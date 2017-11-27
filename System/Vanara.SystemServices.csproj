@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Windows operating system services</Description>
+    <Copyright>Copyright © 2017</Copyright>
+    <AssemblyTitle>Vanara.SystemServices</AssemblyTitle>
+    <VersionPrefix>1.0.1</VersionPrefix>
+    <TargetFrameworks>net20;net35;net40;net461</TargetFrameworks>
+    <AssemblyName>Vanara.SystemServices</AssemblyName>
+    <PackageId>Vanara.SystemServices</PackageId>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <RootNamespace>Vanara.Extensions</RootNamespace>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>David Hall</Authors>
+    <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/dahall/vanara/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>https://github.com/dahall/Vanara/blob/master/docs/Vanara64x64.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
+    <PackageTags>pinvoke vanara net-extensions interop</PackageTags>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <IncludeSource>true</IncludeSource>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net20' ">
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
+    <ProjectReference Include="..\PInvoke\VirtDisk\Vanara.PInvoke.VirtDisk.csproj" />
+    <ProjectReference Include="..\Security\Vanara.Security.csproj" />
+  </ItemGroup>
+
+</Project>

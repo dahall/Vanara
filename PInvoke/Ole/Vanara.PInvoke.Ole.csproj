@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>This library includes PInvoke methods, structures and constants.</Description>
+    <Copyright>Copyright © 2017</Copyright>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <VersionPrefix>1.0.1</VersionPrefix>
+    <TargetFrameworks>net20;net35;net40;net461</TargetFrameworks>
+    <AssemblyName>Vanara.PInvoke.Ole</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <RootNamespace>Vanara.PInvoke</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>David Hall</Authors>
+    <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/dahall/vanara/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>https://github.com/dahall/Vanara/blob/master/docs/Vanara64x64.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>pinvoke vanara net-extensions interop</PackageTags>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <IncludeSource>true</IncludeSource>
+    <IncludeSymbols>true</IncludeSymbols>
+    <Company>GitHub Community</Company>
+    <Product>Vanara</Product>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net20' ">
+    <Reference Include="System" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
+    <Reference Include="System" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>

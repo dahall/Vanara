@@ -1,0 +1,148 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Windows helpers.</Description>
+    <Copyright>Copyright © 2017</Copyright>
+    <AssemblyTitle>Vanara.UI</AssemblyTitle>
+    <VersionPrefix>1.0.1</VersionPrefix>
+    <TargetFrameworks>net20;net35;net40;net461</TargetFrameworks>
+    <AssemblyName>Vanara.UI</AssemblyName>
+    <PackageId>Vanara.UI</PackageId>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <RootNamespace>Vanara.Windows.Forms</RootNamespace>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>David Hall</Authors>
+    <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/dahall/vanara/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>https://github.com/dahall/Vanara/blob/master/docs/Vanara64x64.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
+    <PackageTags>pinvoke vanara net-extensions interop</PackageTags>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <IncludeSource>true</IncludeSource>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="_InProgress_\**\*" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net20' ">
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\PInvoke\ComCtl32\Vanara.PInvoke.ComCtl32.csproj" />
+    <ProjectReference Include="..\PInvoke\CredUI\Vanara.PInvoke.CredUI.csproj" />
+    <ProjectReference Include="..\PInvoke\DwmApi\Vanara.PInvoke.DwmApi.csproj" />
+    <ProjectReference Include="..\PInvoke\NetListMgr\Vanara.PInvoke.NetListMgr.csproj" />
+    <ProjectReference Include="..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj" />
+    <ProjectReference Include="..\PInvoke\Shell32\Vanara.PInvoke.Shell32.csproj" />
+    <ProjectReference Include="..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
+    <ProjectReference Include="..\PInvoke\UxTheme\Vanara.PInvoke.UxTheme.csproj" />
+    <ProjectReference Include="..\Security\Vanara.Security.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Controls\CollapsiblePanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\CollapsiblePanelHeader.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\CommandLink.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\CredentialsDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\CustomButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\CustomComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\CustomDrawBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\DisabledItemComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\EmbeddedContainer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\EnumComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\FolderBrowserDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\GlassExtenderProvider.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\InputDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\IPAddressBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\IPAddressBox.Designer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\SplitButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\TaskDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\ThemedImageButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\ThemedLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\ThemedPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\ThemedTableLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\TrackBarEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\VistaButtonBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Controls\VistaControlExtender.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>
