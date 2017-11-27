@@ -243,3 +243,25 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/UI
+/System
+/Security
+/PInvoke/WinINet
+/PInvoke/VirtDisk
+/PInvoke/UxTheme
+/PInvoke/User32
+/PInvoke/ShlwApi
+/PInvoke/Shell32
+/PInvoke/Security
+/PInvoke/Ole
+/PInvoke/NTDSApi
+/PInvoke/NetListMgr
+/PInvoke/NetApi32
+/PInvoke/Kernel32
+/PInvoke/Gdi32
+/PInvoke/DwmApi
+/PInvoke/Crypt32
+/PInvoke/CredUI
+/PInvoke/ComCtl32
+/PInvoke/AclUI
+/CodeMap1.dgml
