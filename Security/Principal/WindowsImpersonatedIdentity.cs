@@ -1,3 +1,4 @@
+#if !(NETSTANDARD2_0)
 using System;
 using System.ComponentModel;
 using System.Security.Principal;
@@ -96,3 +97,4 @@ namespace Vanara.Security.Principal
 		string IIdentity.Name => identity?.Name;
 	}
 }
+#endif

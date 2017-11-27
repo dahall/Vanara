@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>This library includes PInvoke methods, structures and constants.</Description>
+    <Description>Methods, structures and constants imported from ComCtl32.dll.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <VersionPrefix>1.0.1</VersionPrefix>

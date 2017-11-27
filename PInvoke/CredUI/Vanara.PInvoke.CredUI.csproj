@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>This library includes PInvoke methods, structures and constants.</Description>
+    <Description>Methods, structures and constants imported from CredUI.dll.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <VersionPrefix>1.0.1</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net461</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.CredUI</AssemblyName>
-    <PackageId>$(AssemblyName)</PackageId>
+    <PackageId>Vanara.PInvoke.CredUI</PackageId>
     <RootNamespace>Vanara.PInvoke</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>David Hall</Authors>

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.ConstrainedExecution;
 using System.Security;
-using System.Security.Permissions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.AdvApi32;
 
@@ -20,7 +19,6 @@ namespace Vanara.Security.AccessControl
 
 		/// <summary>Initializes a new instance of the <see cref="PrivilegedCodeBlock"/> class.</summary>
 		/// <param name="systemPrivileges">The privileges.</param>
-		[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
 		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail), SecurityCritical]
 		public PrivilegedCodeBlock(params SystemPrivilege[] systemPrivileges) : this(Process.GetCurrentProcess(), systemPrivileges)
 		{
@@ -29,7 +27,6 @@ namespace Vanara.Security.AccessControl
 		/// <summary>Initializes a new instance of the <see cref="PrivilegedCodeBlock"/> class.</summary>
 		/// <param name="process">Process on which to enable the <see cref="SystemPrivilege"/>.</param>
 		/// <param name="systemPrivileges">The privileges.</param>
-		[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
 		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail), SecurityCritical]
 		public PrivilegedCodeBlock(Process process, params SystemPrivilege[] systemPrivileges)
 		{
@@ -51,8 +48,7 @@ namespace Vanara.Security.AccessControl
 
 		/// <summary>Disposes of an instance of the PrivilegedCodeBlock class.</summary>
 		/// <exception cref="System.ComponentModel.Win32Exception">Thrown when an underlying Win32 function call does not succeed.</exception>
-		/// <permission cref="SecurityAction.Demand">Requires the call stack to have FullTrust.</permission>
-		[PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
+		[SecurityCritical]
 		public void Dispose()
 		{
 			Revert();

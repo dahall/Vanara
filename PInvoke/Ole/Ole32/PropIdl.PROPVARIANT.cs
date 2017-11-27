@@ -891,12 +891,14 @@ namespace Vanara.PInvoke
 						}
 						break;
 
+#if !(NETSTANDARD2_0)
 					case VARTYPE.VT_DISPATCH:
 						{
 							var p = value as IntPtr? ?? Marshal.GetIDispatchForObject(value);
 							SetStruct<IntPtr>(p, VarType);
 						}
 						break;
+#endif
 
 					case VARTYPE.VT_STREAM:
 					case VARTYPE.VT_STREAMED_OBJECT:

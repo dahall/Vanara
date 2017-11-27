@@ -101,8 +101,7 @@ namespace Vanara.Security
 			return id.IsAdmin();
 		}
 
-
-		/// <summary>Runs the current application elevated if it isn't already. <note>This will close the current running instance.</note></summary>
+		/*/// <summary>Runs the current application elevated if it isn't already. <note>This will close the current running instance.</note></summary>
 		public static void RunCurrentApplicationElevated()
 		{
 			if (!WindowsIdentity.GetCurrent().IsAdmin())
@@ -121,6 +120,6 @@ namespace Vanara.Security
 				}
 				catch { }
 			}
-		}
+		}*/
 	}
 }

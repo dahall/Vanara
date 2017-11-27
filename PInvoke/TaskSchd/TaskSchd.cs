@@ -1551,7 +1551,7 @@ namespace Vanara.PInvoke
 			/// The scheduled times that the task will run. A NULL LPSYSTEMTIME object should be passed into this parameter. On return, this array contains
 			/// pCount run times. You must free this array by a calling the CoTaskMemFree function.
 			/// </returns>
-			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), TypeLibFunc(0x41), DispId(0x60020011)]
+			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020011)]
 			SafeCoTaskMemHandle GetRunTimes([In] ref SYSTEMTIME pstStart, [In] ref SYSTEMTIME pstEnd, [In, Out] ref uint pCount);
 		}
 
@@ -2324,7 +2324,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides access to the Task Scheduler service for managing registered tasks.</summary>
-		[ComImport, TypeLibType(0x10c0), DefaultMember("TargetServer"), Guid("2FABA4C7-4DA9-4013-9697-20CC3FD40F85"),
+		[ComImport, DefaultMember("TargetServer"), Guid("2FABA4C7-4DA9-4013-9697-20CC3FD40F85"),
 		 System.Security.SuppressUnmanagedCodeSecurity, CoClass(typeof(TaskSchedulerClass))]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381832")]
 		public interface ITaskService
@@ -3406,8 +3406,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides access to the Task Scheduler service for managing registered tasks.</summary>
-		[ComImport, DefaultMember("TargetServer"), Guid("0F87369F-A4E5-4CFC-BD3E-73E6154572DD"), TypeLibType(2),
-		 ClassInterface((short)0), System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, DefaultMember("TargetServer"), Guid("0F87369F-A4E5-4CFC-BD3E-73E6154572DD"), ClassInterface((short)0), System.Security.SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381832")]
 		public class TaskSchedulerClass
 		{

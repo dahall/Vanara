@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿#if !NETSTANDARD2_0
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using static Vanara.PInvoke.AdvApi32;
@@ -17,3 +18,4 @@ namespace Vanara.Extensions
 		}
 	}
 }
+#endif

@@ -391,7 +391,7 @@ namespace Vanara.PInvoke
 			return new SafeLocalHandle(ptr, 0).ToString(-1);
 		}
 
-		/// <summary>
+		/*/// <summary>
 		/// Formats a message string. The function requires a message definition as input. The message definition can come from a message table resource in an
 		/// already-loaded module. Or the caller can ask the function to search the system's message table resource(s) for the message definition. The function
 		/// finds the message definition in a message table resource based on a message identifier and a language identifier. The function returns the formatted
@@ -435,7 +435,7 @@ namespace Vanara.PInvoke
 
 			//if (ret == 0) Win32Error.ThrowLastError();
 			return new SafeLocalHandle(ptr, 0).ToString(-1);
-		}
+		}*/
 
 		/// <summary>
 		/// Frees the loaded dynamic-link library (DLL) module and, if necessary, decrements its reference count. When the reference count reaches zero, the

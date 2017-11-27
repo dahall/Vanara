@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>Windows helpers.</Description>
+    <Description>Wrapper classes for user interface related items in the Vanara PInvoke libraries.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>Vanara.UI</AssemblyTitle>
     <VersionPrefix>1.0.1</VersionPrefix>
@@ -59,6 +59,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\PInvoke\AclUI\Vanara.PInvoke.AclUI.csproj" />
     <ProjectReference Include="..\PInvoke\ComCtl32\Vanara.PInvoke.ComCtl32.csproj" />
     <ProjectReference Include="..\PInvoke\CredUI\Vanara.PInvoke.CredUI.csproj" />
     <ProjectReference Include="..\PInvoke\DwmApi\Vanara.PInvoke.DwmApi.csproj" />
@@ -71,6 +72,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="AccessControl\Editor\AccessControlEditorDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="Controls\CollapsiblePanel.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -12,21 +12,13 @@ namespace Vanara.PInvoke
 		public static class KnownSIDRelativeID
 		{
 			public const int SECURITY_CREATOR_GROUP_RID = 0x00000001;
-
 			public const int SECURITY_CREATOR_GROUP_SERVER_RID = 0x00000003;
-
 			public const int SECURITY_CREATOR_OWNER_RID = 0x00000000;
-
 			public const int SECURITY_CREATOR_OWNER_RIGHTS_RID = 0x00000004;
-
 			public const int SECURITY_CREATOR_OWNER_SERVER_RID = 0x00000002;
-
 			public const int SECURITY_LOCAL_LOGON_RID = 0x00000001;
-
 			public const int SECURITY_LOCAL_RID = 0x00000000;
-
 			public const int SECURITY_NULL_RID = 0x00000000;
-
 			public const int SECURITY_WORLD_RID = 0x00000000;
 		}
 

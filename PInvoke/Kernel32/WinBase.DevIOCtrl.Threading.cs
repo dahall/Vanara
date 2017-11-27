@@ -133,7 +133,6 @@ namespace Vanara.PInvoke
         ///   </item>
         /// </list>
         /// </remarks>
-        [HostProtection(SecurityAction.LinkDemand, ExternalThreading = true)]
         public static Task<TOut?> DeviceIoControlAsync<TIn, TOut>(SafeFileHandle hDevice, uint ioControlCode, TIn? inVal, TOut? outVal) where TIn : struct where TOut : struct
         {
             var buf = Pack(inVal, outVal);

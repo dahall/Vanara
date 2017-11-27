@@ -214,7 +214,7 @@ namespace Vanara.Security.AccessControl
 		/// <summary>Gets a resource string.</summary>
 		/// <param name="id">The string identifier.</param>
 		/// <returns>Localized resource string or identifier string if not found.</returns>
-		protected static string ResStr(string id) => Properties.Resources.ResourceManager.GetString(id) ?? id;
+		protected static string ResStr(string id) => Vanara.Windows.Forms.Properties.Resources.ResourceManager.GetString(id) ?? id;
 	}
 
 	internal class FileProvider : GenericProvider

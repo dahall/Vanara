@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+#if !(NETSTANDARD2_0)
 using System.Management;
+#endif
 using System.Runtime.InteropServices;
 using Vanara.Security;
 using Vanara.Security.AccessControl;
@@ -38,7 +40,7 @@ namespace Vanara.Extensions
 			}
 		}
 
-#if !NET20
+#if !(NET20 || NETSTANDARD2_0)
 		/// <summary>Gets the child processes.</summary>
 		/// <param name="p">The process.</param>
 		/// <param name="includeDescendants">if set to <c>true</c> include descendants of child processes as well.</param>
@@ -97,6 +99,7 @@ namespace Vanara.Extensions
 			}
 		}
 
+#if !(NETSTANDARD2_0)
 		/// <summary>
 		/// Gets the parent process.
 		/// </summary>
@@ -117,6 +120,7 @@ namespace Vanara.Extensions
 			catch { }
 			return null;
 		}
+#endif
 
 		/// <summary>Gets the privileges for this process.</summary>
 		/// <param name="process">The process.</param>

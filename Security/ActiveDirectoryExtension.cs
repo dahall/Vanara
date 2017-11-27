@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !(NETSTANDARD2_0)
+using System;
 using System.Linq;
 using System.DirectoryServices.ActiveDirectory;
 using static Vanara.PInvoke.NTDSApi;
@@ -25,3 +26,4 @@ namespace Vanara.Extensions
 		}
 	}
 }
+#endif

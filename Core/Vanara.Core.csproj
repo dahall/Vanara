@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>This library includes shared methods, structures and constants for use throughout the Vanara assemblies. Think of it as windows.h with some useful extensions. This assembly has no dependencies on any DLL.</Description>
+    <Description>This library includes shared methods, structures and constants for use throughout the Vanara assemblies. Think of it as windows.h with some useful extensions.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>Vanara.Core</AssemblyTitle>
     <VersionPrefix>1.0.1</VersionPrefix>
-    <TargetFrameworks>net20;net35;net40;net461</TargetFrameworks>
+    <TargetFrameworks>net20;net35;net40;net461;netstandard20</TargetFrameworks>
     <AssemblyName>Vanara.Core</AssemblyName>
     <PackageId>Vanara.Core</PackageId>
     <RootNamespace>Vanara</RootNamespace>
