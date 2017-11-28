@@ -6,13 +6,15 @@ I have tried to follow the concepts below in laying out the libraries.
 * All functions that are imported from a single DLL should be placed into a single assembly that is named after the DLL
   * (e.g. The assembly `Vanara.PInvoke.Gdi32.dll` hosts all functions and supporting enumerations, constants and structures that are exported from `gdi32.dll` in the system directory.)
 * Any structure or macro or enumeration (no function) that is used by many libraries is put into either `Vanara.Core` or `Vanara.PInvoke.Shared`
-  * (e.g. The macro HIWORD and the structure SIZE are both in `Vanara.PInvoke.Shared` and classes to simplfy interop calls and native memory management are in `Vanara.Core`.)
+  * (e.g. The macro `HIWORD` and the structure `SIZE` are both in `Vanara.PInvoke.Shared` and classes to simplfy interop calls and native memory management are in `Vanara.Core`.)
 * Inside a project, all constructs are contained in a file named after the header file (*.h) in which they are defined in the Windows API
   * (e.g. In the Kernel32 assembly, you'll find a FileApi.cs, a WinBase.cs and a WinNT.cs file representing fileapi.h, winbase.h and winnt.h respectively.)
 * Where the direct interpretation of a structure leads to memory leaks or misuse, I have tried to simplify their use
 * Where structures are always passed by reference and where that structure needs to clean up memory allocations, I have changed the structure to class implementing `IDisposable`.
 * Wherever possible, all handles have been turned into `SafeHandle` derivatives.
 * Wherever possible, all functions that allocate memory that is to be freed by the caller use a safe memory handle.
+* All PInvoke calls are in assemblies prefixed by `Vanara.PInvoke`
+* If there are classes or extensions that make use of the PInvoke calls, they are in wrapper assemblies prefixed by `Vanara` and then followed by a logical name for the functionality. Today, those are Core, Security, SystemServices and UI.
 
 ## Quick Links
 * [Issues](https://github.com/dahall/Vanara/issues)
