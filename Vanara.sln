@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.Core", "Core\Vanara.Core.csproj", "{241F73EE-9298-45C9-B869-A045DFF94C03}"
 EndProject
@@ -64,6 +64,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Ole", "PInvoke\Ole\Vanara.PInvoke.Ole.csproj", "{BBE4A7D6-0B24-4F58-9726-E05F358C1256}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{3C9E407F-9D0B-4B54-B181-BA5476B8D2DC}"
+EndProject
+Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "HelpBuilder", "HelpBuilder\HelpBuilder.shfbproj", "{8A2AE72B-18A3-4944-B15C-06DEC99E52C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -164,9 +166,10 @@ Global
 		{BBE4A7D6-0B24-4F58-9726-E05F358C1256}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBE4A7D6-0B24-4F58-9726-E05F358C1256}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3C9E407F-9D0B-4B54-B181-BA5476B8D2DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3C9E407F-9D0B-4B54-B181-BA5476B8D2DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C9E407F-9D0B-4B54-B181-BA5476B8D2DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3C9E407F-9D0B-4B54-B181-BA5476B8D2DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A2AE72B-18A3-4944-B15C-06DEC99E52C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A2AE72B-18A3-4944-B15C-06DEC99E52C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A2AE72B-18A3-4944-B15C-06DEC99E52C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
