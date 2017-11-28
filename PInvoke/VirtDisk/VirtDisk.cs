@@ -208,17 +208,17 @@ namespace Vanara.PInvoke
 		[Flags]
 		public enum EXPAND_VIRTUAL_DISK_FLAG
 		{
-			/// <summary></summary>
+			/// <summary>No flags. Use system defaults.</summary>
 			EXPAND_VIRTUAL_DISK_FLAG_NONE = 0x00000000
 		}
 
 		/// <summary>Contains the version of the virtual hard disk (VHD) EXPAND_VIRTUAL_DISK_PARAMETERS structure to use in calls to VHD functions.</summary>
 		public enum EXPAND_VIRTUAL_DISK_VERSION
 		{
-			/// <summary></summary>
+			/// <summary>Unspecified.</summary>
 			EXPAND_VIRTUAL_DISK_VERSION_UNSPECIFIED = 0,
 
-			/// <summary></summary>
+			/// <summary>Version 1.</summary>
 			EXPAND_VIRTUAL_DISK_VERSION_1 = 1
 		}
 
@@ -239,36 +239,76 @@ namespace Vanara.PInvoke
 		/// <summary>Contains virtual hard disk (VHD) information retrieval identifiers.</summary>
 		public enum GET_VIRTUAL_DISK_INFO_VERSION
 		{
-			/// <summary>Unspecified.</summary>
+			/// <summary>Reserved. This value should not be used.</summary>
+			[CorrespondingType(null)]
 			GET_VIRTUAL_DISK_INFO_UNSPECIFIED = 0,
 
-			/// <summary>Size.</summary>
+			/// <summary>Information related to the virtual disk size, including total size, physical allocation used, block size, and sector size.</summary>
+			[CorrespondingType(typeof(GET_VIRTUAL_DISK_INFO_Size))]
 			GET_VIRTUAL_DISK_INFO_SIZE = 1,
 
-			/// <summary>Unique identifier.</summary>
+			/// <summary>The unique identifier. This identifier is persistently stored in the virtual disk and will not change even if the virtual disk file is copied to another file.</summary>
+			[CorrespondingType(typeof(Guid))]
 			GET_VIRTUAL_DISK_INFO_IDENTIFIER = 2,
 
-			/// <summary>Location of the parent.</summary>
+			/// <summary>The paths to parent virtual disks. Valid only for differencing virtual disks.</summary>
+			[CorrespondingType(typeof(GET_VIRTUAL_DISK_INFO_ParentLocation))]
 			GET_VIRTUAL_DISK_INFO_PARENT_LOCATION = 3,
 
-			/// <summary>Unique identifier of the parent.</summary>
+			/// <summary>The unique identifier of the parent virtual disk. Valid only for differencing virtual disks.</summary>
+			[CorrespondingType(typeof(Guid))]
 			GET_VIRTUAL_DISK_INFO_PARENT_IDENTIFIER = 4,
 
-			/// <summary>Time stamp of the parent.</summary>
+			/// <summary>The time stamp of the parent when the child virtual disk was created. Valid only for differencing virtual disks.</summary>
+			[CorrespondingType(typeof(uint))]
 			GET_VIRTUAL_DISK_INFO_PARENT_TIMESTAMP = 5,
 
-			/// <summary>Type.</summary>
+			/// <summary>The device identifier and vendor identifier that identify the type of virtual disk.</summary>
+			[CorrespondingType(typeof(VIRTUAL_STORAGE_TYPE))]
 			GET_VIRTUAL_DISK_INFO_VIRTUAL_STORAGE_TYPE = 6,
 
-			/// <summary>Subtype.</summary>
+			/// <summary>The type of virtual disk.</summary>
+			[CorrespondingType(typeof(VIRTUAL_DISK_INFO_PROVIDER_SUBTYPE))]
 			GET_VIRTUAL_DISK_INFO_PROVIDER_SUBTYPE = 7,
+
+			/// <summary>Indicates whether the virtual disk is 4 KB aligned.
+			/// <para><c>Windows 7 and Windows Server 2008 R2:</c> This value is not supported before Windows 8 and Windows Server 2012.</para></summary>
+			[CorrespondingType(typeof(bool))]
 			GET_VIRTUAL_DISK_INFO_IS_4K_ALIGNED = 8,
+
+			/// <summary>Details about the physical disk on which the virtual disk resides.
+			/// <para><c>Windows 7 and Windows Server 2008 R2:</c> This value is not supported before Windows 8 and Windows Server 2012.</para></summary>
+			[CorrespondingType(typeof(GET_VIRTUAL_DISK_INFO_PhysicalDisk))]
 			GET_VIRTUAL_DISK_INFO_PHYSICAL_DISK = 9,
+
+			/// <summary>The physical sector size of the virtual disk.
+			/// <para><c>Windows 7 and Windows Server 2008 R2:</c> This value is not supported before Windows 8 and Windows Server 2012.</para></summary>
+			[CorrespondingType(typeof(uint))]
 			GET_VIRTUAL_DISK_INFO_VHD_PHYSICAL_SECTOR_SIZE = 10,
+
+			/// <summary>The smallest safe minimum size of the virtual disk.
+			/// <para><c>Windows 7 and Windows Server 2008 R2:</c> This value is not supported before Windows 8 and Windows Server 2012.</para></summary>
+			[CorrespondingType(typeof(ulong))]
 			GET_VIRTUAL_DISK_INFO_SMALLEST_SAFE_VIRTUAL_SIZE = 11,
+
+			/// <summary>The fragmentation level of the virtual disk.
+			/// <para><c>Windows 7 and Windows Server 2008 R2:</c> This value is not supported before Windows 8 and Windows Server 2012.</para></summary>
+			[CorrespondingType(typeof(uint))]
 			GET_VIRTUAL_DISK_INFO_FRAGMENTATION = 12,
+
+			/// <summary>Whether the virtual disk is currently mounted and in use.
+			/// <para><c>Windows 8 and Windows Server 2012:</c> This value is not supported before Windows 8.1 and Windows Server 2012 R2.</para></summary>
+			[CorrespondingType(typeof(bool))]
 			GET_VIRTUAL_DISK_INFO_IS_LOADED = 13,
+
+			/// <summary>The identifier that is uniquely created when a user first creates the virtual disk to attempt to uniquely identify that virtual disk.
+			/// <para><c>Windows 8 and Windows Server 2012:</c> This value is not supported before Windows 8.1 and Windows Server 2012 R2.</para></summary>
+			[CorrespondingType(typeof(Guid))]
 			GET_VIRTUAL_DISK_INFO_VIRTUAL_DISK_ID = 14,
+
+			/// <summary>The state of resilient change tracking (RCT) for the virtual disk.
+			/// <para><c>Windows 8.1 and Windows Server 2012 R2:</c> This value is not supported before Windows 10 and Windows Server 2016.</para></summary>
+			[CorrespondingType(typeof(GET_VIRTUAL_DISK_INFO_ChangeTrackingState))]
 			GET_VIRTUAL_DISK_INFO_CHANGE_TRACKING_STATE = 15,
 		}
 
@@ -276,25 +316,31 @@ namespace Vanara.PInvoke
 		[Flags]
 		public enum MERGE_VIRTUAL_DISK_FLAG
 		{
-			/// <summary></summary>
+			/// <summary>None.</summary>
 			MERGE_VIRTUAL_DISK_FLAG_NONE = 0x00000000
 		}
 
 		/// <summary>Contains the version of the virtual hard disk (VHD) MERGE_VIRTUAL_DISK_PARAMETERS structure to use in calls to VHD functions.</summary>
 		public enum MERGE_VIRTUAL_DISK_VERSION
 		{
-			/// <summary></summary>
+			/// <summary>Not supported.</summary>
 			MERGE_VIRTUAL_DISK_VERSION_UNSPECIFIED = 0,
 
-			/// <summary></summary>
+			/// <summary>The Version1 member structure will be used.</summary>
 			MERGE_VIRTUAL_DISK_VERSION_1 = 1,
 
+			/// <summary>The Version2 member structure will be used.
+			/// <para><c>Windows 7 and Windows Server 2008 R2:</c> This value is not supported before Windows 8 and Windows Server 2012.</para></summary>
 			MERGE_VIRTUAL_DISK_VERSION_2 = 2,
 		}
 
+		/// <summary>Contains the version of the virtual disk MIRROR_VIRTUAL_DISK_PARAMETERS structure used by the MirrorVirtualDisk function.</summary>
+		[PInvokeData("VirtDisk.h", MSDNShortId = "hh448681")]
 		public enum MIRROR_VIRTUAL_DISK_VERSION
 		{
+			/// <summary>Unsupported.</summary>
 			MIRROR_VIRTUAL_DISK_VERSION_UNSPECIFIED = 0,
+			/// <summary>Use the Version1 member.</summary>
 			MIRROR_VIRTUAL_DISK_VERSION_1 = 1,
 		}
 
@@ -310,6 +356,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains virtual hard disk (VHD) or CD or DVD image file (ISO) open request flags.</summary>
+		[PInvokeData("VirtDisk.h", MSDNShortId = "dd323681")]
 		[Flags]
 		public enum OPEN_VIRTUAL_DISK_FLAG
 		{
@@ -355,6 +402,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains the version of the virtual disk OPEN_VIRTUAL_DISK_PARAMETERS structure to use in calls to virtual disk functions.</summary>
+		[PInvokeData("VirtDisk.h", MSDNShortId = "dd323683")]
 		public enum OPEN_VIRTUAL_DISK_VERSION
 		{
 			/// <summary>Unspecified version.</summary>
@@ -363,15 +411,20 @@ namespace Vanara.PInvoke
 			/// <summary>Use the Version1 member of this structure.</summary>
 			OPEN_VIRTUAL_DISK_VERSION_1 = 1,
 
-			/// <summary>Use the Version2 member of this structure.</summary>
+			/// <summary>Use the Version2 member of this structure.
+			/// <para><c>Windows 7 and Windows Server 2008 R2:</c> This value is not supported before Windows 8 and Windows Server 2012.</para></summary>
 			OPEN_VIRTUAL_DISK_VERSION_2 = 2,
 
+			/// <summary>Use the Version3 member of this structure.</summary>
 			OPEN_VIRTUAL_DISK_VERSION_3 = 3,
 		}
 
+		/// <summary>Enumerates the available flags for the ResizeVirtualDisk function.</summary>
+		[PInvokeData("VirtDisk.h", MSDNShortId = "dd323683")]
 		[Flags]
 		public enum RESIZE_VIRTUAL_DISK_FLAG
 		{
+			/// <summary>No flags are specified.</summary>
 			RESIZE_VIRTUAL_DISK_FLAG_NONE = 0x0,
 
 			/// <summary>
@@ -387,9 +440,13 @@ namespace Vanara.PInvoke
 			RESIZE_VIRTUAL_DISK_FLAG_RESIZE_TO_SMALLEST_SAFE_VIRTUAL_SIZE = 0x2,
 		}
 
+		/// <summary>Enumerates the possible versions for parameters for the ResizeVirtualDisk function.</summary>
+		[PInvokeData("VirtDisk.h", MSDNShortId = "hh832161")]
 		public enum RESIZE_VIRTUAL_DISK_VERSION
 		{
+			/// <summary>The version is not valid.</summary>
 			RESIZE_VIRTUAL_DISK_VERSION_UNSPECIFIED = 0,
+			/// <summary>Version one of the parameters is used. This is the only supported value.</summary>
 			RESIZE_VIRTUAL_DISK_VERSION_1 = 1,
 		}
 		
@@ -423,6 +480,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains the version of the virtual hard disk (VHD) STORAGE_DEPENDENCY_INFO structure to use in calls to VHD functions.</summary>
+		[PInvokeData("VirtDisk.h", MSDNShortId = "dd323691")]
 		public enum STORAGE_DEPENDENCY_INFO_VERSION
 		{
 			/// <summary>The version is not specified.</summary>
@@ -436,6 +494,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains the bitmask for specifying access rights to a virtual hard disk (VHD) or CD or DVD image file (ISO).</summary>
+		[PInvokeData("VirtDisk.h", MSDNShortId = "dd323702")]
 		[Flags]
 		public enum VIRTUAL_DISK_ACCESS_MASK
 		{
@@ -518,10 +577,16 @@ namespace Vanara.PInvoke
 			VIRTUAL_DISK_ACCESS_WRITABLE = 0x00320000
 		}
 
+		/// <summary>
+		/// Provider-specific subtype. Set the Version member to GET_VIRTUAL_DISK_INFO_PROVIDER_SUBTYPE.
+		/// </summary>
 		public enum VIRTUAL_DISK_INFO_PROVIDER_SUBTYPE : uint
 		{
+			/// <summary>Fixed.</summary>
 			Fixed = 2,
+			/// <summary>Dynamically expandable (sparse).</summary>
 			DynamicallyExpandable = 3,
+			/// <summary>Differencing.</summary>
 			Differencing = 4
 		}
 
@@ -546,9 +611,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			VIRTUAL_STORAGE_TYPE_DEVICE_VHDX = 3,
 
-			/// <summary>
-			/// 
-			/// </summary>
+			/// <summary></summary>
 			VIRTUAL_STORAGE_TYPE_DEVICE_VHDSET = 4
 		}
 
@@ -814,7 +877,7 @@ namespace Vanara.PInvoke
 		/// <param name="VirtualDiskHandle">A handle to the open VHD, which must have been opened using the VIRTUAL_DISK_ACCESS_GET_INFO flag.</param>
 		/// <param name="VirtualDiskInfoSize">A pointer to a ULONG that contains the size of the VirtualDiskInfo parameter.</param>
 		/// <param name="VirtualDiskInfo">
-		/// A pointer to a valid GET_VIRTUAL_DISK_INFO structure. The format of the data returned is dependent on the value passed in the Version member by the caller.
+		/// A pointer to a valid <see cref="GET_VIRTUAL_DISK_INFO"/> structure. The format of the data returned is dependent on the value passed in the Version member by the caller.
 		/// </param>
 		/// <param name="SizeUsed">A pointer to a ULONG that contains the size used.</param>
 		/// <returns>
