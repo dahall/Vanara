@@ -10,7 +10,7 @@ namespace Vanara.Collections
 	/// like some COM objects.
 	/// </summary>
 	/// <typeparam name="TItem">The type of the item.</typeparam>
-	public class IEnumFromIndexer<TItem> : IEnumerable<TItem>
+	public class IEnumFromIndexer<TItem> : IReadOnlyList<TItem>
 	{
 		private readonly Func<uint> getCount;
 		private readonly Func<uint, TItem> indexer;
@@ -27,6 +27,16 @@ namespace Vanara.Collections
 			this.indexer = indexer;
 			this.startIndex = startIndex;
 		}
+
+		/// <summary>Gets the number of elements in the collection.</summary>
+		/// <value>The number of elements in the collection.</value>
+		public int Count => (int)getCount();
+
+		/// <summary>Gets the <see cref="TItem"/> at the specified index.</summary>
+		/// <value>The <see cref="TItem"/>.</value>
+		/// <param name="index">The index.</param>
+		/// <returns></returns>
+		public TItem this[int index] => indexer((uint)index);
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
 		/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
