@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 
@@ -12,20 +10,16 @@ namespace Vanara.InteropServices
 	{
 		private CharSet charSet = CharSet.Unicode;
 
-		/// <summary>Gets the instance.</summary>
-		/// <param name="cookie">The cookie.</param>
-		/// <returns></returns>
-		public static ICustomMarshaler GetInstance(string cookie)
+		private CoTaskMemStringMarshaler(string cookie)
 		{
-			var ret = new CoTaskMemStringMarshaler();
-			if (!string.IsNullOrEmpty(cookie))
-			{
-				try { ret.charSet = (CharSet) Enum.Parse(typeof(CharSet), cookie, true); } catch { }
-			}
-			return ret;
+			if (string.IsNullOrEmpty(cookie)) return;
+			try { charSet = (CharSet)Enum.Parse(typeof(CharSet), cookie, true); } catch { }
 		}
 
-		internal CharSet CharSet => charSet;
+		/// <summary>Gets the instance.</summary>
+		/// <param name="cookie">The cookie.</param>
+		/// <returns>A new instance of this class.</returns>
+		public static ICustomMarshaler GetInstance(string cookie) => new CoTaskMemStringMarshaler(cookie);
 
 		/// <summary>Performs necessary cleanup of the managed data when it is no longer needed.</summary>
 		/// <param name="ManagedObj">The managed object to be destroyed.</param>
