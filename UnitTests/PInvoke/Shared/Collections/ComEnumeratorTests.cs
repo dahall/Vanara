@@ -69,15 +69,9 @@ namespace Vanara.Collections.Tests
 			foreach (var p in e)
 			{
 				Assert.That(p, Is.Not.EqualTo(IntPtr.Zero));
-				try
-				{
-					TestContext.WriteLine(Marshal.PtrToStringUni(Marshal.ReadIntPtr(p)));
-				}
-				finally
-				{
-					Marshal.FreeCoTaskMem(Marshal.ReadIntPtr(p));
-					Marshal.FreeCoTaskMem(p);
-				}
+				var sa = IEnumWorkItemsNames.Convert(p, 1);
+				Assert.That(sa.Length, Is.EqualTo(1));
+				TestContext.WriteLine(sa[0]);
 			}
 
 			// Test IEnumerator
@@ -154,13 +148,18 @@ namespace Vanara.Collections.Tests
 			// Test IEnumerable
 			var e = new IEnumFromIndexer<IPropertyDescription>(pdl.GetCount, i => pdl.GetAt(i, pdRiid), 0);
 			var c = 0;
+			var l = new List<string>();
 			foreach (var pd in e)
 			{
 				Assert.IsInstanceOf<IPropertyDescription>(pd);
-				TestContext.WriteLine(pd.GetDisplayName());
+				var s = pd.GetDisplayName();
+				l.Add(s);
+				TestContext.WriteLine(s);
 				c++;
 			}
-			Assert.That(c, Is.EqualTo(pdl.GetCount()));
+			Assert.That(c, Is.EqualTo(e.Count));
+			Assert.That(l[0], Is.EqualTo(e[0]));
+			Assert.That(l[c-1], Is.EqualTo(e[c-1]));
 
 			// Test IEnumerator
 			var g = e.GetEnumerator();

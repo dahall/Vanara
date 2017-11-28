@@ -32,11 +32,11 @@ namespace Vanara.Collections
 		/// <value>The number of elements in the collection.</value>
 		public int Count => (int)getCount();
 
-		/// <summary>Gets the <see cref="TItem"/> at the specified index.</summary>
+		/// <summary>Gets the <see cref="TItem"/> at the specified zero-based index.</summary>
 		/// <value>The <see cref="TItem"/>.</value>
-		/// <param name="index">The index.</param>
-		/// <returns></returns>
-		public TItem this[int index] => indexer((uint)index);
+		/// <param name="index">The zero-based index.</param>
+		/// <returns>The <see cref="TItem"/> at the specified zero-based index.</returns>
+		public TItem this[int index] => indexer((uint)index + startIndex);
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
 		/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
