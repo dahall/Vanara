@@ -4,7 +4,7 @@
     <Description>Wrapper classes for system related items in the Vanara PInvoke libraries.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>Vanara.SystemServices</AssemblyTitle>
-    <VersionPrefix>1.0.1</VersionPrefix>
+    <VersionPrefix>1.0.2</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net461;netstandard2.0</TargetFrameworks>
     <AssemblyName>Vanara.SystemServices</AssemblyName>
     <PackageId>Vanara.SystemServices</PackageId>
@@ -12,15 +12,18 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <RootNamespace>Vanara.Extensions</RootNamespace>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>David Hall</Authors>
     <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/dahall/vanara/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageIconUrl>https://github.com/dahall/Vanara/blob/master/docs/Vanara64x64.png</PackageIconUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/dahall/Vanara/master/docs/Vanara64x64.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
     <PackageTags>pinvoke vanara net-extensions interop</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
     <IncludeSource>true</IncludeSource>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net20' ">
