@@ -501,6 +501,27 @@ namespace Vanara.PInvoke
 			IEnumWorkItems Clone();
 		}
 
+		/// <summary>Simple converter for results of <see cref="IEnumWorkItems.Next"/>.</summary>
+		public static class IEnumWorkItemsNames
+		{
+			/// <summary>Simple converter for results of <see cref="IEnumWorkItems.Next" />.</summary>
+			/// <param name="rgpwszNames">The rgpwszNames result from <see cref="IEnumWorkItems.Next" />.</param>
+			/// <param name="pceltFetched">The pceltFetched result from <see cref="IEnumWorkItems.Next" />.</param>
+			/// <returns>An array of strings.</returns>
+			public static string[] Convert(IntPtr rgpwszNames, uint pceltFetched)
+			{
+				var ret = new string[pceltFetched];
+				for (var i = 0; i < pceltFetched; i++)
+				{
+					var sptr = Marshal.ReadIntPtr(rgpwszNames, IntPtr.Size * i);
+					ret[i] = Marshal.PtrToStringUni(sptr);
+					Marshal.FreeCoTaskMem(sptr);
+				}
+				Marshal.FreeCoTaskMem(rgpwszNames);
+				return ret;
+			}
+		}
+
 		/// <summary>
 		/// Provides the methods for running tasks, getting or setting task information, and terminating tasks. It is derived from the IScheduledWorkItem
 		/// interface and inherits all the methods of that interface.
