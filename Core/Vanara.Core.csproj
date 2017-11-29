@@ -5,7 +5,7 @@
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>Vanara.Core</AssemblyTitle>
     <VersionPrefix>1.0.2</VersionPrefix>
-    <TargetFrameworks>net20;net35;net40;net461;netstandard20</TargetFrameworks>
+    <TargetFrameworks>net20;net35;net40;net45;netstandard20</TargetFrameworks>
     <AssemblyName>Vanara.Core</AssemblyName>
     <PackageId>Vanara.Core</PackageId>
     <RootNamespace>Vanara</RootNamespace>
@@ -26,7 +26,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild><DocumentationFile>bin\Release\$(TargetFramework)\$(TargetName).xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -49,7 +49,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System.Drawing" />
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />

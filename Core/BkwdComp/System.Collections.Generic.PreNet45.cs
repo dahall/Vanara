@@ -1,4 +1,4 @@
-﻿#if (NET20 || NET35)
+﻿#if (NET20 || NET35 || NET40)
 namespace System.Collections.Generic
 {
 	/// <summary>Represents a strongly-typed, read-only collection of elements.</summary>

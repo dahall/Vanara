@@ -5,7 +5,7 @@
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>Vanara.Security</AssemblyTitle>
     <VersionPrefix>1.0.2</VersionPrefix>
-    <TargetFrameworks>net20;net35;net40;net461;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net20;net35;net40;net45;netstandard2.0</TargetFrameworks>
     <AssemblyName>Vanara.Security</AssemblyName>
     <PackageId>Vanara.Security</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild><DocumentationFile>bin\Release\$(TargetFramework)\$(TargetName).xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net20' ">
@@ -42,7 +42,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
