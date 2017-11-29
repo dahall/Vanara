@@ -206,7 +206,7 @@ namespace Vanara.Security.AccessControl
 		}
 
 		public static IEnumerable<LUID_AND_ATTRIBUTES> GetPrivileges(this SafeTokenHandle hObj) =>
-			hObj.GetConvertedInfo<PTOKEN_PRIVILEGES>(TOKEN_INFORMATION_CLASS.TokenPrivileges).Privileges;
+			hObj.GetInfo<PTOKEN_PRIVILEGES>(TOKEN_INFORMATION_CLASS.TokenPrivileges).Privileges;
 	}
 
 	internal class SystemPrivilegeTypeConverter : TypeConverter
@@ -272,14 +272,13 @@ namespace Vanara.Security.AccessControl
 
 		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
-			var s = value as string;
-			if (s != null)
+			if (value is string s)
 			{
 				try { var val = (SystemPrivilege)Enum.Parse(typeof(SystemPrivilege), s, true); return val; } catch { }
 				try { return ConvertKnownString(s); } catch { }
 			}
-			if (value is LUID)
-				return GetPrivilege((LUID)value);
+			if (value is LUID luid)
+				return GetPrivilege(luid);
 			return base.ConvertFrom(context, culture, value);
 		}
 

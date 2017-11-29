@@ -75,13 +75,13 @@ namespace Vanara.Security
 				if (Environment.OSVersion.Version.Major >= 6)
 				{
 					// Marshal the TOKEN_ELEVATION_TYPE enum from native to .NET.
-					var elevType = hObject.GetConvertedInfo<TOKEN_ELEVATION_TYPE>(TOKEN_INFORMATION_CLASS.TokenElevationType);
+					var elevType = hObject.GetInfo<TOKEN_ELEVATION_TYPE>(TOKEN_INFORMATION_CLASS.TokenElevationType);
 
 					// If limited, get the linked elevated token for further check.
 					if (elevType == TOKEN_ELEVATION_TYPE.TokenElevationTypeLimited)
 					{
 						// Marshal the linked token value from native to .NET.
-						hObjectToCheck = new SafeTokenHandle(hObject.GetConvertedInfo<IntPtr>(TOKEN_INFORMATION_CLASS.TokenLinkedToken));
+						hObjectToCheck = new SafeTokenHandle(hObject.GetInfo<IntPtr>(TOKEN_INFORMATION_CLASS.TokenLinkedToken));
 					}
 				}
 

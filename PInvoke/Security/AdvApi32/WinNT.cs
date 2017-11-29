@@ -2,8 +2,13 @@
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
+using System.Text;
 using Vanara.Extensions;
 using Vanara.InteropServices;
+
+// ReSharper disable UnusedMember.Global
+// ReSharper disable FieldCanBeMadeReadOnly.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Vanara.PInvoke
 {
@@ -81,7 +86,7 @@ namespace Vanara.PInvoke
 			/// <summary>The SID is a logon SID that identifies the logon session associated with an access token.</summary>
 			SE_GROUP_LOGON_ID = 0xC0000000,
 			/// <summary>The SID identifies a domain-local group.</summary>
-			SE_GROUP_RESOURCE = 0x20000000,
+			SE_GROUP_RESOURCE = 0x20000000
 		}
 
 		[Flags]
@@ -214,7 +219,7 @@ namespace Vanara.PInvoke
 			/// Indicates a self-relative security descriptor. If this flag is not set, the security descriptor is in absolute format. For more information, see
 			/// Absolute and Self-Relative Security Descriptors.
 			/// </summary>
-			SE_SELF_RELATIVE = 0x8000,
+			SE_SELF_RELATIVE = 0x8000
 		}
 
 		/// <summary>
@@ -295,41 +300,52 @@ namespace Vanara.PInvoke
 		public enum TOKEN_INFORMATION_CLASS
 		{
 			/// <summary>The buffer receives a TOKEN_USER structure that contains the user account of the token.</summary>
+			[CorrespondingType(typeof(TOKEN_USER))]
 			TokenUser = 1,
 
 			/// <summary>The buffer receives a TOKEN_GROUPS structure that contains the group accounts associated with the token.</summary>
+			[CorrespondingType(typeof(TOKEN_GROUPS))]
 			TokenGroups,
 
 			/// <summary>The buffer receives a TOKEN_PRIVILEGES structure that contains the privileges of the token.</summary>
+			[CorrespondingType(typeof(PTOKEN_PRIVILEGES))]
 			TokenPrivileges,
 
 			/// <summary>The buffer receives a TOKEN_OWNER structure that contains the default owner security identifier (SID) for newly created objects.</summary>
+			[CorrespondingType(typeof(TOKEN_OWNER))]
 			TokenOwner,
 
 			/// <summary>The buffer receives a TOKEN_PRIMARY_GROUP structure that contains the default primary group SID for newly created objects.</summary>
+			[CorrespondingType(typeof(TOKEN_PRIMARY_GROUP))]
 			TokenPrimaryGroup,
 
 			/// <summary>The buffer receives a TOKEN_DEFAULT_DACL structure that contains the default DACL for newly created objects.</summary>
+			[CorrespondingType(typeof(TOKEN_DEFAULT_DACL))]
 			TokenDefaultDacl,
 
 			/// <summary>
 			/// The buffer receives a TOKEN_SOURCE structure that contains the source of the token. TOKEN_QUERY_SOURCE access is needed to retrieve this information.
 			/// </summary>
+			[CorrespondingType(typeof(TOKEN_SOURCE))]
 			TokenSource,
 
 			/// <summary>The buffer receives a TOKEN_TYPE value that indicates whether the token is a primary or impersonation token.</summary>
+			[CorrespondingType(typeof(TOKEN_TYPE))]
 			TokenType,
 
 			/// <summary>
 			/// The buffer receives a SECURITY_IMPERSONATION_LEVEL value that indicates the impersonation level of the token. If the access token is not an
 			/// impersonation token, the function fails.
 			/// </summary>
+			[CorrespondingType(typeof(SECURITY_IMPERSONATION_LEVEL))]
 			TokenImpersonationLevel,
 
 			/// <summary>The buffer receives a TOKEN_STATISTICS structure that contains various token statistics.</summary>
+			[CorrespondingType(typeof(TOKEN_STATISTICS))]
 			TokenStatistics,
 
 			/// <summary>The buffer receives a TOKEN_GROUPS structure that contains the list of restricting SIDs in a restricted token.</summary>
+			[CorrespondingType(typeof(TOKEN_GROUPS))]
 			TokenRestrictedSids,
 
 			/// <summary>
@@ -342,21 +358,26 @@ namespace Vanara.PInvoke
 			/// application must be enabled to set the session ID in a token.
 			/// </para>
 			/// </summary>
+			[CorrespondingType(typeof(uint))]
 			TokenSessionId,
 
 			/// <summary>
 			/// The buffer receives a TOKEN_GROUPS_AND_PRIVILEGES structure that contains the user SID, the group accounts, the restricted SIDs, and the
 			/// authentication ID associated with the token.
 			/// </summary>
+			[CorrespondingType(typeof(TOKEN_GROUPS_AND_PRIVILEGES))]
 			TokenGroupsAndPrivileges,
 
 			/// <summary>Reserved.</summary>
+			[CorrespondingType(CorrepsondingAction.Exception)]
 			TokenSessionReference,
 
 			/// <summary>The buffer receives a DWORD value that is nonzero if the token includes the SANDBOX_INERT flag.</summary>
+			[CorrespondingType(typeof(uint))]
 			TokenSandBoxInert,
 
 			/// <summary>Reserved.</summary>
+			[CorrespondingType(CorrepsondingAction.Exception)]
 			TokenAuditPolicy,
 
 			/// <summary>
@@ -370,39 +391,51 @@ namespace Vanara.PInvoke
 			/// LOGON32_LOGON_NETWORK or LOGON32_LOGON_NETWORK_CLEARTEXT, then this value will be zero.
 			/// </para>
 			/// </summary>
+			[CorrespondingType(typeof(TOKEN_ORIGIN))]
 			TokenOrigin,
 
 			/// <summary>The buffer receives a TOKEN_ELEVATION_TYPE value that specifies the elevation level of the token.</summary>
+			[CorrespondingType(typeof(TOKEN_ELEVATION_TYPE))]
 			TokenElevationType,
 
 			/// <summary>The buffer receives a TOKEN_LINKED_TOKEN structure that contains a handle to another token that is linked to this token.</summary>
+			[CorrespondingType(typeof(TOKEN_LINKED_TOKEN))]
 			TokenLinkedToken,
 
 			/// <summary>The buffer receives a TOKEN_ELEVATION structure that specifies whether the token is elevated.</summary>
+			[CorrespondingType(typeof(TOKEN_ELEVATION))]
 			TokenElevation,
 
 			/// <summary>The buffer receives a DWORD value that is nonzero if the token has ever been filtered.</summary>
+			[CorrespondingType(typeof(uint))]
 			TokenHasRestrictions,
 
 			/// <summary>The buffer receives a TOKEN_ACCESS_INFORMATION structure that specifies security information contained in the token.</summary>
+			[CorrespondingType(typeof(TOKEN_ACCESS_INFORMATION))]
 			TokenAccessInformation,
 
 			/// <summary>The buffer receives a DWORD value that is nonzero if virtualization is allowed for the token.</summary>
+			[CorrespondingType(typeof(uint))]
 			TokenVirtualizationAllowed,
 
 			/// <summary>The buffer receives a DWORD value that is nonzero if virtualization is enabled for the token.</summary>
+			[CorrespondingType(typeof(uint))]
 			TokenVirtualizationEnabled,
 
 			/// <summary>The buffer receives a TOKEN_MANDATORY_LABEL structure that specifies the token's integrity level.</summary>
+			[CorrespondingType(typeof(TOKEN_MANDATORY_LABEL))]
 			TokenIntegrityLevel,
 
 			/// <summary>The buffer receives a DWORD value that is nonzero if the token has the UIAccess flag set.</summary>
+			[CorrespondingType(typeof(uint))]
 			TokenUIAccess,
 
 			/// <summary>The buffer receives a TOKEN_MANDATORY_POLICY structure that specifies the token's mandatory integrity policy.</summary>
+			[CorrespondingType(typeof(TOKEN_MANDATORY_POLICY))]
 			TokenMandatoryPolicy,
 
 			/// <summary>The buffer receives a TOKEN_GROUPS structure that specifies the token's logon SID.</summary>
+			[CorrespondingType(typeof(TOKEN_GROUPS))]
 			TokenLogonSid,
 
 			/// <summary>
@@ -410,45 +443,57 @@ namespace Vanara.PInvoke
 			/// and have it return 0 should also verify that the caller token is not an identify level impersonation token. If the current token is not an
 			/// application container but is an identity level token, you should return AccessDenied.
 			/// </summary>
+			[CorrespondingType(typeof(uint))]
 			TokenIsAppContainer,
 
 			/// <summary>The buffer receives a TOKEN_GROUPS structure that contains the capabilities associated with the token.</summary>
+			[CorrespondingType(typeof(TOKEN_GROUPS))]
 			TokenCapabilities,
 
 			/// <summary>
 			/// The buffer receives a TOKEN_APPCONTAINER_INFORMATION structure that contains the AppContainerSid associated with the token. If the token is not
 			/// associated with an application container, the TokenAppContainer member of the TOKEN_APPCONTAINER_INFORMATION structure points to NULL.
 			/// </summary>
+			[CorrespondingType(typeof(TOKEN_APPCONTAINER_INFORMATION))]
 			TokenAppContainerSid,
 
 			/// <summary>
 			/// The buffer receives a DWORD value that includes the application container number for the token. For tokens that are not application container
 			/// tokens, this value is zero.
 			/// </summary>
+			[CorrespondingType(typeof(uint))]
 			TokenAppContainerNumber,
 
 			/// <summary>The buffer receives a CLAIM_SECURITY_ATTRIBUTES_INFORMATION structure that contains the user claims associated with the token.</summary>
+			[CorrespondingType(typeof(CLAIM_SECURITY_ATTRIBUTES_INFORMATION))]
 			TokenUserClaimAttributes,
 
 			/// <summary>The buffer receives a CLAIM_SECURITY_ATTRIBUTES_INFORMATION structure that contains the device claims associated with the token.</summary>
+			[CorrespondingType(typeof(CLAIM_SECURITY_ATTRIBUTES_INFORMATION))]
 			TokenDeviceClaimAttributes,
 
 			/// <summary>This value is reserved.</summary>
+			[CorrespondingType(CorrepsondingAction.Exception)]
 			TokenRestrictedUserClaimAttributes,
 
 			/// <summary>This value is reserved.</summary>
+			[CorrespondingType(CorrepsondingAction.Exception)]
 			TokenRestrictedDeviceClaimAttributes,
 
 			/// <summary>The buffer receives a TOKEN_GROUPS structure that contains the device groups that are associated with the token.</summary>
+			[CorrespondingType(typeof(TOKEN_GROUPS))]
 			TokenDeviceGroups,
 
 			/// <summary>The buffer receives a TOKEN_GROUPS structure that contains the restricted device groups that are associated with the token.</summary>
+			[CorrespondingType(typeof(TOKEN_GROUPS))]
 			TokenRestrictedDeviceGroups,
 
 			/// <summary>This value is reserved.</summary>
+			[CorrespondingType(CorrepsondingAction.Exception)]
 			TokenSecurityAttributes,
 
 			/// <summary>This value is reserved.</summary>
+			[CorrespondingType(CorrepsondingAction.Exception)]
 			TokenIsRestricted
 		}
 
@@ -509,7 +554,7 @@ namespace Vanara.PInvoke
 			TOKEN_WRITE = 0x000200E0,
 
 			/// <summary>Combines STANDARD_RIGHTS_EXECUTE and TOKEN_IMPERSONATE.</summary>
-			TOKEN_EXECUTE = 0x00020000,
+			TOKEN_EXECUTE = 0x00020000
 		}
 
 		/// <summary>
@@ -539,12 +584,9 @@ namespace Vanara.PInvoke
 			/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
 			public override bool Equals(object obj)
 			{
-				if (obj is ACCESS_ALLOWED_ACE)
-				{
-					var that = (ACCESS_ALLOWED_ACE)obj;
-					return Header.AceType == that.Header.AceType && Header.AceFlags == that.Header.AceFlags && Mask == that.Mask;
-				}
-				return base.Equals(obj);
+				return obj is ACCESS_ALLOWED_ACE aaa
+					? Header.AceType == aaa.Header.AceType && Header.AceFlags == aaa.Header.AceFlags && Mask == aaa.Mask
+					: base.Equals(obj);
 			}
 
 			/// <summary>Returns a hash code for this instance.</summary>
@@ -619,6 +661,34 @@ namespace Vanara.PInvoke
 			public uint AclBytesFree;
 		}
 
+		/// <summary>The actual attribute.</summary>
+		[StructLayout(LayoutKind.Explicit)]
+		[PInvokeData("Winnt.h", MSDNShortId = "hh448481")]
+		public struct CLAIM_SECURITY_ATTRIBUTE_INFORMATION_V1
+		{
+			/// <summary>Pointer to an array that contains the AttributeCount member of the CLAIM_SECURITY_ATTRIBUTE_V1 structure.</summary>
+			[FieldOffset(0)]
+			public IntPtr pAttributeV1;
+		}
+
+		/// <summary>The CLAIM_SECURITY_ATTRIBUTES_INFORMATION structure defines the security attributes for the claim.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("Winnt.h", MSDNShortId = "hh448481")]
+		public struct CLAIM_SECURITY_ATTRIBUTES_INFORMATION
+		{
+			/// <summary>The version of the security attribute. This must be 1.</summary>
+			public ushort Version;
+
+			/// <summary>This member is currently reserved and must be zero when setting an attribute and is ignored when getting an attribute.</summary>
+			public ushort Reserved;
+
+			/// <summary>The number of values.</summary>
+			public uint AttributeCount;
+
+			/// <summary>The actual attribute.</summary>
+			public CLAIM_SECURITY_ATTRIBUTE_INFORMATION_V1 Attribute;
+		}
+
 		/// <summary>
 		/// Defines the mapping of generic access rights to specific and standard access rights for an object. When a client application requests generic access
 		/// to an object, that request is mapped to the access rights defined in this structure.
@@ -672,7 +742,7 @@ namespace Vanara.PInvoke
 			/// <returns>The name retrieved for the LUID.</returns>
 			public string GetName(string systemName = null)
 			{
-				var sb = new System.Text.StringBuilder(1024);
+				var sb = new StringBuilder(1024);
 				var sz = sb.Capacity;
 				if (!LookupPrivilegeName(systemName, ref this, sb, ref sz))
 					Win32Error.ThrowLastError();
@@ -719,7 +789,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public PrivilegeAttributes Attributes;
 
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.LUID_AND_ATTRIBUTES"/> struct.</summary>
+			/// <summary>Initializes a new instance of the <see cref="LUID_AND_ATTRIBUTES"/> struct.</summary>
 			/// <param name="luid">The LUID value.</param>
 			/// <param name="attr">The attribute value.</param>
 			public LUID_AND_ATTRIBUTES(LUID luid, PrivilegeAttributes attr)
@@ -825,12 +895,54 @@ namespace Vanara.PInvoke
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)] public byte[] Value;
 		}
 
+		/// <summary>The TOKEN_ACCESS_INFORMATION structure specifies all the information in a token that is necessary to perform an access check.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("WinNT.h", MSDNShortId = "bb394726")]
+		public struct TOKEN_ACCESS_INFORMATION
+		{
+			/// <summary>A pointer to a SID_AND_ATTRIBUTES_HASH structure that specifies a hash of the token's security identifier (SID).</summary>
+			public IntPtr SidHash;
+			/// <summary>A pointer to a SID_AND_ATTRIBUTES_HASH structure that specifies a hash of the token's restricted SID.</summary>
+			public IntPtr RestrictedSidHash;
+			/// <summary>A pointer to a TOKEN_PRIVILEGES structure that specifies information about the token's privileges.</summary>
+			public PTOKEN_PRIVILEGES Privileges;
+			/// <summary>A LUID structure that specifies the token's identity.</summary>
+			public LUID AuthenticationId;
+			/// <summary>A value of the TOKEN_TYPE enumeration that specifies the token's type.</summary>
+			public TOKEN_TYPE TokenType;
+			/// <summary>A value of the SECURITY_IMPERSONATION_LEVEL enumeration that specifies the token's impersonation level.</summary>
+			public SECURITY_IMPERSONATION_LEVEL ImpersonationLevel;
+			/// <summary>A TOKEN_MANDATORY_POLICY structure that specifies the token's mandatory integrity policy.</summary>
+			public TOKEN_MANDATORY_POLICY MandatoryPolicy;
+			/// <summary>Reserved. Must be set to zero.</summary>
+			public uint Flags;
+			/// <summary>The app container number for the token or zero if this is not an app container token.<para><c>Windows Server 2008 R2, Windows 7, Windows Server 2008 and Windows Vista:</c> This member is not available.</para></summary>
+			public uint AppContainerNumber;
+			/// <summary>The app container SID or NULL if this is not an app container token.<para><c>Windows Server 2008 R2, Windows 7, Windows Server 2008 and Windows Vista:</c> This member is not available.</para></summary>
+			public PSID PackageSid;
+			/// <summary>Pointer to a SID_AND_ATTRIBUTES_HASH structure that specifies a hash of the token's capability SIDs.<para><c>Windows Server 2008 R2, Windows 7, Windows Server 2008 and Windows Vista:</c> This member is not available.</para></summary>
+			public IntPtr CapabilitiesHash;
+			/// <summary>The protected process trust level of the token.</summary>
+			public PSID TrustLevelSid;
+			/// <summary>Reserved. Must be set to NULL.<para><c>Prior to Windows 10:</c> This member is not available.</para></summary>
+			public IntPtr SecurityAttributes;
+		}
+
 		/// <summary>The TOKEN_APPCONTAINER_INFORMATION structure specifies all the information in a token that is necessary for an app container.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct TOKEN_APPCONTAINER_INFORMATION
 		{
 			/// <summary>The security identifier (SID) of the app container.</summary>
 			public IntPtr TokenAppContainer;
+		}
+
+		/// <summary>The TOKEN_DEFAULT_DACL structure specifies a discretionary access control list (DACL).</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("WinNT.h", MSDNShortId = "aa379623")]
+		public struct TOKEN_DEFAULT_DACL
+		{
+			/// <summary>A pointer to an ACL structure assigned by default to any objects created by the user. The user is represented by the access token.</summary>
+			public IntPtr DefaultDacl;
 		}
 
 		/// <summary>The TOKEN_ELEVATION structure indicates whether a token has elevated privileges.</summary>
@@ -853,13 +965,51 @@ namespace Vanara.PInvoke
 			[MarshalAs(UnmanagedType.ByValArray)]
 			public SID_AND_ATTRIBUTES[] Groups;
 
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.TOKEN_GROUPS"/> struct.</summary>
+			/// <summary>Initializes a new instance of the <see cref="TOKEN_GROUPS"/> struct.</summary>
 			/// <param name="count">The number of groups.</param>
 			public TOKEN_GROUPS(uint count = 0)
 			{
 				GroupCount = count;
 				Groups = new SID_AND_ATTRIBUTES[count];
 			}
+		}
+
+		/// <summary>The TOKEN_GROUPS_AND_PRIVILEGES structure contains information about the group security identifiers (SIDs) and privileges in an access token.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("WinNT.h", MSDNShortId = "aa379625")]
+		public struct TOKEN_GROUPS_AND_PRIVILEGES
+		{
+			/// <summary>Number of SIDs in the access token.</summary>
+			public uint SidCount;
+			/// <summary>Length, in bytes, required to hold all of the user SIDs and the account SID for the group.</summary>
+			public uint SidLength;
+			/// <summary>A pointer to an array of SID_AND_ATTRIBUTES structures that contain a set of SIDs and corresponding attributes.</summary>
+			public IntPtr Sids;
+			/// <summary>Number of restricted SIDs.</summary>
+			public uint RestrictedSidCount;
+			/// <summary>Length, in bytes, required to hold all of the restricted SIDs.</summary>
+			public uint RestrictedSidLength;
+			/// <summary>A pointer to an array of SID_AND_ATTRIBUTES structures that contain a set of restricted SIDs and corresponding attributes.
+			/// <para>The Attributes members of the SID_AND_ATTRIBUTES structures can have the same values as those listed for the preceding Sids member.</para></summary>
+			public IntPtr RestrictedSids;
+			/// <summary>Number of privileges.</summary>
+			public uint PrivilegeCount;
+			/// <summary>Length, in bytes, needed to hold the privilege array.</summary>
+			public uint PrivilegeLength;
+			/// <summary>Array of privileges.</summary>
+			public IntPtr Privileges;
+			/// <summary>Locally unique identifier (LUID) of the authenticator of the token.</summary>
+			public LUID AuthenticationId;
+		}
+
+		/// <summary>The TOKEN_MANDATORY_POLICY structure specifies the mandatory integrity policy for a token.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("WinNT.h", MSDNShortId = "bb394728")]
+		public struct TOKEN_MANDATORY_POLICY
+		{
+			/// <summary>The mandatory integrity access policy for the associated token.</summary>
+			// TODO: Convert to enum
+			public uint Policy;
 		}
 
 		/// <summary>The TOKEN_MANDATORY_LABEL structure specifies the mandatory integrity level for a token.</summary>
@@ -870,6 +1020,86 @@ namespace Vanara.PInvoke
 			public SID_AND_ATTRIBUTES Label;
 		}
 
+		/// <summary>The TOKEN_LINKED_TOKEN structure contains a handle to a token. This token is linked to the token being queried by the GetTokenInformation function or set by the SetTokenInformation function.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("WinNT.h", MSDNShortId = "bb530719")]
+		public struct TOKEN_LINKED_TOKEN
+		{
+			/// <summary>A handle to the linked token. When you have finished using the handle, close it by calling the CloseHandle function.</summary>
+			public IntPtr LinkedToken;
+		}
+
+		/// <summary>The TOKEN_ORIGIN structure contains information about the origin of the logon session. This structure is used by the GetTokenInformation function.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("WinNT.h", MSDNShortId = "aa379627")]
+		public struct TOKEN_ORIGIN
+		{
+			/// <summary>Locally unique identifier (LUID) for the logon session. If the token passed to GetTokenInformation resulted from a logon using explicit credentials, such as passing name, domain, and password to the LogonUser function, then this member will contain the ID of the logon session that created it. If the token resulted from network authentication, such as a call to AcceptSecurityContext, or a call to LogonUser with dwLogonType set to LOGON32_LOGON_NETWORK or LOGON32_LOGON_NETWORK_CLEARTEXT, then this member will be zero.</summary>
+			public LUID OriginatingLogonSession;
+		}
+
+		/// <summary>The TOKEN_OWNER structure contains the default owner security identifier (SID) that will be applied to newly created objects.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("WinNT.h", MSDNShortId = "aa379628")]
+		public struct TOKEN_OWNER
+		{
+			/// <summary>A pointer to a SID structure representing a user who will become the owner of any objects created by a process using this access token. The SID must be one of the user or group SIDs already in the token.</summary>
+			public IntPtr Owner;
+		}
+
+		/// <summary>The TOKEN_PRIMARY_GROUP structure specifies a group security identifier (SID) for an access token.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("WinNT.h", MSDNShortId = "aa379629")]
+		public struct TOKEN_PRIMARY_GROUP
+		{
+			/// <summary>A pointer to a SID structure representing a group that will become the primary group of any objects created by a process using this access token. The SID must be one of the group SIDs already in the token.</summary>
+			public IntPtr PrimaryGroup;
+		}
+
+		/// <summary>The TOKEN_SOURCE structure identifies the source of an access token.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("WinNT.h", MSDNShortId = "aa379631")]
+		public struct TOKEN_SOURCE
+		{
+			private const int TOKEN_SOURCE_LENGTH = 8;
+
+			/// <summary>Specifies an 8-byte character string used to identify the source of an access token. This is used to distinguish between such sources as Session Manager, LAN Manager, and RPC Server. A string, rather than a constant, is used to identify the source so users and developers can make extensions to the system, such as by adding other networks, that act as the source of access tokens.</summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = TOKEN_SOURCE_LENGTH)]
+			public char[] SourceName;
+			/// <summary>Specifies a locally unique identifier (LUID) provided by the source component named by the SourceName member. This value aids the source component in relating context blocks, such as session-control structures, to the token. This value is typically, but not necessarily, an LUID.</summary>
+			public LUID SourceIdentifier;
+		}
+
+		/// <summary>
+		/// The TOKEN_STATISTICS structure contains information about an access token. An application can retrieve this information by calling the
+		/// GetTokenInformation function.
+		/// </summary>
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		[PInvokeData("WinNT.h", MSDNShortId = "aa379632")]
+		public struct TOKEN_STATISTICS
+		{
+			/// <summary>Specifies a locally unique identifier (LUID) that identifies this instance of the token object.</summary>
+			public LUID TokenId;
+			/// <summary>Specifies an LUID assigned to the session this token represents. There can be many tokens representing a single logon session.</summary>
+			public LUID AuthenticationId;
+			/// <summary>Specifies the time at which this token expires. Expiration times for access tokens are not currently supported.</summary>
+			public long ExpirationTime;
+			/// <summary>Specifies a TOKEN_TYPE enumeration type indicating whether the token is a primary or impersonation token.</summary>
+			public TOKEN_TYPE TokenType;
+			/// <summary>Specifies a SECURITY_IMPERSONATION_LEVEL enumeration type indicating the impersonation level of the token. This member is valid only if the TokenType is TokenImpersonation.</summary>
+			public SECURITY_IMPERSONATION_LEVEL ImpersonationLevel;
+			/// <summary>Specifies the amount, in bytes, of memory allocated for storing default protection and a primary group identifier.</summary>
+			public uint DynamicCharged;
+			/// <summary>Specifies the portion of memory allocated for storing default protection and a primary group identifier not already in use. This value is returned as a count of free bytes.</summary>
+			public uint DynamicAvailable;
+			/// <summary>Specifies the number of supplemental group security identifiers (SIDs) included in the token.</summary>
+			public uint GroupCount;
+			/// <summary>Specifies the number of privileges included in the token.</summary>
+			public uint PrivilegeCount;
+			/// <summary>Specifies an LUID that changes each time the token is modified. An application can use this value as a test of whether a security context has changed since it was last used.</summary>
+			public LUID ModifiedId;
+		}
+		
 		/// <summary>The TOKEN_USER structure identifies the user associated with an access token.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct TOKEN_USER
@@ -899,7 +1129,7 @@ namespace Vanara.PInvoke
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
 			public LUID_AND_ATTRIBUTES[] Privilege;
 
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.PRIVILEGE_SET"/> class with a single LUID_AND_ATTRIBUTES value.</summary>
+			/// <summary>Initializes a new instance of the <see cref="PRIVILEGE_SET"/> class with a single LUID_AND_ATTRIBUTES value.</summary>
 			/// <param name="control">The control flag. See <see cref="Control"/>.</param>
 			/// <param name="luid">The LUID value.</param>
 			/// <param name="attribute">The attribute value.</param>
@@ -910,7 +1140,7 @@ namespace Vanara.PInvoke
 				Privilege = new[] { new LUID_AND_ATTRIBUTES(luid, attribute) };
 			}
 
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.PRIVILEGE_SET"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="PRIVILEGE_SET"/> class.</summary>
 			/// <param name="control">The control flag. See <see cref="Control"/>.</param>
 			/// <param name="privileges">A list of privileges to assign to the structure.</param>
 			public PRIVILEGE_SET(PrivilegeSetControl control, LUID_AND_ATTRIBUTES[] privileges)
@@ -920,7 +1150,7 @@ namespace Vanara.PInvoke
 				Privilege = (LUID_AND_ATTRIBUTES[])privileges?.Clone() ?? new LUID_AND_ATTRIBUTES[0];
 			}
 
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.PRIVILEGE_SET"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="PRIVILEGE_SET"/> class.</summary>
 			internal PRIVILEGE_SET() : this(PrivilegeSetControl.PRIVILEGE_SET_ALL_NECESSARY, null)
 			{
 			}
@@ -955,7 +1185,7 @@ namespace Vanara.PInvoke
 					var ptr = Marshal.AllocCoTaskMem((int)GetSize(ps.PrivilegeCount));
 					Marshal.WriteInt32(ptr, (int)ps.PrivilegeCount);
 					Marshal.WriteInt32(ptr, Marshal.SizeOf(typeof(int)), (int)ps.Control);
-					InteropExtensions.MarshalToPtr<LUID_AND_ATTRIBUTES>(ps.Privilege, ptr, Marshal.SizeOf(typeof(int)) * 2);
+					ps.Privilege.MarshalToPtr(ptr, Marshal.SizeOf(typeof(int)) * 2);
 					return ptr;
 				}
 
@@ -1040,10 +1270,10 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public LUID_AND_ATTRIBUTES[] Privileges;
 
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.PTOKEN_PRIVILEGES"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="PTOKEN_PRIVILEGES"/> class.</summary>
 			public PTOKEN_PRIVILEGES() : this(null) { }
 
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.PTOKEN_PRIVILEGES"/> class with a single LUID_AND_ATTRIBUTES value.</summary>
+			/// <summary>Initializes a new instance of the <see cref="PTOKEN_PRIVILEGES"/> class with a single LUID_AND_ATTRIBUTES value.</summary>
 			/// <param name="luid">The LUID value.</param>
 			/// <param name="attribute">The attribute value.</param>
 			public PTOKEN_PRIVILEGES(LUID luid, PrivilegeAttributes attribute)
@@ -1052,7 +1282,7 @@ namespace Vanara.PInvoke
 				Privileges = new[] { new LUID_AND_ATTRIBUTES(luid, attribute) };
 			}
 
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.PTOKEN_PRIVILEGES"/> class from a list of privileges.</summary>
+			/// <summary>Initializes a new instance of the <see cref="PTOKEN_PRIVILEGES"/> class from a list of privileges.</summary>
 			/// <param name="values">The values.</param>
 			public PTOKEN_PRIVILEGES(LUID_AND_ATTRIBUTES[] values)
 			{
@@ -1064,9 +1294,9 @@ namespace Vanara.PInvoke
 			/// <value>The size in bytes.</value>
 			public uint SizeInBytes => Marshaler.GetSize(PrivilegeCount);
 
-			/// <summary>Creates a new instance of <see cref="Vanara.PInvoke.PTOKEN_PRIVILEGES"/> from a pointer.</summary>
+			/// <summary>Creates a new instance of <see cref="PTOKEN_PRIVILEGES"/> from a pointer.</summary>
 			/// <param name="hMem">A pointer to a memory block that contains a native TOKEN_PRIVILEGES structure.</param>
-			/// <returns>A new instance of <see cref="Vanara.PInvoke.PTOKEN_PRIVILEGES"/>.</returns>
+			/// <returns>A new instance of <see cref="PTOKEN_PRIVILEGES"/>.</returns>
 			public static PTOKEN_PRIVILEGES FromPtr(IntPtr hMem) => Marshaler.GetInstance(null).MarshalNativeToManaged(hMem) as PTOKEN_PRIVILEGES;
 
 			/// <summary>Gets unmanaged memory allocated to hold the number of privileges specified by <paramref name="privilegeCount"/>.</summary>
@@ -1102,11 +1332,10 @@ namespace Vanara.PInvoke
 				/// <returns>Returns the COM view of the managed object.</returns>
 				public IntPtr MarshalManagedToNative(object ManagedObj)
 				{
-					var ps = ManagedObj as PTOKEN_PRIVILEGES;
-					if (ps == null) return IntPtr.Zero;
+					if (!(ManagedObj is PTOKEN_PRIVILEGES ps)) return IntPtr.Zero;
 					if (allocOut)
 					{
-						var sz = Math.Abs((int)ps.PrivilegeCount);
+						var sz = Math.Abs(ps.PrivilegeCount);
 						ps.PrivilegeCount = 0;
 						return Marshal.AllocCoTaskMem(sz);
 					}

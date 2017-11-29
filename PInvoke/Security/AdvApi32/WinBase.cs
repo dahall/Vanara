@@ -882,7 +882,7 @@ namespace Vanara.PInvoke
 			public static SafeTokenHandle Null { get; } = new SafeTokenHandle(IntPtr.Zero, false);
 			/// <summary>Gets a value indicating whether this token is elevated.</summary>
 			/// <value><c>true</c> if this instance is elevated; otherwise, <c>false</c>.</value>
-			public bool IsElevated => GetConvertedInfo<TOKEN_ELEVATION>(TOKEN_INFORMATION_CLASS.TokenElevation).TokenIsElevated;
+			public bool IsElevated => GetInfo<TOKEN_ELEVATION>(TOKEN_INFORMATION_CLASS.TokenElevation).TokenIsElevated;
 
 			/// <summary>Get the token handle instance from a process handle.</summary>
 			/// <param name="hProcess">The process handle.</param>
@@ -924,8 +924,10 @@ namespace Vanara.PInvoke
 			/// check the TokenIsAppContainer and have it return 0 should also verify that the caller token is not an identify level impersonation token. If the
 			/// current token is not an application container but is an identity level token, you should return AccessDenied.
 			/// </param>
-			public T GetConvertedInfo<T>(TOKEN_INFORMATION_CLASS tokenInfoClass)
+			public T GetInfo<T>(TOKEN_INFORMATION_CLASS tokenInfoClass)
 			{
+				if (CorrespondingTypeAttribute.GetCorrespondingType(tokenInfoClass) != typeof(T))
+					throw new InvalidCastException();
 				using (var pType = GetInfo(tokenInfoClass))
 				{
 					// Marshal from native to .NET.
@@ -933,11 +935,13 @@ namespace Vanara.PInvoke
 					{
 						// DWORD
 						case TOKEN_INFORMATION_CLASS.TokenSessionId:
+						case TOKEN_INFORMATION_CLASS.TokenAppContainerNumber:
 						// BOOL
 						case TOKEN_INFORMATION_CLASS.TokenSandBoxInert:
 						case TOKEN_INFORMATION_CLASS.TokenHasRestrictions:
 						case TOKEN_INFORMATION_CLASS.TokenVirtualizationAllowed:
 						case TOKEN_INFORMATION_CLASS.TokenVirtualizationEnabled:
+						case TOKEN_INFORMATION_CLASS.TokenIsAppContainer:
 							return (T)Convert.ChangeType(Marshal.ReadInt32((IntPtr)pType), typeof(T));
 
 						// Enum
@@ -971,6 +975,12 @@ namespace Vanara.PInvoke
 						case TOKEN_INFORMATION_CLASS.TokenIntegrityLevel:
 						case TOKEN_INFORMATION_CLASS.TokenMandatoryPolicy:
 						case TOKEN_INFORMATION_CLASS.TokenLogonSid:
+						case TOKEN_INFORMATION_CLASS.TokenCapabilities:
+						case TOKEN_INFORMATION_CLASS.TokenAppContainerSid:
+						case TOKEN_INFORMATION_CLASS.TokenUserClaimAttributes:
+						case TOKEN_INFORMATION_CLASS.TokenDeviceClaimAttributes:
+						case TOKEN_INFORMATION_CLASS.TokenDeviceGroups:
+						case TOKEN_INFORMATION_CLASS.TokenRestrictedDeviceGroups:
 							return pType.ToStructure<T>();
 
 						case TOKEN_INFORMATION_CLASS.TokenPrivileges:
