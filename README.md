@@ -1,5 +1,4 @@
-![Vanara](/docs/Vanara64x64.png)
-# Vanara
+![Vanara](/docs/icons/VanaraHeading.png)
 In a number of projects I have needed to use native API calls. Over the years I have collected quite a few of these interop code chunks and I decided to pull them all together into a set of reusable libraries. I have tried to carve up the libraries into small enough chunks that they are easy to identify and consume. The only problem with this is that you can literally end up with over 20 dependencies on some of the higher function libraries (oh well).
 
 I have tried to follow the concepts below in laying out the libraries.
@@ -8,7 +7,7 @@ I have tried to follow the concepts below in laying out the libraries.
 * Any structure or macro or enumeration (no function) that is used by many libraries is put into either `Vanara.Core` or `Vanara.PInvoke.Shared`
   * (e.g. The macro `HIWORD` and the structure `SIZE` are both in `Vanara.PInvoke.Shared` and classes to simplfy interop calls and native memory management are in `Vanara.Core`.)
 * Inside a project, all constructs are contained in a file named after the header file (*.h) in which they are defined in the Windows API
-  * (e.g. In the Kernel32 assembly, you'll find a FileApi.cs, a WinBase.cs and a WinNT.cs file representing fileapi.h, winbase.h and winnt.h respectively.)
+  * (e.g. In the Vanara.PInvoke.Kernel32 project directory, you'll find a FileApi.cs, a WinBase.cs and a WinNT.cs file representing fileapi.h, winbase.h and winnt.h respectively.)
 * Where the direct interpretation of a structure leads to memory leaks or misuse, I have tried to simplify their use
 * Where structures are always passed by reference and where that structure needs to clean up memory allocations, I have changed the structure to class implementing `IDisposable`.
 * Wherever possible, all handles have been turned into `SafeHandle` derivatives.

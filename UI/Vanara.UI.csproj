@@ -15,7 +15,7 @@
     <Authors>David Hall</Authors>
     <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/dahall/vanara/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/dahall/Vanara/master/docs/Vanara64x64.png</PackageIconUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/dahall/Vanara/master/docs/icons/Vanara48x48.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
     <PackageTags>pinvoke vanara net-extensions interop</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
@@ -23,7 +23,8 @@
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild><DocumentationFile>bin\Release\$(TargetFramework)\$(TargetName).xml</DocumentationFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
