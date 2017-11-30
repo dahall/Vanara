@@ -1,0 +1,854 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Vanara.SystemServices</name>
+  </assembly>
+  <members>
+    <member name="T:Vanara.Extensions.FileInfoExtension">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.Extensions.FileInfoExtension</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Vanara.Extensions.FileInfoExtension.GetFileHandle(System.IO.FileSystemInfo,System.Boolean,System.Boolean)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.GetFileHandle(System.IO.FileSystemInfo,System.Boolean,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="fi">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>fi</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.GetFileHandle(System.IO.FileSystemInfo,System.Boolean,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="readOnly">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>readOnly</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.GetFileHandle(System.IO.FileSystemInfo,System.Boolean,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="overlapped">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>overlapped</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.GetFileHandle(System.IO.FileSystemInfo,System.Boolean,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.GetFileHandle(System.IO.FileSystemInfo,System.Boolean,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Extensions.FileInfoExtension.GetFileSystemFlags(System.IO.DriveInfo)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.GetFileSystemFlags(System.IO.DriveInfo)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="di">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>di</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.GetFileSystemFlags(System.IO.DriveInfo)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.GetFileSystemFlags(System.IO.DriveInfo)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Extensions.FileInfoExtension.GetMaxFileNameLength(System.IO.DriveInfo)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.GetMaxFileNameLength(System.IO.DriveInfo)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="di">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>di</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.GetMaxFileNameLength(System.IO.DriveInfo)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.GetMaxFileNameLength(System.IO.DriveInfo)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Extensions.FileInfoExtension.GetNtfsCompression(System.IO.FileSystemInfo)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.GetNtfsCompression(System.IO.FileSystemInfo)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="fi">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>fi</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.GetNtfsCompression(System.IO.FileSystemInfo)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.GetNtfsCompression(System.IO.FileSystemInfo)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Extensions.FileInfoExtension.GetNtfsCompressionAsync(System.IO.FileSystemInfo)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.GetNtfsCompressionAsync(System.IO.FileSystemInfo)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="fi">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>fi</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.GetNtfsCompressionAsync(System.IO.FileSystemInfo)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.GetNtfsCompressionAsync(System.IO.FileSystemInfo)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Extensions.FileInfoExtension.GetPhysicalLength(System.IO.FileInfo)">
+      <summary>
+            Gets the length of the file on the disk. If the file is compressed, this will return the compressed size.
+            </summary>
+      <param name="fi">The <see cref="T:System.IO.FileInfo" /> instance.</param>
+      <returns>The actual size of the file on the disk in bytes, compressed or uncompressed.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.FileInfoExtension.SetNtfsCompression(System.IO.FileSystemInfo,System.Boolean)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.SetNtfsCompression(System.IO.FileSystemInfo,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="fi">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>fi</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.SetNtfsCompression(System.IO.FileSystemInfo,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="compressed">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>compressed</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.SetNtfsCompression(System.IO.FileSystemInfo,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </param>
+    </member>
+    <member name="M:Vanara.Extensions.FileInfoExtension.SetNtfsCompressionAsync(System.IO.FileSystemInfo,System.Boolean)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.SetNtfsCompressionAsync(System.IO.FileSystemInfo,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="fi">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>fi</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.SetNtfsCompressionAsync(System.IO.FileSystemInfo,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="compressed">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>compressed</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.SetNtfsCompressionAsync(System.IO.FileSystemInfo,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Extensions.FileInfoExtension.SetNtfsCompressionAsync(System.IO.FileSystemInfo,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="T:Vanara.Extensions.ProcessExtension">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.Extensions.ProcessExtension</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Vanara.Extensions.ProcessExtension.DisablePrivilege(System.Diagnostics.Process,Vanara.Security.AccessControl.SystemPrivilege)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.Extensions.ProcessExtension.DisablePrivilege(System.Diagnostics.Process,Vanara.Security.AccessControl.SystemPrivilege)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="process">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>process</parameter>
+            <parameter>M:Vanara.Extensions.ProcessExtension.DisablePrivilege(System.Diagnostics.Process,Vanara.Security.AccessControl.SystemPrivilege)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="privilege">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>privilege</parameter>
+            <parameter>M:Vanara.Extensions.ProcessExtension.DisablePrivilege(System.Diagnostics.Process,Vanara.Security.AccessControl.SystemPrivilege)</parameter>
+          </include>
+        </markup>
+      </param>
+    </member>
+    <member name="M:Vanara.Extensions.ProcessExtension.EnablePrivilege(System.Diagnostics.Process,Vanara.Security.AccessControl.SystemPrivilege)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.Extensions.ProcessExtension.EnablePrivilege(System.Diagnostics.Process,Vanara.Security.AccessControl.SystemPrivilege)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="process">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>process</parameter>
+            <parameter>M:Vanara.Extensions.ProcessExtension.EnablePrivilege(System.Diagnostics.Process,Vanara.Security.AccessControl.SystemPrivilege)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="privilege">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>privilege</parameter>
+            <parameter>M:Vanara.Extensions.ProcessExtension.EnablePrivilege(System.Diagnostics.Process,Vanara.Security.AccessControl.SystemPrivilege)</parameter>
+          </include>
+        </markup>
+      </param>
+    </member>
+    <member name="M:Vanara.Extensions.ProcessExtension.GetChildProcesses(System.Diagnostics.Process,System.Boolean)">
+      <summary>Gets the child processes.</summary>
+      <param name="p">The process.</param>
+      <param name="includeDescendants">if set to <c>true</c> include descendants of child processes as well.</param>
+      <returns>A <see cref="T:System.Collections.Generic.IEnumerable`1" /> reference for enumerating child processes.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.ProcessExtension.GetIntegrityLevel(System.Diagnostics.Process)">
+      <summary>
+            The function gets the integrity level of the current process. Integrity level is only available on Windows Vista and newer operating systems, thus
+            GetProcessIntegrityLevel throws an exception if it is called on systems prior to Windows Vista.
+            </summary>
+      <param name="p">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>p</parameter>
+            <parameter>M:Vanara.Extensions.ProcessExtension.GetIntegrityLevel(System.Diagnostics.Process)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>Returns the integrity level of the current process.</returns>
+      <exception cref="T:System.ComponentModel.Win32Exception">
+            When any native Windows API call fails, the function throws a Win32Exception with the last error code.
+            </exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="p" /> must be a valid <see cref="T:System.Diagnostics.Process" />.</exception>
+    </member>
+    <member name="M:Vanara.Extensions.ProcessExtension.GetParentProcess(System.Diagnostics.Process)">
+      <summary>
+            Gets the parent process.
+            </summary>
+      <param name="p">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>p</parameter>
+            <parameter>M:Vanara.Extensions.ProcessExtension.GetParentProcess(System.Diagnostics.Process)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>A <see cref="T:System.Diagnostics.Process" /> object for the process that called the specified process. <c>null</c> if no parent can be established.</returns>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="p" /> must be a valid <see cref="T:System.Diagnostics.Process" />.</exception>
+    </member>
+    <member name="M:Vanara.Extensions.ProcessExtension.GetPrivileges(System.Diagnostics.Process)">
+      <summary>Gets the privileges for this process.</summary>
+      <param name="process">The process.</param>
+      <returns>
+            An enumeration of <see cref="T:Vanara.Security.AccessControl.PrivilegeAndAttributes" /> instances that include the process privileges and their associated attributes (enabled,
+            disabled, removed, etc.).
+            </returns>
+    </member>
+    <member name="M:Vanara.Extensions.ProcessExtension.HasPrivilege(System.Diagnostics.Process,Vanara.Security.AccessControl.SystemPrivilege)">
+      <summary>Determines whether the specified privilege is had by the process.</summary>
+      <param name="process">The process.</param>
+      <param name="priv">The privilege.</param>
+      <returns>
+        <c>true</c> if the process has the specified privilege; otherwise, <c>false</c>.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.ProcessExtension.HasPrivileges(System.Diagnostics.Process,System.Boolean,Vanara.Security.AccessControl.SystemPrivilege[])">
+      <summary>Determines whether the specified privileges are had by the process.</summary>
+      <param name="process">The process.</param>
+      <param name="requireAll">if set to <c>true</c> require all privileges to be enabled in order to return <c>true</c>.</param>
+      <param name="privs">The privileges to check.</param>
+      <returns>
+        <c>true</c> if the process has the specified privilege; otherwise, <c>false</c>.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.ProcessExtension.IsElevated(System.Diagnostics.Process)">
+      <summary>
+            The function gets the elevation information of the current process. It dictates whether the process is elevated or not. Token elevation is only
+            available on Windows Vista and newer operating systems, thus IsProcessElevated throws a C++ exception if it is called on systems prior to Windows
+            Vista. It is not appropriate to use this function to determine whether a process is run as administrator.
+            </summary>
+      <param name="p">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>p</parameter>
+            <parameter>M:Vanara.Extensions.ProcessExtension.IsElevated(System.Diagnostics.Process)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>Returns true if the process is elevated. Returns false if it is not.</returns>
+      <exception cref="T:System.ComponentModel.Win32Exception">
+            When any native Windows API call fails, the function throws a Win32Exception with the last error code.
+            </exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="p" /> must be a valid <see cref="T:System.Diagnostics.Process" />.</exception>
+    </member>
+    <member name="M:Vanara.Extensions.ProcessExtension.IsRunningAsAdmin(System.Diagnostics.Process)">
+      <summary>
+            The function checks whether the primary access token of the process belongs to user account that is a member of the local Administrators group,
+            even if it currently is not elevated.
+            </summary>
+      <param name="proc">The process to check.</param>
+      <returns>
+            Returns true if the primary access token of the process belongs to user account that is a member of the local Administrators group. Returns false
+            if the token does not.
+            </returns>
+    </member>
+    <member name="M:Vanara.Extensions.ProcessExtension.RemovePrivilege(System.Diagnostics.Process,Vanara.Security.AccessControl.SystemPrivilege)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.Extensions.ProcessExtension.RemovePrivilege(System.Diagnostics.Process,Vanara.Security.AccessControl.SystemPrivilege)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="process">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>process</parameter>
+            <parameter>M:Vanara.Extensions.ProcessExtension.RemovePrivilege(System.Diagnostics.Process,Vanara.Security.AccessControl.SystemPrivilege)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="privilege">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>privilege</parameter>
+            <parameter>M:Vanara.Extensions.ProcessExtension.RemovePrivilege(System.Diagnostics.Process,Vanara.Security.AccessControl.SystemPrivilege)</parameter>
+          </include>
+        </markup>
+      </param>
+    </member>
+    <member name="T:Vanara.Extensions.ProcessIntegrityLevel">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.Extensions.ProcessIntegrityLevel</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="T:Vanara.Extensions.ServiceControllerExtension">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.Extensions.ServiceControllerExtension</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Vanara.Extensions.ServiceControllerExtension.SetStartType(System.ServiceProcess.ServiceController,System.ServiceProcess.ServiceStartMode)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.Extensions.ServiceControllerExtension.SetStartType(System.ServiceProcess.ServiceController,System.ServiceProcess.ServiceStartMode)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="svc">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>svc</parameter>
+            <parameter>M:Vanara.Extensions.ServiceControllerExtension.SetStartType(System.ServiceProcess.ServiceController,System.ServiceProcess.ServiceStartMode)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="mode">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>mode</parameter>
+            <parameter>M:Vanara.Extensions.ServiceControllerExtension.SetStartType(System.ServiceProcess.ServiceController,System.ServiceProcess.ServiceStartMode)</parameter>
+          </include>
+        </markup>
+      </param>
+    </member>
+    <member name="T:Vanara.IO.VirtualDisk">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.IO.VirtualDisk</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.Attach(System.Boolean,System.Boolean,System.Boolean,System.Security.AccessControl.FileSecurity)">
+      <summary>Attaches a virtual hard disk (VHD) or CD or DVD image file (ISO) by locating an appropriate VHD provider to accomplish the attachment.</summary>
+      <param name="readOnly">Attach the virtual disk as read-only.</param>
+      <param name="autoDetach">
+            If <c>false</c>, decouple the virtual disk lifetime from that of the VirtualDisk. The virtual disk will be attached until the Detach function is
+            called, even if all open instances of the virtual disk are disposed.
+            </param>
+      <param name="noDriveLetter">No drive letters are assigned to the disk's volumes.</param>
+      <param name="access">
+            An optional pointer to a FileSecurity instance to apply to the attached virtual disk. If this parameter is NULL, the security descriptor of the
+            virtual disk image file is used. Ensure that the security descriptor that AttachVirtualDisk applies to the attached virtual disk grants the write
+            attributes permission for the user, or that the security descriptor of the virtual disk image file grants the write attributes permission for the
+            user if you specify NULL for this parameter.If the security descriptor does not grant write attributes permission for a user, Shell displays the
+            following error when the user accesses the attached virtual disk: The Recycle Bin is corrupted.Do you want to empty the Recycle Bin for this drive?
+            </param>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.Attach(Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_FLAG,Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_PARAMETERS@,System.IntPtr)">
+      <summary>Attaches a virtual hard disk (VHD) or CD or DVD image file (ISO) by locating an appropriate VHD provider to accomplish the attachment.</summary>
+      <param name="flags">A valid combination of values of the ATTACH_VIRTUAL_DISK_FLAG enumeration.</param>
+      <param name="param">A reference to a valid ATTACH_VIRTUAL_DISK_PARAMETERS structure that contains attachment parameter data.</param>
+      <param name="securityDescriptor">
+            An optional pointer to a SECURITY_DESCRIPTOR to apply to the attached virtual disk. If this parameter is NULL, the security descriptor of the virtual
+            disk image file is used.
+            <para>
+            Ensure that the security descriptor that AttachVirtualDisk applies to the attached virtual disk grants the write attributes permission for the user,
+            or that the security descriptor of the virtual disk image file grants the write attributes permission for the user if you specify NULL for this
+            parameter. If the security descriptor does not grant write attributes permission for a user, Shell displays the following error when the user
+            accesses the attached virtual disk: The Recycle Bin is corrupted. Do you want to empty the Recycle Bin for this drive?
+            </para></param>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.Attached">
+      <summary>Indicates whether this virtual disk is currently attached.</summary>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.BlockSize">
+      <summary>Block size of the VHD, in bytes.</summary>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.Close">
+      <summary>Closes the instance of the virtual disk.</summary>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.Compact">
+      <summary>Reduces the size of a virtual hard disk (VHD) backing store file.</summary>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.Compact(System.Threading.CancellationToken,System.IProgress{System.Int32})">
+      <summary>Reduces the size of a virtual hard disk (VHD) backing store file.</summary>
+      <param name="cancellationToken">A cancellation token that can be used to cancel the operation. This value can be <c>null</c> to disable cancellation.</param>
+      <param name="progress">A class that implements <see cref="T:System.IProgress`1" /> that can be used to report on progress. This value can be <c>null</c> to disable progress reporting.</param>
+      <returns>
+        <c>true</c> if operation completed without error or cancellation; <c>false</c> otherwise.</returns>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.Create(System.String,System.UInt64,System.Boolean,System.Security.AccessControl.FileSecurity)">
+      <summary>Creates a virtual hard disk (VHD) image file, either using default parameters or using an existing VHD or physical disk.</summary>
+      <param name="path">A valid file path that represents the path to the new virtual disk image file.</param>
+      <param name="size">The maximum virtual size, in bytes, of the virtual disk object. Must be a multiple of 512.</param>
+      <param name="dynamic">
+        <c>true</c> to grow the disk dynamically as content is added; <c>false</c> to pre-allocate all physical space necessary for the size of the virtual disk.
+            </param>
+      <param name="access">
+            An optional FileSecurity instance to apply to the attached virtual disk. If this parameter is <c>null</c>, the security descriptor of the virtual
+            disk image file is used. Ensure that the security descriptor that AttachVirtualDisk applies to the attached virtual disk grants the write attributes
+            permission for the user, or that the security descriptor of the virtual disk image file grants the write attributes permission for the user if you
+            specify <c>null</c> for this parameter. If the security descriptor does not grant write attributes permission for a user, Shell displays the
+            following error when the user accesses the attached virtual disk: The Recycle Bin is corrupted. Do you want to empty the Recycle Bin for this drive?
+            </param>
+      <returns>If successful, returns a valid <see cref="T:Vanara.IO.VirtualDisk" /> instance for the newly created virtual disk.</returns>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.Create(System.String,System.UInt64,System.Boolean,System.UInt32,System.UInt32,System.Security.AccessControl.FileSecurity)">
+      <summary>Creates a virtual hard disk (VHD) image file, either using default parameters or using an existing VHD or physical disk.</summary>
+      <param name="path">A valid file path that represents the path to the new virtual disk image file.</param>
+      <param name="size">The maximum virtual size, in bytes, of the virtual disk object. Must be a multiple of 512.</param>
+      <param name="dynamic">
+        <c>true</c> to grow the disk dynamically as content is added; <c>false</c> to pre-allocate all physical space necessary for the size of the virtual disk.
+            </param>
+      <param name="blockSize">
+            Internal size of the virtual disk object blocks, in bytes. For VHDX this must be a multiple of 1 MB between 1 and 256 MB. For VHD 1 this must be set
+            to one of the following values: 0 (default), 0x80000 (512K), or 0x200000 (2MB)
+            </param>
+      <param name="logicalSectorSize">
+            Internal size of the virtual disk object sectors. For VHDX must be set to 512 (0x200) or 4096 (0x1000). For VHD 1 must be set to 512.
+            </param>
+      <param name="access">
+            An optional FileSecurity instance to apply to the attached virtual disk. If this parameter is <c>null</c>, the security descriptor of the virtual
+            disk image file is used. Ensure that the security descriptor that AttachVirtualDisk applies to the attached virtual disk grants the write attributes
+            permission for the user, or that the security descriptor of the virtual disk image file grants the write attributes permission for the user if you
+            specify <c>null</c> for this parameter. If the security descriptor does not grant write attributes permission for a user, Shell displays the
+            following error when the user accesses the attached virtual disk: The Recycle Bin is corrupted. Do you want to empty the Recycle Bin for this drive?
+            </param>
+      <returns>If successful, returns a valid <see cref="T:Vanara.IO.VirtualDisk" /> instance for the newly created virtual disk.</returns>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.Create(System.String,Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS@,Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_FLAG,Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_ACCESS_MASK,System.IntPtr)">
+      <summary>Creates a virtual hard disk (VHD) image file.</summary>
+      <param name="path">A valid file path that represents the path to the new virtual disk image file.</param>
+      <param name="param">A reference to a valid CREATE_VIRTUAL_DISK_PARAMETERS structure that contains creation parameter data.</param>
+      <param name="flags">Creation flags, which must be a valid combination of the CREATE_VIRTUAL_DISK_FLAG enumeration.</param>
+      <param name="mask">The VIRTUAL_DISK_ACCESS_MASK value to use when opening the newly created virtual disk file.</param>
+      <param name="securityDescriptor">An optional pointer to a SECURITY_DESCRIPTOR to apply to the virtual disk image file. If this parameter is IntPtr.Zero, the parent directory's security descriptor will be used.</param>
+      <returns>If successful, returns a valid <see cref="T:Vanara.IO.VirtualDisk" /> instance for the newly created virtual disk.</returns>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.CreateDifferencing(System.String,System.String,System.Security.AccessControl.FileSecurity)">
+      <summary>Creates a virtual hard disk (VHD) image file, either using default parameters or using an existing VHD or physical disk.</summary>
+      <param name="path">A valid string that represents the path to the new virtual disk image file.</param>
+      <param name="parentPath">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>parentPath</parameter>
+            <parameter>M:Vanara.IO.VirtualDisk.CreateDifferencing(System.String,System.String,System.Security.AccessControl.FileSecurity)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="access">
+            An optional pointer to a FileSecurity instance to apply to the attached virtual disk. If this parameter is NULL, the security descriptor of the
+            virtual disk image file is used. Ensure that the security descriptor that AttachVirtualDisk applies to the attached virtual disk grants the write
+            attributes permission for the user, or that the security descriptor of the virtual disk image file grants the write attributes permission for the
+            user if you specify NULL for this parameter.If the security descriptor does not grant write attributes permission for a user, Shell displays the
+            following error when the user accesses the attached virtual disk: The Recycle Bin is corrupted.Do you want to empty the Recycle Bin for this drive?
+            </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.IO.VirtualDisk.CreateDifferencing(System.String,System.String,System.Security.AccessControl.FileSecurity)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.CreateFromSource(System.String,System.String)">
+      <summary>Creates a virtual hard disk (VHD) image file, either using default parameters or using an existing VHD or physical disk.</summary>
+      <param name="path">A valid file path that represents the path to the new virtual disk image file.</param>
+      <param name="sourcePath">
+            A fully qualified path to pre-populate the new virtual disk object with block data from an existing disk. This path may refer to a virtual
+            disk or a physical disk.
+            </param>
+      <returns>If successful, returns a valid <see cref="T:Vanara.IO.VirtualDisk" /> instance for the newly created virtual disk.</returns>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.CreateFromSource(System.String,System.String,System.Threading.CancellationToken,System.IProgress{System.Int32})">
+      <summary>Creates a virtual hard disk (VHD) image file, either using default parameters or using an existing VHD or physical disk.</summary>
+      <param name="path">A valid file path that represents the path to the new virtual disk image file.</param>
+      <param name="sourcePath">
+            A fully qualified path to pre-populate the new virtual disk object with block data from an existing disk. This path may refer to a virtual
+            disk or a physical disk.
+            </param>
+      <param name="cancellationToken">A cancellation token that can be used to cancel the operation. This value can be <c>null</c> to disable cancellation.</param>
+      <param name="progress">A class that implements <see cref="T:System.IProgress`1" /> that can be used to report on progress. This value can be <c>null</c> to disable progress reporting.</param>
+      <returns>If successful, returns a valid <see cref="T:Vanara.IO.VirtualDisk" /> instance for the newly created virtual disk.</returns>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.Detach">
+      <summary>
+            Detaches a virtual hard disk (VHD) or CD or DVD image file (ISO) by locating an appropriate virtual disk provider to accomplish the operation.
+            </summary>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.Detach(System.String)">
+      <summary>
+            Detach a virtual disk that was previously attached with the ATTACH_VIRTUAL_DISK_FLAG_PERMANENT_LIFETIME flag or calling <see cref="M:Vanara.IO.VirtualDisk.Attach(System.Boolean,System.Boolean,System.Boolean,System.Security.AccessControl.FileSecurity)" /> and setting autoDetach to <c>false</c>.
+            </summary>
+      <param name="path">A valid path to the virtual disk image to detach.</param>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.DiskType">
+      <summary>The device identifier.</summary>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.Dispose">
+      <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.Enabled">
+      <summary>Whether RCT is turned on. TRUE if RCT is turned on; otherwise FALSE.</summary>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.Expand(System.UInt64)">
+      <summary>Increases the size of a fixed or dynamic virtual hard disk (VHD).</summary>
+      <param name="newSize">New size, in bytes, for the expansion request.</param>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.Expand(System.UInt64,System.Threading.CancellationToken,System.IProgress{System.Int32})">
+      <summary>Increases the size of a fixed or dynamic virtual hard disk (VHD).</summary>
+      <param name="newSize">New size, in bytes, for the expansion request.</param>
+      <param name="cancellationToken">A cancellation token that can be used to cancel the operation. This value can be <c>null</c> to disable cancellation.</param>
+      <param name="progress">A class that implements <see cref="T:System.IProgress`1" /> that can be used to report on progress. This value can be <c>null</c> to disable progress reporting.</param>
+      <returns>
+        <c>true</c> if operation completed without error or cancellation; <c>false</c> otherwise.</returns>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.FragmentationPercentage">
+      <summary>The fragmentation level of the virtual disk.</summary>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.GetAllAttachedVirtualDiskPaths">
+      <summary>Gets the list of all the loopback mounted virtual disks.</summary>
+      <returns>An enumeration of all the loopback mounted virtual disks physical paths.</returns>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.Handle">
+      <summary>Gets the safe handle for the current virtual disk.</summary>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.Identifier">
+      <summary>Unique identifier of the VHD.</summary>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.Is4kAligned">
+      <summary>Indicates whether the virtual disk is 4 KB aligned.</summary>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.IsLoaded">
+      <summary>
+            Indicates whether the virtual disk is currently mounted and in use. TRUE if the virtual disk is currently mounted and in use; otherwise FALSE.
+            </summary>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.IsRemote">
+      <summary>Indicates whether the physical disk is remote.</summary>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.LogicalSectorSize">
+      <summary>The logical sector size of the physical disk.</summary>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.Merge(System.UInt32,System.UInt32)">
+      <summary>Merges a child virtual hard disk (VHD) in a differencing chain with parent disks in the chain.</summary>
+      <param name="sourceDepth">Depth from the leaf from which to begin the merge. The leaf is at depth 1.</param>
+      <param name="targetDepth">Depth from the leaf to target the merge. The leaf is at depth 1.</param>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.MergeWithParent">
+      <summary>Merges a child virtual hard disk (VHD) in a differencing chain with its immediate parent disk in the chain.</summary>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.MostRecentId">
+      <summary>
+            The change tracking identifier for the change that identifies the state of the virtual disk that you want to use as the basis of comparison to
+            determine whether the NewerChanges member reports new changes.
+            </summary>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.NewerChanges">
+      <summary>
+            Whether the virtual disk has changed since the change identified by the MostRecentId member occurred. TRUE if the virtual disk has changed since the
+            change identified by the MostRecentId member occurred; otherwise FALSE.
+            </summary>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.Open(System.String,System.Boolean,System.Boolean,System.Boolean)">
+      <summary>Creates an instance of a Virtual Disk from a file.</summary>
+      <param name="path">A valid path to the virtual disk image to open.</param>
+      <param name="readOnly">If TRUE, indicates the file backing store is to be opened as read-only.</param>
+      <param name="getInfoOnly">If TRUE, indicates the handle is only to be used to get information on the virtual disk.</param>
+      <param name="noParents">Open the VHD file (backing store) without opening any differencing-chain parents. Used to correct broken parent links. This flag is not supported for ISO virtual disks.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.IO.VirtualDisk.Open(System.String,System.Boolean,System.Boolean,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.Open(System.String,Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_FLAG,Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS,Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_ACCESS_MASK)">
+      <summary>Creates an instance of a Virtual Disk from a file.</summary>
+      <param name="path">A valid path to the virtual disk image to open.</param>
+      <param name="flags">A valid combination of values of the OPEN_VIRTUAL_DISK_FLAG enumeration.</param>
+      <param name="param">A valid OPEN_VIRTUAL_DISK_PARAMETERS structure.</param>
+      <param name="mask">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>mask</parameter>
+            <parameter>M:Vanara.IO.VirtualDisk.Open(System.String,Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_FLAG,Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS,Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_ACCESS_MASK)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.IO.VirtualDisk.Open(System.String,Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_FLAG,Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS,Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_ACCESS_MASK)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.ParentBackingStore">
+      <summary>The path of the parent backing store, if it can be resolved.</summary>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.ParentIdentifier">
+      <summary>Unique identifier of the parent disk backing store.</summary>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.ParentPaths">
+      <summary>The path of the parent backing store, if it can be resolved.</summary>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.ParentTimeStamp">
+      <summary>Internal time stamp of the parent disk backing store.</summary>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.PhysicalPath">
+      <summary>Retrieves the path to the physical device object that contains a virtual hard disk (VHD) or CD or DVD image file (ISO).</summary>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.PhysicalSectorSize">
+      <summary>The physical sector size of the physical disk.</summary>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.PhysicalSize">
+      <summary>Physical size of the VHD on disk, in bytes.</summary>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.ProviderSubtype">
+      <summary>Provider-specific subtype.</summary>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.Resize(System.UInt64)">
+      <summary>Resizes a virtual disk.</summary>
+      <param name="newSize">New size, in bytes, for the expansion request. Setting this value to '0' will shrink the disk to the smallest safe virtual size possible without truncating past any existing partitions.</param>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.Resize(System.UInt64,System.Threading.CancellationToken,System.IProgress{System.Int32})">
+      <summary>Resizes a virtual disk.</summary>
+      <param name="newSize">New size, in bytes, for the expansion request.</param>
+      <param name="cancellationToken">A cancellation token that can be used to cancel the operation. This value can be <c>null</c> to disable cancellation.</param>
+      <param name="progress">A class that implements <see cref="T:System.IProgress`1" /> that can be used to report on progress. This value can be <c>null</c> to disable progress reporting.</param>
+      <returns>
+        <c>true</c> if operation completed without error or cancellation; <c>false</c> otherwise.</returns>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.SectorSize">
+      <summary>Sector size of the VHD, in bytes.</summary>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.SmallestSafeVirtualSize">
+      <summary>The smallest safe minimum size of the virtual disk.</summary>
+    </member>
+    <member name="M:Vanara.IO.VirtualDisk.UnsafeResize(System.UInt64)">
+      <summary>Resizes a virtual disk without checking the virtual disk's partition table to ensure that this truncation is safe.
+            <note type="warning">This method can cause unrecoverable data loss; use with care.</note></summary>
+      <param name="newSize">New size, in bytes, for the expansion request.</param>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.VendorId">
+      <summary>Vendor-unique identifier.</summary>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.VhdPhysicalSectorSize">
+      <summary>The physical sector size of the virtual disk.</summary>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.VirtualDiskId">
+      <summary>The identifier that is uniquely created when a user first creates the virtual disk to attempt to uniquely identify that virtual disk.</summary>
+    </member>
+    <member name="P:Vanara.IO.VirtualDisk.VirtualSize">
+      <summary>Virtual size of the VHD, in bytes.</summary>
+    </member>
+    <member name="T:Vanara.IO.VirtualDisk.DeviceType">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.IO.VirtualDisk.DeviceType</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.IO.VirtualDisk.DeviceType.Unknown">
+      <summary>Device type is unknown or not valid.</summary>
+    </member>
+    <member name="F:Vanara.IO.VirtualDisk.DeviceType.Iso">
+      <summary>
+            CD or DVD image file device type. (.iso file)
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This value is not supported before Windows 8 and Windows Server 2012.</para></summary>
+    </member>
+    <member name="F:Vanara.IO.VirtualDisk.DeviceType.Vhd">
+      <summary>Virtual hard disk device type. (.vhd file)</summary>
+    </member>
+    <member name="F:Vanara.IO.VirtualDisk.DeviceType.Vhdx">
+      <summary>
+            VHDX format virtual hard disk device type. (.vhdx file)
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This value is not supported before Windows 8 and Windows Server 2012.</para></summary>
+    </member>
+    <member name="F:Vanara.IO.VirtualDisk.DeviceType.VhdSet">
+      <summary></summary>
+    </member>
+    <member name="T:Vanara.IO.VirtualDisk.Subtype">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.IO.VirtualDisk.Subtype</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+  </members>
+</doc>

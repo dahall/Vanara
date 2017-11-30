@@ -1,0 +1,3334 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Vanara.PInvoke.UxTheme</name>
+  </assembly>
+  <members>
+    <member name="T:Vanara.PInvoke.UxTheme">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.UxTheme</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.BeginBufferedAnimation(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT,Vanara.PInvoke.UxTheme.BP_PAINTPARAMS,Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS@,System.IntPtr@,System.IntPtr@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BeginBufferedAnimation(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT,Vanara.PInvoke.UxTheme.BP_PAINTPARAMS,Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS@,System.IntPtr@,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hwnd">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hwnd</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BeginBufferedAnimation(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT,Vanara.PInvoke.UxTheme.BP_PAINTPARAMS,Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS@,System.IntPtr@,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="hdcTarget">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hdcTarget</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BeginBufferedAnimation(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT,Vanara.PInvoke.UxTheme.BP_PAINTPARAMS,Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS@,System.IntPtr@,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="rcTarget">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>rcTarget</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BeginBufferedAnimation(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT,Vanara.PInvoke.UxTheme.BP_PAINTPARAMS,Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS@,System.IntPtr@,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="dwFormat">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>dwFormat</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BeginBufferedAnimation(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT,Vanara.PInvoke.UxTheme.BP_PAINTPARAMS,Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS@,System.IntPtr@,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pPaintParams">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pPaintParams</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BeginBufferedAnimation(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT,Vanara.PInvoke.UxTheme.BP_PAINTPARAMS,Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS@,System.IntPtr@,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pAnimationParams">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pAnimationParams</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BeginBufferedAnimation(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT,Vanara.PInvoke.UxTheme.BP_PAINTPARAMS,Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS@,System.IntPtr@,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="phdcFrom">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>phdcFrom</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BeginBufferedAnimation(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT,Vanara.PInvoke.UxTheme.BP_PAINTPARAMS,Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS@,System.IntPtr@,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="phdcTo">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>phdcTo</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BeginBufferedAnimation(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT,Vanara.PInvoke.UxTheme.BP_PAINTPARAMS,Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS@,System.IntPtr@,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BeginBufferedAnimation(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT,Vanara.PInvoke.UxTheme.BP_PAINTPARAMS,Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS@,System.IntPtr@,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.BeginBufferedPaint(Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT,Vanara.PInvoke.UxTheme.BP_PAINTPARAMS,System.IntPtr@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BeginBufferedPaint(Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT,Vanara.PInvoke.UxTheme.BP_PAINTPARAMS,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hdcTarget">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hdcTarget</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BeginBufferedPaint(Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT,Vanara.PInvoke.UxTheme.BP_PAINTPARAMS,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="prcTarget">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>prcTarget</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BeginBufferedPaint(Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT,Vanara.PInvoke.UxTheme.BP_PAINTPARAMS,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="dwFormat">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>dwFormat</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BeginBufferedPaint(Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT,Vanara.PInvoke.UxTheme.BP_PAINTPARAMS,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pPaintParams">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pPaintParams</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BeginBufferedPaint(Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT,Vanara.PInvoke.UxTheme.BP_PAINTPARAMS,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="phdc">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>phdc</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BeginBufferedPaint(Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT,Vanara.PInvoke.UxTheme.BP_PAINTPARAMS,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BeginBufferedPaint(Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT,Vanara.PInvoke.UxTheme.BP_PAINTPARAMS,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.BufferedPaintInit">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BufferedPaintInit</parameter>
+          </include>
+        </markup>
+      </summary>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BufferedPaintInit</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.BufferedPaintRenderAnimation(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BufferedPaintRenderAnimation(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hwnd">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hwnd</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BufferedPaintRenderAnimation(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="hdcTarget">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hdcTarget</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BufferedPaintRenderAnimation(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BufferedPaintRenderAnimation(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.BufferedPaintStopAllAnimations(System.Runtime.InteropServices.HandleRef)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BufferedPaintStopAllAnimations(System.Runtime.InteropServices.HandleRef)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hwnd">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hwnd</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BufferedPaintStopAllAnimations(System.Runtime.InteropServices.HandleRef)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BufferedPaintStopAllAnimations(System.Runtime.InteropServices.HandleRef)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.BufferedPaintUnInit">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BufferedPaintUnInit</parameter>
+          </include>
+        </markup>
+      </summary>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BufferedPaintUnInit</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.CloseThemeData(System.IntPtr)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.CloseThemeData(System.IntPtr)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.CloseThemeData(System.IntPtr)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.CloseThemeData(System.IntPtr)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.DrawThemeBackground(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.PRECT)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeBackground(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.PRECT)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeBackground(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.PRECT)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="hdc">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hdc</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeBackground(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.PRECT)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeBackground(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.PRECT)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeBackground(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.PRECT)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pRect">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pRect</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeBackground(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.PRECT)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pClipRect">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pClipRect</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeBackground(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.PRECT)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeBackground(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.PRECT)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.DrawThemeBackgroundEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeBackgroundEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeBackgroundEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="hdc">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hdc</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeBackgroundEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeBackgroundEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeBackgroundEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pRect">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pRect</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeBackgroundEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="opts">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>opts</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeBackgroundEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeBackgroundEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.DrawThemeIcon(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,System.IntPtr,System.Int32)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeIcon(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,System.IntPtr,System.Int32)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeIcon(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,System.IntPtr,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="hdc">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hdc</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeIcon(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,System.IntPtr,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeIcon(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,System.IntPtr,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeIcon(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,System.IntPtr,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pRect">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pRect</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeIcon(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,System.IntPtr,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="himl">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>himl</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeIcon(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,System.IntPtr,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iImageIndex">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iImageIndex</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeIcon(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,System.IntPtr,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeIcon(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,System.IntPtr,System.Int32)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.DrawThemeParentBackground(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.PRECT)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeParentBackground(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.PRECT)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hwnd">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hwnd</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeParentBackground(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.PRECT)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="hdc">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hdc</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeParentBackground(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.PRECT)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pRect">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pRect</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeParentBackground(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.PRECT)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeParentBackground(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.PRECT)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundEx(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundFlags,Vanara.PInvoke.PRECT)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundEx(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundFlags,Vanara.PInvoke.PRECT)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hwnd">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hwnd</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundEx(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundFlags,Vanara.PInvoke.PRECT)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="hdc">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hdc</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundEx(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundFlags,Vanara.PInvoke.PRECT)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="dwFlags">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>dwFlags</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundEx(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundFlags,Vanara.PInvoke.PRECT)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pRect">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pRect</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundEx(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundFlags,Vanara.PInvoke.PRECT)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundEx(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.Gdi32.SafeDCHandle,Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundFlags,Vanara.PInvoke.PRECT)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.DrawThemeText(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,System.Int32,Vanara.PInvoke.RECT@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeText(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,System.Int32,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeText(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,System.Int32,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="hdc">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hdc</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeText(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,System.Int32,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeText(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,System.Int32,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeText(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,System.Int32,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="text">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>text</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeText(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,System.Int32,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="textLength">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>textLength</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeText(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,System.Int32,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="textFlags">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>textFlags</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeText(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,System.Int32,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="textFlags2">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>textFlags2</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeText(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,System.Int32,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pRect">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pRect</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeText(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,System.Int32,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeText(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,System.Int32,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.DrawThemeTextEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeTextOptions@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeTextEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeTextOptions@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeTextEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeTextOptions@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="hdc">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hdc</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeTextEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeTextOptions@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeTextEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeTextOptions@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeTextEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeTextOptions@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="text">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>text</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeTextEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeTextOptions@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iCharCount">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iCharCount</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeTextEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeTextOptions@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="dwFlags">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>dwFlags</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeTextEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeTextOptions@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pRect">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pRect</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeTextEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeTextOptions@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pOptions">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pOptions</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeTextEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeTextOptions@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.DrawThemeTextEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeTextOptions@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.EndBufferedAnimation(System.IntPtr,System.Boolean)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.EndBufferedAnimation(System.IntPtr,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hbpAnimation">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hbpAnimation</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.EndBufferedAnimation(System.IntPtr,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="fUpdateTarget">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>fUpdateTarget</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.EndBufferedAnimation(System.IntPtr,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.EndBufferedAnimation(System.IntPtr,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.EndBufferedPaint(System.IntPtr,System.Boolean)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.EndBufferedPaint(System.IntPtr,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hbp">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hbp</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.EndBufferedPaint(System.IntPtr,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="fUpdateTarget">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>fUpdateTarget</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.EndBufferedPaint(System.IntPtr,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.EndBufferedPaint(System.IntPtr,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemeBackgroundContentRect(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBackgroundContentRect(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBackgroundContentRect(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="hdc">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hdc</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBackgroundContentRect(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBackgroundContentRect(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBackgroundContentRect(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pBoundingRect">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pBoundingRect</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBackgroundContentRect(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pContentRect">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pContentRect</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBackgroundContentRect(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBackgroundContentRect(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemeBitmap(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.Int32,System.IntPtr@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBitmap(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.Int32,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBitmap(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.Int32,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="hdc">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hdc</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBitmap(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.Int32,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBitmap(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.Int32,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBitmap(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.Int32,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPropId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPropId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBitmap(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.Int32,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="dwFlags">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>dwFlags</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBitmap(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.Int32,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="phBitmap">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>phBitmap</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBitmap(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.Int32,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBitmap(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.Int32,System.IntPtr@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemeBool(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Boolean@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBool(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Boolean@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBool(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Boolean@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBool(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Boolean@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBool(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Boolean@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPropId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPropId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBool(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Boolean@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pfVal">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pfVal</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBool(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Boolean@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeBool(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Boolean@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemeColor(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeColor(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeColor(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeColor(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeColor(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPropId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPropId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeColor(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pColor">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pColor</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeColor(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeColor(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemeEnumValue(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeEnumValue(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeEnumValue(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeEnumValue(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeEnumValue(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPropId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPropId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeEnumValue(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="piVal">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>piVal</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeEnumValue(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeEnumValue(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemeFilename(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Text.StringBuilder@,System.Int32)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeFilename(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Text.StringBuilder@,System.Int32)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeFilename(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Text.StringBuilder@,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeFilename(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Text.StringBuilder@,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeFilename(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Text.StringBuilder@,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPropId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPropId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeFilename(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Text.StringBuilder@,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pszBuff">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pszBuff</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeFilename(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Text.StringBuilder@,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="buffLength">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>buffLength</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeFilename(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Text.StringBuilder@,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeFilename(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Text.StringBuilder@,System.Int32)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemeFont(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.Gdi32.LOGFONT@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeFont(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.Gdi32.LOGFONT@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeFont(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.Gdi32.LOGFONT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="hdc">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hdc</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeFont(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.Gdi32.LOGFONT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeFont(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.Gdi32.LOGFONT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeFont(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.Gdi32.LOGFONT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPropId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPropId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeFont(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.Gdi32.LOGFONT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pFont">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pFont</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeFont(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.Gdi32.LOGFONT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeFont(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.Gdi32.LOGFONT@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemeInt(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeInt(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeInt(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeInt(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeInt(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPropId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPropId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeInt(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="piVal">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>piVal</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeInt(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeInt(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemeIntList(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeIntList(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeIntList(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="partId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>partId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeIntList(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="stateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>stateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeIntList(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="propId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>propId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeIntList(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeIntList(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemeMargins(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.IntPtr,Vanara.PInvoke.RECT@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeMargins(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.IntPtr,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeMargins(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.IntPtr,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="hdc">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hdc</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeMargins(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.IntPtr,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeMargins(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.IntPtr,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeMargins(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.IntPtr,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPropId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPropId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeMargins(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.IntPtr,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="prc">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>prc</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeMargins(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.IntPtr,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pMargins">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pMargins</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeMargins(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.IntPtr,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeMargins(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.IntPtr,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemeMetric(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.Int32@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeMetric(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeMetric(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="hdc">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hdc</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeMetric(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeMetric(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeMetric(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPropId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPropId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeMetric(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="piVal">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>piVal</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeMetric(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeMetric(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemePartSize(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.PRECT,Vanara.PInvoke.UxTheme.ThemeSize,System.Drawing.Size@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePartSize(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.PRECT,Vanara.PInvoke.UxTheme.ThemeSize,System.Drawing.Size@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePartSize(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.PRECT,Vanara.PInvoke.UxTheme.ThemeSize,System.Drawing.Size@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="hdc">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hdc</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePartSize(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.PRECT,Vanara.PInvoke.UxTheme.ThemeSize,System.Drawing.Size@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="part">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>part</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePartSize(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.PRECT,Vanara.PInvoke.UxTheme.ThemeSize,System.Drawing.Size@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="state">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>state</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePartSize(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.PRECT,Vanara.PInvoke.UxTheme.ThemeSize,System.Drawing.Size@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pRect">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pRect</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePartSize(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.PRECT,Vanara.PInvoke.UxTheme.ThemeSize,System.Drawing.Size@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="eSize">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>eSize</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePartSize(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.PRECT,Vanara.PInvoke.UxTheme.ThemeSize,System.Drawing.Size@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="size">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>size</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePartSize(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.PRECT,Vanara.PInvoke.UxTheme.ThemeSize,System.Drawing.Size@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePartSize(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,Vanara.PInvoke.PRECT,Vanara.PInvoke.UxTheme.ThemeSize,System.Drawing.Size@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemePosition(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Drawing.Point@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePosition(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Drawing.Point@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePosition(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Drawing.Point@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePosition(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Drawing.Point@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePosition(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Drawing.Point@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPropId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPropId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePosition(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Drawing.Point@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="piVal">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>piVal</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePosition(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Drawing.Point@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePosition(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Drawing.Point@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemePropertyOrigin(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.UxTheme.ThemePropertyOrigin@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePropertyOrigin(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.UxTheme.ThemePropertyOrigin@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePropertyOrigin(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.UxTheme.ThemePropertyOrigin@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePropertyOrigin(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.UxTheme.ThemePropertyOrigin@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePropertyOrigin(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.UxTheme.ThemePropertyOrigin@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPropId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPropId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePropertyOrigin(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.UxTheme.ThemePropertyOrigin@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pOrigin">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pOrigin</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePropertyOrigin(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.UxTheme.ThemePropertyOrigin@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemePropertyOrigin(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.UxTheme.ThemePropertyOrigin@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemeRect(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.RECT@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeRect(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeRect(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeRect(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeRect(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPropId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPropId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeRect(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pRect">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pRect</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeRect(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeRect(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemeStream(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Byte[]@,System.Int32@,System.IntPtr)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeStream(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Byte[]@,System.Int32@,System.IntPtr)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeStream(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Byte[]@,System.Int32@,System.IntPtr)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeStream(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Byte[]@,System.Int32@,System.IntPtr)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeStream(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Byte[]@,System.Int32@,System.IntPtr)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPropId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPropId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeStream(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Byte[]@,System.Int32@,System.IntPtr)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pvStream">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pvStream</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeStream(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Byte[]@,System.Int32@,System.IntPtr)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="cbStream">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>cbStream</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeStream(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Byte[]@,System.Int32@,System.IntPtr)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="hInst">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hInst</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeStream(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Byte[]@,System.Int32@,System.IntPtr)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeStream(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Byte[]@,System.Int32@,System.IntPtr)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemeString(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Text.StringBuilder@,System.Int32)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeString(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Text.StringBuilder@,System.Int32)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeString(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Text.StringBuilder@,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeString(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Text.StringBuilder@,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeString(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Text.StringBuilder@,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPropId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPropId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeString(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Text.StringBuilder@,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="themeString">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>themeString</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeString(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Text.StringBuilder@,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="themeStringLength">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>themeStringLength</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeString(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Text.StringBuilder@,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeString(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Text.StringBuilder@,System.Int32)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemeSysFont(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,Vanara.PInvoke.Gdi32.LOGFONT@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeSysFont(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,Vanara.PInvoke.Gdi32.LOGFONT@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeSysFont(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,Vanara.PInvoke.Gdi32.LOGFONT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iFontId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iFontId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeSysFont(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,Vanara.PInvoke.Gdi32.LOGFONT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pFont">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pFont</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeSysFont(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,Vanara.PInvoke.Gdi32.LOGFONT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeSysFont(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,Vanara.PInvoke.Gdi32.LOGFONT@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemeSysInt(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeSysInt(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeSysInt(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iIntID">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iIntID</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeSysInt(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="piVal">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>piVal</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeSysInt(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeSysInt(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemeTextExtent(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeTextExtent(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeTextExtent(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="hdc">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hdc</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeTextExtent(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeTextExtent(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeTextExtent(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="text">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>text</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeTextExtent(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="textLength">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>textLength</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeTextExtent(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="textFlags">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>textFlags</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeTextExtent(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="boundingRect">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>boundingRect</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeTextExtent(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="extentRect">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>extentRect</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeTextExtent(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeTextExtent(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.RECT@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.GetThemeTransitionDuration(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32@)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeTransitionDuration(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeTransitionDuration(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeTransitionDuration(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateIdFrom">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateIdFrom</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeTransitionDuration(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateIdTo">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateIdTo</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeTransitionDuration(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPropId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPropId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeTransitionDuration(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pdwDuration">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pdwDuration</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeTransitionDuration(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.GetThemeTransitionDuration(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.IsThemeBackgroundPartiallyTransparent(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.IsThemeBackgroundPartiallyTransparent(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.IsThemeBackgroundPartiallyTransparent(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.IsThemeBackgroundPartiallyTransparent(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.IsThemeBackgroundPartiallyTransparent(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.IsThemeBackgroundPartiallyTransparent(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.IsThemePartDefined(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.IsThemePartDefined(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.IsThemePartDefined(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iPartId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iPartId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.IsThemePartDefined(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="iStateId">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>iStateId</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.IsThemePartDefined(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.IsThemePartDefined(Vanara.PInvoke.UxTheme.SafeThemeHandle,System.Int32,System.Int32)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.OpenThemeData(System.Runtime.InteropServices.HandleRef,System.String)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.OpenThemeData(System.Runtime.InteropServices.HandleRef,System.String)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hWnd">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hWnd</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.OpenThemeData(System.Runtime.InteropServices.HandleRef,System.String)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="classList">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>classList</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.OpenThemeData(System.Runtime.InteropServices.HandleRef,System.String)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.OpenThemeData(System.Runtime.InteropServices.HandleRef,System.String)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.OpenThemeDataEx(System.Runtime.InteropServices.HandleRef,System.String,Vanara.PInvoke.UxTheme.OpenThemeDataOptions)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.OpenThemeDataEx(System.Runtime.InteropServices.HandleRef,System.String,Vanara.PInvoke.UxTheme.OpenThemeDataOptions)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hWnd">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hWnd</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.OpenThemeDataEx(System.Runtime.InteropServices.HandleRef,System.String,Vanara.PInvoke.UxTheme.OpenThemeDataOptions)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="classList">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>classList</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.OpenThemeDataEx(System.Runtime.InteropServices.HandleRef,System.String,Vanara.PInvoke.UxTheme.OpenThemeDataOptions)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="dwFlags">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>dwFlags</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.OpenThemeDataEx(System.Runtime.InteropServices.HandleRef,System.String,Vanara.PInvoke.UxTheme.OpenThemeDataOptions)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.OpenThemeDataEx(System.Runtime.InteropServices.HandleRef,System.String,Vanara.PInvoke.UxTheme.OpenThemeDataOptions)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.SetWindowTheme(System.Runtime.InteropServices.HandleRef,System.String,System.String)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.SetWindowTheme(System.Runtime.InteropServices.HandleRef,System.String,System.String)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hWnd">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hWnd</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.SetWindowTheme(System.Runtime.InteropServices.HandleRef,System.String,System.String)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pszSubAppName">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pszSubAppName</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.SetWindowTheme(System.Runtime.InteropServices.HandleRef,System.String,System.String)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="pszSubIdList">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pszSubIdList</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.SetWindowTheme(System.Runtime.InteropServices.HandleRef,System.String,System.String)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.SetWindowTheme(System.Runtime.InteropServices.HandleRef,System.String,System.String)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.SetWindowThemeAttribute(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.UxTheme.WindowThemeAttributeType,Vanara.PInvoke.UxTheme.WTA_OPTIONS@,System.Int32)">
+      <summary>
+            Sets attributes to control how visual styles are applied to a specified window.
+            </summary>
+      <param name="hWnd">Handle to a window to apply changes to.</param>
+      <param name="wtype">Value of type WINDOWTHEMEATTRIBUTETYPE that specifies the type of attribute to set. The value of this parameter determines the type of data that should be passed in the pvAttribute parameter.</param>
+      <param name="attributes">A pointer that specifies attributes to set. Type is determined by the value of the eAttribute value.</param>
+      <param name="size">Specifies the size, in bytes, of the data pointed to by pvAttribute.</param>
+      <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.SetWindowThemeAttribute(System.Runtime.InteropServices.HandleRef,Vanara.PInvoke.UxTheme.WindowThemeNonClientAttributes,System.Boolean)">
+      <summary>
+            Sets attributes to control how visual styles are applied to a specified window.
+            </summary>
+      <param name="hWnd">Handle to a window to apply changes to.</param>
+      <param name="ncAttrs">A combination of flags that modify window visual style attributes.</param>
+      <param name="activate">if set to <c>true</c> add the flag to the window attributes, otherwise remove the flag.</param>
+    </member>
+    <member name="T:Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS.#ctor(Vanara.PInvoke.UxTheme.BP_ANIMATIONSTYLE,System.Int32)">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="animStyle">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>animStyle</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS.#ctor(Vanara.PInvoke.UxTheme.BP_ANIMATIONSTYLE,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="dur">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>dur</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS.#ctor(Vanara.PInvoke.UxTheme.BP_ANIMATIONSTYLE,System.Int32)</parameter>
+          </include>
+        </markup>
+      </param>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS.AnimationStyle">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>P:Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS.AnimationStyle</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS.cbSize">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS.cbSize</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS.Duration">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>P:Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS.Duration</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS.dwDuration">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS.dwDuration</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS.dwFlags">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS.dwFlags</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS.Empty">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>P:Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS.Empty</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS.style">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.BP_ANIMATIONPARAMS.style</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.UxTheme.BP_ANIMATIONSTYLE">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.UxTheme.BP_ANIMATIONSTYLE</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.UxTheme.BP_BUFFERFORMAT</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS.#ctor(Vanara.PInvoke.UxTheme.BufferedPaintParamsFlags)">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Vanara.PInvoke.UxTheme.BP_PAINTPARAMS</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="flags">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>flags</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS.#ctor(Vanara.PInvoke.UxTheme.BufferedPaintParamsFlags)</parameter>
+          </include>
+        </markup>
+      </param>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS.BlendFunction">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>P:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS.BlendFunction</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS.cbSize">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS.cbSize</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS.ClearBg">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>P:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS.ClearBg</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS.Dispose">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocDispose">
+            <parameter>Vanara.PInvoke.UxTheme.BP_PAINTPARAMS</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS.Exclude">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>P:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS.Exclude</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS.Flags">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS.Flags</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS.NoClip">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>P:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS.NoClip</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS.pBlendFunction">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS.pBlendFunction</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS.prcExclude">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.BP_PAINTPARAMS.prcExclude</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.UxTheme.BufferedPaintParamsFlags">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.UxTheme.BufferedPaintParamsFlags</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions">
+      <summary>Defines the options for the DrawThemeBackgroundEx function.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions.#ctor(System.Nullable{System.Drawing.Rectangle})">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions" /> class.</summary>
+      <param name="clipRect">The rectangle to which drawing is clipped.</param>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions.ClipRectangle">
+      <summary>Gets or sets the bounding rectangle of the clip region.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions.DoNotMirror">
+      <summary>Gets or sets a value indicating whether to mirror the output; even in right-to-left (RTL) layout.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions.dwFlags">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions.dwFlags</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions.dwSize">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions.dwSize</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions.HasMirroredDC">
+      <summary>Gets or sets a value indicating the hdc is mirrored and flip images as appropriate.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions.OmitBorder">
+      <summary>Gets or sets a value indicating whether omit drawing the border.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions.OmitContent">
+      <summary>Gets or sets a value indicating whether omit drawing the content area of the part.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions.op_Implicit(System.Drawing.Rectangle)~Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions">
+      <summary>Performs an implicit conversion from <see cref="T:System.Drawing.Rectangle" /> to <see cref="T:Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions" />.</summary>
+      <param name="clipRectangle">The clipping rectangle.</param>
+      <returns>The result of the conversion.</returns>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions.rcClip">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.DrawThemeBackgroundOptions.rcClip</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundFlags">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundFlags</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundFlags.DTPB_WINDOWDC">
+      <summary>If set, hdc is assumed to be a window DC, not a client DC.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundFlags.DTPB_USECTLCOLORSTATIC">
+      <summary>
+            If set, this function sends a WM_CTLCOLORSTATIC message to the parent and uses the brush if one is provided. Otherwise, it uses COLOR_BTNFACE.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeParentBackgroundFlags.DTPB_USEERASEBKGND">
+      <summary>If set, this function returns S_OK without sending a WM_CTLCOLORSTATIC message if the parent actually painted on WM_ERASEBKGND.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.UxTheme.DrawThemeTextCallback">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.UxTheme.DrawThemeTextCallback</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.UxTheme.DrawThemeTextOptions">
+      <summary>Defines the options for the <see cref="M:Vanara.PInvoke.UxTheme.DrawThemeTextEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeTextOptions@)" /> function.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.#ctor(System.Nullable{System.Byte})">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.PInvoke.UxTheme.DrawThemeTextOptions" /> struct.</summary>
+      <param name="shouldBeNull">This value must be specified to initialize. Use null.</param>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.AlternateColor">
+      <summary>Gets or sets a value that specifies an alternate color property to use when drawing text.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.AlternateFont">
+      <summary>Gets or sets an alternate font property to use when drawing text.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.AntiAliasedAlpha">
+      <summary>
+            Gets or sets a value indicating whether to draw text with antialiased alpha. Use of this flag requires a top-down DIB section. This flag works
+            only if the HDC passed to function DrawThemeTextEx has a top-down DIB section currently selected in it. For more information, see
+            Device-Independent Bitmaps.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.ApplyOverlay">
+      <summary>
+            Gets or sets a value indicating whether text will be drawn on top of the shadow and outline effects ( <c>true</c>) or if just the shadow and
+            outline effects will be drawn ( <c>false</c>).
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.BorderColor">
+      <summary>Gets or sets the color of the outline that will be drawn around the text.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.BorderSize">
+      <summary>Gets or sets the radius of the outline that will be drawn around the text.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.Callback">
+      <summary>Gets or sets the callback function.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.crBorder">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.crBorder</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.crShadow">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.crShadow</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.crText">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.crText</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.Default">
+      <summary>Gets an instance with default values set.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.dwMasks">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.dwMasks</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.dwSize">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.dwSize</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.fApplyOverlay">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.fApplyOverlay</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.GlowSize">
+      <summary>Gets or sets the size of a glow that will be drawn on the background prior to any text being drawn.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.iBorderSize">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.iBorderSize</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.iColorPropId">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.iColorPropId</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.iFontPropId">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.iFontPropId</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.iGlowSize">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.iGlowSize</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.iStateId">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.iStateId</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.iTextShadowType">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.iTextShadowType</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.lParam">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.lParam</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.LParam">
+      <summary>Gets or sets the parameter for callback back function specified by <see cref="P:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.Callback" />.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.pfnDrawTextCallback">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.pfnDrawTextCallback</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.ptShadowOffset">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.ptShadowOffset</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.ReturnCalculatedRectangle">
+      <summary>
+            Gets or sets a value indicating whether the pRect parameter of the <see cref="M:Vanara.PInvoke.UxTheme.DrawThemeTextEx(Vanara.PInvoke.UxTheme.SafeThemeHandle,Vanara.PInvoke.Gdi32.SafeDCHandle,System.Int32,System.Int32,System.String,System.Int32,Vanara.PInvoke.DrawTextFlags,Vanara.PInvoke.RECT@,Vanara.PInvoke.UxTheme.DrawThemeTextOptions@)" /> function that uses this structure will be used
+            as both an in and an out parameter. After the function returns, the pRect parameter will contain the rectangle that corresponds to the region
+            calculated to be drawn.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.ShadowColor">
+      <summary>Gets or sets the color of the shadow drawn behind the text.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.ShadowOffset">
+      <summary>Gets or sets the amount of offset, in logical coordinates, between the shadow and the text.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.ShadowType">
+      <summary>Gets or sets the type of the shadow that will be drawn behind the text.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.UxTheme.DrawThemeTextOptions.TextColor">
+      <summary>Gets or sets the color of the text that will be drawn.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.UxTheme.DrawThemeTextOptionsMasks">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.UxTheme.DrawThemeTextOptionsMasks</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.UxTheme.DrawThemeTextSystemFonts">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.UxTheme.DrawThemeTextSystemFonts</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.UxTheme.IntegerListProperty">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.UxTheme.IntegerListProperty</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.UxTheme.OpenThemeDataOptions">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.UxTheme.OpenThemeDataOptions</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.OpenThemeDataOptions.ForceRectSizing">
+      <summary>Forces drawn images from this theme to stretch to fit the rectangles specified by drawing functions.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.OpenThemeDataOptions.NonClient">
+      <summary>Allows theme elements to be drawn in the non-client area of the window.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.UxTheme.SafeThemeHandle">
+      <summary>
+            Represents a safe handle for a token. Use in place of HTOKEN or HANDLE.
+            </summary>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.SafeThemeHandle.#ctor(System.IntPtr,System.Boolean)">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Vanara.PInvoke.UxTheme.SafeThemeHandle</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="hTheme">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>hTheme</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.SafeThemeHandle.#ctor(System.IntPtr,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="ownsHandle">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>ownsHandle</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.SafeThemeHandle.#ctor(System.IntPtr,System.Boolean)</parameter>
+          </include>
+        </markup>
+      </param>
+    </member>
+    <member name="M:Vanara.PInvoke.UxTheme.SafeThemeHandle.ReleaseHandle">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.SafeThemeHandle.ReleaseHandle</parameter>
+          </include>
+        </markup>
+      </summary>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.UxTheme.SafeThemeHandle.ReleaseHandle</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="T:Vanara.PInvoke.UxTheme.TextShadowType">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.UxTheme.TextShadowType</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.TextShadowType.None">
+      <summary>No shadow will be drawn.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.TextShadowType.Single">
+      <summary>The shadow will be drawn to appear detailed underneath text.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.TextShadowType.Continuous">
+      <summary>The shadow will be drawn to appear blurred underneath text.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.UxTheme.ThemePropertyOrigin">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.UxTheme.ThemePropertyOrigin</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.ThemePropertyOrigin.State">
+      <summary>Property was found in the state section.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.ThemePropertyOrigin.Part">
+      <summary>Property was found in the part section.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.ThemePropertyOrigin.Class">
+      <summary>Property was found in the class section.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.ThemePropertyOrigin.Global">
+      <summary>Property was found in the list of global variables.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.ThemePropertyOrigin.NotFound">
+      <summary>Property was not found.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.UxTheme.ThemeSize">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.UxTheme.ThemeSize</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.ThemeSize.Min">
+      <summary>Receives the minimum size of a visual style part.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.ThemeSize.True">
+      <summary>Receives the size of the visual style part that will best fit the available space.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.ThemeSize.Draw">
+      <summary>Receives the size that the theme manager uses to draw a part.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.UxTheme.WindowThemeAttributeType">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.UxTheme.WindowThemeAttributeType</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.UxTheme.WindowThemeNonClientAttributes">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.UxTheme.WindowThemeNonClientAttributes</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.WindowThemeNonClientAttributes.NoDrawCaption">
+      <summary>Do Not Draw The Caption (Text)</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.WindowThemeNonClientAttributes.NoDrawIcon">
+      <summary>Do Not Draw the Icon</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.WindowThemeNonClientAttributes.NoSysMenu">
+      <summary>Do Not Show the System Menu</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.WindowThemeNonClientAttributes.NoMirrorHelp">
+      <summary>Do Not Mirror the Question mark Symbol</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.UxTheme.WTA_OPTIONS">
+      <summary>The Options of What Attributes to Add/Remove</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.WTA_OPTIONS.Flags">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.WTA_OPTIONS.Flags</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.UxTheme.WTA_OPTIONS.Mask">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.UxTheme.WTA_OPTIONS.Mask</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+  </members>
+</doc>

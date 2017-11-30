@@ -1,0 +1,2074 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Vanara.Core</name>
+  </assembly>
+  <members>
+    <member name="T:Vanara.Collections.EventedList`1">
+      <summary>A generic list that provides event for changes to the list.</summary>
+      <typeparam name="T">Type for the list.</typeparam>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.Collections.EventedList`1" /> class.</summary>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.Collections.EventedList`1" /> class.</summary>
+      <param name="collection">The collection.</param>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.#ctor(System.Int32)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.Collections.EventedList`1" /> class.</summary>
+      <param name="capacity">The capacity.</param>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.Add(`0)">
+      <summary>Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
+      <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.</exception>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
+      <summary>Adds the range of items to the list.</summary>
+      <param name="collection">The collection of items to add.</param>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.AddRange(`0[])">
+      <summary>Adds the range of items to the list.</summary>
+      <param name="items">The items to add.</param>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.AsReadOnly">
+      <summary>Determines if the collection is read-only.</summary>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.EventedList`1.AsReadOnly</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.BinarySearch(System.Int32,System.Int32,`0,System.Collections.Generic.IComparer{`0})">
+      <summary>
+            Searches a range of elements in the sorted <see cref="T:Vanara.Collections.EventedList`1" /> for an element using the specified comparer and returns the zero-based index
+            of the element.
+            </summary>
+      <param name="index">The zero-based starting index of the range to search.</param>
+      <param name="count">The length of the range to search.</param>
+      <param name="item">The object to locate. The value can be null for reference types.</param>
+      <param name="comparer">The <see cref="T:System.Collections.Generic.IComparer`1" /> implementation to use when comparing elements, or null to use the default comparer <see cref="P:System.Collections.Generic.Comparer`1.Default" />.</param>
+      <returns>
+            The zero-based index of item in the sorted <see cref="T:Vanara.Collections.EventedList`1" />, if item is found; otherwise, a negative number that is the bitwise
+            complement of the index of the next element that is larger than item or, if there is no larger element, the bitwise complement of <see cref="P:Vanara.Collections.EventedList`1.Count" />.
+            </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.BinarySearch(`0)">
+      <summary>
+            Searches the entire sorted <see cref="T:Vanara.Collections.EventedList`1" /> for an element using the default comparer and returns the zero-based index of the element.
+            </summary>
+      <param name="item">The object to locate. The value can be null for reference types.</param>
+      <returns>
+            The zero-based index of item in the sorted <see cref="T:Vanara.Collections.EventedList`1" />, if item is found; otherwise, a negative number that is the bitwise
+            complement of the index of the next element that is larger than item or, if there is no larger element, the bitwise complement of <see cref="P:Vanara.Collections.EventedList`1.Count" />.
+            </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.BinarySearch(`0,System.Collections.Generic.IComparer{`0})">
+      <summary>
+            Searches the entire sorted <see cref="T:Vanara.Collections.EventedList`1" /> for an element using the specified comparer and returns the zero-based index of the element.
+            </summary>
+      <param name="item">The object to locate. The value can be null for reference types.</param>
+      <param name="comparer">The <see cref="T:System.Collections.Generic.IComparer`1" /> implementation to use when comparing elements, or null to use the default comparer <see cref="P:System.Collections.Generic.Comparer`1.Default" />.</param>
+      <returns>
+            The zero-based index of item in the sorted <see cref="T:Vanara.Collections.EventedList`1" />, if item is found; otherwise, a negative number that is the bitwise
+            complement of the index of the next element that is larger than item or, if there is no larger element, the bitwise complement of <see cref="P:Vanara.Collections.EventedList`1.Count" />.
+            </returns>
+    </member>
+    <member name="P:Vanara.Collections.EventedList`1.Capacity">
+      <summary>Gets or sets the capacity.</summary>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.Clear">
+      <summary>Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.</exception>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.Contains(`0)">
+      <summary>Determines whether the <see cref="T:System.Collections.Generic.ICollection`1" /> contains a specific value.</summary>
+      <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
+      <returns>true if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false.</returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.ConvertAll``1(System.Converter{`0,``0})">
+      <summary>Converts all.</summary>
+      <param name="converter">The converter.</param>
+      <typeparam name="TOutput">The type of the output.</typeparam>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.EventedList`1.ConvertAll``1(System.Converter{`0,``0})</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.CopyTo(System.Int32,`0[],System.Int32,System.Int32)">
+      <summary>Copies to.</summary>
+      <param name="index">The index.</param>
+      <param name="array">The array.</param>
+      <param name="arrayIndex">Index of the array.</param>
+      <param name="count">The count.</param>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.CopyTo(`0[],System.Int32)">
+      <summary>
+            Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an <see cref="T:System.Array" />, starting at a particular <see cref="T:System.Array" /> index.
+            </summary>
+      <param name="array">
+            The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1" />. The
+            <see cref="T:System.Array" /> must have zero-based indexing.
+            </param>
+      <param name="arrayIndex">The zero-based index in <paramref name="array" /> at which copying begins.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="array" /> is null.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="arrayIndex" /> is less than 0.</exception>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="array" /> is multidimensional.-or- <paramref name="arrayIndex" /> is equal to or greater than the length of <paramref name="array" />.-or-The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1" /> is greater than the available space from <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.-or-Type <c>T</c> cannot be cast automatically to the type of the
+            destination <paramref name="array" />.
+            </exception>
+    </member>
+    <member name="P:Vanara.Collections.EventedList`1.Count">
+      <summary>Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.Exists(System.Predicate{`0})">
+      <summary>Determines if an item matches the specified predicate.</summary>
+      <param name="match">The match.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.EventedList`1.Exists(System.Predicate{`0})</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.Find(System.Predicate{`0})">
+      <summary>Finds the specified match.</summary>
+      <param name="match">The match.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.EventedList`1.Find(System.Predicate{`0})</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.FindAll(System.Predicate{`0})">
+      <summary>Finds all.</summary>
+      <param name="match">The match.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.EventedList`1.FindAll(System.Predicate{`0})</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.FindIndex(System.Int32,System.Int32,System.Predicate{`0})">
+      <summary>Finds the index.</summary>
+      <param name="startIndex">The start index.</param>
+      <param name="count">The count.</param>
+      <param name="match">The match.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.EventedList`1.FindIndex(System.Int32,System.Int32,System.Predicate{`0})</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.FindIndex(System.Int32,System.Predicate{`0})">
+      <summary>Finds the index.</summary>
+      <param name="startIndex">The start index.</param>
+      <param name="match">The match.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.EventedList`1.FindIndex(System.Int32,System.Predicate{`0})</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.FindIndex(System.Predicate{`0})">
+      <summary>Finds the index.</summary>
+      <param name="match">The match.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.EventedList`1.FindIndex(System.Predicate{`0})</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.FindLast(System.Predicate{`0})">
+      <summary>Finds the last.</summary>
+      <param name="match">The match.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.EventedList`1.FindLast(System.Predicate{`0})</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.FindLastIndex(System.Int32,System.Int32,System.Predicate{`0})">
+      <summary>Finds the last index.</summary>
+      <param name="startIndex">The start index.</param>
+      <param name="count">The count.</param>
+      <param name="match">The match.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.EventedList`1.FindLastIndex(System.Int32,System.Int32,System.Predicate{`0})</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.FindLastIndex(System.Int32,System.Predicate{`0})">
+      <summary>Finds the last index.</summary>
+      <param name="startIndex">The start index.</param>
+      <param name="match">The match.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.EventedList`1.FindLastIndex(System.Int32,System.Predicate{`0})</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.FindLastIndex(System.Predicate{`0})">
+      <summary>Finds the last index.</summary>
+      <param name="match">The match.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.EventedList`1.FindLastIndex(System.Predicate{`0})</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.ForEach(System.Action{`0})">
+      <summary>Performs an action on each item in the collection.</summary>
+      <param name="action">The action.</param>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.GetEnumerator">
+      <summary>Returns an enumerator that iterates through the collection.</summary>
+      <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.</returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.GetRange(System.Int32,System.Int32)">
+      <summary>Gets the range of items and returns then in another list.</summary>
+      <param name="index">The starting index.</param>
+      <param name="count">The count of items to place in the list.</param>
+      <returns>An <see cref="T:Vanara.Collections.EventedList`1" /> with the requested items.</returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.IndexOf(`0)">
+      <summary>Determines the index of a specific item in the <see cref="T:System.Collections.Generic.IList`1" />.</summary>
+      <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.IList`1" />.</param>
+      <returns>The index of <paramref name="item" /> if found in the list; otherwise, -1.</returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.IndexOf(`0,System.Int32)">
+      <summary>Indexes the of.</summary>
+      <param name="item">The item.</param>
+      <param name="index">The index.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.EventedList`1.IndexOf(`0,System.Int32)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.IndexOf(`0,System.Int32,System.Int32)">
+      <summary>Indexes the of.</summary>
+      <param name="item">The item.</param>
+      <param name="index">The index.</param>
+      <param name="count">The count.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.EventedList`1.IndexOf(`0,System.Int32,System.Int32)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.Insert(System.Int32,`0)">
+      <summary>Inserts an item to the <see cref="T:System.Collections.Generic.IList`1" /> at the specified index.</summary>
+      <param name="index">The zero-based index at which <paramref name="item" /> should be inserted.</param>
+      <param name="item">The object to insert into the <see cref="T:System.Collections.Generic.IList`1" />.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="index" /> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1" />.</exception>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IList`1" /> is read-only.</exception>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{`0})">
+      <summary>Inserts the range.</summary>
+      <param name="index">The index.</param>
+      <param name="collection">The collection.</param>
+    </member>
+    <member name="P:Vanara.Collections.EventedList`1.Item(System.Int32)">
+      <summary>Gets or sets the element at the specified index.</summary>
+      <param name="index">The zero-based index of the element to get or set.</param>
+    </member>
+    <member name="E:Vanara.Collections.EventedList`1.ItemAdded">
+      <summary>Occurs when an item has been added.</summary>
+    </member>
+    <member name="E:Vanara.Collections.EventedList`1.ItemChanged">
+      <summary>Occurs when an item has changed.</summary>
+    </member>
+    <member name="E:Vanara.Collections.EventedList`1.ItemDeleted">
+      <summary>Occurs when an item has been deleted.</summary>
+    </member>
+    <member name="E:Vanara.Collections.EventedList`1.ItemPropertyChanged">
+      <summary>Occurs when an item's property value has been changed.</summary>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.LastIndexOf(`0)">
+      <summary>Lasts the index of.</summary>
+      <param name="item">The item.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.EventedList`1.LastIndexOf(`0)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.LastIndexOf(`0,System.Int32)">
+      <summary>Lasts the index of.</summary>
+      <param name="item">The item.</param>
+      <param name="index">The index.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.EventedList`1.LastIndexOf(`0,System.Int32)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.LastIndexOf(`0,System.Int32,System.Int32)">
+      <summary>Lasts the index of.</summary>
+      <param name="item">The item.</param>
+      <param name="index">The index.</param>
+      <param name="count">The count.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.EventedList`1.LastIndexOf(`0,System.Int32,System.Int32)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.OnItemAdded(System.Int32,`0)">
+      <summary>Called when [insert].</summary>
+      <param name="index">The index.</param>
+      <param name="value">The value.</param>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.OnItemChanged(System.Int32,`0,`0)">
+      <summary>Called when [set].</summary>
+      <param name="index">The index.</param>
+      <param name="oldValue">The old value.</param>
+      <param name="newValue">The new value.</param>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.OnItemDeleted(System.Int32,`0)">
+      <summary>Called when [remove].</summary>
+      <param name="index">The index.</param>
+      <param name="value">The value.</param>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.OnItemPropertyChanged(System.Object,System.ComponentModel.PropertyChangedEventArgs)">
+      <summary>Called when [item property changed].</summary>
+      <param name="sender">The sender.</param>
+      <param name="e">The <see cref="T:System.ComponentModel.PropertyChangedEventArgs" /> instance containing the event data.</param>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.OnReset">
+      <summary>Called when [clear].</summary>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.Remove(`0)">
+      <summary>Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
+      <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
+      <returns>
+            true if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false. This method also returns false if
+            <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" />.
+            </returns>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.</exception>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.RemoveAll(System.Predicate{`0})">
+      <summary>Removes all.</summary>
+      <param name="match">The match.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.EventedList`1.RemoveAll(System.Predicate{`0})</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.RemoveAt(System.Int32)">
+      <summary>Removes the <see cref="T:System.Collections.Generic.IList`1" /> item at the specified index.</summary>
+      <param name="index">The zero-based index of the item to remove.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="index" /> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1" />.</exception>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IList`1" /> is read-only.</exception>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.RemoveRange(System.Int32,System.Int32)">
+      <summary>Removes the range.</summary>
+      <param name="index">The index.</param>
+      <param name="count">The count.</param>
+    </member>
+    <member name="E:Vanara.Collections.EventedList`1.Reset">
+      <summary>Occurs when the list has been reset.</summary>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.Reverse">
+      <summary>Reverses this instance.</summary>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.Reverse(System.Int32,System.Int32)">
+      <summary>Reverses the specified index.</summary>
+      <param name="index">The index.</param>
+      <param name="count">The count.</param>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.Sort">
+      <summary>Sorts this instance.</summary>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.Sort(System.Collections.Generic.IComparer{`0})">
+      <summary>Sorts the specified comparer.</summary>
+      <param name="comparer">The comparer.</param>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.Sort(System.Int32,System.Int32,System.Collections.Generic.IComparer{`0})">
+      <summary>Sorts the specified index.</summary>
+      <param name="index">The index.</param>
+      <param name="count">The count.</param>
+      <param name="comparer">The comparer.</param>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.ToArray">
+      <summary>Toes the array.</summary>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.EventedList`1.ToArray</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.TrimExcess">
+      <summary>Trims the excess.</summary>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.TrueForAll(System.Predicate{`0})">
+      <summary>Trues for all.</summary>
+      <param name="match">The match.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.EventedList`1.TrueForAll(System.Predicate{`0})</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="T:Vanara.Collections.EventedList`1.Enumerator">
+      <summary>Enumerates over the <see cref="T:Vanara.Collections.EventedList`1" />.</summary>
+    </member>
+    <member name="P:Vanara.Collections.EventedList`1.Enumerator.Current">
+      <summary>Gets the current.</summary>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.Enumerator.Dispose">
+      <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.Enumerator.MoveNext">
+      <summary>Advances the enumerator to the next element of the collection.</summary>
+      <returns>true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.</returns>
+      <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created.</exception>
+    </member>
+    <member name="T:Vanara.Collections.EventedList`1.ListChangedEventArgs`1">
+      <summary>An <see cref="T:System.EventArgs" /> structure passed to events generated by an <see cref="T:Vanara.Collections.EventedList`1" />.</summary>
+      <typeparam name="T"></typeparam>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.ListChangedEventArgs`1.#ctor(System.ComponentModel.ListChangedType)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.Collections.EventedList`1.ListChangedEventArgs`1" /> class.</summary>
+      <param name="type">The type of change.</param>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.ListChangedEventArgs`1.#ctor(System.ComponentModel.ListChangedType,`1,System.Int32)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.Collections.EventedList`1.ListChangedEventArgs`1" /> class.</summary>
+      <param name="type">The type of change.</param>
+      <param name="item">The item that has changed.</param>
+      <param name="itemIndex">Index of the changed item.</param>
+    </member>
+    <member name="M:Vanara.Collections.EventedList`1.ListChangedEventArgs`1.#ctor(System.ComponentModel.ListChangedType,`1,System.Int32,`1)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.Collections.EventedList`1.ListChangedEventArgs`1" /> class.</summary>
+      <param name="type">The type of change.</param>
+      <param name="item">The item that has changed.</param>
+      <param name="itemIndex">Index of the changed item.</param>
+      <param name="oldItem">The old item when an item has changed.</param>
+    </member>
+    <member name="P:Vanara.Collections.EventedList`1.ListChangedEventArgs`1.Item">
+      <summary>Gets the item that has changed.</summary>
+    </member>
+    <member name="P:Vanara.Collections.EventedList`1.ListChangedEventArgs`1.ItemIndex">
+      <summary>Gets the index of the item.</summary>
+    </member>
+    <member name="P:Vanara.Collections.EventedList`1.ListChangedEventArgs`1.ListChangedType">
+      <summary>Gets the type of change for the list.</summary>
+    </member>
+    <member name="P:Vanara.Collections.EventedList`1.ListChangedEventArgs`1.OldItem">
+      <summary>Gets the item's previous value.</summary>
+    </member>
+    <member name="T:Vanara.Collections.SparseArray`1">
+      <summary>A sparse array based on a dictionary.</summary>
+      <typeparam name="T">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>typeparam</parameter>
+            <parameter>T</parameter>
+            <parameter>T:Vanara.Collections.SparseArray`1</parameter>
+          </include>
+        </markup>
+      </typeparam>
+    </member>
+    <member name="M:Vanara.Collections.SparseArray`1.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.Collections.SparseArray`1" /> class.</summary>
+    </member>
+    <member name="M:Vanara.Collections.SparseArray`1.Clear">
+      <summary>Removes all items from the <see cref="T:System.Collections.Generic.ICollection{T}" />.</summary>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection{T}" /> is read-only.</exception>
+    </member>
+    <member name="M:Vanara.Collections.SparseArray`1.Contains(`0)">
+      <summary>Determines whether the array contains the specified value.</summary>
+      <param name="item">The value.</param>
+      <returns>
+        <c>true</c> if the array contains the specified value; otherwise, <c>false</c>.</returns>
+    </member>
+    <member name="M:Vanara.Collections.SparseArray`1.CopyTo(`0[],System.Int32)">
+      <summary>
+            Copies the elements of the <see cref="T:System.Collections.Generic.ICollection{T}" /> to an <see cref="T:System.Array" />, starting at a particular <see cref="T:System.Array" /> index.
+            </summary>
+      <param name="array">
+            The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection{T}" />. The <see cref="T:System.Array" /> must have zero-based indexing.
+            </param>
+      <param name="arrayIndex">The zero-based index in <paramref name="array" /> at which copying begins.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="array" /> is null.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="arrayIndex" /> is less than 0.</exception>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="array" /> is multidimensional.-or- <paramref name="arrayIndex" /> is equal to or greater than the length of <paramref name="array" />.-or-The number of elements in the source <see cref="T:System.Collections.Generic.ICollection{T}" /> is greater than the available space
+            from <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.-or-Type <c>T</c> cannot be cast automatically to the type
+            of the destination <paramref name="array" />.
+            </exception>
+    </member>
+    <member name="P:Vanara.Collections.SparseArray`1.Count">
+      <summary>Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection{T}" />.</summary>
+      <returns>The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection{T}" />.</returns>
+    </member>
+    <member name="M:Vanara.Collections.SparseArray`1.GetEnumerator">
+      <summary>Returns an enumerator that iterates through the collection.</summary>
+      <returns>A <see cref="T:System.Collections.Generic.IEnumerator{T}" /> that can be used to iterate through the collection.</returns>
+    </member>
+    <member name="F:Vanara.Collections.SparseArray`1.hashtable">
+      <summary>Base hash table</summary>
+    </member>
+    <member name="M:Vanara.Collections.SparseArray`1.IndexOf(`0)">
+      <summary>Gets the index of the specified item, or returns -1 if item is not in the array.</summary>
+      <param name="item">The item.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.Collections.SparseArray`1.IndexOf(`0)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.Collections.SparseArray`1.Insert(System.Int32,`0)">
+      <summary>Inserts an item to the <see cref="T:System.Collections.Generic.IList{T}" /> at the specified index.</summary>
+      <param name="index">The zero-based index at which <paramref name="item" /> should be inserted.</param>
+      <param name="item">The object to insert into the <see cref="T:System.Collections.Generic.IList{T}" />.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="index" /> is not a valid index in the <see cref="T:System.Collections.Generic.IList{T}" />.</exception>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IList{T}" /> is read-only.</exception>
+    </member>
+    <member name="P:Vanara.Collections.SparseArray`1.IsReadOnly">
+      <summary>Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection{T}" /> is read-only.</summary>
+      <returns>true if the <see cref="T:System.Collections.Generic.ICollection{T}" /> is read-only; otherwise, false.</returns>
+    </member>
+    <member name="P:Vanara.Collections.SparseArray`1.Item(System.Int32)">
+      <summary>Gets or sets the element at the specified index.</summary>
+      <param name="index">The index of the element.</param>
+    </member>
+    <member name="M:Vanara.Collections.SparseArray`1.Remove(`0)">
+      <summary>Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection{T}" />.</summary>
+      <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection{T}" />.</param>
+      <returns>
+            true if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection{T}" />; otherwise, false. This
+            method also returns false if <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection{T}" />.
+            </returns>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection{T}" /> is read-only.</exception>
+    </member>
+    <member name="M:Vanara.Collections.SparseArray`1.RemoveAt(System.Int32)">
+      <summary>Removes the <see cref="T:System.Collections.Generic.IList{T}" /> item at the specified index.</summary>
+      <param name="index">The zero-based index of the item to remove.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="index" /> is not a valid index in the <see cref="T:System.Collections.Generic.IList{T}" />.</exception>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IList{T}" /> is read-only.</exception>
+    </member>
+    <member name="M:Vanara.Collections.SparseArray`1.ToArray">
+      <summary>Collapses array into new, condensed array. Does not maintain indexes.</summary>
+      <returns>An array of <typeparamref name="T" /></returns>
+    </member>
+    <member name="T:Vanara.Extensions.EnumExtensions">
+      <summary>Extensions for enumerated types.</summary>
+    </member>
+    <member name="M:Vanara.Extensions.EnumExtensions.CheckHasValue``1(``0,System.String)">
+      <summary>Throws an exception if a flag value does not exist in a specified enumeration.</summary>
+      <param name="value">The value to check.</param>
+      <param name="argName">Name of the argument to display in the exception. "value" is used if no value or <c>null</c> is supplied.</param>
+      <typeparam name="T">The enumerated type.</typeparam>
+      <exception cref="T:System.ComponentModel.InvalidEnumArgumentException"></exception>
+    </member>
+    <member name="M:Vanara.Extensions.EnumExtensions.ClearFlags``1(``0,``0)">
+      <summary>Clears the specified flags from an enumerated value and returns the new value.</summary>
+      <param name="flags">The enumerated value.</param>
+      <param name="flag">The flags to clear or unset.</param>
+      <typeparam name="T">The enumerated type.</typeparam>
+      <returns>The resulting enumerated value after the <paramref name="flag" /> has been unset.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.EnumExtensions.CombineFlags``1(System.Collections.Generic.IEnumerable{``0})">
+      <summary>Combines enumerated list of values into a single enumerated value.</summary>
+      <param name="flags">The flags to combine.</param>
+      <typeparam name="T">The enumerated type.</typeparam>
+      <returns>A single enumerated value.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.EnumExtensions.GetDescription``1(``0)">
+      <summary>Gets the description supplied by a <see cref="T:System.ComponentModel.DescriptionAttribute" /> if one is set.</summary>
+      <param name="value">The enumerated value.</param>
+      <typeparam name="T">The enumerated type.</typeparam>
+      <returns>The description, or <c>null</c> if one is not set.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.EnumExtensions.GetFlags``1(``0)">
+      <summary>Gets the flags of an enumerated value as an enumerated list.</summary>
+      <param name="value">The enumerated value.</param>
+      <typeparam name="T">The enumerated type.</typeparam>
+      <returns>An enumeration of individual flags that compose the <paramref name="value" />.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.EnumExtensions.IsFlagSet``1(``0,``0)">
+      <summary>Determines whether the enumerated flag value has the specified flag set.</summary>
+      <param name="flags">The enumerated flag value.</param>
+      <param name="flag">The flag value to check.</param>
+      <typeparam name="T">The enumerated type.</typeparam>
+      <returns>
+        <c>true</c> if is flag set; otherwise, <c>false</c>.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.EnumExtensions.IsValid``1(``0)">
+      <summary>Returns an indication if the enumerated value is either defined or can be defined by a set of known flags.</summary>
+      <param name="value">The enumerated value.</param>
+      <typeparam name="T">The enumerated type.</typeparam>
+      <returns>
+        <c>true</c> if the specified value is valid; otherwise, <c>false</c>.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.EnumExtensions.SetFlags``1(``0,``0,System.Boolean)">
+      <summary>Set or unsets flags in an enumerated value and returns the new value.</summary>
+      <param name="flags">The enumerated value.</param>
+      <param name="flag">The flag to set or unset.</param>
+      <param name="set">if set to <c>true</c> sets the flag; otherwise the flag is unset.</param>
+      <typeparam name="T">The enumerated type.</typeparam>
+      <returns>The resulting enumerated value after the <paramref name="flag" /> has been set or unset.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.EnumExtensions.SetFlags``1(``0@,``0,System.Boolean)">
+      <summary>Set or unsets flags in a referenced enumerated value.</summary>
+      <param name="flags">A reference to an enumerated value.</param>
+      <param name="flag">The flag to set or unset.</param>
+      <param name="set">if set to <c>true</c> sets the flag; otherwise the flag is unset.</param>
+      <typeparam name="T">The enumerated type.</typeparam>
+    </member>
+    <member name="T:Vanara.Extensions.EnumFlagIndexer`1">
+      <summary>Structure to use in place of a enumerated type with the <see cref="T:System.FlagsAttribute" /> set. Allows for indexer access to flags and simplifies boolean logic.</summary>
+      <typeparam name="TEnum">Must be an enumerated type or constructor will fail.</typeparam>
+    </member>
+    <member name="M:Vanara.Extensions.EnumFlagIndexer`1.#ctor(`0)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.Extensions.EnumFlagIndexer`1" /> struct.</summary>
+      <param name="initialValue">The initial value. Defaults to <c>default(E)</c>.</param>
+    </member>
+    <member name="M:Vanara.Extensions.EnumFlagIndexer`1.Clear">
+      <summary>Clears and sets to <c>default(E)</c>.</summary>
+    </member>
+    <member name="M:Vanara.Extensions.EnumFlagIndexer`1.Equals(System.Object)">
+      <summary>Determines whether the specified <see cref="T:System.Object" />, is equal to this instance.</summary>
+      <param name="obj">The <see cref="T:System.Object" /> to compare with this instance.</param>
+      <returns>
+        <c>true</c> if the specified <see cref="T:System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.EnumFlagIndexer`1.Equals(`0)">
+      <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+      <param name="other">An object to compare with this object.</param>
+      <returns>true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.EnumFlagIndexer`1.Equals(Vanara.Extensions.EnumFlagIndexer{`0})">
+      <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+      <param name="other">An object to compare with this object.</param>
+      <returns>true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.EnumFlagIndexer`1.GetEnumerator">
+      <summary>Returns an enumerator that iterates through the collection.</summary>
+      <returns>A <see cref="T:System.Collections.Generic.IEnumerator{TEnum}" /> that can be used to iterate through the collection.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.EnumFlagIndexer`1.GetHashCode">
+      <summary>Returns a hash code for this instance.</summary>
+      <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+    </member>
+    <member name="P:Vanara.Extensions.EnumFlagIndexer`1.Item(`0)">
+      <summary>Gets or sets the specified flag.</summary>
+      <param name="flag">A value in the enumerated type to check.</param>
+      <returns>
+        <c>true</c> if the flag is set; <c>false</c> otherwise.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.EnumFlagIndexer`1.op_BitwiseAnd(Vanara.Extensions.EnumFlagIndexer{`0},`0)">
+      <summary>Implements the operator &amp;.</summary>
+      <param name="a">An instance of <see cref="T:Vanara.Extensions.EnumFlagIndexer`1" />.</param>
+      <param name="b">An instance of the <typeparamref name="TEnum" /> enumerated type.</param>
+      <returns>The result of the operator.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.EnumFlagIndexer`1.op_BitwiseOr(Vanara.Extensions.EnumFlagIndexer{`0},`0)">
+      <summary>Implements the operator |.</summary>
+      <param name="a">An instance of <see cref="T:Vanara.Extensions.EnumFlagIndexer`1" />.</param>
+      <param name="b">An instance of the <typeparamref name="TEnum" /> enumerated type.</param>
+      <returns>The result of the operator.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.EnumFlagIndexer`1.op_Equality(Vanara.Extensions.EnumFlagIndexer{`0},`0)">
+      <summary>Implements the operator ==.</summary>
+      <param name="a">An instance of <see cref="T:Vanara.Extensions.EnumFlagIndexer`1" />.</param>
+      <param name="b">An instance of the <typeparamref name="TEnum" /> enumerated type.</param>
+      <returns>The result of the operator.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.EnumFlagIndexer`1.op_Implicit(`0)~Vanara.Extensions.EnumFlagIndexer{`0}">
+      <summary>Implicitly converts a value of E to an instance of <see cref="T:Vanara.Extensions.EnumFlagIndexer`1" />.</summary>
+      <param name="e">The e.</param>
+      <returns>The result of the operator.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.EnumFlagIndexer`1.op_Implicit(Vanara.Extensions.EnumFlagIndexer{`0})~`0">
+      <summary>Implicitly converts an instance of <see cref="T:Vanara.Extensions.EnumFlagIndexer`1" /> to the value of enumerated type E.</summary>
+      <param name="f">The f.</param>
+      <returns>The result of the operator.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.EnumFlagIndexer`1.op_Inequality(Vanara.Extensions.EnumFlagIndexer{`0},`0)">
+      <summary>Implements the operator !=.</summary>
+      <param name="a">An instance of <see cref="T:Vanara.Extensions.EnumFlagIndexer`1" />.</param>
+      <param name="b">An instance of the <typeparamref name="TEnum" /> enumerated type.</param>
+      <returns>The result of the operator.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.EnumFlagIndexer`1.ToString">
+      <summary>Returns a <see cref="T:System.String" /> that represents this instance.</summary>
+      <returns>A <see cref="T:System.String" /> that represents this instance.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.EnumFlagIndexer`1.Union(System.Collections.Generic.IEnumerable{`0})">
+      <summary>Unions the specified flags.</summary>
+      <param name="enumValues">The flags.</param>
+    </member>
+    <member name="M:Vanara.Extensions.EnumFlagIndexer`1.Union(`0)">
+      <summary>Unions the specified flags.</summary>
+      <param name="enumVal">The flags.</param>
+    </member>
+    <member name="T:Vanara.Extensions.FileTimeExtensions">
+      <summary>Extensions for <see cref="T:System.Runtime.InteropServices.ComTypes.FILETIME" />.</summary>
+    </member>
+    <member name="M:Vanara.Extensions.FileTimeExtensions.CompareTo(System.Runtime.InteropServices.ComTypes.FILETIME,System.Runtime.InteropServices.ComTypes.FILETIME)">
+      <summary>Compares two instances of <see cref="T:System.Runtime.InteropServices.ComTypes.FILETIME" /> and returns an integer that indicates whether the first instance is earlier than, the same as, or later than the second instance.</summary>
+      <param name="ft">The first object to compare. </param>
+      <param name="other">The second object to compare. </param>
+      <returns>A signed number indicating the relative values of t1 and t2.
+             <list type="table"><listheader><term>Value Type</term><term>Condition</term></listheader><item><term>Less than zero</term><term>t1 is earlier than t2.</term></item><item><term>Zero</term><term>t1 is the same as t2.</term></item><item><term>Greater than zero</term><term>t1 is later than t2.</term></item></list></returns>
+    </member>
+    <member name="M:Vanara.Extensions.FileTimeExtensions.Equals(System.Runtime.InteropServices.ComTypes.FILETIME,System.Runtime.InteropServices.ComTypes.FILETIME)">
+      <summary>Compares two <see cref="T:System.Runtime.InteropServices.ComTypes.FILETIME" /> structures for equality.</summary>
+      <param name="ft1">The first <see cref="T:System.Runtime.InteropServices.ComTypes.FILETIME" /> value.</param>
+      <param name="ft2">The second <see cref="T:System.Runtime.InteropServices.ComTypes.FILETIME" /> value.</param>
+      <returns>true if the current object is equal to the <paramref name="ft2" /> parameter; otherwise, false.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.FileTimeExtensions.MakeFILETIME(System.UInt64)">
+      <summary>Creates a <see cref="T:System.Runtime.InteropServices.ComTypes.FILETIME" /> from a 64-bit value.</summary>
+      <param name="ul">The value to be converted.</param>
+      <returns>The return value is a <see cref="T:System.Runtime.InteropServices.ComTypes.FILETIME" /> created from the supplied 64-bit value.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.FileTimeExtensions.ToDateTime(System.Runtime.InteropServices.ComTypes.FILETIME,System.DateTimeKind)">
+      <summary>Converts a <see cref="T:System.Runtime.InteropServices.ComTypes.FILETIME" /> structure to a <see cref="T:System.DateTime" /> structure.</summary>
+      <param name="ft">The <see cref="T:System.Runtime.InteropServices.ComTypes.FILETIME" /> value to convert.</param>
+      <param name="kind">The <see cref="T:System.DateTimeKind" /> value to use to determine local or UTC time.</param>
+      <returns>The resulting <see cref="T:System.DateTime" /> structure.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.FileTimeExtensions.ToFileTimeStruct(System.DateTime)">
+      <summary>Converts a <see cref="T:System.DateTime" /> structure to a <see cref="T:System.Runtime.InteropServices.ComTypes.FILETIME" /> structure using the local time.</summary>
+      <param name="dt">The <see cref="T:System.DateTime" /> value to convert.</param>
+      <returns>The resulting <see cref="T:System.Runtime.InteropServices.ComTypes.FILETIME" /> structure as the local time.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.FileTimeExtensions.ToString(System.Runtime.InteropServices.ComTypes.FILETIME,System.String,System.IFormatProvider)">
+      <summary>Returns a <see cref="T:System.String" /> that represents the <see cref="T:System.Runtime.InteropServices.ComTypes.FILETIME" /> instance.</summary>
+      <param name="ft">The <see cref="T:System.Runtime.InteropServices.ComTypes.FILETIME" /> to convert.</param>
+      <param name="format">A standard or custom date and time format string. See notes for <a href="https://msdn.microsoft.com/en-us/library/8tfzyc64(v=vs.110).aspx">DateTime.ToString()</a>.</param>
+      <param name="provider">An object that supplies culture-specific formatting information.</param>
+      <returns>
+            A string representation of value of the current <see cref="T:System.Runtime.InteropServices.ComTypes.FILETIME" /> object as specified by <paramref name="format" /> and <paramref name="provider" />.
+            </returns>
+    </member>
+    <member name="M:Vanara.Extensions.FileTimeExtensions.ToUInt64(System.Runtime.InteropServices.ComTypes.FILETIME)">
+      <summary>Converts a <see cref="T:System.Runtime.InteropServices.ComTypes.FILETIME" /> structure to its 64-bit representation.</summary>
+      <param name="ft">The value to be converted.</param>
+      <returns>The return value is a 64-bit value that represented the <see cref="T:System.Runtime.InteropServices.ComTypes.FILETIME" />.</returns>
+    </member>
+    <member name="T:Vanara.Extensions.InteropExtensions">
+      <summary>Extension methods for System.Runtime.InteropServices.</summary>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.GetNulledPtrArrayLength(System.IntPtr)">
+      <summary>Gets the length of a null terminated array of pointers. <note type="warning">This is a very dangerous function and can result in memory access errors if the <paramref name="lptr" /> does not point to a null-terminated array of pointers.</note></summary>
+      <param name="lptr">The <see cref="T:System.IntPtr" /> pointing to the native array.</param>
+      <returns>The number of non-null pointers in the array. If <paramref name="lptr" /> is equal to IntPtr.Zero, this result is 0.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.IsBlittable(System.Type)">
+      <summary>Determines whether this type is formatted or blittable.</summary>
+      <param name="T">The type to check.</param>
+      <returns>
+        <c>true</c> if the specified type is blittable; otherwise, <c>false</c>.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.IsNullable(System.Type)">
+      <summary>Determines whether this type is nullable (derived from <see cref="T:System.Nullable`1" />).</summary>
+      <param name="type">The type to check.</param>
+      <returns>
+        <c>true</c> if the specified type is nullable; otherwise, <c>false</c>.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.MarshalToPtr(System.Collections.Generic.IEnumerable{System.String},Vanara.InteropServices.StringListPackMethod,System.Func{System.Int32,System.IntPtr},System.Int32@,System.Runtime.InteropServices.CharSet,System.Int32)">
+      <summary>Marshals data from a managed list of strings to an unmanaged block of memory allocated by the <paramref name="memAlloc" /> method.</summary>
+      <param name="values">The enumerated list of strings to marshal.</param>
+      <param name="packing">The packing type for the strings.</param>
+      <param name="memAlloc">
+            The function that allocates the memory for the block of strings (typically <see cref="M:System.Runtime.InteropServices.Marshal.AllocCoTaskMem(System.Int32)" /> or <see cref="M:System.Runtime.InteropServices.Marshal.AllocHGlobal(System.Int32)" />.
+            </param>
+      <param name="bytesAllocated">The bytes allocated by the <paramref name="memAlloc" /> method.</param>
+      <param name="charSet">The character set to use for the strings.</param>
+      <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
+      <returns>
+            Pointer to the allocated native (unmanaged) array of strings stored using the <paramref name="packing" /> model and the character set defined by <paramref name="charSet" />.
+            </returns>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.MarshalToPtr``1(System.Collections.Generic.IEnumerable{``0},System.Func{System.Int32,System.IntPtr},System.Int32@,System.Int32)">
+      <summary>Marshals data from a managed list of specified type to an unmanaged block of memory allocated by the <paramref name="memAlloc" /> method.</summary>
+      <param name="items">The enumerated list of items to marshal.</param>
+      <param name="memAlloc">The function that allocates the memory for the block of items (typically <see cref="M:System.Runtime.InteropServices.Marshal.AllocCoTaskMem(System.Int32)" /> or <see cref="M:System.Runtime.InteropServices.Marshal.AllocHGlobal(System.Int32)" />.</param>
+      <param name="bytesAllocated">The bytes allocated by the <paramref name="memAlloc" /> method.</param>
+      <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
+      <typeparam name="T">
+            A type of the enumerated managed object that holds the data to be marshaled. The object must be a structure or an instance of a formatted class.
+            </typeparam>
+      <returns>Pointer to the allocated native (unmanaged) array of items stored.</returns>
+      <exception cref="T:System.ArgumentException">Structure layout is not sequential or explicit.</exception>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.MarshalToPtr``1(System.Collections.Generic.IEnumerable{``0},System.IntPtr,System.Int32)">
+      <summary>Marshals data from a managed list of specified type to a pre-allocated unmanaged block of memory.</summary>
+      <param name="items">The enumerated list of items to marshal.</param>
+      <param name="ptr">
+            A pointer to a pre-allocated block of memory. The allocated memory must be sufficient to hold the size of <typeparamref name="T" /> times the number
+            of items in the enumeration plus the number of bytes specified by <paramref name="prefixBytes" />.
+            </param>
+      <param name="prefixBytes">The number of bytes to skip before writing the first element of <paramref name="items" />.</param>
+      <typeparam name="T">
+            A type of the enumerated managed object that holds the data to be marshaled. The object must be a structure or an instance of a formatted class.
+            </typeparam>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.Offset(System.IntPtr,System.Int64)">
+      <summary>Adds an offset to the value of a pointer.</summary>
+      <param name="pointer">The pointer to add the offset to.</param>
+      <param name="offset">The offset to add.</param>
+      <returns>A new pointer that reflects the addition of <paramref name="offset" /> to <paramref name="pointer" />.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.StructureToPtr``1(``0,System.Func{System.Int32,System.IntPtr},System.Int32@)">
+      <summary>Marshals data from a managed object to an unmanaged block of memory that is allocated using <paramref name="memAlloc" />.</summary>
+      <param name="value">A managed object that holds the data to be marshaled. The object must be a structure or an instance of a formatted class.</param>
+      <param name="memAlloc">The function that allocates the memory for the structure (typically <see cref="M:System.Runtime.InteropServices.Marshal.AllocCoTaskMem(System.Int32)" /> or <see cref="M:System.Runtime.InteropServices.Marshal.AllocHGlobal(System.Int32)" />.</param>
+      <param name="bytesAllocated">The bytes allocated by the <paramref name="memAlloc" /> method.</param>
+      <typeparam name="T">The type of the managed object.</typeparam>
+      <returns>A pointer to the memory allocated by <paramref name="memAlloc" />.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.ToArray``1(System.IntPtr,System.Int32,System.Int32)">
+      <summary>
+            Converts an <see cref="T:System.IntPtr" /> that points to a C-style array into a CLI array.
+            </summary>
+      <param name="ptr">The <see cref="T:System.IntPtr" /> pointing to the native array.</param>
+      <param name="count">The number of items in the native array.</param>
+      <param name="prefixBytes">Bytes to skip before reading the array.</param>
+      <typeparam name="T">Type of native structure used by the C-style array.</typeparam>
+      <returns>An array of type <typeparamref name="T" /> containing the elements of the native array.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.ToIEnum``1(System.IntPtr,System.Int32,System.Int32)">
+      <summary>
+            Converts an <see cref="T:System.IntPtr" /> that points to a C-style array into an <see cref="T:System.Collections.Generic.IEnumerable`1" />.
+            </summary>
+      <param name="ptr">The <see cref="T:System.IntPtr" /> pointing to the native array.</param>
+      <param name="count">The number of items in the native array.</param>
+      <param name="prefixBytes">Bytes to skip before reading the array.</param>
+      <typeparam name="T">Type of native structure used by the C-style array.</typeparam>
+      <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1" /> exposing the elements of the native array.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.ToInsecureString(System.Security.SecureString)">
+      <summary>Converts a <see cref="T:System.Security.SecureString" /> to a string.</summary>
+      <param name="s">The <see cref="T:System.Security.SecureString" /> value.</param>
+      <returns>The extracted string.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.ToIntPtr(System.UIntPtr)">
+      <summary>Converts a <see cref="T:System.UIntPtr" /> to a <see cref="T:System.IntPtr" />.</summary>
+      <param name="p">The <see cref="T:System.UIntPtr" />.</param>
+      <returns>An equivalent <see cref="T:System.IntPtr" />.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.ToNullableStructure``1(System.IntPtr)">
+      <summary>
+            Converts an <see cref="T:System.IntPtr" /> to a structure. If pointer has no value, <c>null</c> is returned.
+            </summary>
+      <param name="ptr">The <see cref="T:System.IntPtr" /> that points to allocated memory holding a structure or <see cref="F:System.IntPtr.Zero" />.</param>
+      <typeparam name="T">Type of the structure.</typeparam>
+      <returns>The converted structure or <c>null</c>.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.ToSecureString(System.IntPtr)">
+      <summary>Converts a pointer to an unmanaged Unicode string to a <see cref="T:System.Security.SecureString" />.</summary>
+      <param name="p">A pointer to an unmanaged Unicode string.</param>
+      <returns>A <see cref="T:System.Security.SecureString" /> with the contents of the in memory string.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.ToSecureString(System.IntPtr,System.Int32)">
+      <summary>Converts a pointer to an unmanaged Unicode string of a specified length to a <see cref="T:System.Security.SecureString" />.</summary>
+      <param name="p">A pointer to an unmanaged Unicode string.</param>
+      <param name="length">The number of Unicode characters in the unmanaged string, excluding any terminating null values.</param>
+      <returns>A <see cref="T:System.Security.SecureString" /> with the contents of the in memory string.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.ToSecureString(System.String)">
+      <summary>Converts a string to a <see cref="T:System.Security.SecureString" />.</summary>
+      <param name="s">A string.</param>
+      <returns>A <see cref="T:System.Security.SecureString" /> with the contents of the string.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.ToStringEnum(System.IntPtr,System.Int32,System.Runtime.InteropServices.CharSet,System.Int32)">
+      <summary>Returns an enumeration of strings from memory where each string is pointed to by a preceding list of pointers of length <paramref name="count" />.</summary>
+      <param name="ptr">The <see cref="T:System.IntPtr" /> pointing to the native array.</param>
+      <param name="count">The count of expected strings.</param>
+      <param name="charSet">The character set of the strings.</param>
+      <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
+      <returns>Enumeration of strings.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.ToStringEnum(System.IntPtr,System.Runtime.InteropServices.CharSet,System.Int32)">
+      <summary>
+            Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character and is terminated by
+            two '\0' characters.
+            </summary>
+      <param name="lptr">The <see cref="T:System.IntPtr" /> pointing to the native array.</param>
+      <param name="charSet">The character set of the strings.</param>
+      <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
+      <returns>An enumerated list of strings.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.ToStructure``1(System.IntPtr)">
+      <summary>Marshals data from an unmanaged block of memory to a newly allocated managed object of the type specified by a generic type parameter.</summary>
+      <param name="ptr">A pointer to an unmanaged block of memory.</param>
+      <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
+      <returns>A managed object that contains the data that the <paramref name="ptr" /> parameter points to.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.ToStructure``1(System.IntPtr,``0)">
+      <summary>Marshals data from an unmanaged block of memory to a managed object.</summary>
+      <param name="ptr">A pointer to an unmanaged block of memory.</param>
+      <param name="instance">The object to which the data is to be copied. This must be an instance of a formatted class.</param>
+      <typeparam name="T">The type of the object to which the data is to be copied. This must be a formatted class.</typeparam>
+      <returns>A managed object that contains the data that the <paramref name="ptr" /> parameter points to.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.InteropExtensions.ToUIntPtr(System.IntPtr)">
+      <summary>Converts a <see cref="T:System.IntPtr" /> to a <see cref="T:System.UIntPtr" />.</summary>
+      <param name="p">The <see cref="T:System.IntPtr" />.</param>
+      <returns>An equivalent <see cref="T:System.UIntPtr" />.</returns>
+    </member>
+    <member name="T:Vanara.Extensions.IOExtensions">
+      <summary>Extensions for classes in System.IO.</summary>
+    </member>
+    <member name="M:Vanara.Extensions.IOExtensions.Read``1(System.IO.BinaryReader)">
+      <summary>Reads the specified structure value of type <typeparamref name="T" /> from a binary stream.</summary>
+      <param name="reader">The <see cref="T:System.IO.BinaryReader" /> instance to read from.</param>
+      <typeparam name="T">The type of the structure value to read.</typeparam>
+      <returns>The value to read from the stream.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.IOExtensions.Write``1(System.IO.BinaryWriter,``0)">
+      <summary>Writes the specified structure value of type <typeparamref name="T" /> into a binary stream.</summary>
+      <param name="writer">The <see cref="T:System.IO.BinaryWriter" /> instance to write into.</param>
+      <param name="value">The value to write.</param>
+      <typeparam name="T">The type of the structure value to write.</typeparam>
+    </member>
+    <member name="T:Vanara.Extensions.ReflectionExtensions">
+      <summary>Extensions related to <c>System.Reflection</c></summary>
+    </member>
+    <member name="M:Vanara.Extensions.ReflectionExtensions.GetPropertyValue``1(System.Object,System.String,``0)">
+      <summary>Gets a named property value from an object.</summary>
+      <param name="obj">The object from which to retrieve the property.</param>
+      <param name="propertyName">Name of the property.</param>
+      <param name="defaultValue">The default value to return in the instance that the property is not found.</param>
+      <typeparam name="T">The expected type of the property to be returned.</typeparam>
+      <returns>The property value, if found, or the <paramref name="defaultValue" /> if not.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.ReflectionExtensions.InvokeMethod(System.Object,System.String,System.Object[])">
+      <summary>Invokes a named method on an object with parameters and no return value.</summary>
+      <param name="obj">The object on which to invoke the method.</param>
+      <param name="methodName">Name of the method.</param>
+      <param name="args">The arguments to provide to the method invocation.</param>
+    </member>
+    <member name="M:Vanara.Extensions.ReflectionExtensions.InvokeMethod``1(System.Object,System.String,System.Object[])">
+      <summary>Invokes a named method on an object with parameters and no return value.</summary>
+      <param name="obj">The object on which to invoke the method.</param>
+      <param name="methodName">Name of the method.</param>
+      <param name="args">The arguments to provide to the method invocation.</param>
+      <typeparam name="T">The expected type of the method's return value.</typeparam>
+      <returns>The value returned from the method.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.ReflectionExtensions.InvokeMethod(System.Object,System.String,System.Type[],System.Object[])">
+      <summary>Invokes a named method on an object with parameters and no return value.</summary>
+      <param name="obj">The object on which to invoke the method.</param>
+      <param name="methodName">Name of the method.</param>
+      <param name="argTypes">The argument types.</param>
+      <param name="args">The arguments to provide to the method invocation.</param>
+    </member>
+    <member name="M:Vanara.Extensions.ReflectionExtensions.InvokeMethod``1(System.Object,System.String,System.Type[],System.Object[])">
+      <summary>Invokes a named method on an object with parameters and no return value.</summary>
+      <param name="obj">The object on which to invoke the method.</param>
+      <param name="methodName">Name of the method.</param>
+      <param name="argTypes">The argument types.</param>
+      <param name="args">The arguments to provide to the method invocation.</param>
+      <typeparam name="T">The expected type of the method's return value.</typeparam>
+      <returns>The value returned from the method.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.ReflectionExtensions.InvokeMethod``1(System.Type,System.Object[],System.String,System.Object[])">
+      <summary>Invokes a named method on a created instance of a type with parameters.</summary>
+      <param name="type">The type to be instantiated and then used to invoke the method.</param>
+      <param name="instArgs">The arguments to supply to the constructor.</param>
+      <param name="methodName">Name of the method.</param>
+      <param name="args">The arguments to provide to the method invocation.</param>
+      <typeparam name="T">The expected type of the method's return value.</typeparam>
+      <returns>The value returned from the method.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.ReflectionExtensions.InvokeMethod``1(System.Type,System.String,System.Object[])">
+      <summary>Invokes a named method on a created instance of a type with parameters.</summary>
+      <param name="type">The type to be instantiated and then used to invoke the method. This method assumes the type has a default public constructor.</param>
+      <param name="methodName">Name of the method.</param>
+      <param name="args">The arguments to provide to the method invocation.</param>
+      <typeparam name="T">The expected type of the method's return value.</typeparam>
+      <returns>The value returned from the method.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.ReflectionExtensions.InvokeNotOverride(System.Reflection.MethodInfo,System.Object,System.Object[])">
+      <summary>Invokes a method from a derived base class.</summary>
+      <param name="methodInfo">The <see cref="T:System.Reflection.MethodInfo" /> instance from the derived class for the method to invoke.</param>
+      <param name="targetObject">The target object.</param>
+      <param name="arguments">The arguments.</param>
+      <returns>The value returned from the method.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.ReflectionExtensions.LoadType(System.String,System.String)">
+      <summary>Loads a type from a named assembly.</summary>
+      <param name="typeName">Name of the type.</param>
+      <param name="asmRef">The name or path of the file that contains the manifest of the assembly.</param>
+      <returns>The <see cref="T:System.Type" /> reference, or <c>null</c> if type or assembly not found.</returns>
+    </member>
+    <member name="T:Vanara.Extensions.StringHelper">
+      <summary>A safe class that represents an object that is pinned in memory.</summary>
+    </member>
+    <member name="M:Vanara.Extensions.StringHelper.AllocChars(System.UInt32,System.Runtime.InteropServices.CharSet)">
+      <summary>Allocates a block of memory allocated from the unmanaged COM task allocator sufficient to hold the number of specified characters.</summary>
+      <param name="count">The number of characters, inclusive of the null terminator.</param>
+      <param name="charSet">The character set.</param>
+      <returns>The address of the block of memory allocated.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.StringHelper.AllocSecureString(System.Security.SecureString,System.Runtime.InteropServices.CharSet)">
+      <summary>Copies the contents of a managed <see cref="T:System.Security.SecureString" /> object to a block of memory allocated from the unmanaged COM task allocator.</summary>
+      <param name="s">The managed object to copy.</param>
+      <param name="charSet">The character set.</param>
+      <returns>The address, in unmanaged memory, where the <paramref name="s" /> parameter was copied to, or 0 if a null object was supplied.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.StringHelper.AllocString(System.String,System.Runtime.InteropServices.CharSet)">
+      <summary>Copies the contents of a managed String to a block of memory allocated from the unmanaged COM task allocator.</summary>
+      <param name="s">A managed string to be copied.</param>
+      <param name="charSet">The character set.</param>
+      <returns>The allocated memory block, or 0 if <paramref name="s" /> is null.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.StringHelper.FreeString(System.IntPtr,System.Runtime.InteropServices.CharSet)">
+      <summary>Frees a block of memory allocated by the unmanaged COM task memory allocator for a string.</summary>
+      <param name="ptr">The address of the memory to be freed.</param>
+      <param name="charSet">The character set of the string.</param>
+    </member>
+    <member name="M:Vanara.Extensions.StringHelper.GetByteCount(System.String,System.Boolean,System.Runtime.InteropServices.CharSet)">
+      <summary>Gets the number of bytes required to store the string.</summary>
+      <param name="value">The string value.</param>
+      <param name="nullTerm">if set to <c>true</c> include a null terminator at the end of the string in the count if <paramref name="value" /> does not equal <c>null</c>.</param>
+      <param name="charSet">The character set.</param>
+      <returns>The number of bytes required to store <paramref name="value" />. Returns 0 if <paramref name="value" /> is <c>null</c>.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.StringHelper.GetBytes(System.String,System.Boolean,System.Runtime.InteropServices.CharSet)">
+      <summary>Gets the encoded bytes for a string including an optional null terminator.</summary>
+      <param name="value">The string value to convert.</param>
+      <param name="nullTerm">if set to <c>true</c> include a null terminator at the end of the string in the resulting byte array.</param>
+      <param name="charSet">The character set.</param>
+      <returns>A byte array including <paramref name="value" /> encoded as per <paramref name="charSet" /> and the optional null terminator.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.StringHelper.GetCharSize(System.Runtime.InteropServices.CharSet)">
+      <summary>Gets the size of a character defined by the supplied <see cref="T:System.Runtime.InteropServices.CharSet" />.</summary>
+      <param name="charSet">The character set to size.</param>
+      <returns>The size of a standard character, in bytes, from <paramref name="charSet" />.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.StringHelper.GetString(System.IntPtr,System.Runtime.InteropServices.CharSet)">
+      <summary>Allocates a managed String and copies all characters up to the first null character from a string stored in unmanaged memory into it.</summary>
+      <param name="ptr">The address of the first character.</param>
+      <param name="charSet">The character set of the string.</param>
+      <returns>A managed string that holds a copy of the unmanaged string if the value of the <paramref name="ptr" /> parameter is not null; otherwise, this method returns null.</returns>
+    </member>
+    <member name="M:Vanara.Extensions.StringHelper.RefreshString(System.IntPtr@,System.UInt32@,System.String,System.Runtime.InteropServices.CharSet)">
+      <summary>Refreshes the memory block from the unmanaged COM task allocator and copies the contents of a new managed String.</summary>
+      <param name="ptr">The address of the first character.</param>
+      <param name="charLen">Receives the new character length of the allocated memory block.</param>
+      <param name="s">A managed string to be copied.</param>
+      <param name="charSet">The character set of the string.</param>
+      <returns>
+        <c>true</c> if the memory block was reallocated; <c>false</c> if set to null.</returns>
+    </member>
+    <member name="T:Vanara.InteropServices.CorrepsondingAction">
+      <summary>Actions that can be taken with a corresponding type.</summary>
+    </member>
+    <member name="F:Vanara.InteropServices.CorrepsondingAction.None">
+      <summary>No actions may be taken.</summary>
+    </member>
+    <member name="F:Vanara.InteropServices.CorrepsondingAction.Get">
+      <summary>The type can be retrieved.</summary>
+    </member>
+    <member name="F:Vanara.InteropServices.CorrepsondingAction.Set">
+      <summary>The type can be set.</summary>
+    </member>
+    <member name="F:Vanara.InteropServices.CorrepsondingAction.GetSet">
+      <summary>The type can be retrieved and set.</summary>
+    </member>
+    <member name="F:Vanara.InteropServices.CorrepsondingAction.Exception">
+      <summary>Throw a <see cref="F:Vanara.InteropServices.CorrepsondingAction.Exception" /> if this enumeration value is used.</summary>
+    </member>
+    <member name="T:Vanara.InteropServices.CorrespondingTypeAttribute">
+      <summary>
+            Attribute for enum values that provides information about corresponding types and related actions. Useful for Get/Set methods that use an enumeration
+            value to determine the type to get or set.
+            </summary>
+    </member>
+    <member name="M:Vanara.InteropServices.CorrespondingTypeAttribute.#ctor(System.Type,Vanara.InteropServices.CorrepsondingAction)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.CorrespondingTypeAttribute" /> class.</summary>
+      <param name="typeRef">The type that corresponds to this enumeration value.</param>
+      <param name="action">The actions allowed for the type.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.CorrespondingTypeAttribute.#ctor(Vanara.InteropServices.CorrepsondingAction)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.CorrespondingTypeAttribute" /> class.</summary>
+      <param name="action">The actions allowed for the type.</param>
+    </member>
+    <member name="P:Vanara.InteropServices.CorrespondingTypeAttribute.Action">
+      <summary>Gets the action allowed for the type.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.CorrespondingTypeAttribute.CanGet(System.Object,System.Type)">
+      <summary>Determines whether this instance can get the type for the specified enum value.</summary>
+      <param name="value">The enumeration value.</param>
+      <param name="typeRef">The type supplied by the user to validate.</param>
+      <returns>
+        <c>true</c> if this instance can get the specified type; otherwise, <c>false</c>.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.CorrespondingTypeAttribute.CanSet(System.Object,System.Type)">
+      <summary>Determines whether this instance can set the type for the specified enum value.</summary>
+      <param name="value">The enumeration value.</param>
+      <param name="typeRef">The type supplied by the user to validate.</param>
+      <returns>
+        <c>true</c> if this instance can set the specified type; otherwise, <c>false</c>.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.CorrespondingTypeAttribute.GetCorrespondingType(System.Object)">
+      <summary>Gets the corresponding type for the supplied enumeration value.</summary>
+      <param name="enumValue">The enumeration value.</param>
+      <returns>The type defined by the attribute.</returns>
+    </member>
+    <member name="P:Vanara.InteropServices.CorrespondingTypeAttribute.TypeRef">
+      <summary>Gets the type that corresponds to this enumeration value.</summary>
+    </member>
+    <member name="T:Vanara.InteropServices.CoTaskMemoryMethods">
+      <summary>Unmanaged memory methods for COM.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.CoTaskMemoryMethods.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Vanara.InteropServices.CoTaskMemoryMethods</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Vanara.InteropServices.CoTaskMemoryMethods.AllocMem">
+      <summary>Gets the allocation method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.CoTaskMemoryMethods.AllocSecureStringAnsi">
+      <summary>Gets the Ansi <see cref="T:System.Security.SecureString" /> allocation method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.CoTaskMemoryMethods.AllocSecureStringUni">
+      <summary>Gets the Unicode <see cref="T:System.Security.SecureString" /> allocation method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.CoTaskMemoryMethods.AllocStringAnsi">
+      <summary>Gets the Ansi string allocation method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.CoTaskMemoryMethods.AllocStringUni">
+      <summary>Gets the Unicode string allocation method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.CoTaskMemoryMethods.FreeMem">
+      <summary>Gets the free method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.CoTaskMemoryMethods.FreeSecureStringAnsi">
+      <summary>Gets the Ansi <see cref="T:System.Security.SecureString" /> free method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.CoTaskMemoryMethods.FreeSecureStringUni">
+      <summary>Gets the Unicode <see cref="T:System.Security.SecureString" /> free method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.CoTaskMemoryMethods.ReAllocMem">
+      <summary>Gets the reallocation method.</summary>
+    </member>
+    <member name="T:Vanara.InteropServices.GenericSafeHandle">
+      <summary>A <see cref="T:System.Runtime.InteropServices.SafeHandle" /> that takes a delegate in the constructor that closes the supplied handle.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.GenericSafeHandle.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.GenericSafeHandle" /> class.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.GenericSafeHandle.#ctor(System.Func{System.IntPtr,System.Boolean})">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.GenericSafeHandle" /> class.</summary>
+      <param name="closeMethod">The delegate method for closing the handle.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.GenericSafeHandle.#ctor(System.IntPtr,System.Func{System.IntPtr,System.Boolean},System.Boolean)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.GenericSafeHandle" /> class.</summary>
+      <param name="ptr">The PTR.</param>
+      <param name="closeMethod">The delegate method for closing the handle.</param>
+      <param name="ownsHandle">if set to <c>true</c> [owns handle].</param>
+      <exception cref="T:System.ArgumentNullException">closeMethod</exception>
+    </member>
+    <member name="P:Vanara.InteropServices.GenericSafeHandle.CloseMethod">
+      <summary>Gets or sets the close method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.GenericSafeHandle.IsInvalid">
+      <summary>When overridden in a derived class, gets a value indicating whether the handle value is invalid.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.GenericSafeHandle.op_Implicit(Vanara.InteropServices.GenericSafeHandle)~System.IntPtr">
+      <summary>Performs an implicit conversion from <see cref="T:Vanara.InteropServices.GenericSafeHandle" /> to <see cref="T:System.IntPtr" />.</summary>
+      <param name="h">The <see cref="T:Vanara.InteropServices.GenericSafeHandle" /> instance.</param>
+      <returns>The value of the handle. Use caution when using this value as it can be closed by the disposal of the parent <see cref="T:Vanara.InteropServices.GenericSafeHandle" />.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.GenericSafeHandle.ReleaseHandle">
+      <summary>When overridden in a derived class, executes the code required to free the handle.</summary>
+      <returns>
+            true if the handle is released successfully; otherwise, in the event of a catastrophic failure, false. In this case, it generates a
+            releaseHandleFailed MDA Managed Debugging Assistant.
+            </returns>
+    </member>
+    <member name="T:Vanara.InteropServices.HGlobalMemoryMethods">
+      <summary>Unmanaged memory methods for HGlobal.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.HGlobalMemoryMethods.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Vanara.InteropServices.HGlobalMemoryMethods</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Vanara.InteropServices.HGlobalMemoryMethods.AllocMem">
+      <summary>Gets the allocation method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.HGlobalMemoryMethods.AllocSecureStringAnsi">
+      <summary>Gets the Ansi <see cref="T:System.Security.SecureString" /> allocation method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.HGlobalMemoryMethods.AllocSecureStringUni">
+      <summary>Gets the Unicode <see cref="T:System.Security.SecureString" /> allocation method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.HGlobalMemoryMethods.AllocStringAnsi">
+      <summary>Gets the Ansi string allocation method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.HGlobalMemoryMethods.AllocStringUni">
+      <summary>Gets the Unicode string allocation method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.HGlobalMemoryMethods.FreeMem">
+      <summary>Gets the free method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.HGlobalMemoryMethods.FreeSecureStringAnsi">
+      <summary>Gets the Ansi <see cref="T:System.Security.SecureString" /> free method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.HGlobalMemoryMethods.FreeSecureStringUni">
+      <summary>Gets the Unicode <see cref="T:System.Security.SecureString" /> free method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.HGlobalMemoryMethods.ReAllocMem">
+      <summary>Gets the reallocation method.</summary>
+    </member>
+    <member name="T:Vanara.InteropServices.IMemoryMethods">
+      <summary>Interface to capture unmanaged memory methods.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.IMemoryMethods.AllocMem">
+      <summary>Gets the allocation method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.IMemoryMethods.AllocSecureStringAnsi">
+      <summary>Gets the Ansi <see cref="T:System.Security.SecureString" /> allocation method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.IMemoryMethods.AllocSecureStringUni">
+      <summary>Gets the Unicode <see cref="T:System.Security.SecureString" /> allocation method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.IMemoryMethods.AllocStringAnsi">
+      <summary>Gets the Ansi string allocation method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.IMemoryMethods.AllocStringUni">
+      <summary>Gets the Unicode string allocation method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.IMemoryMethods.FreeMem">
+      <summary>Gets the free method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.IMemoryMethods.FreeSecureStringAnsi">
+      <summary>Gets the Ansi <see cref="T:System.Security.SecureString" /> free method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.IMemoryMethods.FreeSecureStringUni">
+      <summary>Gets the Unicode <see cref="T:System.Security.SecureString" /> free method.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.IMemoryMethods.ReAllocMem">
+      <summary>Gets the reallocation method.</summary>
+    </member>
+    <member name="T:Vanara.InteropServices.ISafeMemoryHandle">
+      <summary>Interface for classes that support safe memory pointers.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.ISafeMemoryHandle.AddSubReference(System.Collections.Generic.IEnumerable{Vanara.InteropServices.ISafeMemoryHandle})">
+      <summary>
+            Adds reference to other SafeMemoryHandle objects, the pointer to which are referred to by this object. This is to ensure that such objects being
+            referred to wouldn't be unreferenced until this object is active. For e.g. when this object is an array of pointers to other objects
+            </summary>
+      <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.ISafeMemoryHandle.DangerousGetHandle">
+      <summary>Returns the instance as an <see cref="T:System.IntPtr" />. This is a dangerous call as the value is mutable.</summary>
+      <returns>An <see cref="T:System.IntPtr" /> to the internally held memory.</returns>
+    </member>
+    <member name="P:Vanara.InteropServices.ISafeMemoryHandle.IsInvalid">
+      <summary>Gets a value indicating whether the handle value is invalid.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.ISafeMemoryHandle.Size">
+      <summary>Gets the size of the allocated memory block.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.ISafeMemoryHandle.ToArray``1(System.Int32,System.Int32)">
+      <summary>
+            Extracts an array of structures of <typeparamref name="T" /> containing <paramref name="count" /> items. <note type="note">This call can cause memory
+            exceptions if the pointer does not have sufficient allocated memory to retrieve all the structures.</note></summary>
+      <param name="count">The number of structures to retrieve.</param>
+      <param name="prefixBytes">The number of bytes to skip before reading the structures.</param>
+      <typeparam name="T">The type of the structures to retrieve.</typeparam>
+      <returns>An array of structures of <typeparamref name="T" />.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.ISafeMemoryHandle.ToEnumerable``1(System.Int32,System.Int32)">
+      <summary>
+            Extracts an enumeration of structures of <typeparamref name="T" /> containing <paramref name="count" /> items. <note type="note">This call can cause
+            memory exceptions if the pointer does not have sufficient allocated memory to retrieve all the structures.</note></summary>
+      <param name="count">The number of structures to retrieve.</param>
+      <param name="prefixBytes">The number of bytes to skip before reading the structures.</param>
+      <typeparam name="T">The type of the structures to retrieve.</typeparam>
+      <returns>An enumeration of structures of <typeparamref name="T" />.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.ISafeMemoryHandle.ToString(System.Int32,System.Runtime.InteropServices.CharSet)">
+      <summary>Returns a <see cref="T:System.String" /> that represents this instance.</summary>
+      <param name="len">The length.</param>
+      <param name="charSet">The character set of the string.</param>
+      <returns>A <see cref="T:System.String" /> that represents this instance.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.ISafeMemoryHandle.ToStringEnum(System.Int32,System.Runtime.InteropServices.CharSet,System.Int32)">
+      <summary>Returns an enumeration of strings from memory where each string is pointed to by a preceding list of pointers of length <paramref name="count" />.</summary>
+      <param name="count">The count.</param>
+      <param name="charSet">The character set of the strings.</param>
+      <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
+      <returns>An enumerated list of strings.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.ISafeMemoryHandle.ToStringEnum(System.Runtime.InteropServices.CharSet,System.Int32)">
+      <summary>
+            Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character and is terminated by
+            two '\0' characters.
+            </summary>
+      <param name="charSet">The character set of the strings.</param>
+      <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
+      <returns>Enumeration of strings.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.ISafeMemoryHandle.ToStructure``1">
+      <summary>Marshals data from this block of memory to a newly allocated managed object of the type specified by a generic type parameter.</summary>
+      <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
+      <returns>A managed object that contains the data that this <see cref="T:Vanara.InteropServices.SafeMemoryHandleExt`1" /> holds.</returns>
+    </member>
+    <member name="T:Vanara.InteropServices.MarshalingStream">
+      <summary>A <see cref="T:System.IO.Stream" /> derivative for working with unmanaged memory.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.MarshalingStream.#ctor(System.IntPtr,System.Int64)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.MarshalingStream" /> class.</summary>
+      <param name="unmanagedPtr">The unmanaged PTR.</param>
+      <param name="bytesAllocated">The bytes allocated.</param>
+    </member>
+    <member name="P:Vanara.InteropServices.MarshalingStream.CanRead">
+      <summary>Gets a value indicating whether the current stream supports reading.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.MarshalingStream.CanSeek">
+      <summary>Gets a value indicating whether the current stream supports seeking.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.MarshalingStream.CanWrite">
+      <summary>Gets a value indicating whether the current stream supports writing.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.MarshalingStream.Capacity">
+      <summary>Gets the capacity.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.MarshalingStream.CharSet">
+      <summary>Gets or sets the character set.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.MarshalingStream.Flush">
+      <summary>Clears all buffers for this stream and causes any buffered data to be written to the underlying device.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.MarshalingStream.Length">
+      <summary>When overridden in a derived class, gets the length in bytes of the stream.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.MarshalingStream.Pointer">
+      <summary>Gets the initial pointer supplied to the constructor.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.MarshalingStream.Poke(System.Byte[],System.Int64)">
+      <summary>Pokes the specified buffer at the offset from the starting pointer without changing the <see cref="P:Vanara.InteropServices.MarshalingStream.Position" />.</summary>
+      <param name="buffer">The buffer.</param>
+      <param name="offsetFromStart">The offset from start.</param>
+      <exception cref="T:System.ArgumentNullException">buffer</exception>
+      <exception cref="T:System.ArgumentException"></exception>
+      <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+    </member>
+    <member name="M:Vanara.InteropServices.MarshalingStream.Poke(System.IntPtr,System.Int64)">
+      <summary>Pokes the specified IntPtr value at the offset from the starting pointer without changing the <see cref="P:Vanara.InteropServices.MarshalingStream.Position" />.</summary>
+      <param name="value">The value.</param>
+      <param name="offsetFromStart">The offset from start.</param>
+      <exception cref="T:System.ArgumentException"></exception>
+      <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+    </member>
+    <member name="P:Vanara.InteropServices.MarshalingStream.Position">
+      <summary>When overridden in a derived class, gets or sets the position within the current stream.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.MarshalingStream.PositionPtr">
+      <summary>Gets the position PTR.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.MarshalingStream.Read``1">
+      <summary>Reads a blittable type from the current stream and advances the position within the stream by the number of bytes read.</summary>
+      <typeparam name="T">The type of the object to read.</typeparam>
+      <returns>An object of type <typeparamref name="T" />.</returns>
+      <exception cref="T:System.ArgumentException">Type to be read must be blittable. - T</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException" />
+    </member>
+    <member name="M:Vanara.InteropServices.MarshalingStream.Read(System.Byte[],System.Int32,System.Int32)">
+      <summary>Reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.</summary>
+      <param name="buffer">
+            An array of bytes. When this method returns, the buffer contains the specified byte array with the values between <paramref name="offset" /> and (
+            <paramref name="offset" /> + <paramref name="count" /> - 1) replaced by the bytes read from the current source.
+            </param>
+      <param name="offset">The zero-based byte offset in <paramref name="buffer" /> at which to begin storing the data read from the current stream.</param>
+      <param name="count">The maximum number of bytes to be read from the current stream.</param>
+      <returns>
+            The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not currently available,
+            or zero (0) if the end of the stream has been reached.
+            </returns>
+      <exception cref="T:System.ArgumentNullException">buffer</exception>
+      <exception cref="T:System.ArgumentException"></exception>
+      <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+    </member>
+    <member name="M:Vanara.InteropServices.MarshalingStream.Seek(System.Int64,System.IO.SeekOrigin)">
+      <summary>Sets the position within the current stream.</summary>
+      <param name="offset">A byte offset relative to the <paramref name="origin" /> parameter.</param>
+      <param name="origin">A value of type <see cref="T:System.IO.SeekOrigin" /> indicating the reference point used to obtain the new position.</param>
+      <returns>The new position within the current stream.</returns>
+      <exception cref="T:System.ArgumentException"></exception>
+    </member>
+    <member name="M:Vanara.InteropServices.MarshalingStream.SetLength(System.Int64)">
+      <summary>Sets the length of the current stream.</summary>
+      <param name="value">The desired length of the current stream in bytes.</param>
+      <exception cref="T:System.InvalidOperationException"></exception>
+    </member>
+    <member name="M:Vanara.InteropServices.MarshalingStream.Write(System.Byte[],System.Int32,System.Int32)">
+      <summary>Writes a sequence of bytes to the current stream and advances the current position within this stream by the number of bytes written.</summary>
+      <param name="buffer">An array of bytes. This method copies <paramref name="count" /> bytes from <paramref name="buffer" /> to the current stream.</param>
+      <param name="offset">The zero-based byte offset in <paramref name="buffer" /> at which to begin copying bytes to the current stream.</param>
+      <param name="count">The number of bytes to be written to the current stream.</param>
+      <exception cref="T:System.ArgumentNullException">buffer</exception>
+      <exception cref="T:System.ArgumentException"></exception>
+      <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+    </member>
+    <member name="M:Vanara.InteropServices.MarshalingStream.Write``1(``0)">
+      <summary>Writes the specified value into the stream.</summary>
+      <param name="value">The value.</param>
+      <typeparam name="T">The type of the value.</typeparam>
+    </member>
+    <member name="M:Vanara.InteropServices.MarshalingStream.Write``1(``0[])">
+      <summary>Writes the specified array into the stream.</summary>
+      <param name="items">The items.</param>
+      <typeparam name="T">The type of the array item.</typeparam>
+    </member>
+    <member name="T:Vanara.InteropServices.PinnedObject">
+      <summary>A safe class that represents an object that is pinned in memory.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.PinnedObject.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.PinnedObject" /> class.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.PinnedObject.#ctor(System.Object,System.Int32)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.PinnedObject" /> class.</summary>
+      <param name="obj">The object to pin.</param>
+      <param name="offset">The offset into the pinned bytes used to return a pointer.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.PinnedObject.Dispose">
+      <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.PinnedObject.IsInvalid">
+      <summary>Gets a value indicating whether the object is no longer pinned.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.PinnedObject.op_Implicit(Vanara.InteropServices.PinnedObject)~System.IntPtr">
+      <summary>Get a pointer ( <see cref="T:System.IntPtr" />) to the pinned memory of the object with any preset offset.</summary>
+      <param name="ap">The <see cref="T:Vanara.InteropServices.PinnedObject" /> instance.</param>
+      <returns>The result of the conversion.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.PinnedObject.SetObject(System.Object)">
+      <summary>Sets the object. This should only be called once per instance in the constructor.</summary>
+      <param name="obj">The object to pin.</param>
+    </member>
+    <member name="T:Vanara.InteropServices.SafeByteArray">
+      <summary>An safe unmanaged array of bytes allocated on the global heap.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeByteArray.#ctor(System.Byte[])">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.SafeByteArray" /> class from a copy of a managed byte array.</summary>
+      <param name="array">The array of bytes to copy.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeByteArray.#ctor(System.Int32)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.SafeByteArray" /> class and allocates <paramref name="byteCount" /> bytes.</summary>
+      <param name="byteCount">The byte count to allocate.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeByteArray.#ctor(Vanara.InteropServices.SafeByteArray)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.SafeByteArray" /> class by copying the bytes from another unmanaged array.</summary>
+      <param name="src">Another unmanaged array.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeByteArray.Clear">
+      <summary>Removes all items from the <see cref="T:System.Collections.Generic.ICollection{T}" />.</summary>
+      <exception cref="T:System.NotSupportedException"></exception>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeByteArray.Clone">
+      <summary>Creates a new object that is a copy of the current instance.</summary>
+      <returns>A new object that is a copy of this instance.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeByteArray.Contains(System.Byte)">
+      <summary>Determines whether the <see cref="T:System.Collections.Generic.ICollection{T}" /> contains a specific value.</summary>
+      <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection{T}" />.</param>
+      <returns>true if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection{T}" />; otherwise, false.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeByteArray.CopyTo(System.Byte[],System.Int32)">
+      <summary>
+            Copies the elements of the <see cref="T:System.Collections.Generic.ICollection{T}" /> to an <see cref="T:System.Array" />, starting at a particular
+            <see cref="T:System.Array" /> index.
+            </summary>
+      <param name="array">
+            The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from
+            <see cref="T:System.Collections.Generic.ICollection{T}" /> . The <see cref="T:System.Array" /> must have zero-based indexing.
+            </param>
+      <param name="arrayIndex">The zero-based index in <paramref name="array" /> at which copying begins.</param>
+      <exception cref="T:System.ArgumentNullException">array</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">array</exception>
+    </member>
+    <member name="P:Vanara.InteropServices.SafeByteArray.Count">
+      <summary>Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection{T}" />.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeByteArray.GetEnumerator">
+      <summary>Returns an enumerator that iterates through the collection.</summary>
+      <returns>A <see cref="T:System.Collections.Generic.IEnumerator{T}" /> that can be used to iterate through the collection.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeByteArray.IndexOf(System.Byte)">
+      <summary>Determines the index of a specific item in the <see cref="T:System.Collections.Generic.IList{T}" />.</summary>
+      <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.IList{T}" />.</param>
+      <returns>The index of <paramref name="item" /> if found in the list; otherwise, -1.</returns>
+    </member>
+    <member name="P:Vanara.InteropServices.SafeByteArray.IsReadOnly">
+      <summary>Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection{T}" /> is read-only.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.SafeByteArray.Item(System.Int32)">
+      <summary>Gets or sets the <see cref="T:System.Byte" /> at the specified index.</summary>
+      <param name="index">The index.</param>
+      <returns></returns>
+      <exception cref="T:System.ArgumentOutOfRangeException">index</exception>
+      <exception cref="T:System.InvalidOperationException">Object is not valid.</exception>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeByteArray.ToArray">
+      <summary>Copies unmanaged bytes to a managed byte array.</summary>
+      <returns>Copied byte array.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeByteArray.Zero">
+      <summary>Zeroes out this instance, or writes 0 to every allocated byte.</summary>
+    </member>
+    <member name="T:Vanara.InteropServices.SafeCoTaskMemHandle">
+      <summary>A <see cref="T:System.Runtime.InteropServices.SafeHandle" /> for memory allocated via COM.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeCoTaskMemHandle.#ctor(System.Byte[])">
+      <summary>Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native array equivalent.</summary>
+      <param name="bytes">Array of unmanaged pointers</param>
+      <returns>SafeCoTaskMemHandle object to an native (unmanaged) array of pointers</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeCoTaskMemHandle.#ctor(System.Int32)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.SafeCoTaskMemHandle" /> class.</summary>
+      <param name="size">The size of memory to allocate, in bytes.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeCoTaskMemHandle.#ctor(System.IntPtr,System.Int32,System.Boolean)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.SafeCoTaskMemHandle" /> class.</summary>
+      <param name="handle">The handle.</param>
+      <param name="size">The size of memory allocated to the handle, in bytes.</param>
+      <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeCoTaskMemHandle.#ctor(System.IntPtr[])">
+      <summary>Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native array equivalent.</summary>
+      <param name="values">Array of unmanaged pointers</param>
+      <returns>SafeCoTaskMemHandle object to an native (unmanaged) array of pointers</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeCoTaskMemHandle.#ctor(System.String)">
+      <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native PWSTR.</summary>
+      <param name="s">The string value.</param>
+      <returns>SafeCoTaskMemHandle object to an native (unmanaged) Unicode string</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeCoTaskMemHandle.CreateFromList``1(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Int32)">
+      <summary>
+            Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure elements. It is the
+            callers responsibility to marshal what precedes the trailing array into the unmanaged memory. ONLY structures with attribute StructLayout of
+            LayoutKind.Sequential are supported.
+            </summary>
+      <param name="values">Collection of structure objects</param>
+      <param name="count">Number of items in <paramref name="values" />. Setting this value to -1 will cause the method to get the count by iterating through <paramref name="values" />.</param>
+      <param name="prefixBytes">Number of bytes preceding the trailing array of structures</param>
+      <typeparam name="T">Type of the trailing array of structures</typeparam>
+      <returns>
+        <see cref="T:Vanara.InteropServices.SafeCoTaskMemHandle" /> object to an native (unmanaged) structure with a trail array of structures</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeCoTaskMemHandle.CreateFromStringList(System.Collections.Generic.IEnumerable{System.String},Vanara.InteropServices.StringListPackMethod,System.Runtime.InteropServices.CharSet,System.Int32)">
+      <summary>Allocates from unmanaged memory sufficient memory to hold an array of strings.</summary>
+      <param name="values">The list of strings.</param>
+      <param name="packing">The packing type for the strings.</param>
+      <param name="charSet">The character set to use for the strings.</param>
+      <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
+      <returns>
+        <see cref="T:Vanara.InteropServices.SafeCoTaskMemHandle" /> object to an native (unmanaged) array of strings stored using the <paramref name="packing" /> model and the character set defined by <paramref name="charSet" />.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeCoTaskMemHandle.CreateFromStructure``1(``0)">
+      <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
+      <param name="value">The value.</param>
+      <typeparam name="T">Native type</typeparam>
+      <returns>
+        <see cref="T:Vanara.InteropServices.SafeCoTaskMemHandle" /> object to an native (unmanaged) memory block the size of T.</returns>
+    </member>
+    <member name="P:Vanara.InteropServices.SafeCoTaskMemHandle.Null">
+      <summary>Represents a NULL memory pointer.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeCoTaskMemHandle.op_Implicit(System.IntPtr)~Vanara.InteropServices.SafeCoTaskMemHandle">
+      <summary>Converts an <see cref="T:System.IntPtr" /> to a <see cref="T:Vanara.InteropServices.SafeCoTaskMemHandle" /> where it owns the reference.</summary>
+      <param name="ptr">The <see cref="T:System.IntPtr" />.</param>
+      <returns>The result of the conversion.</returns>
+    </member>
+    <member name="T:Vanara.InteropServices.SafeCoTaskMemString">
+      <summary>Safely handles an unmanaged memory allocated Unicode string.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeCoTaskMemString.#ctor(System.Int32,System.Runtime.InteropServices.CharSet)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.SafeCoTaskMemString" /> class.</summary>
+      <param name="charLen">The size of the buffer in characters, including the null character terminator.</param>
+      <param name="charSet">The character set.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeCoTaskMemString.#ctor(System.Security.SecureString,System.Runtime.InteropServices.CharSet)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.SafeCoTaskMemString" /> class.</summary>
+      <param name="s">The string value.</param>
+      <param name="charSet">The character set.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeCoTaskMemString.#ctor(System.String,System.Runtime.InteropServices.CharSet)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.SafeCoTaskMemString" /> class.</summary>
+      <param name="s">The string value.</param>
+      <param name="charSet">The character set.</param>
+    </member>
+    <member name="P:Vanara.InteropServices.SafeCoTaskMemString.Capacity">
+      <summary>Gets the number of allocated bytes or -1 if the size is unknown (for example if it is holding a <see cref="T:System.Security.SecureString" />.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.SafeCoTaskMemString.CharCapacity">
+      <summary>Gets the number of allocated characters or -1 if the size is unknown (for example if it is holding a <see cref="T:System.Security.SecureString" />.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeCoTaskMemString.op_Explicit(Vanara.InteropServices.SafeCoTaskMemString)~System.IntPtr">
+      <summary>Returns the value of the <see cref="F:System.Runtime.InteropServices.SafeHandle.handle" /> field.</summary>
+      <param name="s">The <see cref="T:Vanara.InteropServices.SafeCoTaskMemString" /> instance.</param>
+      <returns>
+            An <see cref="T:System.IntPtr" /> representing the value of the handle field. If the handle has been marked invalid with <see cref="M:System.Runtime.InteropServices.SafeHandle.SetHandleAsInvalid" />, this method still returns the original handle value, which can be a stale value.
+            </returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeCoTaskMemString.op_Implicit(Vanara.InteropServices.SafeCoTaskMemString)~System.String">
+      <summary>Returns the string value held by a <see cref="T:Vanara.InteropServices.SafeCoTaskMemString" />.</summary>
+      <param name="s">The <see cref="T:Vanara.InteropServices.SafeCoTaskMemString" /> instance.</param>
+      <returns>A <see cref="T:System.String" /> value held by the <see cref="T:Vanara.InteropServices.SafeCoTaskMemString" /> or <c>null</c> if the handle or value is invalid.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeCoTaskMemString.ReleaseHandle">
+      <summary>When overridden in a derived class, executes the code required to free the handle.</summary>
+      <returns>
+            true if the handle is released successfully; otherwise, in the event of a catastrophic failure, false. In this case, it generates a
+            releaseHandleFailed MDA Managed Debugging Assistant.
+            </returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeCoTaskMemString.ToString">
+      <summary>Returns the string value held by this instance.</summary>
+      <returns>A <see cref="T:System.String" /> value held by this instance or <c>null</c> if the handle is invalid.</returns>
+    </member>
+    <member name="T:Vanara.InteropServices.SafeHGlobalHandle">
+      <summary>A <see cref="T:System.Runtime.InteropServices.SafeHandle" /> for memory allocated via LocalAlloc.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeHGlobalHandle.#ctor(System.Byte[])">
+      <summary>Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native array equivalent.</summary>
+      <param name="bytes">Array of unmanaged pointers</param>
+      <returns>SafeHGlobalHandle object to an native (unmanaged) array of pointers</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeHGlobalHandle.#ctor(System.Int32)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.SafeHGlobalHandle" /> class.</summary>
+      <param name="size">The size of memory to allocate, in bytes.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeHGlobalHandle.#ctor(System.IntPtr,System.Int32,System.Boolean)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.SafeHGlobalHandle" /> class.</summary>
+      <param name="handle">The handle.</param>
+      <param name="size">The size of memory allocated to the handle, in bytes.</param>
+      <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeHGlobalHandle.#ctor(System.IntPtr[])">
+      <summary>Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native array equivalent.</summary>
+      <param name="values">Array of unmanaged pointers</param>
+      <returns>SafeHGlobalHandle object to an native (unmanaged) array of pointers</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeHGlobalHandle.#ctor(System.String)">
+      <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native PWSTR.</summary>
+      <param name="s">The string value.</param>
+      <returns>SafeHGlobalHandle object to an native (unmanaged) Unicode string</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeHGlobalHandle.CreateFromList``1(System.Collections.Generic.IEnumerable{``0},System.Int32,System.Int32)">
+      <summary>
+            Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure elements. It is the
+            callers responsibility to marshal what precedes the trailing array into the unmanaged memory. ONLY structures with attribute StructLayout of
+            LayoutKind.Sequential are supported.
+            </summary>
+      <param name="values">Collection of structure objects</param>
+      <param name="count">Number of items in <paramref name="values" />.</param>
+      <param name="prefixBytes">Number of bytes preceding the trailing array of structures</param>
+      <typeparam name="T">Type of the trailing array of structures</typeparam>
+      <returns>
+        <see cref="T:Vanara.InteropServices.SafeHGlobalHandle" /> object to an native (unmanaged) structure with a trail array of structures</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeHGlobalHandle.CreateFromStringList(System.Collections.Generic.IEnumerable{System.String},Vanara.InteropServices.StringListPackMethod,System.Runtime.InteropServices.CharSet,System.Int32)">
+      <summary>Allocates from unmanaged memory sufficient memory to hold an array of strings.</summary>
+      <param name="values">The list of strings.</param>
+      <param name="packing">The packing type for the strings.</param>
+      <param name="charSet">The character set to use for the strings.</param>
+      <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
+      <returns>
+        <see cref="T:Vanara.InteropServices.SafeHGlobalHandle" /> object to an native (unmanaged) array of strings stored using the <paramref name="packing" /> model and the character set defined by <paramref name="charSet" />.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeHGlobalHandle.CreateFromStructure``1(``0)">
+      <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
+      <param name="value">The value.</param>
+      <typeparam name="T">Native type</typeparam>
+      <returns>
+        <see cref="T:Vanara.InteropServices.SafeHGlobalHandle" /> object to an native (unmanaged) memory block the size of T.</returns>
+    </member>
+    <member name="P:Vanara.InteropServices.SafeHGlobalHandle.Null">
+      <summary>Represents a NULL memory pointer.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeHGlobalHandle.op_Implicit(System.IntPtr)~Vanara.InteropServices.SafeHGlobalHandle">
+      <summary>Converts an <see cref="T:System.IntPtr" /> to a <see cref="T:Vanara.InteropServices.SafeHGlobalHandle" /> where it owns the reference.</summary>
+      <param name="ptr">The <see cref="T:System.IntPtr" />.</param>
+      <returns>The result of the conversion.</returns>
+    </member>
+    <member name="T:Vanara.InteropServices.SafeMemoryHandle`1">
+      <summary>
+            Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory.
+            </summary>
+      <typeparam name="TMem">The <see cref="T:Vanara.InteropServices.IMemoryMethods" /> implementation.</typeparam>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeMemoryHandle`1.#ctor(System.Byte[])">
+      <summary>Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native array equivalent.</summary>
+      <param name="bytes">Array of unmanaged pointers</param>
+      <returns>SafeHGlobalHandle object to an native (unmanaged) array of pointers</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeMemoryHandle`1.#ctor(System.Int32)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.SafeMemoryHandle`1" /> class.</summary>
+      <param name="size">The size of memory to allocate, in bytes.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeMemoryHandle`1.#ctor(System.IntPtr,System.Int32,System.Boolean)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.SafeMemoryHandle`1" /> class.</summary>
+      <param name="handle">The handle.</param>
+      <param name="size">The size of memory allocated to the handle, in bytes.</param>
+      <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
+    </member>
+    <member name="P:Vanara.InteropServices.SafeMemoryHandle`1.IsInvalid">
+      <summary>When overridden in a derived class, gets a value indicating whether the handle value is invalid.</summary>
+    </member>
+    <member name="F:Vanara.InteropServices.SafeMemoryHandle`1.mm">
+      <summary>The <see cref="T:Vanara.InteropServices.IMemoryMethods" /> implementation instance.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeMemoryHandle`1.op_Explicit(Vanara.InteropServices.SafeMemoryHandle{`0})~System.IntPtr">
+      <summary>Returns the <see cref="T:Vanara.InteropServices.SafeMemoryHandle`1" /> as an <see cref="T:System.IntPtr" />. This is a dangerous call as the value is mutable.</summary>
+      <param name="h">The <see cref="T:Vanara.InteropServices.SafeMemoryHandle`1" /> instance.</param>
+      <returns>The result of the conversion.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeMemoryHandle`1.ReleaseHandle">
+      <summary>When overridden in a derived class, executes the code required to free the handle.</summary>
+      <returns>
+            true if the handle is released successfully; otherwise, in the event of a catastrophic failure, false. In this case, it generates a
+            releaseHandleFailed MDA Managed Debugging Assistant.
+            </returns>
+    </member>
+    <member name="P:Vanara.InteropServices.SafeMemoryHandle`1.Size">
+      <summary>Gets the size of the allocated memory block.</summary>
+    </member>
+    <member name="F:Vanara.InteropServices.SafeMemoryHandle`1.sz">
+      <summary>The number of bytes currently allocated.</summary>
+    </member>
+    <member name="T:Vanara.InteropServices.SafeMemoryHandleExt`1">
+      <summary>A <see cref="T:System.Runtime.InteropServices.SafeHandle" /> for memory allocated via COM.</summary>
+      <typeparam name="TMem">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>typeparam</parameter>
+            <parameter>TMem</parameter>
+            <parameter>T:Vanara.InteropServices.SafeMemoryHandleExt`1</parameter>
+          </include>
+        </markup>
+      </typeparam>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeMemoryHandleExt`1.#ctor(System.Byte[])">
+      <summary>Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native array equivalent.</summary>
+      <param name="bytes">Array of unmanaged pointers</param>
+      <returns>SafeHGlobalHandle object to an native (unmanaged) array of pointers</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeMemoryHandleExt`1.#ctor(System.Int32)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.SafeMemoryHandleExt`1" /> class.</summary>
+      <param name="size">The size of memory to allocate, in bytes.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeMemoryHandleExt`1.#ctor(System.IntPtr,System.Int32,System.Boolean)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.SafeMemoryHandleExt`1" /> class.</summary>
+      <param name="handle">The handle.</param>
+      <param name="size">The size of memory allocated to the handle, in bytes.</param>
+      <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeMemoryHandleExt`1.#ctor(System.IntPtr[])">
+      <summary>Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native array equivalent.</summary>
+      <param name="values">Array of unmanaged pointers</param>
+      <returns>SafeMemoryHandleExt object to an native (unmanaged) array of pointers</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeMemoryHandleExt`1.#ctor(System.String,System.Runtime.InteropServices.CharSet)">
+      <summary>Allocates from unmanaged memory to represent a Unicode string (WSTR) and marshal this to a native PWSTR.</summary>
+      <param name="s">The string value.</param>
+      <param name="charSet">The character set of the string.</param>
+      <returns>SafeMemoryHandleExt object to an native (unmanaged) string</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeMemoryHandleExt`1.AddSubReference(System.Collections.Generic.IEnumerable{Vanara.InteropServices.ISafeMemoryHandle})">
+      <summary>
+            Adds reference to other SafeMemoryHandle objects, the pointer to which are referred to by this object. This is to ensure that such objects being
+            referred to wouldn't be unreferenced until this object is active. For e.g. when this object is an array of pointers to other objects
+            </summary>
+      <param name="children">Collection of SafeMemoryHandle objects referred to by this object.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeMemoryHandleExt`1.ReleaseHandle">
+      <summary>When overridden in a derived class, executes the code required to free the handle.</summary>
+      <returns>
+            true if the handle is released successfully; otherwise, in the event of a catastrophic failure, false. In this case, it generates a
+            releaseHandleFailed MDA Managed Debugging Assistant.
+            </returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeMemoryHandleExt`1.ToArray``1(System.Int32,System.Int32)">
+      <summary>Extracts an array of structures of <typeparamref name="T" /> containing <paramref name="count" /> items.
+            <note type="note">This call can cause memory exceptions if the pointer does not have sufficient allocated memory to retrieve all the structures.</note></summary>
+      <param name="count">The number of structures to retrieve.</param>
+      <param name="prefixBytes">The number of bytes to skip before reading the structures.</param>
+      <typeparam name="T">The type of the structures to retrieve.</typeparam>
+      <returns>An array of structures of <typeparamref name="T" />.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeMemoryHandleExt`1.ToEnumerable``1(System.Int32,System.Int32)">
+      <summary>Extracts an enumeration of structures of <typeparamref name="T" /> containing <paramref name="count" /> items.
+            <note type="note">This call can cause memory exceptions if the pointer does not have sufficient allocated memory to retrieve all the structures.</note></summary>
+      <param name="count">The number of structures to retrieve.</param>
+      <param name="prefixBytes">The number of bytes to skip before reading the structures.</param>
+      <typeparam name="T">The type of the structures to retrieve.</typeparam>
+      <returns>An enumeration of structures of <typeparamref name="T" />.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeMemoryHandleExt`1.ToString(System.Int32,System.Runtime.InteropServices.CharSet)">
+      <summary>Returns a <see cref="T:System.String" /> that represents this instance.</summary>
+      <param name="len">The length.</param>
+      <param name="charSet">The character set of the string.</param>
+      <returns>A <see cref="T:System.String" /> that represents this instance.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeMemoryHandleExt`1.ToStringEnum(System.Int32,System.Runtime.InteropServices.CharSet,System.Int32)">
+      <summary>Returns an enumeration of strings from memory where each string is pointed to by a preceding list of pointers of length <paramref name="count" />.</summary>
+      <param name="count">The count of expected strings.</param>
+      <param name="charSet">The character set of the strings.</param>
+      <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
+      <returns>Enumeration of strings.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeMemoryHandleExt`1.ToStringEnum(System.Runtime.InteropServices.CharSet,System.Int32)">
+      <summary>
+            Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character and is terminated by
+            two '\0' characters.
+            </summary>
+      <param name="charSet">The character set of the strings.</param>
+      <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
+      <returns>An enumerated list of strings.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.SafeMemoryHandleExt`1.ToStructure``1">
+      <summary>Marshals data from this block of memory to a newly allocated managed object of the type specified by a generic type parameter.</summary>
+      <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
+      <returns>A managed object that contains the data that this <see cref="T:Vanara.InteropServices.SafeMemoryHandleExt`1" /> holds.</returns>
+    </member>
+    <member name="T:Vanara.InteropServices.StringListPackMethod">
+      <summary>Method used to pack a list of strings into memory.</summary>
+    </member>
+    <member name="F:Vanara.InteropServices.StringListPackMethod.Concatenated">
+      <summary>Each string is separated by a single '\0' character and is terminated by two '\0' characters.</summary>
+    </member>
+    <member name="F:Vanara.InteropServices.StringListPackMethod.Packed">
+      <summary>A contiguous block of memory containing an array of pointers to strings followed by a NULL pointer and then followed by the actual strings.</summary>
+    </member>
+    <member name="T:Vanara.InteropServices.StrPtrAnsi">
+      <summary>The StrPtr structure represents a LPWSTR.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrAnsi.#ctor(System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.StrPtrAnsi" /> struct.</summary>
+      <param name="s">The string value.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrAnsi.#ctor(System.UInt32)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.StrPtrAnsi" /> struct.</summary>
+      <param name="charLen">Number of characters to reserve in memory.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrAnsi.Assign(System.String)">
+      <summary>Assigns a new string value to the pointer.</summary>
+      <param name="s">The string value.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrAnsi.Assign(System.String,System.UInt32@)">
+      <summary>Assigns a new string value to the pointer.</summary>
+      <param name="s">The string value.</param>
+      <param name="charsAllocated">The character count allocated.</param>
+      <returns>
+        <c>true</c> if new memory was allocated for the string; <c>false</c> if otherwise.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrAnsi.AssignConstant(System.Int32)">
+      <summary>Assigns an integer to the pointer for uses such as LPSTR_TEXTCALLBACK.</summary>
+      <param name="value">The value to assign.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrAnsi.Free">
+      <summary>Frees the unmanaged string memory.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.StrPtrAnsi.IsNull">
+      <summary>Gets a value indicating whether this instance is equivalent to null pointer or void*.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrAnsi.op_Explicit(Vanara.InteropServices.StrPtrAnsi)~System.IntPtr">
+      <summary>Performs an explicit conversion from <see cref="T:Vanara.InteropServices.StrPtrAnsi" /> to <see cref="T:System.IntPtr" />.</summary>
+      <param name="p">The <see cref="T:Vanara.InteropServices.StrPtrAnsi" /> instance.</param>
+      <returns>The result of the conversion.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrAnsi.op_Implicit(Vanara.InteropServices.StrPtrAnsi)~System.String">
+      <summary>Performs an implicit conversion from <see cref="T:Vanara.InteropServices.StrPtrAnsi" /> to <see cref="T:System.String" />.</summary>
+      <param name="p">The <see cref="T:Vanara.InteropServices.StrPtrAnsi" /> instance.</param>
+      <returns>The result of the conversion.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrAnsi.ToString">
+      <summary>Returns a <see cref="T:System.String" /> that represents this instance.</summary>
+      <returns>A <see cref="T:System.String" /> that represents this instance.</returns>
+    </member>
+    <member name="T:Vanara.InteropServices.StrPtrAuto">
+      <summary>The StrPtr structure represents a LPTSTR.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrAuto.#ctor(System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.StrPtrAuto" /> struct.</summary>
+      <param name="s">The string value.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrAuto.#ctor(System.UInt32)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.StrPtrAuto" /> struct.</summary>
+      <param name="charLen">Number of characters to reserve in memory.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrAuto.Assign(System.String)">
+      <summary>Assigns a new string value to the pointer.</summary>
+      <param name="s">The string value.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrAuto.Assign(System.String,System.UInt32@)">
+      <summary>Assigns a new string value to the pointer.</summary>
+      <param name="s">The string value.</param>
+      <param name="charsAllocated">The character count allocated.</param>
+      <returns>
+        <c>true</c> if new memory was allocated for the string; <c>false</c> if otherwise.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrAuto.AssignConstant(System.Int32)">
+      <summary>Assigns an integer to the pointer for uses such as LPSTR_TEXTCALLBACK.</summary>
+      <param name="value">The value to assign.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrAuto.Free">
+      <summary>Frees the unmanaged string memory.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.StrPtrAuto.IsNull">
+      <summary>Gets a value indicating whether this instance is equivalent to null pointer or void*.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrAuto.op_Explicit(Vanara.InteropServices.StrPtrAuto)~System.IntPtr">
+      <summary>Performs an explicit conversion from <see cref="T:Vanara.InteropServices.StrPtrAuto" /> to <see cref="T:System.IntPtr" />.</summary>
+      <param name="p">The <see cref="T:Vanara.InteropServices.StrPtrAuto" /> instance.</param>
+      <returns>The result of the conversion.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrAuto.op_Implicit(Vanara.InteropServices.StrPtrAuto)~System.String">
+      <summary>Performs an implicit conversion from <see cref="T:Vanara.InteropServices.StrPtrAuto" /> to <see cref="T:System.String" />.</summary>
+      <param name="p">The <see cref="T:Vanara.InteropServices.StrPtrAuto" /> instance.</param>
+      <returns>The result of the conversion.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrAuto.ToString">
+      <summary>Returns a <see cref="T:System.String" /> that represents this instance.</summary>
+      <returns>A <see cref="T:System.String" /> that represents this instance.</returns>
+    </member>
+    <member name="T:Vanara.InteropServices.StrPtrUni">
+      <summary>The StrPtr structure represents a LPWSTR.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrUni.#ctor(System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.StrPtrUni" /> struct.</summary>
+      <param name="s">The string value.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrUni.#ctor(System.UInt32)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.InteropServices.StrPtrUni" /> struct.</summary>
+      <param name="charLen">Number of characters to reserve in memory.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrUni.Assign(System.String)">
+      <summary>Assigns a new string value to the pointer.</summary>
+      <param name="s">The string value.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrUni.Assign(System.String,System.UInt32@)">
+      <summary>Assigns a new string value to the pointer.</summary>
+      <param name="s">The string value.</param>
+      <param name="charsAllocated">The character count allocated.</param>
+      <returns>
+        <c>true</c> if new memory was allocated for the string; <c>false</c> if otherwise.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrUni.AssignConstant(System.Int32)">
+      <summary>Assigns an integer to the pointer for uses such as LPSTR_TEXTCALLBACK.</summary>
+      <param name="value">The value to assign.</param>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrUni.Free">
+      <summary>Frees the unmanaged string memory.</summary>
+    </member>
+    <member name="P:Vanara.InteropServices.StrPtrUni.IsNull">
+      <summary>Gets a value indicating whether this instance is equivalent to null pointer or void*.</summary>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrUni.op_Explicit(Vanara.InteropServices.StrPtrUni)~System.IntPtr">
+      <summary>Performs an explicit conversion from <see cref="T:Vanara.InteropServices.StrPtrUni" /> to <see cref="T:System.IntPtr" />.</summary>
+      <param name="p">The <see cref="T:Vanara.InteropServices.StrPtrUni" /> instance.</param>
+      <returns>The result of the conversion.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrUni.op_Implicit(Vanara.InteropServices.StrPtrUni)~System.String">
+      <summary>Performs an implicit conversion from <see cref="T:Vanara.InteropServices.StrPtrUni" /> to <see cref="T:System.String" />.</summary>
+      <param name="p">The <see cref="T:Vanara.InteropServices.StrPtrUni" /> instance.</param>
+      <returns>The result of the conversion.</returns>
+    </member>
+    <member name="M:Vanara.InteropServices.StrPtrUni.ToString">
+      <summary>Returns a <see cref="T:System.String" /> that represents this instance.</summary>
+      <returns>A <see cref="T:System.String" /> that represents this instance.</returns>
+    </member>
+  </members>
+</doc>
