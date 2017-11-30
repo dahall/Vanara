@@ -1,28 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <topic id="990ac43d-cb4e-4fa7-87f6-39c93cd08b3b" revisionNumber="1">
-	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-		<introduction>
-			<para>Version [TODO: Version] was released on [TODO: Date].
-			</para>
-		</introduction>
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>
+        Version 1.0.2 was released on 29 November 2017.
+      </para>
+    </introduction>
 
-		<section>
-			<title>Changes in This Release</title>
-			<content>
+    <section>
+      <title>Changes in This Release</title>
+      <content>
 
-				<list class="bullet">
-					<listItem>
-						<para>[TODO: Add change items here]</para>
-					</listItem>
+        <list class="bullet">
+          <listItem>
+            <para>Added .NET Standard 2.0 builds for all capable (non-GUI) projects.</para>
+            <para>Enhanced and fixed IEnumFromIndexer.</para>
+            <para>Enhanced and extended the Token structures in Vanara.PInvoke.Securty (AdvApi32).</para>
+          </listItem>
 
-				</list>
+        </list>
 
-			</content>
-		</section>
+      </content>
+    </section>
 
-		<relatedTopics>
-			<link xlink:href="b2b4b5a4-7eb7-47f0-aa84-e4d68ac1515f" />
-		</relatedTopics>
+    <relatedTopics>
+      <link xlink:href="b2b4b5a4-7eb7-47f0-aa84-e4d68ac1515f" />
+    </relatedTopics>
 
-	</developerConceptualDocument>
+  </developerConceptualDocument>
 </topic>

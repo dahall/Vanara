@@ -1,0 +1,1598 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Vanara.PInvoke.VirtDisk</name>
+  </assembly>
+  <members>
+    <member name="T:Vanara.PInvoke.VirtDisk">
+      <summary>Platform invokable enumerated types, constants and functions from virtdisk.h</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.AttachVirtualDisk(Microsoft.Win32.SafeHandles.SafeFileHandle,System.IntPtr,Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_FLAG,System.UInt32,Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_PARAMETERS@,System.IntPtr)">
+      <summary>Attaches a virtual hard disk (VHD) or CD or DVD image file (ISO) by locating an appropriate VHD provider to accomplish the attachment.</summary>
+      <param name="VirtualDiskHandle">A handle to an open virtual disk. For information on how to open a virtual disk, see the OpenVirtualDisk function.</param>
+      <param name="SecurityDescriptor">
+            An optional pointer to a SECURITY_DESCRIPTOR to apply to the attached virtual disk. If this parameter is NULL, the security descriptor of the virtual
+            disk image file is used.
+            <para>
+            Ensure that the security descriptor that AttachVirtualDisk applies to the attached virtual disk grants the write attributes permission for the user,
+            or that the security descriptor of the virtual disk image file grants the write attributes permission for the user if you specify NULL for this
+            parameter. If the security descriptor does not grant write attributes permission for a user, Shell displays the following error when the user
+            accesses the attached virtual disk: The Recycle Bin is corrupted. Do you want to empty the Recycle Bin for this drive?
+            </para></param>
+      <param name="Flags">A valid combination of values of the ATTACH_VIRTUAL_DISK_FLAG enumeration.</param>
+      <param name="ProviderSpecificFlags">Flags specific to the type of virtual disk being attached. May be zero if none are required.</param>
+      <param name="Parameters">A pointer to a valid ATTACH_VIRTUAL_DISK_PARAMETERS structure that contains attachment parameter data.</param>
+      <param name="Overlapped">An optional pointer to a valid OVERLAPPED structure if asynchronous operation is desired.</param>
+      <returns>
+            Status of the request.
+            <para>If the function succeeds, the return value is ERROR_SUCCESS.</para><para>If the function fails, the return value is an error code. For more information, see System Error Codes.</para></returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.AttachVirtualDisk(Microsoft.Win32.SafeHandles.SafeFileHandle,System.IntPtr,Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_FLAG,System.UInt32,Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_PARAMETERS@,System.Threading.NativeOverlapped@)">
+      <summary>Attaches a virtual hard disk (VHD) or CD or DVD image file (ISO) by locating an appropriate VHD provider to accomplish the attachment.</summary>
+      <param name="VirtualDiskHandle">A handle to an open virtual disk. For information on how to open a virtual disk, see the OpenVirtualDisk function.</param>
+      <param name="SecurityDescriptor">
+            An optional pointer to a SECURITY_DESCRIPTOR to apply to the attached virtual disk. If this parameter is NULL, the security descriptor of the virtual
+            disk image file is used.
+            <para>
+            Ensure that the security descriptor that AttachVirtualDisk applies to the attached virtual disk grants the write attributes permission for the user,
+            or that the security descriptor of the virtual disk image file grants the write attributes permission for the user if you specify NULL for this
+            parameter. If the security descriptor does not grant write attributes permission for a user, Shell displays the following error when the user
+            accesses the attached virtual disk: The Recycle Bin is corrupted. Do you want to empty the Recycle Bin for this drive?
+            </para></param>
+      <param name="Flags">A valid combination of values of the ATTACH_VIRTUAL_DISK_FLAG enumeration.</param>
+      <param name="ProviderSpecificFlags">Flags specific to the type of virtual disk being attached. May be zero if none are required.</param>
+      <param name="Parameters">A pointer to a valid ATTACH_VIRTUAL_DISK_PARAMETERS structure that contains attachment parameter data.</param>
+      <param name="Overlapped">An optional pointer to a valid OVERLAPPED structure if asynchronous operation is desired.</param>
+      <returns>
+            Status of the request.
+            <para>If the function succeeds, the return value is ERROR_SUCCESS.</para><para>If the function fails, the return value is an error code. For more information, see System Error Codes.</para></returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.BreakMirrorVirtualDisk(Microsoft.Win32.SafeHandles.SafeFileHandle)">
+      <summary>
+            Breaks a previously initiated mirror operation and sets the mirror to be the active virtual disk.
+            </summary>
+      <param name="VirtualDiskHandle">A handle to the open mirrored virtual disk. For information on how to open a virtual disk, see the OpenVirtualDisk function. For information on how to mirror a virtual disk, see the MirrorVirtualDisk function.</param>
+      <returns>
+            Status of the request.
+            <para>If the function succeeds, the return value is ERROR_SUCCESS.</para><para>If the function fails, the return value is an error code. For more information, see System Error Codes.</para></returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.CompactVirtualDisk(Microsoft.Win32.SafeHandles.SafeFileHandle,Vanara.PInvoke.VirtDisk.COMPACT_VIRTUAL_DISK_FLAG,Vanara.PInvoke.VirtDisk.COMPACT_VIRTUAL_DISK_PARAMETERS@,System.IntPtr)">
+      <summary>Reduces the size of a virtual hard disk (VHD) backing store file.</summary>
+      <param name="VirtualDiskHandle">
+            A handle to the open virtual disk, which must have been opened using the VIRTUAL_DISK_ACCESS_METAOPS flag in the VirtualDiskAccessMask parameter
+            passed to OpenVirtualDisk. For information on how to open a virtual disk, see the OpenVirtualDisk function.
+            </param>
+      <param name="Flags">Must be the COMPACT_VIRTUAL_DISK_FLAG_NONE value (0) of the COMPACT_VIRTUAL_DISK_FLAG enumeration.</param>
+      <param name="Parameters">A optional pointer to a valid COMPACT_VIRTUAL_DISK_PARAMETERS structure that contains compaction parameter data.</param>
+      <param name="Overlapped">An optional pointer to a valid OVERLAPPED structure if asynchronous operation is desired.</param>
+      <returns>
+            If the function succeeds, the return value is ERROR_SUCCESS. If the function fails, the return value is an error code. For more information, see
+            System Error Codes.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.CompactVirtualDisk(Microsoft.Win32.SafeHandles.SafeFileHandle,Vanara.PInvoke.VirtDisk.COMPACT_VIRTUAL_DISK_FLAG,Vanara.PInvoke.VirtDisk.COMPACT_VIRTUAL_DISK_PARAMETERS@,System.Threading.NativeOverlapped@)">
+      <summary>Reduces the size of a virtual hard disk (VHD) backing store file.</summary>
+      <param name="VirtualDiskHandle">
+            A handle to the open virtual disk, which must have been opened using the VIRTUAL_DISK_ACCESS_METAOPS flag in the VirtualDiskAccessMask parameter
+            passed to OpenVirtualDisk. For information on how to open a virtual disk, see the OpenVirtualDisk function.
+            </param>
+      <param name="Flags">Must be the COMPACT_VIRTUAL_DISK_FLAG_NONE value (0) of the COMPACT_VIRTUAL_DISK_FLAG enumeration.</param>
+      <param name="Parameters">A optional pointer to a valid COMPACT_VIRTUAL_DISK_PARAMETERS structure that contains compaction parameter data.</param>
+      <param name="Overlapped">An optional pointer to a valid OVERLAPPED structure if asynchronous operation is desired.</param>
+      <returns>
+            If the function succeeds, the return value is ERROR_SUCCESS. If the function fails, the return value is an error code. For more information, see
+            System Error Codes.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.CreateVirtualDisk(Vanara.PInvoke.VirtDisk.VIRTUAL_STORAGE_TYPE@,System.String,Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_ACCESS_MASK,System.IntPtr,Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_FLAG,System.Int32,Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS@,System.IntPtr,Microsoft.Win32.SafeHandles.SafeFileHandle@)">
+      <summary>Creates a virtual hard disk (VHD) image file, either using default parameters or using an existing VHD or physical disk.</summary>
+      <param name="VirtualStorageType">A pointer to a VIRTUAL_STORAGE_TYPE structure that contains the desired disk type and vendor information.</param>
+      <param name="Path">A pointer to a valid string that represents the path to the new virtual disk image file.</param>
+      <param name="VirtualDiskAccessMask">The VIRTUAL_DISK_ACCESS_MASK value to use when opening the newly created virtual disk file.</param>
+      <param name="SecurityDescriptor">
+            An optional pointer to a SECURITY_DESCRIPTOR to apply to the virtual disk image file. If this parameter is NULL, the parent directory's security
+            descriptor will be used.
+            </param>
+      <param name="Flags">Creation flags, which must be a valid combination of the CREATE_VIRTUAL_DISK_FLAG enumeration.</param>
+      <param name="ProviderSpecificFlags">Flags specific to the type of virtual disk being created. May be zero if none are required.</param>
+      <param name="Parameters">A pointer to a valid CREATE_VIRTUAL_DISK_PARAMETERS structure that contains creation parameter data.</param>
+      <param name="Overlapped">An optional pointer to a valid OVERLAPPED structure if asynchronous operation is desired.</param>
+      <param name="Handle">A pointer to the handle object that represents the newly created virtual disk.</param>
+      <returns>
+            If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
+            function fails, the return value is an error code and the value of the Handle parameter is undefined.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.CreateVirtualDisk(Vanara.PInvoke.VirtDisk.VIRTUAL_STORAGE_TYPE@,System.String,Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_ACCESS_MASK,System.IntPtr,Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_FLAG,System.Int32,Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS@,System.Threading.NativeOverlapped@,Microsoft.Win32.SafeHandles.SafeFileHandle@)">
+      <summary>Creates a virtual hard disk (VHD) image file, either using default parameters or using an existing VHD or physical disk.</summary>
+      <param name="VirtualStorageType">A pointer to a VIRTUAL_STORAGE_TYPE structure that contains the desired disk type and vendor information.</param>
+      <param name="Path">A pointer to a valid string that represents the path to the new virtual disk image file.</param>
+      <param name="VirtualDiskAccessMask">The VIRTUAL_DISK_ACCESS_MASK value to use when opening the newly created virtual disk file.</param>
+      <param name="SecurityDescriptor">
+            An optional pointer to a SECURITY_DESCRIPTOR to apply to the virtual disk image file. If this parameter is NULL, the parent directory's security
+            descriptor will be used.
+            </param>
+      <param name="Flags">Creation flags, which must be a valid combination of the CREATE_VIRTUAL_DISK_FLAG enumeration.</param>
+      <param name="ProviderSpecificFlags">Flags specific to the type of virtual disk being created. May be zero if none are required.</param>
+      <param name="Parameters">A pointer to a valid CREATE_VIRTUAL_DISK_PARAMETERS structure that contains creation parameter data.</param>
+      <param name="Overlapped">An optional pointer to a valid OVERLAPPED structure if asynchronous operation is desired.</param>
+      <param name="Handle">A pointer to the handle object that represents the newly created virtual disk.</param>
+      <returns>
+            If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
+            function fails, the return value is an error code and the value of the Handle parameter is undefined.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.DetachVirtualDisk(Microsoft.Win32.SafeHandles.SafeFileHandle,Vanara.PInvoke.VirtDisk.DETACH_VIRTUAL_DISK_FLAG,System.Int32)">
+      <summary>
+            Detaches a virtual hard disk (VHD) or CD or DVD image file (ISO) by locating an appropriate virtual disk provider to accomplish the operation.
+            </summary>
+      <param name="VirtualDiskHandle">
+            A handle to an open virtual disk, which must have been opened using the VIRTUAL_DISK_ACCESS_DETACH flag set in the VirtualDiskAccessMask parameter to
+            the OpenVirtualDisk function. For information on how to open a virtual disk, see the OpenVirtualDisk function.
+            </param>
+      <param name="Flags">A valid combination of values of the DETACH_VIRTUAL_DISK_FLAG enumeration.</param>
+      <param name="ProviderSpecificFlags">Flags specific to the type of virtual disk being detached. May be zero if none are required.</param>
+      <returns>
+            If the function succeeds, the return value is ERROR_SUCCESS. If the function fails, the return value is an error code. For more information, see
+            System Error Codes.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.ExpandVirtualDisk(Microsoft.Win32.SafeHandles.SafeFileHandle,Vanara.PInvoke.VirtDisk.EXPAND_VIRTUAL_DISK_FLAG,Vanara.PInvoke.VirtDisk.EXPAND_VIRTUAL_DISK_PARAMETERS@,System.IntPtr)">
+      <summary>Increases the size of a fixed or dynamic virtual hard disk (VHD).</summary>
+      <param name="VirtualDiskHandle">A handle to the open VHD, which must have been opened using the VIRTUAL_DISK_ACCESS_METAOPS flag.</param>
+      <param name="Flags">Must be the EXPAND_VIRTUAL_DISK_FLAG_NONE value of the EXPAND_VIRTUAL_DISK_FLAG enumeration.</param>
+      <param name="Parameters">A pointer to a valid EXPAND_VIRTUAL_DISK_PARAMETERS structure that contains expansion parameter data.</param>
+      <param name="Overlapped">An optional pointer to a valid OVERLAPPED structure if asynchronous operation is desired.</param>
+      <returns>
+            If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
+            function fails, the return value is an error code and the value of the Handle parameter is undefined.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.ExpandVirtualDisk(Microsoft.Win32.SafeHandles.SafeFileHandle,Vanara.PInvoke.VirtDisk.EXPAND_VIRTUAL_DISK_FLAG,Vanara.PInvoke.VirtDisk.EXPAND_VIRTUAL_DISK_PARAMETERS@,System.Threading.NativeOverlapped@)">
+      <summary>Increases the size of a fixed or dynamic virtual hard disk (VHD).</summary>
+      <param name="VirtualDiskHandle">A handle to the open VHD, which must have been opened using the VIRTUAL_DISK_ACCESS_METAOPS flag.</param>
+      <param name="Flags">Must be the EXPAND_VIRTUAL_DISK_FLAG_NONE value of the EXPAND_VIRTUAL_DISK_FLAG enumeration.</param>
+      <param name="Parameters">A pointer to a valid EXPAND_VIRTUAL_DISK_PARAMETERS structure that contains expansion parameter data.</param>
+      <param name="Overlapped">An optional pointer to a valid OVERLAPPED structure if asynchronous operation is desired.</param>
+      <returns>
+            If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
+            function fails, the return value is an error code and the value of the Handle parameter is undefined.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.GetAllAttachedVirtualDiskPhysicalPaths(System.UInt32@,Vanara.InteropServices.SafeCoTaskMemHandle)">
+      <summary>
+            Get the paths of all attached virtual disks.
+            </summary>
+      <param name="PathsBufferSizeInBytes">Size of the buffer supplied in <paramref name="PathsBuffer" />.</param>
+      <param name="PathsBuffer">Buffer of sufficient size to hold all returned paths.</param>
+      <returns>
+            If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
+            function fails, the return value is an error code and the value of the Handle parameter is undefined.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.GetStorageDependencyInformation(Microsoft.Win32.SafeHandles.SafeFileHandle,Vanara.PInvoke.VirtDisk.GET_STORAGE_DEPENDENCY_FLAG,System.Int32,Vanara.InteropServices.SafeHGlobalHandle,System.Int32@)">
+      <summary>Returns the relationships between virtual hard disks (VHDs) or the volumes contained within those disks and their parent disk or volume.</summary>
+      <param name="ObjectHandle">A handle to an open VHD.</param>
+      <param name="Flags">A valid combination of GET_STORAGE_DEPENDENCY_FLAG values.</param>
+      <param name="StorageDependencyInfoSize">
+            Size, in bytes, of the STORAGE_DEPENDENCY_INFO structure that the StorageDependencyInfo parameter refers to.
+            </param>
+      <param name="StorageDependencyInfo">A pointer to a valid STORAGE_DEPENDENCY_INFO structure, which is a variable-length structure.</param>
+      <param name="SizeUsed">An optional pointer to a ULONG that receives the size used.</param>
+      <returns>
+            If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
+            function fails, the return value is an error code and the value of the Handle parameter is undefined.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.GetVirtualDiskInformation(Microsoft.Win32.SafeHandles.SafeFileHandle,System.UInt32@,Vanara.InteropServices.SafeHGlobalHandle,System.UInt32@)">
+      <summary>Retrieves information about a virtual hard disk (VHD).</summary>
+      <param name="VirtualDiskHandle">A handle to the open VHD, which must have been opened using the VIRTUAL_DISK_ACCESS_GET_INFO flag.</param>
+      <param name="VirtualDiskInfoSize">A pointer to a ULONG that contains the size of the VirtualDiskInfo parameter.</param>
+      <param name="VirtualDiskInfo">
+            A pointer to a valid <see cref="T:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO" /> structure. The format of the data returned is dependent on the value passed in the Version member by the caller.
+            </param>
+      <param name="SizeUsed">A pointer to a ULONG that contains the size used.</param>
+      <returns>
+            If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
+            function fails, the return value is an error code and the value of the Handle parameter is undefined.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.GetVirtualDiskOperationProgress(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Threading.NativeOverlapped@,Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_PROGRESS@)">
+      <summary>Checks the progress of an asynchronous virtual hard disk (VHD) operation.</summary>
+      <param name="VirtualDiskHandle">A valid handle to a virtual disk with a pending asynchronous operation.</param>
+      <param name="Overlapped">
+            A pointer to a valid OVERLAPPED structure. This parameter must reference the same structure previously sent to the virtual disk operation being
+            checked for progress.
+            </param>
+      <param name="Progress">A pointer to a VIRTUAL_DISK_PROGRESS structure that receives the current virtual disk operation progress.</param>
+      <returns>
+            If the function succeeds, the return value is ERROR_SUCCESS and the Progress parameter will be populated with the current virtual disk operation
+            progress. If the function fails, the return value is an error code and the value of the Progress parameter is undefined. For more information, see
+            System Error Codes.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.GetVirtualDiskPhysicalPath(Microsoft.Win32.SafeHandles.SafeFileHandle,System.Int32@,System.Text.StringBuilder)">
+      <summary>Retrieves the path to the physical device object that contains a virtual hard disk (VHD).</summary>
+      <param name="VirtualDiskHandle">A handle to the open VHD, which must have been opened using the VIRTUAL_DISK_ACCESS_GET_INFO flag.</param>
+      <param name="DiskPathSizeInBytes">The size, in bytes, of the buffer pointed to by the DiskPath parameter.</param>
+      <param name="DiskPath">A target buffer to receive the path of the physical disk device that contains the VHD.</param>
+      <returns>
+            If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
+            function fails, the return value is an error code and the value of the Handle parameter is undefined.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.MergeVirtualDisk(Microsoft.Win32.SafeHandles.SafeFileHandle,Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_FLAG,Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_PARAMETERS@,System.IntPtr)">
+      <summary>Merges a child virtual hard disk (VHD) in a differencing chain with parent disks in the chain.</summary>
+      <param name="VirtualDiskHandle">A handle to the open VHD, which must have been opened using the VIRTUAL_DISK_ACCESS_METAOPS flag.</param>
+      <param name="Flags">Must be the MERGE_VIRTUAL_DISK_FLAG_NONE value of the MERGE_VIRTUAL_DISK_FLAG enumeration.</param>
+      <param name="Parameters">A pointer to a valid MERGE_VIRTUAL_DISK_PARAMETERS structure that contains merge parameter data.</param>
+      <param name="Overlapped">An optional pointer to a valid OVERLAPPED structure if asynchronous operation is desired.</param>
+      <returns>
+            If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
+            function fails, the return value is an error code and the value of the Handle parameter is undefined.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.MergeVirtualDisk(Microsoft.Win32.SafeHandles.SafeFileHandle,Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_FLAG,Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_PARAMETERS@,System.Threading.NativeOverlapped@)">
+      <summary>Merges a child virtual hard disk (VHD) in a differencing chain with parent disks in the chain.</summary>
+      <param name="VirtualDiskHandle">A handle to the open VHD, which must have been opened using the VIRTUAL_DISK_ACCESS_METAOPS flag.</param>
+      <param name="Flags">Must be the MERGE_VIRTUAL_DISK_FLAG_NONE value of the MERGE_VIRTUAL_DISK_FLAG enumeration.</param>
+      <param name="Parameters">A pointer to a valid MERGE_VIRTUAL_DISK_PARAMETERS structure that contains merge parameter data.</param>
+      <param name="Overlapped">An optional pointer to a valid OVERLAPPED structure if asynchronous operation is desired.</param>
+      <returns>
+            If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
+            function fails, the return value is an error code and the value of the Handle parameter is undefined.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.MirrorVirtualDisk(Microsoft.Win32.SafeHandles.SafeFileHandle,Vanara.PInvoke.VirtDisk.MIRROR_VIRTUAL_DISK_FLAG,Vanara.PInvoke.VirtDisk.MIRROR_VIRTUAL_DISK_PARAMETERS@,System.Threading.NativeOverlapped@)">
+      <summary>
+            Initiates a mirror operation for a virtual disk. Once the mirroring operation is initiated it will not complete until either CancelIo or CancelIoEx is called to cancel all I/O on the VirtualDiskHandle, leaving the original file as the current or BreakMirrorVirtualDisk is called to stop using the original file and only use the mirror. GetVirtualDiskOperationProgress can be used to determine if the disks are fully mirrored and writes go to both virtual disks.
+            </summary>
+      <param name="VirtualDiskHandle">A handle to the open virtual disk. For information on how to open a virtual disk, see the OpenVirtualDisk function.</param>
+      <param name="Flags">A valid combination of values from the MIRROR_VIRTUAL_DISK_FLAG enumeration.</param>
+      <param name="Parameters">Address of a MIRROR_VIRTUAL_DISK_PARAMETERS structure containing mirror parameter data.</param>
+      <param name="Overlapped">Address of an OVERLAPPEDstructure. This parameter is required.</param>
+      <returns>If the function succeeds, the return value is ERROR_SUCCESS. If the function fails, the return value is an error code.For more information, see System Error Codes.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.OpenVirtualDisk(Vanara.PInvoke.VirtDisk.VIRTUAL_STORAGE_TYPE@,System.String,Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_ACCESS_MASK,Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_FLAG,Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS,Microsoft.Win32.SafeHandles.SafeFileHandle@)">
+      <summary>Opens a virtual hard disk (VHD) or CD or DVD image file (ISO) for use.</summary>
+      <param name="VirtualStorageType">A pointer to a valid VIRTUAL_STORAGE_TYPE structure.</param>
+      <param name="Path">A pointer to a valid path to the virtual disk image to open.</param>
+      <param name="VirtualDiskAccessMask">A valid value of the VIRTUAL_DISK_ACCESS_MASK enumeration.</param>
+      <param name="Flags">A valid combination of values of the OPEN_VIRTUAL_DISK_FLAG enumeration.</param>
+      <param name="Parameters">An optional pointer to a valid OPEN_VIRTUAL_DISK_PARAMETERS structure. Can be NULL.</param>
+      <param name="Handle">A pointer to the handle object that represents the open virtual disk.</param>
+      <returns>
+            If the function succeeds, the return value is ERROR_SUCCESS (0) and the Handle parameter contains a valid pointer to the new virtual disk object.
+            <para>
+            If the function fails, the return value is an error code and the value of the Handle parameter is undefined. For more information, see System Error Codes.
+            </para></returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.ResizeVirtualDisk(Microsoft.Win32.SafeHandles.SafeFileHandle,Vanara.PInvoke.VirtDisk.RESIZE_VIRTUAL_DISK_FLAG,Vanara.PInvoke.VirtDisk.RESIZE_VIRTUAL_DISK_PARAMETERS@,System.IntPtr)">
+      <summary>Resizes a virtual disk.</summary>
+      <param name="VirtualDiskHandle">Handle to an open virtual disk.</param>
+      <param name="Flags">Zero or more flags enumerated from the RESIZE_VIRTUAL_DISK_FLAG enumeration.</param>
+      <param name="Parameters">Address of a RESIZE_VIRTUAL_DISK_PARAMETERS structure containing the new size of the virtual disk.</param>
+      <param name="Overlapped">If this is to be an asynchronous operation, the address of a valid OVERLAPPED structure.</param>
+      <returns>
+            If the function succeeds, the return value is ERROR_SUCCESS (0) and the Handle parameter contains a valid pointer to the new virtual disk object.
+            <para>
+            If the function fails, the return value is an error code and the value of the Handle parameter is undefined. For more information, see System Error Codes.
+            </para></returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.ResizeVirtualDisk(Microsoft.Win32.SafeHandles.SafeFileHandle,Vanara.PInvoke.VirtDisk.RESIZE_VIRTUAL_DISK_FLAG,Vanara.PInvoke.VirtDisk.RESIZE_VIRTUAL_DISK_PARAMETERS@,System.Threading.NativeOverlapped@)">
+      <summary>Resizes a virtual disk.</summary>
+      <param name="VirtualDiskHandle">Handle to an open virtual disk.</param>
+      <param name="Flags">Zero or more flags enumerated from the RESIZE_VIRTUAL_DISK_FLAG enumeration.</param>
+      <param name="Parameters">Address of a RESIZE_VIRTUAL_DISK_PARAMETERS structure containing the new size of the virtual disk.</param>
+      <param name="Overlapped">If this is to be an asynchronous operation, the address of a valid OVERLAPPED structure.</param>
+      <returns>
+            If the function succeeds, the return value is ERROR_SUCCESS (0) and the Handle parameter contains a valid pointer to the new virtual disk object.
+            <para>
+            If the function fails, the return value is an error code and the value of the Handle parameter is undefined. For more information, see System Error Codes.
+            </para></returns>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.SetVirtualDiskInformation(Microsoft.Win32.SafeHandles.SafeFileHandle,Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO@)">
+      <summary>Sets information about a virtual hard disk (VHD).</summary>
+      <param name="VirtualDiskHandle">A handle to the open VHD, which must have been opened using the VIRTUAL_DISK_ACCESS_METAOPS flag.</param>
+      <param name="VirtualDiskInfo">A pointer to a valid SET_VIRTUAL_DISK_INFO structure.</param>
+      <returns>
+            If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
+            function fails, the return value is an error code and the value of the Handle parameter is undefined.
+            </returns>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_STORAGE_TYPE_VENDOR_MICROSOFT">
+      <summary>The virtual storage type vendor Microsoft</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_FLAG">
+      <summary>Contains virtual disk attach request flags.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_NONE">
+      <summary>No flags. Use system defaults.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_READ_ONLY">
+      <summary>
+            Attach the virtual disk as read-only.
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This flag is not supported for opening ISO virtual disks until Windows 8 and Windows Server 2012.
+            </para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_NO_DRIVE_LETTER">
+      <summary>
+            No drive letters are assigned to the disk's volumes.
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This flag is not supported for opening ISO virtual disks until Windows 8 and Windows Server 2012.
+            </para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_PERMANENT_LIFETIME">
+      <summary>
+            Will decouple the virtual disk lifetime from that of the VirtualDiskHandle. The virtual disk will be attached until the DetachVirtualDisk
+            function is called, even if all open handles to the virtual disk are closed.
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This flag is not supported for opening ISO virtual disks until Windows 8 and Windows Server 2012.
+            </para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_NO_LOCAL_HOST">
+      <summary>Reserved. This flag is not supported for ISO virtual disks.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_NO_SECURITY_DESCRIPTOR">
+      <summary>Do not assign a custom security descriptor to the disk; use the system default.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_PARAMETERS">
+      <summary>Contains virtual hard disk (VHD) attach request parameters.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_PARAMETERS.Default">
+      <summary>Gets the default value for this structure. This is currently the only valid value for <see cref="T:Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_PARAMETERS" />.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_PARAMETERS.Version">
+      <summary>
+            A ATTACH_VIRTUAL_DISK_VERSION enumeration that specifies the version of the ATTACH_VIRTUAL_DISK_PARAMETERS structure being passed to or from the
+            VHD functions.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_PARAMETERS.Version1">
+      <summary>A structure with the following member.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_PARAMETERS_Version1">
+      <summary>A structure with the following member.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_PARAMETERS_Version1.Reserved">
+      <summary>Reserved.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_VERSION">
+      <summary>Contains the version of the virtual hard disk (VHD) ATTACH_VIRTUAL_DISK_PARAMETERS structure to use in calls to VHD functions.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_VERSION.ATTACH_VIRTUAL_DISK_VERSION_UNSPECIFIED">
+      <summary>Unspecified version.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_VERSION.ATTACH_VIRTUAL_DISK_VERSION_1">
+      <summary>Version 1.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.COMPACT_VIRTUAL_DISK_FLAG">
+      <summary>Contains virtual disk compact request flags.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.COMPACT_VIRTUAL_DISK_FLAG.COMPACT_VIRTUAL_DISK_FLAG_NONE">
+      <summary>No flags are specified.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.COMPACT_VIRTUAL_DISK_FLAG.COMPACT_VIRTUAL_DISK_FLAG_NO_ZERO_SCAN">
+      <summary></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.COMPACT_VIRTUAL_DISK_FLAG.COMPACT_VIRTUAL_DISK_FLAG_NO_BLOCK_MOVES">
+      <summary></summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.COMPACT_VIRTUAL_DISK_PARAMETERS">
+      <summary>Contains virtual hard disk (VHD) compacting parameters.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.VirtDisk.COMPACT_VIRTUAL_DISK_PARAMETERS.Default">
+      <summary>Gets the default value for this structure. This is currently the only valid value for <see cref="T:Vanara.PInvoke.VirtDisk.COMPACT_VIRTUAL_DISK_PARAMETERS" />.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.COMPACT_VIRTUAL_DISK_PARAMETERS.Reserved">
+      <summary>Reserved. Must be set to zero.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.COMPACT_VIRTUAL_DISK_PARAMETERS.Version">
+      <summary>
+            A COMPACT_VIRTUAL_DISK_VERSION enumeration that specifies the version of the COMPACT_VIRTUAL_DISK_PARAMETERS structure being passed to or from
+            the virtual hard disk (VHD) functions.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.COMPACT_VIRTUAL_DISK_VERSION">
+      <summary>Contains the version of the virtual hard disk (VHD) COMPACT_VIRTUAL_DISK_PARAMETERS structure to use in calls to VHD functions.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.COMPACT_VIRTUAL_DISK_VERSION.COMPACT_VIRTUAL_DISK_VERSION_UNSPECIFIED">
+      <summary>Unspecified.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.COMPACT_VIRTUAL_DISK_VERSION.COMPACT_VIRTUAL_DISK_VERSION_1">
+      <summary>Version 1.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_FLAG">
+      <summary>Contains virtual disk creation flags.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_NONE">
+      <summary>No special creation conditions; system defaults are used.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_FULL_PHYSICAL_ALLOCATION">
+      <summary>Pre-allocate all physical space necessary for the virtual size of the disk (e.g. a fixed VHD).</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_PREVENT_WRITES_TO_SOURCE_DISK">
+      <summary>
+            Take ownership of the source disk during create from source disk, to insure the source disk does not change during the create operation. The
+            source disk must also already be offline or read-only (or both). Ownership is released when create is done. This also has a side-effect of
+            disallowing concurrent create from same source disk. Create will fail if ownership cannot be obtained or if the source disk is not already
+            offline or read-only. This flag is optional, but highly recommended for creates from source disk. No effect for other types of create (no effect
+            for create from source VHD; no effect for create without SourcePath).
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_DO_NOT_COPY_METADATA_FROM_PARENT">
+      <summary>
+            Do not copy initial virtual disk metadata or block states from the parent VHD; this is useful if the parent VHD is a stand-in file and the real
+            parent will be explicitly set later.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_CREATE_BACKING_STORAGE">
+      <summary>Create the backing storage disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_USE_CHANGE_TRACKING_SOURCE_LIMIT">
+      <summary>
+            If set, the SourceLimitPath is an change tracking ID, and all data that has changed since that change tracking ID will be copied from the source.
+            If clear, the SourceLimitPath is a VHD file path in the source VHD's chain, and all data that is present in the children of that VHD in the chain
+            will be copied from the source.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_PRESERVE_PARENT_CHANGE_TRACKING_STATE">
+      <summary>
+            If set and the parent VHD has change tracking enabled, the child will have change tracking enabled and will recognize all change tracking IDs
+            that currently exist in the parent. If clear or if the parent VHD does not have change tracking available, then change tracking will not be
+            enabled in the new VHD.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_VHD_SET_USE_ORIGINAL_BACKING_STORAGE">
+      <summary>
+            When creating a VHD Set from source, don't copy the data in the original backing store, but intsead use the file as is. If this flag is not
+            specified and a source file is passed to CreateVirtualDisk for a VHDSet file, the data in the source file is copied. If this flag is set the data
+            is moved. The name of the file may change.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_SPARSE_FILE">
+      <summary>
+            When creating a fixed virtual disk, take advantage of an underlying sparse file. Only supported on file systems that support sparse VDLs.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS">
+      <summary>Contains virtual disk creation parameters, providing control over, and information about, the newly created virtual disk.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS.#ctor(System.UInt64,System.UInt32,System.UInt32,System.UInt32)">
+      <summary>
+            Initializes a CREATE_VIRTUAL_DISK_PARAMETERS with a maximum size.
+            </summary>
+      <param name="maxSize">
+            The maximum virtual size of the virtual disk object. Must be a multiple of 512. If a ParentPath is specified, this value must be zero. If a
+            SourcePath is specified, this value can be zero to specify the size of the source VHD to be used, otherwise the size specified must be greater
+            than or equal to the size of the source disk.
+            </param>
+      <param name="version">Set this number if you wish to force the version of this structure to something other than <see cref="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_VERSION.CREATE_VIRTUAL_DISK_VERSION_1" />.</param>
+      <param name="blockSize">Internal size of the virtual disk object blocks, in bytes. This must be set to one of the following values: 0 (default), 0x80000 (512K), or 0x200000 (2MB).</param>
+      <param name="logicalSectorSize">Internal size of the virtual disk object sectors. For VHDX must be set to 512 (0x200) or 4096 (0x1000). For VHD 1 must be set to 512.</param>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS.Version">
+      <summary>
+            A CREATE_VIRTUAL_DISK_VERSION enumeration that specifies the version of the CREATE_VIRTUAL_DISK_PARAMETERS structure being passed to or from the
+            virtual hard disk (VHD) functions.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS.Version1">
+      <summary>This structure is used if the Version member is CREATE_VIRTUAL_DISK_VERSION_1 (1).</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS.Version2">
+      <summary>This structure is used if the Version member is CREATE_VIRTUAL_DISK_VERSION_2 (2).</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS.Version3">
+      <summary>This structure is used if the Version member is CREATE_VIRTUAL_DISK_VERSION_3 (3).</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version1">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version1</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version1.BlockSizeInBytes">
+      <summary>
+            Internal size of the virtual disk object blocks. If value is 0, block size will be automatically matched to the parent or source disk's setting
+            if ParentPath or SourcePath is specified (otherwise a block size of 2MB will be used).
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version1.MaximumSize">
+      <summary>
+            The maximum virtual size of the virtual disk object. Must be a multiple of 512. If a ParentPath is specified, this value must be zero. If a
+            SourcePath is specified, this value can be zero to specify the size of the source VHD to be used, otherwise the size specified must be greater
+            than or equal to the size of the source disk.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version1.ParentPath">
+      <summary>
+            Optional path to a parent virtual disk object. Associates the new virtual disk with an existing virtual disk. If this parameter is not NULL,
+            SourcePath must be NULL.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version1.SectorSizeInBytes">
+      <summary>Internal size of the virtual disk object sectors. Must be set to 512.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version1.SourcePath">
+      <summary>
+            Optional fully qualified path to pre-populate the new virtual disk object with block data from an existing disk. This path may refer to a virtual
+            disk or a physical disk. If this parameter is not NULL, ParentPath must be NULL.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version1.UniqueId">
+      <summary>Unique identifier to assign to the virtual disk object. If this member is set to zero, a unique identifier is created by the system.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version2">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version2</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version2.BlockSizeInBytes">
+      <summary>
+            Internal size of the virtual disk object blocks. If value is 0, block size will be automatically matched to the parent or source disk's setting
+            if ParentPath or SourcePath is specified (otherwise a block size of 2MB will be used).
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version2.MaximumSize">
+      <summary>
+            The maximum virtual size of the virtual disk object. Must be a multiple of 512. If a ParentPath is specified, this value must be zero. If a
+            SourcePath is specified, this value can be zero to specify the size of the source VHD to be used, otherwise the size specified must be greater
+            than or equal to the size of the source disk.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version2.OpenFlags">
+      <summary>Zero or more flags from the OPEN_VIRTUAL_DISK_FLAG enumeration describing how the virtual disk is to be opened.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version2.ParentPath">
+      <summary>
+            Optional path to a parent virtual disk object. Associates the new virtual disk with an existing virtual disk. If this parameter is not NULL,
+            SourcePath must be NULL.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version2.ParentVirtualStorageType">
+      <summary>A VIRTUAL_STORAGE_TYPE structure describing the parent virtual disk specified in the ParentPath member.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version2.PhysicalSectorSizeInBytes">
+      <summary>Size of the physical disk object sectors.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version2.ResiliencyGuid">
+      <summary>Resiliency GUID for the file.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version2.SectorSizeInBytes">
+      <summary>Internal size of the virtual disk object sectors. Must be set to 512.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version2.SourcePath">
+      <summary>
+            Optional fully qualified path to pre-populate the new virtual disk object with block data from an existing disk. This path may refer to a virtual
+            disk or a physical disk. If this parameter is not NULL, ParentPath must be NULL.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version2.SourceVirtualStorageType">
+      <summary>A VIRTUAL_STORAGE_TYPE structure describing the source virtual disk specified in the SourcePath member.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version2.UniqueId">
+      <summary>Unique identifier to assign to the virtual disk object. If this member is set to zero, a unique identifier is created by the system.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version3">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version3</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version3.BackingStorageType">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version3.BackingStorageType</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version3.BlockSizeInBytes">
+      <summary>
+            Internal size of the virtual disk object blocks. If value is 0, block size will be automatically matched to the parent or source disk's setting
+            if ParentPath or SourcePath is specified (otherwise a block size of 2MB will be used).
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version3.MaximumSize">
+      <summary>
+            The maximum virtual size of the virtual disk object. Must be a multiple of 512. If a ParentPath is specified, this value must be zero. If a
+            SourcePath is specified, this value can be zero to specify the size of the source VHD to be used, otherwise the size specified must be greater
+            than or equal to the size of the source disk.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version3.OpenFlags">
+      <summary>Zero or more flags from the OPEN_VIRTUAL_DISK_FLAG enumeration describing how the virtual disk is to be opened.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version3.ParentPath">
+      <summary>
+            Optional path to a parent virtual disk object. Associates the new virtual disk with an existing virtual disk. If this parameter is not NULL,
+            SourcePath must be NULL.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version3.ParentVirtualStorageType">
+      <summary>A VIRTUAL_STORAGE_TYPE structure describing the parent virtual disk specified in the ParentPath member.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version3.PhysicalSectorSizeInBytes">
+      <summary>Size of the physical disk object sectors.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version3.ResiliencyGuid">
+      <summary>Resiliency GUID for the file.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version3.SectorSizeInBytes">
+      <summary>Internal size of the virtual disk object sectors. Must be set to 512.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version3.SourceLimitPath">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version3.SourceLimitPath</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version3.SourcePath">
+      <summary>
+            Optional fully qualified path to pre-populate the new virtual disk object with block data from an existing disk. This path may refer to a virtual
+            disk or a physical disk. If this parameter is not NULL, ParentPath must be NULL.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version3.SourceVirtualStorageType">
+      <summary>A VIRTUAL_STORAGE_TYPE structure describing the source virtual disk specified in the SourcePath member.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_PARAMETERS_Version3.UniqueId">
+      <summary>Unique identifier to assign to the virtual disk object. If this member is set to zero, a unique identifier is created by the system.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_VERSION">
+      <summary>Contains the version of the virtual hard disk (VHD) CREATE_VIRTUAL_DISK_PARAMETERS structure to use in calls to VHD functions.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_VERSION.CREATE_VIRTUAL_DISK_VERSION_UNSPECIFIED">
+      <summary>Unsupported</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_VERSION.CREATE_VIRTUAL_DISK_VERSION_1">
+      <summary></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_VERSION.CREATE_VIRTUAL_DISK_VERSION_2">
+      <summary></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.CREATE_VIRTUAL_DISK_VERSION.CREATE_VIRTUAL_DISK_VERSION_3">
+      <summary></summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.DEPENDENT_DISK_FLAG">
+      <summary>Contains virtual disk dependency information flags.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.DEPENDENT_DISK_FLAG.DEPENDENT_DISK_FLAG_NONE">
+      <summary>No flags specified. Use system defaults.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.DEPENDENT_DISK_FLAG.DEPENDENT_DISK_FLAG_MULT_BACKING_FILES">
+      <summary>Multiple files backing the virtual disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.DEPENDENT_DISK_FLAG.DEPENDENT_DISK_FLAG_FULLY_ALLOCATED">
+      <summary>Fully allocated virtual disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.DEPENDENT_DISK_FLAG.DEPENDENT_DISK_FLAG_READ_ONLY">
+      <summary>Read-only virtual disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.DEPENDENT_DISK_FLAG.DEPENDENT_DISK_FLAG_REMOTE">
+      <summary>The backing file of the virtual disk is not on a local physical disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.DEPENDENT_DISK_FLAG.DEPENDENT_DISK_FLAG_SYSTEM_VOLUME">
+      <summary>Reserved.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.DEPENDENT_DISK_FLAG.DEPENDENT_DISK_FLAG_SYSTEM_VOLUME_PARENT">
+      <summary>The backing file of the virtual disk is on the system volume.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.DEPENDENT_DISK_FLAG.DEPENDENT_DISK_FLAG_REMOVABLE">
+      <summary>The backing file of the virtual disk is on a removable physical disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.DEPENDENT_DISK_FLAG.DEPENDENT_DISK_FLAG_NO_DRIVE_LETTER">
+      <summary>Drive letters are not automatically assigned to the volumes on the virtual disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.DEPENDENT_DISK_FLAG.DEPENDENT_DISK_FLAG_PARENT">
+      <summary>The virtual disk is a parent of a differencing chain.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.DEPENDENT_DISK_FLAG.DEPENDENT_DISK_FLAG_NO_HOST_DISK">
+      <summary>The virtual disk is not surfaced on (attached to) the local host. For example, it is attached to a guest virtual machine.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.DEPENDENT_DISK_FLAG.DEPENDENT_DISK_FLAG_PERMANENT_LIFETIME">
+      <summary>The lifetime of the virtual disk is not tied to any application or process.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.DETACH_VIRTUAL_DISK_FLAG">
+      <summary>Contains virtual disk detach request flags.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.DETACH_VIRTUAL_DISK_FLAG.DETACH_VIRTUAL_DISK_FLAG_NONE">
+      <summary>No flags. Use system defaults.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.EXPAND_VIRTUAL_DISK_FLAG">
+      <summary>Contains virtual hard disk (VHD) expand request flags.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.EXPAND_VIRTUAL_DISK_FLAG.EXPAND_VIRTUAL_DISK_FLAG_NONE">
+      <summary>No flags. Use system defaults.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.EXPAND_VIRTUAL_DISK_PARAMETERS">
+      <summary>Contains virtual disk expansion request parameters.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.EXPAND_VIRTUAL_DISK_PARAMETERS.#ctor(System.UInt64)">
+      <summary>Initializes with default version and <paramref name="newSize" />.</summary>
+      <param name="newSize">New size, in bytes, for the expansion request.</param>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.EXPAND_VIRTUAL_DISK_PARAMETERS.NewSize">
+      <summary>New size, in bytes, for the expansion request.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.EXPAND_VIRTUAL_DISK_PARAMETERS.Version">
+      <summary>
+            An EXPAND_VIRTUAL_DISK_VERSION enumeration that specifies the version of the EXPAND_VIRTUAL_DISK_PARAMETERS structure being passed to or from the
+            virtual hard disk (VHD) functions.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.EXPAND_VIRTUAL_DISK_VERSION">
+      <summary>Contains the version of the virtual hard disk (VHD) EXPAND_VIRTUAL_DISK_PARAMETERS structure to use in calls to VHD functions.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.EXPAND_VIRTUAL_DISK_VERSION.EXPAND_VIRTUAL_DISK_VERSION_UNSPECIFIED">
+      <summary>Unspecified.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.EXPAND_VIRTUAL_DISK_VERSION.EXPAND_VIRTUAL_DISK_VERSION_1">
+      <summary>Version 1.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.GET_STORAGE_DEPENDENCY_FLAG">
+      <summary>Contains virtual hard disk (VHD) storage dependency request flags.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_STORAGE_DEPENDENCY_FLAG.GET_STORAGE_DEPENDENCY_FLAG_NONE">
+      <summary>No flags specified.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_STORAGE_DEPENDENCY_FLAG.GET_STORAGE_DEPENDENCY_FLAG_HOST_VOLUMES">
+      <summary>Return information for volumes or disks hosting the volume specified.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_STORAGE_DEPENDENCY_FLAG.GET_STORAGE_DEPENDENCY_FLAG_DISK_HANDLE">
+      <summary>The handle provided is to a disk, not a volume or file.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO">
+      <summary>Contains virtual hard disk (VHD) information.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO.ChangeTrackingState">
+      <summary>The state of resilient change tracking (RCT) for the virtual disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO.FragmentationPercentage">
+      <summary>The fragmentation level of the virtual disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO.Identifier">
+      <summary>Unique identifier of the VHD.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO.Is4kAligned">
+      <summary>Indicates whether the virtual disk is 4 KB aligned.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO.IsLoaded">
+      <summary>Indicates whether the virtual disk is currently mounted and in use. TRUE if the virtual disk is currently mounted and in use; otherwise FALSE.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO.ParentIdentifier">
+      <summary>Unique identifier of the parent disk backing store.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO.ParentLocation">
+      <summary>A structure with the following members</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO.ParentTimestamp">
+      <summary>Internal time stamp of the parent disk backing store.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO.PhysicalDisk">
+      <summary>Details about the physical disk on which the virtual disk resides.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO.ProviderSubtype">
+      <summary>Provider-specific subtype.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO.Size">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO.Size</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO.SmallestSafeVirtualSize">
+      <summary>The smallest safe minimum size of the virtual disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO.Version">
+      <summary>
+            A GET_VIRTUAL_DISK_INFO_VERSION enumeration that specifies the version of the GET_VIRTUAL_DISK_INFO structure being passed to or from the VHD
+            functions. This determines what parts of this structure will be used.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO.VhdPhysicalSectorSize">
+      <summary>The physical sector size of the virtual disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO.VirtualDiskId">
+      <summary>The identifier that is uniquely created when a user first creates the virtual disk to attempt to uniquely identify that virtual disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO.VirtualStorageType">
+      <summary>VIRTUAL_STORAGE_TYPE structure containing information about the type of VHD.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_ChangeTrackingState">
+      <summary>The state of resilient change tracking (RCT) for the virtual disk.
+            <note type="warning">While this structure will fill, the value of MostRecentId will the be first character of a truncated string.</note></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_ChangeTrackingState.Enabled">
+      <summary>Whether RCT is turned on. TRUE if RCT is turned on; otherwise FALSE.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_ChangeTrackingState.MostRecentId">
+      <summary>The change tracking identifier for the change that identifies the state of the virtual disk that you want to use as the basis of comparison to determine whether the NewerChanges member reports new changes.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_ChangeTrackingState.NewerChanges">
+      <summary>Whether the virtual disk has changed since the change identified by the MostRecentId member occurred. TRUE if the virtual disk has changed since the change identified by the MostRecentId member occurred; otherwise FALSE.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_ParentLocation">
+      <summary>A structure with the following members
+            <note type="warning">While this structure will fill, the value of ParentLocationBuffer will the be first character of a truncated string.</note></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_ParentLocation.ParentLocationBuffer">
+      <summary>
+            If the ParentResolved member is TRUE, contains the path of the parent backing store. If the ParentResolved member is FALSE, contains all of the
+            parent paths present in the search list.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_ParentLocation.ParentResolved">
+      <summary>Parent resolution. TRUE if the parent backing store was successfully resolved, FALSE if not.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_PhysicalDisk">
+      <summary>Details about the physical disk on which the virtual disk resides.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_PhysicalDisk.IsRemote">
+      <summary>Indicates whether the physical disk is remote.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_PhysicalDisk.LogicalSectorSize">
+      <summary>The logical sector size of the physical disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_PhysicalDisk.PhysicalSectorSize">
+      <summary>The physical sector size of the physical disk.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_Size">
+      <summary>Sizes of the virtual disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_Size.BlockSize">
+      <summary>Block size of the VHD, in bytes.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_Size.PhysicalSize">
+      <summary>Physical size of the VHD on disk, in bytes.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_Size.SectorSize">
+      <summary>Sector size of the VHD, in bytes.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_Size.VirtualSize">
+      <summary>Virtual size of the VHD, in bytes.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_VERSION">
+      <summary>Contains virtual hard disk (VHD) information retrieval identifiers.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_UNSPECIFIED">
+      <summary>Reserved. This value should not be used.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_SIZE">
+      <summary>Information related to the virtual disk size, including total size, physical allocation used, block size, and sector size.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_IDENTIFIER">
+      <summary>The unique identifier. This identifier is persistently stored in the virtual disk and will not change even if the virtual disk file is copied to another file.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_LOCATION">
+      <summary>The paths to parent virtual disks. Valid only for differencing virtual disks.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_IDENTIFIER">
+      <summary>The unique identifier of the parent virtual disk. Valid only for differencing virtual disks.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PARENT_TIMESTAMP">
+      <summary>The time stamp of the parent when the child virtual disk was created. Valid only for differencing virtual disks.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_VIRTUAL_STORAGE_TYPE">
+      <summary>The device identifier and vendor identifier that identify the type of virtual disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PROVIDER_SUBTYPE">
+      <summary>The type of virtual disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_IS_4K_ALIGNED">
+      <summary>Indicates whether the virtual disk is 4 KB aligned.
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This value is not supported before Windows 8 and Windows Server 2012.</para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PHYSICAL_DISK">
+      <summary>Details about the physical disk on which the virtual disk resides.
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This value is not supported before Windows 8 and Windows Server 2012.</para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_VHD_PHYSICAL_SECTOR_SIZE">
+      <summary>The physical sector size of the virtual disk.
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This value is not supported before Windows 8 and Windows Server 2012.</para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_SMALLEST_SAFE_VIRTUAL_SIZE">
+      <summary>The smallest safe minimum size of the virtual disk.
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This value is not supported before Windows 8 and Windows Server 2012.</para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_FRAGMENTATION">
+      <summary>The fragmentation level of the virtual disk.
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This value is not supported before Windows 8 and Windows Server 2012.</para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_IS_LOADED">
+      <summary>Whether the virtual disk is currently mounted and in use.
+            <para><c>Windows 8 and Windows Server 2012:</c> This value is not supported before Windows 8.1 and Windows Server 2012 R2.</para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_VIRTUAL_DISK_ID">
+      <summary>The identifier that is uniquely created when a user first creates the virtual disk to attempt to uniquely identify that virtual disk.
+            <para><c>Windows 8 and Windows Server 2012:</c> This value is not supported before Windows 8.1 and Windows Server 2012 R2.</para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_CHANGE_TRACKING_STATE">
+      <summary>The state of resilient change tracking (RCT) for the virtual disk.
+            <para><c>Windows 8.1 and Windows Server 2012 R2:</c> This value is not supported before Windows 10 and Windows Server 2016.</para></summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_FLAG">
+      <summary>Contains virtual hard disk (VHD) merge request flags.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_FLAG.MERGE_VIRTUAL_DISK_FLAG_NONE">
+      <summary>None.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_PARAMETERS">
+      <summary>Contains virtual disk merge request parameters.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_PARAMETERS.#ctor(System.UInt32)">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_PARAMETERS</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="mergeDepth">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>mergeDepth</parameter>
+            <parameter>M:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_PARAMETERS.#ctor(System.UInt32)</parameter>
+          </include>
+        </markup>
+      </param>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_PARAMETERS.#ctor(System.UInt32,System.UInt32)">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_PARAMETERS</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="mergeSourceDepth">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>mergeSourceDepth</parameter>
+            <parameter>M:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_PARAMETERS.#ctor(System.UInt32,System.UInt32)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="mergeTargetDepth">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>mergeTargetDepth</parameter>
+            <parameter>M:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_PARAMETERS.#ctor(System.UInt32,System.UInt32)</parameter>
+          </include>
+        </markup>
+      </param>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_PARAMETERS.Version">
+      <summary>
+            A MERGE_VIRTUAL_DISK_VERSION enumeration that specifies the version of the MERGE_VIRTUAL_DISK_PARAMETERS structure being passed to or from the
+            VHD functions.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_PARAMETERS.Version1">
+      <summary>This structure is used when the Version member is MERGE_VIRTUAL_DISK_VERSION_1 (1).</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_PARAMETERS.Version2">
+      <summary>This structure is used when the Version member is MERGE_VIRTUAL_DISK_VERSION_2 (2).</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_PARAMETERS_V1">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_PARAMETERS_V1</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_PARAMETERS_V1.MergeDepth">
+      <summary>
+            Depth of the merge request. This is the number of parent disks in the differencing chain to merge together.
+            <note type="note">The RWDepth of the virtual disk must be greater than MergeDepth. For more information, see OPEN_VIRTUAL_DISK_PARAMETERS.</note></summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_PARAMETERS_V2">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_PARAMETERS_V2</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_PARAMETERS_V2.MergeSourceDepth">
+      <summary>Depth from the leaf from which to begin the merge. The leaf is at depth 1.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_PARAMETERS_V2.MergeTargetDepth">
+      <summary>Depth from the leaf to target the merge. The leaf is at depth 1.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_VERSION">
+      <summary>Contains the version of the virtual hard disk (VHD) MERGE_VIRTUAL_DISK_PARAMETERS structure to use in calls to VHD functions.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_VERSION.MERGE_VIRTUAL_DISK_VERSION_UNSPECIFIED">
+      <summary>Not supported.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_VERSION.MERGE_VIRTUAL_DISK_VERSION_1">
+      <summary>The Version1 member structure will be used.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.MERGE_VIRTUAL_DISK_VERSION.MERGE_VIRTUAL_DISK_VERSION_2">
+      <summary>The Version2 member structure will be used.
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This value is not supported before Windows 8 and Windows Server 2012.</para></summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.MIRROR_VIRTUAL_DISK_FLAG">
+      <summary>Contains virtual hard disk (VHD) mirror request flags.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.MIRROR_VIRTUAL_DISK_FLAG.MIRROR_VIRTUAL_DISK_FLAG_NONE">
+      <summary>The mirror virtual disk file does not exist, and needs to be created.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.MIRROR_VIRTUAL_DISK_FLAG.MIRROR_VIRTUAL_DISK_FLAG_EXISTING_FILE">
+      <summary>Create the mirror using an existing file.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.MIRROR_VIRTUAL_DISK_PARAMETERS">
+      <summary>Contains virtual hard disk (VHD) mirror request parameters.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.MIRROR_VIRTUAL_DISK_PARAMETERS.Version">
+      <summary>Indicates the version of this structure to use. Set this to MIRROR_VIRTUAL_DISK_VERSION_1 (1).</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.MIRROR_VIRTUAL_DISK_PARAMETERS.Version1">
+      <summary>This structure is used if the Version member is set to MIRROR_VIRTUAL_DISK_VERSION_1.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.MIRROR_VIRTUAL_DISK_PARAMETERS_Version1">
+      <summary>This structure is used if the Version member is set to MIRROR_VIRTUAL_DISK_VERSION_1.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.MIRROR_VIRTUAL_DISK_PARAMETERS_Version1.MirrorVirtualDiskPath">
+      <summary>
+            Fully qualified path where the mirrored virtual disk will be located. If the Flags parameter to MirrorVirtualDisk is
+            MIRROR_VIRTUAL_DISK_FLAG_NONE (0) then this file must not exist. If the Flags parameter to MirrorVirtualDisk is
+            MIRROR_VIRTUAL_DISK_FLAG_EXISTING_FILE (1) then this file must exist.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.MIRROR_VIRTUAL_DISK_VERSION">
+      <summary>Contains the version of the virtual disk MIRROR_VIRTUAL_DISK_PARAMETERS structure used by the MirrorVirtualDisk function.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.MIRROR_VIRTUAL_DISK_VERSION.MIRROR_VIRTUAL_DISK_VERSION_UNSPECIFIED">
+      <summary>Unsupported.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.MIRROR_VIRTUAL_DISK_VERSION.MIRROR_VIRTUAL_DISK_VERSION_1">
+      <summary>Use the Version1 member.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_FLAG">
+      <summary>Contains virtual hard disk (VHD) or CD or DVD image file (ISO) open request flags.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_FLAG.OPEN_VIRTUAL_DISK_FLAG_NONE">
+      <summary>No flag specified.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_FLAG.OPEN_VIRTUAL_DISK_FLAG_NO_PARENTS">
+      <summary>
+            Open the VHD file (backing store) without opening any differencing-chain parents. Used to correct broken parent links. This flag is not supported
+            for ISO virtual disks.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_FLAG.OPEN_VIRTUAL_DISK_FLAG_BLANK_FILE">
+      <summary>Reserved. This flag is not supported for ISO virtual disks.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_FLAG.OPEN_VIRTUAL_DISK_FLAG_BOOT_DRIVE">
+      <summary>Reserved. This flag is not supported for ISO virtual disks.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_FLAG.OPEN_VIRTUAL_DISK_FLAG_CACHED_IO">
+      <summary>
+            Indicates that the virtual disk should be opened in cached mode. By default the virtual disks are opened using FILE_FLAG_NO_BUFFERING and FILE_FLAG_WRITE_THROUGH.
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This value is not supported before Windows 8 and Windows Server 2012.</para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_FLAG.OPEN_VIRTUAL_DISK_FLAG_CUSTOM_DIFF_CHAIN">
+      <summary>
+            Indicates the VHD file is to be opened without opening any differencing-chain parents and the parent chain is to be created manually using the
+            AddVirtualDiskParent function.
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This value is not supported before Windows 8 and Windows Server 2012.</para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_FLAG.OPEN_VIRTUAL_DISK_FLAG_PARENT_CACHED_IO">
+      <summary>This flag causes all backing stores except the leaf backing store to be opened in cached mode.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_FLAG.OPEN_VIRTUAL_DISK_FLAG_VHDSET_FILE_ONLY">
+      <summary>This flag causes a Vhd Set file to be opened without any virtual disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_FLAG.OPEN_VIRTUAL_DISK_FLAG_IGNORE_RELATIVE_PARENT_LOCATOR">
+      <summary>For differencing disks, relative parent locators are not used when determining the path of a parent VHD.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_FLAG.OPEN_VIRTUAL_DISK_FLAG_NO_WRITE_HARDENING">
+      <summary>Disable flushing and FUA (both for payload data and for metadata) for backing files associated with this virtual disk.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS">
+      <summary>Contains virtual disk open request parameters.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS.#ctor(System.Boolean,System.Boolean,System.Guid)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS" /> struct setting Version to OPEN_VIRTUAL_DISK_VERSION_2.
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This constructor is not supported until Windows 8 and Windows Server 2012.</para></summary>
+      <param name="readOnly">If TRUE, indicates the file backing store is to be opened as read-only.</param>
+      <param name="getInfoOnly">If TRUE, indicates the handle is only to be used to get information on the virtual disk.</param>
+      <param name="resiliencyGuid">Resiliency GUID to specify when opening files.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS.#ctor(System.UInt32)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS" /> struct setting Version to OPEN_VIRTUAL_DISK_VERSION_1.</summary>
+      <param name="rwDepth">
+        <para>
+            Indicates the number of stores, beginning with the child, of the backing store chain to open as read/write. The remaining stores in the
+            differencing chain will be opened read-only. This is necessary for merge operations to succeed.
+            </para>
+        <list type="table">
+          <listheader>
+            <term>Value</term>
+            <term>Meaning</term>
+          </listheader>
+          <item>
+            <term>0</term>
+            <term>Do not open for read/write at any depth. This value should be used for read-only operations.</term>
+          </item>
+          <item>
+            <term>OPEN_VIRTUAL_DISK_RW_DEPTH_DEFAULT (1)</term>
+            <term>Default value to use if no other value is desired.</term>
+          </item>
+          <item>
+            <term>n (user-defined)</term>
+            <term>This integer value should be the number of merge levels plus one, if a merge operation is intended.</term>
+          </item>
+        </list>
+      </param>
+    </member>
+    <member name="P:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS.DefaultV2">
+      <summary>Gets the default value for this structure. This is currently the only valid value for <see cref="T:Vanara.PInvoke.VirtDisk.ATTACH_VIRTUAL_DISK_PARAMETERS" />.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS.ToString">
+      <summary>Returns a string that represents the current object.</summary>
+      <returns>A string that represents the current object.</returns>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS.Version">
+      <summary>
+            An OPEN_VIRTUAL_DISK_VERSION enumeration that specifies the version of the OPEN_VIRTUAL_DISK_PARAMETERS structure being passed to or from the VHD functions.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS.Version1">
+      <summary>This structure is used if the Version member is OPEN_VIRTUAL_DISK_VERSION_1 (1).</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS.Version2">
+      <summary>This structure is used if the Version member is OPEN_VIRTUAL_DISK_VERSION_2 (2).</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS.Version3">
+      <summary>This structure is used if the Version member is OPEN_VIRTUAL_DISK_VERSION_3 (3).</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS_Version1">
+      <summary>This value is used if the Version member is OPEN_VIRTUAL_DISK_VERSION_1 (1).</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS_Version1.RWDepth">
+      <summary>
+            Indicates the number of stores, beginning with the child, of the backing store chain to open as read/write. The remaining stores in the
+            differencing chain will be opened read-only. This is necessary for merge operations to succeed.
+            <list type="table"><listheader><term>Value</term><term>Meaning</term></listheader><item><term>0</term><term>Do not open for read/write at any depth. This value should be used for read-only operations.</term></item><item><term>OPEN_VIRTUAL_DISK_RW_DEPTH_DEFAULT (1)</term><term>Default value to use if no other value is desired.</term></item><item><term>n (user-defined)</term><term>This integer value should be the number of merge levels plus one, if a merge operation is intended.</term></item></list></summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS_Version2">
+      <summary>
+            This value is used if the Version member is OPEN_VIRTUAL_DISK_VERSION_2 (2).
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This structure is not supported until Windows 8 and Windows Server 2012.</para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS_Version2.GetInfoOnly">
+      <summary>If TRUE, indicates the handle is only to be used to get information on the virtual disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS_Version2.ReadOnly">
+      <summary>If TRUE, indicates the file backing store is to be opened as read-only.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS_Version2.ResiliencyGuid">
+      <summary>Resiliency GUID to specify when opening files.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS_Version3">
+      <summary>
+            This value is used if the Version member is OPEN_VIRTUAL_DISK_VERSION_3 (3).
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This structure is not supported until Windows 8 and Windows Server 2012.</para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS_Version3.GetInfoOnly">
+      <summary>If TRUE, indicates the handle is only to be used to get information on the virtual disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS_Version3.ReadOnly">
+      <summary>If TRUE, indicates the file backing store is to be opened as read-only.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS_Version3.ResiliencyGuid">
+      <summary>Resiliency GUID to specify when opening files.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS_Version3.SnapshotId">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_PARAMETERS_Version3.SnapshotId</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_VERSION">
+      <summary>Contains the version of the virtual disk OPEN_VIRTUAL_DISK_PARAMETERS structure to use in calls to virtual disk functions.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_UNSPECIFIED">
+      <summary>Unspecified version.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_1">
+      <summary>Use the Version1 member of this structure.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_2">
+      <summary>Use the Version2 member of this structure.
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This value is not supported before Windows 8 and Windows Server 2012.</para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_3">
+      <summary>Use the Version3 member of this structure.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.RESIZE_VIRTUAL_DISK_FLAG">
+      <summary>Enumerates the available flags for the ResizeVirtualDisk function.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.RESIZE_VIRTUAL_DISK_FLAG.RESIZE_VIRTUAL_DISK_FLAG_NONE">
+      <summary>No flags are specified.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.RESIZE_VIRTUAL_DISK_FLAG.RESIZE_VIRTUAL_DISK_FLAG_ALLOW_UNSAFE_VIRTUAL_SIZE">
+      <summary>
+            If this flag is set, skip checking the virtual disk's partition table to ensure that this truncation is safe. Setting this flag can cause
+            unrecoverable data loss; use with care.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.RESIZE_VIRTUAL_DISK_FLAG.RESIZE_VIRTUAL_DISK_FLAG_RESIZE_TO_SMALLEST_SAFE_VIRTUAL_SIZE">
+      <summary>
+            If this flag is set, resize the disk to the smallest virtual size possible without truncating past any existing partitions. If this is set,
+            NewSize in RESIZE_VIRTUAL_DISK_PARAMETERS must be zero.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.RESIZE_VIRTUAL_DISK_PARAMETERS">
+      <summary>Contains the parameters for a ResizeVirtualDisk function.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.RESIZE_VIRTUAL_DISK_PARAMETERS.#ctor(System.UInt64)">
+      <summary>Initializes with default version and <paramref name="newSize" />.</summary>
+      <param name="newSize">Contains the new size of the virtual disk.</param>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.RESIZE_VIRTUAL_DISK_PARAMETERS.NewSize">
+      <summary>Contains the new size of the virtual disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.RESIZE_VIRTUAL_DISK_PARAMETERS.Version">
+      <summary>
+            Discriminant for the union containing a value enumerated from the RESIZE_VIRTUAL_DISK_VERSION enumeration.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.RESIZE_VIRTUAL_DISK_VERSION">
+      <summary>Enumerates the possible versions for parameters for the ResizeVirtualDisk function.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.RESIZE_VIRTUAL_DISK_VERSION.RESIZE_VIRTUAL_DISK_VERSION_UNSPECIFIED">
+      <summary>The version is not valid.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.RESIZE_VIRTUAL_DISK_VERSION.RESIZE_VIRTUAL_DISK_VERSION_1">
+      <summary>Version one of the parameters is used. This is the only supported value.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO">
+      <summary>Contains virtual hard disk (VHD) information for set request.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO.ChangeTrackingEnabled">
+      <summary>Turns resilient change tracking (RCT) on or off for the VHD. TRUE turns RCT on. FALSE turns RCT off.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO.ParentFilePath">
+      <summary>Path to the parent backing store.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO.ParentLocator">
+      <summary>Sets the parent linkage information that differencing VHDs store. Parent linkage information is metadata used to locate and correctly identify the next parent in the virtual disk chain.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO.ParentPathWithDepthInfo">
+      <summary>Sets the parent file path and the child depth.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO.UniqueIdentifier">
+      <summary>Unique identifier of the VHD.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO.Version">
+      <summary>
+            A SET_VIRTUAL_DISK_INFO_VERSION enumeration that specifies the version of the SET_VIRTUAL_DISK_INFO structure being passed to or from the VHD
+            functions. This determines the type of information set.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO.VhdPhysicalSectorSize">
+      <summary>Sets the physical sector size reported by the VHD.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO.VirtualDiskId">
+      <summary>The identifier that is uniquely created when a user first creates the virtual disk to attempt to uniquely identify that virtual disk.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO_ParentLocator">
+      <summary>
+            Sets the parent linkage information that differencing VHDs store. Parent linkage information is metadata used to locate and correctly identify the next parent in the virtual disk chain.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO_ParentLocator.LinkageId">
+      <summary>The unique identifier for the parent linkage information.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO_ParentLocator.ParentFilePath">
+      <summary>The path of the file for the parent VHD.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO_ParentPathWithDepthInfo">
+      <summary>
+            Sets the parent file path and the child depth.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO_ParentPathWithDepthInfo.ChildDepth">
+      <summary>Specifies the depth to the child from the leaf. The leaf itself is at depth 1.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO_ParentPathWithDepthInfo.ParentFilePath">
+      <summary>Specifies the depth to the parent from the leaf. The leaf itself is at depth 1.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO_VERSION">
+      <summary>Contains the version of the virtual hard disk (VHD) SET_VIRTUAL_DISK_INFO structure to use in calls to VHD functions.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_UNSPECIFIED">
+      <summary>Not used. Will fail the operation.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_PARENT_PATH">
+      <summary>Parent information is being set.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_IDENTIFIER">
+      <summary>A unique identifier is being set.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_PARENT_PATH_WITH_DEPTH">
+      <summary>Sets the parent file path and the child depth.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_PHYSICAL_SECTOR_SIZE">
+      <summary>Sets the physical sector size reported by the VHD.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_VIRTUAL_DISK_ID">
+      <summary>The identifier that is uniquely created when a user first creates the virtual disk to attempt to uniquely identify that virtual disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_CHANGE_TRACKING_STATE">
+      <summary>Whether resilient change tracking (RCT) is turned on for the virtual disk.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.SET_VIRTUAL_DISK_INFO_VERSION.SET_VIRTUAL_DISK_INFO_PARENT_LOCATOR">
+      <summary>The parent linkage information that differencing VHDs store. Parent linkage information is metadata used to locate and correctly identify the next parent in the virtual disk chain.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO">
+      <summary>Contains storage dependency information.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO.NumberEntries">
+      <summary>Number of entries returned in the following unioned members.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO.Union">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>F:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO.Union</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO.Version">
+      <summary>
+            A STORAGE_DEPENDENCY_INFO_VERSION enumeration that specifies the version of the information structure being passed to or from the VHD functions.
+            Can be STORAGE_DEPENDENCY_INFO_TYPE_1 or STORAGE_DEPENDENCY_INFO_TYPE_2.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_TYPE_1">
+      <summary>Contains storage dependency information for type 1.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_TYPE_1.DependencyTypeFlags">
+      <summary>A DEPENDENT_DISK_FLAG enumeration.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_TYPE_1.ProviderSpecificFlags">
+      <summary>Flags specific to the VHD provider.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_TYPE_1.VirtualStorageType">
+      <summary>A VIRTUAL_STORAGE_TYPE structure.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_TYPE_2">
+      <summary>Contains storage dependency information for type 2.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_TYPE_2.AncestorLevel">
+      <summary>The ancestor level.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_TYPE_2.DependencyDeviceName">
+      <summary>The device name of the dependent device.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_TYPE_2.DependencyTypeFlags">
+      <summary>A DEPENDENT_DISK_FLAG enumeration.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_TYPE_2.DependentVolumeName">
+      <summary>The name of the dependent volume, if any.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_TYPE_2.DependentVolumeRelativePath">
+      <summary>The relative path to the dependent volume.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_TYPE_2.HostVolumeName">
+      <summary>The host disk volume name.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_TYPE_2.ProviderSpecificFlags">
+      <summary>Flags specific to the VHD provider.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_TYPE_2.VirtualStorageType">
+      <summary>A VIRTUAL_STORAGE_TYPE structure.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_Union">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_Union</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_Union.Version1Entries">
+      <summary>Variable-length array containing STORAGE_DEPENDENCY_INFO_TYPE_1 structures.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_Union.Version2Entries">
+      <summary>Variable-length array containing STORAGE_DEPENDENCY_INFO_TYPE_2 structures.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_VERSION">
+      <summary>Contains the version of the virtual hard disk (VHD) STORAGE_DEPENDENCY_INFO structure to use in calls to VHD functions.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_VERSION.STORAGE_DEPENDENCY_INFO_VERSION_UNSPECIFIED">
+      <summary>The version is not specified.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_VERSION.STORAGE_DEPENDENCY_INFO_VERSION_1">
+      <summary>Specifies STORAGE_DEPENDENCY_INFO_TYPE_1.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.STORAGE_DEPENDENCY_INFO_VERSION.STORAGE_DEPENDENCY_INFO_VERSION_2">
+      <summary>Specifies STORAGE_DEPENDENCY_INFO_TYPE_2.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_ACCESS_MASK">
+      <summary>Contains the bitmask for specifying access rights to a virtual hard disk (VHD) or CD or DVD image file (ISO).</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_NONE">
+      <summary>
+            Open the virtual disk with no access. This is the only supported value when calling CreateVirtualDisk and specifying
+            CREATE_VIRTUAL_DISK_VERSION_2 in the VirtualDiskAccessMask parameter.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_ATTACH_RO">
+      <summary>
+            Open the virtual disk for read-only attach access. The caller must have READ access to the virtual disk image file.
+            <para>
+            If used in a request to open a virtual disk that is already open, the other handles must be limited to either VIRTUAL_DISK_ACCESS_DETACH or
+            VIRTUAL_DISK_ACCESS_GET_INFO access, otherwise the open request with this flag will fail.
+            </para><para><c>Windows 7 and Windows Server 2008 R2:</c> This access right is not supported for opening ISO virtual disks until Windows 8 and Windows Server 2012.
+            </para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_ATTACH_RW">
+      <summary>
+            Open the virtual disk for read/write attaching access. The caller must have (READ | WRITE) access to the virtual disk image file.
+            <para>
+            If used in a request to open a virtual disk that is already open, the other handles must be limited to either VIRTUAL_DISK_ACCESS_DETACH or
+            VIRTUAL_DISK_ACCESS_GET_INFO access, otherwise the open request with this flag will fail.
+            </para><para>
+            If the virtual disk is part of a differencing chain, the disk for this request cannot be less than the RWDepth specified during the prior open
+            request for that differencing chain.
+            </para><para>This flag is not supported for ISO virtual disks.</para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_DETACH">
+      <summary>
+            Open the virtual disk to allow detaching of an attached virtual disk. The caller must have (FILE_READ_ATTRIBUTES | FILE_READ_DATA) access to the
+            virtual disk image file.
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This access right is not supported for opening ISO virtual disks until Windows 8 and Windows Server 2012.
+            </para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_GET_INFO">
+      <summary>
+            Information retrieval access to the virtual disk. The caller must have READ access to the virtual disk image file.
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This access right is not supported for opening ISO virtual disks until Windows 8 and Windows Server 2012.
+            </para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_CREATE">
+      <summary>
+            Virtual disk creation access.
+            <para>This flag is not supported for ISO virtual disks.</para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_METAOPS">
+      <summary>
+            Open the virtual disk to perform offline meta-operations. The caller must have (READ | WRITE) access to the virtual disk image file, up to
+            RWDepth if working with a differencing chain.
+            <para>If the virtual disk is part of a differencing chain, the backing store (host volume) is opened in RW exclusive mode up to RWDepth.</para><para>This flag is not supported for ISO virtual disks.</para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_READ">
+      <summary>Reserved.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_ALL">
+      <summary>
+            Allows unrestricted access to the virtual disk. The caller must have unrestricted access rights to the virtual disk image file.
+            <para>This flag is not supported for ISO virtual disks.</para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_WRITABLE">
+      <summary>
+            Reserved.
+            <para>This flag is not supported for ISO virtual disks.</para></summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_INFO_PROVIDER_SUBTYPE">
+      <summary>
+            Provider-specific subtype. Set the Version member to GET_VIRTUAL_DISK_INFO_PROVIDER_SUBTYPE.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_INFO_PROVIDER_SUBTYPE.Fixed">
+      <summary>Fixed.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_INFO_PROVIDER_SUBTYPE.DynamicallyExpandable">
+      <summary>Dynamically expandable (sparse).</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_INFO_PROVIDER_SUBTYPE.Differencing">
+      <summary>Differencing.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_PROGRESS">
+      <summary>Contains the progress and result data for the current virtual disk operation, used by the GetVirtualDiskOperationProgress function.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_PROGRESS.CompletionValue">
+      <summary>
+            The value that the CurrentValue member would be if the operation were complete. This value is meaningful only if OperationStatus is ERROR_IO_PENDING.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_PROGRESS.CurrentValue">
+      <summary>
+            The current progress of the operation, used in conjunction with the CompletionValue member. This value is meaningful only if OperationStatus is ERROR_IO_PENDING.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_DISK_PROGRESS.OperationStatus">
+      <summary>
+            A system error code status value, this member will be ERROR_IO_PENDING if the operation is still in progress; otherwise, the value is the result
+            code of the completed operation.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.VIRTUAL_STORAGE_TYPE">
+      <summary>Device type identifier.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.VirtDisk.VIRTUAL_STORAGE_TYPE.#ctor(Vanara.PInvoke.VirtDisk.VIRTUAL_STORAGE_TYPE_DEVICE_TYPE,System.Boolean)">
+      <summary>
+            Initializes a new instance of <see cref="T:Vanara.PInvoke.VirtDisk.VIRTUAL_STORAGE_TYPE" />.
+            </summary>
+      <param name="type">The type of disk to create.</param>
+      <param name="vendorIsMicrosoft">
+        <c>true</c> if <see cref="F:Vanara.PInvoke.VirtDisk.VIRTUAL_STORAGE_TYPE.VendorId" /> is to be assigned VIRTUAL_STORAGE_TYPE_VENDOR_MICROSOFT.</param>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_STORAGE_TYPE.DeviceId">
+      <summary>The device identifier.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_STORAGE_TYPE.VendorId">
+      <summary>Vendor-unique identifier.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.VirtDisk.VIRTUAL_STORAGE_TYPE.VHD">
+      <summary>Gets an instance of <see cref="T:Vanara.PInvoke.VirtDisk.VIRTUAL_STORAGE_TYPE" /> that represents a Microsoft Virtual Hard Drive or .vhd file.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.VirtDisk.VIRTUAL_STORAGE_TYPE_DEVICE_TYPE">
+      <summary>Device type identifier.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_STORAGE_TYPE_DEVICE_TYPE.VIRTUAL_STORAGE_TYPE_DEVICE_UNKNOWN">
+      <summary>Device type is unknown or not valid.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_STORAGE_TYPE_DEVICE_TYPE.VIRTUAL_STORAGE_TYPE_DEVICE_ISO">
+      <summary>
+            CD or DVD image file device type. (.iso file)
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This value is not supported before Windows 8 and Windows Server 2012.</para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_STORAGE_TYPE_DEVICE_TYPE.VIRTUAL_STORAGE_TYPE_DEVICE_VHD">
+      <summary>Virtual hard disk device type. (.vhd file)</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_STORAGE_TYPE_DEVICE_TYPE.VIRTUAL_STORAGE_TYPE_DEVICE_VHDX">
+      <summary>
+            VHDX format virtual hard disk device type. (.vhdx file)
+            <para><c>Windows 7 and Windows Server 2008 R2:</c> This value is not supported before Windows 8 and Windows Server 2012.</para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.VirtDisk.VIRTUAL_STORAGE_TYPE_DEVICE_TYPE.VIRTUAL_STORAGE_TYPE_DEVICE_VHDSET">
+      <summary></summary>
+    </member>
+  </members>
+</doc>

@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Vanara.PInvoke.NTDSApi</name>
+  </assembly>
+  <members>
+    <member name="T:Vanara.PInvoke.NTDSApi">
+      <summary>Platform invokable enumerated types, constants and functions from ntdsapi.h</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.NTDSApi.DsBind(System.String,System.String,System.IntPtr@)">
+      <summary>
+            The DsBind function binds to a domain controller.DsBind uses the default process credentials to bind to the domain controller. To specify alternate
+            credentials, use the DsBindWithCred function.
+            </summary>
+      <param name="DomainControllerName">
+            Pointer to a null-terminated string that contains the name of the domain controller to bind to. This name can be the name of the domain controller or
+            the fully qualified DNS name of the domain controller. Either name type can, optionally, be preceded by two backslash characters. All of the
+            following examples represent correctly formatted domain controller names:
+            <list type="bullet"><item><definition>"FAB-DC-01"</definition></item><item><definition>"\\FAB-DC-01"</definition></item><item><definition>"FAB-DC-01.fabrikam.com"</definition></item><item><definition>"\\FAB-DC-01.fabrikam.com"</definition></item></list><para>This parameter can be NULL. For more information, see Remarks.</para></param>
+      <param name="DnsDomainName">
+            Pointer to a null-terminated string that contains the fully qualified DNS name of the domain to bind to. This parameter can be NULL. For more
+            information, see Remarks.
+            </param>
+      <param name="phDS">Address of a HANDLE value that receives the binding handle. To close this handle, pass it to the DsUnBind function.</param>
+      <returns>Returns ERROR_SUCCESS if successful or a Windows or RPC error code otherwise.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.NTDSApi.DsBindWithCred(System.String,System.String,Vanara.PInvoke.NTDSApi.SafeDsPasswordCredentialsHandle,System.IntPtr@)">
+      <summary>The DsBindWithCred function binds to a domain controller using the specified credentials.</summary>
+      <param name="DomainControllerName">
+            Pointer to a null-terminated string that contains the name of the domain controller to bind to. This name can be the name of the domain controller or
+            the fully qualified DNS name of the domain controller. Either name type can, optionally, be preceded by two backslash characters. All of the
+            following examples represent correctly formatted domain controller names:
+            <list type="bullet"><item><definition>"FAB-DC-01"</definition></item><item><definition>"\\FAB-DC-01"</definition></item><item><definition>"FAB-DC-01.fabrikam.com"</definition></item><item><definition>"\\FAB-DC-01.fabrikam.com"</definition></item></list><para>This parameter can be NULL. For more information, see Remarks.</para></param>
+      <param name="DnsDomainName">
+            Pointer to a null-terminated string that contains the fully qualified DNS name of the domain to bind to. This parameter can be NULL. For more
+            information, see Remarks.
+            </param>
+      <param name="AuthIdentity">
+            Contains an RPC_AUTH_IDENTITY_HANDLE value that represents the credentials to be used for the bind. The DsMakePasswordCredentials function is used to
+            obtain this value. If this parameter is NULL, the credentials of the calling thread are used.
+            <para>DsUnBind must be called before freeing this handle with the DsFreePasswordCredentials function.</para></param>
+      <param name="phDS">Address of a HANDLE value that receives the binding handle. To close this handle, pass it to the DsUnBind function.</param>
+      <returns>Returns ERROR_SUCCESS if successful or a Windows or RPC error code otherwise.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.NTDSApi.DsCrackNames(Vanara.PInvoke.NTDSApi.SafeDsHandle,System.String[],Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT,Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT,Vanara.PInvoke.NTDSApi.DS_NAME_FLAGS)">
+      <summary>A wrapper function for the DsCrackNames OS call</summary>
+      <param name="hSafeDs">
+            Contains a directory service handle obtained from either the DSBind or DSBindWithCred function. If flags contains DS_NAME_FLAG_SYNTACTICAL_ONLY, hDS
+            can be NULL.
+            </param>
+      <param name="names">The names to be converted.</param>
+      <param name="formatDesired">
+            Contains one of the DS_NAME_FORMAT values that identifies the format of the output names. The DS_SID_OR_SID_HISTORY_NAME value is not supported.
+            </param>
+      <param name="formatOffered">Contains one of the DS_NAME_FORMAT values that identifies the format of the input names.</param>
+      <param name="flags">Contains one or m ore of the DS_NAME_FLAGS values used to determine how the name syntax will be cracked.</param>
+      <returns>The crack results.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.NTDSApi.DsCrackNames(Vanara.PInvoke.NTDSApi.SafeDsHandle,Vanara.PInvoke.NTDSApi.DS_NAME_FLAGS,Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT,Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT,System.UInt32,System.String[],Vanara.PInvoke.NTDSApi.SafeDsNameResult@)">
+      <summary>
+            The DsCrackNames function converts an array of directory service object names from one format to another. Name conversion enables client applications
+            to map between the multiple names used to identify various directory service objects. For example, user objects can be identified by SAM account
+            names (Domain\UserName), user principal name (UserName@Domain.com), or distinguished name.
+            <note type="note">This function uses many handles and memory allocations that can be unwieldy. It is recommended to use the 
+            <see cref="M:Vanara.PInvoke.NTDSApi.DsCrackNames(Vanara.PInvoke.NTDSApi.SafeDsHandle,System.String[],Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT,Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT,Vanara.PInvoke.NTDSApi.DS_NAME_FLAGS)" /> method instead.</note></summary>
+      <param name="hSafeDs">
+            Contains a directory service handle obtained from either the DSBind or DSBindWithCred function. If flags contains DS_NAME_FLAG_SYNTACTICAL_ONLY, hDS
+            can be NULL.
+            </param>
+      <param name="flags">Contains one or more of the DS_NAME_FLAGS values used to determine how the name syntax will be cracked.</param>
+      <param name="formatOffered">Contains one of the DS_NAME_FORMAT values that identifies the format of the input names.</param>
+      <param name="formatDesired">
+            Contains one of the DS_NAME_FORMAT values that identifies the format of the output names. The DS_SID_OR_SID_HISTORY_NAME value is not supported.
+            </param>
+      <param name="cNames">Contains the number of elements in the rpNames array.</param>
+      <param name="rpNames">Pointer to an array of pointers to null-terminated strings that contain names to be converted.</param>
+      <param name="ppResult">
+            Pointer to a PDS_NAME_RESULT value that receives a DS_NAME_RESULT structure that contains the converted names. The caller must free this memory, when
+            it is no longer required, by calling DsFreeNameResult.
+            </param>
+      <returns>Returns a Win32 error value, an RPC error value, or one of the following.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.NTDSApi.DsFreeNameResult(System.IntPtr)">
+      <summary>
+            The DsFreeNameResult function frees the memory held by a DS_NAME_RESULT structure. Use this function to free the memory allocated by the DsCrackNames function.
+            </summary>
+      <param name="pResult">Pointer to the DS_NAME_RESULT structure to be freed.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.NTDSApi.DsFreePasswordCredentials(System.IntPtr)">
+      <summary>Frees memory allocated for a credentials structure by the DsMakePasswordCredentials function.</summary>
+      <param name="AuthIdentity">Handle of the credential structure to be freed.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.NTDSApi.DsMakePasswordCredentials(System.String,System.String,System.String,System.IntPtr@)">
+      <summary>Constructs a credential handle suitable for use with the DsBindWithCred function.</summary>
+      <param name="User">A string that contains the user name to use for the credentials.</param>
+      <param name="Domain">A string that contains the domain that the user is a member of.</param>
+      <param name="Password">A string that contains the password to use for the credentials.</param>
+      <param name="pAuthIdentity">
+            An RPC_AUTH_IDENTITY_HANDLE value that receives the credential handle. This handle is used in a subsequent call to DsBindWithCred. This handle must
+            be freed with the DsFreePasswordCredentials function when it is no longer required.
+            </param>
+      <returns>Returns a Windows error code.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.NTDSApi.DsUnBind(System.IntPtr@)">
+      <summary>The DsUnBind function finds an RPC session with a domain controller and unbinds a handle to the directory service (DS).</summary>
+      <param name="phDS">Pointer to a bind handle to the directory service. This handle is provided by a call to DsBind, DsBindWithCred, or DsBindWithSpn.</param>
+      <returns>0</returns>
+    </member>
+    <member name="T:Vanara.PInvoke.NTDSApi.DS_NAME_ERROR">
+      <summary>
+            Defines the errors returned by the status member of the <see cref="T:Vanara.PInvoke.NTDSApi.DS_NAME_RESULT_ITEM" /> structure. These are potential errors that may be
+            encountered while a name is converted by the <see cref="M:Vanara.PInvoke.NTDSApi.DsCrackNames(Vanara.PInvoke.NTDSApi.SafeDsHandle,System.String[],Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT,Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT,Vanara.PInvoke.NTDSApi.DS_NAME_FLAGS)" /> function.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_ERROR.DS_NAME_NO_ERROR">
+      <summary>The conversion was successful.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_ERROR.DS_NAME_ERROR_RESOLVING">
+      <summary>A generic processing error occurred.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_ERROR.DS_NAME_ERROR_NOT_FOUND">
+      <summary>The name cannot be found or the caller does not have permission to access the name.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_ERROR.DS_NAME_ERROR_NOT_UNIQUE">
+      <summary>The input name is mapped to more than one output name or the desired format did not have a single, unique value for the object found.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_ERROR.DS_NAME_ERROR_NO_MAPPING">
+      <summary>
+            The input name was found, but the associated output format cannot be found. This can occur if the object does not have all the required attributes.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_ERROR.DS_NAME_ERROR_DOMAIN_ONLY">
+      <summary>
+            Unable to resolve entire name, but was able to determine in which domain object resides. The caller is expected to retry the call at a domain
+            controller for the specified domain. The entire name cannot be resolved, but the domain that the object resides in could be determined. The
+            pDomain member of the DS_NAME_RESULT_ITEM contains valid data when this error is specified.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_ERROR.DS_NAME_ERROR_NO_SYNTACTICAL_MAPPING">
+      <summary>A syntactical mapping cannot be performed on the client without transmitting over the network.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_ERROR.DS_NAME_ERROR_TRUST_REFERRAL">
+      <summary>The name is from an external trusted forest.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.NTDSApi.DS_NAME_FLAGS">
+      <summary>
+            Used to define how the name syntax will be cracked. These flags are used by the <see cref="M:Vanara.PInvoke.NTDSApi.DsCrackNames(Vanara.PInvoke.NTDSApi.SafeDsHandle,System.String[],Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT,Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT,Vanara.PInvoke.NTDSApi.DS_NAME_FLAGS)" /> function.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_FLAGS.DS_NAME_NO_FLAGS">
+      <summary>Indicates that there are no associated flags.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_FLAGS.DS_NAME_FLAG_SYNTACTICAL_ONLY">
+      <summary>
+            Performs a syntactical mapping at the client without transferring over the network. The only syntactic mapping supported is from
+            DS_FQDN_1779_NAME to DS_CANONICAL_NAME or DS_CANONICAL_NAME_EX. <see cref="M:Vanara.PInvoke.NTDSApi.DsCrackNames(Vanara.PInvoke.NTDSApi.SafeDsHandle,System.String[],Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT,Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT,Vanara.PInvoke.NTDSApi.DS_NAME_FLAGS)" />
+            returns the DS_NAME_ERROR_NO_SYNTACTICAL_MAPPING flag if a syntactical mapping is not possible.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_FLAGS.DS_NAME_FLAG_EVAL_AT_DC">
+      <summary>Forces a trip to the domain controller for evaluation, even if the syntax could be cracked locally.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_FLAGS.DS_NAME_FLAG_GCVERIFY">
+      <summary>The call fails if the domain controller is not a global catalog server.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_FLAGS.DS_NAME_FLAG_TRUST_REFERRAL">
+      <summary>Enables cross forest trust referral.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT">
+      <summary>
+            Provides formats to use for input and output names for the <see cref="M:Vanara.PInvoke.NTDSApi.DsCrackNames(Vanara.PInvoke.NTDSApi.SafeDsHandle,System.String[],Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT,Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT,Vanara.PInvoke.NTDSApi.DS_NAME_FLAGS)" /> function.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT.DS_UNKNOWN_NAME">
+      <summary>
+            Indicates the name is using an unknown name type. This format can impact performance because it forces the server to attempt to match all
+            possible formats. Only use this value if the input format is unknown.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT.DS_FQDN_1779_NAME">
+      <summary>
+            Indicates that the fully qualified distinguished name is used. For example: CN = someone, OU = Users, DC = Engineering, DC = Fabrikam, DC = Com
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT.DS_NT4_ACCOUNT_NAME">
+      <summary>
+            Indicates a Windows NT 4.0 account name. For example: Engineering\someone The domain-only version includes two trailing backslashes (\\).
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT.DS_DISPLAY_NAME">
+      <summary>
+            Indicates a user-friendly display name, for example, Jeff Smith. The display name is not necessarily the same as relative distinguished name (RDN).
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT.DS_UNIQUE_ID_NAME">
+      <summary>Indicates a GUID string that the IIDFromString function returns. For example: {4fa050f0-f561-11cf-bdd9-00aa003a77b6}</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT.DS_CANONICAL_NAME">
+      <summary>
+            Indicates a complete canonical name. For example: engineering.fabrikam.com/software/someone The domain-only version includes a trailing forward
+            slash (/).
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT.DS_USER_PRINCIPAL_NAME">
+      <summary>Indicates that it is using the user principal name (UPN). For example: someone@engineering.fabrikam.com</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT.DS_CANONICAL_NAME_EX">
+      <summary>
+            This element is the same as DS_CANONICAL_NAME except that the rightmost forward slash (/) is replaced with a newline character (\n), even in a
+            domain-only case. For example: engineering.fabrikam.com/software\nsomeone
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT.DS_SERVICE_PRINCIPAL_NAME">
+      <summary>Indicates it is using a generalized service principal name. For example: www/www.fabrikam.com@fabrikam.com</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT.DS_SID_OR_SID_HISTORY_NAME">
+      <summary>
+            Indicates a Security Identifier (SID) for the object. This can be either the current SID or a SID from the object SID history. The SID string can
+            use either the standard string representation of a SID, or one of the string constants defined in Sddl.h. For more information about converting a
+            binary SID into a SID string, see SID Strings. The following is an example of a SID string: S-1-5-21-397955417-626881126-188441444-501
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT.DS_DNS_DOMAIN_NAME">
+      <summary>Not supported by the Directory Service (DS) APIs.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_FORMAT.DS_LIST_NCS">
+      <summary>
+            This causes DsCrackNames to return the distinguished names of all naming contexts in the current forest. The formatDesired parameter is ignored.
+            cNames must be at least one and all strings in rpNames must have a length greater than zero characters. The contents of the rpNames strings is ignored.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.NTDSApi.DS_NAME_RESULT">
+      <summary>Used with the DsCrackNames function to contain the names converted by the function.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_RESULT.cItems">
+      <summary>Contains the number of elements in the rItems array.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.NTDSApi.DS_NAME_RESULT.Items">
+      <summary>Enumeration of DS_NAME_RESULT_ITEM structures. Each element of this array represents a single converted name.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_RESULT.rItems">
+      <summary>Contains an array of DS_NAME_RESULT_ITEM structure pointers. Each element of this array represents a single converted name.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.NTDSApi.DS_NAME_RESULT_ITEM">
+      <summary>Contains a name converted by the DsCrackNames function, along with associated error and domain data.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_RESULT_ITEM.pDomain">
+      <summary>
+            A string that specifies the DNS domain in which the object resides. This member will contain valid data if status contains DS_NAME_NO_ERROR or DS_NAME_ERROR_DOMAIN_ONLY.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_RESULT_ITEM.pName">
+      <summary>A string that specifies the newly formatted object name.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.NTDSApi.DS_NAME_RESULT_ITEM.status">
+      <summary>Contains one of the DS_NAME_ERROR values that indicates the status of this name conversion.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.NTDSApi.DS_NAME_RESULT_ITEM.ToString">
+      <summary>Returns a <see cref="T:System.String" /> that represents this instance.</summary>
+      <returns>A <see cref="T:System.String" /> that represents this instance.</returns>
+    </member>
+    <member name="T:Vanara.PInvoke.NTDSApi.SafeDsHandle">
+      <summary>A <see cref="T:System.Runtime.InteropServices.SafeHandle" /> for handles bound to directory services.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.NTDSApi.SafeDsHandle.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.PInvoke.NTDSApi.SafeDsHandle" /> class.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.NTDSApi.SafeDsHandle.#ctor(System.IntPtr)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.PInvoke.NTDSApi.SafeDsHandle" /> class from an existing bound handle.</summary>
+      <param name="hDs">
+            A handle retrieved from a call to <see cref="M:Vanara.PInvoke.NTDSApi.DsBind(System.String,System.String,System.IntPtr@)" /> or <see cref="M:Vanara.PInvoke.NTDSApi.DsBindWithCred(System.String,System.String,Vanara.PInvoke.NTDSApi.SafeDsPasswordCredentialsHandle,System.IntPtr@)" />.
+            </param>
+    </member>
+    <member name="M:Vanara.PInvoke.NTDSApi.SafeDsHandle.#ctor(System.String,System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.PInvoke.NTDSApi.SafeDsHandle" /> class bound to a domain and/or DC.</summary>
+      <param name="dnsDomainName">
+            A string that contains the fully qualified DNS name of the domain to bind to. This parameter can be NULL. For more information, see Remarks.
+            </param>
+      <param name="domainControllerName">
+            A string that contains the name of the domain controller to bind to. This name can be the name of the domain controller or the fully qualified
+            DNS name of the domain controller. Either name type can, optionally, be preceded by two backslash characters. All of the following examples
+            represent correctly formatted domain controller names:
+            <list type="bullet"><item><definition>"FAB-DC-01"</definition></item><item><definition>"\\FAB-DC-01"</definition></item><item><definition>"FAB-DC-01.fabrikam.com"</definition></item><item><definition>"\\FAB-DC-01.fabrikam.com"</definition></item></list><para>This parameter can be NULL. For more information, see Remarks.</para></param>
+    </member>
+    <member name="M:Vanara.PInvoke.NTDSApi.SafeDsHandle.#ctor(Vanara.PInvoke.NTDSApi.SafeDsPasswordCredentialsHandle,System.String,System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.PInvoke.NTDSApi.SafeDsHandle" /> class from a user credential and then bound to a domain and/or DC.</summary>
+      <param name="authIdentity">
+            Contains an <see cref="T:Vanara.PInvoke.NTDSApi.SafeDsPasswordCredentialsHandle" /> value that represents the credentials to be used for the bind.
+            </param>
+      <param name="dnsDomainName">
+            A string that contains the fully qualified DNS name of the domain to bind to. This parameter can be NULL. For more information, see Remarks.
+            </param>
+      <param name="domainControllerName">
+            A string that contains the name of the domain controller to bind to. This name can be the name of the domain controller or the fully qualified
+            DNS name of the domain controller. Either name type can, optionally, be preceded by two backslash characters. All of the following examples
+            represent correctly formatted domain controller names:
+            <list type="bullet"><item><definition>"FAB-DC-01"</definition></item><item><definition>"\\FAB-DC-01"</definition></item><item><definition>"FAB-DC-01.fabrikam.com"</definition></item><item><definition>"\\FAB-DC-01.fabrikam.com"</definition></item></list><para>This parameter can be NULL. For more information, see Remarks.</para></param>
+    </member>
+    <member name="P:Vanara.PInvoke.NTDSApi.SafeDsHandle.Null">
+      <summary>Gets a <c>NULL</c> equivalent for a bound directory services handle.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.NTDSApi.SafeDsNameResult">
+      <summary>
+            A <see cref="T:System.Runtime.InteropServices.SafeHandle" /> for the results from <see cref="!:Vanara.DsCrackNames(SafeDsHandle,DS_NAME_FLAGS,DS_NAME_FORMAT,DS_NAME_FORMAT,uint,string[],out SafeDsNameResult)" />.
+            </summary>
+    </member>
+    <member name="M:Vanara.PInvoke.NTDSApi.SafeDsNameResult.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.PInvoke.NTDSApi.SafeDsNameResult" /> class.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.NTDSApi.SafeDsNameResult.Items">
+      <summary>An array of DS_NAME_RESULT_ITEM structures. Each element of this array represents a single converted name.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.NTDSApi.SafeDsPasswordCredentialsHandle">
+      <summary>
+            Constructs a <see cref="T:System.Runtime.InteropServices.SafeHandle" /> that encapsulates the value retrieved from <see cref="M:Vanara.PInvoke.NTDSApi.DsMakePasswordCredentials(System.String,System.String,System.String,System.IntPtr@)" />.
+            </summary>
+    </member>
+    <member name="M:Vanara.PInvoke.NTDSApi.SafeDsPasswordCredentialsHandle.#ctor(System.String,System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.PInvoke.NTDSApi.SafeDsPasswordCredentialsHandle" /> class from user credentials.</summary>
+      <param name="user">
+            String that contains a fully qualified user name to use for the credentials, such as a user in UPN format; for example, "someone@fabrikam.com".
+            </param>
+      <param name="password">String that contains the password to use for the credentials.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.NTDSApi.SafeDsPasswordCredentialsHandle.#ctor(System.String,System.String,System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Vanara.PInvoke.NTDSApi.SafeDsPasswordCredentialsHandle" /> class from user credentials.</summary>
+      <param name="user">String that contains the user name to use for the credentials.</param>
+      <param name="domain">String that contains the domain that the user is a member of.</param>
+      <param name="password">String that contains the password to use for the credentials.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.NTDSApi.SafeDsPasswordCredentialsHandle.ReleaseHandle">
+      <summary>When overridden in a derived class, executes the code required to free the handle.</summary>
+      <returns>
+            true if the handle is released successfully; otherwise, in the event of a catastrophic failure, false. In this case, it generates a
+            releaseHandleFailed MDA Managed Debugging Assistant.
+            </returns>
+    </member>
+  </members>
+</doc>

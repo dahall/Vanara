@@ -1,0 +1,2648 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Vanara.PInvoke.TaskSchd</name>
+  </assembly>
+  <members>
+    <member name="T:Vanara.PInvoke.MSTask">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.MSTask</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.MSTask.CTask">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.MSTask.CTask</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.CTask.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Vanara.PInvoke.MSTask.CTask</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.MSTask.CTaskScheduler">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.MSTask.CTaskScheduler</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.CTaskScheduler.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Vanara.PInvoke.MSTask.CTaskScheduler</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.MSTask.DAILY">
+      <summary>Defines the interval, in days, at which a task is run.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.DAILY.DaysInterval">
+      <summary>Specifies the number of days between task runs.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.MSTask.IEnumWorkItems">
+      <summary>
+            Provides the methods for enumerating the tasks in the Scheduled Tasks folder.
+            <para>IEnumWorkItems is the primary interface of the enumeration object. To create the enumeration, call ITaskScheduler::Enum.</para></summary>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.IEnumWorkItems.Clone">
+      <summary>
+            Creates a new enumeration object that contains the same enumeration state as the current enumeration. Because the new object points to the same
+            place in the enumeration sequence, a client can use the Clone method to record a particular point in the enumeration sequence and return to that
+            point later.
+            </summary>
+      <returns>
+            A pointer to a pointer to a new IEnumWorkItems interface. This pointer will point to the newly created enumeration. If the method fails, this
+            parameter is undefined.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.IEnumWorkItems.Next(System.UInt32,System.IntPtr@,System.UInt32@)">
+      <summary>
+            Retrieves the next specified number of tasks in the enumeration sequence. If there are fewer than the requested number of tasks left in the
+            sequence, all the remaining elements are retrieved.
+            </summary>
+      <param name="celt">The number of tasks to retrieve.</param>
+      <param name="rgpwszNames">
+            A pointer to an array of pointers (LPWSTR) to null-terminated character strings containing the file names of the tasks returned from the
+            enumeration sequence. These file names are taken from the Scheduled Tasks folder and have the ".job" extension.
+            <para>
+            After processing the names returned in rgpwszNames, you must first free each character string in the array and then the array itself using CoTaskMemFree.
+            </para></param>
+      <param name="pceltFetched">A pointer to the number of tasks returned in rgpwszNames. If the celt parameter is 1, this parameter may be NULL.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Vanara.PInvoke.MSTask.IEnumWorkItems.Next(System.UInt32,System.IntPtr@,System.UInt32@)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.IEnumWorkItems.Reset">
+      <summary>Resets the enumeration sequence to the beginning.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.IEnumWorkItems.Skip(System.UInt32)">
+      <summary>Skips the next specified number of tasks in the enumeration sequence.</summary>
+      <param name="celt">The number of tasks to be skipped.</param>
+    </member>
+    <member name="T:Vanara.PInvoke.MSTask.IEnumWorkItemsNames">
+      <summary>Simple converter for results of <see cref="M:Vanara.PInvoke.MSTask.IEnumWorkItems.Next(System.UInt32,System.IntPtr@,System.UInt32@)" />.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.IEnumWorkItemsNames.Convert(System.IntPtr,System.UInt32)">
+      <summary>Simple converter for results of <see cref="M:Vanara.PInvoke.MSTask.IEnumWorkItems.Next(System.UInt32,System.IntPtr@,System.UInt32@)" />.</summary>
+      <param name="rgpwszNames">The rgpwszNames result from <see cref="M:Vanara.PInvoke.MSTask.IEnumWorkItems.Next(System.UInt32,System.IntPtr@,System.UInt32@)" />.</param>
+      <param name="pceltFetched">The pceltFetched result from <see cref="M:Vanara.PInvoke.MSTask.IEnumWorkItems.Next(System.UInt32,System.IntPtr@,System.UInt32@)" />.</param>
+      <returns>An array of strings.</returns>
+    </member>
+    <member name="T:Vanara.PInvoke.MSTask.ITask">
+      <summary>
+            Provides the methods for running tasks, getting or setting task information, and terminating tasks. It is derived from the IScheduledWorkItem
+            interface and inherits all the methods of that interface.
+            </summary>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.CreateTrigger(System.UInt16@)">
+      <summary>Creates a trigger using a work item object.</summary>
+      <param name="piNewTrigger">
+            A pointer to the returned trigger index value of the new trigger. The trigger index for the first trigger associated with a work item is "0". See
+            Remarks for other uses of the trigger index.
+            </param>
+      <returns>An ITaskTrigger interface. Currently, the only supported work items are tasks.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.DeleteTrigger(System.UInt16)">
+      <summary>Deletes a trigger from a work item.</summary>
+      <param name="iTrigger">A trigger index value that specifies the trigger to be deleted. For more information, see Remarks.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.EditWorkItem(System.IntPtr,System.UInt32)">
+      <summary>Displays the Task, Schedule, and settings property pages for the work item, allowing a user set the properties on those pages.</summary>
+      <param name="hParent">Reserved for future use. Set this parameter to NULL.</param>
+      <param name="dwReserved">Reserved for internal use; this parameter must be set to zero.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetAccountInformation">
+      <summary>Retrieves the account name for the work item.</summary>
+      <returns>
+            A pointer to a null-terminated string that contains the account name for the current work item. The empty string, L"", is returned for the local
+            system account. After processing the account name, be sure to call CoTaskMemFree to free the string.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetApplicationName">
+      <summary>This method retrieves the name of the application that the task is associated with.</summary>
+      <returns>
+            A pointer to a null-terminated string that contains the name of the application the current task is associated with. After processing this name,
+            call CoTaskMemFree to free resources.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetComment">
+      <summary>Retrieves the comment for the work item.</summary>
+      <returns>A pointer to a null-terminated string that contains the retrieved comment for the current work item.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetCreator">
+      <summary>Retrieves the name of the creator of the work item.</summary>
+      <returns>
+            A pointer to a null-terminated string that contains the name of the creator of the current work item. The application that invokes GetCreator is
+            responsible for freeing this string using the CoTaskMemFree function.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetErrorRetryCount">
+      <summary>Retrieves the number of times that the Task Scheduler will retry an operation when an error occurs. This method is not implemented.</summary>
+      <returns>A pointer to a WORD that contains the number of times to retry.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetErrorRetryInterval">
+      <summary>
+            Retrieves the time interval, in minutes, between Task Scheduler's attempts to run a work item if an error occurs. This method is not implemented.
+            </summary>
+      <returns>A pointer to a WORD value that contains the time interval between retries of the current work item.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetExitCode">
+      <summary>
+            Retrieves the last exit code returned by the executable associated with the work item on its last run. The method also returns the exit code
+            returned to Task Scheduler when it last attempted to run the work item.
+            </summary>
+      <returns>
+            A pointer to a DWORD value that is set to the last exit code for the work item. This is the exit code that the work item returned when it last
+            stopped running. If the work item has never been started, 0 is returned.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetFlags">
+      <summary>Retrieves the flags that modify the behavior of any type of work item.</summary>
+      <returns>A pointer to a DWORD that contains the flags for the work item. For a list of these flags, see SetFlags.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetIdleWait(System.UInt16@,System.UInt16@)">
+      <summary>Retrieves the idle wait time for the work item. For information about idle conditions, see Task Idle Conditions.</summary>
+      <param name="wIdleMinutes">A pointer to a WORD that contains the idle wait time for the current work item, in minutes.</param>
+      <param name="wDeadlineMinutes">
+            A pointer to a WORD that specifies the maximum number of minutes that the Task Scheduler will wait for the idle-time period returned in pwIdleMinutes.
+            </param>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetMaxRunTime">
+      <summary>This method retrieves the maximum length of time, in milliseconds, the task can run before terminating.</summary>
+      <returns>
+            A pointer to a DWORD that contains the maximum run time of the current task. If the maximum run time is reached during the execution of a task,
+            the Task Scheduler first sends a WM_CLOSE message to the associated application. If the application does not exit within three minutes,
+            TerminateProcess is run.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetMostRecentRunTime">
+      <summary>Retrieves the most recent time the work item began running.</summary>
+      <returns>A pointer to a SYSTEMTIME structure that contains the most recent time the current work item ran.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetNextRunTime">
+      <summary>Retrieves the next time the work item will run.</summary>
+      <returns>A pointer to a SYSTEMTIME structure that contains the next time the work item will run.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetParameters">
+      <summary>This method retrieves the task's command-line parameters.</summary>
+      <returns>
+            A pointer to a null-terminated string that contains the command-line parameters for the task. The method that invokes GetParameters is
+            responsible for freeing this string using the CoTaskMemFree function.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetPriority">
+      <summary>This method retrieves the priority for the task.</summary>
+      <returns>
+            A pointer to a DWORD that contains the priority for the current task. The priority value determines the frequency and length of the time slices
+            for a process. This applies only to the Windows Server 2003, Windows XP, and Windows 2000 operating systems. It is taken from the <c>CreateProcess</c>
+            priority class and can be one of the following flags (in descending order of thread scheduling priority):
+            <list type="bullet"><item><term>REALTIME_PRIORITY_CLASS</term></item><item><term>HIGH_PRIORITY_CLASS</term></item><item><term>NORMAL_PRIORITY_CLASS</term></item><item><term>IDLE_PRIORITY_CLASS</term></item></list></returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetRunTimes(Vanara.PInvoke.SYSTEMTIME@,Vanara.PInvoke.SYSTEMTIME@,System.UInt16@)">
+      <summary>Retrieves the work item run times for a specified time period.</summary>
+      <param name="pstBegin">A pointer to a SYSTEMTIME structure that contains the starting time of the time period to check. This value is inclusive.</param>
+      <param name="pstEnd">
+            A pointer to a SYSTEMTIME structure that contains the ending time of the time period to check. This value is exclusive. If NULL is passed for
+            this value, the end time is infinite.
+            </param>
+      <param name="pCount">
+            A pointer to a WORD value that specifies the number of run times to retrieve.
+            <para>On input, this parameter contains the number of run times being requested. This can be a number of between 1 and TASK_MAX_RUN_TIMES.</para><para>On output, this parameter contains the number of run times retrieved.</para></param>
+      <returns>
+            A pointer to an array of SYSTEMTIME structures. A NULL LPSYSTEMTIME object should be passed into this parameter. On return, this array contains
+            pCount run times. You must free this array by a calling the CoTaskMemFree function.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetStatus">
+      <summary>Retrieves the status of the work item.</summary>
+      <returns>A pointer to an HRESULT value.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetTaskFlags">
+      <summary>This method returns the flags that modify the behavior of a task.</summary>
+      <returns>Currently, there are no defined flags for scheduled tasks.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetTrigger(System.UInt16)">
+      <summary>Retrieves a task trigger.</summary>
+      <param name="iTrigger">The index of the trigger to retrieve.</param>
+      <returns>An ITaskTrigger interface for the retrieved trigger.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetTriggerCount">
+      <summary>Retrieves the number of triggers for the current work item.</summary>
+      <returns>A WORD that will contain the number of triggers associated with the work item.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetTriggerString(System.UInt16)">
+      <summary>Retrieves a string that describes the work item trigger.</summary>
+      <param name="iTrigger">The index of the trigger to be retrieved. The first trigger is always referenced by 0. For more information, see Remarks.</param>
+      <returns>
+            A pointer to a null-terminated string that contains the retrieved trigger description. Note that this string must be release by a call to
+            CoTaskMemFree after the string is no longer needed.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetWorkingDirectory">
+      <summary>This method retrieves the task's working directory.</summary>
+      <returns>
+            A pointer to a null-terminated string that contains the task's working directory. The application that invokes GetWorkingDirectory is responsible
+            for freeing this string using the CoTaskMemFree function.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.GetWorkItemData(System.UInt16@,Vanara.InteropServices.SafeCoTaskMemHandle@)">
+      <summary>Retrieves application-defined data associated with the work item.</summary>
+      <param name="pcBytes">A pointer to the number of bytes copied.</param>
+      <param name="ppBytes">
+            A pointer to a pointer to a BYTE that contains user-defined data for the current work item. The method that invokes GetWorkItemData is
+            responsible for freeing this memory by using CoTaskMemFree.
+            </param>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.Run">
+      <summary>Sends a request to the Task Scheduler service to run the work item.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.SetAccountInformation(System.String,System.IntPtr)">
+      <summary>Sets the account name and password used to run the work item.</summary>
+      <param name="pwszAccountName">
+            A string that contains the null-terminated name of the user account in which the work item will run. To specify the local system account, use the
+            empty string, L"". Do not use any other string to specify the local system account. For more information, see Remarks.
+            </param>
+      <param name="pwszPassword">
+            A string that contains the password for the account specified in pwszAccountName.
+            <para>
+            Set this parameter to NULL if the local system account is specified. If you set the TASK_FLAG_RUN_ONLY_IF_LOGGED_ON flag, you may also set
+            pwszPassword to NULL for local or domain user accounts. Use the IScheduledWorkItem::SetFlags method to set the flag.
+            </para><para>
+            Task Scheduler stores account information only once for all tasks that use the same account. If the account password is updated for one task,
+            then all tasks using that same account will use the updated password.
+            </para><para>
+            When you have finished using the password, clear the password information by calling the SecureZeroMemory function. For more information about
+            protecting passwords, see Handling Passwords.
+            </para></param>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.SetApplicationName(System.String)">
+      <summary>This method assigns a specific application to the current task.</summary>
+      <param name="pwszApplicationName">
+            A null-terminated string that contains the name of the application that will be associated with the task. Use an empty string to clear the
+            application name.
+            </param>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.SetComment(System.String)">
+      <summary>Sets the comment for the work item.</summary>
+      <param name="pwszComment">A null-terminated string that specifies the comment for the current work item.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.SetCreator(System.String)">
+      <summary>Sets the name of the work item's creator.</summary>
+      <param name="Creator">A null-terminated string that contains the name of the work item's creator.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.SetErrorRetryCount(System.UInt16)">
+      <summary>Sets the number of times Task Scheduler will try to run the work item again if an error occurs. This method is not implemented.</summary>
+      <param name="wRetryCount">A value that specifies the number of error retries for the current work item.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.SetErrorRetryInterval(System.UInt16)">
+      <summary>
+            Sets the time interval, in minutes, between Task Scheduler's attempts to run a work item after an error occurs. This method is not implemented.
+            </summary>
+      <param name="wRetryInterval">A value that specifies the interval between error retries for the current work item, in minutes.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.SetFlags(Vanara.PInvoke.MSTask.TaskFlags)">
+      <summary>Sets the flags that modify the behavior of any type of work item.</summary>
+      <param name="dwFlags">A value that specifies a combination of one or more flags.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.SetIdleWait(System.UInt16,System.UInt16)">
+      <summary>Sets the minutes that the system must be idle before the work item can run.</summary>
+      <param name="wIdleMinutes">A value that specifies how long, in minutes, the system must remain idle before the work item can run.</param>
+      <param name="wDeadlineMinutes">
+            A value that specifies the maximum number of minutes that the Task Scheduler will wait for the idle-time period returned in pwIdleMinutes.
+            </param>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.SetMaxRunTime(System.UInt32)">
+      <summary>This method sets the maximum time the task can run, in milliseconds, before terminating.</summary>
+      <param name="dwMaxRunTime">
+            A DWORD value that specifies the maximum run time (in milliseconds), for the task. This parameter may be set to INFINITE to specify an unlimited time.
+            </param>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.SetParameters(System.String)">
+      <summary>This method sets the command-line parameters for the task.</summary>
+      <param name="pwszParameters">
+            A null-terminated string that contains task parameters. These parameters are passed as command-line arguments to the application the task will
+            run. To clear the command-line parameter property, set pwszParameters to L"".
+            </param>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.SetPriority(System.Diagnostics.ProcessPriorityClass)">
+      <summary>This method sets the priority for the task.</summary>
+      <param name="dwPriority">
+            A DWORD that specifies the priority for the current task. The priority of a task determines the frequency and length of the time slices for a
+            process. This applies only to the Windows Server 2003, Windows XP, and Windows 2000 operating systems. These values are taken from the
+            CreateProcess priority class and can be one of following flags (in descending order of thread scheduling priority):
+            <list type="bullet"><item><term>REALTIME_PRIORITY_CLASS</term></item><item><term>HIGH_PRIORITY_CLASS</term></item><item><term>NORMAL_PRIORITY_CLASS</term></item><item><term>IDLE_PRIORITY_CLASS</term></item></list></param>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.SetTaskFlags(System.UInt32)">
+      <summary>This method sets the flags that modify the behavior of a scheduled task.</summary>
+      <param name="dwFlags">Currently, there are no flags defined for scheduled tasks.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.SetWorkingDirectory(System.String)">
+      <summary>This method sets the working directory for the task.</summary>
+      <param name="pwszWorkingDirectory">
+            A null-terminated string that contains a directory path to the working directory for the task.
+            <para>
+            The application starts with this directory as the current working directory. To clear the directory, set pwszWorkingDirectory to L"". If the
+            working directory is set to L"", when the application is run, the current directory will be the directory in which the task scheduler service
+            executable, Mstask.exe, resides.
+            </para></param>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.SetWorkItemData(System.UInt16,System.Byte[])">
+      <summary>This method stores application-defined data associated with the work item.</summary>
+      <param name="cBytes">The number of bytes in the data buffer. The caller allocates and frees this memory.</param>
+      <param name="rgbData">The data to copy.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITask.Terminate">
+      <summary>This method ends the execution of the work item.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.MSTask.ITaskScheduler">
+      <summary>Provides the methods for scheduling tasks.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITaskScheduler.Activate(System.String,System.Guid)">
+      <summary>The Activate method returns an active interface for a specified work item.</summary>
+      <param name="pwszName">A null-terminated string that specifies the name of the work item to activate.</param>
+      <param name="riid">
+            An identifier that identifies the interface being requested. The only interface supported at this time, ITask, has the identifier IID_ITask.
+            </param>
+      <returns>A pointer to an interface pointer that receives the address of the requested interface.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITaskScheduler.AddWorkItem(System.String,Vanara.PInvoke.MSTask.ITask)">
+      <summary>The AddWorkItem method adds a task to the schedule of tasks.</summary>
+      <param name="pwszTaskName">
+            A null-terminated string that specifies the name of the task to add. The task name must conform to Windows NT file-naming conventions, but cannot
+            include backslashes because nesting within the task folder object is not allowed.
+            </param>
+      <param name="WorkItem">A pointer to the task to add to the schedule.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITaskScheduler.Delete(System.String)">
+      <summary>The Delete method deletes a task.</summary>
+      <param name="pwszName">A null-terminated string that specifies the name of the task to delete.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITaskScheduler.Enum">
+      <summary>The Enum method retrieves a pointer to an OLE enumerator object that enumerates the tasks in the current task folder.</summary>
+      <returns>A pointer to a pointer to an IEnumWorkItems interface. This interface contains the enumeration context of the current task(s).</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITaskScheduler.GetTargetComputer">
+      <summary>The GetTargetComputer method returns the name of the computer on which ITaskScheduler is currently targeted.</summary>
+      <returns>
+            A pointer to a null-terminated string that contains the name of the target computer for the current task. This string is allocated by the
+            application that invokes GetTargetComputer, and must also be freed using CoTaskMemFree.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITaskScheduler.IsOfType(System.String,System.Guid)">
+      <summary>The IsOfType method checks the object's type to verify that it supports a particular interface.</summary>
+      <param name="pwszName">A null-terminated string that contains the name of the object to check.</param>
+      <param name="riid">The reference identifier of the interface to be matched.</param>
+      <returns>
+            The IsOfType method returns S_OK if the object named by pwszName supports the interface specified in riid. Otherwise, S_FALSE is returned.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITaskScheduler.NewWorkItem(System.String,System.Guid,System.Guid)">
+      <summary>The NewWorkItem method creates a new work item, allocating space for the work item and retrieving its address.</summary>
+      <param name="pwszTaskName ">
+            A null-terminated string that specifies the name of the new work item. This name must conform to Windows NT file-naming conventions, but cannot
+            include backslashes because nesting within the task folder object is not allowed.
+            </param>
+      <param name="rclsid">
+            The class identifier of the work item to be created. The only class supported at this time, the task class, has the identifier CLSID_Ctask.
+            </param>
+      <param name="riid">
+            The reference identifier of the interface being requested. The only interface supported at this time, ITask, has the identifier IID_ITask.
+            </param>
+      <param name="pwszTaskName">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>pwszTaskName</parameter>
+            <parameter>M:Vanara.PInvoke.MSTask.ITaskScheduler.NewWorkItem(System.String,System.Guid,System.Guid)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+            A pointer to an interface pointer that receives the requested interface. See Remarks for information on saving the work item to disk.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITaskScheduler.SetTargetComputer(System.String)">
+      <summary>
+            The SetTargetComputer method selects the computer that the ITaskScheduler interface operates on, allowing remote task management and enumeration.
+            </summary>
+      <param name="pwszComputer">
+            A pointer to a null-terminated wide character string that specifies the target computer name for the current instance of the ITaskScheduler
+            interface. Specify the target computer name in the Universal Naming Convention (UNC) format. To indicate the local computer, set this value to
+            NULL or to the local computer's UNC name. <note>When specifying a remote computer name, use two backslash (\\) characters before the computer
+            name. For example, use "\\ComputerName" instead of "ComputerName".</note></param>
+    </member>
+    <member name="T:Vanara.PInvoke.MSTask.ITaskTrigger">
+      <summary>
+            Provides the methods for accessing and setting triggers for a task. Triggers specify task start times, repetition criteria, and other parameters that
+            control when a task is run.
+            <para>ITaskTrigger is the primary interface of the task_trigger object. To create a trigger object, call CreateTrigger or GetTrigger.</para></summary>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITaskTrigger.GetTrigger">
+      <summary>The GetTrigger method retrieves the current task trigger.</summary>
+      <returns>
+            A pointer to a TASK_TRIGGER structure that contains the current task trigger. You must set the cbTriggerSize member of the TASK_TRIGGER structure
+            to the size of the task trigger structure before passing the structure to this method.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITaskTrigger.GetTriggerString">
+      <summary>
+            The GetTriggerString method retrieves the current task trigger in the form of a string. This string appears in the Task Scheduler user interface
+            in a form similar to "At 2PM every day, starting 5/11/97."
+            </summary>
+      <returns>
+            A pointer to a pointer to a null-terminated string that describes the current task trigger. The method that invokes GetTriggerString is
+            responsible for freeing this string using the CoTaskMemFree function.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.ITaskTrigger.SetTrigger(Vanara.PInvoke.MSTask.TASK_TRIGGER@)">
+      <summary>The SetTrigger method sets the trigger criteria for a task trigger.</summary>
+      <param name="Trigger">A pointer to a TASK_TRIGGER structure that contains the values that define the new task trigger.</param>
+    </member>
+    <member name="T:Vanara.PInvoke.MSTask.MONTHLYDATE">
+      <summary>Defines the day of the month the task will run.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.MONTHLYDATE.Days">
+      <summary>
+            Specifies the day of the month a task runs. This value is a bitfield that specifies the day(s) the task will run. Bit 0 corresponds to the first
+            of the month, bit 1 to the second, and so forth.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.MONTHLYDATE.Months">
+      <summary>
+            Specifies the month(s) when the task runs. This value is a combination of the following flags. See Remarks for an example of setting multiple flags.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.MSTask.MONTHLYDOW">
+      <summary>Defines the date(s) that the task runs by month, week, and day of the week.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.MONTHLYDOW.rgfDaysOfTheWeek">
+      <summary>Specifies the day(s) of the week (specified in wWhichWeek) when the task runs. This value is a combination of the following flags.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.MONTHLYDOW.rgfMonths">
+      <summary>Value that describes the month(s) when the task runs. This value is a combination of the following flags.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.MONTHLYDOW.wWhichWeek">
+      <summary>Specifies the week of the month when the task runs. This value is exclusive and is one of the following flags.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.MSTask.TASK_TRIGGER">
+      <summary>Defines the times to run a scheduled work item.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.MSTask.TASK_TRIGGER.BeginDate">
+      <summary>Gets or sets the begin date.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER.cbTriggerSize">
+      <summary>Size of this structure, in bytes.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.MSTask.TASK_TRIGGER.EndDate">
+      <summary>Gets or sets the end date.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER.MinutesDuration">
+      <summary>
+            Number of minutes after the task starts that the trigger will remain active. The number of minutes specified here must be greater than or equal
+            to the MinutesInterval setting.
+            <para>
+            For example, if you start a task at 8:00 A.M. and want to repeatedly start the task until 5:00 P.M., there would be 540 minutes in the duration.
+            </para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER.MinutesInterval">
+      <summary>
+            Number of minutes between consecutive task executions. This number is counted from the start of the previous scheduled task. The number of
+            minutes specified here must be less than the MinutesDuration setting.
+            <para>For example, to run a task every hour from 8:00 A.M. to 5:00 P.M., set this field to 60.</para></summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER.Reserved1">
+      <summary>For internal use only; this value must be zero.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER.Reserved2">
+      <summary>For internal use only; this value must be zero.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER.rgFlags">
+      <summary>Value that describes the behavior of the trigger. This value is a combination of the following flags.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.MSTask.TASK_TRIGGER.ToString">
+      <summary>Returns a <see cref="T:System.String" /> that represents this instance.</summary>
+      <returns>A <see cref="T:System.String" /> that represents this instance.</returns>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER.TriggerType">
+      <summary>
+            A TASK_TRIGGER_TYPE enumerated value that specifies the type of trigger. This member is used with Type. The type of trigger specified here
+            determines which fields of the TRIGGER_TYPE_UNION specified in Type member will be used. Trigger type is based on when the trigger will run the task.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER.Type">
+      <summary>
+            A TRIGGER_TYPE_UNION structure that specifies details about the trigger. Note that the TriggerType member determines which fields of the
+            TRIGGER_TYPE_UNION union will be used.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER.wBeginDay">
+      <summary>
+            Day of the month (specified in the wBeginMonth member) that the task trigger activates. The beginning day must be specified when setting a task.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER.wBeginMonth">
+      <summary>
+            Month of the year (specified in the wBeginYear member) that the task trigger activates. The beginning month must be specified when setting a task.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER.wBeginYear">
+      <summary>
+            Year that the task trigger activates. This value must be four digits (1997, not 97). The beginning year must be specified when setting a task.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER.wEndDay">
+      <summary>Day of the month (specified in the wEndMonth member) that the task trigger deactivates.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER.wEndMonth">
+      <summary>Month of the year (specified in the wEndYear member) that the task trigger deactivates.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER.wEndYear">
+      <summary>Year that the task trigger deactivates. This value must be four digits (1997, not 97).</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER.wRandomMinutesInterval">
+      <summary>Not currently used.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER.wStartHour">
+      <summary>Hour of the day the task runs. This value is on a 24-hour clock; hours go from 00 to 23.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER.wStartMinute">
+      <summary>Minute of the hour (specified in the wStartHour member) that the task runs.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.MSTask.TASK_TRIGGER_TYPE">
+      <summary>Valid types of triggers</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER_TYPE.TASK_TIME_TRIGGER_ONCE">
+      <summary>Trigger is set to run the task a single time.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER_TYPE.TASK_TIME_TRIGGER_DAILY">
+      <summary>Trigger is set to run the task on a daily interval.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER_TYPE.TASK_TIME_TRIGGER_WEEKLY">
+      <summary>Trigger is set to run the work item on specific days of a specific week of a specific month.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER_TYPE.TASK_TIME_TRIGGER_MONTHLYDATE">
+      <summary>Trigger is set to run the task on a specific day(s) of the month.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER_TYPE.TASK_TIME_TRIGGER_MONTHLYDOW">
+      <summary>Trigger is set to run the task on specific days, weeks, and months.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER_TYPE.TASK_EVENT_TRIGGER_ON_IDLE">
+      <summary>Trigger is set to run the task if the system remains idle for the amount of time specified by the idle wait time of the task.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER_TYPE.TASK_EVENT_TRIGGER_AT_SYSTEMSTART">
+      <summary>Trigger is set to run the task at system startup.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TASK_TRIGGER_TYPE.TASK_EVENT_TRIGGER_AT_LOGON">
+      <summary>Trigger is set to run the task when a user logs on.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.MSTask.TaskDaysOfTheWeek">
+      <summary>Specifies the day(s) of the week (specified in wWhichWeek) when the task runs.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskDaysOfTheWeek.TASK_SUNDAY">
+      <summary>The task will run on Sunday.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskDaysOfTheWeek.TASK_MONDAY">
+      <summary>The task will run on Monday</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskDaysOfTheWeek.TASK_TUESDAY">
+      <summary>The task will run on Tuesday</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskDaysOfTheWeek.TASK_WEDNESDAY">
+      <summary>The task will run on Wednesday</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskDaysOfTheWeek.TASK_THURSDAY">
+      <summary>The task will run on Thursday</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskDaysOfTheWeek.TASK_FRIDAY">
+      <summary>The task will run on Friday</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskDaysOfTheWeek.TASK_SATURDAY">
+      <summary>The task will run on Saturday</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.MSTask.TaskFlags">
+      <summary>
+            Options for a task, used for the Flags property of a Task. Uses the "Flags" attribute, so these values are combined with |. Some flags are documented
+            as Windows 95 only, but they have a user interface in Windows XP so that may not be true.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskFlags.TASK_FLAG_INTERACTIVE">
+      <summary>
+            This flag is used when converting Windows NT AT service jobs into work items. The Windows NT AT service job refers to At.exe, the Windows NT
+            command-line utility used for creating jobs for the Windows NT Schedule service. The Task Scheduler service replaces the Schedule service and is
+            backward compatible with it. The conversion occurs when the Task Scheduler is installed on Windows NT/Windows 2000— for example, if you install
+            Internet Explorer 4.0, or upgrade to Windows 2000. During the setup process, the Task Scheduler installation code searches the registry for jobs
+            created for the AT service and creates work items that will accomplish the same operation. For such converted jobs, the interactive flag is set
+            if the work item is intended to be displayed to the user. When this flag is not set, no work items are displayed in the Tasks folder, and no user
+            interface associated with the work item is presented to the user when the work item is executed.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskFlags.TASK_FLAG_DELETE_WHEN_DONE">
+      <summary>The work item will be deleted when there are no more scheduled run times.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskFlags.TASK_FLAG_DISABLED">
+      <summary>The work item is disabled. This is useful to temporarily prevent a work item from running at the scheduled time(s).</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskFlags.TASK_FLAG_RUN_ONLY_IF_DOCKED">
+      <summary>The task runs only if the system is docked. Windows 95 only.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskFlags.TASK_FLAG_HIDDEN">
+      <summary>The work item created will be hidden.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskFlags.TASK_FLAG_RUN_ONLY_IF_LOGGED_ON">
+      <summary>
+            The work item runs only if the user specified in IScheduledWorkItem::SetAccountInformation is logged on interactively. This flag has no effect on
+            the work items that are set to run in the local account.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskFlags.TASK_FLAG_START_ONLY_IF_IDLE">
+      <summary>The work item begins only if the computer is not in use at the scheduled start time.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskFlags.TASK_FLAG_SYSTEM_REQUIRED">
+      <summary>
+            The work item causes the system to be resumed, or awakened, if the system is running on battery power. This flag is supported only on systems
+            that support resume timers.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskFlags.TASK_FLAG_KILL_ON_IDLE_END">
+      <summary>
+            The work item terminates if the computer makes an idle to non-idle transition while the work item is running. The computer is not considered idle
+            until the IdleWait triggers' time elapses with no user input. For information regarding idle triggers, see Idle Trigger.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskFlags.TASK_FLAG_RESTART_ON_IDLE_RESUME">
+      <summary>
+            The work item starts again if the computer makes a non-idle to idle transition before all the work item's task_triggers elapse. (Use this flag in
+            conjunction with TASK_FLAG_KILL_ON_IDLE_END.)
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskFlags.TASK_FLAG_DONT_START_IF_ON_BATTERIES">
+      <summary>The work item does not start if its target computer is running on battery power.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskFlags.TASK_FLAG_KILL_IF_GOING_ON_BATTERIES">
+      <summary>The work item ends, and the associated application quits if the work item's target computer switches to battery power.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskFlags.TASK_FLAG_RUN_IF_CONNECTED_TO_INTERNET">
+      <summary>The work item runs only if there is currently a valid Internet connection.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.MSTask.TaskMonths">
+      <summary>Value that describes the month(s) when the task runs.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskMonths.TASK_JANUARY">
+      <summary>The task will run in January.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskMonths.TASK_FEBRUARY">
+      <summary>The task will run in February</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskMonths.TASK_MARCH">
+      <summary>The task will run in March</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskMonths.TASK_APRIL">
+      <summary>The task will run in April</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskMonths.TASK_MAY">
+      <summary>The task will run in May</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskMonths.TASK_JUNE">
+      <summary>The task will run in June</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskMonths.TASK_JULY">
+      <summary>The task will run in July</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskMonths.TASK_AUGUST">
+      <summary>The task will run in August</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskMonths.TASK_SEPTEMBER">
+      <summary>The task will run in September</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskMonths.TASK_OCTOBER">
+      <summary>The task will run in October</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskMonths.TASK_NOVEMBER">
+      <summary>The task will run in November</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskMonths.TASK_DECEMBER">
+      <summary>The task will run in December</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.MSTask.TaskStatus">
+      <summary>
+            Status values returned for a task. Some values have been determined to occur although they do no appear in the Task Scheduler system documentation.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskStatus.Ready">
+      <summary>The task is ready to run at its next scheduled time.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskStatus.Running">
+      <summary>The task is currently running.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskStatus.NotScheduled">
+      <summary>One or more of the properties that are needed to run this task on a schedule have not been set.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskStatus.NeverRun">
+      <summary>The task has not yet run.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskStatus.Disabled">
+      <summary>The task will not run at the scheduled times because it has been disabled.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskStatus.NoMoreRuns">
+      <summary>There are no more runs scheduled for this task.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskStatus.Terminated">
+      <summary>The last run of the task was terminated by the user.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskStatus.NoTriggers">
+      <summary>Either the task has no triggers or the existing triggers are disabled or not set.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskStatus.NoTriggerTime">
+      <summary>Event triggers don't have set run times.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.MSTask.TaskTriggerFlags">
+      <summary>Value that describes the behavior of the trigger. This value is a combination of the following flags.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskTriggerFlags.TASK_TRIGGER_FLAG_HAS_END_DATE">
+      <summary>Trigger structure's end date is valid. If this flag is not set, the end date data is ignored and the trigger will be valid indefinitely.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskTriggerFlags.TASK_TRIGGER_FLAG_KILL_AT_DURATION_END">
+      <summary>
+            Task will be terminated at the end of the active trigger's lifetime. At the duration end, the Task Scheduler sends a WM_CLOSE message to the
+            associated application. If WM_CLOSE cannot be sent (for example, the application has no windows) or the application has not exited within three
+            minutes of the receiving WM_CLOSE, the Task Scheduler terminates the application using TerminateProcess.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskTriggerFlags.TASK_TRIGGER_FLAG_DISABLED">
+      <summary>Task trigger is inactive.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.MSTask.TaskWhichWeek">
+      <summary>Specifies the week of the month when the task runs.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskWhichWeek.TASK_FIRST_WEEK">
+      <summary>The task will run between the first and seventh day of the month.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskWhichWeek.TASK_SECOND_WEEK">
+      <summary>The task will run between the eighth and 14th day of the month.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskWhichWeek.TASK_THIRD_WEEK">
+      <summary>The task will run between the 15th and 21st day of the month.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskWhichWeek.TASK_FOURTH_WEEK">
+      <summary>The task will run between the 22nd and 28th of the month.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TaskWhichWeek.TASK_LAST_WEEK">
+      <summary>The task will run between the last seven days of the month.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.MSTask.TRIGGER_TYPE_UNION">
+      <summary>Defines the invocation schedule of the trigger within the Type member of a TASK_TRIGGER structure.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TRIGGER_TYPE_UNION.Daily">
+      <summary>A DAILY structure that specifies the number of days between invocations of a task.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TRIGGER_TYPE_UNION.MonthlyDate">
+      <summary>A MONTHLYDATE structure that specifies the month(s) and day(s) of the month a task will run.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TRIGGER_TYPE_UNION.MonthlyDOW">
+      <summary>A MONTHLYDOW structure that specifies the day(s) of the year a task runs by month(s), week of month, and day(s) of week.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.TRIGGER_TYPE_UNION.Weekly">
+      <summary>A WEEKLY structure that specifies the number of weeks between invocations of a task, and day(s) of the week the task will run.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.MSTask.WEEKLY">
+      <summary>Defines the interval, in weeks, between invocations of a task.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.WEEKLY.rgfDaysOfTheWeek">
+      <summary>
+            Value that describes the days of the week the task runs. This value is a bitfield and is a combination of the following flags. See Remarks for an
+            example of specifying multiple flags.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.MSTask.WEEKLY.WeeksInterval">
+      <summary>Number of weeks between invocations of a task.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>T:Vanara.PInvoke.TaskSchd</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IAction">
+      <summary>Provides the common properties inherited by all action objects. An action object is created by the IActionCollection::Create method.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IAction.Id">
+      <summary>Gets or sets the identifier of the action.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IAction.Type">
+      <summary>Gets the type of action.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IActionCollection">
+      <summary>Contains the actions that are performed by the task.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.IActionCollection.Clear">
+      <summary>Clears all the actions from the collection.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IActionCollection.Context">
+      <summary>
+            Gets or sets the identifier of the principal for the task. The principal of the task specifies the security context under which the actions of
+            the task are performed.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IActionCollection.Count">
+      <summary>Gets the number of actions in the collection.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.IActionCollection.Create(Vanara.PInvoke.TaskSchd.TASK_ACTION_TYPE)">
+      <summary>Creates and adds a new action to the collection.</summary>
+      <param name="Type">This parameter is set to one of the following TASK_ACTION_TYPE enumeration constants.</param>
+      <returns>An <see cref="T:Vanara.PInvoke.TaskSchd.IAction" /> interface that represents the new action.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.IActionCollection.GetEnumerator">
+      <summary>Returns an enumerator that iterates through a collection.</summary>
+      <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IActionCollection.Item(System.Int32)">
+      <summary>Gets a specified action from the collection.</summary>
+      <param name="index">The index. Collections are 1-based. In other words, the index for the first item in the collection is 1.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.IActionCollection.Remove(System.Object)">
+      <summary>Removes the specified action from the collection.</summary>
+      <param name="index">The index of the action to be removed. Use a LONG value for the index number.</param>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IActionCollection.XmlText">
+      <summary>Gets or sets an XML-formatted version of the collection.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IBootTrigger">
+      <summary>Represents a trigger that starts a task when the system is started.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IBootTrigger.Delay">
+      <summary>Gets or sets a value that indicates the amount of time between when the system is booted and when the task is started.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IBootTrigger.Enabled">
+      <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IBootTrigger.EndBoundary">
+      <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IBootTrigger.ExecutionTimeLimit">
+      <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IBootTrigger.Id">
+      <summary>Gets or sets the identifier for the trigger.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IBootTrigger.Repetition">
+      <summary>
+            Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IBootTrigger.StartBoundary">
+      <summary>Gets or sets the date and time when the trigger is activated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IBootTrigger.Type">
+      <summary>
+            Gets the type of the trigger. The trigger type is defined when the trigger is created and cannot be changed later. For information on creating a
+            trigger, see ITriggerCollection::Create.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IComHandlerAction">
+      <summary>Represents an action that fires a handler.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IComHandlerAction.ClassId">
+      <summary>Gets or sets the identifier of the handler class.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IComHandlerAction.Data">
+      <summary>Gets or sets additional data that is associated with the handler.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IComHandlerAction.Id">
+      <summary>Gets or sets the identifier of the action.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IComHandlerAction.Type">
+      <summary>Gets the type of action.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IDailyTrigger">
+      <summary>
+            Represents a trigger that starts a task based on a daily schedule. For example, the task starts at a specific time every day, every other day, every
+            third day, and so on.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IDailyTrigger.DaysInterval">
+      <summary>Gets or sets the interval between the days in the schedule.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IDailyTrigger.Enabled">
+      <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IDailyTrigger.EndBoundary">
+      <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IDailyTrigger.ExecutionTimeLimit">
+      <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IDailyTrigger.Id">
+      <summary>Gets or sets the identifier for the trigger.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IDailyTrigger.RandomDelay">
+      <summary>Gets or sets a delay time that is randomly added to the start time of the trigger.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IDailyTrigger.Repetition">
+      <summary>
+            Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IDailyTrigger.StartBoundary">
+      <summary>Gets or sets the date and time when the trigger is activated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IDailyTrigger.Type">
+      <summary>
+            Gets the type of the trigger. The trigger type is defined when the trigger is created and cannot be changed later. For information on creating a
+            trigger, see ITriggerCollection::Create.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IEmailAction">
+      <summary>
+            Represents an action that sends an email message. <note>This interface is no longer supported. Please use IExecAction with the powershell
+            Send-MailMessage cmdlet as a workaround.</note></summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEmailAction.Attachments">
+      <summary>Gets or sets the pointer to an array of attachments that is sent with the email message.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEmailAction.Bcc">
+      <summary>Gets or sets the email address or addresses that you want to Bcc in the email message.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEmailAction.Body">
+      <summary>Gets or sets the body of the email that contains the email message.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEmailAction.Cc">
+      <summary>Gets or sets the email address or addresses that you want to Cc in the email message.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEmailAction.From">
+      <summary>Gets or sets the email address that you want to send the email from.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEmailAction.HeaderFields">
+      <summary>Gets or sets the header information in the email message to send.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEmailAction.Id">
+      <summary>Gets or sets the identifier of the action.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEmailAction.ReplyTo">
+      <summary>Gets or sets the email address that you want to reply to.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEmailAction.Server">
+      <summary>Gets or sets the name of the SMTP server that you use to send email from.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEmailAction.Subject">
+      <summary>Gets or sets the subject of the email message.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEmailAction.To">
+      <summary>Gets or sets to.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEmailAction.Type">
+      <summary>Gets the type of action.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IEventTrigger">
+      <summary>Represents a trigger that starts a task when a system event occurs.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEventTrigger.Delay">
+      <summary>
+            Gets or sets a value that indicates the amount of time between when the event occurs and when the task is started. The format for this string is
+            PnYnMnDTnHnMnS, where nY is the number of years, nM is the number of months, nD is the number of days, 'T' is the date/time separator, nH is the
+            number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5 minutes and P1M4DT2H5M specifies one
+            month, four days, two hours, and five minutes).
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEventTrigger.Enabled">
+      <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEventTrigger.EndBoundary">
+      <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEventTrigger.ExecutionTimeLimit">
+      <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEventTrigger.Id">
+      <summary>Gets or sets the identifier for the trigger.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEventTrigger.Repetition">
+      <summary>
+            Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEventTrigger.StartBoundary">
+      <summary>Gets or sets the date and time when the trigger is activated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEventTrigger.Subscription">
+      <summary>Gets or sets a query string that identifies the event that fires the trigger.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEventTrigger.Type">
+      <summary>
+            Gets the type of the trigger. The trigger type is defined when the trigger is created and cannot be changed later. For information on creating a
+            trigger, see ITriggerCollection::Create.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IEventTrigger.ValueQueries">
+      <summary>
+            Gets or sets a collection of named XPath queries. Each query in the collection is applied to the last matching event XML returned from the
+            subscription query specified in the Subscription property.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IExecAction">
+      <summary>Represents an action that executes a command-line operation.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IExecAction.Arguments">
+      <summary>Gets or sets the arguments associated with the command-line operation.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IExecAction.Id">
+      <summary>Gets or sets the identifier of the action.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IExecAction.Path">
+      <summary>Gets or sets the path to an executable file.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IExecAction.Type">
+      <summary>Gets the type of action.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IExecAction.WorkingDirectory">
+      <summary>Gets or sets the directory that contains either the executable file or the files that are used by the executable file.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IIdleSettings">
+      <summary>
+            Specifies how the Task Scheduler performs tasks when the computer is in an idle condition. For information about idle conditions, see Task Idle Conditions.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IIdleSettings.IdleDuration">
+      <summary>Gets or sets a value that indicates the amount of time that the computer must be in an idle state before the task is run.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IIdleSettings.RestartOnIdle">
+      <summary>
+            Gets or sets a Boolean value that indicates whether the task is restarted when the computer cycles into an idle condition more than once.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IIdleSettings.StopOnIdleEnd">
+      <summary>
+            Gets or sets a Boolean value that indicates that the Task Scheduler will terminate the task if the idle condition ends before the task is
+            completed. The idle condition ends when the computer is no longer idle.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IIdleSettings.WaitTimeout">
+      <summary>
+            Gets or sets a value that indicates the amount of time that the Task Scheduler will wait for an idle condition to occur. If no value is specified
+            for this property, then the Task Scheduler service will wait indefinitely for an idle condition to occur.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IIdleTrigger">
+      <summary>
+            Represents a trigger that starts a task when the computer goes into an idle state. For information about idle conditions, see Task Idle Conditions.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IIdleTrigger.Enabled">
+      <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IIdleTrigger.EndBoundary">
+      <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IIdleTrigger.ExecutionTimeLimit">
+      <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IIdleTrigger.Id">
+      <summary>Gets or sets the identifier for the trigger.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IIdleTrigger.Repetition">
+      <summary>
+            Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IIdleTrigger.StartBoundary">
+      <summary>Gets or sets the date and time when the trigger is activated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IIdleTrigger.Type">
+      <summary>
+            Gets the type of the trigger. The trigger type is defined when the trigger is created and cannot be changed later. For information on creating a
+            trigger, see ITriggerCollection::Create.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.ILogonTrigger">
+      <summary>
+            Represents a trigger that starts a task when a user logs on. When the Task Scheduler service starts, all logged-on users are enumerated and any tasks
+            registered with logon triggers that match the logged on user are run.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ILogonTrigger.Delay">
+      <summary>Gets or sets a value that indicates the amount of time between when the user logs on and when the task is started.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ILogonTrigger.Enabled">
+      <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ILogonTrigger.EndBoundary">
+      <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ILogonTrigger.ExecutionTimeLimit">
+      <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ILogonTrigger.Id">
+      <summary>Gets or sets the identifier for the trigger.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ILogonTrigger.Repetition">
+      <summary>
+            Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ILogonTrigger.StartBoundary">
+      <summary>Gets or sets the date and time when the trigger is activated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ILogonTrigger.Type">
+      <summary>
+            Gets the type of the trigger. The trigger type is defined when the trigger is created and cannot be changed later. For information on creating a
+            trigger, see ITriggerCollection::Create.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ILogonTrigger.UserId">
+      <summary>Gets or sets the identifier of the user.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IMaintenanceSettings">
+      <summary>Provides the settings that the Task Scheduler uses to perform task during Automatic maintenance.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMaintenanceSettings.Deadline">
+      <summary>
+            Gets or sets the amount of time after which the Task scheduler attempts to run the task during emergency Automatic maintenance, if the task
+            failed to complete during regular Automatic maintenance.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMaintenanceSettings.Exclusive">
+      <summary>
+            Indicates whether the Task scheduler must start the task during the Automatic maintenance in exclusive mode.
+            <para>
+            The exclusivity is guaranteed only between other maintenance tasks and doesn't grant any ordering priority of the task. If exclusivity is not
+            specified, the task is started in parallel with other maintenance tasks.
+            </para></summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMaintenanceSettings.Period">
+      <summary>Gets or sets the amount of time the task needs to be once executed during regular Automatic maintenance.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IMonthlyDOWTrigger">
+      <summary>
+            Represents a trigger that starts a task on a monthly day-of-week schedule. For example, the task starts on every first Thursday, May through October.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyDOWTrigger.DaysOfWeek">
+      <summary>Gets or sets the days of the week during which the task runs.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyDOWTrigger.Enabled">
+      <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyDOWTrigger.EndBoundary">
+      <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyDOWTrigger.ExecutionTimeLimit">
+      <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyDOWTrigger.Id">
+      <summary>Gets or sets the identifier for the trigger.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyDOWTrigger.MonthsOfYear">
+      <summary>Gets or sets the months of the year during which the task runs.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyDOWTrigger.RandomDelay">
+      <summary>Gets or sets a delay time that is randomly added to the start time of the trigger.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyDOWTrigger.Repetition">
+      <summary>
+            Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyDOWTrigger.RunOnLastWeekOfMonth">
+      <summary>Gets or sets a Boolean value that indicates that the task runs on the last week of the month.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyDOWTrigger.StartBoundary">
+      <summary>Gets or sets the date and time when the trigger is activated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyDOWTrigger.Type">
+      <summary>
+            Gets the type of the trigger. The trigger type is defined when the trigger is created and cannot be changed later. For information on creating a
+            trigger, see ITriggerCollection::Create.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyDOWTrigger.WeeksOfMonth">
+      <summary>Gets or sets the weeks of the month during which the task runs.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IMonthlyTrigger">
+      <summary>Represents a trigger that starts a job based on a monthly schedule. For example, the task starts on specific days of specific months.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyTrigger.DaysOfMonth">
+      <summary>Gets or sets the days of the month during which the task runs.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyTrigger.Enabled">
+      <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyTrigger.EndBoundary">
+      <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyTrigger.ExecutionTimeLimit">
+      <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyTrigger.Id">
+      <summary>Gets or sets the identifier for the trigger.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyTrigger.MonthsOfYear">
+      <summary>Gets or sets the months of the year during which the task runs.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyTrigger.RandomDelay">
+      <summary>Gets or sets a delay time that is randomly added to the start time of the trigger.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyTrigger.Repetition">
+      <summary>
+            Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyTrigger.RunOnLastDayOfMonth">
+      <summary>Gets or sets a Boolean value that indicates that the task runs on the last day of the month.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyTrigger.StartBoundary">
+      <summary>Gets or sets the date and time when the trigger is activated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IMonthlyTrigger.Type">
+      <summary>
+            Gets the type of the trigger. The trigger type is defined when the trigger is created and cannot be changed later. For information on creating a
+            trigger, see ITriggerCollection::Create.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.INetworkSettings">
+      <summary>Provides the settings that the Task Scheduler service uses to obtain a network profile.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.INetworkSettings.Id">
+      <summary>Gets or sets a GUID value that identifies a network profile.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.INetworkSettings.Name">
+      <summary>Gets or sets the name of a network profile. The name is used for display purposes.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IPrincipal">
+      <summary>
+            Provides the security credentials for a principal. These security credentials define the security context for the tasks that are associated with the principal.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IPrincipal.DisplayName">
+      <summary>Gets or sets the name of the principal.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IPrincipal.GroupId">
+      <summary>Gets or sets the identifier of the user group that is required to run the tasks that are associated with the principal.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IPrincipal.Id">
+      <summary>Gets or sets the identifier of the principal.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IPrincipal.LogonType">
+      <summary>Gets or sets the security logon method that is required to run the tasks that are associated with the principal.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IPrincipal.RunLevel">
+      <summary>
+            Gets or sets the identifier that is used to specify the privilege level that is required to run the tasks that are associated with the principal.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IPrincipal.UserId">
+      <summary>Gets or sets the user identifier that is required to run the tasks that are associated with the principal.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IPrincipal2">
+      <summary>
+            Provides the extended settings applied to security credentials for a principal. These security credentials define the security context for the tasks
+            that are associated with the principal.
+            </summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.IPrincipal2.AddRequiredPrivilege(System.String)">
+      <summary>Adds the required privilege to the task process token.</summary>
+      <param name="privilege">
+            Specifies the right of a task to perform various system-related operations, such as shutting down the system, loading device drivers, or changing
+            the system time.
+            </param>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IPrincipal2.Item(System.Int32)">
+      <summary>Gets the required privilege of the task by index.</summary>
+      <param name="index">The index of the privilege to be retrieved.</param>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IPrincipal2.ProcessTokenSidType">
+      <summary>Gets or sets the task process security identifier (SID) type.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IPrincipal2.RequiredPrivilegeCount">
+      <summary>Gets the number of privileges in the required privileges array.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IRegisteredTask">
+      <summary>
+            Provides the methods that are used to run the task immediately, get any running instances of the task, get or set the credentials that are used to
+            register the task, and the properties that describe the task.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegisteredTask.Definition">
+      <summary>Gets the definition of the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegisteredTask.Enabled">
+      <summary>Gets or sets a Boolean value that indicates if the registered task is enabled.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.IRegisteredTask.GetInstances(System.Int32)">
+      <summary>
+            Returns all instances of the currently running registered task. <note>IRegisteredTask::GetInstances will only return instances of the currently
+            running registered task that are running at or below a user's security context. For example, for members of the Administrators group,
+            GetInstances will return all instances of the currently running registered task, but for members of the Users group, GetInstances will only
+            return instances of the currently running registered task that are running under the Users group security context.</note></summary>
+      <param name="flags">This parameter is reserved for future use and must be set to 0.</param>
+      <returns>An IRunningTaskCollection interface that contains all currently running instances of the task under the user's context.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.IRegisteredTask.GetRunTimes(Vanara.PInvoke.SYSTEMTIME@,Vanara.PInvoke.SYSTEMTIME@,System.UInt32@)">
+      <summary>Gets the times that the registered task is scheduled to run during a specified time.</summary>
+      <param name="pstStart">The starting time for the query.</param>
+      <param name="pstEnd">The ending time for the query.</param>
+      <param name="pCount">The requested number of runs on input and the returned number of runs on output.</param>
+      <returns>
+            The scheduled times that the task will run. A NULL LPSYSTEMTIME object should be passed into this parameter. On return, this array contains
+            pCount run times. You must free this array by a calling the CoTaskMemFree function.
+            </returns>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.IRegisteredTask.GetSecurityDescriptor(Vanara.PInvoke.SECURITY_INFORMATION)">
+      <summary>Gets the security descriptor that is used as credentials for the registered task.</summary>
+      <param name="securityInformation">The security information from SECURITY_INFORMATION.</param>
+      <returns>The security descriptor that is used as credentials for the registered task.</returns>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegisteredTask.LastRunTime">
+      <summary>Gets the time the registered task was last run.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegisteredTask.LastTaskResult">
+      <summary>Gets the results that were returned the last time the registered task was run.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegisteredTask.Name">
+      <summary>Gets the name of the registered task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegisteredTask.NextRunTime">
+      <summary>Gets the time when the registered task is next scheduled to run.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegisteredTask.NumberOfMissedRuns">
+      <summary>Gets the number of times the registered task has missed a scheduled run.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegisteredTask.Path">
+      <summary>Gets the path to where the registered task is stored.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.IRegisteredTask.Run(System.Object)">
+      <summary>Runs the registered task immediately.</summary>
+      <param name="parameters">
+            The parameters used as values in the task actions. To not specify any parameter values for the task actions, set this parameter to VT_NULL or
+            VT_EMPTY. Otherwise, a single BSTR value or an array of BSTR values can be specified.
+            <para>
+            The BSTR values that you specify are paired with names and stored as name-value pairs. If you specify a single BSTR value, then Arg0 will be the
+            name assigned to the value. The value can be used in the task action where the $(Arg0) variable is used in the action properties.
+            </para><para>
+            If you pass in values such as "0", "100", and "250" as an array of BSTR values, then "0" will replace the $(Arg0) variables, "100" will replace
+            the $(Arg1) variables, and "250" will replace the $(Arg2) variables that are used in the action properties.
+            </para><para>A maximum of 32 BSTR values can be specified.</para><para>
+            For more information and a list of action properties that can use $(Arg0), $(Arg1), ..., $(Arg32) variables in their values, see Task Actions.
+            </para></param>
+      <returns>An IRunningTask interface that defines the new instance of the task.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.IRegisteredTask.RunEx(System.Object,Vanara.PInvoke.TaskSchd.TASK_RUN_FLAGS,System.Int32,System.String)">
+      <summary>Runs the registered task immediately using specified flags and a session identifier.</summary>
+      <param name="parameters">
+            The parameters used as values in the task actions. To not specify any parameter values for the task actions, set this parameter to VT_NULL or
+            VT_EMPTY. Otherwise, a single BSTR value or an array of BSTR values can be specified.
+            <para>
+            The BSTR values that you specify are paired with names and stored as name-value pairs. If you specify a single BSTR value, then Arg0 will be the
+            name assigned to the value. The value can be used in the task action where the $(Arg0) variable is used in the action properties.
+            </para><para>
+            If you pass in values such as "0", "100", and "250" as an array of BSTR values, then "0" will replace the $(Arg0) variables, "100" will replace
+            the $(Arg1) variables, and "250" will replace the $(Arg2) variables that are used in the action properties.
+            </para><para>A maximum of 32 BSTR values can be specified.</para><para>
+            For more information and a list of action properties that can use $(Arg0), $(Arg1), ..., $(Arg32) variables in their values, see Task Actions.
+            </para></param>
+      <param name="flags">A TASK_RUN_FLAGS constant that defines how the task is run.</param>
+      <param name="sessionID">
+            The terminal server session in which you want to start the task.
+            <para>
+            If the TASK_RUN_USE_SESSION_ID constant is not passed into the flags parameter, then the value specified in this parameter is ignored. If the
+            TASK_RUN_USE_SESSION_ID constant is passed into the flags parameter and the sessionID value is less than or equal to 0, then an invalid argument
+            error will be returned.
+            </para><para>
+            If the TASK_RUN_USE_SESSION_ID constant is passed into the flags parameter and the sessionID value is a valid session ID greater than 0 and if no
+            value is specified for the user parameter, then the Task Scheduler service will try to start the task interactively as the user who is logged on
+            to the specified session.
+            </para><para>
+            If the TASK_RUN_USE_SESSION_ID constant is passed into the flags parameter and the sessionID value is a valid session ID greater than 0 and if a
+            user is specified in the user parameter, then the Task Scheduler service will try to start the task interactively as the user who is specified in
+            the user parameter.
+            </para></param>
+      <param name="user">The user for which the task runs.</param>
+      <returns>An IRunningTask interface that defines the new instance of the task.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.IRegisteredTask.SetSecurityDescriptor(System.String,System.Int32)">
+      <summary>Sets the security descriptor that is used as credentials for the registered task.</summary>
+      <param name="sddl">
+            The security descriptor that is used as credentials for the registered task. <note>If the Local System account is denied access to a task, then
+            the Task Scheduler service can produce unexpected results.</note></param>
+      <param name="flags">
+            Flags that specify how to set the security descriptor. The TASK_DONT_ADD_PRINCIPAL_ACE flag from the TASK_CREATION enumeration can be specified.
+            </param>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegisteredTask.State">
+      <summary>Gets the operational state of the registered task.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.IRegisteredTask.Stop(System.Int32)">
+      <summary>Stops the registered task immediately.</summary>
+      <param name="flags">Reserved. Must be zero.</param>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegisteredTask.Xml">
+      <summary>Gets the XML-formatted registration information for the registered task.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IRegisteredTaskCollection">
+      <summary>Contains all the tasks that are registered.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegisteredTaskCollection.Count">
+      <summary>Gets the number of registered tasks in the collection.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.IRegisteredTaskCollection.GetEnumerator">
+      <summary>Returns an enumerator that iterates through a collection.</summary>
+      <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegisteredTaskCollection.Item(System.Object)">
+      <summary>Gets the specified registered task from the collection.</summary>
+      <param name="index">The 1-based index of the item desired or a VARIANT string that contains the name of the task to get.</param>
+      <returns>An IRegisteredTask interface that contains the requested context.</returns>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IRegistrationInfo">
+      <summary>
+            Provides the administrative information that can be used to describe the task. This information includes details such as a description of the task,
+            the author of the task, the date the task is registered, and the security descriptor of the task.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegistrationInfo.Author">
+      <summary>Gets or sets the author of the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegistrationInfo.Date">
+      <summary>Gets or sets the date and time when the task is registered.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegistrationInfo.Description">
+      <summary>Gets or sets the description of the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegistrationInfo.Documentation">
+      <summary>Gets or sets any additional documentation for the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegistrationInfo.SecurityDescriptor">
+      <summary>
+            Gets or sets the security descriptor of the task. If a different security descriptor is supplied during task registration, it will supersede the
+            security descriptor that is set with this property.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegistrationInfo.Source">
+      <summary>Gets or sets where the task originated from. For example, a task may originate from a component, service, application, or user.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegistrationInfo.URI">
+      <summary>Gets or sets the URI of the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegistrationInfo.Version">
+      <summary>Gets or sets the version number of the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegistrationInfo.XmlText">
+      <summary>Gets or sets an XML-formatted version of the registration information for the task.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IRegistrationTrigger">
+      <summary>Represents a trigger that starts a task when the task is registered or updated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegistrationTrigger.Delay">
+      <summary>
+            Gets or sets the amount of time between when the task is registered and when the task is started. The format for this string is PnYnMnDTnHnMnS,
+            where nY is the number of years, nM is the number of months, nD is the number of days, 'T' is the date/time separator, nH is the number of hours,
+            nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5 minutes and P1M4DT2H5M specifies one month, four
+            days, two hours, and five minutes).
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegistrationTrigger.Enabled">
+      <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegistrationTrigger.EndBoundary">
+      <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegistrationTrigger.ExecutionTimeLimit">
+      <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegistrationTrigger.Id">
+      <summary>Gets or sets the identifier for the trigger.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegistrationTrigger.Repetition">
+      <summary>
+            Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegistrationTrigger.StartBoundary">
+      <summary>Gets or sets the date and time when the trigger is activated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRegistrationTrigger.Type">
+      <summary>
+            Gets the type of the trigger. The trigger type is defined when the trigger is created and cannot be changed later. For information on creating a
+            trigger, see ITriggerCollection::Create.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IRepetitionPattern">
+      <summary>Defines how often the task is run and how long the repetition pattern is repeated after the task is started.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRepetitionPattern.Duration">
+      <summary>Gets or sets how long the pattern is repeated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRepetitionPattern.Interval">
+      <summary>Gets or sets the amount of time between each restart of the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRepetitionPattern.StopAtDurationEnd">
+      <summary>Gets or sets a Boolean value that indicates if a running instance of the task is stopped at the end of the repetition pattern duration.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IRunningTask">
+      <summary>Provides the methods to get information from and control a running task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRunningTask.CurrentAction">
+      <summary>Gets the name of the current action that the running task is performing.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRunningTask.EnginePID">
+      <summary>Gets the process ID for the engine (process) which is running the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRunningTask.InstanceGuid">
+      <summary>Gets the GUID identifier for this instance of the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRunningTask.Name">
+      <summary>Gets the name of the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRunningTask.Path">
+      <summary>Gets the path to where the task is stored.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.IRunningTask.Refresh">
+      <summary>Refreshes all of the local instance variables of the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRunningTask.State">
+      <summary>Gets an identifier for the state of the running task.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.IRunningTask.Stop">
+      <summary>Stops this instance of the task.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IRunningTaskCollection">
+      <summary>Provides a collection that is used to control running tasks.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRunningTaskCollection.Count">
+      <summary>Gets the number of running tasks in the collection.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.IRunningTaskCollection.GetEnumerator">
+      <summary>Returns an enumerator that iterates through a collection.</summary>
+      <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IRunningTaskCollection.Item(System.Object)">
+      <summary>Gets the specified task from the collection.</summary>
+      <param name="index">The index. Collections are 1-based. That is, the index for the first item in the collection is 1.</param>
+      <returns>An IRunningTask interface of the specified task.</returns>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.ISessionStateChangeTrigger">
+      <summary>Triggers tasks for console connect or disconnect, remote connect or disconnect, or workstation lock or unlock notifications.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ISessionStateChangeTrigger.Delay">
+      <summary>
+            Gets or sets a value that indicates how long of a delay takes place before a task is started after a Terminal Server session state change is
+            detected. The format for this string is PnYnMnDTnHnMnS, where nY is the number of years, nM is the number of months, nD is the number of days,
+            'T' is the date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M
+            specifies 5 minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ISessionStateChangeTrigger.Enabled">
+      <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ISessionStateChangeTrigger.EndBoundary">
+      <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ISessionStateChangeTrigger.ExecutionTimeLimit">
+      <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ISessionStateChangeTrigger.Id">
+      <summary>Gets or sets the identifier for the trigger.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ISessionStateChangeTrigger.Repetition">
+      <summary>
+            Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ISessionStateChangeTrigger.StartBoundary">
+      <summary>Gets or sets the date and time when the trigger is activated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ISessionStateChangeTrigger.StateChange">
+      <summary>Gets or sets the kind of Terminal Server session change that would trigger a task launch.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ISessionStateChangeTrigger.Type">
+      <summary>
+            Gets the type of the trigger. The trigger type is defined when the trigger is created and cannot be changed later. For information on creating a
+            trigger, see ITriggerCollection::Create.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ISessionStateChangeTrigger.UserId">
+      <summary>Gets or sets the user for the Terminal Server session. When a session state change is detected for this user, a task is started.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IShowMessageAction">
+      <summary>
+            Represents an action that shows a message box when a task is activated. <note>This interface is no longer supported. You can use IExecAction with the
+            Windows scripting MsgBox function to show a message in the user session.</note></summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IShowMessageAction.Id">
+      <summary>Gets or sets the identifier of the action.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IShowMessageAction.MessageBody">
+      <summary>Gets or sets the message text that is displayed in the body of the message box.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IShowMessageAction.Title">
+      <summary>Gets or sets the title of the message box.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IShowMessageAction.Type">
+      <summary>Gets the type of action.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.ITaskDefinition">
+      <summary>Defines all the components of a task, such as the task settings, triggers, actions, and registration information.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskDefinition.Actions">
+      <summary>Gets or sets a collection of actions performed by the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskDefinition.Data">
+      <summary>
+            Gets or sets the data that is associated with the task. This data is ignored by the Task Scheduler service, but is used by third-parties who wish
+            to extend the task format.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskDefinition.Principal">
+      <summary>Gets or sets the principal for the task that provides the security credentials for the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskDefinition.RegistrationInfo">
+      <summary>
+            Gets or sets the registration information that is used to describe a task, such as the description of the task, the author of the task, and the
+            date the task is registered.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskDefinition.Settings">
+      <summary>Gets or sets the settings that define how the Task Scheduler service performs the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskDefinition.Triggers">
+      <summary>Gets or sets a collection of triggers that are used to start a task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskDefinition.XmlText">
+      <summary>Gets or sets the XML text.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.ITaskFolder">
+      <summary>
+            Provides the methods that are used to register (create) tasks in the folder, remove tasks from the folder, and create or remove subfolders from the folder.
+            </summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskFolder.CreateFolder(System.String,System.Object)">
+      <summary>Creates a folder for related tasks.</summary>
+      <param name="subFolderName">
+            The name used to identify the folder. If "FolderName\SubFolder1\SubFolder2" is specified, the entire folder tree will be created if the folders
+            do not exist. This parameter can be a relative path to the current ITaskFolder instance. The root task folder is specified with a backslash (\).
+            An example of a task folder path, under the root task folder, is \MyTaskFolder. The '.' character cannot be used to specify the current task
+            folder and the '..' characters cannot be used to specify the parent task folder in the path.
+            </param>
+      <param name="sddl">The security descriptor associated with the folder, in the form of a VT_BSTR in SDDL_REVISION_1 format.</param>
+      <returns>An ITaskFolder interface that represents the new subfolder.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskFolder.DeleteFolder(System.String,System.Int32)">
+      <summary>Deletes a subfolder from the parent folder.</summary>
+      <param name="subFolderName">
+            The name of the subfolder to be removed. The root task folder is specified with a backslash (\). This parameter can be a relative path to the
+            folder you want to delete. An example of a task folder path, under the root task folder, is \MyTaskFolder. The '.' character cannot be used to
+            specify the current task folder and the '..' characters cannot be used to specify the parent task folder in the path.
+            </param>
+      <param name="flags">Not supported.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskFolder.DeleteTask(System.String,System.Int32)">
+      <summary>Deletes a task from the folder.</summary>
+      <param name="Name">
+            The name of the task that is specified when the task was registered. The '.' character cannot be used to specify the current task folder and the
+            '..' characters cannot be used to specify the parent task folder in the path.
+            </param>
+      <param name="flags">Not supported.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskFolder.GetFolder(System.String)">
+      <summary>Gets a folder that contains tasks at a specified location.</summary>
+      <param name="Path">
+            The path (location) to the folder. Do not use a backslash following the last folder name in the path. The root task folder is specified with a
+            backslash (\). An example of a task folder path, under the root task folder, is \MyTaskFolder. The '.' character cannot be used to specify the
+            current task folder and the '..' characters cannot be used to specify the parent task folder in the path.
+            </param>
+      <returns>The folder at the specified location.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskFolder.GetFolders(System.Int32)">
+      <summary>Gets all the subfolders in the folder.</summary>
+      <param name="flags">This parameter is reserved for future use and must be set to 0.</param>
+      <returns>The collection of subfolders in the folder.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskFolder.GetSecurityDescriptor(Vanara.PInvoke.SECURITY_INFORMATION)">
+      <summary>Gets the security descriptor for the folder.</summary>
+      <param name="securityInformation">The security information from SECURITY_INFORMATION.</param>
+      <returns>The security descriptor for the folder.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskFolder.GetTask(System.String)">
+      <summary>Gets a task at a specified location in a folder.</summary>
+      <param name="Path">
+            The path (location) to the task in a folder. The root task folder is specified with a backslash (\). An example of a task folder path, under the
+            root task folder, is \MyTaskFolder. The '.' character cannot be used to specify the current task folder and the '..' characters cannot be used to
+            specify the parent task folder in the path.
+            </param>
+      <returns>The task at the specified location.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskFolder.GetTasks(Vanara.PInvoke.TaskSchd.TASK_ENUM_FLAGS)">
+      <summary>Gets all the tasks in the folder.</summary>
+      <param name="flags">
+            Specifies whether to retrieve hidden tasks. Pass in TASK_ENUM_HIDDEN to retrieve all tasks in the folder including hidden tasks, and pass in 0 to
+            retrieve all the tasks in the folder excluding the hidden tasks.
+            </param>
+      <returns>An IRegisteredTaskCollection collection of all the tasks in the folder.</returns>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskFolder.Name">
+      <summary>Gets the name that is used to identify the folder that contains a task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskFolder.Path">
+      <summary>Gets the path to where the folder is stored.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskFolder.RegisterTask(System.String,System.String,Vanara.PInvoke.TaskSchd.TASK_CREATION,System.Object,System.Object,Vanara.PInvoke.TaskSchd.TASK_LOGON_TYPE,System.Object)">
+      <summary>Registers (creates) a new task in the folder using XML to define the task.</summary>
+      <param name="path">
+            The task name. If this value is NULL, the task will be registered in the root task folder and the task name will be a GUID value that is created
+            by the Task Scheduler service.
+            <para>
+            A task name cannot begin or end with a space character. The '.' character cannot be used to specify the current task folder and the '..'
+            characters cannot be used to specify the parent task folder in the path.
+            </para></param>
+      <param name="xmlText">An XML-formatted definition of the task.</param>
+      <param name="flags">A TASK_CREATION constant.</param>
+      <param name="userId">
+            The user credentials used to register the task. <note>If the task is defined as a Task Scheduler 1.0 task, then do not use a group name (rather
+            than a specific user name) in this userId parameter. A task is defined as a Task Scheduler 1.0 task when the version attribute of the Task
+            element in the task's XML is set to 1.1.</note></param>
+      <param name="password">
+            The password for the userId used to register the task. When the TASK_LOGON_SERVICE_ACCOUNT logon type is used, the password must be an empty
+            VARIANT value such as VT_NULL or VT_EMPTY.
+            </param>
+      <param name="logonType">A value that defines what logon technique is used to run the registered task.</param>
+      <param name="sddl">
+            The security descriptor associated with the registered task. You can specify the access control list (ACL) in the security descriptor for a task
+            in order to allow or deny certain users and groups access to a task. <note>If the Local System account is denied access to a task, then the Task
+            Scheduler service can produce unexpected results.</note></param>
+      <returns>An IRegisteredTask interface that represents the new task.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskFolder.RegisterTaskDefinition(System.String,Vanara.PInvoke.TaskSchd.ITaskDefinition,Vanara.PInvoke.TaskSchd.TASK_CREATION,System.Object,System.Object,Vanara.PInvoke.TaskSchd.TASK_LOGON_TYPE,System.Object)">
+      <summary>Registers the task definition.</summary>
+      <param name="path">
+            The task name. If this value is NULL, the task will be registered in the root task folder and the task name will be a GUID value that is created
+            by the Task Scheduler service.
+            <para>
+            A task name cannot begin or end with a space character. The '.' character cannot be used to specify the current task folder and the '..'
+            characters cannot be used to specify the parent task folder in the path.
+            </para></param>
+      <param name="pDefinition">The definition of the registered task.</param>
+      <param name="flags">A TASK_CREATION constant.</param>
+      <param name="userId">
+            The user credentials used to register the task. <note>If the task is defined as a Task Scheduler 1.0 task, then do not use a group name (rather
+            than a specific user name) in this userId parameter. A task is defined as a Task Scheduler 1.0 task when the version attribute of the Task
+            element in the task's XML is set to 1.1.</note></param>
+      <param name="password">
+            The password for the userId used to register the task. When the TASK_LOGON_SERVICE_ACCOUNT logon type is used, the password must be an empty
+            VARIANT value such as VT_NULL or VT_EMPTY.
+            </param>
+      <param name="logonType">A value that defines what logon technique is used to run the registered task.</param>
+      <param name="sddl">
+            The security descriptor associated with the registered task. You can specify the access control list (ACL) in the security descriptor for a task
+            in order to allow or deny certain users and groups access to a task. <note>If the Local System account is denied access to a task, then the Task
+            Scheduler service can produce unexpected results.</note></param>
+      <returns>An IRegisteredTask interface that represents the new task.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskFolder.SetSecurityDescriptor(System.String,System.Int32)">
+      <summary>Sets the security descriptor for the folder.</summary>
+      <param name="sddl">
+            The security descriptor associated with the folder. <note>If the Local System account is denied access to a task folder, then the Task Scheduler
+            service can produce unexpected results.</note></param>
+      <param name="flags">A value that specifies how the security descriptor is set.</param>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.ITaskFolderCollection">
+      <summary>Provides information and control for a collection of folders that contain tasks.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskFolderCollection.Count">
+      <summary>Gets the number of folders in the collection.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskFolderCollection.GetEnumerator">
+      <summary>Returns an enumerator that iterates through a collection.</summary>
+      <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskFolderCollection.Item(System.Object)">
+      <summary>Gets the <see cref="T:Vanara.PInvoke.TaskSchd.ITaskFolder" /> at the specified index from the collection.</summary>
+      <param name="index">
+            The index. Collections are 1-based. That is, the index for the first item in the collection is 1. You can also pass in a string with the name of
+            folder to get.
+            </param>
+      <returns>An ITaskFolder interface that represents the requested folder.</returns>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.ITaskHandler">
+      <summary>
+            Defines the methods that are called by the Task Scheduler service to manage a COM handler.
+            </summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskHandler.Pause">
+      <summary>
+            Called to pause the COM handler. This method is optional and should only be implemented to give the Task Scheduler the ability to pause and restart the handler.
+            </summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskHandler.Resume">
+      <summary>
+            Called to resume the COM handler. This method is optional and should only be implemented to give the Task Scheduler the ability to resume the handler.
+            </summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskHandler.Start(System.Object,System.String)">
+      <summary>
+            Called to start the COM handler. This method must be implemented by the handler.
+            </summary>
+      <param name="pHandlerServices">An <c>IUnkown</c> interface that is used to communicate back with the Task Scheduler.</param>
+      <param name="Data">The arguments that are required by the handler. These arguments are defined in the <see cref="P:Vanara.PInvoke.TaskSchd.IComHandlerAction.Data" /> property of the COM handler action.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskHandler.Stop(System.Int32@)">
+      <summary>
+            Called to stop the COM handler. This method must be implemented by the handler.
+            </summary>
+      <param name="pRetCode">The return code that the Task Schedule will raise as an event when the COM handler action is completed.</param>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.ITaskHandlerStatus">
+      <summary>
+            Provides the methods that are used by COM handlers to notify the Task Scheduler about the status of the handler.
+            </summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskHandlerStatus.TaskCompleted(System.Int32)">
+      <summary>
+            Tells the Task Scheduler that the COM handler is completed.
+            </summary>
+      <param name="taskErrCode">The error code that the Task Scheduler will raise as an event.</param>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskHandlerStatus.UpdateStatus(System.Int16,System.String)">
+      <summary>
+            Tells the Task Scheduler about the percentage of completion of the COM handler.
+            </summary>
+      <param name="percentComplete">A value that indicates the percentage of completion for the COM handler.</param>
+      <param name="statusMessage">The message that is displayed in the Task Scheduler UI.</param>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.ITaskNamedValueCollection">
+      <summary>Contains a collection of ITaskNamedValuePair interface name-value pairs.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskNamedValueCollection.Clear">
+      <summary>Clears the entire collection of name-value pairs.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskNamedValueCollection.Count">
+      <summary>Gets the number of name-value pairs in the collection.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskNamedValueCollection.Create(System.String,System.String)">
+      <summary>Creates a name-value pair in the collection.</summary>
+      <param name="name">The name associated with a value in a name-value pair.</param>
+      <param name="value">The value associated with a name in a name-value pair.</param>
+      <returns>The name-value pair created in the collection.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskNamedValueCollection.GetEnumerator">
+      <summary>Returns an enumerator that iterates through a collection.</summary>
+      <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskNamedValueCollection.Item(System.Int32)">
+      <summary>Gets the <see cref="T:Vanara.PInvoke.TaskSchd.ITaskNamedValuePair" /> at the specified index from the collection.</summary>
+      <param name="index">The index.</param>
+      <returns>An ITaskNamedValuePair interface that represents the requested pair.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskNamedValueCollection.Remove(System.Int32)">
+      <summary>Removes a selected name-value pair from the collection.</summary>
+      <param name="index">The index of the name-value pair to be removed.</param>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.ITaskNamedValuePair">
+      <summary>Creates a name-value pair in which the name is associated with the value.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskNamedValuePair.Name">
+      <summary>Gets or sets the name that is associated with a value in a name-value pair.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskNamedValuePair.Value">
+      <summary>Gets or sets the value that is associated with a name in a name-value pair.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.ITaskService">
+      <summary>Provides access to the Task Scheduler service for managing registered tasks.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskService.Connect(System.Object,System.Object,System.Object,System.Object)">
+      <summary>
+            Connects to a remote computer and associates all subsequent calls on this interface with a remote session. If the serverName parameter is empty,
+            then this method will execute on the local computer. If the user is not specified, then the current token is used.
+            </summary>
+      <param name="serverName">
+            The name of the computer that you want to connect to. If the serverName parameter is empty, then this method will execute on the local computer.
+            </param>
+      <param name="user">
+            The user name that is used during the connection to the computer. If the user is not specified, then the current token is used.
+            </param>
+      <param name="domain">The domain of the user specified in the user parameter.</param>
+      <param name="password">
+            The password that is used to connect to the computer. If the user name and password are not specified, then the current token is used.
+            </param>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskService.Connected">
+      <summary>Gets a Boolean value that indicates if you are connected to the Task Scheduler service.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskService.ConnectedDomain">
+      <summary>Gets the name of the domain to which the TargetServer computer is connected.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskService.ConnectedUser">
+      <summary>Gets the name of the user that is connected to the Task Scheduler service.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskService.GetFolder(System.String)">
+      <summary>Gets a folder of registered tasks.</summary>
+      <param name="path">
+            The path to the folder to retrieve. Do not use a backslash following the last folder name in the path. The root task folder is specified with a
+            backslash (\). An example of a task folder path, under the root task folder, is \MyTaskFolder. The '.' character cannot be used to specify the
+            current task folder and the '..' characters cannot be used to specify the parent task folder in the path.
+            </param>
+      <returns>An ITaskFolder interface for the requested folder.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskService.GetRunningTasks(Vanara.PInvoke.TaskSchd.TASK_ENUM_FLAGS)">
+      <summary>
+            Gets a collection of running tasks. <note>ITaskService::GetRunningTasks will only return a collection of running tasks that are running at or
+            below a user's security context. For example, for members of the Administrators group, GetRunningTasks will return a collection of all running
+            tasks, but for members of the Users group, GetRunningTasks will only return a collection of tasks running under the Users group security context.</note></summary>
+      <param name="flags">A value from the TASK_ENUM_FLAGS enumeration. Pass in 0 to return a collection of running tasks that are not hidden tasks.</param>
+      <returns>An IRunningTaskCollection interface that contains the currently running tasks.</returns>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskService.HighestVersion">
+      <summary>Indicates the highest version of Task Scheduler that a computer supports.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskService.NewTask(System.UInt32)">
+      <summary>
+            Returns an empty task definition object to be filled in with settings and properties and then registered using the
+            ITaskFolder::RegisterTaskDefinition method.
+            </summary>
+      <param name="flags">This parameter is reserved for future use and must be set to 0.</param>
+      <returns>The task definition that specifies all the information required to create a new task.</returns>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskService.TargetServer">
+      <summary>Gets the name of the computer that is running the Task Scheduler service that the user is connected to.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.ITaskSettings">
+      <summary>Provides the settings that the Task Scheduler service uses to perform the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings.AllowDemandStart">
+      <summary>Gets or sets a Boolean value that indicates that the task can be started by using either the Run command or the Context menu.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings.AllowHardTerminate">
+      <summary>
+            Gets or sets a Boolean value that indicates that the task may be terminated by the Task Scheduler service using TerminateProcess. The service
+            will try to close the running task by sending the WM_CLOSE notification, and if the task does not respond, the task will be terminated only if
+            this property is set to true.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings.Compatibility">
+      <summary>Gets or sets an integer value that indicates which version of Task Scheduler a task is compatible with.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings.DeleteExpiredTaskAfter">
+      <summary>
+            Gets or sets the amount of time that the Task Scheduler will wait before deleting the task after it expires. If no value is specified for this
+            property, then the Task Scheduler service will not delete the task.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings.DisallowStartIfOnBatteries">
+      <summary>Gets or sets a Boolean value that indicates that the task will not be started if the computer is running on batteries.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings.Enabled">
+      <summary>Gets or sets a Boolean value that indicates that the task is enabled. The task can be performed only when this setting is True.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings.ExecutionTimeLimit">
+      <summary>
+            Gets or sets the amount of time that is allowed to complete the task. By default, a task will be stopped 72 hours after it starts to run. You can
+            change this by changing this setting.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings.Hidden">
+      <summary>
+            Gets or sets a Boolean value that indicates that the task will not be visible in the UI. However, administrators can override this setting
+            through the use of a 'master switch' that makes all tasks visible in the UI.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings.IdleSettings">
+      <summary>
+            Gets or sets the information that specifies how the Task Scheduler performs tasks when the computer is in an idle condition. For information
+            about idle conditions, see Task Idle Conditions.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings.MultipleInstances">
+      <summary>Gets or sets the policy that defines how the Task Scheduler deals with multiple instances of the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings.NetworkSettings">
+      <summary>
+            Gets or sets the network settings object that contains a network profile identifier and name. If the RunOnlyIfNetworkAvailable property of
+            ITaskSettings is true and a network propfile is specified in the NetworkSettings property, then the task will run only if the specified network
+            profile is available.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings.Priority">
+      <summary>Gets or sets the priority level of the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings.RestartCount">
+      <summary>Gets or sets the number of times that the Task Scheduler will attempt to restart the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings.RestartInterval">
+      <summary>Gets or sets a value that specifies how long the Task Scheduler will attempt to restart the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings.RunOnlyIfIdle">
+      <summary>Gets or sets a Boolean value that indicates that the Task Scheduler will run the task only if the computer is in an idle condition.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings.RunOnlyIfNetworkAvailable">
+      <summary>Gets or sets a Boolean value that indicates that the Task Scheduler will run the task only when a network is available.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings.StartWhenAvailable">
+      <summary>
+            Gets or sets a Boolean value that indicates that the Task Scheduler can start the task at any time after its scheduled time has passed.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings.StopIfGoingOnBatteries">
+      <summary>Gets or sets a Boolean value that indicates that the task will be stopped if the computer is going onto batteries.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings.WakeToRun">
+      <summary>
+            Gets or sets a Boolean value that indicates that the Task Scheduler will wake the computer when it is time to run the task, and keep the computer
+            awake until the task is completed.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings.XmlText">
+      <summary>Gets or sets an XML-formatted definition of the task settings.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.ITaskSettings2">
+      <summary>Provides the extended settings that the Task Scheduler uses to run the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings2.DisallowStartOnRemoteAppSession">
+      <summary>
+            Gets or sets a Boolean value that specifies that the task will not be started if triggered to run in a Remote Applications Integrated Locally
+            (RAIL) session.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings2.UseUnifiedSchedulingEngine">
+      <summary>Gets or sets a Boolean value that indicates that the Unified Scheduling Engine will be utilized to run this task.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.ITaskSettings3">
+      <summary>Provides the extended settings that the Task Scheduler uses to run the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.AllowDemandStart">
+      <summary>Gets or sets a Boolean value that indicates that the task can be started by using either the Run command or the Context menu.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.AllowHardTerminate">
+      <summary>
+            Gets or sets a Boolean value that indicates that the task may be terminated by the Task Scheduler service using TerminateProcess. The service
+            will try to close the running task by sending the WM_CLOSE notification, and if the task does not respond, the task will be terminated only if
+            this property is set to true.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.Compatibility">
+      <summary>Gets or sets an integer value that indicates which version of Task Scheduler a task is compatible with.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskSettings3.CreateMaintenanceSettings">
+      <summary>Creates a new instance an IMaintenanceSettings object and associates it with this ITaskSettings3 object.</summary>
+      <returns>A pointer to a pointer to the IMaintenanceSettings object this method creates.</returns>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.DeleteExpiredTaskAfter">
+      <summary>
+            Gets or sets the amount of time that the Task Scheduler will wait before deleting the task after it expires. If no value is specified for this
+            property, then the Task Scheduler service will not delete the task.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.DisallowStartIfOnBatteries">
+      <summary>Gets or sets a Boolean value that indicates that the task will not be started if the computer is running on batteries.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.DisallowStartOnRemoteAppSession">
+      <summary>
+            Gets or sets a Boolean value that specifies that the task will not be started if triggered to run in a Remote Applications Integrated Locally
+            (RAIL) session.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.Enabled">
+      <summary>Gets or sets a Boolean value that indicates that the task is enabled. The task can be performed only when this setting is True.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.ExecutionTimeLimit">
+      <summary>
+            Gets or sets the amount of time that is allowed to complete the task. By default, a task will be stopped 72 hours after it starts to run. You can
+            change this by changing this setting.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.Hidden">
+      <summary>
+            Gets or sets a Boolean value that indicates that the task will not be visible in the UI. However, administrators can override this setting
+            through the use of a 'master switch' that makes all tasks visible in the UI.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.IdleSettings">
+      <summary>
+            Gets or sets the information that specifies how the Task Scheduler performs tasks when the computer is in an idle condition. For information
+            about idle conditions, see Task Idle Conditions.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.MaintenanceSettings">
+      <summary>Gets or sets a pointer to pointer to an IMaintenanceSettingsobject that Task scheduler uses to perform a task during Automatic maintenance.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.MultipleInstances">
+      <summary>Gets or sets the policy that defines how the Task Scheduler deals with multiple instances of the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.NetworkSettings">
+      <summary>
+            Gets or sets the network settings object that contains a network profile identifier and name. If the RunOnlyIfNetworkAvailable property of
+            ITaskSettings is true and a network propfile is specified in the NetworkSettings property, then the task will run only if the specified network
+            profile is available.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.Priority">
+      <summary>Gets or sets the priority level of the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.RestartCount">
+      <summary>Gets or sets the number of times that the Task Scheduler will attempt to restart the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.RestartInterval">
+      <summary>Gets or sets a value that specifies how long the Task Scheduler will attempt to restart the task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.RunOnlyIfIdle">
+      <summary>Gets or sets a Boolean value that indicates that the Task Scheduler will run the task only if the computer is in an idle condition.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.RunOnlyIfNetworkAvailable">
+      <summary>Gets or sets a Boolean value that indicates that the Task Scheduler will run the task only when a network is available.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.StartWhenAvailable">
+      <summary>
+            Gets or sets a Boolean value that indicates that the Task Scheduler can start the task at any time after its scheduled time has passed.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.StopIfGoingOnBatteries">
+      <summary>Gets or sets a Boolean value that indicates that the task will be stopped if the computer is going onto batteries.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.UseUnifiedSchedulingEngine">
+      <summary>Gets or sets a Boolean value that indicates that the Unified Scheduling Engine will be utilized to run this task.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.Volatile">
+      <summary>Gets or sets a boolean value that indicates whether the task is automatically disabled every time Windows starts.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.WakeToRun">
+      <summary>
+            Gets or sets a Boolean value that indicates that the Task Scheduler will wake the computer when it is time to run the task, and keep the computer
+            awake until the task is completed.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITaskSettings3.XmlText">
+      <summary>Gets or sets an XML-formatted definition of the task settings.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.ITaskVariables">
+      <summary>
+            Defines task variables that can be passed as parameters to task handlers and external executables that are launched by tasks. Task handlers that need
+            to input and output data to job variables should do a query interface on the services pointer for ITaskVariables.
+            </summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskVariables.GetContext">
+      <summary>Used to share the context between different steps and tasks that are in the same job instance. This method is not implemented.</summary>
+      <returns>The context that is used to share the context between different steps and tasks that are in the same job instance.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskVariables.GetInput">
+      <summary>Gets the input variables for a task. This method is not implemented.</summary>
+      <returns>The input variables for a task.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITaskVariables.SetOutput(System.String)">
+      <summary>Sets the output variables for a task. This method is not implemented.</summary>
+      <param name="input">The output variables for a task.</param>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.ITimeTrigger">
+      <summary>Represents a trigger that starts a task at a specific date and time.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITimeTrigger.Enabled">
+      <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITimeTrigger.EndBoundary">
+      <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITimeTrigger.ExecutionTimeLimit">
+      <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITimeTrigger.Id">
+      <summary>Gets or sets the identifier for the trigger.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITimeTrigger.RandomDelay">
+      <summary>Gets or sets a delay time that is randomly added to the start time of the trigger.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITimeTrigger.Repetition">
+      <summary>
+            Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITimeTrigger.StartBoundary">
+      <summary>Gets or sets the date and time when the trigger is activated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITimeTrigger.Type">
+      <summary>
+            Gets the type of the trigger. The trigger type is defined when the trigger is created and cannot be changed later. For information on creating a
+            trigger, see ITriggerCollection::Create.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.ITrigger">
+      <summary>Provides the common properties that are inherited by all trigger objects.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITrigger.Enabled">
+      <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITrigger.EndBoundary">
+      <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITrigger.ExecutionTimeLimit">
+      <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITrigger.Id">
+      <summary>Gets or sets the identifier for the trigger.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITrigger.Repetition">
+      <summary>
+            Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITrigger.StartBoundary">
+      <summary>Gets or sets the date and time when the trigger is activated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITrigger.Type">
+      <summary>
+            Gets the type of the trigger. The trigger type is defined when the trigger is created and cannot be changed later. For information on creating a
+            trigger, see ITriggerCollection::Create.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.ITriggerCollection">
+      <summary>Provides the methods that are used to add to, remove from, and get the triggers of a task.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITriggerCollection.Clear">
+      <summary>Clears all triggers from the collection.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITriggerCollection.Count">
+      <summary>Gets the number of triggers in the collection.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITriggerCollection.Create(Vanara.PInvoke.TaskSchd.TASK_TRIGGER_TYPE2)">
+      <summary>Creates a new trigger for the task.</summary>
+      <param name="type">This parameter is set to one of the following TASK_TRIGGER_TYPE2 enumeration constants.</param>
+      <returns>An ITrigger interface that represents the new trigger.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITriggerCollection.GetEnumerator">
+      <summary>Returns an enumerator that iterates through a collection.</summary>
+      <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.ITriggerCollection.Item(System.Int32)">
+      <summary>Gets the <see cref="T:Vanara.PInvoke.TaskSchd.ITrigger" /> at the specified index from the collection.</summary>
+      <param name="index">The index. Collections are 1-based. That is, the index for the first item in the collection is 1.</param>
+      <returns>An ITrigger interface that represents the requested trigger.</returns>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.ITriggerCollection.Remove(System.Object)">
+      <summary>Removes the specified trigger from the collection of triggers used by the task.</summary>
+      <param name="index">The index of the trigger to be removed. Use a LONG value for the index number.</param>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.IWeeklyTrigger">
+      <summary>
+            Represents a trigger that starts a task based on a weekly schedule. For example, the task starts at 8:00 A.M. on a specific day of the week every
+            week or every other week.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IWeeklyTrigger.DaysOfWeek">
+      <summary>Gets or sets the days of the week in which the task runs.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IWeeklyTrigger.Enabled">
+      <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IWeeklyTrigger.EndBoundary">
+      <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IWeeklyTrigger.ExecutionTimeLimit">
+      <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IWeeklyTrigger.Id">
+      <summary>Gets or sets the identifier for the trigger.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IWeeklyTrigger.RandomDelay">
+      <summary>Gets or sets a delay time that is randomly added to the start time of the trigger.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IWeeklyTrigger.Repetition">
+      <summary>
+            Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IWeeklyTrigger.StartBoundary">
+      <summary>Gets or sets the date and time when the trigger is activated.</summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IWeeklyTrigger.Type">
+      <summary>
+            Gets the type of the trigger. The trigger type is defined when the trigger is created and cannot be changed later. For information on creating a
+            trigger, see ITriggerCollection::Create.
+            </summary>
+    </member>
+    <member name="P:Vanara.PInvoke.TaskSchd.IWeeklyTrigger.WeeksInterval">
+      <summary>Gets or sets the interval between the weeks in the schedule.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.TASK_ACTION_TYPE">
+      <summary>Defines the type of actions that a task can perform.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_ACTION_TYPE.TASK_ACTION_EXEC">
+      <summary>
+            This action performs a command-line operation. For example, the action can run a script, launch an executable, or, if the name of a document is
+            provided, find its associated application and launch the application with the document.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_ACTION_TYPE.TASK_ACTION_COM_HANDLER">
+      <summary>This action fires a handler. This action can only be used if the task Compatibility property is set to TASK_COMPATIBILITY_V2.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_ACTION_TYPE.TASK_ACTION_SEND_EMAIL">
+      <summary>This action sends email message. This action can only be used if the task Compatibility property is set to TASK_COMPATIBILITY_V2.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_ACTION_TYPE.TASK_ACTION_SHOW_MESSAGE">
+      <summary>This action shows a message box. This action can only be used if the task Compatibility property is set to TASK_COMPATIBILITY_V2.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.TASK_COMPATIBILITY">
+      <summary>Defines what versions of Task Scheduler or the AT command that the task is compatible with.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_COMPATIBILITY.TASK_COMPATIBILITY_AT">
+      <summary>The task is compatible with the AT command.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_COMPATIBILITY.TASK_COMPATIBILITY_V1">
+      <summary>The task is compatible with Task Scheduler 1.0.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_COMPATIBILITY.TASK_COMPATIBILITY_V2">
+      <summary>The task is compatible with Task Scheduler 2.0.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_COMPATIBILITY.TASK_COMPATIBILITY_V2_1">
+      <summary>The task is compatible with Task Scheduler 2.1.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_COMPATIBILITY.TASK_COMPATIBILITY_V2_2">
+      <summary>The task is compatible with Task Scheduler 2.2.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_COMPATIBILITY.TASK_COMPATIBILITY_V2_3">
+      <summary>The task is compatible with Task Scheduler 2.3.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_COMPATIBILITY.TASK_COMPATIBILITY_V2_4">
+      <summary>The task is compatible with Task Scheduler 2.4.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.TASK_CREATION">
+      <summary>Defines how the Task Scheduler service creates, updates, or disables the task.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_CREATION.TASK_VALIDATE_ONLY">
+      <summary>
+            The Task Scheduler service checks the syntax of the XML that describes the task but does not register the task. This constant cannot be combined
+            with the TASK_CREATE, TASK_UPDATE, or TASK_CREATE_OR_UPDATE values.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_CREATION.TASK_CREATE">
+      <summary>The Task Scheduler service registers the task as a new task.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_CREATION.TASK_UPDATE">
+      <summary>
+            The Task Scheduler service registers the task as an updated version of an existing task. When a task with a registration trigger is updated, the
+            task will execute after the update occurs.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_CREATION.TASK_CREATE_OR_UPDATE">
+      <summary>
+            The Task Scheduler service either registers the task as a new task or as an updated version if the task already exists. Equivalent to TASK_CREATE
+            | TASK_UPDATE.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_CREATION.TASK_DISABLE">
+      <summary>
+            The Task Scheduler service registers the disabled task. A disabled task cannot run until it is enabled. For more information, see Enabled
+            Property of ITaskSettings and Enabled Property of IRegisteredTask.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_CREATION.TASK_DONT_ADD_PRINCIPAL_ACE">
+      <summary>
+            The Task Scheduler service is prevented from adding the allow access-control entry (ACE) for the context principal. When the
+            ITaskFolder::RegisterTaskDefinition or ITaskFolder::RegisterTask functions are called with this flag to update a task, the Task Scheduler service
+            does not add the ACE for the new context principal and does not remove the ACE from the old context principal.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_CREATION.TASK_IGNORE_REGISTRATION_TRIGGERS">
+      <summary>
+            The Task Scheduler service creates the task, but ignores the registration triggers in the task. By ignoring the registration triggers, the task
+            will not execute when it is registered unless a time-based trigger causes it to execute on registration.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.TASK_ENUM_FLAGS">
+      <summary>Defines how the Task Scheduler enumerates through registered tasks.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_ENUM_FLAGS.TASK_ENUM_UNHIDDEN">
+      <summary>Enumerates all the tasks in the folder excluding the hidden tasks.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_ENUM_FLAGS.TASK_ENUM_HIDDEN">
+      <summary>Enumerates all tasks, including tasks that are hidden.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.TASK_INSTANCES_POLICY">
+      <summary>Defines how the Task Scheduler handles existing instances of the task when it starts a new instance of the task.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_INSTANCES_POLICY.TASK_INSTANCES_PARALLEL">
+      <summary>Starts new instance while an existing instance is running.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_INSTANCES_POLICY.TASK_INSTANCES_QUEUE">
+      <summary>Starts a new instance of the task after all other instances of the task are complete.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_INSTANCES_POLICY.TASK_INSTANCES_IGNORE_NEW">
+      <summary>Does not start a new instance if an existing instance of the task is running.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_INSTANCES_POLICY.TASK_INSTANCES_STOP_EXISTING">
+      <summary>Stops an existing instance of the task before it starts a new instance.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.TASK_LOGON_TYPE">
+      <summary>Defines what logon technique is required to run a task.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_LOGON_TYPE.TASK_LOGON_NONE">
+      <summary>The logon method is not specified. Used for non-NT credentials.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_LOGON_TYPE.TASK_LOGON_PASSWORD">
+      <summary>Use a password for logging on the user. The password must be supplied at registration time.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_LOGON_TYPE.TASK_LOGON_S4U">
+      <summary>
+            The service will log the user on using Service For User (S4U), and the task will run in a non-interactive desktop. When an S4U logon is used, no
+            password is stored by the system and there is no access to either the network or to encrypted files.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_LOGON_TYPE.TASK_LOGON_INTERACTIVE_TOKEN">
+      <summary>User must already be logged on. The task will be run only in an existing interactive session.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_LOGON_TYPE.TASK_LOGON_GROUP">
+      <summary>Group activation. The groupId field specifies the group.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_LOGON_TYPE.TASK_LOGON_SERVICE_ACCOUNT">
+      <summary>Indicates that a Local System, Local Service, or Network Service account is being used as a security context to run the task.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_LOGON_TYPE.TASK_LOGON_INTERACTIVE_TOKEN_OR_PASSWORD">
+      <summary>
+            First use the interactive token. If the user is not logged on (no interactive token is available), then the password is used. The password must
+            be specified when a task is registered. This flag is not recommended for new tasks because it is less reliable than TASK_LOGON_PASSWORD.
+            </summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.TASK_PROCESSTOKENSID_TYPE">
+      <summary>
+            Defines the types of process security identifier (SID) that can be used by tasks. These changes are used to specify the type of process SID in the
+            IPrincipal2 interface.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_PROCESSTOKENSID_TYPE.TASK_PROCESSTOKENSID_NONE">
+      <summary>No changes will be made to the process token groups list.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_PROCESSTOKENSID_TYPE.TASK_PROCESSTOKENSID_UNRESTRICTED">
+      <summary>
+            A task SID that is derived from the task name will be added to the process token groups list, and the token default discretionary access control
+            list (DACL) will be modified to allow only the task SID and local system full control and the account SID read control.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_PROCESSTOKENSID_TYPE.TASK_PROCESSTOKENSID_DEFAULT">
+      <summary>A Task Scheduler will apply default settings to the task process.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.TASK_RUN_FLAGS">
+      <summary>Defines how a task is run.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_RUN_FLAGS.TASK_RUN_NO_FLAGS">
+      <summary>The task is run with all flags ignored.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_RUN_FLAGS.TASK_RUN_AS_SELF">
+      <summary>The task is run as the user who is calling the Run method.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_RUN_FLAGS.TASK_RUN_IGNORE_CONSTRAINTS">
+      <summary>The task is run regardless of constraints such as "do not run on batteries" or "run only if idle".</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_RUN_FLAGS.TASK_RUN_USE_SESSION_ID">
+      <summary>The task is run using a terminal server session identifier.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_RUN_FLAGS.TASK_RUN_USER_SID">
+      <summary>The task is run using a security identifier.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.TASK_RUNLEVEL_TYPE">
+      <summary>Defines LUA elevation flags that specify with what privilege level the task will be run.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_RUNLEVEL_TYPE.TASK_RUNLEVEL_LUA">
+      <summary>Tasks will be run with the least privileges.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_RUNLEVEL_TYPE.TASK_RUNLEVEL_HIGHEST">
+      <summary>Tasks will be run with the highest privileges.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.TASK_SESSION_STATE_CHANGE_TYPE">
+      <summary>
+            Defines what kind of Terminal Server session state change you can use to trigger a task to start. These changes are used to specify the type of state
+            change in the ISessionStateChangeTrigger interface.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_SESSION_STATE_CHANGE_TYPE.TASK_CONSOLE_CONNECT">
+      <summary>
+            Terminal Server console connection state change. For example, when you connect to a user session on the local computer by switching users on the computer.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_SESSION_STATE_CHANGE_TYPE.TASK_CONSOLE_DISCONNECT">
+      <summary>
+            Terminal Server console disconnection state change. For example, when you disconnect to a user session on the local computer by switching users
+            on the computer.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_SESSION_STATE_CHANGE_TYPE.TASK_REMOTE_CONNECT">
+      <summary>
+            Terminal Server remote connection state change. For example, when a user connects to a user session by using the Remote Desktop Connection
+            program from a remote computer.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_SESSION_STATE_CHANGE_TYPE.TASK_REMOTE_DISCONNECT">
+      <summary>
+            Terminal Server remote disconnection state change. For example, when a user disconnects from a user session while using the Remote Desktop
+            Connection program from a remote computer.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_SESSION_STATE_CHANGE_TYPE.TASK_SESSION_LOCK">
+      <summary>Terminal Server session locked state change. For example, this state change causes the task to run when the computer is locked.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_SESSION_STATE_CHANGE_TYPE.TASK_SESSION_UNLOCK">
+      <summary>Terminal Server session unlocked state change. For example, this state change causes the task to run when the computer is unlocked.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.TASK_STATE">
+      <summary>Defines the different states that a registered task can be in.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_STATE.TASK_STATE_UNKNOWN">
+      <summary>The state of the task is unknown.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_STATE.TASK_STATE_DISABLED">
+      <summary>The task is registered but is disabled and no instances of the task are queued or running. The task cannot be run until it is enabled.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_STATE.TASK_STATE_QUEUED">
+      <summary>Instances of the task are queued.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_STATE.TASK_STATE_READY">
+      <summary>The task is ready to be executed, but no instances are queued or running.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_STATE.TASK_STATE_RUNNING">
+      <summary>One or more instances of the task is running.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.TASK_TRIGGER_TYPE2">
+      <summary>Defines the type of triggers that can be used by tasks.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_TRIGGER_TYPE2.TASK_TRIGGER_EVENT">
+      <summary>Triggers the task when a specific event occurs. For more information about event triggers, see IEventTrigger.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_TRIGGER_TYPE2.TASK_TRIGGER_TIME">
+      <summary>Triggers the task at a specific time of day. For more information about time triggers, see ITimeTrigger.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_TRIGGER_TYPE2.TASK_TRIGGER_DAILY">
+      <summary>
+            Triggers the task on a daily schedule. For example, the task starts at a specific time every day, every other day, or every third day. For more
+            information about daily triggers, see IDailyTrigger.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_TRIGGER_TYPE2.TASK_TRIGGER_WEEKLY">
+      <summary>
+            Triggers the task on a weekly schedule. For example, the task starts at 8:00 AM on a specific day every week or other week. For more information
+            about weekly triggers, see IWeeklyTrigger.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_TRIGGER_TYPE2.TASK_TRIGGER_MONTHLY">
+      <summary>
+            Triggers the task on a monthly schedule. For example, the task starts on specific days of specific months. For more information about monthly
+            triggers, see IMonthlyTrigger.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_TRIGGER_TYPE2.TASK_TRIGGER_MONTHLYDOW">
+      <summary>
+            Triggers the task on a monthly day-of-week schedule. For example, the task starts on a specific days of the week, weeks of the month, and months
+            of the year. For more information about monthly day-of-week triggers, see IMonthlyDOWTrigger.
+            </summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_TRIGGER_TYPE2.TASK_TRIGGER_IDLE">
+      <summary>Triggers the task when the computer goes into an idle state. For more information about idle triggers, see IIdleTrigger.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_TRIGGER_TYPE2.TASK_TRIGGER_REGISTRATION">
+      <summary>Triggers the task when the task is registered. For more information about registration triggers, see IRegistrationTrigger.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_TRIGGER_TYPE2.TASK_TRIGGER_BOOT">
+      <summary>Triggers the task when the computer boots. For more information about boot triggers, see IBootTrigger.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_TRIGGER_TYPE2.TASK_TRIGGER_LOGON">
+      <summary>Triggers the task when a specific user logs on. For more information about logon triggers, see ILogonTrigger.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_TRIGGER_TYPE2.TASK_TRIGGER_SESSION_STATE_CHANGE">
+      <summary>Triggers the task when a specific user session state changes. For more information about session state change triggers, see ISessionStateChangeTrigger.</summary>
+    </member>
+    <member name="F:Vanara.PInvoke.TaskSchd.TASK_TRIGGER_TYPE2.TASK_TRIGGER_CUSTOM_TRIGGER_01">
+      <summary>Custom triggers defined by the operating system. User defined custom triggers are not supported.</summary>
+    </member>
+    <member name="T:Vanara.PInvoke.TaskSchd.TaskSchedulerClass">
+      <summary>Provides access to the Task Scheduler service for managing registered tasks.</summary>
+    </member>
+    <member name="M:Vanara.PInvoke.TaskSchd.TaskSchedulerClass.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Vanara.PInvoke.TaskSchd.TaskSchedulerClass</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+  </members>
+</doc>

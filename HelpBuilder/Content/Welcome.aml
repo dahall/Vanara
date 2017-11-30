@@ -1,55 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <topic id="d22522ce-4106-42b2-81eb-cb37a0f36df8" revisionNumber="1">
-	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
-		<introduction>
-			<para>This is a sample conceptual topic.  You can use this as a starting point for adding more conceptual
-content to your help project.</para>
-		</introduction>
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>
+        In a number of projects I have needed to use native API calls. Over the years I have collected quite a few of these interop code chunks and I decided to pull them all together into a set of reusable libraries. I have tried to carve up the libraries into small enough chunks that they are easy to identify and consume. The only problem with this is that you can literally end up with over 20 dependencies on some of the higher function libraries (oh well).
+      </para>
+    </introduction>
 
-		<section>
-			<title>Getting Started</title>
-			<content>
-				<para>To get started, add a documentation source to the project (a Visual Studio solution, project, or
-assembly and XML comments file).  See the <legacyBold>Getting Started</legacyBold> topics in the Sandcastle Help
-File Builder's help file for more information.  The following default items are included in this project:</para>
+    <section>
+      <title>Getting Started</title>
+      <content>
+        <para>
+          Go out to MSDN and find the API functions or structures you'd like to use. Take note of the DLL in which it is implemented (usually at the very bottom of the page). This will be the name of the Vanara assembly
+          (Vanara.PInvoke.[DLL_Name]). The only exceptions to this are for the security libraries (AdvApi32.dll, Authz.dll and Secur32.dll) which are all in the Vanara.PInvoke.Security assembly and the OLE/COM related
+          libraries (Ole32.dll, OleAut32.dll and PropSys.dll) which are all in the Vanara.PInvoke.Ole assembly. To confirm these libraries have included that method you can search the
+          <externalLink><linkText>API Help</linkText><linkUri>https://dahall.github.io/Vanara</linkUri></externalLink> or search through the code.
+        </para>
+        <para>
+          For example, let's say you want to use the <codeInline>FormatMessage</codeInline> function. You go to is page in MSDN and see that it is in the Kernel32.dll and in the WinBase.h header.
+          This would indicate that it should be in the Vanara.PInvoke.<legacyUnderline>Kernel32</legacyUnderline> assembly and NuGet package. In the code, it will indicate that you should find it
+          in the PInvoke\Kernel32 project directory and in the WinBase.cs file.
+        </para>
+        <para>
+          If you find an API call that is not in the library, please <externalLink><linkText>log an issue</linkText><linkUri>https://github.com/dahall/Vanara/issues/new</linkUri></externalLink> requesting it.
+        </para>
+      </content>
+    </section>
 
-				<list class="bullet">
-					<listItem>
-						<para><localUri>ContentLayout.content</localUri> - Use the content layout file to manage the
-conceptual content in the project and define its layout in the table of contents.</para>
-					</listItem>
-
-					<listItem>
-						<para>The <localUri>.\media</localUri> folder - Place images in this folder that you will reference
-from conceptual content using <codeInline>medialLink</codeInline> or <codeInline>mediaLinkInline</codeInline>
-elements.  If you will not have any images in the file, you may remove this folder.</para>
-					</listItem>
-
-					<listItem>
-						<para>The <localUri>.\icons</localUri> folder - This contains a default logo for the help file.  You
-may replace it or remove it and the folder if not wanted.  If removed or if you change the file name, update
-the <ui>Transform Args</ui> project properties page by removing or changing the filename in the
-<codeInline>logoFile</codeInline> transform argument.  Note that unlike images referenced from conceptual topics,
-the logo file should have its <legacyBold>BuildAction</legacyBold> property set to <codeInline>Content</codeInline>.</para>
-					</listItem>
-
-					<listItem>
-						<para>The <localUri>.\Content</localUri> folder - Use this to store your conceptual topics.  You may
-name the files and organize them however you like.  One suggestion is to lay the files out on disk as you have
-them in the content layout file as shown in this project but the choice is yours.  Files can be added via the
-Solution Explorer or from within the content layout file editor.  Files must appear in the content layout file
-in order to be compiled into the help file.</para>
-					</listItem>
-				</list>
-
-				<para>See the <legacyBold>Conceptual Content</legacyBold> topics in the Sandcastle Help File Builder's
-help file for more information.  See the <legacyBold> Sandcastle MAML Guide</legacyBold> for details on Microsoft
-Assistance Markup Language (MAML) which is used to create these topics.</para>
-			</content>
-		</section>
-
-		<relatedTopics>
-			<link xlink:href="b2b4b5a4-7eb7-47f0-aa84-e4d68ac1515f" />
-		</relatedTopics>
-	</developerConceptualDocument>
+    <relatedTopics>
+      <link xlink:href="b2b4b5a4-7eb7-47f0-aa84-e4d68ac1515f" />
+    </relatedTopics>
+  </developerConceptualDocument>
 </topic>
