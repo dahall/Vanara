@@ -417,7 +417,7 @@ namespace Vanara.PInvoke
 		[System.Security.SecurityCritical]
 		public static extern IntPtr GetWindowLongPtr(HandleRef hWnd, int nIndex);
 
-		[DllImport(Lib.User32, CharSet = CharSet.Unicode, SetLastError = true)]
+		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
 		public static extern int RealGetWindowClass(HandleRef hwnd, System.Text.StringBuilder pszType, int cchType);
 
 		/// <summary>

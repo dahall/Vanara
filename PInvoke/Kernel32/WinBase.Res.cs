@@ -60,7 +60,7 @@ namespace Vanara.PInvoke
 		/// The return value is TRUE if the function succeeds or FALSE if the function does not find a resource of the type specified, or if the function fails
 		/// for another reason. To get extended error information, call GetLastError.
 		/// </returns>
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[SuppressUnmanagedCodeSecurity]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms648037")]
@@ -110,7 +110,32 @@ namespace Vanara.PInvoke
 		/// handle to the <see cref="LoadResource"/> function.
 		/// <para>If the function fails, the return value is NULL. To get extended error information, call GetLastError.</para>
 		/// </returns>
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[SuppressUnmanagedCodeSecurity]
+		[PInvokeData("WinBase.h", MSDNShortId = "ms648042")]
+		public static extern IntPtr FindResource(SafeLibraryHandle hModule, IntPtr lpName, IntPtr lpType);
+
+		/// <summary>
+		/// Determines the location of a resource with the specified type and name in the specified module.
+		/// <para>To specify a language, use the FindResourceEx function.</para>
+		/// </summary>
+		/// <param name="hModule">
+		/// A handle to the module whose portable executable file or an accompanying MUI file contains the resource. If this parameter is Null, the function
+		/// searches the module used to create the current process.
+		/// </param>
+		/// <param name="lpName">
+		/// The name of the resource. Alternately, rather than a pointer, this parameter can be MAKEINTRESOURCE, where wInteger is the integer identifier of the resource.
+		/// </param>
+		/// <param name="lpType">
+		/// The resource type. Alternately, rather than a pointer, this parameter can be MAKEINTRESOURCE, where wInteger is the integer identifier of the given
+		/// resource type.
+		/// </param>
+		/// <returns>
+		/// If the function succeeds, the return value is a handle to the specified resource's information block. To obtain a handle to the resource, pass this
+		/// handle to the <see cref="LoadResource"/> function.
+		/// <para>If the function fails, the return value is NULL. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "FindResourceW")]
 		[SuppressUnmanagedCodeSecurity]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms648042")]
 		public static extern IntPtr FindResource(SafeLibraryHandle hModule, SafeResourceId lpName, SafeResourceId lpType);
