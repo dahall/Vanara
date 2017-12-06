@@ -8,7 +8,7 @@ namespace Vanara.PInvoke
 	{
 		/// <summary>Frees the specified storage medium.</summary>
 		/// <param name="pMedium">Pointer to the storage medium that is to be freed.</param>
-		[DllImport(Lib.Ole32)]
+		[DllImport(Lib.Ole32, ExactSpelling = true)]
 		[PInvokeData("Ole2.h", MSDNShortId = "ms693491")]
 		public static extern void ReleaseStgMedium([In] ref STGMEDIUM pMedium);
 

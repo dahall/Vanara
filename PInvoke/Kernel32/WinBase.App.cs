@@ -111,14 +111,14 @@ namespace Vanara.PInvoke
 
 		/// <summary>Indicates that the calling application has completed its data recovery.</summary>
 		/// <param name="bSuccess">Specify TRUE to indicate that the data was successfully recovered; otherwise, FALSE.</param>
-		[DllImport(Lib.Kernel32)]
+		[DllImport(Lib.Kernel32, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa373328")]
 		public static extern void ApplicationRecoveryFinished([MarshalAs(UnmanagedType.Bool)] bool bSuccess);
 
 		/// <summary>Indicates that the calling application is continuing to recover data.</summary>
 		/// <param name="pbCanceled">Indicates whether the user has canceled the recovery process. Set by WER if the user clicks the Cancel button.</param>
 		/// <returns>This function returns S_OK on success or one of the following error codes.</returns>
-		[DllImport(Lib.Kernel32)]
+		[DllImport(Lib.Kernel32, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa373329")]
 		public static extern HRESULT ApplicationRecoveryInProgress([Out, MarshalAs(UnmanagedType.Bool)] out bool pbCanceled);
 
@@ -149,7 +149,7 @@ namespace Vanara.PInvoke
 		/// <param name="pdwPingInterval">The recovery ping interval, in 100-nanosecond intervals.</param>
 		/// <param name="pdwFlags">Reserved for future use.</param>
 		/// <returns>This function returns S_OK on success.</returns>
-		[DllImport(Lib.Kernel32)]
+		[DllImport(Lib.Kernel32, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa373343")]
 		public static extern HRESULT GetApplicationRecoveryCallback(IntPtr hProcess, out ApplicationRecoveryCallback pRecoveryCallback, out IntPtr ppvParameter, out uint pdwPingInterval, out int pdwFlags);
 
@@ -175,9 +175,9 @@ namespace Vanara.PInvoke
 		/// A pointer to a variable that receives the flags specified by the application when it called the RegisterApplicationRestart function.
 		/// </param>
 		/// <returns>This function returns S_OK on success</returns>
-		[DllImport(Lib.Kernel32, CharSet = CharSet.Unicode, SetLastError = true)]
+		[DllImport(Lib.Kernel32, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa373344")]
-		public static extern HRESULT GetApplicationRestartSettings(IntPtr hProcess, StringBuilder pwzCommandline, ref uint pcchSize, out ApplicationRestartFlags pdwFlags);
+		public static extern HRESULT GetApplicationRestartSettings(IntPtr hProcess, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwzCommandline, ref uint pcchSize, out ApplicationRestartFlags pdwFlags);
 
 		/// <summary>The GetCurrentActCtx function returns the handle to the active activation context of the calling thread.</summary>
 		/// <param name="handle">Pointer to the returned ACTCTX structure that contains information on the active activation context.</param>
@@ -202,7 +202,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="dwFlags">Reserved for future use. Set to zero.</param>
 		/// <returns>This function returns S_OK on success</returns>
-		[DllImport(Lib.Kernel32, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.Kernel32, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa373345")]
 		public static extern HRESULT RegisterApplicationRecoveryCallback(ApplicationRecoveryCallback pRecoveryCallback, IntPtr pvParameter, uint dwPingInterval, uint dwFlags);
 
@@ -217,7 +217,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="dwFlags">Options</param>
 		/// <returns>This function returns S_OK on success</returns>
-		[DllImport(Lib.Kernel32)]
+		[DllImport(Lib.Kernel32, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa373347")]
 		public static extern HRESULT RegisterApplicationRestart([MarshalAs(UnmanagedType.BStr)] string pwzCommandline, ApplicationRestartFlags dwFlags);
 
@@ -233,7 +233,7 @@ namespace Vanara.PInvoke
 		/// <summary>Removes the active instance of an application from the recovery list.</summary>
 		/// <remarks>You do not need to call this function before exiting. You need to remove the registration only if you choose to not recover data.</remarks>
 		/// <returns>This function returns S_OK on success</returns>
-		[DllImport(Lib.Kernel32)]
+		[DllImport(Lib.Kernel32, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa373348")]
 		public static extern HRESULT UnregisterApplicationRecoveryCallback();
 
@@ -244,7 +244,7 @@ namespace Vanara.PInvoke
 		/// function before the application fails abnormally.
 		/// </remarks>
 		/// <returns>This function returns S_OK on success</returns>
-		[DllImport(Lib.Kernel32)]
+		[DllImport(Lib.Kernel32, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa373349")]
 		public static extern HRESULT UnregisterApplicationRestart();
 

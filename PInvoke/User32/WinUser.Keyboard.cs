@@ -20,10 +20,10 @@ namespace Vanara.PInvoke
 			MOD_NOREPEAT = 0x4000,
 		}
 
-		[DllImport(Lib.User32, SetLastError = true)]
+		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
 		public static extern int RegisterHotKey(HandleRef hWnd, int id, HotKeyModifiers fsModifiers, uint vk);
 
-		[DllImport(Lib.User32, SetLastError = true)]
+		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
 		public static extern int UnregisterHotKey(HandleRef hWnd, int id);
 
 	}

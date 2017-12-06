@@ -259,14 +259,66 @@ namespace Vanara.PInvoke
 			SLDF_PERSIST_VOLUME_ID_RELATIVE = 0x08000000,
 		}
 
+		/// <summary>Receives a value that determines what type the item is in <see cref="SHDESCRIPTIONID"/>.</summary>
+		[PInvokeData("Shlobj_core.h", MSDNShortId = "bb759775")]
+		public enum SHDID
+		{
+			/// <summary>The item is a registered item on the desktop.</summary>
+			SHDID_ROOT_REGITEM = 1,
+			/// <summary>The item is a file.</summary>
+			SHDID_FS_FILE = 2,
+			/// <summary>The item is a folder.</summary>
+			SHDID_FS_DIRECTORY = 3,
+			/// <summary>The item is an unidentified item in the file system.</summary>
+			SHDID_FS_OTHER = 4,
+			/// <summary>The item is a 3.5-inch floppy drive.</summary>
+			SHDID_COMPUTER_DRIVE35 = 5,
+			/// <summary>The item is a 5.25-inch floppy drive.</summary>
+			SHDID_COMPUTER_DRIVE525 = 6,
+			/// <summary>The item is a removable disk.</summary>
+			SHDID_COMPUTER_REMOVABLE = 7,
+			/// <summary>The item is a fixed hard disk.</summary>
+			SHDID_COMPUTER_FIXED = 8,
+			/// <summary>The item is a drive that is mapped to a network share.</summary>
+			SHDID_COMPUTER_NETDRIVE = 9,
+			/// <summary>The item is a CD-ROM drive.</summary>
+			SHDID_COMPUTER_CDROM = 10,
+			/// <summary>The item is a RAM disk.</summary>
+			SHDID_COMPUTER_RAMDISK = 11,
+			/// <summary>The item is an unidentified system device.</summary>
+			SHDID_COMPUTER_OTHER = 12,
+			/// <summary>The item is a network domain.</summary>
+			SHDID_NET_DOMAIN = 13,
+			/// <summary>The item is a network server.</summary>
+			SHDID_NET_SERVER = 14,
+			/// <summary>The item is a network share.</summary>
+			SHDID_NET_SHARE = 15,
+			/// <summary>Not currently used.</summary>
+			SHDID_NET_RESTOFNET = 16,
+			/// <summary>The item is an unidentified network resource.</summary>
+			SHDID_NET_OTHER = 17,
+			/// <summary>Windows XP and later. Not currently used.</summary>
+			SHDID_COMPUTER_IMAGING = 18,
+			/// <summary>Windows XP and later. Not currently used.</summary>
+			SHDID_COMPUTER_AUDIO = 19,
+			/// <summary>Windows XP and later. The item is the system shared documents folder.</summary>
+			SHDID_COMPUTER_SHAREDDOCS = 20,
+			/// <summary>Windows Vista and later. The item is a mobile device, such as a personal digital assistant (PDA).</summary>
+			SHDID_MOBILE_DEVICE = 21,
+		}
+
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762174")]
 		public enum SHGetDataFormat
 		{
 			/// <summary>Format used for file system objects. The pv parameter is the address of a WIN32_FIND_DATA structure.</summary>
+			[CorrespondingType(typeof(WIN32_FIND_DATA), CorrepsondingAction.Get)]
 			SHGDFIL_FINDDATA = 1,
 			/// <summary>Format used for network resources. The pv parameter is the address of a NETRESOURCE structure.</summary>
+			// TODO: Define NETRESOURCE (https://msdn.microsoft.com/en-us/library/windows/desktop/aa385353(v=vs.85).aspx)
+			//[CorrespondingType(typeof(NETRESOURCE), CorrepsondingAction.Get)]
 			SHGDFIL_NETRESOURCE = 2,
 			/// <summary>Version 4.71. Format used for network resources. The pv parameter is the address of an SHDESCRIPTIONID structure.</summary>
+			[CorrespondingType(typeof(SHDESCRIPTIONID), CorrepsondingAction.Get)]
 			SHGDFIL_DESCRIPTIONID = 3
 		}
 
@@ -400,7 +452,7 @@ namespace Vanara.PInvoke
 		/// <param name="cb">Size of the buffer at pv, in bytes.</param>
 		/// <remarks>This function extracts only information that is present in the pointer to an item identifier list (PIDL). Since the content of a PIDL depends on the folder object that created the PIDL, there is no guarantee that all requested information will be available. In addition, the information that is returned reflects the state of the object at the time the PIDL was created. The current state of the object could be different. For example, if you set nFormat to SHGDFIL_FINDDATA, the function might assign meaningful values to only some of the members of the WIN32_FIND_DATA structure. The remaining members will be set to zero. To retrieve complete current information on a file system file or folder, use standard file system functions such as GetFileTime or FindFirstFile.
 		/// <para>E_INVALIDARG is returned if the psf, pidl, pv, or cb parameter does not match the nFormat parameter, or if nFormat is not one of the specific SHGDFIL_ values shown above.</para></remarks>
-		[DllImport(Lib.Shell32, CharSet = CharSet.Unicode, ExactSpelling = true)]
+		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762174")]
 		public static extern HRESULT SHGetDataFromIDList([In, MarshalAs(UnmanagedType.Interface)] IShellFolder psf, [In] PIDL pidl, SHGetDataFormat nFormat, [In, Out] IntPtr pv, int cb);
@@ -792,6 +844,17 @@ namespace Vanara.PInvoke
 
 			/// <summary>The console's code page.</summary>
 			public uint uCodePage;
+		}
+
+		/// <summary>Receives item data in response to a call to SHGetDataFromIDList.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("Shlobj.h", MSDNShortId = "bb759775")]
+		public struct SHDESCRIPTIONID
+		{
+			/// <summary>Receives a value that determines what type the item is. </summary>
+			public SHDID dwDescriptionId;
+			/// <summary>Receives the CLSID of the object to which the item belongs.</summary>
+			public Guid clsid;
 		}
 
 		/// <summary>

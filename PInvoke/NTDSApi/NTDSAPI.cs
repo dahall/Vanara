@@ -282,7 +282,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Frees memory allocated for a credentials structure by the DsMakePasswordCredentials function.</summary>
 		/// <param name="AuthIdentity">Handle of the credential structure to be freed.</param>
-		[DllImport(Lib.NTDSApi, CharSet = CharSet.Auto)]
+		[DllImport(Lib.NTDSApi, ExactSpelling = true)]
 		[PInvokeData("Ntdsapi.h", MSDNShortId = "ms675979")]
 		public static extern void DsFreePasswordCredentials(IntPtr AuthIdentity);
 

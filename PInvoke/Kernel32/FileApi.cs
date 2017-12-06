@@ -691,7 +691,7 @@ namespace Vanara.PInvoke
 		/// <para>To write to the end of file, specify both the Offset and OffsetHigh members of the OVERLAPPED structure as 0xFFFFFFFF. This is functionally equivalent to previously calling the CreateFile function to open hFile using FILE_APPEND_DATA access.</para>
 		/// <para>For more information about different combinations of lpOverlapped and FILE_FLAG_OVERLAPPED, see the Remarks section and the Synchronization and File Position section.</para></param>
 		/// <returns>If the function succeeds, the return value is nonzero (TRUE). If the function fails, or is completing asynchronously, the return value is zero(FALSE). To get extended error information, call the GetLastError function.</returns>
-		[DllImport(Lib.Kernel32, SetLastError = true), SuppressUnmanagedCodeSecurity]
+		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true), SuppressUnmanagedCodeSecurity]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365747")]
 		public static extern bool WriteFile(SafeFileHandle hFile, IntPtr lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, IntPtr lpOverlapped);
@@ -716,7 +716,7 @@ namespace Vanara.PInvoke
 		/// <para>To write to the end of file, specify both the Offset and OffsetHigh members of the OVERLAPPED structure as 0xFFFFFFFF. This is functionally equivalent to previously calling the CreateFile function to open hFile using FILE_APPEND_DATA access.</para>
 		/// <para>For more information about different combinations of lpOverlapped and FILE_FLAG_OVERLAPPED, see the Remarks section and the Synchronization and File Position section.</para></param>
 		/// <returns>If the function succeeds, the return value is nonzero (TRUE). If the function fails, or is completing asynchronously, the return value is zero(FALSE). To get extended error information, call the GetLastError function.</returns>
-		[DllImport(Lib.Kernel32, SetLastError = true), SuppressUnmanagedCodeSecurity]
+		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true), SuppressUnmanagedCodeSecurity]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365747")]
 		public static extern unsafe bool WriteFile(SafeFileHandle hFile, byte* lpBuffer, uint nNumberOfBytesToWrite, IntPtr lpNumberOfBytesWritten, NativeOverlapped* lpOverlapped);
@@ -741,7 +741,7 @@ namespace Vanara.PInvoke
 		/// <para>To write to the end of file, specify both the Offset and OffsetHigh members of the OVERLAPPED structure as 0xFFFFFFFF. This is functionally equivalent to previously calling the CreateFile function to open hFile using FILE_APPEND_DATA access.</para>
 		/// <para>For more information about different combinations of lpOverlapped and FILE_FLAG_OVERLAPPED, see the Remarks section and the Synchronization and File Position section.</para></param>
 		/// <returns>If the function succeeds, the return value is nonzero (TRUE). If the function fails, or is completing asynchronously, the return value is zero(FALSE). To get extended error information, call the GetLastError function.</returns>
-		[DllImport(Lib.Kernel32, SetLastError = true), SuppressUnmanagedCodeSecurity]
+		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true), SuppressUnmanagedCodeSecurity]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365747")]
 		public static extern bool WriteFile(SafeFileHandle hFile, byte[] lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, IntPtr lpOverlapped);

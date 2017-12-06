@@ -12,7 +12,7 @@ namespace Vanara.PInvoke
 		/// <param name="AceCnt">Number of entries in pInheritArray.</param>
 		/// <param name="pfnArray">Unused. Set to NULL.</param>
 		/// <returns>If the function succeeds, the return value is ERROR_SUCCESS. If the function fails, it returns a nonzero error code.</returns>
-		[DllImport(Lib.AdvApi32)]
+		[DllImport(Lib.AdvApi32, ExactSpelling = true)]
 		[PInvokeData("Aclapi.h", MSDNShortId = "aa446630")]
 		public static extern Win32Error FreeInheritedFromArray(IntPtr pInheritArray, ushort AceCnt, IntPtr pfnArray);
 

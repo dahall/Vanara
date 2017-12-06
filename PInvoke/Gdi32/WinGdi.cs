@@ -332,7 +332,7 @@ namespace Vanara.PInvoke
 		/// paint it horizontally.
 		/// </para>
 		/// </remarks>
-		[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
+		[DllImport(Lib.Gdi32, CharSet = CharSet.Auto, SetLastError = true)]
 		[PInvokeData("Wingdi.h", MSDNShortId = "dd144904")]
 		public static extern int GetObject(IntPtr hgdiobj, int cbBuffer, IntPtr lpvObject);
 

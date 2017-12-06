@@ -33,7 +33,7 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.
 		/// </returns>
-		[DllImport(Lib.AdvApi32, SetLastError = true)]
+		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winbase.h", MSDNShortId = "aa375213")]
 		public static extern bool AllocateAndInitializeSid([In] PSID_IDENTIFIER_AUTHORITY sia,
@@ -48,7 +48,7 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// If the function succeeds, the return value is nonzero. If the function fails, the return value is zero. To get extended error information, call GetLastError.
 		/// </returns>
-		[DllImport(Lib.AdvApi32, SetLastError = true)]
+		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa376404")]
 		public static extern bool CopySid(int cbDestSid, IntPtr destSid, IntPtr sourceSid);
@@ -61,7 +61,7 @@ namespace Vanara.PInvoke
 		/// <para>If the SID structures are not equal, the return value is zero. To get extended error information, call GetLastError.</para>
 		/// <para>If either SID structure is not valid, the return value is undefined.</para>
 		/// </returns>
-		[DllImport(Lib.AdvApi32, SetLastError = true)]
+		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa446622")]
 		public static extern bool EqualSid(PSID sid1, PSID sid2);
@@ -74,7 +74,7 @@ namespace Vanara.PInvoke
 		/// <para>If the SID structures are not equal, the return value is zero. To get extended error information, call GetLastError.</para>
 		/// <para>If either SID structure is not valid, the return value is undefined.</para>
 		/// </returns>
-		[DllImport(Lib.AdvApi32, SetLastError = true)]
+		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa446622")]
 		public static extern bool EqualSid(IntPtr sid1, IntPtr sid2);
@@ -84,7 +84,7 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// If the function succeeds, the function returns NULL. If the function fails, it returns a pointer to the SID structure represented by the pSid parameter.
 		/// </returns>
-		[DllImport(Lib.AdvApi32, SetLastError = true)]
+		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa446631")]
 		public static extern IntPtr FreeSid(IntPtr pSid);
 
@@ -97,7 +97,7 @@ namespace Vanara.PInvoke
 		/// the SID is valid.
 		/// </para>
 		/// </returns>
-		[DllImport(Lib.AdvApi32, SetLastError = true)]
+		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa446642")]
 		public static extern int GetLengthSid(IntPtr pSid);
 

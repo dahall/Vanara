@@ -4,7 +4,7 @@
     <Description>This library includes shared methods, structures and constants for use throughout the Vanara assemblies. Think of it as windows.h with some useful extensions.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>Vanara.Core</AssemblyTitle>
-    <VersionPrefix>1.0.2</VersionPrefix>
+    <VersionPrefix>1.0.3</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard20</TargetFrameworks>
     <AssemblyName>Vanara.Core</AssemblyName>
     <PackageId>Vanara.Core</PackageId>
@@ -22,7 +22,7 @@
     <Company>GitHub Community</Company>
     <Product>Vanara</Product>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">

@@ -125,7 +125,7 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is a handle to the data associated with the resource.
 		/// <para>If the function fails, the return value is NULL. To get extended error information, call GetLastError.</para>
 		/// </returns>
-		[DllImport(Lib.Kernel32, SetLastError = true)]
+		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 		[SuppressUnmanagedCodeSecurity]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms648046")]
 		public static extern IntPtr LoadResource(SafeLibraryHandle hModule, IntPtr hResInfo);
@@ -133,7 +133,7 @@ namespace Vanara.PInvoke
 		/// <summary>Retrieves a pointer to the specified resource in memory.</summary>
 		/// <param name="hResData">A handle to the resource to be accessed. The <see cref="LoadResource"/> function returns this handle.</param>
 		/// <returns>If the loaded resource is available, the return value is a pointer to the first byte of the resource; otherwise, it is NULL.</returns>
-		[DllImport(Lib.Kernel32, SetLastError = true)]
+		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 		[SuppressUnmanagedCodeSecurity]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms648047")]
 		public static extern IntPtr LockResource(IntPtr hResData);
@@ -145,7 +145,7 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is the number of bytes in the resource. If the function fails, the return value is zero. To get extended
 		/// error information, call GetLastError.
 		/// </returns>
-		[DllImport(Lib.Kernel32, SetLastError = true)]
+		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 		[SuppressUnmanagedCodeSecurity]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms648048")]
 		public static extern int SizeofResource(SafeLibraryHandle hModule, IntPtr hResInfo);

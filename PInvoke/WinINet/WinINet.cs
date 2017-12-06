@@ -1269,7 +1269,7 @@ namespace Vanara.PInvoke
 		/// <summary>Closes a single Internet handle.</summary>
 		/// <param name="hInternet">Handle to be closed.</param>
 		/// <returns>Returns TRUE if the handle is successfully closed, or FALSE otherwise. To get extended error information, call GetLastError.</returns>
-		[DllImport(Lib.WinInet, CharSet = CharSet.Auto, SetLastError = true)]
+		[DllImport(Lib.WinInet, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool InternetCloseHandle(IntPtr hInternet);
 

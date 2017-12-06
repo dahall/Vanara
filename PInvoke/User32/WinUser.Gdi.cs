@@ -363,7 +363,7 @@ namespace Vanara.PInvoke
 		/// </summary>
 		/// <param name="hIcon">A handle to the icon to be destroyed. The icon must not be in use.</param>
 		/// <returns>If the function succeeds, the return value is true. If the function fails, the return value is false. To get extended error information, call GetLastError.</returns>
-		[DllImport(Lib.User32, SetLastError = true)]
+		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[System.Security.SecurityCritical]
 		public static extern bool DestroyIcon(IntPtr hIcon);
@@ -553,7 +553,7 @@ namespace Vanara.PInvoke
 		/// <param name="cy">The new height of the window, in pixels.</param>
 		/// <param name="uFlags">The window sizing and positioning flags.</param>
 		/// <returns>If the function succeeds, the return value is true. If the function fails, the return value is false. To get extended error information, call GetLastError.</returns>
-		[DllImport(Lib.User32, SetLastError = true)]
+		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[System.Security.SecurityCritical]
 		public static extern bool SetWindowPos(HandleRef hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
@@ -575,7 +575,7 @@ namespace Vanara.PInvoke
 		/// The return value is a handle to the window that contains the point. If no window exists at the given point, the return value is NULL. If the point is
 		/// over a static text control, the return value is a handle to the window under the static text control.
 		/// </returns>
-		[DllImport(Lib.User32, SetLastError = true)]
+		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
 		public static extern IntPtr WindowFromPoint(Point Point);
 
 		/// <summary>

@@ -153,7 +153,7 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.
 		/// </returns>
 		[PInvokeData("FileAPI.h", MSDNShortId = "ms724280")]
-		[DllImport(Lib.Kernel32, SetLastError = true), SuppressUnmanagedCodeSecurity]
+		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true), SuppressUnmanagedCodeSecurity]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool FileTimeToSystemTime(ref FILETIME lpFileTime, ref SYSTEMTIME lpSystemTime);
 
@@ -448,7 +448,7 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is a nonzero value.
 		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
 		/// </returns>
-		[DllImport(Lib.Kernel32, SetLastError = true)]
+		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683152")]
 		public static extern bool FreeLibrary(IntPtr hModule);
@@ -596,9 +596,9 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is the address of the exported function or variable. <br></br><br>If the function fails, the return value
 		/// is NULL. To get extended error information, call Marshal.GetLastWin32Error.</br>
 		/// </returns>
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Ansi)]
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683212")]
-		public static extern IntPtr GetProcAddress(SafeLibraryHandle hModule, string lpProcName);
+		public static extern IntPtr GetProcAddress(SafeLibraryHandle hModule, [MarshalAs(UnmanagedType.LPStr)] string lpProcName);
 
 		/// <summary>
 		/// The GlobalLock function locks a global memory object and returns a pointer to the first byte of the object's memory block. GlobalLock function
@@ -606,14 +606,14 @@ namespace Vanara.PInvoke
 		/// </summary>
 		/// <param name="hMem"></param>
 		/// <returns></returns>
-		[DllImport(Lib.Kernel32, SetLastError = true)]
+		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366584")]
 		public static extern IntPtr GlobalLock(IntPtr hMem);
 
 		/// <summary>The GlobalUnlock function decrements the lock count associated with a memory object.</summary>
 		/// <param name="hMem"></param>
 		/// <returns></returns>
-		[DllImport(Lib.Kernel32, SetLastError = true)]
+		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366595")]
 		public static extern bool GlobalUnlock(IntPtr hMem);
@@ -828,7 +828,7 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.
 		/// </returns>
-		[DllImport(Lib.Kernel32, SetLastError = true), SuppressUnmanagedCodeSecurity]
+		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true), SuppressUnmanagedCodeSecurity]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724948")]
 		public static extern bool SystemTimeToFileTime(ref SYSTEMTIME lpSystemTime, ref FILETIME lpFileTime);

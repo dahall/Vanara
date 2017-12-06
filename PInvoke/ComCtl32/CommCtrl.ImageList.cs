@@ -129,7 +129,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>Returns nonzero if successful, or zero otherwise.</returns>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761536")]
-		[DllImport(Lib.ComCtl32, SetLastError = true)]
+		[DllImport(Lib.ComCtl32, SetLastError = true, ExactSpelling = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool ImageList_DrawEx(HandleRef himl, int i, SafeDCHandle hdcDst, int x, int y, int dx, int dy,
 			uint rgbBk, uint rgbFg, IMAGELISTDRAWFLAGS fStyle);
@@ -152,7 +152,7 @@ namespace Vanara.PInvoke
 		/// <param name="iOverlay">The one-based index of the overlay mask.</param>
 		/// <returns>Returns nonzero if successful, or zero otherwise.</returns>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775227")]
-		[DllImport(Lib.ComCtl32, SetLastError = true)]
+		[DllImport(Lib.ComCtl32, SetLastError = true, ExactSpelling = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool ImageList_SetOverlayImage(HandleRef himl, int iImage, int iOverlay);
 

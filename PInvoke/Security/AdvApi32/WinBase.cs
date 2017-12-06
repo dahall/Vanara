@@ -245,7 +245,7 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// If the function succeeds, the function returns nonzero. If the function fails, it returns zero. To get extended error information, call GetLastError.
 		/// </returns>
-		[DllImport(Lib.AdvApi32, CharSet = CharSet.Unicode, SetLastError = true)]
+		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa446634")]
 		public static extern bool GetAce(IntPtr pAcl, int dwAceIndex, out IntPtr pAce);
@@ -276,7 +276,7 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// If the function succeeds, the function returns nonzero. If the function fails, it returns zero. To get extended error information, call GetLastError.
 		/// </returns>
-		[DllImport(Lib.AdvApi32, SetLastError = true)]
+		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa446635")]
 		public static extern bool GetAclInformation(IntPtr pAcl, ref ACL_REVISION_INFORMATION pAclInformation, uint nAclInformationLength, ACL_INFORMATION_CLASS dwAclInformationClass);
 
@@ -306,7 +306,7 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// If the function succeeds, the function returns nonzero. If the function fails, it returns zero. To get extended error information, call GetLastError.
 		/// </returns>
-		[DllImport(Lib.AdvApi32, SetLastError = true)]
+		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa446635")]
 		public static extern bool GetAclInformation(IntPtr pAcl, ref ACL_SIZE_INFORMATION pAclInformation, uint nAclInformationLength, ACL_INFORMATION_CLASS dwAclInformationClass);
 

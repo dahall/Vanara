@@ -148,7 +148,7 @@ namespace Vanara.PInvoke
 		/// <param name="pPackedCredentials">A pointer to an array of bytes that, on output, receives the packed authentication buffer. This parameter can be NULL to receive the required buffer size in the pcbPackedCredentials parameter.</param>
 		/// <param name="pcbPackedCredentials">A pointer to a DWORD value that specifies the size, in bytes, of the pPackedCredentials buffer. On output, if the buffer is not of sufficient size, specifies the required size, in bytes, of the pPackedCredentials buffer.</param>
 		/// <returns>TRUE if the function succeeds; otherwise, FALSE. For extended error information, call the GetLastError function.</returns>
-		[DllImport(Lib.CredUI, CharSet = CharSet.Unicode, SetLastError = true)]
+		[DllImport(Lib.CredUI, CharSet = CharSet.Unicode, EntryPoint = "CredPackAuthenticationBufferW", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("wincred.h", MSDNShortId = "aa374802")]
 		public static extern bool CredPackAuthenticationBuffer(CredPackFlags dwFlags, IntPtr pszUserName, IntPtr pszPassword, IntPtr pPackedCredentials, ref int pcbPackedCredentials);
@@ -233,7 +233,7 @@ namespace Vanara.PInvoke
 		/// <para>This parameter is ignored if the CREDUIWIN_CHECKBOX flag is not set in the dwFlags parameter.</para></param>
 		/// <param name="dwFlags">A DWORD value that specifies special behavior for this function. This value can be a bitwise-OR combination of any enumerated value.</param>
 		/// <returns>Status of the operation is returned.</returns>
-		[DllImport(Lib.CredUI, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.CredUI, CharSet = CharSet.Auto)]
 		[PInvokeData("wincred.h", MSDNShortId = "aa375178")]
 		public static extern int CredUIPromptForWindowsCredentials(ref CREDUI_INFO pUiInfo, int dwAuthError, ref uint pulAuthPackage, IntPtr pvInAuthBuffer, uint ulInAuthBufferSize, out IntPtr ppvOutAuthBuffer, out uint pulOutAuthBufferSize, [MarshalAs(UnmanagedType.Bool)] ref bool pfSave, WindowsCredentialsDialogOptions dwFlags);
 
@@ -263,7 +263,7 @@ namespace Vanara.PInvoke
 		/// <param name="pcchMaxPassword">A pointer to a DWORD value that specifies the size, in characters, of the pszPassword buffer. On output, if the buffer is not of sufficient size, specifies the required size, in characters, of the pszPassword buffer. The size includes the terminating null character.
 		/// <para>This string can be a marshaled credential. See Remarks.</para></param>
 		/// <returns>TRUE if the function succeeds; otherwise, FALSE. For extended error information, call the GetLastError function.The following table shows common values for the GetLastError function.</returns>
-		[DllImport(Lib.CredUI, CharSet = CharSet.Unicode, SetLastError = true)]
+		[DllImport(Lib.CredUI, CharSet = CharSet.Auto, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("wincred.h", MSDNShortId = "aa375185")]
 		public static extern bool CredUnPackAuthenticationBuffer(int dwFlags, IntPtr pAuthBuffer, int cbAuthBuffer, StringBuilder pszUserName, ref int pcchMaxUserName, StringBuilder pszDomainName, ref int pcchMaxDomainame, StringBuilder pszPassword, ref int pcchMaxPassword);
@@ -294,7 +294,7 @@ namespace Vanara.PInvoke
 		/// <param name="pcchMaxPassword">A pointer to a DWORD value that specifies the size, in characters, of the pszPassword buffer. On output, if the buffer is not of sufficient size, specifies the required size, in characters, of the pszPassword buffer. The size includes the terminating null character.
 		/// <para>This string can be a marshaled credential. See Remarks.</para></param>
 		/// <returns>TRUE if the function succeeds; otherwise, FALSE. For extended error information, call the GetLastError function.The following table shows common values for the GetLastError function.</returns>
-		[DllImport(Lib.CredUI, CharSet = CharSet.Unicode, SetLastError = true)]
+		[DllImport(Lib.CredUI, CharSet = CharSet.Auto, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("wincred.h", MSDNShortId = "aa375173")]
 		public static extern bool CredUnPackAuthenticationBuffer(int dwFlags, IntPtr pAuthBuffer, int cbAuthBuffer, IntPtr pszUserName, ref int pcchMaxUserName, IntPtr pszDomainName, ref int pcchMaxDomainame, IntPtr pszPassword, ref int pcchMaxPassword);
@@ -302,7 +302,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// The CREDUI_INFO structure is used to pass information to the CredUIPromptForCredentials function that creates a dialog box used to obtain credentials information.
 		/// </summary>
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		[PInvokeData("wincred.h", MSDNShortId = "aa375183")]
 		public struct CREDUI_INFO
 		{
@@ -317,12 +317,10 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// Pointer to a string containing a brief message to display in the dialog box. The length of this string should not exceed CREDUI_MAX_MESSAGE_LENGTH.
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
 			public string pszMessageText;
 			/// <summary>
 			/// Pointer to a string containing the title for the dialog box. The length of this string should not exceed CREDUI_MAX_CAPTION_LENGTH.
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPWStr)]
 			public string pszCaptionText;
 			/// <summary>
 			/// Bitmap to display in the dialog box. If this member is NULL, a default bitmap is used. The bitmap size is limited to 320x60 pixels.

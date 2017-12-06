@@ -70,7 +70,7 @@ namespace Vanara.PInvoke
 		/// <param name="uFlags">Specifies the type of shutdown.</param>
 		/// <param name="dwReason">The reason for initiating the shutdown.</param>
 		/// <returns>If the function succeeds, the return value is nonzero.<br></br><br>If the function fails, the return value is zero. To get extended error information, call Marshal.GetLastWin32Error.</br></returns>
-		[DllImport(Lib.User32, SetLastError = true)]
+		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool ExitWindowsEx(ExitWindowsFlags uFlags, SystemShutDownReason dwReason);
 

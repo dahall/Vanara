@@ -232,7 +232,7 @@ namespace Vanara.PInvoke
 		/// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero. To get extended error information, call GetLastError.</returns>
 		/// <remarks>The hook procedure can be in the state of being called by another thread even after UnhookWindowsHookEx returns. If the hook procedure is not being called concurrently, the hook procedure is removed immediately before UnhookWindowsHookEx returns.</remarks>
 		[PInvokeData("WinUser.h", MSDNShortId = "ms644993")]
-		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool UnhookWindowsHookEx(IntPtr hhk);
 		

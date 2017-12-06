@@ -33,7 +33,7 @@ namespace Vanara.PInvoke
 		/// <item><term>STG_E_INVALID_PARAMETER</term><definition>The variant has an unknown VT type.</definition></item>
 		/// </list>
 		/// </returns>
-		[DllImport(Lib.Ole32)]
+		[DllImport(Lib.Ole32, ExactSpelling = true)]
 		[PInvokeData("Propidl.h", MSDNShortId = "aa380192")]
 		public static extern HRESULT PropVariantCopy([In, Out] PROPVARIANT pDst, [In] PROPVARIANT pSrc);
 	}
