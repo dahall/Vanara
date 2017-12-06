@@ -124,7 +124,7 @@ namespace Vanara.Extensions
 		/// <summary>Retrieves the window styles.</summary>
 		/// <param name="ctrl">The control.</param>
 		/// <returns>The window styles</returns>
-		public static int GetStyle(this Control ctrl) => GetWindowLong(new HandleRef(ctrl, ctrl.Handle), (int)WindowLongFlags.GWL_STYLE).ToInt32();
+		public static int GetStyle(this Control ctrl) => GetWindowLongAuto(new HandleRef(ctrl, ctrl.Handle), (int)WindowLongFlags.GWL_STYLE).ToInt32();
 
 		/// <summary>Removes the mnemonic, if one exists, from the string.</summary>
 		/// <param name="str">The string.</param>
@@ -149,7 +149,7 @@ namespace Vanara.Extensions
 		public static void SetStyle(this Control ctrl, int style, bool on = true)
 		{
 			var href = new HandleRef(ctrl, ctrl.Handle);
-			int oldstyle = GetWindowLong(href, (int)WindowLongFlags.GWL_STYLE).ToInt32();
+			int oldstyle = GetWindowLongAuto(href, (int)WindowLongFlags.GWL_STYLE).ToInt32();
 			if ((oldstyle & style) != style && on)
 				SetWindowLong(href, (int)WindowLongFlags.GWL_STYLE, new IntPtr(oldstyle | style));
 			else if ((oldstyle & style) == style && !on)

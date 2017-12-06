@@ -382,11 +382,11 @@ namespace Vanara.PInvoke
 		/// <param name="hWnd">A handle to the window and, indirectly, the class to which the window belongs.</param>
 		/// <param name="nIndex">The zero-based offset to the value to be retrieved. Valid values are in the range zero through the number of bytes of extra window memory, minus the size of an integer. To retrieve any other value, specify one of the following values.</param>
 		/// <returns>If the function succeeds, the return value is the requested value. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
-		public static IntPtr GetWindowLong(HandleRef hWnd, int nIndex)
+		public static IntPtr GetWindowLongAuto(HandleRef hWnd, int nIndex)
 		{
 			IntPtr ret;
 			if (IntPtr.Size == 4)
-				ret = (IntPtr)GetWindowLong32(hWnd, nIndex);
+				ret = (IntPtr)GetWindowLong(hWnd, nIndex);
 			else
 				ret = GetWindowLongPtr(hWnd, nIndex);
 			if (ret == IntPtr.Zero)
@@ -400,11 +400,11 @@ namespace Vanara.PInvoke
 		/// <param name="hWnd">A handle to the window and, indirectly, the class to which the window belongs.</param>
 		/// <param name="nIndex">The zero-based offset to the value to be retrieved. Valid values are in the range zero through the number of bytes of extra window memory, minus four; for example, if you specified 12 or more bytes of extra memory, a value of 8 would be an index to the third 32-bit integer. To retrieve any other value, specify one of the following values.</param>
 		/// <returns>If the function succeeds, the return value is the requested value. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
-		[DllImport(Lib.User32, EntryPoint = "GetWindowLong", SetLastError = true)]
+		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
 		[SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "return", Justification = "This declaration is not used on 64-bit Windows.")]
 		[SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "2", Justification = "This declaration is not used on 64-bit Windows.")]
 		[System.Security.SecurityCritical]
-		public static extern int GetWindowLong32(HandleRef hWnd, int nIndex);
+		public static extern int GetWindowLong(HandleRef hWnd, int nIndex);
 
 		/// <summary>
 		/// Retrieves information about the specified window. The function also retrieves the value at a specified offset into the extra window memory.
@@ -412,7 +412,7 @@ namespace Vanara.PInvoke
 		/// <param name="hWnd">A handle to the window and, indirectly, the class to which the window belongs.</param>
 		/// <param name="nIndex">The zero-based offset to the value to be retrieved. Valid values are in the range zero through the number of bytes of extra window memory, minus the size of an integer. To retrieve any other value, specify one of the following values.</param>
 		/// <returns>If the function succeeds, the return value is the requested value. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
-		[DllImport(Lib.User32, EntryPoint = "GetWindowLongPtr", SetLastError = true)]
+		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
 		[SuppressMessage("Microsoft.Interoperability", "CA1400:PInvokeEntryPointsShouldExist", Justification = "Entry point does exist on 64-bit Windows.")]
 		[System.Security.SecurityCritical]
 		public static extern IntPtr GetWindowLongPtr(HandleRef hWnd, int nIndex);
