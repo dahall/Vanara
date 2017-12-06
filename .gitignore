@@ -245,3 +245,4 @@ ModelManifest.xml
 .fake/
 /CodeMap1.dgml
 *.cmd
+/RefFileResults.txt
