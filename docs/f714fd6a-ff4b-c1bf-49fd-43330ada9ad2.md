@@ -1,0 +1,36 @@
+# CommandLink.GetPreferredSize Method 
+ 
+
+Retrieves the size of a rectangular area into which a control can be fitted.
+
+**Namespace:**&nbsp;<a href="c580cf52-4028-70db-28d0-f9b1abc03861">Vanara.Windows.Forms</a><br />**Assembly:**&nbsp;Vanara.UI (in Vanara.UI.dll) Version: 1.0.3
+
+## Syntax
+
+**C#**<br />
+``` C#
+public override Size GetPreferredSize(
+	Size proposedSize
+)
+```
+
+**VB**<br />
+``` VB
+Public Overrides Function GetPreferredSize ( 
+	proposedSize As Size
+) As Size
+```
+
+<br />
+
+#### Parameters
+&nbsp;<dl><dt>proposedSize</dt><dd>Type: <a href="http://msdn2.microsoft.com/en-us/library/bfwt6fe5" target="_blank">System.Drawing.Size</a><br />The custom-sized area for a control.</dd></dl>
+
+#### Return Value
+Type: <a href="http://msdn2.microsoft.com/en-us/library/bfwt6fe5" target="_blank">Size</a><br />An ordered pair of type <a href="http://msdn2.microsoft.com/en-us/library/bfwt6fe5" target="_blank">Size</a> representing the width and height of a rectangle.
+
+## See Also
+
+
+#### Reference
+<a href="07d8ae3c-bd87-0a8d-8adb-38df2ce1ac5b">CommandLink Class</a><br /><a href="c580cf52-4028-70db-28d0-f9b1abc03861">Vanara.Windows.Forms Namespace</a><br />

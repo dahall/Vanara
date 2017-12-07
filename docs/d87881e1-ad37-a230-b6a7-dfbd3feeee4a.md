@@ -1,0 +1,34 @@
+# TaskDialogButton Constructor (String, Int32)
+ 
+
+Initialize the custom button.
+
+**Namespace:**&nbsp;<a href="c580cf52-4028-70db-28d0-f9b1abc03861">Vanara.Windows.Forms</a><br />**Assembly:**&nbsp;Vanara.UI (in Vanara.UI.dll) Version: 1.0.3
+
+## Syntax
+
+**C#**<br />
+``` C#
+public TaskDialogButton(
+	string text,
+	int id = -1
+)
+```
+
+**VB**<br />
+``` VB
+Public Sub New ( 
+	text As String,
+	Optional id As Integer = -1
+)
+```
+
+
+#### Parameters
+&nbsp;<dl><dt>text</dt><dd>Type: <a href="http://msdn2.microsoft.com/en-us/library/s1wwdcbf" target="_blank">System.String</a><br />The string that appears on the button.</dd><dt>id (Optional)</dt><dd>Type: <a href="http://msdn2.microsoft.com/en-us/library/td2s409d" target="_blank">System.Int32</a><br />The ID of the button. This value is returned by TaskDialog.Show when the button is clicked. Typically this will be a value in the DialogResult enum. Specifying a value of (-1) will insert a potentially non-unique value.</dd></dl>
+
+## See Also
+
+
+#### Reference
+<a href="1d014f22-9536-9860-ea85-fa2cafd31448">TaskDialogButton Class</a><br /><a href="c867d406-0c4c-44f5-4f9f-1e70de71d5ef">TaskDialogButton Overload</a><br /><a href="c580cf52-4028-70db-28d0-f9b1abc03861">Vanara.Windows.Forms Namespace</a><br />

@@ -13,7 +13,7 @@
     <RootNamespace>HelpBuilder</RootNamespace>
     <Name>HelpBuilder</Name>
     <!-- SHFB properties -->
-    <FrameworkVersion>.NET Framework 4.6.1</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
     <OutputPath>..\docs\</OutputPath>
     <HtmlHelpName>vanara</HtmlHelpName>
     <Language>en-US</Language>
@@ -28,18 +28,18 @@
     </TransformComponentArguments>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
-    <HelpFileFormat>Website</HelpFileFormat>
+    <HelpFileFormat>Markdown</HelpFileFormat>
     <IndentHtml>False</IndentHtml>
     <KeepLogFile>True</KeepLogFile>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CleanIntermediates>True</CleanIntermediates>
-    <HelpFileVersion>1.0.2</HelpFileVersion>
+    <HelpFileVersion>1.0.3</HelpFileVersion>
     <MaximumGroupParts>2</MaximumGroupParts>
-    <NamespaceGrouping>False</NamespaceGrouping>
+    <NamespaceGrouping>True</NamespaceGrouping>
     <SyntaxFilters>C#, Visual Basic</SyntaxFilters>
     <SdkLinkTarget>Blank</SdkLinkTarget>
     <RootNamespaceContainer>False</RootNamespaceContainer>
-    <PresentationStyle>VS2013</PresentationStyle>
+    <PresentationStyle>Markdown</PresentationStyle>
     <Preliminary>False</Preliminary>
     <NamingMethod>Guid</NamingMethod>
     <HelpTitle>Vanara API Documentation</HelpTitle>
@@ -101,44 +101,6 @@
     <DocumentationSources>
       <DocumentationSource sourceFile="..\Core\bin\Release\net45\Vanara.Core.dll" />
       <DocumentationSource sourceFile="..\Core\bin\Release\net45\Vanara.Core.xml" />
-      <DocumentationSource sourceFile="..\PInvoke\AclUI\bin\Release\net45\Vanara.PInvoke.AclUI.dll" />
-      <DocumentationSource sourceFile="..\PInvoke\AclUI\bin\Release\net45\Vanara.PInvoke.AclUI.xml" />
-      <DocumentationSource sourceFile="..\PInvoke\ComCtl32\bin\Release\net45\Vanara.PInvoke.ComCtl32.dll" />
-      <DocumentationSource sourceFile="..\PInvoke\ComCtl32\bin\Release\net45\Vanara.PInvoke.ComCtl32.xml" />
-      <DocumentationSource sourceFile="..\PInvoke\CredUI\bin\Release\net45\Vanara.PInvoke.CredUI.dll" />
-      <DocumentationSource sourceFile="..\PInvoke\CredUI\bin\Release\net45\Vanara.PInvoke.CredUI.xml" />
-      <DocumentationSource sourceFile="..\PInvoke\DwmApi\bin\Release\net45\Vanara.PInvoke.DwmApi.dll" />
-      <DocumentationSource sourceFile="..\PInvoke\DwmApi\bin\Release\net45\Vanara.PInvoke.DwmApi.xml" />
-      <DocumentationSource sourceFile="..\PInvoke\Gdi32\bin\Release\net45\Vanara.PInvoke.Gdi32.dll" />
-      <DocumentationSource sourceFile="..\PInvoke\Gdi32\bin\Release\net45\Vanara.PInvoke.Gdi32.xml" />
-      <DocumentationSource sourceFile="..\PInvoke\Kernel32\bin\Release\net45\Vanara.PInvoke.Kernel32.dll" />
-      <DocumentationSource sourceFile="..\PInvoke\Kernel32\bin\Release\net45\Vanara.PInvoke.Kernel32.xml" />
-      <DocumentationSource sourceFile="..\PInvoke\NetApi32\bin\Release\net45\Vanara.PInvoke.NetApi32.dll" />
-      <DocumentationSource sourceFile="..\PInvoke\NetApi32\bin\Release\net45\Vanara.PInvoke.NetApi32.xml" />
-      <DocumentationSource sourceFile="..\PInvoke\NetListMgr\bin\Release\net45\Vanara.PInvoke.NetListMgr.dll" />
-      <DocumentationSource sourceFile="..\PInvoke\NetListMgr\bin\Release\net45\Vanara.PInvoke.NetListMgr.xml" />
-      <DocumentationSource sourceFile="..\PInvoke\NTDSApi\bin\Release\net45\Vanara.PInvoke.NTDSApi.dll" />
-      <DocumentationSource sourceFile="..\PInvoke\NTDSApi\bin\Release\net45\Vanara.PInvoke.NTDSApi.xml" />
-      <DocumentationSource sourceFile="..\PInvoke\Ole\bin\Release\net45\Vanara.PInvoke.Ole.dll" />
-      <DocumentationSource sourceFile="..\PInvoke\Ole\bin\Release\net45\Vanara.PInvoke.Ole.xml" />
-      <DocumentationSource sourceFile="..\PInvoke\Security\bin\Release\net45\Vanara.PInvoke.Security.dll" />
-      <DocumentationSource sourceFile="..\PInvoke\Security\bin\Release\net45\Vanara.PInvoke.Security.xml" />
-      <DocumentationSource sourceFile="..\PInvoke\Shared\bin\Release\net45\Vanara.PInvoke.Shared.dll" />
-      <DocumentationSource sourceFile="..\PInvoke\Shared\bin\Release\net45\Vanara.PInvoke.Shared.xml" />
-      <DocumentationSource sourceFile="..\PInvoke\Shell32\bin\Release\net45\Vanara.PInvoke.Shell32.dll" />
-      <DocumentationSource sourceFile="..\PInvoke\Shell32\bin\Release\net45\Vanara.PInvoke.Shell32.xml" />
-      <DocumentationSource sourceFile="..\PInvoke\ShlwApi\bin\Release\net45\Vanara.PInvoke.ShlwApi.dll" />
-      <DocumentationSource sourceFile="..\PInvoke\ShlwApi\bin\Release\net45\Vanara.PInvoke.ShlwApi.xml" />
-      <DocumentationSource sourceFile="..\PInvoke\TaskSchd\bin\Release\net45\Vanara.PInvoke.TaskSchd.dll" />
-      <DocumentationSource sourceFile="..\PInvoke\TaskSchd\bin\Release\net45\Vanara.PInvoke.TaskSchd.xml" />
-      <DocumentationSource sourceFile="..\PInvoke\User32\bin\Release\net45\Vanara.PInvoke.User32.dll" />
-      <DocumentationSource sourceFile="..\PInvoke\User32\bin\Release\net45\Vanara.PInvoke.User32.xml" />
-      <DocumentationSource sourceFile="..\PInvoke\UxTheme\bin\Release\net45\Vanara.PInvoke.UxTheme.dll" />
-      <DocumentationSource sourceFile="..\PInvoke\UxTheme\bin\Release\net45\Vanara.PInvoke.UxTheme.xml" />
-      <DocumentationSource sourceFile="..\PInvoke\VirtDisk\bin\Release\net45\Vanara.PInvoke.VirtDisk.dll" />
-      <DocumentationSource sourceFile="..\PInvoke\VirtDisk\bin\Release\net45\Vanara.PInvoke.VirtDisk.xml" />
-      <DocumentationSource sourceFile="..\PInvoke\WinINet\bin\Release\net45\Vanara.PInvoke.WinINet.dll" />
-      <DocumentationSource sourceFile="..\PInvoke\WinINet\bin\Release\net45\Vanara.PInvoke.WinINet.xml" />
       <DocumentationSource sourceFile="..\Security\bin\Release\net45\Vanara.Security.dll" />
       <DocumentationSource sourceFile="..\Security\bin\Release\net45\Vanara.Security.xml" />
       <DocumentationSource sourceFile="..\System\bin\Release\net45\Vanara.SystemServices.dll" />
@@ -146,6 +108,9 @@
       <DocumentationSource sourceFile="..\UI\bin\Release\net45\Vanara.UI.dll" />
       <DocumentationSource sourceFile="..\UI\bin\Release\net45\Vanara.UI.xml" />
     </DocumentationSources>
+    <NamespaceSummaries>
+      <NamespaceSummaryItem name="Microsoft.Samples.DynamicAccessControl" isDocumented="False" xmlns="" />
+    </NamespaceSummaries>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->

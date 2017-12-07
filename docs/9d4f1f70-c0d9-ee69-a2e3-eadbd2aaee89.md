@@ -1,0 +1,30 @@
+# AccessControlEditorDialog.OwnerReadOnly Property 
+ 
+
+If this flag is set, the user cannot change the owner of the object. Set this flag if EditOwner is set but the user does not have permission to change the owner.
+
+**Namespace:**&nbsp;<a href="c580cf52-4028-70db-28d0-f9b1abc03861">Vanara.Windows.Forms</a><br />**Assembly:**&nbsp;Vanara.UI (in Vanara.UI.dll) Version: 1.0.3
+
+## Syntax
+
+**C#**<br />
+``` C#
+public bool OwnerReadOnly { get; set; }
+```
+
+**VB**<br />
+``` VB
+Public Property OwnerReadOnly As Boolean
+	Get
+	Set
+```
+
+
+#### Property Value
+Type: <a href="http://msdn2.microsoft.com/en-us/library/a28wyd50" target="_blank">Boolean</a>
+
+## See Also
+
+
+#### Reference
+<a href="050b03d3-dac8-f9da-5561-d0b211f945f0">AccessControlEditorDialog Class</a><br /><a href="c580cf52-4028-70db-28d0-f9b1abc03861">Vanara.Windows.Forms Namespace</a><br />

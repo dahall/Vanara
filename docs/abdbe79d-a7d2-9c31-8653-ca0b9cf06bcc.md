@@ -1,0 +1,39 @@
+# ListViewExtension.GetCollapsed Method 
+ 
+
+\[Missing <summary> documentation for "M:Vanara.Extensions.ListViewExtension.GetCollapsed(System.Windows.Forms.ListViewGroup)"\]
+
+**Namespace:**&nbsp;<a href="9abe54ff-18ce-e333-beed-30e855655381">Vanara.Extensions</a><br />**Assembly:**&nbsp;Vanara.UI (in Vanara.UI.dll) Version: 1.0.3
+
+## Syntax
+
+**C#**<br />
+``` C#
+public static bool GetCollapsed(
+	this ListViewGroup group
+)
+```
+
+**VB**<br />
+``` VB
+<ExtensionAttribute>
+Public Shared Function GetCollapsed ( 
+	group As ListViewGroup
+) As Boolean
+```
+
+
+#### Parameters
+&nbsp;<dl><dt>group</dt><dd>Type: <a href="http://msdn2.microsoft.com/en-us/library/916092y2" target="_blank">System.Windows.Forms.ListViewGroup</a><br />\[Missing <param name="group"/> documentation for "M:Vanara.Extensions.ListViewExtension.GetCollapsed(System.Windows.Forms.ListViewGroup)"\]</dd></dl>
+
+#### Return Value
+Type: <a href="http://msdn2.microsoft.com/en-us/library/a28wyd50" target="_blank">Boolean</a><br />\[Missing <returns> documentation for "M:Vanara.Extensions.ListViewExtension.GetCollapsed(System.Windows.Forms.ListViewGroup)"\]
+
+#### Usage Note
+In Visual Basic and C#, you can call this method as an instance method on any object of type <a href="http://msdn2.microsoft.com/en-us/library/916092y2" target="_blank">ListViewGroup</a>. When you use instance method syntax to call this method, omit the first parameter. For more information, see <a href="http://msdn.microsoft.com/en-us/library/bb384936.aspx">Extension Methods (Visual Basic)</a> or <a href="http://msdn.microsoft.com/en-us/library/bb383977.aspx">Extension Methods (C# Programming Guide)</a>.
+
+## See Also
+
+
+#### Reference
+<a href="3e5258c0-2fc2-fa30-46e7-ec6ea45b218a">ListViewExtension Class</a><br /><a href="9abe54ff-18ce-e333-beed-30e855655381">Vanara.Extensions Namespace</a><br />

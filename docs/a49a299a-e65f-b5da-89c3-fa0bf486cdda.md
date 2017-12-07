@@ -1,0 +1,137 @@
+# AttributedControlDesignerEx(*TControl*) Methods
+ 
+
+The <a href="ca5131da-0178-5def-558b-54e14b990818">AttributedControlDesignerEx(TControl)</a> generic type exposes the following members.
+
+
+## Methods
+&nbsp;<table><tr><th></th><th>Name</th><th>Description</th></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/7sdkfcx5" target="_blank">BaseWndProc</a></td><td>
+Processes Windows messages.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/3c8abae8" target="_blank">CanBeParentedTo</a></td><td>
+Indicates if this designer's control can be parented by the control of the specified designer.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/xs348db6" target="_blank">DefWndProc</a></td><td>
+Provides default processing for Windows messages.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/5dkwasb7" target="_blank">DisplayError</a></td><td>
+Displays information about the specified exception to the user.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/s5ssshh7" target="_blank">Dispose()</a></td><td>
+Releases all resources used by the <a href="http://msdn2.microsoft.com/en-us/library/72ea7ss5" target="_blank">ComponentDesigner</a>.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/72ea7ss5" target="_blank">ComponentDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="b6487fb4-cfb5-ab55-73fb-661465094f8a">Dispose(Boolean)</a></td><td> (Overrides <a href="http://msdn2.microsoft.com/en-us/library/wk4t4d8h" target="_blank">ControlDesigner.Dispose(Boolean)</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ba9af7tx" target="_blank">DoDefaultAction</a></td><td>
+Creates a method signature in the source code file for the default event on the component and navigates the user's cursor to that location.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/72ea7ss5" target="_blank">ComponentDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/2f89bcb4" target="_blank">EnableDesignMode</a></td><td>
+Enables design time functionality for a child control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/wkh0esak" target="_blank">EnableDragDrop</a></td><td>
+Enables or disables drag-and-drop support for the control being designed.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/bsc2ak47" target="_blank">Equals</a></td><td>
+Determines whether the specified object is equal to the current object.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/wad9h9z7" target="_blank">Finalize</a></td><td>
+Attempts to free resources by calling Dispose(false) before the object is reclaimed by garbage collection.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/72ea7ss5" target="_blank">ComponentDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ms161601" target="_blank">GetControlGlyph</a></td><td>
+Returns a <a href="http://msdn2.microsoft.com/en-us/library/ms161838" target="_blank">ControlBodyGlyph</a> representing the bounds of this control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/fats5es9" target="_blank">GetGlyphs</a></td><td>
+Gets a collection of <a href="http://msdn2.microsoft.com/en-us/library/w24tc7te" target="_blank">Glyph</a> objects representing the selection borders and grab handles for a standard control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/zdee4b3y" target="_blank">GetHashCode</a></td><td>
+Serves as the default hash function.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/hx291yz4" target="_blank">GetHitTest</a></td><td>
+Indicates whether a mouse click at the specified point should be handled by the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/txzwfxb4" target="_blank">GetService(Type)</a></td><td>
+Attempts to retrieve the specified type of service from the design mode site of the designer's component.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/72ea7ss5" target="_blank">ComponentDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="696be8c8-a3ba-6b26-84c5-884624494b84">GetService(TS)()</a></td><td /></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/dfwy45w9" target="_blank">GetType</a></td><td>
+Gets the <a href="http://msdn2.microsoft.com/en-us/library/42892f65" target="_blank">Type</a> of the current instance.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/hs1yd679" target="_blank">HookChildControls</a></td><td>
+Routes messages from the child controls of the specified control to the designer.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="5863a498-ef5b-68a1-3e7a-7c531bc9251e">Initialize</a></td><td> (Overrides <a href="http://msdn2.microsoft.com/en-us/library/xdfw6xas" target="_blank">ControlDesigner.Initialize(IComponent)</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/h89zdzwe" target="_blank">InitializeExistingComponent</a></td><td>
+Re-initializes an existing component.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/5th3f3fa" target="_blank">InitializeNewComponent</a></td><td>
+Initializes a newly created component.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/d3ysw4z3" target="_blank">InitializeNonDefault</a></td><td> **Obsolete. **
+Initializes the settings for an imported component that is already initialized to settings other than the defaults.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/72ea7ss5" target="_blank">ComponentDesigner</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ms161602" target="_blank">InternalControlDesigner</a></td><td>
+Returns the internal control designer with the specified index in the <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/z5y86zbx" target="_blank">InvokeGetInheritanceAttribute</a></td><td>
+Gets the <a href="http://msdn2.microsoft.com/en-us/library/2xwdxtes" target="_blank">InheritanceAttribute</a> of the specified <a href="http://msdn2.microsoft.com/en-us/library/72ea7ss5" target="_blank">ComponentDesigner</a>.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/72ea7ss5" target="_blank">ComponentDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/57ctke0a" target="_blank">MemberwiseClone</a></td><td>
+Creates a shallow copy of the current <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ms161603" target="_blank">NumberOfInternalControlDesigners</a></td><td>
+Returns the number of internal control designers in the <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="59bf52c0-55c8-5935-13b8-62e4b0333b8c">OnComponentChanged</a></td><td /></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/3zh2x659" target="_blank">OnContextMenu</a></td><td>
+Shows the context menu and provides an opportunity to perform additional processing when the context menu is about to be displayed.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/z9st65ys" target="_blank">OnCreateHandle</a></td><td>
+Provides an opportunity to perform additional processing immediately after the control handle has been created.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ms161604" target="_blank">OnDragComplete</a></td><td>
+Receives a call to clean up a drag-and-drop operation.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/x85zas18" target="_blank">OnDragDrop</a></td><td>
+Receives a call when a drag-and-drop object is dropped onto the control designer view.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/f0x9kfet" target="_blank">OnDragEnter</a></td><td>
+Receives a call when a drag-and-drop operation enters the control designer view.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/zt1ywwc3" target="_blank">OnDragLeave</a></td><td>
+Receives a call when a drag-and-drop operation leaves the control designer view.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/t8b4te91" target="_blank">OnDragOver</a></td><td>
+Receives a call when a drag-and-drop object is dragged over the control designer view.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/6fdb8tkd" target="_blank">OnGiveFeedback</a></td><td>
+Receives a call when a drag-and-drop operation is in progress to provide visual cues based on the location of the mouse while a drag operation is in progress.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/txk6bfch" target="_blank">OnMouseDragBegin</a></td><td>
+Receives a call in response to the left mouse button being pressed and held while over the component.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/cys771hf" target="_blank">OnMouseDragEnd</a></td><td>
+Receives a call at the end of a drag-and-drop operation to complete or cancel the operation.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/9c884xy9" target="_blank">OnMouseDragMove</a></td><td>
+Receives a call for each movement of the mouse during a drag-and-drop operation.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/4k6e1d8z" target="_blank">OnMouseEnter</a></td><td>
+Receives a call when the mouse first enters the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/w21at6kk" target="_blank">OnMouseHover</a></td><td>
+Receives a call after the mouse hovers over the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/1c8y04wa" target="_blank">OnMouseLeave</a></td><td>
+Receives a call when the mouse first enters the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/kzzey6ec" target="_blank">OnPaintAdornments</a></td><td>
+Receives a call when the control that the designer is managing has painted its surface so the designer can paint any additional adornments on top of the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="cc22e2f4-8e04-57cd-ef76-bda8fbb7084d">OnSelectionChanged</a></td><td /></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ms223744" target="_blank">OnSetComponentDefaults</a></td><td> **Obsolete. **
+Called when the designer is intialized.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/h4edx4ck" target="_blank">OnSetCursor</a></td><td>
+Receives a call each time the cursor needs to be set.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/z0d6et85" target="_blank">PostFilterAttributes</a></td><td>
+Allows a designer to change or remove items from the set of attributes that it exposes through a <a href="http://msdn2.microsoft.com/en-us/library/7z7xccyw" target="_blank">TypeDescriptor</a>.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/72ea7ss5" target="_blank">ComponentDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/c9668hd7" target="_blank">PostFilterEvents</a></td><td>
+Allows a designer to change or remove items from the set of events that it exposes through a <a href="http://msdn2.microsoft.com/en-us/library/7z7xccyw" target="_blank">TypeDescriptor</a>.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/72ea7ss5" target="_blank">ComponentDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/t5yksf5k" target="_blank">PostFilterProperties</a></td><td>
+Allows a designer to change or remove items from the set of properties that it exposes through a <a href="http://msdn2.microsoft.com/en-us/library/7z7xccyw" target="_blank">TypeDescriptor</a>.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/72ea7ss5" target="_blank">ComponentDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/72a9btsc" target="_blank">PreFilterAttributes</a></td><td>
+Allows a designer to add to the set of attributes that it exposes through a <a href="http://msdn2.microsoft.com/en-us/library/7z7xccyw" target="_blank">TypeDescriptor</a>.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/72ea7ss5" target="_blank">ComponentDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/dz79kfsd" target="_blank">PreFilterEvents</a></td><td>
+Allows a designer to add to the set of events that it exposes through a <a href="http://msdn2.microsoft.com/en-us/library/7z7xccyw" target="_blank">TypeDescriptor</a>.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/72ea7ss5" target="_blank">ComponentDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="0ab60d8c-f107-ff99-4731-b36019126968">PreFilterProperties</a></td><td> (Inherited from <a href="d547f969-a146-1ee2-1283-130d644d2ad7">AttributedControlDesigner(TControl)</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/72sy5h7z" target="_blank">RaiseComponentChanged</a></td><td>
+Notifies the <a href="http://msdn2.microsoft.com/en-us/library/22dytfsd" target="_blank">IComponentChangeService</a> that this component has been changed.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/72ea7ss5" target="_blank">ComponentDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/a1kfh2dh" target="_blank">RaiseComponentChanging</a></td><td>
+Notifies the <a href="http://msdn2.microsoft.com/en-us/library/22dytfsd" target="_blank">IComponentChangeService</a> that this component is about to be changed.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/72ea7ss5" target="_blank">ComponentDesigner</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/7bxwbwt2" target="_blank">ToString</a></td><td>
+Returns a string that represents the current object.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/d8hzw951" target="_blank">UnhookChildControls</a></td><td>
+Routes messages for the children of the specified control to each control rather than to a parent designer.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/3074cy2d" target="_blank">WndProc</a></td><td>
+Processes Windows messages and optionally routes them to the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/sycctd1z" target="_blank">ControlDesigner</a>.)</td></tr></table>&nbsp;
+<a href="#attributedcontroldesignerex(*tcontrol*)-methods">Back to Top</a>
+
+## Extension Methods
+&nbsp;<table><tr><th></th><th>Name</th><th>Description</th></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="a6eead8e-dc5f-aade-f5a8-c9de00c50d79">EditValue</a></td><td>
+Launches the design-time editor for the property of the component behind a designer.
+ (Defined by <a href="6211dc76-47ba-8406-4d11-89f3e1d12747">ComponentDesignerExtension</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="609b1449-9696-245e-03a2-e22beb84efe1">GetPropertyValue(T)</a></td><td>
+Gets a named property value from an object.
+ (Defined by <a href="00588eb4-ca31-ef7e-81da-3ce105aa9b63">ReflectionExtensions</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="cc997716-244b-d4f1-e26d-139cc82ce6b0">InvokeMethod(String, Object[])</a></td><td>Overloaded.  
+Invokes a named method on an object with parameters and no return value.
+ (Defined by <a href="00588eb4-ca31-ef7e-81da-3ce105aa9b63">ReflectionExtensions</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="35c20259-aa16-9a35-254f-8bf630272463">InvokeMethod(String, Type[], Object[])</a></td><td>Overloaded.  
+Invokes a named method on an object with parameters and no return value.
+ (Defined by <a href="00588eb4-ca31-ef7e-81da-3ce105aa9b63">ReflectionExtensions</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="39c67efc-5f5d-9e71-64bc-8e89b4589f75">InvokeMethod(T)(String, Object[])</a></td><td>Overloaded.  
+Invokes a named method on an object with parameters and no return value.
+ (Defined by <a href="00588eb4-ca31-ef7e-81da-3ce105aa9b63">ReflectionExtensions</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="4a4da18e-d1a2-3a1f-28b0-10fb9f9646e6">InvokeMethod(T)(String, Type[], Object[])</a></td><td>Overloaded.  
+Invokes a named method on an object with parameters and no return value.
+ (Defined by <a href="00588eb4-ca31-ef7e-81da-3ce105aa9b63">ReflectionExtensions</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="b41d295c-d6ad-ac6f-9369-f85d945b13e5">SetComponentProperty(T)</a></td><td>
+Sets a property on the component behind a designer.
+ (Defined by <a href="6211dc76-47ba-8406-4d11-89f3e1d12747">ComponentDesignerExtension</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="171dca5c-983d-2045-2d14-97b588798505">ShowDialog</a></td><td>
+Shows a form tied to a designer.
+ (Defined by <a href="6211dc76-47ba-8406-4d11-89f3e1d12747">ComponentDesignerExtension</a>.)</td></tr></table>&nbsp;
+<a href="#attributedcontroldesignerex(*tcontrol*)-methods">Back to Top</a>
+
+## See Also
+
+
+#### Reference
+<a href="ca5131da-0178-5def-558b-54e14b990818">AttributedControlDesignerEx(TControl) Class</a><br /><a href="47183544-7c44-c1e2-cf57-c68e49a55933">Vanara.Windows.Forms.Design Namespace</a><br />

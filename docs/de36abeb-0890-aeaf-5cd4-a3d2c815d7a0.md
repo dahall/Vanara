@@ -1,0 +1,473 @@
+# TrackBarEx Methods
+ 
+
+The <a href="13f0013e-1c7e-6cb9-8787-d9ab3a2640ed">TrackBarEx</a> type exposes the following members.
+
+
+## Methods
+&nbsp;<table><tr><th></th><th>Name</th><th>Description</th></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/yett96bx" target="_blank">AccessibilityNotifyClients(AccessibleEvents, Int32)</a></td><td>
+Notifies the accessibility client applications of the specified <a href="http://msdn2.microsoft.com/en-us/library/wekbxc1d" target="_blank">AccessibleEvents</a> for the specified child control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/7skkyz2e" target="_blank">AccessibilityNotifyClients(AccessibleEvents, Int32, Int32)</a></td><td>
+Notifies the accessibility client applications of the specified <a href="http://msdn2.microsoft.com/en-us/library/wekbxc1d" target="_blank">AccessibleEvents</a> for the specified child control .
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="de5f8a3a-3b02-ef64-c6d6-f322f61cb779">AdjustSize</a></td><td>
+Adjusts the size of the control.</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/2t0e6hx1" target="_blank">BeginInit</a></td><td>
+Begins the initialization of a <a href="http://msdn2.microsoft.com/en-us/library/4hat5zsd" target="_blank">TrackBar</a> that is used on a form or used by another component. The initialization occurs at run time.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/4hat5zsd" target="_blank">TrackBar</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/0b1bf3y3" target="_blank">BeginInvoke(Delegate)</a></td><td>
+Executes the specified delegate asynchronously on the thread that the control's underlying handle was created on.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/a06c0dc2" target="_blank">BeginInvoke(Delegate, Object[])</a></td><td>
+Executes the specified delegate asynchronously with the specified arguments, on the thread that the control's underlying handle was created on.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/hf2x4s9k" target="_blank">BringToFront</a></td><td>
+Brings the control to the front of the z-order.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/5hz17ea8" target="_blank">Contains</a></td><td>
+Retrieves a value indicating whether the specified control is a child of the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/84k3t8e4" target="_blank">CreateAccessibilityInstance</a></td><td>
+Creates a new accessibility object for the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/16sehyhs" target="_blank">CreateControl</a></td><td>
+Forces the creation of the visible control, including the creation of the handle and any visible child controls.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/15a39wy1" target="_blank">CreateControlsInstance</a></td><td>
+Creates a new instance of the control collection for the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/xz0d56wk" target="_blank">CreateGraphics</a></td><td>
+Creates the <a href="http://msdn2.microsoft.com/en-us/library/ac148eb3" target="_blank">Graphics</a> for the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/dsk0k95x" target="_blank">CreateHandle</a></td><td>
+Overrides the <a href="http://msdn2.microsoft.com/en-us/library/wc21zbdw" target="_blank">CreateHandle()</a> method.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/4hat5zsd" target="_blank">TrackBar</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/2ch65xad" target="_blank">CreateObjRef</a></td><td>
+Creates an object that contains all the relevant information required to generate a proxy used to communicate with a remote object.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/w4302s1f" target="_blank">MarshalByRefObject</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ck1wz73b" target="_blank">DefWndProc</a></td><td>
+Sends the specified message to the default window procedure.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/zxt48k83" target="_blank">DestroyHandle</a></td><td>
+Destroys the handle associated with the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/3cc9y48w" target="_blank">Dispose()</a></td><td>
+Releases all resources used by the <a href="http://msdn2.microsoft.com/en-us/library/9wbadbce" target="_blank">Component</a>.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/9wbadbce" target="_blank">Component</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/a4zkb31d" target="_blank">Dispose(Boolean)</a></td><td>
+Releases the unmanaged resources used by the <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a> and its child controls and optionally releases the managed resources.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/9zeew0h4" target="_blank">DoDragDrop</a></td><td>
+Begins a drag-and-drop operation.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ms158401" target="_blank">DrawToBitmap</a></td><td>
+Supports rendering to the specified bitmap.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/73a96saf" target="_blank">EndInit</a></td><td>
+Ends the initialization of a <a href="http://msdn2.microsoft.com/en-us/library/4hat5zsd" target="_blank">TrackBar</a> that is used on a form or used by another component. The initialization occurs at run time.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/4hat5zsd" target="_blank">TrackBar</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/zbdewc0s" target="_blank">EndInvoke</a></td><td>
+Retrieves the return value of the asynchronous operation represented by the <a href="http://msdn2.microsoft.com/en-us/library/ft8a6455" target="_blank">IAsyncResult</a> passed.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/bsc2ak47" target="_blank">Equals</a></td><td>
+Determines whether the specified object is equal to the current object.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/az5741fh" target="_blank">Finalize</a></td><td>
+Releases unmanaged resources and performs other cleanup operations before the <a href="http://msdn2.microsoft.com/en-us/library/9wbadbce" target="_blank">Component</a> is reclaimed by garbage collection.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/9wbadbce" target="_blank">Component</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/y9kwh2ew" target="_blank">FindForm</a></td><td>
+Retrieves the form that the control is on.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/he2b9bba" target="_blank">Focus</a></td><td>
+Sets input focus to the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/a81kk2fc" target="_blank">GetAccessibilityObjectById</a></td><td>
+Retrieves the specified <a href="http://msdn2.microsoft.com/en-us/library/7826d8fd" target="_blank">AccessibleObject</a>.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ms158402" target="_blank">GetAutoSizeMode</a></td><td>
+Retrieves a value indicating how a control will behave when its <a href="http://msdn2.microsoft.com/en-us/library/89hd14zb" target="_blank">AutoSize</a> property is enabled.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/a6zktd23" target="_blank">GetChildAtPoint(Point)</a></td><td>
+Retrieves the child control that is located at the specified coordinates.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ms158404" target="_blank">GetChildAtPoint(Point, GetChildAtPointSkip)</a></td><td>
+Retrieves the child control that is located at the specified coordinates, specifying whether to ignore child controls of a certain type.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/9xtf9w5f" target="_blank">GetContainerControl</a></td><td>
+Returns the next <a href="http://msdn2.microsoft.com/en-us/library/e7d2a552" target="_blank">ContainerControl</a> up the control's chain of parent controls.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/zdee4b3y" target="_blank">GetHashCode</a></td><td>
+Serves as the default hash function.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/c6y7316f" target="_blank">GetLifetimeService</a></td><td>
+Retrieves the current lifetime service object that controls the lifetime policy for this instance.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/w4302s1f" target="_blank">MarshalByRefObject</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/9k5e7h8k" target="_blank">GetNextControl</a></td><td>
+Retrieves the next control forward or back in the tab order of child controls.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/e2wsbw8a" target="_blank">GetPreferredSize</a></td><td>
+Retrieves the size of a rectangular area into which a control can be fitted.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ms158406" target="_blank">GetScaledBounds</a></td><td>
+Retrieves the bounds within which the control is scaled.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/6szz9afc" target="_blank">GetService</a></td><td>
+Returns an object that represents a service provided by the <a href="http://msdn2.microsoft.com/en-us/library/9wbadbce" target="_blank">Component</a> or by its <a href="http://msdn2.microsoft.com/en-us/library/bxa2xz9d" target="_blank">Container</a>.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/9wbadbce" target="_blank">Component</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/at6a4kt9" target="_blank">GetStyle</a></td><td>
+Retrieves the value of the specified control style bit for the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/x67k1514" target="_blank">GetTopLevel</a></td><td>
+Determines if the control is a top-level control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/dfwy45w9" target="_blank">GetType</a></td><td>
+Gets the <a href="http://msdn2.microsoft.com/en-us/library/42892f65" target="_blank">Type</a> of the current instance.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/6dyxsx4d" target="_blank">Hide</a></td><td>
+Conceals the control from the user.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/zwt5tzck" target="_blank">InitializeLifetimeService</a></td><td>
+Obtains a lifetime service object to control the lifetime policy for this instance.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/w4302s1f" target="_blank">MarshalByRefObject</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/8s59a2zb" target="_blank">InitLayout</a></td><td>
+Called after the control has been added to another container.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/598t492a" target="_blank">Invalidate()</a></td><td>
+Invalidates the entire surface of the control and causes the control to be redrawn.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/wtzka3b5" target="_blank">Invalidate(Region)</a></td><td>
+Invalidates the specified region of the control (adds it to the control's update region, which is the area that will be repainted at the next paint operation), and causes a paint message to be sent to the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/xz8ytzt0" target="_blank">Invalidate(Boolean)</a></td><td>
+Invalidates a specific region of the control and causes a paint message to be sent to the control. Optionally, invalidates the child controls assigned to the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/8dtk06x2" target="_blank">Invalidate(Rectangle)</a></td><td>
+Invalidates the specified region of the control (adds it to the control's update region, which is the area that will be repainted at the next paint operation), and causes a paint message to be sent to the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/w6w9csht" target="_blank">Invalidate(Region, Boolean)</a></td><td>
+Invalidates the specified region of the control (adds it to the control's update region, which is the area that will be repainted at the next paint operation), and causes a paint message to be sent to the control. Optionally, invalidates the child controls assigned to the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/8bk29t0f" target="_blank">Invalidate(Rectangle, Boolean)</a></td><td>
+Invalidates the specified region of the control (adds it to the control's update region, which is the area that will be repainted at the next paint operation), and causes a paint message to be sent to the control. Optionally, invalidates the child controls assigned to the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/zyzhdc6b" target="_blank">Invoke(Delegate)</a></td><td>
+Executes the specified delegate on the thread that owns the control's underlying window handle.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/a1hetckb" target="_blank">Invoke(Delegate, Object[])</a></td><td>
+Executes the specified delegate, on the thread that owns the control's underlying window handle, with the specified list of arguments.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/5508fhfs" target="_blank">InvokeGotFocus</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/t31a9w7d" target="_blank">GotFocus</a> event for the specified control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/9562kz14" target="_blank">InvokeLostFocus</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/98wbb910" target="_blank">LostFocus</a> event for the specified control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/c8fk3y2a" target="_blank">InvokeOnClick</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/hkz3c8hc" target="_blank">Click</a> event for the specified control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/2dw1ebzw" target="_blank">InvokePaint</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/02745s21" target="_blank">Paint</a> event for the specified control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/bssf4x62" target="_blank">InvokePaintBackground</a></td><td>
+Raises the PaintBackground event for the specified control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/6skc49ce" target="_blank">IsInputChar</a></td><td>
+Determines if a character is an input character that the control recognizes.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/cz6e3k50" target="_blank">IsInputKey</a></td><td>
+Handles special input keys, such as PAGE UP, PAGE DOWN, HOME, and END.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/4hat5zsd" target="_blank">TrackBar</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/57ctke0a" target="_blank">MemberwiseClone()</a></td><td>
+Creates a shallow copy of the current <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/e5kfa45b" target="_blank">Object</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ms131262" target="_blank">MemberwiseClone(Boolean)</a></td><td>
+Creates a shallow copy of the current <a href="http://msdn2.microsoft.com/en-us/library/w4302s1f" target="_blank">MarshalByRefObject</a> object.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/w4302s1f" target="_blank">MarshalByRefObject</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ssfa656k" target="_blank">NotifyInvalidate</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/z4yzf1s6" target="_blank">Invalidated</a> event with a specified region of the control to invalidate.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="97b57b90-f9d4-8e6a-0636-a3273642df5e">OnAutoSizeChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/w9w4zkdc" target="_blank">AutoSizeChanged</a> event.
+ (Overrides <a href="http://msdn2.microsoft.com/en-us/library/hs45btbf" target="_blank">Control.OnAutoSizeChanged(EventArgs)</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/a08szes7" target="_blank">OnBackColorChanged</a></td><td>
+This method is called by the control when any property changes. Inheriting controls can override this method to get property change notification on basic properties. Inheriting controls must call base.propertyChanged.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/4hat5zsd" target="_blank">TrackBar</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/c7df14s6" target="_blank">OnBackgroundImageChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/hz31y3c2" target="_blank">BackgroundImageChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/t71bw3xb" target="_blank">OnBackgroundImageLayoutChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/34bs504a" target="_blank">BackgroundImageLayoutChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/92cfz3e7" target="_blank">OnBindingContextChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/kx0sbdb3" target="_blank">BindingContextChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/5kcszs0x" target="_blank">OnCausesValidationChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/08h15s1s" target="_blank">CausesValidationChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/2zac6y6c" target="_blank">OnChangeUICues</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/dts6akd5" target="_blank">ChangeUICues</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/0wdb8ta9" target="_blank">OnClick</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/hkz3c8hc" target="_blank">Click</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ms223971" target="_blank">OnClientSizeChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/ms223712" target="_blank">ClientSizeChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/aaetkkb9" target="_blank">OnContextMenuChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/8921z4e9" target="_blank">ContextMenuChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/w6k2zk23" target="_blank">OnContextMenuStripChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/7a1xca6y" target="_blank">ContextMenuStripChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/kdx4e984" target="_blank">OnControlAdded</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/c9yzthkk" target="_blank">ControlAdded</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/t9e0dzwe" target="_blank">OnControlRemoved</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/6b0d3fzs" target="_blank">ControlRemoved</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/b9eb371b" target="_blank">OnCreateControl</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/16sehyhs" target="_blank">CreateControl()</a> method.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/87d9whsw" target="_blank">OnCursorChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/bh6cw60d" target="_blank">CursorChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/97746bzs" target="_blank">OnDockChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/tk5zdxbx" target="_blank">DockChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/h0das6hz" target="_blank">OnDoubleClick</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/f6fwzesc" target="_blank">DoubleClick</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/aa6y32s2" target="_blank">OnDragDrop</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/yca236x4" target="_blank">DragDrop</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/a6cyw5ah" target="_blank">OnDragEnter</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/dh27e0we" target="_blank">DragEnter</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/0ydaecw3" target="_blank">OnDragLeave</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/t8sk2yhy" target="_blank">DragLeave</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/z631ez0a" target="_blank">OnDragOver</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/yzhz0h1a" target="_blank">DragOver</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="51cb9a92-0557-6423-c549-142bd125ea77">OnDrawChannel</a></td><td>
+Raises the [E:DrawChannel] event.</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="7e8564b4-4f19-0491-513c-d1a3f6cff881">OnDrawThumb</a></td><td>
+Raises the [E:DrawThumb] event.</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="4b782134-6b98-a401-0614-d4dacdbb623f">OnDrawTics</a></td><td>
+Raises the [E:DrawTics] event.</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ewk271z4" target="_blank">OnEnabledChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/6kcyz2yw" target="_blank">EnabledChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/t58s5yd9" target="_blank">OnEnter</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/ash3dt4f" target="_blank">Enter</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/bc60y5df" target="_blank">OnFontChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/ww7637ch" target="_blank">FontChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/6801k2tx" target="_blank">OnForeColorChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/e2s6y1w5" target="_blank">ForeColorChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/h083k10f" target="_blank">OnGiveFeedback</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/e5wsf6x7" target="_blank">GiveFeedback</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/1xyf6df2" target="_blank">OnGotFocus</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/t31a9w7d" target="_blank">GotFocus</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="2d345ef9-5441-ff9c-04f3-e3833f872fd6">OnHandleCreated</a></td><td>
+Use the <a href="http://msdn2.microsoft.com/en-us/library/2ad2bktx" target="_blank">OnHandleCreated(EventArgs)</a> method.
+ (Overrides <a href="http://msdn2.microsoft.com/en-us/library/fkaat7hy" target="_blank">TrackBar.OnHandleCreated(EventArgs)</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/9364h8hb" target="_blank">OnHandleDestroyed</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/06aszex9" target="_blank">HandleDestroyed</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/7a8x1h8e" target="_blank">OnHelpRequested</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/kt1tcb13" target="_blank">HelpRequested</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/11x0dy56" target="_blank">OnImeModeChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/9y84kde5" target="_blank">ImeModeChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/hzk2cytx" target="_blank">OnInvalidated</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/z4yzf1s6" target="_blank">Invalidated</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/t1e687z2" target="_blank">OnKeyDown</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/wxasd33h" target="_blank">KeyDown</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/5053hkky" target="_blank">OnKeyPress</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/07t9694z" target="_blank">KeyPress</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/1tk9a311" target="_blank">OnKeyUp</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/ey143f2h" target="_blank">KeyUp</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/y4sh8s03" target="_blank">OnLayout</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/c7tzb479" target="_blank">Layout</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ab71fz9k" target="_blank">OnLeave</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/5weh0kcx" target="_blank">Leave</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/5k0zycw4" target="_blank">OnLocationChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/e0xc63zd" target="_blank">LocationChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ec1sa3ze" target="_blank">OnLostFocus</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/98wbb910" target="_blank">LostFocus</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/e1ts8bdh" target="_blank">OnMarginChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/dt6c08ba" target="_blank">MarginChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/fc4w6cx0" target="_blank">OnMouseCaptureChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/adt3t40x" target="_blank">MouseCaptureChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/bkt6asw4" target="_blank">OnMouseClick</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/x7abey48" target="_blank">MouseClick</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/44099f99" target="_blank">OnMouseDoubleClick</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/k5htkkkk" target="_blank">MouseDoubleClick</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/hkys7y6e" target="_blank">OnMouseDown</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/wa1c9hdd" target="_blank">MouseDown</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/h8dfc31a" target="_blank">OnMouseEnter</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/y9x9ska3" target="_blank">MouseEnter</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/55cy7750" target="_blank">OnMouseHover</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/9c2dcd5w" target="_blank">MouseHover</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/3h80ceky" target="_blank">OnMouseLeave</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/4xe8zhc9" target="_blank">MouseLeave</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/tfff4dad" target="_blank">OnMouseMove</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/4s8wcb7h" target="_blank">MouseMove</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ycs63a2s" target="_blank">OnMouseUp</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/11hh0yha" target="_blank">MouseUp</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="f0f74db5-70b6-ac91-0f21-27531fb1ec0e">OnMouseWheel</a></td><td> (Overrides <a href="http://msdn2.microsoft.com/en-us/library/w5356z9x" target="_blank">TrackBar.OnMouseWheel(MouseEventArgs)</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/40f35c3w" target="_blank">OnMove</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/se7294f8" target="_blank">Move</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/5at682w3" target="_blank">OnNotifyMessage</a></td><td>
+Notifies the control of Windows messages.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/905ea3c6" target="_blank">OnPaddingChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/kbee3kfh" target="_blank">PaddingChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/21z9fct2" target="_blank">OnPaint</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/02745s21" target="_blank">Paint</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/7s5thy3t" target="_blank">OnPaintBackground</a></td><td>
+Paints the background of the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/xd082sz8" target="_blank">OnParentBackColorChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/8hxkw97w" target="_blank">BackColorChanged</a> event when the <a href="http://msdn2.microsoft.com/en-us/library/tstx4c33" target="_blank">BackColor</a> property value of the control's container changes.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ay2sy19s" target="_blank">OnParentBackgroundImageChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/hz31y3c2" target="_blank">BackgroundImageChanged</a> event when the <a href="http://msdn2.microsoft.com/en-us/library/4thk01w9" target="_blank">BackgroundImage</a> property value of the control's container changes.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/t519e702" target="_blank">OnParentBindingContextChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/kx0sbdb3" target="_blank">BindingContextChanged</a> event when the <a href="http://msdn2.microsoft.com/en-us/library/skfe2974" target="_blank">BindingContext</a> property value of the control's container changes.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/bb0b1wzw" target="_blank">OnParentChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/xx552860" target="_blank">ParentChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/t58z37cw" target="_blank">OnParentCursorChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/bh6cw60d" target="_blank">CursorChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/2esth0z4" target="_blank">OnParentEnabledChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/6kcyz2yw" target="_blank">EnabledChanged</a> event when the <a href="http://msdn2.microsoft.com/en-us/library/k2wzhedy" target="_blank">Enabled</a> property value of the control's container changes.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/f8wxwada" target="_blank">OnParentFontChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/ww7637ch" target="_blank">FontChanged</a> event when the <a href="http://msdn2.microsoft.com/en-us/library/z0hb3sb6" target="_blank">Font</a> property value of the control's container changes.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/5zdbyx6y" target="_blank">OnParentForeColorChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/e2s6y1w5" target="_blank">ForeColorChanged</a> event when the <a href="http://msdn2.microsoft.com/en-us/library/3zdk614s" target="_blank">ForeColor</a> property value of the control's container changes.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/wbb0t5b0" target="_blank">OnParentRightToLeftChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/sx45xybc" target="_blank">RightToLeftChanged</a> event when the <a href="http://msdn2.microsoft.com/en-us/library/w9e5s1ba" target="_blank">RightToLeft</a> property value of the control's container changes.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/6272ecaf" target="_blank">OnParentVisibleChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/fz09hcw9" target="_blank">VisibleChanged</a> event when the <a href="http://msdn2.microsoft.com/en-us/library/3k8kd8ah" target="_blank">Visible</a> property value of the control's container changes.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ms223978" target="_blank">OnPreviewKeyDown</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/ms223717" target="_blank">PreviewKeyDown</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ms158409" target="_blank">OnPrint</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/02745s21" target="_blank">Paint</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/wy27axed" target="_blank">OnQueryContinueDrag</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/2d3k5fhc" target="_blank">QueryContinueDrag</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/s6xe3c60" target="_blank">OnRegionChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/z5ssfhh9" target="_blank">RegionChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ha804atx" target="_blank">OnResize</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/3y85ytf2" target="_blank">Resize</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/30a8fzw2" target="_blank">OnRightToLeftChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/sx45xybc" target="_blank">RightToLeftChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ms161247" target="_blank">OnRightToLeftLayoutChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/ms161252" target="_blank">RightToLeftLayoutChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/4hat5zsd" target="_blank">TrackBar</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/khcy36wz" target="_blank">OnScroll</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/hc020433" target="_blank">Scroll</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/4hat5zsd" target="_blank">TrackBar</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/d028h382" target="_blank">OnSizeChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/3cwtaczx" target="_blank">SizeChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/x59ss568" target="_blank">OnStyleChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/225dksd9" target="_blank">StyleChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/23afby99" target="_blank">OnSystemColorsChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/ba9007ss" target="_blank">SystemColorsChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/4hat5zsd" target="_blank">TrackBar</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/5fxbzsxh" target="_blank">OnTabIndexChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/81fe5tx3" target="_blank">TabIndexChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/wtxe33y1" target="_blank">OnTabStopChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/df6kbt1f" target="_blank">TabStopChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/h6w7d2sh" target="_blank">OnTextChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/7zhdyh4z" target="_blank">TextChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/81yz4382" target="_blank">OnValidated</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/1x7dyebt" target="_blank">Validated</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/8zhdkfes" target="_blank">OnValidating</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/35htw7by" target="_blank">Validating</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="fbf8b306-9465-dc6c-00bf-c9e61b0594fa">OnValueChanged</a></td><td> (Overrides <a href="http://msdn2.microsoft.com/en-us/library/za65hw42" target="_blank">TrackBar.OnValueChanged(EventArgs)</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/fc9696e4" target="_blank">OnVisibleChanged</a></td><td>
+Raises the <a href="http://msdn2.microsoft.com/en-us/library/fz09hcw9" target="_blank">VisibleChanged</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/z8aw0sd8" target="_blank">PerformLayout()</a></td><td>
+Forces the control to apply layout logic to all its child controls.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/xt7y95c1" target="_blank">PerformLayout(Control, String)</a></td><td>
+Forces the control to apply layout logic to all its child controls.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/cetf1a6e" target="_blank">PointToClient</a></td><td>
+Computes the location of the specified screen point into client coordinates.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/wtc791h6" target="_blank">PointToScreen</a></td><td>
+Computes the location of the specified client point into screen coordinates.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ms223977" target="_blank">PreProcessControlMessage</a></td><td>
+Preprocesses keyboard or input messages within the message loop before they are dispatched.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/x4sfs1b8" target="_blank">PreProcessMessage</a></td><td>
+Preprocesses keyboard or input messages within the message loop before they are dispatched.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/zask62fx" target="_blank">ProcessCmdKey</a></td><td>
+Processes a command key.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ae024d7f" target="_blank">ProcessDialogChar</a></td><td>
+Processes a dialog character.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ss6d73ec" target="_blank">ProcessDialogKey</a></td><td>
+Processes a dialog key.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/dsh5cz3h" target="_blank">ProcessKeyEventArgs</a></td><td>
+Processes a key message and generates the appropriate control events.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/8hbhb2d1" target="_blank">ProcessKeyMessage</a></td><td>
+Processes a keyboard message.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/59938zhc" target="_blank">ProcessKeyPreview</a></td><td>
+Previews a keyboard message.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ahsahyk7" target="_blank">ProcessMnemonic</a></td><td>
+Processes a mnemonic character.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/6kcct8b5" target="_blank">RaiseDragEvent</a></td><td>
+Raises the appropriate drag event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/8kx1cy65" target="_blank">RaiseKeyEvent</a></td><td>
+Raises the appropriate key event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/9ky60x95" target="_blank">RaiseMouseEvent</a></td><td>
+Raises the appropriate mouse event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ak5x1hca" target="_blank">RaisePaintEvent</a></td><td>
+Raises the appropriate paint event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/b08dhz0k" target="_blank">RecreateHandle</a></td><td>
+Forces the re-creation of the handle for the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/87ddhycf" target="_blank">RectangleToClient</a></td><td>
+Computes the size and location of the specified screen rectangle in client coordinates.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/e2cabazk" target="_blank">RectangleToScreen</a></td><td>
+Computes the size and location of the specified client rectangle in screen coordinates.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/2yzc1css" target="_blank">Refresh</a></td><td>
+Forces the control to invalidate its client area and immediately redraw itself and any child controls.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/hf14wb5d" target="_blank">ResetBackColor</a></td><td>
+Resets the <a href="http://msdn2.microsoft.com/en-us/library/tstx4c33" target="_blank">BackColor</a> property to its default value.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/7xfda493" target="_blank">ResetBindings</a></td><td>
+Causes a control bound to the <a href="http://msdn2.microsoft.com/en-us/library/ms158145" target="_blank">BindingSource</a> to reread all the items in the list and refresh their displayed values.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/60ye6c84" target="_blank">ResetCursor</a></td><td>
+Resets the <a href="http://msdn2.microsoft.com/en-us/library/5sbeszwf" target="_blank">Cursor</a> property to its default value.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/h239e0k9" target="_blank">ResetFont</a></td><td>
+Resets the <a href="http://msdn2.microsoft.com/en-us/library/z0hb3sb6" target="_blank">Font</a> property to its default value.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/00ds1847" target="_blank">ResetForeColor</a></td><td>
+Resets the <a href="http://msdn2.microsoft.com/en-us/library/3zdk614s" target="_blank">ForeColor</a> property to its default value.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/a17ekt3b" target="_blank">ResetImeMode</a></td><td>
+Resets the <a href="http://msdn2.microsoft.com/en-us/library/d77c2643" target="_blank">ImeMode</a> property to its default value.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/92hb117z" target="_blank">ResetMouseEventArgs</a></td><td>
+Resets the control to handle the <a href="http://msdn2.microsoft.com/en-us/library/4xe8zhc9" target="_blank">MouseLeave</a> event.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/wfxbx401" target="_blank">ResetRightToLeft</a></td><td>
+Resets the <a href="http://msdn2.microsoft.com/en-us/library/w9e5s1ba" target="_blank">RightToLeft</a> property to its default value.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/a1bf8be2" target="_blank">ResetText</a></td><td>
+Resets the <a href="http://msdn2.microsoft.com/en-us/library/1x029774" target="_blank">Text</a> property to its default value.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/y53zat12" target="_blank">ResumeLayout()</a></td><td>
+Resumes usual layout logic.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/w8k76wfs" target="_blank">ResumeLayout(Boolean)</a></td><td>
+Resumes usual layout logic, optionally forcing an immediate layout of pending layout requests.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/1fe717f0" target="_blank">RtlTranslateAlignment(HorizontalAlignment)</a></td><td>
+Converts the specified <a href="http://msdn2.microsoft.com/en-us/library/w4d1hwsw" target="_blank">HorizontalAlignment</a> to the appropriate <a href="http://msdn2.microsoft.com/en-us/library/w4d1hwsw" target="_blank">HorizontalAlignment</a> to support right-to-left text.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/bw337a96" target="_blank">RtlTranslateAlignment(LeftRightAlignment)</a></td><td>
+Converts the specified <a href="http://msdn2.microsoft.com/en-us/library/sbs2d757" target="_blank">LeftRightAlignment</a> to the appropriate <a href="http://msdn2.microsoft.com/en-us/library/sbs2d757" target="_blank">LeftRightAlignment</a> to support right-to-left text.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/y2f831he" target="_blank">RtlTranslateAlignment(ContentAlignment)</a></td><td>
+Converts the specified <a href="http://msdn2.microsoft.com/en-us/library/7ded0ec2" target="_blank">ContentAlignment</a> to the appropriate <a href="http://msdn2.microsoft.com/en-us/library/7ded0ec2" target="_blank">ContentAlignment</a> to support right-to-left text.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/k2wzf14d" target="_blank">RtlTranslateContent</a></td><td>
+Converts the specified <a href="http://msdn2.microsoft.com/en-us/library/7ded0ec2" target="_blank">ContentAlignment</a> to the appropriate <a href="http://msdn2.microsoft.com/en-us/library/7ded0ec2" target="_blank">ContentAlignment</a> to support right-to-left text.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/xc6ss080" target="_blank">RtlTranslateHorizontal</a></td><td>
+Converts the specified <a href="http://msdn2.microsoft.com/en-us/library/w4d1hwsw" target="_blank">HorizontalAlignment</a> to the appropriate <a href="http://msdn2.microsoft.com/en-us/library/w4d1hwsw" target="_blank">HorizontalAlignment</a> to support right-to-left text.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/chza5c0w" target="_blank">RtlTranslateLeftRight</a></td><td>
+Converts the specified <a href="http://msdn2.microsoft.com/en-us/library/sbs2d757" target="_blank">LeftRightAlignment</a> to the appropriate <a href="http://msdn2.microsoft.com/en-us/library/sbs2d757" target="_blank">LeftRightAlignment</a> to support right-to-left text.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/7448e653" target="_blank">Scale(Single)</a></td><td> **Obsolete. **
+Scales the control and any child controls.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ms158413" target="_blank">Scale(SizeF)</a></td><td>
+Scales the control and all child controls by the specified scaling factor.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/b4yxa0xc" target="_blank">Scale(Single, Single)</a></td><td> **Obsolete. **
+Scales the entire control and any child controls.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ms158415" target="_blank">ScaleControl</a></td><td>
+Scales a control's location, size, padding and margin.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/eekafswa" target="_blank">ScaleCore</a></td><td>
+This method is not relevant for this class.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/7wt11hea" target="_blank">Select()</a></td><td>
+Activates the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/hb97bya5" target="_blank">Select(Boolean, Boolean)</a></td><td>
+Activates a child control. Optionally specifies the direction in the tab order to select the control from.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/yak83csz" target="_blank">SelectNextControl</a></td><td>
+Activates the next control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="fdf718ed-534f-6bbf-a16b-f6eb606940cc">SendMsg</a></td><td>
+Sends the supplied message and parameters to the underlying TRACKBAR system control.</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/sbtaa5k4" target="_blank">SendToBack</a></td><td>
+Sends the control to the back of the z-order.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ms158417" target="_blank">SetAutoSizeMode</a></td><td>
+Sets a value indicating how a control will behave when its <a href="http://msdn2.microsoft.com/en-us/library/89hd14zb" target="_blank">AutoSize</a> property is enabled.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/z0tayb1b" target="_blank">SetBounds(Int32, Int32, Int32, Int32)</a></td><td>
+Sets the bounds of the control to the specified location and size.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/ad5ah3k5" target="_blank">SetBounds(Int32, Int32, Int32, Int32, BoundsSpecified)</a></td><td>
+Sets the specified bounds of the control to the specified location and size.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="e7dbc158-aba0-2581-04d4-44fffb7d1800">SetBoundsCore</a></td><td>
+Overrides Control.setBoundsCore to enforce autoSize.
+ (Overrides <a href="http://msdn2.microsoft.com/en-us/library/7b21c57t" target="_blank">TrackBar.SetBoundsCore(Int32, Int32, Int32, Int32, BoundsSpecified)</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/fas6wt36" target="_blank">SetClientSizeCore</a></td><td>
+Sets the size of the client area of the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/9fhetsdc" target="_blank">SetRange</a></td><td>
+Sets the minimum and maximum values for a <a href="http://msdn2.microsoft.com/en-us/library/4hat5zsd" target="_blank">TrackBar</a>.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/4hat5zsd" target="_blank">TrackBar</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="9056c6ce-5953-c99e-a1be-3b2bc96b2f3b">SetSelectionRange</a></td><td>
+Sets the starting and ending positions for the available selection range in a trackbar.</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/c89st9fk" target="_blank">SetStyle</a></td><td>
+Sets a specified <a href="http://msdn2.microsoft.com/en-us/library/fkf25009" target="_blank">ControlStyles</a> flag to either true or false.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/87hbcsff" target="_blank">SetTopLevel</a></td><td>
+Sets the control as the top-level control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/7twb9awe" target="_blank">SetVisibleCore</a></td><td>
+Sets the control to the specified visible state.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/zbxhh16h" target="_blank">Show</a></td><td>
+Displays the control to the user.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/51zk2t9d" target="_blank">SizeFromClientSize</a></td><td>
+Determines the size of the entire control from the height and width of its client area.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/w6h3z5yx" target="_blank">SuspendLayout</a></td><td>
+Temporarily suspends the layout logic for the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/h1cs20hy" target="_blank">ToString</a></td><td>
+Returns a string that represents the <a href="http://msdn2.microsoft.com/en-us/library/4hat5zsd" target="_blank">TrackBar</a> control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/4hat5zsd" target="_blank">TrackBar</a>.)</td></tr><tr><td>![Public method](media/pubmethod.gif "Public method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/9dc1yh37" target="_blank">Update</a></td><td>
+Causes the control to redraw the invalidated regions within its client area.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/zxe4zss7" target="_blank">UpdateBounds()</a></td><td>
+Updates the bounds of the control with the current size and location.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/t83c26f8" target="_blank">UpdateBounds(Int32, Int32, Int32, Int32)</a></td><td>
+Updates the bounds of the control with the specified size and location.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/37zzd7tc" target="_blank">UpdateBounds(Int32, Int32, Int32, Int32, Int32, Int32)</a></td><td>
+Updates the bounds of the control with the specified size, location, and client size.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/5y9edd85" target="_blank">UpdateStyles</a></td><td>
+Forces the assigned styles to be reapplied to the control.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="http://msdn2.microsoft.com/en-us/library/8th31bdb" target="_blank">UpdateZOrder</a></td><td>
+Updates the control in its parent's z-order.
+ (Inherited from <a href="http://msdn2.microsoft.com/en-us/library/36cd312w" target="_blank">Control</a>.)</td></tr><tr><td>![Protected method](media/protmethod.gif "Protected method")</td><td><a href="0719b84e-6e4e-18d3-a01c-ceb22bb5b904">WndProc</a></td><td>
+Overrides the <a href="http://msdn2.microsoft.com/en-us/library/0x0kesc8" target="_blank">WndProc(Message)</a> method.
+ (Overrides <a href="http://msdn2.microsoft.com/en-us/library/tye98y5a" target="_blank">TrackBar.WndProc(Message)</a>.)</td></tr></table>&nbsp;
+<a href="#trackbarex-methods">Back to Top</a>
+
+## Extension Methods
+&nbsp;<table><tr><th></th><th>Name</th><th>Description</th></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="84d6209c-8fa9-8f55-2e94-2dad42d91043">BuildTextFormatFlags</a></td><td>
+Builds the <a href="http://msdn2.microsoft.com/en-us/library/63ykz3w5" target="_blank">TextFormatFlags</a> based on this control's values.
+ (Defined by <a href="ccd6a3d6-cafd-3c05-1f87-8ef6e3a4b593">ControlExtension</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="ecb6fdcf-dce0-33a2-ae24-2866eaafc254">CallWhenHandleValid</a></td><td>
+Performs an action on a control after its handle has been created. If the control's handle has already been created, the action is executed immediately.
+ (Defined by <a href="ccd6a3d6-cafd-3c05-1f87-8ef6e3a4b593">ControlExtension</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="33d34fbc-8c30-ae2f-cc83-40298fdb23c4">EnableChildren</a></td><td>
+Enables all children of a control.
+ (Defined by <a href="ccd6a3d6-cafd-3c05-1f87-8ef6e3a4b593">ControlExtension</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="48d6968a-3679-27ee-c27e-f7aa43a405c6">ExcludeChildFromGlass</a></td><td>
+Excludes the specified child control from the glass effect.
+ (Defined by <a href="51ffe269-15ed-c96e-bc05-607675204677">DesktopWindowManager</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="daa08f5a-3f19-5c5c-c9a9-cbeb954d7a56">GetMessageString</a></td><td>
+Gets a string using a message pattern that asks for the string length by sending a GetXXXLen message and then a GetXXXText message.
+ (Defined by <a href="ccd6a3d6-cafd-3c05-1f87-8ef6e3a4b593">ControlExtension</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="d2680727-be30-8334-c726-40663cce9063">GetParent(T)</a></td><td>
+Gets the control in the list of parents of type `T`.
+ (Defined by <a href="ccd6a3d6-cafd-3c05-1f87-8ef6e3a4b593">ControlExtension</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="609b1449-9696-245e-03a2-e22beb84efe1">GetPropertyValue(T)</a></td><td>
+Gets a named property value from an object.
+ (Defined by <a href="00588eb4-ca31-ef7e-81da-3ce105aa9b63">ReflectionExtensions</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="4e6f85c5-cc6f-5617-48de-0dabfd3c975c">GetRightToLeftProperty</a></td><td>
+Gets the right to left property.
+ (Defined by <a href="ccd6a3d6-cafd-3c05-1f87-8ef6e3a4b593">ControlExtension</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="52f2d698-e647-92dd-64ef-88e11f937147">GetStyle</a></td><td>
+Retrieves the window styles.
+ (Defined by <a href="ccd6a3d6-cafd-3c05-1f87-8ef6e3a4b593">ControlExtension</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="59dd0bd6-f92d-ebfb-4433-fd261fc9d08b">GetTopMostParent(T)</a></td><td>
+Gets the top-most control in the list of parents of type `T`.
+ (Defined by <a href="ccd6a3d6-cafd-3c05-1f87-8ef6e3a4b593">ControlExtension</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="cc997716-244b-d4f1-e26d-139cc82ce6b0">InvokeMethod(String, Object[])</a></td><td>Overloaded.  
+Invokes a named method on an object with parameters and no return value.
+ (Defined by <a href="00588eb4-ca31-ef7e-81da-3ce105aa9b63">ReflectionExtensions</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="35c20259-aa16-9a35-254f-8bf630272463">InvokeMethod(String, Type[], Object[])</a></td><td>Overloaded.  
+Invokes a named method on an object with parameters and no return value.
+ (Defined by <a href="00588eb4-ca31-ef7e-81da-3ce105aa9b63">ReflectionExtensions</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="39c67efc-5f5d-9e71-64bc-8e89b4589f75">InvokeMethod(T)(String, Object[])</a></td><td>Overloaded.  
+Invokes a named method on an object with parameters and no return value.
+ (Defined by <a href="00588eb4-ca31-ef7e-81da-3ce105aa9b63">ReflectionExtensions</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="4a4da18e-d1a2-3a1f-28b0-10fb9f9646e6">InvokeMethod(T)(String, Type[], Object[])</a></td><td>Overloaded.  
+Invokes a named method on an object with parameters and no return value.
+ (Defined by <a href="00588eb4-ca31-ef7e-81da-3ce105aa9b63">ReflectionExtensions</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="878057ac-70ce-6164-2853-ecb86908e3ea">IsDesignMode</a></td><td>
+Determines whether this control is in design mode.
+ (Defined by <a href="ccd6a3d6-cafd-3c05-1f87-8ef6e3a4b593">ControlExtension</a>.)</td></tr><tr><td>![Public Extension Method](media/pubextension.gif "Public Extension Method")</td><td><a href="a14c2485-5609-5f2d-ac8b-74deb92ee931">SetStyle</a></td><td>
+Sets the windows styles.
+ (Defined by <a href="ccd6a3d6-cafd-3c05-1f87-8ef6e3a4b593">ControlExtension</a>.)</td></tr></table>&nbsp;
+<a href="#trackbarex-methods">Back to Top</a>
+
+## See Also
+
+
+#### Reference
+<a href="13f0013e-1c7e-6cb9-8787-d9ab3a2640ed">TrackBarEx Class</a><br /><a href="c580cf52-4028-70db-28d0-f9b1abc03861">Vanara.Windows.Forms Namespace</a><br />
