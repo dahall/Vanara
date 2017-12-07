@@ -340,7 +340,7 @@ Native Method | Native DLL | Header | Managed Method
 [EnumResourceLanguagesExA](https://www.google.com/search?num=5&q=EnumResourceLanguagesExA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [EnumResourceLanguagesExW](https://www.google.com/search?num=5&q=EnumResourceLanguagesExW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [EnumResourceLanguagesW](https://www.google.com/search?num=5&q=EnumResourceLanguagesW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[EnumResourceNamesA](https://www.google.com/search?num=5&q=EnumResourceNamesA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[EnumResourceNamesA](https://www.google.com/search?num=5&q=EnumResourceNamesA+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.EnumResourceNames
 [EnumResourceNamesExA](https://www.google.com/search?num=5&q=EnumResourceNamesExA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [EnumResourceNamesExW](https://www.google.com/search?num=5&q=EnumResourceNamesExW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [EnumResourceNamesW](https://www.google.com/search?num=5&q=EnumResourceNamesW+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.EnumResourceNames
@@ -418,7 +418,7 @@ Native Method | Native DLL | Header | Managed Method
 [FindNLSString](https://www.google.com/search?num=5&q=FindNLSString+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [FindNLSStringEx](https://www.google.com/search?num=5&q=FindNLSStringEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [FindPackagesByPackageFamily](https://www.google.com/search?num=5&q=FindPackagesByPackageFamily+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[FindResourceA](https://www.google.com/search?num=5&q=FindResourceA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[FindResourceA](https://www.google.com/search?num=5&q=FindResourceA+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FindResource
 [FindResourceExA](https://www.google.com/search?num=5&q=FindResourceExA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [FindResourceExW](https://www.google.com/search?num=5&q=FindResourceExW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [FindResourceW](https://www.google.com/search?num=5&q=FindResourceW+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FindResource

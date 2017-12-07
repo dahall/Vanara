@@ -672,7 +672,7 @@ Native Method | Native DLL | Header | Managed Method
 [QuerySendMessage](https://www.google.com/search?num=5&q=QuerySendMessage+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [RealChildWindowFromPoint](https://www.google.com/search?num=5&q=RealChildWindowFromPoint+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [RealGetWindowClass](https://www.google.com/search?num=5&q=RealGetWindowClass+site%3Amsdn.microsoft.com) | user32.dll |  | 
-[RealGetWindowClassA](https://www.google.com/search?num=5&q=RealGetWindowClassA+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[RealGetWindowClassA](https://www.google.com/search?num=5&q=RealGetWindowClassA+site%3Amsdn.microsoft.com) | user32.dll |  | Vanara.PInvoke.User32.RealGetWindowClass
 [RealGetWindowClassW](https://www.google.com/search?num=5&q=RealGetWindowClassW+site%3Amsdn.microsoft.com) | user32.dll |  | Vanara.PInvoke.User32.RealGetWindowClass
 [ReasonCodeNeedsBugID](https://www.google.com/search?num=5&q=ReasonCodeNeedsBugID+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [ReasonCodeNeedsComment](https://www.google.com/search?num=5&q=ReasonCodeNeedsComment+site%3Amsdn.microsoft.com) | user32.dll |  | 
