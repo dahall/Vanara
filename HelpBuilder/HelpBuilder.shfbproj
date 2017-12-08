@@ -14,23 +14,19 @@
     <Name>HelpBuilder</Name>
     <!-- SHFB properties -->
     <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
-    <OutputPath>..\docs\</OutputPath>
+    <OutputPath>..\..\Vanara.wiki\</OutputPath>
     <HtmlHelpName>vanara</HtmlHelpName>
     <Language>en-US</Language>
     <TransformComponentArguments>
-      <Argument Key="logoFile" Value="Help.png" xmlns="" />
-      <Argument Key="logoHeight" Value="" xmlns="" />
-      <Argument Key="logoWidth" Value="" xmlns="" />
-      <Argument Key="logoAltText" Value="" xmlns="" />
-      <Argument Key="logoPlacement" Value="left" xmlns="" />
-      <Argument Key="logoAlignment" Value="left" xmlns="" />
-      <Argument Key="maxVersionParts" Value="" xmlns="" />
+      <Argument Key="maxVersionParts" Value="" />
+      <Argument Key="includeEnumValues" Value="true" />
+      <Argument Key="baseSourceCodeUrl" Value="https://github.com/dahall/Vanara/blob/master/src/" />
     </TransformComponentArguments>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
     <HelpFileFormat>Markdown</HelpFileFormat>
     <IndentHtml>False</IndentHtml>
-    <KeepLogFile>True</KeepLogFile>
+    <KeepLogFile>False</KeepLogFile>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CleanIntermediates>True</CleanIntermediates>
     <HelpFileVersion>1.0.3</HelpFileVersion>
@@ -41,7 +37,7 @@
     <RootNamespaceContainer>False</RootNamespaceContainer>
     <PresentationStyle>Markdown</PresentationStyle>
     <Preliminary>False</Preliminary>
-    <NamingMethod>Guid</NamingMethod>
+    <NamingMethod>MemberName</NamingMethod>
     <HelpTitle>Vanara API Documentation</HelpTitle>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
     <WarnOnMissingSourceContext>False</WarnOnMissingSourceContext>
@@ -109,8 +105,25 @@
       <DocumentationSource sourceFile="..\UI\bin\Release\net45\Vanara.UI.xml" />
     </DocumentationSources>
     <NamespaceSummaries>
-      <NamespaceSummaryItem name="Microsoft.Samples.DynamicAccessControl" isDocumented="False" xmlns="" />
-    </NamespaceSummaries>
+      <NamespaceSummaryItem name="Microsoft.Samples.DynamicAccessControl" isDocumented="False" />
+<NamespaceSummaryItem name="Vanara.Collections" isDocumented="True">Generic collections</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Vanara.Diagnostics" isDocumented="True">System manipulation</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Vanara.Drawing" isDocumented="True">Drawing capabilities</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Vanara.Extensions" isDocumented="True">Extension methods</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Vanara.InteropServices" isDocumented="True">Interop helper classes</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Vanara.IO" isDocumented="True">Disk and virtual machines</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Vanara.Network" isDocumented="True">Networking</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Vanara.Resources" isDocumented="True">Working with resource files</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Vanara.Security (Group)" isGroup="True" isDocumented="True">Security</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Vanara.Security" isDocumented="True">Security</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Vanara.Security.AccessControl" isDocumented="True">Access control</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Vanara.Security.Principal" isDocumented="True">Security identities</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Vanara.Windows (Group)" isGroup="True" isDocumented="True">Windows</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Vanara.Windows.Forms (Group)" isGroup="True" isDocumented="True">Forms</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Vanara.Windows.Forms" isDocumented="True">Controls and components</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Vanara.Windows.Forms.Annotations" isDocumented="True">Decorations</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Vanara.Windows.Forms.Design" isDocumented="True">Designer helps</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Vanara.Windows.Shell" isDocumented="True">Shell classes</NamespaceSummaryItem></NamespaceSummaries>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->
