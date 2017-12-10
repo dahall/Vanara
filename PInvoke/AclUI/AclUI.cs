@@ -685,6 +685,13 @@ namespace Vanara.PInvoke
 		/// <returns>A combined value.</returns>
 		public static uint COMBINE_PAGE_ACTIVATION(SI_PAGE_TYPE pt, SI_PAGE_ACTIVATED pa) => (uint)pt | ((uint)pa << 16);
 
+		/// <summary>The CreateSecurityPage function creates a basic security property page that enables the user to view and edit the access rights allowed or denied by the access control entries (ACEs) in an object's discretionary access control list (DACL). Use the PropertySheet function or the PSM_ADDPAGE message to add this page to a property sheet.</summary>
+		/// <param name="psi">A pointer to your implementation of the ISecurityInformation interface. The system calls the interface methods to retrieve information about the object being edited and to return the user's input.</param>
+		/// <returns>If the function succeeds, the function returns a handle to a basic security property page. If the function fails, it returns NULL. To get extended error information, call GetLastError.</returns>
+		[DllImport(Lib.AclUI, ExactSpelling = true, SetLastError = true)]
+		[PInvokeData("aclui.h", Dll = "Aclui.dll", MSDNShortId = "aa446584")]
+		public static extern IntPtr CreateSecurityPage([In] ISecurityInformation psi );
+
 		/// <summary>
 		/// The EditSecurity function displays a property sheet that contains a basic security property page. This property page enables the user to view and
 		/// edit the access rights allowed or denied by the ACEs in an object's DACL.
