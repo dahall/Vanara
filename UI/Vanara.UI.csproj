@@ -4,7 +4,7 @@
     <Description>Wrapper classes for user interface related items in the Vanara PInvoke libraries.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>Vanara.UI</AssemblyTitle>
-    <VersionPrefix>1.0.3</VersionPrefix>
+    <VersionPrefix>1.0.4</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
     <AssemblyName>Vanara.UI</AssemblyName>
     <PackageId>Vanara.UI</PackageId>

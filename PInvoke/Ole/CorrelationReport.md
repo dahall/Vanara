@@ -198,12 +198,8 @@ Native Method | Native DLL | Header | Managed Method
 [DispGetIDsOfNames](https://www.google.com/search?num=5&q=DispGetIDsOfNames+site%3Amsdn.microsoft.com) | oleaut32.dll |  | 
 [DispGetParam](https://www.google.com/search?num=5&q=DispGetParam+site%3Amsdn.microsoft.com) | oleaut32.dll |  | 
 [DispInvoke](https://www.google.com/search?num=5&q=DispInvoke+site%3Amsdn.microsoft.com) | oleaut32.dll |  | 
-[DllCanUnloadNow](https://www.google.com/search?num=5&q=DllCanUnloadNow+site%3Amsdn.microsoft.com) | oleaut32.dll |  | 
 [DllDebugObjectRPCHook](https://www.google.com/search?num=5&q=DllDebugObjectRPCHook+site%3Amsdn.microsoft.com) | ole32.dll |  | 
-[DllGetClassObject](https://www.google.com/search?num=5&q=DllGetClassObject+site%3Amsdn.microsoft.com) | ole32.dll |  | 
 [DllGetClassObjectWOW](https://www.google.com/search?num=5&q=DllGetClassObjectWOW+site%3Amsdn.microsoft.com) | ole32.dll |  | 
-[DllRegisterServer](https://www.google.com/search?num=5&q=DllRegisterServer+site%3Amsdn.microsoft.com) | ole32.dll |  | 
-[DllUnregisterServer](https://www.google.com/search?num=5&q=DllUnregisterServer+site%3Amsdn.microsoft.com) | oleaut32.dll |  | 
 [DoDragDrop](https://www.google.com/search?num=5&q=DoDragDrop+site%3Amsdn.microsoft.com) | ole32.dll |  | 
 [DosDateTimeToVariantTime](https://www.google.com/search?num=5&q=DosDateTimeToVariantTime+site%3Amsdn.microsoft.com) | oleaut32.dll |  | 
 [DragDropSetFDT](https://www.google.com/search?num=5&q=DragDropSetFDT+site%3Amsdn.microsoft.com) | ole32.dll |  | 
@@ -1190,3 +1186,11 @@ Native Structure | Header | Managed Structure
 [SAFEARRAYBOUND](https://www.google.com/search?num=5&q=SAFEARRAYBOUND+site%3Amsdn.microsoft.com) | OaIdl.h | Vanara.PInvoke.OleAut32+SAFEARRAYBOUND
 [SNB](https://www.google.com/search?num=5&q=SNB+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.Ole32+SNB
 [STGOPTIONS](https://www.google.com/search?num=5&q=STGOPTIONS+site%3Amsdn.microsoft.com) | Objbase.h | Vanara.PInvoke.Ole32+STGOPTIONS
+### Interfaces
+Native Interface | Native DLL | Header | Managed Interface
+---- | ---- | ---- | ----
+[IEnumSTATSTG](https://www.google.com/search?num=5&q=IEnumSTATSTG+site%3Amsdn.microsoft.com) |  | Objidl.h | Vanara.PInvoke.Ole32+IEnumSTATSTG
+[IPropertyDescription](https://www.google.com/search?num=5&q=IPropertyDescription+site%3Amsdn.microsoft.com) |  | Propsys.h | Vanara.PInvoke.PropSys+IPropertyDescription
+[IPropertyDescriptionList](https://www.google.com/search?num=5&q=IPropertyDescriptionList+site%3Amsdn.microsoft.com) |  | Propsys.h | Vanara.PInvoke.PropSys+IPropertyDescriptionList
+[IPropertyStore](https://www.google.com/search?num=5&q=IPropertyStore+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.PropSys+IPropertyStore
+[IStorage](https://www.google.com/search?num=5&q=IStorage+site%3Amsdn.microsoft.com) |  | Objidl.h | Vanara.PInvoke.Ole32+IStorage

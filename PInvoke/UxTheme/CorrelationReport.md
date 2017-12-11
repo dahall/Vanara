@@ -1,5 +1,5 @@
 ## Correlation report for uxtheme.dll
-### Methods (50% complete)
+### Methods (51% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
 [BeginBufferedAnimation](https://www.google.com/search?num=5&q=BeginBufferedAnimation+site%3Amsdn.microsoft.com) | uxtheme.dll |  | Vanara.PInvoke.UxTheme.BeginBufferedAnimation
@@ -12,9 +12,7 @@ Native Method | Native DLL | Header | Managed Method
 [BufferedPaintStopAllAnimations](https://www.google.com/search?num=5&q=BufferedPaintStopAllAnimations+site%3Amsdn.microsoft.com) | uxtheme.dll |  | Vanara.PInvoke.UxTheme.BufferedPaintStopAllAnimations
 [BufferedPaintUnInit](https://www.google.com/search?num=5&q=BufferedPaintUnInit+site%3Amsdn.microsoft.com) | uxtheme.dll |  | Vanara.PInvoke.UxTheme.BufferedPaintUnInit
 [CloseThemeData](https://www.google.com/search?num=5&q=CloseThemeData+site%3Amsdn.microsoft.com) | uxtheme.dll |  | Vanara.PInvoke.UxTheme.CloseThemeData
-[DllCanUnloadNow](https://www.google.com/search?num=5&q=DllCanUnloadNow+site%3Amsdn.microsoft.com) | uxtheme.dll |  | 
 [DllGetActivationFactory](https://www.google.com/search?num=5&q=DllGetActivationFactory+site%3Amsdn.microsoft.com) | uxtheme.dll |  | 
-[DllGetClassObject](https://www.google.com/search?num=5&q=DllGetClassObject+site%3Amsdn.microsoft.com) | uxtheme.dll |  | 
 [DrawThemeBackground](https://www.google.com/search?num=5&q=DrawThemeBackground+site%3Amsdn.microsoft.com) | uxtheme.dll |  | Vanara.PInvoke.UxTheme.DrawThemeBackground
 [DrawThemeBackgroundEx](https://www.google.com/search?num=5&q=DrawThemeBackgroundEx+site%3Amsdn.microsoft.com) | uxtheme.dll |  | Vanara.PInvoke.UxTheme.DrawThemeBackgroundEx
 [DrawThemeEdge](https://www.google.com/search?num=5&q=DrawThemeEdge+site%3Amsdn.microsoft.com) | uxtheme.dll |  | 

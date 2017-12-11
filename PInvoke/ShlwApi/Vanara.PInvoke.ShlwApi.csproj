@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Methods, structures and constants imported from ShlwApi.dll.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.3</VersionPrefix>
+    <VersionPrefix>1.0.4</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.ShlwApi</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -22,34 +22,33 @@
     <Company>GitHub Community</Company>
     <Product>Vanara</Product>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-  </PropertyGroup>
+    <PackageReleaseNotes>Currently implements:
 
+Functions
+SHCreateStreamOnFileEx
+
+</PackageReleaseNotes>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net20' ">
     <Reference Include="System" />
   </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
     <Reference Include="System" />
   </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
-
 </Project>

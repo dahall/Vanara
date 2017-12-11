@@ -18,7 +18,6 @@ Native Method | Native DLL | Header | Managed Method
 [ColorRGBToHLS](https://www.google.com/search?num=5&q=ColorRGBToHLS+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [ConnectToConnectionPoint](https://www.google.com/search?num=5&q=ConnectToConnectionPoint+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [DelayLoadFailureHook](https://www.google.com/search?num=5&q=DelayLoadFailureHook+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
-[DllGetClassObject](https://www.google.com/search?num=5&q=DllGetClassObject+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [DllGetVersion](https://www.google.com/search?num=5&q=DllGetVersion+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [GetAcceptLanguagesA](https://www.google.com/search?num=5&q=GetAcceptLanguagesA+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [GetAcceptLanguagesW](https://www.google.com/search?num=5&q=GetAcceptLanguagesW+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
@@ -381,6 +380,3 @@ Native Method | Native DLL | Header | Managed Method
 [wnsprintfW](https://www.google.com/search?num=5&q=wnsprintfW+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [wvnsprintfA](https://www.google.com/search?num=5&q=wvnsprintfA+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [wvnsprintfW](https://www.google.com/search?num=5&q=wvnsprintfW+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
-### Structures
-Native Structure | Header | Managed Structure
----- | ---- | ----

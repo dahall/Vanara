@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Methods, structures and constants imported from VirtDisk.dll.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.3</VersionPrefix>
+    <VersionPrefix>1.0.4</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.VirtDisk</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -22,34 +22,36 @@
     <Company>GitHub Community</Company>
     <Product>Vanara</Product>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-  </PropertyGroup>
+    <PackageReleaseNotes>Currently implements:
 
+Functions
+AttachVirtualDisk, BreakMirrorVirtualDisk, CompactVirtualDisk, CreateVirtualDisk, DetachVirtualDisk, ExpandVirtualDisk, GetAllAttachedVirtualDiskPhysicalPaths, GetStorageDependencyInformation, GetVirtualDiskInformation, GetVirtualDiskOperationProgress, GetVirtualDiskPhysicalPath, MergeVirtualDisk, MirrorVirtualDisk, OpenVirtualDisk, ResizeVirtualDisk, SetVirtualDiskInformation
+
+Structures
+ATTACH_VIRTUAL_DISK_PARAMETERS, ATTACH_VIRTUAL_DISK_PARAMETERS_Version1, COMPACT_VIRTUAL_DISK_PARAMETERS, CREATE_VIRTUAL_DISK_PARAMETERS, CREATE_VIRTUAL_DISK_PARAMETERS_Version1, CREATE_VIRTUAL_DISK_PARAMETERS_Version2, CREATE_VIRTUAL_DISK_PARAMETERS_Version3, EXPAND_VIRTUAL_DISK_PARAMETERS, GET_VIRTUAL_DISK_INFO, GET_VIRTUAL_DISK_INFO_ChangeTrackingState, GET_VIRTUAL_DISK_INFO_ParentLocation, GET_VIRTUAL_DISK_INFO_PhysicalDisk, GET_VIRTUAL_DISK_INFO_Size, MERGE_VIRTUAL_DISK_PARAMETERS, MERGE_VIRTUAL_DISK_PARAMETERS_V1, MERGE_VIRTUAL_DISK_PARAMETERS_V2, MIRROR_VIRTUAL_DISK_PARAMETERS, MIRROR_VIRTUAL_DISK_PARAMETERS_Version1, OPEN_VIRTUAL_DISK_PARAMETERS, OPEN_VIRTUAL_DISK_PARAMETERS_Version1, OPEN_VIRTUAL_DISK_PARAMETERS_Version2, OPEN_VIRTUAL_DISK_PARAMETERS_Version3, RESIZE_VIRTUAL_DISK_PARAMETERS, SET_VIRTUAL_DISK_INFO_ParentPathWithDepthInfo, SET_VIRTUAL_DISK_INFO_ParentLocator, STORAGE_DEPENDENCY_INFO_TYPE_1, STORAGE_DEPENDENCY_INFO_TYPE_2, VIRTUAL_DISK_PROGRESS, VIRTUAL_STORAGE_TYPE
+
+</PackageReleaseNotes>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net20' ">
     <Reference Include="System" />
   </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
     <Reference Include="System" />
   </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
-
 </Project>

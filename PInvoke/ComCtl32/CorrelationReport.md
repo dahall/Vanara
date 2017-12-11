@@ -213,3 +213,7 @@ Native Structure | Header | Managed Structure
 [TVITEM](https://www.google.com/search?num=5&q=TVITEM+site%3Amsdn.microsoft.com) | Commctrl.h | Vanara.PInvoke.ComCtl32+TVITEM
 [TVITEMEX](https://www.google.com/search?num=5&q=TVITEMEX+site%3Amsdn.microsoft.com) | Commctrl.h | Vanara.PInvoke.ComCtl32+TVITEMEX
 [TVSORTCB](https://www.google.com/search?num=5&q=TVSORTCB+site%3Amsdn.microsoft.com) | Commctrl.h | Vanara.PInvoke.ComCtl32+TVSORTCB
+### Interfaces
+Native Interface | Native DLL | Header | Managed Interface
+---- | ---- | ---- | ----
+[IImageList](https://www.google.com/search?num=5&q=IImageList+site%3Amsdn.microsoft.com) |  | Commctrl.h | Vanara.PInvoke.ComCtl32+IImageList

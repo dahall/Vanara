@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Methods, structures and constants imported from Shell32.dll.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.3</VersionPrefix>
+    <VersionPrefix>1.0.4</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Shell32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -22,31 +22,37 @@
     <Company>GitHub Community</Company>
     <Product>Vanara</Product>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-  </PropertyGroup>
+    <PackageReleaseNotes>Currently implements:
 
+Functions
+ExtractIconExA, ExtractIconExW, GetCurrentProcessExplicitAppUserModelID, ILClone, ILCloneFirst, ILCombine, ILCreateFromPath, ILCreateFromPathA, ILCreateFromPathW, ILFindLastID, ILGetNext, ILGetSize, ILIsEqual, ILIsParent, ILRemoveLastID, SetCurrentProcessExplicitAppUserModelID, SHAddToRecentDocs, SHBrowseForFolderA, SHBrowseForFolderW, SHCreateItemFromIDList, SHCreateItemFromParsingName, SHCreateItemFromRelativeName, SHCreateItemInKnownFolder, SHCreateItemWithParent, SHCreateShellItemArray, SHCreateShellItemArrayFromIDLists, SHCreateShellItemArrayFromShellItem, SHDefExtractIconA, SHDefExtractIconW, ShellExecuteExA, ShellExecuteExW, SHGetDataFromIDListA, SHGetDataFromIDListW, SHGetDesktopFolder, SHGetFileInfoA, SHGetFileInfoW, SHGetFolderLocation, SHGetFolderPathA, SHGetFolderPathEx, SHGetFolderPathW, SHGetIDListFromObject, SHGetImageList, SHGetKnownFolderIDList, SHGetKnownFolderItem, SHGetKnownFolderPath, SHGetNameFromIDList, SHGetPathFromIDListA, SHGetPathFromIDListW, SHGetPropertyStoreFromParsingName, SHOpenFolderAndSelectItems, SHParseDisplayName
+
+Structures
+SHELLEXECUTEINFO, SHFILEINFO, BROWSEINFO, COORD, DATABLOCKHEADER, EXP_DARWIN_LINK, EXP_SPECIAL_FOLDER, EXP_SZ_LINK, NT_CONSOLE_PROPS, NT_FE_CONSOLE_PROPS, SHDESCRIPTIONID, KNOWNFOLDER_DEFINITION, THUMBBUTTON, COMDLG_FILTERSPEC, ITEMIDLIST, SHITEMID
+
+Interfaces
+IApplicationDestinations, IApplicationDocumentLists, ICustomDestinationList, IEnumIDList, IEnumShellItems, IFileDialog, IFileDialogEvents, IFileOpenDialog, IFileOperationProgressSink, IFileSaveDialog, IKnownFolder, IKnownFolderManager, IModalWindow, IObjectArray, IObjectCollection, IObjectWithAppUserModelId, IObjectWithProgId, IQueryInfo, IShellFolder, IShellItem, IShellItem2, IShellItemArray, IShellLinkDataList, IShellLinkW, ITaskbarList, ITaskbarList2, ITaskbarList3, ITaskbarList4
+
+</PackageReleaseNotes>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net20' ">
     <Reference Include="System" />
   </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
     <Reference Include="System" />
   </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\ComCtl32\Vanara.PInvoke.ComCtl32.csproj" />
@@ -55,5 +61,4 @@
     <ProjectReference Include="..\Security\Vanara.PInvoke.Security.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
-
 </Project>

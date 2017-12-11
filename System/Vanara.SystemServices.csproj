@@ -4,7 +4,7 @@
     <Description>Wrapper classes for system related items in the Vanara PInvoke libraries.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>Vanara.SystemServices</AssemblyTitle>
-    <VersionPrefix>1.0.3</VersionPrefix>
+    <VersionPrefix>1.0.4</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0</TargetFrameworks>
     <AssemblyName>Vanara.SystemServices</AssemblyName>
     <PackageId>Vanara.SystemServices</PackageId>

@@ -4,7 +4,7 @@
     <Description>Shared methods, structures and constants for use throughout the Vanara.PInvoke assemblies</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.3</VersionPrefix>
+    <VersionPrefix>1.0.4</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard20</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Shared</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>

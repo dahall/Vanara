@@ -1,9 +1,7 @@
 ## Correlation report for dwmapi.dll
-### Methods (13% complete)
+### Methods (14% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
-[DllCanUnloadNow](https://www.google.com/search?num=5&q=DllCanUnloadNow+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
-[DllGetClassObject](https://www.google.com/search?num=5&q=DllGetClassObject+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
 [DwmAttachMilContent](https://www.google.com/search?num=5&q=DwmAttachMilContent+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
 [DwmDefWindowProc](https://www.google.com/search?num=5&q=DwmDefWindowProc+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
 [DwmDetachMilContent](https://www.google.com/search?num=5&q=DwmDetachMilContent+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 

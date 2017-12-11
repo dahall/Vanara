@@ -41,11 +41,7 @@ Native Method | Native DLL | Header | Managed Method
 [DeleteWpadCacheForNetworks](https://www.google.com/search?num=5&q=DeleteWpadCacheForNetworks+site%3Amsdn.microsoft.com) | wininet.dll |  | 
 [DetectAutoProxyUrl](https://www.google.com/search?num=5&q=DetectAutoProxyUrl+site%3Amsdn.microsoft.com) | wininet.dll |  | 
 [DispatchAPICall](https://www.google.com/search?num=5&q=DispatchAPICall+site%3Amsdn.microsoft.com) | wininet.dll |  | 
-[DllCanUnloadNow](https://www.google.com/search?num=5&q=DllCanUnloadNow+site%3Amsdn.microsoft.com) | wininet.dll |  | 
-[DllGetClassObject](https://www.google.com/search?num=5&q=DllGetClassObject+site%3Amsdn.microsoft.com) | wininet.dll |  | 
 [DllInstall](https://www.google.com/search?num=5&q=DllInstall+site%3Amsdn.microsoft.com) | wininet.dll |  | 
-[DllRegisterServer](https://www.google.com/search?num=5&q=DllRegisterServer+site%3Amsdn.microsoft.com) | wininet.dll |  | 
-[DllUnregisterServer](https://www.google.com/search?num=5&q=DllUnregisterServer+site%3Amsdn.microsoft.com) | wininet.dll |  | 
 [FindCloseUrlCache](https://www.google.com/search?num=5&q=FindCloseUrlCache+site%3Amsdn.microsoft.com) | wininet.dll |  | 
 [FindFirstUrlCacheContainerA](https://www.google.com/search?num=5&q=FindFirstUrlCacheContainerA+site%3Amsdn.microsoft.com) | wininet.dll |  | 
 [FindFirstUrlCacheContainerW](https://www.google.com/search?num=5&q=FindFirstUrlCacheContainerW+site%3Amsdn.microsoft.com) | wininet.dll |  | 

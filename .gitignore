@@ -246,3 +246,6 @@ ModelManifest.xml
 /CodeMap1.dgml
 *.cmd
 /RefFileResults.txt
+
+# Solution specific
+UndefinedMethods.txt
