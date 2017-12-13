@@ -3,7 +3,7 @@
 
 namespace Vanara.PInvoke
 {
-	public static partial class User32
+	public static partial class User32_Gdi
 	{
 		/// <summary>Windows Messages</summary>
 		[Flags]

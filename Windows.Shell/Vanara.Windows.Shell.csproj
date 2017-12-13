@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>Classes for user interface related items derived from the Vanara PInvoke libraries. Includes shutdown/restart/lock control, buffered painting, network profile and list management, resource files, access control editor, simplifed designer framework for Windows.Forms, Windows Shell objects (files, icons, links, taskbar lists).</Description>
+    <Description>Classes for Windows Shell items derived from the Vanara PInvoke libraries. Includes shell items, files, icons, links, and taskbar lists.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <VersionPrefix>1.0.4</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
-    <AssemblyName>Vanara.UI</AssemblyName>
+    <AssemblyName>Vanara.UI.Shell</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
@@ -62,10 +62,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Extenders\GlassExtenderProvider.bmp" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\PInvoke\AclUI\Vanara.PInvoke.AclUI.csproj" />
     <ProjectReference Include="..\PInvoke\ComCtl32\Vanara.PInvoke.ComCtl32.csproj" />
@@ -77,84 +73,6 @@
     <ProjectReference Include="..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
     <ProjectReference Include="..\PInvoke\UxTheme\Vanara.PInvoke.UxTheme.csproj" />
     <ProjectReference Include="..\Security\Vanara.Security.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Controls\CollapsiblePanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\CollapsiblePanelHeader.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\CommandLink.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\CustomButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\CustomComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\CustomDrawBase.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\DisabledItemComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\EmbeddedContainer.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\EnumComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\IPAddressBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\IPAddressBox.Designer.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\SplitButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\ThemedImageButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\ThemedLabel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\ThemedPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\ThemedTableLayoutPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\TrackBarEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\VistaButtonBase.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Dialogs\AccessControlEditor\AccessControlEditorDialog.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Dialogs\CredentialsDialog\CredentialsDialog.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Dialogs\FolderBrowserDialog.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Dialogs\InputDialog.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Dialogs\TaskDialog\TaskDialog.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Extenders\GlassExtenderProvider.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Extenders\VistaControlExtender.cs">
-      <SubType>Component</SubType>
-    </Compile>
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using Vanara.PInvoke;
 using Vanara.Security.AccessControl;
 using static Vanara.PInvoke.AdvApi32;
@@ -8,6 +6,7 @@ using static Vanara.PInvoke.User32;
 
 namespace Vanara.Diagnostics
 {
+	/// <summary>Provides access to system shutdown, restart, lock and notifications.</summary>
 	public static class SystemShutdown
 	{
 		/// <summary>Stops a system shutdown started by using the InitiateSystemShutdown function.</summary>
@@ -78,31 +77,6 @@ namespace Vanara.Diagnostics
 		/// <summary>
 		/// Locks the workstation's display, protecting it from unauthorized use.
 		/// </summary>
-		public static bool LockWorkStation() => LockWorkStation();
-
-		/// <summary>Retrieves the reason string set by the <see cref="ShutdownBlockReasonSet"/> function.</summary>
-		/// <param name="form">A top level <see cref="Form"/> instance.</param>
-		/// <returns>On success, returns the reason string. On failure, returns <c>null</c>. To get extended error information, call GetLastError.</returns>
-		public static string ShutdownBlockReasonGet(this Form form)
-		{
-			string reason;
-			ShutdownBlockReasonQuery(new HandleRef(form, form.Handle), out reason);
-			return reason;
-		}
-
-		/// <summary>
-		/// Indicates that the system can be shut down and frees the reason string.
-		/// </summary>
-		/// <param name="form">A top level <see cref="Form"/> instance.</param>
-		/// <returns>If the call succeeds, the return value is nonzero. If the call fails, the return value is zero. To get extended error information, call GetLastError.</returns>
-		public static bool ShutdownBlockReasonRemove(this Form form) => ShutdownBlockReasonDestroy(new HandleRef(form, form.Handle));
-
-		/// <summary>
-		/// Indicates that the system cannot be shut down and sets a reason string to be displayed to the user if system shutdown is initiated.
-		/// </summary>
-		/// <param name="form">A top level <see cref="Form"/> instance.</param>
-		/// <param name="reason">The reason the application must block system shutdown. This string will be truncated for display purposes after MAX_STR_BLOCKREASON characters.</param>
-		/// <returns>If the call succeeds, the return value is nonzero. If the call fails, the return value is zero. To get extended error information, call GetLastError.</returns>
-		public static bool ShutdownBlockReasonSet(this Form form, string reason) => ShutdownBlockReasonCreate(new HandleRef(form, form.Handle), reason);
+		public static bool LockWorkStation() => User32.LockWorkStation();
 	}
 }

@@ -58,6 +58,6 @@ IImageList
     <ProjectReference Include="..\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
     <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
-    <ProjectReference Include="..\User32\Vanara.PInvoke.User32.csproj" />
+    <ProjectReference Include="..\User32.Gdi\Vanara.PInvoke.User32.Gdi.csproj" />
   </ItemGroup>
 </Project>

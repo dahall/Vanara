@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
 {
-	public static partial class User32
+	public static partial class User32_Gdi
 	{
 		/// <summary>
 		/// Contains information about a notification message.

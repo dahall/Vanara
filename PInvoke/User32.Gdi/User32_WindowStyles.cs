@@ -3,7 +3,7 @@
 
 namespace Vanara.PInvoke
 {
-	public static partial class User32
+	public static partial class User32_Gdi
 	{
 		/// <summary>
 		/// Window Styles. The following styles can be specified wherever a window style is required. After the control has been created, these styles cannot be

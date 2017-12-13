@@ -71,6 +71,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Mpr", "PInvo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Crypt32", "PInvoke\Crypt32\Vanara.PInvoke.Crypt32.csproj", "{BD86FD1B-D52E-4B78-89AC-36D89458EBD8}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.User32.Gdi", "PInvoke\User32.Gdi\Vanara.PInvoke.User32.Gdi.csproj", "{FC7B25B5-3BB9-44F5-93D9-9AB7193B1BE9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.Windows.Shell", "Windows.Shell\Vanara.Windows.Shell.csproj", "{43685BE2-A65E-4B01-BE16-479526940F23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -182,6 +186,14 @@ Global
 		{BD86FD1B-D52E-4B78-89AC-36D89458EBD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD86FD1B-D52E-4B78-89AC-36D89458EBD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD86FD1B-D52E-4B78-89AC-36D89458EBD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC7B25B5-3BB9-44F5-93D9-9AB7193B1BE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC7B25B5-3BB9-44F5-93D9-9AB7193B1BE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC7B25B5-3BB9-44F5-93D9-9AB7193B1BE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC7B25B5-3BB9-44F5-93D9-9AB7193B1BE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43685BE2-A65E-4B01-BE16-479526940F23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43685BE2-A65E-4B01-BE16-479526940F23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43685BE2-A65E-4B01-BE16-479526940F23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43685BE2-A65E-4B01-BE16-479526940F23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -208,6 +220,7 @@ Global
 		{BBE4A7D6-0B24-4F58-9726-E05F358C1256} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{E91C263F-82D9-40A9-99A1-F879CB076BCE} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{BD86FD1B-D52E-4B78-89AC-36D89458EBD8} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
+		{FC7B25B5-3BB9-44F5-93D9-9AB7193B1BE9} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}

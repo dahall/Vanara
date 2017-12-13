@@ -4,13 +4,16 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable EventNeverSubscribedTo.Global
 
 namespace Vanara.Collections
 {
-	/// <summary>A generic list that provides event for changes to the list.</summary>
-	/// <typeparam name="T">Type for the list.</typeparam>
+	/// <summary>A generic list that provides event for changes to the list. This is an alternative to ObservableCollection that provides distinct events for each action (add, insert, remove, changed).</summary>
+	/// <typeparam name="T">The type of elements in the collection.</typeparam>
 	[Serializable]
 	public class EventedList<T> : IList<T>, IList where T : INotifyPropertyChanged
 	{
@@ -26,36 +29,36 @@ namespace Vanara.Collections
 			internalItems = emptyArray;
 		}
 
-		/// <summary>Initializes a new instance of the <see cref="EventedList{T}"/> class.</summary>
-		/// <param name="collection">The collection.</param>
+		/// <summary>Initializes a new instance of the <see cref="EventedList{T}"/> class that contains elements copied from the specified collection.</summary>
+		/// <param name="collection">The collection from which the elements are copied.</param>
 		public EventedList(IEnumerable<T> collection)
 		{
-			if (collection == null)
+			switch (collection)
 			{
-				throw new ArgumentNullException(nameof(collection));
-			}
-			if (collection is ICollection<T> is2)
-			{
-				var count = is2.Count;
-				internalItems = new T[count];
-				is2.CopyTo(internalItems, 0);
-				Count = count;
-			}
-			else
-			{
-				Count = 0;
-				internalItems = new T[4];
-				using (var enumerator = collection.GetEnumerator())
-				{
-					while (enumerator.MoveNext())
+				case null:
+					throw new ArgumentNullException(nameof(collection));
+				case ICollection<T> is2:
+					var count = is2.Count;
+					internalItems = new T[count];
+					is2.CopyTo(internalItems, 0);
+					Count = count;
+					break;
+				default:
+					Count = 0;
+					internalItems = new T[4];
+					using (var enumerator = collection.GetEnumerator())
 					{
-						Add(enumerator.Current);
+						while (enumerator.MoveNext())
+						{
+							Add(enumerator.Current);
+						}
 					}
-				}
+
+					break;
 			}
 		}
 
-		/// <summary>Initializes a new instance of the <see cref="EventedList{T}"/> class.</summary>
+		/// <summary>Initializes a new instance of the <see cref="EventedList{T}"/> class providing an initial capacity.</summary>
 		/// <param name="capacity">The capacity.</param>
 		public EventedList(int capacity)
 		{
@@ -85,27 +88,26 @@ namespace Vanara.Collections
 		/// <value>The capacity.</value>
 		public int Capacity
 		{
-			get => internalItems.Length; set
+			get => internalItems.Length;
+			set
 			{
-				if (value != internalItems.Length)
+				if (value == internalItems.Length) return;
+				if (value < Count)
 				{
-					if (value < Count)
+					throw new ArgumentOutOfRangeException(nameof(value));
+				}
+				if (value > 0)
+				{
+					var destinationArray = new T[value];
+					if (Count > 0)
 					{
-						throw new ArgumentOutOfRangeException(nameof(value));
+						Array.Copy(internalItems, 0, destinationArray, 0, Count);
 					}
-					if (value > 0)
-					{
-						var destinationArray = new T[value];
-						if (Count > 0)
-						{
-							Array.Copy(internalItems, 0, destinationArray, 0, Count);
-						}
-						internalItems = destinationArray;
-					}
-					else
-					{
-						internalItems = emptyArray;
-					}
+					internalItems = destinationArray;
+				}
+				else
+				{
+					internalItems = emptyArray;
 				}
 			}
 		}
@@ -244,10 +246,7 @@ namespace Vanara.Collections
 		/// The zero-based index of item in the sorted <see cref="EventedList{T}"/>, if item is found; otherwise, a negative number that is the bitwise
 		/// complement of the index of the next element that is larger than item or, if there is no larger element, the bitwise complement of <see cref="Count"/>.
 		/// </returns>
-		public int BinarySearch(int index, int count, T item, IComparer<T> comparer)
-		{
-			return Array.BinarySearch(internalItems, index, count, item, comparer);
-		}
+		public int BinarySearch(int index, int count, T item, IComparer<T> comparer) => Array.BinarySearch(internalItems, index, count, item, comparer);
 
 		/// <summary>Removes all items from the <see cref="ICollection{T}"/>.</summary>
 		/// <exception cref="T:System.NotSupportedException">The <see cref="ICollection{T}"/> is read-only.</exception>
@@ -297,12 +296,11 @@ namespace Vanara.Collections
 			{
 				throw new ArgumentNullException(nameof(converter));
 			}
-			var list = new EventedList<TOutput>(Count);
-			for (var i = 0; i < Count; i++)
+			var list = new EventedList<TOutput>
 			{
-				list.internalItems[i] = converter(internalItems[i]);
-			}
-			list.Count = Count;
+				internalItems = Array.ConvertAll(internalItems, converter),
+				Count = Count
+			};
 			return list;
 		}
 
@@ -347,21 +345,7 @@ namespace Vanara.Collections
 		/// <summary>Finds the specified match.</summary>
 		/// <param name="match">The match.</param>
 		/// <returns></returns>
-		public T Find(Predicate<T> match)
-		{
-			if (match == null)
-			{
-				throw new ArgumentNullException(nameof(match));
-			}
-			for (var i = 0; i < Count; i++)
-			{
-				if (match(internalItems[i]))
-				{
-					return internalItems[i];
-				}
-			}
-			return default(T);
-		}
+		public T Find(Predicate<T> match) => Array.Find(internalItems, match);
 
 		/// <summary>Finds all.</summary>
 		/// <param name="match">The match.</param>
@@ -369,18 +353,8 @@ namespace Vanara.Collections
 		public EventedList<T> FindAll(Predicate<T> match)
 		{
 			if (match == null)
-			{
 				throw new ArgumentNullException(nameof(match));
-			}
-			var list = new EventedList<T>();
-			for (var i = 0; i < Count; i++)
-			{
-				if (match(internalItems[i]))
-				{
-					list.Add(internalItems[i]);
-				}
-			}
-			return list;
+			return new EventedList<T>(internalItems.Where(match.Invoke));
 		}
 
 		/// <summary>Finds the index.</summary>
@@ -402,39 +376,13 @@ namespace Vanara.Collections
 		public int FindIndex(int startIndex, int count, Predicate<T> match)
 		{
 			CheckRange(startIndex, count);
-			if (match == null)
-			{
-				throw new ArgumentNullException(nameof(match));
-			}
-			var num = startIndex + count;
-			for (var i = startIndex; i < num; i++)
-			{
-				if (match(internalItems[i]))
-				{
-					return i;
-				}
-			}
-			return -1;
+			return Array.FindIndex(internalItems, startIndex, count, match);
 		}
 
 		/// <summary>Finds the last.</summary>
 		/// <param name="match">The match.</param>
 		/// <returns></returns>
-		public T FindLast(Predicate<T> match)
-		{
-			if (match == null)
-			{
-				throw new ArgumentNullException(nameof(match));
-			}
-			for (var i = Count - 1; i >= 0; i--)
-			{
-				if (match(internalItems[i]))
-				{
-					return internalItems[i];
-				}
-			}
-			return default(T);
-		}
+		public T FindLast(Predicate<T> match) => Array.FindLast(internalItems, match);
 
 		/// <summary>Finds the last index.</summary>
 		/// <param name="match">The match.</param>
@@ -454,31 +402,10 @@ namespace Vanara.Collections
 		/// <returns></returns>
 		public int FindLastIndex(int startIndex, int count, Predicate<T> match)
 		{
-			if (match == null)
-			{
-				throw new ArgumentNullException(nameof(match));
-			}
-			if (Count == 0)
-			{
-				if (startIndex != -1)
-				{
-					throw new ArgumentOutOfRangeException(nameof(startIndex));
-				}
-			}
 			CheckIndex(startIndex, "startIndex");
 			if (count < 0 || startIndex - count + 1 < 0)
-			{
 				throw new ArgumentOutOfRangeException(nameof(count));
-			}
-			var num = startIndex - count;
-			for (var i = startIndex; i > num; i--)
-			{
-				if (match(internalItems[i]))
-				{
-					return i;
-				}
-			}
-			return -1;
+			return Array.FindLastIndex(internalItems, startIndex, count, match);
 		}
 
 		/// <summary>Performs an action on each item in the collection.</summary>
@@ -513,20 +440,14 @@ namespace Vanara.Collections
 		/// <param name="item">The item.</param>
 		/// <param name="index">The index.</param>
 		/// <returns></returns>
-		public int IndexOf(T item, int index)
-		{
-			return Array.IndexOf(internalItems, item, index, Count - index);
-		}
+		public int IndexOf(T item, int index) => Array.IndexOf(internalItems, item, index, Count - index);
 
 		/// <summary>Indexes the of.</summary>
 		/// <param name="item">The item.</param>
 		/// <param name="index">The index.</param>
 		/// <param name="count">The count.</param>
 		/// <returns></returns>
-		public int IndexOf(T item, int index, int count)
-		{
-			return Array.IndexOf(internalItems, item, index, count);
-		}
+		public int IndexOf(T item, int index, int count) => Array.IndexOf(internalItems, item, index, count);
 
 		/// <summary>Inserts an item to the <see cref="IList{T}"/> at the specified index.</summary>
 		/// <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param>
@@ -562,8 +483,7 @@ namespace Vanara.Collections
 			}
 			if (index != Count)
 				CheckIndex(index);
-			var is2 = collection as ICollection<T>;
-			if (is2 != null)
+			if (collection is ICollection<T> is2)
 			{
 				var count = is2.Count;
 				if (count > 0)
@@ -611,20 +531,14 @@ namespace Vanara.Collections
 		/// <param name="item">The item.</param>
 		/// <param name="index">The index.</param>
 		/// <returns></returns>
-		public int LastIndexOf(T item, int index)
-		{
-			return LastIndexOf(item, index, Count - index + 1);
-		}
+		public int LastIndexOf(T item, int index) => LastIndexOf(item, index, Count - index + 1);
 
 		/// <summary>Lasts the index of.</summary>
 		/// <param name="item">The item.</param>
 		/// <param name="index">The index.</param>
 		/// <param name="count">The count.</param>
 		/// <returns></returns>
-		public int LastIndexOf(T item, int index, int count)
-		{
-			return Array.LastIndexOf(internalItems, item, index, count);
-		}
+		public int LastIndexOf(T item, int index, int count) => Array.LastIndexOf(internalItems, item, index, count);
 
 		/// <summary>Removes the first occurrence of a specific object from the <see cref="ICollection{T}"/>.</summary>
 		/// <param name="item">The object to remove from the <see cref="ICollection{T}"/>.</param>
@@ -917,6 +831,7 @@ namespace Vanara.Collections
 		{
 			ItemPropertyChanged?.Invoke(sender, e);
 		}
+
 		/// <summary>Called when [clear].</summary>
 		protected virtual void OnReset()
 		{
@@ -978,7 +893,7 @@ namespace Vanara.Collections
 
 		/// <summary>Enumerates over the <see cref="EventedList{T}"/>.</summary>
 		[Serializable, StructLayout(LayoutKind.Sequential)]
-		public struct Enumerator : IEnumerator<T>
+		private struct Enumerator : IEnumerator<T>
 		{
 			private readonly EventedList<T> list;
 			private int index;

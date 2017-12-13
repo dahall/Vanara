@@ -215,10 +215,10 @@ namespace Vanara.PInvoke
 		[PInvokeData("LibLoaderAPI.h")]
 		public class SafeLibraryHandle : GenericSafeHandle
 		{
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.SafeLibraryHandle"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeLibraryHandle"/> class.</summary>
 			public SafeLibraryHandle() : this(IntPtr.Zero) { }
 
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.SafeLibraryHandle"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeLibraryHandle"/> class.</summary>
 			/// <param name="fileName">
 			/// <para>
 			/// A string that specifies the file name of the module to load. This name is not related to the name stored in a library module itself, as specified
@@ -259,7 +259,7 @@ namespace Vanara.PInvoke
 				SetHandle(hLib);
 			}
 
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.SafeLibraryHandle"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeLibraryHandle"/> class.</summary>
 			/// <param name="handle">An existing handle created by <see cref="LoadLibrary"/> or <see cref="LoadLibraryEx"/>.</param>
 			/// <param name="own">if set to <c>true</c> calls <see cref="FreeLibrary"/> on disposal.</param>
 			public SafeLibraryHandle(IntPtr handle, bool own = true) : base(handle, FreeLibrary, own) { }

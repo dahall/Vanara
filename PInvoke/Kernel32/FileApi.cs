@@ -9,10 +9,10 @@ using System.Text;
 using System.Threading;
 using Microsoft.Win32.SafeHandles;
 using Vanara.InteropServices;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
 {
+	/// <summary>Fields, enums, functions and structures for kernel32.dll.</summary>
 	public static partial class Kernel32
 	{
 		/// <summary>A value returned when invalid file attributes are found.</summary>

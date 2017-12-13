@@ -16,7 +16,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Convert a <see cref="FILETIME"/> value to a <see cref="SYSTEMTIME"/> value.</summary>
-		/// <param name="st">The <see cref="FILETIME"/> value.</param>
+		/// <param name="ft">The <see cref="FILETIME"/> value.</param>
 		/// <returns>The converted <see cref="SYSTEMTIME"/> value.</returns>
 		public static SYSTEMTIME ToSYSTEMTIME(this FILETIME ft)
 		{

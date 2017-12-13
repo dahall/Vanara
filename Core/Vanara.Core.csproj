@@ -1,13 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>This library includes shared methods, structures and constants for use throughout the Vanara assemblies. Think of it as windows.h with some useful extensions.</Description>
+    <Description>This library includes shared methods, structures and constants for use throughout the Vanara assemblies. Think of it as windows.h with some useful extensions. It includes:
+* Extension methods for working with enumerated types (enum), FILETIME, and method and property extractions via reflection
+* Extension and helper methods to marshaling structures arrays and strings
+* SafeHandle based classes for working with memory allocated via CoTaskMem, HGlobal, or Local calls that handles packing and extracting arrays, structures and raw memory
+* Safe pinning of objects in memory
+* Memory stream based on marshaled memory</Description>
     <Copyright>Copyright © 2017</Copyright>
-    <AssemblyTitle>Vanara.Core</AssemblyTitle>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <VersionPrefix>1.0.4</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard20</TargetFrameworks>
     <AssemblyName>Vanara.Core</AssemblyName>
-    <PackageId>Vanara.Core</PackageId>
+    <PackageId>$(AssemblyName)</PackageId>
     <RootNamespace>Vanara</RootNamespace>
     <Authors>David Hall</Authors>
     <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>

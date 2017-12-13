@@ -128,12 +128,9 @@ namespace Vanara.PInvoke
 			reason = null;
 			if (!ShutdownBlockReasonQuery(hWnd, null, ref sz)) return false;
 			var sb = new StringBuilder((int)sz);
-			if (ShutdownBlockReasonQuery(hWnd, sb, ref sz))
-			{
-				reason = sb.ToString();
-				return true;
-			}
-			return false;
+			if (!ShutdownBlockReasonQuery(hWnd, sb, ref sz)) return false;
+			reason = sb.ToString();
+			return true;
 		}
 	}
 }

@@ -32,10 +32,10 @@ namespace Vanara.Collections
 		/// <value>The number of elements in the collection.</value>
 		public int Count => (int)getCount();
 
-		/// <summary>Gets the <see cref="TItem"/> at the specified zero-based index.</summary>
-		/// <value>The <see cref="TItem"/>.</value>
+		/// <summary>Gets the item at the specified zero-based index.</summary>
+		/// <value>The item.</value>
 		/// <param name="index">The zero-based index.</param>
-		/// <returns>The <see cref="TItem"/> at the specified zero-based index.</returns>
+		/// <returns>The item at the specified zero-based index.</returns>
 		public TItem this[int index] => indexer((uint)index + startIndex);
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
@@ -113,7 +113,7 @@ namespace Vanara.Collections
 			}
 			public TItem Current { get; private set; }
 			[ExcludeFromCodeCoverage]
-			object IEnumerator.Current => ((IEnumerator<TItem>)this).Current;
+			object IEnumerator.Current => Current;
 			void IDisposable.Dispose() { ienum = null; }
 		}
 	}

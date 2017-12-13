@@ -168,9 +168,7 @@ namespace Vanara.Extensions
 			return ret;
 		}
 
-		/// <summary>
-		/// Converts an <see cref="IntPtr"/> that points to a C-style array into a CLI array.
-		/// </summary>
+		/// <summary>Converts an <see cref="IntPtr"/> that points to a C-style array into a CLI array.</summary>
 		/// <typeparam name="T">Type of native structure used by the C-style array.</typeparam>
 		/// <param name="ptr">The <see cref="IntPtr"/> pointing to the native array.</param>
 		/// <param name="count">The number of items in the native array.</param>
@@ -186,9 +184,7 @@ namespace Vanara.Extensions
 			return ret;
 		}
 
-		/// <summary>
-		/// Converts an <see cref="IntPtr"/> that points to a C-style array into an <see cref="IEnumerable{T}"/>.
-		/// </summary>
+		/// <summary>Converts an <see cref="IntPtr"/> that points to a C-style array into an <see cref="IEnumerable{T}"/>.</summary>
 		/// <typeparam name="T">Type of native structure used by the C-style array.</typeparam>
 		/// <param name="ptr">The <see cref="IntPtr"/> pointing to the native array.</param>
 		/// <param name="count">The number of items in the native array.</param>
@@ -218,11 +214,9 @@ namespace Vanara.Extensions
 			unsafe { return new UIntPtr(p.ToPointer()); }
 		}
 
-		/// <summary>
-		/// Converts an <see cref="IntPtr" /> to a structure. If pointer has no value, <c>null</c> is returned.
-		/// </summary>
+		/// <summary>Converts an <see cref="IntPtr"/> to a structure. If pointer has no value, <c>null</c> is returned.</summary>
 		/// <typeparam name="T">Type of the structure.</typeparam>
-		/// <param name="ptr">The <see cref="IntPtr" /> that points to allocated memory holding a structure or <see cref="IntPtr.Zero"/>.</param>
+		/// <param name="ptr">The <see cref="IntPtr"/> that points to allocated memory holding a structure or <see cref="IntPtr.Zero"/>.</param>
 		/// <returns>The converted structure or <c>null</c>.</returns>
 		public static T? ToNullableStructure<T>(this IntPtr ptr) where T : struct => ptr != IntPtr.Zero ? ptr.ToStructure<T>() : (T?)null;
 
@@ -244,7 +238,10 @@ namespace Vanara.Extensions
 			return instance;
 		}
 
-		/// <summary>Gets the length of a null terminated array of pointers. <note type="warning">This is a very dangerous function and can result in memory access errors if the <paramref name="lptr"/> does not point to a null-terminated array of pointers.</note></summary>
+		/// <summary>
+		/// Gets the length of a null terminated array of pointers. <note type="warning">This is a very dangerous function and can result in memory access errors
+		/// if the <paramref name="lptr"/> does not point to a null-terminated array of pointers.</note>
+		/// </summary>
 		/// <param name="lptr">The <see cref="IntPtr"/> pointing to the native array.</param>
 		/// <returns>The number of non-null pointers in the array. If <paramref name="lptr"/> is equal to IntPtr.Zero, this result is 0.</returns>
 		public static int GetNulledPtrArrayLength(this IntPtr lptr)

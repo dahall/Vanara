@@ -8,7 +8,7 @@ using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke
 {
-	public static partial class User32
+	public static partial class User32_Gdi
 	{
 		/// <summary>
 		/// Specifies the load options for <see cref="LoadImage"/>.

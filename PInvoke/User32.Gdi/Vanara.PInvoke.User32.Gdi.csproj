@@ -1,19 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Description>Shared methods, structures and constants for use throughout the Vanara.PInvoke assemblies. Includes:
-* IEnumerable helpers for COM enumerations
-* Custom marshaler for CoTaskMem pointers
-* Enhanced error results classes for HRESULT, Win32Error and NTStatus
-* Standard windows.h macros (e.g. HIWORD, MAKELONG, etc.)
-* Overlapped method wrapper
-* Resource ID holder
-* Shared structures and enums (see release notes)</Description>
+    <Description>Methods, structures and constants imported from User32.dll and specific to graphics or window management.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <VersionPrefix>1.0.4</VersionPrefix>
-    <TargetFrameworks>net20;net35;net40;net45;netstandard20</TargetFrameworks>
-    <AssemblyName>Vanara.PInvoke.Shared</AssemblyName>
+    <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
+    <AssemblyName>Vanara.PInvoke.User32.Gdi</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <RootNamespace>Vanara.PInvoke</RootNamespace>
     <Authors>David Hall</Authors>
@@ -29,45 +22,38 @@
     <Company>GitHub Community</Company>
     <Product>Vanara</Product>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <PackageReleaseNotes>Enums
-ACCESS_MASK, DrawTextFlags, FileFlagsAndAttributes, ProcessorArchitecture, ResourceType, SECURITY_INFORMATION, SystemShutDownReason
+    <PackageReleaseNotes>Currently implements:
 
-Structures/Types
-HRESULT, NTSTATUS, OBJECT_TYPE_LIST, RECT, SIZE, SECURITY_ATTRIBUTES, STGM, SYSTEMTIME, WIN32ERROR, WIN32_FIND_DATA
+Functions
+CallNextHookEx, ChildWindowFromPointEx, DestroyIcon, DrawTextA, DrawTextW, ExitWindowsEx, GetActiveWindow, GetClientRect, GetIconInfo, GetWindowLongA, GetWindowLongPtrA, GetWindowLongPtrW, GetWindowLongW, GetWindowRect, InvalidateRect, LoadImageA, LoadImageW, LoadStringA, LoadStringW, LockWorkStation, MapWindowPoints, RealGetWindowClassA, RealGetWindowClassW, RegisterHotKey, RegisterWindowMessageA, RegisterWindowMessageW, ScreenToClient, SendMessageA, SendMessageW, SetWindowPos, SetWindowsHookExA, SetWindowsHookExW, SetWindowTextA, SetWindowTextW, ShutdownBlockReasonCreate, ShutdownBlockReasonDestroy, ShutdownBlockReasonQuery, UnhookWindowsHookEx, UnregisterHotKey, WindowFromPoint
 
-Macros
-HIBYTE, HIWORD, LOBYTE, LOWORD, MAKELONG, MAKELONG64, MAKELPARAM, MAKEWORD, IS_INTRESOURCE, MAKEINTRESOURCE</PackageReleaseNotes>
+Structures
+ICONINFO, NMHDR, MINMAXINFO, WINDOWPOS, GRPICONDIR, GRPICONDIRENTRY
+
+</PackageReleaseNotes>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="InteropServices\SafeLocalHandle.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
-  </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net20' ">
     <Reference Include="System" />
   </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
     <Reference Include="System" />
   </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
+    <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
 </Project>

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using HTREEITEM = System.IntPtr;
-using static Vanara.PInvoke.User32;
+using static Vanara.PInvoke.User32_Gdi;
 
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 // ReSharper disable InconsistentNaming
@@ -53,9 +53,9 @@ namespace Vanara.PInvoke
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760143")]
 		public enum TreeViewActionFlag
 		{
-			/// <summaryRetrieves the currently selected item. You can use the TreeView_GetSelection macro to send this message.</summary>
+			/// <summary>Retrieves the currently selected item. You can use the TreeView_GetSelection macro to send this message.</summary>
 			TVGN_CARET = 0x0009,
-			/// <summaryRetrieves the first child item of the item specified by the hitem parameter. You can use the TreeView_GetChild macro to send this message.</summary>
+			/// <summary>Retrieves the first child item of the item specified by the hitem parameter. You can use the TreeView_GetChild macro to send this message.</summary>
 			TVGN_CHILD = 0x0004,
 			/// <summary>Retrieves the item that is the target of a drag-and-drop operation. You can use the TreeView_GetDropHilight macro to send this message.</summary>
 			TVGN_DROPHILITE = 0x0008,
@@ -143,7 +143,7 @@ namespace Vanara.PInvoke
 			TVI_SORT = -0x0FFFD
 		}
 
-		/// <summary>Used in <see cref="TVITEM"/> and <see cref="TVITMEEX"/> mask members to indicate which structure members contain valid data.</summary>
+		/// <summary>Used in <see cref="TVITEM"/> and <see cref="TVITEMEX"/> mask members to indicate which structure members contain valid data.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb773459")]
 		[Flags]
 		public enum TreeViewItemMask
@@ -409,6 +409,7 @@ namespace Vanara.PInvoke
 			TVS_EX_RICHTOOLTIP = 0x0010,
 		}
 
+		/// <summary>Tree view button item part.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb773442")]
 		public enum TVITEMPART
 		{

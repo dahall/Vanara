@@ -9,7 +9,7 @@ using static Vanara.PInvoke.Gdi32;
 
 namespace Vanara.PInvoke
 {
-	public static partial class User32
+	public static partial class User32_Gdi
 	{
 		public const int OCM_NOTIFY = 0x204E; // WM_NOTIFY + WM_REFLECT
 

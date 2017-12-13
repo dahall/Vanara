@@ -1,7 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Reflection;
-using System.Reflection.Emit;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -14,7 +12,7 @@ namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
-		/// <summary>Flags passed to the <see cref=Vanara.PInvokee.FormatMessage(FormatMessageFlags,SafeLibraryHandle,int,int,System.IntPtr,int,string[])"/> method.</summary>
+		/// <summary>Flags passed to the <see cref="Kernel32.FormatMessage(Vanara.PInvoke.Kernel32.FormatMessageFlags,Vanara.PInvoke.Kernel32.SafeLibraryHandle,uint,uint,ref System.IntPtr,uint,string[])"/> method.</summary>
 		[PInvokeData("winbase.h")]
 		[Flags]
 		public enum FormatMessageFlags

@@ -5,7 +5,7 @@ using static Vanara.PInvoke.Gdi32;
 
 namespace Vanara.PInvoke
 {
-	public static partial class User32
+	public static partial class User32_Gdi
 	{
 		/// <summary>Contains information about an icon or a cursor.</summary>
 		[StructLayout(LayoutKind.Sequential)]
