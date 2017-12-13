@@ -33,7 +33,7 @@ using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using static Vanara.PInvoke.Shell32;
-using static Vanara.PInvoke.User32;
+using static Vanara.PInvoke.User32_Gdi;
 
 namespace Vanara.Extensions
 {

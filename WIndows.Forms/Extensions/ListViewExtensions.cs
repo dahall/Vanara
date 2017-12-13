@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
 using static Vanara.PInvoke.ComCtl32;
-using static Vanara.PInvoke.User32;
+using static Vanara.PInvoke.User32_Gdi;
 
 namespace Vanara.Extensions
 {

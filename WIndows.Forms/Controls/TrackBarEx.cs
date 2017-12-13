@@ -10,7 +10,7 @@ using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Macros;
-using static Vanara.PInvoke.User32;
+using static Vanara.PInvoke.User32_Gdi;
 
 namespace Vanara.Windows.Forms
 {

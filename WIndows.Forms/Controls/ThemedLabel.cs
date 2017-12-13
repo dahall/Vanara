@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using Vanara.Extensions;
-using static Vanara.PInvoke.User32;
+using static Vanara.PInvoke.User32_Gdi;
 
 namespace Vanara.Windows.Forms
 {

@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>Classes for user interface related items derived from the Vanara PInvoke libraries. Includes shutdown/restart/lock control, buffered painting, network profile and list management, resource files, access control editor, simplifed designer framework for Windows.Forms, Windows Shell objects (files, icons, links, taskbar lists).</Description>
+    <Description>Classes for user interface related items derived from the Vanara PInvoke libraries. Includes extensions for almost all common controls to give post Vista capabilities, WinForms controls (panel, commandlink, enhanced combo boxes, IPAddress, split button, trackbar and themed controls), shutdown/restart/lock control, buffered painting, resource files, access control editor, simplifed designer framework for Windows.Forms.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <VersionPrefix>1.0.4</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
-    <AssemblyName>Vanara.UI</AssemblyName>
+    <AssemblyName>Vanara.Windows.Forms</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
@@ -74,6 +74,7 @@
     <ProjectReference Include="..\PInvoke\NetListMgr\Vanara.PInvoke.NetListMgr.csproj" />
     <ProjectReference Include="..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj" />
     <ProjectReference Include="..\PInvoke\Shell32\Vanara.PInvoke.Shell32.csproj" />
+    <ProjectReference Include="..\PInvoke\User32.Gdi\Vanara.PInvoke.User32.Gdi.csproj" />
     <ProjectReference Include="..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
     <ProjectReference Include="..\PInvoke\UxTheme\Vanara.PInvoke.UxTheme.csproj" />
     <ProjectReference Include="..\Security\Vanara.Security.csproj" />

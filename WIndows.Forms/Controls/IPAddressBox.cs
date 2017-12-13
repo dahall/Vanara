@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Vanara.Extensions;
 using static Vanara.PInvoke.ComCtl32;
-using static Vanara.PInvoke.User32;
+using static Vanara.PInvoke.User32_Gdi;
 
 // ReSharper disable InconsistentNaming
 
@@ -222,7 +222,7 @@ namespace Vanara.Windows.Forms
 		}
 
 		private IntPtr SendMessage(IPAddressMessage msg, UIntPtr wParam = default(UIntPtr), UIntPtr lParam = default(UIntPtr)) =>
-			PInvoke.User32.SendMessage(new HandleRef(this, Handle), (uint)msg, wParam, lParam);
+			PInvoke.User32_Gdi.SendMessage(new HandleRef(this, Handle), (uint)msg, wParam, lParam);
 	}
 
 	/// <summary>
