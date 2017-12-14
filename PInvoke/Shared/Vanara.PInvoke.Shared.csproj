@@ -62,12 +62,10 @@ HIBYTE, HIWORD, LOBYTE, LOWORD, MAKELONG, MAKELONG64, MAKELPARAM, MAKEWORD, IS_I
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
     <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
 </Project>

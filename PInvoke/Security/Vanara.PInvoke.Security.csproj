@@ -44,11 +44,9 @@ INHERITED_FROM, TRUSTEE, LSA_OBJECT_ATTRIBUTES, LSA_STRING, LSA_TRANSLATED_NAME,
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
     <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
     <PackageReference Include="System.Security.AccessControl" Version="4.4.0" />

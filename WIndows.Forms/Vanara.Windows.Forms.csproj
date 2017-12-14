@@ -50,7 +50,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
@@ -58,7 +57,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
   <ItemGroup>
@@ -71,7 +69,6 @@
     <ProjectReference Include="..\PInvoke\ComCtl32\Vanara.PInvoke.ComCtl32.csproj" />
     <ProjectReference Include="..\PInvoke\CredUI\Vanara.PInvoke.CredUI.csproj" />
     <ProjectReference Include="..\PInvoke\DwmApi\Vanara.PInvoke.DwmApi.csproj" />
-    <ProjectReference Include="..\PInvoke\NetListMgr\Vanara.PInvoke.NetListMgr.csproj" />
     <ProjectReference Include="..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj" />
     <ProjectReference Include="..\PInvoke\Shell32\Vanara.PInvoke.Shell32.csproj" />
     <ProjectReference Include="..\PInvoke\User32.Gdi\Vanara.PInvoke.User32.Gdi.csproj" />
