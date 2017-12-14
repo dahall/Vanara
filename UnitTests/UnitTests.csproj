@@ -202,7 +202,7 @@
       <Project>{eeec146d-14b2-4eef-9155-e1aef82d85f6}</Project>
       <Name>Vanara.SystemServices</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UI\Vanara.Windows.Forms.csproj">
+    <ProjectReference Include="..\Windows.Forms\Vanara.Windows.Forms.csproj">
       <Project>{51986cd3-eeda-4369-93a4-255512548f68}</Project>
       <Name>Vanara.Windows.Forms</Name>
     </ProjectReference>
