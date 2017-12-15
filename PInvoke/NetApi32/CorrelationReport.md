@@ -1,5 +1,5 @@
 ## Correlation report for netapi32.dll
-### Methods (1% complete)
+### Methods (2% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
 [DavAddConnection](https://www.google.com/search?num=5&q=DavAddConnection+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
@@ -35,43 +35,6 @@ Native Method | Native DLL | Header | Managed Method
 [DsRoleGetPrimaryDomainInformation](https://www.google.com/search?num=5&q=DsRoleGetPrimaryDomainInformation+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
 [DsValidateSubnetNameA](https://www.google.com/search?num=5&q=DsValidateSubnetNameA+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
 [DsValidateSubnetNameW](https://www.google.com/search?num=5&q=DsValidateSubnetNameW+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_BrowserSetNetlogonState](https://www.google.com/search?num=5&q=I_BrowserSetNetlogonState+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_DsUpdateReadOnlyServerDnsRecords](https://www.google.com/search?num=5&q=I_DsUpdateReadOnlyServerDnsRecords+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetAccountDeltas](https://www.google.com/search?num=5&q=I_NetAccountDeltas+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetAccountSync](https://www.google.com/search?num=5&q=I_NetAccountSync+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetChainSetClientAttributes](https://www.google.com/search?num=5&q=I_NetChainSetClientAttributes+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetChainSetClientAttributes2](https://www.google.com/search?num=5&q=I_NetChainSetClientAttributes2+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetDatabaseDeltas](https://www.google.com/search?num=5&q=I_NetDatabaseDeltas+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetDatabaseRedo](https://www.google.com/search?num=5&q=I_NetDatabaseRedo+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetDatabaseSync](https://www.google.com/search?num=5&q=I_NetDatabaseSync+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetDatabaseSync2](https://www.google.com/search?num=5&q=I_NetDatabaseSync2+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetDfsGetVersion](https://www.google.com/search?num=5&q=I_NetDfsGetVersion+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetDfsIsThisADomainName](https://www.google.com/search?num=5&q=I_NetDfsIsThisADomainName+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetGetDCList](https://www.google.com/search?num=5&q=I_NetGetDCList+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetGetForestTrustInformation](https://www.google.com/search?num=5&q=I_NetGetForestTrustInformation+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetlogonComputeClientDigest](https://www.google.com/search?num=5&q=I_NetlogonComputeClientDigest+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetlogonComputeServerDigest](https://www.google.com/search?num=5&q=I_NetlogonComputeServerDigest+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetLogonControl](https://www.google.com/search?num=5&q=I_NetLogonControl+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetLogonControl2](https://www.google.com/search?num=5&q=I_NetLogonControl2+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetLogonGetDomainInfo](https://www.google.com/search?num=5&q=I_NetLogonGetDomainInfo+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetLogonSamLogoff](https://www.google.com/search?num=5&q=I_NetLogonSamLogoff+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetLogonSamLogon](https://www.google.com/search?num=5&q=I_NetLogonSamLogon+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetLogonSamLogonEx](https://www.google.com/search?num=5&q=I_NetLogonSamLogonEx+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetLogonSamLogonWithFlags](https://www.google.com/search?num=5&q=I_NetLogonSamLogonWithFlags+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetLogonSendToSam](https://www.google.com/search?num=5&q=I_NetLogonSendToSam+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetLogonUasLogoff](https://www.google.com/search?num=5&q=I_NetLogonUasLogoff+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetLogonUasLogon](https://www.google.com/search?num=5&q=I_NetLogonUasLogon+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetServerAuthenticate](https://www.google.com/search?num=5&q=I_NetServerAuthenticate+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetServerAuthenticate2](https://www.google.com/search?num=5&q=I_NetServerAuthenticate2+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetServerAuthenticate3](https://www.google.com/search?num=5&q=I_NetServerAuthenticate3+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetServerGetTrustInfo](https://www.google.com/search?num=5&q=I_NetServerGetTrustInfo+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetServerPasswordGet](https://www.google.com/search?num=5&q=I_NetServerPasswordGet+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetServerPasswordSet](https://www.google.com/search?num=5&q=I_NetServerPasswordSet+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetServerPasswordSet2](https://www.google.com/search?num=5&q=I_NetServerPasswordSet2+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetServerReqChallenge](https://www.google.com/search?num=5&q=I_NetServerReqChallenge+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetServerSetServiceBits](https://www.google.com/search?num=5&q=I_NetServerSetServiceBits+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetServerSetServiceBitsEx](https://www.google.com/search?num=5&q=I_NetServerSetServiceBitsEx+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[I_NetServerTrustPasswordsGet](https://www.google.com/search?num=5&q=I_NetServerTrustPasswordsGet+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
 [NetAccessAdd](https://www.google.com/search?num=5&q=NetAccessAdd+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
 [NetAccessDel](https://www.google.com/search?num=5&q=NetAccessDel+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
 [NetAccessEnum](https://www.google.com/search?num=5&q=NetAccessEnum+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
@@ -286,18 +249,6 @@ Native Method | Native DLL | Header | Managed Method
 [NetWkstaUserEnum](https://www.google.com/search?num=5&q=NetWkstaUserEnum+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
 [NetWkstaUserGetInfo](https://www.google.com/search?num=5&q=NetWkstaUserGetInfo+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
 [NetWkstaUserSetInfo](https://www.google.com/search?num=5&q=NetWkstaUserSetInfo+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[NlBindingAddServerToCache](https://www.google.com/search?num=5&q=NlBindingAddServerToCache+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[NlBindingRemoveServerFromCache](https://www.google.com/search?num=5&q=NlBindingRemoveServerFromCache+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[NlBindingSetAuthInfo](https://www.google.com/search?num=5&q=NlBindingSetAuthInfo+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[RxNetAccessAdd](https://www.google.com/search?num=5&q=RxNetAccessAdd+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[RxNetAccessDel](https://www.google.com/search?num=5&q=RxNetAccessDel+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[RxNetAccessEnum](https://www.google.com/search?num=5&q=RxNetAccessEnum+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[RxNetAccessGetInfo](https://www.google.com/search?num=5&q=RxNetAccessGetInfo+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[RxNetAccessGetUserPerms](https://www.google.com/search?num=5&q=RxNetAccessGetUserPerms+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[RxNetAccessSetInfo](https://www.google.com/search?num=5&q=RxNetAccessSetInfo+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[RxNetServerEnum](https://www.google.com/search?num=5&q=RxNetServerEnum+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[RxNetUserPasswordSet](https://www.google.com/search?num=5&q=RxNetUserPasswordSet+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[RxRemoteApi](https://www.google.com/search?num=5&q=RxRemoteApi+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
 ### Structures
 Native Structure | Header | Managed Structure
 ---- | ---- | ----

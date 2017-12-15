@@ -1,5 +1,5 @@
 ## Correlation report for dwmapi.dll
-### Methods (14% complete)
+### Methods (19% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
 [DwmAttachMilContent](https://www.google.com/search?num=5&q=DwmAttachMilContent+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
@@ -19,16 +19,6 @@ Native Method | Native DLL | Header | Managed Method
 [DwmInvalidateIconicBitmaps](https://www.google.com/search?num=5&q=DwmInvalidateIconicBitmaps+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
 [DwmIsCompositionEnabled](https://www.google.com/search?num=5&q=DwmIsCompositionEnabled+site%3Amsdn.microsoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmIsCompositionEnabled
 [DwmModifyPreviousDxFrameDuration](https://www.google.com/search?num=5&q=DwmModifyPreviousDxFrameDuration+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
-[DwmpAllocateSecurityDescriptor](https://www.google.com/search?num=5&q=DwmpAllocateSecurityDescriptor+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
-[DwmpDxBindSwapChain](https://www.google.com/search?num=5&q=DwmpDxBindSwapChain+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
-[DwmpDxGetWindowSharedSurface](https://www.google.com/search?num=5&q=DwmpDxGetWindowSharedSurface+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
-[DwmpDxgiIsThreadDesktopComposited](https://www.google.com/search?num=5&q=DwmpDxgiIsThreadDesktopComposited+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
-[DwmpDxUnbindSwapChain](https://www.google.com/search?num=5&q=DwmpDxUnbindSwapChain+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
-[DwmpDxUpdateWindowRedirectionBltSurface](https://www.google.com/search?num=5&q=DwmpDxUpdateWindowRedirectionBltSurface+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
-[DwmpDxUpdateWindowSharedSurface](https://www.google.com/search?num=5&q=DwmpDxUpdateWindowSharedSurface+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
-[DwmpEnableDDASupport](https://www.google.com/search?num=5&q=DwmpEnableDDASupport+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
-[DwmpFreeSecurityDescriptor](https://www.google.com/search?num=5&q=DwmpFreeSecurityDescriptor+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
-[DwmpRenderFlick](https://www.google.com/search?num=5&q=DwmpRenderFlick+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
 [DwmQueryThumbnailSourceSize](https://www.google.com/search?num=5&q=DwmQueryThumbnailSourceSize+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
 [DwmRegisterThumbnail](https://www.google.com/search?num=5&q=DwmRegisterThumbnail+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
 [DwmRenderGesture](https://www.google.com/search?num=5&q=DwmRenderGesture+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 

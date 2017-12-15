@@ -1,5 +1,5 @@
 ## Correlation report for ntdsapi.dll
-### Methods (9% complete)
+### Methods (10% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
 [DsAddCloneDCW](https://www.google.com/search?num=5&q=DsAddCloneDCW+site%3Amsdn.microsoft.com) | ntdsapi.dll |  | 
@@ -30,10 +30,6 @@ Native Method | Native DLL | Header | Managed Method
 [DsCrackNamesA](https://www.google.com/search?num=5&q=DsCrackNamesA+site%3Amsdn.microsoft.com) | ntdsapi.dll | Ntdsapi.h | Vanara.PInvoke.NTDSApi.DsCrackNames
 [DsCrackNamesW](https://www.google.com/search?num=5&q=DsCrackNamesW+site%3Amsdn.microsoft.com) | ntdsapi.dll | Ntdsapi.h | Vanara.PInvoke.NTDSApi.DsCrackNames
 [DsCrackNamesWWorker](https://www.google.com/search?num=5&q=DsCrackNamesWWorker+site%3Amsdn.microsoft.com) | ntdsapi.dll |  | 
-[DsCrackSpn2A](https://www.google.com/search?num=5&q=DsCrackSpn2A+site%3Amsdn.microsoft.com) | ntdsapi.dll |  | 
-[DsCrackSpn2W](https://www.google.com/search?num=5&q=DsCrackSpn2W+site%3Amsdn.microsoft.com) | ntdsapi.dll |  | 
-[DsCrackSpn3W](https://www.google.com/search?num=5&q=DsCrackSpn3W+site%3Amsdn.microsoft.com) | ntdsapi.dll |  | 
-[DsCrackSpn4W](https://www.google.com/search?num=5&q=DsCrackSpn4W+site%3Amsdn.microsoft.com) | ntdsapi.dll |  | 
 [DsCrackSpnA](https://www.google.com/search?num=5&q=DsCrackSpnA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  | 
 [DsCrackSpnW](https://www.google.com/search?num=5&q=DsCrackSpnW+site%3Amsdn.microsoft.com) | ntdsapi.dll |  | 
 [DsCrackUnquotedMangledRdnA](https://www.google.com/search?num=5&q=DsCrackUnquotedMangledRdnA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  | 
@@ -130,9 +126,6 @@ Native Method | Native DLL | Header | Managed Method
 [DsUnquoteRdnValueW](https://www.google.com/search?num=5&q=DsUnquoteRdnValueW+site%3Amsdn.microsoft.com) | ntdsapi.dll |  | 
 [DsWriteAccountSpnA](https://www.google.com/search?num=5&q=DsWriteAccountSpnA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  | 
 [DsWriteAccountSpnW](https://www.google.com/search?num=5&q=DsWriteAccountSpnW+site%3Amsdn.microsoft.com) | ntdsapi.dll |  | 
-[DsWriteNgcKeyA](https://www.google.com/search?num=5&q=DsWriteNgcKeyA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  | 
-[DsWriteNgcKeyW](https://www.google.com/search?num=5&q=DsWriteNgcKeyW+site%3Amsdn.microsoft.com) | ntdsapi.dll |  | 
-[DsWriteNgcKeyWWorker](https://www.google.com/search?num=5&q=DsWriteNgcKeyWWorker+site%3Amsdn.microsoft.com) | ntdsapi.dll |  | 
 ### Structures
 Native Structure | Header | Managed Structure
 ---- | ---- | ----

@@ -1,10 +1,7 @@
 ## Correlation report for advapi32.dll, secur32.dll, authz.dll
-### Methods (10% complete)
+### Methods (11% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
-[A_SHAFinal](https://www.google.com/search?num=5&q=A_SHAFinal+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[A_SHAInit](https://www.google.com/search?num=5&q=A_SHAInit+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[A_SHAUpdate](https://www.google.com/search?num=5&q=A_SHAUpdate+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [AbortSystemShutdownA](https://www.google.com/search?num=5&q=AbortSystemShutdownA+site%3Amsdn.microsoft.com) | advapi32.dll | winreg.h | Vanara.PInvoke.AdvApi32.AbortSystemShutdown
 [AbortSystemShutdownW](https://www.google.com/search?num=5&q=AbortSystemShutdownW+site%3Amsdn.microsoft.com) | advapi32.dll | winreg.h | Vanara.PInvoke.AdvApi32.AbortSystemShutdown
 [AcceptSecurityContext](https://www.google.com/search?num=5&q=AcceptSecurityContext+site%3Amsdn.microsoft.com) | secur32.dll |  | 
@@ -320,27 +317,6 @@ Native Method | Native DLL | Header | Managed Method
 [DuplicateEncryptionInfoFile](https://www.google.com/search?num=5&q=DuplicateEncryptionInfoFile+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [DuplicateToken](https://www.google.com/search?num=5&q=DuplicateToken+site%3Amsdn.microsoft.com) | advapi32.dll |  | Vanara.PInvoke.AdvApi32.DuplicateToken
 [DuplicateTokenEx](https://www.google.com/search?num=5&q=DuplicateTokenEx+site%3Amsdn.microsoft.com) | advapi32.dll |  | Vanara.PInvoke.AdvApi32.DuplicateTokenEx
-[ElfBackupEventLogFileA](https://www.google.com/search?num=5&q=ElfBackupEventLogFileA+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ElfBackupEventLogFileW](https://www.google.com/search?num=5&q=ElfBackupEventLogFileW+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ElfChangeNotify](https://www.google.com/search?num=5&q=ElfChangeNotify+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ElfClearEventLogFileA](https://www.google.com/search?num=5&q=ElfClearEventLogFileA+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ElfClearEventLogFileW](https://www.google.com/search?num=5&q=ElfClearEventLogFileW+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ElfCloseEventLog](https://www.google.com/search?num=5&q=ElfCloseEventLog+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ElfDeregisterEventSource](https://www.google.com/search?num=5&q=ElfDeregisterEventSource+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ElfFlushEventLog](https://www.google.com/search?num=5&q=ElfFlushEventLog+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ElfNumberOfRecords](https://www.google.com/search?num=5&q=ElfNumberOfRecords+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ElfOldestRecord](https://www.google.com/search?num=5&q=ElfOldestRecord+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ElfOpenBackupEventLogA](https://www.google.com/search?num=5&q=ElfOpenBackupEventLogA+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ElfOpenBackupEventLogW](https://www.google.com/search?num=5&q=ElfOpenBackupEventLogW+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ElfOpenEventLogA](https://www.google.com/search?num=5&q=ElfOpenEventLogA+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ElfOpenEventLogW](https://www.google.com/search?num=5&q=ElfOpenEventLogW+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ElfReadEventLogA](https://www.google.com/search?num=5&q=ElfReadEventLogA+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ElfReadEventLogW](https://www.google.com/search?num=5&q=ElfReadEventLogW+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ElfRegisterEventSourceA](https://www.google.com/search?num=5&q=ElfRegisterEventSourceA+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ElfRegisterEventSourceW](https://www.google.com/search?num=5&q=ElfRegisterEventSourceW+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ElfReportEventA](https://www.google.com/search?num=5&q=ElfReportEventA+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ElfReportEventAndSourceW](https://www.google.com/search?num=5&q=ElfReportEventAndSourceW+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ElfReportEventW](https://www.google.com/search?num=5&q=ElfReportEventW+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [EnableTrace](https://www.google.com/search?num=5&q=EnableTrace+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [EnableTraceEx](https://www.google.com/search?num=5&q=EnableTraceEx+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [EnableTraceEx2](https://www.google.com/search?num=5&q=EnableTraceEx2+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
@@ -478,18 +454,6 @@ Native Method | Native DLL | Header | Managed Method
 [GetUserNameExW](https://www.google.com/search?num=5&q=GetUserNameExW+site%3Amsdn.microsoft.com) | secur32.dll |  | 
 [GetUserNameW](https://www.google.com/search?num=5&q=GetUserNameW+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [GetWindowsAccountDomainSid](https://www.google.com/search?num=5&q=GetWindowsAccountDomainSid+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[I_QueryTagInformation](https://www.google.com/search?num=5&q=I_QueryTagInformation+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[I_ScGetCurrentGroupStateW](https://www.google.com/search?num=5&q=I_ScGetCurrentGroupStateW+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[I_ScIsSecurityProcess](https://www.google.com/search?num=5&q=I_ScIsSecurityProcess+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[I_ScPnPGetServiceName](https://www.google.com/search?num=5&q=I_ScPnPGetServiceName+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[I_ScQueryServiceConfig](https://www.google.com/search?num=5&q=I_ScQueryServiceConfig+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[I_ScRegisterPreshutdownRestart](https://www.google.com/search?num=5&q=I_ScRegisterPreshutdownRestart+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[I_ScReparseServiceDatabase](https://www.google.com/search?num=5&q=I_ScReparseServiceDatabase+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[I_ScSendPnPMessage](https://www.google.com/search?num=5&q=I_ScSendPnPMessage+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[I_ScSendTSMessage](https://www.google.com/search?num=5&q=I_ScSendTSMessage+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[I_ScSetServiceBitsA](https://www.google.com/search?num=5&q=I_ScSetServiceBitsA+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[I_ScSetServiceBitsW](https://www.google.com/search?num=5&q=I_ScSetServiceBitsW+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[I_ScValidatePnPService](https://www.google.com/search?num=5&q=I_ScValidatePnPService+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [IdentifyCodeAuthzLevelW](https://www.google.com/search?num=5&q=IdentifyCodeAuthzLevelW+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [ImpersonateAnonymousToken](https://www.google.com/search?num=5&q=ImpersonateAnonymousToken+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [ImpersonateLoggedOnUser](https://www.google.com/search?num=5&q=ImpersonateLoggedOnUser+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
@@ -930,44 +894,6 @@ Native Method | Native DLL | Header | Managed Method
 [StartTraceW](https://www.google.com/search?num=5&q=StartTraceW+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [StopTraceA](https://www.google.com/search?num=5&q=StopTraceA+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [StopTraceW](https://www.google.com/search?num=5&q=StopTraceW+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction001](https://www.google.com/search?num=5&q=SystemFunction001+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction002](https://www.google.com/search?num=5&q=SystemFunction002+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction003](https://www.google.com/search?num=5&q=SystemFunction003+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction004](https://www.google.com/search?num=5&q=SystemFunction004+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction005](https://www.google.com/search?num=5&q=SystemFunction005+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction006](https://www.google.com/search?num=5&q=SystemFunction006+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction007](https://www.google.com/search?num=5&q=SystemFunction007+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction008](https://www.google.com/search?num=5&q=SystemFunction008+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction009](https://www.google.com/search?num=5&q=SystemFunction009+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction010](https://www.google.com/search?num=5&q=SystemFunction010+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction011](https://www.google.com/search?num=5&q=SystemFunction011+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction012](https://www.google.com/search?num=5&q=SystemFunction012+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction013](https://www.google.com/search?num=5&q=SystemFunction013+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction014](https://www.google.com/search?num=5&q=SystemFunction014+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction015](https://www.google.com/search?num=5&q=SystemFunction015+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction016](https://www.google.com/search?num=5&q=SystemFunction016+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction017](https://www.google.com/search?num=5&q=SystemFunction017+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction018](https://www.google.com/search?num=5&q=SystemFunction018+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction019](https://www.google.com/search?num=5&q=SystemFunction019+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction020](https://www.google.com/search?num=5&q=SystemFunction020+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction021](https://www.google.com/search?num=5&q=SystemFunction021+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction022](https://www.google.com/search?num=5&q=SystemFunction022+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction023](https://www.google.com/search?num=5&q=SystemFunction023+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction024](https://www.google.com/search?num=5&q=SystemFunction024+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction025](https://www.google.com/search?num=5&q=SystemFunction025+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction026](https://www.google.com/search?num=5&q=SystemFunction026+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction027](https://www.google.com/search?num=5&q=SystemFunction027+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction028](https://www.google.com/search?num=5&q=SystemFunction028+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction029](https://www.google.com/search?num=5&q=SystemFunction029+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction030](https://www.google.com/search?num=5&q=SystemFunction030+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction031](https://www.google.com/search?num=5&q=SystemFunction031+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction032](https://www.google.com/search?num=5&q=SystemFunction032+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction033](https://www.google.com/search?num=5&q=SystemFunction033+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction034](https://www.google.com/search?num=5&q=SystemFunction034+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction035](https://www.google.com/search?num=5&q=SystemFunction035+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction036](https://www.google.com/search?num=5&q=SystemFunction036+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction040](https://www.google.com/search?num=5&q=SystemFunction040+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[SystemFunction041](https://www.google.com/search?num=5&q=SystemFunction041+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [TraceEvent](https://www.google.com/search?num=5&q=TraceEvent+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [TraceEventInstance](https://www.google.com/search?num=5&q=TraceEventInstance+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [TraceMessage](https://www.google.com/search?num=5&q=TraceMessage+site%3Amsdn.microsoft.com) | advapi32.dll |  | 

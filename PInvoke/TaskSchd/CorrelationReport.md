@@ -2,16 +2,7 @@
 ### Methods (0% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
-[ConvertAtJobsToTasks](https://www.google.com/search?num=5&q=ConvertAtJobsToTasks+site%3Amsdn.microsoft.com) | mstask.dll |  | 
 [GetNetScheduleAccountInformation](https://www.google.com/search?num=5&q=GetNetScheduleAccountInformation+site%3Amsdn.microsoft.com) | mstask.dll |  | 
-[NetrJobAdd](https://www.google.com/search?num=5&q=NetrJobAdd+site%3Amsdn.microsoft.com) | mstask.dll |  | 
-[NetrJobDel](https://www.google.com/search?num=5&q=NetrJobDel+site%3Amsdn.microsoft.com) | mstask.dll |  | 
-[NetrJobEnum](https://www.google.com/search?num=5&q=NetrJobEnum+site%3Amsdn.microsoft.com) | mstask.dll |  | 
-[NetrJobGetInfo](https://www.google.com/search?num=5&q=NetrJobGetInfo+site%3Amsdn.microsoft.com) | mstask.dll |  | 
-[SAGetAccountInformation](https://www.google.com/search?num=5&q=SAGetAccountInformation+site%3Amsdn.microsoft.com) | mstask.dll |  | 
-[SAGetNSAccountInformation](https://www.google.com/search?num=5&q=SAGetNSAccountInformation+site%3Amsdn.microsoft.com) | mstask.dll |  | 
-[SASetAccountInformation](https://www.google.com/search?num=5&q=SASetAccountInformation+site%3Amsdn.microsoft.com) | mstask.dll |  | 
-[SASetNSAccountInformation](https://www.google.com/search?num=5&q=SASetNSAccountInformation+site%3Amsdn.microsoft.com) | mstask.dll |  | 
 [SetNetScheduleAccountInformation](https://www.google.com/search?num=5&q=SetNetScheduleAccountInformation+site%3Amsdn.microsoft.com) | mstask.dll |  | 
 ### Structures
 Native Structure | Header | Managed Structure

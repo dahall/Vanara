@@ -18,14 +18,11 @@ Native Method | Native DLL | Header | Managed Method
 [ColorRGBToHLS](https://www.google.com/search?num=5&q=ColorRGBToHLS+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [ConnectToConnectionPoint](https://www.google.com/search?num=5&q=ConnectToConnectionPoint+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [DelayLoadFailureHook](https://www.google.com/search?num=5&q=DelayLoadFailureHook+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
-[DllGetVersion](https://www.google.com/search?num=5&q=DllGetVersion+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [GetAcceptLanguagesA](https://www.google.com/search?num=5&q=GetAcceptLanguagesA+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [GetAcceptLanguagesW](https://www.google.com/search?num=5&q=GetAcceptLanguagesW+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [GetMenuPosFromID](https://www.google.com/search?num=5&q=GetMenuPosFromID+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [GUIDFromStringW](https://www.google.com/search?num=5&q=GUIDFromStringW+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [HashData](https://www.google.com/search?num=5&q=HashData+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
-[IntlStrEqWorkerA](https://www.google.com/search?num=5&q=IntlStrEqWorkerA+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
-[IntlStrEqWorkerW](https://www.google.com/search?num=5&q=IntlStrEqWorkerW+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [IsCharSpaceA](https://www.google.com/search?num=5&q=IsCharSpaceA+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [IsCharSpaceW](https://www.google.com/search?num=5&q=IsCharSpaceW+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [IsInternetESCEnabled](https://www.google.com/search?num=5&q=IsInternetESCEnabled+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 

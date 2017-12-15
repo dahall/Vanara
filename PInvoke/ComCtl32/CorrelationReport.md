@@ -22,8 +22,6 @@ Native Method | Native DLL | Header | Managed Method
 [DefSubclassProc](https://www.google.com/search?num=5&q=DefSubclassProc+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [DestroyPropertySheetPage](https://www.google.com/search?num=5&q=DestroyPropertySheetPage+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [DetachScrollBars](https://www.google.com/search?num=5&q=DetachScrollBars+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
-[DllGetVersion](https://www.google.com/search?num=5&q=DllGetVersion+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
-[DllInstall](https://www.google.com/search?num=5&q=DllInstall+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [DPA_Clone](https://www.google.com/search?num=5&q=DPA_Clone+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [DPA_Create](https://www.google.com/search?num=5&q=DPA_Create+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [DPA_CreateEx](https://www.google.com/search?num=5&q=DPA_CreateEx+site%3Amsdn.microsoft.com) | comctl32.dll |  | 

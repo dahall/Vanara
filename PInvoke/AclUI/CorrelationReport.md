@@ -1,8 +1,8 @@
 ## Correlation report for aclui.dll
-### Methods (66% complete)
+### Methods (100% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
-[CreateSecurityPage](https://www.google.com/search?num=5&q=CreateSecurityPage+site%3Amsdn.microsoft.com) | aclui.dll |  | 
+[CreateSecurityPage](https://www.google.com/search?num=5&q=CreateSecurityPage+site%3Amsdn.microsoft.com) | aclui.dll | aclui.h | Vanara.PInvoke.AclUI.CreateSecurityPage
 [EditSecurity](https://www.google.com/search?num=5&q=EditSecurity+site%3Amsdn.microsoft.com) | aclui.dll | aclui.h | Vanara.PInvoke.AclUI.EditSecurity
 [EditSecurityAdvanced](https://www.google.com/search?num=5&q=EditSecurityAdvanced+site%3Amsdn.microsoft.com) | aclui.dll | aclui.h | Vanara.PInvoke.AclUI.EditSecurityAdvanced
 ### Structures

@@ -2,7 +2,6 @@
 ### Methods (3% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
-[_GetFileExtensionFromUrl](https://www.google.com/search?num=5&q=_GetFileExtensionFromUrl+site%3Amsdn.microsoft.com) | wininet.dll |  | 
 [AppCacheCheckManifest](https://www.google.com/search?num=5&q=AppCacheCheckManifest+site%3Amsdn.microsoft.com) | wininet.dll |  | 
 [AppCacheCloseHandle](https://www.google.com/search?num=5&q=AppCacheCloseHandle+site%3Amsdn.microsoft.com) | wininet.dll |  | 
 [AppCacheCreateAndCommitFile](https://www.google.com/search?num=5&q=AppCacheCreateAndCommitFile+site%3Amsdn.microsoft.com) | wininet.dll |  | 
@@ -41,7 +40,6 @@ Native Method | Native DLL | Header | Managed Method
 [DeleteWpadCacheForNetworks](https://www.google.com/search?num=5&q=DeleteWpadCacheForNetworks+site%3Amsdn.microsoft.com) | wininet.dll |  | 
 [DetectAutoProxyUrl](https://www.google.com/search?num=5&q=DetectAutoProxyUrl+site%3Amsdn.microsoft.com) | wininet.dll |  | 
 [DispatchAPICall](https://www.google.com/search?num=5&q=DispatchAPICall+site%3Amsdn.microsoft.com) | wininet.dll |  | 
-[DllInstall](https://www.google.com/search?num=5&q=DllInstall+site%3Amsdn.microsoft.com) | wininet.dll |  | 
 [FindCloseUrlCache](https://www.google.com/search?num=5&q=FindCloseUrlCache+site%3Amsdn.microsoft.com) | wininet.dll |  | 
 [FindFirstUrlCacheContainerA](https://www.google.com/search?num=5&q=FindFirstUrlCacheContainerA+site%3Amsdn.microsoft.com) | wininet.dll |  | 
 [FindFirstUrlCacheContainerW](https://www.google.com/search?num=5&q=FindFirstUrlCacheContainerW+site%3Amsdn.microsoft.com) | wininet.dll |  | 

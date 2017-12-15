@@ -25,7 +25,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-EditSecurity, EditSecurityAdvanced
+CreateSecurityPage, EditSecurity, EditSecurityAdvanced
 
 Structures
 EFFPERM_RESULT_LIST, SECURITY_OBJECT, SI_ACCESS, SI_INHERIT_TYPE, SI_OBJECT_INFO, SID_INFO

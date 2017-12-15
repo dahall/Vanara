@@ -6,12 +6,12 @@
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <VersionPrefix>1.0.4</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
-    <AssemblyName>Vanara.UI.Shell</AssemblyName>
+    <AssemblyName>Vanara.Windows.Shell</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <RootNamespace>Vanara.Windows.Forms</RootNamespace>
+    <RootNamespace>Vanara.Windows.Shell</RootNamespace>
     <Authors>David Hall</Authors>
     <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/dahall/vanara/blob/master/LICENSE</PackageLicenseUrl>

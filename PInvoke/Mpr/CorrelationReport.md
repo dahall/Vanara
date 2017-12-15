@@ -2,11 +2,6 @@
 ### Methods (0% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
-[DoBroadcastSystemMessage](https://www.google.com/search?num=5&q=DoBroadcastSystemMessage+site%3Amsdn.microsoft.com) | mpr.dll |  | 
-[DoCommandLinePrompt](https://www.google.com/search?num=5&q=DoCommandLinePrompt+site%3Amsdn.microsoft.com) | mpr.dll |  | 
-[DoPasswordDialog](https://www.google.com/search?num=5&q=DoPasswordDialog+site%3Amsdn.microsoft.com) | mpr.dll |  | 
-[DoProfileErrorDialog](https://www.google.com/search?num=5&q=DoProfileErrorDialog+site%3Amsdn.microsoft.com) | mpr.dll |  | 
-[I_MprSaveConn](https://www.google.com/search?num=5&q=I_MprSaveConn+site%3Amsdn.microsoft.com) | mpr.dll |  | 
 [MultinetGetConnectionPerformanceA](https://www.google.com/search?num=5&q=MultinetGetConnectionPerformanceA+site%3Amsdn.microsoft.com) | mpr.dll |  | 
 [MultinetGetConnectionPerformanceW](https://www.google.com/search?num=5&q=MultinetGetConnectionPerformanceW+site%3Amsdn.microsoft.com) | mpr.dll |  | 
 [MultinetGetErrorTextA](https://www.google.com/search?num=5&q=MultinetGetErrorTextA+site%3Amsdn.microsoft.com) | mpr.dll |  | 
