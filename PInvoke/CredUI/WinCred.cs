@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using Vanara.InteropServices;
+
 // ReSharper disable InconsistentNaming
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 
@@ -224,6 +226,26 @@ namespace Vanara.PInvoke
 		[PInvokeData("wincred.h", MSDNShortId = "aa374802")]
 		public static extern bool CredPackAuthenticationBuffer(CredPackFlags dwFlags, IntPtr pszUserName, IntPtr pszPassword, IntPtr pPackedCredentials, ref int pcbPackedCredentials);
 
+		/// <summary>The CredUICmdLinePromptForCredentials function prompts for and accepts credential information from a user working in a command-line (console) application. The name and password typed by the user are passed back to the calling application for verification.</summary>
+		/// <param name="pszTargetName">A pointer to a null-terminated string that contains the name of the target for the credentials, typically a server name. For DFS connections, this string is of the form ServerName\ShareName. The pszTargetName parameter is used to identify the target information and is used to store and retrieve the credential.</param>
+		/// <param name="pContext">Currently reserved and must be NULL.</param>
+		/// <param name="dwAuthError">Specifies why prompting for credentials is needed. A caller can pass this Windows error parameter, returned by another authentication call, to allow the dialog box to accommodate certain errors. For example, if the password expired status code is passed, the dialog box prompts the user to change the password on the account.</param>
+		/// <param name="UserName">A pointer to a null-terminated string that contains the credential user name. If a nonzero-length string is specified for pszUserName, the user will be prompted only for the password. In the case of credentials other than user name/password, a marshaled format of the credential can be passed in. This string is created by calling CredMarshalCredential.
+		/// <para>This function writes the user-supplied name to this buffer, copying a maximum of ulUserNameMaxChars characters. The string in this format can be converted to the user name/password format by calling the CredUIParseUsername function. The string in its marshaled format can be passed directly to a security support provider (SSP).</para>
+		/// <para>If the CREDUI_FLAGS_DO_NOT_PERSIST flag is not specified, the value returned in this parameter is of a form that should not be inspected, printed, or persisted other than passing it to CredUIParseUsername. The subsequent results of CredUIParseUsername can be passed only to a client-side authentication API such as WNetAddConnection or the SSP API.</para></param>
+		/// <param name="ulUserBufferSize">The maximum number of characters that can be copied to pszUserName including the terminating null character. <note>CREDUI_MAX_USERNAME_LENGTH does not include the terminating null character.</note></param>
+		/// <param name="pszPassword">A pointer to a null-terminated string that contains the password for the credentials. If a nonzero-length string is specified for pszPassword, the password parameter will be prefilled with the string.
+		/// <para>This function writes the user-supplied password to this buffer, copying a maximum of ulPasswordMaxChars characters. If the CREDUI_FLAGS_DO_NOT_PERSIST flag is not specified, the value returned in this parameter is of a form that should not be inspected, printed, or persisted other than passing it to a client-side authentication function such as WNetAddConnection or an SSP function.</para>
+		/// <para>When you have finished using the password, clear the password from memory by calling the SecureZeroMemory function. For more information about protecting passwords, see Handling Passwords.</para></param>
+		/// <param name="ulPasswordBufferSize">The maximum number of characters that can be copied to pszPassword including the terminating null character. <note>CREDUI_MAX_USERNAME_LENGTH does not include the terminating null character.</note></param>
+		/// <param name="pfSave">A pointer to a BOOL that specifies the initial state of the Save message and receives the state of the Save message after the user has responded to the command prompt. If pfSave is not NULL and CredUIPromptForCredentials returns NO_ERROR, pfSave returns the state of the Save message. If the CREDUI_FLAGS_PERSIST flag is specified, the Save message is not displayed but is considered to be "y". If the CREDUI_FLAGS_DO_NOT_PERSIST flag is specified and CREDUI_FLAGS_SHOW_SAVE_CHECK_BOX is not specified, the Save message is not displayed but is considered to be "n".</param>
+		/// <param name="dwFlags">A DWORD value that specifies special behavior for this function.</param>
+		/// <returns>The result of the operation.</returns>
+		[DllImport(Lib.CredUI, CharSet = CharSet.Auto, SetLastError = true)]
+		[PInvokeData("wincred.h", MSDNShortId = "aa374802")]
+		public static extern Win32Error CredUICmdLinePromptForCredentials([In, Optional] string pszTargetName, IntPtr pContext, Win32Error dwAuthError, StringBuilder UserName, uint ulUserBufferSize, 
+			StringBuilder pszPassword, uint ulPasswordBufferSize, [MarshalAs(UnmanagedType.Bool)] ref bool pfSave, CredentialsDialogOptions dwFlags);
+
 		/// <summary>
 		/// The CredUIConfirmCredentials function is called after CredUIPromptForCredentials or CredUICmdLinePromptForCredentials, to confirm the validity of the
 		/// credential harvested. CredUIConfirmCredentials must be called if the CREDUI_FLAGS_EXPECT_CONFIRMATION flag was passed to the "prompt" function,
@@ -424,6 +446,24 @@ namespace Vanara.PInvoke
 		[PInvokeData("wincred.h", MSDNShortId = "aa375178")]
 		public static extern int CredUIPromptForWindowsCredentials(ref CREDUI_INFO pUiInfo, int dwAuthError, ref uint pulAuthPackage, IntPtr pvInAuthBuffer, uint ulInAuthBufferSize, out IntPtr ppvOutAuthBuffer, out uint pulOutAuthBufferSize, [MarshalAs(UnmanagedType.Bool)] ref bool pfSave, WindowsCredentialsDialogOptions dwFlags);
 
+		/// <summary>The CredUIReadSSOCred function retrieves the user name for a single logon credential.</summary>
+		/// <param name="pszRealm">Pointer to a null-terminated string that specifies the realm. If this parameter is NULL, the default realm is used.</param>
+		/// <param name="ppszUsername">Pointer to a pointer to a null-terminated string. When you have finished using the string, free ppszUsername by calling the LocalFree function.</param>
+		/// <returns>Status of the operation is returned.</returns>
+		[DllImport(Lib.CredUI, CharSet = CharSet.Auto)]
+		[PInvokeData("wincred.h", MSDNShortId = "aa375177")]
+		public static extern Win32Error CredUIReadSSOCred(string pszRealm, [Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LocalStringMarshaler), MarshalCookie = "Auto")] string ppszUsername);
+
+		/// <summary>The CredUIStoreSSOCred function stores a single logon credential.</summary>
+		/// <param name="pszRealm">Pointer to a null-terminated string that specifies the realm. If this parameter is NULL, the default realm is used.</param>
+		/// <param name="pszUsername">Pointer to a null-terminated string that specifies the user's name.</param>
+		/// <param name="pszPassword">Pointer to a null-terminated string that specifies the user's password. When you have finished using the password, clear the password from memory by calling the SecureZeroMemory function. For more information about protecting passwords, see Handling Passwords.</param>
+		/// <param name="bPersist">Boolean value that specifies whether the credentials are persisted. If this value is TRUE, the credentials are persisted. If this value is FALSE, the credentials are not persisted.</param>
+		/// <returns>Status of the operation is returned.</returns>
+		[DllImport(Lib.CredUI, CharSet = CharSet.Auto)]
+		[PInvokeData("wincred.h", MSDNShortId = "aa375181")]
+		public static extern Win32Error CredUIStoreSSOCred(string pszRealm, string pszUsername, string pszPassword, [MarshalAs(UnmanagedType.Bool)] bool bPersist);
+
 		/// <summary>
 		/// The CredUnPackAuthenticationBuffer function converts an authentication buffer returned by a call to the CredUIPromptForWindowsCredentials function
 		/// into a string user name and password.
@@ -561,6 +601,10 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("wincred.h", MSDNShortId = "aa375173")]
 		public static extern bool CredUnPackAuthenticationBuffer(int dwFlags, IntPtr pAuthBuffer, int cbAuthBuffer, IntPtr pszUserName, ref int pcchMaxUserName, IntPtr pszDomainName, ref int pcchMaxDomainame, IntPtr pszPassword, ref int pcchMaxPassword);
+
+		[DllImport(Lib.CredUI, CharSet = CharSet.Auto)]
+		[PInvokeData("wincred.h", MSDNShortId = "aa375181")]
+		public static extern Win32Error XCredUIStoreSSOCred(string pszRealm, string pszUsername, string pszPassword, [MarshalAs(UnmanagedType.Bool)] bool bPersist);
 
 		/// <summary>
 		/// The CREDUI_INFO structure is used to pass information to the CredUIPromptForCredentials function that creates a dialog box used to obtain credentials information.
