@@ -9,13 +9,35 @@ using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
-	/// <summary>Platform invokable enumerated types, constants and functions from virtdisk.h</summary>
+	/// <summary>Platform invokable enumerated types, constants and functions from VirtDisk.h</summary>
 	public static partial class VirtDisk
 	{
 		/// <summary>The virtual storage type vendor Microsoft</summary>
 		public static readonly Guid VIRTUAL_STORAGE_TYPE_VENDOR_MICROSOFT = new Guid("EC984AEC-A0F9-47e9-901F-71415A66345B");
 
+		/// <summary>Contains flags affecting the behavior of the ApplySnapshotVhdSet function.</summary>
+		[PInvokeData("VirtDisk.h", MSDNShortId = "mt638035")]
+		[Flags]
+		public enum APPLY_SNAPSHOT_VHDSET_FLAG
+		{
+			/// <summary>No flag specified.</summary>
+			APPLY_SNAPSHOT_VHDSET_FLAG_NONE = 0x00000000,
+			/// <summary>Indicates that the snapshot to be applied was created as a writeable snapshot type.</summary>
+			APPLY_SNAPSHOT_VHDSET_FLAG_WRITEABLE = 0x00000001
+		}
+
+		/// <summary>Enumerates the possible versions for parameters for the ApplySnapshotVhdSet function.</summary>
+		[PInvokeData("VirtDisk.h")]
+		public enum APPLY_SNAPSHOT_VHDSET_VERSION
+		{
+			/// <summary>Not Supported.</summary>
+			APPLY_SNAPSHOT_VHDSET_VERSION_UNSPECIFIED = 0,
+			/// <summary>The Version1 member structure will be used.</summary>
+			APPLY_SNAPSHOT_VHDSET_VERSION_1 = 1,
+		}
+
 		/// <summary>Contains virtual disk attach request flags.</summary>
+		[PInvokeData("VirtDisk.h")]
 		[Flags]
 		public enum ATTACH_VIRTUAL_DISK_FLAG
 		{
@@ -55,6 +77,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains the version of the virtual hard disk (VHD) ATTACH_VIRTUAL_DISK_PARAMETERS structure to use in calls to VHD functions.</summary>
+		[PInvokeData("VirtDisk.h")]
 		public enum ATTACH_VIRTUAL_DISK_VERSION
 		{
 			/// <summary>Unspecified version.</summary>
@@ -78,6 +101,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains the version of the virtual hard disk (VHD) COMPACT_VIRTUAL_DISK_PARAMETERS structure to use in calls to VHD functions.</summary>
+		[PInvokeData("VirtDisk.h")]
 		public enum COMPACT_VIRTUAL_DISK_VERSION
 		{
 			/// <summary>Unspecified.</summary>
@@ -88,6 +112,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains virtual disk creation flags.</summary>
+		[PInvokeData("VirtDisk.h")]
 		[Flags]
 		public enum CREATE_VIRTUAL_DISK_FLAG
 		{
@@ -143,6 +168,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains the version of the virtual hard disk (VHD) CREATE_VIRTUAL_DISK_PARAMETERS structure to use in calls to VHD functions.</summary>
+		[PInvokeData("VirtDisk.h")]
 		public enum CREATE_VIRTUAL_DISK_VERSION
 		{
 			/// <summary>Unsupported</summary>
@@ -155,7 +181,29 @@ namespace Vanara.PInvoke
 			CREATE_VIRTUAL_DISK_VERSION_3 = 3,
 		}
 
+		/// <summary>Contains flags affecting the behavior of the DeleteSnapshotVhdSet function.</summary>
+		[PInvokeData("VirtDisk.h")]
+		[Flags]
+		public enum DELETE_SNAPSHOT_VHDSET_FLAG
+		{
+			/// <summary>No flag specified.</summary>
+			DELETE_SNAPSHOT_VHDSET_FLAG_NONE = 0x00000000,
+			/// <summary>A reference point should be persisted in the VHD Set after the snapshot is deleted.</summary>
+			DELETE_SNAPSHOT_VHDSET_FLAG_PERSIST_RCT = 0x00000001
+		}
+
+		/// <summary>Contains the version of the DELETE_SNAPHSOT_VHDSET_PARAMETERS structure to use in calls to virtual disk functions.</summary>
+		[PInvokeData("VirtDisk.h")]
+		public enum DELETE_SNAPSHOT_VHDSET_VERSION
+		{
+			/// <summary>Not supported.</summary>
+			DELETE_SNAPSHOT_VHDSET_VERSION_UNSPECIFIED = 0x00000000,
+			/// <summary>The Version1 member structure will be used.</summary>
+			DELETE_SNAPSHOT_VHDSET_VERSION_1 = 0x00000001
+		}
+
 		/// <summary>Contains virtual disk dependency information flags.</summary>
+		[PInvokeData("VirtDisk.h")]
 		[Flags]
 		public enum DEPENDENT_DISK_FLAG
 		{
@@ -197,6 +245,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains virtual disk detach request flags.</summary>
+		[PInvokeData("VirtDisk.h")]
 		[Flags]
 		public enum DETACH_VIRTUAL_DISK_FLAG
 		{
@@ -205,6 +254,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains virtual hard disk (VHD) expand request flags.</summary>
+		[PInvokeData("VirtDisk.h")]
 		[Flags]
 		public enum EXPAND_VIRTUAL_DISK_FLAG
 		{
@@ -213,6 +263,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains the version of the virtual hard disk (VHD) EXPAND_VIRTUAL_DISK_PARAMETERS structure to use in calls to VHD functions.</summary>
+		[PInvokeData("VirtDisk.h")]
 		public enum EXPAND_VIRTUAL_DISK_VERSION
 		{
 			/// <summary>Unspecified.</summary>
@@ -223,6 +274,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains virtual hard disk (VHD) storage dependency request flags.</summary>
+		[PInvokeData("VirtDisk.h")]
 		[Flags]
 		public enum GET_STORAGE_DEPENDENCY_FLAG
 		{
@@ -237,6 +289,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains virtual hard disk (VHD) information retrieval identifiers.</summary>
+		[PInvokeData("VirtDisk.h")]
 		public enum GET_VIRTUAL_DISK_INFO_VERSION
 		{
 			/// <summary>Reserved. This value should not be used.</summary>
@@ -313,6 +366,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains virtual hard disk (VHD) merge request flags.</summary>
+		[PInvokeData("VirtDisk.h")]
 		[Flags]
 		public enum MERGE_VIRTUAL_DISK_FLAG
 		{
@@ -321,6 +375,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains the version of the virtual hard disk (VHD) MERGE_VIRTUAL_DISK_PARAMETERS structure to use in calls to VHD functions.</summary>
+		[PInvokeData("VirtDisk.h")]
 		public enum MERGE_VIRTUAL_DISK_VERSION
 		{
 			/// <summary>Not supported.</summary>
@@ -342,6 +397,29 @@ namespace Vanara.PInvoke
 			MIRROR_VIRTUAL_DISK_VERSION_UNSPECIFIED = 0,
 			/// <summary>Use the Version1 member.</summary>
 			MIRROR_VIRTUAL_DISK_VERSION_1 = 1,
+		}
+
+		/// <summary>Contains flags affecting the behavior of the ModifyVhdSet function.</summary>
+		[PInvokeData("VirtDisk.h")]
+		[Flags]
+		public enum MODIFY_VHDSET_FLAG
+		{
+			/// <summary>No flag specified.</summary>
+			MODIFY_VHDSET_FLAG_NONE = 0x00000000
+		}
+
+		/// <summary>Contains the version of the MODIFY_VHDSET_PARAMETERS structure to use in calls to virtual disk functions.</summary>
+		[PInvokeData("VirtDisk.h")]
+		public enum MODIFY_VHDSET_VERSION
+		{
+			/// <summary>Not Supported.</summary>
+			MODIFY_VHDSET_UNSPECIFIED = 0,
+			/// <summary>The SnapshotPath member structure will be used.</summary>
+			MODIFY_VHDSET_SNAPSHOT_PATH = 1,
+			/// <summary>The SnapshotId member structure will be used.</summary>
+			MODIFY_VHDSET_REMOVE_SNAPSHOT = 2,
+			/// <summary>The DefaultFilePath member structure will be used</summary>
+			MODIFY_VHDSET_DEFAULT_SNAPSHOT_PATH = 3,
 		}
 
 		/// <summary>Contains virtual hard disk (VHD) mirror request flags.</summary>
@@ -419,6 +497,34 @@ namespace Vanara.PInvoke
 			OPEN_VIRTUAL_DISK_VERSION_3 = 3,
 		}
 
+		/// <summary>Used by <see cref="QueryChangesVirtualDisk"/>.</summary>
+		[PInvokeData("VirtDisk.h")]
+		[Flags]
+		public enum QUERY_CHANGES_VIRTUAL_DISK_FLAG
+		{
+			/// <summary>Default value.</summary>
+			QUERY_CHANGES_VIRTUAL_DISK_FLAG_NONE = 0x00000000,
+		}
+
+		/// <summary>Contains flags affecting the behavior of the RawSCSIVirtualDisk function.</summary>
+		[PInvokeData("VirtDisk.h")]
+		[Flags]
+		public enum RAW_SCSI_VIRTUAL_DISK_FLAG
+		{
+			/// <summary>No flag specified.</summary>
+			RAW_SCSI_VIRTUAL_DISK_FLAG_NONE = 0X00000000
+		}
+
+		/// <summary>Contains the version of the RAW_SCSI_VIRTUAL_DISK_PARAMETERS structure to use in calls to virtual disk functions.</summary>
+		[PInvokeData("VirtDisk.h")]
+		public enum RAW_SCSI_VIRTUAL_DISK_VERSION
+		{
+			/// <summary>Unspecified version.</summary>
+			RAW_SCSI_VIRTUAL_DISK_VERSION_UNSPECIFIED = 0,
+			/// <summary>Use the Version1 member of this structure.</summary>
+			RAW_SCSI_VIRTUAL_DISK_VERSION_1 = 1
+		}
+
 		/// <summary>Enumerates the available flags for the ResizeVirtualDisk function.</summary>
 		[PInvokeData("VirtDisk.h", MSDNShortId = "dd323683")]
 		[Flags]
@@ -491,6 +597,25 @@ namespace Vanara.PInvoke
 
 			/// <summary>Specifies STORAGE_DEPENDENCY_INFO_TYPE_2.</summary>
 			STORAGE_DEPENDENCY_INFO_VERSION_2 = 2
+		}
+
+		/// <summary>Contains flags affecting the behavior of the TakeSnapshotVhdSet function.</summary>
+		[PInvokeData("VirtDisk.h", MSDNShortId = "mt414221")]
+		[Flags]
+		public enum TAKE_SNAPSHOT_VHDSET_FLAG
+		{
+			/// <summary>No flag specified.</summary>
+			TAKE_SNAPSHOT_VHDSET_FLAG_NONE = 0x00000000
+		}
+
+		/// <summary>Enumerates the possible versions for parameters for the TakeSnapshotVhdSet function.</summary>
+		[PInvokeData("VirtDisk.h", MSDNShortId = "mt414224")]
+		public enum TAKE_SNAPSHOT_VHDSET_VERSION
+		{
+			/// <summary>Not Supported.</summary>
+			TAKE_SNAPSHOT_VHDSET_VERSION_UNSPECIFIED = 0,
+			/// <summary>The Version1 member structure will be used.</summary>
+			TAKE_SNAPSHOT_VHDSET_VERSION_1 = 1
 		}
 
 		/// <summary>Contains the bitmask for specifying access rights to a virtual hard disk (VHD) or CD or DVD image file (ISO).</summary>
@@ -580,6 +705,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Provider-specific subtype. Set the Version member to GET_VIRTUAL_DISK_INFO_PROVIDER_SUBTYPE.
 		/// </summary>
+		[PInvokeData("VirtDisk.h")]
 		public enum VIRTUAL_DISK_INFO_PROVIDER_SUBTYPE : uint
 		{
 			/// <summary>Fixed.</summary>
@@ -591,6 +717,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Device type identifier.</summary>
+		[PInvokeData("VirtDisk.h")]
 		public enum VIRTUAL_STORAGE_TYPE_DEVICE_TYPE : uint
 		{
 			/// <summary>Device type is unknown or not valid.</summary>
@@ -615,6 +742,31 @@ namespace Vanara.PInvoke
 			VIRTUAL_STORAGE_TYPE_DEVICE_VHDSET = 4
 		}
 
+		/// <summary>Attaches a parent to a virtual disk opened with the OPEN_VIRTUAL_DISK_FLAG_CUSTOM_DIFF_CHAIN flag.</summary>
+		/// <param name="VirtualDiskHandle">Handle to a virtual disk.</param>
+		/// <param name="ParentPath">Address of a string containing a valid path to the virtual hard disk image to add as a parent.</param>
+		/// <returns>
+		/// Status of the request.
+		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
+		/// <para>If the function fails, the return value is an error code. For more information, see System Error Codes.</para>
+		/// </returns>
+		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
+		[PInvokeData("VirtDisk.h")]
+		public static extern Win32Error AddVirtualDiskParent(SafeFileHandle VirtualDiskHandle, [MarshalAs(UnmanagedType.LPWStr)] string ParentPath);
+
+		/// <summary>Applies a snapshot of the current virtual disk for VHD Set files.</summary>
+		/// <param name="VirtualDiskHandle">A handle to an open virtual disk. For information on how to open a virtual disk, see the OpenVirtualDisk function.</param>
+		/// <param name="Parameters">A pointer to a valid APPLY_SNAPSHOT_VHDSET_PARAMETERS structure that contains snapshot data.</param>
+		/// <param name="Flags">A valid combination of values of the APPLY_SNAPSHOT_VHDSET_FLAG enumeration.</param>
+		/// <returns>
+		/// Status of the request.
+		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
+		/// <para>If the function fails, the return value is an error code. For more information, see System Error Codes.</para>
+		/// </returns>
+		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
+		[PInvokeData("VirtDisk.h")]
+		public static extern Win32Error ApplySnapshotVhdSet(SafeFileHandle VirtualDiskHandle, ref APPLY_SNAPSHOT_VHDSET_PARAMETERS Parameters, APPLY_SNAPSHOT_VHDSET_FLAG Flags);
+
 		/// <summary>Attaches a virtual hard disk (VHD) or CD or DVD image file (ISO) by locating an appropriate VHD provider to accomplish the attachment.</summary>
 		/// <param name="VirtualDiskHandle">A handle to an open virtual disk. For information on how to open a virtual disk, see the OpenVirtualDisk function.</param>
 		/// <param name="SecurityDescriptor">
@@ -637,6 +789,7 @@ namespace Vanara.PInvoke
 		/// <para>If the function fails, the return value is an error code. For more information, see System Error Codes.</para>
 		/// </returns>
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
+		[PInvokeData("VirtDisk.h")]
 		public static extern Win32Error AttachVirtualDisk(SafeFileHandle VirtualDiskHandle, IntPtr SecurityDescriptor, ATTACH_VIRTUAL_DISK_FLAG Flags, uint ProviderSpecificFlags, ref ATTACH_VIRTUAL_DISK_PARAMETERS Parameters, [In] IntPtr Overlapped);
 
 		/// <summary>Attaches a virtual hard disk (VHD) or CD or DVD image file (ISO) by locating an appropriate VHD provider to accomplish the attachment.</summary>
@@ -661,6 +814,7 @@ namespace Vanara.PInvoke
 		/// <para>If the function fails, the return value is an error code. For more information, see System Error Codes.</para>
 		/// </returns>
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
+		[PInvokeData("VirtDisk.h")]
 		public static extern Win32Error AttachVirtualDisk(SafeFileHandle VirtualDiskHandle, IntPtr SecurityDescriptor, ATTACH_VIRTUAL_DISK_FLAG Flags, uint ProviderSpecificFlags, ref ATTACH_VIRTUAL_DISK_PARAMETERS Parameters, ref NativeOverlapped Overlapped);
 
 		/// <summary>
@@ -718,6 +872,7 @@ namespace Vanara.PInvoke
 		/// <para>Compaction can be CPU-intensive and/or I/O-intensive, depending on how large the virtual disk is and how many blocks require movement.</para>
 		/// <para>The CompactVirtualDisk function runs on the virtual disk in the same security context as the caller.</para>
 		/// </remarks>
+		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		public static extern Win32Error CompactVirtualDisk(SafeFileHandle VirtualDiskHandle, COMPACT_VIRTUAL_DISK_FLAG Flags, ref COMPACT_VIRTUAL_DISK_PARAMETERS Parameters, ref NativeOverlapped Overlapped);
 
@@ -763,6 +918,7 @@ namespace Vanara.PInvoke
 		/// <para>Compaction can be CPU-intensive and/or I/O-intensive, depending on how large the virtual disk is and how many blocks require movement.</para>
 		/// <para>The CompactVirtualDisk function runs on the virtual disk in the same security context as the caller.</para>
 		/// </remarks>
+		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		public static extern Win32Error CompactVirtualDisk(SafeFileHandle VirtualDiskHandle, COMPACT_VIRTUAL_DISK_FLAG Flags, ref COMPACT_VIRTUAL_DISK_PARAMETERS Parameters, IntPtr Overlapped);
 
@@ -783,6 +939,7 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
 		/// function fails, the return value is an error code and the value of the Handle parameter is undefined.
 		/// </returns>
+		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, CharSet = CharSet.Unicode, ExactSpelling = true)]
 		public static extern Win32Error CreateVirtualDisk(ref VIRTUAL_STORAGE_TYPE VirtualStorageType, string Path, VIRTUAL_DISK_ACCESS_MASK VirtualDiskAccessMask, IntPtr SecurityDescriptor, CREATE_VIRTUAL_DISK_FLAG Flags, int ProviderSpecificFlags, ref CREATE_VIRTUAL_DISK_PARAMETERS Parameters, IntPtr Overlapped, out SafeFileHandle Handle);
 
@@ -803,8 +960,32 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
 		/// function fails, the return value is an error code and the value of the Handle parameter is undefined.
 		/// </returns>
+		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, CharSet = CharSet.Unicode, ExactSpelling = true)]
 		public static extern Win32Error CreateVirtualDisk(ref VIRTUAL_STORAGE_TYPE VirtualStorageType, string Path, VIRTUAL_DISK_ACCESS_MASK VirtualDiskAccessMask, IntPtr SecurityDescriptor, CREATE_VIRTUAL_DISK_FLAG Flags, int ProviderSpecificFlags, ref CREATE_VIRTUAL_DISK_PARAMETERS Parameters, ref NativeOverlapped Overlapped, out SafeFileHandle Handle);
+
+		/// <summary>Deletes a snapshot from a VHD Set file.</summary>
+		/// <param name="VirtualDiskHandle">A handle to the open virtual disk.</param>
+		/// <param name="Parameters">A pointer to a valid DELETE_SNAPSHOT_VHDSET_PARAMETERS structure that contains snapshot deletion data.</param>
+		/// <param name="Flags">Snapshot deletion flags, which must be a valid combination of the DELETE_SNAPSHOT_VHDSET_FLAG enumeration.</param>
+		/// <returns>
+		/// If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
+		/// function fails, the return value is an error code and the value of the Handle parameter is undefined.
+		/// </returns>
+		[PInvokeData("VirtDisk.h")]
+		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
+		public static extern Win32Error DeleteSnapshotVhdSet(SafeFileHandle VirtualDiskHandle, ref DELETE_SNAPSHOT_VHDSET_PARAMETERS Parameters, DELETE_SNAPSHOT_VHDSET_FLAG Flags);
+
+		/// <summary>Deletes metadata from a virtual disk.</summary>
+		/// <param name="VirtualDiskHandle">A handle to the open virtual disk.</param>
+		/// <param name="Item">The item to be deleted.</param>
+		/// <returns>
+		/// If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
+		/// function fails, the return value is an error code and the value of the Handle parameter is undefined.
+		/// </returns>
+		[PInvokeData("VirtDisk.h")]
+		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
+		public static extern Win32Error DeleteVirtualDiskMetadata(SafeFileHandle VirtualDiskHandle, [MarshalAs(UnmanagedType.LPStruct)] Guid Item);
 
 		/// <summary>
 		/// Detaches a virtual hard disk (VHD) or CD or DVD image file (ISO) by locating an appropriate virtual disk provider to accomplish the operation.
@@ -819,8 +1000,21 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is ERROR_SUCCESS. If the function fails, the return value is an error code. For more information, see
 		/// System Error Codes.
 		/// </returns>
+		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		public static extern Win32Error DetachVirtualDisk(SafeFileHandle VirtualDiskHandle, DETACH_VIRTUAL_DISK_FLAG Flags, int ProviderSpecificFlags);
+
+		/// <summary>Enumerates the metadata associated with a virtual disk.</summary>
+		/// <param name="VirtualDiskHandle">Handle to an open virtual disk.</param>
+		/// <param name="NumberOfItems">Address of a ULONG. On input, the value indicates the number of elements in the buffer pointed to by the Items parameter. On output, the value contains the number of items retrieved. If the buffer was too small, the API will fail and return ERROR_INSUFFICIENT_BUFFER and the ULONG will contain the required buffer size.</param>
+		/// <param name="Items">Address of a buffer to be filled with the GUIDs representing the metadata. The GetVirtualDiskMetadata function can be used to retrieve the data represented by each GUID.</param>
+		/// <returns>
+		/// If the function succeeds, the return value is ERROR_SUCCESS. If the function fails, the return value is an error code. For more information, see
+		/// System Error Codes.
+		/// </returns>
+		[PInvokeData("VirtDisk.h")]
+		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
+		public static extern Win32Error EnumerateVirtualDiskMetadata(SafeFileHandle VirtualDiskHandle, ref uint NumberOfItems, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] Guid[] Items);
 
 		/// <summary>Increases the size of a fixed or dynamic virtual hard disk (VHD).</summary>
 		/// <param name="VirtualDiskHandle">A handle to the open VHD, which must have been opened using the VIRTUAL_DISK_ACCESS_METAOPS flag.</param>
@@ -831,6 +1025,7 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
 		/// function fails, the return value is an error code and the value of the Handle parameter is undefined.
 		/// </returns>
+		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		public static extern Win32Error ExpandVirtualDisk(SafeFileHandle VirtualDiskHandle, EXPAND_VIRTUAL_DISK_FLAG Flags, ref EXPAND_VIRTUAL_DISK_PARAMETERS Parameters, IntPtr Overlapped);
 
@@ -843,6 +1038,7 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
 		/// function fails, the return value is an error code and the value of the Handle parameter is undefined.
 		/// </returns>
+		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		public static extern Win32Error ExpandVirtualDisk(SafeFileHandle VirtualDiskHandle, EXPAND_VIRTUAL_DISK_FLAG Flags, ref EXPAND_VIRTUAL_DISK_PARAMETERS Parameters, ref NativeOverlapped Overlapped);
 
@@ -855,6 +1051,7 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
 		/// function fails, the return value is an error code and the value of the Handle parameter is undefined.
 		/// </returns>
+		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		public static extern Win32Error GetAllAttachedVirtualDiskPhysicalPaths(ref uint PathsBufferSizeInBytes, SafeCoTaskMemHandle PathsBuffer);
 
@@ -870,6 +1067,7 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
 		/// function fails, the return value is an error code and the value of the Handle parameter is undefined.
 		/// </returns>
+		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		public static extern Win32Error GetStorageDependencyInformation(SafeFileHandle ObjectHandle, GET_STORAGE_DEPENDENCY_FLAG Flags, int StorageDependencyInfoSize, SafeHGlobalHandle StorageDependencyInfo, ref int SizeUsed);
 
@@ -884,8 +1082,26 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
 		/// function fails, the return value is an error code and the value of the Handle parameter is undefined.
 		/// </returns>
+		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		public static extern Win32Error GetVirtualDiskInformation(SafeFileHandle VirtualDiskHandle, ref uint VirtualDiskInfoSize, SafeHGlobalHandle VirtualDiskInfo, out uint SizeUsed);
+
+		/// <summary>Retrieves the specified metadata from the virtual disk.</summary>
+		/// <param name="VirtualDiskHandle">Handle to an open virtual disk.</param>
+		/// <param name="Item">Address of a GUID identifying the metadata to retrieve.</param>
+		/// <param name="MetaDataSize">
+		/// Address of a ULONG. On input, the value indicates the size, in bytes, of the buffer pointed to by the MetaData parameter. On output, the value
+		/// contains size, in bytes, of the retrieved metadata. If the buffer was too small, the API will fail and return ERROR_INSUFFICIENT_BUFFER, putting the
+		/// required size in the ULONG and the buffer will contain the start of the metadata.
+		/// </param>
+		/// <param name="MetaData">Address of the buffer where the metadata is to be stored.</param>
+		/// <returns>
+		/// If the function succeeds, the return value is ERROR_SUCCESS. If the buffer pointed to by the Items parameter was too small, the return value is
+		/// ERROR_INSUFFICIENT_BUFFER. If the function fails, the return value is an error code.For more information, see System Error Codes.
+		/// </returns>
+		[PInvokeData("VirtDisk.h")]
+		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
+		public static extern Win32Error GetVirtualDiskMetadata(SafeFileHandle VirtualDiskHandle, [MarshalAs(UnmanagedType.LPStruct)] Guid Item, ref uint MetaDataSize, SafeCoTaskMemHandle MetaData);
 
 		/// <summary>Checks the progress of an asynchronous virtual hard disk (VHD) operation.</summary>
 		/// <param name="VirtualDiskHandle">A valid handle to a virtual disk with a pending asynchronous operation.</param>
@@ -899,6 +1115,7 @@ namespace Vanara.PInvoke
 		/// progress. If the function fails, the return value is an error code and the value of the Progress parameter is undefined. For more information, see
 		/// System Error Codes.
 		/// </returns>
+		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		public static extern Win32Error GetVirtualDiskOperationProgress(SafeFileHandle VirtualDiskHandle, ref NativeOverlapped Overlapped, ref VIRTUAL_DISK_PROGRESS Progress);
 
@@ -910,6 +1127,7 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
 		/// function fails, the return value is an error code and the value of the Handle parameter is undefined.
 		/// </returns>
+		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, CharSet = CharSet.Unicode, ExactSpelling = true)]
 		public static extern Win32Error GetVirtualDiskPhysicalPath(SafeFileHandle VirtualDiskHandle, ref int DiskPathSizeInBytes, StringBuilder DiskPath);
 
@@ -922,6 +1140,7 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
 		/// function fails, the return value is an error code and the value of the Handle parameter is undefined.
 		/// </returns>
+		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		public static extern Win32Error MergeVirtualDisk(SafeFileHandle VirtualDiskHandle, MERGE_VIRTUAL_DISK_FLAG Flags, ref MERGE_VIRTUAL_DISK_PARAMETERS Parameters, IntPtr Overlapped);
 
@@ -934,6 +1153,7 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
 		/// function fails, the return value is an error code and the value of the Handle parameter is undefined.
 		/// </returns>
+		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		public static extern Win32Error MergeVirtualDisk(SafeFileHandle VirtualDiskHandle, MERGE_VIRTUAL_DISK_FLAG Flags, ref MERGE_VIRTUAL_DISK_PARAMETERS Parameters, ref NativeOverlapped Overlapped);
 
@@ -945,8 +1165,18 @@ namespace Vanara.PInvoke
 		/// <param name="Parameters">Address of a MIRROR_VIRTUAL_DISK_PARAMETERS structure containing mirror parameter data.</param>
 		/// <param name="Overlapped">Address of an OVERLAPPEDstructure. This parameter is required.</param>
 		/// <returns>If the function succeeds, the return value is ERROR_SUCCESS. If the function fails, the return value is an error code.For more information, see System Error Codes.</returns>
+		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		public static extern Win32Error MirrorVirtualDisk(SafeFileHandle VirtualDiskHandle, MIRROR_VIRTUAL_DISK_FLAG Flags, ref MIRROR_VIRTUAL_DISK_PARAMETERS Parameters, ref NativeOverlapped Overlapped);
+
+		/// <summary>Modifies the internal contents of a virtual disk file. Can be used to set the active leaf, or to fix up snapshot entries.</summary>
+		/// <param name="VirtualDiskHandle">A handle to the open virtual disk. This must be a VHD Set file.</param>
+		/// <param name="Parameters">A pointer to a valid MODIFY_VHDSET_PARAMETERS structure that contains modification data.</param>
+		/// <param name="Flags">Modification flags, which must be a valid combination of the MODIFY_VHDSET_FLAG enumeration.</param>
+		/// <returns>Status of the request. If the function succeeds, the return value is ERROR_SUCCESS. If the function fails, the return value is an error code.For more information, see System Error Codes.</returns>
+		[PInvokeData("VirtDisk.h")]
+		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
+		public static extern Win32Error ModifyVhdSet(SafeFileHandle VirtualDiskHandle, ref MODIFY_VHDSET_PARAMETERS Parameters, MODIFY_VHDSET_FLAG Flags);
 
 		/// <summary>Opens a virtual hard disk (VHD) or CD or DVD image file (ISO) for use.</summary>
 		/// <param name="VirtualStorageType">A pointer to a valid VIRTUAL_STORAGE_TYPE structure.</param>
@@ -961,8 +1191,33 @@ namespace Vanara.PInvoke
 		/// If the function fails, the return value is an error code and the value of the Handle parameter is undefined. For more information, see System Error Codes.
 		/// </para>
 		/// </returns>
-		[DllImport(Lib.VirtDisk, ExactSpelling = true, ThrowOnUnmappableChar = true, CharSet = CharSet.Unicode)]
-		public static extern Win32Error OpenVirtualDisk([In] ref VIRTUAL_STORAGE_TYPE VirtualStorageType, string Path, VIRTUAL_DISK_ACCESS_MASK VirtualDiskAccessMask, OPEN_VIRTUAL_DISK_FLAG Flags, [In] OPEN_VIRTUAL_DISK_PARAMETERS Parameters, out SafeFileHandle Handle);
+		[PInvokeData("VirtDisk.h")]
+		[DllImport(Lib.VirtDisk, ExactSpelling = true, ThrowOnUnmappableChar = true)]
+		public static extern Win32Error OpenVirtualDisk([In] ref VIRTUAL_STORAGE_TYPE VirtualStorageType, [MarshalAs(UnmanagedType.LPWStr)] string Path, VIRTUAL_DISK_ACCESS_MASK VirtualDiskAccessMask, OPEN_VIRTUAL_DISK_FLAG Flags, [In] OPEN_VIRTUAL_DISK_PARAMETERS Parameters, out SafeFileHandle Handle);
+
+		/// <summary>Retrieves information about changes to the specified areas of a virtual hard disk (VHD) that are tracked by resilient change tracking (RCT).</summary>
+		/// <param name="VirtualDiskHandle">A handle to the open VHD, which must have been opened using the VIRTUAL_DISK_ACCESS_GET_INFO flag set in the VirtualDiskAccessMask parameter to the OpenVirtualDisk function. For information on how to open a VHD, see the OpenVirtualDisk function.</param>
+		/// <param name="ChangeTrackingId">A pointer to a string that specifies the change tracking identifier for the change that identifies the state of the virtual disk that you want to use as the basis of comparison to determine whether the specified area of the VHD has changed.</param>
+		/// <param name="ByteOffset">An unsigned long integer that specifies the distance from the start of the VHD to the beginning of the area of the VHD that you want to check for changes, in bytes.</param>
+		/// <param name="ByteLength">An unsigned long integer that specifies the length of the area of the VHD that you want to check for changes, in bytes.</param>
+		/// <param name="Flags">Reserved. Set to QUERY_CHANGES_VIRTUAL_DISK_FLAG_NONE.</param>
+		/// <param name="Ranges">An array of QUERY_CHANGES_VIRTUAL_DISK_RANGE structures that indicates the areas of the virtual disk within the area that the ByteOffset and ByteLength parameters specify that have changed since the change tracking identifier that the ChangeTrackingId parameter specifies was sealed.</param>
+		/// <param name="RangeCount">An address of an unsigned long integer. On input, the value indicates the number of QUERY_CHANGES_VIRTUAL_DISK_RANGE structures that the array that the Ranges parameter points to can hold. On output, the value contains the number of QUERY_CHANGES_VIRTUAL_DISK_RANGE structures that the method placed in the array.</param>
+		/// <param name="ProcessedLength">A pointer to an unsigned long integer that indicates the total number of bytes that the method processed, which indicates for how much of the area that the BytesLength parameter specifies that changes were captured in the available space of the array that the Ranges parameter specifies.</param>
+		/// <returns>The status of the request. If the function succeeds, the return value is ERROR_SUCCESS and the Ranges parameter contains the requested information. If the function fails, the return value is an error code.For more information, see System Error Codes.</returns>
+		[PInvokeData("VirtDisk.h")]
+		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
+		public static extern Win32Error QueryChangesVirtualDisk(SafeFileHandle VirtualDiskHandle, [MarshalAs(UnmanagedType.LPWStr)] string ChangeTrackingId, ulong ByteOffset, ulong ByteLength, QUERY_CHANGES_VIRTUAL_DISK_FLAG Flags, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] QUERY_CHANGES_VIRTUAL_DISK_RANGE[] Ranges, ref uint RangeCount, out ulong ProcessedLength);
+
+		/// <summary>Issues an embedded SCSI request directly to a virtual hard disk.</summary>
+		/// <param name="VirtualDiskHandle">A handle to an open virtual disk. For information on how to open a virtual disk, see the OpenVirtualDisk function. This handle may also be a handle to a Remote Shared Virtual Disk. For information on how to open a Remote Shared Virtual Disk, see the Remote Shared Virtual Disk Protocol documentation.</param>
+		/// <param name="Parameters">A pointer to a valid RAW_SCSI_VIRTUAL_DISK_PARAMETERS structure that contains snapshot deletion data.</param>
+		/// <param name="Flags">SCSI virtual disk flags, which must be a valid combination of the RAW_SCSI_VIRTUAL_DISK_FLAG enumeration.</param>
+		/// <param name="Response">A pointer to a RAW_SCSI_VIRTUAL_DISK_RESPONSE structure that contains the results of processing the SCSI command.</param>
+		/// <returns>Status of the request. If the function succeeds, the return value is ERROR_SUCCESS. A return of ERROR_SUCCESS only means the request was received by the virtual disk.The SCSI command itself could have failed due to an invalid device state, an unsupported SCSI command, or another error. If the function fails, the return value is an error code.For more information, see System Error Codes.</returns>
+	   [PInvokeData("VirtDisk.h")]
+		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
+		public static extern Win32Error RawSCSIVirtualDisk(SafeFileHandle VirtualDiskHandle, ref RAW_SCSI_VIRTUAL_DISK_PARAMETERS Parameters, RAW_SCSI_VIRTUAL_DISK_FLAG Flags, out RAW_SCSI_VIRTUAL_DISK_RESPONSE Response);
 
 		/// <summary>Resizes a virtual disk.</summary>
 		/// <param name="VirtualDiskHandle">Handle to an open virtual disk.</param>
@@ -975,6 +1230,7 @@ namespace Vanara.PInvoke
 		/// If the function fails, the return value is an error code and the value of the Handle parameter is undefined. For more information, see System Error Codes.
 		/// </para>
 		/// </returns>
+		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		public static extern Win32Error ResizeVirtualDisk(SafeFileHandle VirtualDiskHandle, RESIZE_VIRTUAL_DISK_FLAG Flags, ref RESIZE_VIRTUAL_DISK_PARAMETERS Parameters, IntPtr Overlapped);
 
@@ -989,6 +1245,7 @@ namespace Vanara.PInvoke
 		/// If the function fails, the return value is an error code and the value of the Handle parameter is undefined. For more information, see System Error Codes.
 		/// </para>
 		/// </returns>
+		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		public static extern Win32Error ResizeVirtualDisk(SafeFileHandle VirtualDiskHandle, RESIZE_VIRTUAL_DISK_FLAG Flags, ref RESIZE_VIRTUAL_DISK_PARAMETERS Parameters, ref NativeOverlapped Overlapped);
 
@@ -999,10 +1256,60 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is ERROR_SUCCESS and the Handle parameter contains a valid pointer to the new virtual disk object. If the
 		/// function fails, the return value is an error code and the value of the Handle parameter is undefined.
 		/// </returns>
+		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		public static extern Win32Error SetVirtualDiskInformation(SafeFileHandle VirtualDiskHandle, ref SET_VIRTUAL_DISK_INFO VirtualDiskInfo);
 
+		/// <summary>Sets a metadata item for a virtual disk.</summary>
+		/// <param name="VirtualDiskHandle">Handle to an open virtual disk.</param>
+		/// <param name="Item">A GUID identifying the metadata to retrieve.</param>
+		/// <param name="MetaDataSize">Address of a ULONG containing the size, in bytes, of the buffer pointed to by the MetaData parameter.</param>
+		/// <param name="MetaData">Address of the buffer containing the metadata to be stored.</param>
+		/// <returns>Status of the request. If the function succeeds, the return value is ERROR_SUCCESS. If the function fails, the return value is an error code.For more information, see System Error Codes.</returns>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows8)]
+		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
+		public static extern Win32Error SetVirtualDiskMetadata(SafeFileHandle VirtualDiskHandle, [MarshalAs(UnmanagedType.LPStruct)] Guid Item, uint MetaDataSize, IntPtr MetaData);
+
+		/// <summary>Creates a snapshot of the current virtual disk for VHD Set files.</summary>
+		/// <param name="VirtualDiskHandle">A handle to the open virtual disk. This must be a VHD Set file.</param>
+		/// <param name="Parameters">A pointer to a valid TAKE_SNAPSHOT_VHDSET_PARAMETERS structure that contains snapshot data.</param>
+		/// <param name="Flags">Snapshot flags, which must be a valid combination of the TAKE_SNAPSHOT_VHDSET_FLAG enumeration.</param>
+		/// <returns>Status of the request. If the function succeeds, the return value is ERROR_SUCCESS. If the function fails, the return value is an error code.For more information, see System Error Codes.</returns>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
+		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
+		public static extern Win32Error TakeSnapshotVhdSet(SafeFileHandle VirtualDiskHandle, ref TAKE_SNAPSHOT_VHDSET_PARAMETERS Parameters, TAKE_SNAPSHOT_VHDSET_FLAG Flags);
+
+		/// <summary>Contains snapshot parameters, indicating information about the new snapshot to be applied.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct APPLY_SNAPSHOT_VHDSET_PARAMETERS
+		{
+			/// <summary>
+			/// An APPLY_SNAPSHOT_VHDSET_VERSION enumeration that specifies the version of the APPLY_SNAPSHOT_VHDSET_PARAMETERS structure being passed to or from
+			/// the VHD functions.
+			/// </summary>
+			public APPLY_SNAPSHOT_VHDSET_VERSION Version;
+			/// <summary>A structure with the following member.</summary>
+			public APPLY_SNAPSHOT_VHDSET_PARAMETERS_Version1 Version1;
+		}
+
+		/// <summary>A structure with the following member.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct APPLY_SNAPSHOT_VHDSET_PARAMETERS_Version1
+		{
+			/// <summary>The ID of the new snapshot to be applied to the VHD set.</summary>
+			public Guid SnapshotId;
+			/// <summary>
+			/// Indicates whether the current default leaf data should be retained as part of the apply operation. When a zero GUID is specified, the apply
+			/// operation will discard the current default leaf data. When a non-zero GUID is specified, the apply operation will convert the default leaf data
+			/// into a writeable snapshot with the specified ID.
+			/// </summary>
+			public Guid LeafSnapshotId;
+		}
+
 		/// <summary>Contains virtual hard disk (VHD) attach request parameters.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct ATTACH_VIRTUAL_DISK_PARAMETERS
 		{
@@ -1020,6 +1327,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>A structure with the following member.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct ATTACH_VIRTUAL_DISK_PARAMETERS_Version1
 		{
@@ -1028,6 +1336,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains virtual hard disk (VHD) compacting parameters.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct COMPACT_VIRTUAL_DISK_PARAMETERS
 		{
@@ -1037,14 +1346,24 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public COMPACT_VIRTUAL_DISK_VERSION Version;
 
-			/// <summary>Reserved. Must be set to zero.</summary>
-			public uint Reserved;
+			/// <summary>A structure with the following member.</summary>
+			public COMPACT_VIRTUAL_DISK_PARAMETERS_Version1 Version1;
 
 			/// <summary>Gets the default value for this structure. This is currently the only valid value for <see cref="COMPACT_VIRTUAL_DISK_PARAMETERS"/>.</summary>
 			public static COMPACT_VIRTUAL_DISK_PARAMETERS Default => new COMPACT_VIRTUAL_DISK_PARAMETERS { Version = COMPACT_VIRTUAL_DISK_VERSION.COMPACT_VIRTUAL_DISK_VERSION_1 };
 		}
 
+		/// <summary>A structure with the following member.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct COMPACT_VIRTUAL_DISK_PARAMETERS_Version1
+		{
+			/// <summary>Reserved. Must be set to zero.</summary>
+			public uint Reserved;
+		}
+
 		/// <summary>Contains virtual disk creation parameters, providing control over, and information about, the newly created virtual disk.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 		[StructLayout(LayoutKind.Explicit)]
 		public struct CREATE_VIRTUAL_DISK_PARAMETERS
 		{
@@ -1082,6 +1401,7 @@ namespace Vanara.PInvoke
 			}
 		}
 
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct CREATE_VIRTUAL_DISK_PARAMETERS_Version1
 		{
@@ -1117,6 +1437,7 @@ namespace Vanara.PInvoke
 			public IntPtr SourcePath;
 		}
 
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows8)]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct CREATE_VIRTUAL_DISK_PARAMETERS_Version2
 		{
@@ -1167,6 +1488,7 @@ namespace Vanara.PInvoke
 			public Guid ResiliencyGuid;
 		}
 
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct CREATE_VIRTUAL_DISK_PARAMETERS_Version3
 		{
@@ -1223,7 +1545,28 @@ namespace Vanara.PInvoke
 			public VIRTUAL_STORAGE_TYPE BackingStorageType;
 		}
 
+		/// <summary>Contains snapshot deletion parameters, designating which snapshot to delete from the VHD Set.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct DELETE_SNAPSHOT_VHDSET_PARAMETERS
+		{
+			/// <summary>A value from the DELETE_SNAPSHOT_VHDSET_VERSION enumeration that is the discriminant for the union.</summary>
+			public DELETE_SNAPSHOT_VHDSET_VERSION Version;
+			/// <summary>A structure with the following member.</summary>
+			public DELETE_SNAPSHOT_VHDSET_PARAMETERS_Version1 Version1;
+		}
+
+		/// <summary>A structure with the following member.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct DELETE_SNAPSHOT_VHDSET_PARAMETERS_Version1
+		{
+			/// <summary>The Snapshot Id in GUID format indicating which snapshot is to be deleted from the VHD Set.</summary>
+			public Guid SnapshotId;
+		}
+
 		/// <summary>Contains virtual disk expansion request parameters.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct EXPAND_VIRTUAL_DISK_PARAMETERS
 		{
@@ -1234,18 +1577,27 @@ namespace Vanara.PInvoke
 			public EXPAND_VIRTUAL_DISK_VERSION Version;
 
 			/// <summary>New size, in bytes, for the expansion request.</summary>
-			public ulong NewSize;
+			public EXPAND_VIRTUAL_DISK_PARAMETERS_Version1 Version1;
 
 			/// <summary>Initializes with default version and <paramref name="newSize"/>.</summary>
 			/// <param name="newSize">New size, in bytes, for the expansion request.</param>
 			public EXPAND_VIRTUAL_DISK_PARAMETERS(ulong newSize)
 			{
 				Version = EXPAND_VIRTUAL_DISK_VERSION.EXPAND_VIRTUAL_DISK_VERSION_1;
-				NewSize = newSize;
+				Version1.NewSize = newSize;
 			}
 		}
 
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct EXPAND_VIRTUAL_DISK_PARAMETERS_Version1
+		{
+			/// <summary>New size, in bytes, for the expansion request.</summary>
+			public ulong NewSize;
+		}
+
 		/// <summary>Contains virtual hard disk (VHD) information.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 		[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
 		public struct GET_VIRTUAL_DISK_INFO
 		{
@@ -1257,69 +1609,70 @@ namespace Vanara.PInvoke
 			public GET_VIRTUAL_DISK_INFO_VERSION Version;
 
 			/// <summary></summary>
-			[FieldOffset(8)]
+			[FieldOffset(8), PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 			public GET_VIRTUAL_DISK_INFO_Size Size;
 
 			/// <summary>Unique identifier of the VHD.</summary>
-			[FieldOffset(8)]
+			[FieldOffset(8), PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 			public Guid Identifier;
 
 			/// <summary>A structure with the following members</summary>
-			[FieldOffset(8)]
+			[FieldOffset(8), PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 			public GET_VIRTUAL_DISK_INFO_ParentLocation ParentLocation;
 
 			/// <summary>Unique identifier of the parent disk backing store.</summary>
-			[FieldOffset(8)]
+			[FieldOffset(8), PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 			public Guid ParentIdentifier;
 
 			/// <summary>Internal time stamp of the parent disk backing store.</summary>
-			[FieldOffset(8)]
+			[FieldOffset(8), PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 			public uint ParentTimestamp;
 
 			/// <summary>VIRTUAL_STORAGE_TYPE structure containing information about the type of VHD.</summary>
-			[FieldOffset(8)]
+			[FieldOffset(8), PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 			public VIRTUAL_STORAGE_TYPE VirtualStorageType;
 
 			/// <summary>Provider-specific subtype.</summary>
-			[FieldOffset(8)]
+			[FieldOffset(8), PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 			public VIRTUAL_DISK_INFO_PROVIDER_SUBTYPE ProviderSubtype;
 
 			/// <summary>Indicates whether the virtual disk is 4 KB aligned.</summary>
-			[FieldOffset(8), MarshalAs(UnmanagedType.Bool)]
+			[FieldOffset(8), MarshalAs(UnmanagedType.Bool), PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows8)]
 			public bool Is4kAligned;
 
 			/// <summary>Indicates whether the virtual disk is currently mounted and in use. TRUE if the virtual disk is currently mounted and in use; otherwise FALSE.</summary>
-			[FieldOffset(8), MarshalAs(UnmanagedType.Bool)]
+			[FieldOffset(8), MarshalAs(UnmanagedType.Bool), PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows81)]
 			public bool IsLoaded;
 
 			/// <summary>Details about the physical disk on which the virtual disk resides.</summary>
-			[FieldOffset(8)]
+			[FieldOffset(8), PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows8)]
 			public GET_VIRTUAL_DISK_INFO_PhysicalDisk PhysicalDisk;
 
 			/// <summary>The physical sector size of the virtual disk.</summary>
-			[FieldOffset(8)]
+			[FieldOffset(8), PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows8)]
 			public uint VhdPhysicalSectorSize;
 
 			/// <summary>The smallest safe minimum size of the virtual disk.</summary>
-			[FieldOffset(8)]
+			[FieldOffset(8), PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows8)]
 			public ulong SmallestSafeVirtualSize;
 
 			/// <summary>The fragmentation level of the virtual disk.</summary>
-			[FieldOffset(8)]
+			[FieldOffset(8), PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows8)]
 			public uint FragmentationPercentage;
 
 			/// <summary>The identifier that is uniquely created when a user first creates the virtual disk to attempt to uniquely identify that virtual disk.</summary>
-			[FieldOffset(8)]
+			[FieldOffset(8), PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows81)]
 			public Guid VirtualDiskId;
 
 			/// <summary>The state of resilient change tracking (RCT) for the virtual disk.</summary>
-			[FieldOffset(8)]
+			[FieldOffset(8), PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
 			public GET_VIRTUAL_DISK_INFO_ChangeTrackingState ChangeTrackingState;
 		}
 
 		/// <summary>The state of resilient change tracking (RCT) for the virtual disk.
 		/// <note type="warning">While this structure will fill, the value of MostRecentId will the be first character of a truncated string.</note>
 		/// </summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct GET_VIRTUAL_DISK_INFO_ChangeTrackingState
 		{
@@ -1336,6 +1689,7 @@ namespace Vanara.PInvoke
 		/// <summary>A structure with the following members
 		/// <note type="warning">While this structure will fill, the value of ParentLocationBuffer will the be first character of a truncated string.</note>
 		/// </summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct GET_VIRTUAL_DISK_INFO_ParentLocation
 		{
@@ -1351,6 +1705,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Details about the physical disk on which the virtual disk resides.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows8)]
 		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct GET_VIRTUAL_DISK_INFO_PhysicalDisk
 		{
@@ -1365,6 +1720,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Sizes of the virtual disk.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct GET_VIRTUAL_DISK_INFO_Size
 		{
@@ -1382,6 +1738,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains virtual disk merge request parameters.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 		[StructLayout(LayoutKind.Explicit)]
 		public struct MERGE_VIRTUAL_DISK_PARAMETERS
 		{
@@ -1414,6 +1771,7 @@ namespace Vanara.PInvoke
 			}
 		}
 
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct MERGE_VIRTUAL_DISK_PARAMETERS_V1
 		{
@@ -1424,6 +1782,7 @@ namespace Vanara.PInvoke
 			public uint MergeDepth;
 		}
 
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows8)]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct MERGE_VIRTUAL_DISK_PARAMETERS_V2
 		{
@@ -1435,7 +1794,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains virtual hard disk (VHD) mirror request parameters.</summary>
-		[PInvokeData("VirtDisk.h", MSDNShortId = "hh448680")]
+		[PInvokeData("VirtDisk.h", MSDNShortId = "hh448680", MinClient = PInvokeClient.Windows8)]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct MIRROR_VIRTUAL_DISK_PARAMETERS
 		{
@@ -1447,7 +1806,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>This structure is used if the Version member is set to MIRROR_VIRTUAL_DISK_VERSION_1.</summary>
-		[PInvokeData("VirtDisk.h", MSDNShortId = "hh448680")]
+		[PInvokeData("VirtDisk.h", MSDNShortId = "hh448680", MinClient = PInvokeClient.Windows8)]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct MIRROR_VIRTUAL_DISK_PARAMETERS_Version1
 		{
@@ -1459,7 +1818,55 @@ namespace Vanara.PInvoke
 			public IntPtr MirrorVirtualDiskPath;
 		}
 
+		/// <summary>
+		/// Contains VHD Set modification parameters, indicating how the VHD Set should be altered.
+		/// </summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct MODIFY_VHDSET_PARAMETERS
+		{
+			/// <summary>A value from the MODIFY_VHDSET_VERSION enumeration that determines that is the discriminant for the union.</summary>
+			public MODIFY_VHDSET_VERSION Version;
+
+			/// <summary>A structure with the following members.</summary>
+			public MODIFY_VHDSET_PARAMETERS_Version1 Version1;
+		}
+
+		/// <summary>
+		/// A structure with the following members.
+		/// </summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
+		[StructLayout(LayoutKind.Explicit)]
+		public struct MODIFY_VHDSET_PARAMETERS_Version1
+		{
+			/// <summary>The snapshot path</summary>
+			[FieldOffset(0)]
+			public MODIFY_VHDSET_PARAMETERS_Version1_SnapshotPath SnapshotPath;
+			/// <summary>The Snapshot Id in GUID format indicating which snapshot is to be removed from the VHD Set file.</summary>
+			[FieldOffset(0)]
+			public Guid SnapshotId;
+			/// <summary>The file path for the default Snapshot of the Vhd Set.</summary>
+			[FieldOffset(0)]
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string DefaultFilePath;
+		}
+
+		/// <summary>
+		/// A structure with the following members.
+		/// </summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct MODIFY_VHDSET_PARAMETERS_Version1_SnapshotPath
+		{
+			/// <summary>The Snapshot Id in GUID format indicating which snapshot is to have its path altered in the VHD Set.</summary>
+			public Guid SnapshotId;
+			/// <summary>The new file path for the Snapshot indicated by the SnapshotId field.</summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string SnapshotFilePath;
+		}
+
 		/// <summary>Contains virtual disk open request parameters.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 		[StructLayout(LayoutKind.Explicit)]
 		public class OPEN_VIRTUAL_DISK_PARAMETERS
 		{
@@ -1529,6 +1936,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>This value is used if the Version member is OPEN_VIRTUAL_DISK_VERSION_1 (1).</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct OPEN_VIRTUAL_DISK_PARAMETERS_Version1
 		{
@@ -1549,6 +1957,7 @@ namespace Vanara.PInvoke
 		/// This value is used if the Version member is OPEN_VIRTUAL_DISK_VERSION_2 (2).
 		/// <para><c>Windows 7 and Windows Server 2008 R2:</c> This structure is not supported until Windows 8 and Windows Server 2012.</para>
 		/// </summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows8)]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct OPEN_VIRTUAL_DISK_PARAMETERS_Version2
 		{
@@ -1568,6 +1977,7 @@ namespace Vanara.PInvoke
 		/// This value is used if the Version member is OPEN_VIRTUAL_DISK_VERSION_3 (3).
 		/// <para><c>Windows 7 and Windows Server 2008 R2:</c> This structure is not supported until Windows 8 and Windows Server 2012.</para>
 		/// </summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct OPEN_VIRTUAL_DISK_PARAMETERS_Version3
 		{
@@ -1586,7 +1996,85 @@ namespace Vanara.PInvoke
 			public Guid SnapshotId;
 		}
 
+		/// <summary>Identifies an area on a virtual hard disk (VHD) that has changed as tracked by resilient change tracking (RCT).</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct QUERY_CHANGES_VIRTUAL_DISK_RANGE
+		{
+			/// <summary>The distance from the start of the virtual disk to the beginning of the area of the virtual disk that has changed, in bytes.</summary>
+			public ulong ByteOffset;
+			/// <summary>The length of the area of the virtual disk that has changed, in bytes.</summary>
+			public ulong ByteLength;
+			/// <summary>Reserved.</summary>
+			public ulong Reserved;
+		}
+
+		/// <summary>Contains raw SCSI virtual disk request parameters.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct RAW_SCSI_VIRTUAL_DISK_PARAMETERS
+		{
+			/// <summary>A RAW_SCSI_VIRTUAL_DISK_VERSION enumeration that specifies the version of the RAW_SCSI_VIRTUAL_DISK_PARAMETERS structure being passed to or from the VHD functions.</summary>
+			public RAW_SCSI_VIRTUAL_DISK_VERSION Version;
+			/// <summary>A structure with the following members.</summary>
+			public RAW_SCSI_VIRTUAL_DISK_PARAMETERS_Version1 Version1;
+		}
+
+		/// <summary>A structure with the following members.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
+		[StructLayout(LayoutKind.Sequential, Pack = 1)]
+		public struct RAW_SCSI_VIRTUAL_DISK_PARAMETERS_Version1
+		{
+			/// <summary>If TRUE, indicates the operation will be transported to the virtual disk using the RSVD protocol.</summary>
+			[MarshalAs(UnmanagedType.Bool)] public bool RSVDHandle;
+			/// <summary>If TRUE, indicates the SCSI command will read data from the DataBuffer. If FALSE, indicates data may be written.</summary>
+			[MarshalAs(UnmanagedType.U1)] public bool DataIn;
+			/// <summary>Length, in bytes, of the command descriptor block (CDB) contained in the CDB member.</summary>
+			public byte CdbLength;
+			/// <summary>Length, in bytes, of the sense buffer.</summary>
+			public byte SenseInfoLength;
+			/// <summary>Caller-supplied SRB_FLAGS-prefixed bit flag specifying the requested operation. Flags are defined in srb.h.</summary>
+			public byte SrbFlags;
+			/// <summary>Length, in bytes, of the buffer to be transferred.</summary>
+			public uint DataTransferLength;
+			/// <summary>A pointer to the SCSI data buffer.</summary>
+			public IntPtr DataBuffer;
+			/// <summary>A pointer to a buffer to receive SCSI sense info after completion of the command.</summary>
+			public IntPtr SenseInfo;
+			/// <summary>Caller-supplied CDB data. (The CDB structure is declared in scsi.h.)</summary>
+			public IntPtr Cdb;
+		}
+
+		/// <summary>
+		/// Contains raw SCSI virtual disk response parameters.
+		/// </summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct RAW_SCSI_VIRTUAL_DISK_RESPONSE
+		{
+			/// <summary>A RAW_SCSI_VIRTUAL_DISK_VERSION enumeration that specifies the version of the RAW_SCSI_VIRTUAL_DISK_PARAMETERS structure being passed to or from the VHD functions.</summary>
+			public RAW_SCSI_VIRTUAL_DISK_VERSION Version;
+			/// <summary>A structure with the following member.</summary>
+			public RAW_SCSI_VIRTUAL_DISK_RESPONSE_Version1 Version1;
+		}
+
+		/// <summary>
+		/// A structure with the following member.
+		/// </summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
+		[StructLayout(LayoutKind.Sequential, Pack = 1)]
+		public struct RAW_SCSI_VIRTUAL_DISK_RESPONSE_Version1
+		{
+			/// <summary>A SRB_STATUS-prefixed status value (defined in srb.h).</summary>
+			public byte ScsiStatus;
+			/// <summary>Length, in bytes, of the sense buffer.</summary>
+			public byte SenseInfoLength;
+			/// <summary>Length, in bytes, of the buffer to be transferred.</summary>
+			public uint DataTransferLength;
+		}
+
 		/// <summary>Contains the parameters for a ResizeVirtualDisk function.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows8)]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct RESIZE_VIRTUAL_DISK_PARAMETERS
 		{
@@ -1595,20 +2083,29 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public RESIZE_VIRTUAL_DISK_VERSION Version;
 
-			/// <summary>Contains the new size of the virtual disk.</summary>
-			public ulong NewSize;
+			/// <summary>If the Version member is RESIZE_VIRTUAL_DISK_VERSION_1 (1), this structure is used.</summary>
+			public RESIZE_VIRTUAL_DISK_PARAMETERS_Version1 Version1;
 
 			/// <summary>Initializes with default version and <paramref name="newSize"/>.</summary>
 			/// <param name="newSize">Contains the new size of the virtual disk.</param>
 			public RESIZE_VIRTUAL_DISK_PARAMETERS(ulong newSize)
 			{
 				Version = RESIZE_VIRTUAL_DISK_VERSION.RESIZE_VIRTUAL_DISK_VERSION_1;
-				NewSize = newSize;
+				Version1.NewSize = newSize;
 			}
 		}
 
+		/// <summary>If the Version member is RESIZE_VIRTUAL_DISK_VERSION_1 (1), this structure is used.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows8)]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct RESIZE_VIRTUAL_DISK_PARAMETERS_Version1
+		{
+			/// <summary>Contains the new size of the virtual disk.</summary>
+			public ulong NewSize;
+		}
+
 		/// <summary>Contains virtual hard disk (VHD) information for set request.</summary>
-		[PInvokeData("VirtDisk.h", MSDNShortId = "dd323686")]
+		[PInvokeData("VirtDisk.h", MSDNShortId = "dd323686", MinClient = PInvokeClient.Windows7)]
 		[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
 		public struct SET_VIRTUAL_DISK_INFO
 		{
@@ -1619,31 +2116,38 @@ namespace Vanara.PInvoke
 			[FieldOffset(0)] public SET_VIRTUAL_DISK_INFO_VERSION Version;
 
 			/// <summary>Path to the parent backing store.</summary>
+			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 			[FieldOffset(8)] public string ParentFilePath;
 
 			/// <summary>Unique identifier of the VHD.</summary>
+			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 			[FieldOffset(8)] public Guid UniqueIdentifier;
 
 			/// <summary>Sets the parent file path and the child depth.</summary>
+			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows8)]
 			[FieldOffset(8)] public SET_VIRTUAL_DISK_INFO_ParentPathWithDepthInfo ParentPathWithDepthInfo;
 
 			/// <summary>Sets the physical sector size reported by the VHD.</summary>
+			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows8)]
 			[FieldOffset(8)] public uint VhdPhysicalSectorSize;
 
 			/// <summary>The identifier that is uniquely created when a user first creates the virtual disk to attempt to uniquely identify that virtual disk.</summary>
+			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows81)]
 			[FieldOffset(8)] public Guid VirtualDiskId;
 
 			/// <summary>Turns resilient change tracking (RCT) on or off for the VHD. TRUE turns RCT on. FALSE turns RCT off.</summary>
+			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
 			[FieldOffset(8), MarshalAs(UnmanagedType.Bool)] public bool ChangeTrackingEnabled;
 
 			/// <summary>Sets the parent linkage information that differencing VHDs store. Parent linkage information is metadata used to locate and correctly identify the next parent in the virtual disk chain.</summary>
+			[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
 			[FieldOffset(8)] public SET_VIRTUAL_DISK_INFO_ParentLocator ParentLocator;
 		}
 
 		/// <summary>
 		/// Sets the parent file path and the child depth.
 		/// </summary>
-		[PInvokeData("VirtDisk.h", MSDNShortId = "dd323686")]
+		[PInvokeData("VirtDisk.h", MSDNShortId = "dd323686", MinClient = PInvokeClient.Windows8)]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct SET_VIRTUAL_DISK_INFO_ParentPathWithDepthInfo
 		{
@@ -1657,7 +2161,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Sets the parent linkage information that differencing VHDs store. Parent linkage information is metadata used to locate and correctly identify the next parent in the virtual disk chain.
 		/// </summary>
-		[PInvokeData("VirtDisk.h", MSDNShortId = "dd323686")]
+		[PInvokeData("VirtDisk.h", MSDNShortId = "dd323686", MinClient = PInvokeClient.Windows10)]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct SET_VIRTUAL_DISK_INFO_ParentLocator
 		{
@@ -1669,6 +2173,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains storage dependency information.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct STORAGE_DEPENDENCY_INFO
 		{
@@ -1681,11 +2186,12 @@ namespace Vanara.PInvoke
 			/// <summary>Number of entries returned in the following unioned members.</summary>
 			public int NumberEntries;
 
-			/// <summary></summary>
-			public STORAGE_DEPENDENCY_INFO_Union Union;
+			/// <summary>Variable-length array containing STORAGE_DEPENDENCY_INFO_TYPE_1 or STORAGE_DEPENDENCY_INFO_TYPE_2 structures.</summary>
+			public IntPtr Entries;
 		}
 
 		/// <summary>Contains storage dependency information for type 1.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct STORAGE_DEPENDENCY_INFO_TYPE_1
 		{
@@ -1700,6 +2206,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains storage dependency information for type 2.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct STORAGE_DEPENDENCY_INFO_TYPE_2
 		{
@@ -1728,20 +2235,29 @@ namespace Vanara.PInvoke
 			public string DependentVolumeRelativePath;
 		}
 
-		/// <summary></summary>
-		[StructLayout(LayoutKind.Explicit)]
-		public struct STORAGE_DEPENDENCY_INFO_Union
+		/// <summary>Contains snapshot parameters, indicating information about the new snapshot to be created.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct TAKE_SNAPSHOT_VHDSET_PARAMETERS
 		{
-			/// <summary>Variable-length array containing STORAGE_DEPENDENCY_INFO_TYPE_1 structures.</summary>
-			[FieldOffset(0)]
-			public STORAGE_DEPENDENCY_INFO_TYPE_1 Version1Entries;
+			/// <summary>A value from the TAKE_SNAPSHOT_VHDSET_VERSION enumeration that is the discriminant for the union.</summary>
+			public TAKE_SNAPSHOT_VHDSET_VERSION Version;
 
-			/// <summary>Variable-length array containing STORAGE_DEPENDENCY_INFO_TYPE_2 structures.</summary>
-			[FieldOffset(0)]
-			public STORAGE_DEPENDENCY_INFO_TYPE_2 Version2Entries;
+			/// <summary>A structure with the following member.</summary>
+			public TAKE_SNAPSHOT_VHDSET_PARAMETERS_Version1 Version1;
+		}
+
+		/// <summary>A structure with the following member.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows10)]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct TAKE_SNAPSHOT_VHDSET_PARAMETERS_Version1
+		{
+			/// <summary>The Id of the new Snapshot to be added to the Vhd Set.</summary>
+			public Guid SnapshotId;
 		}
 
 		/// <summary>Contains the progress and result data for the current virtual disk operation, used by the GetVirtualDiskOperationProgress function.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct VIRTUAL_DISK_PROGRESS
 		{
@@ -1763,6 +2279,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Device type identifier.</summary>
+		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows7)]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct VIRTUAL_STORAGE_TYPE
 		{
