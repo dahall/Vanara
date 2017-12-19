@@ -9,6 +9,7 @@ using static Vanara.PInvoke.Gdi32;
 
 namespace Vanara.PInvoke
 {
+	/// <summary>User32.dll function with GDI params.</summary>
 	public static partial class User32_Gdi
 	{
 		public const int OCM_NOTIFY = 0x204E; // WM_NOTIFY + WM_REFLECT
@@ -257,6 +258,16 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinUser.h", MSDNShortId = "dd162498")]
 		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
 		public static extern int DrawText(SafeDCHandle hDC, string lpchText, int nCount, ref RECT lpRect, DrawTextFlags uFormat);
+
+		/// <summary>Retrieves a handle to the top-level window whose class name and window name match the specified strings. This function does not search child windows. This function does not perform a case-sensitive search.</summary>
+		/// <param name="lpClassName">The class name or a class atom created by a previous call to the RegisterClass or RegisterClassEx function. The atom must be in the low-order word of lpClassName; the high-order word must be zero.		
+		/// <para>If lpClassName points to a string, it specifies the window class name. The class name can be any name registered with RegisterClass or RegisterClassEx, or any of the predefined control-class names.</para>
+		/// <para>If lpClassName is NULL, it finds any window whose title matches the lpWindowName parameter.</para></param>
+		/// <param name="lpWindowName">The window name (the window's title). If this parameter is NULL, all window names match.</param>
+		/// <returns>If the function succeeds, the return value is a handle to the window that has the specified class name and window name. If the function fails, the return value is NULL. To get extended error information, call GetLastError.</returns>
+		[PInvokeData("WinUser.h", MSDNShortId = "ms633499")]
+		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
+		public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
 		/// <summary>
 		/// Retrieves the coordinates of a window's client area. The client coordinates specify the upper-left and lower-right corners of the client area. Because client coordinates are relative to the upper-left corner of a window's client area, the coordinates of the upper-left corner are (0,0).
