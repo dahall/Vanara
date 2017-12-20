@@ -78,7 +78,7 @@ namespace Vanara.Windows.Forms
 		/// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs" /> that contains the event data.</param>
 		protected override void OnPaint(PaintEventArgs e)
 		{
-			if (!this.IsDesignMode() && SupportGlass && DesktopWindowManager.IsCompositionEnabled())
+			if (!this.IsDesignMode() && SupportGlass && DesktopWindowManager.CompositionEnabled)
 				try { e.Graphics.Clear(Color.Black); } catch { }
 			else
 			{

@@ -220,7 +220,7 @@ namespace Vanara.Windows.Forms
 		private void form_Resize(object sender, EventArgs e)
 		{
 			var form = sender as Form;
-			if ((DesktopWindowManager.IsCompositionEnabled() && GetGlassEnabled(form)) || form.IsDesignMode())
+			if ((DesktopWindowManager.CompositionEnabled && GetGlassEnabled(form)) || form.IsDesignMode())
 				InvalidateNonGlassClientArea(form);
 		}
 
@@ -247,7 +247,7 @@ namespace Vanara.Windows.Forms
 
 		private void GlassifyForm(Form form, Graphics g = null)
 		{
-			if (!(DesktopWindowManager.IsCompositionEnabled() && GetGlassEnabled(form)) && !form.IsDesignMode())
+			if (!(DesktopWindowManager.CompositionEnabled && GetGlassEnabled(form)) && !form.IsDesignMode())
 				return;
 
 			if (g == null) g = form.CreateGraphics();

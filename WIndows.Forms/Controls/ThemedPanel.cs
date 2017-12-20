@@ -82,7 +82,7 @@ namespace Vanara.Windows.Forms
 
 		protected override void OnPaint(PaintEventArgs e)
 		{
-			if (!this.IsDesignMode() && SupportGlass && DesktopWindowManager.IsCompositionEnabled())
+			if (!this.IsDesignMode() && SupportGlass && DesktopWindowManager.CompositionEnabled)
 				try { e.Graphics.Clear(Color.Black); } catch { }
 			else
 			{

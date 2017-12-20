@@ -187,7 +187,7 @@ namespace Vanara.Windows.Forms
 					ref tff, out tRect, out iRect);
 
 				// Draw background
-				if (SupportGlass && !this.IsDesignMode() && DesktopWindowManager.IsCompositionEnabled())
+				if (SupportGlass && !this.IsDesignMode() && DesktopWindowManager.CompositionEnabled)
 					e.Graphics.Clear(Color.Black);
 				else
 				{
@@ -220,7 +220,7 @@ namespace Vanara.Windows.Forms
 					}
 					else
 					{
-						var br = DesktopWindowManager.IsCompositionEnabled() ? SystemBrushes.ActiveCaptionText : SystemBrushes.ControlText;
+						var br = DesktopWindowManager.CompositionEnabled ? SystemBrushes.ActiveCaptionText : SystemBrushes.ControlText;
 						var sf = new StringFormat(StringFormat.GenericDefault);
 						if (rtl == RightToLeft.Yes) sf.FormatFlags |= StringFormatFlags.DirectionRightToLeft;
 						e.Graphics.DrawString(Text, Font, br, ClientRectangle, sf);
