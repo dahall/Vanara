@@ -103,6 +103,8 @@ namespace Vanara.IO
 		/// <summary>The logical sector size of the physical disk.</summary>
 		public uint LogicalSectorSize => GetInformation<uint>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_PHYSICAL_DISK);
 
+		/// <summary>Gets the metadata associated with this virtual disk. Currently on VHDX files support metadata.</summary>
+		/// <value>The metadata.</value>
 		public VirtualDiskMetadata Metadata => metadata ?? (metadata = new VirtualDiskMetadata(this));
 
 		/// <summary>
@@ -777,7 +779,7 @@ namespace Vanara.IO
 					if (parent.Handle.IsClosed) throw new InvalidOperationException("Virtual disk not valid.");
 					uint count = 0;
 					var err = EnumerateVirtualDiskMetadata(parent.Handle, ref count, IntPtr.Zero);
-					if (err != Win32Error.ERROR_MORE_DATA) err.ThrowIfFailed();
+					if (err != Win32Error.ERROR_MORE_DATA && err != Win32Error.ERROR_INSUFFICIENT_BUFFER) err.ThrowIfFailed();
 					if (count == 0) return new Guid[0];
 					var mem = new SafeCoTaskMemHandle(Marshal.SizeOf(typeof(Guid)) * (int)count);
 					EnumerateVirtualDiskMetadata(parent.Handle, ref count, (IntPtr)mem).ThrowIfFailed();
@@ -802,7 +804,7 @@ namespace Vanara.IO
 					if (parent.Handle.IsClosed) throw new InvalidOperationException("Virtual disk not valid.");
 					uint sz = 0;
 					var err = GetVirtualDiskMetadata(parent.Handle, key, ref sz, SafeCoTaskMemHandle.Null);
-					if (err != Win32Error.ERROR_MORE_DATA) err.ThrowIfFailed();
+					if (err != Win32Error.ERROR_MORE_DATA && err != Win32Error.ERROR_INSUFFICIENT_BUFFER) err.ThrowIfFailed();
 					var ret = new SafeCoTaskMemHandle((int)sz);
 					GetVirtualDiskMetadata(parent.Handle, key, ref sz, ret).ThrowIfFailed();
 					return ret;
@@ -898,6 +900,11 @@ namespace Vanara.IO
 			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 			private IEnumerable<KeyValuePair<Guid, SafeCoTaskMemHandle>> GetEnum() => Keys.Select(k => new KeyValuePair<Guid, SafeCoTaskMemHandle>(k, this[k]));
+		}
+
+		private class VirtualDiskSnapshot
+		{
+			private Guid id;
 		}
 	}
 }

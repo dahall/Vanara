@@ -155,7 +155,7 @@ namespace Vanara.PInvoke
 			CREATE_VIRTUAL_DISK_FLAG_PRESERVE_PARENT_CHANGE_TRACKING_STATE = 0x20,
 
 			/// <summary>
-			/// When creating a VHD Set from source, don't copy the data in the original backing store, but intsead use the file as is. If this flag is not
+			/// When creating a VHD Set from source, don't copy the data in the original backing store, but instead use the file as is. If this flag is not
 			/// specified and a source file is passed to CreateVirtualDisk for a VHDSet file, the data in the source file is copied. If this flag is set the data
 			/// is moved. The name of the file may change.
 			/// </summary>

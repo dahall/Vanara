@@ -235,7 +235,16 @@ namespace Vanara.IO.Tests
 			{
 				using (var vhd = VirtualDisk.Create(lfn, sz))
 				{
-					vhd.Attach(true, true, false, GetWorldFullFileSecurity());
+					var count = 0;
+					Assert.That(() => count = vhd.Metadata.Count, Throws.Nothing);
+
+					// Try get and set
+					var guid = Guid.NewGuid();
+					Assert.That(() => vhd.Metadata.Add(guid, new SafeCoTaskMemHandle("Testing")), Throws.Nothing);
+					Assert.That(vhd.Metadata.Count, Is.EqualTo(count + 1));
+					Assert.That(vhd.Metadata.ContainsKey(Guid.NewGuid()), Is.False);
+					Assert.That(vhd.Metadata.TryGetValue(guid, out var mem), Is.True);
+					Assert.That(mem.ToString(-1), Is.EqualTo("Testing"));
 
 					// Try enumerate and get
 					foreach (var mkv in vhd.Metadata)
@@ -245,14 +254,10 @@ namespace Vanara.IO.Tests
 						TestContext.WriteLine($"{mkv.Key}={mkv.Value.Size}b:{mkv.Value.ToString(-1)}");
 					}
 
-					// Try set and remove
-					var guid = Guid.NewGuid();
-					Assert.That(() => vhd.Metadata.Add(guid, new SafeCoTaskMemHandle("Testing")), Throws.Nothing);
-					Assert.That(vhd.Metadata.TryGetValue(Guid.NewGuid(), out SafeCoTaskMemHandle mem), Is.False);
-					Assert.That(vhd.Metadata.TryGetValue(guid, out mem), Is.True);
-					Assert.That(mem.ToString(-1), Is.EqualTo("Testing"));
+					// Try remove
 					Assert.That(vhd.Metadata.Remove(guid), Is.True);
 					Assert.That(vhd.Metadata.TryGetValue(guid, out mem), Is.False);
+					Assert.That(vhd.Metadata.Count, Is.EqualTo(count));
 				}
 			}
 			finally
