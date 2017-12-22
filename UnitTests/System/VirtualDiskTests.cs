@@ -226,6 +226,41 @@ namespace Vanara.IO.Tests
 			}
 		}
 
+		[Test]
+		public void GetSetMetadataTest()
+		{
+			const int sz = 0x03010200;
+			var lfn = tmpfn + "x";
+			try
+			{
+				using (var vhd = VirtualDisk.Create(lfn, sz))
+				{
+					vhd.Attach(true, true, false, GetWorldFullFileSecurity());
+
+					// Try enumerate and get
+					foreach (var mkv in vhd.Metadata)
+					{
+						Assert.That(mkv.Key, Is.Not.EqualTo(Guid.Empty));
+						Assert.That(mkv.Value.Size, Is.Not.Zero);
+						TestContext.WriteLine($"{mkv.Key}={mkv.Value.Size}b:{mkv.Value.ToString(-1)}");
+					}
+
+					// Try set and remove
+					var guid = Guid.NewGuid();
+					Assert.That(() => vhd.Metadata.Add(guid, new SafeCoTaskMemHandle("Testing")), Throws.Nothing);
+					Assert.That(vhd.Metadata.TryGetValue(Guid.NewGuid(), out SafeCoTaskMemHandle mem), Is.False);
+					Assert.That(vhd.Metadata.TryGetValue(guid, out mem), Is.True);
+					Assert.That(mem.ToString(-1), Is.EqualTo("Testing"));
+					Assert.That(vhd.Metadata.Remove(guid), Is.True);
+					Assert.That(vhd.Metadata.TryGetValue(guid, out mem), Is.False);
+				}
+			}
+			finally
+			{
+				System.IO.File.Delete(lfn);
+			}
+		}
+
 		//[Test()]
 		public void DetachTest()
 		{

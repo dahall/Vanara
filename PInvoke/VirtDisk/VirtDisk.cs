@@ -1014,7 +1014,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error EnumerateVirtualDiskMetadata(SafeFileHandle VirtualDiskHandle, ref uint NumberOfItems, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] Guid[] Items);
+		public static extern Win32Error EnumerateVirtualDiskMetadata(SafeFileHandle VirtualDiskHandle, ref uint NumberOfItems, IntPtr Items);
 
 		/// <summary>Increases the size of a fixed or dynamic virtual hard disk (VHD).</summary>
 		/// <param name="VirtualDiskHandle">A handle to the open VHD, which must have been opened using the VIRTUAL_DISK_ACCESS_METAOPS flag.</param>
