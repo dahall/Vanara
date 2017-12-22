@@ -130,6 +130,10 @@
       <Project>{1f0b972a-06da-4f6a-8b60-87d76fb1f2d9}</Project>
       <Name>Vanara.PInvoke.CredUI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PInvoke\Crypt32\Vanara.PInvoke.Crypt32.csproj">
+      <Project>{bd86fd1b-d52e-4b78-89ac-36d89458ebd8}</Project>
+      <Name>Vanara.PInvoke.Crypt32</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PInvoke\DwmApi\Vanara.PInvoke.DwmApi.csproj">
       <Project>{e1c6d6af-60a0-42cd-af77-f0de0ffe1395}</Project>
       <Name>Vanara.PInvoke.DwmApi</Name>
@@ -141,6 +145,10 @@
     <ProjectReference Include="..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj">
       <Project>{842d436f-598c-47d7-b5aa-12399f8ccfe9}</Project>
       <Name>Vanara.PInvoke.Kernel32</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PInvoke\Mpr\Vanara.PInvoke.Mpr.csproj">
+      <Project>{e91c263f-82d9-40a9-99a1-f879cb076bce}</Project>
+      <Name>Vanara.PInvoke.Mpr</Name>
     </ProjectReference>
     <ProjectReference Include="..\PInvoke\NetApi32\Vanara.PInvoke.NetApi32.csproj">
       <Project>{48ed1b1b-1450-43d2-917e-b5ace357fd82}</Project>
@@ -178,6 +186,10 @@
       <Project>{ac7d45c6-3c00-4fbf-90be-1a026fb26df0}</Project>
       <Name>Vanara.PInvoke.TaskSchd</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PInvoke\User32.Gdi\Vanara.PInvoke.User32.Gdi.csproj">
+      <Project>{fc7b25b5-3bb9-44f5-93d9-9ab7193b1be9}</Project>
+      <Name>Vanara.PInvoke.User32.Gdi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PInvoke\User32\Vanara.PInvoke.User32.csproj">
       <Project>{a6771907-addc-49fc-8444-a97aa65e77e2}</Project>
       <Name>Vanara.PInvoke.User32</Name>
@@ -205,6 +217,10 @@
     <ProjectReference Include="..\Windows.Forms\Vanara.Windows.Forms.csproj">
       <Project>{51986cd3-eeda-4369-93a4-255512548f68}</Project>
       <Name>Vanara.Windows.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Windows.Shell\Vanara.Windows.Shell.csproj">
+      <Project>{43685be2-a65e-4b01-be16-479526940f23}</Project>
+      <Name>Vanara.Windows.Shell</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

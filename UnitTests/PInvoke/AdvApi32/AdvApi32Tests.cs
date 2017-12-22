@@ -193,12 +193,12 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void GetTokenInformationTest()
 		{
-			//var p = SafeTokenHandle.CurrentProcessToken.GetConvertedInfo<PTOKEN_PRIVILEGES>(TOKEN_INFORMATION_CLASS.TokenPrivileges).Privileges;
+			//var p = SafeTokenHandle.CurrentProcessToken.GetInfo<PTOKEN_PRIVILEGES>(TOKEN_INFORMATION_CLASS.TokenPrivileges).Privileges;
 			using (var t = SafeTokenHandle.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_QUERY))
 			{
 				Assert.That(t, Is.Not.Null);
 
-				var p = t.GetConvertedInfo<PTOKEN_PRIVILEGES>(TOKEN_INFORMATION_CLASS.TokenPrivileges);
+				var p = t.GetInfo<PTOKEN_PRIVILEGES>(TOKEN_INFORMATION_CLASS.TokenPrivileges);
 				Assert.That(p, Is.Not.Null);
 				Assert.That(p.PrivilegeCount, Is.GreaterThan(0));
 				TestContext.WriteLine("Privs: " + string.Join("; ", p.Privileges.Select(i => i.ToString())));
@@ -216,18 +216,18 @@ namespace Vanara.PInvoke.Tests
 
 			using (var t = SafeTokenHandle.FromThread(GetCurrentThread(), TokenAccess.TOKEN_QUERY))
 			{
-				var id = t.GetConvertedInfo<uint>(TOKEN_INFORMATION_CLASS.TokenSessionId);
+				var id = t.GetInfo<uint>(TOKEN_INFORMATION_CLASS.TokenSessionId);
 				Assert.That(id, Is.Not.Zero);
 				TestContext.WriteLine($"SessId: {id}");
 
-				var ve = t.GetConvertedInfo<bool>(TOKEN_INFORMATION_CLASS.TokenVirtualizationEnabled);
+				var ve = t.GetInfo<bool>(TOKEN_INFORMATION_CLASS.TokenVirtualizationEnabled);
 				TestContext.WriteLine($"VirtEnable: {ve}");
 
-				var et = t.GetConvertedInfo<TOKEN_ELEVATION_TYPE>(TOKEN_INFORMATION_CLASS.TokenElevationType);
+				var et = t.GetInfo<TOKEN_ELEVATION_TYPE>(TOKEN_INFORMATION_CLASS.TokenElevationType);
 				Assert.That(et, Is.Not.Zero);
 				TestContext.WriteLine($"ElevType: {et}");
 
-				var e = t.GetConvertedInfo<TOKEN_ELEVATION>(TOKEN_INFORMATION_CLASS.TokenElevation);
+				var e = t.GetInfo<TOKEN_ELEVATION>(TOKEN_INFORMATION_CLASS.TokenElevation);
 				Assert.That(e, Is.Not.Zero);
 				TestContext.WriteLine($"Elev: {e.TokenIsElevated}");
 			}

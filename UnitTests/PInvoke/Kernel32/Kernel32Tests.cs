@@ -8,7 +8,7 @@ using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Macros;
-using static Vanara.PInvoke.User32;
+using static Vanara.PInvoke.User32_Gdi;
 
 namespace Vanara.PInvoke.Tests
 {
