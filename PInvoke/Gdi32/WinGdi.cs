@@ -432,5 +432,70 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Wingdi.h", MSDNShortId = "dd145141")]
 		public static extern bool TransparentBlt(SafeDCHandle hdcDest, int xOriginDest, int yOriginDest, int wDest, int hDest, SafeDCHandle hdcSrc, int xOriginSrc, int yOriginSrc, int wSrc, int hSrc, int crTransparent);
+
+		/// <summary>The COLORREF value is used to specify an RGB color in the form <c>0x00bbggrr</c>.</summary>
+		[PInvokeData("WinDef.h")]
+		[StructLayout(LayoutKind.Explicit, Size = 4)]
+		public struct COLORREF
+		{
+			/// <summary>The DWORD value</summary>
+			[FieldOffset(0)]
+			private uint Value;
+			/// <summary>The intensity of the red color.</summary>
+			[FieldOffset(0)]
+			public byte R;
+			/// <summary>The intensity of the green color.</summary>
+			[FieldOffset(1)]
+			public byte G;
+			/// <summary>The intensity of the blue color.</summary>
+			[FieldOffset(2)]
+			public byte B;
+
+			/// <summary>Initializes a new instance of the <see cref="COLORREF"/> struct.</summary>
+			/// <param name="r">The intensity of the red color.</param>
+			/// <param name="g">The intensity of the green color.</param>
+			/// <param name="b">The intensity of the blue color.</param>
+			public COLORREF(byte r, byte g, byte b)
+			{
+				Value = 0;
+				R = r;
+				G = g;
+				B = b;
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="COLORREF"/> struct.</summary>
+			/// <param name="value">The packed DWORD value.</param>
+			public COLORREF(uint value)
+			{
+				R = 0;
+				G = 0;
+				B = 0;
+				Value = value & 0x00FFFFFF;
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="COLORREF"/> struct.</summary>
+			/// <param name="color">The color.</param>
+			public COLORREF(System.Drawing.Color color) : this(color.R, color.G, color.B) { }
+
+			/// <summary>Performs an implicit conversion from <see cref="COLORREF"/> to <see cref="System.Drawing.Color"/>.</summary>
+			/// <param name="cr">The <see cref="COLORREF"/> value.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator System.Drawing.Color(COLORREF cr) => System.Drawing.Color.FromArgb(cr.R, cr.G, cr.B);
+
+			/// <summary>Performs an implicit conversion from <see cref="System.Drawing.Color"/> to <see cref="COLORREF"/>.</summary>
+			/// <param name="clr">The <see cref="System.Drawing.Color"/> value.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator COLORREF(System.Drawing.Color clr) => new COLORREF(clr);
+
+			/// <summary>Performs an implicit conversion from <see cref="COLORREF"/> to <see cref="System.UInt32"/>.</summary>
+			/// <param name="cr">The <see cref="COLORREF"/> value.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator uint(COLORREF cr) => cr.Value;
+
+			/// <summary>Performs an implicit conversion from <see cref="System.UInt32"/> to <see cref="COLORREF"/>.</summary>
+			/// <param name="value">The <see cref="uint"/> value.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator COLORREF(uint value) => new COLORREF(value);
+		}
 	}
 }
