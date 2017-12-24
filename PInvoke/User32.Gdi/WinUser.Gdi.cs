@@ -17,6 +17,49 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
 		public delegate IntPtr DialogProc(IntPtr hwndDlg, uint uMsg, IntPtr wParam, IntPtr lParam);
 
+		[PInvokeData("WinUser.h")]
+		[Flags]
+		public enum BorderFlags : uint
+		{
+			BF_LEFT        = 0x0001,
+			BF_TOP         = 0x0002,
+			BF_RIGHT       = 0x0004,
+			BF_BOTTOM      = 0x0008,
+			BF_TOPLEFT     = (BF_TOP | BF_LEFT),
+			BF_TOPRIGHT    = (BF_TOP | BF_RIGHT),
+			BF_BOTTOMLEFT  = (BF_BOTTOM | BF_LEFT),
+			BF_BOTTOMRIGHT = (BF_BOTTOM | BF_RIGHT),
+			BF_RECT        = (BF_LEFT | BF_TOP | BF_RIGHT | BF_BOTTOM),
+			BF_DIAGONAL    = 0x0010,
+			BF_DIAGONAL_ENDTOPRIGHT    = (BF_DIAGONAL | BF_TOP | BF_RIGHT),
+			BF_DIAGONAL_ENDTOPLEFT     = (BF_DIAGONAL | BF_TOP | BF_LEFT),
+			BF_DIAGONAL_ENDBOTTOMLEFT  = (BF_DIAGONAL | BF_BOTTOM | BF_LEFT),
+			BF_DIAGONAL_ENDBOTTOMRIGHT = (BF_DIAGONAL | BF_BOTTOM | BF_RIGHT),
+			BF_MIDDLE     =  0x0800,
+			BF_SOFT       =  0x1000,
+			BF_ADJUST     =  0x2000,
+			BF_FLAT       =  0x4000,
+			BF_MONO       =  0x8000,
+		}
+
+		[PInvokeData("WinUser.h")]
+		[Flags]
+		public enum BorderStyles3D : uint
+		{
+			BDR_RAISEDOUTER = 0x0001,
+			BDR_SUNKENOUTER = 0x0002,
+			BDR_RAISEDINNER = 0x0004,
+			BDR_SUNKENINNER = 0x0008,
+			BDR_OUTER     = (BDR_RAISEDOUTER | BDR_SUNKENOUTER),
+			BDR_INNER     = (BDR_RAISEDINNER | BDR_SUNKENINNER),
+			BDR_RAISED    = (BDR_RAISEDOUTER | BDR_RAISEDINNER),
+			BDR_SUNKEN    = (BDR_SUNKENOUTER | BDR_SUNKENINNER),
+			EDGE_RAISED   = (BDR_RAISEDOUTER | BDR_RAISEDINNER),
+			EDGE_SUNKEN   = (BDR_SUNKENOUTER | BDR_SUNKENINNER),
+			EDGE_ETCHED   = (BDR_SUNKENOUTER | BDR_RAISEDINNER),
+			EDGE_BUMP     = (BDR_RAISEDOUTER | BDR_SUNKENINNER),
+		}
+
 		/// <summary>
 		/// For use with ChildWindowFromPointEx 
 		/// </summary>
@@ -245,6 +288,16 @@ namespace Vanara.PInvoke
 			/// <summary>The dialog procedure address or handle</summary>
 			DWLP_DLGPROC = 0x4
 		}
+
+		/// <summary>The DrawEdge function draws one or more edges of rectangle.</summary>
+		/// <param name="hDC">A handle to the device context.</param>
+		/// <param name="qrc">A pointer to a RECT structure that contains the logical coordinates of the rectangle.</param>
+		/// <param name="edge">The type of inner and outer edges to draw.</param>
+		/// <param name="grfFlags">The type of border.</param>
+		/// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.</returns>
+		[PInvokeData("WinUser.h", MSDNShortId = "dd162498")]
+		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
+		public static extern bool DrawEdge(SafeDCHandle hDC, ref RECT qrc, BorderStyles3D edge, BorderFlags grfFlags);
 
 		/// <summary>
 		/// The DrawText function draws formatted text in the specified rectangle. It formats the text according to the specified method (expanding tabs, justifying characters, breaking lines, and so forth).
