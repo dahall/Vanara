@@ -52,5 +52,6 @@ DrawThemeTextOptions, WTA_OPTIONS, DrawThemeBackgroundOptions, BP_ANIMATIONPARAM
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+    <ProjectReference Include="..\User32.Gdi\Vanara.PInvoke.User32.Gdi.csproj" />
   </ItemGroup>
 </Project>

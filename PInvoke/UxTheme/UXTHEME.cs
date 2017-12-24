@@ -2,8 +2,10 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Text;
 using Microsoft.Win32.SafeHandles;
 using static Vanara.PInvoke.Gdi32;
+using static Vanara.PInvoke.User32_Gdi;
 
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 // ReSharper disable InconsistentNaming
@@ -80,6 +82,27 @@ namespace Vanara.PInvoke
 			NonClient = 2
 		}
 
+		public enum TA_PROPERTY
+		{
+			TAP_FLAGS,
+			TAP_TRANSFORMCOUNT,
+			TAP_STAGGERDELAY,
+			TAP_STAGGERDELAYCAP,
+			TAP_STAGGERDELAYFACTOR,
+			TAP_ZORDER,
+		}
+
+		[Flags]
+		public enum TA_PROPERTY_FLAG
+		{
+			TAPF_NONE = 0x0,
+			TAPF_HASSTAGGER = 0x1,
+			TAPF_ISRTLAWARE = 0x2,
+			TAPF_ALLOWCOLLECTION = 0x4,
+			TAPF_HASBACKGROUND = 0x8,
+			TAPF_HASPERSPECTIVE = 0x10,
+		}
+
 		public enum TextShadowType
 		{
 			/// <summary>No shadow will be drawn.</summary>
@@ -154,56 +177,173 @@ namespace Vanara.PInvoke
 			NoMirrorHelp = 0x00000008
 		}
 
+		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern int CloseThemeData(IntPtr hTheme);
+		public static extern HRESULT CloseThemeData(IntPtr hTheme);
 
-		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		[System.Security.SecurityCritical]
-		public static extern int DrawThemeBackground(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, ref RECT pRect, PRECT pClipRect);
-
+		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
 		[System.Security.SecurityCritical]
-		public static extern int DrawThemeBackgroundEx(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, ref RECT pRect, DrawThemeBackgroundOptions opts);
+		public static extern HRESULT DrawThemeBackground(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, ref RECT pRect, PRECT pClipRect);
 
+		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
 		[System.Security.SecurityCritical]
-		public static extern int DrawThemeIcon(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, ref RECT pRect, IntPtr himl, int iImageIndex);
+		public static extern HRESULT DrawThemeBackgroundEx(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, ref RECT pRect, DrawThemeBackgroundOptions opts);
 
+		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
 		[System.Security.SecurityCritical]
-		public static extern int DrawThemeParentBackground(HandleRef hwnd, SafeDCHandle hdc, PRECT pRect);
+		public static extern HRESULT DrawThemeEdge(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, ref RECT pDestRect, BorderStyles3D uEdge, BorderFlags uFlags, out RECT pContentRect);
 
+		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
 		[System.Security.SecurityCritical]
-		public static extern int DrawThemeParentBackgroundEx(HandleRef hwnd, SafeDCHandle hdc, DrawThemeParentBackgroundFlags dwFlags, PRECT pRect);
+		public static extern HRESULT DrawThemeIcon(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, ref RECT pRect, IntPtr himl, int iImageIndex);
 
+		[PInvokeData("UxTheme.h")]
+		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		[System.Security.SecurityCritical]
+		public static extern HRESULT DrawThemeParentBackground(HandleRef hwnd, SafeDCHandle hdc, PRECT pRect);
+
+		[PInvokeData("UxTheme.h")]
+		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		[System.Security.SecurityCritical]
+		public static extern HRESULT DrawThemeParentBackgroundEx(HandleRef hwnd, SafeDCHandle hdc, DrawThemeParentBackgroundFlags dwFlags, PRECT pRect);
+
+		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true, CharSet = CharSet.Unicode)]
-		public static extern int DrawThemeText(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, string text, int textLength, DrawTextFlags textFlags, int textFlags2, ref RECT pRect);
+		public static extern HRESULT DrawThemeText(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, string text, int textLength, DrawTextFlags textFlags, int textFlags2, ref RECT pRect);
 
+		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[System.Security.SecurityCritical]
-		public static extern int DrawThemeTextEx(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, string text, int iCharCount, DrawTextFlags dwFlags, ref RECT pRect, ref DrawThemeTextOptions pOptions);
+		public static extern HRESULT DrawThemeTextEx(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, string text, int iCharCount, DrawTextFlags dwFlags, ref RECT pRect, ref DrawThemeTextOptions pOptions);
 
+		public enum ThemeDialogTextureFlags
+		{
+			/// <summary>Disables background texturing.</summary>
+			ETDT_DISABLE = 0x00000001,
+			/// <summary>Enables dialog window background texturing. The texturing is defined by a visual style.</summary>
+			ETDT_ENABLE = 0x00000002,
+			/// <summary>Uses the Tab control texture for the background texture of a dialog window.</summary>
+			ETDT_USETABTEXTURE = 0x00000004,
+			/// <summary>Enables dialog window background texturing. The texture is the Tab control texture defined by the visual style. This flag is equivalent to (ETDT_ENABLE | ETDT_USETABTEXTURE).</summary>
+			ETDT_ENABLETAB = (ETDT_ENABLE | ETDT_USETABTEXTURE),
+			/// <summary>Uses the Aero wizard texture for the background texture of a dialog window.</summary>
+			ETDT_USEAEROWIZARDTABTEXTURE = 0x00000008,
+			/// <summary>ETDT_ENABLE | ETDT_USEAEROWIZARDTABTEXTURE.</summary>
+			ETDT_ENABLEAEROWIZARDTAB = (ETDT_ENABLE | ETDT_USEAEROWIZARDTABTEXTURE),
+			/// <summary>ETDT_DISABLE | ETDT_ENABLE | ETDT_USETABTEXTURE | ETDT_USEAEROWIZARDTABTEXTURE.</summary>
+			ETDT_VALIDBITS = (ETDT_DISABLE | ETDT_ENABLE | ETDT_USETABTEXTURE | ETDT_USEAEROWIZARDTABTEXTURE),
+		}
+
+		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern int GetThemeBackgroundContentRect(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, ref RECT pBoundingRect, out RECT pContentRect);
+		[System.Security.SecurityCritical]
+		public static extern HRESULT EnableThemeDialogTexture(HandleRef hwnd, ThemeDialogTextureFlags dwFlags);
 
+		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern int GetThemeBitmap(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, int iPropId, int dwFlags, out IntPtr phBitmap);
+		[System.Security.SecurityCritical]
+		public static extern HRESULT EnableTheming([MarshalAs(UnmanagedType.Bool)] bool fEnable);
 
+		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern int GetThemeBool(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, [MarshalAs(UnmanagedType.Bool)] out bool pfVal);
+		[System.Security.SecurityCritical]
+		public static extern HRESULT GetCurrentThemeName([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszThemeFileName, int dwMaxNameChars, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszColorBuff, int cchMaxColorChars, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszSizeBuff, int cchMaxSizeChars);
 
+		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern int GetThemeColor(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out int pColor);
+		public static extern HRESULT GetThemeAnimationProperty(SafeThemeHandle hTheme, int iStoryboardId, int iTargetId, uint dwTransformIndex, ref TA_TRANSFORM, uint cbSize, out uint pcbSizeOut);
 
+		[PInvokeData("UxTheme.h")]
+		public enum TA_TRANSFORM_TYPE
+		{
+			TATT_TRANSLATE_2D,
+			TATT_SCALE_2D,
+			TATT_OPACITY,
+			TATT_CLIP,
+		}
+
+		[PInvokeData("UxTheme.h")]
+		[Flags]
+		public enum TA_TRANSFORM_FLAG
+		{
+			TATF_NONE = 0x0,
+			TATF_TARGETVALUES_USER = 0x1,
+			TATF_HASINITIALVALUES = 0x2,
+			TATF_HASORIGINVALUES = 0x4,
+		}
+
+		[PInvokeData("UxTheme.h")]
+		public struct TA_TRANSFORM
+		{
+			public TA_TRANSFORM_TYPE eTransformType;
+			public uint dwTimingFunctionId;
+			public uint dwStartTime;              // in milliseconds
+			public uint dwDurationTime;
+			public TA_TRANSFORM_FLAG eFlags;
+		}
+
+		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern int GetThemeEnumValue(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out int piVal);
+		public static extern HRESULT GetThemeAnimationTransform(SafeThemeHandle hTheme, int iStoryboardId, int iTargetId, TA_PROPERTY eProperty, IntPtr pvProperty, uint cbSize, out uint pcbSizeOut);
 
+		[Flags]
+		public enum ThemeAppProperties : uint
+		{
+			/// <summary>Specifies that the non-client areas of application windows have visual styles applied.</summary>
+			STAP_ALLOW_NONCLIENT = (1U << 0),
+			/// <summary>Specifies that controls in application windows have visual styles applied.</summary>
+			STAP_ALLOW_CONTROLS = (1U << 1),
+			/// <summary>Specifies that all web content displayed in an application is rendered using visual styles.</summary>
+			STAP_ALLOW_WEBCONTENT = (1U << 2),
+		}
+
+		[PInvokeData("UxTheme.h")]
+		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		public static extern ThemeAppProperties GetThemeAppProperties();
+
+		[PInvokeData("UxTheme.h")]
+		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		public static extern HRESULT GetThemeBackgroundContentRect(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, ref RECT pBoundingRect, out RECT pContentRect);
+
+		[PInvokeData("UxTheme.h")]
+		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		public static extern HRESULT GetThemeBackgroundExtent(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, ref RECT pContentRect, out RECT pExtentRect);
+
+		[PInvokeData("UxTheme.h")]
+		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		public static extern HRESULT GetThemeBackgroundRegion(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, ref RECT pRect, out IntPtr pRegion);
+
+		[PInvokeData("UxTheme.h")]
+		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		public static extern HRESULT GetThemeBitmap(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, int iPropId, int dwFlags, out IntPtr phBitmap);
+
+		[PInvokeData("UxTheme.h")]
+		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		public static extern HRESULT GetThemeBool(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, [MarshalAs(UnmanagedType.Bool)] out bool pfVal);
+
+		[PInvokeData("UxTheme.h")]
+		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		public static extern HRESULT GetThemeColor(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out int pColor);
+
+		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true, CharSet = CharSet.Unicode)]
-		public static extern int GetThemeFilename(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, ref System.Text.StringBuilder pszBuff, int buffLength);
+		public static extern HRESULT GetThemeDocumentationProperty(string pszThemeName, string pszPropertyName, out StringBuilder pszValueBuff, int cchMaxValChars);
 
+		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern int GetThemeInt(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out int piVal);
+		public static extern HRESULT GetThemeEnumValue(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out int piVal);
+
+		[PInvokeData("UxTheme.h")]
+		[DllImport(Lib.UxTheme, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		public static extern HRESULT GetThemeFilename(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, ref System.Text.StringBuilder pszBuff, int buffLength);
+
+		[PInvokeData("UxTheme.h")]
+		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		public static extern HRESULT GetThemeInt(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out int piVal);
 
 		public static int[] GetThemeIntList(SafeThemeHandle hTheme, int partId, int stateId, int propId)
 		{
@@ -227,30 +367,46 @@ namespace Vanara.PInvoke
 			}
 		}
 
+		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
 		[System.Security.SecurityCritical]
-		public static extern int GetThemeMargins(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, int iPropId, IntPtr prc, out RECT pMargins);
+		public static extern HRESULT GetThemeMargins(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, int iPropId, IntPtr prc, out RECT pMargins);
+
+		[PInvokeData("UxTheme.h")]
+		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		public static extern HRESULT GetThemeMetric(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, int iPropId, out int piVal);
+
+		[PInvokeData("UxTheme.h")]
+		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		public static extern HRESULT GetThemePartSize(SafeThemeHandle hTheme, SafeDCHandle hdc, int part, int state, PRECT pRect, ThemeSize eSize, out Size size);
+
+		[PInvokeData("UxTheme.h")]
+		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		public static extern HRESULT GetThemePosition(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out Point piVal);
+
+		[PInvokeData("UxTheme.h")]
+		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		public static extern HRESULT GetThemePropertyOrigin(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out ThemePropertyOrigin pOrigin);
+
+		[PInvokeData("UxTheme.h")]
+		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		public static extern HRESULT GetThemeRect(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out RECT pRect);
+
+		[PInvokeData("UxTheme.h")]
+		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		public static extern HRESULT GetThemeStream(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 5)] out byte[] pvStream, out int cbStream, IntPtr hInst);
 
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern int GetThemeMetric(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, int iPropId, out int piVal);
+		public static extern HRESULT GetThemeString(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder themeString, int themeStringLength);
 
+		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern int GetThemePartSize(SafeThemeHandle hTheme, SafeDCHandle hdc, int part, int state, PRECT pRect, ThemeSize eSize, out Size size);
+		[return: [MarshalAs(UnmanagedType.Bool)]]
+		public static extern bool GetThemeSysBool(SafeThemeHandle hTheme, int iBoolID);
 
+		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern int GetThemePosition(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out Point piVal);
-
-		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern int GetThemePropertyOrigin(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out ThemePropertyOrigin pOrigin);
-
-		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern int GetThemeRect(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out RECT pRect);
-
-		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern int GetThemeStream(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 5)] out byte[] pvStream, out int cbStream, IntPtr hInst);
-
-		[DllImport(Lib.UxTheme, ExactSpelling = true, CharSet = CharSet.Unicode)]
-		public static extern int GetThemeString(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, ref System.Text.StringBuilder themeString, int themeStringLength);
+		public static extern COLORREF GetThemeSysColor(SafeThemeHandle hTheme, int iColorID);
 
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
 		public static extern int GetThemeSysInt(SafeThemeHandle hTheme, int iIntID, out int piVal);
