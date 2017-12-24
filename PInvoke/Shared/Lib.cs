@@ -17,6 +17,8 @@
 		public const string DwmApi = "dwmapi.dll";
 		/// <summary>The gdi32</summary>
 		public const string Gdi32 = "gdi32.dll";
+		/// <summary>The gdi32</summary>
+		public const string IpHlpApi = "Iphlpapi.dll";
 		/// <summary>The kernel32</summary>
 		public const string Kernel32 = "kernel32.dll";
 		/// <summary>The net api32</summary>
