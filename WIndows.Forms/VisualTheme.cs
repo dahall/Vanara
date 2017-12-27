@@ -35,7 +35,7 @@ namespace Vanara.Windows.Forms
 		public void DrawBackground(IDeviceContext graphics, int partId, int stateId, Rectangle bounds, Rectangle clipRect)
 		{
 			var b = new RECT(bounds);
-			var o = new DrawThemeBackgroundOptions(clipRect); // {OmitBorder = true, OmitContent = true};
+			var o = new DTBGOPTS(clipRect); // {OmitBorder = true, OmitContent = true};
 			using (var hdc = new SafeDCHandle(graphics))
 				DrawThemeBackgroundEx(hTheme, hdc, partId, stateId, ref b, o);
 		}
@@ -46,10 +46,10 @@ namespace Vanara.Windows.Forms
 				DrawThemeParentBackground(new HandleRef(childWindow, childWindow.Handle), hdc, bounds);
 		}
 
-		public void DrawText(IDeviceContext graphics, int partId, int stateId, Rectangle bounds, string text, TextFormatFlags fmt = TextFormatFlags.Default, DrawThemeTextOptions? options = null, Font font = null)
+		public void DrawText(IDeviceContext graphics, int partId, int stateId, Rectangle bounds, string text, TextFormatFlags fmt = TextFormatFlags.Default, DTTOPTS? options = null, Font font = null)
 		{
 			var b = new RECT(bounds);
-			var dt = options ?? DrawThemeTextOptions.Default; //new DrawThemeTextOptions(true) {AntiAliasedAlpha = true, BorderSize = 10, BorderColor = Color.Red, ApplyOverlay = true, ShadowType = TextShadowType.Continuous, ShadowColor = Color.White, ShadowOffset = new Point(2, 2), GlowSize = 18, TextColor = Color.White, Callback = DrawTextCallback };
+			var dt = options ?? DTTOPTS.Default; //new DrawThemeTextOptions(true) {AntiAliasedAlpha = true, BorderSize = 10, BorderColor = Color.Red, ApplyOverlay = true, ShadowType = TextShadowType.Continuous, ShadowColor = Color.White, ShadowOffset = new Point(2, 2), GlowSize = 18, TextColor = Color.White, Callback = DrawTextCallback };
 			using (var hdc = new SafeDCHandle(graphics))
 				using (new SafeDCObjectHandle(hdc, font?.ToHfont() ?? IntPtr.Zero))
 					DrawThemeTextEx(hTheme, hdc, partId, stateId, text, text.Length, (DrawTextFlags)fmt, ref b, ref dt);
@@ -60,8 +60,7 @@ namespace Vanara.Windows.Forms
 			RECT b = new RECT(bounds);
 			using (var hdc = new SafeDCHandle(graphics))
 			{
-				RECT rc;
-				if (0 == GetThemeBackgroundContentRect(hTheme, hdc, partId, stateId, ref b, out rc)) return rc;
+				if (GetThemeBackgroundContentRect(hTheme, hdc, partId, stateId, ref b, out RECT rc).Succeeded) return rc;
 			}
 			return null;
 		}
@@ -70,30 +69,26 @@ namespace Vanara.Windows.Forms
 		{
 			using (var hdc = new SafeDCHandle(graphics))
 			{
-				IntPtr hBmp;
-				if (0 == GetThemeBitmap(hTheme, hdc, partId, stateId, propId, 0, out hBmp)) return Image.FromHbitmap(hBmp);
+				if (GetThemeBitmap(hTheme, hdc, partId, stateId, propId, 0, out IntPtr hBmp).Succeeded) return Image.FromHbitmap(hBmp);
 			}
 			return null;
 		}
 
 		public bool? GetBool(int partId, int stateId, int propId)
 		{
-			bool b;
-			if (0 == GetThemeBool(hTheme, partId, stateId, propId, out b)) return b;
+			if (GetThemeBool(hTheme, partId, stateId, propId, out bool b).Succeeded) return b;
 			return null;
 		}
 
 		public Color? GetColor(int partId, int stateId, int propId)
 		{
-			int cr;
-			if (0 == GetThemeColor(hTheme, partId, stateId, propId, out cr)) return ColorTranslator.FromWin32(cr);
+			if (GetThemeColor(hTheme, partId, stateId, propId, out var cr).Succeeded) return cr;
 			return null;
 		}
 
 		public int? GetEnumValue(int partId, int stateId, int propId)
 		{
-			int i;
-			if (0 == GetThemeEnumValue(hTheme, partId, stateId, propId, out i)) return i;
+			if (GetThemeEnumValue(hTheme, partId, stateId, propId, out int i).Succeeded) return i;
 			return null;
 		}
 
@@ -101,7 +96,7 @@ namespace Vanara.Windows.Forms
 		{
 			const int sbLen = 1024;
 			var sb = new StringBuilder(sbLen);
-			if (0 == GetThemeFilename(hTheme, partId, stateId, propId, ref sb, sbLen)) return sb.ToString();
+			if (GetThemeFilename(hTheme, partId, stateId, propId, ref sb, sbLen).Succeeded) return sb.ToString();
 			return null;
 		}
 
@@ -109,23 +104,20 @@ namespace Vanara.Windows.Forms
 		{
 			using (var hdc = new SafeDCHandle(graphics))
 			{
-				LOGFONT f;
-				if (0 == GetThemeFont(hTheme, hdc, partId, stateId, propId, out f)) return f.ToFont();
+				if (GetThemeFont(hTheme, hdc, partId, stateId, propId, out LOGFONT f).Succeeded) return f.ToFont();
 			}
 			return null;
 		}
 
 		public int? GetInt(int partId, int stateId, int propId)
 		{
-			int i;
-			if (0 == GetThemeInt(hTheme, partId, stateId, propId, out i)) return i;
+			if (GetThemeInt(hTheme, partId, stateId, propId, out int i).Succeeded) return i;
 			return null;
 		}
 
 		public int? GetSysInt(int propId)
 		{
-			int i;
-			if (0 == GetThemeSysInt(hTheme, propId, out i)) return i;
+			if (GetThemeSysInt(hTheme, propId, out int i).Succeeded) return i;
 			return null;
 		}
 
@@ -135,9 +127,8 @@ namespace Vanara.Windows.Forms
 		{
 			using (var hdc = new SafeDCHandle(graphics))
 			{
-				RECT rc;
-				if (0 == GetThemeMargins(hTheme, hdc, partId, stateId, propId, IntPtr.Zero, out rc))
-					return new Padding(rc.left, rc.top, rc.right, rc.bottom);
+				if (GetThemeMargins(hTheme, hdc, partId, stateId, propId, null, out MARGINS m).Succeeded)
+					return new Padding(m.cxLeftWidth, m.cyTopHeight, m.cxRightWidth, m.cyBottomHeight);
 			}
 			return null;
 		}
@@ -146,8 +137,7 @@ namespace Vanara.Windows.Forms
 		{
 			using (var hdc = new SafeDCHandle(graphics))
 			{
-				int i;
-				if (0 == GetThemeMetric(hTheme, hdc, partId, stateId, propId, out i)) return i;
+				if (GetThemeMetric(hTheme, hdc, partId, stateId, propId, out int i).Succeeded) return i;
 			}
 			return null;
 		}
@@ -250,7 +240,7 @@ namespace Vanara.Windows.Forms
 						o = GetFilename(partId, stateId, propId);
 						break;
 					case PropertyType.Size:
-						o = GetPartSize(graphics, partId, stateId, null, (ThemeSize)propId);
+						o = GetPartSize(graphics, partId, stateId, null, (THEMESIZE)propId);
 						break;
 					case PropertyType.Position:
 						o = GetPosition(partId, stateId, propId);
@@ -280,55 +270,47 @@ namespace Vanara.Windows.Forms
 			return o;
 		}
 
-		public Size? GetPartSize(IDeviceContext graphics, int partId, int stateId, Rectangle? destRect, ThemeSize themeSize)
+		public Size? GetPartSize(IDeviceContext graphics, int partId, int stateId, Rectangle? destRect, THEMESIZE themeSize)
 		{
 			using (var hdc = new SafeDCHandle(graphics))
 			{
-				Size sz;
-				if (0 != GetThemePartSize(hTheme, hdc, partId, stateId, destRect, themeSize, out sz))
-					return null;
-				return sz;
+				if (GetThemePartSize(hTheme, hdc, partId, stateId, destRect, themeSize, out var sz).Succeeded)
+					return sz;
+				return null;
 			}
 		}
 
 		public Point? GetPosition(int partId, int stateId, int propId)
 		{
-			Point i;
-			if (0 == GetThemePosition(hTheme, partId, stateId, propId, out i)) return i;
+			if (GetThemePosition(hTheme, partId, stateId, propId, out Point i).Succeeded) return i;
 			return null;
 		}
 
 		public int GetPropertyOrigin(int partId, int stateId, int propId)
 		{
-			ThemePropertyOrigin po;
-			GetThemePropertyOrigin(hTheme, partId, stateId, propId, out po);
+			GetThemePropertyOrigin(hTheme, partId, stateId, propId, out PROPERTYORIGIN po);
 			return (int)po;
 		}
 
 		public Rectangle? GetRect(int partId, int stateId, int propId)
 		{
-			RECT rc;
-			if (0 == GetThemeRect(hTheme, partId, stateId, propId, out rc)) return rc;
+			if (GetThemeRect(hTheme, partId, stateId, propId, out RECT rc).Succeeded) return rc;
 			return null;
 		}
 
 		public byte[] GetDiskStream(SafeLibraryHandle hInst, int partId, int stateId, int propId)
 		{
-			byte[] bytes;
-			int bLen;
-			var r = GetThemeStream(hTheme, partId, stateId, propId, out bytes, out bLen, hInst);
-			if (r == 0) return bytes;
-			if ((uint)r != 0x80070490) throw new InvalidOperationException("Bad GetThemeStream");
+			var r = GetThemeStream(hTheme, partId, stateId, propId, out byte[] bytes, out int bLen, hInst);
+			if (r.Succeeded) return bytes;
+			if (r != 0x80070490) throw new InvalidOperationException("Bad GetThemeStream");
 			return null;
 		}
 
 		public byte[] GetStream(int partId, int stateId, int propId)
 		{
-			byte[] bytes;
-			int bLen;
-			var r = GetThemeStream(hTheme, partId, stateId, propId, out bytes, out bLen, IntPtr.Zero);
-			if (r == 0) return bytes;
-			if ((uint)r != 0x80070490) throw new InvalidOperationException("Bad GetThemeStream");
+			var r = GetThemeStream(hTheme, partId, stateId, propId, out byte[] bytes, out int bLen, IntPtr.Zero);
+			if (r.Succeeded) return bytes;
+			if (r != 0x80070490) throw new InvalidOperationException("Bad GetThemeStream");
 			return null;
 		}
 
@@ -336,15 +318,14 @@ namespace Vanara.Windows.Forms
 		{
 			const int sbLen = 1024;
 			var sb = new StringBuilder(sbLen);
-			if (0 == GetThemeString(hTheme, partId, stateId, propId, ref sb, sbLen))
+			if (GetThemeString(hTheme, partId, stateId, propId, sb, sbLen).Succeeded)
 				return sb.ToString();
 			return null;
 		}
 
-		public int GetTransitionDuration(int partId, int fromStateId, int toStateId, int propId)
+		public uint GetTransitionDuration(int partId, int fromStateId, int toStateId, int propId)
 		{
-			int dur;
-			GetThemeTransitionDuration(hTheme, partId, fromStateId, toStateId, propId, out dur);
+			GetThemeTransitionDuration(hTheme, partId, fromStateId, toStateId, propId, out var dur);
 			return dur;
 		}
 

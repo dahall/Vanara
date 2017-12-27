@@ -139,7 +139,7 @@ namespace Vanara.Extensions
 					using (new SafeDCObjectHandle(memoryHdc, font?.ToHfont() ?? IntPtr.Zero))
 					{
 						// Draw glowing text
-						var dttOpts = new DrawThemeTextOptions(null) {GlowSize = glowSize, AntiAliasedAlpha = true};
+						var dttOpts = new DTTOPTS(null) {GlowSize = glowSize, AntiAliasedAlpha = true};
 						if (color != null) dttOpts.TextColor = color.Value;
 						var textBounds = new RECT(4, 0, bounds.Right - bounds.Left, bounds.Bottom - bounds.Top);
 						DrawThemeTextEx(ht, memoryHdc, rnd.Part, rnd.State, text, text.Length, FromTFF(flags), ref textBounds, ref dttOpts);
@@ -156,8 +156,8 @@ namespace Vanara.Extensions
 		/// <param name="bounds">A <see cref="Rectangle" /> in which the text is drawn.</param>
 		/// <param name="text">The text to draw.</param>
 		/// <param name="flags">A bitwise combination of the <see cref="TextFormatFlags"/> values.</param>
-		/// <param name="options">The <see cref="DrawThemeTextOptions"/> .</param>
-		public static void DrawText(this VisualStyleRenderer rnd, IDeviceContext dc, ref Rectangle bounds, string text, TextFormatFlags flags, ref DrawThemeTextOptions options)
+		/// <param name="options">The <see cref="DTTOPTS"/> .</param>
+		public static void DrawText(this VisualStyleRenderer rnd, IDeviceContext dc, ref Rectangle bounds, string text, TextFormatFlags flags, ref DTTOPTS options)
 		{
 			var rc = new RECT(bounds);
 			var ht = new SafeThemeHandle(rnd.Handle, false);

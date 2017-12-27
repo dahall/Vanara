@@ -13,22 +13,22 @@ namespace Vanara.Extensions
 	{
 		public static Padding GetMargins2(this VisualStyleRenderer rnd, IDeviceContext dc = null, MarginProperty prop = MarginProperty.ContentMargins)
 		{
-			RECT rc;
 			using (var hdc = new SafeDCHandle(dc))
-				GetThemeMargins(new SafeThemeHandle(rnd.Handle, false), hdc, rnd.Part, rnd.State, (int)prop, IntPtr.Zero, out rc);
-			return new Padding(rc.left, rc.top, rc.right, rc.bottom);
+			{
+				GetThemeMargins(rnd.GetSafeHandle(), hdc, rnd.Part, rnd.State, (int)prop, null, out MARGINS m);
+				return new Padding(m.cxLeftWidth, m.cyTopHeight, m.cxRightWidth, m.cyBottomHeight);
+			}
 		}
 
-		public static int GetTransitionDuration(this VisualStyleRenderer rnd, int toState, int fromState = 0)
+		public static uint GetTransitionDuration(this VisualStyleRenderer rnd, int toState, int fromState = 0)
 		{
-			int dwDuration;
-			GetThemeTransitionDuration(new SafeThemeHandle(rnd.Handle, false), rnd.Part, fromState == 0 ? rnd.State : fromState, toState, (int)IntegerListProperty.TransitionDuration, out dwDuration);
+			GetThemeTransitionDuration(rnd.GetSafeHandle(), rnd.Part, fromState == 0 ? rnd.State : fromState, toState, (int)IntegerListProperty.TransitionDuration, out var dwDuration);
 			return dwDuration;
 		}
 
 		public static int[,] GetTransitionMatrix(this VisualStyleRenderer rnd)
 		{
-			var res = GetThemeIntList(new SafeThemeHandle(rnd.Handle, false), rnd.Part, rnd.State, (int)IntegerListProperty.TransitionDuration);
+			var res = GetThemeIntList(rnd.GetSafeHandle(), rnd.Part, rnd.State, (int)IntegerListProperty.TransitionDuration);
 			if (res == null || res.Length == 0) return null;
 			var dim = res[0];
 			var ret = new int[dim, dim];
@@ -38,10 +38,7 @@ namespace Vanara.Extensions
 			return ret;
 		}
 
-		public static bool IsPartDefined(this VisualStyleRenderer rnd, int part, int state)
-		{
-			return IsThemePartDefined(new SafeThemeHandle(rnd.Handle, false), part, state);
-		}
+		public static bool IsPartDefined(this VisualStyleRenderer rnd, int part, int state) => IsThemePartDefined(rnd.GetSafeHandle(), part, state);
 
 		/// <summary>
 		/// Sets the state of the <see cref="VisualStyleRenderer"/>.
@@ -68,10 +65,12 @@ namespace Vanara.Extensions
 		/// <param name="window">The window.</param>
 		/// <param name="attr">The attributes to apply or disable.</param>
 		/// <param name="enable">if set to <c>true</c> enable the attribute, otherwise disable it.</param>
-		public static void SetWindowThemeAttribute(this IWin32Window window, WindowThemeNonClientAttributes attr, bool enable = true)
+		public static void SetWindowThemeAttribute(this IWin32Window window, WTNCA attr, bool enable = true)
 		{
-			try { UxTheme.SetWindowThemeAttribute(new HandleRef(window, window.Handle), attr, enable); }
+			try { UxTheme.SetWindowThemeNonClientAttributes(new HandleRef(window, window.Handle), attr, enable); }
 			catch (EntryPointNotFoundException) { }
 		}
+
+		private static SafeThemeHandle GetSafeHandle(this VisualStyleRenderer rnd) => new SafeThemeHandle(rnd.Handle, false);
 	}
 }
