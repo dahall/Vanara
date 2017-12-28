@@ -148,8 +148,8 @@ namespace Vanara.Windows.Forms
 			get => textImageRelation; set => SetField(ref textImageRelation, value, nameof(TextImageRelation));
 		}
 
-		/// <summary>Gets or sets a value indicating whether the first character that is preceded by an ampersand (&) is used as the mnemonic key of the control.</summary>
-		/// <value><c>true</c> if the first character that is preceded by an ampersand (&) is used as the mnemonic key of the control; otherwise, <c>false</c>. The default is <c>true</c>.</value>
+		/// <summary>Gets or sets a value indicating whether the first character that is preceded by an ampersand (&amp;) is used as the mnemonic key of the control.</summary>
+		/// <value><c>true</c> if the first character that is preceded by an ampersand (&amp;) is used as the mnemonic key of the control; otherwise, <c>false</c>. The default is <c>true</c>.</value>
 		[DefaultValue(true), Description(""), Category("Appearance")]
 		public bool UseMnemonic
 		{

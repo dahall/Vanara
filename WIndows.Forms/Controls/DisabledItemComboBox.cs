@@ -265,7 +265,7 @@ namespace Vanara.Windows.Forms
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			base.OnPaint(e);
-			BufferedPaint.PaintAnimation(e.Graphics, this, ClientRectangle, PaintControl, currentState, Enabled ? newState : ComboBoxState.Disabled, (a,b) => vsr.GetTransitionDuration((int)a, (int)b));
+			BufferedPaint.PaintAnimation(e.Graphics, this, ClientRectangle, PaintControl, currentState, Enabled ? newState : ComboBoxState.Disabled, (a,b) => (int)vsr.GetTransitionDuration((int)a, (int)b));
 		}
 
 		/// <summary>

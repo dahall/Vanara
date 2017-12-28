@@ -16,7 +16,7 @@ namespace Vanara.Drawing
 
 		static BufferedPaint() { BufferedPaintInit(); }
 
-		public delegate uint GetDuration<in TState>(TState oldState, TState newState);
+		public delegate int GetDuration<in TState>(TState oldState, TState newState);
 
 		public delegate void PaintAction<in TState, in TParam>(Graphics graphics, Rectangle bounds, TState currentState, TParam data);
 
