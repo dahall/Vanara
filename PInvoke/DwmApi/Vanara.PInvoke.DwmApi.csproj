@@ -25,10 +25,10 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-#127, #131, DwmEnableBlurBehindWindow, DwmEnableComposition, DwmExtendFrameIntoClientArea, DwmGetWindowAttribute, DwmIsCompositionEnabled, DwmSetWindowAttribute
+#127, #131, DwmDefWindowProc, DwmEnableBlurBehindWindow, DwmEnableComposition, DwmEnableMMCSS, DwmExtendFrameIntoClientArea, DwmFlush, DwmGetColorizationColor, DwmGetCompositionTimingInfo, DwmGetTransportAttributes, DwmGetWindowAttribute, DwmInvalidateIconicBitmaps, DwmIsCompositionEnabled, DwmQueryThumbnailSourceSize, DwmRegisterThumbnail, DwmRenderGesture, DwmSetIconicLivePreviewBitmap, DwmSetIconicThumbnail, DwmSetWindowAttribute, DwmShowContact, DwmTetherContact, DwmTransitionOwnedWindow, DwmUnregisterThumbnail, DwmUpdateThumbnailProperties
 
 Structures
-DWM_BLURBEHIND, DWM_COLORIZATION_PARAMS, MARGINS
+DWM_BLURBEHIND, DWM_COLORIZATION_PARAMS, DWM_THUMBNAIL_PROPERTIES, DWM_TIMING_INFO, MARGINS, UNSIGNED_RATIO
 
 </PackageReleaseNotes>
   </PropertyGroup>

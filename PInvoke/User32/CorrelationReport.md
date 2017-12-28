@@ -206,7 +206,7 @@ Native Method | Native DLL | Header | Managed Method
 [DrawCaption](https://www.google.com/search?num=5&q=DrawCaption+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [DrawCaptionTempA](https://www.google.com/search?num=5&q=DrawCaptionTempA+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [DrawCaptionTempW](https://www.google.com/search?num=5&q=DrawCaptionTempW+site%3Amsdn.microsoft.com) | user32.dll |  | 
-[DrawEdge](https://www.google.com/search?num=5&q=DrawEdge+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[DrawEdge](https://www.google.com/search?num=5&q=DrawEdge+site%3Amsdn.microsoft.com) | user32.dll | WinUser.h | Vanara.PInvoke.User32_Gdi.DrawEdge
 [DrawFocusRect](https://www.google.com/search?num=5&q=DrawFocusRect+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [DrawFrame](https://www.google.com/search?num=5&q=DrawFrame+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [DrawFrameControl](https://www.google.com/search?num=5&q=DrawFrameControl+site%3Amsdn.microsoft.com) | user32.dll |  | 
@@ -268,10 +268,10 @@ Native Method | Native DLL | Header | Managed Method
 [ExcludeUpdateRgn](https://www.google.com/search?num=5&q=ExcludeUpdateRgn+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [ExitWindowsEx](https://www.google.com/search?num=5&q=ExitWindowsEx+site%3Amsdn.microsoft.com) | user32.dll |  | Vanara.PInvoke.User32.ExitWindowsEx
 [FillRect](https://www.google.com/search?num=5&q=FillRect+site%3Amsdn.microsoft.com) | user32.dll |  | 
-[FindWindowA](https://www.google.com/search?num=5&q=FindWindowA+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[FindWindowA](https://www.google.com/search?num=5&q=FindWindowA+site%3Amsdn.microsoft.com) | user32.dll | WinUser.h | Vanara.PInvoke.User32_Gdi.FindWindow
 [FindWindowExA](https://www.google.com/search?num=5&q=FindWindowExA+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [FindWindowExW](https://www.google.com/search?num=5&q=FindWindowExW+site%3Amsdn.microsoft.com) | user32.dll |  | 
-[FindWindowW](https://www.google.com/search?num=5&q=FindWindowW+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[FindWindowW](https://www.google.com/search?num=5&q=FindWindowW+site%3Amsdn.microsoft.com) | user32.dll | WinUser.h | Vanara.PInvoke.User32_Gdi.FindWindow
 [FlashWindow](https://www.google.com/search?num=5&q=FlashWindow+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [FlashWindowEx](https://www.google.com/search?num=5&q=FlashWindowEx+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [FrameRect](https://www.google.com/search?num=5&q=FrameRect+site%3Amsdn.microsoft.com) | user32.dll |  | 
@@ -436,8 +436,8 @@ Native Method | Native DLL | Header | Managed Method
 [GetSendMessageReceiver](https://www.google.com/search?num=5&q=GetSendMessageReceiver+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [GetShellWindow](https://www.google.com/search?num=5&q=GetShellWindow+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [GetSubMenu](https://www.google.com/search?num=5&q=GetSubMenu+site%3Amsdn.microsoft.com) | user32.dll |  | 
-[GetSysColor](https://www.google.com/search?num=5&q=GetSysColor+site%3Amsdn.microsoft.com) | user32.dll |  | 
-[GetSysColorBrush](https://www.google.com/search?num=5&q=GetSysColorBrush+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[GetSysColor](https://www.google.com/search?num=5&q=GetSysColor+site%3Amsdn.microsoft.com) | user32.dll | WinUser.h | Vanara.PInvoke.User32_Gdi.GetSysColor
+[GetSysColorBrush](https://www.google.com/search?num=5&q=GetSysColorBrush+site%3Amsdn.microsoft.com) | user32.dll | WinUser.h | Vanara.PInvoke.User32_Gdi.GetSysColorBrush
 [GetSystemMenu](https://www.google.com/search?num=5&q=GetSystemMenu+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [GetSystemMetrics](https://www.google.com/search?num=5&q=GetSystemMetrics+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [GetSystemMetricsForDpi](https://www.google.com/search?num=5&q=GetSystemMetricsForDpi+site%3Amsdn.microsoft.com) | user32.dll |  | 
@@ -749,12 +749,12 @@ Native Method | Native DLL | Header | Managed Method
 [SendIMEMessageExA](https://www.google.com/search?num=5&q=SendIMEMessageExA+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SendIMEMessageExW](https://www.google.com/search?num=5&q=SendIMEMessageExW+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SendInput](https://www.google.com/search?num=5&q=SendInput+site%3Amsdn.microsoft.com) | user32.dll |  | 
-[SendMessageA](https://www.google.com/search?num=5&q=SendMessageA+site%3Amsdn.microsoft.com) | user32.dll | WinUser.h | Vanara.PInvoke.User32_Gdi.SendMessage
+[SendMessageA](https://www.google.com/search?num=5&q=SendMessageA+site%3Amsdn.microsoft.com) | user32.dll | Winuser.h | Vanara.PInvoke.User32_Gdi.SendMessage
 [SendMessageCallbackA](https://www.google.com/search?num=5&q=SendMessageCallbackA+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SendMessageCallbackW](https://www.google.com/search?num=5&q=SendMessageCallbackW+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SendMessageTimeoutA](https://www.google.com/search?num=5&q=SendMessageTimeoutA+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SendMessageTimeoutW](https://www.google.com/search?num=5&q=SendMessageTimeoutW+site%3Amsdn.microsoft.com) | user32.dll |  | 
-[SendMessageW](https://www.google.com/search?num=5&q=SendMessageW+site%3Amsdn.microsoft.com) | user32.dll | WinUser.h | Vanara.PInvoke.User32_Gdi.SendMessage
+[SendMessageW](https://www.google.com/search?num=5&q=SendMessageW+site%3Amsdn.microsoft.com) | user32.dll | Winuser.h | Vanara.PInvoke.User32_Gdi.SendMessage
 [SendNotifyMessageA](https://www.google.com/search?num=5&q=SendNotifyMessageA+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SendNotifyMessageW](https://www.google.com/search?num=5&q=SendNotifyMessageW+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SetActiveWindow](https://www.google.com/search?num=5&q=SetActiveWindow+site%3Amsdn.microsoft.com) | user32.dll |  | 

@@ -192,11 +192,11 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="BP_ANIMATIONPARAMS"/> struct.</summary>
 			/// <param name="animStyle">The animation style.</param>
 			/// <param name="dur">The duration.</param>
-			public BP_ANIMATIONPARAMS(BP_ANIMATIONSTYLE animStyle, uint dur = 0)
+			public BP_ANIMATIONPARAMS(BP_ANIMATIONSTYLE animStyle, int dur = 0)
 			{
 				cbSize = (uint)Marshal.SizeOf(typeof(BP_ANIMATIONPARAMS));
 				dwFlags = 0;
-				dwDuration = dur;
+				dwDuration = (uint)dur;
 				style = animStyle;
 			}
 
