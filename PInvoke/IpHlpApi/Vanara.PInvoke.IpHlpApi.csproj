@@ -4,7 +4,7 @@
     <Description>Methods, structures and constants imported from IpHlpApi.dll.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.5</VersionPrefix>
+    <VersionPrefix>1.0.6</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.IpHlpApi</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
