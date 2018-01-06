@@ -122,11 +122,33 @@ namespace Vanara.InteropServices
 		T ToStructure<T>();
 	}
 
-	/// <summary>
-	/// Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory.
-	/// </summary>
+	/// <summary>Abstract base class for all SafeHandle derivatives that encapsulate handling unmanaged memory.</summary>
+	/// <seealso cref="System.Runtime.InteropServices.SafeHandle"/>
+	public abstract class SafeAllocatedMemoryHandle : SafeHandle
+	{
+		/// <summary>Initializes a new instance of the <see cref="SafeAllocatedMemoryHandle"/> class.</summary>
+		/// <param name="handle">The handle.</param>
+		/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
+		protected SafeAllocatedMemoryHandle(IntPtr handle, bool ownsHandle) : base(handle, ownsHandle) { }
+
+		/// <summary>Gets or sets the size in bytes of the allocated memory block.</summary>
+		/// <value>The size in bytes of the allocated memory block.</value>
+		public abstract int Size { get; set; }
+
+		/// <summary>Zero out all allocated memory.</summary>
+		protected virtual void Zero()
+		{
+			if (handle == IntPtr.Zero || Size <= 0) return;
+			for (var i = 0; i < Size / 8; i += 8)
+				Marshal.WriteInt64(handle, i, 0L);
+			for (var i = Size % 8; i < -1; i--)
+				Marshal.WriteByte(handle, Size - i, 0);
+		}
+	}
+
+	/// <summary>Abstract base class for all SafeAllocatedMemoryHandle derivatives that apply a specific memory handling routine set.</summary>
 	/// <typeparam name="TMem">The <see cref="IMemoryMethods"/> implementation.</typeparam>
-	public abstract class SafeMemoryHandle<TMem> : SafeHandle where TMem : IMemoryMethods, new()
+	public abstract class SafeMemoryHandle<TMem> : SafeAllocatedMemoryHandle where TMem : IMemoryMethods, new()
 	{
 		/// <summary>The <see cref="IMemoryMethods"/> implementation instance.</summary>
 		protected static TMem mm = new TMem();
@@ -169,9 +191,9 @@ namespace Vanara.InteropServices
 		/// <summary>When overridden in a derived class, gets a value indicating whether the handle value is invalid.</summary>
 		public override bool IsInvalid => handle == IntPtr.Zero;
 
-		/// <summary>Gets the size of the allocated memory block.</summary>
-		/// <value>The size of the allocated memory block.</value>
-		public virtual int Size
+		/// <summary>Gets or sets the size in bytes of the allocated memory block.</summary>
+		/// <value>The size in bytes of the allocated memory block.</value>
+		public override int Size
 		{
 			get => sz;
 			set
@@ -193,6 +215,18 @@ namespace Vanara.InteropServices
 		/// <param name="h">The <see cref="SafeMemoryHandle{T}"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator IntPtr(SafeMemoryHandle<TMem> h) => h.DangerousGetHandle();
+
+		/// <summary>Gets a copy of bytes from the allocated memory block.</summary>
+		/// <param name="startIndex">The start index.</param>
+		/// <param name="count">The number of bytes to retrieve.</param>
+		/// <returns>A byte array with the copied bytes.</returns>
+		protected byte[] GetBytes(int startIndex, int count)
+		{
+			if (startIndex < 0 || startIndex + count > Size) throw new ArgumentOutOfRangeException();
+			var ret = new byte[count];
+			Marshal.Copy(handle, ret, startIndex, count);
+			return ret;
+		}
 
 		/// <summary>When overridden in a derived class, executes the code required to free the handle.</summary>
 		/// <returns>
