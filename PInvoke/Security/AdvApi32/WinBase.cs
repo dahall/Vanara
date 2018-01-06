@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -926,7 +927,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			public T GetInfo<T>(TOKEN_INFORMATION_CLASS tokenInfoClass)
 			{
-				if (CorrespondingTypeAttribute.GetCorrespondingType(tokenInfoClass) != typeof(T))
+				if (CorrespondingTypeAttribute.GetCorrespondingTypes(tokenInfoClass).FirstOrDefault() != typeof(T))
 					throw new InvalidCastException();
 				using (var pType = GetInfo(tokenInfoClass))
 				{

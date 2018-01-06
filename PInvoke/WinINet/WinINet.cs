@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
@@ -1399,7 +1400,7 @@ namespace Vanara.PInvoke
 		/// <param name="option">Internet option to be set. This can be one of the Option Flags values.</param>
 		public static void InternetSetOption(this SafeInternetHandle hInternet, InternetOptionFlags option)
 		{
-			if (CorrespondingTypeAttribute.GetCorrespondingType(option) != null) throw new ArgumentException($"{option} cannot be used to set options that do not require a value.");
+			if (CorrespondingTypeAttribute.GetCorrespondingTypes(option).FirstOrDefault() != null) throw new ArgumentException($"{option} cannot be used to set options that do not require a value.");
 			var res = InternetSetOption(hInternet, option, IntPtr.Zero, 0);
 			if (!res) Win32Error.ThrowLastError();
 		}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Vanara.Extensions;
 // ReSharper disable MemberCanBePrivate.Global
@@ -27,13 +28,13 @@ namespace Vanara.InteropServices
 	/// value to determine the type to get or set.
 	/// </summary>
 	/// <seealso cref="System.Attribute"/>
-	[AttributeUsage(AttributeTargets.Field)]
+	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Class, AllowMultiple = true)]
 	public class CorrespondingTypeAttribute : Attribute
 	{
 		/// <summary>Initializes a new instance of the <see cref="CorrespondingTypeAttribute"/> class.</summary>
 		/// <param name="typeRef">The type that corresponds to this enumeration value.</param>
 		/// <param name="action">The actions allowed for the type.</param>
-		public CorrespondingTypeAttribute(Type typeRef, CorrepsondingAction action = CorrepsondingAction.Get | CorrepsondingAction.Set)
+		public CorrespondingTypeAttribute(Type typeRef, CorrepsondingAction action = CorrepsondingAction.GetSet)
 		{
 			TypeRef = typeRef;
 			Action = action;
@@ -54,39 +55,69 @@ namespace Vanara.InteropServices
 		/// <value>The type that corresponds to this enumeration value.</value>
 		public Type TypeRef { get; }
 
-		/// <summary>Determines whether this instance can get the type for the specified enum value.</summary>
-		/// <param name="value">The enumeration value.</param>
+		/// <summary>Determines whether this instance can get the type for the specified enum value or class.</summary>
+		/// <param name="value">The enumeration value or class instance.</param>
 		/// <param name="typeRef">The type supplied by the user to validate.</param>
 		/// <returns><c>true</c> if this instance can get the specified type; otherwise, <c>false</c>.</returns>
 		public static bool CanGet(object value, Type typeRef)
 		{
-			var attr = GetAttrForEnum(value);
-			return attr.Action.IsFlagSet(CorrepsondingAction.Get) && attr.TypeRef == typeRef;
+			return GetAttrForObj(value).Any(a => a.Action.IsFlagSet(CorrepsondingAction.Get) && a.TypeRef == typeRef);
 		}
 
-		/// <summary>Determines whether this instance can set the type for the specified enum value.</summary>
-		/// <param name="value">The enumeration value.</param>
+		/// <summary>Determines whether this type can get the specified reference type.</summary>
+		/// <param name="type">The class type.</param>
+		/// <param name="typeRef">The type supplied by the user to validate.</param>
+		/// <returns><c>true</c> if this type can get the specified reference type; otherwise, <c>false</c>.</returns>
+		public static bool CanGet(Type type, Type typeRef)
+		{
+			return GetAttrForType(type).Any(a => a.Action.IsFlagSet(CorrepsondingAction.Get) && a.TypeRef == typeRef);
+		}
+
+		/// <summary>Determines whether this instance can set the type for the specified enum value or class.</summary>
+		/// <param name="value">The enumeration value or class instance.</param>
 		/// <param name="typeRef">The type supplied by the user to validate.</param>
 		/// <returns><c>true</c> if this instance can set the specified type; otherwise, <c>false</c>.</returns>
 		public static bool CanSet(object value, Type typeRef)
 		{
-			var attr = GetAttrForEnum(value);
-			return attr.Action.IsFlagSet(CorrepsondingAction.Set) && attr.TypeRef == typeRef;
+			return GetAttrForObj(value).Any(a => a.Action.IsFlagSet(CorrepsondingAction.Set) && a.TypeRef == typeRef);
 		}
 
-		/// <summary>Gets the corresponding type for the supplied enumeration value.</summary>
-		/// <param name="enumValue">The enumeration value.</param>
-		/// <returns>The type defined by the attribute.</returns>
-		public static Type GetCorrespondingType(object enumValue) => GetAttrForEnum(enumValue).TypeRef;
+		/// <summary>Determines whether this type can set the specified reference type.</summary>
+		/// <param name="type">The class type.</param>
+		/// <param name="typeRef">The type supplied by the user to validate.</param>
+		/// <returns><c>true</c> if this type can set the specified reference type; otherwise, <c>false</c>.</returns>
+		public static bool CanSet(Type type, Type typeRef)
+		{
+			return GetAttrForType(type).Any(a => a.Action.IsFlagSet(CorrepsondingAction.Set) && a.TypeRef == typeRef);
+		}
 
-		private static CorrespondingTypeAttribute GetAttrForEnum(object value)
+		/// <summary>Gets the corresponding types for the supplied enumeration value.</summary>
+		/// <param name="enumValue">The enumeration value or class.</param>
+		/// <returns>The types defined by the attribute.</returns>
+		public static IEnumerable<Type> GetCorrespondingTypes(object enumValue) => GetAttrForObj(enumValue).Select(a => a.TypeRef);
+
+		/// <summary>Gets the corresponding types for the supplied enumeration value.</summary>
+		/// <param name="enumValue">The enumeration value or class.</param>
+		/// <returns>The types defined by the attribute.</returns>
+		public static IEnumerable<Type> GetCorrespondingTypes(Type type) => GetAttrForType(type).Select(a => a.TypeRef);
+
+		private static IEnumerable<CorrespondingTypeAttribute> GetAttrForObj(object value)
 		{
 			if (value == null) throw new ArgumentNullException(nameof(value));
 			var valueType = value.GetType();
-			if (!valueType.IsEnum) throw new ArgumentException("Value must be an enumeration value.", nameof(value));
-			var attr = valueType.GetField(value.ToString()).GetCustomAttributes(typeof(CorrespondingTypeAttribute), false).Cast<CorrespondingTypeAttribute>().FirstOrDefault();
-			if (attr == null) throw new InvalidOperationException("Value must have the CorrespondingTypeAttribute defined.");
-			if (attr.Action == CorrepsondingAction.Exception) throw new Exception();
+			if (!valueType.IsEnum && !valueType.IsClass) throw new ArgumentException("Value must be an enumeration or class value.", nameof(value));
+			var attr = (valueType.IsEnum ? valueType.GetField(value.ToString()).GetCustomAttributes(typeof(CorrespondingTypeAttribute), false) : valueType.GetCustomAttributes(typeof(CorrespondingTypeAttribute), false)).Cast<CorrespondingTypeAttribute>().ToArray();
+			if (attr == null || attr.Length == 0) throw new InvalidOperationException("Value must have the CorrespondingTypeAttribute defined.");
+			if (attr.Any(a => a.Action == CorrepsondingAction.Exception)) throw new Exception();
+			return attr;
+		}
+
+		private static IEnumerable<CorrespondingTypeAttribute> GetAttrForType(Type type)
+		{
+			if (type == null) throw new ArgumentNullException(nameof(type));
+			var attr = type.GetCustomAttributes(typeof(CorrespondingTypeAttribute), false).Cast<CorrespondingTypeAttribute>().ToArray();
+			if (attr == null || attr.Length == 0) throw new InvalidOperationException("Type must have the CorrespondingTypeAttribute defined.");
+			if (attr.Any(a => a.Action == CorrepsondingAction.Exception)) throw new Exception();
 			return attr;
 		}
 	}
