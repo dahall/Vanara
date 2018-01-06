@@ -40,6 +40,22 @@ namespace Vanara.Extensions
 		/// <returns><c>true</c> if the specified type is nullable; otherwise, <c>false</c>.</returns>
 		public static bool IsNullable(this Type type) => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
 
+		/// <summary>Marshals an unmanaged linked list of structures to an <see cref="IEnumerable{T}"/> of that structure.</summary>
+		/// <typeparam name="T">Type of native structure used by the unmanaged linked list.</typeparam>
+		/// <param name="ptr">The <see cref="IntPtr"/> pointing to the native array.</param>
+		/// <param name="next">The expression to be used to fetch the pointer to the next item in the list.</param>
+		/// <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the linked list.</returns>
+		public static IEnumerable<T> LinkedListToIEnum<T>(this IntPtr ptr, Func<T, IntPtr> next)
+		{
+			for (var pCurrent = ptr; pCurrent != IntPtr.Zero; )
+			{
+				var ret = pCurrent.ToStructure<T>();
+				yield return ret;
+				pCurrent = next(ret);
+			}
+			yield break;
+		}
+
 		/// <summary>Marshals data from a managed list of specified type to a pre-allocated unmanaged block of memory.</summary>
 		/// <typeparam name="T">
 		/// A type of the enumerated managed object that holds the data to be marshaled. The object must be a structure or an instance of a formatted class.
