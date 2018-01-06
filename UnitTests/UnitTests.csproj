@@ -41,6 +41,10 @@
     <Reference Include="Microsoft.Pex.Framework, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.VisualStudio.QualityTools.UnitTestFramework.Updated.15.0.26228\lib\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.2.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
@@ -82,6 +86,7 @@
     <Compile Include="PInvoke\DwmApi\DwmApiTests.cs" />
     <Compile Include="PInvoke\Gdi32\Gdi32Tests.cs" />
     <Compile Include="PInvoke\InteropServices\SafeLocalHandleTests.cs" />
+    <Compile Include="PInvoke\IpHlpApi\IpHlpApiTests.cs" />
     <Compile Include="PInvoke\Kernel32\Kernel32Tests.cs" />
     <Compile Include="PInvoke\NetApi\NetApi32Tests.cs" />
     <Compile Include="PInvoke\NetApi\NetListMgrTests.cs" />
@@ -141,6 +146,10 @@
     <ProjectReference Include="..\PInvoke\Gdi32\Vanara.PInvoke.Gdi32.csproj">
       <Project>{e186aff0-bc70-4776-8bee-9fdae108f4eb}</Project>
       <Name>Vanara.PInvoke.Gdi32</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PInvoke\IpHlpApi\Vanara.PInvoke.IpHlpApi.csproj">
+      <Project>{bbd8ce8d-31d2-4dfb-8d96-46825c09c7f1}</Project>
+      <Name>Vanara.PInvoke.IpHlpApi</Name>
     </ProjectReference>
     <ProjectReference Include="..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj">
       <Project>{842d436f-598c-47d7-b5aa-12399f8ccfe9}</Project>
@@ -226,6 +235,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
