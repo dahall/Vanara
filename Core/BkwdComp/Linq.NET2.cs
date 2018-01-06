@@ -7,6 +7,20 @@ namespace System.Linq
 	/// <summary>Provides a set of static (Shared in Visual Basic) methods for querying objects that implement <see cref="IEnumerable{T}"/>.</summary>
 	public static class Enumerable
 	{
+		/// <summary>Determines whether all elements of a sequence satisfy a condition.</summary>
+		/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+		/// <param name="source">An <see cref="IEnumerable{T}"/> whose elements to apply the predicate to.</param>
+		/// <param name="predicate">A function to test each element for a condition.</param>
+		/// <returns><c>true</c> if all elements in the source sequence pass the test in the specified predicate; otherwise, <c>false</c>.</returns>
+		public static bool All<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+		{
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+			foreach (TSource element in source)
+				if (!predicate(element)) return false;
+			return true;
+		}
+
 		/// <summary>Determines whether any element of a sequence satisfies a condition.</summary>
 		/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
 		/// <param name="source">An <see cref="IEnumerable{T}"/> whose elements to apply the predicate to.</param>
