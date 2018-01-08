@@ -1,5 +1,5 @@
 ## Correlation report for iphlpapi.dll
-### Methods (14% complete)
+### Methods (20% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
 [AddIPAddress](https://www.google.com/search?num=5&q=AddIPAddress+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.AddIPAddress
@@ -154,68 +154,6 @@ Native Method | Native DLL | Header | Managed Method
 [InitializeIpForwardEntry](https://www.google.com/search?num=5&q=InitializeIpForwardEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [InitializeIpInterfaceEntry](https://www.google.com/search?num=5&q=InitializeIpInterfaceEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [InitializeUnicastIpAddressEntry](https://www.google.com/search?num=5&q=InitializeUnicastIpAddressEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalCleanupPersistentStore](https://www.google.com/search?num=5&q=InternalCleanupPersistentStore+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalCreateAnycastIpAddressEntry](https://www.google.com/search?num=5&q=InternalCreateAnycastIpAddressEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalCreateIpForwardEntry](https://www.google.com/search?num=5&q=InternalCreateIpForwardEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalCreateIpForwardEntry2](https://www.google.com/search?num=5&q=InternalCreateIpForwardEntry2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalCreateIpNetEntry](https://www.google.com/search?num=5&q=InternalCreateIpNetEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalCreateIpNetEntry2](https://www.google.com/search?num=5&q=InternalCreateIpNetEntry2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalCreateUnicastIpAddressEntry](https://www.google.com/search?num=5&q=InternalCreateUnicastIpAddressEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalDeleteAnycastIpAddressEntry](https://www.google.com/search?num=5&q=InternalDeleteAnycastIpAddressEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalDeleteIpForwardEntry](https://www.google.com/search?num=5&q=InternalDeleteIpForwardEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalDeleteIpForwardEntry2](https://www.google.com/search?num=5&q=InternalDeleteIpForwardEntry2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalDeleteIpNetEntry](https://www.google.com/search?num=5&q=InternalDeleteIpNetEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalDeleteIpNetEntry2](https://www.google.com/search?num=5&q=InternalDeleteIpNetEntry2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalDeleteUnicastIpAddressEntry](https://www.google.com/search?num=5&q=InternalDeleteUnicastIpAddressEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalFindInterfaceByAddress](https://www.google.com/search?num=5&q=InternalFindInterfaceByAddress+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetAnycastIpAddressEntry](https://www.google.com/search?num=5&q=InternalGetAnycastIpAddressEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetAnycastIpAddressTable](https://www.google.com/search?num=5&q=InternalGetAnycastIpAddressTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetBoundTcp6EndpointTable](https://www.google.com/search?num=5&q=InternalGetBoundTcp6EndpointTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetBoundTcpEndpointTable](https://www.google.com/search?num=5&q=InternalGetBoundTcpEndpointTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetForwardIpTable2](https://www.google.com/search?num=5&q=InternalGetForwardIpTable2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetIfEntry2](https://www.google.com/search?num=5&q=InternalGetIfEntry2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetIfTable](https://www.google.com/search?num=5&q=InternalGetIfTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetIfTable2](https://www.google.com/search?num=5&q=InternalGetIfTable2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetIpAddrTable](https://www.google.com/search?num=5&q=InternalGetIpAddrTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetIpForwardEntry2](https://www.google.com/search?num=5&q=InternalGetIpForwardEntry2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetIpForwardTable](https://www.google.com/search?num=5&q=InternalGetIpForwardTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetIpInterfaceEntry](https://www.google.com/search?num=5&q=InternalGetIpInterfaceEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetIpInterfaceTable](https://www.google.com/search?num=5&q=InternalGetIpInterfaceTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetIpNetEntry2](https://www.google.com/search?num=5&q=InternalGetIpNetEntry2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetIpNetTable](https://www.google.com/search?num=5&q=InternalGetIpNetTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetIpNetTable2](https://www.google.com/search?num=5&q=InternalGetIpNetTable2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetIPPhysicalInterfaceForDestination](https://www.google.com/search?num=5&q=InternalGetIPPhysicalInterfaceForDestination+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetMulticastIpAddressEntry](https://www.google.com/search?num=5&q=InternalGetMulticastIpAddressEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetMulticastIpAddressTable](https://www.google.com/search?num=5&q=InternalGetMulticastIpAddressTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetRtcSlotInformation](https://www.google.com/search?num=5&q=InternalGetRtcSlotInformation+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetTcp6Table2](https://www.google.com/search?num=5&q=InternalGetTcp6Table2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetTcp6TableWithOwnerModule](https://www.google.com/search?num=5&q=InternalGetTcp6TableWithOwnerModule+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetTcp6TableWithOwnerPid](https://www.google.com/search?num=5&q=InternalGetTcp6TableWithOwnerPid+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetTcpTable](https://www.google.com/search?num=5&q=InternalGetTcpTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetTcpTable2](https://www.google.com/search?num=5&q=InternalGetTcpTable2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetTcpTableEx](https://www.google.com/search?num=5&q=InternalGetTcpTableEx+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetTcpTableWithOwnerModule](https://www.google.com/search?num=5&q=InternalGetTcpTableWithOwnerModule+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetTcpTableWithOwnerPid](https://www.google.com/search?num=5&q=InternalGetTcpTableWithOwnerPid+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetTunnelPhysicalAdapter](https://www.google.com/search?num=5&q=InternalGetTunnelPhysicalAdapter+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetUdp6TableWithOwnerModule](https://www.google.com/search?num=5&q=InternalGetUdp6TableWithOwnerModule+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetUdp6TableWithOwnerPid](https://www.google.com/search?num=5&q=InternalGetUdp6TableWithOwnerPid+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetUdpTable](https://www.google.com/search?num=5&q=InternalGetUdpTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetUdpTableEx](https://www.google.com/search?num=5&q=InternalGetUdpTableEx+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetUdpTableWithOwnerModule](https://www.google.com/search?num=5&q=InternalGetUdpTableWithOwnerModule+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetUdpTableWithOwnerPid](https://www.google.com/search?num=5&q=InternalGetUdpTableWithOwnerPid+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetUnicastIpAddressEntry](https://www.google.com/search?num=5&q=InternalGetUnicastIpAddressEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalGetUnicastIpAddressTable](https://www.google.com/search?num=5&q=InternalGetUnicastIpAddressTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalIcmpCreateFileEx](https://www.google.com/search?num=5&q=InternalIcmpCreateFileEx+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalSetIfEntry](https://www.google.com/search?num=5&q=InternalSetIfEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalSetIpForwardEntry](https://www.google.com/search?num=5&q=InternalSetIpForwardEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalSetIpForwardEntry2](https://www.google.com/search?num=5&q=InternalSetIpForwardEntry2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalSetIpInterfaceEntry](https://www.google.com/search?num=5&q=InternalSetIpInterfaceEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalSetIpNetEntry](https://www.google.com/search?num=5&q=InternalSetIpNetEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalSetIpNetEntry2](https://www.google.com/search?num=5&q=InternalSetIpNetEntry2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalSetIpStats](https://www.google.com/search?num=5&q=InternalSetIpStats+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalSetTcpEntry](https://www.google.com/search?num=5&q=InternalSetTcpEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalSetTeredoPort](https://www.google.com/search?num=5&q=InternalSetTeredoPort+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[InternalSetUnicastIpAddressEntry](https://www.google.com/search?num=5&q=InternalSetUnicastIpAddressEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [IpReleaseAddress](https://www.google.com/search?num=5&q=IpReleaseAddress+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.IpReleaseAddress
 [IpRenewAddress](https://www.google.com/search?num=5&q=IpRenewAddress+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.IpRenewAddress
 [LookupPersistentTcpPortReservation](https://www.google.com/search?num=5&q=LookupPersistentTcpPortReservation+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
@@ -237,23 +175,6 @@ Native Method | Native DLL | Header | Managed Method
 [NTTimeToNTPTime](https://www.google.com/search?num=5&q=NTTimeToNTPTime+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [OpenCompartment](https://www.google.com/search?num=5&q=OpenCompartment+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [ParseNetworkString](https://www.google.com/search?num=5&q=ParseNetworkString+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[PfAddFiltersToInterface](https://www.google.com/search?num=5&q=PfAddFiltersToInterface+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[PfAddGlobalFilterToInterface](https://www.google.com/search?num=5&q=PfAddGlobalFilterToInterface+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[PfBindInterfaceToIndex](https://www.google.com/search?num=5&q=PfBindInterfaceToIndex+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[PfBindInterfaceToIPAddress](https://www.google.com/search?num=5&q=PfBindInterfaceToIPAddress+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[PfCreateInterface](https://www.google.com/search?num=5&q=PfCreateInterface+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[PfDeleteInterface](https://www.google.com/search?num=5&q=PfDeleteInterface+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[PfDeleteLog](https://www.google.com/search?num=5&q=PfDeleteLog+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[PfGetInterfaceStatistics](https://www.google.com/search?num=5&q=PfGetInterfaceStatistics+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[PfMakeLog](https://www.google.com/search?num=5&q=PfMakeLog+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[PfRebindFilters](https://www.google.com/search?num=5&q=PfRebindFilters+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[PfRemoveFilterHandles](https://www.google.com/search?num=5&q=PfRemoveFilterHandles+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[PfRemoveFiltersFromInterface](https://www.google.com/search?num=5&q=PfRemoveFiltersFromInterface+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[PfRemoveGlobalFilterFromInterface](https://www.google.com/search?num=5&q=PfRemoveGlobalFilterFromInterface+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[PfSetLogBuffer](https://www.google.com/search?num=5&q=PfSetLogBuffer+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[PfTestPacket](https://www.google.com/search?num=5&q=PfTestPacket+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[PfUnBindInterface](https://www.google.com/search?num=5&q=PfUnBindInterface+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[register_icmp](https://www.google.com/search?num=5&q=register_icmp+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [ResolveIpNetEntry2](https://www.google.com/search?num=5&q=ResolveIpNetEntry2+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.ResolveIpNetEntry2
 [ResolveNeighbor](https://www.google.com/search?num=5&q=ResolveNeighbor+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [RestoreMediaSense](https://www.google.com/search?num=5&q=RestoreMediaSense+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
