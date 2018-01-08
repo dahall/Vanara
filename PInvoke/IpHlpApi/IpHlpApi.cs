@@ -685,6 +685,15 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern unsafe bool CancelIPChangeNotify(System.Threading.NativeOverlapped* notifyOverlapped);
 
+		/// <summary>The CreateIpNetEntry function creates an Address Resolution Protocol (ARP) entry in the ARP table on the local computer.</summary>
+		/// <param name="pArpEntry">
+		/// A pointer to a MIB_IPNETROW structure that specifies information for the new entry. The caller must specify values for all members of this structure.
+		/// </param>
+		/// <returns>If the function succeeds, the return value is NO_ERROR. If the function fails, the return value is an error code.</returns>
+		[PInvokeData("Iphlpapi.h")]
+		[DllImport(Lib.IpHlpApi, ExactSpelling = true)]
+		public static extern Win32Error CreateIpNetEntry(ref MIB_IPNETROW pArpEntry);
+	
 		/// <summary>The CreateIpNetEntry2 function creates a new neighbor IP address entry on the local computer.</summary>
 		/// <param name="Row">A pointer to a MIB_IPNET_ROW2 structure entry for a neighbor IP address entry.</param>
 		/// <returns>If the function succeeds, the return value is NO_ERROR. If the function fails, the return value is an error code.</returns>
@@ -698,6 +707,13 @@ namespace Vanara.PInvoke
 		[PInvokeData("Iphlpapi.h")]
 		[DllImport(Lib.IpHlpApi, ExactSpelling = true)]
 		public static extern Win32Error DeleteIPAddress(uint NTEContext);
+
+		/// <summary>The DeleteIpNetEntry function deletes an ARP entry from the ARP table on the local computer.</summary>
+		/// <param name="pArpEntry">A pointer to a MIB_IPNETROW structure. The information in this structure specifies the entry to delete. The caller must specify values for at least the dwIndex and dwAddr members of this structure.</param>
+		/// <returns>If the function succeeds, the return value is NO_ERROR. If the function fails, the return value is an error code.</returns>
+		[PInvokeData("Iphlpapi.h")]
+		[DllImport(Lib.IpHlpApi, ExactSpelling = true)]
+		public static extern Win32Error DeleteIpNetEntry(ref MIB_IPNETROW pArpEntry);
 
 		/// <summary>The DeleteIpNetEntry2 function deletes a neighbor IP address entry on the local computer.</summary>
 		/// <param name="Row">A pointer to a MIB_IPNET_ROW2 structure entry for a neighbor IP address entry. On successful return, this entry will be deleted.</param>
@@ -1082,6 +1098,40 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.IpHlpApi, ExactSpelling = true)]
 		public static extern Win32Error GetIpNetEntry2(ref MIB_IPNET_ROW2 Row);
 
+		/// <summary>The GetIpNetTable function retrieves the IPv4 to physical address mapping table.</summary>
+		/// <param name="pIpNetTable">A pointer to a buffer that receives the IPv4 to physical address mapping table as a MIB_IPNETTABLE structure.</param>
+		/// <param name="pdwSize">
+		/// On input, specifies the size in bytes of the buffer pointed to by the pIpNetTable parameter.
+		/// <para>
+		/// On output, if the buffer is not large enough to hold the returned mapping table, the function sets this parameter equal to the required buffer size
+		/// in bytes.
+		/// </para>
+		/// </param>
+		/// <param name="bOrder">
+		/// A Boolean value that specifies whether the returned mapping table should be sorted in ascending order by IP address. If this parameter is TRUE, the
+		/// table is sorted.
+		/// </param>
+		/// <returns>If the function succeeds, the return value is NO_ERROR or ERROR_NO_DATA. If the function fails, the return value is an error code.</returns>
+		[PInvokeData("Iphlpapi.h")]
+		[DllImport(Lib.IpHlpApi, ExactSpelling = true)]
+		public static extern Win32Error GetIpNetTable(IntPtr pIpNetTable, ref uint pdwSize, [MarshalAs(UnmanagedType.Bool)] bool bOrder);
+
+		/// <summary>The GetIpNetTable function retrieves the IPv4 to physical address mapping table.</summary>
+		/// <param name="sorted">
+		/// A Boolean value that specifies whether the returned mapping table should be sorted in ascending order by IP address. If this parameter is TRUE, the
+		/// table is sorted.
+		/// </param>
+		/// <returns>The IPv4 to physical address mapping table as a MIB_IPNETTABLE structure.</returns>
+		public static MIB_IPNETTABLE GetIpNetTable(bool sorted = false)
+		{
+			uint len = 0;
+			var e = GetIpNetTable(IntPtr.Zero, ref len, false);
+			if (e != Win32Error.ERROR_INSUFFICIENT_BUFFER) e.ThrowIfFailed();
+			var mem = new MIB_IPNETTABLE(len);
+			GetIpNetTable(mem, ref len, sorted).ThrowIfFailed();
+			return mem;
+		}
+
 		/// <summary>The GetIpNetTable2 function retrieves the IP neighbor table on the local computer.</summary>
 		/// <param name="Family">The address family to retrieve.</param>
 		/// <param name="Table">A pointer to a MIB_IPNET_TABLE2 structure that contains a table of neighbor IP address entries on the local computer.</param>
@@ -1280,6 +1330,13 @@ namespace Vanara.PInvoke
 			SendARP(DestIP, SrcIP, ret, ref len).ThrowIfFailed();
 			return ret;
 		}
+
+		/// <summary>The SetIpNetEntry function modifies an existing ARP entry in the ARP table on the local computer.</summary>
+		/// <param name="pArpEntry">A pointer to a MIB_IPNETROW structure. The information in this structure specifies the entry to modify and the new information for the entry. The caller must specify values for all members of this structure.</param>
+		/// <returns>If the function succeeds, the return value is NO_ERROR. If the function fails, the return value is an error code.</returns>
+		[PInvokeData("Iphlpapi.h")]
+		[DllImport(Lib.IpHlpApi, ExactSpelling = true)]
+		public static extern Win32Error SetIpNetEntry(ref MIB_IPNETROW pArpEntry);
 
 		/// <summary>The SetIpNetEntry2 function sets the physical address of an existing neighbor IP address entry on the local computer.</summary>
 		/// <param name="Row">A pointer to a MIB_IPNET_ROW2 structure entry for a neighbor IP address entry.</param>
