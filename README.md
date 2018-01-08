@@ -10,11 +10,11 @@ I have tried to follow the concepts below in laying out the libraries.
 * Inside a project, all constructs are contained in a file named after the header file (*.h) in which they are defined in the Windows API
   * (e.g. In the Vanara.PInvoke.Kernel32 project directory, you'll find a FileApi.cs, a WinBase.cs and a WinNT.cs file representing fileapi.h, winbase.h and winnt.h respectively.)
 * Where the direct interpretation of a structure leads to memory leaks or misuse, I have tried to simplify their use
-* Where structures are always passed by reference and where that structure needs to clean up memory allocations, I have changed the structure to class implementing `IDisposable`.
+* Where structures are always passed by reference and where that structure needs to clean up memory allocations, I have changed the structure to a class implementing `IDisposable`.
 * Wherever possible, all handles have been turned into `SafeHandle` derivatives.
 * Wherever possible, all functions that allocate memory that is to be freed by the caller use a safe memory handle.
 * All PInvoke calls are in assemblies prefixed by `Vanara.PInvoke`
-* If there are classes or extensions that make use of the PInvoke calls, they are in wrapper assemblies prefixed by `Vanara` and then followed by a logical name for the functionality. Today, those are Core, Security, SystemServices and UI.
+* If there are classes or extensions that make use of the PInvoke calls, they are in wrapper assemblies prefixed by `Vanara` and then followed by a logical name for the functionality. Today, those are Core, Security, SystemServices, Windows.Forms and Windows.Shell.
 
 ## Quick Links
 * [Documentation](https://github.com/dahall/Vanara/wiki)
