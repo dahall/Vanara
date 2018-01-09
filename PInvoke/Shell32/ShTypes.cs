@@ -3,6 +3,10 @@ using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable FieldCanBeMadeReadOnly.Global
+// ReSharper disable UnusedMember.Global
+
 namespace Vanara.PInvoke
 {
 	public static partial class Shell32
@@ -21,18 +25,6 @@ namespace Vanara.PInvoke
 			STRRET_CSTR = 0x0002,
 		}
 
-		/// <summary>Used generically to filter elements.</summary>
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-		[PInvokeData("Shtypes.h", MSDNShortId = "bb773221")]
-		public struct COMDLG_FILTERSPEC
-		{
-			/// <summary>A pointer to a buffer that contains the friendly name of the filter.</summary>
-			public string pszName;
-
-			/// <summary>A pointer to a buffer that contains the filter pattern.</summary>
-			public string pszSpec;
-		}
-
 		/// <summary>Contains a list of item identifiers.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		[PInvokeData("Shtypes.h", MSDNShortId = "bb773321")]
@@ -42,6 +34,7 @@ namespace Vanara.PInvoke
 			public SHITEMID mkid;
 		}
 
+		/// <summary>Defines an item identifier.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		[PInvokeData("Shtypes.h", MSDNShortId = "bb759800")]
 		public struct SHITEMID
@@ -95,7 +88,6 @@ namespace Vanara.PInvoke
 				if (pNativeData == IntPtr.Zero) return;
 				pNativeData.ToStructure<STRRET>().pOleStr.Free();
 				Marshal.FreeCoTaskMem(pNativeData);
-				pNativeData = IntPtr.Zero;
 			}
 
 			public int GetNativeDataSize() => Marshal.SizeOf(typeof(STRRET));
