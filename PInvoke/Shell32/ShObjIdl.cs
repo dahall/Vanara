@@ -1302,9 +1302,10 @@ namespace Vanara.PInvoke
 		/// <param name="pidl">The source PIDL.</param>
 		/// <param name="riid">A reference to the IID of the requested interface.</param>
 		/// <param name="ppv">When this function returns, contains the interface pointer requested in riid. This will typically be IShellItem or IShellItem2.</param>
+		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762133")]
-		public static extern void SHCreateItemFromIDList(PIDL pidl, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+		public static extern HRESULT SHCreateItemFromIDList(PIDL pidl, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
 
 		/// <summary>Creates and initializes a Shell item object from a parsing name.</summary>
 		/// <param name="pszPath">A pointer to a display name.</param>
