@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Vanara.PInvoke
 {
@@ -75,6 +76,14 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Ole32, ExactSpelling = true, CallingConvention = CallingConvention.StdCall, SetLastError = false)]
 		[PInvokeData("Objbase.h", MSDNShortId = "ms688715")]
 		public static extern void CoUninitialize();
+
+		/// <summary>Returns a pointer to an implementation of IBindCtx (a bind context object). This object stores information about a particular moniker-binding operation.</summary>
+		/// <param name="reserved">This parameter is reserved and must be 0.</param>
+		/// <param name="ppbc">Address of an IBindCtx* pointer variable that receives the interface pointer to the new bind context object. When the function is successful, the caller is responsible for calling Release on the bind context. A NULL value for the bind context indicates that an error occurred.</param>
+		/// <returns>This function can return the standard return values E_OUTOFMEMORY and S_OK.</returns>
+		[DllImport(Lib.Ole32, ExactSpelling = true)]
+		[PInvokeData("Objbase.h", MSDNShortId = "ms678542")]
+		public static extern HRESULT CreateBindCtx(uint reserved, out IBindCtx ppbc);
 
 		/// <summary>The StgCreateStorageEx function creates a new storage object using a provided implementation for the IStorage or IPropertySetStorage interfaces. To open an existing file, use the StgOpenStorageEx function instead.
 		/// <para>Applications written for Windows 2000, Windows Server 2003 and Windows XP must use StgCreateStorageEx rather than StgCreateDocfile to take advantage of the enhanced Windows 2000 and Windows XP Structured Storage features.</para></summary>
