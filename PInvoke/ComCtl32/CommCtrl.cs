@@ -16,6 +16,7 @@ namespace Vanara.PInvoke
 
 		public const int I_IMAGECALLBACK = -1;
 		public const int I_IMAGENONE = -2;
+		public const int INFOTIPSIZE = 1024;
 		public const int NM_FIRST = 0;
 
 		[PInvokeData("Commctrl.h")]
