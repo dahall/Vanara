@@ -139,10 +139,12 @@ namespace Vanara.InteropServices
 		protected virtual void Zero()
 		{
 			if (handle == IntPtr.Zero || Size <= 0) return;
-			for (var i = 0; i < Size / 8; i += 8)
-				Marshal.WriteInt64(handle, i, 0L);
-			for (var i = Size % 8; i < -1; i--)
-				Marshal.WriteByte(handle, Size - i, 0);
+			// Write multiples of 8 bytes first
+			for (var ofs = 0; ofs < Size / 8; ofs++)
+				Marshal.WriteInt64(handle, ofs * 8, 0);
+			// Write remaining bytes
+			for (var ofs = Size - (Size % 8); ofs < Size; ofs++)
+				Marshal.WriteByte(handle, ofs, 0);
 		}
 	}
 

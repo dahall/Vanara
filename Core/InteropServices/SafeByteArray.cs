@@ -164,27 +164,10 @@ namespace Vanara.InteropServices
 			return array;
 		}
 
-		/// <summary>Zeroes out this instance, or writes 0 to every allocated byte.</summary>
-		public void Zero()
-		{
-			var size1 = Count % 8;
-			var size8 = Count - size1;
-			int ofs;
-			// Write multiples of 8 bytes first
-			for (ofs = 0; ofs < size8; ofs += 8)
-				Marshal.WriteInt64(handle, ofs, 0);
-			// Write remaining bytes
-			for (var n = 0; n < size1; n++, ofs++)
-				Marshal.WriteByte(handle, ofs, 0);
-		}
-
 		/// <summary>Adds an item to the <see cref="T:System.Collections.IList"/>.</summary>
 		/// <param name="value">The object to add to the <see cref="T:System.Collections.IList"/>.</param>
 		/// <returns>The position into which the new element was inserted, or -1 to indicate that the item was not inserted into the collection.</returns>
-		int IList.Add(object value)
-		{
-			throw new NotSupportedException();
-		}
+		int IList.Add(object value) => throw new NotSupportedException();
 
 		/// <summary>Adds an item to the <see cref="T:System.Collections.Generic.ICollection{T}"/>.</summary>
 		/// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection{T}"/>.</param>
