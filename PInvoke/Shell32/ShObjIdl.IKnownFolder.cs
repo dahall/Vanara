@@ -992,17 +992,16 @@ namespace Vanara.PInvoke
 
 		/// <summary>Provides information about a <see cref="KNOWNFOLDERID"/>.</summary>
 		[AttributeUsage(AttributeTargets.Field)]
-		internal class KnownFolderDetailAttribute : Attribute
+		internal class KnownFolderDetailAttribute : AssociateAttribute
 		{
-			public Environment.SpecialFolder Equivalent = (Environment.SpecialFolder) 0XFFFF;
-			internal Guid guid;
-
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.Shell32.KnownFolderDetailAttribute"/> class with a GUID for the <see cref="KNOWNFOLDERID"/>.</summary>
+			/// <summary>Initializes a new instance of the <see cref="KnownFolderDetailAttribute"/> class with a GUID for the <see cref="KNOWNFOLDERID"/>.</summary>
 			/// <param name="knownFolderGuid">The GUID for the <see cref="KNOWNFOLDERID"/>.</param>
-			public KnownFolderDetailAttribute(string knownFolderGuid)
+			public KnownFolderDetailAttribute(string knownFolderGuid) : base(knownFolderGuid)
 			{
-				guid = new Guid(knownFolderGuid);
 			}
+
+			/// <summary>The equivalent SpecialFolder.</summary>
+			public Environment.SpecialFolder Equivalent = (Environment.SpecialFolder) 0XFFFF;
 		}
 	}
 }

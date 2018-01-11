@@ -35,10 +35,15 @@ namespace Vanara.PInvoke
 		/// <summary>Retrieves the Guid associated with a <see cref="KNOWNFOLDERID"/>.</summary>
 		/// <param name="id">The known folder.</param>
 		/// <returns>The GUID.</returns>
-		public static Guid Guid(this KNOWNFOLDERID id)
+		public static Guid Guid(this KNOWNFOLDERID id) => AssociateAttribute.GetGuidFromEnum(id);
+
+		/// <summary>Retrieves the IShellItem associated with a <see cref="KNOWNFOLDERID"/>.</summary>
+		/// <param name="id">The known folder.</param>
+		/// <returns>The <see cref="IShellItem"/> instance.</returns>
+		public static IShellItem GetIShellItem(this KNOWNFOLDERID id)
 		{
-			var attr = typeof(KNOWNFOLDERID).GetField(id.ToString()).GetCustomAttributes(typeof(KnownFolderDetailAttribute), false);
-			return attr.Length > 0 ? ((KnownFolderDetailAttribute) attr[0]).guid : System.Guid.Empty;
+			SHGetKnownFolderItem(id.Guid(), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, SafeTokenHandle.Null, typeof(IShellItem).GUID, out var ppv).ThrowIfFailed();
+			return (IShellItem) ppv;
 		}
 
 		/// <summary>Retrieves the <see cref="KNOWNFOLDERID"/> associated with the <see cref="Environment.SpecialFolder"/>.</summary>
