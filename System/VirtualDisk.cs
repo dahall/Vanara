@@ -16,16 +16,18 @@ using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.VirtDisk;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Vanara.IO
 {
 	public class VirtualDisk : IDisposable
 	{
-		private static bool IsPreWin8 = Environment.OSVersion.Version < new Version(6, 2);
-		private bool attached = false;
-		private SafeFileHandle hVhd;
+		private static readonly bool IsPreWin8 = Environment.OSVersion.Version < new Version(6, 2);
+		private bool attached;
+		private readonly SafeFileHandle hVhd;
 		private VirtualDiskMetadata metadata;
-		private OPEN_VIRTUAL_DISK_VERSION ver;
+		private readonly OPEN_VIRTUAL_DISK_VERSION ver;
 
 		private VirtualDisk(SafeFileHandle handle, OPEN_VIRTUAL_DISK_VERSION version) { hVhd = handle; ver = version; }
 
@@ -154,7 +156,7 @@ namespace Vanara.IO
 			{
 				var sz = 64;
 				StringBuilder sb;
-				Win32Error err = 0;
+				Win32Error err;
 				do
 				{
 					sb = new StringBuilder(sz *= 4);
@@ -292,7 +294,6 @@ namespace Vanara.IO
 			if (string.IsNullOrEmpty(parentPath)) throw new ArgumentNullException(nameof(parentPath));
 
 			// If this is V2 (>=Win8), then let the file extension determine type, otherwise, it has to be a VHD
-			var stType = IsPreWin8 ? VIRTUAL_STORAGE_TYPE.VHD : new VIRTUAL_STORAGE_TYPE();
 			var mask = IsPreWin8 ? VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_CREATE : VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_NONE;
 			var sd = new PinnedObject(access?.GetSecurityDescriptorBinaryForm());
 			var param = new CREATE_VIRTUAL_DISK_PARAMETERS { Version = IsPreWin8 ? CREATE_VIRTUAL_DISK_VERSION.CREATE_VIRTUAL_DISK_VERSION_1 : CREATE_VIRTUAL_DISK_VERSION.CREATE_VIRTUAL_DISK_VERSION_2 };
@@ -319,15 +320,11 @@ namespace Vanara.IO
 			var param = new CREATE_VIRTUAL_DISK_PARAMETERS(0, IsPreWin8 ? 1U : 2U);
 			var mask = IsPreWin8 ? VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_CREATE : VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_NONE;
 			var sp = new SafeCoTaskMemString(sourcePath);
-			if (sourcePath != null)
-			{
-				if (IsPreWin8)
-					param.Version1.SourcePath = (IntPtr)sp;
-				else
-					param.Version2.SourcePath = (IntPtr)sp;
-			}
-			var flags = CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_NONE;
-			return Create(path, ref param, flags, mask, IntPtr.Zero);
+			if (IsPreWin8)
+				param.Version1.SourcePath = (IntPtr)sp;
+			else
+				param.Version2.SourcePath = (IntPtr)sp;
+			return Create(path, ref param, CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_NONE, mask, IntPtr.Zero);
 		}
 
 		/// <summary>
@@ -351,7 +348,7 @@ namespace Vanara.IO
 		{
 			uint sz = 0;
 			var sb = new SafeCoTaskMemHandle(0);
-			Win32Error err = 0;
+			Win32Error err;
 			do
 			{
 				err = GetAllAttachedVirtualDiskPhysicalPaths(ref sz, sb);
@@ -359,14 +356,14 @@ namespace Vanara.IO
 				if (err != Win32Error.ERROR_INSUFFICIENT_BUFFER) err.ThrowIfFailed();
 				sb.Size = (int)sz;
 			} while (err == Win32Error.ERROR_INSUFFICIENT_BUFFER);
-			if (sb.Size <= 1) return new string[0];
-			return sb.ToStringEnum(CharSet.Unicode);
+			return sb.Size <= 1 ? new string[0] : sb.ToStringEnum(CharSet.Unicode);
 		}
 
 		/// <summary>Creates an instance of a Virtual Disk from a file.</summary>
 		/// <param name="path">A valid path to the virtual disk image to open.</param>
 		/// <param name="flags">A valid combination of values of the OPEN_VIRTUAL_DISK_FLAG enumeration.</param>
 		/// <param name="param">A valid OPEN_VIRTUAL_DISK_PARAMETERS structure.</param>
+		/// <param name="mask">A valid VIRTUAL_DISK_ACCESS_MASK value.</param>
 		public static VirtualDisk Open(string path, OPEN_VIRTUAL_DISK_FLAG flags = OPEN_VIRTUAL_DISK_FLAG.OPEN_VIRTUAL_DISK_FLAG_NONE, OPEN_VIRTUAL_DISK_PARAMETERS param = null, VIRTUAL_DISK_ACCESS_MASK mask = VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_NONE)
 		{
 			if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
@@ -390,7 +387,7 @@ namespace Vanara.IO
 			var mask = VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_NONE;
 			var flags = OPEN_VIRTUAL_DISK_FLAG.OPEN_VIRTUAL_DISK_FLAG_NONE;
 			if (noParents) flags |= OPEN_VIRTUAL_DISK_FLAG.OPEN_VIRTUAL_DISK_FLAG_NO_PARENTS;
-			OPEN_VIRTUAL_DISK_PARAMETERS param = null;
+			OPEN_VIRTUAL_DISK_PARAMETERS param;
 			var isIso = Path.GetExtension(path).Equals(".iso", StringComparison.InvariantCultureIgnoreCase);
 			if (isIso && (!readOnly || noParents)) throw new NotSupportedException();
 			if (isIso || IsPreWin8)
@@ -420,7 +417,7 @@ namespace Vanara.IO
 		public void Attach(ATTACH_VIRTUAL_DISK_FLAG flags, ref ATTACH_VIRTUAL_DISK_PARAMETERS param, IntPtr securityDescriptor = default(IntPtr))
 		{
 			AdvApi32.ConvertSecurityDescriptorToStringSecurityDescriptor(securityDescriptor, AdvApi32.SDDL_REVISION.SDDL_REVISION_1, (SECURITY_INFORMATION)7, out SafeHGlobalHandle ssd, out uint _);
-			System.Diagnostics.Debug.WriteLine($"AttachVD: flags={flags}; sddl={ssd.ToString(-1)}, param={param.Version},{param.Version1.Reserved}");
+			Debug.WriteLine($"AttachVD: flags={flags}; sddl={ssd.ToString(-1)}, param={param.Version},{param.Version1.Reserved}");
 			AttachVirtualDisk(hVhd, securityDescriptor, flags, 0, ref param, IntPtr.Zero).ThrowIfFailed();
 			if (!flags.IsFlagSet(ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_PERMANENT_LIFETIME)) attached = true;
 		}
@@ -747,17 +744,17 @@ namespace Vanara.IO
 				err.ThrowIfFailed();
 
 				var ms = new MarshalingStream(mem.DangerousGetHandle(), mem.Size) { Position = 8 + offset };
-				if (typeof(T) == typeof(string)) return (T)(object)System.Text.Encoding.Unicode.GetString(mem.ToArray<byte>((int)sz), 8 + (int)offset, (int)sz - 8 - (int)offset).TrimEnd('\0');
+				if (typeof(T) == typeof(string)) return (T)(object)Encoding.Unicode.GetString(mem.ToArray<byte>((int)sz), 8 + (int)offset, (int)sz - 8 - (int)offset).TrimEnd('\0');
 				return typeof(T) == typeof(bool) ? (T)Convert.ChangeType(ms.Read<uint>() != 0, typeof(bool)) : ms.Read<T>();
 			}
 		}
 
 		/// <summary>Supports getting and setting metadata on a virtual disk.</summary>
-		/// <seealso cref="System.Collections.Generic.IDictionary{System.Guid, Vanara.InteropServices.SafeCoTaskMemHandle}"/>
+		/// <seealso cref="IDictionary{Guid, SafeCoTaskMemHandle}"/>
 		public class VirtualDiskMetadata : IDictionary<Guid, SafeCoTaskMemHandle>
 		{
-			private VirtualDisk parent;
-			private bool supported;
+			private readonly VirtualDisk parent;
+			private readonly bool supported;
 
 			/// <summary>Initializes a new instance of the <see cref="VirtualDiskMetadata"/> class.</summary>
 			/// <param name="vhd">The VHD.</param>
@@ -791,7 +788,7 @@ namespace Vanara.IO
 			public ICollection<SafeCoTaskMemHandle> Values => Keys.Select(k => this[k]).ToList();
 
 			/// <summary>Gets the number of elements contained in the <see cref="IDictionary{Guid, SafeCoTaskMemHandle}"/>.</summary>
-			public int Count => Keys.Count();
+			public int Count => Keys.Count;
 
 			/// <summary>Gets or sets the <see cref="SafeCoTaskMemHandle"/> with the specified key.</summary>
 			/// <value>The <see cref="SafeCoTaskMemHandle"/>.</value>
@@ -856,7 +853,7 @@ namespace Vanara.IO
 			}
 
 			/// <summary>Returns an enumerator that iterates through the collection.</summary>
-			/// <returns>A <see cref="IEnumerator{KeyValuePair{Guid, SafeCoTaskMemHandle}}"/> that can be used to iterate through the collection.</returns>
+			/// <returns>A <see cref="IEnumerator{T}"/> that can be used to iterate through the collection.</returns>
 			public IEnumerator<KeyValuePair<Guid, SafeCoTaskMemHandle>> GetEnumerator() => GetEnum().GetEnumerator();
 
 			/// <summary>Removes the element with the specified key from the <see cref="IDictionary{Guid, SafeCoTaskMemHandle}"/>.</summary>
@@ -902,9 +899,9 @@ namespace Vanara.IO
 			private IEnumerable<KeyValuePair<Guid, SafeCoTaskMemHandle>> GetEnum() => Keys.Select(k => new KeyValuePair<Guid, SafeCoTaskMemHandle>(k, this[k]));
 		}
 
-		private class VirtualDiskSnapshot
-		{
-			private Guid id;
-		}
+		//private class VirtualDiskSnapshot
+		//{
+		//	private Guid id;
+		//}
 	}
 }
