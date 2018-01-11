@@ -10,11 +10,11 @@ I have tried to follow the concepts below in laying out the libraries.
 * Inside a project, all constructs are contained in a file named after the header file (*.h) in which they are defined in the Windows API
   * (e.g. In the Vanara.PInvoke.Kernel32 project directory, you'll find a FileApi.cs, a WinBase.cs and a WinNT.cs file representing fileapi.h, winbase.h and winnt.h respectively.)
 * Where the direct interpretation of a structure leads to memory leaks or misuse, I have tried to simplify their use
-* Where structures are always passed by reference and where that structure needs to clean up memory allocations, I have changed the structure to class implementing `IDisposable`.
+* Where structures are always passed by reference and where that structure needs to clean up memory allocations, I have changed the structure to a class implementing `IDisposable`.
 * Wherever possible, all handles have been turned into `SafeHandle` derivatives.
 * Wherever possible, all functions that allocate memory that is to be freed by the caller use a safe memory handle.
 * All PInvoke calls are in assemblies prefixed by `Vanara.PInvoke`
-* If there are classes or extensions that make use of the PInvoke calls, they are in wrapper assemblies prefixed by `Vanara` and then followed by a logical name for the functionality. Today, those are Core, Security, SystemServices and UI.
+* If there are classes or extensions that make use of the PInvoke calls, they are in wrapper assemblies prefixed by `Vanara` and then followed by a logical name for the functionality. Today, those are Core, Security, SystemServices, Windows.Forms and Windows.Shell.
 
 ## Quick Links
 * [Documentation](https://github.com/dahall/Vanara/wiki)
@@ -33,6 +33,7 @@ NuGet Link | Assembly | Description | Dependencies
 [![NuGet](https://img.shields.io/nuget/v/Vanara.PInvoke.ComCtl32.svg?style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.CredUI)| [Vanara.PInvoke.CredUI](https://github.com/dahall/Vanara/blob/master/PInvoke/CredUI/CorrelationReport.md) | Methods, structures and constants imported from CredUI.dll | Vanara.PInvoke.Security
 [![NuGet](https://img.shields.io/nuget/v/Vanara.PInvoke.DwmApi.svg?style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.DwmApi)| [Vanara.PInvoke.DwmApi](https://github.com/dahall/Vanara/blob/master/PInvoke/DwmApi/CorrelationReport.md) | Methods, structures and constants imported from DwmApi.dll | Vanara.PInvoke.Shared
 [![NuGet](https://img.shields.io/nuget/v/Vanara.PInvoke.Gdi32.svg?style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Gdi32)| [Vanara.PInvoke.Gdi32](https://github.com/dahall/Vanara/blob/master/PInvoke/Gdi32/CorrelationReport.md) | Methods, structures and constants imported from Gdi32.dll | Vanara.PInvoke.Shared
+[![NuGet](https://img.shields.io/nuget/v/Vanara.PInvoke.IpHlpApi.svg?style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.IpHlpApi)| [Vanara.PInvoke.IpHlpApi](https://github.com/dahall/Vanara/blob/master/PInvoke/IpHlpApi/CorrelationReport.md) | Methods, structures and constants imported from IpHlpApi.dll | Vanara.PInvoke.Shared
 [![NuGet](https://img.shields.io/nuget/v/Vanara.PInvoke.Kernel32.svg?style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Kernel32)| [Vanara.PInvoke.Kernel32](https://github.com/dahall/Vanara/blob/master/PInvoke/Kernel32/CorrelationReport.md) | Methods, structures and constants imported from Kernel32.dll | Vanara.PInvoke.Shared
 [![NuGet](https://img.shields.io/nuget/v/Vanara.PInvoke.Mpr.svg?style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Mpr)| [Vanara.PInvoke.Mpr](https://github.com/dahall/Vanara/blob/master/PInvoke/Mpr/CorrelationReport.md) | Methods, structures and constants imported from Mpr.dll | Vanara.PInvoke.Shared
 [![NuGet](https://img.shields.io/nuget/v/Vanara.PInvoke.NetApi32.svg?style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.NetApi32)| [Vanara.PInvoke.NetApi32](https://github.com/dahall/Vanara/blob/master/PInvoke/NetApi32/CorrelationReport.md) | Methods, structures and constants imported from NetApi32.dll | Vanara.PInvoke.Shared
