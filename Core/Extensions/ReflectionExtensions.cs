@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
@@ -7,6 +9,24 @@ namespace Vanara.Extensions
 	/// <summary>Extensions related to <c>System.Reflection</c></summary>
 	public static class ReflectionExtensions
 	{
+		/// <summary>Returns an array of custom attributes applied to this member and identified by <typeparamref name="TAttr"/>.</summary>
+		/// <typeparam name="TAttr">The type of attribute to search for. Only attributes that are assignable to this type are returned.</typeparam>
+		/// <param name="element">An object derived from the MemberInfo class that describes a constructor, event, field, method, or property member of a class.</param>
+		/// <param name="inherit"><c>true</c> to search this member's inheritance chain to find the attributes; otherwise, <c>false</c>. This parameter is ignored for properties and events.</param>
+		/// <param name="predicate">An optional predicate to refine the results.</param>
+		/// <returns></returns>
+		public static IEnumerable<TAttr> GetCustomAttributes<TAttr>(this MemberInfo element, bool inherit = false, Func<TAttr, bool> predicate = null) where TAttr : Attribute =>
+			element.GetCustomAttributes(typeof(TAttr), inherit).Cast<TAttr>().Where(predicate ?? (a => true));
+
+		/// <summary>Returns an array of custom attributes applied to this member and identified by <typeparamref name="TAttr"/>.</summary>
+		/// <typeparam name="TAttr">The type of attribute to search for. Only attributes that are assignable to this type are returned.</typeparam>
+		/// <param name="type">The type of the <see cref="Type"/> to examine.</param>
+		/// <param name="inherit"><c>true</c> to search this member's inheritance chain to find the attributes; otherwise, <c>false</c>. This parameter is ignored for properties and events.</param>
+		/// <param name="predicate">An optional predicate to refine the results.</param>
+		/// <returns></returns>
+		public static IEnumerable<TAttr> GetCustomAttributes<TAttr>(this Type type, bool inherit = false, Func<TAttr, bool> predicate = null) where TAttr : Attribute =>
+			type.GetCustomAttributes(typeof(TAttr), inherit).Cast<TAttr>().Where(predicate ?? (a => true));
+
 		/// <summary>Gets a named property value from an object.</summary>
 		/// <typeparam name="T">The expected type of the property to be returned.</typeparam>
 		/// <param name="obj">The object from which to retrieve the property.</param>

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using Vanara.Extensions;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Shell32;
 // ReSharper disable InconsistentNaming
@@ -75,13 +77,7 @@ namespace Vanara.PInvoke
 		/// <summary>Retrieves the <see cref="Environment.SpecialFolder"/> associated with a <see cref="KNOWNFOLDERID"/> if it exists.</summary>
 		/// <param name="id">The known folder.</param>
 		/// <returns>The <see cref="Environment.SpecialFolder"/> if defined, <c>null</c> otherwise.</returns>
-		public static Environment.SpecialFolder? SpecialFolder(this KNOWNFOLDERID id)
-		{
-			var attr = typeof(KNOWNFOLDERID).GetField(id.ToString()).GetCustomAttributes(typeof(KnownFolderDetailAttribute), false);
-			var ret = (Environment.SpecialFolder) 0XFFFF;
-			if (attr.Length > 0)
-				ret = ((KnownFolderDetailAttribute) attr[0]).Equivalent;
-			return ret == (Environment.SpecialFolder) 0XFFFF ? (Environment.SpecialFolder?) null : ret;
-		}
+		public static Environment.SpecialFolder? SpecialFolder(this KNOWNFOLDERID id) =>
+			typeof(KNOWNFOLDERID).GetField(id.ToString()).GetCustomAttributes<KnownFolderDetailAttribute>().Select(a => (Environment.SpecialFolder?)a.Equivalent).FirstOrDefault();
 	}
 }

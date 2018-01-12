@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using Vanara.Extensions;
 
 namespace Vanara.PInvoke
 {
@@ -26,11 +27,8 @@ namespace Vanara.PInvoke
 		/// <typeparam name="T">An enum type.</typeparam>
 		/// <param name="value">The enum value.</param>
 		/// <returns>The GUID.</returns>
-		public static Guid GetGuidFromEnum<T>(T value)
-		{
-			var attr = typeof(T).GetField(value.ToString()).GetCustomAttributes(typeof(AssociateAttribute), false);
-			return attr.Length > 0 ? ((AssociateAttribute) attr[0]).Guid : Guid.Empty;
-		}
+		public static Guid GetGuidFromEnum<T>(T value) =>
+			typeof(T).GetField(value.ToString()).GetCustomAttributes<AssociateAttribute>().Select(a => a.Guid).FirstOrDefault();
 
 		/// <summary>Tries a lookup of the enum value associated with a Guid.</summary>
 		/// <param name="guid">The unique identifier.</param>
@@ -40,7 +38,7 @@ namespace Vanara.PInvoke
 		{
 			foreach (var f in typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static))
 			{
-				if (f.GetCustomAttributes(typeof(AssociateAttribute), false).Cast<AssociateAttribute>().All(a => a.Guid != guid))
+				if (f.GetCustomAttributes<AssociateAttribute>().All(a => a.Guid != guid))
 					continue;
 				value = (T)f.GetRawConstantValue();
 				return true;

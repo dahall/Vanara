@@ -106,8 +106,8 @@ namespace Vanara.InteropServices
 			if (value == null) throw new ArgumentNullException(nameof(value));
 			var valueType = value.GetType();
 			if (!valueType.IsEnum && !valueType.IsClass) throw new ArgumentException("Value must be an enumeration or class value.", nameof(value));
-			var attr = (valueType.IsEnum ? valueType.GetField(value.ToString()).GetCustomAttributes(typeof(CorrespondingTypeAttribute), false) : valueType.GetCustomAttributes(typeof(CorrespondingTypeAttribute), false)).Cast<CorrespondingTypeAttribute>().ToArray();
-			if (attr == null || attr.Length == 0) throw new InvalidOperationException("Value must have the CorrespondingTypeAttribute defined.");
+			var attr = (valueType.IsEnum ? valueType.GetField(value.ToString()).GetCustomAttributes<CorrespondingTypeAttribute>() : valueType.GetCustomAttributes<CorrespondingTypeAttribute>());
+			if (!attr.Any()) throw new InvalidOperationException("Value must have the CorrespondingTypeAttribute defined.");
 			if (attr.Any(a => a.Action == CorrepsondingAction.Exception)) throw new Exception();
 			return attr;
 		}
@@ -115,8 +115,8 @@ namespace Vanara.InteropServices
 		private static IEnumerable<CorrespondingTypeAttribute> GetAttrForType(Type type)
 		{
 			if (type == null) throw new ArgumentNullException(nameof(type));
-			var attr = type.GetCustomAttributes(typeof(CorrespondingTypeAttribute), false).Cast<CorrespondingTypeAttribute>().ToArray();
-			if (attr == null || attr.Length == 0) throw new InvalidOperationException("Type must have the CorrespondingTypeAttribute defined.");
+			var attr = type.GetCustomAttributes<CorrespondingTypeAttribute>();
+			if (!attr.Any()) throw new InvalidOperationException("Type must have the CorrespondingTypeAttribute defined.");
 			if (attr.Any(a => a.Action == CorrepsondingAction.Exception)) throw new Exception();
 			return attr;
 		}

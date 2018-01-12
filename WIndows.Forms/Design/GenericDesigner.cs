@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing.Design;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.Windows.Forms.Design.Behavior;
+using Vanara.Extensions;
 
 namespace Vanara.Windows.Forms.Design
 {
@@ -721,7 +723,7 @@ namespace Vanara.Windows.Forms.Design
 					List<Attribute> attributes;
 					if (attr.ApplyOtherAttributes)
 					{
-						attributes = new List<Attribute>(Array.ConvertAll(prop.GetCustomAttributes(false), o => o as Attribute));
+						attributes = prop.GetCustomAttributes<Attribute>().ToList();
 						attributes.RemoveAll(a => a is RedirectedDesignerPropertyAttribute);
 					}
 					else
