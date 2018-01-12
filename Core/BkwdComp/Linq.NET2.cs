@@ -26,12 +26,11 @@ namespace System.Linq
 		/// <param name="source">An <see cref="IEnumerable{T}"/> whose elements to apply the predicate to.</param>
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns><c>true</c> if any elements in the source sequence pass the test in the specified predicate; otherwise, <c>false</c>.</returns>
-		public static bool Any<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+		public static bool Any<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate = null)
 		{
 			if (source == null) throw new ArgumentNullException(nameof(source));
-			if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 			foreach (TSource element in source)
-				if (predicate(element)) return true;
+				if (predicate == null || predicate(element)) return true;
 			return false;
 		}
 
@@ -63,12 +62,43 @@ namespace System.Linq
 		/// <returns>The number of elements in the input sequence.</returns>
 		public static int Count<TSource>(this IEnumerable<TSource> source)
 		{
+			switch (source)
+			{
+				case null:
+					throw new ArgumentNullException(nameof(source));
+				case ICollection<TSource> c:
+					return c.Count;
+				case ICollection ngc:
+					return ngc.Count;
+				default:
+					var i = 0;
+					foreach (var e in source) i++;
+					return i;
+			}
+		}
+
+		/// <summary>Returns the elements of the specified sequence or the specified value in a singleton collection if the sequence is empty.</summary>
+		/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+		/// <param name="source">The sequence to return the specified value for if it is empty.</param>
+		/// <param name="defaultValue">The value to return if the sequence is empty. This value defaults to <see cref="default(TSource)"/>.</param>
+		/// <returns>An <see cref="IEnumerable{T}"/> that contains <paramref name="defaultValue"/> if source is empty; otherwise, source.</returns>
+		public static IEnumerable<TSource> DefaultIfEmpty<TSource>(this IEnumerable<TSource> source, TSource defaultValue = default(TSource))
+		{
 			if (source == null) throw new ArgumentNullException(nameof(source));
-			if (source is ICollection<TSource> c) return c.Count;
-			if (source is ICollection ngc) return ngc.Count;
-			var i = 0;
-			foreach (var e in source) i++;
-			return i;
+			using (var e = source.GetEnumerator())
+			{
+				if (e.MoveNext())
+				{
+					do
+					{
+						yield return e.Current;
+					} while (e.MoveNext());
+				}
+				else
+				{
+					yield return defaultValue;
+				}
+			}
 		}
 
 		/// <summary>Returns distinct elements from a sequence by using the default equality comparer to compare values.</summary>
