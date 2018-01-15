@@ -16,7 +16,8 @@ namespace Vanara.InteropServices
 		/// <summary>Initializes a new instance of the <see cref="SafeCoTaskMemString"/> class.</summary>
 		/// <param name="s">The string value.</param>
 		/// <param name="charSet">The character set.</param>
-		public SafeCoTaskMemString(string s, CharSet charSet = CharSet.Unicode) : this(StringHelper.AllocString(s, charSet), charSet)
+		/// <param name="ownsHandle"><c>true</c> to reliably release the handle during finalization; <c>false</c> to prevent it.</param>
+		public SafeCoTaskMemString(string s, CharSet charSet = CharSet.Unicode, bool ownsHandle = true) : this(StringHelper.AllocString(s, charSet), charSet, ownsHandle)
 		{
 			Capacity = StringHelper.GetByteCount(s, true, charSet);
 		}
@@ -44,8 +45,9 @@ namespace Vanara.InteropServices
 		/// <summary>Initializes a new instance of the <see cref="SafeCoTaskMemString"/> class.</summary>
 		/// <param name="ptr">The PTR.</param>
 		/// <param name="charSet">The character set.</param>
+		/// <param name="ownsHandle"><c>true</c> to reliably release the handle during finalization; <c>false</c> to prevent it.</param>
 		[ExcludeFromCodeCoverage]
-		private SafeCoTaskMemString(IntPtr ptr, CharSet charSet = CharSet.Unicode) : base(true)
+		private SafeCoTaskMemString(IntPtr ptr, CharSet charSet = CharSet.Unicode, bool ownsHandle = true) : base(ownsHandle)
 		{
 			chSet = charSet;
 			SetHandle(ptr);
