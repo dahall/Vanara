@@ -222,9 +222,9 @@ namespace Vanara.PInvoke.Tests
 		public void GetIfEntry2ExTest()
 		{
 			return;
-			var row = new MIB_IF_ROW2(primaryAdapter.IfIndex);
-			Assert.That(GetIfEntry2Ex(MIB_IF_ENTRY_LEVEL.MibIfEntryNormalWithoutStatistics, ref row), Is.Zero);
-			Assert.That(row.InterfaceLuid, Is.EqualTo(primaryAdapter.Luid));
+			//var row = new MIB_IF_ROW2(primaryAdapter.IfIndex);
+			//Assert.That(GetIfEntry2Ex(MIB_IF_ENTRY_LEVEL.MibIfEntryNormalWithoutStatistics, ref row), Is.Zero);
+			//Assert.That(row.InterfaceLuid, Is.EqualTo(primaryAdapter.Luid));
 		}
 
 		[Test]
