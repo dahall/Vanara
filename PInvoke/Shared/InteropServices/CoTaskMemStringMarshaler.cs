@@ -31,7 +31,7 @@ namespace Vanara.InteropServices
 		/// <param name="pNativeData">A pointer to the unmanaged data to be destroyed.</param>
 		public void CleanUpNativeData(IntPtr pNativeData)
 		{
-			StringHelper.FreeString(pNativeData, charSet);
+			Marshal.FreeCoTaskMem(pNativeData);
 		}
 
 		/// <summary>Returns the size of the native data to be marshaled.</summary>

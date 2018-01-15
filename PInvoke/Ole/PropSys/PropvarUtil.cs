@@ -422,7 +422,7 @@ namespace Vanara.PInvoke
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[DllImport(Lib.PropSys, ExactSpelling = true)]
 		[PInvokeData("Propvarutil.h", MSDNShortId = "bb776560")]
-		public static extern HRESULT PropVariantToStringAlloc([In] PROPVARIANT propVar,  out SafeCoTaskMemString ppszOut);
+		public static extern HRESULT PropVariantToStringAlloc([In] PROPVARIANT propVar, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszOut);
 
 		/// <summary>Extracts data from a <see cref="PROPVARIANT" /> structure into a newly allocated strings in a newly allocated vector.</summary>
 		/// <param name="propVar">Reference to the source <see cref="PROPVARIANT" /> structure.</param>

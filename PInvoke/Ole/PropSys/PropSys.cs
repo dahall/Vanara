@@ -387,14 +387,26 @@ namespace Vanara.PInvoke
 			PDCOT_NUMBER	= 5
 		}
 
+		/// <summary>Gets an instance of a property description interface for a property specified by a PROPERTYKEY structure.</summary>
+		/// <param name="propkey">Reference to a PROPERTYKEY.</param>
+		/// <param name="riid">Reference to the interface ID of the requested interface.</param>
+		/// <param name="ppv">
+		/// When this function returns, contains the interface pointer requested in riid. This is typically IPropertyDescription, IPropertyDescriptionAliasInfo,
+		/// or IPropertyDescriptionSearchInfo.
+		/// </param>
+		/// <returns></returns>
+		[DllImport(Lib.PropSys, ExactSpelling = true)]
+		[PInvokeData("Propsys.h", MSDNShortId = "bb776503")]
+		public static extern HRESULT PSGetPropertyDescription(ref PROPERTYKEY propkey, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+
 		/// <summary>
 		/// Retrieves the property's canonical name given its PROPERTYKEY.
 		/// </summary>
 		/// <param name="propkey">A pointer to a PROPERTYKEY structure containing the property's identifiers.</param>
-		/// <param name="ppszCanonicalName">The address of a pointer to a buffer that receives the property name as a null-terminated Unicode string. It is the responsibility of the caller to release this string through a call to CoTaskMemFree once it is no longer needed.</param>
+		/// <param name="ppszCanonicalName">The address of a pointer to a buffer that receives the property name as a null-terminated Unicode string.</param>
 		[DllImport(Lib.PropSys, ExactSpelling = true)]
 		[PInvokeData("Propsys.h", MSDNShortId = "bb776502")]
-		public static extern HRESULT PSGetNameFromPropertyKey(ref PROPERTYKEY propkey, out SafeCoTaskMemString ppszCanonicalName);
+		public static extern HRESULT PSGetNameFromPropertyKey(ref PROPERTYKEY propkey, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszCanonicalName);
 
 		[ComImport, Guid("1F9FC1D0-C39B-4B26-817F-011967D3440E"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		[PInvokeData("Propsys.h", MSDNShortId = "bb761511")]
@@ -414,19 +426,16 @@ namespace Vanara.PInvoke
 			PROPERTYKEY GetPropertyKey();
 			/// <summary>Gets the case-sensitive name by which a property is known to the system, regardless of its localized name.</summary>
 			/// <returns>When this method returns, contains the address of a pointer to the property's canonical name as a null-terminated Unicode string.</returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			string GetCanonicalName();
+			SafeCoTaskMemString GetCanonicalName();
 			/// <summary>Gets the variant type of the property.</summary>
 			/// <returns>When this method returns, contains a pointer to a VARTYPE that indicates the property type. If the property is multi-valued, the value pointed to is a VT_VECTOR mask (VT_VECTOR ORed to the VARTYPE.</returns>
 			VARTYPE GetPropertyType();
 			/// <summary>Gets the display name of the property as it is shown in any UI.</summary>
 			/// <returns>Contains the address of a pointer to the property's name as a null-terminated Unicode string.</returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			string GetDisplayName();
+			SafeCoTaskMemString GetDisplayName();
 			/// <summary>Gets the text used in edit controls hosted in various dialog boxes.</summary>
 			/// <returns>When this method returns, contains the address of a pointer to a null-terminated Unicode buffer that holds the invitation text.</returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			string GetEditInvitation();
+			SafeCoTaskMemString GetEditInvitation();
 			/// <summary>Gets a set of flags that describe the uses and capabilities of the property.</summary>
 			/// <param name="mask">A mask that specifies which type flags to retrieve. A combination of values found in the PROPDESC_TYPE_FLAGS constants. To retrieve all type flags, pass PDTF_MASK_ALL</param>
 			/// <returns>When this method returns, contains a pointer to a value that consists of bitwise PROPDESC_TYPE_FLAGS values.</returns>
@@ -461,8 +470,7 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the localized display string that describes the current sort order.</summary>
 			/// <param name="fDescending">TRUE if ppszDescription should reference the string "Z on top"; FALSE to reference the string "A on top".</param>
 			/// <returns>When this method returns, contains the address of a pointer to the sort description as a null-terminated Unicode string.</returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			string GetSortDescriptionLabel([In, MarshalAs(UnmanagedType.Bool)] bool fDescending);
+			SafeCoTaskMemString GetSortDescriptionLabel([In, MarshalAs(UnmanagedType.Bool)] bool fDescending);
 			/// <summary>Gets a value that describes how the property values are displayed when multiple items are selected in the UI.</summary>
 			/// <returns>When this method returns, contains a pointer to a value that indicates the aggregation type.</returns>
 			PROPDESC_AGGREGATION_TYPE GetAggregationType();

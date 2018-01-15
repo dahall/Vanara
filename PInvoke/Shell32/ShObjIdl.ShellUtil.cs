@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 
@@ -46,8 +45,8 @@ namespace Vanara.PInvoke
 					return null;
 
 				var pathBuilder = new StringBuilder(260);
-				try { SHGetFolderPathEx(knownFolder, 0, null, pathBuilder, (uint)pathBuilder.Capacity); }
-				catch { return null; }
+				if (SHGetFolderPathEx(knownFolder, 0, null, pathBuilder, (uint)pathBuilder.Capacity).Failed)
+				    return null;
 				return pathBuilder.ToString();
 			}
 
@@ -66,7 +65,7 @@ namespace Vanara.PInvoke
 				if (string.IsNullOrEmpty(path))
 					return null;
 
-				SHCreateItemFromParsingName(path, null, Marshal.GenerateGuidForType(typeof(IShellItem)), out object unk);
+				SHCreateItemFromParsingName(path, null, typeof(IShellItem).GUID, out object unk).ThrowIfFailed();
 				return (IShellItem)unk;
 			}
 		}

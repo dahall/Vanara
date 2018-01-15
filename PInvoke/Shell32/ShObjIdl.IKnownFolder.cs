@@ -743,8 +743,7 @@ namespace Vanara.PInvoke
 			/// When this method returns, contains the address of a pointer to a null-terminated buffer that contains the path. The calling application is
 			/// responsible for calling CoTaskMemFree to free this resource when it is no longer needed.
 			/// </returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			string GetPath([In] KNOWN_FOLDER_FLAG dwFlags);
+			SafeCoTaskMemString GetPath([In] KNOWN_FOLDER_FLAG dwFlags);
 
 			/// <summary>Assigns a new path to a known folder.</summary>
 			/// <param name="dwFlags">Either zero or the following value: KF_FLAG_DONT_UNEXPAND</param>
@@ -886,8 +885,7 @@ namespace Vanara.PInvoke
 			/// When this method returns, contains the address of a pointer to a null-terminated Unicode string that contains an error message if one was
 			/// generated. This value can be NULL.
 			/// </returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			string Redirect([In, MarshalAs(UnmanagedType.LPStruct)] Guid rfid, [In] IntPtr hwnd, [In] KF_REDIRECT_FLAGS flags,
+			SafeCoTaskMemString Redirect([In, MarshalAs(UnmanagedType.LPStruct)] Guid rfid, [In] IntPtr hwnd, [In] KF_REDIRECT_FLAGS flags,
 				[In, MarshalAs(UnmanagedType.LPWStr)] string pszTargetPath, [In] uint cFolders, [In, MarshalAs(UnmanagedType.LPStruct)] Guid pExclusion);
 		}
 

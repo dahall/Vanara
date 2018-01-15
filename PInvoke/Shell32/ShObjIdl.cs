@@ -633,8 +633,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Retrieves a file type handler's explicit Application User Model ID (AppUserModelID), if one has been declared.</summary>
 			/// <returns></returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			string GetAppID();
+			SafeCoTaskMemString GetAppID();
 		}
 
 		/// <summary>Exposes methods that provide access to the ProgID associated with an object.</summary>
@@ -649,8 +648,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Retrieves the ProgID associated with an object.</summary>
 			/// <returns>A pointer to a string that, when this method returns successfully, contains the ProgID.</returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			string GetProgID();
+			SafeCoTaskMemString GetProgID();
 		}
 
 		/// <summary>
@@ -665,13 +663,11 @@ namespace Vanara.PInvoke
 			/// <param name="dwFlags">
 			/// Flags that direct the handling of the item from which you're retrieving the info tip text. This value is commonly zero (QITIPF_DEFAULT).
 			/// </param>
-			/// <returns>
-			/// The address of a Unicode string pointer that, when this method returns successfully, receives the tip string pointer. Applications that implement
+			/// <param name="ppwszTip">The address of a Unicode string pointer that, when this method returns successfully, receives the tip string pointer. Applications that implement
 			/// this method must allocate memory for ppwszTip by calling CoTaskMemAlloc. Calling applications must call CoTaskMemFree to free the memory when it
 			/// is no longer needed.
-			/// </returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			string GetInfoTip(QITIP dwFlags);
+			/// </param>>
+			void GetInfoTip(QITIP dwFlags, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppwszTip);
 
 			/// <summary>Gets the information flags for an item. This method is not currently used.</summary>
 			/// <returns>A pointer to a value that receives the flags for the item. If no flags are to be returned, this value should be set to zero.</returns>
@@ -920,8 +916,7 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the display name of the IShellItem object.</summary>
 			/// <param name="sigdnName">One of the SIGDN values that indicates how the name should look.</param>
 			/// <returns>A value that, when this function returns successfully, receives the address of a pointer to the retrieved display name.</returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			string GetDisplayName(SIGDN sigdnName);
+			SafeCoTaskMemString GetDisplayName(SIGDN sigdnName);
 
 			/// <summary>Gets a requested set of attributes of the IShellItem object.</summary>
 			/// <param name="sfgaoMask">
@@ -972,8 +967,7 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the display name of the IShellItem object.</summary>
 			/// <param name="sigdnName">One of the SIGDN values that indicates how the name should look.</param>
 			/// <returns>A value that, when this function returns successfully, receives the address of a pointer to the retrieved display name.</returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			new string GetDisplayName(SIGDN sigdnName);
+			new SafeCoTaskMemString GetDisplayName(SIGDN sigdnName);
 
 			/// <summary>Gets a requested set of attributes of the IShellItem object.</summary>
 			/// <param name="sfgaoMask">
@@ -1068,8 +1062,7 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the string value of a specified property key.</summary>
 			/// <param name="key">A reference to a PROPERTYKEY structure.</param>
 			/// <returns>A pointer to a Unicode string value.</returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			string GetString([In] ref PROPERTYKEY key);
+			SafeCoTaskMemString GetString([In] ref PROPERTYKEY key);
 
 			/// <summary>Gets the UInt32 value of specified property key.</summary>
 			/// <param name="key">A reference to a PROPERTYKEY structure.</param>
@@ -1283,9 +1276,9 @@ namespace Vanara.PInvoke
 		/// terminating null character.
 		/// </param>
 		/// <returns>Returns a pointer to an ITEMIDLIST structure that corresponds to the path.</returns>
-		[DllImport(Lib.Shell32, EntryPoint = "ILCreateFromPath", SetLastError = false)]
+		[DllImport(Lib.Shell32, EntryPoint = "ILCreateFromPathW", SetLastError = true)]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "dd378420")]
-		public static extern IntPtr IntILCreateFromPath(string pszPath);
+		public static extern IntPtr IntILCreateFromPath([MarshalAs(UnmanagedType.LPWStr)] string pszPath);
 
 		/// <summary>
 		/// Specifies a unique application-defined Application User Model ID (AppUserModelID) that identifies the current process to the taskbar. This identifier

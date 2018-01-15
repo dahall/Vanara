@@ -136,8 +136,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets the default icon for the library.</summary>
 			/// <returns>A null-terminated Unicode string that describes the location of the default icon. The string is returned as ModuleFileName,ResourceIndex or ModuleFileName,-ResourceID.</returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler), MarshalCookie = "Unicode")]
-			string GetIcon();
+			SafeCoTaskMemString GetIcon();
 
 			/// <summary>Sets the default icon for the library.</summary>
 			/// <param name="icon">A null-terminated Unicode string that describes the location of the default icon. The string must be formatted as ModuleFileName,ResourceIndex or ModuleFileName,-ResourceID.</param>

@@ -560,8 +560,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a null-terminated string that contains the retrieved trigger description. Note that this string must be release by a call to
 			/// CoTaskMemFree after the string is no longer needed.
 			/// </returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			string GetTriggerString([In] ushort iTrigger);
+			SafeCoTaskMemString GetTriggerString([In] ushort iTrigger);
 
 			/// <summary>Retrieves the work item run times for a specified time period.</summary>
 			/// <param name="pstBegin">A pointer to a SYSTEMTIME structure that contains the starting time of the time period to check. This value is inclusive.</param>
@@ -635,8 +634,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Retrieves the comment for the work item.</summary>
 			/// <returns>A pointer to a null-terminated string that contains the retrieved comment for the current work item.</returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			string GetComment();
+			SafeCoTaskMemString GetComment();
 
 			/// <summary>Sets the name of the work item's creator.</summary>
 			/// <param name="Creator">A null-terminated string that contains the name of the work item's creator.</param>
@@ -647,8 +645,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a null-terminated string that contains the name of the creator of the current work item. The application that invokes GetCreator is
 			/// responsible for freeing this string using the CoTaskMemFree function.
 			/// </returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			string GetCreator();
+			SafeCoTaskMemString GetCreator();
 
 			/// <summary>This method stores application-defined data associated with the work item.</summary>
 			/// <param name="cBytes">The number of bytes in the data buffer. The caller allocates and frees this memory.</param>
@@ -718,8 +715,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a null-terminated string that contains the account name for the current work item. The empty string, L"", is returned for the local
 			/// system account. After processing the account name, be sure to call CoTaskMemFree to free the string.
 			/// </returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			string GetAccountInformation();
+			SafeCoTaskMemString GetAccountInformation();
 
 			/// <summary>This method assigns a specific application to the current task.</summary>
 			/// <param name="pwszApplicationName">
@@ -733,8 +729,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a null-terminated string that contains the name of the application the current task is associated with. After processing this name,
 			/// call CoTaskMemFree to free resources.
 			/// </returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			string GetApplicationName();
+			SafeCoTaskMemString GetApplicationName();
 
 			/// <summary>This method sets the command-line parameters for the task.</summary>
 			/// <param name="pwszParameters">
@@ -748,8 +743,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a null-terminated string that contains the command-line parameters for the task. The method that invokes GetParameters is
 			/// responsible for freeing this string using the CoTaskMemFree function.
 			/// </returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			string GetParameters();
+			SafeCoTaskMemString GetParameters();
 
 			/// <summary>This method sets the working directory for the task.</summary>
 			/// <param name="pwszWorkingDirectory">
@@ -767,8 +761,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a null-terminated string that contains the task's working directory. The application that invokes GetWorkingDirectory is responsible
 			/// for freeing this string using the CoTaskMemFree function.
 			/// </returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			string GetWorkingDirectory();
+			SafeCoTaskMemString GetWorkingDirectory();
 
 			/// <summary>This method sets the priority for the task.</summary>
 			/// <param name="dwPriority">
@@ -842,8 +835,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a null-terminated string that contains the name of the target computer for the current task. This string is allocated by the
 			/// application that invokes GetTargetComputer, and must also be freed using CoTaskMemFree.
 			/// </returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			string GetTargetComputer();
+			SafeCoTaskMemString GetTargetComputer();
 
 			/// <summary>The Enum method retrieves a pointer to an OLE enumerator object that enumerates the tasks in the current task folder.</summary>
 			/// <returns>A pointer to a pointer to an IEnumWorkItems interface. This interface contains the enumeration context of the current task(s).</returns>
@@ -923,8 +915,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a pointer to a null-terminated string that describes the current task trigger. The method that invokes GetTriggerString is
 			/// responsible for freeing this string using the CoTaskMemFree function.
 			/// </returns>
-			[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))]
-			string GetTriggerString();
+			SafeCoTaskMemString GetTriggerString();
 
 			/// <summary>The SetTrigger method sets the trigger criteria for a task trigger.</summary>
 			/// <param name="Trigger">A pointer to a TASK_TRIGGER structure that contains the values that define the new task trigger.</param>
