@@ -141,7 +141,7 @@ namespace Vanara.Collections.Tests
 			SHCreateItemFromParsingName(PInvoke.Tests.AdvApi32Tests.fn, null, typeof(IShellItem2).GUID, out object ppv);
 			Assert.That(ppv, Is.Not.Null);
 			var si2 = (IShellItem2) ppv;
-			var pk = KnownShellItemPropertyKeys.PropList.FullDetails;
+			var pk = PROPERTYKEY.System.PropList.FullDetails;
 			var pdl = si2.GetPropertyDescriptionList(ref pk, typeof(IPropertyDescriptionList).GUID);
 			var pdRiid = typeof(IPropertyDescription).GUID;
 

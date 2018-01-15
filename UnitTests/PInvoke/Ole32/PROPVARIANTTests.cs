@@ -221,7 +221,7 @@ namespace Vanara.PInvoke.Tests
 					if (ps == null) continue;
 					using (var pv = new PROPVARIANT())
 					{
-						ps.GetValue(ref KnownShellItemPropertyKeys.Thumbnail, pv);
+						ps.GetValue(ref PROPERTYKEY.System.Thumbnail, pv);
 						if (pv.IsNullOrEmpty) continue;
 						if (pv.vt == VARTYPE.VT_CF)
 							TestContext.WriteLine(f);

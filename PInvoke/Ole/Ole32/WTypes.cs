@@ -207,55 +207,5 @@ namespace Vanara.PInvoke
 			/// <summary>A void pointer for local use.</summary>
 			VT_BYREF = 0x4000,
 		}
-
-		/// <summary>Specifies the FMTID/PID identifier that programmatically identifies a property. Replaces SHCOLUMNID.</summary>
-		[PInvokeData("Wtypes.h", MSDNShortId = "bb773381")]
-		[StructLayout(LayoutKind.Sequential, Pack = 4)]
-		public struct PROPERTYKEY : IComparable<PROPERTYKEY>
-		{
-			public Guid fmtid;
-			public uint pid;
-
-			public PROPERTYKEY(Guid key, uint id)
-			{
-				fmtid = key;
-				pid = id;
-			}
-
-			public Guid Key => fmtid;
-
-			public uint Id => pid;
-
-			public override string ToString() => GetCononicalName() ?? KnownShellItemPropertyKeys.ReverseLookup(this) ?? $"{Key:B} {Id}";
-
-			public override bool Equals(object obj) => obj is PROPERTYKEY propertykey && Equals(Key, propertykey.Key) && Id == propertykey.Id;
-
-			public override int GetHashCode() => new { Key, Id }.GetHashCode();
-
-			int IComparable<PROPERTYKEY>.CompareTo(PROPERTYKEY other)
-			{
-				var ret = Key.GetHashCode() - other.Key.GetHashCode();
-				if (ret == 0)
-					ret = (int)(Id - other.Id);
-				return ret;
-			}
-
-			public string GetCononicalName()
-			{
-				SafeCoTaskMemString str = null;
-				try
-				{
-					var pk = this;
-					PropSys.PSGetNameFromPropertyKey(ref pk, out str);
-					return str;
-				}
-				catch { }
-				finally
-				{
-					str?.Dispose();
-				}
-				return null;
-			}
-		}
 	}
 }

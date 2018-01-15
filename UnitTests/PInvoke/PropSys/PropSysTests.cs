@@ -172,11 +172,10 @@ namespace Vanara.PInvoke.Tests
 		public void PSGetNameFromPropertyKeyTest()
 		{
 			var pkey = new PROPERTYKEY {fmtid = new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), pid = 5};
-			var hr = PSGetNameFromPropertyKey(ref pkey, out SafeCoTaskMemString str);
+			var hr = PSGetNameFromPropertyKey(ref pkey, out var str);
 			Assert.That(hr.Succeeded);
-			Assert.That((string)str, Is.Not.Null);
-			TestContext.WriteLine(str.ToString());
-			str.Dispose();
+			Assert.That(str, Is.Not.Null);
+			TestContext.WriteLine(str);
 		}
 
 		[Test()]
@@ -405,7 +404,7 @@ namespace Vanara.PInvoke.Tests
 		public void PropVariantToStringAllocTest()
 		{
 			var pv = new PROPVARIANT("Test");
-			var hr = PropVariantToStringAlloc(pv, out SafeCoTaskMemString s);
+			var hr = PropVariantToStringAlloc(pv, out var s);
 			Assert.That(hr.Succeeded);
 			Assert.That(pv.Value, Is.EqualTo((string)s));
 			pv = new PROPVARIANT(1);
