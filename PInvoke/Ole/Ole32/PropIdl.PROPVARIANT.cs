@@ -1055,7 +1055,9 @@ namespace Vanara.PInvoke
 			public override string ToString()
 			{
 				string s = null;
-				if (PropVariantToStringAlloc(this, out SafeCoTaskMemString str).Succeeded)
+				if (IsVector && Value is IEnumerable ie)
+					s = string.Join(",", ie.Cast<object>().Select(o => o.ToString()).ToArray());
+				else if (PropVariantToStringAlloc(this, out var str).Succeeded)
 					s = str;
 				return $"{vt}={s ?? "null"}";
 			}
