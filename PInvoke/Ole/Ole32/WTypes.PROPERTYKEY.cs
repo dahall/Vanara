@@ -4542,43 +4542,6 @@ namespace Vanara.PInvoke
 						=> new PROPERTYKEY(new Guid("{6444048F-4C8B-11D1-8B70-080036B11A03}"), 4);
 				}
 
-				/// <summary>JA Properties</summary>
-				public static class JA
-				{
-					/// <summary>
-					///     <para>Name:     System.Contact.JA.CompanyNamePhonetic -- PKEY_Contact_JA_CompanyNamePhonetic</para>
-					///     <para>
-					///     Description:
-					///     </para>
-					///     <para>Type:     String -- VT_LPWSTR  (For variants: VT_BSTR)</para>
-					///     <para>FormatID: {897B3694-FE9E-43E6-8066-260F590C0100}, 2</para>
-					/// </summary>
-					public static PROPERTYKEY CompanyNamePhonetic
-						=> new PROPERTYKEY(new Guid("{897B3694-FE9E-43E6-8066-260F590C0100}"), 2);
-
-					/// <summary>
-					///     <para>Name:     System.Contact.JA.FirstNamePhonetic -- PKEY_Contact_JA_FirstNamePhonetic</para>
-					///     <para>
-					///     Description:
-					///     </para>
-					///     <para>Type:     String -- VT_LPWSTR  (For variants: VT_BSTR)</para>
-					///     <para>FormatID: {897B3694-FE9E-43E6-8066-260F590C0100}, 3</para>
-					/// </summary>
-					public static PROPERTYKEY FirstNamePhonetic
-						=> new PROPERTYKEY(new Guid("{897B3694-FE9E-43E6-8066-260F590C0100}"), 3);
-
-					/// <summary>
-					///     <para>Name:     System.Contact.JA.LastNamePhonetic -- PKEY_Contact_JA_LastNamePhonetic</para>
-					///     <para>
-					///     Description:
-					///     </para>
-					///     <para>Type:     String -- VT_LPWSTR  (For variants: VT_BSTR)</para>
-					///     <para>FormatID: {897B3694-FE9E-43E6-8066-260F590C0100}, 4</para>
-					/// </summary>
-					public static PROPERTYKEY LastNamePhonetic
-						=> new PROPERTYKEY(new Guid("{897B3694-FE9E-43E6-8066-260F590C0100}"), 4);
-				}
-
 				/// <summary>Journal Properties</summary>
 				public static class Journal
 				{
@@ -5601,76 +5564,6 @@ namespace Vanara.PInvoke
 					/// </summary>
 					public static PROPERTYKEY ColorText
 						=> new PROPERTYKEY(new Guid("{46B4E8DE-CDB2-440D-885C-1658EB65B914}"), 100);
-				}
-
-				/// <summary>Notifications Properties</summary>
-				public static class Notifications
-				{
-					/// <summary>
-					///     <para>Name:     System.Devices.Notifications.LowBattery -- PKEY_Devices_Notification_LowBattery</para>
-					///     <para>
-					///     Description: Device Low Battery Notification.
-					///     </para>
-					///     <para>Type:     Byte -- VT_UI1</para>
-					///     <para>FormatID: {C4C07F2B-8524-4E66-AE3A-A6235F103BEB}, 2</para>
-					/// </summary>
-					public static PROPERTYKEY LowBattery
-						=> new PROPERTYKEY(new Guid("{C4C07F2B-8524-4E66-AE3A-A6235F103BEB}"), 2);
-
-					/// <summary>
-					///     <para>Name:     System.Devices.Notifications.MissedCall -- PKEY_Devices_Notification_MissedCall</para>
-					///     <para>
-					///     Description: Device Missed Call Notification.
-					///     </para>
-					///     <para>Type:     Byte -- VT_UI1</para>
-					///     <para>FormatID: {6614EF48-4EFE-4424-9EDA-C79F404EDF3E}, 2</para>
-					/// </summary>
-					public static PROPERTYKEY MissedCall
-						=> new PROPERTYKEY(new Guid("{6614EF48-4EFE-4424-9EDA-C79F404EDF3E}"), 2);
-
-					/// <summary>
-					///     <para>Name:     System.Devices.Notifications.NewMessage -- PKEY_Devices_Notification_NewMessage</para>
-					///     <para>
-					///     Description: Device New Message Notification.
-					///     </para>
-					///     <para>Type:     Byte -- VT_UI1</para>
-					///     <para>FormatID: {2BE9260A-2012-4742-A555-F41B638B7DCB}, 2</para>
-					/// </summary>
-					public static PROPERTYKEY NewMessage
-						=> new PROPERTYKEY(new Guid("{2BE9260A-2012-4742-A555-F41B638B7DCB}"), 2);
-
-					/// <summary>
-					///     <para>Name:     System.Devices.Notifications.NewVoicemail -- PKEY_Devices_Notification_NewVoicemail</para>
-					///     <para>
-					///     Description: Device Voicemail Notification.
-					///     </para>
-					///     <para>Type:     Byte -- VT_UI1</para>
-					///     <para>FormatID: {59569556-0A08-4212-95B9-FAE2AD6413DB}, 2</para>
-					/// </summary>
-					public static PROPERTYKEY NewVoicemail
-						=> new PROPERTYKEY(new Guid("{59569556-0A08-4212-95B9-FAE2AD6413DB}"), 2);
-
-					/// <summary>
-					///     <para>Name:     System.Devices.Notifications.StorageFull -- PKEY_Devices_Notification_StorageFull</para>
-					///     <para>
-					///     Description: Device Storage Full Notification.
-					///     </para>
-					///     <para>Type:     UInt64 -- VT_UI8</para>
-					///     <para>FormatID: {A0E00EE1-F0C7-4D41-B8E7-26A7BD8D38B0}, 2</para>
-					/// </summary>
-					public static PROPERTYKEY StorageFull
-						=> new PROPERTYKEY(new Guid("{A0E00EE1-F0C7-4D41-B8E7-26A7BD8D38B0}"), 2);
-
-					/// <summary>
-					///     <para>Name:     System.Devices.Notifications.StorageFullLinkText -- PKEY_Devices_Notification_StorageFullLinkText</para>
-					///     <para>
-					///     Description: Link Text for the Device Storage Full Notification.
-					///     </para>
-					///     <para>Type:     UInt64 -- VT_UI8</para>
-					///     <para>FormatID: {A0E00EE1-F0C7-4D41-B8E7-26A7BD8D38B0}, 3</para>
-					/// </summary>
-					public static PROPERTYKEY StorageFullLinkText
-						=> new PROPERTYKEY(new Guid("{A0E00EE1-F0C7-4D41-B8E7-26A7BD8D38B0}"), 3);
 				}
 
 				/// <summary>Photo Properties</summary>
