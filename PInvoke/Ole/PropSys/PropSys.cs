@@ -246,6 +246,25 @@ namespace Vanara.PInvoke
 			PDDT_ENUMERATED	= 4
 		}
 
+		/// <summary>Describes the filtered list of property descriptions that is returned.</summary>
+		public enum PROPDESC_ENUMFILTER
+		{
+			/// <summary>The list contains all property descriptions in the system.</summary>
+			PDEF_ALL = 0,        // All properties in system
+			/// <summary>The list contains system property descriptions only. It excludes third-party property descriptions that are registered on the computer.</summary>
+			PDEF_SYSTEM = 1,        // Only system properties
+			/// <summary>The list contains only third-party property descriptions that are registered on the computer.</summary>
+			PDEF_NONSYSTEM = 2,        // Only non-system properties
+			/// <summary>The list contains only viewable properties, where &lt;typeInfo isViewable="true"&gt;.</summary>
+			PDEF_VIEWABLE = 3,        // Only viewable properties
+			/// <summary>Deprecated in Windows 7 and later. The list contains only queryable properties, where &lt;typeInfo isViewable="true" isQueryable="true"&gt;.</summary>
+			PDEF_QUERYABLE = 4,        // Deprecated
+			/// <summary>Deprecated in Windows 7 and later. The list contains only properties to be included in full-text queries.</summary>
+			PDEF_INFULLTEXTQUERY = 5,        // Deprecated
+			/// <summary>The list contains only properties that are columns.</summary>
+			PDEF_COLUMN = 6,        // Only properties that are columns
+		}
+
 		/// <summary>A flag value that indicates the grouping type.</summary>
 		[PInvokeData("Propsys.h", MSDNShortId = "bb761542")]
 		public enum PROPDESC_GROUPING_RANGE
@@ -394,7 +413,7 @@ namespace Vanara.PInvoke
 		/// When this function returns, contains the interface pointer requested in riid. This is typically IPropertyDescription, IPropertyDescriptionAliasInfo,
 		/// or IPropertyDescriptionSearchInfo.
 		/// </param>
-		/// <returns></returns>
+		/// <returns>The result of the operation. S_OK indicates success.</returns>
 		[DllImport(Lib.PropSys, ExactSpelling = true)]
 		[PInvokeData("Propsys.h", MSDNShortId = "bb776503")]
 		public static extern HRESULT PSGetPropertyDescription(ref PROPERTYKEY propkey, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
@@ -404,9 +423,18 @@ namespace Vanara.PInvoke
 		/// </summary>
 		/// <param name="propkey">A pointer to a PROPERTYKEY structure containing the property's identifiers.</param>
 		/// <param name="ppszCanonicalName">The address of a pointer to a buffer that receives the property name as a null-terminated Unicode string.</param>
+		/// <returns>The result of the operation. S_OK indicates success.</returns>
 		[DllImport(Lib.PropSys, ExactSpelling = true)]
 		[PInvokeData("Propsys.h", MSDNShortId = "bb776502")]
 		public static extern HRESULT PSGetNameFromPropertyKey(ref PROPERTYKEY propkey, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszCanonicalName);
+
+		/// <summary>Gets the property key for a canonical property name.</summary>
+		/// <param name="pszName">Pointer to a property name as a null-terminated, Unicode string.</param>
+		/// <param name="ppropkey">When this function returns, contains the requested property key.</param>
+		/// <returns>The result of the operation. S_OK indicates success.</returns>
+		[DllImport(Lib.PropSys, ExactSpelling = true)]
+		[PInvokeData("Propsys.h", MSDNShortId = "bb762081")]
+		public static extern HRESULT PSGetPropertyKeyFromName([MarshalAs(UnmanagedType.LPWStr)] string pszName, out PROPERTYKEY ppropkey);
 
 		[ComImport, Guid("1F9FC1D0-C39B-4B26-817F-011967D3440E"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		[PInvokeData("Propsys.h", MSDNShortId = "bb761511")]
@@ -578,6 +606,34 @@ namespace Vanara.PInvoke
 			void SetValue([In] ref PROPERTYKEY pkey, [In] PROPVARIANT pv);
 
 			void Commit();
+		}
+
+		[SuppressUnmanagedCodeSecurity]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("ca724e8a-c3e6-442b-88a4-6fb0db8035a3")]
+		[PInvokeData("PropSys.h")]
+		public interface IPropertySystem
+		{
+			[return: MarshalAs(UnmanagedType.Interface)]
+			IPropertyDescription GetPropertyDescription(ref PROPERTYKEY propkey, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+
+			[return: MarshalAs(UnmanagedType.Interface)]
+			IPropertyDescription GetPropertyDescriptionByName([In, MarshalAs(UnmanagedType.LPWStr)] string pszCanonicalName, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+
+			[return: MarshalAs(UnmanagedType.Interface)]
+			IPropertyDescriptionList GetPropertyDescriptionListFromString([In, MarshalAs(UnmanagedType.LPWStr)] string pszPropList, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+
+			[return: MarshalAs(UnmanagedType.Interface)]
+			IPropertyDescriptionList EnumeratePropertyDescriptions(PROPDESC_ENUMFILTER filterOn, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+
+			void FormatForDisplay(ref PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, System.Text.StringBuilder pszText, uint cchText);
+
+			SafeCoTaskMemString FormatForDisplayAlloc(ref PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff);
+
+			void RegisterPropertySchema([In, MarshalAs(UnmanagedType.LPWStr)] string pszPath);
+
+			void UnregisterPropertySchema([In, MarshalAs(UnmanagedType.LPWStr)] string pszPath);
+
+			void RefreshPropertySchema();
 		}
 	}
 }
