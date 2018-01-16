@@ -491,13 +491,77 @@ namespace Vanara.PInvoke
 			/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
 			/// <param name="pdfFlags">One or more of the PROPDESC_FORMAT_FLAGS flags, which are either bitwise or multiple values, that indicate the property string format.</param>
 			/// <param name="pszText">When this method returns, contains the formatted value as a null-terminated, Unicode string. The calling application must allocate memory for the buffer, and use CoTaskMemFree to release the string specified by pszText when it is no longer needed.</param>
-			/// <returns>The length of the buffer at pszText in WCHARS, including the terminating NULL. The maximum size is 0x8000 (32K).</returns>
-			uint FormatForDisplay([In] ref PROPERTYKEY key, [In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags, [Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pszText);
+			/// <param name="cchText">The length of the buffer at pszText in WCHARS, including the terminating NULL. The maximum size is 0x8000 (32K).</param>
+			void FormatForDisplay([In] ref PROPERTYKEY key, [In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags, System.Text.StringBuilder pszText, uint cchText);
 			/// <summary>Gets a value that indicates whether a property is canonical according to the definition of the property description.</summary>
 			/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
 			/// <returns>Returns one of the following values: S_OK = The value is canonical; S_FALSE = The value is not canonical.</returns>
 			[PreserveSig]
 			HRESULT IsValueCanonical([In] PROPVARIANT propvar);
+		}
+
+		[ComImport, Guid("11E1FBF9-2D56-4A6B-8DB3-7CD193A471F2"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		[PInvokeData("Propsys.h")]
+		public interface IPropertyEnumType
+		{
+			PROPENUMTYPE GetEnumType();
+
+			PROPVARIANT GetValue();
+
+			PROPVARIANT GetRangeMinValue();
+
+			PROPVARIANT GetRangeSetValue();
+
+			SafeCoTaskMemString GetDisplayText();
+		}
+
+		/// <summary>Property Enumeration Types</summary>
+		public enum PROPENUMTYPE
+		{
+			/// <summary>Use DisplayText and either RangeMinValue or RangeSetValue.</summary>
+			PET_DISCRETEVALUE = 0,
+
+			/// <summary>Use DisplayText and either RangeMinValue or RangeSetValue</summary>
+			PET_RANGEDVALUE = 1,
+
+			/// <summary>Use DisplayText</summary>
+			PET_DEFAULTVALUE = 2,
+
+			/// <summary>Use Value or RangeMinValue</summary>
+			PET_ENDRANGE = 3
+		}
+
+		[ComImport, Guid("9B6E051C-5DDD-4321-9070-FE2ACB55E794"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		[PInvokeData("Propsys.h")]
+		public interface IPropertyEnumType2 : IPropertyEnumType
+		{
+			new PROPENUMTYPE GetEnumType();
+
+			new PROPVARIANT GetValue();
+
+			new PROPVARIANT GetRangeMinValue();
+
+			new PROPVARIANT GetRangeSetValue();
+
+			new SafeCoTaskMemString GetDisplayText();
+
+			SafeCoTaskMemString GetImageReference();
+		}
+
+
+		[ComImport, Guid("A99400F4-3D84-4557-94BA-1242FB2CC9A6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		[PInvokeData("Propsys.h")]
+		public interface IPropertyEnumTypeList
+		{
+			uint GetCount();
+
+			[return: MarshalAs(UnmanagedType.Interface)]
+			IPropertyEnumType GetAt([In] uint itype, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+
+			[return: MarshalAs(UnmanagedType.Interface)]
+			object GetConditionAt([In] uint index, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+
+			uint FindMatchingIndex([In] PROPVARIANT propvarCmp);
 		}
 
 		[SuppressUnmanagedCodeSecurity]
