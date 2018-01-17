@@ -861,7 +861,7 @@ namespace Vanara.PInvoke
 			/// <param name="rgfReserved">Reserved.</param>
 			/// <returns>When this method returns successfully, contains the interface pointer requested in riid.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			object GetUIObjectOf(IntPtr hwndOwner, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, IntPtr rgfReserved);
+			object GetUIObjectOf(IntPtr hwndOwner, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, IntPtr rgfReserved = default(IntPtr));
 
 			/// <summary>Retrieves the display name for the specified file object or subfolder.</summary>
 			/// <param name="pidl">PIDL that uniquely identifies the file object or subfolder relative to the parent folder.</param>
@@ -1193,7 +1193,13 @@ namespace Vanara.PInvoke
 		/// <returns>A pointer to the last SHITEMID structure in pidl.</returns>
 		[DllImport(Lib.Shell32, ExactSpelling = true, SetLastError = false)]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb776440")]
-		public static extern PIDL ILFindLastID(IntPtr pidl);
+		public static extern IntPtr ILFindLastID(IntPtr pidl);
+
+		/// <summary>Frees an ITEMIDLIST structure allocated by the Shell.</summary>
+		/// <param name="pidl">A pointer to the ITEMIDLIST structure to be freed. This parameter can be NULL.</param>
+		[DllImport(Lib.Shell32, ExactSpelling = true, SetLastError = false)]
+		[PInvokeData("Shobjidl.h", MSDNShortId = "bb776441")]
+		public static extern void ILFree(IntPtr pidl);
 
 		/// <summary>Returns the size, in bytes, of an SHITEMID structure.</summary>
 		/// <param name="pidl">A pointer to an SHITEMID structure.</param>
