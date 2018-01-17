@@ -994,6 +994,7 @@ namespace Vanara.PInvoke
 			/// <param name="flags">The GETPROPERTYSTOREFLAGS constants that modify the property store object.</param>
 			/// <param name="riid">A reference to the IID of the object to be retrieved.</param>
 			/// <returns>When this method returns, contains the address of an IPropertyStore interface pointer.</returns>
+			[return: MarshalAs(UnmanagedType.Interface)]
 			IPropertyStore GetPropertyStore(GETPROPERTYSTOREFLAGS flags, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
 
 			/// <summary>
@@ -1016,6 +1017,7 @@ namespace Vanara.PInvoke
 			/// <param name="riid">A reference to the IID of the object to be retrieved.</param>
 			/// <returns>When this method returns, contains the address of the requested IPropertyStore interface pointer.</returns>
 			// TODO: Create ICreateObject for second param
+			[return: MarshalAs(UnmanagedType.Interface)]
 			IPropertyStore GetPropertyStoreWithCreateObject(GETPROPERTYSTOREFLAGS flags, [MarshalAs(UnmanagedType.IUnknown)] object punkCreateObject,
 				[In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
 
@@ -1027,6 +1029,7 @@ namespace Vanara.PInvoke
 			/// <param name="flags">The GETPROPERTYSTOREFLAGS constants that modify the property store object.</param>
 			/// <param name="riid">A reference to the IID of the object to be retrieved.</param>
 			/// <returns></returns>
+			[return: MarshalAs(UnmanagedType.Interface)]
 			IPropertyStore GetPropertyStoreForKeys([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] PROPERTYKEY[] rgKeys, uint cKeys, GETPROPERTYSTOREFLAGS flags, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
 
 			/// <summary>Gets a property description list object given a reference to a property key.</summary>
