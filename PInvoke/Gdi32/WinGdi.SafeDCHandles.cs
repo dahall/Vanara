@@ -80,5 +80,11 @@ namespace Vanara.PInvoke
 				return DeleteObject(handle);
 			}
 		}
+
+		public class SafeObjectHandle : InteropServices.GenericSafeHandle
+		{
+			public SafeObjectHandle() : this(IntPtr.Zero)  { }
+			public SafeObjectHandle(IntPtr handle) : base(handle, DeleteObject) { }
+		}
 	}
 }
