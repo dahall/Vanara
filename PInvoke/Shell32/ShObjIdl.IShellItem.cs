@@ -584,11 +584,13 @@ namespace Vanara.PInvoke
         [ComImport, Guid("bcc18b79-ba16-442f-80c4-8a59c30c463b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
         public interface IShellItemImageFactory
         {
-            /// <summary>Gets an HBITMAP that represents an IShellItem. The default behavior is to load a thumbnail. If there is no thumbnail for the current IShellItem, it retrieves an HBITMAP for the icon of the item. The thumbnail or icon is extracted if it is not currently cached.</summary>
-            /// <param name="size">A structure that specifies the size of the image to be received.</param>
-            /// <param name="flags">One or more of the SIIGBF flags.</param>
-            /// <returns>Pointer to a value that, when this method returns successfully, receives the handle of the retrieved bitmap. It is the responsibility of the caller to free this retrieved resource through DeleteObject when it is no longer needed.</returns>
-            Gdi32.SafeDCObjectHandle GetImage(SIZE size, [In] SIIGBF flags);
+			/// <summary>Gets an HBITMAP that represents an IShellItem. The default behavior is to load a thumbnail. If there is no thumbnail for the current IShellItem, it retrieves an HBITMAP for the icon of the item. The thumbnail or icon is extracted if it is not currently cached.</summary>
+			/// <param name="size">A structure that specifies the size of the image to be received.</param>
+			/// <param name="flags">One or more of the SIIGBF flags.</param>
+			/// <param name="phbm">Pointer to a value that, when this method returns successfully, receives the handle of the retrieved bitmap. It is the responsibility of the caller to free this retrieved resource through DeleteObject when it is no longer needed.</param>
+			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
+			[PreserveSig]
+			HRESULT GetImage([In, MarshalAs(UnmanagedType.Struct)] SIZE size, [In] SIIGBF flags, out Gdi32.SafeObjectHandle phbm);
         }
     }
 }
