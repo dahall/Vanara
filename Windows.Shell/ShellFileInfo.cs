@@ -2,10 +2,17 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Security;
+using System.Text;
 using static Vanara.PInvoke.ComCtl32;
+using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Macros;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.User32_Gdi;
+
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable MemberCanBeProtected.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Vanara.Windows.Shell
 {
@@ -14,38 +21,39 @@ namespace Vanara.Windows.Shell
 	{
 		/// <summary>The file executable type is not able to be determined.</summary>
 		Nonexecutable = 0,
-
 		/// <summary>The file is an MS-DOS .exe, .com, or .bat file.</summary>
 		// ReSharper disable once InconsistentNaming
 		DOS,
-
 		/// <summary>The file is a Microsoft Win32®-based console application.</summary>
 		Win32Console,
-
 		/// <summary>The file is a Windows application.</summary>
 		Windows,
 	}
 
+	/// <summary>The type of icon to be returned from <see cref="ShellFileInfo.GetIcon"/>.</summary>
 	[Flags]
 	public enum ShellIconType
 	{
-		Small = 1,
-		Large = 0,
-		ShellDefinedSize = 4,
-		LinkOverlay = 0x8000,
-		Open = 2,
-		Selected = 0x10000,
+		/// <summary>Retrieve the file's small icon.</summary>
+		Small = SHGFI.SHGFI_SMALLICON,
+		/// <summary>Retrieve the file's large icon.</summary>
+		Large = SHGFI.SHGFI_LARGEICON,
+		/// <summary>Retrieve a Shell-sized icon.</summary>
+		ShellDefinedSize = SHGFI.SHGFI_SHELLICONSIZE,
+		/// <summary>Add the link overlay to the file's icon</summary>
+		LinkOverlay = SHGFI.SHGFI_LINKOVERLAY,
+		/// <summary>Retrieve the file's open icon.</summary>
+		Open = SHGFI.SHGFI_OPENICON,
+		/// <summary>Blend the file's icon with the system highlight color.</summary>
+		Selected = SHGFI.SHGFI_SELECTED
 	}
 
 	/// <summary>Information and icons for any shell file.</summary>
 	public class ShellFileInfo : FileSystemInfo
 	{
-		private string name;
+		private string _name;
 
-		/// <summary>
-		/// Initializes a new instance of the ShellFileInfo class, which acts as a wrapper for a file path within the
-		/// Windows Shell.
-		/// </summary>
+		/// <summary>Initializes a new instance of the ShellFileInfo class, which acts as a wrapper for a file path within the Windows Shell.</summary>
 		/// <param name="fileName">The fully qualified name of the new file, or the relative file name.</param>
 		public ShellFileInfo(string fileName)
 		{
@@ -55,10 +63,23 @@ namespace Vanara.Windows.Shell
 			GetInfo();
 		}
 
+		/// <summary>Initializes a new instance of the <see cref="ShellFileInfo"/> class.</summary>
 		protected ShellFileInfo() { }
 
-		/// <summary>Gets the display name for the file.</summary>
-		public string DisplayName { get; private set; }
+        /// <summary>Initializes a new instance of the ShellFileInfo class, which acts as a wrapper for a file path within the Windows Shell.</summary>
+        /// <param name="pidl">The ID list.</param>
+        public ShellFileInfo(PIDL pidl)
+        {
+            var sb = new StringBuilder(MAX_PATH, MAX_PATH);
+            if (!SHGetPathFromIDList(pidl, sb)) throw new ArgumentException("Invalid identifier list.");
+            OriginalPath = sb.ToString();
+            FullPath = sb.ToString();
+            SetName(Path.GetFileName(sb.ToString()));
+            GetInfo();
+        }
+
+        /// <summary>Gets the display name for the file.</summary>
+        public string DisplayName { get; private set; }
 
 		/// <summary>Gets the executable type of the file.</summary>
 		public ExecutableType ExecutableType { get; private set; }
@@ -70,9 +91,9 @@ namespace Vanara.Windows.Shell
 			get { try { return ((int)Attributes & 0x10) == 0; } catch { return false; } }
 		}
 
-		/// <summary>Gets the name of the file that contains the icon representing this shell item.</summary>
-		/// <value>The icon file path, or <c>null</c> if no icon is defined.</value>
-		public string IconFilePath
+        /// <summary>Gets the icon location for this file.</summary>
+        /// <value>The <see cref="IconLocation"/>.</value>
+        public IconLocation IconLocation
 		{
 			get
 			{
@@ -83,21 +104,9 @@ namespace Vanara.Windows.Shell
 					ret = SHGetFileInfo(FullPath, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_ICONLOCATION | SHGFI.SHGFI_ICON);
 					if (ret != IntPtr.Zero) DestroyIcon(shfi.hIcon);
 				}
-				return ret != IntPtr.Zero ? shfi.szDisplayName : null;
-			}
-		}
-
-		/// <summary>Gets the large icon for the file.</summary>
-		public Icon LargeIcon => GetIcon();
-
-		/// <summary>Gets the size, in bytes, of the current link file.</summary>
-		/// <value>The length in bytes of the file.</value>
-		public long Length => new FileInfo(FullPath).Length;
-
-		/// <summary>
-		/// For files, gets the name of the file. For directories, gets the name of the last directory in the hierarchy if a hierarchy exists. Otherwise, the Name property gets the name of the directory.
-		/// </summary>
-		public override string Name => name;
+                return ret != IntPtr.Zero ? new IconLocation(shfi.szDisplayName, shfi.iIcon) : new IconLocation();
+            }
+        }
 
 		/// <summary>Gets the index of the icon overlay.</summary>
 		/// <value>The index of the icon overlay, or -1 if no overlay is set.</value>
@@ -113,10 +122,25 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
-		/// <summary>Gets the size the file requires on disk taking into account NTFS compression.</summary>
-		// REQUIRES DEPENDENCY ON Vanara.SystemServices
-		//public ulong PhysicalLength => new FileInfo(FullPath).GetPhysicalLength();
+		/// <summary>Gets the large icon for the file.</summary>
+		public Icon LargeIcon => GetIcon();
 
+		/// <summary>Gets the size, in bytes, of the current link file.</summary>
+		/// <value>The length in bytes of the file.</value>
+		public long Length => new FileInfo(FullPath).Length;
+
+		/// <summary>
+		/// For files, gets the name of the file. For directories, gets the name of the last directory in the hierarchy if a hierarchy exists. Otherwise, the
+		/// Name property gets the name of the directory.
+		/// </summary>
+		public override string Name => _name;
+
+		// <summary>Gets the size the file requires on disk taking into account NTFS compression.</summary>
+		// REQUIRES DEPENDENCY ON Vanara.SystemServices
+		// public ulong PhysicalLength =&gt; new FileInfo(FullPath).GetPhysicalLength();
+
+		/// <summary>Gets the shell item attributes.</summary>
+		/// <value>The shell item attributes.</value>
 		public ShellItemAttribute ShellAttributes { get; private set; }
 
 		/// <summary>Gets the small icon for the file.</summary>
@@ -132,7 +156,7 @@ namespace Vanara.Windows.Shell
 				var hImageList = SHGetFileInfo(FullPath, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_SYSICONINDEX);
 				if (hImageList == IntPtr.Zero) return null;
 				var hIcon = ImageList_GetIcon(hImageList, shfi.iIcon, IMAGELISTDRAWFLAGS.ILD_NORMAL);
-				return GetClonedIcon(hIcon);
+				return IconLocation.GetClonedIcon(hIcon);
 			}
 		}
 
@@ -142,9 +166,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Permanently deletes the file.</summary>
 		public override void Delete() { File.Delete(FullPath); }
 
-		/// <summary>
-		/// Gets the icon defined by the set of flags provided.
-		/// </summary>
+		/// <summary>Gets the icon defined by the set of flags provided.</summary>
 		/// <param name="iconType">Flags to specify type of the icon.</param>
 		/// <returns><see cref="Icon"/> if successful; <c>null</c> otherwise.</returns>
 		public Icon GetIcon(ShellIconType iconType = ShellIconType.Large)
@@ -154,12 +176,16 @@ namespace Vanara.Windows.Shell
 			var ret = SHGetFileInfo(FullPath, 0, ref shfi, SHFILEINFO.Size, baseFlags | (SHGFI)iconType);
 			if (ret == IntPtr.Zero)
 				ret = SHGetFileInfo(FullPath, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_ICON | (SHGFI)iconType);
-			return ret == IntPtr.Zero ? null : GetClonedIcon(shfi.hIcon);
+			return ret == IntPtr.Zero ? null : IconLocation.GetClonedIcon(shfi.hIcon);
 		}
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 		public override string ToString() => FullPath;
+
+		/// <summary>Sets the name.</summary>
+		/// <param name="name">The name.</param>
+		protected void SetName(string name) { _name = name; }
 
 		/// <summary>Gets the information.</summary>
 		private void GetInfo()
@@ -194,20 +220,5 @@ namespace Vanara.Windows.Shell
 					ExecutableType = ExecutableType.Windows;
 			}
 		}
-
-		/// <summary>Gets an <see cref="Icon"/> from an icon handle.</summary>
-		/// <param name="hIcon">The icon handle.</param>
-		/// <returns>An <see cref="Icon"/> instance.</returns>
-		protected static Icon GetClonedIcon(IntPtr hIcon)
-		{
-			if (hIcon == IntPtr.Zero) return null;
-			var icon = (Icon)Icon.FromHandle(hIcon).Clone();
-			DestroyIcon(hIcon);
-			return icon;
-		}
-
-		/// <summary>Sets the name.</summary>
-		/// <param name="name">The name.</param>
-		protected void SetName(string name) { this.name = name; }
 	}
 }

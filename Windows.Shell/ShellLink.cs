@@ -13,7 +13,9 @@ using static Vanara.PInvoke.Macros;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Shell32;
-
+// ReSharper disable UnusedParameter.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 // ReSharper disable SuspiciousTypeConversion.Global
 // ReSharper disable InconsistentNaming
 
@@ -76,7 +78,7 @@ namespace Vanara.Windows.Shell
 		/// This only works if the original target path was a file system path or ID list and not an aliased known folder
 		/// ID list.
 		/// </summary>
-		KnonnFolder = 0x400,
+		KnownFolder = 0x400,
 
 		/// <summary>
 		/// Windows 7 and later. Resolve the computer name in UNC targets that point to a local computer. This value is
@@ -92,10 +94,10 @@ namespace Vanara.Windows.Shell
 	}
 
 	/// <summary>Represents a Shell Shortcut (.lnk) file.</summary>
-	public sealed class ShellLink : ShellFileInfo, IDisposable
+	public sealed class ShellLink : ShellItem
 	{
 		internal IShellLinkW link;
-		private PropertyStore values;
+		private ShellItem target;
 
 		/// <summary>Initializes a new instance of the <see cref="ShellLink"/> class, which acts as a wrapper for a .lnk file.</summary>
 		/// <param name="linkFile">The shortcut file (.lnk) to load.</param>
@@ -106,30 +108,17 @@ namespace Vanara.Windows.Shell
 		/// <param name="resolveFlags">The resolve flags.</param>
 		/// <param name="timeOut">The time out.</param>
 		/// <exception cref="System.ArgumentNullException">linkFile</exception>
-		public ShellLink(string linkFile, IWin32Window window = null, LinkResolution resolveFlags = LinkResolution.AnyMatch | LinkResolution.NoUI, ushort timeOut = 1) : this()
+		public ShellLink(string linkFile, LinkResolution resolveFlags = LinkResolution.NoUI, IWin32Window window = null, TimeSpan timeOut = default(TimeSpan)) : base(linkFile)
 		{
-			if (string.IsNullOrEmpty(linkFile)) throw new ArgumentNullException(nameof(linkFile));
-
-			if ((resolveFlags & LinkResolution.NoUI) == LinkResolution.NoUI)
-				resolveFlags |= (LinkResolution)(timeOut << 16);
-
-			Init(linkFile);
-			new FileIOPermission(FileIOPermissionAccess.Read, FullPath).Demand();
-			((IPersistFile)link).Load(linkFile, 0); //STGM_DIRECT)
-			link.Resolve(window?.Handle ?? IntPtr.Zero, (SLR_FLAGS)resolveFlags);
+			LoadAndResolve(linkFile, (SLR_FLAGS)resolveFlags, ShellFolder.IWin2Ptr(window), (ushort)timeOut.TotalMilliseconds);
 		}
 
-		/// <summary>Creates an instance of the Shell Link object.</summary>
-		private ShellLink()
+		internal ShellLink(IShellItem iItem) : base(iItem)
 		{
-			link = (IShellLinkW)new CShellLinkW();
+			LoadAndResolve(iItem.GetDisplayName(SIGDN.SIGDN_FILESYSPATH), SLR_FLAGS.SLR_NO_UI);
 		}
 
-		/// <summary>Call dispose just in case it hasn't happened yet</summary>
-		~ShellLink()
-		{
-			Dispose();
-		}
+		private ShellLink() { }
 
 		/*public string AppUserModelID
 		{
@@ -158,14 +147,20 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets/sets any command line arguments associated with the link</summary>
 		public string Arguments
 		{
-			get => GetStringValue(link.GetArguments, 260); set { link.SetArguments(value); Save(); }
+			get => GetStringValue(link.GetArguments, MAX_PATH);
+			set { link.SetArguments(value); Save(); }
 		}
 
 		/// <summary>Gets/sets the description of the link</summary>
 		public string Description
 		{
-			get => GetStringValue(link.GetDescription, 1024); set { link.SetDescription(value); Save(); }
+			get => GetStringValue(link.GetDescription, ComCtl32.INFOTIPSIZE);
+			set { link.SetDescription(value); Save(); }
 		}
+
+		/// <summary>Gets the full path of the link file.</summary>
+		/// <value>The full path of the link file.</value>
+		public string FullPath => GetPath(SLGP.SLGP_RAWPATH);
 
 		/// <summary>Gets/sets the HotKey to start the shortcut (if any).</summary>
 		public Keys HotKey
@@ -175,86 +170,40 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Gets the index of this icon within the icon path's resources.</summary>
-		public int IconIndex
+		public IconLocation IconLocation
 		{
 			get
 			{
-				int iconIndex;
-				GetIconLocation(out iconIndex);
-				return iconIndex;
+				var iconPath = new StringBuilder(MAX_PATH, MAX_PATH);
+				link.GetIconLocation(iconPath, iconPath.Capacity, out var iconIndex);
+				return new IconLocation(iconPath.ToString(), iconIndex);
 			}
-			set
-			{
-				int iconIndex;
-				link.SetIconLocation(GetIconLocation(out iconIndex), value);
-				Save();
-			}
-		}
-
-		/// <summary>Gets the path to the file containing the icon for this shortcut.</summary>
-		public string IconPath
-		{
-			get
-			{
-				int iconIndex;
-				return GetIconLocation(out iconIndex);
-			}
-			set
-			{
-				int iconIndex;
-				GetIconLocation(out iconIndex);
-				link.SetIconLocation(value, iconIndex);
-				Save();
-			}
+			set { link.SetIconLocation(value.ModuleFileName, value.ResourceId); Save(); }
 		}
 
 		/// <summary>Get or sets the list of item identifiers for a Shell link.</summary>
 		public PIDL IDList
 		{
-			get => link.GetIDList(); set { link.SetIDList(value); Save(); }
+			get => link.GetIDList();
+			set { link.SetIDList(value); Save(); }
 		}
-
-		/// <summary>Gets or sets a value that determines if the current link file is read only.</summary>
-		/// <value><c>true</c> if this instance is read only; otherwise, <c>false</c>.</value>
-		public bool IsReadOnly
-		{
-			get => (Attributes & FileAttributes.ReadOnly) != 0; set
-			{
-				if (value)
-					Attributes |= FileAttributes.ReadOnly;
-				else
-					Attributes &= ~FileAttributes.ReadOnly;
-			}
-		}
-
-		/// <summary>Gets a <see cref="PropertyStore"/> object that provides access to shell properties of the file.</summary>
-		/// <value>A <see cref="PropertyStore"/> object.</value>
-		public PropertyStore Properties => values ?? (values = new PropertyStore(this, (o, e) => Save()));
 
 		/// <summary>Gets/sets the relative path to the link's target</summary>
 		public string RelativeTargetPath
 		{
-			get => GetPath(SLGP.SLGP_RELATIVEPRIORITY); set { link.SetRelativePath(value, 0); Save(); }
+			get => GetPath(SLGP.SLGP_RELATIVEPRIORITY);
+			set { link.SetRelativePath(value, 0); Save(); }
 		}
 
 		/// <summary>Gets or sets a value indicating whether the target is run with Administrator rights.</summary>
 		/// <value><c>true</c> if run as Administrator; otherwise, <c>false</c>.</value>
 		public bool RunAsAdministrator
 		{
-			get
-			{
-				var dl = (IShellLinkDataList)link;
-				var flags = dl.GetFlags();
-				return flags.IsFlagSet(SHELL_LINK_DATA_FLAGS.SLDF_RUNAS_USER);
-			}
+			get => ((IShellLinkDataList)link).GetFlags().IsFlagSet(SHELL_LINK_DATA_FLAGS.SLDF_RUNAS_USER);
 			set
 			{
 				var dl = (IShellLinkDataList)link;
-				var flags = dl.GetFlags();
-				if (flags.IsFlagSet(SHELL_LINK_DATA_FLAGS.SLDF_RUNAS_USER) && !value)
-					dl.SetFlags(flags.SetFlags(SHELL_LINK_DATA_FLAGS.SLDF_RUNAS_USER, false));
-				else if (!flags.IsFlagSet(SHELL_LINK_DATA_FLAGS.SLDF_RUNAS_USER) && value)
-					dl.SetFlags(flags.SetFlags(SHELL_LINK_DATA_FLAGS.SLDF_RUNAS_USER, true));
+				dl.SetFlags(dl.GetFlags().SetFlags(SHELL_LINK_DATA_FLAGS.SLDF_RUNAS_USER, value));
 				Save();
 			}
 		}
@@ -266,41 +215,74 @@ namespace Vanara.Windows.Shell
 		/// <value>The show command for a Shell link object.</value>
 		public FormWindowState ShowState
 		{
-			get => (FormWindowState)link.GetShowCmd() - 1; set { link.SetShowCmd((ShowWindowCommand)value + 1); Save(); }
+			get => (FormWindowState)link.GetShowCmd() - 1;
+			set { link.SetShowCmd((ShowWindowCommand)value + 1); Save(); }
+		}
+
+		/// <summary>Gets or sets the target with a <see cref="ShellItem"/> instance.</summary>
+		public ShellItem Target
+		{
+			get => target ?? (target = new ShellItem(link.GetIDList()));
+			set => link.SetIDList(value.PIDL);
 		}
 
 		/// <summary>Gets/sets the fully qualified path to the link's target</summary>
 		public string TargetPath
 		{
-			get => GetPath(SLGP.SLGP_UNCPRIORITY); set { link.SetPath(value); Save(); }
+			get => GetPath(SLGP.SLGP_UNCPRIORITY);
+			set { link.SetPath(value); Save(); }
 		}
 
 		/// <summary>Gets/sets the Working Directory for the Link</summary>
 		public string WorkingDirectory
 		{
-			get => GetStringValue(link.GetWorkingDirectory, 260); set { link.SetWorkingDirectory(value); Save(); }
+			get => GetStringValue(link.GetWorkingDirectory, MAX_PATH);
+			set { link.SetWorkingDirectory(value); Save(); }
 		}
 
-		/// <summary>
-		/// Creates or overwrites a new link file.
-		/// </summary>
+		/// <summary>Creates or overwrites a new link file.</summary>
 		/// <param name="linkFilename">The link filename.</param>
 		/// <param name="targetFilename">The full path to the target file.</param>
 		/// <param name="description">The description of the link.</param>
 		/// <param name="workingDirectory">The working directory for the execution of the target.</param>
 		/// <param name="arguments">The arguments for the target's execution.</param>
 		/// <returns>An instance of a <see cref="ShellLink"/> representing the values supplied.</returns>
-		public static ShellLink Create(string linkFilename, string targetFilename, string description = null,
-			string workingDirectory = null, string arguments = null)
+		public static ShellLink Create(string linkFilename, string targetFilename, string description = null, string workingDirectory = null, string arguments = null)
 		{
+			if (File.Exists(linkFilename)) throw new InvalidOperationException("File already exists.");
 			var lnk = new ShellLink
 			{
+				link = new IShellLinkW(),
 				TargetPath = targetFilename,
 				Description = description,
 				WorkingDirectory = workingDirectory,
 				Arguments = arguments
 			};
 			lnk.SaveAs(linkFilename);
+			lnk.Init((IShellItem)lnk.link);
+			return lnk;
+		}
+
+		/// <summary>Creates or overwrites a new link file.</summary>
+		/// <param name="linkFilename">The link filename.</param>
+		/// <param name="target">The ShellItem for the target.</param>
+		/// <param name="description">The description of the link.</param>
+		/// <param name="workingDirectory">The working directory for the execution of the target.</param>
+		/// <param name="arguments">The arguments for the target's execution.</param>
+		/// <returns>An instance of a <see cref="ShellLink"/> representing the values supplied.</returns>
+		public static ShellLink Create(string linkFilename, ShellItem target, string description = null, string workingDirectory = null, string arguments = null)
+		{
+			if (File.Exists(linkFilename)) throw new InvalidOperationException("File already exists.");
+			var lnk = new ShellLink
+			{
+				link = new IShellLinkW(),
+				Target = target,
+				Description = description,
+				WorkingDirectory = workingDirectory,
+				Arguments = arguments
+			};
+			lnk.SaveAs(linkFilename);
+			lnk.Init((IShellItem)lnk.link);
 			return lnk;
 		}
 
@@ -312,24 +294,16 @@ namespace Vanara.Windows.Shell
 		/// <returns>A new file, or an overwrite of an existing file if overwrite is true. If the file exists and overwrite is false, an IOException is thrown.</returns>
 		public ShellLink CopyTo(string destShellLink, bool overwrite = false)
 		{
-			File.Copy(FullPath, destShellLink);
+			File.Copy(FullPath, destShellLink, overwrite);
 			return new ShellLink(destShellLink);
 		}
 
-		/// <summary>Permanently deletes the link file.</summary>
-		public override void Delete()
-		{
-			File.Delete(FullPath);
-		}
-
 		/// <summary>Dispose the object, releasing the COM ShellLink object</summary>
-		public void Dispose()
+		public override void Dispose()
 		{
-			if (link != null)
-			{
-				Marshal.ReleaseComObject(link);
-				link = null;
-			}
+			if (link != null) { Marshal.ReleaseComObject(link); link = null; }
+			//Release(link);
+			base.Dispose();
 		}
 
 		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
@@ -341,7 +315,7 @@ namespace Vanara.Windows.Shell
 		{
 			var link2 = obj as ShellLink;
 			if (link2 != null)
-				return link2.ToString() == ToString();
+				return string.Equals(link2.ToString(), ToString(), StringComparison.InvariantCultureIgnoreCase);
 			return base.Equals(obj);
 		}
 
@@ -350,10 +324,8 @@ namespace Vanara.Windows.Shell
 		/// </summary>
 		/// <param name="includeSections">One of the AccessControlSections values that specifies which group of access control entries to retrieve.</param>
 		/// <returns>A FileSecurity object that encapsulates the access control rules for the current file.</returns>
-		public FileSecurity GetAccessControl(AccessControlSections includeSections = AccessControlSections.Access | AccessControlSections.Group | AccessControlSections.Owner)
-		{
-			return File.GetAccessControl(FullPath, includeSections);
-		}
+		public FileSecurity GetAccessControl(AccessControlSections includeSections = AccessControlSections.Access | AccessControlSections.Group | AccessControlSections.Owner) =>
+			File.GetAccessControl(FullPath, includeSections);
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>
@@ -361,29 +333,17 @@ namespace Vanara.Windows.Shell
 		/// </returns>
 		public override int GetHashCode() => ToString().GetHashCode();
 
-		/// <summary>Gets the property specified by <paramref name="key"/>.</summary>
-		/// <typeparam name="T">Property type</typeparam>
-		/// <param name="key">The property key.</param>
-		/// <param name="defValue">The default value.</param>
-		/// <returns>The value of the property or <paramref name="defValue"/> if not found.</returns>
-		public T GetProperty<T>(PROPERTYKEY key, T defValue = default(T))
+		/// <summary>Gets the icon for this link file.</summary>
+		/// <param name="large">if set to <c>true</c> retrieve the large icon; other retrieve the small icon.</param>
+		/// <returns>The icon.</returns>
+		public Icon GetIcon(bool large)
 		{
-			try
-			{
-				return (T)Properties[key.Key];
-			}
-			catch { }
-			return defValue;
-		}
+			var loc = IconLocation;
+			if (loc.IsValid) return loc.Icon;
 
-		/// <summary>
-		/// Moves a specified file to a new location, providing the option to specify a new file name.
-		/// </summary>
-		/// <param name="destFileName">The path to move the file to, which can specify a different file name.</param>
-		public void MoveTo(string destFileName)
-		{
-			File.Move(FullPath, destFileName);
-			Init(destFileName);
+			// If there are no details set for the icon, then we must use the shell to get the icon for the target
+			var sfi = new ShellFileInfo(TargetPath);
+			return large ? sfi.LargeIcon : sfi.SmallIcon;
 		}
 
 		/// <summary>
@@ -395,49 +355,18 @@ namespace Vanara.Windows.Shell
 			File.SetAccessControl(FullPath, fileSecurity);
 		}
 
-		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
+		/*/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 		// Path and title should be case insensitive. Shell treats arguments as case sensitive because apps can handle
 		// those differently.
 		public override string ToString() =>
-			$"{(GetProperty<string>(KnownShellItemPropertyKeys.Title) ?? "").ToUpperInvariant()} {GetPath(SLGP.SLGP_RAWPATH).ToUpperInvariant()} {Arguments}";
+			$"{(Properties.GetProperty<string>(PROPERTYKEY.System.Title) ?? "").ToUpperInvariant()} {FullPath.ToUpperInvariant()} {Arguments}";*/
 
-		private Icon GetIcon(bool large)
+		private static string GetStringValue(Action<StringBuilder, int> method, int buffSize)
 		{
-			// Get icon index and path:
-			var iconIndex = 0;
-			var iconPath = new StringBuilder(MAX_PATH, MAX_PATH);
-			link.GetIconLocation(iconPath, iconPath.Capacity, out iconIndex);
-			var iconFile = iconPath.ToString();
-
-			// If there are no details set for the icon, then we must use the shell to get the icon for the target
-			if (iconFile.Length == 0)
-			{
-				var sfi = new ShellFileInfo(TargetPath);
-				return large ? sfi.LargeIcon : sfi.SmallIcon;
-			}
-			else
-			{
-				// Use ExtractIconEx to get the icon:
-				var hIconEx = new IntPtr[1] { IntPtr.Zero };
-				if (large)
-					ExtractIconEx(iconFile, iconIndex, hIconEx, null, 1);
-				else
-					ExtractIconEx(iconFile, iconIndex, null, hIconEx, 1);
-				// If success then return as a GDI+ object
-				Icon icon = null;
-				if (hIconEx[0] != IntPtr.Zero)
-					icon = ShellFileInfo.GetClonedIcon(hIconEx[0]);
-				return icon;
-			}
-		}
-
-		private string GetIconLocation(out int iconIndex)
-		{
-			var iconPath = new StringBuilder(MAX_PATH, MAX_PATH);
-			iconIndex = 0;
-			link.GetIconLocation(iconPath, iconPath.Capacity, out iconIndex);
-			return iconPath.ToString();
+			var ret = new StringBuilder(buffSize, buffSize);
+			method(ret, ret.Capacity);
+			return ret.ToString();
 		}
 
 		private string GetPath(SLGP value)
@@ -448,24 +377,26 @@ namespace Vanara.Windows.Shell
 			return target.ToString();
 		}
 
-		private string GetStringValue(Action<StringBuilder, int> method, int buffSize)
+		private void LoadAndResolve(string linkFile, SLR_FLAGS resolveFlags, IntPtr hWin = default(IntPtr), ushort timeOut = 0)
 		{
-			var ret = new StringBuilder(buffSize, buffSize);
-			method(ret, ret.Capacity);
-			return ret.ToString();
-		}
+			if (string.IsNullOrEmpty(linkFile)) throw new ArgumentNullException(nameof(linkFile));
+			var fullPath = Path.GetFullPath(linkFile);
+			if (!File.Exists(fullPath)) throw new FileNotFoundException("Link file not found.", linkFile);
 
-		private void Init(string linkFile)
-		{
-			OriginalPath = linkFile;
-			FullPath = Path.GetFullPath(linkFile);
-			SetName(Path.GetFileName(linkFile));
+			link = new IShellLinkW();
+
+			if (resolveFlags.IsFlagSet(SLR_FLAGS.SLR_NO_UI) && timeOut != 0)
+				resolveFlags = (SLR_FLAGS)MAKELONG((ushort)resolveFlags, timeOut);
+
+			new FileIOPermission(FileIOPermissionAccess.Read, fullPath).Demand();
+			((IPersistFile)link).Load(fullPath, 0); //STGM_DIRECT)
+			link.Resolve(hWin, resolveFlags);
 		}
 
 		/// <summary>Saves the shortcut to ShortCutFile.</summary>
 		private void Save()
 		{
-			if (Exists)
+			if (File.Exists(FullPath))
 				((IPersistFile)link).Save(null, true);
 			else if (FullPath != null)
 				SaveAs(FullPath);
@@ -476,7 +407,6 @@ namespace Vanara.Windows.Shell
 		private void SaveAs(string linkFile)
 		{
 			((IPersistFile)link).Save(linkFile, true);
-			Init(linkFile);
 		}
 	}
 }

@@ -1,36 +1,43 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 
 namespace Vanara.Windows.Shell
 {
-	public class PropertyStore : IDictionary<PROPERTYKEY, object>
+	/// <summary>Encapsulates the IPropertyStore object.</summary>
+	/// <seealso cref="IDictionary{PROPERTYKEY, Object}"/>
+	/// <seealso cref="System.IDisposable"/>
+	public class PropertyStore : IDictionary<PROPERTYKEY, object>, IDisposable, INotifyPropertyChanged
 	{
-		private readonly IPropertyStore iprops;
+		/// <summary>The IPropertyStore instance. This can be null.</summary>
+		protected IPropertyStore iprops;
 
-		internal PropertyStore(ShellItem item, EventHandler propChangedHandler = null)
-		{
-			iprops = item.GetPropertyStore();
-			if (propChangedHandler != null)
-				PropertyChanged += propChangedHandler;
-		}
+		/// <summary>Initializes a new instance of the <see cref="PropertyStore"/> class.</summary>
+		protected PropertyStore() { }
 
-		internal PropertyStore(ShellLink lnk, EventHandler propChangedHandler = null)
-		{
-			iprops = (IPropertyStore)lnk.link;
-			if (propChangedHandler != null)
-				PropertyChanged += propChangedHandler;
-		}
+		/// <summary>Initializes a new instance of the <see cref="PropertyStore"/> class.</summary>
+		/// <param name="ps">The ps.</param>
+		protected PropertyStore(IPropertyStore ps) { iprops = ps; }
 
-		public event EventHandler PropertyChanged;
+		/// <summary>Occurs when a property value changes.</summary>
+		public event PropertyChangedEventHandler PropertyChanged;
 
+		/// <summary>Gets the number of properties in the current property store.</summary>
 		public int Count => (int)(iprops?.GetCount() ?? 0);
 
-		public bool IsReadOnly => false;
+		/// <summary>Gets or sets a value indicating whether this property store has uncommitted changes.</summary>
+		/// <value><c>true</c> if this instance is dirty; otherwise, <c>false</c>.</value>
+		public bool IsDirty { get; protected set; }
 
+		/// <summary>Gets a value indicating whether the <see cref="ICollection{T}"/> is read-only.</summary>
+		public virtual bool IsReadOnly => false;
+
+		/// <summary>Gets an <see cref="ICollection{T}"/> containing the keys of the <see cref="IDictionary{PROPERTYKEY, Object}"/>.</summary>
 		public ICollection<PROPERTYKEY> Keys
 		{
 			get
@@ -42,6 +49,7 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
+		/// <summary>Gets an <see cref="ICollection{T}"/> containing the values in the <see cref="IDictionary{PROPERTYKEY, Object}"/>.</summary>
 		public ICollection<object> Values
 		{
 			get
@@ -53,17 +61,25 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
-		public object this[Guid key]
+		/// <summary>Gets or sets the value of the property with the specified known key.</summary>
+		/// <value>The value.</value>
+		/// <param name="knownKey">The known key of the property (e.g. "System.Title"}.</param>
+		/// <returns>The value of the property.</returns>
+		public object this[string knownKey]
 		{
-			get => this[new PROPERTYKEY(key, 2)]; set { this[new PROPERTYKEY(key, 2)] = value; OnPropertyChanged(); }
+			get => this[GetPropertyKeyFromName(knownKey)];
+			set => this[GetPropertyKeyFromName(knownKey)] = value;
 		}
 
+		/// <summary>Gets or sets the value of the property with the specified PROPERTYKEY.</summary>
+		/// <value>The value.</value>
+		/// <param name="knownKey">The PROPERTYKEY of the property.</param>
+		/// <returns>The value of the property.</returns>
 		public object this[PROPERTYKEY key]
 		{
 			get
 			{
-				object r;
-				if (!TryGetValue(key, out r))
+				if (!TryGetValue(key, out object r))
 					throw new ArgumentOutOfRangeException(nameof(key));
 				return r;
 			}
@@ -72,32 +88,49 @@ namespace Vanara.Windows.Shell
 				if (iprops == null)
 					throw new InvalidOperationException("Property store does not exist.");
 				iprops.SetValue(key, new PROPVARIANT(value));
-				OnPropertyChanged();
+				OnPropertyChanged(key.ToString());
 			}
 		}
 
+		/// <summary>Gets the property key for a canonical property name.</summary>
+		/// <param name="name">A property name.</param>
+		/// <returns>The requested property key.</returns>
+		public static PROPERTYKEY GetPropertyKeyFromName(string name)
+		{
+			PSGetPropertyKeyFromName(name, out var pk).ThrowIfFailed();
+			return pk;
+		}
+
+		/// <summary>Adds a property with the provided key and value to the property store.</summary>
+		/// <param name="key">The PROPERTYKEY for the new property.</param>
+		/// <param name="value">The value of the new property.</param>
 		public void Add(PROPERTYKEY key, object value)
 		{
 			if (iprops == null)
 				throw new InvalidOperationException("Property store does not exist.");
 			iprops.SetValue(key, new PROPVARIANT(value));
-			OnPropertyChanged();
+			OnPropertyChanged(key.ToString());
 		}
 
-		public void Add(KeyValuePair<PROPERTYKEY, object> item) { Add(item.Key, item.Value); }
+		/// <summary>Commits all changes to the property store.</summary>
+		public void Commit() { iprops?.Commit(); IsDirty = false; }
 
-		public void Clear() { throw new InvalidOperationException(); }
-
-		public void Commit() { iprops?.Commit(); }
-
-		public bool Contains(KeyValuePair<PROPERTYKEY, object> item)
-		{
-			object o;
-			return TryGetValue(item.Key, out o) && Equals(o, item.Value);
-		}
-
+		/// <summary>Determines whether the <see cref="IDictionary{PROPERTYKEY, Object}"/> contains an element with the specified key.</summary>
+		/// <param name="key">The key to locate in the <see cref="IDictionary{PROPERTYKEY, Object}"/>.</param>
+		/// <returns>true if the <see cref="IDictionary{PROPERTYKEY, Object}"/> contains an element with the key; otherwise, false.</returns>
 		public bool ContainsKey(PROPERTYKEY key) => Keys.Contains(key);
 
+		/// <summary>
+		/// Copies the elements of the <see cref="ICollection{T}"/> to an <see cref="T:System.Array"/>, starting at a particular
+		/// <see cref="T:System.Array"/> index.
+		/// </summary>
+		/// <param name="array">
+		/// The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from
+		/// <see cref="ICollection{T}"/>. The <see cref="T:System.Array"/> must have zero-based indexing.
+		/// </param>
+		/// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
+		/// <exception cref="ArgumentOutOfRangeException">arrayIndex - The number of items exceeds the length of the supplied array.</exception>
+		/// <exception cref="ArgumentNullException">array</exception>
 		public void CopyTo(KeyValuePair<PROPERTYKEY, object>[] array, int arrayIndex)
 		{
 			if (array.Length < (arrayIndex + Count))
@@ -110,16 +143,42 @@ namespace Vanara.Windows.Shell
 				array[i++] = kv;
 		}
 
+		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+		public virtual void Dispose()
+		{
+			if (iprops != null)
+			{
+				if (IsDirty) Commit();
+				Marshal.ReleaseComObject(iprops);
+				iprops = null;
+			}
+		}
+
+		/// <summary>Returns an enumerator that iterates through the collection.</summary>
+		/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
 		public IEnumerator<KeyValuePair<PROPERTYKEY, object>> GetEnumerator() => Keys.Select(k => new KeyValuePair<PROPERTYKEY, object>(k, this[k])).GetEnumerator();
 
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		/// <summary>Gets the property.</summary>
+		/// <typeparam name="TVal">The type of the value.</typeparam>
+		/// <param name="key">The key.</param>
+		/// <returns>The cast value of the property.</returns>
+		/// <exception cref="ArgumentOutOfRangeException">key</exception>
+		public TVal GetProperty<TVal>(PROPERTYKEY key)
+		{
+			if (!TryGetValue<TVal>(key, out var ret))
+				throw new ArgumentOutOfRangeException(nameof(key));
+			return ret;
+		}
 
-		public void OnPropertyChanged() { PropertyChanged?.Invoke(this, EventArgs.Empty); }
-
-		public bool Remove(PROPERTYKEY key) { throw new InvalidOperationException(); }
-
-		public bool Remove(KeyValuePair<PROPERTYKEY, object> item) { throw new InvalidOperationException(); }
-
+		/// <summary>Gets the value associated with the specified key.</summary>
+		/// <param name="key">The key whose value to get.</param>
+		/// <param name="value">
+		/// When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the
+		/// <paramref name="value"/> parameter. This parameter is passed uninitialized.
+		/// </param>
+		/// <returns>
+		/// true if the object that implements <see cref="IDictionary{PROPERTYKEY, Object}"/> contains an element with the specified key; otherwise, false.
+		/// </returns>
 		public bool TryGetValue(PROPERTYKEY key, out object value)
 		{
 			if (iprops != null)
@@ -135,6 +194,74 @@ namespace Vanara.Windows.Shell
 			}
 			value = null;
 			return false;
+		}
+
+		/// <summary>Gets the value associated with the specified key.</summary>
+		/// <typeparam name="TVal">The type of the returned value.</typeparam>
+		/// <param name="key">The key whose value to get.</param>
+		/// <param name="value">
+		/// When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the
+		/// <paramref name="value"/> parameter. This parameter is passed uninitialized.
+		/// </param>
+		/// <returns>
+		/// true if the object that implements <see cref="IDictionary{PROPERTYKEY, Object}"/> contains an element with the specified key; otherwise, false.
+		/// </returns>
+		public bool TryGetValue<TVal>(PROPERTYKEY key, out TVal value)
+		{
+			if (iprops != null)
+			{
+				try
+				{
+					var pv = new PROPVARIANT();
+					iprops.GetValue(ref key, pv);
+					value = (TVal)pv.Value;
+					return true;
+				}
+				catch { }
+			}
+			value = default(TVal);
+			return false;
+		}
+
+		/// <summary>Adds an item to the <see cref="ICollection{T}"/>.</summary>
+		/// <param name="item">The object to add to the <see cref="ICollection{T}"/>.</param>
+		void ICollection<KeyValuePair<PROPERTYKEY, object>>.Add(KeyValuePair<PROPERTYKEY, object> item) { Add(item.Key, item.Value); }
+
+		/// <summary>Removes all items from the <see cref="ICollection{T}"/>.</summary>
+		/// <exception cref="InvalidOperationException"></exception>
+		void ICollection<KeyValuePair<PROPERTYKEY, object>>.Clear() { throw new InvalidOperationException(); }
+
+		/// <summary>Determines whether the <see cref="ICollection{T}"/> contains a specific value.</summary>
+		/// <param name="item">The object to locate in the <see cref="ICollection{T}"/>.</param>
+		/// <returns>true if <paramref name="item"/> is found in the <see cref="ICollection{T}"/>; otherwise, false.</returns>
+		bool ICollection<KeyValuePair<PROPERTYKEY, object>>.Contains(KeyValuePair<PROPERTYKEY, object> item) => TryGetValue(item.Key, out object o) && Equals(o, item.Value);
+
+		/// <summary>Returns an enumerator that iterates through a collection.</summary>
+		/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		/// <summary>Removes the element with the specified key from the <see cref="IDictionary{PROPERTYKEY, Object}"/>.</summary>
+		/// <param name="key">The key of the element to remove.</param>
+		/// <returns>
+		/// true if the element is successfully removed; otherwise, false. This method also returns false if <paramref name="key"/> was not found in the original <see cref="IDictionary{PROPERTYKEY, Object}"/>.
+		/// </returns>
+		/// <exception cref="InvalidOperationException"></exception>
+		bool IDictionary<PROPERTYKEY, object>.Remove(PROPERTYKEY key) { throw new InvalidOperationException(); }
+
+		/// <summary>Removes the first occurrence of a specific object from the <see cref="ICollection{T}"/>.</summary>
+		/// <param name="item">The object to remove from the <see cref="ICollection{T}"/>.</param>
+		/// <returns>
+		/// true if <paramref name="item"/> was successfully removed from the <see cref="ICollection{T}"/>; otherwise, false. This
+		/// method also returns false if <paramref name="item"/> is not found in the original <see cref="ICollection{T}"/>.
+		/// </returns>
+		/// <exception cref="InvalidOperationException"></exception>
+		bool ICollection<KeyValuePair<PROPERTYKEY, object>>.Remove(KeyValuePair<PROPERTYKEY, object> item) { throw new InvalidOperationException(); }
+
+		/// <summary>Called when a property has changed.</summary>
+		protected virtual void OnPropertyChanged(string propertyName)
+		{
+			IsDirty = true;
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }

@@ -1,21 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.AdvApi32;
-using static Vanara.PInvoke.ComCtl32;
+using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Kernel32;
-using static Vanara.PInvoke.Macros;
-using static Vanara.PInvoke.PropSys;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
-using static Vanara.PInvoke.User32_Gdi;
+using Vanara.InteropServices;
+using static Vanara.PInvoke.PropSys;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Diagnostics;
+using Vanara.Extensions;
 
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable InconsistentNaming
 
 namespace Vanara.Windows.Shell
@@ -199,7 +201,24 @@ namespace Vanara.Windows.Shell
 		/// Mask used by the PKEY_SFGAOFlags property to determine attributes that are considered to cause slow
 		/// calculations or lack context: ISSLOW, READONLY, HASSUBFOLDER, and VALIDATE. Callers normally do not use this value.
 		/// </summary>
-		PKEYMask = 0x81044000,
+		PKEYMask = 0x81044000
+	}
+
+	/// <summary>Used to determine how to compare two Shell items. ShellItem.Compare uses this enumerated type.</summary>
+	[Flags]
+	public enum ShellItemComparison : uint
+	{
+		/// <summary>Exact comparison of two instances of a Shell item.</summary>
+		AllFields = 0x80000000,
+
+		/// <summary>Indicates that the comparison is based on a canonical name.</summary>
+		Canonical = 0x10000000,
+
+		/// <summary>Indicates that the comparison is based on the display in a folder view.</summary>
+		Display = 0,
+
+		/// <summary>Windows 7 and later. If the Shell items are not the same, test the file system paths.</summary>
+		SecondaryFileSystemPath = 0x20000000
 	}
 
 	/// <summary>Requests the form of an item's display name to retrieve through <see cref="ShellItem.GetDisplayName"/>.</summary>
@@ -253,9 +272,73 @@ namespace Vanara.Windows.Shell
 		ParentRelative = 0x80080001,
 
 		/// <summary>Introduced in Windows 8.</summary>
-		ParentRelativeForUI = 0x80094001,
+		ParentRelativeForUI = 0x80094001
 	}
 
+	/// <summary>Options for retrieving images from a <see cref="ShellItem"/>.</summary>
+	[Flags]
+	public enum ShellItemGetImageOptions
+	{
+		/// <summary>Shrink the bitmap as necessary to fit, preserving its aspect ratio.</summary>
+		ResizeToFit = 0x00000000,
+		/// <summary>
+		/// Passed by callers if they want to stretch the returned image themselves. For example, if the caller passes an icon size of 80x80, a 96x96
+		/// thumbnail could be returned. This action can be used as a performance optimization if the caller expects that they will need to stretch the image.
+		/// </summary>
+		BiggerSizeOk = 0x00000001,
+		/// <summary>
+		/// Return the item only if it is already in memory. Do not access the disk even if the item is cached. Note that this only returns an already-cached
+		/// icon and can fall back to a per-class icon if an item has a per-instance icon that has not been cached. Retrieving a thumbnail, even if it is
+		/// cached, always requires the disk to be accessed, so GetImage should not be called from the UI thread without passing MemoryOnly.
+		/// </summary>
+		MemoryOnly = 0x00000002,
+		/// <summary>Return only the icon, never the thumbnail.</summary>
+		IconOnly = 0x00000004,
+		/// <summary>
+		/// Return only the thumbnail, never the icon. Note that not all items have thumbnails, so ThumbnailOnly will cause the method to fail in these cases.
+		/// </summary>
+		ThumbnailOnly = 0x00000008,
+		/// <summary>
+		/// Allows access to the disk, but only to retrieve a cached item. This returns a cached thumbnail if it is available. If no cached thumbnail is
+		/// available, it returns a cached per-instance icon but does not extract a thumbnail or icon.
+		/// </summary>
+		InCacheOnly = 0x00000010,
+		/// <summary>Introduced in Windows 8. If necessary, crop the bitmap to a square.</summary>
+		CropToSquare = 0x00000020,
+		/// <summary>Introduced in Windows 8. Stretch and crop the bitmap to a 0.7 aspect ratio.</summary>
+		WideThumbnails = 0x00000040,
+		/// <summary>Introduced in Windows 8. If returning an icon, paint a background using the associated app's registered background color.</summary>
+		IconBackground = 0x00000080,
+		/// <summary>Introduced in Windows 8. If necessary, stretch the bitmap so that the height and width fit the given size.</summary>
+		ScaleUp = 0x00000100,
+	}
+
+	/// <summary>Flags that direct the handling of the item from which you're retrieving the info tip text.</summary>
+	[Flags]
+	public enum ShellItemToolTipOptions
+	{
+		/// <summary>No special handling.</summary>
+		Default = 0x00000000,
+
+		/// <summary>Provide the name of the item in ppwszTip rather than the info tip text.</summary>
+		Name = 0x00000001,
+
+		/// <summary>If the item is a shortcut, retrieve the info tip text of the shortcut rather than its target.</summary>
+		LinkNotTarget = 0x00000002,
+
+		/// <summary>If the item is a shortcut, retrieve the info tip text of the shortcut's target.</summary>
+		LinkTarget = 0x00000004,
+
+		/// <summary>Search the entire namespace for the information. This value can result in a delayed response time.</summary>
+		AllowDelay = 0x00000008,
+
+		/// <summary><c>Windows Vista and later.</c> Put the info tip on a single line.</summary>
+		SingleLine = 0x00000010,
+	}
+
+	// TODO: object GetPropertyDescriptionList(IntPtr keyType, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+	// TODO: object GetPropertyStoreForKeys(IntPtr rgKeys, uint cKeys, GPS flags, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+	// TODO: object GetPropertyStoreWithCreateObject(GPS flags, object punkCreateObject, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
 	/// <summary>Encapsulates an item in the Windows Shell.</summary>
 	/// <seealso cref="System.IComparable{ShellItem}"/>
 	/// <seealso cref="System.IDisposable"/>
@@ -265,173 +348,72 @@ namespace Vanara.Windows.Shell
 	{
 		internal static readonly bool IsMin7 = Environment.OSVersion.Version >= new Version(6, 1);
 		internal static readonly bool IsMinVista = Environment.OSVersion.Version.Major >= 6;
-
-		private static ShellItem desktop;
-		private IPropertyStore iprops;
-		private IShellItem iShellItem;
-		private IShellItem2 iShellItem2;
-		private ShellItem parent;
-		private PIDL pidl;
-		private PropertyStore values;
-		private bool writable, slowProps;
+		internal static IBindCtx iBindCtx;
+		internal IShellItem iShellItem;
+		internal IShellItem2 iShellItem2;
+		private static Dictionary<Type, BHID> bhidLookup;
+        private IQueryInfo qi;
+        private ShellItemPropertyStore values;
 
 		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 		/// <param name="path">The file system path of the item.</param>
-		public ShellItem(string path) : this(new Uri(path)) { }
-
-		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
-		/// <param name="uri">The URI of the item.</param>
-		public ShellItem(Uri uri)
+		public ShellItem(string path)
 		{
-			Init(uri);
-		}
-
-		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
-		/// <param name="knownFolder">A known folder.</param>
-		public ShellItem(KNOWNFOLDERID knownFolder)
-		{
-			Init(knownFolder);
+			Init(ShellUtil.GetShellItemForPath(path));
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 		/// <param name="idList">The ID list.</param>
 		public ShellItem(PIDL idList)
 		{
-			Init(idList);
-		}
-
-		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
-		/// <param name="parent">The parent Shell item.</param>
-		/// <param name="name">The name of the child item.</param>
-		public ShellItem(ShellItem parent, string name)
-		{
-			if (parent == null) throw new ArgumentNullException(nameof(parent));
-			if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
-			if (!parent.IsFolder) throw new ArgumentException("Parent argument must be a folder.");
-
-			if (parent.IsFileSystem)
-				Init(ShellUtil.GetShellItemForPath(Path.Combine(parent.FileSystemPath, name)));
-			else
-			{
-				SFGAO attr = 0;
-				parent.GetIShellFolder().ParseDisplayName(IntPtr.Zero, null, name, out uint eaten, out PIDL tempPidl, ref attr);
-				Init(tempPidl);
-			}
-		}
-
-		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
-		/// <param name="parent">The parent Shell item.</param>
-		/// <param name="pidl">The ID List of the child.</param>
-		public ShellItem(ShellItem parent, PIDL pidl)
-		{
-			if (parent == null) throw new ArgumentNullException(nameof(parent));
-			if (pidl == null || pidl.IsInvalid) throw new ArgumentNullException(nameof(pidl));
-			if (!parent.IsFolder) throw new ArgumentException("Parent argument must be a folder.");
-
-			object ppv;
+			if (idList == null || idList.IsInvalid) throw new ArgumentNullException(nameof(idList));
 			if (IsMinVista)
-				SHCreateItemWithParent(PIDL.Null, parent.GetIShellFolder(), pidl, typeof(IShellItem).GUID, out ppv);
+			{
+				SHCreateItemFromIDList(idList, typeof(IShellItem).GUID, out var obj).ThrowIfFailed();
+				Init((IShellItem)obj);
+			}
 			else
 			{
-				var idList = PIDL.Combine(parent.PIDL, pidl);
-				ppv = new ShellItemImpl(idList, false);
+				Init(new ShellItemImpl(idList, false));
 			}
-			Init((IShellItem)ppv);
 		}
 
-		private ShellItem() { }
+		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
+		/// <param name="si">An existing IShellItem instance.</param>
+		protected ShellItem(IShellItem si) { Init(si); }
 
-		private ShellItem(IShellItem si) { Init(si); }
+		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
+		/// <param name="knownFolder">A known folder reference.</param>
+		protected ShellItem(KNOWNFOLDERID knownFolder)
+		{
+			if (IsMin7)
+			{
+				SHGetKnownFolderItem(knownFolder.Guid(), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, SafeTokenHandle.Null, typeof(IShellItem).GUID, out var ppv).ThrowIfFailed();
+				Init((IShellItem)ppv);
+			}
+			else
+			{
+				var csidl = knownFolder.SpecialFolder();
+				if (csidl == null) throw new ArgumentOutOfRangeException(nameof(knownFolder), @"Cannot translate this known folder to a value understood by systems prior to Windows 7.");
+				var path = new StringBuilder(MAX_PATH);
+				SHGetFolderPath(IntPtr.Zero, (int)csidl.Value, SafeTokenHandle.Null, SHGFP.SHGFP_TYPE_CURRENT, path).ThrowIfFailed();
+				Init(ShellUtil.GetShellItemForPath(path.ToString()));
+			}
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
+		protected ShellItem() { }
 
 		/// <summary>Gets the attributes for the Shell item.</summary>
 		/// <value>The attributes of the Shell item.</value>
 		public ShellItemAttribute Attributes => (ShellItemAttribute)iShellItem.GetAttributes((SFGAO)0xFFFFFFFF);
 
-		/// <summary>Gets a reference to the primary Desktop.</summary>
-		/// <value>The desktop instance.</value>
-		public static ShellItem Desktop => desktop ?? (desktop = new ShellItem(KNOWNFOLDERID.FOLDERID_Desktop));
-
-		/// <summary>Gets the display name for the shell item.</summary>
-		/// <value>The display name of the item.</value>
-		public string DisplayName => GetDisplayName(SIGDN.SIGDN_NORMALDISPLAY);
-
-		/// <summary>Gets the executable type of the file.</summary>
-		public ExecutableType ExecutableType
-		{
-			get
-			{
-				if (IsFileSystem)
-				{
-					var shfi = new SHFILEINFO();
-					var ret = SHGetFileInfo(FileSystemPath, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_EXETYPE);
-					if (ret != IntPtr.Zero)
-					{
-						var loWord = LOWORD(ret);
-						if (HIWORD(ret) == 0x0000)
-						{
-							if (loWord == 0x5A4D)
-								return ExecutableType.DOS;
-							if (loWord == 0x4550)
-								return ExecutableType.Win32Console;
-						}
-						else if (loWord == 0x454E || loWord == 0x4550 || loWord == 0x454C)
-							return ExecutableType.Windows;
-					}
-				}
-				return ExecutableType.Nonexecutable;
-			}
-		}
+        /// <summary>Gets the <see cref="ShellFileInfo"/> corresponding to this instance.</summary>
+        public ShellFileInfo FileInfo => IsFileSystem ? new ShellFileInfo(PIDL) : throw new InvalidOperationException("Not file system objects do not have associated ShellFileInfo objects");
 
 		/// <summary>Gets the file system path if this item is part of the file system.</summary>
 		/// <value>The file system path.</value>
 		public string FileSystemPath => GetDisplayName(SIGDN.SIGDN_FILESYSPATH);
-
-		/// <summary>Gets the name of the file that contains the icon representing this shell item with the resource ID appended.</summary>
-		/// <value>The icon file path and resource ID, or <c>null</c> if no icon is defined.</value>
-		public string IconFilePath
-		{
-			get
-			{
-				var shfi = new SHFILEINFO();
-				var ret = SHGetFileInfo(PIDL, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_ICONLOCATION | SHGFI.SHGFI_PIDL);
-				if (ret == IntPtr.Zero)
-				{
-					ret = SHGetFileInfo(PIDL, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_ICONLOCATION | SHGFI.SHGFI_ICON | SHGFI.SHGFI_PIDL);
-					if (ret != IntPtr.Zero) DestroyIcon(shfi.hIcon);
-				}
-				var id = shfi.iIcon == 0 ? "" : $",{shfi.iIcon}";
-				return ret != IntPtr.Zero ? shfi.szDisplayName + id : null;
-			}
-		}
-
-		/// <summary>Gets the index of the icon overlay.</summary>
-		/// <value>The index of the icon overlay, or -1 if no overlay is set.</value>
-		public int IconOverlayIndex
-		{
-			get
-			{
-				var shfi = new SHFILEINFO();
-				var ret = SHGetFileInfo(PIDL, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_ICON | SHGFI.SHGFI_USEFILEATTRIBUTES | SHGFI.SHGFI_OVERLAYINDEX | SHGFI.SHGFI_LINKOVERLAY | SHGFI.SHGFI_PIDL);
-				if (ret == IntPtr.Zero) return -1;
-				DestroyIcon(shfi.hIcon);
-				return (shfi.iIcon >> 24) - 1;
-			}
-		}
-
-		/// <summary>Gets or sets a value indicating whether to include slow properties.</summary>
-		/// <value><c>true</c> if including slow properties; otherwise, <c>false</c>.</value>
-		[DefaultValue(false)]
-		public bool IncludeSlowProperties
-		{
-			get => !slowProps; set
-			{
-				if (value != slowProps)
-				{
-					slowProps = value;
-					GetPropertyStore();
-				}
-			}
-		}
 
 		/// <summary>Gets a value indicating whether this instance is part of the file system.</summary>
 		/// <value><c>true</c> if this instance is part of the file system; otherwise, <c>false</c>.</value>
@@ -441,22 +423,29 @@ namespace Vanara.Windows.Shell
 		/// <value><c>true</c> if this instance is folder; otherwise, <c>false</c>.</value>
 		public bool IsFolder => iShellItem.GetAttributes(SFGAO.SFGAO_FOLDER) != 0;
 
+		/// <summary>Gets the IShellItem instance of the current ShellItem.</summary>
+		/// <param name="i">A ShellItem instance.</param>
+		public IShellItem IShellItem => iShellItem;
+
 		/// <summary>Gets a value indicating whether this instance is link.</summary>
 		/// <value><c>true</c> if this instance is link; otherwise, <c>false</c>.</value>
 		public bool IsLink => iShellItem.GetAttributes(SFGAO.SFGAO_LINK) != 0;
 
-		/// <summary>Gets the large icon for the file.</summary>
-		public Icon LargeIcon => GetIcon();
+		/// <summary>Gets the name relative to the parent for the item.</summary>
+		public virtual string Name
+		{
+			get => GetDisplayName(SIGDN.SIGDN_NORMALDISPLAY);
+			protected set { }
+		}
 
 		/// <summary>Gets the parent for the current item.</summary>
 		/// <value>The parent item. If this is the desktop, this property will return <c>null</c>.</value>
-		public ShellItem Parent
+		public ShellFolder Parent
 		{
 			get
 			{
-				if (parent == null)
-					try { parent = new ShellItem(iShellItem.GetParent()); } catch { }
-				return parent;
+				try { return new ShellFolder(iShellItem.GetParent()); } catch { }
+				return null;
 			}
 		}
 
@@ -470,342 +459,333 @@ namespace Vanara.Windows.Shell
 		{
 			get
 			{
-				if (pidl == null)
-					SHGetIDListFromObject(iShellItem, out pidl);
+				SHGetIDListFromObject(iShellItem, out var pidl).ThrowIfFailed();
 				return pidl;
 			}
 		}
 
 		/// <summary>Gets the property store for the item.</summary>
 		/// <value>The dictionary of properties.</value>
-		public PropertyStore Properties => values ?? (values = new PropertyStore(this));
-
-		[DefaultValue(false)]
-		public bool ReadWriteProperties
-		{
-			get => !writable; set
-			{
-				if (value != writable)
-				{
-					writable = value;
-					GetPropertyStore();
-				}
-			}
-		}
-
-		/// <summary>Gets the small icon for the file.</summary>
-		public Icon SmallIcon => GetIcon(ShellIconType.Small);
-
-		/// <summary>Gets the icon for this shell item from the system.</summary>
-		/// <value>The system icon on success; <c>null</c> on failure.</value>
-		public Icon SystemIcon
-		{
-			get
-			{
-				var shfi = new SHFILEINFO();
-				var hImageList = SHGetFileInfo(PIDL, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_SYSICONINDEX | SHGFI.SHGFI_PIDL);
-				if (hImageList == IntPtr.Zero) return null;
-				var hIcon = ImageList_GetIcon(hImageList, shfi.iIcon, IMAGELISTDRAWFLAGS.ILD_NORMAL);
-				return GetClonedIcon(hIcon);
-			}
-		}
+		public ShellItemPropertyStore Properties => values ?? (values = new ShellItemPropertyStore(this));
 
 		/// <summary>Gets the normal tool tip text associated with this item.</summary>
 		/// <value>The tool tip text.</value>
 		public string ToolTipText => GetToolTip();
 
-		/// <summary>Gets the type name for the file.</summary>
-		public string TypeName
+		/// <summary>Gets the system bind context.</summary>
+		/// <value>The bind context.</value>
+		protected static IBindCtx BindContext
 		{
 			get
 			{
-				var shfi = new SHFILEINFO();
-				var ret = SHGetFileInfo(PIDL, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_ICON | SHGFI.SHGFI_USEFILEATTRIBUTES | SHGFI.SHGFI_TYPENAME | SHGFI.SHGFI_PIDL);
-				return ret == IntPtr.Zero ? null : shfi.szTypeName;
+				if (iBindCtx == null)
+					CreateBindCtx(0, out iBindCtx);
+				return iBindCtx;
 			}
 		}
 
-		/// <summary>Gets the <see cref="ShellItem"/> with the specified child name.</summary>
-		/// <value>The <see cref="ShellItem"/> instance matching <paramref name="childName"/>.</value>
-		/// <param name="childName">Name of the child item.</param>
-		/// <returns>The <see cref="ShellItem"/> instance matching <paramref name="childName"/>, if it exists.</returns>
-		public ShellItem this[string childName] => new ShellItem(this, childName);
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="left">The left operand.</param>
+		/// <param name="right">The right operand.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(ShellItem left, ShellItem right) => !(left == right);
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="left">The left operand.</param>
+		/// <param name="right">The right operand.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(ShellItem left, ShellItem right) => Equals(left?.iShellItem, right?.iShellItem);
 
 		/// <summary>
-		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+		/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes,
+		/// follows, or occurs in the same position in the sort order as the other object.
 		/// </summary>
-		public void Dispose()
-		{
-			if (iprops != null)
-				Marshal.ReleaseComObject(iprops);
-			if (iShellItem != null)
-				Marshal.ReleaseComObject(iShellItem);
-			if (iShellItem2 != null)
-				Marshal.ReleaseComObject(iShellItem2);
-		}
+		/// <param name="other">An object to compare with this instance.</param>
+		/// <param name="hint">Optional hint value that determines how to perform the comparison. The default compares all fields.</param>
+		/// <returns>
+		/// A value that indicates the relative order of the objects being compared. If the two items are the same this parameter equals zero; if they are
+		/// different the parameter is nonzero.
+		/// </returns>
+		public int CompareTo(ShellItem other, ShellItemComparison hint = ShellItemComparison.SecondaryFileSystemPath) => iShellItem.Compare(other?.iShellItem, (SICHINTF)hint);
 
-		/// <summary>Enumerates all children of this item. If this item is not a folder/container, this method will return an empty enumeration.</summary>
-		/// <param name="filter">A filter for the types of children to enumerate.</param>
-		/// <returns>An enumerated list of children matching the filter.</returns>
-		public IEnumerable<ShellItem> EnumerateChildren(SHCONTF filter = SHCONTF.SHCONTF_FOLDERS | SHCONTF.SHCONTF_INCLUDEHIDDEN | SHCONTF.SHCONTF_NONFOLDERS)
+		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+		public virtual void Dispose()
 		{
-			if (!IsFolder) yield break;
-			var folder = GetIShellFolder();
-			var enumId = GetIEnumIDList(folder, filter);
-			if (enumId == null) yield break;
-
-			HRESULT result;
-			while ((result = enumId.Next(1, out IntPtr cpidl, out uint count)) == HRESULT.S_OK)
-			{
-				yield return new ShellItem(this, new PIDL(cpidl));
-			}
-			if (result != HRESULT.S_FALSE)
-				Marshal.ThrowExceptionForHR((int)result);
+			values?.Dispose();
+			if (qi != null) { Marshal.ReleaseComObject(qi); qi = null; }
+			if (iShellItem2 != null) { Marshal.ReleaseComObject(iShellItem2); iShellItem2 = null; }
+			if (iShellItem != null) { Marshal.ReleaseComObject(iShellItem); iShellItem = null; }
 		}
 
 		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public override bool Equals(object obj)
-		{
-			var item = obj as ShellItem;
-			if (item != null)
-				return Equals(item);
-			var psi = obj as IShellItem;
-			return psi != null ? Equals(psi) : base.Equals(obj);
-		}
+		public override bool Equals(object obj) => Equals(iShellItem, obj as IShellItem);
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		public bool Equals(IShellItem other)
-		{
-			return iShellItem.Compare(other, SICHINTF.SICHINT_ALLFIELDS) == 0;
-		}
+		public bool Equals(IShellItem other) => Equals(iShellItem, other);
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		public bool Equals(ShellItem other)
-		{
-			return ((IComparable<ShellItem>)this).CompareTo(other) == 0;
-		}
-
-		// ReSharper disable once InconsistentNaming
-		/// <summary>Gets the CLSID of a supplied property key.</summary>
-		/// <param name="key">The property key.</param>
-		/// <returns>The CLSID related to the property key.</returns>
-		public Guid GetCLSID(Guid key)
-		{
-			ThrowIfNoShellItem2();
-			var shipk = new PROPERTYKEY(key, 2);
-			return iShellItem2.GetCLSID(ref shipk);
-		}
+		public bool Equals(ShellItem other) => Equals(iShellItem, other?.iShellItem);
 
 		/// <summary>Gets a formatted display name for this item.</summary>
 		/// <param name="option">The formatting options.</param>
 		/// <returns>A string with the formatted display name if successful; otherwise <c>null</c>.</returns>
 		public string GetDisplayName(ShellItemDisplayString option) => GetDisplayName((SIGDN)option);
 
-		/// <summary>Returns a hash code for this instance.</summary>
-		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-		public override int GetHashCode() => GetDisplayName(SIGDN.SIGDN_DESKTOPABSOLUTEEDITING).GetHashCode();
+		/// <summary>Gets a handler interface.</summary>
+		/// <typeparam name="TInterface">The interface of the handler to return.</typeparam>
+		/// <param name="handler">The bind handler to retrieve.</param>
+		/// <returns>The requested interface.</returns>
+		public TInterface GetHandler<TInterface>(BHID handler = 0) where TInterface : class
+		{
+            if (handler == 0)
+                handler = GetBHIDForInterface<TInterface>();
+            if (handler == 0)
+                throw new ArgumentOutOfRangeException(nameof(handler));
+            return iShellItem.BindToHandler(BindContext, handler.Guid(), typeof(TInterface).GUID) as TInterface;
+		}
+
+        /// <summary>Returns a hash code for this instance.</summary>
+        /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+        public override int GetHashCode() => GetDisplayName(SIGDN.SIGDN_DESKTOPABSOLUTEPARSING).GetHashCode();
 
 		/// <summary>
-		/// Gets the icon defined by the set of flags provided.
+		/// Gets an image that represents this item. The default behavior is to load a thumbnail. If there is no thumbnail for the current item, it retrieves the
+		/// icon of the item. The thumbnail or icon is extracted if it is not currently cached.
 		/// </summary>
-		/// <param name="iconType">Flags to specify type of the icon.</param>
-		/// <returns><see cref="Icon"/> if successful; <c>null</c> otherwise.</returns>
-		public Icon GetIcon(ShellIconType iconType = ShellIconType.Large)
+		/// <param name="size">A structure that specifies the size of the image to be received.</param>
+		/// <param name="flags">One or more of the option flags.</param>
+		/// <returns>The resulting image.</returns>
+		/// <exception cref="PlatformNotSupportedException"></exception>
+		public Image GetImage(Size size, ShellItemGetImageOptions flags)
 		{
-			const SHGFI baseFlags = SHGFI.SHGFI_ICON | SHGFI.SHGFI_PIDL;
-			var shfi = new SHFILEINFO();
-			var ret = SHGetFileInfo(PIDL, 0, ref shfi, SHFILEINFO.Size, baseFlags | SHGFI.SHGFI_USEFILEATTRIBUTES | (SHGFI)iconType);
-			if (ret == IntPtr.Zero)
-				ret = SHGetFileInfo(PIDL, 0, ref shfi, SHFILEINFO.Size, baseFlags | (SHGFI)iconType);
-			return ret == IntPtr.Zero ? null : GetClonedIcon(shfi.hIcon);
+			if (!IsMinVista) throw new PlatformNotSupportedException();
+			var fctry = iShellItem as IShellItemImageFactory;
+			if (fctry != null)
+			{
+				var hbitmap = fctry.GetImage(size, (SIIGBF)flags);
+				Marshal.ReleaseComObject(fctry);
+				return GetTransparentBitmap(hbitmap.DangerousGetHandle());
+			}
+			if (!flags.IsFlagSet(ShellItemGetImageOptions.IconOnly))
+				return GetThumbnail(size.Width);
+			throw new InvalidOperationException("Unable to retrieve an image for this item.");
 		}
 
-		/// <summary>Gets the <see cref="IShellFolder"/> interface associated with this item.</summary>
-		/// <returns>An <see cref="IShellFolder"/> interface associated with this item.</returns>
-		public IShellFolder GetIShellFolder()
+		/// <summary>Gets a property description list object given a reference to a property key.</summary>
+		/// <param name="keyType">A reference to a PROPERTYKEY structure.</param>
+		/// <returns>A <see cref="PropertyDescriptionList"/> instance for the supplied key.</returns>
+		public PropertyDescriptionList GetPropertyDescriptionList(ref PROPERTYKEY keyType)
 		{
-			try
-			{
-				return (IShellFolder)iShellItem.BindToHandler(null, BHID_SFObject, typeof(IShellFolder).GUID);
-			}
-			catch { }
-			return null;
-		}
-
-		/// <summary>Gets the property specified by <paramref name="key"/>.</summary>
-		/// <typeparam name="T">Property type</typeparam>
-		/// <param name="key">The property key.</param>
-		/// <param name="defValue">The default value.</param>
-		/// <returns>The value of the property or <paramref name="defValue"/> if not found.</returns>
-		public T GetProperty<T>(PROPERTYKEY key, T defValue = default(T))
-		{
-			try
-			{
-				return (T)Properties[key];
-			}
-			catch { }
-			return defValue;
+			ThrowIfNoShellItem2();
+			return new PropertyDescriptionList(iShellItem2.GetPropertyDescriptionList(ref keyType, typeof(IPropertyDescriptionList).GUID));
 		}
 
 		/// <summary>Gets the formatted tool tip text associated with this item.</summary>
-		/// <param name="flags">The format flags.</param>
-		/// <returns>The tool tip text formatted as per <paramref name="flags"/>.</returns>
-		public string GetToolTip(QITIP flags = QITIP.QITIPF_DEFAULT)
+		/// <param name="options">The option flags.</param>
+		/// <returns>The tool tip text formatted as per <paramref name="options"/>.</returns>
+		public string GetToolTip(ShellItemToolTipOptions options = ShellItemToolTipOptions.Default)
 		{
-			try
-			{
-				var relPidl = PIDL.LastId;
-				var qi = (IQueryInfo)(Parent ?? Desktop).GetIShellFolder().GetUIObjectOf(IntPtr.Zero, 1, new[] { (IntPtr)relPidl }, typeof(IQueryInfo).GUID, IntPtr.Zero);
-				return qi.GetInfoTip(flags);
-			}
-			catch (Exception)
-			{
-				return string.Empty;
-			}
+			if (qi == null)
+				try
+				{
+					qi = (Parent ?? ShellFolder.Desktop).GetChildrenUIObjects<IQueryInfo>(null, this);
+				}
+				catch { }
+			if (qi == null) return "";
+			qi.GetInfoTip((QITIP)options, out var ret);
+			return ret ?? "";
 		}
-		int IComparable<ShellItem>.CompareTo(ShellItem other) => iShellItem.Compare(other.iShellItem, SICHINTF.SICHINT_ALLFIELDS);
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-		public override string ToString() => DisplayName;
+		public override string ToString() => Name;
 
-		// object GetPropertyDescriptionList(IntPtr keyType, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid); object GetPropertyStoreForKeys(IntPtr
-		// rgKeys, uint cKeys, GPS flags, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid); object GetPropertyStoreWithCreateObject(GPS flags, object
-		// punkCreateObject, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid); void Update(IBindCtx pbc); object BindToHandler(IBindCtx pbc, [In] ref
-		// Guid bhid, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
-
-		internal IPropertyStore GetPropertyStore()
+		/// <summary>Ensures that all cached information for this item is updated.</summary>
+		public void Update()
 		{
-			if (iprops == null)
-			{
-				ThrowIfNoShellItem2();
-				var gps = writable ? GETPROPERTYSTOREFLAGS.GPS_READWRITE : GETPROPERTYSTOREFLAGS.GPS_DEFAULT;
-				if (slowProps)
-					gps |= GETPROPERTYSTOREFLAGS.GPS_OPENSLOWITEM;
-				if (iprops != null)
-					Marshal.ReleaseComObject(iprops);
-				try
+			ThrowIfNoShellItem2();
+			iShellItem2.Update(BindContext);
+		}
+
+		/// <summary>
+		/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.
+		/// </summary>
+		/// <param name="other">An object to compare with this instance.</param>
+		/// <returns>A value that indicates the relative order of the objects being compared. If the two items are the same this parameter equals zero; if they are different the parameter is nonzero.</returns>
+		int IComparable<ShellItem>.CompareTo(ShellItem other) => CompareTo(other);
+
+		/// <summary>Gets the BHID for the supplied <typeparamref name="TInterface"/>.</summary>
+		/// <typeparam name="TInterface">The type of the interface to lookup.</typeparam>
+		/// <returns>The related BHID if found, 0 if not.</returns>
+		internal static BHID GetBHIDForInterface<TInterface>()
+		{
+			if (bhidLookup == null)
+				bhidLookup = new Dictionary<Type, BHID>
 				{
-					iprops = iShellItem2.GetPropertyStore(gps, typeof(IPropertyStore).GUID) as IPropertyStore;
-				}
-				catch { }
-			}
-			return iprops;
+					//{ typeof(??), BHID.BHID_SFObject },
+					{ typeof(IShellLinkW), BHID.BHID_SFUIObject },
+					//{ typeof(Others??), BHID.BHID_SFUIObject },
+					//{ typeof(??), BHID.BHID_SFViewObject },
+					{ typeof(IStorage), BHID.BHID_Storage },
+					{ typeof(IStream), BHID.BHID_Stream },
+					//{ typeof(IShellItem??), BHID.BHID_LinkTargetItem },
+					//{ typeof(IEnumShellItems), BHID.BHID_StorageEnum }, // Can't have multiple keys
+					// TODO: { typeof(ITransferSource), BHID.BHID_Transfer },
+					// TODO: { typeof(ITransferDestination), BHID.BHID_Transfer },
+					{ typeof(IPropertyStore), BHID.BHID_PropertyStore },
+					// TODO: { typeof(IPropertyStoreFactory), BHID.BHID_PropertyStore },
+					{ typeof(IExtractImage), BHID.BHID_ThumbnailHandler },
+					{ typeof(IThumbnailProvider), BHID.BHID_ThumbnailHandler },
+					{ typeof(IEnumShellItems), BHID.BHID_EnumItems },
+					{ typeof(IDataObject), BHID.BHID_DataObject },
+					// TODO: { typeof(IQueryAssociations), BHID.BHID_AssociationArray },
+					// TODO: { typeof(IFilter), BHID.BHID_Filter },
+					// TODO: { typeof(IEnumAssocHandlers), BHID.BHID_EnumAssocHandlers },
+					// TODO: { typeof(IRandomAccessStream), BHID.BHID_RandomAccessStream },
+					//{ typeof(??), BHID.BHID_FilePlaceholder },
+				};
+			return bhidLookup.TryGetValue(typeof(TInterface), out var value) ? value : 0;
 		}
 
-		/// <summary>Gets an <see cref="Icon"/> from an icon handle.</summary>
-		/// <param name="hIcon">The icon handle.</param>
-		/// <returns>An <see cref="Icon"/> instance.</returns>
-		protected static Icon GetClonedIcon(IntPtr hIcon)
+		/// <summary>Creates the most specialized derivative of ShellItem from an IShellItem object.</summary>
+		/// <param name="iItem">The IShellItem object.</param>
+		/// <returns>A ShellItem derivative for the supplied IShellItem.</returns>
+		internal static ShellItem Open(IShellItem iItem)
 		{
-			if (hIcon == IntPtr.Zero) return null;
-			var icon = (Icon)Icon.FromHandle(hIcon).Clone();
-			DestroyIcon(hIcon);
-			return icon;
-		}
+			if (iItem.GetAttributes(SFGAO.SFGAO_LINK) != 0)
+				return new ShellLink(iItem);
 
-		private static IEnumIDList GetIEnumIDList(IShellFolder folder, SHCONTF flags)
-		{
-			try
-			{
-				return folder.EnumObjects(IntPtr.Zero, flags);
-			}
-			catch { }
-			return null;
-		}
+			// If not a folder, get the ShellItem
+			if (iItem.GetAttributes(SFGAO.SFGAO_FOLDER) == 0)
+				return new ShellItem(iItem);
 
-		private string GetDisplayName(SIGDN dn)
-		{
-			try { return iShellItem?.GetDisplayName(dn); } catch { }
-			return null;
-		}
-
-		private void Init(PIDL idList)
-		{
-			if (IsMinVista)
+			// Try to get specialized folder type from property
+			var pk = PROPERTYKEY.System.ItemType;
+			string itemType = null;
+			try { itemType = (iItem as IShellItem2)?.GetString(ref pk)?.ToString().ToLowerInvariant(); } catch { }
+			switch (itemType)
 			{
-				object obj;
-				SHCreateItemFromIDList(idList, typeof(IShellItem).GUID, out obj);
-				Init((IShellItem)obj);
-			}
-			else
-			{
-				Init(new ShellItemImpl(idList, false));
+				case ".library-ms":
+					return new ShellLibrary(iItem);
+				case ".searchconnector-ms":
+				// TODO: Return a search connector
+				case ".search-ms":
+				// TODO: Return a saved search connection
+				default:
+					return new ShellFolder(iItem);
 			}
 		}
 
-		private void Init(KNOWNFOLDERID knownFolder)
-		{
-			if (IsMin7)
-			{
-				object ppv;
-				SHGetKnownFolderItem(knownFolder.Guid(), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, SafeTokenHandle.Null, typeof(IShellItem).GUID, out ppv);
-				Init((IShellItem)ppv);
-			}
-			else
-			{
-				var csidl = knownFolder.SpecialFolder();
-				if (csidl == null) throw new ArgumentOutOfRangeException(nameof(knownFolder), @"Cannot translate this known folder to a value understood by systems prior to Windows 7.");
-				var path = new StringBuilder(MAX_PATH);
-				SHGetFolderPath(IntPtr.Zero, (int)csidl.Value, SafeTokenHandle.Null, SHGFP.SHGFP_TYPE_CURRENT, path);
-				Init(new Uri(path.ToString()));
-			}
-		}
-
-		private void Init(IShellItem si)
-		{
-			iShellItem = si;
-			iShellItem2 = (IShellItem2)si;
-		}
-
-		private void Init(Uri uri)
-		{
-			if (uri.Scheme == "file")
-			{
-				Init(ShellUtil.GetShellItemForPath(uri.LocalPath));
-			}
-			else if (uri.Scheme == "shell")
-			{
-				var path = uri.GetComponents(UriComponents.Path, UriFormat.Unescaped);
-				var knownFolder = path;
-				var restOfPath = string.Empty;
-				var separatorIndex = path.IndexOf('/');
-				if (separatorIndex != -1)
-				{
-					knownFolder = path.Substring(0, separatorIndex);
-					restOfPath = path.Substring(separatorIndex + 1);
-				}
-				if (restOfPath != string.Empty)
-					Init(this[restOfPath.Replace('/', '\\')].iShellItem);
-				else
-					Init(ShellUtil.GetKnownFolderFromPath(knownFolder));
-			}
-			else
-			{
-				throw new InvalidOperationException("Invalid scheme.");
-			}
-		}
-
-		private void ThrowIfNoShellItem2()
+		/// <summary>Throws an exception if no IShellItem2 instance can be retrieved.</summary>
+		internal void ThrowIfNoShellItem2()
 		{
 			if (iShellItem2 == null)
 				throw new InvalidOperationException("Unable to get access to this detail.");
 		}
 
-		private class ShellItemImpl : IDisposable, IShellItem
+		/// <summary>Enumerates all the children of the current item. Not valid before Vista.</summary>
+		/// <returns>An enumeration of the child objects.</returns>
+		protected virtual IEnumerable<ShellItem> EnumerateChildren()
+		{
+			if (!IsMinVista) yield break;
+			IEnumShellItems ie = null;
+			try
+			{
+				ie = GetHandler<IEnumShellItems>(BHID.BHID_EnumItems);
+			}
+			catch (Exception e) { Debug.WriteLine($"Unable to enum children: {e.Message}"); }
+			if (ie != null)
+			{
+				var a = new IShellItem[1];
+				while (ie.Next(1, a, out var f).Succeeded && f == 1)
+				{
+					ShellItem i = null;
+					try { i = Open(a[0]); } catch (Exception e) { Debug.WriteLine($"Unable to open child: {e.Message}"); }
+					if (i != null) yield return i;
+				}
+				Marshal.ReleaseComObject(ie);
+			}
+		}
+
+		/// <summary>Gets the display name.</summary>
+		/// <param name="dn">The display name option.</param>
+		/// <returns>The display name.</returns>
+		protected virtual string GetDisplayName(SIGDN dn)
+		{
+			try { return iShellItem?.GetDisplayName(dn); } catch { }
+			return null;
+		}
+
+		/// <summary>Initializes this instance with the specified IShellItem.</summary>
+		/// <param name="si">The IShellItem object.</param>
+		/// <exception cref="ArgumentNullException">si</exception>
+		protected void Init(IShellItem si)
+		{
+			iShellItem = si ?? throw new ArgumentNullException(nameof(si));
+			iShellItem2 = si as IShellItem2;
+		}
+
+		private static bool Equals(IShellItem left, IShellItem right)
+		{
+			if (ReferenceEquals(left, right)) return true;
+			if (left is null || right is null) return false;
+			return left.Compare(right, SICHINTF.SICHINT_TEST_FILESYSPATH_IF_NOT_EQUAL) == 0;
+		}
+
+		private static Bitmap GetTransparentBitmap(IntPtr hbitmap)
+		{
+			var dibsection = GetObject<DIBSECTION>(hbitmap);
+			var bitmap = new Bitmap(dibsection.dsBm.bmWidth, dibsection.dsBm.bmHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+			using (var mstr = new MarshalingStream(dibsection.dsBm.bmBits, (long)dibsection.dsBm.bmBits))
+			{
+				for (int x = 0; x < dibsection.dsBmih.biWidth; x++)
+					for (int y = 0; y < dibsection.dsBmih.biHeight; y++)
+					{
+						var rgbquad = mstr.Read<RGBQUAD>();
+						if (rgbquad.rgbReserved != 0)
+							bitmap.SetPixel(x, y, rgbquad.Color);
+					}
+			}
+			return bitmap;
+		}
+
+		/// <summary>Gets the thumbnail image for the item using the specified characteristics.</summary>
+		/// <param name="width">The width, in pixels, of the Bitmap.</param>
+		/// <returns>The resulting Bitmap, on success, or <c>null</c> on failure.</returns>
+		private Image GetThumbnail(int width = 32)
+        {
+            IThumbnailProvider provider = null;
+            try
+            {
+                provider = GetHandler<IThumbnailProvider>(BHID.BHID_ThumbnailHandler);
+                if (provider == null) return null;
+                provider.GetThumbnail((uint)width, out var hbmp, out var alpha);
+                return Image.FromHbitmap(hbmp);
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                if (provider != null) Marshal.ReleaseComObject(provider);
+            }
+        }
+
+		protected class ShellItemImpl : IDisposable, IShellItem
 		{
 			public ShellItemImpl(PIDL pidl, bool owner)
 			{
 				PIDL = owner ? pidl : new PIDL(pidl);
 			}
 
-			public PIDL PIDL { get; private set; }
+			private PIDL PIDL { get; set; }
 
 			[return: MarshalAs(UnmanagedType.Interface)]
 			public object BindToHandler(IBindCtx pbc, [In, MarshalAs(UnmanagedType.LPStruct)] Guid bhid, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid)
@@ -838,19 +818,19 @@ namespace Vanara.Windows.Shell
 				return result & sfgaoMask;
 			}
 
-			public string GetDisplayName(SIGDN sigdnName)
+			public SafeCoTaskMemString GetDisplayName(SIGDN sigdnName)
 			{
 				if (sigdnName == SIGDN.SIGDN_FILESYSPATH)
 				{
 					var result = new StringBuilder(512);
 					if (!SHGetPathFromIDList(PIDL, result))
 						throw new ArgumentException();
-					return result.ToString();
+					return new SafeCoTaskMemString(result.ToString(), CharSet.Unicode, false);
 				}
 
 				var parentFolder = InternalGetParent().GetIShellFolder();
 				var child = PIDL.LastId;
-				return parentFolder.GetDisplayNameOf(child, (SHGDNF)((int)sigdnName & 0xffff));
+				return new SafeCoTaskMemString(parentFolder.GetDisplayNameOf(child, (SHGDNF)((int)sigdnName & 0xffff)), CharSet.Unicode, false);
 			}
 
 			public IShellItem GetParent()
@@ -861,16 +841,15 @@ namespace Vanara.Windows.Shell
 				return new ShellItemImpl(pidlCopy, true);
 			}
 
-			internal IShellFolder GetIShellFolder()
+			private IShellFolder GetIShellFolder()
 			{
-				PIDL dtPidl;
-				SHGetFolderLocation(IntPtr.Zero, 0, SafeTokenHandle.Null, 0, out dtPidl);
-				if (Desktop.PIDL.Equals(dtPidl))
-					return Desktop.GetIShellFolder();
-				return (IShellFolder)Desktop.GetIShellFolder().BindToObject(PIDL, null, typeof(IShellFolder).GUID);
+				SHGetFolderLocation(IntPtr.Zero, 0, SafeTokenHandle.Null, 0, out var dtPidl);
+				if (ShellFolder.Desktop.PIDL.Equals(dtPidl))
+					return ShellFolder.Desktop.iShellFolder;
+				return (IShellFolder)ShellFolder.Desktop.iShellFolder.BindToObject(PIDL, null, typeof(IShellFolder).GUID);
 			}
 
-			internal ShellItemImpl InternalGetParent()
+			private ShellItemImpl InternalGetParent()
 			{
 				var pidlCopy = new PIDL(PIDL);
 				return pidlCopy.RemoveLastId() ? new ShellItemImpl(pidlCopy, true) : this;
