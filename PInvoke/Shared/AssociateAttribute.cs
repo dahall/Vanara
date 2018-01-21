@@ -26,9 +26,9 @@ namespace Vanara.PInvoke
 		/// <summary>Retrieves the Guid associated with an enum value.</summary>
 		/// <typeparam name="T">An enum type.</typeparam>
 		/// <param name="value">The enum value.</param>
-		/// <returns>The GUID.</returns>
+		/// <returns>The GUID associated with the <paramref name="value"/> or <see cref="Guid.Empty"/> if no association exists.</returns>
 		public static Guid GetGuidFromEnum<T>(T value) =>
-			typeof(T).GetField(value.ToString()).GetCustomAttributes<AssociateAttribute>().Select(a => a.Guid).FirstOrDefault();
+			typeof(T).GetField(value.ToString())?.GetCustomAttributes<AssociateAttribute>().Select(a => a.Guid).FirstOrDefault() ?? Guid.Empty;
 
 		/// <summary>Tries a lookup of the enum value associated with a Guid.</summary>
 		/// <param name="guid">The unique identifier.</param>
