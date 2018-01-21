@@ -29,11 +29,13 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>No options.</summary>
 			OFASI_NONE = 0,
+
 			/// <summary>
 			/// Select an item and put its name in edit mode. This flag can only be used when a single item is being selected. For multiple item selections, it
 			/// is ignored.
 			/// </summary>
 			OFASI_EDIT = 1,
+
 			/// <summary>
 			/// Select the item or items on the desktop rather than in a Windows Explorer window. Note that if the desktop is obscured behind open windows, it
 			/// will not be made visible.
@@ -58,7 +60,7 @@ namespace Vanara.PInvoke
 			QITIPF_LINKUSETARGET = 0x00000004,
 
 			/// <summary>Search the entire namespace for the information. This value can result in a delayed response time.</summary>
-			QITIPF_USESLOWTIP = 0x00000008,  // Flag says it's OK to take a long time generating tip
+			QITIPF_USESLOWTIP = 0x00000008, // Flag says it's OK to take a long time generating tip
 
 			/// <summary><c>Windows Vista and later.</c> Put the info tip on a single line.</summary>
 			QITIPF_SINGLELINE = 0x00000010,
@@ -75,24 +77,31 @@ namespace Vanara.PInvoke
 			/// AppUserModelID that associates it with a particular process or application.
 			/// </summary>
 			SHARD_APPIDINFO = 4,
+
 			/// <summary>
 			/// <c>Windows 7 and later.</c> The pv parameter points to a SHARDAPPIDINFOIDLIST structure that pairs an absolute PIDL that identifies the item with
 			/// an AppUserModelID that associates it with a particular process or application.
 			/// </summary>
 			SHARD_APPIDINFOIDLIST = 5,
+
 			/// <summary>
 			/// <c>Windows 7 and later.</c> The pv parameter points to a SHARDAPPIDINFOLINK structure that pairs an IShellLink that identifies the item with an
 			/// AppUserModelID that associates it with a particular process or application.
 			/// </summary>
 			SHARD_APPIDINFOLINK = 7,
+
 			/// <summary><c>Windows 7 and later.</c> The pv parameter is an interface pointer to an IShellLink object.</summary>
 			SHARD_LINK = 6,
+
 			/// <summary>The pv parameter points to a null-terminated ANSI string with the path and file name of the object.</summary>
 			SHARD_PATHA = 2,
+
 			/// <summary>The pv parameter points to a null-terminated Unicode string with the path and file name of the object.</summary>
 			SHARD_PATHW = 3,
+
 			/// <summary>The pv parameter points to a PIDL that identifies the document's file object. PIDLs that identify non-file objects are not accepted.</summary>
 			SHARD_PIDL = 1,
+
 			/// <summary><c>Windows 7 and later.</c> The pv parameter is an interface pointer to an IShellItem object.</summary>
 			SHARD_SHELLITEM = 8
 		}
@@ -103,44 +112,64 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>The item is a registered item on the desktop.</summary>
 			SHDID_ROOT_REGITEM = 1,
+
 			/// <summary>The item is a file.</summary>
 			SHDID_FS_FILE = 2,
+
 			/// <summary>The item is a folder.</summary>
 			SHDID_FS_DIRECTORY = 3,
+
 			/// <summary>The item is an unidentified item in the file system.</summary>
 			SHDID_FS_OTHER = 4,
+
 			/// <summary>The item is a 3.5-inch floppy drive.</summary>
 			SHDID_COMPUTER_DRIVE35 = 5,
+
 			/// <summary>The item is a 5.25-inch floppy drive.</summary>
 			SHDID_COMPUTER_DRIVE525 = 6,
+
 			/// <summary>The item is a removable disk.</summary>
 			SHDID_COMPUTER_REMOVABLE = 7,
+
 			/// <summary>The item is a fixed hard disk.</summary>
 			SHDID_COMPUTER_FIXED = 8,
+
 			/// <summary>The item is a drive that is mapped to a network share.</summary>
 			SHDID_COMPUTER_NETDRIVE = 9,
+
 			/// <summary>The item is a CD-ROM drive.</summary>
 			SHDID_COMPUTER_CDROM = 10,
+
 			/// <summary>The item is a RAM disk.</summary>
 			SHDID_COMPUTER_RAMDISK = 11,
+
 			/// <summary>The item is an unidentified system device.</summary>
 			SHDID_COMPUTER_OTHER = 12,
+
 			/// <summary>The item is a network domain.</summary>
 			SHDID_NET_DOMAIN = 13,
+
 			/// <summary>The item is a network server.</summary>
 			SHDID_NET_SERVER = 14,
+
 			/// <summary>The item is a network share.</summary>
 			SHDID_NET_SHARE = 15,
+
 			/// <summary>Not currently used.</summary>
 			SHDID_NET_RESTOFNET = 16,
+
 			/// <summary>The item is an unidentified network resource.</summary>
 			SHDID_NET_OTHER = 17,
+
 			/// <summary>Windows XP and later. Not currently used.</summary>
 			SHDID_COMPUTER_IMAGING = 18,
+
 			/// <summary>Windows XP and later. Not currently used.</summary>
 			SHDID_COMPUTER_AUDIO = 19,
+
 			/// <summary>Windows XP and later. The item is the system shared documents folder.</summary>
 			SHDID_COMPUTER_SHAREDDOCS = 20,
+
 			/// <summary>Windows Vista and later. The item is a mobile device, such as a personal digital assistant (PDA).</summary>
 			SHDID_MOBILE_DEVICE = 21,
 		}
@@ -152,10 +181,12 @@ namespace Vanara.PInvoke
 			/// <summary>Format used for file system objects. The pv parameter is the address of a WIN32_FIND_DATA structure.</summary>
 			[CorrespondingType(typeof(WIN32_FIND_DATA), CorrepsondingAction.Get)]
 			SHGDFIL_FINDDATA = 1,
+
 			/// <summary>Format used for network resources. The pv parameter is the address of a NETRESOURCE structure.</summary>
 			// TODO: Define NETRESOURCE (https://msdn.microsoft.com/en-us/library/windows/desktop/aa385353(v=vs.85).aspx)
 			//[CorrespondingType(typeof(NETRESOURCE), CorrepsondingAction.Get)]
 			SHGDFIL_NETRESOURCE = 2,
+
 			/// <summary>Version 4.71. Format used for network resources. The pv parameter is the address of an SHDESCRIPTIONID structure.</summary>
 			[CorrespondingType(typeof(SHDESCRIPTIONID), CorrepsondingAction.Get)]
 			SHGDFIL_DESCRIPTIONID = 3
@@ -167,6 +198,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Retrieve the folder's current path.</summary>
 			SHGFP_TYPE_CURRENT = 0,
+
 			/// <summary>Retrieve the folder's default path.</summary>
 			SHGFP_TYPE_DEFAULT = 1
 		}
@@ -180,25 +212,70 @@ namespace Vanara.PInvoke
 			/// Display Properties, the image is 48x48 pixels.
 			/// </summary>
 			SHIL_LARGE = 0,
+
 			/// <summary>These images are the Shell standard small icon size of 16x16, but the size can be customized by the user.</summary>
 			SHIL_SMALL = 1,
+
 			/// <summary>These images are the Shell standard extra-large icon size. This is typically 48x48, but the size can be customized by the user.</summary>
 			SHIL_EXTRALARGE = 2,
+
 			/// <summary>These images are the size specified by GetSystemMetrics called with SM_CXSMICON and GetSystemMetrics called with SM_CYSMICON.</summary>
 			SHIL_SYSSMALL = 3,
+
 			/// <summary>Windows Vista and later. The image is normally 256x256 pixels.</summary>
-			SHIL_JUMBO = 4,												
+			SHIL_JUMBO = 4,
 		}
 
 		/// <summary>
-		/// Notifies the system that an item has been accessed, for the purposes of tracking those items used most recently and most frequently. This function can also be used to clear all usage data.
+		/// CSIDL (constant special item ID list) values provide a unique system-independent way to identify special folders used frequently by applications, but
+		/// which may not have the same name or location on any given system. For example, the system folder may be "C:\Windows" on one system and "C:\Winnt" on
+		/// another. These constants are defined in Shlobj.h.
+		/// </summary>
+		[PInvokeData("Shlobj.h", MSDNShortId = "bb762494")]
+		internal enum CSIDL
+		{
+			CSIDL_ADMINTOOLS = 0x0030,
+			CSIDL_CDBURN_AREA = 0x003b,
+			CSIDL_COMMON_ADMINTOOLS = 0x002f,
+			CSIDL_COMMON_DESKTOPDIRECTORY = 0x0019,
+			CSIDL_COMMON_DOCUMENTS = 0x002e,
+			CSIDL_COMMON_MUSIC = 0x0035,
+			CSIDL_COMMON_OEM_LINKS = 0x003a,
+			CSIDL_COMMON_PICTURES = 0x0036,
+			CSIDL_COMMON_PROGRAMS = 0X0017,
+			CSIDL_COMMON_STARTMENU = 0x0016,
+			CSIDL_COMMON_STARTUP = 0x0018,
+			CSIDL_COMMON_TEMPLATES = 0x002d,
+			CSIDL_COMMON_VIDEO = 0x0037,
+			CSIDL_FLAG_CREATE = 0x8000, // force folder creation in SHGetFolderPath
+			CSIDL_FLAG_DONT_VERIFY = 0x4000, // return an unverified folder path
+			CSIDL_FONTS = 0x0014, // windows\fonts
+			CSIDL_MYVIDEO = 0x000e, // "My Videos" folder
+			CSIDL_NETHOOD = 0x0013, // %APPDATA%\Microsoft\Windows\Network Shortcuts
+			CSIDL_PRINTHOOD = 0x001b, // %APPDATA%\Microsoft\Windows\Printer Shortcuts
+			CSIDL_PROFILE = 0x0028, // %USERPROFILE% (%SystemDrive%\Users\%USERNAME%)
+			CSIDL_PROGRAM_FILES_COMMONX86 = 0x002c, // x86 Program Files\Common on RISC
+			CSIDL_PROGRAM_FILESX86 = 0x002a, // x86 C:\Program Files on RISC
+			CSIDL_RESOURCES = 0x0038, // %windir%\Resources
+			CSIDL_RESOURCES_LOCALIZED = 0x0039, // %windir%\resources\0409 (code page)
+			CSIDL_SYSTEMX86 = 0x0029, // %windir%\system32
+			CSIDL_WINDOWS = 0x0024, // GetWindowsDirectory()
+		}
+
+		/// <summary>
+		/// Notifies the system that an item has been accessed, for the purposes of tracking those items used most recently and most frequently. This function
+		/// can also be used to clear all usage data.
 		/// </summary>
 		/// <param name="uFlags">A value from the SHARD enumeration that indicates the form of the information pointed to by the pv parameter.</param>
-		/// <param name="pv">A pointer to data that identifies the item that has been accessed. The item can be specified in this parameter in one of the following forms:
+		/// <param name="pv">
+		/// A pointer to data that identifies the item that has been accessed. The item can be specified in this parameter in one of the following forms:
 		/// <list type="bullet">
 		/// <item><definition>A null-terminated string that contains the path and file name of the item.</definition></item>
 		/// <item><definition>A PIDL that identifies the item's file object.</definition></item>
-		/// <item><definition>Windows 7 and later only. A SHARDAPPIDINFO, SHARDAPPIDINFOIDLIST, or SHARDAPPIDINFOLINK structure that identifies the item through an AppUserModelID. See Application User Model IDs (AppUserModelIDs) for more information.</definition></item>
+		/// <item>
+		/// <definition>Windows 7 and later only. A SHARDAPPIDINFO, SHARDAPPIDINFOIDLIST, or SHARDAPPIDINFOLINK structure that identifies the item through an
+		/// AppUserModelID. See Application User Model IDs (AppUserModelIDs) for more information.</definition>
+		/// </item>
 		/// <item><definition>Windows 7 and later only. An IShellLink object that identifies the item through a shortcut.</definition></item>
 		/// </list>
 		/// <para>Set this parameter to NULL to clear all usage data on all items.</para>
@@ -209,14 +286,19 @@ namespace Vanara.PInvoke
 		public static extern void SHAddToRecentDocs(SHARD uFlags, IShellLinkW pv);
 
 		/// <summary>
-		/// Notifies the system that an item has been accessed, for the purposes of tracking those items used most recently and most frequently. This function can also be used to clear all usage data.
+		/// Notifies the system that an item has been accessed, for the purposes of tracking those items used most recently and most frequently. This function
+		/// can also be used to clear all usage data.
 		/// </summary>
 		/// <param name="uFlags">A value from the SHARD enumeration that indicates the form of the information pointed to by the pv parameter.</param>
-		/// <param name="pv">A pointer to data that identifies the item that has been accessed. The item can be specified in this parameter in one of the following forms:
+		/// <param name="pv">
+		/// A pointer to data that identifies the item that has been accessed. The item can be specified in this parameter in one of the following forms:
 		/// <list type="bullet">
 		/// <item><definition>A null-terminated string that contains the path and file name of the item.</definition></item>
 		/// <item><definition>A PIDL that identifies the item's file object.</definition></item>
-		/// <item><definition>Windows 7 and later only. A SHARDAPPIDINFO, SHARDAPPIDINFOIDLIST, or SHARDAPPIDINFOLINK structure that identifies the item through an AppUserModelID. See Application User Model IDs (AppUserModelIDs) for more information.</definition></item>
+		/// <item>
+		/// <definition>Windows 7 and later only. A SHARDAPPIDINFO, SHARDAPPIDINFOIDLIST, or SHARDAPPIDINFOLINK structure that identifies the item through an
+		/// AppUserModelID. See Application User Model IDs (AppUserModelIDs) for more information.</definition>
+		/// </item>
 		/// <item><definition>Windows 7 and later only. An IShellLink object that identifies the item through a shortcut.</definition></item>
 		/// </list>
 		/// <para>Set this parameter to NULL to clear all usage data on all items.</para>
@@ -227,14 +309,19 @@ namespace Vanara.PInvoke
 		public static extern void SHAddToRecentDocs(SHARD uFlags, [MarshalAs(UnmanagedType.LPWStr)] string pv);
 
 		/// <summary>
-		/// Notifies the system that an item has been accessed, for the purposes of tracking those items used most recently and most frequently. This function can also be used to clear all usage data.
+		/// Notifies the system that an item has been accessed, for the purposes of tracking those items used most recently and most frequently. This function
+		/// can also be used to clear all usage data.
 		/// </summary>
 		/// <param name="uFlags">A value from the SHARD enumeration that indicates the form of the information pointed to by the pv parameter.</param>
-		/// <param name="pv">A pointer to data that identifies the item that has been accessed. The item can be specified in this parameter in one of the following forms:
+		/// <param name="pv">
+		/// A pointer to data that identifies the item that has been accessed. The item can be specified in this parameter in one of the following forms:
 		/// <list type="bullet">
 		/// <item><definition>A null-terminated string that contains the path and file name of the item.</definition></item>
 		/// <item><definition>A PIDL that identifies the item's file object.</definition></item>
-		/// <item><definition>Windows 7 and later only. A SHARDAPPIDINFO, SHARDAPPIDINFOIDLIST, or SHARDAPPIDINFOLINK structure that identifies the item through an AppUserModelID. See Application User Model IDs (AppUserModelIDs) for more information.</definition></item>
+		/// <item>
+		/// <definition>Windows 7 and later only. A SHARDAPPIDINFO, SHARDAPPIDINFOIDLIST, or SHARDAPPIDINFOLINK structure that identifies the item through an
+		/// AppUserModelID. See Application User Model IDs (AppUserModelIDs) for more information.</definition>
+		/// </item>
 		/// <item><definition>Windows 7 and later only. An IShellLink object that identifies the item through a shortcut.</definition></item>
 		/// </list>
 		/// <para>Set this parameter to NULL to clear all usage data on all items.</para>
@@ -254,111 +341,218 @@ namespace Vanara.PInvoke
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762115")]
 		public static extern PIDL SHBrowseForFolder(ref BROWSEINFO lpbi);
 
-		/// <summary>
-		/// Provides a default handler to extract an icon from a file.
-		/// </summary>
+		/// <summary>Provides a default handler to extract an icon from a file.</summary>
 		/// <param name="pszIconFile">A pointer to a null-terminated buffer that contains the path and name of the file from which the icon is extracted.</param>
-		/// <param name="iIndex">The location of the icon within the file named in pszIconFile. If this is a positive number, it refers to the zero-based position of the icon in the file. For instance, 0 refers to the 1st icon in the resource file and 2 refers to the 3rd. If this is a negative number, it refers to the icon's resource ID.</param>
+		/// <param name="iIndex">
+		/// The location of the icon within the file named in pszIconFile. If this is a positive number, it refers to the zero-based position of the icon in the
+		/// file. For instance, 0 refers to the 1st icon in the resource file and 2 refers to the 3rd. If this is a negative number, it refers to the icon's
+		/// resource ID.
+		/// </param>
 		/// <param name="uFlags">A flag that controls the icon extraction.</param>
-		/// <param name="phiconLarge">A pointer to an HICON that, when this function returns successfully, receives the handle of the large version of the icon specified in the LOWORD of nIconSize. This value can be NULL.</param>
-		/// <param name="phiconSmall">A pointer to an HICON that, when this function returns successfully, receives the handle of the small version of the icon specified in the HIWORD of nIconSize.</param>
-		/// <param name="nIconSize">A value that contains the large icon size in its LOWORD and the small icon size in its HIWORD. Size is measured in pixels. Pass 0 to specify default large and small sizes.</param>
+		/// <param name="phiconLarge">
+		/// A pointer to an HICON that, when this function returns successfully, receives the handle of the large version of the icon specified in the LOWORD of
+		/// nIconSize. This value can be NULL.
+		/// </param>
+		/// <param name="phiconSmall">
+		/// A pointer to an HICON that, when this function returns successfully, receives the handle of the small version of the icon specified in the HIWORD of nIconSize.
+		/// </param>
+		/// <param name="nIconSize">
+		/// A value that contains the large icon size in its LOWORD and the small icon size in its HIWORD. Size is measured in pixels. Pass 0 to specify default
+		/// large and small sizes.
+		/// </param>
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762149")]
-		public static extern HRESULT SHDefExtractIcon(string pszIconFile, int iIndex, uint uFlags, ref IntPtr phiconLarge, ref IntPtr phiconSmall, uint nIconSize);
+		public static extern HRESULT SHDefExtractIcon(string pszIconFile, int iIndex, uint uFlags, ref IntPtr phiconLarge,
+			ref IntPtr phiconSmall, uint nIconSize);
 
-		/// <summary>
-		/// Provides a default handler to extract an icon from a file.
-		/// </summary>
+		/// <summary>Provides a default handler to extract an icon from a file.</summary>
 		/// <param name="pszIconFile">A pointer to a null-terminated buffer that contains the path and name of the file from which the icon is extracted.</param>
-		/// <param name="iIndex">The location of the icon within the file named in pszIconFile. If this is a positive number, it refers to the zero-based position of the icon in the file. For instance, 0 refers to the 1st icon in the resource file and 2 refers to the 3rd. If this is a negative number, it refers to the icon's resource ID.</param>
+		/// <param name="iIndex">
+		/// The location of the icon within the file named in pszIconFile. If this is a positive number, it refers to the zero-based position of the icon in the
+		/// file. For instance, 0 refers to the 1st icon in the resource file and 2 refers to the 3rd. If this is a negative number, it refers to the icon's
+		/// resource ID.
+		/// </param>
 		/// <param name="uFlags">A flag that controls the icon extraction.</param>
-		/// <param name="phiconLarge">A pointer to an HICON that, when this function returns successfully, receives the handle of the large version of the icon specified in the LOWORD of nIconSize. This value can be NULL.</param>
-		/// <param name="phiconSmall">A pointer to an HICON that, when this function returns successfully, receives the handle of the small version of the icon specified in the HIWORD of nIconSize.</param>
-		/// <param name="nIconSize">A value that contains the large icon size in its LOWORD and the small icon size in its HIWORD. Size is measured in pixels. Pass 0 to specify default large and small sizes.</param>
+		/// <param name="phiconLarge">
+		/// A pointer to an HICON that, when this function returns successfully, receives the handle of the large version of the icon specified in the LOWORD of
+		/// nIconSize. This value can be NULL.
+		/// </param>
+		/// <param name="phiconSmall">
+		/// A pointer to an HICON that, when this function returns successfully, receives the handle of the small version of the icon specified in the HIWORD of nIconSize.
+		/// </param>
+		/// <param name="nIconSize">
+		/// A value that contains the large icon size in its LOWORD and the small icon size in its HIWORD. Size is measured in pixels. Pass 0 to specify default
+		/// large and small sizes.
+		/// </param>
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762149")]
-		public static extern HRESULT SHDefExtractIcon(string pszIconFile, int iIndex, uint uFlags, IntPtr phiconLarge, ref IntPtr phiconSmall, uint nIconSize);
+		public static extern HRESULT SHDefExtractIcon(string pszIconFile, int iIndex, uint uFlags, IntPtr phiconLarge,
+			ref IntPtr phiconSmall, uint nIconSize);
 
-		/// <summary>
-		/// Retrieves extended property data from a relative identifier list.
-		/// </summary>
-		/// <param name="psf">The address of the parent IShellFolder interface. This must be the immediate parent of the ITEMIDLIST structure referenced by the pidl parameter.</param>
+		/// <summary>Retrieves extended property data from a relative identifier list.</summary>
+		/// <param name="psf">
+		/// The address of the parent IShellFolder interface. This must be the immediate parent of the ITEMIDLIST structure referenced by the pidl parameter.
+		/// </param>
 		/// <param name="pidl">A pointer to an ITEMIDLIST structure that identifies the object relative to the folder specified in psf.</param>
-		/// <param name="nFormat">The format in which the data is being requested. </param>
-		/// <param name="pv">A pointer to a buffer that, when this function returns successfully, receives the requested data. The format of this buffer is determined by nFormat.
-		/// <para>If nFormat is SHGDFIL_NETRESOURCE, there are two possible cases. If the buffer is large enough, the net resource's string information (fields for the network name, local name, provider, and comments) will be placed into the buffer. If the buffer is not large enough, only the net resource structure will be placed into the buffer and the string information pointers will be NULL.</para></param>
+		/// <param name="nFormat">The format in which the data is being requested.</param>
+		/// <param name="pv">
+		/// A pointer to a buffer that, when this function returns successfully, receives the requested data. The format of this buffer is determined by nFormat.
+		/// <para>
+		/// If nFormat is SHGDFIL_NETRESOURCE, there are two possible cases. If the buffer is large enough, the net resource's string information (fields for the
+		/// network name, local name, provider, and comments) will be placed into the buffer. If the buffer is not large enough, only the net resource structure
+		/// will be placed into the buffer and the string information pointers will be NULL.
+		/// </para>
+		/// </param>
 		/// <param name="cb">Size of the buffer at pv, in bytes.</param>
-		/// <remarks>This function extracts only information that is present in the pointer to an item identifier list (PIDL). Since the content of a PIDL depends on the folder object that created the PIDL, there is no guarantee that all requested information will be available. In addition, the information that is returned reflects the state of the object at the time the PIDL was created. The current state of the object could be different. For example, if you set nFormat to SHGDFIL_FINDDATA, the function might assign meaningful values to only some of the members of the WIN32_FIND_DATA structure. The remaining members will be set to zero. To retrieve complete current information on a file system file or folder, use standard file system functions such as GetFileTime or FindFirstFile.
-		/// <para>E_INVALIDARG is returned if the psf, pidl, pv, or cb parameter does not match the nFormat parameter, or if nFormat is not one of the specific SHGDFIL_ values shown above.</para></remarks>
+		/// <remarks>
+		/// This function extracts only information that is present in the pointer to an item identifier list (PIDL). Since the content of a PIDL depends on the
+		/// folder object that created the PIDL, there is no guarantee that all requested information will be available. In addition, the information that is
+		/// returned reflects the state of the object at the time the PIDL was created. The current state of the object could be different. For example, if you
+		/// set nFormat to SHGDFIL_FINDDATA, the function might assign meaningful values to only some of the members of the WIN32_FIND_DATA structure. The
+		/// remaining members will be set to zero. To retrieve complete current information on a file system file or folder, use standard file system functions
+		/// such as GetFileTime or FindFirstFile.
+		/// <para>
+		/// E_INVALIDARG is returned if the psf, pidl, pv, or cb parameter does not match the nFormat parameter, or if nFormat is not one of the specific
+		/// SHGDFIL_ values shown above.
+		/// </para>
+		/// </remarks>
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762174")]
-		public static extern HRESULT SHGetDataFromIDList([In, MarshalAs(UnmanagedType.Interface)] IShellFolder psf, [In] PIDL pidl, SHGetDataFormat nFormat, [In, Out] IntPtr pv, int cb);
+		public static extern HRESULT SHGetDataFromIDList([In, MarshalAs(UnmanagedType.Interface)]
+			IShellFolder psf, [In] PIDL pidl, SHGetDataFormat nFormat, [In, Out] IntPtr pv, int cb);
 
-		/// <summary>
-		/// Retrieves the IShellFolder interface for the desktop folder, which is the root of the Shell's namespace.
-		/// </summary>
-		/// <param name="ppv">When this method returns, receives an IShellFolder interface pointer for the desktop folder. The calling application is responsible for eventually freeing the interface by calling its IUnknown::Release method.</param>
+		/// <summary>Retrieves the IShellFolder interface for the desktop folder, which is the root of the Shell's namespace.</summary>
+		/// <param name="ppv">
+		/// When this method returns, receives an IShellFolder interface pointer for the desktop folder. The calling application is responsible for eventually
+		/// freeing the interface by calling its IUnknown::Release method.
+		/// </param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[DllImport(Lib.Shell32, CharSet = CharSet.Unicode, ExactSpelling = true)]
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762175")]
 		public static extern HRESULT SHGetDesktopFolder([MarshalAs(UnmanagedType.Interface)] out IShellFolder ppv);
 
-		/// <summary>
-		/// Deprecated. Retrieves the path of a folder as an ITEMIDLIST structure.
-		/// </summary>
+		/// <summary>Deprecated. Retrieves the path of a folder as an ITEMIDLIST structure.</summary>
 		/// <param name="hwndOwner">Reserved.</param>
-		/// <param name="nFolder">A CSIDL value that identifies the folder to be located. The folders associated with the CSIDLs might not exist on a particular system.</param>
-		/// <param name="hToken">An access token that can be used to represent a particular user. It is usually set to NULL, but it may be needed when there are multiple users for those folders that are treated as belonging to a single user. The most commonly used folder of this type is My Documents. The calling application is responsible for correct impersonation when hToken is non-NULL. It must have appropriate security privileges for the particular user, and the user's registry hive must be currently mounted.
-		/// <para>Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetFolderLocation to find folder locations (such as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user account is created, and includes special folders such as My Documents and Desktop. Any items added to the Default User folder also appear in any new user account.</para></param>
+		/// <param name="nFolder">
+		/// A CSIDL value that identifies the folder to be located. The folders associated with the CSIDLs might not exist on a particular system.
+		/// </param>
+		/// <param name="hToken">
+		/// An access token that can be used to represent a particular user. It is usually set to NULL, but it may be needed when there are multiple users for
+		/// those folders that are treated as belonging to a single user. The most commonly used folder of this type is My Documents. The calling application is
+		/// responsible for correct impersonation when hToken is non-NULL. It must have appropriate security privileges for the particular user, and the user's
+		/// registry hive must be currently mounted.
+		/// <para>
+		/// Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetFolderLocation to find folder locations (such as
+		/// the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user account is created, and includes special
+		/// folders such as My Documents and Desktop. Any items added to the Default User folder also appear in any new user account.
+		/// </para>
+		/// </param>
 		/// <param name="dwReserved">Reserved.</param>
-		/// <param name="ppidl">The address of a pointer to an item identifier list structure that specifies the folder's location relative to the root of the namespace (the desktop). The ppidl parameter is set to NULL on failure. The calling application is responsible for freeing this resource by calling CoTaskMemFree.</param>
+		/// <param name="ppidl">
+		/// The address of a pointer to an item identifier list structure that specifies the folder's location relative to the root of the namespace (the
+		/// desktop). The ppidl parameter is set to NULL on failure. The calling application is responsible for freeing this resource by calling CoTaskMemFree.
+		/// </param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762180")]
-		public static extern HRESULT SHGetFolderLocation(IntPtr hwndOwner, int nFolder, SafeTokenHandle hToken, int dwReserved, out PIDL ppidl);
+		public static extern HRESULT SHGetFolderLocation(IntPtr hwndOwner, int nFolder, SafeTokenHandle hToken,
+			int dwReserved, out PIDL ppidl);
 
 		/// <summary>
-		/// Deprecated. Gets the path of a folder identified by a CSIDL value.
-		/// <note>As of Windows Vista, this function is merely a wrapper for SHGetKnownFolderPath. The CSIDL value is translated to its associated KNOWNFOLDERID and then SHGetKnownFolderPath is called. New applications should use the known folder system rather than the older CSIDL system, which is supported only for backward compatibility.</note>
+		/// Deprecated. Gets the path of a folder identified by a CSIDL value. <note>As of Windows Vista, this function is merely a wrapper for
+		/// SHGetKnownFolderPath. The CSIDL value is translated to its associated KNOWNFOLDERID and then SHGetKnownFolderPath is called. New applications should
+		/// use the known folder system rather than the older CSIDL system, which is supported only for backward compatibility.</note>
 		/// </summary>
 		/// <param name="hwndOwner">Reserved.</param>
-		/// <param name="nFolder">A CSIDL value that identifies the folder whose path is to be retrieved. Only real folders are valid. If a virtual folder is specified, this function fails. You can force creation of a folder by combining the folder's CSIDL with CSIDL_FLAG_CREATE.</param>
-		/// <param name="hToken">An access token that represents a particular user. If this parameter is NULL, which is the most common usage, the function requests the known folder for the current user.
-		/// <para>Request a specific user's folder by passing the hToken of that user. This is typically done in the context of a service that has sufficient privileges to retrieve the token of a given user. That token must be opened with TOKEN_QUERY and TOKEN_IMPERSONATE rights. In some cases, you also need to include TOKEN_DUPLICATE. In addition to passing the user's hToken, the registry hive of that specific user must be mounted. See Access Control for further discussion of access control issues.</para>
-		/// <para>Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetKnownFolderPath to find folder locations (such as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user account is created, and includes special folders such as Documents and Desktop. Any items added to the Default User folder also appear in any new user account. Note that access to the Default User folders requires administrator privileges.</para></param>
-		/// <param name="dwFlags">Flags that specify the path to be returned. This value is used in cases where the folder associated with a KNOWNFOLDERID (or CSIDL) can be moved, renamed, redirected, or roamed across languages by a user or administrator.
-		/// <para>The known folder system that underlies SHGetFolderPath allows users or administrators to redirect a known folder to a location that suits their needs. This is achieved by calling IKnownFolderManager::Redirect, which sets the "current" value of the folder associated with the SHGFP_TYPE_CURRENT flag.</para>
-		/// <para>The default value of the folder, which is the location of the folder if a user or administrator had not redirected it elsewhere, is retrieved by specifying the SHGFP_TYPE_DEFAULT flag. This value can be used to implement a "restore defaults" feature for a known folder.</para>
-		/// <para>For example, the default value (SHGFP_TYPE_DEFAULT) for FOLDERID_Music (CSIDL_MYMUSIC) is "C:\Users\user name\Music". If the folder was redirected, the current value (SHGFP_TYPE_CURRENT) might be "D:\Music". If the folder has not been redirected, then SHGFP_TYPE_DEFAULT and SHGFP_TYPE_CURRENT retrieve the same path.</para></param>
-		/// <param name="pszPath">A pointer to a null-terminated string of length MAX_PATH which will receive the path. If an error occurs or S_FALSE is returned, this string will be empty. The returned path does not include a trailing backslash. For example, "C:\Users" is returned rather than "C:\Users\".</param>
+		/// <param name="nFolder">
+		/// A CSIDL value that identifies the folder whose path is to be retrieved. Only real folders are valid. If a virtual folder is specified, this function
+		/// fails. You can force creation of a folder by combining the folder's CSIDL with CSIDL_FLAG_CREATE.
+		/// </param>
+		/// <param name="hToken">
+		/// An access token that represents a particular user. If this parameter is NULL, which is the most common usage, the function requests the known folder
+		/// for the current user.
+		/// <para>
+		/// Request a specific user's folder by passing the hToken of that user. This is typically done in the context of a service that has sufficient
+		/// privileges to retrieve the token of a given user. That token must be opened with TOKEN_QUERY and TOKEN_IMPERSONATE rights. In some cases, you also
+		/// need to include TOKEN_DUPLICATE. In addition to passing the user's hToken, the registry hive of that specific user must be mounted. See Access
+		/// Control for further discussion of access control issues.
+		/// </para>
+		/// <para>
+		/// Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetKnownFolderPath to find folder locations (such
+		/// as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user account is created, and includes special
+		/// folders such as Documents and Desktop. Any items added to the Default User folder also appear in any new user account. Note that access to the
+		/// Default User folders requires administrator privileges.
+		/// </para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// Flags that specify the path to be returned. This value is used in cases where the folder associated with a KNOWNFOLDERID (or CSIDL) can be moved,
+		/// renamed, redirected, or roamed across languages by a user or administrator.
+		/// <para>
+		/// The known folder system that underlies SHGetFolderPath allows users or administrators to redirect a known folder to a location that suits their
+		/// needs. This is achieved by calling IKnownFolderManager::Redirect, which sets the "current" value of the folder associated with the SHGFP_TYPE_CURRENT flag.
+		/// </para>
+		/// <para>
+		/// The default value of the folder, which is the location of the folder if a user or administrator had not redirected it elsewhere, is retrieved by
+		/// specifying the SHGFP_TYPE_DEFAULT flag. This value can be used to implement a "restore defaults" feature for a known folder.
+		/// </para>
+		/// <para>
+		/// For example, the default value (SHGFP_TYPE_DEFAULT) for FOLDERID_Music (CSIDL_MYMUSIC) is "C:\Users\user name\Music". If the folder was redirected,
+		/// the current value (SHGFP_TYPE_CURRENT) might be "D:\Music". If the folder has not been redirected, then SHGFP_TYPE_DEFAULT and SHGFP_TYPE_CURRENT
+		/// retrieve the same path.
+		/// </para>
+		/// </param>
+		/// <param name="pszPath">
+		/// A pointer to a null-terminated string of length MAX_PATH which will receive the path. If an error occurs or S_FALSE is returned, this string will be
+		/// empty. The returned path does not include a trailing backslash. For example, "C:\Users" is returned rather than "C:\Users\".
+		/// </param>
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762181")]
-		public static extern HRESULT SHGetFolderPath(IntPtr hwndOwner, int nFolder, [In, Optional] SafeTokenHandle hToken, SHGFP dwFlags, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPath);
+		public static extern HRESULT SHGetFolderPath(IntPtr hwndOwner, int nFolder, [In, Optional] SafeTokenHandle hToken,
+			SHGFP dwFlags, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPath);
 
 		/// <summary>
-		/// Retrieves the full path of a known folder identified by the folder's KNOWNFOLDERID. This extends SHGetKnownFolderPath by allowing you to set the initial size of the string buffer.
+		/// Retrieves the full path of a known folder identified by the folder's KNOWNFOLDERID. This extends SHGetKnownFolderPath by allowing you to set the
+		/// initial size of the string buffer.
 		/// </summary>
 		/// <param name="rfid">A reference to the KNOWNFOLDERID that identifies the folder.</param>
 		/// <param name="dwFlags">Flags that specify special retrieval options. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.</param>
-		/// <param name="hToken">An access token that represents a particular user. If this parameter is NULL, which is the most common usage, the function requests the known folder for the current user.
-		/// <para>Request a specific user's folder by passing the hToken of that user. This is typically done in the context of a service that has sufficient privileges to retrieve the token of a given user. That token must be opened with TOKEN_QUERY and TOKEN_IMPERSONATE rights. In some cases, you also need to include TOKEN_DUPLICATE. In addition to passing the user's hToken, the registry hive of that specific user must be mounted. See Access Control for further discussion of access control issues.</para>
-		/// <para>Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetKnownFolderPath to find folder locations (such as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user account is created, and includes special folders such as Documents and Desktop. Any items added to the Default User folder also appear in any new user account. Note that access to the Default User folders requires administrator privileges.</para></param>
-		/// <param name="pszPath">A null-terminated, Unicode string. This buffer must be of size cchPath. When SHGetFolderPathEx returns successfully, this parameter contains the path for the known folder.</param>
+		/// <param name="hToken">
+		/// An access token that represents a particular user. If this parameter is NULL, which is the most common usage, the function requests the known folder
+		/// for the current user.
+		/// <para>
+		/// Request a specific user's folder by passing the hToken of that user. This is typically done in the context of a service that has sufficient
+		/// privileges to retrieve the token of a given user. That token must be opened with TOKEN_QUERY and TOKEN_IMPERSONATE rights. In some cases, you also
+		/// need to include TOKEN_DUPLICATE. In addition to passing the user's hToken, the registry hive of that specific user must be mounted. See Access
+		/// Control for further discussion of access control issues.
+		/// </para>
+		/// <para>
+		/// Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetKnownFolderPath to find folder locations (such
+		/// as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user account is created, and includes special
+		/// folders such as Documents and Desktop. Any items added to the Default User folder also appear in any new user account. Note that access to the
+		/// Default User folders requires administrator privileges.
+		/// </para>
+		/// </param>
+		/// <param name="pszPath">
+		/// A null-terminated, Unicode string. This buffer must be of size cchPath. When SHGetFolderPathEx returns successfully, this parameter contains the path
+		/// for the known folder.
+		/// </param>
 		/// <param name="cchPath">The size of the ppszPath buffer, in characters.</param>
 		[DllImport(Lib.Shell32, CharSet = CharSet.Unicode, ExactSpelling = true)]
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Shlobj.h", MSDNShortId = "mt757093")]
-		public static extern HRESULT SHGetFolderPathEx([In, MarshalAs(UnmanagedType.LPStruct)] Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] SafeTokenHandle hToken, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPath, uint cchPath);
+		public static extern HRESULT SHGetFolderPathEx([In, MarshalAs(UnmanagedType.LPStruct)]
+			Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] SafeTokenHandle hToken,
+			[Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPath, uint cchPath);
 
 		/// <summary>Retrieves the pointer to an item identifier list (PIDL) of an object.</summary>
 		/// <param name="iUnknown">A pointer to the IUnknown of the object from which to get the PIDL.</param>
 		/// <param name="ppidl">When this function returns, contains a pointer to the PIDL of the given object.</param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762184")]
-		public static extern HRESULT SHGetIDListFromObject([MarshalAs(UnmanagedType.IUnknown)] object iUnknown, out PIDL ppidl);
+		public static extern HRESULT SHGetIDListFromObject([MarshalAs(UnmanagedType.IUnknown)] object iUnknown,
+			out PIDL ppidl);
 
 		/// <summary>Retrieves an image list.</summary>
 		/// <param name="iImageList">The image type contained in the list.</param>
@@ -366,7 +560,8 @@ namespace Vanara.PInvoke
 		/// <param name="ppv">When this method returns, contains the interface pointer requested in riid. This is typically IImageList.</param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762185")]
-		public static extern HRESULT SHGetImageList(SHIL iImageList, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IImageList ppv);
+		public static extern HRESULT SHGetImageList(SHIL iImageList, [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+			out IImageList ppv);
 
 		/// <summary>Retrieves the path of a known folder as an ITEMIDLIST structure.</summary>
 		/// <param name="rfid">
@@ -397,13 +592,15 @@ namespace Vanara.PInvoke
 		/// </param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762187")]
-		public static extern HRESULT SHGetKnownFolderIDList([In, MarshalAs(UnmanagedType.LPStruct)] Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] SafeTokenHandle hToken, out PIDL ppidl);
+		public static extern HRESULT SHGetKnownFolderIDList([In, MarshalAs(UnmanagedType.LPStruct)]
+			Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] SafeTokenHandle hToken, out PIDL ppidl);
 
-		/// <summary>
-		/// Retrieves an IShellItem object that represents a known folder.
-		/// </summary>
+		/// <summary>Retrieves an IShellItem object that represents a known folder.</summary>
 		/// <param name="rfid">A reference to the KNOWNFOLDERID, a GUID that identifies the folder that contains the item.</param>
-		/// <param name="dwFlags">Flags that specify special options used in the retrieval of the known folder IShellItem. This value can be KF_FLAG_DEFAULT; otherwise, one or more of the KNOWN_FOLDER_FLAG values.</param>
+		/// <param name="dwFlags">
+		/// Flags that specify special options used in the retrieval of the known folder IShellItem. This value can be KF_FLAG_DEFAULT; otherwise, one or more of
+		/// the KNOWN_FOLDER_FLAG values.
+		/// </param>
 		/// <param name="hToken">
 		/// An access token used to represent a particular user. This parameter is usually set to NULL, in which case the function tries to access the current
 		/// user's instance of the folder. However, you may need to assign a value to hToken for those folders that can have multiple users but are treated as
@@ -424,23 +621,41 @@ namespace Vanara.PInvoke
 		/// <param name="ppv">When this method returns, contains the interface pointer requested in riid.</param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "dd378429")]
-		public static extern HRESULT SHGetKnownFolderItem([In, MarshalAs(UnmanagedType.LPStruct)] Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] SafeTokenHandle hToken,
-			[In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+		public static extern HRESULT SHGetKnownFolderItem([In, MarshalAs(UnmanagedType.LPStruct)]
+			Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] SafeTokenHandle hToken,
+			[In, MarshalAs(UnmanagedType.LPStruct)]
+			Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
 
-		/// <summary>
-		/// Retrieves the full path of a known folder identified by the folder's KNOWNFOLDERID.
-		/// </summary>
+		/// <summary>Retrieves the full path of a known folder identified by the folder's KNOWNFOLDERID.</summary>
 		/// <param name="rfid">A reference to the KNOWNFOLDERID that identifies the folder.</param>
 		/// <param name="dwFlags">Flags that specify special retrieval options. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.</param>
-		/// <param name="hToken">An access token that represents a particular user. If this parameter is NULL, which is the most common usage, the function requests the known folder for the current user.
-		/// <para>Request a specific user's folder by passing the hToken of that user. This is typically done in the context of a service that has sufficient privileges to retrieve the token of a given user. That token must be opened with TOKEN_QUERY and TOKEN_IMPERSONATE rights. In some cases, you also need to include TOKEN_DUPLICATE. In addition to passing the user's hToken, the registry hive of that specific user must be mounted. See Access Control for further discussion of access control issues.</para>
-		/// <para>Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetKnownFolderPath to find folder locations (such as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user account is created, and includes special folders such as Documents and Desktop. Any items added to the Default User folder also appear in any new user account. Note that access to the Default User folders requires administrator privileges.</para></param>
-		/// <param name="pszPath">When this method returns, contains the address of a pointer to a null-terminated Unicode string that specifies the path of the known folder. The calling process is responsible for freeing this resource once it is no longer needed by calling CoTaskMemFree. The returned path does not include a trailing backslash. For example, "C:\Users" is returned rather than "C:\Users\".</param>
+		/// <param name="hToken">
+		/// An access token that represents a particular user. If this parameter is NULL, which is the most common usage, the function requests the known folder
+		/// for the current user.
+		/// <para>
+		/// Request a specific user's folder by passing the hToken of that user. This is typically done in the context of a service that has sufficient
+		/// privileges to retrieve the token of a given user. That token must be opened with TOKEN_QUERY and TOKEN_IMPERSONATE rights. In some cases, you also
+		/// need to include TOKEN_DUPLICATE. In addition to passing the user's hToken, the registry hive of that specific user must be mounted. See Access
+		/// Control for further discussion of access control issues.
+		/// </para>
+		/// <para>
+		/// Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetKnownFolderPath to find folder locations (such
+		/// as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user account is created, and includes special
+		/// folders such as Documents and Desktop. Any items added to the Default User folder also appear in any new user account. Note that access to the
+		/// Default User folders requires administrator privileges.
+		/// </para>
+		/// </param>
+		/// <param name="pszPath">
+		/// When this method returns, contains the address of a pointer to a null-terminated Unicode string that specifies the path of the known folder. The
+		/// calling process is responsible for freeing this resource once it is no longer needed by calling CoTaskMemFree. The returned path does not include a
+		/// trailing backslash. For example, "C:\Users" is returned rather than "C:\Users\".
+		/// </param>
 		/// <returns>Returns S_OK if successful, or an error value otherwise.</returns>
 		/// <remarks>This function replaces SHGetFolderPath. That older function is now simply a wrapper for SHGetKnownFolderPath.</remarks>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762188")]
-		public static extern HRESULT SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] SafeTokenHandle hToken, out SafeCoTaskMemHandle pszPath);
+		public static extern HRESULT SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid,
+			KNOWN_FOLDER_FLAG dwFlags, [In, Optional] SafeTokenHandle hToken, out SafeCoTaskMemHandle pszPath);
 
 		/// <summary>Retrieves the full path of a known folder identified by the folder's KNOWNFOLDERID.</summary>
 		/// <param name="id">A reference to the KNOWNFOLDERID that identifies the folder.</param>
@@ -470,9 +685,7 @@ namespace Vanara.PInvoke
 			return path.ToString(-1);
 		}
 
-		/// <summary>
-		/// Retrieves the display name of an item identified by its IDList.
-		/// </summary>
+		/// <summary>Retrieves the display name of an item identified by its IDList.</summary>
 		/// <param name="pidl">A PIDL that identifies the item.</param>
 		/// <param name="sigdnName">A value from the SIGDN enumeration that specifies the type of display name to retrieve.</param>
 		/// <param name="ppszName">A value that, when this function returns successfully, receives the address of a pointer to the retrieved display name.</param>
@@ -480,10 +693,10 @@ namespace Vanara.PInvoke
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762191")]
 		public static extern HRESULT SHGetNameFromIDList(PIDL pidl, SIGDN sigdnName, out SafeCoTaskMemHandle ppszName);
 
-		/// <summary>
-		/// Converts an item identifier list to a file system path.
-		/// </summary>
-		/// <param name="pidl">The address of an item identifier list that specifies a file or directory location relative to the root of the namespace (the desktop).</param>
+		/// <summary>Converts an item identifier list to a file system path.</summary>
+		/// <param name="pidl">
+		/// The address of an item identifier list that specifies a file or directory location relative to the root of the namespace (the desktop).
+		/// </param>
 		/// <param name="pszPath">The address of a buffer to receive the file system path. This buffer must be at least MAX_PATH characters in size.</param>
 		/// <returns>Returns TRUE if successful; otherwise, FALSE.</returns>
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
@@ -491,28 +704,42 @@ namespace Vanara.PInvoke
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762194")]
 		public static extern bool SHGetPathFromIDList(PIDL pidl, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder pszPath);
 
-		/// <summary>
-		/// Opens a Windows Explorer window with specified items in a particular folder selected.
-		/// </summary>
+		/// <summary>Opens a Windows Explorer window with specified items in a particular folder selected.</summary>
 		/// <param name="pidlFolder">A pointer to a fully qualified item ID list that specifies the folder.</param>
-		/// <param name="cidl">A count of items in the selection array, apidl. If cidl is zero, then pidlFolder must point to a fully specified ITEMIDLIST describing a single item to select. This function opens the parent folder and selects that item.</param>
+		/// <param name="cidl">
+		/// A count of items in the selection array, apidl. If cidl is zero, then pidlFolder must point to a fully specified ITEMIDLIST describing a single item
+		/// to select. This function opens the parent folder and selects that item.
+		/// </param>
 		/// <param name="apidl">A pointer to an array of PIDL structures, each of which is an item to select in the target folder referenced by pidlFolder.</param>
 		/// <param name="dwFlags">The optional flags. Under Windows XP this parameter is ignored. In Windows Vista, the following flags are defined.</param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762232")]
-		public static extern HRESULT SHOpenFolderAndSelectItems(PIDL pidlFolder, uint cidl, [In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] PIDL[] apidl, OFASI dwFlags);
+		public static extern HRESULT SHOpenFolderAndSelectItems(PIDL pidlFolder, uint cidl,
+			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)]
+			PIDL[] apidl, OFASI dwFlags);
 
 		/// <summary>
-		/// Translates a Shell namespace object's display name into an item identifier list and returns the attributes of the object. This function is the preferred method to convert a string to a pointer to an item identifier list (PIDL).
+		/// Translates a Shell namespace object's display name into an item identifier list and returns the attributes of the object. This function is the
+		/// preferred method to convert a string to a pointer to an item identifier list (PIDL).
 		/// </summary>
 		/// <param name="pszName">A pointer to a zero-terminated wide string that contains the display name to parse.</param>
 		/// <param name="pbc">A bind context that controls the parsing operation. This parameter is normally set to NULL.</param>
-		/// <param name="ppidl">The address of a pointer to a variable of type ITEMIDLIST that receives the item identifier list for the object. If an error occurs, then this parameter is set to NULL.</param>
-		/// <param name="sfgaoIn">A ULONG value that specifies the attributes to query. To query for one or more attributes, initialize this parameter with the flags that represent the attributes of interest. For a list of available SFGAO flags, see IShellFolder::GetAttributesOf.</param>
-		/// <param name="psfgaoOut">A pointer to a ULONG. On return, those attributes that are true for the object and were requested in sfgaoIn are set. An object's attribute flags can be zero or a combination of SFGAO flags. For a list of available SFGAO flags, see IShellFolder::GetAttributesOf.</param>
+		/// <param name="ppidl">
+		/// The address of a pointer to a variable of type ITEMIDLIST that receives the item identifier list for the object. If an error occurs, then this
+		/// parameter is set to NULL.
+		/// </param>
+		/// <param name="sfgaoIn">
+		/// A ULONG value that specifies the attributes to query. To query for one or more attributes, initialize this parameter with the flags that represent
+		/// the attributes of interest. For a list of available SFGAO flags, see IShellFolder::GetAttributesOf.
+		/// </param>
+		/// <param name="psfgaoOut">
+		/// A pointer to a ULONG. On return, those attributes that are true for the object and were requested in sfgaoIn are set. An object's attribute flags can
+		/// be zero or a combination of SFGAO flags. For a list of available SFGAO flags, see IShellFolder::GetAttributesOf.
+		/// </param>
 		[DllImport(Lib.Shell32, CharSet = CharSet.Unicode, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762236")]
-		public static extern HRESULT SHParseDisplayName([MarshalAs(UnmanagedType.LPWStr)] string pszName, [In, Optional] IntPtr pbc, out PIDL ppidl, SFGAO sfgaoIn, out SFGAO psfgaoOut);
+		public static extern HRESULT SHParseDisplayName([MarshalAs(UnmanagedType.LPWStr)] string pszName,
+			[In, Optional] IntPtr pbc, out PIDL ppidl, SFGAO sfgaoIn, out SFGAO psfgaoOut);
 
 		/// <summary>
 		/// Defines the coordinates of a character cell in a console screen buffer. The origin of the coordinate system (0,0) is at the top, left cell of the buffer.
@@ -641,7 +868,8 @@ namespace Vanara.PInvoke
 			public uint uFontWeight;
 
 			/// <summary>A character array that contains the font's face name.</summary>
-			[MarshalAs(UnmanagedType.LPWStr, SizeConst = LF_FACESIZE)] public string FaceName;
+			[MarshalAs(UnmanagedType.LPWStr, SizeConst = LF_FACESIZE)]
+			public string FaceName;
 
 			/// <summary>The cursor size.</summary>
 			public uint uCursorSize;
@@ -668,7 +896,8 @@ namespace Vanara.PInvoke
 			[MarshalAs(UnmanagedType.Bool)] public bool bHistoryNoDup;
 
 			/// <summary>An array of COLORREF values with the console's color settings.</summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)] public uint[] ColorTable;
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+			public uint[] ColorTable;
 		}
 
 		/// <summary>Holds an extra data block used by IShellLinkDataList. It holds the console's code page.</summary>
@@ -690,44 +919,11 @@ namespace Vanara.PInvoke
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb759775")]
 		public struct SHDESCRIPTIONID
 		{
-			/// <summary>Receives a value that determines what type the item is. </summary>
+			/// <summary>Receives a value that determines what type the item is.</summary>
 			public SHDID dwDescriptionId;
+
 			/// <summary>Receives the CLSID of the object to which the item belongs.</summary>
 			public Guid clsid;
-		}
-
-		/// <summary>
-		/// CSIDL (constant special item ID list) values provide a unique system-independent way to identify special folders used frequently by applications, but which may not have the same name or location on any given system. For example, the system folder may be "C:\Windows" on one system and "C:\Winnt" on another. These constants are defined in Shlobj.h.
-		/// </summary>
-		[PInvokeData("Shlobj.h", MSDNShortId = "bb762494")]
-		internal enum CSIDL
-		{
-			CSIDL_ADMINTOOLS = 0x0030,
-			CSIDL_CDBURN_AREA = 0x003b,
-			CSIDL_COMMON_ADMINTOOLS = 0x002f,
-			CSIDL_COMMON_DESKTOPDIRECTORY = 0x0019,
-			CSIDL_COMMON_DOCUMENTS = 0x002e,
-			CSIDL_COMMON_MUSIC = 0x0035,
-			CSIDL_COMMON_OEM_LINKS = 0x003a,
-			CSIDL_COMMON_PICTURES = 0x0036,
-			CSIDL_COMMON_PROGRAMS = 0X0017,
-			CSIDL_COMMON_STARTMENU = 0x0016,
-			CSIDL_COMMON_STARTUP = 0x0018,
-			CSIDL_COMMON_TEMPLATES = 0x002d,
-			CSIDL_COMMON_VIDEO = 0x0037,
-			CSIDL_FLAG_CREATE = 0x8000, // force folder creation in SHGetFolderPath
-			CSIDL_FLAG_DONT_VERIFY = 0x4000, // return an unverified folder path
-			CSIDL_FONTS = 0x0014, // windows\fonts
-			CSIDL_MYVIDEO = 0x000e, // "My Videos" folder
-			CSIDL_NETHOOD = 0x0013, // %APPDATA%\Microsoft\Windows\Network Shortcuts
-			CSIDL_PRINTHOOD = 0x001b, // %APPDATA%\Microsoft\Windows\Printer Shortcuts
-			CSIDL_PROFILE = 0x0028, // %USERPROFILE% (%SystemDrive%\Users\%USERNAME%)
-			CSIDL_PROGRAM_FILES_COMMONX86 = 0x002c, // x86 Program Files\Common on RISC
-			CSIDL_PROGRAM_FILESX86 = 0x002a, // x86 C:\Program Files on RISC
-			CSIDL_RESOURCES = 0x0038, // %windir%\Resources
-			CSIDL_RESOURCES_LOCALIZED = 0x0039, // %windir%\resources\0409 (code page)
-			CSIDL_SYSTEMX86 = 0x0029, // %windir%\system32
-			CSIDL_WINDOWS = 0x0024, // GetWindowsDirectory()
 		}
 
 		/*[StructLayout(LayoutKind.Sequential)]
