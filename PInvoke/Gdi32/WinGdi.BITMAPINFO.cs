@@ -242,6 +242,32 @@ namespace Vanara.PInvoke
 		[PInvokeData("Wingdi.h", MSDNShortId = "dd144879")]
 		public static extern int GetDIBits(SafeDCHandle hdc, IntPtr hbmp, int uStartScan, int cScanLines, IntPtr lpvBits, ref BITMAPINFO lpbi, DIBColorMode uUsage);
 
+		/// <summary>The BITMAP structure defines the type, width, height, color format, and bit values of a bitmap.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("Wingdi.h", MSDNShortId = "dd183371")]
+		public struct BITMAP
+		{
+			/// <summary>The bitmap type. This member must be zero.</summary>
+			public int bmType;
+			/// <summary>The width, in pixels, of the bitmap. The width must be greater than zero.</summary>
+			public int bmWidth;
+			/// <summary>The height, in pixels, of the bitmap. The height must be greater than zero.</summary>
+			public int bmHeight;
+			/// <summary>
+			/// The number of bytes in each scan line. This value must be divisible by 2, because the system assumes that the bit values of a bitmap form an
+			/// array that is word aligned.
+			/// </summary>
+			public int bmWidthBytes;
+			/// <summary>The count of color planes.</summary>
+			public ushort bmPlanes;
+			/// <summary>The number of bits required to indicate the color of a pixel.</summary>
+			public ushort bmBitsPixel;
+			/// <summary>
+			/// A pointer to the location of the bit values for the bitmap. The bmBits member must be a pointer to an array of character (1-byte) values.
+			/// </summary>
+			public IntPtr bmBits;
+		}
+
 		/// <summary>The BITMAPINFO structure defines the dimensions and color information for a DIB.</summary>
 		/// <remarks>
 		/// A DIB consists of two distinct parts: a BITMAPINFO structure describing the dimensions and colors of the bitmap, and an array of bytes defining the
@@ -442,6 +468,38 @@ namespace Vanara.PInvoke
 
 			/// <summary>The number of color indexes that are required for displaying the bitmap. If this value is zero, all colors are required.</summary>
 			public uint biClrImportant;
+		}
+
+		/// <summary>
+		/// The DIBSECTION structure contains information about a DIB created by calling the CreateDIBSection function. A DIBSECTION structure includes
+		/// information about the bitmap's dimensions, color format, color masks, optional file mapping object, and optional bit values storage offset. An
+		/// application can obtain a filled-in DIBSECTION structure for a given DIB by calling the GetObject function.
+		/// </summary>
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("Wingdi.h", MSDNShortId = "dd183567")]
+		public struct DIBSECTION
+		{
+			/// <summary>
+			/// A BITMAP data structure that contains information about the DIB: its type, its dimensions, its color capacities, and a pointer to its bit values.
+			/// </summary>
+			public BITMAP dsBm;
+			/// <summary>A BITMAPINFOHEADER structure that contains information about the color format of the DIB.</summary>
+			public BITMAPINFOHEADER dsBmih;
+			/// <summary>
+			/// Specifies three color masks for the DIB. This field is only valid when the BitCount member of the BITMAPINFOHEADER structure has a value greater
+			/// than 8. Each color mask indicates the bits that are used to encode one of the three color channels (red, green, and blue).
+			/// </summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+			public uint[] dsBitFields;
+			/// <summary>
+			/// The DSH sectionContains a handle to the file mapping object that the CreateDIBSection function used to create the DIB. If CreateDIBSection was
+			/// called with a NULL value for its hSection parameter, causing the system to allocate memory for the bitmap, the dshSection member will be NULL.
+			/// </summary>
+			public IntPtr dshSection;
+			/// <summary>
+			/// The offset to the bitmap's bit values within the file mapping object referenced by dshSection. If dshSection is NULL, the dsOffset value has no meaning.
+			/// </summary>
+			public uint dsOffset;
 		}
 
 		/// <summary>The RGBQUAD structure describes a color consisting of relative intensities of red, green, and blue.</summary>
