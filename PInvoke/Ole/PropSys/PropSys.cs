@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
@@ -436,7 +437,18 @@ namespace Vanara.PInvoke
 		[PInvokeData("Propsys.h", MSDNShortId = "bb762081")]
 		public static extern HRESULT PSGetPropertyKeyFromName([MarshalAs(UnmanagedType.LPWStr)] string pszName, out PROPERTYKEY ppropkey);
 
-		[ComImport, Guid("1F9FC1D0-C39B-4B26-817F-011967D3440E"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        /// <summary>Exposes a method that initializes a handler, such as a property handler, thumbnail handler, or preview handler, with a stream.</summary>
+        [ComImport, Guid("b824b49d-22ac-4161-ac8a-9916e8fa3f7f"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        [PInvokeData("Propsys.h", MSDNShortId = "bb761810")]
+        public interface IInitializeWithStream
+        {
+            /// <summary>Initializes a handler with a stream.</summary>
+            /// <param name="pstream">A pointer to an IStream interface that represents the stream source.</param>
+            /// <param name="grfMode">One of the following STGM values that indicates the access mode for pstream. STGM_READ or STGM_READWRITE.</param>
+            void Initialize(IStream pstream, STGM grfMode);
+        }
+
+        [ComImport, Guid("1F9FC1D0-C39B-4B26-817F-011967D3440E"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		[PInvokeData("Propsys.h", MSDNShortId = "bb761511")]
 		public interface IPropertyDescriptionList
 		{
