@@ -34,10 +34,10 @@ namespace Vanara.PInvoke
 		public static T GetRegistryProperty<T>(this KNOWNFOLDERID id, string valueName) =>
 			(T)Microsoft.Win32.Registry.GetValue(RegPath + id.Guid().ToString("B"), valueName, default(T));
 
-		/// <summary>Retrieves the Guid associated with a <see cref="KNOWNFOLDERID"/>.</summary>
-		/// <param name="id">The known folder.</param>
-		/// <returns>The GUID.</returns>
-		public static Guid Guid(this KNOWNFOLDERID id) => AssociateAttribute.GetGuidFromEnum(id);
+        /// <summary>Retrieves the Guid associated with a <see cref="KNOWNFOLDERID"/>.</summary>
+        /// <param name="id">The known folder.</param>
+        /// <returns>The GUID associated with the <paramref name="id"/> or <see cref="Guid.Empty"/> if no association exists.</returns>
+        public static Guid Guid(this KNOWNFOLDERID id) => AssociateAttribute.GetGuidFromEnum(id);
 
 		/// <summary>Retrieves the IShellItem associated with a <see cref="KNOWNFOLDERID"/>.</summary>
 		/// <param name="id">The known folder.</param>
