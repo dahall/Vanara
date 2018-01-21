@@ -196,15 +196,18 @@ namespace Vanara.Windows.Forms.Tests
         [Test]
         public void GetImageTest()
         {
-            using (var i = new ShellItem(@"C:\Temp\IDA256.png"))
-            {
-                var sz = 32;
-                var bmp = i.GetImage(sz);
-                Assert.That(bmp, Is.Not.Null);
-                Assert.That(bmp.Width, Is.EqualTo(sz));
-                sz = 1024;
-                bmp = i.GetImage(sz);
-                Assert.That(bmp.Width, Is.EqualTo(256));
+			using (var i = new ShellItem(testDoc))
+			{
+				var sz = new System.Drawing.Size(32, 32);
+				var bmp = i.GetImage(sz, ShellItemGetImageOptions.IconOnly);
+				Assert.That(bmp, Is.Not.Null);
+				Assert.That(bmp.Size, Is.EqualTo(sz));
+			}
+			using (var i = new ShellItem(@"C:\Temp\IDA256.png"))
+			{
+				var sz = new System.Drawing.Size(1024, 1024);
+				var bmp = i.GetImage(sz, ShellItemGetImageOptions.ThumbnailOnly | ShellItemGetImageOptions.ScaleUp);
+                Assert.That(bmp.Size, Is.EqualTo(sz));
             }
         }
     }

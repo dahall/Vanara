@@ -12,7 +12,7 @@ namespace Vanara.Windows.Shell
 		private readonly ShellItem shellItem;
 		private GETPROPERTYSTOREFLAGS flags = GETPROPERTYSTOREFLAGS.GPS_DEFAULT;
 
-		internal ShellItemPropertyStore(ShellItem item, EventHandler propChangedHandler = null)
+		internal ShellItemPropertyStore(ShellItem item, PropertyChangedEventHandler propChangedHandler = null)
 		{
 			shellItem = item;
 			Refresh();

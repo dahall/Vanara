@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Diagnostics;
 using Vanara.Extensions;
+using System.ComponentModel;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -344,7 +345,7 @@ namespace Vanara.Windows.Shell
 	/// <seealso cref="System.IDisposable"/>
 	/// <seealso cref="System.IEquatable{IShellItem}"/>
 	/// <seealso cref="System.IEquatable{ShellItem}"/>
-	public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellItem>, IEquatable<ShellItem>
+	public class ShellItem : IComparable<ShellItem>, IDisposable, IEquatable<IShellItem>, IEquatable<ShellItem>, INotifyPropertyChanged
 	{
 		internal static readonly bool IsMin7 = Environment.OSVersion.Version >= new Version(6, 1);
 		internal static readonly bool IsMinVista = Environment.OSVersion.Version.Major >= 6;
@@ -403,6 +404,20 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 		protected ShellItem() { }
+
+		/// <summary>Occurs when a property value changes.</summary>
+		public event PropertyChangedEventHandler PropertyChanged
+		{
+			add
+			{
+				((INotifyPropertyChanged)Properties).PropertyChanged += value;
+			}
+
+			remove
+			{
+				((INotifyPropertyChanged)Properties).PropertyChanged -= value;
+			}
+		}
 
 		/// <summary>Gets the attributes for the Shell item.</summary>
 		/// <value>The attributes of the Shell item.</value>
@@ -568,9 +583,12 @@ namespace Vanara.Windows.Shell
 			var fctry = iShellItem as IShellItemImageFactory;
 			if (fctry != null)
 			{
-				var hbitmap = fctry.GetImage(size, (SIIGBF)flags);
-				Marshal.ReleaseComObject(fctry);
-				return GetTransparentBitmap(hbitmap.DangerousGetHandle());
+				var hres = fctry.GetImage(size, (SIIGBF)flags, out var hbitmap);
+				if (hres == 0x8004B200 && flags.IsFlagSet(ShellItemGetImageOptions.ThumbnailOnly))
+					throw new InvalidOperationException("Thumbnails are not supported by this item.");
+				hres.ThrowIfFailed();
+				//Marshal.ReleaseComObject(fctry);
+				return GetTransparentBitmap((IntPtr)hbitmap);
 			}
 			if (!flags.IsFlagSet(ShellItemGetImageOptions.IconOnly))
 				return GetThumbnail(size.Width);
