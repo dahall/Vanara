@@ -8,7 +8,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Restricts usage to BindToObject.</summary>
 			[Associate("{3981e224-f559-11d3-8e3a-00c04f6837d5}")]
-			BHID_SFObject,
+			BHID_SFObject = 1,
 			/// <summary>Restricts usage to GetUIObjectOf.</summary>
 			[Associate("{3981e225-f559-11d3-8e3a-00c04f6837d5}")]
 			BHID_SFUIObject,
