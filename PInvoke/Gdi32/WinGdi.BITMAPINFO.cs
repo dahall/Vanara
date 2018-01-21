@@ -485,12 +485,9 @@ namespace Vanara.PInvoke
 			public BITMAP dsBm;
 			/// <summary>A BITMAPINFOHEADER structure that contains information about the color format of the DIB.</summary>
 			public BITMAPINFOHEADER dsBmih;
-			/// <summary>
-			/// Specifies three color masks for the DIB. This field is only valid when the BitCount member of the BITMAPINFOHEADER structure has a value greater
-			/// than 8. Each color mask indicates the bits that are used to encode one of the three color channels (red, green, and blue).
-			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-			public uint[] dsBitFields;
+			private uint dsBitField1;
+			private uint dsBitField2;
+			private uint dsBitField3;
 			/// <summary>
 			/// The DSH sectionContains a handle to the file mapping object that the CreateDIBSection function used to create the DIB. If CreateDIBSection was
 			/// called with a NULL value for its hSection parameter, causing the system to allocate memory for the bitmap, the dshSection member will be NULL.
@@ -500,6 +497,16 @@ namespace Vanara.PInvoke
 			/// The offset to the bitmap's bit values within the file mapping object referenced by dshSection. If dshSection is NULL, the dsOffset value has no meaning.
 			/// </summary>
 			public uint dsOffset;
+
+			/// <summary>
+			/// Specifies three color masks for the DIB. This field is only valid when the BitCount member of the BITMAPINFOHEADER structure has a value greater
+			/// than 8. Each color mask indicates the bits that are used to encode one of the three color channels (red, green, and blue).
+			/// </summary>
+			public uint[] dsBitFields
+			{
+				get => new[] { dsBitField1, dsBitField2, dsBitField3 };
+				set { dsBitField1 = value[0]; dsBitField2 = value[1]; dsBitField3 = value[2]; }
+			}
 		}
 
 		/// <summary>The RGBQUAD structure describes a color consisting of relative intensities of red, green, and blue.</summary>
