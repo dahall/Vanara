@@ -531,6 +531,34 @@ namespace Vanara.PInvoke
 			/// <value>The value type.</value>
 			public VarEnum VarType { get => (VarEnum)vt; set => vt = (VARTYPE)value; }
 
+			/// <summary>Gets the Type for a provided VARTYPE.</summary>
+			/// <param name="vt">The VARTYPE value to lookup.</param>
+			/// <returns>A best fit <see cref="Type"/> for the provided VARTYPE.</returns>
+			public static Type GetType(VARTYPE vt)
+			{
+				// Safe arrays are always pointers
+				if (vt.IsFlagSet(VARTYPE.VT_ARRAY)) return typeof(IntPtr);
+				var elemType = (VARTYPE)((int)vt & 0xFFF);
+				// VT_NULL is always DBNull
+				if (elemType == VARTYPE.VT_NULL) return typeof(DBNull);
+				// Get type of element, return null if VT_EMPTY or not found
+				var type = CorrespondingTypeAttribute.GetCorrespondingTypes(elemType).FirstOrDefault();
+				if (type == null || elemType == 0) return null;
+				// Change type if by reference
+				if (vt.IsFlagSet(VARTYPE.VT_BYREF))
+				{
+					type = Nullable.GetUnderlyingType(type);
+					if (type.IsValueType)
+						type = typeof(Nullable<>).MakeGenericType(type);
+				}
+				// Change type if vector
+				if (vt.IsFlagSet(VARTYPE.VT_VECTOR))
+				{
+					type = typeof(IEnumerable<>).MakeGenericType(type);
+				}
+				return type;
+			}
+
 			/// <summary>Gets the VARTYPE for a provided type.</summary>
 			/// <param name="type">The type to analyze.</param>
 			/// <returns>A best fit <see cref="VARTYPE"/> for the provided type.</returns>

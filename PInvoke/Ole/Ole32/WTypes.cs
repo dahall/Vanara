@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using Vanara.InteropServices;
 
 // ReSharper disable InconsistentNaming
@@ -117,86 +118,124 @@ namespace Vanara.PInvoke
 		public enum VARTYPE : ushort
 		{
 			/// <summary>Not specified.</summary>
+			[CorrespondingType(typeof(object))]
 			VT_EMPTY = 0,
 			/// <summary>Null.</summary>
+			[CorrespondingType(typeof(DBNull))]
 			VT_NULL = 1,
 			/// <summary>A 2-byte integer.</summary>
+			[CorrespondingType(typeof(short))]
 			VT_I2 = 2,
 			/// <summary>A 4-byte integer.</summary>
+			[CorrespondingType(typeof(int))]
 			VT_I4 = 3,
 			/// <summary>A 4-byte real.</summary>
+			[CorrespondingType(typeof(float))]
 			VT_R4 = 4,
 			/// <summary>A 8-byte real.</summary>
+			[CorrespondingType(typeof(double))]
 			VT_R8 = 5,
 			/// <summary>Currency</summary>
+			[CorrespondingType(typeof(decimal))]
 			VT_CY = 6,
 			/// <summary>A date.</summary>
+			[CorrespondingType(typeof(DateTime))]
 			VT_DATE = 7,
 			/// <summary>A string.</summary>
+			[CorrespondingType(typeof(string))]
 			VT_BSTR = 8,
 			/// <summary>An IDispatch pointer.</summary>
+			[CorrespondingType(typeof(object))]
 			VT_DISPATCH = 9,
 			/// <summary>An SCODE value.</summary>
+			[CorrespondingType(typeof(Win32Error))]
 			VT_ERROR = 10,
 			/// <summary>A Boolean value. True is -1 and false is 0.</summary>
+			[CorrespondingType(typeof(bool))]
 			VT_BOOL = 11,
 			/// <summary>A variant pointer.</summary>
+			[CorrespondingType(typeof(object))]
 			VT_VARIANT = 12,
 			/// <summary>An IUnknown pointer.</summary>
+			[CorrespondingType(typeof(object))]
 			VT_UNKNOWN = 13,
 			/// <summary>A 16-byte fixed-point value.</summary>
+			[CorrespondingType(typeof(decimal))]
 			VT_DECIMAL = 14,
 			/// <summary>A character.</summary>
+			[CorrespondingType(typeof(sbyte))]
 			VT_I1 = 16,
 			/// <summary>An unsigned character.</summary>
+			[CorrespondingType(typeof(byte))]
 			VT_UI1 = 17,
 			/// <summary>An unsigned short.</summary>
+			[CorrespondingType(typeof(ushort))]
 			VT_UI2 = 18,
 			/// <summary>An unsigned long.</summary>
+			[CorrespondingType(typeof(uint))]
 			VT_UI4 = 19,
 			/// <summary>A 64-bit integer.</summary>
+			[CorrespondingType(typeof(long))]
 			VT_I8 = 20,
 			/// <summary>A 64-bit unsigned integer.</summary>
+			[CorrespondingType(typeof(ulong))]
 			VT_UI8 = 21,
 			/// <summary>An integer.</summary>
+			[CorrespondingType(typeof(int))]
 			VT_INT = 22,
 			/// <summary>An unsigned integer.</summary>
+			[CorrespondingType(typeof(uint))]
 			VT_UINT = 23,
 			/// <summary>The vt void</summary>
+			[CorrespondingType(typeof(IntPtr))]
 			VT_VOID = 24,
 			/// <summary>A C-style void.</summary>
+			[CorrespondingType(typeof(double))]
 			VT_HRESULT = 25,
 			/// <summary>A pointer type.</summary>
+			[CorrespondingType(typeof(IntPtr))]
 			VT_PTR = 26,
 			/// <summary>A safe array. Use VT_ARRAY in VARIANT.</summary>
 			VT_SAFEARRAY = 27,
 			/// <summary>A C-style array.</summary>
 			VT_CARRAY = 28,
 			/// <summary>A user-defined type.</summary>
+			[CorrespondingType(typeof(IntPtr))]
 			VT_USERDEFINED = 29,
 			/// <summary>A null-terminated string.</summary>
+			[CorrespondingType(typeof(string))]
 			VT_LPSTR = 30,
 			/// <summary>A wide null-terminated string.</summary>
+			[CorrespondingType(typeof(string))]
 			VT_LPWSTR = 31,
 			/// <summary>A user-defined type.</summary>
+			[CorrespondingType(typeof(IntPtr))]
 			VT_RECORD = 36,
 			/// <summary>A FILETIME value.</summary>
+			[CorrespondingType(typeof(System.Runtime.InteropServices.ComTypes.FILETIME))]
 			VT_FILETIME = 64,
 			/// <summary>Length-prefixed bytes.</summary>
+			[CorrespondingType(typeof(BLOB))]
 			VT_BLOB = 65,
 			/// <summary>The name of the stream follows.</summary>
+			[CorrespondingType(typeof(IStream))]
 			VT_STREAM = 66,
 			/// <summary>The name of the storage follows.</summary>
+			[CorrespondingType(typeof(IStorage))]
 			VT_STORAGE = 67,
 			/// <summary>The stream contains an object.</summary>
+			[CorrespondingType(typeof(IStream))]
 			VT_STREAMED_OBJECT = 68,
 			/// <summary>The storage contains an object.</summary>
+			[CorrespondingType(typeof(IStorage))]
 			VT_STORED_OBJECT = 69,
 			/// <summary>The blob contains an object.</summary>
 			VT_BLOB_OBJECT = 70,
 			/// <summary>A clipboard format.</summary>
+			[CorrespondingType(typeof(CLIPDATA))]
 			VT_CF = 71,
 			/// <summary>A class ID.</summary>
+			[CorrespondingType(typeof(Guid))]
 			VT_CLSID = 72,
 			/// <summary>A stream with a GUID version.</summary>
 			VT_VERSIONED_STREAM = 73,
