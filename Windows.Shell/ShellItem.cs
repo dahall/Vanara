@@ -353,8 +353,8 @@ namespace Vanara.Windows.Shell
 		internal IShellItem iShellItem;
 		internal IShellItem2 iShellItem2;
 		private static Dictionary<Type, BHID> bhidLookup;
-        private IQueryInfo qi;
-        private ShellItemPropertyStore values;
+		private IQueryInfo qi;
+		private ShellItemPropertyStore values;
 
 		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 		/// <param name="path">The file system path of the item.</param>
@@ -423,8 +423,8 @@ namespace Vanara.Windows.Shell
 		/// <value>The attributes of the Shell item.</value>
 		public ShellItemAttribute Attributes => (ShellItemAttribute)iShellItem.GetAttributes((SFGAO)0xFFFFFFFF);
 
-        /// <summary>Gets the <see cref="ShellFileInfo"/> corresponding to this instance.</summary>
-        public ShellFileInfo FileInfo => IsFileSystem ? new ShellFileInfo(PIDL) : throw new InvalidOperationException("Not file system objects do not have associated ShellFileInfo objects");
+		/// <summary>Gets the <see cref="ShellFileInfo"/> corresponding to this instance.</summary>
+		public ShellFileInfo FileInfo => IsFileSystem ? new ShellFileInfo(PIDL) : throw new InvalidOperationException("Not file system objects do not have associated ShellFileInfo objects");
 
 		/// <summary>Gets the file system path if this item is part of the file system.</summary>
 		/// <value>The file system path.</value>
@@ -558,16 +558,16 @@ namespace Vanara.Windows.Shell
 		/// <returns>The requested interface.</returns>
 		public TInterface GetHandler<TInterface>(BHID handler = 0) where TInterface : class
 		{
-            if (handler == 0)
-                handler = GetBHIDForInterface<TInterface>();
-            if (handler == 0)
-                throw new ArgumentOutOfRangeException(nameof(handler));
-            return iShellItem.BindToHandler(BindContext, handler.Guid(), typeof(TInterface).GUID) as TInterface;
+			if (handler == 0)
+				handler = GetBHIDForInterface<TInterface>();
+			if (handler == 0)
+				throw new ArgumentOutOfRangeException(nameof(handler));
+			return iShellItem.BindToHandler(BindContext, handler.Guid(), typeof(TInterface).GUID) as TInterface;
 		}
 
-        /// <summary>Returns a hash code for this instance.</summary>
-        /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-        public override int GetHashCode() => GetDisplayName(SIGDN.SIGDN_DESKTOPABSOLUTEPARSING).GetHashCode();
+		/// <summary>Returns a hash code for this instance.</summary>
+		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+		public override int GetHashCode() => GetDisplayName(SIGDN.SIGDN_DESKTOPABSOLUTEPARSING).GetHashCode();
 
 		/// <summary>
 		/// Gets an image that represents this item. The default behavior is to load a thumbnail. If there is no thumbnail for the current item, it retrieves the
@@ -595,10 +595,14 @@ namespace Vanara.Windows.Shell
 			throw new InvalidOperationException("Unable to retrieve an image for this item.");
 		}
 
+		/// <summary>Gets a property description list object containing descriptions of all properties.</summary>
+		/// <returns>A complete <see cref="PropertyDescriptionList"/> instance.</returns>
+		public PropertyDescriptionList GetPropertyDescriptionList() => GetPropertyDescriptionList(PROPERTYKEY.System.PropList.FullDetails);
+
 		/// <summary>Gets a property description list object given a reference to a property key.</summary>
-		/// <param name="keyType">A reference to a PROPERTYKEY structure.</param>
+		/// <param name="keyType">A reference to a PROPERTYKEY structure. The values in <see cref="PROPERTYKEY.System.PropList"/> are all valid. <see cref="PROPERTYKEY.System.PropList.FullDetails"/> will return all properties.</param>
 		/// <returns>A <see cref="PropertyDescriptionList"/> instance for the supplied key.</returns>
-		public PropertyDescriptionList GetPropertyDescriptionList(ref PROPERTYKEY keyType)
+		public PropertyDescriptionList GetPropertyDescriptionList(PROPERTYKEY keyType)
 		{
 			ThrowIfNoShellItem2();
 			return new PropertyDescriptionList(iShellItem2.GetPropertyDescriptionList(ref keyType, typeof(IPropertyDescriptionList).GUID));
@@ -627,6 +631,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Ensures that all cached information for this item is updated.</summary>
 		public void Update()
 		{
+			values?.Commit();
 			ThrowIfNoShellItem2();
 			iShellItem2.Update(BindContext);
 		}
@@ -777,24 +782,24 @@ namespace Vanara.Windows.Shell
 		/// <param name="width">The width, in pixels, of the Bitmap.</param>
 		/// <returns>The resulting Bitmap, on success, or <c>null</c> on failure.</returns>
 		private Image GetThumbnail(int width = 32)
-        {
-            IThumbnailProvider provider = null;
-            try
-            {
-                provider = GetHandler<IThumbnailProvider>(BHID.BHID_ThumbnailHandler);
-                if (provider == null) return null;
-                provider.GetThumbnail((uint)width, out var hbmp, out var alpha);
-                return Image.FromHbitmap(hbmp);
-            }
-            catch
-            {
-                return null;
-            }
-            finally
-            {
-                if (provider != null) Marshal.ReleaseComObject(provider);
-            }
-        }
+		{
+			IThumbnailProvider provider = null;
+			try
+			{
+				provider = GetHandler<IThumbnailProvider>(BHID.BHID_ThumbnailHandler);
+				if (provider == null) return null;
+				provider.GetThumbnail((uint)width, out var hbmp, out var alpha);
+				return Image.FromHbitmap(hbmp);
+			}
+			catch
+			{
+				return null;
+			}
+			finally
+			{
+				if (provider != null) Marshal.ReleaseComObject(provider);
+			}
+		}
 
 		protected class ShellItemImpl : IDisposable, IShellItem
 		{

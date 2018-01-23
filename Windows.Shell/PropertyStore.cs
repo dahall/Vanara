@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 
@@ -97,7 +98,10 @@ namespace Vanara.Windows.Shell
 		/// <returns>The requested property key.</returns>
 		public static PROPERTYKEY GetPropertyKeyFromName(string name)
 		{
-			PSGetPropertyKeyFromName(name, out var pk).ThrowIfFailed();
+			if (name == null) throw new ArgumentNullException(nameof(name));
+			var hr = PSGetPropertyKeyFromName(name, out var pk);
+			if (hr == HRESULT.TYPE_E_ELEMENTNOTFOUND) throw new ArgumentOutOfRangeException(nameof(name));
+			hr.ThrowIfFailed();
 			return pk;
 		}
 
@@ -187,8 +191,11 @@ namespace Vanara.Windows.Shell
 				{
 					var pv = new PROPVARIANT();
 					iprops.GetValue(ref key, pv);
-					value = pv.Value;
-					return true;
+					if (pv.VarType != VarEnum.VT_EMPTY)
+					{
+						value = pv.Value;
+						return true;
+					}
 				}
 				catch { }
 			}
@@ -208,19 +215,9 @@ namespace Vanara.Windows.Shell
 		/// </returns>
 		public bool TryGetValue<TVal>(PROPERTYKEY key, out TVal value)
 		{
-			if (iprops != null)
-			{
-				try
-				{
-					var pv = new PROPVARIANT();
-					iprops.GetValue(ref key, pv);
-					value = (TVal)pv.Value;
-					return true;
-				}
-				catch { }
-			}
-			value = default(TVal);
-			return false;
+			var ret = TryGetValue(key, out var val);
+			value = ret ? (TVal)val : default(TVal);
+			return ret;
 		}
 
 		/// <summary>Adds an item to the <see cref="ICollection{T}"/>.</summary>

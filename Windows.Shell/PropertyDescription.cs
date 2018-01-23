@@ -11,12 +11,17 @@ namespace Vanara.Windows.Shell
 	{
 		/// <summary>The IPropertyDescription object.</summary>
 		protected IPropertyDescription iDesc;
+		/// <summary>The IPropertyDescription2 object.</summary>
+		protected IPropertyDescription2 iDesc2;
+
+		/// <summary>Gets the type list.</summary>
+		protected PropertyTypeList typeList;
 
 		/// <summary>Initializes a new instance of the <see cref="PropertyDescription"/> class.</summary>
 		/// <param name="propertyDescription">The property description.</param>
-		internal PropertyDescription(IPropertyDescription propertyDescription)
+		internal protected PropertyDescription(IPropertyDescription propertyDescription)
 		{
-			iDesc = propertyDescription;
+			iDesc = propertyDescription ?? throw new ArgumentNullException(nameof(propertyDescription));
 		}
 
 		/// <summary>Gets a value that describes how the property values are displayed when multiple items are selected in the UI.</summary>
@@ -53,15 +58,9 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets a structure that acts as a property's unique identifier.</summary>
 		public PROPERTYKEY PropertyKey => iDesc.GetPropertyKey();
 
-		/// <summary>Gets the variant type of the property.</summary>
-		public Type PropertyType
-		{
-			get
-			{
-				throw new NotImplementedException();
-				//TODO: return iDesc.GetPropertyType().GetType();
-			}
-		}
+		/// <summary>Gets the variant type of the property. If the type cannot be determined, this property returns <c>null</c>.</summary>
+		public Type PropertyType => PROPVARIANT.GetType(iDesc.GetPropertyType());
+
 		/// <summary>Gets the relative description type for a property description.</summary>
 		public PROPDESC_RELATIVEDESCRIPTION_TYPE RelativeDescriptionType => iDesc.GetRelativeDescriptionType();
 
@@ -70,6 +69,9 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets a set of flags that describe the uses and capabilities of the property.</summary>
 		public PROPDESC_TYPE_FLAGS TypeFlags => iDesc.GetTypeFlags(PROPDESC_TYPE_FLAGS.PDTF_MASK_ALL);
+
+		/// <summary>Gets an instance of an PropertyTypeList, which can be used to enumerate the possible values for a property.</summary>
+		public PropertyTypeList TypeList => typeList ?? (typeList = new PropertyTypeList(iDesc.GetEnumTypeList() as IPropertyEnumTypeList));
 
 		/// <summary>Gets the current set of flags governing the property's view.</summary>
 		/// <returns>When this method returns, contains a pointer to a value that includes one or more of the following flags. See PROPDESC_VIEW_FLAGS for valid values.</returns>
@@ -82,25 +84,37 @@ namespace Vanara.Windows.Shell
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public virtual void Dispose()
 		{
+			typeList?.Dispose();
+			if (iDesc2 != null)
+			{
+				Marshal.ReleaseComObject(iDesc2);
+				iDesc2 = null;
+			}
 			if (iDesc != null)
 			{
 				Marshal.ReleaseComObject(iDesc);
 				iDesc = null;
 			}
 		}
-
-		// /// <summary>Gets an instance of an IPropertyEnumTypeList, which can be used to enumerate the possible values for a property.</summary>
-		// public IPropertyEnumTypeList EnumTypeList => iDesc.GetEnumTypeList() as IPropertyEnumTypeList;
 		/// <summary>Gets a formatted string representation of a property value.</summary>
-		/// <param name="key">A reference to the requested property key, which identifies a property. See PROPERTYKEY.</param>
 		/// <param name="propvar">A PROPVARIANT that contains the type and value of the property.</param>
 		/// <param name="pdfFlags">One or more of the PROPDESC_FORMAT_FLAGS flags, which are either bitwise or multiple values, that indicate the property string format.</param>
 		/// <returns>The formatted value.</returns>
-		public string FormatForDisplay(ref PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdfFlags)
+		public string FormatForDisplay(PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdfFlags = PROPDESC_FORMAT_FLAGS.PDFF_DEFAULT)
 		{
 			var sb = new System.Text.StringBuilder(0x8000);
+			var key = PropertyKey;
 			iDesc.FormatForDisplay(ref key, propvar, pdfFlags, sb, (uint)sb.Capacity);
 			return sb.ToString();
+		}
+
+		/// <summary>Gets the image location for a value.</summary>
+		/// <param name="propvar">The value.</param>
+		/// <returns>An IconLocation for the image associated with the property value.</returns>
+		public IconLocation GetImageLocationForValue(PROPVARIANT propvar)
+		{
+			if (iDesc2 == null) iDesc2 = iDesc as IPropertyDescription2;
+			return IconLocation.TryParse(iDesc2?.GetImageReferenceForValue(propvar), out var loc) ? loc : new IconLocation();
 		}
 
 		/// <summary>Compares two property values in the manner specified by the property description. Returns two display strings that describe how the two properties compare.</summary>
@@ -122,18 +136,30 @@ namespace Vanara.Windows.Shell
 		public bool IsValueCanonical(PROPVARIANT propvar) => iDesc.IsValueCanonical(propvar).Succeeded;
 	}
 
+	/// <summary>Exposes methods that extract information from a collection of property descriptions presented as a list.</summary>
+	/// <seealso cref="System.Collections.Generic.IReadOnlyList{Vanara.Windows.Shell.PropertyDescription}"/>
+	/// <seealso cref="System.IDisposable"/>
 	public class PropertyDescriptionList : IReadOnlyList<PropertyDescription>, IDisposable
 	{
+		/// <summary>The IPropertyDescriptionList instance.</summary>
 		protected IPropertyDescriptionList iList;
 
-		internal PropertyDescriptionList(IPropertyDescriptionList list)
+		/// <summary>Initializes a new instance of the <see cref="PropertyDescriptionList"/> class.</summary>
+		/// <param name="list">The COM interface pointer.</param>
+		internal protected PropertyDescriptionList(IPropertyDescriptionList list)
 		{
-			iList = list;
+			iList = list ?? throw new ArgumentNullException(nameof(list));
 		}
 
-		public int Count => (int)iList.GetCount();
+		/// <summary>Gets the number of elements in the collection.</summary>
+		/// <value>The number of elements in the collection.</value>
+		public virtual int Count => (int)iList.GetCount();
 
-		public PropertyDescription this[int index] => new PropertyDescription(iList.GetAt((uint)index, typeof(IPropertyDescription).GUID));
+		/// <summary>Gets the <see cref="PropertyDescription"/> at the specified index.</summary>
+		/// <value>The <see cref="PropertyDescription"/>.</value>
+		/// <param name="index">The index.</param>
+		/// <returns>The <see cref="PropertyDescription"/> at the specified index.</returns>
+		public virtual PropertyDescription this[int index] => new PropertyDescription(iList.GetAt((uint)index, typeof(IPropertyDescription).GUID));
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public virtual void Dispose()
@@ -145,11 +171,17 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
+		/// <summary>Returns an enumerator that iterates through the collection.</summary>
+		/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
 		public IEnumerator<PropertyDescription> GetEnumerator() => Enum().GetEnumerator();
 
+		/// <summary>Returns an enumerator that iterates through a collection.</summary>
+		/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-		private IEnumerable<PropertyDescription> Enum()
+		/// <summary>Enumerates through the items in this instance.</summary>
+		/// <returns>An <see cref="IEnumerable{PropertyDescription}"/> for this list.</returns>
+		protected virtual IEnumerable<PropertyDescription> Enum()
 		{
 			for (var i = 0; i < Count; i++)
 				yield return this[i];
@@ -157,30 +189,56 @@ namespace Vanara.Windows.Shell
 		}
 	}
 
+	/// <summary>Exposes methods that extract data from enumeration information.</summary>
+	/// <seealso cref="System.IDisposable"/>
 	public class PropertyType : IDisposable
 	{
+		/// <summary>The IPropertyEnumType instance.</summary>
 		protected IPropertyEnumType iType;
+		/// <summary>The IPropertyEnumType2 instance.</summary>
 		protected IPropertyEnumType2 iType2;
 
-		internal PropertyType(IPropertyEnumType type)
+		/// <summary>Initializes a new instance of the <see cref="PropertyType"/> class.</summary>
+		/// <param name="type">The IPropertyEnumType object.</param>
+		internal protected PropertyType(IPropertyEnumType type)
 		{
-			iType = type;
-			iType2 = type as IPropertyEnumType2;
+			iType = type ?? throw new ArgumentNullException(nameof(type));
 		}
 
+		/// <summary>Gets the display text.</summary>
+		/// <value>The display text.</value>
 		public string DisplayText => iType.GetDisplayText();
 
+		/// <summary>Gets an enumeration type.</summary>
+		/// <value>The enumeration type.</value>
 		public PROPENUMTYPE EnumType => iType.GetEnumType();
 
-		public IconLocation ImageReference { get { if (IconLocation.TryParse(iType2?.GetImageReference(), out var loc)) return loc; return new IconLocation(); } }
+		/// <summary>Gets the image reference.</summary>
+		/// <value>The image reference.</value>
+		public IconLocation ImageReference
+		{
+			get
+			{
+				if (iType2 == null) iType2 = iType as IPropertyEnumType2;
+				return IconLocation.TryParse(iType2?.GetImageReference(), out var loc) ? loc : new IconLocation();
+			}
+		}
 
+		/// <summary>Gets a minimum value.</summary>
+		/// <value>The minimum value.</value>
 		public PROPVARIANT RangeMinValue => iType.GetRangeMinValue();
 
+		/// <summary>Gets a set value.</summary>
+		/// <value>The set value.</value>
 		public PROPVARIANT RangeSetValue => iType.GetRangeSetValue();
 
+		/// <summary>Gets a value.</summary>
+		/// <value>The value.</value>
 		public PROPVARIANT Value => iType.GetValue();
 
-		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+		/// <summary>
+		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+		/// </summary>
 		public virtual void Dispose()
 		{
 			if (iType != null)
@@ -196,20 +254,34 @@ namespace Vanara.Windows.Shell
 		}
 	}
 
+	/// <summary>Exposes methods that enumerate the possible values for a property.</summary>
+	/// <seealso cref="System.Collections.Generic.IReadOnlyList{Vanara.Windows.Shell.PropertyType}"/>
+	/// <seealso cref="System.IDisposable"/>
 	public class PropertyTypeList : IReadOnlyList<PropertyType>, IDisposable
 	{
+		/// <summary>The IPropertyEnumTypeList object.</summary>
 		protected IPropertyEnumTypeList iList;
 
-		internal PropertyTypeList(IPropertyEnumTypeList list)
+		/// <summary>Initializes a new instance of the <see cref="PropertyTypeList"/> class.</summary>
+		/// <param name="list">The IPropertyEnumTypeList object.</param>
+		internal protected PropertyTypeList(IPropertyEnumTypeList list)
 		{
-			iList = list;
+			iList = list ?? throw new ArgumentNullException(nameof(list));
 		}
 
-		public int Count => (int)iList.GetCount();
+		/// <summary>Gets the number of elements in the collection.</summary>
+		/// <value>The number of elements in the collection.</value>
+		public virtual int Count => (int)iList.GetCount();
 
-		public PropertyType this[int index] => new PropertyType(iList.GetAt((uint)index, typeof(IPropertyDescription).GUID));
+		/// <summary>Gets the <see cref="PropertyType"/> at the specified index.</summary>
+		/// <value>The <see cref="PropertyType"/>.</value>
+		/// <param name="index">The index.</param>
+		/// <returns>The <see cref="PropertyType"/> at the specified index.</returns>
+		public virtual PropertyType this[int index] => new PropertyType(iList.GetAt((uint)index, typeof(IPropertyDescription).GUID));
 
-		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+		/// <summary>
+		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+		/// </summary>
 		public virtual void Dispose()
 		{
 			if (iList != null)
@@ -219,13 +291,26 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
-		public int FindMatchingIndex(PROPVARIANT pv) => (int)iList.FindMatchingIndex(pv);
+		/// <summary>Determines the index of a specific item in the list.</summary>
+		/// <param name="pv">The object to locate in the list.</param>
+		/// <returns>The index of item if found in the list; otherwise, -1.</returns>
+		public virtual int IndexOf(PROPVARIANT pv) => iList.FindMatchingIndex(pv, out var idx).Succeeded ? (int)idx : -1;
 
+		/// <summary>Returns an enumerator that iterates through the collection.</summary>
+		/// <returns>
+		/// A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
+		/// </returns>
 		public IEnumerator<PropertyType> GetEnumerator() => Enum().GetEnumerator();
 
+		/// <summary>Returns an enumerator that iterates through a collection.</summary>
+		/// <returns>
+		/// An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
+		/// </returns>
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-		private IEnumerable<PropertyType> Enum()
+		/// <summary>Enumerates through the items in this instance.</summary>
+		/// <returns>An <see cref="IEnumerable{PropertyType}"/> for this list.</returns>
+		protected virtual IEnumerable<PropertyType> Enum()
 		{
 			for (var i = 0; i < Count; i++)
 				yield return this[i];

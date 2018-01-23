@@ -66,10 +66,10 @@ namespace Vanara.Windows.Forms.Tests
 		}
 
 		[Test]
-        public void GetAttrTest()
-        {
-            Assert.That(() =>
-            {
+		public void GetAttrTest()
+		{
+			Assert.That(() =>
+			{
 				using (var i = new ShellItem(testDoc))
 				{
 					Assert.That(i.Attributes, Is.Not.Zero);
@@ -84,7 +84,7 @@ namespace Vanara.Windows.Forms.Tests
 					Assert.That(i.ToolTipText, Is.Not.Null);
 				}
 			}, Throws.Nothing);
-        }
+		}
 
 		[Test]
 		public void GetDisplayNameTest()
@@ -137,6 +137,16 @@ namespace Vanara.Windows.Forms.Tests
 				Assert.That(i.Properties[PROPERTYKEY.System.Author], Has.Member("TestAuthor"));
 				Assert.That(i.Properties[PROPERTYKEY.System.ItemTypeText], Does.StartWith("Microsoft Word"));
 				Assert.That(i.Properties[PROPERTYKEY.System.DateAccessed], Is.TypeOf<FILETIME>());
+				Assert.That(() => i.Properties[new PROPERTYKEY()], Throws.Exception);
+				Assert.That(() => i.Properties[new PROPERTYKEY(Guid.NewGuid(), 2)], Throws.Exception);
+
+				Assert.That(i.Properties["System.Author"], Has.Member("TestAuthor"));
+				Assert.That(i.Properties["DocAuthor"], Has.Member("TestAuthor"));
+				Assert.That(() => i.Properties[null], Throws.Exception);
+				Assert.That(() => i.Properties["Arthur"], Throws.Exception);
+
+				Assert.That(i.Properties.GetProperty<string>(PROPERTYKEY.System.Company), Is.InstanceOf<string>().And.StartWith("Microsoft"));
+				Assert.That(() => i.Properties.GetProperty<int>(PROPERTYKEY.System.Company), Throws.Exception);
 			}
 		}
 
@@ -147,15 +157,14 @@ namespace Vanara.Windows.Forms.Tests
 			{
 				using (var i = new ShellItem(testDoc))
 				{
-					var pk = PROPERTYKEY.System.Category;
-					Assert.That(() => i.GetPropertyDescriptionList(ref pk), Throws.Exception);
-					pk = PROPERTYKEY.System.PropList.FullDetails;
-					using (var pdl = i.GetPropertyDescriptionList(ref pk))
+					Assert.That(() => i.GetPropertyDescriptionList(PROPERTYKEY.System.Category), Throws.Exception);
+					using (var pdl = i.GetPropertyDescriptionList(PROPERTYKEY.System.PropList.FullDetails))
 					{
 						Assert.That(pdl.Count, Is.GreaterThan(0));
 						foreach (var d in pdl)
 						{
 							Assert.That(d.TypeFlags, Is.Not.Zero);
+							Debug.WriteLine($"Property '{d.DisplayName}' is of type '{d.PropertyType}'");
 						}
 					}
 				}
@@ -190,12 +199,12 @@ namespace Vanara.Windows.Forms.Tests
 				Assert.That(ps, Is.Not.Null.And.InstanceOf<PropSys.IPropertyStore>());
 				System.Runtime.InteropServices.Marshal.ReleaseComObject(ps);
 				Assert.That(() => i.GetHandler<IExtractIcon>(), Throws.TypeOf<ArgumentOutOfRangeException>());
-            }
-        }
+			}
+		}
 
-        [Test]
-        public void GetImageTest()
-        {
+		[Test]
+		public void GetImageTest()
+		{
 			using (var i = new ShellItem(testDoc))
 			{
 				var sz = new System.Drawing.Size(32, 32);
@@ -207,8 +216,8 @@ namespace Vanara.Windows.Forms.Tests
 			{
 				var sz = new System.Drawing.Size(1024, 1024);
 				var bmp = i.GetImage(sz, ShellItemGetImageOptions.ThumbnailOnly | ShellItemGetImageOptions.ScaleUp);
-                Assert.That(bmp.Size, Is.EqualTo(sz));
-            }
-        }
-    }
+				Assert.That(bmp.Size, Is.EqualTo(sz));
+			}
+		}
+	}
 }
