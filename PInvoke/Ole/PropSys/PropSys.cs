@@ -437,18 +437,18 @@ namespace Vanara.PInvoke
 		[PInvokeData("Propsys.h", MSDNShortId = "bb762081")]
 		public static extern HRESULT PSGetPropertyKeyFromName([MarshalAs(UnmanagedType.LPWStr)] string pszName, out PROPERTYKEY ppropkey);
 
-        /// <summary>Exposes a method that initializes a handler, such as a property handler, thumbnail handler, or preview handler, with a stream.</summary>
-        [ComImport, Guid("b824b49d-22ac-4161-ac8a-9916e8fa3f7f"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        [PInvokeData("Propsys.h", MSDNShortId = "bb761810")]
-        public interface IInitializeWithStream
-        {
-            /// <summary>Initializes a handler with a stream.</summary>
-            /// <param name="pstream">A pointer to an IStream interface that represents the stream source.</param>
-            /// <param name="grfMode">One of the following STGM values that indicates the access mode for pstream. STGM_READ or STGM_READWRITE.</param>
-            void Initialize(IStream pstream, STGM grfMode);
-        }
+		/// <summary>Exposes a method that initializes a handler, such as a property handler, thumbnail handler, or preview handler, with a stream.</summary>
+		[ComImport, Guid("b824b49d-22ac-4161-ac8a-9916e8fa3f7f"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		[PInvokeData("Propsys.h", MSDNShortId = "bb761810")]
+		public interface IInitializeWithStream
+		{
+			/// <summary>Initializes a handler with a stream.</summary>
+			/// <param name="pstream">A pointer to an IStream interface that represents the stream source.</param>
+			/// <param name="grfMode">One of the following STGM values that indicates the access mode for pstream. STGM_READ or STGM_READWRITE.</param>
+			void Initialize(IStream pstream, STGM grfMode);
+		}
 
-        [ComImport, Guid("1F9FC1D0-C39B-4B26-817F-011967D3440E"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		[ComImport, Guid("1F9FC1D0-C39B-4B26-817F-011967D3440E"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		[PInvokeData("Propsys.h", MSDNShortId = "bb761511")]
 		public interface IPropertyDescriptionList
 		{
@@ -521,7 +521,7 @@ namespace Vanara.PInvoke
 			/// <summary>Gets an instance of an IPropertyEnumTypeList, which can be used to enumerate the possible values for a property.</summary>
 			/// <returns>When this method returns, contains the address of an IPropertyEnumTypeList interface pointer.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			object GetEnumTypeList();
+			IPropertyEnumTypeList GetEnumTypeList();
 			/// <summary>Coerces the value to the canonical value, according to the property description.</summary>
 			/// <param name="propvar">On entry, contains a pointer to a PROPVARIANT structure that contains the original value. When this method returns, contains the canonical value.</param>
 			[PreserveSig]
@@ -538,6 +538,93 @@ namespace Vanara.PInvoke
 			/// <returns>Returns one of the following values: S_OK = The value is canonical; S_FALSE = The value is not canonical.</returns>
 			[PreserveSig]
 			HRESULT IsValueCanonical([In] PROPVARIANT propvar);
+		}
+
+		[ComImport, Guid("57d2eded-5062-400e-b107-5dae79fe57a6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		[PInvokeData("Propsys.h", MSDNShortId = "bb761561")]
+		public interface IPropertyDescription2 : IPropertyDescription
+		{
+			/// <summary>Gets a structure that acts as a property's unique identifier.</summary>
+			/// <returns>When this method returns, contains a pointer to a PROPERTYKEY structure.</returns>
+			new PROPERTYKEY GetPropertyKey();
+			/// <summary>Gets the case-sensitive name by which a property is known to the system, regardless of its localized name.</summary>
+			/// <returns>When this method returns, contains the address of a pointer to the property's canonical name as a null-terminated Unicode string.</returns>
+			new SafeCoTaskMemString GetCanonicalName();
+			/// <summary>Gets the variant type of the property.</summary>
+			/// <returns>When this method returns, contains a pointer to a VARTYPE that indicates the property type. If the property is multi-valued, the value pointed to is a VT_VECTOR mask (VT_VECTOR ORed to the VARTYPE.</returns>
+			new VARTYPE GetPropertyType();
+			/// <summary>Gets the display name of the property as it is shown in any UI.</summary>
+			/// <returns>Contains the address of a pointer to the property's name as a null-terminated Unicode string.</returns>
+			new SafeCoTaskMemString GetDisplayName();
+			/// <summary>Gets the text used in edit controls hosted in various dialog boxes.</summary>
+			/// <returns>When this method returns, contains the address of a pointer to a null-terminated Unicode buffer that holds the invitation text.</returns>
+			new SafeCoTaskMemString GetEditInvitation();
+			/// <summary>Gets a set of flags that describe the uses and capabilities of the property.</summary>
+			/// <param name="mask">A mask that specifies which type flags to retrieve. A combination of values found in the PROPDESC_TYPE_FLAGS constants. To retrieve all type flags, pass PDTF_MASK_ALL</param>
+			/// <returns>When this method returns, contains a pointer to a value that consists of bitwise PROPDESC_TYPE_FLAGS values.</returns>
+			new PROPDESC_TYPE_FLAGS GetTypeFlags([In] PROPDESC_TYPE_FLAGS mask);
+			/// <summary>Gets the current set of flags governing the property's view.</summary>
+			/// <returns>When this method returns, contains a pointer to a value that includes one or more of the following flags. See PROPDESC_VIEW_FLAGS for valid values.</returns>
+			new PROPDESC_VIEW_FLAGS GetViewFlags();
+			/// <summary>Gets the default column width of the property in a list view.</summary>
+			/// <returns>A pointer to the column width value, in characters.</returns>
+			new uint GetDefaultColumnWidth();
+			/// <summary>Gets the current data type used to display the property.</summary>
+			/// <returns>Contains a pointer to a value that indicates the display type.</returns>
+			new PROPDESC_DISPLAYTYPE GetDisplayType();
+			/// <summary>Gets the column state flag, which describes how the property should be treated by interfaces or APIs that use this flag.</summary>
+			/// <returns>When this method returns, contains a pointer to the column state flag.</returns>
+			new SHCOLSTATE GetColumnState();
+			/// <summary>Gets the grouping method to be used when a view is grouped by a property, and retrieves the grouping type.</summary>
+			/// <returns>Receives a pointer to a flag value that indicates the grouping type.</returns>
+			new PROPDESC_GROUPING_RANGE GetGroupingRange();
+			/// <summary>Gets the relative description type for a property description.</summary>
+			/// <returns>When this method returns, contains a pointer to the relative description type value. See PROPDESC_RELATIVEDESCRIPTION_TYPE for valid values.</returns>
+			new PROPDESC_RELATIVEDESCRIPTION_TYPE GetRelativeDescriptionType();
+			/// <summary>Compares two property values in the manner specified by the property description. Returns two display strings that describe how the two properties compare.</summary>
+			/// <param name="propvar1">A reference to a PROPVARIANT structure that contains the type and value of the first property.</param>
+			/// <param name="propvar2">A reference to a PROPVARIANT structure that contains the type and value of the second property.</param>
+			/// <param name="ppszDesc1">When this method returns, contains the address of a pointer to the description string that compares the first property with the second property. The string is null-terminated.</param>
+			/// <param name="ppszDesc2">When this method returns, contains the address of a pointer to the description string that compares the second property with the first property. The string is null-terminated.</param>
+			new void GetRelativeDescription([In] PROPVARIANT propvar1, [In] PROPVARIANT propvar2, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszDesc1, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszDesc2);
+			/// <summary>Gets the current sort description flags for the property, which indicate the particular wordings of sort offerings.</summary>
+			/// <returns>When this method returns, contains a pointer to the value of one or more of the following flags that indicate the sort types available to the user. Note that the strings shown are English versions only. Localized strings are used for other locales.</returns>
+			new PROPDESC_SORTDESCRIPTION GetSortDescription();
+			/// <summary>Gets the localized display string that describes the current sort order.</summary>
+			/// <param name="fDescending">TRUE if ppszDescription should reference the string "Z on top"; FALSE to reference the string "A on top".</param>
+			/// <returns>When this method returns, contains the address of a pointer to the sort description as a null-terminated Unicode string.</returns>
+			new SafeCoTaskMemString GetSortDescriptionLabel([In, MarshalAs(UnmanagedType.Bool)] bool fDescending);
+			/// <summary>Gets a value that describes how the property values are displayed when multiple items are selected in the UI.</summary>
+			/// <returns>When this method returns, contains a pointer to a value that indicates the aggregation type.</returns>
+			new PROPDESC_AGGREGATION_TYPE GetAggregationType();
+			/// <summary>Gets the condition type and default condition operation to use when displaying the property in the query builder UI. This influences the list of predicate conditions (for example, equals, less than, and contains) that are shown for this property.</summary>
+			/// <param name="pcontype">A pointer to a value that indicates the condition type.</param>
+			/// <param name="popDefault">When this method returns, contains a pointer to a value that indicates the default condition operation.</param>
+			new void GetConditionType(out PROPDESC_CONDITION_TYPE pcontype, out CONDITION_OPERATION popDefault);
+			/// <summary>Gets an instance of an IPropertyEnumTypeList, which can be used to enumerate the possible values for a property.</summary>
+			/// <returns>When this method returns, contains the address of an IPropertyEnumTypeList interface pointer.</returns>
+			[return: MarshalAs(UnmanagedType.Interface)]
+			new IPropertyEnumTypeList GetEnumTypeList();
+			/// <summary>Coerces the value to the canonical value, according to the property description.</summary>
+			/// <param name="propvar">On entry, contains a pointer to a PROPVARIANT structure that contains the original value. When this method returns, contains the canonical value.</param>
+			[PreserveSig]
+			new HRESULT CoerceToCanonicalValue([In, Out] PROPVARIANT propvar);
+			/// <summary>Gets a formatted, Unicode string representation of a property value.</summary>
+			/// <param name="key">A reference to the requested property key, which identifies a property. See PROPERTYKEY.</param>
+			/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
+			/// <param name="pdfFlags">One or more of the PROPDESC_FORMAT_FLAGS flags, which are either bitwise or multiple values, that indicate the property string format.</param>
+			/// <param name="pszText">When this method returns, contains the formatted value as a null-terminated, Unicode string. The calling application must allocate memory for the buffer, and use CoTaskMemFree to release the string specified by pszText when it is no longer needed.</param>
+			/// <param name="cchText">The length of the buffer at pszText in WCHARS, including the terminating NULL. The maximum size is 0x8000 (32K).</param>
+			new void FormatForDisplay([In] ref PROPERTYKEY key, [In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags, System.Text.StringBuilder pszText, uint cchText);
+			/// <summary>Gets a value that indicates whether a property is canonical according to the definition of the property description.</summary>
+			/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
+			/// <returns>Returns one of the following values: S_OK = The value is canonical; S_FALSE = The value is not canonical.</returns>
+			[PreserveSig]
+			new HRESULT IsValueCanonical([In] PROPVARIANT propvar);
+			/// <summary>Gets the image reference associated with a property value.</summary>
+			/// <param name="propvar">The PROPVARIANT for which to get an image.</param>
+			/// <returns>A string that receives, when this method returns successfully, a string of the form &lt;dll name&gt;,-&lt;resid&gt; that is suitable to be passed to PathParseIconLocation.</returns>
+			SafeCoTaskMemString GetImageReferenceForValue([In] PROPVARIANT propvar);
 		}
 
 		[ComImport, Guid("11E1FBF9-2D56-4A6B-8DB3-7CD193A471F2"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -601,7 +688,12 @@ namespace Vanara.PInvoke
 			[return: MarshalAs(UnmanagedType.Interface)]
 			object GetConditionAt([In] uint index, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
 
-			uint FindMatchingIndex([In] PROPVARIANT propvarCmp);
+			/// <summary>Compares the specified property value against the enumerated values in a list and returns the matching index.</summary>
+			/// <param name="propvarCmp">A reference to a PROPVARIANT structure that represents the property value.</param>
+			/// <param name="pnIndex">When this method returns, contains a pointer to the index in the enumerated type list that matches the property value, if any.</param>
+			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
+			[PreserveSig]
+			HRESULT FindMatchingIndex([In] PROPVARIANT propvarCmp, out uint pnIndex);
 		}
 
 		[SuppressUnmanagedCodeSecurity]
