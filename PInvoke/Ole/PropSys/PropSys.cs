@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security;
@@ -159,6 +160,182 @@ namespace Vanara.PInvoke
 			GPS_EXTRINSICPROPERTIESONLY = 0x400,
 		}
 
+		/// <summary>Describes how property values are displayed when multiple items are selected. For a particular property, PROPDESC_AGGREGATION_TYPE describes how the property should be displayed when multiple items that have a value for the property are selected, such as whether the values should be summed, or averaged, or just displayed with the default "Multiple Values" string.</summary>
+		[PInvokeData("Propsys.h", MSDNShortId = "bb762522")]
+		public enum PROPDESC_AGGREGATION_TYPE
+		{
+			/// <summary>Display the string "Multiple Values".</summary>
+			PDAT_DEFAULT = 0,
+			/// <summary>Display the first value in the selection.</summary>
+			PDAT_FIRST = 1,
+			/// <summary>Display the sum of the selected values. This flag is never returned for data types VT_LPWSTR, VT_BOOL, and VT_FILETIME.</summary>
+			PDAT_SUM = 2,
+			/// <summary>Display the numerical average of the selected values. This flag is never returned for data types VT_LPWSTR, VT_BOOL, and VT_FILETIME.</summary>
+			PDAT_AVERAGE = 3,
+			/// <summary>Display the date range of the selected values. This flag is returned only for values of the VT_FILETIME data type.</summary>
+			PDAT_DATERANGE = 4,
+			/// <summary>Display a concatenated string of all the values. The order of individual values in the string is undefined. The concatenated string omits duplicate values; if a value occurs more than once, it appears only once in the concatenated string.</summary>
+			PDAT_UNION = 5,
+			/// <summary>Display the highest of the selected values.</summary>
+			PDAT_MAX = 6,
+			/// <summary>Display the lowest of the selected values.</summary>
+			PDAT_MIN = 7
+		}
+
+		/// <summary>Describes the condition type to use when displaying the property in the query builder UI in Windows Vista, but not in Windows 7 and later.</summary>
+		[PInvokeData("Propsys.h", MSDNShortId = "bb762523")]
+		public enum PROPDESC_CONDITION_TYPE
+		{
+			/// <summary>The default value; it means the condition type is unspecified.</summary>
+			PDCOT_NONE = 0,
+			/// <summary>Use the string condition type.</summary>
+			PDCOT_STRING = 1,
+			/// <summary>Use the size condition type.</summary>
+			PDCOT_SIZE = 2,
+			/// <summary>Use the date/time condition type.</summary>
+			PDCOT_DATETIME = 3,
+			/// <summary>Use the Boolean condition type.</summary>
+			PDCOT_BOOLEAN = 4,
+			/// <summary>Use the number condition type.</summary>
+			PDCOT_NUMBER = 5
+		}
+
+		/// <summary>A value that indicates the display type.</summary>
+		[PInvokeData("Propsys.h", MSDNShortId = "bb761535")]
+		public enum PROPDESC_DISPLAYTYPE
+		{
+			/// <summary>The value is displayed as a string.</summary>
+			PDDT_STRING = 0,
+			/// <summary>The value is displayed as an integer.</summary>
+			PDDT_NUMBER = 1,
+			/// <summary>The value is displayed as a Boolean value.</summary>
+			PDDT_BOOLEAN = 2,
+			/// <summary>The value is displayed as date and time.</summary>
+			PDDT_DATETIME = 3,
+			/// <summary>The value is displayed as an enumerated type-list. Use IPropertyDescription::GetEnumTypeList to handle this type.</summary>
+			PDDT_ENUMERATED = 4
+		}
+
+		/// <summary>Describes the filtered list of property descriptions that is returned.</summary>
+		public enum PROPDESC_ENUMFILTER
+		{
+			/// <summary>The list contains all property descriptions in the system.</summary>
+			PDEF_ALL = 0,        // All properties in system
+								 /// <summary>The list contains system property descriptions only. It excludes third-party property descriptions that are registered on the computer.</summary>
+			PDEF_SYSTEM = 1,        // Only system properties
+									/// <summary>The list contains only third-party property descriptions that are registered on the computer.</summary>
+			PDEF_NONSYSTEM = 2,        // Only non-system properties
+									   /// <summary>The list contains only viewable properties, where &lt;typeInfo isViewable="true"&gt;.</summary>
+			PDEF_VIEWABLE = 3,        // Only viewable properties
+									  /// <summary>Deprecated in Windows 7 and later. The list contains only queryable properties, where &lt;typeInfo isViewable="true" isQueryable="true"&gt;.</summary>
+			PDEF_QUERYABLE = 4,        // Deprecated
+									   /// <summary>Deprecated in Windows 7 and later. The list contains only properties to be included in full-text queries.</summary>
+			PDEF_INFULLTEXTQUERY = 5,        // Deprecated
+											 /// <summary>The list contains only properties that are columns.</summary>
+			PDEF_COLUMN = 6,        // Only properties that are columns
+		}
+
+		/// <summary>Used by property description helper functions, such as PSFormatForDisplay, to indicate the format of a property string.</summary>
+		[PInvokeData("Propsys.h", MSDNShortId = "bb762525")]
+		[Flags]
+		public enum PROPDESC_FORMAT_FLAGS
+		{
+			/// <summary>Use the format settings specified in the property's .propdesc file.</summary>
+			PDFF_DEFAULT = 0,
+			/// <summary>Precede the value with the property's display name. If the hideLabelPrefix attribute of the labelInfo element in the property's .propinfo file is set to true, then this flag is ignored.</summary>
+			PDFF_PREFIXNAME = 0x1,
+			/// <summary>Treat the string as a file name.</summary>
+			PDFF_FILENAME = 0x2,
+			/// <summary>Byte sizes are always displayed in KB, regardless of size. This enables clean alignment of the values in the column. This flag applies only to properties that have been declared as type Integer in the displayType attribute of the displayInfo element in the property's .propinfo file. This flag overrides the numberFormat setting.</summary>
+			PDFF_ALWAYSKB = 0x4,
+			/// <summary>Reserved.</summary>
+			PDFF_RESERVED_RIGHTTOLEFT = 0x8,
+			/// <summary>Display time as "hh:mm am/pm".</summary>
+			PDFF_SHORTTIME = 0x10,
+			/// <summary>Display time as "hh:mm:ss am/pm".</summary>
+			PDFF_LONGTIME = 0x20,
+			/// <summary>Hide the time portion of datetime.</summary>
+			PDFF_HIDETIME = 0x40,
+			/// <summary>Display date as "MM/DD/YY". For example, "03/21/04".</summary>
+			PDFF_SHORTDATE = 0x80,
+			/// <summary>Display date as "DayOfWeek, Month day, year". For example, "Monday, March 21, 2009".</summary>
+			PDFF_LONGDATE = 0x100,
+			/// <summary>Hide the date portion of datetime.</summary>
+			PDFF_HIDEDATE = 0x200,
+			/// <summary>Use friendly date descriptions. For example, "Yesterday".</summary>
+			PDFF_RELATIVEDATE = 0x400,
+			/// <summary>Return the invitation text if formatting failed or the value was empty. Invitation text is text displayed in a text box as a cue for the user, such as "Enter your name". Formatting can fail if the data entered is not of an expected type, such as when alpha characters have been entered in a phone-number field.</summary>
+			PDFF_USEEDITINVITATION = 0x800,
+			/// <summary>If this flag is used, the PDFF_USEEDITINVITATION flag must also be specified. When the formatting flags are PDFF_READONLY | PDFF_USEEDITINVITATION and the algorithm would have shown invitation text, a string is returned that indicates the value is "Unknown" instead of returning the invitation text.</summary>
+			PDFF_READONLY = 0x1000,
+			/// <summary>Do not detect reading order automatically. Useful when converting to ANSI to omit the Unicode reading order characters. However, reading order characters for some values are still returned.</summary>
+			PDFF_NOAUTOREADINGORDER = 0x2000
+		}
+
+		/// <summary>A flag value that indicates the grouping type.</summary>
+		[PInvokeData("Propsys.h", MSDNShortId = "bb761542")]
+		public enum PROPDESC_GROUPING_RANGE
+		{
+			/// <summary>Displays individual values.</summary>
+			PDGR_DISCRETE = 0,
+			/// <summary>Displays static alphanumeric ranges.</summary>
+			PDGR_ALPHANUMERIC = 1,
+			/// <summary>Displays static size ranges.</summary>
+			PDGR_SIZE = 2,
+			/// <summary>Displays dynamically created ranges.</summary>
+			PDGR_DYNAMIC = 3,
+			/// <summary>Displays month and year groups.</summary>
+			PDGR_DATE = 4,
+			/// <summary>Displays percent groups.</summary>
+			PDGR_PERCENT = 5,
+			/// <summary>Displays percent groups returned by IPropertyDescription::GetEnumTypeList.		</summary>
+			PDGR_ENUMERATED = 6
+		}
+
+		/// <summary>Describes the relative description type for a property description, as determined by the relativeDescriptionType attribute of the displayInfo element.</summary>
+		[PInvokeData("Propsys.h", MSDNShortId = "bb762526")]
+		public enum PROPDESC_RELATIVEDESCRIPTION_TYPE
+		{
+			/// <summary>General type.</summary>
+			PDRDT_GENERAL = 0,
+			/// <summary>Date type.</summary>
+			PDRDT_DATE = 1,
+			/// <summary>Size type.</summary>
+			PDRDT_SIZE = 2,
+			/// <summary>Count type.</summary>
+			PDRDT_COUNT = 3,
+			/// <summary>Revision type.</summary>
+			PDRDT_REVISION = 4,
+			/// <summary>Length type.</summary>
+			PDRDT_LENGTH = 5,
+			/// <summary>Duration type.</summary>
+			PDRDT_DURATION = 6,
+			/// <summary>Speed type.</summary>
+			PDRDT_SPEED = 7,
+			/// <summary>Rate type.</summary>
+			PDRDT_RATE = 8,
+			/// <summary>Rating type.</summary>
+			PDRDT_RATING = 9,
+			/// <summary>Priority type.</summary>
+			PDRDT_PRIORITY = 10
+		}
+
+		/// <summary>Indicate the sort types available to the user.</summary>
+		[PInvokeData("Propsys.h", MSDNShortId = "bb761551")]
+		public enum PROPDESC_SORTDESCRIPTION
+		{
+			/// <summary>Default. "Sort going up", "Sort going down"</summary>
+			PDSD_GENERAL = 0,
+			/// <summary>"A on top", "Z on top"</summary>
+			PDSD_A_Z = 1,
+			/// <summary>"Lowest on top", "Highest on top"</summary>
+			PDSD_LOWEST_HIGHEST = 2,
+			/// <summary>"Smallest on top", "Largest on top"</summary>
+			PDSD_SMALLEST_BIGGEST = 3,
+			/// <summary>"Oldest on top", "Newest on top"		</summary>
+			PDSD_OLDEST_NEWEST = 4
+		}
+
 		/// <summary>Describes attributes of the typeInfo element in the property's .propdesc file.</summary>
 		[PInvokeData("Propsys.h", MSDNShortId = "bb762527")]
 		[Flags]
@@ -231,211 +408,21 @@ namespace Vanara.PInvoke
 			PDVF_MASK_ALL	= 0x1bff
 		}
 
-		/// <summary>A value that indicates the display type.</summary>
-		[PInvokeData("Propsys.h", MSDNShortId = "bb761535")]
-		public enum PROPDESC_DISPLAYTYPE
+		/// <summary>Property Enumeration Types</summary>
+		public enum PROPENUMTYPE
 		{
-			/// <summary>The value is displayed as a string.</summary>
-			PDDT_STRING	= 0,
-			/// <summary>The value is displayed as an integer.</summary>
-			PDDT_NUMBER	= 1,
-			/// <summary>The value is displayed as a Boolean value.</summary>
-			PDDT_BOOLEAN	= 2,
-			/// <summary>The value is displayed as date and time.</summary>
-			PDDT_DATETIME	= 3,
-			/// <summary>The value is displayed as an enumerated type-list. Use IPropertyDescription::GetEnumTypeList to handle this type.</summary>
-			PDDT_ENUMERATED	= 4
+			/// <summary>Use DisplayText and either RangeMinValue or RangeSetValue.</summary>
+			PET_DISCRETEVALUE = 0,
+
+			/// <summary>Use DisplayText and either RangeMinValue or RangeSetValue</summary>
+			PET_RANGEDVALUE = 1,
+
+			/// <summary>Use DisplayText</summary>
+			PET_DEFAULTVALUE = 2,
+
+			/// <summary>Use Value or RangeMinValue</summary>
+			PET_ENDRANGE = 3
 		}
-
-		/// <summary>Describes the filtered list of property descriptions that is returned.</summary>
-		public enum PROPDESC_ENUMFILTER
-		{
-			/// <summary>The list contains all property descriptions in the system.</summary>
-			PDEF_ALL = 0,        // All properties in system
-			/// <summary>The list contains system property descriptions only. It excludes third-party property descriptions that are registered on the computer.</summary>
-			PDEF_SYSTEM = 1,        // Only system properties
-			/// <summary>The list contains only third-party property descriptions that are registered on the computer.</summary>
-			PDEF_NONSYSTEM = 2,        // Only non-system properties
-			/// <summary>The list contains only viewable properties, where &lt;typeInfo isViewable="true"&gt;.</summary>
-			PDEF_VIEWABLE = 3,        // Only viewable properties
-			/// <summary>Deprecated in Windows 7 and later. The list contains only queryable properties, where &lt;typeInfo isViewable="true" isQueryable="true"&gt;.</summary>
-			PDEF_QUERYABLE = 4,        // Deprecated
-			/// <summary>Deprecated in Windows 7 and later. The list contains only properties to be included in full-text queries.</summary>
-			PDEF_INFULLTEXTQUERY = 5,        // Deprecated
-			/// <summary>The list contains only properties that are columns.</summary>
-			PDEF_COLUMN = 6,        // Only properties that are columns
-		}
-
-		/// <summary>A flag value that indicates the grouping type.</summary>
-		[PInvokeData("Propsys.h", MSDNShortId = "bb761542")]
-		public enum PROPDESC_GROUPING_RANGE
-		{
-			/// <summary>Displays individual values.</summary>
-			PDGR_DISCRETE	= 0,
-			/// <summary>Displays static alphanumeric ranges.</summary>
-			PDGR_ALPHANUMERIC	= 1,
-			/// <summary>Displays static size ranges.</summary>
-			PDGR_SIZE	= 2,
-			/// <summary>Displays dynamically created ranges.</summary>
-			PDGR_DYNAMIC	= 3,
-			/// <summary>Displays month and year groups.</summary>
-			PDGR_DATE	= 4,
-			/// <summary>Displays percent groups.</summary>
-			PDGR_PERCENT	= 5,
-			/// <summary>Displays percent groups returned by IPropertyDescription::GetEnumTypeList.		</summary>
-			PDGR_ENUMERATED	= 6
-		}
-
-		/// <summary>Used by property description helper functions, such as PSFormatForDisplay, to indicate the format of a property string.</summary>
-		[PInvokeData("Propsys.h", MSDNShortId = "bb762525")]
-		[Flags]
-		public enum PROPDESC_FORMAT_FLAGS
-		{
-			/// <summary>Use the format settings specified in the property's .propdesc file.</summary>
-			PDFF_DEFAULT	= 0,
-			/// <summary>Precede the value with the property's display name. If the hideLabelPrefix attribute of the labelInfo element in the property's .propinfo file is set to true, then this flag is ignored.</summary>
-			PDFF_PREFIXNAME	= 0x1,
-			/// <summary>Treat the string as a file name.</summary>
-			PDFF_FILENAME	= 0x2,
-			/// <summary>Byte sizes are always displayed in KB, regardless of size. This enables clean alignment of the values in the column. This flag applies only to properties that have been declared as type Integer in the displayType attribute of the displayInfo element in the property's .propinfo file. This flag overrides the numberFormat setting.</summary>
-			PDFF_ALWAYSKB	= 0x4,
-			/// <summary>Reserved.</summary>
-			PDFF_RESERVED_RIGHTTOLEFT	= 0x8,
-			/// <summary>Display time as "hh:mm am/pm".</summary>
-			PDFF_SHORTTIME	= 0x10,
-			/// <summary>Display time as "hh:mm:ss am/pm".</summary>
-			PDFF_LONGTIME	= 0x20,
-			/// <summary>Hide the time portion of datetime.</summary>
-			PDFF_HIDETIME	= 0x40,
-			/// <summary>Display date as "MM/DD/YY". For example, "03/21/04".</summary>
-			PDFF_SHORTDATE	= 0x80,
-			/// <summary>Display date as "DayOfWeek, Month day, year". For example, "Monday, March 21, 2009".</summary>
-			PDFF_LONGDATE	= 0x100,
-			/// <summary>Hide the date portion of datetime.</summary>
-			PDFF_HIDEDATE	= 0x200,
-			/// <summary>Use friendly date descriptions. For example, "Yesterday".</summary>
-			PDFF_RELATIVEDATE	= 0x400,
-			/// <summary>Return the invitation text if formatting failed or the value was empty. Invitation text is text displayed in a text box as a cue for the user, such as "Enter your name". Formatting can fail if the data entered is not of an expected type, such as when alpha characters have been entered in a phone-number field.</summary>
-			PDFF_USEEDITINVITATION	= 0x800,
-			/// <summary>If this flag is used, the PDFF_USEEDITINVITATION flag must also be specified. When the formatting flags are PDFF_READONLY | PDFF_USEEDITINVITATION and the algorithm would have shown invitation text, a string is returned that indicates the value is "Unknown" instead of returning the invitation text.</summary>
-			PDFF_READONLY	= 0x1000,
-			/// <summary>Do not detect reading order automatically. Useful when converting to ANSI to omit the Unicode reading order characters. However, reading order characters for some values are still returned.</summary>
-			PDFF_NOAUTOREADINGORDER	= 0x2000
-		}
-
-		/// <summary>Indicate the sort types available to the user.</summary>
-		[PInvokeData("Propsys.h", MSDNShortId = "bb761551")]
-		public enum PROPDESC_SORTDESCRIPTION
-		{
-			/// <summary>Default. "Sort going up", "Sort going down"</summary>
-			PDSD_GENERAL	= 0,
-			/// <summary>"A on top", "Z on top"</summary>
-			PDSD_A_Z	= 1,
-			/// <summary>"Lowest on top", "Highest on top"</summary>
-			PDSD_LOWEST_HIGHEST	= 2,
-			/// <summary>"Smallest on top", "Largest on top"</summary>
-			PDSD_SMALLEST_BIGGEST	= 3,
-			/// <summary>"Oldest on top", "Newest on top"		</summary>
-			PDSD_OLDEST_NEWEST	= 4
-		}
-
-		/// <summary>Describes the relative description type for a property description, as determined by the relativeDescriptionType attribute of the displayInfo element.</summary>
-		[PInvokeData("Propsys.h", MSDNShortId = "bb762526")]
-		public enum PROPDESC_RELATIVEDESCRIPTION_TYPE
-		{
-			/// <summary>General type.</summary>
-			PDRDT_GENERAL	= 0,
-			/// <summary>Date type.</summary>
-			PDRDT_DATE	= 1,
-			/// <summary>Size type.</summary>
-			PDRDT_SIZE	= 2,
-			/// <summary>Count type.</summary>
-			PDRDT_COUNT	= 3,
-			/// <summary>Revision type.</summary>
-			PDRDT_REVISION	= 4,
-			/// <summary>Length type.</summary>
-			PDRDT_LENGTH	= 5,
-			/// <summary>Duration type.</summary>
-			PDRDT_DURATION	= 6,
-			/// <summary>Speed type.</summary>
-			PDRDT_SPEED	= 7,
-			/// <summary>Rate type.</summary>
-			PDRDT_RATE	= 8,
-			/// <summary>Rating type.</summary>
-			PDRDT_RATING	= 9,
-			/// <summary>Priority type.</summary>
-			PDRDT_PRIORITY	= 10
-		}
-
-		/// <summary>Describes how property values are displayed when multiple items are selected. For a particular property, PROPDESC_AGGREGATION_TYPE describes how the property should be displayed when multiple items that have a value for the property are selected, such as whether the values should be summed, or averaged, or just displayed with the default "Multiple Values" string.</summary>
-		[PInvokeData("Propsys.h", MSDNShortId = "bb762522")]
-		public enum PROPDESC_AGGREGATION_TYPE
-		{
-			/// <summary>Display the string "Multiple Values".</summary>
-			PDAT_DEFAULT	= 0,
-			/// <summary>Display the first value in the selection.</summary>
-			PDAT_FIRST	= 1,
-			/// <summary>Display the sum of the selected values. This flag is never returned for data types VT_LPWSTR, VT_BOOL, and VT_FILETIME.</summary>
-			PDAT_SUM	= 2,
-			/// <summary>Display the numerical average of the selected values. This flag is never returned for data types VT_LPWSTR, VT_BOOL, and VT_FILETIME.</summary>
-			PDAT_AVERAGE	= 3,
-			/// <summary>Display the date range of the selected values. This flag is returned only for values of the VT_FILETIME data type.</summary>
-			PDAT_DATERANGE	= 4,
-			/// <summary>Display a concatenated string of all the values. The order of individual values in the string is undefined. The concatenated string omits duplicate values; if a value occurs more than once, it appears only once in the concatenated string.</summary>
-			PDAT_UNION	= 5,
-			/// <summary>Display the highest of the selected values.</summary>
-			PDAT_MAX	= 6,
-			/// <summary>Display the lowest of the selected values.</summary>
-			PDAT_MIN	= 7
-		}
-
-		/// <summary>Describes the condition type to use when displaying the property in the query builder UI in Windows Vista, but not in Windows 7 and later.</summary>
-		[PInvokeData("Propsys.h", MSDNShortId = "bb762523")]
-		public enum PROPDESC_CONDITION_TYPE
-		{
-			/// <summary>The default value; it means the condition type is unspecified.</summary>
-			PDCOT_NONE	= 0,
-			/// <summary>Use the string condition type.</summary>
-			PDCOT_STRING	= 1,
-			/// <summary>Use the size condition type.</summary>
-			PDCOT_SIZE	= 2,
-			/// <summary>Use the date/time condition type.</summary>
-			PDCOT_DATETIME	= 3,
-			/// <summary>Use the Boolean condition type.</summary>
-			PDCOT_BOOLEAN	= 4,
-			/// <summary>Use the number condition type.</summary>
-			PDCOT_NUMBER	= 5
-		}
-
-		/// <summary>Gets an instance of a property description interface for a property specified by a PROPERTYKEY structure.</summary>
-		/// <param name="propkey">Reference to a PROPERTYKEY.</param>
-		/// <param name="riid">Reference to the interface ID of the requested interface.</param>
-		/// <param name="ppv">
-		/// When this function returns, contains the interface pointer requested in riid. This is typically IPropertyDescription, IPropertyDescriptionAliasInfo,
-		/// or IPropertyDescriptionSearchInfo.
-		/// </param>
-		/// <returns>The result of the operation. S_OK indicates success.</returns>
-		[DllImport(Lib.PropSys, ExactSpelling = true)]
-		[PInvokeData("Propsys.h", MSDNShortId = "bb776503")]
-		public static extern HRESULT PSGetPropertyDescription(ref PROPERTYKEY propkey, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
-
-		/// <summary>
-		/// Retrieves the property's canonical name given its PROPERTYKEY.
-		/// </summary>
-		/// <param name="propkey">A pointer to a PROPERTYKEY structure containing the property's identifiers.</param>
-		/// <param name="ppszCanonicalName">The address of a pointer to a buffer that receives the property name as a null-terminated Unicode string.</param>
-		/// <returns>The result of the operation. S_OK indicates success.</returns>
-		[DllImport(Lib.PropSys, ExactSpelling = true)]
-		[PInvokeData("Propsys.h", MSDNShortId = "bb776502")]
-		public static extern HRESULT PSGetNameFromPropertyKey(ref PROPERTYKEY propkey, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszCanonicalName);
-
-		/// <summary>Gets the property key for a canonical property name.</summary>
-		/// <param name="pszName">Pointer to a property name as a null-terminated, Unicode string.</param>
-		/// <param name="ppropkey">When this function returns, contains the requested property key.</param>
-		/// <returns>The result of the operation. S_OK indicates success.</returns>
-		[DllImport(Lib.PropSys, ExactSpelling = true)]
-		[PInvokeData("Propsys.h", MSDNShortId = "bb762081")]
-		public static extern HRESULT PSGetPropertyKeyFromName([MarshalAs(UnmanagedType.LPWStr)] string pszName, out PROPERTYKEY ppropkey);
 
 		/// <summary>Exposes a method that initializes a handler, such as a property handler, thumbnail handler, or preview handler, with a stream.</summary>
 		[ComImport, Guid("b824b49d-22ac-4161-ac8a-9916e8fa3f7f"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -446,14 +433,6 @@ namespace Vanara.PInvoke
 			/// <param name="pstream">A pointer to an IStream interface that represents the stream source.</param>
 			/// <param name="grfMode">One of the following STGM values that indicates the access mode for pstream. STGM_READ or STGM_READWRITE.</param>
 			void Initialize(IStream pstream, STGM grfMode);
-		}
-
-		[ComImport, Guid("1F9FC1D0-C39B-4B26-817F-011967D3440E"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		[PInvokeData("Propsys.h", MSDNShortId = "bb761511")]
-		public interface IPropertyDescriptionList
-		{
-			uint GetCount();
-			IPropertyDescription GetAt([In] uint iElem, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
 		}
 
 		// <summary>Exposes methods that enumerate and retrieve individual property description details.</summary>
@@ -471,8 +450,9 @@ namespace Vanara.PInvoke
 			/// <returns>When this method returns, contains a pointer to a VARTYPE that indicates the property type. If the property is multi-valued, the value pointed to is a VT_VECTOR mask (VT_VECTOR ORed to the VARTYPE.</returns>
 			VARTYPE GetPropertyType();
 			/// <summary>Gets the display name of the property as it is shown in any UI.</summary>
-			/// <returns>Contains the address of a pointer to the property's name as a null-terminated Unicode string.</returns>
-			SafeCoTaskMemString GetDisplayName();
+			/// <param name="pszName">Contains the address of a pointer to the property's name as a null-terminated Unicode string.</param>
+			[PreserveSig]
+			HRESULT GetDisplayName(out SafeCoTaskMemString pszName);
 			/// <summary>Gets the text used in edit controls hosted in various dialog boxes.</summary>
 			/// <returns>When this method returns, contains the address of a pointer to a null-terminated Unicode buffer that holds the invitation text.</returns>
 			SafeCoTaskMemString GetEditInvitation();
@@ -519,20 +499,19 @@ namespace Vanara.PInvoke
 			/// <param name="popDefault">When this method returns, contains a pointer to a value that indicates the default condition operation.</param>
 			void GetConditionType(out PROPDESC_CONDITION_TYPE pcontype, out CONDITION_OPERATION popDefault);
 			/// <summary>Gets an instance of an IPropertyEnumTypeList, which can be used to enumerate the possible values for a property.</summary>
+			/// <param name="riid">Reference to the interface ID of the requested interface.</param>
 			/// <returns>When this method returns, contains the address of an IPropertyEnumTypeList interface pointer.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IPropertyEnumTypeList GetEnumTypeList();
+			IPropertyEnumTypeList GetEnumTypeList([MarshalAs(UnmanagedType.LPStruct)] Guid riid);
 			/// <summary>Coerces the value to the canonical value, according to the property description.</summary>
 			/// <param name="propvar">On entry, contains a pointer to a PROPVARIANT structure that contains the original value. When this method returns, contains the canonical value.</param>
 			[PreserveSig]
 			HRESULT CoerceToCanonicalValue([In, Out] PROPVARIANT propvar);
 			/// <summary>Gets a formatted, Unicode string representation of a property value.</summary>
-			/// <param name="key">A reference to the requested property key, which identifies a property. See PROPERTYKEY.</param>
 			/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
 			/// <param name="pdfFlags">One or more of the PROPDESC_FORMAT_FLAGS flags, which are either bitwise or multiple values, that indicate the property string format.</param>
 			/// <param name="pszText">When this method returns, contains the formatted value as a null-terminated, Unicode string. The calling application must allocate memory for the buffer, and use CoTaskMemFree to release the string specified by pszText when it is no longer needed.</param>
-			/// <param name="cchText">The length of the buffer at pszText in WCHARS, including the terminating NULL. The maximum size is 0x8000 (32K).</param>
-			void FormatForDisplay([In] ref PROPERTYKEY key, [In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags, System.Text.StringBuilder pszText, uint cchText);
+			SafeCoTaskMemString FormatForDisplay([In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags);
 			/// <summary>Gets a value that indicates whether a property is canonical according to the definition of the property description.</summary>
 			/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
 			/// <returns>Returns one of the following values: S_OK = The value is canonical; S_FALSE = The value is not canonical.</returns>
@@ -554,8 +533,9 @@ namespace Vanara.PInvoke
 			/// <returns>When this method returns, contains a pointer to a VARTYPE that indicates the property type. If the property is multi-valued, the value pointed to is a VT_VECTOR mask (VT_VECTOR ORed to the VARTYPE.</returns>
 			new VARTYPE GetPropertyType();
 			/// <summary>Gets the display name of the property as it is shown in any UI.</summary>
-			/// <returns>Contains the address of a pointer to the property's name as a null-terminated Unicode string.</returns>
-			new SafeCoTaskMemString GetDisplayName();
+			/// <param name="pszName">Contains the address of a pointer to the property's name as a null-terminated Unicode string.</param>
+			[PreserveSig]
+			new HRESULT GetDisplayName(out SafeCoTaskMemString pszName);
 			/// <summary>Gets the text used in edit controls hosted in various dialog boxes.</summary>
 			/// <returns>When this method returns, contains the address of a pointer to a null-terminated Unicode buffer that holds the invitation text.</returns>
 			new SafeCoTaskMemString GetEditInvitation();
@@ -602,20 +582,19 @@ namespace Vanara.PInvoke
 			/// <param name="popDefault">When this method returns, contains a pointer to a value that indicates the default condition operation.</param>
 			new void GetConditionType(out PROPDESC_CONDITION_TYPE pcontype, out CONDITION_OPERATION popDefault);
 			/// <summary>Gets an instance of an IPropertyEnumTypeList, which can be used to enumerate the possible values for a property.</summary>
+			/// <param name="riid">Reference to the interface ID of the requested interface.</param>
 			/// <returns>When this method returns, contains the address of an IPropertyEnumTypeList interface pointer.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			new IPropertyEnumTypeList GetEnumTypeList();
+			new IPropertyEnumTypeList GetEnumTypeList([MarshalAs(UnmanagedType.LPStruct)] Guid riid);
 			/// <summary>Coerces the value to the canonical value, according to the property description.</summary>
 			/// <param name="propvar">On entry, contains a pointer to a PROPVARIANT structure that contains the original value. When this method returns, contains the canonical value.</param>
 			[PreserveSig]
 			new HRESULT CoerceToCanonicalValue([In, Out] PROPVARIANT propvar);
 			/// <summary>Gets a formatted, Unicode string representation of a property value.</summary>
-			/// <param name="key">A reference to the requested property key, which identifies a property. See PROPERTYKEY.</param>
 			/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
 			/// <param name="pdfFlags">One or more of the PROPDESC_FORMAT_FLAGS flags, which are either bitwise or multiple values, that indicate the property string format.</param>
 			/// <param name="pszText">When this method returns, contains the formatted value as a null-terminated, Unicode string. The calling application must allocate memory for the buffer, and use CoTaskMemFree to release the string specified by pszText when it is no longer needed.</param>
-			/// <param name="cchText">The length of the buffer at pszText in WCHARS, including the terminating NULL. The maximum size is 0x8000 (32K).</param>
-			new void FormatForDisplay([In] ref PROPERTYKEY key, [In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags, System.Text.StringBuilder pszText, uint cchText);
+			new SafeCoTaskMemString FormatForDisplay([In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags);
 			/// <summary>Gets a value that indicates whether a property is canonical according to the definition of the property description.</summary>
 			/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
 			/// <returns>Returns one of the following values: S_OK = The value is canonical; S_FALSE = The value is not canonical.</returns>
@@ -623,58 +602,70 @@ namespace Vanara.PInvoke
 			new HRESULT IsValueCanonical([In] PROPVARIANT propvar);
 			/// <summary>Gets the image reference associated with a property value.</summary>
 			/// <param name="propvar">The PROPVARIANT for which to get an image.</param>
-			/// <returns>A string that receives, when this method returns successfully, a string of the form &lt;dll name&gt;,-&lt;resid&gt; that is suitable to be passed to PathParseIconLocation.</returns>
-			SafeCoTaskMemString GetImageReferenceForValue([In] PROPVARIANT propvar);
+			/// <param name="ppszImageRes">A string that receives, when this method returns successfully, a string of the form &lt;dll name&gt;,-&lt;resid&gt; that is suitable to be passed to PathParseIconLocation.</param>
+			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
+			[PreserveSig]
+			HRESULT GetImageReferenceForValue([In] PROPVARIANT propvar, out SafeCoTaskMemString ppszImageRes);
 		}
 
-		[ComImport, Guid("11E1FBF9-2D56-4A6B-8DB3-7CD193A471F2"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		[ComImport, Guid("1F9FC1D0-C39B-4B26-817F-011967D3440E"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		[PInvokeData("Propsys.h", MSDNShortId = "bb761511")]
+		public interface IPropertyDescriptionList
+		{
+			uint GetCount();
+			IPropertyDescription GetAt([In] uint iElem, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+		}
+
+		/// <summary>
+		/// Exposes methods that extract data from enumeration information. IPropertyEnumType gives access to the enum and enumRange elements in the property
+		/// schema in a programmatic way at run time.
+		/// </summary>
+		[ComImport, Guid("11e1fbf9-2d56-4a6b-8db3-7cd193a471f2"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		[PInvokeData("Propsys.h")]
 		public interface IPropertyEnumType
 		{
+			/// <summary>Gets an enumeration type from an enumeration information structure.</summary>
+			/// <returns>When this method returns, contains a value that indicate the enumeration type.</returns>
 			PROPENUMTYPE GetEnumType();
-
-			PROPVARIANT GetValue();
-
-			PROPVARIANT GetRangeMinValue();
-
-			PROPVARIANT GetRangeSetValue();
-
-			SafeCoTaskMemString GetDisplayText();
+			/// <summary>Gets a value from an enumeration information structure.</summary>
+			/// <param name="ppropvar">When this method returns, contains a pointer to the property value.</param>
+			void GetValue([Out] PROPVARIANT ppropvar);
+			/// <summary>Gets a minimum value from an enumeration information structure.</summary>
+			/// <param name="ppropvarMin">When this method returns, contains a pointer to the minimum value.</param>
+			void GetRangeMinValue([Out] PROPVARIANT ppropvarMin);
+			/// <summary>Gets a set value from an enumeration information structure.</summary>
+			/// <param name="ppropvarSet">When this method returns, contains a pointer to the set value.</param>
+			void GetRangeSetValue([Out] PROPVARIANT ppropvarSet);
+			/// <summary>Gets display text from an enumeration information structure.</summary>
+			/// <param name="ppszDisplay">When this method returns, contains the address of a pointer to a null-terminated Unicode string that contains the display text.</param>
+			void GetDisplayText([Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszDisplay);
 		}
 
-		/// <summary>Property Enumeration Types</summary>
-		public enum PROPENUMTYPE
-		{
-			/// <summary>Use DisplayText and either RangeMinValue or RangeSetValue.</summary>
-			PET_DISCRETEVALUE = 0,
-
-			/// <summary>Use DisplayText and either RangeMinValue or RangeSetValue</summary>
-			PET_RANGEDVALUE = 1,
-
-			/// <summary>Use DisplayText</summary>
-			PET_DEFAULTVALUE = 2,
-
-			/// <summary>Use Value or RangeMinValue</summary>
-			PET_ENDRANGE = 3
-		}
-
-		[ComImport, Guid("9B6E051C-5DDD-4321-9070-FE2ACB55E794"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		/// <summary>Exposes methods that extract data from enumeration information. IPropertyEnumType2 extends IPropertyEnumType.</summary>
+		/// <seealso cref="Vanara.PInvoke.PropSys.IPropertyEnumType"/>
+		[ComImport, Guid("9b6e051c-5ddd-4321-9070-fe2acb55e794"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		[PInvokeData("Propsys.h")]
 		public interface IPropertyEnumType2 : IPropertyEnumType
 		{
+			/// <summary>Gets an enumeration type from an enumeration information structure.</summary>
+			/// <returns>When this method returns, contains a value that indicate the enumeration type.</returns>
 			new PROPENUMTYPE GetEnumType();
-
-			new PROPVARIANT GetValue();
-
-			new PROPVARIANT GetRangeMinValue();
-
-			new PROPVARIANT GetRangeSetValue();
-
-			new SafeCoTaskMemString GetDisplayText();
-
-			SafeCoTaskMemString GetImageReference();
+			/// <summary>Gets a value from an enumeration information structure.</summary>
+			/// <param name="ppropvar">When this method returns, contains a pointer to the property value.</param>
+			new void GetValue([Out] PROPVARIANT ppropvar);
+			/// <summary>Gets a minimum value from an enumeration information structure.</summary>
+			/// <param name="ppropvarMin">When this method returns, contains a pointer to the minimum value.</param>
+			new void GetRangeMinValue([Out] PROPVARIANT ppropvarMin);
+			/// <summary>Gets a set value from an enumeration information structure.</summary>
+			/// <param name="ppropvarSet">When this method returns, contains a pointer to the set value.</param>
+			new void GetRangeSetValue([Out] PROPVARIANT ppropvarSet);
+			/// <summary>Gets display text from an enumeration information structure.</summary>
+			/// <param name="ppszDisplay">When this method returns, contains the address of a pointer to a null-terminated Unicode string that contains the display text.</param>
+			new void GetDisplayText([Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszDisplay);
+			/// <summary>Retrieves the image reference associated with a property enumeration.</summary>
+			/// <param name="ppszImageRes">A pointer to a buffer that, when this method returns successfully, receives a string of the form &lt;dll name&gt;,-&lt;resid&gt; that is suitable to be passed to PathParseIconLocation.</param>
+			[PreserveSig] HRESULT GetImageReference([Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszImageRes);
 		}
-
 
 		[ComImport, Guid("A99400F4-3D84-4557-94BA-1242FB2CC9A6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		[PInvokeData("Propsys.h")]
@@ -739,5 +730,35 @@ namespace Vanara.PInvoke
 
 			void RefreshPropertySchema();
 		}
+
+		/// <summary>
+		/// Retrieves the property's canonical name given its PROPERTYKEY.
+		/// </summary>
+		/// <param name="propkey">A pointer to a PROPERTYKEY structure containing the property's identifiers.</param>
+		/// <param name="ppszCanonicalName">The address of a pointer to a buffer that receives the property name as a null-terminated Unicode string.</param>
+		/// <returns>The result of the operation. S_OK indicates success.</returns>
+		[DllImport(Lib.PropSys, ExactSpelling = true)]
+		[PInvokeData("Propsys.h", MSDNShortId = "bb776502")]
+		public static extern HRESULT PSGetNameFromPropertyKey(ref PROPERTYKEY propkey, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszCanonicalName);
+
+		/// <summary>Gets an instance of a property description interface for a property specified by a PROPERTYKEY structure.</summary>
+		/// <param name="propkey">Reference to a PROPERTYKEY.</param>
+		/// <param name="riid">Reference to the interface ID of the requested interface.</param>
+		/// <param name="ppv">
+		/// When this function returns, contains the interface pointer requested in riid. This is typically IPropertyDescription, IPropertyDescriptionAliasInfo,
+		/// or IPropertyDescriptionSearchInfo.
+		/// </param>
+		/// <returns>The result of the operation. S_OK indicates success.</returns>
+		[DllImport(Lib.PropSys, ExactSpelling = true)]
+		[PInvokeData("Propsys.h", MSDNShortId = "bb776503")]
+		public static extern HRESULT PSGetPropertyDescription(ref PROPERTYKEY propkey, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+
+		/// <summary>Gets the property key for a canonical property name.</summary>
+		/// <param name="pszName">Pointer to a property name as a null-terminated, Unicode string.</param>
+		/// <param name="ppropkey">When this function returns, contains the requested property key.</param>
+		/// <returns>The result of the operation. S_OK indicates success.</returns>
+		[DllImport(Lib.PropSys, ExactSpelling = true)]
+		[PInvokeData("Propsys.h", MSDNShortId = "bb762081")]
+		public static extern HRESULT PSGetPropertyKeyFromName([MarshalAs(UnmanagedType.LPWStr)] string pszName, out PROPERTYKEY ppropkey);
 	}
 }
