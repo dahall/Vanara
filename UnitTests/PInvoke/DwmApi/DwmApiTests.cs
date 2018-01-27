@@ -74,7 +74,7 @@ namespace Vanara.PInvoke.Tests
 			err = DwmGetWindowAttribute(wnd.Handle, DWMWINDOWATTRIBUTE.DWMWA_NCRENDERING_ENABLED, out bool b2);
 			if (err.Failed) TestContext.WriteLine($"Err:DWMWA_NCRENDERING_ENABLE={err}");
 			Assert.That(err.Succeeded);
-			err = DwmGetWindowAttribute(wnd.Handle, DWMWINDOWATTRIBUTE.DWMWA_CLOAKED, out int i2);
+			err = DwmGetWindowAttribute(wnd.Handle, DWMWINDOWATTRIBUTE.DWMWA_CLOAKED, out DWM_CLOAKED i2);
 			if (err.Failed) TestContext.WriteLine($"Err:DWMWA_NCRENDERING_POLICY={err}");
 			Assert.That(err.Succeeded);
 			wnd.Hide();
@@ -97,6 +97,9 @@ namespace Vanara.PInvoke.Tests
 			wnd.Show();
 			var err = DwmSetWindowAttribute(wnd.Handle, DWMWINDOWATTRIBUTE.DWMWA_CLOAK, true);
 			if (err.Failed) TestContext.WriteLine($"Err:DWMWA_CLOAK={err}");
+			Assert.That(err.Succeeded);
+			err = DwmSetWindowAttribute(wnd.Handle, DWMWINDOWATTRIBUTE.DWMWA_NCRENDERING_POLICY, DWMNCRENDERINGPOLICY.DWMNCRP_USEWINDOWSTYLE);
+			if (err.Failed) TestContext.WriteLine($"Err:DWMWA_NCRENDERING_POLICY={err}");
 			Assert.That(err.Succeeded);
 			wnd.Hide();
 		}

@@ -459,10 +459,12 @@ namespace Vanara.PInvoke
 		public static HRESULT DwmGetWindowAttribute<T>(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, out T pvAttribute)
 		{
 			if (!CorrespondingTypeAttribute.CanGet(dwAttribute, typeof(T))) throw new ArgumentException();
-			var isBool = typeof(T) == typeof(bool);
-			var m = new SafeCoTaskMemHandle(Marshal.SizeOf(isBool ? typeof(uint) : typeof(T)));
+			var type = typeof(T);
+			var isBool = type == typeof(bool);
+			type = isBool ? typeof(uint) : (type.IsEnum ? Enum.GetUnderlyingType(type) : type);
+			var m = new SafeCoTaskMemHandle(Marshal.SizeOf(type));
 			var hr = DwmGetWindowAttribute(hwnd, dwAttribute, (IntPtr)m, m.Size);
-			pvAttribute = isBool ? (T)Convert.ChangeType(m.ToStructure<uint>(), typeof(bool)) : m.ToStructure<T>();
+			pvAttribute = isBool ? (T)Convert.ChangeType(m.ToStructure<uint>(), typeof(bool)) : (T)Marshal.PtrToStructure((IntPtr)m, type);
 			return hr;
 		}
 
@@ -618,7 +620,7 @@ namespace Vanara.PInvoke
 		public static HRESULT DwmSetWindowAttribute<T>(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, [In] T pvAttribute)
 		{
 			if (pvAttribute == null || !CorrespondingTypeAttribute.CanSet(dwAttribute, typeof(T))) throw new ArgumentException();
-			var attr = pvAttribute is bool ? (object)Convert.ToUInt32(pvAttribute) : pvAttribute;
+			var attr = pvAttribute is bool ? Convert.ToUInt32(pvAttribute) : (pvAttribute.GetType().IsEnum ? Convert.ChangeType(pvAttribute, Enum.GetUnderlyingType(pvAttribute.GetType())) : pvAttribute);
 			using (var p = new PinnedObject(attr))
 				return DwmSetWindowAttribute(hwnd, dwAttribute, p, Marshal.SizeOf(attr));
 		}
