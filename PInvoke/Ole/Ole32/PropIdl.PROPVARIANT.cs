@@ -574,14 +574,14 @@ namespace Vanara.PInvoke
 
 				var isEnumerable = type.IsArray || type != typeof(string) && typeof(IEnumerable).IsAssignableFrom(type);
 				var ret = isEnumerable ? VARTYPE.VT_VECTOR : 0;
-				if (isEnumerable && type.GetElementType() == null && type.IsGenericType)
+				if (isEnumerable && type.IsGenericType)
 				{
 					var i = type.GetInterface("IEnumerable`1");
 					if (i != null)
 					{
 						var args = i.GetGenericArguments();
 						if (args.Length == 1)
-							elemType = args[0];
+							elemtype = args[0];
 					}
 				}
 				if (elemtype.IsNullable()) ret |= VARTYPE.VT_BYREF;
