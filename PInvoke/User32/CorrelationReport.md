@@ -169,6 +169,7 @@ Native Method | Native DLL | Header | Managed Method
 [DefRawInputProc](https://www.google.com/search?num=5&q=DefRawInputProc+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [DefWindowProcA](https://www.google.com/search?num=5&q=DefWindowProcA+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [DefWindowProcW](https://www.google.com/search?num=5&q=DefWindowProcW+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[DelegateInput](https://www.google.com/search?num=5&q=DelegateInput+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [DeleteMenu](https://www.google.com/search?num=5&q=DeleteMenu+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [DeregisterShellHookWindow](https://www.google.com/search?num=5&q=DeregisterShellHookWindow+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [DestroyAcceleratorTable](https://www.google.com/search?num=5&q=DestroyAcceleratorTable+site%3Amsdn.microsoft.com) | user32.dll |  | 
@@ -220,12 +221,17 @@ Native Method | Native DLL | Header | Managed Method
 [DrawTextExA](https://www.google.com/search?num=5&q=DrawTextExA+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [DrawTextExW](https://www.google.com/search?num=5&q=DrawTextExW+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [DrawTextW](https://www.google.com/search?num=5&q=DrawTextW+site%3Amsdn.microsoft.com) | user32.dll | WinUser.h | Vanara.PInvoke.User32_Gdi.DrawText
+[DWMBindCursorToOutputConfig](https://www.google.com/search?num=5&q=DWMBindCursorToOutputConfig+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[DWMCommitInputSystemOutputConfig](https://www.google.com/search?num=5&q=DWMCommitInputSystemOutputConfig+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[DwmGetDxRgn](https://www.google.com/search?num=5&q=DwmGetDxRgn+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [DwmGetDxSharedSurface](https://www.google.com/search?num=5&q=DwmGetDxSharedSurface+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [DwmGetRemoteSessionOcclusionEvent](https://www.google.com/search?num=5&q=DwmGetRemoteSessionOcclusionEvent+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [DwmGetRemoteSessionOcclusionState](https://www.google.com/search?num=5&q=DwmGetRemoteSessionOcclusionState+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [DwmKernelShutdown](https://www.google.com/search?num=5&q=DwmKernelShutdown+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [DwmKernelStartup](https://www.google.com/search?num=5&q=DwmKernelStartup+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [DwmLockScreenUpdates](https://www.google.com/search?num=5&q=DwmLockScreenUpdates+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[DWMSetCursorOrientation](https://www.google.com/search?num=5&q=DWMSetCursorOrientation+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[DWMSetInputSystemOutputConfig](https://www.google.com/search?num=5&q=DWMSetInputSystemOutputConfig+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [DwmValidateWindow](https://www.google.com/search?num=5&q=DwmValidateWindow+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [EditWndProc](https://www.google.com/search?num=5&q=EditWndProc+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [EmptyClipboard](https://www.google.com/search?num=5&q=EmptyClipboard+site%3Amsdn.microsoft.com) | user32.dll |  | 
@@ -323,6 +329,8 @@ Native Method | Native DLL | Header | Managed Method
 [GetDesktopID](https://www.google.com/search?num=5&q=GetDesktopID+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [GetDesktopWindow](https://www.google.com/search?num=5&q=GetDesktopWindow+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [GetDialogBaseUnits](https://www.google.com/search?num=5&q=GetDialogBaseUnits+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[GetDialogControlDpiChangeBehavior](https://www.google.com/search?num=5&q=GetDialogControlDpiChangeBehavior+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[GetDialogDpiChangeBehavior](https://www.google.com/search?num=5&q=GetDialogDpiChangeBehavior+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [GetDisplayAutoRotationPreferences](https://www.google.com/search?num=5&q=GetDisplayAutoRotationPreferences+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [GetDisplayConfigBufferSizes](https://www.google.com/search?num=5&q=GetDisplayConfigBufferSizes+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [GetDlgCtrlID](https://www.google.com/search?num=5&q=GetDlgCtrlID+site%3Amsdn.microsoft.com) | user32.dll |  | 
@@ -364,6 +372,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetListBoxInfo](https://www.google.com/search?num=5&q=GetListBoxInfo+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [GetMagnificationDesktopColorEffect](https://www.google.com/search?num=5&q=GetMagnificationDesktopColorEffect+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [GetMagnificationDesktopMagnification](https://www.google.com/search?num=5&q=GetMagnificationDesktopMagnification+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[GetMagnificationDesktopSamplingMode](https://www.google.com/search?num=5&q=GetMagnificationDesktopSamplingMode+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [GetMagnificationLensCtxInformation](https://www.google.com/search?num=5&q=GetMagnificationLensCtxInformation+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [GetMenu](https://www.google.com/search?num=5&q=GetMenu+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [GetMenuBarInfo](https://www.google.com/search?num=5&q=GetMenuBarInfo+site%3Amsdn.microsoft.com) | user32.dll |  | 
@@ -416,6 +425,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetPriorityClipboardFormat](https://www.google.com/search?num=5&q=GetPriorityClipboardFormat+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [GetProcessDefaultLayout](https://www.google.com/search?num=5&q=GetProcessDefaultLayout+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [GetProcessDpiAwarenessInternal](https://www.google.com/search?num=5&q=GetProcessDpiAwarenessInternal+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[GetProcessUIContextInformation](https://www.google.com/search?num=5&q=GetProcessUIContextInformation+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [GetProcessWindowStation](https://www.google.com/search?num=5&q=GetProcessWindowStation+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [GetProgmanWindow](https://www.google.com/search?num=5&q=GetProgmanWindow+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [GetPropA](https://www.google.com/search?num=5&q=GetPropA+site%3Amsdn.microsoft.com) | user32.dll |  | 
@@ -491,6 +501,7 @@ Native Method | Native DLL | Header | Managed Method
 [GrayStringA](https://www.google.com/search?num=5&q=GrayStringA+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [GrayStringW](https://www.google.com/search?num=5&q=GrayStringW+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [gSharedInfo](https://www.google.com/search?num=5&q=gSharedInfo+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[HandleDelegatedInput](https://www.google.com/search?num=5&q=HandleDelegatedInput+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [HideCaret](https://www.google.com/search?num=5&q=HideCaret+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [HiliteMenuItem](https://www.google.com/search?num=5&q=HiliteMenuItem+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [HungWindowFromGhostWindow](https://www.google.com/search?num=5&q=HungWindowFromGhostWindow+site%3Amsdn.microsoft.com) | user32.dll |  | 
@@ -504,11 +515,14 @@ Native Method | Native DLL | Header | Managed Method
 [InflateRect](https://www.google.com/search?num=5&q=InflateRect+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [InheritWindowMonitor](https://www.google.com/search?num=5&q=InheritWindowMonitor+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [InitDManipHook](https://www.google.com/search?num=5&q=InitDManipHook+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[InitializeGenericHidInjection](https://www.google.com/search?num=5&q=InitializeGenericHidInjection+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [InitializeInputDeviceInjection](https://www.google.com/search?num=5&q=InitializeInputDeviceInjection+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [InitializeLpkHooks](https://www.google.com/search?num=5&q=InitializeLpkHooks+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [InitializePointerDeviceInjection](https://www.google.com/search?num=5&q=InitializePointerDeviceInjection+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[InitializePointerDeviceInjectionEx](https://www.google.com/search?num=5&q=InitializePointerDeviceInjectionEx+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [InitializeTouchInjection](https://www.google.com/search?num=5&q=InitializeTouchInjection+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [InjectDeviceInput](https://www.google.com/search?num=5&q=InjectDeviceInput+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[InjectGenericHidInput](https://www.google.com/search?num=5&q=InjectGenericHidInput+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [InjectKeyboardInput](https://www.google.com/search?num=5&q=InjectKeyboardInput+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [InjectMouseInput](https://www.google.com/search?num=5&q=InjectMouseInput+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [InjectPointerInput](https://www.google.com/search?num=5&q=InjectPointerInput+site%3Amsdn.microsoft.com) | user32.dll |  | 
@@ -620,6 +634,27 @@ Native Method | Native DLL | Header | Managed Method
 [MessageBoxTimeoutA](https://www.google.com/search?num=5&q=MessageBoxTimeoutA+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [MessageBoxTimeoutW](https://www.google.com/search?num=5&q=MessageBoxTimeoutW+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [MessageBoxW](https://www.google.com/search?num=5&q=MessageBoxW+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITActivateInputProcessing](https://www.google.com/search?num=5&q=MITActivateInputProcessing+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITBindInputTypeToMonitors](https://www.google.com/search?num=5&q=MITBindInputTypeToMonitors+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITCoreMsgKGetConnectionHandle](https://www.google.com/search?num=5&q=MITCoreMsgKGetConnectionHandle+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITCoreMsgKOpenConnectionTo](https://www.google.com/search?num=5&q=MITCoreMsgKOpenConnectionTo+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITCoreMsgKSend](https://www.google.com/search?num=5&q=MITCoreMsgKSend+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITDeactivateInputProcessing](https://www.google.com/search?num=5&q=MITDeactivateInputProcessing+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITDisableMouseIntercept](https://www.google.com/search?num=5&q=MITDisableMouseIntercept+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITEnableMouseIntercept](https://www.google.com/search?num=5&q=MITEnableMouseIntercept+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITGetCursorUpdateHandle](https://www.google.com/search?num=5&q=MITGetCursorUpdateHandle+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITGetCursorUpdateHandlee](https://www.google.com/search?num=5&q=MITGetCursorUpdateHandlee+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITInjectLegacyISMTouchFrame](https://www.google.com/search?num=5&q=MITInjectLegacyISMTouchFrame+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITRegisterManipulationThread](https://www.google.com/search?num=5&q=MITRegisterManipulationThread+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITSetForegroundRoutingInfo](https://www.google.com/search?num=5&q=MITSetForegroundRoutingInfo+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITSetInputCallbacks](https://www.google.com/search?num=5&q=MITSetInputCallbacks+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITSetManipulationInputTarget](https://www.google.com/search?num=5&q=MITSetManipulationInputTarget+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITStopAndEndInertia](https://www.google.com/search?num=5&q=MITStopAndEndInertia+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITSynthesizeMouseInput](https://www.google.com/search?num=5&q=MITSynthesizeMouseInput+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITSynthesizeMouseWheel](https://www.google.com/search?num=5&q=MITSynthesizeMouseWheel+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITSynthesizeTouchInput](https://www.google.com/search?num=5&q=MITSynthesizeTouchInput+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITUpdateInputGlobals](https://www.google.com/search?num=5&q=MITUpdateInputGlobals+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[MITWaitForMultipleObjectsEx](https://www.google.com/search?num=5&q=MITWaitForMultipleObjectsEx+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [ModifyMenuA](https://www.google.com/search?num=5&q=ModifyMenuA+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [ModifyMenuW](https://www.google.com/search?num=5&q=ModifyMenuW+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [MonitorFromPoint](https://www.google.com/search?num=5&q=MonitorFromPoint+site%3Amsdn.microsoft.com) | user32.dll |  | 
@@ -692,7 +727,6 @@ Native Method | Native DLL | Header | Managed Method
 [RegisterGhostWindow](https://www.google.com/search?num=5&q=RegisterGhostWindow+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [RegisterHotKey](https://www.google.com/search?num=5&q=RegisterHotKey+site%3Amsdn.microsoft.com) | user32.dll |  | Vanara.PInvoke.User32.RegisterHotKey
 [RegisterLogonProcess](https://www.google.com/search?num=5&q=RegisterLogonProcess+site%3Amsdn.microsoft.com) | user32.dll |  | 
-[RegisterManipulationThread](https://www.google.com/search?num=5&q=RegisterManipulationThread+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [RegisterMessagePumpHook](https://www.google.com/search?num=5&q=RegisterMessagePumpHook+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [RegisterPointerDeviceNotifications](https://www.google.com/search?num=5&q=RegisterPointerDeviceNotifications+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [RegisterPointerInputTarget](https://www.google.com/search?num=5&q=RegisterPointerInputTarget+site%3Amsdn.microsoft.com) | user32.dll |  | 
@@ -719,15 +753,18 @@ Native Method | Native DLL | Header | Managed Method
 [RemovePropA](https://www.google.com/search?num=5&q=RemovePropA+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [RemovePropW](https://www.google.com/search?num=5&q=RemovePropW+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [ReplyMessage](https://www.google.com/search?num=5&q=ReplyMessage+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[ReportInertia](https://www.google.com/search?num=5&q=ReportInertia+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [ResolveDesktopForWOW](https://www.google.com/search?num=5&q=ResolveDesktopForWOW+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [ReuseDDElParam](https://www.google.com/search?num=5&q=ReuseDDElParam+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [RIMAddInputObserver](https://www.google.com/search?num=5&q=RIMAddInputObserver+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [RIMAreSiblingDevices](https://www.google.com/search?num=5&q=RIMAreSiblingDevices+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [RIMDeviceIoControl](https://www.google.com/search?num=5&q=RIMDeviceIoControl+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[RIMEnableMonitorMappingForDevice](https://www.google.com/search?num=5&q=RIMEnableMonitorMappingForDevice+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [RIMFreeInputBuffer](https://www.google.com/search?num=5&q=RIMFreeInputBuffer+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [RIMGetDevicePreparsedData](https://www.google.com/search?num=5&q=RIMGetDevicePreparsedData+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [RIMGetDevicePreparsedDataLockfree](https://www.google.com/search?num=5&q=RIMGetDevicePreparsedDataLockfree+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [RIMGetDeviceProperties](https://www.google.com/search?num=5&q=RIMGetDeviceProperties+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[RIMGetDevicePropertiesLockfree](https://www.google.com/search?num=5&q=RIMGetDevicePropertiesLockfree+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [RIMGetPhysicalDeviceRect](https://www.google.com/search?num=5&q=RIMGetPhysicalDeviceRect+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [RIMGetSourceProcessId](https://www.google.com/search?num=5&q=RIMGetSourceProcessId+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [RIMObserveNextInput](https://www.google.com/search?num=5&q=RIMObserveNextInput+site%3Amsdn.microsoft.com) | user32.dll |  | 
@@ -769,11 +806,15 @@ Native Method | Native DLL | Header | Managed Method
 [SetClipboardData](https://www.google.com/search?num=5&q=SetClipboardData+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SetClipboardViewer](https://www.google.com/search?num=5&q=SetClipboardViewer+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SetCoalescableTimer](https://www.google.com/search?num=5&q=SetCoalescableTimer+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[SetCoreWindow](https://www.google.com/search?num=5&q=SetCoreWindow+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SetCursor](https://www.google.com/search?num=5&q=SetCursor+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SetCursorContents](https://www.google.com/search?num=5&q=SetCursorContents+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SetCursorPos](https://www.google.com/search?num=5&q=SetCursorPos+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SetDebugErrorLevel](https://www.google.com/search?num=5&q=SetDebugErrorLevel+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[SetDesktopColorTransform](https://www.google.com/search?num=5&q=SetDesktopColorTransform+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SetDeskWallpaper](https://www.google.com/search?num=5&q=SetDeskWallpaper+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[SetDialogControlDpiChangeBehavior](https://www.google.com/search?num=5&q=SetDialogControlDpiChangeBehavior+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[SetDialogDpiChangeBehavior](https://www.google.com/search?num=5&q=SetDialogDpiChangeBehavior+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SetDisplayAutoRotationPreferences](https://www.google.com/search?num=5&q=SetDisplayAutoRotationPreferences+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SetDisplayConfig](https://www.google.com/search?num=5&q=SetDisplayConfig+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SetDlgItemInt](https://www.google.com/search?num=5&q=SetDlgItemInt+site%3Amsdn.microsoft.com) | user32.dll |  | 
@@ -790,8 +831,8 @@ Native Method | Native DLL | Header | Managed Method
 [SetLayeredWindowAttributes](https://www.google.com/search?num=5&q=SetLayeredWindowAttributes+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SetMagnificationDesktopColorEffect](https://www.google.com/search?num=5&q=SetMagnificationDesktopColorEffect+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SetMagnificationDesktopMagnification](https://www.google.com/search?num=5&q=SetMagnificationDesktopMagnification+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[SetMagnificationDesktopSamplingMode](https://www.google.com/search?num=5&q=SetMagnificationDesktopSamplingMode+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SetMagnificationLensCtxInformation](https://www.google.com/search?num=5&q=SetMagnificationLensCtxInformation+site%3Amsdn.microsoft.com) | user32.dll |  | 
-[SetManipulationInputTarget](https://www.google.com/search?num=5&q=SetManipulationInputTarget+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SetMenu](https://www.google.com/search?num=5&q=SetMenu+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SetMenuContextHelpId](https://www.google.com/search?num=5&q=SetMenuContextHelpId+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [SetMenuDefaultItem](https://www.google.com/search?num=5&q=SetMenuDefaultItem+site%3Amsdn.microsoft.com) | user32.dll |  | 
@@ -895,6 +936,7 @@ Native Method | Native DLL | Header | Managed Method
 [TranslateMDISysAccel](https://www.google.com/search?num=5&q=TranslateMDISysAccel+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [TranslateMessage](https://www.google.com/search?num=5&q=TranslateMessage+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [TranslateMessageEx](https://www.google.com/search?num=5&q=TranslateMessageEx+site%3Amsdn.microsoft.com) | user32.dll |  | 
+[UndelegateInput](https://www.google.com/search?num=5&q=UndelegateInput+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [UnhookWindowsHook](https://www.google.com/search?num=5&q=UnhookWindowsHook+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [UnhookWindowsHookEx](https://www.google.com/search?num=5&q=UnhookWindowsHookEx+site%3Amsdn.microsoft.com) | user32.dll | WinUser.h | Vanara.PInvoke.User32.UnhookWindowsHookEx
 [UnhookWinEvent](https://www.google.com/search?num=5&q=UnhookWinEvent+site%3Amsdn.microsoft.com) | user32.dll |  | 
@@ -920,7 +962,6 @@ Native Method | Native DLL | Header | Managed Method
 [UpdatePerUserSystemParameters](https://www.google.com/search?num=5&q=UpdatePerUserSystemParameters+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [UpdateWindow](https://www.google.com/search?num=5&q=UpdateWindow+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [UpdateWindowInputSinkHints](https://www.google.com/search?num=5&q=UpdateWindowInputSinkHints+site%3Amsdn.microsoft.com) | user32.dll |  | 
-[UpdateWindowTransform](https://www.google.com/search?num=5&q=UpdateWindowTransform+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [User32InitializeImmEntryTable](https://www.google.com/search?num=5&q=User32InitializeImmEntryTable+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [UserClientDllInitialize](https://www.google.com/search?num=5&q=UserClientDllInitialize+site%3Amsdn.microsoft.com) | user32.dll |  | 
 [UserHandleGrantAccess](https://www.google.com/search?num=5&q=UserHandleGrantAccess+site%3Amsdn.microsoft.com) | user32.dll |  | 

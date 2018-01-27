@@ -1,5 +1,5 @@
 ## Correlation report for uxtheme.dll
-### Methods (94% complete)
+### Methods (93% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
 [BeginBufferedAnimation](https://www.google.com/search?num=5&q=BeginBufferedAnimation+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.BeginBufferedAnimation
@@ -77,6 +77,7 @@ Native Method | Native DLL | Header | Managed Method
 [IsThemePartDefined](https://www.google.com/search?num=5&q=IsThemePartDefined+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.IsThemePartDefined
 [OpenThemeData](https://www.google.com/search?num=5&q=OpenThemeData+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.OpenThemeData
 [OpenThemeDataEx](https://www.google.com/search?num=5&q=OpenThemeDataEx+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.OpenThemeDataEx
+[OpenThemeDataForDpi](https://www.google.com/search?num=5&q=OpenThemeDataForDpi+site%3Amsdn.microsoft.com) | uxtheme.dll |  | 
 [SetThemeAppProperties](https://www.google.com/search?num=5&q=SetThemeAppProperties+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.SetThemeAppProperties
 [SetWindowTheme](https://www.google.com/search?num=5&q=SetWindowTheme+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.SetWindowTheme
 [SetWindowThemeAttribute](https://www.google.com/search?num=5&q=SetWindowThemeAttribute+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.SetWindowThemeAttribute

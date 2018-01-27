@@ -1,5 +1,5 @@
 ## Correlation report for dwmapi.dll
-### Methods (95% complete)
+### Methods (88% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
 [DwmDefWindowProc](https://www.google.com/search?num=5&q=DwmDefWindowProc+site%3Amsdn.microsoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmDefWindowProc
@@ -14,6 +14,8 @@ Native Method | Native DLL | Header | Managed Method
 [DwmGetWindowAttribute](https://www.google.com/search?num=5&q=DwmGetWindowAttribute+site%3Amsdn.microsoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmGetWindowAttribute
 [DwmInvalidateIconicBitmaps](https://www.google.com/search?num=5&q=DwmInvalidateIconicBitmaps+site%3Amsdn.microsoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmInvalidateIconicBitmaps
 [DwmIsCompositionEnabled](https://www.google.com/search?num=5&q=DwmIsCompositionEnabled+site%3Amsdn.microsoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmIsCompositionEnabled
+[DwmpGetColorizationParameters](https://www.google.com/search?num=5&q=DwmpGetColorizationParameters+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
+[DwmpSetColorizationParameters](https://www.google.com/search?num=5&q=DwmpSetColorizationParameters+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
 [DwmQueryThumbnailSourceSize](https://www.google.com/search?num=5&q=DwmQueryThumbnailSourceSize+site%3Amsdn.microsoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmQueryThumbnailSourceSize
 [DwmRegisterThumbnail](https://www.google.com/search?num=5&q=DwmRegisterThumbnail+site%3Amsdn.microsoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmRegisterThumbnail
 [DwmRenderGesture](https://www.google.com/search?num=5&q=DwmRenderGesture+site%3Amsdn.microsoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmRenderGesture

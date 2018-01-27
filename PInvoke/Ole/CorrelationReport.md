@@ -145,7 +145,7 @@ Native Method | Native DLL | Header | Managed Method
 [CoWaitForMultipleHandles](https://www.google.com/search?num=5&q=CoWaitForMultipleHandles+site%3Amsdn.microsoft.com) | ole32.dll |  | 
 [CoWaitForMultipleObjects](https://www.google.com/search?num=5&q=CoWaitForMultipleObjects+site%3Amsdn.microsoft.com) | ole32.dll |  | 
 [CreateAntiMoniker](https://www.google.com/search?num=5&q=CreateAntiMoniker+site%3Amsdn.microsoft.com) | ole32.dll |  | 
-[CreateBindCtx](https://www.google.com/search?num=5&q=CreateBindCtx+site%3Amsdn.microsoft.com) | ole32.dll |  | 
+[CreateBindCtx](https://www.google.com/search?num=5&q=CreateBindCtx+site%3Amsdn.microsoft.com) | ole32.dll | Objbase.h | Vanara.PInvoke.Ole32.CreateBindCtx
 [CreateClassMoniker](https://www.google.com/search?num=5&q=CreateClassMoniker+site%3Amsdn.microsoft.com) | ole32.dll |  | 
 [CreateDataAdviseHolder](https://www.google.com/search?num=5&q=CreateDataAdviseHolder+site%3Amsdn.microsoft.com) | ole32.dll |  | 
 [CreateDataCache](https://www.google.com/search?num=5&q=CreateDataCache+site%3Amsdn.microsoft.com) | ole32.dll |  | 
@@ -447,11 +447,11 @@ Native Method | Native DLL | Header | Managed Method
 [PSGetItemPropertyHandlerWithCreateObject](https://www.google.com/search?num=5&q=PSGetItemPropertyHandlerWithCreateObject+site%3Amsdn.microsoft.com) | propsys.dll |  | 
 [PSGetNamedPropertyFromPropertyStorage](https://www.google.com/search?num=5&q=PSGetNamedPropertyFromPropertyStorage+site%3Amsdn.microsoft.com) | propsys.dll |  | 
 [PSGetNameFromPropertyKey](https://www.google.com/search?num=5&q=PSGetNameFromPropertyKey+site%3Amsdn.microsoft.com) | propsys.dll | Propsys.h | Vanara.PInvoke.PropSys.PSGetNameFromPropertyKey
-[PSGetPropertyDescription](https://www.google.com/search?num=5&q=PSGetPropertyDescription+site%3Amsdn.microsoft.com) | propsys.dll |  | 
+[PSGetPropertyDescription](https://www.google.com/search?num=5&q=PSGetPropertyDescription+site%3Amsdn.microsoft.com) | propsys.dll | Propsys.h | Vanara.PInvoke.PropSys.PSGetPropertyDescription
 [PSGetPropertyDescriptionByName](https://www.google.com/search?num=5&q=PSGetPropertyDescriptionByName+site%3Amsdn.microsoft.com) | propsys.dll |  | 
 [PSGetPropertyDescriptionListFromString](https://www.google.com/search?num=5&q=PSGetPropertyDescriptionListFromString+site%3Amsdn.microsoft.com) | propsys.dll |  | 
 [PSGetPropertyFromPropertyStorage](https://www.google.com/search?num=5&q=PSGetPropertyFromPropertyStorage+site%3Amsdn.microsoft.com) | propsys.dll |  | 
-[PSGetPropertyKeyFromName](https://www.google.com/search?num=5&q=PSGetPropertyKeyFromName+site%3Amsdn.microsoft.com) | propsys.dll |  | 
+[PSGetPropertyKeyFromName](https://www.google.com/search?num=5&q=PSGetPropertyKeyFromName+site%3Amsdn.microsoft.com) | propsys.dll | Propsys.h | Vanara.PInvoke.PropSys.PSGetPropertyKeyFromName
 [PSGetPropertySystem](https://www.google.com/search?num=5&q=PSGetPropertySystem+site%3Amsdn.microsoft.com) | propsys.dll |  | 
 [PSGetPropertyValue](https://www.google.com/search?num=5&q=PSGetPropertyValue+site%3Amsdn.microsoft.com) | propsys.dll |  | 
 [PSLookupPropertyHandlerCLSID](https://www.google.com/search?num=5&q=PSLookupPropertyHandlerCLSID+site%3Amsdn.microsoft.com) | propsys.dll |  | 
@@ -970,7 +970,14 @@ Native Structure | Header | Managed Structure
 Native Interface | Native DLL | Header | Managed Interface
 ---- | ---- | ---- | ----
 [IEnumSTATSTG](https://www.google.com/search?num=5&q=IEnumSTATSTG+site%3Amsdn.microsoft.com) |  | Objidl.h | Vanara.PInvoke.Ole32+IEnumSTATSTG
+[IInitializeWithStream](https://www.google.com/search?num=5&q=IInitializeWithStream+site%3Amsdn.microsoft.com) |  | Propsys.h | Vanara.PInvoke.PropSys+IInitializeWithStream
+[IOleWindow](https://www.google.com/search?num=5&q=IOleWindow+site%3Amsdn.microsoft.com) |  |  | Vanara.PInvoke.Ole32+IOleWindow
 [IPropertyDescription](https://www.google.com/search?num=5&q=IPropertyDescription+site%3Amsdn.microsoft.com) |  | Propsys.h | Vanara.PInvoke.PropSys+IPropertyDescription
+[IPropertyDescription2](https://www.google.com/search?num=5&q=IPropertyDescription2+site%3Amsdn.microsoft.com) |  | Propsys.h | Vanara.PInvoke.PropSys+IPropertyDescription2
 [IPropertyDescriptionList](https://www.google.com/search?num=5&q=IPropertyDescriptionList+site%3Amsdn.microsoft.com) |  | Propsys.h | Vanara.PInvoke.PropSys+IPropertyDescriptionList
+[IPropertyEnumType](https://www.google.com/search?num=5&q=IPropertyEnumType+site%3Amsdn.microsoft.com) |  | Propsys.h | Vanara.PInvoke.PropSys+IPropertyEnumType
+[IPropertyEnumType2](https://www.google.com/search?num=5&q=IPropertyEnumType2+site%3Amsdn.microsoft.com) |  | Propsys.h | Vanara.PInvoke.PropSys+IPropertyEnumType2
+[IPropertyEnumTypeList](https://www.google.com/search?num=5&q=IPropertyEnumTypeList+site%3Amsdn.microsoft.com) |  | Propsys.h | Vanara.PInvoke.PropSys+IPropertyEnumTypeList
 [IPropertyStore](https://www.google.com/search?num=5&q=IPropertyStore+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.PropSys+IPropertyStore
+[IPropertySystem](https://www.google.com/search?num=5&q=IPropertySystem+site%3Amsdn.microsoft.com) |  | PropSys.h | Vanara.PInvoke.PropSys+IPropertySystem
 [IStorage](https://www.google.com/search?num=5&q=IStorage+site%3Amsdn.microsoft.com) |  | Objidl.h | Vanara.PInvoke.Ole32+IStorage

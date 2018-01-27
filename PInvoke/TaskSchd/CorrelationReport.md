@@ -24,6 +24,7 @@ Native Interface | Native DLL | Header | Managed Interface
 [IEmailAction](https://www.google.com/search?num=5&q=IEmailAction+site%3Amsdn.microsoft.com) | taskschd.dll | taskschd.h | Vanara.PInvoke.TaskSchd+IEmailAction
 [IEventTrigger](https://www.google.com/search?num=5&q=IEventTrigger+site%3Amsdn.microsoft.com) | taskschd.dll | taskschd.h | Vanara.PInvoke.TaskSchd+IEventTrigger
 [IExecAction](https://www.google.com/search?num=5&q=IExecAction+site%3Amsdn.microsoft.com) | taskschd.dll | taskschd.h | Vanara.PInvoke.TaskSchd+IExecAction
+[IExecAction2](https://www.google.com/search?num=5&q=IExecAction2+site%3Amsdn.microsoft.com) | taskschd.dll |  | 
 [IIdleSettings](https://www.google.com/search?num=5&q=IIdleSettings+site%3Amsdn.microsoft.com) | taskschd.dll | taskschd.h | Vanara.PInvoke.TaskSchd+IIdleSettings
 [IIdleTrigger](https://www.google.com/search?num=5&q=IIdleTrigger+site%3Amsdn.microsoft.com) | taskschd.dll | taskschd.h | Vanara.PInvoke.TaskSchd+IIdleTrigger
 [ILogonTrigger](https://www.google.com/search?num=5&q=ILogonTrigger+site%3Amsdn.microsoft.com) | taskschd.dll | taskschd.h | Vanara.PInvoke.TaskSchd+ILogonTrigger

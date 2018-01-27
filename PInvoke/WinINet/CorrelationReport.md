@@ -153,6 +153,7 @@ Native Method | Native DLL | Header | Managed Method
 [InternetConfirmZoneCrossingW](https://www.google.com/search?num=5&q=InternetConfirmZoneCrossingW+site%3Amsdn.microsoft.com) | wininet.dll |  | 
 [InternetConnectA](https://www.google.com/search?num=5&q=InternetConnectA+site%3Amsdn.microsoft.com) | wininet.dll |  | Vanara.PInvoke.WinINet.InternetConnect
 [InternetConnectW](https://www.google.com/search?num=5&q=InternetConnectW+site%3Amsdn.microsoft.com) | wininet.dll |  | Vanara.PInvoke.WinINet.InternetConnect
+[InternetConvertUrlFromWireToWideChar](https://www.google.com/search?num=5&q=InternetConvertUrlFromWireToWideChar+site%3Amsdn.microsoft.com) | wininet.dll |  | 
 [InternetCrackUrlA](https://www.google.com/search?num=5&q=InternetCrackUrlA+site%3Amsdn.microsoft.com) | wininet.dll |  | 
 [InternetCrackUrlW](https://www.google.com/search?num=5&q=InternetCrackUrlW+site%3Amsdn.microsoft.com) | wininet.dll |  | 
 [InternetCreateUrlA](https://www.google.com/search?num=5&q=InternetCreateUrlA+site%3Amsdn.microsoft.com) | wininet.dll |  | 

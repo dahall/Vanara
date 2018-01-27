@@ -55,6 +55,8 @@ Native Method | Native DLL | Header | Managed Method
 [BackupRead](https://www.google.com/search?num=5&q=BackupRead+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [BackupSeek](https://www.google.com/search?num=5&q=BackupSeek+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [BackupWrite](https://www.google.com/search?num=5&q=BackupWrite+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[BasepInitAppCompatData](https://www.google.com/search?num=5&q=BasepInitAppCompatData+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[BasepQueryModuleChpeSettings](https://www.google.com/search?num=5&q=BasepQueryModuleChpeSettings+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [Beep](https://www.google.com/search?num=5&q=Beep+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [BeginUpdateResourceA](https://www.google.com/search?num=5&q=BeginUpdateResourceA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [BeginUpdateResourceW](https://www.google.com/search?num=5&q=BeginUpdateResourceW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -294,6 +296,7 @@ Native Method | Native DLL | Header | Managed Method
 [EnumSystemCodePagesW](https://www.google.com/search?num=5&q=EnumSystemCodePagesW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [EnumSystemFirmwareTables](https://www.google.com/search?num=5&q=EnumSystemFirmwareTables+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [EnumSystemGeoID](https://www.google.com/search?num=5&q=EnumSystemGeoID+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[EnumSystemGeoNames](https://www.google.com/search?num=5&q=EnumSystemGeoNames+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [EnumSystemLanguageGroupsA](https://www.google.com/search?num=5&q=EnumSystemLanguageGroupsA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [EnumSystemLanguageGroupsW](https://www.google.com/search?num=5&q=EnumSystemLanguageGroupsW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [EnumSystemLocalesA](https://www.google.com/search?num=5&q=EnumSystemLocalesA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -559,6 +562,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetFullPathNameTransactedW](https://www.google.com/search?num=5&q=GetFullPathNameTransactedW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetFullPathNameW](https://www.google.com/search?num=5&q=GetFullPathNameW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetGeoInfoA](https://www.google.com/search?num=5&q=GetGeoInfoA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetGeoInfoEx](https://www.google.com/search?num=5&q=GetGeoInfoEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetGeoInfoW](https://www.google.com/search?num=5&q=GetGeoInfoW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetHandleInformation](https://www.google.com/search?num=5&q=GetHandleInformation+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetLargePageMinimum](https://www.google.com/search?num=5&q=GetLargePageMinimum+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -715,6 +719,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetTempPathA](https://www.google.com/search?num=5&q=GetTempPathA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetTempPathW](https://www.google.com/search?num=5&q=GetTempPathW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetThreadContext](https://www.google.com/search?num=5&q=GetThreadContext+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetThreadDescription](https://www.google.com/search?num=5&q=GetThreadDescription+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetThreadErrorMode](https://www.google.com/search?num=5&q=GetThreadErrorMode+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetThreadGroupAffinity](https://www.google.com/search?num=5&q=GetThreadGroupAffinity+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetThreadId](https://www.google.com/search?num=5&q=GetThreadId+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -741,6 +746,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetUILanguageInfo](https://www.google.com/search?num=5&q=GetUILanguageInfo+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetUmsCompletionListEvent](https://www.google.com/search?num=5&q=GetUmsCompletionListEvent+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetUmsSystemThreadInformation](https://www.google.com/search?num=5&q=GetUmsSystemThreadInformation+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetUserDefaultGeoName](https://www.google.com/search?num=5&q=GetUserDefaultGeoName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetUserDefaultLangID](https://www.google.com/search?num=5&q=GetUserDefaultLangID+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetUserDefaultLCID](https://www.google.com/search?num=5&q=GetUserDefaultLCID+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetUserDefaultLocaleName](https://www.google.com/search?num=5&q=GetUserDefaultLocaleName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -860,7 +866,9 @@ Native Method | Native DLL | Header | Managed Method
 [IsValidLocale](https://www.google.com/search?num=5&q=IsValidLocale+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [IsValidLocaleName](https://www.google.com/search?num=5&q=IsValidLocaleName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [IsValidNLSVersion](https://www.google.com/search?num=5&q=IsValidNLSVersion+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[IsWow64GuestMachineSupported](https://www.google.com/search?num=5&q=IsWow64GuestMachineSupported+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [IsWow64Process](https://www.google.com/search?num=5&q=IsWow64Process+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[IsWow64Process2](https://www.google.com/search?num=5&q=IsWow64Process2+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [LCIDToLocaleName](https://www.google.com/search?num=5&q=LCIDToLocaleName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [LCMapStringA](https://www.google.com/search?num=5&q=LCMapStringA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [LCMapStringEx](https://www.google.com/search?num=5&q=LCMapStringEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -1072,6 +1080,7 @@ Native Method | Native DLL | Header | Managed Method
 [ReadConsoleOutputCharacterW](https://www.google.com/search?num=5&q=ReadConsoleOutputCharacterW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [ReadConsoleOutputW](https://www.google.com/search?num=5&q=ReadConsoleOutputW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [ReadConsoleW](https://www.google.com/search?num=5&q=ReadConsoleW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[ReadDirectoryChangesExW](https://www.google.com/search?num=5&q=ReadDirectoryChangesExW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [ReadDirectoryChangesW](https://www.google.com/search?num=5&q=ReadDirectoryChangesW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [ReadFile](https://www.google.com/search?num=5&q=ReadFile+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.ReadFile
 [ReadFileEx](https://www.google.com/search?num=5&q=ReadFileEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -1308,6 +1317,7 @@ Native Method | Native DLL | Header | Managed Method
 [SetTermsrvAppInstallMode](https://www.google.com/search?num=5&q=SetTermsrvAppInstallMode+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [SetThreadAffinityMask](https://www.google.com/search?num=5&q=SetThreadAffinityMask+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [SetThreadContext](https://www.google.com/search?num=5&q=SetThreadContext+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[SetThreadDescription](https://www.google.com/search?num=5&q=SetThreadDescription+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [SetThreadErrorMode](https://www.google.com/search?num=5&q=SetThreadErrorMode+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [SetThreadExecutionState](https://www.google.com/search?num=5&q=SetThreadExecutionState+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [SetThreadGroupAffinity](https://www.google.com/search?num=5&q=SetThreadGroupAffinity+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -1335,6 +1345,7 @@ Native Method | Native DLL | Header | Managed Method
 [SetUnhandledExceptionFilter](https://www.google.com/search?num=5&q=SetUnhandledExceptionFilter+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [SetupComm](https://www.google.com/search?num=5&q=SetupComm+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [SetUserGeoID](https://www.google.com/search?num=5&q=SetUserGeoID+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[SetUserGeoName](https://www.google.com/search?num=5&q=SetUserGeoName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [SetVDMCurrentDirectories](https://www.google.com/search?num=5&q=SetVDMCurrentDirectories+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [SetVolumeLabelA](https://www.google.com/search?num=5&q=SetVolumeLabelA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [SetVolumeLabelW](https://www.google.com/search?num=5&q=SetVolumeLabelW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -1462,16 +1473,15 @@ Native Method | Native DLL | Header | Managed Method
 [WakeConditionVariable](https://www.google.com/search?num=5&q=WakeConditionVariable+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerGetFlags](https://www.google.com/search?num=5&q=WerGetFlags+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerGetFlagsWorker](https://www.google.com/search?num=5&q=WerGetFlagsWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[WerpCleanupMessageMapping](https://www.google.com/search?num=5&q=WerpCleanupMessageMapping+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerpGetDebugger](https://www.google.com/search?num=5&q=WerpGetDebugger+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerpInitiateRemoteRecovery](https://www.google.com/search?num=5&q=WerpInitiateRemoteRecovery+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerpLaunchAeDebug](https://www.google.com/search?num=5&q=WerpLaunchAeDebug+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[WerpNotifyLoadStringResource](https://www.google.com/search?num=5&q=WerpNotifyLoadStringResource+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[WerpNotifyLoadStringResourceEx](https://www.google.com/search?num=5&q=WerpNotifyLoadStringResourceEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerpNotifyLoadStringResourceWorker](https://www.google.com/search?num=5&q=WerpNotifyLoadStringResourceWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[WerpNotifyUseStringResource](https://www.google.com/search?num=5&q=WerpNotifyUseStringResource+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerpNotifyUseStringResourceWorker](https://www.google.com/search?num=5&q=WerpNotifyUseStringResourceWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[WerpStringLookup](https://www.google.com/search?num=5&q=WerpStringLookup+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[WerRegisterAdditionalProcess](https://www.google.com/search?num=5&q=WerRegisterAdditionalProcess+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[WerRegisterAppLocalDump](https://www.google.com/search?num=5&q=WerRegisterAppLocalDump+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[WerRegisterCustomMetadata](https://www.google.com/search?num=5&q=WerRegisterCustomMetadata+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[WerRegisterExcludedMemoryBlock](https://www.google.com/search?num=5&q=WerRegisterExcludedMemoryBlock+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerRegisterFile](https://www.google.com/search?num=5&q=WerRegisterFile+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerRegisterFileWorker](https://www.google.com/search?num=5&q=WerRegisterFileWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerRegisterMemoryBlock](https://www.google.com/search?num=5&q=WerRegisterMemoryBlock+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -1480,6 +1490,10 @@ Native Method | Native DLL | Header | Managed Method
 [WerRegisterRuntimeExceptionModuleWorker](https://www.google.com/search?num=5&q=WerRegisterRuntimeExceptionModuleWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerSetFlags](https://www.google.com/search?num=5&q=WerSetFlags+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerSetFlagsWorker](https://www.google.com/search?num=5&q=WerSetFlagsWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[WerUnregisterAdditionalProcess](https://www.google.com/search?num=5&q=WerUnregisterAdditionalProcess+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[WerUnregisterAppLocalDump](https://www.google.com/search?num=5&q=WerUnregisterAppLocalDump+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[WerUnregisterCustomMetadata](https://www.google.com/search?num=5&q=WerUnregisterCustomMetadata+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[WerUnregisterExcludedMemoryBlock](https://www.google.com/search?num=5&q=WerUnregisterExcludedMemoryBlock+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerUnregisterFile](https://www.google.com/search?num=5&q=WerUnregisterFile+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerUnregisterFileWorker](https://www.google.com/search?num=5&q=WerUnregisterFileWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerUnregisterMemoryBlock](https://www.google.com/search?num=5&q=WerUnregisterMemoryBlock+site%3Amsdn.microsoft.com) | kernel32.dll |  | 

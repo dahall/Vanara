@@ -1,5 +1,5 @@
 ## Correlation report for iphlpapi.dll
-### Methods (22% complete)
+### Methods (25% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
 [AddIPAddress](https://www.google.com/search?num=5&q=AddIPAddress+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.AddIPAddress
@@ -22,7 +22,7 @@ Native Method | Native DLL | Header | Managed Method
 [CreateAnycastIpAddressEntry](https://www.google.com/search?num=5&q=CreateAnycastIpAddressEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [CreateIpForwardEntry](https://www.google.com/search?num=5&q=CreateIpForwardEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [CreateIpForwardEntry2](https://www.google.com/search?num=5&q=CreateIpForwardEntry2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[CreateIpNetEntry](https://www.google.com/search?num=5&q=CreateIpNetEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
+[CreateIpNetEntry](https://www.google.com/search?num=5&q=CreateIpNetEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.CreateIpNetEntry
 [CreateIpNetEntry2](https://www.google.com/search?num=5&q=CreateIpNetEntry2+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.CreateIpNetEntry2
 [CreatePersistentTcpPortReservation](https://www.google.com/search?num=5&q=CreatePersistentTcpPortReservation+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [CreatePersistentUdpPortReservation](https://www.google.com/search?num=5&q=CreatePersistentUdpPortReservation+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
@@ -33,7 +33,7 @@ Native Method | Native DLL | Header | Managed Method
 [DeleteIPAddress](https://www.google.com/search?num=5&q=DeleteIPAddress+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.DeleteIPAddress
 [DeleteIpForwardEntry](https://www.google.com/search?num=5&q=DeleteIpForwardEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [DeleteIpForwardEntry2](https://www.google.com/search?num=5&q=DeleteIpForwardEntry2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[DeleteIpNetEntry](https://www.google.com/search?num=5&q=DeleteIpNetEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
+[DeleteIpNetEntry](https://www.google.com/search?num=5&q=DeleteIpNetEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.DeleteIpNetEntry
 [DeleteIpNetEntry2](https://www.google.com/search?num=5&q=DeleteIpNetEntry2+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.DeleteIpNetEntry2
 [DeletePersistentTcpPortReservation](https://www.google.com/search?num=5&q=DeletePersistentTcpPortReservation+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [DeletePersistentUdpPortReservation](https://www.google.com/search?num=5&q=DeletePersistentUdpPortReservation+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
@@ -62,10 +62,12 @@ Native Method | Native DLL | Header | Managed Method
 [GetIcmpStatisticsEx](https://www.google.com/search?num=5&q=GetIcmpStatisticsEx+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [GetIfEntry](https://www.google.com/search?num=5&q=GetIfEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [GetIfEntry2](https://www.google.com/search?num=5&q=GetIfEntry2+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.GetIfEntry2
+[GetIfEntry2Ex](https://www.google.com/search?num=5&q=GetIfEntry2Ex+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.GetIfEntry2Ex
 [GetIfStackTable](https://www.google.com/search?num=5&q=GetIfStackTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [GetIfTable](https://www.google.com/search?num=5&q=GetIfTable+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.GetIfTable
 [GetIfTable2](https://www.google.com/search?num=5&q=GetIfTable2+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.GetIfTable2
 [GetIfTable2Ex](https://www.google.com/search?num=5&q=GetIfTable2Ex+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.GetIfTable2Ex
+[GetInterfaceCompartmentId](https://www.google.com/search?num=5&q=GetInterfaceCompartmentId+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [GetInterfaceInfo](https://www.google.com/search?num=5&q=GetInterfaceInfo+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.GetInterfaceInfo
 [GetInvertedIfStackTable](https://www.google.com/search?num=5&q=GetInvertedIfStackTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [GetIpAddrTable](https://www.google.com/search?num=5&q=GetIpAddrTable+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.GetIpAddrTable
@@ -76,7 +78,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetIpInterfaceEntry](https://www.google.com/search?num=5&q=GetIpInterfaceEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [GetIpInterfaceTable](https://www.google.com/search?num=5&q=GetIpInterfaceTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [GetIpNetEntry2](https://www.google.com/search?num=5&q=GetIpNetEntry2+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.GetIpNetEntry2
-[GetIpNetTable](https://www.google.com/search?num=5&q=GetIpNetTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
+[GetIpNetTable](https://www.google.com/search?num=5&q=GetIpNetTable+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.GetIpNetTable
 [GetIpNetTable2](https://www.google.com/search?num=5&q=GetIpNetTable2+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.GetIpNetTable2
 [GetIpPathEntry](https://www.google.com/search?num=5&q=GetIpPathEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [GetIpPathTable](https://www.google.com/search?num=5&q=GetIpPathTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
@@ -102,12 +104,14 @@ Native Method | Native DLL | Header | Managed Method
 [GetTcp6Table2](https://www.google.com/search?num=5&q=GetTcp6Table2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [GetTcpStatistics](https://www.google.com/search?num=5&q=GetTcpStatistics+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [GetTcpStatisticsEx](https://www.google.com/search?num=5&q=GetTcpStatisticsEx+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
+[GetTcpStatisticsEx2](https://www.google.com/search?num=5&q=GetTcpStatisticsEx2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [GetTcpTable](https://www.google.com/search?num=5&q=GetTcpTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [GetTcpTable2](https://www.google.com/search?num=5&q=GetTcpTable2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [GetTeredoPort](https://www.google.com/search?num=5&q=GetTeredoPort+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [GetUdp6Table](https://www.google.com/search?num=5&q=GetUdp6Table+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [GetUdpStatistics](https://www.google.com/search?num=5&q=GetUdpStatistics+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [GetUdpStatisticsEx](https://www.google.com/search?num=5&q=GetUdpStatisticsEx+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
+[GetUdpStatisticsEx2](https://www.google.com/search?num=5&q=GetUdpStatisticsEx2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [GetUdpTable](https://www.google.com/search?num=5&q=GetUdpTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [GetUnicastIpAddressEntry](https://www.google.com/search?num=5&q=GetUnicastIpAddressEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [GetUnicastIpAddressTable](https://www.google.com/search?num=5&q=GetUnicastIpAddressTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
@@ -147,7 +151,7 @@ Native Method | Native DLL | Header | Managed Method
 [SetIpForwardEntry](https://www.google.com/search?num=5&q=SetIpForwardEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [SetIpForwardEntry2](https://www.google.com/search?num=5&q=SetIpForwardEntry2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [SetIpInterfaceEntry](https://www.google.com/search?num=5&q=SetIpInterfaceEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[SetIpNetEntry](https://www.google.com/search?num=5&q=SetIpNetEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
+[SetIpNetEntry](https://www.google.com/search?num=5&q=SetIpNetEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.SetIpNetEntry
 [SetIpNetEntry2](https://www.google.com/search?num=5&q=SetIpNetEntry2+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.SetIpNetEntry2
 [SetIpStatistics](https://www.google.com/search?num=5&q=SetIpStatistics+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [SetIpStatisticsEx](https://www.google.com/search?num=5&q=SetIpStatisticsEx+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 

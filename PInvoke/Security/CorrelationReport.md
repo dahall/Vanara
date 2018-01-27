@@ -214,6 +214,7 @@ Native Method | Native DLL | Header | Managed Method
 [CreateProcessWithTokenW](https://www.google.com/search?num=5&q=CreateProcessWithTokenW+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [CreateRestrictedToken](https://www.google.com/search?num=5&q=CreateRestrictedToken+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [CreateServiceA](https://www.google.com/search?num=5&q=CreateServiceA+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
+[CreateServiceEx](https://www.google.com/search?num=5&q=CreateServiceEx+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [CreateServiceW](https://www.google.com/search?num=5&q=CreateServiceW+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [CreateTraceInstanceId](https://www.google.com/search?num=5&q=CreateTraceInstanceId+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [CreateWellKnownSid](https://www.google.com/search?num=5&q=CreateWellKnownSid+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
@@ -684,8 +685,10 @@ Native Method | Native DLL | Header | Managed Method
 [QueryServiceStatus](https://www.google.com/search?num=5&q=QueryServiceStatus+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [QueryServiceStatusEx](https://www.google.com/search?num=5&q=QueryServiceStatusEx+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [QueryTraceA](https://www.google.com/search?num=5&q=QueryTraceA+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
+[QueryTraceProcessingHandle](https://www.google.com/search?num=5&q=QueryTraceProcessingHandle+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [QueryTraceW](https://www.google.com/search?num=5&q=QueryTraceW+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [QueryUserServiceName](https://www.google.com/search?num=5&q=QueryUserServiceName+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
+[QueryUserServiceNameForContext](https://www.google.com/search?num=5&q=QueryUserServiceNameForContext+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [QueryUsersOnEncryptedFile](https://www.google.com/search?num=5&q=QueryUsersOnEncryptedFile+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [ReadEncryptedFileRaw](https://www.google.com/search?num=5&q=ReadEncryptedFileRaw+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [ReadEventLogA](https://www.google.com/search?num=5&q=ReadEventLogA+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
@@ -786,6 +789,8 @@ Native Method | Native DLL | Header | Managed Method
 [RemoteRegEnumKeyWrapper](https://www.google.com/search?num=5&q=RemoteRegEnumKeyWrapper+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [RemoteRegEnumValueWrapper](https://www.google.com/search?num=5&q=RemoteRegEnumValueWrapper+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [RemoteRegQueryInfoKeyWrapper](https://www.google.com/search?num=5&q=RemoteRegQueryInfoKeyWrapper+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
+[RemoteRegQueryMultipleValues2Wrapper](https://www.google.com/search?num=5&q=RemoteRegQueryMultipleValues2Wrapper+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
+[RemoteRegQueryMultipleValuesWrapper](https://www.google.com/search?num=5&q=RemoteRegQueryMultipleValuesWrapper+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [RemoteRegQueryValueWrapper](https://www.google.com/search?num=5&q=RemoteRegQueryValueWrapper+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [RemoveTraceCallback](https://www.google.com/search?num=5&q=RemoveTraceCallback+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [RemoveUsersFromEncryptedFile](https://www.google.com/search?num=5&q=RemoveUsersFromEncryptedFile+site%3Amsdn.microsoft.com) | advapi32.dll |  | 

@@ -1,4 +1,4 @@
-## Correlation report for C:\Windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.14393.953_none_42151e83c686086b\comctl32.dll
+## Correlation report for comctl32.dll
 ### Methods (5% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
@@ -199,6 +199,7 @@ Native Structure | Header | Managed Structure
 [NMTVKEYDOWN](https://www.google.com/search?num=5&q=NMTVKEYDOWN+site%3Amsdn.microsoft.com) | Commctrl.h | Vanara.PInvoke.ComCtl32+NMTVKEYDOWN
 [PBRANGE](https://www.google.com/search?num=5&q=PBRANGE+site%3Amsdn.microsoft.com) | Commctrl.h | Vanara.PInvoke.ComCtl32+PBRANGE
 [PROPSHEETHEADER](https://www.google.com/search?num=5&q=PROPSHEETHEADER+site%3Amsdn.microsoft.com) | Commctrl.h | Vanara.PInvoke.ComCtl32+PROPSHEETHEADER
+[TBBUTTON](https://www.google.com/search?num=5&q=TBBUTTON+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.ComCtl32+TBBUTTON
 [TCHITTESTINFO](https://www.google.com/search?num=5&q=TCHITTESTINFO+site%3Amsdn.microsoft.com) | Commctrl.h | Vanara.PInvoke.ComCtl32+TCHITTESTINFO
 [TCITEM](https://www.google.com/search?num=5&q=TCITEM+site%3Amsdn.microsoft.com) | Commctrl.h | Vanara.PInvoke.ComCtl32+TCITEM
 [TCITEMHEADER](https://www.google.com/search?num=5&q=TCITEMHEADER+site%3Amsdn.microsoft.com) | Commctrl.h | Vanara.PInvoke.ComCtl32+TCITEMHEADER
