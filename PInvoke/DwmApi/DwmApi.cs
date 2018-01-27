@@ -458,8 +458,8 @@ namespace Vanara.PInvoke
 		[PInvokeData("dwmapi.h")]
 		public static HRESULT DwmGetWindowAttribute<T>(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, out T pvAttribute)
 		{
+			if (!CorrespondingTypeAttribute.CanGet(dwAttribute, typeof(T))) throw new ArgumentException();
 			var isBool = typeof(T) == typeof(bool);
-			if (!(typeof(T) == typeof(RECT) || isBool || typeof(T) == typeof(int) || typeof(T).IsEnum)) throw new ArgumentException();
 			var m = new SafeCoTaskMemHandle(Marshal.SizeOf(isBool ? typeof(uint) : typeof(T)));
 			var hr = DwmGetWindowAttribute(hwnd, dwAttribute, (IntPtr)m, m.Size);
 			pvAttribute = isBool ? (T)Convert.ChangeType(m.ToStructure<uint>(), typeof(bool)) : m.ToStructure<T>();
@@ -617,7 +617,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("dwmapi.h")]
 		public static HRESULT DwmSetWindowAttribute<T>(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, [In] T pvAttribute)
 		{
-			if (pvAttribute == null || !(pvAttribute is bool || pvAttribute is int || typeof(T).IsEnum)) throw new ArgumentException();
+			if (pvAttribute == null || !CorrespondingTypeAttribute.CanSet(dwAttribute, typeof(T))) throw new ArgumentException();
 			var attr = pvAttribute is bool ? (object)Convert.ToUInt32(pvAttribute) : pvAttribute;
 			using (var p = new PinnedObject(attr))
 				return DwmSetWindowAttribute(hwnd, dwAttribute, p, Marshal.SizeOf(attr));
