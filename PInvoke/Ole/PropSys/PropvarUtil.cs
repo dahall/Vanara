@@ -110,7 +110,7 @@ namespace Vanara.PInvoke
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[DllImport(Lib.PropSys, ExactSpelling = true)]
 		[PInvokeData("Propvarutil.h", MSDNShortId = "bb762290")]
-		public static extern HRESULT InitPropVariantFromCLSID([In] ref Guid clsid, [In, Out] PROPVARIANT ppropvar);
+		public static extern HRESULT InitPropVariantFromCLSID([In, MarshalAs(UnmanagedType.LPStruct)] Guid clsid, [In, Out] PROPVARIANT ppropvar);
 
 		/// <summary>
 		/// Initializes a <see cref="PROPVARIANT"/> structure based on a specified vector of double values.
