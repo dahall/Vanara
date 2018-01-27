@@ -117,6 +117,7 @@
     <Compile Include="Security\AccessControl\SystemSecurityTests.cs" />
     <Compile Include="Shell\ShellItemTests.cs" />
     <Compile Include="Shell\ShellFolderTests.cs" />
+    <Compile Include="Shell\ShellItemPropStoreTests.cs" />
     <Compile Include="System\VirtualDiskTests.cs" />
     <Compile Include="UI\Controls\CredentialsDialogTests.cs" />
   </ItemGroup>

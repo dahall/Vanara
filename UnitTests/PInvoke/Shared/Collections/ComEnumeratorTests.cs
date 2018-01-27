@@ -152,7 +152,7 @@ namespace Vanara.Collections.Tests
 			foreach (var pd in e)
 			{
 				Assert.IsInstanceOf<IPropertyDescription>(pd);
-				var s = pd.GetDisplayName();
+				pd.GetDisplayName(out var s);
 				l.Add(s);
 				TestContext.WriteLine(s);
 				c++;

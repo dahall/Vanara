@@ -337,7 +337,6 @@ namespace Vanara.Windows.Shell
 		SingleLine = 0x00000010,
 	}
 
-	// TODO: object GetPropertyDescriptionList(IntPtr keyType, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
 	// TODO: object GetPropertyStoreForKeys(IntPtr rgKeys, uint cKeys, GPS flags, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
 	// TODO: object GetPropertyStoreWithCreateObject(GPS flags, object punkCreateObject, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
 	/// <summary>Encapsulates an item in the Windows Shell.</summary>
@@ -354,7 +353,8 @@ namespace Vanara.Windows.Shell
 		internal IShellItem2 iShellItem2;
 		private static Dictionary<Type, BHID> bhidLookup;
 		private IQueryInfo qi;
-		private ShellItemPropertyStore values;
+		private ShellItemPropertyStore props;
+		private PropertyDescriptionList propDescList;
 
 		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 		/// <param name="path">The file system path of the item.</param>
@@ -408,15 +408,8 @@ namespace Vanara.Windows.Shell
 		/// <summary>Occurs when a property value changes.</summary>
 		public event PropertyChangedEventHandler PropertyChanged
 		{
-			add
-			{
-				((INotifyPropertyChanged)Properties).PropertyChanged += value;
-			}
-
-			remove
-			{
-				((INotifyPropertyChanged)Properties).PropertyChanged -= value;
-			}
+			add { ((INotifyPropertyChanged)Properties).PropertyChanged += value; }
+			remove { ((INotifyPropertyChanged)Properties).PropertyChanged -= value; }
 		}
 
 		/// <summary>Gets the attributes for the Shell item.</summary>
@@ -481,7 +474,11 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets the property store for the item.</summary>
 		/// <value>The dictionary of properties.</value>
-		public ShellItemPropertyStore Properties => values ?? (values = new ShellItemPropertyStore(this));
+		public ShellItemPropertyStore Properties => props ?? (props = new ShellItemPropertyStore(this));
+
+		/// <summary>Gets a property description list object containing descriptions of all properties.</summary>
+		/// <returns>A complete <see cref="PropertyDescriptionList"/> instance.</returns>
+		public PropertyDescriptionList PropertyDescriptions => propDescList ?? (propDescList = GetPropertyDescriptionList(PROPERTYKEY.System.PropList.FullDetails));
 
 		/// <summary>Gets the normal tool tip text associated with this item.</summary>
 		/// <value>The tool tip text.</value>
@@ -526,7 +523,8 @@ namespace Vanara.Windows.Shell
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public virtual void Dispose()
 		{
-			values?.Dispose();
+			if (props != null) { props?.Dispose(); props = null; }
+			if (propDescList != null) { propDescList?.Dispose(); propDescList = null; }
 			if (qi != null) { Marshal.ReleaseComObject(qi); qi = null; }
 			if (iShellItem2 != null) { Marshal.ReleaseComObject(iShellItem2); iShellItem2 = null; }
 			if (iShellItem != null) { Marshal.ReleaseComObject(iShellItem); iShellItem = null; }
@@ -595,10 +593,6 @@ namespace Vanara.Windows.Shell
 			throw new InvalidOperationException("Unable to retrieve an image for this item.");
 		}
 
-		/// <summary>Gets a property description list object containing descriptions of all properties.</summary>
-		/// <returns>A complete <see cref="PropertyDescriptionList"/> instance.</returns>
-		public PropertyDescriptionList GetPropertyDescriptionList() => GetPropertyDescriptionList(PROPERTYKEY.System.PropList.FullDetails);
-
 		/// <summary>Gets a property description list object given a reference to a property key.</summary>
 		/// <param name="keyType">A reference to a PROPERTYKEY structure. The values in <see cref="PROPERTYKEY.System.PropList"/> are all valid. <see cref="PROPERTYKEY.System.PropList.FullDetails"/> will return all properties.</param>
 		/// <returns>A <see cref="PropertyDescriptionList"/> instance for the supplied key.</returns>
@@ -631,7 +625,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Ensures that all cached information for this item is updated.</summary>
 		public void Update()
 		{
-			values?.Commit();
+			props?.Commit();
 			ThrowIfNoShellItem2();
 			iShellItem2.Update(BindContext);
 		}

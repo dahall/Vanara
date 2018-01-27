@@ -39,7 +39,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			var pv = new PROPVARIANT();
 			var g = Guid.NewGuid();
-			InitPropVariantFromCLSID(ref g, pv);
+			InitPropVariantFromCLSID(g, pv);
 			Assert.That(pv.VarType, Is.EqualTo(VarEnum.VT_CLSID));
 			Assert.That(pv.Value, Is.EqualTo(g));
 			pv.Dispose();

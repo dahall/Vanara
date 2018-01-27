@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
@@ -88,6 +87,8 @@ namespace Vanara.Windows.Shell
 			{
 				if (iprops == null)
 					throw new InvalidOperationException("Property store does not exist.");
+				if (IsReadOnly)
+					throw new InvalidOperationException("Property store is read-only.");
 				iprops.SetValue(key, new PROPVARIANT(value));
 				OnPropertyChanged(key.ToString());
 			}
@@ -138,8 +139,7 @@ namespace Vanara.Windows.Shell
 		public void CopyTo(KeyValuePair<PROPERTYKEY, object>[] array, int arrayIndex)
 		{
 			if (array.Length < (arrayIndex + Count))
-				throw new ArgumentOutOfRangeException(nameof(arrayIndex),
-					"The number of items exceeds the length of the supplied array.");
+				throw new ArgumentOutOfRangeException(nameof(arrayIndex), "The number of items exceeds the length of the supplied array.");
 			if (array == null)
 				throw new ArgumentNullException(nameof(array));
 			var i = arrayIndex;
@@ -160,7 +160,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
 		/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
-		public IEnumerator<KeyValuePair<PROPERTYKEY, object>> GetEnumerator() => Keys.Select(k => new KeyValuePair<PROPERTYKEY, object>(k, this[k])).GetEnumerator();
+		public IEnumerator<KeyValuePair<PROPERTYKEY, object>> GetEnumerator() => Enum().GetEnumerator();
 
 		/// <summary>Gets the property.</summary>
 		/// <typeparam name="TVal">The type of the value.</typeparam>
@@ -170,6 +170,29 @@ namespace Vanara.Windows.Shell
 		public TVal GetProperty<TVal>(PROPERTYKEY key)
 		{
 			if (!TryGetValue<TVal>(key, out var ret))
+				throw new ArgumentOutOfRangeException(nameof(key));
+			return ret;
+		}
+
+		/// <summary>Gets the string value of the property.</summary>
+		/// <param name="key">The key.</param>
+		/// <param name="flags">The formatting flags.</param>
+		/// <returns>The string value of the property.</returns>
+		/// <exception cref="ArgumentOutOfRangeException">key</exception>
+		public string GetPropertyString(PROPERTYKEY key, PROPDESC_FORMAT_FLAGS flags = PROPDESC_FORMAT_FLAGS.PDFF_DEFAULT)
+		{
+			if (!TryGetValue(key, out PROPVARIANT ret))
+				throw new ArgumentOutOfRangeException(nameof(key));
+			return new PropertyDescription(key).FormatForDisplay(ret, flags);
+		}
+
+		/// <summary>Gets the PROPVARIANT value for a key.</summary>
+		/// <param name="key">The key.</param>
+		/// <returns>The PROPVARIANT value.</returns>
+		/// <exception cref="ArgumentOutOfRangeException">key</exception>
+		public PROPVARIANT GetPropVariant(PROPERTYKEY key)
+		{
+			if (!TryGetValue(key, out PROPVARIANT ret))
 				throw new ArgumentOutOfRangeException(nameof(key));
 			return ret;
 		}
@@ -185,22 +208,9 @@ namespace Vanara.Windows.Shell
 		/// </returns>
 		public bool TryGetValue(PROPERTYKEY key, out object value)
 		{
-			if (iprops != null)
-			{
-				try
-				{
-					var pv = new PROPVARIANT();
-					iprops.GetValue(ref key, pv);
-					if (pv.VarType != VarEnum.VT_EMPTY)
-					{
-						value = pv.Value;
-						return true;
-					}
-				}
-				catch { }
-			}
-			value = null;
-			return false;
+			var ret = TryGetValue(key, out PROPVARIANT pv);
+			value = ret ? pv.Value : null;
+			return ret;
 		}
 
 		/// <summary>Gets the value associated with the specified key.</summary>
@@ -215,8 +225,8 @@ namespace Vanara.Windows.Shell
 		/// </returns>
 		public bool TryGetValue<TVal>(PROPERTYKEY key, out TVal value)
 		{
-			var ret = TryGetValue(key, out var val);
-			value = ret ? (TVal)val : default(TVal);
+			var ret = TryGetValue(key, out PROPVARIANT val);
+			value = ret ? (TVal)val.Value : default(TVal);
 			return ret;
 		}
 
@@ -259,6 +269,33 @@ namespace Vanara.Windows.Shell
 		{
 			IsDirty = true;
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+		private IEnumerable<KeyValuePair<PROPERTYKEY, object>> Enum()
+		{
+			for (uint i = 0; i < Count; i++)
+			{
+				var k = iprops.GetAt(i);
+				yield return new KeyValuePair<PROPERTYKEY, object>(k, this[k]);
+			}
+			yield break;
+		}
+
+		private bool TryGetValue(PROPERTYKEY key, out PROPVARIANT value)
+		{
+			if (iprops != null)
+			{
+				try
+				{
+					var pv = new PROPVARIANT();
+					iprops.GetValue(ref key, pv);
+					value = pv;
+					return true;
+				}
+				catch { }
+			}
+			value = null;
+			return false;
 		}
 	}
 }

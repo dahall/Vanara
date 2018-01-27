@@ -3,18 +3,17 @@ using NUnit.Framework;
 using System.Diagnostics;
 using System.Runtime.InteropServices.ComTypes;
 using Vanara.PInvoke;
-using Vanara.Windows.Shell;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 
-namespace Vanara.Windows.Forms.Tests
+namespace Vanara.Windows.Shell.Tests
 {
 	[TestFixture]
 	public class ShellItemTests
 	{
-		private const string badTestDoc = @"C:\Temp\BadTest.doc";
-		private const string testDoc = @"C:\Temp\Test.doc";
-		private const string testLinkDoc = @"C:\Temp\Test.lnk";
+		internal const string badTestDoc = @"C:\Temp\BadTest.doc";
+		internal const string testDoc = @"C:\Temp\Test.docx";
+		internal const string testLinkDoc = @"C:\Temp\Test.lnk";
 
 		[Test]
 		public void ShellItemTest1()

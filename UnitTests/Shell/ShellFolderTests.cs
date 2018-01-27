@@ -1,21 +1,16 @@
 ﻿using System;
 using NUnit.Framework;
-using System.Diagnostics;
-using System.Runtime.InteropServices.ComTypes;
-using Vanara.PInvoke;
-using Vanara.Windows.Shell;
-using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 using System.IO;
 using System.Linq;
 
-namespace Vanara.Windows.Forms.Tests
+namespace Vanara.Windows.Shell.Tests
 {
 	[TestFixture]
 	public class ShellFolderTests
 	{
-		private const string testFile = @"C:\Temp\Test.doc";
-		private const string testFld = @"C:\Temp";
+		private const string testFile = ShellItemTests.testDoc;
+		private static string testFld = Path.GetDirectoryName(testFile);
 
 		[Test]
 		public void ShellFolderTest1()
@@ -35,9 +30,9 @@ namespace Vanara.Windows.Forms.Tests
 		{
 			Assert.That(() =>
 			{
-                var d = new ShellFolder(KNOWNFOLDERID.FOLDERID_Desktop);
-                Assert.That(d, Is.EqualTo(ShellFolder.Desktop));
-                var i = new ShellFolder(KNOWNFOLDERID.FOLDERID_ProgramFiles);
+				var d = new ShellFolder(KNOWNFOLDERID.FOLDERID_Desktop);
+				Assert.That(d, Is.EqualTo(ShellFolder.Desktop));
+				var i = new ShellFolder(KNOWNFOLDERID.FOLDERID_ProgramFiles);
 				Assert.That(i.FileSystemPath, Is.EqualTo(Environment.GetEnvironmentVariable("ProgramFiles")));
 			}, Throws.Nothing);
 			Assert.That(() => new ShellFolder((KNOWNFOLDERID)int.MaxValue), Throws.TypeOf<FileNotFoundException>());
@@ -66,7 +61,7 @@ namespace Vanara.Windows.Forms.Tests
 				Assert.That(i.FileSystemPath, Is.EqualTo(testFld));
 			}, Throws.Nothing);
 			Assert.That(() => new ShellFolder((ShellItem) null), Throws.Exception);
-			Assert.That(() => new ShellFolder(new ShellItem(@"C:\Temp\Test.doc")), Throws.Exception);
+			Assert.That(() => new ShellFolder(new ShellItem(testFile)), Throws.Exception);
 		}
 
 		[Test]
@@ -113,7 +108,7 @@ namespace Vanara.Windows.Forms.Tests
 							Assert.That(lnk, Is.Not.Null.And.InstanceOf<ShellLink>());
 					}
 				}
-            }, Throws.Nothing);
+			}, Throws.Nothing);
 			Assert.That(() => new ShellFolder(KNOWNFOLDERID.FOLDERID_Windows).EnumerateChildren((FolderItemFilter)0x80000), Is.Empty);
 		}
 
@@ -131,6 +126,6 @@ namespace Vanara.Windows.Forms.Tests
 				Assert.That(() => f.GetChildrenUIObjects<IShellLibrary>(null, i), Throws.TypeOf<NotImplementedException>());
 				Assert.That(() => f.GetViewObject<IShellLibrary>(null), Throws.TypeOf<NotImplementedException>());
 			}
-        }
-    }
+		}
+	}
 }
