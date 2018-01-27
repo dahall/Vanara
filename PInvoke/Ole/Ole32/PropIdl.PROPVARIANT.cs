@@ -152,6 +152,8 @@ namespace Vanara.PInvoke
 			{
 				if (obj == null)
 					VarType = type;
+				else if (obj is PROPVARIANT pv)
+					PropVariantCopy(this, pv);
 				else
 					SetValue(obj, type);
 			}
@@ -570,7 +572,18 @@ namespace Vanara.PInvoke
 
 				if (type.IsArray && elemtype == typeof(object)) return VARTYPE.VT_ARRAY | VARTYPE.VT_VARIANT;
 
-				var ret = type.IsArray || type != typeof(string) && typeof(IEnumerable).IsAssignableFrom(type) ? VARTYPE.VT_VECTOR : 0;
+				var isEnumerable = type.IsArray || type != typeof(string) && typeof(IEnumerable).IsAssignableFrom(type);
+				var ret = isEnumerable ? VARTYPE.VT_VECTOR : 0;
+				if (isEnumerable && type.GetElementType() == null && type.IsGenericType)
+				{
+					var i = type.GetInterface("IEnumerable`1");
+					if (i != null)
+					{
+						var args = i.GetGenericArguments();
+						if (args.Length == 1)
+							elemType = args[0];
+					}
+				}
 				if (elemtype.IsNullable()) ret |= VARTYPE.VT_BYREF;
 
 				if (elemtype == typeof(BLOB))
@@ -1281,7 +1294,8 @@ namespace Vanara.PInvoke
 						}
 					else if (type == typeof(FILETIME)) _ft = (FILETIME)(object)value.Value;
 					else if (type == typeof(BLOB)) _blob = (BLOB)(object)value.Value;
-					else if (type == typeof(decimal)) SetDecimal((decimal) (object) value.Value);
+					else if (type == typeof(decimal)) SetDecimal((decimal)(object)value.Value);
+					else if (type == typeof(Guid)) InitPropVariantFromCLSID((Guid)(object)value.Value, this);
 					else throw new ArgumentException($"Unrecognized structure {typeof(T).Name}"); // This would work but there is no means to free this memory. // _ptr = value.Value.StructureToPtr());
 				}
 				else
