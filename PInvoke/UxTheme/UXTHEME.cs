@@ -1097,6 +1097,42 @@ namespace Vanara.PInvoke
 		[System.Security.SecurityCritical]
 		public static extern HRESULT GetCurrentThemeName([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszThemeFileName, int dwMaxNameChars, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszColorBuff, int cchMaxColorChars, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszSizeBuff, int cchMaxSizeChars);
 
+		/*
+		/// <summary>Gets the string containing the name of an element like ‘StartBackground’ or ‘StartDesktopTilesBackground’.</summary>
+		/// <param name="index">The index.</param>
+		/// <returns></returns>
+		[PInvokeData("UxTheme.h")]
+		[DllImport(Lib.UxTheme, ExactSpelling = true, EntryPoint = "#100")]
+		[return: MarshalAs(UnmanagedType.LPWStr)]
+		public static extern string GetImmersiveColorNamedTypeByIndex(uint index);
+
+		[PInvokeData("UxTheme.h")]
+		[DllImport(Lib.UxTheme, ExactSpelling = true, EntryPoint = "#94")]
+		public static extern uint GetImmersiveColorSetCount();
+
+		/// <summary>Gets the immersive color from color set ex.</summary>
+		/// <param name="dwImmersiveColorSet">The color set ID (between 0 and 24 for Windows 8)</param>
+		/// <param name="dwImmersiveColorType">The color type (e.g. 0 for 'StartBackground').</param>
+		/// <param name="bIgnoreHighContrast">Determines whether high contrast mode should be ignored – set it to <c>true</c> to retrieve the active color set's colors even when high contrast mode is enabled.</param>
+		/// <param name="dwHighContrastCacheMode">Set to 1 to force UxTheme to check whether the system is in high contrast mode even with it already thinks it is (this check would otherwise only occur if high contrast mode had previously not been enabled).</param>
+		/// <returns></returns>
+		[DllImport(Lib.UxTheme, ExactSpelling = true, EntryPoint = "#95")]
+		public static extern COLORREF GetImmersiveColorFromColorSetEx(uint dwImmersiveColorSet, uint dwImmersiveColorType, [MarshalAs(UnmanagedType.Bool)] bool bIgnoreHighContrast, uint dwHighContrastCacheMode);
+
+		/// <summary>Gets the name of the immersive color type from.</summary>
+		/// <param name="pName">Prepend 'Immersive' to the string first, or the function will fail ('StartBackground' becomes 'ImmersiveStartBackground', for example).</param>
+		/// <returns></returns>
+		[DllImport(Lib.UxTheme, ExactSpelling = true, EntryPoint = "#96")]
+		public static extern uint GetImmersiveColorTypeFromName([MarshalAs(UnmanagedType.LPWStr)] string pName);
+
+		/// <summary>Gets the immersive user color set preference.</summary>
+		/// <param name="bForceCheckRegistry">true to force UxTheme to read the value stored in the registry (and update the system setting if what’s in the registry is different to what’s in memory).</param>
+		/// <param name="bSkipCheckOnFail">Setting it to true will stop the function attempting to retrieve the user preference a second time if the first call returns –1. May only be relevant in the event that UxTheme doesn’t have permission to update the system setting with the value from the registry.</param>
+		/// <returns></returns>
+		[DllImport(Lib.UxTheme, ExactSpelling = true, EntryPoint = "#98")]
+		public static extern uint GetImmersiveUserColorSetPreference([MarshalAs(UnmanagedType.Bool)] bool bForceCheckRegistry, [MarshalAs(UnmanagedType.Bool)] bool bSkipCheckOnFail);
+		*/
+		
 		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
 		public static extern HRESULT GetThemeAnimationProperty(SafeThemeHandle hTheme, int iStoryboardId, int iTargetId, TA_PROPERTY eProperty, IntPtr pvProperty, uint cbSize, out uint pcbSizeOut);
@@ -1171,6 +1207,10 @@ namespace Vanara.PInvoke
 			}
 		}
 
+		[PInvokeData("UxTheme.h", MinClient = PInvokeClient.WindowsVista)]
+		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		public static extern HRESULT GetThemeIntList(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out INTLIST pIntList);
+
 		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
 		[System.Security.SecurityCritical]
@@ -1200,6 +1240,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
 		public static extern HRESULT GetThemeStream(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 5)] out byte[] pvStream, out int cbStream, IntPtr hInst);
 
+		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
 		public static extern HRESULT GetThemeString(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder themeString, int themeStringLength);
 
@@ -1216,6 +1257,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
 		public static extern IntPtr GetThemeSysColorBrush(SafeThemeHandle hTheme, SystemColorIndex iColorID);
 
+		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
 		public static extern HRESULT GetThemeSysInt(SafeThemeHandle hTheme, int iIntID, out int piVal);
 
@@ -1282,13 +1324,26 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool IsThemePartDefined(SafeThemeHandle hTheme, int iPartId, int iStateId);
 
+		/// <summary>Opens the theme data for a window and its associated class.</summary>
+		/// <param name="hWnd">The handle of the window for which theme data is required.</param>
+		/// <param name="pszClassList">A pointer to a string that contains a semicolon-separated list of classes.</param>
+		/// <returns>OpenThemeData tries to match each class, one at a time, to a class data section in the active theme. If a match is found, an associated HTHEME handle is returned. If no match is found NULL is returned.</returns>
 		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true, CharSet = CharSet.Unicode)]
-		public static extern SafeThemeHandle OpenThemeData(HandleRef hWnd, string classList);
+		public static extern SafeThemeHandle OpenThemeData(HandleRef hWnd, string pszClassList);
 
 		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		public static extern SafeThemeHandle OpenThemeDataEx(HandleRef hWnd, string classList, OpenThemeDataOptions dwFlags);
+
+		/// <summary>A variant of OpenThemeData that opens a theme handle associated with a specific DPI.</summary>
+		/// <param name="hWnd">The handle of the window for which theme data is required.</param>
+		/// <param name="pszClassIdList">A pointer to a string that contains a semicolon-separated list of classes.</param>
+		/// <param name="dpi">The specified DPI value with which to associate the theme handle. The function will return an error if this value is outside of those that correspond to the set of connected monitors.</param>
+		/// <returns>OpenThemeDataForDpi tries to match each class, one at a time, to a class data section in the active theme. If a match is found, an associated HTHEME handle is returned. If no match is found NULL is returned.</returns>
+		[PInvokeData("UxTheme.h")]
+		[DllImport(Lib.UxTheme, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		public static extern SafeThemeHandle OpenThemeDataForDpi(HandleRef hWnd, string pszClassIdList, uint dpi);
 
 		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
@@ -1322,10 +1377,6 @@ namespace Vanara.PInvoke
 			var opt = new WTA_OPTIONS { Flags = ncAttrs, Mask = activate ? (int)ncAttrs : 0 };
 			SetWindowThemeAttribute(hWnd, WindowThemeAttributeType.NonClient, ref opt, Marshal.SizeOf(opt)).ThrowIfFailed();
 		}
-
-		[PInvokeData("UxTheme.h")]
-		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		private static extern HRESULT GetThemeIntList(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out INTLIST pIntList);
 
 		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true, EntryPoint = "GetThemeIntList")]
