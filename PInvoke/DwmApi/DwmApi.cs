@@ -404,7 +404,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.DwmApi, EntryPoint = "#127")]
 		[System.Security.SecurityCritical]
 		[PInvokeData("dwmapi.h")]
-		public static extern HRESULT DwmGetColorizationParameters(ref DWM_COLORIZATION_PARAMS parameters);
+		public static extern HRESULT DwmpGetColorizationParameters(out DWM_COLORIZATION_PARAMS parameters);
 
 		/// <summary>Retrieves the current composition timing information for a specified window.</summary>
 		/// <param name="hwnd">
@@ -544,7 +544,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.DwmApi, EntryPoint = "#131")]
 		[System.Security.SecurityCritical]
 		[PInvokeData("dwmapi.h")]
-		public static extern HRESULT DwmSetColorizationParameters(ref DWM_COLORIZATION_PARAMS parameters, uint unk);
+		public static extern HRESULT DwmpSetColorizationParameters(ref DWM_COLORIZATION_PARAMS parameters, uint unk);
 
 		/// <summary>
 		/// Sets a static, iconic bitmap to display a live preview (also known as a Peek preview) of a window or tab. The taskbar can use this bitmap to show a
