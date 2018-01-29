@@ -15,6 +15,20 @@ namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
+		/// <summary>Specifies the values that indicate whether a control is visible and enabled. Used by members of the IFileDialogCustomize interface.</summary>
+		[Flags]
+		public enum CDCONTROLSTATEF : uint
+		{
+			/// <summary>The control is inactive and cannot be accessed by the user.</summary>
+			CDCS_INACTIVE = 0x00000000,
+			/// <summary>The control is active.</summary>
+			CDCS_ENABLED = 0x00000001,
+			/// <summary>The control is visible. The absence of this value indicates that the control is hidden.</summary>
+			CDCS_VISIBLE = 0x00000002,
+			/// <summary>Windows 7 and later. The control is visible and enabled.</summary>
+			CDCS_ENABLEDVISIBLE = 0x00000003
+		}
+
 		/// <summary>Specifies list placement.</summary>
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762502")]
 		public enum FDAP : uint
@@ -201,7 +215,7 @@ namespace Vanara.PInvoke
 			/// <param name="cFileTypes">The number of elements in the array specified by rgFilterSpec.</param>
 			/// <param name="rgFilterSpec">A pointer to an array of COMDLG_FILTERSPEC structures, each representing a file type.</param>
 			void SetFileTypes(uint cFileTypes,
-				[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] COMDLG_FILTERSPEC[] rgFilterSpec);
+				[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] COMDLG_FILTERSPEC[] rgFilterSpec);
 
 			/// <summary>Sets the file type that appears as selected in the dialog.</summary>
 			/// <param name="iFileType">
@@ -303,7 +317,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Enables a calling application to associate a GUID with a dialog's persisted state.</summary>
 			/// <param name="guid">The GUID to associate with this dialog state.</param>
-			void SetClientGuid([In, MarshalAs(UnmanagedType.LPStruct)] Guid guid);
+			void SetClientGuid([MarshalAs(UnmanagedType.LPStruct)] Guid guid);
 
 			/// <summary>Instructs the dialog to clear all persisted state information.</summary>
 			void ClearClientData();
@@ -311,6 +325,293 @@ namespace Vanara.PInvoke
 			/// <summary>Sets the filter. <note>Deprecated. SetFilter is no longer available for use as of Windows 7.</note></summary>
 			/// <param name="pFilter">A pointer to the IShellItemFilter that is to be set.</param>
 			void SetFilter([MarshalAs(UnmanagedType.Interface)] object pFilter);
+		}
+
+		/// <summary>
+		/// Extends the IFileDialog interface by providing methods that allow the caller to name a specific, restricted location that can be browsed in the
+		/// common file dialog as well as to specify alternate text to display as a label on the Cancel button.
+		/// </summary>
+		/// <seealso cref="Vanara.PInvoke.Shell32.IFileDialog"/>
+		[SuppressUnmanagedCodeSecurity]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("61744fc7-85b5-4791-a9b0-272276309b13")]
+		[PInvokeData("Shobjidl.h", MinClient = PInvokeClient.Windows7)]
+		public interface IFileDialog2 : IFileDialog
+		{
+			/// <summary>Launches the modal window.</summary>
+			/// <param name="parent">The handle of the owner window. This value can be NULL.</param>
+			/// <returns>
+			/// If the method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code, including the following:
+			/// HRESULT_FROM_WIN32(ERROR_CANCELLED) = The user closed the window by canceling the operation.
+			/// </returns>
+			[PreserveSig]
+			new HRESULT Show(IntPtr parent);
+
+			/// <summary>Sets the file types that the dialog can open or save.</summary>
+			/// <param name="cFileTypes">The number of elements in the array specified by rgFilterSpec.</param>
+			/// <param name="rgFilterSpec">A pointer to an array of COMDLG_FILTERSPEC structures, each representing a file type.</param>
+			new void SetFileTypes(uint cFileTypes,
+				[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] COMDLG_FILTERSPEC[] rgFilterSpec);
+
+			/// <summary>Sets the file type that appears as selected in the dialog.</summary>
+			/// <param name="iFileType">
+			/// The index of the file type in the file type array passed to IFileDialog::SetFileTypes in its cFileTypes parameter. Note that this is a one-based
+			/// index, not zero-based.
+			/// </param>
+			new void SetFileTypeIndex(uint iFileType);
+
+			/// <summary>Gets the currently selected file type.</summary>
+			/// <returns>
+			/// A UINT value that receives the index of the selected file type in the file type array passed to IFileDialog::SetFileTypes in its cFileTypes parameter.
+			/// </returns>
+			new uint GetFileTypeIndex();
+
+			/// <summary>Assigns an event handler that listens for events coming from the dialog.</summary>
+			/// <param name="pfde">A pointer to an IFileDialogEvents implementation that will receive events from the dialog.</param>
+			/// <returns>
+			/// A DWORD value identifying this event handler. When the client is finished with the dialog, that client must call the IFileDialog::Unadvise method
+			/// with this value.
+			/// </returns>
+			new uint Advise(IFileDialogEvents pfde);
+
+			/// <summary>Removes an event handler that was attached through the IFileDialog::Advise method.</summary>
+			/// <param name="dwCookie">
+			/// The DWORD value that represents the event handler. This value is obtained through the pdwCookie parameter of the IFileDialog::Advise method.
+			/// </param>
+			new void Unadvise(uint dwCookie);
+
+			/// <summary>Sets flags to control the behavior of the dialog.</summary>
+			/// <param name="fos">One or more of the FILEOPENDIALOGOPTIONS values.</param>
+			new void SetOptions(FILEOPENDIALOGOPTIONS fos);
+
+			/// <summary>Gets the current flags that are set to control dialog behavior.</summary>
+			/// <returns>When this method returns successfully, points to a value made up of one or more of the FILEOPENDIALOGOPTIONS values.</returns>
+			new FILEOPENDIALOGOPTIONS GetOptions();
+
+			/// <summary>Sets the folder used as a default if there is not a recently used folder value available.</summary>
+			/// <param name="psi">A pointer to the interface that represents the folder.</param>
+			new void SetDefaultFolder(IShellItem psi);
+
+			/// <summary>Sets a folder that is always selected when the dialog is opened, regardless of previous user action.</summary>
+			/// <param name="psi">A pointer to the interface that represents the folder.</param>
+			new void SetFolder(IShellItem psi);
+
+			/// <summary>
+			/// Gets either the folder currently selected in the dialog, or, if the dialog is not currently displayed, the folder that is to be selected when the
+			/// dialog is opened.
+			/// </summary>
+			/// <returns>The address of a pointer to the interface that represents the folder.</returns>
+			new IShellItem GetFolder();
+
+			/// <summary>Gets the user's current selection in the dialog.</summary>
+			/// <returns>
+			/// The address of a pointer to the interface that represents the item currently selected in the dialog. This item can be a file or folder selected
+			/// in the view window, or something that the user has entered into the dialog's edit box. The latter case may require a parsing operation
+			/// (cancelable by the user) that blocks the current thread.
+			/// </returns>
+			new IShellItem GetCurrentSelection();
+
+			/// <summary>Sets the file name that appears in the File name edit box when that dialog box is opened.</summary>
+			/// <param name="pszName">A pointer to the name of the file.</param>
+			new void SetFileName([MarshalAs(UnmanagedType.LPWStr)] string pszName);
+
+			/// <summary>Retrieves the text currently entered in the dialog's File name edit box.</summary>
+			/// <returns>The address of a pointer to a buffer that, when this method returns successfully, receives the text.</returns>
+			new SafeCoTaskMemString GetFileName();
+
+			/// <summary>Sets the title of the dialog.</summary>
+			/// <param name="pszTitle">A pointer to a buffer that contains the title text.</param>
+			new void SetTitle([MarshalAs(UnmanagedType.LPWStr)] string pszTitle);
+
+			/// <summary>Sets the text of the Open or Save button.</summary>
+			/// <param name="pszText">A pointer to a buffer that contains the button text.</param>
+			new void SetOkButtonLabel([MarshalAs(UnmanagedType.LPWStr)] string pszText);
+
+			/// <summary>Sets the text of the label next to the file name edit box.</summary>
+			/// <param name="pszLabel">A pointer to a buffer that contains the label text.</param>
+			new void SetFileNameLabel([MarshalAs(UnmanagedType.LPWStr)] string pszLabel);
+
+			/// <summary>Gets the choice that the user made in the dialog.</summary>
+			/// <returns>The address of a pointer to an IShellItem that represents the user's choice.</returns>
+			new IShellItem GetResult();
+
+			/// <summary>Adds a folder to the list of places available for the user to open or save items.</summary>
+			/// <param name="psi">A pointer to an IShellItem that represents the folder to be made available to the user. This can only be a folder.</param>
+			/// <param name="fdap">Specifies where the folder is placed within the list.</param>
+			new void AddPlace(IShellItem psi, FDAP fdap);
+
+			/// <summary>Sets the default extension to be added to file names.</summary>
+			/// <param name="pszDefaultExtension">
+			/// A pointer to a buffer that contains the extension text. This string should not include a leading period. For example, "jpg" is correct, while
+			/// ".jpg" is not.
+			/// </param>
+			new void SetDefaultExtension([MarshalAs(UnmanagedType.LPWStr)] string pszDefaultExtension);
+
+			/// <summary>Closes the dialog.</summary>
+			/// <param name="hr">The code that will be returned by Show to indicate that the dialog was closed before a selection was made.</param>
+			new void Close([MarshalAs(UnmanagedType.Error)] HRESULT hr);
+
+			/// <summary>Enables a calling application to associate a GUID with a dialog's persisted state.</summary>
+			/// <param name="guid">The GUID to associate with this dialog state.</param>
+			new void SetClientGuid([MarshalAs(UnmanagedType.LPStruct)] Guid guid);
+
+			/// <summary>Instructs the dialog to clear all persisted state information.</summary>
+			new void ClearClientData();
+
+			/// <summary>Sets the filter. <note>Deprecated. SetFilter is no longer available for use as of Windows 7.</note></summary>
+			/// <param name="pFilter">A pointer to the IShellItemFilter that is to be set.</param>
+			new void SetFilter([MarshalAs(UnmanagedType.Interface)] object pFilter);
+
+			/// <summary>Replaces the default text "Cancel" on the common file dialog's Cancel button.</summary>
+			/// <param name="pszLabel">Pointer to a string that contains the new text to display on the button.</param>
+			void SetCancelButtonLabel([MarshalAs(UnmanagedType.LPWStr)] string pszLabel);
+
+			/// <summary>Specifies a top-level location from which to begin browsing a namespace, for instance in the Save dialog's Browse folder option. Users cannot navigate above this location.</summary>
+			/// <param name="psi">Pointer to an IShellItem object that represents the navigation root.</param>
+			void SetNavigationRoot([MarshalAs(UnmanagedType.Interface)] IShellItem psi);
+		}
+
+		/// <summary>
+		/// Exposes methods that allow an application to be notified of events that are related to controls that the application has added to a common file dialog.
+		/// </summary>
+		[SuppressUnmanagedCodeSecurity]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("36116642-D713-4b97-9B83-7484A9D00433")]
+		[PInvokeData("Shobjidl.h")]
+		public interface IFileDialogControlEvents
+		{
+			/// <summary>Called when [item selected].</summary>
+			/// <param name="pfdc">The PFDC.</param>
+			/// <param name="dwIDCtl">The dw identifier control.</param>
+			/// <param name="dwIDItem">The dw identifier item.</param>
+			/// <returns></returns>
+			[PreserveSig]
+			HRESULT OnItemSelected(IFileDialogCustomize pfdc, uint dwIDCtl, uint dwIDItem);
+			/// <summary>Called when [button clicked].</summary>
+			/// <param name="pfdc">The PFDC.</param>
+			/// <param name="dwIDCtl">The dw identifier control.</param>
+			/// <returns></returns>
+			[PreserveSig]
+			HRESULT OnButtonClicked(IFileDialogCustomize pfdc, uint dwIDCtl);
+			/// <summary>Called when [check button toggled].</summary>
+			/// <param name="pfdc">The PFDC.</param>
+			/// <param name="dwIDCtl">The dw identifier control.</param>
+			/// <param name="bChecked">if set to <c>true</c> [b checked].</param>
+			/// <returns></returns>
+			[PreserveSig]
+			HRESULT OnCheckButtonToggled(IFileDialogCustomize pfdc, uint dwIDCtl, [MarshalAs(UnmanagedType.Bool)] bool bChecked);
+			/// <summary>Called when [control activating].</summary>
+			/// <param name="pfdc">The PFDC.</param>
+			/// <param name="dwIDCtl">The dw identifier control.</param>
+			/// <returns></returns>
+			[PreserveSig]
+			HRESULT OnControlActivating(IFileDialogCustomize pfdc, uint dwIDCtl);
+		}
+
+		/// <summary>Exposes methods that allow an application to add controls to a common file dialog.</summary>
+		[SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("e6fdd21a-163f-4975-9c8c-a69f1ba37034"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IFileDialogCustomize
+		{
+			/// <summary>Enables a drop-down list on the Open or Save button in the dialog.</summary>
+			/// <param name="dwIDCtl">The ID of the drop-down list.</param>
+			void EnableOpenDropDown(uint dwIDCtl);
+			/// <summary>Adds a menu to the dialog.</summary>
+			/// <param name="dwIDCtl">The ID of the menu to add.</param>
+			/// <param name="pszLabel">A pointer to a buffer that contains the menu name as a null-terminated Unicode string.</param>
+			void AddMenu(uint dwIDCtl, [MarshalAs(UnmanagedType.LPWStr)] string pszLabel);
+			/// <summary>Adds a button to the dialog.</summary>
+			/// <param name="dwIDCtl">The ID of the button to add.</param>
+			/// <param name="pszLabel">A pointer to a buffer that contains the button text as a null-terminated Unicode string.</param>
+			void AddPushButton(uint dwIDCtl, [MarshalAs(UnmanagedType.LPWStr)] string pszLabel);
+			/// <summary>Adds a combo box to the dialog.</summary>
+			/// <param name="dwIDCtl">The ID of the combo box to add.</param>
+			void AddComboBox(uint dwIDCtl);
+			/// <summary>Adds an option button (also known as radio button) group to the dialog.</summary>
+			/// <param name="dwIDCtl">The ID of the option button group to add.</param>
+			void AddRadioButtonList(uint dwIDCtl);
+			/// <summary>Adds a check button (check box) to the dialog.</summary>
+			/// <param name="dwIDCtl">The ID of the check button to add.</param>
+			/// <param name="pszLabel">A pointer to a buffer that contains the button text as a null-terminated Unicode string.</param>
+			/// <param name="bChecked">A BOOL indicating the current state of the check button. TRUE if checked; FALSE otherwise.</param>
+			void AddCheckButton(uint dwIDCtl, [MarshalAs(UnmanagedType.LPWStr)] string pszLabel, [MarshalAs(UnmanagedType.Bool)] bool bChecked);
+			/// <summary>Adds an edit box control to the dialog.</summary>
+			/// <param name="dwIDCtl">The ID of the edit box to add.</param>
+			/// <param name="pszText">A pointer to a null-terminated Unicode string that provides the default text displayed in the edit box.</param>
+			void AddEditBox(uint dwIDCtl, [MarshalAs(UnmanagedType.LPWStr)] string pszText);
+			/// <summary>Adds a separator to the dialog, allowing a visual separation of controls.</summary>
+			/// <param name="dwIDCtl">The control ID of the separator.</param>
+			void AddSeparator(uint dwIDCtl);
+			/// <summary>Adds text content to the dialog.</summary>
+			/// <param name="dwIDCtl">The ID of the text to add.</param>
+			/// <param name="pszText">A pointer to a buffer that contains the text as a null-terminated Unicode string.</param>
+			void AddText(uint dwIDCtl, [MarshalAs(UnmanagedType.LPWStr)] string pszText);
+			/// <summary>Sets the text associated with a control, such as button text or an edit box label.</summary>
+			/// <param name="dwIDCtl">The ID of the control whose text is to be changed.</param>
+			/// <param name="pszLabel">A pointer to a buffer that contains the text as a null-terminated Unicode string.</param>
+			void SetControlLabel(uint dwIDCtl, [MarshalAs(UnmanagedType.LPWStr)] string pszLabel);
+			/// <summary>Gets the current visibility and enabled states of a given control.</summary>
+			/// <param name="dwIDCtl">The ID of the control in question.</param>
+			/// <returns>A variable that receives one or more values from the CDCONTROLSTATE enumeration that indicate the current state of the control.</returns>
+			CDCONTROLSTATEF GetControlState(uint dwIDCtl);
+			/// <summary>Sets the current visibility and enabled states of a given control.</summary>
+			/// <param name="dwIDCtl">The ID of the control in question.</param>
+			/// <param name="dwState">One or more values from the CDCONTROLSTATE enumeration that indicate the current state of the control.</param>
+			void SetControlState(uint dwIDCtl, CDCONTROLSTATEF dwState);
+			/// <summary>Gets the current text in an edit box control.</summary>
+			/// <param name="dwIDCtl">The ID of the edit box.</param>
+			/// <param name="ppszText">The address of a pointer to a buffer that receives the text as a null-terminated Unicode string.</param>
+			void GetEditBoxText(uint dwIDCtl, out SafeCoTaskMemString ppszText);
+			/// <summary>Sets the text in an edit box control found in the dialog.</summary>
+			/// <param name="dwIDCtl">The ID of the edit box.</param>
+			/// <param name="pszText">A pointer to a buffer that contains the text as a null-terminated Unicode string.</param>
+			void SetEditBoxText(uint dwIDCtl, [MarshalAs(UnmanagedType.LPWStr)] string pszText);
+			/// <summary>Gets the current state of a check button (check box) in the dialog.</summary>
+			/// <param name="dwIDCtl">The ID of the check box.</param>
+			/// <returns>A BOOL value that indicates whether the box is checked. TRUE means checked; FALSE, unchecked.</returns>
+			[return: MarshalAs(UnmanagedType.Bool)]
+			bool GetCheckButtonState(uint dwIDCtl);
+			/// <summary>Sets the state of a check button (check box) in the dialog.</summary>
+			/// <param name="dwIDCtl">The ID of the check box.</param>
+			/// <param name="bChecked">A BOOL value that indicates whether the box is checked. TRUE means checked; FALSE, unchecked.</param>
+			void SetCheckButtonState(uint dwIDCtl, [MarshalAs(UnmanagedType.Bool)] bool bChecked);
+			/// <summary>Adds an item to a container control in the dialog.</summary>
+			/// <param name="dwIDCtl">The ID of the container control to which the item is to be added.</param>
+			/// <param name="dwIDItem">The ID of the item.</param>
+			/// <param name="pszLabel">A pointer to a buffer that contains the item's text, which can be either a label or, in the case of a drop-down list, the item itself. This text is a null-terminated Unicode string.</param>
+			void AddControlItem(uint dwIDCtl, int dwIDItem, [MarshalAs(UnmanagedType.LPWStr)] string pszLabel);
+			/// <summary>Removes an item from a container control in the dialog.</summary>
+			/// <param name="dwIDCtl">The ID of the container control from which the item is to be removed.</param>
+			/// <param name="dwIDItem">The ID of the item.</param>
+			void RemoveControlItem(uint dwIDCtl, int dwIDItem);
+			/// <summary>Not implemented.</summary>
+			/// <param name="dwIDCtl"></param>
+			void RemoveAllControlItems(uint dwIDCtl);
+			/// <summary>Gets the current state of an item in a container control found in the dialog.</summary>
+			/// <param name="dwIDCtl">The ID of the container control.</param>
+			/// <param name="dwIDItem">The ID of the item.</param>
+			/// <returns>A pointer to a variable that receives one of more values from the CDCONTROLSTATE enumeration that indicate the current state of the control.</returns>
+			CDCONTROLSTATEF GetControlItemState(uint dwIDCtl, int dwIDItem);
+			/// <summary>Sets the current state of an item in a container control found in the dialog.</summary>
+			/// <param name="dwIDCtl">The ID of the container control.</param>
+			/// <param name="dwIDItem">The ID of the item.</param>
+			/// <param name="dwState">One or more values from the CDCONTROLSTATE enumeration that indicate the new state of the control.</param>
+			void SetControlItemState(uint dwIDCtl, int dwIDItem, CDCONTROLSTATEF dwState);
+			/// <summary>Gets a particular item from specified container controls in the dialog.</summary>
+			/// <param name="dwIDCtl">The ID of the container control.</param>
+			/// <returns>The ID of the item that the user selected in the control.</returns>
+			uint GetSelectedControlItem(uint dwIDCtl);
+			/// <summary>Sets the selected state of a particular item in an option button group or a combo box found in the dialog.</summary>
+			/// <param name="dwIDCtl">The ID of the container control.</param>
+			/// <param name="dwIDItem">The ID of the item to display as selected in the control.</param>
+			void SetSelectedControlItem(uint dwIDCtl, int dwIDItem);
+			/// <summary>Declares a visual group in the dialog. Subsequent calls to any "add" method add those elements to this group.</summary>
+			/// <param name="dwIDCtl">The ID of the visual group.</param>
+			/// <param name="pszLabel">A pointer to a buffer that contains text, as a null-terminated Unicode string, that appears next to the visual group.</param>
+			void StartVisualGroup(uint dwIDCtl, [MarshalAs(UnmanagedType.LPWStr)] string pszLabel);
+			/// <summary>Stops the addition of elements to a visual group in the dialog.</summary>
+			void EndVisualGroup();
+			/// <summary>Places a control in the dialog so that it stands out compared to other added controls.</summary>
+			/// <param name="dwIDCtl">The ID of the control.</param>
+			void MakeProminent(uint dwIDCtl);
 		}
 
 		/// <summary>Exposes methods that allow notification of events within a common file dialog.</summary>
@@ -424,7 +725,7 @@ namespace Vanara.PInvoke
 			/// <param name="cFileTypes">The number of elements in the array specified by rgFilterSpec.</param>
 			/// <param name="rgFilterSpec">A pointer to an array of COMDLG_FILTERSPEC structures, each representing a file type.</param>
 			new void SetFileTypes(uint cFileTypes,
-				[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] COMDLG_FILTERSPEC[] rgFilterSpec);
+				[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] COMDLG_FILTERSPEC[] rgFilterSpec);
 
 			/// <summary>Sets the file type that appears as selected in the dialog.</summary>
 			/// <param name="iFileType">
@@ -526,7 +827,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Enables a calling application to associate a GUID with a dialog's persisted state.</summary>
 			/// <param name="guid">The GUID to associate with this dialog state.</param>
-			new void SetClientGuid([In, MarshalAs(UnmanagedType.LPStruct)] Guid guid);
+			new void SetClientGuid([MarshalAs(UnmanagedType.LPStruct)] Guid guid);
 
 			/// <summary>Instructs the dialog to clear all persisted state information.</summary>
 			new void ClearClientData();
@@ -686,7 +987,7 @@ namespace Vanara.PInvoke
 			/// <param name="cFileTypes">The number of elements in the array specified by rgFilterSpec.</param>
 			/// <param name="rgFilterSpec">A pointer to an array of COMDLG_FILTERSPEC structures, each representing a file type.</param>
 			new void SetFileTypes(uint cFileTypes,
-				[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] COMDLG_FILTERSPEC[] rgFilterSpec);
+				[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] COMDLG_FILTERSPEC[] rgFilterSpec);
 
 			/// <summary>Sets the file type that appears as selected in the dialog.</summary>
 			/// <param name="iFileType">
@@ -788,7 +1089,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Enables a calling application to associate a GUID with a dialog's persisted state.</summary>
 			/// <param name="guid">The GUID to associate with this dialog state.</param>
-			new void SetClientGuid([In, MarshalAs(UnmanagedType.LPStruct)] Guid guid);
+			new void SetClientGuid([MarshalAs(UnmanagedType.LPStruct)] Guid guid);
 
 			/// <summary>Instructs the dialog to clear all persisted state information.</summary>
 			new void ClearClientData();
@@ -803,7 +1104,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Provides a property store that defines the default values to be used for the item being saved.</summary>
 			/// <param name="pStore">Pointer to the interface that represents the property store that contains the associated metadata.</param>
-			void SetProperties([In] PropSys.IPropertyStore pStore);
+			void SetProperties(PropSys.IPropertyStore pStore);
 
 			/// <summary>Specifies which properties will be collected in the save dialog.</summary>
 			/// <param name="pList">Pointer to the interface that represents the list of properties to collect. This parameter can be NULL.</param>
@@ -811,7 +1112,7 @@ namespace Vanara.PInvoke
 			/// TRUE to show default properties for the currently selected filetype in addition to the properties specified by pList. FALSE to show only
 			/// properties specified by pList.
 			/// </param>
-			void SetCollectedProperties(PropSys.IPropertyDescriptionList pList, [In, MarshalAs(UnmanagedType.Bool)] bool fAppendDefault);
+			void SetCollectedProperties(PropSys.IPropertyDescriptionList pList, [MarshalAs(UnmanagedType.Bool)] bool fAppendDefault);
 
 			/// <summary>Retrieves the set of property values for a saved item or an item in the process of being saved.</summary>
 			/// <returns>Address of a pointer to an IPropertyStore that receives the property values.</returns>
@@ -827,7 +1128,7 @@ namespace Vanara.PInvoke
 			/// Pointer to an optional IFileOperationProgressSink that the calling application can use if they want to be notified of the progress of the
 			/// property stamping. This value may be NULL.
 			/// </param>
-			void ApplyProperties(IShellItem psi, PropSys.IPropertyStore pStore, [In] IntPtr hwnd, IFileOperationProgressSink pSink);
+			void ApplyProperties(IShellItem psi, PropSys.IPropertyStore pStore, IntPtr hwnd, IFileOperationProgressSink pSink);
 		}
 
 		/// <summary>Exposes a method that represents a modal window. This interface is used in the Windows XP Passport Wizard.</summary>
