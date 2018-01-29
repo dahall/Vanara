@@ -13,6 +13,8 @@
 		public const string ComCtl32 = "comctl32.dll";
 		/// <summary>The cred UI</summary>
 		public const string CredUI = "credui.dll";
+		/// <summary>The crypt32.dll</summary>
+		public const string Crypt32 = "crypt32.dll";
 		/// <summary>The DWM API</summary>
 		public const string DwmApi = "dwmapi.dll";
 		/// <summary>The gdi32</summary>
