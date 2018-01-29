@@ -4,8 +4,6 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Security;
 using Vanara.Extensions;
 using Vanara.InteropServices;
-using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
-using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -62,6 +60,25 @@ namespace Vanara.PInvoke
 			/// Windows Vista and later. Retrieves the path, if possible, of the shortcut's target relative to the path set by a previous call to IShellLink::SetRelativePath.
 			/// </summary>
 			SLGP_RELATIVEPRIORITY = 8
+		}
+
+		/// <summary>
+		/// Used with the IFolderView::Items, IFolderView::ItemCount, and IShellView::GetItemObject methods to restrict or control the items in their collections.
+		/// </summary>
+		public enum SVGIO : uint
+		{
+			/// <summary>Refers to the background of the view. It is used with IID_IContextMenu to get a shortcut menu for the view background and with IID_IDispatch to get a dispatch interface that represents the ShellFolderView object for the view.</summary>
+			SVGIO_BACKGROUND = 0,
+			/// <summary>Refers to the currently selected items. Used with IID_IDataObject to retrieve a data object that represents the selected items.</summary>
+			SVGIO_SELECTION = 0x1,
+			/// <summary>Used in the same way as SVGIO_SELECTION but refers to all items in the view.</summary>
+			SVGIO_ALLVIEW = 0x2,
+			/// <summary>Used in the same way as SVGIO_SELECTION but refers to checked items in views where checked mode is supported. For more details on checked mode, see FOLDERFLAGS.</summary>
+			SVGIO_CHECKED = 0x3,
+			/// <summary>Masks all bits but those corresponding to the _SVGIO flags.</summary>
+			SVGIO_TYPE_MASK = 0xf,
+			/// <summary>Returns the items in the order they appear in the view. If this flag is not set, the selected item will be listed first.</summary>
+			SVGIO_FLAG_VIEWORDER = 0x80000000,
 		}
 
 		/// <summary>Exposes methods that allow an application to remove one or all destinations from the Recent or Frequent categories in a Jump List.</summary>
@@ -152,44 +169,6 @@ namespace Vanara.PInvoke
 			/// </returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IEnumIDList Clone();
-		}
-
-		/// <summary>Exposes enumeration of IShellItem interfaces. This interface is typically obtained by calling the IEnumShellItems method.</summary>
-		[SuppressUnmanagedCodeSecurity]
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("70629033-e363-4a28-a567-0db78006e6d7")]
-		[PInvokeData("Shobjidl.h", MSDNShortId = "bb761962")]
-		public interface IEnumShellItems
-		{
-			/// <summary>Gets an array of one or more IShellItem interfaces from the enumeration.</summary>
-			/// <param name="celt">The number of elements in the array referenced by the rgelt parameter.</param>
-			/// <param name="rgelt">
-			/// The address of an array of pointers to IShellItem interfaces that receive the enumerated item or items. The calling application is responsible
-			/// for freeing the IShellItem interfaces by calling the IUnknown::Release method.
-			/// </param>
-			/// <param name="pceltFetched">
-			/// A pointer to a value that receives the number of IShellItem interfaces successfully retrieved. The count can be smaller than the value specified
-			/// in the celt parameter. This parameter can be NULL on entry only if celt is one, because in that case the method can only retrieve one item and
-			/// return S_OK, or zero items and return S_FALSE.
-			/// </param>
-			/// <returns>
-			/// Returns S_OK if the method successfully retrieved the requested celt elements. This method only returns S_OK if the full count of requested items
-			/// are successfully retrieved. S_FALSE indicates that more items were requested than remained in the enumeration. The value pointed to by the
-			/// pceltFetched parameter specifies the actual number of items retrieved. Note that the value will be 0 if there are no more items to retrieve.
-			/// </returns>
-			[PreserveSig]
-			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 2)] IShellItem[] rgelt, out uint pceltFetched);
-
-			/// <summary>Skips the specified number of elements in the enumeration sequence.</summary>
-			/// <param name="celt">The number of IShellItem interfaces to skip.</param>
-			void Skip(uint celt);
-
-			/// <summary>Returns to the beginning of the enumeration sequence.</summary>
-			void Reset();
-
-			/// <summary>Gets a copy of the current enumeration.</summary>
-			/// <returns>The address of a pointer that receives a copy of this enumeration.</returns>
-			[return: MarshalAs(UnmanagedType.Interface)]
-			IEnumShellItems Clone();
 		}
 
 		/// <summary>Exposes methods that enable clients to access items in a collection of objects that support IUnknown.</summary>
@@ -299,29 +278,6 @@ namespace Vanara.PInvoke
 			uint GetInfoFlags();
 		}
 
-		public enum SVGIO : uint
-		{
-			SVGIO_BACKGROUND = 0,
-			SVGIO_SELECTION = 0x1,
-			SVGIO_ALLVIEW = 0x2,
-			SVGIO_CHECKED = 0x3,
-			SVGIO_TYPE_MASK = 0xf,
-			SVGIO_FLAG_VIEWORDER = 0x80000000,
-		}
-
-		/// <summary>
-		/// Indicates the number of menu items in each of the six menu groups of a menu shared between a container and an object server during an in-place editing session. This is the mechanism for building a shared menu.
-		/// </summary>
-		[StructLayout(LayoutKind.Sequential)]
-		public struct OLEMENUGROUPWIDTHS
-		{
-			/// <summary>
-			/// An array whose elements contain the number of menu items in each of the six menu groups of a shared in-place editing menu. Each menu group can have any number of menu items. The container uses elements 0, 2, and 4 to indicate the number of menu items in its File, View, and Window menu groups. The object server uses elements 1, 3, and 5 to indicate the number of menu items in its Edit, Object, and Help menu groups.
-			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)] public uint[] width;
-		}
-		
-	
 		/// <summary>Retrieves the User Model AppID that has been explicitly set for the current process via SetCurrentProcessExplicitAppUserModelID</summary>
 		/// <param name="AppID">The application identifier.</param>
 		/// <returns></returns>

@@ -298,36 +298,74 @@ namespace Vanara.PInvoke
 			SIGDN_URL = 0x80068000
 		}
 
-        /// <summary>Flags for <see cref="IShellItemImageFactory.GetImage(SIZE, SIIGBF)"/>.</summary>
-        [Flags]
-        public enum SIIGBF
-        {
-            /// <summary>Shrink the bitmap as necessary to fit, preserving its aspect ratio.</summary>
-            SIIGBF_RESIZETOFIT = 0x00000000,
-            /// <summary>Passed by callers if they want to stretch the returned image themselves. For example, if the caller passes an icon size of 80x80, a 96x96 thumbnail could be returned. This action can be used as a performance optimization if the caller expects that they will need to stretch the image. Note that the Shell implementation of IShellItemImageFactory performs a GDI stretch blit. If the caller wants a higher quality image stretch than provided through that mechanism, they should pass this flag and perform the stretch themselves.</summary>
-            SIIGBF_BIGGERSIZEOK = 0x00000001,
-            /// <summary>Return the item only if it is already in memory. Do not access the disk even if the item is cached. Note that this only returns an already-cached icon and can fall back to a per-class icon if an item has a per-instance icon that has not been cached. Retrieving a thumbnail, even if it is cached, always requires the disk to be accessed, so GetImage should not be called from the UI thread without passing SIIGBF_MEMORYONLY.</summary>
-            SIIGBF_MEMORYONLY = 0x00000002,
-            /// <summary>Return only the icon, never the thumbnail.</summary>
-            SIIGBF_ICONONLY = 0x00000004,
-            /// <summary>Return only the thumbnail, never the icon. Note that not all items have thumbnails, so SIIGBF_THUMBNAILONLY will cause the method to fail in these cases.</summary>
-            SIIGBF_THUMBNAILONLY = 0x00000008,
-            /// <summary>Allows access to the disk, but only to retrieve a cached item. This returns a cached thumbnail if it is available. If no cached thumbnail is available, it returns a cached per-instance icon but does not extract a thumbnail or icon.</summary>
-            SIIGBF_INCACHEONLY = 0x00000010,
-            /// <summary>Introduced in Windows 8. If necessary, crop the bitmap to a square.</summary>
-            SIIGBF_CROPTOSQUARE = 0x00000020,
-            /// <summary>Introduced in Windows 8. Stretch and crop the bitmap to a 0.7 aspect ratio.</summary>
-            SIIGBF_WIDETHUMBNAILS = 0x00000040,
-            /// <summary>Introduced in Windows 8. If returning an icon, paint a background using the associated app's registered background color.</summary>
-            SIIGBF_ICONBACKGROUND = 0x00000080,
-            /// <summary>Introduced in Windows 8. If necessary, stretch the bitmap so that the height and width fit the given size.</summary>
-            SIIGBF_SCALEUP = 0x00000100,
-        }
+		/// <summary>Flags for <see cref="IShellItemImageFactory.GetImage(SIZE, SIIGBF)"/>.</summary>
+		[Flags]
+		public enum SIIGBF
+		{
+			/// <summary>Shrink the bitmap as necessary to fit, preserving its aspect ratio.</summary>
+			SIIGBF_RESIZETOFIT = 0x00000000,
+			/// <summary>Passed by callers if they want to stretch the returned image themselves. For example, if the caller passes an icon size of 80x80, a 96x96 thumbnail could be returned. This action can be used as a performance optimization if the caller expects that they will need to stretch the image. Note that the Shell implementation of IShellItemImageFactory performs a GDI stretch blit. If the caller wants a higher quality image stretch than provided through that mechanism, they should pass this flag and perform the stretch themselves.</summary>
+			SIIGBF_BIGGERSIZEOK = 0x00000001,
+			/// <summary>Return the item only if it is already in memory. Do not access the disk even if the item is cached. Note that this only returns an already-cached icon and can fall back to a per-class icon if an item has a per-instance icon that has not been cached. Retrieving a thumbnail, even if it is cached, always requires the disk to be accessed, so GetImage should not be called from the UI thread without passing SIIGBF_MEMORYONLY.</summary>
+			SIIGBF_MEMORYONLY = 0x00000002,
+			/// <summary>Return only the icon, never the thumbnail.</summary>
+			SIIGBF_ICONONLY = 0x00000004,
+			/// <summary>Return only the thumbnail, never the icon. Note that not all items have thumbnails, so SIIGBF_THUMBNAILONLY will cause the method to fail in these cases.</summary>
+			SIIGBF_THUMBNAILONLY = 0x00000008,
+			/// <summary>Allows access to the disk, but only to retrieve a cached item. This returns a cached thumbnail if it is available. If no cached thumbnail is available, it returns a cached per-instance icon but does not extract a thumbnail or icon.</summary>
+			SIIGBF_INCACHEONLY = 0x00000010,
+			/// <summary>Introduced in Windows 8. If necessary, crop the bitmap to a square.</summary>
+			SIIGBF_CROPTOSQUARE = 0x00000020,
+			/// <summary>Introduced in Windows 8. Stretch and crop the bitmap to a 0.7 aspect ratio.</summary>
+			SIIGBF_WIDETHUMBNAILS = 0x00000040,
+			/// <summary>Introduced in Windows 8. If returning an icon, paint a background using the associated app's registered background color.</summary>
+			SIIGBF_ICONBACKGROUND = 0x00000080,
+			/// <summary>Introduced in Windows 8. If necessary, stretch the bitmap so that the height and width fit the given size.</summary>
+			SIIGBF_SCALEUP = 0x00000100,
+		}
 
-        /// <summary>
-        /// Exposes methods that retrieve information about a Shell item. IShellItem and IShellItem2 are the preferred representations of items in any new code.
-        /// </summary>
-        [SuppressUnmanagedCodeSecurity]
+		/// <summary>Exposes enumeration of IShellItem interfaces. This interface is typically obtained by calling the IEnumShellItems method.</summary>
+		[SuppressUnmanagedCodeSecurity]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("70629033-e363-4a28-a567-0db78006e6d7")]
+		[PInvokeData("Shobjidl.h", MSDNShortId = "bb761962")]
+		public interface IEnumShellItems
+		{
+			/// <summary>Gets an array of one or more IShellItem interfaces from the enumeration.</summary>
+			/// <param name="celt">The number of elements in the array referenced by the rgelt parameter.</param>
+			/// <param name="rgelt">
+			/// The address of an array of pointers to IShellItem interfaces that receive the enumerated item or items. The calling application is responsible
+			/// for freeing the IShellItem interfaces by calling the IUnknown::Release method.
+			/// </param>
+			/// <param name="pceltFetched">
+			/// A pointer to a value that receives the number of IShellItem interfaces successfully retrieved. The count can be smaller than the value specified
+			/// in the celt parameter. This parameter can be NULL on entry only if celt is one, because in that case the method can only retrieve one item and
+			/// return S_OK, or zero items and return S_FALSE.
+			/// </param>
+			/// <returns>
+			/// Returns S_OK if the method successfully retrieved the requested celt elements. This method only returns S_OK if the full count of requested items
+			/// are successfully retrieved. S_FALSE indicates that more items were requested than remained in the enumeration. The value pointed to by the
+			/// pceltFetched parameter specifies the actual number of items retrieved. Note that the value will be 0 if there are no more items to retrieve.
+			/// </returns>
+			[PreserveSig]
+			HRESULT Next(uint celt, [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.Interface, SizeParamIndex = 2)] IShellItem[] rgelt, out uint pceltFetched);
+
+			/// <summary>Skips the specified number of elements in the enumeration sequence.</summary>
+			/// <param name="celt">The number of IShellItem interfaces to skip.</param>
+			void Skip(uint celt);
+
+			/// <summary>Returns to the beginning of the enumeration sequence.</summary>
+			void Reset();
+
+			/// <summary>Gets a copy of the current enumeration.</summary>
+			/// <returns>The address of a pointer that receives a copy of this enumeration.</returns>
+			[return: MarshalAs(UnmanagedType.Interface)]
+			IEnumShellItems Clone();
+		}
+
+		/// <summary>
+		/// Exposes methods that retrieve information about a Shell item. IShellItem and IShellItem2 are the preferred representations of items in any new code.
+		/// </summary>
+		[SuppressUnmanagedCodeSecurity]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("43826d1e-e718-42ee-bc55-a1e261c37bfe")]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb761144")]
 		public interface IShellItem
@@ -578,12 +616,12 @@ namespace Vanara.PInvoke
 			IEnumShellItems EnumItems();
 		}
 
-        /// <summary>
-        /// 
-        /// </summary>
-        [ComImport, Guid("bcc18b79-ba16-442f-80c4-8a59c30c463b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        public interface IShellItemImageFactory
-        {
+		/// <summary>
+		/// 
+		/// </summary>
+		[ComImport, Guid("bcc18b79-ba16-442f-80c4-8a59c30c463b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IShellItemImageFactory
+		{
 			/// <summary>Gets an HBITMAP that represents an IShellItem. The default behavior is to load a thumbnail. If there is no thumbnail for the current IShellItem, it retrieves an HBITMAP for the icon of the item. The thumbnail or icon is extracted if it is not currently cached.</summary>
 			/// <param name="size">A structure that specifies the size of the image to be received.</param>
 			/// <param name="flags">One or more of the SIIGBF flags.</param>
@@ -591,6 +629,6 @@ namespace Vanara.PInvoke
 			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 			[PreserveSig]
 			HRESULT GetImage([In, MarshalAs(UnmanagedType.Struct)] SIZE size, [In] SIIGBF flags, out Gdi32.SafeObjectHandle phbm);
-        }
-    }
+		}
+	}
 }

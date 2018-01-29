@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using Vanara.Extensions;
 using static Vanara.PInvoke.Ole32;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -15,11 +16,17 @@ namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
+		/// <summary>Specifies an application-defined callback function that a property sheet extension uses to add a page to a property sheet.</summary>
+		/// <param name="hpage">Handle to a property sheet page.</param>
+		/// <param name="lParam">Application-defined 32-bit value.</param>
+		/// <returns>Returns TRUE if successful, or FALSE otherwise.</returns>
+		[PInvokeData("Prsht.h")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, SetLastError = true, CharSet = CharSet.Unicode)]
 		[System.Security.SuppressUnmanagedCodeSecurity]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public delegate bool AddPropSheetPageProc(IntPtr hpage, IntPtr lParam);
 
+		/// <summary>Flags specifying where the toolbar buttons should go.</summary>
 		[Flags]
 		public enum FCT : uint
 		{
@@ -31,20 +38,25 @@ namespace Vanara.PInvoke
 			FCT_ADDTOEND = 0x0004,
 		}
 
+		/// <summary>
+		/// A value that indicates the frame control to show or hide. One of the following values as defined in Shobjidl.h or -1 for fullscreen/kiosk mode.
+		/// </summary>
 		[Flags]
 		public enum FCW : uint
 		{
+			/// <summary>The browser's media bar.</summary>
 			FCW_INTERNETBAR = 0x0006,
-			/// <summary>Retrieves the window handle to the browser's progress bar.</summary>
+			/// <summary>The browser's progress bar.</summary>
 			FCW_PROGRESS = 0x0008,
-			/// <summary>Retrieves the window handle to the browser's status bar.</summary>
+			/// <summary>The browser's status bar.</summary>
 			FCW_STATUS = 0x0001,
-			/// <summary>Retrieves the window handle to the browser's toolbar.</summary>
+			/// <summary>The browser's toolbar.</summary>
 			FCW_TOOLBAR = 0x0002,
-			/// <summary>Retrieves the window handle to the browser's tree view.</summary>
+			/// <summary>The browser's tree view.</summary>
 			FCW_TREE = 0x0003,
 		}
 
+		/// <summary>Folder view flags.</summary>
 		[Flags]
 		public enum FOLDERFLAGS : uint
 		{
@@ -116,6 +128,7 @@ namespace Vanara.PInvoke
 			FWF_ALLOWRTLREADING = 0x80000000,
 		}
 
+		/// <summary>The view mode of a folder.</summary>
 		public enum FOLDERVIEWMODE
 		{
 			/// <summary>The view should determine the best option.</summary>
@@ -138,6 +151,29 @@ namespace Vanara.PInvoke
 			FVM_TILE = 6,
 		}
 
+		/// <summary>
+		/// Used by methods of the IFolderViewOptions interface to activate Windows Vista options not supported by default in Windows 7 and later systems as well as deactivating new Windows 7 options.
+		/// </summary>
+		[Flags]
+		public enum FOLDERVIEWOPTIONS
+		{
+			/// <summary>Do not use any special options.</summary>
+			FVO_DEFAULT = 0x00000000,
+			/// <summary>Use the Windows Vista list view. This can be used to maintain continuity between systems so that users are presented with an expected view. At this time, setting this flag has the effective, though not literal, result of the application of the FVO_CUSTOMPOSITION and FVO_CUSTOMORDERING flags. However, this could change. Applications should be specific about the behaviors that they require. For instance, if an application requires custom positioning of its items, it should not rely on FVO_VISTALAYOUT to provide it, but instead explicitly apply the FVO_CUSTOMPOSITION flag.</summary>
+			FVO_VISTALAYOUT = 0x00000001,
+			/// <summary>Items require custom positioning within the space of the view. Those items are positioned to specific coordinates. This option is not active by default in the Windows 7 view.</summary>
+			FVO_CUSTOMPOSITION = 0x00000002,
+			/// <summary>Items require custom ordering within the view. This option is not active by default in the Windows 7 view. When it is active, the user can reorder the view by dragging items to their desired locations.</summary>
+			FVO_CUSTOMORDERING = 0x00000004,
+			/// <summary>Tiles and Details displays can contain hyperlinks. This option is not active by default in the Windows 7 view. When hyperlinks are displayed, they are updated to the Windows 7 view.</summary>
+			FVO_SUPPORTHYPERLINKS = 0x00000008,
+			/// <summary>Do not display animations in the view. This option was introduced in Windows 7 and is active by default in the Windows 7 view.</summary>
+			FVO_NOANIMATIONS = 0x00000010,
+			/// <summary>Do not show scroll tips. This option was introduced in Windows 7 and is active by default in the Windows 7 view.</summary>
+			FVO_NOSCROLLTIPS = 0x00000020,
+		}
+
+		/// <summary>Flags specifying the folder to be browsed.</summary>
 		[Flags]
 		public enum SBSP : uint
 		{
@@ -226,9 +262,12 @@ namespace Vanara.PInvoke
 			SBSP_WRITENOHISTORY = 0x08000000
 		}
 
+		/// <summary>The type of view requested.</summary>
 		public enum SV2GV : int
 		{
+			/// <summary>Current Shell view.</summary>
 			SV2GV_CURRENTVIEW = -1,
+			/// <summary>Default Shell view.</summary>
 			SV2GV_DEFAULTVIEW = -2,
 		}
 
@@ -245,6 +284,7 @@ namespace Vanara.PInvoke
 			SV3CVW3_FORCEFOLDERFLAGS = 0x00000004,
 		}
 
+		/// <summary>Selection flags for IShellView objects.</summary>
 		[Flags]
 		public enum SVSIF : uint
 		{
@@ -289,6 +329,26 @@ namespace Vanara.PInvoke
 			SVUIA_INPLACEACTIVATE = 3
 		}
 
+		/// <summary>Exposes methods that allow control of folder view options specific to the Windows 7 and later views.</summary>
+		[PInvokeData("Shobjidl.h", MinClient = PInvokeClient.Windows7)]
+		[ComImport, Guid("3cc974d2-b302-4d36-ad3e-06d93f695d3f"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IFolderViewOptions
+		{
+			/// <summary>Sets specified options for the view.</summary>
+			/// <param name="fvoMask">A bitmask made up of one or more of the FOLDERVIEWOPTIONS flags to indicate which options' are being changed. Values in fvoFlags not included in this mask are ignored.</param>
+			/// <param name="fvoFlags">A bitmask that contains the new values for the options specified in fvoMask. To enable an option, the bitmask should include the FOLDERVIEWOPTIONS flag for that option. To disable an option, the bit used for that FOLDERVIEWOPTIONS flag should be 0.</param>
+			void SetFolderViewOptions(FOLDERVIEWOPTIONS fvoMask, FOLDERVIEWOPTIONS fvoFlags);
+			/// <summary>Retrieves the current set of options for the view.</summary>
+			/// <returns>A bitmask that, when this method returns successfully, receives the FOLDERVIEWOPTIONS values that are currently set.</returns>
+			FOLDERVIEWOPTIONS GetFolderViewOptions();
+		}
+
+		/// <summary>
+		/// Implemented by hosts of Shell views (objects that implement IShellView). Exposes methods that provide services for the view it is hosting and other
+		/// objects that run in the context of the Explorer window.
+		/// </summary>
+		/// <seealso cref="Vanara.PInvoke.Ole32.IOleWindow"/>
+		[PInvokeData("Shobjidl.h")]
 		[ComImport, Guid("000214E2-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		public interface IShellBrowser : IOleWindow
 		{
@@ -298,24 +358,65 @@ namespace Vanara.PInvoke
 			/// <summary>Determines whether context-sensitive help mode should be entered during an in-place activation session.</summary>
 			/// <param name="fEnterMode"><c>true</c> if help mode should be entered; <c>false</c> if it should be exited.</param>
 			new void ContextSensitiveHelp([MarshalAs(UnmanagedType.Bool)] bool fEnterMode);
+			/// <summary>Allows the container to insert its menu groups into the composite menu that is displayed when an extended namespace is being viewed or used.</summary>
+			/// <param name="hmenuShared">A handle to an empty menu.</param>
+			/// <param name="lpMenuWidths">The address of an OLEMENUGROUPWIDTHS array of six LONG values. The container fills in elements 0, 2, and 4 to reflect the number of menu elements it provided in the File, View, and Window menu groups.</param>
 			void InsertMenusSB(IntPtr hmenuShared, ref OLEMENUGROUPWIDTHS lpMenuWidths);
+			/// <summary>Installs the composite menu in the view window.</summary>
+			/// <param name="hmenuShared">A handle to the composite menu constructed by calls to IShellBrowser::InsertMenusSB and the InsertMenu function.</param>
+			/// <param name="holemenuRes"></param>
+			/// <param name="hwndActiveObject">The view's window handle.</param>
 			void SetMenuSB(IntPtr hmenuShared, IntPtr holemenuRes, IntPtr hwndActiveObject);
+			/// <summary>Permits the container to remove any of its menu elements from the in-place composite menu and to free all associated resources.</summary>
+			/// <param name="hmenuShared">A handle to the in-place composite menu that was constructed by calls to IShellBrowser::InsertMenusSB and the InsertMenu function.</param>
 			void RemoveMenusSB(IntPtr hmenuShared);
+			/// <summary>Sets and displays status text about the in-place object in the container's frame-window status bar.</summary>
+			/// <param name="pszStatusText">A pointer to a null-terminated character string that contains the message to display.</param>
 			void SetStatusTextSB([MarshalAs(UnmanagedType.LPWStr)] string pszStatusText);
+			/// <summary>Tells Windows Explorer to enable or disable its modeless dialog boxes.</summary>
+			/// <param name="fEnable">Specifies whether the modeless dialog boxes are to be enabled or disabled. If this parameter is nonzero, modeless dialog boxes are enabled. If this parameter is zero, modeless dialog boxes are disabled.</param>
 			void EnableModelessSB([MarshalAs(UnmanagedType.Bool)] bool fEnable);
+			/// <summary>Translates accelerator keystrokes intended for the browser's frame while the view is active.</summary>
+			/// <param name="pmsg">The address of an MSG structure containing the keystroke message.</param>
+			/// <param name="wID">The command identifier value corresponding to the keystroke in the container-provided accelerator table. Containers should use this value instead of translating again.</param>
 			void TranslateAcceleratorSB(ref MSG pmsg, ushort wID);
+			/// <summary>Informs Windows Explorer to browse to another folder.</summary>
+			/// <param name="pidl">The address of an ITEMIDLIST (item identifier list) structure that specifies an object's location. This value is dependent on the flag or flags set in the wFlags parameter.</param>
+			/// <param name="wFlags">Flags specifying the folder to be browsed.</param>
 			void BrowseObject(PIDL pidl, SBSP wFlags);
+			/// <summary>Gets an IStream interface that can be used for storage of view-specific state information.</summary>
+			/// <param name="grfMode">Read/write access of the IStream interface.</param>
+			/// <returns>The address that receives the IStream interface pointer.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IStream GetViewStateStream(STGM grfMode);
+			/// <summary>Gets the window handle to a browser control.</summary>
+			/// <param name="id">The control handle that is being requested.</param>
+			/// <returns>The address of the window handle to the Windows Explorer control.</returns>
 			IntPtr GetControlWindow(FCW id);
+			/// <summary>Sends control messages to either the toolbar or the status bar in a Windows Explorer window.</summary>
+			/// <param name="id">An identifier for either a toolbar (FCW_TOOLBAR) or for a status bar window (FCW_STATUS).</param>
+			/// <param name="uMsg">The message to be sent to the control.</param>
+			/// <param name="wParam">The value depends on the message specified in the uMsg parameter.</param>
+			/// <param name="lParam">The value depends on the message specified in the uMsg parameter.</param>
+			/// <returns>The address of the return value of the SendMessage function.</returns>
 			IntPtr SendControlMsg(FCW id, uint uMsg, IntPtr wParam, IntPtr lParam);
-			void QueryActiveShellView(ref IShellView ppshv);
+			/// <summary>Retrieves the currently active (displayed) Shell view object.</summary>
+			/// <returns>The address of the pointer to the currently active Shell view object.</returns>
+			[return: MarshalAs(UnmanagedType.Interface)]
+			IShellView QueryActiveShellView();
+			/// <summary>Called by the Shell view when the view window or one of its child windows gets the focus or becomes active.</summary>
+			/// <param name="ppshv">Address of the view object's IShellView pointer.</param>
 			void OnViewWindowActive(IShellView ppshv);
-			void SetToolbarItems(IntPtr lpButtons, uint nButtons, FCT uFlags);
+			/// <summary><note type="note">This method has no effect on Windows Vista or later operating systems.</note> Adds toolbar items to Windows Explorer's toolbar.</summary>
+			/// <param name="lpButtons">The address of an array of TBBUTTON structures.</param>
+			/// <param name="nButtons">The number of TBBUTTON structures in the lpButtons array.</param>
+			/// <param name="uFlags">Flags specifying where the toolbar buttons should go.</param>
+			void SetToolbarItems([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ComCtl32.TBBUTTON[] lpButtons, uint nButtons, FCT uFlags);
 		}
 
 		/// <summary>Exposes methods that present a view in the Windows Explorer or folder windows.</summary>
 		/// <seealso cref="Vanara.PInvoke.Ole32.IOleWindow"/>
+		[PInvokeData("Shobjidl.h")]
 		[ComImport, Guid("000214E3-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		public interface IShellView : IOleWindow
 		{
@@ -328,6 +429,8 @@ namespace Vanara.PInvoke
 			/// <summary>Translates keyboard shortcut (accelerator) key strokes when a namespace extension's view has the focus.</summary>
 			/// <param name="lpmsg">The address of the message to be translated.</param>
 			void TranslateAccelerator(ref MSG lpmsg);
+			/// <summary>Enables or disables modeless dialog boxes. This method is not currently implemented.</summary>
+			/// <param name="enable"><c>true</c> to enable modeless dialog box windows or <c>false</c> to disable them.</param>
 			void EnableModeless([MarshalAs(UnmanagedType.Bool)] bool enable);
 			/// <summary>
 			/// Called when the activation state of the view window is changed by an event that is not caused by the Shell view itself. For example, if the TAB
@@ -364,7 +467,7 @@ namespace Vanara.PInvoke
 			void SaveViewState();
 			/// <summary>Changes the selection state of one or more items within the Shell view window.</summary>
 			/// <param name="pidlItem">The address of the ITEMIDLIST structure.</param>
-			/// <param name="flags">One of the _SVSIF constants that specify the type of selection to apply.</param>
+			/// <param name="uFlags">One of the _SVSIF constants that specify the type of selection to apply.</param>
 			void SelectItem(PIDL pidlItem, SVSIF uFlags);
 			/// <summary>Gets an interface that refers to data presented in the view.</summary>
 			/// <param name="uItem">The constants that refer to an aspect of the view.</param>
@@ -373,11 +476,15 @@ namespace Vanara.PInvoke
 			[return: MarshalAs(UnmanagedType.IUnknown)]
 			object GetItemObject(SVGIO uItem, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
 		}
+
 		/// <summary>Extends the capabilities of IShellView.</summary>
 		/// <seealso cref="Vanara.PInvoke.Shell32.IShellView"/>
+		[PInvokeData("Shobjidl.h")]
 		[ComImport, Guid("88E39E80-3578-11CF-AE69-08002B2E1262"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		public interface IShellView2 : IShellView
 		{
+			/// <summary>Retrieves a handle to one of the windows participating in in-place activation (frame, document, parent, or in-place object window).</summary>
+			/// <returns>A pointer to a variable that receives the window handle.</returns>
 			new IntPtr GetWindow();
 			/// <summary>Determines whether context-sensitive help mode should be entered during an in-place activation session.</summary>
 			/// <param name="fEnterMode"><c>true</c> if help mode should be entered; <c>false</c> if it should be exited.</param>
@@ -385,6 +492,8 @@ namespace Vanara.PInvoke
 			/// <summary>Translates keyboard shortcut (accelerator) key strokes when a namespace extension's view has the focus.</summary>
 			/// <param name="lpmsg">The address of the message to be translated.</param>
 			new void TranslateAccelerator(ref MSG lpmsg);
+			/// <summary>Enables or disables modeless dialog boxes. This method is not currently implemented.</summary>
+			/// <param name="enable"><c>true</c> to enable modeless dialog box windows or <c>false</c> to disable them.</param>
 			new void EnableModeless([MarshalAs(UnmanagedType.Bool)] bool enable);
 			/// <summary>
 			/// Called when the activation state of the view window is changed by an event that is not caused by the Shell view itself. For example, if the TAB
@@ -421,7 +530,7 @@ namespace Vanara.PInvoke
 			new void SaveViewState();
 			/// <summary>Changes the selection state of one or more items within the Shell view window.</summary>
 			/// <param name="pidlItem">The address of the ITEMIDLIST structure.</param>
-			/// <param name="flags">One of the _SVSIF constants that specify the type of selection to apply.</param>
+			/// <param name="uFlags">One of the _SVSIF constants that specify the type of selection to apply.</param>
 			new void SelectItem(PIDL pidlItem, SVSIF uFlags);
 			/// <summary>Gets an interface that refers to data presented in the view.</summary>
 			/// <param name="uItem">The constants that refer to an aspect of the view.</param>
@@ -435,7 +544,7 @@ namespace Vanara.PInvoke
 			void GetView([MarshalAs(UnmanagedType.LPStruct)] out Guid pvid, SV2GV uView);
 			/// <summary>Used to request the creation of a new Shell view window. It can be either the right pane of Windows Explorer or the client window of a folder window.</summary>
 			/// <param name="lpParams">A pointer to an SV2CVW2_PARAMS structure that defines the new view window.</param>
-			void CreateViewWindow(ref SV2CVW2_PARAMS lpParams);
+			void CreateViewWindow2(SV2CVW2_PARAMS lpParams);
 			/// <summary>Used to change an item's identifier.</summary>
 			/// <param name="pidlNew">A pointer to an ITEMIDLIST structure. The current identifier is passed in and is replaced by the new one.</param>
 			void HandleRename(PIDL pidlNew);
@@ -448,9 +557,12 @@ namespace Vanara.PInvoke
 
 		/// <summary>Extends the capabilities of IShellView2 by providing a method to replace IShellView2::CreateViewWindow2.</summary>
 		/// <seealso cref="Vanara.PInvoke.Shell32.IShellView2"/>
+		[PInvokeData("Shobjidl.h")]
 		[ComImport(), Guid("ec39fa88-f8af-41c5-8421-38bed28f4673"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		public interface IShellView3 : IShellView2
 		{
+			/// <summary>Retrieves a handle to one of the windows participating in in-place activation (frame, document, parent, or in-place object window).</summary>
+			/// <returns>A pointer to a variable that receives the window handle.</returns>
 			new IntPtr GetWindow();
 			/// <summary>Determines whether context-sensitive help mode should be entered during an in-place activation session.</summary>
 			/// <param name="fEnterMode"><c>true</c> if help mode should be entered; <c>false</c> if it should be exited.</param>
@@ -458,6 +570,8 @@ namespace Vanara.PInvoke
 			/// <summary>Translates keyboard shortcut (accelerator) key strokes when a namespace extension's view has the focus.</summary>
 			/// <param name="lpmsg">The address of the message to be translated.</param>
 			new void TranslateAccelerator(ref MSG lpmsg);
+			/// <summary>Enables or disables modeless dialog boxes. This method is not currently implemented.</summary>
+			/// <param name="enable"><c>true</c> to enable modeless dialog box windows or <c>false</c> to disable them.</param>
 			new void EnableModeless([MarshalAs(UnmanagedType.Bool)] bool enable);
 			/// <summary>
 			/// Called when the activation state of the view window is changed by an event that is not caused by the Shell view itself. For example, if the TAB
@@ -494,7 +608,7 @@ namespace Vanara.PInvoke
 			new void SaveViewState();
 			/// <summary>Changes the selection state of one or more items within the Shell view window.</summary>
 			/// <param name="pidlItem">The address of the ITEMIDLIST structure.</param>
-			/// <param name="flags">One of the _SVSIF constants that specify the type of selection to apply.</param>
+			/// <param name="uFlags">One of the _SVSIF constants that specify the type of selection to apply.</param>
 			new void SelectItem(PIDL pidlItem, SVSIF uFlags);
 			/// <summary>Gets an interface that refers to data presented in the view.</summary>
 			/// <param name="uItem">The constants that refer to an aspect of the view.</param>
@@ -508,7 +622,7 @@ namespace Vanara.PInvoke
 			new void GetView([MarshalAs(UnmanagedType.LPStruct)] out Guid pvid, SV2GV uView);
 			/// <summary>Used to request the creation of a new Shell view window. It can be either the right pane of Windows Explorer or the client window of a folder window.</summary>
 			/// <param name="lpParams">A pointer to an SV2CVW2_PARAMS structure that defines the new view window.</param>
-			new void CreateViewWindow(ref SV2CVW2_PARAMS lpParams);
+			new void CreateViewWindow2(SV2CVW2_PARAMS lpParams);
 			/// <summary>Used to change an item's identifier.</summary>
 			/// <param name="pidlNew">A pointer to an ITEMIDLIST structure. The current identifier is passed in and is replaced by the new one.</param>
 			new void HandleRename(PIDL pidlNew);
@@ -528,10 +642,11 @@ namespace Vanara.PInvoke
 			/// <param name="prcView">A pointer to a RECT structure that provides the dimensions of the view window.</param>
 			/// <returns>A value that receives a pointer to the handle of the new Shell view window.</returns>
 			IntPtr CreateViewWindow3(IShellBrowser psbOwner, IShellView psvPrevious, SV3CVW3_FLAGS dwViewFlags, FOLDERFLAGS dwMask,
-				FOLDERFLAGS dwFlags, FOLDERVIEWMODE fvMode, [MarshalAs(UnmanagedType.LPStruct)] Guid pvid, ref RECT prcView);
+				FOLDERFLAGS dwFlags, FOLDERVIEWMODE fvMode, [MarshalAs(UnmanagedType.LPStruct)] Guid pvid, PRECT prcView);
 		}
 
 		/// <summary>Contains folder view information.</summary>
+		[PInvokeData("Shobjidl.h")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct FOLDERSETTINGS
 		{
@@ -539,20 +654,90 @@ namespace Vanara.PInvoke
 			public FOLDERVIEWMODE ViewMode;
 			/// <summary>A set of flags that indicate the options for the folder.</summary>
 			public FOLDERFLAGS fFlags;
+
+			/// <summary>Initializes a new instance of the <see cref="FOLDERSETTINGS"/> struct.</summary>
+			/// <param name="viewMode">Folder view mode.</param>
+			/// <param name="flags">A set of flags that indicate the options for the folder.</param>
+			public FOLDERSETTINGS(FOLDERVIEWMODE viewMode, FOLDERFLAGS flags)
+			{
+				ViewMode = viewMode;
+				fFlags = flags;
+			}
 		}
 
+		/// <summary>Holds the parameters for the IShellView2::CreateViewWindow2 method.</summary>
+		[PInvokeData("Shobjidl.h")]
 		[StructLayout(LayoutKind.Sequential)]
-		public struct SV2CVW2_PARAMS
+		public class SV2CVW2_PARAMS : IDisposable
 		{
+			/// <summary>The size of the structure.</summary>
 			public uint cbSize;
-			public IShellView psvPrev;  // IShellView*
-			public IntPtr pfs;      // FOLDERSETTINGS*
-			public IShellBrowser psbOwner; // IShellBrowser*
-			public IntPtr prcView;  // RECT*
-			public IntPtr pvid;     // GUID*
-			public IntPtr hwndView; // HWND
+			/// <summary>
+			/// A pointer to the IShellView interface of the previous view. A Shell view can use this parameter to communicate with a previous view with the same
+			/// implementation. It can also be used to optimize browsing between like views. This parameter may be NULL.
+			/// </summary>
+			public IShellView psvPrev;
+			/// <summary>A FOLDERSETTINGS structure with information needed to create the view.</summary>
+			private IntPtr _pfs;
+			/// <summary>
+			/// A pointer to the current instance of the IShellBrowser interface of the parent Shell browser. IShellView2::CreateViewWindow2 should call this
+			/// interface's AddRef method and store the interface pointer. It can be used for communication with the Windows Explorer window.
+			/// </summary>
+			public IShellBrowser psbOwner;
+			/// <summary>A RECT structure that defines the view's display area.</summary>
+			private IntPtr _prcView;
+			/// <summary>
+			/// A pointer to a view ID. The view ID can be one of the Windows-defined VIDs or a custom, view-defined VID. This value takes precedence over the
+			/// view mode designated in the FOLDERSETTINGS structure pointed to by pfs.
+			/// </summary>
+			private IntPtr _pvid;
+			/// <summary>A window handle to the new Shell view.</summary>
+			public IntPtr hwndView;
 
-			// TODO: ctor that grabs all but last two fields
+			/// <summary>Initializes a new instance of the <see cref="SV2CVW2_PARAMS"/> class.</summary>
+			/// <param name="viewMode">Folder view mode.</param>
+			/// <param name="flags">A set of flags that indicate the options for the folder.</param>
+			/// <param name="owner">The current instance of the IShellBrowser interface of the parent Shell browser.</param>
+			/// <param name="displayArea">The view's display area.</param>
+			/// <param name="prevView">
+			/// Optional. The IShellView interface of the previous view. A Shell view can use this parameter to communicate with a previous view with the same
+			/// implementation. It can also be used to optimize browsing between like views.
+			/// </param>
+			public SV2CVW2_PARAMS(FOLDERVIEWMODE viewMode, FOLDERFLAGS flags, IShellBrowser owner, ref RECT displayArea, IShellView prevView = null)
+			{
+				cbSize = (uint)Marshal.SizeOf(typeof(SV2CVW2_PARAMS));
+				psvPrev = prevView;
+				psbOwner = owner;
+				pfs = new FOLDERSETTINGS(viewMode, flags);
+				prcView = displayArea;
+			}
+
+			/// <summary>A FOLDERSETTINGS structure with information needed to create the view.</summary>
+			public FOLDERSETTINGS pfs
+			{
+				get => _pfs.ToStructure<FOLDERSETTINGS>();
+				set { Marshal.FreeCoTaskMem(_pfs); _pfs = InteropExtensions.StructureToPtr(value, Marshal.AllocCoTaskMem, out var _); }
+			}
+
+			/// <summary>A RECT structure that defines the view's display area.</summary>
+			public RECT prcView
+			{
+				get => _prcView.ToStructure<RECT>();
+				set { Marshal.FreeCoTaskMem(_prcView); _prcView = InteropExtensions.StructureToPtr(value, Marshal.AllocCoTaskMem, out var _); }
+			}
+
+			/// <summary>
+			/// A view ID. The view ID can be one of the Windows-defined VIDs or a custom, view-defined VID. This value takes precedence over the view mode
+			/// designated in the FOLDERSETTINGS structure pointed to by pfs.
+			/// </summary>
+			public Guid pvid => _pvid.ToStructure<Guid>();
+
+			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+			void IDisposable.Dispose()
+			{
+				Marshal.FreeCoTaskMem(_pfs);
+				Marshal.FreeCoTaskMem(_prcView);
+			}
 		}
 	}
 }
