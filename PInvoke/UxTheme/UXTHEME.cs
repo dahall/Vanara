@@ -1601,6 +1601,15 @@ namespace Vanara.PInvoke
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
+		public struct INTLIST
+		{
+			public int iValueCount;
+
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 402)]
+			public int[] iValues;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
 		public struct TA_TIMINGFUNCTION
 		{
 			public TA_TIMINGFUNCTION_TYPE eTimingFunctionType;
@@ -1623,15 +1632,6 @@ namespace Vanara.PInvoke
 		{
 			public WTNCA Flags;
 			public int Mask;
-		}
-
-		[StructLayout(LayoutKind.Sequential)]
-		private struct INTLIST
-		{
-			public int iValueCount;
-
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 402)]
-			public int[] iValues;
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
