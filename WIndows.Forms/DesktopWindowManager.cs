@@ -105,10 +105,9 @@ namespace Vanara.Windows.Forms
 			{
 				if (!CompositionSupported)
 					return;
-				var p = new DWM_COLORIZATION_PARAMS();
-				DwmGetColorizationParameters(ref p);
+				DwmpGetColorizationParameters(out var p).ThrowIfFailed();
 				p.clrColor = (uint)value.ToArgb();
-				DwmSetColorizationParameters(ref p, 1);
+				DwmpSetColorizationParameters(ref p, 1).ThrowIfFailed();
 				Microsoft.Win32.Registry.CurrentUser.SetValue(@"Software\Microsoft\Windows\DWM\ColorizationColor", value.ToArgb(), Microsoft.Win32.RegistryValueKind.DWord);
 			}
 		}
@@ -147,10 +146,9 @@ namespace Vanara.Windows.Forms
 			{
 				if (!CompositionSupported)
 					return;
-				var p = new DWM_COLORIZATION_PARAMS();
-				DwmGetColorizationParameters(ref p);
+				DwmpGetColorizationParameters(out var p).ThrowIfFailed();
 				p.fOpaque = value;
-				DwmSetColorizationParameters(ref p, 1);
+				DwmpSetColorizationParameters(ref p, 1).ThrowIfFailed();
 				Microsoft.Win32.Registry.CurrentUser.SetValue(@"Software\Microsoft\Windows\DWM\ColorizationOpaqueBlend", p.fOpaque, Microsoft.Win32.RegistryValueKind.DWord);
 			}
 		}

@@ -57,8 +57,7 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void DwmGetColorizationParametersTest()
 		{
-			var p = new DWM_COLORIZATION_PARAMS();
-			var err = DwmGetColorizationParameters(ref p);
+			var err = DwmpGetColorizationParameters(out var p);
 			Assert.That(err.Succeeded);
 			TestContext.WriteLine($"Colorization: Color={p.clrColor:X}, AfterGlow={p.clrAfterGlow:X}, AGBalance={p.clrAfterGlowBalance:X}, BlurBal={p.clrBlurBalance:X}, Intensity={p.nIntensity}, GlassReflInt={p.clrGlassReflectionIntensity}, Opaque={p.fOpaque}");
 		}
@@ -83,10 +82,9 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void DwmSetColorizationParametersTest()
 		{
-			var p = new DWM_COLORIZATION_PARAMS();
-			var err = DwmGetColorizationParameters(ref p);
+			var err = DwmpGetColorizationParameters(out var p);
 			Assert.That(err.Succeeded);
-			err = DwmSetColorizationParameters(ref p, 0);
+			err = DwmpSetColorizationParameters(ref p, 0);
 			Assert.That(err.Succeeded);
 		}
 
