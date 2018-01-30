@@ -115,6 +115,7 @@
     <Compile Include="PInvoke\WinInet\WinInetTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\AccessControl\SystemSecurityTests.cs" />
+    <Compile Include="Shell\ControlPanelTests.cs" />
     <Compile Include="Shell\ShellItemTests.cs" />
     <Compile Include="Shell\ShellFolderTests.cs" />
     <Compile Include="Shell\ShellItemPropStoreTests.cs" />
