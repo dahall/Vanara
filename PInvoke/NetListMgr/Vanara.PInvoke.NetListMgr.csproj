@@ -4,7 +4,7 @@
     <Description>Methods, structures and constants for NetListMgr COM object.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.7</VersionPrefix>
+    <VersionPrefix>1.0.8</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard20</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.NetListMgr</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
