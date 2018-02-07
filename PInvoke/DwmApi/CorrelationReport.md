@@ -1,5 +1,5 @@
 ## Correlation report for dwmapi.dll
-### Methods (88% complete)
+### Methods (92% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
 [DwmDefWindowProc](https://www.google.com/search?num=5&q=DwmDefWindowProc+site%3Amsdn.microsoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmDefWindowProc
@@ -24,7 +24,6 @@ Native Method | Native DLL | Header | Managed Method
 [DwmSetWindowAttribute](https://www.google.com/search?num=5&q=DwmSetWindowAttribute+site%3Amsdn.microsoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmSetWindowAttribute
 [DwmShowContact](https://www.google.com/search?num=5&q=DwmShowContact+site%3Amsdn.microsoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmShowContact
 [DwmTetherContact](https://www.google.com/search?num=5&q=DwmTetherContact+site%3Amsdn.microsoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmTetherContact
-[DwmTetherTextContact](https://www.google.com/search?num=5&q=DwmTetherTextContact+site%3Amsdn.microsoft.com) | dwmapi.dll |  | 
 [DwmTransitionOwnedWindow](https://www.google.com/search?num=5&q=DwmTransitionOwnedWindow+site%3Amsdn.microsoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmTransitionOwnedWindow
 [DwmUnregisterThumbnail](https://www.google.com/search?num=5&q=DwmUnregisterThumbnail+site%3Amsdn.microsoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmUnregisterThumbnail
 [DwmUpdateThumbnailProperties](https://www.google.com/search?num=5&q=DwmUpdateThumbnailProperties+site%3Amsdn.microsoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmUpdateThumbnailProperties

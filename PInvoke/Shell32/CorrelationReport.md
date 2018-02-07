@@ -328,17 +328,16 @@ Native Structure | Header | Managed Structure
 [EXP_SPECIAL_FOLDER](https://www.google.com/search?num=5&q=EXP_SPECIAL_FOLDER+site%3Amsdn.microsoft.com) | Shlobj.h | Vanara.PInvoke.Shell32+EXP_SPECIAL_FOLDER
 [EXP_SZ_LINK](https://www.google.com/search?num=5&q=EXP_SZ_LINK+site%3Amsdn.microsoft.com) | Shlobj.h | Vanara.PInvoke.Shell32+EXP_SZ_LINK
 [EXTRASEARCH](https://www.google.com/search?num=5&q=EXTRASEARCH+site%3Amsdn.microsoft.com) | Shobjidl.h | Vanara.PInvoke.Shell32+EXTRASEARCH
-[FOLDERSETTINGS](https://www.google.com/search?num=5&q=FOLDERSETTINGS+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.Shell32+FOLDERSETTINGS
+[FOLDERSETTINGS](https://www.google.com/search?num=5&q=FOLDERSETTINGS+site%3Amsdn.microsoft.com) | Shobjidl.h | Vanara.PInvoke.Shell32+FOLDERSETTINGS
 [ITEMIDLIST](https://www.google.com/search?num=5&q=ITEMIDLIST+site%3Amsdn.microsoft.com) | Shtypes.h | Vanara.PInvoke.Shell32+ITEMIDLIST
 [KNOWNFOLDER_DEFINITION](https://www.google.com/search?num=5&q=KNOWNFOLDER_DEFINITION+site%3Amsdn.microsoft.com) | Shobjidl.h | Vanara.PInvoke.Shell32+KNOWNFOLDER_DEFINITION
 [NT_CONSOLE_PROPS](https://www.google.com/search?num=5&q=NT_CONSOLE_PROPS+site%3Amsdn.microsoft.com) | Shlobj.h | Vanara.PInvoke.Shell32+NT_CONSOLE_PROPS
 [NT_FE_CONSOLE_PROPS](https://www.google.com/search?num=5&q=NT_FE_CONSOLE_PROPS+site%3Amsdn.microsoft.com) | Shlobj.h | Vanara.PInvoke.Shell32+NT_FE_CONSOLE_PROPS
-[OLEMENUGROUPWIDTHS](https://www.google.com/search?num=5&q=OLEMENUGROUPWIDTHS+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.Shell32+OLEMENUGROUPWIDTHS
 [SHDESCRIPTIONID](https://www.google.com/search?num=5&q=SHDESCRIPTIONID+site%3Amsdn.microsoft.com) | Shlobj.h | Vanara.PInvoke.Shell32+SHDESCRIPTIONID
 [SHELLEXECUTEINFO](https://www.google.com/search?num=5&q=SHELLEXECUTEINFO+site%3Amsdn.microsoft.com) | Shellapi.h | Vanara.PInvoke.Shell32+SHELLEXECUTEINFO
 [SHFILEINFO](https://www.google.com/search?num=5&q=SHFILEINFO+site%3Amsdn.microsoft.com) | Shellapi.h | Vanara.PInvoke.Shell32+SHFILEINFO
 [SHITEMID](https://www.google.com/search?num=5&q=SHITEMID+site%3Amsdn.microsoft.com) | Shtypes.h | Vanara.PInvoke.Shell32+SHITEMID
-[SV2CVW2_PARAMS](https://www.google.com/search?num=5&q=SV2CVW2_PARAMS+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.Shell32+SV2CVW2_PARAMS
+[SV2CVW2_PARAMS](https://www.google.com/search?num=5&q=SV2CVW2_PARAMS+site%3Amsdn.microsoft.com) | Shobjidl.h | Vanara.PInvoke.Shell32+SV2CVW2_PARAMS
 [THUMBBUTTON](https://www.google.com/search?num=5&q=THUMBBUTTON+site%3Amsdn.microsoft.com) | Shobjidl.h | Vanara.PInvoke.Shell32+THUMBBUTTON
 ### Interfaces
 Native Interface | Native DLL | Header | Managed Interface
@@ -364,12 +363,16 @@ Native Interface | Native DLL | Header | Managed Interface
 [IExtractIcon](https://www.google.com/search?num=5&q=IExtractIcon+site%3Amsdn.microsoft.com) |  | shlobj.h | Vanara.PInvoke.Shell32+IExtractIcon
 [IExtractImage](https://www.google.com/search?num=5&q=IExtractImage+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IExtractImage
 [IFileDialog](https://www.google.com/search?num=5&q=IFileDialog+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IFileDialog
+[IFileDialog2](https://www.google.com/search?num=5&q=IFileDialog2+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IFileDialog2
+[IFileDialogControlEvents](https://www.google.com/search?num=5&q=IFileDialogControlEvents+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IFileDialogControlEvents
+[IFileDialogCustomize](https://www.google.com/search?num=5&q=IFileDialogCustomize+site%3Amsdn.microsoft.com) |  |  | Vanara.PInvoke.Shell32+IFileDialogCustomize
 [IFileDialogEvents](https://www.google.com/search?num=5&q=IFileDialogEvents+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IFileDialogEvents
 [IFileOpenDialog](https://www.google.com/search?num=5&q=IFileOpenDialog+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IFileOpenDialog
 [IFileOperationProgressSink](https://www.google.com/search?num=5&q=IFileOperationProgressSink+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IFileOperationProgressSink
 [IFileSaveDialog](https://www.google.com/search?num=5&q=IFileSaveDialog+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IFileSaveDialog
 [IFileSearchBand](https://www.google.com/search?num=5&q=IFileSearchBand+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [IFolderViewOC](https://www.google.com/search?num=5&q=IFolderViewOC+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[IFolderViewOptions](https://www.google.com/search?num=5&q=IFolderViewOptions+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IFolderViewOptions
 [IKnownFolder](https://www.google.com/search?num=5&q=IKnownFolder+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IKnownFolder
 [IKnownFolderManager](https://www.google.com/search?num=5&q=IKnownFolderManager+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IKnownFolderManager
 [IModalWindow](https://www.google.com/search?num=5&q=IModalWindow+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IModalWindow
@@ -378,8 +381,9 @@ Native Interface | Native DLL | Header | Managed Interface
 [IObjectCollection](https://www.google.com/search?num=5&q=IObjectCollection+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IObjectCollection
 [IObjectWithAppUserModelId](https://www.google.com/search?num=5&q=IObjectWithAppUserModelId+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IObjectWithAppUserModelId
 [IObjectWithProgId](https://www.google.com/search?num=5&q=IObjectWithProgId+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IObjectWithProgId
+[IOpenControlPanel](https://www.google.com/search?num=5&q=IOpenControlPanel+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IOpenControlPanel
 [IQueryInfo](https://www.google.com/search?num=5&q=IQueryInfo+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IQueryInfo
-[IShellBrowser](https://www.google.com/search?num=5&q=IShellBrowser+site%3Amsdn.microsoft.com) |  |  | Vanara.PInvoke.Shell32+IShellBrowser
+[IShellBrowser](https://www.google.com/search?num=5&q=IShellBrowser+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IShellBrowser
 [IShellDispatch](https://www.google.com/search?num=5&q=IShellDispatch+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [IShellDispatch2](https://www.google.com/search?num=5&q=IShellDispatch2+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [IShellDispatch3](https://www.google.com/search?num=5&q=IShellDispatch3+site%3Amsdn.microsoft.com) | shell32.dll |  | 
@@ -400,9 +404,9 @@ Native Interface | Native DLL | Header | Managed Interface
 [IShellLinkDual](https://www.google.com/search?num=5&q=IShellLinkDual+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [IShellLinkDual2](https://www.google.com/search?num=5&q=IShellLinkDual2+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [IShellLinkW](https://www.google.com/search?num=5&q=IShellLinkW+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IShellLinkW
-[IShellView](https://www.google.com/search?num=5&q=IShellView+site%3Amsdn.microsoft.com) |  |  | Vanara.PInvoke.Shell32+IShellView
-[IShellView2](https://www.google.com/search?num=5&q=IShellView2+site%3Amsdn.microsoft.com) |  |  | Vanara.PInvoke.Shell32+IShellView2
-[IShellView3](https://www.google.com/search?num=5&q=IShellView3+site%3Amsdn.microsoft.com) |  |  | Vanara.PInvoke.Shell32+IShellView3
+[IShellView](https://www.google.com/search?num=5&q=IShellView+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IShellView
+[IShellView2](https://www.google.com/search?num=5&q=IShellView2+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IShellView2
+[IShellView3](https://www.google.com/search?num=5&q=IShellView3+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IShellView3
 [ITaskbarList](https://www.google.com/search?num=5&q=ITaskbarList+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+ITaskbarList
 [ITaskbarList2](https://www.google.com/search?num=5&q=ITaskbarList2+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+ITaskbarList2
 [ITaskbarList3](https://www.google.com/search?num=5&q=ITaskbarList3+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+ITaskbarList3

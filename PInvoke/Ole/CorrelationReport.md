@@ -959,6 +959,7 @@ Native Structure | Header | Managed Structure
 ---- | ---- | ----
 [BLOB](https://www.google.com/search?num=5&q=BLOB+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.Ole32+BLOB
 [CLIPDATA](https://www.google.com/search?num=5&q=CLIPDATA+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.Ole32+CLIPDATA
+[OLEMENUGROUPWIDTHS](https://www.google.com/search?num=5&q=OLEMENUGROUPWIDTHS+site%3Amsdn.microsoft.com) | Oleidl.h | Vanara.PInvoke.Ole32+OLEMENUGROUPWIDTHS
 [PACKEDMETA](https://www.google.com/search?num=5&q=PACKEDMETA+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.Ole32+PACKEDMETA
 [PROPERTYKEY](https://www.google.com/search?num=5&q=PROPERTYKEY+site%3Amsdn.microsoft.com) | Wtypes.h | Vanara.PInvoke.Ole32+PROPERTYKEY
 [PROPVARIANT](https://www.google.com/search?num=5&q=PROPVARIANT+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.Ole32+PROPVARIANT
@@ -971,7 +972,7 @@ Native Interface | Native DLL | Header | Managed Interface
 ---- | ---- | ---- | ----
 [IEnumSTATSTG](https://www.google.com/search?num=5&q=IEnumSTATSTG+site%3Amsdn.microsoft.com) |  | Objidl.h | Vanara.PInvoke.Ole32+IEnumSTATSTG
 [IInitializeWithStream](https://www.google.com/search?num=5&q=IInitializeWithStream+site%3Amsdn.microsoft.com) |  | Propsys.h | Vanara.PInvoke.PropSys+IInitializeWithStream
-[IOleWindow](https://www.google.com/search?num=5&q=IOleWindow+site%3Amsdn.microsoft.com) |  |  | Vanara.PInvoke.Ole32+IOleWindow
+[IOleWindow](https://www.google.com/search?num=5&q=IOleWindow+site%3Amsdn.microsoft.com) |  | Oleidl.h | Vanara.PInvoke.Ole32+IOleWindow
 [IPropertyDescription](https://www.google.com/search?num=5&q=IPropertyDescription+site%3Amsdn.microsoft.com) |  | Propsys.h | Vanara.PInvoke.PropSys+IPropertyDescription
 [IPropertyDescription2](https://www.google.com/search?num=5&q=IPropertyDescription2+site%3Amsdn.microsoft.com) |  | Propsys.h | Vanara.PInvoke.PropSys+IPropertyDescription2
 [IPropertyDescriptionList](https://www.google.com/search?num=5&q=IPropertyDescriptionList+site%3Amsdn.microsoft.com) |  | Propsys.h | Vanara.PInvoke.PropSys+IPropertyDescriptionList

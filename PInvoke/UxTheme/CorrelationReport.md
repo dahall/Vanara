@@ -1,5 +1,5 @@
 ## Correlation report for uxtheme.dll
-### Methods (93% complete)
+### Methods (100% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
 [BeginBufferedAnimation](https://www.google.com/search?num=5&q=BeginBufferedAnimation+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.BeginBufferedAnimation
@@ -29,10 +29,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetBufferedPaintDC](https://www.google.com/search?num=5&q=GetBufferedPaintDC+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetBufferedPaintDC
 [GetBufferedPaintTargetDC](https://www.google.com/search?num=5&q=GetBufferedPaintTargetDC+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetBufferedPaintTargetDC
 [GetBufferedPaintTargetRect](https://www.google.com/search?num=5&q=GetBufferedPaintTargetRect+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetBufferedPaintTargetRect
-[GetColorFromPreference](https://www.google.com/search?num=5&q=GetColorFromPreference+site%3Amsdn.microsoft.com) | uxtheme.dll |  | 
 [GetCurrentThemeName](https://www.google.com/search?num=5&q=GetCurrentThemeName+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetCurrentThemeName
-[GetImmersiveColorFromColorSetEx](https://www.google.com/search?num=5&q=GetImmersiveColorFromColorSetEx+site%3Amsdn.microsoft.com) | uxtheme.dll |  | 
-[GetImmersiveUserColorSetPreference](https://www.google.com/search?num=5&q=GetImmersiveUserColorSetPreference+site%3Amsdn.microsoft.com) | uxtheme.dll |  | 
 [GetThemeAnimationProperty](https://www.google.com/search?num=5&q=GetThemeAnimationProperty+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeAnimationProperty
 [GetThemeAnimationTransform](https://www.google.com/search?num=5&q=GetThemeAnimationTransform+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeAnimationTransform
 [GetThemeAppProperties](https://www.google.com/search?num=5&q=GetThemeAppProperties+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeAppProperties
@@ -45,9 +42,9 @@ Native Method | Native DLL | Header | Managed Method
 [GetThemeDocumentationProperty](https://www.google.com/search?num=5&q=GetThemeDocumentationProperty+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeDocumentationProperty
 [GetThemeEnumValue](https://www.google.com/search?num=5&q=GetThemeEnumValue+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeEnumValue
 [GetThemeFilename](https://www.google.com/search?num=5&q=GetThemeFilename+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeFilename
-[GetThemeFont](https://www.google.com/search?num=5&q=GetThemeFont+site%3Amsdn.microsoft.com) | uxtheme.dll |  | Vanara.PInvoke.UxTheme.GetThemeFont
+[GetThemeFont](https://www.google.com/search?num=5&q=GetThemeFont+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeFont
 [GetThemeInt](https://www.google.com/search?num=5&q=GetThemeInt+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeInt
-[GetThemeIntList](https://www.google.com/search?num=5&q=GetThemeIntList+site%3Amsdn.microsoft.com) | uxtheme.dll |  | 
+[GetThemeIntList](https://www.google.com/search?num=5&q=GetThemeIntList+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeIntList
 [GetThemeMargins](https://www.google.com/search?num=5&q=GetThemeMargins+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeMargins
 [GetThemeMetric](https://www.google.com/search?num=5&q=GetThemeMetric+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeMetric
 [GetThemePartSize](https://www.google.com/search?num=5&q=GetThemePartSize+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemePartSize
@@ -55,12 +52,12 @@ Native Method | Native DLL | Header | Managed Method
 [GetThemePropertyOrigin](https://www.google.com/search?num=5&q=GetThemePropertyOrigin+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemePropertyOrigin
 [GetThemeRect](https://www.google.com/search?num=5&q=GetThemeRect+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeRect
 [GetThemeStream](https://www.google.com/search?num=5&q=GetThemeStream+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeStream
-[GetThemeString](https://www.google.com/search?num=5&q=GetThemeString+site%3Amsdn.microsoft.com) | uxtheme.dll |  | Vanara.PInvoke.UxTheme.GetThemeString
+[GetThemeString](https://www.google.com/search?num=5&q=GetThemeString+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeString
 [GetThemeSysBool](https://www.google.com/search?num=5&q=GetThemeSysBool+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeSysBool
 [GetThemeSysColor](https://www.google.com/search?num=5&q=GetThemeSysColor+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeSysColor
 [GetThemeSysColorBrush](https://www.google.com/search?num=5&q=GetThemeSysColorBrush+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeSysColorBrush
-[GetThemeSysFont](https://www.google.com/search?num=5&q=GetThemeSysFont+site%3Amsdn.microsoft.com) | uxtheme.dll |  | Vanara.PInvoke.UxTheme.GetThemeSysFont
-[GetThemeSysInt](https://www.google.com/search?num=5&q=GetThemeSysInt+site%3Amsdn.microsoft.com) | uxtheme.dll |  | Vanara.PInvoke.UxTheme.GetThemeSysInt
+[GetThemeSysFont](https://www.google.com/search?num=5&q=GetThemeSysFont+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeSysFont
+[GetThemeSysInt](https://www.google.com/search?num=5&q=GetThemeSysInt+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeSysInt
 [GetThemeSysSize](https://www.google.com/search?num=5&q=GetThemeSysSize+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeSysSize
 [GetThemeSysString](https://www.google.com/search?num=5&q=GetThemeSysString+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeSysString
 [GetThemeTextExtent](https://www.google.com/search?num=5&q=GetThemeTextExtent+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeTextExtent
@@ -77,7 +74,7 @@ Native Method | Native DLL | Header | Managed Method
 [IsThemePartDefined](https://www.google.com/search?num=5&q=IsThemePartDefined+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.IsThemePartDefined
 [OpenThemeData](https://www.google.com/search?num=5&q=OpenThemeData+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.OpenThemeData
 [OpenThemeDataEx](https://www.google.com/search?num=5&q=OpenThemeDataEx+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.OpenThemeDataEx
-[OpenThemeDataForDpi](https://www.google.com/search?num=5&q=OpenThemeDataForDpi+site%3Amsdn.microsoft.com) | uxtheme.dll |  | 
+[OpenThemeDataForDpi](https://www.google.com/search?num=5&q=OpenThemeDataForDpi+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.OpenThemeDataForDpi
 [SetThemeAppProperties](https://www.google.com/search?num=5&q=SetThemeAppProperties+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.SetThemeAppProperties
 [SetWindowTheme](https://www.google.com/search?num=5&q=SetWindowTheme+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.SetWindowTheme
 [SetWindowThemeAttribute](https://www.google.com/search?num=5&q=SetWindowThemeAttribute+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.SetWindowThemeAttribute
@@ -89,6 +86,7 @@ Native Structure | Header | Managed Structure
 [BP_PAINTPARAMS](https://www.google.com/search?num=5&q=BP_PAINTPARAMS+site%3Amsdn.microsoft.com) | UxTheme.h | Vanara.PInvoke.UxTheme+BP_PAINTPARAMS
 [DTBGOPTS](https://www.google.com/search?num=5&q=DTBGOPTS+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.UxTheme+DTBGOPTS
 [DTTOPTS](https://www.google.com/search?num=5&q=DTTOPTS+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.UxTheme+DTTOPTS
+[INTLIST](https://www.google.com/search?num=5&q=INTLIST+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.UxTheme+INTLIST
 [MARGINS](https://www.google.com/search?num=5&q=MARGINS+site%3Amsdn.microsoft.com) | UxTheme.h | Vanara.PInvoke.UxTheme+MARGINS
 [TA_TIMINGFUNCTION](https://www.google.com/search?num=5&q=TA_TIMINGFUNCTION+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.UxTheme+TA_TIMINGFUNCTION
 [TA_TRANSFORM](https://www.google.com/search?num=5&q=TA_TRANSFORM+site%3Amsdn.microsoft.com) | UxTheme.h | Vanara.PInvoke.UxTheme+TA_TRANSFORM
