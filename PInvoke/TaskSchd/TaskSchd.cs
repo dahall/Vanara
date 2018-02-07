@@ -440,7 +440,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new TimeSpanBSTR ExecutionTimeLimit { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -452,7 +452,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string StartBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR StartBoundary { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
 			/// <value>The date and time when the trigger is deactivated.</value>
@@ -464,7 +464,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string EndBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR EndBoundary { get; set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
 			/// <value>True if the trigger is enabled; otherwise, false. The default is true.</value>
@@ -477,7 +477,7 @@ namespace Vanara.PInvoke
 			/// number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5 minutes and P1M4DT2H5M specifies one
 			/// month, four days, two hours, and five minutes).
 			/// </value>
-			string Delay { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			TimeSpanBSTR Delay { get; set; }
 		}
 
 		/// <summary>Represents an action that fires a handler.</summary>
@@ -536,7 +536,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new TimeSpanBSTR ExecutionTimeLimit { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -548,7 +548,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string StartBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR StartBoundary { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
 			/// <value>The date and time when the trigger is deactivated.</value>
@@ -560,7 +560,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string EndBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR EndBoundary { get; set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
 			/// <value>True if the trigger is enabled; otherwise, false. The default is true.</value>
@@ -581,7 +581,7 @@ namespace Vanara.PInvoke
 			/// seventh day, and the randomDelay parameter is set to P2DT5S (2 day, 5 second time span), then once the seventh day is reached, the trigger will
 			/// fire once randomly during the next 2 days, 5 seconds.
 			/// </remarks>
-			string RandomDelay { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			TimeSpanBSTR RandomDelay { get; set; }
 		}
 
 		/// <summary>
@@ -692,7 +692,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new TimeSpanBSTR ExecutionTimeLimit { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -704,7 +704,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string StartBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR StartBoundary { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
 			/// <value>The date and time when the trigger is deactivated.</value>
@@ -716,7 +716,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string EndBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR EndBoundary { get; set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
 			/// <value>True if the trigger is enabled; otherwise, false. The default is true.</value>
@@ -733,7 +733,7 @@ namespace Vanara.PInvoke
 			/// month, four days, two hours, and five minutes).
 			/// </summary>
 			/// <value>A value that indicates the amount of time between when the event occurs and when the task is started.</value>
-			string Delay { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			TimeSpanBSTR Delay { get; set; }
 
 			/// <summary>
 			/// Gets or sets a collection of named XPath queries. Each query in the collection is applied to the last matching event XML returned from the
@@ -744,13 +744,7 @@ namespace Vanara.PInvoke
 			/// triggers the event trigger. The property value of the event is defined as an XPath event query. For more information about XPath event queries,
 			/// see Event Selection.
 			/// </value>
-			ITaskNamedValueCollection ValueQueries
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			ITaskNamedValueCollection ValueQueries { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 		}
 
 		/// <summary>Represents an action that executes a command-line operation.</summary>
@@ -800,7 +794,7 @@ namespace Vanara.PInvoke
 			/// month, four days, two hours, and five minutes). The minimum value is one minute. If this value is NULL, then the delay will be set to the default
 			/// of 10 minutes.
 			/// </value>
-			string IdleDuration { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			TimeSpanBSTR IdleDuration { get; set; }
 
 			/// <summary>
 			/// Gets or sets a value that indicates the amount of time that the Task Scheduler will wait for an idle condition to occur. If no value is specified
@@ -813,7 +807,7 @@ namespace Vanara.PInvoke
 			/// month, four days, two hours, and five minutes). The minimum time allowed is 1 minute. If this value is NULL, then the delay will be set to the
 			/// default of 1 hour.
 			/// </value>
-			string WaitTimeout { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			TimeSpanBSTR WaitTimeout { get; set; }
 
 			/// <summary>
 			/// Gets or sets a Boolean value that indicates that the Task Scheduler will terminate the task if the idle condition ends before the task is
@@ -866,7 +860,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new TimeSpanBSTR ExecutionTimeLimit { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -878,7 +872,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string StartBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR StartBoundary { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
 			/// <value>The date and time when the trigger is deactivated.</value>
@@ -890,7 +884,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string EndBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR EndBoundary { get; set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
 			/// <value>True if the trigger is enabled; otherwise, false. The default is true.</value>
@@ -930,7 +924,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new TimeSpanBSTR ExecutionTimeLimit { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -942,7 +936,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string StartBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR StartBoundary { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
 			/// <value>The date and time when the trigger is deactivated.</value>
@@ -954,7 +948,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string EndBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR EndBoundary { get; set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
 			/// <value>True if the trigger is enabled; otherwise, false. The default is true.</value>
@@ -967,7 +961,7 @@ namespace Vanara.PInvoke
 			/// number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5 minutes and P1M4DT2H5M specifies one
 			/// month, four days, two hours, and five minutes).
 			/// </value>
-			string Delay { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			TimeSpanBSTR Delay { get; set; }
 
 			/// <summary>Gets or sets the identifier of the user.</summary>
 			/// <value>
@@ -1006,7 +1000,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>The minimum value for this property is 1 day (P1D).</para>
 			/// </value>
-			string Period { [param: In, MarshalAs(UnmanagedType.BStr)] set; [return: MarshalAs(UnmanagedType.BStr)] get; }
+			TimeSpanBSTR Period { get; set; }
 
 			/// <summary>
 			/// Gets or sets the amount of time after which the Task scheduler attempts to run the task during emergency Automatic maintenance, if the task
@@ -1025,7 +1019,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>The value of this property must be greater than the value of the Period property.</para>
 			/// </value>
-			string Deadline { [param: In, MarshalAs(UnmanagedType.BStr)] set; [return: MarshalAs(UnmanagedType.BStr)] get; }
+			TimeSpanBSTR Deadline { get; set; }
 
 			/// <summary>
 			/// Indicates whether the Task scheduler must start the task during the Automatic maintenance in exclusive mode.
@@ -1074,7 +1068,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new TimeSpanBSTR ExecutionTimeLimit { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -1086,7 +1080,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string StartBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR StartBoundary { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
 			/// <value>The date and time when the trigger is deactivated.</value>
@@ -1098,7 +1092,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string EndBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR EndBoundary { get; set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
 			/// <value>True if the trigger is enabled; otherwise, false. The default is true.</value>
@@ -1131,7 +1125,7 @@ namespace Vanara.PInvoke
 			/// seventh day, and the randomDelay parameter is set to P2DT5S (2 day, 5 second time span), then once the seventh day is reached, the trigger will
 			/// fire once randomly during the next 2 days, 5 seconds.
 			/// </remarks>
-			string RandomDelay { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			TimeSpanBSTR RandomDelay { get; set; }
 		}
 
 		/// <summary>Represents a trigger that starts a job based on a monthly schedule. For example, the task starts on specific days of specific months.</summary>
@@ -1164,7 +1158,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new TimeSpanBSTR ExecutionTimeLimit { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -1176,7 +1170,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string StartBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR StartBoundary { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
 			/// <value>The date and time when the trigger is deactivated.</value>
@@ -1188,7 +1182,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string EndBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR EndBoundary { get; set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
 			/// <value>True if the trigger is enabled; otherwise, false. The default is true.</value>
@@ -1217,7 +1211,7 @@ namespace Vanara.PInvoke
 			/// seventh day, and the randomDelay parameter is set to P2DT5S (2 day, 5 second time span), then once the seventh day is reached, the trigger will
 			/// fire once randomly during the next 2 days, 5 seconds.
 			/// </remarks>
-			string RandomDelay { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			TimeSpanBSTR RandomDelay { get; set; }
 		}
 
 		/// <summary>Provides the settings that the Task Scheduler service uses to obtain a network profile.</summary>
@@ -1562,7 +1556,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new TimeSpanBSTR ExecutionTimeLimit { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -1574,7 +1568,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string StartBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR StartBoundary { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
 			/// <value>The date and time when the trigger is deactivated.</value>
@@ -1586,7 +1580,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string EndBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR EndBoundary { get; set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
 			/// <value>True if the trigger is enabled; otherwise, false. The default is true.</value>
@@ -1599,7 +1593,7 @@ namespace Vanara.PInvoke
 			/// days, two hours, and five minutes).
 			/// </summary>
 			/// <value>The amount of time between when the system is registered and when the task is started.</value>
-			string Delay { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			TimeSpanBSTR Delay { get; set; }
 		}
 
 		/// <summary>Defines how often the task is run and how long the repetition pattern is repeated after the task is started.</summary>
@@ -1614,7 +1608,7 @@ namespace Vanara.PInvoke
 			/// allowed is 1 minute.
 			/// </value>
 			/// <remarks>If you specify a repetition duration for a task, you must also specify the repetition interval.</remarks>
-			string Interval { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			TimeSpanBSTR Interval { get; set; }
 
 			/// <summary>Gets or sets how long the pattern is repeated.</summary>
 			/// <value>
@@ -1625,7 +1619,7 @@ namespace Vanara.PInvoke
 			/// <para>If no value is specified, the pattern is repeated indefinitely.</para>
 			/// </value>
 			/// <remarks>If you specify a repetition duration for a task, you must also specify the repetition interval.</remarks>
-			string Duration { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			TimeSpanBSTR Duration { get; set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates if a running instance of the task is stopped at the end of the repetition pattern duration.</summary>
 			/// <value>A Boolean value that indicates if a running instance of the task is stopped at the end of the repetition pattern duration.</value>
@@ -1719,7 +1713,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new TimeSpanBSTR ExecutionTimeLimit { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -1731,7 +1725,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string StartBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR StartBoundary { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
 			/// <value>The date and time when the trigger is deactivated.</value>
@@ -1743,7 +1737,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string EndBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR EndBoundary { get; set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
 			/// <value>True if the trigger is enabled; otherwise, false. The default is true.</value>
@@ -1756,7 +1750,7 @@ namespace Vanara.PInvoke
 			/// specifies 5 minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </summary>
 			/// <value>The delay that takes place before a task is started after a Terminal Server session state change is detected.</value>
-			string Delay { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			TimeSpanBSTR Delay { get; set; }
 
 			/// <summary>Gets or sets the user for the Terminal Server session. When a session state change is detected for this user, a task is started.</summary>
 			/// <value>The user for the Terminal Server session.</value>
@@ -2284,7 +2278,7 @@ namespace Vanara.PInvoke
 			/// be set. The format for this string is P&lt;days&gt;DT&lt;hours&gt;H&lt;minutes&gt;M&lt;seconds&gt;S (for example, "PT5M" is 5 minutes, "PT1H" is
 			/// 1 hour, and "PT20M" is 20 minutes). The maximum time allowed is 31 days, and the minimum time allowed is 1 minute.
 			/// </value>
-			string RestartInterval { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			TimeSpanBSTR RestartInterval { get; set; }
 
 			/// <summary>Gets or sets the number of times that the Task Scheduler will attempt to restart the task.</summary>
 			/// <value>
@@ -2347,7 +2341,7 @@ namespace Vanara.PInvoke
 			/// change this by changing this setting.
 			/// </summary>
 			/// <value>The amount of time that is allowed to complete the task. When this parameter is set to NULL, the execution time limit is infinite.</value>
-			string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			TimeSpanBSTR ExecutionTimeLimit { get; set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates that the task is enabled. The task can be performed only when this setting is True.</summary>
 			/// <value>If True, the task is enabled. If False, the task is not enabled.</value>
@@ -2367,7 +2361,7 @@ namespace Vanara.PInvoke
 			/// A task expires after the end boundary has been exceeded for all triggers associated with the task. The end boundary for a trigger is specified by
 			/// the EndBoundary property inherited by all trigger interfaces.
 			/// </remarks>
-			string DeleteExpiredTaskAfter { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			TimeSpanBSTR DeleteExpiredTaskAfter { get; set; }
 
 			/// <summary>Gets or sets the priority level of the task.</summary>
 			/// <value>The priority level (0-10) of the task. The default is 7.</value>
@@ -2496,7 +2490,7 @@ namespace Vanara.PInvoke
 			/// be set. The format for this string is P&lt;days&gt;DT&lt;hours&gt;H&lt;minutes&gt;M&lt;seconds&gt;S (for example, "PT5M" is 5 minutes, "PT1H" is
 			/// 1 hour, and "PT20M" is 20 minutes). The maximum time allowed is 31 days, and the minimum time allowed is 1 minute.
 			/// </value>
-			new string RestartInterval { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new TimeSpanBSTR RestartInterval { get; set; }
 
 			/// <summary>Gets or sets the number of times that the Task Scheduler will attempt to restart the task.</summary>
 			/// <value>
@@ -2559,7 +2553,7 @@ namespace Vanara.PInvoke
 			/// change this by changing this setting.
 			/// </summary>
 			/// <value>The amount of time that is allowed to complete the task. When this parameter is set to NULL, the execution time limit is infinite.</value>
-			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new TimeSpanBSTR ExecutionTimeLimit { get; set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates that the task is enabled. The task can be performed only when this setting is True.</summary>
 			/// <value>If True, the task is enabled. If False, the task is not enabled.</value>
@@ -2579,7 +2573,7 @@ namespace Vanara.PInvoke
 			/// A task expires after the end boundary has been exceeded for all triggers associated with the task. The end boundary for a trigger is specified by
 			/// the EndBoundary property inherited by all trigger interfaces.
 			/// </remarks>
-			new string DeleteExpiredTaskAfter { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new TimeSpanBSTR DeleteExpiredTaskAfter { get; set; }
 
 			/// <summary>Gets or sets the priority level of the task.</summary>
 			/// <value>The priority level (0-10) of the task. The default is 7.</value>
@@ -2776,7 +2770,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new TimeSpanBSTR ExecutionTimeLimit { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -2788,7 +2782,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string StartBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR StartBoundary { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
 			/// <value>The date and time when the trigger is deactivated.</value>
@@ -2800,7 +2794,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string EndBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR EndBoundary { get; set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
 			/// <value>True if the trigger is enabled; otherwise, false. The default is true.</value>
@@ -2817,7 +2811,7 @@ namespace Vanara.PInvoke
 			/// seventh day, and the randomDelay parameter is set to P2DT5S (2 day, 5 second time span), then once the seventh day is reached, the trigger will
 			/// fire once randomly during the next 2 days, 5 seconds.
 			/// </remarks>
-			string RandomDelay { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			TimeSpanBSTR RandomDelay { get; set; }
 		}
 
 		/// <summary>Provides the common properties that are inherited by all trigger objects.</summary>
@@ -2849,7 +2843,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			TimeSpanBSTR ExecutionTimeLimit { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -2861,7 +2855,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			string StartBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			DateTimeBSTR StartBoundary { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
 			/// <value>The date and time when the trigger is deactivated.</value>
@@ -2873,7 +2867,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			string EndBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			DateTimeBSTR EndBoundary { get; set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
 			/// <value>True if the trigger is enabled; otherwise, false. The default is true.</value>
@@ -2950,7 +2944,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new TimeSpanBSTR ExecutionTimeLimit { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -2962,7 +2956,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string StartBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR StartBoundary { get; set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is deactivated.</summary>
 			/// <value>The date and time when the trigger is deactivated.</value>
@@ -2974,7 +2968,7 @@ namespace Vanara.PInvoke
 			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
 			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
 			/// </remarks>
-			new string EndBoundary { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			new DateTimeBSTR EndBoundary { get; set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates whether the trigger is enabled.</summary>
 			/// <value>True if the trigger is enabled; otherwise, false. The default is true.</value>
@@ -3001,14 +2995,126 @@ namespace Vanara.PInvoke
 			/// seventh day, and the randomDelay parameter is set to P2DT5S (2 day, 5 second time span), then once the seventh day is reached, the trigger will
 			/// fire once randomly during the next 2 days, 5 seconds.
 			/// </remarks>
-			string RandomDelay { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
+			TimeSpanBSTR RandomDelay { get; set; }
 		}
 
 		/// <summary>Provides access to the Task Scheduler service for managing registered tasks.</summary>
 		[ComImport, DefaultMember("TargetServer"), Guid("0F87369F-A4E5-4CFC-BD3E-73E6154572DD"), ClassInterface((short)0), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381832")]
-		public class TaskSchedulerClass
+		public class TaskSchedulerClass { }
+
+		/// <summary>Class that encapsulates the BSTR values that actually hold formatted date strings.</summary>
+		public class DateTimeBSTR : GenericSafeHandle
 		{
+			internal const string DateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'FFFK";
+			internal static readonly System.Globalization.CultureInfo DefaultDateCulture = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
+
+			internal DateTimeBSTR() : this(IntPtr.Zero) { }
+
+			internal DateTimeBSTR(IntPtr ptr, bool owns = true) : base(ptr, p => { Marshal.FreeBSTR(p); return true; }, owns) { }
+
+			internal DateTimeBSTR(DateTime? value) : this(IntPtr.Zero) { Value = value; }
+
+			/// <summary>Gets or sets the formatted string value that represents a date.</summary>
+			/// <value>
+			/// The date and time must be in the following format: YYYY-MM-DDTHH:MM:SS(+-)HH:MM. The (+-)HH:MM section of the format defines a certain number of
+			/// hours and minutes ahead or behind Coordinated Universal Time (UTC). For example the date October 11th, 2005 at 1:21:17 with an offset of eight
+			/// hours behind UTC would be written as 2005-10-11T13:21:17-08:00. If Z is specified for the UTC offset (for example, 2005-10-11T13:21:17Z), then
+			/// the no offset from UTC will be used. If you do not specify any offset time or Z for the offset (for example, 2005-10-11T13:21:17), then the time
+			/// zone and daylight saving information that is set on the local computer will be used. When an offset is specified (using hours and minutes or Z),
+			/// then the time and offset are always used regardless of the time zone and daylight saving settings on the local computer.
+			/// </value>
+			public string StringValue
+			{
+				get => handle == IntPtr.Zero ? null : Marshal.PtrToStringBSTR(handle);
+				set
+				{
+					if (value != null && !TryParse(value, out var _)) throw new FormatException("Invalid date format.");
+					ReleaseHandle();
+					SetHandle(Marshal.StringToBSTR(value));
+				}
+			}
+
+			/// <summary>Gets or sets the <see cref="DateTime"/> value.</summary>
+			/// <value>The <see cref="DateTime"/> value. This value can be <c>null</c>. This value will be automatically translated to the equivalent string value.</value>
+			public DateTime? Value
+			{
+				get => TryParse(StringValue, out var ret) ? ret : (DateTime?)null;
+				set
+				{
+					if (value.HasValue)
+						StringValue = value.Value.ToString(DateFormat, DefaultDateCulture);
+					else
+						ReleaseHandle();
+				}
+			}
+
+			/// <summary>Performs an implicit conversion from <see cref="System.Nullable{DateTime}"/> to <see cref="DateTimeBSTR"/>.</summary>
+			/// <param name="dt">The <see cref="DateTime"/> value.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator DateTimeBSTR(DateTime? dt) => new DateTimeBSTR(dt);
+
+			/// <summary>Returns a <see cref="string" /> that represents this instance.</summary>
+			/// <returns>A <see cref="string" /> that represents this instance.</returns>
+			public override string ToString() => StringValue ?? string.Empty;
+
+			private static bool TryParse(string value, out DateTime dt) => DateTime.TryParse(value, DefaultDateCulture, System.Globalization.DateTimeStyles.AssumeLocal, out dt);
+		}
+
+		/// <summary>Class that encapsulates the BSTR values that actually hold formatted duration strings.</summary>
+		public class TimeSpanBSTR : GenericSafeHandle
+		{
+			internal TimeSpanBSTR() : this(IntPtr.Zero) { }
+
+			internal TimeSpanBSTR(IntPtr ptr, bool owns = true) : base(ptr, p => { Marshal.FreeBSTR(p); return true; }, owns) { }
+
+			internal TimeSpanBSTR(TimeSpan? value) : this(IntPtr.Zero) { Value = value; }
+
+			/// <summary>Gets or sets the formatted string value that represents a duration.</summary>
+			/// <value>
+			/// A value that indicates a duration. The format for this string is PnYnMnDTnHnMnS, where nY is the number of years, nM is the number of months, nD
+			/// is the number of days, 'T' is the date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds
+			/// (for example, PT5M specifies 5 minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
+			/// </value>
+			public string StringValue
+			{
+				get => handle == IntPtr.Zero ? null : Marshal.PtrToStringBSTR(handle);
+				set
+				{
+					if (value != null && !TryParse(value, out var _)) throw new FormatException("Invalid duration format.");
+					ReleaseHandle();
+					SetHandle(Marshal.StringToBSTR(value));
+				}
+			}
+
+			/// <summary>Gets or sets the <see cref="TimeSpan"/> value.</summary>
+			/// <value>The <see cref="TimeSpan"/> value. This value can be <c>null</c>. This value will be automatically translated to the equivalent string value.</value>
+			public TimeSpan? Value
+			{
+				get => TryParse(StringValue, out var ret) ? ret : (TimeSpan?)null;
+				set
+				{
+					if (value.HasValue)
+						StringValue = System.Xml.XmlConvert.ToString(value.Value);
+					else
+						ReleaseHandle();
+				}
+			}
+
+			/// <summary>Performs an implicit conversion from <see cref="System.Nullable{TimeSpan}"/> to <see cref="TimeSpanBSTR"/>.</summary>
+			/// <param name="ts">The ts.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator TimeSpanBSTR(TimeSpan? ts) => new TimeSpanBSTR(ts);
+
+			/// <summary>Returns a <see cref="string" /> that represents this instance.</summary>
+			/// <returns>A <see cref="string" /> that represents this instance.</returns>
+			public override string ToString() => StringValue ?? string.Empty;
+
+			private static bool TryParse(string value, out TimeSpan ts)
+			{
+				try { ts = System.Xml.XmlConvert.ToTimeSpan(value); return true; }
+				catch { ts = TimeSpan.Zero; return false; }
+			}
 		}
 	}
 }
