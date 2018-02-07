@@ -3,12 +3,14 @@ using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security;
 using Vanara.InteropServices;
 // ReSharper disable UnusedMember.Global
+// ReSharper disable InconsistentNaming
 
 namespace Vanara.PInvoke
 {
-	public static partial class TaskSchd
+	public static class TaskSchd
 	{
 		/// <summary>Defines the type of actions that a task can perform.</summary>
 		[PInvokeData("taskschd.h", MSDNShortId = "aa383553")]
@@ -272,6 +274,27 @@ namespace Vanara.PInvoke
 			TASK_STATE_RUNNING = 4
 		}
 
+		/// <summary>A bitwise mask that indicates the weeks of the month.</summary>
+		[PInvokeData("taskschd.h", MSDNShortId = "aa380733")]
+		[Flags]
+		public enum TaskWeeksOfMonth
+		{
+			/// <summary>The task will run between the first and seventh day of the month.</summary>
+			First = 1,
+
+			/// <summary>The task will run between the eighth and 14th day of the month.</summary>
+			Second = 2,
+
+			/// <summary>The task will run between the 15th and 21st day of the month.</summary>
+			Third = 4,
+
+			/// <summary>The task will run between the 22nd and 28th of the month.</summary>
+			Fourth = 8,
+
+			/// <summary>The task will run between the last seven days of the month.</summary>
+			Last = 16,
+		}
+
 		/// <summary>Defines the type of triggers that can be used by tasks.</summary>
 		[PInvokeData("taskschd.h", MSDNShortId = "aa383915")]
 		public enum TASK_TRIGGER_TYPE2
@@ -326,8 +349,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides the common properties inherited by all action objects. An action object is created by the IActionCollection::Create method.</summary>
-		[ComImport, Guid("BAE54997-48B1-4CBE-9965-D6BE263EBEA4"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("BAE54997-48B1-4CBE-9965-D6BE263EBEA4"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa446895")]
 		public interface IAction
 		{
@@ -341,9 +363,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains the actions that are performed by the task.</summary>
-		/// <seealso cref="System.Collections.IEnumerable"/>
-		[ComImport, Guid("02820E19-7B98-4ED2-B2E8-FDCCCEFF619B"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		/// <seealso cref="IEnumerable"/>
+		[ComImport, Guid("02820E19-7B98-4ED2-B2E8-FDCCCEFF619B"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa446901")]
 		public interface IActionCollection : IEnumerable
 		{
@@ -357,7 +378,7 @@ namespace Vanara.PInvoke
 			IAction this[int index] { [return: MarshalAs(UnmanagedType.Interface)] get; }
 
 			/// <summary>Returns an enumerator that iterates through a collection.</summary>
-			/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
+			/// <returns>An <see cref="T:IEnumerator"/> object that can be used to iterate through the collection.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			new IEnumerator GetEnumerator();
 
@@ -391,8 +412,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Represents a trigger that starts a task when the system is started.</summary>
 		/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
-		[ComImport, Guid("2A9C35DA-D357-41F4-BBC1-207AC1B1F3CB"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("2A9C35DA-D357-41F4-BBC1-207AC1B1F3CB"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa380607")]
 		public interface IBootTrigger : ITrigger
 		{
@@ -411,13 +431,7 @@ namespace Vanara.PInvoke
 			/// Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
 			/// </summary>
 			/// <value>The repetition pattern for how often the task is run and how long the repetition pattern is repeated after the task is started.</value>
-			new IRepetitionPattern Repetition
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			new IRepetitionPattern Repetition { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
 			/// <value>The maximum amount of time that the task launched by the trigger is allowed to run.</value>
@@ -426,13 +440,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit
-			{
-				[return: MarshalAs(UnmanagedType.BStr)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.BStr)]
-				set;
-			}
+			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -474,8 +482,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Represents an action that fires a handler.</summary>
 		/// <seealso cref="Vanara.PInvoke.TaskSchd.IAction"/>
-		[ComImport, Guid("6D2FD252-75C5-4F66-90BA-2A7D8CC3039F"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("6D2FD252-75C5-4F66-90BA-2A7D8CC3039F"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa380613")]
 		public interface IComHandlerAction : IAction
 		{
@@ -501,8 +508,7 @@ namespace Vanara.PInvoke
 		/// third day, and so on.
 		/// </summary>
 		/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsDual), Guid("126C5CD8-B288-41D5-8DBF-E491446ADC5C"),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsDual), Guid("126C5CD8-B288-41D5-8DBF-E491446ADC5C"), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa380656")]
 		public interface IDailyTrigger : ITrigger
 		{
@@ -521,13 +527,7 @@ namespace Vanara.PInvoke
 			/// Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
 			/// </summary>
 			/// <value>The repetition pattern for how often the task is run and how long the repetition pattern is repeated after the task is started.</value>
-			new IRepetitionPattern Repetition
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			new IRepetitionPattern Repetition { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
 			/// <value>The maximum amount of time that the task launched by the trigger is allowed to run.</value>
@@ -536,13 +536,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit
-			{
-				[return: MarshalAs(UnmanagedType.BStr)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.BStr)]
-				set;
-			}
+			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -595,8 +589,7 @@ namespace Vanara.PInvoke
 		/// Send-MailMessage cmdlet as a workaround.</note>
 		/// </summary>
 		/// <seealso cref="Vanara.PInvoke.TaskSchd.IAction"/>
-		[ComImport, Guid("10F62C64-7E16-4314-A0C2-0C3683F99D40"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("10F62C64-7E16-4314-A0C2-0C3683F99D40"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa380693")]
 		public interface IEmailAction : IAction
 		{
@@ -651,13 +644,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets or sets the header information in the email message to send.</summary>
 			/// <value>The header information in the email message to send.</value>
-			ITaskNamedValueCollection HeaderFields
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			ITaskNamedValueCollection HeaderFields { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>Gets or sets the body of the email that contains the email message.</summary>
 			/// <value>The body of the email that contains the email message.</value>
@@ -672,19 +659,12 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets or sets the pointer to an array of attachments that is sent with the email message.</summary>
 			/// <value>An array of attachments that is sent with the email message.</value>
-			object[] Attachments
-			{
-				[return: MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_VARIANT)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_VARIANT)]
-				set;
-			}
+			object[] Attachments { [return: MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_VARIANT)] get; [param: In, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_VARIANT)] set; }
 		}
 
 		/// <summary>Represents a trigger that starts a task when a system event occurs.</summary>
 		/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
-		[ComImport, Guid("D45B0167-9653-4EEF-B94F-0732CA7AF251"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("D45B0167-9653-4EEF-B94F-0732CA7AF251"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa380711")]
 		public interface IEventTrigger : ITrigger
 		{
@@ -703,13 +683,7 @@ namespace Vanara.PInvoke
 			/// Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
 			/// </summary>
 			/// <value>The repetition pattern for how often the task is run and how long the repetition pattern is repeated after the task is started.</value>
-			new IRepetitionPattern Repetition
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			new IRepetitionPattern Repetition { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
 			/// <value>The maximum amount of time that the task launched by the trigger is allowed to run.</value>
@@ -718,13 +692,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit
-			{
-				[return: MarshalAs(UnmanagedType.BStr)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.BStr)]
-				set;
-			}
+			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -787,8 +755,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Represents an action that executes a command-line operation.</summary>
 		/// <seealso cref="Vanara.PInvoke.TaskSchd.IAction"/>
-		[ComImport, Guid("4C3D624D-FD6B-49A3-B9B7-09CB3CD3F047"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("4C3D624D-FD6B-49A3-B9B7-09CB3CD3F047"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa380715")]
 		public interface IExecAction : IAction
 		{
@@ -815,20 +782,13 @@ namespace Vanara.PInvoke
 			/// <summary>Gets or sets the directory that contains either the executable file or the files that are used by the executable file.</summary>
 			/// <value>The directory that contains either the executable file or the files that are used by the executable file.</value>
 			/// <remarks>The path is checked to make sure it is valid when the task is registered, not when this property is set.</remarks>
-			string WorkingDirectory
-			{
-				[return: MarshalAs(UnmanagedType.BStr)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.BStr)]
-				set;
-			}
+			string WorkingDirectory { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
 		}
 
 		/// <summary>
 		/// Specifies how the Task Scheduler performs tasks when the computer is in an idle condition. For information about idle conditions, see Task Idle Conditions.
 		/// </summary>
-		[ComImport, Guid("84594461-0053-4342-A8FD-088FABF11F32"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("84594461-0053-4342-A8FD-088FABF11F32"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa380719")]
 		public interface IIdleSettings
 		{
@@ -878,8 +838,7 @@ namespace Vanara.PInvoke
 		/// Represents a trigger that starts a task when the computer goes into an idle state. For information about idle conditions, see Task Idle Conditions.
 		/// </summary>
 		/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
-		[ComImport, Guid("D537D2B0-9FB3-4D34-9739-1FF5CE7B1EF3"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("D537D2B0-9FB3-4D34-9739-1FF5CE7B1EF3"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa380724")]
 		public interface IIdleTrigger : ITrigger
 		{
@@ -898,13 +857,7 @@ namespace Vanara.PInvoke
 			/// Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
 			/// </summary>
 			/// <value>The repetition pattern for how often the task is run and how long the repetition pattern is repeated after the task is started.</value>
-			new IRepetitionPattern Repetition
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			new IRepetitionPattern Repetition { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
 			/// <value>The maximum amount of time that the task launched by the trigger is allowed to run.</value>
@@ -913,13 +866,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit
-			{
-				[return: MarshalAs(UnmanagedType.BStr)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.BStr)]
-				set;
-			}
+			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -955,8 +902,7 @@ namespace Vanara.PInvoke
 		/// registered with logon triggers that match the logged on user are run.
 		/// </summary>
 		/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
-		[ComImport, Guid("72DADE38-FAE4-4B3E-BAF4-5D009AF02B1C"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("72DADE38-FAE4-4B3E-BAF4-5D009AF02B1C"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa380725")]
 		public interface ILogonTrigger : ITrigger
 		{
@@ -975,13 +921,7 @@ namespace Vanara.PInvoke
 			/// Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
 			/// </summary>
 			/// <value>The repetition pattern for how often the task is run and how long the repetition pattern is repeated after the task is started.</value>
-			new IRepetitionPattern Repetition
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			new IRepetitionPattern Repetition { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
 			/// <value>The maximum amount of time that the task launched by the trigger is allowed to run.</value>
@@ -990,13 +930,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit
-			{
-				[return: MarshalAs(UnmanagedType.BStr)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.BStr)]
-				set;
-			}
+			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -1055,8 +989,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides the settings that the Task Scheduler uses to perform task during Automatic maintenance.</summary>
-		[ComImport, Guid("A6024FA8-9652-4ADB-A6BF-5CFCD877A7BA"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("A6024FA8-9652-4ADB-A6BF-5CFCD877A7BA"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "hh832144")]
 		public interface IMaintenanceSettings
 		{
@@ -1113,8 +1046,7 @@ namespace Vanara.PInvoke
 		/// Represents a trigger that starts a task on a monthly day-of-week schedule. For example, the task starts on every first Thursday, May through October.
 		/// </summary>
 		/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
-		[ComImport, Guid("77D025A3-90FA-43AA-B52E-CDA5499B946A"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("77D025A3-90FA-43AA-B52E-CDA5499B946A"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa380728")]
 		public interface IMonthlyDOWTrigger : ITrigger
 		{
@@ -1133,13 +1065,7 @@ namespace Vanara.PInvoke
 			/// Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
 			/// </summary>
 			/// <value>The repetition pattern for how often the task is run and how long the repetition pattern is repeated after the task is started.</value>
-			new IRepetitionPattern Repetition
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			new IRepetitionPattern Repetition { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
 			/// <value>The maximum amount of time that the task launched by the trigger is allowed to run.</value>
@@ -1148,13 +1074,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit
-			{
-				[return: MarshalAs(UnmanagedType.BStr)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.BStr)]
-				set;
-			}
+			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -1186,15 +1106,15 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets or sets the days of the week during which the task runs.</summary>
 			/// <value>A bitwise mask that indicates the days of the week during which the task runs.</value>
-			short DaysOfWeek { get; [param: In] set; }
+			MSTask.TaskDaysOfTheWeek DaysOfWeek { get; [param: In] set; }
 
 			/// <summary>Gets or sets the weeks of the month during which the task runs.</summary>
 			/// <value>A bitwise mask that indicates the weeks of the month during which the task runs.</value>
-			short WeeksOfMonth { get; [param: In] set; }
+			TaskWeeksOfMonth WeeksOfMonth { get; [param: In] set; }
 
 			/// <summary>Gets or sets the months of the year during which the task runs.</summary>
 			/// <value>A bitwise mask that indicates the months of the year during which the task runs.</value>
-			short MonthsOfYear { get; [param: In] set; }
+			MSTask.TaskMonths MonthsOfYear { get; [param: In] set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates that the task runs on the last week of the month.</summary>
 			/// <value>True indicates that the task runs on the last week of the month; otherwise, False.</value>
@@ -1216,8 +1136,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Represents a trigger that starts a job based on a monthly schedule. For example, the task starts on specific days of specific months.</summary>
 		/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
-		[ComImport, Guid("97C45EF1-6B02-4A1A-9C0E-1EBFBA1500AC"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("97C45EF1-6B02-4A1A-9C0E-1EBFBA1500AC"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa380734")]
 		public interface IMonthlyTrigger : ITrigger
 		{
@@ -1236,13 +1155,7 @@ namespace Vanara.PInvoke
 			/// Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
 			/// </summary>
 			/// <value>The repetition pattern for how often the task is run and how long the repetition pattern is repeated after the task is started.</value>
-			new IRepetitionPattern Repetition
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			new IRepetitionPattern Repetition { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
 			/// <value>The maximum amount of time that the task launched by the trigger is allowed to run.</value>
@@ -1251,13 +1164,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit
-			{
-				[return: MarshalAs(UnmanagedType.BStr)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.BStr)]
-				set;
-			}
+			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -1293,7 +1200,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets or sets the months of the year during which the task runs.</summary>
 			/// <value>A bitwise mask that indicates the months of the year during which the task runs.</value>
-			short MonthsOfYear { get; [param: In] set; }
+			MSTask.TaskMonths MonthsOfYear { get; [param: In] set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates that the task runs on the last day of the month.</summary>
 			/// <value>True indicates that the task runs on the last day of the month, regardless of the actual date of that day; otherwise, False.</value>
@@ -1314,8 +1221,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides the settings that the Task Scheduler service uses to obtain a network profile.</summary>
-		[ComImport, Guid("9F7DEA84-C30B-4245-80B6-00E9F646F1B4"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("9F7DEA84-C30B-4245-80B6-00E9F646F1B4"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa380739")]
 		public interface INetworkSettings
 		{
@@ -1331,8 +1237,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Provides the security credentials for a principal. These security credentials define the security context for the tasks that are associated with the principal.
 		/// </summary>
-		[ComImport, Guid("D98D51E5-C9B4-496A-A9C1-18980261CF0F"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("D98D51E5-C9B4-496A-A9C1-18980261CF0F"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa380742")]
 		public interface IPrincipal
 		{
@@ -1374,8 +1279,7 @@ namespace Vanara.PInvoke
 		/// Provides the extended settings applied to security credentials for a principal. These security credentials define the security context for the tasks
 		/// that are associated with the principal.
 		/// </summary>
-		[ComImport, Guid("248919AE-E345-4A6D-8AEB-E0D3165C904E"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("248919AE-E345-4A6D-8AEB-E0D3165C904E"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "ee695858")]
 		public interface IPrincipal2
 		{
@@ -1404,8 +1308,7 @@ namespace Vanara.PInvoke
 		/// Provides the methods that are used to run the task immediately, get any running instances of the task, get or set the credentials that are used to
 		/// register the task, and the properties that describe the task.
 		/// </summary>
-		[ComImport, Guid("9C86F320-DEE3-4DD1-B972-A303F26B061E"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity, DefaultMember("Path")]
+		[ComImport, Guid("9C86F320-DEE3-4DD1-B972-A303F26B061E"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity, DefaultMember("Path")]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa380751")]
 		public interface IRegisteredTask
 		{
@@ -1556,9 +1459,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains all the tasks that are registered.</summary>
-		/// <seealso cref="System.Collections.IEnumerable"/>
-		[ComImport, Guid("86627EB4-42A7-41E4-A4D9-AC33A72F2D52"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		/// <seealso cref="IEnumerable"/>
+		[ComImport, Guid("86627EB4-42A7-41E4-A4D9-AC33A72F2D52"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa380752")]
 		public interface IRegisteredTaskCollection : IEnumerable
 		{
@@ -1572,7 +1474,7 @@ namespace Vanara.PInvoke
 			IRegisteredTask this[object index] { [return: MarshalAs(UnmanagedType.Interface)] get; }
 
 			/// <summary>Returns an enumerator that iterates through a collection.</summary>
-			/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
+			/// <returns>An <see cref="T:IEnumerator"/> object that can be used to iterate through the collection.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			new IEnumerator GetEnumerator();
 		}
@@ -1581,8 +1483,7 @@ namespace Vanara.PInvoke
 		/// Provides the administrative information that can be used to describe the task. This information includes details such as a description of the task,
 		/// the author of the task, the date the task is registered, and the security descriptor of the task.
 		/// </summary>
-		[ComImport, Guid("416D8B73-CB41-4EA1-805C-9BE9A5AC4A74"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("416D8B73-CB41-4EA1-805C-9BE9A5AC4A74"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa380773")]
 		public interface IRegistrationInfo
 		{
@@ -1623,13 +1524,7 @@ namespace Vanara.PInvoke
 			/// If a different security descriptor is supplied when a task is registered, then it will supersede the sddl parameter that is set through this property.
 			/// <para>If you try to pass an invalid security descriptor into the sddl parameter, then this method will return E_INVALIDARG.</para>
 			/// </remarks>
-			object SecurityDescriptor
-			{
-				[return: MarshalAs(UnmanagedType.Struct)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Struct)]
-				set;
-			}
+			object SecurityDescriptor { [return: MarshalAs(UnmanagedType.Struct)] get; [param: In, MarshalAs(UnmanagedType.Struct)] set; }
 
 			/// <summary>Gets or sets where the task originated from. For example, a task may originate from a component, service, application, or user.</summary>
 			/// <value>Where the task originated from. For example, from a component, service, application, or user.</value>
@@ -1639,8 +1534,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Represents a trigger that starts a task when the task is registered or updated.</summary>
 		/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
-		[ComImport, Guid("4C8FEC3A-C218-4E0C-B23D-629024DB91A2"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("4C8FEC3A-C218-4E0C-B23D-629024DB91A2"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381104")]
 		public interface IRegistrationTrigger : ITrigger
 		{
@@ -1659,13 +1553,7 @@ namespace Vanara.PInvoke
 			/// Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
 			/// </summary>
 			/// <value>The repetition pattern for how often the task is run and how long the repetition pattern is repeated after the task is started.</value>
-			new IRepetitionPattern Repetition
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			new IRepetitionPattern Repetition { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
 			/// <value>The maximum amount of time that the task launched by the trigger is allowed to run.</value>
@@ -1674,13 +1562,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit
-			{
-				[return: MarshalAs(UnmanagedType.BStr)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.BStr)]
-				set;
-			}
+			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -1721,8 +1603,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Defines how often the task is run and how long the repetition pattern is repeated after the task is started.</summary>
-		[ComImport, Guid("7FB9ACF1-26BE-400E-85B5-294B9C75DFD6"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("7FB9ACF1-26BE-400E-85B5-294B9C75DFD6"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381128")]
 		public interface IRepetitionPattern
 		{
@@ -1752,8 +1633,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides the methods to get information from and control a running task.</summary>
-		[ComImport, Guid("653758FB-7B9A-4F1E-A471-BEEB8E9B834E"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity, DefaultMember("InstanceGuid")]
+		[ComImport, Guid("653758FB-7B9A-4F1E-A471-BEEB8E9B834E"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity, DefaultMember("InstanceGuid")]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381157")]
 		public interface IRunningTask
 		{
@@ -1789,9 +1669,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a collection that is used to control running tasks.</summary>
-		/// <seealso cref="System.Collections.IEnumerable"/>
-		[ComImport, Guid("6A67614B-6828-4FEC-AA54-6D52E8F1F2DB"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		/// <seealso cref="IEnumerable"/>
+		[ComImport, Guid("6A67614B-6828-4FEC-AA54-6D52E8F1F2DB"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381166")]
 		public interface IRunningTaskCollection : IEnumerable
 		{
@@ -1805,15 +1684,14 @@ namespace Vanara.PInvoke
 			IRunningTask this[object index] { [return: MarshalAs(UnmanagedType.Interface)] get; }
 
 			/// <summary>Returns an enumerator that iterates through a collection.</summary>
-			/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
+			/// <returns>An <see cref="T:IEnumerator"/> object that can be used to iterate through the collection.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			new IEnumerator GetEnumerator();
 		}
 
 		/// <summary>Triggers tasks for console connect or disconnect, remote connect or disconnect, or workstation lock or unlock notifications.</summary>
 		/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsDual), Guid("754DA71B-4385-4475-9DD9-598294FA3641"),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsDual), Guid("754DA71B-4385-4475-9DD9-598294FA3641"), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381292")]
 		public interface ISessionStateChangeTrigger : ITrigger
 		{
@@ -1832,13 +1710,7 @@ namespace Vanara.PInvoke
 			/// Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
 			/// </summary>
 			/// <value>The repetition pattern for how often the task is run and how long the repetition pattern is repeated after the task is started.</value>
-			new IRepetitionPattern Repetition
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			new IRepetitionPattern Repetition { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
 			/// <value>The maximum amount of time that the task launched by the trigger is allowed to run.</value>
@@ -1847,13 +1719,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit
-			{
-				[return: MarshalAs(UnmanagedType.BStr)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.BStr)]
-				set;
-			}
+			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -1906,8 +1772,7 @@ namespace Vanara.PInvoke
 		/// Windows scripting MsgBox function to show a message in the user session.</note>
 		/// </summary>
 		/// <seealso cref="Vanara.PInvoke.TaskSchd.IAction"/>
-		[ComImport, Guid("505E9E68-AF89-46B8-A30F-56162A83D537"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("505E9E68-AF89-46B8-A30F-56162A83D537"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381302")]
 		public interface IShowMessageAction : IAction
 		{
@@ -1951,8 +1816,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Defines all the components of a task, such as the task settings, triggers, actions, and registration information.</summary>
-		[ComImport, Guid("F5BC8FC5-536D-4F77-B852-FBC1356FDEB6"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("F5BC8FC5-536D-4F77-B852-FBC1356FDEB6"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381313")]
 		public interface ITaskDefinition
 		{
@@ -1964,33 +1828,15 @@ namespace Vanara.PInvoke
 			/// The registration information that is used to describe a task, such as the description of the task, the author of the task, and the date the task
 			/// is registered.
 			/// </value>
-			IRegistrationInfo RegistrationInfo
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			IRegistrationInfo RegistrationInfo { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>Gets or sets a collection of triggers that are used to start a task.</summary>
 			/// <value>The collection of triggers that are used to start a task.</value>
-			ITriggerCollection Triggers
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			ITriggerCollection Triggers { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>Gets or sets the settings that define how the Task Scheduler service performs the task.</summary>
 			/// <value>The settings that define how the Task Scheduler service performs the task.</value>
-			ITaskSettings Settings
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			ITaskSettings Settings { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>
 			/// Gets or sets the data that is associated with the task. This data is ignored by the Task Scheduler service, but is used by third-parties who wish
@@ -2001,23 +1847,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets or sets the principal for the task that provides the security credentials for the task.</summary>
 			/// <value>The principal for the task that provides the security credentials for the task.</value>
-			IPrincipal Principal
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			IPrincipal Principal { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>Gets or sets a collection of actions performed by the task.</summary>
 			/// <value>A collection of actions performed by the task.</value>
-			IActionCollection Actions
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			IActionCollection Actions { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>Gets or sets the XML text.</summary>
 			/// <value>The XML text.</value>
@@ -2027,8 +1861,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Provides the methods that are used to register (create) tasks in the folder, remove tasks from the folder, and create or remove subfolders from the folder.
 		/// </summary>
-		[ComImport, Guid("8CFAC062-A080-4C15-9A88-AA7C2AF80DFC"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity, DefaultMember("Path")]
+		[ComImport, Guid("8CFAC062-A080-4C15-9A88-AA7C2AF80DFC"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity, DefaultMember("Path")]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381330")]
 		public interface ITaskFolder
 		{
@@ -2190,9 +2023,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides information and control for a collection of folders that contain tasks.</summary>
-		/// <seealso cref="System.Collections.IEnumerable"/>
-		[ComImport, Guid("79184A66-8664-423F-97F1-637356A5D812"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		/// <seealso cref="IEnumerable"/>
+		[ComImport, Guid("79184A66-8664-423F-97F1-637356A5D812"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381332")]
 		public interface ITaskFolderCollection : IEnumerable
 		{
@@ -2209,7 +2041,7 @@ namespace Vanara.PInvoke
 			ITaskFolder this[object index] { [return: MarshalAs(UnmanagedType.Interface)] get; }
 
 			/// <summary>Returns an enumerator that iterates through a collection.</summary>
-			/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
+			/// <returns>An <see cref="T:IEnumerator"/> object that can be used to iterate through the collection.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			new IEnumerator GetEnumerator();
 		}
@@ -2220,7 +2052,7 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// This interface must be implemented for a task to perform a COM handler action. When the Task Scheduler performs a COM handler action, it creates and activates the handler and calls the methods of this interface as needed. For information on specifying a COM handler action, see the <see cref="IComHandlerAction"/> class.
 		/// </remarks>
-		[ComImport, Guid("839D7762-5121-4009-9234-4F0D19394F04"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("839D7762-5121-4009-9234-4F0D19394F04"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381370")]
 		public interface ITaskHandler
 		{
@@ -2253,7 +2085,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Provides the methods that are used by COM handlers to notify the Task Scheduler about the status of the handler.
 		/// </summary>
-		[ComImport, Guid("EAEC7A8F-27A0-4DDC-8675-14726A01A38A"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("EAEC7A8F-27A0-4DDC-8675-14726A01A38A"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381373")]
 		public interface ITaskHandlerStatus
 		{
@@ -2272,9 +2104,8 @@ namespace Vanara.PInvoke
 		}
 		
 		/// <summary>Contains a collection of ITaskNamedValuePair interface name-value pairs.</summary>
-		/// <seealso cref="System.Collections.IEnumerable"/>
-		[ComImport, Guid("B4EF826B-63C3-46E4-A504-EF69E4F7EA4D"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		/// <seealso cref="IEnumerable"/>
+		[ComImport, Guid("B4EF826B-63C3-46E4-A504-EF69E4F7EA4D"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381392")]
 		public interface ITaskNamedValueCollection : IEnumerable
 		{
@@ -2288,7 +2119,7 @@ namespace Vanara.PInvoke
 			ITaskNamedValuePair this[int index] { [return: MarshalAs(UnmanagedType.Interface)] get; }
 
 			/// <summary>Returns an enumerator that iterates through a collection.</summary>
-			/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
+			/// <returns>An <see cref="T:IEnumerator"/> object that can be used to iterate through the collection.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			new IEnumerator GetEnumerator();
 
@@ -2309,8 +2140,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Creates a name-value pair in which the name is associated with the value.</summary>
-		[ComImport, Guid("39038068-2B46-4AFD-8662-7BB6F868D221"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity, DefaultMember("Name")]
+		[ComImport, Guid("39038068-2B46-4AFD-8662-7BB6F868D221"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity, DefaultMember("Name")]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381804")]
 		public interface ITaskNamedValuePair
 		{
@@ -2324,8 +2154,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides access to the Task Scheduler service for managing registered tasks.</summary>
-		[ComImport, DefaultMember("TargetServer"), Guid("2FABA4C7-4DA9-4013-9697-20CC3FD40F85"),
-		 System.Security.SuppressUnmanagedCodeSecurity, CoClass(typeof(TaskSchedulerClass))]
+		[ComImport, DefaultMember("TargetServer"), Guid("2FABA4C7-4DA9-4013-9697-20CC3FD40F85"), SuppressUnmanagedCodeSecurity, CoClass(typeof(TaskSchedulerClass))]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381832")]
 		public interface ITaskService
 		{
@@ -2438,8 +2267,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides the settings that the Task Scheduler service uses to perform the task.</summary>
-		[ComImport, Guid("8FD4711D-2D02-4C8C-87E3-EFF699DE127E"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("8FD4711D-2D02-4C8C-87E3-EFF699DE127E"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381843")]
 		public interface ITaskSettings
 		{
@@ -2456,13 +2284,7 @@ namespace Vanara.PInvoke
 			/// be set. The format for this string is P&lt;days&gt;DT&lt;hours&gt;H&lt;minutes&gt;M&lt;seconds&gt;S (for example, "PT5M" is 5 minutes, "PT1H" is
 			/// 1 hour, and "PT20M" is 20 minutes). The maximum time allowed is 31 days, and the minimum time allowed is 1 minute.
 			/// </value>
-			string RestartInterval
-			{
-				[return: MarshalAs(UnmanagedType.BStr)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.BStr)]
-				set;
-			}
+			string RestartInterval { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
 
 			/// <summary>Gets or sets the number of times that the Task Scheduler will attempt to restart the task.</summary>
 			/// <value>
@@ -2525,13 +2347,7 @@ namespace Vanara.PInvoke
 			/// change this by changing this setting.
 			/// </summary>
 			/// <value>The amount of time that is allowed to complete the task. When this parameter is set to NULL, the execution time limit is infinite.</value>
-			string ExecutionTimeLimit
-			{
-				[return: MarshalAs(UnmanagedType.BStr)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.BStr)]
-				set;
-			}
+			string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates that the task is enabled. The task can be performed only when this setting is True.</summary>
 			/// <value>If True, the task is enabled. If False, the task is not enabled.</value>
@@ -2551,13 +2367,7 @@ namespace Vanara.PInvoke
 			/// A task expires after the end boundary has been exceeded for all triggers associated with the task. The end boundary for a trigger is specified by
 			/// the EndBoundary property inherited by all trigger interfaces.
 			/// </remarks>
-			string DeleteExpiredTaskAfter
-			{
-				[return: MarshalAs(UnmanagedType.BStr)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.BStr)]
-				set;
-			}
+			string DeleteExpiredTaskAfter { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
 
 			/// <summary>Gets or sets the priority level of the task.</summary>
 			/// <value>The priority level (0-10) of the task. The default is 7.</value>
@@ -2571,66 +2381,18 @@ namespace Vanara.PInvoke
 			/// Priority Level values.
 			/// </para>
 			/// <list type="table">
-			/// <listheader>
-			/// <term>Task priority</term>
-			/// <term>Priority Class</term>
-			/// <term>Priority Level</term>
-			/// </listheader>
-			/// <item>
-			/// <term>0</term>
-			/// <term>REALTIME_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_TIME_CRITICAL</term>
-			/// </item>
-			/// <item>
-			/// <term>1</term>
-			/// <term>HIGH_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_HIGHEST</term>
-			/// </item>
-			/// <item>
-			/// <term>2</term>
-			/// <term>ABOVE_NORMAL_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_ABOVE_NORMAL</term>
-			/// </item>
-			/// <item>
-			/// <term>3</term>
-			/// <term>ABOVE_NORMAL_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_ABOVE_NORMAL</term>
-			/// </item>
-			/// <item>
-			/// <term>4</term>
-			/// <term>NORMAL_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_NORMAL</term>
-			/// </item>
-			/// <item>
-			/// <term>5</term>
-			/// <term>NORMAL_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_NORMAL</term>
-			/// </item>
-			/// <item>
-			/// <term>6</term>
-			/// <term>NORMAL_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_NORMAL</term>
-			/// </item>
-			/// <item>
-			/// <term>7</term>
-			/// <term>BELOW_NORMAL_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_BELOW_NORMAL</term>
-			/// </item>
-			/// <item>
-			/// <term>8</term>
-			/// <term>BELOW_NORMAL_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_BELOW_NORMAL</term>
-			/// </item>
-			/// <item>
-			/// <term>9</term>
-			/// <term>IDLE_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_LOWEST</term>
-			/// </item>
-			/// <item>
-			/// <term>10</term>
-			/// <term>IDLE_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_IDLE</term>
-			/// </item>
+			/// <listheader><term>Task priority</term><term>Priority Class</term><term>Priority Level</term></listheader>
+			/// <item><term>0</term><term>REALTIME_PRIORITY_CLASS</term><term>THREAD_PRIORITY_TIME_CRITICAL</term></item>
+			/// <item><term>1</term><term>HIGH_PRIORITY_CLASS</term><term>THREAD_PRIORITY_HIGHEST</term></item>
+			/// <item><term>2</term><term>ABOVE_NORMAL_PRIORITY_CLASS</term><term>THREAD_PRIORITY_ABOVE_NORMAL</term></item>
+			/// <item><term>3</term><term>ABOVE_NORMAL_PRIORITY_CLASS</term><term>THREAD_PRIORITY_ABOVE_NORMAL</term></item>
+			/// <item><term>4</term><term>NORMAL_PRIORITY_CLASS</term><term>THREAD_PRIORITY_NORMAL</term></item>
+			/// <item><term>5</term><term>NORMAL_PRIORITY_CLASS</term><term>THREAD_PRIORITY_NORMAL</term></item>
+			/// <item><term>6</term><term>NORMAL_PRIORITY_CLASS</term><term>THREAD_PRIORITY_NORMAL</term></item>
+			/// <item><term>7</term><term>BELOW_NORMAL_PRIORITY_CLASS</term><term>THREAD_PRIORITY_BELOW_NORMAL</term></item>
+			/// <item><term>8</term><term>BELOW_NORMAL_PRIORITY_CLASS</term><term>THREAD_PRIORITY_BELOW_NORMAL</term></item>
+			/// <item><term>9</term><term>IDLE_PRIORITY_CLASS</term><term>THREAD_PRIORITY_LOWEST</term></item>
+			/// <item><term>10</term><term>IDLE_PRIORITY_CLASS</term><term>THREAD_PRIORITY_IDLE</term></item>
 			/// </list>
 			/// </remarks>
 			int Priority { get; [param: In] set; }
@@ -2654,28 +2416,16 @@ namespace Vanara.PInvoke
 			/// <remarks>
 			/// When battery saver is on, Windows Task Scheduler tasks are triggered only if the task is:
 			/// <list type="bullet">
-			/// <item>
-			/// <term>Not set to Start the task only if the computer is idle... (task doesn't use IdleSettings)</term>
-			/// </item>
-			/// <item>
-			/// <term>Not set to run during automatic maintenance (task doesn't use MaintenanceSettings)</term>
-			/// </item>
-			/// <item>
-			/// <term>Is set to Run only when user is logged on (task LogonType is TASK_LOGON_INTERACTIVE_TOKEN or TASK_LOGON_GROUP)</term>
-			/// </item>
+			/// <item><term>Not set to Start the task only if the computer is idle... (task doesn't use IdleSettings)</term></item>
+			/// <item><term>Not set to run during automatic maintenance (task doesn't use MaintenanceSettings)</term></item>
+			/// <item><term>Is set to Run only when user is logged on (task LogonType is TASK_LOGON_INTERACTIVE_TOKEN or TASK_LOGON_GROUP)</term></item>
 			/// </list>
 			/// <para>
 			/// All other triggers are delayed until battery saver is off. For more information about accessing battery saver status in your application, see
 			/// SYSTEM_POWER_STATUS. For general information about battery saver, see battery saver (in the hardware component guidelines).
 			/// </para>
 			/// </remarks>
-			IIdleSettings IdleSettings
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			IIdleSettings IdleSettings { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates that the Task Scheduler will run the task only if the computer is in an idle condition.</summary>
 			/// <value>
@@ -2707,18 +2457,11 @@ namespace Vanara.PInvoke
 			/// profile is available.
 			/// </summary>
 			/// <value>A pointer to an INetworkSettings object that contains a network profile identifier and name.</value>
-			INetworkSettings NetworkSettings
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			INetworkSettings NetworkSettings { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 		}
 
 		/// <summary>Provides the extended settings that the Task Scheduler uses to run the task.</summary>
-		[ComImport, Guid("2C05C3F0-6EED-4c05-A15F-ED7D7A98A369"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("2C05C3F0-6EED-4c05-A15F-ED7D7A98A369"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "ee695863")]
 		public interface ITaskSettings2
 		{
@@ -2736,8 +2479,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Provides the extended settings that the Task Scheduler uses to run the task.</summary>
 		/// <seealso cref="Vanara.PInvoke.TaskSchd.ITaskSettings"/>
-		[ComImport, Guid("0AD9D0D7-0C7F-4EBB-9A5F-D1C648DCA528"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("0AD9D0D7-0C7F-4EBB-9A5F-D1C648DCA528"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "hh832148")]
 		public interface ITaskSettings3 : ITaskSettings
 		{
@@ -2754,13 +2496,7 @@ namespace Vanara.PInvoke
 			/// be set. The format for this string is P&lt;days&gt;DT&lt;hours&gt;H&lt;minutes&gt;M&lt;seconds&gt;S (for example, "PT5M" is 5 minutes, "PT1H" is
 			/// 1 hour, and "PT20M" is 20 minutes). The maximum time allowed is 31 days, and the minimum time allowed is 1 minute.
 			/// </value>
-			new string RestartInterval
-			{
-				[return: MarshalAs(UnmanagedType.BStr)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.BStr)]
-				set;
-			}
+			new string RestartInterval { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
 
 			/// <summary>Gets or sets the number of times that the Task Scheduler will attempt to restart the task.</summary>
 			/// <value>
@@ -2823,13 +2559,7 @@ namespace Vanara.PInvoke
 			/// change this by changing this setting.
 			/// </summary>
 			/// <value>The amount of time that is allowed to complete the task. When this parameter is set to NULL, the execution time limit is infinite.</value>
-			new string ExecutionTimeLimit
-			{
-				[return: MarshalAs(UnmanagedType.BStr)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.BStr)]
-				set;
-			}
+			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates that the task is enabled. The task can be performed only when this setting is True.</summary>
 			/// <value>If True, the task is enabled. If False, the task is not enabled.</value>
@@ -2849,13 +2579,7 @@ namespace Vanara.PInvoke
 			/// A task expires after the end boundary has been exceeded for all triggers associated with the task. The end boundary for a trigger is specified by
 			/// the EndBoundary property inherited by all trigger interfaces.
 			/// </remarks>
-			new string DeleteExpiredTaskAfter
-			{
-				[return: MarshalAs(UnmanagedType.BStr)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.BStr)]
-				set;
-			}
+			new string DeleteExpiredTaskAfter { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
 
 			/// <summary>Gets or sets the priority level of the task.</summary>
 			/// <value>The priority level (0-10) of the task. The default is 7.</value>
@@ -2869,66 +2593,18 @@ namespace Vanara.PInvoke
 			/// Priority Level values.
 			/// </para>
 			/// <list type="table">
-			/// <listheader>
-			/// <term>Task priority</term>
-			/// <term>Priority Class</term>
-			/// <term>Priority Level</term>
-			/// </listheader>
-			/// <item>
-			/// <term>0</term>
-			/// <term>REALTIME_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_TIME_CRITICAL</term>
-			/// </item>
-			/// <item>
-			/// <term>1</term>
-			/// <term>HIGH_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_HIGHEST</term>
-			/// </item>
-			/// <item>
-			/// <term>2</term>
-			/// <term>ABOVE_NORMAL_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_ABOVE_NORMAL</term>
-			/// </item>
-			/// <item>
-			/// <term>3</term>
-			/// <term>ABOVE_NORMAL_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_ABOVE_NORMAL</term>
-			/// </item>
-			/// <item>
-			/// <term>4</term>
-			/// <term>NORMAL_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_NORMAL</term>
-			/// </item>
-			/// <item>
-			/// <term>5</term>
-			/// <term>NORMAL_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_NORMAL</term>
-			/// </item>
-			/// <item>
-			/// <term>6</term>
-			/// <term>NORMAL_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_NORMAL</term>
-			/// </item>
-			/// <item>
-			/// <term>7</term>
-			/// <term>BELOW_NORMAL_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_BELOW_NORMAL</term>
-			/// </item>
-			/// <item>
-			/// <term>8</term>
-			/// <term>BELOW_NORMAL_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_BELOW_NORMAL</term>
-			/// </item>
-			/// <item>
-			/// <term>9</term>
-			/// <term>IDLE_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_LOWEST</term>
-			/// </item>
-			/// <item>
-			/// <term>10</term>
-			/// <term>IDLE_PRIORITY_CLASS</term>
-			/// <term>THREAD_PRIORITY_IDLE</term>
-			/// </item>
+			/// <listheader><term>Task priority</term><term>Priority Class</term><term>Priority Level</term></listheader>
+			/// <item><term>0</term><term>REALTIME_PRIORITY_CLASS</term><term>THREAD_PRIORITY_TIME_CRITICAL</term></item>
+			/// <item><term>1</term><term>HIGH_PRIORITY_CLASS</term><term>THREAD_PRIORITY_HIGHEST</term></item>
+			/// <item><term>2</term><term>ABOVE_NORMAL_PRIORITY_CLASS</term><term>THREAD_PRIORITY_ABOVE_NORMAL</term></item>
+			/// <item><term>3</term><term>ABOVE_NORMAL_PRIORITY_CLASS</term><term>THREAD_PRIORITY_ABOVE_NORMAL</term></item>
+			/// <item><term>4</term><term>NORMAL_PRIORITY_CLASS</term><term>THREAD_PRIORITY_NORMAL</term></item>
+			/// <item><term>5</term><term>NORMAL_PRIORITY_CLASS</term><term>THREAD_PRIORITY_NORMAL</term></item>
+			/// <item><term>6</term><term>NORMAL_PRIORITY_CLASS</term><term>THREAD_PRIORITY_NORMAL</term></item>
+			/// <item><term>7</term><term>BELOW_NORMAL_PRIORITY_CLASS</term><term>THREAD_PRIORITY_BELOW_NORMAL</term></item>
+			/// <item><term>8</term><term>BELOW_NORMAL_PRIORITY_CLASS</term><term>THREAD_PRIORITY_BELOW_NORMAL</term></item>
+			/// <item><term>9</term><term>IDLE_PRIORITY_CLASS</term><term>THREAD_PRIORITY_LOWEST</term></item>
+			/// <item><term>10</term><term>IDLE_PRIORITY_CLASS</term><term>THREAD_PRIORITY_IDLE</term></item>
 			/// </list>
 			/// </remarks>
 			new int Priority { get; [param: In] set; }
@@ -2952,28 +2628,16 @@ namespace Vanara.PInvoke
 			/// <remarks>
 			/// When battery saver is on, Windows Task Scheduler tasks are triggered only if the task is:
 			/// <list type="bullet">
-			/// <item>
-			/// <term>Not set to Start the task only if the computer is idle... (task doesn't use IdleSettings)</term>
-			/// </item>
-			/// <item>
-			/// <term>Not set to run during automatic maintenance (task doesn't use MaintenanceSettings)</term>
-			/// </item>
-			/// <item>
-			/// <term>Is set to Run only when user is logged on (task LogonType is TASK_LOGON_INTERACTIVE_TOKEN or TASK_LOGON_GROUP)</term>
-			/// </item>
+			/// <item><term>Not set to Start the task only if the computer is idle... (task doesn't use IdleSettings)</term></item>
+			/// <item><term>Not set to run during automatic maintenance (task doesn't use MaintenanceSettings)</term></item>
+			/// <item><term>Is set to Run only when user is logged on (task LogonType is TASK_LOGON_INTERACTIVE_TOKEN or TASK_LOGON_GROUP)</term></item>
 			/// </list>
 			/// <para>
 			/// All other triggers are delayed until battery saver is off. For more information about accessing battery saver status in your application, see
 			/// SYSTEM_POWER_STATUS. For general information about battery saver, see battery saver (in the hardware component guidelines).
 			/// </para>
 			/// </remarks>
-			new IIdleSettings IdleSettings
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			new IIdleSettings IdleSettings { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>Gets or sets a Boolean value that indicates that the Task Scheduler will run the task only if the computer is in an idle condition.</summary>
 			/// <value>
@@ -3001,17 +2665,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Gets or sets the network settings object that contains a network profile identifier and name. If the RunOnlyIfNetworkAvailable property of
-			/// ITaskSettings is true and a network propfile is specified in the NetworkSettings property, then the task will run only if the specified network
+			/// ITaskSettings is true and a network profile is specified in the NetworkSettings property, then the task will run only if the specified network
 			/// profile is available.
 			/// </summary>
 			/// <value>A pointer to an INetworkSettings object that contains a network profile identifier and name.</value>
-			new INetworkSettings NetworkSettings
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			new INetworkSettings NetworkSettings { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>
 			/// Gets or sets a Boolean value that specifies that the task will not be started if triggered to run in a Remote Applications Integrated Locally
@@ -3029,48 +2687,30 @@ namespace Vanara.PInvoke
 			/// <remarks>
 			/// When battery saver is on, Windows Task Scheduler tasks are triggered only if the task is:
 			/// <list type="bullet">
-			/// <item>
-			/// <term>Not set to Start the task only if the computer is idle... (task doesn't use IdleSettings)</term>
-			/// </item>
-			/// <item>
-			/// <term>Not set to run during automatic maintenance (task doesn't use MaintenanceSettings)</term>
-			/// </item>
-			/// <item>
-			/// <term>Is set to Run only when user is logged on (task LogonType is TASK_LOGON_INTERACTIVE_TOKEN or TASK_LOGON_GROUP)</term>
-			/// </item>
+			/// <item><term>Not set to Start the task only if the computer is idle... (task doesn't use IdleSettings)</term></item>
+			/// <item><term>Not set to run during automatic maintenance (task doesn't use MaintenanceSettings)</term></item>
+			/// <item><term>Is set to Run only when user is logged on (task LogonType is TASK_LOGON_INTERACTIVE_TOKEN or TASK_LOGON_GROUP)</term></item>
+			/// </list>
 			/// <para>
 			/// All other triggers are delayed until battery saver is off. For more information about accessing battery saver status in your application, see
 			/// SYSTEM_POWER_STATUS. For general information about battery saver, see battery saver (in the hardware component guidelines).
 			/// </para>
-			/// </list>
 			/// </remarks>
-			IMaintenanceSettings MaintenanceSettings
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			IMaintenanceSettings MaintenanceSettings { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>Creates a new instance an IMaintenanceSettings object and associates it with this ITaskSettings3 object.</summary>
 			/// <returns>A pointer to a pointer to the IMaintenanceSettings object this method creates.</returns>
 			/// <remarks>
 			/// When battery saver is on, Windows Task Scheduler tasks are triggered only if the task is:
 			/// <list type="bullet">
-			/// <item>
-			/// <term>Not set to Start the task only if the computer is idle... (task doesn't use IdleSettings)</term>
-			/// </item>
-			/// <item>
-			/// <term>Not set to run during automatic maintenance (task doesn't use MaintenanceSettings)</term>
-			/// </item>
-			/// <item>
-			/// <term>Is set to Run only when user is logged on (task LogonType is TASK_LOGON_INTERACTIVE_TOKEN or TASK_LOGON_GROUP)</term>
-			/// </item>
+			/// <item><term>Not set to Start the task only if the computer is idle... (task doesn't use IdleSettings)</term></item>
+			/// <item><term>Not set to run during automatic maintenance (task doesn't use MaintenanceSettings)</term></item>
+			/// <item><term>Is set to Run only when user is logged on (task LogonType is TASK_LOGON_INTERACTIVE_TOKEN or TASK_LOGON_GROUP)</term></item>
+			/// </list>
 			/// <para>
 			/// All other triggers are delayed until battery saver is off. For more information about accessing battery saver status in your application, see
 			/// SYSTEM_POWER_STATUS. For general information about battery saver, see battery saver (in the hardware component guidelines).
 			/// </para>
-			/// </list>
 			/// </remarks>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IMaintenanceSettings CreateMaintenanceSettings();
@@ -3084,8 +2724,7 @@ namespace Vanara.PInvoke
 		/// Defines task variables that can be passed as parameters to task handlers and external executables that are launched by tasks. Task handlers that need
 		/// to input and output data to job variables should do a query interface on the services pointer for ITaskVariables.
 		/// </summary>
-		[ComImport, Guid("3E4C9351-D966-4B8B-BB87-CEBA68BB0107"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("3E4C9351-D966-4B8B-BB87-CEBA68BB0107"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381868")]
 		public interface ITaskVariables
 		{
@@ -3109,8 +2748,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Represents a trigger that starts a task at a specific date and time.</summary>
 		/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
-		[ComImport, Guid("B45747E0-EBA7-4276-9F29-85C5BB300006"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("B45747E0-EBA7-4276-9F29-85C5BB300006"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381885")]
 		public interface ITimeTrigger : ITrigger
 		{
@@ -3129,13 +2767,7 @@ namespace Vanara.PInvoke
 			/// Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
 			/// </summary>
 			/// <value>The repetition pattern for how often the task is run and how long the repetition pattern is repeated after the task is started.</value>
-			new IRepetitionPattern Repetition
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			new IRepetitionPattern Repetition { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
 			/// <value>The maximum amount of time that the task launched by the trigger is allowed to run.</value>
@@ -3144,13 +2776,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit
-			{
-				[return: MarshalAs(UnmanagedType.BStr)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.BStr)]
-				set;
-			}
+			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -3195,8 +2821,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides the common properties that are inherited by all trigger objects.</summary>
-		[ComImport, Guid("09941815-EA89-4B5B-89E0-2A773801FAC3"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("09941815-EA89-4B5B-89E0-2A773801FAC3"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381887")]
 		public interface ITrigger
 		{
@@ -3215,13 +2840,7 @@ namespace Vanara.PInvoke
 			/// Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
 			/// </summary>
 			/// <value>The repetition pattern for how often the task is run and how long the repetition pattern is repeated after the task is started.</value>
-			IRepetitionPattern Repetition
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			IRepetitionPattern Repetition { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
 			/// <value>The maximum amount of time that the task launched by the trigger is allowed to run.</value>
@@ -3230,13 +2849,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			string ExecutionTimeLimit
-			{
-				[return: MarshalAs(UnmanagedType.BStr)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.BStr)]
-				set;
-			}
+			string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -3268,9 +2881,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides the methods that are used to add to, remove from, and get the triggers of a task.</summary>
-		/// <seealso cref="System.Collections.IEnumerable"/>
-		[ComImport, Guid("85DF5081-1B24-4F32-878A-D9D14DF4CB77"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		/// <seealso cref="IEnumerable"/>
+		[ComImport, Guid("85DF5081-1B24-4F32-878A-D9D14DF4CB77"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381889")]
 		public interface ITriggerCollection : IEnumerable
 		{
@@ -3284,7 +2896,7 @@ namespace Vanara.PInvoke
 			ITrigger this[int index] { [return: MarshalAs(UnmanagedType.Interface)] get; }
 
 			/// <summary>Returns an enumerator that iterates through a collection.</summary>
-			/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
+			/// <returns>An <see cref="T:IEnumerator"/> object that can be used to iterate through the collection.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			new IEnumerator GetEnumerator();
 
@@ -3310,8 +2922,7 @@ namespace Vanara.PInvoke
 		/// week or every other week.
 		/// </summary>
 		/// <seealso cref="Vanara.PInvoke.TaskSchd.ITrigger"/>
-		[ComImport, Guid("5038FC98-82FF-436D-8728-A512A57C9DC1"), InterfaceType(ComInterfaceType.InterfaceIsDual),
-		 System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, Guid("5038FC98-82FF-436D-8728-A512A57C9DC1"), InterfaceType(ComInterfaceType.InterfaceIsDual), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381904")]
 		public interface IWeeklyTrigger : ITrigger
 		{
@@ -3330,13 +2941,7 @@ namespace Vanara.PInvoke
 			/// Gets or sets a value that indicates how often the task is run and how long the repetition pattern is repeated after the task is started.
 			/// </summary>
 			/// <value>The repetition pattern for how often the task is run and how long the repetition pattern is repeated after the task is started.</value>
-			new IRepetitionPattern Repetition
-			{
-				[return: MarshalAs(UnmanagedType.Interface)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.Interface)]
-				set;
-			}
+			new IRepetitionPattern Repetition { [return: MarshalAs(UnmanagedType.Interface)] get; [param: In, MarshalAs(UnmanagedType.Interface)] set; }
 
 			/// <summary>Gets or sets the maximum amount of time that the task launched by this trigger is allowed to run.</summary>
 			/// <value>The maximum amount of time that the task launched by the trigger is allowed to run.</value>
@@ -3345,13 +2950,7 @@ namespace Vanara.PInvoke
 			/// date/time separator, nH is the number of hours, nM is the number of minutes, and nS is the number of seconds (for example, PT5M specifies 5
 			/// minutes and P1M4DT2H5M specifies one month, four days, two hours, and five minutes).
 			/// </remarks>
-			new string ExecutionTimeLimit
-			{
-				[return: MarshalAs(UnmanagedType.BStr)]
-				get;
-				[param: In, MarshalAs(UnmanagedType.BStr)]
-				set;
-			}
+			new string ExecutionTimeLimit { [return: MarshalAs(UnmanagedType.BStr)] get; [param: In, MarshalAs(UnmanagedType.BStr)] set; }
 
 			/// <summary>Gets or sets the date and time when the trigger is activated.</summary>
 			/// <value>The date and time when the trigger is activated.</value>
@@ -3383,7 +2982,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets or sets the days of the week in which the task runs.</summary>
 			/// <value>A bitwise mask that indicates the days of the week on which the task runs.</value>
-			short DaysOfWeek { get; [param: In] set; }
+			MSTask.TaskDaysOfTheWeek DaysOfWeek { get; [param: In] set; }
 
 			/// <summary>Gets or sets the interval between the weeks in the schedule.</summary>
 			/// <value>
@@ -3406,7 +3005,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides access to the Task Scheduler service for managing registered tasks.</summary>
-		[ComImport, DefaultMember("TargetServer"), Guid("0F87369F-A4E5-4CFC-BD3E-73E6154572DD"), ClassInterface((short)0), System.Security.SuppressUnmanagedCodeSecurity]
+		[ComImport, DefaultMember("TargetServer"), Guid("0F87369F-A4E5-4CFC-BD3E-73E6154572DD"), ClassInterface((short)0), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("taskschd.h", MSDNShortId = "aa381832")]
 		public class TaskSchedulerClass
 		{

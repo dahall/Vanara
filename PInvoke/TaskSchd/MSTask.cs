@@ -2,10 +2,12 @@ using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable InconsistentNaming
 
 namespace Vanara.PInvoke
 {
-	public static partial class MSTask
+	public static class MSTask
 	{
 		/// <summary>Valid types of triggers</summary>
 		public enum TASK_TRIGGER_TYPE
@@ -856,7 +858,7 @@ namespace Vanara.PInvoke
 			void Delete([In, MarshalAs(UnmanagedType.LPWStr)] string pwszName);
 
 			/// <summary>The NewWorkItem method creates a new work item, allocating space for the work item and retrieving its address.</summary>
-			/// <param name="pwszTaskName ">
+			/// <param name="pwszTaskName">
 			/// A null-terminated string that specifies the name of the new work item. This name must conform to Windows NT file-naming conventions, but cannot
 			/// include backslashes because nesting within the task folder object is not allowed.
 			/// </param>

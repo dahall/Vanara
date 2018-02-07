@@ -109,6 +109,7 @@
     <Compile Include="PInvoke\Shared\WinNT\OBJECT_TYPE_LISTTests.cs" />
     <Compile Include="PInvoke\Shared\WinUser\MacrosTests.cs" />
     <Compile Include="PInvoke\Shell32\KnownFolderIdExtTests.cs" />
+    <Compile Include="PInvoke\TaskSchd\TaskSchdTests.cs" />
     <Compile Include="PInvoke\User32\User32Tests.cs" />
     <Compile Include="PInvoke\UxTheme\UxThemeTests.cs" />
     <Compile Include="PInvoke\VirtDisk\VirtDiskTests.cs" />
