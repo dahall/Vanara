@@ -1,10 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Classes for user interface related items derived from the Vanara PInvoke libraries. Includes extensions for almost all common controls to give post Vista capabilities, WinForms controls (panel, commandlink, enhanced combo boxes, IPAddress, split button, trackbar and themed controls), shutdown/restart/lock control, buffered painting, resource files, access control editor, simplifed designer framework for Windows.Forms.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.8</VersionPrefix>
+    <VersionPrefix>1.0.9</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
     <AssemblyName>Vanara.Windows.Forms</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -21,48 +20,23 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <IncludeSource>true</IncludeSource>
   </PropertyGroup>
-  
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="_InProgress_\**\*" />
   </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net20' ">
+  <ItemGroup>
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System" />
   </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
-    <Reference Include="System.Design" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
-    <Reference Include="System.Design" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-    <Reference Include="System.Design" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System" />
-  </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Include="Extenders\GlassExtenderProvider.bmp" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\PInvoke\AclUI\Vanara.PInvoke.AclUI.csproj" />
@@ -76,7 +50,6 @@
     <ProjectReference Include="..\PInvoke\UxTheme\Vanara.PInvoke.UxTheme.csproj" />
     <ProjectReference Include="..\Security\Vanara.Security.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Update="Controls\CollapsiblePanel.cs">
       <SubType>Component</SubType>
@@ -154,5 +127,4 @@
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
-
 </Project>

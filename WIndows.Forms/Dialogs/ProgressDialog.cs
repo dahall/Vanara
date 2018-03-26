@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !(NET20 || NET35 || NET40)
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
@@ -450,3 +451,4 @@ namespace CodePlexArchiveManager
 		public string StatusText { get; set; }
 	}
 }
+#endif
