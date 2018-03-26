@@ -80,7 +80,7 @@ namespace System.Linq
 		/// <summary>Returns the elements of the specified sequence or the specified value in a singleton collection if the sequence is empty.</summary>
 		/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
 		/// <param name="source">The sequence to return the specified value for if it is empty.</param>
-		/// <param name="defaultValue">The value to return if the sequence is empty. This value defaults to <see cref="default(TSource)"/>.</param>
+		/// <param name="defaultValue">The value to return if the sequence is empty. This value defaults to <c>default(TSource)</c>.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains <paramref name="defaultValue"/> if source is empty; otherwise, source.</returns>
 		public static IEnumerable<TSource> DefaultIfEmpty<TSource>(this IEnumerable<TSource> source, TSource defaultValue = default(TSource))
 		{
@@ -254,6 +254,19 @@ namespace System.Linq
 			throw new InvalidOperationException("No elements");
 		}
 
+		/// <summary>Filters the elements of an <see cref="IEnumerable"/> based on a specified type.</summary>
+		/// <typeparam name="TResult">The type to filter the elements of the sequence on.</typeparam>
+		/// <param name="source">The <see cref="IEnumerable"/> whose elements to filter.</param>
+		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements from the input sequence of type <typeparamref name="TResult"/>.</returns>
+		public static IEnumerable<TResult> OfType<TResult>(this IEnumerable source)
+		{
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			foreach (object obj in source)
+			{
+				if (obj is TResult) yield return (TResult)obj;
+			}
+		}
+
 		/// <summary>Sorts the elements of a sequence in ascending order according to a key.</summary>
 		/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
 		/// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>
@@ -266,6 +279,31 @@ namespace System.Linq
 			foreach (var item in source)
 				d.Add(keySelector(item), item);
 			return d.Values;
+		}
+
+		/// <summary>Sorts the elements of a sequence in descending order.</summary>
+		/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
+		/// <typeparam name="TKey">The type of the key returned by <paramref name="keySelector"/>.</typeparam>
+		/// <param name="source">A sequence of values to order.</param>
+		/// <param name="keySelector">A function to extract a key from an element.</param>
+		/// <returns>An <see cref="IEnumerable{T}"/> whose elements are sorted in descending order according to a key.</returns>
+		public static IEnumerable<TSource> OrderByDescending<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+		{
+			var d = new SortedDictionary<TKey, TSource>();
+			foreach (var item in source)
+				d.Add(keySelector(item), item);
+			return d.Values.Reverse();
+		}
+
+		/// <summary>Inverts the order of the elements in a sequence.</summary>
+		/// <typeparam name="TSource">The type of the elements of source.</typeparam>
+		/// <param name="source">A sequence of values to reverse.</param>
+		/// <returns>A sequence whose elements correspond to those of the input sequence in reverse order.</returns>
+		public static IEnumerable<TSource> Reverse<TSource>(this IEnumerable<TSource> source)
+		{
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			IList<TSource> items = source as IList<TSource> ?? source.ToList();
+			for (int i = items.Count - 1; i >= 0; i--) yield return items[i];
 		}
 
 		/// <summary>Projects each element of a sequence into a new form.</summary>
@@ -325,6 +363,40 @@ namespace System.Linq
 		/// <param name="selector">A transform function to apply to each element.</param>
 		/// <returns>The sum of the projected values.</returns>
 		public static int Sum<TSource>(this IEnumerable<TSource> source, Func<TSource, int> selector) => Sum(Select(source, selector));
+
+		/// <summary>Returns a specified number of contiguous elements from the start of a sequence.</summary>
+		/// <typeparam name="TSource">The type of the elements of source.</typeparam>
+		/// <param name="source">A sequence to return elements from.</param>
+		/// <param name="count">The number of elements to return.</param>
+		/// <returns>An <see cref="IEnumerable{T}"/> that contains the specified number of elements from the start of the input sequence.</returns>
+		public static IEnumerable<TSource> Take<TSource>(this IEnumerable<TSource> source, int count)
+		{
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (count > 0)
+			{
+				foreach (TSource element in source)
+				{
+					yield return element;
+					if (--count == 0) break;
+				}
+			}
+		}
+
+		/// <summary>Returns elements from a sequence as long as a specified condition is true.</summary>
+		/// <typeparam name="TSource">The type of the elements of source.</typeparam>
+		/// <param name="source">A sequence to return elements from.</param>
+		/// <param name="predicate">A function to test each element for a condition.</param>
+		/// <returns>An <see cref="IEnumerable{T}"/> that contains the elements from the input sequence that occur before the element at which the test no longer passes.</returns>
+		public static IEnumerable<TSource> TakeWhile<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+		{
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+			foreach (TSource element in source)
+			{
+				if (!predicate(element)) break;
+				yield return element;
+			}
+		}
 
 		/// <summary>Creates an array from a <see cref="IEnumerable"/>.</summary>
 		/// <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
