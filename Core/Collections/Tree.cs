@@ -9,12 +9,14 @@ namespace Vanara.Collections
 {
 	public static partial class TreeExtension
 	{
+		private const char defaultSeparator = '\\';
+
 		/// <summary>Parses and adds the entry to the hierarchy, creating any parent entries as required.</summary>
 		/// <param name="tree">The tree.</param>
 		/// <param name="entry">The delimiter separated list of child node values.</param>
 		/// <param name="startIndex">The index of the character in <paramref name="entry"/> at which to start reading node values.</param>
 		/// <param name="separator">The separator character used as the delimiter.</param>
-		public static void AddEntry(this Tree<string> tree, string entry, int startIndex = 0, string separator = @"\")
+		public static void AddEntry(this Tree<string> tree, string entry, int startIndex = 0, char separator = defaultSeparator)
 		{
 			AddEntry((TreeNode<string>)tree, entry, startIndex, separator);
 		}
@@ -27,11 +29,11 @@ namespace Vanara.Collections
 		/// <returns>The requested <see cref="TreeNode{T}"/>, or <c>null</c> if not found.</returns>
 		public static TreeNode<string> NodeFromPath(this Tree<string> tree, string childPath)
 		{
-			childPath = childPath?.TrimStart('\\');
+			childPath = childPath?.TrimStart(defaultSeparator);
 			if (string.IsNullOrEmpty(childPath)) return tree;
 			try
 			{
-				return childPath.Split('\\').Aggregate((TreeNode<string>)tree, (current, key) => current.Children.First(p => string.Equals(key, p.Value, StringComparison.InvariantCulture)));
+				return childPath.Split(defaultSeparator).Aggregate((TreeNode<string>)tree, (current, key) => current.Children.First(p => string.Equals(key, p.Value, StringComparison.InvariantCulture)));
 			}
 			catch
 			{
@@ -39,13 +41,13 @@ namespace Vanara.Collections
 			}
 		}
 
-		private static void AddEntry(this TreeNode<string> tree, string entry, int startIndex = 0, string separator = @"\")
+		private static void AddEntry(this TreeNode<string> tree, string entry, int startIndex, char separator)
 		{
 			if (string.IsNullOrEmpty(entry)) throw new ArgumentNullException(nameof(entry));
 			if (startIndex >= entry.Length)
 				return;
 
-			var endIndex = entry.IndexOf(separator, startIndex, StringComparison.InvariantCulture);
+			var endIndex = entry.IndexOf(separator, startIndex);
 			if (endIndex == -1)
 				endIndex = entry.Length;
 			var key = entry.Substring(startIndex, endIndex - startIndex);
@@ -55,6 +57,17 @@ namespace Vanara.Collections
 			// Now add the rest to the new item's children
 			var item = tree.Children.Contains(key) ? tree.Children.GetNode(key) : tree.Children.Add(key);
 			AddEntry(item, entry, endIndex + 1);
+
+			/*while (startIndex < entry.Length)
+			{
+				var endIndex = entry.IndexOf(pathDesignator, startIndex);
+				if (endIndex == -1) endIndex = entry.Length;
+				var key = entry.Substring(startIndex, endIndex - startIndex);
+				if (string.IsNullOrEmpty(key)) return;
+
+				node = enumChildren(node).FirstOrDefault(n => getPath(n) == key) ?? addChild(node, key);
+				startIndex = endIndex + 1;
+			}*/
 		}
 	}
 
