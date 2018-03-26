@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using Vanara.Extensions;
 
 namespace Vanara.Configuration
 {
@@ -113,17 +114,19 @@ namespace Vanara.Configuration
 						var type = Type.GetTypeFromProgID("Wscript.Shell");
 						if (type != null)
 						{
-							dynamic script = null;
+							object script = null;
 							try
 							{
 								script = Activator.CreateInstance(type);
 								foreach (var file in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Recent), "*.lnk").Where(s => exts.Contains(Path.GetExtension(s.Substring(0, s.Length - 4)).Trim('.').ToLower())))
 								{
-									dynamic sc = null;
+									object sc = null;
 									try
 									{
-										sc = script.CreateShortcut(file);
-										recentFiles.Add(sc.TargetPath);
+										sc = script.InvokeMethod<object>("CreateShortcut", file);
+										var targetPath = sc.GetPropertyValue<string>("TargetPath");
+										if (targetPath != null)
+											recentFiles.Add(targetPath);
 									}
 									finally
 									{
