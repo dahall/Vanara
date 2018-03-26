@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Classes for security related items derived from the Vanara PInvoke libraries. Includes extension methods for Active Directory and access control classes, methods for working with accounts, UAC, privileges, system access, impersonation and SIDs, and a full LSA wrapper.</Description>
@@ -19,6 +20,15 @@
     <PackageTags>pinvoke vanara net-extensions interop</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
     <IncludeSource>true</IncludeSource>
+    <PackageReleaseNotes>Currently implements:
+
+Classes
+AccountPrivileges, BadValueException, LogonRights, PrivilegedCodeBlock, SystemSecurity, WindowsImpersonatedIdentity
+
+Enumerations
+AccountLogonRights, DesiredAccess, SystemPrivilege
+
+</PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

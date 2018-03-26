@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Classes for Windows Shell items derived from the Vanara PInvoke libraries. Includes shell items, files, icons, links, and taskbar lists.</Description>
@@ -19,6 +20,15 @@
     <PackageTags>pinvoke vanara net-extensions interop</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
     <IncludeSource>true</IncludeSource>
+    <PackageReleaseNotes>Currently implements:
+
+Classes
+IconLocation, PropertyType, PropertyTypeList, ShellFileInfo
+
+Enumerations
+ExecutableType, FolderItemFilter, LibraryFolderFilter, LibraryViewTemplate, LinkResolution, ShellIconType, ShellItemAttribute, ShellItemComparison, ShellItemDisplayString, ShellItemGetImageOptions, ShellItemToolTipOptions
+
+</PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

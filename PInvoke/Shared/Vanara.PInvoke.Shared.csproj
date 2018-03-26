@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Shared methods, structures and constants for use throughout the Vanara.PInvoke assemblies. Includes:
@@ -28,14 +29,18 @@
     <Company>GitHub Community</Company>
     <Product>Vanara</Product>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <PackageReleaseNotes>Enums
-ACCESS_MASK, DrawTextFlags, FileFlagsAndAttributes, ProcessorArchitecture, ResourceType, SECURITY_INFORMATION, SystemShutDownReason
+    <PackageReleaseNotes>Currently implements:
 
-Structures/Types
-HRESULT, NTSTATUS, OBJECT_TYPE_LIST, RECT, SIZE, SECURITY_ATTRIBUTES, STGM, SYSTEMTIME, WIN32ERROR, WIN32_FIND_DATA
+Classes
+AssociateAttribute, CoTaskMemStringMarshaler, IEnumFromIndexer&lt;T&gt;, IEnumFromNext&lt;T&gt;, OBJECT_TYPE_LIST, OverlappedAsyncResult, PInvokeDataAttribute, PRECT, SECURITY_ATTRIBUTES, TryGetNext, WIN32_FIND_DATA
 
-Macros
-HIBYTE, HIWORD, LOBYTE, LOWORD, MAKELONG, MAKELONG64, MAKELPARAM, MAKEWORD, IS_INTRESOURCE, MAKEINTRESOURCE</PackageReleaseNotes>
+Structures
+HRESULT, MSG, NTStatus, OBJECT_TYPE_LIST, PRECT, RECT, SECURITY_ATTRIBUTES, SIZE, SYSTEMTIME, WIN32_FIND_DATA, Win32Error
+
+Enumerations
+ACCESS_MASK, DrawTextFlags, FacilityCode, FacilityCode, FileFlagsAndAttributes, ObjectTypeListLevel, PInvokeClient, ProcessorArchitecture, ResourceType, SECURITY_INFORMATION, SeverityLevel, SeverityLevel, ShowWindowCommand, STGM, SystemShutDownReason
+
+</PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

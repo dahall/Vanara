@@ -1,5 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>This library includes shared methods, structures and constants for use throughout the Vanara assemblies. Think of it as windows.h with some useful extensions. It includes:
 * Extension methods for working with enumerated types (enum), FILETIME, and method and property extractions via reflection
@@ -27,13 +27,23 @@
     <Company>GitHub Community</Company>
     <Product>Vanara</Product>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
+    <PackageReleaseNotes>Currently implements:
 
+Classes
+CorrespondingTypeAttribute, CoTaskMemoryMethods, EnumerableEqualityComparer&lt;T&gt;, EventedList&lt;T&gt;, GenericSafeHandle, HGlobalMemoryMethods, ListChangedEventArgs&lt;T&gt;, MarshalingStream, PinnedObject, SafeByteArray, SafeCoTaskMemHandle, SafeCoTaskMemString, SafeHGlobalHandle, SparseArray&lt;T&gt;
+
+Structures
+EnumFlagIndexer&lt;T&gt;, StrPtrAnsi, StrPtrAuto, StrPtrUni
+
+Enumerations
+CorrepsondingAction, StringListPackMethod
+
+</PackageReleaseNotes>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
-
   <ItemGroup Condition=" '$(TargetFramework)' == 'net20' ">
     <Reference Include="System.Drawing" />
     <Reference Include="System" />
@@ -50,17 +60,14 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Remove="Collections\Hierarchy.cs" />
     <Compile Remove="Collections\Tree.cs" />
     <Compile Remove="Collections\VaList.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <None Include="Collections\Hierarchy.cs" />
     <None Include="Collections\Tree.cs" />
     <None Include="Collections\VaList.cs" />
   </ItemGroup>
-
 </Project>

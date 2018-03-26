@@ -356,6 +356,8 @@ Native Interface | Native DLL | Header | Managed Interface
 [FolderItemVerbs](https://www.google.com/search?num=5&q=FolderItemVerbs+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [IApplicationDestinations](https://www.google.com/search?num=5&q=IApplicationDestinations+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IApplicationDestinations
 [IApplicationDocumentLists](https://www.google.com/search?num=5&q=IApplicationDocumentLists+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IApplicationDocumentLists
+[IAutoComplete](https://www.google.com/search?num=5&q=IAutoComplete+site%3Amsdn.microsoft.com) |  |  | Vanara.PInvoke.IAutoComplete
+[IAutoComplete2](https://www.google.com/search?num=5&q=IAutoComplete2+site%3Amsdn.microsoft.com) |  |  | Vanara.PInvoke.IAutoComplete2
 [ICustomDestinationList](https://www.google.com/search?num=5&q=ICustomDestinationList+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+ICustomDestinationList
 [IEnumExtraSearch](https://www.google.com/search?num=5&q=IEnumExtraSearch+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IEnumExtraSearch
 [IEnumIDList](https://www.google.com/search?num=5&q=IEnumIDList+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IEnumIDList
