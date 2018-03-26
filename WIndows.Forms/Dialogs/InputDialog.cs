@@ -7,39 +7,41 @@ using System.Windows.Forms;
 
 namespace Vanara.Windows.Forms
 {
-	/// <summary>
-	/// An input dialog that automatically creates controls to collect the values of the object supplied via the <see cref="Data"/> property.
-	/// </summary>
+	/// <summary>An input dialog that automatically creates controls to collect the values of the object supplied via the <see cref="Data"/> property.</summary>
 	public class InputDialog : CommonDialog
 	{
 		private object data;
 
 		/// <summary>
-		/// Gets or sets the data for the input dialog box. The data type will determine the type of input mechanism displayed. For simple types, a <see
-		/// cref="TextBox"/> with validation, or a <see cref="CheckBox"/> or a <see cref="ComboBox"/> will be displayed. For classes and structures, all of the
-		/// public, top-level, fields and properties will have input mechanisms shown for each. See Remarks for more detail.
+		/// Gets or sets the data for the input dialog box. The data type will determine the type of input mechanism displayed. For simple types, a
+		/// <see cref="TextBox"/> with validation, or a <see cref="CheckBox"/> or a <see cref="ComboBox"/> will be displayed. For classes and structures, all of
+		/// the public, top-level, fields and properties will have input mechanisms shown for each. See Remarks for more detail.
 		/// </summary>
 		/// <value>The data for the input dialog box.</value>
 		/// <remarks>TBD</remarks>
 		[DefaultValue(null), Browsable(false), Category("Data"), Description("The data for the input dialog box.")]
 		public object Data
 		{
-			get => data; set => data = value;
+			get => data;
+			set => data = value;
 		}
 
 		/// <summary>Gets or sets the image to display on the top left corner of the dialog. This value can be <c>null</c> to display no image.</summary>
 		/// <value>The image to display on the top left corner of the dialog.</value>
 		[DefaultValue(null), Category("Appearance"), Description("The image to display on the top left corner of the dialog.")]
+		[Localizable(true)]
 		public Image Image { get; set; }
 
 		/// <summary>Gets or sets the text prompt to display above all input options. This value can be <c>null</c>.</summary>
 		/// <value>The text prompt to display above all input options.</value>
 		[DefaultValue(null), Category("Appearance"), Description("The text prompt to display above all input options.")]
+		[Localizable(true), Bindable(true), Editor(typeof(System.ComponentModel.Design.MultilineStringEditor), typeof(System.Drawing.Design.UITypeEditor))]
 		public string Prompt { get; set; }
 
 		/// <summary>Gets or sets the input dialog box title.</summary>
 		/// <value>The input dialog box title. The default value is an empty string ("").</value>
 		[DefaultValue(""), Category("Window"), Description("The input dialog box title.")]
+		[Localizable(true), Bindable(true)]
 		public string Title { get; set; } = "";
 
 		/// <summary>Displays an input dialog in front of the specified object and with the specified prompt, caption, data, and image.</summary>
@@ -86,9 +88,7 @@ namespace Vanara.Windows.Forms
 		/// <remarks></remarks>
 		public static DialogResult Show(string prompt, string caption, ref object data, Image image = null, int width = 0) => Show(null, prompt, caption, ref data, image, width);
 
-		/// <summary>
-		/// Resets all properties to their default values.
-		/// </summary>
+		/// <summary>Resets all properties to their default values.</summary>
 		public override void Reset() { }
 
 		/// <summary>
@@ -99,14 +99,10 @@ namespace Vanara.Windows.Forms
 		/// <returns><c>true</c> if the data was collected; otherwise, <c>false</c>.</returns>
 		protected override bool RunDialog(IntPtr hwndOwner) => Show(NativeWindow.FromHandle(hwndOwner), Prompt, Title, ref data, Image) == DialogResult.OK;
 
-		/// <summary>
-		/// Get input based on automatic interpretation of Data object.
-		/// </summary>
+		/// <summary>Get input based on automatic interpretation of Data object.</summary>
 		internal class InternalInputDialog : Form
 		{
 			private const int prefWidth = 340;
-
-			private static readonly Size minSize = new Size(193, 104);
 
 			private static readonly Dictionary<Type, char[]> keyPressValidChars = new Dictionary<Type, char[]>
 			{
@@ -124,29 +120,30 @@ namespace Vanara.Windows.Forms
 				[typeof(TimeSpan)] = GetCultureChars(true, true, false, new[] { '-' }),
 				[typeof(Guid)] = GetCultureChars(true, false, false, "-{}()".ToCharArray()),
 			};
-
-			private static readonly Type[] simpleTypes = new[] { typeof(Enum), typeof(Decimal), typeof(DateTime),
-			typeof(DateTimeOffset), typeof(String), typeof(TimeSpan), typeof(Guid) };
+			private static readonly Size minSize = new Size(193, 104);
+			private static readonly Type[] simpleTypes = { typeof(Enum), typeof(decimal), typeof(DateTime),
+				typeof(DateTimeOffset), typeof(string), typeof(TimeSpan), typeof(Guid) };
 
 			private static readonly Dictionary<Type, Predicate<string>> validations = new Dictionary<Type, Predicate<string>>
 			{
-				[typeof(byte)] = s => { byte n; return byte.TryParse(s, out n); },
-				[typeof(sbyte)] = s => { sbyte n; return sbyte.TryParse(s, out n); },
-				[typeof(short)] = s => { short n; return short.TryParse(s, out n); },
-				[typeof(ushort)] = s => { ushort n; return ushort.TryParse(s, out n); },
-				[typeof(int)] = s => { int n; return int.TryParse(s, out n); },
-				[typeof(uint)] = s => { uint n; return uint.TryParse(s, out n); },
-				[typeof(long)] = s => { long n; return long.TryParse(s, out n); },
-				[typeof(ulong)] = s => { ulong n; return ulong.TryParse(s, out n); },
-				[typeof(char)] = s => { char n; return char.TryParse(s, out n); },
-				[typeof(double)] = s => { double n; return double.TryParse(s, out n); },
-				[typeof(float)] = s => { float n; return float.TryParse(s, out n); },
-				[typeof(decimal)] = s => { decimal n; return decimal.TryParse(s, out n); },
-				[typeof(DateTime)] = s => { DateTime n; return DateTime.TryParse(s, out n); },
-				[typeof(TimeSpan)] = s => { TimeSpan n; return TimeSpan.TryParse(s, out n); },
+				[typeof(byte)] = s => byte.TryParse(s, out var _),
+				[typeof(sbyte)] = s => sbyte.TryParse(s, out var _),
+				[typeof(short)] = s => short.TryParse(s, out var _),
+				[typeof(ushort)] = s => ushort.TryParse(s, out var _),
+				[typeof(int)] = s => int.TryParse(s, out var _),
+				[typeof(uint)] = s => uint.TryParse(s, out var _),
+				[typeof(long)] = s => long.TryParse(s, out var _),
+				[typeof(ulong)] = s => ulong.TryParse(s, out var _),
+				[typeof(char)] = s => char.TryParse(s, out var _),
+				[typeof(double)] = s => double.TryParse(s, out var _),
+				[typeof(float)] = s => float.TryParse(s, out var _),
+				[typeof(decimal)] = s => decimal.TryParse(s, out var _),
+				[typeof(DateTime)] = s => DateTime.TryParse(s, out var _),
+				[typeof(TimeSpan)] = s => TimeSpan.TryParse(s, out var _),
 				[typeof(Guid)] = s => { try { var n = new Guid(s); return true; } catch { return false; } },
 			};
 
+			private readonly List<MemberInfo> items = new List<MemberInfo>();
 			private Panel borderPanel;
 			private TableLayoutPanel buttonPanel;
 			private Button cancelBtn;
@@ -154,14 +151,11 @@ namespace Vanara.Windows.Forms
 			private object dataObj;
 			private ErrorProvider errorProvider;
 			private Image image;
-			private readonly List<MemberInfo> items = new List<MemberInfo>();
 			private Button okBtn;
 			private string prompt;
 			private TableLayoutPanel table;
 
-			/// <summary>
-			/// Initializes a new instance of the <see cref="InternalInputDialog"/> class.
-			/// </summary>
+			/// <summary>Initializes a new instance of the <see cref="InternalInputDialog"/> class.</summary>
 			public InternalInputDialog()
 			{
 				InitializeComponent();
@@ -171,7 +165,7 @@ namespace Vanara.Windows.Forms
 			{
 				Width = width;
 				this.prompt = prompt;
-				base.Text = caption;
+				Text = caption;
 				this.image = image;
 				Data = data;
 			}
@@ -222,13 +216,12 @@ namespace Vanara.Windows.Forms
 			[DefaultValue(null)]
 			public Image Image
 			{
-				get => image; set
+				get => image;
+				set
 				{
-					if (image != value)
-					{
-						image = value;
-						BuildTable();
-					}
+					if (image == value) return;
+					image = value;
+					BuildTable();
 				}
 			}
 
@@ -237,22 +230,20 @@ namespace Vanara.Windows.Forms
 			[DefaultValue(null)]
 			public string Prompt
 			{
-				get => prompt; set
+				get => prompt;
+				set
 				{
-					if (prompt != value)
-					{
-						prompt = value;
-						BuildTable();
-					}
+					if (prompt == value) return;
+					prompt = value;
+					BuildTable();
 				}
 			}
 
-			/// <summary>
-			/// Gets or sets the width of the control.
-			/// </summary>
+			/// <summary>Gets or sets the width of the control.</summary>
 			public new int Width
 			{
-				get => base.Width; set
+				get => base.Width;
+				set
 				{
 					if (value == 0) value = prefWidth;
 					value = Math.Max(minSize.Width, value);
@@ -276,11 +267,13 @@ namespace Vanara.Windows.Forms
 
 			private static string ConvertToStr(object value)
 			{
-				if (value == null)
-					return string.Empty;
-				var conv = value as IConvertible;
-				if (conv != null)
-					return value.ToString();
+				switch (value)
+				{
+					case null:
+						return string.Empty;
+					case IConvertible conv:
+						return value.ToString();
+				}
 				return (string)TypeDescriptor.GetConverter(value).ConvertTo(value, typeof(string));
 			}
 
@@ -325,21 +318,17 @@ namespace Vanara.Windows.Forms
 			}
 
 			private static bool IsSimpleType(Type type) => type.IsPrimitive || type.IsEnum || Array.Exists(simpleTypes, t => t == type) || Convert.GetTypeCode(type) != TypeCode.Object ||
-				(type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>) && IsSimpleType(type.GetGenericArguments()[0]));
+				type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>) && IsSimpleType(type.GetGenericArguments()[0]);
 
 			private static bool IsSupportedType(Type type)
 			{
 				if (typeof(IConvertible).IsAssignableFrom(type))
 					return true;
 				var cvtr = TypeDescriptor.GetConverter(type);
-				if (cvtr.CanConvertFrom(typeof(string)) && cvtr.CanConvertTo(typeof(string)))
-					return true;
-				return false;
+				return cvtr.CanConvertFrom(typeof(string)) && cvtr.CanConvertTo(typeof(string));
 			}
 
-			/// <summary>
-			/// Binds input text values back to the Data object.
-			/// </summary>
+			/// <summary>Binds input text values back to the Data object.</summary>
 			private void BindToData()
 			{
 				for (var i = 0; i < items.Count; i++)
@@ -392,7 +381,7 @@ namespace Vanara.Windows.Forms
 				}
 				else
 				{
-					var tb = new TextBox { CausesValidation = true, Dock = DockStyle.Fill, Text = t };
+					var tb = new TextBox { CausesValidation = true, Dock = DockStyle.Fill, Text = t, UseSystemPasswordChar = GetAttr(item)?.UsePasswordChar ?? false };
 					tb.Enter += (s, e) => tb.SelectAll();
 					if (itemType == typeof(char))
 						tb.KeyPress += (s, e) => e.Handled = !char.IsControl(e.KeyChar) && tb.TextLength > 0;
@@ -459,7 +448,7 @@ namespace Vanara.Windows.Forms
 						Text = Prompt,
 						Dock = DockStyle.Top,
 						UseMnemonic = false,
-						Font = new Font(Font.FontFamily, Font.Size*4/3),
+						Font = new Font(Font.FontFamily, Font.Size * 4 / 3),
 						ForeColor = Color.FromArgb(19, 112, 171),
 						Margin = new Padding(items.Count == 1 && items[0] == null ? 1 : 0, 0, 0, 0)
 					};
@@ -478,11 +467,8 @@ namespace Vanara.Windows.Forms
 
 				table.ResumeLayout();
 
-				if (HasPrompt)
-				{
-					if (lbl != null && lbl.PreferredWidth > lbl.Width)
-						lbl.MinimumSize = lbl.Size;
-				}
+				if (HasPrompt && lbl != null && lbl.PreferredWidth > lbl.Width)
+					lbl.MinimumSize = lbl.Size;
 			}
 
 			private void cancelBtn_Click(object sender, EventArgs e)
@@ -506,9 +492,7 @@ namespace Vanara.Windows.Forms
 				buttonPanel.SuspendLayout();
 				((ISupportInitialize)errorProvider).BeginInit();
 				SuspendLayout();
-				//
 				// buttonPanel
-				//
 				buttonPanel.AutoSize = true;
 				buttonPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 				buttonPanel.BackColor = SystemColors.Control;
@@ -528,34 +512,28 @@ namespace Vanara.Windows.Forms
 				buttonPanel.RowStyles.Add(new RowStyle());
 				buttonPanel.Size = new Size(177, 40);
 				buttonPanel.TabIndex = 1;
-				//
 				// okBtn
-				//
 				okBtn.Location = new Point(10, 8);
 				okBtn.Margin = new Padding(0, 0, 7, 0);
 				okBtn.MinimumSize = new Size(75, 23);
 				okBtn.Name = "okBtn";
 				okBtn.Size = new Size(75, 23);
-				okBtn.TabIndex = 0;
+				okBtn.TabIndex = 1;
 				okBtn.Text = "OK";
 				okBtn.UseVisualStyleBackColor = true;
 				okBtn.Click += new EventHandler(okBtn_Click);
-				//
 				// cancelBtn
-				//
 				cancelBtn.DialogResult = DialogResult.Cancel;
 				cancelBtn.Location = new Point(92, 8);
 				cancelBtn.Margin = new Padding(0);
 				cancelBtn.MinimumSize = new Size(75, 23);
 				cancelBtn.Name = "cancelBtn";
 				cancelBtn.Size = new Size(75, 23);
-				cancelBtn.TabIndex = 1;
+				cancelBtn.TabIndex = 2;
 				cancelBtn.Text = "&Cancel";
 				cancelBtn.UseVisualStyleBackColor = true;
 				cancelBtn.Click += new EventHandler(cancelBtn_Click);
-				//
 				// borderPanel
-				//
 				borderPanel.BackColor = Color.FromArgb((int)(byte)223, (int)(byte)223, (int)(byte)223);
 				borderPanel.Dock = DockStyle.Bottom;
 				borderPanel.Location = new Point(0, 24);
@@ -563,10 +541,8 @@ namespace Vanara.Windows.Forms
 				borderPanel.MinimumSize = new Size(0, 1);
 				borderPanel.Name = "borderPanel";
 				borderPanel.Size = new Size(177, 1);
-				borderPanel.TabIndex = 2;
-				//
+				borderPanel.TabIndex = 3;
 				// table
-				//
 				table.AutoSize = true;
 				table.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 				table.ColumnCount = 3;
@@ -581,14 +557,10 @@ namespace Vanara.Windows.Forms
 				table.RowCount = 1;
 				table.RowStyles.Add(new RowStyle());
 				table.Size = new Size(177, 24);
-				table.TabIndex = 3;
-				//
+				table.TabIndex = 0;
 				// errorProvider
-				//
 				errorProvider.ContainerControl = this;
-				//
 				// InternalInputDialog
-				//
 				AcceptButton = okBtn;
 				AutoSize = true;
 				AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -614,8 +586,7 @@ namespace Vanara.Windows.Forms
 			{
 				if (char.IsControl(keyChar))
 					return false;
-				char[] chars;
-				keyPressValidChars.TryGetValue(itemType, out chars);
+				keyPressValidChars.TryGetValue(itemType, out char[] chars);
 				if (chars != null)
 				{
 					var si = Array.BinarySearch(chars, keyChar);
@@ -637,11 +608,8 @@ namespace Vanara.Windows.Forms
 			{
 				if (string.IsNullOrEmpty(tb.Text))
 					return false;
-				Predicate<string> p;
-				validations.TryGetValue(itemType, out p);
-				if (p != null)
-					return !p(tb.Text);
-				return false;
+				validations.TryGetValue(itemType, out Predicate<string> p);
+				return p != null && !p(tb.Text);
 			}
 
 			private class RegexTextBox : TextBox
@@ -657,48 +625,34 @@ namespace Vanara.Windows.Forms
 		}
 	}
 
-	/// <summary>
-	/// Allows a developer to attribute a property or field with text that gets shown instead of the field or property name in an <see cref="InputDialog"/>.
-	/// </summary>
+	/// <summary>Allows a developer to attribute a property or field with text that gets shown instead of the field or property name in an <see cref="InputDialog"/>.</summary>
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
 	public sealed class InputDialogItemAttribute : Attribute
 	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="InputDialogItemAttribute" /> class.
-		/// </summary>
+		/// <summary>Initializes a new instance of the <see cref="InputDialogItemAttribute"/> class.</summary>
 		public InputDialogItemAttribute() { }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="InputDialogItemAttribute" /> class.
-		/// </summary>
+		/// <summary>Initializes a new instance of the <see cref="InputDialogItemAttribute"/> class.</summary>
 		/// <param name="label">The label to use in the <see cref="InputDialog"/> as the label for this field or property.</param>
 		public InputDialogItemAttribute(string label)
 		{
 			Label = label;
 		}
 
-		/// <summary>
-		/// Gets or sets a value indicating whether this item is hidden and not displayed by the <see cref="InputDialog"/>.
-		/// </summary>
-		/// <value>
-		/// <c>true</c> if hidden; otherwise, <c>false</c>.
-		/// </value>
+		/// <summary>Gets or sets a value indicating whether this item is hidden and not displayed by the <see cref="InputDialog"/>.</summary>
+		/// <value><c>true</c> if hidden; otherwise, <c>false</c>.</value>
 		public bool Hidden { get; set; } = false;
 
-		/// <summary>
-		/// Gets or sets the label to use in the <see cref="InputDialog"/> as the label for this field or property.
-		/// </summary>
-		/// <value>
-		/// The label for this item.
-		/// </value>
+		/// <summary>Gets or sets the label to use in the <see cref="InputDialog"/> as the label for this field or property.</summary>
+		/// <value>The label for this item.</value>
 		public string Label { get; }
 
-		/// <summary>
-		/// Gets or sets the order in which to display the input for this field or property within the <see cref="InputDialog"/>.
-		/// </summary>
-		/// <value>
-		/// The display order for this item.
-		/// </value>
+		/// <summary>Gets or sets the order in which to display the input for this field or property within the <see cref="InputDialog"/>.</summary>
+		/// <value>The display order for this item.</value>
 		public int Order { get; set; } = int.MaxValue;
+
+		/// <summary>Gets or sets a value indicating whether text boxes should display text using the system default password character.</summary>
+		/// <value><c>true</c> if using a password character; otherwise, <c>false</c>.</value>
+		public bool UsePasswordChar { get; set; } = false;
 	}
 }
