@@ -2,30 +2,22 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using System.Security;
 using System.Windows.Forms;
+using Vanara.InteropServices;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.User32_Gdi;
 
 namespace Vanara.Extensions
 {
+	/// <summary>Extension methods for <see cref="TextBox"/>.</summary>
 	public static partial class TextBoxExtension
 	{
-		[Flags]
-		public enum AutoCompleteOptions
-		{
-			None = 0,
-			AutoSuggest = 0x1,
-			AutoAppend = 0x2,
-			Search = 0x4,
-			FilterPreFixes = 0x8,
-			UseTab = 0x10,
-			UpDownKeyDropsList = 0x20,
-			RtlReading = 0x40,
-			WordFilter = 0x80,
-			NoPrefixFiltering = 0x100
-		}
-
+		/// <summary>Sets the textual cue, or tip, that is displayed by the edit control to prompt the user for information.</summary>
+		/// <param name="textBox">The text box.</param>
+		/// <param name="cueBannerText">A string that contains the text to display as the textual cue.</param>
+		/// <param name="retainOnFocus">if set to <c>true</c> the cue banner should show even when the edit control has focus.</param>
+		/// <exception cref="PlatformNotSupportedException">Must be Windows Vista or later.</exception>
 		public static void SetCueBanner(this TextBox textBox, string cueBannerText, bool retainOnFocus = false)
 		{
 			if (Environment.OSVersion.Version.Major >= 6)
@@ -37,21 +29,27 @@ namespace Vanara.Extensions
 				throw new PlatformNotSupportedException();
 		}
 
-		public static void SetCustomAutoCompleteList(this TextBox textBox, IList<string> items, AutoCompleteOptions options = AutoCompleteOptions.AutoSuggest)
+		/// <summary>Sets a custom automatic complete list.</summary>
+		/// <param name="textBox">The text box.</param>
+		/// <param name="items">The autocomplete strings.</param>
+		/// <param name="options">The autocomplete options.</param>
+		public static void SetCustomAutoCompleteList(this TextBox textBox, IList<string> items, AUTOCOMPLETEOPTIONS options = AUTOCOMPLETEOPTIONS.ACO_AUTOSUGGEST)
 		{
-			var ac = (IAutoComplete2)Activator.CreateInstance(Type.GetTypeFromCLSID(new Guid("{00BB2763-6A77-11D0-A535-00C04FD7D062}")));
+			var ac = new IAutoComplete2();
 			ac.Init(new HandleRef(textBox, textBox.Handle), new ComEnumStringImpl(items), null, null);
-			ac.SetOptions((int)options);
+			ac.SetOptions(options);
 			Marshal.ReleaseComObject(ac);
 		}
 
-		[ComImport, SuppressUnmanagedCodeSecurity, Guid("EAC04BC0-3791-11D2-BB95-0060977B464C"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		private interface IAutoComplete2
+		/// <summary>Sets the tab stops in a multiline edit control. When text is copied to the control, any tab character in the text causes space to be generated up to the next tab stop.</summary>
+		/// <param name="textBox">The text box.</param>
+		/// <param name="tabs">An array of unsigned integers specifying the tab stops, in dialog template units. If this parameter is not supplied, default tab stops are set at every 32 dialog template units. If a single value is provided, this value is the distance between all tab stops, in dialog template units. If two or more values are provided, each value represents a tab stop in dialog template units.</param>
+		public static void SetTabStops(this TextBox textBox, params uint[] tabs)
 		{
-			void Init(HandleRef hwndEdit, IEnumString punkAcl, [MarshalAs(UnmanagedType.LPWStr)] string pwszRegKeyPath, [MarshalAs(UnmanagedType.LPWStr)] string pwszQuickComplete);
-			void Enable(bool fEnable);
-			void SetOptions(int dwFlag);
-			void GetOptions(out int dwFlag);
+			if (tabs == null) tabs = new uint[0];
+			using (var ptr = SafeCoTaskMemHandle.CreateFromList(tabs))
+				SendMessage(new HandleRef(textBox, textBox.Handle), (int)EditMessage.EM_SETTABSTOPS, (IntPtr)tabs.Length, (IntPtr)ptr);
+			textBox.Invalidate();
 		}
 
 		private class ComEnumStringImpl : IEnumString
