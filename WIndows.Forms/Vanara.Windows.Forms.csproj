@@ -1,9 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Classes for user interface related items derived from the Vanara PInvoke libraries. Includes extensions for almost all common controls to give post Vista capabilities, WinForms controls (panel, commandlink, enhanced combo boxes, IPAddress, split button, trackbar and themed controls), shutdown/restart/lock control, buffered painting, resource files, access control editor, simplifed designer framework for Windows.Forms.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.9</VersionPrefix>
+    <VersionPrefix>1.0.10</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
     <AssemblyName>Vanara.Windows.Forms</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -19,6 +20,18 @@
     <PackageTags>pinvoke vanara net-extensions interop</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
     <IncludeSource>true</IncludeSource>
+    <PackageReleaseNotes>Currently implements:
+
+Classes
+ActivationContext, AppSettingsFileListStorage, AspChildControlTypeAttribute, AspDataFieldAttribute, AspDataFieldsAttribute, AspMethodPropertyAttribute, AspMvcActionAttribute, AspMvcActionSelectorAttribute, AspMvcAreaAttribute, AspMvcAreaMasterLocationFormatAttribute, AspMvcAreaPartialViewLocationFormatAttribute, AspMvcAreaViewLocationFormatAttribute, AspMvcControllerAttribute, AspMvcDisplayTemplateAttribute, AspMvcEditorTemplateAttribute, AspMvcMasterAttribute, AspMvcMasterLocationFormatAttribute, AspMvcModelTypeAttribute, AspMvcPartialViewAttribute, AspMvcPartialViewLocationFormatAttribute, AspMvcSuppressViewErrorAttribute, AspMvcTemplateAttribute, AspMvcViewAttribute, AspMvcViewComponentAttribute, AspMvcViewComponentViewAttribute, AspMvcViewLocationFormatAttribute, AspRequiredAttributeAttribute, AspTypePropertyAttribute, AssertionConditionAttribute, AssertionMethodAttribute, AuthenticationBuffer, BaseTypeRequiredAttribute, BufferedPaintHandle, ButtonClickedEventArgs, CanBeNullAttribute, CannotApplyEqualityOperatorAttribute, CollapsiblePanel, CollectionAccessAttribute, CommandLink, ContractAnnotationAttribute, ControlImage, CredentialsDialog, DesignerActionMethodAttribute, DesignerActionPropertyAttribute, DesignerVerbAttribute, DisabledItemComboBox, DrawPattern, EditorServiceContext, EnumComboBox, ExpandedEventArgs, FlagCheckedListBox, FlagCheckedListBoxItem, FlagEnumUIEditor&lt;T&gt;, FolderBrowserDialog, FolderBrowserDialogInitializedEventArgs, GetDuration&lt;T&gt;, GlassExtenderProvider, GroupIconResIndexer, HtmlAttributeValueAttribute, HtmlElementAttributesAttribute, ImageResIndexer&lt;T&gt;, ImplicitNotNullAttribute, InputDialog, InputDialogItemAttribute, InstantHandleAttribute, InvalidFolderEventArgs, InvokerParameterNameAttribute, IPAddressBox, IPAddressFieldChangedEventArgs, ItemCanBeNullAttribute, ItemNotNullAttribute, LinqTunnelAttribute, ListViewGroupingSet&lt;T&gt;, LocalizationRequiredAttribute, MacroAttribute, MeansImplicitUseAttribute, MenuStripMRUManager, MRUManager, MustUseReturnValueAttribute, NoEnumerationAttribute, NoReorder, NotifyPropertyChangedInvocatorAttribute, NotNullAttribute, PaintAction`2, PasswordValidatorEventArgs, PathReferenceAttribute, PreventShutdownContext, ProgressDialog, ProgressEventArgs, ProvidesContextAttribute, PublicAPIAttribute, PureAttribute, RazorDirectiveAttribute, RazorHelperCommonAttribute, RazorImportNamespaceAttribute, RazorInjectionAttribute, RazorLayoutAttribute, RazorSectionAttribute, RazorWriteLiteralMethodAttribute, RazorWriteMethodAttribute, RazorWriteMethodParameterAttribute, RedirectedDesignerPropertyAttribute, RegexPatternAttribute, RegistryFileListStorage, ResourceFile, SmartBitmapLock, SourceTemplateAttribute, SplitMenuEventArgs, StringFormatMethodAttribute, StringResIndexer, Style, TaskDialogProgressBar, TerminatesProgramAttribute, ThemedLabel, ThemedPanel, ThemedTableLayoutPanel, TimerEventArgs, TrackBarEx, TranslateButtonStateDelegate, UsedImplicitlyAttribute, ValueProviderAttribute, VerificationClickedEventArgs, VistaControlExtender, VisualTheme, XamlItemBindingOfItemsControlAttribute, XamlItemsControlAttribute
+
+Structures
+ImageListDrawColor, TaskDialogResult
+
+Enumerations
+AssertionConditionType, CloakingSource, CollapsiblePanelBorderCondition, CollapsiblePanelHeaderState, CollectionAccessType, ControlState, Corners, Flip3DWindowPolicy, FolderBrowserDialogOptions, ImplicitUseKindFlags, ImplicitUseTargetFlags, KnownFolders, NonClientRenderingPolicy, ProgressBarState, RenderStyle, SecurityPageType, SizeMode, TaskDialogButtonDisplay, TaskDialogCommonButtons, TaskDialogIcon
+
+</PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

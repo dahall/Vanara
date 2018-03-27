@@ -4,7 +4,7 @@
     <Description>Methods, structures and constants imported from User32.dll and specific to graphics or window management.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.9</VersionPrefix>
+    <VersionPrefix>1.0.10</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.User32.Gdi</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
