@@ -327,7 +327,7 @@ namespace Vanara.Configuration
 
 			private void TryLoadAppSettings()
 			{
-				var appSettingsType = GetType().Assembly.GetTypes().First(t => t.IsSubclassOf(typeof(ApplicationSettingsBase)));
+				var appSettingsType = Assembly.GetEntryAssembly().GetTypes().FirstOrDefault(t => t.IsSubclassOf(typeof(ApplicationSettingsBase)));
 				if (appSettingsType != null)
 				{
 					var defProp = appSettingsType.GetProperty("Default");
