@@ -33,364 +33,364 @@ namespace Vanara.Windows.Forms
 	/// <summary>
 	/// Standard folders registered with the system as Known Folders. A computer will have only folders appropriate to it installed.
 	/// </summary>
-	public enum KnownFolders
+	public enum KnownFolder
 	{
 		/// <summary>Account Pictures</summary>
-		AccountPictures,
+		AccountPictures = KNOWNFOLDERID.FOLDERID_AccountPictures,
 
 		/// <summary>Get Programs</summary>
-		AddNewPrograms,
+		AddNewPrograms = KNOWNFOLDERID.FOLDERID_AddNewPrograms,
 
-		/// <summary>Administration Tools</summary>
-		AdminTools,
+		/// <summary>Admin tools</summary>
+		AdminTools = KNOWNFOLDERID.FOLDERID_AdminTools,
 
-		/// <summary>Application Shortcuts</summary>
-		ApplicationShortcuts,
+		/// <summary>Application shortcuts</summary>
+		ApplicationShortcuts = KNOWNFOLDERID.FOLDERID_ApplicationShortcuts,
 
 		/// <summary>Applications</summary>
-		AppsFolder,
+		AppsFolder = KNOWNFOLDERID.FOLDERID_AppsFolder,
 
 		/// <summary>Installed Updates</summary>
-		AppUpdates,
+		AppUpdates = KNOWNFOLDERID.FOLDERID_AppUpdates,
 
 		/// <summary>Camera Roll</summary>
-		CameraRoll,
+		CameraRoll = KNOWNFOLDERID.FOLDERID_CameraRoll,
 
 		/// <summary>Temporary Burn Folder</summary>
-		CDBurning,
+		CDBurning = KNOWNFOLDERID.FOLDERID_CDBurning,
 
 		/// <summary>Programs and Features</summary>
-		ChangeRemovePrograms,
+		ChangeRemovePrograms = KNOWNFOLDERID.FOLDERID_ChangeRemovePrograms,
 
 		/// <summary>Administrative Tools</summary>
-		CommonAdminTools,
+		CommonAdminTools = KNOWNFOLDERID.FOLDERID_CommonAdminTools,
 
 		/// <summary>OEM Links</summary>
-		CommonOEMLinks,
+		CommonOEMLinks = KNOWNFOLDERID.FOLDERID_CommonOEMLinks,
 
 		/// <summary>Programs</summary>
-		CommonPrograms,
+		CommonPrograms = KNOWNFOLDERID.FOLDERID_CommonPrograms,
 
 		/// <summary>Start Menu</summary>
-		CommonStartMenu,
+		CommonStartMenu = KNOWNFOLDERID.FOLDERID_CommonStartMenu,
 
 		/// <summary>Startup</summary>
-		CommonStartup,
+		CommonStartup = KNOWNFOLDERID.FOLDERID_CommonStartup,
 
 		/// <summary>Templates</summary>
-		CommonTemplates,
+		CommonTemplates = KNOWNFOLDERID.FOLDERID_CommonTemplates,
 
 		/// <summary>Computer</summary>
-		ComputerFolder,
+		ComputerFolder = KNOWNFOLDERID.FOLDERID_ComputerFolder,
 
 		/// <summary>Conflicts</summary>
-		ConflictFolder,
+		ConflictFolder = KNOWNFOLDERID.FOLDERID_ConflictFolder,
 
 		/// <summary>Network Connections</summary>
-		ConnectionsFolder,
+		ConnectionsFolder = KNOWNFOLDERID.FOLDERID_ConnectionsFolder,
 
 		/// <summary>Contacts</summary>
-		Contacts,
+		Contacts = KNOWNFOLDERID.FOLDERID_Contacts,
 
 		/// <summary>Control Panel</summary>
-		ControlPanelFolder,
+		ControlPanelFolder = KNOWNFOLDERID.FOLDERID_ControlPanelFolder,
 
 		/// <summary>Cookies</summary>
-		Cookies,
+		Cookies = KNOWNFOLDERID.FOLDERID_Cookies,
 
 		/// <summary>Desktop</summary>
-		Desktop,
+		Desktop = KNOWNFOLDERID.FOLDERID_Desktop,
 
 		/// <summary>DeviceMetadataStore</summary>
-		DeviceMetadataStore,
+		DeviceMetadataStore = KNOWNFOLDERID.FOLDERID_DeviceMetadataStore,
 
 		/// <summary>Documents</summary>
-		Documents,
+		Documents = KNOWNFOLDERID.FOLDERID_Documents,
 
 		/// <summary>Documents</summary>
-		DocumentsLibrary,
+		DocumentsLibrary = KNOWNFOLDERID.FOLDERID_DocumentsLibrary,
 
 		/// <summary>Downloads</summary>
-		Downloads,
+		Downloads = KNOWNFOLDERID.FOLDERID_Downloads,
 
 		/// <summary>Favorites</summary>
-		Favorites,
+		Favorites = KNOWNFOLDERID.FOLDERID_Favorites,
 
 		/// <summary>Fonts</summary>
-		Fonts,
+		Fonts = KNOWNFOLDERID.FOLDERID_Fonts,
 
 		/// <summary>Games</summary>
-		Games,
+		Games = KNOWNFOLDERID.FOLDERID_Games,
 
 		/// <summary>GameExplorer</summary>
-		GameTasks,
+		GameTasks = KNOWNFOLDERID.FOLDERID_GameTasks,
 
 		/// <summary>History</summary>
-		History,
+		History = KNOWNFOLDERID.FOLDERID_History,
 
 		/// <summary>Homegroup</summary>
-		HomeGroup,
+		HomeGroup = KNOWNFOLDERID.FOLDERID_HomeGroup,
 
 		/// <summary>The user's username (%USERNAME%)</summary>
-		HomeGroupCurrentUser,
+		HomeGroupCurrentUser = KNOWNFOLDERID.FOLDERID_HomeGroupCurrentUser,
 
 		/// <summary>ImplicitAppShortcuts</summary>
-		ImplicitAppShortcuts,
+		ImplicitAppShortcuts = KNOWNFOLDERID.FOLDERID_ImplicitAppShortcuts,
 
 		/// <summary>Temporary Internet Files</summary>
-		InternetCache,
+		InternetCache = KNOWNFOLDERID.FOLDERID_InternetCache,
 
 		/// <summary>The Internet</summary>
-		InternetFolder,
+		InternetFolder = KNOWNFOLDERID.FOLDERID_InternetFolder,
 
 		/// <summary>Libraries</summary>
-		Libraries,
+		Libraries = KNOWNFOLDERID.FOLDERID_Libraries,
 
 		/// <summary>Links</summary>
-		Links,
+		Links = KNOWNFOLDERID.FOLDERID_Links,
 
 		/// <summary>Local</summary>
-		LocalAppData,
+		LocalAppData = KNOWNFOLDERID.FOLDERID_LocalAppData,
 
 		/// <summary>LocalLow</summary>
-		LocalAppDataLow,
+		LocalAppDataLow = KNOWNFOLDERID.FOLDERID_LocalAppDataLow,
 
 		/// <summary>None</summary>
-		LocalizedResourcesDir,
+		LocalizedResourcesDir = KNOWNFOLDERID.FOLDERID_LocalizedResourcesDir,
 
 		/// <summary>Music</summary>
-		Music,
+		Music = KNOWNFOLDERID.FOLDERID_Music,
 
 		/// <summary>Music</summary>
-		MusicLibrary,
+		MusicLibrary = KNOWNFOLDERID.FOLDERID_MusicLibrary,
 
 		/// <summary>Network Shortcuts</summary>
-		NetHood,
+		NetHood = KNOWNFOLDERID.FOLDERID_NetHood,
 
 		/// <summary>Network</summary>
-		NetworkFolder,
+		NetworkFolder = KNOWNFOLDERID.FOLDERID_NetworkFolder,
 
 		/// <summary>Original Images</summary>
-		OriginalImages,
+		OriginalImages = KNOWNFOLDERID.FOLDERID_OriginalImages,
 
 		/// <summary>Slide Shows</summary>
-		PhotoAlbums,
+		PhotoAlbums = KNOWNFOLDERID.FOLDERID_PhotoAlbums,
 
 		/// <summary>Pictures</summary>
-		PicturesLibrary,
+		PicturesLibrary = KNOWNFOLDERID.FOLDERID_PicturesLibrary,
 
 		/// <summary>Pictures</summary>
-		Pictures,
+		Pictures = KNOWNFOLDERID.FOLDERID_Pictures,
 
 		/// <summary>Playlists</summary>
-		Playlists,
+		Playlists = KNOWNFOLDERID.FOLDERID_Playlists,
 
 		/// <summary>Printers</summary>
-		PrintersFolder,
+		PrintersFolder = KNOWNFOLDERID.FOLDERID_PrintersFolder,
 
 		/// <summary>Printer Shortcuts</summary>
-		PrintHood,
+		PrintHood = KNOWNFOLDERID.FOLDERID_PrintHood,
 
 		/// <summary>The user's username (%USERNAME%)</summary>
-		Profile,
+		Profile = KNOWNFOLDERID.FOLDERID_Profile,
 
 		/// <summary>ProgramData</summary>
-		ProgramData,
+		ProgramData = KNOWNFOLDERID.FOLDERID_ProgramData,
 
 		/// <summary>Program Files</summary>
-		ProgramFiles,
+		ProgramFiles = KNOWNFOLDERID.FOLDERID_ProgramFiles,
 
 		/// <summary>Program Files</summary>
-		ProgramFilesX64,
+		ProgramFilesX64 = KNOWNFOLDERID.FOLDERID_ProgramFilesX64,
 
 		/// <summary>Program Files</summary>
-		ProgramFilesX86,
+		ProgramFilesX86 = KNOWNFOLDERID.FOLDERID_ProgramFilesX86,
 
 		/// <summary>Common Files</summary>
-		ProgramFilesCommon,
+		ProgramFilesCommon = KNOWNFOLDERID.FOLDERID_ProgramFilesCommon,
 
 		/// <summary>Common Files</summary>
-		ProgramFilesCommonX64,
+		ProgramFilesCommonX64 = KNOWNFOLDERID.FOLDERID_ProgramFilesCommonX64,
 
 		/// <summary>Common Files</summary>
-		ProgramFilesCommonX86,
+		ProgramFilesCommonX86 = KNOWNFOLDERID.FOLDERID_ProgramFilesCommonX86,
 
 		/// <summary>Programs</summary>
-		Programs,
+		Programs = KNOWNFOLDERID.FOLDERID_Programs,
 
 		/// <summary>Public</summary>
-		Public,
+		Public = KNOWNFOLDERID.FOLDERID_Public,
 
 		/// <summary>Public Desktop</summary>
-		PublicDesktop,
+		PublicDesktop = KNOWNFOLDERID.FOLDERID_PublicDesktop,
 
 		/// <summary>Public Documents</summary>
-		PublicDocuments,
+		PublicDocuments = KNOWNFOLDERID.FOLDERID_PublicDocuments,
 
 		/// <summary>Public Downloads</summary>
-		PublicDownloads,
+		PublicDownloads = KNOWNFOLDERID.FOLDERID_PublicDownloads,
 
 		/// <summary>GameExplorer</summary>
-		PublicGameTasks,
+		PublicGameTasks = KNOWNFOLDERID.FOLDERID_PublicGameTasks,
 
 		/// <summary>Libraries</summary>
-		PublicLibraries,
+		PublicLibraries = KNOWNFOLDERID.FOLDERID_PublicLibraries,
 
 		/// <summary>Public Music</summary>
-		PublicMusic,
+		PublicMusic = KNOWNFOLDERID.FOLDERID_PublicMusic,
 
 		/// <summary>Public Pictures</summary>
-		PublicPictures,
+		PublicPictures = KNOWNFOLDERID.FOLDERID_PublicPictures,
 
 		/// <summary>Ringtones</summary>
-		PublicRingtones,
+		PublicRingtones = KNOWNFOLDERID.FOLDERID_PublicRingtones,
 
 		/// <summary>Public Account Pictures</summary>
-		PublicUserTiles,
+		PublicUserTiles = KNOWNFOLDERID.FOLDERID_PublicUserTiles,
 
 		/// <summary>Public Videos</summary>
-		PublicVideos,
+		PublicVideos = KNOWNFOLDERID.FOLDERID_PublicVideos,
 
 		/// <summary>Quick Launch</summary>
-		QuickLaunch,
+		QuickLaunch = KNOWNFOLDERID.FOLDERID_QuickLaunch,
 
 		/// <summary>Recent Items</summary>
-		Recent,
+		Recent = KNOWNFOLDERID.FOLDERID_Recent,
 
 		/// <summary>Recorded TV</summary>
-		RecordedTVLibrary,
+		RecordedTVLibrary = KNOWNFOLDERID.FOLDERID_RecordedTVLibrary,
 
 		/// <summary>Recycle Bin</summary>
-		RecycleBinFolder,
+		RecycleBinFolder = KNOWNFOLDERID.FOLDERID_RecycleBinFolder,
 
 		/// <summary>Resources</summary>
-		ResourceDir,
+		ResourceDir = KNOWNFOLDERID.FOLDERID_ResourceDir,
 
 		/// <summary>Ringtones</summary>
-		Ringtones,
+		Ringtones = KNOWNFOLDERID.FOLDERID_Ringtones,
 
 		/// <summary>Roaming</summary>
-		RoamingAppData,
+		RoamingAppData = KNOWNFOLDERID.FOLDERID_RoamingAppData,
 
 		/// <summary>RoamedTileImages</summary>
-		RoamedTileImages,
+		RoamedTileImages = KNOWNFOLDERID.FOLDERID_RoamedTileImages,
 
 		/// <summary>RoamingTiles</summary>
-		RoamingTiles,
+		RoamingTiles = KNOWNFOLDERID.FOLDERID_RoamingTiles,
 
 		/// <summary>Sample Music</summary>
-		SampleMusic,
+		SampleMusic = KNOWNFOLDERID.FOLDERID_SampleMusic,
 
 		/// <summary>Sample Pictures</summary>
-		SamplePictures,
+		SamplePictures = KNOWNFOLDERID.FOLDERID_SamplePictures,
 
 		/// <summary>Sample Playlists</summary>
-		SamplePlaylists,
+		SamplePlaylists = KNOWNFOLDERID.FOLDERID_SamplePlaylists,
 
 		/// <summary>Sample Videos</summary>
-		SampleVideos,
+		SampleVideos = KNOWNFOLDERID.FOLDERID_SampleVideos,
 
 		/// <summary>Saved Games</summary>
-		SavedGames,
+		SavedGames = KNOWNFOLDERID.FOLDERID_SavedGames,
 
 		/// <summary>Saved Pictures</summary>
-		SavedPictures,
+		SavedPictures = KNOWNFOLDERID.FOLDERID_SavedPictures,
 
 		/// <summary>Saved Pictures Library</summary>
-		SavedPicturesLibrary,
+		SavedPicturesLibrary = KNOWNFOLDERID.FOLDERID_SavedPicturesLibrary,
 
 		/// <summary>Searches</summary>
-		SavedSearches,
+		SavedSearches = KNOWNFOLDERID.FOLDERID_SavedSearches,
 
 		/// <summary>Screenshots</summary>
-		Screenshots,
+		Screenshots = KNOWNFOLDERID.FOLDERID_Screenshots,
 
 		/// <summary>Offline Files</summary>
-		OfflineFiles,
+		SEARCH_CSC = KNOWNFOLDERID.FOLDERID_SEARCH_CSC,
 
 		/// <summary>History</summary>
-		SearchHistory,
+		SearchHistory = KNOWNFOLDERID.FOLDERID_SearchHistory,
 
 		/// <summary>Search Results</summary>
-		SearchHome,
+		SearchHome = KNOWNFOLDERID.FOLDERID_SearchHome,
 
 		/// <summary>Microsoft Office Outlook</summary>
-		MicrosoftOfficeOutlook,
+		SEARCH_MAPI = KNOWNFOLDERID.FOLDERID_SEARCH_MAPI,
 
 		/// <summary>Templates</summary>
-		SearchTemplates,
+		SearchTemplates = KNOWNFOLDERID.FOLDERID_SearchTemplates,
 
 		/// <summary>SendTo</summary>
-		SendTo,
+		SendTo = KNOWNFOLDERID.FOLDERID_SendTo,
 
 		/// <summary>Gadgets</summary>
-		SidebarDefaultParts,
+		SidebarDefaultParts = KNOWNFOLDERID.FOLDERID_SidebarDefaultParts,
 
 		/// <summary>Gadgets</summary>
-		SidebarParts,
+		SidebarParts = KNOWNFOLDERID.FOLDERID_SidebarParts,
 
 		/// <summary>OneDrive</summary>
-		SkyDrive,
+		SkyDrive = KNOWNFOLDERID.FOLDERID_SkyDrive,
 
 		/// <summary>Camera Roll</summary>
-		SkyDriveCameraRoll,
+		SkyDriveCameraRoll = KNOWNFOLDERID.FOLDERID_SkyDriveCameraRoll,
 
 		/// <summary>Documents</summary>
-		SkyDriveDocuments,
+		SkyDriveDocuments = KNOWNFOLDERID.FOLDERID_SkyDriveDocuments,
 
 		/// <summary>Pictures</summary>
-		SkyDrivePictures,
+		SkyDrivePictures = KNOWNFOLDERID.FOLDERID_SkyDrivePictures,
 
 		/// <summary>Start Menu</summary>
-		StartMenu,
+		StartMenu = KNOWNFOLDERID.FOLDERID_StartMenu,
 
 		/// <summary>Startup</summary>
-		Startup,
+		Startup = KNOWNFOLDERID.FOLDERID_Startup,
 
 		/// <summary>Sync Center</summary>
-		SyncManagerFolder,
+		SyncManagerFolder = KNOWNFOLDERID.FOLDERID_SyncManagerFolder,
 
 		/// <summary>Sync Results</summary>
-		SyncResultsFolder,
+		SyncResultsFolder = KNOWNFOLDERID.FOLDERID_SyncResultsFolder,
 
 		/// <summary>Sync Setup</summary>
-		SyncSetupFolder,
+		SyncSetupFolder = KNOWNFOLDERID.FOLDERID_SyncSetupFolder,
 
 		/// <summary>System32</summary>
-		System,
+		System = KNOWNFOLDERID.FOLDERID_System,
 
 		/// <summary>System32</summary>
-		SystemX86,
+		SystemX86 = KNOWNFOLDERID.FOLDERID_SystemX86,
 
 		/// <summary>Templates</summary>
-		Templates,
+		Templates = KNOWNFOLDERID.FOLDERID_Templates,
 
 		/// <summary>User Pinned</summary>
-		UserPinned,
+		UserPinned = KNOWNFOLDERID.FOLDERID_UserPinned,
 
 		/// <summary>Users</summary>
-		UserProfiles,
+		UserProfiles = KNOWNFOLDERID.FOLDERID_UserProfiles,
 
 		/// <summary>Programs</summary>
-		UserProgramFiles,
+		UserProgramFiles = KNOWNFOLDERID.FOLDERID_UserProgramFiles,
 
 		/// <summary>Programs</summary>
-		UserProgramFilesCommon,
+		UserProgramFilesCommon = KNOWNFOLDERID.FOLDERID_UserProgramFilesCommon,
 
 		/// <summary>The user's full name (for instance, Jean Philippe Bagel) entered when the user account was created.</summary>
-		UsersFiles,
+		UsersFiles = KNOWNFOLDERID.FOLDERID_UsersFiles,
 
 		/// <summary>Libraries</summary>
-		UsersLibraries,
+		UsersLibraries = KNOWNFOLDERID.FOLDERID_UsersLibraries,
 
 		/// <summary>Videos</summary>
-		Videos,
+		Videos = KNOWNFOLDERID.FOLDERID_Videos,
 
 		/// <summary>Videos</summary>
-		VideosLibrary,
+		VideosLibrary = KNOWNFOLDERID.FOLDERID_VideosLibrary,
 
 		/// <summary>Windows</summary>
-		Windows,
+		Windows = KNOWNFOLDERID.FOLDERID_Windows,
 
 		/// <summary>Undefined</summary>
 		Undefined = 0xFFFF,
@@ -400,16 +400,16 @@ namespace Vanara.Windows.Forms
 	[ToolboxBitmap(typeof(FolderBrowserDialog), "Dialog"), Description("Dialog that browses network computers.")]
 	public class FolderBrowserDialog : CommonDialog
 	{
-		private const KnownFolders defaultComputersFolder = KnownFolders.NetworkFolder;
-		private const KnownFolders defaultFolderFolder = KnownFolders.ComputerFolder;
-		private const KnownFolders defaultPrintersFolder = KnownFolders.PrintersFolder;
+		private const KnownFolder defaultComputersFolder = KnownFolder.NetworkFolder;
+		private const KnownFolder defaultFolderFolder = KnownFolder.ComputerFolder;
+		private const KnownFolder defaultPrintersFolder = KnownFolder.PrintersFolder;
 
 		private static IImageList sysImgList;
 		private FolderBrowserDialogOptions browseOption;
 		private HandleRef href;
 		private bool initialized;
 		private PIDL pidl;
-		private KnownFolders rootFolder;
+		private KnownFolder rootFolder;
 		private PIDL rootPidl;
 
 		/// <summary>Initializes a new instance of the <see cref="FolderBrowserDialog"/> class.</summary>
@@ -484,7 +484,7 @@ namespace Vanara.Windows.Forms
 
 		/// <summary>Gets or sets the root folder.</summary>
 		[Localizable(false), Category("Data"), Description("Root folder of tree."), DefaultValue(defaultFolderFolder)]
-		public KnownFolders RootFolder
+		public KnownFolder RootFolder
 		{
 			get => rootFolder; set
 			{
@@ -507,13 +507,13 @@ namespace Vanara.Windows.Forms
 			get => rootPidl; set
 			{
 				rootPidl = value;
-				rootFolder = KnownFolders.Undefined;
+				rootFolder = KnownFolder.Undefined;
 			}
 		}
 
-		/// <summary>Gets or sets the item selected by the user. The initially selected item if set before the dialog box is shown.</summary>
-		[DefaultValue(""), Category("Data"), Localizable(true), Description("Item selected in the dialog box.")]
-		public string SelectedItem { get; set; } = "";
+		/// <summary>Gets the path or name of the folder selected by the user.</summary>
+		[DefaultValue(""), Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public string SelectedItem { get; private set; } = "";
 
 		/// <summary>Gets the image from the system image list associated with the selected item.</summary>
 		/// <value>The selected item's image.</value>
@@ -604,6 +604,7 @@ namespace Vanara.Windows.Forms
 		private static string GetNameForPidl(PIDL pidl)
 		{
 			SafeCoTaskMemHandle mStr;
+			try { SHGetNameFromIDList(pidl, SIGDN.SIGDN_FILESYSPATH, out mStr); return mStr.ToString(-1); } catch { }
 			try { SHGetNameFromIDList(pidl, SIGDN.SIGDN_DESKTOPABSOLUTEEDITING, out mStr); return mStr.ToString(-1); } catch { }
 			try { SHGetNameFromIDList(pidl, SIGDN.SIGDN_NORMALDISPLAY, out mStr); return mStr.ToString(-1); } catch { }
 			return string.Empty;
@@ -729,11 +730,11 @@ namespace Vanara.Windows.Forms
 			{
 				case FolderBrowserDialogOptions.Folders:
 				case FolderBrowserDialogOptions.FoldersAndFiles:
-					return RootFolder != KnownFolders.ComputerFolder;
+					return RootFolder != KnownFolder.ComputerFolder;
 				case FolderBrowserDialogOptions.Computers:
-					return RootFolder != KnownFolders.NetworkFolder;
+					return RootFolder != KnownFolder.NetworkFolder;
 				case FolderBrowserDialogOptions.Printers:
-					return RootFolder != KnownFolders.PrintersFolder;
+					return RootFolder != KnownFolder.PrintersFolder;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
