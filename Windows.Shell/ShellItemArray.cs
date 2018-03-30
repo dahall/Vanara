@@ -44,6 +44,10 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets the number of elements contained in the <see cref="ICollection{ShellItem}"/>.</summary>
 		public int Count => (int)array.GetCount();
 
+		/// <summary>Gets the <see cref="IEnumShellItems"/> instance behind this class.</summary>
+		/// <value>The <see cref="IEnumShellItems"/> instance.</value>
+		public IEnumShellItems IEnumShellItems => array.EnumItems();
+
 		/// <summary>Gets the <see cref="IShellItemArray"/> instance behind this class.</summary>
 		/// <value>The <see cref="IShellItemArray"/> instance.</value>
 		public IShellItemArray IShellItemArray => array;
