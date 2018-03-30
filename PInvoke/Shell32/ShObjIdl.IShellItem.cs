@@ -298,7 +298,7 @@ namespace Vanara.PInvoke
 			SIGDN_URL = 0x80068000
 		}
 
-		/// <summary>Flags for <see cref="IShellItemImageFactory.GetImage(SIZE, SIIGBF)"/>.</summary>
+		/// <summary>Flags for <see cref="IShellItemImageFactory.GetImage"/>.</summary>
 		[Flags]
 		public enum SIIGBF
 		{
