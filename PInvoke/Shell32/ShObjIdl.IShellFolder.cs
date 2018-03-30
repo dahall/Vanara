@@ -355,6 +355,8 @@ namespace Vanara.PInvoke
 			void SetNameOf(IntPtr hwnd, [In] PIDL pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszName, SHGDNF uFlags, out PIDL ppidlOut);
 		}
 
+		/// <summary>Extends the capabilities of IShellFolder. Its methods provide a variety of information about the contents of a Shell folder.</summary>
+		/// <seealso cref="Vanara.PInvoke.Shell32.IShellFolder"/>
 		[SuppressUnmanagedCodeSecurity]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("93F2F68C-1D1B-11d3-A30E-00C04F79ABD1")]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb775075")]
@@ -627,13 +629,17 @@ namespace Vanara.PInvoke
 			PROPERTYKEY MapColumnToSCID(uint iColumn);
 		}
 
+		/// <summary>Used by an IEnumExtraSearch enumerator object to return information on the search objects supported by a Shell Folder object.</summary>
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb773283")]
 		public struct EXTRASEARCH
 		{
+			/// <summary>A search object's GUID.</summary>
 			public Guid guidSearch;
+			/// <summary>A Unicode string containing the search object's friendly name. It will be used to identify the search engine on the Search Assistant menu.</summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
 			public string wszFriendlyName;
+			/// <summary>The URL that will be displayed in the search pane.</summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 2084)]
 			public string wszUrl;
 		}
