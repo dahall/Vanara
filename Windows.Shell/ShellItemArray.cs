@@ -19,11 +19,34 @@ namespace Vanara.Windows.Shell
 			array = shellItems;
 		}
 
+		/// <summary>Initializes a new instance of the <see cref="ShellItemArray"/> class.</summary>
+		/// <param name="shellItems">The shell items to add to this array.</param>
+		public ShellItemArray(IEnumerable<ShellItem> shellItems) : this(shellItems.Select(i => (IntPtr)i.PIDL).ToArray())
+		{
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="ShellItemArray"/> class.</summary>
+		/// <param name="pidls">The IDList items to add to this array.</param>
+		public ShellItemArray(IEnumerable<PIDL> pidls) : this(pidls.Select(p => (IntPtr)p).ToArray())
+		{
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="ShellItemArray"/> class.</summary>
+		/// <param name="pidls">The IDList items to add to this array.</param>
+		private ShellItemArray(IntPtr[] pidls)
+		{
+			SHCreateShellItemArrayFromIDLists((uint)pidls.Length, pidls, out array).ThrowIfFailed();
+		}
+
 		/// <summary>Initializes a new instance of the <see cref="ShellFolder"/> class.</summary>
 		private ShellItemArray() { }
 
 		/// <summary>Gets the number of elements contained in the <see cref="ICollection{ShellItem}"/>.</summary>
 		public int Count => (int)array.GetCount();
+
+		/// <summary>Gets the <see cref="IShellItemArray"/> instance behind this class.</summary>
+		/// <value>The <see cref="IShellItemArray"/> instance.</value>
+		public IShellItemArray IShellItemArray => array;
 
 		/// <summary>Gets the <see cref="ShellItem"/> at the specified index.</summary>
 		/// <value>The <see cref="ShellItem"/>.</value>
