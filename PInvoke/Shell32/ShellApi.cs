@@ -6,23 +6,6 @@ namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
-		/// <summary>
-		/// The ExtractIconEx function creates an array of handles to large or small icons extracted from the specified executable file, DLL, or icon file.
-		/// </summary>
-		/// <param name="lpszFile">String that specifies the name of an executable file, DLL, or icon file from which icons will be extracted.</param>
-		/// <param name="nIconIndex">Specifies the zero-based index of the first icon to extract. For example, if this value is zero, the function extracts the first icon in the specified file.
-		/// <para>If this value is –1 and phiconLarge and phiconSmall are both NULL, the function returns the total number of icons in the specified file. If the file is an executable file or DLL, the return value is the number of RT_GROUP_ICON resources. If the file is an .ico file, the return value is 1.</para>
-		/// <para>If this value is a negative number and either phiconLarge or phiconSmall is not NULL, the function begins by extracting the icon whose resource identifier is equal to the absolute value of nIconIndex. For example, use -3 to extract the icon whose resource identifier is 3.</para></param>
-		/// <param name="phIconLarge">An array of icon handles that receives handles to the large icons extracted from the file. If this parameter is NULL, no large icons are extracted from the file.</param>
-		/// <param name="phIconSmall">Array of icon handles that receives handles to the small icons extracted from the file. If this parameter is NULL, no small icons are extracted from the file.</param>
-		/// <param name="nIcons">The number of icons to extract from the file.</param>
-		/// <returns>If the nIconIndex parameter is -1, the phiconLarge parameter is NULL, and the phiconSmall parameter is NULL, then the return value is the number of icons contained in the specified file. Otherwise, the return value is the number of icons successfully extracted from the file.</returns>
-		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
-		[PInvokeData("Shellapi.h", MSDNShortId = "ms648069")]
-		public static extern int ExtractIconEx([MarshalAs(UnmanagedType.LPTStr)] string lpszFile, int nIconIndex,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] IntPtr[] phIconLarge,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] IntPtr[] phIconSmall, int nIcons);
-
 		/// <summary>Flags that indicate the content and validity of the other structure members in <see cref="SHELLEXECUTEINFO"/>.</summary>
 		[PInvokeData("Shellapi.h", MSDNShortId = "bb759784")]
 		[Flags]
@@ -140,6 +123,20 @@ namespace Vanara.PInvoke
 			SEE_MASK_FLAG_HINST_IS_SITE = 0x08000000
 		}
 
+		/// <summary>A value that indicates which operation to perform.</summary>
+		[PInvokeData("Shellapi.h")]
+		public enum ShellFileOperation
+		{
+			/// <summary>Move the files specified in pFrom to the location specified in pTo.</summary>
+			FO_MOVE = 0x0001,
+			/// <summary>Copy the files specified in the pFrom member to the location specified in the pTo member.</summary>
+			FO_COPY = 0x0002,
+			/// <summary>Delete the files specified in pFrom.</summary>
+			FO_DELETE = 0x0003,
+			/// <summary>Rename the file specified in pFrom. You cannot use this flag to rename multiple files with a single function call. Use FO_MOVE instead.</summary>
+			FO_RENAME = 0x0004
+		}
+
 		/// <summary>The flags that specify the file information to retrieve from <see cref="Vanara.SHGetFileInfo(string,System.IO.FileAttributes,ref SHFILEINFO,int,Vanara.PInvoke.SHGFI)"/>.</summary>
 		[PInvokeData("Shellapi.h", MSDNShortId = "bb762179")]
 		[Flags]
@@ -244,6 +241,40 @@ namespace Vanara.PInvoke
 			/// </summary>
 			SHGFI_OVERLAYINDEX = 0x000000040
 		}
+
+		/// <summary>
+		/// The ExtractIconEx function creates an array of handles to large or small icons extracted from the specified executable file, DLL, or icon file.
+		/// </summary>
+		/// <param name="lpszFile">String that specifies the name of an executable file, DLL, or icon file from which icons will be extracted.</param>
+		/// <param name="nIconIndex">Specifies the zero-based index of the first icon to extract. For example, if this value is zero, the function extracts the first icon in the specified file.
+		/// <para>If this value is –1 and phiconLarge and phiconSmall are both NULL, the function returns the total number of icons in the specified file. If the file is an executable file or DLL, the return value is the number of RT_GROUP_ICON resources. If the file is an .ico file, the return value is 1.</para>
+		/// <para>If this value is a negative number and either phiconLarge or phiconSmall is not NULL, the function begins by extracting the icon whose resource identifier is equal to the absolute value of nIconIndex. For example, use -3 to extract the icon whose resource identifier is 3.</para></param>
+		/// <param name="phIconLarge">An array of icon handles that receives handles to the large icons extracted from the file. If this parameter is NULL, no large icons are extracted from the file.</param>
+		/// <param name="phIconSmall">Array of icon handles that receives handles to the small icons extracted from the file. If this parameter is NULL, no small icons are extracted from the file.</param>
+		/// <param name="nIcons">The number of icons to extract from the file.</param>
+		/// <returns>If the nIconIndex parameter is -1, the phiconLarge parameter is NULL, and the phiconSmall parameter is NULL, then the return value is the number of icons contained in the specified file. Otherwise, the return value is the number of icons successfully extracted from the file.</returns>
+		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
+		[PInvokeData("Shellapi.h", MSDNShortId = "ms648069")]
+		public static extern int ExtractIconEx([MarshalAs(UnmanagedType.LPTStr)] string lpszFile, int nIconIndex,
+			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] IntPtr[] phIconLarge,
+			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] IntPtr[] phIconSmall, int nIcons);
+
+		/// <summary>
+		/// Performs an operation on a specified file.
+		/// </summary>
+		/// <param name="lpExecInfo">A pointer to a SHELLEXECUTEINFO structure that contains and receives information about the application being executed.</param>
+		/// <returns>Returns TRUE if successful; otherwise, FALSE. Call GetLastError for extended error information.</returns>
+		[DllImport(Lib.Shell32, CharSet = CharSet.Auto, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[PInvokeData("Shellapi.h", MSDNShortId = "bb762154")]
+		public static extern bool ShellExecuteEx(ref SHELLEXECUTEINFO lpExecInfo);
+
+		/// <summary>Copies, moves, renames, or deletes a file system object. This function has been replaced in Windows Vista by <see cref="IFileOperation"/>.</summary>
+		/// <param name="lpFileOp">A pointer to an SHFILEOPSTRUCT structure that contains information this function needs to carry out the specified operation. This parameter must contain a valid value that is not NULL. You are responsible for validating the value. If you do not validate it, you will experience unexpected results.</param>
+		/// <returns>Returns zero if successful; otherwise nonzero. Applications normally should simply check for zero or nonzero.</returns>
+		[PInvokeData("Shellapi.h")]
+		[DllImport("shell32.dll", CharSet = CharSet.Auto)]
+		public static extern int SHFileOperation([In] ref SHFILEOPSTRUCT lpFileOp);
 
 		/// <summary>
 		/// Retrieves information about an object in the file system, such as a file, folder, directory, or drive root.
@@ -429,14 +460,43 @@ namespace Vanara.PInvoke
 			public static int Size => Marshal.SizeOf(typeof(SHFILEINFO));
 		}
 
-		/// <summary>
-		/// Performs an operation on a specified file.
-		/// </summary>
-		/// <param name="lpExecInfo">A pointer to a SHELLEXECUTEINFO structure that contains and receives information about the application being executed.</param>
-		/// <returns>Returns TRUE if successful; otherwise, FALSE. Call GetLastError for extended error information.</returns>
-		[DllImport(Lib.Shell32, CharSet = CharSet.Auto, SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[PInvokeData("Shellapi.h", MSDNShortId = "bb762154")]
-		public static extern bool ShellExecuteEx(ref SHELLEXECUTEINFO lpExecInfo);
+		/// <summary>Contains information that the SHFileOperation function uses to perform file operations.</summary>
+		[PInvokeData("Shellapi.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct SHFILEOPSTRUCT
+		{
+			/// <summary>A window handle to the dialog box to display information about the status of the file operation.</summary>
+			public IntPtr hwnd;
+			/// <summary>A value that indicates which operation to perform.</summary>
+			public ShellFileOperation wFunc;
+			/// <summary><note type="note">This string must be double-null terminated.</note>
+			/// <para>A pointer to one or more source file names.These names should be fully qualified paths to prevent unexpected results.</para>
+			/// <para>Standard MS-DOS wildcard characters, such as "*", are permitted only in the file-name position.Using a wildcard character elsewhere in the string will lead to unpredictable results.</para>
+			/// <para>Although this member is declared as a single null-terminated string, it is actually a buffer that can hold multiple null-delimited file names.Each file name is terminated by a single NULL character. The last file name is terminated with a double NULL character ("\0\0") to indicate the end of the buffer.</summary></para></summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string pFrom;
+			/// <summary><note type="note">This string must be double-null terminated.</note>
+			/// <para>A pointer to the destination file or directory name. This parameter must be set to NULL if it is not used. Wildcard characters are not allowed. Their use will lead to unpredictable results.</para>
+			/// <para>Like pFrom, the pTo member is also a double-null terminated string and is handled in much the same way. However, pTo must meet the following specifications:</para>
+			/// <list type="bullet">
+			/// <item><description>Wildcard characters are not supported.</description></item>
+			/// <item><description>Copy and Move operations can specify destination directories that do not exist. In those cases, the system attempts to create them and normally displays a dialog box to ask the user if they want to create the new directory. To suppress this dialog box and have the directories created silently, set the FOF_NOCONFIRMMKDIR flag in fFlags.</description></item>
+			/// <item><description>For Copy and Move operations, the buffer can contain multiple destination file names if the fFlags member specifies FOF_MULTIDESTFILES.</description></item>
+			/// <item><description>Pack multiple names into the pTo string in the same way as for pFrom.</description></item>
+			/// <item><description>Use fully qualified paths. Using relative paths is not prohibited, but can have unpredictable results.</description></item>
+			/// </list></summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string pTo;
+			/// <summary>Flags that control the file operation.</summary>
+			public FILEOP_FLAGS fFlags;
+			/// <summary>When the function returns, this member contains TRUE if any file operations were aborted before they were completed; otherwise, FALSE. An operation can be manually aborted by the user through UI or it can be silently aborted by the system if the FOF_NOERRORUI or FOF_NOCONFIRMATION flags were set.</summary>
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fAnyOperationsAborted;
+			/// <summary>When the function returns, this member contains a handle to a name mapping object that contains the old and new names of the renamed files. This member is used only if the fFlags member includes the FOF_WANTMAPPINGHANDLE flag. See Remarks for more details.</summary>
+			public IntPtr hNameMappings;
+			/// <summary>A pointer to the title of a progress dialog box. This is a null-terminated string. This member is used only if fFlags includes the FOF_SIMPLEPROGRESS flag.</summary>
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string lpszProgressTitle;
+		}
 	}
 }
