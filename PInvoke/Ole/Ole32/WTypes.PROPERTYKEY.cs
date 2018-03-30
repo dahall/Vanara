@@ -17,7 +17,7 @@ namespace Vanara.PInvoke
 		/// <summary>Specifies the FMTID/PID identifier that programmatically identifies a property. Replaces SHCOLUMNID.</summary>
 		[PInvokeData("Wtypes.h", MSDNShortId = "bb773381")]
 		[StructLayout(LayoutKind.Sequential, Pack = 4)]
-		public partial struct PROPERTYKEY : IComparable<PROPERTYKEY>
+		public partial struct PROPERTYKEY : IComparable<PROPERTYKEY>, IEquatable<PROPERTYKEY>
 		{
 			private static Dictionary<PROPERTYKEY, string> revIndex;
 
@@ -36,7 +36,13 @@ namespace Vanara.PInvoke
 
 			public override string ToString() => GetCononicalName() ?? ReverseLookup(this) ?? $"{Key:B} {Id}";
 
-			public override bool Equals(object obj) => obj is PROPERTYKEY propertykey && Equals(Key, propertykey.Key) && Id == propertykey.Id;
+			public override bool Equals(object obj) => obj is PROPERTYKEY other && Equals(other);
+
+			public bool Equals(PROPERTYKEY other) => Equals(Key, other.Key) && Id == other.Id;
+
+			public static bool operator ==(PROPERTYKEY pk1, PROPERTYKEY pk2) => pk1.Equals(pk2);
+
+			public static bool operator !=(PROPERTYKEY pk1, PROPERTYKEY pk2) => !pk1.Equals(pk2);
 
 			public override int GetHashCode() => new { Key, Id }.GetHashCode();
 
