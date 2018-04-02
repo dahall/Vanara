@@ -18,6 +18,116 @@ namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
+		/// <summary>The bind interruptable</summary>
+		public const uint BIND_INTERRUPTABLE = 0xFFFFFFFF;
+		/// <summary>Introduced in Windows XP SP2. Specify this bind context to permit clients of the data source to override the hidden drive letter policy and enable access to the view objects for data sources on the drives that are blocked.
+		/// <para>Used with IShellFolder::BindToObject or IShellItem::BindToHandler.</para>
+		/// <para>The system supports administrator-controlled policies that hide specified drive letters to block users from accessing those drives through Windows Explorer.When this policy is active, the result is that view objects and other handlers created with the IShellFolder::CreateViewObject method will fail when called on drives that are blocked by policy.</para></summary>
+		public const string STR_AVOID_DRIVE_RESTRICTION_POLICY = "Avoid Drive Restriction Policy";
+		/// <summary>Introduced in Windows Vista. Specify this bind context to cause the IShellFolder::BindToObject method to use the object specified by the pbc parameter to create the target object; in this case, the object specified by the punk parameter in the IBindCtx::RegisterObjectParam call must implement the ICreateObject interface.
+		/// <para>Used with IShellFolder::BindToObject or IShellItem::BindToHandler.</para></summary>
+		public const string STR_BIND_DELEGATE_CREATE_OBJECT = "Delegate Object Creation";
+		/// <summary>Introduced in Windows 7. Passed to IShellFolder::ParseDisplayName along with STR_FILE_SYS_BIND_DATA. This forces simple parsing while also probing for Desktop.ini files along the path from which to get a localized name string. This avoids probing for folders along the path, which, in a case of a folder that represents a server or a share, could take extensive time and resources. Desktop.ini files are cached in some locations, so it will be at least as efficient as probing for folders attributes and then probing for the Desktop.ini if that folder should turn ou tot be read-only.</summary>
+		public const string STR_BIND_FOLDERS_READ_ONLY = "Folders As Read Only";
+		/// <summary>Introduced in Windows 7. Passed to IShellFolder::ParseDisplayName with an FOLDER_ENUM_MODE value to control the enumeration mode of the parsed item. The FOLDER_ENUM_MODE value is passed in the bind context through an object that implements IObjectWithFolderEnumMode.
+		/// <para>Items with different enumeration modes compare canonically(SHCIDS_CANONICALONLY) different because they enumerate different sets of items.</para>
+		/// <para>If an item doesn't support the enumeration mode (because it isn't a folder or it doesn't provide the enumeration mode) then it is created in the default enumeration mode.</para></summary>
+		public const string STR_BIND_FOLDER_ENUM_MODE = "Folder Enum Mode";
+		/// <summary>Introduced in Windows XP SP2. Specify this bind context to force a folder shortcut to resolve the link that points to its target.
+		/// <para>A folder shortcut is a folder item that points to another folder item in the same namespace, using a link(shortcut) to hold the IDList of the target.The link is resolved to track the target in case it is moved or renamed.For example, the Windows XP My Network Places folder and the Windows Vista Computer folder can contain folder shortcuts created with the Add Network Location wizard.To improve performance, the IShellFolder::BindToObject method does not resolve links to network folder by default.</para>
+		/// <para>Used with IShellFolder::BindToObject or IShellItem::BindToHandler.</para></summary>
+		public const string STR_BIND_FORCE_FOLDER_SHORTCUT_RESOLVE = "Force Folder Shortcut Resolve";
+		/// <summary>Introduced in Windows XP. Specify this bind context to prevent a call to the IShellFolder::ParseDisplayName method on the Desktop folder from treating relative paths as relative to the desktop; in such a case, parsing fails when this bind context is specified.</summary>
+		public const string STR_DONT_PARSE_RELATIVE = "Don't Parse Relative";
+		/// <summary>Introduced in Windows Vista. Specify this bind context to instruct an IShellItem not to resolve the link target obtained when using the BHID_LinkTargetItem GUID in IShellItem::BindToHandler.</summary>
+		public const string STR_DONT_RESOLVE_LINK = "Don't Resolve Link";
+		/// <summary>Introduced in Windows 8. Specifies a SHCONTF value to be passed to IShellFolder::EnumObjects when you call IShellItem::BindToHandler with BHID_EnumItems.</summary>
+		public const string STR_ENUM_ITEMS_FLAGS = "SHCONTF";
+		/// <summary>Introduced in Windows XP. Specify this bind context to provide file metadata to the IShellFolder::ParseDisplayName method, which is used instead of attempting to retrieve the actual file metadata. The associated object must implement IFileSystemBindData and can optionally also implement IFileSystemBindData2. By default, the IShellFolder::ParseDisplayName method verifies that the file exists and uses the file's actual metadata to populate the ID list.</summary>
+		public const string STR_FILE_SYS_BIND_DATA = "File System Bind Data";
+		/// <summary>Introduced in Windows 8.1. Specify this bind context to indicate that the data provided in the STR_FILE_SYS_FIND_DATA bind context should be used to create an ItemID list in the Windows 7 format.</summary>
+		public const string STR_FILE_SYS_BIND_DATA_WIN7_FORMAT = "Win7FileSystemIdList";
+		/// <summary>Introduced in Windows 7. Specify this bind context when the handler is being retrieved on the same thread as the UI. Any memory-intensive activities such as those that involve disk or network access should be avoided.</summary>
+		public const string STR_GET_ASYNC_HANDLER = "GetAsyncHandler";
+		/// <summary>Introduced in Windows Vista. Specify this bind context when requesting an IPropertySetStorage or IPropertyStore handler. This value is used with IShellFolder::BindToObject. See the GPS_BESTEFFORT flag for more information.</summary>
+		public const string STR_GPS_BESTEFFORT = "GPS_BESTEFFORT";
+		/// <summary>Introduced in Windows Vista. Specify this bind context when requesting an IPropertySetStorage or IPropertyStore handler. This value is used with IShellFolder::BindToObject. See the GPS_DELAYCREATION flag for more information.</summary>
+		public const string STR_GPS_DELAYCREATION = "GPS_DELAYCREATION";
+		/// <summary>Introduced in Windows Vista. Specify this bind context when requesting an IPropertySetStorage or IPropertyStore handler. This value is used with IShellFolder::BindToObject. See the GPS_FASTPROPERTIESONLY flag for more information.</summary>
+		public const string STR_GPS_FASTPROPERTIESONLY = "GPS_FASTPROPERTIESONLY";
+		/// <summary>Introduced in Windows Vista. Specify this bind context when requesting an IPropertySetStorage or IPropertyStore handler. This value is used with IShellFolder::BindToObject. See the GPS_HANDLERPROPERTIESONLY flag for more information.</summary>
+		public const string STR_GPS_HANDLERPROPERTIESONLY = "GPS_HANDLERPROPERTIESONLY";
+		/// <summary>Introduced in Windows 7. Specify this bind context when requesting an IPropertySetStorage or IPropertyStore handler. This value is used with IShellFolder::BindToObject. See the GPS_NO_OPLOCK flag for more information.</summary>
+		public const string STR_GPS_NO_OPLOCK = "GPS_NO_OPLOCK";
+		/// <summary>Introduced in Windows Vista. Specify this bind context when requesting an IPropertySetStorage or IPropertyStore handler. This value is used with IShellFolder::BindToObject. See the GPS_OPENSLOWITEM flag for more information.</summary>
+		public const string STR_GPS_OPENSLOWITEM = "GPS_OPENSLOWITEM";
+		/// <summary>Windows Vista only. Specify this bind context to cause a call to the IShellFolder::BindToObject method that requests the IFilter interface for a file system object to return a text filter if no other filter is available. This value is not defined as of Windows 7.</summary>
+		public const string STR_IFILTER_FORCE_TEXT_FILTER_FALLBACK = "Always bind persistent handlers";
+		/// <summary>Windows Vista only. Specify this bind context to cause a call to the IShellFolder::BindToObject method that requests the IFilter interface for a file system object to not return a fallback filter if no registered filter could be found.</summary>
+		public const string STR_IFILTER_LOAD_DEFINED_FILTER = "Only bind registered persistent handlers";
+		/// <summary>Introduced in Windows Vista. Specify this bind context to enable loading of the history from a stream for an internal navigation when the IPersistHistory::LoadHistory method is called. An internal navigation is a navigation within the same view.</summary>
+		public const string STR_INTERNAL_NAVIGATE = "Internal Navigation";
+		/// <summary>Introduced in Windows 7. Specify this bind context with STR_PARSE_PREFER_FOLDER_BROWSING when the client wants the Internet Shell folder handlers to generate an IDList for any valid URL if a DAV-type folder cannot be created for that URL. The URL is not verified to exist; only its syntax is checked and that it has a registered protocol handler.</summary>
+		public const string STR_INTERNETFOLDER_PARSE_ONLY_URLMON_BINDABLE = "Validate URL";
+		/// <summary>Introduced in Windows 7. Specify this bind context to instruct implementations of IShellFolder::ParseDisplayName and IPersistFolder3::InitializeEx to cache memory-intensive helper objects that can exist across instantiations of Shell items instead of recreating these objects each time that a Shell item is created. The associated object is another bind context object, initially empty. This should result in a separate bind context object, which is accessed through IBindCtx::GetObjectParam or IBindCtx::Register.ObjectParam.
+		/// <para>A caller must opt into this behavior by providing this bind context parameter when calling SHCreateItemFromParsingName. By doing so, you optimize the behavior of binding to multiple parsing names in succession.The lifetime of the bind context object should span multiple instances of Shell items and their individual bind contexts.</para></summary>
+		public const string STR_ITEM_CACHE_CONTEXT = "ItemCacheContext";
+		/// <summary>Introduced in Windows Vista. Specify this bind context to allow invalid file name characters to appear in file names. By default, a call to the IShellFolder::ParseDisplayName method rejects characters that are illegal in file names. This bind context is meaningful only in conjunction with the STR_FILE_SYS_FIND_DATA bind context.</summary>
+		public const string STR_NO_VALIDATE_FILENAME_CHARS = "NoValidateFilenameChars";
+		/// <summary>Introduced in Windows Vista. Specify this bind context to enable a call to the IShellFolder::ParseDisplayName method on the Desktop folder to parse URLs. If this bind context is specified, it overrides STR_PARSE_PREFER_WEB_BROWSING.</summary>
+		public const string STR_PARSE_ALLOW_INTERNET_SHELL_FOLDERS = "Allow binding to Internet shell folder handlers and negate STR_PARSE_PREFER_WEB_BROWSING";
+		/// <summary>Introduced in Windows 7. Specify this bind context to instruct a data source's implementation of IShellFolder::ParseDisplayName to optimize the behavior of SHCreateItemFromParsingName.
+		/// <para>Normally, SHCreateItemFromParsingName performs two binding operations on the name to be parsed: one through and one to IShellFolder::ParseDisplayName and one to create the Shell item.When the STR_PARSE_AND_CREATE_ITEM bind context is supported, the second bind is avoided by creating the Shell item during the IShellFolder::ParseDisplayName bind and storing the Shell item through IParseAndCreateItem::SetItem.SHCreateItemFromParsingName then uses the stored Shell item rather than creating one.</para>
+		/// <para>This parameter applies to the last element of the name that is parsed. For instance, in the name "C:\Folder1\File.txt, the data applies to File.txt.</para></summary>
+		public const string STR_PARSE_AND_CREATE_ITEM = "ParseAndCreateItem";
+		/// <summary>Windows Vista only. Specify that, when parsing a URL, this bind context should not require the URL to exist before generating an IDList for it. Specify this bind context along with STR_PARSE_PREFER_FOLDER_BROWSING when the client desires that the Internet Shell folder handlers generate an IDList for the URL if a DAV folder cannot be created for the given URL.</summary>
+		public const string STR_PARSE_DONT_REQUIRE_VALIDATED_URLS = "Do not require validated URLs";
+		/// <summary>Introduced in Windows 7. The IShellFolder::ParseDisplayName method sets this property to tell the caller that the returned IDList was bound to the ProgID specified with STR_PARSE_WITH_EXPLICIT_PROGID or the application specified with STR_PARSE_WITH_EXPLICIT_ASSOCAPP. When STR_PARSE_EXPLICIT_ASSOCIATION_SUCCESSFUL is absent, the ProgID or application was not bound into the IDList.</summary>
+		public const string STR_PARSE_EXPLICIT_ASSOCIATION_SUCCESSFUL = "ExplicitAssociationSuccessful";
+		/// <summary>Introduced in Windows Vista. Specify this bind context to pass the original item that is being re-parsed when that item is stored as a IShellItem object that also implements the IParentAndItem interface. Before Windows 7 this value was not defined in a header file. It could be defined by the caller or passed as its string value of L"ParseOriginalItem". As of Windows 7, the value is defined in Shlobj.h. Note that this is a different header than the other STR constants.</summary>
+		public const string STR_PARSE_PARTIAL_IDLIST = "ParseOriginalItem";
+		/// <summary>Introduced in Windows XP. Specify this bind context to enable a call to the IShellFolder::ParseDisplayName method on the Desktop folder to parse URLs as if they were folders. Use this bind context to bind to a WebDAV server.</summary>
+		public const string STR_PARSE_PREFER_FOLDER_BROWSING = "Parse Prefer Folder Browsing";
+		/// <summary>Introduced in Windows Vista. Specify this bind context to prevent a call to the IShellFolder::ParseDisplayName method on the Desktop folder form parsing URLs. This bind context can be overridden by STR_PARSE_ALLOW_INTERNET_SHELL_FOLDERS.</summary>
+		public const string STR_PARSE_PREFER_WEB_BROWSING = "Do not bind to Internet shell folder handlers";
+		/// <summary>Introduced in Windows Vista. Specify this bind context to override the default property store used by the IShellFolder::ParseDisplayName method, and use the property store specified as the bind parameter instead. Applies to delegate folders.</summary>
+		public const string STR_PARSE_PROPERTYSTORE = "DelegateNamedProperties";
+		/// <summary>Introduced in Windows XP SP2. Specify this bind context to enable a call to the IShellFolder::ParseDisplayName method on the Desktop folder to use the "shell:" prefix notation to access files.</summary>
+		public const string STR_PARSE_SHELL_PROTOCOL_TO_FILE_OBJECTS = "Parse Shell Protocol To File Objects";
+		/// <summary>Introduced in Windows Vista. Specify this bind context to cause a call to the IShellFolder::ParseDisplayName method to display the network diagnostics dialog if the parsing of a network path fails.</summary>
+		public const string STR_PARSE_SHOW_NET_DIAGNOSTICS_UI = "Show network diagnostics UI";
+		/// <summary>Introduced in Windows Vista. Specify this bind context to cause a call to the IShellFolder::ParseDisplayName method to skip checking the network shares cache and contact the network server directly. Information about network shares is cached to improve performance, and IShellFolder::ParseDisplayName checks this cache by default.</summary>
+		public const string STR_PARSE_SKIP_NET_CACHE = "Skip Net Resource Cache";
+		/// <summary>Introduced in Windows XP. Specify this bind context to pass parsed properties to the IShellFolder::ParseDisplayName method for a delegate namespace. The namespace can use the passed properties instead of attempting to parse the name itself.</summary>
+		public const string STR_PARSE_TRANSLATE_ALIASES = "Parse Translate Aliases";
+		/// <summary>Windows Vista only. A parsing bind context that is used to pass a set of properties and the item's name when calling IShellFolder::ParseDisplayName. The object in the bind context implements IPropertyStore and is retrieved by calling IBindCtx::GetObjectParam.
+		/// <para>DBFolder is a Shell data source that represents items in search results and query-based views.DBFolder retrieves these items by querying the Windows Search system.Items in the search results are identified through a protocol scheme, for example "file:" or "mapi:". DBFolder provides the behavior for these items by delegating to Shell data sources that are created for these protocols. See Developing Protocol Handler Add-ins for more information.</para>
+		/// <para>When DBFolder delegates its parsing operation to the Shell data sources that support Windows Search protocols, this bind context provides access to values that were returned in the query result for that item. This includes the following:</para>
+		/// <list type="bullet">
+		/// <item><description>System.ItemType (PKEY_ItemType)</description></item>
+		/// <item><description>System.ParsingPath (PKEY_ParsingPath)</description></item>
+		/// <item><description>System.ItemPathDisplay (PKEY_ItemPathDisplay)</description></item>
+		/// <item><description>System.ItemNameDisplay (PKEY_ItemNameDisplay)</description></item>
+		/// </list>
+		/// <para>This bind context can also be used to parse a DBFolder item if a client has a set of properties that define the item.In this case an empty name should be passed to IShellFolder::ParseDisplayName.</para>
+		/// <para>Before Windows 7, this value was not defined in a header file.It could be defined by the caller or passed as its string value: L"ParseWithProperties". As of Windows 7, the value is defined in Shlobj.h.Note that this is a different header than where the other STR constants are defined.</para></summary>
+		public const string STR_PARSE_WITH_PROPERTIES = "ParseWithProperties";
+		/// <summary>Introduced in Windows 7. Specify this property to cause a call to the IShellFolder::ParseDisplayName method to return an IDList bound to the file type association handler for the application.</summary>
+		public const string STR_PARSE_WITH_EXPLICIT_ASSOCAPP = "ExplicitAssociationApp";
+		/// <summary>Introduced in Windows 7. Specify this property to cause a call to the IShellFolder::ParseDisplayName method to return an IDList bound to the file association handler of the provided ProgID.</summary>
+		public const string STR_PARSE_WITH_EXPLICIT_PROGID = "ExplicitProgid";
+		/// <summary>Introduced in Windows 8. Specify this bind context to indicate that the bind context parameter is a property bag (IPropertyBag) used to pass VARIANT values in the bind context. See the Remarks section for further details.</summary>
+		public const string STR_PROPERTYBAG_PARAM = "SHBindCtxPropertyBag";
+		/// <summary>Introduced in Windows XP. Specify this bind context to cause calls to the IShellFolder::ParseDisplayName or IShellFolder::BindToObject methods to ignore a particular Shell namespace extension when parsing or binding. The CLSID of the namespace to ignore is provided by the IPersist::GetClassID method of the bind parameter.</summary>
+		public const string STR_SKIP_BINDING_CLSID = "Skip Binding CLSID";
+		/// <summary>Not used.</summary>
+		public const string STR_TRACK_CLSID = "Track the CLSID";
+
+		/// <summary>The string referrer identifier</summary>
+		public const string STR_REFERRER_IDENTIFIER = "Referrer Identifier";
+		/// <summary>The string tab reuse identifier</summary>
+		public const string STR_TAB_REUSE_IDENTIFIER = "Tab Reuse Identifier";
+
 		/// <summary>Values that specify from which category the list of destinations should be retrieved.</summary>
 		[PInvokeData("Shobjidl.h", MSDNShortId = "dd378410")]
 		public enum APPDOCLISTTYPE
@@ -169,6 +279,49 @@ namespace Vanara.PInvoke
 			/// </returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IEnumIDList Clone();
+		}
+
+		/// <summary>Exposes methods that store file system information for optimizing calls to IShellFolder::ParseDisplayName.</summary>
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("01E18D10-4D8B-11d2-855D-006008059367")]
+		[PInvokeData("Shobjidl.h", MSDNShortId = "bb775671")]
+		public interface IFileSystemBindData
+		{
+			/// <summary>Stores file system information in a WIN32_FIND_DATA structure. This information is used by IShellFolder::ParseDisplayName.</summary>
+			/// <param name="pfd">A pointer to the WIN32_FIND_DATA structure that specifies the data you want to store.</param>
+			void SetFindData([In] ref WIN32_FIND_DATA pfd);
+			/// <summary>Gets the file system information stored in the WIN32_FIND_DATA structure.</summary>
+			/// <param name="pfd">A pointer to the WIN32_FIND_DATA structure that receives the data.</param>
+			void GetFindData(out WIN32_FIND_DATA pfd);
+		}
+
+		/// <summary>
+		/// Extends IFileSystemBindData, which stores file system information for optimizing calls to IShellFolder::ParseDisplayName. This interface adds the
+		/// ability set or get file ID or junction class identifier (CLSID).
+		/// </summary>
+		/// <seealso cref="Vanara.PInvoke.Shell32.IFileSystemBindData"/>
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("3acf075f-71db-4afa-81f0-3fc4fdf2a5b8")]
+		[PInvokeData("Shobjidl.h", MSDNShortId = "bb775660")]
+		public interface IFileSystemBindData2 : IFileSystemBindData
+		{
+			/// <summary>Stores file system information in a WIN32_FIND_DATA structure. This information is used by IShellFolder::ParseDisplayName.</summary>
+			/// <param name="pfd">A pointer to the WIN32_FIND_DATA structure that specifies the data you want to store.</param>
+			new void SetFindData([In] ref WIN32_FIND_DATA pfd);
+			/// <summary>Gets the file system information stored in the WIN32_FIND_DATA structure.</summary>
+			/// <param name="pfd">A pointer to the WIN32_FIND_DATA structure that receives the data.</param>
+			new void GetFindData(out WIN32_FIND_DATA pfd);
+			/// <summary>Sets the unique file identifier for the current file.</summary>
+			/// <param name="liFileID">A unique file identifier for the current file. liFileID is a value that is a concatenation of the values nFileIndexHigh and nFileIndexlow, noted in structure _by_handle_file_information.</param>
+			void SetFileID(long liFileID);
+			/// <summary>Gets the unique file identifier for the current file.</summary>
+			/// <returns>When this method returns successfully, receives a pointer to the unique file identifier for the current file. pliFileID is a pointer to a value that is a concatenation of the values nFileIndexHigh and nFileIndexlow, noted in structure _by_handle_file_information.</returns>
+			long GetFileID();
+			/// <summary>Sets the class identifier (CLSID) of the object that implements IShellFolder, if the current item is a junction point.</summary>
+			/// <param name="clsid">The CLSID for the object that implements IShellFolder with a junction point as its current item.</param>
+			void SetJunctionCLSID([In, MarshalAs(UnmanagedType.LPStruct)] Guid clsid);
+			/// <summary>Gets the class identifier (CLSID) of the object that implements IShellFolder for the item, if the item is a junction point.</summary>
+			/// <returns>When this method returns successfully, receives a pointer to the CLSID of the object that implements IShellFolder for the current item, if the item is a junction point.</returns>
+			[return: MarshalAs(UnmanagedType.LPStruct)]
+			Guid GetJunctionCLSID();
 		}
 
 		/// <summary>Exposes methods that enable clients to access items in a collection of objects that support IUnknown.</summary>
