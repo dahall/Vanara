@@ -8806,5 +8806,133 @@ namespace Vanara.PInvoke
 
 		/// <summary>This function can be used only if a program is running in the local console session. It cannot be used if the program is running on a remote desktop session or on a terminal server session.</summary>
 		public const uint ERROR_GRAPHICS_ONLY_CONSOLE_SESSION_SUPPORTED = 0xC02625E0;
+
+		public const uint COPYENGINE_S_YES = 0x00270001;
+		public const uint COPYENGINE_S_NOT_HANDLED = 0x00270003;
+		public const uint COPYENGINE_S_USER_RETRY = 0x00270004;
+		public const uint COPYENGINE_S_USER_IGNORED = 0x00270005;
+		public const uint COPYENGINE_S_MERGE = 0x00270006;
+		public const uint COPYENGINE_S_DONT_PROCESS_CHILDREN = 0x00270008;
+		public const uint COPYENGINE_S_ALREADY_DONE = 0x0027000A;
+		public const uint COPYENGINE_S_PENDING = 0x0027000B;
+		public const uint COPYENGINE_S_KEEP_BOTH = 0x0027000C;
+		/// <summary>Close the program using the current file</summary>
+		public const uint COPYENGINE_S_CLOSE_PROGRAM = 0x0027000D;
+		/// <summary>User wants to canceled entire job</summary>
+		public const uint COPYENGINE_E_USER_CANCELLED = 0x80270000;
+		/// <summary>Engine wants to canceled entire job, don't set the CANCELLED bit</summary>
+		public const uint COPYENGINE_E_CANCELLED = 0x80270001;
+		/// <summary>Need to elevate the process to complete the operation</summary>
+		public const uint COPYENGINE_E_REQUIRES_ELEVATION = 0x80270002;
+		/// <summary>Source and destination file are the same</summary>
+		public const uint COPYENGINE_E_SAME_FILE = 0x80270003;
+		/// <summary>Trying to rename a file into a different location, use move instead</summary>
+		public const uint COPYENGINE_E_DIFF_DIR = 0x80270004;
+		/// <summary>One source specified, multiple destinations</summary>
+		public const uint COPYENGINE_E_MANY_SRC_1_DEST = 0x80270005;
+		/// <summary>The destination is a sub-tree of the source</summary>
+		public const uint COPYENGINE_E_DEST_SUBTREE = 0x80270009;
+		/// <summary>The destination is the same folder as the source</summary>
+		public const uint COPYENGINE_E_DEST_SAME_TREE = 0x8027000A;
+		/// <summary>Existing destination file with same name as folder</summary>
+		public const uint COPYENGINE_E_FLD_IS_FILE_DEST = 0x8027000B;
+		/// <summary>Existing destination folder with same name as file</summary>
+		public const uint COPYENGINE_E_FILE_IS_FLD_DEST = 0x8027000C;
+		/// <summary>File too large for destination file system</summary>
+		public const uint COPYENGINE_E_FILE_TOO_LARGE = 0x8027000D;
+		/// <summary>Destination device is full and happens to be removable</summary>
+		public const uint COPYENGINE_E_REMOVABLE_FULL = 0x8027000E;
+		/// <summary>Destination is a Read-Only CDRom, possibly unformatted</summary>
+		public const uint COPYENGINE_E_DEST_IS_RO_CD = 0x8027000F;
+		/// <summary>Destination is a Read/Write CDRom, possibly unformatted</summary>
+		public const uint COPYENGINE_E_DEST_IS_RW_CD = 0x80270010;
+		/// <summary>Destination is a Recordable (Audio, CDRom, possibly unformatted</summary>
+		public const uint COPYENGINE_E_DEST_IS_R_CD = 0x80270011;
+		/// <summary>Destination is a Read-Only DVD, possibly unformatted</summary>
+		public const uint COPYENGINE_E_DEST_IS_RO_DVD = 0x80270012;
+		/// <summary>Destination is a Read/Wrote DVD, possibly unformatted</summary>
+		public const uint COPYENGINE_E_DEST_IS_RW_DVD = 0x80270013;
+		/// <summary>Destination is a Recordable (Audio, DVD, possibly unformatted</summary>
+		public const uint COPYENGINE_E_DEST_IS_R_DVD = 0x80270014;
+		/// <summary>Source is a Read-Only CDRom, possibly unformatted</summary>
+		public const uint COPYENGINE_E_SRC_IS_RO_CD = 0x80270015;
+		/// <summary>Source is a Read/Write CDRom, possibly unformatted</summary>
+		public const uint COPYENGINE_E_SRC_IS_RW_CD = 0x80270016;
+		/// <summary>Source is a Recordable (Audio, CDRom, possibly unformatted</summary>
+		public const uint COPYENGINE_E_SRC_IS_R_CD = 0x80270017;
+		/// <summary>Source is a Read-Only DVD, possibly unformatted</summary>
+		public const uint COPYENGINE_E_SRC_IS_RO_DVD = 0x80270018;
+		/// <summary>Source is a Read/Wrote DVD, possibly unformatted</summary>
+		public const uint COPYENGINE_E_SRC_IS_RW_DVD = 0x80270019;
+		/// <summary>Source is a Recordable (Audio, DVD, possibly unformatted</summary>
+		public const uint COPYENGINE_E_SRC_IS_R_DVD = 0x8027001A;
+		/// <summary>Invalid source path</summary>
+		public const uint COPYENGINE_E_INVALID_FILES_SRC = 0x8027001B;
+		/// <summary>Invalid destination path</summary>
+		public const uint COPYENGINE_E_INVALID_FILES_DEST = 0x8027001C;
+		/// <summary>Source Files within folders where the overall path is longer than MAX_PATH</summary>
+		public const uint COPYENGINE_E_PATH_TOO_DEEP_SRC = 0x8027001D;
+		/// <summary>Destination files would be within folders where the overall path is longer than MAX_PATH</summary>
+		public const uint COPYENGINE_E_PATH_TOO_DEEP_DEST = 0x8027001E;
+		/// <summary>Source is a root directory, cannot be moved or renamed</summary>
+		public const uint COPYENGINE_E_ROOT_DIR_SRC = 0x8027001F;
+		/// <summary>Destination is a root directory, cannot be renamed</summary>
+		public const uint COPYENGINE_E_ROOT_DIR_DEST = 0x80270020;
+		/// <summary>Security problem on source</summary>
+		public const uint COPYENGINE_E_ACCESS_DENIED_SRC = 0x80270021;
+		/// <summary>Security problem on destination</summary>
+		public const uint COPYENGINE_E_ACCESS_DENIED_DEST = 0x80270022;
+		/// <summary>Source file does not exist, or is unavailable</summary>
+		public const uint COPYENGINE_E_PATH_NOT_FOUND_SRC = 0x80270023;
+		/// <summary>Destination file does not exist, or is unavailable</summary>
+		public const uint COPYENGINE_E_PATH_NOT_FOUND_DEST = 0x80270024;
+		/// <summary>Source file is on a disconnected network location</summary>
+		public const uint COPYENGINE_E_NET_DISCONNECT_SRC = 0x80270025;
+		/// <summary>Destination file is on a disconnected network location</summary>
+		public const uint COPYENGINE_E_NET_DISCONNECT_DEST = 0x80270026;
+		/// <summary>Sharing Violation on source</summary>
+		public const uint COPYENGINE_E_SHARING_VIOLATION_SRC = 0x80270027;
+		/// <summary>Sharing Violation on destination</summary>
+		public const uint COPYENGINE_E_SHARING_VIOLATION_DEST = 0x80270028;
+		/// <summary>Destination exists, cannot replace</summary>
+		public const uint COPYENGINE_E_ALREADY_EXISTS_NORMAL = 0x80270029;
+		/// <summary>Destination with read-only attribute exists, cannot replace</summary>
+		public const uint COPYENGINE_E_ALREADY_EXISTS_READONLY = 0x8027002A;
+		/// <summary>Destination with system attribute exists, cannot replace</summary>
+		public const uint COPYENGINE_E_ALREADY_EXISTS_SYSTEM = 0x8027002B;
+		/// <summary>Destination folder exists, cannot replace</summary>
+		public const uint COPYENGINE_E_ALREADY_EXISTS_FOLDER = 0x8027002C;
+		/// <summary>Secondary Stream information would be lost</summary>
+		public const uint COPYENGINE_E_STREAM_LOSS = 0x8027002D;
+		/// <summary>Extended Attributes would be lost</summary>
+		public const uint COPYENGINE_E_EA_LOSS = 0x8027002E;
+		/// <summary>Property would be lost</summary>
+		public const uint COPYENGINE_E_PROPERTY_LOSS = 0x8027002F;
+		/// <summary>Properties would be lost</summary>
+		public const uint COPYENGINE_E_PROPERTIES_LOSS = 0x80270030;
+		/// <summary>Encryption would be lost</summary>
+		public const uint COPYENGINE_E_ENCRYPTION_LOSS = 0x80270031;
+		/// <summary>Entire operation likely won't fit</summary>
+		public const uint COPYENGINE_E_DISK_FULL = 0x80270032;
+		/// <summary>Entire operation likely won't fit, clean-up wizard available</summary>
+		public const uint COPYENGINE_E_DISK_FULL_CLEAN = 0x80270033;
+		/// <summary>Can't reach source folder")</summary>
+		public const uint COPYENGINE_E_CANT_REACH_SOURCE = 0x80270035;
+		/// <summary>???</summary>
+		public const uint COPYENGINE_E_RECYCLE_UNKNOWN_ERROR = 0x80270035;
+		/// <summary>Recycling not available (usually turned off,</summary>
+		public const uint COPYENGINE_E_RECYCLE_FORCE_NUKE = 0x80270036;
+		/// <summary>Item is too large for the recycle-bin</summary>
+		public const uint COPYENGINE_E_RECYCLE_SIZE_TOO_BIG = 0x80270037;
+		/// <summary>Folder is too deep to fit in the recycle-bin</summary>
+		public const uint COPYENGINE_E_RECYCLE_PATH_TOO_LONG = 0x80270038;
+		/// <summary>Recycle bin could not be found or is unavailable</summary>
+		public const uint COPYENGINE_E_RECYCLE_BIN_NOT_FOUND = 0x8027003A;
+		/// <summary>Name of the new file being created is too long</summary>
+		public const uint COPYENGINE_E_NEWFILE_NAME_TOO_LONG = 0x8027003B;
+		/// <summary>Name of the new folder being created is too long</summary>
+		public const uint COPYENGINE_E_NEWFOLDER_NAME_TOO_LONG = 0x8027003C;
+		/// <summary>The directory being processed is not empty</summary>
+		public const uint COPYENGINE_E_DIR_NOT_EMPTY = 0x8027003D;
 	}
 }
