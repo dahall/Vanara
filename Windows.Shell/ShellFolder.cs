@@ -157,8 +157,8 @@ namespace Vanara.Windows.Shell
 		{
 			IEnumIDList eo = null;
 			try
-            {
-                eo = iShellFolder.EnumObjects(IWin2Ptr(parentWindow, false), (SHCONTF)filter);
+			{
+				eo = iShellFolder.EnumObjects(IWin2Ptr(parentWindow, false), (SHCONTF)filter);
 			}
 			catch (Exception e) { Debug.WriteLine($"Unable to enum children in folder: {e.Message}"); }
 			if (eo != null)
@@ -234,6 +234,6 @@ namespace Vanara.Windows.Shell
 		/// <returns>An enumeration of the child objects.</returns>
 		protected override IEnumerable<ShellItem> EnumerateChildren() => EnumerateChildren();
 
-        private IShellFolder GetInstance() => (IShellFolder)iShellItem.BindToHandler(null, BHID.BHID_SFObject.Guid(), typeof(IShellFolder).GUID);
+		private IShellFolder GetInstance() => (IShellFolder)iShellItem.BindToHandler(null, BHID.BHID_SFObject.Guid(), typeof(IShellFolder).GUID);
 	}
 }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security;
 using System.Text;
 
@@ -65,8 +67,43 @@ namespace Vanara.PInvoke
 				if (string.IsNullOrEmpty(path))
 					return null;
 
-				SHCreateItemFromParsingName(path, null, typeof(IShellItem).GUID, out object unk).ThrowIfFailed();
+				var hr = SHCreateItemFromParsingName(path, null, typeof(IShellItem).GUID, out object unk);
+				if (hr == 0x80070002)
+				{
+					Ole32.CreateBindCtx(0, out var ibc).ThrowIfFailed();
+					using (var _ibc = new InteropServices.ComReleaser<IBindCtx>(ibc))
+					{
+						var bd = new IntFileSysBindData();
+						ibc.RegisterObjectParam(STR_FILE_SYS_BIND_DATA, bd);
+						hr = SHCreateItemFromParsingName(path, ibc, typeof(IShellItem).GUID, out unk);
+					}
+				}
+				hr.ThrowIfFailed();
 				return (IShellItem)unk;
+			}
+
+			[ComVisible(true)]
+			private class IntFileSysBindData : IFileSystemBindData2
+			{
+				private static readonly Guid CLSID_UnknownJunction = new Guid("{fc0a77e6-9d70-4258-9783-6dab1d0fe31e}");
+				private WIN32_FIND_DATA fd;
+				private long fileId;
+				private Guid clsidJunction;
+
+				public IntFileSysBindData() { }
+
+				public void SetFindData([In] ref WIN32_FIND_DATA pfd) => fd = pfd;
+
+				public void GetFindData(out WIN32_FIND_DATA pfd) => pfd = fd;
+
+				public void SetFileID(long liFileID) => fileId = liFileID;
+
+				public long GetFileID() => fileId;
+
+				public void SetJunctionCLSID([In, MarshalAs(UnmanagedType.LPStruct)] Guid clsid) => clsidJunction = clsid;
+
+				[return: MarshalAs(UnmanagedType.LPStruct)]
+				public Guid GetJunctionCLSID() => clsidJunction != CLSID_UnknownJunction ? clsidJunction : throw new COMException("Unable to handle junctions", unchecked((int)HRESULT.E_FAIL));
 			}
 		}
 	}
