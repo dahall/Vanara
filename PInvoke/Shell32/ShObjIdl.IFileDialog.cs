@@ -163,6 +163,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Used by methods of the ITransferSource and ITransferDestination interfaces to control their file operations.</summary>
+		[Flags]
 		public enum TRANSFER_SOURCE_FLAGS
 		{
 			/// <summary>Fail if the destination already exists, unless TSF_OVERWRITE_EXIST is specified. This is a default behavior.</summary>
