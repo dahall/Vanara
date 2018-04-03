@@ -4,8 +4,8 @@ Class | Description
 ---- | ----
 AssociateAttribute | Associates a Guid with an element.
 CoTaskMemStringMarshaler | Marshals strings that are allocated by native code and must be freed using CoTaskMemFree after use.
-IEnumFromIndexer`1 | Creates an enumerable class from a counter and an indexer. Useful if a class doesn't support `IEnumerable` or <see cref="T:System.Collections.Generic.IEnumerable`1" /> like some COM objects.
-IEnumFromNext`1 | Creates an enumerable class from a get next method and a reset method. Useful if a class doesn't support `IEnumerable` or <see cref="T:System.Collections.Generic.IEnumerable`1" /> like some COM objects.
+IEnumFromIndexer<T> | Creates an enumerable class from a counter and an indexer. Useful if a class doesn't support `IEnumerable` or <see cref="T:System.Collections.Generic.IEnumerable`1" /> like some COM objects.
+IEnumFromNext<T> | Creates an enumerable class from a get next method and a reset method. Useful if a class doesn't support `IEnumerable` or <see cref="T:System.Collections.Generic.IEnumerable`1" /> like some COM objects.
 OBJECT_TYPE_LIST | Identifies an object type element in a hierarchy of object types. An array of OBJECT_TYPE_LIST structures to define a hierarchy of an object and its subobjects, such as property sets and properties.
 OverlappedAsyncResult | Holds all pertinent information for handling results and errors in an overlapped set of method calls.
 PInvokeDataAttribute | Captures information about P/Invoke calls.

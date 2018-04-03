@@ -1,5 +1,5 @@
 ## Correlation report for shell32.dll
-### Methods (16% complete)
+### Methods (17% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
 [AssocCreateForClasses](https://www.google.com/search?num=5&q=AssocCreateForClasses+site%3Amsdn.microsoft.com) | shell32.dll |  | 
@@ -182,8 +182,8 @@ Native Method | Native DLL | Header | Managed Method
 [SHEvaluateSystemCommandTemplate](https://www.google.com/search?num=5&q=SHEvaluateSystemCommandTemplate+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHExtractIconsW](https://www.google.com/search?num=5&q=SHExtractIconsW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHFileOperation](https://www.google.com/search?num=5&q=SHFileOperation+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHFileOperationA](https://www.google.com/search?num=5&q=SHFileOperationA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHFileOperationW](https://www.google.com/search?num=5&q=SHFileOperationW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[SHFileOperationA](https://www.google.com/search?num=5&q=SHFileOperationA+site%3Amsdn.microsoft.com) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.SHFileOperation
+[SHFileOperationW](https://www.google.com/search?num=5&q=SHFileOperationW+site%3Amsdn.microsoft.com) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.SHFileOperation
 [SHFind_InitMenuPopup](https://www.google.com/search?num=5&q=SHFind_InitMenuPopup+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHFindFiles](https://www.google.com/search?num=5&q=SHFindFiles+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHFlushSFCache](https://www.google.com/search?num=5&q=SHFlushSFCache+site%3Amsdn.microsoft.com) | shell32.dll |  | 
@@ -336,6 +336,7 @@ Native Structure | Header | Managed Structure
 [SHDESCRIPTIONID](https://www.google.com/search?num=5&q=SHDESCRIPTIONID+site%3Amsdn.microsoft.com) | Shlobj.h | Vanara.PInvoke.Shell32+SHDESCRIPTIONID
 [SHELLEXECUTEINFO](https://www.google.com/search?num=5&q=SHELLEXECUTEINFO+site%3Amsdn.microsoft.com) | Shellapi.h | Vanara.PInvoke.Shell32+SHELLEXECUTEINFO
 [SHFILEINFO](https://www.google.com/search?num=5&q=SHFILEINFO+site%3Amsdn.microsoft.com) | Shellapi.h | Vanara.PInvoke.Shell32+SHFILEINFO
+[SHFILEOPSTRUCT](https://www.google.com/search?num=5&q=SHFILEOPSTRUCT+site%3Amsdn.microsoft.com) | Shellapi.h | Vanara.PInvoke.Shell32+SHFILEOPSTRUCT
 [SHITEMID](https://www.google.com/search?num=5&q=SHITEMID+site%3Amsdn.microsoft.com) | Shtypes.h | Vanara.PInvoke.Shell32+SHITEMID
 [SV2CVW2_PARAMS](https://www.google.com/search?num=5&q=SV2CVW2_PARAMS+site%3Amsdn.microsoft.com) | Shobjidl.h | Vanara.PInvoke.Shell32+SV2CVW2_PARAMS
 [THUMBBUTTON](https://www.google.com/search?num=5&q=THUMBBUTTON+site%3Amsdn.microsoft.com) | Shobjidl.h | Vanara.PInvoke.Shell32+THUMBBUTTON
@@ -370,9 +371,12 @@ Native Interface | Native DLL | Header | Managed Interface
 [IFileDialogCustomize](https://www.google.com/search?num=5&q=IFileDialogCustomize+site%3Amsdn.microsoft.com) |  |  | Vanara.PInvoke.Shell32+IFileDialogCustomize
 [IFileDialogEvents](https://www.google.com/search?num=5&q=IFileDialogEvents+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IFileDialogEvents
 [IFileOpenDialog](https://www.google.com/search?num=5&q=IFileOpenDialog+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IFileOpenDialog
+[IFileOperation](https://www.google.com/search?num=5&q=IFileOperation+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IFileOperation
 [IFileOperationProgressSink](https://www.google.com/search?num=5&q=IFileOperationProgressSink+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IFileOperationProgressSink
 [IFileSaveDialog](https://www.google.com/search?num=5&q=IFileSaveDialog+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IFileSaveDialog
 [IFileSearchBand](https://www.google.com/search?num=5&q=IFileSearchBand+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[IFileSystemBindData](https://www.google.com/search?num=5&q=IFileSystemBindData+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IFileSystemBindData
+[IFileSystemBindData2](https://www.google.com/search?num=5&q=IFileSystemBindData2+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IFileSystemBindData2
 [IFolderViewOC](https://www.google.com/search?num=5&q=IFolderViewOC+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [IFolderViewOptions](https://www.google.com/search?num=5&q=IFolderViewOptions+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IFolderViewOptions
 [IKnownFolder](https://www.google.com/search?num=5&q=IKnownFolder+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IKnownFolder
@@ -384,6 +388,7 @@ Native Interface | Native DLL | Header | Managed Interface
 [IObjectWithAppUserModelId](https://www.google.com/search?num=5&q=IObjectWithAppUserModelId+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IObjectWithAppUserModelId
 [IObjectWithProgId](https://www.google.com/search?num=5&q=IObjectWithProgId+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IObjectWithProgId
 [IOpenControlPanel](https://www.google.com/search?num=5&q=IOpenControlPanel+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IOpenControlPanel
+[IOperationsProgressDialog](https://www.google.com/search?num=5&q=IOperationsProgressDialog+site%3Amsdn.microsoft.com) |  |  | Vanara.PInvoke.Shell32+IOperationsProgressDialog
 [IQueryInfo](https://www.google.com/search?num=5&q=IQueryInfo+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IQueryInfo
 [IShellBrowser](https://www.google.com/search?num=5&q=IShellBrowser+site%3Amsdn.microsoft.com) |  | Shobjidl.h | Vanara.PInvoke.Shell32+IShellBrowser
 [IShellDispatch](https://www.google.com/search?num=5&q=IShellDispatch+site%3Amsdn.microsoft.com) | shell32.dll |  | 

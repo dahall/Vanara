@@ -4,7 +4,7 @@
     <Description>Methods, structures and constants imported from Ole32.dll, OleAut32 and PropSys.dll.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.10</VersionPrefix>
+    <VersionPrefix>1.0.11</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard20</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Ole</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -25,13 +25,13 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-CoInitializeEx, CoUninitialize, CreateBindCtx, InitPropVariantFromBooleanVector, InitPropVariantFromBuffer, InitPropVariantFromCLSID, InitPropVariantFromDoubleVector, InitPropVariantFromFileTime, InitPropVariantFromFileTimeVector, InitPropVariantFromInt16Vector, InitPropVariantFromInt32Vector, InitPropVariantFromInt64Vector, InitPropVariantFromPropVariantVectorElem, InitPropVariantFromStringVector, InitPropVariantFromUInt16Vector, InitPropVariantFromUInt32Vector, InitPropVariantFromUInt64Vector, InitPropVariantVectorFromPropVariant, OleInitialize, OleUninitialize, PropVariantChangeType, PropVariantClear, PropVariantCompareEx, PropVariantCopy, PropVariantGetElementCount, PropVariantToBoolean, PropVariantToBooleanVectorAlloc, PropVariantToBSTR, PropVariantToBuffer, PropVariantToDouble, PropVariantToDoubleVectorAlloc, PropVariantToFileTime, PropVariantToFileTimeVectorAlloc, PropVariantToGUID, PropVariantToInt16, PropVariantToInt16VectorAlloc, PropVariantToInt32, PropVariantToInt32VectorAlloc, PropVariantToInt64, PropVariantToInt64VectorAlloc, PropVariantToStringAlloc, PropVariantToStringVectorAlloc, PropVariantToStringWithDefault, PropVariantToUInt16, PropVariantToUInt16VectorAlloc, PropVariantToUInt32, PropVariantToUInt32VectorAlloc, PropVariantToUInt64, PropVariantToUInt64VectorAlloc, PropVariantToVariant, PSGetNameFromPropertyKey, PSGetPropertyDescription, PSGetPropertyKeyFromName, ReleaseStgMedium, SafeArrayAccessData, SafeArrayCreate, SafeArrayCreateEx, SafeArrayCreateVector, SafeArrayDestroy, SafeArrayGetDim, SafeArrayGetElement, SafeArrayGetElemsize, SafeArrayGetLBound, SafeArrayGetUBound, SafeArrayPutElement, SafeArrayUnaccessData, StgCreateStorageEx, StgIsStorageFile, StgOpenStorage, StgOpenStorageEx, VariantClear, VariantToPropVariant
+CoInitializeEx, CoUninitialize, CreateBindCtx, InitPropVariantFromBooleanVector, InitPropVariantFromBuffer, InitPropVariantFromCLSID, InitPropVariantFromDoubleVector, InitPropVariantFromFileTime, InitPropVariantFromFileTimeVector, InitPropVariantFromInt16Vector, InitPropVariantFromInt32Vector, InitPropVariantFromInt64Vector, InitPropVariantFromPropVariantVectorElem, InitPropVariantFromStringVector, InitPropVariantFromUInt16Vector, InitPropVariantFromUInt32Vector, InitPropVariantFromUInt64Vector, InitPropVariantVectorFromPropVariant, OleInitialize, OleUninitialize, PropVariantChangeType, PropVariantClear, PropVariantCompareEx, PropVariantCopy, PropVariantGetElementCount, PropVariantToBoolean, PropVariantToBooleanVectorAlloc, PropVariantToBSTR, PropVariantToBuffer, PropVariantToDouble, PropVariantToDoubleVectorAlloc, PropVariantToFileTime, PropVariantToFileTimeVectorAlloc, PropVariantToGUID, PropVariantToInt16, PropVariantToInt16VectorAlloc, PropVariantToInt32, PropVariantToInt32VectorAlloc, PropVariantToInt64, PropVariantToInt64VectorAlloc, PropVariantToStringAlloc, PropVariantToStringVectorAlloc, PropVariantToStringWithDefault, PropVariantToUInt16, PropVariantToUInt16VectorAlloc, PropVariantToUInt32, PropVariantToUInt32VectorAlloc, PropVariantToUInt64, PropVariantToUInt64VectorAlloc, PropVariantToVariant, PSCreatePropertyChangeArray, PSCreateSimplePropertyChange, PSGetNameFromPropertyKey, PSGetPropertyDescription, PSGetPropertyKeyFromName, ReleaseStgMedium, SafeArrayAccessData, SafeArrayCreate, SafeArrayCreateEx, SafeArrayCreateVector, SafeArrayDestroy, SafeArrayGetDim, SafeArrayGetElement, SafeArrayGetElemsize, SafeArrayGetLBound, SafeArrayGetUBound, SafeArrayPutElement, SafeArrayUnaccessData, StgCreateStorageEx, StgIsStorageFile, StgOpenStorage, StgOpenStorageEx, VariantClear, VariantToPropVariant
 
 Structures
 STGOPTIONS, SNB, OLEMENUGROUPWIDTHS, BLOB, CLIPDATA, PACKEDMETA, PROPVARIANT, PROPERTYKEY, SAFEARRAY, SAFEARRAYBOUND
 
 Interfaces
-IEnumSTATSTG, IStorage, IOleWindow, IInitializeWithStream, IPropertyDescription, IPropertyDescription2, IPropertyDescriptionList, IPropertyEnumType, IPropertyEnumType2, IPropertyEnumTypeList, IPropertyStore, IPropertySystem
+IEnumSTATSTG, IStorage, IOleWindow, IInitializeWithStream, IPropertyDescription, IPropertyDescription2, IPropertyDescriptionList, IPropertyEnumType, IPropertyEnumType2, IPropertyEnumTypeList, IPropertyStore, IPropertySystem, IObjectWithPropertyKey, IPropertyChange, IPropertyChangeArray
 
 </PackageReleaseNotes>
   </PropertyGroup>

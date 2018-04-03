@@ -4,7 +4,7 @@
     <Description>Methods, structures and constants imported from Shell32.dll.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.10</VersionPrefix>
+    <VersionPrefix>1.0.11</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Shell32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -25,13 +25,13 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-ExtractIconExA, ExtractIconExW, GetCurrentProcessExplicitAppUserModelID, ILClone, ILCloneFirst, ILCombine, ILCreateFromPathA, ILCreateFromPathW, ILFindLastID, ILFree, ILGetNext, ILGetSize, ILIsEqual, ILIsParent, ILRemoveLastID, SetCurrentProcessExplicitAppUserModelID, SHAddToRecentDocs, SHBrowseForFolderA, SHBrowseForFolderW, SHCreateItemFromIDList, SHCreateItemFromParsingName, SHCreateItemFromRelativeName, SHCreateItemInKnownFolder, SHCreateItemWithParent, SHCreateShellItemArray, SHCreateShellItemArrayFromIDLists, SHCreateShellItemArrayFromShellItem, SHDefExtractIconA, SHDefExtractIconW, ShellExecuteExA, ShellExecuteExW, SHGetDataFromIDListA, SHGetDataFromIDListW, SHGetDesktopFolder, SHGetFileInfoA, SHGetFileInfoW, SHGetFolderLocation, SHGetFolderPathA, SHGetFolderPathEx, SHGetFolderPathW, SHGetIDListFromObject, SHGetImageList, SHGetKnownFolderIDList, SHGetKnownFolderItem, SHGetKnownFolderPath, SHGetNameFromIDList, SHGetPathFromIDListA, SHGetPathFromIDListW, SHGetPropertyStoreFromParsingName, SHOpenFolderAndSelectItems, SHParseDisplayName, SHResolveLibrary, SHShowManageLibraryUI
+ExtractIconExA, ExtractIconExW, GetCurrentProcessExplicitAppUserModelID, ILClone, ILCloneFirst, ILCombine, ILCreateFromPathA, ILCreateFromPathW, ILFindLastID, ILFree, ILGetNext, ILGetSize, ILIsEqual, ILIsParent, ILRemoveLastID, SetCurrentProcessExplicitAppUserModelID, SHAddToRecentDocs, SHBrowseForFolderA, SHBrowseForFolderW, SHCreateItemFromIDList, SHCreateItemFromParsingName, SHCreateItemFromRelativeName, SHCreateItemInKnownFolder, SHCreateItemWithParent, SHCreateShellItemArray, SHCreateShellItemArrayFromIDLists, SHCreateShellItemArrayFromShellItem, SHDefExtractIconA, SHDefExtractIconW, ShellExecuteExA, ShellExecuteExW, SHFileOperationA, SHFileOperationW, SHGetDataFromIDListA, SHGetDataFromIDListW, SHGetDesktopFolder, SHGetFileInfoA, SHGetFileInfoW, SHGetFolderLocation, SHGetFolderPathA, SHGetFolderPathEx, SHGetFolderPathW, SHGetIDListFromObject, SHGetImageList, SHGetKnownFolderIDList, SHGetKnownFolderItem, SHGetKnownFolderPath, SHGetNameFromIDList, SHGetPathFromIDListA, SHGetPathFromIDListW, SHGetPropertyStoreFromParsingName, SHOpenFolderAndSelectItems, SHParseDisplayName, SHResolveLibrary, SHShowManageLibraryUI
 
 Structures
-SHELLEXECUTEINFO, SHFILEINFO, BROWSEINFO, COORD, DATABLOCKHEADER, EXP_DARWIN_LINK, EXP_SPECIAL_FOLDER, EXP_SZ_LINK, NT_CONSOLE_PROPS, NT_FE_CONSOLE_PROPS, SHDESCRIPTIONID, COMDLG_FILTERSPEC, KNOWNFOLDER_DEFINITION, EXTRASEARCH, FOLDERSETTINGS, SV2CVW2_PARAMS, THUMBBUTTON, ITEMIDLIST, SHITEMID
+SHELLEXECUTEINFO, SHFILEINFO, SHFILEOPSTRUCT, BROWSEINFO, COORD, DATABLOCKHEADER, EXP_DARWIN_LINK, EXP_SPECIAL_FOLDER, EXP_SZ_LINK, NT_CONSOLE_PROPS, NT_FE_CONSOLE_PROPS, SHDESCRIPTIONID, COMDLG_FILTERSPEC, KNOWNFOLDER_DEFINITION, EXTRASEARCH, FOLDERSETTINGS, SV2CVW2_PARAMS, THUMBBUTTON, ITEMIDLIST, SHITEMID
 
 Interfaces
-IAutoComplete, IAutoComplete2, IExtractIcon, IOpenControlPanel, IApplicationDestinations, IApplicationDocumentLists, IEnumIDList, IObjectArray, IObjectCollection, IObjectWithAppUserModelId, IObjectWithProgId, IQueryInfo, IExtractImage, IFileDialog, IFileDialog2, IFileDialogControlEvents, IFileDialogCustomize, IFileDialogEvents, IFileOpenDialog, IFileOperationProgressSink, IFileSaveDialog, IModalWindow, IKnownFolder, IKnownFolderManager, IEnumExtraSearch, IShellFolder, IShellFolder2, IEnumShellItems, IShellItem, IShellItem2, IShellItemArray, IShellItemImageFactory, IShellLibrary, IShellLinkDataList, IShellLinkW, IFolderViewOptions, IShellBrowser, IShellView, IShellView2, IShellView3, ICustomDestinationList, ITaskbarList, ITaskbarList2, ITaskbarList3, ITaskbarList4, IThumbnailProvider
+IAutoComplete, IAutoComplete2, IExtractIcon, IOpenControlPanel, IApplicationDestinations, IApplicationDocumentLists, IEnumIDList, IFileSystemBindData, IFileSystemBindData2, IObjectArray, IObjectCollection, IObjectWithAppUserModelId, IObjectWithProgId, IQueryInfo, IExtractImage, IFileDialog, IFileDialog2, IFileDialogControlEvents, IFileDialogCustomize, IFileDialogEvents, IFileOpenDialog, IFileOperationProgressSink, IFileSaveDialog, IModalWindow, IFileOperation, IKnownFolder, IKnownFolderManager, IOperationsProgressDialog, IEnumExtraSearch, IShellFolder, IShellFolder2, IEnumShellItems, IShellItem, IShellItem2, IShellItemArray, IShellItemImageFactory, IShellLibrary, IShellLinkDataList, IShellLinkW, IFolderViewOptions, IShellBrowser, IShellView, IShellView2, IShellView3, ICustomDestinationList, ITaskbarList, ITaskbarList2, ITaskbarList3, ITaskbarList4, IThumbnailProvider
 
 </PackageReleaseNotes>
   </PropertyGroup>

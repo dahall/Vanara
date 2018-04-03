@@ -4,7 +4,7 @@
     <Description>Methods, structures and constants imported from UxTheme.dll.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.10</VersionPrefix>
+    <VersionPrefix>1.0.11</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.UxTheme</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>

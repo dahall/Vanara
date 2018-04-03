@@ -434,10 +434,10 @@ Native Method | Native DLL | Header | Managed Method
 [PSCreateDelayedMultiplexPropertyStore](https://www.google.com/search?num=5&q=PSCreateDelayedMultiplexPropertyStore+site%3Amsdn.microsoft.com) | propsys.dll |  | 
 [PSCreateMemoryPropertyStore](https://www.google.com/search?num=5&q=PSCreateMemoryPropertyStore+site%3Amsdn.microsoft.com) | propsys.dll |  | 
 [PSCreateMultiplexPropertyStore](https://www.google.com/search?num=5&q=PSCreateMultiplexPropertyStore+site%3Amsdn.microsoft.com) | propsys.dll |  | 
-[PSCreatePropertyChangeArray](https://www.google.com/search?num=5&q=PSCreatePropertyChangeArray+site%3Amsdn.microsoft.com) | propsys.dll |  | 
+[PSCreatePropertyChangeArray](https://www.google.com/search?num=5&q=PSCreatePropertyChangeArray+site%3Amsdn.microsoft.com) | propsys.dll | Propsys.h | Vanara.PInvoke.PropSys.PSCreatePropertyChangeArray
 [PSCreatePropertyStoreFromObject](https://www.google.com/search?num=5&q=PSCreatePropertyStoreFromObject+site%3Amsdn.microsoft.com) | propsys.dll |  | 
 [PSCreatePropertyStoreFromPropertySetStorage](https://www.google.com/search?num=5&q=PSCreatePropertyStoreFromPropertySetStorage+site%3Amsdn.microsoft.com) | propsys.dll |  | 
-[PSCreateSimplePropertyChange](https://www.google.com/search?num=5&q=PSCreateSimplePropertyChange+site%3Amsdn.microsoft.com) | propsys.dll |  | 
+[PSCreateSimplePropertyChange](https://www.google.com/search?num=5&q=PSCreateSimplePropertyChange+site%3Amsdn.microsoft.com) | propsys.dll | Propsys.h | Vanara.PInvoke.PropSys.PSCreateSimplePropertyChange
 [PSEnumeratePropertyDescriptions](https://www.google.com/search?num=5&q=PSEnumeratePropertyDescriptions+site%3Amsdn.microsoft.com) | propsys.dll |  | 
 [PSFormatForDisplay](https://www.google.com/search?num=5&q=PSFormatForDisplay+site%3Amsdn.microsoft.com) | propsys.dll |  | 
 [PSFormatForDisplayAlloc](https://www.google.com/search?num=5&q=PSFormatForDisplayAlloc+site%3Amsdn.microsoft.com) | propsys.dll |  | 
@@ -972,7 +972,10 @@ Native Interface | Native DLL | Header | Managed Interface
 ---- | ---- | ---- | ----
 [IEnumSTATSTG](https://www.google.com/search?num=5&q=IEnumSTATSTG+site%3Amsdn.microsoft.com) |  | Objidl.h | Vanara.PInvoke.Ole32+IEnumSTATSTG
 [IInitializeWithStream](https://www.google.com/search?num=5&q=IInitializeWithStream+site%3Amsdn.microsoft.com) |  | Propsys.h | Vanara.PInvoke.PropSys+IInitializeWithStream
+[IObjectWithPropertyKey](https://www.google.com/search?num=5&q=IObjectWithPropertyKey+site%3Amsdn.microsoft.com) |  | Propsys.h | Vanara.PInvoke.PropSys+IObjectWithPropertyKey
 [IOleWindow](https://www.google.com/search?num=5&q=IOleWindow+site%3Amsdn.microsoft.com) |  | Oleidl.h | Vanara.PInvoke.Ole32+IOleWindow
+[IPropertyChange](https://www.google.com/search?num=5&q=IPropertyChange+site%3Amsdn.microsoft.com) |  | Propsys.h | Vanara.PInvoke.PropSys+IPropertyChange
+[IPropertyChangeArray](https://www.google.com/search?num=5&q=IPropertyChangeArray+site%3Amsdn.microsoft.com) |  | Propsys.h | Vanara.PInvoke.PropSys+IPropertyChangeArray
 [IPropertyDescription](https://www.google.com/search?num=5&q=IPropertyDescription+site%3Amsdn.microsoft.com) |  | Propsys.h | Vanara.PInvoke.PropSys+IPropertyDescription
 [IPropertyDescription2](https://www.google.com/search?num=5&q=IPropertyDescription2+site%3Amsdn.microsoft.com) |  | Propsys.h | Vanara.PInvoke.PropSys+IPropertyDescription2
 [IPropertyDescriptionList](https://www.google.com/search?num=5&q=IPropertyDescriptionList+site%3Amsdn.microsoft.com) |  | Propsys.h | Vanara.PInvoke.PropSys+IPropertyDescriptionList

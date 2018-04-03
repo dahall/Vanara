@@ -54,15 +54,15 @@ EnumComboBox |
 ExpandedEventArgs | 
 FlagCheckedListBox | 
 FlagCheckedListBoxItem | 
-FlagEnumUIEditor`1 | 
+FlagEnumUIEditor<T> | 
 FolderBrowserDialog | Class to let the user browse for a folder.
 FolderBrowserDialogInitializedEventArgs | Event arguments for when the `FolderBrowserDialog` has been initialized.
-GetDuration`1 | 
+GetDuration<T> | 
 GlassExtenderProvider | GlassExtenderProvider extends a `Form` and provides glass margins.
 GroupIconResIndexer | 
 HtmlAttributeValueAttribute | 
 HtmlElementAttributesAttribute | 
-ImageResIndexer`1 | 
+ImageResIndexer<T> | 
 ImplicitNotNullAttribute | Implicitly apply [NotNull]/[ItemNotNull] annotation to all the of type members and parameters in particular scope where this annotation is used (type declaration or whole assembly).
 InputDialog | An input dialog that automatically creates controls to collect the values of the object supplied via the `Data` property.
 InputDialogItemAttribute | Allows a developer to attribute a property or field with text that gets shown instead of the field or property name in an `InputDialog`.
@@ -74,7 +74,7 @@ IPAddressFieldChangedEventArgs | Contains the arguments needed to handle the `Fi
 ItemCanBeNullAttribute | Can be appplied to symbols of types derived from IEnumerable as well as to symbols of Task and Lazy classes to indicate that the value of a collection item, of the Task.Result property or of the Lazy.Value property can be null.
 ItemNotNullAttribute | Can be appplied to symbols of types derived from IEnumerable as well as to symbols of Task and Lazy classes to indicate that the value of a collection item, of the Task.Result property or of the Lazy.Value property can never be null.
 LinqTunnelAttribute | Indicates that method is pure LINQ method, with postponed enumeration (like Enumerable.Select, .Where). This annotation allows inference of [InstantHandle] annotation for parameters of delegate type by analyzing LINQ method chains.
-ListViewGroupingSet`1 | Takes a list of groups and matching predicates to be used by the ApplyGroupingSet extension method.
+ListViewGroupingSet<T> | Takes a list of groups and matching predicates to be used by the ApplyGroupingSet extension method.
 LocalizationRequiredAttribute | Indicates that marked element should be localized or not.
 MacroAttribute | Allows specifying a macro for a parameter of a <see cref="T:Vanara.Windows.Forms.Annotations.SourceTemplateAttribute">source template</see>.
 MeansImplicitUseAttribute | Should be used on attributes and causes ReSharper to not mark symbols marked with such attributes as unused (as well as by other usage inspections)
@@ -147,7 +147,7 @@ Flip3DWindowPolicy | Flags used by the SetWindowAttr method to specify the Flip3
 FolderBrowserDialogOptions |  | Folders, FoldersAndFiles, Computers, Printers
 ImplicitUseKindFlags |  | Access, Assign, InstantiatedWithFixedConstructorSignature, Default, InstantiatedNoFixedConstructorSignature
 ImplicitUseTargetFlags | Specify what is considered used implicitly when marked with `MeansImplicitUseAttribute` or `UsedImplicitlyAttribute`. | Default, Itself, Members, WithMembers
-KnownFolders | Standard folders registered with the system as Known Folders. A computer will have only folders appropriate to it installed. | AccountPictures, AddNewPrograms, AdminTools, ApplicationShortcuts, AppsFolder, AppUpdates, CameraRoll, CDBurning, ChangeRemovePrograms, CommonAdminTools, CommonOEMLinks, CommonPrograms, CommonStartMenu, CommonStartup, CommonTemplates, ComputerFolder, ConflictFolder, ConnectionsFolder, Contacts, ControlPanelFolder, Cookies, Desktop, DeviceMetadataStore, Documents, DocumentsLibrary, Downloads, Favorites, Fonts, Games, GameTasks, History, HomeGroup, HomeGroupCurrentUser, ImplicitAppShortcuts, InternetCache, InternetFolder, Libraries, Links, LocalAppData, LocalAppDataLow, LocalizedResourcesDir, Music, MusicLibrary, NetHood, NetworkFolder, OriginalImages, PhotoAlbums, PicturesLibrary, Pictures, Playlists, PrintersFolder, PrintHood, Profile, ProgramData, ProgramFiles, ProgramFilesX64, ProgramFilesX86, ProgramFilesCommon, ProgramFilesCommonX64, ProgramFilesCommonX86, Programs, Public, PublicDesktop, PublicDocuments, PublicDownloads, PublicGameTasks, PublicLibraries, PublicMusic, PublicPictures, PublicRingtones, PublicUserTiles, PublicVideos, QuickLaunch, Recent, RecordedTVLibrary, RecycleBinFolder, ResourceDir, Ringtones, RoamingAppData, RoamedTileImages, RoamingTiles, SampleMusic, SamplePictures, SamplePlaylists, SampleVideos, SavedGames, SavedPictures, SavedPicturesLibrary, SavedSearches, Screenshots, OfflineFiles, SearchHistory, SearchHome, MicrosoftOfficeOutlook, SearchTemplates, SendTo, SidebarDefaultParts, SidebarParts, SkyDrive, SkyDriveCameraRoll, SkyDriveDocuments, SkyDrivePictures, StartMenu, Startup, SyncManagerFolder, SyncResultsFolder, SyncSetupFolder, System, SystemX86, Templates, UserPinned, UserProfiles, UserProgramFiles, UserProgramFilesCommon, UsersFiles, UsersLibraries, Videos, VideosLibrary, Windows, Undefined
+KnownFolder | Standard folders registered with the system as Known Folders. A computer will have only folders appropriate to it installed. | AccountPictures, AddNewPrograms, AdminTools, ApplicationShortcuts, AppsFolder, AppUpdates, CameraRoll, CDBurning, ChangeRemovePrograms, CommonAdminTools, CommonOEMLinks, CommonPrograms, CommonStartMenu, CommonStartup, CommonTemplates, ComputerFolder, ConflictFolder, ConnectionsFolder, Contacts, ControlPanelFolder, Cookies, Desktop, DeviceMetadataStore, Documents, DocumentsLibrary, Downloads, Favorites, Fonts, Games, GameTasks, History, HomeGroup, HomeGroupCurrentUser, ImplicitAppShortcuts, InternetCache, InternetFolder, Libraries, Links, LocalAppData, LocalAppDataLow, LocalizedResourcesDir, Music, MusicLibrary, NetHood, NetworkFolder, OriginalImages, PhotoAlbums, PicturesLibrary, Pictures, Playlists, PrintersFolder, PrintHood, Profile, ProgramData, ProgramFiles, ProgramFilesX64, ProgramFilesX86, ProgramFilesCommon, ProgramFilesCommonX64, ProgramFilesCommonX86, Programs, Public, PublicDesktop, PublicDocuments, PublicDownloads, PublicGameTasks, PublicLibraries, PublicMusic, PublicPictures, PublicRingtones, PublicUserTiles, PublicVideos, QuickLaunch, Recent, RecordedTVLibrary, RecycleBinFolder, ResourceDir, Ringtones, RoamingAppData, RoamedTileImages, RoamingTiles, SampleMusic, SamplePictures, SamplePlaylists, SampleVideos, SavedGames, SavedPictures, SavedPicturesLibrary, SavedSearches, Screenshots, SEARCH_CSC, SearchHistory, SearchHome, SEARCH_MAPI, SearchTemplates, SendTo, SidebarDefaultParts, SidebarParts, SkyDrive, SkyDriveCameraRoll, SkyDriveDocuments, SkyDrivePictures, StartMenu, Startup, SyncManagerFolder, SyncResultsFolder, SyncSetupFolder, System, SystemX86, Templates, UserPinned, UserProfiles, UserProgramFiles, UserProgramFilesCommon, UsersFiles, UsersLibraries, Videos, VideosLibrary, Windows, Undefined
 NonClientRenderingPolicy | Flags used by the SetWindowAttr method to specify the non-client area rendering policy. | UseWindowStyle, Disabled, Enabled
 ProgressBarState | Progress bar state. | Normal, Error, Paused
 RenderStyle |  | SystemTheme, Custom

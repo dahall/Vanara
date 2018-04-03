@@ -1,9 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Classes for system related items derived from the Vanara PInvoke libraries. Includes a class for working with virtual disks (including async methods) and extensions for Process (privileges and elavation), FileInfo (compression info), and ServiceController (SetStartType) that pull extended information through native API calls.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.10</VersionPrefix>
+    <VersionPrefix>1.0.11</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0</TargetFrameworks>
     <AssemblyName>Vanara.SystemServices</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -19,6 +20,15 @@
     <PackageTags>pinvoke vanara net-extensions interop</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
     <IncludeSource>true</IncludeSource>
+    <PackageReleaseNotes>Currently implements:
+
+Classes
+NetworkConnection, NetworkProfile
+
+Enumerations
+DeviceType, ProcessIntegrityLevel, Subtype
+
+</PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
