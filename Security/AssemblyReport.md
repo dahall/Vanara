@@ -2,11 +2,21 @@
 ### Classes
 Class | Description
 ---- | ----
+AccessControlHelper | 
 AccountPrivileges | Allows for the privileges of a user to be retrieved, enumerated and set.
+AccountUtils | 
+ActiveDirectoryExtension | 
 BadValueException | Exception raised when value(s) of a claim value type is invalid.
+ClaimValue | Class to represent the type of claims values held, the value(s) and obtain native (unmanaged) pointers to the value as they are stored in the union members of AUTHZ_SECURITY_ATTRIBUTE_V1 structure's 'Values' field.
 LogonRights | Allows for the privileges of a user to be retrieved, enumerated and set.
+PinnedAcl | 
+PinnedSid | 
+PrivilegeAndAttributes | 
 PrivilegedCodeBlock | Elevate user privileges for a code block similar to a <c>lock</c> or <c>using</c> statement.
+PrivilegeExtension | 
+SystemAccountInfo | Contains a corresponding result for each name provided to the `SystemSecurity.GetAccountInfo(System.Boolean,System.String[])` method.
 SystemSecurity | Provides access to the local security authority on a given server.
+UAC | Provides information about the state of User Access Control for the system.
 WindowsImpersonatedIdentity | Impersonation of a user. Allows to execute code under another user context. Please note that the account that instantiates this class needs to have the 'Act as part of operating system' privilege set.
 ### Enumerations
 Enum | Description | Values

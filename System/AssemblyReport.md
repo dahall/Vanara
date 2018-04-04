@@ -2,8 +2,15 @@
 ### Classes
 Class | Description
 ---- | ----
+FileInfoExtension | 
 NetworkConnection | 
+NetworkListManager | 
 NetworkProfile | Represents a wireless network profile
+ProcessExtension | 
+ServiceControllerExtension | 
+SystemShutdown | Provides access to system shutdown, restart, lock and notifications.
+VirtualDisk | 
+VirtualDiskMetadata | Supports getting and setting metadata on a virtual disk.
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----

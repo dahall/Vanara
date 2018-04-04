@@ -23,7 +23,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Classes
-NetworkConnection, NetworkProfile
+FileInfoExtension, NetworkConnection, NetworkListManager, NetworkProfile, ProcessExtension, ServiceControllerExtension, SystemShutdown, VirtualDisk, VirtualDiskMetadata
 
 Enumerations
 DeviceType, ProcessIntegrityLevel, Subtype

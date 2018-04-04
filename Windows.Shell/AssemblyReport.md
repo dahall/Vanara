@@ -2,11 +2,27 @@
 ### Classes
 Class | Description
 ---- | ----
+ControlPanel | Provides a means to open Control Panel items and get their paths.
 IconLocation | Wraps the icon location string used by some Shell classes.
+PropertyDescription | 
+PropertyDescriptionList | Exposes methods that extract information from a collection of property descriptions presented as a list.
+PropertyStore | Encapsulates the IPropertyStore object.
 PropertyType | Exposes methods that extract data from enumeration information.
 PropertyTypeList | Exposes methods that enumerate the possible values for a property.
 ShellFileInfo | Information and icons for any shell file.
+ShellFileNewOpEventArgs | Arguments supplied to the `PostNewItem` event.
 ShellFileOperations | Queued and static file operations using the Shell.
+ShellFileOpEventArgs | Arguments supplied to events from `ShellFileOperations`. Depending on the event, some properties may not be set.
+ShellFolder | A folder or container of `ShellItem` instances.
+ShellImageList | 
+ShellItem | Encapsulates an item in the Windows Shell.
+ShellItemArray | A folder or container of `ShellItem` instances.
+ShellItemPropertyStore | A property store for a `ShellItem`.
+ShellItemPropertyUpdates | A dictionary of properties that can be used to set or update property values on Shell items via the `ShellFileOperations.QueueApplyPropertiesOperation(Vanara.Windows.Shell.ShellItem,Vanara.Windows.Shell.ShellItemPropertyUpdates)` method. This class wraps the `IPropertyChangeArray` COM interface.
+ShellLibrary | Shell library encapsulation.
+ShellLibraryFolders | Folders of a `ShellLibrary`.
+ShellLink | Represents a Shell Shortcut (.lnk) file.
+TaskbarList | 
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----

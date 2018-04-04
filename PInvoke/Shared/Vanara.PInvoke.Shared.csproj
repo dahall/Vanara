@@ -32,7 +32,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Classes
-AssociateAttribute, CoTaskMemStringMarshaler, IEnumFromIndexer&lt;T&gt;, IEnumFromNext&lt;T&gt;, OBJECT_TYPE_LIST, OverlappedAsyncResult, PInvokeDataAttribute, PRECT, SECURITY_ATTRIBUTES, TryGetNext, WIN32_FIND_DATA
+AssociateAttribute, CoTaskMemStringMarshaler, IEnumFromIndexer&lt;T&gt;, IEnumFromNext&lt;T&gt;, Lib, Macros, OBJECT_TYPE_LIST, OverlappedAsync, OverlappedAsyncResult, PInvokeDataAttribute, PRECT, SafeElementArray&lt;T&gt;, SafeResourceId, SECURITY_ATTRIBUTES, TryGetNext, WIN32_FIND_DATA
 
 Structures
 HRESULT, MSG, NTStatus, OBJECT_TYPE_LIST, PRECT, RECT, SECURITY_ATTRIBUTES, SIZE, SYSTEMTIME, WIN32_FIND_DATA, Win32Error
