@@ -222,7 +222,7 @@ namespace Vanara.Windows.Shell
 		SecondaryFileSystemPath = 0x20000000
 	}
 
-	/// <summary>Requests the form of an item's display name to retrieve through <see cref="ShellItem.GetDisplayName"/>.</summary>
+	/// <summary>Requests the form of an item's display name to retrieve through <see cref="ShellItem.GetDisplayName(ShellItemDisplayString)"/>.</summary>
 	public enum ShellItemDisplayString : uint
 	{
 		/// <summary>

@@ -45,7 +45,7 @@ namespace Vanara.PInvoke
 			LVBKIF_SOURCE_MASK = 0X00000003,
 			/// <summary>The background image is displayed normally.</summary>
 			LVBKIF_STYLE_NORMAL = 0X00000000,
-			/// <summary>The background image will be tiled to fill the entire background of the control./summary>
+			/// <summary>The background image will be tiled to fill the entire background of the control.</summary>
 			LVBKIF_STYLE_TILE = 0X00000010,
 			/// <summary>You can use the LVBKIF_STYLE_MASK value to mask off all but the style flags.</summary>
 			LVBKIF_STYLE_MASK = 0X00000010,
@@ -919,6 +919,7 @@ namespace Vanara.PInvoke
 			public uint dwReserved;
 
 			/// <summary>Initializes a new instance of the <see cref="LVINSERTMARK"/> struct.</summary>
+			/// <param name="insertAtItem">Index at which to insert the item.</param>
 			/// <param name="insertAfter">if set to <c>true</c> the insertion point appears after the item specified.</param>
 			public LVINSERTMARK(int insertAtItem, bool insertAfter = false) : this()
 			{

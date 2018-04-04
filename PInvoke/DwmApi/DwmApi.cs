@@ -725,7 +725,7 @@ namespace Vanara.PInvoke
 			}
 		}
 
-		/// <summary>Structure to get colorization information using the <see cref="PVanara.PInvokeDwmGetColorizationParameters"/> function.</summary>
+		/// <summary>Structure to get colorization information using the <see cref="DwmpGetColorizationParameters"/> function.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		[PInvokeData("dwmapi.h")]
 		public struct DWM_COLORIZATION_PARAMS

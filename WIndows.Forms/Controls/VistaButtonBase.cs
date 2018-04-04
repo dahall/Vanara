@@ -27,13 +27,13 @@ namespace Vanara.Windows.Forms
 			base.FlatStyle = FlatStyle.System;
 		}
 
-		/// <summary>
+		/*/// <summary>
 		/// Gets or sets the flat style.
 		/// </summary>
 		/// <value>
 		/// The flat style.
 		/// </value>
-		/*[Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DefaultValue(typeof(FlatStyle), "System")]
+		[Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DefaultValue(typeof(FlatStyle), "System")]
 		public new FlatStyle FlatStyle
 		{
 			get { return base.FlatStyle; }

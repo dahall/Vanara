@@ -137,7 +137,7 @@ namespace Vanara.PInvoke
 			FO_RENAME = 0x0004
 		}
 
-		/// <summary>The flags that specify the file information to retrieve from <see cref="Vanara.SHGetFileInfo(string,System.IO.FileAttributes,ref SHFILEINFO,int,Vanara.PInvoke.SHGFI)"/>.</summary>
+		/// <summary>The flags that specify the file information to retrieve from <see cref="SHGetFileInfo(string, FileAttributes, ref SHFILEINFO, int, SHGFI)"/>.</summary>
 		[PInvokeData("Shellapi.h", MSDNShortId = "bb762179")]
 		[Flags]
 		public enum SHGFI
@@ -417,7 +417,7 @@ namespace Vanara.PInvoke
 			public IntPtr hProcess;
 
 			/// <summary>
-			/// Initializes a new instance of the <see cref="Vanara.PInvoke.SHELLEXECUTEINFO"/> struct.
+			/// Initializes a new instance of the <see cref="SHELLEXECUTEINFO"/> struct.
 			/// </summary>
 			/// <param name="fileName">Name of the file.</param>
 			/// <param name="parameters">The parameters.</param>
@@ -472,7 +472,7 @@ namespace Vanara.PInvoke
 			/// <summary><note type="note">This string must be double-null terminated.</note>
 			/// <para>A pointer to one or more source file names.These names should be fully qualified paths to prevent unexpected results.</para>
 			/// <para>Standard MS-DOS wildcard characters, such as "*", are permitted only in the file-name position.Using a wildcard character elsewhere in the string will lead to unpredictable results.</para>
-			/// <para>Although this member is declared as a single null-terminated string, it is actually a buffer that can hold multiple null-delimited file names.Each file name is terminated by a single NULL character. The last file name is terminated with a double NULL character ("\0\0") to indicate the end of the buffer.</summary></para></summary>
+			/// <para>Although this member is declared as a single null-terminated string, it is actually a buffer that can hold multiple null-delimited file names.Each file name is terminated by a single NULL character. The last file name is terminated with a double NULL character ("\0\0") to indicate the end of the buffer.</para></summary>
 			[MarshalAs(UnmanagedType.LPTStr)]
 			public string pFrom;
 			/// <summary><note type="note">This string must be double-null terminated.</note>

@@ -869,14 +869,14 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			public static readonly SafeTokenHandle CurrentThreadToken = new SafeTokenHandle((IntPtr)5, false);
 
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.SafeTokenHandle"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeTokenHandle"/> class.</summary>
 			/// <param name="hToken">The h token.</param>
 			/// <param name="own">if set to <c>true</c> [own].</param>
 			public SafeTokenHandle(IntPtr hToken, bool own = true) : base(hToken, CloseHandle, own)
 			{
 			}
 
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.SafeTokenHandle"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeTokenHandle"/> class.</summary>
 			internal SafeTokenHandle() : base(CloseHandle) { }
 
 			/// <summary>Gets an instance that is equivalent to NULL HTOKEN.</summary>

@@ -157,8 +157,8 @@ namespace Vanara.PInvoke
 			/// <summary>On the screen background or on a dividing line between windows.</summary>
 			HTNOWHERE = 0,
 
-			/// <summary>Not implemented.</summary>
-			/* HTOBJECT = 19, */
+			/* /// <summary>Not implemented.</summary>
+			HTOBJECT = 19, */
 
 			/// <summary>In a Minimize button.</summary>
 			HTREDUCE = HTMINBUTTON,

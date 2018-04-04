@@ -317,7 +317,7 @@ namespace Vanara.PInvoke
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator SNB(IntPtr p) => new SNB(p);
 
-			/// <summary>Performs an implicit conversion from <see cref="IEnumerable{string}"/> to <see cref="SNB"/>.</summary>
+			/// <summary>Performs an implicit conversion from <see cref="IEnumerable{T}"/> to <see cref="SNB"/>.</summary>
 			/// <param name="names">The names.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator SNB(string[] names) => new SNB(names);

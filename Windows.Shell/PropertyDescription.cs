@@ -122,7 +122,7 @@ namespace Vanara.Windows.Shell
 		public string FormatForDisplay(object obj, PROPDESC_FORMAT_FLAGS pdfFlags = PROPDESC_FORMAT_FLAGS.PDFF_DEFAULT) => iDesc?.FormatForDisplay(new PROPVARIANT(obj), pdfFlags) ?? obj?.ToString();
 
 		/// <summary>Gets a formatted string representation of a property value.</summary>
-		/// <param name="obj">A object that contains the type and value of the property.</param>
+		/// <param name="pv">A object that contains the type and value of the property.</param>
 		/// <param name="pdfFlags">One or more of the PROPDESC_FORMAT_FLAGS flags, which are either bitwise or multiple values, that indicate the property string format.</param>
 		/// <returns>The formatted value.</returns>
 		internal string FormatForDisplay(PROPVARIANT pv, PROPDESC_FORMAT_FLAGS pdfFlags = PROPDESC_FORMAT_FLAGS.PDFF_DEFAULT) => iDesc?.FormatForDisplay(pv, pdfFlags) ?? pv?.ToString();
@@ -163,7 +163,7 @@ namespace Vanara.Windows.Shell
 	}
 
 	/// <summary>Exposes methods that extract information from a collection of property descriptions presented as a list.</summary>
-	/// <seealso cref="System.Collections.Generic.IReadOnlyList{Vanara.Windows.Shell.PropertyDescription}"/>
+	/// <seealso cref="System.Collections.Generic.IReadOnlyList{T}"/>
 	/// <seealso cref="System.IDisposable"/>
 	public class PropertyDescriptionList : IReadOnlyList<PropertyDescription>, IDisposable
 	{
@@ -188,10 +188,10 @@ namespace Vanara.Windows.Shell
 		public virtual PropertyDescription this[int index] =>
 			new PropertyDescription(iList?.GetAt((uint)index, typeof(IPropertyDescription).GUID));
 
-		/// <summary>Gets the <see cref="PropertyDescription"/> for the specified key.</summary>
-		/// <value>The <see cref="PropertyDescription"/>.</value>
-		/// <param name="index">The PROPERTYKEY.</param>
-		/// <returns>The <see cref="PropertyDescription"/> for the specified key.</returns>
+		/// <summary>Gets the <see cref="PropertyDescription" /> for the specified key.</summary>
+		/// <value>The <see cref="PropertyDescription" />.</value>
+		/// <param name="propkey">The PROPERTYKEY.</param>
+		/// <returns>The <see cref="PropertyDescription" /> for the specified key.</returns>
 		public virtual PropertyDescription this[PROPERTYKEY propkey] => new PropertyDescription(propkey);
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
@@ -291,7 +291,7 @@ namespace Vanara.Windows.Shell
 	}
 
 	/// <summary>Exposes methods that enumerate the possible values for a property.</summary>
-	/// <seealso cref="System.Collections.Generic.IReadOnlyList{Vanara.Windows.Shell.PropertyType}"/>
+	/// <seealso cref="System.Collections.Generic.IReadOnlyList{T}"/>
 	/// <seealso cref="System.IDisposable"/>
 	public class PropertyTypeList : IReadOnlyList<PropertyType>, IDisposable
 	{

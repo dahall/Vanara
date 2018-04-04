@@ -6,7 +6,7 @@ namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
-		/// <summary>Used by the <see cref="Vanara.ChangeServiceConfig2"/> method.</summary>
+		/// <summary>Used by the <see cref="ChangeServiceConfig2"/> method.</summary>
 		public enum ServiceConfigOption : uint
 		{
 			/// <summary>

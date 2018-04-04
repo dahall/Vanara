@@ -150,8 +150,11 @@ namespace Vanara.Windows.Shell
 			base.Dispose();
 		}
 
-		/// <summary>Enumerates all children of this item. If this item is not a folder/container, this method will return an empty enumeration.</summary>
+		/// <summary>
+		/// Enumerates all children of this item. If this item is not a folder/container, this method will return an empty enumeration.
+		/// </summary>
 		/// <param name="filter">A filter for the types of children to enumerate.</param>
+		/// <param name="parentWindow">The parent window.</param>
 		/// <returns>An enumerated list of children matching the filter.</returns>
 		public IEnumerable<ShellItem> EnumerateChildren(FolderItemFilter filter = FolderItemFilter.Folders | FolderItemFilter.IncludeHidden | FolderItemFilter.NonFolders | FolderItemFilter.IncludeSuperHidden, System.Windows.Forms.IWin32Window parentWindow = null)
 		{

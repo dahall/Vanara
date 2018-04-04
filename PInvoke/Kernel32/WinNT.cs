@@ -5,7 +5,7 @@ namespace Vanara.PInvoke
 	public static partial class Kernel32
 	{
 		/// <summary>
-		/// Flags that may be passed to the <see cref="GetVolumeInformation(string,System.Text.StringBuilder,int,ref int,ref int,ref FileSystemFlags,System.Text.StringBuilder,int)"/> function.
+		/// Flags that may be passed to the <see cref="GetVolumeInformation(string, out string, out uint, out uint, out FileSystemFlags, out string)"/> function.
 		/// </summary>
 		[Flags]
 		[PInvokeData("winnt.h")]

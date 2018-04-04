@@ -348,7 +348,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// A <see cref="SafeHandle"/> for the results from <see cref="Vanara.DsCrackNames(SafeDsHandle,DS_NAME_FLAGS,DS_NAME_FORMAT,DS_NAME_FORMAT,uint,string[],out SafeDsNameResult)"/>.
+		/// A <see cref="SafeHandle"/> for the results from <see cref="DsCrackNames(SafeDsHandle,DS_NAME_FLAGS,DS_NAME_FORMAT,DS_NAME_FORMAT,uint,string[],out SafeDsNameResult)"/>.
 		/// </summary>
 		/// <seealso cref="GenericSafeHandle"/>
 		[PInvokeData("Ntdsapi.h")]

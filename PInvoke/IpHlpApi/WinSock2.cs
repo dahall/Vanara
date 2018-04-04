@@ -94,7 +94,7 @@ namespace Vanara.PInvoke
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator long(IN_ADDR a) => (long)a.S_addr;
 
-			/// <summary>Performs an implicit conversion from <see cref="IN_ADDR"/> to <see cref="System.Byte[]"/>.</summary>
+			/// <summary>Performs an implicit conversion from <see cref="IN_ADDR"/> to <see cref="T:byte[]"/>.</summary>
 			/// <param name="a">An IN_ADDR value.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator byte[](IN_ADDR a) => BitConverter.GetBytes(a.S_addr);

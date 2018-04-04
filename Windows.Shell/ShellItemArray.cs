@@ -12,8 +12,8 @@ namespace Vanara.Windows.Shell
 	{
 		private IShellItemArray array;
 
-		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
-		/// <param name="path">The file system path of the item.</param>
+		/// <summary>Initializes a new instance of the <see cref="ShellItem" /> class.</summary>
+		/// <param name="shellItems">The shell items.</param>
 		public ShellItemArray(IShellItemArray shellItems)
 		{
 			array = shellItems;

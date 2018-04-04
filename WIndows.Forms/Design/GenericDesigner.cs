@@ -13,6 +13,7 @@ using Vanara.Extensions;
 
 namespace Vanara.Windows.Forms.Design
 {
+	/// <summary>Methods to assist when using designer code.</summary>
 	public static class ComponentDesignerExtension
 	{
 		/// <summary>Launches the design-time editor for the property of the component behind a designer.</summary>
@@ -37,7 +38,7 @@ namespace Vanara.Windows.Forms.Design
 
 		/// <summary>Sets a property on the component behind a designer.</summary>
 		/// <typeparam name="T">The type of the property value.</typeparam>
-		/// <param name="designer">The designer for a component.</param>
+		/// <param name="d">The designer for a component.</param>
 		/// <param name="propName">The name of the property to set. If this value is null, the default property for the object is used. This method will not set the property if the property type does not match <typeparamref name="T"/>, if the property is read-only, or if the property is not browsable.</param>
 		/// <param name="value">The value to assign to the property.</param>
 		public static void SetComponentProperty<T>(this ComponentDesigner d, string propName, T value)

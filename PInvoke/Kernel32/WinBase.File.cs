@@ -102,7 +102,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </returns>
 		/// <remarks>
-		/// An application can determine whether a volume is compressed by calling <see cref="GetVolumeInformation(string,System.Text.StringBuilder,int,ref int,ref int,ref FileSystemFlags,System.Text.StringBuilder,int)"/>,
+		/// An application can determine whether a volume is compressed by calling <see cref="GetVolumeInformation(string, out string, out uint, out uint, out FileSystemFlags, out string)"/>,
 		/// then checking the status of the FS_VOL_IS_COMPRESSED flag in the DWORD value pointed to by that function's lpFileSystemFlags parameter.
 		/// <para>
 		/// If the file is not located on a volume that supports compression or sparse files, or if the file is not compressed or a sparse file, the value

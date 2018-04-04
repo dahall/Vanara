@@ -19,12 +19,13 @@ namespace Vanara.InteropServices
 		/// <summary>Initializes a new instance of the <see cref="SafeElementArray{TElem, TPrefix, TMem}"/> class.</summary>
 		protected SafeElementArray() : this(0) { }
 
-		/// <summary>Initializes a new instance of the <see cref="SafeElementArray"/> class and allocates <paramref name="byteCount"/> bytes.</summary>
-		/// <param name="byteCount">The TElem count to allocate.</param>
+		/// <summary>Initializes a new instance of the <see cref="SafeElementArray{TElem, TPrefix, TMem}"/> class and allocates <paramref name="elementCount"/> bytes.</summary>
+		/// <param name="elementCount">The TElem count to allocate.</param>
 		protected SafeElementArray(TPrefix elementCount) : this(Convert.ToInt32(elementCount)) { }
 
-		/// <summary>Initializes a new instance of the <see cref="SafeElementArray"/> class from a copy of a managed TElem array.</summary>
+		/// <summary>Initializes a new instance of the <see cref="SafeElementArray{TElem, TPrefix, TMem}"/> class from a copy of a managed TElem array.</summary>
 		/// <param name="array">The array of bytes to copy.</param>
+		/// <param name="getElemSize">Size of the get elem.</param>
 		protected SafeElementArray(TElem[] array, Func<TElem, int> getElemSize = null) : base(IntPtr.Zero, 0, true) { GetElemSize = getElemSize; Elements = array; }
 
 		/// <summary>Initializes a new instance of the <see cref="SafeElementArray{TElem, TPrefix, TMem}"/> class.</summary>
@@ -59,6 +60,8 @@ namespace Vanara.InteropServices
 			}
 		}
 
+		/// <summary>Gets or sets the size of the element.</summary>
+		/// <value>The size of the element.</value>
 		protected Func<TElem, int> GetElemSize { get; set; }
 
 		private int IntCount

@@ -32,7 +32,7 @@ namespace Vanara.PInvoke
 		/// <summary>Registry entries subordinate to this key define the default user configuration for new users on the local computer and the user configuration for the current user.</summary>
 		public static readonly SafeRegistryHandle HKEY_USERS = new SafeRegistryHandle(new IntPtr(unchecked((int)0x80000003)), false);
 
-		/// <summary>Flags used in the <see cref="Vanara.InitiateShutdown"/> function.</summary>
+		/// <summary>Flags used in the <see cref="InitiateShutdown"/> function.</summary>
 		[Flags]
 		public enum ShutdownFlags
 		{

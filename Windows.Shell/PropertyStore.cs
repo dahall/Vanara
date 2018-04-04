@@ -73,7 +73,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets or sets the value of the property with the specified PROPERTYKEY.</summary>
 		/// <value>The value.</value>
-		/// <param name="knownKey">The PROPERTYKEY of the property.</param>
+		/// <param name="key">The PROPERTYKEY of the property.</param>
 		/// <returns>The value of the property.</returns>
 		public object this[PROPERTYKEY key]
 		{

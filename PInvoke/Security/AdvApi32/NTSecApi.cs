@@ -417,7 +417,7 @@ namespace Vanara.PInvoke
 		private static extern uint LsaFreeMemory(IntPtr Buffer);
 
 		/// <summary>The LsaFreeReturnBuffer function frees the memory used by a buffer previously allocated by the LSA.</summary>
-		/// <param name="Buffer"Pointer to the buffer to be freed.</param>
+		/// <param name="Buffer">Pointer to the buffer to be freed.</param>
 		/// <returns>If the function succeeds, the return value is STATUS_SUCCESS. If the function fails, the return value is an NTSTATUS code.</returns>
 		[DllImport(Lib.Secur32, ExactSpelling = true)]
 		private static extern uint LsaFreeReturnBuffer(IntPtr Buffer);
@@ -458,12 +458,12 @@ namespace Vanara.PInvoke
 		/// <summary>A <see cref="SafeHandle"/> for values that must be freed using the <see cref="LsaFreeMemory(IntPtr)"/> function.</summary>
 		public sealed class SafeLsaMemoryHandle : GenericSafeHandle
 		{
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.SafeLsaMemoryHandle"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeLsaMemoryHandle"/> class.</summary>
 			public SafeLsaMemoryHandle() : this(IntPtr.Zero)
 			{
 			}
 
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.SafeLsaMemoryHandle"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeLsaMemoryHandle"/> class.</summary>
 			/// <param name="ptr">The pointer to the memory allocated by an Lsa function.</param>
 			/// <param name="own">if set to <c>true</c> release the memory when out of scope.</param>
 			public SafeLsaMemoryHandle(IntPtr ptr, bool own = true) : base(ptr, Free, own)
@@ -477,10 +477,10 @@ namespace Vanara.PInvoke
 		/// <seealso cref="GenericSafeHandle"/>
 		public sealed class SafeLsaPolicyHandle : GenericSafeHandle
 		{
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.SafeLsaPolicyHandle"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeLsaPolicyHandle"/> class.</summary>
 			public SafeLsaPolicyHandle() : base(Release) { }
 
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.SafeLsaPolicyHandle"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeLsaPolicyHandle"/> class.</summary>
 			/// <param name="ptr">The PTR.</param>
 			/// <param name="own">if set to <c>true</c> [own].</param>
 			public SafeLsaPolicyHandle(IntPtr ptr, bool own = true) : base(ptr, Release, own) { }
@@ -494,10 +494,10 @@ namespace Vanara.PInvoke
 		/// <summary>A <see cref="SafeHandle"/> for values that must be freed using the <see cref="LsaFreeReturnBuffer(IntPtr)"/> function.</summary>
 		public sealed class SafeLsaReturnBufferHandle : GenericSafeHandle
 		{
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.SafeLsaReturnBufferHandle"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeLsaReturnBufferHandle"/> class.</summary>
 			public SafeLsaReturnBufferHandle() : this(IntPtr.Zero) { }
 
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.SafeLsaReturnBufferHandle"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeLsaReturnBufferHandle"/> class.</summary>
 			/// <param name="ptr">The pointer to the memory allocated by an Lsa function.</param>
 			/// <param name="own">if set to <c>true</c> release the memory when out of scope.</param>
 			public SafeLsaReturnBufferHandle(IntPtr ptr, bool own = true) : base(ptr, Free, own) { }

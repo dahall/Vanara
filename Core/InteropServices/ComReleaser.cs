@@ -42,12 +42,12 @@ namespace Vanara.InteropServices
 			Item = null;
 		}
 
-		/// <summary>Performs an implicit conversion from <see cref="ComReleaser{T}"/> to <see cref="T"/>.</summary>
+		/// <summary>Performs an implicit conversion from <see cref="ComReleaser{T}"/> to <typeparamref name="T"/>.</summary>
 		/// <param name="co">The <see cref="ComReleaser{T}"/> instance.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator T(ComReleaser<T> co) => co.Item;
 
-		/// <summary>Performs an implicit conversion from <see cref="T"/> to <see cref="ComReleaser{T}"/>.</summary>
+		/// <summary>Performs an implicit conversion from <typeparamref name="T"/> to <see cref="ComReleaser{T}"/>.</summary>
 		/// <param name="obj">The COM object.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator ComReleaser<T>(T obj) => new ComReleaser<T>(obj);

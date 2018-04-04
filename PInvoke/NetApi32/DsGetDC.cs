@@ -133,7 +133,7 @@ namespace Vanara.PInvoke
 			DS_DNS_FOREST_FLAG = 0x80000000,
 		}
 
-		/// <summary>Flags supporting behavior of <see cref="PInvoke.DsGetDcName"/>.</summary>
+		/// <summary>Flags supporting behavior of <see cref="DsGetDcName"/>.</summary>
 		[Flags]
 		[PInvokeData("DsGetDC.h", MSDNShortId = "ms675983")]
 		public enum DsGetDcNameFlags : uint

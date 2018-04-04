@@ -14,7 +14,7 @@ namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
-		/// <summary>Flags used by <see cref="IExtractIcon.GetFieldInfo"/>.</summary>
+		/// <summary>Flags used by <see cref="IExtractIcon.GetIconLocation(GetIconLocationFlags, StringBuilder, int, out int, out GetIconLocationResultFlags)"/>.</summary>
 		[Flags]
 		public enum GetIconLocationFlags : uint
 		{
@@ -32,7 +32,7 @@ namespace Vanara.PInvoke
 			GIL_CHECKSHIELD = 0x0200
 		}
 
-		/// <summary>Flags returned by <see cref="IExtractIcon.GetFieldInfo"/>.</summary>
+		/// <summary>Flags returned by <see cref="IExtractIcon.GetIconLocation(GetIconLocationFlags, StringBuilder, int, out int, out GetIconLocationResultFlags)"/>.</summary>
 		[Flags]
 		public enum GetIconLocationResultFlags : uint
 		{

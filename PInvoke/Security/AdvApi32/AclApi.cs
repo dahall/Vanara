@@ -147,7 +147,7 @@ namespace Vanara.PInvoke
 		public static extern Win32Error SetNamedSecurityInfo(string pObjectName, SE_OBJECT_TYPE ObjectType, SECURITY_INFORMATION SecurityInfo, PSID ppsidOwner,
 			PSID ppsidGroup, IntPtr ppDacl, IntPtr ppSacl);
 
-		/// <summary>A <see cref="SafeHandle"/> to hold the array of <see cref="INHERITED_FROM"/> instances returned from <see cref="Vanara.GetInheritanceSource"/>.</summary>
+		/// <summary>A <see cref="SafeHandle"/> to hold the array of <see cref="INHERITED_FROM"/> instances returned from <see cref="GetInheritanceSource"/>.</summary>
 		public class SafeInheritedFromArray : SafeHGlobalHandle
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeInheritedFromArray"/> class.</summary>

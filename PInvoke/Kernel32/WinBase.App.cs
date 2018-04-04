@@ -316,7 +316,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public IntPtr hModule;
 
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.ACTCTX"/> struct.</summary>
+			/// <summary>Initializes a new instance of the <see cref="ACTCTX"/> struct.</summary>
 			/// <param name="source">The source.</param>
 			public ACTCTX(string source) : this()
 			{
@@ -333,10 +333,10 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h")]
 		public class ActCtxSafeHandle : GenericSafeHandle
 		{
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.ActCtxSafeHandle"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="ActCtxSafeHandle"/> class.</summary>
 			public ActCtxSafeHandle() : base(ReleaseHandle) { }
 
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.ActCtxSafeHandle"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="ActCtxSafeHandle"/> class.</summary>
 			/// <param name="hActCtx">The h act CTX.</param>
 			/// <param name="ownsHandle">if set to <c>true</c> [owns handle].</param>
 			public ActCtxSafeHandle(IntPtr hActCtx, bool ownsHandle) : base(hActCtx, ReleaseHandle, ownsHandle) { }

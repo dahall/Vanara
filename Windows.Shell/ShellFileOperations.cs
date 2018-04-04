@@ -371,7 +371,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Copies a set of items to a specified destination using the Shell to provide progress and error dialogs.</summary>
-		/// <param name="items">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances that represent the group of items to be copied.</param>
+		/// <param name="sourceItems">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances that represent the group of items to be copied.</param>
 		/// <param name="dest">A <see cref="ShellFolder"/> that specifies the destination folder to contain the copy of the items.</param>
 		/// <param name="options">Options that control file operations.</param>
 		public static void Copy(IEnumerable<ShellItem> sourceItems, ShellFolder dest, OperationFlags options = defaultOptions)
@@ -397,7 +397,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Deletes a single item using the Shell to provide progress and error dialogs.</summary>
-		/// <param name="item">&gt;A <see cref="ShellItem"/> that specifies the item to be deleted.</param>
+		/// <param name="source">A <see cref="ShellItem"/> that specifies the item to be deleted.</param>
 		/// <param name="options">Options that control file operations.</param>
 		public static void Delete(ShellItem source, OperationFlags options = defaultOptions)
 		{
@@ -422,7 +422,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Deletes a set of items using the Shell to provide progress and error dialogs.</summary>
-		/// <param name="items">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be deleted.</param>
+		/// <param name="sourceItems">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be deleted.</param>
 		/// <param name="options">Options that control file operations.</param>
 		public static void Delete(IEnumerable<ShellItem> sourceItems, OperationFlags options = defaultOptions)
 		{
@@ -477,7 +477,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Moves a set of items to a specified destination using the Shell to provide progress and error dialogs.</summary>
-		/// <param name="items">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be moved.</param>
+		/// <param name="sourceItems">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be moved.</param>
 		/// <param name="dest">A <see cref="ShellFolder"/> that specifies the destination folder to contain the moved items.</param>
 		/// <param name="options">Options that control file operations.</param>
 		public static void Move(IEnumerable<ShellItem> sourceItems, ShellFolder dest, OperationFlags options = defaultOptions)
@@ -571,7 +571,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>
 		/// Renames a set of items that are to be given a new display name using the Shell to provide progress and error dialogs. All items are given the same name.
 		/// </summary>
-		/// <param name="items">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be renamed.</param>
+		/// <param name="sourceItems">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be renamed.</param>
 		/// <param name="newName">The new display name of the items.</param>
 		/// <param name="options">Options that control file operations.</param>
 		public static void Rename(IEnumerable<ShellItem> sourceItems, string newName, OperationFlags options = defaultOptions)
@@ -655,7 +655,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Declares a set of items that are to be copied to a specified destination.</summary>
-		/// <param name="items">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances that represent the group of items to be copied.</param>
+		/// <param name="sourceItems">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances that represent the group of items to be copied.</param>
 		/// <param name="dest">A <see cref="ShellFolder"/> that specifies the destination folder to contain the copy of the items.</param>
 		public void QueueCopyOperation(IEnumerable<ShellItem> sourceItems, ShellFolder dest)
 		{
@@ -693,7 +693,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Declares a set of items that are to be moved to a specified destination.</summary>
-		/// <param name="items">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be moved.</param>
+		/// <param name="sourceItems">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be moved.</param>
 		/// <param name="dest">A <see cref="ShellFolder"/> that specifies the destination folder to contain the moved items.</param>
 		public void QueueMoveOperation(IEnumerable<ShellItem> sourceItems, ShellFolder dest)
 		{
@@ -734,7 +734,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Declares a set of items that are to be given a new display name. All items are given the same name.</summary>
-		/// <param name="items">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be renamed.</param>
+		/// <param name="sourceItems">An <see cref="IEnumerable{T}"/> of <see cref="ShellItem"/> instances which represents the group of items to be renamed.</param>
 		/// <param name="newName">The new display name of the items.</param>
 		public void QueueRenameOperation(IEnumerable<ShellItem> sourceItems, string newName)
 		{
@@ -874,7 +874,7 @@ namespace Vanara.Windows.Shell
 	/// <see cref="ShellFileOperations.QueueApplyPropertiesOperation(ShellItem, ShellItemPropertyUpdates)"/> method. This class wraps the
 	/// <see cref="IPropertyChangeArray"/> COM interface.
 	/// </summary>
-	/// <seealso cref="System.Collections.Generic.IDictionary{PROPERTYKEY, object}"/>
+	/// <seealso cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>
 	/// <seealso cref="IDisposable"/>
 	public class ShellItemPropertyUpdates : IDictionary<PROPERTYKEY, object>, IDisposable
 	{
@@ -886,14 +886,14 @@ namespace Vanara.Windows.Shell
 			PSCreatePropertyChangeArray(null, null, null, 0, typeof(IPropertyChangeArray).GUID, out changes).ThrowIfFailed();
 		}
 
-		/// <summary>Gets the number of elements contained in the <see cref="System.Collections.Generic.ICollection`1"/>.</summary>
+		/// <summary>Gets the number of elements contained in the <see cref="System.Collections.Generic.ICollection{T}"/>.</summary>
 		public int Count => (int)changes.GetCount();
 
 		/// <summary>Gets the COM interface for <see cref="IPropertyChangeArray"/>.</summary>
 		/// <value>The <see cref="IPropertyChangeArray"/> value.</value>
 		public IPropertyChangeArray IPropertyChangeArray => changes;
 
-		/// <summary>Gets an <see cref="System.Collections.Generic.ICollection{T}"/> containing the keys of the <see cref="System.Collections.Generic.IDictionary{T}"/>.</summary>
+		/// <summary>Gets an <see cref="System.Collections.Generic.ICollection{T}"/> containing the keys of the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.</summary>
 		public ICollection<PROPERTYKEY> Keys
 		{
 			get
@@ -908,7 +908,7 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
-		/// <summary>Gets an <see cref="System.Collections.Generic.ICollection{T}"/> containing the values in the <see cref="System.Collections.Generic.IDictionary{T}"/>.</summary>
+		/// <summary>Gets an <see cref="System.Collections.Generic.ICollection{T}"/> containing the values in the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.</summary>
 		public ICollection<object> Values
 		{
 			get
@@ -945,7 +945,7 @@ namespace Vanara.Windows.Shell
 				}
 			}
 		}
-		/// <summary>Adds an element with the provided key and value to the <see cref="System.Collections.Generic.IDictionary{T}"/>.</summary>
+		/// <summary>Adds an element with the provided key and value to the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.</summary>
 		/// <param name="key">The object to use as the key of the element to add.</param>
 		/// <param name="value">The object to use as the value of the element to add.</param>
 		public void Add(PROPERTYKEY key, object value)
@@ -960,9 +960,9 @@ namespace Vanara.Windows.Shell
 				changes.RemoveAt(i);
 		}
 
-		/// <summary>Determines whether the <see cref="System.Collections.Generic.IDictionary{T}"/> contains an element with the specified key.</summary>
-		/// <param name="key">The key to locate in the <see cref="System.Collections.Generic.IDictionary{T}"/>.</param>
-		/// <returns>true if the <see cref="System.Collections.Generic.IDictionary{T}"/> contains an element with the key; otherwise, false.</returns>
+		/// <summary>Determines whether the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> contains an element with the specified key.</summary>
+		/// <param name="key">The key to locate in the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.</param>
+		/// <returns>true if the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> contains an element with the key; otherwise, false.</returns>
 		public bool ContainsKey(PROPERTYKEY key) => changes.IsKeyInArray(ref key).Succeeded;
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
@@ -970,10 +970,10 @@ namespace Vanara.Windows.Shell
 		public IEnumerator<KeyValuePair<PROPERTYKEY, object>> GetEnumerator() =>
 			new IEnumFromIndexer<KeyValuePair<PROPERTYKEY, object>>(changes.GetCount, i => this[(int)i]).GetEnumerator();
 
-		/// <summary>Removes the element with the specified key from the <see cref="System.Collections.Generic.IDictionary{T}"/>.</summary>
+		/// <summary>Removes the element with the specified key from the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.</summary>
 		/// <param name="key">The key of the element to remove.</param>
 		/// <returns>
-		/// true if the element is successfully removed; otherwise, false. This method also returns false if <paramref name="key"/> was not found in the original <see cref="System.Collections.Generic.IDictionary{T}"/>.
+		/// true if the element is successfully removed; otherwise, false. This method also returns false if <paramref name="key"/> was not found in the original <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.
 		/// </returns>
 		public bool Remove(PROPERTYKEY key)
 		{
@@ -989,7 +989,7 @@ namespace Vanara.Windows.Shell
 		/// <paramref name="value"/> parameter. This parameter is passed uninitialized.
 		/// </param>
 		/// <returns>
-		/// true if the object that implements <see cref="System.Collections.Generic.IDictionary{T}"/> contains an element with the specified key; otherwise, false.
+		/// true if the object that implements <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> contains an element with the specified key; otherwise, false.
 		/// </returns>
 		public bool TryGetValue(PROPERTYKEY key, out object value)
 		{

@@ -147,6 +147,8 @@ namespace Vanara.PInvoke
 				AncestorName = ancestorName;
 			}
 
+			/// <summary>Returns a <see cref="System.String" /> that represents this instance.</summary>
+			/// <returns>A <see cref="System.String" /> that represents this instance.</returns>
 			public override string ToString() => $"{AncestorName} : 0x{GenerationGap:X}";
 
 			/// <summary>ACE is explicit.</summary>
@@ -213,14 +215,14 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public IntPtr ptstrName;
 
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.TRUSTEE"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="TRUSTEE"/> class.</summary>
 			/// <param name="sid">The sid.</param>
 			public TRUSTEE(PSID sid = null)
 			{
 				if (sid != null) Sid = sid;
 			}
 
-			/// <summary>Initializes a new instance of the <see cref="Vanara.PInvoke.TRUSTEE"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="TRUSTEE"/> class.</summary>
 			/// <param name="name">The name of the trustee in one of the following formats:
 			/// <list type="bullet">
 			/// <listItem>A fully qualified name, such as "g:\remotedir\abc".</listItem>

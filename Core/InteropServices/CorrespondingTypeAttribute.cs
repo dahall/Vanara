@@ -97,7 +97,7 @@ namespace Vanara.InteropServices
 		public static IEnumerable<Type> GetCorrespondingTypes(object enumValue) => GetAttrForObj(enumValue).Select(a => a.TypeRef);
 
 		/// <summary>Gets the corresponding types for the supplied enumeration value.</summary>
-		/// <param name="enumValue">The enumeration value or class.</param>
+		/// <param name="type">The enumeration value or class.</param>
 		/// <returns>The types defined by the attribute.</returns>
 		public static IEnumerable<Type> GetCorrespondingTypes(Type type) => GetAttrForType(type).Select(a => a.TypeRef);
 

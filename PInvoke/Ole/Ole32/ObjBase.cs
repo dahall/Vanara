@@ -197,7 +197,7 @@ namespace Vanara.PInvoke
 			/// <summary>Specifies the sector size of the storage object. The default is 512 bytes.</summary>
 			public uint ulSectorSize;
 			/// <summary>Specifies the name of a file whose Encrypted File System (EFS) metadata will be transferred to a newly created Structured Storage file. This member is valid only when STGFMT_DOCFILE is used with StgCreateStorageEx.
-			/// <para>In Windows XP and later:  The pwcsTemplateFile member is only valid if version 2 or later is specified in the usVersion member.</summary>
+			/// <para>In Windows XP and later:  The pwcsTemplateFile member is only valid if version 2 or later is specified in the usVersion member.</para></summary>
 			public string pwcsTemplateFile;
 		}
 	}
