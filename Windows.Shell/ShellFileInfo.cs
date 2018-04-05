@@ -3,7 +3,6 @@ using System.Drawing;
 using System.IO;
 using System.Security;
 using System.Text;
-using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Macros;
 using static Vanara.PInvoke.Shell32;
@@ -66,20 +65,20 @@ namespace Vanara.Windows.Shell
 		/// <summary>Initializes a new instance of the <see cref="ShellFileInfo"/> class.</summary>
 		protected ShellFileInfo() { }
 
-        /// <summary>Initializes a new instance of the ShellFileInfo class, which acts as a wrapper for a file path within the Windows Shell.</summary>
-        /// <param name="pidl">The ID list.</param>
-        public ShellFileInfo(PIDL pidl)
-        {
-            var sb = new StringBuilder(MAX_PATH, MAX_PATH);
-            if (!SHGetPathFromIDList(pidl, sb)) throw new ArgumentException("Invalid identifier list.");
-            OriginalPath = sb.ToString();
-            FullPath = sb.ToString();
-            SetName(Path.GetFileName(sb.ToString()));
-            GetInfo();
-        }
+		/// <summary>Initializes a new instance of the ShellFileInfo class, which acts as a wrapper for a file path within the Windows Shell.</summary>
+		/// <param name="pidl">The ID list.</param>
+		public ShellFileInfo(PIDL pidl)
+		{
+			var sb = new StringBuilder(MAX_PATH, MAX_PATH);
+			if (!SHGetPathFromIDList(pidl, sb)) throw new ArgumentException("Invalid identifier list.");
+			OriginalPath = sb.ToString();
+			FullPath = sb.ToString();
+			SetName(Path.GetFileName(sb.ToString()));
+			GetInfo();
+		}
 
-        /// <summary>Gets the display name for the file.</summary>
-        public string DisplayName { get; private set; }
+		/// <summary>Gets the display name for the file.</summary>
+		public string DisplayName { get; private set; }
 
 		/// <summary>Gets the executable type of the file.</summary>
 		public ExecutableType ExecutableType { get; private set; }
@@ -91,9 +90,9 @@ namespace Vanara.Windows.Shell
 			get { try { return ((int)Attributes & 0x10) == 0; } catch { return false; } }
 		}
 
-        /// <summary>Gets the icon location for this file.</summary>
-        /// <value>The <see cref="IconLocation"/>.</value>
-        public IconLocation IconLocation
+		/// <summary>Gets the icon location for this file.</summary>
+		/// <value>The <see cref="IconLocation"/>.</value>
+		public IconLocation IconLocation
 		{
 			get
 			{
@@ -104,9 +103,9 @@ namespace Vanara.Windows.Shell
 					ret = SHGetFileInfo(FullPath, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_ICONLOCATION | SHGFI.SHGFI_ICON);
 					if (ret != IntPtr.Zero) DestroyIcon(shfi.hIcon);
 				}
-                return ret != IntPtr.Zero ? new IconLocation(shfi.szDisplayName, shfi.iIcon) : new IconLocation();
-            }
-        }
+				return ret != IntPtr.Zero ? new IconLocation(shfi.szDisplayName, shfi.iIcon) : new IconLocation();
+			}
+		}
 
 		/// <summary>Gets the index of the icon overlay.</summary>
 		/// <value>The index of the icon overlay, or -1 if no overlay is set.</value>
@@ -148,17 +147,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets the icon for this shell item from the system.</summary>
 		/// <value>The system icon on success; <c>null</c> on failure.</value>
-		public Icon SystemIcon
-		{
-			get
-			{
-				var shfi = new SHFILEINFO();
-				var hImageList = SHGetFileInfo(FullPath, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_SYSICONINDEX);
-				if (hImageList == IntPtr.Zero) return null;
-				var hIcon = ImageList_GetIcon(hImageList, shfi.iIcon, IMAGELISTDRAWFLAGS.ILD_NORMAL);
-				return IconLocation.GetClonedIcon(hIcon);
-			}
-		}
+		public Icon SystemIcon => ShellImageList.GetSystemIcon(FullPath);
 
 		/// <summary>Gets the type name for the file.</summary>
 		public string TypeName { get; private set; }
@@ -169,15 +158,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets the icon defined by the set of flags provided.</summary>
 		/// <param name="iconType">Flags to specify type of the icon.</param>
 		/// <returns><see cref="Icon"/> if successful; <c>null</c> otherwise.</returns>
-		public Icon GetIcon(ShellIconType iconType = ShellIconType.Large)
-		{
-			const SHGFI baseFlags = SHGFI.SHGFI_USEFILEATTRIBUTES | SHGFI.SHGFI_ICON;
-			var shfi = new SHFILEINFO();
-			var ret = SHGetFileInfo(FullPath, 0, ref shfi, SHFILEINFO.Size, baseFlags | (SHGFI)iconType);
-			if (ret == IntPtr.Zero)
-				ret = SHGetFileInfo(FullPath, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_ICON | (SHGFI)iconType);
-			return ret == IntPtr.Zero ? null : IconLocation.GetClonedIcon(shfi.hIcon);
-		}
+		public Icon GetIcon(ShellIconType iconType = ShellIconType.Large) => ShellImageList.GetFileIcon(FullPath, iconType);
 
 		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
