@@ -2,18 +2,18 @@
 ### Classes
 Class | Description
 ---- | ----
-AccessControlHelper | 
+AccessControlHelper | Helper methods for working with Access Control structures.
 AccountPrivileges | Allows for the privileges of a user to be retrieved, enumerated and set.
-AccountUtils | 
+AccountUtils | Helper methods for working with `WindowsIdentity` and user names.
 ActiveDirectoryExtension | 
 BadValueException | Exception raised when value(s) of a claim value type is invalid.
 ClaimValue | Class to represent the type of claims values held, the value(s) and obtain native (unmanaged) pointers to the value as they are stored in the union members of AUTHZ_SECURITY_ATTRIBUTE_V1 structure's 'Values' field.
 LogonRights | Allows for the privileges of a user to be retrieved, enumerated and set.
-PinnedAcl | 
-PinnedSid | 
-PrivilegeAndAttributes | 
+PinnedAcl | Enables access to managed `RawAcl` as unmanaged <see cref="T:byte[]" />.
+PinnedSid | Enables access to managed `SecurityIdentifier` as unmanaged `PSID`.
+PrivilegeAndAttributes | Class to hold associated `SystemPrivilege` and `PrivilegeAttributes` pairs.
 PrivilegedCodeBlock | Elevate user privileges for a code block similar to a <c>lock</c> or <c>using</c> statement.
-PrivilegeExtension | 
+PrivilegeExtension | Extension methods for `SafeTokenHandle` for working with privileges.
 SystemAccountInfo | Contains a corresponding result for each name provided to the `SystemSecurity.GetAccountInfo(System.Boolean,System.String[])` method.
 SystemSecurity | Provides access to the local security authority on a given server.
 UAC | Provides information about the state of User Access Control for the system.

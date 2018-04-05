@@ -4,7 +4,7 @@
     <Description>Methods, structures and constants imported from Crypt32.dll.</Description>
     <Copyright>Copyright © 2017</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.11</VersionPrefix>
+    <VersionPrefix>1.0.12</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Crypt32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
