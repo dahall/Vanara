@@ -9,6 +9,11 @@ namespace Vanara.Extensions
 	/// <summary>Extensions related to <c>System.Reflection</c></summary>
 	public static class ReflectionExtensions
 	{
+		/// <summary>Gets all loaded types in the <see cref="AppDomain"/>.</summary>
+		/// <param name="appDomain">The application domain.</param>
+		/// <returns>All loaded types.</returns>
+		public static IEnumerable<Type> GetAllTypes(this AppDomain appDomain) => appDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes());
+
 		/// <summary>Returns an array of custom attributes applied to this member and identified by <typeparamref name="TAttr"/>.</summary>
 		/// <typeparam name="TAttr">The type of attribute to search for. Only attributes that are assignable to this type are returned.</typeparam>
 		/// <param name="element">An object derived from the MemberInfo class that describes a constructor, event, field, method, or property member of a class.</param>
@@ -172,9 +177,10 @@ namespace Vanara.Extensions
 			Assembly asm = null;
 			try { asm = Assembly.LoadFrom(asmRef); } catch { }
 			if (!TryGetType(asm, typeName, ref ret))
-				if (!TryGetType(Assembly.GetExecutingAssembly(), typeName, ref ret))
-					if (!TryGetType(Assembly.GetCallingAssembly(), typeName, ref ret))
-						TryGetType(Assembly.GetEntryAssembly(), typeName, ref ret);
+			{
+				foreach (asm in AppDomain.CurrentDomain.GetAssemblies())
+					if (TryGetType(asm, typeName, ref ret)) break;
+			}
 			return ret;
 		}
 
@@ -186,8 +192,7 @@ namespace Vanara.Extensions
 		private static bool TryGetType(Assembly asm, string typeName, ref Type type)
 		{
 			if (asm == null) return false;
-			type = asm.GetType(typeName, false, false);
-			return type != null;
+			return (type = asm.GetType(typeName, false, false)) != null;
 		}
 	}
 }
