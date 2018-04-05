@@ -2,6 +2,7 @@
 
 namespace Vanara.Security
 {
+	/// <summary>Helper methods for working with <see cref="WindowsIdentity"/> and user names.</summary>
 	public static partial class AccountUtils
 	{
 		public static bool IsAdmin(this WindowsIdentity id) => new WindowsPrincipal(id).IsInRole(WindowsBuiltInRole.Administrator);

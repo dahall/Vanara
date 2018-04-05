@@ -7,6 +7,8 @@ using static Vanara.PInvoke.PropSys;
 
 namespace Vanara.Windows.Shell
 {
+	/// <summary>Enumerate and retrieve individual property description details. Wraps the <see cref="IPropertyDescription"/> shell interface</summary>
+	/// <seealso cref="System.IDisposable"/>
 	public class PropertyDescription : IDisposable
 	{
 		/// <summary>The IPropertyDescription object.</summary>

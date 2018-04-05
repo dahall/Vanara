@@ -9,6 +9,8 @@ using static Vanara.PInvoke.AdvApi32;
 
 namespace Vanara.Security.AccessControl
 {
+	/// <summary>Enables access to managed <see cref="SecurityIdentifier"/> as unmanaged <see cref="PSID"/>.</summary>
+	/// <seealso cref="Vanara.InteropServices.PinnedObject"/>
 	public class PinnedSid : PinnedObject
 	{
 		private readonly byte[] bytes;
@@ -23,6 +25,7 @@ namespace Vanara.Security.AccessControl
 		public PSID PSID => PSID.CreateFromPtr(this);
 	}
 
+	/// <summary>Enables access to managed <see cref="RawAcl"/> as unmanaged <see cref="T:byte[]"/>.</summary>
 	public class PinnedAcl : PinnedObject
 	{
 		private readonly byte[] bytes;
@@ -35,6 +38,7 @@ namespace Vanara.Security.AccessControl
 		}
 	}
 
+	/// <summary>Helper methods for working with Access Control structures.</summary>
 	public static class AccessControlHelper
 	{
 		public static ACCESS_ALLOWED_ACE GetAce(IntPtr pAcl, int aceIndex)

@@ -12,6 +12,7 @@ using static Vanara.PInvoke.AdvApi32;
 
 namespace Vanara.Extensions
 {
+	/// <summary>Values which define a processes integrity level.</summary>
 	public enum ProcessIntegrityLevel
 	{
 		Untrusted,
@@ -22,6 +23,7 @@ namespace Vanara.Extensions
 		System
 	}
 
+	/// <summary>Extension methods for <see cref="Process"/> for privilegs, status, elevation and relationships.</summary>
 	public static partial class ProcessExtension
 	{
 		public static void DisablePrivilege(this Process process, SystemPrivilege privilege)

@@ -21,6 +21,8 @@ using static Vanara.PInvoke.VirtDisk;
 
 namespace Vanara.IO
 {
+	/// <summary>Class that represents a virtual disk and allows for performing actions on it. This wraps most of the methods found in virtdisk.h.</summary>
+	/// <seealso cref="System.IDisposable"/>
 	public class VirtualDisk : IDisposable
 	{
 		private static readonly bool IsPreWin8 = Environment.OSVersion.Version < new Version(6, 2);
@@ -31,6 +33,7 @@ namespace Vanara.IO
 
 		private VirtualDisk(SafeFileHandle handle, OPEN_VIRTUAL_DISK_VERSION version) { hVhd = handle; ver = version; }
 
+		/// <summary>Represents the format of the virtual disk.</summary>
 		public enum DeviceType : uint
 		{
 			/// <summary>Device type is unknown or not valid.</summary>
@@ -55,6 +58,7 @@ namespace Vanara.IO
 			VhdSet = VIRTUAL_STORAGE_TYPE_DEVICE_TYPE.VIRTUAL_STORAGE_TYPE_DEVICE_VHDSET
 		}
 
+		/// <summary>Represents the subtype of a virtual disk.</summary>
 		public enum Subtype : uint
 		{
 			Fixed = 2,

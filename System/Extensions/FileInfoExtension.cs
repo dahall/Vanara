@@ -11,6 +11,7 @@ using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.Extensions
 {
+	/// <summary>Extension methods for <see cref="FileSystemInfo"/> and derived classes to facilitate retrieval of extended properties.</summary>
 	public static class FileInfoExtension
 	{
 		private static readonly SafeFileHandle nullSafeHandle = new SafeFileHandle(IntPtr.Zero, false);

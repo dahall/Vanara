@@ -151,6 +151,7 @@ namespace Vanara.Security.AccessControl
 		UnsolicitedInput
 	}
 
+	/// <summary>Extension methods for <see cref="SafeTokenHandle"/> for working with privileges.</summary>
 	public static class PrivilegeExtension
 	{
 		public static SafeCoTaskMemHandle AdjustPrivilege(this SafeTokenHandle hObj, SystemPrivilege priv, PrivilegeAttributes attr)

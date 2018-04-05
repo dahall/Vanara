@@ -6,6 +6,7 @@ using static Vanara.PInvoke.AdvApi32;
 
 namespace Vanara.Extensions
 {
+	/// <summary>Extension methods for <see cref="ServiceController"/>.</summary>
 	public static partial class ServiceControllerExtension
 	{
 		public static void SetStartType(this ServiceController svc, ServiceStartMode mode)

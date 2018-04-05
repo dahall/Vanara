@@ -7,6 +7,7 @@ using static Vanara.PInvoke.NetListMgr;
 
 namespace Vanara.Network
 {
+	/// <summary>Provides a set of methods to perform network list management functions.</summary>
 	public static class NetworkListManager
 	{
 		private static NetworkConnectionIterator connIter;
