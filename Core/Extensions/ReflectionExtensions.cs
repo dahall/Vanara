@@ -12,7 +12,7 @@ namespace Vanara.Extensions
 		/// <summary>Gets all loaded types in the <see cref="AppDomain"/>.</summary>
 		/// <param name="appDomain">The application domain.</param>
 		/// <returns>All loaded types.</returns>
-		public static IEnumerable<Type> GetAllTypes(this AppDomain appDomain) => appDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes());
+		public static IEnumerable<Type> GetAllTypes(this AppDomain appDomain) => appDomain.GetAssemblies().SelectMany(a => a.GetTypes());
 
 		/// <summary>Returns an array of custom attributes applied to this member and identified by <typeparamref name="TAttr"/>.</summary>
 		/// <typeparam name="TAttr">The type of attribute to search for. Only attributes that are assignable to this type are returned.</typeparam>
@@ -178,8 +178,8 @@ namespace Vanara.Extensions
 			try { asm = Assembly.LoadFrom(asmRef); } catch { }
 			if (!TryGetType(asm, typeName, ref ret))
 			{
-				foreach (asm in AppDomain.CurrentDomain.GetAssemblies())
-					if (TryGetType(asm, typeName, ref ret)) break;
+				foreach (var asm2 in AppDomain.CurrentDomain.GetAssemblies())
+					if (TryGetType(asm2, typeName, ref ret)) break;
 			}
 			return ret;
 		}
