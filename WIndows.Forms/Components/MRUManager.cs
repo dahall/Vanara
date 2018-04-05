@@ -256,6 +256,13 @@ namespace Vanara.Configuration
 			private const string propName = "__MRUList__";
 			private ApplicationSettingsBase settings;
 
+			/// <summary>Initializes a new instance of the <see cref="AppSettingsFileListStorage"/> class.</summary>
+			/// <param name="settings">The settings object to use. If <see langword="null"/>, the component will search all loaded assemblies for an instance.</param>
+			public AppSettingsFileListStorage(ApplicationSettingsBase settings = null)
+			{
+				if (settings != null) Settings = settings;
+			}
+
 			/// <summary>Gets or sets the files.</summary>
 			/// <value>The files.</value>
 			public IEnumerable<string> Files
@@ -327,7 +334,8 @@ namespace Vanara.Configuration
 
 			private void TryLoadAppSettings()
 			{
-				var appSettingsType = Assembly.GetEntryAssembly().GetTypes().FirstOrDefault(t => t.IsSubclassOf(typeof(ApplicationSettingsBase)));
+				if (Settings != null) return;
+				var appSettingsType = AppDomain.CurrentDomain.GetAllTypes().FirstOrDefault(t => t.IsSubclassOf(typeof(ApplicationSettingsBase)));
 				if (appSettingsType != null)
 				{
 					var defProp = appSettingsType.GetProperty("Default");
