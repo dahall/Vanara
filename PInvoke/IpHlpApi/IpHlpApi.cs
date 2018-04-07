@@ -37,33 +37,65 @@ namespace Vanara.PInvoke
 		public const int MIB_IF_TYPE_TOKENRING = 9;
 		public const int TCPIP_OWNING_MODULE_SIZE = 16;
 
+		/// <summary>The type of addresses to retrieve in <see cref="GetAdaptersAddresses(GetAdaptersAddressesFlags, ADDRESS_FAMILY)"/>.</summary>
 		[Flags]
 		public enum GetAdaptersAddressesFlags : uint
 		{
+			/// <summary>Do not return unicast addresses.</summary>
 			GAA_FLAG_SKIP_UNICAST = 0x0001,
+			/// <summary>Do not return IPv6 anycast addresses.</summary>
 			GAA_FLAG_SKIP_ANYCAST = 0x0002,
+			/// <summary>Do not return multicast addresses.</summary>
 			GAA_FLAG_SKIP_MULTICAST = 0x0004,
+			/// <summary>Do not return addresses of DNS servers.</summary>
 			GAA_FLAG_SKIP_DNS_SERVER = 0x0008,
+			/// <summary>Return a list of IP address prefixes on this adapter. When this flag is set, IP address prefixes are returned for both IPv6 and IPv4 addresses.
+			/// <para>This flag is supported on Windows XP with SP1 and later.</para></summary>
 			GAA_FLAG_INCLUDE_PREFIX = 0x0010,
+			/// <summary>Do not return the adapter friendly name.</summary>
 			GAA_FLAG_SKIP_FRIENDLY_NAME = 0x0020,
+			/// <summary>Return addresses of Windows Internet Name Service (WINS) servers.
+			/// <para>This flag is supported on Windows Vista and later.</para></summary>
 			GAA_FLAG_INCLUDE_WINS_INFO = 0x0040,
+			/// <summary>Return the addresses of default gateways.
+			/// <para>This flag is supported on Windows Vista and later.</para></summary>
 			GAA_FLAG_INCLUDE_GATEWAYS = 0x0080,
+			/// <summary>Return addresses for all NDIS interfaces.
+			/// <para>This flag is supported on Windows Vista and later.</para></summary>
 			GAA_FLAG_INCLUDE_ALL_INTERFACES = 0x0100,
+			/// <summary>Return addresses in all routing compartments.
+			/// <para>This flag is not currently supported and reserved for future use.</para></summary>
 			GAA_FLAG_INCLUDE_ALL_COMPARTMENTS = 0x0200,
+			/// <summary>Return the adapter addresses sorted in tunnel binding order. This flag is supported on Windows Vista and later.</summary>
 			GAA_FLAG_INCLUDE_TUNNEL_BINDINGORDER = 0x0400,
 		}
 
+		/// <summary>The IF_OPER_STATUS enumeration specifies the operational status of an interface.</summary>
 		public enum IF_OPER_STATUS : uint
 		{
+			/// <summary>The interface is up and operational. The interface is able to pass packets.</summary>
 			IfOperStatusUp = 1,
+			/// <summary>The interface is not down and not operational. The interface is unable to pass packets.</summary>
 			IfOperStatusDown,
+			/// <summary>The interface is being tested.</summary>
 			IfOperStatusTesting,
+			/// <summary>The interface status is unknown.</summary>
 			IfOperStatusUnknown,
+			/// <summary>
+			/// The interface is not in a condition to pass packets. The interface is not up, but is in a pending state, waiting for some external event. This
+			/// state identifies the situation where the interface is waiting for events to place it in the up state.
+			/// </summary>
 			IfOperStatusDormant,
+			/// <summary>
+			/// This state is a refinement on the down state which indicates that the interface is down specifically because some component (for example, a
+			/// hardware component) is not present in the system.
+			/// </summary>
 			IfOperStatusNotPresent,
+			/// <summary>This state is a refinement on the down state. The interface is operational, but a networking layer below the interface is not operational.</summary>
 			IfOperStatusLowerLayerDown,
 		}
 
+		/// <summary>The interface type as defined by the Internet Assigned Names Authority (IANA).</summary>
 		public enum IFTYPE : uint
 		{
 			/// <summary>Some other type of network interface.</summary>
@@ -83,140 +115,238 @@ namespace Vanara.PInvoke
 			IF_TYPE_PROTEON_10MBIT = 12,
 			IF_TYPE_PROTEON_80MBIT = 13,
 			IF_TYPE_HYPERCHANNEL = 14,
+			/// <summary>A Fiber Distributed Data Interface (FDDI) network interface.</summary>
 			IF_TYPE_FDDI = 15,
 			IF_TYPE_LAP_B = 16,
 			IF_TYPE_SDLC = 17,
-			IF_TYPE_DS1 = 18,  // DS1-MIB
-			IF_TYPE_E1 = 19,  // Obsolete; see DS1-MIB
+			/// <summary>DS1-MIB</summary>
+			IF_TYPE_DS1 = 18,
+			/// <summary>Obsolete; see DS1-MIB</summary>
+			IF_TYPE_E1 = 19,
 			IF_TYPE_BASIC_ISDN = 20,
 			IF_TYPE_PRIMARY_ISDN = 21,
-			IF_TYPE_PROP_POINT2POINT_SERIAL = 22,  // proprietary serial
+			/// <summary>proprietary serial</summary>
+			IF_TYPE_PROP_POINT2POINT_SERIAL = 22,
 			/// <summary>A PPP network interface.</summary>
 			IF_TYPE_PPP = 23,
 			/// <summary>A software loopback network interface.</summary>
 			IF_TYPE_SOFTWARE_LOOPBACK = 24,
-			IF_TYPE_EON = 25,  // CLNP over IP
+			/// <summary>CLNP over IP</summary>
+			IF_TYPE_EON = 25,
 			IF_TYPE_ETHERNET_3MBIT = 26,
-			IF_TYPE_NSIP = 27,  // XNS over IP
-			IF_TYPE_SLIP = 28,  // Generic Slip
-			IF_TYPE_ULTRA = 29,  // ULTRA Technologies
-			IF_TYPE_DS3 = 30,  // DS3-MIB
-			IF_TYPE_SIP = 31,  // SMDS, coffee
-			IF_TYPE_FRAMERELAY = 32,  // DTE only
+			/// <summary>XNS over IP</summary>
+			IF_TYPE_NSIP = 27,
+			/// <summary>Generic Slip</summary>
+			IF_TYPE_SLIP = 28,
+			/// <summary>ULTRA Technologies</summary>
+			IF_TYPE_ULTRA = 29,
+			/// <summary>DS3-MIB</summary>
+			IF_TYPE_DS3 = 30,
+			/// <summary>SMDS, coffee</summary>
+			IF_TYPE_SIP = 31,
+			/// <summary>DTE only</summary>
+			IF_TYPE_FRAMERELAY = 32,
 			IF_TYPE_RS232 = 33,
-			IF_TYPE_PARA = 34,  // Parallel port
+			/// <summary>Parallel port</summary>
+			IF_TYPE_PARA = 34,
 			IF_TYPE_ARCNET = 35,
 			IF_TYPE_ARCNET_PLUS = 36,
 			/// <summary>An ATM network interface.</summary>
-			IF_TYPE_ATM = 37,  // ATM cells
+			IF_TYPE_ATM = 37,
 			IF_TYPE_MIO_X25 = 38,
-			IF_TYPE_SONET = 39,  // SONET or SDH
+			/// <summary>SONET or SDH</summary>
+			IF_TYPE_SONET = 39,
 			IF_TYPE_X25_PLE = 40,
 			IF_TYPE_ISO88022_LLC = 41,
 			IF_TYPE_LOCALTALK = 42,
 			IF_TYPE_SMDS_DXI = 43,
-			IF_TYPE_FRAMERELAY_SERVICE = 44,  // FRNETSERV-MIB
+			/// <summary>FRNETSERV-MIB</summary>
+			IF_TYPE_FRAMERELAY_SERVICE = 44,
 			IF_TYPE_V35 = 45,
 			IF_TYPE_HSSI = 46,
 			IF_TYPE_HIPPI = 47,
-			IF_TYPE_MODEM = 48,  // Generic Modem
-			IF_TYPE_AAL5 = 49,  // AAL5 over ATM
+			/// <summary>Generic Modem</summary>
+			IF_TYPE_MODEM = 48,
+			/// <summary>AAL5 over ATM</summary>
+			IF_TYPE_AAL5 = 49,
 			IF_TYPE_SONET_PATH = 50,
 			IF_TYPE_SONET_VT = 51,
-			IF_TYPE_SMDS_ICIP = 52,  // SMDS InterCarrier Interface
-			IF_TYPE_PROP_VIRTUAL = 53,  // Proprietary virtual/internal
-			IF_TYPE_PROP_MULTIPLEXOR = 54,  // Proprietary multiplexing
-			IF_TYPE_IEEE80212 = 55,  // 100BaseVG
+			/// <summary>SMDS InterCarrier Interface</summary>
+			IF_TYPE_SMDS_ICIP = 52,
+			/// <summary>Proprietary virtual/internal</summary>
+			IF_TYPE_PROP_VIRTUAL = 53,
+			/// <summary>Proprietary multiplexing</summary>
+			IF_TYPE_PROP_MULTIPLEXOR = 54,
+			/// <summary>100BaseVG</summary>
+			IF_TYPE_IEEE80212 = 55,
 			IF_TYPE_FIBRECHANNEL = 56,
 			IF_TYPE_HIPPIINTERFACE = 57,
-			IF_TYPE_FRAMERELAY_INTERCONNECT = 58,  // Obsolete, use 32 or 44
-			IF_TYPE_AFLANE_8023 = 59,  // ATM Emulated LAN for 802.3
-			IF_TYPE_AFLANE_8025 = 60,  // ATM Emulated LAN for 802.5
-			IF_TYPE_CCTEMUL = 61,  // ATM Emulated circuit
-			IF_TYPE_FASTETHER = 62,  // Fast Ethernet (100BaseT)
-			IF_TYPE_ISDN = 63,  // ISDN and X.25
-			IF_TYPE_V11 = 64,  // CCITT V.11/X.21
-			IF_TYPE_V36 = 65,  // CCITT V.36
-			IF_TYPE_G703_64K = 66,  // CCITT G703 at 64Kbps
-			IF_TYPE_G703_2MB = 67,  // Obsolete; see DS1-MIB
-			IF_TYPE_QLLC = 68,  // SNA QLLC
-			IF_TYPE_FASTETHER_FX = 69,  // Fast Ethernet (100BaseFX)
+			/// <summary>Obsolete, use 32 or 44</summary>
+			IF_TYPE_FRAMERELAY_INTERCONNECT = 58,
+			/// <summary>ATM Emulated LAN for 802.3</summary>
+			IF_TYPE_AFLANE_8023 = 59,
+			/// <summary>ATM Emulated LAN for 802.5</summary>
+			IF_TYPE_AFLANE_8025 = 60,
+			/// <summary>ATM Emulated circuit</summary>
+			IF_TYPE_CCTEMUL = 61,
+			/// <summary>Fast Ethernet (100BaseT)</summary>
+			IF_TYPE_FASTETHER = 62,
+			/// <summary>ISDN and X.25</summary>
+			IF_TYPE_ISDN = 63,
+			/// <summary>CCITT V.11/X.21</summary>
+			IF_TYPE_V11 = 64,
+			/// <summary>CCITT V.36</summary>
+			IF_TYPE_V36 = 65,
+			/// <summary>CCITT G703 at 64Kbps</summary>
+			IF_TYPE_G703_64K = 66,
+			/// <summary>Obsolete; see DS1-MIB</summary>
+			IF_TYPE_G703_2MB = 67,
+			/// <summary>SNA QLLC</summary>
+			IF_TYPE_QLLC = 68,
+			/// <summary>Fast Ethernet (100BaseFX)</summary>
+			IF_TYPE_FASTETHER_FX = 69,
 			IF_TYPE_CHANNEL = 70,
 			/// <summary>An IEEE 802.11 wireless network interface.</summary>
-			IF_TYPE_IEEE80211 = 71,  // Radio spread spectrum
-			IF_TYPE_IBM370PARCHAN = 72,  // IBM System 360/370 OEMI Channel
-			IF_TYPE_ESCON = 73,  // IBM Enterprise Systems Connection
-			IF_TYPE_DLSW = 74,  // Data Link Switching
-			IF_TYPE_ISDN_S = 75,  // ISDN S/T interface
-			IF_TYPE_ISDN_U = 76,  // ISDN U interface
-			IF_TYPE_LAP_D = 77,  // Link Access Protocol D
-			IF_TYPE_IPSWITCH = 78,  // IP Switching Objects
-			IF_TYPE_RSRB = 79,  // Remote Source Route Bridging
-			IF_TYPE_ATM_LOGICAL = 80,  // ATM Logical Port
-			IF_TYPE_DS0 = 81,  // Digital Signal Level 0
-			IF_TYPE_DS0_BUNDLE = 82,  // Group of ds0s on the same ds1
-			IF_TYPE_BSC = 83,  // Bisynchronous Protocol
-			IF_TYPE_ASYNC = 84,  // Asynchronous Protocol
-			IF_TYPE_CNR = 85,  // Combat Net Radio
-			IF_TYPE_ISO88025R_DTR = 86,  // ISO 802.5r DTR
-			IF_TYPE_EPLRS = 87,  // Ext Pos Loc Report Sys
-			IF_TYPE_ARAP = 88,  // Appletalk Remote Access Protocol
-			IF_TYPE_PROP_CNLS = 89,  // Proprietary Connectionless Proto
-			IF_TYPE_HOSTPAD = 90,  // CCITT-ITU X.29 PAD Protocol
-			IF_TYPE_TERMPAD = 91,  // CCITT-ITU X.3 PAD Facility
-			IF_TYPE_FRAMERELAY_MPI = 92,  // Multiproto Interconnect over FR
-			IF_TYPE_X213 = 93,  // CCITT-ITU X213
-			IF_TYPE_ADSL = 94,  // Asymmetric Digital Subscrbr Loop
-			IF_TYPE_RADSL = 95,  // Rate-Adapt Digital Subscrbr Loop
-			IF_TYPE_SDSL = 96,  // Symmetric Digital Subscriber Loop
-			IF_TYPE_VDSL = 97,  // Very H-Speed Digital Subscrb Loop
-			IF_TYPE_ISO88025_CRFPRINT = 98,  // ISO 802.5 CRFP
-			IF_TYPE_MYRINET = 99,  // Myricom Myrinet
-			IF_TYPE_VOICE_EM = 100, // Voice recEive and transMit
-			IF_TYPE_VOICE_FXO = 101, // Voice Foreign Exchange Office
-			IF_TYPE_VOICE_FXS = 102, // Voice Foreign Exchange Station
-			IF_TYPE_VOICE_ENCAP = 103, // Voice encapsulation
-			IF_TYPE_VOICE_OVERIP = 104, // Voice over IP encapsulation
-			IF_TYPE_ATM_DXI = 105, // ATM DXI
-			IF_TYPE_ATM_FUNI = 106, // ATM FUNI
-			IF_TYPE_ATM_IMA = 107, // ATM IMA
-			IF_TYPE_PPPMULTILINKBUNDLE = 108, // PPP Multilink Bundle
-			IF_TYPE_IPOVER_CDLC = 109, // IBM ipOverCdlc
-			IF_TYPE_IPOVER_CLAW = 110, // IBM Common Link Access to Workstn
-			IF_TYPE_STACKTOSTACK = 111, // IBM stackToStack
-			IF_TYPE_VIRTUALIPADDRESS = 112, // IBM VIPA
-			IF_TYPE_MPC = 113, // IBM multi-proto channel support
-			IF_TYPE_IPOVER_ATM = 114, // IBM ipOverAtm
-			IF_TYPE_ISO88025_FIBER = 115, // ISO 802.5j Fiber Token Ring
-			IF_TYPE_TDLC = 116, // IBM twinaxial data link control
+			IF_TYPE_IEEE80211 = 71,
+			/// <summary>IBM System 360/370 OEMI Channel</summary>
+			IF_TYPE_IBM370PARCHAN = 72,
+			/// <summary>IBM Enterprise Systems Connection</summary>
+			IF_TYPE_ESCON = 73,
+			/// <summary>Data Link Switching</summary>
+			IF_TYPE_DLSW = 74,
+			/// <summary>ISDN S/T interface</summary>
+			IF_TYPE_ISDN_S = 75,
+			/// <summary>ISDN U interface</summary>
+			IF_TYPE_ISDN_U = 76,
+			/// <summary>Link Access Protocol D</summary>
+			IF_TYPE_LAP_D = 77,
+			/// <summary>IP Switching Objects</summary>
+			IF_TYPE_IPSWITCH = 78,
+			/// <summary>Remote Source Route Bridging</summary>
+			IF_TYPE_RSRB = 79,
+			/// <summary>ATM Logical Port</summary>
+			IF_TYPE_ATM_LOGICAL = 80,
+			/// <summary>Digital Signal Level 0</summary>
+			IF_TYPE_DS0 = 81,
+			/// <summary>Group of ds0s on the same ds1</summary>
+			IF_TYPE_DS0_BUNDLE = 82,
+			/// <summary>Bisynchronous Protocol</summary>
+			IF_TYPE_BSC = 83,
+			/// <summary>Asynchronous Protocol</summary>
+			IF_TYPE_ASYNC = 84,
+			/// <summary>Combat Net Radio</summary>
+			IF_TYPE_CNR = 85,
+			/// <summary>ISO 802.5r DTR</summary>
+			IF_TYPE_ISO88025R_DTR = 86,
+			/// <summary>Ext Pos Loc Report Sys</summary>
+			IF_TYPE_EPLRS = 87,
+			/// <summary>Appletalk Remote Access Protocol</summary>
+			IF_TYPE_ARAP = 88,
+			/// <summary>Proprietary Connectionless Proto</summary>
+			IF_TYPE_PROP_CNLS = 89,
+			/// <summary>CCITT-ITU X.29 PAD Protocol</summary>
+			IF_TYPE_HOSTPAD = 90,
+			/// <summary>CCITT-ITU X.3 PAD Facility</summary>
+			IF_TYPE_TERMPAD = 91,
+			/// <summary>Multiproto Interconnect over FR</summary>
+			IF_TYPE_FRAMERELAY_MPI = 92,
+			/// <summary>CCITT-ITU X213</summary>
+			IF_TYPE_X213 = 93,
+			/// <summary>Asymmetric Digital Subscrbr Loop</summary>
+			IF_TYPE_ADSL = 94,
+			/// <summary>Rate-Adapt Digital Subscrbr Loop</summary>
+			IF_TYPE_RADSL = 95,
+			/// <summary>Symmetric Digital Subscriber Loop</summary>
+			IF_TYPE_SDSL = 96,
+			/// <summary>Very H-Speed Digital Subscrb Loop</summary>
+			IF_TYPE_VDSL = 97,
+			/// <summary>ISO 802.5 CRFP</summary>
+			IF_TYPE_ISO88025_CRFPRINT = 98,
+			/// <summary>Myricom Myrinet</summary>
+			IF_TYPE_MYRINET = 99,
+			/// <summary>Voice recEive and transMit</summary>
+			IF_TYPE_VOICE_EM = 100,
+			/// <summary>Voice Foreign Exchange Office</summary>
+			IF_TYPE_VOICE_FXO = 101,
+			/// <summary>Voice Foreign Exchange Station</summary>
+			IF_TYPE_VOICE_FXS = 102,
+			/// <summary>Voice encapsulation</summary>
+			IF_TYPE_VOICE_ENCAP = 103,
+			/// <summary>Voice over IP encapsulation</summary>
+			IF_TYPE_VOICE_OVERIP = 104,
+			/// <summary>ATM DXI</summary>
+			IF_TYPE_ATM_DXI = 105,
+			/// <summary>ATM FUNI</summary>
+			IF_TYPE_ATM_FUNI = 106,
+			/// <summary>ATM IMA</summary>
+			IF_TYPE_ATM_IMA = 107,
+			/// <summary>PPP Multilink Bundle</summary>
+			IF_TYPE_PPPMULTILINKBUNDLE = 108,
+			/// <summary>IBM ipOverCdlc</summary>
+			IF_TYPE_IPOVER_CDLC = 109,
+			/// <summary>IBM Common Link Access to Workstn</summary>
+			IF_TYPE_IPOVER_CLAW = 110,
+			/// <summary>IBM stackToStack</summary>
+			IF_TYPE_STACKTOSTACK = 111,
+			/// <summary>IBM VIPA</summary>
+			IF_TYPE_VIRTUALIPADDRESS = 112,
+			/// <summary>IBM multi-proto channel support</summary>
+			IF_TYPE_MPC = 113,
+			/// <summary>IBM ipOverAtm</summary>
+			IF_TYPE_IPOVER_ATM = 114,
+			/// <summary>ISO 802.5j Fiber Token Ring</summary>
+			IF_TYPE_ISO88025_FIBER = 115,
+			/// <summary>IBM twinaxial data link control</summary>
+			IF_TYPE_TDLC = 116,
 			IF_TYPE_GIGABITETHERNET = 117,
 			IF_TYPE_HDLC = 118,
 			IF_TYPE_LAP_F = 119,
 			IF_TYPE_V37 = 120,
-			IF_TYPE_X25_MLP = 121, // Multi-Link Protocol
-			IF_TYPE_X25_HUNTGROUP = 122, // X.25 Hunt Group
+			/// <summary>Multi-Link Protocol</summary>
+			IF_TYPE_X25_MLP = 121,
+			/// <summary>X.25 Hunt Group</summary>
+			IF_TYPE_X25_HUNTGROUP = 122,
 			IF_TYPE_TRANSPHDLC = 123,
-			IF_TYPE_INTERLEAVE = 124, // Interleave channel
-			IF_TYPE_FAST = 125, // Fast channel
-			IF_TYPE_IP = 126, // IP (for APPN HPR in IP networks)
-			IF_TYPE_DOCSCABLE_MACLAYER = 127, // CATV Mac Layer
-			IF_TYPE_DOCSCABLE_DOWNSTREAM = 128, // CATV Downstream interface
-			IF_TYPE_DOCSCABLE_UPSTREAM = 129, // CATV Upstream interface
-			IF_TYPE_A12MPPSWITCH = 130, // Avalon Parallel Processor			
+			/// <summary>Interleave channel</summary>
+			IF_TYPE_INTERLEAVE = 124,
+			/// <summary>Fast channel</summary>
+			IF_TYPE_FAST = 125,
+			/// <summary>IP (for APPN HPR in IP networks)</summary>
+			IF_TYPE_IP = 126,
+			/// <summary>CATV Mac Layer</summary>
+			IF_TYPE_DOCSCABLE_MACLAYER = 127,
+			/// <summary>CATV Downstream interface</summary>
+			IF_TYPE_DOCSCABLE_DOWNSTREAM = 128,
+			/// <summary>CATV Upstream interface</summary>
+			IF_TYPE_DOCSCABLE_UPSTREAM = 129,
+			/// <summary>Avalon Parallel Processor</summary>
+			IF_TYPE_A12MPPSWITCH = 130,
 			/// <summary>A tunnel type encapsulation network interface.</summary>
 			IF_TYPE_TUNNEL = 131, // Encapsulation interface
-			IF_TYPE_COFFEE = 132, // Coffee pot
-			IF_TYPE_CES = 133, // Circuit Emulation Service
-			IF_TYPE_ATM_SUBINTERFACE = 134, // ATM Sub Interface
-			IF_TYPE_L2_VLAN = 135, // Layer 2 Virtual LAN using 802.1Q
-			IF_TYPE_L3_IPVLAN = 136, // Layer 3 Virtual LAN using IP
-			IF_TYPE_L3_IPXVLAN = 137, // Layer 3 Virtual LAN using IPX
-			IF_TYPE_DIGITALPOWERLINE = 138, // IP over Power Lines
-			IF_TYPE_MEDIAMAILOVERIP = 139, // Multimedia Mail over IP
-			IF_TYPE_DTM = 140, // Dynamic syncronous Transfer Mode
-			IF_TYPE_DCN = 141, // Data Communications Network
-			IF_TYPE_IPFORWARD = 142, // IP Forwarding Interface
-			IF_TYPE_MSDSL = 143, // Multi-rate Symmetric DSL			
+			/// <summary>Coffee pot</summary>
+			IF_TYPE_COFFEE = 132,
+			/// <summary>Circuit Emulation Service</summary>
+			IF_TYPE_CES = 133,
+			/// <summary>ATM Sub Interface</summary>
+			IF_TYPE_ATM_SUBINTERFACE = 134,
+			/// <summary>Layer 2 Virtual LAN using 802.1Q</summary>
+			IF_TYPE_L2_VLAN = 135,
+			/// <summary>Layer 3 Virtual LAN using IP</summary>
+			IF_TYPE_L3_IPVLAN = 136,
+			/// <summary>Layer 3 Virtual LAN using IPX</summary>
+			IF_TYPE_L3_IPXVLAN = 137,
+			/// <summary>IP over Power Lines</summary>
+			IF_TYPE_DIGITALPOWERLINE = 138,
+			/// <summary>Multimedia Mail over IP</summary>
+			IF_TYPE_MEDIAMAILOVERIP = 139,
+			/// <summary>Dynamic syncronous Transfer Mode</summary>
+			IF_TYPE_DTM = 140,
+			/// <summary>Data Communications Network</summary>
+			IF_TYPE_DCN = 141,
+			/// <summary>IP Forwarding Interface</summary>
+			IF_TYPE_IPFORWARD = 142,
+			/// <summary>Multi-rate Symmetric DSL			</summary>
+			IF_TYPE_MSDSL = 143,
 			/// <summary>An IEEE 1394 (Firewire) high performance serial bus network interface.</summary>
 			IF_TYPE_IEEE1394 = 144, // IEEE1394 High Perf Serial Bus
 			IF_TYPE_IF_GSN = 145,
@@ -271,23 +401,36 @@ namespace Vanara.PInvoke
 			IF_TYPE_ATM_VCI_ENDPT = 194,
 			IF_TYPE_OPTICAL_CHANNEL = 195,
 			IF_TYPE_OPTICAL_TRANSPORT = 196,
+			/// <summary>A mobile broadband interface for WiMax devices.<note type="note">This interface type is supported on Windows 7, Windows Server 2008 R2, and later.</note></summary>
 			IF_TYPE_IEEE80216_WMAN = 237,
-			IF_TYPE_WWANPP = 243, // WWAN devices based on GSM technology
-			IF_TYPE_WWANPP2 = 244, // WWAN devices based on CDMA technology
-			IF_TYPE_IEEE802154 = 259, // IEEE 802.15.4 WPAN interface
+			/// <summary>A mobile broadband interface for GSM-based devices.<note type="note">This interface type is supported on Windows 7, Windows Server 2008 R2, and later.</note></summary>
+			IF_TYPE_WWANPP = 243,
+			/// <summary>A mobile broadband interface for CDMA-based devices.<note type="note">This interface type is supported on Windows 7, Windows Server 2008 R2, and later.</note></summary>
+			IF_TYPE_WWANPP2 = 244,
+			/// <summary>IEEE 802.15.4 WPAN interface</summary>
+			IF_TYPE_IEEE802154 = 259,
 			IF_TYPE_XBOX_WIRELESS = 281,
 		}
 
+		/// <summary>A set of flags that provide information about an interface.</summary>
 		[Flags]
 		public enum InterfaceAndOperStatusFlags : byte
 		{
+			/// <summary>Set if the network interface is for hardware.</summary>
 			HardwareInterface = 1 << 0,
+			/// <summary>Set if the network interface is for a filter module.</summary>
 			FilterInterface = 1 << 1,
+			/// <summary>Set if a connector is present on the network interface. This value is set if there is a physical network adapter.</summary>
 			ConnectorPresent = 1 << 2,
+			/// <summary>Set if the default port for the network interface is not authenticated. If a network interface is not authenticated by the target, then the network interface is not in an operational mode. Although this applies to both wired and wireless network connections, authentication is more common for wireless network connections.</summary>
 			NotAuthenticated = 1 << 3,
+			/// <summary>Set if the network interface is not in a media-connected state. If a network cable is unplugged for a wired network, this would be set. For a wireless network, this is set for the network adapter that is not connected to a network.</summary>
 			NotMediaConnected = 1 << 4,
+			/// <summary>Set if the network stack for the network interface is in the paused or pausing state. This does not mean that the computer is in a hibernated state.</summary>
 			Paused = 1 << 5,
+			/// <summary>Set if the network interface is in a low power state.</summary>
 			LowPower = 1 << 6,
+			/// <summary>Set if the network interface is an endpoint device and not a true network interface that connects to a network. This can be set by devices such as smart phones which use networking infrastructure to communicate to the PC but do not provide connectivity to an external network. It is mandatory for these types of devices to set this flag.</summary>
 			EndPointInterface = 1 << 7
 		}
 
@@ -432,55 +575,98 @@ namespace Vanara.PInvoke
 			MIB_TCP_STATE_DELETE_TCB
 		}
 
+		/// <summary>The NDIS_MEDIUM enumeration type identifies the medium types that NDIS drivers support.</summary>
 		[PInvokeData("ntddndis.h")]
 		public enum NDIS_MEDIUM
 		{
+			/// <summary>Specifies an Ethernet (802.3) network.</summary>
 			NdisMedium802_3,
+			/// <summary>Specifies a Token Ring (802.5) network.<note type="note">Not supported in Windows 8 or later.</note></summary>
 			NdisMedium802_5,
+			/// <summary>Specifies a Fiber Distributed Data Interface (FDDI) network.<note type="note">Not supported in Windows Vista/Windows Server 2008 or later.</note></summary>
 			NdisMediumFddi,
+			/// <summary>Specifies a wide area network. This type covers various forms of point-to-point and WAN NICs, as well as variant address/header formats that must be negotiated between the protocol driver and the underlying driver after the binding is established.</summary>
 			NdisMediumWan,
+			/// <summary>Specifies a LocalTalk network.</summary>
 			NdisMediumLocalTalk,
-			NdisMediumDix,              // defined for convenience, not a real medium
+			/// <summary>Specifies an Ethernet network for which the drivers use the DIX Ethernet header format.</summary>
+			NdisMediumDix,
+			/// <summary>Specifies an ARCNET network.<note type="note">Not supported in Windows Vista/Windows Server 2008 or later.</note></summary>
 			NdisMediumArcnetRaw,
+			/// <summary>Specifies an ARCNET (878.2) network.<note type="note">Not supported in Windows Vista/Windows Server 2008 or later.</note></summary>
 			NdisMediumArcnet878_2,
+			/// <summary>Specifies an ATM network. Connection-oriented client protocol drivers can bind themselves to an underlying miniport driver that returns this value. Otherwise, legacy protocol drivers bind themselves to the system-supplied LanE intermediate driver, which reports its medium type as either of NdisMedium802_3 or NdisMedium802_5, depending on how the LanE driver is configured by the network administrator.</summary>
 			NdisMediumAtm,
+			/// <summary>Specifies a wireless network. NDIS 5.X miniport drivers that support wireless LAN (WLAN) or wireless WAN (WWAN) packets declare their medium as NdisMedium802_3 and emulate Ethernet to higher-level NDIS drivers.<note type="note">Starting with Windows 7, this media type is supported and can be used for Mobile Broadband.</note></summary>
 			NdisMediumWirelessWan,
+			/// <summary>Specifies an infrared (IrDA) network.</summary>
 			NdisMediumIrda,
+			/// <summary>Specifies a broadcast PC network.</summary>
 			NdisMediumBpc,
+			/// <summary>Specifies a wide area network in a connection-oriented environment.</summary>
 			NdisMediumCoWan,
+			/// <summary>Specifies an IEEE 1394 (fire wire) network.<note type="note">Not supported in Windows Vista/Windows Server 2008 or later.</note></summary>
 			NdisMedium1394,
+			/// <summary>Specifies an InfiniBand network.</summary>
 			NdisMediumInfiniBand,
+			/// <summary>Specifies a tunnel network.</summary>
 			NdisMediumTunnel,
+			/// <summary>Specifies a native IEEE 802.11 network.</summary>
 			NdisMediumNative802_11,
+			/// <summary>Specifies an NDIS loopback network.</summary>
 			NdisMediumLoopback,
+			/// <summary>Specifies a WiMAX network.</summary>
 			NdisMediumWiMAX,
-			NdisMediumIP
+			/// <summary>Specifies a generic medium that is capable of sending and receiving raw IP packets.</summary>
+			NdisMediumIP,
+			/// <summary>A maximum value for testing purposes.</summary>
+			NdisMediumMax,
 		}
 
+		/// <summary>The NDIS physical medium type.</summary>
 		[PInvokeData("ntddndis.h")]
 		public enum NDIS_PHYSICAL_MEDIUM
 		{
-			NdisPhysicalMediumUnspecified,
-			NdisPhysicalMediumWirelessLan,
-			NdisPhysicalMediumCableModem,
-			NdisPhysicalMediumPhoneLine,
-			NdisPhysicalMediumPowerLine,
-			NdisPhysicalMediumDSL,      // includes ADSL and UADSL (G.Lite)
-			NdisPhysicalMediumFibreChannel,
-			NdisPhysicalMedium1394,
-			NdisPhysicalMediumWirelessWan,
-			NdisPhysicalMediumNative802_11,
-			NdisPhysicalMediumBluetooth,
-			NdisPhysicalMediumInfiniband,
-			NdisPhysicalMediumWiMax,
-			NdisPhysicalMediumUWB,
-			NdisPhysicalMedium802_3,
-			NdisPhysicalMedium802_5,
-			NdisPhysicalMediumIrda,
-			NdisPhysicalMediumWiredWAN,
-			NdisPhysicalMediumWiredCoWan,
-			NdisPhysicalMediumOther,
-			NdisPhysicalMediumNative802_15_4,
+			/// <summary>The physical medium is none of the below values. For example, a one-way satellite feed is an unspecified physical medium.</summary>
+			NdisPhysicalMediumUnspecified = 0,
+			/// <summary>Packets are transferred over a wireless LAN network through a miniport driver that conforms to the 802.11 interface.</summary>
+			NdisPhysicalMediumWirelessLan = 1,
+			/// <summary>Packets are transferred over a DOCSIS-based cable network.</summary>
+			NdisPhysicalMediumCableModem = 2,
+			/// <summary>Packets are transferred over standard phone lines. This includes HomePNA media, for example.</summary>
+			NdisPhysicalMediumPhoneLine = 3,
+			/// <summary>Packets are transferred over wiring that is connected to a power distribution system.</summary>
+			NdisPhysicalMediumPowerLine = 4,
+			/// <summary>Packets are transferred over a Digital Subscriber Line (DSL) network. This includes ADSL, UADSL (G.Lite), and SDSL, for example.</summary>
+			NdisPhysicalMediumDSL = 5,
+			/// <summary>Packets are transferred over a Fibre Channel interconnect.</summary>
+			NdisPhysicalMediumFibreChannel = 6,
+			/// <summary>Packets are transferred over an IEEE 1394 bus.</summary>
+			NdisPhysicalMedium1394 = 7,
+			/// <summary>Packets are transferred over a Wireless WAN link. This includes mobile broadband devices that support CDPD, CDMA, GSM, and GPRS, for example.</summary>
+			NdisPhysicalMediumWirelessWan = 8,
+			/// <summary>Packets are transferred over a wireless LAN network through a miniport driver that conforms to the Native 802.11 interface.<note type="note">The Native 802.11 interface is supported in NDIS 6.0 and later versions.</note></summary>
+			NdisPhysicalMediumNative802_11 = 9,
+			/// <summary>Packets are transferred over a Bluetooth network. Bluetooth is a short-range wireless technology that uses the 2.4 GHz spectrum.</summary>
+			NdisPhysicalMediumBluetooth = 10,
+			/// <summary>Packets are transferred over an Infiniband interconnect.</summary>
+			NdisPhysicalMediumInfiniband = 11,
+			/// <summary>Packets are transferred over a WiMax network.</summary>
+			NdisPhysicalMediumWiMax = 12,
+			/// <summary>Packets are transferred over an ultra wide band network.</summary>
+			NdisPhysicalMediumUWB = 13,
+			/// <summary>Packets are transferred over an Ethernet (802.3) network.</summary>
+			NdisPhysicalMedium802_3 = 14,
+			/// <summary>Packets are transferred over a Token Ring (802.5) network.</summary>
+			NdisPhysicalMedium802_5 = 15,
+			/// <summary>Packets are transferred over an infrared (IrDA) network.</summary>
+			NdisPhysicalMediumIrda = 16,
+			/// <summary>Packets are transferred over a wired WAN network.</summary>
+			NdisPhysicalMediumWiredWAN = 17,
+			/// <summary>Packets are transferred over a wide area network in a connection-oriented environment.</summary>
+			NdisPhysicalMediumWiredCoWan = 18,
+			/// <summary>Packets are transferred over a network that is not described by other possible values.</summary>
+			NdisPhysicalMediumOther = 19,
 		}
 
 		[PInvokeData("ifdef.h")]
@@ -629,15 +815,25 @@ namespace Vanara.PInvoke
 			TCP_TABLE_OWNER_MODULE_ALL
 		}
 
+		/// <summary>
+		/// The TUNNEL_TYPE enumeration type defines the encapsulation method used by a tunnel, as described by the Internet Assigned Names Authority (IANA).
+		/// </summary>
 		[PInvokeData("ifdef.h")]
 		public enum TUNNEL_TYPE : uint
 		{
+			/// <summary>Indicates that a tunnel is not specified.</summary>
 			TUNNEL_TYPE_NONE = 0,
+			/// <summary>Indicates that none of the following tunnel types is specified.</summary>
 			TUNNEL_TYPE_OTHER = 1,
+			/// <summary>A packet is encapsulated directly within a normal IP header, with no intermediate header, and unicast to the remote tunnel endpoint.</summary>
 			TUNNEL_TYPE_DIRECT = 2,
+			/// <summary>An IPv6 packet is encapsulated directly within an IPv4 header, with no intermediate header, and unicast to the destination determined by the 6to4 protocol.</summary>
 			TUNNEL_TYPE_6TO4 = 11,
+			/// <summary>An IPv6 packet is encapsulated directly within an IPv4 header, with no intermediate header, and unicast to the destination determined by the ISATAP protocol.</summary>
 			TUNNEL_TYPE_ISATAP = 13,
+			/// <summary>Teredo encapsulation.</summary>
 			TUNNEL_TYPE_TEREDO = 14,
+			/// <summary>Specifies that the tunnel uses IP over Hypertext Transfer Protocol Secure (HTTPS). This tunnel type is supported in Windows 7 and later versions of the Windows operating system.</summary>
 			TUNNEL_TYPE_IPHTTPS = 15
 		}
 
@@ -1609,60 +1805,106 @@ namespace Vanara.PInvoke
 			}
 		}
 
+		/// <summary>The MIB_IF_ROW2 structure stores information about a particular interface.</summary>
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 		public struct MIB_IF_ROW2
 		{
+			/// <summary>The locally unique identifier (LUID) for the network interface.</summary>
 			public NET_LUID InterfaceLuid;
+			/// <summary>The index that identifies the network interface. This index value may change when a network adapter is disabled and then enabled, and should not be considered persistent.</summary>
 			public uint InterfaceIndex;
+			/// <summary>The GUID for the network interface.</summary>
 			public Guid InterfaceGuid;
+			/// <summary>A NULL-terminated Unicode string that contains the alias name of the network interface.</summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = IF_MAX_STRING_SIZE + 1)]
 			public string Alias;
+			/// <summary>A NULL-terminated Unicode string that contains a description of the network interface.</summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = IF_MAX_STRING_SIZE + 1)]
 			public string Description;
+			/// <summary>The length, in bytes, of the physical hardware address specified by the PhysicalAddress member.</summary>
 			public uint physicalAddressLength;
+			/// <summary>The physical hardware address of the adapter for this network interface.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = IF_MAX_PHYS_ADDRESS_LENGTH)]
 			public byte[] PhysicalAddress;
+			/// <summary>The permanent physical hardware address of the adapter for this network interface.</summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = IF_MAX_PHYS_ADDRESS_LENGTH)]
 			public byte[] PermanentPhysicalAddress;
+			/// <summary>The maximum transmission unit (MTU) size, in bytes, for this network interface.</summary>
 			public uint Mtu;
+			/// <summary>The interface type as defined by the Internet Assigned Names Authority (IANA). For more information, see http://www.iana.org/assignments/ianaiftype-mib. Possible values for the interface type are listed in the Ipifcons.h header file.</summary>
 			public IFTYPE Type;
+			/// <summary>The encapsulation method used by a tunnel if the Type member is IF_TYPE_TUNNEL. The tunnel type is defined by the Internet Assigned Names Authority (IANA). For more information, see http://www.iana.org/assignments/ianaiftype-mib. This member can be one of the values from the TUNNEL_TYPE enumeration type defined in the Ifdef.h header file.</summary>
 			public TUNNEL_TYPE TunnelType;
+			/// <summary>The NDIS media type for the interface. This member can be one of the values from the NDIS_MEDIUM enumeration type defined in the Ntddndis.h header file.</summary>
 			public NDIS_MEDIUM MediaType;
+			/// <summary>The NDIS physical medium type. This member can be one of the values from the NDIS_PHYSICAL_MEDIUM enumeration type defined in the Ntddndis.h header file.</summary>
 			public NDIS_PHYSICAL_MEDIUM PhysicalMediumType;
+			/// <summary>The interface access type. This member can be one of the values from the NET_IF_ACCESS_TYPE enumeration type defined in the Ifdef.h header file.</summary>
 			public NET_IF_ACCESS_TYPE AccessType;
+			/// <summary>The interface direction type. This member can be one of the values from the NET_IF_DIRECTION_TYPE enumeration type defined in the Ifdef.h header file.</summary>
 			public NET_IF_DIRECTION_TYPE DirectionType;
+			/// <summary>A set of flags that provide information about the interface. These flags are combined with a bitwise OR operation. If none of the flags applies, then this member is set to zero.</summary>
 			public InterfaceAndOperStatusFlags InterfaceAndOperStatusFlags;
+			/// <summary>The operational status for the interface as defined in RFC 2863 as IfOperStatus. For more information, see http://www.ietf.org/rfc/rfc2863.txt. This member can be one of the values from the IF_OPER_STATUS enumeration type defined in the Ifdef.h header file.</summary>
 			public IF_OPER_STATUS OperStatus;
+			/// <summary>The administrative status for the interface as defined in RFC 2863. For more information, see http://www.ietf.org/rfc/rfc2863.txt. This member can be one of the values from the NET_IF_ADMIN_STATUS enumeration type defined in the Ifdef.h header file.</summary>
 			public NET_IF_ADMIN_STATUS AdminStatus;
+			/// <summary>The connection state of the interface. This member can be one of the values from the NET_IF_MEDIA_CONNECT_STATE enumeration type defined in the Ifdef.h header file.</summary>
 			public NET_IF_MEDIA_CONNECT_STATE MediaConnectState;
+			/// <summary>The GUID that is associated with the network that the interface belongs to.</summary>
 			public Guid NetworkGuid;
+			/// <summary>The NDIS network interface connection type. This member can be one of the values from the NET_IF_CONNECTION_TYPE enumeration type defined in the Ifdef.h header file.</summary>
 			public NET_IF_CONNECTION_TYPE ConnectionType;
+			/// <summary>The speed in bits per second of the transmit link.</summary>
 			public ulong TransmitLinkSpeed;
+			/// <summary>The speed in bits per second of the receive link.</summary>
 			public ulong ReceiveLinkSpeed;
+			/// <summary>The number of octets of data received without errors through this interface. This value includes octets in unicast, broadcast, and multicast packets.</summary>
 			public ulong InOctets;
+			/// <summary>The number of unicast packets received without errors through this interface.</summary>
 			public ulong InUcastPkts;
+			/// <summary>The number of non-unicast packets received without errors through this interface. This value includes broadcast and multicast packets.</summary>
 			public ulong InNUcastPkts;
+			/// <summary>The number of inbound packets which were chosen to be discarded even though no errors were detected to prevent the packets from being deliverable to a higher-layer protocol.</summary>
 			public ulong InDiscards;
+			/// <summary>The number of incoming packets that were discarded because of errors.</summary>
 			public ulong InErrors;
+			/// <summary>The number of incoming packets that were discarded because the protocol was unknown.</summary>
 			public ulong InUnknownProtos;
+			/// <summary>The number of octets of data received without errors in unicast packets through this interface.</summary>
 			public ulong InUcastOctets;
+			/// <summary>The number of octets of data received without errors in multicast packets through this interface.</summary>
 			public ulong InMulticastOctets;
+			/// <summary>The number of octets of data received without errors in broadcast packets through this interface.</summary>
 			public ulong InBroadcastOctets;
+			/// <summary>The number of octets of data transmitted without errors through this interface. This value includes octets in unicast, broadcast, and multicast packets.</summary>
 			public ulong OutOctets;
+			/// <summary>The number of unicast packets transmitted without errors through this interface.</summary>
 			public ulong OutUcastPkts;
+			/// <summary>The number of non-unicast packets transmitted without errors through this interface. This value includes broadcast and multicast packets.</summary>
 			public ulong OutNUcastPkts;
+			/// <summary>The number of outgoing packets that were discarded even though they did not have errors.</summary>
 			public ulong OutDiscards;
+			/// <summary>The number of outgoing packets that were discarded because of errors.</summary>
 			public ulong OutErrors;
+			/// <summary>The number of octets of data transmitted without errors in unicast packets through this interface.</summary>
 			public ulong OutUcastOctets;
+			/// <summary>The number of octets of data transmitted without errors in multicast packets through this interface.</summary>
 			public ulong OutMulticastOctets;
+			/// <summary>The number of octets of data transmitted without errors in broadcast packets through this interface.</summary>
 			public ulong OutBroadcastOctets;
+			/// <summary>The transmit queue length. This field is not currently used.</summary>
 			public ulong OutQLen;
 
+			/// <summary>Initializes a new instance of the <see cref="MIB_IF_ROW2"/> struct.</summary>
+			/// <param name="interfaceIndex">Index of the interface.</param>
 			public MIB_IF_ROW2(uint interfaceIndex) : this()
 			{
 				InterfaceIndex = interfaceIndex;
 			}
 
+			/// <summary>Initializes a new instance of the <see cref="MIB_IF_ROW2"/> struct.</summary>
+			/// <param name="interfaceLuid">The interface luid.</param>
 			public MIB_IF_ROW2(NET_LUID interfaceLuid) : this()
 			{
 				InterfaceLuid = interfaceLuid;
