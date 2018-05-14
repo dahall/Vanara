@@ -20,13 +20,13 @@ namespace Vanara.Extensions
 			}
 			else if (!ctrl.IsDesignMode())
 			{
-				EventHandler handler = null;
-				handler = (sender, e) =>
+				void handler(object sender, EventArgs e)
 				{
 					if (!ctrl.IsHandleCreated) return;
 					ctrl.HandleCreated -= handler;
 					action(ctrl);
-				};
+				}
+
 				ctrl.HandleCreated += handler;
 			}
 		}
