@@ -30,9 +30,6 @@ namespace Vanara.InteropServices
 		/// <value>The close method.</value>
 		protected virtual Func<IntPtr, bool> CloseMethod { get; }
 
-		/// <summary>When overridden in a derived class, gets a value indicating whether the handle value is invalid.</summary>
-		public override bool IsInvalid => handle == IntPtr.Zero;
-
 		/// <summary>Performs an implicit conversion from <see cref="GenericSafeHandle"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="h">The <see cref="GenericSafeHandle"/> instance.</param>
 		/// <returns>The value of the handle. Use caution when using this value as it can be closed by the disposal of the parent <see cref="GenericSafeHandle"/>.</returns>
