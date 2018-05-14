@@ -174,7 +174,7 @@ namespace Vanara.Configuration
 		public IFileListStorage StorageHandler
 		{
 			get => storage;
-			set { storage = value; storage?.Initialize(); }
+			set { storage = value; if (LicenseManager.UsageMode != LicenseUsageMode.Designtime) storage?.Initialize(); }
 		}
 
 		/// <summary>Adds the recent file.</summary>
