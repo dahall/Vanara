@@ -25,6 +25,8 @@
 		public const string Kernel32 = "kernel32.dll";
 		/// <summary>The net api32</summary>
 		public const string NetApi32 = "netapi32.dll";
+		/// <summary>The normaliz</summary>
+		public const string Normaliz = "normaliz.dll";
 		/// <summary>The nt DLL</summary>
 		public const string NTDll= "ntdll.dll";
 		/// <summary>The NTDS API</summary>
@@ -45,6 +47,8 @@
 		public const string User32 = "user32.dll";
 		/// <summary>The ux theme</summary>
 		public const string UxTheme = "uxtheme.dll";
+		/// <summary>The vertdll</summary>
+		public const string VertDll = "vertdll.dll";
 		/// <summary>The virt disk</summary>
 		public const string VirtDisk = "virtdisk.dll";
 		/// <summary>The win inet</summary>

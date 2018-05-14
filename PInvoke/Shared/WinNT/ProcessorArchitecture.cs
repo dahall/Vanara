@@ -2,7 +2,7 @@
 namespace Vanara.PInvoke
 {
 	/// <summary>Processor architecture</summary>
-	public enum ProcessorArchitecture
+	public enum ProcessorArchitecture : ushort
 	{
 		/// <summary>x86</summary>
 		PROCESSOR_ARCHITECTURE_INTEL = 0,
