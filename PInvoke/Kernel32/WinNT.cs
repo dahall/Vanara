@@ -1,129 +1,86 @@
-using System;
+﻿using System;
+using System.Runtime.InteropServices;
+// ReSharper disable InconsistentNaming
 
 namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
+		/// <summary>The flags that control the enforcement of the minimum and maximum working set sizes.</summary>
+		[PInvokeData("winnt.h")]
+		[Flags]
+		public enum QUOTA_LIMITS_HARDWS
+		{
+			/// <summary>The working set will not fall below the minimum working set limit.</summary>
+			QUOTA_LIMITS_HARDWS_MIN_ENABLE = 0x00000001,
+			/// <summary>The working set may fall below the minimum working set limit if memory demands are high.</summary>
+			QUOTA_LIMITS_HARDWS_MIN_DISABLE = 0x00000002,
+			/// <summary>The working set will not exceed the maximum working set limit.</summary>
+			QUOTA_LIMITS_HARDWS_MAX_ENABLE = 0x00000004,
+			/// <summary>The working set may exceed the maximum working set limit if there is abundant memory.</summary>
+			QUOTA_LIMITS_HARDWS_MAX_DISABLE = 0x00000008,
+			/// <summary>The quota limits use default limits</summary>
+			QUOTA_LIMITS_USE_DEFAULT_LIMITS = 0x00000010,
+		}
+
+		[PInvokeData("winnt.h")]
+		[Flags]
+		public enum SECTION_MAP : uint
+		{
+			SECTION_QUERY                = 0x0001,
+			SECTION_MAP_WRITE            = 0x0002,
+			SECTION_MAP_READ             = 0x0004,
+			SECTION_MAP_EXECUTE          = 0x0008,
+			SECTION_EXTEND_SIZE          = 0x0010,
+			SECTION_MAP_EXECUTE_EXPLICIT = 0x0020,
+			SECTION_ALL_ACCESS = ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | SECTION_QUERY | SECTION_MAP_WRITE | SECTION_MAP_READ | SECTION_MAP_EXECUTE | SECTION_EXTEND_SIZE,
+		}
+
 		/// <summary>
-		/// Flags that may be passed to the <see cref="GetVolumeInformation(string, out string, out uint, out uint, out FileSystemFlags, out string)"/> function.
+		/// A mask that indicates the member of the OSVERSIONINFOEX structure whose comparison operator is being set. This value corresponds to one of the bits
+		/// specified in the dwTypeMask parameter for the VerifyVersionInfo function.
 		/// </summary>
 		[Flags]
-		[PInvokeData("winnt.h")]
-		public enum FileSystemFlags
+		public enum VERSION_MASK : uint
 		{
-			/// <summary>The specified volume supports case-sensitive file names.</summary>
-			FILE_CASE_SENSITIVE_SEARCH = 0x00000001,
+			/// <summary>dwMinorVersion</summary>
+			VER_MINORVERSION = 0x0000001,
+			/// <summary>dwMajorVersion</summary>
+			VER_MAJORVERSION = 0x0000002,
+			/// <summary>dwBuildNumber</summary>
+			VER_BUILDNUMBER = 0x0000004,
+			/// <summary>dwPlatformId</summary>
+			VER_PLATFORMID = 0x0000008,
+			/// <summary>wServicePackMinor</summary>
+			VER_SERVICEPACKMINOR = 0x0000010,
+			/// <summary>wServicePackMajor</summary>
+			VER_SERVICEPACKMAJOR = 0x0000020,
+			/// <summary>wSuiteMask</summary>
+			VER_SUITENAME = 0x0000040,
+			/// <summary>wProductType</summary>
+			VER_PRODUCT_TYPE = 0x0000080,
+		}
 
-			/// <summary>The specified volume supports preserved case of file names when it places a name on disk.</summary>
-			FILE_CASE_PRESERVED_NAMES = 0x00000002,
-
-			/// <summary>The specified volume supports Unicode in file names as they appear on disk.</summary>
-			FILE_UNICODE_ON_DISK = 0x00000004,
-
-			/// <summary>
-			/// The specified volume preserves and enforces access control lists (ACL). For example, the NTFS file system preserves and enforces ACLs, and the
-			/// FAT file system does not.
-			/// </summary>
-			FILE_PERSISTENT_ACLS = 0x00000008,
-
-			/// <summary>The specified volume supports file-based compression.</summary>
-			FILE_FILE_COMPRESSION = 0x00000010,
-
-			/// <summary>The specified volume supports disk quotas.</summary>
-			FILE_VOLUME_QUOTAS = 0x00000020,
-
-			/// <summary>The specified volume supports sparse files.</summary>
-			FILE_SUPPORTS_SPARSE_FILES = 0x00000040,
-
-			/// <summary>The specified volume supports reparse points.</summary>
-			FILE_SUPPORTS_REPARSE_POINTS = 0x00000080,
-
-			/// <summary>The specified volume supports remote storage.</summary>
-			FILE_SUPPORTS_REMOTE_STORAGE = 0x00000100,
-
-			/// <summary>The specified volume is a compressed volume, for example, a DoubleSpace volume.</summary>
-			FILE_VOLUME_IS_COMPRESSED = 0x00008000,
-
-			/// <summary>The specified volume supports object identifiers.</summary>
-			FILE_SUPPORTS_OBJECT_IDS = 0x00010000,
-
-			/// <summary>
-			/// The specified volume supports the Encrypted File System (EFS). For more information, see <a
-			/// href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa364223(v=vs.85).aspx">File Encryption</a>.
-			/// </summary>
-			FILE_SUPPORTS_ENCRYPTION = 0x00020000,
-
-			/// <summary>The specified volume supports named streams.</summary>
-			FILE_NAMED_STREAMS = 0x00040000,
-
-			/// <summary>The specified volume is read-only.</summary>
-			FILE_READ_ONLY_VOLUME = 0x00080000,
-
-			/// <summary>The specified volume supports a single sequential write.</summary>
-			FILE_SEQUENTIAL_WRITE_ONCE = 0x00100000,
-
-			/// <summary>
-			/// The specified volume supports transactions. For more information, see <a
-			/// href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365993(v=vs.85).aspx">About KTM</a>.
-			/// </summary>
-			FILE_SUPPORTS_TRANSACTIONS = 0x00200000,
-
-			/// <summary>
-			/// The specified volume supports hard links. For more information, see <a
-			/// href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365006(v=vs.85).aspx">Hard Links and Junctions.</a>
-			/// <para>
-			/// <c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value is not supported until Windows Server 2008 R2 and
-			/// Windows 7.
-			/// </para>
-			/// </summary>
-			FILE_SUPPORTS_HARD_LINKS = 0x00400000,
-
-			/// <summary>
-			/// The specified volume supports extended attributes. An extended attribute is a piece of application-specific metadata that an application can
-			/// associate with a file and is not part of the file's data.
-			/// <para>
-			/// <c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value is not supported until Windows Server 2008 R2 and
-			/// Windows 7.
-			/// </para>
-			/// </summary>
-			FILE_SUPPORTS_EXTENDED_ATTRIBUTES = 0x00800000,
-
-			/// <summary>
-			/// The file system supports open by FileID. For more information, see FILE_ID_BOTH_DIR_INFO.
-			/// <para>
-			/// <c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value is not supported until Windows Server 2008 R2 and
-			/// Windows 7.
-			/// </para>
-			/// </summary>
-			FILE_SUPPORTS_OPEN_BY_FILE_ID = 0x01000000,
-
-			/// <summary>
-			/// The specified volume supports update sequence number (USN) journals. For more information, see <a
-			/// href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa363803(v=vs.85).aspx">Change Journal Records</a> .
-			/// <para>
-			/// <c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value is not supported until Windows Server 2008 R2 and
-			/// Windows 7.
-			/// </para>
-			/// </summary>
-			FILE_SUPPORTS_USN_JOURNAL = 0x02000000,
-
-			/// <summary>The specified volume supports integrity streams.</summary>
-			FILE_SUPPORTS_INTEGRITY_STREAMS = 0x04000000,
-
-			/// <summary>The specified volume supports block refcounting.</summary>
-			FILE_SUPPORTS_BLOCK_REFCOUNTING = 0x08000000,
-
-			/// <summary>The specified volume supports sparse VDL.</summary>
-			FILE_SUPPORTS_SPARSE_VDL = 0x10000000,
-
-			/// <summary>
-			/// The specified volume is a direct access (DAX) volume.
-			/// <para><c>Note</c> This flag was introduced in Windows 10, version 1607.</para>
-			/// </summary>
-			FILE_DAX_VOLUME = 0x20000000,
-
-			/// <summary>The specified volume supports ghosting.</summary>
-			FILE_SUPPORTS_GHOSTING = 0x40000000
+		/// <summary>
+		/// The operator to be used for the comparison. The VerifyVersionInfo function uses this operator to compare a specified attribute value to the
+		/// corresponding value for the currently running system.
+		/// </summary>
+		public enum VERSION_CONDITION : byte
+		{
+			/// <summary>The current value must be equal to the specified value.</summary>
+			VER_EQUAL = 1,
+			/// <summary>The current value must be greater than the specified value.</summary>
+			VER_GREATER,
+			/// <summary>The current value must be greater than or equal to the specified value.</summary>
+			VER_GREATER_EQUAL,
+			/// <summary>The current value must be less than the specified value.</summary>
+			VER_LESS,
+			/// <summary>The current value must be less than or equal to the specified value.</summary>
+			VER_LESS_EQUAL,
+			/// <summary>All product suites specified in the wSuiteMask member must be present in the current system.</summary>
+			VER_AND,
+			/// <summary>At least one of the specified product suites must be present in the current system.</summary>
+			VER_OR,
 		}
 	}
 }

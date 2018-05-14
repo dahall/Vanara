@@ -14,9 +14,9 @@ namespace Vanara.InteropServices
 	public sealed class LocalMemoryMethods : IMemoryMethods
 	{
 		/// <summary>Gets the allocation method.</summary>
-		public Func<int, IntPtr> AllocMem => i => { var o = LocalAlloc(LocalMemoryFlags.LPTR, (UIntPtr)i); return o != IntPtr.Zero ? o : throw Win32Error.GetLastError().GetException(); };
+		public Func<int, IntPtr> AllocMem => i => { var o = LocalAlloc(LMEM.LPTR, (UIntPtr)i); return o != IntPtr.Zero ? o : throw Win32Error.GetLastError().GetException(); };
 		/// <summary>Gets the reallocation method.</summary>
-		public Func<IntPtr, int, IntPtr> ReAllocMem => (p, i) => { var o = LocalReAlloc(p, (UIntPtr)i, LocalMemoryFlags.LMEM_MOVEABLE); return o != IntPtr.Zero ? o : throw Win32Error.GetLastError().GetException(); };
+		public Func<IntPtr, int, IntPtr> ReAllocMem => (p, i) => { var o = LocalReAlloc(p, (UIntPtr)i, LMEM.LMEM_MOVEABLE); return o != IntPtr.Zero ? o : throw Win32Error.GetLastError().GetException(); };
 		/// <summary>Gets the free method.</summary>
 		public Action<IntPtr> FreeMem => p => LocalFree(p);
 		/// <summary>Gets the Unicode string allocation method.</summary>

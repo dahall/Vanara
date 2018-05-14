@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.InteropServices;
@@ -8,6 +7,32 @@ namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
+		/// <summary>
+		/// Application-defined callback function used to save data and application state information in the event the application encounters an unhandled
+		/// exception or becomes unresponsive.
+		/// </summary>
+		/// <param name="pvParameter">Context information specified when you called the RegisterApplicationRecoveryCallback function to register for recovery.</param>
+		/// <returns>The return value is not used and should be 0.</returns>
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		[PInvokeData("Winbase.h", MSDNShortId = "aa373202")]
+		public delegate uint ApplicationRecoveryCallback(IntPtr pvParameter);
+
+		/// <summary>Flags that determine in which section FindActCtxSectionString searches.</summary>
+		public enum ACTCTX_SECTION
+		{
+			ACTIVATION_CONTEXT_SECTION_ASSEMBLY_INFORMATION = 1,
+			ACTIVATION_CONTEXT_SECTION_DLL_REDIRECTION = 2,
+			ACTIVATION_CONTEXT_SECTION_WINDOW_CLASS_REDIRECTION = 3,
+			ACTIVATION_CONTEXT_SECTION_COM_SERVER_REDIRECTION = 4,
+			ACTIVATION_CONTEXT_SECTION_COM_INTERFACE_REDIRECTION = 5,
+			ACTIVATION_CONTEXT_SECTION_COM_TYPE_LIBRARY_REDIRECTION = 6,
+			ACTIVATION_CONTEXT_SECTION_COM_PROGID_REDIRECTION = 7,
+			ACTIVATION_CONTEXT_SECTION_GLOBAL_OBJECT_RENAME_TABLE = 8,
+			ACTIVATION_CONTEXT_SECTION_CLR_SURROGATES = 9,
+			ACTIVATION_CONTEXT_SECTION_APPLICATION_SETTINGS = 10,
+			ACTIVATION_CONTEXT_SECTION_COMPATIBILITY_INFO = 11
+		}
+
 		/// <summary>Flags that indicate how the values included in <see cref="ACTCTX"/> are to be used.</summary>
 		[Flags]
 		[PInvokeData("Winbase.h")]
@@ -42,6 +67,56 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary></summary>
+		public enum ACTIVATION_CONTEXT_INFO_CLASS
+		{
+			/// <summary>Not available.</summary>
+			ActivationContextBasicInformation = 1,
+			/// <summary>
+			/// If QueryActCtxW is called with this option and the function succeeds, the returned buffer contains detailed information about the activation
+			/// context. This information is in the form of the ACTIVATION_CONTEXT_DETAILED_INFORMATION structure.
+			/// </summary>
+			ActivationContextDetailedInformation = 2,
+			/// <summary>
+			/// If QueryActCtxW is called with this option and the function succeeds, the buffer contains information about the assembly that has the index
+			/// specified in pvSubInstance. This information is in the form of the ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION structure.
+			/// </summary>
+			AssemblyDetailedInformationInActivationContext = 3,
+			/// <summary>
+			/// Information about a file in one of the assemblies in Activation Context. The pvSubInstance parameter must point to an
+			/// ACTIVATION_CONTEXT_QUERY_INDEX structure. If QueryActCtxW is called with this option and the function succeeds, the returned buffer contains
+			/// information for a file in the assembly. This information is in the form of the ASSEMBLY_FILE_DETAILED_INFORMATION structure.
+			/// </summary>
+			FileInformationInAssemblyOfAssemblyInActivationContext = 4,
+			/// <summary>
+			/// If QueryActCtxW is called with this option and the function succeeds, the buffer contains information about requested run level of the activation
+			/// context. This information is in the form of the ACTIVATION_CONTEXT_RUN_LEVEL_INFORMATION structure.Windows Server 2003 and Windows XP: This value
+			/// is not available.
+			/// </summary>
+			RunlevelInformationInActivationContext = 5,
+			/// <summary>
+			/// If QueryActCtxW is called with this option and the function succeeds, the buffer contains information about requested compatibility context. This
+			/// information is in the form of the ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION structure.Windows Server 2008 and earlier, and Windows Vista and
+			/// earlier: This value is not available. This option is available beginning with Windows Server 2008 R2 and Windows 7.
+			/// </summary>
+			CompatibilityInformationInActivationContext = 6,
+			/// <summary>The activation context manifest resource name</summary>
+			ActivationContextManifestResourceName = 7,
+			/// <summary>The maximum activation context information class</summary>
+			MaxActivationContextInfoClass,
+			/// <summary>
+			/// If QueryActCtxW is called with this option and the function succeeds, the buffer contains information about the assembly that has the index
+			/// specified in pvSubInstance. This information is in the form of the ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION structure.
+			/// </summary>
+			AssemblyDetailedInformationInActivationContxt = 3,
+			/// <summary>
+			/// Information about a file in one of the assemblies in Activation Context. The pvSubInstance parameter must point to an
+			/// ACTIVATION_CONTEXT_QUERY_INDEX structure. If QueryActCtxW is called with this option and the function succeeds, the returned buffer contains
+			/// information for a file in the assembly. This information is in the form of the ASSEMBLY_FILE_DETAILED_INFORMATION structure.
+			/// </summary>
+			FileInformationInAssemblyOfAssemblyInActivationContxt = 4
+		}
+
+		/// <summary></summary>
 		[Flags]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa373344")]
 		public enum ApplicationRestartFlags
@@ -59,6 +134,7 @@ namespace Vanara.PInvoke
 			RESTART_NO_REBOOT = 8,
 		}
 
+		/// <summary></summary>
 		[PInvokeData("Winbase.h")]
 		public enum DeactivateActCtxFlag
 		{
@@ -87,153 +163,672 @@ namespace Vanara.PInvoke
 			DEACTIVATE_ACTCTX_FLAG_FORCE_EARLY_DEACTIVATION = 1
 		}
 
-		/// <summary>
-		/// Application-defined callback function used to save data and application state information in the event the application encounters an unhandled
-		/// exception or becomes unresponsive.
-		/// </summary>
-		/// <param name="pvParameter">Context information specified when you called the RegisterApplicationRecoveryCallback function to register for recovery.</param>
-		/// <returns>The return value is not used and should be 0.</returns>
-		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		[PInvokeData("Winbase.h", MSDNShortId = "aa373202")]
-		public delegate uint ApplicationRecoveryCallback(IntPtr pvParameter);
+		/// <summary>Flags that determine how FindActCtxSectionString operates.</summary>
+		public enum FIND_ACTCTX_SECTION
+		{
+			/// <summary>
+			/// This function returns the activation context handle where the redirection data was found in the hActCtx member of the ACTCTX_SECTION_KEYED_DATA
+			/// structure. The caller must use ReleaseActCtx to release this activation context.
+			/// </summary>
+			FIND_ACTCTX_SECTION_KEY_RETURN_HACTCTX = 0x00000001,
+			/// <summary>Undocumented.</summary>
+			FIND_ACTCTX_SECTION_KEY_RETURN_FLAGS = 0x00000002,
+			/// <summary>Undocumented.</summary>
+			FIND_ACTCTX_SECTION_KEY_RETURN_ASSEMBLY_METADATA = 0x00000004
+		}
+
+		/// <summary></summary>
+		[PInvokeData("Winbase.h")]
+		public enum QueryActCtxFlag : uint
+		{
+			/// <summary>
+			/// QueryActCtxW queries the activation context active on the thread instead of the context specified by hActCtx. This is usually the last activation
+			/// context passed to ActivateActCtx. If ActivateActCtx has not been called, the active activation context can be the activation context used by the
+			/// executable of the current process. In other cases, the operating system determines the active activation context. For example, when the callback
+			/// function to a new thread is called, the active activation context may be the context that was active when you created the thread by calling CreateThread.
+			/// </summary>
+			QUERY_ACTCTX_FLAG_USE_ACTIVE_ACTCTX = 0x00000004,
+			/// <summary>
+			/// QueryActCtxW interprets hActCtx as an HMODULE data type and queries an activation context that is associated with a DLL or EXE. When a DLL or EXE
+			/// is loaded, the loader checks for a manifest stored in a resource. If the loader finds an RT_MANIFEST resource with a resource identifier set to
+			/// ISOLATIONAWARE_MANIFEST_ RESOURCE_ID, the loader associates the resulting activation context with the DLL or EXE. This is the activation context
+			/// that QueryActCtxW queries when the QUERY_ACTCTX_FLAG_ACTCTX_IS_HMODULE flag has been set.
+			/// </summary>
+			QUERY_ACTCTX_FLAG_ACTCTX_IS_HMODULE = 0x00000008,
+			/// <summary>
+			/// QueryActCtxW interprets hActCtx as an address within a DLL or EXE and queries an activation context that has been associated with the DLL or EXE.
+			/// This can be any address within the DLL or EXE. For example, the address of any function within a DLL or EXE or the address of any static data,
+			/// such as a constant string. When a DLL or EXE is loaded, the loader checks for a manifest stored in a resource in the same way as QUERY_ACTCTX_FLAG_ACTCTX_IS_HMODULE.
+			/// </summary>
+			QUERY_ACTCTX_FLAG_ACTCTX_IS_ADDRESS = 0x00000010,
+			/// <summary>Undocumented.</summary>
+			QUERY_ACTCTX_FLAG_NO_ADDREF = 0x80000000,
+		}
 
 		/// <summary>
-		/// The ActivateActCtx function activates the specified activation context. It does this by pushing the specified activation context to the top of the
-		/// activation stack. The specified activation context is thus associated with the current thread and any appropriate side-by-side API functions.
+		/// The <c>ActivateActCtx</c> function activates the specified activation context. It does this by pushing the specified activation context to the top of
+		/// the activation stack. The specified activation context is thus associated with the current thread and any appropriate side-by-side API functions.
 		/// </summary>
-		/// <param name="hActCtx">Handle to an ACTCTX structure that contains information on the activation context that is to be made active.</param>
-		/// <param name="lpCookie">Pointer to a ULONG_PTR that functions as a cookie, uniquely identifying a specific, activated activation context.</param>
-		/// <returns>If the function succeeds, it returns TRUE. Otherwise, it returns FALSE. This function sets errors that can be retrieved by calling GetLastError.</returns>
-		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
+		/// <param name="hActCtx">Handle to an <c>ACTCTX</c> structure that contains information on the activation context that is to be made active.</param>
+		/// <param name="lpCookie">Pointer to a <c>ULONG_PTR</c> that functions as a cookie, uniquely identifying a specific, activated activation context.</param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>. Otherwise, it returns <c>FALSE</c>.</para>
+		/// <para>
+		/// This function sets errors that can be retrieved by calling <c>GetLastError</c>. For an example, see Retrieving the Last-Error Code. For a complete
+		/// list of error codes, see System Error Codes.
+		/// </para>
+		/// </returns>
+		// BOOL ActivateActCtx( _In_ HANDLE hActCtx, _Out_ ULONG_PTR *lpCookie); https://msdn.microsoft.com/en-us/library/windows/desktop/aa374151(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa374151")]
+		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool ActivateActCtx(ActCtxSafeHandle hActCtx, out IntPtr lpCookie);
 
+		/// <summary>The <c>AddRefActCtx</c> function increments the reference count of the specified activation context.</summary>
+		/// <param name="hActCtx">
+		/// Handle to an <c>ACTCTX</c> structure that contains information on the activation context for which the reference count is to be incremented.
+		/// </param>
+		/// <returns>This function does not return a value.</returns>
+		// void AddRefActCtx( _In_ HANDLE hActCtx); https://msdn.microsoft.com/en-us/library/windows/desktop/aa374171(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Winbase.h", MSDNShortId = "aa374171")]
+		public static extern void AddRefActCtx(IntPtr hActCtx);
+
 		/// <summary>Indicates that the calling application has completed its data recovery.</summary>
-		/// <param name="bSuccess">Specify TRUE to indicate that the data was successfully recovered; otherwise, FALSE.</param>
-		[DllImport(Lib.Kernel32, ExactSpelling = true)]
+		/// <param name="bSuccess">Specify <c>TRUE</c> to indicate that the data was successfully recovered; otherwise, <c>FALSE</c>.</param>
+		/// <returns>This function does not return a value.</returns>
+		// VOID WINAPI ApplicationRecoveryFinished( _In_ BOOL bSuccess); https://msdn.microsoft.com/en-us/library/windows/desktop/aa373328(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa373328")]
 		public static extern void ApplicationRecoveryFinished([MarshalAs(UnmanagedType.Bool)] bool bSuccess);
 
 		/// <summary>Indicates that the calling application is continuing to recover data.</summary>
 		/// <param name="pbCanceled">Indicates whether the user has canceled the recovery process. Set by WER if the user clicks the Cancel button.</param>
-		/// <returns>This function returns S_OK on success or one of the following error codes.</returns>
-		[DllImport(Lib.Kernel32, ExactSpelling = true)]
+		/// <returns>
+		/// <para>This function returns <c>S_OK</c> on success or one of the following error codes.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>E_FAIL</term>
+		/// <term>You can call this function only after Windows Error Reporting has called your recovery callback function.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>The pbCancelled cannot be NULL.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </returns>
+		// HRESULT WINAPI ApplicationRecoveryInProgress( _Out_ PBOOL pbCanceled); https://msdn.microsoft.com/en-us/library/windows/desktop/aa373329(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa373329")]
 		public static extern HRESULT ApplicationRecoveryInProgress([Out, MarshalAs(UnmanagedType.Bool)] out bool pbCanceled);
 
-		/// <summary>The CreateActCtx function creates an activation context.</summary>
-		/// <param name="actctx">Pointer to an ACTCTX structure that contains information about the activation context to be created.</param>
-		/// <returns>If the function succeeds, it returns a handle to the returned activation context. Otherwise, it returns INVALID_HANDLE_VALUE.</returns>
-		[DllImport(Lib.Kernel32, CharSet = CharSet.Auto, SetLastError = true)]
+		/// <summary>The <c>CreateActCtx</c> function creates an activation context.</summary>
+		/// <param name="pActCtx">Pointer to an <c>ACTCTX</c> structure that contains information about the activation context to be created.</param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns a handle to the returned activation context. Otherwise, it returns INVALID_HANDLE_VALUE.</para>
+		/// <para>
+		/// This function sets errors that can be retrieved by calling <c>GetLastError</c>. For an example, see Retrieving the Last-Error Code. For a complete
+		/// list of error codes, see System Error Codes.
+		/// </para>
+		/// </returns>
+		// HANDLE CreateActCtx( _Inout_ PACTCTX pActCtx); https://msdn.microsoft.com/en-us/library/windows/desktop/aa375125(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa375125")]
 		public static extern ActCtxSafeHandle CreateActCtx(ref ACTCTX actctx);
 
-		/// <summary>The DeactivateActCtx function deactivates the activation context corresponding to the specified cookie.</summary>
-		/// <param name="dwFlags">Flags that indicate how the deactivation is to occur.</param>
-		/// <param name="lpCookie">
-		/// The ULONG_PTR that was passed into the call to ActivateActCtx. This value is used as a cookie to identify a specific activated activation context.
+		/// <summary>The <c>DeactivateActCtx</c> function deactivates the activation context corresponding to the specified cookie.</summary>
+		/// <param name="dwFlags">
+		/// <para>Flags that indicate how the deactivation is to occur.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0</term>
+		/// <term>
+		/// If this value is set and the cookie specified in the ulCookie parameter is in the top frame of the activation stack, the activation context is popped
+		/// from the stack and thereby deactivated. If this value is set and the cookie specified in the ulCookie parameter is not in the top frame of the
+		/// activation stack, this function searches down the stack for the cookie.If the cookie is found, a STATUS_SXS_EARLY_DEACTIVATION exception is thrown.If
+		/// the cookie is not found, a STATUS_SXS_INVALID_DEACTIVATION exception is thrown.This value should be specified in most cases.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DEACTIVATE_ACTCTX_FLAG_FORCE_EARLY_DEACTIVATION</term>
+		/// <term>
+		/// If this value is set and the cookie specified in the ulCookie parameter is in the top frame of the activation stack, the function returns an
+		/// ERROR_INVALID_PARAMETER error code. Call GetLastError to obtain this code. If this value is set and the cookie is not on the activation stack, a
+		/// STATUS_SXS_INVALID_DEACTIVATION exception will be thrown.If this value is set and the cookie is in a lower frame of the activation stack, all of the
+		/// frames down to and including the frame the cookie is in is popped from the stack.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
 		/// </param>
-		/// <returns>If the function succeeds, it returns TRUE. Otherwise, it returns FALSE. This function sets errors that can be retrieved by calling GetLastError.</returns>
-		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
+		/// <param name="ulCookie">
+		/// The ULONG_PTR that was passed into the call to <c>ActivateActCtx</c>. This value is used as a cookie to identify a specific activated activation context.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>. Otherwise, it returns <c>FALSE</c>.</para>
+		/// <para>
+		/// This function sets errors that can be retrieved by calling <c>GetLastError</c>. For an example, see Retrieving the Last-Error Code. For a complete
+		/// list of error codes, see System Error Codes.
+		/// </para>
+		/// </returns>
+		// BOOL DeactivateActCtx( _In_ DWORD dwFlags, _In_ ULONG_PTR ulCookie); https://msdn.microsoft.com/en-us/library/windows/desktop/aa375140(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa375140")]
+		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool DeactivateActCtx(DeactivateActCtxFlag dwFlags, IntPtr lpCookie);
+
+		/// <summary>
+		/// The <c>FindActCtxSectionGuid</c> function retrieves information on a specific GUID in the current activation context and returns a
+		/// <c>ACTCTX_SECTION_KEYED_DATA</c> structure.
+		/// </summary>
+		/// <param name="dwFlags">
+		/// <para>Flags that determine how this function is to operate. Only the following flag is currently defined.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>FIND_ACTCTX_SECTION_KEY_RETURN_HACTCTX</term>
+		/// <term>
+		/// This function returns the activation context handle where the redirection data was found in the hActCtx member of the ACTCTX_SECTION_KEYED_DATA
+		/// structure. The caller must use ReleaseActCtx to release this activation context.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="lpExtensionGuid">Reserved; must be null.</param>
+		/// <param name="ulSectionId">
+		/// <para>Identifier of the section of the activation context in which to search for the specified GUID.</para>
+		/// <para>The following are valid GUID section identifiers:</para>
+		/// <para>The following is a valid GUID section identifier beginning with Windows Server 2003 and Windows XP with SP1:</para>
+		/// </param>
+		/// <param name="lpGuidToFind">Pointer to a GUID to be used as the search criteria.</param>
+		/// <param name="ReturnedData">Pointer to an <c>ACTCTX_SECTION_KEYED_DATA</c> structure to be filled out with the requested GUID information.</param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>. Otherwise, it returns <c>FALSE</c>.</para>
+		/// <para>
+		/// This function sets errors that can be retrieved by calling <c>GetLastError</c>. For an example, see Retrieving the Last-Error Code. For a complete
+		/// list of error codes, see System Error Codes.
+		/// </para>
+		/// </returns>
+		// BOOL FindActCtxSectionGuid( _In_ DWORD dwFlags, _In_ const GUID *lpExtensionGuid, _In_ ULONG ulSectionId, _In_ const GUID *lpGuidToFind, _Out_
+		// PACTCTX_SECTION_KEYED_DATA ReturnedData); https://msdn.microsoft.com/en-us/library/windows/desktop/aa375148(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("Winbase.h", MSDNShortId = "aa375148")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool FindActCtxSectionGuid(FIND_ACTCTX_SECTION dwFlags, [MarshalAs(UnmanagedType.LPStruct)] Guid lpExtensionGuid, uint ulSectionId, [MarshalAs(UnmanagedType.LPStruct)] Guid lpGuidToFind, out ACTCTX_SECTION_KEYED_DATA ReturnedData);
+
+		/// <summary>
+		/// The <c>FindActCtxSectionString</c> function retrieves information on a specific string in the current activation context and returns a
+		/// <c>ACTCTX_SECTION_KEYED_DATA</c> structure.
+		/// </summary>
+		/// <param name="dwFlags">
+		/// <para>Flags that determine how this function is to operate. Only the following flag is currently defined.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>FIND_ACTCTX_SECTION_KEY_RETURN_HACTCTX</term>
+		/// <term>
+		/// This function returns the activation context handle where the redirection data was found in the hActCtx member of the ACTCTX_SECTION_KEYED_DATA
+		/// structure. The caller must use ReleaseActCtx to release this activation context.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="lpExtensionGuid">Reserved; must be null.</param>
+		/// <param name="ulSectionId">
+		/// <para>Identifier of the string section of the activation context in which to search for the specific string.</para>
+		/// <para>The following are valid string section identifiers:</para>
+		/// </param>
+		/// <param name="lpStringToFind">Pointer to a null-terminated string to be used as the search criteria.</param>
+		/// <param name="ReturnedData">Pointer to an <c>ACTCTX_SECTION_KEYED_DATA</c> structure to be filled out with the requested string information.</param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>. Otherwise, it returns <c>FALSE</c>.</para>
+		/// <para>
+		/// This function sets errors that can be retrieved by calling <c>GetLastError</c>. For an example, see Retrieving the Last-Error Code. For a complete
+		/// list of error codes, see System Error Codes.
+		/// </para>
+		/// </returns>
+		// BOOL FindActCtxSectionString( _In_ DWORD dwFlags, _In_ const GUID *lpExtensionGuid, _In_ ULONG ulSectionId, _In_ LPCTSTR lpStringToFind, _Out_
+		// PACTCTX_SECTION_KEYED_DATA ReturnedData); https://msdn.microsoft.com/en-us/library/windows/desktop/aa375149(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("Winbase.h", MSDNShortId = "aa375149")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool FindActCtxSectionString(FIND_ACTCTX_SECTION dwFlags, [MarshalAs(UnmanagedType.LPStruct)] Guid lpExtensionGuid, ACTCTX_SECTION ulSectionId, [In] string lpStringToFind, out ACTCTX_SECTION_KEYED_DATA ReturnedData);
 
 		/// <summary>
 		/// Retrieves a pointer to the callback routine registered for the specified process. The address returned is in the virtual address space of the process.
 		/// </summary>
 		/// <param name="hProcess">A handle to the process. This handle must have the PROCESS_VM_READ access right.</param>
-		/// <param name="pRecoveryCallback">A pointer to the recovery callback function. For more information, see ApplicationRecoveryCallback.</param>
+		/// <param name="pRecoveryCallback">A pointer to the recovery callback function. For more information, see <c>ApplicationRecoveryCallback</c>.</param>
 		/// <param name="ppvParameter">A pointer to the callback parameter.</param>
 		/// <param name="pdwPingInterval">The recovery ping interval, in 100-nanosecond intervals.</param>
 		/// <param name="pdwFlags">Reserved for future use.</param>
-		/// <returns>This function returns S_OK on success.</returns>
-		[DllImport(Lib.Kernel32, ExactSpelling = true)]
+		/// <returns>
+		/// <para>This function returns <c>S_OK</c> on success or one of the following error codes.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_FALSE</term>
+		/// <term>The application did not register for recovery.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One or more parameters are not valid.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </returns>
+		// HRESULT WINAPI GetApplicationRecoveryCallback( _In_ HANDLE hProcess, _Out_ APPLICATION_RECOVERY_CALLBACK *pRecoveryCallback, _Out_ PVOID
+		// *ppvParameter, _Out_ PDWORD pdwPingInterval, _Out_ PDWORD pdwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa373343(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa373343")]
 		public static extern HRESULT GetApplicationRecoveryCallback(IntPtr hProcess, out ApplicationRecoveryCallback pRecoveryCallback, out IntPtr ppvParameter, out uint pdwPingInterval, out int pdwFlags);
 
 		/// <summary>Retrieves the restart information registered for the specified process.</summary>
 		/// <param name="hProcess">A handle to the process. This handle must have the PROCESS_VM_READ access right.</param>
 		/// <param name="pwzCommandline">
-		/// A pointer to a buffer that receives the restart command line specified by the application when it called the RegisterApplicationRestart function. The
-		/// maximum size of the command line, in characters, is RESTART_MAX_CMD_LINE. Can be NULL if pcchSize is zero.
+		/// A pointer to a buffer that receives the restart command line specified by the application when it called the <c>RegisterApplicationRestart</c>
+		/// function. The maximum size of the command line, in characters, is RESTART_MAX_CMD_LINE. Can be <c>NULL</c> if pcchSize is zero.
 		/// </param>
 		/// <param name="pcchSize">
-		/// On input, specifies the size of the pwzCommandLine buffer, in characters.
+		/// <para>On input, specifies the size of the pwzCommandLine buffer, in characters.</para>
 		/// <para>
 		/// If the buffer is not large enough to receive the command line, the function fails with HRESULT_FROM_WIN32(ERROR_INSUFFICIENT_BUFFER) and sets this
 		/// parameter to the required buffer size, in characters.
 		/// </para>
 		/// <para>On output, specifies the size of the buffer that was used.</para>
 		/// <para>
-		/// To determine the required buffer size, set pwzCommandLine to NULL and this parameter to zero. The size includes one for the null-terminator
-		/// character. Note that the function returns S_OK, not HRESULT_FROM_WIN32(ERROR_INSUFFICIENT_BUFFER) in this case.
+		/// To determine the required buffer size, set pwzCommandLine to <c>NULL</c> and this parameter to zero. The size includes one for the
+		/// <c>null</c>-terminator character. Note that the function returns S_OK, not HRESULT_FROM_WIN32(ERROR_INSUFFICIENT_BUFFER) in this case.
 		/// </para>
 		/// </param>
 		/// <param name="pdwFlags">
-		/// A pointer to a variable that receives the flags specified by the application when it called the RegisterApplicationRestart function.
+		/// A pointer to a variable that receives the flags specified by the application when it called the <c>RegisterApplicationRestart</c> function.
 		/// </param>
-		/// <returns>This function returns S_OK on success</returns>
-		[DllImport(Lib.Kernel32, ExactSpelling = true)]
+		/// <returns>
+		/// <para>This function returns <c>S_OK</c> on success or one of the following error codes.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One or more parameters are not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>HRESULT_FROM_WIN32(ERROR_NOT_FOUND)</term>
+		/// <term>The application did not register for restart.</term>
+		/// </item>
+		/// <item>
+		/// <term>HRESULT_FROM_WIN32(ERROR_INSUFFICIENT_BUFFER)</term>
+		/// <term>
+		/// The pwzCommandLine buffer is too small. The function returns the required buffer size in pcchSize. Use the required size to reallocate the buffer.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </returns>
+		// HRESULT WINAPI GetApplicationRestartSettings( _In_ HANDLE hProcess, _Out_opt_ PWSTR pwzCommandline, _Inout_ PDWORD pcchSize, _Out_opt_ PDWORD
+		// pdwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa373344(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa373344")]
-		public static extern HRESULT GetApplicationRestartSettings(IntPtr hProcess, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwzCommandline, ref uint pcchSize, out ApplicationRestartFlags pdwFlags);
+		public static extern HRESULT GetApplicationRestartSettings(IntPtr hProcess, [Out] StringBuilder pwzCommandline, ref uint pcchSize, out ApplicationRestartFlags pdwFlags);
 
-		/// <summary>The GetCurrentActCtx function returns the handle to the active activation context of the calling thread.</summary>
-		/// <param name="handle">Pointer to the returned ACTCTX structure that contains information on the active activation context.</param>
-		/// <returns>If the function succeeds, it returns TRUE. Otherwise, it returns FALSE. This function sets errors that can be retrieved by calling GetLastError.</returns>
-		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
+		/// <summary>The <c>GetCurrentActCtx</c> function returns the handle to the active activation context of the calling thread.</summary>
+		/// <param name="lphActCtx">Pointer to the returned <c>ACTCTX</c> structure that contains information on the active activation context.</param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>. Otherwise, it returns <c>FALSE</c>.</para>
+		/// <para>
+		/// This function sets errors that can be retrieved by calling <c>GetLastError</c>. For an example, see Retrieving the Last-Error Code. For a complete
+		/// list of error codes, see System Error Codes.
+		/// </para>
+		/// </returns>
+		// BOOL GetCurrentActCtx( _Out_ HANDLE *lphActCtx); https://msdn.microsoft.com/en-us/library/windows/desktop/aa375152(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa375152")]
+		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetCurrentActCtx(out ActCtxSafeHandle handle);
 
+		/// <summary>
+		/// The <c>QueryActCtxSettingsW</c> function specifies the activation context, and the namespace and name of the attribute that is to be queried.
+		/// </summary>
+		/// <param name="dwFlags">This value must be 0.</param>
+		/// <param name="hActCtx">A handle to the activation context that is being queried.</param>
+		/// <param name="settingsNameSpace">
+		/// <para>
+		/// A pointer to a string that contains the value <c>"http://schemas.microsoft.com/SMI/2005/WindowsSettings"</c> or <c>NULL</c>. These values are equivalent.
+		/// </para>
+		/// <para>
+		/// <c>Windows 8 and Windows Server 2012:</c> A pointer to a string that contains the value
+		/// <c>"http://schemas.microsoft.com/SMI/2011/WindowsSettings"</c> is also a valid parameter. A <c>NULL</c> is still equivalent to the previous value.
+		/// </para>
+		/// </param>
+		/// <param name="settingName">The name of the attribute to be queried.</param>
+		/// <param name="pvBuffer">A pointer to the buffer that receives the query result.</param>
+		/// <param name="dwBuffer">The size of the buffer in characters that receives the query result.</param>
+		/// <param name="pdwWrittenOrRequired">
+		/// A pointer to a value which is the number of characters written to the buffer specified by pvBuffer or that is required to hold the query result.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>. Otherwise, it returns <c>FALSE</c>.</para>
+		/// <para>
+		/// This function sets errors that can be retrieved by calling <c>GetLastError</c>. For an example, see Retrieving the Last-Error Code. For a complete
+		/// list of error codes, see System Error Codes.
+		/// </para>
+		/// </returns>
+		// BOOL QueryActCtxSettingsW( _In_opt_ DWORD dwFlags, _In_opt_ HANDLE hActCtx, _In_opt_ PCWSTR settingsNameSpace, _In_ PCWSTR settingName, _Out_ PWSTR
+		// pvBuffer, _In_ SIZE_T dwBuffer, _Out_opt_ SIZE_T *pdwWrittenOrRequired); https://msdn.microsoft.com/en-us/library/windows/desktop/aa375700(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("Winbase.h", MSDNShortId = "aa375700")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool QueryActCtxSettingsW(QueryActCtxFlag dwFlags, [In] IntPtr hActCtx, string settingsNameSpace, string settingName, [Out] StringBuilder pvBuffer, SizeT dwBuffer, out SizeT pdwWrittenOrRequired);
+
+		/// <summary>The <c>QueryActCtxW</c> function queries the activation context.</summary>
+		/// <param name="dwFlags">
+		/// <para>This parameter should be set to one of the following flag bits.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Flag</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>QUERY_ACTCTX_FLAG_USE_ACTIVE_ACTCTX</term>
+		/// <term>
+		/// QueryActCtxW queries the activation context active on the thread instead of the context specified by hActCtx. This is usually the last activation
+		/// context passed to ActivateActCtx. If ActivateActCtx has not been called, the active activation context can be the activation context used by the
+		/// executable of the current process. In other cases, the operating system determines the active activation context. For example, when the callback
+		/// function to a new thread is called, the active activation context may be the context that was active when you created the thread by calling CreateThread.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>QUERY_ACTCTX_FLAG_ACTCTX_IS_HMODULE</term>
+		/// <term>
+		/// QueryActCtxW interprets hActCtx as an HMODULE data type and queries an activation context that is associated with a DLL or EXE. When a DLL or EXE is
+		/// loaded, the loader checks for a manifest stored in a resource. If the loader finds an RT_MANIFEST resource with a resource identifier set to
+		/// ISOLATIONAWARE_MANIFEST_ RESOURCE_ID, the loader associates the resulting activation context with the DLL or EXE. This is the activation context that
+		/// QueryActCtxW queries when the QUERY_ACTCTX_FLAG_ACTCTX_IS_HMODULE flag has been set.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>QUERY_ACTCTX_FLAG_ACTCTX_IS_ADDRESS</term>
+		/// <term>
+		/// QueryActCtxW interprets hActCtx as an address within a DLL or EXE and queries an activation context that has been associated with the DLL or EXE.
+		/// This can be any address within the DLL or EXE. For example, the address of any function within a DLL or EXE or the address of any static data, such
+		/// as a constant string. When a DLL or EXE is loaded, the loader checks for a manifest stored in a resource in the same way as QUERY_ACTCTX_FLAG_ACTCTX_IS_HMODULE.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="hActCtx">Handle to the activation context that is being queried.</param>
+		/// <param name="pvSubInstance">
+		/// <para>
+		/// Index of the assembly, or assembly and file combination, in the activation context. The meaning of the pvSubInstance depends on the option specified
+		/// by the value of the ulInfoClass parameter. This parameter may be null.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>ulInfoClass Option</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>AssemblyDetailedInformationInActivationContext</term>
+		/// <term>
+		/// Pointer to a DWORD that specifies the index of the assembly within the activation context. This is the activation context that QueryActCtxW queries.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FileInformationInAssemblyOfAssemblyInActivationContext</term>
+		/// <term>
+		/// Pointer to an ACTIVATION_CONTEXT_QUERY_INDEX structure. If QueryActCtxW is called with this option and the function succeeds, the returned buffer
+		/// contains information for a file in the assembly. This information is in the form of the ASSEMBLY_FILE_DETAILED_INFORMATION structure.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="ulInfoClass">
+		/// <para>This parameter can have only the values shown in the following table.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Option</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ActivationContextBasicInformation1</term>
+		/// <term>Not available.</term>
+		/// </item>
+		/// <item>
+		/// <term>ActivationContextDetailedInformation2</term>
+		/// <term>
+		/// If QueryActCtxW is called with this option and the function succeeds, the returned buffer contains detailed information about the activation context.
+		/// This information is in the form of the ACTIVATION_CONTEXT_DETAILED_INFORMATION structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>AssemblyDetailedInformationInActivationContext3</term>
+		/// <term>
+		/// If QueryActCtxW is called with this option and the function succeeds, the buffer contains information about the assembly that has the index specified
+		/// in pvSubInstance. This information is in the form of the ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FileInformationInAssemblyOfAssemblyInActivationContext4</term>
+		/// <term>
+		/// Information about a file in one of the assemblies in Activation Context. The pvSubInstance parameter must point to an ACTIVATION_CONTEXT_QUERY_INDEX
+		/// structure. If QueryActCtxW is called with this option and the function succeeds, the returned buffer contains information for a file in the assembly.
+		/// This information is in the form of the ASSEMBLY_FILE_DETAILED_INFORMATION structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>RunlevelInformationInActivationContext5</term>
+		/// <term>
+		/// If QueryActCtxW is called with this option and the function succeeds, the buffer contains information about requested run level of the activation
+		/// context. This information is in the form of the ACTIVATION_CONTEXT_RUN_LEVEL_INFORMATION structure.Windows Server 2003 and Windows XP: This value is
+		/// not available.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CompatibilityInformationInActivationContext6</term>
+		/// <term>
+		/// If QueryActCtxW is called with this option and the function succeeds, the buffer contains information about requested compatibility context. This
+		/// information is in the form of the ACTIVATION_CONTEXT_COMPATIBILITY_INFORMATION structure.Windows Server 2008 and earlier, and Windows Vista and
+		/// earlier: This value is not available. This option is available beginning with Windows Server 2008 R2 and Windows 7.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="pvBuffer">
+		/// Pointer to a buffer that holds the returned information. This parameter is optional. If pvBuffer is <c>null</c>, then cbBuffer must be zero. If the
+		/// size of the buffer pointed to by pvBuffer is too small, <c>QueryActCtxW</c> returns ERROR_INSUFFICIENT_BUFFER and no data is written into the buffer.
+		/// See the Remarks section for the method you can use to determine the required size of the buffer.
+		/// </param>
+		/// <param name="cbBuffer">Size of the buffer in bytes pointed to by pvBuffer. This parameter is optional.</param>
+		/// <param name="pcbWrittenOrRequired">
+		/// Number of bytes written or required. The parameter pcbWrittenOrRequired can only be <c>NULL</c> when pvBuffer is <c>NULL</c>. If pcbWrittenOrRequired
+		/// is non- <c>NULL</c>, it is filled with the number of bytes required to store the returned buffer.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns <c>TRUE</c>. Otherwise, it returns <c>FALSE</c>.</para>
+		/// <para>
+		/// This function sets errors that can be retrieved by calling <c>GetLastError</c>. For an example, see Retrieving the Last-Error Code. For a complete
+		/// list of error codes, see System Error Codes.
+		/// </para>
+		/// </returns>
+		// BOOL QueryActCtxW( _In_ DWORD dwFlags, _In_ HANDLE hActCtx, _In_opt_ PVOID pvSubInstance, _In_ ULONG ulInfoClass, _Out_ PVOID pvBuffer, _In_opt_
+		// SIZE_T cbBuffer, _Out_opt_ SIZE_T *pcbWrittenOrRequired); https://msdn.microsoft.com/en-us/library/windows/desktop/aa375704(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("Winbase.h", MSDNShortId = "aa375704")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool QueryActCtxW(QueryActCtxFlag dwFlags, [In] IntPtr hActCtx, [In] IntPtr pvSubInstance, ACTIVATION_CONTEXT_INFO_CLASS ulInfoClass, IntPtr pvBuffer, SizeT cbBuffer, out SizeT pcbWrittenOrRequired);
+
 		/// <summary>Registers the active instance of an application for recovery.</summary>
-		/// <param name="pRecoveryCallback">A pointer to the recovery callback function. For more information, see ApplicationRecoveryCallback.</param>
-		/// <param name="pvParameter">A pointer to a variable to be passed to the callback function. Can be NULL.</param>
+		/// <param name="pRecoveryCallback">A pointer to the recovery callback function. For more information, see <c>ApplicationRecoveryCallback</c>.</param>
+		/// <param name="pvParameter">A pointer to a variable to be passed to the callback function. Can be <c>NULL</c>.</param>
 		/// <param name="dwPingInterval">
+		/// <para>
 		/// The recovery ping interval, in milliseconds. By default, the interval is 5 seconds (RECOVERY_DEFAULT_PING_INTERVAL). The maximum interval is 5
 		/// minutes. If you specify zero, the default interval is used.
+		/// </para>
 		/// <para>
-		/// You must call the ApplicationRecoveryInProgress function within the specified interval to indicate to ARR that you are still actively recovering;
-		/// otherwise, WER terminates recovery. Typically, you perform recovery in a loop with each iteration lasting no longer than the ping interval. Each
-		/// iteration performs a block of recovery work followed by a call to ApplicationRecoveryInProgress. Since you also use ApplicationRecoveryInProgress to
-		/// determine if the user wants to cancel recovery, you should consider a smaller interval, so you do not perform a lot of work unnecessarily.
+		/// You must call the <c>ApplicationRecoveryInProgress</c> function within the specified interval to indicate to ARR that you are still actively
+		/// recovering; otherwise, WER terminates recovery. Typically, you perform recovery in a loop with each iteration lasting no longer than the ping
+		/// interval. Each iteration performs a block of recovery work followed by a call to <c>ApplicationRecoveryInProgress</c>. Since you also use
+		/// <c>ApplicationRecoveryInProgress</c> to determine if the user wants to cancel recovery, you should consider a smaller interval, so you do not perform
+		/// a lot of work unnecessarily.
 		/// </para>
 		/// </param>
 		/// <param name="dwFlags">Reserved for future use. Set to zero.</param>
-		/// <returns>This function returns S_OK on success</returns>
-		[DllImport(Lib.Kernel32, ExactSpelling = true)]
+		/// <returns>
+		/// <para>This function returns <c>S_OK</c> on success or one of the following error codes.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>E_FAIL</term>
+		/// <term>Internal error; the registration failed.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>The ping interval cannot be more than five minutes.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </returns>
+		// HRESULT WINAPI RegisterApplicationRecoveryCallback( _In_ APPLICATION_RECOVERY_CALLBACK pRecoveryCallback, _In_opt_ PVOID pvParameter, _In_ DWORD
+		// dwPingInterval, _In_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa373345(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa373345")]
 		public static extern HRESULT RegisterApplicationRecoveryCallback(ApplicationRecoveryCallback pRecoveryCallback, IntPtr pvParameter, uint dwPingInterval, uint dwFlags);
 
 		/// <summary>Registers the active instance of an application for restart.</summary>
 		/// <param name="pwzCommandline">
-		/// A string that specifies the command-line arguments for the application when it is restarted. The maximum size of the command line that you can
-		/// specify is RESTART_MAX_CMD_LINE characters. Do not include the name of the executable in the command line; this function adds it for you.
 		/// <para>
-		/// If this parameter is NULL or an empty string, the previously registered command line is removed. If the argument contains spaces, use quotes around
-		/// the argument.
+		/// A pointer to a Unicode string that specifies the command-line arguments for the application when it is restarted. The maximum size of the command
+		/// line that you can specify is RESTART_MAX_CMD_LINE characters. Do not include the name of the executable in the command line; this function adds it
+		/// for you.
+		/// </para>
+		/// <para>
+		/// If this parameter is <c>NULL</c> or an empty string, the previously registered command line is removed. If the argument contains spaces, use quotes
+		/// around the argument.
 		/// </para>
 		/// </param>
-		/// <param name="dwFlags">Options</param>
-		/// <returns>This function returns S_OK on success</returns>
-		[DllImport(Lib.Kernel32, ExactSpelling = true)]
-		[PInvokeData("Winbase.h", MSDNShortId = "aa373347")]
-		public static extern HRESULT RegisterApplicationRestart([MarshalAs(UnmanagedType.BStr)] string pwzCommandline, ApplicationRestartFlags dwFlags);
-
-		/// <summary>The ReleaseActCtx function decrements the reference count of the specified activation context.</summary>
-		/// <param name="hActCtx">
-		/// Handle to the ACTCTX structure that contains information on the activation context for which the reference count is to be decremented.
+		/// <param name="dwFlags">
+		/// <para>This parameter can be 0 or one or more of the following values.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>RESTART_NO_CRASH1</term>
+		/// <term>Do not restart the process if it terminates due to an unhandled exception.</term>
+		/// </item>
+		/// <item>
+		/// <term>RESTART_NO_HANG2</term>
+		/// <term>Do not restart the process if it terminates due to the application not responding.</term>
+		/// </item>
+		/// <item>
+		/// <term>RESTART_NO_PATCH4</term>
+		/// <term>Do not restart the process if it terminates due to the installation of an update.</term>
+		/// </item>
+		/// <item>
+		/// <term>RESTART_NO_REBOOT8</term>
+		/// <term>Do not restart the process if the computer is restarted as the result of an update.</term>
+		/// </item>
+		/// </list>
+		/// </para>
 		/// </param>
-		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
-		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
+		/// <returns>
+		/// <para>This function returns <c>S_OK</c> on success or one of the following error codes.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>E_FAIL</term>
+		/// <term>Internal error.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>The specified command line is too long.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </returns>
+		// HRESULT WINAPI RegisterApplicationRestart( _In_opt_ PCWSTR pwzCommandline, _In_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa373347(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("Winbase.h", MSDNShortId = "aa373347")]
+		public static extern HRESULT RegisterApplicationRestart(string pwzCommandline, ApplicationRestartFlags dwFlags);
+
+		/// <summary>The <c>ReleaseActCtx</c> function decrements the reference count of the specified activation context.</summary>
+		/// <param name="hActCtx">
+		/// Handle to the <c>ACTCTX</c> structure that contains information on the activation context for which the reference count is to be decremented.
+		/// </param>
+		/// <returns>
+		/// This function does not return a value. On successful completion, the activation context reference count is decremented. The recipient of the
+		/// reference-counted object must decrement the reference count when the object is no longer required.
+		/// </returns>
+		// void ReleaseActCtx( _In_ HANDLE hActCtx); https://msdn.microsoft.com/en-us/library/windows/desktop/aa375713(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa375713")]
 		public static extern void ReleaseActCtx(IntPtr hActCtx);
 
 		/// <summary>Removes the active instance of an application from the recovery list.</summary>
-		/// <remarks>You do not need to call this function before exiting. You need to remove the registration only if you choose to not recover data.</remarks>
-		/// <returns>This function returns S_OK on success</returns>
-		[DllImport(Lib.Kernel32, ExactSpelling = true)]
+		/// <param name="RegisterApplicationRecoveryCallback"></param>
+		/// <returns>
+		/// <para>This function returns <c>S_OK</c> on success or one of the following error codes.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>E_FAIL</term>
+		/// <term>Internal error.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </returns>
+		// HRESULT WINAPI UnregisterApplicationRecoveryCallback(void); https://msdn.microsoft.com/en-us/library/windows/desktop/aa373348(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa373348")]
 		public static extern HRESULT UnregisterApplicationRecoveryCallback();
 
@@ -247,6 +842,24 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa373349")]
 		public static extern HRESULT UnregisterApplicationRestart();
+
+		/// <summary>The <c>ZombifyActCtx</c> function deactivates the specified activation context, but does not deallocate it.</summary>
+		/// <param name="hActCtx">Handle to the activation context that is to be deactivated.</param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, it returns <c>TRUE</c>. If a <c>null</c> handle is passed in the hActCtx parameter, NULL_INVALID_PARAMETER will be
+		/// returned. Otherwise, it returns <c>FALSE</c>.
+		/// </para>
+		/// <para>
+		/// This function sets errors that can be retrieved by calling <c>GetLastError</c>. For an example, see Retrieving the Last-Error Code. For a complete
+		/// list of error codes, see System Error Codes.
+		/// </para>
+		/// </returns>
+		// BOOL ZombifyActCtx( _In_ HANDLE hActCtx); https://msdn.microsoft.com/en-us/library/windows/desktop/aa376622(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("Winbase.h", MSDNShortId = "aa376622")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool ZombifyActCtx(IntPtr hActCtx);
 
 		/// <summary>The ACTCTX structure is used by the CreateActCtx function to create the activation context.</summary>
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -326,6 +939,98 @@ namespace Vanara.PInvoke
 
 			/// <summary>The empty</summary>
 			public static ACTCTX Empty = new ACTCTX { cbSize = Marshal.SizeOf(typeof(ACTCTX)) };
+		}
+
+		/// <summary>
+		/// The <c>ACTCTX_SECTION_KEYED_DATA</c> structure is used by the <c>FindActCtxSectionString</c> and <c>FindActCtxSectionGuid</c> functions to return the
+		/// activation context information along with either the GUID or 32-bit integer-tagged activation context section.
+		/// </summary>
+		// typedef struct tagACTCTX_SECTION_KEYED_DATA { ULONG cbSize; ULONG ulDataFormatVersion; PVOID lpData; ULONG ulLength; PVOID lpSectionGlobalData; ULONG
+		// ulSectionGlobalDataLength; PVOID lpSectionBase; ULONG ulSectionTotalLength; HANDLE hActCtx; HANDLE ulAssemblyRosterIndex;} ACTCTX_SECTION_KEYED_DATA, *PACTCTX_SECTION_KEYED_DATA;
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("Winbase.h", MSDNShortId = "aa374148")]
+		public struct ACTCTX_SECTION_KEYED_DATA
+		{
+			/// <summary>
+			/// <para>The size, in bytes, of the activation context keyed data structure.</para>
+			/// </summary>
+			public uint cbSize;
+
+			/// <summary>
+			/// <para>
+			/// Number that indicates the format of the data in the section where the key was found. Clients should verify that the data format version is as
+			/// expected rather than trying to interpret the values of unfamiliar data formats. This number is only changed when major non-backward-compatible
+			/// changes to the section data formats need to be made. The current format version is 1.
+			/// </para>
+			/// </summary>
+			public uint ulDataFormatVersion;
+
+			/// <summary>
+			/// <para>Pointer to the redirection data found associated with the section identifier and key.</para>
+			/// </summary>
+			public IntPtr lpData;
+
+			/// <summary>
+			/// <para>
+			/// Number of bytes in the structure referred to by <c>lpData</c>. Note that the data structures grow over time; do not access members in the
+			/// instance data that extend beyond <c>ulLength</c>.
+			/// </para>
+			/// </summary>
+			public uint ulLength;
+
+			/// <summary>
+			/// <para>
+			/// Returned pointer to a section-specific data structure which is global to the activation context section where the key was found. Its
+			/// interpretation depends on the section identifier requested.
+			/// </para>
+			/// </summary>
+			public IntPtr lpSectionGlobalData;
+
+			/// <summary>
+			/// <para>Number of bytes in the section global data block referred to by <c>lpSectionGlobalData</c>.</para>
+			/// <para>
+			/// Note that the data structures grow over time and you may receive an old format activation context data block; do not access members in the
+			/// section global data that extend beyond <c>ulSectionGlobalDataLength</c>.
+			/// </para>
+			/// </summary>
+			public uint ulSectionGlobalDataLength;
+
+			/// <summary>
+			/// <para>
+			/// Pointer to the base of the section where the key was found. Some instance data contains offsets relative to the section base address, in which
+			/// case this pointer value is used.
+			/// </para>
+			/// </summary>
+			public IntPtr lpSectionBase;
+
+			/// <summary>
+			/// <para>
+			/// Number of bytes for the entire section starting at <c>lpSectionBase</c>. May be used to verify that offset/length pairs, which are specified as
+			/// relative to the section base are wholly contained in the section.
+			/// </para>
+			/// </summary>
+			public uint ulSectionTotalLength;
+
+			/// <summary>
+			/// <para>
+			/// Handle to the activation context where the key was found. First, the active activation context for the thread is searched, followed by the
+			/// process-default activation context and then the system-compatible-default-activation context. This member indicates which activation context
+			/// contained the section and key requested. This is only returned if the FIND_ACTCTX_SECTION_KEY_RETURN_HACTCTX flag is passed.
+			/// </para>
+			/// <para>
+			/// Note that when this is returned, the caller must call <c>ReleaseActCtx</c>() on the activation context handle returned to release system
+			/// resources when all other references to the activation context have been released.
+			/// </para>
+			/// </summary>
+			public IntPtr hActCtx;
+
+			/// <summary>
+			/// <para>
+			/// Cardinal number of the assembly in the activation context that provided the redirection information found. This value can be presented to
+			/// <c>QueryActCtxW</c> for more information about the contributing assembly.
+			/// </para>
+			/// </summary>
+			public uint ulAssemblyRosterIndex;
 		}
 
 		/// <summary>A safe handle for an Activation Context.</summary>

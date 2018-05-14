@@ -419,6 +419,19 @@ namespace Vanara.PInvoke
 		[PInvokeData("winbase.h", MSDNShortId = "aa446671")]
 		public static extern bool GetTokenInformation(SafeTokenHandle hObject, TOKEN_INFORMATION_CLASS tokenInfoClass, SafeCoTaskMemHandle pTokenInfo, int tokenInfoLength, out int returnLength);
 
+		/// <summary>The <c>ImpersonateNamedPipeClient</c> function impersonates a named-pipe client application.</summary>
+		/// <param name="hNamedPipe">A handle to a named pipe.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI ImpersonateNamedPipeClient( _In_ HANDLE hNamedPipe);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/aa378618(v=vs.85).aspx
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("Winbase.h", MSDNShortId = "aa378618")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool ImpersonateNamedPipeClient(IntPtr hNamedPipe);
+
 		/// <summary>
 		/// The LogonUser function attempts to log a user on to the local computer. The local computer is the computer from which LogonUser was called. You
 		/// cannot use LogonUser to log on to a remote computer. You specify the user with a user name and domain and authenticate the user with a plain-text

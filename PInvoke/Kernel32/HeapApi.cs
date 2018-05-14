@@ -6,27 +6,80 @@ namespace Vanara.PInvoke
 {
 	public static partial class Kernel32
 	{
+		/// <summary>Specifies the class of heap information to be set or retrieved.</summary>
+		// typedef enum _HEAP_INFORMATION_CLASS { HeapCompatibilityInformation = 0, HeapEnableTerminationOnCorruption = 1} HEAP_INFORMATION_CLASS; https://msdn.microsoft.com/en-us/library/windows/desktop/dn280633(v=vs.85).aspx
+		[PInvokeData("WinNT.h", MSDNShortId = "dn280633")]
+		public enum HEAP_INFORMATION_CLASS
+		{
+			/// <summary>
+			/// <para>
+			/// The heap features that are enabled. The available features vary based on operating system. Depending on the HeapInformation parameter in the
+			/// <c>HeapQueryInformation</c> or <c>HeapSetInformation</c> functions, specifying this enumeration value can indicate one of the following features:
+			/// </para>
+			/// <para>For more information about look-aside lists, see the Remarks section.</para>
+			/// </summary>
+			HeapCompatibilityInformation = 0,
+			/// <summary>
+			/// <para>
+			/// The terminate-on-corruption feature. If the heap manager detects an error in any heap used by the process, it calls the Windows Error Reporting
+			/// service and terminates the process.
+			/// </para>
+			/// <para>After a process enables this feature, it cannot be disabled.</para>
+			/// </summary>
+			HeapEnableTerminationOnCorruption = 1,
+			/// <summary>
+			/// If HeapSetInformation is called with HeapHandle set to NULL, then all heaps in the process with a low-fragmentation heap (LFH) will have their
+			/// caches optimized, and the memory will be decommitted if possible.
+			/// <para>If a heap pointer is supplied in HeapHandle, then only that heap will be optimized.</para>
+			/// <para>Note that the HEAP_OPTIMIZE_RESOURCES_INFORMATION structure passed in HeapInformation must be properly initialized.</para>
+			/// <para>Note This value was added in Windows 8.1.</para>
+			/// </summary>
+			HeapOptimizeResources = 3
+		}
+
+		/// <summary>Flags for Head functions</summary>
 		[PInvokeData("HeapApi.h")]
 		[Flags]
 		public enum HeapFlags
 		{
-			/// <summary>Serialized access will not be used for this allocation. For more information, see Remarks.
-			/// <para>To ensure that serialized access is disabled for all calls to this function, specify HEAP_NO_SERIALIZE in the call to HeapCreate. In this case, it is not necessary to additionally specify HEAP_NO_SERIALIZE in this function call.</para>
-			/// <para>This value should not be specified when accessing the process's default heap. The system may create additional threads within the application's process, such as a CTRL+C handler, that simultaneously access the process's default heap.</para></summary>
+			/// <summary>
+			/// Serialized access will not be used for this allocation. For more information, see Remarks.
+			/// <para>
+			/// To ensure that serialized access is disabled for all calls to this function, specify HEAP_NO_SERIALIZE in the call to HeapCreate. In this case,
+			/// it is not necessary to additionally specify HEAP_NO_SERIALIZE in this function call.
+			/// </para>
+			/// <para>
+			/// This value should not be specified when accessing the process's default heap. The system may create additional threads within the application's
+			/// process, such as a CTRL+C handler, that simultaneously access the process's default heap.
+			/// </para>
+			/// </summary>
 			HEAP_NO_SERIALIZE = 0x00000001,
 			HEAP_GROWABLE = 0x00000002,
-			/// <summary>The system will raise an exception to indicate a function failure, such as an out-of-memory condition, instead of returning NULL.
-			/// <para>To ensure that exceptions are generated for all calls to this function, specify HEAP_GENERATE_EXCEPTIONS in the call to HeapCreate. In this case, it is not necessary to additionally specify HEAP_GENERATE_EXCEPTIONS in this function call.</para></summary>
+			/// <summary>
+			/// The system will raise an exception to indicate a function failure, such as an out-of-memory condition, instead of returning NULL.
+			/// <para>
+			/// To ensure that exceptions are generated for all calls to this function, specify HEAP_GENERATE_EXCEPTIONS in the call to HeapCreate. In this case,
+			/// it is not necessary to additionally specify HEAP_GENERATE_EXCEPTIONS in this function call.
+			/// </para>
+			/// </summary>
 			HEAP_GENERATE_EXCEPTIONS = 0x00000004,
 			/// <summary>The allocated memory will be initialized to zero. Otherwise, the memory is not initialized to zero.</summary>
 			HEAP_ZERO_MEMORY = 0x00000008,
+			/// <summary>
+			/// There can be no movement when reallocating a memory block. If this value is not specified, the function may move the block to a new location. If
+			/// this value is specified and the block cannot be resized without moving, the function fails, leaving the original memory block unchanged.
+			/// </summary>
 			HEAP_REALLOC_IN_PLACE_ONLY = 0x00000010,
 			HEAP_TAIL_CHECKING_ENABLED = 0x00000020,
 			HEAP_FREE_CHECKING_ENABLED = 0x00000040,
 			HEAP_DISABLE_COALESCE_ON_FREE = 0x00000080,
 			HEAP_CREATE_ALIGN_16 = 0x00010000,
 			HEAP_CREATE_ENABLE_TRACING = 0x00020000,
-			/// <summary>All memory blocks that are allocated from this heap allow code execution, if the hardware enforces data execution prevention. Use this flag heap in applications that run code from the heap. If HEAP_CREATE_ENABLE_EXECUTE is not specified and an application attempts to run code from a protected page, the application receives an exception with the status code STATUS_ACCESS_VIOLATION.</summary>
+			/// <summary>
+			/// All memory blocks that are allocated from this heap allow code execution, if the hardware enforces data execution prevention. Use this flag heap
+			/// in applications that run code from the heap. If HEAP_CREATE_ENABLE_EXECUTE is not specified and an application attempts to run code from a
+			/// protected page, the application receives an exception with the status code STATUS_ACCESS_VIOLATION.
+			/// </summary>
 			HEAP_CREATE_ENABLE_EXECUTE = 0x00040000,
 			HEAP_MAXIMUM_TAG = 0x0FFF,
 			HEAP_PSEUDO_TAG_FLAG = 0x8000,
@@ -35,64 +88,721 @@ namespace Vanara.PInvoke
 			HEAP_CREATE_HARDENED = 0x00000200,
 		}
 
+		/// <summary>The properties of the heap element.</summary>
+		[Flags]
+		public enum PROCESS_HEAP : ushort
+		{
+			/// <summary>
+			/// The heap element is located at the beginning of a region of contiguous virtual memory in use by the heap.The lpData member of the structure
+			/// points to the first virtual address used by the region; the cbData member specifies the total size, in bytes, of the address space that is
+			/// reserved for this region; and the cbOverhead member specifies the size, in bytes, of the heap control structures that describe the region.The
+			/// Region structure becomes valid. The dwCommittedSize, dwUnCommittedSize, lpFirstBlock, and lpLastBlock members of the structure contain additional
+			/// information about the region.
+			/// </summary>
+			PROCESS_HEAP_REGION = 1,
+			/// <summary>
+			/// The heap element is located in a range of uncommitted memory within the heap region.The lpData member points to the beginning of the range of
+			/// uncommitted memory; the cbData member specifies the size, in bytes, of the range of uncommitted memory; and the cbOverhead member specifies the
+			/// size, in bytes, of the control structures that describe this uncommitted range.
+			/// </summary>
+			PROCESS_HEAP_UNCOMMITTED_RANGE = 2,
+			/// <summary>
+			/// The heap element is an allocated block.If PROCESS_HEAP_ENTRY_MOVEABLE is also specified, the Block structure becomes valid. The hMem member of
+			/// the Block structure contains a handle to the allocated, moveable memory block.
+			/// </summary>
+			PROCESS_HEAP_ENTRY_BUSY = 4,
+			/// <summary>
+			/// This value must be used with PROCESS_HEAP_ENTRY_BUSY, indicating that the heap element is an allocated block.The block was allocated with
+			/// LMEM_MOVEABLE or GMEM_MOVEABLE, and the Block structure becomes valid. The hMem member of the Block structure contains a handle to the allocated,
+			/// moveable memory block.
+			/// </summary>
+			PROCESS_HEAP_ENTRY_MOVEABLE = 16,
+			/// <summary>This value must be used with PROCESS_HEAP_ENTRY_BUSY, indicating that the heap element is an allocated block.</summary>
+			PROCESS_HEAP_ENTRY_DDESHARE = 32,
+		}
+
 		/// <summary>Retrieves a handle to the default heap of the calling process. This handle can then be used in subsequent calls to the heap functions.</summary>
-		/// <returns>If the function succeeds, the return value is a handle to the calling process's heap. If the function fails, the return value is NULL. To get extended error information, call GetLastError.</returns>
+		/// <returns>
+		/// If the function succeeds, the return value is a handle to the calling process's heap. If the function fails, the return value is NULL. To get
+		/// extended error information, call GetLastError.
+		/// </returns>
 		[PInvokeData("HeapApi.h", MSDNShortId = "aa366569")]
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 		public static extern IntPtr GetProcessHeap();
 
+		/// <summary>Returns the number of active heaps and retrieves handles to all of the active heaps for the calling process.</summary>
+		/// <param name="NumberOfHeaps">The maximum number of heap handles that can be stored into the buffer pointed to by ProcessHeaps.</param>
+		/// <param name="ProcessHeaps">A pointer to a buffer that receives an array of heap handles.</param>
+		/// <returns>
+		/// <para>The return value is the number of handles to heaps that are active for the calling process.</para>
+		/// <para>
+		/// If the return value is less than or equal to NumberOfHeaps, the function has stored that number of heap handles in the buffer pointed to by ProcessHeaps.
+		/// </para>
+		/// <para>
+		/// If the return value is greater than NumberOfHeaps, the buffer pointed to by ProcessHeaps is too small to hold all the heap handles for the calling
+		/// process, and the function stores NumberOfHeaps handles in the buffer. Use the return value to allocate a buffer that is large enough to receive all
+		/// of the handles, and call the function again.
+		/// </para>
+		/// <para>
+		/// If the return value is zero, the function has failed because every process has at least one active heap, the default heap for the process. To get
+		/// extended error information, call <c>GetLastError</c>.
+		/// </para>
+		/// </returns>
+		// DWORD WINAPI GetProcessHeaps( _In_ DWORD NumberOfHeaps, _Out_ PHANDLE ProcessHeaps);// https://msdn.microsoft.com/en-us/library/windows/desktop/aa366571(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("HeapApi.h", MSDNShortId = "aa366571")]
+		public static extern uint GetProcessHeaps(uint NumberOfHeaps, out IntPtr ProcessHeaps);
+
 		/// <summary>Allocates a block of memory from a heap. The allocated memory is not movable.</summary>
 		/// <param name="hHeap">A handle to the heap from which the memory will be allocated. This handle is returned by the HeapCreate or GetProcessHeap function.</param>
-		/// <param name="dwFlags">The heap allocation options. Specifying any of these values will override the corresponding value specified when the heap was created with HeapCreate. This parameter can be one or more of the following values: HEAP_GENERATE_EXCEPTIONS, HEAP_NO_SERIALIZE and HEAP_ZERO_MEMORY.</param>
-		/// <param name="dwBytes">The number of bytes to be allocated. If the heap specified by the hHeap parameter is a "non-growable" heap, dwBytes must be less than 0x7FFF8. You create a non-growable heap by calling the HeapCreate function with a nonzero value.</param>
-		/// <returns>If the function succeeds, the return value is a pointer to the allocated memory block.
+		/// <param name="dwFlags">
+		/// The heap allocation options. Specifying any of these values will override the corresponding value specified when the heap was created with
+		/// HeapCreate. This parameter can be one or more of the following values: HEAP_GENERATE_EXCEPTIONS, HEAP_NO_SERIALIZE and HEAP_ZERO_MEMORY.
+		/// </param>
+		/// <param name="dwBytes">
+		/// The number of bytes to be allocated. If the heap specified by the hHeap parameter is a "non-growable" heap, dwBytes must be less than 0x7FFF8. You
+		/// create a non-growable heap by calling the HeapCreate function with a nonzero value.
+		/// </param>
+		/// <returns>
+		/// If the function succeeds, the return value is a pointer to the allocated memory block.
 		/// <para>If the function fails and you have not specified HEAP_GENERATE_EXCEPTIONS, the return value is NULL.</para>
-		/// <para>If the function fails and you have specified HEAP_GENERATE_EXCEPTIONS, the function may generate either of the exceptions listed in the following table. The particular exception depends upon the nature of the heap corruption. For more information, see GetExceptionCode.</para></returns>
+		/// <para>
+		/// If the function fails and you have specified HEAP_GENERATE_EXCEPTIONS, the function may generate either of the exceptions listed in the following
+		/// table. The particular exception depends upon the nature of the heap corruption. For more information, see GetExceptionCode.
+		/// </para>
+		/// </returns>
 		[PInvokeData("HeapApi.h", MSDNShortId = "aa366597")]
 		[DllImport(Lib.Kernel32, ExactSpelling = true)]
 		public static extern IntPtr HeapAlloc(IntPtr hHeap, HeapFlags dwFlags, [MarshalAs(UnmanagedType.SysInt)] IntPtr dwBytes);
 
-		/// <summary>Creates a private heap object that can be used by the calling process. The function reserves space in the virtual address space of the process and allocates physical storage for a specified initial portion of this block.</summary>
-		/// <param name="flOptions">The heap allocation options. These options affect subsequent access to the new heap through calls to the heap functions. This parameter can be 0 or one or more of the following values: HEAP_CREATE_ENABLE_EXECUTE, HEAP_GENERATE_EXCEPTIONS, HEAP_NO_SERIALIZE.</param>
-		/// <param name="dwInitialSize">The initial size of the heap, in bytes. This value determines the initial amount of memory that is committed for the heap. The value is rounded up to a multiple of the system page size. The value must be smaller than dwMaximumSize.
-		/// <para>If this parameter is 0, the function commits one page. To determine the size of a page on the host computer, use the GetSystemInfo function.</para></param>
-		/// <param name="dwMaximumSize">The maximum size of the heap, in bytes. The HeapCreate function rounds dwMaximumSize up to a multiple of the system page size and then reserves a block of that size in the process's virtual address space for the heap. If allocation requests made by the HeapAlloc or HeapReAlloc functions exceed the size specified by dwInitialSize, the system commits additional pages of memory for the heap, up to the heap's maximum size.
-		/// <para>If dwMaximumSize is not zero, the heap size is fixed and cannot grow beyond the maximum size. Also, the largest memory block that can be allocated from the heap is slightly less than 512 KB for a 32-bit process and slightly less than 1,024 KB for a 64-bit process. Requests to allocate larger blocks fail, even if the maximum size of the heap is large enough to contain the block.</para>
-		/// <para>If dwMaximumSize is 0, the heap can grow in size. The heap's size is limited only by the available memory. Requests to allocate memory blocks larger than the limit for a fixed-size heap do not automatically fail; instead, the system calls the VirtualAlloc function to obtain the memory that is needed for large blocks. Applications that need to allocate large memory blocks should set dwMaximumSize to 0.</para></param>
-		/// <returns>If the function succeeds, the return value is a handle to the newly created heap. If the function fails, the return value is NULL. To get extended error information, call GetLastError.</returns>
+		/// <summary>
+		/// Returns the size of the largest committed free block in the specified heap. If the Disable heap coalesce on free global flag is set, this function
+		/// also coalesces adjacent free blocks of memory in the heap.
+		/// </summary>
+		/// <param name="hHeap">A handle to the heap. This handle is returned by either the <c>HeapCreate</c> or <c>GetProcessHeap</c> function.</param>
+		/// <param name="dwFlags">
+		/// <para>The heap access options. This parameter can be the following value.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>HEAP_NO_SERIALIZE0x00000001</term>
+		/// <term>
+		/// Serialized access will not be used. For more information, see Remarks.To ensure that serialized access is disabled for all calls to this function,
+		/// specify HEAP_NO_SERIALIZE in the call to HeapCreate. In this case, it is not necessary to additionally specify HEAP_NO_SERIALIZE in this function
+		/// call.Do not specify this value when accessing the process heap. The system may create additional threads within the application&amp;#39;s process,
+		/// such as a CTRL+C handler, that simultaneously access the process heap.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is the size of the largest committed free block in the heap, in bytes.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>
+		/// In the unlikely case that there is absolutely no space available in the heap, the function return value is zero, and <c>GetLastError</c> returns the
+		/// value NO_ERROR.
+		/// </para>
+		/// </returns>
+		// SIZE_T WINAPI HeapCompact( _In_ HANDLE hHeap, _In_ DWORD dwFlags);// https://msdn.microsoft.com/en-us/library/windows/desktop/aa366598(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("HeapApi.h", MSDNShortId = "aa366598")]
+		public static extern SizeT HeapCompact([In] IntPtr hHeap, HeapFlags dwFlags);
+
+		/// <summary>
+		/// Creates a private heap object that can be used by the calling process. The function reserves space in the virtual address space of the process and
+		/// allocates physical storage for a specified initial portion of this block.
+		/// </summary>
+		/// <param name="flOptions">
+		/// The heap allocation options. These options affect subsequent access to the new heap through calls to the heap functions. This parameter can be 0 or
+		/// one or more of the following values: HEAP_CREATE_ENABLE_EXECUTE, HEAP_GENERATE_EXCEPTIONS, HEAP_NO_SERIALIZE.
+		/// </param>
+		/// <param name="dwInitialSize">
+		/// The initial size of the heap, in bytes. This value determines the initial amount of memory that is committed for the heap. The value is rounded up to
+		/// a multiple of the system page size. The value must be smaller than dwMaximumSize.
+		/// <para>If this parameter is 0, the function commits one page. To determine the size of a page on the host computer, use the GetSystemInfo function.</para>
+		/// </param>
+		/// <param name="dwMaximumSize">
+		/// The maximum size of the heap, in bytes. The HeapCreate function rounds dwMaximumSize up to a multiple of the system page size and then reserves a
+		/// block of that size in the process's virtual address space for the heap. If allocation requests made by the HeapAlloc or HeapReAlloc functions exceed
+		/// the size specified by dwInitialSize, the system commits additional pages of memory for the heap, up to the heap's maximum size.
+		/// <para>
+		/// If dwMaximumSize is not zero, the heap size is fixed and cannot grow beyond the maximum size. Also, the largest memory block that can be allocated
+		/// from the heap is slightly less than 512 KB for a 32-bit process and slightly less than 1,024 KB for a 64-bit process. Requests to allocate larger
+		/// blocks fail, even if the maximum size of the heap is large enough to contain the block.
+		/// </para>
+		/// <para>
+		/// If dwMaximumSize is 0, the heap can grow in size. The heap's size is limited only by the available memory. Requests to allocate memory blocks larger
+		/// than the limit for a fixed-size heap do not automatically fail; instead, the system calls the VirtualAlloc function to obtain the memory that is
+		/// needed for large blocks. Applications that need to allocate large memory blocks should set dwMaximumSize to 0.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// If the function succeeds, the return value is a handle to the newly created heap. If the function fails, the return value is NULL. To get extended
+		/// error information, call GetLastError.
+		/// </returns>
 		[PInvokeData("HeapApi.h", MSDNShortId = "aa366599")]
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 		public static extern SafePrivateHeapHandle HeapCreate(HeapFlags flOptions, [MarshalAs(UnmanagedType.SysInt)] IntPtr dwInitialSize, [MarshalAs(UnmanagedType.SysInt)] IntPtr dwMaximumSize);
 
-		/// <summary>Destroys the specified heap object. It decommits and releases all the pages of a private heap object, and it invalidates the handle to the heap.</summary>
-		/// <param name="hHeap">A handle to the heap to be destroyed. This handle is returned by the HeapCreate function. Do not use the handle to the process heap returned by the GetProcessHeap function.</param>
-		/// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero. To get extended error information, call GetLastError.</returns>
+		/// <summary>
+		/// Destroys the specified heap object. It decommits and releases all the pages of a private heap object, and it invalidates the handle to the heap.
+		/// </summary>
+		/// <param name="hHeap">
+		/// A handle to the heap to be destroyed. This handle is returned by the HeapCreate function. Do not use the handle to the process heap returned by the
+		/// GetProcessHeap function.
+		/// </param>
+		/// <returns>
+		/// If the function succeeds, the return value is nonzero. If the function fails, the return value is zero. To get extended error information, call GetLastError.
+		/// </returns>
 		[PInvokeData("HeapApi.h", MSDNShortId = "aa366700")]
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool HeapDestroy(IntPtr hHeap);
 
 		/// <summary>Frees a memory block allocated from a heap by the HeapAlloc or HeapReAlloc function.</summary>
-		/// <param name="hHeap">A handle to the heap whose memory block is to be freed. This handle is returned by either the HeapCreate or GetProcessHeap function.</param>
-		/// <param name="dwFlags">The heap free options. Specifying the following value overrides the corresponding value specified in the flOptions parameter when the heap was created by using the HeapCreate function: HEAP_NO_SERIALIZE</param>
-		/// <param name="lpMem">A pointer to the memory block to be freed. This pointer is returned by the HeapAlloc or HeapReAlloc function. If this pointer is NULL, the behavior is undefined.</param>
-		/// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.An application can call GetLastError for extended error information.</returns>
+		/// <param name="hHeap">
+		/// A handle to the heap whose memory block is to be freed. This handle is returned by either the HeapCreate or GetProcessHeap function.
+		/// </param>
+		/// <param name="dwFlags">
+		/// The heap free options. Specifying the following value overrides the corresponding value specified in the flOptions parameter when the heap was
+		/// created by using the HeapCreate function: HEAP_NO_SERIALIZE
+		/// </param>
+		/// <param name="lpMem">
+		/// A pointer to the memory block to be freed. This pointer is returned by the HeapAlloc or HeapReAlloc function. If this pointer is NULL, the behavior
+		/// is undefined.
+		/// </param>
+		/// <returns>
+		/// If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.An application can call GetLastError for
+		/// extended error information.
+		/// </returns>
 		[PInvokeData("HeapApi.h", MSDNShortId = "aa366701")]
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool HeapFree(IntPtr hHeap, HeapFlags dwFlags, IntPtr lpMem);
 
+		/// <summary>Attempts to acquire the critical section object, or lock, that is associated with a specified heap.</summary>
+		/// <param name="hHeap">A handle to the heap to be locked. This handle is returned by either the <c>HeapCreate</c> or <c>GetProcessHeap</c> function.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI HeapLock( _In_ HANDLE hHeap);// https://msdn.microsoft.com/en-us/library/windows/desktop/aa366702(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("HeapApi.h", MSDNShortId = "aa366702")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool HeapLock([In] IntPtr hHeap);
+
+		/// <summary>Retrieves information about the specified heap.</summary>
+		/// <param name="HeapHandle">
+		/// A handle to the heap whose information is to be retrieved. This handle is returned by either the <c>HeapCreate</c> or <c>GetProcessHeap</c> function.
+		/// </param>
+		/// <param name="HeapInformationClass">
+		/// <para>The class of information to be retrieved. This parameter can be the following value from the <c>HEAP_INFORMATION_CLASS</c> enumeration type.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>HeapCompatibilityInformation0</term>
+		/// <term>
+		/// Indicates the heap features that are enabled. The HeapInformation parameter is a pointer to a ULONG variable.If HeapInformation is 0, the heap is a
+		/// standard heap that does not support look-aside lists.If HeapInformation is 1, the heap supports look-aside lists. For more information, see
+		/// Remarks.If HeapInformation is 2, the low-fragmentation heap (LFH) has been enabled for the heap. Enabling the LFH disables look-aside lists.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="HeapInformation">
+		/// A pointer to a buffer that receives the heap information. The format of this data depends on the value of the HeapInformationClass parameter.
+		/// </param>
+		/// <param name="HeapInformationLength">The size of the heap information being queried, in bytes.</param>
+		/// <param name="ReturnLength">
+		/// <para>
+		/// A pointer to a variable that receives the length of data written to the HeapInformation buffer. If the buffer is too small, the function fails and
+		/// ReturnLength specifies the minimum size required for the buffer.
+		/// </para>
+		/// <para>If you do not want to receive this information, specify <c>NULL</c>.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI HeapQueryInformation( _In_opt_ HANDLE HeapHandle, _In_ HEAP_INFORMATION_CLASS HeapInformationClass, _Out_ PVOID HeapInformation, _In_
+		// SIZE_T HeapInformationLength, _Out_opt_ PSIZE_T ReturnLength);// https://msdn.microsoft.com/en-us/library/windows/desktop/aa366703(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("HeapApi.h", MSDNShortId = "aa366703")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool HeapQueryInformation([In] IntPtr HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, IntPtr HeapInformation, SizeT HeapInformationLength, out SizeT ReturnLength);
+
+		/// <summary>
+		/// Reallocates a block of memory from a heap. This function enables you to resize a memory block and change other memory block properties. The allocated
+		/// memory is not movable.
+		/// </summary>
+		/// <param name="hHeap">
+		/// A handle to the heap from which the memory is to be reallocated. This handle is a returned by either the <c>HeapCreate</c> or <c>GetProcessHeap</c> function.
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>
+		/// The heap reallocation options. Specifying a value overrides the corresponding value specified in the flOptions parameter when the heap was created by
+		/// using the <c>HeapCreate</c> function. This parameter can be one or more of the following values.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>HEAP_GENERATE_EXCEPTIONS0x00000004</term>
+		/// <term>
+		/// The operating-system raises an exception to indicate a function failure, such as an out-of-memory condition, instead of returning NULL.To ensure that
+		/// exceptions are generated for all calls to this function, specify HEAP_GENERATE_EXCEPTIONS in the call to HeapCreate. In this case, it is not
+		/// necessary to additionally specify HEAP_GENERATE_EXCEPTIONS in this function call.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>HEAP_NO_SERIALIZE0x00000001</term>
+		/// <term>
+		/// Serialized access will not be used. For more information, see Remarks.To ensure that serialized access is disabled for all calls to this function,
+		/// specify HEAP_NO_SERIALIZE in the call to HeapCreate. In this case, it is not necessary to additionally specify HEAP_NO_SERIALIZE in this function
+		/// call.This value should not be specified when accessing the process heap. The system may create additional threads within the application&amp;#39;s
+		/// process, such as a CTRL+C handler, that simultaneously access the process heap.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>HEAP_REALLOC_IN_PLACE_ONLY0x00000010</term>
+		/// <term>
+		/// There can be no movement when reallocating a memory block. If this value is not specified, the function may move the block to a new location. If this
+		/// value is specified and the block cannot be resized without moving, the function fails, leaving the original memory block unchanged.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>HEAP_ZERO_MEMORY0x00000008</term>
+		/// <term>
+		/// If the reallocation request is for a larger size, the additional region of memory beyond the original size be initialized to zero. The contents of
+		/// the memory block up to its original size are unaffected.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="lpMem">
+		/// A pointer to the block of memory that the function reallocates. This pointer is returned by an earlier call to the <c>HeapAlloc</c> or
+		/// <c>HeapReAlloc</c> function.
+		/// </param>
+		/// <param name="dwBytes">
+		/// <para>The new size of the memory block, in bytes. A memory block's size can be increased or decreased by using this function.</para>
+		/// <para>
+		/// If the heap specified by the hHeap parameter is a "non-growable" heap, dwBytes must be less than 0x7FFF8. You create a non-growable heap by calling
+		/// the <c>HeapCreate</c> function with a nonzero value.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a pointer to the reallocated memory block.</para>
+		/// <para>If the function fails and you have not specified <c>HEAP_GENERATE_EXCEPTIONS</c>, the return value is <c>NULL</c>.</para>
+		/// <para>
+		/// If the function fails and you have specified <c>HEAP_GENERATE_EXCEPTIONS</c>, the function may generate either of the exceptions listed in the
+		/// following table. For more information, see <c>GetExceptionCode</c>.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Exception code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_NO_MEMORY</term>
+		/// <term>The allocation attempt failed because of a lack of available memory or heap corruption.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_ACCESS_VIOLATION</term>
+		/// <term>The allocation attempt failed because of heap corruption or improper function parameters.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// <para>If the function fails, it does not call <c>SetLastError</c>. An application cannot call <c>GetLastError</c> for extended error information.</para>
+		/// </returns>
+		// LPVOID WINAPI HeapReAlloc( _In_ HANDLE hHeap, _In_ DWORD dwFlags, _In_ LPVOID lpMem, _In_ SIZE_T dwBytes);// https://msdn.microsoft.com/en-us/library/windows/desktop/aa366704(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("HeapApi.h", MSDNShortId = "aa366704")]
+		public static extern IntPtr HeapReAlloc(IntPtr hHeap, HeapFlags dwFlags, IntPtr lpMem, SizeT dwBytes);
+
+		/// <summary>Enables features for a specified heap.</summary>
+		/// <param name="HeapHandle">
+		/// A handle to the heap where information is to be set. This handle is returned by either the <c>HeapCreate</c> or <c>GetProcessHeap</c> function.
+		/// </param>
+		/// <param name="HeapInformationClass">
+		/// <para>The class of information to be set. This parameter can be one of the following values from the <c>HEAP_INFORMATION_CLASS</c> enumeration type.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>HeapCompatibilityInformation0</term>
+		/// <term>
+		/// Enables heap features. Only the low-fragmentation heap (LFH) is supported. However, it is not necessary for applications to enable the LFH because
+		/// the system uses the LFH as needed to service memory allocation requests. Windows XP and Windows Server 2003: The LFH is not enabled by default. To
+		/// enable the LFH for the specified heap, set the variable pointed to by the HeapInformation parameter to 2. After the LFH is enabled for a heap, it
+		/// cannot be disabled.The LFH cannot be enabled for heaps created with HEAP_NO_SERIALIZE or for heaps created with a fixed size. The LFH also cannot be
+		/// enabled if you are using the heap debugging tools in Debugging Tools for Windows or Microsoft Application Verifier.When a process is run under any
+		/// debugger, certain heap debug options are automatically enabled for all heaps in the process. These heap debug options prevent the use of the LFH. To
+		/// enable the low-fragmentation heap when running under a debugger, set the _NO_DEBUG_HEAP environment variable to 1.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>HeapEnableTerminationOnCorruption1</term>
+		/// <term>
+		/// Enables the terminate-on-corruption feature. If the heap manager detects an error in any heap used by the process, it calls the Windows Error
+		/// Reporting service and terminates the process.After a process enables this feature, it cannot be disabled.Windows Server 2003 and Windows XP: This
+		/// value is not supported until Windows Vista and Windows XP with SP3. The function succeeds but the HeapEnableTerminationOnCorruption value is ignored.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>HeapOptimizeResources3</term>
+		/// <term>
+		/// If HeapSetInformation is called with HeapHandle set to NULL, then all heaps in the process with a low-fragmentation heap (LFH) will have their caches
+		/// optimized, and the memory will be decommitted if possible. If a heap pointer is supplied in HeapHandle, then only that heap will be optimized.Note
+		/// that the HEAP_OPTIMIZE_RESOURCES_INFORMATION structure passed in HeapInformation must be properly initialized.Note This value was added in Windows 8.1.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="HeapInformation">
+		/// <para>The heap information buffer. The format of this data depends on the value of the HeapInformationClass parameter.</para>
+		/// <para>
+		/// If the HeapInformationClass parameter is <c>HeapCompatibilityInformation</c>, the HeapInformation parameter is a pointer to a <c>ULONG</c> variable.
+		/// </para>
+		/// <para>
+		/// If the HeapInformationClass parameter is <c>HeapEnableTerminationOnCorruption</c>, the HeapInformation parameter should be <c>NULL</c> and
+		/// HeapInformationLength should be 0
+		/// </para>
+		/// </param>
+		/// <param name="HeapInformationLength">The size of the HeapInformation buffer, in bytes.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is 0 (zero). To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI HeapSetInformation( _In_opt_ HANDLE HeapHandle, _In_ HEAP_INFORMATION_CLASS HeapInformationClass, _In_ PVOID HeapInformation, _In_ SIZE_T
+		// HeapInformationLength);// https://msdn.microsoft.com/en-us/library/windows/desktop/aa366705(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("HeapApi.h", MSDNShortId = "aa366705")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool HeapSetInformation([In] IntPtr HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, [In] IntPtr HeapInformation, uint HeapInformationLength);
+
 		/// <summary>Retrieves the size of a memory block allocated from a heap by the HeapAlloc or HeapReAlloc function.</summary>
-		/// <param name="hHeap">A handle to the heap in which the memory block resides. This handle is returned by either the HeapCreate or GetProcessHeap function.</param>
-		/// <param name="dwFlags">The heap size options. Specifying the following value overrides the corresponding value specified in the flOptions parameter when the heap was created by using the HeapCreate function.</param>
-		/// <param name="lpMem">A pointer to the memory block whose size the function will obtain. This is a pointer returned by the HeapAlloc or HeapReAlloc function. The memory block must be from the heap specified by the hHeap parameter.</param>
-		/// <returns>If the function succeeds, the return value is the requested size of the allocated memory block, in bytes.
-		/// <para>If the function fails, the return value is (SIZE_T)-1. The function does not call SetLastError. An application cannot call GetLastError for extended error information.</para>
-		/// <para>If the lpMem parameter refers to a heap allocation that is not in the heap specified by the hHeap parameter, the behavior of the HeapSize function is undefined.</para></returns>
+		/// <param name="hHeap">
+		/// A handle to the heap in which the memory block resides. This handle is returned by either the HeapCreate or GetProcessHeap function.
+		/// </param>
+		/// <param name="dwFlags">
+		/// The heap size options. Specifying the following value overrides the corresponding value specified in the flOptions parameter when the heap was
+		/// created by using the HeapCreate function.
+		/// </param>
+		/// <param name="lpMem">
+		/// A pointer to the memory block whose size the function will obtain. This is a pointer returned by the HeapAlloc or HeapReAlloc function. The memory
+		/// block must be from the heap specified by the hHeap parameter.
+		/// </param>
+		/// <returns>
+		/// If the function succeeds, the return value is the requested size of the allocated memory block, in bytes.
+		/// <para>
+		/// If the function fails, the return value is (SIZE_T)-1. The function does not call SetLastError. An application cannot call GetLastError for extended
+		/// error information.
+		/// </para>
+		/// <para>
+		/// If the lpMem parameter refers to a heap allocation that is not in the heap specified by the hHeap parameter, the behavior of the HeapSize function is undefined.
+		/// </para>
+		/// </returns>
 		[PInvokeData("HeapApi.h", MSDNShortId = "aa366706")]
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.SysInt)]
 		public static extern IntPtr HeapSize(IntPtr hHeap, HeapFlags dwFlags, IntPtr lpMem);
+
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("HeapApi.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool HeapSummary([In] IntPtr hHeap, HeapFlags dwFlags, out HEAP_SUMMARY lpSummary);
+
+		/// <summary>
+		/// Releases ownership of the critical section object, or lock, that is associated with a specified heap. It reverses the action of the <c>HeapLock</c> function.
+		/// </summary>
+		/// <param name="hHeap">A handle to the heap to be unlocked. This handle is returned by either the <c>HeapCreate</c> or <c>GetProcessHeap</c> function.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI HeapUnlock( _In_ HANDLE hHeap);// https://msdn.microsoft.com/en-us/library/windows/desktop/aa366707(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("HeapApi.h", MSDNShortId = "aa366707")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool HeapUnlock([In] IntPtr hHeap);
+
+		/// <summary>
+		/// Validates the specified heap. The function scans all the memory blocks in the heap and verifies that the heap control structures maintained by the
+		/// heap manager are in a consistent state. You can also use the <c>HeapValidate</c> function to validate a single memory block within a specified heap
+		/// without checking the validity of the entire heap.
+		/// </summary>
+		/// <param name="hHeap">A handle to the heap to be validated. This handle is returned by either the <c>HeapCreate</c> or <c>GetProcessHeap</c> function.</param>
+		/// <param name="dwFlags">
+		/// <para>The heap access options. This parameter can be the following value.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>HEAP_NO_SERIALIZE0x00000001</term>
+		/// <term>
+		/// Serialized access will not be used. For more information, see Remarks.To ensure that serialized access is disabled for all calls to this function,
+		/// specify HEAP_NO_SERIALIZE in the call to HeapCreate. In this case, it is not necessary to additionally specify HEAP_NO_SERIALIZE in this function
+		/// call.This value should not be specified when accessing the process default heap. The system may create additional threads within the
+		/// application&amp;#39;s process, such as a CTRL+C handler, that simultaneously access the process default heap.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="lpMem">
+		/// <para>A pointer to a memory block within the specified heap. This parameter may be <c>NULL</c>.</para>
+		/// <para>If this parameter is <c>NULL</c>, the function attempts to validate the entire heap specified by hHeap.</para>
+		/// <para>
+		/// If this parameter is not <c>NULL</c>, the function attempts to validate the memory block pointed to by lpMem. It does not attempt to validate the
+		/// rest of the heap.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the specified heap or memory block is valid, the return value is nonzero.</para>
+		/// <para>
+		/// If the specified heap or memory block is invalid, the return value is zero. On a system set up for debugging, the <c>HeapValidate</c> function then
+		/// displays debugging messages that describe the part of the heap or memory block that is invalid, and stops at a hard-coded breakpoint so that you can
+		/// examine the system to determine the source of the invalidity. The <c>HeapValidate</c> function does not set the thread's last error value. There is
+		/// no extended error information for this function; do not call <c>GetLastError</c>.
+		/// </para>
+		/// </returns>
+		// BOOL WINAPI HeapValidate( _In_ HANDLE hHeap, _In_ DWORD dwFlags, _In_opt_ LPCVOID lpMem);// https://msdn.microsoft.com/en-us/library/windows/desktop/aa366708(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("HeapApi.h", MSDNShortId = "aa366708")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool HeapValidate([In] IntPtr hHeap, HeapFlags dwFlags, [In] IntPtr lpMem);
+
+		/// <summary>Enumerates the memory blocks in the specified heap.</summary>
+		/// <param name="hHeap">A handle to the heap. This handle is returned by either the <c>HeapCreate</c> or <c>GetProcessHeap</c> function.</param>
+		/// <param name="lpEntry">
+		/// <para>A pointer to a <c>PROCESS_HEAP_ENTRY</c> structure that maintains state information for a particular heap enumeration.</para>
+		/// <para>
+		/// If the <c>HeapWalk</c> function succeeds, returning the value <c>TRUE</c>, this structure's members contain information about the next memory block
+		/// in the heap.
+		/// </para>
+		/// <para>
+		/// To initiate a heap enumeration, set the <c>lpData</c> field of the <c>PROCESS_HEAP_ENTRY</c> structure to <c>NULL</c>. To continue a particular heap
+		/// enumeration, call the <c>HeapWalk</c> function repeatedly, with no changes to hHeap, lpEntry, or any of the members of the <c>PROCESS_HEAP_ENTRY</c> structure.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>
+		/// If the heap enumeration terminates successfully by reaching the end of the heap, the function returns <c>FALSE</c>, and <c>GetLastError</c> returns
+		/// the error code <c>ERROR_NO_MORE_ITEMS</c>.
+		/// </para>
+		/// </returns>
+		// BOOL WINAPI HeapWalk( _In_ HANDLE hHeap, _Inout_ LPPROCESS_HEAP_ENTRY lpEntry);// https://msdn.microsoft.com/en-us/library/windows/desktop/aa366710(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("HeapApi.h", MSDNShortId = "aa366710")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool HeapWalk([In] IntPtr hHeap, ref PROCESS_HEAP_ENTRY lpEntry);
+
+		/// <summary>Specifies flags for a HeapOptimizeResources operation initiated with HeapSetInformation.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HEAP_OPTIMIZE_RESOURCES_INFORMATION
+		{
+			/// <summary>The version</summary>
+			public uint Version;
+			/// <summary>The flags</summary>
+			public uint Flags;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HEAP_SUMMARY
+		{
+			public uint cb;
+			public SizeT cbAllocated;
+			public SizeT cbCommitted;
+			public SizeT cbReserved;
+			public SizeT cbMaxReserve;
+		}
+
+		/// <summary>
+		/// Contains information about a heap element. The <c>HeapWalk</c> function uses a <c>PROCESS_HEAP_ENTRY</c> structure to enumerate the elements of a heap.
+		/// </summary>
+		// typedef struct _PROCESS_HEAP_ENTRY { PVOID lpData; DWORD cbData; BYTE cbOverhead; BYTE iRegionIndex; WORD wFlags; union { struct { HANDLE hMem; DWORD
+		// dwReserved[3]; } Block; struct { DWORD dwCommittedSize; DWORD dwUnCommittedSize; LPVOID lpFirstBlock; LPVOID lpLastBlock; } Region; };}
+		// PROCESS_HEAP_ENTRY, *LPPROCESS_HEAP_ENTRY; https://msdn.microsoft.com/en-us/library/windows/desktop/aa366798(v=vs.85).aspx
+		[PInvokeData("WinBase.h", MSDNShortId = "aa366798")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PROCESS_HEAP_ENTRY
+		{
+			/// <summary>
+			/// <para>A pointer to the data portion of the heap element.</para>
+			/// <para>To initiate a <c>HeapWalk</c> heap enumeration, set <c>lpData</c> to <c>NULL</c>.</para>
+			/// <para>If <c>PROCESS_HEAP_REGION</c> is used in the <c>wFlags</c> member, <c>lpData</c> points to the first virtual address used by the region.</para>
+			/// <para>If <c>PROCESS_HEAP_UNCOMMITTED_RANGE</c> is used in <c>wFlags</c>, <c>lpData</c> points to the beginning of the range of uncommitted memory.</para>
+			/// </summary>
+			public IntPtr lpData;
+			/// <summary>
+			/// <para>The size of the data portion of the heap element, in bytes.</para>
+			/// <para>
+			/// If <c>PROCESS_HEAP_REGION</c> is used in <c>wFlags</c>, <c>cbData</c> specifies the total size, in bytes, of the address space that is reserved
+			/// for this region.
+			/// </para>
+			/// <para>
+			/// If <c>PROCESS_HEAP_UNCOMMITTED_RANGE</c> is used in <c>wFlags</c>, <c>cbData</c> specifies the size, in bytes, of the range of uncommitted memory.
+			/// </para>
+			/// </summary>
+			public uint cbData;
+			/// <summary>
+			/// <para>
+			/// The size of the data used by the system to maintain information about the heap element, in bytes. These overhead bytes are in addition to the
+			/// <c>cbData</c> bytes of the data portion of the heap element.
+			/// </para>
+			/// <para>
+			/// If <c>PROCESS_HEAP_REGION</c> is used in <c>wFlags</c>, <c>cbOverhead</c> specifies the size, in bytes, of the heap control structures that
+			/// describe the region.
+			/// </para>
+			/// <para>
+			/// If <c>PROCESS_HEAP_UNCOMMITTED_RANGE</c> is used in <c>wFlags</c>, <c>cbOverhead</c> specifies the size, in bytes, of the control structures that
+			/// describe this uncommitted range.
+			/// </para>
+			/// </summary>
+			public byte cbOverhead;
+			/// <summary>
+			/// <para>
+			/// A handle to the heap region that contains the heap element. A heap consists of one or more regions of virtual memory, each with a unique region index.
+			/// </para>
+			/// <para>
+			/// In the first heap entry returned for most heap regions, <c>HeapWalk</c> uses the <c>PROCESS_HEAP_REGION</c> in the <c>wFlags</c> member. When
+			/// this value is used, the members of the <c>Region</c> structure contain additional information about the region.
+			/// </para>
+			/// <para>
+			/// The <c>HeapAlloc</c> function sometimes uses the <c>VirtualAlloc</c> function to allocate large blocks from a growable heap. The heap manager
+			/// treats such a large block allocation as a separate region with a unique region index. <c>HeapWalk</c> does not use <c>PROCESS_HEAP_REGION</c> in
+			/// the heap entry returned for a large block region, so the members of the <c>Region</c> structure are not valid. You can use the
+			/// <c>VirtualQuery</c> function to get additional information about a large block region.
+			/// </para>
+			/// </summary>
+			public byte iRegionIndex;
+			/// <summary>
+			/// <para>
+			/// The properties of the heap element. Some values affect the meaning of other members of this <c>PROCESS_HEAP_ENTRY</c> data structure. The
+			/// following values are defined.
+			/// </para>
+			/// <para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>PROCESS_HEAP_ENTRY_BUSY0x0004</term>
+			/// <term>
+			/// The heap element is an allocated block.If PROCESS_HEAP_ENTRY_MOVEABLE is also specified, the Block structure becomes valid. The hMem member of
+			/// the Block structure contains a handle to the allocated, moveable memory block.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>PROCESS_HEAP_ENTRY_DDESHARE0x0020</term>
+			/// <term>This value must be used with PROCESS_HEAP_ENTRY_BUSY, indicating that the heap element is an allocated block.</term>
+			/// </item>
+			/// <item>
+			/// <term>PROCESS_HEAP_ENTRY_MOVEABLE0x0010</term>
+			/// <term>
+			/// This value must be used with PROCESS_HEAP_ENTRY_BUSY, indicating that the heap element is an allocated block.The block was allocated with
+			/// LMEM_MOVEABLE or GMEM_MOVEABLE, and the Block structure becomes valid. The hMem member of the Block structure contains a handle to the allocated,
+			/// moveable memory block.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>PROCESS_HEAP_REGION0x0001</term>
+			/// <term>
+			/// The heap element is located at the beginning of a region of contiguous virtual memory in use by the heap.The lpData member of the structure
+			/// points to the first virtual address used by the region; the cbData member specifies the total size, in bytes, of the address space that is
+			/// reserved for this region; and the cbOverhead member specifies the size, in bytes, of the heap control structures that describe the region.The
+			/// Region structure becomes valid. The dwCommittedSize, dwUnCommittedSize, lpFirstBlock, and lpLastBlock members of the structure contain additional
+			/// information about the region.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>PROCESS_HEAP_UNCOMMITTED_RANGE0x0002</term>
+			/// <term>
+			/// The heap element is located in a range of uncommitted memory within the heap region.The lpData member points to the beginning of the range of
+			/// uncommitted memory; the cbData member specifies the size, in bytes, of the range of uncommitted memory; and the cbOverhead member specifies the
+			/// size, in bytes, of the control structures that describe this uncommitted range.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </para>
+			/// </summary>
+			public PROCESS_HEAP wFlags;
+			/// <summary>A union</summary>
+			public BLOCK_REGION_UNION union;
+
+			/// <summary>Union of child structures.</summary>
+			[StructLayout(LayoutKind.Explicit)]
+			public struct BLOCK_REGION_UNION
+			{
+				/// <summary>
+				/// This structure is valid only if both the <c>PROCESS_HEAP_ENTRY_BUSY</c> and <c>PROCESS_HEAP_ENTRY_MOVEABLE</c> are specified in <c>wFlags</c>.
+				/// </summary>
+				[FieldOffset(0)]
+				public BLOCK_DATA Block;
+				/// <summary>This structure is valid only if the <c>wFlags</c> member specifies <c>PROCESS_HEAP_REGION</c>.</summary>
+				[FieldOffset(0)]
+				public REGION_DATA Region;
+
+				/// <summary>
+				/// This structure is valid only if both the <c>PROCESS_HEAP_ENTRY_BUSY</c> and <c>PROCESS_HEAP_ENTRY_MOVEABLE</c> are specified in <c>wFlags</c>.
+				/// </summary>
+				[StructLayout(LayoutKind.Sequential)]
+				public struct BLOCK_DATA
+				{
+					/// <summary>Handle to the allocated, moveable memory block.</summary>
+					public IntPtr hMem;
+					/// <summary>Reserved; not used.</summary>
+					[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3, ArraySubType = UnmanagedType.U4)]
+					public uint[] dwReserved;
+				}
+
+				/// <summary>This structure is valid only if the <c>wFlags</c> member specifies <c>PROCESS_HEAP_REGION</c>.</summary>
+				[StructLayout(LayoutKind.Sequential)]
+				public struct REGION_DATA
+				{
+					/// <summary>
+					/// Number of bytes in the heap region that are currently committed as free memory blocks, busy memory blocks, or heap control structures.
+					/// This is an optional field that is set to zero if the number of committed bytes is not available.
+					/// </summary>
+					public uint dwCommittedSize;
+					/// <summary>
+					/// Number of bytes in the heap region that are currently uncommitted. This is an optional field that is set to zero if the number of
+					/// uncommitted bytes is not available.
+					/// </summary>
+					public uint dwUnCommittedSize;
+					/// <summary>Pointer to the first valid memory block in this heap region.</summary>
+					public IntPtr lpFirstBlock;
+					/// <summary>Pointer to the first invalid memory block in this heap region.</summary>
+					public IntPtr lpLastBlock;
+				}
+			}
+		}
 
 		/// <summary>Safe handle for memory heaps.</summary>
 		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
@@ -112,7 +822,9 @@ namespace Vanara.PInvoke
 				this.hHeap = hHeap;
 			}
 
-			/// <summary>Initializes a new instance of the <see cref="SafePrivateHeapBlockHandle"/> class and allocates the specified amount of memory from the process heap.</summary>
+			/// <summary>
+			/// Initializes a new instance of the <see cref="SafePrivateHeapBlockHandle"/> class and allocates the specified amount of memory from the process heap.
+			/// </summary>
 			/// <param name="hHeap">A handle to a heap created using <see cref="HeapCreate"/>.</param>
 			/// <param name="size">The size. This value cannot be zero.</param>
 			public SafePrivateHeapBlockHandle(SafePrivateHeapHandle hHeap, int size) : this(hHeap, HeapAlloc(hHeap, HeapFlags.HEAP_ZERO_MEMORY, (IntPtr)size)) { }
@@ -120,27 +832,6 @@ namespace Vanara.PInvoke
 			/// <summary>Retrieves the size of this memory block.</summary>
 			/// <value>The size in bytes of this memory block.</value>
 			public long Size => HeapSize(hHeap, 0, handle).ToInt64();
-		}
-
-		/// <summary>Safe handle for memory heaps.</summary>
-		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
-		public class SafeProcessHeapBlockHandle : GenericSafeHandle
-		{
-			/// <summary>Initializes a new instance of the <see cref="SafeProcessHeapBlockHandle"/> class.</summary>
-			public SafeProcessHeapBlockHandle() : this(IntPtr.Zero) { }
-
-			/// <summary>Initializes a new instance of the <see cref="SafeProcessHeapBlockHandle"/> class.</summary>
-			/// <param name="ptr">The handle created by <see cref="HeapAlloc"/>.</param>
-			/// <param name="own">if set to <c>true</c> this safe handle disposes the handle when done.</param>
-			public SafeProcessHeapBlockHandle(IntPtr ptr, bool own = true) : base(ptr, h => HeapFree(GetProcessHeap(), 0, h), own) { }
-
-			/// <summary>Initializes a new instance of the <see cref="SafeProcessHeapBlockHandle"/> class and allocates the specified amount of memory from the process heap.</summary>
-			/// <param name="size">The size. This value cannot be zero.</param>
-			public SafeProcessHeapBlockHandle(ulong size) : this(HeapAlloc(GetProcessHeap(), HeapFlags.HEAP_ZERO_MEMORY, (IntPtr)size)) { }
-
-			/// <summary>Retrieves the size of this memory block.</summary>
-			/// <value>The size in bytes of this memory block.</value>
-			public long Size => HeapSize(GetProcessHeap(), 0, handle).ToInt64();
 		}
 
 		/// <summary>Safe handle for memory heaps.</summary>
@@ -159,6 +850,29 @@ namespace Vanara.PInvoke
 			/// <param name="size">The size of the block.</param>
 			/// <returns>A safe handle for the memory that will call HeapFree on disposal.</returns>
 			public SafePrivateHeapBlockHandle GetBlock(int size) => new SafePrivateHeapBlockHandle(this, size);
+		}
+
+		/// <summary>Safe handle for memory heaps.</summary>
+		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
+		public class SafeProcessHeapBlockHandle : GenericSafeHandle
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeProcessHeapBlockHandle"/> class.</summary>
+			public SafeProcessHeapBlockHandle() : this(IntPtr.Zero) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeProcessHeapBlockHandle"/> class.</summary>
+			/// <param name="ptr">The handle created by <see cref="HeapAlloc"/>.</param>
+			/// <param name="own">if set to <c>true</c> this safe handle disposes the handle when done.</param>
+			public SafeProcessHeapBlockHandle(IntPtr ptr, bool own = true) : base(ptr, h => HeapFree(GetProcessHeap(), 0, h), own) { }
+
+			/// <summary>
+			/// Initializes a new instance of the <see cref="SafeProcessHeapBlockHandle"/> class and allocates the specified amount of memory from the process heap.
+			/// </summary>
+			/// <param name="size">The size. This value cannot be zero.</param>
+			public SafeProcessHeapBlockHandle(ulong size) : this(HeapAlloc(GetProcessHeap(), HeapFlags.HEAP_ZERO_MEMORY, (IntPtr)size)) { }
+
+			/// <summary>Retrieves the size of this memory block.</summary>
+			/// <value>The size in bytes of this memory block.</value>
+			public long Size => HeapSize(GetProcessHeap(), 0, handle).ToInt64();
 		}
 	}
 }
