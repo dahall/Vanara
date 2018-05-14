@@ -124,7 +124,7 @@ namespace Vanara.PInvoke
 		/// Font families describe the look of a font in a general way. They are intended for specifying fonts when the exact typeface desired is not available.
 		/// </summary>
 		[PInvokeData("Wingdi.h", MSDNShortId = "dd145037")]
-		public enum LogFontFontFamily : byte
+		public enum FontFamily : byte
 		{
 			/// <summary>Use default font.</summary>
 			FF_DONTCARE = 0 << 4,
@@ -234,20 +234,6 @@ namespace Vanara.PInvoke
 			CLEARTYPE_NATURAL_QUALITY = 6
 		}
 
-		/// <summary>The pitch of the font.</summary>
-		[PInvokeData("Wingdi.h", MSDNShortId = "dd145037")]
-		public enum LogFontPitch : byte
-		{
-			/// <summary>The default pitch.</summary>
-			DEFAULT_PITCH = 0,
-
-			/// <summary>The pitch is fixed.</summary>
-			FIXED_PITCH = 1,
-
-			/// <summary>The pitch is variable.</summary>
-			VARIABLE_PITCH = 2
-		}
-
 		/// <summary>The LOGFONT structure defines the attributes of a font.</summary>
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		[PInvokeData("Wingdi.h", MSDNShortId = "dd145037")]
@@ -336,9 +322,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets or sets the font family.</summary>
 			/// <value>The font family.</value>
-			public LogFontFontFamily FontFamily
+			public FontFamily FontFamily
 			{
-				get => (LogFontFontFamily)(lfPitchAndFamily & 0xF0); set => lfPitchAndFamily = (byte)((lfPitchAndFamily & 0x0F) | (byte)value);
+				get => (FontFamily)(lfPitchAndFamily & 0xF0); set => lfPitchAndFamily = (byte)((lfPitchAndFamily & 0x0F) | (byte)value);
 			}
 
 			/// <summary>
@@ -393,9 +379,9 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets or sets the font pitch.</summary>
 			/// <value>The pitch.</value>
-			public LogFontPitch Pitch
+			public FontPitch Pitch
 			{
-				get => (LogFontPitch)(lfPitchAndFamily & 0x0F); set => lfPitchAndFamily = (byte)((lfPitchAndFamily & 0xF0) | (byte)value);
+				get => (FontPitch)(lfPitchAndFamily & 0x0F); set => lfPitchAndFamily = (byte)((lfPitchAndFamily & 0xF0) | (byte)value);
 			}
 
 			/// <summary>Converts this structure to a <see cref="Font"/>.</summary>
