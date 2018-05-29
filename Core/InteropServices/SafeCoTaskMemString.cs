@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.Win32.SafeHandles;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Security;
-using Microsoft.Win32.SafeHandles;
 using Vanara.Extensions;
 
 namespace Vanara.InteropServices
@@ -53,6 +53,10 @@ namespace Vanara.InteropServices
 			SetHandle(ptr);
 		}
 
+		/// <summary>Represents a <c>null</c> value. Used primarily for comparrison.</summary>
+		/// <value>A null value.</value>
+		public static SafeCoTaskMemString Null => new SafeCoTaskMemString(IntPtr.Zero, CharSet.Unicode, false);
+
 		/// <summary>Gets the number of allocated bytes or -1 if the size is unknown (for example if it is holding a <see cref="SecureString"/>.</summary>
 		/// <value>The number of allocated bytes.</value>
 		public int Capacity { get; } = -1;
@@ -64,7 +68,8 @@ namespace Vanara.InteropServices
 		/// <summary>Returns the value of the <see cref="SafeHandle.handle"/> field.</summary>
 		/// <param name="s">The <see cref="SafeCoTaskMemString"/> instance.</param>
 		/// <returns>
-		/// An <see cref="IntPtr"/> representing the value of the handle field. If the handle has been marked invalid with <see cref="SafeHandle.SetHandleAsInvalid"/>, this method still returns the original handle value, which can be a stale value.
+		/// An <see cref="IntPtr"/> representing the value of the handle field. If the handle has been marked invalid with
+		/// <see cref="SafeHandle.SetHandleAsInvalid"/>, this method still returns the original handle value, which can be a stale value.
 		/// </returns>
 		public static explicit operator IntPtr(SafeCoTaskMemString s) => s.DangerousGetHandle();
 
