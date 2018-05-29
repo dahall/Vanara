@@ -69,6 +69,86 @@ namespace Vanara.PInvoke
 		[PInvokeData("Objbase.h", MSDNShortId = "ms695279")]
 		public static extern HRESULT CoInitializeEx(IntPtr pvReserved, COINIT coInit);
 
+		/// <summary>Registers security and sets the default security values for the process.</summary>
+		/// <param name="pSecDesc">
+		/// The access permissions that a server will use to receive calls. This parameter is used by COM only when a server calls <c>CoInitializeSecurity</c>.
+		/// Its value is a pointer to one of three types: an AppID, an <c>IAccessControl</c> object, or a <c>SECURITY_DESCRIPTOR</c>, in absolute format. See the
+		/// Remarks section for more information.
+		/// </param>
+		/// <param name="cAuthSvc">
+		/// The count of entries in the asAuthSvc parameter. This parameter is used by COM only when a server calls <c>CoInitializeSecurity</c>. If this
+		/// parameter is 0, no authentication services will be registered and the server cannot receive secure calls. A value of -1 tells COM to choose which
+		/// authentication services to register, and if this is the case, the asAuthSvc parameter must be <c>NULL</c>. However, Schannel will never be chosen as
+		/// an authentication service by the server if this parameter is -1.
+		/// </param>
+		/// <param name="asAuthSvc">
+		/// An array of authentication services that a server is willing to use to receive a call. This parameter is used by COM only when a server calls
+		/// <c>CoInitializeSecurity</c>. For more information, see <c>SOLE_AUTHENTICATION_SERVICE</c>.
+		/// </param>
+		/// <param name="pReserved1">This parameter is reserved and must be <c>NULL</c>.</param>
+		/// <param name="dwAuthnLevel">
+		/// The default authentication level for the process. Both servers and clients use this parameter when they call <c>CoInitializeSecurity</c>. COM will
+		/// fail calls that arrive with a lower authentication level. By default, all proxies will use at least this authentication level. This value should
+		/// contain one of the authentication level constants. By default, all calls to <c>IUnknown</c> are made at this level.
+		/// </param>
+		/// <param name="dwImpLevel">
+		/// <para>
+		/// The default impersonation level for proxies. The value of this parameter is used only when the process is a client. It should be a value from the
+		/// impersonation level constants, except for RPC_C_IMP_LEVEL_DEFAULT, which is not for use with <c>CoInitializeSecurity</c>.
+		/// </para>
+		/// <para>
+		/// Outgoing calls from the client always use the impersonation level as specified. (It is not negotiated.) Incoming calls to the client can be at any
+		/// impersonation level. By default, all <c>IUnknown</c> calls are made with this impersonation level, so even security-aware applications should set
+		/// this level carefully. To determine which impersonation levels each authentication service supports, see the description of the authentication
+		/// services in COM and Security Packages. For more information about impersonation levels, see Impersonation.
+		/// </para>
+		/// </param>
+		/// <param name="pAuthList">
+		/// A pointer to <c>SOLE_AUTHENTICATION_LIST</c>, which is an array of <c>SOLE_AUTHENTICATION_INFO</c> structures. This list indicates the information
+		/// for each authentication service that a client can use to call a server. This parameter is used by COM only when a client calls <c>CoInitializeSecurity</c>.
+		/// </param>
+		/// <param name="dwCapabilities">
+		/// Additional capabilities of the client or server, specified by setting one or more <c>EOLE_AUTHENTICATION_CAPABILITIES</c> values. Some of these value
+		/// cannot be used simultaneously, and some cannot be set when particular authentication services are being used. For more information about these flags,
+		/// see the Remarks section.
+		/// </param>
+		/// <param name="pReserved3">This parameter is reserved and must be <c>NULL</c>.</param>
+		/// <returns>
+		/// <para>This function can return the standard return value E_INVALIDARG, as well as the following values.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Indicates success.</term>
+		/// </item>
+		/// <item>
+		/// <term>RPC_E_TOO_LATE</term>
+		/// <term>CoInitializeSecurity has already been called.</term>
+		/// </item>
+		/// <item>
+		/// <term>RPC_E_NO_GOOD_SECURITY_PACKAGES</term>
+		/// <term>
+		/// The asAuthSvc parameter was not NULL, and none of the authentication services in the list could be registered. Check the results saved in asAuthSvc
+		/// for authentication service–specific error codes.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUT_OF_MEMORY</term>
+		/// <term>Out of memory.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </returns>
+		// HRESULT CoInitializeSecurity( _In_opt_ PSECURITY_DESCRIPTOR pSecDesc, _In_ LONG cAuthSvc, _In_opt_ SOLE_AUTHENTICATION_SERVICE *asAuthSvc, _In_opt_ void *pReserved1, _In_ DWORD dwAuthnLevel, _In_ DWORD dwImpLevel, _In_opt_ void *pAuthList, _In_ DWORD dwCapabilities, _In_opt_ void *pReserved3);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms693736(v=vs.85).aspx
+		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Objbase.h", MSDNShortId = "ms693736")]
+		public static extern HRESULT CoInitializeSecurity(IntPtr secDesc, int cAuthSvc, IntPtr asAuthSvc, IntPtr pReserved1, uint dwAuthnLevel, uint dwImpLevel, IntPtr pAuthList, uint dwCapabilities, IntPtr pReserved3);
+
 		/// <summary>
 		/// Closes the COM library on the current thread, unloads all DLLs loaded by the thread, frees any other resources that the thread maintains, and forces
 		/// all RPC connections on the thread to close.
