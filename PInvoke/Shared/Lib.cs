@@ -23,6 +23,8 @@
 		public const string IpHlpApi = "Iphlpapi.dll";
 		/// <summary>The kernel32</summary>
 		public const string Kernel32 = "kernel32.dll";
+		/// <summary>The kernel base</summary>
+		public const string KernelBase = "kernelbase.dll";
 		/// <summary>The net api32</summary>
 		public const string NetApi32 = "netapi32.dll";
 		/// <summary>The normaliz</summary>
