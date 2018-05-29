@@ -116,6 +116,7 @@
     <Compile Include="Shell\ShellItemTests.cs" />
     <Compile Include="Shell\ShellFolderTests.cs" />
     <Compile Include="Shell\ShellItemPropStoreTests.cs" />
+    <Compile Include="System\BackgroundCopyTests.cs" />
     <Compile Include="System\VirtualDiskTests.cs" />
     <Compile Include="UI\Controls\CredentialsDialogTests.cs" />
   </ItemGroup>
@@ -127,6 +128,10 @@
     <ProjectReference Include="..\PInvoke\AclUI\Vanara.PInvoke.AclUI.csproj">
       <Project>{ef88cf8c-e737-4bb1-bbf9-f47bf65547e0}</Project>
       <Name>Vanara.PInvoke.AclUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PInvoke\BITS\Vanara.PInvoke.BITS.csproj">
+      <Project>{ef53ed51-c141-4525-a6b7-41109ee5f416}</Project>
+      <Name>Vanara.PInvoke.BITS</Name>
     </ProjectReference>
     <ProjectReference Include="..\PInvoke\ComCtl32\Vanara.PInvoke.ComCtl32.csproj">
       <Project>{291af9b0-51e8-4e4a-972b-77310a7a0c06}</Project>

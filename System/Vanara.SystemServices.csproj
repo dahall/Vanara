@@ -58,6 +58,7 @@ DeviceType, ProcessIntegrityLevel, Subtype
     <PackageReference Include="System.IO.FileSystem.AccessControl" Version="4.4.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PInvoke\BITS\Vanara.PInvoke.BITS.csproj" />
     <ProjectReference Include="..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\PInvoke\NetListMgr\Vanara.PInvoke.NetListMgr.csproj" />
     <ProjectReference Include="..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
