@@ -1450,43 +1450,6 @@ namespace Vanara.PInvoke
 		[SuppressUnmanagedCodeSecurity]
 		public static extern SafeResourceDataHandle LoadResource(SafeLibraryHandle hModule, SafeResourceHandle hResInfo);
 
-		/// <summary>
-		/// Loads a string resource from the executable file associated with a specified module, copies the string into a buffer, and appends a terminating null character.
-		/// </summary>
-		/// <param name="hInstance">
-		/// <para>Type: <c>HINSTANCE</c></para>
-		/// <para>
-		/// A handle to an instance of the module whose executable file contains the string resource. To get the handle to the application itself, call the
-		/// <c>GetModuleHandle</c> function with <c>NULL</c>.
-		/// </para>
-		/// </param>
-		/// <param name="uID">
-		/// <para>Type: <c>UINT</c></para>
-		/// <para>The identifier of the string to be loaded.</para>
-		/// </param>
-		/// <param name="lpBuffer">
-		/// <para>Type: <c>LPTSTR</c></para>
-		/// <para>The buffer is to receive the string. Must be of sufficient length to hold a pointer (8 bytes).</para>
-		/// </param>
-		/// <param name="nBufferMax">
-		/// <para>Type: <c>int</c></para>
-		/// <para>
-		/// The size of the buffer, in characters. The string is truncated and null-terminated if it is longer than the number of characters specified. If this
-		/// parameter is 0, then lpBuffer receives a read-only pointer to the resource itself.
-		/// </para>
-		/// </param>
-		/// <returns>
-		/// <para>Type: <c>int</c></para>
-		/// <para>
-		/// If the function succeeds, the return value is the number of characters copied into the buffer, not including the terminating null character, or zero
-		/// if the string resource does not exist. To get extended error information, call <c>GetLastError</c>.
-		/// </para>
-		/// </returns>
-		// int WINAPI LoadString( _In_opt_ HINSTANCE hInstance, _In_ UINT uID, _Out_ LPTSTR lpBuffer, _In_ int nBufferMax); https://msdn.microsoft.com/en-us/library/windows/desktop/ms647486(v=vs.85).aspx
-		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("Winuser.h", MSDNShortId = "ms647486")]
-		public static extern int LoadString(SafeLibraryHandle hInstance, uint uID, [Out] StringBuilder lpBuffer, int nBufferMax);
-
 		/// <summary>Retrieves a pointer to the specified resource in memory.</summary>
 		/// <param name="hResData">
 		/// <para>Type: <c>HGLOBAL</c></para>

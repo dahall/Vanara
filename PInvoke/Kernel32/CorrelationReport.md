@@ -1,5 +1,5 @@
 ## Correlation report for kernel32.dll
-### Methods (66% complete)
+### Methods (67% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
 [AcquireSRWLockExclusive](https://www.google.com/search?num=5&q=AcquireSRWLockExclusive+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive
@@ -134,10 +134,10 @@ Native Method | Native DLL | Header | Managed Method
 [CreateEventW](https://www.google.com/search?num=5&q=CreateEventW+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateEvent
 [CreateFiber](https://www.google.com/search?num=5&q=CreateFiber+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateFiber
 [CreateFiberEx](https://www.google.com/search?num=5&q=CreateFiberEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateFiberEx
-[CreateFile2](https://www.google.com/search?num=5&q=CreateFile2+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[CreateFile2](https://www.google.com/search?num=5&q=CreateFile2+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.CreateFile2
 [CreateFileA](https://www.google.com/search?num=5&q=CreateFileA+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.CreateFile
 [CreateFileMappingA](https://www.google.com/search?num=5&q=CreateFileMappingA+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateFileMapping
-[CreateFileMappingFromApp](https://www.google.com/search?num=5&q=CreateFileMappingFromApp+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[CreateFileMappingFromApp](https://www.google.com/search?num=5&q=CreateFileMappingFromApp+site%3Amsdn.microsoft.com) | kernel32.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.CreateFileMappingFromApp
 [CreateFileMappingNumaA](https://www.google.com/search?num=5&q=CreateFileMappingNumaA+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateFileMappingNuma
 [CreateFileMappingNumaW](https://www.google.com/search?num=5&q=CreateFileMappingNumaW+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateFileMappingNuma
 [CreateFileMappingW](https://www.google.com/search?num=5&q=CreateFileMappingW+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateFileMapping
@@ -330,12 +330,12 @@ Native Method | Native DLL | Header | Managed Method
 [FindFirstFileTransactedW](https://www.google.com/search?num=5&q=FindFirstFileTransactedW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [FindFirstFileW](https://www.google.com/search?num=5&q=FindFirstFileW+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindFirstFile
 [FindFirstStreamTransactedW](https://www.google.com/search?num=5&q=FindFirstStreamTransactedW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[FindFirstStreamW](https://www.google.com/search?num=5&q=FindFirstStreamW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[FindFirstStreamW](https://www.google.com/search?num=5&q=FindFirstStreamW+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FindFirstStream
 [FindFirstVolumeA](https://www.google.com/search?num=5&q=FindFirstVolumeA+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindFirstVolume
 [FindFirstVolumeMountPointA](https://www.google.com/search?num=5&q=FindFirstVolumeMountPointA+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FindFirstVolumeMountPoint
 [FindFirstVolumeMountPointW](https://www.google.com/search?num=5&q=FindFirstVolumeMountPointW+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FindFirstVolumeMountPoint
 [FindFirstVolumeW](https://www.google.com/search?num=5&q=FindFirstVolumeW+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindFirstVolume
-[FindNextChangeNotification](https://www.google.com/search?num=5&q=FindNextChangeNotification+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[FindNextChangeNotification](https://www.google.com/search?num=5&q=FindNextChangeNotification+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindNextChangeNotification
 [FindNextFileA](https://www.google.com/search?num=5&q=FindNextFileA+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindNextFile
 [FindNextFileNameW](https://www.google.com/search?num=5&q=FindNextFileNameW+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FindNextFileName
 [FindNextFileW](https://www.google.com/search?num=5&q=FindNextFileW+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindNextFile
@@ -667,10 +667,10 @@ Native Method | Native DLL | Header | Managed Method
 [GetStateFolder](https://www.google.com/search?num=5&q=GetStateFolder+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetStdHandle](https://www.google.com/search?num=5&q=GetStdHandle+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetStdHandle
 [GetStringScripts](https://www.google.com/search?num=5&q=GetStringScripts+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetStringScripts
-[GetStringTypeA](https://www.google.com/search?num=5&q=GetStringTypeA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetStringTypeA](https://www.google.com/search?num=5&q=GetStringTypeA+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetStringTypeA
 [GetStringTypeExA](https://www.google.com/search?num=5&q=GetStringTypeExA+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetStringTypeEx
 [GetStringTypeExW](https://www.google.com/search?num=5&q=GetStringTypeExW+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetStringTypeEx
-[GetStringTypeW](https://www.google.com/search?num=5&q=GetStringTypeW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetStringTypeW](https://www.google.com/search?num=5&q=GetStringTypeW+site%3Amsdn.microsoft.com) | kernel32.dll | Stringapiset.h | Vanara.PInvoke.Kernel32.GetStringTypeW
 [GetSystemAppDataKey](https://www.google.com/search?num=5&q=GetSystemAppDataKey+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetSystemCpuSetInformation](https://www.google.com/search?num=5&q=GetSystemCpuSetInformation+site%3Amsdn.microsoft.com) | kernel32.dll | Processthreadapi.h | Vanara.PInvoke.Kernel32.GetSystemCpuSetInformation
 [GetSystemDefaultLangID](https://www.google.com/search?num=5&q=GetSystemDefaultLangID+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetSystemDefaultLangID
@@ -742,7 +742,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetVersionExA](https://www.google.com/search?num=5&q=GetVersionExA+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetVersionEx
 [GetVersionExW](https://www.google.com/search?num=5&q=GetVersionExW+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetVersionEx
 [GetVolumeInformationA](https://www.google.com/search?num=5&q=GetVolumeInformationA+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetVolumeInformation
-[GetVolumeInformationByHandleW](https://www.google.com/search?num=5&q=GetVolumeInformationByHandleW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetVolumeInformationByHandleW](https://www.google.com/search?num=5&q=GetVolumeInformationByHandleW+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetVolumeInformationByHandleW
 [GetVolumeInformationW](https://www.google.com/search?num=5&q=GetVolumeInformationW+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetVolumeInformation
 [GetVolumeNameForVolumeMountPointA](https://www.google.com/search?num=5&q=GetVolumeNameForVolumeMountPointA+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetVolumeNameForVolumeMountPoint
 [GetVolumeNameForVolumeMountPointW](https://www.google.com/search?num=5&q=GetVolumeNameForVolumeMountPointW+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetVolumeNameForVolumeMountPoint
@@ -883,8 +883,8 @@ Native Method | Native DLL | Header | Managed Method
 [lstrcpy](https://www.google.com/search?num=5&q=lstrcpy+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [lstrcpyn](https://www.google.com/search?num=5&q=lstrcpyn+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [lstrlen](https://www.google.com/search?num=5&q=lstrlen+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[lstrlenA](https://www.google.com/search?num=5&q=lstrlenA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[lstrlenW](https://www.google.com/search?num=5&q=lstrlenW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[lstrlenA](https://www.google.com/search?num=5&q=lstrlenA+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.lstrlen
+[lstrlenW](https://www.google.com/search?num=5&q=lstrlenW+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.lstrlen
 [LZClose](https://www.google.com/search?num=5&q=LZClose+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [LZCloseFile](https://www.google.com/search?num=5&q=LZCloseFile+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [LZCopy](https://www.google.com/search?num=5&q=LZCopy+site%3Amsdn.microsoft.com) | kernel32.dll |  | 

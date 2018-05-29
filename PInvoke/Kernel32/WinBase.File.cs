@@ -782,7 +782,7 @@ namespace Vanara.PInvoke
 		/// <para>If no streams can be found, the function fails and <c>GetLastError</c> returns <c>ERROR_HANDLE_EOF</c> (38).</para>
 		/// </returns>
 		// HANDLE WINAPI FindFirstStreamW( _In_ LPCWSTR lpFileName, _In_ STREAM_INFO_LEVELS InfoLevel, _Out_ LPVOID lpFindStreamData, _Reserved_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa364424(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa364424")]
 		public static extern SafeSearchHandle FindFirstStream(string lpFileName, STREAM_INFO_LEVELS InfoLevel, [Out] IntPtr lpFindStreamData, [Optional] uint dwFlags);
 

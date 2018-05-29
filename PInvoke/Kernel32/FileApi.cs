@@ -700,7 +700,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// HANDLE WINAPI CreateFile2( _In_ LPCWSTR lpFileName, _In_ DWORD dwDesiredAccess, _In_ DWORD dwShareMode, _In_ DWORD dwCreationDisposition, _In_opt_
 		// LPCREATEFILE2_EXTENDED_PARAMETERS pCreateExParams);
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "hh449422")]
 		public static extern SafeFileHandle CreateFile2(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode, FileMode dwCreationDisposition, ref CREATEFILE2_EXTENDED_PARAMETERS pCreateExParams);
 
@@ -889,11 +889,14 @@ namespace Vanara.PInvoke
 		public static extern SafeVolumeSearchHandle FindFirstVolume([In, Out] StringBuilder lpszVolumeName, uint cchBufferLength);
 
 		/// <summary>Requests that the operating system signal a change notification handle the next time it detects an appropriate change.</summary>
-		/// <param name="hChangeHandle">A handle to a change notification handle created by the FindFirstChangeNotification function.</param>
+		/// <param name="hChangeHandle">A handle to a change notification handle created by the <c>FindFirstChangeNotification</c> function.</param>
 		/// <returns>
-		/// If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error information, call GetLastError.
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		// BOOL WINAPI FindNextChangeNotification( _In_ HANDLE hChangeHandle);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/aa364427(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa364427")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool FindNextChangeNotification([In] SafeFindChangeNotificationHandle hChangeHandle);
@@ -1873,7 +1876,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa964920")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern uint GetVolumeInformationByHandle([In] SafeFileHandle hFile, [Out] StringBuilder lpVolumeNameBuffer, uint nVolumeNameSize, out uint lpVolumeSerialNumber, out uint lpMaximumComponentLength, out FileSystemFlags lpFileSystemFlags, [Out] StringBuilder lpFileSystemNameBuffer, uint nFileSystemNameSize);
+		public static extern uint GetVolumeInformationByHandleW([In] SafeFileHandle hFile, [Out] StringBuilder lpVolumeNameBuffer, uint nVolumeNameSize, out uint lpVolumeSerialNumber, out uint lpMaximumComponentLength, out FileSystemFlags lpFileSystemFlags, [Out] StringBuilder lpFileSystemNameBuffer, uint nFileSystemNameSize);
 
 		/// <summary>
 		/// <para>

@@ -1007,14 +1007,6 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "")]
 		public static extern void RestoreLastError(uint dwErrCode);
 
-		/// <summary>Retrieves a context record in the context of the caller.</summary>
-		/// <param name="ContextRecord">A pointer to a <c>CONTEXT</c> structure.</param>
-		/// <returns>This function does not return a value.</returns>
-		// VOID WINAPI RtlCaptureContext( _Out_ PCONTEXT ContextRecord); https://msdn.microsoft.com/en-us/library/windows/desktop/ms680591(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("WinNT.h", MSDNShortId = "ms680591")]
-		public static extern void RtlCaptureContext(ref CONTEXT ContextRecord);
-
 		/// <summary>Controls whether the system will handle the specified types of serious errors or whether the process will handle them.</summary>
 		/// <param name="uMode">
 		/// <para>The process error mode. This parameter can be one or more of the following values.</para>

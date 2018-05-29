@@ -799,7 +799,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// HANDLE WINAPI CreateFileMappingFromApp( _In_ HANDLE hFile, _In_opt_ PSECURITY_ATTRIBUTES SecurityAttributes, _In_ ULONG PageProtection, _In_ ULONG64
 		// MaximumSize, _In_opt_ PCWSTR Name);
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("MemoryApi.h", MSDNShortId = "hh994453")]
 		public static extern IntPtr CreateFileMappingFromApp([In] SafeFileHandle hFile, [In] ref SECURITY_ATTRIBUTES SecurityAttributes,
 			MEM_PROTECTION PageProtection, ulong MaximumSize, [In] string Name);
@@ -1575,7 +1575,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		// PVOID WINAPI MapViewOfFileNuma2( _In_ HANDLE FileMappingHandle, _In_ HANDLE ProcessHandle, _In_ ULONG64 Offset, _In_opt_ PVOID BaseAddress, _In_
 		// SIZE_T ViewSize, _In_ ULONG AllocationType, _In_ ULONG PageProtection, _In_ ULONG PreferredNode);
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[DllImport("Api-ms-win-core-memory-l1-1-5.dll", SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "mt492558")]
 		public static extern IntPtr MapViewOfFileNuma2([In] IntPtr FileMappingHandle, [In] IntPtr ProcessHandle, ulong Offset, IntPtr BaseAddress, SizeT ViewSize,
 			MEM_ALLOCATION_TYPE AllocationType, MEM_PROTECTION PageProtection, uint PreferredNode);
@@ -1673,7 +1673,7 @@ namespace Vanara.PInvoke
 		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
 		// HANDLE WINAPI OpenFileMappingFromApp( _In_ ULONG DesiredAccess, _In_ BOOL InheritHandle, _In_ PCWSTR Name);
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("MemoryApi.h", MSDNShortId = "mt169844")]
 		public static extern IntPtr OpenFileMappingFromApp(FILE_MAP DesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool InheritHandle, string Name);
 

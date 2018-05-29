@@ -143,7 +143,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			using (var hLib = new SafeLibraryHandle(@"C:\Windows\System32\en-US\aclui.dll.mui", LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE))
 			{
-				var l = EnumResourceNames(hLib, ResourceType.RT_STRING);
+				var l = EnumResourceNamesEx(hLib, ResourceType.RT_STRING);
 				Assert.That(l.Count, Is.GreaterThan(0));
 				foreach (var resourceName in l)
 				{

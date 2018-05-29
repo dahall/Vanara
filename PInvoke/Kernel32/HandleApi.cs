@@ -53,7 +53,7 @@ namespace Vanara.PInvoke
 		/// <param name="hSecondObjectHandle">The second object handle to compare.</param>
 		/// <returns>A Boolean value that indicates if the two handles refer to the same underlying kernel object. TRUE if the same, otherwise FALSE.</returns>
 		// BOOL WINAPI CompareObjectHandles( _In_ HANDLE hFirstObjectHandle, _In_ HANDLE hSecondObjectHandle); https://msdn.microsoft.com/en-us/library/windows/desktop/mt438733(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Handleapi.h", MSDNShortId = "mt438733")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CompareObjectHandles(IntPtr hFirstObjectHandle, IntPtr hSecondObjectHandle);

@@ -105,7 +105,7 @@ namespace Vanara.Resources
 			return buf;
 		}
 
-		public IList<SafeResourceId> GetResourceNames(SafeResourceId type) => EnumResourceNames(hLib, type);
+		public IList<SafeResourceId> GetResourceNames(SafeResourceId type) => EnumResourceNamesEx(hLib, type);
 
 		protected virtual Bitmap GetBitmap(SafeResourceId name, Size size)
 		{

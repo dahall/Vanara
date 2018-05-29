@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Vanara.PInvoke
 {
-	public static partial class Lz32
+	public static partial class Kernel32
 	{
 		/// <summary>Retrieves the original name of a compressed file, if the file was compressed by the Lempel-Ziv algorithm.</summary>
 		/// <param name="lpszSource">The name of the compressed file.</param>
@@ -13,7 +13,7 @@ namespace Vanara.PInvoke
 		/// <para>If the function fails, the return value is LZERROR_BADVALUE. There is no extended error information for this function; do not call <c>GetLastError</c>.</para>
 		/// </returns>
 		// INT WINAPI GetExpandedName( _In_ LPTSTR lpszSource, _Out_ LPTSTR lpszBuffer); https://msdn.microsoft.com/en-us/library/windows/desktop/aa364941(v=vs.85).aspx
-		[DllImport(Lib.Lz32, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("LzExpand.h", MSDNShortId = "aa364941")]
 		public static extern int GetExpandedName(string lpszSource, [Out] StringBuilder lpszBuffer);
 
@@ -21,7 +21,7 @@ namespace Vanara.PInvoke
 		/// <param name="hFile">A handle to the file to be closed.</param>
 		/// <returns>This function does not return a value.</returns>
 		// void APIENTRY LZClose( _In_ INT hFile); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365221(v=vs.85).aspx
-		[DllImport(Lib.Lz32, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("LzExpand.h", MSDNShortId = "aa365221")]
 		public static extern void LZClose(int hFile);
 
@@ -69,7 +69,7 @@ namespace Vanara.PInvoke
 		/// <para>There is no extended error information for this function; do not call <c>GetLastError</c>.</para>
 		/// </returns>
 		// LONG WINAPI LZCopy( _In_ INT hfSource, _In_ INT hfDest); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365223(v=vs.85).aspx
-		[DllImport(Lib.Lz32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("LzExpand.h", MSDNShortId = "aa365223")]
 		public static extern int LZCopy(int hfSource, int hfDest);
 
@@ -109,7 +109,7 @@ namespace Vanara.PInvoke
 		/// <para>There is no extended error information for this function; do not call <c>GetLastError</c>.</para>
 		/// </returns>
 		// INT WINAPI LZInit( _In_ INT hfSource); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365224(v=vs.85).aspx
-		[DllImport(Lib.Lz32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("LzExpand.h", MSDNShortId = "aa365224")]
 		public static extern int LZInit(int hfSource);
 
@@ -232,7 +232,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </returns>
 		// INT WINAPI LZOpenFile( _In_ LPTSTR lpFileName, _Out_ LPOFSTRUCT lpReOpenBuf, _In_ WORD wStyle); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365225(v=vs.85).aspx
-		[DllImport(Lib.Lz32, SetLastError = true, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("LzExpand.h", MSDNShortId = "aa365225")]
 		public static extern int LZOpenFile(string lpFileName, out OFSTRUCT lpReOpenBuf, ushort wStyle);
 
@@ -286,7 +286,7 @@ namespace Vanara.PInvoke
 		/// <para>There is no extended error information for this function; do not call <c>GetLastError</c>.</para>
 		/// </returns>
 		// INT WINAPI LZRead( _In_ INT hFile, _Out_ LPSTR lpBuffer, _In_ INT cbRead); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365226(v=vs.85).aspx
-		[DllImport(Lib.Lz32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("LzExpand.h", MSDNShortId = "aa365226")]
 		public static extern int LZRead(int hFile, [Out] StringBuilder lpBuffer, int cbRead);
 
@@ -346,7 +346,7 @@ namespace Vanara.PInvoke
 		/// <para>There is no extended error information for this function; do not call <c>GetLastError</c>.</para>
 		/// </returns>
 		// LONG WINAPI LZSeek( _In_ INT hFile, _In_ LONG lOffset, _In_ INT iOrigin); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365227(v=vs.85).aspx
-		[DllImport(Lib.Lz32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("LzExpand.h", MSDNShortId = "aa365227")]
 		public static extern int LZSeek(int hFile, int lOffset, int iOrigin);
 	}

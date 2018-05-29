@@ -400,6 +400,48 @@ namespace Vanara.PInvoke
 		public static extern int FoldString(STRING_MAPPING dwMapFlags, [In] string lpSrcStr, int cchSrc, [Out] StringBuilder lpDestStr, int cchDest);
 
 		/// <summary>
+		/// Deprecated. Retrieves character type information for the characters in the specified source string. For each character in the string, the function
+		/// sets one or more bits in the corresponding 16-bit element of the output array. Each bit identifies a given character type, for example, letter,
+		/// digit, or neither.
+		/// </summary>
+		/// <param name="Locale">
+		/// <para>
+		/// Locale identifier that specifies the locale. You can use the <c>MAKELCID</c> macro to create a locale identifier or use one of the following
+		/// predefined values.
+		/// </para>
+		/// <para><c>Windows Vista and later:</c> The following custom locale identifiers are also supported.</para>
+		/// </param>
+		/// <param name="dwInfoType">
+		/// Flags specifying the character type information to retrieve. For possible flag values, see the dwInfoType parameter of <c>GetStringTypeW</c>. For
+		/// detailed information about the character type bits, see Remarks for <c>GetStringTypeW</c>.
+		/// </param>
+		/// <param name="lpSrcStr">
+		/// Pointer to the ANSI string for which to retrieve the character types. The string can be a double-byte character set (DBCS) string if the supplied
+		/// locale is appropriate for DBCS. The string is assumed to be null-terminated if cchSrc is set to any negative value.
+		/// </param>
+		/// <param name="cchSrc">
+		/// Size, in characters, of the string indicated by lpSrcStr. If the size includes a terminating null character, the function retrieves character type
+		/// information for that character. If the application sets the size to any negative integer, the source string is assumed to be null-terminated and the
+		/// function calculates the size automatically with an additional character for the null termination.
+		/// </param>
+		/// <param name="lpCharType">
+		/// Pointer to an array of 16-bit values. The length of this array must be large enough to receive one 16-bit value for each character in the source
+		/// string. If cchSrc is not a negative number, lpCharType should be an array of words with cchSrc elements. If cchSrc is set to a negative number,
+		/// lpCharType is an array of words with lpSrcStr + 1 elements. When the function returns, this array contains one word corresponding to each character
+		/// in the source string.
+		/// </param>
+		/// <returns>
+		/// Returns a nonzero value if successful, or 0 otherwise. To get extended error information, the application can call <c>GetLastError</c>, which can
+		/// return one of the following error codes:
+		/// </returns>
+		// BOOL GetStringTypeA( _In_ LCID Locale, _In_ DWORD dwInfoType, _In_ LPCSTR lpSrcStr, _In_ int cchSrc, _Out_ LPWORD lpCharType);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/dd318117(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
+		[PInvokeData("Winnls.h", MSDNShortId = "dd318117")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetStringTypeA(uint Locale, uint dwInfoType, string lpSrcStr, int cchSrc, out uint lpCharType);
+
+		/// <summary>
 		/// Retrieves character type information for the characters in the specified Unicode source string. For each character in the string, the function sets
 		/// one or more bits in the corresponding 16-bit element of the output array. Each bit identifies a given character type, for example, letter, digit, or neither.
 		/// </summary>
@@ -451,7 +493,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Stringapiset.h", MSDNShortId = "dd318119")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetStringType(CHAR_TYPE_INFO dwInfoType, [In] string lpSrcStr, int cchSrc, out ushort lpCharType);
+		public static extern bool GetStringTypeW(CHAR_TYPE_INFO dwInfoType, [In] string lpSrcStr, int cchSrc, out ushort lpCharType);
 
 		/// <summary>
 		/// Retrieves character type information for the characters in the specified source string. For each character in the string, the function sets one or
