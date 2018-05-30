@@ -25,7 +25,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-BitBlt, CreateCompatibleDC, CreateDIBSection, DeleteDC, DeleteObject, GdiAlphaBlend, GdiFlush, GdiTransparentBlt, GetDIBits, GetObjectA, GetObjectW, SelectObject, SetBkMode, SetLayout
+BitBlt, CreateCompatibleDC, CreateDIBSection, DeleteDC, DeleteObject, GdiAlphaBlend, GdiFlush, GdiTransparentBlt, GetDIBits, GetObject, SelectObject, SetBkMode, SetLayout
 
 Structures
 BITMAP, BITMAPINFO, BITMAPINFOHEADER, DIBSECTION, RGBQUAD, BLENDFUNCTION, COLORREF, LOGFONT, TEXTMETRIC

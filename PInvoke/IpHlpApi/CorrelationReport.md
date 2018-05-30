@@ -7,18 +7,18 @@ Native Method | Native DLL | Header | Managed Method
 [AllocateAndGetIpAddrTableFromStack](https://www.google.com/search?num=5&q=AllocateAndGetIpAddrTableFromStack+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [CancelIPChangeNotify](https://www.google.com/search?num=5&q=CancelIPChangeNotify+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.CancelIPChangeNotify
 [CancelMibChangeNotify2](https://www.google.com/search?num=5&q=CancelMibChangeNotify2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
+[ConvertGuidToString](https://www.google.com/search?num=5&q=ConvertGuidToString+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [ConvertInterfaceAliasToLuid](https://www.google.com/search?num=5&q=ConvertInterfaceAliasToLuid+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [ConvertInterfaceGuidToLuid](https://www.google.com/search?num=5&q=ConvertInterfaceGuidToLuid+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [ConvertInterfaceIndexToLuid](https://www.google.com/search?num=5&q=ConvertInterfaceIndexToLuid+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [ConvertInterfaceLuidToAlias](https://www.google.com/search?num=5&q=ConvertInterfaceLuidToAlias+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [ConvertInterfaceLuidToGuid](https://www.google.com/search?num=5&q=ConvertInterfaceLuidToGuid+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [ConvertInterfaceLuidToIndex](https://www.google.com/search?num=5&q=ConvertInterfaceLuidToIndex+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[ConvertInterfaceLuidToNameA](https://www.google.com/search?num=5&q=ConvertInterfaceLuidToNameA+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[ConvertInterfaceLuidToNameW](https://www.google.com/search?num=5&q=ConvertInterfaceLuidToNameW+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[ConvertInterfaceNameToLuidA](https://www.google.com/search?num=5&q=ConvertInterfaceNameToLuidA+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
-[ConvertInterfaceNameToLuidW](https://www.google.com/search?num=5&q=ConvertInterfaceNameToLuidW+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
+[ConvertInterfaceLuidToName](https://www.google.com/search?num=5&q=ConvertInterfaceLuidToName+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
+[ConvertInterfaceNameToLuid](https://www.google.com/search?num=5&q=ConvertInterfaceNameToLuid+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [ConvertIpv4MaskToLength](https://www.google.com/search?num=5&q=ConvertIpv4MaskToLength+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [ConvertLengthToIpv4Mask](https://www.google.com/search?num=5&q=ConvertLengthToIpv4Mask+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
+[ConvertStringToGuid](https://www.google.com/search?num=5&q=ConvertStringToGuid+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [CreateAnycastIpAddressEntry](https://www.google.com/search?num=5&q=CreateAnycastIpAddressEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [CreateIpForwardEntry](https://www.google.com/search?num=5&q=CreateIpForwardEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 
 [CreateIpForwardEntry2](https://www.google.com/search?num=5&q=CreateIpForwardEntry2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  | 

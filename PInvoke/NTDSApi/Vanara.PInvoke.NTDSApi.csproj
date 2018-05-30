@@ -25,7 +25,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-DsBindA, DsBindW, DsBindWithCredA, DsBindWithCredW, DsCrackNamesA, DsCrackNamesW, DsFreeNameResultA, DsFreeNameResultW, DsFreePasswordCredentials, DsMakePasswordCredentialsA, DsMakePasswordCredentialsW, DsUnBindA, DsUnBindW
+DsBind, DsBindWithCred, DsCrackNames, DsFreeNameResult, DsFreePasswordCredentials, DsMakePasswordCredentials, DsUnBind
 
 Structures
 DS_NAME_RESULT, DS_NAME_RESULT_ITEM

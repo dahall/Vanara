@@ -25,7 +25,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-InternetCloseHandle, InternetConnectA, InternetConnectW, InternetOpenA, InternetOpenW, InternetQueryOptionA, InternetQueryOptionW, InternetSetOptionA, InternetSetOptionW, InternetSetStatusCallback
+InternetCloseHandle, InternetConnect, InternetOpen, InternetQueryOption, InternetSetOption, InternetSetStatusCallback
 
 Structures
 HTTP_VERSION_INFO, INTERNET_CACHE_TIMESTAMPS, INTERNET_CERTIFICATE_INFO, INTERNET_DIAGNOSTIC_SOCKET_INFO, INTERNET_PER_CONN_OPTION, INTERNET_PER_CONN_OPTION_LIST, INTERNET_PER_CONN_OPTION_Value, INTERNET_PROXY_INFO, INTERNET_VERSION_INFO

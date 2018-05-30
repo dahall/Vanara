@@ -11,11 +11,7 @@ Native Method | Native DLL | Header | Managed Method
 [CreateMappedBitmap](https://www.google.com/search?num=5&q=CreateMappedBitmap+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [CreateMRUListW](https://www.google.com/search?num=5&q=CreateMRUListW+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [CreatePropertySheetPage](https://www.google.com/search?num=5&q=CreatePropertySheetPage+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
-[CreatePropertySheetPageA](https://www.google.com/search?num=5&q=CreatePropertySheetPageA+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
-[CreatePropertySheetPageW](https://www.google.com/search?num=5&q=CreatePropertySheetPageW+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [CreateStatusWindow](https://www.google.com/search?num=5&q=CreateStatusWindow+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
-[CreateStatusWindowA](https://www.google.com/search?num=5&q=CreateStatusWindowA+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
-[CreateStatusWindowW](https://www.google.com/search?num=5&q=CreateStatusWindowW+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [CreateToolbar](https://www.google.com/search?num=5&q=CreateToolbar+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [CreateToolbarEx](https://www.google.com/search?num=5&q=CreateToolbarEx+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [CreateUpDownControl](https://www.google.com/search?num=5&q=CreateUpDownControl+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
@@ -46,8 +42,6 @@ Native Method | Native DLL | Header | Managed Method
 [DrawShadowText](https://www.google.com/search?num=5&q=DrawShadowText+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [DrawSizeBox](https://www.google.com/search?num=5&q=DrawSizeBox+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [DrawStatusText](https://www.google.com/search?num=5&q=DrawStatusText+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
-[DrawStatusTextA](https://www.google.com/search?num=5&q=DrawStatusTextA+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
-[DrawStatusTextW](https://www.google.com/search?num=5&q=DrawStatusTextW+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [DSA_Clone](https://www.google.com/search?num=5&q=DSA_Clone+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [DSA_Create](https://www.google.com/search?num=5&q=DSA_Create+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [DSA_DeleteAllItems](https://www.google.com/search?num=5&q=DSA_DeleteAllItems+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
@@ -106,8 +100,6 @@ Native Method | Native DLL | Header | Managed Method
 [ImageList_GetImageInfo](https://www.google.com/search?num=5&q=ImageList_GetImageInfo+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [ImageList_GetImageRect](https://www.google.com/search?num=5&q=ImageList_GetImageRect+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [ImageList_LoadImage](https://www.google.com/search?num=5&q=ImageList_LoadImage+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
-[ImageList_LoadImageA](https://www.google.com/search?num=5&q=ImageList_LoadImageA+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
-[ImageList_LoadImageW](https://www.google.com/search?num=5&q=ImageList_LoadImageW+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [ImageList_Merge](https://www.google.com/search?num=5&q=ImageList_Merge+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [ImageList_Read](https://www.google.com/search?num=5&q=ImageList_Read+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [ImageList_ReadEx](https://www.google.com/search?num=5&q=ImageList_ReadEx+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
@@ -133,9 +125,7 @@ Native Method | Native DLL | Header | Managed Method
 [LoadIconWithScaleDown](https://www.google.com/search?num=5&q=LoadIconWithScaleDown+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [MakeDragList](https://www.google.com/search?num=5&q=MakeDragList+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [MenuHelp](https://www.google.com/search?num=5&q=MenuHelp+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
-[PropertySheet](https://www.google.com/search?num=5&q=PropertySheet+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
-[PropertySheetA](https://www.google.com/search?num=5&q=PropertySheetA+site%3Amsdn.microsoft.com) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.PropertySheet
-[PropertySheetW](https://www.google.com/search?num=5&q=PropertySheetW+site%3Amsdn.microsoft.com) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.PropertySheet
+[PropertySheet](https://www.google.com/search?num=5&q=PropertySheet+site%3Amsdn.microsoft.com) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.PropertySheet
 [QuerySystemGestureStatus](https://www.google.com/search?num=5&q=QuerySystemGestureStatus+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [RegisterClassNameW](https://www.google.com/search?num=5&q=RegisterClassNameW+site%3Amsdn.microsoft.com) | comctl32.dll |  | 
 [RemoveWindowSubclass](https://www.google.com/search?num=5&q=RemoveWindowSubclass+site%3Amsdn.microsoft.com) | comctl32.dll |  | 

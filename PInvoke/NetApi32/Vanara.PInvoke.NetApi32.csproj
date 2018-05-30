@@ -25,7 +25,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-DsGetDcNameA, DsGetDcNameW, NetApiBufferFree, NetServerEnum, NetServerGetInfo
+DsGetDcName, NetApiBufferFree, NetServerEnum, NetServerGetInfo
 
 Structures
 DOMAIN_CONTROLLER_INFO, SERVER_INFO_100, SERVER_INFO_101, SERVER_INFO_102

@@ -15,28 +15,19 @@ Native Method | Native DLL | Header | Managed Method
 [DAD_DragMove](https://www.google.com/search?num=5&q=DAD_DragMove+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [DAD_SetDragImage](https://www.google.com/search?num=5&q=DAD_SetDragImage+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [DAD_ShowDragImage](https://www.google.com/search?num=5&q=DAD_ShowDragImage+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[DoEnvironmentSubstA](https://www.google.com/search?num=5&q=DoEnvironmentSubstA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[DoEnvironmentSubstW](https://www.google.com/search?num=5&q=DoEnvironmentSubstW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[DoEnvironmentSubst](https://www.google.com/search?num=5&q=DoEnvironmentSubst+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [DragAcceptFiles](https://www.google.com/search?num=5&q=DragAcceptFiles+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [DragFinish](https://www.google.com/search?num=5&q=DragFinish+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [DragQueryFile](https://www.google.com/search?num=5&q=DragQueryFile+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[DragQueryFileA](https://www.google.com/search?num=5&q=DragQueryFileA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [DragQueryFileAorW](https://www.google.com/search?num=5&q=DragQueryFileAorW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[DragQueryFileW](https://www.google.com/search?num=5&q=DragQueryFileW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [DragQueryPoint](https://www.google.com/search?num=5&q=DragQueryPoint+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [DriveType](https://www.google.com/search?num=5&q=DriveType+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [DuplicateIcon](https://www.google.com/search?num=5&q=DuplicateIcon+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[ExtractAssociatedIconA](https://www.google.com/search?num=5&q=ExtractAssociatedIconA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[ExtractAssociatedIconExA](https://www.google.com/search?num=5&q=ExtractAssociatedIconExA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[ExtractAssociatedIconExW](https://www.google.com/search?num=5&q=ExtractAssociatedIconExW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[ExtractAssociatedIconW](https://www.google.com/search?num=5&q=ExtractAssociatedIconW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[ExtractIconA](https://www.google.com/search?num=5&q=ExtractIconA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[ExtractIconEx](https://www.google.com/search?num=5&q=ExtractIconEx+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[ExtractIconExA](https://www.google.com/search?num=5&q=ExtractIconExA+site%3Amsdn.microsoft.com) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.ExtractIconEx
-[ExtractIconExW](https://www.google.com/search?num=5&q=ExtractIconExW+site%3Amsdn.microsoft.com) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.ExtractIconEx
-[ExtractIconW](https://www.google.com/search?num=5&q=ExtractIconW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[FindExecutableA](https://www.google.com/search?num=5&q=FindExecutableA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[FindExecutableW](https://www.google.com/search?num=5&q=FindExecutableW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[ExtractAssociatedIcon](https://www.google.com/search?num=5&q=ExtractAssociatedIcon+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[ExtractAssociatedIconEx](https://www.google.com/search?num=5&q=ExtractAssociatedIconEx+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[ExtractIcon](https://www.google.com/search?num=5&q=ExtractIcon+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[ExtractIconEx](https://www.google.com/search?num=5&q=ExtractIconEx+site%3Amsdn.microsoft.com) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.ExtractIconEx
+[FindExecutable](https://www.google.com/search?num=5&q=FindExecutable+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [FreeIconList](https://www.google.com/search?num=5&q=FreeIconList+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [GetCurrentProcessExplicitAppUserModelID](https://www.google.com/search?num=5&q=GetCurrentProcessExplicitAppUserModelID+site%3Amsdn.microsoft.com) | shell32.dll | Shobjidl.h | Vanara.PInvoke.Shell32.GetCurrentProcessExplicitAppUserModelID
 [GetFileNameFromBrowse](https://www.google.com/search?num=5&q=GetFileNameFromBrowse+site%3Amsdn.microsoft.com) | shell32.dll |  | 
@@ -45,9 +36,7 @@ Native Method | Native DLL | Header | Managed Method
 [ILClone](https://www.google.com/search?num=5&q=ILClone+site%3Amsdn.microsoft.com) | shell32.dll | Shobjidl.h | Vanara.PInvoke.Shell32.ILClone
 [ILCloneFirst](https://www.google.com/search?num=5&q=ILCloneFirst+site%3Amsdn.microsoft.com) | shell32.dll | Shobjidl.h | Vanara.PInvoke.Shell32.ILCloneFirst
 [ILCombine](https://www.google.com/search?num=5&q=ILCombine+site%3Amsdn.microsoft.com) | shell32.dll | Shobjidl.h | Vanara.PInvoke.Shell32.ILCombine
-[ILCreateFromPath](https://www.google.com/search?num=5&q=ILCreateFromPath+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[ILCreateFromPathA](https://www.google.com/search?num=5&q=ILCreateFromPathA+site%3Amsdn.microsoft.com) | shell32.dll | Shobjidl.h | Vanara.PInvoke.Shell32.ILCreateFromPath
-[ILCreateFromPathW](https://www.google.com/search?num=5&q=ILCreateFromPathW+site%3Amsdn.microsoft.com) | shell32.dll | Shobjidl.h | Vanara.PInvoke.Shell32.ILCreateFromPath
+[ILCreateFromPath](https://www.google.com/search?num=5&q=ILCreateFromPath+site%3Amsdn.microsoft.com) | shell32.dll | Shobjidl.h | Vanara.PInvoke.Shell32.ILCreateFromPath
 [ILFindChild](https://www.google.com/search?num=5&q=ILFindChild+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [ILFindLastID](https://www.google.com/search?num=5&q=ILFindLastID+site%3Amsdn.microsoft.com) | shell32.dll | Shobjidl.h | Vanara.PInvoke.Shell32.ILFindLastID
 [ILFree](https://www.google.com/search?num=5&q=ILFree+site%3Amsdn.microsoft.com) | shell32.dll | Shobjidl.h | Vanara.PInvoke.Shell32.ILFree
@@ -59,10 +48,9 @@ Native Method | Native DLL | Header | Managed Method
 [ILRemoveLastID](https://www.google.com/search?num=5&q=ILRemoveLastID+site%3Amsdn.microsoft.com) | shell32.dll | Shobjidl.h | Vanara.PInvoke.Shell32.ILRemoveLastID
 [ILSaveToStream](https://www.google.com/search?num=5&q=ILSaveToStream+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [InitNetworkAddressControl](https://www.google.com/search?num=5&q=InitNetworkAddressControl+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[InternalExtractIconList](https://www.google.com/search?num=5&q=InternalExtractIconList+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [IsDesktopExplorerProcess](https://www.google.com/search?num=5&q=IsDesktopExplorerProcess+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [IsLFNDrive](https://www.google.com/search?num=5&q=IsLFNDrive+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[IsLFNDriveA](https://www.google.com/search?num=5&q=IsLFNDriveA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[IsLFNDriveW](https://www.google.com/search?num=5&q=IsLFNDriveW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [IsNetDrive](https://www.google.com/search?num=5&q=IsNetDrive+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [IsProcessAnExplorer](https://www.google.com/search?num=5&q=IsProcessAnExplorer+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [IsUserAnAdmin](https://www.google.com/search?num=5&q=IsUserAnAdmin+site%3Amsdn.microsoft.com) | shell32.dll |  | 
@@ -70,8 +58,7 @@ Native Method | Native DLL | Header | Managed Method
 [PathCleanupSpec](https://www.google.com/search?num=5&q=PathCleanupSpec+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [PathGetShortPath](https://www.google.com/search?num=5&q=PathGetShortPath+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [PathIsExe](https://www.google.com/search?num=5&q=PathIsExe+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[PathIsSlowA](https://www.google.com/search?num=5&q=PathIsSlowA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[PathIsSlowW](https://www.google.com/search?num=5&q=PathIsSlowW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[PathIsSlow](https://www.google.com/search?num=5&q=PathIsSlow+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [PathMakeUniqueName](https://www.google.com/search?num=5&q=PathMakeUniqueName+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [PathQualify](https://www.google.com/search?num=5&q=PathQualify+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [PathResolve](https://www.google.com/search?num=5&q=PathResolve+site%3Amsdn.microsoft.com) | shell32.dll |  | 
@@ -83,10 +70,10 @@ Native Method | Native DLL | Header | Managed Method
 [PifMgr_SetProperties](https://www.google.com/search?num=5&q=PifMgr_SetProperties+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [PrepareDiscForBurnRunDllW](https://www.google.com/search?num=5&q=PrepareDiscForBurnRunDllW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [PrintersGetCommand_RunDLL](https://www.google.com/search?num=5&q=PrintersGetCommand_RunDLL+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[PrintersGetCommand_RunDLLA](https://www.google.com/search?num=5&q=PrintersGetCommand_RunDLLA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[PrintersGetCommand_RunDLLW](https://www.google.com/search?num=5&q=PrintersGetCommand_RunDLLW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [ReadCabinetState](https://www.google.com/search?num=5&q=ReadCabinetState+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [RealDriveType](https://www.google.com/search?num=5&q=RealDriveType+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[RealShellExecute](https://www.google.com/search?num=5&q=RealShellExecute+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[RealShellExecuteEx](https://www.google.com/search?num=5&q=RealShellExecuteEx+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [RegenerateUserEnvironment](https://www.google.com/search?num=5&q=RegenerateUserEnvironment+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [RestartDialog](https://www.google.com/search?num=5&q=RestartDialog+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [RestartDialogEx](https://www.google.com/search?num=5&q=RestartDialogEx+site%3Amsdn.microsoft.com) | shell32.dll |  | 
@@ -103,9 +90,7 @@ Native Method | Native DLL | Header | Managed Method
 [SHBindToFolderIDListParentEx](https://www.google.com/search?num=5&q=SHBindToFolderIDListParentEx+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHBindToObject](https://www.google.com/search?num=5&q=SHBindToObject+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHBindToParent](https://www.google.com/search?num=5&q=SHBindToParent+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHBrowseForFolder](https://www.google.com/search?num=5&q=SHBrowseForFolder+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHBrowseForFolderA](https://www.google.com/search?num=5&q=SHBrowseForFolderA+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHBrowseForFolder
-[SHBrowseForFolderW](https://www.google.com/search?num=5&q=SHBrowseForFolderW+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHBrowseForFolder
+[SHBrowseForFolder](https://www.google.com/search?num=5&q=SHBrowseForFolder+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHBrowseForFolder
 [SHChangeNotification_Lock](https://www.google.com/search?num=5&q=SHChangeNotification_Lock+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHChangeNotification_Unlock](https://www.google.com/search?num=5&q=SHChangeNotification_Unlock+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHChangeNotify](https://www.google.com/search?num=5&q=SHChangeNotify+site%3Amsdn.microsoft.com) | shell32.dll |  | 
@@ -124,8 +109,7 @@ Native Method | Native DLL | Header | Managed Method
 [SHCreateDefaultExtractIcon](https://www.google.com/search?num=5&q=SHCreateDefaultExtractIcon+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHCreateDefaultPropertiesOp](https://www.google.com/search?num=5&q=SHCreateDefaultPropertiesOp+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHCreateDirectory](https://www.google.com/search?num=5&q=SHCreateDirectory+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHCreateDirectoryExA](https://www.google.com/search?num=5&q=SHCreateDirectoryExA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHCreateDirectoryExW](https://www.google.com/search?num=5&q=SHCreateDirectoryExW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[SHCreateDirectoryEx](https://www.google.com/search?num=5&q=SHCreateDirectoryEx+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHCreateDrvExtIcon](https://www.google.com/search?num=5&q=SHCreateDrvExtIcon+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHCreateFileExtractIconW](https://www.google.com/search?num=5&q=SHCreateFileExtractIconW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHCreateItemFromIDList](https://www.google.com/search?num=5&q=SHCreateItemFromIDList+site%3Amsdn.microsoft.com) | shell32.dll | Shobjidl.h | Vanara.PInvoke.Shell32.SHCreateItemFromIDList
@@ -145,45 +129,30 @@ Native Method | Native DLL | Header | Managed Method
 [SHCreateShellItemArrayFromIDLists](https://www.google.com/search?num=5&q=SHCreateShellItemArrayFromIDLists+site%3Amsdn.microsoft.com) | shell32.dll | Shobjidl.h | Vanara.PInvoke.Shell32.SHCreateShellItemArrayFromIDLists
 [SHCreateShellItemArrayFromShellItem](https://www.google.com/search?num=5&q=SHCreateShellItemArrayFromShellItem+site%3Amsdn.microsoft.com) | shell32.dll | Shobjidl.h | Vanara.PInvoke.Shell32.SHCreateShellItemArrayFromShellItem
 [SHCreateStdEnumFmtEtc](https://www.google.com/search?num=5&q=SHCreateStdEnumFmtEtc+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHDefExtractIconA](https://www.google.com/search?num=5&q=SHDefExtractIconA+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHDefExtractIcon
-[SHDefExtractIconW](https://www.google.com/search?num=5&q=SHDefExtractIconW+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHDefExtractIcon
+[SHDefExtractIcon](https://www.google.com/search?num=5&q=SHDefExtractIcon+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHDefExtractIcon
 [SHDestroyPropSheetExtArray](https://www.google.com/search?num=5&q=SHDestroyPropSheetExtArray+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHDoDragDrop](https://www.google.com/search?num=5&q=SHDoDragDrop+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SheChangeDirA](https://www.google.com/search?num=5&q=SheChangeDirA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SheChangeDirExW](https://www.google.com/search?num=5&q=SheChangeDirExW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SheGetDirA](https://www.google.com/search?num=5&q=SheGetDirA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [Shell_GetCachedImageIndex](https://www.google.com/search?num=5&q=Shell_GetCachedImageIndex+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[Shell_GetCachedImageIndexA](https://www.google.com/search?num=5&q=Shell_GetCachedImageIndexA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[Shell_GetCachedImageIndexW](https://www.google.com/search?num=5&q=Shell_GetCachedImageIndexW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [Shell_GetImageLists](https://www.google.com/search?num=5&q=Shell_GetImageLists+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [Shell_MergeMenus](https://www.google.com/search?num=5&q=Shell_MergeMenus+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [Shell_NotifyIcon](https://www.google.com/search?num=5&q=Shell_NotifyIcon+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[Shell_NotifyIconA](https://www.google.com/search?num=5&q=Shell_NotifyIconA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [Shell_NotifyIconGetRect](https://www.google.com/search?num=5&q=Shell_NotifyIconGetRect+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[Shell_NotifyIconW](https://www.google.com/search?num=5&q=Shell_NotifyIconW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[ShellAboutA](https://www.google.com/search?num=5&q=ShellAboutA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[ShellAboutW](https://www.google.com/search?num=5&q=ShellAboutW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[ShellAbout](https://www.google.com/search?num=5&q=ShellAbout+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [ShellExec_RunDLL](https://www.google.com/search?num=5&q=ShellExec_RunDLL+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[ShellExec_RunDLLA](https://www.google.com/search?num=5&q=ShellExec_RunDLLA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[ShellExec_RunDLLW](https://www.google.com/search?num=5&q=ShellExec_RunDLLW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[ShellExecuteA](https://www.google.com/search?num=5&q=ShellExecuteA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[ShellExecuteEx](https://www.google.com/search?num=5&q=ShellExecuteEx+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[ShellExecuteExA](https://www.google.com/search?num=5&q=ShellExecuteExA+site%3Amsdn.microsoft.com) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.ShellExecuteEx
-[ShellExecuteExW](https://www.google.com/search?num=5&q=ShellExecuteExW+site%3Amsdn.microsoft.com) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.ShellExecuteEx
-[ShellExecuteW](https://www.google.com/search?num=5&q=ShellExecuteW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[ShellExecute](https://www.google.com/search?num=5&q=ShellExecute+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[ShellExecuteEx](https://www.google.com/search?num=5&q=ShellExecuteEx+site%3Amsdn.microsoft.com) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.ShellExecuteEx
 [ShellHookProc](https://www.google.com/search?num=5&q=ShellHookProc+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[ShellMessageBoxA](https://www.google.com/search?num=5&q=ShellMessageBoxA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[ShellMessageBoxW](https://www.google.com/search?num=5&q=ShellMessageBoxW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHEmptyRecycleBinA](https://www.google.com/search?num=5&q=SHEmptyRecycleBinA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHEmptyRecycleBinW](https://www.google.com/search?num=5&q=SHEmptyRecycleBinW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[ShellMessageBox](https://www.google.com/search?num=5&q=ShellMessageBox+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[SHEmptyRecycleBin](https://www.google.com/search?num=5&q=SHEmptyRecycleBin+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHEnableServiceObject](https://www.google.com/search?num=5&q=SHEnableServiceObject+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHEnumerateUnreadMailAccountsW](https://www.google.com/search?num=5&q=SHEnumerateUnreadMailAccountsW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SheSetCurDrive](https://www.google.com/search?num=5&q=SheSetCurDrive+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHEvaluateSystemCommandTemplate](https://www.google.com/search?num=5&q=SHEvaluateSystemCommandTemplate+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHExtractIconsW](https://www.google.com/search?num=5&q=SHExtractIconsW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHFileOperation](https://www.google.com/search?num=5&q=SHFileOperation+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHFileOperationA](https://www.google.com/search?num=5&q=SHFileOperationA+site%3Amsdn.microsoft.com) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.SHFileOperation
-[SHFileOperationW](https://www.google.com/search?num=5&q=SHFileOperationW+site%3Amsdn.microsoft.com) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.SHFileOperation
+[SHFileOperation](https://www.google.com/search?num=5&q=SHFileOperation+site%3Amsdn.microsoft.com) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.SHFileOperation
 [SHFind_InitMenuPopup](https://www.google.com/search?num=5&q=SHFind_InitMenuPopup+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHFindFiles](https://www.google.com/search?num=5&q=SHFindFiles+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHFlushSFCache](https://www.google.com/search?num=5&q=SHFlushSFCache+site%3Amsdn.microsoft.com) | shell32.dll |  | 
@@ -191,24 +160,17 @@ Native Method | Native DLL | Header | Managed Method
 [SHFree](https://www.google.com/search?num=5&q=SHFree+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHFreeNameMappings](https://www.google.com/search?num=5&q=SHFreeNameMappings+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHGetAttributesFromDataObject](https://www.google.com/search?num=5&q=SHGetAttributesFromDataObject+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHGetDataFromIDListA](https://www.google.com/search?num=5&q=SHGetDataFromIDListA+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHGetDataFromIDList
-[SHGetDataFromIDListW](https://www.google.com/search?num=5&q=SHGetDataFromIDListW+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHGetDataFromIDList
+[SHGetDataFromIDList](https://www.google.com/search?num=5&q=SHGetDataFromIDList+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHGetDataFromIDList
 [SHGetDesktopFolder](https://www.google.com/search?num=5&q=SHGetDesktopFolder+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHGetDesktopFolder
 [SHGetDiskFreeSpaceA](https://www.google.com/search?num=5&q=SHGetDiskFreeSpaceA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHGetDiskFreeSpaceExA](https://www.google.com/search?num=5&q=SHGetDiskFreeSpaceExA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHGetDiskFreeSpaceExW](https://www.google.com/search?num=5&q=SHGetDiskFreeSpaceExW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[SHGetDiskFreeSpaceEx](https://www.google.com/search?num=5&q=SHGetDiskFreeSpaceEx+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHGetDriveMedia](https://www.google.com/search?num=5&q=SHGetDriveMedia+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHGetFileInfo](https://www.google.com/search?num=5&q=SHGetFileInfo+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHGetFileInfoA](https://www.google.com/search?num=5&q=SHGetFileInfoA+site%3Amsdn.microsoft.com) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.SHGetFileInfo
-[SHGetFileInfoW](https://www.google.com/search?num=5&q=SHGetFileInfoW+site%3Amsdn.microsoft.com) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.SHGetFileInfo
+[SHGetFileInfo](https://www.google.com/search?num=5&q=SHGetFileInfo+site%3Amsdn.microsoft.com) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.SHGetFileInfo
 [SHGetFolderLocation](https://www.google.com/search?num=5&q=SHGetFolderLocation+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHGetFolderLocation
-[SHGetFolderPathA](https://www.google.com/search?num=5&q=SHGetFolderPathA+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHGetFolderPath
-[SHGetFolderPathAndSubDirA](https://www.google.com/search?num=5&q=SHGetFolderPathAndSubDirA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHGetFolderPathAndSubDirW](https://www.google.com/search?num=5&q=SHGetFolderPathAndSubDirW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[SHGetFolderPath](https://www.google.com/search?num=5&q=SHGetFolderPath+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHGetFolderPath
+[SHGetFolderPathAndSubDir](https://www.google.com/search?num=5&q=SHGetFolderPathAndSubDir+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHGetFolderPathEx](https://www.google.com/search?num=5&q=SHGetFolderPathEx+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHGetFolderPathEx
-[SHGetFolderPathW](https://www.google.com/search?num=5&q=SHGetFolderPathW+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHGetFolderPath
-[SHGetIconOverlayIndexA](https://www.google.com/search?num=5&q=SHGetIconOverlayIndexA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHGetIconOverlayIndexW](https://www.google.com/search?num=5&q=SHGetIconOverlayIndexW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[SHGetIconOverlayIndex](https://www.google.com/search?num=5&q=SHGetIconOverlayIndex+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHGetIDListFromObject](https://www.google.com/search?num=5&q=SHGetIDListFromObject+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHGetIDListFromObject
 [SHGetImageList](https://www.google.com/search?num=5&q=SHGetImageList+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHGetImageList
 [SHGetInstanceExplorer](https://www.google.com/search?num=5&q=SHGetInstanceExplorer+site%3Amsdn.microsoft.com) | shell32.dll |  | 
@@ -221,12 +183,8 @@ Native Method | Native DLL | Header | Managed Method
 [SHGetMalloc](https://www.google.com/search?num=5&q=SHGetMalloc+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHGetNameFromIDList](https://www.google.com/search?num=5&q=SHGetNameFromIDList+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHGetNameFromIDList
 [SHGetNewLinkInfo](https://www.google.com/search?num=5&q=SHGetNewLinkInfo+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHGetNewLinkInfoA](https://www.google.com/search?num=5&q=SHGetNewLinkInfoA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHGetNewLinkInfoW](https://www.google.com/search?num=5&q=SHGetNewLinkInfoW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHGetPathFromIDList](https://www.google.com/search?num=5&q=SHGetPathFromIDList+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHGetPathFromIDListA](https://www.google.com/search?num=5&q=SHGetPathFromIDListA+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHGetPathFromIDList
+[SHGetPathFromIDList](https://www.google.com/search?num=5&q=SHGetPathFromIDList+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHGetPathFromIDList
 [SHGetPathFromIDListEx](https://www.google.com/search?num=5&q=SHGetPathFromIDListEx+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHGetPathFromIDListW](https://www.google.com/search?num=5&q=SHGetPathFromIDListW+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHGetPathFromIDList
 [SHGetPropertyStoreForWindow](https://www.google.com/search?num=5&q=SHGetPropertyStoreForWindow+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHGetPropertyStoreFromIDList](https://www.google.com/search?num=5&q=SHGetPropertyStoreFromIDList+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHGetPropertyStoreFromParsingName](https://www.google.com/search?num=5&q=SHGetPropertyStoreFromParsingName+site%3Amsdn.microsoft.com) | shell32.dll | Shlobjidl.h | Vanara.PInvoke.Shell32.SHGetPropertyStoreFromParsingName
@@ -235,18 +193,14 @@ Native Method | Native DLL | Header | Managed Method
 [SHGetSetSettings](https://www.google.com/search?num=5&q=SHGetSetSettings+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHGetSettings](https://www.google.com/search?num=5&q=SHGetSettings+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHGetSpecialFolderLocation](https://www.google.com/search?num=5&q=SHGetSpecialFolderLocation+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHGetSpecialFolderPathA](https://www.google.com/search?num=5&q=SHGetSpecialFolderPathA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHGetSpecialFolderPathW](https://www.google.com/search?num=5&q=SHGetSpecialFolderPathW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[SHGetSpecialFolderPath](https://www.google.com/search?num=5&q=SHGetSpecialFolderPath+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHGetStockIconInfo](https://www.google.com/search?num=5&q=SHGetStockIconInfo+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHGetTemporaryPropertyForItem](https://www.google.com/search?num=5&q=SHGetTemporaryPropertyForItem+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHGetUnreadMailCountW](https://www.google.com/search?num=5&q=SHGetUnreadMailCountW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHHandleUpdateImage](https://www.google.com/search?num=5&q=SHHandleUpdateImage+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHHelpShortcuts_RunDLL](https://www.google.com/search?num=5&q=SHHelpShortcuts_RunDLL+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHHelpShortcuts_RunDLLA](https://www.google.com/search?num=5&q=SHHelpShortcuts_RunDLLA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHHelpShortcuts_RunDLLW](https://www.google.com/search?num=5&q=SHHelpShortcuts_RunDLLW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHILCreateFromPath](https://www.google.com/search?num=5&q=SHILCreateFromPath+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHInvokePrinterCommandA](https://www.google.com/search?num=5&q=SHInvokePrinterCommandA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHInvokePrinterCommandW](https://www.google.com/search?num=5&q=SHInvokePrinterCommandW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[SHInvokePrinterCommand](https://www.google.com/search?num=5&q=SHInvokePrinterCommand+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHIsFileAvailableOffline](https://www.google.com/search?num=5&q=SHIsFileAvailableOffline+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHLimitInputEdit](https://www.google.com/search?num=5&q=SHLimitInputEdit+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHLoadInProc](https://www.google.com/search?num=5&q=SHLoadInProc+site%3Amsdn.microsoft.com) | shell32.dll |  | 
@@ -258,21 +212,18 @@ Native Method | Native DLL | Header | Managed Method
 [SHOpenPropSheetW](https://www.google.com/search?num=5&q=SHOpenPropSheetW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHOpenWithDialog](https://www.google.com/search?num=5&q=SHOpenWithDialog+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHParseDisplayName](https://www.google.com/search?num=5&q=SHParseDisplayName+site%3Amsdn.microsoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHParseDisplayName
-[SHPathPrepareForWriteA](https://www.google.com/search?num=5&q=SHPathPrepareForWriteA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHPathPrepareForWriteW](https://www.google.com/search?num=5&q=SHPathPrepareForWriteW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[SHPathPrepareForWrite](https://www.google.com/search?num=5&q=SHPathPrepareForWrite+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHPropStgCreate](https://www.google.com/search?num=5&q=SHPropStgCreate+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHPropStgReadMultiple](https://www.google.com/search?num=5&q=SHPropStgReadMultiple+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHPropStgWriteMultiple](https://www.google.com/search?num=5&q=SHPropStgWriteMultiple+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHQueryRecycleBinA](https://www.google.com/search?num=5&q=SHQueryRecycleBinA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHQueryRecycleBinW](https://www.google.com/search?num=5&q=SHQueryRecycleBinW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[SHQueryRecycleBin](https://www.google.com/search?num=5&q=SHQueryRecycleBin+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHQueryUserNotificationState](https://www.google.com/search?num=5&q=SHQueryUserNotificationState+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHRemoveLocalizedName](https://www.google.com/search?num=5&q=SHRemoveLocalizedName+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHReplaceFromPropSheetExtArray](https://www.google.com/search?num=5&q=SHReplaceFromPropSheetExtArray+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHResolveLibrary](https://www.google.com/search?num=5&q=SHResolveLibrary+site%3Amsdn.microsoft.com) | shell32.dll | Shobjidl.h | Vanara.PInvoke.Shell32.SHResolveLibrary
 [SHRestricted](https://www.google.com/search?num=5&q=SHRestricted+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHSetDefaultProperties](https://www.google.com/search?num=5&q=SHSetDefaultProperties+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHSetFolderPathA](https://www.google.com/search?num=5&q=SHSetFolderPathA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHSetFolderPathW](https://www.google.com/search?num=5&q=SHSetFolderPathW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[SHSetFolderPath](https://www.google.com/search?num=5&q=SHSetFolderPath+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHSetInstanceExplorer](https://www.google.com/search?num=5&q=SHSetInstanceExplorer+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHSetKnownFolderPath](https://www.google.com/search?num=5&q=SHSetKnownFolderPath+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHSetLocalizedName](https://www.google.com/search?num=5&q=SHSetLocalizedName+site%3Amsdn.microsoft.com) | shell32.dll |  | 
@@ -283,36 +234,23 @@ Native Method | Native DLL | Header | Managed Method
 [SHSimpleIDListFromPath](https://www.google.com/search?num=5&q=SHSimpleIDListFromPath+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHStartNetConnectionDialogW](https://www.google.com/search?num=5&q=SHStartNetConnectionDialogW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHTestTokenMembership](https://www.google.com/search?num=5&q=SHTestTokenMembership+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHUpdateImageA](https://www.google.com/search?num=5&q=SHUpdateImageA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[SHUpdateImageW](https://www.google.com/search?num=5&q=SHUpdateImageW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[SHUpdateImage](https://www.google.com/search?num=5&q=SHUpdateImage+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHUpdateRecycleBinIcon](https://www.google.com/search?num=5&q=SHUpdateRecycleBinIcon+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SHValidateUNC](https://www.google.com/search?num=5&q=SHValidateUNC+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [SignalFileOpen](https://www.google.com/search?num=5&q=SignalFileOpen+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [StgMakeUniqueName](https://www.google.com/search?num=5&q=StgMakeUniqueName+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrChrA](https://www.google.com/search?num=5&q=StrChrA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrChrIA](https://www.google.com/search?num=5&q=StrChrIA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrChrIW](https://www.google.com/search?num=5&q=StrChrIW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrChrW](https://www.google.com/search?num=5&q=StrChrW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrCmpNA](https://www.google.com/search?num=5&q=StrCmpNA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrCmpNIA](https://www.google.com/search?num=5&q=StrCmpNIA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrCmpNIW](https://www.google.com/search?num=5&q=StrCmpNIW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrCmpNW](https://www.google.com/search?num=5&q=StrCmpNW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrNCmpA](https://www.google.com/search?num=5&q=StrNCmpA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrNCmpIA](https://www.google.com/search?num=5&q=StrNCmpIA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrNCmpIW](https://www.google.com/search?num=5&q=StrNCmpIW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrNCmpW](https://www.google.com/search?num=5&q=StrNCmpW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrRChrA](https://www.google.com/search?num=5&q=StrRChrA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrRChrIA](https://www.google.com/search?num=5&q=StrRChrIA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrRChrIW](https://www.google.com/search?num=5&q=StrRChrIW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrRChrW](https://www.google.com/search?num=5&q=StrRChrW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrRStrA](https://www.google.com/search?num=5&q=StrRStrA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrRStrIA](https://www.google.com/search?num=5&q=StrRStrIA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrRStrIW](https://www.google.com/search?num=5&q=StrRStrIW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrRStrW](https://www.google.com/search?num=5&q=StrRStrW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrStrA](https://www.google.com/search?num=5&q=StrStrA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrStrIA](https://www.google.com/search?num=5&q=StrStrIA+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrStrIW](https://www.google.com/search?num=5&q=StrStrIW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
-[StrStrW](https://www.google.com/search?num=5&q=StrStrW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[StrChr](https://www.google.com/search?num=5&q=StrChr+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[StrChrI](https://www.google.com/search?num=5&q=StrChrI+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[StrCmpN](https://www.google.com/search?num=5&q=StrCmpN+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[StrCmpNI](https://www.google.com/search?num=5&q=StrCmpNI+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[StrNCmp](https://www.google.com/search?num=5&q=StrNCmp+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[StrNCmpI](https://www.google.com/search?num=5&q=StrNCmpI+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[StrRChr](https://www.google.com/search?num=5&q=StrRChr+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[StrRChrI](https://www.google.com/search?num=5&q=StrRChrI+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[StrRStr](https://www.google.com/search?num=5&q=StrRStr+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[StrRStrI](https://www.google.com/search?num=5&q=StrRStrI+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[StrStr](https://www.google.com/search?num=5&q=StrStr+site%3Amsdn.microsoft.com) | shell32.dll |  | 
+[StrStrI](https://www.google.com/search?num=5&q=StrStrI+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [WaitForExplorerRestartW](https://www.google.com/search?num=5&q=WaitForExplorerRestartW+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [Win32DeleteFile](https://www.google.com/search?num=5&q=Win32DeleteFile+site%3Amsdn.microsoft.com) | shell32.dll |  | 
 [WOWShellExecute](https://www.google.com/search?num=5&q=WOWShellExecute+site%3Amsdn.microsoft.com) | shell32.dll |  | 

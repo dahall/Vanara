@@ -25,7 +25,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-CallNextHookEx, ChildWindowFromPointEx, DestroyIcon, DrawEdge, DrawTextA, DrawTextW, ExitWindowsEx, FindWindowA, FindWindowW, GetActiveWindow, GetClientRect, GetIconInfo, GetSysColor, GetSysColorBrush, GetWindowLongA, GetWindowLongPtrA, GetWindowLongPtrW, GetWindowLongW, GetWindowRect, InvalidateRect, LoadImageA, LoadImageW, LoadStringA, LoadStringW, LockWorkStation, MapWindowPoints, RealGetWindowClassA, RealGetWindowClassW, RegisterHotKey, RegisterWindowMessageA, RegisterWindowMessageW, ScreenToClient, SendMessageA, SendMessageW, SetWindowPos, SetWindowsHookExA, SetWindowsHookExW, SetWindowTextA, SetWindowTextW, ShutdownBlockReasonCreate, ShutdownBlockReasonDestroy, ShutdownBlockReasonQuery, UnhookWindowsHookEx, UnregisterHotKey, WindowFromPoint
+CallNextHookEx, ChildWindowFromPointEx, DestroyIcon, DrawEdge, DrawText, ExitWindowsEx, FindWindow, GetActiveWindow, GetClientRect, GetIconInfo, GetSysColor, GetSysColorBrush, GetWindowLong, GetWindowLongPtr, GetWindowRect, InvalidateRect, LoadImage, LoadString, LockWorkStation, MapWindowPoints, RealGetWindowClass, RegisterHotKey, RegisterWindowMessage, ScreenToClient, SendMessage, SetWindowPos, SetWindowsHookEx, SetWindowText, ShutdownBlockReasonCreate, ShutdownBlockReasonDestroy, ShutdownBlockReasonQuery, UnhookWindowsHookEx, UnregisterHotKey, WindowFromPoint
 
 Structures
 ICONINFO, NMHDR, MINMAXINFO, WINDOWPOS, GRPICONDIR, GRPICONDIRENTRY

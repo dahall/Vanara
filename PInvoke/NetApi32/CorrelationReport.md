@@ -1,5 +1,5 @@
 ## Correlation report for netapi32.dll
-### Methods (2% complete)
+### Methods (1% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
 [DavAddConnection](https://www.google.com/search?num=5&q=DavAddConnection+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
@@ -8,33 +8,22 @@ Native Method | Native DLL | Header | Managed Method
 [DavGetExtendedError](https://www.google.com/search?num=5&q=DavGetExtendedError+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
 [DavGetHTTPFromUNCPath](https://www.google.com/search?num=5&q=DavGetHTTPFromUNCPath+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
 [DavGetUNCFromHTTPPath](https://www.google.com/search?num=5&q=DavGetUNCFromHTTPPath+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[DsAddressToSiteNamesA](https://www.google.com/search?num=5&q=DsAddressToSiteNamesA+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[DsAddressToSiteNamesExA](https://www.google.com/search?num=5&q=DsAddressToSiteNamesExA+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[DsAddressToSiteNamesExW](https://www.google.com/search?num=5&q=DsAddressToSiteNamesExW+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[DsAddressToSiteNamesW](https://www.google.com/search?num=5&q=DsAddressToSiteNamesW+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[DsDeregisterDnsHostRecordsA](https://www.google.com/search?num=5&q=DsDeregisterDnsHostRecordsA+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[DsDeregisterDnsHostRecordsW](https://www.google.com/search?num=5&q=DsDeregisterDnsHostRecordsW+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[DsEnumerateDomainTrustsA](https://www.google.com/search?num=5&q=DsEnumerateDomainTrustsA+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[DsEnumerateDomainTrustsW](https://www.google.com/search?num=5&q=DsEnumerateDomainTrustsW+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
+[DsAddressToSiteNames](https://www.google.com/search?num=5&q=DsAddressToSiteNames+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
+[DsAddressToSiteNamesEx](https://www.google.com/search?num=5&q=DsAddressToSiteNamesEx+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
+[DsDeregisterDnsHostRecords](https://www.google.com/search?num=5&q=DsDeregisterDnsHostRecords+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
+[DsEnumerateDomainTrusts](https://www.google.com/search?num=5&q=DsEnumerateDomainTrusts+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
 [DsGetDcCloseW](https://www.google.com/search?num=5&q=DsGetDcCloseW+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[DsGetDcNameA](https://www.google.com/search?num=5&q=DsGetDcNameA+site%3Amsdn.microsoft.com) | netapi32.dll | DsGetDC.h | Vanara.PInvoke.NetApi32.DsGetDcName
-[DsGetDcNameW](https://www.google.com/search?num=5&q=DsGetDcNameW+site%3Amsdn.microsoft.com) | netapi32.dll | DsGetDC.h | Vanara.PInvoke.NetApi32.DsGetDcName
-[DsGetDcNameWithAccountA](https://www.google.com/search?num=5&q=DsGetDcNameWithAccountA+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[DsGetDcNameWithAccountW](https://www.google.com/search?num=5&q=DsGetDcNameWithAccountW+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[DsGetDcNextA](https://www.google.com/search?num=5&q=DsGetDcNextA+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[DsGetDcNextW](https://www.google.com/search?num=5&q=DsGetDcNextW+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[DsGetDcOpenA](https://www.google.com/search?num=5&q=DsGetDcOpenA+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[DsGetDcOpenW](https://www.google.com/search?num=5&q=DsGetDcOpenW+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[DsGetDcSiteCoverageA](https://www.google.com/search?num=5&q=DsGetDcSiteCoverageA+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[DsGetDcSiteCoverageW](https://www.google.com/search?num=5&q=DsGetDcSiteCoverageW+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
+[DsGetDcName](https://www.google.com/search?num=5&q=DsGetDcName+site%3Amsdn.microsoft.com) | netapi32.dll | DsGetDC.h | Vanara.PInvoke.NetApi32.DsGetDcName
+[DsGetDcNameWithAccount](https://www.google.com/search?num=5&q=DsGetDcNameWithAccount+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
+[DsGetDcNext](https://www.google.com/search?num=5&q=DsGetDcNext+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
+[DsGetDcOpen](https://www.google.com/search?num=5&q=DsGetDcOpen+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
+[DsGetDcSiteCoverage](https://www.google.com/search?num=5&q=DsGetDcSiteCoverage+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
 [DsGetForestTrustInformationW](https://www.google.com/search?num=5&q=DsGetForestTrustInformationW+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[DsGetSiteNameA](https://www.google.com/search?num=5&q=DsGetSiteNameA+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[DsGetSiteNameW](https://www.google.com/search?num=5&q=DsGetSiteNameW+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
+[DsGetSiteName](https://www.google.com/search?num=5&q=DsGetSiteName+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
 [DsMergeForestTrustInformationW](https://www.google.com/search?num=5&q=DsMergeForestTrustInformationW+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
 [DsRoleFreeMemory](https://www.google.com/search?num=5&q=DsRoleFreeMemory+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
 [DsRoleGetPrimaryDomainInformation](https://www.google.com/search?num=5&q=DsRoleGetPrimaryDomainInformation+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[DsValidateSubnetNameA](https://www.google.com/search?num=5&q=DsValidateSubnetNameA+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
-[DsValidateSubnetNameW](https://www.google.com/search?num=5&q=DsValidateSubnetNameW+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
+[DsValidateSubnetName](https://www.google.com/search?num=5&q=DsValidateSubnetName+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
 [NetAccessAdd](https://www.google.com/search?num=5&q=NetAccessAdd+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
 [NetAccessDel](https://www.google.com/search?num=5&q=NetAccessDel+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
 [NetAccessEnum](https://www.google.com/search?num=5&q=NetAccessEnum+site%3Amsdn.microsoft.com) | netapi32.dll |  | 
