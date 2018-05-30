@@ -1,10 +1,33 @@
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
+using System.Text;
 
 namespace Vanara.PInvoke
 {
 	public static partial class ShlwApi
 	{
+		/// <summary>Searches for a file.</summary>
+		/// <param name="pszFile">
+		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>
+		/// A pointer to a null-terminated string of length MAX_PATH that contains the file name for which to search. If the search is successful, this parameter
+		/// is used to return the fully qualified path name.
+		/// </para>
+		/// </param>
+		/// <param name="ppszOtherDirs">
+		/// <para>Type: <c>LPCTSTR*</c></para>
+		/// <para>An optional, null-terminated array of directories to be searched first. This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+		/// </returns>
+		// BOOL PathFindOnPath( _Inout_ LPTSTR pszFile, _In_opt_ LPCTSTR *ppszOtherDirs);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773594(v=vs.85).aspx
+		[PInvokeData("Shlwapi.h", MSDNShortId = "bb773594")]
+		[DllImport(Lib.Shlwapi, CharSet = CharSet.Auto, SetLastError = false)]
+		public static extern bool PathFindOnPath(StringBuilder pszFile, [In] string[] ppszOtherDirs);
+
 		/// <summary>Opens or creates a file and retrieves a stream to read or write to that file.</summary>
 		/// <param name="pszFile">A pointer to a null-terminated string that specifies the file name.</param>
 		/// <param name="grfMode">One or more STGM values that are used to specify the file access mode and how the object that exposes the stream is created and deleted.</param>
