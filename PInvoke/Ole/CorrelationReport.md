@@ -85,7 +85,7 @@ Native Method | Native DLL | Header | Managed Method
 [CoIncrementMTAUsage](https://www.google.com/search?num=5&q=CoIncrementMTAUsage+site%3Amsdn.microsoft.com) | ole32.dll |  | 
 [CoInitialize](https://www.google.com/search?num=5&q=CoInitialize+site%3Amsdn.microsoft.com) | ole32.dll |  | 
 [CoInitializeEx](https://www.google.com/search?num=5&q=CoInitializeEx+site%3Amsdn.microsoft.com) | ole32.dll | Objbase.h | Vanara.PInvoke.Ole32.CoInitializeEx
-[CoInitializeSecurity](https://www.google.com/search?num=5&q=CoInitializeSecurity+site%3Amsdn.microsoft.com) | ole32.dll |  | 
+[CoInitializeSecurity](https://www.google.com/search?num=5&q=CoInitializeSecurity+site%3Amsdn.microsoft.com) | ole32.dll | Objbase.h | Vanara.PInvoke.Ole32.CoInitializeSecurity
 [CoInitializeWOW](https://www.google.com/search?num=5&q=CoInitializeWOW+site%3Amsdn.microsoft.com) | ole32.dll |  | 
 [CoInstall](https://www.google.com/search?num=5&q=CoInstall+site%3Amsdn.microsoft.com) | ole32.dll |  | 
 [CoInvalidateRemoteMachineBindings](https://www.google.com/search?num=5&q=CoInvalidateRemoteMachineBindings+site%3Amsdn.microsoft.com) | ole32.dll |  | 

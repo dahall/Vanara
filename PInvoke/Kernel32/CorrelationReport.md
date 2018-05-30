@@ -1,5 +1,5 @@
 ## Correlation report for kernel32.dll
-### Methods (67% complete)
+### Methods (69% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
 [AcquireSRWLockExclusive](https://www.google.com/search?num=5&q=AcquireSRWLockExclusive+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive
@@ -1052,25 +1052,6 @@ Native Method | Native DLL | Header | Managed Method
 [ReadProcessMemory](https://www.google.com/search?num=5&q=ReadProcessMemory+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReadProcessMemory
 [ReadThreadProfilingData](https://www.google.com/search?num=5&q=ReadThreadProfilingData+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [ReclaimVirtualMemory](https://www.google.com/search?num=5&q=ReclaimVirtualMemory+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReclaimVirtualMemory
-[RegCloseKey](https://www.google.com/search?num=5&q=RegCloseKey+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegCopyTreeW](https://www.google.com/search?num=5&q=RegCopyTreeW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegCreateKeyExA](https://www.google.com/search?num=5&q=RegCreateKeyExA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegCreateKeyExW](https://www.google.com/search?num=5&q=RegCreateKeyExW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegDeleteKeyExA](https://www.google.com/search?num=5&q=RegDeleteKeyExA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegDeleteKeyExW](https://www.google.com/search?num=5&q=RegDeleteKeyExW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegDeleteTreeA](https://www.google.com/search?num=5&q=RegDeleteTreeA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegDeleteTreeW](https://www.google.com/search?num=5&q=RegDeleteTreeW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegDeleteValueA](https://www.google.com/search?num=5&q=RegDeleteValueA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegDeleteValueW](https://www.google.com/search?num=5&q=RegDeleteValueW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegDisablePredefinedCacheEx](https://www.google.com/search?num=5&q=RegDisablePredefinedCacheEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegEnumKeyExA](https://www.google.com/search?num=5&q=RegEnumKeyExA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegEnumKeyExW](https://www.google.com/search?num=5&q=RegEnumKeyExW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegEnumValueA](https://www.google.com/search?num=5&q=RegEnumValueA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegEnumValueW](https://www.google.com/search?num=5&q=RegEnumValueW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegFlushKey](https://www.google.com/search?num=5&q=RegFlushKey+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegGetKeySecurity](https://www.google.com/search?num=5&q=RegGetKeySecurity+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegGetValueA](https://www.google.com/search?num=5&q=RegGetValueA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegGetValueW](https://www.google.com/search?num=5&q=RegGetValueW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RegisterApplicationRecoveryCallback](https://www.google.com/search?num=5&q=RegisterApplicationRecoveryCallback+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.RegisterApplicationRecoveryCallback
 [RegisterApplicationRestart](https://www.google.com/search?num=5&q=RegisterApplicationRestart+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.RegisterApplicationRestart
 [RegisterBadMemoryNotification](https://www.google.com/search?num=5&q=RegisterBadMemoryNotification+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RegisterBadMemoryNotification
@@ -1083,28 +1064,6 @@ Native Method | Native DLL | Header | Managed Method
 [RegisterWaitUntilOOBECompleted](https://www.google.com/search?num=5&q=RegisterWaitUntilOOBECompleted+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RegisterWowBaseHandlers](https://www.google.com/search?num=5&q=RegisterWowBaseHandlers+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RegisterWowExec](https://www.google.com/search?num=5&q=RegisterWowExec+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegLoadKeyA](https://www.google.com/search?num=5&q=RegLoadKeyA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegLoadKeyW](https://www.google.com/search?num=5&q=RegLoadKeyW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegLoadMUIStringA](https://www.google.com/search?num=5&q=RegLoadMUIStringA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegLoadMUIStringW](https://www.google.com/search?num=5&q=RegLoadMUIStringW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegNotifyChangeKeyValue](https://www.google.com/search?num=5&q=RegNotifyChangeKeyValue+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegOpenCurrentUser](https://www.google.com/search?num=5&q=RegOpenCurrentUser+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegOpenKeyExA](https://www.google.com/search?num=5&q=RegOpenKeyExA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegOpenKeyExW](https://www.google.com/search?num=5&q=RegOpenKeyExW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegOpenUserClassesRoot](https://www.google.com/search?num=5&q=RegOpenUserClassesRoot+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegQueryInfoKeyA](https://www.google.com/search?num=5&q=RegQueryInfoKeyA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegQueryInfoKeyW](https://www.google.com/search?num=5&q=RegQueryInfoKeyW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegQueryValueExA](https://www.google.com/search?num=5&q=RegQueryValueExA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegQueryValueExW](https://www.google.com/search?num=5&q=RegQueryValueExW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegRestoreKeyA](https://www.google.com/search?num=5&q=RegRestoreKeyA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegRestoreKeyW](https://www.google.com/search?num=5&q=RegRestoreKeyW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegSaveKeyExA](https://www.google.com/search?num=5&q=RegSaveKeyExA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegSaveKeyExW](https://www.google.com/search?num=5&q=RegSaveKeyExW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegSetKeySecurity](https://www.google.com/search?num=5&q=RegSetKeySecurity+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegSetValueExA](https://www.google.com/search?num=5&q=RegSetValueExA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegSetValueExW](https://www.google.com/search?num=5&q=RegSetValueExW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegUnLoadKeyA](https://www.google.com/search?num=5&q=RegUnLoadKeyA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RegUnLoadKeyW](https://www.google.com/search?num=5&q=RegUnLoadKeyW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [ReleaseActCtx](https://www.google.com/search?num=5&q=ReleaseActCtx+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ReleaseActCtx
 [ReleaseActCtxWorker](https://www.google.com/search?num=5&q=ReleaseActCtxWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [ReleaseMutex](https://www.google.com/search?num=5&q=ReleaseMutex+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReleaseMutex
@@ -1136,23 +1095,23 @@ Native Method | Native DLL | Header | Managed Method
 [ResolveLocaleName](https://www.google.com/search?num=5&q=ResolveLocaleName+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.ResolveLocaleName
 [RestoreLastError](https://www.google.com/search?num=5&q=RestoreLastError+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RestoreLastError
 [ResumeThread](https://www.google.com/search?num=5&q=ResumeThread+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ResumeThread
-[RtlAddFunctionTable](https://www.google.com/search?num=5&q=RtlAddFunctionTable+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RtlAddFunctionTable](https://www.google.com/search?num=5&q=RtlAddFunctionTable+site%3Amsdn.microsoft.com) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlAddFunctionTable
 [RtlCaptureContext](https://www.google.com/search?num=5&q=RtlCaptureContext+site%3Amsdn.microsoft.com) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlCaptureContext
 [RtlCaptureStackBackTrace](https://www.google.com/search?num=5&q=RtlCaptureStackBackTrace+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RtlCompareMemory](https://www.google.com/search?num=5&q=RtlCompareMemory+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RtlCopyMemory](https://www.google.com/search?num=5&q=RtlCopyMemory+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RtlDeleteFunctionTable](https://www.google.com/search?num=5&q=RtlDeleteFunctionTable+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RtlDeleteFunctionTable](https://www.google.com/search?num=5&q=RtlDeleteFunctionTable+site%3Amsdn.microsoft.com) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlDeleteFunctionTable
 [RtlFillMemory](https://www.google.com/search?num=5&q=RtlFillMemory+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RtlInstallFunctionTableCallback](https://www.google.com/search?num=5&q=RtlInstallFunctionTableCallback+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RtlLookupFunctionEntry](https://www.google.com/search?num=5&q=RtlLookupFunctionEntry+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RtlMoveMemory](https://www.google.com/search?num=5&q=RtlMoveMemory+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RtlPcToFileHeader](https://www.google.com/search?num=5&q=RtlPcToFileHeader+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RtlInstallFunctionTableCallback](https://www.google.com/search?num=5&q=RtlInstallFunctionTableCallback+site%3Amsdn.microsoft.com) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlInstallFunctionTableCallback
+[RtlLookupFunctionEntry](https://www.google.com/search?num=5&q=RtlLookupFunctionEntry+site%3Amsdn.microsoft.com) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlLookupFunctionEntry
+[RtlMoveMemory](https://www.google.com/search?num=5&q=RtlMoveMemory+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MoveMemory
+[RtlPcToFileHeader](https://www.google.com/search?num=5&q=RtlPcToFileHeader+site%3Amsdn.microsoft.com) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlPcToFileHeader
 [RtlRaiseException](https://www.google.com/search?num=5&q=RtlRaiseException+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RtlRestoreContext](https://www.google.com/search?num=5&q=RtlRestoreContext+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RtlUnwind](https://www.google.com/search?num=5&q=RtlUnwind+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RtlUnwindEx](https://www.google.com/search?num=5&q=RtlUnwindEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RtlRestoreContext](https://www.google.com/search?num=5&q=RtlRestoreContext+site%3Amsdn.microsoft.com) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlRestoreContext
+[RtlUnwind](https://www.google.com/search?num=5&q=RtlUnwind+site%3Amsdn.microsoft.com) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlUnwind
+[RtlUnwindEx](https://www.google.com/search?num=5&q=RtlUnwindEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlUnwindEx
 [RtlVirtualUnwind](https://www.google.com/search?num=5&q=RtlVirtualUnwind+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[RtlZeroMemory](https://www.google.com/search?num=5&q=RtlZeroMemory+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RtlZeroMemory](https://www.google.com/search?num=5&q=RtlZeroMemory+site%3Amsdn.microsoft.com) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlZeroMemory
 [ScrollConsoleScreenBufferA](https://www.google.com/search?num=5&q=ScrollConsoleScreenBufferA+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.ScrollConsoleScreenBuffer
 [ScrollConsoleScreenBufferW](https://www.google.com/search?num=5&q=ScrollConsoleScreenBufferW+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.ScrollConsoleScreenBuffer
 [SearchPathA](https://www.google.com/search?num=5&q=SearchPathA+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SearchPath

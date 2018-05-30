@@ -2,9 +2,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Methods, structures and constants imported for Task Scheduler 1.0 and 2.0 COM objects.</Description>
-    <Copyright>Copyright © 2017</Copyright>
+    <Copyright>Copyright © 2017-2018</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.12</VersionPrefix>
+    <VersionPrefix>1.0.13</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.TaskSchd</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>

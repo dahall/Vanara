@@ -2,9 +2,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Interfaces, structures and constants imported for BITS (Background Intelligent Transfer Service).</Description>
-    <Copyright>Copyright © 2017</Copyright>
+    <Copyright>Copyright © 2017-2018</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.12</VersionPrefix>
+    <VersionPrefix>1.0.13</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.BITS</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -22,7 +22,15 @@
     <Company>GitHub Community</Company>
     <Product>Vanara</Product>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>Currently implements:
+
+Structures
+BG_AUTH_CREDENTIALS, BG_FILE_INFO, BG_FILE_PROGRESS, BG_FILE_RANGE, BG_JOB_PROGRESS, BG_JOB_REPLY_PROGRESS, BG_JOB_TIMES, BITS_FILE_PROPERTY_VALUE, BITS_JOB_PROPERTY_VALUE, BG_AUTH_CREDENTIALS_UNION, BG_BASIC_CREDENTIALS
+
+Interfaces
+IBackgroundCopyCallback, IBackgroundCopyCallback2, IBackgroundCopyCallback3, IBackgroundCopyError, IBackgroundCopyFile, IBackgroundCopyFile2, IBackgroundCopyFile3, IBackgroundCopyFile4, IBackgroundCopyFile5, IBackgroundCopyFile6, IBackgroundCopyJob, IBackgroundCopyJob2, IBackgroundCopyJob3, IBackgroundCopyJob4, IBackgroundCopyJob5, IBackgroundCopyJobHttpOptions, IBackgroundCopyManager, IBitsPeer, IBitsPeerCacheAdministration, IBitsPeerCacheRecord, IBitsTokenOptions, IEnumBackgroundCopyFiles, IEnumBackgroundCopyJobs, IEnumBitsPeerCacheRecords, IEnumBitsPeers
+
+</PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

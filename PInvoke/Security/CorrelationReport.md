@@ -458,7 +458,7 @@ Native Method | Native DLL | Header | Managed Method
 [IdentifyCodeAuthzLevelW](https://www.google.com/search?num=5&q=IdentifyCodeAuthzLevelW+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [ImpersonateAnonymousToken](https://www.google.com/search?num=5&q=ImpersonateAnonymousToken+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [ImpersonateLoggedOnUser](https://www.google.com/search?num=5&q=ImpersonateLoggedOnUser+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
-[ImpersonateNamedPipeClient](https://www.google.com/search?num=5&q=ImpersonateNamedPipeClient+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
+[ImpersonateNamedPipeClient](https://www.google.com/search?num=5&q=ImpersonateNamedPipeClient+site%3Amsdn.microsoft.com) | advapi32.dll | Winbase.h | Vanara.PInvoke.AdvApi32.ImpersonateNamedPipeClient
 [ImpersonateSecurityContext](https://www.google.com/search?num=5&q=ImpersonateSecurityContext+site%3Amsdn.microsoft.com) | secur32.dll |  | 
 [ImpersonateSelf](https://www.google.com/search?num=5&q=ImpersonateSelf+site%3Amsdn.microsoft.com) | advapi32.dll |  | 
 [ImportSecurityContextA](https://www.google.com/search?num=5&q=ImportSecurityContextA+site%3Amsdn.microsoft.com) | secur32.dll |  | 
