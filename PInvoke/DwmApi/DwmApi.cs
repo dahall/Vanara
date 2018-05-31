@@ -335,7 +335,7 @@ namespace Vanara.PInvoke
 		/// <param name="hWnd">The handle to the window on which the blur behind data is applied.</param>
 		/// <param name="pDwmBlurbehind">A pointer to a DWM_BLURBEHIND structure that provides blur behind data.</param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[System.Security.SecurityCritical]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmEnableBlurBehindWindow(IntPtr hWnd, ref DWM_BLURBEHIND pDwmBlurbehind);
@@ -349,7 +349,7 @@ namespace Vanara.PInvoke
 		/// with DWM_EC_DISABLECOMPOSITION has no effect. However, the function will still return a success code.</note>
 		/// </param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[System.Security.SecurityCritical]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmEnableComposition(int uCompositionAction);
@@ -359,7 +359,7 @@ namespace Vanara.PInvoke
 		/// </summary>
 		/// <param name="fEnableMMCSS">TRUE to instruct DWM to participate in MMCSS scheduling; FALSE to opt out or end participation in MMCSS scheduling.</param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmEnableMMCSS([MarshalAs(UnmanagedType.Bool)] bool fEnableMMCSS);
 
@@ -367,7 +367,7 @@ namespace Vanara.PInvoke
 		/// <param name="hWnd">The handle to the window in which the frame will be extended into the client area.</param>
 		/// <param name="pMarInset">A pointer to a MARGINS structure that describes the margins to use when extending the frame into the client area.</param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[System.Security.SecurityCritical]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmExtendFrameIntoClientArea(IntPtr hWnd, ref MARGINS pMarInset);
@@ -377,7 +377,7 @@ namespace Vanara.PInvoke
 		/// have been made. This compensates for very complex scenes or calling processes with very low priority.
 		/// </summary>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmFlush();
 
@@ -394,14 +394,14 @@ namespace Vanara.PInvoke
 		/// blend; otherwise, FALSE.
 		/// </param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmGetColorizationColor(out uint pcrColorization, [MarshalAs(UnmanagedType.Bool)] out bool pfOpaqueBlend);
 
 		/// <summary>Gets the colorization parameters.</summary>
 		/// <param name="parameters">The parameters.</param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, EntryPoint = "#127")]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[System.Security.SecurityCritical]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmpGetColorizationParameters(out DWM_COLORIZATION_PARAMS parameters);
@@ -416,7 +416,7 @@ namespace Vanara.PInvoke
 		/// window. The cbSize member of this structure must be set before this function is called.
 		/// </param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmGetCompositionTimingInfo(IntPtr hwnd, ref DWM_TIMING_INFO dwAttribute);
 
@@ -429,7 +429,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="pDwGeneration">A pointer to a DWORD that receives a generation value for the transport.</param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmGetTransportAttributes([MarshalAs(UnmanagedType.Bool)] out bool pfIsRemoting, [MarshalAs(UnmanagedType.Bool)] out bool pfIsConnected, out uint pDwGeneration);
 
@@ -442,7 +442,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="cbAttribute">The size of the DWMWINDOWATTRIBUTE value being retrieved. The size is dependent on the type of the pvAttribute parameter.</param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[System.Security.SecurityCritical]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmGetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, IntPtr pvAttribute, int cbAttribute);
@@ -480,7 +480,7 @@ namespace Vanara.PInvoke
 		/// window when they are next needed. DwmInvalidateIconicBitmaps should not be called frequently. Doing so can lead to poor performance as new bitmaps
 		/// are created and retrieved.
 		/// </remarks>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmInvalidateIconicBitmaps(IntPtr hwnd);
 
@@ -497,7 +497,7 @@ namespace Vanara.PInvoke
 		/// SPI_GETHIGHCONTRAST flag to determine the state of high contrast mode.)</note>
 		/// </param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[System.Security.SecurityCritical]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmIsCompositionEnabled([MarshalAs(UnmanagedType.Bool)] out bool pfEnabled);
@@ -506,7 +506,7 @@ namespace Vanara.PInvoke
 		/// <param name="hThumbnail">A handle to the thumbnail to retrieve the source window size from.</param>
 		/// <param name="pSize">A pointer to a SIZE structure that, when this function returns successfully, receives the size of the source thumbnail.</param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmQueryThumbnailSourceSize(IntPtr hThumbnail, ref SIZE pSize);
 
@@ -521,7 +521,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="phThumbnailId">A pointer to a handle that, when this function returns successfully, represents the registration of the DWM thumbnail.</param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmRegisterThumbnail(IntPtr hwndDestination, IntPtr hwndSource, out IntPtr phThumbnailId);
 
@@ -533,7 +533,7 @@ namespace Vanara.PInvoke
 		/// <param name="pdwPointerID">The pointer ID.</param>
 		/// <param name="pPoints">The points.</param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmRenderGesture(GESTURE_TYPE gt, uint cContacts, ref uint pdwPointerID, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] System.Drawing.Point[] pPoints);
 
@@ -541,7 +541,7 @@ namespace Vanara.PInvoke
 		/// <param name="parameters">The parameters.</param>
 		/// <param name="unk">Always set to 1.</param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, EntryPoint = "#131")]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[System.Security.SecurityCritical]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmpSetColorizationParameters(ref DWM_COLORIZATION_PARAMS parameters, uint unk);
@@ -558,7 +558,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="dwSITFlags">The display options for the live preview.</param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmSetIconicLivePreviewBitmap(IntPtr hwnd, IntPtr hbmp, ref System.Drawing.Point pptClient, DWM_SETICONICPREVIEW_Flags dwSITFlags);
 
@@ -574,7 +574,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="dwSITFlags">The display options for the live preview.</param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmSetIconicLivePreviewBitmap(IntPtr hwnd, IntPtr hbmp, IntPtr pptClient, DWM_SETICONICPREVIEW_Flags dwSITFlags);
 
@@ -586,7 +586,7 @@ namespace Vanara.PInvoke
 		/// <param name="hbmp">A handle to the bitmap to represent the window that hwnd specifies.</param>
 		/// <param name="dwSITFlags">The display options for the live preview.</param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmSetIconicThumbnail(IntPtr hwnd, IntPtr hbmp, DWM_SETICONICPREVIEW_Flags dwSITFlags);
 
@@ -601,7 +601,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="cbAttribute">The size, in bytes, of the value type pointed to by the pvAttribute parameter.</param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[System.Security.SecurityCritical]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, [In] IntPtr pvAttribute, int cbAttribute);
@@ -627,33 +627,37 @@ namespace Vanara.PInvoke
 
 		/// <summary>Called by an app or framework to specify the visual feedback type to draw in response to a particular touch or pen contact.</summary>
 		/// <param name="dwPointerID">The pointer ID of the contact. Each touch or pen contact is given a unique ID when it is detected.</param>
-		/// <param name="eShowContact">One or more of the DWM_SHOWCONTACT visualizations that DWM should show for this contact.</param>
-		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
-		[PInvokeData("dwmapi.h")]
-		public static extern void DwmShowContact(uint dwPointerID, DWM_SHOWCONTACT eShowContact);
+		/// <param name="eShowContact">One or more of the following DWM_SHOWCONTACT visualizations that DWM should show for this contact.</param>
+		/// <returns>
+		/// If dwPointerID does not match that of a contact currently present on the screen, this function returns E_INVALIDARG; otherwise, it returns S_OK.
+		/// </returns>
+		// DWMAPI DwmShowContact( DWORD dwPointerID, DWM_SHOWCONTACT eShowContact);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/hh706496(v=vs.85).aspx
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Dwmapi.h", MSDNShortId = "hh706496")]
+		public static extern HRESULT DwmShowContact(uint dwPointerID, DWM_SHOWCONTACT eShowContact);
 
 		/// <summary>Enables the graphical feedback of touch and drag interactions to the user.</summary>
 		/// <param name="dwPointerID">The pointer ID.</param>
 		/// <param name="fEnable">Indicates whether the contact is enabled.</param>
 		/// <param name="ptTether">The tether.</param>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
-		public static extern void DwmTetherContact(uint dwPointerID, [MarshalAs(UnmanagedType.Bool)] bool fEnable, System.Drawing.Point ptTether);
+		public static extern HRESULT DwmTetherContact(uint dwPointerID, [MarshalAs(UnmanagedType.Bool)] bool fEnable, System.Drawing.Point ptTether);
 
 		/// <summary>Coordinates the animations of tool windows with the Desktop Window Manager (DWM).</summary>
 		/// <param name="hwnd">Handle to the window.</param>
 		/// <param name="target">The target.</param>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
-		public static extern void DwmTransitionOwnedWindow(IntPtr hwnd, DWMTRANSITION_OWNEDWINDOW_TARGET target);
+		public static extern HRESULT DwmTransitionOwnedWindow(IntPtr hwnd, DWMTRANSITION_OWNEDWINDOW_TARGET target);
 
 		/// <summary>Removes a Desktop Window Manager (DWM) thumbnail relationship created by the DwmRegisterThumbnail function.</summary>
 		/// <param name="hThumbnailId">
 		/// The handle to the thumbnail relationship to be removed. Null or non-existent handles will result in a return value of E_INVALIDARG.
 		/// </param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmUnregisterThumbnail(IntPtr hThumbnailId);
 
@@ -664,7 +668,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="ptnProperties">A pointer to a DWM_THUMBNAIL_PROPERTIES structure that contains the new thumbnail properties.</param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.DwmApi, ExactSpelling = true)]
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmUpdateThumbnailProperties(IntPtr hThumbnailId, ref DWM_THUMBNAIL_PROPERTIES ptnProperties);
 
