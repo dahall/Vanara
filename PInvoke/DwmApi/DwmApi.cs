@@ -757,7 +757,10 @@ namespace Vanara.PInvoke
 			public bool fOpaque;
 		}
 
-		/// <summary>Specifies Desktop Window Manager (DWM) thumbnail properties. Used by the DwmUpdateThumbnailProperties function.</summary>
+		/// <summary>Specifies Desktop Window Manager (DWM) thumbnail properties. Used by the <c>DwmUpdateThumbnailProperties</c> function.</summary>
+		// typedef struct _DWM_THUMBNAIL_PROPERTIES { DWORD dwFlags; RECT rcDestination; RECT rcSource; BYTE opacity; BOOL fVisible; BOOL fSourceClientAreaOnly;} DWM_THUMBNAIL_PROPERTIES, *PDWM_THUMBNAIL_PROPERTIES;
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/aa969502(v=vs.85).aspx
+		[PInvokeData("Dwmapi.h", MSDNShortId = "aa969502")]
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		public struct DWM_THUMBNAIL_PROPERTIES
 		{
