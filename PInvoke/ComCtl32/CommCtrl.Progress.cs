@@ -76,8 +76,6 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="progressRange">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, CharSet = CharSet.Unicode, SetLastError = false)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, ProgressMessage Msg, [MarshalAs(UnmanagedType.Bool)] bool wParam, ref PBRANGE progressRange);
+		public static IntPtr SendMessage(HandleRef hWnd, ProgressMessage Msg, bool wParam, ref PBRANGE progressRange) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref progressRange);
 	}
 }

@@ -965,7 +965,8 @@ namespace Vanara.PInvoke
 		/// <param name="Exchange">The exchange value.</param>
 		/// <param name="Comparand">The value to compare to Destination.</param>
 		/// <returns>The function returns the initial value of the Destination parameter.</returns>
-		// LONG __cdecl InterlockedCompareExchange( _Inout_ LONG volatile *Destination, _In_ LONG Exchange, _In_ LONG Comparand); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683560(v=vs.85).aspx
+		// LONG __cdecl InterlockedCompareExchange( _Inout_ LONG volatile *Destination, _In_ LONG Exchange, _In_ LONG Comparand);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms683560(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683560")]
 		public static extern int InterlockedCompareExchange(ref int Destination, int Exchange, int Comperand);

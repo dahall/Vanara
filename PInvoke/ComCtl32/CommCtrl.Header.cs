@@ -696,16 +696,10 @@ namespace Vanara.PInvoke
 			public IntPtr pItem = IntPtr.Zero;
 		}
 
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, SetLastError = true)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, HeaderMessage message, [MarshalAs(UnmanagedType.SysInt)] int wParam, [In, Out] HDITEM item);
+		public static IntPtr SendMessage(HandleRef hWnd, HeaderMessage message, int wParam, [In, Out] HDITEM item) => User32_Gdi.SendMessage(hWnd, message, wParam, item);
 
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, SetLastError = true)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, HeaderMessage message, [MarshalAs(UnmanagedType.SysInt)] int wParam, [In, Out] HDLAYOUT layout);
+		public static IntPtr SendMessage(HandleRef hWnd, HeaderMessage message, int wParam, [In, Out] HDLAYOUT layout) => User32_Gdi.SendMessage(hWnd, message, wParam, layout);
 
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, SetLastError = true)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, HeaderMessage message, [MarshalAs(UnmanagedType.SysInt)] int wParam, [In, Out] HDHITTESTINFO hittest);
+		public static IntPtr SendMessage(HandleRef hWnd, HeaderMessage message, int wParam, [In, Out] HDHITTESTINFO hittest) => User32_Gdi.SendMessage(hWnd, message, wParam, hittest);
 	}
 }

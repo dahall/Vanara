@@ -77,6 +77,7 @@
     <Compile Include="PInvoke\AdvApi32\AdvApi32Tests.cs" />
     <Compile Include="PInvoke\AdvApi32\PSIDTests.cs" />
     <Compile Include="PInvoke\Authz\AuthzTests.cs" />
+    <Compile Include="PInvoke\CommCtrl\EditTest.cs" />
     <Compile Include="PInvoke\CredUI\CredUITests.cs" />
     <Compile Include="PInvoke\DwmApi\DwmApiTests.cs" />
     <Compile Include="PInvoke\Gdi32\Gdi32Tests.cs" />

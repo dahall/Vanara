@@ -57,7 +57,7 @@ Native Method | Native DLL | Header | Managed Method
 [PathFindExtension](https://www.google.com/search?num=5&q=PathFindExtension+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [PathFindFileName](https://www.google.com/search?num=5&q=PathFindFileName+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [PathFindNextComponent](https://www.google.com/search?num=5&q=PathFindNextComponent+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
-[PathFindOnPath](https://www.google.com/search?num=5&q=PathFindOnPath+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
+[PathFindOnPath](https://www.google.com/search?num=5&q=PathFindOnPath+site%3Amsdn.microsoft.com) | shlwapi.dll | Shlwapi.h | Vanara.PInvoke.ShlwApi.PathFindOnPath
 [PathFindSuffixArray](https://www.google.com/search?num=5&q=PathFindSuffixArray+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [PathGetArgs](https://www.google.com/search?num=5&q=PathGetArgs+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 
 [PathGetCharType](https://www.google.com/search?num=5&q=PathGetCharType+site%3Amsdn.microsoft.com) | shlwapi.dll |  | 

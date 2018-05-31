@@ -118,7 +118,7 @@ namespace Vanara.Windows.Forms
 		private void SetShowShield()
 		{
 			if (!IsHandleCreated) return;
-			SendMessage(new HandleRef(this, Handle), (int)ButtonMessage.BCM_SETSHIELD, IntPtr.Zero, showShield ? new IntPtr(1) : IntPtr.Zero);
+			SendMessage(new HandleRef(this, Handle), (uint)ButtonMessage.BCM_SETSHIELD, IntPtr.Zero, showShield ? new IntPtr(1) : IntPtr.Zero);
 		}
 
 		/// <summary>
@@ -135,7 +135,7 @@ namespace Vanara.Windows.Forms
 			else if (icon != null)
 				iconhandle = Icon.Handle;
 
-			const int BM_SETIMAGE = 0xF7;
+			const uint BM_SETIMAGE = 0xF7;
 			SendMessage(new HandleRef(this, Handle), BM_SETIMAGE, (IntPtr)1, iconhandle);
 		}
 	}

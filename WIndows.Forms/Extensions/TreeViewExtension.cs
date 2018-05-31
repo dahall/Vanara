@@ -29,7 +29,7 @@ namespace Vanara.Extensions
 				if (!on) return;
 				treeView.HotTracking = true;
 				treeView.ShowLines = false;
-				SendMessage(new HandleRef(treeView, treeView.Handle), (int)TreeViewMessage.TVM_SETEXTENDEDSTYLE, (int)(TreeViewStyleEx.TVS_EX_FADEINOUTEXPANDOS | TreeViewStyleEx.TVS_EX_AUTOHSCROLL), (int)(TreeViewStyleEx.TVS_EX_FADEINOUTEXPANDOS | TreeViewStyleEx.TVS_EX_AUTOHSCROLL));
+				SendMessage(new HandleRef(treeView, treeView.Handle), (uint)TreeViewMessage.TVM_SETEXTENDEDSTYLE, (IntPtr)(TreeViewStyleEx.TVS_EX_FADEINOUTEXPANDOS | TreeViewStyleEx.TVS_EX_AUTOHSCROLL), (IntPtr)(TreeViewStyleEx.TVS_EX_FADEINOUTEXPANDOS | TreeViewStyleEx.TVS_EX_AUTOHSCROLL));
 			}
 		}
 

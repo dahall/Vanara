@@ -748,7 +748,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </returns>
 		// HANDLE WINAPI FindFirstFileNameW( _In_ LPCWSTR lpFileName, _In_ DWORD dwFlags, _Inout_ LPDWORD StringLength, _Inout_ PWCHAR LinkName);
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "FindFirstFileNameW", CharSet = CharSet.Unicode)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa364421")]
 		public static extern SafeSearchHandle FindFirstFileName(string lpFileName, uint dwFlags, ref uint StringLength, StringBuilder LinkName);
 
@@ -782,7 +782,7 @@ namespace Vanara.PInvoke
 		/// <para>If no streams can be found, the function fails and <c>GetLastError</c> returns <c>ERROR_HANDLE_EOF</c> (38).</para>
 		/// </returns>
 		// HANDLE WINAPI FindFirstStreamW( _In_ LPCWSTR lpFileName, _In_ STREAM_INFO_LEVELS InfoLevel, _Out_ LPVOID lpFindStreamData, _Reserved_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa364424(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "FindFirstStreamW", CharSet = CharSet.Unicode)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa364424")]
 		public static extern SafeSearchHandle FindFirstStream(string lpFileName, STREAM_INFO_LEVELS InfoLevel, [Out] IntPtr lpFindStreamData, [Optional] uint dwFlags);
 
@@ -828,7 +828,7 @@ namespace Vanara.PInvoke
 		/// <para>If no matching files can be found, the <c>GetLastError</c> function returns <c>ERROR_HANDLE_EOF</c>.</para>
 		/// </returns>
 		// BOOL WINAPI FindNextFileNameW( _In_ HANDLE hFindStream, _Inout_ LPDWORD StringLength, _Inout_ PWCHAR LinkName);
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "FindNextFileNameW", CharSet = CharSet.Unicode)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa364429")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool FindNextFileName(SafeSearchHandle hFindStream, ref uint StringLength, StringBuilder LinkName);
@@ -850,7 +850,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </returns>
 		// BOOL WINAPI FindNextStreamW( _In_ HANDLE hFindStream, _Out_ LPVOID lpFindStreamData);
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "FindNextStreamW", CharSet = CharSet.Unicode)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa364430")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool FindNextStream([In] SafeSearchHandle hFindStream, [Out] IntPtr lpFindStreamData);

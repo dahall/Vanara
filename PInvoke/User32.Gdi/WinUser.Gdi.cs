@@ -3,7 +3,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
+using Vanara.Extensions;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.Gdi32;
+
 // ReSharper disable FieldCanBeMadeReadOnly.Global
 // ReSharper disable InconsistentNaming
 
@@ -366,6 +369,27 @@ namespace Vanara.PInvoke
 			DWLP_DLGPROC = 0x4
 		}
 
+		/// <summary>
+		/// Determines which, if any, of the child windows belonging to the specified parent window contains the specified point. The function can ignore invisible, disabled, and transparent child windows. The search is restricted to immediate child windows. Grandchildren and deeper descendants are not searched.
+		/// </summary>
+		/// <param name="hwndParent">A handle to the parent window.</param>
+		/// <param name="pt">A structure that defines the client coordinates (relative to hwndParent) of the point to be checked.</param>
+		/// <param name="uFlags">The child windows to be skipped. This parameter can be one or more of the following values.</param>
+		/// <returns>The return value is a handle to the first child window that contains the point and meets the criteria specified by uFlags. If the point is within the parent window but not within any child window that meets the criteria, the return value is a handle to the parent window. If the point lies outside the parent window or if the function fails, the return value is NULL.</returns>
+		[DllImport(Lib.User32, CharSet = CharSet.Auto, ExactSpelling = true)]
+		[System.Security.SecurityCritical]
+		public static extern IntPtr ChildWindowFromPointEx(HandleRef hwndParent, ref Point pt, ChildWindowSkipOptions uFlags);
+
+		/// <summary>
+		/// Destroys an icon and frees any memory the icon occupied.
+		/// </summary>
+		/// <param name="hIcon">A handle to the icon to be destroyed. The icon must not be in use.</param>
+		/// <returns>If the function succeeds, the return value is true. If the function fails, the return value is false. To get extended error information, call GetLastError.</returns>
+		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		[System.Security.SecurityCritical]
+		public static extern bool DestroyIcon(IntPtr hIcon);
+
 		/// <summary>The DrawEdge function draws one or more edges of rectangle.</summary>
 		/// <param name="hDC">A handle to the device context.</param>
 		/// <param name="qrc">A pointer to a RECT structure that contains the logical coordinates of the rectangle.</param>
@@ -400,6 +424,14 @@ namespace Vanara.PInvoke
 		public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
 		/// <summary>
+		/// Retrieves the window handle to the active window attached to the calling thread's message queue.
+		/// </summary>
+		/// <returns>The return value is the handle to the active window attached to the calling thread's message queue. Otherwise, the return value is NULL.</returns>
+		[DllImport(Lib.User32, ExactSpelling = true)]
+		[System.Security.SecurityCritical]
+		public static extern IntPtr GetActiveWindow();
+
+		/// <summary>
 		/// Retrieves the coordinates of a window's client area. The client coordinates specify the upper-left and lower-right corners of the client area. Because client coordinates are relative to the upper-left corner of a window's client area, the coordinates of the upper-left corner are (0,0).
 		/// </summary>
 		/// <param name="hWnd">A handle to the window whose client coordinates are to be retrieved.</param>
@@ -425,6 +457,47 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinUser.h", MSDNShortId = "dd144927")]
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		public static extern IntPtr GetSysColorBrush(SystemColorIndex nIndex);
+
+		/// <summary>
+		/// Retrieves information about the specified window. The function also retrieves the value at a specified offset into the extra window memory.
+		/// </summary>
+		/// <param name="hWnd">A handle to the window and, indirectly, the class to which the window belongs.</param>
+		/// <param name="nIndex">The zero-based offset to the value to be retrieved. Valid values are in the range zero through the number of bytes of extra window memory, minus four; for example, if you specified 12 or more bytes of extra memory, a value of 8 would be an index to the third 32-bit integer. To retrieve any other value, specify one of the following values.</param>
+		/// <returns>If the function succeeds, the return value is the requested value. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
+		[SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "return", Justification = "This declaration is not used on 64-bit Windows.")]
+		[SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "2", Justification = "This declaration is not used on 64-bit Windows.")]
+		[System.Security.SecurityCritical]
+		public static extern int GetWindowLong(HandleRef hWnd, int nIndex);
+
+		/// <summary>
+		/// Retrieves information about the specified window. The function also retrieves the value at a specified offset into the extra window memory.
+		/// </summary>
+		/// <param name="hWnd">A handle to the window and, indirectly, the class to which the window belongs.</param>
+		/// <param name="nIndex">The zero-based offset to the value to be retrieved. Valid values are in the range zero through the number of bytes of extra window memory, minus the size of an integer. To retrieve any other value, specify one of the following values.</param>
+		/// <returns>If the function succeeds, the return value is the requested value. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+		public static IntPtr GetWindowLongAuto(HandleRef hWnd, int nIndex)
+		{
+			IntPtr ret;
+			if (IntPtr.Size == 4)
+				ret = (IntPtr)GetWindowLong(hWnd, nIndex);
+			else
+				ret = GetWindowLongPtr(hWnd, nIndex);
+			if (ret == IntPtr.Zero)
+				throw new System.ComponentModel.Win32Exception();
+			return ret;
+		}
+
+		/// <summary>
+		/// Retrieves information about the specified window. The function also retrieves the value at a specified offset into the extra window memory.
+		/// </summary>
+		/// <param name="hWnd">A handle to the window and, indirectly, the class to which the window belongs.</param>
+		/// <param name="nIndex">The zero-based offset to the value to be retrieved. Valid values are in the range zero through the number of bytes of extra window memory, minus the size of an integer. To retrieve any other value, specify one of the following values.</param>
+		/// <returns>If the function succeeds, the return value is the requested value. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
+		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
+		[SuppressMessage("Microsoft.Interoperability", "CA1400:PInvokeEntryPointsShouldExist", Justification = "Entry point does exist on 64-bit Windows.")]
+		[System.Security.SecurityCritical]
+		public static extern IntPtr GetWindowLongPtr(HandleRef hWnd, int nIndex);
 
 		/// <summary>
 		/// Retrieves the dimensions of the bounding rectangle of the specified window. The dimensions are given in screen coordinates that are relative to the upper-left corner of the screen.
@@ -490,89 +563,6 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
 		public static extern int MapWindowPoints(HandleRef hWndFrom, HandleRef hWndTo, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] Point[] lpPoints, [MarshalAs(UnmanagedType.U4)] int cPoints);
 
-		/// <summary>
-		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
-		/// </summary>
-		/// <param name="hWnd">A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message is not sent to child windows.</param>
-		/// <param name="msg">The message to be sent.</param>
-		/// <param name="wParam">Additional message-specific information.</param>
-		/// <param name="rect">Additional message-specific information.</param>
-		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		[PInvokeData("WinUser.h", MSDNShortId = "")]
-		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = false)]
-		[System.Security.SecurityCritical]
-		public static extern IntPtr SendMessage(HandleRef hWnd, uint msg, IntPtr wParam, ref RECT rect);
-
-		/// <summary>
-		/// Determines which, if any, of the child windows belonging to the specified parent window contains the specified point. The function can ignore invisible, disabled, and transparent child windows. The search is restricted to immediate child windows. Grandchildren and deeper descendants are not searched.
-		/// </summary>
-		/// <param name="hwndParent">A handle to the parent window.</param>
-		/// <param name="pt">A structure that defines the client coordinates (relative to hwndParent) of the point to be checked.</param>
-		/// <param name="uFlags">The child windows to be skipped. This parameter can be one or more of the following values.</param>
-		/// <returns>The return value is a handle to the first child window that contains the point and meets the criteria specified by uFlags. If the point is within the parent window but not within any child window that meets the criteria, the return value is a handle to the parent window. If the point lies outside the parent window or if the function fails, the return value is NULL.</returns>
-		[DllImport(Lib.User32, CharSet = CharSet.Auto, ExactSpelling = true)]
-		[System.Security.SecurityCritical]
-		public static extern IntPtr ChildWindowFromPointEx(HandleRef hwndParent, ref Point pt, ChildWindowSkipOptions uFlags);
-
-		/// <summary>
-		/// Destroys an icon and frees any memory the icon occupied.
-		/// </summary>
-		/// <param name="hIcon">A handle to the icon to be destroyed. The icon must not be in use.</param>
-		/// <returns>If the function succeeds, the return value is true. If the function fails, the return value is false. To get extended error information, call GetLastError.</returns>
-		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[System.Security.SecurityCritical]
-		public static extern bool DestroyIcon(IntPtr hIcon);
-
-		/// <summary>
-		/// Retrieves the window handle to the active window attached to the calling thread's message queue.
-		/// </summary>
-		/// <returns>The return value is the handle to the active window attached to the calling thread's message queue. Otherwise, the return value is NULL.</returns>
-		[DllImport(Lib.User32, ExactSpelling = true)]
-		[System.Security.SecurityCritical]
-		public static extern IntPtr GetActiveWindow();
-
-		/// <summary>
-		/// Retrieves information about the specified window. The function also retrieves the value at a specified offset into the extra window memory.
-		/// </summary>
-		/// <param name="hWnd">A handle to the window and, indirectly, the class to which the window belongs.</param>
-		/// <param name="nIndex">The zero-based offset to the value to be retrieved. Valid values are in the range zero through the number of bytes of extra window memory, minus the size of an integer. To retrieve any other value, specify one of the following values.</param>
-		/// <returns>If the function succeeds, the return value is the requested value. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
-		public static IntPtr GetWindowLongAuto(HandleRef hWnd, int nIndex)
-		{
-			IntPtr ret;
-			if (IntPtr.Size == 4)
-				ret = (IntPtr)GetWindowLong(hWnd, nIndex);
-			else
-				ret = GetWindowLongPtr(hWnd, nIndex);
-			if (ret == IntPtr.Zero)
-				throw new System.ComponentModel.Win32Exception();
-			return ret;
-		}
-
-		/// <summary>
-		/// Retrieves information about the specified window. The function also retrieves the value at a specified offset into the extra window memory.
-		/// </summary>
-		/// <param name="hWnd">A handle to the window and, indirectly, the class to which the window belongs.</param>
-		/// <param name="nIndex">The zero-based offset to the value to be retrieved. Valid values are in the range zero through the number of bytes of extra window memory, minus four; for example, if you specified 12 or more bytes of extra memory, a value of 8 would be an index to the third 32-bit integer. To retrieve any other value, specify one of the following values.</param>
-		/// <returns>If the function succeeds, the return value is the requested value. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
-		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
-		[SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "return", Justification = "This declaration is not used on 64-bit Windows.")]
-		[SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "2", Justification = "This declaration is not used on 64-bit Windows.")]
-		[System.Security.SecurityCritical]
-		public static extern int GetWindowLong(HandleRef hWnd, int nIndex);
-
-		/// <summary>
-		/// Retrieves information about the specified window. The function also retrieves the value at a specified offset into the extra window memory.
-		/// </summary>
-		/// <param name="hWnd">A handle to the window and, indirectly, the class to which the window belongs.</param>
-		/// <param name="nIndex">The zero-based offset to the value to be retrieved. Valid values are in the range zero through the number of bytes of extra window memory, minus the size of an integer. To retrieve any other value, specify one of the following values.</param>
-		/// <returns>If the function succeeds, the return value is the requested value. If the function fails, the return value is zero.To get extended error information, call GetLastError.</returns>
-		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
-		[SuppressMessage("Microsoft.Interoperability", "CA1400:PInvokeEntryPointsShouldExist", Justification = "Entry point does exist on 64-bit Windows.")]
-		[System.Security.SecurityCritical]
-		public static extern IntPtr GetWindowLongPtr(HandleRef hWnd, int nIndex);
-
 		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
 		public static extern int RealGetWindowClass(HandleRef hwnd, System.Text.StringBuilder pszType, int cchType);
 
@@ -602,73 +592,194 @@ namespace Vanara.PInvoke
 		/// <param name="hWnd">A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message is not sent to child windows.</param>
 		/// <param name="msg">The message to be sent.</param>
 		/// <param name="wParam">Additional message-specific information.</param>
-		/// <param name="lParam">Additional message-specific information.</param>
+		/// <param name="rect">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
+		[PInvokeData("WinUser.h", MSDNShortId = "")]
 		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = false)]
 		[System.Security.SecurityCritical]
-		public static extern IntPtr SendMessage(HandleRef hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+		public static extern IntPtr SendMessage(HandleRef hWnd, uint msg, IntPtr wParam, ref RECT rect);
 
 		/// <summary>
-		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
+		/// <para>
+		/// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified window and does not
+		/// return until the window procedure has processed the message.
+		/// </para>
+		/// <para>
+		/// To send a message and return immediately, use the <c>SendMessageCallback</c> or <c>SendNotifyMessage</c> function. To post a message to a thread's
+		/// message queue and return immediately, use the <c>PostMessage</c> or <c>PostThreadMessage</c> function.
+		/// </para>
 		/// </summary>
-		/// <param name="hWnd">A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message is not sent to child windows.</param>
-		/// <param name="msg">The message to be sent.</param>
+		/// <param name="hWnd">
+		/// <para>
+		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c> ((HWND)0xffff), the message is
+		/// sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message
+		/// is not sent to child windows.
+		/// </para>
+		/// <para>
+		/// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of lesser or equal
+		/// integrity level.
+		/// </para>
+		/// </param>
+		/// <param name="Msg">
+		/// <para>The message to be sent.</para>
+		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+		/// </param>
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="lParam">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		// LRESULT WINAPI SendMessage( _In_ HWND hWnd, _In_ UINT Msg, _In_ WPARAM wParam, _In_ LPARAM lParam);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = false)]
 		[System.Security.SecurityCritical]
-		public static extern IntPtr SendMessage(HandleRef hWnd, uint msg, UIntPtr wParam, UIntPtr lParam);
+		public static extern IntPtr SendMessage(HandleRef hWnd, uint msg, IntPtr wParam = default(IntPtr), IntPtr lParam = default(IntPtr));
 
 		/// <summary>
-		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
+		/// <para>
+		/// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified window and does not
+		/// return until the window procedure has processed the message.
+		/// </para>
+		/// <para>
+		/// To send a message and return immediately, use the <c>SendMessageCallback</c> or <c>SendNotifyMessage</c> function. To post a message to a thread's
+		/// message queue and return immediately, use the <c>PostMessage</c> or <c>PostThreadMessage</c> function.
+		/// </para>
 		/// </summary>
-		/// <param name="hWnd">A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message is not sent to child windows.</param>
-		/// <param name="msg">The message to be sent.</param>
+		/// <param name="hWnd">
+		/// <para>
+		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c> ((HWND)0xffff), the message is
+		/// sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message
+		/// is not sent to child windows.
+		/// </para>
+		/// <para>
+		/// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of lesser or equal
+		/// integrity level.
+		/// </para>
+		/// </param>
+		/// <param name="Msg">
+		/// <para>The message to be sent.</para>
+		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+		/// </param>
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="lParam">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		// LRESULT WINAPI SendMessage( _In_ HWND hWnd, _In_ UINT Msg, _In_ WPARAM wParam, _In_ LPARAM lParam);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		public static IntPtr SendMessage(HandleRef hWnd, uint msg, int wParam = 0, int lParam = 0) => SendMessage(hWnd, msg, (IntPtr)wParam, (IntPtr)lParam);
-
-		/// <summary>
-		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
-		/// </summary>
-		/// <param name="hWnd">A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message is not sent to child windows.</param>
-		/// <param name="msg">The message to be sent.</param>
-		/// <param name="wParam">Additional message-specific information.</param>
-		/// <param name="lParam">Additional message-specific information.</param>
-		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		public static IntPtr SendMessage(HandleRef hWnd, uint msg, int wParam, string lParam) => SendMessage(hWnd, msg, (IntPtr)wParam, lParam);
-
-		/// <summary>
-		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
-		/// </summary>
-		/// <param name="hWnd">A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message is not sent to child windows.</param>
-		/// <param name="msg">The message to be sent.</param>
-		/// <param name="wParam">Additional message-specific information.</param>
-		/// <param name="lParam">Additional message-specific information.</param>
-		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, CharSet = CharSet.Unicode, SetLastError = false)]
 		[System.Security.SecurityCritical]
-		public static extern IntPtr SendMessage(HandleRef hWnd, uint msg, IntPtr wParam, [In, MarshalAs(UnmanagedType.LPWStr)] string lParam);
+		public static unsafe extern int* SendMessage(void* hWnd, uint msg, ushort* wParam, int* lParam);
 
 		/// <summary>
-		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
+		/// <para>
+		/// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified window and does not
+		/// return until the window procedure has processed the message.
+		/// </para>
+		/// <para>
+		/// To send a message and return immediately, use the <c>SendMessageCallback</c> or <c>SendNotifyMessage</c> function. To post a message to a thread's
+		/// message queue and return immediately, use the <c>PostMessage</c> or <c>PostThreadMessage</c> function.
+		/// </para>
 		/// </summary>
-		/// <param name="hWnd">A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message is not sent to child windows.</param>
-		/// <param name="msg">The message to be sent.</param>
+		/// <param name="hWnd">
+		/// <para>
+		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c> ((HWND)0xffff), the message is
+		/// sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message
+		/// is not sent to child windows.
+		/// </para>
+		/// <para>
+		/// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of lesser or equal
+		/// integrity level.
+		/// </para>
+		/// </param>
+		/// <param name="Msg">
+		/// <para>The message to be sent.</para>
+		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+		/// </param>
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="lParam">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		// LRESULT WINAPI SendMessage( _In_ HWND hWnd, _In_ UINT Msg, _In_ WPARAM wParam, _In_ LPARAM lParam);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = false)]
+		[System.Security.SecurityCritical]
+		public static extern IntPtr SendMessage(HandleRef hWnd, uint msg, IntPtr wParam, string lParam);
+
+		/// <summary>
+		/// <para>
+		/// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified window and does not
+		/// return until the window procedure has processed the message.
+		/// </para>
+		/// <para>
+		/// To send a message and return immediately, use the <c>SendMessageCallback</c> or <c>SendNotifyMessage</c> function. To post a message to a thread's
+		/// message queue and return immediately, use the <c>PostMessage</c> or <c>PostThreadMessage</c> function.
+		/// </para>
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>
+		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c> ((HWND)0xffff), the message is
+		/// sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message
+		/// is not sent to child windows.
+		/// </para>
+		/// <para>
+		/// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of lesser or equal
+		/// integrity level.
+		/// </para>
+		/// </param>
+		/// <param name="Msg">
+		/// <para>The message to be sent.</para>
+		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+		/// </param>
+		/// <param name="wParam">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
+		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		// LRESULT WINAPI SendMessage( _In_ HWND hWnd, _In_ UINT Msg, _In_ WPARAM wParam, _In_ LPARAM lParam);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
 		[System.Security.SecurityCritical]
 		public static extern IntPtr SendMessage(HandleRef hWnd, uint msg, ref int wParam, [In, Out] StringBuilder lParam);
+
+		/// <summary>
+		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
+		/// </summary>
+		/// <typeparam name="TEnum">The type of the <paramref name="msg"/> value.</typeparam>
+		/// <typeparam name="TWP">The type of the <paramref name="wParam"/> value.</typeparam>
+		/// <typeparam name="TLP">The type of the <paramref name="lParam"/> value.</typeparam>
+		/// <param name="hWnd">A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message is not sent to child windows.</param>
+		/// <param name="msg">The message to be sent.</param>
+		/// <param name="wParam">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
+		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		public static IntPtr SendMessage<TEnum, TWP, TLP>(HandleRef hWnd, TEnum msg, TWP wParam, TLP lParam) where TEnum : struct, IConvertible where TWP : struct where TLP : class
+		{
+			var m = (uint)Convert.ChangeType(msg, typeof(uint));
+			return SendMessage(hWnd, m, (IntPtr)GetPtr(wParam), (IntPtr)GetPtr(lParam));
+		}
+
+		/// <summary>
+		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
+		/// </summary>
+		/// <typeparam name="TEnum">The type of the <paramref name="msg"/> value.</typeparam>
+		/// <typeparam name="TWP">The type of the <paramref name="wParam"/> value.</typeparam>
+		/// <typeparam name="TLP">The type of the <paramref name="lParam"/> value.</typeparam>
+		/// <param name="hWnd">A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message is not sent to child windows.</param>
+		/// <param name="msg">The message to be sent.</param>
+		/// <param name="wParam">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
+		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		public static IntPtr SendMessage<TEnum, TWP, TLP>(HandleRef hWnd, TEnum msg, TWP wParam, ref TLP lParam) where TEnum : IConvertible where TWP : struct where TLP : struct
+		{
+			var m = (uint)Convert.ChangeType(msg, typeof(uint));
+			return SendMessage(hWnd, m, (IntPtr)GetPtr(ref wParam), (IntPtr)GetPtr(ref lParam));
+
+			SafeCoTaskMemHandle GetPtr<T>(ref T val)
+			{
+				if (typeof(T).Equals(typeof(IntPtr))) return new SafeCoTaskMemHandle((IntPtr)(object)val, 0, false);
+				if (val is IConvertible ic)
+					try { return new SafeCoTaskMemHandle((IntPtr)ic.ToInt32(System.Globalization.CultureInfo.InvariantCulture.NumberFormat), 0, false); } catch { }
+				return SafeCoTaskMemHandle.CreateFromStructure(val);
+			}
+		}
 
 		/// <summary>
 		/// Changes an attribute of the specified window. The function also sets a value at the specified offset in the extra window memory.
@@ -733,6 +844,14 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
 		public static extern IntPtr WindowFromPoint(Point Point);
+
+		private static SafeCoTaskMemHandle GetPtr<T>(T val)
+		{
+			if (typeof(T).Equals(typeof(IntPtr))) return new SafeCoTaskMemHandle((IntPtr)(object)val, 0, false);
+			if (val is IConvertible ic)
+				try { return new SafeCoTaskMemHandle((IntPtr)ic.ToInt32(System.Globalization.CultureInfo.InvariantCulture.NumberFormat), 0, false); } catch { }
+			return SafeCoTaskMemHandle.CreateFromStructure(val);
+		}
 
 		/// <summary>
 		/// Changes an attribute of the specified window. The function also sets a value at the specified offset in the extra window memory.

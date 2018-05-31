@@ -69,10 +69,9 @@ namespace Vanara.PInvoke
 		/// <summary>Gets the IP address represented as a byte array from an unsigned pointer.</summary>
 		/// <param name="ipAddress">The IP address.</param>
 		/// <returns>The IP address represented as a byte array.</returns>
-		public static byte[] GET_IPADDRESS(UIntPtr ipAddress)
+		public static byte[] GET_IPADDRESS(uint ipAddress)
 		{
-			var i = ipAddress.ToUInt32();
-			return new[] { (byte)((i >> 24) & 0xff), (byte)((i >> 16) & 0xff), (byte)((i >> 8) & 0xff), (byte)(i & 0xff) };
+			return new[] { (byte)((ipAddress >> 24) & 0xff), (byte)((ipAddress >> 16) & 0xff), (byte)((ipAddress >> 8) & 0xff), (byte)(ipAddress & 0xff) };
 		}
 
 		/// <summary>Packs four byte-values into a single LPARAM suitable for use with the IPM_SETADDRESS message.</summary>
@@ -82,17 +81,17 @@ namespace Vanara.PInvoke
 		/// <param name="b3">The field 3 address.</param>
 		/// <returns>Returns an LPARAM value that contains the address.</returns>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761385")]
-		public static UIntPtr MAKEIPADDRESS(byte b0, byte b1, byte b2, byte b3) => new UIntPtr(((uint)b0 << 24) | ((uint)b1 << 16) | ((uint)b2 << 8) | b3);
+		public static uint MAKEIPADDRESS(byte b0, byte b1, byte b2, byte b3) => (((uint)b0 << 24) | ((uint)b1 << 16) | ((uint)b2 << 8) | b3);
 
 		/// <summary>Packs four byte-values into a single LPARAM suitable for use with the IPM_SETADDRESS message.</summary>
 		/// <param name="bytes">The bytes ordered 0-3.</param>
 		/// <returns>Returns an LPARAM value that contains the address.</returns>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761385")]
-		public static UIntPtr MAKEIPADDRESS(byte[] bytes)
+		public static uint MAKEIPADDRESS(byte[] bytes)
 		{
 			if (bytes != null && bytes.Length != 4)
 				throw new ArgumentOutOfRangeException(nameof(bytes), "Array must contain exactly four items.");
-			return bytes == null ? UIntPtr.Zero : MAKEIPADDRESS(bytes[0], bytes[1], bytes[2], bytes[3]);
+			return bytes == null ? 0 : MAKEIPADDRESS(bytes[0], bytes[1], bytes[2], bytes[3]);
 		}
 
 		/// <summary>Packs two byte-values into a single LPARAM suitable for use with the IPM_SETRANGE message.</summary>
@@ -100,7 +99,7 @@ namespace Vanara.PInvoke
 		/// <param name="high">The upper limit of the range.</param>
 		/// <returns>Returns an LPARAM value that contains the range.</returns>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761386")]
-		public static UIntPtr MAKEIPRANGE(byte low, byte high) => (UIntPtr)((high << 8) + low);
+		public static uint MAKEIPRANGE(byte low, byte high) => (uint)((high << 8) + low);
 
 		/// <summary>Contains information for the IPN_FIELDCHANGED notification code.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761375")]

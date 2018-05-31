@@ -25,7 +25,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-SHCreateStreamOnFileEx
+PathFindOnPath, SHCreateStreamOnFileEx
 
 </PackageReleaseNotes>
   </PropertyGroup>

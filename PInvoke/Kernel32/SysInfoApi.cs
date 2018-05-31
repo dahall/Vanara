@@ -381,7 +381,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </returns>
 		// BOOL WINAPI DnsHostnameToComputerName( _In_ LPCTSTR Hostname, _Out_ LPTSTR ComputerName, _Inout_ LPDWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724244(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "DnsHostnameToComputerNameExW", CharSet = CharSet.Unicode)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724244")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool DnsHostnameToComputerNameEx(string Hostname, [Out] StringBuilder ComputerName, ref uint nSize);
@@ -1683,7 +1683,7 @@ namespace Vanara.PInvoke
 		/// <para>If the function succeeds, the return value is a nonzero value.</para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode)]
+		[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "SetComputerNameEx2W", CharSet = CharSet.Unicode)]
 		[PInvokeData("Winbase.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetComputerNameEx2(COMPUTER_NAME_FORMAT NameType, uint Flags, string lpBuffer);

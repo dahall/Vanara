@@ -22,7 +22,7 @@ namespace Vanara.Extensions
 		{
 			if (Environment.OSVersion.Version.Major >= 6)
 			{
-				SendMessage(new HandleRef(textBox, textBox.Handle), (int)EditMessage.EM_SETCUEBANNER, new IntPtr(retainOnFocus ? 1 : 0), cueBannerText);
+				SendMessage(new HandleRef(textBox, textBox.Handle), (uint)EditMessage.EM_SETCUEBANNER, new IntPtr(retainOnFocus ? 1 : 0), cueBannerText);
 				textBox.Invalidate();
 			}
 			else
@@ -48,7 +48,7 @@ namespace Vanara.Extensions
 		{
 			if (tabs == null) tabs = new uint[0];
 			using (var ptr = SafeCoTaskMemHandle.CreateFromList(tabs))
-				SendMessage(new HandleRef(textBox, textBox.Handle), (int)EditMessage.EM_SETTABSTOPS, (IntPtr)tabs.Length, (IntPtr)ptr);
+				SendMessage(new HandleRef(textBox, textBox.Handle), (uint)EditMessage.EM_SETTABSTOPS, (IntPtr)tabs.Length, (IntPtr)ptr);
 			textBox.Invalidate();
 		}
 

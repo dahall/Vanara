@@ -521,9 +521,7 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="item">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, CharSet = CharSet.Unicode, SetLastError = false)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, ComboBoxMessage Msg, int wParam, ref COMBOBOXINFO item);
+		public static IntPtr SendMessage(HandleRef hWnd, ComboBoxMessage Msg, int wParam, ref COMBOBOXINFO item) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref item);
 
 		/// <summary>Contains combo box status information.</summary>
 		[PInvokeData("Winuser.h", MSDNShortId = "bb775798")]

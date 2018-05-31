@@ -18,7 +18,7 @@ namespace Vanara.PInvoke
 		public const int I_GROUPIDCALLBACK = -1;
 		public const int I_GROUPIDNONE = -2;
 
-		private const int LVM_FIRST = 0x1000;
+		private const uint LVM_FIRST = 0x1000;
 		private const int LVN_FIRST = -0x100;
 
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761385")]
@@ -705,53 +705,62 @@ namespace Vanara.PInvoke
 			LVTVIM_LABELMARGIN = 0x00000004,
 		}
 
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, SetLastError = true)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, [MarshalAs(UnmanagedType.SysInt)] int wParam, [In, Out] LVBKIMAGE bkImage);
+		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, int wParam, [In, Out] LVBKIMAGE bkImage) => User32_Gdi.SendMessage(hWnd, message, wParam, bkImage);
 
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, SetLastError = true)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, [MarshalAs(UnmanagedType.SysInt)] int wParam, [In, Out] LVCOLUMN column);
+		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, int wParam, [In, Out] LVCOLUMN column) => User32_Gdi.SendMessage(hWnd, message, wParam, column);
 
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, SetLastError = true)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, [MarshalAs(UnmanagedType.SysInt)] int wParam, [In, Out] ref LVFINDINFO findInfo);
+		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, int wParam, [In, Out] ref LVFINDINFO findInfo) => User32_Gdi.SendMessage(hWnd, message, wParam, ref findInfo);
 
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, SetLastError = true)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, [MarshalAs(UnmanagedType.SysInt)] int wParam, [In, Out] LVGROUP group);
+		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, int wParam, [In, Out] LVGROUP group) => User32_Gdi.SendMessage(hWnd, message, wParam, group);
 
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, SetLastError = true)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, [MarshalAs(UnmanagedType.SysInt)] int wParam, ref LVGROUPMETRICS metrics);
+		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, int wParam, ref LVGROUPMETRICS metrics) => User32_Gdi.SendMessage(hWnd, message, wParam, ref metrics);
 
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, SetLastError = true)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, [MarshalAs(UnmanagedType.SysInt)] int wParam, ref LVHITTESTINFO hitTestInfo);
+		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, int wParam, ref LVHITTESTINFO hitTestInfo) => User32_Gdi.SendMessage(hWnd, message, wParam, ref hitTestInfo);
 
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, SetLastError = true)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, [MarshalAs(UnmanagedType.SysInt)] int wParam, ref LVINSERTMARK insertMark);
+		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, int wParam, ref LVINSERTMARK insertMark) => User32_Gdi.SendMessage(hWnd, message, wParam, ref insertMark);
 
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, SetLastError = true)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, ref System.Drawing.Point wParam, ref LVINSERTMARK insertMark);
+		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, ref Point wParam, ref LVINSERTMARK insertMark) => User32_Gdi.SendMessage(hWnd, message, wParam, ref insertMark);
 
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, SetLastError = true)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, [MarshalAs(UnmanagedType.SysInt)] int wParam, [In, Out] LVITEM item);
+		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, int wParam, [In, Out] LVITEM item) => User32_Gdi.SendMessage(hWnd, message, wParam, item);
 
+		/// <summary>
+		/// <para>
+		/// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified window and does not
+		/// return until the window procedure has processed the message.
+		/// </para>
+		/// <para>
+		/// To send a message and return immediately, use the <c>SendMessageCallback</c> or <c>SendNotifyMessage</c> function. To post a message to a thread's
+		/// message queue and return immediately, use the <c>PostMessage</c> or <c>PostThreadMessage</c> function.
+		/// </para>
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>
+		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c> ((HWND)0xffff), the message is
+		/// sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message
+		/// is not sent to child windows.
+		/// </para>
+		/// <para>
+		/// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of lesser or equal
+		/// integrity level.
+		/// </para>
+		/// </param>
+		/// <param name="Msg">
+		/// <para>The message to be sent.</para>
+		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+		/// </param>
+		/// <param name="wParam">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
+		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		// LRESULT WINAPI SendMessage( _In_ HWND hWnd, _In_ UINT Msg, _In_ WPARAM wParam, _In_ LPARAM lParam);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, SetLastError = true)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, [In, Out] ref LVITEMINDEX wParam, [In, MarshalAs(UnmanagedType.SysInt)] int lParam);
+		[System.Security.SecurityCritical]
+		public static extern IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, [In, Out] ref LVITEMINDEX wParam, int lParam);
 
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, SetLastError = true)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, [MarshalAs(UnmanagedType.SysInt)] int wParam, ref LVTILEVIEWINFO tileViewInfo);
+		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, int wParam, ref LVTILEVIEWINFO tileViewInfo) => User32_Gdi.SendMessage(hWnd, message, wParam, ref tileViewInfo);
 
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, SetLastError = true)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, [MarshalAs(UnmanagedType.SysInt)] ListViewImageList wParam, [In, Out] IntPtr hImageList);
+		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, ListViewImageList wParam, [In, Out] IntPtr hImageList) => User32_Gdi.SendMessage(hWnd, (uint)message, (IntPtr)wParam, hImageList);
 
 		/// <summary>
 		/// Contains information used when searching for a list-view item. This structure is identical to LV_FINDINFO but has been renamed to fit standard naming conventions.

@@ -172,7 +172,7 @@ namespace Vanara.Extensions
 		public static void SetSortIcon(this ListView listView, int columnIndex, SortOrder order)
 		{
 			var hr = new HandleRef(listView, listView.Handle);
-			var columnHeader = SendMessage(hr, ListViewMessage.LVM_GETHEADER, 0, IntPtr.Zero);
+			var columnHeader = SendMessage(hr, (uint)ListViewMessage.LVM_GETHEADER);
 			var chr = new HandleRef(listView, columnHeader);
 
 			for (var columnNumber = 0; columnNumber <= listView.Columns.Count - 1; columnNumber++)
@@ -289,7 +289,7 @@ namespace Vanara.Extensions
 			{
 				listView.SetWindowTheme(on ? "explorer" : null);
 				if (!on) return;
-				SendMessage(new HandleRef(listView, listView.Handle), (int)ListViewMessage.LVM_SETEXTENDEDLISTVIEWSTYLE, (int)ListViewStyleEx.LVS_EX_DOUBLEBUFFER, (int)ListViewStyleEx.LVS_EX_DOUBLEBUFFER);
+				SendMessage(new HandleRef(listView, listView.Handle), (uint)ListViewMessage.LVM_SETEXTENDEDLISTVIEWSTYLE, (IntPtr)ListViewStyleEx.LVS_EX_DOUBLEBUFFER, (IntPtr)ListViewStyleEx.LVS_EX_DOUBLEBUFFER);
 			}
 		}
 

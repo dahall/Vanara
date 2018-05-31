@@ -58,15 +58,15 @@ namespace Vanara.Windows.Forms
 		{
 			get
 			{
-				var ip = UIntPtr.Zero;
-				SendMessage(IPAddressMessage.IPM_GETADDRESS, UIntPtr.Zero, ip);
+				uint ip = 0;
+				SendMessage(IPAddressMessage.IPM_GETADDRESS, IntPtr.Zero, ref ip);
 				return new IPAddress(GET_IPADDRESS(ip));
 			}
 			set
 			{
 				if (value != null && value.AddressFamily != AddressFamily.InterNetwork)
 					throw new ArgumentException("Only IP v4 addresses are permissible.");
-				try { SendMessage(IPAddressMessage.IPM_SETADDRESS, UIntPtr.Zero, MAKEIPADDRESS(value?.GetAddressBytes())); }
+				try { var ip = MAKEIPADDRESS(value?.GetAddressBytes()); SendMessage(IPAddressMessage.IPM_SETADDRESS, IntPtr.Zero, ref ip); }
 				catch (Exception e) { Debug.WriteLine($"set_IPAddress:{e}"); }
 			}
 		}
@@ -181,7 +181,8 @@ namespace Vanara.Windows.Forms
 		{
 			if (field < 0 || field > 3)
 				throw new ArgumentOutOfRangeException(nameof(field), @"Field must be a value from 0 to 3.");
-			return SendMessage(IPAddressMessage.IPM_SETRANGE, (UIntPtr)field, MAKEIPRANGE(minValue, maxValue)).ToInt32() > 0;
+			var ipr = MAKEIPRANGE(minValue, maxValue);
+			return SendMessage(IPAddressMessage.IPM_SETRANGE, (IntPtr)field, ref ipr).ToInt32() > 0;
 		}
 
 		/// <summary>Raises the <see cref="E:FieldChanged"/> event.</summary>
@@ -221,8 +222,15 @@ namespace Vanara.Windows.Forms
 			base.WndProc(ref m);
 		}
 
-		private IntPtr SendMessage(IPAddressMessage msg, UIntPtr wParam = default(UIntPtr), UIntPtr lParam = default(UIntPtr)) =>
+		private IntPtr SendMessage(IPAddressMessage msg, IntPtr wParam = default(IntPtr), IntPtr lParam = default(IntPtr)) =>
 			PInvoke.User32_Gdi.SendMessage(new HandleRef(this, Handle), (uint)msg, wParam, lParam);
+
+		private IntPtr SendMessage(IPAddressMessage msg, IntPtr wParam, ref uint lParam) =>
+			SendMessage(new HandleRef(this, Handle), (uint)msg, wParam, ref lParam);
+
+		[DllImport(PInvoke.Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[System.Security.SecurityCritical]
+		private static extern IntPtr SendMessage(HandleRef hWnd, uint msg, IntPtr wParam, ref uint lParam);
 	}
 
 	/// <summary>

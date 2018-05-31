@@ -239,9 +239,7 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="splitInfo">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, CharSet = CharSet.Unicode, SetLastError = false)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, ButtonMessage Msg, int wParam, ref BUTTON_SPLITINFO splitInfo);
+		public static IntPtr SendMessage(HandleRef hWnd, ButtonMessage Msg, int wParam, ref BUTTON_SPLITINFO splitInfo) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref splitInfo);
 
 		/// <summary>
 		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return
@@ -256,8 +254,6 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="imageList">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, CharSet = CharSet.Unicode, SetLastError = false)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, ButtonMessage Msg, int wParam, ref BUTTON_IMAGELIST imageList);
+		public static IntPtr SendMessage(HandleRef hWnd, ButtonMessage Msg, int wParam, ref BUTTON_IMAGELIST imageList) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref imageList);
 	}
 }

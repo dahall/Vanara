@@ -292,7 +292,7 @@ namespace Vanara.Windows.Forms
 				if (content == value) return;
 				content = value;
 				if (handle != IntPtr.Zero)
-					SendMessage(HRef, (uint)TaskDialogMessage.TDM_SET_ELEMENT_TEXT, (int)TASKDIALOG_ELEMENTS.TDE_CONTENT, content);
+					SendMessage(HRef, (uint)TaskDialogMessage.TDM_SET_ELEMENT_TEXT, (IntPtr)TASKDIALOG_ELEMENTS.TDE_CONTENT, content);
 			}
 		}
 

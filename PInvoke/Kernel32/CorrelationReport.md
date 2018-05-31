@@ -1,16 +1,58 @@
-## Correlation report for kernel32.dll
-### Methods (65% complete)
+## Correlation report for kernel32.dll, vertdll.dll, kernelbase.dll
+### Methods (40% complete)
 Native Method | Native DLL | Header | Managed Method
 ---- | ---- | ---- | ----
+[__C_specific_handler](https://www.google.com/search?num=5&q=__C_specific_handler+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[__chkstk](https://www.google.com/search?num=5&q=__chkstk+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[__dllonexit3](https://www.google.com/search?num=5&q=__dllonexit3+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[__misaligned_access](https://www.google.com/search?num=5&q=__misaligned_access+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[__wgetmainargs](https://www.google.com/search?num=5&q=__wgetmainargs+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[_AddMUIStringToCache](https://www.google.com/search?num=5&q=_AddMUIStringToCache+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[_amsg_exit](https://www.google.com/search?num=5&q=_amsg_exit+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[_c_exit](https://www.google.com/search?num=5&q=_c_exit+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[_cexit](https://www.google.com/search?num=5&q=_cexit+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[_exit](https://www.google.com/search?num=5&q=_exit+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[_GetMUIStringFromCache](https://www.google.com/search?num=5&q=_GetMUIStringFromCache+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[_initterm](https://www.google.com/search?num=5&q=_initterm+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[_initterm_e](https://www.google.com/search?num=5&q=_initterm_e+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[_invalid_parameter](https://www.google.com/search?num=5&q=_invalid_parameter+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[_local_unwind](https://www.google.com/search?num=5&q=_local_unwind+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[_onexit](https://www.google.com/search?num=5&q=_onexit+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[_OpenMuiStringCache](https://www.google.com/search?num=5&q=_OpenMuiStringCache+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[_purecall](https://www.google.com/search?num=5&q=_purecall+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[_time64](https://www.google.com/search?num=5&q=_time64+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[_vsnwprintf](https://www.google.com/search?num=5&q=_vsnwprintf+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[_wcsicmp](https://www.google.com/search?num=5&q=_wcsicmp+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[AccessCheck](https://www.google.com/search?num=5&q=AccessCheck+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AccessCheckAndAuditAlarmW](https://www.google.com/search?num=5&q=AccessCheckAndAuditAlarmW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AccessCheckByType](https://www.google.com/search?num=5&q=AccessCheckByType+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AccessCheckByTypeAndAuditAlarmW](https://www.google.com/search?num=5&q=AccessCheckByTypeAndAuditAlarmW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AccessCheckByTypeResultList](https://www.google.com/search?num=5&q=AccessCheckByTypeResultList+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AccessCheckByTypeResultListAndAuditAlarmByHandleW](https://www.google.com/search?num=5&q=AccessCheckByTypeResultListAndAuditAlarmByHandleW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AccessCheckByTypeResultListAndAuditAlarmW](https://www.google.com/search?num=5&q=AccessCheckByTypeResultListAndAuditAlarmW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [AcquireSRWLockExclusive](https://www.google.com/search?num=5&q=AcquireSRWLockExclusive+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive
 [AcquireSRWLockShared](https://www.google.com/search?num=5&q=AcquireSRWLockShared+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AcquireSRWLockShared
+[AcquireStateLock](https://www.google.com/search?num=5&q=AcquireStateLock+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [ActivateActCtx](https://www.google.com/search?num=5&q=ActivateActCtx+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ActivateActCtx
 [ActivateActCtxWorker](https://www.google.com/search?num=5&q=ActivateActCtxWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[AddAccessAllowedAce](https://www.google.com/search?num=5&q=AddAccessAllowedAce+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AddAccessAllowedAceEx](https://www.google.com/search?num=5&q=AddAccessAllowedAceEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AddAccessAllowedObjectAce](https://www.google.com/search?num=5&q=AddAccessAllowedObjectAce+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AddAccessDeniedAce](https://www.google.com/search?num=5&q=AddAccessDeniedAce+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AddAccessDeniedAceEx](https://www.google.com/search?num=5&q=AddAccessDeniedAceEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AddAccessDeniedObjectAce](https://www.google.com/search?num=5&q=AddAccessDeniedObjectAce+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AddAce](https://www.google.com/search?num=5&q=AddAce+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [AddAtom](https://www.google.com/search?num=5&q=AddAtom+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.AddAtom
+[AddAuditAccessAce](https://www.google.com/search?num=5&q=AddAuditAccessAce+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AddAuditAccessAceEx](https://www.google.com/search?num=5&q=AddAuditAccessAceEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AddAuditAccessObjectAce](https://www.google.com/search?num=5&q=AddAuditAccessObjectAce+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [AddConsoleAlias](https://www.google.com/search?num=5&q=AddConsoleAlias+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.AddConsoleAlias
 [AddDllDirectory](https://www.google.com/search?num=5&q=AddDllDirectory+site%3Amsdn.microsoft.com) | kernel32.dll | LibLoaderAPI.h | Vanara.PInvoke.Kernel32.AddDllDirectory
+[AddExtensionProgId](https://www.google.com/search?num=5&q=AddExtensionProgId+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [AddIntegrityLabelToBoundaryDescriptor](https://www.google.com/search?num=5&q=AddIntegrityLabelToBoundaryDescriptor+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [AddLocalAlternateComputerName](https://www.google.com/search?num=5&q=AddLocalAlternateComputerName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[AddMandatoryAce](https://www.google.com/search?num=5&q=AddMandatoryAce+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AddPackageToFamilyXref](https://www.google.com/search?num=5&q=AddPackageToFamilyXref+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [AddRefActCtx](https://www.google.com/search?num=5&q=AddRefActCtx+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.AddRefActCtx
 [AddRefActCtxWorker](https://www.google.com/search?num=5&q=AddRefActCtxWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [AddResourceAttributeAce](https://www.google.com/search?num=5&q=AddResourceAttributeAce+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -20,11 +62,22 @@ Native Method | Native DLL | Header | Managed Method
 [AddVectoredContinueHandler](https://www.google.com/search?num=5&q=AddVectoredContinueHandler+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AddVectoredContinueHandler
 [AddVectoredExceptionHandler](https://www.google.com/search?num=5&q=AddVectoredExceptionHandler+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AddVectoredExceptionHandler
 [AdjustCalendarDate](https://www.google.com/search?num=5&q=AdjustCalendarDate+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[AdjustTokenGroups](https://www.google.com/search?num=5&q=AdjustTokenGroups+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AdjustTokenPrivileges](https://www.google.com/search?num=5&q=AdjustTokenPrivileges+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AllocateAndInitializeSid](https://www.google.com/search?num=5&q=AllocateAndInitializeSid+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AllocateLocallyUniqueId](https://www.google.com/search?num=5&q=AllocateLocallyUniqueId+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [AllocateUserPhysicalPages](https://www.google.com/search?num=5&q=AllocateUserPhysicalPages+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AllocateUserPhysicalPages
 [AllocateUserPhysicalPagesNuma](https://www.google.com/search?num=5&q=AllocateUserPhysicalPagesNuma+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AllocateUserPhysicalPagesNuma
 [AllocConsole](https://www.google.com/search?num=5&q=AllocConsole+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.AllocConsole
+[AppContainerDeriveSidFromMoniker](https://www.google.com/search?num=5&q=AppContainerDeriveSidFromMoniker+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AppContainerFreeMemory](https://www.google.com/search?num=5&q=AppContainerFreeMemory+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AppContainerLookupDisplayNameMrtReference](https://www.google.com/search?num=5&q=AppContainerLookupDisplayNameMrtReference+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AppContainerLookupMoniker](https://www.google.com/search?num=5&q=AppContainerLookupMoniker+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AppContainerRegisterSid](https://www.google.com/search?num=5&q=AppContainerRegisterSid+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AppContainerUnregisterSid](https://www.google.com/search?num=5&q=AppContainerUnregisterSid+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [ApplicationRecoveryFinished](https://www.google.com/search?num=5&q=ApplicationRecoveryFinished+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ApplicationRecoveryFinished
 [ApplicationRecoveryInProgress](https://www.google.com/search?num=5&q=ApplicationRecoveryInProgress+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ApplicationRecoveryInProgress
+[ApplicationUserModelIdFromProductId](https://www.google.com/search?num=5&q=ApplicationUserModelIdFromProductId+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [AppPolicyGetClrCompat](https://www.google.com/search?num=5&q=AppPolicyGetClrCompat+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [AppPolicyGetCreateFileAccess](https://www.google.com/search?num=5&q=AppPolicyGetCreateFileAccess+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [AppPolicyGetLifecycleManagement](https://www.google.com/search?num=5&q=AppPolicyGetLifecycleManagement+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -33,22 +86,61 @@ Native Method | Native DLL | Header | Managed Method
 [AppPolicyGetShowDeveloperDiagnostic](https://www.google.com/search?num=5&q=AppPolicyGetShowDeveloperDiagnostic+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [AppPolicyGetThreadInitializationType](https://www.google.com/search?num=5&q=AppPolicyGetThreadInitializationType+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [AppPolicyGetWindowingModel](https://www.google.com/search?num=5&q=AppPolicyGetWindowingModel+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[AppXFreeMemory](https://www.google.com/search?num=5&q=AppXFreeMemory+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AppXGetApplicationData](https://www.google.com/search?num=5&q=AppXGetApplicationData+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AppXGetDevelopmentMode](https://www.google.com/search?num=5&q=AppXGetDevelopmentMode+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [AppXGetOSMaxVersionTested](https://www.google.com/search?num=5&q=AppXGetOSMaxVersionTested+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[AppXGetOSMinVersion](https://www.google.com/search?num=5&q=AppXGetOSMinVersion+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AppXGetPackageCapabilities](https://www.google.com/search?num=5&q=AppXGetPackageCapabilities+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AppXGetPackageSid](https://www.google.com/search?num=5&q=AppXGetPackageSid+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AppXLookupDisplayName](https://www.google.com/search?num=5&q=AppXLookupDisplayName+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AppXLookupMoniker](https://www.google.com/search?num=5&q=AppXLookupMoniker+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AppXPostSuccessExtension](https://www.google.com/search?num=5&q=AppXPostSuccessExtension+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AppXPreCreationExtension](https://www.google.com/search?num=5&q=AppXPreCreationExtension+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AppXReleaseAppXContext](https://www.google.com/search?num=5&q=AppXReleaseAppXContext+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AppXUpdatePackageCapabilities](https://www.google.com/search?num=5&q=AppXUpdatePackageCapabilities+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AreAllAccessesGranted](https://www.google.com/search?num=5&q=AreAllAccessesGranted+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AreAnyAccessesGranted](https://www.google.com/search?num=5&q=AreAnyAccessesGranted+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [AreFileApisANSI](https://www.google.com/search?num=5&q=AreFileApisANSI+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AreFileApisANSI
+[AreThereVisibleLogoffScriptsInternal](https://www.google.com/search?num=5&q=AreThereVisibleLogoffScriptsInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[AreThereVisibleShutdownScriptsInternal](https://www.google.com/search?num=5&q=AreThereVisibleShutdownScriptsInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [AssignProcessToJobObject](https://www.google.com/search?num=5&q=AssignProcessToJobObject+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AssignProcessToJobObject
+[atexit](https://www.google.com/search?num=5&q=atexit+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [AttachConsole](https://www.google.com/search?num=5&q=AttachConsole+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.AttachConsole
 [BackupRead](https://www.google.com/search?num=5&q=BackupRead+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.BackupRead
 [BackupSeek](https://www.google.com/search?num=5&q=BackupSeek+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.BackupSeek
 [BackupWrite](https://www.google.com/search?num=5&q=BackupWrite+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.BackupWrite
+[BaseCheckAppcompatCache](https://www.google.com/search?num=5&q=BaseCheckAppcompatCache+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[BaseCheckAppcompatCacheEx](https://www.google.com/search?num=5&q=BaseCheckAppcompatCacheEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[BaseCleanupAppcompatCacheSupport](https://www.google.com/search?num=5&q=BaseCleanupAppcompatCacheSupport+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[BaseDllFreeResourceId](https://www.google.com/search?num=5&q=BaseDllFreeResourceId+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[BaseDllMapResourceIdW](https://www.google.com/search?num=5&q=BaseDllMapResourceIdW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[BaseDumpAppcompatCache](https://www.google.com/search?num=5&q=BaseDumpAppcompatCache+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[BaseFlushAppcompatCache](https://www.google.com/search?num=5&q=BaseFlushAppcompatCache+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[BaseFormatObjectAttributes](https://www.google.com/search?num=5&q=BaseFormatObjectAttributes+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[BaseFreeAppCompatDataForProcess](https://www.google.com/search?num=5&q=BaseFreeAppCompatDataForProcess+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[BaseGetConsoleReference](https://www.google.com/search?num=5&q=BaseGetConsoleReference+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[BaseGetNamedObjectDirectory](https://www.google.com/search?num=5&q=BaseGetNamedObjectDirectory+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[BaseInitAppcompatCacheSupport](https://www.google.com/search?num=5&q=BaseInitAppcompatCacheSupport+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[BaseIsAppcompatInfrastructureDisabled](https://www.google.com/search?num=5&q=BaseIsAppcompatInfrastructureDisabled+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[BaseMarkFileForDelete](https://www.google.com/search?num=5&q=BaseMarkFileForDelete+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[BasepAdjustObjectAttributesForPrivateNamespace](https://www.google.com/search?num=5&q=BasepAdjustObjectAttributesForPrivateNamespace+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[BasepCopyFileCallback](https://www.google.com/search?num=5&q=BasepCopyFileCallback+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[BasepCopyFileExW](https://www.google.com/search?num=5&q=BasepCopyFileExW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [BasepInitAppCompatData](https://www.google.com/search?num=5&q=BasepInitAppCompatData+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[BasepNotifyTrackingService](https://www.google.com/search?num=5&q=BasepNotifyTrackingService+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [BasepQueryModuleChpeSettings](https://www.google.com/search?num=5&q=BasepQueryModuleChpeSettings+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[BaseReadAppCompatDataForProcess](https://www.google.com/search?num=5&q=BaseReadAppCompatDataForProcess+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[BaseUpdateAppcompatCache](https://www.google.com/search?num=5&q=BaseUpdateAppcompatCache+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [Beep](https://www.google.com/search?num=5&q=Beep+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.Beep
 [BeginUpdateResource](https://www.google.com/search?num=5&q=BeginUpdateResource+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.BeginUpdateResource
 [BindIoCompletionCallback](https://www.google.com/search?num=5&q=BindIoCompletionCallback+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.BindIoCompletionCallback
 [BuildCommDCB](https://www.google.com/search?num=5&q=BuildCommDCB+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.BuildCommDCB
 [BuildCommDCBAndTimeouts](https://www.google.com/search?num=5&q=BuildCommDCBAndTimeouts+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.BuildCommDCBAndTimeouts
 [CallbackMayRunLong](https://www.google.com/search?num=5&q=CallbackMayRunLong+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CallbackMayRunLong
+[CallEnclave](https://www.google.com/search?num=5&q=CallEnclave+site%3Amsdn.microsoft.com) | vertdll.dll | Enclaveapi.h | Vanara.PInvoke.Kernel32.CallEnclave
 [CallNamedPipe](https://www.google.com/search?num=5&q=CallNamedPipe+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.CallNamedPipe
+[CallNamedPipeW](https://www.google.com/search?num=5&q=CallNamedPipeW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CancelIo](https://www.google.com/search?num=5&q=CancelIo+site%3Amsdn.microsoft.com) | kernel32.dll | IoAPI.h | Vanara.PInvoke.Kernel32.CancelIo
 [CancelIoEx](https://www.google.com/search?num=5&q=CancelIoEx+site%3Amsdn.microsoft.com) | kernel32.dll | IoAPI.h | Vanara.PInvoke.Kernel32.CancelIoEx
 [CancelSynchronousIo](https://www.google.com/search?num=5&q=CancelSynchronousIo+site%3Amsdn.microsoft.com) | kernel32.dll | IoAPI.h | Vanara.PInvoke.Kernel32.CancelSynchronousIo
@@ -56,23 +148,41 @@ Native Method | Native DLL | Header | Managed Method
 [CancelWaitableTimer](https://www.google.com/search?num=5&q=CancelWaitableTimer+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CancelWaitableTimer
 [CeipIsOptedIn](https://www.google.com/search?num=5&q=CeipIsOptedIn+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [ChangeTimerQueueTimer](https://www.google.com/search?num=5&q=ChangeTimerQueueTimer+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ChangeTimerQueueTimer
+[CharLower](https://www.google.com/search?num=5&q=CharLower+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CharLowerBuff](https://www.google.com/search?num=5&q=CharLowerBuff+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CharNext](https://www.google.com/search?num=5&q=CharNext+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CharNextExA](https://www.google.com/search?num=5&q=CharNextExA+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CharPrev](https://www.google.com/search?num=5&q=CharPrev+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CharPrevExA](https://www.google.com/search?num=5&q=CharPrevExA+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CharUpper](https://www.google.com/search?num=5&q=CharUpper+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CharUpperBuff](https://www.google.com/search?num=5&q=CharUpperBuff+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CheckAllowDecryptedRemoteDestinationPolicy](https://www.google.com/search?num=5&q=CheckAllowDecryptedRemoteDestinationPolicy+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [CheckElevation](https://www.google.com/search?num=5&q=CheckElevation+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [CheckElevationEnabled](https://www.google.com/search?num=5&q=CheckElevationEnabled+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [CheckForReadOnlyResource](https://www.google.com/search?num=5&q=CheckForReadOnlyResource+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [CheckForReadOnlyResourceFilter](https://www.google.com/search?num=5&q=CheckForReadOnlyResourceFilter+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[CheckGroupPolicyEnabled](https://www.google.com/search?num=5&q=CheckGroupPolicyEnabled+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CheckIfStateChangeNotificationExists](https://www.google.com/search?num=5&q=CheckIfStateChangeNotificationExists+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CheckNameLegalDOS8Dot3](https://www.google.com/search?num=5&q=CheckNameLegalDOS8Dot3+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CheckNameLegalDOS8Dot3
 [CheckRemoteDebuggerPresent](https://www.google.com/search?num=5&q=CheckRemoteDebuggerPresent+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CheckRemoteDebuggerPresent
 [CheckTokenCapability](https://www.google.com/search?num=5&q=CheckTokenCapability+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[CheckTokenMembership](https://www.google.com/search?num=5&q=CheckTokenMembership+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CheckTokenMembershipEx](https://www.google.com/search?num=5&q=CheckTokenMembershipEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[ChrCmpI](https://www.google.com/search?num=5&q=ChrCmpI+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [ClearCommBreak](https://www.google.com/search?num=5&q=ClearCommBreak+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ClearCommBreak
 [ClearCommError](https://www.google.com/search?num=5&q=ClearCommError+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ClearCommError
+[CLOSE_LOCAL_HANDLE_INTERNAL](https://www.google.com/search?num=5&q=CLOSE_LOCAL_HANDLE_INTERNAL+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CloseConsoleHandle](https://www.google.com/search?num=5&q=CloseConsoleHandle+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[CloseGlobalizationUserSettingsKey](https://www.google.com/search?num=5&q=CloseGlobalizationUserSettingsKey+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CloseHandle](https://www.google.com/search?num=5&q=CloseHandle+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.CloseHandle
 [ClosePackageInfo](https://www.google.com/search?num=5&q=ClosePackageInfo+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [ClosePrivateNamespace](https://www.google.com/search?num=5&q=ClosePrivateNamespace+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ClosePrivateNamespace
 [CloseProfileUserMapping](https://www.google.com/search?num=5&q=CloseProfileUserMapping+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [CloseState](https://www.google.com/search?num=5&q=CloseState+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[CloseStateAtom](https://www.google.com/search?num=5&q=CloseStateAtom+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CloseStateChangeNotification](https://www.google.com/search?num=5&q=CloseStateChangeNotification+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CloseStateContainer](https://www.google.com/search?num=5&q=CloseStateContainer+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CloseStateLock](https://www.google.com/search?num=5&q=CloseStateLock+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CloseThreadpool](https://www.google.com/search?num=5&q=CloseThreadpool+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CloseThreadpool
 [CloseThreadpoolCleanupGroup](https://www.google.com/search?num=5&q=CloseThreadpoolCleanupGroup+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CloseThreadpoolCleanupGroup
 [CloseThreadpoolCleanupGroupMembers](https://www.google.com/search?num=5&q=CloseThreadpoolCleanupGroupMembers+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CloseThreadpoolCleanupGroupMembers
@@ -82,46 +192,61 @@ Native Method | Native DLL | Header | Managed Method
 [CloseThreadpoolWork](https://www.google.com/search?num=5&q=CloseThreadpoolWork+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CloseThreadpoolWork
 [CmdBatNotification](https://www.google.com/search?num=5&q=CmdBatNotification+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [CommConfigDialog](https://www.google.com/search?num=5&q=CommConfigDialog+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.CommConfigDialog
+[CommitStateAtom](https://www.google.com/search?num=5&q=CommitStateAtom+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CompareCalendarDates](https://www.google.com/search?num=5&q=CompareCalendarDates+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [CompareFileTime](https://www.google.com/search?num=5&q=CompareFileTime+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.CompareFileTime
+[CompareObjectHandles](https://www.google.com/search?num=5&q=CompareObjectHandles+site%3Amsdn.microsoft.com) | kernelbase.dll | Handleapi.h | Vanara.PInvoke.Kernel32.CompareObjectHandles
 [CompareString](https://www.google.com/search?num=5&q=CompareString+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.CompareString
 [CompareStringEx](https://www.google.com/search?num=5&q=CompareStringEx+site%3Amsdn.microsoft.com) | kernel32.dll | Stringapiset.h | Vanara.PInvoke.Kernel32.CompareStringEx
 [CompareStringOrdinal](https://www.google.com/search?num=5&q=CompareStringOrdinal+site%3Amsdn.microsoft.com) | kernel32.dll | Stringapiset.h | Vanara.PInvoke.Kernel32.CompareStringOrdinal
 [ConnectNamedPipe](https://www.google.com/search?num=5&q=ConnectNamedPipe+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ConnectNamedPipe
 [ConsoleMenuControl](https://www.google.com/search?num=5&q=ConsoleMenuControl+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [ContinueDebugEvent](https://www.google.com/search?num=5&q=ContinueDebugEvent+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ContinueDebugEvent
+[ConvertAuxiliaryCounterToPerformanceCounter](https://www.google.com/search?num=5&q=ConvertAuxiliaryCounterToPerformanceCounter+site%3Amsdn.microsoft.com) | kernelbase.dll | Realtimeapiset.h | Vanara.PInvoke.Kernel32.ConvertAuxiliaryCounterToPerformanceCounter
 [ConvertCalDateTimeToSystemTime](https://www.google.com/search?num=5&q=ConvertCalDateTimeToSystemTime+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [ConvertDefaultLocale](https://www.google.com/search?num=5&q=ConvertDefaultLocale+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.ConvertDefaultLocale
 [ConvertFiberToThread](https://www.google.com/search?num=5&q=ConvertFiberToThread+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ConvertFiberToThread
 [ConvertNLSDayOfWeekToWin32DayOfWeek](https://www.google.com/search?num=5&q=ConvertNLSDayOfWeekToWin32DayOfWeek+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[ConvertPerformanceCounterToAuxiliaryCounter](https://www.google.com/search?num=5&q=ConvertPerformanceCounterToAuxiliaryCounter+site%3Amsdn.microsoft.com) | kernelbase.dll | Realtimeapiset.h | Vanara.PInvoke.Kernel32.ConvertPerformanceCounterToAuxiliaryCounter
 [ConvertSystemTimeToCalDateTime](https://www.google.com/search?num=5&q=ConvertSystemTimeToCalDateTime+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [ConvertThreadToFiber](https://www.google.com/search?num=5&q=ConvertThreadToFiber+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ConvertThreadToFiber
 [ConvertThreadToFiberEx](https://www.google.com/search?num=5&q=ConvertThreadToFiberEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[ConvertToAutoInheritPrivateObjectSecurity](https://www.google.com/search?num=5&q=ConvertToAutoInheritPrivateObjectSecurity+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CopyContext](https://www.google.com/search?num=5&q=CopyContext+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[CopyFile](https://www.google.com/search?num=5&q=CopyFile+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CopyFile
 [CopyFile2](https://www.google.com/search?num=5&q=CopyFile2+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[CopyFileA](https://www.google.com/search?num=5&q=CopyFileA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [CopyFileEx](https://www.google.com/search?num=5&q=CopyFileEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CopyFileEx
+[CopyFileExW](https://www.google.com/search?num=5&q=CopyFileExW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CopyFileTransacted](https://www.google.com/search?num=5&q=CopyFileTransacted+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[CopyFileW](https://www.google.com/search?num=5&q=CopyFileW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[CopyFileW](https://www.google.com/search?num=5&q=CopyFileW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CopyMemoryNonTemporal](https://www.google.com/search?num=5&q=CopyMemoryNonTemporal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CopySid](https://www.google.com/search?num=5&q=CopySid+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CouldMultiUserAppsBehaviorBePossibleForPackage](https://www.google.com/search?num=5&q=CouldMultiUserAppsBehaviorBePossibleForPackage+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CreateActCtx](https://www.google.com/search?num=5&q=CreateActCtx+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.CreateActCtx
+[CreateActCtxW](https://www.google.com/search?num=5&q=CreateActCtxW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CreateActCtxWWorker](https://www.google.com/search?num=5&q=CreateActCtxWWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[CreateAppContainerToken](https://www.google.com/search?num=5&q=CreateAppContainerToken+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CreateBoundaryDescriptor](https://www.google.com/search?num=5&q=CreateBoundaryDescriptor+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateBoundaryDescriptor
+[CreateBoundaryDescriptorW](https://www.google.com/search?num=5&q=CreateBoundaryDescriptorW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CreateConsoleScreenBuffer](https://www.google.com/search?num=5&q=CreateConsoleScreenBuffer+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.CreateConsoleScreenBuffer
 [CreateDirectory](https://www.google.com/search?num=5&q=CreateDirectory+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.CreateDirectory
 [CreateDirectoryEx](https://www.google.com/search?num=5&q=CreateDirectoryEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateDirectoryEx
+[CreateDirectoryExW](https://www.google.com/search?num=5&q=CreateDirectoryExW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CreateDirectoryTransacted](https://www.google.com/search?num=5&q=CreateDirectoryTransacted+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [CreateEnclave](https://www.google.com/search?num=5&q=CreateEnclave+site%3Amsdn.microsoft.com) | kernel32.dll | Enclaveapi.h | Vanara.PInvoke.Kernel32.CreateEnclave
 [CreateEvent](https://www.google.com/search?num=5&q=CreateEvent+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateEvent
 [CreateEventEx](https://www.google.com/search?num=5&q=CreateEventEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateEventEx
+[CreateEventW](https://www.google.com/search?num=5&q=CreateEventW+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [CreateFiber](https://www.google.com/search?num=5&q=CreateFiber+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateFiber
 [CreateFiberEx](https://www.google.com/search?num=5&q=CreateFiberEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateFiberEx
+[CreateFile](https://www.google.com/search?num=5&q=CreateFile+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.CreateFile
 [CreateFile2](https://www.google.com/search?num=5&q=CreateFile2+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.CreateFile2
-[CreateFileA](https://www.google.com/search?num=5&q=CreateFileA+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [CreateFileMapping](https://www.google.com/search?num=5&q=CreateFileMapping+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateFileMapping
 [CreateFileMappingFromApp](https://www.google.com/search?num=5&q=CreateFileMappingFromApp+site%3Amsdn.microsoft.com) | kernel32.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.CreateFileMappingFromApp
 [CreateFileMappingNuma](https://www.google.com/search?num=5&q=CreateFileMappingNuma+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateFileMappingNuma
+[CreateFileMappingNumaW](https://www.google.com/search?num=5&q=CreateFileMappingNumaW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CreateFileMappingW](https://www.google.com/search?num=5&q=CreateFileMappingW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CreateFileTransacted](https://www.google.com/search?num=5&q=CreateFileTransacted+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[CreateFileW](https://www.google.com/search?num=5&q=CreateFileW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [CreateHardLink](https://www.google.com/search?num=5&q=CreateHardLink+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateHardLink
 [CreateHardLinkTransacted](https://www.google.com/search?num=5&q=CreateHardLinkTransacted+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [CreateIoCompletionPort](https://www.google.com/search?num=5&q=CreateIoCompletionPort+site%3Amsdn.microsoft.com) | kernel32.dll | IoAPI.h | Vanara.PInvoke.Kernel32.CreateIoCompletionPort
@@ -131,17 +256,31 @@ Native Method | Native DLL | Header | Managed Method
 [CreateMutex](https://www.google.com/search?num=5&q=CreateMutex+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateMutex
 [CreateMutexEx](https://www.google.com/search?num=5&q=CreateMutexEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateMutexEx
 [CreateNamedPipe](https://www.google.com/search?num=5&q=CreateNamedPipe+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.CreateNamedPipe
+[CreateNamedPipeW](https://www.google.com/search?num=5&q=CreateNamedPipeW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CreatePipe](https://www.google.com/search?num=5&q=CreatePipe+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.CreatePipe
 [CreatePrivateNamespace](https://www.google.com/search?num=5&q=CreatePrivateNamespace+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreatePrivateNamespace
+[CreatePrivateNamespaceW](https://www.google.com/search?num=5&q=CreatePrivateNamespaceW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CreatePrivateObjectSecurity](https://www.google.com/search?num=5&q=CreatePrivateObjectSecurity+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CreatePrivateObjectSecurityEx](https://www.google.com/search?num=5&q=CreatePrivateObjectSecurityEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CreatePrivateObjectSecurityWithMultipleInheritance](https://www.google.com/search?num=5&q=CreatePrivateObjectSecurityWithMultipleInheritance+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CreateProcess](https://www.google.com/search?num=5&q=CreateProcess+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateProcess
 [CreateProcessAsUser](https://www.google.com/search?num=5&q=CreateProcessAsUser+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateProcessAsUser
 [CreateProcessInternal](https://www.google.com/search?num=5&q=CreateProcessInternal+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [CreateRemoteThread](https://www.google.com/search?num=5&q=CreateRemoteThread+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateRemoteThread
 [CreateRemoteThreadEx](https://www.google.com/search?num=5&q=CreateRemoteThreadEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateRemoteThreadEx
+[CreateRestrictedToken](https://www.google.com/search?num=5&q=CreateRestrictedToken+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CreateSemaphore](https://www.google.com/search?num=5&q=CreateSemaphore+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateSemaphore
 [CreateSemaphoreEx](https://www.google.com/search?num=5&q=CreateSemaphoreEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateSemaphoreEx
+[CreateSemaphoreExW](https://www.google.com/search?num=5&q=CreateSemaphoreExW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CreateSemaphoreW](https://www.google.com/search?num=5&q=CreateSemaphoreW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CreateStateAtom](https://www.google.com/search?num=5&q=CreateStateAtom+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CreateStateChangeNotification](https://www.google.com/search?num=5&q=CreateStateChangeNotification+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CreateStateContainer](https://www.google.com/search?num=5&q=CreateStateContainer+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CreateStateLock](https://www.google.com/search?num=5&q=CreateStateLock+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CreateStateSubcontainer](https://www.google.com/search?num=5&q=CreateStateSubcontainer+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CreateSymbolicLink](https://www.google.com/search?num=5&q=CreateSymbolicLink+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateSymbolicLink
 [CreateSymbolicLinkTransacted](https://www.google.com/search?num=5&q=CreateSymbolicLinkTransacted+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[CreateSymbolicLinkW](https://www.google.com/search?num=5&q=CreateSymbolicLinkW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CreateTapePartition](https://www.google.com/search?num=5&q=CreateTapePartition+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.CreateTapePartition
 [CreateThread](https://www.google.com/search?num=5&q=CreateThread+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateThread
 [CreateThreadpool](https://www.google.com/search?num=5&q=CreateThreadpool+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateThreadpool
@@ -157,7 +296,12 @@ Native Method | Native DLL | Header | Managed Method
 [CreateUmsThreadContext](https://www.google.com/search?num=5&q=CreateUmsThreadContext+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [CreateWaitableTimer](https://www.google.com/search?num=5&q=CreateWaitableTimer+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateWaitableTimer
 [CreateWaitableTimerEx](https://www.google.com/search?num=5&q=CreateWaitableTimerEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.CreateWaitableTimerEx
+[CreateWaitableTimerExW](https://www.google.com/search?num=5&q=CreateWaitableTimerExW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CreateWaitableTimerW](https://www.google.com/search?num=5&q=CreateWaitableTimerW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[CreateWellKnownSid](https://www.google.com/search?num=5&q=CreateWellKnownSid+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [CtrlRoutine](https://www.google.com/search?num=5&q=CtrlRoutine+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[CveEventWrite](https://www.google.com/search?num=5&q=CveEventWrite+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[DbgPrint](https://www.google.com/search?num=5&q=DbgPrint+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [DeactivateActCtx](https://www.google.com/search?num=5&q=DeactivateActCtx+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.DeactivateActCtx
 [DeactivateActCtxWorker](https://www.google.com/search?num=5&q=DeactivateActCtxWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [DebugActiveProcess](https://www.google.com/search?num=5&q=DebugActiveProcess+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DebugActiveProcess
@@ -166,16 +310,24 @@ Native Method | Native DLL | Header | Managed Method
 [DebugBreakProcess](https://www.google.com/search?num=5&q=DebugBreakProcess+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DebugBreakProcess
 [DebugSetProcessKillOnExit](https://www.google.com/search?num=5&q=DebugSetProcessKillOnExit+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DebugSetProcessKillOnExit
 [DecodePointer](https://www.google.com/search?num=5&q=DecodePointer+site%3Amsdn.microsoft.com) | kernel32.dll | UtilApiSet.h | Vanara.PInvoke.Kernel32.DecodePointer
+[DecodeRemotePointer](https://www.google.com/search?num=5&q=DecodeRemotePointer+site%3Amsdn.microsoft.com) | kernelbase.dll | UtilApiSet.h | Vanara.PInvoke.Kernel32.DecodeRemotePointer
 [DecodeSystemPointer](https://www.google.com/search?num=5&q=DecodeSystemPointer+site%3Amsdn.microsoft.com) | kernel32.dll | UtilApiSet.h | Vanara.PInvoke.Kernel32.DecodeSystemPointer
 [DefineDosDevice](https://www.google.com/search?num=5&q=DefineDosDevice+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.DefineDosDevice
+[DefineDosDeviceW](https://www.google.com/search?num=5&q=DefineDosDeviceW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [DelayLoadFailureHook](https://www.google.com/search?num=5&q=DelayLoadFailureHook+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[DelayLoadFailureHookLookup](https://www.google.com/search?num=5&q=DelayLoadFailureHookLookup+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[DeleteAce](https://www.google.com/search?num=5&q=DeleteAce+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [DeleteAtom](https://www.google.com/search?num=5&q=DeleteAtom+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.DeleteAtom
 [DeleteBoundaryDescriptor](https://www.google.com/search?num=5&q=DeleteBoundaryDescriptor+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DeleteBoundaryDescriptor
 [DeleteCriticalSection](https://www.google.com/search?num=5&q=DeleteCriticalSection+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DeleteCriticalSection
+[DeleteEnclave](https://www.google.com/search?num=5&q=DeleteEnclave+site%3Amsdn.microsoft.com) | kernelbase.dll | Enclaveapi.h | Vanara.PInvoke.Kernel32.DeleteEnclave
 [DeleteFiber](https://www.google.com/search?num=5&q=DeleteFiber+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DeleteFiber
 [DeleteFile](https://www.google.com/search?num=5&q=DeleteFile+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.DeleteFile
 [DeleteFileTransacted](https://www.google.com/search?num=5&q=DeleteFileTransacted+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [DeleteProcThreadAttributeList](https://www.google.com/search?num=5&q=DeleteProcThreadAttributeList+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DeleteProcThreadAttributeList
+[DeleteStateAtomValue](https://www.google.com/search?num=5&q=DeleteStateAtomValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[DeleteStateContainer](https://www.google.com/search?num=5&q=DeleteStateContainer+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[DeleteStateContainerValue](https://www.google.com/search?num=5&q=DeleteStateContainerValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [DeleteSynchronizationBarrier](https://www.google.com/search?num=5&q=DeleteSynchronizationBarrier+site%3Amsdn.microsoft.com) | kernel32.dll | SynchAPI.h | Vanara.PInvoke.Kernel32.DeleteSynchronizationBarrier
 [DeleteTimerQueue](https://www.google.com/search?num=5&q=DeleteTimerQueue+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DeleteTimerQueue
 [DeleteTimerQueueEx](https://www.google.com/search?num=5&q=DeleteTimerQueueEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DeleteTimerQueueEx
@@ -183,59 +335,131 @@ Native Method | Native DLL | Header | Managed Method
 [DeleteUmsCompletionList](https://www.google.com/search?num=5&q=DeleteUmsCompletionList+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [DeleteUmsThreadContext](https://www.google.com/search?num=5&q=DeleteUmsThreadContext+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [DeleteVolumeMountPoint](https://www.google.com/search?num=5&q=DeleteVolumeMountPoint+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.DeleteVolumeMountPoint
+[DeleteVolumeMountPointW](https://www.google.com/search?num=5&q=DeleteVolumeMountPointW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [DequeueUmsCompletionListItems](https://www.google.com/search?num=5&q=DequeueUmsCompletionListItems+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[DeriveCapabilitySidsFromName](https://www.google.com/search?num=5&q=DeriveCapabilitySidsFromName+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[DestroyPrivateObjectSecurity](https://www.google.com/search?num=5&q=DestroyPrivateObjectSecurity+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [DeviceIoControl](https://www.google.com/search?num=5&q=DeviceIoControl+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.DeviceIoControl
+[DisablePredefinedHandleTableInternal](https://www.google.com/search?num=5&q=DisablePredefinedHandleTableInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [DisableThreadLibraryCalls](https://www.google.com/search?num=5&q=DisableThreadLibraryCalls+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.DisableThreadLibraryCalls
 [DisableThreadProfiling](https://www.google.com/search?num=5&q=DisableThreadProfiling+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [DisassociateCurrentThreadFromCallback](https://www.google.com/search?num=5&q=DisassociateCurrentThreadFromCallback+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DisassociateCurrentThreadFromCallback
 [DiscardVirtualMemory](https://www.google.com/search?num=5&q=DiscardVirtualMemory+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.DiscardVirtualMemory
 [DisconnectNamedPipe](https://www.google.com/search?num=5&q=DisconnectNamedPipe+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.DisconnectNamedPipe
 [DnsHostnameToComputerName](https://www.google.com/search?num=5&q=DnsHostnameToComputerName+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.DnsHostnameToComputerName
-[DnsHostnameToComputerNameExW](https://www.google.com/search?num=5&q=DnsHostnameToComputerNameExW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[DnsHostnameToComputerNameExW](https://www.google.com/search?num=5&q=DnsHostnameToComputerNameExW+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.DnsHostnameToComputerNameEx
 [DosDateTimeToFileTime](https://www.google.com/search?num=5&q=DosDateTimeToFileTime+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.DosDateTimeToFileTime
 [DosPathToSessionPath](https://www.google.com/search?num=5&q=DosPathToSessionPath+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[DsBindWithSpnExW](https://www.google.com/search?num=5&q=DsBindWithSpnExW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[DsCrackNamesW](https://www.google.com/search?num=5&q=DsCrackNamesW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[DsFreeDomainControllerInfoW](https://www.google.com/search?num=5&q=DsFreeDomainControllerInfoW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[DsFreeNameResultW](https://www.google.com/search?num=5&q=DsFreeNameResultW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[DsFreeNgcKey](https://www.google.com/search?num=5&q=DsFreeNgcKey+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[DsFreePasswordCredentials](https://www.google.com/search?num=5&q=DsFreePasswordCredentials+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[DsGetDomainControllerInfoW](https://www.google.com/search?num=5&q=DsGetDomainControllerInfoW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[DsMakePasswordCredentialsW](https://www.google.com/search?num=5&q=DsMakePasswordCredentialsW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[DsReadNgcKeyW](https://www.google.com/search?num=5&q=DsReadNgcKeyW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[DsUnBindW](https://www.google.com/search?num=5&q=DsUnBindW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[DsWriteNgcKeyW](https://www.google.com/search?num=5&q=DsWriteNgcKeyW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [DuplicateConsoleHandle](https://www.google.com/search?num=5&q=DuplicateConsoleHandle+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [DuplicateEncryptionInfoFileExt](https://www.google.com/search?num=5&q=DuplicateEncryptionInfoFileExt+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [DuplicateHandle](https://www.google.com/search?num=5&q=DuplicateHandle+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.DuplicateHandle
+[DuplicateStateContainerHandle](https://www.google.com/search?num=5&q=DuplicateStateContainerHandle+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[DuplicateToken](https://www.google.com/search?num=5&q=DuplicateToken+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[DuplicateTokenEx](https://www.google.com/search?num=5&q=DuplicateTokenEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[EmptyWorkingSet](https://www.google.com/search?num=5&q=EmptyWorkingSet+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [EnableThreadProfiling](https://www.google.com/search?num=5&q=EnableThreadProfiling+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[EnclaveGetAttestationReport](https://www.google.com/search?num=5&q=EnclaveGetAttestationReport+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[EnclaveGetEnclaveInformation](https://www.google.com/search?num=5&q=EnclaveGetEnclaveInformation+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[EnclaveSealData](https://www.google.com/search?num=5&q=EnclaveSealData+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[EnclaveUnsealData](https://www.google.com/search?num=5&q=EnclaveUnsealData+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[EnclaveVerifyAttestationReport](https://www.google.com/search?num=5&q=EnclaveVerifyAttestationReport+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [EncodePointer](https://www.google.com/search?num=5&q=EncodePointer+site%3Amsdn.microsoft.com) | kernel32.dll | UtilApiSet.h | Vanara.PInvoke.Kernel32.EncodePointer
+[EncodeRemotePointer](https://www.google.com/search?num=5&q=EncodeRemotePointer+site%3Amsdn.microsoft.com) | kernelbase.dll | UtilApiSet.h | Vanara.PInvoke.Kernel32.EncodeRemotePointer
 [EncodeSystemPointer](https://www.google.com/search?num=5&q=EncodeSystemPointer+site%3Amsdn.microsoft.com) | kernel32.dll | UtilApiSet.h | Vanara.PInvoke.Kernel32.EncodeSystemPointer
 [EndUpdateResource](https://www.google.com/search?num=5&q=EndUpdateResource+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.EndUpdateResource
+[EnterCriticalPolicySectionInternal](https://www.google.com/search?num=5&q=EnterCriticalPolicySectionInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [EnterCriticalSection](https://www.google.com/search?num=5&q=EnterCriticalSection+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.EnterCriticalSection
 [EnterSynchronizationBarrier](https://www.google.com/search?num=5&q=EnterSynchronizationBarrier+site%3Amsdn.microsoft.com) | kernel32.dll | Synchapi.h | Vanara.PInvoke.Kernel32.EnterSynchronizationBarrier
 [EnterUmsSchedulingMode](https://www.google.com/search?num=5&q=EnterUmsSchedulingMode+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [EnumCalendarInfo](https://www.google.com/search?num=5&q=EnumCalendarInfo+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumCalendarInfo
 [EnumCalendarInfoEx](https://www.google.com/search?num=5&q=EnumCalendarInfoEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumCalendarInfoEx
 [EnumCalendarInfoExEx](https://www.google.com/search?num=5&q=EnumCalendarInfoExEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumCalendarInfoExEx
+[EnumCalendarInfoExW](https://www.google.com/search?num=5&q=EnumCalendarInfoExW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[EnumCalendarInfoW](https://www.google.com/search?num=5&q=EnumCalendarInfoW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [EnumDateFormats](https://www.google.com/search?num=5&q=EnumDateFormats+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumDateFormats
 [EnumDateFormatsEx](https://www.google.com/search?num=5&q=EnumDateFormatsEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumDateFormatsEx
 [EnumDateFormatsExEx](https://www.google.com/search?num=5&q=EnumDateFormatsExEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumDateFormatsExEx
+[EnumDateFormatsExW](https://www.google.com/search?num=5&q=EnumDateFormatsExW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[EnumDateFormatsW](https://www.google.com/search?num=5&q=EnumDateFormatsW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[EnumDeviceDrivers](https://www.google.com/search?num=5&q=EnumDeviceDrivers+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[EnumDynamicTimeZoneInformation](https://www.google.com/search?num=5&q=EnumDynamicTimeZoneInformation+site%3Amsdn.microsoft.com) | kernelbase.dll | Winbase.h | Vanara.PInvoke.Kernel32.EnumDynamicTimeZoneInformation
+[EnumerateExtensionNames](https://www.google.com/search?num=5&q=EnumerateExtensionNames+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [EnumerateLocalComputerNames](https://www.google.com/search?num=5&q=EnumerateLocalComputerNames+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[EnumerateStateAtomValues](https://www.google.com/search?num=5&q=EnumerateStateAtomValues+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[EnumerateStateContainerItems](https://www.google.com/search?num=5&q=EnumerateStateContainerItems+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [EnumLanguageGroupLocales](https://www.google.com/search?num=5&q=EnumLanguageGroupLocales+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumLanguageGroupLocales
+[EnumLanguageGroupLocalesW](https://www.google.com/search?num=5&q=EnumLanguageGroupLocalesW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[EnumPageFiles](https://www.google.com/search?num=5&q=EnumPageFiles+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[EnumProcesses](https://www.google.com/search?num=5&q=EnumProcesses+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[EnumProcessModules](https://www.google.com/search?num=5&q=EnumProcessModules+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[EnumProcessModulesEx](https://www.google.com/search?num=5&q=EnumProcessModulesEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [EnumResourceLanguages](https://www.google.com/search?num=5&q=EnumResourceLanguages+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [EnumResourceLanguagesEx](https://www.google.com/search?num=5&q=EnumResourceLanguagesEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [EnumResourceNames](https://www.google.com/search?num=5&q=EnumResourceNames+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [EnumResourceNamesEx](https://www.google.com/search?num=5&q=EnumResourceNamesEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[EnumResourceNamesW](https://www.google.com/search?num=5&q=EnumResourceNamesW+site%3Amsdn.microsoft.com) | kernelbase.dll | WinBase.h | Vanara.PInvoke.Kernel32.EnumResourceNames
 [EnumResourceTypes](https://www.google.com/search?num=5&q=EnumResourceTypes+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [EnumResourceTypesEx](https://www.google.com/search?num=5&q=EnumResourceTypesEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.EnumResourceTypesEx
 [EnumSystemCodePages](https://www.google.com/search?num=5&q=EnumSystemCodePages+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumSystemCodePages
+[EnumSystemCodePagesW](https://www.google.com/search?num=5&q=EnumSystemCodePagesW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [EnumSystemFirmwareTables](https://www.google.com/search?num=5&q=EnumSystemFirmwareTables+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.EnumSystemFirmwareTables
 [EnumSystemGeoID](https://www.google.com/search?num=5&q=EnumSystemGeoID+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumSystemGeoID
 [EnumSystemGeoNames](https://www.google.com/search?num=5&q=EnumSystemGeoNames+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumSystemGeoNames
 [EnumSystemLanguageGroups](https://www.google.com/search?num=5&q=EnumSystemLanguageGroups+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumSystemLanguageGroups
+[EnumSystemLanguageGroupsW](https://www.google.com/search?num=5&q=EnumSystemLanguageGroupsW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [EnumSystemLocales](https://www.google.com/search?num=5&q=EnumSystemLocales+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumSystemLocales
 [EnumSystemLocalesEx](https://www.google.com/search?num=5&q=EnumSystemLocalesEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumSystemLocalesEx
 [EnumTimeFormats](https://www.google.com/search?num=5&q=EnumTimeFormats+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumTimeFormats
 [EnumTimeFormatsEx](https://www.google.com/search?num=5&q=EnumTimeFormatsEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumTimeFormatsEx
+[EnumTimeFormatsW](https://www.google.com/search?num=5&q=EnumTimeFormatsW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [EnumUILanguages](https://www.google.com/search?num=5&q=EnumUILanguages+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.EnumUILanguages
+[EnumUILanguagesW](https://www.google.com/search?num=5&q=EnumUILanguagesW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[EqualDomainSid](https://www.google.com/search?num=5&q=EqualDomainSid+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[EqualPrefixSid](https://www.google.com/search?num=5&q=EqualPrefixSid+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[EqualSid](https://www.google.com/search?num=5&q=EqualSid+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [EraseTape](https://www.google.com/search?num=5&q=EraseTape+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.EraseTape
 [EscapeCommFunction](https://www.google.com/search?num=5&q=EscapeCommFunction+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.EscapeCommFunction
+[EtwEventRegister](https://www.google.com/search?num=5&q=EtwEventRegister+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[EtwEventUnregister](https://www.google.com/search?num=5&q=EtwEventUnregister+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[EtwEventWrite](https://www.google.com/search?num=5&q=EtwEventWrite+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[EtwGetTraceEnableFlags](https://www.google.com/search?num=5&q=EtwGetTraceEnableFlags+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[EtwGetTraceEnableLevel](https://www.google.com/search?num=5&q=EtwGetTraceEnableLevel+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[EtwGetTraceLoggerHandle](https://www.google.com/search?num=5&q=EtwGetTraceLoggerHandle+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[EtwRegisterTraceGuidsW](https://www.google.com/search?num=5&q=EtwRegisterTraceGuidsW+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[EtwTraceMessage](https://www.google.com/search?num=5&q=EtwTraceMessage+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[EtwUnregisterTraceGuids](https://www.google.com/search?num=5&q=EtwUnregisterTraceGuids+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[EventActivityIdControl](https://www.google.com/search?num=5&q=EventActivityIdControl+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[EventEnabled](https://www.google.com/search?num=5&q=EventEnabled+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[EventProviderEnabled](https://www.google.com/search?num=5&q=EventProviderEnabled+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[EventRegister](https://www.google.com/search?num=5&q=EventRegister+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[EventSetInformation](https://www.google.com/search?num=5&q=EventSetInformation+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[EventUnregister](https://www.google.com/search?num=5&q=EventUnregister+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[EventWrite](https://www.google.com/search?num=5&q=EventWrite+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[EventWriteEx](https://www.google.com/search?num=5&q=EventWriteEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[EventWriteString](https://www.google.com/search?num=5&q=EventWriteString+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[EventWriteTransfer](https://www.google.com/search?num=5&q=EventWriteTransfer+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [ExecuteUmsThread](https://www.google.com/search?num=5&q=ExecuteUmsThread+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[exit](https://www.google.com/search?num=5&q=exit+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [ExitProcess](https://www.google.com/search?num=5&q=ExitProcess+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ExitProcess
 [ExitThread](https://www.google.com/search?num=5&q=ExitThread+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ExitThread
 [ExitVDM](https://www.google.com/search?num=5&q=ExitVDM+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [ExpandEnvironmentStrings](https://www.google.com/search?num=5&q=ExpandEnvironmentStrings+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ExpandEnvironmentStrings
+[ExpInterlockedPopEntrySListEnd](https://www.google.com/search?num=5&q=ExpInterlockedPopEntrySListEnd+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[ExpInterlockedPopEntrySListFault](https://www.google.com/search?num=5&q=ExpInterlockedPopEntrySListFault+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[ExpInterlockedPopEntrySListResume](https://www.google.com/search?num=5&q=ExpInterlockedPopEntrySListResume+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [ExpungeConsoleCommandHistory](https://www.google.com/search?num=5&q=ExpungeConsoleCommandHistory+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[ExtensionProgIdExists](https://www.google.com/search?num=5&q=ExtensionProgIdExists+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [FatalAppExit](https://www.google.com/search?num=5&q=FatalAppExit+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FatalAppExit
 [FatalExit](https://www.google.com/search?num=5&q=FatalExit+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FatalExit
 [FileTimeToDosDateTime](https://www.google.com/search?num=5&q=FileTimeToDosDateTime+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.FileTimeToDosDateTime
@@ -246,6 +470,7 @@ Native Method | Native DLL | Header | Managed Method
 [FindActCtxSectionGuid](https://www.google.com/search?num=5&q=FindActCtxSectionGuid+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.FindActCtxSectionGuid
 [FindActCtxSectionGuidWorker](https://www.google.com/search?num=5&q=FindActCtxSectionGuidWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [FindActCtxSectionString](https://www.google.com/search?num=5&q=FindActCtxSectionString+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.FindActCtxSectionString
+[FindActCtxSectionStringW](https://www.google.com/search?num=5&q=FindActCtxSectionStringW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [FindActCtxSectionStringWWorker](https://www.google.com/search?num=5&q=FindActCtxSectionStringWWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [FindAtom](https://www.google.com/search?num=5&q=FindAtom+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.FindAtom
 [FindClose](https://www.google.com/search?num=5&q=FindClose+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindClose
@@ -254,23 +479,28 @@ Native Method | Native DLL | Header | Managed Method
 [FindFirstFile](https://www.google.com/search?num=5&q=FindFirstFile+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindFirstFile
 [FindFirstFileEx](https://www.google.com/search?num=5&q=FindFirstFileEx+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindFirstFileEx
 [FindFirstFileNameTransactedW](https://www.google.com/search?num=5&q=FindFirstFileNameTransactedW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[FindFirstFileNameW](https://www.google.com/search?num=5&q=FindFirstFileNameW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[FindFirstFileNameW](https://www.google.com/search?num=5&q=FindFirstFileNameW+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FindFirstFileName
 [FindFirstFileTransacted](https://www.google.com/search?num=5&q=FindFirstFileTransacted+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[FindFirstFreeAce](https://www.google.com/search?num=5&q=FindFirstFreeAce+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [FindFirstStreamTransactedW](https://www.google.com/search?num=5&q=FindFirstStreamTransactedW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[FindFirstStreamW](https://www.google.com/search?num=5&q=FindFirstStreamW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[FindFirstStreamW](https://www.google.com/search?num=5&q=FindFirstStreamW+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FindFirstStream
 [FindFirstVolume](https://www.google.com/search?num=5&q=FindFirstVolume+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindFirstVolume
 [FindFirstVolumeMountPoint](https://www.google.com/search?num=5&q=FindFirstVolumeMountPoint+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FindFirstVolumeMountPoint
+[FindFirstVolumeW](https://www.google.com/search?num=5&q=FindFirstVolumeW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [FindNextChangeNotification](https://www.google.com/search?num=5&q=FindNextChangeNotification+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindNextChangeNotification
 [FindNextFile](https://www.google.com/search?num=5&q=FindNextFile+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindNextFile
-[FindNextFileNameW](https://www.google.com/search?num=5&q=FindNextFileNameW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
-[FindNextStreamW](https://www.google.com/search?num=5&q=FindNextStreamW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[FindNextFileNameW](https://www.google.com/search?num=5&q=FindNextFileNameW+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FindNextFileName
+[FindNextStreamW](https://www.google.com/search?num=5&q=FindNextStreamW+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FindNextStream
 [FindNextVolume](https://www.google.com/search?num=5&q=FindNextVolume+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindNextVolume
 [FindNextVolumeMountPoint](https://www.google.com/search?num=5&q=FindNextVolumeMountPoint+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FindNextVolumeMountPoint
+[FindNextVolumeW](https://www.google.com/search?num=5&q=FindNextVolumeW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [FindNLSString](https://www.google.com/search?num=5&q=FindNLSString+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.FindNLSString
 [FindNLSStringEx](https://www.google.com/search?num=5&q=FindNLSStringEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.FindNLSStringEx
 [FindPackagesByPackageFamily](https://www.google.com/search?num=5&q=FindPackagesByPackageFamily+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [FindResource](https://www.google.com/search?num=5&q=FindResource+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [FindResourceEx](https://www.google.com/search?num=5&q=FindResourceEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[FindResourceExW](https://www.google.com/search?num=5&q=FindResourceExW+site%3Amsdn.microsoft.com) | kernelbase.dll | Winbase.h | Vanara.PInvoke.Kernel32.FindResourceEx
+[FindResourceW](https://www.google.com/search?num=5&q=FindResourceW+site%3Amsdn.microsoft.com) | kernelbase.dll | Winbase.h | Vanara.PInvoke.Kernel32.FindResource
 [FindStringOrdinal](https://www.google.com/search?num=5&q=FindStringOrdinal+site%3Amsdn.microsoft.com) | kernel32.dll | Libloaderapi.h | Vanara.PInvoke.Kernel32.FindStringOrdinal
 [FindVolumeClose](https://www.google.com/search?num=5&q=FindVolumeClose+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.FindVolumeClose
 [FindVolumeMountPointClose](https://www.google.com/search?num=5&q=FindVolumeMountPointClose+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FindVolumeMountPointClose
@@ -284,36 +514,52 @@ Native Method | Native DLL | Header | Managed Method
 [FlushProcessWriteBuffers](https://www.google.com/search?num=5&q=FlushProcessWriteBuffers+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FlushProcessWriteBuffers
 [FlushViewOfFile](https://www.google.com/search?num=5&q=FlushViewOfFile+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FlushViewOfFile
 [FoldString](https://www.google.com/search?num=5&q=FoldString+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.FoldString
+[FoldStringW](https://www.google.com/search?num=5&q=FoldStringW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[ForceSyncFgPolicyInternal](https://www.google.com/search?num=5&q=ForceSyncFgPolicyInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [FormatApplicationUserModelId](https://www.google.com/search?num=5&q=FormatApplicationUserModelId+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [FormatMessage](https://www.google.com/search?num=5&q=FormatMessage+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FormatMessage
 [FreeConsole](https://www.google.com/search?num=5&q=FreeConsole+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.FreeConsole
 [FreeEnvironmentStrings](https://www.google.com/search?num=5&q=FreeEnvironmentStrings+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FreeEnvironmentStrings
+[FreeGPOListInternal](https://www.google.com/search?num=5&q=FreeGPOListInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [FreeLibrary](https://www.google.com/search?num=5&q=FreeLibrary+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.FreeLibrary
 [FreeLibraryAndExitThread](https://www.google.com/search?num=5&q=FreeLibraryAndExitThread+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.FreeLibraryAndExitThread
 [FreeLibraryWhenCallbackReturns](https://www.google.com/search?num=5&q=FreeLibraryWhenCallbackReturns+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FreeLibraryWhenCallbackReturns
 [FreeMemoryJobObject](https://www.google.com/search?num=5&q=FreeMemoryJobObject+site%3Amsdn.microsoft.com) | kernel32.dll | Jobapi2.h | Vanara.PInvoke.Kernel32.FreeMemoryJobObject
 [FreeResource](https://www.google.com/search?num=5&q=FreeResource+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.FreeResource
+[FreeSid](https://www.google.com/search?num=5&q=FreeSid+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [FreeUserPhysicalPages](https://www.google.com/search?num=5&q=FreeUserPhysicalPages+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FreeUserPhysicalPages
 [GenerateConsoleCtrlEvent](https://www.google.com/search?num=5&q=GenerateConsoleCtrlEvent+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GenerateConsoleCtrlEvent
+[GenerateGPNotificationInternal](https://www.google.com/search?num=5&q=GenerateGPNotificationInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetAcceptLanguages](https://www.google.com/search?num=5&q=GetAcceptLanguages+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetAce](https://www.google.com/search?num=5&q=GetAce+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetAclInformation](https://www.google.com/search?num=5&q=GetAclInformation+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetACP](https://www.google.com/search?num=5&q=GetACP+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetACP
 [GetActiveProcessorCount](https://www.google.com/search?num=5&q=GetActiveProcessorCount+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetActiveProcessorGroupCount](https://www.google.com/search?num=5&q=GetActiveProcessorGroupCount+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetAdjustObjectAttributesForPrivateNamespaceRoutine](https://www.google.com/search?num=5&q=GetAdjustObjectAttributesForPrivateNamespaceRoutine+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetAlternatePackageRoots](https://www.google.com/search?num=5&q=GetAlternatePackageRoots+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetAppContainerAce](https://www.google.com/search?num=5&q=GetAppContainerAce+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetAppContainerNamedObjectPath](https://www.google.com/search?num=5&q=GetAppContainerNamedObjectPath+site%3Amsdn.microsoft.com) | kernel32.dll | Securityappcontainer.h | Vanara.PInvoke.Kernel32.GetAppContainerNamedObjectPath
+[GetAppDataFolder](https://www.google.com/search?num=5&q=GetAppDataFolder+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetApplicationRecoveryCallback](https://www.google.com/search?num=5&q=GetApplicationRecoveryCallback+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetApplicationRecoveryCallback
 [GetApplicationRecoveryCallbackWorker](https://www.google.com/search?num=5&q=GetApplicationRecoveryCallbackWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetApplicationRestartSettings](https://www.google.com/search?num=5&q=GetApplicationRestartSettings+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetApplicationRestartSettings
 [GetApplicationRestartSettingsWorker](https://www.google.com/search?num=5&q=GetApplicationRestartSettingsWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetApplicationUserModelId](https://www.google.com/search?num=5&q=GetApplicationUserModelId+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetApplicationUserModelIdFromToken](https://www.google.com/search?num=5&q=GetApplicationUserModelIdFromToken+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetAppliedGPOListInternal](https://www.google.com/search?num=5&q=GetAppliedGPOListInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetAppModelVersion](https://www.google.com/search?num=5&q=GetAppModelVersion+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetAtomName](https://www.google.com/search?num=5&q=GetAtomName+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetAtomName
 [GetBinaryType](https://www.google.com/search?num=5&q=GetBinaryType+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetCachedSigningLevel](https://www.google.com/search?num=5&q=GetCachedSigningLevel+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetCalendar](https://www.google.com/search?num=5&q=GetCalendar+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetCalendarDateFormat](https://www.google.com/search?num=5&q=GetCalendarDateFormat+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetCalendarDateFormatEx](https://www.google.com/search?num=5&q=GetCalendarDateFormatEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetCalendarDaysInMonth](https://www.google.com/search?num=5&q=GetCalendarDaysInMonth+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetCalendarDifferenceInDays](https://www.google.com/search?num=5&q=GetCalendarDifferenceInDays+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetCalendarInfo](https://www.google.com/search?num=5&q=GetCalendarInfo+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetCalendarInfo
 [GetCalendarInfoEx](https://www.google.com/search?num=5&q=GetCalendarInfoEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetCalendarInfoEx
+[GetCalendarInfoW](https://www.google.com/search?num=5&q=GetCalendarInfoW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetCalendarMonthsInYear](https://www.google.com/search?num=5&q=GetCalendarMonthsInYear+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetCalendarSupportedDateRange](https://www.google.com/search?num=5&q=GetCalendarSupportedDateRange+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetCalendarWeekNumber](https://www.google.com/search?num=5&q=GetCalendarWeekNumber+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -357,26 +603,37 @@ Native Method | Native DLL | Header | Managed Method
 [GetConsoleScreenBufferInfoEx](https://www.google.com/search?num=5&q=GetConsoleScreenBufferInfoEx+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleScreenBufferInfoEx
 [GetConsoleSelectionInfo](https://www.google.com/search?num=5&q=GetConsoleSelectionInfo+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleSelectionInfo
 [GetConsoleTitle](https://www.google.com/search?num=5&q=GetConsoleTitle+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleTitle
+[GetConsoleTitleW](https://www.google.com/search?num=5&q=GetConsoleTitleW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetConsoleWindow](https://www.google.com/search?num=5&q=GetConsoleWindow+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleWindow
+[GetCPFileNameFromRegistry](https://www.google.com/search?num=5&q=GetCPFileNameFromRegistry+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetCPHashNode](https://www.google.com/search?num=5&q=GetCPHashNode+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetCPInfo](https://www.google.com/search?num=5&q=GetCPInfo+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetCPInfo
 [GetCPInfoEx](https://www.google.com/search?num=5&q=GetCPInfoEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetCPInfoEx
+[GetCPInfoExW](https://www.google.com/search?num=5&q=GetCPInfoExW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetCurrencyFormat](https://www.google.com/search?num=5&q=GetCurrencyFormat+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetCurrencyFormat
 [GetCurrencyFormatEx](https://www.google.com/search?num=5&q=GetCurrencyFormatEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetCurrencyFormatEx
+[GetCurrencyFormatW](https://www.google.com/search?num=5&q=GetCurrencyFormatW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetCurrentActCtx](https://www.google.com/search?num=5&q=GetCurrentActCtx+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCurrentActCtx
 [GetCurrentActCtxWorker](https://www.google.com/search?num=5&q=GetCurrentActCtxWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetCurrentApplicationUserModelId](https://www.google.com/search?num=5&q=GetCurrentApplicationUserModelId+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetCurrentConsoleFont](https://www.google.com/search?num=5&q=GetCurrentConsoleFont+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetCurrentConsoleFont
 [GetCurrentConsoleFontEx](https://www.google.com/search?num=5&q=GetCurrentConsoleFontEx+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetCurrentConsoleFontEx
 [GetCurrentDirectory](https://www.google.com/search?num=5&q=GetCurrentDirectory+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetCurrentDirectory
+[GetCurrentPackageApplicationContext](https://www.google.com/search?num=5&q=GetCurrentPackageApplicationContext+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetCurrentPackageApplicationResourcesContext](https://www.google.com/search?num=5&q=GetCurrentPackageApplicationResourcesContext+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetCurrentPackageContext](https://www.google.com/search?num=5&q=GetCurrentPackageContext+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetCurrentPackageFamilyName](https://www.google.com/search?num=5&q=GetCurrentPackageFamilyName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetCurrentPackageFullName](https://www.google.com/search?num=5&q=GetCurrentPackageFullName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetCurrentPackageId](https://www.google.com/search?num=5&q=GetCurrentPackageId+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetCurrentPackageInfo](https://www.google.com/search?num=5&q=GetCurrentPackageInfo+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetCurrentPackagePath](https://www.google.com/search?num=5&q=GetCurrentPackagePath+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetCurrentPackageResourcesContext](https://www.google.com/search?num=5&q=GetCurrentPackageResourcesContext+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetCurrentPackageSecurityContext](https://www.google.com/search?num=5&q=GetCurrentPackageSecurityContext+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetCurrentProcess](https://www.google.com/search?num=5&q=GetCurrentProcess+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetCurrentProcess
 [GetCurrentProcessId](https://www.google.com/search?num=5&q=GetCurrentProcessId+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetCurrentProcessId
 [GetCurrentProcessorNumber](https://www.google.com/search?num=5&q=GetCurrentProcessorNumber+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetCurrentProcessorNumberEx](https://www.google.com/search?num=5&q=GetCurrentProcessorNumberEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetCurrentProcessorNumberEx
+[GetCurrentTargetPlatformContext](https://www.google.com/search?num=5&q=GetCurrentTargetPlatformContext+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetCurrentThread](https://www.google.com/search?num=5&q=GetCurrentThread+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetCurrentThread
 [GetCurrentThreadId](https://www.google.com/search?num=5&q=GetCurrentThreadId+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetCurrentThreadId
 [GetCurrentThreadStackLimits](https://www.google.com/search?num=5&q=GetCurrentThreadStackLimits+site%3Amsdn.microsoft.com) | kernel32.dll | Processthreadsapi.h | Vanara.PInvoke.Kernel32.GetCurrentThreadStackLimits
@@ -386,6 +643,8 @@ Native Method | Native DLL | Header | Managed Method
 [GetDateFormatEx](https://www.google.com/search?num=5&q=GetDateFormatEx+site%3Amsdn.microsoft.com) | kernel32.dll | Datetimeapi.h | Vanara.PInvoke.Kernel32.GetDateFormatEx
 [GetDateFormatWWorker](https://www.google.com/search?num=5&q=GetDateFormatWWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetDefaultCommConfig](https://www.google.com/search?num=5&q=GetDefaultCommConfig+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetDefaultCommConfig
+[GetDeviceDriverBaseName](https://www.google.com/search?num=5&q=GetDeviceDriverBaseName+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetDeviceDriverFileName](https://www.google.com/search?num=5&q=GetDeviceDriverFileName+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetDevicePowerState](https://www.google.com/search?num=5&q=GetDevicePowerState+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetDevicePowerState
 [GetDiskFreeSpace](https://www.google.com/search?num=5&q=GetDiskFreeSpace+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetDiskFreeSpace
 [GetDiskFreeSpaceEx](https://www.google.com/search?num=5&q=GetDiskFreeSpaceEx+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetDiskFreeSpaceEx
@@ -394,6 +653,11 @@ Native Method | Native DLL | Header | Managed Method
 [GetDurationFormat](https://www.google.com/search?num=5&q=GetDurationFormat+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetDurationFormat
 [GetDurationFormatEx](https://www.google.com/search?num=5&q=GetDurationFormatEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetDurationFormatEx
 [GetDynamicTimeZoneInformation](https://www.google.com/search?num=5&q=GetDynamicTimeZoneInformation+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetDynamicTimeZoneInformation
+[GetDynamicTimeZoneInformationEffectiveYears](https://www.google.com/search?num=5&q=GetDynamicTimeZoneInformationEffectiveYears+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetEffectivePackageStatusForUser](https://www.google.com/search?num=5&q=GetEffectivePackageStatusForUser+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetEffectivePackageStatusForUserSid](https://www.google.com/search?num=5&q=GetEffectivePackageStatusForUserSid+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetEightBitStringToUnicodeSizeRoutine](https://www.google.com/search?num=5&q=GetEightBitStringToUnicodeSizeRoutine+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetEightBitStringToUnicodeStringRoutine](https://www.google.com/search?num=5&q=GetEightBitStringToUnicodeStringRoutine+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetEnabledXStateFeatures](https://www.google.com/search?num=5&q=GetEnabledXStateFeatures+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetEncryptedFileVersionExt](https://www.google.com/search?num=5&q=GetEncryptedFileVersionExt+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetEnvironmentStrings](https://www.google.com/search?num=5&q=GetEnvironmentStrings+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetEnvironmentStrings
@@ -403,6 +667,11 @@ Native Method | Native DLL | Header | Managed Method
 [GetExitCodeProcess](https://www.google.com/search?num=5&q=GetExitCodeProcess+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetExitCodeProcess
 [GetExitCodeThread](https://www.google.com/search?num=5&q=GetExitCodeThread+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetExitCodeThread
 [GetExpandedName](https://www.google.com/search?num=5&q=GetExpandedName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetExtensionApplicationUserModelId](https://www.google.com/search?num=5&q=GetExtensionApplicationUserModelId+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetExtensionProgIds](https://www.google.com/search?num=5&q=GetExtensionProgIds+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetExtensionProperty](https://www.google.com/search?num=5&q=GetExtensionProperty+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetExtensionProperty2](https://www.google.com/search?num=5&q=GetExtensionProperty2+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetFallbackDisplayName](https://www.google.com/search?num=5&q=GetFallbackDisplayName+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetFileAttributes](https://www.google.com/search?num=5&q=GetFileAttributes+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFileAttributes
 [GetFileAttributesEx](https://www.google.com/search?num=5&q=GetFileAttributesEx+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFileAttributesEx
 [GetFileAttributesTransacted](https://www.google.com/search?num=5&q=GetFileAttributesTransacted+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -411,47 +680,74 @@ Native Method | Native DLL | Header | Managed Method
 [GetFileInformationByHandleEx](https://www.google.com/search?num=5&q=GetFileInformationByHandleEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetFileMUIInfo](https://www.google.com/search?num=5&q=GetFileMUIInfo+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetFileMUIInfo
 [GetFileMUIPath](https://www.google.com/search?num=5&q=GetFileMUIPath+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetFileMUIPath
+[GetFileSecurityW](https://www.google.com/search?num=5&q=GetFileSecurityW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetFileSize](https://www.google.com/search?num=5&q=GetFileSize+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFileSize
 [GetFileSizeEx](https://www.google.com/search?num=5&q=GetFileSizeEx+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFileSizeEx
 [GetFileTime](https://www.google.com/search?num=5&q=GetFileTime+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFileTime
 [GetFileType](https://www.google.com/search?num=5&q=GetFileType+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFileType
+[GetFileVersionInfo](https://www.google.com/search?num=5&q=GetFileVersionInfo+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetFileVersionInfoByHandle](https://www.google.com/search?num=5&q=GetFileVersionInfoByHandle+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetFileVersionInfoEx](https://www.google.com/search?num=5&q=GetFileVersionInfoEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetFileVersionInfoSize](https://www.google.com/search?num=5&q=GetFileVersionInfoSize+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetFileVersionInfoSizeEx](https://www.google.com/search?num=5&q=GetFileVersionInfoSizeEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetFinalPathNameByHandle](https://www.google.com/search?num=5&q=GetFinalPathNameByHandle+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFinalPathNameByHandle
+[GetFipsModeFromIumKernelState](https://www.google.com/search?num=5&q=GetFipsModeFromIumKernelState+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [GetFirmwareEnvironmentVariable](https://www.google.com/search?num=5&q=GetFirmwareEnvironmentVariable+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetFirmwareEnvironmentVariable
 [GetFirmwareEnvironmentVariableEx](https://www.google.com/search?num=5&q=GetFirmwareEnvironmentVariableEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetFirmwareType](https://www.google.com/search?num=5&q=GetFirmwareType+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetFullPathName](https://www.google.com/search?num=5&q=GetFullPathName+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetFullPathName
 [GetFullPathNameTransacted](https://www.google.com/search?num=5&q=GetFullPathNameTransacted+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetGamingDeviceModelInformation](https://www.google.com/search?num=5&q=GetGamingDeviceModelInformation+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetGeoInfo](https://www.google.com/search?num=5&q=GetGeoInfo+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetGeoInfo
 [GetGeoInfoEx](https://www.google.com/search?num=5&q=GetGeoInfoEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetGeoInfoEx
+[GetGeoInfoW](https://www.google.com/search?num=5&q=GetGeoInfoW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetGPOListInternal](https://www.google.com/search?num=5&q=GetGPOListInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetHandleInformation](https://www.google.com/search?num=5&q=GetHandleInformation+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetHandleInformation
+[GetHivePath](https://www.google.com/search?num=5&q=GetHivePath+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetIntegratedDisplaySize](https://www.google.com/search?num=5&q=GetIntegratedDisplaySize+site%3Amsdn.microsoft.com) | kernelbase.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetIntegratedDisplaySize
+[GetIsEdpEnabled](https://www.google.com/search?num=5&q=GetIsEdpEnabled+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetKernelObjectSecurity](https://www.google.com/search?num=5&q=GetKernelObjectSecurity+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetLargePageMinimum](https://www.google.com/search?num=5&q=GetLargePageMinimum+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetLargePageMinimum
 [GetLargestConsoleWindowSize](https://www.google.com/search?num=5&q=GetLargestConsoleWindowSize+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetLargestConsoleWindowSize
 [GetLastError](https://www.google.com/search?num=5&q=GetLastError+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetLastError
+[GetLengthSid](https://www.google.com/search?num=5&q=GetLengthSid+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetLocaleInfo](https://www.google.com/search?num=5&q=GetLocaleInfo+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetLocaleInfo
 [GetLocaleInfoEx](https://www.google.com/search?num=5&q=GetLocaleInfoEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetLocaleInfoEx
+[GetLocaleInfoHelper](https://www.google.com/search?num=5&q=GetLocaleInfoHelper+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetLocalTime](https://www.google.com/search?num=5&q=GetLocalTime+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetLocalTime
 [GetLogicalDrives](https://www.google.com/search?num=5&q=GetLogicalDrives+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetLogicalDrives
 [GetLogicalDriveStrings](https://www.google.com/search?num=5&q=GetLogicalDriveStrings+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetLogicalDriveStrings
+[GetLogicalDriveStringsW](https://www.google.com/search?num=5&q=GetLogicalDriveStringsW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetLogicalProcessorInformation](https://www.google.com/search?num=5&q=GetLogicalProcessorInformation+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetLogicalProcessorInformation
 [GetLogicalProcessorInformationEx](https://www.google.com/search?num=5&q=GetLogicalProcessorInformationEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetLogicalProcessorInformationEx
 [GetLongPathName](https://www.google.com/search?num=5&q=GetLongPathName+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetLongPathName
 [GetLongPathNameTransacted](https://www.google.com/search?num=5&q=GetLongPathNameTransacted+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetMailslotInfo](https://www.google.com/search?num=5&q=GetMailslotInfo+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetMailslotInfo
+[GetMappedFileName](https://www.google.com/search?num=5&q=GetMappedFileName+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetMaximumProcessorCount](https://www.google.com/search?num=5&q=GetMaximumProcessorCount+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetMaximumProcessorGroupCount](https://www.google.com/search?num=5&q=GetMaximumProcessorGroupCount+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetMemoryErrorHandlingCapabilities](https://www.google.com/search?num=5&q=GetMemoryErrorHandlingCapabilities+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetMemoryErrorHandlingCapabilities
+[GetModuleBaseName](https://www.google.com/search?num=5&q=GetModuleBaseName+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetModuleFileName](https://www.google.com/search?num=5&q=GetModuleFileName+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetModuleFileName
+[GetModuleFileNameEx](https://www.google.com/search?num=5&q=GetModuleFileNameEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetModuleFileNameW](https://www.google.com/search?num=5&q=GetModuleFileNameW+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [GetModuleHandle](https://www.google.com/search?num=5&q=GetModuleHandle+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetModuleHandleEx](https://www.google.com/search?num=5&q=GetModuleHandleEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetModuleHandleExW](https://www.google.com/search?num=5&q=GetModuleHandleExW+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[GetModuleInformation](https://www.google.com/search?num=5&q=GetModuleInformation+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetNamedLocaleHashNode](https://www.google.com/search?num=5&q=GetNamedLocaleHashNode+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetNamedPipeAttribute](https://www.google.com/search?num=5&q=GetNamedPipeAttribute+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetNamedPipeClientComputerName](https://www.google.com/search?num=5&q=GetNamedPipeClientComputerName+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetNamedPipeClientComputerName
+[GetNamedPipeClientComputerNameW](https://www.google.com/search?num=5&q=GetNamedPipeClientComputerNameW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetNamedPipeClientProcessId](https://www.google.com/search?num=5&q=GetNamedPipeClientProcessId+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetNamedPipeClientSessionId](https://www.google.com/search?num=5&q=GetNamedPipeClientSessionId+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetNamedPipeHandleState](https://www.google.com/search?num=5&q=GetNamedPipeHandleState+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetNamedPipeHandleState
+[GetNamedPipeHandleStateW](https://www.google.com/search?num=5&q=GetNamedPipeHandleStateW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetNamedPipeInfo](https://www.google.com/search?num=5&q=GetNamedPipeInfo+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetNamedPipeInfo
 [GetNamedPipeServerProcessId](https://www.google.com/search?num=5&q=GetNamedPipeServerProcessId+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetNamedPipeServerSessionId](https://www.google.com/search?num=5&q=GetNamedPipeServerSessionId+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetNativeSystemInfo](https://www.google.com/search?num=5&q=GetNativeSystemInfo+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetNativeSystemInfo
+[GetNextFgPolicyRefreshInfoInternal](https://www.google.com/search?num=5&q=GetNextFgPolicyRefreshInfoInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetNextUmsListItem](https://www.google.com/search?num=5&q=GetNextUmsListItem+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetNextVDMCommand](https://www.google.com/search?num=5&q=GetNextVDMCommand+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetNLSVersion](https://www.google.com/search?num=5&q=GetNLSVersion+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetNLSVersion
@@ -468,28 +764,57 @@ Native Method | Native DLL | Header | Managed Method
 [GetNumaProximityNodeEx](https://www.google.com/search?num=5&q=GetNumaProximityNodeEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetNumaProximityNodeEx
 [GetNumberFormat](https://www.google.com/search?num=5&q=GetNumberFormat+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetNumberFormat
 [GetNumberFormatEx](https://www.google.com/search?num=5&q=GetNumberFormatEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetNumberFormatEx
+[GetNumberFormatW](https://www.google.com/search?num=5&q=GetNumberFormatW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetNumberOfConsoleFonts](https://www.google.com/search?num=5&q=GetNumberOfConsoleFonts+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetNumberOfConsoleInputEvents](https://www.google.com/search?num=5&q=GetNumberOfConsoleInputEvents+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetNumberOfConsoleInputEvents
 [GetNumberOfConsoleMouseButtons](https://www.google.com/search?num=5&q=GetNumberOfConsoleMouseButtons+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetNumberOfConsoleMouseButtons
 [GetOEMCP](https://www.google.com/search?num=5&q=GetOEMCP+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetOEMCP
+[GetOsManufacturingMode](https://www.google.com/search?num=5&q=GetOsManufacturingMode+site%3Amsdn.microsoft.com) | kernelbase.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetOsManufacturingMode
+[GetOsSafeBootMode](https://www.google.com/search?num=5&q=GetOsSafeBootMode+site%3Amsdn.microsoft.com) | kernelbase.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetOsSafeBootMode
 [GetOverlappedResult](https://www.google.com/search?num=5&q=GetOverlappedResult+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetOverlappedResult
 [GetOverlappedResultEx](https://www.google.com/search?num=5&q=GetOverlappedResultEx+site%3Amsdn.microsoft.com) | kernel32.dll | Ioapiset.h | Vanara.PInvoke.Kernel32.GetOverlappedResultEx
+[GetPackageApplicationContext](https://www.google.com/search?num=5&q=GetPackageApplicationContext+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetPackageApplicationIds](https://www.google.com/search?num=5&q=GetPackageApplicationIds+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetPackageApplicationProperty](https://www.google.com/search?num=5&q=GetPackageApplicationProperty+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetPackageApplicationPropertyString](https://www.google.com/search?num=5&q=GetPackageApplicationPropertyString+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetPackageApplicationResourcesContext](https://www.google.com/search?num=5&q=GetPackageApplicationResourcesContext+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetPackageContext](https://www.google.com/search?num=5&q=GetPackageContext+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetPackageFamilyName](https://www.google.com/search?num=5&q=GetPackageFamilyName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetPackageFamilyNameFromProgId](https://www.google.com/search?num=5&q=GetPackageFamilyNameFromProgId+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetPackageFamilyNameFromToken](https://www.google.com/search?num=5&q=GetPackageFamilyNameFromToken+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetPackageFullName](https://www.google.com/search?num=5&q=GetPackageFullName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetPackageFullNameFromToken](https://www.google.com/search?num=5&q=GetPackageFullNameFromToken+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetPackageId](https://www.google.com/search?num=5&q=GetPackageId+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetPackageInfo](https://www.google.com/search?num=5&q=GetPackageInfo+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetPackageInstallTime](https://www.google.com/search?num=5&q=GetPackageInstallTime+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetPackageOSMaxVersionTested](https://www.google.com/search?num=5&q=GetPackageOSMaxVersionTested+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetPackagePath](https://www.google.com/search?num=5&q=GetPackagePath+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetPackagePathByFullName](https://www.google.com/search?num=5&q=GetPackagePathByFullName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetPackagePathOnVolume](https://www.google.com/search?num=5&q=GetPackagePathOnVolume+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetPackageProperty](https://www.google.com/search?num=5&q=GetPackageProperty+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetPackagePropertyString](https://www.google.com/search?num=5&q=GetPackagePropertyString+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetPackageResourcesContext](https://www.google.com/search?num=5&q=GetPackageResourcesContext+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetPackageResourcesProperty](https://www.google.com/search?num=5&q=GetPackageResourcesProperty+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetPackagesByPackageFamily](https://www.google.com/search?num=5&q=GetPackagesByPackageFamily+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetPackageSecurityContext](https://www.google.com/search?num=5&q=GetPackageSecurityContext+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetPackageSecurityProperty](https://www.google.com/search?num=5&q=GetPackageSecurityProperty+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetPackageStatus](https://www.google.com/search?num=5&q=GetPackageStatus+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetPackageStatusForUser](https://www.google.com/search?num=5&q=GetPackageStatusForUser+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetPackageStatusForUserSid](https://www.google.com/search?num=5&q=GetPackageStatusForUserSid+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetPackageTargetPlatformProperty](https://www.google.com/search?num=5&q=GetPackageTargetPlatformProperty+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetPackageVolumeSisPath](https://www.google.com/search?num=5&q=GetPackageVolumeSisPath+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetPerformanceInfo](https://www.google.com/search?num=5&q=GetPerformanceInfo+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetPhysicallyInstalledSystemMemory](https://www.google.com/search?num=5&q=GetPhysicallyInstalledSystemMemory+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetPhysicallyInstalledSystemMemory
+[GetPreviousFgPolicyRefreshInfoInternal](https://www.google.com/search?num=5&q=GetPreviousFgPolicyRefreshInfoInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetPriorityClass](https://www.google.com/search?num=5&q=GetPriorityClass+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetPriorityClass
+[GetPrivateObjectSecurity](https://www.google.com/search?num=5&q=GetPrivateObjectSecurity+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetPrivateProfileInt](https://www.google.com/search?num=5&q=GetPrivateProfileInt+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetPrivateProfileInt
 [GetPrivateProfileSection](https://www.google.com/search?num=5&q=GetPrivateProfileSection+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetPrivateProfileSection
 [GetPrivateProfileSectionNames](https://www.google.com/search?num=5&q=GetPrivateProfileSectionNames+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetPrivateProfileSectionNames
 [GetPrivateProfileString](https://www.google.com/search?num=5&q=GetPrivateProfileString+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetPrivateProfileString
 [GetPrivateProfileStruct](https://www.google.com/search?num=5&q=GetPrivateProfileStruct+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetPrivateProfileStruct
 [GetProcAddress](https://www.google.com/search?num=5&q=GetProcAddress+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetProcAddress
+[GetProcAddressForCaller](https://www.google.com/search?num=5&q=GetProcAddressForCaller+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetProcessAffinityMask](https://www.google.com/search?num=5&q=GetProcessAffinityMask+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessAffinityMask
 [GetProcessDefaultCpuSets](https://www.google.com/search?num=5&q=GetProcessDefaultCpuSets+site%3Amsdn.microsoft.com) | kernel32.dll | Processthreadapi.h | Vanara.PInvoke.Kernel32.GetProcessDefaultCpuSets
 [GetProcessDEPPolicy](https://www.google.com/search?num=5&q=GetProcessDEPPolicy+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -499,8 +824,10 @@ Native Method | Native DLL | Header | Managed Method
 [GetProcessHeaps](https://www.google.com/search?num=5&q=GetProcessHeaps+site%3Amsdn.microsoft.com) | kernel32.dll | HeapApi.h | Vanara.PInvoke.Kernel32.GetProcessHeaps
 [GetProcessId](https://www.google.com/search?num=5&q=GetProcessId+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessId
 [GetProcessIdOfThread](https://www.google.com/search?num=5&q=GetProcessIdOfThread+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessIdOfThread
+[GetProcessImageFileName](https://www.google.com/search?num=5&q=GetProcessImageFileName+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetProcessInformation](https://www.google.com/search?num=5&q=GetProcessInformation+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessInformation
 [GetProcessIoCounters](https://www.google.com/search?num=5&q=GetProcessIoCounters+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessIoCounters
+[GetProcessMemoryInfo](https://www.google.com/search?num=5&q=GetProcessMemoryInfo+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetProcessMitigationPolicy](https://www.google.com/search?num=5&q=GetProcessMitigationPolicy+site%3Amsdn.microsoft.com) | kernel32.dll | Processthreadsapi.h | Vanara.PInvoke.Kernel32.GetProcessMitigationPolicy
 [GetProcessorSystemCycleTime](https://www.google.com/search?num=5&q=GetProcessorSystemCycleTime+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessorSystemCycleTime
 [GetProcessPreferredUILanguages](https://www.google.com/search?num=5&q=GetProcessPreferredUILanguages+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetProcessPreferredUILanguages
@@ -514,16 +841,49 @@ Native Method | Native DLL | Header | Managed Method
 [GetProfileInt](https://www.google.com/search?num=5&q=GetProfileInt+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetProfileInt
 [GetProfileSection](https://www.google.com/search?num=5&q=GetProfileSection+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetProfileSection
 [GetProfileString](https://www.google.com/search?num=5&q=GetProfileString+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetProfileString
+[GetProtocolAumid](https://www.google.com/search?num=5&q=GetProtocolAumid+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetProtocolProperty](https://www.google.com/search?num=5&q=GetProtocolProperty+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetPtrCalData](https://www.google.com/search?num=5&q=GetPtrCalData+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetPtrCalDataArray](https://www.google.com/search?num=5&q=GetPtrCalDataArray+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetPublisherCacheFolder](https://www.google.com/search?num=5&q=GetPublisherCacheFolder+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetPublisherRootFolder](https://www.google.com/search?num=5&q=GetPublisherRootFolder+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetQueuedCompletionStatus](https://www.google.com/search?num=5&q=GetQueuedCompletionStatus+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetQueuedCompletionStatus
 [GetQueuedCompletionStatusEx](https://www.google.com/search?num=5&q=GetQueuedCompletionStatusEx+site%3Amsdn.microsoft.com) | kernel32.dll | IoAPI.h | Vanara.PInvoke.Kernel32.GetQueuedCompletionStatusEx
+[GetRegistryExtensionFlags](https://www.google.com/search?num=5&q=GetRegistryExtensionFlags+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetRoamingLastObservedChangeTime](https://www.google.com/search?num=5&q=GetRoamingLastObservedChangeTime+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetSecurityDescriptorControl](https://www.google.com/search?num=5&q=GetSecurityDescriptorControl+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetSecurityDescriptorDacl](https://www.google.com/search?num=5&q=GetSecurityDescriptorDacl+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetSecurityDescriptorGroup](https://www.google.com/search?num=5&q=GetSecurityDescriptorGroup+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetSecurityDescriptorLength](https://www.google.com/search?num=5&q=GetSecurityDescriptorLength+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetSecurityDescriptorOwner](https://www.google.com/search?num=5&q=GetSecurityDescriptorOwner+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetSecurityDescriptorRMControl](https://www.google.com/search?num=5&q=GetSecurityDescriptorRMControl+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetSecurityDescriptorSacl](https://www.google.com/search?num=5&q=GetSecurityDescriptorSacl+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetSeedFromIumKernelState](https://www.google.com/search?num=5&q=GetSeedFromIumKernelState+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[GetSerializedAtomBytes](https://www.google.com/search?num=5&q=GetSerializedAtomBytes+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetSharedLocalFolder](https://www.google.com/search?num=5&q=GetSharedLocalFolder+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetShortPathName](https://www.google.com/search?num=5&q=GetShortPathName+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetShortPathName
+[GetShortPathNameW](https://www.google.com/search?num=5&q=GetShortPathNameW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetSidIdentifierAuthority](https://www.google.com/search?num=5&q=GetSidIdentifierAuthority+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetSidLengthRequired](https://www.google.com/search?num=5&q=GetSidLengthRequired+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetSidSubAuthority](https://www.google.com/search?num=5&q=GetSidSubAuthority+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetSidSubAuthorityCount](https://www.google.com/search?num=5&q=GetSidSubAuthorityCount+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetStagedPackageOrigin](https://www.google.com/search?num=5&q=GetStagedPackageOrigin+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetStagedPackagePathByFullName](https://www.google.com/search?num=5&q=GetStagedPackagePathByFullName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetStartupInfo](https://www.google.com/search?num=5&q=GetStartupInfo+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetStartupInfo
+[GetStartupInfoW](https://www.google.com/search?num=5&q=GetStartupInfoW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetStateContainerDepth](https://www.google.com/search?num=5&q=GetStateContainerDepth+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetStateFolder](https://www.google.com/search?num=5&q=GetStateFolder+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetStateRootFolder](https://www.google.com/search?num=5&q=GetStateRootFolder+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetStateRootFolderBase](https://www.google.com/search?num=5&q=GetStateRootFolderBase+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetStateSettingsFolder](https://www.google.com/search?num=5&q=GetStateSettingsFolder+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetStateVersion](https://www.google.com/search?num=5&q=GetStateVersion+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetStdHandle](https://www.google.com/search?num=5&q=GetStdHandle+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetStdHandle
 [GetStringScripts](https://www.google.com/search?num=5&q=GetStringScripts+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetStringScripts
+[GetStringTableEntry](https://www.google.com/search?num=5&q=GetStringTableEntry+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetStringType](https://www.google.com/search?num=5&q=GetStringType+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetStringTypeEx](https://www.google.com/search?num=5&q=GetStringTypeEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetStringTypeEx
+[GetStringTypeExW](https://www.google.com/search?num=5&q=GetStringTypeExW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetSystemAppDataFolder](https://www.google.com/search?num=5&q=GetSystemAppDataFolder+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetSystemAppDataKey](https://www.google.com/search?num=5&q=GetSystemAppDataKey+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetSystemCpuSetInformation](https://www.google.com/search?num=5&q=GetSystemCpuSetInformation+site%3Amsdn.microsoft.com) | kernel32.dll | Processthreadapi.h | Vanara.PInvoke.Kernel32.GetSystemCpuSetInformation
 [GetSystemDefaultLangID](https://www.google.com/search?num=5&q=GetSystemDefaultLangID+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetSystemDefaultLangID
@@ -532,12 +892,17 @@ Native Method | Native DLL | Header | Managed Method
 [GetSystemDefaultUILanguage](https://www.google.com/search?num=5&q=GetSystemDefaultUILanguage+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetSystemDefaultUILanguage
 [GetSystemDEPPolicy](https://www.google.com/search?num=5&q=GetSystemDEPPolicy+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetSystemDirectory](https://www.google.com/search?num=5&q=GetSystemDirectory+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemDirectory
+[GetSystemDirectoryW](https://www.google.com/search?num=5&q=GetSystemDirectoryW+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [GetSystemFileCacheSize](https://www.google.com/search?num=5&q=GetSystemFileCacheSize+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetSystemFileCacheSize
 [GetSystemFirmwareTable](https://www.google.com/search?num=5&q=GetSystemFirmwareTable+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemFirmwareTable
 [GetSystemInfo](https://www.google.com/search?num=5&q=GetSystemInfo+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemInfo
+[GetSystemMetadataPath](https://www.google.com/search?num=5&q=GetSystemMetadataPath+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetSystemMetadataPathForPackage](https://www.google.com/search?num=5&q=GetSystemMetadataPathForPackage+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetSystemMetadataPathForPackageFamily](https://www.google.com/search?num=5&q=GetSystemMetadataPathForPackageFamily+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetSystemPowerStatus](https://www.google.com/search?num=5&q=GetSystemPowerStatus+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemPowerStatus
 [GetSystemPreferredUILanguages](https://www.google.com/search?num=5&q=GetSystemPreferredUILanguages+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetSystemPreferredUILanguages
 [GetSystemRegistryQuota](https://www.google.com/search?num=5&q=GetSystemRegistryQuota+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemRegistryQuota
+[GetSystemStateRootFolder](https://www.google.com/search?num=5&q=GetSystemStateRootFolder+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetSystemTime](https://www.google.com/search?num=5&q=GetSystemTime+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemTime
 [GetSystemTimeAdjustment](https://www.google.com/search?num=5&q=GetSystemTimeAdjustment+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemTimeAdjustment
 [GetSystemTimeAsFileTime](https://www.google.com/search?num=5&q=GetSystemTimeAsFileTime+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemTimeAsFileTime
@@ -545,9 +910,11 @@ Native Method | Native DLL | Header | Managed Method
 [GetSystemTimes](https://www.google.com/search?num=5&q=GetSystemTimes+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemTimes
 [GetSystemWindowsDirectory](https://www.google.com/search?num=5&q=GetSystemWindowsDirectory+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemWindowsDirectory
 [GetSystemWow64Directory](https://www.google.com/search?num=5&q=GetSystemWow64Directory+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemWow64Directory
+[GetSystemWow64Directory2](https://www.google.com/search?num=5&q=GetSystemWow64Directory2+site%3Amsdn.microsoft.com) | kernelbase.dll | Wow64apiset.h | Vanara.PInvoke.Kernel32.GetSystemWow64Directory2
 [GetTapeParameters](https://www.google.com/search?num=5&q=GetTapeParameters+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetTapeParameters
 [GetTapePosition](https://www.google.com/search?num=5&q=GetTapePosition+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetTapePosition
 [GetTapeStatus](https://www.google.com/search?num=5&q=GetTapeStatus+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetTapeStatus
+[GetTargetPlatformContext](https://www.google.com/search?num=5&q=GetTargetPlatformContext+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetTempFileName](https://www.google.com/search?num=5&q=GetTempFileName+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetTempFileName
 [GetTempPath](https://www.google.com/search?num=5&q=GetTempPath+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetTempPath
 [GetThreadContext](https://www.google.com/search?num=5&q=GetThreadContext+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetThreadContext
@@ -574,15 +941,25 @@ Native Method | Native DLL | Header | Managed Method
 [GetTimeFormatWWorker](https://www.google.com/search?num=5&q=GetTimeFormatWWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetTimeZoneInformation](https://www.google.com/search?num=5&q=GetTimeZoneInformation+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetTimeZoneInformation
 [GetTimeZoneInformationForYear](https://www.google.com/search?num=5&q=GetTimeZoneInformationForYear+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetTimeZoneInformationForYear
+[GetTokenInformation](https://www.google.com/search?num=5&q=GetTokenInformation+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetTraceEnableFlags](https://www.google.com/search?num=5&q=GetTraceEnableFlags+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetTraceEnableLevel](https://www.google.com/search?num=5&q=GetTraceEnableLevel+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetTraceLoggerHandle](https://www.google.com/search?num=5&q=GetTraceLoggerHandle+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetUILanguageInfo](https://www.google.com/search?num=5&q=GetUILanguageInfo+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetUILanguageInfo
 [GetUmsCompletionListEvent](https://www.google.com/search?num=5&q=GetUmsCompletionListEvent+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetUmsSystemThreadInformation](https://www.google.com/search?num=5&q=GetUmsSystemThreadInformation+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[GetUnicodeStringToEightBitSizeRoutine](https://www.google.com/search?num=5&q=GetUnicodeStringToEightBitSizeRoutine+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetUnicodeStringToEightBitStringRoutine](https://www.google.com/search?num=5&q=GetUnicodeStringToEightBitStringRoutine+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetUserDefaultGeoName](https://www.google.com/search?num=5&q=GetUserDefaultGeoName+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetUserDefaultGeoName
 [GetUserDefaultLangID](https://www.google.com/search?num=5&q=GetUserDefaultLangID+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetUserDefaultLangID
 [GetUserDefaultLCID](https://www.google.com/search?num=5&q=GetUserDefaultLCID+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetUserDefaultLCID
 [GetUserDefaultLocaleName](https://www.google.com/search?num=5&q=GetUserDefaultLocaleName+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetUserDefaultLocaleName
 [GetUserDefaultUILanguage](https://www.google.com/search?num=5&q=GetUserDefaultUILanguage+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetUserDefaultUILanguage
 [GetUserGeoID](https://www.google.com/search?num=5&q=GetUserGeoID+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetUserGeoID
+[GetUserInfo](https://www.google.com/search?num=5&q=GetUserInfo+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetUserInfoWord](https://www.google.com/search?num=5&q=GetUserInfoWord+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetUserOverrideString](https://www.google.com/search?num=5&q=GetUserOverrideString+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetUserOverrideWord](https://www.google.com/search?num=5&q=GetUserOverrideWord+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetUserPreferredUILanguages](https://www.google.com/search?num=5&q=GetUserPreferredUILanguages+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.GetUserPreferredUILanguages
 [GetVDMCurrentDirectories](https://www.google.com/search?num=5&q=GetVDMCurrentDirectories+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GetVersion](https://www.google.com/search?num=5&q=GetVersion+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetVersion
@@ -590,10 +967,16 @@ Native Method | Native DLL | Header | Managed Method
 [GetVolumeInformation](https://www.google.com/search?num=5&q=GetVolumeInformation+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetVolumeInformation
 [GetVolumeInformationByHandleW](https://www.google.com/search?num=5&q=GetVolumeInformationByHandleW+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetVolumeInformationByHandleW
 [GetVolumeNameForVolumeMountPoint](https://www.google.com/search?num=5&q=GetVolumeNameForVolumeMountPoint+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetVolumeNameForVolumeMountPoint
+[GetVolumeNameForVolumeMountPointW](https://www.google.com/search?num=5&q=GetVolumeNameForVolumeMountPointW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetVolumePathName](https://www.google.com/search?num=5&q=GetVolumePathName+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetVolumePathName
 [GetVolumePathNamesForVolumeName](https://www.google.com/search?num=5&q=GetVolumePathNamesForVolumeName+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.GetVolumePathNamesForVolumeName
+[GetVolumePathNamesForVolumeNameW](https://www.google.com/search?num=5&q=GetVolumePathNamesForVolumeNameW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetVolumePathNameW](https://www.google.com/search?num=5&q=GetVolumePathNameW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetWindowsAccountDomainSid](https://www.google.com/search?num=5&q=GetWindowsAccountDomainSid+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetWindowsDirectory](https://www.google.com/search?num=5&q=GetWindowsDirectory+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetWindowsDirectory
 [GetWriteWatch](https://www.google.com/search?num=5&q=GetWriteWatch+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetWriteWatch
+[GetWsChanges](https://www.google.com/search?num=5&q=GetWsChanges+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[GetWsChangesEx](https://www.google.com/search?num=5&q=GetWsChangesEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [GetXStateFeaturesMask](https://www.google.com/search?num=5&q=GetXStateFeaturesMask+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [GlobalAddAtom](https://www.google.com/search?num=5&q=GlobalAddAtom+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GlobalAddAtom
 [GlobalAddAtomEx](https://www.google.com/search?num=5&q=GlobalAddAtomEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GlobalAddAtomEx
@@ -610,6 +993,9 @@ Native Method | Native DLL | Header | Managed Method
 [GlobalReAlloc](https://www.google.com/search?num=5&q=GlobalReAlloc+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GlobalReAlloc
 [GlobalSize](https://www.google.com/search?num=5&q=GlobalSize+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GlobalSize
 [GlobalUnlock](https://www.google.com/search?num=5&q=GlobalUnlock+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GlobalUnlock
+[GuardCheckLongJumpTarget](https://www.google.com/search?num=5&q=GuardCheckLongJumpTarget+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[HashData](https://www.google.com/search?num=5&q=HashData+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[HasPolicyForegroundProcessingCompletedInternal](https://www.google.com/search?num=5&q=HasPolicyForegroundProcessingCompletedInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [Heap32First](https://www.google.com/search?num=5&q=Heap32First+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [Heap32ListFirst](https://www.google.com/search?num=5&q=Heap32ListFirst+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [Heap32ListNext](https://www.google.com/search?num=5&q=Heap32ListNext+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -628,17 +1014,28 @@ Native Method | Native DLL | Header | Managed Method
 [HeapUnlock](https://www.google.com/search?num=5&q=HeapUnlock+site%3Amsdn.microsoft.com) | kernel32.dll | HeapApi.h | Vanara.PInvoke.Kernel32.HeapUnlock
 [HeapValidate](https://www.google.com/search?num=5&q=HeapValidate+site%3Amsdn.microsoft.com) | kernel32.dll | HeapApi.h | Vanara.PInvoke.Kernel32.HeapValidate
 [HeapWalk](https://www.google.com/search?num=5&q=HeapWalk+site%3Amsdn.microsoft.com) | kernel32.dll | HeapApi.h | Vanara.PInvoke.Kernel32.HeapWalk
+[hgets](https://www.google.com/search?num=5&q=hgets+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[hwprintf](https://www.google.com/search?num=5&q=hwprintf+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [IdnToAscii](https://www.google.com/search?num=5&q=IdnToAscii+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IdnToAscii
 [IdnToNameprepUnicode](https://www.google.com/search?num=5&q=IdnToNameprepUnicode+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IdnToNameprepUnicode
 [IdnToUnicode](https://www.google.com/search?num=5&q=IdnToUnicode+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IdnToUnicode
+[ImpersonateAnonymousToken](https://www.google.com/search?num=5&q=ImpersonateAnonymousToken+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[ImpersonateLoggedOnUser](https://www.google.com/search?num=5&q=ImpersonateLoggedOnUser+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[ImpersonateNamedPipeClient](https://www.google.com/search?num=5&q=ImpersonateNamedPipeClient+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[ImpersonateSelf](https://www.google.com/search?num=5&q=ImpersonateSelf+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[IncrementPackageStatusVersion](https://www.google.com/search?num=5&q=IncrementPackageStatusVersion+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [InitAtomTable](https://www.google.com/search?num=5&q=InitAtomTable+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.InitAtomTable
+[InitializeAcl](https://www.google.com/search?num=5&q=InitializeAcl+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [InitializeConditionVariable](https://www.google.com/search?num=5&q=InitializeConditionVariable+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InitializeConditionVariable
 [InitializeContext](https://www.google.com/search?num=5&q=InitializeContext+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [InitializeCriticalSection](https://www.google.com/search?num=5&q=InitializeCriticalSection+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InitializeCriticalSection
 [InitializeCriticalSectionAndSpinCount](https://www.google.com/search?num=5&q=InitializeCriticalSectionAndSpinCount+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InitializeCriticalSectionAndSpinCount
 [InitializeCriticalSectionEx](https://www.google.com/search?num=5&q=InitializeCriticalSectionEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InitializeCriticalSectionEx
 [InitializeEnclave](https://www.google.com/search?num=5&q=InitializeEnclave+site%3Amsdn.microsoft.com) | kernel32.dll | Enclaveapi.h | Vanara.PInvoke.Kernel32.InitializeEnclave
+[InitializeProcessForWsWatch](https://www.google.com/search?num=5&q=InitializeProcessForWsWatch+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [InitializeProcThreadAttributeList](https://www.google.com/search?num=5&q=InitializeProcThreadAttributeList+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InitializeProcThreadAttributeList
+[InitializeSecurityDescriptor](https://www.google.com/search?num=5&q=InitializeSecurityDescriptor+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[InitializeSid](https://www.google.com/search?num=5&q=InitializeSid+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [InitializeSListHead](https://www.google.com/search?num=5&q=InitializeSListHead+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InitializeSListHead
 [InitializeSRWLock](https://www.google.com/search?num=5&q=InitializeSRWLock+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InitializeSRWLock
 [InitializeSynchronizationBarrier](https://www.google.com/search?num=5&q=InitializeSynchronizationBarrier+site%3Amsdn.microsoft.com) | kernel32.dll | SynchAPI.h | Vanara.PInvoke.Kernel32.InitializeSynchronizationBarrier
@@ -652,6 +1049,18 @@ Native Method | Native DLL | Header | Managed Method
 [InterlockedPushEntrySList](https://www.google.com/search?num=5&q=InterlockedPushEntrySList+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.InterlockedPushEntrySList
 [InterlockedPushListSList](https://www.google.com/search?num=5&q=InterlockedPushListSList+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [InterlockedPushListSListEx](https://www.google.com/search?num=5&q=InterlockedPushListSListEx+site%3Amsdn.microsoft.com) | kernel32.dll | Interlockedapi.h | Vanara.PInvoke.Kernel32.InterlockedPushListSListEx
+[Internal_EnumCalendarInfo](https://www.google.com/search?num=5&q=Internal_EnumCalendarInfo+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[Internal_EnumDateFormats](https://www.google.com/search?num=5&q=Internal_EnumDateFormats+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[Internal_EnumLanguageGroupLocales](https://www.google.com/search?num=5&q=Internal_EnumLanguageGroupLocales+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[Internal_EnumSystemCodePages](https://www.google.com/search?num=5&q=Internal_EnumSystemCodePages+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[Internal_EnumSystemLanguageGroups](https://www.google.com/search?num=5&q=Internal_EnumSystemLanguageGroups+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[Internal_EnumSystemLocales](https://www.google.com/search?num=5&q=Internal_EnumSystemLocales+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[Internal_EnumTimeFormats](https://www.google.com/search?num=5&q=Internal_EnumTimeFormats+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[Internal_EnumUILanguages](https://www.google.com/search?num=5&q=Internal_EnumUILanguages+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[InternalLcidToName](https://www.google.com/search?num=5&q=InternalLcidToName+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[InternetTimeFromSystemTime](https://www.google.com/search?num=5&q=InternetTimeFromSystemTime+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[InternetTimeToSystemTime](https://www.google.com/search?num=5&q=InternetTimeToSystemTime+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[InvalidateAppModelVersionCache](https://www.google.com/search?num=5&q=InvalidateAppModelVersionCache+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [InvalidateConsoleDIBits](https://www.google.com/search?num=5&q=InvalidateConsoleDIBits+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [IsBadCodePtr](https://www.google.com/search?num=5&q=IsBadCodePtr+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.IsBadCodePtr
 [IsBadReadPtr](https://www.google.com/search?num=5&q=IsBadReadPtr+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.IsBadReadPtr
@@ -660,49 +1069,98 @@ Native Method | Native DLL | Header | Managed Method
 [IsCalendarLeapDay](https://www.google.com/search?num=5&q=IsCalendarLeapDay+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [IsCalendarLeapMonth](https://www.google.com/search?num=5&q=IsCalendarLeapMonth+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [IsCalendarLeapYear](https://www.google.com/search?num=5&q=IsCalendarLeapYear+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[IsCharAlpha](https://www.google.com/search?num=5&q=IsCharAlpha+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[IsCharAlphaNumeric](https://www.google.com/search?num=5&q=IsCharAlphaNumeric+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[IsCharBlankW](https://www.google.com/search?num=5&q=IsCharBlankW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[IsCharCntrlW](https://www.google.com/search?num=5&q=IsCharCntrlW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[IsCharDigitW](https://www.google.com/search?num=5&q=IsCharDigitW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[IsCharLower](https://www.google.com/search?num=5&q=IsCharLower+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[IsCharPunctW](https://www.google.com/search?num=5&q=IsCharPunctW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[IsCharSpace](https://www.google.com/search?num=5&q=IsCharSpace+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[IsCharUpper](https://www.google.com/search?num=5&q=IsCharUpper+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[IsCharXDigitW](https://www.google.com/search?num=5&q=IsCharXDigitW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [IsDBCSLeadByte](https://www.google.com/search?num=5&q=IsDBCSLeadByte+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IsDBCSLeadByte
 [IsDBCSLeadByteEx](https://www.google.com/search?num=5&q=IsDBCSLeadByteEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IsDBCSLeadByteEx
 [IsDebuggerPresent](https://www.google.com/search?num=5&q=IsDebuggerPresent+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.IsDebuggerPresent
+[IsDeveloperModeEnabled](https://www.google.com/search?num=5&q=IsDeveloperModeEnabled+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[IsDeveloperModePolicyApplied](https://www.google.com/search?num=5&q=IsDeveloperModePolicyApplied+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [IsEnclaveTypeSupported](https://www.google.com/search?num=5&q=IsEnclaveTypeSupported+site%3Amsdn.microsoft.com) | kernel32.dll | Enclaveapi.h | Vanara.PInvoke.Kernel32.IsEnclaveTypeSupported
+[IsGlobalizationUserSettingsKeyRedirected](https://www.google.com/search?num=5&q=IsGlobalizationUserSettingsKeyRedirected+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[IsInternetESCEnabled](https://www.google.com/search?num=5&q=IsInternetESCEnabled+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [IsNativeVhdBoot](https://www.google.com/search?num=5&q=IsNativeVhdBoot+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [IsNLSDefinedString](https://www.google.com/search?num=5&q=IsNLSDefinedString+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IsNLSDefinedString
 [IsNormalizedString](https://www.google.com/search?num=5&q=IsNormalizedString+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IsNormalizedString
+[IsOnDemandRegistrationSupportedForExtensionCategory](https://www.google.com/search?num=5&q=IsOnDemandRegistrationSupportedForExtensionCategory+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [IsProcessCritical](https://www.google.com/search?num=5&q=IsProcessCritical+site%3Amsdn.microsoft.com) | kernel32.dll | Processthreadsapi.h | Vanara.PInvoke.Kernel32.IsProcessCritical
 [IsProcessInJob](https://www.google.com/search?num=5&q=IsProcessInJob+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.IsProcessInJob
 [IsProcessorFeaturePresent](https://www.google.com/search?num=5&q=IsProcessorFeaturePresent+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.IsProcessorFeaturePresent
+[IsSideloadingEnabled](https://www.google.com/search?num=5&q=IsSideloadingEnabled+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[IsSideloadingPolicyApplied](https://www.google.com/search?num=5&q=IsSideloadingPolicyApplied+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[IsSyncForegroundPolicyRefresh](https://www.google.com/search?num=5&q=IsSyncForegroundPolicyRefresh+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [IsSystemResumeAutomatic](https://www.google.com/search?num=5&q=IsSystemResumeAutomatic+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.IsSystemResumeAutomatic
 [IsThreadAFiber](https://www.google.com/search?num=5&q=IsThreadAFiber+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.IsThreadAFiber
 [IsThreadpoolTimerSet](https://www.google.com/search?num=5&q=IsThreadpoolTimerSet+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.IsThreadpoolTimerSet
+[IsTimeZoneRedirectionEnabled](https://www.google.com/search?num=5&q=IsTimeZoneRedirectionEnabled+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[IsTokenRestricted](https://www.google.com/search?num=5&q=IsTokenRestricted+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[IsValidAcl](https://www.google.com/search?num=5&q=IsValidAcl+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [IsValidCalDateTime](https://www.google.com/search?num=5&q=IsValidCalDateTime+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [IsValidCodePage](https://www.google.com/search?num=5&q=IsValidCodePage+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IsValidCodePage
 [IsValidLanguageGroup](https://www.google.com/search?num=5&q=IsValidLanguageGroup+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IsValidLanguageGroup
 [IsValidLocale](https://www.google.com/search?num=5&q=IsValidLocale+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IsValidLocale
 [IsValidLocaleName](https://www.google.com/search?num=5&q=IsValidLocaleName+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IsValidLocaleName
 [IsValidNLSVersion](https://www.google.com/search?num=5&q=IsValidNLSVersion+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.IsValidNLSVersion
+[IsValidRelativeSecurityDescriptor](https://www.google.com/search?num=5&q=IsValidRelativeSecurityDescriptor+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[IsValidSecurityDescriptor](https://www.google.com/search?num=5&q=IsValidSecurityDescriptor+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[IsValidSid](https://www.google.com/search?num=5&q=IsValidSid+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[IsWellKnownSid](https://www.google.com/search?num=5&q=IsWellKnownSid+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [IsWow64GuestMachineSupported](https://www.google.com/search?num=5&q=IsWow64GuestMachineSupported+site%3Amsdn.microsoft.com) | kernel32.dll | Wow64apiset.h | Vanara.PInvoke.Kernel32.IsWow64GuestMachineSupported
 [IsWow64Process](https://www.google.com/search?num=5&q=IsWow64Process+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.IsWow64Process
 [IsWow64Process2](https://www.google.com/search?num=5&q=IsWow64Process2+site%3Amsdn.microsoft.com) | kernel32.dll | Wow64apiset.h | Vanara.PInvoke.Kernel32.IsWow64Process2
+[K32EmptyWorkingSet](https://www.google.com/search?num=5&q=K32EmptyWorkingSet+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[K32EnumDeviceDrivers](https://www.google.com/search?num=5&q=K32EnumDeviceDrivers+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [K32EnumPageFiles](https://www.google.com/search?num=5&q=K32EnumPageFiles+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[K32EnumProcesses](https://www.google.com/search?num=5&q=K32EnumProcesses+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[K32EnumProcessModules](https://www.google.com/search?num=5&q=K32EnumProcessModules+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[K32EnumProcessModulesEx](https://www.google.com/search?num=5&q=K32EnumProcessModulesEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [K32GetDeviceDriverBaseName](https://www.google.com/search?num=5&q=K32GetDeviceDriverBaseName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [K32GetDeviceDriverFileName](https://www.google.com/search?num=5&q=K32GetDeviceDriverFileName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [K32GetMappedFileName](https://www.google.com/search?num=5&q=K32GetMappedFileName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [K32GetModuleBaseName](https://www.google.com/search?num=5&q=K32GetModuleBaseName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [K32GetModuleFileNameEx](https://www.google.com/search?num=5&q=K32GetModuleFileNameEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[K32GetModuleInformation](https://www.google.com/search?num=5&q=K32GetModuleInformation+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[K32GetPerformanceInfo](https://www.google.com/search?num=5&q=K32GetPerformanceInfo+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [K32GetProcessImageFileName](https://www.google.com/search?num=5&q=K32GetProcessImageFileName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[K32GetProcessMemoryInfo](https://www.google.com/search?num=5&q=K32GetProcessMemoryInfo+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[K32GetWsChanges](https://www.google.com/search?num=5&q=K32GetWsChanges+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[K32GetWsChangesEx](https://www.google.com/search?num=5&q=K32GetWsChangesEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[K32InitializeProcessForWsWatch](https://www.google.com/search?num=5&q=K32InitializeProcessForWsWatch+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[K32QueryWorkingSet](https://www.google.com/search?num=5&q=K32QueryWorkingSet+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[K32QueryWorkingSetEx](https://www.google.com/search?num=5&q=K32QueryWorkingSetEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[KernelBaseGetGlobalData](https://www.google.com/search?num=5&q=KernelBaseGetGlobalData+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[KernelbasePostInit](https://www.google.com/search?num=5&q=KernelbasePostInit+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[KiUserExceptionDispatcher](https://www.google.com/search?num=5&q=KiUserExceptionDispatcher+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [LCIDToLocaleName](https://www.google.com/search?num=5&q=LCIDToLocaleName+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.LCIDToLocaleName
 [LCMapString](https://www.google.com/search?num=5&q=LCMapString+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.LCMapString
 [LCMapStringEx](https://www.google.com/search?num=5&q=LCMapStringEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.LCMapStringEx
+[LdrDisableThreadCalloutsForDll](https://www.google.com/search?num=5&q=LdrDisableThreadCalloutsForDll+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[LdrResolveDelayLoadedAPI](https://www.google.com/search?num=5&q=LdrResolveDelayLoadedAPI+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[LeaveCriticalPolicySectionInternal](https://www.google.com/search?num=5&q=LeaveCriticalPolicySectionInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [LeaveCriticalSection](https://www.google.com/search?num=5&q=LeaveCriticalSection+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.LeaveCriticalSection
 [LeaveCriticalSectionWhenCallbackReturns](https://www.google.com/search?num=5&q=LeaveCriticalSectionWhenCallbackReturns+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.LeaveCriticalSectionWhenCallbackReturns
 [LoadAppInitDlls](https://www.google.com/search?num=5&q=LoadAppInitDlls+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [LoadEnclaveData](https://www.google.com/search?num=5&q=LoadEnclaveData+site%3Amsdn.microsoft.com) | kernel32.dll | Enclaveapi.h | Vanara.PInvoke.Kernel32.LoadEnclaveData
+[LoadEnclaveImage](https://www.google.com/search?num=5&q=LoadEnclaveImage+site%3Amsdn.microsoft.com) | kernelbase.dll | Enclaveapi.h | Vanara.PInvoke.Kernel32.LoadEnclaveImage
 [LoadLibrary](https://www.google.com/search?num=5&q=LoadLibrary+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.LoadLibrary
 [LoadLibraryEx](https://www.google.com/search?num=5&q=LoadLibraryEx+site%3Amsdn.microsoft.com) | kernel32.dll | LibLoaderAPI.h | Vanara.PInvoke.Kernel32.LoadLibraryEx
+[LoadLibraryExW](https://www.google.com/search?num=5&q=LoadLibraryExW+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[LoadLibraryW](https://www.google.com/search?num=5&q=LoadLibraryW+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [LoadModule](https://www.google.com/search?num=5&q=LoadModule+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.LoadModule
 [LoadPackagedLibrary](https://www.google.com/search?num=5&q=LoadPackagedLibrary+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [LoadResource](https://www.google.com/search?num=5&q=LoadResource+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.LoadResource
+[LoadString](https://www.google.com/search?num=5&q=LoadString+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [LoadStringBaseExW](https://www.google.com/search?num=5&q=LoadStringBaseExW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [LoadStringBaseW](https://www.google.com/search?num=5&q=LoadStringBaseW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[LoadStringByReference](https://www.google.com/search?num=5&q=LoadStringByReference+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [LocalAlloc](https://www.google.com/search?num=5&q=LocalAlloc+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.LocalAlloc
 [LocaleNameToLCID](https://www.google.com/search?num=5&q=LocaleNameToLCID+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.LocaleNameToLCID
 [LocalFileTimeToFileTime](https://www.google.com/search?num=5&q=LocalFileTimeToFileTime+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.LocalFileTimeToFileTime
@@ -733,62 +1191,211 @@ Native Method | Native DLL | Header | Managed Method
 [LZRead](https://www.google.com/search?num=5&q=LZRead+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [LZSeek](https://www.google.com/search?num=5&q=LZSeek+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [LZStart](https://www.google.com/search?num=5&q=LZStart+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[MakeAbsoluteSD](https://www.google.com/search?num=5&q=MakeAbsoluteSD+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[MakeAbsoluteSD2](https://www.google.com/search?num=5&q=MakeAbsoluteSD2+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[MakeSelfRelativeSD](https://www.google.com/search?num=5&q=MakeSelfRelativeSD+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[MapGenericMask](https://www.google.com/search?num=5&q=MapGenericMask+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[MapPredefinedHandleInternal](https://www.google.com/search?num=5&q=MapPredefinedHandleInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [MapUserPhysicalPages](https://www.google.com/search?num=5&q=MapUserPhysicalPages+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MapUserPhysicalPages
 [MapUserPhysicalPagesScatter](https://www.google.com/search?num=5&q=MapUserPhysicalPagesScatter+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MapUserPhysicalPagesScatter
 [MapViewOfFile](https://www.google.com/search?num=5&q=MapViewOfFile+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MapViewOfFile
 [MapViewOfFileEx](https://www.google.com/search?num=5&q=MapViewOfFileEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MapViewOfFileEx
 [MapViewOfFileExNuma](https://www.google.com/search?num=5&q=MapViewOfFileExNuma+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [MapViewOfFileFromApp](https://www.google.com/search?num=5&q=MapViewOfFileFromApp+site%3Amsdn.microsoft.com) | kernel32.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.MapViewOfFileFromApp
+[MapViewOfFileNuma2](https://www.google.com/search?num=5&q=MapViewOfFileNuma2+site%3Amsdn.microsoft.com) | kernelbase.dll | WinBase.h | Vanara.PInvoke.Kernel32.MapViewOfFileNuma2
+[memcmp](https://www.google.com/search?num=5&q=memcmp+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[memcpy](https://www.google.com/search?num=5&q=memcpy+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[memmove](https://www.google.com/search?num=5&q=memmove+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[memset](https://www.google.com/search?num=5&q=memset+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [Module32First](https://www.google.com/search?num=5&q=Module32First+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [Module32FirstW](https://www.google.com/search?num=5&q=Module32FirstW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [Module32Next](https://www.google.com/search?num=5&q=Module32Next+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [Module32NextW](https://www.google.com/search?num=5&q=Module32NextW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [MoveFile](https://www.google.com/search?num=5&q=MoveFile+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MoveFile
 [MoveFileEx](https://www.google.com/search?num=5&q=MoveFileEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MoveFileEx
+[MoveFileExW](https://www.google.com/search?num=5&q=MoveFileExW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [MoveFileTransacted](https://www.google.com/search?num=5&q=MoveFileTransacted+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [MoveFileWithProgress](https://www.google.com/search?num=5&q=MoveFileWithProgress+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MoveFileWithProgress
+[MoveFileWithProgressTransactedW](https://www.google.com/search?num=5&q=MoveFileWithProgressTransactedW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[MoveFileWithProgressW](https://www.google.com/search?num=5&q=MoveFileWithProgressW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [MulDiv](https://www.google.com/search?num=5&q=MulDiv+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.MulDiv
 [MultiByteToWideChar](https://www.google.com/search?num=5&q=MultiByteToWideChar+site%3Amsdn.microsoft.com) | kernel32.dll | Stringapiset.h | Vanara.PInvoke.Kernel32.MultiByteToWideChar
+[NamedPipeEventEnum](https://www.google.com/search?num=5&q=NamedPipeEventEnum+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[NamedPipeEventSelect](https://www.google.com/search?num=5&q=NamedPipeEventSelect+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [NeedCurrentDirectoryForExePath](https://www.google.com/search?num=5&q=NeedCurrentDirectoryForExePath+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.NeedCurrentDirectoryForExePath
 [NlsCheckPolicy](https://www.google.com/search?num=5&q=NlsCheckPolicy+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[NlsDispatchAnsiEnumProc](https://www.google.com/search?num=5&q=NlsDispatchAnsiEnumProc+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [NlsEventDataDescCreate](https://www.google.com/search?num=5&q=NlsEventDataDescCreate+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[NlsGetACPFromLocale](https://www.google.com/search?num=5&q=NlsGetACPFromLocale+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [NlsGetCacheUpdateCount](https://www.google.com/search?num=5&q=NlsGetCacheUpdateCount+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[NlsIsUserDefaultLocale](https://www.google.com/search?num=5&q=NlsIsUserDefaultLocale+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [NlsUpdateLocale](https://www.google.com/search?num=5&q=NlsUpdateLocale+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [NlsUpdateSystemLocale](https://www.google.com/search?num=5&q=NlsUpdateSystemLocale+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[NlsValidateLocale](https://www.google.com/search?num=5&q=NlsValidateLocale+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [NlsWriteEtwEvent](https://www.google.com/search?num=5&q=NlsWriteEtwEvent+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [NormalizeString](https://www.google.com/search?num=5&q=NormalizeString+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.NormalizeString
 [NotifyMountMgr](https://www.google.com/search?num=5&q=NotifyMountMgr+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[NotifyRedirectedStringChange](https://www.google.com/search?num=5&q=NotifyRedirectedStringChange+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[NtClose](https://www.google.com/search?num=5&q=NtClose+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[NtDeviceIoControlFile](https://www.google.com/search?num=5&q=NtDeviceIoControlFile+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[NtOpenFile](https://www.google.com/search?num=5&q=NtOpenFile+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[NtOpenKey](https://www.google.com/search?num=5&q=NtOpenKey+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[NtQueryInformationProcess](https://www.google.com/search?num=5&q=NtQueryInformationProcess+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[NtQueryValueKey](https://www.google.com/search?num=5&q=NtQueryValueKey+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[NtTerminateProcess](https://www.google.com/search?num=5&q=NtTerminateProcess+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [NtVdm64CreateProcessInternalW](https://www.google.com/search?num=5&q=NtVdm64CreateProcessInternalW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[ObjectCloseAuditAlarmW](https://www.google.com/search?num=5&q=ObjectCloseAuditAlarmW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[ObjectDeleteAuditAlarmW](https://www.google.com/search?num=5&q=ObjectDeleteAuditAlarmW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[ObjectOpenAuditAlarmW](https://www.google.com/search?num=5&q=ObjectOpenAuditAlarmW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[ObjectPrivilegeAuditAlarmW](https://www.google.com/search?num=5&q=ObjectPrivilegeAuditAlarmW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [OfferVirtualMemory](https://www.google.com/search?num=5&q=OfferVirtualMemory+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OfferVirtualMemory
 [OOBEComplete](https://www.google.com/search?num=5&q=OOBEComplete+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[OpenCommPort](https://www.google.com/search?num=5&q=OpenCommPort+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [OpenConsoleW](https://www.google.com/search?num=5&q=OpenConsoleW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [OpenConsoleWStub](https://www.google.com/search?num=5&q=OpenConsoleWStub+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [OpenEvent](https://www.google.com/search?num=5&q=OpenEvent+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenEvent
 [OpenFile](https://www.google.com/search?num=5&q=OpenFile+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenFile
 [OpenFileById](https://www.google.com/search?num=5&q=OpenFileById+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [OpenFileMapping](https://www.google.com/search?num=5&q=OpenFileMapping+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenFileMapping
+[OpenFileMappingFromApp](https://www.google.com/search?num=5&q=OpenFileMappingFromApp+site%3Amsdn.microsoft.com) | kernelbase.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.OpenFileMappingFromApp
+[OpenFileMappingW](https://www.google.com/search?num=5&q=OpenFileMappingW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[OpenGlobalizationUserSettingsKey](https://www.google.com/search?num=5&q=OpenGlobalizationUserSettingsKey+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [OpenJobObject](https://www.google.com/search?num=5&q=OpenJobObject+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenJobObject
 [OpenMutex](https://www.google.com/search?num=5&q=OpenMutex+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenMutex
+[OpenMutexW](https://www.google.com/search?num=5&q=OpenMutexW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [OpenPackageInfoByFullName](https://www.google.com/search?num=5&q=OpenPackageInfoByFullName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[OpenPackageInfoByFullNameForUser](https://www.google.com/search?num=5&q=OpenPackageInfoByFullNameForUser+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [OpenPrivateNamespace](https://www.google.com/search?num=5&q=OpenPrivateNamespace+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenPrivateNamespace
+[OpenPrivateNamespaceW](https://www.google.com/search?num=5&q=OpenPrivateNamespaceW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [OpenProcess](https://www.google.com/search?num=5&q=OpenProcess+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenProcess
 [OpenProcessToken](https://www.google.com/search?num=5&q=OpenProcessToken+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [OpenProfileUserMapping](https://www.google.com/search?num=5&q=OpenProfileUserMapping+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[OpenRegKey](https://www.google.com/search?num=5&q=OpenRegKey+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [OpenSemaphore](https://www.google.com/search?num=5&q=OpenSemaphore+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenSemaphore
+[OpenSemaphoreW](https://www.google.com/search?num=5&q=OpenSemaphoreW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [OpenState](https://www.google.com/search?num=5&q=OpenState+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[OpenStateAtom](https://www.google.com/search?num=5&q=OpenStateAtom+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [OpenStateExplicit](https://www.google.com/search?num=5&q=OpenStateExplicit+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[OpenStateExplicitForUserSid](https://www.google.com/search?num=5&q=OpenStateExplicitForUserSid+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[OpenStateExplicitForUserSidString](https://www.google.com/search?num=5&q=OpenStateExplicitForUserSidString+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [OpenThread](https://www.google.com/search?num=5&q=OpenThread+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenThread
 [OpenThreadToken](https://www.google.com/search?num=5&q=OpenThreadToken+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [OpenWaitableTimer](https://www.google.com/search?num=5&q=OpenWaitableTimer+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OpenWaitableTimer
+[OpenWaitableTimerW](https://www.google.com/search?num=5&q=OpenWaitableTimerW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [OutputDebugString](https://www.google.com/search?num=5&q=OutputDebugString+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.OutputDebugString
+[OutputDebugStringW](https://www.google.com/search?num=5&q=OutputDebugStringW+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[OverrideRoamingDataModificationTimesInRange](https://www.google.com/search?num=5&q=OverrideRoamingDataModificationTimesInRange+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [PackageFamilyNameFromFullName](https://www.google.com/search?num=5&q=PackageFamilyNameFromFullName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [PackageFamilyNameFromId](https://www.google.com/search?num=5&q=PackageFamilyNameFromId+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[PackageFamilyNameFromProductId](https://www.google.com/search?num=5&q=PackageFamilyNameFromProductId+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [PackageFullNameFromId](https://www.google.com/search?num=5&q=PackageFullNameFromId+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[PackageFullNameFromProductId](https://www.google.com/search?num=5&q=PackageFullNameFromProductId+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [PackageIdFromFullName](https://www.google.com/search?num=5&q=PackageIdFromFullName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[PackageIdFromProductId](https://www.google.com/search?num=5&q=PackageIdFromProductId+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [PackageNameAndPublisherIdFromFamilyName](https://www.google.com/search?num=5&q=PackageNameAndPublisherIdFromFamilyName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[PackageRelativeApplicationIdFromProductId](https://www.google.com/search?num=5&q=PackageRelativeApplicationIdFromProductId+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PackageSidFromFamilyName](https://www.google.com/search?num=5&q=PackageSidFromFamilyName+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PackageSidFromProductId](https://www.google.com/search?num=5&q=PackageSidFromProductId+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [ParseApplicationUserModelId](https://www.google.com/search?num=5&q=ParseApplicationUserModelId+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[ParseURL](https://www.google.com/search?num=5&q=ParseURL+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathAddBackslash](https://www.google.com/search?num=5&q=PathAddBackslash+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathAddExtension](https://www.google.com/search?num=5&q=PathAddExtension+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathAllocCanonicalize](https://www.google.com/search?num=5&q=PathAllocCanonicalize+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathAllocCombine](https://www.google.com/search?num=5&q=PathAllocCombine+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathAppend](https://www.google.com/search?num=5&q=PathAppend+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCanonicalize](https://www.google.com/search?num=5&q=PathCanonicalize+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCchAddBackslash](https://www.google.com/search?num=5&q=PathCchAddBackslash+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCchAddBackslashEx](https://www.google.com/search?num=5&q=PathCchAddBackslashEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCchAddExtension](https://www.google.com/search?num=5&q=PathCchAddExtension+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCchAppend](https://www.google.com/search?num=5&q=PathCchAppend+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCchAppendEx](https://www.google.com/search?num=5&q=PathCchAppendEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCchCanonicalize](https://www.google.com/search?num=5&q=PathCchCanonicalize+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCchCanonicalizeEx](https://www.google.com/search?num=5&q=PathCchCanonicalizeEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCchCombine](https://www.google.com/search?num=5&q=PathCchCombine+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCchCombineEx](https://www.google.com/search?num=5&q=PathCchCombineEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCchFindExtension](https://www.google.com/search?num=5&q=PathCchFindExtension+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCchIsRoot](https://www.google.com/search?num=5&q=PathCchIsRoot+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCchRemoveBackslash](https://www.google.com/search?num=5&q=PathCchRemoveBackslash+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCchRemoveBackslashEx](https://www.google.com/search?num=5&q=PathCchRemoveBackslashEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCchRemoveExtension](https://www.google.com/search?num=5&q=PathCchRemoveExtension+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCchRemoveFileSpec](https://www.google.com/search?num=5&q=PathCchRemoveFileSpec+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCchRenameExtension](https://www.google.com/search?num=5&q=PathCchRenameExtension+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCchSkipRoot](https://www.google.com/search?num=5&q=PathCchSkipRoot+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCchStripPrefix](https://www.google.com/search?num=5&q=PathCchStripPrefix+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCchStripToRoot](https://www.google.com/search?num=5&q=PathCchStripToRoot+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCombine](https://www.google.com/search?num=5&q=PathCombine+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCommonPrefix](https://www.google.com/search?num=5&q=PathCommonPrefix+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCreateFromUrl](https://www.google.com/search?num=5&q=PathCreateFromUrl+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathCreateFromUrlAlloc](https://www.google.com/search?num=5&q=PathCreateFromUrlAlloc+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathFileExists](https://www.google.com/search?num=5&q=PathFileExists+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathFindExtension](https://www.google.com/search?num=5&q=PathFindExtension+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathFindFileName](https://www.google.com/search?num=5&q=PathFindFileName+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathFindNextComponent](https://www.google.com/search?num=5&q=PathFindNextComponent+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathGetArgs](https://www.google.com/search?num=5&q=PathGetArgs+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathGetCharType](https://www.google.com/search?num=5&q=PathGetCharType+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathGetDriveNumber](https://www.google.com/search?num=5&q=PathGetDriveNumber+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathIsFileSpec](https://www.google.com/search?num=5&q=PathIsFileSpec+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathIsLFNFileSpec](https://www.google.com/search?num=5&q=PathIsLFNFileSpec+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathIsPrefix](https://www.google.com/search?num=5&q=PathIsPrefix+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathIsRelative](https://www.google.com/search?num=5&q=PathIsRelative+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathIsRoot](https://www.google.com/search?num=5&q=PathIsRoot+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathIsSameRoot](https://www.google.com/search?num=5&q=PathIsSameRoot+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathIsUNC](https://www.google.com/search?num=5&q=PathIsUNC+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathIsUNCEx](https://www.google.com/search?num=5&q=PathIsUNCEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathIsUNCServer](https://www.google.com/search?num=5&q=PathIsUNCServer+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathIsUNCServerShare](https://www.google.com/search?num=5&q=PathIsUNCServerShare+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathIsURL](https://www.google.com/search?num=5&q=PathIsURL+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathIsValidChar](https://www.google.com/search?num=5&q=PathIsValidChar+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathMatchSpec](https://www.google.com/search?num=5&q=PathMatchSpec+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathMatchSpecEx](https://www.google.com/search?num=5&q=PathMatchSpecEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathParseIconLocation](https://www.google.com/search?num=5&q=PathParseIconLocation+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathQuoteSpaces](https://www.google.com/search?num=5&q=PathQuoteSpaces+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathRelativePathTo](https://www.google.com/search?num=5&q=PathRelativePathTo+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathRemoveBackslash](https://www.google.com/search?num=5&q=PathRemoveBackslash+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathRemoveBlanks](https://www.google.com/search?num=5&q=PathRemoveBlanks+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathRemoveExtension](https://www.google.com/search?num=5&q=PathRemoveExtension+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathRemoveFileSpec](https://www.google.com/search?num=5&q=PathRemoveFileSpec+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathRenameExtension](https://www.google.com/search?num=5&q=PathRenameExtension+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathSearchAndQualify](https://www.google.com/search?num=5&q=PathSearchAndQualify+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathSkipRoot](https://www.google.com/search?num=5&q=PathSkipRoot+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathStripPath](https://www.google.com/search?num=5&q=PathStripPath+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathStripToRoot](https://www.google.com/search?num=5&q=PathStripToRoot+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathUnExpandEnvStrings](https://www.google.com/search?num=5&q=PathUnExpandEnvStrings+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PathUnquoteSpaces](https://www.google.com/search?num=5&q=PathUnquoteSpaces+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PcwAddQueryItem](https://www.google.com/search?num=5&q=PcwAddQueryItem+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PcwClearCounterSetSecurity](https://www.google.com/search?num=5&q=PcwClearCounterSetSecurity+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PcwCollectData](https://www.google.com/search?num=5&q=PcwCollectData+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PcwCompleteNotification](https://www.google.com/search?num=5&q=PcwCompleteNotification+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PcwCreateNotifier](https://www.google.com/search?num=5&q=PcwCreateNotifier+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PcwCreateQuery](https://www.google.com/search?num=5&q=PcwCreateQuery+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PcwDisconnectCounterSet](https://www.google.com/search?num=5&q=PcwDisconnectCounterSet+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PcwEnumerateInstances](https://www.google.com/search?num=5&q=PcwEnumerateInstances+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PcwIsNotifierAlive](https://www.google.com/search?num=5&q=PcwIsNotifierAlive+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PcwQueryCounterSetSecurity](https://www.google.com/search?num=5&q=PcwQueryCounterSetSecurity+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PcwReadNotificationData](https://www.google.com/search?num=5&q=PcwReadNotificationData+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PcwRegisterCounterSet](https://www.google.com/search?num=5&q=PcwRegisterCounterSet+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PcwRemoveQueryItem](https://www.google.com/search?num=5&q=PcwRemoveQueryItem+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PcwSendNotification](https://www.google.com/search?num=5&q=PcwSendNotification+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PcwSendStatelessNotification](https://www.google.com/search?num=5&q=PcwSendStatelessNotification+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PcwSetCounterSetSecurity](https://www.google.com/search?num=5&q=PcwSetCounterSetSecurity+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PcwSetQueryItemUserData](https://www.google.com/search?num=5&q=PcwSetQueryItemUserData+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [PeekConsoleInput](https://www.google.com/search?num=5&q=PeekConsoleInput+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.PeekConsoleInput
 [PeekNamedPipe](https://www.google.com/search?num=5&q=PeekNamedPipe+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.PeekNamedPipe
+[PerfCreateInstance](https://www.google.com/search?num=5&q=PerfCreateInstance+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PerfDecrementULongCounterValue](https://www.google.com/search?num=5&q=PerfDecrementULongCounterValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PerfDecrementULongLongCounterValue](https://www.google.com/search?num=5&q=PerfDecrementULongLongCounterValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PerfDeleteInstance](https://www.google.com/search?num=5&q=PerfDeleteInstance+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PerfIncrementULongCounterValue](https://www.google.com/search?num=5&q=PerfIncrementULongCounterValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PerfIncrementULongLongCounterValue](https://www.google.com/search?num=5&q=PerfIncrementULongLongCounterValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PerfQueryInstance](https://www.google.com/search?num=5&q=PerfQueryInstance+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PerfSetCounterRefValue](https://www.google.com/search?num=5&q=PerfSetCounterRefValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PerfSetCounterSetInfo](https://www.google.com/search?num=5&q=PerfSetCounterSetInfo+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PerfSetULongCounterValue](https://www.google.com/search?num=5&q=PerfSetULongCounterValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PerfSetULongLongCounterValue](https://www.google.com/search?num=5&q=PerfSetULongLongCounterValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PerfStartProvider](https://www.google.com/search?num=5&q=PerfStartProvider+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PerfStartProviderEx](https://www.google.com/search?num=5&q=PerfStartProviderEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PerfStopProvider](https://www.google.com/search?num=5&q=PerfStopProvider+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PoolPerAppKeyStateInternal](https://www.google.com/search?num=5&q=PoolPerAppKeyStateInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [PostQueuedCompletionStatus](https://www.google.com/search?num=5&q=PostQueuedCompletionStatus+site%3Amsdn.microsoft.com) | kernel32.dll | IoAPI.h | Vanara.PInvoke.Kernel32.PostQueuedCompletionStatus
 [PowerClearRequest](https://www.google.com/search?num=5&q=PowerClearRequest+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [PowerCreateRequest](https://www.google.com/search?num=5&q=PowerCreateRequest+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -796,12 +1403,26 @@ Native Method | Native DLL | Header | Managed Method
 [PrefetchVirtualMemory](https://www.google.com/search?num=5&q=PrefetchVirtualMemory+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.PrefetchVirtualMemory
 [PrepareTape](https://www.google.com/search?num=5&q=PrepareTape+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.PrepareTape
 [PrivCopyFileExW](https://www.google.com/search?num=5&q=PrivCopyFileExW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[PrivilegeCheck](https://www.google.com/search?num=5&q=PrivilegeCheck+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[PrivilegedServiceAuditAlarmW](https://www.google.com/search?num=5&q=PrivilegedServiceAuditAlarmW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [PrivMoveFileIdentityW](https://www.google.com/search?num=5&q=PrivMoveFileIdentityW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [Process32First](https://www.google.com/search?num=5&q=Process32First+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [Process32FirstW](https://www.google.com/search?num=5&q=Process32FirstW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [Process32Next](https://www.google.com/search?num=5&q=Process32Next+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [Process32NextW](https://www.google.com/search?num=5&q=Process32NextW+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [ProcessIdToSessionId](https://www.google.com/search?num=5&q=ProcessIdToSessionId+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ProcessIdToSessionId
+[ProductIdFromPackageFamilyName](https://www.google.com/search?num=5&q=ProductIdFromPackageFamilyName+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PsmCreateKey](https://www.google.com/search?num=5&q=PsmCreateKey+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PsmCreateKeyWithDynamicId](https://www.google.com/search?num=5&q=PsmCreateKeyWithDynamicId+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PsmEqualApplication](https://www.google.com/search?num=5&q=PsmEqualApplication+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PsmEqualPackage](https://www.google.com/search?num=5&q=PsmEqualPackage+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PsmGetApplicationNameFromKey](https://www.google.com/search?num=5&q=PsmGetApplicationNameFromKey+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PsmGetKeyFromProcess](https://www.google.com/search?num=5&q=PsmGetKeyFromProcess+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PsmGetKeyFromToken](https://www.google.com/search?num=5&q=PsmGetKeyFromToken+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PsmGetPackageFullNameFromKey](https://www.google.com/search?num=5&q=PsmGetPackageFullNameFromKey+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PsmIsChildKey](https://www.google.com/search?num=5&q=PsmIsChildKey+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PsmIsDynamicKey](https://www.google.com/search?num=5&q=PsmIsDynamicKey+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[PsmIsValidKey](https://www.google.com/search?num=5&q=PsmIsValidKey+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [PssCaptureSnapshot](https://www.google.com/search?num=5&q=PssCaptureSnapshot+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [PssDuplicateSnapshot](https://www.google.com/search?num=5&q=PssDuplicateSnapshot+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [PssFreeSnapshot](https://www.google.com/search?num=5&q=PssFreeSnapshot+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -815,40 +1436,68 @@ Native Method | Native DLL | Header | Managed Method
 [PssWalkMarkerSetPosition](https://www.google.com/search?num=5&q=PssWalkMarkerSetPosition+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [PssWalkMarkerTell](https://www.google.com/search?num=5&q=PssWalkMarkerTell+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [PssWalkSnapshot](https://www.google.com/search?num=5&q=PssWalkSnapshot+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[PublishStateChangeNotification](https://www.google.com/search?num=5&q=PublishStateChangeNotification+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [PulseEvent](https://www.google.com/search?num=5&q=PulseEvent+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.PulseEvent
 [PurgeComm](https://www.google.com/search?num=5&q=PurgeComm+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.PurgeComm
+[QISearch](https://www.google.com/search?num=5&q=QISearch+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[qsort](https://www.google.com/search?num=5&q=qsort+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [QueryActCtxSettingsW](https://www.google.com/search?num=5&q=QueryActCtxSettingsW+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.QueryActCtxSettingsW
 [QueryActCtxSettingsWWorker](https://www.google.com/search?num=5&q=QueryActCtxSettingsWWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [QueryActCtxW](https://www.google.com/search?num=5&q=QueryActCtxW+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.QueryActCtxW
 [QueryActCtxWWorker](https://www.google.com/search?num=5&q=QueryActCtxWWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[QueryAuxiliaryCounterFrequency](https://www.google.com/search?num=5&q=QueryAuxiliaryCounterFrequency+site%3Amsdn.microsoft.com) | kernelbase.dll | Realtimeapiset.h | Vanara.PInvoke.Kernel32.QueryAuxiliaryCounterFrequency
 [QueryDepthSList](https://www.google.com/search?num=5&q=QueryDepthSList+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.QueryDepthSList
 [QueryDosDevice](https://www.google.com/search?num=5&q=QueryDosDevice+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.QueryDosDevice
+[QueryDosDeviceW](https://www.google.com/search?num=5&q=QueryDosDeviceW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[QueryFullProcess](https://www.google.com/search?num=5&q=QueryFullProcess+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [QueryFullProcessImageName](https://www.google.com/search?num=5&q=QueryFullProcessImageName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[QueryFullProcessImageNameW](https://www.google.com/search?num=5&q=QueryFullProcessImageNameW+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [QueryIdleProcessorCycleTime](https://www.google.com/search?num=5&q=QueryIdleProcessorCycleTime+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.QueryIdleProcessorCycleTime
 [QueryIdleProcessorCycleTimeEx](https://www.google.com/search?num=5&q=QueryIdleProcessorCycleTimeEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.QueryIdleProcessorCycleTimeEx
 [QueryInformationJobObject](https://www.google.com/search?num=5&q=QueryInformationJobObject+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.QueryInformationJobObject
+[QueryInterruptTime](https://www.google.com/search?num=5&q=QueryInterruptTime+site%3Amsdn.microsoft.com) | kernelbase.dll | Realtimeapiset.h | Vanara.PInvoke.Kernel32.QueryInterruptTime
+[QueryInterruptTimePrecise](https://www.google.com/search?num=5&q=QueryInterruptTimePrecise+site%3Amsdn.microsoft.com) | kernelbase.dll | Realtimeapiset.h | Vanara.PInvoke.Kernel32.QueryInterruptTimePrecise
 [QueryIoRateControlInformationJobObject](https://www.google.com/search?num=5&q=QueryIoRateControlInformationJobObject+site%3Amsdn.microsoft.com) | kernel32.dll | Jobapi2.h | Vanara.PInvoke.Kernel32.QueryIoRateControlInformationJobObject
 [QueryMemoryResourceNotification](https://www.google.com/search?num=5&q=QueryMemoryResourceNotification+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.QueryMemoryResourceNotification
+[QueryOptionalDelayLoadedAPI](https://www.google.com/search?num=5&q=QueryOptionalDelayLoadedAPI+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [QueryPerformanceCounter](https://www.google.com/search?num=5&q=QueryPerformanceCounter+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.QueryPerformanceCounter
 [QueryPerformanceFrequency](https://www.google.com/search?num=5&q=QueryPerformanceFrequency+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.QueryPerformanceFrequency
 [QueryProcessAffinityUpdateMode](https://www.google.com/search?num=5&q=QueryProcessAffinityUpdateMode+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.QueryProcessAffinityUpdateMode
 [QueryProcessCycleTime](https://www.google.com/search?num=5&q=QueryProcessCycleTime+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.QueryProcessCycleTime
 [QueryProtectedPolicy](https://www.google.com/search?num=5&q=QueryProtectedPolicy+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.QueryProtectedPolicy
+[QuerySecurityAccessMask](https://www.google.com/search?num=5&q=QuerySecurityAccessMask+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[QueryStateAtomValueInfo](https://www.google.com/search?num=5&q=QueryStateAtomValueInfo+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[QueryStateContainerCreatedNew](https://www.google.com/search?num=5&q=QueryStateContainerCreatedNew+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[QueryStateContainerItemInfo](https://www.google.com/search?num=5&q=QueryStateContainerItemInfo+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [QueryThreadCycleTime](https://www.google.com/search?num=5&q=QueryThreadCycleTime+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.QueryThreadCycleTime
 [QueryThreadpoolStackInformation](https://www.google.com/search?num=5&q=QueryThreadpoolStackInformation+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.QueryThreadpoolStackInformation
 [QueryThreadProfiling](https://www.google.com/search?num=5&q=QueryThreadProfiling+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [QueryUmsThreadInformation](https://www.google.com/search?num=5&q=QueryUmsThreadInformation+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [QueryUnbiasedInterruptTime](https://www.google.com/search?num=5&q=QueryUnbiasedInterruptTime+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.QueryUnbiasedInterruptTime
+[QueryUnbiasedInterruptTimePrecise](https://www.google.com/search?num=5&q=QueryUnbiasedInterruptTimePrecise+site%3Amsdn.microsoft.com) | kernelbase.dll | Realtimeapiset.h | Vanara.PInvoke.Kernel32.QueryUnbiasedInterruptTimePrecise
+[QueryVirtualMemoryInformation](https://www.google.com/search?num=5&q=QueryVirtualMemoryInformation+site%3Amsdn.microsoft.com) | kernelbase.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.QueryVirtualMemoryInformation
+[QueryWorkingSet](https://www.google.com/search?num=5&q=QueryWorkingSet+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[QueryWorkingSetEx](https://www.google.com/search?num=5&q=QueryWorkingSetEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [QueueUserAPC](https://www.google.com/search?num=5&q=QueueUserAPC+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.QueueUserAPC
 [QueueUserWorkItem](https://www.google.com/search?num=5&q=QueueUserWorkItem+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.QueueUserWorkItem
+[QuirkGetData](https://www.google.com/search?num=5&q=QuirkGetData+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[QuirkGetData2](https://www.google.com/search?num=5&q=QuirkGetData2+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [QuirkGetData2Worker](https://www.google.com/search?num=5&q=QuirkGetData2Worker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [QuirkGetDataWorker](https://www.google.com/search?num=5&q=QuirkGetDataWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[QuirkIsEnabled](https://www.google.com/search?num=5&q=QuirkIsEnabled+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[QuirkIsEnabled2](https://www.google.com/search?num=5&q=QuirkIsEnabled2+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [QuirkIsEnabled2Worker](https://www.google.com/search?num=5&q=QuirkIsEnabled2Worker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[QuirkIsEnabled3](https://www.google.com/search?num=5&q=QuirkIsEnabled3+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [QuirkIsEnabled3Worker](https://www.google.com/search?num=5&q=QuirkIsEnabled3Worker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[QuirkIsEnabledForPackage](https://www.google.com/search?num=5&q=QuirkIsEnabledForPackage+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[QuirkIsEnabledForPackage2](https://www.google.com/search?num=5&q=QuirkIsEnabledForPackage2+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [QuirkIsEnabledForPackage2Worker](https://www.google.com/search?num=5&q=QuirkIsEnabledForPackage2Worker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[QuirkIsEnabledForPackage3](https://www.google.com/search?num=5&q=QuirkIsEnabledForPackage3+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [QuirkIsEnabledForPackage3Worker](https://www.google.com/search?num=5&q=QuirkIsEnabledForPackage3Worker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[QuirkIsEnabledForPackage4](https://www.google.com/search?num=5&q=QuirkIsEnabledForPackage4+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [QuirkIsEnabledForPackage4Worker](https://www.google.com/search?num=5&q=QuirkIsEnabledForPackage4Worker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [QuirkIsEnabledForPackageWorker](https://www.google.com/search?num=5&q=QuirkIsEnabledForPackageWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[QuirkIsEnabledForProcess](https://www.google.com/search?num=5&q=QuirkIsEnabledForProcess+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [QuirkIsEnabledForProcessWorker](https://www.google.com/search?num=5&q=QuirkIsEnabledForProcessWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [QuirkIsEnabledWorker](https://www.google.com/search?num=5&q=QuirkIsEnabledWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RaiseException](https://www.google.com/search?num=5&q=RaiseException+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RaiseException
@@ -866,14 +1515,28 @@ Native Method | Native DLL | Header | Managed Method
 [ReadFileEx](https://www.google.com/search?num=5&q=ReadFileEx+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.ReadFileEx
 [ReadFileScatter](https://www.google.com/search?num=5&q=ReadFileScatter+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.ReadFileScatter
 [ReadProcessMemory](https://www.google.com/search?num=5&q=ReadProcessMemory+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReadProcessMemory
+[ReadStateAtomValue](https://www.google.com/search?num=5&q=ReadStateAtomValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[ReadStateContainerValue](https://www.google.com/search?num=5&q=ReadStateContainerValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [ReadThreadProfilingData](https://www.google.com/search?num=5&q=ReadThreadProfilingData+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [ReclaimVirtualMemory](https://www.google.com/search?num=5&q=ReclaimVirtualMemory+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReclaimVirtualMemory
+[RefreshPackageInfo](https://www.google.com/search?num=5&q=RefreshPackageInfo+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RefreshPolicyExInternal](https://www.google.com/search?num=5&q=RefreshPolicyExInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RefreshPolicyInternal](https://www.google.com/search?num=5&q=RefreshPolicyInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RegCloseKey](https://www.google.com/search?num=5&q=RegCloseKey+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[RegCopyTreeW](https://www.google.com/search?num=5&q=RegCopyTreeW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [RegCreateKeyEx](https://www.google.com/search?num=5&q=RegCreateKeyEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RegCreateKeyExInternal](https://www.google.com/search?num=5&q=RegCreateKeyExInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [RegDeleteKeyEx](https://www.google.com/search?num=5&q=RegDeleteKeyEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RegDeleteKeyExInternal](https://www.google.com/search?num=5&q=RegDeleteKeyExInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RegDeleteKeyValue](https://www.google.com/search?num=5&q=RegDeleteKeyValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [RegDeleteTree](https://www.google.com/search?num=5&q=RegDeleteTree+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RegDeleteValue](https://www.google.com/search?num=5&q=RegDeleteValue+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RegDisablePredefinedCacheEx](https://www.google.com/search?num=5&q=RegDisablePredefinedCacheEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [RegEnumKeyEx](https://www.google.com/search?num=5&q=RegEnumKeyEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RegEnumKeyExW](https://www.google.com/search?num=5&q=RegEnumKeyExW+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [RegEnumValue](https://www.google.com/search?num=5&q=RegEnumValue+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RegFlushKey](https://www.google.com/search?num=5&q=RegFlushKey+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RegGetKeySecurity](https://www.google.com/search?num=5&q=RegGetKeySecurity+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [RegGetValue](https://www.google.com/search?num=5&q=RegGetValue+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RegisterApplicationRecoveryCallback](https://www.google.com/search?num=5&q=RegisterApplicationRecoveryCallback+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.RegisterApplicationRecoveryCallback
 [RegisterApplicationRestart](https://www.google.com/search?num=5&q=RegisterApplicationRestart+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.RegisterApplicationRestart
@@ -881,19 +1544,42 @@ Native Method | Native DLL | Header | Managed Method
 [RegisterConsoleIME](https://www.google.com/search?num=5&q=RegisterConsoleIME+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RegisterConsoleOS2](https://www.google.com/search?num=5&q=RegisterConsoleOS2+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RegisterConsoleVDM](https://www.google.com/search?num=5&q=RegisterConsoleVDM+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RegisterGPNotificationInternal](https://www.google.com/search?num=5&q=RegisterGPNotificationInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RegisterStateChangeNotification](https://www.google.com/search?num=5&q=RegisterStateChangeNotification+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RegisterStateLock](https://www.google.com/search?num=5&q=RegisterStateLock+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RegisterTraceGuidsW](https://www.google.com/search?num=5&q=RegisterTraceGuidsW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [RegisterWaitForInputIdle](https://www.google.com/search?num=5&q=RegisterWaitForInputIdle+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RegisterWaitForSingleObject](https://www.google.com/search?num=5&q=RegisterWaitForSingleObject+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RegisterWaitForSingleObject
 [RegisterWaitForSingleObjectEx](https://www.google.com/search?num=5&q=RegisterWaitForSingleObjectEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RegisterWaitUntilOOBECompleted](https://www.google.com/search?num=5&q=RegisterWaitUntilOOBECompleted+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RegisterWowBaseHandlers](https://www.google.com/search?num=5&q=RegisterWowBaseHandlers+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RegisterWowExec](https://www.google.com/search?num=5&q=RegisterWowExec+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RegKrnGetAppKeyEventAddressInternal](https://www.google.com/search?num=5&q=RegKrnGetAppKeyEventAddressInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RegKrnGetAppKeyLoaded](https://www.google.com/search?num=5&q=RegKrnGetAppKeyLoaded+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RegKrnGetClassesEnumTableAddressInternal](https://www.google.com/search?num=5&q=RegKrnGetClassesEnumTableAddressInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RegKrnGetHKEY_ClassesRootAddress](https://www.google.com/search?num=5&q=RegKrnGetHKEY_ClassesRootAddress+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RegKrnGetTermsrvRegistryExtensionFlags](https://www.google.com/search?num=5&q=RegKrnGetTermsrvRegistryExtensionFlags+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RegKrnResetAppKeyLoaded](https://www.google.com/search?num=5&q=RegKrnResetAppKeyLoaded+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RegKrnSetDllHasThreadStateGlobal](https://www.google.com/search?num=5&q=RegKrnSetDllHasThreadStateGlobal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RegKrnSetTermsrvRegistryExtensionFlags](https://www.google.com/search?num=5&q=RegKrnSetTermsrvRegistryExtensionFlags+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RegLoadAppKey](https://www.google.com/search?num=5&q=RegLoadAppKey+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [RegLoadKey](https://www.google.com/search?num=5&q=RegLoadKey+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RegLoadMUIString](https://www.google.com/search?num=5&q=RegLoadMUIString+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RegNotifyChangeKeyValue](https://www.google.com/search?num=5&q=RegNotifyChangeKeyValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RegOpenCurrentUser](https://www.google.com/search?num=5&q=RegOpenCurrentUser+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [RegOpenKeyEx](https://www.google.com/search?num=5&q=RegOpenKeyEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RegOpenKeyExInternal](https://www.google.com/search?num=5&q=RegOpenKeyExInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RegOpenKeyExW](https://www.google.com/search?num=5&q=RegOpenKeyExW+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[RegOpenUserClassesRoot](https://www.google.com/search?num=5&q=RegOpenUserClassesRoot+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [RegQueryInfoKey](https://www.google.com/search?num=5&q=RegQueryInfoKey+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RegQueryInfoKeyW](https://www.google.com/search?num=5&q=RegQueryInfoKeyW+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[RegQueryMultipleValues](https://www.google.com/search?num=5&q=RegQueryMultipleValues+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [RegQueryValueEx](https://www.google.com/search?num=5&q=RegQueryValueEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RegQueryValueExW](https://www.google.com/search?num=5&q=RegQueryValueExW+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [RegRestoreKey](https://www.google.com/search?num=5&q=RegRestoreKey+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RegSaveKeyEx](https://www.google.com/search?num=5&q=RegSaveKeyEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RegSetKeySecurity](https://www.google.com/search?num=5&q=RegSetKeySecurity+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RegSetKeyValue](https://www.google.com/search?num=5&q=RegSetKeyValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [RegSetValueEx](https://www.google.com/search?num=5&q=RegSetValueEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RegUnLoadKey](https://www.google.com/search?num=5&q=RegUnLoadKey+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [ReleaseActCtx](https://www.google.com/search?num=5&q=ReleaseActCtx+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ReleaseActCtx
@@ -904,45 +1590,86 @@ Native Method | Native DLL | Header | Managed Method
 [ReleaseSemaphoreWhenCallbackReturns](https://www.google.com/search?num=5&q=ReleaseSemaphoreWhenCallbackReturns+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReleaseSemaphoreWhenCallbackReturns
 [ReleaseSRWLockExclusive](https://www.google.com/search?num=5&q=ReleaseSRWLockExclusive+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReleaseSRWLockExclusive
 [ReleaseSRWLockShared](https://www.google.com/search?num=5&q=ReleaseSRWLockShared+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReleaseSRWLockShared
+[ReleaseStateLock](https://www.google.com/search?num=5&q=ReleaseStateLock+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RemapPredefinedHandleInternal](https://www.google.com/search?num=5&q=RemapPredefinedHandleInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [RemoveDirectory](https://www.google.com/search?num=5&q=RemoveDirectory+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.RemoveDirectory
 [RemoveDirectoryTransacted](https://www.google.com/search?num=5&q=RemoveDirectoryTransacted+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RemoveDllDirectory](https://www.google.com/search?num=5&q=RemoveDllDirectory+site%3Amsdn.microsoft.com) | kernel32.dll | LibLoaderAPI.h | Vanara.PInvoke.Kernel32.RemoveDllDirectory
+[RemoveExtensionProgIds](https://www.google.com/search?num=5&q=RemoveExtensionProgIds+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [RemoveLocalAlternateComputerName](https://www.google.com/search?num=5&q=RemoveLocalAlternateComputerName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RemovePackageFromFamilyXref](https://www.google.com/search?num=5&q=RemovePackageFromFamilyXref+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RemovePackageStatus](https://www.google.com/search?num=5&q=RemovePackageStatus+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RemovePackageStatusForUser](https://www.google.com/search?num=5&q=RemovePackageStatusForUser+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [RemoveSecureMemoryCacheCallback](https://www.google.com/search?num=5&q=RemoveSecureMemoryCacheCallback+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RemoveVectoredContinueHandler](https://www.google.com/search?num=5&q=RemoveVectoredContinueHandler+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RemoveVectoredContinueHandler
 [RemoveVectoredExceptionHandler](https://www.google.com/search?num=5&q=RemoveVectoredExceptionHandler+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RemoveVectoredExceptionHandler
 [ReOpenFile](https://www.google.com/search?num=5&q=ReOpenFile+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [ReplaceFile](https://www.google.com/search?num=5&q=ReplaceFile+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ReplaceFile
+[ReplaceFileExInternal](https://www.google.com/search?num=5&q=ReplaceFileExInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[ReplaceFileW](https://www.google.com/search?num=5&q=ReplaceFileW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [ReplacePartitionUnit](https://www.google.com/search?num=5&q=ReplacePartitionUnit+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RequestWakeupLatency](https://www.google.com/search?num=5&q=RequestWakeupLatency+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RequestWakeupLatency
 [ResetEvent](https://www.google.com/search?num=5&q=ResetEvent+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ResetEvent
+[ResetState](https://www.google.com/search?num=5&q=ResetState+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [ResetWriteWatch](https://www.google.com/search?num=5&q=ResetWriteWatch+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ResetWriteWatch
 [ResolveDelayLoadedAPI](https://www.google.com/search?num=5&q=ResolveDelayLoadedAPI+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [ResolveDelayLoadsFromDll](https://www.google.com/search?num=5&q=ResolveDelayLoadsFromDll+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [ResolveLocaleName](https://www.google.com/search?num=5&q=ResolveLocaleName+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.ResolveLocaleName
 [RestoreLastError](https://www.google.com/search?num=5&q=RestoreLastError+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RestoreLastError
 [ResumeThread](https://www.google.com/search?num=5&q=ResumeThread+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ResumeThread
+[RevertToSelf](https://www.google.com/search?num=5&q=RevertToSelf+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RsopLoggingEnabledInternal](https://www.google.com/search?num=5&q=RsopLoggingEnabledInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[RtlAcquireResourceExclusive](https://www.google.com/search?num=5&q=RtlAcquireResourceExclusive+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[RtlAcquireResourceShared](https://www.google.com/search?num=5&q=RtlAcquireResourceShared+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [RtlAddFunctionTable](https://www.google.com/search?num=5&q=RtlAddFunctionTable+site%3Amsdn.microsoft.com) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlAddFunctionTable
+[RtlAllocateHeap](https://www.google.com/search?num=5&q=RtlAllocateHeap+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[RtlAssert](https://www.google.com/search?num=5&q=RtlAssert+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[RtlCallEnclaveReturn](https://www.google.com/search?num=5&q=RtlCallEnclaveReturn+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [RtlCaptureContext](https://www.google.com/search?num=5&q=RtlCaptureContext+site%3Amsdn.microsoft.com) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlCaptureContext
 [RtlCaptureStackBackTrace](https://www.google.com/search?num=5&q=RtlCaptureStackBackTrace+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RtlCompareMemory](https://www.google.com/search?num=5&q=RtlCompareMemory+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RtlCompareUnicodeString](https://www.google.com/search?num=5&q=RtlCompareUnicodeString+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [RtlCopyMemory](https://www.google.com/search?num=5&q=RtlCopyMemory+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RtlDeleteCriticalSection](https://www.google.com/search?num=5&q=RtlDeleteCriticalSection+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [RtlDeleteFunctionTable](https://www.google.com/search?num=5&q=RtlDeleteFunctionTable+site%3Amsdn.microsoft.com) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlDeleteFunctionTable
+[RtlDeleteResource](https://www.google.com/search?num=5&q=RtlDeleteResource+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[RtlEnclaveCallDispatch](https://www.google.com/search?num=5&q=RtlEnclaveCallDispatch+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[RtlEnclaveCallDispatchReturn](https://www.google.com/search?num=5&q=RtlEnclaveCallDispatchReturn+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[RtlEnterCriticalSection](https://www.google.com/search?num=5&q=RtlEnterCriticalSection+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [RtlFillMemory](https://www.google.com/search?num=5&q=RtlFillMemory+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RtlFreeHeap](https://www.google.com/search?num=5&q=RtlFreeHeap+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[RtlGetCurrentProcessorNumberEx](https://www.google.com/search?num=5&q=RtlGetCurrentProcessorNumberEx+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[RtlGetLastNtStatus](https://www.google.com/search?num=5&q=RtlGetLastNtStatus+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[RtlImageNtHeader](https://www.google.com/search?num=5&q=RtlImageNtHeader+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[RtlInitializeCriticalSection](https://www.google.com/search?num=5&q=RtlInitializeCriticalSection+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[RtlInitializeResource](https://www.google.com/search?num=5&q=RtlInitializeResource+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[RtlInitUnicodeString](https://www.google.com/search?num=5&q=RtlInitUnicodeString+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [RtlInstallFunctionTableCallback](https://www.google.com/search?num=5&q=RtlInstallFunctionTableCallback+site%3Amsdn.microsoft.com) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlInstallFunctionTableCallback
+[RtlLeaveCriticalSection](https://www.google.com/search?num=5&q=RtlLeaveCriticalSection+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [RtlLookupFunctionEntry](https://www.google.com/search?num=5&q=RtlLookupFunctionEntry+site%3Amsdn.microsoft.com) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlLookupFunctionEntry
 [RtlMoveMemory](https://www.google.com/search?num=5&q=RtlMoveMemory+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MoveMemory
+[RtlNtStatusToDosError](https://www.google.com/search?num=5&q=RtlNtStatusToDosError+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [RtlPcToFileHeader](https://www.google.com/search?num=5&q=RtlPcToFileHeader+site%3Amsdn.microsoft.com) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlPcToFileHeader
 [RtlRaiseException](https://www.google.com/search?num=5&q=RtlRaiseException+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[RtlRaiseStatus](https://www.google.com/search?num=5&q=RtlRaiseStatus+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[RtlReleaseResource](https://www.google.com/search?num=5&q=RtlReleaseResource+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[RtlReleaseResourceShared](https://www.google.com/search?num=5&q=RtlReleaseResourceShared+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [RtlRestoreContext](https://www.google.com/search?num=5&q=RtlRestoreContext+site%3Amsdn.microsoft.com) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlRestoreContext
+[RtlUnhandledExceptionFilter](https://www.google.com/search?num=5&q=RtlUnhandledExceptionFilter+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [RtlUnwind](https://www.google.com/search?num=5&q=RtlUnwind+site%3Amsdn.microsoft.com) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlUnwind
 [RtlUnwindEx](https://www.google.com/search?num=5&q=RtlUnwindEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlUnwindEx
 [RtlVirtualUnwind](https://www.google.com/search?num=5&q=RtlVirtualUnwind+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [RtlZeroMemory](https://www.google.com/search?num=5&q=RtlZeroMemory+site%3Amsdn.microsoft.com) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlZeroMemory
+[SaveAlternatePackageRootPath](https://www.google.com/search?num=5&q=SaveAlternatePackageRootPath+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SaveStateRootFolderPath](https://www.google.com/search?num=5&q=SaveStateRootFolderPath+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [ScrollConsoleScreenBuffer](https://www.google.com/search?num=5&q=ScrollConsoleScreenBuffer+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.ScrollConsoleScreenBuffer
 [SearchPath](https://www.google.com/search?num=5&q=SearchPath+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SearchPath
+[SetAclInformation](https://www.google.com/search?num=5&q=SetAclInformation+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [SetCachedSigningLevel](https://www.google.com/search?num=5&q=SetCachedSigningLevel+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [SetCalendarInfo](https://www.google.com/search?num=5&q=SetCalendarInfo+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.SetCalendarInfo
+[SetCalendarInfoW](https://www.google.com/search?num=5&q=SetCalendarInfoW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SetClientDynamicTimeZoneInformation](https://www.google.com/search?num=5&q=SetClientDynamicTimeZoneInformation+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SetClientTimeZoneInformation](https://www.google.com/search?num=5&q=SetClientTimeZoneInformation+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [SetCommBreak](https://www.google.com/search?num=5&q=SetCommBreak+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetCommBreak
 [SetCommConfig](https://www.google.com/search?num=5&q=SetCommConfig+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetCommConfig
 [SetCommMask](https://www.google.com/search?num=5&q=SetCommMask+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetCommMask
@@ -951,7 +1678,7 @@ Native Method | Native DLL | Header | Managed Method
 [SetComPlusPackageInstallStatus](https://www.google.com/search?num=5&q=SetComPlusPackageInstallStatus+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [SetComputerName](https://www.google.com/search?num=5&q=SetComputerName+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetComputerName
 [SetComputerNameEx](https://www.google.com/search?num=5&q=SetComputerNameEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetComputerNameEx
-[SetComputerNameEx2W](https://www.google.com/search?num=5&q=SetComputerNameEx2W+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[SetComputerNameEx2W](https://www.google.com/search?num=5&q=SetComputerNameEx2W+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetComputerNameEx2
 [SetConsoleActiveScreenBuffer](https://www.google.com/search?num=5&q=SetConsoleActiveScreenBuffer+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleActiveScreenBuffer
 [SetConsoleCP](https://www.google.com/search?num=5&q=SetConsoleCP+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleCP
 [SetConsoleCtrlHandler](https://www.google.com/search?num=5&q=SetConsoleCtrlHandler+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleCtrlHandler
@@ -979,6 +1706,7 @@ Native Method | Native DLL | Header | Managed Method
 [SetConsoleScreenBufferSize](https://www.google.com/search?num=5&q=SetConsoleScreenBufferSize+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleScreenBufferSize
 [SetConsoleTextAttribute](https://www.google.com/search?num=5&q=SetConsoleTextAttribute+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleTextAttribute
 [SetConsoleTitle](https://www.google.com/search?num=5&q=SetConsoleTitle+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleTitle
+[SetConsoleTitleW](https://www.google.com/search?num=5&q=SetConsoleTitleW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [SetConsoleWindowInfo](https://www.google.com/search?num=5&q=SetConsoleWindowInfo+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleWindowInfo
 [SetCriticalSectionSpinCount](https://www.google.com/search?num=5&q=SetCriticalSectionSpinCount+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetCriticalSectionSpinCount
 [SetCurrentConsoleFontEx](https://www.google.com/search?num=5&q=SetCurrentConsoleFontEx+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetCurrentConsoleFontEx
@@ -989,10 +1717,12 @@ Native Method | Native DLL | Header | Managed Method
 [SetDynamicTimeZoneInformation](https://www.google.com/search?num=5&q=SetDynamicTimeZoneInformation+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetDynamicTimeZoneInformation
 [SetEndOfFile](https://www.google.com/search?num=5&q=SetEndOfFile+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.SetEndOfFile
 [SetEnvironmentStrings](https://www.google.com/search?num=5&q=SetEnvironmentStrings+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[SetEnvironmentStringsW](https://www.google.com/search?num=5&q=SetEnvironmentStringsW+site%3Amsdn.microsoft.com) | kernelbase.dll | ProcessEnv.h | Vanara.PInvoke.Kernel32.SetEnvironmentStringsW
 [SetEnvironmentVariable](https://www.google.com/search?num=5&q=SetEnvironmentVariable+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetEnvironmentVariable
 [SetErrorMode](https://www.google.com/search?num=5&q=SetErrorMode+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetErrorMode
 [SetEvent](https://www.google.com/search?num=5&q=SetEvent+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetEvent
 [SetEventWhenCallbackReturns](https://www.google.com/search?num=5&q=SetEventWhenCallbackReturns+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetEventWhenCallbackReturns
+[SetExtensionProperty](https://www.google.com/search?num=5&q=SetExtensionProperty+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [SetFileApisToANSI](https://www.google.com/search?num=5&q=SetFileApisToANSI+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetFileApisToANSI
 [SetFileApisToOEM](https://www.google.com/search?num=5&q=SetFileApisToOEM+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetFileApisToOEM
 [SetFileAttributes](https://www.google.com/search?num=5&q=SetFileAttributes+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.SetFileAttributes
@@ -1003,36 +1733,56 @@ Native Method | Native DLL | Header | Managed Method
 [SetFileIoOverlappedRange](https://www.google.com/search?num=5&q=SetFileIoOverlappedRange+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetFileIoOverlappedRange
 [SetFilePointer](https://www.google.com/search?num=5&q=SetFilePointer+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.SetFilePointer
 [SetFilePointerEx](https://www.google.com/search?num=5&q=SetFilePointerEx+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.SetFilePointerEx
+[SetFileSecurityW](https://www.google.com/search?num=5&q=SetFileSecurityW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [SetFileShortName](https://www.google.com/search?num=5&q=SetFileShortName+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetFileShortName
 [SetFileTime](https://www.google.com/search?num=5&q=SetFileTime+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.SetFileTime
 [SetFileValidData](https://www.google.com/search?num=5&q=SetFileValidData+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.SetFileValidData
 [SetFirmwareEnvironmentVariable](https://www.google.com/search?num=5&q=SetFirmwareEnvironmentVariable+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetFirmwareEnvironmentVariable
 [SetFirmwareEnvironmentVariableEx](https://www.google.com/search?num=5&q=SetFirmwareEnvironmentVariableEx+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[SetHandleCount](https://www.google.com/search?num=5&q=SetHandleCount+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [SetHandleInformation](https://www.google.com/search?num=5&q=SetHandleInformation+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetHandleInformation
 [SetInformationJobObject](https://www.google.com/search?num=5&q=SetInformationJobObject+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetInformationJobObject
 [SetIoRateControlInformationJobObject](https://www.google.com/search?num=5&q=SetIoRateControlInformationJobObject+site%3Amsdn.microsoft.com) | kernel32.dll | Jobapi2.h | Vanara.PInvoke.Kernel32.SetIoRateControlInformationJobObject
+[SetIsDeveloperModeEnabled](https://www.google.com/search?num=5&q=SetIsDeveloperModeEnabled+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SetIsSideloadingEnabled](https://www.google.com/search?num=5&q=SetIsSideloadingEnabled+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SetKernelObjectSecurity](https://www.google.com/search?num=5&q=SetKernelObjectSecurity+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [SetLastConsoleEventActive](https://www.google.com/search?num=5&q=SetLastConsoleEventActive+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [SetLastError](https://www.google.com/search?num=5&q=SetLastError+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetLastError
 [SetLocaleInfo](https://www.google.com/search?num=5&q=SetLocaleInfo+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.SetLocaleInfo
+[SetLocaleInfoW](https://www.google.com/search?num=5&q=SetLocaleInfoW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [SetLocalPrimaryComputerName](https://www.google.com/search?num=5&q=SetLocalPrimaryComputerName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [SetLocalTime](https://www.google.com/search?num=5&q=SetLocalTime+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetLocalTime
 [SetMailslotInfo](https://www.google.com/search?num=5&q=SetMailslotInfo+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetMailslotInfo
 [SetNamedPipeAttribute](https://www.google.com/search?num=5&q=SetNamedPipeAttribute+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [SetNamedPipeHandleState](https://www.google.com/search?num=5&q=SetNamedPipeHandleState+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetNamedPipeHandleState
 [SetPriorityClass](https://www.google.com/search?num=5&q=SetPriorityClass+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetPriorityClass
+[SetPrivateObjectSecurity](https://www.google.com/search?num=5&q=SetPrivateObjectSecurity+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SetPrivateObjectSecurityEx](https://www.google.com/search?num=5&q=SetPrivateObjectSecurityEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [SetProcessAffinityMask](https://www.google.com/search?num=5&q=SetProcessAffinityMask+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetProcessAffinityMask
 [SetProcessAffinityUpdateMode](https://www.google.com/search?num=5&q=SetProcessAffinityUpdateMode+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetProcessAffinityUpdateMode
 [SetProcessDefaultCpuSets](https://www.google.com/search?num=5&q=SetProcessDefaultCpuSets+site%3Amsdn.microsoft.com) | kernel32.dll | Processthreadapi.h | Vanara.PInvoke.Kernel32.SetProcessDefaultCpuSets
 [SetProcessDEPPolicy](https://www.google.com/search?num=5&q=SetProcessDEPPolicy+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[SetProcessGroupAffinity](https://www.google.com/search?num=5&q=SetProcessGroupAffinity+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [SetProcessInformation](https://www.google.com/search?num=5&q=SetProcessInformation+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetProcessInformation
 [SetProcessMitigationPolicy](https://www.google.com/search?num=5&q=SetProcessMitigationPolicy+site%3Amsdn.microsoft.com) | kernel32.dll | Processthreadsapi.h | Vanara.PInvoke.Kernel32.SetProcessMitigationPolicy
 [SetProcessPreferredUILanguages](https://www.google.com/search?num=5&q=SetProcessPreferredUILanguages+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.SetProcessPreferredUILanguages
 [SetProcessPriorityBoost](https://www.google.com/search?num=5&q=SetProcessPriorityBoost+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetProcessPriorityBoost
 [SetProcessShutdownParameters](https://www.google.com/search?num=5&q=SetProcessShutdownParameters+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetProcessShutdownParameters
+[SetProcessValidCallTargets](https://www.google.com/search?num=5&q=SetProcessValidCallTargets+site%3Amsdn.microsoft.com) | kernelbase.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetProcessValidCallTargets
 [SetProcessWorkingSetSize](https://www.google.com/search?num=5&q=SetProcessWorkingSetSize+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetProcessWorkingSetSize
 [SetProcessWorkingSetSizeEx](https://www.google.com/search?num=5&q=SetProcessWorkingSetSizeEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetProcessWorkingSetSizeEx
 [SetProtectedPolicy](https://www.google.com/search?num=5&q=SetProtectedPolicy+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetProtectedPolicy
+[SetProtocolProperty](https://www.google.com/search?num=5&q=SetProtocolProperty+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SetRoamingLastObservedChangeTime](https://www.google.com/search?num=5&q=SetRoamingLastObservedChangeTime+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [SetSearchPathMode](https://www.google.com/search?num=5&q=SetSearchPathMode+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[SetSecurityAccessMask](https://www.google.com/search?num=5&q=SetSecurityAccessMask+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SetSecurityDescriptorControl](https://www.google.com/search?num=5&q=SetSecurityDescriptorControl+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SetSecurityDescriptorDacl](https://www.google.com/search?num=5&q=SetSecurityDescriptorDacl+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SetSecurityDescriptorGroup](https://www.google.com/search?num=5&q=SetSecurityDescriptorGroup+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SetSecurityDescriptorOwner](https://www.google.com/search?num=5&q=SetSecurityDescriptorOwner+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SetSecurityDescriptorRMControl](https://www.google.com/search?num=5&q=SetSecurityDescriptorRMControl+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SetSecurityDescriptorSacl](https://www.google.com/search?num=5&q=SetSecurityDescriptorSacl+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SetStateVersion](https://www.google.com/search?num=5&q=SetStateVersion+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [SetStdHandle](https://www.google.com/search?num=5&q=SetStdHandle+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetStdHandle
 [SetStdHandleEx](https://www.google.com/search?num=5&q=SetStdHandleEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetStdHandleEx
 [SetSystemFileCacheSize](https://www.google.com/search?num=5&q=SetSystemFileCacheSize+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetSystemFileCacheSize
@@ -1067,6 +1817,7 @@ Native Method | Native DLL | Header | Managed Method
 [SetThreadToken](https://www.google.com/search?num=5&q=SetThreadToken+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [SetThreadUILanguage](https://www.google.com/search?num=5&q=SetThreadUILanguage+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.SetThreadUILanguage
 [SetTimeZoneInformation](https://www.google.com/search?num=5&q=SetTimeZoneInformation+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetTimeZoneInformation
+[SetTokenInformation](https://www.google.com/search?num=5&q=SetTokenInformation+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [SetUmsThreadInformation](https://www.google.com/search?num=5&q=SetUmsThreadInformation+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [SetUnhandledExceptionFilter](https://www.google.com/search?num=5&q=SetUnhandledExceptionFilter+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetUnhandledExceptionFilter
 [SetupComm](https://www.google.com/search?num=5&q=SetupComm+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetupComm
@@ -1079,7 +1830,26 @@ Native Method | Native DLL | Header | Managed Method
 [SetWaitableTimer](https://www.google.com/search?num=5&q=SetWaitableTimer+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetWaitableTimer
 [SetWaitableTimerEx](https://www.google.com/search?num=5&q=SetWaitableTimerEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetWaitableTimerEx
 [SetXStateFeaturesMask](https://www.google.com/search?num=5&q=SetXStateFeaturesMask+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[SharedLocalIsEnabled](https://www.google.com/search?num=5&q=SharedLocalIsEnabled+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SHCoCreateInstance](https://www.google.com/search?num=5&q=SHCoCreateInstance+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SHExpandEnvironmentStrings](https://www.google.com/search?num=5&q=SHExpandEnvironmentStrings+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SHLoadIndirectString](https://www.google.com/search?num=5&q=SHLoadIndirectString+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SHLoadIndirectStringInternal](https://www.google.com/search?num=5&q=SHLoadIndirectStringInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [ShowConsoleCursor](https://www.google.com/search?num=5&q=ShowConsoleCursor+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[SHRegCloseUSKey](https://www.google.com/search?num=5&q=SHRegCloseUSKey+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SHRegCreateUSKey](https://www.google.com/search?num=5&q=SHRegCreateUSKey+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SHRegDeleteEmptyUSKey](https://www.google.com/search?num=5&q=SHRegDeleteEmptyUSKey+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SHRegDeleteUSValue](https://www.google.com/search?num=5&q=SHRegDeleteUSValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SHRegEnumUSKey](https://www.google.com/search?num=5&q=SHRegEnumUSKey+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SHRegEnumUSValue](https://www.google.com/search?num=5&q=SHRegEnumUSValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SHRegGetBoolUSValue](https://www.google.com/search?num=5&q=SHRegGetBoolUSValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SHRegGetUSValue](https://www.google.com/search?num=5&q=SHRegGetUSValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SHRegOpenUSKey](https://www.google.com/search?num=5&q=SHRegOpenUSKey+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SHRegQueryInfoUSKey](https://www.google.com/search?num=5&q=SHRegQueryInfoUSKey+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SHRegQueryUSValue](https://www.google.com/search?num=5&q=SHRegQueryUSValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SHRegSetUSValue](https://www.google.com/search?num=5&q=SHRegSetUSValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SHRegWriteUSValue](https://www.google.com/search?num=5&q=SHRegWriteUSValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SHTruncateString](https://www.google.com/search?num=5&q=SHTruncateString+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [SignalObjectAndWait](https://www.google.com/search?num=5&q=SignalObjectAndWait+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SignalObjectAndWait
 [SizeofResource](https://www.google.com/search?num=5&q=SizeofResource+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SizeofResource
 [Sleep](https://www.google.com/search?num=5&q=Sleep+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.Sleep
@@ -1088,16 +1858,64 @@ Native Method | Native DLL | Header | Managed Method
 [SleepEx](https://www.google.com/search?num=5&q=SleepEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SleepEx
 [SortCloseHandle](https://www.google.com/search?num=5&q=SortCloseHandle+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [SortGetHandle](https://www.google.com/search?num=5&q=SortGetHandle+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[SpecialMBToWC](https://www.google.com/search?num=5&q=SpecialMBToWC+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [StartThreadpoolIo](https://www.google.com/search?num=5&q=StartThreadpoolIo+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.StartThreadpoolIo
+[StmAlignSize](https://www.google.com/search?num=5&q=StmAlignSize+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StmAllocateFlat](https://www.google.com/search?num=5&q=StmAllocateFlat+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StmCoalesceChunks](https://www.google.com/search?num=5&q=StmCoalesceChunks+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StmDeinitialize](https://www.google.com/search?num=5&q=StmDeinitialize+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StmInitialize](https://www.google.com/search?num=5&q=StmInitialize+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StmReduceSize](https://www.google.com/search?num=5&q=StmReduceSize+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StmReserve](https://www.google.com/search?num=5&q=StmReserve+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StmWrite](https://www.google.com/search?num=5&q=StmWrite+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrCatBuff](https://www.google.com/search?num=5&q=StrCatBuff+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrCatChainW](https://www.google.com/search?num=5&q=StrCatChainW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrChr](https://www.google.com/search?num=5&q=StrChr+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrChrA_MB](https://www.google.com/search?num=5&q=StrChrA_MB+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrChrI](https://www.google.com/search?num=5&q=StrChrI+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrChrNIW](https://www.google.com/search?num=5&q=StrChrNIW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrChrNW](https://www.google.com/search?num=5&q=StrChrNW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrCmpC](https://www.google.com/search?num=5&q=StrCmpC+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrCmpIC](https://www.google.com/search?num=5&q=StrCmpIC+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrCmpIW](https://www.google.com/search?num=5&q=StrCmpIW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrCmpLogicalW](https://www.google.com/search?num=5&q=StrCmpLogicalW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrCmpN](https://www.google.com/search?num=5&q=StrCmpN+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrCmpNC](https://www.google.com/search?num=5&q=StrCmpNC+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrCmpNI](https://www.google.com/search?num=5&q=StrCmpNI+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrCmpNIC](https://www.google.com/search?num=5&q=StrCmpNIC+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrCmpW](https://www.google.com/search?num=5&q=StrCmpW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrCpyNW](https://www.google.com/search?num=5&q=StrCpyNW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrCpyNX](https://www.google.com/search?num=5&q=StrCpyNX+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrCSpn](https://www.google.com/search?num=5&q=StrCSpn+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrCSpnI](https://www.google.com/search?num=5&q=StrCSpnI+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrDup](https://www.google.com/search?num=5&q=StrDup+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrIsIntlEqual](https://www.google.com/search?num=5&q=StrIsIntlEqual+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrPBrk](https://www.google.com/search?num=5&q=StrPBrk+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrRChr](https://www.google.com/search?num=5&q=StrRChr+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrRChrI](https://www.google.com/search?num=5&q=StrRChrI+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrRStrI](https://www.google.com/search?num=5&q=StrRStrI+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrSpn](https://www.google.com/search?num=5&q=StrSpn+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrStr](https://www.google.com/search?num=5&q=StrStr+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrStrI](https://www.google.com/search?num=5&q=StrStrI+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrStrNIW](https://www.google.com/search?num=5&q=StrStrNIW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrStrNW](https://www.google.com/search?num=5&q=StrStrNW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrToInt](https://www.google.com/search?num=5&q=StrToInt+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrToInt64Ex](https://www.google.com/search?num=5&q=StrToInt64Ex+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrToIntEx](https://www.google.com/search?num=5&q=StrToIntEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[StrTrim](https://www.google.com/search?num=5&q=StrTrim+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [SubmitThreadpoolWork](https://www.google.com/search?num=5&q=SubmitThreadpoolWork+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SubmitThreadpoolWork
+[SubscribeEdpEnabledStateChange](https://www.google.com/search?num=5&q=SubscribeEdpEnabledStateChange+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[SubscribeStateChangeNotification](https://www.google.com/search?num=5&q=SubscribeStateChangeNotification+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [SuspendThread](https://www.google.com/search?num=5&q=SuspendThread+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SuspendThread
 [SwitchToFiber](https://www.google.com/search?num=5&q=SwitchToFiber+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SwitchToFiber
 [SwitchToThread](https://www.google.com/search?num=5&q=SwitchToThread+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SwitchToThread
 [SystemTimeToFileTime](https://www.google.com/search?num=5&q=SystemTimeToFileTime+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SystemTimeToFileTime
 [SystemTimeToTzSpecificLocalTime](https://www.google.com/search?num=5&q=SystemTimeToTzSpecificLocalTime+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SystemTimeToTzSpecificLocalTime
 [SystemTimeToTzSpecificLocalTimeEx](https://www.google.com/search?num=5&q=SystemTimeToTzSpecificLocalTimeEx+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SystemTimeToTzSpecificLocalTimeEx
+[TerminateEnclave](https://www.google.com/search?num=5&q=TerminateEnclave+site%3Amsdn.microsoft.com) | vertdll.dll | Enclaveapi.h | Vanara.PInvoke.Kernel32.TerminateEnclave
 [TerminateJobObject](https://www.google.com/search?num=5&q=TerminateJobObject+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.TerminateJobObject
 [TerminateProcess](https://www.google.com/search?num=5&q=TerminateProcess+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.TerminateProcess
+[TerminateProcessOnMemoryExhaustion](https://www.google.com/search?num=5&q=TerminateProcessOnMemoryExhaustion+site%3Amsdn.microsoft.com) | kernelbase.dll | WinBase.h | Vanara.PInvoke.Kernel32.TerminateProcessOnMemoryExhaustion
 [TerminateThread](https://www.google.com/search?num=5&q=TerminateThread+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.TerminateThread
 [TermsrvAppInstallMode](https://www.google.com/search?num=5&q=TermsrvAppInstallMode+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [TermsrvConvertSysRootToUserDir](https://www.google.com/search?num=5&q=TermsrvConvertSysRootToUserDir+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -1114,6 +1932,7 @@ Native Method | Native DLL | Header | Managed Method
 [TermsrvSyncUserIniFileExt](https://www.google.com/search?num=5&q=TermsrvSyncUserIniFileExt+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [Thread32First](https://www.google.com/search?num=5&q=Thread32First+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [Thread32Next](https://www.google.com/search?num=5&q=Thread32Next+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[time](https://www.google.com/search?num=5&q=time+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [timeBeginPeriod](https://www.google.com/search?num=5&q=timeBeginPeriod+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [timeEndPeriod](https://www.google.com/search?num=5&q=timeEndPeriod+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [timeGetDevCaps](https://www.google.com/search?num=5&q=timeGetDevCaps+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -1124,6 +1943,9 @@ Native Method | Native DLL | Header | Managed Method
 [TlsGetValue](https://www.google.com/search?num=5&q=TlsGetValue+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.TlsGetValue
 [TlsSetValue](https://www.google.com/search?num=5&q=TlsSetValue+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.TlsSetValue
 [Toolhelp32ReadProcessMemory](https://www.google.com/search?num=5&q=Toolhelp32ReadProcessMemory+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[TraceEvent](https://www.google.com/search?num=5&q=TraceEvent+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[TraceMessage](https://www.google.com/search?num=5&q=TraceMessage+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[TraceMessageVa](https://www.google.com/search?num=5&q=TraceMessageVa+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [TransactNamedPipe](https://www.google.com/search?num=5&q=TransactNamedPipe+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.TransactNamedPipe
 [TransmitCommChar](https://www.google.com/search?num=5&q=TransmitCommChar+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.TransmitCommChar
 [TryAcquireSRWLockExclusive](https://www.google.com/search?num=5&q=TryAcquireSRWLockExclusive+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.TryAcquireSRWLockExclusive
@@ -1137,40 +1959,75 @@ Native Method | Native DLL | Header | Managed Method
 [UnlockFile](https://www.google.com/search?num=5&q=UnlockFile+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.UnlockFile
 [UnlockFileEx](https://www.google.com/search?num=5&q=UnlockFileEx+site%3Amsdn.microsoft.com) | kernel32.dll | FileAPI.h | Vanara.PInvoke.Kernel32.UnlockFileEx
 [UnmapViewOfFile](https://www.google.com/search?num=5&q=UnmapViewOfFile+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.UnmapViewOfFile
+[UnmapViewOfFile2](https://www.google.com/search?num=5&q=UnmapViewOfFile2+site%3Amsdn.microsoft.com) | kernelbase.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.UnmapViewOfFile2
 [UnmapViewOfFileEx](https://www.google.com/search?num=5&q=UnmapViewOfFileEx+site%3Amsdn.microsoft.com) | kernel32.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.UnmapViewOfFileEx
 [UnregisterApplicationRecoveryCallback](https://www.google.com/search?num=5&q=UnregisterApplicationRecoveryCallback+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.UnregisterApplicationRecoveryCallback
 [UnregisterApplicationRestart](https://www.google.com/search?num=5&q=UnregisterApplicationRestart+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.UnregisterApplicationRestart
 [UnregisterBadMemoryNotification](https://www.google.com/search?num=5&q=UnregisterBadMemoryNotification+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.UnregisterBadMemoryNotification
 [UnregisterConsoleIME](https://www.google.com/search?num=5&q=UnregisterConsoleIME+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[UnregisterGPNotificationInternal](https://www.google.com/search?num=5&q=UnregisterGPNotificationInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[UnregisterStateChangeNotification](https://www.google.com/search?num=5&q=UnregisterStateChangeNotification+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[UnregisterStateLock](https://www.google.com/search?num=5&q=UnregisterStateLock+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[UnregisterTraceGuids](https://www.google.com/search?num=5&q=UnregisterTraceGuids+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [UnregisterWait](https://www.google.com/search?num=5&q=UnregisterWait+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.UnregisterWait
 [UnregisterWaitEx](https://www.google.com/search?num=5&q=UnregisterWaitEx+site%3Amsdn.microsoft.com) | kernel32.dll | LibLoaderAPI.h | Vanara.PInvoke.Kernel32.UnregisterWaitEx
 [UnregisterWaitUntilOOBECompleted](https://www.google.com/search?num=5&q=UnregisterWaitUntilOOBECompleted+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[UnsubscribeEdpEnabledStateChange](https://www.google.com/search?num=5&q=UnsubscribeEdpEnabledStateChange+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[UnsubscribeStateChangeNotification](https://www.google.com/search?num=5&q=UnsubscribeStateChangeNotification+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [UpdateCalendarDayOfWeek](https://www.google.com/search?num=5&q=UpdateCalendarDayOfWeek+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[UpdatePackageStatus](https://www.google.com/search?num=5&q=UpdatePackageStatus+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[UpdatePackageStatusForUser](https://www.google.com/search?num=5&q=UpdatePackageStatusForUser+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[UpdatePackageStatusForUserSid](https://www.google.com/search?num=5&q=UpdatePackageStatusForUserSid+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [UpdateProcThreadAttribute](https://www.google.com/search?num=5&q=UpdateProcThreadAttribute+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.UpdateProcThreadAttribute
 [UpdateResource](https://www.google.com/search?num=5&q=UpdateResource+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.UpdateResource
+[UrlApplyScheme](https://www.google.com/search?num=5&q=UrlApplyScheme+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[UrlCanonicalize](https://www.google.com/search?num=5&q=UrlCanonicalize+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[UrlCombine](https://www.google.com/search?num=5&q=UrlCombine+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[UrlCompare](https://www.google.com/search?num=5&q=UrlCompare+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[UrlCreateFromPath](https://www.google.com/search?num=5&q=UrlCreateFromPath+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[UrlEscape](https://www.google.com/search?num=5&q=UrlEscape+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[UrlFixupW](https://www.google.com/search?num=5&q=UrlFixupW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[UrlGetLocation](https://www.google.com/search?num=5&q=UrlGetLocation+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[UrlGetPart](https://www.google.com/search?num=5&q=UrlGetPart+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[UrlHash](https://www.google.com/search?num=5&q=UrlHash+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[UrlIs](https://www.google.com/search?num=5&q=UrlIs+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[UrlIsNoHistory](https://www.google.com/search?num=5&q=UrlIsNoHistory+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[UrlIsOpaque](https://www.google.com/search?num=5&q=UrlIsOpaque+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[UrlUnescape](https://www.google.com/search?num=5&q=UrlUnescape+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [UTRegister](https://www.google.com/search?num=5&q=UTRegister+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [UTUnRegister](https://www.google.com/search?num=5&q=UTUnRegister+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [VDMConsoleOperation](https://www.google.com/search?num=5&q=VDMConsoleOperation+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [VDMOperationStarted](https://www.google.com/search?num=5&q=VDMOperationStarted+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[VerFindFile](https://www.google.com/search?num=5&q=VerFindFile+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[VerifyApplicationUserModelId](https://www.google.com/search?num=5&q=VerifyApplicationUserModelId+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [VerifyConsoleIoHandle](https://www.google.com/search?num=5&q=VerifyConsoleIoHandle+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[VerifyPackageFamilyName](https://www.google.com/search?num=5&q=VerifyPackageFamilyName+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[VerifyPackageFullName](https://www.google.com/search?num=5&q=VerifyPackageFullName+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[VerifyPackageId](https://www.google.com/search?num=5&q=VerifyPackageId+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[VerifyPackageRelativeApplicationId](https://www.google.com/search?num=5&q=VerifyPackageRelativeApplicationId+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [VerifyScripts](https://www.google.com/search?num=5&q=VerifyScripts+site%3Amsdn.microsoft.com) | kernel32.dll | Winnls.h | Vanara.PInvoke.Kernel32.VerifyScripts
 [VerifyVersionInfo](https://www.google.com/search?num=5&q=VerifyVersionInfo+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.VerifyVersionInfo
 [VerLanguageName](https://www.google.com/search?num=5&q=VerLanguageName+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[VerQueryValue](https://www.google.com/search?num=5&q=VerQueryValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [VerSetConditionMask](https://www.google.com/search?num=5&q=VerSetConditionMask+site%3Amsdn.microsoft.com) | kernel32.dll | Winnt.h | Vanara.PInvoke.Kernel32.VerSetConditionMask
 [VirtualAlloc](https://www.google.com/search?num=5&q=VirtualAlloc+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualAlloc
 [VirtualAllocEx](https://www.google.com/search?num=5&q=VirtualAllocEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualAllocEx
 [VirtualAllocExNuma](https://www.google.com/search?num=5&q=VirtualAllocExNuma+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualAllocExNuma
+[VirtualAllocFromApp](https://www.google.com/search?num=5&q=VirtualAllocFromApp+site%3Amsdn.microsoft.com) | kernelbase.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.VirtualAllocFromApp
 [VirtualFree](https://www.google.com/search?num=5&q=VirtualFree+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualFree
 [VirtualFreeEx](https://www.google.com/search?num=5&q=VirtualFreeEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualFreeEx
 [VirtualLock](https://www.google.com/search?num=5&q=VirtualLock+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualLock
 [VirtualProtect](https://www.google.com/search?num=5&q=VirtualProtect+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualProtect
 [VirtualProtectEx](https://www.google.com/search?num=5&q=VirtualProtectEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualProtectEx
+[VirtualProtectFromApp](https://www.google.com/search?num=5&q=VirtualProtectFromApp+site%3Amsdn.microsoft.com) | kernelbase.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.VirtualProtectFromApp
 [VirtualQuery](https://www.google.com/search?num=5&q=VirtualQuery+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualQuery
 [VirtualQueryEx](https://www.google.com/search?num=5&q=VirtualQueryEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualQueryEx
 [VirtualUnlock](https://www.google.com/search?num=5&q=VirtualUnlock+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualUnlock
+[VirtualUnlockEx](https://www.google.com/search?num=5&q=VirtualUnlockEx+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [WaitCommEvent](https://www.google.com/search?num=5&q=WaitCommEvent+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.WaitCommEvent
 [WaitForDebugEvent](https://www.google.com/search?num=5&q=WaitForDebugEvent+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WaitForDebugEvent
 [WaitForDebugEventEx](https://www.google.com/search?num=5&q=WaitForDebugEventEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WaitForDebugEventEx
+[WaitForMachinePolicyForegroundProcessingInternal](https://www.google.com/search?num=5&q=WaitForMachinePolicyForegroundProcessingInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [WaitForMultipleObjects](https://www.google.com/search?num=5&q=WaitForMultipleObjects+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WaitForMultipleObjects
 [WaitForMultipleObjectsEx](https://www.google.com/search?num=5&q=WaitForMultipleObjectsEx+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WaitForMultipleObjectsEx
 [WaitForSingleObject](https://www.google.com/search?num=5&q=WaitForSingleObject+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WaitForSingleObject
@@ -1179,15 +2036,25 @@ Native Method | Native DLL | Header | Managed Method
 [WaitForThreadpoolTimerCallbacks](https://www.google.com/search?num=5&q=WaitForThreadpoolTimerCallbacks+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WaitForThreadpoolTimerCallbacks
 [WaitForThreadpoolWaitCallbacks](https://www.google.com/search?num=5&q=WaitForThreadpoolWaitCallbacks+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WaitForThreadpoolWaitCallbacks
 [WaitForThreadpoolWorkCallbacks](https://www.google.com/search?num=5&q=WaitForThreadpoolWorkCallbacks+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WaitForThreadpoolWorkCallbacks
+[WaitForUserPolicyForegroundProcessingInternal](https://www.google.com/search?num=5&q=WaitForUserPolicyForegroundProcessingInternal+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [WaitNamedPipe](https://www.google.com/search?num=5&q=WaitNamedPipe+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.WaitNamedPipe
+[WaitNamedPipeW](https://www.google.com/search?num=5&q=WaitNamedPipeW+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[WaitOnAddress](https://www.google.com/search?num=5&q=WaitOnAddress+site%3Amsdn.microsoft.com) | vertdll.dll | SynchAPI.h | Vanara.PInvoke.Kernel32.WaitOnAddress
 [WakeAllConditionVariable](https://www.google.com/search?num=5&q=WakeAllConditionVariable+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WakeAllConditionVariable
+[WakeByAddressAll](https://www.google.com/search?num=5&q=WakeByAddressAll+site%3Amsdn.microsoft.com) | vertdll.dll | SynchAPI.h | Vanara.PInvoke.Kernel32.WakeByAddressAll
+[WakeByAddressSingle](https://www.google.com/search?num=5&q=WakeByAddressSingle+site%3Amsdn.microsoft.com) | vertdll.dll | SynchAPI.h | Vanara.PInvoke.Kernel32.WakeByAddressSingle
 [WakeConditionVariable](https://www.google.com/search?num=5&q=WakeConditionVariable+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WakeConditionVariable
+[wcscmp](https://www.google.com/search?num=5&q=wcscmp+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[wcscpy_s](https://www.google.com/search?num=5&q=wcscpy_s+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
+[wcsncmp](https://www.google.com/search?num=5&q=wcsncmp+site%3Amsdn.microsoft.com) | vertdll.dll |  | 
 [WerGetFlags](https://www.google.com/search?num=5&q=WerGetFlags+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerGetFlagsWorker](https://www.google.com/search?num=5&q=WerGetFlagsWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerpGetDebugger](https://www.google.com/search?num=5&q=WerpGetDebugger+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerpInitiateRemoteRecovery](https://www.google.com/search?num=5&q=WerpInitiateRemoteRecovery+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerpLaunchAeDebug](https://www.google.com/search?num=5&q=WerpLaunchAeDebug+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[WerpNotifyLoadStringResource](https://www.google.com/search?num=5&q=WerpNotifyLoadStringResource+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [WerpNotifyLoadStringResourceWorker](https://www.google.com/search?num=5&q=WerpNotifyLoadStringResourceWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[WerpNotifyUseStringResource](https://www.google.com/search?num=5&q=WerpNotifyUseStringResource+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [WerpNotifyUseStringResourceWorker](https://www.google.com/search?num=5&q=WerpNotifyUseStringResourceWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerRegisterAdditionalProcess](https://www.google.com/search?num=5&q=WerRegisterAdditionalProcess+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [WerRegisterAppLocalDump](https://www.google.com/search?num=5&q=WerRegisterAppLocalDump+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -1219,7 +2086,9 @@ Native Method | Native DLL | Header | Managed Method
 [Wow64GetThreadSelectorEntry](https://www.google.com/search?num=5&q=Wow64GetThreadSelectorEntry+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 [Wow64RevertWow64FsRedirection](https://www.google.com/search?num=5&q=Wow64RevertWow64FsRedirection+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.Wow64RevertWow64FsRedirection
 [Wow64SetThreadContext](https://www.google.com/search?num=5&q=Wow64SetThreadContext+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[Wow64SetThreadDefaultGuestMachine](https://www.google.com/search?num=5&q=Wow64SetThreadDefaultGuestMachine+site%3Amsdn.microsoft.com) | kernelbase.dll |  | Vanara.PInvoke.Kernel32.Wow64SetThreadDefaultGuestMachine
 [Wow64SuspendThread](https://www.google.com/search?num=5&q=Wow64SuspendThread+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
+[wprintf](https://www.google.com/search?num=5&q=wprintf+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [WriteConsole](https://www.google.com/search?num=5&q=WriteConsole+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.WriteConsole
 [WriteConsoleInput](https://www.google.com/search?num=5&q=WriteConsoleInput+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.WriteConsoleInput
 [WriteConsoleInputVDM](https://www.google.com/search?num=5&q=WriteConsoleInputVDM+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
@@ -1235,8 +2104,12 @@ Native Method | Native DLL | Header | Managed Method
 [WriteProcessMemory](https://www.google.com/search?num=5&q=WriteProcessMemory+site%3Amsdn.microsoft.com) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.WriteProcessMemory
 [WriteProfileSection](https://www.google.com/search?num=5&q=WriteProfileSection+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.WriteProfileSection
 [WriteProfileString](https://www.google.com/search?num=5&q=WriteProfileString+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.WriteProfileString
+[WriteStateAtomValue](https://www.google.com/search?num=5&q=WriteStateAtomValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[WriteStateContainerValue](https://www.google.com/search?num=5&q=WriteStateContainerValue+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [WriteTapemark](https://www.google.com/search?num=5&q=WriteTapemark+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.WriteTapemark
 [WTSGetActiveConsoleSessionId](https://www.google.com/search?num=5&q=WTSGetActiveConsoleSessionId+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.WTSGetActiveConsoleSessionId
+[WTSGetServiceSessionId](https://www.google.com/search?num=5&q=WTSGetServiceSessionId+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
+[WTSIsServerContainer](https://www.google.com/search?num=5&q=WTSIsServerContainer+site%3Amsdn.microsoft.com) | kernelbase.dll |  | 
 [ZombifyActCtx](https://www.google.com/search?num=5&q=ZombifyActCtx+site%3Amsdn.microsoft.com) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ZombifyActCtx
 [ZombifyActCtxWorker](https://www.google.com/search?num=5&q=ZombifyActCtxWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  | 
 ### Structures

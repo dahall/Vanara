@@ -115,9 +115,9 @@ namespace Vanara.Extensions
 		public static string GetMessageString(this Control ctrl, uint getLenMsg, uint getTextMsg)
 		{
 			if (!ctrl.IsHandleCreated) return null;
-			var cp = SendMessage(new HandleRef(ctrl, ctrl.Handle), getLenMsg).ToInt32() + 1;
+			var cp = ctrl.SendMessage(getLenMsg).ToInt32() + 1;
 			var sb = new System.Text.StringBuilder(cp);
-			SendMessage(new HandleRef(ctrl, ctrl.Handle), getTextMsg, ref cp, sb);
+			Vanara.PInvoke.User32_Gdi.SendMessage(new HandleRef(ctrl, ctrl.Handle), getTextMsg, ref cp, sb);
 			return sb.ToString();
 		}
 
@@ -141,6 +141,32 @@ namespace Vanara.Extensions
 			}
 			return str;
 		}
+
+		/// <summary>
+		/// <para>
+		/// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified window and does not
+		/// return until the window procedure has processed the message.
+		/// </para>
+		/// <para>
+		/// To send a message and return immediately, use the <c>SendMessageCallback</c> or <c>SendNotifyMessage</c> function. To post a message to a thread's
+		/// message queue and return immediately, use the <c>PostMessage</c> or <c>PostThreadMessage</c> function.
+		/// </para>
+		/// </summary>
+		/// <param name="wnd">
+		/// <para>
+		/// A window whose window procedure will receive the message.
+		/// </para>
+		/// <para>
+		/// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of lesser or equal
+		/// integrity level.
+		/// </para>
+		/// </param>
+		/// <param name="msg">The message to be sent.</param>
+		/// <param name="wParam">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
+		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		public static IntPtr SendMessage(this IWin32Window wnd, uint msg, IntPtr wParam = default(IntPtr), IntPtr lParam = default(IntPtr)) =>
+			Vanara.PInvoke.User32_Gdi.SendMessage(new HandleRef(wnd, wnd.Handle), msg, wParam, lParam);
 
 		/// <summary>Sets the windows styles.</summary>
 		/// <param name="ctrl">The control.</param>

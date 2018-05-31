@@ -384,7 +384,7 @@ namespace Vanara.Windows.Forms
 		/// <param name="wParam">The wParam.</param>
 		/// <param name="lParam">The lParam.</param>
 		/// <returns>The result value defined for the message.</returns>
-		protected IntPtr SendMsg(TrackBarMessage msg, int wParam = 0, int lParam = 0) => IsHandleCreated ? SendMessage(new HandleRef(this, Handle), (uint)msg, wParam, lParam) : IntPtr.Zero;
+		protected IntPtr SendMsg(TrackBarMessage msg, int wParam = 0, int lParam = 0) => IsHandleCreated ? SendMessage(new HandleRef(this, Handle), (uint)msg, (IntPtr)wParam, (IntPtr)lParam) : IntPtr.Zero;
 
 		/// <inheritdoc />
 		protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)

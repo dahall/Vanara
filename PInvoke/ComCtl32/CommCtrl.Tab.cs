@@ -292,9 +292,7 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="item">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, CharSet = CharSet.Unicode, SetLastError = false)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, TabControlMessage Msg, int wParam, ref TCHITTESTINFO item);
+		public static IntPtr SendMessage(HandleRef hWnd, TabControlMessage Msg, int wParam, ref TCHITTESTINFO item) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref item);
 
 		/// <summary>
 		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
@@ -304,8 +302,6 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="item">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[DllImport(Lib.User32, CharSet = CharSet.Unicode, SetLastError = false)]
-		public static extern IntPtr SendMessage(HandleRef hWnd, TabControlMessage Msg, int wParam, TCITEM item);
+		public static IntPtr SendMessage(HandleRef hWnd, TabControlMessage Msg, int wParam, TCITEM item) => User32_Gdi.SendMessage(hWnd, Msg, wParam, item);
 	}
 }

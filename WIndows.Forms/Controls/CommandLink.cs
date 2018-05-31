@@ -23,13 +23,13 @@ namespace Vanara.Windows.Forms
 	[Designer(typeof(Design.CommandLinkDesigner)), DefaultProperty("Text")]
 	public class CommandLink : Button
 	{
-		//private const int BCM_GETNOTE = 0x0000160A;
-		//private const int BCM_GETNOTELENGTH = 0x0000160B;
-		private const int BCM_SETNOTE = 0x00001609;
-		private const int BCM_SETSHIELD = 0x0000160C;
-		private const int BM_SETIMAGE = 0x000000F7;
-		private const int BS_COMMANDLINK = 0x0000000E;
-		private const int BS_DEFCOMMANDLINK = 0x0000000F;
+		//private const uint BCM_GETNOTE = 0x0000160A;
+		//private const uint BCM_GETNOTELENGTH = 0x0000160B;
+		private const uint BCM_SETNOTE = 0x00001609;
+		private const uint BCM_SETSHIELD = 0x0000160C;
+		private const uint BM_SETIMAGE = 0x000000F7;
+		private const uint BS_COMMANDLINK = 0x0000000E;
+		private const uint BS_DEFCOMMANDLINK = 0x0000000F;
 
 		private static readonly bool IsPlatformSupported = Environment.OSVersion.Version.Major > 5;
 		private PushButtonState buttonState = PushButtonState.Normal;
@@ -66,7 +66,7 @@ namespace Vanara.Windows.Forms
 			{
 				base.Image = value;
 				if (IsPlatformSupported)
-					SendMessage(new HandleRef(this, Handle), BM_SETIMAGE, (IntPtr)1, (base.Image as Bitmap)?.GetHicon() ?? IntPtr.Zero);
+					this.SendMessage(BM_SETIMAGE, (IntPtr)1, (base.Image as Bitmap)?.GetHicon() ?? IntPtr.Zero);
 			}
 		}
 
@@ -80,7 +80,8 @@ namespace Vanara.Windows.Forms
 		[DefaultValue(null), Category("Appearance"), Localizable(true)]
 		public string NoteText
 		{
-			get => noteText; set
+			get => noteText;
+			set
 			{
 				if (value == string.Empty) value = null;
 				if (string.Equals(noteText, value)) return;
@@ -93,7 +94,7 @@ namespace Vanara.Windows.Forms
 		private void SetNote()
 		{
 			if (IsPlatformSupported && IsHandleCreated)
-				SendMessage(new HandleRef(this, Handle), BCM_SETNOTE, 0, noteText);
+				SendMessage(new HandleRef(this, Handle), BCM_SETNOTE, IntPtr.Zero, noteText);
 		}
 
 		/// <summary>
@@ -103,12 +104,13 @@ namespace Vanara.Windows.Forms
 		[DefaultValue(false), Category("Behavior")]
 		public bool ShowShield
 		{
-			get => showShield; set
+			get => showShield;
+			set
 			{
 				if (showShield == value) return;
 				showShield = value;
 				if (IsPlatformSupported)
-					SendMessage(new HandleRef(this, Handle), BCM_SETSHIELD, 0, value ? 1 : 0);
+					this.SendMessage(BCM_SETSHIELD, (IntPtr)0, (IntPtr)(value ? 1 : 0));
 				Invalidate();
 			}
 		}
@@ -122,7 +124,7 @@ namespace Vanara.Windows.Forms
 			{
 				var cp = base.CreateParams;
 				if (IsPlatformSupported)
-					cp.Style |= (Default ? BS_DEFCOMMANDLINK : BS_COMMANDLINK);
+					cp.Style |= (int)(Default ? BS_DEFCOMMANDLINK : BS_COMMANDLINK);
 				return cp;
 			}
 		}

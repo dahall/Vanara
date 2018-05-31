@@ -25,7 +25,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-CredPackAuthenticationBuffer, CredUICmdLinePromptForCredentials, CredUIConfirmCredentials, CredUIParseUserName, CredUIPromptForCredentials, CredUIPromptForWindowsCredentials, CredUIReadSSOCred, CredUIStoreSSOCred, CredUnPackAuthenticationBuffer, SspiGetCredUIContext, SspiIsPromptingNeeded, SspiPromptForCredentials, SspiUnmarshalCredUIContext, SspiUpdateCredentials, XCredUIStoreSSOCred
+CredPackAuthenticationBuffer, CredUICmdLinePromptForCredentials, CredUIConfirmCredentials, CredUIParseUserName, CredUIPromptForCredentials, CredUIPromptForWindowsCredentials, CredUIReadSSOCred, CredUIStoreSSOCred, CredUnPackAuthenticationBuffer, SspiGetCredUIContext, SspiIsPromptingNeeded, SspiPromptForCredentials, SspiUnmarshalCredUIContext, SspiUpdateCredentials
 
 Structures
 PSEC_WINNT_CREDUI_CONTEXT_VECTOR, PSEC_WINNT_CREDUI_CONTEXT, CREDUI_INFO

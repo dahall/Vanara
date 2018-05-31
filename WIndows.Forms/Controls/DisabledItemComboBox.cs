@@ -467,7 +467,7 @@ namespace Vanara.Windows.Forms
 
 			public int IndexFromPoint(int x, int y)
 			{
-				var n = SendMessage(new HandleRef(this, Handle), 0x1a9 /* LB_ITEMFROMPOINT */, IntPtr.Zero, MAKELPARAM((ushort)x, (ushort)y));
+				var n = SendMessage(new HandleRef(this, Handle), 0x1a9u /* LB_ITEMFROMPOINT */, IntPtr.Zero, MAKELPARAM((ushort)x, (ushort)y));
 				if (HIWORD(n) == 0)
 					return LOWORD(n);
 				return -1;
