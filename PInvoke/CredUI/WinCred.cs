@@ -602,10 +602,6 @@ namespace Vanara.PInvoke
 		[PInvokeData("wincred.h", MSDNShortId = "aa375173")]
 		public static extern bool CredUnPackAuthenticationBuffer(int dwFlags, IntPtr pAuthBuffer, int cbAuthBuffer, IntPtr pszUserName, ref int pcchMaxUserName, IntPtr pszDomainName, ref int pcchMaxDomainame, IntPtr pszPassword, ref int pcchMaxPassword);
 
-		[DllImport(Lib.CredUI, CharSet = CharSet.Auto)]
-		[PInvokeData("wincred.h", MSDNShortId = "aa375181")]
-		public static extern Win32Error XCredUIStoreSSOCred(string pszRealm, string pszUsername, string pszPassword, [MarshalAs(UnmanagedType.Bool)] bool bPersist);
-
 		/// <summary>
 		/// The CREDUI_INFO structure is used to pass information to the CredUIPromptForCredentials function that creates a dialog box used to obtain credentials information.
 		/// </summary>
