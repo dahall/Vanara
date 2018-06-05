@@ -14,20 +14,6 @@ namespace Vanara.Extensions
 		private static Dictionary<ImageList, List<int>> imageListOverlays = new Dictionary<ImageList, List<int>>();
 
 		/// <summary>
-		/// Draw color with options for <see cref="Draw"/> method.
-		/// </summary>
-		public struct ImageListDrawColor
-		{
-			private uint value;
-			public ImageListDrawColor(Color color) { value = (uint)ColorTranslator.ToWin32(color); }
-			private ImageListDrawColor(uint val) { value = val; }
-			public static ImageListDrawColor None = new ImageListDrawColor(CLR_NONE);
-			public static ImageListDrawColor Default = new ImageListDrawColor(CLR_DEFAULT);
-			public static implicit operator uint (ImageListDrawColor c) => c.value;
-			public static implicit operator ImageListDrawColor(Color c) => new ImageListDrawColor(c);
-		}
-
-		/// <summary>
 		/// Draws the image indicated by the given index on the specified <see cref="Graphics"/> at the specified location.
 		/// </summary>
 		/// <param name="imageList">The image list.</param>
@@ -48,17 +34,18 @@ namespace Vanara.Extensions
 			if (overlayImageIndex < 0 || overlayImageIndex > imageList.GetOverlayCount())
 				throw new ArgumentOutOfRangeException(nameof(overlayImageIndex));
 			using (var hg = new SafeDCHandle(g))
-				if (!ImageList_DrawEx(new HandleRef(imageList, imageList.Handle), index, hg, bounds.X, bounds.Y, bounds.Width, bounds.Height, bgColor, fgColor, style | (IMAGELISTDRAWFLAGS)(overlayImageIndex << 8)))
-					throw new Win32Exception();
+			{
+				var p = new IMAGELISTDRAWPARAMS(hg.DangerousGetHandle(), bounds, index, bgColor, style | (IMAGELISTDRAWFLAGS)(overlayImageIndex << 8)) { rgbFg = fgColor };
+				imageList.GetIImageList().Draw(p);
+			}
 		}
 
-		private static int GetOverlayCount(this ImageList imageList)
-		{
-			List<int> vals;
-			if (!imageListOverlays.TryGetValue(imageList, out vals))
-				return 0;
-			return vals.Count;
-		}
+		/// <summary>Gets an <see cref="IImageList"/> object for the <see cref="ImageList"/> instance.</summary>
+		/// <param name="imageList">The image list.</param>
+		/// <returns>An <see cref="IImageList"/> object.</returns>
+		public static IImageList GetIImageList(this ImageList imageList) => new SafeImageListHandle(imageList.Handle, false).Interface;
+
+		private static int GetOverlayCount(this ImageList imageList) => imageListOverlays.TryGetValue(imageList, out List<int> vals) ? vals.Count : 0;
 
 		/// <summary>
 		/// Assigns the image at the specified index as an overlay and returns is overlay index.
@@ -72,16 +59,14 @@ namespace Vanara.Extensions
 		{
 			if (imageIndex < 0 || imageIndex >= imageList.Images.Count)
 				throw new ArgumentOutOfRangeException(nameof(imageIndex));
-			List<int> vals;
-			if (!imageListOverlays.TryGetValue(imageList, out vals))
+			if (!imageListOverlays.TryGetValue(imageList, out List<int> vals))
 			{
 				imageList.RecreateHandle += imageList_RecreateHandle;
 				imageListOverlays.Add(imageList, vals = new List<int>(15));
 			}
 			vals.Add(imageIndex);
 			var overlayIndex = vals.Count;
-			if (!ImageList_SetOverlayImage(new HandleRef(imageList, imageList.Handle), imageIndex, overlayIndex))
-				throw new Win32Exception();
+			imageList.GetIImageList().SetOverlayImage(imageIndex, overlayIndex);
 			return overlayIndex;
 		}
 
@@ -101,12 +86,10 @@ namespace Vanara.Extensions
 
 		private static void imageList_RecreateHandle(object sender, EventArgs e)
 		{
-			List<int> vals;
-			var il = sender as ImageList;
-			if (il == null || !imageListOverlays.TryGetValue(il, out vals)) return;
-			var hIl = new HandleRef(il, il.Handle);
+			if (!(sender is ImageList il) || !imageListOverlays.TryGetValue(il, out List<int> vals)) return;
+			var iil = il.GetIImageList();
 			for (var i = 0; i < vals.Count; i++)
-				ImageList_SetOverlayImage(hIl, vals[i], i + 1);
+				iil.SetOverlayImage(vals[i], i + 1);
 		}
 	}
 }

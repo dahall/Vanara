@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.User32_Gdi;
 
 // ReSharper disable FieldCanBeMadeReadOnly.Global
@@ -9,6 +10,26 @@ namespace Vanara.PInvoke
 {
 	public static partial class ComCtl32
 	{
+		/// <summary>Specifies an application-defined callback function that a property sheet extension uses to add a page to a property sheet.</summary>
+		/// <param name="hpage">
+		/// <para>Type: <c>HPROPSHEETPAGE</c></para>
+		/// <para>Handle to a property sheet page.</para>
+		/// </param>
+		/// <param name="lParam">
+		/// <para>Type: <c><c>LPARAM</c></c></para>
+		/// <para>Application-defined 32-bit value.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c><c>BOOL</c></c></para>
+		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+		/// </returns>
+		// BOOL CALLBACK AddPropSheetPageProc( HPROPSHEETPAGE hpage, LPARAM lParam);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb760805(v=vs.85).aspx
+		[PInvokeData("Prsht.h", MSDNShortId = "bb760805")]
+		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public delegate bool AddPropSheetPageProc(IntPtr hpage, IntPtr lParam);
+
 		/// <summary>
 		/// Specifies an application-defined callback function that a property sheet calls when a page is created and when it is about to be destroyed. An application can use this function to perform initialization and cleanup operations for the page.
 		/// </summary>
@@ -182,30 +203,35 @@ namespace Vanara.PInvoke
 			PSPCB_CREATE = 0x2,
 		}
 
-		/// <summary>
-		/// Creates a property sheet and adds the pages defined in the specified property sheet header structure.
-		/// </summary>
-		/// <param name="psh">
-		/// Pointer to a <see cref="PROPSHEETHEADER" /> structure that defines the frame and pages of a property
-		/// sheet.
+		/// <summary>Creates a new page for a property sheet.</summary>
+		/// <param name="lppsp">
+		/// <para>Type: <c>LPCPROPSHEETPAGE</c></para>
+		/// <para>Pointer to a <c>PROPSHEETPAGE</c> structure that defines a page to be included in a property sheet.</para>
 		/// </param>
-		/// <returns>For modal property sheets, the return value is as follows:
-		/// <list type="table">
-		/// <item><term>&gt;=1</term><term>Changes were saved by the user.</term></item>
-		/// <item><term>0</term><term>No changes were saved by the user.</term></item>
-		/// <item><term>-1</term><term>An error occurred.</term></item>
-		/// </list>
-		/// <para>For modeless property sheets, the return value is the property sheet's window handle.</para>
-		/// <para>The following return values have a special meaning.</para>
-		/// <list type="table">
-		/// <listheader><term>Return code</term><term>Description</term></listheader>
-		/// <item><term>ID_PSREBOOTSYSTEM</term><description>A page sent the PSM_REBOOTSYSTEM message to the property sheet. The computer must be restarted for the user's changes to take effect.</description></item>
-		/// <item><term>ID_PSRESTARTWINDOWS</term><description>A page sent the PSM_RESTARTWINDOWS message to the property sheet.Windows must be restarted for the user's changes to take effect.</description></item>
-		/// </list>
+		/// <returns>
+		/// <para>Type: <c>HPROPSHEETPAGE</c></para>
+		/// <para>Returns the handle to the new property page if successful, or <c>NULL</c> otherwise.</para>
 		/// </returns>
-		[PInvokeData("Commctrl.h", MSDNShortId = "bb760811")]
-		[DllImport(Lib.ComCtl32, SetLastError = true, CharSet = CharSet.Auto)]
+		// HPROPSHEETPAGE CreatePropertySheetPage( LPCPROPSHEETPAGE lppsp);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb760807(v=vs.85).aspx
+		[DllImport(Lib.ComCtl32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("Prsht.h", MSDNShortId = "bb760807")]
+		public static extern SafePropertySheetPagehandle CreatePropertySheetPage(ref PROPSHEETPAGE lppsp);
+
+		/// <summary>Destroys a property sheet page. An application must call this function for pages that have not been passed to the <c>PropertySheet</c> function.</summary><param name="hPSPage"><para>Type: <c>HPROPSHEETPAGE</c></para><para>Handle to the property sheet page to delete.</para></param><returns><para>Type: <c><c>BOOL</c></c></para><para>Returns nonzero if successful, or zero otherwise.</para></returns>
+		// BOOL DestroyPropertySheetPage( HPROPSHEETPAGE hPSPage);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb760809(v=vs.85).aspx
+		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Prsht.h", MSDNShortId = "bb760809")]
 		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool DestroyPropertySheetPage(IntPtr hPSPage);
+
+		/// <summary>Creates a property sheet and adds the pages defined in the specified property sheet header structure.</summary><param name="lppsph"><para>Type: <c>LPCPROPSHEETHEADER</c></para><para>Pointer to a <c>PROPSHEETHEADER</c> structure that defines the frame and pages of a property sheet.</para></param><returns><para>Type: <c><c>INT_PTR</c></c></para><para>For modal property sheets, the return value is as follows:</para><para><list type="table"><listheader><term>&amp;gt;=1</term><term>Changes were saved by the user.</term></listheader><item><term>0</term><term>No changes were saved by the user.</term></item><item><term>-1</term><term>An error occurred.</term></item></list></para><para>For modeless property sheets, the return value is the property sheet&#39;s window handle.</para><para>The following return values have a special meaning.</para><para><list type="table"><listheader><term>Return code</term><term>Description</term></listheader><item><term>ID_PSREBOOTSYSTEM</term><term>A page sent the PSM_REBOOTSYSTEM message to the property sheet. The computer must be restarted for the user&amp;#39;s changes to take effect.</term></item><item><term>ID_PSRESTARTWINDOWS</term><term>A page sent the PSM_RESTARTWINDOWS message to the property sheet. Windows must be restarted for the user&amp;#39;s changes to take effect.</term></item></list></para></returns>
+		// INT_PTR PropertySheet( LPCPROPSHEETHEADER lppsph);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb760811(v=vs.85).aspx
+		[DllImport(Lib.ComCtl32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("Prsht.h", MSDNShortId = "bb760811")]
+		[return: MarshalAs(UnmanagedType.SysInt)]
 		public static extern int PropertySheet(ref PROPSHEETHEADER psh);
 
 		/// <summary>Defines the frame and pages of a property sheet.</summary>
@@ -392,6 +418,18 @@ namespace Vanara.PInvoke
 			/// CreateActCtx. The system will activate this context before creating the dialog box. You do not need to use this member if you use a global manifest.
 			/// </summary>
 			public IntPtr hActCtx;
+		}
+
+		/// <summary>Safe handle for property sheet pages.</summary>
+		/// <seealso cref="GenericSafeHandle"/>
+		public class SafePropertySheetPagehandle : GenericSafeHandle
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafePropertySheetPagehandle"/> class.</summary>
+			public SafePropertySheetPagehandle() : this(IntPtr.Zero) { }
+			/// <summary>Initializes a new instance of the <see cref="SafePropertySheetPagehandle"/> class.</summary>
+			/// <param name="handle">The handle.</param>
+			/// <param name="owns">if set to <c>true</c> calls DestroyPropertySheetPage on disposal.</param>
+			public SafePropertySheetPagehandle(IntPtr handle, bool owns = true) : base(handle, DestroyPropertySheetPage, owns) { }
 		}
 	}
 }

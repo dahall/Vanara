@@ -1,14 +1,25 @@
 using System;
 using System.Runtime.InteropServices;
-using static Vanara.PInvoke.User32_Gdi;
+using static Vanara.PInvoke.Gdi32;
+using static Vanara.PInvoke.Kernel32;
 
 // ReSharper disable InconsistentNaming
-// ReSharper disable FieldCanBeMadeReadOnly.Global ReSharper disable InconsistentNaming
+// ReSharper disable FieldCanBeMadeReadOnly.Global
+// ReSharper disable InconsistentNaming
 
 namespace Vanara.PInvoke
 {
 	public static partial class ComCtl32
 	{
+		/// <summary>Options for CreateMappedBitmap.</summary>
+		public enum CMB
+		{
+			/// <summary>No flags</summary>
+			CMB_NONE = 0,
+			/// <summary>Uses a bitmap as a mask.</summary>
+			CMB_MASKED = 2
+		}
+
 		[Flags]
 		public enum TBSTATE : byte
 		{
@@ -33,7 +44,10 @@ namespace Vanara.PInvoke
 		[Flags]
 		public enum TBSTYLE : ushort
 		{
-			/// <summary>Allows users to change a toolbar button's position by dragging it while holding down the ALT key. If this style is not specified, the user must hold down the SHIFT key while dragging a button. Note that the CCS_ADJUSTABLE style must be specified to enable toolbar buttons to be dragged.</summary>
+			/// <summary>
+			/// Allows users to change a toolbar button's position by dragging it while holding down the ALT key. If this style is not specified, the user must
+			/// hold down the SHIFT key while dragging a button. Note that the CCS_ADJUSTABLE style must be specified to enable toolbar buttons to be dragged.
+			/// </summary>
 			TBSTYLE_ALTDRAG = 0x0400,
 			/// <summary>Equivalent to BTNS_AUTOSIZE. Use TBSTYLE_AUTOSIZE for version 4.72 and earlier.</summary>
 			TBSTYLE_AUTOSIZE = 0x0010,
@@ -47,11 +61,17 @@ namespace Vanara.PInvoke
 			TBSTYLE_CUSTOMERASE = 0x2000,
 			/// <summary>Equivalent to BTNS_DROPDOWN. Use TBSTYLE_DROPDOWN for version 4.72 and earlier.</summary>
 			TBSTYLE_DROPDOWN = 0x0008,
-			/// <summary>Version 4.70. Creates a flat toolbar. In a flat toolbar, both the toolbar and the buttons are transparent and hot-tracking is enabled. Button text appears under button bitmaps. To prevent repainting problems, this style should be set before the toolbar control becomes visible.</summary>
+			/// <summary>
+			/// Version 4.70. Creates a flat toolbar. In a flat toolbar, both the toolbar and the buttons are transparent and hot-tracking is enabled. Button
+			/// text appears under button bitmaps. To prevent repainting problems, this style should be set before the toolbar control becomes visible.
+			/// </summary>
 			TBSTYLE_FLAT = 0x0800,
 			/// <summary>Equivalent to BTNS_GROUP. Use TBSTYLE_GROUP for version 4.72 and earlier.</summary>
 			TBSTYLE_GROUP = 0x0004,
-			/// <summary>Version 4.70. Creates a flat toolbar with button text to the right of the bitmap. Otherwise, this style is identical to TBSTYLE_FLAT. To prevent repainting problems, this style should be set before the toolbar control becomes visible.</summary>
+			/// <summary>
+			/// Version 4.70. Creates a flat toolbar with button text to the right of the bitmap. Otherwise, this style is identical to TBSTYLE_FLAT. To prevent
+			/// repainting problems, this style should be set before the toolbar control becomes visible.
+			/// </summary>
 			TBSTYLE_LIST = 0x1000,
 			/// <summary>Equivalent to BTNS_NOPREFIX. Use TBSTYLE_NOPREFIX for version 4.72 and earlier.</summary>
 			TBSTYLE_NOPREFIX = 0x0020,
@@ -61,28 +81,110 @@ namespace Vanara.PInvoke
 			TBSTYLE_SEP = 0x0001,
 			/// <summary>Creates a tooltip control that an application can use to display descriptive text for the buttons in the toolbar.</summary>
 			TBSTYLE_TOOLTIPS = 0x0100,
-			/// <summary>Version 4.71. Creates a transparent toolbar. In a transparent toolbar, the toolbar is transparent but the buttons are not. Button text appears under button bitmaps. To prevent repainting problems, this style should be set before the toolbar control becomes visible.</summary>
+			/// <summary>
+			/// Version 4.71. Creates a transparent toolbar. In a transparent toolbar, the toolbar is transparent but the buttons are not. Button text appears
+			/// under button bitmaps. To prevent repainting problems, this style should be set before the toolbar control becomes visible.
+			/// </summary>
 			TBSTYLE_TRANSPARENT = 0x8000,
-			/// <summary>Creates a toolbar that can have multiple lines of buttons. Toolbar buttons can "wrap" to the next line when the toolbar becomes too narrow to include all buttons on the same line. When the toolbar is wrapped, the break will occur on either the rightmost separator or the rightmost button if there are no separators on the bar. This style must be set to display a vertical toolbar control when the toolbar is part of a vertical rebar control. This style cannot be combined with CCS_VERT.</summary>
+			/// <summary>
+			/// Creates a toolbar that can have multiple lines of buttons. Toolbar buttons can "wrap" to the next line when the toolbar becomes too narrow to
+			/// include all buttons on the same line. When the toolbar is wrapped, the break will occur on either the rightmost separator or the rightmost button
+			/// if there are no separators on the bar. This style must be set to display a vertical toolbar control when the toolbar is part of a vertical rebar
+			/// control. This style cannot be combined with CCS_VERT.
+			/// </summary>
 			TBSTYLE_WRAPABLE = 0x0200,
+		}
+
+		/// <summary>Creates a bitmap for use in a toolbar.</summary>
+		/// <param name="hInstance">
+		/// <para>Type: <c><c>HINSTANCE</c></c></para>
+		/// <para>Handle to the module instance with the executable file that contains the bitmap resource.</para>
+		/// </param>
+		/// <param name="idBitmap">
+		/// <para>Type: <c><c>INT_PTR</c></c></para>
+		/// <para>Resource identifier of the bitmap resource.</para>
+		/// </param>
+		/// <param name="wFlags">
+		/// <para>Type: <c><c>UINT</c></c></para>
+		/// <para>Bitmap flag. This parameter can be zero or the following value:</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CMB_MASKED</term>
+		/// <term>Uses a bitmap as a mask.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="lpColorMap">
+		/// <para>Type: <c>LPCOLORMAP</c></para>
+		/// <para>
+		/// Pointer to a <c>COLORMAP</c> structure that contains the color information needed to map the bitmaps. If this parameter is <c>NULL</c>, the function
+		/// uses the default color map.
+		/// </para>
+		/// </param>
+		/// <param name="iNumMaps">
+		/// <para>Type: <c>int</c></para>
+		/// <para>Number of color maps pointed to by lpColorMap.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c><c>HBITMAP</c></c></para>
+		/// <para>Returns the handle to the bitmap if successful, or <c>NULL</c> otherwise. To retrieve extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// HBITMAP CreateMappedBitmap( HINSTANCE hInstance, INT_PTR idBitmap, UINT wFlags, _In_ LPCOLORMAP lpColorMap, int iNumMaps); https://msdn.microsoft.com/en-us/library/windows/desktop/bb787467(v=vs.85).aspx
+		[DllImport(Lib.ComCtl32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("Commctrl.h", MSDNShortId = "bb787467")]
+		public static extern IntPtr CreateMappedBitmap(SafeLibraryHandle hInstance, SafeResourceId idBitmap, CMB wFlags, ref COLORMAP lpColorMap, int iNumMaps);
+
+		/// <summary>Contains information used by the <c>CreateMappedBitmap</c> function to map the colors of the bitmap.</summary>
+		// typedef struct _COLORMAP { COLORREF from; COLORREF to;} COLORMAP, *LPCOLORMAP; https://msdn.microsoft.com/en-us/library/windows/desktop/bb760448(v=vs.85).aspx
+		[PInvokeData("Commctrl.h", MSDNShortId = "bb760448")]
+		public struct COLORMAP
+		{
+			/// <summary>
+			/// <para>Type: <c><c>COLORREF</c></c></para>
+			/// <para>Color to map from.</para>
+			/// </summary>
+			public COLORREF from;
+			/// <summary>
+			/// <para>Type: <c><c>COLORREF</c></c></para>
+			/// <para>Color to map to.</para>
+			/// </summary>
+			public COLORREF to;
 		}
 
 		/// <summary>Contains information about a button in a toolbar.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct TBBUTTON
 		{
-			/// <summary>Zero-based index of the button image. Set this member to I_IMAGECALLBACK, and the toolbar will send the TBN_GETDISPINFO notification code to retrieve the image index when it is needed.
-			/// <para>Version 5.81. Set this member to I_IMAGENONE to indicate that the button does not have an image.The button layout will not include any space for a bitmap, only text.</para>
-			/// <para>If the button is a separator, that is, if fsStyle is set to BTNS_SEP, iBitmap determines the width of the separator, in pixels.For information on selecting button images from image lists, see TB_SETIMAGELIST message.</para></summary>
+			/// <summary>
+			/// Zero-based index of the button image. Set this member to I_IMAGECALLBACK, and the toolbar will send the TBN_GETDISPINFO notification code to
+			/// retrieve the image index when it is needed.
+			/// <para>
+			/// Version 5.81. Set this member to I_IMAGENONE to indicate that the button does not have an image.The button layout will not include any space for
+			/// a bitmap, only text.
+			/// </para>
+			/// <para>
+			/// If the button is a separator, that is, if fsStyle is set to BTNS_SEP, iBitmap determines the width of the separator, in pixels.For information on
+			/// selecting button images from image lists, see TB_SETIMAGELIST message.
+			/// </para>
+			/// </summary>
 			public int iBitmap;
 			/// <summary>Command identifier associated with the button. This identifier is used in a WM_COMMAND message when the button is chosen.</summary>
 			public int idCommand;
 			// Funky holder to make preprocessor directives work
 			private TBBUTTON_U union;
+
 			/// <summary>Button state flags.</summary>
 			public TBSTATE fsState { get => union.fsState; set => union.fsState = value; }
+
 			/// <summary>Button style.</summary>
 			public TBSTYLE fsStyle { get => union.fsStyle; set => union.fsStyle = value; }
+
 			/// <summary>Application-defined value.</summary>
 			public IntPtr dwData;
 			/// <summary>Zero-based index of the button string, or a pointer to a string buffer that contains text for the button.</summary>
