@@ -24,9 +24,41 @@ namespace Vanara.PInvoke
 		[PInvokeData("Commctrl.h")]
 		public static readonly IntPtr LPSTR_TEXTCALLBACK = (IntPtr)(-1);
 
-		/// <summary>
-		/// The set of bit flags that indicate which common control classes will be loaded from the DLL when calling <see cref="InitCommonControlsEx(ref INITCOMMONCONTROLSEX)"/>.
-		/// </summary>
+		/// <summary>Defines the prototype for the callback function used by <c>RemoveWindowSubclass</c> and <c>SetWindowSubclass</c>.</summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>The handle to the subclassed window.</para>
+		/// </param>
+		/// <param name="uMsg">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The message being passed.</para>
+		/// </param>
+		/// <param name="wParam">
+		/// <para>Type: <c>WPARAM</c></para>
+		/// <para>Additional message information. The contents of this parameter depend on the value of uMsg.</para>
+		/// </param>
+		/// <param name="lParam">
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>Additional message information. The contents of this parameter depend on the value of uMsg.</para>
+		/// </param>
+		/// <param name="uIdSubclass">
+		/// <para>Type: <c>UINT_PTR</c></para>
+		/// <para>The subclass ID.</para>
+		/// </param>
+		/// <param name="dwRefData">
+		/// <para>Type: <c>DWORD_PTR</c></para>
+		/// <para>The reference data provided to the <c>SetWindowSubclass</c> function. This can be used to associate the subclass instance with a "this" pointer.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LRESULT</c></para>
+		/// <para>The return value is the result of the message processing and depends on the message sent.</para>
+		/// </returns>
+		// typedef LRESULT ( CALLBACK *SUBCLASSPROC)( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData); https://msdn.microsoft.com/en-us/library/windows/desktop/bb776774(v=vs.85).aspx
+		[PInvokeData("Commctrl.h", MSDNShortId = "bb776774")]
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		public delegate IntPtr SUBCLASSPROC(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam, [MarshalAs(UnmanagedType.SysUInt)] uint uIdSubclass, IntPtr dwRefData);
+
+		/// <summary>The set of bit flags that indicate which common control classes will be loaded from the DLL when calling <see cref="InitCommonControlsEx(ref INITCOMMONCONTROLSEX)"/>.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775507")]
 		[Flags]
 		public enum CommonControlClass
@@ -564,6 +596,34 @@ namespace Vanara.PInvoke
 			HOTKEYF_EXT = 0x08,
 		}
 
+		/// <summary>The desired metric.</summary>
+		public enum LI_METRIC
+		{
+			/// <summary>Corresponds to SM_CXSMICON, the recommended pixel width of a small icon.</summary>
+			LIM_SMALL,
+			/// <summary>Corresponds toSM_CXICON, the default pixel width of an icon.</summary>
+			LIM_LARGE,
+		}
+
+		/// <summary>
+		/// Posts messages when the mouse pointer leaves a window or hovers over a window for a specified amount of time. This function calls TrackMouseEvent if
+		/// it exists, otherwise it emulates it.
+		/// </summary>
+		/// <param name="lpEventTrack">
+		/// <para>Type: <c>LPTRACKMOUSEEVENT</c></para>
+		/// <para>A pointer to a <c>TRACKMOUSEEVENT</c> structure that contains tracking information.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>If the function succeeds, the return value is nonzero .</para>
+		/// <para>If the function fails, return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI TrackMouseEvent( _Inout_ LPTRACKMOUSEEVENT lpEventTrack); https://msdn.microsoft.com/en-us/library/windows/desktop/ms646266(v=vs.85).aspx
+		[DllImport(Lib.ComCtl32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("CommCtrl.h", MSDNShortId = "ms646266")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool _TrackMouseEvent(ref User32.TRACKMOUSEEVENT lpEventTrack);
+
 		/// <summary>
 		/// Calls the next handler in a window's subclass chain. The last handler in the subclass chain calls the original window procedure for the window.
 		/// </summary>
@@ -590,8 +650,7 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>The returned value is specific to the message sent. This value should be ignored.</para>
 		/// </returns>
-		// LRESULT DefSubclassProc( _In_ HWND hWnd, _In_ UINT uMsg, _In_ WPARAM WPARAM, _In_ LPARAM LPARAM);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb776403(v=vs.85).aspx
+		// LRESULT DefSubclassProc( _In_ HWND hWnd, _In_ UINT uMsg, _In_ WPARAM WPARAM, _In_ LPARAM LPARAM); https://msdn.microsoft.com/en-us/library/windows/desktop/bb776403(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb776403")]
 		public static extern IntPtr DefSubclassProc(HandleRef hWnd, uint uMsg, IntPtr WPARAM, IntPtr LPARAM);
@@ -637,11 +696,11 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>int</c></para>
 		/// <para>Returns the height of the text in logical units if the function succeeds, otherwise returns zero.</para>
 		/// </returns>
-		// int DrawShadowText( HDC hdc, LPCWSTR pszText, UINT cch, const RECT *pRect, DWORD dwFlags, COLORREF crText, COLORREF crShadow, int ixOffset, int iyOffset);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb775639(v=vs.85).aspx
+		// int DrawShadowText( HDC hdc, LPCWSTR pszText, UINT cch, const RECT *pRect, DWORD dwFlags, COLORREF crText, COLORREF crShadow, int ixOffset, int
+		// iyOffset); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775639(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775639")]
-		public static extern int DrawShadowText(SafeDCHandle hdc, string pszText, uint cch, ref RECT pRect, uint dwFlags, COLORREF crText, COLORREF crShadow, int ixOffset,  int iyOffset);
+		public static extern int DrawShadowText(SafeDCHandle hdc, string pszText, uint cch, ref RECT pRect, uint dwFlags, COLORREF crText, COLORREF crShadow, int ixOffset, int iyOffset);
 
 		/// <summary>Calculates the dimensions of a rectangle in the client area that contains all the specified controls.</summary>
 		/// <param name="hWnd">
@@ -661,8 +720,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </param>
 		/// <returns>No return value.</returns>
-		// void GetEffectiveClientRect( HWND hWnd, LPRECT lprc, _In_ const INT *lpInfo);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb775674(v=vs.85).aspx
+		// void GetEffectiveClientRect( HWND hWnd, LPRECT lprc, _In_ const INT *lpInfo); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775674(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775674")]
 		public static extern void GetEffectiveClientRect(HandleRef hWnd, out RECT lprc, IntPtr lpInfo);
@@ -671,8 +729,7 @@ namespace Vanara.PInvoke
 		/// <param name="hWnd">A handle to the window that has the client area to check.</param>
 		/// <param name="controlIdentifiers">An array of integers that identify the control identifiers in the client area.</param>
 		/// <returns>The dimensions of the rectangle.</returns>
-		// void GetEffectiveClientRect( HWND hWnd, LPRECT lprc, _In_ const INT *lpInfo);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb775674(v=vs.85).aspx
+		// void GetEffectiveClientRect( HWND hWnd, LPRECT lprc, _In_ const INT *lpInfo); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775674(v=vs.85).aspx
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775674")]
 		public static RECT GetEffectiveClientRect(HandleRef hWnd, int[] controlIdentifiers)
 		{
@@ -696,50 +753,51 @@ namespace Vanara.PInvoke
 		/// the same process, <c>GetMUILanguage</c> returns the language-neutral LANGID, <c>MAKELANGID</c>(LANG_NEUTRAL, SUBLANG_NEUTRAL).
 		/// </para>
 		/// </returns>
-		// LANGID GetMUILanguage(void);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb775676(v=vs.85).aspx
+		// LANGID GetMUILanguage(void); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775676(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775676")]
 		public static extern ushort GetMUILanguage();
 
-		/// <summary>Defines the prototype for the callback function used by <c>RemoveWindowSubclass</c> and <c>SetWindowSubclass</c>.</summary>
+		/// <summary>Retrieves the reference data for the specified window subclass callback.</summary>
 		/// <param name="hWnd">
 		/// <para>Type: <c>HWND</c></para>
-		/// <para>The handle to the subclassed window.</para>
+		/// <para>The handle of the window being subclassed.</para>
 		/// </param>
-		/// <param name="uMsg">
-		/// <para>Type: <c>UINT</c></para>
-		/// <para>The message being passed.</para>
-		/// </param>
-		/// <param name="wParam">
-		/// <para>Type: <c>WPARAM</c></para>
-		/// <para>Additional message information. The contents of this parameter depend on the value of uMsg.</para>
-		/// </param>
-		/// <param name="lParam">
-		/// <para>Type: <c>LPARAM</c></para>
-		/// <para>Additional message information. The contents of this parameter depend on the value of uMsg.</para>
+		/// <param name="pfnSubclass">
+		/// <para>Type: <c><c>SUBCLASSPROC</c></c></para>
+		/// <para>A pointer to a window procedure. This pointer and the subclass ID uniquely identify this subclass callback.</para>
 		/// </param>
 		/// <param name="uIdSubclass">
 		/// <para>Type: <c>UINT_PTR</c></para>
-		/// <para>The subclass ID.</para>
+		/// <para>
+		/// <c>UINT_PTR</c> subclass ID. This ID and the callback pointer uniquely identify this subclass callback. Note: On 64-bit versions of Windows this is a
+		/// 64-bit value.
+		/// </para>
 		/// </param>
-		/// <param name="dwRefData">
-		/// <para>Type: <c>DWORD_PTR</c></para>
-		/// <para>The reference data provided to the <c>SetWindowSubclass</c> function. This can be used to associate the subclass instance with a "this" pointer.</para>
+		/// <param name="pdwRefData">
+		/// <para>Type: <c>DWORD_PTR*</c></para>
+		/// <para>A pointer to a <c>DWORD</c> which will return the reference data. Note: On 64-bit versions of Windows, pointers are 64-bit values.</para>
 		/// </param>
 		/// <returns>
-		/// <para>Type: <c>LRESULT</c></para>
-		/// <para>The return value is the result of the message processing and depends on the message sent.</para>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>TRUE</term>
+		/// <term>The subclass callback was successfully installed.</term>
+		/// </item>
+		/// <item>
+		/// <term>FALSE</term>
+		/// <term>The subclass callback was not installed.</term>
+		/// </item>
+		/// </list>
+		/// </para>
 		/// </returns>
-		// typedef LRESULT ( CALLBACK *SUBCLASSPROC)( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb776774(v=vs.85).aspx
-		[PInvokeData("Commctrl.h", MSDNShortId = "bb776774")]
-		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate IntPtr SUBCLASSPROC(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam, [MarshalAs(UnmanagedType.SysUInt)] uint uIdSubclass, IntPtr dwRefData);
-
-		/// <summary>Retrieves the reference data for the specified window subclass callback.</summary><param name="hWnd"><para>Type: <c>HWND</c></para><para>The handle of the window being subclassed.</para></param><param name="pfnSubclass"><para>Type: <c><c>SUBCLASSPROC</c></c></para><para>A pointer to a window procedure. This pointer and the subclass ID uniquely identify this subclass callback.</para></param><param name="uIdSubclass"><para>Type: <c>UINT_PTR</c></para><para><c>UINT_PTR</c> subclass ID. This ID and the callback pointer uniquely identify this subclass callback. Note: On 64-bit versions of Windows this is a 64-bit value.</para></param><param name="pdwRefData"><para>Type: <c>DWORD_PTR*</c></para><para>A pointer to a <c>DWORD</c> which will return the reference data. Note: On 64-bit versions of Windows, pointers are 64-bit values.</para></param><returns><para>Type: <c>BOOL</c></para><para><list type="table"><listheader><term>Return code</term><term>Description</term></listheader><item><term>TRUE</term><term>The subclass callback was successfully installed.</term></item><item><term>FALSE</term><term>The subclass callback was not installed.</term></item></list></para></returns>
-		// BOOL GetWindowSubclass( _In_ HWND hWnd, _In_ SUBCLASSPROC pfnSubclass, _In_ UINT_PTR uIdSubclass, _Out_ DWORD_PTR *pdwRefData);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb776430(v=vs.85).aspx
+		// BOOL GetWindowSubclass( _In_ HWND hWnd, _In_ SUBCLASSPROC pfnSubclass, _In_ UINT_PTR uIdSubclass, _Out_ DWORD_PTR *pdwRefData); https://msdn.microsoft.com/en-us/library/windows/desktop/bb776430(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb776430")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -775,8 +833,7 @@ namespace Vanara.PInvoke
 		/// <para>The language identifier of the language to be used by the common controls.</para>
 		/// </param>
 		/// <returns>None</returns>
-		// VOID InitMUILanguage( LANGID uiLang);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb775699(v=vs.85).aspx
+		// VOID InitMUILanguage( LANGID uiLang); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775699(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775699")]
 		public static extern void InitMUILanguage(ushort uiLang);
@@ -833,68 +890,210 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </para>
 		/// </returns>
-		// HRESULT LoadIconMetric( _In_ HINSTANCE hinst, _In_ PCWSTR pszName, _In_ int lims, _Out_ HICON *phico);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb775701(v=vs.85).aspx
+		// HRESULT LoadIconMetric( _In_ HINSTANCE hinst, _In_ PCWSTR pszName, _In_ int lims, _Out_ HICON *phico); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775701(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775701")]
 		public static extern HRESULT LoadIconMetric(SafeLibraryHandle hinst, string pszName, LI_METRIC lims, out IntPtr phico);
 
-		/// <summary>The desired metric.</summary>
-		public enum LI_METRIC
-		{
-			/// <summary>Corresponds to SM_CXSMICON, the recommended pixel width of a small icon.</summary>
-			LIM_SMALL,
-			/// <summary>Corresponds toSM_CXICON, the default pixel width of an icon.</summary>
-			LIM_LARGE,
-		}
-
-		/// <summary>Loads an icon. If the icon is not a standard size, this function scales down a larger image instead of scaling up a smaller image.</summary><param name="hinst"><para>Type: <c><c>HINSTANCE</c></c></para><para>A handle to the module of either a DLL or executable (.exe) file that contains the icon to be loaded. For more information, see <c>GetModuleHandle</c>.</para><para>To load a predefined icon or a standalone icon file, set this parameter to <c>NULL</c>.</para></param><param name="pszName"><para>Type: <c><c>PCWSTR</c></c></para><para>A pointer to a null-terminated, Unicode buffer that contains location information about the icon to load.</para><para>If hinst is non-<c>NULL</c>, pszName specifies the icon resource either by name or ordinal. This ordinal must be packaged by using the <c>MAKEINTRESOURCE</c> macro.</para><para>If hinst is <c>NULL</c>, pszName specifies either the name of a standalone icon (.ico) file or the identifier of a predefined icon to load. The following identifiers are recognized. To pass these constants to the <c>LoadIconWithScaleDown</c> function, use the <c>MAKEINTRESOURCE</c> macro. For example, to load the IDI_ERROR icon, pass as the pszName parameter and <c>NULL</c> as the hinst parameter.</para><para><list type="table"><listheader><term>Value</term><term>Meaning</term></listheader><item><term>IDI_APPLICATION</term><term>Default application icon.</term></item><item><term>IDI_ASTERISK</term><term>Same as IDI_INFORMATION.</term></item><item><term>IDI_ERROR</term><term>Hand-shaped icon.</term></item><item><term>IDI_EXCLAMATION</term><term>Same as IDI_WARNING.</term></item><item><term>IDI_HAND</term><term>Same as IDI_ERROR. </term></item><item><term>IDI_INFORMATION</term><term>Asterisk icon.</term></item><item><term>IDI_QUESTION</term><term>Question mark icon.</term></item><item><term>IDI_WARNING</term><term>Exclamation point icon.</term></item><item><term>IDI_WINLOGO</term><term>Windows logo icon. </term></item><item><term>IDI_SHIELD</term><term>Security Shield icon.</term></item></list></para></param><param name="cx"><para>Type: <c>int</c></para><para>The desired width, in pixels, of the icon.</para></param><param name="cy"><para>Type: <c>int</c></para><para>The desired height, in pixels, of the icon.</para></param><param name="phico"><para>Type: <c><c>HICON</c>*</c></para><para>When this function returns, contains a pointer to the handle of the loaded icon.</para></param><returns><para>Type: <c><c>HRESULT</c></c></para><para>Returns S_OK if successful, or an error value otherwise, including the following:</para><para><list type="table"><listheader><term>Return code</term><term>Description</term></listheader><item><term>E_INVALIDARG</term><term>The contents of the buffer pointed to by pszName do not fit any of the expected interpretations.</term></item></list></para></returns>
-		// HRESULT WINAPI LoadIconWithScaleDown( _In_ HINSTANCE hinst, _In_ PCWSTR pszName, _In_ int cx, _In_ int cy, _Out_ HICON *phico);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb775703(v=vs.85).aspx
+		/// <summary>Loads an icon. If the icon is not a standard size, this function scales down a larger image instead of scaling up a smaller image.</summary>
+		/// <param name="hinst">
+		/// <para>Type: <c><c>HINSTANCE</c></c></para>
+		/// <para>A handle to the module of either a DLL or executable (.exe) file that contains the icon to be loaded. For more information, see <c>GetModuleHandle</c>.</para>
+		/// <para>To load a predefined icon or a standalone icon file, set this parameter to <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="pszName">
+		/// <para>Type: <c><c>PCWSTR</c></c></para>
+		/// <para>A pointer to a null-terminated, Unicode buffer that contains location information about the icon to load.</para>
+		/// <para>
+		/// If hinst is non- <c>NULL</c>, pszName specifies the icon resource either by name or ordinal. This ordinal must be packaged by using the
+		/// <c>MAKEINTRESOURCE</c> macro.
+		/// </para>
+		/// <para>
+		/// If hinst is <c>NULL</c>, pszName specifies either the name of a standalone icon (.ico) file or the identifier of a predefined icon to load. The
+		/// following identifiers are recognized. To pass these constants to the <c>LoadIconWithScaleDown</c> function, use the <c>MAKEINTRESOURCE</c> macro. For
+		/// example, to load the IDI_ERROR icon, pass as the pszName parameter and <c>NULL</c> as the hinst parameter.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>IDI_APPLICATION</term>
+		/// <term>Default application icon.</term>
+		/// </item>
+		/// <item>
+		/// <term>IDI_ASTERISK</term>
+		/// <term>Same as IDI_INFORMATION.</term>
+		/// </item>
+		/// <item>
+		/// <term>IDI_ERROR</term>
+		/// <term>Hand-shaped icon.</term>
+		/// </item>
+		/// <item>
+		/// <term>IDI_EXCLAMATION</term>
+		/// <term>Same as IDI_WARNING.</term>
+		/// </item>
+		/// <item>
+		/// <term>IDI_HAND</term>
+		/// <term>Same as IDI_ERROR.</term>
+		/// </item>
+		/// <item>
+		/// <term>IDI_INFORMATION</term>
+		/// <term>Asterisk icon.</term>
+		/// </item>
+		/// <item>
+		/// <term>IDI_QUESTION</term>
+		/// <term>Question mark icon.</term>
+		/// </item>
+		/// <item>
+		/// <term>IDI_WARNING</term>
+		/// <term>Exclamation point icon.</term>
+		/// </item>
+		/// <item>
+		/// <term>IDI_WINLOGO</term>
+		/// <term>Windows logo icon.</term>
+		/// </item>
+		/// <item>
+		/// <term>IDI_SHIELD</term>
+		/// <term>Security Shield icon.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="cx">
+		/// <para>Type: <c>int</c></para>
+		/// <para>The desired width, in pixels, of the icon.</para>
+		/// </param>
+		/// <param name="cy">
+		/// <para>Type: <c>int</c></para>
+		/// <para>The desired height, in pixels, of the icon.</para>
+		/// </param>
+		/// <param name="phico">
+		/// <para>Type: <c><c>HICON</c>*</c></para>
+		/// <para>When this function returns, contains a pointer to the handle of the loaded icon.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c><c>HRESULT</c></c></para>
+		/// <para>Returns S_OK if successful, or an error value otherwise, including the following:</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>The contents of the buffer pointed to by pszName do not fit any of the expected interpretations.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </returns>
+		// HRESULT WINAPI LoadIconWithScaleDown( _In_ HINSTANCE hinst, _In_ PCWSTR pszName, _In_ int cx, _In_ int cy, _Out_ HICON *phico); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775703(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775703")]
 		public static extern HRESULT LoadIconWithScaleDown(SafeLibraryHandle hinst, string pszName, int cx, int cy, out IntPtr phico);
 
-		/// <summary>Removes a subclass callback from a window.</summary><param name="hWnd"><para>Type: <c>HWND</c></para><para>The handle of the window being subclassed.</para></param><param name="pfnSubclass"><para>Type: <c><c>SUBCLASSPROC</c></c></para><para>A pointer to a window procedure. This pointer and the subclass ID uniquely identify this subclass callback. For the callback function prototype, see <c>SUBCLASSPROC</c>.</para></param><param name="uIdSubclass"><para>Type: <c>UINT_PTR</c></para><para>The <c>UINT_PTR</c> subclass ID. This ID and the callback pointer uniquely identify this subclass callback. Note: On 64-bit versions of Windows this is a 64-bit value.</para></param><returns><para>Type: <c>BOOL</c></para><para><c>TRUE</c> if the subclass callback was successfully removed; otherwise, <c>FALSE</c>.</para></returns>
-		// BOOL RemoveWindowSubclass( _In_ HWND hWnd, _In_ SUBCLASSPROC pfnSubclass, _In_ UINT_PTR uIdSubclass);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb762094(v=vs.85).aspx
+		/// <summary>Removes a subclass callback from a window.</summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>The handle of the window being subclassed.</para>
+		/// </param>
+		/// <param name="pfnSubclass">
+		/// <para>Type: <c><c>SUBCLASSPROC</c></c></para>
+		/// <para>
+		/// A pointer to a window procedure. This pointer and the subclass ID uniquely identify this subclass callback. For the callback function prototype, see <c>SUBCLASSPROC</c>.
+		/// </para>
+		/// </param>
+		/// <param name="uIdSubclass">
+		/// <para>Type: <c>UINT_PTR</c></para>
+		/// <para>
+		/// The <c>UINT_PTR</c> subclass ID. This ID and the callback pointer uniquely identify this subclass callback. Note: On 64-bit versions of Windows this
+		/// is a 64-bit value.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para><c>TRUE</c> if the subclass callback was successfully removed; otherwise, <c>FALSE</c>.</para>
+		/// </returns>
+		// BOOL RemoveWindowSubclass( _In_ HWND hWnd, _In_ SUBCLASSPROC pfnSubclass, _In_ UINT_PTR uIdSubclass); https://msdn.microsoft.com/en-us/library/windows/desktop/bb762094(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb762094")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool RemoveWindowSubclass(HandleRef hWnd, SUBCLASSPROC pfnSubclass, [MarshalAs(UnmanagedType.SysUInt)] uint uIdSubclass);
 
-		/// <summary>Installs or updates a window subclass callback.</summary><param name="hWnd"><para>Type: <c>HWND</c></para><para>The handle of the window being subclassed.</para></param><param name="pfnSubclass"><para>Type: <c><c>SUBCLASSPROC</c></c></para><para>A pointer to a window procedure. This pointer and the subclass ID uniquely identify this subclass callback. For the callback function prototype, see <c>SUBCLASSPROC</c>.</para></param><param name="uIdSubclass"><para>Type: <c>UINT_PTR</c></para><para>The subclass ID. This ID together with the subclass procedure uniquely identify a subclass. To remove a subclass, pass the subclass procedure and this value to the <c>RemoveWindowSubclass</c> function. This value is passed to the subclass procedure in the uIdSubclass parameter.</para></param><param name="dwRefData"><para>Type: <c>DWORD_PTR</c></para><para><c>DWORD_PTR</c> to reference data. The meaning of this value is determined by the calling application. This value is passed to the subclass procedure in the dwRefData parameter. A different dwRefData is associated with each combination of window handle, subclass procedure and uIdSubclass.</para></param><returns><para>Type: <c>BOOL</c></para><para><c>TRUE</c> if the subclass callback was successfully installed; otherwise, <c>FALSE</c>.</para></returns>
-		// BOOL SetWindowSubclass( _In_ HWND hWnd, _In_ SUBCLASSPROC pfnSubclass, _In_ UINT_PTR uIdSubclass, _In_ DWORD_PTR dwRefData);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb762102(v=vs.85).aspx
+		/// <summary>Installs or updates a window subclass callback.</summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>The handle of the window being subclassed.</para>
+		/// </param>
+		/// <param name="pfnSubclass">
+		/// <para>Type: <c><c>SUBCLASSPROC</c></c></para>
+		/// <para>
+		/// A pointer to a window procedure. This pointer and the subclass ID uniquely identify this subclass callback. For the callback function prototype, see <c>SUBCLASSPROC</c>.
+		/// </para>
+		/// </param>
+		/// <param name="uIdSubclass">
+		/// <para>Type: <c>UINT_PTR</c></para>
+		/// <para>
+		/// The subclass ID. This ID together with the subclass procedure uniquely identify a subclass. To remove a subclass, pass the subclass procedure and
+		/// this value to the <c>RemoveWindowSubclass</c> function. This value is passed to the subclass procedure in the uIdSubclass parameter.
+		/// </para>
+		/// </param>
+		/// <param name="dwRefData">
+		/// <para>Type: <c>DWORD_PTR</c></para>
+		/// <para>
+		/// <c>DWORD_PTR</c> to reference data. The meaning of this value is determined by the calling application. This value is passed to the subclass
+		/// procedure in the dwRefData parameter. A different dwRefData is associated with each combination of window handle, subclass procedure and uIdSubclass.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para><c>TRUE</c> if the subclass callback was successfully installed; otherwise, <c>FALSE</c>.</para>
+		/// </returns>
+		// BOOL SetWindowSubclass( _In_ HWND hWnd, _In_ SUBCLASSPROC pfnSubclass, _In_ UINT_PTR uIdSubclass, _In_ DWORD_PTR dwRefData); https://msdn.microsoft.com/en-us/library/windows/desktop/bb762102(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb762102")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetWindowSubclass(HandleRef hWnd, SUBCLASSPROC pfnSubclass, [MarshalAs(UnmanagedType.SysUInt)] uint uIdSubclass, IntPtr dwRefData);
 
-		/// <summary><para>[<c>ShowHideMenuCtl</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in subsequent versions.]</para><para>Sets or removes the specified menu item&#39;s check mark attribute and shows or hides the corresponding control. The function adds a check mark to the specified menu item if it does not have one and then displays the corresponding control. If the menu item already has a check mark, the function removes the check mark and hides the corresponding control.</para></summary><param name="hWnd"><para>Type: <c><c>HWND</c></c></para><para>A handle to the window that contains the menu and controls.</para></param><param name="uFlags"><para>Type: <c><c>UINT_PTR</c></c></para><para>The identifier of the menu item to receive or lose a check mark.</para></param><param name="lpInfo"><para>Type: <c><c>LPINT</c></c></para><para>A pointer to an array that contains pairs of values. The second value in the first pair must be the handle to the application&#39;s main menu. Each subsequent pair consists of a menu item identifier and a control window identifier. The function searches the array for a value that matches uFlags and, if the value is found, checks or unchecks the menu item and shows or hides the corresponding control.</para></param><returns><para>Type: <c><c>BOOL</c></c></para><para>Returns nonzero if successful, or zero otherwise.</para></returns>
-		// BOOL ShowHideMenuCtl( HWND hWnd, UINT_PTR uFlags, LPINT lpInfo);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb775731(v=vs.85).aspx
+		/// <summary>
+		/// <para>
+		/// [ <c>ShowHideMenuCtl</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
+		/// subsequent versions.]
+		/// </para>
+		/// <para>
+		/// Sets or removes the specified menu item's check mark attribute and shows or hides the corresponding control. The function adds a check mark to the
+		/// specified menu item if it does not have one and then displays the corresponding control. If the menu item already has a check mark, the function
+		/// removes the check mark and hides the corresponding control.
+		/// </para>
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c><c>HWND</c></c></para>
+		/// <para>A handle to the window that contains the menu and controls.</para>
+		/// </param>
+		/// <param name="uFlags">
+		/// <para>Type: <c><c>UINT_PTR</c></c></para>
+		/// <para>The identifier of the menu item to receive or lose a check mark.</para>
+		/// </param>
+		/// <param name="lpInfo">
+		/// <para>Type: <c><c>LPINT</c></c></para>
+		/// <para>
+		/// A pointer to an array that contains pairs of values. The second value in the first pair must be the handle to the application's main menu. Each
+		/// subsequent pair consists of a menu item identifier and a control window identifier. The function searches the array for a value that matches uFlags
+		/// and, if the value is found, checks or unchecks the menu item and shows or hides the corresponding control.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c><c>BOOL</c></c></para>
+		/// <para>Returns nonzero if successful, or zero otherwise.</para>
+		/// </returns>
+		// BOOL ShowHideMenuCtl( HWND hWnd, UINT_PTR uFlags, LPINT lpInfo); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775731(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775731")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool ShowHideMenuCtl(HandleRef hWnd, [MarshalAs(UnmanagedType.SysUInt)] uint uFlags, [In, MarshalAs(UnmanagedType.LPArray)] int[] lpInfo);
-
-		/// <summary>Posts messages when the mouse pointer leaves a window or hovers over a window for a specified amount of time. This function calls TrackMouseEvent if it exists, otherwise it emulates it.</summary>
-		/// <param name="lpEventTrack">
-		/// <para>Type: <c>LPTRACKMOUSEEVENT</c></para>
-		/// <para>A pointer to a <c>TRACKMOUSEEVENT</c> structure that contains tracking information.</para>
-		/// </param>
-		/// <returns>
-		/// <para>Type: <c>BOOL</c></para>
-		/// <para>If the function succeeds, the return value is nonzero .</para>
-		/// <para>If the function fails, return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
-		/// </returns>
-		// BOOL WINAPI TrackMouseEvent( _Inout_ LPTRACKMOUSEEVENT lpEventTrack);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms646266(v=vs.85).aspx
-		[DllImport(Lib.ComCtl32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("CommCtrl.h", MSDNShortId = "ms646266")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool _TrackMouseEvent(ref User32.TRACKMOUSEEVENT lpEventTrack);
 
 		/// <summary>Contains information for the drawing of buttons in a toolbar or rebar.</summary>
 		[StructLayout(LayoutKind.Sequential)]
@@ -911,8 +1110,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Carries information used to load common control classes from the dynamic-link library (DLL). This structure is used with the <see
-		/// cref="InitCommonControlsEx(ref INITCOMMONCONTROLSEX)"/> function.
+		/// Carries information used to load common control classes from the dynamic-link library (DLL). This structure is used with the
+		/// <see cref="InitCommonControlsEx(ref INITCOMMONCONTROLSEX)"/> function.
 		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775507")]
 		[StructLayout(LayoutKind.Sequential)]
@@ -921,9 +1120,7 @@ namespace Vanara.PInvoke
 			/// <summary>The size of the structure, in bytes.</summary>
 			public int dwSize;
 
-			/// <summary>
-			/// The set of bit flags that indicate which common control classes will be loaded from the DLL when calling <see cref="InitCommonControlsEx(ref INITCOMMONCONTROLSEX)"/>.
-			/// </summary>
+			/// <summary>The set of bit flags that indicate which common control classes will be loaded from the DLL when calling <see cref="InitCommonControlsEx(ref INITCOMMONCONTROLSEX)"/>.</summary>
 			public CommonControlClass dwICC;
 
 			/// <summary>Initializes a new instance of the <see cref="INITCOMMONCONTROLSEX"/> class and sets the dwICC field.</summary>
@@ -933,6 +1130,34 @@ namespace Vanara.PInvoke
 				dwICC = ccc;
 				dwSize = Marshal.SizeOf(typeof(INITCOMMONCONTROLSEX));
 			}
+		}
+
+		/// <summary>Contains information used with character notification messages.</summary>
+		// typedef struct tagNMCHAR { NMHDR hdr; UINT ch; DWORD dwItemPrev; DWORD dwItemNext;} NMCHAR, *LPNMCHAR; https://msdn.microsoft.com/en-us/library/windows/desktop/bb775508(v=vs.85).aspx
+		[PInvokeData("Commctrl.h", MSDNShortId = "bb775508")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct NMCHAR
+		{
+			/// <summary>
+			/// <para>Type: <c><c>NMHDR</c></c></para>
+			/// <para>An <c>NMHDR</c> structure that contains additional information about this notification.</para>
+			/// </summary>
+			public NMHDR hdr;
+			/// <summary>
+			/// <para>Type: <c><c>UINT</c></c></para>
+			/// <para>The character that is being processed.</para>
+			/// </summary>
+			public uint ch;
+			/// <summary>
+			/// <para>Type: <c><c>DWORD</c></c></para>
+			/// <para>A 32-bit value that is determined by the control that is sending the notification.</para>
+			/// </summary>
+			public uint dwItemPrev;
+			/// <summary>
+			/// <para>Type: <c><c>DWORD</c></c></para>
+			/// <para>A 32-bit value that is determined by the control that is sending the notification.</para>
+			/// </summary>
+			public uint dwItemNext;
 		}
 
 		/// <summary>Contains information specific to an NM_CUSTOMDRAW notification code.</summary>
@@ -984,6 +1209,169 @@ namespace Vanara.PInvoke
 
 			/// <summary>A RECT structure that describes the rectangle that contains the drop-down arrow.</summary>
 			public RECT rcSplit;
+		}
+
+		/// <summary>Contains information used with custom text notification.</summary>
+		// typedef struct tagNMCUSTOMTEXT { NMHDR hdr; HDC hDC; LPCWSTR lpString; int nCount; LPRECT lpRect; UINT uFormat; BOOL fLink;} NMCUSTOMTEXT,
+		// *LPNMCUSTOMTEXT; https://msdn.microsoft.com/en-us/library/windows/desktop/bb775512(v=vs.85).aspx
+		[PInvokeData("Commctrl.h", MSDNShortId = "bb775512")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct NMCUSTOMTEXT
+		{
+			/// <summary>
+			/// <para>Type: <c><c>NMHDR</c></c></para>
+			/// <para>An <c>NMHDR</c> structure that contains additional information about this notification.</para>
+			/// </summary>
+			public NMHDR hdr;
+			/// <summary>
+			/// <para>Type: <c><c>HDC</c></c></para>
+			/// <para>The device context to draw to.</para>
+			/// </summary>
+			public IntPtr hDC;
+			/// <summary>
+			/// <para>Type: <c><c>LPCWSTR</c></c></para>
+			/// <para>The string to draw.</para>
+			/// </summary>
+			public string lpString;
+			/// <summary>
+			/// <para>Type: <c>int</c></para>
+			/// <para>Length of lpString.</para>
+			/// </summary>
+			public int nCount;
+			/// <summary>
+			/// <para>Type: <c>LPRECT</c></para>
+			/// <para>The rect to draw in.</para>
+			/// </summary>
+			public IntPtr lpRect;
+			/// <summary>
+			/// <para>Type: <c><c>UINT</c></c></para>
+			/// <para>
+			/// One or more of the DT_* flags. For more information, see the description of the uFormat parameter of the <c>DrawText</c> function. This may be <c>NULL</c>.
+			/// </para>
+			/// </summary>
+			public uint uFormat;
+			/// <summary>
+			/// <para>Type: <c><c>BOOL</c></c></para>
+			/// <para>Whether the text is a link.</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fLink;
+		}
+
+		/// <summary>Contains information used with key notification messages.</summary>
+		// typedef struct tagNMKEY { NMHDR hdr; UINT nVKey; UINT uFlags;} NMKEY, *LPNMKEY; https://msdn.microsoft.com/en-us/library/windows/desktop/bb775516(v=vs.85).aspx
+		[PInvokeData("Commctrl.h", MSDNShortId = "bb775516")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct NMKEY
+		{
+			/// <summary>
+			/// <para>Type: <c><c>NMHDR</c></c></para>
+			/// <para>An <c>NMHDR</c> structure that contains additional information about this notification.</para>
+			/// </summary>
+			public NMHDR hdr;
+			/// <summary>
+			/// <para>Type: <c><c>UINT</c></c></para>
+			/// <para>A virtual key code of the key that caused the event.</para>
+			/// </summary>
+			public uint nVKey;
+			/// <summary>
+			/// <para>Type: <c><c>UINT</c></c></para>
+			/// <para>
+			/// Flags associated with the key. These are the same flags that are passed in the high word of the lParam parameter of the <c>WM_KEYDOWN</c> message.
+			/// </para>
+			/// </summary>
+			public uint uFlags;
+		}
+
+		/// <summary>Contains information used with mouse notification messages.</summary>
+		// typedef struct tagNMMOUSE { NMHDR hdr; DWORD_PTR dwItemSpec; DWORD_PTR dwItemData; POINT pt; LPARAM dwHitInfo;} NMMOUSE, *LPNMMOUSE; https://msdn.microsoft.com/en-us/library/windows/desktop/bb775518(v=vs.85).aspx
+		[PInvokeData("Commctrl.h", MSDNShortId = "bb775518")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct NMMOUSE
+		{
+			/// <summary>
+			/// <para>Type: <c><c>NMHDR</c></c></para>
+			/// <para>An <c>NMHDR</c> structure that contains additional information about this notification.</para>
+			/// </summary>
+			public NMHDR hdr;
+			/// <summary>
+			/// <para>Type: <c><c>DWORD_PTR</c></c></para>
+			/// <para>A control-specific item identifier.</para>
+			/// </summary>
+			public IntPtr dwItemSpec;
+			/// <summary>
+			/// <para>Type: <c><c>DWORD_PTR</c></c></para>
+			/// <para>A control-specific item data.</para>
+			/// </summary>
+			public IntPtr dwItemData;
+			/// <summary>
+			/// <para>Type: <c><c>POINT</c></c></para>
+			/// <para>A <c>POINT</c> structure that contains the client coordinates of the mouse when the click occurred.</para>
+			/// </summary>
+			public System.Drawing.Point pt;
+			/// <summary>
+			/// <para>Type: <c><c>LPARAM</c></c></para>
+			/// <para>Carries information about where on the item or control the cursor is pointing.</para>
+			/// </summary>
+			public IntPtr dwHitInfo;
+		}
+
+		/// <summary>Contains information used with the TBN_GETOBJECT, TCN_GETOBJECT, and PSN_GETOBJECT notification codes.</summary>
+		// typedef struct tagNMOBJECTNOTIFY { NMHDR hdr; int iItem; IID *piid; IUnknown *pObject; HRESULT hResult;} NMOBJECTNOTIFY, *LPNMOBJECTNOTIFY; https://msdn.microsoft.com/en-us/library/windows/desktop/bb775520(v=vs.85).aspx
+		[PInvokeData("Commctrl.h", MSDNShortId = "bb775520")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct NMOBJECTNOTIFY
+		{
+			/// <summary>
+			/// <para>Type: <c><c>NMHDR</c></c></para>
+			/// <para>An <c>NMHDR</c> structure that contains additional information about this notification.</para>
+			/// </summary>
+			public NMHDR hdr;
+			/// <summary>
+			/// <para>Type: <c>int</c></para>
+			/// <para>
+			/// A control-specific item identifier. This value will comply to item identification standards for the control sending the notification. However,
+			/// this member is not used with the PSN_GETOBJECT notification code.
+			/// </para>
+			/// </summary>
+			public int iItem;
+			/// <summary>
+			/// <para>Type: <c>IID*</c></para>
+			/// <para>A pointer to an interface identifier of the requested object.</para>
+			/// </summary>
+			public IntPtr piid;
+			/// <summary>
+			/// <para>Type: <c><c>IUnknown</c>*</c></para>
+			/// <para>
+			/// A pointer to an object provided by the window processing the notification code. The application processing the notification code sets this member.
+			/// </para>
+			/// </summary>
+			public IntPtr pObject;
+			/// <summary>
+			/// <para>Type: <c><c>HRESULT</c></c></para>
+			/// <para>COM success or failure flags. The application processing the notification code sets this member.</para>
+			/// </summary>
+			public HRESULT hResult;
+			/// <summary>Undocumented</summary>
+			public uint dwFlags;
+		}
+
+		/// <summary>Contains information used with NM_TOOLTIPSCREATED notification codes.</summary>
+		// typedef struct tagNMTOOLTIPSCREATED { NMHDR hdr; HWND hwndToolTips;} NMTOOLTIPSCREATED, *LPNMTOOLTIPSCREATED; https://msdn.microsoft.com/en-us/library/windows/desktop/bb775522(v=vs.85).aspx
+		[PInvokeData("Commctrl.h", MSDNShortId = "bb775522")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct NMTOOLTIPSCREATED
+		{
+			/// <summary>
+			/// <para>Type: <c><c>NMHDR</c></c></para>
+			/// <para>An <c>NMHDR</c> structure that contains additional information about this notification.</para>
+			/// </summary>
+			public NMHDR hdr;
+			/// <summary>
+			/// <para>Type: <c><c>HWND</c></c></para>
+			/// <para>The window handle to the tooltip control created.</para>
+			/// </summary>
+			public IntPtr hwndToolTips;
 		}
 	}
 }

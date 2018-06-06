@@ -11,6 +11,9 @@ namespace Vanara.PInvoke
 {
 	public static partial class ComCtl32
 	{
+		/// <summary>Window Class Name for Header control.</summary>
+		public const string WC_HEADER = "SysHeader";
+
 		private const int HDM_FIRST = 0x1200;
 		private const int HDN_FIRST = -300;
 
@@ -198,27 +201,247 @@ namespace Vanara.PInvoke
 			HDM_SETUNICODEFORMAT = 0X2005,        // CCM_SETUNICODEFORMAT,
 		}
 
+		/// <summary>Header control notifications</summary>
+		[PInvokeData("Commctrl.h", MSDNShortId = "ff485940")]
 		public enum HeaderNotification
 		{
+			/// <summary>
+			/// Sent by a header control when a drag operation has begun on one of its items. This notification code is sent only by header controls that are set
+			/// to the <c>HDS_DRAGDROP</c> style. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </summary>
+			/// <param name="lParam">A pointer to an <c>NMHEADER</c> structure containing information about the header item that is being dragged.</param>
+			/// <returns>
+			/// To allow the header control to automatically manage drag-and-drop operations, return <c>FALSE</c>. If the owner of the control is manually
+			/// performing drag-and-drop reordering, return <c>TRUE</c>.
+			/// </returns>
 			HDN_BEGINDRAG = HDN_FIRST - 10,
+			/// <summary>
+			/// Notifies a header control's parent window that a filter edit has begun. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </summary>
+			/// <param name="lParam">A pointer to an <c>NMHEADER</c> structure that contains additional information about the filter that is being edited.</param>
+			/// <returns>No return value.</returns>
 			HDN_BEGINFILTEREDIT = HDN_FIRST - 14,
+			/// <summary>
+			/// Notifies a header control's parent window that the user has begun dragging a divider in the control (that is, the user has pressed the left mouse
+			/// button while the mouse cursor is on a divider in the header control). This notification code is sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </summary>
+			/// <param name="lParam">
+			/// A pointer to an <c>NMHEADER</c> structure that contains information about the header control and the item whose divider is to be dragged.
+			/// </param>
+			/// <returns>Returns <c>FALSE</c> to allow tracking of the divider, or <c>TRUE</c> to prevent tracking.</returns>
 			HDN_BEGINTRACK = HDN_FIRST - 26,
+			/// <summary>
+			/// Notifies a header control's parent window that the user double-clicked the divider area of the control. This notification code is sent in the
+			/// form of a <c>WM_NOTIFY</c> message.
+			/// </summary>
+			/// <param name="lParam">
+			/// A pointer to an <c>NMHEADER</c> structure that contains information about the header control and the item whose divider was double-clicked.
+			/// </param>
+			/// <returns>No return value.</returns>
 			HDN_DIVIDERDBLCLICK = HDN_FIRST - 25,
+			/// <summary>
+			/// Sent by a header control to its parent when the drop-down arrow on the header control is clicked. This notification code is sent in the form of a
+			/// <c>WM_NOTIFY</c> message.
+			/// </summary>
+			/// <param name="lParam">A pointer to an <c>NMHEADER</c> structure that contains information on the header control.</param>
+			/// <returns>No return value.</returns>
 			HDN_DROPDOWN = HDN_FIRST - 18,
+			/// <summary>
+			/// Sent by a header control when a drag operation has ended on one of its items. This notification code is sent as a <c>WM_NOTIFY</c> message. Only
+			/// header controls that are set to the <c>HDS_DRAGDROP</c> style send this notification code.
+			/// </summary>
+			/// <param name="lParam">A pointer to an <c>NMHEADER</c> structure containing information about the header item that was being dragged.</param>
+			/// <returns>
+			/// To allow the control to automatically place and reorder the item, return <c>FALSE</c>. To prevent the item from being placed, return <c>TRUE</c>.
+			/// </returns>
 			HDN_ENDDRAG = HDN_FIRST - 11,
+			/// <summary>
+			/// Notifies a header control's parent window that a filter edit has ended. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </summary>
+			/// <param name="lParam">A pointer to an <c>NMHEADER</c> structure that contains additional information about the filter that is being edited.</param>
+			/// <returns>No return value.</returns>
 			HDN_ENDFILTEREDIT = HDN_FIRST - 15,
+			/// <summary>
+			/// Notifies a header control's parent window that the user has finished dragging a divider. This notification code sent in the form of a
+			/// <c>WM_NOTIFY</c> message.
+			/// </summary>
+			/// <param name="lParam">
+			/// A pointer to an <c>NMHEADER</c> structure that contains information about the header control and the item whose divider was dragged.
+			/// </param>
+			/// <returns>No return value.</returns>
 			HDN_ENDTRACK = HDN_FIRST - 27,
+			/// <summary>
+			/// Notifies the header control's parent window when the filter button is clicked or in response to an <c>HDM_SETITEM</c> message. This notification
+			/// code sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </summary>
+			/// <param name="lParam">
+			/// A pointer to an <c>NMHDFILTERBTNCLICK</c> structure that contains information about the header control and the header filter button.
+			/// </param>
+			/// <returns>
+			/// If you return <c>TRUE</c>, an HDN_FILTERCHANGE notification code will be sent to the header control's parent window. This notification code gives
+			/// the parent window an opportunity to synchronize its user interface elements. Return <c>FALSE</c> if you do not want the notification sent.
+			/// </returns>
 			HDN_FILTERBTNCLICK = HDN_FIRST - 13,
+			/// <summary>
+			/// Notifies the header control's parent window that the attributes of a header control filter are being changed or edited. This notification code
+			/// sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </summary>
+			/// <param name="lParam">
+			/// A pointer to an <c>NMHEADER</c> structure that contains information about the header control and the header item, including the attributes that
+			/// are about to change.
+			/// </param>
+			/// <returns>No return value.</returns>
 			HDN_FILTERCHANGE = HDN_FIRST - 12,
+			/// <summary>
+			/// Sent to the owner of a header control when the control needs information about a callback header item. This notification code is sent as a
+			/// <c>WM_NOTIFY</c> message.
+			/// </summary>
+			/// <param name="lParam">
+			/// A pointer to an <c>NMHDDISPINFO</c> structure. On input, the fields of the structure specify what information is required and the item of interest.
+			/// </param>
+			/// <returns>Returns an LRESULT.</returns>
 			HDN_GETDISPINFO = HDN_FIRST - 29,
+			/// <summary>
+			/// Notifies a header control's parent window that the attributes of a header item have changed. This notification code is sent in the form of a
+			/// <c>WM_NOTIFY</c> message.
+			/// </summary>
+			/// <param name="lParam">
+			/// A pointer to an <c>NMHEADER</c> structure that contains information about the header control, including the attributes that have changed.
+			/// </param>
+			/// <returns>No return value.</returns>
 			HDN_ITEMCHANGED = HDN_FIRST - 21,
+			/// <summary>
+			/// Notifies a header control's parent window that the attributes of a header item are about to change. This notification code is sent in the form of
+			/// a <c>WM_NOTIFY</c> message.
+			/// </summary>
+			/// <param name="lParam">
+			/// A pointer to an <c>NMHEADER</c> structure that contains information about the header control and the header item, including the attributes that
+			/// are about to change.
+			/// </param>
+			/// <returns>Returns <c>FALSE</c> to allow the changes, or <c>TRUE</c> to prevent them.</returns>
 			HDN_ITEMCHANGING = HDN_FIRST - 20,
+			/// <summary>
+			/// Notifies a header control's parent window that the user clicked the control. This notification code is sent in the form of a <c>WM_NOTIFY</c> message.
+			/// </summary>
+			/// <param name="lParam">
+			/// A pointer to an <c>NMHEADER</c> structure that identifies the header control and specifies the index of the header item that was clicked and the
+			/// mouse button used to click the item. The <c>pItem</c> member is set to <c>NULL</c>.
+			/// </param>
+			/// <returns>No return value.</returns>
 			HDN_ITEMCLICK = HDN_FIRST - 22,
+			/// <summary>
+			/// Notifies a header control's parent window that the user double-clicked the control. This notification code is sent in the form of a
+			/// <c>WM_NOTIFY</c> message. Only header controls that are set to the <c>HDS_BUTTONS</c> style send this notification code.
+			/// </summary>
+			/// <param name="lParam">A pointer to an <c>NMHEADER</c> structure that contains information about this notification code.</param>
+			/// <returns>No return value.</returns>
 			HDN_ITEMDBLCLICK = HDN_FIRST - 23,
+			/// <summary>
+			/// Notifies a header control's parent window that a key has been pressed with an item selected. This notification code is sent in the form of a
+			/// <c>WM_NOTIFY</c> message.
+			/// </summary>
+			/// <param name="lParam">A pointer to an <c>NMHEADER</c> structure that contains additional information about the key that is being pressed.</param>
+			/// <returns>No return value.</returns>
 			HDN_ITEMKEYDOWN = HDN_FIRST - 17,
+			/// <summary>
+			/// Notifies a header control's parent window that the user clicked an item's state icon. This notification code is sent in the form of a
+			/// <c>WM_NOTIFY</c> message.
+			/// </summary>
+			/// <param name="lParam">A pointer to an <c>NMHEADER</c> structure that contains additional information about the state icon that was clicked on.</param>
+			/// <returns>No return value.</returns>
 			HDN_ITEMSTATEICONCLICK = HDN_FIRST - 16,
+			/// <summary>
+			/// Sent by a header control to its parent when the header's overflow button is clicked. This notification code is sent in the form of an
+			/// <c>WM_NOTIFY</c> message.
+			/// </summary>
+			/// <param name="lParam">
+			/// <para>
+			/// A pointer to a <c>NMHEADER</c> structure that describes the notification code. The calling process is responsible for allocating this structure,
+			/// including the contained <c>NMHDR</c> structure. Set the members of the <c>NMHDR</c> structure, including the code member that must be set to HDN_OVERFLOWCLICK.
+			/// </para>
+			/// <para>
+			/// Set the <c>iItem</c> member of the <c>NMHEADER</c> structure to the index of the first header item that is not visible and thus should be
+			/// displayed on an overflow.
+			/// </para>
+			/// </param>
+			/// <returns>No return value.</returns>
 			HDN_OVERFLOWCLICK = HDN_FIRST - 19,
+			/// <summary>
+			/// Notifies a header control's parent window that the user is dragging a divider in the header control. This notification code is sent in the form
+			/// of a <c>WM_NOTIFY</c> message.
+			/// </summary>
+			/// <param name="lParam">
+			/// A pointer to an <c>NMHEADER</c> structure that contains information about the header control and the item whose divider is being dragged.
+			/// </param>
+			/// <returns>Returns <c>FALSE</c> to continue tracking the divider, or <c>TRUE</c> to end tracking.</returns>
 			HDN_TRACK = HDN_FIRST - 28,
+		}
+
+		/// <summary>
+		/// Header controls have a number of styles, described in this section, that determine the control's appearance and behavior. You set the initial styles when you create the header control.
+		/// </summary>
+		[PInvokeData("Commctrl.h", MSDNShortId = "bb775241")]
+		[Flags]
+		public enum HeaderStyle
+		{
+			/// <summary>Each item in the control looks and behaves like a push button. This style is useful if an application carries out a task when the user clicks an item in the header control. For example, an application could sort information in the columns differently depending on which item the user clicks.</summary>
+			HDS_BUTTONS = 0x0002,
+			/// <summary>Allows drag-and-drop reordering of header items.</summary>
+			HDS_DRAGDROP = 0x0040,
+			/// <summary>Include a filter bar as part of the standard header control. This bar allows users to conveniently apply a filter to the display. Calls to HDM_LAYOUT will yield a new size for the control and cause the list view to update.</summary>
+			HDS_FILTERBAR = 0x0100,
+			/// <summary>Version 6.0 and later. Causes the header control to be drawn flat when the operating system is running in classic mode.
+			/// <note>Comctl32.dll version 6 is not redistributable but it is included in Windows. To use Comctl32.dll version 6, specify it in a manifest. For more information on manifests, see Enabling Visual Styles.</note></summary>
+			HDS_FLAT = 0x0200,
+			/// <summary>Causes the header control to display column contents even while the user resizes a column.</summary>
+			HDS_FULLDRAG = 0x0080,
+			/// <summary>Indicates a header control that is intended to be hidden. This style does not hide the control. Instead, when you send the HDM_LAYOUT message to a header control with the HDS_HIDDEN style, the control returns zero in the cy member of the WINDOWPOS structure. You would then hide the control by setting its height to zero. This can be useful when you want to use the control as an information container instead of a visual control.</summary>
+			HDS_HIDDEN = 0x0008,
+			/// <summary>Creates a header control with a horizontal orientation.</summary>
+			HDS_HORZ = 0x0000,
+			/// <summary>Enables hot tracking.</summary>
+			HDS_HOTTRACK = 0x0004,
+			/// <summary>Version 6.00 and later. Allows the placing of checkboxes on header items. For more information, see the fmt member of HDITEM.</summary>
+			HDS_CHECKBOXES = 0x0400,
+			/// <summary>Version 6.00 and later. The user cannot drag the divider on the header control.</summary>
+			HDS_NOSIZING = 0x0800,
+			/// <summary>Version 6.00 and later. A button is displayed when not all items can be displayed within the header control's rectangle. When clicked, this button sends an HDN_OVERFLOWCLICK notification.</summary>
+			HDS_OVERFLOW = 0x1000,
+		}
+
+		public static IntPtr SendMessage(HandleRef hWnd, HeaderMessage message, int wParam, [In, Out] HDITEM item) => User32_Gdi.SendMessage(hWnd, message, wParam, item);
+
+		public static IntPtr SendMessage(HandleRef hWnd, HeaderMessage message, int wParam, [In, Out] HDLAYOUT layout) => User32_Gdi.SendMessage(hWnd, message, wParam, layout);
+
+		public static IntPtr SendMessage(HandleRef hWnd, HeaderMessage message, int wParam, [In, Out] HDHITTESTINFO hittest) => User32_Gdi.SendMessage(hWnd, message, wParam, hittest);
+
+		/// <summary>Contains information about header control text filters.</summary>
+		[PInvokeData("Commctrl.h", MSDNShortId = "bb775251")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct HDTEXTFILTER
+		{
+			/// <summary>A pointer to the buffer containing the filter.</summary>
+			public string pszText;
+			/// <summary>A value specifying the maximum size, in characters, for an edit control buffer.</summary>
+			public int cchTextMax;
+
+			/// <summary>Initializes a new instance of the <see cref="HDTEXTFILTER"/> struct.</summary>
+			/// <param name="filter">The filter.</param>
+			public HDTEXTFILTER(string filter)
+			{
+				pszText = filter;
+				cchTextMax = filter.Length;
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="HDTEXTFILTER"/> struct.</summary>
+			/// <param name="length">The length.</param>
+			public HDTEXTFILTER(int length) : this(new string('\0', length))
+			{
+			}
+
+			/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
+			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+			public override string ToString() => pszText;
 		}
 
 		/// <summary>Contains information about a hit test. This structure is used with the HDM_HITTEST message and it supersedes the HD_HITTESTINFO structure.</summary>
@@ -329,12 +552,16 @@ namespace Vanara.PInvoke
 					{
 						case HeaderItemFilterType.HDFT_ISSTRING:
 							return pvFilter.ToStructure<HDTEXTFILTER>().ToString();
+
 						case HeaderItemFilterType.HDFT_ISNUMBER:
 							return pvFilter.ToInt32();
+
 						case HeaderItemFilterType.HDFT_ISDATE:
 							return pvFilter.ToStructure<SYSTEMTIME>().ToDateTime(DateTimeKind.Unspecified);
+
 						case HeaderItemFilterType.HDFT_HASNOVALUE:
 							return null;
+
 						default:
 							throw new InvalidOperationException();
 					}
@@ -348,22 +575,27 @@ namespace Vanara.PInvoke
 							Marshal.FreeCoTaskMem(pvFilter);
 							pvFilter = IntPtr.Zero;
 							break;
+
 						case DateTime dt:
 							pvFilter = new SYSTEMTIME(dt).StructureToPtr(Marshal.AllocCoTaskMem, out int _);
 							type = HeaderItemFilterType.HDFT_ISDATE;
 							break;
+
 						case string str:
 							pvFilter = new HDTEXTFILTER(str).StructureToPtr(Marshal.AllocCoTaskMem, out int _);
 							type = HeaderItemFilterType.HDFT_ISSTRING;
 							break;
+
 						case int i:
 							pvFilter = new IntPtr(i);
 							type = HeaderItemFilterType.HDFT_ISNUMBER;
 							break;
+
 						case SYSTEMTIME st:
 							pvFilter = st.StructureToPtr(Marshal.AllocCoTaskMem, out int _);
 							type = HeaderItemFilterType.HDFT_ISDATE;
 							break;
+
 						default:
 							throw new ArgumentException("Value must be a string, integer, DateTime or SYSTEMTIME");
 					}
@@ -519,8 +751,10 @@ namespace Vanara.PInvoke
 				}
 			}
 
-			/// <summary>Gets or sets a value indicating whether this header requests a callback message to retrieve the text.
-			/// <note>Setting this value to either true or false will remove any previously set value for the <see cref="Text"/> property or <see cref="pszText"/> field.</note></summary>
+			/// <summary>
+			/// Gets or sets a value indicating whether this header requests a callback message to retrieve the text. <note>Setting this value to either true or
+			/// false will remove any previously set value for the <see cref="Text"/> property or <see cref="pszText"/> field.</note>
+			/// </summary>
 			/// <value><c>true</c> if using text callback; otherwise, <c>false</c>.</value>
 			public bool UseTextCallback
 			{
@@ -589,35 +823,6 @@ namespace Vanara.PInvoke
 				Marshal.FreeHGlobal(prc);
 				Marshal.FreeHGlobal(pwpos);
 			}
-		}
-
-		/// <summary>Contains information about header control text filters.</summary>
-		[PInvokeData("Commctrl.h", MSDNShortId = "bb775251")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-		public struct HDTEXTFILTER
-		{
-			/// <summary>A pointer to the buffer containing the filter.</summary>
-			[MarshalAs(UnmanagedType.LPWStr)] public string pszText;
-			/// <summary>A value specifying the maximum size, in characters, for an edit control buffer.</summary>
-			public int cchTextMax;
-
-			/// <summary>Initializes a new instance of the <see cref="HDTEXTFILTER"/> struct.</summary>
-			/// <param name="filter">The filter.</param>
-			public HDTEXTFILTER(string filter)
-			{
-				pszText = filter;
-				cchTextMax = filter.Length;
-			}
-
-			/// <summary>Initializes a new instance of the <see cref="HDTEXTFILTER"/> struct.</summary>
-			/// <param name="length">The length.</param>
-			public HDTEXTFILTER(int length) : this(new string('\0', length))
-			{
-			}
-
-			/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
-			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-			public override string ToString() => pszText;
 		}
 
 		/// <summary>Contains information used in handling HDN_GETDISPINFO notification codes.</summary>
@@ -695,11 +900,5 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public IntPtr pItem = IntPtr.Zero;
 		}
-
-		public static IntPtr SendMessage(HandleRef hWnd, HeaderMessage message, int wParam, [In, Out] HDITEM item) => User32_Gdi.SendMessage(hWnd, message, wParam, item);
-
-		public static IntPtr SendMessage(HandleRef hWnd, HeaderMessage message, int wParam, [In, Out] HDLAYOUT layout) => User32_Gdi.SendMessage(hWnd, message, wParam, layout);
-
-		public static IntPtr SendMessage(HandleRef hWnd, HeaderMessage message, int wParam, [In, Out] HDHITTESTINFO hittest) => User32_Gdi.SendMessage(hWnd, message, wParam, hittest);
 	}
 }
