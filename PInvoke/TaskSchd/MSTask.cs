@@ -2,8 +2,8 @@ using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
-// ReSharper disable UnusedMember.Global
-// ReSharper disable InconsistentNaming
+
+// ReSharper disable UnusedMember.Global ReSharper disable InconsistentNaming
 
 namespace Vanara.PInvoke
 {
@@ -243,220 +243,6 @@ namespace Vanara.PInvoke
 			TASK_LAST_WEEK = 5,
 		}
 
-		/// <summary>Defines the interval, in days, at which a task is run.</summary>
-		[StructLayout(LayoutKind.Sequential)]
-		[PInvokeData("mstask.h", MSDNShortId = "aa446857")]
-		public struct DAILY
-		{
-			/// <summary>Specifies the number of days between task runs.</summary>
-			public ushort DaysInterval;
-		}
-
-		/// <summary>Defines the day of the month the task will run.</summary>
-		[StructLayout(LayoutKind.Sequential)]
-		[PInvokeData("mstask.h", MSDNShortId = "aa381918")]
-		public struct MONTHLYDATE
-		{
-			/// <summary>
-			/// Specifies the day of the month a task runs. This value is a bitfield that specifies the day(s) the task will run. Bit 0 corresponds to the first
-			/// of the month, bit 1 to the second, and so forth.
-			/// </summary>
-			public uint Days;
-
-			/// <summary>
-			/// Specifies the month(s) when the task runs. This value is a combination of the following flags. See Remarks for an example of setting multiple flags.
-			/// </summary>
-			public TaskMonths Months;
-		}
-
-		/// <summary>Defines the date(s) that the task runs by month, week, and day of the week.</summary>
-		[StructLayout(LayoutKind.Sequential)]
-		[PInvokeData("mstask.h", MSDNShortId = "aa381950")]
-		public struct MONTHLYDOW
-		{
-			/// <summary>Specifies the week of the month when the task runs. This value is exclusive and is one of the following flags.</summary>
-			public TaskWhichWeek wWhichWeek;
-
-			/// <summary>Specifies the day(s) of the week (specified in wWhichWeek) when the task runs. This value is a combination of the following flags.</summary>
-			public TaskDaysOfTheWeek rgfDaysOfTheWeek;
-
-			/// <summary>Value that describes the month(s) when the task runs. This value is a combination of the following flags.</summary>
-			public TaskMonths rgfMonths;
-		}
-
-		/// <summary>Defines the times to run a scheduled work item.</summary>
-		[StructLayout(LayoutKind.Sequential)]
-		[PInvokeData("mstask.h", MSDNShortId = "aa383618")]
-		public struct TASK_TRIGGER
-		{
-			/// <summary>Size of this structure, in bytes.</summary>
-			public ushort cbTriggerSize;
-
-			/// <summary>For internal use only; this value must be zero.</summary>
-			public ushort Reserved1;
-
-			/// <summary>
-			/// Year that the task trigger activates. This value must be four digits (1997, not 97). The beginning year must be specified when setting a task.
-			/// </summary>
-			public ushort wBeginYear;
-
-			/// <summary>
-			/// Month of the year (specified in the wBeginYear member) that the task trigger activates. The beginning month must be specified when setting a task.
-			/// </summary>
-			public ushort wBeginMonth;
-
-			/// <summary>
-			/// Day of the month (specified in the wBeginMonth member) that the task trigger activates. The beginning day must be specified when setting a task.
-			/// </summary>
-			public ushort wBeginDay;
-
-			/// <summary>Year that the task trigger deactivates. This value must be four digits (1997, not 97).</summary>
-			public ushort wEndYear;
-
-			/// <summary>Month of the year (specified in the wEndYear member) that the task trigger deactivates.</summary>
-			public ushort wEndMonth;
-
-			/// <summary>Day of the month (specified in the wEndMonth member) that the task trigger deactivates.</summary>
-			public ushort wEndDay;
-
-			/// <summary>Hour of the day the task runs. This value is on a 24-hour clock; hours go from 00 to 23.</summary>
-			public ushort wStartHour;
-
-			/// <summary>Minute of the hour (specified in the wStartHour member) that the task runs.</summary>
-			public ushort wStartMinute;
-
-			/// <summary>
-			/// Number of minutes after the task starts that the trigger will remain active. The number of minutes specified here must be greater than or equal
-			/// to the MinutesInterval setting.
-			/// <para>
-			/// For example, if you start a task at 8:00 A.M. and want to repeatedly start the task until 5:00 P.M., there would be 540 minutes in the duration.
-			/// </para>
-			/// </summary>
-			public uint MinutesDuration;
-
-			/// <summary>
-			/// Number of minutes between consecutive task executions. This number is counted from the start of the previous scheduled task. The number of
-			/// minutes specified here must be less than the MinutesDuration setting.
-			/// <para>For example, to run a task every hour from 8:00 A.M. to 5:00 P.M., set this field to 60.</para>
-			/// </summary>
-			public uint MinutesInterval;
-
-			/// <summary>Value that describes the behavior of the trigger. This value is a combination of the following flags.</summary>
-			public TaskTriggerFlags rgFlags;
-
-			/// <summary>
-			/// A TASK_TRIGGER_TYPE enumerated value that specifies the type of trigger. This member is used with Type. The type of trigger specified here
-			/// determines which fields of the TRIGGER_TYPE_UNION specified in Type member will be used. Trigger type is based on when the trigger will run the task.
-			/// </summary>
-			public TASK_TRIGGER_TYPE TriggerType;
-
-			/// <summary>
-			/// A TRIGGER_TYPE_UNION structure that specifies details about the trigger. Note that the TriggerType member determines which fields of the
-			/// TRIGGER_TYPE_UNION union will be used.
-			/// </summary>
-			public TRIGGER_TYPE_UNION Type;
-
-			/// <summary>For internal use only; this value must be zero.</summary>
-			public ushort Reserved2;
-
-			/// <summary>Not currently used.</summary>
-			public ushort wRandomMinutesInterval;
-
-			/// <summary>Gets or sets the begin date.</summary>
-			/// <value>The begin date.</value>
-			public DateTime BeginDate
-			{
-				get
-				{
-					try
-					{
-						return wBeginYear == 0
-							? DateTime.MinValue
-							: new DateTime(wBeginYear, wBeginMonth, wBeginDay, wStartHour, wStartMinute, 0, DateTimeKind.Unspecified);
-					}
-					catch { return DateTime.MinValue; }
-				}
-				set
-				{
-					if (value != DateTime.MinValue)
-					{
-						DateTime local = value.Kind == DateTimeKind.Utc ? value.ToLocalTime() : value;
-						wBeginYear = (ushort)local.Year;
-						wBeginMonth = (ushort)local.Month;
-						wBeginDay = (ushort)local.Day;
-						wStartHour = (ushort)local.Hour;
-						wStartMinute = (ushort)local.Minute;
-					}
-					else
-						wBeginYear = wBeginMonth = wBeginDay = wStartHour = wStartMinute = 0;
-				}
-			}
-
-			/// <summary>Gets or sets the end date.</summary>
-			/// <value>The end date.</value>
-			public DateTime? EndDate
-			{
-				get
-				{
-					try { return wEndYear == 0 ? (DateTime?)null : new DateTime(wEndYear, wEndMonth, wEndDay); }
-					catch { return DateTime.MaxValue; }
-				}
-				set
-				{
-					if (value.HasValue)
-					{
-						wEndYear = (ushort)value.Value.Year;
-						wEndMonth = (ushort)value.Value.Month;
-						wEndDay = (ushort)value.Value.Day;
-						rgFlags |= TaskTriggerFlags.TASK_TRIGGER_FLAG_HAS_END_DATE;
-					}
-					else
-					{
-						wEndYear = wEndMonth = wEndDay = 0;
-						rgFlags &= ~TaskTriggerFlags.TASK_TRIGGER_FLAG_HAS_END_DATE;
-					}
-				}
-			}
-
-			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
-			/// <returns>A <see cref="string"/> that represents this instance.</returns>
-			public override string ToString() =>
-				$"Trigger Type: {Type};\n> Start: {BeginDate}; End: {(wEndYear == 0 ? "null" : EndDate?.ToString())};\n> DurMin: {MinutesDuration}; DurItv: {MinutesInterval};\n>";
-		}
-
-		/// <summary>Defines the invocation schedule of the trigger within the Type member of a TASK_TRIGGER structure.</summary>
-		[StructLayout(LayoutKind.Explicit)]
-		[PInvokeData("mstask.h", MSDNShortId = "aa384002")]
-		public struct TRIGGER_TYPE_UNION
-		{
-			/// <summary>A DAILY structure that specifies the number of days between invocations of a task.</summary>
-			[FieldOffset(0)] public DAILY Daily;
-
-			/// <summary>A WEEKLY structure that specifies the number of weeks between invocations of a task, and day(s) of the week the task will run.</summary>
-			[FieldOffset(0)] public WEEKLY Weekly;
-
-			/// <summary>A MONTHLYDATE structure that specifies the month(s) and day(s) of the month a task will run.</summary>
-			[FieldOffset(0)] public MONTHLYDATE MonthlyDate;
-
-			/// <summary>A MONTHLYDOW structure that specifies the day(s) of the year a task runs by month(s), week of month, and day(s) of week.</summary>
-			[FieldOffset(0)] public MONTHLYDOW MonthlyDOW;
-		}
-
-		/// <summary>Defines the interval, in weeks, between invocations of a task.</summary>
-		[StructLayout(LayoutKind.Sequential)]
-		[PInvokeData("mstask.h", MSDNShortId = "aa384014")]
-		public struct WEEKLY
-		{
-			/// <summary>Number of weeks between invocations of a task.</summary>
-			public ushort WeeksInterval;
-
-			/// <summary>
-			/// Value that describes the days of the week the task runs. This value is a bitfield and is a combination of the following flags. See Remarks for an
-			/// example of specifying multiple flags.
-			/// </summary>
-			public TaskDaysOfTheWeek rgfDaysOfTheWeek;
-		}
-
 		/// <summary>
 		/// Provides the methods for enumerating the tasks in the Scheduled Tasks folder.
 		/// <para>IEnumWorkItems is the primary interface of the enumeration object. To create the enumeration, call ITaskScheduler::Enum.</para>
@@ -465,6 +251,18 @@ namespace Vanara.PInvoke
 		[PInvokeData("mstask.h", MSDNShortId = "aa380706")]
 		public interface IEnumWorkItems
 		{
+			/// <summary>
+			/// Creates a new enumeration object that contains the same enumeration state as the current enumeration. Because the new object points to the same
+			/// place in the enumeration sequence, a client can use the Clone method to record a particular point in the enumeration sequence and return to that
+			/// point later.
+			/// </summary>
+			/// <returns>
+			/// A pointer to a pointer to a new IEnumWorkItems interface. This pointer will point to the newly created enumeration. If the method fails, this
+			/// parameter is undefined.
+			/// </returns>
+			[return: MarshalAs(UnmanagedType.Interface)]
+			IEnumWorkItems Clone();
+
 			/// <summary>
 			/// Retrieves the next specified number of tasks in the enumeration sequence. If there are fewer than the requested number of tasks left in the
 			/// sequence, all the remaining elements are retrieved.
@@ -483,45 +281,12 @@ namespace Vanara.PInvoke
 			//HRESULT Next([In] uint celt, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] out SafeCoTaskMemString[] rgpwszNames, [Out] out uint pceltFetched);
 			HRESULT Next([In] uint celt, [Out] out IntPtr rgpwszNames, [Out] out uint pceltFetched);
 
-			/// <summary>Skips the next specified number of tasks in the enumeration sequence.</summary>
-			/// <param name="celt">The number of tasks to be skipped.</param>
-			void Skip([In] uint celt);
-
 			/// <summary>Resets the enumeration sequence to the beginning.</summary>
 			void Reset();
 
-			/// <summary>
-			/// Creates a new enumeration object that contains the same enumeration state as the current enumeration. Because the new object points to the same
-			/// place in the enumeration sequence, a client can use the Clone method to record a particular point in the enumeration sequence and return to that
-			/// point later.
-			/// </summary>
-			/// <returns>
-			/// A pointer to a pointer to a new IEnumWorkItems interface. This pointer will point to the newly created enumeration. If the method fails, this
-			/// parameter is undefined.
-			/// </returns>
-			[return: MarshalAs(UnmanagedType.Interface)]
-			IEnumWorkItems Clone();
-		}
-
-		/// <summary>Simple converter for results of <see cref="IEnumWorkItems.Next"/>.</summary>
-		public static class IEnumWorkItemsNames
-		{
-			/// <summary>Simple converter for results of <see cref="IEnumWorkItems.Next" />.</summary>
-			/// <param name="rgpwszNames">The rgpwszNames result from <see cref="IEnumWorkItems.Next" />.</param>
-			/// <param name="pceltFetched">The pceltFetched result from <see cref="IEnumWorkItems.Next" />.</param>
-			/// <returns>An array of strings.</returns>
-			public static string[] Convert(IntPtr rgpwszNames, uint pceltFetched)
-			{
-				var ret = new string[pceltFetched];
-				for (var i = 0; i < pceltFetched; i++)
-				{
-					var sptr = Marshal.ReadIntPtr(rgpwszNames, IntPtr.Size * i);
-					ret[i] = Marshal.PtrToStringUni(sptr);
-					Marshal.FreeCoTaskMem(sptr);
-				}
-				Marshal.FreeCoTaskMem(rgpwszNames);
-				return ret;
-			}
+			/// <summary>Skips the next specified number of tasks in the enumeration sequence.</summary>
+			/// <param name="celt">The number of tasks to be skipped.</param>
+			void Skip([In] uint celt);
 		}
 
 		/// <summary>
@@ -771,10 +536,18 @@ namespace Vanara.PInvoke
 			/// process. This applies only to the Windows Server 2003, Windows XP, and Windows 2000 operating systems. These values are taken from the
 			/// CreateProcess priority class and can be one of following flags (in descending order of thread scheduling priority):
 			/// <list type="bullet">
-			/// <item><term>REALTIME_PRIORITY_CLASS</term></item>
-			/// <item><term>HIGH_PRIORITY_CLASS</term></item>
-			/// <item><term>NORMAL_PRIORITY_CLASS</term></item>
-			/// <item><term>IDLE_PRIORITY_CLASS</term></item>
+			/// <item>
+			/// <term>REALTIME_PRIORITY_CLASS</term>
+			/// </item>
+			/// <item>
+			/// <term>HIGH_PRIORITY_CLASS</term>
+			/// </item>
+			/// <item>
+			/// <term>NORMAL_PRIORITY_CLASS</term>
+			/// </item>
+			/// <item>
+			/// <term>IDLE_PRIORITY_CLASS</term>
+			/// </item>
 			/// </list>
 			/// </param>
 			void SetPriority([In] ProcessPriorityClass dwPriority);
@@ -782,13 +555,21 @@ namespace Vanara.PInvoke
 			/// <summary>This method retrieves the priority for the task.</summary>
 			/// <returns>
 			/// A pointer to a DWORD that contains the priority for the current task. The priority value determines the frequency and length of the time slices
-			/// for a process. This applies only to the Windows Server 2003, Windows XP, and Windows 2000 operating systems. It is taken from the <c>CreateProcess</c>
-			/// priority class and can be one of the following flags (in descending order of thread scheduling priority):
+			/// for a process. This applies only to the Windows Server 2003, Windows XP, and Windows 2000 operating systems. It is taken from the
+			/// <c>CreateProcess</c> priority class and can be one of the following flags (in descending order of thread scheduling priority):
 			/// <list type="bullet">
-			/// <item><term>REALTIME_PRIORITY_CLASS</term></item>
-			/// <item><term>HIGH_PRIORITY_CLASS</term></item>
-			/// <item><term>NORMAL_PRIORITY_CLASS</term></item>
-			/// <item><term>IDLE_PRIORITY_CLASS</term></item>
+			/// <item>
+			/// <term>REALTIME_PRIORITY_CLASS</term>
+			/// </item>
+			/// <item>
+			/// <term>HIGH_PRIORITY_CLASS</term>
+			/// </item>
+			/// <item>
+			/// <term>NORMAL_PRIORITY_CLASS</term>
+			/// </item>
+			/// <item>
+			/// <term>IDLE_PRIORITY_CLASS</term>
+			/// </item>
 			/// </list>
 			/// </returns>
 			ProcessPriorityClass GetPriority();
@@ -922,6 +703,317 @@ namespace Vanara.PInvoke
 			/// <summary>The SetTrigger method sets the trigger criteria for a task trigger.</summary>
 			/// <param name="Trigger">A pointer to a TASK_TRIGGER structure that contains the values that define the new task trigger.</param>
 			void SetTrigger([In, Out, MarshalAs(UnmanagedType.Struct)] ref TASK_TRIGGER Trigger);
+		}
+
+		/// <summary>
+		/// <para>[<c>GetNetScheduleAccountInformation</c> is no longer available for use as of Windows 8. Instead, use the Task Scheduler 2.0 Interfaces.]</para>
+		/// <para>The <c>GetNetScheduleAccountInformation</c> function retrieves the AT Service account name.</para>
+		/// </summary>
+		/// <param name="pwszServerName">A NULL-terminated wide character string for the name of the computer whose account information is being retrieved.</param>
+		/// <param name="ccAccount">
+		/// The number of characters, including the NULL terminator, allocated for wszAccount. The maximum allowed length for this value is the maximum domain
+		/// name length plus the maximum user name length plus 2, expressed as DNLEN + UNLEN + 2. (The last two characters are the "\" character and the NULL terminator.)
+		/// </param>
+		/// <param name="wszAccount">An array of wide characters, including the NULL terminator, that receives the account information.</param>
+		/// <returns>
+		/// The return value is an HRESULT. A value of S_OK indicates the function succeeded, and the account information is returned in wszAccount. A value of
+		/// S_FALSE indicates the function succeeded, and the account is the Local System account (no information will be returned in wszAccount). Any other
+		/// return values indicate an error condition.
+		/// </returns>
+		// HRESULT GetNetScheduleAccountInformation( _In_ LPCWSTR pwszServerName, _In_ DWORD ccAccount, _Out_ WCHAR wszAccount[]);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/aa370264(v=vs.85).aspx
+		[DllImport(Lib.Mstask, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("AtAcct.h", MSDNShortId = "aa370264")]
+		public static extern HRESULT GetNetScheduleAccountInformation(string pwszServerName, uint ccAccount, System.Text.StringBuilder wszAccount);
+
+		/// <summary>
+		/// <para>[<c>SetNetScheduleAccountInformation</c> is no longer available for use as of Windows 8. Instead, use the Task Scheduler 2.0 Interfaces.]</para>
+		/// <para>
+		/// The <c>SetNetScheduleAccountInformation</c> function sets the AT Service account name and password. The AT Service account name and password are used
+		/// as the credentials for scheduled jobs created with <c>NetScheduleJobAdd</c>.
+		/// </para>
+		/// </summary>
+		/// <param name="pwszServerName">A NULL-terminated wide character string for the name of the computer whose account information is being set.</param>
+		/// <param name="pwszAccount">
+		/// A pointer to a NULL-terminated wide character string for the account. To specify the local system account, set this parameter to <c>NULL</c>.
+		/// </param>
+		/// <param name="pwszPassword">
+		/// A pointer to a NULL-terminated wide character string for the password. For information about securing password information, see Handling Passwords.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// The return value is an HRESULT. A value of S_OK indicates the account name and password were successfully set. Any other value indicates an error condition.
+		/// </para>
+		/// <para>If the function fails, some of the possible return values are listed below.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code/value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>E_ACCESSDENIED0x080070005</term>
+		/// <term>
+		/// Access was denied. This error is returned if the caller was not a member of the Administrators group. This error is also returned if the pwszAccount
+		/// parameter was not NULL indicating a named account not the local system account and the pwszPassword parameter was incorrect for the account specified
+		/// in the pwszAccount parameter.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>HRESULT_FROM_WIN32(ERROR_INVALID_DATA)0x08007000d</term>
+		/// <term>
+		/// The data is invalid. This error is returned if the pwszPassword parameter was NULL or the length of pwszPassword parameter string was too long.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SCHED_E_ACCOUNT_NAME_NOT_FOUND0x80041310</term>
+		/// <term>
+		/// Unable to establish existence of the account specified. This error is returned if the pwszAccount parameter was not NULL indicating a named account
+		/// not the local system account and the pwszAccount parameter could not be found.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </returns>
+		// HRESULT SetNetScheduleAccountInformation( _In_ LPCWSTR pwszServerName, _In_ LPCWSTR pwszAccount, _In_ LPCWSTR pwszPassword);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/aa370955(v=vs.85).aspx
+		[DllImport(Lib.Mstask, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("AtAcct.h", MSDNShortId = "aa370955")]
+		public static extern HRESULT SetNetScheduleAccountInformation(string pwszServerName, string pwszAccount, string pwszPassword);
+
+		/// <summary>Defines the interval, in days, at which a task is run.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("mstask.h", MSDNShortId = "aa446857")]
+		public struct DAILY
+		{
+			/// <summary>Specifies the number of days between task runs.</summary>
+			public ushort DaysInterval;
+		}
+
+		/// <summary>Defines the day of the month the task will run.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("mstask.h", MSDNShortId = "aa381918")]
+		public struct MONTHLYDATE
+		{
+			/// <summary>
+			/// Specifies the day of the month a task runs. This value is a bitfield that specifies the day(s) the task will run. Bit 0 corresponds to the first
+			/// of the month, bit 1 to the second, and so forth.
+			/// </summary>
+			public uint Days;
+
+			/// <summary>
+			/// Specifies the month(s) when the task runs. This value is a combination of the following flags. See Remarks for an example of setting multiple flags.
+			/// </summary>
+			public TaskMonths Months;
+		}
+
+		/// <summary>Defines the date(s) that the task runs by month, week, and day of the week.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("mstask.h", MSDNShortId = "aa381950")]
+		public struct MONTHLYDOW
+		{
+			/// <summary>Specifies the week of the month when the task runs. This value is exclusive and is one of the following flags.</summary>
+			public TaskWhichWeek wWhichWeek;
+
+			/// <summary>Specifies the day(s) of the week (specified in wWhichWeek) when the task runs. This value is a combination of the following flags.</summary>
+			public TaskDaysOfTheWeek rgfDaysOfTheWeek;
+
+			/// <summary>Value that describes the month(s) when the task runs. This value is a combination of the following flags.</summary>
+			public TaskMonths rgfMonths;
+		}
+
+		/// <summary>Defines the times to run a scheduled work item.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("mstask.h", MSDNShortId = "aa383618")]
+		public struct TASK_TRIGGER
+		{
+			/// <summary>Size of this structure, in bytes.</summary>
+			public ushort cbTriggerSize;
+
+			/// <summary>For internal use only; this value must be zero.</summary>
+			public ushort Reserved1;
+
+			/// <summary>
+			/// Year that the task trigger activates. This value must be four digits (1997, not 97). The beginning year must be specified when setting a task.
+			/// </summary>
+			public ushort wBeginYear;
+
+			/// <summary>
+			/// Month of the year (specified in the wBeginYear member) that the task trigger activates. The beginning month must be specified when setting a task.
+			/// </summary>
+			public ushort wBeginMonth;
+
+			/// <summary>
+			/// Day of the month (specified in the wBeginMonth member) that the task trigger activates. The beginning day must be specified when setting a task.
+			/// </summary>
+			public ushort wBeginDay;
+
+			/// <summary>Year that the task trigger deactivates. This value must be four digits (1997, not 97).</summary>
+			public ushort wEndYear;
+
+			/// <summary>Month of the year (specified in the wEndYear member) that the task trigger deactivates.</summary>
+			public ushort wEndMonth;
+
+			/// <summary>Day of the month (specified in the wEndMonth member) that the task trigger deactivates.</summary>
+			public ushort wEndDay;
+
+			/// <summary>Hour of the day the task runs. This value is on a 24-hour clock; hours go from 00 to 23.</summary>
+			public ushort wStartHour;
+
+			/// <summary>Minute of the hour (specified in the wStartHour member) that the task runs.</summary>
+			public ushort wStartMinute;
+
+			/// <summary>
+			/// Number of minutes after the task starts that the trigger will remain active. The number of minutes specified here must be greater than or equal
+			/// to the MinutesInterval setting.
+			/// <para>
+			/// For example, if you start a task at 8:00 A.M. and want to repeatedly start the task until 5:00 P.M., there would be 540 minutes in the duration.
+			/// </para>
+			/// </summary>
+			public uint MinutesDuration;
+
+			/// <summary>
+			/// Number of minutes between consecutive task executions. This number is counted from the start of the previous scheduled task. The number of
+			/// minutes specified here must be less than the MinutesDuration setting.
+			/// <para>For example, to run a task every hour from 8:00 A.M. to 5:00 P.M., set this field to 60.</para>
+			/// </summary>
+			public uint MinutesInterval;
+
+			/// <summary>Value that describes the behavior of the trigger. This value is a combination of the following flags.</summary>
+			public TaskTriggerFlags rgFlags;
+
+			/// <summary>
+			/// A TASK_TRIGGER_TYPE enumerated value that specifies the type of trigger. This member is used with Type. The type of trigger specified here
+			/// determines which fields of the TRIGGER_TYPE_UNION specified in Type member will be used. Trigger type is based on when the trigger will run the task.
+			/// </summary>
+			public TASK_TRIGGER_TYPE TriggerType;
+
+			/// <summary>
+			/// A TRIGGER_TYPE_UNION structure that specifies details about the trigger. Note that the TriggerType member determines which fields of the
+			/// TRIGGER_TYPE_UNION union will be used.
+			/// </summary>
+			public TRIGGER_TYPE_UNION Type;
+
+			/// <summary>For internal use only; this value must be zero.</summary>
+			public ushort Reserved2;
+
+			/// <summary>Not currently used.</summary>
+			public ushort wRandomMinutesInterval;
+
+			/// <summary>Gets or sets the begin date.</summary>
+			/// <value>The begin date.</value>
+			public DateTime BeginDate
+			{
+				get
+				{
+					try
+					{
+						return wBeginYear == 0
+							? DateTime.MinValue
+							: new DateTime(wBeginYear, wBeginMonth, wBeginDay, wStartHour, wStartMinute, 0, DateTimeKind.Unspecified);
+					}
+					catch { return DateTime.MinValue; }
+				}
+				set
+				{
+					if (value != DateTime.MinValue)
+					{
+						DateTime local = value.Kind == DateTimeKind.Utc ? value.ToLocalTime() : value;
+						wBeginYear = (ushort)local.Year;
+						wBeginMonth = (ushort)local.Month;
+						wBeginDay = (ushort)local.Day;
+						wStartHour = (ushort)local.Hour;
+						wStartMinute = (ushort)local.Minute;
+					}
+					else
+						wBeginYear = wBeginMonth = wBeginDay = wStartHour = wStartMinute = 0;
+				}
+			}
+
+			/// <summary>Gets or sets the end date.</summary>
+			/// <value>The end date.</value>
+			public DateTime? EndDate
+			{
+				get
+				{
+					try { return wEndYear == 0 ? (DateTime?)null : new DateTime(wEndYear, wEndMonth, wEndDay); }
+					catch { return DateTime.MaxValue; }
+				}
+				set
+				{
+					if (value.HasValue)
+					{
+						wEndYear = (ushort)value.Value.Year;
+						wEndMonth = (ushort)value.Value.Month;
+						wEndDay = (ushort)value.Value.Day;
+						rgFlags |= TaskTriggerFlags.TASK_TRIGGER_FLAG_HAS_END_DATE;
+					}
+					else
+					{
+						wEndYear = wEndMonth = wEndDay = 0;
+						rgFlags &= ~TaskTriggerFlags.TASK_TRIGGER_FLAG_HAS_END_DATE;
+					}
+				}
+			}
+
+			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+			/// <returns>A <see cref="string"/> that represents this instance.</returns>
+			public override string ToString() =>
+				$"Trigger Type: {Type};\n> Start: {BeginDate}; End: {(wEndYear == 0 ? "null" : EndDate?.ToString())};\n> DurMin: {MinutesDuration}; DurItv: {MinutesInterval};\n>";
+		}
+
+		/// <summary>Defines the invocation schedule of the trigger within the Type member of a TASK_TRIGGER structure.</summary>
+		[StructLayout(LayoutKind.Explicit)]
+		[PInvokeData("mstask.h", MSDNShortId = "aa384002")]
+		public struct TRIGGER_TYPE_UNION
+		{
+			/// <summary>A DAILY structure that specifies the number of days between invocations of a task.</summary>
+			[FieldOffset(0)] public DAILY Daily;
+
+			/// <summary>A WEEKLY structure that specifies the number of weeks between invocations of a task, and day(s) of the week the task will run.</summary>
+			[FieldOffset(0)] public WEEKLY Weekly;
+
+			/// <summary>A MONTHLYDATE structure that specifies the month(s) and day(s) of the month a task will run.</summary>
+			[FieldOffset(0)] public MONTHLYDATE MonthlyDate;
+
+			/// <summary>A MONTHLYDOW structure that specifies the day(s) of the year a task runs by month(s), week of month, and day(s) of week.</summary>
+			[FieldOffset(0)] public MONTHLYDOW MonthlyDOW;
+		}
+
+		/// <summary>Defines the interval, in weeks, between invocations of a task.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("mstask.h", MSDNShortId = "aa384014")]
+		public struct WEEKLY
+		{
+			/// <summary>Number of weeks between invocations of a task.</summary>
+			public ushort WeeksInterval;
+
+			/// <summary>
+			/// Value that describes the days of the week the task runs. This value is a bitfield and is a combination of the following flags. See Remarks for an
+			/// example of specifying multiple flags.
+			/// </summary>
+			public TaskDaysOfTheWeek rgfDaysOfTheWeek;
+		}
+
+		/// <summary>Simple converter for results of <see cref="IEnumWorkItems.Next"/>.</summary>
+		public static class IEnumWorkItemsNames
+		{
+			/// <summary>Simple converter for results of <see cref="IEnumWorkItems.Next"/>.</summary>
+			/// <param name="rgpwszNames">The rgpwszNames result from <see cref="IEnumWorkItems.Next"/>.</param>
+			/// <param name="pceltFetched">The pceltFetched result from <see cref="IEnumWorkItems.Next"/>.</param>
+			/// <returns>An array of strings.</returns>
+			public static string[] Convert(IntPtr rgpwszNames, uint pceltFetched)
+			{
+				var ret = new string[pceltFetched];
+				for (var i = 0; i < pceltFetched; i++)
+				{
+					var sptr = Marshal.ReadIntPtr(rgpwszNames, IntPtr.Size * i);
+					ret[i] = Marshal.PtrToStringUni(sptr);
+					Marshal.FreeCoTaskMem(sptr);
+				}
+				Marshal.FreeCoTaskMem(rgpwszNames);
+				return ret;
+			}
 		}
 
 		[ComImport, Guid("148BD520-A2AB-11CE-B11F-00AA00530503"), System.Security.SuppressUnmanagedCodeSecurity, ClassInterface(ClassInterfaceType.None)]
