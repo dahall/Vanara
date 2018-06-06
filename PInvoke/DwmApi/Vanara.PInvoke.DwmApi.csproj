@@ -25,7 +25,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-DwmDefWindowProc, DwmEnableBlurBehindWindow, DwmEnableComposition, DwmEnableMMCSS, DwmExtendFrameIntoClientArea, DwmFlush, DwmGetColorizationColor, DwmGetCompositionTimingInfo, DwmGetTransportAttributes, DwmGetWindowAttribute, DwmInvalidateIconicBitmaps, DwmIsCompositionEnabled, DwmQueryThumbnailSourceSize, DwmRegisterThumbnail, DwmRenderGesture, DwmSetIconicLivePreviewBitmap, DwmSetIconicThumbnail, DwmSetWindowAttribute, DwmShowContact, DwmTetherContact, DwmTransitionOwnedWindow, DwmUnregisterThumbnail, DwmUpdateThumbnailProperties
+DwmDefWindowProc, DwmEnableBlurBehindWindow, DwmEnableComposition, DwmEnableMMCSS, DwmExtendFrameIntoClientArea, DwmFlush, DwmGetColorizationColor, DwmGetCompositionTimingInfo, DwmGetTransportAttributes, DwmGetWindowAttribute, DwmInvalidateIconicBitmaps, DwmIsCompositionEnabled, DwmpGetColorizationParameters, DwmpSetColorizationParameters, DwmQueryThumbnailSourceSize, DwmRegisterThumbnail, DwmRenderGesture, DwmSetIconicLivePreviewBitmap, DwmSetIconicThumbnail, DwmSetWindowAttribute, DwmShowContact, DwmTetherContact, DwmTransitionOwnedWindow, DwmUnregisterThumbnail, DwmUpdateThumbnailProperties
 
 Structures
 DWM_BLURBEHIND, DWM_COLORIZATION_PARAMS, DWM_THUMBNAIL_PROPERTIES, DWM_TIMING_INFO, MARGINS, UNSIGNED_RATIO

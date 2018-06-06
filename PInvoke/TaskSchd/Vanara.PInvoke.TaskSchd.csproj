@@ -24,6 +24,9 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
+Functions
+GetNetScheduleAccountInformation, SetNetScheduleAccountInformation
+
 Structures
 DAILY, MONTHLYDATE, MONTHLYDOW, TASK_TRIGGER, TRIGGER_TYPE_UNION, WEEKLY
 
