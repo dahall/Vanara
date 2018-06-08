@@ -1236,9 +1236,44 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
 		public static extern HRESULT GetThemeRect(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out RECT pRect);
 
-		[PInvokeData("UxTheme.h")]
-		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern HRESULT GetThemeStream(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 5)] out byte[] pvStream, out int cbStream, IntPtr hInst);
+		/// <summary>Retrieves a data stream corresponding to a specified theme, starting from a specified part, state, and property.</summary>
+		/// <param name="hTheme">
+		/// <para>Type: <c>HTHEME</c></para>
+		/// <para>Handle to the theme from which the stream will be retrieved.</para>
+		/// </param>
+		/// <param name="iPartId">
+		/// <para>Type: <c>int</c></para>
+		/// <para>Specifies the part to retrieve a stream from. See Parts and States.</para>
+		/// </param>
+		/// <param name="iStateId">
+		/// <para>Type: <c>int</c></para>
+		/// <para>Specifies the state of the part.</para>
+		/// </param>
+		/// <param name="iPropId">
+		/// <para>Type: <c>int</c></para>
+		/// <para>Specifies the property to retrieve.</para>
+		/// </param>
+		/// <param name="ppvStream">
+		/// <para>Type: <c><c>VOID</c>**</c></para>
+		/// <para>Address of a pointer that receives the stream.</para>
+		/// </param>
+		/// <param name="pcbStream">
+		/// <para>Type: <c><c>DWORD</c>*</c></para>
+		/// <para>Pointer that receives the length, in bytes, of the stream received by ppvStream.</para>
+		/// </param>
+		/// <param name="hInst">
+		/// <para>Type: <c><c>HINSTANCE</c></c></para>
+		/// <para>If iPropId is TMT_STREAM, this value is <c>NULL</c>. If iPropId is TMT_DISKSTREAM, this value is the HINSTANCE of a loaded styles file.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c><c>HRESULT</c></c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// HRESULT GetThemeStream( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ VOID **ppvStream, _Out_ DWORD *pcbStream, _In_ HINSTANCE hInst);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb759768(v=vs.85).aspx
+		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759768")]
+		public static extern HRESULT GetThemeStream(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out IntPtr ppvStream, out uint pcbStream, IntPtr hInst);
 
 		[PInvokeData("UxTheme.h")]
 		[DllImport(Lib.UxTheme, ExactSpelling = true)]
