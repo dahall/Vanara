@@ -25,7 +25,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Used for options in SHOpenFolderAndSelectItems.</summary>
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762232")]
-		public enum OFASI
+		public enum OFASI : uint
 		{
 			/// <summary>No options.</summary>
 			OFASI_NONE = 0,
@@ -715,8 +715,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762232")]
 		public static extern HRESULT SHOpenFolderAndSelectItems(PIDL pidlFolder, uint cidl,
-			[In, Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)]
-			PIDL[] apidl, OFASI dwFlags);
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, OFASI dwFlags);
 
 		/// <summary>
 		/// Translates a Shell namespace object's display name into an item identifier list and returns the attributes of the object. This function is the
