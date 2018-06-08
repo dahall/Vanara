@@ -114,6 +114,7 @@ namespace Vanara.PInvoke
 			ILR_SCALE_ASPECTRATIO = 0x0100,
 		}
 
+		/// <summary>Flags used when copying image lists.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775230")]
 		public enum IMAGELISTCOPYFLAG
 		{
@@ -174,6 +175,7 @@ namespace Vanara.PInvoke
 			ILD_ASYNC = 0X00008000
 		}
 
+		/// <summary>Item flags.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761486")]
 		public enum IMAGELISTITEMFLAG
 		{
@@ -251,7 +253,7 @@ namespace Vanara.PInvoke
 			/// is set to 1.
 			/// </param>
 			/// <returns>A pointer to an int that contains the index of the first new image when it returns, if successful, or -1 otherwise.</returns>
-			int AddMasked(IntPtr hbmImage, uint crMask);
+			int AddMasked(IntPtr hbmImage, COLORREF crMask);
 
 			/// <summary>Draws an image list item in the specified device context.</summary>
 			/// <param name="pimldp">A pointer to an IMAGELISTDRAWPARAMS structure that contains the drawing parameters.</param>
@@ -330,11 +332,11 @@ namespace Vanara.PInvoke
 			/// </summary>
 			/// <param name="clrBk">The background color to set. If this parameter is set to CLR_NONE, then images draw transparently using the mask.</param>
 			/// <param name="pclr">A pointer to a COLORREF that contains the previous background color on return if successful, or CLR_NONE otherwise.</param>
-			void SetBkColor(uint clrBk, ref uint pclr);
+			void SetBkColor(COLORREF clrBk, out COLORREF pclr);
 
 			/// <summary>Gets the current background color for an image list.</summary>
 			/// <returns>A pointer to a COLORREF that contains the background color when the method returns.</returns>
-			uint GetBkColor();
+			COLORREF GetBkColor();
 
 			/// <summary>Begins dragging an image.</summary>
 			/// <param name="iTrack">A value of type int that contains the index of the image to drag.</param>
@@ -408,6 +410,22 @@ namespace Vanara.PInvoke
 			int GetOverlayImage(int iOverlay);
 		}
 
+		/// <summary>Gets the dimensions of images in an image list. All images in an image list have the same dimensions.</summary>
+		/// <param name="il">The <see cref="IImageList"/> instance.</param>
+		/// <returns>The size of images.</returns>
+		public static Size GetIconSize(this IImageList il)
+		{
+			il.GetIconSize(out int cx, out int cy);
+			return new Size(cx, cy);
+		}
+
+		/// <summary>Sets the dimensions of images in an image list and removes all images from the list.</summary>
+		/// <param name="il">The <see cref="IImageList"/> instance.</param>
+		/// <param name="size">
+		/// A value that contains the width and height, in pixels, of the images in the image list. All images in an image list have the same dimensions.
+		/// </param>
+		public static void SetIconSize(this IImageList il, Size size) => il.SetIconSize(size.Width, size.Height);
+
 		/// <summary>Extends IImageList by providing additional methods for manipulating and interacting with image lists.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761419")]
 		[ComImport, Guid("192b9d83-50fc-457b-90a0-2b82a8b5dae1"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), CoClass(typeof(CImageList))]
@@ -453,7 +471,7 @@ namespace Vanara.PInvoke
 			/// is set to 1.
 			/// </param>
 			/// <returns>A pointer to an int that contains the index of the first new image when it returns, if successful, or -1 otherwise.</returns>
-			new int AddMasked(IntPtr hbmImage, uint crMask);
+			new int AddMasked(IntPtr hbmImage, COLORREF crMask);
 
 			/// <summary>Draws an image list item in the specified device context.</summary>
 			/// <param name="pimldp">A pointer to an IMAGELISTDRAWPARAMS structure that contains the drawing parameters.</param>
@@ -532,11 +550,12 @@ namespace Vanara.PInvoke
 			/// </summary>
 			/// <param name="clrBk">The background color to set. If this parameter is set to CLR_NONE, then images draw transparently using the mask.</param>
 			/// <param name="pclr">A pointer to a COLORREF that contains the previous background color on return if successful, or CLR_NONE otherwise.</param>
-			new void SetBkColor(uint clrBk, ref uint pclr);
+			new void SetBkColor(COLORREF clrBk, out COLORREF pclr);
 
 			/// <summary>Gets the current background color for an image list.</summary>
 			/// <returns>A pointer to a COLORREF that contains the background color when the method returns.</returns>
-			new uint GetBkColor();
+			new COLORREF GetBkColor();
+
 
 			/// <summary>Begins dragging an image.</summary>
 			/// <param name="iTrack">A value of type int that contains the index of the image to drag.</param>
@@ -706,6 +725,21 @@ namespace Vanara.PInvoke
 		[PInvokeData("Commctrl.h")]
 		public static extern HRESULT HIMAGELIST_QueryInterface(IntPtr himl, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
+		/// <summary>Get an image list interface from an image list handle.</summary>
+		/// <param name="himl">
+		/// <para>Type: <c>HIMAGELIST</c></para>
+		/// <para>A handle to the image list to query.</para>
+		/// </param>
+		/// <returns>
+		/// When this method returns, contains the interface pointer requested. This is normally <c>IImageList2</c>, which provides the <c>Initialize</c> method.
+		/// </returns>
+		[PInvokeData("Commctrl.h")]
+		public static TIntf HIMAGELIST_QueryInterface<TIntf>(IntPtr himl)
+		{
+			if (himl == IntPtr.Zero) throw new ArgumentNullException(nameof(himl));
+			return (TIntf)Marshal.GetTypedObjectForIUnknown(himl, typeof(TIntf));
+		}
+
 		/// <summary>Get an image list handle from an image list interface.</summary>
 		/// <param name="himl">
 		/// <para>Type: <c>HIMAGELIST</c></para>
@@ -745,7 +779,34 @@ namespace Vanara.PInvoke
 		[PInvokeData("CommonControls.h", MSDNShortId = "bb761518")]
 		public static extern HRESULT ImageList_CoCreateInstance([MarshalAs(UnmanagedType.LPStruct)] Guid rclsid, [MarshalAs(UnmanagedType.IUnknown)] object punkOuter, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
-		/// <summary>Creates a new image list.</summary><param name="cx"><para>Type: <c>int</c></para><para>The width, in pixels, of each image.</para></param><param name="cy"><para>Type: <c>int</c></para><para>The height, in pixels, of each image.</para></param><param name="flags"><para>Type: <c><c>UINT</c></c></para><para>A set of bit flags that specify the type of image list to create. This parameter can be a combination of the <c>Image List Creation Flags</c>.</para></param><param name="cInitial"><para>Type: <c>int</c></para><para>The number of images that the image list initially contains.</para></param><param name="cGrow"><para>Type: <c>int</c></para><para>The number of images by which the image list can grow when the system needs to make room for new images. This parameter represents the number of new images that the resized image list can contain.</para></param><returns><para>Type: <c>HIMAGELIST</c></para><para>Returns the handle to the image list if successful, or <c>NULL</c> otherwise.</para></returns>
+		/// <summary>Creates a new image list.</summary>
+		/// <param name="cx">
+		/// <para>Type: <c>int</c></para>
+		/// <para>The width, in pixels, of each image.</para>
+		/// </param>
+		/// <param name="cy">
+		/// <para>Type: <c>int</c></para>
+		/// <para>The height, in pixels, of each image.</para>
+		/// </param>
+		/// <param name="flags">
+		/// <para>Type: <c><c>UINT</c></c></para>
+		/// <para>A set of bit flags that specify the type of image list to create. This parameter can be a combination of the <c>Image List Creation Flags</c>.</para>
+		/// </param>
+		/// <param name="cInitial">
+		/// <para>Type: <c>int</c></para>
+		/// <para>The number of images that the image list initially contains.</para>
+		/// </param>
+		/// <param name="cGrow">
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// The number of images by which the image list can grow when the system needs to make room for new images. This parameter represents the number of new
+		/// images that the resized image list can contain.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HIMAGELIST</c></para>
+		/// <para>Returns the handle to the image list if successful, or <c>NULL</c> otherwise.</para>
+		/// </returns>
 		// HIMAGELIST ImageList_Create( int cx, int cy, UINT flags, int cInitial, int cGrow);
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb761522(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
@@ -919,6 +980,17 @@ namespace Vanara.PInvoke
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775229")]
 		public static extern HRESULT ImageList_WriteEx(IntPtr himl, ILP dwFlags, IStream pstm);
 
+		/// <summary>Prepares the index of an overlay mask so that the <c>ImageList_Draw</c> function can use it.</summary>
+		/// <param name="iOverlay">
+		/// <para>Type: <c><c>UINT</c></c></para>
+		/// <para>An index of an overlay mask.</para>
+		/// </param>
+		/// <returns>No return value.</returns>
+		// UINT INDEXTOOVERLAYMASK( UINT iOverlay);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb761408(v=vs.85).aspx
+		[PInvokeData("Commctrl.h", MSDNShortId = "bb761408")]
+		public static int INDEXTOOVERLAYMASK(int iOverlay) => iOverlay << 8;
+
 		/// <summary>Contains information about an image in an image list. This structure is used with the IImageList::GetImageInfo function.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761393")]
 		[StructLayout(LayoutKind.Sequential)]
@@ -967,42 +1039,10 @@ namespace Vanara.PInvoke
 			public int cStandby;
 		}
 
+		/// <summary>Image list class.</summary>
 		[ComImport, Guid("7C476BA2-02B1-48f4-8048-B24619DDC058"), ClassInterface(ClassInterfaceType.None)]
 		[PInvokeData("CommonControls.h")]
 		public class CImageList { }
-
-		/// <summary>Draw color with options for <see cref="Draw"/> method.</summary>
-		[StructLayout(LayoutKind.Sequential)]
-		public struct ImageListDrawColor
-		{
-			private uint value;
-
-			/// <summary>Initializes a new instance of the <see cref="ImageListDrawColor"/> struct.</summary>
-			/// <param name="color">The color.</param>
-			public ImageListDrawColor(Color color) { value = (uint)ColorTranslator.ToWin32(color); }
-
-			/// <summary>Initializes a new instance of the <see cref="ImageListDrawColor"/> struct.</summary>
-			/// <param name="color">The color.</param>
-			public ImageListDrawColor(COLORREF color) { value = color; }
-
-			private ImageListDrawColor(uint val) { value = val; }
-
-			/// <summary>Static reference for CLR_NONE representing no color.</summary>
-			public static ImageListDrawColor None = new ImageListDrawColor(CLR_NONE);
-
-			/// <summary>Static reference for CLR_DEFAULT representing the default color.</summary>
-			public static ImageListDrawColor Default = new ImageListDrawColor(CLR_DEFAULT);
-
-			/// <summary>Performs an implicit conversion from <see cref="ImageListDrawColor"/> to <see cref="uint"/>.</summary>
-			/// <param name="c">The ImageListDrawColor instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator uint(ImageListDrawColor c) => c.value;
-
-			/// <summary>Performs an implicit conversion from <see cref="Color"/> to <see cref="ImageListDrawColor"/>.</summary>
-			/// <param name="c">The color.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator ImageListDrawColor(Color c) => new ImageListDrawColor(c);
-		}
 
 		/// <summary>Contains information about an image list draw operation and is used with the <c>IImageList::Draw</c> function.</summary>
 		// typedef struct _IMAGELISTDRAWPARAMS { DWORD cbSize; HIMAGELIST himl; int i; HDC hdcDst; int x; int y; int cx; int cy; int xBitmap; int yBitmap; COLORREF rgbBk; COLORREF rgbFg; UINT fStyle; DWORD dwRop; DWORD fState; DWORD Frame; DWORD crEffect;} IMAGELISTDRAWPARAMS;
@@ -1044,12 +1084,12 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public int yBitmap;
 			/// <summary>The image background color. This parameter can be an application-defined RGB value or <see cref="CLR_DEFAULT"/> or <see cref="CLR_NONE"/>.</summary>
-			public ImageListDrawColor rgbBk;
+			public COLORREF rgbBk;
 			/// <summary>
 			/// The image foreground color. This member is used only if fStyle includes the ILD_BLEND25 or ILD_BLEND50 flag. This parameter can be an
 			/// application-defined RGB value or <see cref="CLR_DEFAULT"/> or <see cref="CLR_NONE"/>.
 			/// </summary>
-			public ImageListDrawColor rgbFg;
+			public COLORREF rgbFg;
 			/// <summary>
 			/// A flag specifying the drawing style and, optionally, the overlay image. See the comments section at the end of this topic for information on the
 			/// overlay image. This member can contain one or more image list drawing flags.
@@ -1075,7 +1115,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public uint Frame;
 			/// <summary>A color used for the glow and shadow effects. You must use comctl32.dll version 6 to use this member. See the Remarks.</summary>
-			public ImageListDrawColor crEffect;
+			public COLORREF crEffect;
 
 			/// <summary>Initializes a new instance of the <see cref="IMAGELISTDRAWPARAMS"/> class.</summary>
 			public IMAGELISTDRAWPARAMS() { cbSize = Marshal.SizeOf(this); }
@@ -1086,7 +1126,7 @@ namespace Vanara.PInvoke
 			/// <param name="index">The zero-based index of the image to be drawn.</param>
 			/// <param name="bgColor">The image background color.</param>
 			/// <param name="style">A flag specifying the drawing style and, optionally, the overlay image.</param>
-			public IMAGELISTDRAWPARAMS(IntPtr hdcDst, RECT bounds, int index, ImageListDrawColor bgColor, IMAGELISTDRAWFLAGS style = IMAGELISTDRAWFLAGS.ILD_NORMAL) : this()
+			public IMAGELISTDRAWPARAMS(IntPtr hdcDst, RECT bounds, int index, COLORREF bgColor, IMAGELISTDRAWFLAGS style = IMAGELISTDRAWFLAGS.ILD_NORMAL) : this()
 			{
 				i = index;
 				this.hdcDst = hdcDst;
@@ -1117,18 +1157,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets the IImageList interface for this handle.</summary>
 			/// <value>The interface.</value>
-			public IImageList Interface
-			{
-				get
-				{
-					if (iImageList == null)
-					{
-						HIMAGELIST_QueryInterface(handle, typeof(IImageList).GUID, out var ppv).ThrowIfFailed();
-						iImageList = (IImageList)ppv;
-					}
-					return iImageList;
-				}
-			}
+			public IImageList Interface => iImageList ?? (iImageList = HIMAGELIST_QueryInterface<IImageList>(handle));
 		}
 	}
 }
