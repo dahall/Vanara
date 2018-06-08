@@ -630,6 +630,12 @@ namespace Vanara.Windows.Shell
 			iShellItem2.Update(BindContext);
 		}
 
+		/// <summary>Open a new Windows Explorer window with this item selected.</summary>
+		public void ViewInExplorer()
+		{
+			SHOpenFolderAndSelectItems(Parent.PIDL, 1, new IntPtr[] { PIDL }, OFASI.OFASI_NONE);
+		}
+
 		/// <summary>
 		/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.
 		/// </summary>
