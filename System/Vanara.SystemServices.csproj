@@ -4,7 +4,7 @@
     <Description>Classes for system related items derived from the Vanara PInvoke libraries. Includes a class for working with virtual disks (including async methods), classes for BITS, and extensions for Process (privileges and elavation), FileInfo (compression info), and ServiceController (SetStartType) that pull extended information through native API calls.</Description>
     <Copyright>Copyright © 2017-2018</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.13</VersionPrefix>
+    <VersionPrefix>1.0.14</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0</TargetFrameworks>
     <AssemblyName>Vanara.SystemServices</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -23,10 +23,13 @@
     <PackageReleaseNotes>Currently implements:
 
 Classes
-FileInfoExtension, NetworkConnection, NetworkListManager, NetworkProfile, ProcessExtension, ServiceControllerExtension, SystemShutdown, VirtualDisk, VirtualDiskMetadata
+BackgroundCopyException, BackgroundCopyFileCollection, BackgroundCopyFileInfo, BackgroundCopyFileRange, BackgroundCopyFileRangesTransferredEventArgs, BackgroundCopyFileTransferredEventArgs, BackgroundCopyJob, BackgroundCopyJobCollection, BackgroundCopyJobCredential, BackgroundCopyJobCredentials, BackgroundCopyJobEventArgs, BackgroundCopyManager, FileInfoExtension, NetworkConnection, NetworkListManager, NetworkProfile, ProcessExtension, ServiceControllerExtension, SystemShutdown, VirtualDisk, VirtualDiskMetadata, Wow64Redirect
+
+Structures
+BackgroundCopyFileRange, BackgroundCopyJobProgress, BackgroundCopyJobReplyProgress
 
 Enumerations
-DeviceType, ProcessIntegrityLevel, Subtype
+BackgroundCopyACLFlags, BackgroundCopyCost, BackgroundCopyErrorContext, BackgroundCopyJobCredentialScheme, BackgroundCopyJobCredentialTarget, BackgroundCopyJobPriority, BackgroundCopyJobSecurity, BackgroundCopyJobState, BackgroundCopyJobType, DeviceType, ProcessIntegrityLevel, Subtype
 
 </PackageReleaseNotes>
   </PropertyGroup>

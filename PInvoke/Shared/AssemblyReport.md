@@ -29,6 +29,7 @@ PRECT | Defines the coordinates of the upper-left and lower-right corners of a r
 RECT | Defines the coordinates of the upper-left and lower-right corners of a rectangle.
 SECURITY_ATTRIBUTES | The SECURITY_ATTRIBUTES structure contains the security descriptor for an object and specifies whether the handle retrieved by specifying this structure is inheritable. This structure provides security settings for objects created by various functions, such as CreateFile, CreatePipe, CreateProcess, RegCreateKeyEx, or RegSaveKeyEx.
 SIZE | The SIZE structure specifies the width and height of a rectangle.
+SizeT | Managed instance of the SIZE_T type.
 SYSTEMTIME | Specifies a date and time, using individual members for the month, day, year, weekday, hour, minute, second, and millisecond. The time is either in coordinated universal time (UTC) or local time, depending on the function that is being called.
 WIN32_FIND_DATA | Contains information about the file that is found by the FindFirstFile, FindFirstFileEx, or FindNextFile function.
 Win32Error | Represents a Win32 Error Code. This can be used in place of a return value.

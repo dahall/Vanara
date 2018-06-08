@@ -4,7 +4,7 @@
     <Description>Classes for Windows Shell items derived from the Vanara PInvoke libraries. Includes shell items, files, icons, links, and taskbar lists.</Description>
     <Copyright>Copyright © 2017-2018</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.13</VersionPrefix>
+    <VersionPrefix>1.0.14</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
     <AssemblyName>Vanara.Windows.Shell</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>

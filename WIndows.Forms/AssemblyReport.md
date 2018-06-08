@@ -48,7 +48,7 @@ GlassExtenderProvider | GlassExtenderProvider extends a `Form` and provides glas
 GraphicsExtension | 
 GroupIconResIndexer | 
 IconExtension | 
-ImageListExtension | 
+ImageListExtension | Extension methods for `ImageList`.
 ImageResIndexer<T> | 
 InputDialog | An input dialog that automatically creates controls to collect the values of the object supplied via the `Data` property.
 InputDialogItemAttribute | Allows a developer to attribute a property or field with text that gets shown instead of the field or property name in an `InputDialog`.
@@ -102,7 +102,6 @@ VisualTheme |
 ### Structures
 Struct | Description
 ---- | ----
-ImageListDrawColor | Draw color with options for `ImageListExtension.Draw(System.Windows.Forms.ImageList,System.Drawing.Graphics,System.Drawing.Rectangle,System.Int32,Vanara.Extensions.ImageListExtension.ImageListDrawColor,Vanara.Extensions.ImageListExtension.ImageListDrawColor,Vanara.PInvoke.ComCtl32.IMAGELISTDRAWFLAGS,System.Int32)` method.
 TaskDialogResult | Results from running the `TaskDialog`.
 ### Enumerations
 Enum | Description | Values

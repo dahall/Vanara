@@ -51,7 +51,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetThemePosition](https://www.google.com/search?num=5&q=GetThemePosition+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemePosition  
 [GetThemePropertyOrigin](https://www.google.com/search?num=5&q=GetThemePropertyOrigin+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemePropertyOrigin  
 [GetThemeRect](https://www.google.com/search?num=5&q=GetThemeRect+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeRect  
-[GetThemeStream](https://www.google.com/search?num=5&q=GetThemeStream+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeStream  
+[GetThemeStream](http://msdn2.microsoft.com/en-us/library/bb759768) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeStream  
 [GetThemeString](https://www.google.com/search?num=5&q=GetThemeString+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeString  
 [GetThemeSysBool](https://www.google.com/search?num=5&q=GetThemeSysBool+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeSysBool  
 [GetThemeSysColor](https://www.google.com/search?num=5&q=GetThemeSysColor+site%3Amsdn.microsoft.com) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeSysColor  

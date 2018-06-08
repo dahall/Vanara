@@ -820,7 +820,7 @@ Native Structure | Header | Managed Structure
 [BITMAPINFO](http://msdn2.microsoft.com/en-us/library/dd183375) | Wingdi.h | Vanara.PInvoke.Gdi32+BITMAPINFO  
 [BITMAPINFOHEADER](http://msdn2.microsoft.com/en-us/library/dd183376) | Wingdi.h | Vanara.PInvoke.Gdi32+BITMAPINFOHEADER  
 [BLENDFUNCTION](http://msdn2.microsoft.com/en-us/library/dd183393) | Wingdi.h | Vanara.PInvoke.Gdi32+BLENDFUNCTION  
-[COLORREF](https://www.google.com/search?num=5&q=COLORREF+site%3Amsdn.microsoft.com) | WinDef.h | Vanara.PInvoke.Gdi32+COLORREF  
+[COLORREF](http://msdn2.microsoft.com/en-us/library/dd183449) | Windef.h | Vanara.PInvoke.Gdi32+COLORREF  
 [DIBSECTION](http://msdn2.microsoft.com/en-us/library/dd183567) | Wingdi.h | Vanara.PInvoke.Gdi32+DIBSECTION  
 [LOGFONT](http://msdn2.microsoft.com/en-us/library/dd145037) | Wingdi.h | Vanara.PInvoke.Gdi32+LOGFONT  
 [RGBQUAD](http://msdn2.microsoft.com/en-us/library/dd162938) | Wingdi.h | Vanara.PInvoke.Gdi32+RGBQUAD  

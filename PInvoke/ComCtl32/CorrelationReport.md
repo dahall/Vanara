@@ -87,7 +87,6 @@ Native Structure | Header | Managed Structure
 [HDLAYOUT](http://msdn2.microsoft.com/en-us/library/bb775249) | Commctrl.h | Vanara.PInvoke.ComCtl32+HDLAYOUT  
 [HDTEXTFILTER](http://msdn2.microsoft.com/en-us/library/bb775251) | Commctrl.h | Vanara.PInvoke.ComCtl32+HDTEXTFILTER  
 [IMAGEINFO](http://msdn2.microsoft.com/en-us/library/bb761393) | Commctrl.h | Vanara.PInvoke.ComCtl32+IMAGEINFO  
-[ImageListDrawColor](https://www.google.com/search?num=5&q=ImageListDrawColor+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.ComCtl32+ImageListDrawColor  
 [IMAGELISTDRAWPARAMS](http://msdn2.microsoft.com/en-us/library/bb761395) | Commctrl.h | Vanara.PInvoke.ComCtl32+IMAGELISTDRAWPARAMS  
 [IMAGELISTSTATS](http://msdn2.microsoft.com/en-us/library/bb761397) | Commoncontrols.h | Vanara.PInvoke.ComCtl32+IMAGELISTSTATS  
 [INITCOMMONCONTROLSEX](http://msdn2.microsoft.com/en-us/library/bb775507) | Commctrl.h | Vanara.PInvoke.ComCtl32+INITCOMMONCONTROLSEX  
