@@ -1,5 +1,8 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using Vanara.Extensions;
 
 namespace Vanara.PInvoke.Tests
 {
@@ -141,7 +144,29 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void GetThemeStreamTest()
 		{
-			throw new NotImplementedException();
+			const int WP_MINCAPTION = 3;
+			const int MNCS_ACTIVE = 1;
+			const int TMT_ATLASRECT = 8002;
+
+			Application.EnableVisualStyles();
+			var w = new NativeWindow();
+			var cp = new CreateParams();
+			w.CreateHandle(cp);
+
+			using (var h = UxTheme.OpenThemeData(new HandleRef(w, w.Handle), "DWMWINDOW"))
+			{
+				if (!h.IsInvalid)
+				{
+					UxTheme.GetThemeRect(h, WP_MINCAPTION, MNCS_ACTIVE, TMT_ATLASRECT, out var rect);
+					using (var hInstance = Kernel32.LoadLibraryEx(@"C:\Windows\resources\themes\Aero\Aero.msstyles", dwFlags: Kernel32.LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE))
+					{
+						var hr = UxTheme.GetThemeStream(h, WP_MINCAPTION, MNCS_ACTIVE, TMT_ATLASRECT, out var themeStream, out var streamSize, hInstance);
+						byte[] bytes = hr.Succeeded ? themeStream.ToArray<byte>((int)streamSize) : new byte[0];
+					}
+				}
+			}
+
+			w.DestroyHandle();
 		}
 
 		[Test()]

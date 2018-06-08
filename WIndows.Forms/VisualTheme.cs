@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Kernel32;
@@ -300,16 +301,16 @@ namespace Vanara.Windows.Forms
 
 		public byte[] GetDiskStream(SafeLibraryHandle hInst, int partId, int stateId, int propId)
 		{
-			var r = GetThemeStream(hTheme, partId, stateId, propId, out byte[] bytes, out int bLen, hInst);
-			if (r.Succeeded) return bytes;
+			var r = GetThemeStream(hTheme, partId, stateId, propId, out var bytes, out var bLen, hInst);
+			if (r.Succeeded) return bytes.ToArray<byte>((int)bLen);
 			if (r != 0x80070490) throw new InvalidOperationException("Bad GetThemeStream");
 			return null;
 		}
 
 		public byte[] GetStream(int partId, int stateId, int propId)
 		{
-			var r = GetThemeStream(hTheme, partId, stateId, propId, out byte[] bytes, out int bLen, IntPtr.Zero);
-			if (r.Succeeded) return bytes;
+			var r = GetThemeStream(hTheme, partId, stateId, propId, out var bytes, out var bLen, IntPtr.Zero);
+			if (r.Succeeded) return bytes.ToArray<byte>((int)bLen);
 			if (r != 0x80070490) throw new InvalidOperationException("Bad GetThemeStream");
 			return null;
 		}
