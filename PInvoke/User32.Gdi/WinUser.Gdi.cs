@@ -20,46 +20,79 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
 		public delegate IntPtr DialogProc(IntPtr hwndDlg, uint uMsg, IntPtr wParam, IntPtr lParam);
 
+		/// <summary>Flags used by the <see cref="DrawEdge"/> method.</summary>
 		[PInvokeData("WinUser.h")]
 		[Flags]
 		public enum BorderFlags : uint
 		{
+			/// <summary>Left side of border rectangle.</summary>
 			BF_LEFT = 0x0001,
+			/// <summary>Top of border rectangle.</summary>
 			BF_TOP = 0x0002,
+			/// <summary>Right side of border rectangle.</summary>
 			BF_RIGHT = 0x0004,
+			/// <summary>Bottom of border rectangle.</summary>
 			BF_BOTTOM = 0x0008,
+			/// <summary>Top and left side of border rectangle.</summary>
 			BF_TOPLEFT = (BF_TOP | BF_LEFT),
+			/// <summary>Top and right side of border rectangle.</summary>
 			BF_TOPRIGHT = (BF_TOP | BF_RIGHT),
+			/// <summary>Bottom and left side of border rectangle.</summary>
 			BF_BOTTOMLEFT = (BF_BOTTOM | BF_LEFT),
+			/// <summary>Bottom and right side of border rectangle.</summary>
 			BF_BOTTOMRIGHT = (BF_BOTTOM | BF_RIGHT),
+			/// <summary>Entire border rectangle.</summary>
 			BF_RECT = (BF_LEFT | BF_TOP | BF_RIGHT | BF_BOTTOM),
+			/// <summary>Diagonal border.</summary>
 			BF_DIAGONAL = 0x0010,
+			/// <summary>Diagonal border. The end point is the top-right corner of the rectangle; the origin is lower-left corner.</summary>
 			BF_DIAGONAL_ENDTOPRIGHT = (BF_DIAGONAL | BF_TOP | BF_RIGHT),
+			/// <summary>Diagonal border. The end point is the top-left corner of the rectangle; the origin is lower-right corner.</summary>
 			BF_DIAGONAL_ENDTOPLEFT = (BF_DIAGONAL | BF_TOP | BF_LEFT),
+			/// <summary>Diagonal border. The end point is the lower-left corner of the rectangle; the origin is top-right corner.</summary>
 			BF_DIAGONAL_ENDBOTTOMLEFT = (BF_DIAGONAL | BF_BOTTOM | BF_LEFT),
+			/// <summary>Diagonal border. The end point is the lower-right corner of the rectangle; the origin is top-left corner.</summary>
 			BF_DIAGONAL_ENDBOTTOMRIGHT = (BF_DIAGONAL | BF_BOTTOM | BF_RIGHT),
+			/// <summary>Interior of rectangle to be filled.</summary>
 			BF_MIDDLE = 0x0800,
+			/// <summary>Soft buttons instead of tiles.</summary>
 			BF_SOFT = 0x1000,
+			/// <summary>The rectangle pointed to by the pDestRect parameter is shrunk to exclude the edges that were drawn; otherwise the rectangle does not change.</summary>
 			BF_ADJUST = 0x2000,
+			/// <summary>Flat border.</summary>
 			BF_FLAT = 0x4000,
+			/// <summary>One-dimensional border.</summary>
 			BF_MONO = 0x8000,
 		}
 
+		/// <summary>Styles used by the <see cref="DrawEdge"/> method.</summary>
 		[PInvokeData("WinUser.h")]
 		[Flags]
 		public enum BorderStyles3D : uint
 		{
+			/// <summary>Raised outer edge</summary>
 			BDR_RAISEDOUTER = 0x0001,
+			/// <summary>Sunken outer edge</summary>
 			BDR_SUNKENOUTER = 0x0002,
+			/// <summary>Raised inner edge</summary>
 			BDR_RAISEDINNER = 0x0004,
+			/// <summary>Sunken inner edge</summary>
 			BDR_SUNKENINNER = 0x0008,
+			/// <summary>Combination of BDR_RAISEDOUTER and BDR_SUNKENINNER</summary>
 			BDR_OUTER = (BDR_RAISEDOUTER | BDR_SUNKENOUTER),
+			/// <summary>Combination of BDR_RAISEDINNER and BDR_SUNKENINNER</summary>
 			BDR_INNER = (BDR_RAISEDINNER | BDR_SUNKENINNER),
+			/// <summary>Combination of BDR_RAISEDOUTER and BDR_RAISEDINNER</summary>
 			BDR_RAISED = (BDR_RAISEDOUTER | BDR_RAISEDINNER),
+			/// <summary>Combination of BDR_SUNKENOUTER and BDR_SUNKENINNER</summary>
 			BDR_SUNKEN = (BDR_SUNKENOUTER | BDR_SUNKENINNER),
+			/// <summary>Combination of BDR_RAISEDOUTER and BDR_RAISEDINNER</summary>
 			EDGE_RAISED = (BDR_RAISEDOUTER | BDR_RAISEDINNER),
+			/// <summary>Combination of BDR_SUNKENOUTER and BDR_SUNKENINNER</summary>
 			EDGE_SUNKEN = (BDR_SUNKENOUTER | BDR_SUNKENINNER),
+			/// <summary>Combination of BDR_SUNKENOUTER and BDR_RAISEDINNER</summary>
 			EDGE_ETCHED = (BDR_SUNKENOUTER | BDR_RAISEDINNER),
+			/// <summary>Combination of BDR_RAISEDOUTER and BDR_SUNKENINNER</summary>
 			EDGE_BUMP = (BDR_RAISEDOUTER | BDR_SUNKENINNER),
 		}
 
@@ -107,7 +140,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Values to use a return codes when handling the WM_HCHITTEST message.
 		/// </summary>
-		public enum HitTestValues
+		public enum HitTestValues : short
 		{
 			/// <summary>In the border of a window that does not have a sizing border.</summary>
 			HTBORDER = 18,
@@ -390,14 +423,171 @@ namespace Vanara.PInvoke
 		[System.Security.SecurityCritical]
 		public static extern bool DestroyIcon(IntPtr hIcon);
 
-		/// <summary>The DrawEdge function draws one or more edges of rectangle.</summary>
-		/// <param name="hDC">A handle to the device context.</param>
-		/// <param name="qrc">A pointer to a RECT structure that contains the logical coordinates of the rectangle.</param>
-		/// <param name="edge">The type of inner and outer edges to draw.</param>
-		/// <param name="grfFlags">The type of border.</param>
-		/// <returns>If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.</returns>
-		[PInvokeData("WinUser.h", MSDNShortId = "dd162498")]
-		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
+		/// <summary>The <c>DrawEdge</c> function draws one or more edges of rectangle.</summary>
+		/// <param name="hdc">A handle to the device context.</param>
+		/// <param name="qrc">A pointer to a <c>RECT</c> structure that contains the logical coordinates of the rectangle.</param>
+		/// <param name="edge">
+		/// <para>
+		/// The type of inner and outer edges to draw. This parameter must be a combination of one inner-border flag and one outer-border flag. The inner-border
+		/// flags are as follows.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>BDR_RAISEDINNER</term>
+		/// <term>Raised inner edge.</term>
+		/// </item>
+		/// <item>
+		/// <term>BDR_SUNKENINNER</term>
+		/// <term>Sunken inner edge.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// <para>The outer-border flags are as follows.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>BDR_RAISEDOUTER</term>
+		/// <term>Raised outer edge.</term>
+		/// </item>
+		/// <item>
+		/// <term>BDR_SUNKENOUTER</term>
+		/// <term>Sunken outer edge.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// <para>Alternatively, the edge parameter can specify one of the following flags.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>EDGE_BUMP</term>
+		/// <term>Combination of BDR_RAISEDOUTER and BDR_SUNKENINNER.</term>
+		/// </item>
+		/// <item>
+		/// <term>EDGE_ETCHED</term>
+		/// <term>Combination of BDR_SUNKENOUTER and BDR_RAISEDINNER.</term>
+		/// </item>
+		/// <item>
+		/// <term>EDGE_RAISED</term>
+		/// <term>Combination of BDR_RAISEDOUTER and BDR_RAISEDINNER.</term>
+		/// </item>
+		/// <item>
+		/// <term>EDGE_SUNKEN</term>
+		/// <term>Combination of BDR_SUNKENOUTER and BDR_SUNKENINNER.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="grfFlags">
+		/// <para>The type of border. This parameter can be a combination of the following values.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>BF_ADJUST</term>
+		/// <term>
+		/// If this flag is passed, shrink the rectangle pointed to by the qrc parameter to exclude the edges that were drawn.If this flag is not passed, then do
+		/// not change the rectangle pointed to by the qrc parameter.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>BF_BOTTOM</term>
+		/// <term>Bottom of border rectangle.</term>
+		/// </item>
+		/// <item>
+		/// <term>BF_BOTTOMLEFT</term>
+		/// <term>Bottom and left side of border rectangle.</term>
+		/// </item>
+		/// <item>
+		/// <term>BF_BOTTOMRIGHT</term>
+		/// <term>Bottom and right side of border rectangle.</term>
+		/// </item>
+		/// <item>
+		/// <term>BF_DIAGONAL</term>
+		/// <term>Diagonal border.</term>
+		/// </item>
+		/// <item>
+		/// <term>BF_DIAGONAL_ENDBOTTOMLEFT</term>
+		/// <term>Diagonal border. The end point is the lower-left corner of the rectangle; the origin is top-right corner.</term>
+		/// </item>
+		/// <item>
+		/// <term>BF_DIAGONAL_ENDBOTTOMRIGHT</term>
+		/// <term>Diagonal border. The end point is the lower-right corner of the rectangle; the origin is top-left corner.</term>
+		/// </item>
+		/// <item>
+		/// <term>BF_DIAGONAL_ENDTOPLEFT</term>
+		/// <term>Diagonal border. The end point is the top-left corner of the rectangle; the origin is lower-right corner.</term>
+		/// </item>
+		/// <item>
+		/// <term>BF_DIAGONAL_ENDTOPRIGHT</term>
+		/// <term>Diagonal border. The end point is the top-right corner of the rectangle; the origin is lower-left corner.</term>
+		/// </item>
+		/// <item>
+		/// <term>BF_FLAT</term>
+		/// <term>Flat border.</term>
+		/// </item>
+		/// <item>
+		/// <term>BF_LEFT</term>
+		/// <term>Left side of border rectangle.</term>
+		/// </item>
+		/// <item>
+		/// <term>BF_MIDDLE</term>
+		/// <term>Interior of rectangle to be filled.</term>
+		/// </item>
+		/// <item>
+		/// <term>BF_MONO</term>
+		/// <term>One-dimensional border.</term>
+		/// </item>
+		/// <item>
+		/// <term>BF_RECT</term>
+		/// <term>Entire border rectangle.</term>
+		/// </item>
+		/// <item>
+		/// <term>BF_RIGHT</term>
+		/// <term>Right side of border rectangle.</term>
+		/// </item>
+		/// <item>
+		/// <term>BF_SOFT</term>
+		/// <term>Soft buttons instead of tiles.</term>
+		/// </item>
+		/// <item>
+		/// <term>BF_TOP</term>
+		/// <term>Top of border rectangle.</term>
+		/// </item>
+		/// <item>
+		/// <term>BF_TOPLEFT</term>
+		/// <term>Top and left side of border rectangle.</term>
+		/// </item>
+		/// <item>
+		/// <term>BF_TOPRIGHT</term>
+		/// <term>Top and right side of border rectangle.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero.</para>
+		/// </returns>
+		// BOOL DrawEdge( _In_ HDC hdc, _Inout_ LPRECT qrc, _In_ UINT edge, _In_ UINT grfFlags);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/dd162477(v=vs.85).aspx
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Winuser.h", MSDNShortId = "dd162477")]
 		public static extern bool DrawEdge(SafeDCHandle hDC, ref RECT qrc, BorderStyles3D edge, BorderFlags grfFlags);
 
 		/// <summary>
