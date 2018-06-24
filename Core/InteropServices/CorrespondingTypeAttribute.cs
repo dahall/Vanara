@@ -107,7 +107,7 @@ namespace Vanara.InteropServices
 			var valueType = value.GetType();
 			if (!valueType.IsEnum && !valueType.IsClass) throw new ArgumentException("Value must be an enumeration or class value.", nameof(value));
 			var attr = (valueType.IsEnum ? valueType.GetField(value.ToString()).GetCustomAttributes<CorrespondingTypeAttribute>() : valueType.GetCustomAttributes<CorrespondingTypeAttribute>());
-			if (!attr.Any()) throw new InvalidOperationException("Value must have the CorrespondingTypeAttribute defined.");
+			if (!attr.Any()) return new CorrespondingTypeAttribute[0];
 			if (attr.Any(a => a.Action == CorrepsondingAction.Exception)) throw new Exception();
 			return attr;
 		}
@@ -116,7 +116,7 @@ namespace Vanara.InteropServices
 		{
 			if (type == null) throw new ArgumentNullException(nameof(type));
 			var attr = type.GetCustomAttributes<CorrespondingTypeAttribute>();
-			if (!attr.Any()) throw new InvalidOperationException("Type must have the CorrespondingTypeAttribute defined.");
+			if (!attr.Any()) return new CorrespondingTypeAttribute[0];
 			if (attr.Any(a => a.Action == CorrepsondingAction.Exception)) throw new Exception();
 			return attr;
 		}
