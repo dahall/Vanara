@@ -29,6 +29,7 @@ namespace Vanara.Extensions
 		All = TopLeft | TopRight | BottomLeft | BottomRight
 	}
 
+	/// <summary>Extensions to <c>Graphics</c> related classes.</summary>
 	public static partial class GraphicsExtension
 	{
 		/// <summary>
@@ -410,7 +411,7 @@ namespace Vanara.Extensions
 						double oc, op;
 						if (b == Color.Black)
 						{
-							oVals[i] = Color.FromArgb(255 - w.R, 0, 0, 0);
+							oVals[i] = Color.FromArgb(Bound(255 - w.R, 0, 255), 0, 0, 0);
 							continue;
 						}
 						if (w.R != b.R && b.R != 0)
@@ -429,7 +430,7 @@ namespace Vanara.Extensions
 							op = b.B / oc;
 						}
 						oVals[i] =
-							Color.FromArgb((int)Math.Round(op * 255.0), (int)Math.Round(b.R / op), (int)Math.Round(b.G / op),
+							Color.FromArgb(Bound((int)Math.Round(op * 255.0), 0, 255), (int)Math.Round(b.R / op), (int)Math.Round(b.G / op),
 								(int)Math.Round(b.B / op));
 					}
 					else
@@ -437,6 +438,9 @@ namespace Vanara.Extensions
 				}
 			}
 			return bmp;
+
+			int Bound(int value, int min, int max) => Math.Max(Math.Min(value, max), min);
+			double CalcOrigColor(byte w, byte b) => 255.0 * b / (255.0 - w + b);
 		}
 
 		/// <summary>A method to lighten a color by a percentage of the difference between the color and Black.</summary>
@@ -486,8 +490,6 @@ namespace Vanara.Extensions
 			}
 			return destImage;
 		}
-
-		private static double CalcOrigColor(byte w, byte b) => 255.0 * b / (255.0 - w + b);
 
 		/// <summary>A self-disposing LockBits class for Bitmaps.</summary>
 		/// <seealso cref="System.IDisposable"/>
