@@ -411,7 +411,7 @@ namespace Vanara.Extensions
 						double oc, op;
 						if (b == Color.Black)
 						{
-							oVals[i] = Color.FromArgb(Bound(255 - w.R, 0, 255), 0, 0, 0);
+							oVals[i] = Color.FromArgb(255 - w.R, 0, 0, 0);
 							continue;
 						}
 						if (w.R != b.R && b.R != 0)
@@ -430,8 +430,7 @@ namespace Vanara.Extensions
 							op = b.B / oc;
 						}
 						oVals[i] =
-							Color.FromArgb(Bound((int)Math.Round(op * 255.0), 0, 255), (int)Math.Round(b.R / op), (int)Math.Round(b.G / op),
-								(int)Math.Round(b.B / op));
+							Color.FromArgb(RoundBound(op * 255.0), RoundBound(b.R / op), RoundBound(b.G / op), RoundBound(b.B / op));
 					}
 					else
 						oVals[i] = bVals[i];
@@ -439,7 +438,7 @@ namespace Vanara.Extensions
 			}
 			return bmp;
 
-			int Bound(int value, int min, int max) => Math.Max(Math.Min(value, max), min);
+			int RoundBound(double v) => (int)Math.Round(Math.Min(255.0, Math.Max(0.0, v)));
 			double CalcOrigColor(byte w, byte b) => 255.0 * b / (255.0 - w + b);
 		}
 
