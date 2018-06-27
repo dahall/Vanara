@@ -633,6 +633,30 @@ namespace Vanara.PInvoke
 		[System.Security.SecurityCritical]
 		public static extern bool GetClientRect(HandleRef hWnd, [In, Out] ref RECT lpRect);
 
+		/// <summary>
+		/// Retrieves a handle to the desktop window. The desktop window covers the entire screen. The desktop window is the area on top of which other windows
+		/// are painted.
+		/// </summary>
+		/// <returns>The return value is a handle to the desktop window.</returns>
+		// HWND WINAPI GetDesktopWindow(void);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633504(v=vs.85).aspx
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Winuser.h", MSDNShortId = "ms633504")]
+		public static extern IntPtr GetDesktopWindow();
+
+		/// <summary>
+		/// The GetDC function retrieves a handle to a device context (DC) for the client area of a specified window or for the entire screen. You can use the
+		/// returned handle in subsequent GDI functions to draw in the DC. The device context is an opaque data structure, whose values are used internally by GDI.
+		/// </summary>
+		/// <param name="ptr">A handle to the window whose DC is to be retrieved. If this value is NULL, GetDC retrieves the DC for the entire screen.</param>
+		/// <returns>
+		/// If the function succeeds, the return value is a handle to the DC for the specified window's client area. If the function fails, the return value is NULL.
+		/// </returns>
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/dd144871(v=vs.85).aspx
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Winuser.h", MSDNShortId = "dd144871")]
+		public static extern IntPtr GetDC(IntPtr ptr);
+
 		/// <summary>Retrieves the current color of the specified display element. Display elements are the parts of a window and the display that appear on the system display screen.</summary>
 		/// <param name="nIndex">The display element whose color is to be retrieved.</param>
 		/// <returns>The function returns the red, green, blue (RGB) color value of the given element.		
