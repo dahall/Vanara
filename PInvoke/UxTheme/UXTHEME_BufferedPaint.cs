@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.Gdi32;
 
 // ReSharper disable FieldCanBeMadeReadOnly.Global
@@ -55,128 +56,323 @@ namespace Vanara.PInvoke
 			BPPF_NONCLIENT = 4,
 		}
 
-		/// <summary>Begins a buffered animation operation. The animation consists of a cross-fade between the contents of two buffers over a specified period of time.</summary>
-		/// <param name="hwnd">A handle to the window in which the animations play.</param>
-		/// <param name="hdcTarget">A handle of the target DC on which the buffer is animated.</param>
-		/// <param name="rcTarget">A pointer to a structure that specifies the area of the target DC in which to draw.</param>
-		/// <param name="dwFormat">The format of the buffer.</param>
-		/// <param name="pPaintParams">A pointer to a structure that defines the paint operation parameters. This value can be NULL.</param>
-		/// <param name="pAnimationParams">A pointer to a structure that defines the animation operation parameters.</param>
-		/// <param name="phdcFrom">When this function returns, this value points to the handle of the DC where the application should paint the initial state of the animation, if not NULL.</param>
-		/// <param name="phdcTo">When this function returns, this value points to the handle of the DC where the application should paint the final state of the animation, if not NULL.</param>
-		/// <returns>A handle to the buffered paint animation.</returns>
-		[PInvokeData("UxTheme.h")]
-		[DllImport(Lib.UxTheme, ExactSpelling = true, SetLastError = true)]
-		public static extern IntPtr BeginBufferedAnimation(HandleRef hwnd, SafeDCHandle hdcTarget, [In] ref RECT rcTarget, BP_BUFFERFORMAT dwFormat,
+		/// <summary>
+		/// Begins a buffered animation operation. The animation consists of a cross-fade between the contents of two buffers over a specified period of time.
+		/// </summary>
+		/// <param name="hwnd">
+		/// <para>Type: <c><c>HWND</c></c></para>
+		/// <para>A handle to the window in which the animations play.</para>
+		/// </param>
+		/// <param name="hdcTarget">
+		/// <para>Type: <c><c>HDC</c></c></para>
+		/// <para>A handle of the target DC on which the buffer is animated.</para>
+		/// </param>
+		/// <param name="rcTarget">
+		/// <para>Type: <c>const <c>RECT</c>*</c></para>
+		/// <para>A pointer to a structure that specifies the area of the target DC in which to draw.</para>
+		/// </param>
+		/// <param name="dwFormat">
+		/// <para>Type: <c><c>BP_BUFFERFORMAT</c></c></para>
+		/// <para>The format of the buffer.</para>
+		/// </param>
+		/// <param name="pPaintParams">
+		/// <para>Type: <c><c>BP_PAINTPARAMS</c>*</c></para>
+		/// <para>A pointer to a structure that defines the paint operation parameters. This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="pAnimationParams">
+		/// <para>Type: <c><c>BP_ANIMATIONPARAMS</c>*</c></para>
+		/// <para>A pointer to a structure that defines the animation operation parameters.</para>
+		/// </param>
+		/// <param name="phdcFrom">
+		/// <para>Type: <c><c>HDC</c>*</c></para>
+		/// <para>
+		/// When this function returns, this value points to the handle of the DC where the application should paint the initial state of the animation, if not <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="phdcTo">
+		/// <para>Type: <c><c>HDC</c>*</c></para>
+		/// <para>
+		/// When this function returns, this value points to the handle of the DC where the application should paint the final state of the animation, if not <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HANIMATIONBUFFER</c></para>
+		/// <para>A handle to the buffered paint animation.</para>
+		/// </returns>
+		// HANIMATIONBUFFER BeginBufferedAnimation( HWND hwnd, HDC hdcTarget, const RECT *rcTarget, BP_BUFFERFORMAT dwFormat, _In_ BP_PAINTPARAMS *pPaintParams, _In_ BP_ANIMATIONPARAMS *pAnimationParams, _Out_ HDC *phdcFrom, _Out_ HDC *phdcTo);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773252(v=vs.85).aspx
+		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773252")]
+		public static extern SafeBufferedAnimationHandle BeginBufferedAnimation(HandleRef hwnd, SafeDCHandle hdcTarget, [In] ref RECT rcTarget, BP_BUFFERFORMAT dwFormat,
 			[In] BP_PAINTPARAMS pPaintParams, [In] ref BP_ANIMATIONPARAMS pAnimationParams, out IntPtr phdcFrom, out IntPtr phdcTo);
 
 		/// <summary>Begins a buffered paint operation.</summary>
-		/// <param name="hdcTarget">The handle of the target DC on which the buffer will be painted.</param>
-		/// <param name="prcTarget">A pointer to a RECT structure that specifies the area of the target DC in which to paint.</param>
-		/// <param name="dwFormat">A member of the BP_BUFFERFORMAT enumeration that specifies the format of the buffer.</param>
-		/// <param name="pPaintParams">A pointer to a BP_PAINTPARAMS structure that defines the paint operation parameters. This value can be NULL.</param>
-		/// <param name="phdc">When this function returns, points to the handle of the new device context.</param>
-		/// <returns>A handle to the buffered paint context. If this function fails, the return value is NULL, and phdc is NULL. To get extended error information, call GetLastError.
-		/// <para>The returned handle is freed when EndBufferedPaint is called.</para>
-		/// <para>An application should call BufferedPaintInit on the calling thread before calling BeginBufferedPaint, and BufferedPaintUnInit before the thread is terminated.Failure to call BufferedPaintInit may result in degraded performance due to internal data being initialized and destroyed for each buffered paint operation.</para></returns>
-		[PInvokeData("UxTheme.h")]
-		[DllImport(Lib.UxTheme, ExactSpelling = true, SetLastError = true)]
-		public static extern IntPtr BeginBufferedPaint(SafeDCHandle hdcTarget, [In] ref RECT prcTarget, BP_BUFFERFORMAT dwFormat, [In] BP_PAINTPARAMS pPaintParams, out IntPtr phdc);
+		/// <param name="hdcTarget">
+		/// <para>Type: <c><c>HDC</c></c></para>
+		/// <para>The handle of the target DC on which the buffer will be painted.</para>
+		/// </param>
+		/// <param name="prcTarget">
+		/// <para>Type: <c>const <c>RECT</c>*</c></para>
+		/// <para>A pointer to a <c>RECT</c> structure that specifies the area of the target DC in which to paint.</para>
+		/// </param>
+		/// <param name="dwFormat">
+		/// <para>Type: <c><c>BP_BUFFERFORMAT</c></c></para>
+		/// <para>A member of the <c>BP_BUFFERFORMAT</c> enumeration that specifies the format of the buffer.</para>
+		/// </param>
+		/// <param name="pPaintParams">
+		/// <para>Type: <c><c>BP_PAINTPARAMS</c>*</c></para>
+		/// <para>A pointer to a <c>BP_PAINTPARAMS</c> structure that defines the paint operation parameters. This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="phdc">
+		/// <para>Type: <c><c>HDC</c>*</c></para>
+		/// <para>When this function returns, points to the handle of the new device context.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HPAINTBUFFER</c></para>
+		/// <para>
+		/// A handle to the buffered paint context. If this function fails, the return value is <c>NULL</c>, and phdc is <c>NULL</c>. To get extended error
+		/// information, call <c>GetLastError</c>.
+		/// </para>
+		/// <para>The returned handle is freed when <c>EndBufferedPaint</c> is called.</para>
+		/// <para>
+		/// An application should call <c>BufferedPaintInit</c> on the calling thread before calling <c>BeginBufferedPaint</c>, and <c>BufferedPaintUnInit</c>
+		/// before the thread is terminated. Failure to call <c>BufferedPaintInit</c> may result in degraded performance due to internal data being initialized
+		/// and destroyed for each buffered paint operation.
+		/// </para>
+		/// </returns>
+		// HPAINTBUFFER BeginBufferedPaint( HDC hdcTarget, const RECT *prcTarget, BP_BUFFERFORMAT dwFormat, _In_ BP_PAINTPARAMS *pPaintParams, _Out_ HDC *phdc);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773257(v=vs.85).aspx
+		[DllImport(Lib.UxTheme, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773257")]
+		public static extern SafeBufferedPaintHandle BeginBufferedPaint(SafeDCHandle hdcTarget, [In] ref RECT prcTarget, BP_BUFFERFORMAT dwFormat, [In] BP_PAINTPARAMS pPaintParams, out IntPtr phdc);
 
 		/// <summary>Clears a specified rectangle in the buffer to ARGB = {0,0,0,0}.</summary>
-		/// <param name="hBufferedPaint">The handle of the buffered paint context, obtained through BeginBufferedPaint.</param>
-		/// <param name="prc">A pointer to a RECT structure that specifies the rectangle to clear. Set this parameter to NULL to specify the entire buffer.</param>
-		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[PInvokeData("UxTheme.h")]
-		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern HRESULT BufferedPaintClear(IntPtr hBufferedPaint, ref RECT prc);
+		/// <param name="hBufferedPaint">
+		/// <para>Type: <c>HPAINTBUFFER</c></para>
+		/// <para>The handle of the buffered paint context, obtained through <c>BeginBufferedPaint</c>.</para>
+		/// </param>
+		/// <param name="prc">
+		/// <para>Type: <c>const <c>RECT</c>*</c></para>
+		/// <para>A pointer to a <c>RECT</c> structure that specifies the rectangle to clear. Set this parameter to <c>NULL</c> to specify the entire buffer.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c><c>HRESULT</c></c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// HRESULT BufferedPaintClear( HPAINTBUFFER hBufferedPaint, _In_ const RECT *prc);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773262(v=vs.85).aspx
+		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773262")]
+		public static extern HRESULT BufferedPaintClear(SafeBufferedPaintHandle hBufferedPaint, ref RECT prc);
 
 		/// <summary>Initialize buffered painting for the current thread.</summary>
-		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[PInvokeData("UxTheme.h")]
-		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		/// <returns>
+		/// <para>Type: <c><c>HRESULT</c></c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// HRESULT BufferedPaintInit(void);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773266(v=vs.85).aspx
+		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773266")]
 		public static extern HRESULT BufferedPaintInit();
 
 		/// <summary>Paints the next frame of a buffered paint animation.</summary>
-		/// <param name="hwnd">Handle to the window in which the animations play.</param>
-		/// <param name="hdcTarget">Handle of the target DC on which the buffer is animated.</param>
-		/// <returns>Returns TRUE if the frame has been painted, or FALSE otherwise.</returns>
-		[PInvokeData("UxTheme.h")]
-		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		/// <param name="hwnd">
+		/// <para>Type: <c><c>HWND</c></c></para>
+		/// <para>Handle to the window in which the animations play.</para>
+		/// </param>
+		/// <param name="hdcTarget">
+		/// <para>Type: <c><c>HDC</c></c></para>
+		/// <para>Handle of the target DC on which the buffer is animated.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c><c>BOOL</c></c></para>
+		/// <para>Returns <c>TRUE</c> if the frame has been painted, or <c>FALSE</c> otherwise.</para>
+		/// </returns>
+		// BOOL BufferedPaintRenderAnimation( HWND hwnd, HDC hdcTarget);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773271(v=vs.85).aspx
+		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773271")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool BufferedPaintRenderAnimation(HandleRef hwnd, SafeDCHandle hdcTarget);
 
-		/// <summary>Sets the alpha to a specified value in a given rectangle. The alpha controls the amount of transparency applied when blending with the buffer onto the destination target device context (DC).</summary>
-		/// <param name="hBufferedPaint">The handle of the buffered paint context, obtained through BeginBufferedPaint.</param>
-		/// <param name="prc">A pointer to a RECT structure that specifies the rectangle in which to set the alpha. Set this parameter to NULL to specify the entire buffer.</param>
-		/// <param name="alpha">The alpha value to set. The alpha value can range from zero (fully transparent) to 255 (fully opaque).</param>
-		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[PInvokeData("UxTheme.h")]
-		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern HRESULT BufferedPaintSetAlpha(IntPtr hBufferedPaint, ref RECT prc, byte alpha);
+		/// <summary>
+		/// Sets the alpha to a specified value in a given rectangle. The alpha controls the amount of transparency applied when blending with the buffer onto
+		/// the destination target device context (DC).
+		/// </summary>
+		/// <param name="hBufferedPaint">
+		/// <para>Type: <c>HPAINTBUFFER</c></para>
+		/// <para>The handle of the buffered paint context, obtained through <c>BeginBufferedPaint</c>.</para>
+		/// </param>
+		/// <param name="prc">
+		/// <para>Type: <c>const <c>RECT</c>*</c></para>
+		/// <para>
+		/// A pointer to a <c>RECT</c> structure that specifies the rectangle in which to set the alpha. Set this parameter to <c>NULL</c> to specify the entire buffer.
+		/// </para>
+		/// </param>
+		/// <param name="alpha">
+		/// <para>Type: <c><c>BYTE</c></c></para>
+		/// <para>The alpha value to set. The alpha value can range from zero (fully transparent) to 255 (fully opaque).</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c><c>HRESULT</c></c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// HRESULT BufferedPaintSetAlpha( HPAINTBUFFER hBufferedPaint, _In_ const RECT *prc, BYTE alpha);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773276(v=vs.85).aspx
+		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773276")]
+		public static extern HRESULT BufferedPaintSetAlpha(SafeBufferedPaintHandle hBufferedPaint, ref RECT prc, byte alpha);
 
 		/// <summary>Stops all buffered animations for the given window.</summary>
-		/// <param name="hwnd">The handle of the window in which to stop all animations.</param>
-		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[PInvokeData("UxTheme.h")]
-		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		/// <param name="hwnd">
+		/// <para>Type: <c><c>HWND</c></c></para>
+		/// <para>The handle of the window in which to stop all animations.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c><c>HRESULT</c></c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// HRESULT BufferedPaintStopAllAnimations( HWND hwnd);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773280(v=vs.85).aspx
+		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773280")]
 		public static extern HRESULT BufferedPaintStopAllAnimations(HandleRef hwnd);
 
-		/// <summary>Closes down buffered painting for the current thread. Called once for each call to BufferedPaintInit after calls to BeginBufferedPaint are no longer needed.</summary>
-		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[PInvokeData("UxTheme.h")]
-		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		/// <summary>
+		/// Closes down buffered painting for the current thread. Called once for each call to <c>BufferedPaintInit</c> after calls to <c>BeginBufferedPaint</c>
+		/// are no longer needed.
+		/// </summary>
+		/// <returns>
+		/// <para>Type: <c><c>HRESULT</c></c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// HRESULT BufferedPaintUnInit(void);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773284(v=vs.85).aspx
+		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773284")]
 		public static extern HRESULT BufferedPaintUnInit();
 
 		/// <summary>Renders the first frame of a buffered animation operation and starts the animation timer.</summary>
-		/// <param name="hbpAnimation">The handle to the buffered animation context that was returned by BeginBufferedAnimation.</param>
-		/// <param name="fUpdateTarget">If TRUE, updates the target DC with the animation. If FALSE, the animation is not started, the target DC is not updated, and the hbpAnimation parameter is freed.</param>
-		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[PInvokeData("UxTheme.h")]
-		[DllImport(Lib.UxTheme, ExactSpelling = true)]
+		/// <param name="hbpAnimation">
+		/// <para>Type: <c>HANIMATIONBUFFER</c></para>
+		/// <para>The handle to the buffered animation context that was returned by <c>BeginBufferedAnimation</c>.</para>
+		/// </param>
+		/// <param name="fUpdateTarget">
+		/// <para>Type: <c><c>BOOL</c></c></para>
+		/// <para>
+		/// If <c>TRUE</c>, updates the target DC with the animation. If <c>FALSE</c>, the animation is not started, the target DC is not updated, and the
+		/// hbpAnimation parameter is freed.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c><c>HRESULT</c></c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// HRESULT EndBufferedAnimation( HANIMATIONBUFFER hbpAnimation, BOOL fUpdateTarget);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773328(v=vs.85).aspx
+		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773328")]
 		public static extern HRESULT EndBufferedAnimation(IntPtr hbpAnimation, [MarshalAs(UnmanagedType.Bool)] bool fUpdateTarget);
 
 		/// <summary>Completes a buffered paint operation and frees the associated buffered paint handle.</summary>
-		/// <param name="hbp">The handle of the buffered paint context, obtained through BeginBufferedPaint.</param>
-		/// <param name="fUpdateTarget">TRUE to copy the buffer to the target DC.</param>
-		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[PInvokeData("UxTheme.h")]
-		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern HRESULT EndBufferedPaint(IntPtr hbp, [MarshalAs(UnmanagedType.Bool)] bool fUpdateTarget);
+		/// <param name="hBufferedPaint">
+		/// <para>Type: <c>HPAINTBUFFER</c></para>
+		/// <para>The handle of the buffered paint context, obtained through <c>BeginBufferedPaint</c>.</para>
+		/// </param>
+		/// <param name="fUpdateTarget">
+		/// <para>Type: <c><c>BOOL</c></c></para>
+		/// <para><c>TRUE</c> to copy the buffer to the target DC.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c><c>HRESULT</c></c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// HRESULT EndBufferedPaint( HPAINTBUFFER hBufferedPaint, BOOL fUpdateTarget);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773343(v=vs.85).aspx
+		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773343")]
+		public static extern HRESULT EndBufferedPaint(IntPtr hBufferedPaint, [MarshalAs(UnmanagedType.Bool)] bool fUpdateTarget);
 
 		/// <summary>Retrieves a pointer to the buffer bitmap if the buffer is a device-independent bitmap (DIB).</summary>
-		/// <param name="hBufferedPaint">The handle of the buffered paint context, obtained through BeginBufferedPaint.</param>
-		/// <param name="ppbBuffer">When this function returns, contains a pointer to the address of the buffer bitmap pixels.</param>
-		/// <param name="pcxRow">When this function returns, contains a pointer to the width, in pixels, of the buffer bitmap. This value is not necessarily equal to the buffer width. It may be larger.</param>
-		/// <returns>Returns S_OK if successful, or an error value otherwise. If an error occurs, ppbBuffer is set to NULL and pcxRow is set to zero.</returns>
-		[PInvokeData("UxTheme.h")]
-		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern HRESULT GetBufferedPaintBits(IntPtr hBufferedPaint, out IntPtr ppbBuffer, out int pcxRow);
+		/// <param name="hBufferedPaint">
+		/// <para>Type: <c>HPAINTBUFFER</c></para>
+		/// <para>The handle of the buffered paint context, obtained through <c>BeginBufferedPaint</c>.</para>
+		/// </param>
+		/// <param name="ppbBuffer">
+		/// <para>Type: <c><c>RGBQUAD</c>**</c></para>
+		/// <para>When this function returns, contains a pointer to the address of the buffer bitmap pixels.</para>
+		/// </param>
+		/// <param name="pcxRow">
+		/// <para>Type: <c>int*</c></para>
+		/// <para>
+		/// When this function returns, contains a pointer to the width, in pixels, of the buffer bitmap. This value is not necessarily equal to the buffer
+		/// width. It may be larger.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c><c>HRESULT</c></c></para>
+		/// <para>Returns S_OK if successful, or an error value otherwise. If an error occurs, ppbBuffer is set to <c>NULL</c> and pcxRow is set to zero.</para>
+		/// </returns>
+		// HRESULT GetBufferedPaintBits( HPAINTBUFFER hBufferedPaint, _Out_ RGBQUAD **ppbBuffer, _Out_ int *pcxRow);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773348(v=vs.85).aspx
+		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773348")]
+		public static extern HRESULT GetBufferedPaintBits(SafeBufferedPaintHandle hBufferedPaint, out IntPtr ppbBuffer, out int pcxRow);
 
-		/// <summary>Gets the paint device context (DC). This is the same value retrieved by BeginBufferedPaint.</summary>
-		/// <param name="hBufferedPaint">Handle of the buffered paint context, obtained through BeginBufferedPaint.</param>
-		/// <returns>Handle of the requested DC. This is the same DC that is returned by BeginBufferedPaint. Returns NULL upon failure.</returns>
-		[PInvokeData("UxTheme.h")]
-		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern IntPtr GetBufferedPaintDC(IntPtr hBufferedPaint);
+		/// <summary>Gets the paint device context (DC). This is the same value retrieved by <c>BeginBufferedPaint</c>.</summary>
+		/// <param name="hBufferedPaint">
+		/// <para>Type: <c>HPAINTBUFFER</c></para>
+		/// <para>Handle of the buffered paint context, obtained through <c>BeginBufferedPaint</c>.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c><c>HDC</c></c></para>
+		/// <para>Handle of the requested DC. This is the same DC that is returned by <c>BeginBufferedPaint</c>. Returns <c>NULL</c> upon failure.</para>
+		/// </returns>
+		// HDC GetBufferedPaintDC( HPAINTBUFFER hBufferedPaint);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773351(v=vs.85).aspx
+		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773351")]
+		public static extern IntPtr GetBufferedPaintDC(SafeBufferedPaintHandle hBufferedPaint);
 
 		/// <summary>Retrieves the target device context (DC).</summary>
-		/// <param name="hBufferedPaint">A handle to the buffered paint context obtained through BeginBufferedPaint.</param>
-		/// <returns>A handle to the requested DC, or NULL otherwise.</returns>
-		[PInvokeData("UxTheme.h")]
-		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern IntPtr GetBufferedPaintTargetDC(IntPtr hBufferedPaint);
+		/// <param name="hBufferedPaint">
+		/// <para>Type: <c>HPAINTBUFFER</c></para>
+		/// <para>A handle to the buffered paint context obtained through <c>BeginBufferedPaint</c>.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c><c>HDC</c></c></para>
+		/// <para>A handle to the requested DC, or <c>NULL</c> otherwise.</para>
+		/// </returns>
+		// HDC GetBufferedPaintTargetDC( HPAINTBUFFER hBufferedPaint);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773356(v=vs.85).aspx
+		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773356")]
+		public static extern IntPtr GetBufferedPaintTargetDC(SafeBufferedPaintHandle hBufferedPaint);
 
 		/// <summary>Retrieves the target rectangle specified by BeginBufferedPaint.</summary>
-		/// <param name="hBufferedPaint">Handle to the buffered paint context obtained through BeginBufferedPaint.</param>
-		/// <param name="prc">When this function returns, contains the requested rectangle.</param>
-		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[PInvokeData("UxTheme.h")]
-		[DllImport(Lib.UxTheme, ExactSpelling = true)]
-		public static extern HRESULT GetBufferedPaintTargetRect(IntPtr hBufferedPaint, out RECT prc);
+		/// <param name="hBufferedPaint">
+		/// <para>Type: <c>HPAINTBUFFER</c></para>
+		/// <para>Handle to the buffered paint context obtained through <c>BeginBufferedPaint</c>.</para>
+		/// </param>
+		/// <param name="prc">
+		/// <para>Type: <c><c>RECT</c>*</c></para>
+		/// <para>When this function returns, contains the requested rectangle.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c><c>HRESULT</c></c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// HRESULT GetBufferedPaintTargetRect( HPAINTBUFFER hBufferedPaint, _Out_ RECT *prc);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773361(v=vs.85).aspx
+		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773361")]
+		public static extern HRESULT GetBufferedPaintTargetRect(SafeBufferedPaintHandle hBufferedPaint, out RECT prc);
 
-		/// <summary>Defines animation parameters for the BP_PAINTPARAMS structure used by BeginBufferedPaint.</summary>
-		[PInvokeData("UxTheme.h")]
+		/// <summary>Defines animation parameters for the <c>BP_PAINTPARAMS</c> structure used by <c>BeginBufferedPaint</c>.</summary>
+		// typedef struct _BP_ANIMATIONPARAMS { DWORD cbSize; DWORD dwFlags; BP_ANIMATIONSTYLE style; DWORD dwDuration;} BP_ANIMATIONPARAMS, *PBP_ANIMATIONPARAMS;
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773224(v=vs.85).aspx
+		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773224")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct BP_ANIMATIONPARAMS
 		{
@@ -204,9 +400,10 @@ namespace Vanara.PInvoke
 			public static BP_ANIMATIONPARAMS Empty => new BP_ANIMATIONPARAMS { cbSize = (uint)Marshal.SizeOf(typeof(BP_ANIMATIONPARAMS)) };
 		}
 
-		/// <summary>Defines paint operation parameters for BeginBufferedPaint.</summary>
-		/// <seealso cref="System.IDisposable"/>
-		[PInvokeData("UxTheme.h")]
+		/// <summary>Defines paint operation parameters for <c>BeginBufferedPaint</c>.</summary>
+		// typedef struct _BP_PAINTPARAMS { DWORD cbSize; DWORD dwFlags; const RECT *prcExclude; const BLENDFUNCTION *pBlendFunction;} BP_PAINTPARAMS, *PBP_PAINTPARAMS;
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773228(v=vs.85).aspx
+		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773228")]
 		[StructLayout(LayoutKind.Sequential)]
 		public class BP_PAINTPARAMS : IDisposable
 		{
@@ -268,6 +465,63 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets an instance of this structure set to define clearing the background.</summary>
 			public static BP_PAINTPARAMS ClearBg => new BP_PAINTPARAMS(BufferedPaintParamsFlags.BPPF_ERASE);
+		}
+
+		/// <summary>
+		/// Automated initialization and uninitialization of buffered painting for the current thread. Automatically calls <see cref="BufferedPaintInit"/> on
+		/// construction and <see cref="BufferedPaintUnInit"/> on disposal.
+		/// </summary>
+		/// <example>
+		/// Best used by declaring a static field within the class that calls buffered paint methods. This will ensure that the initialization only happens once
+		/// per thread and then is uninitialized when all methods are complete.
+		/// <code lang="cs">
+		/// private static BufferedPaintBlock buffPaintBlock = new BufferedPaintBlock();
+		/// </code>
+		/// </example>
+		/// <seealso cref="System.IDisposable"/>
+		public class BufferedPaintBlock : IDisposable
+		{
+			/// <summary>Initializes a new instance of the <see cref="BufferedPaintBlock"/> class calling <see cref="BufferedPaintInit"/>.</summary>
+			public BufferedPaintBlock()
+			{
+				BufferedPaintInit().ThrowIfFailed();
+			}
+
+			/// <summary>Automatically calls <see cref="BufferedPaintUnInit"/>.</summary>
+			public void Dispose()
+			{
+				BufferedPaintUnInit();
+			}
+		}
+
+		/// <summary>A safe handle for buffered paint calls. Get handle by calling <see cref="BeginBufferedPaint"/>.</summary>
+		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
+		public class SafeBufferedPaintHandle : GenericSafeHandle
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeBufferedPaintHandle"/> class.</summary>
+			public SafeBufferedPaintHandle() : this(IntPtr.Zero) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeBufferedPaintHandle"/> class.</summary>
+			/// <param name="ptr">The PTR.</param>
+			/// <param name="updateTargetDC">if set to <c>true</c> [update target dc].</param>
+			/// <param name="owns">if set to <c>true</c> [owns].</param>
+			public SafeBufferedPaintHandle(IntPtr ptr, bool updateTargetDC = true, bool owns = true) : 
+				base(ptr, h => EndBufferedPaint(h, updateTargetDC).Succeeded, owns) { }
+		}
+
+		/// <summary>A safe handle for buffered paint animation calls. Get handle by calling <see cref="BeginBufferedAnimation"/>.</summary>
+		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle" />
+		public class SafeBufferedAnimationHandle : GenericSafeHandle
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeBufferedAnimationHandle"/> class.</summary>
+			public SafeBufferedAnimationHandle() : this(IntPtr.Zero) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeBufferedAnimationHandle"/> class.</summary>
+			/// <param name="ptr">The PTR.</param>
+			/// <param name="updateTargetDC">if set to <c>true</c> [update target dc].</param>
+			/// <param name="owns">if set to <c>true</c> [owns].</param>
+			public SafeBufferedAnimationHandle(IntPtr ptr, bool updateTargetDC = true, bool owns = true) :
+				base(ptr, h => EndBufferedAnimation(h, updateTargetDC).Succeeded, owns) { }
 		}
 	}
 }

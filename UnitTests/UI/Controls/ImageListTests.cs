@@ -63,7 +63,7 @@ namespace Vanara.Windows.Forms.Tests
 			ShowImage(ico.ToAlphaBitmap());
 		}
 
-		private static void ShowImage(Image img, [System.Runtime.CompilerServices.CallerMemberName] string title = "")
+		internal static void ShowImage(Image img, [System.Runtime.CompilerServices.CallerMemberName] string title = "", int timeOut = 3)
 		{
 			Application.EnableVisualStyles();
 			var frm = new Form { Size = new Size(300, 300), FormBorderStyle = FormBorderStyle.Sizable, Text = title };
@@ -71,7 +71,16 @@ namespace Vanara.Windows.Forms.Tests
 			pbox.DoubleClick += (s, e) => pbox.SizeMode = PictureBoxSizeMode.Zoom;
 			frm.KeyDown += (s, e) => frm.BackColor = Color.Red;
 			frm.Controls.Add(pbox);
+			if (timeOut > 0)
+				frm.Shown += (s,e) => FormTimeout();
 			frm.ShowDialog();
+
+			void FormTimeout()
+			{
+				var t = new Timer { Interval = timeOut * 1000 };
+				t.Tick += (s, e) => { t.Stop(); frm.Close(); };
+				t.Start();
+			}
 		}
 	}
 }
