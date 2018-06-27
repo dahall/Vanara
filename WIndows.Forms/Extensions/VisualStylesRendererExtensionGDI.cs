@@ -11,6 +11,10 @@ using static Vanara.PInvoke.UxTheme;
 
 namespace Vanara.Extensions
 {
+	/// <summary>
+	/// Extension methods for <see cref="VisualStyleRenderer"/> for glass effects and extended method functionality. Also provides GetFont2 and GetMargins2
+	/// methods that corrects base library's non-functioning methods.
+	/// </summary>
 	public static partial class VisualStylesRendererExtension
 	{
 		private static readonly Dictionary<long, Bitmap> bmpCache = new Dictionary<long, Bitmap>();
@@ -25,7 +29,7 @@ namespace Vanara.Extensions
 		/// <param name="bounds">A <see cref="Rectangle"/> in which the background image is drawn.</param>
 		/// <param name="clipRectangle">A <see cref="Rectangle"/> that defines a clipping rectangle for the drawing operation.</param>
 		/// <param name="rightToLeft">If set to <c>true</c> flip the image for right to left layout.</param>
-		public static void DrawBackground(this VisualStyleRenderer rnd, Graphics dc, Rectangle bounds, Rectangle? clipRectangle = null, bool rightToLeft = false)
+		public static void DrawBackground(this VisualStyleRenderer rnd, IDeviceContext dc, Rectangle bounds, Rectangle? clipRectangle = null, bool rightToLeft = false)
 		{
 			/*var h = rnd.GetHashCode();
 			Bitmap bmp;
@@ -82,14 +86,14 @@ namespace Vanara.Extensions
 		/// <param name="bounds">A <see cref="Rectangle"/> in which the image is drawn.</param>
 		/// <param name="imageList">An <see cref="ImageList"/> that contains the <see cref="Image"/> to draw.</param>
 		/// <param name="imageIndex">The index of the <see cref="Image"/> within <paramref name="imageList"/> to draw.</param>
-		public static void DrawGlassImage(this VisualStyleRenderer rnd, Graphics g, Rectangle bounds, ImageList imageList, int imageIndex)
+		public static void DrawGlassImage(this VisualStyleRenderer rnd, IDeviceContext g, Rectangle bounds, ImageList imageList, int imageIndex)
 		{
 			var ht = new SafeThemeHandle(rnd.Handle, false);
 			DrawWrapper(g, bounds,
 				memoryHdc =>
 				{
 					var rBounds = new RECT(bounds);
-					DrawThemeIcon(ht, memoryHdc, rnd.Part, rnd.State, ref rBounds, imageList.Handle, imageIndex);
+					DrawThemeIcon(ht, memoryHdc, rnd.Part, rnd.State, ref rBounds, new System.Runtime.InteropServices.HandleRef(imageList, imageList.Handle), imageIndex);
 				}
 				);
 		}
@@ -102,7 +106,7 @@ namespace Vanara.Extensions
 		/// <param name="bounds">A <see cref="Rectangle" /> in which the image is drawn.</param>
 		/// <param name="image">An <see cref="ImageList" /> that contains the <see cref="Image" /> to draw.</param>
 		/// <param name="disabled">if set to <c>true</c> draws the image in a disabled state using the <see cref="ControlPaint.DrawImageDisabled"/> method.</param>
-		public static void DrawGlassImage(this VisualStyleRenderer rnd, Graphics g, Rectangle bounds, Image image, bool disabled = false)
+		public static void DrawGlassImage(this VisualStyleRenderer rnd, IDeviceContext g, Rectangle bounds, Image image, bool disabled = false)
 		{
 			DrawWrapper(g, bounds,
 				memoryHdc =>
@@ -246,7 +250,7 @@ namespace Vanara.Extensions
 			using (var hdc = new SafeDCHandle(dc))
 			{
 				return 0 != GetThemeFont(new SafeThemeHandle(rnd.Handle, false), hdc, rnd.Part, rnd.State, 210, out LOGFONT f)
-					? defaultValue : f.ToFont();
+					? defaultValue : Font.FromLogFont(f);
 			}
 		}
 
