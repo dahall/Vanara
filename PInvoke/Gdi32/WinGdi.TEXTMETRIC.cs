@@ -7,29 +7,6 @@ namespace Vanara.PInvoke
 {
 	public static partial class Gdi32
 	{
-		/// <summary>Specifies information about the pitch, the technology, and the family of a physical font.</summary>
-		[PInvokeData("Wingdi.h", MSDNShortId = "dd145037")]
-		[Flags]
-		public enum FontPitch : byte
-		{
-			/// <summary>The default pitch, which is implementation-dependent.</summary>
-			DEFAULT_PITCH = 0,
-			/// <summary>A fixed pitch, which means that all the characters in the font occupy the same width when output in a string.</summary>
-			FIXED_PITCH = 1,
-			/// <summary>A variable pitch, which means that the characters in the font occupy widths that are proportional to the actual widths of the glyphs when output in a string. For example, the "i" and space characters usually have much smaller widths than a "W" or "O" character.</summary>
-			VARIABLE_PITCH = 2,
-			/// <summary>The mono font/</summary>
-			MONO_FONT = 8,
-			/// <summary>If this bit is set the font is a variable pitch font. If this bit is clear the font is a fixed pitch font. Note very carefully that those meanings are the opposite of what the constant name implies.</summary>
-			TMPF_FIXED_PITCH = 0x01,
-			/// <summary>If this bit is set the font is a vector font.</summary>
-			TMPF_VECTOR = 0x02,
-			/// <summary>If this bit is set the font is a TrueType font.</summary>
-			TMPF_TRUETYPE = 0x04,
-			/// <summary>If this bit is set the font is a device font.</summary>
-			TMPF_DEVICE = 0x08,
-		}
-
 		public enum TMCHARSET : byte
 		{
 			/// <summary>The ANSI CHARSET</summary>
