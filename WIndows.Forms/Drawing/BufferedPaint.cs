@@ -10,28 +10,66 @@ using static Vanara.PInvoke.UxTheme;
 
 namespace Vanara.Drawing
 {
+	/// <summary>Buffered painting helper class.</summary>
 	public static class BufferedPaint
 	{
 		private static readonly Dictionary<IntPtr, Tuple<object, object>> paintAnimationInstances = new Dictionary<IntPtr, Tuple<object, object>>();
 
-		static BufferedPaint() { BufferedPaintInit(); }
-
+		/// <summary>A method delegate that retrieves a duration, in milliseconds, to use as the time over which buffered painting occurs.</summary>
+		/// <typeparam name="TState">The type of the state that is used to determine the transition duration.</typeparam>
+		/// <param name="oldState">The old state value.</param>
+		/// <param name="newState">The new state value.</param>
+		/// <returns>A duration, in milliseconds, to use as the time over which buffered painting occurs.</returns>
 		public delegate int GetDuration<in TState>(TState oldState, TState newState);
 
+		/// <summary>A method delegate to paint a stateful image.</summary>
+		/// <typeparam name="TState">The type of the state that is used to determine the image to paint.</typeparam>
+		/// <typeparam name="TParam">The type of the parameter that is passed into this method.</typeparam>
+		/// <param name="graphics">The graphics instance on which to paint the image.</param>
+		/// <param name="bounds">The bounds within which to paint the image.</param>
+		/// <param name="currentState">The current state to paint.</param>
+		/// <param name="data">The custom data passed into this method.</param>
 		public delegate void PaintAction<in TState, in TParam>(Graphics graphics, Rectangle bounds, TState currentState, TParam data);
 
-		public static void Paint<TState, TParam>(Graphics graphics, Rectangle bounds, PaintAction<TState, TParam> paintAction,
-			TState currentState, TParam data)
+		/// <summary>Performs a buffered paint operation.</summary>
+		/// <typeparam name="TState">The type of the state that is used to determine the image to paint.</typeparam>
+		/// <typeparam name="TParam">The type of the parameter that is passed into this method.</typeparam>
+		/// <param name="graphics">The target DC on which the buffer is painted.</param>
+		/// <param name="bounds">Specifies the area of the target DC in which to draw.</param>
+		/// <param name="paintAction">A method delegate that performs the painting of the control at the provided state.</param>
+		/// <param name="currentState">The current state to use to start drawing the animation.</param>
+		/// <param name="data">User-defined data to pass to the <paramref name="paintAction"/> callback.</param>
+		public static void Paint<TState, TParam>(Graphics graphics, Rectangle bounds, PaintAction<TState, TParam> paintAction, TState currentState, TParam data)
 		{
 			using (var g = new SafeDCHandle(graphics))
-			using (var bp = new BufferedPaintHandle(g, bounds))
+			using (var bp = new BufferedPainter(g, bounds))
 				paintAction(bp.Graphics, bounds, currentState, data);
 		}
 
+		/// <summary>Performs a buffered animation operation. The animation consists of a cross-fade between the contents of two buffers over a specified period of time.</summary>
+		/// <typeparam name="TState">The type of the state that is used to determine the image to paint.</typeparam>
+		/// <param name="graphics">The target DC on which the buffer is animated.</param>
+		/// <param name="ctrl">The window in which the animations play.</param>
+		/// <param name="bounds">Specifies the area of the target DC in which to draw.</param>
+		/// <param name="paintAction">A method delegate that performs the painting of the control at a given state.</param>
+		/// <param name="currentState">The current state to use to start drawing the animation.</param>
+		/// <param name="newState">The final state to use to finish drawing the animation.</param>
+		/// <param name="getDuration">A method delegate that gets the duration of the animation, in milliseconds.</param>
 		public static void PaintAnimation<TState>(Graphics graphics, IWin32Window ctrl, Rectangle bounds, PaintAction<TState, int> paintAction,
 			TState currentState, TState newState, GetDuration<TState> getDuration)
-			=> PaintAnimation<TState, int>(graphics, ctrl, bounds, paintAction, currentState, newState, getDuration, 0);
+			=> PaintAnimation(graphics, ctrl, bounds, paintAction, currentState, newState, getDuration, 0);
 
+		/// <summary>Performs a buffered animation operation. The animation consists of a cross-fade between the contents of two buffers over a specified period of time.</summary>
+		/// <typeparam name="TState">The type of the state that is used to determine the image to paint.</typeparam>
+		/// <typeparam name="TParam">The type of the parameter that is passed into this method.</typeparam>
+		/// <param name="graphics">The target DC on which the buffer is animated.</param>
+		/// <param name="ctrl">The window in which the animations play.</param>
+		/// <param name="bounds">Specifies the area of the target DC in which to draw.</param>
+		/// <param name="paintAction">A method delegate that performs the painting of the control at a given state.</param>
+		/// <param name="currentState">The current state to use to start drawing the animation.</param>
+		/// <param name="newState">The final state to use to finish drawing the animation.</param>
+		/// <param name="getDuration">A method delegate that gets the duration of the animation, in milliseconds.</param>
+		/// <param name="data">User-defined data to pass to the <paramref name="paintAction"/> callback.</param>
 		public static void PaintAnimation<TState, TParam>(Graphics graphics, IWin32Window ctrl, Rectangle bounds,
 			PaintAction<TState, TParam> paintAction, TState currentState, TState newState, GetDuration<TState> getDuration, TParam data)
 		{
@@ -40,8 +78,7 @@ namespace Vanara.Drawing
 				if (System.Environment.OSVersion.Version.Major >= 6)
 				{
 					// If this handle is running with a different state, stop the animations
-					Tuple<object, object> val;
-					if (paintAnimationInstances.TryGetValue(ctrl.Handle, out val))
+					if (paintAnimationInstances.TryGetValue(ctrl.Handle, out Tuple<object, object> val))
 					{
 						if (!Equals(val.Item1, currentState) || !Equals(val.Item2, newState))
 						{
@@ -64,14 +101,14 @@ namespace Vanara.Drawing
 						}
 
 						var animParams = new BP_ANIMATIONPARAMS(BP_ANIMATIONSTYLE.BPAS_LINEAR, getDuration?.Invoke(currentState, newState) ?? 0);
-						using (var h = new BufferedPaintHandle(ctrl, hdc, bounds, animParams, BP_PAINTPARAMS.NoClip))
+						using (var h = new BufferedAnimationPainter(ctrl, hdc, bounds, animParams, BP_PAINTPARAMS.NoClip))
 						{
 							if (!h.IsInvalid)
 							{
 								if (h.SourceGraphics != null)
 									paintAction(h.SourceGraphics, bounds, currentState, data);
-								if (h.Graphics != null)
-									paintAction(h.Graphics, bounds, newState, data);
+								if (h.DestinationGraphics != null)
+									paintAction(h.DestinationGraphics, bounds, newState, data);
 							}
 							else
 							{
@@ -89,66 +126,138 @@ namespace Vanara.Drawing
 		}
 	}
 
-	public class BufferedPaintHandle : SafeHandle
+	/// <summary>Use to paint a buffered animation.</summary>
+	/// <seealso cref="System.IDisposable"/>
+	public class BufferedAnimationPainter : IDisposable
 	{
-		private readonly bool ani;
+		private static readonly BufferedPaintBlock block = new BufferedPaintBlock();
 
-		public BufferedPaintHandle(SafeDCHandle hdc, Rectangle targetRectangle, BP_PAINTPARAMS paintParams = null,
-			BP_BUFFERFORMAT fmt = BP_BUFFERFORMAT.BPBF_TOPDOWNDIB) : base(IntPtr.Zero, true)
-		{
-			RECT target = targetRectangle;
-			IntPtr phdc;
-			var hbp = BeginBufferedPaint(hdc, ref target, fmt, paintParams, out phdc);
-			if (hbp == IntPtr.Zero) throw new Win32Exception();
-			if (phdc != IntPtr.Zero) Graphics = Graphics.FromHdc(phdc);
-			SetHandle(hbp);
-		}
+		private bool disposedValue = false;
+		private SafeBufferedAnimationHandle hba;
 
-		public BufferedPaintHandle(IWin32Window wnd, SafeDCHandle hdc, Rectangle targetRectangle,
-			BP_ANIMATIONPARAMS? animationParams = null,
+		/// <summary>
+		/// Initializes a new instance of the <see cref="BufferedPainter"/> class and begins a buffered animation operation. The animation consists of a
+		/// cross-fade between the contents of two buffers over a specified period of time.
+		/// </summary>
+		/// <param name="wnd">The window in which the animations play.</param>
+		/// <param name="hdc">A handle of the target DC on which the buffer is animated.</param>
+		/// <param name="targetRectangle">Specifies the area of the target DC in which to draw.</param>
+		/// <param name="animationParams">A structure that defines the animation operation parameters. This value can be <see langword="null"/>.</param>
+		/// <param name="paintParams">A class that defines the paint operation parameters. This value can be <see langword="null"/>.</param>
+		/// <param name="fmt">The format of the buffer.</param>
+		/// <exception cref="Win32Exception">Buffered animation could not initialize.</exception>
+		public BufferedAnimationPainter(IWin32Window wnd, SafeDCHandle hdc, Rectangle targetRectangle, BP_ANIMATIONPARAMS? animationParams = null,
 			BP_PAINTPARAMS paintParams = null, BP_BUFFERFORMAT fmt = BP_BUFFERFORMAT.BPBF_TOPDOWNDIB)
-			: base(IntPtr.Zero, true)
 		{
 			RECT rc = targetRectangle;
 			var ap = animationParams ?? BP_ANIMATIONPARAMS.Empty;
-			IntPtr hdcFrom, hdcTo;
-			var hbp = BeginBufferedAnimation(new HandleRef(wnd, wnd.Handle), hdc, ref rc, fmt, paintParams, ref ap, out hdcFrom,
-				out hdcTo);
-			if (hbp == IntPtr.Zero) throw new Win32Exception();
+			hba = BeginBufferedAnimation(new HandleRef(wnd, wnd.Handle), hdc, ref rc, fmt, paintParams, ref ap, out IntPtr hdcFrom, out IntPtr hdcTo);
+			if (hba.IsInvalid) throw new Win32Exception();
 			if (hdcFrom != IntPtr.Zero) SourceGraphics = Graphics.FromHdc(hdcFrom);
-			if (hdcTo != IntPtr.Zero) Graphics = Graphics.FromHdc(hdcTo);
-			SetHandle(hbp);
-			ani = true;
+			if (hdcTo != IntPtr.Zero) DestinationGraphics = Graphics.FromHdc(hdcTo);
 		}
 
-		public Graphics Graphics { get; }
-
-		public override bool IsInvalid => handle == IntPtr.Zero;
-
-		public Graphics SourceGraphics { get; }
-
-		protected override void Dispose(bool disposing)
+		/// <summary>Finalizes an instance of the <see cref="BufferedPainter"/> class.</summary>
+		~BufferedAnimationPainter()
 		{
-			if (disposing)
-			{
-				SourceGraphics?.Dispose();
-				Graphics?.Dispose();
-			}
-			base.Dispose(disposing);
+			// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+			Dispose(false);
 		}
 
-		protected override bool ReleaseHandle()
+		/// <summary>Gets the destination graphics where the application should paint the final state of the animation.</summary>
+		public virtual Graphics DestinationGraphics { get; }
+
+		/// <summary>Gets a value indicating whether this instance is invalid.</summary>
+		/// <value><c>true</c> if this instance is invalid; otherwise, <c>false</c>.</value>
+		public virtual bool IsInvalid => hba.IsInvalid;
+
+		/// <summary>Gets the source graphics where the application should paint the initial state of the animation.</summary>
+		public virtual Graphics SourceGraphics { get; }
+
+		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+		void IDisposable.Dispose()
 		{
-			try
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
+		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!disposedValue)
 			{
-				if (ani)
-					EndBufferedAnimation(handle, true);
-				else
-					EndBufferedPaint(handle, true);
-				return true;
+				if (disposing)
+				{
+					SourceGraphics?.Dispose();
+					DestinationGraphics?.Dispose();
+					hba?.Dispose();
+				}
+
+				disposedValue = true;
 			}
-			catch { }
-			return false;
+		}
+	}
+
+	/// <summary>Use to perform buffered painting.</summary>
+	/// <seealso cref="System.IDisposable"/>
+	public class BufferedPainter : IDisposable
+	{
+		private static readonly BufferedPaintBlock block = new BufferedPaintBlock();
+
+		private bool disposedValue = false;
+		private SafeBufferedPaintHandle hbp;
+
+		/// <summary>Initializes a new instance of the <see cref="BufferedPainter"/> class and begins a buffered paint operation.</summary>
+		/// <param name="hdc">The handle of the target DC on which the buffer will be painted.</param>
+		/// <param name="targetRectangle">Specifies the area of the target DC in which to paint.</param>
+		/// <param name="paintParams">The paint operation parameters. This value can be <see langword="null"/>.</param>
+		/// <param name="fmt">The format of the buffer.</param>
+		/// <exception cref="Win32Exception">Buffered painting could not initialize.</exception>
+		public BufferedPainter(SafeDCHandle hdc, Rectangle targetRectangle, BP_PAINTPARAMS paintParams = null,
+			BP_BUFFERFORMAT fmt = BP_BUFFERFORMAT.BPBF_TOPDOWNDIB)
+		{
+			RECT target = targetRectangle;
+			hbp = BeginBufferedPaint(hdc, ref target, fmt, paintParams, out IntPtr phdc);
+			if (hbp.IsInvalid) throw new Win32Exception();
+			if (phdc != IntPtr.Zero) Graphics = Graphics.FromHdc(phdc);
+		}
+
+		/// <summary>Finalizes an instance of the <see cref="BufferedPainter"/> class.</summary>
+		~BufferedPainter()
+		{
+			// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+			Dispose(false);
+		}
+
+		/// <summary>Gets the destination graphics on which all painting is done.</summary>
+		public virtual Graphics Graphics { get; }
+
+		/// <summary>Gets a value indicating whether this instance is invalid.</summary>
+		/// <value><c>true</c> if this instance is invalid; otherwise, <c>false</c>.</value>
+		public virtual bool IsInvalid => hbp.IsInvalid;
+
+		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+		void IDisposable.Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		/// <summary>Releases unmanaged and - optionally - managed resources.</summary>
+		/// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!disposedValue)
+			{
+				if (disposing)
+				{
+					Graphics?.Dispose();
+					hbp?.Dispose();
+				}
+
+				disposedValue = true;
+			}
 		}
 	}
 }
