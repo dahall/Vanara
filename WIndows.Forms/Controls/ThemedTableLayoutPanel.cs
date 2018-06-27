@@ -31,7 +31,7 @@ namespace Vanara.Windows.Forms
 		[DefaultValue("WINDOW"), Category("Appearance")]
 		public string StyleClass
 		{
-			get => styleClass; set { styleClass = value; ResetTheme(); Invalidate(); }
+			get => styleClass; set { styleClass = value; ResetTheme(); }
 		}
 
 		/// <summary>Gets or sets the style part.</summary>
@@ -39,7 +39,7 @@ namespace Vanara.Windows.Forms
 		[DefaultValue(29), Category("Appearance")]
 		public int StylePart
 		{
-			get => stylePart; set { stylePart = value; ResetTheme(); Invalidate(); }
+			get => stylePart; set { stylePart = value; ResetTheme(); }
 		}
 
 		/// <summary>Gets or sets the style part.</summary>
@@ -47,7 +47,7 @@ namespace Vanara.Windows.Forms
 		[DefaultValue(1), Category("Appearance")]
 		public int StyleState
 		{
-			get => styleState; set { styleState = value; ResetTheme(); Invalidate(); }
+			get => styleState; set { styleState = value; ResetTheme(); }
 		}
 
 		/// <summary>Gets or sets a value indicating whether this table supports glass (can be enclosed in the glass margin).</summary>
@@ -83,16 +83,32 @@ namespace Vanara.Windows.Forms
 			else
 			{
 				if (rnd == null || !Application.RenderWithVisualStyles)
+				{
 					try { e.Graphics.Clear(BackColor); } catch { }
+				}
 				else
+				{
+					if (rnd.IsBackgroundPartiallyTransparent())
+						rnd.DrawParentBackground(e.Graphics, ClientRectangle, this);
 					rnd.DrawBackground(e.Graphics, ClientRectangle, e.ClipRectangle);
+				}
 			}
 			base.OnPaint(e);
 		}
 
+		/// <summary>
+		/// Fires the event indicating that the panel has been resized. Inheriting controls should use this in favor of actually listening to the event, but should still call base.onResize to ensure that the event is fired for external listeners.
+		/// </summary>
+		/// <param name="eventargs">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+		protected override void OnResize(System.EventArgs eventargs)
+		{
+			base.OnResize(eventargs);
+			Refresh();
+		}
+
 		private void ResetTheme()
 		{
-			if (VisualStyleRenderer.IsSupported)
+			if (VisualStyleRenderer.IsSupported && styleClass != null)
 			{
 				try
 				{
@@ -108,6 +124,7 @@ namespace Vanara.Windows.Forms
 			}
 			else
 				rnd = null;
+			Invalidate();
 		}
 	}
 }

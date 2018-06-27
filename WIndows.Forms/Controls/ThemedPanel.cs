@@ -6,7 +6,7 @@ using Vanara.Extensions;
 
 namespace Vanara.Windows.Forms
 {
-	/// <summary>A panel that supports a glass overlay.</summary>
+	/// <summary>A panel that supports a glass overlay and is drawn using a visual style.</summary>
 	[ToolboxItem(true), ToolboxBitmap(typeof(ThemedPanel), "ThemedPanel.bmp")]
 	public class ThemedPanel : Panel
 	{
@@ -26,7 +26,8 @@ namespace Vanara.Windows.Forms
 		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public VisualStyleRenderer Style
 		{
-			get => rnd; set
+			get => rnd;
+			set
 			{
 				rnd = value;
 				styleClass = rnd.Class;
@@ -41,7 +42,8 @@ namespace Vanara.Windows.Forms
 		[DefaultValue("WINDOW"), Category("Appearance")]
 		public string StyleClass
 		{
-			get => styleClass; set { styleClass = value; ResetTheme(); Invalidate(); }
+			get => styleClass;
+			set { styleClass = value; ResetTheme(); }
 		}
 
 		/// <summary>Gets or sets the style part.</summary>
@@ -49,7 +51,8 @@ namespace Vanara.Windows.Forms
 		[DefaultValue(29), Category("Appearance")]
 		public int StylePart
 		{
-			get => stylePart; set { stylePart = value; ResetTheme(); Invalidate(); }
+			get => stylePart;
+			set { stylePart = value; ResetTheme(); }
 		}
 
 		/// <summary>Gets or sets the style part.</summary>
@@ -57,7 +60,8 @@ namespace Vanara.Windows.Forms
 		[DefaultValue(1), Category("Appearance")]
 		public int StyleState
 		{
-			get => styleState; set { styleState = value; ResetTheme(); Invalidate(); }
+			get => styleState;
+			set { styleState = value; ResetTheme(); }
 		}
 
 		/// <summary>Gets or sets a value indicating whether this table supports glass (can be enclosed in the glass margin).</summary>
@@ -65,7 +69,8 @@ namespace Vanara.Windows.Forms
 		[DefaultValue(false), Category("Appearance")]
 		public bool SupportGlass
 		{
-			get => supportGlass; set { supportGlass = value; Invalidate(); }
+			get => supportGlass;
+			set { supportGlass = value; Invalidate(); }
 		}
 
 		/// <summary>Sets the theme using theme class information.</summary>
@@ -80,6 +85,8 @@ namespace Vanara.Windows.Forms
 			ResetTheme();
 		}
 
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.Paint" /> event.</summary>
+		/// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs" /> that contains the event data.</param>
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			if (!this.IsDesignMode() && SupportGlass && DesktopWindowManager.CompositionEnabled)
@@ -87,16 +94,36 @@ namespace Vanara.Windows.Forms
 			else
 			{
 				if (rnd == null || !Application.RenderWithVisualStyles)
+				{
 					try { e.Graphics.Clear(BackColor); } catch { }
+					if (!string.IsNullOrEmpty(Text))
+						TextRenderer.DrawText(e.Graphics, Text, Font, ClientRectangle, ForeColor, this.BuildTextFormatFlags(false));
+				}
 				else
+				{
+					if (rnd.IsBackgroundPartiallyTransparent())
+						rnd.DrawParentBackground(e.Graphics, ClientRectangle, this);
 					rnd.DrawBackground(e.Graphics, ClientRectangle, e.ClipRectangle);
+					if (!string.IsNullOrEmpty(Text))
+						rnd.DrawText(e.Graphics, ClientRectangle, Text, !Enabled, this.BuildTextFormatFlags(false));
+				}
 			}
 			base.OnPaint(e);
 		}
 
+		/// <summary>
+		/// Fires the event indicating that the panel has been resized. Inheriting controls should use this in favor of actually listening to the event, but should still call base.onResize to ensure that the event is fired for external listeners.
+		/// </summary>
+		/// <param name="eventargs">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+		protected override void OnResize(System.EventArgs eventargs)
+		{
+			base.OnResize(eventargs);
+			Refresh();
+		}
+
 		private void ResetTheme()
 		{
-			if (VisualStyleRenderer.IsSupported)
+			if (VisualStyleRenderer.IsSupported && styleClass != null)
 			{
 				try
 				{
@@ -112,6 +139,7 @@ namespace Vanara.Windows.Forms
 			}
 			else
 				rnd = null;
+			Invalidate();
 		}
 	}
 }
