@@ -4,7 +4,7 @@
     <Description>Methods, structures and constants imported from Gdi32.dll</Description>
     <Copyright>Copyright © 2017-2018</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.14</VersionPrefix>
+    <VersionPrefix>1.0.15</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Gdi32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -25,10 +25,10 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-BitBlt, CreateCompatibleDC, CreateDIBSection, DeleteDC, DeleteObject, GdiAlphaBlend, GdiFlush, GdiTransparentBlt, GetDIBits, GetObject, SelectObject, SetBkMode, SetLayout
+BitBlt, CreateCompatibleDC, CreateDIBSection, DeleteDC, DeleteObject, GdiAlphaBlend, GdiFlush, GdiTransparentBlt, GetDeviceCaps, GetDIBits, GetObject, SelectObject, SetBkMode, SetLayout
 
 Structures
-BITMAP, BITMAPINFO, BITMAPINFOHEADER, DIBSECTION, RGBQUAD, BLENDFUNCTION, COLORREF, LOGFONT, TEXTMETRIC
+BITMAP, BITMAPINFO, BITMAPINFOHEADER, DIBSECTION, RGBQUAD, BLENDFUNCTION, COLORREF, TEXTMETRIC
 
 </PackageReleaseNotes>
   </PropertyGroup>

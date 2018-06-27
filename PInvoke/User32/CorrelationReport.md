@@ -1,5 +1,5 @@
 ## Correlation report for user32.dll  
-### Methods (2% complete)  
+### Methods (3% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [ActivateKeyboardLayout](https://www.google.com/search?num=5&q=ActivateKeyboardLayout+site%3Amsdn.microsoft.com) | user32.dll |  |   
@@ -165,7 +165,7 @@ Native Method | Native DLL | Header | Managed Method
 [DrawAnimatedRects](https://www.google.com/search?num=5&q=DrawAnimatedRects+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [DrawCaption](https://www.google.com/search?num=5&q=DrawCaption+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [DrawCaptionTemp](https://www.google.com/search?num=5&q=DrawCaptionTempA+site%3Amsdn.microsoft.com) | user32.dll |  |   
-[DrawEdge](http://msdn2.microsoft.com/en-us/library/dd162498) | user32.dll | WinUser.h | Vanara.PInvoke.User32_Gdi.DrawEdge  
+[DrawEdge](http://msdn2.microsoft.com/en-us/library/dd162477) | user32.dll | Winuser.h | Vanara.PInvoke.User32_Gdi.DrawEdge  
 [DrawFocusRect](https://www.google.com/search?num=5&q=DrawFocusRect+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [DrawFrame](https://www.google.com/search?num=5&q=DrawFrame+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [DrawFrameControl](https://www.google.com/search?num=5&q=DrawFrameControl+site%3Amsdn.microsoft.com) | user32.dll |  |   
@@ -220,7 +220,7 @@ Native Method | Native DLL | Header | Managed Method
 [EvaluateProximityToPolygon](https://www.google.com/search?num=5&q=EvaluateProximityToPolygon+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [EvaluateProximityToRect](https://www.google.com/search?num=5&q=EvaluateProximityToRect+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [ExcludeUpdateRgn](https://www.google.com/search?num=5&q=ExcludeUpdateRgn+site%3Amsdn.microsoft.com) | user32.dll |  |   
-[ExitWindowsEx](https://www.google.com/search?num=5&q=ExitWindowsEx+site%3Amsdn.microsoft.com) | user32.dll |  | Vanara.PInvoke.User32.ExitWindowsEx  
+[ExitWindowsEx](http://msdn2.microsoft.com/en-us/library/aa376868) | user32.dll | Winuser.h | Vanara.PInvoke.User32.ExitWindowsEx  
 [FillRect](https://www.google.com/search?num=5&q=FillRect+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [FindWindow](https://www.google.com/search?num=5&q=FindWindowA+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [FindWindowEx](https://www.google.com/search?num=5&q=FindWindowExA+site%3Amsdn.microsoft.com) | user32.dll |  |   
@@ -262,10 +262,10 @@ Native Method | Native DLL | Header | Managed Method
 [GetCursorFrameInfo](https://www.google.com/search?num=5&q=GetCursorFrameInfo+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [GetCursorInfo](https://www.google.com/search?num=5&q=GetCursorInfo+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [GetCursorPos](https://www.google.com/search?num=5&q=GetCursorPos+site%3Amsdn.microsoft.com) | user32.dll |  |   
-[GetDC](https://www.google.com/search?num=5&q=GetDC+site%3Amsdn.microsoft.com) | user32.dll |  |   
+[GetDC](http://msdn2.microsoft.com/en-us/library/dd144871) | user32.dll | Winuser.h | Vanara.PInvoke.User32_Gdi.GetDC  
 [GetDCEx](https://www.google.com/search?num=5&q=GetDCEx+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [GetDesktopID](https://www.google.com/search?num=5&q=GetDesktopID+site%3Amsdn.microsoft.com) | user32.dll |  |   
-[GetDesktopWindow](https://www.google.com/search?num=5&q=GetDesktopWindow+site%3Amsdn.microsoft.com) | user32.dll |  |   
+[GetDesktopWindow](http://msdn2.microsoft.com/en-us/library/ms633504) | user32.dll | Winuser.h | Vanara.PInvoke.User32_Gdi.GetDesktopWindow  
 [GetDialogBaseUnits](https://www.google.com/search?num=5&q=GetDialogBaseUnits+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [GetDialogControlDpiChangeBehavior](https://www.google.com/search?num=5&q=GetDialogControlDpiChangeBehavior+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [GetDialogDpiChangeBehavior](https://www.google.com/search?num=5&q=GetDialogDpiChangeBehavior+site%3Amsdn.microsoft.com) | user32.dll |  |   
@@ -377,7 +377,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetSysColor](http://msdn2.microsoft.com/en-us/library/ms724371) | user32.dll | WinUser.h | Vanara.PInvoke.User32_Gdi.GetSysColor  
 [GetSysColorBrush](http://msdn2.microsoft.com/en-us/library/dd144927) | user32.dll | WinUser.h | Vanara.PInvoke.User32_Gdi.GetSysColorBrush  
 [GetSystemMenu](https://www.google.com/search?num=5&q=GetSystemMenu+site%3Amsdn.microsoft.com) | user32.dll |  |   
-[GetSystemMetrics](https://www.google.com/search?num=5&q=GetSystemMetrics+site%3Amsdn.microsoft.com) | user32.dll |  |   
+[GetSystemMetrics](http://msdn2.microsoft.com/en-us/library/ms724385) | user32.dll | Winuser.h | Vanara.PInvoke.User32.GetSystemMetrics  
 [GetSystemMetricsForDpi](https://www.google.com/search?num=5&q=GetSystemMetricsForDpi+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [GetTabbedTextExtent](https://www.google.com/search?num=5&q=GetTabbedTextExtentA+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [GetTaskmanWindow](https://www.google.com/search?num=5&q=GetTaskmanWindow+site%3Amsdn.microsoft.com) | user32.dll |  |   
@@ -506,7 +506,7 @@ Native Method | Native DLL | Header | Managed Method
 [LockSetForegroundWindow](https://www.google.com/search?num=5&q=LockSetForegroundWindow+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [LockWindowStation](https://www.google.com/search?num=5&q=LockWindowStation+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [LockWindowUpdate](https://www.google.com/search?num=5&q=LockWindowUpdate+site%3Amsdn.microsoft.com) | user32.dll |  |   
-[LockWorkStation](https://www.google.com/search?num=5&q=LockWorkStation+site%3Amsdn.microsoft.com) | user32.dll |  | Vanara.PInvoke.User32.LockWorkStation  
+[LockWorkStation](https://www.google.com/search?num=5&q=LockWorkStation+site%3Amsdn.microsoft.com) | user32.dll | Winuser.h | Vanara.PInvoke.User32.LockWorkStation  
 [LogicalToPhysicalPoint](https://www.google.com/search?num=5&q=LogicalToPhysicalPoint+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [LogicalToPhysicalPointForPerMonitorDPI](https://www.google.com/search?num=5&q=LogicalToPhysicalPointForPerMonitorDPI+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [LookupIconIdFromDirectory](https://www.google.com/search?num=5&q=LookupIconIdFromDirectory+site%3Amsdn.microsoft.com) | user32.dll |  |   
@@ -760,9 +760,9 @@ Native Method | Native DLL | Header | Managed Method
 [ShowSystemCursor](https://www.google.com/search?num=5&q=ShowSystemCursor+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [ShowWindow](https://www.google.com/search?num=5&q=ShowWindow+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [ShowWindowAsync](https://www.google.com/search?num=5&q=ShowWindowAsync+site%3Amsdn.microsoft.com) | user32.dll |  |   
-[ShutdownBlockReasonCreate](https://www.google.com/search?num=5&q=ShutdownBlockReasonCreate+site%3Amsdn.microsoft.com) | user32.dll |  | Vanara.PInvoke.User32.ShutdownBlockReasonCreate  
-[ShutdownBlockReasonDestroy](https://www.google.com/search?num=5&q=ShutdownBlockReasonDestroy+site%3Amsdn.microsoft.com) | user32.dll |  | Vanara.PInvoke.User32.ShutdownBlockReasonDestroy  
-[ShutdownBlockReasonQuery](https://www.google.com/search?num=5&q=ShutdownBlockReasonQuery+site%3Amsdn.microsoft.com) | user32.dll |  | Vanara.PInvoke.User32.ShutdownBlockReasonQuery  
+[ShutdownBlockReasonCreate](https://www.google.com/search?num=5&q=ShutdownBlockReasonCreate+site%3Amsdn.microsoft.com) | user32.dll | Winuser.h | Vanara.PInvoke.User32.ShutdownBlockReasonCreate  
+[ShutdownBlockReasonDestroy](https://www.google.com/search?num=5&q=ShutdownBlockReasonDestroy+site%3Amsdn.microsoft.com) | user32.dll | Winuser.h | Vanara.PInvoke.User32.ShutdownBlockReasonDestroy  
+[ShutdownBlockReasonQuery](https://www.google.com/search?num=5&q=ShutdownBlockReasonQuery+site%3Amsdn.microsoft.com) | user32.dll | Winuser.h | Vanara.PInvoke.User32.ShutdownBlockReasonQuery  
 [SignalRedirectionStartComplete](https://www.google.com/search?num=5&q=SignalRedirectionStartComplete+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [SkipPointerFrameMessages](https://www.google.com/search?num=5&q=SkipPointerFrameMessages+site%3Amsdn.microsoft.com) | user32.dll |  |   
 [SoftModalMessageBox](https://www.google.com/search?num=5&q=SoftModalMessageBox+site%3Amsdn.microsoft.com) | user32.dll |  |   
@@ -842,10 +842,20 @@ Native Method | Native DLL | Header | Managed Method
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
+[ACCESSTIMEOUT](https://www.google.com/search?num=5&q=ACCESSTIMEOUT+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32+ACCESSTIMEOUT  
+[ANIMATIONINFO](http://msdn2.microsoft.com/en-us/library/ms724197) | Winuser.h | Vanara.PInvoke.User32+ANIMATIONINFO  
+[FILTERKEYS](https://www.google.com/search?num=5&q=FILTERKEYS+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32+FILTERKEYS  
 [GRPICONDIR](https://www.google.com/search?num=5&q=GRPICONDIR+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32_Gdi+GRPICONDIR  
 [GRPICONDIRENTRY](https://www.google.com/search?num=5&q=GRPICONDIRENTRY+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32_Gdi+GRPICONDIRENTRY  
+[HIGHCONTRAST](https://www.google.com/search?num=5&q=HIGHCONTRAST+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32+HIGHCONTRAST  
 [ICONINFO](https://www.google.com/search?num=5&q=ICONINFO+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32_Gdi+ICONINFO  
+[MINIMIZEDMETRICS](http://msdn2.microsoft.com/en-us/library/ms724500) | Winuser.h | Vanara.PInvoke.User32+MINIMIZEDMETRICS  
 [MINMAXINFO](https://www.google.com/search?num=5&q=MINMAXINFO+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32_Gdi+MINMAXINFO  
+[MOUSEKEYS](https://www.google.com/search?num=5&q=MOUSEKEYS+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32+MOUSEKEYS  
 [NMHDR](https://www.google.com/search?num=5&q=NMHDR+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32_Gdi+NMHDR  
+[SERIALKEYS](https://www.google.com/search?num=5&q=SERIALKEYS+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32+SERIALKEYS  
+[SOUNDSENTRY](https://www.google.com/search?num=5&q=SOUNDSENTRY+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32+SOUNDSENTRY  
+[STICKYKEYS](https://www.google.com/search?num=5&q=STICKYKEYS+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32+STICKYKEYS  
+[TOGGLEKEYS](https://www.google.com/search?num=5&q=TOGGLEKEYS+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32+TOGGLEKEYS  
 [TRACKMOUSEEVENT](http://msdn2.microsoft.com/en-us/library/ms645604) | Winuser.h | Vanara.PInvoke.User32+TRACKMOUSEEVENT  
 [WINDOWPOS](https://www.google.com/search?num=5&q=WINDOWPOS+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32_Gdi+WINDOWPOS  

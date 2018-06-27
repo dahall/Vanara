@@ -201,6 +201,7 @@ Native Method | Native DLL | Header | Managed Method
 [CreateActCtx](https://www.google.com/search?num=5&q=CreateActCtxA+site%3Amsdn.microsoft.com) | kernel32.dll |  |   
 [CreateActCtxWWorker](https://www.google.com/search?num=5&q=CreateActCtxWWorker+site%3Amsdn.microsoft.com) | kernel32.dll |  |   
 [CreateAppContainerToken](https://www.google.com/search?num=5&q=CreateAppContainerToken+site%3Amsdn.microsoft.com) | kernelbase.dll |  |   
+[CreateAppContainerTokenForUser](https://www.google.com/search?num=5&q=CreateAppContainerTokenForUser+site%3Amsdn.microsoft.com) | kernelbase.dll |  |   
 [CreateBoundaryDescriptor](https://www.google.com/search?num=5&q=CreateBoundaryDescriptorA+site%3Amsdn.microsoft.com) | kernel32.dll |  |   
 [CreateConsoleScreenBuffer](https://www.google.com/search?num=5&q=CreateConsoleScreenBuffer+site%3Amsdn.microsoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.CreateConsoleScreenBuffer  
 [CreateDirectory](https://www.google.com/search?num=5&q=CreateDirectoryA+site%3Amsdn.microsoft.com) | kernel32.dll |  |   
@@ -762,6 +763,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetQueuedCompletionStatusEx](http://msdn2.microsoft.com/en-us/library/aa364988) | kernel32.dll | IoAPI.h | Vanara.PInvoke.Kernel32.GetQueuedCompletionStatusEx  
 [GetRegistryExtensionFlags](https://www.google.com/search?num=5&q=GetRegistryExtensionFlags+site%3Amsdn.microsoft.com) | kernelbase.dll |  |   
 [GetRoamingLastObservedChangeTime](https://www.google.com/search?num=5&q=GetRoamingLastObservedChangeTime+site%3Amsdn.microsoft.com) | kernelbase.dll |  |   
+[GetSecureSystemAppDataFolder](https://www.google.com/search?num=5&q=GetSecureSystemAppDataFolder+site%3Amsdn.microsoft.com) | kernelbase.dll |  |   
 [GetSeedFromIumKernelState](https://www.google.com/search?num=5&q=GetSeedFromIumKernelState+site%3Amsdn.microsoft.com) | vertdll.dll |  |   
 [GetSerializedAtomBytes](https://www.google.com/search?num=5&q=GetSerializedAtomBytes+site%3Amsdn.microsoft.com) | kernelbase.dll |  |   
 [GetSharedLocalFolder](https://www.google.com/search?num=5&q=GetSharedLocalFolder+site%3Amsdn.microsoft.com) | kernelbase.dll |  |   

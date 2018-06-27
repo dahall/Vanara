@@ -4,7 +4,7 @@
     <Description>Methods, structures and constants imported from User32.dll.</Description>
     <Copyright>Copyright © 2017-2018</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.14</VersionPrefix>
+    <VersionPrefix>1.0.15</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard20</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.User32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -25,10 +25,10 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-CallNextHookEx, ChildWindowFromPointEx, DestroyIcon, DrawEdge, DrawText, ExitWindowsEx, FindWindow, GetActiveWindow, GetClientRect, GetIconInfo, GetSysColor, GetSysColorBrush, GetWindowLong, GetWindowLongPtr, GetWindowRect, InvalidateRect, LoadImage, LoadString, LockWorkStation, MapWindowPoints, RealGetWindowClass, RegisterHotKey, RegisterWindowMessage, ScreenToClient, SendMessage, SetWindowPos, SetWindowsHookEx, SetWindowText, ShutdownBlockReasonCreate, ShutdownBlockReasonDestroy, ShutdownBlockReasonQuery, TrackMouseEvent, UnhookWindowsHookEx, UnregisterHotKey, WindowFromPoint
+CallNextHookEx, ChildWindowFromPointEx, DestroyIcon, DrawEdge, DrawText, ExitWindowsEx, FindWindow, GetActiveWindow, GetClientRect, GetDC, GetDesktopWindow, GetIconInfo, GetSysColor, GetSysColorBrush, GetSystemMetrics, GetWindowLong, GetWindowLongPtr, GetWindowRect, InvalidateRect, LoadImage, LoadString, LockWorkStation, MapWindowPoints, RealGetWindowClass, RegisterHotKey, RegisterWindowMessage, ScreenToClient, SendMessage, SetWindowPos, SetWindowsHookEx, SetWindowText, ShutdownBlockReasonCreate, ShutdownBlockReasonDestroy, ShutdownBlockReasonQuery, SystemParametersInfo, TrackMouseEvent, UnhookWindowsHookEx, UnregisterHotKey, WindowFromPoint
 
 Structures
-TRACKMOUSEEVENT, ICONINFO, NMHDR, MINMAXINFO, WINDOWPOS, GRPICONDIR, GRPICONDIRENTRY
+TRACKMOUSEEVENT, MINIMIZEDMETRICS, HIGHCONTRAST, ANIMATIONINFO, FILTERKEYS, TOGGLEKEYS, MOUSEKEYS, SOUNDSENTRY, STICKYKEYS, ACCESSTIMEOUT, SERIALKEYS, ICONINFO, NMHDR, MINMAXINFO, WINDOWPOS, GRPICONDIR, GRPICONDIRENTRY
 
 </PackageReleaseNotes>
   </PropertyGroup>

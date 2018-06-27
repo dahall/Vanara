@@ -119,6 +119,7 @@
     <Compile Include="Shell\ShellItemPropStoreTests.cs" />
     <Compile Include="System\BackgroundCopyTests.cs" />
     <Compile Include="System\VirtualDiskTests.cs" />
+    <Compile Include="UI\VisualThemeTests.cs" />
     <Compile Include="UI\Controls\ImageListTests.cs" />
     <Compile Include="UI\Controls\CredentialsDialogTests.cs" />
   </ItemGroup>

@@ -11,7 +11,7 @@
 * Shared structures and enums (see release notes)</Description>
     <Copyright>Copyright © 2017-2018</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.14</VersionPrefix>
+    <VersionPrefix>1.0.15</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard20</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Shared</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -35,10 +35,10 @@ Classes
 AssociateAttribute, CoTaskMemStringMarshaler, IEnumFromIndexer&lt;T&gt;, IEnumFromNext&lt;T&gt;, Lib, Macros, OBJECT_TYPE_LIST, OverlappedAsync, OverlappedAsyncResult, PInvokeDataAttribute, PRECT, SafeElementArray&lt;T&gt;, SafeResourceId, SECURITY_ATTRIBUTES, TryGetNext, WIN32_FIND_DATA
 
 Structures
-HRESULT, MSG, NTStatus, OBJECT_TYPE_LIST, PRECT, RECT, SECURITY_ATTRIBUTES, SIZE, SizeT, SYSTEMTIME, WIN32_FIND_DATA, Win32Error
+HRESULT, LOGFONT, MSG, NTStatus, OBJECT_TYPE_LIST, PRECT, RECT, SECURITY_ATTRIBUTES, SIZE, SizeT, SYSTEMTIME, WIN32_FIND_DATA, Win32Error
 
 Enumerations
-ACCESS_MASK, DrawTextFlags, FacilityCode, FacilityCode, FileFlagsAndAttributes, ObjectTypeListLevel, PInvokeClient, ProcessorArchitecture, ResourceType, SECURITY_INFORMATION, SeverityLevel, SeverityLevel, ShowWindowCommand, STGM, SystemShutDownReason
+ACCESS_MASK, DrawTextFlags, FacilityCode, FacilityCode, FileFlagsAndAttributes, FontFamily, FontPitch, LogFontCharSet, LogFontClippingPrecision, LogFontOutputPrecision, LogFontOutputQuality, ObjectTypeListLevel, PInvokeClient, ProcessorArchitecture, ResourceType, SECURITY_INFORMATION, SeverityLevel, SeverityLevel, ShowWindowCommand, STGM, SystemShutDownReason
 
 </PackageReleaseNotes>
   </PropertyGroup>

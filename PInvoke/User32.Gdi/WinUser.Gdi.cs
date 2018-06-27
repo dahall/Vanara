@@ -588,7 +588,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/dd162477(v=vs.85).aspx
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winuser.h", MSDNShortId = "dd162477")]
-		public static extern bool DrawEdge(SafeDCHandle hDC, ref RECT qrc, BorderStyles3D edge, BorderFlags grfFlags);
+		public static extern bool DrawEdge(SafeDCHandle hdc, ref RECT qrc, BorderStyles3D edge, BorderFlags grfFlags);
 
 		/// <summary>
 		/// The DrawText function draws formatted text in the specified rectangle. It formats the text according to the specified method (expanding tabs, justifying characters, breaking lines, and so forth).
@@ -834,7 +834,7 @@ namespace Vanara.PInvoke
 		/// integrity level.
 		/// </para>
 		/// </param>
-		/// <param name="Msg">
+		/// <param name="msg">
 		/// <para>The message to be sent.</para>
 		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
 		/// </param>
@@ -869,7 +869,7 @@ namespace Vanara.PInvoke
 		/// integrity level.
 		/// </para>
 		/// </param>
-		/// <param name="Msg">
+		/// <param name="msg">
 		/// <para>The message to be sent.</para>
 		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
 		/// </param>
@@ -904,7 +904,7 @@ namespace Vanara.PInvoke
 		/// integrity level.
 		/// </para>
 		/// </param>
-		/// <param name="Msg">
+		/// <param name="msg">
 		/// <para>The message to be sent.</para>
 		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
 		/// </param>
@@ -939,7 +939,7 @@ namespace Vanara.PInvoke
 		/// integrity level.
 		/// </para>
 		/// </param>
-		/// <param name="Msg">
+		/// <param name="msg">
 		/// <para>The message to be sent.</para>
 		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
 		/// </param>

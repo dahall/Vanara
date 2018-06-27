@@ -531,7 +531,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetDCDpiScaleValue](https://www.google.com/search?num=5&q=GetDCDpiScaleValue+site%3Amsdn.microsoft.com) | gdi32.dll |  |   
 [GetDCOrgEx](https://www.google.com/search?num=5&q=GetDCOrgEx+site%3Amsdn.microsoft.com) | gdi32.dll |  |   
 [GetDCPenColor](https://www.google.com/search?num=5&q=GetDCPenColor+site%3Amsdn.microsoft.com) | gdi32.dll |  |   
-[GetDeviceCaps](https://www.google.com/search?num=5&q=GetDeviceCaps+site%3Amsdn.microsoft.com) | gdi32.dll |  |   
+[GetDeviceCaps](http://msdn2.microsoft.com/en-us/library/dd144877) | gdi32.dll | Wingdi.h | Vanara.PInvoke.Gdi32.GetDeviceCaps  
 [GetDeviceGammaRamp](https://www.google.com/search?num=5&q=GetDeviceGammaRamp+site%3Amsdn.microsoft.com) | gdi32.dll |  |   
 [GetDIBColorTable](https://www.google.com/search?num=5&q=GetDIBColorTable+site%3Amsdn.microsoft.com) | gdi32.dll |  |   
 [GetDIBits](http://msdn2.microsoft.com/en-us/library/dd144879) | gdi32.dll | Wingdi.h | Vanara.PInvoke.Gdi32.GetDIBits  
@@ -822,6 +822,5 @@ Native Structure | Header | Managed Structure
 [BLENDFUNCTION](http://msdn2.microsoft.com/en-us/library/dd183393) | Wingdi.h | Vanara.PInvoke.Gdi32+BLENDFUNCTION  
 [COLORREF](http://msdn2.microsoft.com/en-us/library/dd183449) | Windef.h | Vanara.PInvoke.Gdi32+COLORREF  
 [DIBSECTION](http://msdn2.microsoft.com/en-us/library/dd183567) | Wingdi.h | Vanara.PInvoke.Gdi32+DIBSECTION  
-[LOGFONT](http://msdn2.microsoft.com/en-us/library/dd145037) | Wingdi.h | Vanara.PInvoke.Gdi32+LOGFONT  
 [RGBQUAD](http://msdn2.microsoft.com/en-us/library/dd162938) | Wingdi.h | Vanara.PInvoke.Gdi32+RGBQUAD  
 [TEXTMETRIC](https://www.google.com/search?num=5&q=TEXTMETRIC+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.Gdi32+TEXTMETRIC  
