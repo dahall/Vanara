@@ -101,7 +101,10 @@ namespace Vanara.InteropServices
 		/// <returns>The types defined by the attribute.</returns>
 		public static IEnumerable<Type> GetCorrespondingTypes(Type type) => GetAttrForType(type).Select(a => a.TypeRef);
 
-		private static IEnumerable<CorrespondingTypeAttribute> GetAttrForObj(object value)
+		/// <summary>Gets the CorrespondingTypeAttribute instances associated with an enum value.</summary>
+		/// <param name="value">The enum value.</param>
+		/// <returns>An enumeration of all associated CorrespondingTypeAttribute instances.</returns>
+		protected static IEnumerable<CorrespondingTypeAttribute> GetAttrForObj(object value)
 		{
 			if (value == null) throw new ArgumentNullException(nameof(value));
 			var valueType = value.GetType();
@@ -112,7 +115,10 @@ namespace Vanara.InteropServices
 			return attr;
 		}
 
-		private static IEnumerable<CorrespondingTypeAttribute> GetAttrForType(Type type)
+		/// <summary>Gets the CorrespondingTypeAttribute instances associated with a type.</summary>
+		/// <param name="type">The type.</param>
+		/// <returns>An enumeration of all associated CorrespondingTypeAttribute instances.</returns>
+		protected static IEnumerable<CorrespondingTypeAttribute> GetAttrForType(Type type)
 		{
 			if (type == null) throw new ArgumentNullException(nameof(type));
 			var attr = type.GetCustomAttributes<CorrespondingTypeAttribute>();
