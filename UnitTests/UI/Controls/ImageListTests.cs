@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using Vanara.Extensions;
 using static Vanara.PInvoke.ComCtl32;
 using System.Drawing;
+using Vanara.PInvoke;
 
 namespace Vanara.Windows.Forms.Tests
 {
@@ -42,7 +43,7 @@ namespace Vanara.Windows.Forms.Tests
 			Assert.That(il.Images.Count, Is.EqualTo(2));
 			var bmp = new Bitmap(32, 32, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 			using (var g = Graphics.FromImage(bmp))
-				il.Draw(g, new Rectangle(0, 0, 32, 32), 0, Color.Transparent, PInvoke.Gdi32.COLORREF.None, overlayImageIndex: ovIdx);
+				il.Draw(g, new Rectangle(0, 0, 32, 32), 0, Color.Transparent, COLORREF.None, overlayImageIndex: ovIdx);
 			ShowImage(bmp);
 		}
 

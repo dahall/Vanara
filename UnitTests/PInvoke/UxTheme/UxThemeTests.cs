@@ -242,7 +242,7 @@ namespace Vanara.PInvoke.Tests
 			var hr = GetThemeColor(hwt, 1, 0, (int)ThemeProperty.TMT_TEXTCOLOR, out var result);
 			if (hr.Failed) TestContext.WriteLine(hr);
 			Assert.That(hr.Succeeded);
-			Assert.That(result, Is.EqualTo(new Gdi32.COLORREF(0,0,0)));
+			Assert.That(result, Is.EqualTo(new COLORREF(0,0,0)));
 
 			hr = GetThemeColor(hwt, 1, 0, (int)ThemeProperty.TMT_FILLCOLOR, out result);
 			if (hr.Failed) TestContext.WriteLine(hr);
@@ -287,6 +287,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			Assert.That(GetThemeFont(hbt, Gdi32.SafeDCHandle.Null, 6, 0, (int)ThemeProperty.TMT_FONT, out var result).Succeeded);
 			Assert.That(result.lfHeight, Is.EqualTo(-16));
+			Assert.That(() => System.Drawing.Font.FromLogFont(result), Throws.Nothing);
 		}
 
 		[Test]
@@ -391,7 +392,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void GetThemeSysColorTest()
 		{
-			Assert.That(GetThemeSysColor(hwt, User32_Gdi.SystemColorIndex.COLOR_WINDOW), Is.EqualTo(new Gdi32.COLORREF(255, 255, 255)));
+			Assert.That(GetThemeSysColor(hwt, User32_Gdi.SystemColorIndex.COLOR_WINDOW), Is.EqualTo(new COLORREF(255, 255, 255)));
 		}
 
 		[Test]
