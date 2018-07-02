@@ -842,20 +842,21 @@ Native Method | Native DLL | Header | Managed Method
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
-[ACCESSTIMEOUT](https://www.google.com/search?num=5&q=ACCESSTIMEOUT+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32+ACCESSTIMEOUT  
+[ACCESSTIMEOUT](https://www.google.com/search?num=5&q=ACCESSTIMEOUT+site%3Amsdn.microsoft.com) | Winuser.h | Vanara.PInvoke.User32+ACCESSTIMEOUT  
 [ANIMATIONINFO](http://msdn2.microsoft.com/en-us/library/ms724197) | Winuser.h | Vanara.PInvoke.User32+ANIMATIONINFO  
-[FILTERKEYS](https://www.google.com/search?num=5&q=FILTERKEYS+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32+FILTERKEYS  
+[AUDIODESCRIPTION](http://msdn2.microsoft.com/en-us/library/aa379651) | Winuser.h | Vanara.PInvoke.User32+AUDIODESCRIPTION  
+[FILTERKEYS](https://www.google.com/search?num=5&q=FILTERKEYS+site%3Amsdn.microsoft.com) | Winuser.h | Vanara.PInvoke.User32+FILTERKEYS  
 [GRPICONDIR](https://www.google.com/search?num=5&q=GRPICONDIR+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32_Gdi+GRPICONDIR  
 [GRPICONDIRENTRY](https://www.google.com/search?num=5&q=GRPICONDIRENTRY+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32_Gdi+GRPICONDIRENTRY  
-[HIGHCONTRAST](https://www.google.com/search?num=5&q=HIGHCONTRAST+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32+HIGHCONTRAST  
+[HIGHCONTRAST](https://www.google.com/search?num=5&q=HIGHCONTRAST+site%3Amsdn.microsoft.com) | Winuser.h | Vanara.PInvoke.User32+HIGHCONTRAST  
 [ICONINFO](https://www.google.com/search?num=5&q=ICONINFO+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32_Gdi+ICONINFO  
 [MINIMIZEDMETRICS](http://msdn2.microsoft.com/en-us/library/ms724500) | Winuser.h | Vanara.PInvoke.User32+MINIMIZEDMETRICS  
 [MINMAXINFO](https://www.google.com/search?num=5&q=MINMAXINFO+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32_Gdi+MINMAXINFO  
-[MOUSEKEYS](https://www.google.com/search?num=5&q=MOUSEKEYS+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32+MOUSEKEYS  
+[MOUSEKEYS](https://www.google.com/search?num=5&q=MOUSEKEYS+site%3Amsdn.microsoft.com) | Winuser.h | Vanara.PInvoke.User32+MOUSEKEYS  
 [NMHDR](https://www.google.com/search?num=5&q=NMHDR+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32_Gdi+NMHDR  
-[SERIALKEYS](https://www.google.com/search?num=5&q=SERIALKEYS+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32+SERIALKEYS  
-[SOUNDSENTRY](https://www.google.com/search?num=5&q=SOUNDSENTRY+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32+SOUNDSENTRY  
-[STICKYKEYS](https://www.google.com/search?num=5&q=STICKYKEYS+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32+STICKYKEYS  
-[TOGGLEKEYS](https://www.google.com/search?num=5&q=TOGGLEKEYS+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32+TOGGLEKEYS  
+[SERIALKEYS](https://www.google.com/search?num=5&q=SERIALKEYS+site%3Amsdn.microsoft.com) | Winuser.h | Vanara.PInvoke.User32+SERIALKEYS  
+[STICKYKEYS](https://www.google.com/search?num=5&q=STICKYKEYS+site%3Amsdn.microsoft.com) | Winuser.h | Vanara.PInvoke.User32+STICKYKEYS  
+[TOGGLEKEYS](https://www.google.com/search?num=5&q=TOGGLEKEYS+site%3Amsdn.microsoft.com) | Winuser.h | Vanara.PInvoke.User32+TOGGLEKEYS  
+[TOUCHPREDICTIONPARAMETERS](http://msdn2.microsoft.com/en-us/library/hh969214) | Winuser.h | Vanara.PInvoke.User32+TOUCHPREDICTIONPARAMETERS  
 [TRACKMOUSEEVENT](http://msdn2.microsoft.com/en-us/library/ms645604) | Winuser.h | Vanara.PInvoke.User32+TRACKMOUSEEVENT  
 [WINDOWPOS](https://www.google.com/search?num=5&q=WINDOWPOS+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.User32_Gdi+WINDOWPOS  

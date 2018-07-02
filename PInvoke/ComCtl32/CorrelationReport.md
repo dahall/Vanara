@@ -76,7 +76,6 @@ Native Structure | Header | Managed Structure
 --- | --- | ---  
 [BUTTON_IMAGELIST](http://msdn2.microsoft.com/en-us/library/bb775953) | Commctrl.h | Vanara.PInvoke.ComCtl32+BUTTON_IMAGELIST  
 [BUTTON_SPLITINFO](http://msdn2.microsoft.com/en-us/library/bb775955) | Commctrl.h | Vanara.PInvoke.ComCtl32+BUTTON_SPLITINFO  
-[COLORMAP](http://msdn2.microsoft.com/en-us/library/bb760448) | Commctrl.h | Vanara.PInvoke.ComCtl32+COLORMAP  
 [COLORSCHEME](https://www.google.com/search?num=5&q=COLORSCHEME+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.ComCtl32+COLORSCHEME  
 [COMBOBOXEXITEM](http://msdn2.microsoft.com/en-us/library/bb775746) | Commctrl.h | Vanara.PInvoke.ComCtl32+COMBOBOXEXITEM  
 [COMBOBOXINFO](http://msdn2.microsoft.com/en-us/library/bb775798) | Winuser.h | Vanara.PInvoke.ComCtl32+COMBOBOXINFO  
@@ -87,7 +86,6 @@ Native Structure | Header | Managed Structure
 [HDLAYOUT](http://msdn2.microsoft.com/en-us/library/bb775249) | Commctrl.h | Vanara.PInvoke.ComCtl32+HDLAYOUT  
 [HDTEXTFILTER](http://msdn2.microsoft.com/en-us/library/bb775251) | Commctrl.h | Vanara.PInvoke.ComCtl32+HDTEXTFILTER  
 [IMAGEINFO](http://msdn2.microsoft.com/en-us/library/bb761393) | Commctrl.h | Vanara.PInvoke.ComCtl32+IMAGEINFO  
-[IMAGELISTDRAWPARAMS](http://msdn2.microsoft.com/en-us/library/bb761395) | Commctrl.h | Vanara.PInvoke.ComCtl32+IMAGELISTDRAWPARAMS  
 [IMAGELISTSTATS](http://msdn2.microsoft.com/en-us/library/bb761397) | Commoncontrols.h | Vanara.PInvoke.ComCtl32+IMAGELISTSTATS  
 [INITCOMMONCONTROLSEX](http://msdn2.microsoft.com/en-us/library/bb775507) | Commctrl.h | Vanara.PInvoke.ComCtl32+INITCOMMONCONTROLSEX  
 [LVBKIMAGE](http://msdn2.microsoft.com/en-us/library/bb774742) | Commctrl.h | Vanara.PInvoke.ComCtl32+LVBKIMAGE  

@@ -4,7 +4,7 @@
     <Description>Methods, structures and constants imported from AdvApi32.dll, Authz.dll and Secur32.dll.</Description>
     <Copyright>Copyright © 2017-2018</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.15</VersionPrefix>
+    <VersionPrefix>1.0.16</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Security</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
