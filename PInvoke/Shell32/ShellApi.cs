@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
 {
+	/// <summary>Interfaces, functions, enumerated types and structures for Shell32.dll.</summary>
 	public static partial class Shell32
 	{
 		/// <summary>Flags that indicate the content and validity of the other structure members in <see cref="SHELLEXECUTEINFO"/>.</summary>
@@ -457,6 +458,8 @@ namespace Vanara.PInvoke
 			/// <summary>A string that describes the type of file.</summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)] public string szTypeName;
 
+			/// <summary>Gets the size of this structure.</summary>
+			/// <value>The structure size in bytes.</value>
 			public static int Size => Marshal.SizeOf(typeof(SHFILEINFO));
 		}
 

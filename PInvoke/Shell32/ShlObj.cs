@@ -341,6 +341,14 @@ namespace Vanara.PInvoke
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762115")]
 		public static extern PIDL SHBrowseForFolder(ref BROWSEINFO lpbi);
 
+		/// <summary>Creates a new instance of the default Shell folder view object (DefView).</summary>
+		/// <param name="pcsfv">Pointer to a SFV_CREATE structure that describes the particulars used in creating this instance of the Shell folder view object.</param>
+		/// <param name="ppsv">When this function returns successfully, contains an interface pointer to the new IShellView object. On failure, this value is NULL.</param>
+		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
+		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
+		[PInvokeData("Shlobj.h")]
+		public static extern HRESULT SHCreateShellFolderView(ref SFV_CREATE pcsfv, out IShellView ppsv);
+
 		/// <summary>Provides a default handler to extract an icon from a file.</summary>
 		/// <param name="pszIconFile">A pointer to a null-terminated buffer that contains the path and name of the file from which the icon is extracted.</param>
 		/// <param name="iIndex">
@@ -911,6 +919,26 @@ namespace Vanara.PInvoke
 
 			/// <summary>The console's code page.</summary>
 			public uint uCodePage;
+		}
+
+		/// <summary>This structure is used with the SHCreateShellFolderView function.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("Shlobj.h")]
+		public struct SFV_CREATE
+		{
+			/// <summary>The size of the SFV_CREATE structure, in bytes.</summary>
+			public uint cbSize;
+			/// <summary>The IShellFolder interface of the folder for which to create the view.</summary>
+			public IShellFolder pshf;
+			/// <summary>
+			/// A pointer to the parent IShellView interface. This parameter may be NULL. This parameter is used only when the view created by
+			/// SHCreateShellFolderView is hosted in a common dialog box.
+			/// </summary>
+			public IShellView psvOuter;
+			/// <summary>
+			/// A pointer to the IShellFolderViewCB interface that handles the view's callbacks when various events occur. This parameter may be NULL.
+			/// </summary>
+			public IShellFolderViewCB psfvcb;
 		}
 
 		/// <summary>Receives item data in response to a call to SHGetDataFromIDList.</summary>

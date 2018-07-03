@@ -262,6 +262,69 @@ namespace Vanara.PInvoke
 			SBSP_WRITENOHISTORY = 0x08000000
 		}
 
+		/// <summary>Flags used by IShellFolderViewCB::MessageSFVCB.</summary>
+		public enum SFVM
+		{
+			/// <summary>Allows the callback object to provide a page to add to the Properties property sheet of the selected object.</summary>
+			SFVM_ADDPROPERTYPAGES = 47,
+			/// <summary>Allows the callback object to request that enumeration be done on a background thread.</summary>
+			SFVM_BACKGROUNDENUM = 32,
+			/// <summary>Notifies the callback object that background enumeration is complete.</summary>
+			SFVM_BACKGROUNDENUMDONE = 48,
+			/// <summary>Notifies the callback object that the user has clicked a column header to sort the list of objects in the folder view.</summary>
+			SFVM_COLUMNCLICK = 24,
+			/// <summary>Allows the callback object to specify the number of items in the folder view.</summary>
+			SFVM_DEFITEMCOUNT = 26,
+			/// <summary>Allows the callback object to specify the view mode.</summary>
+			SFVM_DEFVIEWMODE = 27,
+			/// <summary>Notifies the callback function that a drag-and-drop operation has begun.</summary>
+			SFVM_DIDDRAGDROP = 36,
+			/// <summary>Notifies the callback object that an event has taken place that affects one of its items.</summary>
+			SFVM_FSNOTIFY = 14,
+			/// <summary>Allows the callback object to specify that an animation be displayed while items are enumerated on a background thread.</summary>
+			SFVM_GETANIMATION = 68,
+			/// <summary>Allows the callback object to add buttons to the toolbar.</summary>
+			SFVM_GETBUTTONINFO = 5,
+			/// <summary>Allows the callback object to specify the buttons to be added to the toolbar.</summary>
+			SFVM_GETBUTTONS = 6,
+			/// <summary>Allows the callback object to provide the details for an item in a Shell folder. Use only if a call to GetDetailsOf fails and there is no GetDetailsOf method available to call.</summary>
+			SFVM_GETDETAILSOF = 23,
+			/// <summary>Allows the callback object to specify a help text string for menu items or toolbar buttons.</summary>
+			SFVM_GETHELPTEXT = 3,
+			/// <summary>Allows the callback object to specify a Help file and topic.</summary>
+			SFVM_GETHELPTOPIC = 63,
+			/// <summary>Specifies which events will generate an SFVM_FSNOTIFY message for a given item.</summary>
+			SFVM_GETNOTIFY = 49,
+			/// <summary>Allows the callback object to provide the status bar pane in which to display the Internet zone information.</summary>
+			SFVM_GETPANE = 59,
+			/// <summary>Allows the callback object to specify default sorting parameters.</summary>
+			SFVM_GETSORTDEFAULTS = 53,
+			/// <summary>Allows the callback object to specify a tooltip text string for menu items or toolbar buttons.</summary>
+			SFVM_GETTOOLTIPTEXT = 4,
+			/// <summary>Allows the callback object to provide Internet zone information.</summary>
+			SFVM_GETZONE = 58,
+			/// <summary>Allows the callback object to modify an item's context menu.</summary>
+			SFVM_INITMENUPOPUP = 7,
+			/// <summary>Notifies the callback object that one of its toolbar or menu commands has been invoked.</summary>
+			SFVM_INVOKECOMMAND = 2,
+			/// <summary>Allows the callback object to merge menu items into the Windows Explorer menus.</summary>
+			SFVM_MERGEMENU = 1,
+			/// <summary>Allows the callback object to register a folder so that changes to that folder's view will generate notifications.</summary>
+			SFVM_QUERYFSNOTIFY = 25,
+			/// <summary>Notifies the callback object of the container site. This is used only when IObjectWithSite::SetSite is not supported and SHCreateShellFolderViewEx is used.</summary>
+			SFVM_SETISFV = 39,
+			/// <summary>Notifies the callback object that the folder view has been resized.</summary>
+			SFVM_SIZE = 57,
+			/// <summary>Allows the callback object to specify the view's PIDL. This is used only when SetIDList and IPersistFolder2::GetCurFolder have failed.</summary>
+			SFVM_THISIDLIST = 41,
+			/// <summary>Notifies the callback object that a menu is being removed.</summary>
+			SFVM_UNMERGEMENU = 28,
+			/// <summary>Allows the callback object to request that the status bar be updated.</summary>
+			SFVM_UPDATESTATUSBAR = 31,
+			/// <summary>Notifies the callback object that the folder view window is being created.</summary>
+			SFVM_WINDOWCREATED = 15,
+		}
+
 		/// <summary>The type of view requested.</summary>
 		public enum SV2GV : int
 		{
@@ -412,6 +475,23 @@ namespace Vanara.PInvoke
 			/// <param name="nButtons">The number of TBBUTTON structures in the lpButtons array.</param>
 			/// <param name="uFlags">Flags specifying where the toolbar buttons should go.</param>
 			void SetToolbarItems([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ComCtl32.TBBUTTON[] lpButtons, uint nButtons, FCT uFlags);
+		}
+
+		/// <summary>
+		/// Exposes a method that allows communication between Windows Explorer and a folder view implemented using the system folder view object (the IShellView
+		/// object returned through SHCreateShellFolderView) so that the folder view can be notified of events and modify its view accordingly.
+		/// </summary>
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("2047E320-F2A9-11CE-AE65-08002B2E1262")]
+		public interface IShellFolderViewCB
+		{
+			/// <summary>Allows communication between the system folder view object and a system folder view callback object.</summary>
+			/// <param name="uMsg">One of the following notifications.</param>
+			/// <param name="wParam">Additional information.</param>
+			/// <param name="lParam">Additional information.</param>
+			/// <param name="plResult">Additional information.</param>
+			/// <returns>S_OK if the message was handled, E_NOTIMPL if the shell should perform default processing.</returns>
+			[PreserveSig]
+			HRESULT MessageSFVCB(SFVM uMsg, IntPtr wParam, IntPtr lParam, ref IntPtr plResult);
 		}
 
 		/// <summary>Exposes methods that present a view in the Windows Explorer or folder windows.</summary>
