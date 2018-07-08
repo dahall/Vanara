@@ -4,7 +4,7 @@
     <Description>Methods, structures and constants imported from User32.dll.</Description>
     <Copyright>Copyright © 2017-2018</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.16</VersionPrefix>
+    <VersionPrefix>1.0.17</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard20</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.User32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -25,10 +25,10 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-CallNextHookEx, ChildWindowFromPointEx, DestroyIcon, DrawEdge, DrawText, ExitWindowsEx, FindWindow, GetActiveWindow, GetClientRect, GetDC, GetDesktopWindow, GetIconInfo, GetSysColor, GetSysColorBrush, GetSystemMetrics, GetWindowLong, GetWindowLongPtr, GetWindowRect, InvalidateRect, LoadImage, LoadString, LockWorkStation, MapWindowPoints, RealGetWindowClass, RegisterHotKey, RegisterWindowMessage, ScreenToClient, SendMessage, SetWindowPos, SetWindowsHookEx, SetWindowText, ShutdownBlockReasonCreate, ShutdownBlockReasonDestroy, ShutdownBlockReasonQuery, SystemParametersInfo, TrackMouseEvent, UnhookWindowsHookEx, UnregisterHotKey, WindowFromPoint
+CallNextHookEx, ChildWindowFromPointEx, DestroyIcon, DrawEdge, DrawTextA, DrawTextW, ExitWindowsEx, FindWindowA, FindWindowW, GetActiveWindow, GetClientRect, GetDC, GetDesktopWindow, GetIconInfo, GetSysColor, GetSysColorBrush, GetSystemMetrics, GetWindowLongA, GetWindowLongPtrA, GetWindowLongPtrW, GetWindowLongW, GetWindowRect, InvalidateRect, LoadImageA, LoadImageW, LoadStringA, LoadStringW, LockWorkStation, MapWindowPoints, RealGetWindowClassA, RealGetWindowClassW, RegisterHotKey, RegisterWindowMessageA, RegisterWindowMessageW, ScreenToClient, SendMessageA, SendMessageW, SetWindowPos, SetWindowsHookExA, SetWindowsHookExW, SetWindowTextA, SetWindowTextW, ShutdownBlockReasonCreate, ShutdownBlockReasonDestroy, ShutdownBlockReasonQuery, SystemParametersInfoA, SystemParametersInfoW, TrackMouseEvent, UnhookWindowsHookEx, UnregisterHotKey, WindowFromPoint
 
 Structures
-TRACKMOUSEEVENT, ACCESSTIMEOUT, ANIMATIONINFO, AUDIODESCRIPTION, FILTERKEYS, HIGHCONTRAST, MINIMIZEDMETRICS, MOUSEKEYS, SERIALKEYS, STICKYKEYS, TOGGLEKEYS, TOUCHPREDICTIONPARAMETERS, ICONINFO, NMHDR, MINMAXINFO, WINDOWPOS, GRPICONDIR, GRPICONDIRENTRY
+TRACKMOUSEEVENT, ACCESSTIMEOUT, ANIMATIONINFO, AUDIODESCRIPTION, FILTERKEYS, HIGHCONTRAST, ICONMETRICS, MINIMIZEDMETRICS, MOUSEKEYS, NONCLIENTMETRICS, SERIALKEYS, SOUNDSENTRY, STICKYKEYS, TOGGLEKEYS, TOUCHPREDICTIONPARAMETERS, ICONINFO, NMHDR, MINMAXINFO, WINDOWPOS, GRPICONDIR, GRPICONDIRENTRY
 
 </PackageReleaseNotes>
   </PropertyGroup>

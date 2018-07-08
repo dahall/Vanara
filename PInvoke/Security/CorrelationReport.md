@@ -1,8 +1,8 @@
 ## Correlation report for advapi32.dll, secur32.dll, authz.dll  
-### Methods (7% complete)  
+### Methods (11% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
-[AbortSystemShutdown](https://www.google.com/search?num=5&q=AbortSystemShutdownA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
+[AbortSystemShutdown](http://msdn2.microsoft.com/en-us/library/aa376630) | advapi32.dll | winreg.h | Vanara.PInvoke.AdvApi32.AbortSystemShutdown  
 [AcceptSecurityContext](https://www.google.com/search?num=5&q=AcceptSecurityContext+site%3Amsdn.microsoft.com) | secur32.dll |  |   
 [AccessCheck](https://www.google.com/search?num=5&q=AccessCheck+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [AccessCheckAndAuditAlarm](https://www.google.com/search?num=5&q=AccessCheckAndAuditAlarmA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
@@ -135,8 +135,8 @@ Native Method | Native DLL | Header | Managed Method
 [BuildTrusteeWithSid](https://www.google.com/search?num=5&q=BuildTrusteeWithSidA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [CancelOverlappedAccess](https://www.google.com/search?num=5&q=CancelOverlappedAccess+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [ChangeAccountPassword](https://www.google.com/search?num=5&q=ChangeAccountPasswordA+site%3Amsdn.microsoft.com) | secur32.dll |  |   
-[ChangeServiceConfig](https://www.google.com/search?num=5&q=ChangeServiceConfigA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[ChangeServiceConfig2](https://www.google.com/search?num=5&q=ChangeServiceConfig2A+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
+[ChangeServiceConfig](http://msdn2.microsoft.com/en-us/library/ms681987) | advapi32.dll | winsvc.h | Vanara.PInvoke.AdvApi32.ChangeServiceConfig  
+[ChangeServiceConfig2](http://msdn2.microsoft.com/en-us/library/ms681988) | advapi32.dll | winsvc.h | Vanara.PInvoke.AdvApi32.ChangeServiceConfig2  
 [CheckForHiberboot](https://www.google.com/search?num=5&q=CheckForHiberboot+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [CheckTokenMembership](https://www.google.com/search?num=5&q=CheckTokenMembership+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [ClearEventLog](https://www.google.com/search?num=5&q=ClearEventLogA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
@@ -159,12 +159,12 @@ Native Method | Native DLL | Header | Managed Method
 [ConvertSDToStringSDRootDomain](https://www.google.com/search?num=5&q=ConvertSDToStringSDRootDomainA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [ConvertSecurityDescriptorToAccess](https://www.google.com/search?num=5&q=ConvertSecurityDescriptorToAccessA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [ConvertSecurityDescriptorToAccessNamed](https://www.google.com/search?num=5&q=ConvertSecurityDescriptorToAccessNamedA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[ConvertSecurityDescriptorToStringSecurityDescriptor](https://www.google.com/search?num=5&q=ConvertSecurityDescriptorToStringSecurityDescriptorA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[ConvertSidToStringSid](https://www.google.com/search?num=5&q=ConvertSidToStringSidA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
+[ConvertSecurityDescriptorToStringSecurityDescriptor](http://msdn2.microsoft.com/en-us/library/aa376397) | advapi32.dll | sddl.h | Vanara.PInvoke.AdvApi32.ConvertSecurityDescriptorToStringSecurityDescriptor  
+[ConvertSidToStringSid](http://msdn2.microsoft.com/en-us/library/aa376399) | advapi32.dll | sddl.h | Vanara.PInvoke.AdvApi32.ConvertSidToStringSid  
 [ConvertStringSDToSDDomain](https://www.google.com/search?num=5&q=ConvertStringSDToSDDomainA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [ConvertStringSDToSDRootDomain](https://www.google.com/search?num=5&q=ConvertStringSDToSDRootDomainA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[ConvertStringSecurityDescriptorToSecurityDescriptor](https://www.google.com/search?num=5&q=ConvertStringSecurityDescriptorToSecurityDescriptorA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[ConvertStringSidToSid](https://www.google.com/search?num=5&q=ConvertStringSidToSidA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
+[ConvertStringSecurityDescriptorToSecurityDescriptor](http://msdn2.microsoft.com/en-us/library/aa376401) | advapi32.dll | sddl.h | Vanara.PInvoke.AdvApi32.ConvertStringSecurityDescriptorToSecurityDescriptor  
+[ConvertStringSidToSid](http://msdn2.microsoft.com/en-us/library/aa376402) | advapi32.dll | sddl.h | Vanara.PInvoke.AdvApi32.ConvertStringSidToSid  
 [ConvertToAutoInheritPrivateObjectSecurity](https://www.google.com/search?num=5&q=ConvertToAutoInheritPrivateObjectSecurity+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [CopySid](http://msdn2.microsoft.com/en-us/library/aa376404) | advapi32.dll | Winbase.h | Vanara.PInvoke.AdvApi32.CopySid  
 [CreateCodeAuthzLevel](https://www.google.com/search?num=5&q=CreateCodeAuthzLevel+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
@@ -176,7 +176,6 @@ Native Method | Native DLL | Header | Managed Method
 [CreateProcessWithTokenW](https://www.google.com/search?num=5&q=CreateProcessWithTokenW+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [CreateRestrictedToken](https://www.google.com/search?num=5&q=CreateRestrictedToken+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [CreateService](https://www.google.com/search?num=5&q=CreateServiceA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[CreateServiceEx](https://www.google.com/search?num=5&q=CreateServiceEx+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [CreateTraceInstanceId](https://www.google.com/search?num=5&q=CreateTraceInstanceId+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [CreateWellKnownSid](https://www.google.com/search?num=5&q=CreateWellKnownSid+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [CredBackupCredentials](https://www.google.com/search?num=5&q=CredBackupCredentials+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
@@ -186,7 +185,7 @@ Native Method | Native DLL | Header | Managed Method
 [CredFindBestCredential](https://www.google.com/search?num=5&q=CredFindBestCredentialA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [CredFree](https://www.google.com/search?num=5&q=CredFree+site%3Amsdn.microsoft.com) | advapi32.dll |  | Vanara.PInvoke.AdvApi32.CredFree  
 [CredGetSessionTypes](https://www.google.com/search?num=5&q=CredGetSessionTypes+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[CredGetTargetInfo](https://www.google.com/search?num=5&q=CredGetTargetInfoA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
+[CredGetTargetInfo](https://www.google.com/search?num=5&q=CredGetTargetInfoA+site%3Amsdn.microsoft.com) | advapi32.dll |  | Vanara.PInvoke.AdvApi32.CredGetTargetInfo  
 [CredIsMarshaledCredential](https://www.google.com/search?num=5&q=CredIsMarshaledCredentialA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [CredIsProtected](https://www.google.com/search?num=5&q=CredIsProtectedA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [CredMarshalCredential](https://www.google.com/search?num=5&q=CredMarshalCredentialA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
@@ -203,14 +202,14 @@ Native Method | Native DLL | Header | Managed Method
 [CredProtect](https://www.google.com/search?num=5&q=CredProtectA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [CredRead](https://www.google.com/search?num=5&q=CredReadA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [CredReadByTokenHandle](https://www.google.com/search?num=5&q=CredReadByTokenHandle+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[CredReadDomainCredentials](https://www.google.com/search?num=5&q=CredReadDomainCredentialsA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
+[CredReadDomainCredentials](https://www.google.com/search?num=5&q=CredReadDomainCredentialsA+site%3Amsdn.microsoft.com) | advapi32.dll |  | Vanara.PInvoke.AdvApi32.CredReadDomainCredentials  
 [CredRename](https://www.google.com/search?num=5&q=CredRenameA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [CredRestoreCredentials](https://www.google.com/search?num=5&q=CredRestoreCredentials+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [CredUnmarshalCredential](https://www.google.com/search?num=5&q=CredUnmarshalCredentialA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [CredUnmarshalTargetInfo](https://www.google.com/search?num=5&q=CredUnmarshalTargetInfo+site%3Amsdn.microsoft.com) | secur32.dll |  |   
 [CredUnprotect](https://www.google.com/search?num=5&q=CredUnprotectA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [CredWrite](https://www.google.com/search?num=5&q=CredWriteA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[CredWriteDomainCredentials](https://www.google.com/search?num=5&q=CredWriteDomainCredentialsA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
+[CredWriteDomainCredentials](https://www.google.com/search?num=5&q=CredWriteDomainCredentialsA+site%3Amsdn.microsoft.com) | advapi32.dll |  | Vanara.PInvoke.AdvApi32.CredWriteDomainCredentials  
 [CryptAcquireContext](https://www.google.com/search?num=5&q=CryptAcquireContextA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [CryptContextAddRef](https://www.google.com/search?num=5&q=CryptContextAddRef+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [CryptCreateHash](https://www.google.com/search?num=5&q=CryptCreateHash+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
@@ -314,14 +313,14 @@ Native Method | Native DLL | Header | Managed Method
 [GetCurrentHwProfile](https://www.google.com/search?num=5&q=GetCurrentHwProfileA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [GetDefaultCAPESecurityDescriptor](https://www.google.com/search?num=5&q=GetDefaultCAPESecurityDescriptor+site%3Amsdn.microsoft.com) | authz.dll |  |   
 [GetDynamicTimeZoneInformationEffectiveYears](https://www.google.com/search?num=5&q=GetDynamicTimeZoneInformationEffectiveYears+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[GetEffectiveRightsFromAcl](https://www.google.com/search?num=5&q=GetEffectiveRightsFromAclA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
+[GetEffectiveRightsFromAcl](http://msdn2.microsoft.com/en-us/library/aa446637) | advapi32.dll | Aclapi.h | Vanara.PInvoke.AdvApi32.GetEffectiveRightsFromAcl  
 [GetEncryptedFileMetadata](https://www.google.com/search?num=5&q=GetEncryptedFileMetadata+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [GetEventLogInformation](https://www.google.com/search?num=5&q=GetEventLogInformation+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [GetExplicitEntriesFromAcl](https://www.google.com/search?num=5&q=GetExplicitEntriesFromAclA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [GetFileSecurity](https://www.google.com/search?num=5&q=GetFileSecurityA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [GetInformationCodeAuthzLevelW](https://www.google.com/search?num=5&q=GetInformationCodeAuthzLevelW+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [GetInformationCodeAuthzPolicyW](https://www.google.com/search?num=5&q=GetInformationCodeAuthzPolicyW+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[GetInheritanceSource](https://www.google.com/search?num=5&q=GetInheritanceSourceA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
+[GetInheritanceSource](http://msdn2.microsoft.com/en-us/library/aa446640) | advapi32.dll | Aclapi.h | Vanara.PInvoke.AdvApi32.GetInheritanceSource  
 [GetKernelObjectSecurity](https://www.google.com/search?num=5&q=GetKernelObjectSecurity+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [GetLengthSid](http://msdn2.microsoft.com/en-us/library/aa446642) | advapi32.dll | Winbase.h | Vanara.PInvoke.AdvApi32.GetLengthSid  
 [GetLocalManagedApplicationData](https://www.google.com/search?num=5&q=GetLocalManagedApplicationData+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
@@ -330,7 +329,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetManagedApplications](https://www.google.com/search?num=5&q=GetManagedApplications+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [GetMultipleTrustee](https://www.google.com/search?num=5&q=GetMultipleTrusteeA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [GetMultipleTrusteeOperation](https://www.google.com/search?num=5&q=GetMultipleTrusteeOperationA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[GetNamedSecurityInfo](https://www.google.com/search?num=5&q=GetNamedSecurityInfoA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
+[GetNamedSecurityInfo](http://msdn2.microsoft.com/en-us/library/aa446645) | advapi32.dll | Aclapi.h | Vanara.PInvoke.AdvApi32.GetNamedSecurityInfo  
 [GetNamedSecurityInfoEx](https://www.google.com/search?num=5&q=GetNamedSecurityInfoExA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [GetNumberOfEventLogRecords](https://www.google.com/search?num=5&q=GetNumberOfEventLogRecords+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [GetOldestEventLogRecord](https://www.google.com/search?num=5&q=GetOldestEventLogRecord+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
@@ -376,9 +375,9 @@ Native Method | Native DLL | Header | Managed Method
 [InitializeSecurityContext](https://www.google.com/search?num=5&q=InitializeSecurityContextA+site%3Amsdn.microsoft.com) | secur32.dll |  |   
 [InitializeSecurityDescriptor](https://www.google.com/search?num=5&q=InitializeSecurityDescriptor+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [InitializeSid](https://www.google.com/search?num=5&q=InitializeSid+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[InitiateShutdown](https://www.google.com/search?num=5&q=InitiateShutdownA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
+[InitiateShutdown](http://msdn2.microsoft.com/en-us/library/aa376872) | advapi32.dll | winreg.h | Vanara.PInvoke.AdvApi32.InitiateShutdown  
 [InitiateSystemShutdown](https://www.google.com/search?num=5&q=InitiateSystemShutdownA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[InitiateSystemShutdownEx](https://www.google.com/search?num=5&q=InitiateSystemShutdownExA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
+[InitiateSystemShutdownEx](http://msdn2.microsoft.com/en-us/library/aa376874) | advapi32.dll | winreg.h | Vanara.PInvoke.AdvApi32.InitiateSystemShutdownEx  
 [InitSecurityInterface](https://www.google.com/search?num=5&q=InitSecurityInterfaceA+site%3Amsdn.microsoft.com) | secur32.dll |  |   
 [InstallApplication](https://www.google.com/search?num=5&q=InstallApplication+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [IsTextUnicode](https://www.google.com/search?num=5&q=IsTextUnicode+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
@@ -390,14 +389,14 @@ Native Method | Native DLL | Header | Managed Method
 [IsValidSid](http://msdn2.microsoft.com/en-us/library/aa379151) | advapi32.dll | Winbase.h | Vanara.PInvoke.AdvApi32.IsValidSid  
 [IsWellKnownSid](https://www.google.com/search?num=5&q=IsWellKnownSid+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [LockServiceDatabase](https://www.google.com/search?num=5&q=LockServiceDatabase+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[LogonUser](https://www.google.com/search?num=5&q=LogonUserA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[LogonUserEx](https://www.google.com/search?num=5&q=LogonUserExA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
+[LogonUser](http://msdn2.microsoft.com/en-us/library/aa378184) | advapi32.dll | Winbase.h | Vanara.PInvoke.AdvApi32.LogonUser  
+[LogonUserEx](http://msdn2.microsoft.com/en-us/library/aa378189) | advapi32.dll | Winbase.h | Vanara.PInvoke.AdvApi32.LogonUserEx  
 [LogonUserExExW](https://www.google.com/search?num=5&q=LogonUserExExW+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[LookupAccountName](https://www.google.com/search?num=5&q=LookupAccountNameA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[LookupAccountSid](https://www.google.com/search?num=5&q=LookupAccountSidA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
+[LookupAccountName](http://msdn2.microsoft.com/en-us/library/aa379159) | advapi32.dll | Winbase.h | Vanara.PInvoke.AdvApi32.LookupAccountName  
+[LookupAccountSid](http://msdn2.microsoft.com/en-us/library/aa379166) | advapi32.dll | Winbase.h | Vanara.PInvoke.AdvApi32.LookupAccountSid  
 [LookupPrivilegeDisplayName](https://www.google.com/search?num=5&q=LookupPrivilegeDisplayNameA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[LookupPrivilegeName](https://www.google.com/search?num=5&q=LookupPrivilegeNameA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[LookupPrivilegeValue](https://www.google.com/search?num=5&q=LookupPrivilegeValueA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
+[LookupPrivilegeName](https://www.google.com/search?num=5&q=LookupPrivilegeNameA+site%3Amsdn.microsoft.com) | advapi32.dll |  | Vanara.PInvoke.AdvApi32.LookupPrivilegeName  
+[LookupPrivilegeValue](https://www.google.com/search?num=5&q=LookupPrivilegeValueA+site%3Amsdn.microsoft.com) | advapi32.dll |  | Vanara.PInvoke.AdvApi32.LookupPrivilegeValue  
 [LookupSecurityDescriptorParts](https://www.google.com/search?num=5&q=LookupSecurityDescriptorPartsA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [LsaAddAccountRights](http://msdn2.microsoft.com/en-us/library/ms721786) | advapi32.dll | ntsecapi.h | Vanara.PInvoke.AdvApi32.LsaAddAccountRights  
 [LsaAddPrivilegesToAccount](https://www.google.com/search?num=5&q=LsaAddPrivilegesToAccount+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
@@ -551,15 +550,14 @@ Native Method | Native DLL | Header | Managed Method
 [QuerySecurityAccessMask](https://www.google.com/search?num=5&q=QuerySecurityAccessMask+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [QuerySecurityContextToken](https://www.google.com/search?num=5&q=QuerySecurityContextToken+site%3Amsdn.microsoft.com) | secur32.dll |  |   
 [QuerySecurityPackageInfo](https://www.google.com/search?num=5&q=QuerySecurityPackageInfoA+site%3Amsdn.microsoft.com) | secur32.dll |  |   
-[QueryServiceConfig](https://www.google.com/search?num=5&q=QueryServiceConfigA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[QueryServiceConfig2](https://www.google.com/search?num=5&q=QueryServiceConfig2A+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
+[QueryServiceConfig](http://msdn2.microsoft.com/en-us/library/ms684932) | advapi32.dll | winsvc.h | Vanara.PInvoke.AdvApi32.QueryServiceConfig  
+[QueryServiceConfig2](http://msdn2.microsoft.com/en-us/library/ms684935) | advapi32.dll | winsvc.h | Vanara.PInvoke.AdvApi32.QueryServiceConfig2  
 [QueryServiceDynamicInformation](https://www.google.com/search?num=5&q=QueryServiceDynamicInformation+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [QueryServiceLockStatus](https://www.google.com/search?num=5&q=QueryServiceLockStatusA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [QueryServiceObjectSecurity](https://www.google.com/search?num=5&q=QueryServiceObjectSecurity+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [QueryServiceStatus](https://www.google.com/search?num=5&q=QueryServiceStatus+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [QueryServiceStatusEx](https://www.google.com/search?num=5&q=QueryServiceStatusEx+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [QueryTrace](https://www.google.com/search?num=5&q=QueryTraceA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[QueryTraceProcessingHandle](https://www.google.com/search?num=5&q=QueryTraceProcessingHandle+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [QueryUserServiceName](https://www.google.com/search?num=5&q=QueryUserServiceName+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [QueryUserServiceNameForContext](https://www.google.com/search?num=5&q=QueryUserServiceNameForContext+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [QueryUsersOnEncryptedFile](https://www.google.com/search?num=5&q=QueryUsersOnEncryptedFile+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
@@ -601,7 +599,7 @@ Native Method | Native DLL | Header | Managed Method
 [RegNotifyChangeKeyValue](http://msdn2.microsoft.com/en-us/library/ms724892) | advapi32.dll | winreg.h | Vanara.PInvoke.AdvApi32.RegNotifyChangeKeyValue  
 [RegOpenCurrentUser](https://www.google.com/search?num=5&q=RegOpenCurrentUser+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [RegOpenKey](https://www.google.com/search?num=5&q=RegOpenKeyA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[RegOpenKeyEx](https://www.google.com/search?num=5&q=RegOpenKeyExA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
+[RegOpenKeyEx](http://msdn2.microsoft.com/en-us/library/ms724897) | advapi32.dll | winreg.h | Vanara.PInvoke.AdvApi32.RegOpenKeyEx  
 [RegOpenKeyTransacted](https://www.google.com/search?num=5&q=RegOpenKeyTransactedA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [RegOpenUserClassesRoot](https://www.google.com/search?num=5&q=RegOpenUserClassesRoot+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [RegOverridePredefKey](https://www.google.com/search?num=5&q=RegOverridePredefKey+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
@@ -623,8 +621,6 @@ Native Method | Native DLL | Header | Managed Method
 [RemoteRegEnumKeyWrapper](https://www.google.com/search?num=5&q=RemoteRegEnumKeyWrapper+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [RemoteRegEnumValueWrapper](https://www.google.com/search?num=5&q=RemoteRegEnumValueWrapper+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [RemoteRegQueryInfoKeyWrapper](https://www.google.com/search?num=5&q=RemoteRegQueryInfoKeyWrapper+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[RemoteRegQueryMultipleValues2Wrapper](https://www.google.com/search?num=5&q=RemoteRegQueryMultipleValues2Wrapper+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[RemoteRegQueryMultipleValuesWrapper](https://www.google.com/search?num=5&q=RemoteRegQueryMultipleValuesWrapper+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [RemoteRegQueryValueWrapper](https://www.google.com/search?num=5&q=RemoteRegQueryValueWrapper+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [RemoveTraceCallback](https://www.google.com/search?num=5&q=RemoveTraceCallback+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [RemoveUsersFromEncryptedFile](https://www.google.com/search?num=5&q=RemoveUsersFromEncryptedFile+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
@@ -673,7 +669,7 @@ Native Method | Native DLL | Header | Managed Method
 [SetInformationCodeAuthzLevelW](https://www.google.com/search?num=5&q=SetInformationCodeAuthzLevelW+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [SetInformationCodeAuthzPolicyW](https://www.google.com/search?num=5&q=SetInformationCodeAuthzPolicyW+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [SetKernelObjectSecurity](https://www.google.com/search?num=5&q=SetKernelObjectSecurity+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
-[SetNamedSecurityInfo](https://www.google.com/search?num=5&q=SetNamedSecurityInfoA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
+[SetNamedSecurityInfo](http://msdn2.microsoft.com/en-us/library/aa379579) | advapi32.dll | Aclapi.h | Vanara.PInvoke.AdvApi32.SetNamedSecurityInfo  
 [SetNamedSecurityInfoEx](https://www.google.com/search?num=5&q=SetNamedSecurityInfoExA+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [SetPrivateObjectSecurity](https://www.google.com/search?num=5&q=SetPrivateObjectSecurity+site%3Amsdn.microsoft.com) | advapi32.dll |  |   
 [SetPrivateObjectSecurityEx](https://www.google.com/search?num=5&q=SetPrivateObjectSecurityEx+site%3Amsdn.microsoft.com) | advapi32.dll |  |   

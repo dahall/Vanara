@@ -1,19 +1,19 @@
 ## Correlation report for credui.dll  
-### Methods (28% complete)  
+### Methods (100% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
-[CredPackAuthenticationBuffer](https://www.google.com/search?num=5&q=CredPackAuthenticationBufferA+site%3Amsdn.microsoft.com) | credui.dll |  |   
-[CredUICmdLinePromptForCredentials](https://www.google.com/search?num=5&q=CredUICmdLinePromptForCredentialsA+site%3Amsdn.microsoft.com) | credui.dll |  |   
-[CredUIConfirmCredentials](https://www.google.com/search?num=5&q=CredUIConfirmCredentialsA+site%3Amsdn.microsoft.com) | credui.dll |  |   
-[CredUIParseUserName](https://www.google.com/search?num=5&q=CredUIParseUserNameA+site%3Amsdn.microsoft.com) | credui.dll |  |   
-[CredUIPromptForCredentials](https://www.google.com/search?num=5&q=CredUIPromptForCredentialsA+site%3Amsdn.microsoft.com) | credui.dll |  |   
-[CredUIPromptForWindowsCredentials](https://www.google.com/search?num=5&q=CredUIPromptForWindowsCredentialsA+site%3Amsdn.microsoft.com) | credui.dll |  |   
-[CredUIReadSSOCred](https://www.google.com/search?num=5&q=CredUIReadSSOCredA+site%3Amsdn.microsoft.com) | credui.dll |  |   
-[CredUIStoreSSOCred](https://www.google.com/search?num=5&q=CredUIStoreSSOCredA+site%3Amsdn.microsoft.com) | credui.dll |  |   
-[CredUnPackAuthenticationBuffer](https://www.google.com/search?num=5&q=CredUnPackAuthenticationBufferA+site%3Amsdn.microsoft.com) | credui.dll |  |   
+[CredPackAuthenticationBuffer](http://msdn2.microsoft.com/en-us/library/aa374802) | credui.dll | wincred.h | Vanara.PInvoke.CredUI.CredPackAuthenticationBuffer  
+[CredUICmdLinePromptForCredentials](http://msdn2.microsoft.com/en-us/library/aa374802) | credui.dll | wincred.h | Vanara.PInvoke.CredUI.CredUICmdLinePromptForCredentials  
+[CredUIConfirmCredentials](http://msdn2.microsoft.com/en-us/library/aa375173) | credui.dll | wincred.h | Vanara.PInvoke.CredUI.CredUIConfirmCredentials  
+[CredUIParseUserName](http://msdn2.microsoft.com/en-us/library/aa375175) | credui.dll | wincred.h | Vanara.PInvoke.CredUI.CredUIParseUserName  
+[CredUIPromptForCredentials](http://msdn2.microsoft.com/en-us/library/aa375177) | credui.dll | wincred.h | Vanara.PInvoke.CredUI.CredUIPromptForCredentials  
+[CredUIPromptForWindowsCredentials](http://msdn2.microsoft.com/en-us/library/aa375178) | credui.dll | wincred.h | Vanara.PInvoke.CredUI.CredUIPromptForWindowsCredentials  
+[CredUIReadSSOCred](http://msdn2.microsoft.com/en-us/library/aa375177) | credui.dll | wincred.h | Vanara.PInvoke.CredUI.CredUIReadSSOCred  
+[CredUIStoreSSOCred](http://msdn2.microsoft.com/en-us/library/aa375181) | credui.dll | wincred.h | Vanara.PInvoke.CredUI.CredUIStoreSSOCred  
+[CredUnPackAuthenticationBuffer](http://msdn2.microsoft.com/en-us/library/aa375185) | credui.dll | wincred.h | Vanara.PInvoke.CredUI.CredUnPackAuthenticationBuffer  
 [SspiGetCredUIContext](https://www.google.com/search?num=5&q=SspiGetCredUIContext+site%3Amsdn.microsoft.com) | credui.dll | Sspi.h | Vanara.PInvoke.CredUI.SspiGetCredUIContext  
 [SspiIsPromptingNeeded](https://www.google.com/search?num=5&q=SspiIsPromptingNeeded+site%3Amsdn.microsoft.com) | credui.dll | Sspi.h | Vanara.PInvoke.CredUI.SspiIsPromptingNeeded  
-[SspiPromptForCredentials](https://www.google.com/search?num=5&q=SspiPromptForCredentialsA+site%3Amsdn.microsoft.com) | credui.dll |  |   
+[SspiPromptForCredentials](https://www.google.com/search?num=5&q=SspiPromptForCredentialsA+site%3Amsdn.microsoft.com) | credui.dll | Sspi.h | Vanara.PInvoke.CredUI.SspiPromptForCredentials  
 [SspiUnmarshalCredUIContext](https://www.google.com/search?num=5&q=SspiUnmarshalCredUIContext+site%3Amsdn.microsoft.com) | credui.dll | Sspi.h | Vanara.PInvoke.CredUI.SspiUnmarshalCredUIContext  
 [SspiUpdateCredentials](https://www.google.com/search?num=5&q=SspiUpdateCredentials+site%3Amsdn.microsoft.com) | credui.dll | Sspi.h | Vanara.PInvoke.CredUI.SspiUpdateCredentials  
 ### Structures  

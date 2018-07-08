@@ -1,5 +1,5 @@
 ## Correlation report for iphlpapi.dll  
-### Methods (25% complete)  
+### Methods (26% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AddIPAddress](https://www.google.com/search?num=5&q=AddIPAddress+site%3Amsdn.microsoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.AddIPAddress  
@@ -102,14 +102,12 @@ Native Method | Native DLL | Header | Managed Method
 [GetTcp6Table2](https://www.google.com/search?num=5&q=GetTcp6Table2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  |   
 [GetTcpStatistics](https://www.google.com/search?num=5&q=GetTcpStatistics+site%3Amsdn.microsoft.com) | iphlpapi.dll |  |   
 [GetTcpStatisticsEx](https://www.google.com/search?num=5&q=GetTcpStatisticsEx+site%3Amsdn.microsoft.com) | iphlpapi.dll |  |   
-[GetTcpStatisticsEx2](https://www.google.com/search?num=5&q=GetTcpStatisticsEx2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  |   
 [GetTcpTable](https://www.google.com/search?num=5&q=GetTcpTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  |   
 [GetTcpTable2](https://www.google.com/search?num=5&q=GetTcpTable2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  |   
 [GetTeredoPort](https://www.google.com/search?num=5&q=GetTeredoPort+site%3Amsdn.microsoft.com) | iphlpapi.dll |  |   
 [GetUdp6Table](https://www.google.com/search?num=5&q=GetUdp6Table+site%3Amsdn.microsoft.com) | iphlpapi.dll |  |   
 [GetUdpStatistics](https://www.google.com/search?num=5&q=GetUdpStatistics+site%3Amsdn.microsoft.com) | iphlpapi.dll |  |   
 [GetUdpStatisticsEx](https://www.google.com/search?num=5&q=GetUdpStatisticsEx+site%3Amsdn.microsoft.com) | iphlpapi.dll |  |   
-[GetUdpStatisticsEx2](https://www.google.com/search?num=5&q=GetUdpStatisticsEx2+site%3Amsdn.microsoft.com) | iphlpapi.dll |  |   
 [GetUdpTable](https://www.google.com/search?num=5&q=GetUdpTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  |   
 [GetUnicastIpAddressEntry](https://www.google.com/search?num=5&q=GetUnicastIpAddressEntry+site%3Amsdn.microsoft.com) | iphlpapi.dll |  |   
 [GetUnicastIpAddressTable](https://www.google.com/search?num=5&q=GetUnicastIpAddressTable+site%3Amsdn.microsoft.com) | iphlpapi.dll |  |   

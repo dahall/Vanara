@@ -13,7 +13,7 @@ Native Method | Native DLL | Header | Managed Method
 [DsDeregisterDnsHostRecords](https://www.google.com/search?num=5&q=DsDeregisterDnsHostRecordsA+site%3Amsdn.microsoft.com) | netapi32.dll |  |   
 [DsEnumerateDomainTrusts](https://www.google.com/search?num=5&q=DsEnumerateDomainTrustsA+site%3Amsdn.microsoft.com) | netapi32.dll |  |   
 [DsGetDcCloseW](https://www.google.com/search?num=5&q=DsGetDcCloseW+site%3Amsdn.microsoft.com) | netapi32.dll |  |   
-[DsGetDcName](https://www.google.com/search?num=5&q=DsGetDcNameA+site%3Amsdn.microsoft.com) | netapi32.dll |  |   
+[DsGetDcName](http://msdn2.microsoft.com/en-us/library/ms675983) | netapi32.dll | DsGetDC.h | Vanara.PInvoke.NetApi32.DsGetDcName  
 [DsGetDcNameWithAccount](https://www.google.com/search?num=5&q=DsGetDcNameWithAccountA+site%3Amsdn.microsoft.com) | netapi32.dll |  |   
 [DsGetDcNext](https://www.google.com/search?num=5&q=DsGetDcNextA+site%3Amsdn.microsoft.com) | netapi32.dll |  |   
 [DsGetDcOpen](https://www.google.com/search?num=5&q=DsGetDcOpenA+site%3Amsdn.microsoft.com) | netapi32.dll |  |   

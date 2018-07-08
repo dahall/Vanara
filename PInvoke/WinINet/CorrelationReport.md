@@ -1,5 +1,5 @@
 ## Correlation report for wininet.dll  
-### Methods (1% complete)  
+### Methods (3% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AppCacheCheckManifest](https://www.google.com/search?num=5&q=AppCacheCheckManifest+site%3Amsdn.microsoft.com) | wininet.dll |  |   
@@ -106,7 +106,7 @@ Native Method | Native DLL | Header | Managed Method
 [InternetCloseHandle](https://www.google.com/search?num=5&q=InternetCloseHandle+site%3Amsdn.microsoft.com) | wininet.dll |  | Vanara.PInvoke.WinINet.InternetCloseHandle  
 [InternetCombineUrl](https://www.google.com/search?num=5&q=InternetCombineUrlA+site%3Amsdn.microsoft.com) | wininet.dll |  |   
 [InternetConfirmZoneCrossing](https://www.google.com/search?num=5&q=InternetConfirmZoneCrossing+site%3Amsdn.microsoft.com) | wininet.dll |  |   
-[InternetConnect](https://www.google.com/search?num=5&q=InternetConnectA+site%3Amsdn.microsoft.com) | wininet.dll |  |   
+[InternetConnect](https://www.google.com/search?num=5&q=InternetConnectA+site%3Amsdn.microsoft.com) | wininet.dll |  | Vanara.PInvoke.WinINet.InternetConnect  
 [InternetConvertUrlFromWireToWideChar](https://www.google.com/search?num=5&q=InternetConvertUrlFromWireToWideChar+site%3Amsdn.microsoft.com) | wininet.dll |  |   
 [InternetCrackUrl](https://www.google.com/search?num=5&q=InternetCrackUrlA+site%3Amsdn.microsoft.com) | wininet.dll |  |   
 [InternetCreateUrl](https://www.google.com/search?num=5&q=InternetCreateUrlA+site%3Amsdn.microsoft.com) | wininet.dll |  |   
@@ -131,11 +131,11 @@ Native Method | Native DLL | Header | Managed Method
 [InternetHangUp](https://www.google.com/search?num=5&q=InternetHangUp+site%3Amsdn.microsoft.com) | wininet.dll |  |   
 [InternetInitializeAutoProxyDll](https://www.google.com/search?num=5&q=InternetInitializeAutoProxyDll+site%3Amsdn.microsoft.com) | wininet.dll |  |   
 [InternetLockRequestFile](https://www.google.com/search?num=5&q=InternetLockRequestFile+site%3Amsdn.microsoft.com) | wininet.dll |  |   
-[InternetOpen](https://www.google.com/search?num=5&q=InternetOpenA+site%3Amsdn.microsoft.com) | wininet.dll |  |   
+[InternetOpen](https://www.google.com/search?num=5&q=InternetOpenA+site%3Amsdn.microsoft.com) | wininet.dll |  | Vanara.PInvoke.WinINet.InternetOpen  
 [InternetOpenUrl](https://www.google.com/search?num=5&q=InternetOpenUrlA+site%3Amsdn.microsoft.com) | wininet.dll |  |   
 [InternetQueryDataAvailable](https://www.google.com/search?num=5&q=InternetQueryDataAvailable+site%3Amsdn.microsoft.com) | wininet.dll |  |   
 [InternetQueryFortezzaStatus](https://www.google.com/search?num=5&q=InternetQueryFortezzaStatus+site%3Amsdn.microsoft.com) | wininet.dll |  |   
-[InternetQueryOption](https://www.google.com/search?num=5&q=InternetQueryOptionA+site%3Amsdn.microsoft.com) | wininet.dll |  |   
+[InternetQueryOption](https://www.google.com/search?num=5&q=InternetQueryOptionA+site%3Amsdn.microsoft.com) | wininet.dll |  | Vanara.PInvoke.WinINet.InternetQueryOption  
 [InternetReadFile](https://www.google.com/search?num=5&q=InternetReadFile+site%3Amsdn.microsoft.com) | wininet.dll |  |   
 [InternetReadFileEx](https://www.google.com/search?num=5&q=InternetReadFileExA+site%3Amsdn.microsoft.com) | wininet.dll |  |   
 [InternetSecurityProtocolToString](https://www.google.com/search?num=5&q=InternetSecurityProtocolToStringA+site%3Amsdn.microsoft.com) | wininet.dll |  |   
@@ -144,7 +144,7 @@ Native Method | Native DLL | Header | Managed Method
 [InternetSetCookieEx2](https://www.google.com/search?num=5&q=InternetSetCookieEx2+site%3Amsdn.microsoft.com) | wininet.dll |  |   
 [InternetSetDialState](https://www.google.com/search?num=5&q=InternetSetDialState+site%3Amsdn.microsoft.com) | wininet.dll |  |   
 [InternetSetFilePointer](https://www.google.com/search?num=5&q=InternetSetFilePointer+site%3Amsdn.microsoft.com) | wininet.dll |  |   
-[InternetSetOption](https://www.google.com/search?num=5&q=InternetSetOptionA+site%3Amsdn.microsoft.com) | wininet.dll |  |   
+[InternetSetOption](https://www.google.com/search?num=5&q=InternetSetOptionA+site%3Amsdn.microsoft.com) | wininet.dll |  | Vanara.PInvoke.WinINet.InternetSetOption  
 [InternetSetOptionEx](https://www.google.com/search?num=5&q=InternetSetOptionExA+site%3Amsdn.microsoft.com) | wininet.dll |  |   
 [InternetSetPerSiteCookieDecision](https://www.google.com/search?num=5&q=InternetSetPerSiteCookieDecisionA+site%3Amsdn.microsoft.com) | wininet.dll |  |   
 [InternetSetStatusCallback](https://www.google.com/search?num=5&q=InternetSetStatusCallback+site%3Amsdn.microsoft.com) | wininet.dll |  | Vanara.PInvoke.WinINet.InternetSetStatusCallback  

@@ -21,6 +21,7 @@ WIN32_FIND_DATA | Contains information about the file that is found by the FindF
 ### Structures
 Struct | Description
 ---- | ----
+COLORREF | The COLORREF value is used to specify an RGB color in the form <c>0x00bbggrr</c>.
 HRESULT | Formal replacement for the Windows HRESULT definition. In windows.h, it is a defined UINT value. For .NET, this class strongly types the value.
 LOGFONT | The LOGFONT structure defines the attributes of a font.
 MSG | Contains message information from a thread's message queue.

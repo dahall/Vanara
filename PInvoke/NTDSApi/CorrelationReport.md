@@ -1,5 +1,5 @@
 ## Correlation report for ntdsapi.dll  
-### Methods (1% complete)  
+### Methods (8% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [DsAddCloneDCW](https://www.google.com/search?num=5&q=DsAddCloneDCW+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
@@ -10,16 +10,16 @@ Native Method | Native DLL | Header | Managed Method
 [DsaopExecuteScript](https://www.google.com/search?num=5&q=DsaopExecuteScript+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsaopPrepareScript](https://www.google.com/search?num=5&q=DsaopPrepareScript+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsaopUnBind](https://www.google.com/search?num=5&q=DsaopUnBind+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
-[DsBind](https://www.google.com/search?num=5&q=DsBindA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
+[DsBind](http://msdn2.microsoft.com/en-us/library/ms675931) | ntdsapi.dll | Ntdsapi.h | Vanara.PInvoke.NTDSApi.DsBind  
 [DsBindByInstance](https://www.google.com/search?num=5&q=DsBindByInstanceA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsBindingSetTimeout](https://www.google.com/search?num=5&q=DsBindingSetTimeout+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsBindToISTG](https://www.google.com/search?num=5&q=DsBindToISTGA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
-[DsBindWithCred](https://www.google.com/search?num=5&q=DsBindWithCredA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
+[DsBindWithCred](http://msdn2.microsoft.com/en-us/library/ms675961) | ntdsapi.dll | Ntdsapi.h | Vanara.PInvoke.NTDSApi.DsBindWithCred  
 [DsBindWithSpn](https://www.google.com/search?num=5&q=DsBindWithSpnA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsBindWithSpnEx](https://www.google.com/search?num=5&q=DsBindWithSpnExA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsBindWithSpnExWWorker](https://www.google.com/search?num=5&q=DsBindWithSpnExWWorker+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsClientMakeSpnForTargetServer](https://www.google.com/search?num=5&q=DsClientMakeSpnForTargetServerA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
-[DsCrackNames](https://www.google.com/search?num=5&q=DsCrackNamesA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
+[DsCrackNames](http://msdn2.microsoft.com/en-us/library/ms675970) | ntdsapi.dll | Ntdsapi.h | Vanara.PInvoke.NTDSApi.DsCrackNames  
 [DsCrackNamesWWorker](https://www.google.com/search?num=5&q=DsCrackNamesWWorker+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsCrackSpn](https://www.google.com/search?num=5&q=DsCrackSpnA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsCrackUnquotedMangledRdn](https://www.google.com/search?num=5&q=DsCrackUnquotedMangledRdnA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
@@ -27,7 +27,7 @@ Native Method | Native DLL | Header | Managed Method
 [DsFreeCloneDcResult](https://www.google.com/search?num=5&q=DsFreeCloneDcResult+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsFreeDomainControllerInfo](https://www.google.com/search?num=5&q=DsFreeDomainControllerInfoA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsFreeDomainControllerInfoWWorker](https://www.google.com/search?num=5&q=DsFreeDomainControllerInfoWWorker+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
-[DsFreeNameResult](https://www.google.com/search?num=5&q=DsFreeNameResultA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
+[DsFreeNameResult](http://msdn2.microsoft.com/en-us/library/ms675978) | ntdsapi.dll | Ntdsapi.h | Vanara.PInvoke.NTDSApi.DsFreeNameResult  
 [DsFreeNameResultWWorker](https://www.google.com/search?num=5&q=DsFreeNameResultWWorker+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsFreeNgcKey](https://www.google.com/search?num=5&q=DsFreeNgcKey+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsFreeNgcKeyWorker](https://www.google.com/search?num=5&q=DsFreeNgcKeyWorker+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
@@ -53,7 +53,7 @@ Native Method | Native DLL | Header | Managed Method
 [DsListServersInSite](https://www.google.com/search?num=5&q=DsListServersInSiteA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsListSites](https://www.google.com/search?num=5&q=DsListSitesA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsLogEntry](https://www.google.com/search?num=5&q=DsLogEntry+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
-[DsMakePasswordCredentials](https://www.google.com/search?num=5&q=DsMakePasswordCredentialsA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
+[DsMakePasswordCredentials](http://msdn2.microsoft.com/en-us/library/ms676006) | ntdsapi.dll | Ntdsapi.h | Vanara.PInvoke.NTDSApi.DsMakePasswordCredentials  
 [DsMakePasswordCredentialsWWorker](https://www.google.com/search?num=5&q=DsMakePasswordCredentialsWWorker+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsMakeSpn](https://www.google.com/search?num=5&q=DsMakeSpnA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsMapSchemaGuids](https://www.google.com/search?num=5&q=DsMapSchemaGuidsA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
@@ -77,7 +77,7 @@ Native Method | Native DLL | Header | Managed Method
 [DsReplicaUpdateRefs](https://www.google.com/search?num=5&q=DsReplicaUpdateRefsA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsReplicaVerifyObjects](https://www.google.com/search?num=5&q=DsReplicaVerifyObjectsA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsServerRegisterSpn](https://www.google.com/search?num=5&q=DsServerRegisterSpnA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
-[DsUnBind](https://www.google.com/search?num=5&q=DsUnBindA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
+[DsUnBind](http://msdn2.microsoft.com/en-us/library/ms676053) | ntdsapi.dll | Ntdsapi.h | Vanara.PInvoke.NTDSApi.DsUnBind  
 [DsUnBindWWorker](https://www.google.com/search?num=5&q=DsUnBindWWorker+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsUnquoteRdnValue](https://www.google.com/search?num=5&q=DsUnquoteRdnValueA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
 [DsWriteAccountSpn](https://www.google.com/search?num=5&q=DsWriteAccountSpnA+site%3Amsdn.microsoft.com) | ntdsapi.dll |  |   
