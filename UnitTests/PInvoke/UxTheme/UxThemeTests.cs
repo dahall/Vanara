@@ -162,11 +162,11 @@ namespace Vanara.PInvoke.Tests
 		{
 			// Can't test since not documented
 			return;
-			var buf = new SafeHGlobalHandle(bufSz);
-			var hr = GetThemeAnimationProperty(hbt, 1, 2, TA_PROPERTY.TAP_TRANSFORMCOUNT, (IntPtr)buf, (uint)bufSz, out var sz);
-			if (hr.Failed) TestContext.WriteLine(hr);
-			Assert.That(hr.Succeeded);
-			Assert.That(sz, Is.Not.Zero);
+			//var buf = new SafeHGlobalHandle(bufSz);
+			//var hr = GetThemeAnimationProperty(hbt, 1, 2, TA_PROPERTY.TAP_TRANSFORMCOUNT, (IntPtr)buf, (uint)bufSz, out var sz);
+			//if (hr.Failed) TestContext.WriteLine(hr);
+			//Assert.That(hr.Succeeded);
+			//Assert.That(sz, Is.Not.Zero);
 		}
 
 		[Test]
@@ -174,11 +174,11 @@ namespace Vanara.PInvoke.Tests
 		{
 			// Can't test since not documented
 			return;
-			var tran = new TA_TRANSFORM();
-			var hr = GetThemeAnimationTransform(hbt, 1, 2, 0, ref tran, (uint)Marshal.SizeOf<TA_TRANSFORM>(), out var sz);
-			if (hr.Failed) TestContext.WriteLine(hr);
-			Assert.That(hr.Succeeded);
-			Assert.That(sz, Is.Not.Zero);
+			//var tran = new TA_TRANSFORM();
+			//var hr = GetThemeAnimationTransform(hbt, 1, 2, 0, ref tran, (uint)Marshal.SizeOf<TA_TRANSFORM>(), out var sz);
+			//if (hr.Failed) TestContext.WriteLine(hr);
+			//Assert.That(hr.Succeeded);
+			//Assert.That(sz, Is.Not.Zero);
 		}
 
 		[Test]
