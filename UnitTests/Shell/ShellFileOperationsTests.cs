@@ -6,7 +6,7 @@ using Vanara.Windows.Shell;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 
-namespace UnitTests
+namespace Vanara.Windows.Shell.Tests
 {
 	[TestFixture]
 	public class ShellFileOperationsTests

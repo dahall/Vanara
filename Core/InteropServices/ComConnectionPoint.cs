@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 
-namespace Vanara.Network
+namespace Vanara.InteropServices
 {
 	/// <summary>
 	/// Helper class to create an advised COM sink. When this class is constructed, the source is queried for an
