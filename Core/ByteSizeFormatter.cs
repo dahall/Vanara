@@ -26,7 +26,7 @@ namespace Vanara
 			try { bytes = Convert.ToInt64(arg); }
 			catch { return HandleOtherFormats(format, arg); }
 			if (bytes == 0) return "0" + suffixes[0];
-			var m = System.Text.RegularExpressions.Regex.Match(format, "^[B|b](?<prec>\\d+)$");
+			var m = System.Text.RegularExpressions.Regex.Match(format, @"^[B|b](?<prec>\d+)?$");
 			if (!m.Success) return HandleOtherFormats(format, arg);
 			var prec = m.Groups["prec"].Success ? byte.Parse(m.Groups["prec"].Value) : 0;
 			var place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
