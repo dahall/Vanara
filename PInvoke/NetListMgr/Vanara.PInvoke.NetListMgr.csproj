@@ -38,18 +38,23 @@ IEnumNetworkConnections, IEnumNetworks, INetwork, INetworkConnection, INetworkCo
   </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net20' ">
     <Reference Include="System" />
+    <Reference Include="CustomMarshalers" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
     <Reference Include="System" />
+    <Reference Include="CustomMarshalers" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
     <Reference Include="System" />
+    <Reference Include="CustomMarshalers" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
+    <Reference Include="CustomMarshalers" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+    <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
   </ItemGroup>
 </Project>

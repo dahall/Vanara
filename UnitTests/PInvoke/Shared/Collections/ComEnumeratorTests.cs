@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using NUnit.Framework;
 using static Vanara.PInvoke.MSTask;
-using static Vanara.PInvoke.NetListMgr;
+using Vanara.PInvoke.NetListMgr;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 using static Vanara.PInvoke.Shell32;
@@ -86,7 +86,7 @@ namespace Vanara.Collections.Tests
 		[Test]
 		public void ComEnumeratorTest2()
 		{
-			// Test IEnumerable collection
+			/*// Test IEnumerable collection
 			var nlm = new INetworkListManager();
 			var en = nlm.GetNetworks(NLM_ENUM_NETWORK.NLM_ENUM_NETWORK_ALL);
 
@@ -97,6 +97,19 @@ namespace Vanara.Collections.Tests
 			{
 				Assert.IsInstanceOf<INetwork>(p);
 				TestContext.WriteLine(p.GetName());
+			}*/
+
+			// Test IEnumerable collection
+			var nlm = new INetworkListManager();
+			var en = nlm.GetNetworkConnections();
+
+			// Test IEnumerable
+			var e = new IEnumFromNext<INetworkConnection>((out INetworkConnection p) => en.Next(1, out p, out var f).Succeeded && f == 1,
+				() => en.Reset());
+			foreach (var p in e)
+			{
+				Assert.IsInstanceOf<INetworkConnection>(p);
+				TestContext.WriteLine(p.GetAdapterId().ToString());
 			}
 
 			// Test IEnumerator

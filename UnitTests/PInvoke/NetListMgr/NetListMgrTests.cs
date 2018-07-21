@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using Vanara.Extensions;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
-using static Vanara.PInvoke.NetListMgr;
+using Vanara.PInvoke.NetListMgr;
 
 //using NETWORKLIST;
 
@@ -134,7 +134,7 @@ namespace Vanara.PInvoke.Tests
 			var status = new NLM_DATAPLAN_STATUS();
 			Assert.That(() => coster.GetDataPlanStatus(out status, IntPtr.Zero), Throws.Nothing);
 			Assert.That(status.InterfaceGuid, Is.Not.EqualTo(Guid.Empty));
-			TestContext.WriteLine($"Defined:{status.IsDefined}; Guid:{status.InterfaceGuid}; Limit:{status.DataLimitInMegabytes:X}; Xfer:{status.MaxTransferSizeInMegabytes:X}");
+			TestContext.WriteLine($"Guid:{status.InterfaceGuid}; Limit:{status.DataLimitInMegabytes:X}; Xfer:{status.MaxTransferSizeInMegabytes:X}");
 		}
 	}
 }
