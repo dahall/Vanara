@@ -22,7 +22,8 @@ namespace Vanara.InteropServices
 		{
 			if (source == null) throw new ArgumentNullException(nameof(source));
 			if (sink == null) sink = this;
-			if (interfaces == null || interfaces.Length < 1) throw new ArgumentOutOfRangeException(nameof(interfaces));
+			if (interfaces == null) interfaces = GetComInterfaces(sink);
+			if (interfaces.Length < 1) throw new ArgumentOutOfRangeException(nameof(interfaces));
 
 			// Start the event sink
 			if (!(source is IConnectionPointContainer connectionPointContainer)) throw new InvalidOperationException("The source object must be COM object that supports the IConnectionPointContainer interface.");
@@ -42,7 +43,7 @@ namespace Vanara.InteropServices
 		/// will be used to setup the connection points. If this object implements COM interfaces that cannot be used as connection points,
 		/// use the constructor that allows for supported interfaces to be specified.
 		/// </param>
-		public ComConnectionPoint(object source, object sink) : this(source, sink, GetComInterfaces(sink)) { }
+		public ComConnectionPoint(object source, object sink) : this(source, sink, null) { }
 
 		private static Type[] GetComInterfaces(object sink)
 		{
