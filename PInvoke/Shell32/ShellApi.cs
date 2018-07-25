@@ -1,12 +1,121 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
+using System.Text;
+using Vanara.InteropServices;
+using static Vanara.PInvoke.Kernel32;
+using static Vanara.PInvoke.Ole32;
+using static Vanara.PInvoke.PropSys;
+using static Vanara.PInvoke.ShlwApi;
 
 namespace Vanara.PInvoke
 {
 	/// <summary>Interfaces, functions, enumerated types and structures for Shell32.dll.</summary>
 	public static partial class Shell32
 	{
+		/// <summary>Values used in APPBARDATA.</summary>
+		[PInvokeData("shellapi.h", MSDNShortId = "cf86fe15-4beb-49b7-b73e-2ad61cedc3f8")]
+		public enum ABE
+		{
+			/// <summary>Left edge.</summary>
+			ABE_LEFT = 0,
+			/// <summary>Top edge.</summary>
+			ABE_TOP = 1,
+			/// <summary>Right edge.</summary>
+			ABE_RIGHT = 2,
+			/// <summary>Bottom edge.</summary>
+			ABE_BOTTOM = 3,
+		}
+
+		/// <summary>Values used by SHAppBarMessage.</summary>
+		[PInvokeData("shellapi.h", MSDNShortId = "173d6eff-b33b-4d7d-bedd-5ebfb1e45954")]
+		public enum ABM
+		{
+			/// <summary>Registers a new appbar and specifies the message identifier that the system should use to send notification messages to the appbar.</summary>
+			ABM_NEW = 0x00000000,
+
+			/// <summary>Unregisters an appbar, removing the bar from the system's internal list.</summary>
+			ABM_REMOVE = 0x00000001,
+
+			/// <summary>Requests a size and screen position for an appbar.</summary>
+			ABM_QUERYPOS = 0x00000002,
+
+			/// <summary>Sets the size and screen position of an appbar.</summary>
+			ABM_SETPOS = 0x00000003,
+
+			/// <summary>Retrieves the autohide and always-on-top states of the Windows taskbar.</summary>
+			ABM_GETSTATE = 0x00000004,
+
+			/// <summary>Retrieves the bounding rectangle of the Windows taskbar. Note that this applies only to the system taskbar. Other objects, particularly toolbars supplied with third-party software, also can be present. As a result, some of the screen area not covered by the Windows taskbar might not be visible to the user. To retrieve the area of the screen not covered by both the taskbar and other app bars—the working area available to your application—, use the GetMonitorInfo function.</summary>
+			ABM_GETTASKBARPOS = 0x00000005,
+
+			/// <summary>Notifies the system to activate or deactivate an appbar. The lParam member of the APPBARDATA pointed to by pData is set to TRUE to activate or FALSE to deactivate.</summary>
+			ABM_ACTIVATE = 0x00000006,
+
+			/// <summary>Retrieves the handle to the autohide appbar associated with a particular edge of the screen.</summary>
+			ABM_GETAUTOHIDEBAR = 0x00000007,
+
+			/// <summary>Registers or unregisters an autohide appbar for an edge of the screen.</summary>
+			ABM_SETAUTOHIDEBAR = 0x00000008,
+
+			/// <summary>Notifies the system when an appbar's position has changed.</summary>
+			ABM_WINDOWPOSCHANGED = 0x00000009,
+
+			/// <summary>Windows XP and later: Sets the state of the appbar's autohide and always-on-top attributes.</summary>
+			ABM_SETSTATE = 0x0000000A,
+
+			/// <summary>Windows XP and later: Retrieves the handle to the autohide appbar associated with a particular edge of a particular monitor.</summary>
+			ABM_GETAUTOHIDEBAREX = 0x0000000B,
+
+			/// <summary>Windows XP and later: Registers or unregisters an autohide appbar for an edge of a particular monitor.</summary>
+			ABM_SETAUTOHIDEBAREX = 0x0000000C,
+		}
+
+		/// <summary>Where to obtain association data and the form the data is stored in.</summary>
+		[PInvokeData("shellapi.h", MSDNShortId = "1d1a963f-7ebb-4ba6-9a97-795c8ef11ae4")]
+		public enum ASSOCCLASS
+		{
+			/// <summary>The hkClass member names a key found as <b>HKEY_CLASSES_ROOT</b>\ <b>SystemFileAssociations</b>\ <i>hkClass</i>.</summary>
+			ASSOCCLASS_SHELL_KEY = 0,
+			/// <summary>The hkClass member provides the full registry path of a ProgID.</summary>
+			ASSOCCLASS_PROGID_KEY,
+			/// <summary>The pszClass member names a ProgID found as <b>HKEY_CLASSES_ROOT</b>\ <i>pszClass</i>.</summary>
+			ASSOCCLASS_PROGID_STR,
+			/// <summary>The hkClass member provides the full registry path of a CLSID.</summary>
+			ASSOCCLASS_CLSID_KEY,
+			/// <summary>The hkClass member names a CLSID found as <b>HKEY_CLASSES_ROOT</b>\ <b>CLSID</b>\ <i>pszClass</i>.</summary>
+			ASSOCCLASS_CLSID_STR,
+			/// <summary>The hkClass member provides the full registry path of an application identifier (APPID).</summary>
+			ASSOCCLASS_APP_KEY,
+			/// <summary>
+			/// The APPID storing the application information is found at <b>HKEY_CLASSES_ROOT</b>\ <b>Applications</b>\ <i>FileName</i>
+			/// where <i>FileName</i> is obtained by sending <b>pszClass</b> to PathFindFileName.
+			/// </summary>
+			ASSOCCLASS_APP_STR,
+			/// <summary>The pszClass member names a key found as <b>HKEY_CLASSES_ROOT</b>\ <b>SystemFileAssociations</b>\ <i>pszClass</i>.</summary>
+			ASSOCCLASS_SYSTEM_STR,
+			/// <summary>
+			/// Use the association information for folders stored under <b>HKEY_CLASSES_ROOT</b>\ <b>Folder</b>. When this flag is set,
+			/// <b>hkClass</b> and <b>pszClass</b> are ignored.
+			/// </summary>
+			ASSOCCLASS_FOLDER,
+			/// <summary>
+			/// Use the association information stored under the <b>HKEY_CLASSES_ROOT</b>\ <b>*</b> subkey. When this flag is set,
+			/// <b>hkClass</b> and <b>pszClass</b> are ignored.
+			/// </summary>
+			ASSOCCLASS_STAR,
+			/// <summary>
+			/// Introduced in Windows 8. Do not use the user defaults to apply the mapping of the class specified by the pszClass member.
+			/// </summary>
+			ASSOCCLASS_FIXED_PROGID_STR,
+			/// <summary>
+			/// Introduced in Windows 8. Use the user defaults to apply the mapping of the class specified by the pszClass member; the class
+			/// is a protocol.
+			/// </summary>
+			ASSOCCLASS_PROTOCOL_STR,
+		}
+
 		/// <summary>Flags that indicate the content and validity of the other structure members in <see cref="SHELLEXECUTEINFO"/>.</summary>
 		[PInvokeData("Shellapi.h", MSDNShortId = "bb759784")]
 		[Flags]
@@ -242,6 +351,332 @@ namespace Vanara.PInvoke
 			/// </summary>
 			SHGFI_OVERLAYINDEX = 0x000000040
 		}
+		/// <summary>
+		/// <para>Retrieves an object that implements an IQueryAssociations interface.</para>
+		/// </summary>
+		/// <param name="rgClasses">
+		/// <para>Type: <c>const ASSOCIATIONELEMENT*</c></para>
+		/// <para>A pointer to an array of ASSOCIATIONELEMENT structures.</para>
+		/// </param>
+		/// <param name="cClasses">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>The number of elements in the array pointed to by .</para>
+		/// </param>
+		/// <param name="riid">
+		/// <para>Type: <c>REFIID</c></para>
+		/// <para>Reference to the desired IID, normally IID_IQueryAssociations.</para>
+		/// </param>
+		/// <param name="ppv">
+		/// <para>Type: <c>void**</c></para>
+		/// <para>When this method returns, contains the interface pointer requested in . This is normally IQueryAssociations.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>For systems earlier than Windows Vista, use the AssocCreate function.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-assoccreateforclasses
+		// SHSTDAPI AssocCreateForClasses( const ASSOCIATIONELEMENT *rgClasses, ULONG cClasses, REFIID riid, void **ppv );
+		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shellapi.h", MSDNShortId = "43257507-dd5e-4622-8445-c132187fd1e5")]
+		public static extern HRESULT AssocCreateForClasses([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ASSOCIATIONELEMENT[] rgClasses, uint cClasses, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+
+		/// <summary>
+		/// <para>
+		/// Parses a Unicode command line string and returns an array of pointers to the command line arguments, along with a count of such
+		/// arguments, in a way that is similar to the standard C run-time and values.
+		/// </para>
+		/// </summary>
+		/// <param name="lpCmdLine">
+		/// <para>Type: <c>LPCWSTR</c></para>
+		/// <para>
+		/// Pointer to a <c>null</c>-terminated Unicode string that contains the full command line. If this parameter is an empty string the
+		/// function returns the path to the current executable file.
+		/// </para>
+		/// </param>
+		/// <param name="pNumArgs">
+		/// <para>Type: <c>int*</c></para>
+		/// <para>Pointer to an <c>int</c> that receives the number of array elements returned, similar to .</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LPWSTR*</c></para>
+		/// <para>A pointer to an array of <c>LPWSTR</c> values, similar to .</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The address returned by <c>CommandLineToArgvW</c> is the address of the first element in an array of <c>LPWSTR</c> values; the
+		/// number of pointers in this array is indicated by . Each pointer to a <c>null</c>-terminated Unicode string represents an
+		/// individual argument found on the command line.
+		/// </para>
+		/// <para>
+		/// <c>CommandLineToArgvW</c> allocates a block of contiguous memory for pointers to the argument strings, and for the argument
+		/// strings themselves; the calling application must free the memory used by the argument list when it is no longer needed. To free
+		/// the memory, use a single call to the LocalFree function.
+		/// </para>
+		/// <para>For more information about the and argument convention, see Argument Definitions and Parsing C++ Command-Line Arguments.</para>
+		/// <para>The GetCommandLineW function can be used to get a command line string that is suitable for use as the parameter.</para>
+		/// <para>
+		/// This function accepts command lines that contain a program name; the program name can be enclosed in quotation marks or not.
+		/// </para>
+		/// <para>
+		/// <c>CommandLineToArgvW</c> has a special interpretation of backslash characters when they are followed by a quotation mark
+		/// character ("). This interpretation assumes that any preceding argument is a valid file system path, or else it may behave unpredictably.
+		/// </para>
+		/// <para>
+		/// This special interpretation controls the "in quotes" mode tracked by the parser. When this mode is off, whitespace terminates the
+		/// current argument. When on, whitespace is added to the argument like all other characters.
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// 2 backslashes followed by a quotation mark produce backslashes followed by begin/end quote. This does not become part of the
+		/// parsed argument, but toggles the "in quotes" mode.
+		/// </item>
+		/// <item>
+		/// (2) + 1 backslashes followed by a quotation mark again produce backslashes followed by a quotation mark literal ("). This does
+		/// not toggle the "in quotes" mode.
+		/// </item>
+		/// <item>backslashes not followed by a quotation mark simply produce backslashes.</item>
+		/// </list>
+		/// <para>
+		/// <c>Important</c><c>CommandLineToArgvW</c> treats whitespace outside of quotation marks as argument delimiters. However, if starts
+		/// with any amount of whitespace, <c>CommandLineToArgvW</c> will consider the first argument to be an empty string. Excess
+		/// whitespace at the end of is ignored.
+		/// </para>
+		/// <para>Examples</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-commandlinetoargvw
+		// LPWSTR * CommandLineToArgvW( LPCWSTR lpCmdLine, int *pNumArgs );
+		[DllImport(Lib.Shell32, SetLastError = true, CharSet = CharSet.Unicode, ExactSpelling = true)]
+		[PInvokeData("shellapi.h", MSDNShortId = "9889a016-b7a5-402b-8305-6f7c199d41b3")]
+		[return: MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)]
+		public static extern string[] CommandLineToArgvW(string lpCmdLine, out int pNumArgs);
+
+		/// <summary>
+		/// <para>Registers whether a window accepts dropped files.</para>
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>The identifier of the window that is registering whether it will accept dropped files.</para>
+		/// </param>
+		/// <param name="fAccept">
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>
+		/// A value that indicates if the window identified by the parameter accepts dropped files. This value is <c>TRUE</c> to accept
+		/// dropped files or <c>FALSE</c> to discontinue accepting dropped files.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>No return value.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// An application that calls <c>DragAcceptFiles</c> with the parameter set to <c>TRUE</c> has identified itself as able to process
+		/// the WM_DROPFILES message from File Manager.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-dragacceptfiles
+		// void DragAcceptFiles( HWND hWnd, BOOL fAccept );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shellapi.h", MSDNShortId = "1f16f6e4-7847-4bc7-adce-995876db24bd")]
+		public static extern void DragAcceptFiles(HandleRef hWnd, [MarshalAs(UnmanagedType.Bool)] bool fAccept);
+
+		/// <summary>
+		/// <para>Releases memory that the system allocated for use in transferring file names to the application.</para>
+		/// </summary>
+		/// <param name="hDrop">
+		/// <para>Type: <c>HDROP</c></para>
+		/// <para>
+		/// Identifier of the structure that describes dropped files. This handle is retrieved from the parameter of the WM_DROPFILES message.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>No return value.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-dragfinish
+		// void DragFinish( HDROP hDrop );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shellapi.h", MSDNShortId = "9b15e8a5-de68-4dcb-8e1a-0ee0393aa9db")]
+		public static extern void DragFinish(IntPtr hDrop);
+
+		/// <summary>
+		/// <para>Retrieves the names of dropped files that result from a successful drag-and-drop operation.</para>
+		/// </summary>
+		/// <param name="hDrop">
+		/// <para>Type: <c>HDROP</c></para>
+		/// <para>Identifier of the structure that contains the file names of the dropped files.</para>
+		/// </param>
+		/// <param name="iFile">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// Index of the file to query. If the value of this parameter is 0xFFFFFFFF, <c>DragQueryFile</c> returns a count of the files
+		/// dropped. If the value of this parameter is between zero and the total number of files dropped, <c>DragQueryFile</c> copies the
+		/// file name with the corresponding value to the buffer pointed to by the parameter.
+		/// </para>
+		/// </param>
+		/// <param name="lpszFile">
+		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>
+		/// The address of a buffer that receives the file name of a dropped file when the function returns. This file name is a
+		/// null-terminated string. If this parameter is <c>NULL</c>, <c>DragQueryFile</c> returns the required size, in characters, of this buffer.
+		/// </para>
+		/// </param>
+		/// <param name="cch">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The size, in characters, of the buffer.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>A nonzero value indicates a successful call.</para>
+		/// <para>
+		/// When the function copies a file name to the buffer, the return value is a count of the characters copied, not including the
+		/// terminating null character.
+		/// </para>
+		/// <para>
+		/// If the index value is 0xFFFFFFFF, the return value is a count of the dropped files. Note that the index variable itself returns
+		/// unchanged, and therefore remains 0xFFFFFFFF.
+		/// </para>
+		/// <para>
+		/// If the index value is between zero and the total number of dropped files, and the buffer address is <c>NULL</c>, the return value
+		/// is the required size, in characters, of the buffer, the terminating null character.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-dragqueryfilea
+		// UINT DragQueryFileA( HDROP hDrop, UINT iFile, LPSTR lpszFile, UINT cch );
+		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shellapi.h", MSDNShortId = "93fab381-9035-46c4-ba9d-efb2d0801d84")]
+		public static extern uint DragQueryFile(IntPtr hDrop, uint iFile, string lpszFile, uint cch);
+
+		/// <summary>
+		/// <para>Retrieves the position of the mouse pointer at the time a file was dropped during a drag-and-drop operation.</para>
+		/// </summary>
+		/// <param name="hDrop">
+		/// <para>Type: <c>HDROP</c></para>
+		/// <para>Handle of the drop structure that describes the dropped file.</para>
+		/// </param>
+		/// <param name="ppt">
+		/// <para>TBD</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para><c>TRUE</c> if the drop occurred in the client area of the window; otherwise <c>FALSE</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>The window for which coordinates are returned is the window that received the WM_DROPFILES message.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-dragquerypoint
+		// BOOL DragQueryPoint( HDROP hDrop, POINT *ppt );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shellapi.h", MSDNShortId = "87794ab0-a075-4a1f-869f-5998bdc57a1d")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool DragQueryPoint(IntPtr hDrop, ref System.Drawing.Point ppt);
+
+		/// <summary>Creates a duplicate of a specified icon.</summary>
+		/// <param name="hInst">Type: <c>HINSTANCE</c></param>
+		/// <param name="hIcon">
+		/// <para>Type: <c>HICON</c></para>
+		/// <para>Handle to the icon to be duplicated.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HICON</c></para>
+		/// <para>If successful, the function returns the handle to the new icon that was created; otherwise, <c>NULL</c>.</para>
+		/// </returns>
+		// HICON DuplicateIcon( _Reserved_ HINSTANCE hInst, _In_ HICON hIcon);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb776411(v=vs.85).aspx
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Shellapi.h", MSDNShortId = "bb776411")]
+		public static extern IntPtr DuplicateIcon(SafeLibraryHandle hInst, IntPtr hIcon);
+
+		/// <summary>
+		/// Gets a handle to an icon stored as a resource in a file or an icon stored in a file's associated executable file.
+		/// </summary>
+		/// <param name="hInst">A handle to the instance of the calling application.</param>
+		/// <param name="lpIconPath">Pointer to a string that, on entry, specifies the full path and file name of the file that contains the icon. The function extracts the icon handle from that file, or from an executable file associated with that file.
+		/// <para>When this function returns, if the icon handle was obtained from an executable file (either an executable file pointed to by lpIconPath or an associated executable file) the function stores the full path and file name of that executable in the buffer pointed to by this parameter.</para></param>
+		/// <param name="lpiIcon">Pointer to a WORD value that, on entry, specifies the index of the icon whose handle is to be obtained.
+		/// <para>When the function returns, if the icon handle was obtained from an executable file(either an executable file pointed to by lpIconPath or an associated executable file), this value points to the icon's index in that file.</para></param>
+		/// <returns>If the function succeeds, the return value is an icon handle. If the icon is extracted from an associated executable file, the function stores the full path and file name of the executable file in the string pointed to by lpIconPath, and stores the icon's identifier in the WORD pointed to by lpiIcon.
+		/// <para>If the function fails, the return value is NULL.</para></returns>
+		// public static Icon ExtractAssociatedIcon( string filePath )
+		// https://msdn.microsoft.com/en-us/library/system.drawing.icon.extractassociatedicon(v=vs.110).aspx
+		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("Shellapi.h", MSDNShortId = "bb776414")]
+		public static extern IntPtr ExtractAssociatedIcon(SafeLibraryHandle hInst, StringBuilder lpIconPath, ref ushort lpiIcon);
+
+		/// <summary>
+		/// <para>
+		/// Gets a handle to an icon stored as a resource in a file or an icon stored in a file's associated executable file. It extends the
+		/// ExtractAssociatedIcon function by retrieving the icon's ID when that icon is extracted from an executable file.
+		/// </para>
+		/// </summary>
+		/// <param name="hInst">
+		/// <para>Type: <c>HINSTANCE</c></para>
+		/// <para>The handle of the module from which to extract the icon.</para>
+		/// </param>
+		/// <param name="pszIconPath">
+		/// <para>TBD</para>
+		/// </param>
+		/// <param name="piIconIndex">
+		/// <para>TBD</para>
+		/// </param>
+		/// <param name="piIconId">
+		/// <para>TBD</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HICON</c></para>
+		/// <para>Returns the icon's handle if successful, otherwise <c>NULL</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>The icon handle returned by this function must be released by calling DestroyIcon when it is no longer needed.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-extractassociatediconexa
+		// HICON ExtractAssociatedIconExA( HINSTANCE hInst, LPSTR pszIconPath, WORD *piIconIndex, WORD *piIconId );
+		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shellapi.h", MSDNShortId = "f32260b0-917b-4406-aeee-34f71a7c7309")]
+		public static extern IntPtr ExtractAssociatedIconEx(SafeLibraryHandle hInst, StringBuilder pszIconPath, ref ushort piIconIndex, ref ushort piIconId);
+
+		/// <summary>
+		/// <para>Gets a handle to an icon from the specified executable file, DLL, or icon file.</para>
+		/// <para>To retrieve an array of handles to large or small icons, use the <c>ExtractIconEx</c> function.</para>
+		/// </summary>
+		/// <param name="hInst">
+		/// <para>Type: <c>HINSTANCE</c></para>
+		/// <para>Handle to the instance of the application that calls the function.</para>
+		/// </param>
+		/// <param name="lpszExeFileName">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>Pointer to a null-terminated string that specifies the name of an executable file, DLL, or icon file.</para>
+		/// </param>
+		/// <param name="nIconIndex">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// Specifies the zero-based index of the icon to retrieve. For example, if this value is 0, the function returns a handle to the
+		/// first icon in the specified file.
+		/// </para>
+		/// <para>
+		/// If this value is -1, the function returns the total number of icons in the specified file. If the file is an executable file or
+		/// DLL, the return value is the number of RT_GROUP_ICON resources. If the file is an .ICO file, the return value is 1.
+		/// </para>
+		/// <para>
+		/// If this value is a negative number not equal to –1, the function returns a handle to the icon in the specified file whose
+		/// resource identifier is equal to the absolute value of nIconIndex. For example, you should use –3 to extract the icon whose
+		/// resource identifier is 3. To extract the icon whose resource identifier is 1, use the <c>ExtractIconEx</c> function.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HICON</c></para>
+		/// <para>
+		/// The return value is a handle to an icon. If the file specified was not an executable file, DLL, or icon file, the return is 1. If
+		/// no icons were found in the file, the return value is <c>NULL</c>.
+		/// </para>
+		/// </returns>
+		// HICON ExtractIcon( _Reserved_ HINSTANCE hInst, _In_ LPCTSTR lpszExeFileName, UINT nIconIndex);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb776416(v=vs.85).aspx
+		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("Shellapi.h", MSDNShortId = "bb776416")]
+		public static extern IntPtr ExtractIcon(SafeLibraryHandle hInst, string lpszExeFileName, uint nIconIndex);
 
 		/// <summary>
 		/// The ExtractIconEx function creates an array of handles to large or small icons extracted from the specified executable file, DLL, or icon file.
@@ -259,6 +694,270 @@ namespace Vanara.PInvoke
 		public static extern int ExtractIconEx([MarshalAs(UnmanagedType.LPTStr)] string lpszFile, int nIconIndex,
 			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] IntPtr[] phIconLarge,
 			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] IntPtr[] phIconSmall, int nIcons);
+
+		/// <summary>
+		/// <para>Retrieves the name of and handle to the executable (.exe) file associated with a specific document file.</para>
+		/// </summary>
+		/// <param name="lpFile">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>The address of a <c>null</c>-terminated string that specifies a file name. This file should be a document.</para>
+		/// </param>
+		/// <param name="lpDirectory">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>The address of a <c>null</c>-terminated string that specifies the default directory. This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="lpResult">
+		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>
+		/// The address of a buffer that receives the file name of the associated executable file. This file name is a <c>null</c>-terminated
+		/// string that specifies the executable file started when an "open" by association is run on the file specified in the parameter.
+		/// Put simply, this is the application that is launched when the document file is directly double-clicked or when <c>Open</c> is
+		/// chosen from the file's shortcut menu. This parameter must contain a valid non- <c>null</c> value and is assumed to be of length
+		/// MAX_PATH. Responsibility for validating the value is left to the programmer.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HINSTANCE</c></para>
+		/// <para>Returns a value greater than 32 if successful, or a value less than or equal to 32 representing an error.</para>
+		/// <para>The following table lists possible error values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code/value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SE_ERR_FNF 2</term>
+		/// <term>The specified file was not found.</term>
+		/// </item>
+		/// <item>
+		/// <term>SE_ERR_PNF 3</term>
+		/// <term>The specified path is invalid.</term>
+		/// </item>
+		/// <item>
+		/// <term>SE_ERR_ACCESSDENIED 5</term>
+		/// <term>The specified file cannot be accessed.</term>
+		/// </item>
+		/// <item>
+		/// <term>SE_ERR_OOM 8</term>
+		/// <term>The system is out of memory or resources.</term>
+		/// </item>
+		/// <item>
+		/// <term>SE_ERR_NOASSOC 31</term>
+		/// <term>There is no association for the specified file type with an executable file.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>Use <c>FindExecutable</c> for documents. If you want to retrieve the path of an executable file, use the following:</para>
+		/// <para>Here, pszExecutableName is a pointer to a null-terminated string that specifies the name of the executable file, pszPath is a pointer to the null-terminated string buffer that receives the path to the executable file, and pcchOut is a pointer to a DWORD that specifies the number of characters in the pszPath buffer. When the function returns, pcchOut is set to the number of characters actually placed in the buffer. See AssocQueryString for more information.</para>
+		/// <para>
+		/// When <c>FindExecutable</c> returns, the parameter may contain the path to the Dynamic Data Exchange (DDE) server started if a
+		/// server does not respond to a request to initiate a DDE conversation with the DDE client application.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-findexecutablea
+		// HINSTANCE FindExecutableA( LPCSTR lpFile, LPCSTR lpDirectory, LPSTR lpResult );
+		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shellapi.h", MSDNShortId = "969edbd9-164e-457f-ab0a-dc4d069bf16b")]
+		public static extern IntPtr FindExecutable(string lpFile, string lpDirectory, StringBuilder lpResult);
+
+		/// <summary>
+		/// <para>Initializes the network address control window class.</para>
+		/// </summary>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para><c>TRUE</c> if the initialization succeeded; or <c>FALSE</c> otherwise.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The network address control looks like an edit control and offers the additional functionality of network address verification.
+		/// The control uses a balloon tip to display error messages.
+		/// </para>
+		/// <para>This function initializes class WC_NETADDRESS. If this function returns <c>TRUE</c>, the control can be created.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-initnetworkaddresscontrol
+		// BOOL InitNetworkAddressControl( );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shellapi.h", MSDNShortId = "52b475e3-7335-4c34-80d7-ccd81af0e0ec")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool InitNetworkAddressControl();
+
+		/// <summary>
+		/// <para>Adds default properties to the property store as registered for the specified file extension.</para>
+		/// </summary>
+		/// <param name="pszExt">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>A pointer to a null-terminated, Unicode string that specifies the extension.</para>
+		/// </param>
+		/// <param name="pPropStore">
+		/// <para>Type: <c>IPropertyStore*</c></para>
+		/// <para>A pointer to the IPropertyStore interface that defines the default properties to add.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The list of properties used to set a default value comes from the registry value of the ProgID for the file association of the
+		/// specified file extension. The list is prefixed by "" and contains the canonical names of the properties to set the default value,
+		/// such as: "". The possible properties for this list are <c>System.Author</c>, <c>System.Document.DateCreated</c>, and
+		/// <c>System.Photo.DateTaken</c>. If the value does not exist on the ProgID, this function uses the default found on the value of <c>HKEY_CLASSES_ROOT*</c>.
+		/// </para>
+		/// <para>
+		/// <c>System.Author</c> has the value of the user that performed the action. <c>System.Document.DateCreated</c> and
+		/// <c>System.Photo.DateTaken</c> use the current date. These three properties are the only ones for which the system provides
+		/// special defaults.
+		/// </para>
+		/// <para>Note that there are several types of properties:</para>
+		/// <list type="number">
+		/// <item>Properties that derive from the file system (such as, size and date created)</item>
+		/// <item>Properties that derive from the file (such as, dimensions and number of pages)</item>
+		/// <item>Properties that are placed in the file (such as, author and tags)</item>
+		/// </list>
+		/// <para>
+		/// When creating a new file, types one and two are provided just by creating the file. But properties of type three must be set
+		/// explicitly by a program. The system provides
+		/// </para>
+		/// <para>SHAddDefaultPropertiesByExt</para>
+		/// <para>
+		/// to provide values for up to three specific properties of type three. Sometimes Windows Explorer uses this API when saving a file
+		/// for the first time, or when creating a new file after the menu choice
+		/// </para>
+		/// <para>New</para>
+		/// <para>is selected from a shortcut menu.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl/nf-shobjidl-shadddefaultpropertiesbyext
+		// SHSTDAPI SHAddDefaultPropertiesByExt( PCWSTR pszExt, IPropertyStore *pPropStore );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shobjidl.h", MSDNShortId = "ba0fec36-3983-4064-9202-6158af565d9b")]
+		public static extern HRESULT SHAddDefaultPropertiesByExt([MarshalAs(UnmanagedType.LPWStr)] string pszExt, IPropertyStore pPropStore);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be altered or unavailable
+		/// in subsequent versions of Windows.]
+		/// </para>
+		/// <para>Adds pages to a property sheet extension array created by SHCreatePropSheetExtArray.</para>
+		/// </summary>
+		/// <param name="hpsxa">
+		/// <para>Type: <c>HPSXA</c></para>
+		/// <para>The array of property sheet handlers returned by SHCreatePropSheetExtArray.</para>
+		/// </param>
+		/// <param name="lpfnAddPage">
+		/// <para>Type: <c>LPFNADDPROPSHEETPAGE</c></para>
+		/// <para>
+		/// A pointer to an AddPropSheetPageProc callback function. It is called once for each property sheet handler. The callback function
+		/// then returns the information needed to add a page to the handler's property sheet.
+		/// </para>
+		/// </param>
+		/// <param name="lParam">
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>A pointer to application-defined data. This data is passed to the callback function specified by .</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>Returns the number of pages actually added.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>This function should be called only once for the property sheet extension array named in .</para>
+		/// <para>This function calls each extension's IShellPropSheetExt::AddPages method. See that page for further details.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shaddfrompropsheetextarray
+		// WINSHELLAPI UINT SHAddFromPropSheetExtArray( HPSXA hpsxa, LPFNADDPROPSHEETPAGE lpfnAddPage, LPARAM lParam );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "e0570cd6-dda2-43e4-8540-58baef37bf18")]
+		public static extern uint SHAddFromPropSheetExtArray(IntPtr hpsxa, AddPropSheetPageProc lpfnAddPage, IntPtr lParam);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be altered or unavailable
+		/// in subsequent versions of Windows. Use
+		/// </para>
+		/// <para>CoTaskMemAlloc</para>
+		/// <para>instead.]</para>
+		/// </summary>
+		/// <param name="cb">
+		/// <para>Type: <c>SIZE_T</c></para>
+		/// <para>The number of bytes of memory to allocate.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LPVOID</c></para>
+		/// <para>A pointer to the allocated memory.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>You can free this memory by calling SHFree.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shalloc
+		// void * SHAlloc( SIZE_T cb );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "621e4335-1484-4111-9cfe-7ae5c6d5c609")]
+		public static extern IntPtr SHAlloc(SizeT cb);
+
+		/// <summary>
+		/// <para>Sends an appbar message to the system.</para>
+		/// </summary>
+		/// <param name="dwMessage">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>Appbar message value to send. This parameter can be one of the following values.</para>
+		/// <para>ABM_NEW (0x00000000)</para>
+		/// <para>
+		/// Registers a new appbar and specifies the message identifier that the system should use to send notification messages to the appbar.
+		/// </para>
+		/// <para>ABM_REMOVE (0x00000001)</para>
+		/// <para>Unregisters an appbar, removing the bar from the system's internal list.</para>
+		/// <para>ABM_QUERYPOS (0x00000002)</para>
+		/// <para>Requests a size and screen position for an appbar.</para>
+		/// <para>ABM_SETPOS (0x00000003)</para>
+		/// <para>Sets the size and screen position of an appbar.</para>
+		/// <para>ABM_GETSTATE (0x00000004)</para>
+		/// <para>Retrieves the autohide and always-on-top states of the Windows taskbar.</para>
+		/// <para>ABM_GETTASKBARPOS (0x00000005)</para>
+		/// <para>
+		/// Retrieves the bounding rectangle of the Windows taskbar. Note that this applies only to the system taskbar. Other objects,
+		/// particularly toolbars supplied with third-party software, also can be present. As a result, some of the screen area not covered
+		/// by the Windows taskbar might not be visible to the user. To retrieve the area of the screen not covered by both the taskbar and
+		/// other app bars—the working area available to your application—, use the GetMonitorInfo function.
+		/// </para>
+		/// <para>ABM_ACTIVATE (0x00000006)</para>
+		/// <para>
+		/// Notifies the system to activate or deactivate an appbar. The <c>lParam</c> member of the APPBARDATA pointed to by is set to
+		/// <c>TRUE</c> to activate or <c>FALSE</c> to deactivate.
+		/// </para>
+		/// <para>ABM_GETAUTOHIDEBAR (0x00000007)</para>
+		/// <para>Retrieves the handle to the autohide appbar associated with a particular edge of the screen.</para>
+		/// <para>ABM_SETAUTOHIDEBAR (0x00000008)</para>
+		/// <para>Registers or unregisters an autohide appbar for an edge of the screen.</para>
+		/// <para>ABM_WINDOWPOSCHANGED (0x00000009)</para>
+		/// <para>Notifies the system when an appbar's position has changed.</para>
+		/// <para>ABM_SETSTATE (0x0000000A)</para>
+		/// <para><c>Windows XP and later:</c> Sets the state of the appbar's autohide and always-on-top attributes.</para>
+		/// <para>ABM_GETAUTOHIDEBAREX (0x0000000B)</para>
+		/// <para>
+		/// <c>Windows XP and later:</c> Retrieves the handle to the autohide appbar associated with a particular edge of a particular monitor.
+		/// </para>
+		/// <para>ABM_SETAUTOHIDEBAREX (0x0000000C)</para>
+		/// <para><c>Windows XP and later:</c> Registers or unregisters an autohide appbar for an edge of a particular monitor.</para>
+		/// </param>
+		/// <param name="pData">
+		/// <para>Type: <c>PAPPBARDATA</c></para>
+		/// <para>
+		/// A pointer to an APPBARDATA structure. The content of the structure on entry and on exit depends on the value set in the
+		/// parameter. See the individual message pages for specifics.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>UINT_PTR</c></para>
+		/// <para>
+		/// This function returns a message-dependent value. For more information, see the Windows SDK documentation for the specific appbar
+		/// message sent. Links to those documents are given in the See Also section.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-shappbarmessage
+		// UINT_PTR SHAppBarMessage( DWORD dwMessage, PAPPBARDATA pData );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shellapi.h", MSDNShortId = "173d6eff-b33b-4d7d-bedd-5ebfb1e45954")]
+		public static extern UIntPtr SHAppBarMessage(ABM dwMessage, ref APPBARDATA pData);
 
 		/// <summary>
 		/// Performs an operation on a specified file.
@@ -315,6 +1014,96 @@ namespace Vanara.PInvoke
 		public static extern IntPtr SHGetFileInfo(PIDL itemIdList, FileAttributes dwFileAttributes, ref SHFILEINFO psfi,
 			int cbFileInfo, SHGFI uFlags);
 
+		/// <summary>
+		/// <para>Contains information about a system appbar message.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/ns-shellapi-_appbardata typedef struct _AppBarData { DWORD cbSize;
+		// HWND hWnd; UINT uCallbackMessage; UINT uEdge; RECT rc; LPARAM lParam; } APPBARDATA, *PAPPBARDATA;
+		[PInvokeData("shellapi.h", MSDNShortId = "cf86fe15-4beb-49b7-b73e-2ad61cedc3f8")]
+		public struct APPBARDATA
+		{
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The size of the structure, in bytes.</para>
+			/// </summary>
+			public uint cbSize;
+			/// <summary>
+			/// <para>Type: <c>HWND</c></para>
+			/// <para>
+			/// The handle to the appbar window. Not all messages use this member. See the individual message page to see if you need to
+			/// provide an <c>hWind</c> value.
+			/// </para>
+			/// </summary>
+			public IntPtr hWnd;
+			/// <summary>
+			/// <para>Type: <c>LPARAM</c></para>
+			/// <para>A message-dependent value. This member is used with these messages:</para>
+			/// <para>ABM_SETAUTOHIDEBAR</para>
+			/// <para>ABM_SETAUTOHIDEBAREX</para>
+			/// <para>ABM_SETSTATE</para>
+			/// <para>See the individual message pages for details.</para>
+			/// </summary>
+			public IntPtr lParam;
+
+			/// <summary>
+			/// <para>Type: <c>RECT</c></para>
+			/// <para>A RECT structure whose use varies depending on the message:</para>
+			/// <list type="bullet">
+			/// <item>
+			/// ABM_GETTASKBARPOS, ABM_QUERYPOS, ABM_SETPOS: The bounding rectangle, in screen coordinates, of an appbar or the Windows taskbar.
+			/// </item>
+			/// <item>
+			/// ABM_GETAUTOHIDEBAREX, ABM_SETAUTOHIDEBAREX: The monitor on which the operation is being performed. This information can be
+			/// retrieved through the GetMonitorInfo function.
+			/// </item>
+			/// </list>
+			/// </summary>
+			public RECT rc;
+
+			/// <summary>
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>
+			/// An application-defined message identifier. The application uses the specified identifier for notification messages that it
+			/// sends to the appbar identified by the <c>hWnd</c> member. This member is used when sending the ABM_NEW message.
+			/// </para>
+			/// </summary>
+			public uint uCallbackMessage;
+			/// <summary>
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>A value that specifies an edge of the screen. This member is used when sending one of these messages:</para>
+			/// <para>ABM_GETAUTOHIDEBAR</para>
+			/// <para>ABM_SETAUTOHIDEBAR</para>
+			/// <para>ABM_GETAUTOHIDEBAREX</para>
+			/// <para>ABM_SETAUTOHIDEBAREX</para>
+			/// <para>ABM_QUERYPOS</para>
+			/// <para>ABM_SETPOS</para>
+			/// <para>This member can be one of the following values.</para>
+			/// <para>ABE_BOTTOM</para>
+			/// <para>Bottom edge.</para>
+			/// <para>ABE_LEFT</para>
+			/// <para>Left edge.</para>
+			/// <para>ABE_RIGHT</para>
+			/// <para>Right edge.</para>
+			/// <para>ABE_TOP</para>
+			/// <para>Top edge.</para>
+			/// </summary>
+			public ABE uEdge;
+		}
+
+		/// <summary>Defines information used by AssocCreateForClasses to retrieve an IQueryAssociations interface for a given file association.</summary>
+		[PInvokeData("shellapi.h", MSDNShortId = "1d1a963f-7ebb-4ba6-9a97-795c8ef11ae4")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct ASSOCIATIONELEMENT
+		{
+			/// <summary>
+			/// Where to obtain association data and the form the data is stored in. One of the following values from the ASSOCCLASS enumeration.
+			/// </summary>
+			public ASSOCCLASS ac;
+			/// <summary>A registry key that specifies a class that contains association information.</summary>
+			public IntPtr hkClass;
+			/// <summary>A pointer to the name of a class that contains association information.</summary>
+			public string pszClass;
+		}
 		/// <summary>
 		/// Contains information used by ShellExecuteEx.
 		/// </summary>

@@ -58,5 +58,6 @@ IAutoComplete, IAutoComplete2, IExtractIcon, IOpenControlPanel, IApplicationDest
     <ProjectReference Include="..\Ole\Vanara.PInvoke.Ole.csproj" />
     <ProjectReference Include="..\Security\Vanara.PInvoke.Security.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+    <ProjectReference Include="..\ShlwApi\Vanara.PInvoke.ShlwApi.csproj" />
   </ItemGroup>
 </Project>

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security;
 using System.Text;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Kernel32;
+using static Vanara.PInvoke.Ole32;
+using static Vanara.PInvoke.ShlwApi;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedParameter.Global
@@ -22,6 +25,16 @@ namespace Vanara.PInvoke
 	{
 		// Defined in wingdi.h
 		private const int LF_FACESIZE = 32;
+
+		/// <summary>A flag that controls how PifMgr_CloseProperties operates.</summary>
+		[PInvokeData("shlobj_core.h", MSDNShortId = "fd50d4f8-87c8-4162-9e88-3c8592b929fa")]
+		public enum CLOSEPROPS
+		{
+			/// <summary>No options specified.</summary>
+			CLOSEPROPS_NONE = 0x0000,
+			/// <summary>Abandon cached data.</summary>
+			CLOSEPROPS_DISCARD = 0x0001
+		}
 
 		/// <summary>Used for options in SHOpenFolderAndSelectItems.</summary>
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762232")]
@@ -41,6 +54,56 @@ namespace Vanara.PInvoke
 			/// will not be made visible.
 			/// </summary>
 			OFASI_OPENDESKTOP = 2
+		}
+
+		/// <summary>A flag that controls how PifMgr_OpenProperties operates.</summary>
+		[PInvokeData("shlobj_core.h", MSDNShortId = "0bc11528-7278-4765-b3cb-671ba82c9155")]
+		public enum OPENPROPS
+		{
+			/// <summary>No options specified.</summary>
+			OPENPROPS_NONE = 0x0000,
+			/// <summary>
+			/// Ignore any existing .pif files and get the properties from win.ini or _Default.pif. This flag is ignored on Windows NT,
+			/// Windows 2000, and Windows XP.
+			/// </summary>
+			OPENPROPS_INHIBITPIF = 0x8000
+		}
+
+		/// <summary>Return values for PathCleanupSpec.</summary>
+		[PInvokeData("shlobj_core.h", MSDNShortId = "593fd2b7-44ae-4309-a185-97e42f3cc0fa")]
+		[Flags]
+		public enum PCS : uint
+		{
+			/// <summary>The cleaned path is not a valid file name. This flag is always returned in conjunction with PCS_PATHTOOLONG.</summary>
+			PCS_FATAL = 0x80000000,
+			/// <summary>Replaced one or more invalid characters.</summary>
+			PCS_REPLACEDCHAR = 0x00000001,
+			/// <summary>Removed one or more invalid characters.</summary>
+			PCS_REMOVEDCHAR = 0x00000002,
+			/// <summary>The returned path is truncated.</summary>
+			PCS_TRUNCATED = 0x00000004,
+			/// <summary>
+			/// The function failed because the input path specified at is too long to allow the formation of a valid file name from . When this
+			/// flag is returned, it is always accompanied by the PCS_FATAL flag.
+			/// </summary>
+			PCS_PATHTOOLONG = 0x00000008,
+		}
+
+		/// <summary>Flags for PathResolve.</summary>
+		[PInvokeData("shlobj_core.h", MSDNShortId = "84bf0b56-513f-4ac6-b2cf-11f0c471da1e")]
+		[Flags]
+		public enum PRF
+		{
+			/// <summary>Return TRUE if the file's existence is verified; otherwise FALSE.</summary>
+			PRF_VERIFYEXISTS = 0x0001,
+			/// <summary>Look for the specified path with the following extensions appended: .pif, .com, .bat, .cmd, .lnk, and .exe.</summary>
+			PRF_TRYPROGRAMEXTENSIONS = 0x0002 | PRF_VERIFYEXISTS,
+			/// <summary>Look first in the directory or directories specified by dirs.</summary>
+			PRF_FIRSTDIRDEF = 0x0004,
+			/// <summary>Ignore .lnk files.</summary>
+			PRF_DONTFINDLNK = 0x0008,
+			/// <summary>Require an absolute (full) path.</summary>
+			PRF_REQUIREABSOLUTE = 0x0010
 		}
 
 		/// <summary>Flags that direct the handling of the item from which you're retrieving the info tip text. This value is commonly zero (QITIPF_DEFAULT).</summary>
@@ -64,6 +127,18 @@ namespace Vanara.PInvoke
 
 			/// <summary><c>Windows Vista and later.</c> Put the info tip on a single line.</summary>
 			QITIPF_SINGLELINE = 0x00000010,
+		}
+
+		/// <summary><para>Indicates whether to enable or disable Async Register and Deregister for SHChangeNotifyRegisterThread.</para></summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ne-shlobj_core-scnrt_status
+		// typedef enum SCNRT_STATUS { SCNRT_ENABLE , SCNRT_DISABLE } ;
+		[PInvokeData("shlobj_core.h", MSDNShortId = "31fd993b-d8cb-40cc-9f31-15711dba1b10")]
+		public enum SCNRT_STATUS
+		{
+			/// <summary>Enable Async Register and Deregister for SHChangeNotifyRegisterThread.</summary>
+			SCNRT_ENABLE,
+			/// <summary>Disable Async Register and Deregister for SHChangeNotifyRegisterThread.</summary>
+			SCNRT_DISABLE,
 		}
 
 		/// <summary>
@@ -433,6 +508,887 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// <para>Retrieves the value for a given property key using the file association information provided by the Namespace Extensions.</para>
+		/// </summary>
+		/// <param name="psf">
+		/// <para>Type: <c>IShellFolder*</c></para>
+		/// <para>A pointer to the shell folder for which the details of the property key of the file association are being retrieved.</para>
+		/// </param>
+		/// <param name="pidl">
+		/// <para>Type: <c>PCUITEMID_CHILD</c></para>
+		/// <para>The PIDL of the child item for which the file associations are being requested.</para>
+		/// </param>
+		/// <param name="pkey">
+		/// <para>Type: <c>PROPERTYKEY*</c></para>
+		/// <para>A pointer to the property key that is being retrieved.</para>
+		/// </param>
+		/// <param name="pv">
+		/// <para>Type: <c>VARIANT*</c></para>
+		/// <para>When this function returns, contains the details of the given property key.</para>
+		/// </param>
+		/// <param name="pfFoundPropKey">
+		/// <para>Type: <c>BOOL*</c></para>
+		/// <para>When this function returns, contains a flag that is <c>TRUE</c> if the property key was found, otherwise <c>FALSE</c>.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function is to be used only by implementers of IShellFolder Namespace Extensions. Other calling applications should use
+		/// IShellFolder2::GetDetailsEx to get a value for a PROPERTYKEY. This function is to be used by implementers of <c>IShellFolder</c>
+		/// Namespace Extensions.
+		/// </para>
+		/// <para>The provided namespace extension must support the use of this API in one of the following three ways.</para>
+		/// <list type="number">
+		/// <item>
+		/// If the provided Namespace Extensions supports retrieving an IQueryAssociations interface for the item by implementing
+		/// IShellFolder::GetUIObjectOf(..., <c>IID_IQueryAssociations</c>, ...), then <c>AssocGetDetailsOfPropKey</c> will use the provided
+		/// file associations API to retrieve the value for the property key.
+		/// </item>
+		/// <item>
+		/// If the provided namespace extension returns <c>SFGAO_FILESYSTEM</c> for the item from IShellFolder::GetAttributesOf and provides
+		/// a parsing name for the item, then <c>AssocGetDetailsOfPropKey</c> will use the standard file system associations to retrieve the
+		/// value for the property key.
+		/// </item>
+		/// <item>
+		/// If the provided namespace extension returns <c>SFGAO_FOLDER</c> | <c>SFGAO_BROWSABLE</c> for the item from
+		/// IShellFolder::GetAttributesOf, then <c>AssocGetDetailsOfPropKey</c> will use the file association for folders (
+		/// <c>ASSOCCLASS_FOLDER</c>) to retrieve the value for the property key.
+		/// </item>
+		/// </list>
+		/// <para>
+		/// If the ShellFolder being implemented contains items that are extensible through the file associations mechanism, then you can use
+		/// this function to retrieve
+		/// </para>
+		/// <para>PropertyKeys</para>
+		/// <para>
+		/// that are declared for a given file association. For example, if a given Shell folder drives a details pane and you want the
+		/// properties displayed in that pane to be governed by third party file name extensions, then you can use this function to return
+		/// </para>
+		/// <para>PKEY_PropList_PreviewDetails</para>
+		/// <para>
+		/// . This key has a value that is declared in the registry for that file name extension with a semicolon delimited list of
+		/// properties. There is a list of file name extension defined properties in the registry. This list includes but is not limited to
+		/// the following:
+		/// </para>
+		/// <list type="bullet">
+		/// <item><c>PKEY_PropList_PreviewDetails</c></item>
+		/// <item><c>PKEY_PropList_PreviewTitle</c></item>
+		/// <item><c>PKEY_PropList_FullDetails</c></item>
+		/// <item><c>PKEY_PropList_TileInfo</c></item>
+		/// <item><c>PKEY_PropList_ExtendedTileInfo</c></item>
+		/// <item><c>PKEY_PropList_InfoTip</c></item>
+		/// <item><c>PKEY_PropList_QuickTip</c></item>
+		/// <item><c>PKEY_PropList_FileOperationPrompt</c></item>
+		/// <item><c>PKEY_PropList_ConflictPrompt</c></item>
+		/// <item><c>PKEY_PropList_SetDefaultsFor</c></item>
+		/// <item><c>PKEY_PropList_NonPersonal</c></item>
+		/// <item><c>PKEY_NewMenuPreferredTypes</c></item>
+		/// <item><c>PKEY_NewMenuAllowedTypes</c></item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-assocgetdetailsofpropkey
+		// SHSTDAPI AssocGetDetailsOfPropKey( IShellFolder *psf, PCUITEMID_CHILD pidl, const PROPERTYKEY *pkey, VARIANT *pv, BOOL *pfFoundPropKey );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "f13af5f4-1b6a-419c-a042-e05c9ec51d02")]
+		public static extern HRESULT AssocGetDetailsOfPropKey(IShellFolder psf, PIDL pidl, ref PROPERTYKEY pkey, ref object pv, [MarshalAs(UnmanagedType.Bool)] ref bool pfFoundPropKey);
+
+		/// <summary><para>[This function is available through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be altered or unavailable in subsequent versions of Windows.]</para><para>Creates an <c>Open</c> dialog box so that the user can specify the drive, directory, and name of a file to open.</para></summary><param name="hwnd"><para>Type: <c>HWND</c></para><para>A handle to the window that owns the dialog box. This member can be any valid window handle, or it can be <c>NULL</c> if the dialog box has no owner.</para></param><param name="pszFilePath"><para>Type: <c>PWSTR</c></para><para>A null-terminated Unicode string that contains a file name used to initialize the File Name edit control. This string corresponds to the OPENFILENAME structure&#39;s <c>lpstrFile</c> member and is used in exactly the same way.</para></param><param name="cchFilePath"><para>Type: <c>UINT</c></para><para>The number of characters in , including the terminating null character.</para></param><param name="pszWorkingDir"><para>Type: <c>PCWSTR</c></para><para>The fully qualified file path of the initial directory. This string corresponds to the OPENFILENAME structure&#39;s <c>lpstrInitialDir</c> member and is used in exactly the same way.</para></param><param name="pszDefExt"><para>Type: <c>PCWSTR</c></para><para>A null-terminated Unicode string that contains the default file name extension. This extension is added to if the user does not specify an extension. The string should not contain any &#39;.&#39; characters. If this string is <c>NULL</c> and the user fails to type an extension, no extension is appended.</para></param><param name="pszFilters"><para>Type: <c>PCWSTR</c></para><para>A null-terminated Unicode string that defines the filter. This string corresponds to the OPENFILENAME structure&#39;s <c>lpstrFilter</c> member and is used in exactly the same way.</para></param><param name="pszTitle"><para>TBD</para></param><returns><para>Type: <c>BOOL</c></para><para>If the user specifies a file name and clicks <c>OK</c>, the return value is <c>TRUE</c>. The buffer that points to contains the full path and file name that the user specifies. If the user cancels or closes the <c>Open</c> dialog box or an error occurs, the return value is <c>FALSE</c>.</para></returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj/nf-shlobj-getfilenamefrombrowse
+		// BOOL GetFileNameFromBrowse( HWND hwnd, PWSTR pszFilePath, UINT cchFilePath, PCWSTR pszWorkingDir, PCWSTR pszDefExt, PCWSTR pszFilters, PCWSTR pszTitle );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj.h", MSDNShortId = "1f075051-18c8-4ec2-b010-f983ba2d3303")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetFileNameFromBrowse(HandleRef hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszFilePath, uint cchFilePath, [MarshalAs(UnmanagedType.LPWStr)] string pszWorkingDir, [MarshalAs(UnmanagedType.LPWStr)] string pszDefExt, [MarshalAs(UnmanagedType.LPWStr)] string pszFilters, [MarshalAs(UnmanagedType.LPWStr)] string pszTitle);
+
+		/// <summary>
+		/// <para>Appends or prepends an SHITEMID structure to an ITEMIDLIST structure.</para>
+		/// </summary>
+		/// <param name="pidl">
+		/// <para>Type: <c>PIDLIST_RELATIVE</c></para>
+		/// <para>A pointer to an ITEMIDLIST structure. When the function returns, the SHITEMID structure specified by is appended or prepended.</para>
+		/// </param>
+		/// <param name="pmkid">
+		/// <para>Type: <c>LPSHITEMID</c></para>
+		/// <para>A pointer to a SHITEMID structure to be appended or prepended to .</para>
+		/// </param>
+		/// <param name="fAppend">
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Value that is set to <c>TRUE</c> to append to . Set this value to <c>FALSE</c> to prepend to .</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>PIDLIST_RELATIVE</c></para>
+		/// <para>Returns the ITEMIDLIST structure specified by , with appended or prepended. Returns <c>NULL</c> on failure.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-ilappendid
+		// PIDLIST_RELATIVE ILAppendID( PIDLIST_RELATIVE pidl, LPCSHITEMID pmkid, BOOL fAppend );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "d1bb5993-fe23-42d4-a2c5-8e54e6e37d09")]
+		public static extern IntPtr ILAppendID(IntPtr pidl, ref SHITEMID pmkid, [MarshalAs(UnmanagedType.Bool)] bool fAppend);
+
+		/// <summary><para>Determines whether a specified ITEMIDLIST structure is the child of another <c>ITEMIDLIST</c> structure.</para></summary><param name="pidlParent"><para>Type: <c>PCIDLIST_ABSOLUTE</c></para><para>A pointer to the parent ITEMIDLIST structure.</para></param><param name="pidlChild"><para>Type: <c>PCIDLIST_ABSOLUTE</c></para><para>A pointer to the child ITEMIDLIST structure.</para></param><returns><para>Type: <c>PUIDLIST_RELATIVE</c></para><para>Returns a pointer to the child&#39;s simple ITEMIDLIST structure if is a child of . The returned structure consists of , minus the SHITEMID structures that make up . Returns <c>NULL</c> if is not a child of .</para><para><c>Note</c> The returned pointer is a pointer into the existing parent structure. It is an alias for . No new memory is allocated in association with the returned pointer. It is not the caller&#39;s responsibility to free the returned value.</para></returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-ilfindchild
+		// PUIDLIST_RELATIVE ILFindChild( PIDLIST_ABSOLUTE pidlParent, PCIDLIST_ABSOLUTE pidlChild );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "4f07e989-ae74-4cf4-b3d9-0f59f2653095")]
+		public static extern IntPtr ILFindChild(IntPtr pidlParent, IntPtr pidlChild);
+
+		/// <summary>
+		/// <para>[</para>
+		/// <para>ILLoadFromStreamEx(IStream*, PIDLIST_ABSOLUTE*)</para>
+		/// <para>
+		/// is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
+		/// subsequent versions.]
+		/// </para>
+		/// <para>Loads an absolute ITEMIDLIST from an IStream.</para>
+		/// </summary>
+		/// <param name="pstm">
+		/// <para>Type: <c>IStream*</c></para>
+		/// <para>A pointer to the IStream interface from which the absolute ITEMIDLIST loads.</para>
+		/// </param>
+		/// <param name="pidl">
+		/// <para>TBD</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>For use where STRICT_TYPED_ITEMIDS is defined.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-illoadfromstreamex
+		// SHSTDAPI ILLoadFromStreamEx( IStream *pstm, PIDLIST_RELATIVE *pidl );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "6fb735b6-a8c3-439e-9f20-4fda8f008b28")]
+		public static extern HRESULT ILLoadFromStreamEx(IStream pstm, out IntPtr pidl);
+
+		/// <summary>
+		/// <para>Saves an ITEMIDLIST structure to a stream.</para>
+		/// </summary>
+		/// <param name="pstm">
+		/// <para>Type: <c>IStream *</c></para>
+		/// <para>A pointer to the IStream interface where the ITEMIDLIST is saved.</para>
+		/// </param>
+		/// <param name="pidl">
+		/// <para>Type: <c>PCUIDLIST_RELATIVE</c></para>
+		/// <para>A pointer to the ITEMIDLIST structure to be saved.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>Returns S_OK if successful, or a COM error value otherwise.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>The stream must be opened for writing, or <c>ILSaveToStream</c> returns an error.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-ilsavetostream
+		// SHSTDAPI ILSaveToStream( IStream *pstm, PCUIDLIST_RELATIVE pidl );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "40d5ce57-58dc-4c79-8fe6-5412e3d7dc64")]
+		public static extern HRESULT ILSaveToStream(IStream pstm, IntPtr pidl);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be altered or unavailable
+		/// in subsequent versions of Windows. Use
+		/// </para>
+		/// <para>GetDriveType</para>
+		/// <para>or</para>
+		/// <para>WNetGetConnection</para>
+		/// <para>instead.]</para>
+		/// <para>Tests whether a drive is a network drive.</para>
+		/// </summary>
+		/// <param name="iDrive">
+		/// <para>Type: <c>int</c></para>
+		/// <para>An integer that indicates which drive letter you want to test. Set it to 0 for A:, 1 for B:, and so on.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>int</c></para>
+		/// <para>This function returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0</term>
+		/// <term>The specified drive is not a network drive.</term>
+		/// </item>
+		/// <item>
+		/// <term>1</term>
+		/// <term>The specified drive is a network drive that is properly connected.</term>
+		/// </item>
+		/// <item>
+		/// <term>2</term>
+		/// <term>The specified drive is a network drive that is disconnected or in an error state.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-isnetdrive
+		// int IsNetDrive( int iDrive );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "44e02665-648a-4cf0-9dc0-038e54d08a49")]
+		public static extern int IsNetDrive(int iDrive);
+
+		/// <summary>
+		/// <para>[IsUserAnAdmin is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
+		/// subsequent versions.]
+		/// </para>
+		/// <para>Tests whether the current user is a member of the Administrator's group.</para>
+		/// </summary>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Returns <c>TRUE</c> if the user is a member of the Administrator's group; otherwise, <c>FALSE</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function is a wrapper for CheckTokenMembership. It is recommended to call that function directly to determine Administrator
+		/// group status rather than calling <c>IsUserAnAdmin</c>.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-isuseranadmin
+		// BOOL IsUserAnAdmin( );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "fe698d32-32f6-4b2b-ad0c-5d9ec815177f")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool IsUserAnAdmin();
+
+		/// <summary>
+		/// <para>
+		/// [OpenRegStream is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. Instead, use SHOpenRegStream2 or SHOpenRegStream.]
+		/// </para>
+		/// <para>Opens a registry value and supplies an IStream interface that can be used to read from or write to the value.</para>
+		/// </summary>
+		/// <param name="hkey">
+		/// <para>Type: <c>HKEY</c></para>
+		/// <para>A handle to the key that is currently open.</para>
+		/// </param>
+		/// <param name="pszSubkey">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>A null-terminated Unicode string that specifies the name of the subkey.</para>
+		/// </param>
+		/// <param name="pszValue">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>A null-terminated Unicode string that specifies the value to be accessed.</para>
+		/// </param>
+		/// <param name="grfMode">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The type of access for the stream. This can be one of the following values.</para>
+		/// <para>STGM_READ</para>
+		/// <para>Open the stream for reading.</para>
+		/// <para>STGM_WRITE</para>
+		/// <para>Open the stream for writing.</para>
+		/// <para>STGM_READWRITE</para>
+		/// <para>Open the stream for reading and writing.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>IStream*</c></para>
+		/// <para>Returns the address of an IStream interface if successful, or <c>NULL</c> otherwise.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-openregstream
+		// IStream * OpenRegStream( HKEY hkey, PCWSTR pszSubkey, PCWSTR pszValue, DWORD grfMode );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "e1e35c94-84ac-4aa1-b2a1-47b37a7f224e")]
+		public static extern IStream OpenRegStream(IntPtr hkey, [MarshalAs(UnmanagedType.LPWStr)] string pszSubkey, [MarshalAs(UnmanagedType.LPWStr)] string pszValue, STGM grfMode);
+
+		/// <summary>
+		/// <para>[PathCleanupSpec is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
+		/// subsequent versions.]
+		/// </para>
+		/// <para>
+		/// Removes illegal characters from a file or directory name. Enforces the 8.3 filename format on drives that do not support long
+		/// file names.
+		/// </para>
+		/// </summary>
+		/// <param name="pszDir">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>
+		/// A pointer to a null-terminated buffer that contains the fully qualified path of the directory that will contain the file or
+		/// directory named at . The path must not exceed MAX_PATH characters in length, including the terminating null character. This path
+		/// is not altered.
+		/// </para>
+		/// <para>This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="pszSpec">
+		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>
+		/// A pointer to a null-terminated buffer that contains the file or directory name to be cleaned. In the case of a file, include the
+		/// file's extension. Note that because '' is considered an invalid character and will be removed, this buffer cannot contain a path
+		/// more than one directory deep.
+		/// </para>
+		/// <para>On exit, the buffer contains a null-terminated string that includes the cleaned name.</para>
+		/// <para>This buffer should be at least MAX_PATH characters in length to avoid the possibility of a buffer overrun.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Returns one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>PCS_REPLACEDCHAR</term>
+		/// <term>Replaced one or more invalid characters.</term>
+		/// </item>
+		/// <item>
+		/// <term>PCS_REMOVEDCHAR</term>
+		/// <term>Removed one or more invalid characters.</term>
+		/// </item>
+		/// <item>
+		/// <term>PCS_TRUNCATED</term>
+		/// <term>The returned path is truncated.</term>
+		/// </item>
+		/// <item>
+		/// <term>PCS_PATHTOOLONG</term>
+		/// <term>
+		/// The function failed because the input path specified at is too long to allow the formation of a valid file name from . When this
+		/// flag is returned, it is always accompanied by the PCS_FATAL flag.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>PCS_FATAL</term>
+		/// <term>The cleaned path is not a valid file name. This flag is always returned in conjunction with PCS_PATHTOOLONG.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>The following are considered invalid characters in all names.</para>
+		/// <para>
+		/// Control characters are also considered invalid. If long file names are not supported, the semi-colon (;) and comma (,) characters
+		/// are also invalid.
+		/// </para>
+		/// <para>
+		/// The drive named in is checked to determine whether its file system supports long file names. If it does not, the name at is
+		/// truncated to the 8.3 format and the PCS_TRUNCATED value returned. If is <c>NULL</c>, the drive on which Windows is installed is
+		/// used to determine long file name support.
+		/// </para>
+		/// <para>
+		/// If the full path—the number of characters in the path at plus the number of characters in the cleaned name at —exceeds MAX_PATH –
+		/// 1 (to account for the terminating null character), the function returns PCS_PATHTOOLONG.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathcleanupspec
+		// int PathCleanupSpec( PCWSTR pszDir, PWSTR pszSpec );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "593fd2b7-44ae-4309-a185-97e42f3cc0fa")]
+		public static extern PCS PathCleanupSpec([MarshalAs(UnmanagedType.LPWStr)] string pszDir, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszSpec);
+		/// <summary>
+		/// <para>[PathGetShortPath is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
+		/// subsequent versions.]
+		/// </para>
+		/// <para>Retrieves the short path form of a specified input path.</para>
+		/// </summary>
+		/// <param name="pszLongPath">
+		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>
+		/// A pointer to a null-terminated, Unicode string that contains the long path. When the function returns, it contains the equivalent
+		/// short path.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>This function does not return a value.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathgetshortpath
+		// void PathGetShortPath( PWSTR pszLongPath );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "f374a575-3fbf-4bed-aa76-76ed81e01d60")]
+		public static extern void PathGetShortPath([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszLongPath);
+
+		/// <summary>
+		/// <para>
+		/// [PathIsExe is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable
+		/// in subsequent versions.]
+		/// </para>
+		/// <para>Determines whether a file is an executable by examining the file name extension.</para>
+		/// </summary>
+		/// <param name="pszPath">
+		/// <para>TBD</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Returns <c>TRUE</c> if the file name extension is .cmd, .bat, .pif, .scf, .exe, .com, or .scr; otherwise, <c>FALSE</c>.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathisexe
+		// BOOL PathIsExe( PCWSTR pszPath );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "54e9dae7-f9c4-48b8-9b91-32ed21365fb7")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool PathIsExe([MarshalAs(UnmanagedType.LPWStr)] string pszPath);
+
+		/// <summary>
+		/// <para>
+		/// [PathIsSlow is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable
+		/// in subsequent versions.]
+		/// </para>
+		/// <para>Determines whether a file path is a high-latency network connection.</para>
+		/// </summary>
+		/// <param name="pszFile">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>A pointer to a null-terminated string that contains the fully qualified path of the file.</para>
+		/// </param>
+		/// <param name="dwAttr">
+		/// <para>TBD</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Returns <c>TRUE</c> if the connection is high-latency; otherwise, <c>FALSE</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// A path is considered slow if the MultinetGetConnectionPerformance function returns a dwSpeed of 400 or less in its
+		/// NETCONNECTINFOSTRUCT structure—this is the speed of the media to the network resource, in 100 bits-per-second (bps)—or if
+		/// FILE_ATTRIBUTE_OFFLINE is set on the file.
+		/// </para>
+		/// <para>Note that network conditions can impact function performance time.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj/nf-shlobj-pathisslowa
+		// BOOL PathIsSlowA( LPCSTR pszFile, DWORD dwAttr );
+		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shlobj.h", MSDNShortId = "f848a098-9248-453b-a957-77c35d70e528")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool PathIsSlow(string pszFile, uint dwAttr);
+
+		/// <summary>
+		/// <para>Creates a unique path name from a template.</para>
+		/// </summary>
+		/// <param name="pszUniqueName">
+		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>
+		/// A buffer that receives a null-terminated Unicode string that contains the unique path name. It should be at least MAX_PATH
+		/// characters in length.
+		/// </para>
+		/// </param>
+		/// <param name="cchMax">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The number of characters in the buffer pointed to by .</para>
+		/// </param>
+		/// <param name="pszTemplate">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>
+		/// A null-terminated Unicode string that contains a template that is used to construct the unique name. This template is used for
+		/// drives that require file names with the 8.3 format. This string should be no more than MAX_PATH characters in length, including
+		/// the terminating null character.
+		/// </para>
+		/// </param>
+		/// <param name="pszLongPlate">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>
+		/// A null-terminated Unicode string that contains a template that is used to construct the unique name. This template is used for
+		/// drives that support long file names. This string should be no more than MAX_PATH characters in length, including the terminating
+		/// null character.
+		/// </para>
+		/// </param>
+		/// <param name="pszDir">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>
+		/// A null-terminated string that contains the directory in which the new file resides. This string should be no more than MAX_PATH
+		/// characters in length, including the terminating null character.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Returns <c>TRUE</c> if successful; otherwise, <c>FALSE</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function generates a new unique file name based on the templates specified by , for drives that require the 8.3 format, and
+		/// for drives that support long file names. For example, if you specify "My New Filename" for , <c>PathMakeUniqueName</c> returns
+		/// names such as "My New Filename (1)", "My New Filename (2)", and so on.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathmakeuniquename
+		// BOOL PathMakeUniqueName( PWSTR pszUniqueName, UINT cchMax, PCWSTR pszTemplate, PCWSTR pszLongPlate, PCWSTR pszDir );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "8456ae0c-e83c-43d0-a86a-1861a373d237")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool PathMakeUniqueName([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszUniqueName, uint cchMax, [MarshalAs(UnmanagedType.LPWStr)] string pszTemplate, [MarshalAs(UnmanagedType.LPWStr)] string pszLongPlate, [MarshalAs(UnmanagedType.LPWStr)] string pszDir);
+
+		/// <summary>
+		/// <para>
+		/// [PathResolve is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Converts a relative or unqualified path name to a fully qualified path name.</para>
+		/// </summary>
+		/// <param name="pszPath">
+		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>
+		/// A null-terminated Unicode string that contains the path to resolve. When the function returns, the string contains the
+		/// corresponding fully qualified path. This buffer should be at least MAX_PATH characters long.
+		/// </para>
+		/// </param>
+		/// <param name="dirs">
+		/// <para>Type: <c>PZPCWSTR</c></para>
+		/// <para>
+		/// A pointer to an optional null-terminated array of directories to be searched first in the case that the path cannot be resolved
+		/// from . This value can be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="fFlags">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>Flags that specify how the function operates.</para>
+		/// <para>PRF_VERIFYEXISTS</para>
+		/// <para>Return <c>TRUE</c> if the file's existence is verified; otherwise <c>FALSE</c>.</para>
+		/// <para>PRF_TRYPROGRAMEXTENSIONS</para>
+		/// <para>Look for the specified path with the following extensions appended: .pif, .com, .bat, .cmd, .lnk, and .exe.</para>
+		/// <para>PRF_FIRSTDIRDEF</para>
+		/// <para>Look first in the directory or directories specified by .</para>
+		/// <para>PRF_DONTFINDLNK</para>
+		/// <para>Ignore .lnk files.</para>
+		/// <para>PRF_REQUIREABSOLUTE</para>
+		/// <para>Require an absolute (full) path.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// Returns <c>TRUE</c>, unless PRF_VERIFYEXISTS is set. If that flag is set, the function returns <c>TRUE</c> if the file is
+		/// verified to exist and <c>FALSE</c> otherwise. It also sets an ERROR_FILE_NOT_FOUND error code that you can retrieve by calling GetLastError.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// A <c>FALSE</c> return value does not necessarily mean that the file does not exist. It might mean that the function is simply
+		/// unable to find the file from the supplied information.
+		/// </para>
+		/// <para>If <c>PathResolve</c> cannot resolve the path specified in , it calls PathFindOnPath using and as the parameters.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathresolve
+		// int PathResolve( PWSTR pszPath, PZPCWSTR dirs, UINT fFlags );
+		[DllImport(Lib.Shell32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "84bf0b56-513f-4ac6-b2cf-11f0c471da1e")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool PathResolve(StringBuilder pszPath, string[] dirs, PRF fFlags);
+		/// <summary>
+		/// <para>Creates a unique filename based on an existing filename.</para>
+		/// </summary>
+		/// <param name="pszUniqueName">
+		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>
+		/// A string buffer that receives a null-terminated Unicode string that contains the fully qualified path of the unique file name.
+		/// This buffer should be at least MAX_PATH characters long to avoid causing a buffer overrun.
+		/// </para>
+		/// </param>
+		/// <param name="pszPath">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>
+		/// A null-terminated Unicode string that contains the fully qualified path of folder that will contain the new file. If is set to
+		/// <c>NULL</c>, this string must contain a full destination path, ending with the long file name that the new file name will be base on.
+		/// </para>
+		/// </param>
+		/// <param name="pszShort">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>
+		/// A null-terminated Unicode string that contains the short file name that the unique name will be based on. Set this value to
+		/// <c>NULL</c> to create a name based on the long file name.
+		/// </para>
+		/// </param>
+		/// <param name="pszFileSpec">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>A null-terminated Unicode string that contains the long file name that the unique name will be based on.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Returns <c>TRUE</c> if a unique name was successfully created; otherwise <c>FALSE</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If the generated path exceeds MAX_PATH characters, this function may return a truncated string in
+		/// <c>PathYetAnotherMakeUniqueName</c>. In that case, the function returns <c>FALSE</c>.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathyetanothermakeuniquename
+		// BOOL PathYetAnotherMakeUniqueName( PWSTR pszUniqueName, PCWSTR pszPath, PCWSTR pszShort, PCWSTR pszFileSpec );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "1f76ecfa-6f2f-4dde-b05e-4252c92660d9")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool PathYetAnotherMakeUniqueName(StringBuilder pszUniqueName, string pszPath, string pszShort, string pszFileSpec);
+
+		/// <summary>
+		/// <para>
+		/// [PickIconDlg is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>
+		/// Displays a dialog box that allows the user to choose an icon from the selection available embedded in a resource such as an
+		/// executable or DLL file.
+		/// </para>
+		/// </summary>
+		/// <param name="hwnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>The handle of the parent window. This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="pszIconPath">
+		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>
+		/// A pointer to a string that contains the null-terminated, fully qualified path of the default resource that contains the icons. If
+		/// the user chooses a different resource in the dialog, this buffer contains the path of that file when the function returns. This
+		/// buffer should be at least MAX_PATH characters in length, or the returned path may be truncated. You should verify that the path
+		/// is valid before using it.
+		/// </para>
+		/// </param>
+		/// <param name="cchIconPath">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The number of characters in , including the terminating <c>NULL</c> character.</para>
+		/// </param>
+		/// <param name="piIconIndex">
+		/// <para>Type: <c>int*</c></para>
+		/// <para>
+		/// A pointer to an integer that on entry specifies the index of the initial selection and, when this function returns successfully,
+		/// receives the index of the icon that was selected.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Returns 1 if successful; otherwise, 0.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pickicondlg
+		// int PickIconDlg( HWND hwnd, PWSTR pszIconPath, UINT cchIconPath, int *piIconIndex );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "3dfcda10-26d8-495d-8c92-7ff16da098c1")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool PickIconDlg(HandleRef hwnd, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszIconPath, uint cchIconPath, ref int piIconIndex);
+
+		/// <summary>
+		/// [PifMgr_CloseProperties is available for use in the operating systems specified in the Requirements section.It may be altered or unavailable in subsequent versions.]
+		/// <para>Closes application properties that were opened with PifMgr_OpenProperties.</para></summary>
+		/// <param name="hProps">A handle to the application's properties. This parameter should be set to the value that is returned by PifMgr_OpenProperties.</param>
+		/// <param name="flOpt">A flag that specifies how the function operates.</param>
+		/// <returns>Returns NULL if successful. If unsuccessful, the functions returns the handle to the application properties that was passed as hProps.</returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pifmgr_closeproperties
+		// HANDLE PifMgr_CloseProperties(HANDLE hProps, UINT flOpt);
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "fd50d4f8-87c8-4162-9e88-3c8592b929fa")]
+		public static extern IntPtr PifMgr_CloseProperties(IntPtr hProps, CLOSEPROPS flOpt);
+
+		/// <summary>
+		/// [PifMgr_GetProperties is available for use in the operating systems specified in the Requirements section.It may be altered or unavailable in subsequent versions.]
+		/// <para>Returns a specified block of data from a .pif file.</para></summary>
+		/// <param name="hProps">A handle to an application's properties. This parameter should be set to the value that is returned by PifMgr_OpenProperties.</param>
+		/// <param name="pszGroup">A null-terminated string that contains the property group name. It can be one of the following, or any other name that corresponds to a valid .pif extension.</param>
+		/// <param name="lpProps">When this function returns, contains a pointer to a PROPPRG structure.</param>
+		/// <param name="cbProps">The size of the buffer, in bytes, pointed to by lpProps.</param>
+		/// <param name="flOpt">Set this parameter to GETPROPS_NONE.</param>
+		/// <returns>Returns NULL if successful. If unsuccessful, the function returns the handle to the application properties that were passed as hProps.</returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pifmgr_getproperties
+		// int PifMgr_GetProperties( HANDLE hProps, PCSTR pszGroup, void* lpProps, int cbProps, UINT flOpt );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
+		[PInvokeData("shlobj_core.h")]
+		public static extern int PifMgr_GetProperties(IntPtr hProps, string pszGroup, IntPtr lpProps, int cbProps, uint flOpt = 0);
+
+		/// <summary>
+		/// <para>
+		/// [PifMgr_OpenProperties is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Opens the .pif file associated with a Microsoft MS-DOS application, and returns a handle to the application's properties.</para>
+		/// </summary>
+		/// <param name="pszApp">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>A null-terminated Unicode string that contains the application's name.</para>
+		/// </param>
+		/// <param name="pszPIF">
+		/// <para>TBD</para>
+		/// </param>
+		/// <param name="hInf">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// A handle to the application's .inf file. Set this value to zero if there is no .inf file. Set this value to -1 to prevent the
+		/// .inf file from being processed.
+		/// </para>
+		/// </param>
+		/// <param name="flOpt">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>A flag that controls how the function operates.</para>
+		/// <para>OPENPROPS_INHIBITPIF</para>
+		/// <para>
+		/// Ignore any existing .pif files and get the properties from win.ini or _Default.pif. This flag is ignored on Windows NT, Windows
+		/// 2000, and Windows XP.
+		/// </para>
+		/// <para>OPENPROPS_NONE</para>
+		/// <para>No options specified.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HANDLE</c></para>
+		/// <para>Returns a handle to the application's properties. Use this handle when you call the related .pif functions.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// You should not think of <c>PifMgr_OpenProperties</c> as a function that opens a file somewhere. The .pif file does not remain
+		/// open after this call. It is more useful to think of the function as a property structure allocator that you can initialize using
+		/// disk data. The primary reason why this function fails is because of low memory or inability to open the specified .pif file.
+		/// </para>
+		/// <para>
+		/// If no .pif file exists, the function still allocates a data block in memory and initializes it with data from _Default.pif or its
+		/// internal defaults. If the function looks for a .pif file name but does not find it, it constructs a name and saves it in its
+		/// internal .pif data structure. This guarantees that if PifMgr_SetProperties is called, the data is saved to disk.
+		/// </para>
+		/// <para>If the function does not find the .pif file, it searches for it in the following order.</para>
+		/// <list type="number">
+		/// <item>Searches the current directory.</item>
+		/// <item>Searches the specified directory.</item>
+		/// <item>Searches in .pif directory.</item>
+		/// <item>Searches the folders specified by the PATH environment variable.</item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pifmgr_openproperties
+		// HANDLE PifMgr_OpenProperties( PCWSTR pszApp, PCWSTR pszPIF, UINT hInf, UINT flOpt );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "0bc11528-7278-4765-b3cb-671ba82c9155")]
+		public static extern IntPtr PifMgr_OpenProperties([MarshalAs(UnmanagedType.LPWStr)] string pszApp, [MarshalAs(UnmanagedType.LPWStr)] string pszPIF, uint hInf, OPENPROPS flOpt);
+		/// <summary>
+		/// [PifMgr_SetProperties is available for use in the operating systems specified in the Requirements section.It may be altered or unavailable in subsequent versions.]
+		/// <para>Assigns values to a block of data from a .pif file.</para></summary>
+		/// <param name="hProps">A handle to the application's properties. This parameter should be set to the value that is returned by PifMgr_OpenProperties.</param>
+		/// <param name="pszGroup">A null-terminated ANSI string containing the property group name. It can be one of the following, or any other name that corresponds to a valid .pif extension.</param>
+		/// <param name="lpProps">A property group record buffer that holds the data.</param>
+		/// <param name="cbProps">The size of the buffer, in bytes, pointed to by lpProps.</param>
+		/// <param name="flOpt">Always SETPROPS_NONE.</param>
+		/// <returns>Returns the amount of information transferred, in bytes. Returns zero if the group cannot be found or an error occurs.</returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pifmgr_setproperties
+		// int PifMgr_SetProperties(HANDLE hProps, PCSTR pszGroup, const void* lpProps, int cbProps, UINT flOpt );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
+		[PInvokeData("shlobj_core.h")]
+		public static extern int PifMgr_SetProperties(IntPtr hProps, string pszGroup, IntPtr lpProps, int cbProps, uint flOpt = 0);
+
+		/// <summary><para>[ReadCabinetState is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in subsequent versions.]</para><para>Fills a CABINETSTATE structure with information from the registry.</para></summary><param name="pcs"><para>Type: <c>CABINETSTATE*</c></para><para>When this function returns, contains a pointer to a CABINETSTATE structure that contains either information pulled from the registry or default information.</para></param><param name="cLength"><para>Type: <c>int</c></para><para>The size of the structure pointed to by , in bytes.</para></param><returns><para>Type: <c>BOOL</c></para><para>Returns <c>TRUE</c> if the returned structure contains information from the registry. Returns <c>FALSE</c> if the structure contains default information.</para></returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-readcabinetstate
+		// BOOL ReadCabinetState( CABINETSTATE *pcs, int cLength );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "0f0c6a10-588f-4c79-b73b-cf0bf9336ffc")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool ReadCabinetState(ref CABINETSTATE pcs, int cLength);
+
+		/// <summary>
+		/// <para>
+		/// [RealDriveType is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Determines the drive type based on the drive number.</para>
+		/// </summary>
+		/// <param name="iDrive">
+		/// <para>Type: <c>int</c></para>
+		/// <para>The number of the drive that you want to test. "A:" corresponds to 0, "B:" to 1, and so on.</para>
+		/// </param>
+		/// <param name="fOKToHitNet">
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Reserved. Must be set to 0.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DRIVE_UNKNOWN</term>
+		/// <term>The drive type cannot be determined.</term>
+		/// </item>
+		/// <item>
+		/// <term>DRIVE_NO_ROOT_DIR</term>
+		/// <term>The root path is invalid. For example, no volume is mounted at the path.</term>
+		/// </item>
+		/// <item>
+		/// <term>DRIVE_REMOVABLE</term>
+		/// <term>The disk can be removed from the drive.</term>
+		/// </item>
+		/// <item>
+		/// <term>DRIVE_FIXED</term>
+		/// <term>The disk cannot be removed from the drive.</term>
+		/// </item>
+		/// <item>
+		/// <term>DRIVE_REMOTE</term>
+		/// <term>The drive is a remote (network) drive.</term>
+		/// </item>
+		/// <item>
+		/// <term>DRIVE_CDROM</term>
+		/// <term>The drive is a CD-ROM drive.</term>
+		/// </item>
+		/// <item>
+		/// <term>DRIVE_RAMDISK</term>
+		/// <term>The drive is a RAM disk.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-realdrivetype
+		// int RealDriveType( int iDrive, BOOL fOKToHitNet );
+		// public static extern int RealDriveType(int iDrive, [MarshalAs(UnmanagedType.Bool)] bool fOKToHitNet);
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "c4e55b50-637a-446f-aa9c-7d8c71d8071c")]
+		public static extern DRIVE_TYPE RealDriveType(int iDrive, [MarshalAs(UnmanagedType.Bool)] bool fOKToHitNet);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be altered or unavailable
+		/// in subsequent versions of Windows.]
+		/// </para>
+		/// <para>
+		/// Displays a dialog box that prompts the user to restart Windows. When the user clicks the button, the function calls ExitWindowsEx
+		/// to attempt to restart Windows.
+		/// </para>
+		/// </summary>
+		/// <param name="hwnd">
+		/// <para>TBD</para>
+		/// </param>
+		/// <param name="pszPrompt">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>A null-terminated Unicode string that contains the text that displays in the dialog box which prompts the user.</para>
+		/// </param>
+		/// <param name="dwReturn">
+		/// <para>TBD</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Returns the identifier of the button that was pressed to close the dialog box.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-restartdialog
+		// int RestartDialog( HWND hwnd, PCWSTR pszPrompt, DWORD dwReturn );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "ec1e3c11-9960-482c-8461-72c4d41dff3c")]
+		public static extern int RestartDialog(HandleRef hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszPrompt, uint dwReturn);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be altered or unavailable
+		/// in subsequent versions of Windows.]
+		/// </para>
+		/// <para>
+		/// Displays a dialog box that asks the user to restart Windows. When the user clicks the button, the function calls ExitWindowsEx to
+		/// attempt to restart Windows.
+		/// </para>
+		/// </summary>
+		/// <param name="hwnd">
+		/// <para>TBD</para>
+		/// </param>
+		/// <param name="pszPrompt">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>A null-terminated string that contains the text that displays in the dialog box to prompt the user.</para>
+		/// </param>
+		/// <param name="dwReturn">
+		/// <para>TBD</para>
+		/// </param>
+		/// <param name="dwReasonCode">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// <c>Windows XP:</c> Specifies the reason for initiating the shutdown. For more information, see System Shutdown Reason Codes.
+		/// </para>
+		/// <para><c>Windows 2000:</c> This parameter is ignored.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Returns the identifier of the button that was pressed to close the dialog box.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-restartdialogex
+		// int RestartDialogEx( HWND hwnd, PCWSTR pszPrompt, DWORD dwReturn, DWORD dwReasonCode );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "32bc232f-6cc4-4f19-9d33-ba7ad28dfd59")]
+		public static extern int RestartDialogEx(HandleRef hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszPrompt, uint dwReturn, uint dwReasonCode);
+
+		/// <summary>
 		/// Notifies the system that an item has been accessed, for the purposes of tracking those items used most recently and most frequently. This function
 		/// can also be used to clear all usage data.
 		/// </summary>
@@ -501,6 +1457,153 @@ namespace Vanara.PInvoke
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762105")]
 		public static extern void SHAddToRecentDocs(SHARD uFlags, PIDL pv);
 
+		/// <summary>
+		/// <para>
+		/// Given a Shell namespace item specified in the form of a folder, and an item identifier list relative to that folder, this
+		/// function binds to the parent of the namespace item and optionally returns a pointer to the final component of the item identifier list.
+		/// </para>
+		/// </summary>
+		/// <param name="psfRoot">
+		/// <para>Type: <c>IShellFolder*</c></para>
+		/// <para>A pointer to a Shell folder object. If is <c>NULL</c>, indicates that the IDList passed is relative to the desktop.</para>
+		/// </param>
+		/// <param name="pidl">
+		/// <para>Type: <c>PCUIDLIST_RELATIVE</c></para>
+		/// <para>A PIDL to bind to, relative to . If is <c>NULL</c>, this is an absolute IDList relative to the desktop folder.</para>
+		/// </param>
+		/// <param name="riid">
+		/// <para>Type: <c>REFIID</c></para>
+		/// <para>
+		/// Reference to the desired interface ID. This is typically IID_IShellFolder or IID_IShellFolder2, but can be anything supported by
+		/// the target folder.
+		/// </para>
+		/// </param>
+		/// <param name="ppv">
+		/// <para>Type: <c>void**</c></para>
+		/// <para>
+		/// When this function returns, contains the interface pointer requested in . This is typically IShellFolder or IShellFolder2, but
+		/// can be anything supported by the target folder.
+		/// </para>
+		/// </param>
+		/// <param name="ppidlLast">
+		/// <para>Type: <c>PCUITEMID_CHILD*</c></para>
+		/// <para>
+		/// A pointer to the last ID of the parameter, and is a child ID relative to the parent folder returned in . This value can be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>Note</c> Calling the <c>SHBindToFolderIDListParent</c> function is equivalent to calling the SHBindToFolderIDListParentEx
+		/// function with <c>NULL</c> as the bind context.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shbindtofolderidlistparent
+		// SHSTDAPI SHBindToFolderIDListParent( IShellFolder *psfRoot, PCUIDLIST_RELATIVE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "72a79d1b-15ed-475e-9ebd-03345579a06a")]
+		public static extern HRESULT SHBindToFolderIDListParent(IShellFolder psfRoot, PIDL pidl, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, IntPtr ppidlLast);
+
+		/// <summary>
+		/// <para>Extends the SHBindToFolderIDListParent function by allowing the caller to specify a bind context.</para>
+		/// </summary>
+		/// <param name="psfRoot">
+		/// <para>Type: <c>IShellFolder*</c></para>
+		/// <para>A pointer to a Shell folder object. If is <c>NULL</c>, indicates that the IDList passed is relative to the desktop.</para>
+		/// </param>
+		/// <param name="pidl">
+		/// <para>Type: <c>PCUIDLIST_RELATIVE</c></para>
+		/// <para>A PIDL to bind to, relative to . If is <c>NULL</c>, this is an absolute IDList relative to the desktop folder.</para>
+		/// </param>
+		/// <param name="ppbc">
+		/// <para>Type: <c>IBindCtx*</c></para>
+		/// <para>
+		/// A pointer to IBindCtx interface on a bind context object to be used during this operation. If this parameter is not used, set it
+		/// to <c>NULL</c>, which is equivalent to calling the SHBindToFolderIDListParent function. Because support for is optional for
+		/// folder object implementations, some folders may not support the use of bind contexts.
+		/// </para>
+		/// </param>
+		/// <param name="riid">
+		/// <para>Type: <c>REFIID</c></para>
+		/// <para>
+		/// Reference to the desired interface ID. This is typically IID_IShellFolder or IID_IShellFolder2, but can be anything supported by
+		/// the target folder.
+		/// </para>
+		/// </param>
+		/// <param name="ppv">
+		/// <para>Type: <c>void**</c></para>
+		/// <para>
+		/// When this function returns, contains the interface pointer requested in . This is typically IShellFolder or IShellFolder2, but
+		/// can be anything supported by the target folder.
+		/// </para>
+		/// </param>
+		/// <param name="ppidlLast">
+		/// <para>Type: <c>PCUITEMID_CHILD*</c></para>
+		/// <para>
+		/// A pointer to the last ID of the parameter, and is a child ID relative to the parent folder returned in . This value can be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shbindtofolderidlistparentex
+		// SHSTDAPI SHBindToFolderIDListParentEx( IShellFolder *psfRoot, PCUIDLIST_RELATIVE pidl, IBindCtx *ppbc, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "4f9b68cb-d0ae-45f7-90f5-2db1da3ab599")]
+		public static extern HRESULT SHBindToFolderIDListParentEx(IShellFolder psfRoot, PIDL pidl, IBindCtx ppbc, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, IntPtr ppidlLast);
+
+		/// <summary>
+		/// <para>Retrieves and binds to a specified object by using the Shell namespace IShellFolder::BindToObject method.</para>
+		/// </summary>
+		/// <param name="psf">
+		/// <para>Type: <c>IShellFolder*</c></para>
+		/// <para>
+		/// A pointer to IShellFolder. This parameter can be <c>NULL</c>. If is <c>NULL</c>, this indicates parameter is relative to the
+		/// desktop. In this case, must specify an absolute ITEMIDLIST.
+		/// </para>
+		/// </param>
+		/// <param name="pidl">
+		/// <para>Type: <c>PCUIDLIST_RELATIVE</c></para>
+		/// <para>
+		/// A pointer to a constant ITEMIDLIST to bind to that is relative to . If is <c>NULL</c>, this is an absolute <c>ITEMIDLIST</c>
+		/// relative to the desktop folder.
+		/// </para>
+		/// </param>
+		/// <param name="pbc">
+		/// <para>Type: <c>IBindCtx*</c></para>
+		/// <para>
+		/// A pointer to IBindCtx interface on a bind context object to be used during this operation. If this parameter is not used, set it
+		/// to <c>NULL</c>. Because support for is optional for folder object implementations, some folders may not support the use of bind contexts.
+		/// </para>
+		/// </param>
+		/// <param name="riid">
+		/// <para>Type: <c>REFIID</c></para>
+		/// <para>Identifier of the interface to return.</para>
+		/// </param>
+		/// <param name="ppv">
+		/// <para>Type: <c>void**</c></para>
+		/// <para>
+		/// When this method returns, contains the interface pointer as specified in to the bound object. If an error occurs, contains a
+		/// <c>NULL</c> pointer.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para><c>Note</c> This is a helper function that gets the desktop object by calling SHGetDesktopFolder.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shbindtoobject
+		// SHSTDAPI SHBindToObject( IShellFolder *psf, PCUIDLIST_RELATIVE pidl, IBindCtx *pbc, REFIID riid, void **ppv );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "acc16097-8301-4118-8cb5-00aa2705306a")]
+		public static extern HRESULT SHBindToObject(IShellFolder psf, PIDL pidl, IBindCtx pbc, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+
 		/// <summary>Displays a dialog box that enables the user to select a Shell folder.</summary>
 		/// <param name="lpbi">A pointer to a BROWSEINFO structure that contains information used to display the dialog box.</param>
 		/// <returns>
@@ -510,6 +1613,58 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762115")]
 		public static extern PIDL SHBrowseForFolder(ref BROWSEINFO lpbi);
+
+		/// <summary>
+		/// <para>Locks the shared memory associated with a Shell change notification event.</para>
+		/// </summary>
+		/// <param name="hChange">
+		/// <para>Type: <c>HANDLE</c></para>
+		/// <para>A handle to a window received as a in the specified Shell change notification message.</para>
+		/// </param>
+		/// <param name="dwProcId">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The process ID ( in the message callback).</para>
+		/// </param>
+		/// <param name="pppidl">
+		/// <para>Type: <c>PIDLIST_ABSOLUTE**</c></para>
+		/// <para>
+		/// The address of a pointer to a PIDLIST_ABSOLUTE that, when this function returns successfully, receives the list of affected PIDLs.
+		/// </para>
+		/// </param>
+		/// <param name="plEvent">
+		/// <para>Type: <c>LONG*</c></para>
+		/// <para>
+		/// A pointer to a LONG value that, when this function returns successfully, receives the Shell change notification ID of the event
+		/// that took place.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HANDLE</c></para>
+		/// <para>Returns a handle (HLOCK) to the locked memory. Pass this value to SHChangeNotification_Unlock when finished.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shchangenotification_lock
+		// HANDLE SHChangeNotification_Lock( HANDLE hChange, DWORD dwProcId, PIDLIST_ABSOLUTE **pppidl, LONG *plEvent );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "8e22d5d0-64be-403c-982d-c23705d85223")]
+		public static extern IntPtr SHChangeNotification_Lock(IntPtr hChange, uint dwProcId, IntPtr pppidl, ref int plEvent);
+
+		/// <summary>
+		/// <para>Unlocks shared memory for a change notification.</para>
+		/// </summary>
+		/// <param name="hLock">
+		/// <para>Type: <c>HANDLE</c></para>
+		/// <para>A handle to the memory lock. This is the handle returned by SHChangeNotification_Lock when it locked the memory.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Returns <c>TRUE</c> on success; otherwise, <c>FALSE</c>.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shchangenotification_unlock
+		// BOOL SHChangeNotification_Unlock( HANDLE hLock );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "967ede1f-ee9c-46ee-a371-dcfc3a57d824")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SHChangeNotification_Unlock(IntPtr hLock);
 
 		/// <summary>
 		/// Notifies the system of an event that an application has performed. An application should use this function if it performs an
@@ -525,6 +1680,339 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h")]
 		public static extern void SHChangeNotify(SHCNE wEventId, SHCNF uFlags, [Optional] IntPtr dwItem1, [Optional] IntPtr dwItem2);
+
+		/// <summary>
+		/// <para>Unregisters the client's window process from receiving SHChangeNotify messages.</para>
+		/// </summary>
+		/// <param name="ulID">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>A value of type <c>ULONG</c> that specifies the registration ID returned by SHChangeNotifyRegister.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Returns <c>TRUE</c> if the specified client was found and removed; otherwise <c>FALSE</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// See the Change Notify Watcher Sample in the Windows Software Development Kit (SDK) for a full example that demonstrates the use
+		/// of this function.
+		/// </para>
+		/// <para>
+		/// The <c>NTSHChangeNotifyDeregister</c> function, which is no longer available for use as of Windows Vista, was equivalent to <c>SHChangeNotifyDeregister</c>.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shchangenotifyderegister
+		// BOOL SHChangeNotifyDeregister( ULONG ulID );
+		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "fad021dc-8199-4384-b623-c98bc618799f")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SHChangeNotifyDeregister(uint ulID);
+
+		/// <summary>
+		/// <para>Enables asynchronous register and deregister of a thread.</para>
+		/// </summary>
+		/// <param name="status">
+		/// <para>Type: <c>SCNRT_STATUS</c></para>
+		/// <para>Indicates whether the function is being used to register or deregister the thread. One of the values of SCNRT_STATUS.</para>
+		/// </param>
+		/// <returns>
+		/// <para>This function does not return a value.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj/nf-shlobj-shchangenotifyregisterthread
+		// void SHChangeNotifyRegisterThread( SCNRT_STATUS status );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj.h", MSDNShortId = "170afefc-b4de-4661-9c12-1341656b0fdb")]
+		public static extern void SHChangeNotifyRegisterThread(SCNRT_STATUS status);
+
+		/// <summary>
+		/// <para>Creates a data object in a parent folder.</para>
+		/// </summary>
+		/// <param name="pidlFolder">
+		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+		/// <para>A pointer to an ITEMIDLIST (PIDL) of the parent folder that contains the data object.</para>
+		/// </param>
+		/// <param name="cidl">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The number of file objects or subfolders specified in the parameter.</para>
+		/// </param>
+		/// <param name="apidl">
+		/// <para>Type: <c>PCUITEMID_CHILD_ARRAY</c></para>
+		/// <para>
+		/// An array of pointers to constant ITEMIDLIST structures, each of which uniquely identifies a file object or subfolder relative to
+		/// the parent folder. Each item identifier list must contain exactly one SHITEMID structure followed by a terminating zero.
+		/// </para>
+		/// </param>
+		/// <param name="pdtInner">
+		/// <para>Type: <c>IDataObject*</c></para>
+		/// <para>
+		/// A pointer to interface IDataObject. This parameter can be <c>NULL</c>. Specify only if the data object created needs to support
+		/// additional FORMATETC clipboard formats beyond the default formats it is assigned at creation. Alternatively, provide support for
+		/// populating the created data object using non-default clipboard formats by calling method IDataObject::SetData and specifying the
+		/// format in the <c>FORMATETC</c> structure passed in parameter .
+		/// </para>
+		/// </param>
+		/// <param name="riid">
+		/// <para>Type: <c>REFIID</c></para>
+		/// <para>A reference to the IID of the interface to retrieve through . This must be IID_IDataObject.</para>
+		/// </param>
+		/// <param name="ppv">
+		/// <para>Type: <c>void**</c></para>
+		/// <para>When this method returns successfully, contains the IDataObject interface pointer requested in .</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function is typically called when implementing method IShellFolder::GetUIObjectOf. When an interface pointer of interface ID
+		/// IID_IDataObject is requested (using parameter ), the implementer can return the interface pointer on the object created with
+		/// <c>SHCreateDataObject</c> in response.
+		/// </para>
+		/// <para>
+		/// This function supports the CFSTR_SHELLIDLIST (also known as HIDA) clipboard format and also has generic support for arbitrary
+		/// clipboard formats through IDataObject::SetData. For more information on clipboard formats, see Shell Clipboard Formats.
+		/// </para>
+		/// <para>
+		/// The new data object is intended to be used in operations such as drag-and-drop, in which the data is stored in the clipboard with
+		/// a given format.
+		/// </para>
+		/// <para>
+		/// We recommend that you use the IID_PPV_ARGS macro, defined in Objbase.h, to package the and parameters. This macro provides the
+		/// correct IID based on the interface pointed to by the value in , which eliminates the possibility of a coding error in that could
+		/// lead to unexpected results.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shcreatedataobject
+		// SHSTDAPI SHCreateDataObject( PCIDLIST_ABSOLUTE pidlFolder, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, IDataObject *pdtInner, REFIID riid, void **ppv );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "d56cdafe-9463-43a5-8ef0-6cfaf0c524a8")]
+		public static extern HRESULT SHCreateDataObject(PIDL pidlFolder, uint cidl, [In, MarshalAs(UnmanagedType.LPArray)] PIDL[] apidl, IDataObject pdtInner, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IDataObject ppv);
+
+		/// <summary>
+		/// <para>Creates an object that represents the Shell's default context menu implementation.</para>
+		/// </summary>
+		/// <param name="pdcm">
+		/// <para>Type: <c>const DEFCONTEXTMENU*</c></para>
+		/// <para>A pointer to a constant DEFCONTEXTMENU structure.</para>
+		/// </param>
+		/// <param name="riid">
+		/// <para>Type: <c>REFIID</c></para>
+		/// <para>
+		/// Reference to the interface ID of the interface on which to base the object. This is typically the IID of IContextMenu,
+		/// IContextMenu2, or IContextMenu3.
+		/// </para>
+		/// </param>
+		/// <param name="ppv">
+		/// <para>Type: <c>void**</c></para>
+		/// <para>When this method returns, contains the interface pointer requested in riid.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function is typically used in the implementation of IShellFolder::GetUIObjectOf. <c>GetUIObjectOf</c> creates a context menu
+		/// that merges IContextMenu handlers specified by the DEFCONTEXTMENU structure, and can optionally provide default context menu verb
+		/// implementations such as open, explore, delete, and copy.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shcreatedefaultcontextmenu
+		// SHSTDAPI SHCreateDefaultContextMenu( const DEFCONTEXTMENU *pdcm, REFIID riid, void **ppv );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "055ff0a0-9ba7-463d-9684-3fd072b190da")]
+		public static extern HRESULT SHCreateDefaultContextMenu(ref DEFCONTEXTMENU pdcm, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+
+		/// <summary>
+		/// <para>
+		/// [SHCreateDirectory is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Creates a new file system folder.</para>
+		/// </summary>
+		/// <param name="hwnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to a parent window. This parameter can be set to <c>NULL</c> if no user interface is displayed.</para>
+		/// </param>
+		/// <param name="pszPath">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>
+		/// A pointer to a null-terminated Unicode string that contains the fully qualified path of the directory. This string should have no
+		/// more than MAX_PATH characters, including the terminating null character.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// Returns <c>ERROR_SUCCESS</c> if successful. If the operation fails, other error codes can be returned, including those listed
+		/// here. For values not specifically listed, see System Error Codes.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_BAD_PATHNAME</term>
+		/// <term>The parameter was set to a relative path.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_FILENAME_EXCED_RANGE</term>
+		/// <term>The path pointed to by is too long.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_FILE_EXISTS</term>
+		/// <term>The directory exists.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_ALREADY_EXISTS</term>
+		/// <term>The directory exists.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_CANCELLED</term>
+		/// <term>The user canceled the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function creates a file system folder whose fully qualified path is given by . If one or more of the intermediate folders do
+		/// not exist, it creates them.
+		/// </para>
+		/// <para>To set security attributes on a new folder, use SHCreateDirectoryEx.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shcreatedirectory
+		// int SHCreateDirectory( HWND hwnd, PCWSTR pszPath );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "4927429c-f457-4dda-aa0d-236eb236795c")]
+		public static extern Win32Error SHCreateDirectory([Optional] HandleRef hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszPath);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be altered or unavailable
+		/// in subsequent versions of Windows.]
+		/// </para>
+		/// <para>Creates a new file system folder, with optional security attributes.</para>
+		/// </summary>
+		/// <param name="hwnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to a parent window. This parameter can be set to <c>NULL</c> if no user interface will be displayed.</para>
+		/// </param>
+		/// <param name="pszPath">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>
+		/// A pointer to a null-terminated string specifying the fully qualified path of the directory. This string is of maximum length of
+		/// 248 characters, including the terminating null character.
+		/// </para>
+		/// </param>
+		/// <param name="psa">
+		/// <para>Type: <c>const SECURITY_ATTRIBUTES*</c></para>
+		/// <para>
+		/// A pointer to a SECURITY_ATTRIBUTES structure with the directory's security attribute. Set this parameter to <c>NULL</c> if no
+		/// security attributes need to be set.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// Returns <c>ERROR_SUCCESS</c> if successful. If the operation fails, other error codes can be returned, including those listed
+		/// here. For values not specifically listed, see System Error Codes.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_BAD_PATHNAME</term>
+		/// <term>The parameter was set to a relative path.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_FILENAME_EXCED_RANGE</term>
+		/// <term>The path pointed to by is too long.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_PATH_NOT_FOUND</term>
+		/// <term>The system cannot find the path pointed to by . The path may contain an invalid entry.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_FILE_EXISTS</term>
+		/// <term>The directory exists.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_ALREADY_EXISTS</term>
+		/// <term>The directory exists.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_CANCELLED</term>
+		/// <term>The user canceled the operation.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function creates a file system folder whose fully qualified path is given by . If one or more of the intermediate folders do
+		/// not exist, they are created as well. <c>SHCreateDirectoryEx</c> also verifies that the files are visible. If they are not
+		/// visible, expect one of the following:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// If is set to a valid window handle, a message box is displayed warning the user that he or she might not be able to access the
+		/// files. If the user chooses not to proceed, the function returns <c>ERROR_CANCELLED</c>.
+		/// </item>
+		/// <item>If is set to <c>NULL</c>, no user interface is displayed and the function returns <c>ERROR_CANCELLED</c>.</item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shcreatedirectoryexa
+		// int SHCreateDirectoryEx( HWND hwnd, LPCTSTR pszPath, const SECURITY_ATTRIBUTES *psa );
+		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "7f44f907-cd12-4156-91c0-76e577ae25f6")]
+		public static extern Win32Error SHCreateDirectoryEx([Optional] HandleRef hwnd, string pszPath, [In] SECURITY_ATTRIBUTES psa);
+
+		/// <summary>
+		/// <para>[</para>
+		/// <para>SHCreateFileExtractIcon</para>
+		/// <para>
+		/// is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
+		/// subsequent versions.]
+		/// </para>
+		/// <para>
+		/// Creates a default IExtractIcon handler for a file system object. Namespace extensions that display file system objects typically
+		/// use this function. The extension and file attributes derive all that is needed for a simple icon extractor.
+		/// </para>
+		/// </summary>
+		/// <param name="pszFile">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>
+		/// A pointer to a null-terminated string that specifies the file system object. The buffer must not exceed MAX_PATH characters in length.
+		/// </para>
+		/// </param>
+		/// <param name="dwFileAttributes">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// A combination of one or more file attribute flags (FILE_ATTRIBUTE_* values as defined in Winnt.h) that specify the type of object.
+		/// </para>
+		/// </param>
+		/// <param name="riid">
+		/// <para>Type: <c>REFIID</c></para>
+		/// <para>
+		/// Reference to the desired interface ID of the icon extractor interface to create. This must be either IID_IExtractIconA or IID_IExtractIconW.
+		/// </para>
+		/// </param>
+		/// <param name="ppv">
+		/// <para>Type: <c>void**</c></para>
+		/// <para>When this function returns, contains the interface pointer requested in . This is typically IExtractIcon.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shcreatefileextracticonw
+		// SHSTDAPI SHCreateFileExtractIconW( LPCWSTR pszFile, DWORD dwFileAttributes, REFIID riid, void **ppv );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "af3beb0a-892b-43e5-b5b8-8005f497b6e5")]
+		public static extern HRESULT SHCreateFileExtractIconW([MarshalAs(UnmanagedType.LPWStr)] string pszFile, FileFlagsAndAttributes dwFileAttributes, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>Creates a new instance of the default Shell folder view object (DefView).</summary>
 		/// <param name="pcsfv">Pointer to a SFV_CREATE structure that describes the particulars used in creating this instance of the Shell folder view object.</param>
@@ -934,6 +2422,50 @@ namespace Vanara.PInvoke
 			[In, Optional] IntPtr pbc, out PIDL ppidl, SFGAO sfgaoIn, out SFGAO psfgaoOut);
 
 		/// <summary>
+		/// <para>
+		/// [CABINETSTATE is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>
+		/// Holds the global configuration for Windows Explorer and Windows Internet Explorer. This structure is used in the ReadCabinetState
+		/// and WriteCabinetState functions.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-cabinetstate
+		// typedef struct CABINETSTATE { WORD cLength; WORD nVersion; BOOL fFullPathTitle : 1; BOOL fSaveLocalView : 1; BOOL fNotShell : 1; BOOL fSimpleDefault : 1; BOOL fDontShowDescBar : 1; BOOL fNewWindowMode : 1; BOOL fShowCompColor : 1; BOOL fDontPrettyNames : 1; BOOL fAdminsCreateCommonGroups : 1; UINT fUnusedFlags : 7; UINT fMenuEnumFilter; } *LPCABINETSTATE;
+		[PInvokeData("shlobj_core.h", MSDNShortId = "4b82b6a8-c4c0-4af2-9612-0551376c1c62")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct CABINETSTATE
+		{
+			/// <summary><para>Type: <c>WORD</c></para><para>The size of the structure, in bytes.</para></summary>
+			public ushort cLength;
+			/// <summary><para>Type: <c>WORD</c></para></summary>
+			public ushort nVersion;
+			private ushort fFlags;
+			/// <summary><para>Type: <c>UINT</c></para><para>One or both of the following flags.</para><para>SHCONTF_FOLDERS</para><para>Display folders.</para><para>SHCONTF_NONFOLDERS</para><para>Display non-folder items.</para></summary>
+			public SHCONTF fMenuEnumFilter;
+
+			/// <summary><para>Type: <c>BOOL</c></para><para>TRUE</para><para>Display the full path in the title bar.</para><para>FALSE</para><para>Display only the file name in the title bar.</para></summary>
+			public bool fFullPathTitle { get => (fFlags & 1 << 0) != 0; set { if (value) fFlags |= 1 << 0; else { int i = fFlags; i &= ~(1 << 0); fFlags = (ushort)i; } } }
+			/// <summary><para>Type: <c>BOOL</c></para><para>TRUE</para><para>Remember each folder&#39;s view settings.</para><para>FALSE</para><para>Use global settings for all folders.</para></summary>
+			public bool fSaveLocalView { get => (fFlags & 1 << 1) != 0; set { if (value) fFlags |= 1 << 1; else { int i = fFlags; i &= ~(1 << 1); fFlags = (ushort)i; } } }
+			/// <summary><para>Type: <c>BOOL</c></para><para>Not used.</para></summary>
+			public bool fNotShell { get => (fFlags & 1 << 2) != 0; set { if (value) fFlags |= 1 << 2; else { int i = fFlags; i &= ~(1 << 2); fFlags = (ushort)i; } } }
+			/// <summary><para>Type: <c>BOOL</c></para><para>Not used.</para></summary>
+			public bool fSimpleDefault { get => (fFlags & 1 << 3) != 0; set { if (value) fFlags |= 1 << 3; else { int i = fFlags; i &= ~(1 << 3); fFlags = (ushort)i; } } }
+			/// <summary><para>Type: <c>BOOL</c></para><para>Not used.</para></summary>
+			public bool fDontShowDescBar { get => (fFlags & 1 << 4) != 0; set { if (value) fFlags |= 1 << 4; else { int i = fFlags; i &= ~(1 << 4); fFlags = (ushort)i; } } }
+			/// <summary><para>Type: <c>BOOL</c></para><para>TRUE</para><para>Display in a new window.</para><para>FALSE</para><para>Display in the current window.</para></summary>
+			public bool fNewWindowMode { get => (fFlags & 1 << 5) != 0; set { if (value) fFlags |= 1 << 5; else { int i = fFlags; i &= ~(1 << 5); fFlags = (ushort)i; } } }
+			/// <summary><para>Type: <c>BOOL</c></para><para>TRUE</para><para>Show encrypted or compressed NTFS files in color.</para><para>FALSE</para><para>Do not show encrypted or compressed NTFS files in color.</para></summary>
+			public bool fShowCompColor { get => (fFlags & 1 << 6) != 0; set { if (value) fFlags |= 1 << 6; else { int i = fFlags; i &= ~(1 << 6); fFlags = (ushort)i; } } }
+			/// <summary><para>Type: <c>BOOL</c></para><para>Not used.</para></summary>
+			public bool fDontPrettyNames { get => (fFlags & 1 << 7) != 0; set { if (value) fFlags |= 1 << 7; else { int i = fFlags; i &= ~(1 << 7); fFlags = (ushort)i; } } }
+			/// <summary><para>Type: <c>BOOL</c></para><para>Used when an administrator installs an application that places an icon in the <c>Start</c> menu.</para><para>TRUE</para><para>Add the icon to the <c>Start</c> menu for all users (CSIDL_COMMON_STARTMENU). This is the default value.</para><para>FALSE</para><para>Add the icon to only the current user (CSIDL_STARTMENU).</para></summary>
+			public bool fAdminsCreateCommonGroups { get => (fFlags & 1 << 8) != 0; set { if (value) fFlags |= 1 << 8; else { int i = fFlags; i &= ~(1 << 8); fFlags = (ushort)i; } } }
+		}
+
+		/// <summary>
 		/// Defines the coordinates of a character cell in a console screen buffer. The origin of the coordinate system (0,0) is at the top, left cell of the buffer.
 		/// </summary>
 		[PInvokeData("wincon.h")]
@@ -957,6 +2489,65 @@ namespace Vanara.PInvoke
 
 			/// <summary>A signature that identifies the type of data block that follows the header.</summary>
 			public ShellDataBlockSignature dwSignature;
+		}
+
+		/// <summary>Contains context menu information used by SHCreateDefaultContextMenu.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		[PInvokeData("shlobj_core.h")]
+		public struct DEFCONTEXTMENU
+		{
+			/// <summary>A handle to the context menu. Set this member to the handle returned from CreateMenu.</summary>
+			public IntPtr hwnd;
+
+			/// <summary>
+			/// A pointer to the IContextMenuCB interface supported by the callback object. This value is optional and can be NULL.
+			/// </summary>
+			public IContextMenuCB pcmcb;
+
+			/// <summary>
+			/// The PIDL of the folder that contains the selected file object(s) or the folder of the context menu if no file objects are
+			/// selected. This value is optional and can be NULL, in which case the PIDL is computed from the psf member.
+			/// </summary>
+			public IntPtr pidlFolder;
+
+			/// <summary>
+			/// A pointer to the IShellFolder interface of the folder object that contains the selected file objects, or the folder that
+			/// contains the context menu if no file objects are selected.
+			/// </summary>
+			public IShellFolder psf;
+
+			/// <summary>The count of items in member apidl.</summary>
+			public uint cidl;
+
+			/// <summary>
+			/// A pointer to a constant array of ITEMIDLIST structures. Each entry in the array describes a child item to which the context
+			/// menu applies, for instance, a selected file the user wants to Open.
+			/// </summary>
+			public IntPtr apidl;
+
+			/// <summary>
+			/// A pointer to the IQueryAssociations interface on the object from which to load extensions. This parameter is optional and
+			/// thus can be NULL. If this value is NULL and members aKeys and cKeys are also NULL (see Remarks), punkAssociationInfo is
+			/// computed from the apidl member and cidl via a request for IQueryAssociations through IShellFolder::GetUIObjectOf. If
+			/// IShellFolder::GetUIObjectOf returns E_NOTIMPL, a default implementation is provided based on the SFGAO_FOLDER and
+			/// SFGAO_FILESYSTEM attributes returned from IShellFolder::GetAttributesOf.
+			/// </summary>
+			public IQueryAssociations punkAssociationInfo;
+
+			/// <summary> The count of items in member aKeys. This value can be zero. If the value is zero, the extensions are loaded based
+			/// on the object that supports interface IQueryAssociations as specified by member punkAssociationInfo. If the value is
+			/// non-NULL, the extensions are loaded based only on member aKeys and not member punkAssociationInfo.
+			// Note The maximum number of keys is 16. Callers must enforce this limit as the API does not. Failing to do so can result in
+			// memory corruption.
+			/// </summary>
+			public uint cKeys;
+
+			/// <summary>
+			/// A pointer to an HKEY that specifies the registry key from which to load extensions. This parameter is optional and can be
+			/// NULL. If the value is NULL, the extensions are loaded based on the object that supports interface IQueryAssociations as
+			/// specified in punkAssociationInfo.
+			/// </summary>
+			public IntPtr aKeys;
 		}
 
 		/// <summary>Holds an extra data block used by IShellLinkDataList. It holds the link's Windows Installer ID.</summary>
@@ -1106,6 +2697,53 @@ namespace Vanara.PInvoke
 			public uint uCodePage;
 		}
 
+		/// <summary><para>This structure contains information from a .pif file. It is used by PifMgr_GetProperties.</para></summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-propprg
+		// typedef struct PROPPRG { WORD flPrg; WORD flPrgInit; CHAR achTitle[PIFNAMESIZE]; CHAR achCmdLine[PIFSTARTLOCSIZE + PIFPARAMSSIZE + 1]; CHAR achWorkDir[PIFDEFPATHSIZE]; WORD wHotKey; CHAR achIconFile[PIFDEFFILESIZE]; WORD wIconIndex; DWORD dwEnhModeFlags; DWORD dwRealModeFlags; CHAR achOtherFile[PIFDEFFILESIZE]; CHAR achPIFFile[PIFMAXFILEPATH]; };
+		[PInvokeData("shlobj_core.h", MSDNShortId = "603f990b-efb8-4d72-bc96-27bda4ffcbd8")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PROPPRG
+		{
+			private const int PIFNAMESIZE = 30;
+			private const int PIFSTARTLOCSIZE = 63;
+			private const int PIFDEFPATHSIZE = 64;
+			private const int PIFPARAMSSIZE = 64;
+			private const int PIFSHPROGSIZE = 64;
+			private const int PIFSHDATASIZE = 64;
+			private const int PIFDEFFILESIZE = 80;
+			private const int PIFMAXFILEPATH = 260;
+
+			/// <summary><para>Type: <c>WORD</c></para><para>Flags that describe how the program will run.</para><para>PRG_DEFAULT</para><para>Use the default options.</para><para>PRG_CLOSEONEXIT</para><para>Close the application on exit.</para></summary>
+			public ushort flPrg;
+			/// <summary><para>Type: <c>WORD</c></para><para>Flags that specify the initial conditions for the application.</para><para>PRGINIT_DEFAULT</para><para>Use the default options.</para><para>PRGINIT_MINIMIZED</para><para>The application should be minimized.</para><para>PRGINIT_MAXIMIZED</para><para>The application should be maximized.</para><para>PRGINIT_REALMODE</para><para>The application should run in real mode.</para><para>PRGINIT_REALMODESILENT</para><para>The application should run in real mode without being prompted.</para><para>PRGINIT_AMBIGUOUSPIF</para><para>The data is ambiguous.</para><para>PRGINIT_NOPIF</para><para>No .pif file was found.</para><para>PRGINIT_DEFAULTPIF</para><para>A default .pif was found.</para><para>PRGINIT_INFSETTINGS</para><para>A .inf file was found.</para><para>PRGINIT_INHIBITPIF</para><para>The .inf file indicates that a .pif file should not be created.</para></summary>
+			public ushort flPrgInit;
+			/// <summary><para>Type: <c>__wchar_t</c></para><para>A null-terminated string that contains the title.</para></summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = PIFNAMESIZE)]
+			public byte[] achTitle;
+			/// <summary><para>Type: <c>__wchar_t</c></para><para>A null-terminated string that contains the command line, including arguments.</para></summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = PIFSTARTLOCSIZE + PIFPARAMSSIZE + 1)]
+			public byte[] achCmdLine;
+			/// <summary><para>Type: <c>__wchar_t</c></para><para>A null-terminated string that contains the working directory.</para></summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = PIFDEFPATHSIZE)]
+			public byte[] achWorkDir;
+			/// <summary><para>Type: <c>WORD</c></para><para>The key code of the .pif file&#39;s hotkey.</para></summary>
+			public ushort wHotKey;
+			/// <summary><para>Type: <c>__wchar_t</c></para><para>A null-terminated string that contains the name of the file that contains the icon.</para></summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = PIFDEFFILESIZE)]
+			public byte[] achIconFile;
+			/// <summary><para>Type: <c>WORD</c></para><para>The index of the icon in the file specified by <c>achIconFile</c>.</para></summary>
+			public ushort wIconIndex;
+			/// <summary><para>Type: <c>DWORD</c></para><para>Reserved.</para></summary>
+			public uint dwEnhModeFlags;
+			/// <summary><para>Type: <c>DWORD</c></para><para>Flags that specify the real mode options.</para><para>RMOPT_MOUSE</para><para>Requires a real-mode mouse.</para><para>RMOPT_EMS</para><para>Requires expanded memory.</para><para>RMOPT_CDROM</para><para>Requires CD-ROM support.</para><para>RMOPT_NETWORK</para><para>Requires network support.</para><para>RMOPT_DISKLOCK</para><para>Requires disk locking.</para><para>RMOPT_PRIVATECFG</para><para>Use a private config.sys or autoexec.bat file.</para><para>RMOPT_VESA</para><para>Requires a VESA driver.</para></summary>
+			public uint dwRealModeFlags;
+			/// <summary><para>Type: <c>__wchar_t</c></para><para>A null-terminated string that contains the name of the &quot;other&quot; file in the directory.</para></summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = PIFDEFFILESIZE)]
+			public byte[] achOtherFile;
+			/// <summary><para>Type: <c>__wchar_t</c></para><para>A null-terminated string that contains the name of the .pif file in the directory.</para></summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = PIFMAXFILEPATH)]
+			public byte[] achPIFFile;
+		}
 		/// <summary>This structure is used with the SHCreateShellFolderView function.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		[PInvokeData("Shlobj.h")]

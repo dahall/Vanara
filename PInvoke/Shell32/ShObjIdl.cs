@@ -27,12 +27,13 @@ namespace Vanara.PInvoke
 		/// <summary>Introduced in Windows Vista. Specify this bind context to cause the IShellFolder::BindToObject method to use the object specified by the pbc parameter to create the target object; in this case, the object specified by the punk parameter in the IBindCtx::RegisterObjectParam call must implement the ICreateObject interface.
 		/// <para>Used with IShellFolder::BindToObject or IShellItem::BindToHandler.</para></summary>
 		public const string STR_BIND_DELEGATE_CREATE_OBJECT = "Delegate Object Creation";
-		/// <summary>Introduced in Windows 7. Passed to IShellFolder::ParseDisplayName along with STR_FILE_SYS_BIND_DATA. This forces simple parsing while also probing for Desktop.ini files along the path from which to get a localized name string. This avoids probing for folders along the path, which, in a case of a folder that represents a server or a share, could take extensive time and resources. Desktop.ini files are cached in some locations, so it will be at least as efficient as probing for folders attributes and then probing for the Desktop.ini if that folder should turn ou tot be read-only.</summary>
-		public const string STR_BIND_FOLDERS_READ_ONLY = "Folders As Read Only";
 		/// <summary>Introduced in Windows 7. Passed to IShellFolder::ParseDisplayName with an FOLDER_ENUM_MODE value to control the enumeration mode of the parsed item. The FOLDER_ENUM_MODE value is passed in the bind context through an object that implements IObjectWithFolderEnumMode.
 		/// <para>Items with different enumeration modes compare canonically(SHCIDS_CANONICALONLY) different because they enumerate different sets of items.</para>
 		/// <para>If an item doesn't support the enumeration mode (because it isn't a folder or it doesn't provide the enumeration mode) then it is created in the default enumeration mode.</para></summary>
 		public const string STR_BIND_FOLDER_ENUM_MODE = "Folder Enum Mode";
+
+		/// <summary>Introduced in Windows 7. Passed to IShellFolder::ParseDisplayName along with STR_FILE_SYS_BIND_DATA. This forces simple parsing while also probing for Desktop.ini files along the path from which to get a localized name string. This avoids probing for folders along the path, which, in a case of a folder that represents a server or a share, could take extensive time and resources. Desktop.ini files are cached in some locations, so it will be at least as efficient as probing for folders attributes and then probing for the Desktop.ini if that folder should turn ou tot be read-only.</summary>
+		public const string STR_BIND_FOLDERS_READ_ONLY = "Folders As Read Only";
 		/// <summary>Introduced in Windows XP SP2. Specify this bind context to force a folder shortcut to resolve the link that points to its target.
 		/// <para>A folder shortcut is a folder item that points to another folder item in the same namespace, using a link(shortcut) to hold the IDList of the target.The link is resolved to track the target in case it is moved or renamed.For example, the Windows XP My Network Places folder and the Windows Vista Computer folder can contain folder shortcuts created with the Add Network Location wizard.To improve performance, the IShellFolder::BindToObject method does not resolve links to network folder by default.</para>
 		/// <para>Used with IShellFolder::BindToObject or IShellItem::BindToHandler.</para></summary>
@@ -100,6 +101,12 @@ namespace Vanara.PInvoke
 		public const string STR_PARSE_SKIP_NET_CACHE = "Skip Net Resource Cache";
 		/// <summary>Introduced in Windows XP. Specify this bind context to pass parsed properties to the IShellFolder::ParseDisplayName method for a delegate namespace. The namespace can use the passed properties instead of attempting to parse the name itself.</summary>
 		public const string STR_PARSE_TRANSLATE_ALIASES = "Parse Translate Aliases";
+		/// <summary>Introduced in Windows 7. Specify this property to cause a call to the IShellFolder::ParseDisplayName method to return an IDList bound to the file type association handler for the application.</summary>
+		public const string STR_PARSE_WITH_EXPLICIT_ASSOCAPP = "ExplicitAssociationApp";
+
+		/// <summary>Introduced in Windows 7. Specify this property to cause a call to the IShellFolder::ParseDisplayName method to return an IDList bound to the file association handler of the provided ProgID.</summary>
+		public const string STR_PARSE_WITH_EXPLICIT_PROGID = "ExplicitProgid";
+
 		/// <summary>Windows Vista only. A parsing bind context that is used to pass a set of properties and the item's name when calling IShellFolder::ParseDisplayName. The object in the bind context implements IPropertyStore and is retrieved by calling IBindCtx::GetObjectParam.
 		/// <para>DBFolder is a Shell data source that represents items in search results and query-based views.DBFolder retrieves these items by querying the Windows Search system.Items in the search results are identified through a protocol scheme, for example "file:" or "mapi:". DBFolder provides the behavior for these items by delegating to Shell data sources that are created for these protocols. See Developing Protocol Handler Add-ins for more information.</para>
 		/// <para>When DBFolder delegates its parsing operation to the Shell data sources that support Windows Search protocols, this bind context provides access to values that were returned in the query result for that item. This includes the following:</para>
@@ -112,22 +119,18 @@ namespace Vanara.PInvoke
 		/// <para>This bind context can also be used to parse a DBFolder item if a client has a set of properties that define the item.In this case an empty name should be passed to IShellFolder::ParseDisplayName.</para>
 		/// <para>Before Windows 7, this value was not defined in a header file.It could be defined by the caller or passed as its string value: L"ParseWithProperties". As of Windows 7, the value is defined in Shlobj.h.Note that this is a different header than where the other STR constants are defined.</para></summary>
 		public const string STR_PARSE_WITH_PROPERTIES = "ParseWithProperties";
-		/// <summary>Introduced in Windows 7. Specify this property to cause a call to the IShellFolder::ParseDisplayName method to return an IDList bound to the file type association handler for the application.</summary>
-		public const string STR_PARSE_WITH_EXPLICIT_ASSOCAPP = "ExplicitAssociationApp";
-		/// <summary>Introduced in Windows 7. Specify this property to cause a call to the IShellFolder::ParseDisplayName method to return an IDList bound to the file association handler of the provided ProgID.</summary>
-		public const string STR_PARSE_WITH_EXPLICIT_PROGID = "ExplicitProgid";
 		/// <summary>Introduced in Windows 8. Specify this bind context to indicate that the bind context parameter is a property bag (IPropertyBag) used to pass VARIANT values in the bind context. See the Remarks section for further details.</summary>
 		public const string STR_PROPERTYBAG_PARAM = "SHBindCtxPropertyBag";
-		/// <summary>Introduced in Windows XP. Specify this bind context to cause calls to the IShellFolder::ParseDisplayName or IShellFolder::BindToObject methods to ignore a particular Shell namespace extension when parsing or binding. The CLSID of the namespace to ignore is provided by the IPersist::GetClassID method of the bind parameter.</summary>
-		public const string STR_SKIP_BINDING_CLSID = "Skip Binding CLSID";
-		/// <summary>Not used.</summary>
-		public const string STR_TRACK_CLSID = "Track the CLSID";
-
 		/// <summary>The string referrer identifier</summary>
 		public const string STR_REFERRER_IDENTIFIER = "Referrer Identifier";
+
+		/// <summary>Introduced in Windows XP. Specify this bind context to cause calls to the IShellFolder::ParseDisplayName or IShellFolder::BindToObject methods to ignore a particular Shell namespace extension when parsing or binding. The CLSID of the namespace to ignore is provided by the IPersist::GetClassID method of the bind parameter.</summary>
+		public const string STR_SKIP_BINDING_CLSID = "Skip Binding CLSID";
 		/// <summary>The string tab reuse identifier</summary>
 		public const string STR_TAB_REUSE_IDENTIFIER = "Tab Reuse Identifier";
 
+		/// <summary>Not used.</summary>
+		public const string STR_TRACK_CLSID = "Track the CLSID";
 		/// <summary>Values that specify from which category the list of destinations should be retrieved.</summary>
 		[PInvokeData("Shobjidl.h", MSDNShortId = "dd378410")]
 		public enum APPDOCLISTTYPE
@@ -137,6 +140,53 @@ namespace Vanara.PInvoke
 
 			/// <summary>The Frequent category, which lists the items that have been accessed the greatest number of times.</summary>
 			FREQUENT
+		}
+
+		/// <summary>Specifies the enumeration handler filter applied to the full list of handlers in SHAssocEnumHandlers.</summary>
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "83db466b-e00c-4015-879f-c5c222f45b8c")]
+		public enum ASSOC_FILTER
+		{
+			/// <summary>Return all handlers.</summary>
+			ASSOC_FILTER_NONE = 0x0,
+			/// <summary>
+			/// Return only recommended handlers. A handler sets its recommended status in the registry when it is installed. An initial
+			/// status of non-recommended can later be promoted to recommended as a result of user action.
+			/// </summary>
+			ASSOC_FILTER_RECOMMENDED = 0x1,
+		}
+
+		/// <summary><para>Specifies the source of the default association for a file name extension. Used by methods of the IApplicationAssociationRegistration interface.</para></summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/ne-shobjidl_core-associationlevel
+		// typedef enum ASSOCIATIONLEVEL { AL_MACHINE , AL_EFFECTIVE , AL_USER } ;
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "846ce9f4-092a-420d-be73-0951efc4368f")]
+		public enum ASSOCIATIONLEVEL
+		{
+			/// <summary>The machine-level default application association.</summary>
+			AL_MACHINE,
+			/// <summary>The effective default for the current user. This value should be used by most applications.</summary>
+			AL_EFFECTIVE,
+			/// <summary>The per-user default application association. If this value is used and no per-user default is declared, the calling method fails with a value of .</summary>
+			AL_USER,
+		}
+
+		/// <summary>
+		/// Specifies the type of association for an application. Used by methods of the IApplicationAssociationRegistration interface.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/ne-shobjidl_core-associationtype
+		[PInvokeData("shobjidl_core.h")]
+		public enum ASSOCIATIONTYPE
+		{
+			/// <summary>Indicates a file name extension, such as .htm or .mp3.</summary>
+			AT_FILEEXTENSION,
+			/// <summary>Indicates a protocol, such as http or mailto.</summary>
+			AT_URLPROTOCOL,
+			/// <summary>
+			/// Indicates the owner of the startmenu client for a mail or Internet hyperlink. As of Windows 7, this value is used only for
+			/// the MAPI sendmail client.
+			/// </summary>
+			AT_STARTMENUCLIENT,
+			/// <summary>Indicates the MIME type, such as audio/mp3.</summary>
+			AT_MIMETYPE,
 		}
 
 		/// <summary>One of the following values that indicate which known category to add to the list</summary>
@@ -191,6 +241,33 @@ namespace Vanara.PInvoke
 			SVGIO_FLAG_VIEWORDER = 0x80000000,
 		}
 
+		/// <summary>
+		/// <para>
+		/// Exposes methods that query and set default applications for specific file Association Type, and protocols at a specific
+		/// Association Level.
+		/// </para>
+		/// <para><c>Note</c> As of Windows 8, the only functionality of this interface that is supported is QueryCurrentDefault.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// Because <c>IApplicationAssociationRegistration</c> is only supported for Windows Vista and Windows 7, applications that support
+		/// earlier operating systems must use their preexisting code in relation to defaults when running under those operating systems.
+		/// Those applications should include a check for the operating system version to account for this.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nn-shobjidl_core-iapplicationassociationregistration
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "015a3be4-2e74-4a2b-8c02-54dcbf0ecacd")]
+		[ComImport, Guid("4e530b0a-e611-4c77-a3ac-9031d022281b"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), CoClass(typeof(ApplicationAssociationRegistration))]
+		public interface IApplicationAssociationRegistration
+		{
+			void QueryCurrentDefault([MarshalAs(UnmanagedType.LPWStr)] string pszQuery, ASSOCIATIONTYPE atQueryType, ASSOCIATIONLEVEL alQueryLevel, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszAssociation);
+			void QueryAppIsDefault([MarshalAs(UnmanagedType.LPWStr)] string pszQuery, ASSOCIATIONTYPE atQueryType, ASSOCIATIONLEVEL alQueryLevel, [MarshalAs(UnmanagedType.LPWStr)] string pszAppRegistryName, [MarshalAs(UnmanagedType.Bool)] out bool pfDefault);
+			void QueryAppIsDefaultAll(ASSOCIATIONLEVEL alQueryLevel, [MarshalAs(UnmanagedType.LPWStr)] string pszAppRegistryName, [MarshalAs(UnmanagedType.Bool)] out bool pfDefault);
+			void SetAppAsDefault([MarshalAs(UnmanagedType.LPWStr)] string pszAppRegistryName, [MarshalAs(UnmanagedType.LPWStr)] string pszSet, ASSOCIATIONTYPE atSetType);
+			void SetAppAsDefaultAll([MarshalAs(UnmanagedType.LPWStr)] string pszAppRegistryName);
+			void ClearUserAssociations();
+		}
+
 		/// <summary>Exposes methods that allow an application to remove one or all destinations from the Recent or Frequent categories in a Jump List.</summary>
 		[SuppressUnmanagedCodeSecurity]
 		[ComImport, Guid("12337d35-94c6-48a0-bce7-6a9c69d4d600"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -233,6 +310,68 @@ namespace Vanara.PInvoke
 			/// <returns>A COM object based on the IID passed for the riid parameter.</returns>
 			[return: MarshalAs(UnmanagedType.IUnknown)]
 			object GetList(APPDOCLISTTYPE listtype, uint cItemsDesired, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+		}
+
+		/// <summary>Exposes methods to set default icons associated with an object.</summary>
+		[ComImport, Guid("41ded17d-d6b3-4261-997d-88c60e4b1d58"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		[PInvokeData("Shobjidl.h")]
+		public interface IDefaultExtractIconInit
+		{
+			/// <summary>Sets GIL_XXX flags. See GetIconLocation</summary>
+			/// <param name="uFlags">Specifies return flags to get icon location.</param>
+			void SetFlags(GetIconLocationFlags uFlags);
+
+			/// <summary>Sets the registry key from which to load the "DefaultIcon" value.</summary>
+			/// <param name="hkey">A handle to the registry key.</param>
+			void SetKey(IntPtr hkey);
+
+			/// <summary>Sets the normal icon.</summary>
+			/// <param name="pszFile">
+			/// A pointer to a buffer that contains the full icon path, including the file name and extension, as a Unicode string. This
+			/// pointer can be NULL.
+			/// </param>
+			/// <param name="iIcon">A Shell icon ID.</param>
+			void SetNormalIcon([In, MarshalAs(UnmanagedType.LPWStr)] string pszFile, int iIcon);
+
+			/// <summary>Sets the icon that allows containers to specify an "open" look.</summary>
+			/// <param name="pszFile">
+			/// A pointer to a buffer that contains the full icon path, including the file name and extension, as a Unicode string. This
+			/// pointer can be NULL.
+			/// </param>
+			/// <param name="iIcon">Shell icon ID.</param>
+			void SetOpenIcon([In, MarshalAs(UnmanagedType.LPWStr)] string pszFile, int iIcon);
+
+			/// <summary>Sets the icon for a shortcut to the object.</summary>
+			/// <param name="pszFile">
+			/// A pointer to a buffer that contains the full icon path, including the file name and extension, as a Unicode string. This
+			/// pointer can be NULL.
+			/// </param>
+			/// <param name="iIcon">Shell icon ID.</param>
+			void SetShortcutIcon([In, MarshalAs(UnmanagedType.LPWStr)] string pszFile, int iIcon);
+
+			/// <summary>Sets the default icon.</summary>
+			/// <param name="pszFile">
+			/// A pointer to a buffer that contains the full icon path, including the file name and extension, as a Unicode string. This
+			/// pointer can be NULL.
+			/// </param>
+			/// <param name="iIcon">The Shell icon ID.</param>
+			void SetDefaultIcon([In, MarshalAs(UnmanagedType.LPWStr)] string pszFile, int iIcon);
+		}
+		
+		/// <summary>Exposes a method that allows enumeration of a collection of handlers associated with particular file name extensions.</summary>
+		[ComImport, Guid("973810ae-9599-4b88-9e4d-6ee98c9552da"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "9e173cb3-bd73-437c-8853-c13c8b6f216f")]
+		public interface IEnumAssocHandlers
+		{
+			/// <summary>Retrieves a specified number of elements.</summary>
+			/// <param name="celt">The number of elements to retrieve.</param>
+			/// <param name="rgelt">
+			/// When this method returns, contains the address of an array of IAssocHandler pointers. Each IAssocHandler represents a single handler.
+			/// </param>
+			/// <param name="pceltFetched">When this method returns, contains a pointer to the number of elements retrieved.</param>
+			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
+			[PreserveSig]
+			HRESULT Next(uint celt, out IntPtr rgelt, out uint pceltFetched);
 		}
 
 		/// <summary>
@@ -623,6 +762,148 @@ namespace Vanara.PInvoke
 		public static extern HRESULT SetCurrentProcessExplicitAppUserModelID([MarshalAs(UnmanagedType.LPWStr)] string AppID);
 
 		/// <summary>
+		/// <para>Returns an enumeration object for a specified set of file name extension handlers.</para>
+		/// </summary>
+		/// <param name="pszExtra">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>
+		/// A pointer to a null-terminated buffer that contains a single file type extension, for instance ".jpg". Only handlers associated
+		/// with the given extension are enumerated. If this value is <c>NULL</c>, all handlers for all extensions are enumerated.
+		/// </para>
+		/// </param>
+		/// <param name="afFilter">
+		/// <para>Type: <c>ASSOC_FILTER</c></para>
+		/// <para>
+		/// Specifies the enumeration handler filter applied to the full list of handlers that results from the value given in . One of the
+		/// following values.
+		/// </para>
+		/// <para>ASSOC_FILTER_NONE</para>
+		/// <para>Return all handlers.</para>
+		/// <para>ASSOC_FILTER_RECOMMENDED</para>
+		/// <para>
+		/// Return only recommended handlers. A handler sets its recommended status in the registry when it is installed. An initial status
+		/// of non-recommended can later be promoted to recommended as a result of user action.
+		/// </para>
+		/// </param>
+		/// <param name="ppEnumHandler">
+		/// <para>Type: <c>IEnumAssocHandlers**</c></para>
+		/// <para>When this method returns, contains the address of a pointer to an IEnumAssocHandlers object.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shassocenumhandlers
+		// SHSTDAPI SHAssocEnumHandlers( PCWSTR pszExtra, ASSOC_FILTER afFilter, IEnumAssocHandlers **ppEnumHandler );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "83db466b-e00c-4015-879f-c5c222f45b8c")]
+		public static extern HRESULT SHAssocEnumHandlers([MarshalAs(UnmanagedType.LPWStr)] string pszExtra, ASSOC_FILTER afFilter, out IEnumAssocHandlers ppEnumHandler);
+		/// <summary>
+		/// <para>Gets an enumeration interface that provides access to handlers associated with a given protocol.</para>
+		/// </summary>
+		/// <param name="protocol">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>Pointer to a string that specifies the protocol.</para>
+		/// </param>
+		/// <param name="riid">
+		/// <para>Type: <c>REFIID</c></para>
+		/// <para>A reference to the IID of the interface to retrieve through , typically IID_IEnumAssocHandlers.</para>
+		/// </param>
+		/// <param name="enumHandlers">
+		/// <para>Type: <c>void**</c></para>
+		/// <para>When this method returns, contains the interface pointer requested in . This is typically IEnumAssocHandlers.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// It is recommended that you use the <c>IID_PPV_ARGS</c> macro, defined in Objbase.h, to package the and parameters. This macro
+		/// provides the correct IID based on the interface pointed to by the value in , which eliminates the possibility of a coding error.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shassocenumhandlersforprotocolbyapplication
+		// SHSTDAPI SHAssocEnumHandlersForProtocolByApplication( PCWSTR protocol, REFIID riid, void **enumHandlers );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "8bc3b9ce-5909-46a0-b5f1-35ab808aaa55")]
+		public static extern HRESULT SHAssocEnumHandlersForProtocolByApplication([MarshalAs(UnmanagedType.LPWStr)] string protocol, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object enumHandlers);
+
+		/// <summary>
+		/// <para>Creates an IApplicationAssociationRegistration object based on the stock implementation of the interface provided by Windows.</para>
+		/// </summary>
+		/// <param name="riid">
+		/// <para>Type: <c>REFIID</c></para>
+		/// <para>A reference to the IID of the requested interface.</para>
+		/// </param>
+		/// <param name="ppv">
+		/// <para>Type: <c>void**</c></para>
+		/// <para>When this function returns, contains the address of a pointer to the IApplicationAssociationRegistration object.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shcreateassociationregistration
+		// SHSTDAPI SHCreateAssociationRegistration( REFIID riid, void **ppv );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "7998f49d-2515-4c77-991e-62c0fefa43df")]
+		public static extern HRESULT SHCreateAssociationRegistration([In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IApplicationAssociationRegistration ppv);
+		/// <summary>
+		/// <para>Creates a standard icon extractor, whose defaults can be further configured via the IDefaultExtractIconInit interface.</para>
+		/// </summary>
+		/// <param name="riid">
+		/// <para>Type: <c>REFIID</c></para>
+		/// <para>A reference to interface ID.</para>
+		/// </param>
+		/// <param name="ppv">
+		/// <para>Type: <c>void**</c></para>
+		/// <para>The address of IDefaultExtractIconInit interface pointer.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>The intended usage for this function is as follows:</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shcreatedefaultextracticon
+		// HRESULT SHCreateDefaultExtractIcon( REFIID riid, void **ppv );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "483dc9ae-4820-47f1-888e-ad7a6bdf3d29")]
+		public static extern HRESULT SHCreateDefaultExtractIcon([In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IDefaultExtractIconInit ppv);
+
+		/// <summary>
+		/// <para>Creates a file operation that sets the default properties on the Shell item that have not already been set.</para>
+		/// </summary>
+		/// <param name="psi">
+		/// <para>Type: <c>IShellItem*</c></para>
+		/// <para>A pointer to the source shell item. See IShellItem.</para>
+		/// </param>
+		/// <param name="ppFileOp">
+		/// <para>Type: <c>IFileOperation**</c></para>
+		/// <para>The address of the IFileOperation interface pointer.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The list of properties to set a default value comes from the <c>SetDefaultsFor</c> registry entry under the ProgID for the file
+		/// association of the item. The list is prefixed by and contains the canonical names of the properties to set the default value, for
+		/// example, . The possible properties for this list are System.Author, System.Document.DateCreated, and System.Photo.DateTaken. If
+		/// the <c>SetDefaultsFor</c> entry does not exist on the ProgID, this function uses the default found on the <c>SetDefaultsFor</c>
+		/// entry of <c>HKEY_CLASSES_ROOT</c>&lt;b&gt;*.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl/nf-shobjidl-shcreatedefaultpropertiesop
+		// SHSTDAPI SHCreateDefaultPropertiesOp( IShellItem *psi, IFileOperation **ppFileOp );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shobjidl.h", MSDNShortId = "5202ac48-16e7-4d64-8a69-2493036e1e11")]
+		public static extern HRESULT SHCreateDefaultPropertiesOp(IShellItem psi, out IFileOperation ppFileOp);
+
+		/// <summary>
 		/// Creates and initializes a Shell item object from a pointer to an item identifier list (PIDL). The resulting shell item object supports the IShellItem interface.
 		/// </summary>
 		/// <param name="pidl">The source PIDL.</param>
@@ -689,11 +970,6 @@ namespace Vanara.PInvoke
 		public static extern HRESULT SHCreateItemWithParent([In] PIDL pidlParent, [In, MarshalAs(UnmanagedType.Interface)] IShellFolder psfParent,
 			[In] PIDL pidl, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvItem);
 
-		// [DllImport(Lib.Shell32, CharSet = CharSet.Unicode, ExactSpelling = true)]
-		// [SecurityCritical, SuppressUnmanagedCodeSecurity]
-		// [PInvokeData("Shlobj.h", MSDNShortId = "bb762141")]
-		// public static extern HRESULT SHCreateShellFolderView([In] ref SFV_CREATE pcsfv, [MarshalAs(UnmanagedType.Interface)] out object ppvItem);
-
 		/// <summary>
 		/// Creates a Shell item array object.
 		/// </summary>
@@ -706,8 +982,12 @@ namespace Vanara.PInvoke
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762144")]
 		public static extern HRESULT SHCreateShellItemArray([In] PIDL pidlParent, [In, MarshalAs(UnmanagedType.Interface)] IShellFolder psf,
-			uint cidl, [In] PIDL ppidl,  out IShellItemArray ppsiItemArray);
+			uint cidl, [In] PIDL ppidl, out IShellItemArray ppsiItemArray);
 
+		// [DllImport(Lib.Shell32, CharSet = CharSet.Unicode, ExactSpelling = true)]
+		// [SecurityCritical, SuppressUnmanagedCodeSecurity]
+		// [PInvokeData("Shlobj.h", MSDNShortId = "bb762141")]
+		// public static extern HRESULT SHCreateShellFolderView([In] ref SFV_CREATE pcsfv, [MarshalAs(UnmanagedType.Interface)] out object ppvItem);
 		/// <summary>
 		/// Creates a Shell item array object from a list of ITEMIDLIST structures.
 		/// </summary>
@@ -766,6 +1046,10 @@ namespace Vanara.PInvoke
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb776437")]
 		internal static extern IntPtr IntILCombine(IntPtr pidl1, IntPtr pidl2);
 
+		/// <summary>Implements CLSID_ApplicationAssociationRegistration to create IApplicationAssociationRegistration.</summary>
+		[PInvokeData("shobjidl_core.h")]
+		[ComImport, Guid("591209c7-767b-42b2-9fba-44ee4615f2c7"), ClassInterface(ClassInterfaceType.None)]
+		public class ApplicationAssociationRegistration { }
 		/// <summary>Class interface for IEnumerableObjectCollection.</summary>
 		[ComImport, Guid("2d3468c1-36a7-43b6-ac24-d3f02fd9607a"), ClassInterface(ClassInterfaceType.None)]
 		public class CEnumerableObjectCollection { }
