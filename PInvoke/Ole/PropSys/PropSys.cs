@@ -47,10 +47,23 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Indicates flags that modify the property store object retrieved by methods that create a property store, such as IShellItem2::GetPropertyStore or IPropertyStoreFactory::GetPropertyStore.
+		/// <para>
+		/// Indicates flags that modify the property store object retrieved by methods that create a property store, such as
+		/// IShellItem2::GetPropertyStore or IPropertyStoreFactory::GetPropertyStore.
+		/// </para>
 		/// </summary>
-		[PInvokeData("Propsys.h", MSDNShortId = "bb762582")]
+		/// <remarks>
+		/// <para>If the Shell item is a file, the property store contains the following items.</para>
+		/// <list type="bullet">
+		/// <item>Properties from the file system that concern the file.</item>
+		/// <item>Properties from the file itself that are provided by the file's property handler, unless the file is offline (see GPS_OPENSLOWITEM).</item>
+		/// </list>
+		/// <para>Non-file Shell items return a similar read-only store.</para>
+		/// <para><c>Note</c> GPS_INCLUDEOFFLINEPROPERTIES has been superseded by GPS_OPENSLOWITEM.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/ne-propsys-getpropertystoreflags
 		[Flags]
+		[PInvokeData("propsys.h", MSDNShortId = "d3fde1b9-b19f-431d-9cea-bffc289ee683")]
 		public enum GETPROPERTYSTOREFLAGS
 		{
 			/// <summary>
@@ -109,7 +122,7 @@ namespace Vanara.PInvoke
 			GPS_HANDLERPROPERTIESONLY = 1,
 
 			/// <summary>Mask for valid GETPROPERTYSTOREFLAGS values.</summary>
-			GPS_MASK_VALID = 0xff,
+			GPS_MASK_VALID = 0x1fff,
 
 			/// <summary>
 			/// Windows 7 and later. Callers should use this flag only if they are already holding an opportunistic lock (oplock) on the file because without an
@@ -158,6 +171,12 @@ namespace Vanara.PInvoke
 
 			/// <summary>Include only properties from the file's secondary stream.</summary>
 			GPS_EXTRINSICPROPERTIESONLY = 0x400,
+			
+			/// <summary/>
+			GPS_VOLATILEPROPERTIES = 0x800,
+
+			/// <summary/>
+			GPS_VOLATILEPROPERTIESONLY = 0x1000,
 		}
 
 		/// <summary>Describes how property values are displayed when multiple items are selected. For a particular property, PROPDESC_AGGREGATION_TYPE describes how the property should be displayed when multiple items that have a value for the property are selected, such as whether the values should be summed, or averaged, or just displayed with the default "Multiple Values" string.</summary>
