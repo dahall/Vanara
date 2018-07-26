@@ -4,6 +4,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Security;
 using System.Text;
 using Vanara.InteropServices;
+using static Vanara.Extensions.BitHelper;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Kernel32;
@@ -26,14 +27,173 @@ namespace Vanara.PInvoke
 		// Defined in wingdi.h
 		private const int LF_FACESIZE = 32;
 
+		/// <summary>
+		/// <para>
+		/// [This interface is supported through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be unsupported in
+		/// subsequent versions of Windows.]
+		/// </para>
+		/// <para>
+		/// Defines the prototype for the callback function used by the system folder view object. This function essentially duplicates the
+		/// functionality of <c>IShellFolderViewCB</c>.
+		/// </para>
+		/// </summary>
+		/// <param name="psvOuter">
+		/// <para>Type: <c><c>IShellView</c>*</c></para>
+		/// <para>A pointer to the owning instance of <c>IShellView</c>, if applicable. This parameter can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="psf">
+		/// <para>Type: <c><c>IShellFolder</c>*</c></para>
+		/// <para>A pointer to the instance of <c>IShellFolder</c> the message applies to.</para>
+		/// </param>
+		/// <param name="hwndMain">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>The handle of the window that contains the view that receives the message.</para>
+		/// </param>
+		/// <param name="uMsg">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>One of the following notifications.</para>
+		/// </param>
+		/// <param name="wParam">
+		/// <para>Type: <c>WPARAM</c></para>
+		/// <para>Additional information dependent on the value in uMsg. See the individual notification pages for specific requirements.</para>
+		/// </param>
+		/// <param name="lParam">
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>Additional information dependent on the value in uMsg. See the individual notification pages for specific requirements.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function pointer succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// typedef HRESULT ( CALLBACK *LPFNVIEWCALLBACK)( _In_ IShellView *psvOuter, _In_ IShellFolder *psf, _In_ HWND hwndMain, UINT uMsg,
+		// WPARAM wParam, LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/bb776771(v=vs.85).aspx
+		[PInvokeData("Shlobj_core.h", MSDNShortId = "bb776771")]
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		public delegate HRESULT LPFNVIEWCALLBACK(IShellView psvOuter, IShellFolder psf, IntPtr hwndMain, uint uMsg, IntPtr wParam, IntPtr lParam);
+
 		/// <summary>A flag that controls how PifMgr_CloseProperties operates.</summary>
 		[PInvokeData("shlobj_core.h", MSDNShortId = "fd50d4f8-87c8-4162-9e88-3c8592b929fa")]
 		public enum CLOSEPROPS
 		{
 			/// <summary>No options specified.</summary>
 			CLOSEPROPS_NONE = 0x0000,
+
 			/// <summary>Abandon cached data.</summary>
 			CLOSEPROPS_DISCARD = 0x0001
+		}
+
+		/// <summary>
+		/// <para>
+		/// Represents information about the effects of a drag-and-drop operation. The <c>DoDragDrop</c> function and many of the methods in
+		/// the <c>IDropSource</c> and <c>IDropTarget</c> use the values of this enumeration.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// Your application should always mask values from the <c>DROPEFFECT</c> enumeration to ensure compatibility with future
+		/// implementations. Presently, only some of the positions in a <c>DROPEFFECT</c> value have meaning. In the future, more
+		/// interpretations for the bits will be added. Drag sources and drop targets should carefully mask these values appropriately before
+		/// comparing. They should never compare a <c>DROPEFFECT</c> against, say, DROPEFFECT_COPY by doing the following:
+		/// </para>
+		/// <para>Instead, the application should always mask for the value or values being sought as using one of the following techniques:</para>
+		/// <para>This allows for the definition of new drop effects, while preserving backward compatibility with existing code.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/com/dropeffect-constants
+		[PInvokeData("OleIdl.h", MSDNShortId = "d8e46899-3fbf-4012-8dd3-67fa627526d5")]
+		// public static extern
+		public enum DROPEFFECT : uint
+		{
+			/// <summary>Drop target cannot accept the data.</summary>
+			DROPEFFECT_NONE = 0,
+
+			/// <summary>Drop results in a copy. The original data is untouched by the drag source.</summary>
+			DROPEFFECT_COPY = 1,
+
+			/// <summary>Drag source should remove the data.</summary>
+			DROPEFFECT_MOVE = 2,
+
+			/// <summary>Drag source should create a link to the original data.</summary>
+			DROPEFFECT_LINK = 4,
+
+			/// <summary>
+			/// Scrolling is about to start or is currently occurring in the target. This value is used in addition to the other values.
+			/// </summary>
+			DROPEFFECT_SCROLL = 0x80000000,
+		}
+
+		/// <summary>A flag that controls the action of SHGetSetFolderCustomSettings.</summary>
+		[PInvokeData("shlobj_core.h", MSDNShortId = "38b78a4b-ba68-4dff-812d-d4c7421eb202")]
+		[Flags]
+		public enum FCS
+		{
+			/// <summary>Retrieve the custom folder settings in pfcs.</summary>
+			FCS_READ = 0x00000001,
+
+			/// <summary>Use pfcs to set the custom folder's settings regardless of whether the values are already present.</summary>
+			FCS_FORCEWRITE = 0x00000002,
+
+			/// <summary>Use pfcs to set the custom folder's settings if the values are not already present.</summary>
+			FCS_WRITE = (FCS_READ | FCS_FORCEWRITE),
+		}
+
+		/// <summary>Flags used by SHFOLDERCUSTOMSETTINGS.dwMask.</summary>
+		[PInvokeData("shlobj_core.h", MSDNShortId = "a6357372-80ef-4719-b53f-87eb3fdc1b0d")]
+		[Flags]
+		public enum FOLDERCUSTOMSETTINGSMASK : uint
+		{
+			/// <summary>Deprecated. pvid contains the folder's GUID.</summary>
+			FCSM_VIEWID = 0x0001,
+
+			/// <summary>Deprecated. pszWebViewTemplate contains a pointer to a buffer containing the path to the folder's WebView template.</summary>
+			FCSM_WEBVIEWTEMPLATE = 0x0002,
+
+			/// <summary>pszInfoTip contains a pointer to a buffer containing the folder's info tip.</summary>
+			FCSM_INFOTIP = 0x0004,
+
+			/// <summary>pclsid contains the folder's CLSID.</summary>
+			FCSM_CLSID = 0x0008,
+
+			/// <summary>pszIconFile contains the path to the file containing the folder's icon.</summary>
+			FCSM_ICONFILE = 0x0010,
+
+			/// <summary>pszLogo contains the path to the file containing the folder's thumbnail icon.</summary>
+			FCSM_LOGO = 0x0020,
+
+			/// <summary>Not used.</summary>
+			FCSM_FLAGS = 0x0040,
+		}
+
+		/// <summary>Flags used by SHGetPathFromIDListEx.</summary>
+		[PInvokeData("shlobj_core.h", MSDNShortId = "80270c59-275d-4b13-b16c-0c07bb79ed8e")]
+		[Flags]
+		public enum GPFIDL_FLAGS
+		{
+			/// <summary>Win32 file names, servers, and root drives are included.</para>
+			GPFIDL_DEFAULT = 0x0000,
+
+			/// <summary>Uses short file names.</para>
+			GPFIDL_ALTNAME = 0x0001,
+
+			/// <summary>Include UNC printer names items.</para>
+			GPFIDL_UNCPRINTER = 0x0002,
+		}
+
+		/// <summary>Flags used by Shell_MergeMenus.</summary>
+		[PInvokeData("shlobj_core.h", MSDNShortId = "f9e005fd-b1f2-4a5f-ad36-9c44998dc4eb")]
+		[Flags]
+		public enum MM
+		{
+			/// <summary>
+			/// Add a separator between the items from the two menus if one does not exist already. If you are inserting the entries from
+			/// hmSrc into the middle of hmDst, a separator is added above and below the hmSrc material.
+			/// </summary>
+			MM_ADDSEPARATOR = 0x00000001,
+
+			/// <summary>Do not remove any existing separators in the two menus. Note that this could result in two separators in a row.</summary>
+			MM_SUBMENUSHAVEIDS = 0x00000002,
+
+			/// <summary>Set this flag if the submenus have IDs which should be adjusted.</summary>
+			MM_DONTREMOVESEPS = 0x00000004,
 		}
 
 		/// <summary>Used for options in SHOpenFolderAndSelectItems.</summary>
@@ -44,14 +204,14 @@ namespace Vanara.PInvoke
 			OFASI_NONE = 0,
 
 			/// <summary>
-			/// Select an item and put its name in edit mode. This flag can only be used when a single item is being selected. For multiple item selections, it
-			/// is ignored.
+			/// Select an item and put its name in edit mode. This flag can only be used when a single item is being selected. For multiple
+			/// item selections, it is ignored.
 			/// </summary>
 			OFASI_EDIT = 1,
 
 			/// <summary>
-			/// Select the item or items on the desktop rather than in a Windows Explorer window. Note that if the desktop is obscured behind open windows, it
-			/// will not be made visible.
+			/// Select the item or items on the desktop rather than in a Windows Explorer window. Note that if the desktop is obscured behind
+			/// open windows, it will not be made visible.
 			/// </summary>
 			OFASI_OPENDESKTOP = 2
 		}
@@ -62,6 +222,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>No options specified.</summary>
 			OPENPROPS_NONE = 0x0000,
+
 			/// <summary>
 			/// Ignore any existing .pif files and get the properties from win.ini or _Default.pif. This flag is ignored on Windows NT,
 			/// Windows 2000, and Windows XP.
@@ -76,15 +237,19 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>The cleaned path is not a valid file name. This flag is always returned in conjunction with PCS_PATHTOOLONG.</summary>
 			PCS_FATAL = 0x80000000,
+
 			/// <summary>Replaced one or more invalid characters.</summary>
 			PCS_REPLACEDCHAR = 0x00000001,
+
 			/// <summary>Removed one or more invalid characters.</summary>
 			PCS_REMOVEDCHAR = 0x00000002,
+
 			/// <summary>The returned path is truncated.</summary>
 			PCS_TRUNCATED = 0x00000004,
+
 			/// <summary>
-			/// The function failed because the input path specified at is too long to allow the formation of a valid file name from . When this
-			/// flag is returned, it is always accompanied by the PCS_FATAL flag.
+			/// The function failed because the input path specified at is too long to allow the formation of a valid file name from . When
+			/// this flag is returned, it is always accompanied by the PCS_FATAL flag.
 			/// </summary>
 			PCS_PATHTOOLONG = 0x00000008,
 		}
@@ -96,17 +261,23 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Return TRUE if the file's existence is verified; otherwise FALSE.</summary>
 			PRF_VERIFYEXISTS = 0x0001,
+
 			/// <summary>Look for the specified path with the following extensions appended: .pif, .com, .bat, .cmd, .lnk, and .exe.</summary>
 			PRF_TRYPROGRAMEXTENSIONS = 0x0002 | PRF_VERIFYEXISTS,
+
 			/// <summary>Look first in the directory or directories specified by dirs.</summary>
 			PRF_FIRSTDIRDEF = 0x0004,
+
 			/// <summary>Ignore .lnk files.</summary>
 			PRF_DONTFINDLNK = 0x0008,
+
 			/// <summary>Require an absolute (full) path.</summary>
 			PRF_REQUIREABSOLUTE = 0x0010
 		}
 
-		/// <summary>Flags that direct the handling of the item from which you're retrieving the info tip text. This value is commonly zero (QITIPF_DEFAULT).</summary>
+		/// <summary>
+		/// Flags that direct the handling of the item from which you're retrieving the info tip text. This value is commonly zero (QITIPF_DEFAULT).
+		/// </summary>
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb761357")]
 		public enum QITIP
 		{
@@ -129,39 +300,43 @@ namespace Vanara.PInvoke
 			QITIPF_SINGLELINE = 0x00000010,
 		}
 
-		/// <summary><para>Indicates whether to enable or disable Async Register and Deregister for SHChangeNotifyRegisterThread.</para></summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ne-shlobj_core-scnrt_status
-		// typedef enum SCNRT_STATUS { SCNRT_ENABLE , SCNRT_DISABLE } ;
+		/// <summary>
+		/// <para>Indicates whether to enable or disable Async Register and Deregister for SHChangeNotifyRegisterThread.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ne-shlobj_core-scnrt_status typedef enum SCNRT_STATUS {
+		// SCNRT_ENABLE , SCNRT_DISABLE } ;
 		[PInvokeData("shlobj_core.h", MSDNShortId = "31fd993b-d8cb-40cc-9f31-15711dba1b10")]
 		public enum SCNRT_STATUS
 		{
 			/// <summary>Enable Async Register and Deregister for SHChangeNotifyRegisterThread.</summary>
 			SCNRT_ENABLE,
+
 			/// <summary>Disable Async Register and Deregister for SHChangeNotifyRegisterThread.</summary>
 			SCNRT_DISABLE,
 		}
 
 		/// <summary>
-		/// Indicates the interpretation of the data passed by SHAddToRecentDocs in its pv parameter to identify the item whose usage statistics are being tracked.
+		/// Indicates the interpretation of the data passed by SHAddToRecentDocs in its pv parameter to identify the item whose usage
+		/// statistics are being tracked.
 		/// </summary>
 		[PInvokeData("Shlobj.h", MSDNShortId = "dd378453")]
 		public enum SHARD
 		{
 			/// <summary>
-			/// <c>Windows 7 and later.</c> The pv parameter points to a SHARDAPPIDINFO structure that pairs an IShellItem that identifies the item with an
-			/// AppUserModelID that associates it with a particular process or application.
+			/// <c>Windows 7 and later.</c> The pv parameter points to a SHARDAPPIDINFO structure that pairs an IShellItem that identifies
+			/// the item with an AppUserModelID that associates it with a particular process or application.
 			/// </summary>
 			SHARD_APPIDINFO = 4,
 
 			/// <summary>
-			/// <c>Windows 7 and later.</c> The pv parameter points to a SHARDAPPIDINFOIDLIST structure that pairs an absolute PIDL that identifies the item with
-			/// an AppUserModelID that associates it with a particular process or application.
+			/// <c>Windows 7 and later.</c> The pv parameter points to a SHARDAPPIDINFOIDLIST structure that pairs an absolute PIDL that
+			/// identifies the item with an AppUserModelID that associates it with a particular process or application.
 			/// </summary>
 			SHARD_APPIDINFOIDLIST = 5,
 
 			/// <summary>
-			/// <c>Windows 7 and later.</c> The pv parameter points to a SHARDAPPIDINFOLINK structure that pairs an IShellLink that identifies the item with an
-			/// AppUserModelID that associates it with a particular process or application.
+			/// <c>Windows 7 and later.</c> The pv parameter points to a SHARDAPPIDINFOLINK structure that pairs an IShellLink that
+			/// identifies the item with an AppUserModelID that associates it with a particular process or application.
 			/// </summary>
 			SHARD_APPIDINFOLINK = 7,
 
@@ -174,7 +349,9 @@ namespace Vanara.PInvoke
 			/// <summary>The pv parameter points to a null-terminated Unicode string with the path and file name of the object.</summary>
 			SHARD_PATHW = 3,
 
-			/// <summary>The pv parameter points to a PIDL that identifies the document's file object. PIDLs that identify non-file objects are not accepted.</summary>
+			/// <summary>
+			/// The pv parameter points to a PIDL that identifies the document's file object. PIDLs that identify non-file objects are not accepted.
+			/// </summary>
 			SHARD_PIDL = 1,
 
 			/// <summary><c>Windows 7 and later.</c> The pv parameter is an interface pointer to an IShellItem object.</summary>
@@ -191,111 +368,135 @@ namespace Vanara.PInvoke
 			/// previous PIDL or name of the item. dwItem2 contains the new PIDL or name of the item.
 			/// </summary>
 			SHCNE_RENAMEITEM = 0x00000001,
+
 			/// <summary>
 			/// A nonfolder item has been created. SHCNF_IDLIST or SHCNF_PATH must be specified in uFlags. dwItem1 contains the item that was
 			/// created. dwItem2 is not used and should be NULL.
 			/// </summary>
 			SHCNE_CREATE = 0x00000002,
+
 			/// <summary>
 			/// A nonfolder item has been deleted. SHCNF_IDLIST or SHCNF_PATH must be specified in uFlags. dwItem1 contains the item that was
 			/// deleted. dwItem2 is not used and should be NULL.
 			/// </summary>
 			SHCNE_DELETE = 0x00000004,
+
 			/// <summary>
 			/// A folder has been created. SHCNF_IDLIST or SHCNF_PATH must be specified in uFlags. dwItem1 contains the folder that was
 			/// created. dwItem2 is not used and should be NULL.
 			/// </summary>
 			SHCNE_MKDIR = 0x00000008,
+
 			/// <summary>
 			/// A folder has been removed. SHCNF_IDLIST or SHCNF_PATH must be specified in uFlags. dwItem1 contains the folder that was
 			/// removed. dwItem2 is not used and should be NULL.
 			/// </summary>
 			SHCNE_RMDIR = 0x00000010,
+
 			/// <summary>
 			/// Storage media has been inserted into a drive. SHCNF_IDLIST or SHCNF_PATH must be specified in uFlags. dwItem1 contains the
 			/// root of the drive that contains the new media. dwItem2 is not used and should be NULL.
 			/// </summary>
 			SHCNE_MEDIAINSERTED = 0x00000020,
+
 			/// <summary>
 			/// Storage media has been removed from a drive. SHCNF_IDLIST or SHCNF_PATH must be specified in uFlags. dwItem1 contains the
 			/// root of the drive from which the media was removed. dwItem2 is not used and should be NULL.
 			/// </summary>
 			SHCNE_MEDIAREMOVED = 0x00000040,
+
 			/// <summary>
 			/// A drive has been removed. SHCNF_IDLIST or SHCNF_PATH must be specified in uFlags. dwItem1 contains the root of the drive that
 			/// was removed. dwItem2 is not used and should be NULL.
 			/// </summary>
 			SHCNE_DRIVEREMOVED = 0x00000080,
+
 			/// <summary>
 			/// A drive has been added. SHCNF_IDLIST or SHCNF_PATH must be specified in uFlags. dwItem1 contains the root of the drive that
 			/// was added. dwItem2 is not used and should be NULL.
 			/// </summary>
 			SHCNE_DRIVEADD = 0x00000100,
+
 			/// <summary>
 			/// A folder on the local computer is being shared via the network. SHCNF_IDLIST or SHCNF_PATH must be specified in uFlags.
 			/// dwItem1 contains the folder that is being shared. dwItem2 is not used and should be NULL.
 			/// </summary>
 			SHCNE_NETSHARE = 0x00000200,
+
 			/// <summary>
 			/// A folder on the local computer is no longer being shared via the network. SHCNF_IDLIST or SHCNF_PATH must be specified in
 			/// uFlags. dwItem1 contains the folder that is no longer being shared. dwItem2 is not used and should be NULL.
 			/// </summary>
 			SHCNE_NETUNSHARE = 0x00000400,
+
 			/// <summary>
 			/// The attributes of an item or folder have changed. SHCNF_IDLIST or SHCNF_PATH must be specified in uFlags. dwItem1 contains
 			/// the item or folder that has changed. dwItem2 is not used and should be NULL.
 			/// </summary>
 			SHCNE_ATTRIBUTES = 0x00000800,
+
 			/// <summary>
 			/// The contents of an existing folder have changed, but the folder still exists and has not been renamed. SHCNF_IDLIST or
 			/// SHCNF_PATH must be specified in uFlags. dwItem1 contains the folder that has changed. dwItem2 is not used and should be NULL.
 			/// If a folder has been created, deleted, or renamed, use SHCNE_MKDIR, SHCNE_RMDIR, or SHCNE_RENAMEFOLDER, respectively.
 			/// </summary>
 			SHCNE_UPDATEDIR = 0x00001000,
+
 			/// <summary>
 			/// An existing item (a folder or a nonfolder) has changed, but the item still exists and has not been renamed. SHCNF_IDLIST or
 			/// SHCNF_PATH must be specified in uFlags. dwItem1 contains the item that has changed. dwItem2 is not used and should be NULL.
 			/// If a nonfolder item has been created, deleted, or renamed, use SHCNE_CREATE, SHCNE_DELETE, or SHCNE_RENAMEITEM, respectively, instead.
 			/// </summary>
 			SHCNE_UPDATEITEM = 0x00002000,
+
 			/// <summary>
 			/// The computer has disconnected from a server. SHCNF_IDLIST or SHCNF_PATH must be specified in uFlags. dwItem1 contains the
 			/// server from which the computer was disconnected. dwItem2 is not used and should be NULL.
 			/// </summary>
 			SHCNE_SERVERDISCONNECT = 0x00004000,
+
 			/// <summary>
 			/// An image in the system image list has changed. SHCNF_DWORD must be specified in uFlags. dwItem2 contains the index in the
 			/// system image list that has changed. dwItem1 is not used and should be NULL.
 			/// </summary>
 			SHCNE_UPDATEIMAGE = 0x00008000,
+
 			/// <summary>
 			/// A drive has been added. SHCNF_IDLIST or SHCNF_PATH must be specified in uFlags. dwItem1 contains the root of the drive that
 			/// was added. dwItem2 is not used and should be NULL.
 			/// </summary>
 			SHCNE_DRIVEADDGUI = 0x00010000,
+
 			/// <summary>
 			/// The name of a folder has changed. SHCNF_IDLIST or SHCNF_PATH must be specified in uFlags. dwItem1 contains the previous PIDL
 			/// or name of the folder. dwItem2 contains the new PIDL or name of the folder.
 			/// </summary>
 			SHCNE_RENAMEFOLDER = 0x00020000,
+
 			/// <summary>
 			/// The amount of free space on a drive has changed. SHCNF_IDLIST or SHCNF_PATH must be specified in uFlags. dwItem1 contains the
 			/// root of the drive on which the free space changed. dwItem2 is not used and should be NULL.
 			/// </summary>
 			SHCNE_FREESPACE = 0x00040000,
+
 			/// <summary>Not currently used.</summary>
 			SHCNE_EXTENDED_EVENT = 0x04000000,
+
 			/// <summary>
 			/// A file type association has changed. SHCNF_IDLIST must be specified in the uFlags parameter. dwItem1 and dwItem2 are not used
 			/// and must be NULL. This event should also be sent for registered protocols.
 			/// </summary>
 			SHCNE_ASSOCCHANGED = 0x08000000,
+
 			/// <summary>All disk related events.</summary>
 			SHCNE_DISKEVENTS = 0x0002381F,
+
 			/// <summary>All global events.</summary>
 			SHCNE_GLOBALEVENTS = 0x0C0581E0,
+
 			/// <summary>All events.</summary>
 			SHCNE_ALLEVENTS = 0x7FFFFFFF,
+
 			/// <summary>
 			/// The presence of this flag indicates that the event was generated by an interrupt. It is stripped out before the clients of
 			/// SHCNNotify_ see it.
@@ -313,42 +514,79 @@ namespace Vanara.PInvoke
 			/// ITEMIDLIST must be relative to the desktop folder.
 			/// </summary>
 			SHCNF_IDLIST = 0x0000,
+
 			/// <summary>
 			/// dwItem1 and dwItem2 are the addresses of null-terminated strings of maximum length MAX_PATH that contain the full path names
 			/// of the items affected by the change.
 			/// </summary>
 			SHCNF_PATHA = 0x0001,
+
 			/// <summary>
 			/// dwItem1 and dwItem2 are the addresses of null-terminated strings that represent the friendly names of the printer(s) affected
 			/// by the change.
 			/// </summary>
 			SHCNF_PRINTERA = 0x0002,
+
 			/// <summary>The dwItem1 and dwItem2 parameters are DWORD values.</summary>
 			SHCNF_DWORD = 0x0003,
+
 			/// <summary>
 			/// dwItem1 and dwItem2 are the addresses of null-terminated strings of maximum length MAX_PATH that contain the full path names
 			/// of the items affected by the change.
 			/// </summary>
 			SHCNF_PATHW = 0x0005,
+
 			/// <summary>
 			/// dwItem1 and dwItem2 are the addresses of null-terminated strings that represent the friendly names of the printer(s) affected
 			/// by the change.
 			/// </summary>
 			SHCNF_PRINTERW = 0x0006,
+
 			/// <summary>Indicates that a type is defined.</summary>
 			SHCNF_TYPE = 0x00FF,
+
 			/// <summary>
 			/// The function should not return until the notification has been delivered to all affected components. As this flag modifies
 			/// other data-type flags, it cannot be used by itself.
 			/// </summary>
 			SHCNF_FLUSH = 0x1000,
+
 			/// <summary>
 			/// The function should begin delivering notifications to all affected components but should return as soon as the notification
 			/// process has begun. As this flag modifies other data-type flags, it cannot by used by itself. This flag includes SHCNF_FLUSH.
 			/// </summary>
 			SHCNF_FLUSHNOWAIT = 0x3000,
+
 			/// <summary>Notify clients registered for all children.</summary>
 			SHCNF_NOTIFYRECURSIVE = 0x10000
+		}
+
+		/// <summary>Flags used by SHChangeNotifyRegister.</summary>
+		[PInvokeData("shlobj_core.h", MSDNShortId = "73143865-ca2f-4578-a7a2-2ba4833eddd8")]
+		[Flags]
+		public enum SHCNRF
+		{
+			/// <summary>Interrupt level notifications from the file system.</summary>
+			SHCNRF_InterruptLevel = 0x0001,
+
+			/// <summary>Shell-level notifications from the shell.</summary>
+			SHCNRF_ShellLevel = 0x0002,
+
+			/// <summary>
+			/// Interrupt events on the whole subtree. This flag must be combined with the SHCNRF_InterruptLevel flag. When using this flag,
+			/// notifications must also be made recursive by setting the fRecursive member of the corresponding SHChangeNotifyEntry structure
+			/// referenced by pshcne to TRUE. Use of SHCNRF_RecursiveInterrupt on a single level view—for example, a PIDL that is relative
+			/// and contains only one SHITEMID—will block event notification at the highest level and thereby prevent a recursive, child
+			/// update. Thus, an icon dragged into the lowest level of a folder hierarchy may fail to appear in the view as expected.
+			/// </summary>
+			SHCNRF_RecursiveInterrupt = 0x1000,
+
+			/// <summary>
+			/// Messages received use shared memory. Call SHChangeNotification_Lock to access the actual data. Call
+			/// SHChangeNotification_Unlock to release the memory when done. <note type="note">We recommend this flag because it provides a
+			/// more robust delivery method. All clients should specify this flag.</note>
+			/// </summary>
+			SHCNRF_NewDelivery = 0x8000,
 		}
 
 		/// <summary>Receives a value that determines what type the item is in <see cref="SHDESCRIPTIONID"/>.</summary>
@@ -419,6 +657,26 @@ namespace Vanara.PInvoke
 			SHDID_MOBILE_DEVICE = 21,
 		}
 
+		/// <summary>Format ID for SHFormatDrive.</summary>
+		[PInvokeData("shlobj_core.h", MSDNShortId = "4aa255fa-c407-47db-9b1f-d449e0a0e94f")]
+		public enum SHFMT_ID
+		{
+			/// <summary>The default format ID.</summary>
+			SHFMT_ID_DEFAULT = 0xFFFF
+		}
+
+		/// <summary>Format options for SHFormatDrive.</summary>
+		[PInvokeData("shlobj_core.h", MSDNShortId = "4aa255fa-c407-47db-9b1f-d449e0a0e94f")]
+		[Flags]
+		public enum SHFMT_OPT
+		{
+			/// <summary>If this flag is set, then the Quick Format option is selected.</summary>
+			SHFMT_OPT_FULL = 0x0001,
+
+			/// <summary>Selects the Create an MS-DOS startup disk option, creating a system boot disk.</summary>
+			SHFMT_OPT_SYSONLY = 0x0002
+		}
+
 		/// <summary>The format in which the data is being requested.</summary>
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762174")]
 		public enum SHGetDataFormat
@@ -453,28 +711,150 @@ namespace Vanara.PInvoke
 		public enum SHIL
 		{
 			/// <summary>
-			/// The image size is normally 32x32 pixels. However, if the Use large icons option is selected from the Effects section of the Appearance tab in
-			/// Display Properties, the image is 48x48 pixels.
+			/// The image size is normally 32x32 pixels. However, if the Use large icons option is selected from the Effects section of the
+			/// Appearance tab in Display Properties, the image is 48x48 pixels.
 			/// </summary>
 			SHIL_LARGE = 0,
 
 			/// <summary>These images are the Shell standard small icon size of 16x16, but the size can be customized by the user.</summary>
 			SHIL_SMALL = 1,
 
-			/// <summary>These images are the Shell standard extra-large icon size. This is typically 48x48, but the size can be customized by the user.</summary>
+			/// <summary>
+			/// These images are the Shell standard extra-large icon size. This is typically 48x48, but the size can be customized by the user.
+			/// </summary>
 			SHIL_EXTRALARGE = 2,
 
-			/// <summary>These images are the size specified by GetSystemMetrics called with SM_CXSMICON and GetSystemMetrics called with SM_CYSMICON.</summary>
+			/// <summary>
+			/// These images are the size specified by GetSystemMetrics called with SM_CXSMICON and GetSystemMetrics called with SM_CYSMICON.
+			/// </summary>
 			SHIL_SYSSMALL = 3,
 
 			/// <summary>Windows Vista and later. The image is normally 256x256 pixels.</summary>
 			SHIL_JUMBO = 4,
 		}
 
+		/// <summary>Object type options for SHObjectProperties.</summary>
+		[PInvokeData("shlobj_core.h", MSDNShortId = "7517c461-955b-446e-85d7-a707c9bd183a")]
+		[Flags]
+		public enum SHOP
+		{
+			/// <summary>Contains the friendly name of a printer.</summary>
+			SHOP_PRINTERNAME = 0x00000001,
+
+			/// <summary>Contains a fully qualified file name.</summary>
+			SHOP_FILEPATH = 0x00000002,
+
+			/// <summary>
+			/// Contains either (a) a volume name of the form \?\Volume{GUID}, where {GUID} is a globally unique identifier (for example,
+			/// "\?\Volume{2eca078d-5cbc-43d3-aff8-7e8511f60d0e})", or (b) a drive path (for example, "C:").
+			/// </summary>
+			SHOP_VOLUMEGUID = 0x00000004,
+		}
+
 		/// <summary>
-		/// CSIDL (constant special item ID list) values provide a unique system-independent way to identify special folders used frequently by applications, but
-		/// which may not have the same name or location on any given system. For example, the system folder may be "C:\Windows" on one system and "C:\Winnt" on
-		/// another. These constants are defined in Shlobj.h.
+		/// Used by the <c>SHGetSetSettings</c> function to specify which members of its <c>SHELLSTATE</c> structure should be set or retrived.
+		/// </summary>
+		// https://msdn.microsoft.com/en-us/2a883110-fdc3-4451-9e47-e58894600e3b
+		[PInvokeData("Shlobj.h", MSDNShortId = "bb762591")]
+		[Flags]
+		public enum SSF : uint
+		{
+			/// <summary>The fShowAllObjects member is being requested.</summary>
+			SSF_SHOWALLOBJECTS = 0x00000001,
+
+			/// <summary>The fShowExtensions member is being requested.</summary>
+			SSF_SHOWEXTENSIONS = 0x00000002,
+
+			/// <summary>Not used.</summary>
+			SSF_HIDDENFILEEXTS = 0x00000004,
+
+			/// <summary>Not used.</summary>
+			SSF_SERVERADMINUI = 0x00000004,
+
+			/// <summary>The fShowCompColor member is being requested.</summary>
+			SSF_SHOWCOMPCOLOR = 0x00000008,
+
+			/// <summary>The lParamSort and iSortDirection members are being requested.</summary>
+			SSF_SORTCOLUMNS = 0x00000010,
+
+			/// <summary>The fShowSysFiles member is being requested.</summary>
+			SSF_SHOWSYSFILES = 0x00000020,
+
+			/// <summary>The fDoubleClickInWebView member is being requested.</summary>
+			SSF_DOUBLECLICKINWEBVIEW = 0x00000080,
+
+			/// <summary>
+			/// The fShowAttribCol member is being requested.
+			/// <para>Windows Vista: Not used.</para>
+			/// </summary>
+			SSF_SHOWATTRIBCOL = 0x00000100,
+
+			/// <summary>
+			/// The fDesktopHTML member is being requested. Set is not available. Instead, for versions of Windows prior to Windows XP,
+			/// enable desktop HTML by IActiveDesktop. The use of IActiveDesktop for this purpose, however, is not recommended for Windows XP
+			/// and later versions of Windows, and is deprecated in Windows Vista.
+			/// </summary>
+			SSF_DESKTOPHTML = 0x00000200,
+
+			/// <summary>The fWin95Classic member is being requested.</summary>
+			SSF_WIN95CLASSIC = 0x00000400,
+
+			/// <summary>The fDontPrettyPath member is being requested.</summary>
+			SSF_DONTPRETTYPATH = 0x00000800,
+
+			/// <summary>The fMapNetDrvBtn member is being requested.</summary>
+			SSF_MAPNETDRVBUTTON = 0x00001000,
+
+			/// <summary>The fShowInfoTip member is being requested.</summary>
+			SSF_SHOWINFOTIP = 0x00002000,
+
+			/// <summary>The fHideIcons member is being requested.</summary>
+			SSF_HIDEICONS = 0x00004000,
+
+			/// <summary>The fNoConfirmRecycle member is being requested.</summary>
+			SSF_NOCONFIRMRECYCLE = 0x00008000,
+
+			/// <summary>
+			/// The fFilter member is being requested.
+			/// <para>Windows Vista: Not used.</para>
+			/// </summary>
+			SSF_FILTER = 0x00010000,
+
+			/// <summary>The fWebView member is being requested.</summary>
+			SSF_WEBVIEW = 0x00020000,
+
+			/// <summary>The fShowSuperHidden member is being requested.</summary>
+			SSF_SHOWSUPERHIDDEN = 0x00040000,
+
+			/// <summary>The fSepProcess member is being requested.</summary>
+			SSF_SEPPROCESS = 0x00080000,
+
+			/// <summary>Windows XP and later. The fNoNetCrawling member is being requested.</summary>
+			SSF_NONETCRAWLING = 0x00100000,
+
+			/// <summary>Windows XP and later. The fStartPanelOn member is being requested.</summary>
+			SSF_STARTPANELON = 0x00200000,
+
+			/// <summary>Not used.</summary>
+			SSF_SHOWSTARTPAGE = 0x00400000,
+
+			/// <summary>Windows Vista and later. The fAutoCheckSelect member is being requested.</summary>
+			SSF_AUTOCHECKSELECT = 0x00800000,
+
+			/// <summary>Windows Vista and later. The fIconsOnly member is being requested.</summary>
+			SSF_ICONSONLY = 0x01000000,
+
+			/// <summary>Windows Vista and later. The fShowTypeOverlay member is being requested.</summary>
+			SSF_SHOWTYPEOVERLAY = 0x02000000,
+
+			/// <summary>Windows 8 and later: The fShowStatusBar member is being requested.</summary>
+			SSF_SHOWSTATUSBAR = 0x04000000,
+		}
+
+		/// <summary>
+		/// CSIDL (constant special item ID list) values provide a unique system-independent way to identify special folders used frequently
+		/// by applications, but which may not have the same name or location on any given system. For example, the system folder may be
+		/// "C:\Windows" on one system and "C:\Winnt" on another. These constants are defined in Shlobj.h.
 		/// </summary>
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762494")]
 		internal enum CSIDL
@@ -589,15 +969,72 @@ namespace Vanara.PInvoke
 		/// <item><c>PKEY_NewMenuAllowedTypes</c></item>
 		/// </list>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-assocgetdetailsofpropkey
-		// SHSTDAPI AssocGetDetailsOfPropKey( IShellFolder *psf, PCUITEMID_CHILD pidl, const PROPERTYKEY *pkey, VARIANT *pv, BOOL *pfFoundPropKey );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-assocgetdetailsofpropkey SHSTDAPI
+		// AssocGetDetailsOfPropKey( IShellFolder *psf, PCUITEMID_CHILD pidl, const PROPERTYKEY *pkey, VARIANT *pv, BOOL *pfFoundPropKey );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "f13af5f4-1b6a-419c-a042-e05c9ec51d02")]
 		public static extern HRESULT AssocGetDetailsOfPropKey(IShellFolder psf, PIDL pidl, ref PROPERTYKEY pkey, ref object pv, [MarshalAs(UnmanagedType.Bool)] ref bool pfFoundPropKey);
 
-		/// <summary><para>[This function is available through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be altered or unavailable in subsequent versions of Windows.]</para><para>Creates an <c>Open</c> dialog box so that the user can specify the drive, directory, and name of a file to open.</para></summary><param name="hwnd"><para>Type: <c>HWND</c></para><para>A handle to the window that owns the dialog box. This member can be any valid window handle, or it can be <c>NULL</c> if the dialog box has no owner.</para></param><param name="pszFilePath"><para>Type: <c>PWSTR</c></para><para>A null-terminated Unicode string that contains a file name used to initialize the File Name edit control. This string corresponds to the OPENFILENAME structure&#39;s <c>lpstrFile</c> member and is used in exactly the same way.</para></param><param name="cchFilePath"><para>Type: <c>UINT</c></para><para>The number of characters in , including the terminating null character.</para></param><param name="pszWorkingDir"><para>Type: <c>PCWSTR</c></para><para>The fully qualified file path of the initial directory. This string corresponds to the OPENFILENAME structure&#39;s <c>lpstrInitialDir</c> member and is used in exactly the same way.</para></param><param name="pszDefExt"><para>Type: <c>PCWSTR</c></para><para>A null-terminated Unicode string that contains the default file name extension. This extension is added to if the user does not specify an extension. The string should not contain any &#39;.&#39; characters. If this string is <c>NULL</c> and the user fails to type an extension, no extension is appended.</para></param><param name="pszFilters"><para>Type: <c>PCWSTR</c></para><para>A null-terminated Unicode string that defines the filter. This string corresponds to the OPENFILENAME structure&#39;s <c>lpstrFilter</c> member and is used in exactly the same way.</para></param><param name="pszTitle"><para>TBD</para></param><returns><para>Type: <c>BOOL</c></para><para>If the user specifies a file name and clicks <c>OK</c>, the return value is <c>TRUE</c>. The buffer that points to contains the full path and file name that the user specifies. If the user cancels or closes the <c>Open</c> dialog box or an error occurs, the return value is <c>FALSE</c>.</para></returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj/nf-shlobj-getfilenamefrombrowse
-		// BOOL GetFileNameFromBrowse( HWND hwnd, PWSTR pszFilePath, UINT cchFilePath, PCWSTR pszWorkingDir, PCWSTR pszDefExt, PCWSTR pszFilters, PCWSTR pszTitle );
+		/// <summary>
+		/// <para>
+		/// [This function is available through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be altered or unavailable
+		/// in subsequent versions of Windows.]
+		/// </para>
+		/// <para>Creates an <c>Open</c> dialog box so that the user can specify the drive, directory, and name of a file to open.</para>
+		/// </summary>
+		/// <param name="hwnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>
+		/// A handle to the window that owns the dialog box. This member can be any valid window handle, or it can be <c>NULL</c> if the
+		/// dialog box has no owner.
+		/// </para>
+		/// </param>
+		/// <param name="pszFilePath">
+		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>
+		/// A null-terminated Unicode string that contains a file name used to initialize the File Name edit control. This string corresponds
+		/// to the OPENFILENAME structure's <c>lpstrFile</c> member and is used in exactly the same way.
+		/// </para>
+		/// </param>
+		/// <param name="cchFilePath">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The number of characters in , including the terminating null character.</para>
+		/// </param>
+		/// <param name="pszWorkingDir">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>
+		/// The fully qualified file path of the initial directory. This string corresponds to the OPENFILENAME structure's
+		/// <c>lpstrInitialDir</c> member and is used in exactly the same way.
+		/// </para>
+		/// </param>
+		/// <param name="pszDefExt">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>
+		/// A null-terminated Unicode string that contains the default file name extension. This extension is added to if the user does not
+		/// specify an extension. The string should not contain any '.' characters. If this string is <c>NULL</c> and the user fails to type
+		/// an extension, no extension is appended.
+		/// </para>
+		/// </param>
+		/// <param name="pszFilters">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>
+		/// A null-terminated Unicode string that defines the filter. This string corresponds to the OPENFILENAME structure's
+		/// <c>lpstrFilter</c> member and is used in exactly the same way.
+		/// </para>
+		/// </param>
+		/// <param name="pszTitle">
+		/// <para>TBD</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>
+		/// If the user specifies a file name and clicks <c>OK</c>, the return value is <c>TRUE</c>. The buffer that points to contains the
+		/// full path and file name that the user specifies. If the user cancels or closes the <c>Open</c> dialog box or an error occurs, the
+		/// return value is <c>FALSE</c>.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj/nf-shlobj-getfilenamefrombrowse BOOL GetFileNameFromBrowse( HWND hwnd,
+		// PWSTR pszFilePath, UINT cchFilePath, PCWSTR pszWorkingDir, PCWSTR pszDefExt, PCWSTR pszFilters, PCWSTR pszTitle );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj.h", MSDNShortId = "1f075051-18c8-4ec2-b010-f983ba2d3303")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -622,15 +1059,36 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>PIDLIST_RELATIVE</c></para>
 		/// <para>Returns the ITEMIDLIST structure specified by , with appended or prepended. Returns <c>NULL</c> on failure.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-ilappendid
-		// PIDLIST_RELATIVE ILAppendID( PIDLIST_RELATIVE pidl, LPCSHITEMID pmkid, BOOL fAppend );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-ilappendid PIDLIST_RELATIVE ILAppendID(
+		// PIDLIST_RELATIVE pidl, LPCSHITEMID pmkid, BOOL fAppend );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "d1bb5993-fe23-42d4-a2c5-8e54e6e37d09")]
 		public static extern IntPtr ILAppendID(IntPtr pidl, ref SHITEMID pmkid, [MarshalAs(UnmanagedType.Bool)] bool fAppend);
 
-		/// <summary><para>Determines whether a specified ITEMIDLIST structure is the child of another <c>ITEMIDLIST</c> structure.</para></summary><param name="pidlParent"><para>Type: <c>PCIDLIST_ABSOLUTE</c></para><para>A pointer to the parent ITEMIDLIST structure.</para></param><param name="pidlChild"><para>Type: <c>PCIDLIST_ABSOLUTE</c></para><para>A pointer to the child ITEMIDLIST structure.</para></param><returns><para>Type: <c>PUIDLIST_RELATIVE</c></para><para>Returns a pointer to the child&#39;s simple ITEMIDLIST structure if is a child of . The returned structure consists of , minus the SHITEMID structures that make up . Returns <c>NULL</c> if is not a child of .</para><para><c>Note</c> The returned pointer is a pointer into the existing parent structure. It is an alias for . No new memory is allocated in association with the returned pointer. It is not the caller&#39;s responsibility to free the returned value.</para></returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-ilfindchild
-		// PUIDLIST_RELATIVE ILFindChild( PIDLIST_ABSOLUTE pidlParent, PCIDLIST_ABSOLUTE pidlChild );
+		/// <summary>
+		/// <para>Determines whether a specified ITEMIDLIST structure is the child of another <c>ITEMIDLIST</c> structure.</para>
+		/// </summary>
+		/// <param name="pidlParent">
+		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+		/// <para>A pointer to the parent ITEMIDLIST structure.</para>
+		/// </param>
+		/// <param name="pidlChild">
+		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+		/// <para>A pointer to the child ITEMIDLIST structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>PUIDLIST_RELATIVE</c></para>
+		/// <para>
+		/// Returns a pointer to the child's simple ITEMIDLIST structure if is a child of . The returned structure consists of , minus the
+		/// SHITEMID structures that make up . Returns <c>NULL</c> if is not a child of .
+		/// </para>
+		/// <para>
+		/// <c>Note</c> The returned pointer is a pointer into the existing parent structure. It is an alias for . No new memory is allocated
+		/// in association with the returned pointer. It is not the caller's responsibility to free the returned value.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-ilfindchild PUIDLIST_RELATIVE ILFindChild(
+		// PIDLIST_ABSOLUTE pidlParent, PCIDLIST_ABSOLUTE pidlChild );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "4f07e989-ae74-4cf4-b3d9-0f59f2653095")]
 		public static extern IntPtr ILFindChild(IntPtr pidlParent, IntPtr pidlChild);
@@ -658,8 +1116,8 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>For use where STRICT_TYPED_ITEMIDS is defined.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-illoadfromstreamex
-		// SHSTDAPI ILLoadFromStreamEx( IStream *pstm, PIDLIST_RELATIVE *pidl );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-illoadfromstreamex SHSTDAPI ILLoadFromStreamEx(
+		// IStream *pstm, PIDLIST_RELATIVE *pidl );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "6fb735b6-a8c3-439e-9f20-4fda8f008b28")]
 		public static extern HRESULT ILLoadFromStreamEx(IStream pstm, out IntPtr pidl);
@@ -682,8 +1140,8 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>The stream must be opened for writing, or <c>ILSaveToStream</c> returns an error.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-ilsavetostream
-		// SHSTDAPI ILSaveToStream( IStream *pstm, PCUIDLIST_RELATIVE pidl );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-ilsavetostream SHSTDAPI ILSaveToStream( IStream
+		// *pstm, PCUIDLIST_RELATIVE pidl );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "40d5ce57-58dc-4c79-8fe6-5412e3d7dc64")]
 		public static extern HRESULT ILSaveToStream(IStream pstm, IntPtr pidl);
@@ -725,15 +1183,15 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-isnetdrive
-		// int IsNetDrive( int iDrive );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-isnetdrive int IsNetDrive( int iDrive );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "44e02665-648a-4cf0-9dc0-038e54d08a49")]
 		public static extern int IsNetDrive(int iDrive);
 
 		/// <summary>
-		/// <para>[IsUserAnAdmin is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
-		/// subsequent versions.]
+		/// <para>
+		/// [IsUserAnAdmin is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
 		/// </para>
 		/// <para>Tests whether the current user is a member of the Administrator's group.</para>
 		/// </summary>
@@ -747,8 +1205,7 @@ namespace Vanara.PInvoke
 		/// group status rather than calling <c>IsUserAnAdmin</c>.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-isuseranadmin
-		// BOOL IsUserAnAdmin( );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-isuseranadmin BOOL IsUserAnAdmin( );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "fe698d32-32f6-4b2b-ad0c-5d9ec815177f")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -787,15 +1244,16 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>IStream*</c></para>
 		/// <para>Returns the address of an IStream interface if successful, or <c>NULL</c> otherwise.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-openregstream
-		// IStream * OpenRegStream( HKEY hkey, PCWSTR pszSubkey, PCWSTR pszValue, DWORD grfMode );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-openregstream IStream * OpenRegStream( HKEY hkey,
+		// PCWSTR pszSubkey, PCWSTR pszValue, DWORD grfMode );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "e1e35c94-84ac-4aa1-b2a1-47b37a7f224e")]
 		public static extern IStream OpenRegStream(IntPtr hkey, [MarshalAs(UnmanagedType.LPWStr)] string pszSubkey, [MarshalAs(UnmanagedType.LPWStr)] string pszValue, STGM grfMode);
 
 		/// <summary>
-		/// <para>[PathCleanupSpec is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
-		/// subsequent versions.]
+		/// <para>
+		/// [PathCleanupSpec is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
 		/// </para>
 		/// <para>
 		/// Removes illegal characters from a file or directory name. Enforces the 8.3 filename format on drives that do not support long
@@ -870,14 +1328,16 @@ namespace Vanara.PInvoke
 		/// 1 (to account for the terminating null character), the function returns PCS_PATHTOOLONG.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathcleanupspec
-		// int PathCleanupSpec( PCWSTR pszDir, PWSTR pszSpec );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathcleanupspec int PathCleanupSpec( PCWSTR
+		// pszDir, PWSTR pszSpec );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "593fd2b7-44ae-4309-a185-97e42f3cc0fa")]
 		public static extern PCS PathCleanupSpec([MarshalAs(UnmanagedType.LPWStr)] string pszDir, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszSpec);
+
 		/// <summary>
-		/// <para>[PathGetShortPath is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
-		/// subsequent versions.]
+		/// <para>
+		/// [PathGetShortPath is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
 		/// </para>
 		/// <para>Retrieves the short path form of a specified input path.</para>
 		/// </summary>
@@ -891,8 +1351,8 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// <para>This function does not return a value.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathgetshortpath
-		// void PathGetShortPath( PWSTR pszLongPath );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathgetshortpath void PathGetShortPath( PWSTR
+		// pszLongPath );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "f374a575-3fbf-4bed-aa76-76ed81e01d60")]
 		public static extern void PathGetShortPath([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszLongPath);
@@ -911,8 +1371,7 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>Returns <c>TRUE</c> if the file name extension is .cmd, .bat, .pif, .scf, .exe, .com, or .scr; otherwise, <c>FALSE</c>.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathisexe
-		// BOOL PathIsExe( PCWSTR pszPath );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathisexe BOOL PathIsExe( PCWSTR pszPath );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "54e9dae7-f9c4-48b8-9b91-32ed21365fb7")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -944,8 +1403,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>Note that network conditions can impact function performance time.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj/nf-shlobj-pathisslowa
-		// BOOL PathIsSlowA( LPCSTR pszFile, DWORD dwAttr );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj/nf-shlobj-pathisslowa BOOL PathIsSlowA( LPCSTR pszFile, DWORD dwAttr );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlobj.h", MSDNShortId = "f848a098-9248-453b-a957-77c35d70e528")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -999,8 +1457,8 @@ namespace Vanara.PInvoke
 		/// names such as "My New Filename (1)", "My New Filename (2)", and so on.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathmakeuniquename
-		// BOOL PathMakeUniqueName( PWSTR pszUniqueName, UINT cchMax, PCWSTR pszTemplate, PCWSTR pszLongPlate, PCWSTR pszDir );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathmakeuniquename BOOL PathMakeUniqueName( PWSTR
+		// pszUniqueName, UINT cchMax, PCWSTR pszTemplate, PCWSTR pszLongPlate, PCWSTR pszDir );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "8456ae0c-e83c-43d0-a86a-1861a373d237")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -1055,12 +1513,13 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>If <c>PathResolve</c> cannot resolve the path specified in , it calls PathFindOnPath using and as the parameters.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathresolve
-		// int PathResolve( PWSTR pszPath, PZPCWSTR dirs, UINT fFlags );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathresolve int PathResolve( PWSTR pszPath,
+		// PZPCWSTR dirs, UINT fFlags );
 		[DllImport(Lib.Shell32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "84bf0b56-513f-4ac6-b2cf-11f0c471da1e")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool PathResolve(StringBuilder pszPath, string[] dirs, PRF fFlags);
+
 		/// <summary>
 		/// <para>Creates a unique filename based on an existing filename.</para>
 		/// </summary>
@@ -1099,8 +1558,8 @@ namespace Vanara.PInvoke
 		/// <c>PathYetAnotherMakeUniqueName</c>. In that case, the function returns <c>FALSE</c>.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathyetanothermakeuniquename
-		// BOOL PathYetAnotherMakeUniqueName( PWSTR pszUniqueName, PCWSTR pszPath, PCWSTR pszShort, PCWSTR pszFileSpec );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathyetanothermakeuniquename BOOL
+		// PathYetAnotherMakeUniqueName( PWSTR pszUniqueName, PCWSTR pszPath, PCWSTR pszShort, PCWSTR pszFileSpec );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "1f76ecfa-6f2f-4dde-b05e-4252c92660d9")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -1144,36 +1603,51 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>int</c></para>
 		/// <para>Returns 1 if successful; otherwise, 0.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pickicondlg
-		// int PickIconDlg( HWND hwnd, PWSTR pszIconPath, UINT cchIconPath, int *piIconIndex );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pickicondlg int PickIconDlg( HWND hwnd, PWSTR
+		// pszIconPath, UINT cchIconPath, int *piIconIndex );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "3dfcda10-26d8-495d-8c92-7ff16da098c1")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool PickIconDlg(HandleRef hwnd, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszIconPath, uint cchIconPath, ref int piIconIndex);
 
 		/// <summary>
-		/// [PifMgr_CloseProperties is available for use in the operating systems specified in the Requirements section.It may be altered or unavailable in subsequent versions.]
-		/// <para>Closes application properties that were opened with PifMgr_OpenProperties.</para></summary>
-		/// <param name="hProps">A handle to the application's properties. This parameter should be set to the value that is returned by PifMgr_OpenProperties.</param>
+		/// [PifMgr_CloseProperties is available for use in the operating systems specified in the Requirements section.It may be altered or
+		/// unavailable in subsequent versions.]
+		/// <para>Closes application properties that were opened with PifMgr_OpenProperties.</para>
+		/// </summary>
+		/// <param name="hProps">
+		/// A handle to the application's properties. This parameter should be set to the value that is returned by PifMgr_OpenProperties.
+		/// </param>
 		/// <param name="flOpt">A flag that specifies how the function operates.</param>
-		/// <returns>Returns NULL if successful. If unsuccessful, the functions returns the handle to the application properties that was passed as hProps.</returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pifmgr_closeproperties
-		// HANDLE PifMgr_CloseProperties(HANDLE hProps, UINT flOpt);
+		/// <returns>
+		/// Returns NULL if successful. If unsuccessful, the functions returns the handle to the application properties that was passed as hProps.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pifmgr_closeproperties HANDLE
+		// PifMgr_CloseProperties(HANDLE hProps, UINT flOpt);
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "fd50d4f8-87c8-4162-9e88-3c8592b929fa")]
 		public static extern IntPtr PifMgr_CloseProperties(IntPtr hProps, CLOSEPROPS flOpt);
 
 		/// <summary>
-		/// [PifMgr_GetProperties is available for use in the operating systems specified in the Requirements section.It may be altered or unavailable in subsequent versions.]
-		/// <para>Returns a specified block of data from a .pif file.</para></summary>
-		/// <param name="hProps">A handle to an application's properties. This parameter should be set to the value that is returned by PifMgr_OpenProperties.</param>
-		/// <param name="pszGroup">A null-terminated string that contains the property group name. It can be one of the following, or any other name that corresponds to a valid .pif extension.</param>
+		/// [PifMgr_GetProperties is available for use in the operating systems specified in the Requirements section.It may be altered or
+		/// unavailable in subsequent versions.]
+		/// <para>Returns a specified block of data from a .pif file.</para>
+		/// </summary>
+		/// <param name="hProps">
+		/// A handle to an application's properties. This parameter should be set to the value that is returned by PifMgr_OpenProperties.
+		/// </param>
+		/// <param name="pszGroup">
+		/// A null-terminated string that contains the property group name. It can be one of the following, or any other name that
+		/// corresponds to a valid .pif extension.
+		/// </param>
 		/// <param name="lpProps">When this function returns, contains a pointer to a PROPPRG structure.</param>
 		/// <param name="cbProps">The size of the buffer, in bytes, pointed to by lpProps.</param>
 		/// <param name="flOpt">Set this parameter to GETPROPS_NONE.</param>
-		/// <returns>Returns NULL if successful. If unsuccessful, the function returns the handle to the application properties that were passed as hProps.</returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pifmgr_getproperties
-		// int PifMgr_GetProperties( HANDLE hProps, PCSTR pszGroup, void* lpProps, int cbProps, UINT flOpt );
+		/// <returns>
+		/// Returns NULL if successful. If unsuccessful, the function returns the handle to the application properties that were passed as hProps.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pifmgr_getproperties int PifMgr_GetProperties(
+		// HANDLE hProps, PCSTR pszGroup, void* lpProps, int cbProps, UINT flOpt );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("shlobj_core.h")]
 		public static extern int PifMgr_GetProperties(IntPtr hProps, string pszGroup, IntPtr lpProps, int cbProps, uint flOpt = 0);
@@ -1233,29 +1707,61 @@ namespace Vanara.PInvoke
 		/// <item>Searches the folders specified by the PATH environment variable.</item>
 		/// </list>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pifmgr_openproperties
-		// HANDLE PifMgr_OpenProperties( PCWSTR pszApp, PCWSTR pszPIF, UINT hInf, UINT flOpt );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pifmgr_openproperties HANDLE
+		// PifMgr_OpenProperties( PCWSTR pszApp, PCWSTR pszPIF, UINT hInf, UINT flOpt );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "0bc11528-7278-4765-b3cb-671ba82c9155")]
 		public static extern IntPtr PifMgr_OpenProperties([MarshalAs(UnmanagedType.LPWStr)] string pszApp, [MarshalAs(UnmanagedType.LPWStr)] string pszPIF, uint hInf, OPENPROPS flOpt);
+
 		/// <summary>
-		/// [PifMgr_SetProperties is available for use in the operating systems specified in the Requirements section.It may be altered or unavailable in subsequent versions.]
-		/// <para>Assigns values to a block of data from a .pif file.</para></summary>
-		/// <param name="hProps">A handle to the application's properties. This parameter should be set to the value that is returned by PifMgr_OpenProperties.</param>
-		/// <param name="pszGroup">A null-terminated ANSI string containing the property group name. It can be one of the following, or any other name that corresponds to a valid .pif extension.</param>
+		/// [PifMgr_SetProperties is available for use in the operating systems specified in the Requirements section.It may be altered or
+		/// unavailable in subsequent versions.]
+		/// <para>Assigns values to a block of data from a .pif file.</para>
+		/// </summary>
+		/// <param name="hProps">
+		/// A handle to the application's properties. This parameter should be set to the value that is returned by PifMgr_OpenProperties.
+		/// </param>
+		/// <param name="pszGroup">
+		/// A null-terminated ANSI string containing the property group name. It can be one of the following, or any other name that
+		/// corresponds to a valid .pif extension.
+		/// </param>
 		/// <param name="lpProps">A property group record buffer that holds the data.</param>
 		/// <param name="cbProps">The size of the buffer, in bytes, pointed to by lpProps.</param>
 		/// <param name="flOpt">Always SETPROPS_NONE.</param>
 		/// <returns>Returns the amount of information transferred, in bytes. Returns zero if the group cannot be found or an error occurs.</returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pifmgr_setproperties
-		// int PifMgr_SetProperties(HANDLE hProps, PCSTR pszGroup, const void* lpProps, int cbProps, UINT flOpt );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pifmgr_setproperties int
+		// PifMgr_SetProperties(HANDLE hProps, PCSTR pszGroup, const void* lpProps, int cbProps, UINT flOpt );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("shlobj_core.h")]
 		public static extern int PifMgr_SetProperties(IntPtr hProps, string pszGroup, IntPtr lpProps, int cbProps, uint flOpt = 0);
 
-		/// <summary><para>[ReadCabinetState is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in subsequent versions.]</para><para>Fills a CABINETSTATE structure with information from the registry.</para></summary><param name="pcs"><para>Type: <c>CABINETSTATE*</c></para><para>When this function returns, contains a pointer to a CABINETSTATE structure that contains either information pulled from the registry or default information.</para></param><param name="cLength"><para>Type: <c>int</c></para><para>The size of the structure pointed to by , in bytes.</para></param><returns><para>Type: <c>BOOL</c></para><para>Returns <c>TRUE</c> if the returned structure contains information from the registry. Returns <c>FALSE</c> if the structure contains default information.</para></returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-readcabinetstate
-		// BOOL ReadCabinetState( CABINETSTATE *pcs, int cLength );
+		/// <summary>
+		/// <para>
+		/// [ReadCabinetState is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Fills a CABINETSTATE structure with information from the registry.</para>
+		/// </summary>
+		/// <param name="pcs">
+		/// <para>Type: <c>CABINETSTATE*</c></para>
+		/// <para>
+		/// When this function returns, contains a pointer to a CABINETSTATE structure that contains either information pulled from the
+		/// registry or default information.
+		/// </para>
+		/// </param>
+		/// <param name="cLength">
+		/// <para>Type: <c>int</c></para>
+		/// <para>The size of the structure pointed to by , in bytes.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>
+		/// Returns <c>TRUE</c> if the returned structure contains information from the registry. Returns <c>FALSE</c> if the structure
+		/// contains default information.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-readcabinetstate BOOL ReadCabinetState(
+		// CABINETSTATE *pcs, int cLength );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "0f0c6a10-588f-4c79-b73b-cf0bf9336ffc")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -1314,9 +1820,8 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-realdrivetype
-		// int RealDriveType( int iDrive, BOOL fOKToHitNet );
-		// public static extern int RealDriveType(int iDrive, [MarshalAs(UnmanagedType.Bool)] bool fOKToHitNet);
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-realdrivetype int RealDriveType( int iDrive, BOOL
+		// fOKToHitNet ); public static extern int RealDriveType(int iDrive, [MarshalAs(UnmanagedType.Bool)] bool fOKToHitNet);
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "c4e55b50-637a-446f-aa9c-7d8c71d8071c")]
 		public static extern DRIVE_TYPE RealDriveType(int iDrive, [MarshalAs(UnmanagedType.Bool)] bool fOKToHitNet);
@@ -1345,8 +1850,8 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>int</c></para>
 		/// <para>Returns the identifier of the button that was pressed to close the dialog box.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-restartdialog
-		// int RestartDialog( HWND hwnd, PCWSTR pszPrompt, DWORD dwReturn );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-restartdialog int RestartDialog( HWND hwnd, PCWSTR
+		// pszPrompt, DWORD dwReturn );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "ec1e3c11-9960-482c-8461-72c4d41dff3c")]
 		public static extern int RestartDialog(HandleRef hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszPrompt, uint dwReturn);
@@ -1382,25 +1887,26 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>int</c></para>
 		/// <para>Returns the identifier of the button that was pressed to close the dialog box.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-restartdialogex
-		// int RestartDialogEx( HWND hwnd, PCWSTR pszPrompt, DWORD dwReturn, DWORD dwReasonCode );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-restartdialogex int RestartDialogEx( HWND hwnd,
+		// PCWSTR pszPrompt, DWORD dwReturn, DWORD dwReasonCode );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "32bc232f-6cc4-4f19-9d33-ba7ad28dfd59")]
 		public static extern int RestartDialogEx(HandleRef hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszPrompt, uint dwReturn, uint dwReasonCode);
 
 		/// <summary>
-		/// Notifies the system that an item has been accessed, for the purposes of tracking those items used most recently and most frequently. This function
-		/// can also be used to clear all usage data.
+		/// Notifies the system that an item has been accessed, for the purposes of tracking those items used most recently and most
+		/// frequently. This function can also be used to clear all usage data.
 		/// </summary>
 		/// <param name="uFlags">A value from the SHARD enumeration that indicates the form of the information pointed to by the pv parameter.</param>
 		/// <param name="pv">
-		/// A pointer to data that identifies the item that has been accessed. The item can be specified in this parameter in one of the following forms:
+		/// A pointer to data that identifies the item that has been accessed. The item can be specified in this parameter in one of the
+		/// following forms:
 		/// <list type="bullet">
 		/// <item><definition>A null-terminated string that contains the path and file name of the item.</definition></item>
 		/// <item><definition>A PIDL that identifies the item's file object.</definition></item>
 		/// <item>
-		/// <definition>Windows 7 and later only. A SHARDAPPIDINFO, SHARDAPPIDINFOIDLIST, or SHARDAPPIDINFOLINK structure that identifies the item through an
-		/// AppUserModelID. See Application User Model IDs (AppUserModelIDs) for more information.</definition>
+		/// <definition>Windows 7 and later only. A SHARDAPPIDINFO, SHARDAPPIDINFOIDLIST, or SHARDAPPIDINFOLINK structure that identifies the
+		/// item through an AppUserModelID. See Application User Model IDs (AppUserModelIDs) for more information.</definition>
 		/// </item>
 		/// <item><definition>Windows 7 and later only. An IShellLink object that identifies the item through a shortcut.</definition></item>
 		/// </list>
@@ -1412,18 +1918,19 @@ namespace Vanara.PInvoke
 		public static extern void SHAddToRecentDocs(SHARD uFlags, IShellLinkW pv);
 
 		/// <summary>
-		/// Notifies the system that an item has been accessed, for the purposes of tracking those items used most recently and most frequently. This function
-		/// can also be used to clear all usage data.
+		/// Notifies the system that an item has been accessed, for the purposes of tracking those items used most recently and most
+		/// frequently. This function can also be used to clear all usage data.
 		/// </summary>
 		/// <param name="uFlags">A value from the SHARD enumeration that indicates the form of the information pointed to by the pv parameter.</param>
 		/// <param name="pv">
-		/// A pointer to data that identifies the item that has been accessed. The item can be specified in this parameter in one of the following forms:
+		/// A pointer to data that identifies the item that has been accessed. The item can be specified in this parameter in one of the
+		/// following forms:
 		/// <list type="bullet">
 		/// <item><definition>A null-terminated string that contains the path and file name of the item.</definition></item>
 		/// <item><definition>A PIDL that identifies the item's file object.</definition></item>
 		/// <item>
-		/// <definition>Windows 7 and later only. A SHARDAPPIDINFO, SHARDAPPIDINFOIDLIST, or SHARDAPPIDINFOLINK structure that identifies the item through an
-		/// AppUserModelID. See Application User Model IDs (AppUserModelIDs) for more information.</definition>
+		/// <definition>Windows 7 and later only. A SHARDAPPIDINFO, SHARDAPPIDINFOIDLIST, or SHARDAPPIDINFOLINK structure that identifies the
+		/// item through an AppUserModelID. See Application User Model IDs (AppUserModelIDs) for more information.</definition>
 		/// </item>
 		/// <item><definition>Windows 7 and later only. An IShellLink object that identifies the item through a shortcut.</definition></item>
 		/// </list>
@@ -1435,18 +1942,19 @@ namespace Vanara.PInvoke
 		public static extern void SHAddToRecentDocs(SHARD uFlags, [MarshalAs(UnmanagedType.LPWStr)] string pv);
 
 		/// <summary>
-		/// Notifies the system that an item has been accessed, for the purposes of tracking those items used most recently and most frequently. This function
-		/// can also be used to clear all usage data.
+		/// Notifies the system that an item has been accessed, for the purposes of tracking those items used most recently and most
+		/// frequently. This function can also be used to clear all usage data.
 		/// </summary>
 		/// <param name="uFlags">A value from the SHARD enumeration that indicates the form of the information pointed to by the pv parameter.</param>
 		/// <param name="pv">
-		/// A pointer to data that identifies the item that has been accessed. The item can be specified in this parameter in one of the following forms:
+		/// A pointer to data that identifies the item that has been accessed. The item can be specified in this parameter in one of the
+		/// following forms:
 		/// <list type="bullet">
 		/// <item><definition>A null-terminated string that contains the path and file name of the item.</definition></item>
 		/// <item><definition>A PIDL that identifies the item's file object.</definition></item>
 		/// <item>
-		/// <definition>Windows 7 and later only. A SHARDAPPIDINFO, SHARDAPPIDINFOIDLIST, or SHARDAPPIDINFOLINK structure that identifies the item through an
-		/// AppUserModelID. See Application User Model IDs (AppUserModelIDs) for more information.</definition>
+		/// <definition>Windows 7 and later only. A SHARDAPPIDINFO, SHARDAPPIDINFOIDLIST, or SHARDAPPIDINFOLINK structure that identifies the
+		/// item through an AppUserModelID. See Application User Model IDs (AppUserModelIDs) for more information.</definition>
 		/// </item>
 		/// <item><definition>Windows 7 and later only. An IShellLink object that identifies the item through a shortcut.</definition></item>
 		/// </list>
@@ -1501,8 +2009,8 @@ namespace Vanara.PInvoke
 		/// function with <c>NULL</c> as the bind context.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shbindtofolderidlistparent
-		// SHSTDAPI SHBindToFolderIDListParent( IShellFolder *psfRoot, PCUIDLIST_RELATIVE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shbindtofolderidlistparent SHSTDAPI
+		// SHBindToFolderIDListParent( IShellFolder *psfRoot, PCUIDLIST_RELATIVE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "72a79d1b-15ed-475e-9ebd-03345579a06a")]
 		public static extern HRESULT SHBindToFolderIDListParent(IShellFolder psfRoot, PIDL pidl, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, IntPtr ppidlLast);
@@ -1550,8 +2058,9 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>HRESULT</c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shbindtofolderidlistparentex
-		// SHSTDAPI SHBindToFolderIDListParentEx( IShellFolder *psfRoot, PCUIDLIST_RELATIVE pidl, IBindCtx *ppbc, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shbindtofolderidlistparentex SHSTDAPI
+		// SHBindToFolderIDListParentEx( IShellFolder *psfRoot, PCUIDLIST_RELATIVE pidl, IBindCtx *ppbc, REFIID riid, void **ppv,
+		// PCUITEMID_CHILD *ppidlLast );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "4f9b68cb-d0ae-45f7-90f5-2db1da3ab599")]
 		public static extern HRESULT SHBindToFolderIDListParentEx(IShellFolder psfRoot, PIDL pidl, IBindCtx ppbc, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, IntPtr ppidlLast);
@@ -1598,17 +2107,55 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para><c>Note</c> This is a helper function that gets the desktop object by calling SHGetDesktopFolder.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shbindtoobject
-		// SHSTDAPI SHBindToObject( IShellFolder *psf, PCUIDLIST_RELATIVE pidl, IBindCtx *pbc, REFIID riid, void **ppv );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shbindtoobject SHSTDAPI SHBindToObject(
+		// IShellFolder *psf, PCUIDLIST_RELATIVE pidl, IBindCtx *pbc, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "acc16097-8301-4118-8cb5-00aa2705306a")]
 		public static extern HRESULT SHBindToObject(IShellFolder psf, PIDL pidl, IBindCtx pbc, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
+		/// <summary>
+		/// <para>
+		/// Takes a pointer to a fully qualified item identifier list (PIDL), and returns a specified interface pointer on the parent object.
+		/// </para>
+		/// </summary>
+		/// <param name="pidl">
+		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+		/// <para>The item's PIDL.</para>
+		/// </param>
+		/// <param name="riid">
+		/// <para>Type: <c>REFIID</c></para>
+		/// <para>The <c>REFIID</c> of one of the interfaces exposed by the item's parent object.</para>
+		/// </param>
+		/// <param name="ppv">
+		/// <para>Type: <c>VOID**</c></para>
+		/// <para>A pointer to the interface specified by riid. You must release the object when you are finished.</para>
+		/// </param>
+		/// <param name="ppidlLast">
+		/// <para>Type: <c>PCUITEMID_CHILD*</c></para>
+		/// <para>
+		/// The item's PIDL relative to the parent folder. This PIDL can be used with many of the methods supported by the parent folder's
+		/// interfaces. If you set to <c>NULL</c>, the PIDL is not returned.
+		/// </para>
+		/// <para>
+		/// <c>Note</c><c>SHBindToParent</c> does not allocate a new PIDL; it simply receives a pointer through this parameter. Therefore,
+		/// you are not responsible for freeing this resource.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shbindtoparent SHSTDAPI SHBindToParent(
+		// PCIDLIST_ABSOLUTE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "1cb283a6-3ebf-4986-9f32-5f6ab8d977ad")]
+		public static extern HRESULT SHBindToParent(PIDL pidl, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, ref IntPtr ppidlLast);
+
 		/// <summary>Displays a dialog box that enables the user to select a Shell folder.</summary>
 		/// <param name="lpbi">A pointer to a BROWSEINFO structure that contains information used to display the dialog box.</param>
 		/// <returns>
-		/// Returns a PIDL that specifies the location of the selected folder relative to the root of the namespace. If the user chooses the Cancel button in the
-		/// dialog box, the return value is NULL.
+		/// Returns a PIDL that specifies the location of the selected folder relative to the root of the namespace. If the user chooses the
+		/// Cancel button in the dialog box, the return value is NULL.
 		/// </returns>
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762115")]
@@ -1642,8 +2189,8 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>HANDLE</c></para>
 		/// <para>Returns a handle (HLOCK) to the locked memory. Pass this value to SHChangeNotification_Unlock when finished.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shchangenotification_lock
-		// HANDLE SHChangeNotification_Lock( HANDLE hChange, DWORD dwProcId, PIDLIST_ABSOLUTE **pppidl, LONG *plEvent );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shchangenotification_lock HANDLE
+		// SHChangeNotification_Lock( HANDLE hChange, DWORD dwProcId, PIDLIST_ABSOLUTE **pppidl, LONG *plEvent );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "8e22d5d0-64be-403c-982d-c23705d85223")]
 		public static extern IntPtr SHChangeNotification_Lock(IntPtr hChange, uint dwProcId, IntPtr pppidl, ref int plEvent);
@@ -1659,8 +2206,8 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>Returns <c>TRUE</c> on success; otherwise, <c>FALSE</c>.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shchangenotification_unlock
-		// BOOL SHChangeNotification_Unlock( HANDLE hLock );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shchangenotification_unlock BOOL
+		// SHChangeNotification_Unlock( HANDLE hLock );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "967ede1f-ee9c-46ee-a371-dcfc3a57d824")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -1701,12 +2248,114 @@ namespace Vanara.PInvoke
 		/// The <c>NTSHChangeNotifyDeregister</c> function, which is no longer available for use as of Windows Vista, was equivalent to <c>SHChangeNotifyDeregister</c>.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shchangenotifyderegister
-		// BOOL SHChangeNotifyDeregister( ULONG ulID );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shchangenotifyderegister BOOL
+		// SHChangeNotifyDeregister( ULONG ulID );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "fad021dc-8199-4384-b623-c98bc618799f")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SHChangeNotifyDeregister(uint ulID);
+
+		/// <summary>
+		/// <para>Registers a window to receive notifications from the file system or Shell, if the file system supports notifications.</para>
+		/// </summary>
+		/// <param name="hwnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window that receives the change or notification messages.</para>
+		/// </param>
+		/// <param name="fSources">
+		/// <para>Type: <c>int</c></para>
+		/// <para>One or more of the following values that indicate the type of events for which to receive notifications.</para>
+		/// <para>
+		/// <c>Note</c> In earlier versions of the SDK, these flags are not defined in a header file and implementers must define these
+		/// values themselves or use their numeric values directly. As of Windows Vista, these flags are defined in Shlobj.h.
+		/// </para>
+		/// <para>SHCNRF_InterruptLevel (0x0001)</para>
+		/// <para>Interrupt level notifications from the file system.</para>
+		/// <para>SHCNRF_ShellLevel (0x0002)</para>
+		/// <para>Shell-level notifications from the shell.</para>
+		/// <para>SHCNRF_RecursiveInterrupt (0x1000)</para>
+		/// <para>
+		/// Interrupt events on the whole subtree. This flag must be combined with the <c>SHCNRF_InterruptLevel</c> flag. When using this
+		/// flag, notifications must also be made recursive by setting the <c>fRecursive</c> member of the corresponding SHChangeNotifyEntry
+		/// structure referenced by to <c>TRUE</c>. Use of <c>SHCNRF_RecursiveInterrupt</c> on a single level view—for example, a PIDL that
+		/// is relative and contains only one SHITEMID—will block event notification at the highest level and thereby prevent a recursive,
+		/// child update. Thus, an icon dragged into the lowest level of a folder hierarchy may fail to appear in the view as expected.
+		/// </para>
+		/// <para>SHCNRF_NewDelivery (0x8000)</para>
+		/// <para>
+		/// Messages received use shared memory. Call SHChangeNotification_Lock to access the actual data. Call SHChangeNotification_Unlock
+		/// to release the memory when done.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> We recommend this flag because it provides a more robust delivery method. All clients should specify this flag.
+		/// </para>
+		/// </param>
+		/// <param name="fEvents">
+		/// <para>Type: <c>LONG</c></para>
+		/// <para>
+		/// Change notification events for which to receive notification. See the SHCNE flags listed in SHChangeNotify for possible values.
+		/// </para>
+		/// </param>
+		/// <param name="wMsg">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>Message to be posted to the window procedure.</para>
+		/// </param>
+		/// <param name="cEntries">
+		/// <para>Type: <c>int</c></para>
+		/// <para>Number of entries in the array.</para>
+		/// </param>
+		/// <param name="pshcne">
+		/// <para>Type: <c>const SHChangeNotifyEntry*</c></para>
+		/// <para>
+		/// Array of SHChangeNotifyEntry structures that contain the notifications. This array should always be set to one when calling
+		/// <c>SHChangeNotifyRegister</c> or SHChangeNotifyDeregister will not work properly.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>Returns a positive integer registration ID. Returns 0 if out of memory or in response to invalid parameters.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// See the Change Notify Watcher Sample in the Windows Software Development Kit (SDK) for a full example that demonstrates the use
+		/// of this function.
+		/// </para>
+		/// <para>When a change notification event is raised, the message indicated by is delivered to the window specified by the parameter.</para>
+		/// <list type="bullet">
+		/// <item>
+		/// If SHCNRF_NewDelivery is specified, the and values in the message should be passed to SHChangeNotification_Lock as the and
+		/// parameters respectively.
+		/// </item>
+		/// <item>
+		/// If SHCNRF_NewDelivery is not specified, is a pointer to two PIDLIST_ABSOLUTE pointers, and specifies the event. The two
+		/// PIDLIST_ABSOLUTE pointers can be <c>NULL</c>, depending on the event being sent.
+		/// </item>
+		/// </list>
+		/// <para>When a relevant file system event takes place and the</para>
+		/// <para>hwnd</para>
+		/// <para>parameter is not</para>
+		/// <para>NULL</para>
+		/// <para>, then the message indicated by</para>
+		/// <para>wMsg</para>
+		/// <para>is posted to the specified window. Otherwise, if the</para>
+		/// <para>pshcne</para>
+		/// <para>parameter is not</para>
+		/// <para>NULL</para>
+		/// <para>, then that notification entry is used.</para>
+		/// <para>
+		/// For performance reasons, multiple notifications can be combined into a single notification. For example, if a large number of
+		/// SHCNE_UPDATEITEM notifications are generated for files in the same folder, they can be joined into a single SHCNE_UPDATEDIR notification.
+		/// </para>
+		/// <para>
+		/// The <c>NTSHChangeNotifyRegister</c> function, which is no longer available as of Windows Vista, was equivalent to
+		/// <c>SHChangeNotifyRegister</c> with the SHCNRF_NewDelivery flag.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shchangenotifyregister ULONG
+		// SHChangeNotifyRegister( HWND hwnd, int fSources, LONG fEvents, UINT wMsg, int cEntries, const SHChangeNotifyEntry *pshcne );
+		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "73143865-ca2f-4578-a7a2-2ba4833eddd8")]
+		public static extern uint SHChangeNotifyRegister(HandleRef hwnd, SHCNRF fSources, SHCNE fEvents, uint wMsg, int cEntries, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] SHChangeNotifyEntry[] pshcne);
 
 		/// <summary>
 		/// <para>Enables asynchronous register and deregister of a thread.</para>
@@ -1718,8 +2367,8 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// <para>This function does not return a value.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj/nf-shlobj-shchangenotifyregisterthread
-		// void SHChangeNotifyRegisterThread( SCNRT_STATUS status );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj/nf-shlobj-shchangenotifyregisterthread void
+		// SHChangeNotifyRegisterThread( SCNRT_STATUS status );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj.h", MSDNShortId = "170afefc-b4de-4661-9c12-1341656b0fdb")]
 		public static extern void SHChangeNotifyRegisterThread(SCNRT_STATUS status);
@@ -1783,8 +2432,8 @@ namespace Vanara.PInvoke
 		/// lead to unexpected results.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shcreatedataobject
-		// SHSTDAPI SHCreateDataObject( PCIDLIST_ABSOLUTE pidlFolder, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, IDataObject *pdtInner, REFIID riid, void **ppv );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shcreatedataobject SHSTDAPI SHCreateDataObject(
+		// PCIDLIST_ABSOLUTE pidlFolder, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, IDataObject *pdtInner, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "d56cdafe-9463-43a5-8ef0-6cfaf0c524a8")]
 		public static extern HRESULT SHCreateDataObject(PIDL pidlFolder, uint cidl, [In, MarshalAs(UnmanagedType.LPArray)] PIDL[] apidl, IDataObject pdtInner, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IDataObject ppv);
@@ -1818,8 +2467,8 @@ namespace Vanara.PInvoke
 		/// implementations such as open, explore, delete, and copy.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shcreatedefaultcontextmenu
-		// SHSTDAPI SHCreateDefaultContextMenu( const DEFCONTEXTMENU *pdcm, REFIID riid, void **ppv );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shcreatedefaultcontextmenu SHSTDAPI
+		// SHCreateDefaultContextMenu( const DEFCONTEXTMENU *pdcm, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "055ff0a0-9ba7-463d-9684-3fd072b190da")]
 		public static extern HRESULT SHCreateDefaultContextMenu(ref DEFCONTEXTMENU pdcm, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
@@ -1882,8 +2531,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>To set security attributes on a new folder, use SHCreateDirectoryEx.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shcreatedirectory
-		// int SHCreateDirectory( HWND hwnd, PCWSTR pszPath );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shcreatedirectory int SHCreateDirectory( HWND
+		// hwnd, PCWSTR pszPath );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "4927429c-f457-4dda-aa0d-236eb236795c")]
 		public static extern Win32Error SHCreateDirectory([Optional] HandleRef hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszPath);
@@ -1964,8 +2613,8 @@ namespace Vanara.PInvoke
 		/// <item>If is set to <c>NULL</c>, no user interface is displayed and the function returns <c>ERROR_CANCELLED</c>.</item>
 		/// </list>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shcreatedirectoryexa
-		// int SHCreateDirectoryEx( HWND hwnd, LPCTSTR pszPath, const SECURITY_ATTRIBUTES *psa );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shcreatedirectoryexa int SHCreateDirectoryEx( HWND
+		// hwnd, LPCTSTR pszPath, const SECURITY_ATTRIBUTES *psa );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "7f44f907-cd12-4156-91c0-76e577ae25f6")]
 		public static extern Win32Error SHCreateDirectoryEx([Optional] HandleRef hwnd, string pszPath, [In] SECURITY_ATTRIBUTES psa);
@@ -2008,38 +2657,227 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>HRESULT</c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shcreatefileextracticonw
-		// SHSTDAPI SHCreateFileExtractIconW( LPCWSTR pszFile, DWORD dwFileAttributes, REFIID riid, void **ppv );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shcreatefileextracticonw SHSTDAPI
+		// SHCreateFileExtractIconW( LPCWSTR pszFile, DWORD dwFileAttributes, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "af3beb0a-892b-43e5-b5b8-8005f497b6e5")]
 		public static extern HRESULT SHCreateFileExtractIconW([MarshalAs(UnmanagedType.LPWStr)] string pszFile, FileFlagsAndAttributes dwFileAttributes, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
-		/// <summary>Creates a new instance of the default Shell folder view object (DefView).</summary>
-		/// <param name="pcsfv">Pointer to a SFV_CREATE structure that describes the particulars used in creating this instance of the Shell folder view object.</param>
-		/// <param name="ppsv">When this function returns successfully, contains an interface pointer to the new IShellView object. On failure, this value is NULL.</param>
-		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
-		[PInvokeData("Shlobj.h")]
+		/// <summary>
+		/// <para>
+		/// [SHCreatePropSheetExtArray is available for use in the operating systems specified in the Requirements section. It may be altered
+		/// or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Loads all the Shell property sheet extension handlers located under a specified registry key.</para>
+		/// </summary>
+		/// <param name="hKey">
+		/// <para>TBD</para>
+		/// </param>
+		/// <param name="pszSubKey">
+		/// <para>TBD</para>
+		/// </param>
+		/// <param name="max_iface">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The maximum number of property sheet handlers to be returned.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HPSXA</c></para>
+		/// <para>
+		/// Returns a handle to an array of property sheet handlers. Pass this value to SHAddFromPropSheetExtArray. You do not access this
+		/// value directly.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>When you are finished with the returned HPSXA handle, destroy it by calling SHDestroyPropSheetExtArray.</para>
+		/// <para>This function loads up to property sheet extensions into an array that is then passed to SHAddFromPropSheetExtArray.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj/nf-shlobj-shcreatepropsheetextarray WINSHELLAPI HPSXA
+		// SHCreatePropSheetExtArray( HKEY hKey, PCWSTR pszSubKey, UINT max_iface );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj.h", MSDNShortId = "88a72529-325d-431e-bc26-bddca787e62b")]
+		public static extern IntPtr SHCreatePropSheetExtArray(IntPtr hKey, [MarshalAs(UnmanagedType.LPWStr)] string pszSubKey, uint max_iface);
+
+		/// <summary>
+		/// <para>Creates a new instance of the default Shell folder view object (DefView).</para>
+		/// </summary>
+		/// <param name="pcsfv">
+		/// <para>Type: <c>const SFV_CREATE*</c></para>
+		/// <para>
+		/// Pointer to a SFV_CREATE structure that describes the particulars used in creating this instance of the Shell folder view object.
+		/// </para>
+		/// </param>
+		/// <param name="ppsv">
+		/// <para>Type: <c>IShellView**</c></para>
+		/// <para>
+		/// When this function returns successfully, contains an interface pointer to the new IShellView object. On failure, this value is <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>SHCreateShellFolderView</c> is recommended over SHCreateShellFolderViewEx because of the greater flexibility of its elements
+		/// to participate in various scenarios, provide new functionality to the view, and interact with other objects.
+		/// </para>
+		/// <para>
+		/// When dealing with several instances of IShellView, you might want to verify which is the default Shell folder view object. To do
+		/// so, call QueryInterface on the object using the IID_CDefView IID. This call succeeds only when made on the default Shell folder
+		/// view object.
+		/// </para>
+		/// <para>Data sources that use the default Shell folder view object must implement these interfaces:</para>
+		/// <list type="bullet">
+		/// <item>IShellFolder</item>
+		/// <item>IShellFolder2</item>
+		/// <item>IPersistFolder</item>
+		/// <item>IPersistFolder2</item>
+		/// </list>
+		/// <para>Optionally, they can also implement</para>
+		/// <para>IPersistFolder3</para>
+		/// <para>.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shcreateshellfolderview SHSTDAPI
+		// SHCreateShellFolderView( const SFV_CREATE *pcsfv, IShellView **ppsv );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "f2948a6d-84a5-456b-b328-ba76dba46e9d")]
 		public static extern HRESULT SHCreateShellFolderView(ref SFV_CREATE pcsfv, out IShellView ppsv);
 
+		/// <summary>
+		/// <para>
+		/// Creates a new instance of the default Shell folder view object. It is recommended that you use SHCreateShellFolderView rather
+		/// than this function.
+		/// </para>
+		/// </summary>
+		/// <param name="pcsfv">
+		/// <para>Type: <c>CSFV*</c></para>
+		/// <para>Pointer to a structure that describes the details used in creating this instance of the Shell folder view object.</para>
+		/// </param>
+		/// <param name="ppsv">
+		/// <para>Type: <c>IShellView**</c></para>
+		/// <para>
+		/// The address of an IShellView interface pointer that, when this function returns successfully, points to the new view object. On
+		/// failure, this value is <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// SHCreateShellFolderView is recommended over <c>SHCreateShellFolderViewEx</c> because of the greater flexibility of its elements
+		/// to participate in various scenarios, provide new functionality to the view, and interact with other objects.
+		/// </para>
+		/// <para>
+		/// When dealing with several instances of IShellView, you might want to verify which is the default Shell folder view object. To do
+		/// so, call QueryInterface on the object using IID_CDefView. This call succeeds only on the default Shell folder view object.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shcreateshellfolderviewex SHSTDAPI
+		// SHCreateShellFolderViewEx( CSFV *pcsfv, IShellView **ppsv );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "7edd6786-7d74-4065-8cf1-cbb489007a46")]
+		public static extern HRESULT SHCreateShellFolderViewEx(ref CSFV pcsfv, out IShellView ppsv);
+
+		/// <summary>
+		/// <para>Creates an IShellItem object.</para>
+		/// <para><c>Note</c> It is recommended that you use SHCreateItemWithParent or SHCreateItemFromIDList instead of this function.</para>
+		/// </summary>
+		/// <param name="pidlParent">
+		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+		/// <para>A PIDL to the parent. This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="psfParent">
+		/// <para>Type: <c>IShellFolder*</c></para>
+		/// <para>A pointer to the parent IShellFolder. This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="pidl">
+		/// <para>Type: <c>PCUITEMID_CHILD</c></para>
+		/// <para>A PIDL to the requested item. If parent information is not included in or , this must be an absolute PIDL.</para>
+		/// </param>
+		/// <param name="ppsi">
+		/// <para>Type: <c>IShellItem**</c></para>
+		/// <para>When this method returns, contains the interface pointer to the new IShellItem.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>SHCreateShellItem</c> creates an object that represents a Shell namespace item. The caller must provide parent information in
+		/// or ; alternatively, the caller can provide an absolute IDList in the parameter.
+		/// </para>
+		/// <para>There are three valid calling patterns for this function:</para>
+		/// <list type="number">
+		/// <item>
+		/// The parent folder is identified by an absolute IDList . The parameter points to a child IDList that identifies the item within
+		/// the folder identified by .
+		/// </item>
+		/// <item>
+		/// The parent folder is identified by . The parameter points to a child IDList that identifies the item within the folder identified
+		/// by .
+		/// </item>
+		/// <item>The item is identified by an absolute IDList passed to the parameter.</item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shcreateshellitem SHSTDAPI SHCreateShellItem(
+		// PCIDLIST_ABSOLUTE pidlParent, IShellFolder *psfParent, PCUITEMID_CHILD pidl, IShellItem **ppsi );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "d4371cdf-a8f4-4a39-ba66-97fd40ed46ae")]
+		public static extern HRESULT SHCreateShellItem(PIDL pidlParent, IShellFolder psfParent, PIDL pidl, out IShellItem ppsi);
+
+		/// <summary>
+		/// <para>
+		/// [SHCreateStdEnumFmtEtc is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Creates an IEnumFORMATETC object from an array of FORMATETC structures.</para>
+		/// </summary>
+		/// <param name="cfmt">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The number of entries in the array.</para>
+		/// </param>
+		/// <param name="afmt">
+		/// <para>Type: <c>const FORMATETC[]</c></para>
+		/// <para>An array of FORMATETC structures that specifies the clipboard formats of interest.</para>
+		/// </param>
+		/// <param name="ppenumFormatEtc">
+		/// <para>Type: <c>IEnumFORMATETC**</c></para>
+		/// <para>When this function returns successfully, receives an IEnumFORMATETC interface pointer. Receives <c>NULL</c> on failure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shcreatestdenumfmtetc SHSTDAPI
+		// SHCreateStdEnumFmtEtc( UINT cfmt, const FORMATETC [] afmt, IEnumFORMATETC **ppenumFormatEtc );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "c391c8c8-6062-4e70-9a1f-de0eb610250d")]
+		public static extern HRESULT SHCreateStdEnumFmtEtc(uint cfmt, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] FORMATETC[] afmt, out IEnumFORMATETC ppenumFormatEtc);
+
 		/// <summary>Provides a default handler to extract an icon from a file.</summary>
-		/// <param name="pszIconFile">A pointer to a null-terminated buffer that contains the path and name of the file from which the icon is extracted.</param>
+		/// <param name="pszIconFile">
+		/// A pointer to a null-terminated buffer that contains the path and name of the file from which the icon is extracted.
+		/// </param>
 		/// <param name="iIndex">
-		/// The location of the icon within the file named in pszIconFile. If this is a positive number, it refers to the zero-based position of the icon in the
-		/// file. For instance, 0 refers to the 1st icon in the resource file and 2 refers to the 3rd. If this is a negative number, it refers to the icon's
-		/// resource ID.
+		/// The location of the icon within the file named in pszIconFile. If this is a positive number, it refers to the zero-based position
+		/// of the icon in the file. For instance, 0 refers to the 1st icon in the resource file and 2 refers to the 3rd. If this is a
+		/// negative number, it refers to the icon's resource ID.
 		/// </param>
 		/// <param name="uFlags">A flag that controls the icon extraction.</param>
 		/// <param name="phiconLarge">
-		/// A pointer to an HICON that, when this function returns successfully, receives the handle of the large version of the icon specified in the LOWORD of
-		/// nIconSize. This value can be NULL.
+		/// A pointer to an HICON that, when this function returns successfully, receives the handle of the large version of the icon
+		/// specified in the LOWORD of nIconSize. This value can be NULL.
 		/// </param>
 		/// <param name="phiconSmall">
-		/// A pointer to an HICON that, when this function returns successfully, receives the handle of the small version of the icon specified in the HIWORD of nIconSize.
+		/// A pointer to an HICON that, when this function returns successfully, receives the handle of the small version of the icon
+		/// specified in the HIWORD of nIconSize.
 		/// </param>
 		/// <param name="nIconSize">
-		/// A value that contains the large icon size in its LOWORD and the small icon size in its HIWORD. Size is measured in pixels. Pass 0 to specify default
-		/// large and small sizes.
+		/// A value that contains the large icon size in its LOWORD and the small icon size in its HIWORD. Size is measured in pixels. Pass 0
+		/// to specify default large and small sizes.
 		/// </param>
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762149")]
@@ -2047,54 +2885,521 @@ namespace Vanara.PInvoke
 			ref IntPtr phiconSmall, uint nIconSize);
 
 		/// <summary>Provides a default handler to extract an icon from a file.</summary>
-		/// <param name="pszIconFile">A pointer to a null-terminated buffer that contains the path and name of the file from which the icon is extracted.</param>
+		/// <param name="pszIconFile">
+		/// A pointer to a null-terminated buffer that contains the path and name of the file from which the icon is extracted.
+		/// </param>
 		/// <param name="iIndex">
-		/// The location of the icon within the file named in pszIconFile. If this is a positive number, it refers to the zero-based position of the icon in the
-		/// file. For instance, 0 refers to the 1st icon in the resource file and 2 refers to the 3rd. If this is a negative number, it refers to the icon's
-		/// resource ID.
+		/// The location of the icon within the file named in pszIconFile. If this is a positive number, it refers to the zero-based position
+		/// of the icon in the file. For instance, 0 refers to the 1st icon in the resource file and 2 refers to the 3rd. If this is a
+		/// negative number, it refers to the icon's resource ID.
 		/// </param>
 		/// <param name="uFlags">A flag that controls the icon extraction.</param>
 		/// <param name="phiconLarge">
-		/// A pointer to an HICON that, when this function returns successfully, receives the handle of the large version of the icon specified in the LOWORD of
-		/// nIconSize. This value can be NULL.
+		/// A pointer to an HICON that, when this function returns successfully, receives the handle of the large version of the icon
+		/// specified in the LOWORD of nIconSize. This value can be NULL.
 		/// </param>
 		/// <param name="phiconSmall">
-		/// A pointer to an HICON that, when this function returns successfully, receives the handle of the small version of the icon specified in the HIWORD of nIconSize.
+		/// A pointer to an HICON that, when this function returns successfully, receives the handle of the small version of the icon
+		/// specified in the HIWORD of nIconSize.
 		/// </param>
 		/// <param name="nIconSize">
-		/// A value that contains the large icon size in its LOWORD and the small icon size in its HIWORD. Size is measured in pixels. Pass 0 to specify default
-		/// large and small sizes.
+		/// A value that contains the large icon size in its LOWORD and the small icon size in its HIWORD. Size is measured in pixels. Pass 0
+		/// to specify default large and small sizes.
 		/// </param>
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762149")]
 		public static extern HRESULT SHDefExtractIcon(string pszIconFile, int iIndex, uint uFlags, IntPtr phiconLarge,
 			ref IntPtr phiconSmall, uint nIconSize);
 
+		/// <summary>
+		/// <para>
+		/// [SHDestroyPropSheetExtArray is available for use in the operating systems specified in the Requirements section. It may be
+		/// altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Frees property sheet handlers that are pointed to an array created by SHCreatePropSheetExtArray.</para>
+		/// </summary>
+		/// <param name="hpsxa">
+		/// <para>Type: <c>HPSXA</c></para>
+		/// <para>The handle of the array that contains pointers to the property sheet handlers to destroy.</para>
+		/// </param>
+		/// <returns>
+		/// <para>This function does not return a value.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shdestroypropsheetextarray WINSHELLAPI void
+		// SHDestroyPropSheetExtArray( HPSXA hpsxa );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "beb3c1b1-deef-440d-8cf7-f76b3f396efa")]
+		public static extern void SHDestroyPropSheetExtArray(IntPtr hpsxa);
+
+		/// <summary>
+		/// <para>Executes a drag-and-drop operation. Supports drag source creation on demand, as well as drag images.</para>
+		/// </summary>
+		/// <param name="hwnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>The handle of the window used to obtain the drag image. This value can be <c>NULL</c>. See Remarks for more details.</para>
+		/// </param>
+		/// <param name="pdata">
+		/// <para>TBD</para>
+		/// </param>
+		/// <param name="pdsrc">
+		/// <para>Type: <c>IDropSource*</c></para>
+		/// <para>
+		/// A pointer to an implementation of the IDropSource interface, which is used to communicate with the source during the drag operation.
+		/// </para>
+		/// <para>As of Windows Vista, if this value is <c>NULL</c>, the Shell creates a drop source object for you.</para>
+		/// </param>
+		/// <param name="dwEffect">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The effects that the source allows in the drag-and-drop operation. The most significant effect is whether the drag-and-drop
+		/// operation permits a move. For a list of possible values, see DROPEFFECT.
+		/// </para>
+		/// </param>
+		/// <param name="pdwEffect">
+		/// <para>Type: <c>DWORD*</c></para>
+		/// <para>
+		/// A pointer to a value that indicates how the drag-and-drop operation affected the source data. The parameter is set only if the
+		/// operation is not canceled. For a list of possible values, see DROPEFFECT.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>This function supports the standard return value E_OUTOFMEMORY, as well as the following values:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DRAGDROP_S_DROP</term>
+		/// <term>The drag-and-drop operation was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>DRAGDROP_S_CANCEL</term>
+		/// <term>The drag-and-drop operation was canceled.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_UNSPEC</term>
+		/// <term>Unexpected error occurred.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// As of Windows Vista, if a drag image is not already stored in the data object and a drag image cannot be obtained from the window
+		/// specified by , the Shell provides a generic drag image. A drag image can fail to be obtained from the specified window either
+		/// because is <c>NULL</c> or the specified window does not support the DI_GETDRAGIMAGE message.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shdodragdrop SHSTDAPI SHDoDragDrop( HWND hwnd,
+		// IDataObject *pdata, IDropSource *pdsrc, DWORD dwEffect, DWORD *pdwEffect );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "76c98516-ede9-47de-b4ad-257a162775b9")]
+		public static extern HRESULT SHDoDragDrop(HandleRef hwnd, IDataObject pdata, [Optional] IntPtr pdsrc, DROPEFFECT dwEffect, ref DROPEFFECT pdwEffect);
+
+		/// <summary>
+		/// <para>
+		/// [Shell_GetCachedImageIndex is available for use in the operating systems specified in the Requirements section. It may be altered
+		/// or unavailable in subsequent versions. Instead, use
+		/// </para>
+		/// <para>Shell_GetCachedImageIndexA</para>
+		/// <para>or</para>
+		/// <para>Shell_GetCachedImageIndexW</para>
+		/// <para>.]</para>
+		/// <para>Retrieves the cache index of a cached icon.</para>
+		/// </summary>
+		/// <param name="pszIconPath">
+		/// <para>TBD</para>
+		/// </param>
+		/// <param name="iIconIndex">
+		/// <para>Type: <c>int</c></para>
+		/// <para>The index of the image within the file named at .</para>
+		/// </param>
+		/// <param name="uIconFlags">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>Not used.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Returns the index of the image, or –1 on failure.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>Shell_GetCachedImageIndexA</c> and <c>Shell_GetCachedImageIndexW</c> versions of this function were added in Windows
+		/// Vista. For Unicode strings, call either <c>Shell_GetCachedImageIndexW</c> or <c>Shell_GetCachedImageIndex</c>. For ANSI strings,
+		/// you must call <c>Shell_GetCachedImageIndexA</c> explicitly.
+		/// </para>
+		/// <para>
+		/// <c>Windows Server 2003 and Windows XP:</c> Only <c>Shell_GetCachedImageIndex</c> is supported. <c>Shell_GetCachedImageIndex</c>
+		/// requires a Unicode string.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shell_getcachedimageindexa int
+		// Shell_GetCachedImageIndexA( LPCSTR pszIconPath, int iIconIndex, UINT uIconFlags );
+		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "f0d4dd1f-a41c-4dd0-9713-e3aec48ff101")]
+		public static extern int Shell_GetCachedImageIndex(string pszIconPath, int iIconIndex, uint uIconFlags);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be altered or unavailable
+		/// in subsequent versions of Windows.]
+		/// </para>
+		/// <para>Retrieves system image lists for large and small icons.</para>
+		/// </summary>
+		/// <param name="phiml">
+		/// <para>Type: <c>HIMAGELIST*</c></para>
+		/// <para>A pointer to the handle of an image list which, on success, receives the system image list for large (32 x 32) icons.</para>
+		/// </param>
+		/// <param name="phimlSmall">
+		/// <para>Type: <c>HIMAGELIST*</c></para>
+		/// <para>A pointer to the handle of an image list which, on success, receives the system image list for small (16 x 16) icons.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Returns <c>TRUE</c> on success. On failure, returns <c>FALSE</c> and the image lists pointed to by and are unchanged.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>Important</c> The image lists retrieved through this function are global system image lists; do not call ImageList_Destroy
+		/// using them.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shell_getimagelists BOOL Shell_GetImageLists(
+		// HIMAGELIST *phiml, HIMAGELIST *phimlSmall );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "c3b73616-849c-4149-b04d-a7d389ebf700")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool Shell_GetImageLists(ref IntPtr phiml, ref IntPtr phimlSmall);
+
+		/// <summary>
+		/// <para>
+		/// [Shell_MergeMenus is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Merges two menus.</para>
+		/// </summary>
+		/// <param name="hmDst">
+		/// <para>Type: <c>HMENU</c></para>
+		/// <para>The destination menu to which is added.</para>
+		/// </param>
+		/// <param name="hmSrc">
+		/// <para>Type: <c>HMENU</c></para>
+		/// <para>The source menu which is added to .</para>
+		/// </param>
+		/// <param name="uInsert">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The point in after which the entries in are inserted.</para>
+		/// </param>
+		/// <param name="uIDAdjust">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// This number is added to each menu's ID to give an adjusted ID. Set to for no adjustment. The value for would typically be the
+		/// number of items in . This number can be obtained using the GetMenuItemCount.
+		/// </para>
+		/// </param>
+		/// <param name="uIDAdjustMax">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// The maximum adjusted ID to add to the menu. Any adjusted ID greater than this value is not added. To allow all IDs, set this
+		/// parameter to 0xFFFF.
+		/// </para>
+		/// </param>
+		/// <param name="uFlags">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>One or more of the following flags.</para>
+		/// <para>MM_ADDSEPARATOR</para>
+		/// <para>
+		/// Add a separator between the items from the two menus if one does not exist already. If you are inserting the entries from into
+		/// the middle of , a separator is added above and below the material.
+		/// </para>
+		/// <para>MM_DONTREMOVESEPS</para>
+		/// <para>Do not remove any existing separators in the two menus. Note that this could result in two separators in a row.</para>
+		/// <para>MM_SUBMENUSHAVEIDS</para>
+		/// <para>Set this flag if the submenus have IDs which should be adjusted.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>Returns the next open ID at the end of the menu (the maximum adjusted ID + 1).</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shell_mergemenus UINT Shell_MergeMenus( HMENU
+		// hmDst, HMENU hmSrc, UINT uInsert, UINT uIDAdjust, UINT uIDAdjustMax, ULONG uFlags );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "f9e005fd-b1f2-4a5f-ad36-9c44998dc4eb")]
+		public static extern uint Shell_MergeMenus(IntPtr hmDst, IntPtr hmSrc, uint uInsert, uint uIDAdjust, uint uIDAdjustMax, MM uFlags);
+
+		/// <summary>
+		/// <para>
+		/// [SHFind_InitMenuPopup is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>
+		/// Retrieves the IContextMenu instance for the submenu of options displayed for the <c>Search</c> entry in the Classic style Start menu.
+		/// </para>
+		/// </summary>
+		/// <param name="hmenu">
+		/// <para>Type: <c>HMENU</c></para>
+		/// <para>The handle of the popup menu.</para>
+		/// </param>
+		/// <param name="hwndOwner">
+		/// <para>TBD</para>
+		/// </param>
+		/// <param name="idCmdFirst">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The ID of the first menu item.</para>
+		/// </param>
+		/// <param name="idCmdLast">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The ID of the last menu item.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>IContextMenu*</c></para>
+		/// <para>If successful, returns an IContextMenu pointer. On failure, returns <c>NULL</c>.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shfind_initmenupopup IContextMenu *
+		// SHFind_InitMenuPopup( HMENU hmenu, HWND hwndOwner, UINT idCmdFirst, UINT idCmdLast );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "ca44bd57-6af0-45b3-9331-914e93360743")]
+		public static extern IContextMenu SHFind_InitMenuPopup(IntPtr hmenu, HandleRef hwndOwner, uint idCmdFirst, uint idCmdLast);
+
+		/// <summary>
+		/// <para>
+		/// [SHFindFiles is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Displays the <c>Search</c> window UI.</para>
+		/// </summary>
+		/// <param name="pidlFolder">
+		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+		/// <para>
+		/// The folder from which to start the search. This folder appears in the <c>Look in:</c> box in the <c>Search</c> window. This
+		/// folder and all of its subfolders are searched unless users choose other options in the <c>Search</c> window's <c>More Advanced
+		/// Options</c>. This value can be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="pidlSaveFile">
+		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+		/// <para>This parameter is not used and must be set to <c>NULL</c>.</para>
+		/// <para>
+		/// <c>Windows Server 2003 and Windows XP:</c> A saved search file (.fnd) to load. You can save search parameters to a .fnd file
+		/// after the search is begun. This value can be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Returns <c>TRUE</c> if successful in displaying the <c>Search</c> window; otherwise <c>FALSE</c>.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shfindfiles BOOL SHFindFiles( PCIDLIST_ABSOLUTE
+		// pidlFolder, PCIDLIST_ABSOLUTE pidlSaveFile );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "c54036c2-e6b9-4b21-b2b2-a6721c502ee5")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SHFindFiles(PIDL pidlFolder, IntPtr pidlSaveFile);
+
+		/// <summary>
+		/// <para>
+		/// [SHFlushSFCache is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Flushes the special folder cache.</para>
+		/// </summary>
+		/// <returns>
+		/// <para>This function does not return a value.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>SHFlushSFCache</c> is called when the path to a special folder is changed. This ensures that the updated path stored in the
+		/// registry is used rather than the cached value.
+		/// </para>
+		/// <para>For more information on special folders, see the section of Getting a Folder's ID.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shflushsfcache void SHFlushSFCache( );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "2e39b6b1-e60c-411c-aabc-5a3511f0693b")]
+		public static extern void SHFlushSFCache();
+
+		/// <summary>
+		/// <para>
+		/// [SHFormatDrive is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Opens the Shell's <c>Format</c> dialog box.</para>
+		/// </summary>
+		/// <param name="hwnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>
+		/// The handle of the parent window of the dialog box. The <c>Format</c> dialog box must have a parent window; therefore, this
+		/// parameter cannot be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="drive">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// The drive to format. The value of this parameter represents a letter drive starting at 0 for the A: drive. For example, a value
+		/// of 2 stands for the C: drive.
+		/// </para>
+		/// </param>
+		/// <param name="fmtID">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The ID of the physical format. Only the following flag is currently defined.</para>
+		/// <para>SHFMT_ID_DEFAULT (0xFFFF)</para>
+		/// <para>The default format ID.</para>
+		/// </param>
+		/// <param name="options">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// This value must be 0 or one of the following values that alter the default format options in the dialog box. This value is
+		/// regarded as a bitfield and should be treated accordingly.
+		/// </para>
+		/// <para>SHFMT_OPT_FULL (0x0001)</para>
+		/// <para>0x001. If this flag is set, then the <c>Quick Format</c> option is selected.</para>
+		/// <para>This function is included in Shlobj.h only in Windows XP with SP1 and later.</para>
+		/// <para><c>Windows XP:</c> Prior to Windows XP with SP1, this function is accessible through Shell32.lib.</para>
+		/// <para>SHFMT_OPT_SYSONLY (0x0002)</para>
+		/// <para>0x002. Selects the <c>Create an MS-DOS startup disk</c> option, creating a system boot disk.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// Returns the format ID of the last successful format or one of the following values. The LOWORD of this value can be passed on
+		/// subsequent calls as the parameter to repeat the last format.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SHFMT_ERROR</term>
+		/// <term>An error occurred during the last format. This does not indicate that the drive is unformattable.</term>
+		/// </item>
+		/// <item>
+		/// <term>SHFMT_CANCEL</term>
+		/// <term>The last format was canceled.</term>
+		/// </item>
+		/// <item>
+		/// <term>SHFMT_NOFORMAT</term>
+		/// <term>The drive cannot be formatted.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The format is controlled by the dialog box interface. That is, the user must click the <c>OK</c> button to actually begin the
+		/// format—the format cannot be started programmatically.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>
+		/// This call to <c>SHFormatDrive</c> brings up the Shell's Format dialog box for a disk in drive A, with the default formatting
+		/// options selected.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shformatdrive DWORD SHFormatDrive( HWND hwnd, UINT
+		// drive, UINT fmtID, UINT options );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "4aa255fa-c407-47db-9b1f-d449e0a0e94f")]
+		public static extern uint SHFormatDrive(HandleRef hwnd, uint drive, SHFMT_ID fmtID, SHFMT_OPT options);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be altered or unavailable
+		/// in subsequent versions of Windows. Use CoTaskMemFree instead.]
+		/// </para>
+		/// <para>Frees the memory allocated by SHAlloc.</para>
+		/// </summary>
+		/// <param name="pv">
+		/// <para>Type: <c>void*</c></para>
+		/// <para>A pointer to the memory allocated by SHAlloc.</para>
+		/// </param>
+		/// <returns>
+		/// <para>This function does not return a value.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shfree void SHFree( void *pv );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "c9a532ad-ae24-4505-9e7b-577b90365441")]
+		public static extern void SHFree(IntPtr pv);
+
+		/// <summary>
+		/// <para>
+		/// [SHGetAttributesFromDataObject is available for use in the operating systems specified in the Requirements section. It may be
+		/// altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Retrieves specified pieces of information from a system data object.</para>
+		/// </summary>
+		/// <param name="pdo">
+		/// <para>Type: <c>IDataObject*</c></para>
+		/// <para>The data object from which to retrieve the information.</para>
+		/// </param>
+		/// <param name="dwAttributeMask">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>One or more of the SFGAO flags that indicate which pieces of information the calling application wants to retrieve.</para>
+		/// </param>
+		/// <param name="pdwAttributes">
+		/// <para>Type: <c>DWORD*</c></para>
+		/// <para>
+		/// A pointer to a <c>DWORD</c> value that, when this function returns successfully, receives one or more SFGAO flags that indicate
+		/// the attributes, among those requested, that are common to all items in . This pointer can be <c>NULL</c> if this information is
+		/// not needed.
+		/// </para>
+		/// </param>
+		/// <param name="pcItems">
+		/// <para>Type: <c>UINT*</c></para>
+		/// <para>
+		/// A pointer to a <c>UINT</c> that, when this function returns successfully, receives the number of PIDLs in the data object pointed
+		/// to by . This pointer can be <c>NULL</c> if this information is not needed.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>This function can return one of these values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>Success.</term>
+		/// </item>
+		/// <item>
+		/// <term>S_FALSE</term>
+		/// <term>The object is not a system data object. In this case, is set to 0.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shgetattributesfromdataobject HRESULT
+		// SHGetAttributesFromDataObject( IDataObject *pdo, DWORD dwAttributeMask, DWORD *pdwAttributes, UINT *pcItems );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "bdc583ef-a5b6-4665-949c-50f79ace39dc")]
+		public static extern HRESULT SHGetAttributesFromDataObject(IDataObject pdo, SFGAO dwAttributeMask, out SFGAO pdwAttributes, out uint pcItems);
+
 		/// <summary>Retrieves extended property data from a relative identifier list.</summary>
 		/// <param name="psf">
-		/// The address of the parent IShellFolder interface. This must be the immediate parent of the ITEMIDLIST structure referenced by the pidl parameter.
+		/// The address of the parent IShellFolder interface. This must be the immediate parent of the ITEMIDLIST structure referenced by the
+		/// pidl parameter.
 		/// </param>
 		/// <param name="pidl">A pointer to an ITEMIDLIST structure that identifies the object relative to the folder specified in psf.</param>
 		/// <param name="nFormat">The format in which the data is being requested.</param>
 		/// <param name="pv">
-		/// A pointer to a buffer that, when this function returns successfully, receives the requested data. The format of this buffer is determined by nFormat.
+		/// A pointer to a buffer that, when this function returns successfully, receives the requested data. The format of this buffer is
+		/// determined by nFormat.
 		/// <para>
-		/// If nFormat is SHGDFIL_NETRESOURCE, there are two possible cases. If the buffer is large enough, the net resource's string information (fields for the
-		/// network name, local name, provider, and comments) will be placed into the buffer. If the buffer is not large enough, only the net resource structure
-		/// will be placed into the buffer and the string information pointers will be NULL.
+		/// If nFormat is SHGDFIL_NETRESOURCE, there are two possible cases. If the buffer is large enough, the net resource's string
+		/// information (fields for the network name, local name, provider, and comments) will be placed into the buffer. If the buffer is
+		/// not large enough, only the net resource structure will be placed into the buffer and the string information pointers will be NULL.
 		/// </para>
 		/// </param>
 		/// <param name="cb">Size of the buffer at pv, in bytes.</param>
 		/// <remarks>
-		/// This function extracts only information that is present in the pointer to an item identifier list (PIDL). Since the content of a PIDL depends on the
-		/// folder object that created the PIDL, there is no guarantee that all requested information will be available. In addition, the information that is
-		/// returned reflects the state of the object at the time the PIDL was created. The current state of the object could be different. For example, if you
-		/// set nFormat to SHGDFIL_FINDDATA, the function might assign meaningful values to only some of the members of the WIN32_FIND_DATA structure. The
-		/// remaining members will be set to zero. To retrieve complete current information on a file system file or folder, use standard file system functions
-		/// such as GetFileTime or FindFirstFile.
+		/// This function extracts only information that is present in the pointer to an item identifier list (PIDL). Since the content of a
+		/// PIDL depends on the folder object that created the PIDL, there is no guarantee that all requested information will be available.
+		/// In addition, the information that is returned reflects the state of the object at the time the PIDL was created. The current
+		/// state of the object could be different. For example, if you set nFormat to SHGDFIL_FINDDATA, the function might assign meaningful
+		/// values to only some of the members of the WIN32_FIND_DATA structure. The remaining members will be set to zero. To retrieve
+		/// complete current information on a file system file or folder, use standard file system functions such as GetFileTime or FindFirstFile.
 		/// <para>
-		/// E_INVALIDARG is returned if the psf, pidl, pv, or cb parameter does not match the nFormat parameter, or if nFormat is not one of the specific
-		/// SHGDFIL_ values shown above.
+		/// E_INVALIDARG is returned if the psf, pidl, pv, or cb parameter does not match the nFormat parameter, or if nFormat is not one of
+		/// the specific SHGDFIL_ values shown above.
 		/// </para>
 		/// </remarks>
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
@@ -2105,8 +3410,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>Retrieves the IShellFolder interface for the desktop folder, which is the root of the Shell's namespace.</summary>
 		/// <param name="ppv">
-		/// When this method returns, receives an IShellFolder interface pointer for the desktop folder. The calling application is responsible for eventually
-		/// freeing the interface by calling its IUnknown::Release method.
+		/// When this method returns, receives an IShellFolder interface pointer for the desktop folder. The calling application is
+		/// responsible for eventually freeing the interface by calling its IUnknown::Release method.
 		/// </param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[DllImport(Lib.Shell32, CharSet = CharSet.Unicode, ExactSpelling = true)]
@@ -2120,20 +3425,22 @@ namespace Vanara.PInvoke
 		/// A CSIDL value that identifies the folder to be located. The folders associated with the CSIDLs might not exist on a particular system.
 		/// </param>
 		/// <param name="hToken">
-		/// An access token that can be used to represent a particular user. It is usually set to NULL, but it may be needed when there are multiple users for
-		/// those folders that are treated as belonging to a single user. The most commonly used folder of this type is My Documents. The calling application is
-		/// responsible for correct impersonation when hToken is non-NULL. It must have appropriate security privileges for the particular user, and the user's
-		/// registry hive must be currently mounted.
+		/// An access token that can be used to represent a particular user. It is usually set to NULL, but it may be needed when there are
+		/// multiple users for those folders that are treated as belonging to a single user. The most commonly used folder of this type is My
+		/// Documents. The calling application is responsible for correct impersonation when hToken is non-NULL. It must have appropriate
+		/// security privileges for the particular user, and the user's registry hive must be currently mounted.
 		/// <para>
-		/// Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetFolderLocation to find folder locations (such as
-		/// the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user account is created, and includes special
-		/// folders such as My Documents and Desktop. Any items added to the Default User folder also appear in any new user account.
+		/// Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetFolderLocation to find
+		/// folder locations (such as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user
+		/// account is created, and includes special folders such as My Documents and Desktop. Any items added to the Default User folder
+		/// also appear in any new user account.
 		/// </para>
 		/// </param>
 		/// <param name="dwReserved">Reserved.</param>
 		/// <param name="ppidl">
-		/// The address of a pointer to an item identifier list structure that specifies the folder's location relative to the root of the namespace (the
-		/// desktop). The ppidl parameter is set to NULL on failure. The calling application is responsible for freeing this resource by calling CoTaskMemFree.
+		/// The address of a pointer to an item identifier list structure that specifies the folder's location relative to the root of the
+		/// namespace (the desktop). The ppidl parameter is set to NULL on failure. The calling application is responsible for freeing this
+		/// resource by calling CoTaskMemFree.
 		/// </param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762180")]
@@ -2141,51 +3448,54 @@ namespace Vanara.PInvoke
 			int dwReserved, out PIDL ppidl);
 
 		/// <summary>
-		/// Deprecated. Gets the path of a folder identified by a CSIDL value. <note>As of Windows Vista, this function is merely a wrapper for
-		/// SHGetKnownFolderPath. The CSIDL value is translated to its associated KNOWNFOLDERID and then SHGetKnownFolderPath is called. New applications should
-		/// use the known folder system rather than the older CSIDL system, which is supported only for backward compatibility.</note>
+		/// Deprecated. Gets the path of a folder identified by a CSIDL value. <note>As of Windows Vista, this function is merely a wrapper
+		/// for SHGetKnownFolderPath. The CSIDL value is translated to its associated KNOWNFOLDERID and then SHGetKnownFolderPath is called.
+		/// New applications should use the known folder system rather than the older CSIDL system, which is supported only for backward compatibility.</note>
 		/// </summary>
 		/// <param name="hwndOwner">Reserved.</param>
 		/// <param name="nFolder">
-		/// A CSIDL value that identifies the folder whose path is to be retrieved. Only real folders are valid. If a virtual folder is specified, this function
-		/// fails. You can force creation of a folder by combining the folder's CSIDL with CSIDL_FLAG_CREATE.
+		/// A CSIDL value that identifies the folder whose path is to be retrieved. Only real folders are valid. If a virtual folder is
+		/// specified, this function fails. You can force creation of a folder by combining the folder's CSIDL with CSIDL_FLAG_CREATE.
 		/// </param>
 		/// <param name="hToken">
-		/// An access token that represents a particular user. If this parameter is NULL, which is the most common usage, the function requests the known folder
-		/// for the current user.
+		/// An access token that represents a particular user. If this parameter is NULL, which is the most common usage, the function
+		/// requests the known folder for the current user.
 		/// <para>
-		/// Request a specific user's folder by passing the hToken of that user. This is typically done in the context of a service that has sufficient
-		/// privileges to retrieve the token of a given user. That token must be opened with TOKEN_QUERY and TOKEN_IMPERSONATE rights. In some cases, you also
-		/// need to include TOKEN_DUPLICATE. In addition to passing the user's hToken, the registry hive of that specific user must be mounted. See Access
-		/// Control for further discussion of access control issues.
+		/// Request a specific user's folder by passing the hToken of that user. This is typically done in the context of a service that has
+		/// sufficient privileges to retrieve the token of a given user. That token must be opened with TOKEN_QUERY and TOKEN_IMPERSONATE
+		/// rights. In some cases, you also need to include TOKEN_DUPLICATE. In addition to passing the user's hToken, the registry hive of
+		/// that specific user must be mounted. See Access Control for further discussion of access control issues.
 		/// </para>
 		/// <para>
-		/// Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetKnownFolderPath to find folder locations (such
-		/// as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user account is created, and includes special
-		/// folders such as Documents and Desktop. Any items added to the Default User folder also appear in any new user account. Note that access to the
-		/// Default User folders requires administrator privileges.
+		/// Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetKnownFolderPath to find
+		/// folder locations (such as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user
+		/// account is created, and includes special folders such as Documents and Desktop. Any items added to the Default User folder also
+		/// appear in any new user account. Note that access to the Default User folders requires administrator privileges.
 		/// </para>
 		/// </param>
 		/// <param name="dwFlags">
-		/// Flags that specify the path to be returned. This value is used in cases where the folder associated with a KNOWNFOLDERID (or CSIDL) can be moved,
-		/// renamed, redirected, or roamed across languages by a user or administrator.
+		/// Flags that specify the path to be returned. This value is used in cases where the folder associated with a KNOWNFOLDERID (or
+		/// CSIDL) can be moved, renamed, redirected, or roamed across languages by a user or administrator.
 		/// <para>
-		/// The known folder system that underlies SHGetFolderPath allows users or administrators to redirect a known folder to a location that suits their
-		/// needs. This is achieved by calling IKnownFolderManager::Redirect, which sets the "current" value of the folder associated with the SHGFP_TYPE_CURRENT flag.
+		/// The known folder system that underlies SHGetFolderPath allows users or administrators to redirect a known folder to a location
+		/// that suits their needs. This is achieved by calling IKnownFolderManager::Redirect, which sets the "current" value of the folder
+		/// associated with the SHGFP_TYPE_CURRENT flag.
 		/// </para>
 		/// <para>
-		/// The default value of the folder, which is the location of the folder if a user or administrator had not redirected it elsewhere, is retrieved by
-		/// specifying the SHGFP_TYPE_DEFAULT flag. This value can be used to implement a "restore defaults" feature for a known folder.
+		/// The default value of the folder, which is the location of the folder if a user or administrator had not redirected it elsewhere,
+		/// is retrieved by specifying the SHGFP_TYPE_DEFAULT flag. This value can be used to implement a "restore defaults" feature for a
+		/// known folder.
 		/// </para>
 		/// <para>
-		/// For example, the default value (SHGFP_TYPE_DEFAULT) for FOLDERID_Music (CSIDL_MYMUSIC) is "C:\Users\user name\Music". If the folder was redirected,
-		/// the current value (SHGFP_TYPE_CURRENT) might be "D:\Music". If the folder has not been redirected, then SHGFP_TYPE_DEFAULT and SHGFP_TYPE_CURRENT
-		/// retrieve the same path.
+		/// For example, the default value (SHGFP_TYPE_DEFAULT) for FOLDERID_Music (CSIDL_MYMUSIC) is "C:\Users\user name\Music". If the
+		/// folder was redirected, the current value (SHGFP_TYPE_CURRENT) might be "D:\Music". If the folder has not been redirected, then
+		/// SHGFP_TYPE_DEFAULT and SHGFP_TYPE_CURRENT retrieve the same path.
 		/// </para>
 		/// </param>
 		/// <param name="pszPath">
-		/// A pointer to a null-terminated string of length MAX_PATH which will receive the path. If an error occurs or S_FALSE is returned, this string will be
-		/// empty. The returned path does not include a trailing backslash. For example, "C:\Users" is returned rather than "C:\Users\".
+		/// A pointer to a null-terminated string of length MAX_PATH which will receive the path. If an error occurs or S_FALSE is returned,
+		/// this string will be empty. The returned path does not include a trailing backslash. For example, "C:\Users" is returned rather
+		/// than "C:\Users\".
 		/// </param>
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
@@ -2194,30 +3504,91 @@ namespace Vanara.PInvoke
 			SHGFP dwFlags, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPath);
 
 		/// <summary>
-		/// Retrieves the full path of a known folder identified by the folder's KNOWNFOLDERID. This extends SHGetKnownFolderPath by allowing you to set the
-		/// initial size of the string buffer.
+		/// <para>Gets the path of a folder and appends a user-provided subfolder path.</para>
 		/// </summary>
-		/// <param name="rfid">A reference to the KNOWNFOLDERID that identifies the folder.</param>
-		/// <param name="dwFlags">Flags that specify special retrieval options. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.</param>
-		/// <param name="hToken">
-		/// An access token that represents a particular user. If this parameter is NULL, which is the most common usage, the function requests the known folder
-		/// for the current user.
+		/// <param name="hwnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>Reserved.</para>
+		/// </param>
+		/// <param name="csidl">
+		/// <para>Type: <c>int</c></para>
 		/// <para>
-		/// Request a specific user's folder by passing the hToken of that user. This is typically done in the context of a service that has sufficient
-		/// privileges to retrieve the token of a given user. That token must be opened with TOKEN_QUERY and TOKEN_IMPERSONATE rights. In some cases, you also
-		/// need to include TOKEN_DUPLICATE. In addition to passing the user's hToken, the registry hive of that specific user must be mounted. See Access
-		/// Control for further discussion of access control issues.
+		/// A CSIDL value that identifies the folder whose path is to be retrieved. Only real folders are valid. If a virtual folder is
+		/// specified, this function fails. You can force creation of a folder with <c>SHGetFolderPathAndSubDir</c> by combining the folder's
+		/// <c>CSIDL</c> with CSIDL_FLAG_CREATE.
 		/// </para>
+		/// </param>
+		/// <param name="hToken">
+		/// <para>Type: <c>HANDLE</c></para>
 		/// <para>
-		/// Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetKnownFolderPath to find folder locations (such
-		/// as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user account is created, and includes special
-		/// folders such as Documents and Desktop. Any items added to the Default User folder also appear in any new user account. Note that access to the
-		/// Default User folders requires administrator privileges.
+		/// An access token that represents a particular user. For systems earlier than Windows 2000, set this value to <c>NULL</c>. For
+		/// later systems, is usually, but not always, set to <c>NULL</c>. You might need to assign a value to for those folders that can
+		/// have multiple users but are treated as belonging to a single user. The most commonly used folder of this type is My Documents.
+		/// </para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// Specifies whether the path to be returned is the actual path of the folder or the default path. This value is used in cases where
+		/// the folder associated with a CSIDL value may be moved or renamed by the user.
+		/// </para>
+		/// <para>SHGFP_TYPE_CURRENT</para>
+		/// <para>Return the folder's current path.</para>
+		/// <para>SHGFP_TYPE_DEFAULT</para>
+		/// <para>Return the folder's default path.</para>
+		/// </param>
+		/// <param name="pszSubDir">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>
+		/// A pointer to the subpath to be appended to the folder's path. This is a <c>null</c>-terminated string of length MAX_PATH. If you
+		/// are not creating a new directory, this must be an existing subdirectory or the function returns an error. This value can be
+		/// <c>NULL</c> if no subpath is to be appended.
 		/// </para>
 		/// </param>
 		/// <param name="pszPath">
-		/// A null-terminated, Unicode string. This buffer must be of size cchPath. When SHGetFolderPathEx returns successfully, this parameter contains the path
-		/// for the known folder.
+		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>
+		/// When this function returns, this value points to the directory path and appended subpath. This is a <c>null</c>-terminated string
+		/// of length MAX_PATH. This string is empty when the function returns an error code.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shgetfolderpathandsubdira HRESULT
+		// SHGetFolderPathAndSubDirA( HWND hwnd, int csidl, HANDLE hToken, DWORD dwFlags, LPCSTR pszSubDir, LPSTR pszPath );
+		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "7e92e136-1036-4c96-931f-6e0129fb839a")]
+		public static extern HRESULT SHGetFolderPathAndSubDirA(HandleRef hwnd, int csidl, SafeTokenHandle hToken, SHGFP dwFlags, string pszSubDir, StringBuilder pszPath);
+
+		/// <summary>
+		/// Retrieves the full path of a known folder identified by the folder's KNOWNFOLDERID. This extends SHGetKnownFolderPath by allowing
+		/// you to set the initial size of the string buffer.
+		/// </summary>
+		/// <param name="rfid">A reference to the KNOWNFOLDERID that identifies the folder.</param>
+		/// <param name="dwFlags">
+		/// Flags that specify special retrieval options. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.
+		/// </param>
+		/// <param name="hToken">
+		/// An access token that represents a particular user. If this parameter is NULL, which is the most common usage, the function
+		/// requests the known folder for the current user.
+		/// <para>
+		/// Request a specific user's folder by passing the hToken of that user. This is typically done in the context of a service that has
+		/// sufficient privileges to retrieve the token of a given user. That token must be opened with TOKEN_QUERY and TOKEN_IMPERSONATE
+		/// rights. In some cases, you also need to include TOKEN_DUPLICATE. In addition to passing the user's hToken, the registry hive of
+		/// that specific user must be mounted. See Access Control for further discussion of access control issues.
+		/// </para>
+		/// <para>
+		/// Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetKnownFolderPath to find
+		/// folder locations (such as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user
+		/// account is created, and includes special folders such as Documents and Desktop. Any items added to the Default User folder also
+		/// appear in any new user account. Note that access to the Default User folders requires administrator privileges.
+		/// </para>
+		/// </param>
+		/// <param name="pszPath">
+		/// A null-terminated, Unicode string. This buffer must be of size cchPath. When SHGetFolderPathEx returns successfully, this
+		/// parameter contains the path for the known folder.
 		/// </param>
 		/// <param name="cchPath">The size of the ppszPath buffer, in characters.</param>
 		[DllImport(Lib.Shell32, CharSet = CharSet.Unicode, ExactSpelling = true)]
@@ -2226,6 +3597,56 @@ namespace Vanara.PInvoke
 		public static extern HRESULT SHGetFolderPathEx([In, MarshalAs(UnmanagedType.LPStruct)]
 			Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] SafeTokenHandle hToken,
 			[Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPath, uint cchPath);
+
+		/// <summary>
+		/// <para>Returns the index of the overlay icon in the system image list.</para>
+		/// </summary>
+		/// <param name="pszIconPath">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>
+		/// A pointer to a null-terminated string of maximum length <c>MAX_PATH</c> that contains the fully qualified path of the file that
+		/// contains the icon.
+		/// </para>
+		/// </param>
+		/// <param name="iIconIndex">
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// The icon's index in the file pointed to by . To request a standard overlay icon, set to <c>NULL</c>, and to one of the following:
+		/// </para>
+		/// <para>IDO_SHGIOI_SHARE (0x0FFFFFFF)</para>
+		/// <para>The overlay icon that indicates a shared folder.</para>
+		/// <para>IDO_SHGIOI_LINK (0x0FFFFFFE)</para>
+		/// <para>The overlay icon that indicates a linked folder or file.</para>
+		/// <para>IDO_SHGIOI_SLOWFILE (0x0FFFFFFD)</para>
+		/// <para>The overlay icon that indicates a slow file.</para>
+		/// <para>IDO_SHGIOI_DEFAULT (0x0FFFFFFC)</para>
+		/// <para>
+		/// <c>Windows 7 and later</c>. The overlay icon that indicates that the item is the default in a set. One example is the default printer.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Returns the index of the overlay icon in the system image list if successful, or -1 otherwise.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Icon overlays are part of the system image list. They have two identifiers. The first is a one-based overlay index that
+		/// identifies the overlay relative to other overlays in the image list. The other is an image index that identifies the actual
+		/// image. These two indexes are equivalent to the values that you assign to the and parameters, respectively, when you add an icon
+		/// overlay to a private image list with ImageList_SetOverlayImage. <c>SHGetIconOverlayIndex</c> returns the overlay index. To
+		/// convert an overlay index to its equivalent image index, call INDEXTOOVERLAYMASK.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> After the image has been loaded into the system image list during initialization, it cannot be changed. The file name
+		/// and index specified by and are used only to identify the icon overlay. <c>SHGetIconOverlayIndex</c> cannot be used to modify the
+		/// system image list.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shgeticonoverlayindexa int SHGetIconOverlayIndexA(
+		// LPCSTR pszIconPath, int iIconIndex );
+		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "20001ae0-05d0-46a7-8bb8-9bb722f5d795")]
+		public static extern int SHGetIconOverlayIndex(string pszIconPath, int iIconIndex);
 
 		/// <summary>Retrieves the pointer to an item identifier list (PIDL) of an object.</summary>
 		/// <param name="iUnknown">A pointer to the IUnknown of the object from which to get the PIDL.</param>
@@ -2244,32 +3665,81 @@ namespace Vanara.PInvoke
 		public static extern HRESULT SHGetImageList(SHIL iImageList, [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
 			out IImageList ppv);
 
+		/// <summary>
+		/// <para>
+		/// Retrieves an interface that allows hosted Shell extensions and other components to prevent their host process from closing
+		/// prematurely. The host process is typically Windows Explorer or Windows Internet Explorer, but this function can also be used by
+		/// other applications.
+		/// </para>
+		/// </summary>
+		/// <param name="ppunk">
+		/// <para>Type: <c>IUnknown**</c></para>
+		/// <para>
+		/// When this function returns successfully, contains the address of the host process' IUnknown interface pointer. This is a
+		/// free-threaded interface used to prevent the host process from terminating. If the function call fails, this value is set to <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// There are a number of components, such as Shell extension handlers, that are implemented as DLLs and run in a host process such
+		/// as Windows Explorer (Explorer.exe) or Internet Explorer (Iexplore.exe). Typically, when the user closes the host process, the
+		/// component is shut down immediately as well. Such an abrupt termination can create problems for some components. For example, if a
+		/// component is using a background thread to download data or run user-interface functions, it might need additional time to safely
+		/// shut itself down.
+		/// </para>
+		/// <para>
+		/// <c>SHGetInstanceExplorer</c> allows components that run in a host process to hold a reference on the host process.
+		/// <c>SHGetInstanceExplorer</c> increments the host's reference count and returns a pointer to the host's IUnknown interface. By
+		/// holding that reference, a component can prevent the host process from closing prematurely. After the component has completed its
+		/// necessary processing, it should call (*ppunk)-&gt;Release to release the host's reference and allow the process to terminate.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> If <c>SHGetInstanceExplorer</c> is successful, the component must release the host's reference when it is no longer
+		/// needed. Otherwise, all resources associated with the process will remain in memory. The IUnknown interface pointed to by * can
+		/// only be used to release this reference. Components cannot use (*ppunk)-&gt;QueryInterface to request other interface pointers.
+		/// </para>
+		/// <para>SHGetInstanceExplorer</para>
+		/// <para>succeeds only if it is called from from an application which had previously called</para>
+		/// <para>SHSetInstanceExplorer</para>
+		/// <para>to set a process reference.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shgetinstanceexplorer SHSTDAPI
+		// SHGetInstanceExplorer( IUnknown **ppunk );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "ac6d8f7d-2eae-4b22-b493-b4ef740e3c95")]
+		public static extern HRESULT SHGetInstanceExplorer([MarshalAs(UnmanagedType.IUnknown)] out object ppunk);
+
 		/// <summary>Retrieves the path of a known folder as an ITEMIDLIST structure.</summary>
 		/// <param name="rfid">
-		/// A reference to the KNOWNFOLDERID that identifies the folder. The folders associated with the known folder IDs might not exist on a particular system.
+		/// A reference to the KNOWNFOLDERID that identifies the folder. The folders associated with the known folder IDs might not exist on
+		/// a particular system.
 		/// </param>
 		/// <param name="dwFlags">
 		/// Flags that specify special retrieval options. This value can be 0; otherwise, it is one or more of the KNOWN_FOLDER_FLAG values.
 		/// </param>
 		/// <param name="hToken">
-		/// An access token used to represent a particular user. This parameter is usually set to NULL, in which case the function tries to access the current
-		/// user's instance of the folder. However, you may need to assign a value to hToken for those folders that can have multiple users but are treated as
-		/// belonging to a single user. The most commonly used folder of this type is Documents.
+		/// An access token used to represent a particular user. This parameter is usually set to NULL, in which case the function tries to
+		/// access the current user's instance of the folder. However, you may need to assign a value to hToken for those folders that can
+		/// have multiple users but are treated as belonging to a single user. The most commonly used folder of this type is Documents.
 		/// <para>
-		/// The calling application is responsible for correct impersonation when hToken is non-null. It must have appropriate security privileges for the
-		/// particular user, including TOKEN_QUERY and TOKEN_IMPERSONATE, and the user's registry hive must be currently mounted. See Access Control for further
-		/// discussion of access control issues.
+		/// The calling application is responsible for correct impersonation when hToken is non-null. It must have appropriate security
+		/// privileges for the particular user, including TOKEN_QUERY and TOKEN_IMPERSONATE, and the user's registry hive must be currently
+		/// mounted. See Access Control for further discussion of access control issues.
 		/// </para>
 		/// <para>
-		/// Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetKnownFolderIDList to find folder locations (such
-		/// as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user account is created, and includes special
-		/// folders such as Documents and Desktop. Any items added to the Default User folder also appear in any new user account. Note that access to the
-		/// Default User folders requires administrator privileges.
+		/// Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetKnownFolderIDList to find
+		/// folder locations (such as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user
+		/// account is created, and includes special folders such as Documents and Desktop. Any items added to the Default User folder also
+		/// appear in any new user account. Note that access to the Default User folders requires administrator privileges.
 		/// </para>
 		/// </param>
 		/// <param name="ppidl">
-		/// When this method returns, contains a pointer to the PIDL of the folder. This parameter is passed uninitialized. The caller is responsible for freeing
-		/// the returned PIDL when it is no longer needed by calling ILFree.
+		/// When this method returns, contains a pointer to the PIDL of the folder. This parameter is passed uninitialized. The caller is
+		/// responsible for freeing the returned PIDL when it is no longer needed by calling ILFree.
 		/// </param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762187")]
@@ -2279,23 +3749,23 @@ namespace Vanara.PInvoke
 		/// <summary>Retrieves an IShellItem object that represents a known folder.</summary>
 		/// <param name="rfid">A reference to the KNOWNFOLDERID, a GUID that identifies the folder that contains the item.</param>
 		/// <param name="dwFlags">
-		/// Flags that specify special options used in the retrieval of the known folder IShellItem. This value can be KF_FLAG_DEFAULT; otherwise, one or more of
-		/// the KNOWN_FOLDER_FLAG values.
+		/// Flags that specify special options used in the retrieval of the known folder IShellItem. This value can be KF_FLAG_DEFAULT;
+		/// otherwise, one or more of the KNOWN_FOLDER_FLAG values.
 		/// </param>
 		/// <param name="hToken">
-		/// An access token used to represent a particular user. This parameter is usually set to NULL, in which case the function tries to access the current
-		/// user's instance of the folder. However, you may need to assign a value to hToken for those folders that can have multiple users but are treated as
-		/// belonging to a single user. The most commonly used folder of this type is Documents.
+		/// An access token used to represent a particular user. This parameter is usually set to NULL, in which case the function tries to
+		/// access the current user's instance of the folder. However, you may need to assign a value to hToken for those folders that can
+		/// have multiple users but are treated as belonging to a single user. The most commonly used folder of this type is Documents.
 		/// <para>
-		/// The calling application is responsible for correct impersonation when hToken is non-null. It must have appropriate security privileges for the
-		/// particular user, including TOKEN_QUERY and TOKEN_IMPERSONATE, and the user's registry hive must be currently mounted. See Access Control for further
-		/// discussion of access control issues.
+		/// The calling application is responsible for correct impersonation when hToken is non-null. It must have appropriate security
+		/// privileges for the particular user, including TOKEN_QUERY and TOKEN_IMPERSONATE, and the user's registry hive must be currently
+		/// mounted. See Access Control for further discussion of access control issues.
 		/// </para>
 		/// <para>
-		/// Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetKnownFolderIDList to find folder locations (such
-		/// as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user account is created, and includes special
-		/// folders such as Documents and Desktop. Any items added to the Default User folder also appear in any new user account. Note that access to the
-		/// Default User folders requires administrator privileges.
+		/// Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetKnownFolderIDList to find
+		/// folder locations (such as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user
+		/// account is created, and includes special folders such as Documents and Desktop. Any items added to the Default User folder also
+		/// appear in any new user account. Note that access to the Default User folders requires administrator privileges.
 		/// </para>
 		/// </param>
 		/// <param name="riid">A reference to the IID of the interface that represents the item, usually IID_IShellItem or IID_IShellItem2.</param>
@@ -2309,27 +3779,29 @@ namespace Vanara.PInvoke
 
 		/// <summary>Retrieves the full path of a known folder identified by the folder's KNOWNFOLDERID.</summary>
 		/// <param name="rfid">A reference to the KNOWNFOLDERID that identifies the folder.</param>
-		/// <param name="dwFlags">Flags that specify special retrieval options. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.</param>
+		/// <param name="dwFlags">
+		/// Flags that specify special retrieval options. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.
+		/// </param>
 		/// <param name="hToken">
-		/// An access token that represents a particular user. If this parameter is NULL, which is the most common usage, the function requests the known folder
-		/// for the current user.
+		/// An access token that represents a particular user. If this parameter is NULL, which is the most common usage, the function
+		/// requests the known folder for the current user.
 		/// <para>
-		/// Request a specific user's folder by passing the hToken of that user. This is typically done in the context of a service that has sufficient
-		/// privileges to retrieve the token of a given user. That token must be opened with TOKEN_QUERY and TOKEN_IMPERSONATE rights. In some cases, you also
-		/// need to include TOKEN_DUPLICATE. In addition to passing the user's hToken, the registry hive of that specific user must be mounted. See Access
-		/// Control for further discussion of access control issues.
+		/// Request a specific user's folder by passing the hToken of that user. This is typically done in the context of a service that has
+		/// sufficient privileges to retrieve the token of a given user. That token must be opened with TOKEN_QUERY and TOKEN_IMPERSONATE
+		/// rights. In some cases, you also need to include TOKEN_DUPLICATE. In addition to passing the user's hToken, the registry hive of
+		/// that specific user must be mounted. See Access Control for further discussion of access control issues.
 		/// </para>
 		/// <para>
-		/// Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetKnownFolderPath to find folder locations (such
-		/// as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user account is created, and includes special
-		/// folders such as Documents and Desktop. Any items added to the Default User folder also appear in any new user account. Note that access to the
-		/// Default User folders requires administrator privileges.
+		/// Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetKnownFolderPath to find
+		/// folder locations (such as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user
+		/// account is created, and includes special folders such as Documents and Desktop. Any items added to the Default User folder also
+		/// appear in any new user account. Note that access to the Default User folders requires administrator privileges.
 		/// </para>
 		/// </param>
 		/// <param name="pszPath">
-		/// When this method returns, contains the address of a pointer to a null-terminated Unicode string that specifies the path of the known folder. The
-		/// calling process is responsible for freeing this resource once it is no longer needed by calling CoTaskMemFree. The returned path does not include a
-		/// trailing backslash. For example, "C:\Users" is returned rather than "C:\Users\".
+		/// When this method returns, contains the address of a pointer to a null-terminated Unicode string that specifies the path of the
+		/// known folder. The calling process is responsible for freeing this resource once it is no longer needed by calling CoTaskMemFree.
+		/// The returned path does not include a trailing backslash. For example, "C:\Users" is returned rather than "C:\Users\".
 		/// </param>
 		/// <returns>Returns S_OK if successful, or an error value otherwise.</returns>
 		/// <remarks>This function replaces SHGetFolderPath. That older function is now simply a wrapper for SHGetKnownFolderPath.</remarks>
@@ -2340,21 +3812,23 @@ namespace Vanara.PInvoke
 
 		/// <summary>Retrieves the full path of a known folder identified by the folder's KNOWNFOLDERID.</summary>
 		/// <param name="id">A reference to the KNOWNFOLDERID that identifies the folder.</param>
-		/// <param name="dwFlags">Flags that specify special retrieval options. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.</param>
+		/// <param name="dwFlags">
+		/// Flags that specify special retrieval options. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.
+		/// </param>
 		/// <param name="hToken">
-		/// An access token that represents a particular user. If this parameter is NULL, which is the most common usage, the function requests the known folder
-		/// for the current user.
+		/// An access token that represents a particular user. If this parameter is NULL, which is the most common usage, the function
+		/// requests the known folder for the current user.
 		/// <para>
-		/// Request a specific user's folder by passing the hToken of that user. This is typically done in the context of a service that has sufficient
-		/// privileges to retrieve the token of a given user. That token must be opened with TOKEN_QUERY and TOKEN_IMPERSONATE rights. In some cases, you also
-		/// need to include TOKEN_DUPLICATE. In addition to passing the user's hToken, the registry hive of that specific user must be mounted. See Access
-		/// Control for further discussion of access control issues.
+		/// Request a specific user's folder by passing the hToken of that user. This is typically done in the context of a service that has
+		/// sufficient privileges to retrieve the token of a given user. That token must be opened with TOKEN_QUERY and TOKEN_IMPERSONATE
+		/// rights. In some cases, you also need to include TOKEN_DUPLICATE. In addition to passing the user's hToken, the registry hive of
+		/// that specific user must be mounted. See Access Control for further discussion of access control issues.
 		/// </para>
 		/// <para>
-		/// Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetKnownFolderPath to find folder locations (such
-		/// as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user account is created, and includes special
-		/// folders such as Documents and Desktop. Any items added to the Default User folder also appear in any new user account. Note that access to the
-		/// Default User folders requires administrator privileges.
+		/// Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetKnownFolderPath to find
+		/// folder locations (such as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user
+		/// account is created, and includes special folders such as Documents and Desktop. Any items added to the Default User folder also
+		/// appear in any new user account. Note that access to the Default User folders requires administrator privileges.
 		/// </para>
 		/// </param>
 		/// <returns>String that specifies the path of the known folder.</returns>
@@ -2369,7 +3843,9 @@ namespace Vanara.PInvoke
 		/// <summary>Retrieves the display name of an item identified by its IDList.</summary>
 		/// <param name="pidl">A PIDL that identifies the item.</param>
 		/// <param name="sigdnName">A value from the SIGDN enumeration that specifies the type of display name to retrieve.</param>
-		/// <param name="ppszName">A value that, when this function returns successfully, receives the address of a pointer to the retrieved display name.</param>
+		/// <param name="ppszName">
+		/// A value that, when this function returns successfully, receives the address of a pointer to the retrieved display name.
+		/// </param>
 		[DllImport(Lib.Shell32, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762191")]
 		public static extern HRESULT SHGetNameFromIDList(PIDL pidl, SIGDN sigdnName, out SafeCoTaskMemHandle ppszName);
@@ -2378,43 +3854,445 @@ namespace Vanara.PInvoke
 		/// <param name="pidl">
 		/// The address of an item identifier list that specifies a file or directory location relative to the root of the namespace (the desktop).
 		/// </param>
-		/// <param name="pszPath">The address of a buffer to receive the file system path. This buffer must be at least MAX_PATH characters in size.</param>
+		/// <param name="pszPath">
+		/// The address of a buffer to receive the file system path. This buffer must be at least MAX_PATH characters in size.
+		/// </param>
 		/// <returns>Returns TRUE if successful; otherwise, FALSE.</returns>
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762194")]
 		public static extern bool SHGetPathFromIDList(PIDL pidl, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder pszPath);
 
+		/// <summary>
+		/// <para>
+		/// Converts an item identifier list to a file system path. This function extends SHGetPathFromIDList by allowing you to set the
+		/// initial size of the string buffer and declare the options below.
+		/// </para>
+		/// </summary>
+		/// <param name="pidl">
+		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+		/// <para>
+		/// A pointer to an item identifier list that specifies a file or directory location relative to the root of the namespace (the desktop).
+		/// </para>
+		/// </param>
+		/// <param name="pszPath">
+		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>
+		/// When this function is called it is passed a null-terminated, Unicode buffer to receive the file system path. This buffer is of
+		/// size .
+		/// </para>
+		/// <para>
+		/// When this function returns, contains the address of a null-terminated, Unicode buffer that contains the file system path. This
+		/// buffer is of size .
+		/// </para>
+		/// </param>
+		/// <param name="cchPath">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The size of the buffer pointed to by , in characters.</para>
+		/// </param>
+		/// <param name="uOpts">
+		/// <para>Type: <c>GPFIDL_FLAGS</c></para>
+		/// <para>These flags determine the type of path returned.</para>
+		/// <para>GPFIDL_DEFAULT (0x0000)</para>
+		/// <para>Win32 file names, servers, and root drives are included.</para>
+		/// <para>GPFIDL_ALTNAME (0x0001)</para>
+		/// <para>Uses short file names.</para>
+		/// <para>GPFIDL_UNCPRINTER (0x0002)</para>
+		/// <para>Include UNC printer names items.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Returns <c>TRUE</c> if successful; otherwise, <c>FALSE</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Except for UNC printer names, if the location specified by the parameter is not part of the file system, this function fails.
+		/// </para>
+		/// <para>If the parameter specifies a shortcut, the contains the path to the shortcut, not to the shortcut's target.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shgetpathfromidlistex BOOL SHGetPathFromIDListEx(
+		// PCIDLIST_ABSOLUTE pidl, PWSTR pszPath, DWORD cchPath, GPFIDL_FLAGS uOpts );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "80270c59-275d-4b13-b16c-0c07bb79ed8e")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SHGetPathFromIDListEx(PIDL pidl, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPath, uint cchPath, GPFIDL_FLAGS uOpts);
+
+		/// <summary>
+		/// <para>
+		/// [SHGetRealIDL is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Converts a simple pointer to an item identifier list (PIDL) into a full PIDL.</para>
+		/// </summary>
+		/// <param name="psf">
+		/// <para>Type: <c>IShellFolder*</c></para>
+		/// <para>A pointer to an instance of IShellFolder whose simple PIDL is to be converted.</para>
+		/// </param>
+		/// <param name="pidlSimple">
+		/// <para>Type: <c>PCUITEMID_CHILD</c></para>
+		/// <para>The simple PIDL to be converted.</para>
+		/// </param>
+		/// <param name="ppidlReal">
+		/// <para>Type: <c>PITEMID_CHILD*</c></para>
+		/// <para>
+		/// When this method returns, contains a pointer to the full converted PIDL. If the function fails, this parameter is set to <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shgetrealidl SHSTDAPI SHGetRealIDL( IShellFolder
+		// *psf, PCUITEMID_CHILD pidlSimple, PITEMID_CHILD *ppidlReal );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "0c0b63c9-7ca7-4f73-be74-9c492f8506fc")]
+		public static extern HRESULT SHGetRealIDL(IShellFolder psf, PIDL pidlSimple, out IntPtr ppidlReal);
+
+		/// <summary>
+		/// <para>
+		/// [SHGetSetFolderCustomSettings is available for use in the operating systems specified in the Requirements section. It may be
+		/// altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Sets or retrieves custom folder settings. This function reads from and writes to Desktop.ini.</para>
+		/// </summary>
+		/// <param name="pfcs">
+		/// <para>Type: <c>LPSHFOLDERCUSTOMSETTINGS</c></para>
+		/// <para>A pointer to a SHFOLDERCUSTOMSETTINGS structure that provides or receives the custom folder settings.</para>
+		/// </param>
+		/// <param name="pszPath">
+		/// <para>Type: <c>PCTSTR</c></para>
+		/// <para>
+		/// A pointer to a null-terminated Unicode string that contains the path to the folder. The length of <c>pszPath</c> must be MAX_PATH
+		/// or less, including the terminating null character.
+		/// </para>
+		/// </param>
+		/// <param name="dwReadWrite">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>A flag that controls the action of the function. It may be one of the following values.</para>
+		/// <para>FCS_READ (0x00000001)</para>
+		/// <para>Retrieve the custom folder settings in .</para>
+		/// <para>FCS_FORCEWRITE (0x00000002)</para>
+		/// <para>Use to set the custom folder's settings regardless of whether the values are already present.</para>
+		/// <para>FCS_WRITE (FCS_READ | FCS_FORCEWRITE)</para>
+		/// <para>Use to set the custom folder's settings if the values are not already present.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Only Unicode strings are supported.</para>
+		/// <para><c>Windows Server 2003 and Windows XP:</c><c>SHGetSetFolderCustomSettings</c> supports both ANSI and Unicode strings.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shgetsetfoldercustomsettings SHSTDAPI
+		// SHGetSetFolderCustomSettings( LPSHFOLDERCUSTOMSETTINGS pfcs, PCWSTR pszPath, DWORD dwReadWrite );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "38b78a4b-ba68-4dff-812d-d4c7421eb202")]
+		public static extern HRESULT SHGetSetFolderCustomSettings(ref SHFOLDERCUSTOMSETTINGS pfcs, [MarshalAs(UnmanagedType.LPWStr)] string pszPath, FCS dwReadWrite);
+
+		/// <summary>
+		/// <para>
+		/// [SHGetSetSettings is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Sets or retrieves Shell state settings.</para>
+		/// </summary>
+		/// <param name="lpss">
+		/// <para>Type: <c>LPSHELLSTATE</c></para>
+		/// <para>A pointer to a SHELLSTATE structure that provides or receives the Shell state settings.</para>
+		/// </param>
+		/// <param name="dwMask">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>One or more of the SSF flags that indicate which settings should be set or retrieved.</para>
+		/// </param>
+		/// <param name="bSet">
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>
+		/// <c>TRUE</c> to indicate that the contents of should be used to set the Shell settings, <c>FALSE</c> to indicate that the Shell
+		/// settings should be retrieved to .
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>This function does not return a value.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shgetsetsettings void SHGetSetSettings(
+		// LPSHELLSTATE lpss, DWORD dwMask, BOOL bSet );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "d7c2646c-03e0-4d7a-9503-bdf487d43723")]
+		public static extern void SHGetSetSettings(ref SHELLSTATE lpss, SSF dwMask, [MarshalAs(UnmanagedType.Bool)] bool bSet);
+
+		/// <summary>
+		/// <para>Retrieves the current Shell option settings.</para>
+		/// </summary>
+		/// <param name="psfs">
+		/// <para>TBD</para>
+		/// </param>
+		/// <param name="dwMask">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>A set of flags that determine which members of are being requested. This can be one or more of the following values.</para>
+		/// <para>SSF_DESKTOPHTML</para>
+		/// <para>The <c>fDesktopHTML</c> member is being requested.</para>
+		/// <para>SSF_DONTPRETTYPATH</para>
+		/// <para>The <c>fDontPrettyPath</c> member is being requested.</para>
+		/// <para>SSF_DOUBLECLICKINWEBVIEW</para>
+		/// <para>The <c>fDoubleClickInWebView</c> member is being requested.</para>
+		/// <para>SSF_HIDEICONS</para>
+		/// <para>The <c>fHideIcons</c> member is being requested.</para>
+		/// <para>SSF_MAPNETDRVBUTTON</para>
+		/// <para>The <c>fMapNetDrvBtn</c> member is being requested.</para>
+		/// <para>SSF_NOCONFIRMRECYCLE</para>
+		/// <para>The <c>fNoConfirmRecycle</c> member is being requested.</para>
+		/// <para>SSF_SHOWALLOBJECTS</para>
+		/// <para>The <c>fShowAllObjects</c> member is being requested.</para>
+		/// <para>SSF_SHOWATTRIBCOL</para>
+		/// <para>The <c>fShowAttribCol</c> member is being requested.</para>
+		/// <para><c>Windows Vista:</c> Not used.</para>
+		/// <para>SSF_SHOWCOMPCOLOR</para>
+		/// <para>The <c>fShowCompColor</c> member is being requested.</para>
+		/// <para>SSF_SHOWEXTENSIONS</para>
+		/// <para>The <c>fShowExtensions</c> member is being requested.</para>
+		/// <para>SSF_SHOWINFOTIP</para>
+		/// <para>The <c>fShowInfoTip</c> member is being requested.</para>
+		/// <para>SSF_SHOWSYSFILES</para>
+		/// <para>The <c>fShowSysFiles</c> member is being requested.</para>
+		/// <para>SSF_WIN95CLASSIC</para>
+		/// <para>The <c>fWin95Classic</c> member is being requested.</para>
+		/// </param>
+		/// <returns>
+		/// <para>This function does not return a value.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shgetsettings void SHGetSettings( SHELLFLAGSTATE
+		// *psfs, DWORD dwMask );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "728a4004-f35d-4592-baf1-456a613a3344")]
+		public static extern void SHGetSettings(ref SHELLFLAGSTATE psfs, SSF dwMask);
+
+		/// <summary>
+		/// <para>
+		/// [SHHandleUpdateImage is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Handles the <c>SHCNE_UPDATEIMAGE</c> Shell change notification.</para>
+		/// </summary>
+		/// <param name="pidlExtra">
+		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+		/// <para>The index in the system image list that has changed, specified in the parameter of IShellChangeNotify::OnChange.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Returns -1 on failure or the index of the changed image list entry on success.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Use <c>SHHandleUpdateImage</c> only when the parameter received by your change notification callback is non- <c>NULL</c>.</para>
+		/// <para>Examples</para>
+		/// <para>The following example demonstrates the use of <c>SHHandleUpdateImage</c> in the implementation of IShellChangeNotify::OnChange.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shhandleupdateimage int SHHandleUpdateImage(
+		// PCIDLIST_ABSOLUTE pidlExtra );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "9d43e28a-bce0-4da4-98c9-5a6a199b4d8e")]
+		public static extern int SHHandleUpdateImage(PIDL pidlExtra);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be altered or unavailable
+		/// in subsequent versions of Windows.]
+		/// </para>
+		/// <para>Sets limits on valid characters for an edit control.</para>
+		/// </summary>
+		/// <param name="hwndEdit">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>The handle of the edit control.</para>
+		/// </param>
+		/// <param name="psf">
+		/// <para>Type: <c>IShellFolder*</c></para>
+		/// <para>
+		/// An IShellFolder interface pointer. This object must also implement IItemNameLimits, which supplies a list of invalid characters
+		/// and a maximum name length.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shlimitinputedit SHSTDAPI SHLimitInputEdit( HWND
+		// hwndEdit, IShellFolder *psf );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "3f03374f-8dfe-4b80-9ecc-12c6548f2865")]
+		public static extern HRESULT SHLimitInputEdit(HandleRef hwndEdit, IShellFolder psf);
+
+		/// <summary>
+		/// <para>Creates an instance of the specified object class from within the context of the Shell's process.</para>
+		/// <para><c>Windows Vista</c> and later: This function has been disabled and returns E_NOTIMPL.</para>
+		/// </summary>
+		/// <param name="rclsid">
+		/// <para>Type: <c>REFCLSID</c></para>
+		/// <para>The CLSID of the object class to be created.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>Returns S_OK if successful, or an error value otherwise. In Windows Vista and later versions, always returns E_NOTIMPL.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>Note</c> This function is available through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It is not available in
+		/// later versions of Windows, including Windows Vista.
+		/// </para>
+		/// <para>
+		/// This function creates the requested object instance by calling the CoCreateInstance function and immediately releasing the
+		/// returned object. The associated DLL is unloaded according to standard Component Object Model (COM) rules when it returns S_OK
+		/// from its DllCanUnloadNow function.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shloadinproc SHSTDAPI SHLoadInProc( REFCLSID
+		// rclsid );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "307b99d9-2d0a-47c5-8a10-dfdc0a408942")]
+		public static extern HRESULT SHLoadInProc([MarshalAs(UnmanagedType.LPStruct)] Guid rclsid);
+
+		/// <summary>
+		/// <para>
+		/// [ <c>SHMapPIDLToSystemImageListIndex</c> is available for use in the operating systems specified in the Requirements section. It
+		/// may be altered or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Retrieves the icon index from the system image list that is associated with a folder item.</para>
+		/// </summary>
+		/// <param name="psf">
+		/// <para>Type: <c><c>IShellFolder</c>*</c></para>
+		/// <para>An <c>IShellFolder</c> interface pointer for the folder that contains the item.</para>
+		/// </param>
+		/// <param name="pidl">
+		/// <para>Type: <c>PCUITEMID_CHILD</c></para>
+		/// <para>A pointer to the item's <c>ITEMIDLIST</c> structure.</para>
+		/// </param>
+		/// <param name="piIndex">
+		/// <para>Type: <c>int*</c></para>
+		/// <para>
+		/// A pointer to an <c>int</c> that, when this function returns successfully, receives the index of the item's <c>open</c> icon in
+		/// the system image list. If the item does not have a special <c>open</c> icon then the index of its normal icon is returned. If the
+		/// <c>open</c> icon exists and cannot be obtained, then the value pointed to by piIndex is set to -1. This parameter can be
+		/// <c>NULL</c> if the calling application is not interested in the <c>open</c> icon.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>int</c></para>
+		/// <para>Returns the index of the item's normal icon in the system image list if successful, or -1 otherwise.</para>
+		/// </returns>
+		// int SHMapPIDLToSystemImageListIndex( _In_ IShellFolder *psf, _In_ PCUITEMID_CHILD pidl, _Out_opt_ int *piIndex); https://msdn.microsoft.com/en-us/library/windows/desktop/bb762219(v=vs.85).aspx
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Shlobj_core.h", MSDNShortId = "bb762219")]
+		public static extern int SHMapPIDLToSystemImageListIndex(IShellFolder psf, PIDL pidl, out int piIndex);
+
+		/// <summary>
+		/// <para>
+		/// Displays a merged property sheet for a set of files. Property values common to all the files are shown while those that differ
+		/// display the string <c>(multiple values)</c>.
+		/// </para>
+		/// </summary>
+		/// <param name="pdtobj">
+		/// <para>Type: <c>IDataObject*</c></para>
+		/// <para>
+		/// A pointer to a data object that supplies the PIDLs of all of the files for which to display the merged property sheet. The data
+		/// object must use the CFSTR_SHELLIDLIST clipboard format. The parent folder's implementation of IShellFolder::GetDisplayNameOf must
+		/// return a fully qualified file system path for each item in response to the SHGDN_FORPARSING flag.
+		/// </para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>Reserved. Must be set to 0.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj/nf-shlobj-shmultifileproperties SHSTDAPI SHMultiFileProperties(
+		// IDataObject *pdtobj, DWORD dwFlags );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj.h", MSDNShortId = "7c66fd91-4f7a-45f3-b849-bf210c552511")]
+		public static extern HRESULT SHMultiFileProperties(IDataObject pdtobj, uint dwFlags = 0);
+
+		/// <summary>
+		/// <para>
+		/// [SHObjectProperties is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Invokes the <c>Properties</c> context menu command on a Shell object.</para>
+		/// </summary>
+		/// <param name="hwnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>The handle of the parent window of the dialog box. This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="shopObjectType">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>A flag value that specifies the type of object.</para>
+		/// <para>SHOP_PRINTERNAME</para>
+		/// <para>contains the friendly name of a printer.</para>
+		/// <para>SHOP_FILEPATH</para>
+		/// <para>contains a fully qualified file name.</para>
+		/// <para>SHOP_VOLUMEGUID</para>
+		/// <para>
+		/// contains either (a) a volume name of the form \?\Volume{GUID}, where {GUID} is a globally unique identifier (for example,
+		/// "\?\Volume{2eca078d-5cbc-43d3-aff8-7e8511f60d0e})", or (b) a drive path (for example, "C:").
+		/// </para>
+		/// </param>
+		/// <param name="pszObjectName">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>
+		/// A null-terminated Unicode string that contains the object name. The contents of the string are determined by the flag set in .
+		/// </para>
+		/// </param>
+		/// <param name="pszPropertyPage">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>
+		/// A null-terminated Unicode string that contains the name of the property sheet page to be opened initially. Set this parameter to
+		/// <c>NULL</c> to specify the default page.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para><c>TRUE</c> if the command is successfully invoked; otherwise, <c>FALSE</c>.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shobjectproperties BOOL SHObjectProperties( HWND
+		// hwnd, DWORD shopObjectType, PCWSTR pszObjectName, PCWSTR pszPropertyPage );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "7517c461-955b-446e-85d7-a707c9bd183a")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SHObjectProperties(HandleRef hwnd, SHOP shopObjectType, string pszObjectName, string pszPropertyPage);
+
 		/// <summary>Opens a Windows Explorer window with specified items in a particular folder selected.</summary>
 		/// <param name="pidlFolder">A pointer to a fully qualified item ID list that specifies the folder.</param>
 		/// <param name="cidl">
-		/// A count of items in the selection array, apidl. If cidl is zero, then pidlFolder must point to a fully specified ITEMIDLIST describing a single item
-		/// to select. This function opens the parent folder and selects that item.
+		/// A count of items in the selection array, apidl. If cidl is zero, then pidlFolder must point to a fully specified ITEMIDLIST
+		/// describing a single item to select. This function opens the parent folder and selects that item.
 		/// </param>
-		/// <param name="apidl">A pointer to an array of PIDL structures, each of which is an item to select in the target folder referenced by pidlFolder.</param>
-		/// <param name="dwFlags">The optional flags. Under Windows XP this parameter is ignored. In Windows Vista, the following flags are defined.</param>
+		/// <param name="apidl">
+		/// A pointer to an array of PIDL structures, each of which is an item to select in the target folder referenced by pidlFolder.
+		/// </param>
+		/// <param name="dwFlags">
+		/// The optional flags. Under Windows XP this parameter is ignored. In Windows Vista, the following flags are defined.
+		/// </param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762232")]
 		public static extern HRESULT SHOpenFolderAndSelectItems(PIDL pidlFolder, uint cidl,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, OFASI dwFlags);
 
 		/// <summary>
-		/// Translates a Shell namespace object's display name into an item identifier list and returns the attributes of the object. This function is the
-		/// preferred method to convert a string to a pointer to an item identifier list (PIDL).
+		/// Translates a Shell namespace object's display name into an item identifier list and returns the attributes of the object. This
+		/// function is the preferred method to convert a string to a pointer to an item identifier list (PIDL).
 		/// </summary>
 		/// <param name="pszName">A pointer to a zero-terminated wide string that contains the display name to parse.</param>
 		/// <param name="pbc">A bind context that controls the parsing operation. This parameter is normally set to NULL.</param>
 		/// <param name="ppidl">
-		/// The address of a pointer to a variable of type ITEMIDLIST that receives the item identifier list for the object. If an error occurs, then this
-		/// parameter is set to NULL.
+		/// The address of a pointer to a variable of type ITEMIDLIST that receives the item identifier list for the object. If an error
+		/// occurs, then this parameter is set to NULL.
 		/// </param>
 		/// <param name="sfgaoIn">
-		/// A ULONG value that specifies the attributes to query. To query for one or more attributes, initialize this parameter with the flags that represent
-		/// the attributes of interest. For a list of available SFGAO flags, see IShellFolder::GetAttributesOf.
+		/// A ULONG value that specifies the attributes to query. To query for one or more attributes, initialize this parameter with the
+		/// flags that represent the attributes of interest. For a list of available SFGAO flags, see IShellFolder::GetAttributesOf.
 		/// </param>
 		/// <param name="psfgaoOut">
-		/// A pointer to a ULONG. On return, those attributes that are true for the object and were requested in sfgaoIn are set. An object's attribute flags can
-		/// be zero or a combination of SFGAO flags. For a list of available SFGAO flags, see IShellFolder::GetAttributesOf.
+		/// A pointer to a ULONG. On return, those attributes that are true for the object and were requested in sfgaoIn are set. An object's
+		/// attribute flags can be zero or a combination of SFGAO flags. For a list of available SFGAO flags, see IShellFolder::GetAttributesOf.
 		/// </param>
 		[DllImport(Lib.Shell32, CharSet = CharSet.Unicode, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762236")]
@@ -2431,42 +4309,111 @@ namespace Vanara.PInvoke
 		/// and WriteCabinetState functions.
 		/// </para>
 		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-cabinetstate
-		// typedef struct CABINETSTATE { WORD cLength; WORD nVersion; BOOL fFullPathTitle : 1; BOOL fSaveLocalView : 1; BOOL fNotShell : 1; BOOL fSimpleDefault : 1; BOOL fDontShowDescBar : 1; BOOL fNewWindowMode : 1; BOOL fShowCompColor : 1; BOOL fDontPrettyNames : 1; BOOL fAdminsCreateCommonGroups : 1; UINT fUnusedFlags : 7; UINT fMenuEnumFilter; } *LPCABINETSTATE;
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-cabinetstate typedef struct CABINETSTATE { WORD
+		// cLength; WORD nVersion; BOOL fFullPathTitle : 1; BOOL fSaveLocalView : 1; BOOL fNotShell : 1; BOOL fSimpleDefault : 1; BOOL
+		// fDontShowDescBar : 1; BOOL fNewWindowMode : 1; BOOL fShowCompColor : 1; BOOL fDontPrettyNames : 1; BOOL fAdminsCreateCommonGroups
+		// : 1; UINT fUnusedFlags : 7; UINT fMenuEnumFilter; } *LPCABINETSTATE;
 		[PInvokeData("shlobj_core.h", MSDNShortId = "4b82b6a8-c4c0-4af2-9612-0551376c1c62")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct CABINETSTATE
 		{
-			/// <summary><para>Type: <c>WORD</c></para><para>The size of the structure, in bytes.</para></summary>
+			/// <summary>
+			/// <para>Type: <c>WORD</c></para>
+			/// <para>The size of the structure, in bytes.</para>
+			/// </summary>
 			public ushort cLength;
-			/// <summary><para>Type: <c>WORD</c></para></summary>
+
+			/// <summary>
+			/// <para>Type: <c>WORD</c></para>
+			/// </summary>
 			public ushort nVersion;
+
 			private ushort fFlags;
-			/// <summary><para>Type: <c>UINT</c></para><para>One or both of the following flags.</para><para>SHCONTF_FOLDERS</para><para>Display folders.</para><para>SHCONTF_NONFOLDERS</para><para>Display non-folder items.</para></summary>
+
+			/// <summary>
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>One or both of the following flags.</para>
+			/// <para>SHCONTF_FOLDERS</para>
+			/// <para>Display folders.</para>
+			/// <para>SHCONTF_NONFOLDERS</para>
+			/// <para>Display non-folder items.</para>
+			/// </summary>
 			public SHCONTF fMenuEnumFilter;
 
-			/// <summary><para>Type: <c>BOOL</c></para><para>TRUE</para><para>Display the full path in the title bar.</para><para>FALSE</para><para>Display only the file name in the title bar.</para></summary>
-			public bool fFullPathTitle { get => (fFlags & 1 << 0) != 0; set { if (value) fFlags |= 1 << 0; else { int i = fFlags; i &= ~(1 << 0); fFlags = (ushort)i; } } }
-			/// <summary><para>Type: <c>BOOL</c></para><para>TRUE</para><para>Remember each folder&#39;s view settings.</para><para>FALSE</para><para>Use global settings for all folders.</para></summary>
-			public bool fSaveLocalView { get => (fFlags & 1 << 1) != 0; set { if (value) fFlags |= 1 << 1; else { int i = fFlags; i &= ~(1 << 1); fFlags = (ushort)i; } } }
-			/// <summary><para>Type: <c>BOOL</c></para><para>Not used.</para></summary>
-			public bool fNotShell { get => (fFlags & 1 << 2) != 0; set { if (value) fFlags |= 1 << 2; else { int i = fFlags; i &= ~(1 << 2); fFlags = (ushort)i; } } }
-			/// <summary><para>Type: <c>BOOL</c></para><para>Not used.</para></summary>
-			public bool fSimpleDefault { get => (fFlags & 1 << 3) != 0; set { if (value) fFlags |= 1 << 3; else { int i = fFlags; i &= ~(1 << 3); fFlags = (ushort)i; } } }
-			/// <summary><para>Type: <c>BOOL</c></para><para>Not used.</para></summary>
-			public bool fDontShowDescBar { get => (fFlags & 1 << 4) != 0; set { if (value) fFlags |= 1 << 4; else { int i = fFlags; i &= ~(1 << 4); fFlags = (ushort)i; } } }
-			/// <summary><para>Type: <c>BOOL</c></para><para>TRUE</para><para>Display in a new window.</para><para>FALSE</para><para>Display in the current window.</para></summary>
-			public bool fNewWindowMode { get => (fFlags & 1 << 5) != 0; set { if (value) fFlags |= 1 << 5; else { int i = fFlags; i &= ~(1 << 5); fFlags = (ushort)i; } } }
-			/// <summary><para>Type: <c>BOOL</c></para><para>TRUE</para><para>Show encrypted or compressed NTFS files in color.</para><para>FALSE</para><para>Do not show encrypted or compressed NTFS files in color.</para></summary>
-			public bool fShowCompColor { get => (fFlags & 1 << 6) != 0; set { if (value) fFlags |= 1 << 6; else { int i = fFlags; i &= ~(1 << 6); fFlags = (ushort)i; } } }
-			/// <summary><para>Type: <c>BOOL</c></para><para>Not used.</para></summary>
-			public bool fDontPrettyNames { get => (fFlags & 1 << 7) != 0; set { if (value) fFlags |= 1 << 7; else { int i = fFlags; i &= ~(1 << 7); fFlags = (ushort)i; } } }
-			/// <summary><para>Type: <c>BOOL</c></para><para>Used when an administrator installs an application that places an icon in the <c>Start</c> menu.</para><para>TRUE</para><para>Add the icon to the <c>Start</c> menu for all users (CSIDL_COMMON_STARTMENU). This is the default value.</para><para>FALSE</para><para>Add the icon to only the current user (CSIDL_STARTMENU).</para></summary>
-			public bool fAdminsCreateCommonGroups { get => (fFlags & 1 << 8) != 0; set { if (value) fFlags |= 1 << 8; else { int i = fFlags; i &= ~(1 << 8); fFlags = (ushort)i; } } }
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>TRUE</para>
+			/// <para>Display the full path in the title bar.</para>
+			/// <para>FALSE</para>
+			/// <para>Display only the file name in the title bar.</para>
+			/// </summary>
+			public bool fFullPathTitle { get => GetBit(ref fFlags, 0); set => SetBit(ref fFlags, 0, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>TRUE</para>
+			/// <para>Remember each folder's view settings.</para>
+			/// <para>FALSE</para>
+			/// <para>Use global settings for all folders.</para>
+			/// </summary>
+			public bool fSaveLocalView { get => GetBit(ref fFlags, 1); set => SetBit(ref fFlags, 1, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>Not used.</para>
+			/// </summary>
+			public bool fNotShell { get => GetBit(ref fFlags, 2); set => SetBit(ref fFlags, 2, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>Not used.</para>
+			/// </summary>
+			public bool fSimpleDefault { get => GetBit(ref fFlags, 3); set => SetBit(ref fFlags, 3, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>Not used.</para>
+			/// </summary>
+			public bool fDontShowDescBar { get => GetBit(ref fFlags, 4); set => SetBit(ref fFlags, 4, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>TRUE</para>
+			/// <para>Display in a new window.</para>
+			/// <para>FALSE</para>
+			/// <para>Display in the current window.</para>
+			/// </summary>
+			public bool fNewWindowMode { get => GetBit(ref fFlags, 5); set => SetBit(ref fFlags, 5, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>TRUE</para>
+			/// <para>Show encrypted or compressed NTFS files in color.</para>
+			/// <para>FALSE</para>
+			/// <para>Do not show encrypted or compressed NTFS files in color.</para>
+			/// </summary>
+			public bool fShowCompColor { get => GetBit(ref fFlags, 6); set => SetBit(ref fFlags, 6, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>Not used.</para>
+			/// </summary>
+			public bool fDontPrettyNames { get => GetBit(ref fFlags, 7); set => SetBit(ref fFlags, 7, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>Used when an administrator installs an application that places an icon in the <c>Start</c> menu.</para>
+			/// <para>TRUE</para>
+			/// <para>Add the icon to the <c>Start</c> menu for all users (CSIDL_COMMON_STARTMENU). This is the default value.</para>
+			/// <para>FALSE</para>
+			/// <para>Add the icon to only the current user (CSIDL_STARTMENU).</para>
+			/// </summary>
+			public bool fAdminsCreateCommonGroups { get => GetBit(ref fFlags, 8); set => SetBit(ref fFlags, 8, value); }
 		}
 
 		/// <summary>
-		/// Defines the coordinates of a character cell in a console screen buffer. The origin of the coordinate system (0,0) is at the top, left cell of the buffer.
+		/// Defines the coordinates of a character cell in a console screen buffer. The origin of the coordinate system (0,0) is at the top,
+		/// left cell of the buffer.
 		/// </summary>
 		[PInvokeData("wincon.h")]
 		[StructLayout(LayoutKind.Sequential, Pack = 2)]
@@ -2477,6 +4424,59 @@ namespace Vanara.PInvoke
 
 			/// <summary>The vertical coordinate or row value. The units depend on the function call.</summary>
 			public short Y;
+		}
+
+		/// <summary>
+		/// <para>Used with the SHCreateShellFolderViewEx function.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-_csfv typedef struct _CSFV { UINT cbSize;
+		// IShellFolder *pshf; IShellView *psvOuter; PCIDLIST_ABSOLUTE pidl; LONG lEvents; LPFNVIEWCALLBACK pfnCallback; FOLDERVIEWMODE fvm;
+		// } CSFV, *LPCSFV;
+		[PInvokeData("shlobj_core.h", MSDNShortId = "9ec22fd4-1562-4ef0-b932-ebbf06082807")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct CSFV
+		{
+			/// <summary>
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>The size of the <c>CSFV</c> structure, in bytes.</para>
+			/// </summary>
+			public uint cbSize;
+
+			/// <summary>
+			/// <para>Type: <c>IShellFolder*</c></para>
+			/// <para>A pointer to the IShellFolder object for which to create the view.</para>
+			/// </summary>
+			public IShellFolder pshf;
+
+			/// <summary>
+			/// <para>Type: <c>IShellView*</c></para>
+			/// <para>A pointer to the parent IShellView interface. This parameter can be <c>NULL</c>.</para>
+			/// </summary>
+			public IShellView psvOuter;
+
+			/// <summary>
+			/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+			/// <para>Ignored.</para>
+			/// </summary>
+			public IntPtr pidl;
+
+			/// <summary>
+			/// <para>Type: <c>LONG</c></para>
+			/// </summary>
+			public int lEvents;
+
+			/// <summary>
+			/// <para>Type: <c>LPFNVIEWCALLBACK</c></para>
+			/// <para>
+			/// A pointer to the LPFNVIEWCALLBACK function used by this folder view to handle callback messages. This parameter can be <c>NULL</c>.
+			/// </para>
+			/// </summary>
+			public LPFNVIEWCALLBACK pfnCallback;
+
+			/// <summary>
+			/// <para>Type: <c>FOLDERVIEWMODE</c></para>
+			/// </summary>
+			public FOLDERVIEWMODE fvm;
 		}
 
 		/// <summary>Serves as the header for some of the extra data structures used by IShellLinkDataList.</summary>
@@ -2556,7 +4556,8 @@ namespace Vanara.PInvoke
 		public struct EXP_DARWIN_LINK
 		{
 			/// <summary>
-			/// DATABLOCK_HEADER structure stating the size and signature of the EXP_DARWIN_LINK structure. The following is the only recognized signature value: EXP_DARWIN_ID_SIG
+			/// DATABLOCK_HEADER structure stating the size and signature of the EXP_DARWIN_LINK structure. The following is the only
+			/// recognized signature value: EXP_DARWIN_ID_SIG
 			/// </summary>
 			public DATABLOCKHEADER dbh;
 
@@ -2596,8 +4597,8 @@ namespace Vanara.PInvoke
 			public uint cbSize;
 
 			/// <summary>
-			/// The structure's signature. It can have one of the following values: EXP_SZ_LINK_SIG = Contains the link's target path; EXP_SZ_ICON_SIG = Contains
-			/// the links icon path.
+			/// The structure's signature. It can have one of the following values: EXP_SZ_LINK_SIG = Contains the link's target path;
+			/// EXP_SZ_ICON_SIG = Contains the links icon path.
 			/// </summary>
 			public ShellDataBlockSignature dwSignature;
 
@@ -2616,7 +4617,8 @@ namespace Vanara.PInvoke
 		public struct NT_CONSOLE_PROPS
 		{
 			/// <summary>
-			/// The DATABLOCK_HEADER structure with the NT_CONSOLE_PROPS structure's size and signature. The signature for an NT_CONSOLE_PROPS structure is NT_CONSOLE_PROPS_SIG.
+			/// The DATABLOCK_HEADER structure with the NT_CONSOLE_PROPS structure's size and signature. The signature for an
+			/// NT_CONSOLE_PROPS structure is NT_CONSOLE_PROPS_SIG.
 			/// </summary>
 			public DATABLOCKHEADER dbh;
 
@@ -2689,7 +4691,8 @@ namespace Vanara.PInvoke
 		public struct NT_FE_CONSOLE_PROPS
 		{
 			/// <summary>
-			/// The DATABLOCK_HEADER structure with the NT_FE_CONSOLE_PROPS structure's size and signature. The signature for an NT_FE_CONSOLE_PROPS structure is NT_FE_CONSOLE_PROPS_SIG.
+			/// The DATABLOCK_HEADER structure with the NT_FE_CONSOLE_PROPS structure's size and signature. The signature for an
+			/// NT_FE_CONSOLE_PROPS structure is NT_FE_CONSOLE_PROPS_SIG.
 			/// </summary>
 			public DATABLOCKHEADER dbh;
 
@@ -2697,9 +4700,13 @@ namespace Vanara.PInvoke
 			public uint uCodePage;
 		}
 
-		/// <summary><para>This structure contains information from a .pif file. It is used by PifMgr_GetProperties.</para></summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-propprg
-		// typedef struct PROPPRG { WORD flPrg; WORD flPrgInit; CHAR achTitle[PIFNAMESIZE]; CHAR achCmdLine[PIFSTARTLOCSIZE + PIFPARAMSSIZE + 1]; CHAR achWorkDir[PIFDEFPATHSIZE]; WORD wHotKey; CHAR achIconFile[PIFDEFFILESIZE]; WORD wIconIndex; DWORD dwEnhModeFlags; DWORD dwRealModeFlags; CHAR achOtherFile[PIFDEFFILESIZE]; CHAR achPIFFile[PIFMAXFILEPATH]; };
+		/// <summary>
+		/// <para>This structure contains information from a .pif file. It is used by PifMgr_GetProperties.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-propprg typedef struct PROPPRG { WORD flPrg; WORD
+		// flPrgInit; CHAR achTitle[PIFNAMESIZE]; CHAR achCmdLine[PIFSTARTLOCSIZE + PIFPARAMSSIZE + 1]; CHAR achWorkDir[PIFDEFPATHSIZE]; WORD
+		// wHotKey; CHAR achIconFile[PIFDEFFILESIZE]; WORD wIconIndex; DWORD dwEnhModeFlags; DWORD dwRealModeFlags; CHAR
+		// achOtherFile[PIFDEFFILESIZE]; CHAR achPIFFile[PIFMAXFILEPATH]; };
 		[PInvokeData("shlobj_core.h", MSDNShortId = "603f990b-efb8-4d72-bc96-27bda4ffcbd8")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct PROPPRG
@@ -2713,37 +4720,123 @@ namespace Vanara.PInvoke
 			private const int PIFDEFFILESIZE = 80;
 			private const int PIFMAXFILEPATH = 260;
 
-			/// <summary><para>Type: <c>WORD</c></para><para>Flags that describe how the program will run.</para><para>PRG_DEFAULT</para><para>Use the default options.</para><para>PRG_CLOSEONEXIT</para><para>Close the application on exit.</para></summary>
+			/// <summary>
+			/// <para>Type: <c>WORD</c></para>
+			/// <para>Flags that describe how the program will run.</para>
+			/// <para>PRG_DEFAULT</para>
+			/// <para>Use the default options.</para>
+			/// <para>PRG_CLOSEONEXIT</para>
+			/// <para>Close the application on exit.</para>
+			/// </summary>
 			public ushort flPrg;
-			/// <summary><para>Type: <c>WORD</c></para><para>Flags that specify the initial conditions for the application.</para><para>PRGINIT_DEFAULT</para><para>Use the default options.</para><para>PRGINIT_MINIMIZED</para><para>The application should be minimized.</para><para>PRGINIT_MAXIMIZED</para><para>The application should be maximized.</para><para>PRGINIT_REALMODE</para><para>The application should run in real mode.</para><para>PRGINIT_REALMODESILENT</para><para>The application should run in real mode without being prompted.</para><para>PRGINIT_AMBIGUOUSPIF</para><para>The data is ambiguous.</para><para>PRGINIT_NOPIF</para><para>No .pif file was found.</para><para>PRGINIT_DEFAULTPIF</para><para>A default .pif was found.</para><para>PRGINIT_INFSETTINGS</para><para>A .inf file was found.</para><para>PRGINIT_INHIBITPIF</para><para>The .inf file indicates that a .pif file should not be created.</para></summary>
+
+			/// <summary>
+			/// <para>Type: <c>WORD</c></para>
+			/// <para>Flags that specify the initial conditions for the application.</para>
+			/// <para>PRGINIT_DEFAULT</para>
+			/// <para>Use the default options.</para>
+			/// <para>PRGINIT_MINIMIZED</para>
+			/// <para>The application should be minimized.</para>
+			/// <para>PRGINIT_MAXIMIZED</para>
+			/// <para>The application should be maximized.</para>
+			/// <para>PRGINIT_REALMODE</para>
+			/// <para>The application should run in real mode.</para>
+			/// <para>PRGINIT_REALMODESILENT</para>
+			/// <para>The application should run in real mode without being prompted.</para>
+			/// <para>PRGINIT_AMBIGUOUSPIF</para>
+			/// <para>The data is ambiguous.</para>
+			/// <para>PRGINIT_NOPIF</para>
+			/// <para>No .pif file was found.</para>
+			/// <para>PRGINIT_DEFAULTPIF</para>
+			/// <para>A default .pif was found.</para>
+			/// <para>PRGINIT_INFSETTINGS</para>
+			/// <para>A .inf file was found.</para>
+			/// <para>PRGINIT_INHIBITPIF</para>
+			/// <para>The .inf file indicates that a .pif file should not be created.</para>
+			/// </summary>
 			public ushort flPrgInit;
-			/// <summary><para>Type: <c>__wchar_t</c></para><para>A null-terminated string that contains the title.</para></summary>
+
+			/// <summary>
+			/// <para>Type: <c>__wchar_t</c></para>
+			/// <para>A null-terminated string that contains the title.</para>
+			/// </summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = PIFNAMESIZE)]
 			public byte[] achTitle;
-			/// <summary><para>Type: <c>__wchar_t</c></para><para>A null-terminated string that contains the command line, including arguments.</para></summary>
+
+			/// <summary>
+			/// <para>Type: <c>__wchar_t</c></para>
+			/// <para>A null-terminated string that contains the command line, including arguments.</para>
+			/// </summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = PIFSTARTLOCSIZE + PIFPARAMSSIZE + 1)]
 			public byte[] achCmdLine;
-			/// <summary><para>Type: <c>__wchar_t</c></para><para>A null-terminated string that contains the working directory.</para></summary>
+
+			/// <summary>
+			/// <para>Type: <c>__wchar_t</c></para>
+			/// <para>A null-terminated string that contains the working directory.</para>
+			/// </summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = PIFDEFPATHSIZE)]
 			public byte[] achWorkDir;
-			/// <summary><para>Type: <c>WORD</c></para><para>The key code of the .pif file&#39;s hotkey.</para></summary>
+
+			/// <summary>
+			/// <para>Type: <c>WORD</c></para>
+			/// <para>The key code of the .pif file's hotkey.</para>
+			/// </summary>
 			public ushort wHotKey;
-			/// <summary><para>Type: <c>__wchar_t</c></para><para>A null-terminated string that contains the name of the file that contains the icon.</para></summary>
+
+			/// <summary>
+			/// <para>Type: <c>__wchar_t</c></para>
+			/// <para>A null-terminated string that contains the name of the file that contains the icon.</para>
+			/// </summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = PIFDEFFILESIZE)]
 			public byte[] achIconFile;
-			/// <summary><para>Type: <c>WORD</c></para><para>The index of the icon in the file specified by <c>achIconFile</c>.</para></summary>
+
+			/// <summary>
+			/// <para>Type: <c>WORD</c></para>
+			/// <para>The index of the icon in the file specified by <c>achIconFile</c>.</para>
+			/// </summary>
 			public ushort wIconIndex;
-			/// <summary><para>Type: <c>DWORD</c></para><para>Reserved.</para></summary>
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>Reserved.</para>
+			/// </summary>
 			public uint dwEnhModeFlags;
-			/// <summary><para>Type: <c>DWORD</c></para><para>Flags that specify the real mode options.</para><para>RMOPT_MOUSE</para><para>Requires a real-mode mouse.</para><para>RMOPT_EMS</para><para>Requires expanded memory.</para><para>RMOPT_CDROM</para><para>Requires CD-ROM support.</para><para>RMOPT_NETWORK</para><para>Requires network support.</para><para>RMOPT_DISKLOCK</para><para>Requires disk locking.</para><para>RMOPT_PRIVATECFG</para><para>Use a private config.sys or autoexec.bat file.</para><para>RMOPT_VESA</para><para>Requires a VESA driver.</para></summary>
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>Flags that specify the real mode options.</para>
+			/// <para>RMOPT_MOUSE</para>
+			/// <para>Requires a real-mode mouse.</para>
+			/// <para>RMOPT_EMS</para>
+			/// <para>Requires expanded memory.</para>
+			/// <para>RMOPT_CDROM</para>
+			/// <para>Requires CD-ROM support.</para>
+			/// <para>RMOPT_NETWORK</para>
+			/// <para>Requires network support.</para>
+			/// <para>RMOPT_DISKLOCK</para>
+			/// <para>Requires disk locking.</para>
+			/// <para>RMOPT_PRIVATECFG</para>
+			/// <para>Use a private config.sys or autoexec.bat file.</para>
+			/// <para>RMOPT_VESA</para>
+			/// <para>Requires a VESA driver.</para>
+			/// </summary>
 			public uint dwRealModeFlags;
-			/// <summary><para>Type: <c>__wchar_t</c></para><para>A null-terminated string that contains the name of the &quot;other&quot; file in the directory.</para></summary>
+
+			/// <summary>
+			/// <para>Type: <c>__wchar_t</c></para>
+			/// <para>A null-terminated string that contains the name of the "other" file in the directory.</para>
+			/// </summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = PIFDEFFILESIZE)]
 			public byte[] achOtherFile;
-			/// <summary><para>Type: <c>__wchar_t</c></para><para>A null-terminated string that contains the name of the .pif file in the directory.</para></summary>
+
+			/// <summary>
+			/// <para>Type: <c>__wchar_t</c></para>
+			/// <para>A null-terminated string that contains the name of the .pif file in the directory.</para>
+			/// </summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = PIFMAXFILEPATH)]
 			public byte[] achPIFFile;
 		}
+
 		/// <summary>This structure is used with the SHCreateShellFolderView function.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		[PInvokeData("Shlobj.h")]
@@ -2751,17 +4844,48 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>The size of the SFV_CREATE structure, in bytes.</summary>
 			public uint cbSize;
+
 			/// <summary>The IShellFolder interface of the folder for which to create the view.</summary>
 			public IShellFolder pshf;
+
 			/// <summary>
-			/// A pointer to the parent IShellView interface. This parameter may be NULL. This parameter is used only when the view created by
-			/// SHCreateShellFolderView is hosted in a common dialog box.
+			/// A pointer to the parent IShellView interface. This parameter may be NULL. This parameter is used only when the view created
+			/// by SHCreateShellFolderView is hosted in a common dialog box.
 			/// </summary>
 			public IShellView psvOuter;
+
 			/// <summary>
-			/// A pointer to the IShellFolderViewCB interface that handles the view's callbacks when various events occur. This parameter may be NULL.
+			/// A pointer to the IShellFolderViewCB interface that handles the view's callbacks when various events occur. This parameter may
+			/// be NULL.
 			/// </summary>
 			public IShellFolderViewCB psfvcb;
+		}
+
+		/// <summary>
+		/// Contains and receives information for change notifications. This structure is used with the SHChangeNotifyRegister function and
+		/// the SFVM_QUERYFSNOTIFY notification.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-_shchangenotifyentry typedef struct
+		// _SHChangeNotifyEntry { PCIDLIST_ABSOLUTE pidl; BOOL fRecursive; } SHChangeNotifyEntry;
+		[PInvokeData("shlobj_core.h", MSDNShortId = "cb11435a-86f0-4b06-bfc6-e0417f2897a1")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct SHChangeNotifyEntry
+		{
+			/// <summary>
+			/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+			/// <para>PIDL for which to receive notifications.</para>
+			/// </summary>
+			public IntPtr pidl;
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>
+			/// A flag indicating whether to post notifications for children of this PIDL. For example, if the PIDL points to a folder, then
+			/// file notifications would come from the folder's children if this flag was <c>TRUE</c>.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool fRecursive;
 		}
 
 		/// <summary>Receives item data in response to a call to SHGetDataFromIDList.</summary>
@@ -2774,6 +4898,476 @@ namespace Vanara.PInvoke
 
 			/// <summary>Receives the CLSID of the object to which the item belongs.</summary>
 			public Guid clsid;
+		}
+
+		/// <summary>
+		/// <para>Contains a set of flags that indicate the current Shell settings. This structure is used with the SHGetSettings function.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-shellflagstate typedef struct SHELLFLAGSTATE {
+		// BOOL fShowAllObjects : 1; BOOL fShowExtensions : 1; BOOL fNoConfirmRecycle : 1; BOOL fShowSysFiles : 1; BOOL fShowCompColor : 1;
+		// BOOL fDoubleClickInWebView : 1; BOOL fDesktopHTML : 1; BOOL fWin95Classic : 1; BOOL fDontPrettyPath : 1; BOOL fShowAttribCol : 1;
+		// BOOL fMapNetDrvBtn : 1; BOOL fShowInfoTip : 1; BOOL fHideIcons : 1; BOOL fAutoCheckSelect : 1; BOOL fIconsOnly : 1; UINT
+		// fRestFlags : 1; UINT fRestFlags : 3; } *LPSHELLFLAGSTATE;
+		[PInvokeData("shlobj_core.h", MSDNShortId = "9968c7c9-79d9-4fb1-bda2-d6a2504cd3a3")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SHELLFLAGSTATE
+		{
+			private uint bits1;
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to show all objects, including hidden files and folders. <c>FALSE</c> to hide hidden files and folders.</para>
+			/// </summary>
+			public bool fShowAllObjects { get => GetBit(ref bits1, 0); set => SetBit(ref bits1, 0, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to show file name extensions, <c>FALSE</c> to hide them.</para>
+			/// </summary>
+			public bool fShowExtensions { get => GetBit(ref bits1, 1); set => SetBit(ref bits1, 1, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>
+			/// <c>TRUE</c> to show no confirmation dialog box when deleting items to the Recycle Bin, <c>FALSE</c> to display the
+			/// confirmation dialog box.
+			/// </para>
+			/// </summary>
+			public bool fNoConfirmRecycle { get => GetBit(ref bits1, 2); set => SetBit(ref bits1, 2, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to show system files, <c>FALSE</c> to hide them.</para>
+			/// </summary>
+			public bool fShowSysFiles { get => GetBit(ref bits1, 3); set => SetBit(ref bits1, 3, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to show encrypted or compressed NTFS files in color.</para>
+			/// </summary>
+			public bool fShowCompColor { get => GetBit(ref bits1, 4); set => SetBit(ref bits1, 4, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to require a double-click to open an item when in web view.</para>
+			/// </summary>
+			public bool fDoubleClickInWebView { get => GetBit(ref bits1, 5); set => SetBit(ref bits1, 5, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to use Active Desktop, <c>FALSE</c> otherwise.</para>
+			/// </summary>
+			public bool fDesktopHTML { get => GetBit(ref bits1, 6); set => SetBit(ref bits1, 6, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to enforce Windows 95 Shell behavior and restrictions.</para>
+			/// </summary>
+			public bool fWin95Classic { get => GetBit(ref bits1, 7); set => SetBit(ref bits1, 7, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to prevent the conversion of the path to all lowercase characters.</para>
+			/// </summary>
+			public bool fDontPrettyPath { get => GetBit(ref bits1, 8); set => SetBit(ref bits1, 8, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>Not used.</para>
+			/// </summary>
+			public bool fShowAttribCol { get => GetBit(ref bits1, 9); set => SetBit(ref bits1, 9, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to display a <c>Map Network Drive</c> button.</para>
+			/// </summary>
+			public bool fMapNetDrvBtn { get => GetBit(ref bits1, 10); set => SetBit(ref bits1, 10, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to show a pop-up description for folders and files.</para>
+			/// </summary>
+			public bool fShowInfoTip { get => GetBit(ref bits1, 11); set => SetBit(ref bits1, 11, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to hide desktop icons, <c>FALSE</c> to show them.</para>
+			/// </summary>
+			public bool fHideIcons { get => GetBit(ref bits1, 12); set => SetBit(ref bits1, 12, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>
+			/// <c>Introduced in Windows Vista</c>. <c>TRUE</c> to use the Windows Vista-style checkbox folder views, <c>FALSE</c> to use the
+			/// classic views.
+			/// </para>
+			/// </summary>
+			public bool fAutoCheckSelect { get => GetBit(ref bits1, 13); set => SetBit(ref bits1, 13, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>
+			/// <c>Introduced in Windows Vista</c>. <c>TRUE</c> to show generic icons only, <c>FALSE</c> to show thumbnail-style icons in folders.
+			/// </para>
+			/// </summary>
+			public bool fIconsOnly { get => GetBit(ref bits1, 14); set => SetBit(ref bits1, 14, value); }
+		}
+
+		/// <summary>Contains settings for the Shell's state. This structure is used with the <c>SHGetSetSettings</c> function.</summary>
+		// typedef struct { BOOL fShowAllObjects :1; BOOL fShowExtensions :1; BOOL fNoConfirmRecycle :1; BOOL fShowSysFiles :1; BOOL
+		// fShowCompColor :1; BOOL fDoubleClickInWebView :1; BOOL fDesktopHTML :1; BOOL fWin95Classic :1; BOOL fDontPrettyPath :1; BOOL
+		// fShowAttribCol :1; BOOL fMapNetDrvBtn :1; BOOL fShowInfoTip :1; BOOL fHideIcons :1; BOOL fWebView :1; BOOL fFilter :1; BOOL
+		// fShowSuperHidden :1; BOOL fNoNetCrawling :1; DWORD dwWin95Unused; UINT uWin95Unused; LONG lParamSort; int iSortDirection; UINT
+		// version; UINT uNotUsed; BOOL fSepProcess :1; BOOL fStartPanelOn :1; BOOL fShowStartPage :1; BOOL fAutoCheckSelect :1; BOOL
+		// fIconsOnly :1; BOOL fShowTypeOverlay :1; BOOL fShowStatusBar :1; UINT fSpareFlags :9;} SHELLSTATE, *LPSHELLSTATE; https://msdn.microsoft.com/en-us/library/windows/desktop/bb759788(v=vs.85).aspx
+		[PInvokeData("Shlobj.h", MSDNShortId = "bb759788")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SHELLSTATE
+		{
+			private uint bits1;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>Not used.</para>
+			/// </summary>
+			public uint dwWin95Unused;
+
+			/// <summary>
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>Not used.</para>
+			/// </summary>
+			public uint uWin95Unused;
+
+			/// <summary>
+			/// <para>Type: <c>LONG</c></para>
+			/// <para>The column to sort by.</para>
+			/// </summary>
+			public int lParamSort;
+
+			/// <summary>
+			/// <para>Type: <c>int</c></para>
+			/// <para>
+			/// Alphabetical sort direction for the column specified by <c>lParamSort</c>. Use 1 for an ascending sort, -1 for a descending sort.
+			/// </para>
+			/// </summary>
+			public int iSortDirection;
+
+			/// <summary>
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>Not used.</para>
+			/// </summary>
+			public uint version;
+
+			/// <summary>
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>Not used.</para>
+			/// </summary>
+			public uint uNotUsed;
+
+			private uint bits2;
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to show all objects, including hidden files and folders. <c>FALSE</c> to hide hidden files and folders.</para>
+			/// </summary>
+			public bool fShowAllObjects { get => GetBit(ref bits1, 0); set => SetBit(ref bits1, 0, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to show file name extensions, <c>FALSE</c> to hide them.</para>
+			/// </summary>
+			public bool fShowExtensions { get => GetBit(ref bits1, 1); set => SetBit(ref bits1, 1, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>
+			/// <c>TRUE</c> to show no confirmation dialog box when deleting items to the Recycle Bin, <c>FALSE</c> to display the
+			/// confirmation dialog box.
+			/// </para>
+			/// </summary>
+			public bool fNoConfirmRecycle { get => GetBit(ref bits1, 2); set => SetBit(ref bits1, 2, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to show system files, <c>FALSE</c> to hide them.</para>
+			/// </summary>
+			public bool fShowSysFiles { get => GetBit(ref bits1, 3); set => SetBit(ref bits1, 3, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to show encrypted or compressed NTFS files in color.</para>
+			/// </summary>
+			public bool fShowCompColor { get => GetBit(ref bits1, 4); set => SetBit(ref bits1, 4, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to require a double-click to open an item when in web view.</para>
+			/// </summary>
+			public bool fDoubleClickInWebView { get => GetBit(ref bits1, 5); set => SetBit(ref bits1, 5, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to use Active Desktop, <c>FALSE</c> otherwise.</para>
+			/// </summary>
+			public bool fDesktopHTML { get => GetBit(ref bits1, 6); set => SetBit(ref bits1, 6, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to enforce Windows 95 Shell behavior and restrictions.</para>
+			/// </summary>
+			public bool fWin95Classic { get => GetBit(ref bits1, 7); set => SetBit(ref bits1, 7, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to prevent the conversion of the path to all lowercase characters.</para>
+			/// </summary>
+			public bool fDontPrettyPath { get => GetBit(ref bits1, 8); set => SetBit(ref bits1, 8, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>Not used.</para>
+			/// </summary>
+			public bool fShowAttribCol { get => GetBit(ref bits1, 9); set => SetBit(ref bits1, 9, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to display a <c>Map Network Drive</c> button.</para>
+			/// </summary>
+			public bool fMapNetDrvBtn { get => GetBit(ref bits1, 10); set => SetBit(ref bits1, 10, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to show a pop-up description for folders and files.</para>
+			/// </summary>
+			public bool fShowInfoTip { get => GetBit(ref bits1, 11); set => SetBit(ref bits1, 11, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to hide desktop icons, <c>FALSE</c> to show them.</para>
+			/// </summary>
+			public bool fHideIcons { get => GetBit(ref bits1, 12); set => SetBit(ref bits1, 12, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to display as a web view.</para>
+			/// </summary>
+			public bool fWebView { get => GetBit(ref bits1, 13); set => SetBit(ref bits1, 13, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>Not used.</para>
+			/// </summary>
+			public bool fFilter { get => GetBit(ref bits1, 14); set => SetBit(ref bits1, 14, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to show operating system files.</para>
+			/// </summary>
+			public bool fShowSuperHidden { get => GetBit(ref bits1, 15); set => SetBit(ref bits1, 15, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to disable automatic searching for network folders and printers.</para>
+			/// </summary>
+			public bool fNoNetCrawling { get => GetBit(ref bits1, 16); set => SetBit(ref bits1, 16, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>TRUE</c> to launch folder windows in separate processes, <c>FALSE</c> to launch in the same process.</para>
+			/// </summary>
+			public bool fSepProcess { get => GetBit(ref bits2, 0); set => SetBit(ref bits2, 0, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>
+			/// <c>Windows XP only</c>. <c>TRUE</c> to use the Windows XP-style Start menu, <c>FALSE</c> to use the classic Start menu.
+			/// </para>
+			/// </summary>
+			public bool fStartPanelOn { get => GetBit(ref bits2, 1); set => SetBit(ref bits2, 1, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>Not used.</para>
+			/// </summary>
+			public bool fShowStartPage { get => GetBit(ref bits2, 2); set => SetBit(ref bits2, 2, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>
+			/// <c>Introduced in Windows Vista</c>. <c>TRUE</c> to use the Windows Vista-style checkbox folder views, <c>FALSE</c> to use the
+			/// classic views.
+			/// </para>
+			/// </summary>
+			public bool fAutoCheckSelect { get => GetBit(ref bits2, 3); set => SetBit(ref bits2, 3, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>
+			/// <c>Introduced in Windows Vista</c>. <c>TRUE</c> to show generic icons only, <c>FALSE</c> to show thumbnail-style icons in folders.
+			/// </para>
+			/// </summary>
+			public bool fIconsOnly { get => GetBit(ref bits2, 4); set => SetBit(ref bits2, 4, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>
+			/// <c>Introduced in Windows Vista</c>. <c>TRUE</c> indicates a thumbnail should show the application that would be invoked when
+			/// opening the item, <c>FALSE</c> indicates that no application will be shown.
+			/// </para>
+			/// </summary>
+			public bool fShowTypeOverlay { get => GetBit(ref bits2, 5); set => SetBit(ref bits2, 5, value); }
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para><c>Introduced in Windows 8</c>. <c>TRUE</c> to show the status bar; otherwise, <c>FALSE</c>.</para>
+			/// </summary>
+			public bool fShowStatusBar { get => GetBit(ref bits2, 6); set => SetBit(ref bits2, 6, value); }
+		}
+
+		/// <summary>
+		/// <para>Holds custom folder settings. This structure is used with the SHGetSetFolderCustomSettings function.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// In Windows XP Service Pack 2 (SP2) and earlier versions, this structure supported both ANSI and Unicode strings. In Windows Vista
+		/// and later versions, only Unicode strings are supported.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-shfoldercustomsettings typedef struct
+		// SHFOLDERCUSTOMSETTINGS { DWORD dwSize; DWORD dwMask; SHELLVIEWID *pvid; LPWSTR pszWebViewTemplate; DWORD cchWebViewTemplate;
+		// LPWSTR pszWebViewTemplateVersion; LPWSTR pszInfoTip; DWORD cchInfoTip; CLSID *pclsid; DWORD dwFlags; LPWSTR pszIconFile; DWORD
+		// cchIconFile; int iIconIndex; LPWSTR pszLogo; DWORD cchLogo; } *LPSHFOLDERCUSTOMSETTINGS;
+		[PInvokeData("shlobj_core.h", MSDNShortId = "a6357372-80ef-4719-b53f-87eb3fdc1b0d")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct SHFOLDERCUSTOMSETTINGS
+		{
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The size of the structure, in bytes.</para>
+			/// </summary>
+			public uint dwSize;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// A <c>DWORD</c> value specifying which folder attributes to read or write from this structure. Use one or more of the
+			/// following values to indicate which structure members are valid:
+			/// </para>
+			/// <para>FCSM_VIEWID</para>
+			/// <para><c>Deprecated</c>. <c>pvid</c> contains the folder's GUID.</para>
+			/// <para>FCSM_WEBVIEWTEMPLATE</para>
+			/// <para>
+			/// <c>Deprecated</c>. <c>pszWebViewTemplate</c> contains a pointer to a buffer containing the path to the folder's WebView template.
+			/// </para>
+			/// <para>FCSM_INFOTIP</para>
+			/// <para><c>pszInfoTip</c> contains a pointer to a buffer containing the folder's info tip.</para>
+			/// <para>FCSM_CLSID</para>
+			/// <para><c>pclsid</c> contains the folder's CLSID.</para>
+			/// <para>FCSM_ICONFILE</para>
+			/// <para><c>pszIconFile</c> contains the path to the file containing the folder's icon.</para>
+			/// <para>FCSM_LOGO</para>
+			/// <para><c>pszLogo</c> contains the path to the file containing the folder's thumbnail icon.</para>
+			/// <para>FCSM_FLAGS</para>
+			/// <para>Not used.</para>
+			/// </summary>
+			public FOLDERCUSTOMSETTINGSMASK dwMask;
+
+			/// <summary>
+			/// <para>Type: <c>SHELLVIEWID*</c></para>
+			/// <para>The folder's GUID.</para>
+			/// </summary>
+			public IntPtr pvid;
+
+			/// <summary>
+			/// <para>Type: <c>LPTSTR</c></para>
+			/// <para>A pointer to a null-terminated string containing the path to the folder's WebView template.</para>
+			/// </summary>
+			public string pszWebViewTemplate;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// If the SHGetSetFolderCustomSettings parameter is <c>FCS_READ</c>, this is the size of the <c>pszWebViewTemplate</c> buffer,
+			/// in characters. If not, this is the number of characters to write from that buffer. Set this parameter to 0 to write the
+			/// entire string.
+			/// </para>
+			/// </summary>
+			public uint cchWebViewTemplate;
+
+			/// <summary>
+			/// <para>Type: <c>LPTSTR</c></para>
+			/// <para>A pointer to a null-terminated buffer containing the WebView template version.</para>
+			/// </summary>
+			public string pszWebViewTemplateVersion;
+
+			/// <summary>
+			/// <para>Type: <c>LPTSTR</c></para>
+			/// <para>A pointer to a null-terminated buffer containing the text of the folder's infotip.</para>
+			/// </summary>
+			public string pszInfoTip;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// If the SHGetSetFolderCustomSettings parameter is <c>FCS_READ</c>, this is the size of the <c>pszInfoTip</c> buffer, in
+			/// characters. If not, this is the number of characters to write from that buffer. Set this parameter to 0 to write the entire string.
+			/// </para>
+			/// </summary>
+			public uint cchInfoTip;
+
+			/// <summary>
+			/// <para>Type: <c>CLSID*</c></para>
+			/// <para>
+			/// A pointer to a CLSID used to identify the folder in the Windows registry. Further folder information is stored in the
+			/// registry under that CLSID entry.
+			/// </para>
+			/// </summary>
+			public IntPtr pclsid;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>Not used.</para>
+			/// </summary>
+			public uint dwFlags;
+
+			/// <summary>
+			/// <para>Type: <c>LPTSTR</c></para>
+			/// <para>A pointer to a null-terminated buffer containing the path to file containing the folder's icon.</para>
+			/// </summary>
+			public string pszIconFile;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// If the SHGetSetFolderCustomSettings parameter is <c>FCS_READ</c>, this is the size of the <c>pszIconFile</c> buffer, in
+			/// characters. If not, this is the number of characters to write from that buffer. Set this parameter to 0 to write the entire string.
+			/// </para>
+			/// </summary>
+			public uint cchIconFile;
+
+			/// <summary>
+			/// <para>Type: <c>int</c></para>
+			/// <para>The index of the icon within the file named in <c>pszIconFile</c>.</para>
+			/// </summary>
+			public int iIconIndex;
+
+			/// <summary>
+			/// <para>Type: <c>LPTSTR</c></para>
+			/// <para>
+			/// A pointer to a null-terminated buffer containing the path to the file containing the folder's logo image. This is the image
+			/// used in thumbnail views.
+			/// </para>
+			/// </summary>
+			public string pszLogo;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// If the SHGetSetFolderCustomSettings parameter is <c>FCS_READ</c>, this is the size of the <c>pszLogo</c> buffer, in
+			/// characters. If not, this is the number of characters to write from that buffer. Set this parameter to 0 to write the entire string.
+			/// </para>
+			/// </summary>
+			public uint cchLogo;
 		}
 
 		/*[StructLayout(LayoutKind.Sequential)]
