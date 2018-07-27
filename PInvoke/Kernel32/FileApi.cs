@@ -16,6 +16,17 @@ namespace Vanara.PInvoke
 	/// <summary>Fields, enums, functions and structures for kernel32.dll.</summary>
 	public static partial class Kernel32
 	{
+		/// <summary>Create new if one does not already exist.</summary>
+		[PInvokeData("fileapi.h")] public const uint CREATE_NEW        = 1;
+		/// <summary>Always create new, overwriting any existing.</summary>
+		[PInvokeData("fileapi.h")] public const uint CREATE_ALWAYS     = 2;
+		/// <summary>Open existing.</summary>
+		[PInvokeData("fileapi.h")] public const uint OPEN_EXISTING     = 3;
+		/// <summary>Alway open, creating new if doesn't exist.</summary>
+		[PInvokeData("fileapi.h")] public const uint OPEN_ALWAYS       = 4;
+		/// <summary>Truncate existing.</summary>
+		[PInvokeData("fileapi.h")] public const uint TRUNCATE_EXISTING = 5;
+
 		/// <summary>A value returned when invalid file attributes are found.</summary>
 		[PInvokeData("fileapi.h")] public const int INVALID_FILE_ATTRIBUTES = -2;
 		/// <summary>A value returned by <see cref="GetCompressedFileSize(string, ref uint)"/> when the function fails.</summary>
