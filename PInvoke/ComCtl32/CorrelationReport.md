@@ -4,7 +4,7 @@ Native Method | Native DLL | Header | Managed Method
 --- | --- | --- | ---  
 [_TrackMouseEvent](http://msdn2.microsoft.com/en-us/library/ms646266) | comctl32.dll | CommCtrl.h | Vanara.PInvoke.ComCtl32._TrackMouseEvent  
 [CreateMappedBitmap](http://msdn2.microsoft.com/en-us/library/bb787467) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.CreateMappedBitmap  
-[CreatePropertySheetPage](https://www.google.com/search?num=5&q=CreatePropertySheetPage+site%3Amsdn.microsoft.com) | comctl32.dll | Prsht.h | Vanara.PInvoke.ComCtl32.CreatePropertySheetPage  
+[CreatePropertySheetPage](https://www.google.com/search?num=5&q=CreatePropertySheetPage+site%3Amicrosoft.com) | comctl32.dll | Prsht.h | Vanara.PInvoke.ComCtl32.CreatePropertySheetPage  
 [CreateUpDownControl](http://msdn2.microsoft.com/en-us/library/bb759977) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.CreateUpDownControl  
 [DefSubclassProc](http://msdn2.microsoft.com/en-us/library/bb776403) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.DefSubclassProc  
 [DestroyPropertySheetPage](http://msdn2.microsoft.com/en-us/library/bb760809) | comctl32.dll | Prsht.h | Vanara.PInvoke.ComCtl32.DestroyPropertySheetPage  
@@ -29,7 +29,7 @@ Native Method | Native DLL | Header | Managed Method
 [DPA_Sort](http://msdn2.microsoft.com/en-us/library/bb775637) | comctl32.dll | Dpa_dsa.h | Vanara.PInvoke.ComCtl32.DPA_Sort  
 [DrawInsert](http://msdn2.microsoft.com/en-us/library/bb761723) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.DrawInsert  
 [DrawShadowText](http://msdn2.microsoft.com/en-us/library/bb775639) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.DrawShadowText  
-[DrawStatusText](https://www.google.com/search?num=5&q=DrawStatusText+site%3Amsdn.microsoft.com) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.DrawStatusText  
+[DrawStatusText](https://www.google.com/search?num=5&q=DrawStatusText+site%3Amicrosoft.com) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.DrawStatusText  
 [DSA_Clone](http://msdn2.microsoft.com/en-us/library/bb775645) | comctl32.dll | Dpa_dsa.h | Vanara.PInvoke.ComCtl32.DSA_Clone  
 [DSA_Create](http://msdn2.microsoft.com/en-us/library/bb775647) | comctl32.dll | Dpa_dsa.h | Vanara.PInvoke.ComCtl32.DSA_Create  
 [DSA_DeleteAllItems](http://msdn2.microsoft.com/en-us/library/bb775649) | comctl32.dll | Dpa_dsa.h | Vanara.PInvoke.ComCtl32.DSA_DeleteAllItems  
@@ -46,13 +46,13 @@ Native Method | Native DLL | Header | Managed Method
 [GetEffectiveClientRect](http://msdn2.microsoft.com/en-us/library/bb775674) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.GetEffectiveClientRect  
 [GetMUILanguage](http://msdn2.microsoft.com/en-us/library/bb775676) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.GetMUILanguage  
 [GetWindowSubclass](http://msdn2.microsoft.com/en-us/library/bb776430) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.GetWindowSubclass  
-[HIMAGELIST_QueryInterface](https://www.google.com/search?num=5&q=HIMAGELIST_QueryInterface+site%3Amsdn.microsoft.com) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.HIMAGELIST_QueryInterface  
+[HIMAGELIST_QueryInterface](https://www.google.com/search?num=5&q=HIMAGELIST_QueryInterface+site%3Amicrosoft.com) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.HIMAGELIST_QueryInterface  
 [ImageList_CoCreateInstance](http://msdn2.microsoft.com/en-us/library/bb761518) | comctl32.dll | CommonControls.h | Vanara.PInvoke.ComCtl32.ImageList_CoCreateInstance  
 [ImageList_Create](http://msdn2.microsoft.com/en-us/library/bb761522) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.ImageList_Create  
 [ImageList_Destroy](http://msdn2.microsoft.com/en-us/library/bb761524) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.ImageList_Destroy  
 [ImageList_Duplicate](http://msdn2.microsoft.com/en-us/library/bb761540) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.ImageList_Duplicate  
 [ImageList_GetIcon](http://msdn2.microsoft.com/en-us/library/bb761548) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.ImageList_GetIcon  
-[ImageList_LoadImage](https://www.google.com/search?num=5&q=ImageList_LoadImage+site%3Amsdn.microsoft.com) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.ImageList_LoadImage  
+[ImageList_LoadImage](https://www.google.com/search?num=5&q=ImageList_LoadImage+site%3Amicrosoft.com) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.ImageList_LoadImage  
 [ImageList_Read](http://msdn2.microsoft.com/en-us/library/bb761560) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.ImageList_Read  
 [ImageList_ReadEx](http://msdn2.microsoft.com/en-us/library/bb761562) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.ImageList_ReadEx  
 [ImageList_Write](http://msdn2.microsoft.com/en-us/library/bb775228) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.ImageList_Write  
@@ -64,7 +64,7 @@ Native Method | Native DLL | Header | Managed Method
 [LoadIconWithScaleDown](http://msdn2.microsoft.com/en-us/library/bb775703) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.LoadIconWithScaleDown  
 [MakeDragList](http://msdn2.microsoft.com/en-us/library/bb761725) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.MakeDragList  
 [MenuHelp](http://msdn2.microsoft.com/en-us/library/bb760765) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.MenuHelp  
-[PropertySheet](https://www.google.com/search?num=5&q=PropertySheet+site%3Amsdn.microsoft.com) | comctl32.dll | Prsht.h | Vanara.PInvoke.ComCtl32.PropertySheet  
+[PropertySheet](https://www.google.com/search?num=5&q=PropertySheet+site%3Amicrosoft.com) | comctl32.dll | Prsht.h | Vanara.PInvoke.ComCtl32.PropertySheet  
 [RemoveWindowSubclass](http://msdn2.microsoft.com/en-us/library/bb762094) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.RemoveWindowSubclass  
 [SetWindowSubclass](http://msdn2.microsoft.com/en-us/library/bb762102) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.SetWindowSubclass  
 [ShowHideMenuCtl](http://msdn2.microsoft.com/en-us/library/bb775731) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.ShowHideMenuCtl  
@@ -77,7 +77,7 @@ Native Structure | Header | Managed Structure
 [BUTTON_IMAGELIST](http://msdn2.microsoft.com/en-us/library/bb775953) | Commctrl.h | Vanara.PInvoke.ComCtl32+BUTTON_IMAGELIST  
 [BUTTON_SPLITINFO](http://msdn2.microsoft.com/en-us/library/bb775955) | Commctrl.h | Vanara.PInvoke.ComCtl32+BUTTON_SPLITINFO  
 [COLORMAP](http://msdn2.microsoft.com/en-us/library/bb760448) | Commctrl.h | Vanara.PInvoke.ComCtl32+COLORMAP  
-[COLORSCHEME](https://www.google.com/search?num=5&q=COLORSCHEME+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.ComCtl32+COLORSCHEME  
+[COLORSCHEME](https://www.google.com/search?num=5&q=COLORSCHEME+site%3Amicrosoft.com) |  | Vanara.PInvoke.ComCtl32+COLORSCHEME  
 [COMBOBOXEXITEM](http://msdn2.microsoft.com/en-us/library/bb775746) | Commctrl.h | Vanara.PInvoke.ComCtl32+COMBOBOXEXITEM  
 [COMBOBOXINFO](http://msdn2.microsoft.com/en-us/library/bb775798) | Winuser.h | Vanara.PInvoke.ComCtl32+COMBOBOXINFO  
 [DPASTREAMINFO](http://msdn2.microsoft.com/en-us/library/bb775504) | Dpa_dsa.h | Vanara.PInvoke.ComCtl32+DPASTREAMINFO  

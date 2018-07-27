@@ -25,10 +25,10 @@
     <PackageReleaseNotes>Currently implements:
 
 Structures
-NLM_DATAPLAN_STATUS, NLM_SIMULATED_PROFILE_INFO, NLM_SOCKADDR, NLM_USAGE_DATA
+NLM_DATAPLAN_STATUS, NLM_SIMULATED_PROFILE_INFO, NLM_USAGE_DATA
 
 Interfaces
-IEnumNetworkConnections, IEnumNetworks, INetwork, INetworkConnection, INetworkConnectionCost, INetworkCostManager, INetworkListManager
+IEnumNetworkConnections, IEnumNetworks, INetwork, INetworkConnection, INetworkConnectionCost, INetworkConnectionCostEvents, INetworkConnectionEvents, INetworkCostManager, INetworkCostManagerEvents, INetworkEvents, INetworkListManager, INetworkListManagerEvents
 
 </PackageReleaseNotes>
   </PropertyGroup>

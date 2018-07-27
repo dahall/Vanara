@@ -88,6 +88,6 @@ Native Structure | Header | Managed Structure
 [DTTOPTS](http://msdn2.microsoft.com/en-us/library/bb773236) | Uxtheme.h | Vanara.PInvoke.UxTheme+DTTOPTS  
 [INTLIST](http://msdn2.microsoft.com/en-us/library/bb773240) | UxTheme.h | Vanara.PInvoke.UxTheme+INTLIST  
 [MARGINS](http://msdn2.microsoft.com/en-us/library/bb773244) | UxTheme.h | Vanara.PInvoke.UxTheme+MARGINS  
-[TA_TIMINGFUNCTION](https://www.google.com/search?num=5&q=TA_TIMINGFUNCTION+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.UxTheme+TA_TIMINGFUNCTION  
-[TA_TRANSFORM](https://www.google.com/search?num=5&q=TA_TRANSFORM+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.UxTheme+TA_TRANSFORM  
+[TA_TIMINGFUNCTION](https://www.google.com/search?num=5&q=TA_TIMINGFUNCTION+site%3Amicrosoft.com) |  | Vanara.PInvoke.UxTheme+TA_TIMINGFUNCTION  
+[TA_TRANSFORM](https://www.google.com/search?num=5&q=TA_TRANSFORM+site%3Amicrosoft.com) |  | Vanara.PInvoke.UxTheme+TA_TRANSFORM  
 [WTA_OPTIONS](http://msdn2.microsoft.com/en-us/library/bb773248) | Uxtheme.h | Vanara.PInvoke.UxTheme+WTA_OPTIONS  

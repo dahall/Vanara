@@ -27,6 +27,9 @@
 Functions
 PathFindOnPathA, PathFindOnPathW, SHCreateStreamOnFileEx
 
+Interfaces
+IQueryAssociations
+
 </PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">

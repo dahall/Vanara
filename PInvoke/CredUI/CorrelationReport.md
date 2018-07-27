@@ -11,14 +11,14 @@ Native Method | Native DLL | Header | Managed Method
 [CredUIReadSSOCred](http://msdn2.microsoft.com/en-us/library/aa375177) | credui.dll | wincred.h | Vanara.PInvoke.CredUI.CredUIReadSSOCred  
 [CredUIStoreSSOCred](http://msdn2.microsoft.com/en-us/library/aa375181) | credui.dll | wincred.h | Vanara.PInvoke.CredUI.CredUIStoreSSOCred  
 [CredUnPackAuthenticationBuffer](http://msdn2.microsoft.com/en-us/library/aa375185) | credui.dll | wincred.h | Vanara.PInvoke.CredUI.CredUnPackAuthenticationBuffer  
-[SspiGetCredUIContext](https://www.google.com/search?num=5&q=SspiGetCredUIContext+site%3Amsdn.microsoft.com) | credui.dll | Sspi.h | Vanara.PInvoke.CredUI.SspiGetCredUIContext  
-[SspiIsPromptingNeeded](https://www.google.com/search?num=5&q=SspiIsPromptingNeeded+site%3Amsdn.microsoft.com) | credui.dll | Sspi.h | Vanara.PInvoke.CredUI.SspiIsPromptingNeeded  
-[SspiPromptForCredentials](https://www.google.com/search?num=5&q=SspiPromptForCredentialsA+site%3Amsdn.microsoft.com) | credui.dll | Sspi.h | Vanara.PInvoke.CredUI.SspiPromptForCredentials  
-[SspiUnmarshalCredUIContext](https://www.google.com/search?num=5&q=SspiUnmarshalCredUIContext+site%3Amsdn.microsoft.com) | credui.dll | Sspi.h | Vanara.PInvoke.CredUI.SspiUnmarshalCredUIContext  
-[SspiUpdateCredentials](https://www.google.com/search?num=5&q=SspiUpdateCredentials+site%3Amsdn.microsoft.com) | credui.dll | Sspi.h | Vanara.PInvoke.CredUI.SspiUpdateCredentials  
+[SspiGetCredUIContext](https://www.google.com/search?num=5&q=SspiGetCredUIContext+site%3Amicrosoft.com) | credui.dll | Sspi.h | Vanara.PInvoke.CredUI.SspiGetCredUIContext  
+[SspiIsPromptingNeeded](https://www.google.com/search?num=5&q=SspiIsPromptingNeeded+site%3Amicrosoft.com) | credui.dll | Sspi.h | Vanara.PInvoke.CredUI.SspiIsPromptingNeeded  
+[SspiPromptForCredentials](https://www.google.com/search?num=5&q=SspiPromptForCredentialsA+site%3Amicrosoft.com) | credui.dll | Sspi.h | Vanara.PInvoke.CredUI.SspiPromptForCredentials  
+[SspiUnmarshalCredUIContext](https://www.google.com/search?num=5&q=SspiUnmarshalCredUIContext+site%3Amicrosoft.com) | credui.dll | Sspi.h | Vanara.PInvoke.CredUI.SspiUnmarshalCredUIContext  
+[SspiUpdateCredentials](https://www.google.com/search?num=5&q=SspiUpdateCredentials+site%3Amicrosoft.com) | credui.dll | Sspi.h | Vanara.PInvoke.CredUI.SspiUpdateCredentials  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
 [CREDUI_INFO](http://msdn2.microsoft.com/en-us/library/aa375183) | wincred.h | Vanara.PInvoke.CredUI+CREDUI_INFO  
-[PSEC_WINNT_CREDUI_CONTEXT](https://www.google.com/search?num=5&q=PSEC_WINNT_CREDUI_CONTEXT+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.CredUI+PSEC_WINNT_CREDUI_CONTEXT  
-[PSEC_WINNT_CREDUI_CONTEXT_VECTOR](https://www.google.com/search?num=5&q=PSEC_WINNT_CREDUI_CONTEXT_VECTOR+site%3Amsdn.microsoft.com) |  | Vanara.PInvoke.CredUI+PSEC_WINNT_CREDUI_CONTEXT_VECTOR  
+[PSEC_WINNT_CREDUI_CONTEXT](https://www.google.com/search?num=5&q=PSEC_WINNT_CREDUI_CONTEXT+site%3Amicrosoft.com) |  | Vanara.PInvoke.CredUI+PSEC_WINNT_CREDUI_CONTEXT  
+[PSEC_WINNT_CREDUI_CONTEXT_VECTOR](https://www.google.com/search?num=5&q=PSEC_WINNT_CREDUI_CONTEXT_VECTOR+site%3Amicrosoft.com) |  | Vanara.PInvoke.CredUI+PSEC_WINNT_CREDUI_CONTEXT_VECTOR  

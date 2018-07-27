@@ -25,10 +25,10 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-CallNextHookEx, ChildWindowFromPointEx, DestroyIcon, DrawEdge, DrawTextA, DrawTextW, ExitWindowsEx, FindWindowA, FindWindowW, GetActiveWindow, GetClientRect, GetDC, GetDesktopWindow, GetIconInfo, GetSysColor, GetSysColorBrush, GetSystemMetrics, GetWindowLongA, GetWindowLongPtrA, GetWindowLongPtrW, GetWindowLongW, GetWindowRect, InvalidateRect, LoadImageA, LoadImageW, LoadStringA, LoadStringW, LockWorkStation, MapWindowPoints, RealGetWindowClassA, RealGetWindowClassW, RegisterHotKey, RegisterWindowMessageA, RegisterWindowMessageW, ScreenToClient, SendMessageA, SendMessageW, SetWindowPos, SetWindowsHookExA, SetWindowsHookExW, SetWindowTextA, SetWindowTextW, ShutdownBlockReasonCreate, ShutdownBlockReasonDestroy, ShutdownBlockReasonQuery, SystemParametersInfoA, SystemParametersInfoW, TrackMouseEvent, UnhookWindowsHookEx, UnregisterHotKey, WindowFromPoint
+CallNextHookEx, ChildWindowFromPointEx, DestroyIcon, DrawEdge, DrawTextA, DrawTextW, ExitWindowsEx, FindWindowA, FindWindowW, GetActiveWindow, GetClientRect, GetDC, GetDesktopWindow, GetIconInfo, GetSysColor, GetSysColorBrush, GetSystemMetrics, GetWindowLongA, GetWindowLongPtrA, GetWindowLongPtrW, GetWindowLongW, GetWindowRect, InvalidateRect, LoadImageA, LoadImageW, LoadStringA, LoadStringW, LockWorkStation, MapWindowPoints, MessageBoxIndirectA, MessageBoxIndirectW, RealGetWindowClassA, RealGetWindowClassW, RegisterHotKey, RegisterWindowMessageA, RegisterWindowMessageW, ScreenToClient, SendMessageA, SendMessageW, SetWindowPos, SetWindowsHookExA, SetWindowsHookExW, SetWindowTextA, SetWindowTextW, ShutdownBlockReasonCreate, ShutdownBlockReasonDestroy, ShutdownBlockReasonQuery, SystemParametersInfoA, SystemParametersInfoW, TrackMouseEvent, UnhookWindowsHookEx, UnregisterHotKey, WindowFromPoint
 
 Structures
-TRACKMOUSEEVENT, ACCESSTIMEOUT, ANIMATIONINFO, AUDIODESCRIPTION, FILTERKEYS, HIGHCONTRAST, ICONMETRICS, MINIMIZEDMETRICS, MOUSEKEYS, NONCLIENTMETRICS, SERIALKEYS, SOUNDSENTRY, STICKYKEYS, TOGGLEKEYS, TOUCHPREDICTIONPARAMETERS, ICONINFO, NMHDR, MINMAXINFO, WINDOWPOS, GRPICONDIR, GRPICONDIRENTRY
+TRACKMOUSEEVENT, ACCESSTIMEOUT, ANIMATIONINFO, AUDIODESCRIPTION, FILTERKEYS, HELPINFO, HIGHCONTRAST, ICONMETRICS, MINIMIZEDMETRICS, MOUSEKEYS, MSGBOXPARAMS, NONCLIENTMETRICS, SERIALKEYS, SOUNDSENTRY, STICKYKEYS, TOGGLEKEYS, TOUCHPREDICTIONPARAMETERS, ICONINFO, NMHDR, MINMAXINFO, WINDOWPOS, GRPICONDIR, GRPICONDIRENTRY
 
 </PackageReleaseNotes>
   </PropertyGroup>
