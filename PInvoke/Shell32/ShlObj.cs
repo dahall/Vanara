@@ -27,6 +27,13 @@ namespace Vanara.PInvoke
 		// Defined in wingdi.h
 		private const int LF_FACESIZE = 32;
 
+		/// <summary><para>[<c>LPFNDFMCALLBACK</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in subsequent versions.]</para><para>Defines the prototype for the callback function that receives messages from the Shell&#39;s default context menu implementation.</para></summary><param name="psf"><para>Type: <c><c>IShellFolder</c>*</c></para><para>A pointer to the <c>IShellFolder</c> object the message applies to. This value can be <c>NULL</c>.</para></param><param name="hwnd"><para>Type: <c>HWND</c></para><para>The handle of the window that contains the view. This value can be <c>NULL</c>.</para></param><param name="pdtobj"><para>Type: <c><c>IDataObject</c>*</c></para><para><c>IDataObject</c> that represents the selection the context menu is based on. This value can be <c>NULL</c>.</para></param><param name="uMsg"><para>Type: <c>UINT</c></para><para>One of the following notifications.</para><para><list type="table"><listheader><term>Notification</term><term>Usage</term></listheader><item><term>DFM_MERGECONTEXTMENU</term><term>Sent by the default context menu implementation to allow LPFNDFMCALLBACK to add items to the menu.</term></item><item><term>DFM_INVOKECOMMAND</term><term>Sent by the default context menu implementation to request LPFNDFMCALLBACK to invoke a menu command.</term></item><item><term>DFM_GETDEFSTATICID</term><term>Sent by the default context menu implementation when the default menu command is being created, allowing an alternate choice to be made.</term></item></list></para></param><param name="wParam"><para>Type: <c>WPARAM</c></para><para>Additional information. See the individual notification pages for specific requirements.</para></param><param name="lParam"><para>Type: <c>LPARAM</c></para><para>Additional information. See the individual notification pages for specific requirements.</para></param><returns><para>Type: <c>HRESULT</c></para><para>Returns S_OK if the message was handled, or an error value otherwise, including the following:</para><para><list type="table"><listheader><term>Return code</term><term>Description</term></listheader><item><term>E_NOTIMPL</term><term>The message was not handled.</term></item></list></para></returns>
+		// typedef HRESULT ( CALLBACK *LPFNDFMCALLBACK)( _In_opt_ IShellFolder *psf, _In_opt_ HWND hwnd, _In_opt_ IDataObject *pdtobj, UINT uMsg, WPARAM wParam, LPARAM lParam);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb776770(v=vs.85).aspx
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		[PInvokeData("Shlobj_core.h", MSDNShortId = "bb776770")]
+		public delegate HRESULT LPFNDFMCALLBACK(IShellFolder psf, IntPtr hwnd, IDataObject pdtobj, uint uMsg, IntPtr wParam, IntPtr lParam);
+
 		/// <summary>
 		/// <para>
 		/// [This interface is supported through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be unsupported in
@@ -2070,6 +2077,13 @@ namespace Vanara.PInvoke
 		[PInvokeData("shlobj_core.h", MSDNShortId = "f13af5f4-1b6a-419c-a042-e05c9ec51d02")]
 		public static extern HRESULT AssocGetDetailsOfPropKey(IShellFolder psf, PIDL pidl, ref PROPERTYKEY pkey, ref object pv, [MarshalAs(UnmanagedType.Bool)] ref bool pfFoundPropKey);
 
+		/// <summary><para>Creates a context menu for a selected group of file folder objects.</para></summary><param name="pidlFolder"><para>Type: <c>PCIDLIST_ABSOLUTE</c></para><para>An ITEMIDLIST structure for the parent folder. This value can be <c>NULL</c>.</para></param><param name="hwnd"><para>Type: <c>HWND</c></para><para>A handle to the parent window. This value can be <c>NULL</c>.</para></param><param name="cidl"><para>Type: <c>UINT</c></para><para>The number of ITEMIDLIST structures in the array pointed to by .</para></param><param name="apidl"><para>Type: <c>PCUITEMID_CHILD_ARRAY*</c></para><para>A pointer to an array of ITEMIDLIST structures, one for each item that is selected.</para></param><param name="psf"><para>Type: <c>IShellFolder*</c></para><para>A pointer to the parent folder&#39;s IShellFolder interface. This <c>IShellFolder</c> must support the IDataObject interface. If it does not, <c>CDefFolderMenu_Create2</c> fails and returns E_NOINTERFACE. This value can be <c>NULL</c>.</para></param><param name="pfn"><para>TBD</para></param><param name="nKeys"><para>Type: <c>UINT</c></para><para>The number of registry keys in the array pointed to by .</para><para><c>Note</c> The maximum number of registry keys is 16. Callers must enforce this limit as the API does not. Failing to do so can result in memory corruption.</para></param><param name="ahkeys"><para>Type: <c>const HKEY*</c></para><para>A pointer to an array of registry keys that specify the context menu handlers used with the menu&#39;s entries. For more information on context menu handlers, see Creating Context Menu Handlers. This array can contain a maximum of 16 registry keys.</para></param><param name="ppcm"><para>Type: <c>IContextMenu**</c></para><para>The address of an IContextMenu interface pointer that, when this function returns successfully, points to the <c>IContextMenu</c> object that represents the context menu.</para></param><returns><para>Type: <c>HRESULT</c></para><para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para></returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-cdeffoldermenu_create2
+		// SHSTDAPI CDefFolderMenu_Create2( PCIDLIST_ABSOLUTE pidlFolder, HWND hwnd, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, IShellFolder *psf, LPFNDFMCALLBACK pfn, UINT nKeys, const HKEY *ahkeys, IContextMenu **ppcm );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "7b5e012d-1c8b-42c5-8181-9923fd389fc5")]
+		public static extern HRESULT CDefFolderMenu_Create2(PIDL pidlFolder, HandleRef hwnd, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] apidl, IShellFolder psf, LPFNDFMCALLBACK pfn, uint nKeys, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] IntPtr[] ahkeys, out IContextMenu ppcm);
+
 		/// <summary>
 		/// <para>
 		/// [This function is available through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be altered or unavailable
@@ -2558,6 +2572,8 @@ namespace Vanara.PInvoke
 		[PInvokeData("shlobj_core.h", MSDNShortId = "8456ae0c-e83c-43d0-a86a-1861a373d237")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool PathMakeUniqueName([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszUniqueName, uint cchMax, [MarshalAs(UnmanagedType.LPWStr)] string pszTemplate, [MarshalAs(UnmanagedType.LPWStr)] string pszLongPlate, [MarshalAs(UnmanagedType.LPWStr)] string pszDir);
+
+		PathQualify
 
 		/// <summary>
 		/// <para>
@@ -3345,7 +3361,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shchangenotifyderegister BOOL
 		// SHChangeNotifyDeregister( ULONG ulID );
-		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "fad021dc-8199-4384-b623-c98bc618799f")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SHChangeNotifyDeregister(uint ulID);
@@ -3448,7 +3464,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shchangenotifyregister ULONG
 		// SHChangeNotifyRegister( HWND hwnd, int fSources, LONG fEvents, UINT wMsg, int cEntries, const SHChangeNotifyEntry *pshcne );
-		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "73143865-ca2f-4578-a7a2-2ba4833eddd8")]
 		public static extern uint SHChangeNotifyRegister(HandleRef hwnd, SHCNRF fSources, SHCNE fEvents, uint wMsg, int cEntries, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] SHChangeNotifyEntry[] pshcne);
 
@@ -4655,7 +4671,7 @@ namespace Vanara.PInvoke
 		// SHGetFolderPathAndSubDirA( HWND hwnd, int csidl, HANDLE hToken, DWORD dwFlags, LPCSTR pszSubDir, LPSTR pszPath );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "7e92e136-1036-4c96-931f-6e0129fb839a")]
-		public static extern HRESULT SHGetFolderPathAndSubDirA(HandleRef hwnd, int csidl, SafeTokenHandle hToken, SHGFP dwFlags, string pszSubDir, StringBuilder pszPath);
+		public static extern HRESULT SHGetFolderPathAndSubDir(HandleRef hwnd, int csidl, SafeTokenHandle hToken, SHGFP dwFlags, string pszSubDir, StringBuilder pszPath);
 
 		/// <summary>
 		/// Retrieves the full path of a known folder identified by the folder's KNOWNFOLDERID. This extends SHGetKnownFolderPath by allowing

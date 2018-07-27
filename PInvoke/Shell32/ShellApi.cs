@@ -1082,7 +1082,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-assoccreateforclasses SHSTDAPI AssocCreateForClasses(
 		// const ASSOCIATIONELEMENT *rgClasses, ULONG cClasses, REFIID riid, void **ppv );
-		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "43257507-dd5e-4622-8445-c132187fd1e5")]
 		public static extern HRESULT AssocCreateForClasses([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ASSOCIATIONELEMENT[] rgClasses, uint cClasses, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
@@ -2183,7 +2183,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-shenumerateunreadmailaccountsw HRESULT
 		// SHEnumerateUnreadMailAccountsW( HKEY hKeyUser, DWORD dwIndex, LPWSTR pszMailAddress, int cchMailAddress );
-		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "67ec8355-f902-4b71-972f-94e403701f96")]
 		public static extern HRESULT SHEnumerateUnreadMailAccountsW(IntPtr hKeyUser, uint dwIndex, StringBuilder pszMailAddress, int cchMailAddress);
 
