@@ -25,6 +25,8 @@
 		public const string Kernel32 = "kernel32.dll";
 		/// <summary>The kernel base</summary>
 		public const string KernelBase = "kernelbase.dll";
+		/// <summary>The MPR</summary>
+		public const string Mpr = "mpr.dll";
 		/// <summary>The mstask</summary>
 		public const string Mstask = "mstask.dll";
 		/// <summary>The net api32</summary>
