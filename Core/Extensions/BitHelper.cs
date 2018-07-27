@@ -21,7 +21,7 @@ namespace Vanara.Extensions
 		{
 			long bit = 1 << idx;
 			var l = bits.ToInt64(null);
-			bits = (T)(object)(value ? l | bit : l & ~bit);
+			bits = (T)Convert.ChangeType(value ? l | bit : l & ~bit, typeof(T));
 		}
 	}
 }
