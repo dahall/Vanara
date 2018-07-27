@@ -216,6 +216,42 @@ namespace Vanara.PInvoke
 			OFASI_OPENDESKTOP = 2
 		}
 
+		/// <summary>The characteristics of the SHOpenWithDialog dialog box.</summary>
+		[PInvokeData("shlobj_core.h", MSDNShortId = "5486c4d3-c6c5-459d-aa7f-426971184876")]
+		[Flags]
+		public enum OPEN_AS_INFO_FLAGS
+		{
+			/// <summary>Enable the "always use this program" checkbox. If not passed, it will be disabled.</summary>
+			OAIF_ALLOW_REGISTRATION = 0x00000001,
+
+			/// <summary>Do the registration after the user hits the <c>OK</c> button.</summary>
+			OAIF_REGISTER_EXT = 0x00000002,
+
+			/// <summary>Execute file after registering.</summary>
+			OAIF_EXEC = 0x00000004,
+
+			/// <summary>
+			/// Force the <c>Always use this program</c> checkbox to be checked. Typically, you won't use the OAIF_ALLOW_REGISTRATION flag
+			/// when you pass this value.
+			/// </summary>
+			OAIF_FORCE_REGISTRATION = 0x00000008,
+
+			/// <summary>
+			/// <c>Introduced in Windows Vista</c>. Hide the <c>Always use this program</c> checkbox. If this flag is specified, the
+			/// OAIF_ALLOW_REGISTRATION and OAIF_FORCE_REGISTRATION flags will be ignored.
+			/// </summary>
+			OAIF_HIDE_REGISTRATION = 0x00000020,
+
+			/// <summary>
+			/// <c>Introduced in Windows Vista</c>. The value for the extension that is passed is actually a protocol, so the <c>Open
+			/// With</c> dialog box should show applications that are registered as capable of handling that protocol.
+			/// </summary>
+			OAIF_URL_PROTOCOL = 0x00000040,
+
+			/// <summary><c>Introduced in Windows 8</c>. The location pointed to by the parameter is given as a URI.</summary>
+			OAIF_FILE_IS_URI = 0x00000080,
+		}
+
 		/// <summary>A flag that controls how PifMgr_OpenProperties operates.</summary>
 		[PInvokeData("shlobj_core.h", MSDNShortId = "0bc11528-7278-4765-b3cb-671ba82c9155")]
 		public enum OPENPROPS
@@ -298,6 +334,1009 @@ namespace Vanara.PInvoke
 
 			/// <summary><c>Windows Vista and later.</c> Put the info tip on a single line.</summary>
 			QITIPF_SINGLELINE = 0x00000010,
+		}
+
+		/// <summary>
+		/// <para>
+		/// These flags are used with the SHRestricted function. <c>SHRestricted</c> is used to determine whether a specified administrator
+		/// policy is in effect. In many cases, applications need to modify certain behaviors in order to comply with the policies enacted by
+		/// system administrators.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ne-shlobj_core-restrictions
+		[PInvokeData("shlobj_core.h", MSDNShortId = "14eac1b9-8ef6-4473-81c1-72ba270a9da7")]
+		public enum RESTRICTIONS
+		{
+			/// <summary>Not used.</summary>
+			REST_NONE = 0x00000000,
+
+			/// <summary>
+			/// If nonzero, the system administrator has forbidden access to the Run command on the Start menu. Applications should remove
+			/// similar functionality. For example, a browser with an address bar should deny attempts by the user to type the path of a
+			/// local file into the address bar.
+			/// </summary>
+			REST_NORUN = 0x00000001,
+
+			/// <summary>
+			/// If nonzero, the system administrator has forbidden access to the Shut Down command on the Start menu. Applications should
+			/// remove the ability to shut down or restart the computer.
+			/// </summary>
+			REST_NOCLOSE = 0x00000002,
+
+			/// <summary>
+			/// If nonzero, the system administrator has requested that applications do not save their state at exit for restoration the next
+			/// time they are run. Applications should disable saving their window position and settings.
+			/// </summary>
+			REST_NOSAVESET = 0x00000004,
+
+			/// <summary>
+			/// If nonzero, the system administrator has forbidden access to the Windows Explorer File menu. Applications should remove
+			/// similar functionality.
+			/// </summary>
+			REST_NOFILEMENU = 0x00000008,
+
+			/// <summary>
+			/// If nonzero, the system administrator has forbidden access to Control Panel, Printers, and Network and Dial up Connections.
+			/// Applications should prevent users from viewing those folders.
+			/// </summary>
+			REST_NOSETFOLDERS = 0x00000010,
+
+			/// <summary>
+			/// If nonzero, the system administrator has forbidden access to taskbar settings. Applications should prevent users from
+			/// changing those settings.
+			/// </summary>
+			REST_NOSETTASKBAR = 0x00000020,
+
+			/// <summary>
+			/// If nonzero, the system administrator has specified that all icons on the desktop should be hidden. Applications do not need
+			/// to perform any special actions.
+			/// </summary>
+			REST_NODESKTOP = 0x00000040,
+
+			/// <summary>
+			/// If nonzero, the system administrator has indicated that the user should not be enabled to search for files. Applications
+			/// should remove similar functionality.
+			/// </summary>
+			REST_NOFIND = 0x00000080,
+
+			/// <summary>
+			/// A 32-bit value that specifies the drives that should not be displayed to the user. Bit 0 corresponds to drive A, up to bit 25
+			/// which corresponds to drive Z. Applications that display a list of drives should remove drives that have their corresponding
+			/// bits set.
+			/// </summary>
+			REST_NODRIVES = 0x00000100,
+
+			/// <summary>
+			/// A 32-bit value that specifies the drives for which AutoRun should be disabled. Bit 0 corresponds to drive A, up to bit 25
+			/// which corresponds to drive Z. Applications should not offer to AutoRun any drive that has its corresponding bit set.
+			/// </summary>
+			REST_NODRIVEAUTORUN = 0x00000200,
+
+			/// <summary>
+			/// A 32-bit value that specifies the drive types for which AutoRun should be disabled. The bits are numbered according to the
+			/// return value of GetDriveType. For example, bit DRIVE_CDROM disables AutoRun on CD-ROM drives. Applications should not offer
+			/// to AutoRun any drive whose type has its corresponding bit set.
+			/// </summary>
+			REST_NODRIVETYPEAUTORUN = 0x00000400,
+
+			/// <summary>
+			/// If nonzero, the system administrator has removed Network Neighborhood (also known as My Network Places) from the Shell
+			/// namespace. Applications should disable functionality that enables the user to browse the network.
+			/// </summary>
+			REST_NONETHOOD = 0x00000800,
+
+			/// <summary>Not used.</summary>
+			REST_STARTBANNER = 0x00001000,
+
+			/// <summary>
+			/// If nonzero, the system administrator has restricted the programs the user can run. Only programs listed under the registry
+			/// key HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer can be run either from the Run dialog box,
+			/// by double-clicking, or by selecting from the File menu. Applications should prevent users from running programs not listed
+			/// under that key. Applications that use the ShellExecute or ShellExecuteEx functions to run programs do not need to take any
+			/// special action because those functions check the policy.
+			/// </summary>
+			REST_RESTRICTRUN = 0x00002000,
+
+			/// <summary>Not used.</summary>
+			REST_NOPRINTERTABS = 0x00004000,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the user's ability to delete printers. Applications should remove the
+			/// ability to delete printers.
+			/// </summary>
+			REST_NOPRINTERDELETE = 0x00008000,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the user's ability to add printers. Applications should remove the ability
+			/// to add printers.
+			/// </summary>
+			REST_NOPRINTERADD = 0x00010000,
+
+			/// <summary>
+			/// If nonzero, subfolders of the Start menu and Programs menu are not shown on the top of the classic Start menu, the Programs
+			/// list on the classic Start menu, or the All Programs list on the Start menu. Applications that enumerate the contents of the
+			/// Start menu should avoid subfolders. If nonzero, this flag does not restrict any menus other than those listed here; in
+			/// particular, My Computer can still expand.
+			/// </summary>
+			REST_NOSTARTMENUSUBFOLDERS = 0x00020000,
+
+			/// <summary>Not used.</summary>
+			REST_MYDOCSONNET = 0x00040000,
+
+			/// <summary>Not used.</summary>
+			REST_NOEXITTODOS = 0x00080000,
+
+			/// <summary>
+			/// If nonzero, the system administrator has forbidden the use of unapproved Shell extensions. Applications should not
+			/// instantiate Shell extensions unless they are marked as approved by the system administrator. For more information, see
+			/// Creating Shell Extension Handlers.
+			/// </summary>
+			REST_ENFORCESHELLEXTSECURITY = 0x00100000,
+
+			/// <summary>
+			/// If nonzero, the system does not attempt to reconnect mapped network drives when resolving a broken shortcut to a file or
+			/// folder on a mapped network drive. Applications do not need to perform any special actions.
+			/// </summary>
+			REST_LINKRESOLVEIGNORELINKINFO = 0x00200000,
+
+			/// <summary>
+			/// If nonzero, indicates the system administrator has forbidden access to the CSIDL_COMMON_STARTMENU or CSIDL_COMMON_PROGRAMS
+			/// folders on the Start menu. Applications that enumerate the contents of the Start menu should avoid those folders.
+			/// </summary>
+			REST_NOCOMMONGROUPS = 0x00400000,
+
+			/// <summary>
+			/// If nonzero, the administrator has required that folders be opened in a separate process. This overrides and disables the
+			/// corresponding setting in the Folder Options dialog box. Applications do not need to perform any special actions.
+			/// </summary>
+			REST_SEPARATEDESKTOPPROCESS = 0x00800000,
+
+			/// <summary>
+			/// If nonzero, the system administrator has removed the Web tab from the desktop Properties dialog box. Applications do not need
+			/// to perform any special actions. Windows XP and later: Not used.
+			/// </summary>
+			REST_NOWEB = 0x01000000,
+
+			/// <summary>
+			/// If nonzero, the system administrator has forbidden access to context menus for the taskbar. Applications do not need to
+			/// perform any special actions.
+			/// </summary>
+			REST_NOTRAYCONTEXTMENU = 0x02000000,
+
+			/// <summary>
+			/// If nonzero, the system administrator has forbidden access to context menus for Shell objects. Applications should disable
+			/// context menus for Shell objects.
+			/// </summary>
+			REST_NOVIEWCONTEXTMENU = 0x04000000,
+
+			/// <summary>
+			/// If nonzero, the system administrator has denied users the ability to map or disconnect network drives. Applications should
+			/// remove the ability to map or disconnect network drives.
+			/// </summary>
+			REST_NONETCONNECTDISCONNECT = 0x08000000,
+
+			/// <summary>
+			/// If 1, the system administrator has removed the Log Off option from the Start menu. If 2, the system administrator has forced
+			/// the Log Off option to be shown. Applications do not need to perform any special actions.
+			/// </summary>
+			REST_STARTMENULOGOFF = 0x10000000,
+
+			/// <summary>Not used.</summary>
+			REST_NOSETTINGSASSIST = 0x20000000,
+
+			/// <summary>
+			/// If nonzero, the system administrator has removed the Internet Explorer icon from the desktop. Applications do not need to
+			/// perform any special actions.
+			/// </summary>
+			REST_NOINTERNETICON = 0x40000001,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled recent document history. Applications must disable all MRU lists, such as
+			/// those that are often displayed on the File menu. Adherence to this setting is mandatory for Windows logo compliance.
+			/// </summary>
+			REST_NORECENTDOCSHISTORY = 0x40000002,
+
+			/// <summary>
+			/// If nonzero, the system administrator has removed the Recent Documents menu from the Start menu. Applications do not need to
+			/// perform any special actions.
+			/// </summary>
+			REST_NORECENTDOCSMENU = 0x40000003,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the ability to create web content on the desktop. Applications do not need
+			/// to perform any special actions. Windows Vista or later: Not used.
+			/// </summary>
+			REST_NOACTIVEDESKTOP = 0x40000004,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the ability to change web content on the desktop. Applications do not need
+			/// to perform any special actions. Windows Vista or later: Not used.
+			/// </summary>
+			REST_NOACTIVEDESKTOPCHANGES = 0x40000005,
+
+			/// <summary>
+			/// If nonzero, the system administrator has removed the Favorites menu from the Start menu. Applications do not need to perform
+			/// any special actions.
+			/// </summary>
+			REST_NOFAVORITESMENU = 0x40000006,
+
+			/// <summary>
+			/// If nonzero, the system administrator has required that recent document history and related history information be deleted
+			/// when the user logs off. Applications should erase recent document history when they exit.
+			/// </summary>
+			REST_CLEARRECENTDOCSONEXIT = 0x40000007,
+
+			/// <summary>Not used.</summary>
+			REST_CLASSICSHELL = 0x40000008,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the ability to customize the appearance of Windows Explorer folders.
+			/// Applications do not need to perform any special actions.
+			/// </summary>
+			REST_NOCUSTOMIZEWEBVIEW = 0x40000009,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the ability to set the wallpaper to any image that is not a bitmap (*.bmp)
+			/// image. Applications that enable the user to change desktop wallpaper should disable web content. Windows Vista or later: Not used.
+			/// </summary>
+			REST_NOHTMLWALLPAPER = 0x40000010,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the ability to change the desktop wallpaper. Applications should disable
+			/// corresponding functionality.
+			/// </summary>
+			REST_NOCHANGINGWALLPAPER = 0x40000011,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled desktop components. Applications that create or modify desktop components
+			/// should disable this functionality. Windows Vista or later: Not used.
+			/// </summary>
+			REST_NODESKCOMP = 0x40000012,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the ability to create desktop components. Applications that create desktop
+			/// components should disable this functionality.
+			/// </summary>
+			REST_NOADDDESKCOMP = 0x40000013,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the ability to delete desktop components. Applications that delete desktop
+			/// components should disable this functionality. Windows Vista or later: Not used.
+			/// </summary>
+			REST_NODELDESKCOMP = 0x40000014,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the ability to close desktop components. Applications do not need to
+			/// perform any special actions. Windows Vista or later: Not used.
+			/// </summary>
+			REST_NOCLOSEDESKCOMP = 0x40000015,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the ability to drag, drop, or close desktop bands. Applications do not need
+			/// to perform any special actions.
+			/// </summary>
+			REST_NOCLOSE_DRAGDROPBAND = 0x40000016,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the ability to move a desktop band. Applications do not need to perform any
+			/// special actions.
+			/// </summary>
+			REST_NOMOVINGBAND = 0x40000017,
+
+			/// <summary>
+			/// If nonzero, indicates the system administrator has disabled the ability to modify desktop components. Applications that
+			/// modify desktop components should disable this functionality. Windows Vista or later: Not used.
+			/// </summary>
+			REST_NOEDITDESKCOMP = 0x40000018,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled heuristic file searching when resolving broken shortcuts. Applications do
+			/// not need to perform any special actions.
+			/// </summary>
+			REST_NORESOLVESEARCH = 0x40000019,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the use of the link tracking service when resolving broken shortcuts.
+			/// Applications do not need to perform any special actions.
+			/// </summary>
+			REST_NORESOLVETRACK = 0x4000001A,
+
+			/// <summary>
+			/// If nonzero, the system administrator has forced Shell file copy operations to copy the ACL with the file rather than
+			/// inheriting the ACL from the target folder. Applications that use the SHFileOperation function do not need to perform any
+			/// special actions. Applications that copy files manually should ensure that the source ACL is copied.
+			/// </summary>
+			REST_FORCECOPYACLWITHFILE = 0x4000001B,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled channel updates when resolving shortcuts. Applications do not need to
+			/// perform any special actions. Windows Vista or later: Not supported.
+			/// </summary>
+			REST_NOLOGO3CHANNELNOTIFY = 0x4000001C,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the ability to uncheck the Remind me until I update the current version
+			/// checkbox in the SoftwareUpdateMessageBox function. Applications do not need to perform any special actions.
+			/// </summary>
+			REST_NOFORGETSOFTWAREUPDATE = 0x4000001D,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the ability to change settings for web content on the desktop. Applications
+			/// do not need to perform any special actions. Windows Vista or later: Not used.
+			/// </summary>
+			REST_NOSETACTIVEDESKTOP = 0x4000001E,
+
+			/// <summary>
+			/// If nonzero, the system administrator has hidden the Windows Update shortcut on the Start menu. Applications that enumerate
+			/// the contents of the Start menu should not show the Windows Update shortcut to the user.
+			/// </summary>
+			REST_NOUPDATEWINDOWS = 0x4000001F,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the ability to make changes to the Start menu. Applications should disable
+			/// any feature that enables the user to reorganize their Start menu.
+			/// </summary>
+			REST_NOCHANGESTARMENU = 0x40000020,
+
+			/// <summary>
+			/// If nonzero, the system administrator has denied access to the Folder Options dialog box. Applications that display Folder
+			/// Options in Control Panel should disable this functionality.
+			/// </summary>
+			REST_NOFOLDEROPTIONS = 0x40000021,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the ability to search for computers on the network. Applications should
+			/// remove the ability to search for computers on the network.
+			/// </summary>
+			REST_HASFINDCOMPUTERS = 0x40000022,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled personalized menus. Applications should not hide infrequently-used menu commands.
+			/// </summary>
+			REST_INTELLIMENUS = 0x40000023,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the Run in separate memory space option in the Run dialog. Applications
+			/// that provide similar functionality should remove the corresponding checkbox.
+			/// </summary>
+			REST_RUNDLGMEMCHECKBOX = 0x40000024,
+
+			/// <summary>
+			/// If nonzero, the system administrator has removed the list of incomplete setup operations from the "Add/Remove Windows
+			/// Components" section of the Add/Remove Programs dialog box. Applications do not need to perform any special actions. Windows
+			/// Vista or later: Not used.
+			/// </summary>
+			REST_ARP_ShowPostSetup = 0x40000025,
+
+			/// <summary>
+			/// If nonzero, the system administrator has removed Synchronize All from the Start menu. Applications do not need to perform any
+			/// special actions.
+			/// </summary>
+			REST_NOCSC = 0x40000026,
+
+			/// <summary>
+			/// If nonzero, the system administrator has denied access to Control Panel. Applications should disable any functionality that
+			/// runs .
+			/// </summary>
+			REST_NOCONTROLPANEL = 0x40000027,
+
+			/// <summary>
+			/// If nonzero, the system administrator has indicated that the Network Neighborhood should include the computer workgroup.
+			/// Applications do not need to perform any special actions. Windows Vista or later: Not used.
+			/// </summary>
+			REST_ENUMWORKGROUP = 0x40000028,
+
+			/// <summary>
+			/// If nonzero, the system administrator has denied access to the Add/Remove Programs dialog box. Applications should disable any
+			/// functionality that runs the Add/Remove Programs dialog box. Windows Vista or later: Not used.
+			/// </summary>
+			REST_ARP_NOARP = 0x40000029,
+
+			/// <summary>
+			/// If nonzero, the system administrator has denied access to the Change or Remove Programs section of the Add/Remove Programs
+			/// dialog box. Applications do not need to perform any special actions. Windows Vista or later: Not used.
+			/// </summary>
+			REST_ARP_NOREMOVEPAGE = 0x4000002A,
+
+			/// <summary>
+			/// If nonzero, the system administrator has denied access to the Add Programs section of the Add/Remove Programs dialog box.
+			/// Applications do not need to perform any special actions. Windows Vista or later: Not used.
+			/// </summary>
+			REST_ARP_NOADDPAGE = 0x4000002B,
+
+			/// <summary>
+			/// If nonzero, the system administrator has denied access to the Add/Remove Windows Components section of the Add/Remove
+			/// Programs dialog box. Applications do not need to perform any special actions. Windows Vista or later: Not used.
+			/// </summary>
+			REST_ARP_NOWINSETUPPAGE = 0x4000002C,
+
+			/// <summary>
+			/// If nonzero, the system administrator has specified that Windows Installer shortcuts that refer to applications that are
+			/// available but not yet installed should be displayed on the Start menu in gray. Applications do not need to perform any
+			/// special actions.
+			/// </summary>
+			REST_GREYMSIADS = 0x4000002D,
+
+			/// <summary>Not used.</summary>
+			REST_NOCHANGEMAPPEDDRIVELABEL = 0x4000002E,
+
+			/// <summary>Not used.</summary>
+			REST_NOCHANGEMAPPEDDRIVECOMMENT = 0x4000002F,
+
+			/// <summary>
+			/// A 32-bit value that specifies the maximum number of documents to be retained in the Recent Documents menu. If this value is
+			/// zero, then the system administrator has not specified any maximum, and applications can choose a default. If this value is
+			/// nonzero, applications should restrict their Recent Documents list to the specified number of items.
+			/// </summary>
+			REST_MaxRecentDocs = 0x40000030,
+
+			/// <summary>
+			/// If nonzero, the system administrator has removed the Network Connections menu from the Start menu. Applications should hide
+			/// lists of network and dial-up connections.
+			/// </summary>
+			REST_NONETWORKCONNECTIONS = 0x40000031,
+
+			/// <summary>
+			/// If nonzero, the system administrator has forced the Log Off command onto the Start menu. Applications do not need to perform
+			/// any special actions.
+			/// </summary>
+			REST_FORCESTARTMENULOGOFF = 0x40000032,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled folder HTML templates (Windows 2000) or folder tasks (Windows XP) in
+			/// Windows Explorer. Applications do not need to perform any special actions. Windows Vista or later: Not used.
+			/// </summary>
+			REST_NOWEBVIEW = 0x40000033,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the ability to customize the appearance of Windows Explorer folders.
+			/// Applications do not need to perform any special actions.
+			/// </summary>
+			REST_NOCUSTOMIZETHISFOLDER = 0x40000034,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the ability to encrypt and decrypt files and folders. Applications should
+			/// not call EncryptFile or DecryptFile.
+			/// </summary>
+			REST_NOENCRYPTION = 0x40000035,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the ability to view files marked System and Hidden ("super-hidden files"),
+			/// overriding the fShowSuperHidden member of the SHELLSTATE structure. Applications should not show files that have both the
+			/// FILE_ATTRIBUTE_SYSTEM and FILE_ATTRIBUTE_HIDDEN attributes to the user.
+			/// </summary>
+			REST_DONTSHOWSUPERHIDDEN = 0x40000037,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the Search button in the Windows Explorer toolbar. Applications do not need
+			/// to perform any special actions.
+			/// </summary>
+			REST_NOSHELLSEARCHBUTTON = 0x40000038,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the Hardware tab in the Drive, Mouse, Keyboard, and Multimedia property
+			/// sheets. Applications do not need to perform any special actions.
+			/// </summary>
+			REST_NOHARDWARETAB = 0x40000039,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the automatic prompt for automatic credentials when installing an
+			/// application. Applications do not need to perform any special actions. Windows Vista or later: Not used.
+			/// </summary>
+			REST_NORUNASINSTALLPROMPT = 0x4000003A,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the automatic prompt for automatic credentials when installing an
+			/// application from a network path. Applications do not need to perform any special actions. Windows Vista or later: Not used.
+			/// </summary>
+			REST_PROMPTRUNASINSTALLNETPATH = 0x4000003B,
+
+			/// <summary>
+			/// If nonzero, the system administrator has removed the Manage command from the My Computer context menu. Applications do not
+			/// need to perform any special actions.
+			/// </summary>
+			REST_NOMANAGEMYCOMPUTERVERB = 0x4000003C,
+
+			/// <summary>
+			/// If nonzero, the system administrator has restricted the programs the user can run. Programs listed under the registry key
+			/// HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\DisallowRun may not be run from the Run dialog
+			/// box, by double-clicking, or by selecting from the File menu. Programs are listed by their full path (for example,
+			/// "C:\Windows\system32\cmd.exe"). Applications should prevent users from running programs listed under that key. Applications
+			/// that use the ShellExecute or ShellExecuteEx function to run programs do not need to take any special action because those
+			/// functions will check the policy.
+			/// </summary>
+			REST_DISALLOWRUN = 0x4000003E,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the Welcome to Windows program that is run when a user logs on.
+			/// Applications do not need to perform any special actions. Windows Vista or later: Not used.
+			/// </summary>
+			REST_NOWELCOMESCREEN = 0x4000003F,
+
+			/// <summary>
+			/// If nonzero, the system administrator has restricted the control panel applications the user can run. In order to be run, a
+			/// control panel application must be listed under the registry key
+			/// HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\RestrictCpl . The control panel application can
+			/// be listed either under its display name (for example, "Mouse") or under its filename (for example, "main.cpl"). Applications
+			/// that launch control panel applications should prevent users from running control panel applications not listed under that key.
+			/// </summary>
+			REST_RESTRICTCPL = 0x40000040,
+
+			/// <summary>
+			/// If nonzero, the system administrator has restricted the control panel applications the user can run. In order to be run, a
+			/// control panel application must not be listed under the registry key
+			/// HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\DisallowCpl . The control panel application can
+			/// be listed either under its display name (for example, "Mouse") or under its filename (for example, "main.cpl"). Applications
+			/// that launch control panel applications should prevent users from running control panel applications listed under that key.
+			/// </summary>
+			REST_DISALLOWCPL = 0x40000041,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled balloon tips that are displayed by the Start menu. Applications do not need
+			/// to perform any special actions.
+			/// </summary>
+			REST_NOSMBALLOONTIP = 0x40000042,
+
+			/// <summary>
+			/// If nonzero, the system administrator has removed the Help option from the Start menu. Applications do not need to perform any
+			/// special actions.
+			/// </summary>
+			REST_NOSMHELP = 0x40000043,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the keyboard shortcut associated with the Windows logo key. Applications do
+			/// not need to perform any special actions.
+			/// </summary>
+			REST_NOWINKEYS = 0x40000044,
+
+			/// <summary>
+			/// If nonzero, the system administrator has specified that unencrypted files and folders moved into an encrypted folder should
+			/// remain unencrypted instead of inheriting the encryption attribute from the enclosing folder. Applications that move files and
+			/// folders should unencrypt them if they were originally unencrypted and are moved into an encrypted folder. Applications that
+			/// use the SHFileOperation function to move files do not need to perform any special actions because the SHFileOperation
+			/// function respects this policy.
+			/// </summary>
+			REST_NOENCRYPTONMOVE = 0x40000045,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the execution of programs listed in the
+			/// HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run registry key. Applications do not need to perform any
+			/// special actions.
+			/// </summary>
+			REST_NOLOCALMACHINERUN = 0x40000046,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the execution of programs listed in the
+			/// HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run registry key. Applications do not need to perform any special actions.
+			/// </summary>
+			REST_NOCURRENTUSERRUN = 0x40000047,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the execution of programs listed in the
+			/// HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunOnce registry key. Applications do not need to perform any
+			/// special actions.
+			/// </summary>
+			REST_NOLOCALMACHINERUNONCE = 0x40000048,
+
+			/// <summary>
+			/// If nonzero, the system administrator has disabled the execution of programs listed in the
+			/// HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce registry key. Applications do not need to perform any
+			/// special actions.
+			/// </summary>
+			REST_NOCURRENTUSERRUNONCE = 0x40000049,
+
+			/// <summary>
+			/// If nonzero, the system administrator has forced web content to be enabled on the desktop. Applications do not need to perform
+			/// any special actions. Windows Vista or later: Not used.
+			/// </summary>
+			REST_FORCEACTIVEDESKTOPON = 0x4000004A,
+
+			/// <summary>
+			/// A 32-bit value that specifies the drives the user cannot open or drop files into. Bit 0 corresponds to drive A, up to bit 25
+			/// which corresponds to drive Z. Applications that enable the user to open folders or drop files should prevent the user from
+			/// opening a folder on a restricted drive or dropping files onto a restricted drive.
+			/// </summary>
+			REST_NOVIEWONDRIVE = 0x4000004C,
+
+			/// <summary>
+			/// Windows XP, Windows2003, or IE_BACKCOMPAT_VERSION defined. If nonzero, the system administrator has disabled automatic
+			/// searching for network folders and printers, overriding the member of the SHELLSTATE structure. Applications do not need to
+			/// perform any special actions. Windows Vista or later: Not used.
+			/// </summary>
+			REST_NONETCRAWL = 0x4000004D,
+
+			/// <summary>
+			/// Windows XP, Windows2003 or IE_BACKCOMPAT_VERSION defined. If nonzero, the system administrator has hidden the Shared
+			/// Documents icon in My Computer. Applications should hide access to CSIDL_COMMON_DOCUMENTS. Windows Vista or later: Not used.
+			/// </summary>
+			REST_NOSHAREDDOCUMENTS = 0x4000004E,
+
+			/// <summary>
+			/// If nonzero, the system administrator has hidden the My Documents icon on the Start menu. Applications do not need to perform
+			/// any special actions.
+			/// </summary>
+			REST_NOSMMYDOCS = 0x4000004F,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has hidden the My Pictures icon on the Start menu. Applications do
+			/// not need to perform any special actions.
+			/// </summary>
+			REST_NOSMMYPICS = 0x40000050,
+
+			/// <summary>
+			/// Windows XP or later. A 32-bit value that specifies the drives for which the Recycle Bin should be forced to be enabled. The
+			/// system typically disables the Recycle Bin on drives that are not local fixed drives. Bit 0 corresponds to drive A, up to bit
+			/// 25 which corresponds to drive Z. Applications do not need to perform any special actions.
+			/// </summary>
+			REST_ALLOWBITBUCKDRIVES = 0x40000051,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has hidden the Back and Forward buttons in the Internet Explorer
+			/// toolbar. Applications do not need to perform any special actions. Windows Vista or later: Not used.
+			/// </summary>
+			REST_NONLEGACYSHELLMODE = 0x40000052,
+
+			/// <summary>Windows XP or later. Ignored.</summary>
+			REST_NOCONTROLPANELBARRICADE = 0x40000053,
+
+			/// <summary>Windows XP or later. Ignored.</summary>
+			REST_NOSTARTPAGE = 0x40000054,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has forced all taskbar icons to be visible, even if they are
+			/// inactive, overriding the user's decision to hide inactive taskbar icons. Applications do not need to perform any special actions.
+			/// </summary>
+			REST_NOAUTOTRAYNOTIFY = 0x40000055,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has disabled grouping of similar taskbar buttons, overriding the
+			/// user's decision to enable taskbar button grouping. Applications do not need to perform any special actions.
+			/// </summary>
+			REST_NOTASKGROUPING = 0x40000056,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has disabled CD burning. Applications should disable any CD-burning capabilities.
+			/// </summary>
+			REST_NOCDBURNING = 0x40000057,
+
+			/// <summary>
+			/// Windows 2000 SP3 or later. If nonzero, the system administrator has disabled the System Properties dialog box. Applications
+			/// should not launch the System Properties dialog box.
+			/// </summary>
+			REST_MYCOMPNOPROP = 0x40000058,
+
+			/// <summary>
+			/// Windows 2000 SP3 or later. If nonzero, the system administrator has disabled the ability to view properties of the My
+			/// Documents folder. Applications should not redirect the My Documents folder.
+			/// </summary>
+			REST_MYDOCSNOPROP = 0x40000059,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has disabled the Windows XP Start menu. Applications do not need to
+			/// perform any special actions.
+			/// </summary>
+			REST_NOSTARTPANEL = 0x4000005A,
+
+			/// <summary>
+			/// Windows XP or later. If 1, the system administrator has disabled the Themes and Appearance pages from the Desktop Properties
+			/// dialog box. Applications should not change system colors and appearance.
+			/// </summary>
+			REST_NODISPLAYAPPEARANCEPAGE = 0x4000005B,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has disabled the Themes page from the Desktop Properties dialog.
+			/// Applications should not change visual styles.
+			/// </summary>
+			REST_NOTHEMESTAB = 0x4000005C,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has disabled the ability to change visual styles. Applications
+			/// should not change visual styles.
+			/// </summary>
+			REST_NOVISUALSTYLECHOICE = 0x4000005D,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has disabled the ability to change font sizes from the Appearance
+			/// page on the Desktop Properties dialog box. Applications should not change system metrics.
+			/// </summary>
+			REST_NOSIZECHOICE = 0x4000005E,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has disabled the ability to change system colors from the
+			/// Appearance page on the Desktop Properties dialog box. Applications should not change system colors.
+			/// </summary>
+			REST_NOCOLORCHOICE = 0x4000005F,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has forced a specific visual style. Applications should not change
+			/// visual styles.
+			/// </summary>
+			REST_SETVISUALSTYLE = 0x40000060,
+
+			/// <summary>
+			/// Windows 2000 SP3 or later. If nonzero, the default working directory for programs run from the Run dialog is not forced to
+			/// the user's home directory. Applications do not need to perform any special actions.
+			/// </summary>
+			REST_STARTRUNNOHOMEPATH = 0x40000061,
+
+			/// <summary>
+			/// Windows XP, Windows 2003. If nonzero, the system administrator has hidden the user name on the Windows XP Start menu.
+			/// Applications do not need to perform any special actions. Windows Vista or later: Not used.
+			/// </summary>
+			REST_NOUSERNAMEINSTARTPANEL = 0x40000062,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has hidden the My Computer icon. Applications should not permit
+			/// access to the My Computer icon.
+			/// </summary>
+			REST_NOMYCOMPUTERICON = 0x40000063,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has hidden the Network Places icon on the Start menu. Applications
+			/// do not need to perform any special actions.
+			/// </summary>
+			REST_NOSMNETWORKPLACES = 0x40000064,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has hidden the list of "pinned" items on the Start menu.
+			/// Applications do not need to perform any special actions.
+			/// </summary>
+			REST_NOSMPINNEDLIST = 0x40000065,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has hidden the My Music icon on the Start menu. Applications do not
+			/// need to perform any special actions.
+			/// </summary>
+			REST_NOSMMYMUSIC = 0x40000066,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has hidden the Eject command on the Start menu. Applications should
+			/// not enable the user to eject the computer.
+			/// </summary>
+			REST_NOSMEJECTPC = 0x40000067,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has hidden the All Programs item on the Windows XP Start menu.
+			/// Applications should not show the contents of the Start menu folder to the user.
+			/// </summary>
+			REST_NOSMMOREPROGRAMS = 0x40000068,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has hidden the list of most frequently used programs on the Windows
+			/// XP Start menu. Applications do not need to perform any special actions.
+			/// </summary>
+			REST_NOSMMFUPROGRAMS = 0x40000069,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has hidden all taskbar notification icons, regardless of activity.
+			/// Applications do not need to perform any special actions.
+			/// </summary>
+			REST_NOTRAYITEMSDISPLAY = 0x4000006A,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has hidden all taskbar toolbars, such as Quick Launch. Applications
+			/// do not need to perform any special actions.
+			/// </summary>
+			REST_NOTOOLBARSONTASKBAR = 0x4000006B,
+
+			/// <summary>
+			/// Windows 2000 SP3 or later. If nonzero, the system administrator has hidden the Set Program Access and Defaults shortcut on
+			/// the Start menu. Applications that enumerate the contents of the Start menu should not show the Set Program Access and
+			/// Defaults shortcut to the user.
+			/// </summary>
+			REST_NOSMCONFIGUREPROGRAMS = 0x4000006F,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has hidden the clock on the taskbar, overriding any user
+			/// preference. Applications do not need to perform any special actions.
+			/// </summary>
+			REST_HIDECLOCK = 0x40000070,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has disabled taskbar warnings when disk space has become low.
+			/// Applications do not need to perform any special actions.
+			/// </summary>
+			REST_NOLOWDISKSPACECHECKS = 0x40000071,
+
+			/// <summary>
+			/// Windows 2000 Service Pack 4 (SP4) or later. If nonzero, the system administrator has disabled the Entire Network icon in
+			/// Network Places. Applications should remove the ability to browse domain resources.
+			/// </summary>
+			REST_NOENTIRENETWORK = 0x40000072,
+
+			/// <summary>
+			/// Windows XP, Windows2003. If nonzero, the system administrator has disabled the desktop cleaner. Applications do not need to
+			/// perform any special actions. Windows Vista or later: Not used.
+			/// </summary>
+			REST_NODESKTOPCLEANUP = 0x40000073,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has required that deleted files be removed immediately instead of
+			/// being placed in the Recycle Bin, overriding any user preference. Applications do not need to perform any special actions.
+			/// </summary>
+			REST_BITBUCKNUKEONDELETE = 0x40000074,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has disabled the user's ability to specify whether confirmation
+			/// dialogs should be displayed when files are moved to the Recycle Bin. Applications do not need to perform any special actions.
+			/// </summary>
+			REST_BITBUCKCONFIRMDELETE = 0x40000075,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has disabled the user's ability to view or modify Recycle Bin
+			/// properties. Applications do not need to perform any special actions.
+			/// </summary>
+			REST_BITBUCKNOPROP = 0x40000076,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has disabled the user's ability to view or modify the desktop
+			/// wallpaper. Applications should remove the ability to change the desktop wallpaper.
+			/// </summary>
+			REST_NODISPBACKGROUND = 0x40000077,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has disabled the user's ability to view or modify screensaver
+			/// settings. Applications should remove the ability to change the screensaver or screensaver settings.
+			/// </summary>
+			REST_NODISPSCREENSAVEPG = 0x40000078,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has disabled the user's ability to view or modify screen color
+			/// depth and resolution settings. Applications should remove the ability to change display color depth and resolution.
+			/// </summary>
+			REST_NODISPSETTINGSPG = 0x40000079,
+
+			/// <summary>Windows XP or later. Ignored.</summary>
+			REST_NODISPSCREENSAVEPREVIEW = 0x4000007A,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has disabled the Display Properties dialog box in Control Panel.
+			/// Applications should remove the ability to change system colors, metrics, visual styles, font size, desktop wallpaper,
+			/// screensaver, screensaver settings, screen color depth, or display resolution.
+			/// </summary>
+			REST_NODISPLAYCPL = 0x4000007B,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has disabled the "Run As" command for Shell objects. Applications
+			/// should remove corresponding functionality.
+			/// </summary>
+			REST_HIDERUNASVERB = 0x4000007C,
+
+			/// <summary>
+			/// Windows XP or later. If nonzero, the system administrator has disabled caching of thumbnails. Applications do not need to
+			/// perform any special actions.
+			/// </summary>
+			REST_NOTHUMBNAILCACHE = 0x4000007D,
+
+			/// <summary>
+			/// Windows XP SP1 or later, or IE_BACKCOMPAT_VERSION defined. If nonzero, the system administrator has specified that filenames
+			/// should be sorted with the StringCompare function instead of the StrCmpLogical function. Applications that sort filenames
+			/// should sort accordingly. (This policy does not apply to Windows 2000.)
+			/// </summary>
+			REST_NOSTRCMPLOGICAL = 0x4000007E,
+
+			/// <summary>
+			/// Windows XP SP1 or later service pack, Windows Server 2003 or IE_BACKCOMPAT_VERSION defined. Disables the Windows Publishing
+			/// Wizard (WPW).Windows Vista or later: Not used.
+			/// </summary>
+			REST_NOPUBLISHWIZARD = 0x4000007F,
+
+			/// <summary>
+			/// Windows XP SP1 or later, or IE_BACKCOMPAT_VERSION defined. Disables the Online Prints Wizard (OPW). Windows Vista or later:
+			/// Not used.
+			/// </summary>
+			REST_NOONLINEPRINTSWIZARD = 0x40000080,
+
+			/// <summary>
+			/// Windows XP SP1 or later, or IE_BACKCOMPAT_VERSION defined. Disables the web specified services for both the Online Prints
+			/// Wizard (OPW) and the Windows Publishing Wizard (WPW).
+			/// </summary>
+			REST_NOWEBSERVICES = 0x40000081,
+
+			/// <summary>
+			/// Windows 2000 SP3 or later, Windows XP, or Windows Server 2003. If nonzero, the system administrator has granted permission
+			/// for unregistered web view templates to be displayed. Applications do not need to perform any special actions. Windows Vista
+			/// or later: Not used.
+			/// </summary>
+			REST_ALLOWUNHASHEDWEBVIEW = 0x40000082,
+
+			/// <summary>
+			/// If nonzero, the system administrator has granted permission for old web view templates (created prior to Windows XP) to be
+			/// converted to Windows XP templates. Applications do not need to perform any special actions. Windows Vista or later: Not used.
+			/// </summary>
+			REST_ALLOWLEGACYWEBVIEW = 0x40000083,
+
+			/// <summary>
+			/// Windows 2000 SP3 or later, Windows XP, or Windows Server 2003. If nonzero, the system administrator has reduced web view
+			/// security to the level that existed in Windows 2000 SP2 or earlier. Applications do not need to perform any special actions.
+			/// (This policy does not apply to Windows 2000 SP2 or earlier.) Windows Vista or later: Not used.
+			/// </summary>
+			REST_REVERTWEBVIEWSECURITY = 0x40000084,
+
+			/// <summary>
+			/// Windows 2000 Service Pack 4 (SP4) or later. If nonzero, the ShellExec function checks if the current process and target
+			/// process are console processes that can inherit handles.
+			/// </summary>
+			REST_INHERITCONSOLEHANDLES = 0x40000086,
+
+			/// <summary>
+			/// Windows XP SP2 and SP3 only. Not supported under Windows Vista or later. Do not sort views with more items than this key.
+			/// Useful for viewing large numbers of files in one folder.
+			/// </summary>
+			REST_SORTMAXITEMCOUNT = 0x40000087,
+
+			/// <summary>Windows XP SP2 or later. Do not register network change events recursively. This helps to avoid network traffic.</summary>
+			REST_NOREMOTERECURSIVEEVENTS = 0x40000089,
+
+			/// <summary>Windows XP SP2 or later. Do not notify for remote change notifications.</summary>
+			REST_NOREMOTECHANGENOTIFY = 0x40000091,
+
+			/// <summary>Windows XP SP2 or SP3 only. Not supported under Windows Vista or later. No simple network IDLists.</summary>
+			REST_NOSIMPLENETIDLIST = 0x40000092,
+
+			/// <summary>Windows XP SP2 or later. Do not enumerate the entire network.</summary>
+			REST_NOENUMENTIRENETWORK = 0x40000093,
+
+			/// <summary>Windows XP SP2 and SP3 only. Not supported under Windows Vista or later.</summary>
+			REST_NODETAILSTHUMBNAILONNETWORK = 0x40000094,
+
+			/// <summary>
+			/// Windows XP SP2 or later. If nonzero, the system administrator has removed the ability to resolve file associations using the
+			/// Internet. The option Use the web service to find the appropriate program is unavailable in the dialog displayed when the user
+			/// selects Open With or double-clicks an unassociated file type.
+			/// </summary>
+			REST_NOINTERNETOPENWITH = 0x40000095,
+
+			/// <summary>Windows XP SP2 or later. In Network Places, if the provider returns ERROR_BAD_NET_NAME, do not retry.</summary>
+			REST_DONTRETRYBADNETNAME = 0x4000009B,
+
+			/// <summary>
+			/// Windows XP SP2 or later, Windows Server 2003. Re-enable legacy support for file.{guid} junctions in file system folders.
+			/// </summary>
+			REST_ALLOWFILECLSIDJUNCTIONS = 0x4000009C,
+
+			/// <summary>Windows XP SP2 or later. Disable the Install Universal Plug and Play (UPnP) task in My Network Places.</summary>
+			REST_NOUPNPINSTALL = 0x4000009D,
+
+			/// <summary>
+			/// If nonzero, the system administrator has removed the option to list individual patches in Add/Remove Programs. Windows Vista
+			/// or later: Not used.
+			/// </summary>
+			REST_ARP_DONTGROUPPATCHES = 0x400000AC,
+
+			/// <summary>
+			/// If nonzero, the system administrator has removed the option to choose the programs page. Windows Vista or later: Not used.
+			/// </summary>
+			REST_ARP_NOCHOOSEPROGRAMSPAGE = 0x400000AD,
+
+			/// <summary>
+			/// Not supported under Windows Vista or later. If nonzero, the system administrator has removed the Disconnect option from the
+			/// Start menu and Task Manager. Applications should remove the ability to disconnect users from a Terminal Server session.
+			/// </summary>
+			REST_NODISCONNECT = 0x41000001,
+
+			/// <summary>
+			/// Not supported under Windows Vista and later. If nonzero, the system administrator has removed the Windows Security option
+			/// from the Start menu and Task Manager. Applications do not need to perform any special actions.
+			/// </summary>
+			REST_NOSECURITY = 0x41000002,
+
+			/// <summary>
+			/// Not supported under Windows Vista and later. If nonzero, the system administrator has removed the ability to change file
+			/// associations. Applications should not enable users to change file associations arbitrarily.
+			/// </summary>
+			REST_NOFILEASSOCIATE = 0x41000003,
+
+			/// <summary>
+			/// Windows XP SP2 only. Not supported under Windows Vista or later. Allows the user to toggle the position of the Comment and
+			/// the Computer Name.
+			/// </summary>
+			REST_ALLOWCOMMENTTOGGLE = 0x41000004,
+
+			/// <summary>
+			/// Windows XP SP2 and SP3 only. Not supported under Windows Vista or later. Cache desktop.ini entries from network folders.
+			/// </summary>
+			REST_USEDESKTOPINICACHE = 0x41000005,
 		}
 
 		/// <summary>
@@ -751,6 +1790,42 @@ namespace Vanara.PInvoke
 			SHOP_VOLUMEGUID = 0x00000004,
 		}
 
+		/// <summary>Flags that determine behavior options in SHPathPrepareForWrite.</summary>
+		[PInvokeData("shlobj_core.h", MSDNShortId = "1b65e34f-2c31-421b-9d27-ed263dfb372b")]
+		[Flags]
+		public enum SHPPFW
+		{
+			/// <summary>Do not create new directories.</summary>
+			SHPPFW_NONE = 0x00000000,
+
+			/// <summary>
+			/// Default. Do not prompt the user if a directory needs to be created. This is identical to <c>SHPPFW_DIRCREATE</c>. Do not pass
+			/// with <c>SHPPFW_ASKDIRCREATE</c>.
+			/// </summary>
+			SHPPFW_DEFAULT = SHPPFW_DIRCREATE,
+
+			/// <summary>Create directories without prompting the user. Do not pass with <c>SHPPFW_ASKDIRCREATE</c>.</summary>
+			SHPPFW_DIRCREATE = 0x00000001,
+
+			/// <summary>Prompt the user before creating directories. Do not pass with <c>SHPPFW_DIRCREATE</c>.</summary>
+			SHPPFW_ASKDIRCREATE = 0x00000002,
+
+			/// <summary>
+			/// Last item in is a file name, so ignore. For example, if ="C:\MyDir\MyFile.doc", only use "C:\MyDir". If
+			/// ="C:\MyFirDir\MySecDir", only use "C:\MyFirDir".
+			/// </summary>
+			SHPPFW_IGNOREFILENAME = 0x00000004,
+
+			/// <summary>Not currently implemented.</summary>
+			SHPPFW_NOWRITECHECK = 0x00000008,
+
+			/// <summary>
+			/// <c>Windows XP or later.</c> Suppresses the "not accessible" error message box, which displays when a failure other than a
+			/// user cancellation occurs, and is not <c>NULL</c>.
+			/// </summary>
+			SHPPFW_MEDIACHECKONLY = 0x00000010,
+		}
+
 		/// <summary>
 		/// Used by the <c>SHGetSetSettings</c> function to specify which members of its <c>SHELLSTATE</c> structure should be set or retrived.
 		/// </summary>
@@ -849,6 +1924,26 @@ namespace Vanara.PInvoke
 
 			/// <summary>Windows 8 and later: The fShowStatusBar member is being requested.</summary>
 			SSF_SHOWSTATUSBAR = 0x04000000,
+		}
+
+		/// <summary>Flags for SHValidateUNC.</summary>
+		[PInvokeData("shlobj_core.h", MSDNShortId = "42394650-5571-4165-84f1-19a26fb4a1b8")]
+		public enum VALIDATEUNC
+		{
+			/// <summary>
+			/// Connect a drive letter. When this flag is set, the value in is changed to the local drive to which the UNC is mapped on the
+			/// local machine.
+			/// </summary>
+			VALIDATEUNC_CONNECT = 0x0001,
+
+			/// <summary>On either failure or success, display no UI.</summary>
+			VALIDATEUNC_NOUI = 0x0002,
+
+			/// <summary>Validate as a print share rather than disk share.</summary>
+			VALIDATEUNC_PRINT = 0x0004,
+
+			/// <summary><c>Windows Vista and later</c>. The connection should be made persistent.</summary>
+			VALIDATEUNC_PERSIST = 0x0008,
 		}
 
 		/// <summary>
@@ -4277,6 +5372,38 @@ namespace Vanara.PInvoke
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, OFASI dwFlags);
 
 		/// <summary>
+		/// <para>Displays the <c>Open With</c> dialog box.</para>
+		/// </summary>
+		/// <param name="hwndParent">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>The handle of the parent window. This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="poainfo">
+		/// <para>Type: <c>const OPENASINFO*</c></para>
+		/// <para>A pointer to an OPENASINFO structure, which specifies the contents of the resulting dialog.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Starting in Windows 10, the <c>OAIF_ALLOW_REGISTRATION</c>, <c>OAIF_FORCE_REGISTRATION</c>, and <c>OAIF_HIDE_REGISTRATION</c>
+		/// flags will be ignored by <c>SHOpenWithDialog</c>. The <c>Open With</c> dialog box can no longer be used to change the default
+		/// program used to open a file extension. You can only use <c>SHOpenWithDialog</c> to open a single file.
+		/// </para>
+		/// <para>
+		/// If <c>SHOpenWithDialog</c> is called without passing <c>OAIF_EXEC</c>, the user will receive a dialog that informs them that they
+		/// can change the default programs used to open file extensions in their <c>Settings</c>.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shopenwithdialog SHSTDAPI SHOpenWithDialog( HWND
+		// hwndParent, const OPENASINFO *poainfo );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "026bfb34-a8a5-4bd7-9bc0-4aa395e6d535")]
+		public static extern HRESULT SHOpenWithDialog(HandleRef hwndParent, ref OPENASINFO poainfo);
+
+		/// <summary>
 		/// Translates a Shell namespace object's display name into an item identifier list and returns the attributes of the object. This
 		/// function is the preferred method to convert a string to a pointer to an item identifier list (PIDL).
 		/// </summary>
@@ -4298,6 +5425,675 @@ namespace Vanara.PInvoke
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762236")]
 		public static extern HRESULT SHParseDisplayName([MarshalAs(UnmanagedType.LPWStr)] string pszName,
 			[In, Optional] IntPtr pbc, out PIDL ppidl, SFGAO sfgaoIn, out SFGAO psfgaoOut);
+
+		/// <summary>
+		/// <para>
+		/// Checks to see if the path exists. This includes remounting mapped network drives, prompting for ejectable media to be reinserted,
+		/// creating the paths, prompting for the media to be formatted, and providing the appropriate user interfaces, if necessary.
+		/// Read/write permissions for the medium are not checked.
+		/// </para>
+		/// </summary>
+		/// <param name="hwnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>
+		/// A handle to a window that specifies the parent window to be used for any user interface windows that must be created. If set to
+		/// <c>NULL</c>, user interface windows are not created.
+		/// </para>
+		/// </param>
+		/// <param name="punkEnableModless">
+		/// <para>Type: <c>IUnknown*</c></para>
+		/// <para>
+		/// A pointer to an IUnknown interface that specifies the IOleInPlaceActiveObject object that implements the EnableModeless method.
+		/// </para>
+		/// </param>
+		/// <param name="pszPath">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>
+		/// A pointer to a null-terminated string of maximum length MAX_PATH that specifies the path to be verified as valid for writing.
+		/// This can be a UNC or file drive path.
+		/// </para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>Flags that determine behavior options. This parameter can be a combination of the following values.</para>
+		/// <para>SHPPFW_NONE</para>
+		/// <para>Do not create new directories.</para>
+		/// <para>SHPPFW_DEFAULT</para>
+		/// <para>
+		/// Default. Do not prompt the user if a directory needs to be created. This is identical to <c>SHPPFW_DIRCREATE</c>. Do not pass
+		/// with <c>SHPPFW_ASKDIRCREATE</c>.
+		/// </para>
+		/// <para>SHPPFW_DIRCREATE</para>
+		/// <para>Create directories without prompting the user. Do not pass with <c>SHPPFW_ASKDIRCREATE</c>.</para>
+		/// <para>SHPPFW_ASKDIRCREATE</para>
+		/// <para>Prompt the user before creating directories. Do not pass with <c>SHPPFW_DIRCREATE</c>.</para>
+		/// <para>SHPPFW_IGNOREFILENAME</para>
+		/// <para>
+		/// Last item in is a file name, so ignore. For example, if ="C:\MyDir\MyFile.doc", only use "C:\MyDir". If ="C:\MyFirDir\MySecDir",
+		/// only use "C:\MyFirDir".
+		/// </para>
+		/// <para>SHPPFW_NOWRITECHECK</para>
+		/// <para>Not currently implemented.</para>
+		/// <para>SHPPFW_MEDIACHECKONLY</para>
+		/// <para>
+		/// <c>Windows XP or later.</c> Suppresses the "not accessible" error message box, which displays when a failure other than a user
+		/// cancellation occurs, and is not <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>
+		/// Returns S_OK if the path is available, or an error code otherwise. Note that a return value of S_OK does not mean that the medium
+		/// is writable; it simply means that the path is available.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The primary use of this function is for a program to check a path before using it and display the necessary user interface to
+		/// prompt the user. For example, if the disk in drive A: were missing, a window that prompts the user to insert the disk would appear.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shpathprepareforwritea SHSTDAPI
+		// SHPathPrepareForWriteA( HWND hwnd, IUnknown *punkEnableModless, LPCSTR pszPath, DWORD dwFlags );
+		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "1b65e34f-2c31-421b-9d27-ed263dfb372b")]
+		public static extern HRESULT SHPathPrepareForWrite(HandleRef hwnd, [MarshalAs(UnmanagedType.IUnknown)] object punkEnableModless, string pszPath, SHPPFW dwFlags);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be altered or unavailable
+		/// in subsequent versions of Windows.]
+		/// </para>
+		/// <para>Ensures proper handling of code page retrieval or assignment for the requested property set operation.</para>
+		/// </summary>
+		/// <param name="psstg">
+		/// <para>Type: <c>IPropertySetStorage*</c></para>
+		/// <para>A pointer to an IPropertySetStorage interface.</para>
+		/// </param>
+		/// <param name="fmtid">
+		/// <para>Type: <c>REFFMTID</c></para>
+		/// <para>
+		/// A property set ID to open. The values for this parameter can be either one of those defined in Predefined Property Set Format
+		/// Identifiers or any other FMTID that you register.
+		/// </para>
+		/// </param>
+		/// <param name="pclsid">
+		/// <para>Type: <c>const CLSID*</c></para>
+		/// <para>A pointer to the CLSID associated with the set. This parameter can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="grfFlags">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// One or more members of the PROPSETFLAG enumeration that determine how the property set is created and opened. All sets containing
+		/// ANSI bytes should be created with PROPSETFLAG_ANSI, otherwise PROPSETFLAG_DEFAULT.
+		/// </para>
+		/// </param>
+		/// <param name="grfMode">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The flags from the STGM enumeration that indicate conditions for creating and deleting the object and access modes for the
+		/// object. Must contain STGM_DIRECT | STGM_SHARE_EXCLUSIVE.
+		/// </para>
+		/// </param>
+		/// <param name="dwDisposition">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>One of the following values, defined in Fileapi.h.</para>
+		/// <para>CREATE_NEW (1)</para>
+		/// <para>Create a new set if one does not already exist.</para>
+		/// <para>CREATE_ALWAYS (2)</para>
+		/// <para>Always create a new set, overwriting any existing set.</para>
+		/// <para>OPEN_EXISTING (3)</para>
+		/// <para>Open the existing set.</para>
+		/// <para>OPEN_ALWAYS (4)</para>
+		/// </param>
+		/// <param name="ppstg">
+		/// <para>Type: <c>IPropertyStorage**</c></para>
+		/// <para>When this method returns, contains an IPropertyStorage interface pointer.</para>
+		/// </param>
+		/// <param name="puCodePage">
+		/// <para>Type: <c>UINT*</c></para>
+		/// <para>When this method returns, contains the address of the code page ID for the set.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shpropstgcreate SHSTDAPI SHPropStgCreate(
+		// IPropertySetStorage *psstg, REFFMTID fmtid, const CLSID *pclsid, DWORD grfFlags, DWORD grfMode, DWORD dwDisposition,
+		// IPropertyStorage **ppstg, UINT *puCodePage );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "fd99e04e-ef96-4357-9226-da6604fb0e84")]
+		public static extern HRESULT SHPropStgCreate(IPropertySetStorage psstg, [MarshalAs(UnmanagedType.LPStruct)] Guid fmtid, [MarshalAs(UnmanagedType.LPStruct)] Guid pclsid, PROPSETFLAG grfFlags, STGM grfMode, uint dwDisposition, out IPropertyStorage ppstg, out uint puCodePage);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be altered or unavailable
+		/// in subsequent versions of Windows.]
+		/// </para>
+		/// <para>
+		/// Wraps the IPropertyStorage::ReadMultiple function to ensure that ANSI and Unicode translations are handled properly for
+		/// deprecated property sets.
+		/// </para>
+		/// </summary>
+		/// <param name="pps">
+		/// <para>Type: <c>IPropertyStorage*</c></para>
+		/// <para>An IPropertyStorage interface pointer that identifies the property store.</para>
+		/// </param>
+		/// <param name="uCodePage">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>A code page value for ANSI string properties.</para>
+		/// </param>
+		/// <param name="cpspec">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>A count of properties being read.</para>
+		/// </param>
+		/// <param name="rgpspec">
+		/// <para>Type: <c>PROPSPEC const[]</c></para>
+		/// <para>An array of properties to be read.</para>
+		/// </param>
+		/// <param name="rgvar">
+		/// <para>Type: <c>PROPVARIANT[]</c></para>
+		/// <para>An array of PROPVARIANT types that, when this function returns successfully, receives the property values.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shpropstgreadmultiple SHSTDAPI
+		// SHPropStgReadMultiple( IPropertyStorage *pps, UINT uCodePage, ULONG cpspec, PROPSPEC const [] rgpspec, PROPVARIANT [] rgvar );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "5350a1b1-a099-4b09-af89-f652e40b1d20")]
+		public static extern HRESULT SHPropStgReadMultiple(IPropertyStorage pps, uint uCodePage, uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PROPSPEC[] rgpspec, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PROPVARIANT[] rgvar);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be altered or unavailable
+		/// in subsequent versions of Windows.]
+		/// </para>
+		/// <para>
+		/// Wraps the IPropertyStorage::WriteMultiple function to ensure that ANSI and Unicode translations are handled properly for
+		/// deprecated property sets.
+		/// </para>
+		/// </summary>
+		/// <param name="pps">
+		/// <para>Type: <c>IPropertyStorage*</c></para>
+		/// <para>An IPropertyStorage interface pointer that identifies the property store.</para>
+		/// </param>
+		/// <param name="puCodePage">
+		/// <para>TBD</para>
+		/// </param>
+		/// <param name="cpspec">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>A count of properties being set.</para>
+		/// </param>
+		/// <param name="rgpspec">
+		/// <para>Type: <c>PROPSPEC const[]</c></para>
+		/// <para>An array of PROPSPEC structures that contain the property information to be set.</para>
+		/// </param>
+		/// <param name="rgvar">
+		/// <para>Type: <c>PROPVARIANT[]</c></para>
+		/// <para>An array of PROPVARIANT types to set the property values.</para>
+		/// </param>
+		/// <param name="propidNameFirst">
+		/// <para>Type: <c>PROPID</c></para>
+		/// <para>The minimum value for property identifiers when they must be allocated. The value should be greater than or equal to PID_FIRST_USABLE.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shpropstgwritemultiple SHSTDAPI
+		// SHPropStgWriteMultiple( IPropertyStorage *pps, UINT *puCodePage, ULONG cpspec, PROPSPEC const [] rgpspec, PROPVARIANT [] rgvar,
+		// PROPID propidNameFirst );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "38bc4d53-818d-48c5-9ec5-d2e33d98c63e")]
+		public static extern HRESULT SHPropStgWriteMultiple(IPropertyStorage pps, ref uint puCodePage, uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PROPSPEC[] rgpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PROPVARIANT[] rgvar, uint propidNameFirst);
+
+		/// <summary>
+		/// <para>
+		/// [This function is available through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be altered or unavailable
+		/// in subsequent versions of Windows.]
+		/// </para>
+		/// <para>Requests each property sheet in a property sheet extension array to replace pages. Each page is allowed up to one replacement.</para>
+		/// </summary>
+		/// <param name="hpsxa">
+		/// <para>Type: <c>HPSXA</c></para>
+		/// <para>A property sheet array handle (HPSXA) returned from a call to SHCreatePropSheetExtArray.</para>
+		/// </param>
+		/// <param name="uPageID">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The ID of the page to replace.</para>
+		/// </param>
+		/// <param name="lpfnReplaceWith">
+		/// <para>Type: <c>LPFNADDPROPSHEETPAGE</c></para>
+		/// <para>A pointer to an AddPropSheetPageProc function used by the property sheet extension to add a page to a property sheet.</para>
+		/// </param>
+		/// <param name="lParam">
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>An application-defined value.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The number of replacements actually performed.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shreplacefrompropsheetextarray WINSHELLAPI UINT
+		// SHReplaceFromPropSheetExtArray( HPSXA hpsxa, UINT uPageID, LPFNADDPROPSHEETPAGE lpfnReplaceWith, LPARAM lParam );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "a8bdde44-d668-46c4-9e58-7a45b775fe09")]
+		public static extern uint SHReplaceFromPropSheetExtArray(IntPtr hpsxa, uint uPageID, AddPropSheetPageProc lpfnReplaceWith, IntPtr lParam);
+
+		/// <summary>
+		/// <para>
+		/// [SHRestricted is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>
+		/// Determines whether a specified administrator policy is in effect. In many cases, applications need to modify certain behaviors to
+		/// comply with the policies enacted by system administrators.
+		/// </para>
+		/// </summary>
+		/// <param name="rest">
+		/// <para>Type: <c>RESTRICTIONS</c></para>
+		/// <para>Specifies one of the flags described in the RESTRICTIONS enumerated type.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>Returns nonzero if the specified restriction is in effect, or zero otherwise.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shrestricted DWORD SHRestricted( RESTRICTIONS rest );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "94adf343-3879-455a-9770-70460cf383ca")]
+		public static extern uint SHRestricted(RESTRICTIONS rest);
+
+		/// <summary>
+		/// <para>
+		/// Provides an interface that allows hosted Shell extensions and other components to prevent their host process from closing
+		/// prematurely. The host process is typically Windows Explorer or Windows Internet Explorer, but this function can also be used by
+		/// other applications.
+		/// </para>
+		/// </summary>
+		/// <param name="punk">
+		/// <para>Type: <c>IUnknown*</c></para>
+		/// <para>
+		/// A pointer to a free-threaded IUnknown. Components can use this interface (through SHGetInstanceExplorer) to prevent the host
+		/// process from terminating. This value can be <c>NULL</c>, in which case the process reference is no longer made available to components.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>This function does not return a value.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Windows Explorer and Internet Explorer can use <c>SHSetInstanceExplorer</c> to allow components such as Shell extensions to
+		/// extend the lifetime of the process. Other applications can also use <c>SHSetInstanceExplorer</c> to allow for the same
+		/// capability. For instance, the browser message loop and the proxy desktop use <c>SHSetInstanceExplorer</c> to let other threads
+		/// extend their lifetime.
+		/// </para>
+		/// <para>
+		/// Applications other than Windows Explorer and Internet Explorer that call this function might encounter compatibility problems
+		/// because some components use SHGetInstanceExplorer to detect whether they are being hosted from within Windows Explorer or
+		/// Internet Explorer.
+		/// </para>
+		/// <para>The interface pointer passed to <c>SHSetInstanceExplorer</c> must reference a free-threaded object.</para>
+		/// <para>
+		/// Each time a component calls SHGetInstanceExplorer, the system calls the AddRef method before returning the interface pointer to
+		/// the calling component. The component then calls the IUnknown::Release method when processing is complete. The process that calls
+		/// <c>SHSetInstanceExplorer</c> must not terminate while the reference count of the provided interface pointer is nonzero.
+		/// </para>
+		/// <para>For further information on how components use the process references, see SHGetInstanceExplorer.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shsetinstanceexplorer void SHSetInstanceExplorer(
+		// IUnknown *punk );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "86f29587-8347-4e88-87bc-83ef2b8a7728")]
+		public static extern void SHSetInstanceExplorer([MarshalAs(UnmanagedType.IUnknown)] object punk);
+
+		/// <summary>
+		/// <para>Redirects a known folder to a new location.</para>
+		/// </summary>
+		/// <param name="rfid">
+		/// <para>Type: <c>REFKNOWNFOLDERID</c></para>
+		/// <para>A <c>GUID</c> that identifies the known folder.</para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>Either 0 or the following value.</para>
+		/// <para>KF_FLAG_DONT_UNEXPAND</para>
+		/// <para>If this flag is set, portions of the path referenced by may be represented by environment strings such as .</para>
+		/// </param>
+		/// <param name="hToken">
+		/// <para>Type: <c>HANDLE</c></para>
+		/// <para>
+		/// An access token used to represent a particular user. This parameter is usually set to <c>NULL</c>, in which case the function
+		/// tries to access the current user's instance of the folder. However, you may need to assign a value to for those folders that can
+		/// have multiple users but are treated as belonging to a single user. The most commonly used folder of this type is <c>Documents</c>.
+		/// </para>
+		/// <para>
+		/// The calling application is responsible for correct impersonation when is non-null. It must have appropriate security privileges
+		/// for the particular user, including TOKEN_QUERY and TOKEN_IMPERSONATE, and the user's registry hive must be currently mounted. See
+		/// Access Control for further discussion of access control issues.
+		/// </para>
+		/// <para>
+		/// Assigning the parameter a value of -1 indicates the Default User. This allows clients of <c>SHSetKnownFolderPath</c> to set
+		/// folder locations (such as the <c>Desktop</c> folder) for the Default User. The Default User user profile is duplicated when any
+		/// new user account is created, and includes special folders such as <c>Documents</c> and <c>Desktop</c>. Any items added to the
+		/// Default User folder also appear in any new user account. Note that access to the Default User folders requires administrator privileges.
+		/// </para>
+		/// </param>
+		/// <param name="pszPath">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>
+		/// A pointer to the folder's new path. This is a null-terminated Unicode string of length MAX_PATH. This path cannot be of zero length.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>Returns S_OK if successful, or an error value otherwise, including the following:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>
+		/// Among other things, this value can indicate that the parameter references a KNOWNFOLDERID that is not present on the system. Not
+		/// all KNOWNFOLDERID values are present on all systems. Use IKnownFolderManager::GetFolderIds to retrieve the set of KNOWNFOLDERID
+		/// values for the current system.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>This function replaces SHSetFolderPath. That older function is now simply a wrapper for <c>SHSetKnownFolderPath</c>.</para>
+		/// <para>
+		/// The caller of this function must have Administrator privileges. To call this function on public known folders, the caller must
+		/// have Administrator privileges. For per-user known folders the caller only requires User privileges.
+		/// </para>
+		/// <para>
+		/// Some of the known folders, for example, the <c>Documents</c> folder, are per-user. Every user has a different path for their
+		/// <c>Documents</c> folder. If is <c>NULL</c>, the API tries to access the calling application's instance of the folder, which is
+		/// that of the current user. If is a valid user token, the API tries to impersonate the user using this token and tries to access
+		/// that user's instance.
+		/// </para>
+		/// <para>This function cannot be called on folders of type KF_CATEGORY_FIXED and KF_CATEGORY_VIRTUAL.</para>
+		/// <para>To call this function on a folder of type KF_CATEGORY_COMMON, the calling application must be running with elevated privileges.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shsetknownfolderpath HRESULT SHSetKnownFolderPath(
+		// REFKNOWNFOLDERID rfid, DWORD dwFlags, HANDLE hToken, PCWSTR pszPath );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "b5758086-93d1-49d6-b9ac-ba8927f3bd1e")]
+		public static extern HRESULT SHSetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, KNOWN_FOLDER_FLAG dwFlags, SafeTokenHandle hToken, [MarshalAs(UnmanagedType.LPWStr)] string pszPath);
+
+		/// <summary>
+		/// <para>
+		/// [SHShellFolderView_Message is available for use in the operating systems specified in the Requirements section. It may be altered
+		/// or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Sends a message to the shell's default IFolderView implementation (DefView).</para>
+		/// </summary>
+		/// <param name="hwndMain">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window that receives the message.</para>
+		/// </param>
+		/// <param name="uMsg">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The message to send. The following is a list of possible messages.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Message</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SFVM_ADDOBJECT</term>
+		/// <term>Adds an object to the shell view.</term>
+		/// </item>
+		/// <item>
+		/// <term>SFVM_GETSELECTEDOBJECTS</term>
+		/// <term>Retrieves an array of PIDLs for all selected objects.</term>
+		/// </item>
+		/// <item>
+		/// <term>SFVM_REARRANGE</term>
+		/// <term>Notifies the IShellView to rearrange its items.</term>
+		/// </item>
+		/// <item>
+		/// <term>SFVM_REMOVEOBJECT</term>
+		/// <term>Removes an object from the shell view.</term>
+		/// </item>
+		/// <item>
+		/// <term>SFVM_SETCLIPBOARD</term>
+		/// <term>Notifies the IShellView when one of its objects is placed on the clipboard as a result of a menu command.</term>
+		/// </item>
+		/// <item>
+		/// <term>SFVM_SETITEMPOS</term>
+		/// <term>Sets the position of an item in the shell view.</term>
+		/// </item>
+		/// <item>
+		/// <term>SFVM_SETPOINTS</term>
+		/// <term>Sets the points of the currently selected objects to the data object on copy and cut commands.</term>
+		/// </item>
+		/// <item>
+		/// <term>SFVM_UPDATEOBJECT</term>
+		/// <term>Updates an object by passing a pointer to an array of two PIDLs.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="lParam">
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>Contents of this value depend on the message passed in . See individual message topics for more information.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LRESULT</c></para>
+		/// <para>The return value depends on the message passed in . See individual message topics for more information.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shshellfolderview_message LRESULT
+		// SHShellFolderView_Message( HWND hwndMain, UINT uMsg, LPARAM lParam );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "f5722a4f-d830-4c31-9275-13e800408681")]
+		public static extern IntPtr SHShellFolderView_Message(HandleRef hwndMain, uint uMsg, IntPtr lParam);
+
+		/// <summary>
+		/// <para>Notifies the Shell that an image in the system image list has changed.</para>
+		/// </summary>
+		/// <param name="pszHashItem">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>
+		/// A pointer to a string value that specifies the fully qualified path of the file that contains the icon. Use the path that is
+		/// returned in the buffer pointed to by the parameter of IExtractIcon::GetIconLocation.
+		/// </para>
+		/// </param>
+		/// <param name="iIndex">
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// An integer that specifies the zero-based index of the icon in the file specified by . Use the value that is pointed to by the
+		/// parameter of IExtractIcon::GetIconLocation.
+		/// </para>
+		/// </param>
+		/// <param name="uFlags">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// An unsigned integer that specifies the flags that determine the icon attributes. Set to the value that is pointed to by the
+		/// parameter of IExtractIcon::GetIconLocation. The flags that are relevant to <c>SHUpdateImage</c> are <c>GIL_NOTFILENAME</c> and <c>GIL_SIMULATEDOC</c>.
+		/// </para>
+		/// </param>
+		/// <param name="iImageIndex">
+		/// <para>Type: <c>int</c></para>
+		/// <para>An integer that specifies the index in the system image list of the icon that is being updated.</para>
+		/// </param>
+		/// <returns>
+		/// <para>No return value.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If you do not know the index in the system image list of the icon that you want to update, use SHGetFileInfo with the parameter
+		/// set to <c>SHGFI_SYSICONINDEX</c>.
+		/// </para>
+		/// <para>
+		/// You must use IExtractIcon::GetIconLocation with the parameters of the old icon that needs to be updated, not those of the new
+		/// icon you want to replace it with.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shupdateimagea void SHUpdateImageA( LPCSTR
+		// pszHashItem, int iIndex, UINT uFlags, int iImageIndex );
+		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "9df5860e-db65-4e43-aaf9-c1e0e33fc569")]
+		public static extern void SHUpdateImage(string pszHashItem, int iIndex, GetIconLocationFlags uFlags, int iImageIndex);
+
+		/// <summary>
+		/// <para>
+		/// [SHValidateUNC is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>
+		/// Validates a Universal Naming Convention (UNC) path by calling WNetAddConnection3. The function makes it possible for the user to
+		/// type a remote network access (RNA) UNC application or document name from the <c>Run</c> dialog box on the <c>Start</c> menu.
+		/// </para>
+		/// </summary>
+		/// <param name="hwndOwner">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>Handle of the parent window, used to display UI. If this is not needed, this value can be set to <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="pszFile">
+		/// <para>Type: <c>PWSTR</c></para>
+		/// <para>
+		/// A pointer to a null-terminated Unicode string that specifies the UNC path to validate. Note: This string must not be a constant string.
+		/// </para>
+		/// </param>
+		/// <param name="fConnect">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>One or more of the following values.</para>
+		/// <para>VALIDATEUNC_CONNECT (0x0001)</para>
+		/// <para>
+		/// Connect a drive letter. When this flag is set, the value in is changed to the local drive to which the UNC is mapped on the local machine.
+		/// </para>
+		/// <para>VALIDATEUNC_NOUI (0x0002)</para>
+		/// <para>On either failure or success, display no UI.</para>
+		/// <para>VALIDATEUNC_PRINT (0x0004)</para>
+		/// <para>Validate as a print share rather than disk share.</para>
+		/// <para>VALIDATEUNC_PERSIST (0x0008)</para>
+		/// <para><c>Windows Vista and later</c>. The connection should be made persistent.</para>
+		/// <para>VALIDATEUNC_VALID</para>
+		/// <para>Mask value used to verify that the flags passed to <c>SHValidateUNC</c> are valid.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Returns <c>TRUE</c> if the UNC path exists; <c>FALSE</c> if the UNC path does not exist or if some other failure occurred.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shvalidateunc BOOL SHValidateUNC( HWND hwndOwner,
+		// PWSTR pszFile, UINT fConnect );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "42394650-5571-4165-84f1-19a26fb4a1b8")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SHValidateUNC(HandleRef hwndOwner, [MarshalAs(UnmanagedType.LPWStr)] string pszFile, VALIDATEUNC fConnect);
+
+		/// <summary>
+		/// <para>
+		/// [SignalFileOpen is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Sends a notification to the Shell that the specified file has been opened.</para>
+		/// </summary>
+		/// <param name="pidl">
+		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+		/// <para>A PIDL that specifies the file.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Returns <c>TRUE</c> if successful; otherwise <c>FALSE</c>.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-signalfileopen BOOL SignalFileOpen(
+		// PCIDLIST_ABSOLUTE pidl );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "b46bb06f-a183-4a39-89bd-457fa4fe728f")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SignalFileOpen(PIDL pidl);
+
+		/// <summary>
+		/// <para>Creates a unique name for a stream or storage object from a template.</para>
+		/// </summary>
+		/// <param name="pstgParent">
+		/// <para>Type: <c>IStorage*</c></para>
+		/// <para>A pointer to an IStorage object.</para>
+		/// </param>
+		/// <param name="pszFileSpec">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>The format or template for the name of the stream or storage object.</para>
+		/// </param>
+		/// <param name="grfMode">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The access mode to use when opening the stream or storage object. For more information and descriptions of the possible values,
+		/// see STGM Constants.
+		/// </para>
+		/// </param>
+		/// <param name="riid">
+		/// <para>Type: <c>REFIID</c></para>
+		/// <para>A reference to the IID of the interface to retrieve through , typically IID_IStorage or IID_IStream.</para>
+		/// </param>
+		/// <param name="ppv">
+		/// <para>Type: <c>void**</c></para>
+		/// <para>When this method returns, contains the interface pointer requested in . This is typically IStorage or IStream.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// It is recommended that you use the <c>IID_PPV_ARGS</c> macro, defined in Objbase.h, to package the and parameters. This macro
+		/// provides the correct IID based on the interface pointed to by the value in , which eliminates the possibility of a coding error.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-stgmakeuniquename HRESULT StgMakeUniqueName(
+		// IStorage *pstgParent, PCWSTR pszFileSpec, DWORD grfMode, REFIID riid, void **ppv );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "d45ec25c-359b-46f8-b0f6-5888525c7349")]
+		public static extern HRESULT StgMakeUniqueName(IStorage pstgParent, [MarshalAs(UnmanagedType.LPWStr)] string pszFileSpec, STGM grfMode, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+
+		/// <summary>
+		/// <para>
+		/// [Win32DeleteFile is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Deletes a file.</para>
+		/// </summary>
+		/// <param name="pszPath">
+		/// <para>TBD</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para><c>TRUE</c> if the file was successfully deleted; otherwise <c>FALSE</c>.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-win32deletefile BOOL Win32DeleteFile( PCWSTR
+		// pszPath );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "e6b2ac77-a206-413e-aba7-0fd627799a95")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool Win32DeleteFile([MarshalAs(UnmanagedType.LPWStr)] string pszPath);
+
+		/// <summary>
+		/// <para>[</para>
+		/// <para>WriteCabinetState</para>
+		/// <para>
+		/// is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
+		/// subsequent versions.]
+		/// </para>
+		/// <para>Writes the information contained in a CABINETSTATE structure into the registry.</para>
+		/// </summary>
+		/// <param name="pcs">
+		/// <para>Type: <c>CABINETSTATE*</c></para>
+		/// <para>A pointer to a CABINETSTATE structure that holds the values to be set.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para><c>TRUE</c> if successful; otherwise, <c>FALSE</c>.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-writecabinetstate BOOL WriteCabinetState(
+		// CABINETSTATE *pcs );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlobj_core.h", MSDNShortId = "cbd08812-eedc-4ba7-827e-1e5d1e3e6368")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool WriteCabinetState(ref CABINETSTATE pcs);
 
 		/// <summary>
 		/// <para>
@@ -4698,6 +6494,64 @@ namespace Vanara.PInvoke
 
 			/// <summary>The console's code page.</summary>
 			public uint uCodePage;
+		}
+
+		/// <summary>
+		/// <para>Stores information for the SHOpenWithDialog function.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// Starting in Windows 10, the <c>OAIF_ALLOW_REGISTRATION</c>, <c>OAIF_FORCE_REGISTRATION</c>, and <c>OAIF_HIDE_REGISTRATION</c>
+		/// flags will be ignored by SHOpenWithDialog. The <c>Open With</c> dialog box can no longer be used to change the default program
+		/// used to open a file extension. You can only use <c>SHOpenWithDialog</c> to open a single file.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-_openasinfo typedef struct _openasinfo { LPCWSTR
+		// pcszFile; LPCWSTR pcszClass; OPEN_AS_INFO_FLAGS oaifInFlags; } OPENASINFO, *POPENASINFO;
+		[PInvokeData("shlobj_core.h", MSDNShortId = "5486c4d3-c6c5-459d-aa7f-426971184876")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct OPENASINFO
+		{
+			/// <summary>
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>A pointer to the file name.</para>
+			/// </summary>
+			public string pcszFile;
+
+			/// <summary>
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>A pointer to the file type description. Set this parameter to <c>NULL</c> to use the file name extension of <c>pcszFile</c>.</para>
+			/// </summary>
+			public string pcszClass;
+
+			/// <summary>
+			/// <para>Type: <c>OPEN_AS_INFO_FLAGS</c></para>
+			/// <para>The characteristics of the SHOpenWithDialog dialog box. One or more of the following values.</para>
+			/// <para>OAIF_ALLOW_REGISTRATION (0x00000001)</para>
+			/// <para>Enable the "always use this program" checkbox. If not passed, it will be disabled.</para>
+			/// <para>OAIF_REGISTER_EXT (0x00000002)</para>
+			/// <para>Do the registration after the user hits the <c>OK</c> button.</para>
+			/// <para>OAIF_EXEC (0x00000004)</para>
+			/// <para>Execute file after registering.</para>
+			/// <para>OAIF_FORCE_REGISTRATION (0x00000008)</para>
+			/// <para>
+			/// Force the <c>Always use this program</c> checkbox to be checked. Typically, you won't use the OAIF_ALLOW_REGISTRATION flag
+			/// when you pass this value.
+			/// </para>
+			/// <para>OAIF_HIDE_REGISTRATION (0x00000020)</para>
+			/// <para>
+			/// <c>Introduced in Windows Vista</c>. Hide the <c>Always use this program</c> checkbox. If this flag is specified, the
+			/// OAIF_ALLOW_REGISTRATION and OAIF_FORCE_REGISTRATION flags will be ignored.
+			/// </para>
+			/// <para>OAIF_URL_PROTOCOL (0x00000040)</para>
+			/// <para>
+			/// <c>Introduced in Windows Vista</c>. The value for the extension that is passed is actually a protocol, so the <c>Open
+			/// With</c> dialog box should show applications that are registered as capable of handling that protocol.
+			/// </para>
+			/// <para>OAIF_FILE_IS_URI (0x00000080)</para>
+			/// <para><c>Introduced in Windows 8</c>. The location pointed to by the parameter is given as a URI.</para>
+			/// </summary>
+			public OPEN_AS_INFO_FLAGS oaifInFlags;
 		}
 
 		/// <summary>

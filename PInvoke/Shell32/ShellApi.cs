@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.InteropServices;
+using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.PropSys;
 
@@ -326,6 +327,50 @@ namespace Vanara.PInvoke
 
 			/// <summary>0x7. Display the properties for the printer server specified by . The parameter is ignored.</summary>
 			PRINTACTION_SERVERPROPERTIES = 7,
+		}
+
+		/// <summary>
+		/// <para>
+		/// Specifies the state of the machine for the current user in relation to the propriety of sending a notification. Used by SHQueryUserNotificationState.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/ne-shellapi-query_user_notification_state typedef enum
+		// QUERY_USER_NOTIFICATION_STATE { QUNS_NOT_PRESENT , QUNS_BUSY , QUNS_RUNNING_D3D_FULL_SCREEN , QUNS_PRESENTATION_MODE ,
+		// QUNS_ACCEPTS_NOTIFICATIONS , QUNS_QUIET_TIME , QUNS_APP } ;
+		[PInvokeData("shellapi.h", MSDNShortId = "b26439dd-6695-45d8-8c7f-5bbd5eaf5b54")]
+		public enum QUERY_USER_NOTIFICATION_STATE
+		{
+			/// <summary>A screen saver is displayed, the machine is locked, or a nonactive Fast User Switching session is in progress.</summary>
+			QUNS_NOT_PRESENT = 1,
+
+			/// <summary>
+			/// A full-screen application is running or Presentation Settings are applied. Presentation Settings allow a user to put their
+			/// machine into a state fit for an uninterrupted presentation, such as a set of PowerPoint slides, with a single click.
+			/// </summary>
+			QUNS_BUSY,
+
+			/// <summary>A full-screen (exclusive mode) Direct3D application is running.</summary>
+			QUNS_RUNNING_D3D_FULL_SCREEN,
+
+			/// <summary>The user has activated Windows presentation settings to block notifications and pop-up messages.</summary>
+			QUNS_PRESENTATION_MODE,
+
+			/// <summary>None of the other states are found, notifications can be freely sent.</summary>
+			QUNS_ACCEPTS_NOTIFICATIONS,
+
+			/// <summary>
+			/// Introduced in Windows 7. The current user is in "quiet time", which is the first hour after a new user logs into his or her
+			/// account for the first time. During this time, most notifications should not be sent or shown. This lets a user become
+			/// accustomed to a new computer system without those distractions. Quiet time also occurs for each user after an operating
+			/// system upgrade or clean installation. Applications should set the NIIF_RESPECT_QUIET_TIME flag in their notifications or
+			/// balloon tooltip, which prevents those items from being displayed while the current user is in the quiet-time state. Note that
+			/// during quiet time, if the user is in one of the other blocked modes (QUNS_NOT_PRESENT, QUNS_BUSY, QUNS_PRESENTATION_MODE, or
+			/// QUNS_RUNNING_D3D_FULL_SCREEN) SHQueryUserNotificationState returns only that value, and does not report QUNS_QUIET_TIME.
+			/// </summary>
+			QUNS_QUIET_TIME,
+
+			/// <summary>Introduced in Windows 8. A Windows Store app is running.</summary>
+			QUNS_APP,
 		}
 
 		/// <summary>Flags that indicate the content and validity of the other structure members in <see cref="SHELLEXECUTEINFO"/>.</summary>
@@ -2872,6 +2917,216 @@ namespace Vanara.PInvoke
 		public static extern HRESULT SHLoadNonloadedIconOverlayIdentifiers();
 
 		/// <summary>
+		/// <para>Retrieves the size of the Recycle Bin and the number of items in it, for a specified drive.</para>
+		/// </summary>
+		/// <param name="pszRootPath">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>
+		/// The address of a <c>null</c>-terminated string of maximum length MAX_PATH to contain the path of the root drive on which the
+		/// Recycle Bin is located. This parameter can contain the address of a string formatted with the drive, folder, and subfolder names (C:\Windows\System...).
+		/// </para>
+		/// </param>
+		/// <param name="pSHQueryRBInfo">
+		/// <para>Type: <c>LPSHQUERYRBINFO</c></para>
+		/// <para>
+		/// The address of a SHQUERYRBINFO structure that receives the Recycle Bin information. The <c>cbSize</c> member of the structure
+		/// must be set to the size of the structure before calling this API.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// With Windows 2000, if <c>NULL</c> is passed in the parameter, the function fails and returns an E_INVALIDARG error code. In
+		/// earlier versions of the operating system, you can pass an empty string or <c>NULL</c>. If contains an empty string or
+		/// <c>NULL</c>, information is retrieved for all Recycle Bins on all drives.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-shqueryrecyclebina SHSTDAPI SHQueryRecycleBinA( LPCSTR
+		// pszRootPath, LPSHQUERYRBINFO pSHQueryRBInfo );
+		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shellapi.h", MSDNShortId = "a9a80486-2c99-4916-af25-10b00573456b")]
+		public static extern HRESULT SHQueryRecycleBin(string pszRootPath, ref SHQUERYRBINFO pSHQueryRBInfo);
+
+		/// <summary>
+		/// <para>Checks the state of the computer for the current user to determine whether sending a notification is appropriate.</para>
+		/// </summary>
+		/// <param name="pquns">
+		/// <para>Type: <c>QUERY_USER_NOTIFICATION_STATE*</c></para>
+		/// <para>When this function returns, contains a pointer to one of the values of the QUERY_USER_NOTIFICATION_STATE enumeration.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Applications should call <c>SHQueryUserNotificationState</c> and test the return value before displaying any notification UI that
+		/// is similar to the balloon notifications generated by Shell_NotifyIcon. Notifications should only be displayed if this API returns
+		/// QNS_ACCEPTS_NOTIFICATIONS. This informs the application whether the user is running processes that should not be interrupted.
+		/// Top-level windows receive a WM_SETTINGCHANGE message when the user turns presentation settings on or off, and also when the
+		/// user's session is locked or unlocked. Note that there are no notifications sent when the user starts or stops a full-screen application.
+		/// </para>
+		/// <para>If this function returns QUNS_QUIET_TIME, notifications should be displayed only if critical.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-shqueryusernotificationstate SHSTDAPI
+		// SHQueryUserNotificationState( QUERY_USER_NOTIFICATION_STATE *pquns );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shellapi.h", MSDNShortId = "da6b3915-f4fe-4bab-9bae-9bff0b97b5a0")]
+		public static extern HRESULT SHQueryUserNotificationState(out QUERY_USER_NOTIFICATION_STATE pquns);
+
+		/// <summary>
+		/// <para>Removes the localized name of a file in a Shell folder.</para>
+		/// </summary>
+		/// <param name="pszPath">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>A pointer to a null-terminated, Unicode string that specifies the fully qualified path of the target file.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// When a display name string is set by SHSetLocalizedName, Windows Explorer uses that string for display instead of the file name.
+		/// The path to the file is unchanged.
+		/// </para>
+		/// <para>
+		/// Applications can use the IShellFolder::GetDisplayNameOf method to get the display (localized) name through with the
+		/// SIGDN_NORMALDISPLAY flag and the parsing (non-localized) name with SIGDN_DESKTOPABSOLUTEPARSING.
+		/// </para>
+		/// <para>Calling <c>SHRemoveLocalizedName</c> makes the display name identical to the parsing name.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-shremovelocalizedname SHSTDAPI SHRemoveLocalizedName(
+		// PCWSTR pszPath );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shellapi.h", MSDNShortId = "ed30546f-3531-42df-9018-1a24a79a0b79")]
+		public static extern HRESULT SHRemoveLocalizedName([MarshalAs(UnmanagedType.LPWStr)] string pszPath);
+
+		/// <summary>
+		/// <para>Sets the localized name of a file in a Shell folder.</para>
+		/// </summary>
+		/// <param name="pszPath">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>A pointer to a string that specifies the fully qualified path of the target file.</para>
+		/// </param>
+		/// <param name="pszResModule">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>A pointer to a string resource that specifies the localized version of the file name.</para>
+		/// </param>
+		/// <param name="idsRes">
+		/// <para>Type: <c>int</c></para>
+		/// <para>An integer ID that specifies the localized file name in the string resource.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>When this string is set, Explorer displays this string instead of the file name. The path to the file is unchanged.</para>
+		/// <para>
+		/// Applications can get the display (localized) name with IShellFolder::GetDisplayNameOf with the SIGDN_NORMALDISPLAY flag and the
+		/// parsing (non-localized) name with IShellItem::GetDisplayName using the SIGDN_DESKTOPABSOLUTEPARSING flag.
+		/// </para>
+		/// <para>Calling SHRemoveLocalizedName makes the display name identical to the parsing name.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-shsetlocalizedname SHSTDAPI SHSetLocalizedName( PCWSTR
+		// pszPath, PCWSTR pszResModule, int idsRes );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("shellapi.h", MSDNShortId = "35b83fc8-3dad-4f08-a3fe-ce047b2ca3a2")]
+		public static extern HRESULT SHSetLocalizedName(string pszPath, string pszResModule, int idsRes);
+
+		/// <summary>
+		/// <para>Stores the current user's unread message count for a specified email account in the registry.</para>
+		/// </summary>
+		/// <param name="pszMailAddress">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>A pointer to a string in Unicode that contains the current user's full email address.</para>
+		/// </param>
+		/// <param name="dwCount">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The number of unread messages.</para>
+		/// </param>
+		/// <param name="pszShellExecuteCommand">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>
+		/// A pointer to a string in Unicode that contains the full text of a command that can be passed to ShellExecute. This command should
+		/// start the email application that owns the account referenced by .
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para><c>HRESULT</c>, which includes the following possible values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>The call completed successfully.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Insufficient memory available.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>Invalid string argument in either the or parameters.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>When this function updates the registry, the new registry entry is automatically stamped with the current time and date.</para>
+		/// <para>
+		/// If this function is called by different independent software vendors (ISVs) that specify the same email name, only the last call
+		/// is saved. That is, calls to this function overwrite any previously saved value for the same email address, even if the calls are
+		/// made by different ISVs.
+		/// </para>
+		/// <para>
+		/// It is recommended that the count of unread messages be set only for the main Inbox of the users account. Mail in sub-folders such
+		/// as Drafts or Deleted Items should be ignored.
+		/// </para>
+		/// <para>
+		/// It is important that email clients do not set the number of unread messages to 0 when the application exits, because this causes
+		/// the number of unread messages to be erroneously reported as 0.
+		/// </para>
+		/// <para>Because this function uses HKEY_CURRENT_USER, it should not be called by a system process impersonating a user.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-shsetunreadmailcountw HRESULT SHSetUnreadMailCountW(
+		// LPCWSTR pszMailAddress, DWORD dwCount, LPCWSTR pszShellExecuteCommand );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("shellapi.h", MSDNShortId = "4a0e1ade-8df1-41b5-b6ea-dad427b50f5a")]
+		public static extern HRESULT SHSetUnreadMailCountW(string pszMailAddress, uint dwCount, string pszShellExecuteCommand);
+
+		/// <summary>
+		/// <para>Uses CheckTokenMembership to test whether the given token is a member of the local group with the specified RID.</para>
+		/// </summary>
+		/// <param name="hToken">
+		/// <para>Type: <c>HANDLE</c></para>
+		/// <para>A handle to the token. This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="ulRID">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>The RID of the local group for which membership is tested.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Returns <c>TRUE</c> on success, <c>FALSE</c> on failure.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>This function wraps CheckTokenMembership and only checks local groups.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-shtesttokenmembership BOOL SHTestTokenMembership( HANDLE
+		// hToken, ULONG ulRID );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shellapi.h", MSDNShortId = "ac2d591a-f431-4da7-aa9f-0476634ec9cf")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SHTestTokenMembership(SafeTokenHandle hToken, uint ulRID);
+
+		/// <summary>
 		/// <para>Contains information about a system appbar message.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/ns-shellapi-_appbardata typedef struct _AppBarData { DWORD cbSize;
@@ -3502,6 +3757,25 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.LPTStr)]
 			public string lpszProgressTitle;
+		}
+
+		/// <summary>
+		/// <para>Contains the size and item count information retrieved by the SHQueryRecycleBin function.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/ns-shellapi-_shqueryrbinfo typedef struct _SHQUERYRBINFO { DWORD
+		// cbSize; __int64 i64Size; __int64 i64NumItems; DWORDLONG i64Size; DWORDLONG i64NumItems; } SHQUERYRBINFO, *LPSHQUERYRBINFO;
+		[PInvokeData("shellapi.h", MSDNShortId = "7e9bc7e9-5712-45e7-a424-0afb62f26450")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SHQUERYRBINFO
+		{
+			/// <summary>The size of the structure, in bytes. This member must be filled in prior to calling the function.</summary>
+			private uint cbSize;
+
+			/// <summary>The total size, in bytes, of all the items currently in the Recycle Bin.</summary>
+			private long i64Size;
+
+			/// <summary>The total number of items currently in the Recycle Bin.</summary>
+			private long i64NumItems;
 		}
 
 		/// <summary>

@@ -878,134 +878,6 @@ namespace Vanara.PInvoke
 			Guid GetJunctionCLSID();
 		}
 
-		/// <summary>Exposes methods that enable clients to access items in a collection of objects that support IUnknown.</summary>
-		[SuppressUnmanagedCodeSecurity]
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("92CA9DCD-5622-4bba-A805-5E9F541BD8C9")]
-		[PInvokeData("Shobjidl.h", MSDNShortId = "dd378311")]
-		public interface IObjectArray
-		{
-			/// <summary>Provides a count of the objects in the collection.</summary>
-			/// <returns>The number of objects in the collection.</returns>
-			uint GetCount();
-
-			/// <summary>
-			/// Provides a pointer to a specified object's interface. The object and interface are specified by index and interface ID.
-			/// </summary>
-			/// <param name="uiIndex">The index of the object</param>
-			/// <param name="riid">Reference to the desired interface ID.</param>
-			/// <returns>Receives the interface pointer requested in riid.</returns>
-			[return: MarshalAs(UnmanagedType.Interface)]
-			object GetAt([In] uint uiIndex, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
-		}
-
-		/// <summary>
-		/// Extends the IObjectArray interface by providing methods that enable clients to add and remove objects that support IUnknown in a collection.
-		/// </summary>
-		[SuppressUnmanagedCodeSecurity]
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("5632b1a4-e38a-400a-928a-d4cd63230295"), CoClass(typeof(CEnumerableObjectCollection))]
-		[PInvokeData("Shobjidl.h", MSDNShortId = "dd378307")]
-		public interface IObjectCollection
-		{
-			/// <summary>Provides a count of the objects in the collection.</summary>
-			/// <returns>The number of objects in the collection.</returns>
-			uint GetCount();
-
-			/// <summary>
-			/// Provides a pointer to a specified object's interface. The object and interface are specified by index and interface ID.
-			/// </summary>
-			/// <param name="uiIndex">The index of the object</param>
-			/// <param name="riid">Reference to the desired interface ID.</param>
-			/// <returns>Receives the interface pointer requested in riid.</returns>
-			[return: MarshalAs(UnmanagedType.Interface)]
-			object GetAt([In] uint uiIndex, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
-
-			/// <summary>Adds a single object to the collection.</summary>
-			/// <param name="punk">Pointer to the IUnknown of the object to be added to the collection.</param>
-			void AddObject([In, MarshalAs(UnmanagedType.Interface)] object punk);
-
-			/// <summary>Adds the objects contained in an IObjectArray to the collection.</summary>
-			/// <param name="poaSource">Pointer to the IObjectArray whose contents are to be added to the collection.</param>
-			void AddFromArray(IObjectArray poaSource);
-
-			/// <summary>Removes a single, specified object from the collection.</summary>
-			/// <param name="uiIndex">A pointer to the index of the object within the collection.</param>
-			void RemoveObjectAt(uint uiIndex);
-
-			/// <summary>Removes all objects from the collection.</summary>
-			void Clear();
-		}
-
-		/// <summary>
-		/// Exposes methods that allow implementers of a custom IAssocHandler object to provide access to its explicit Application User Model
-		/// ID (AppUserModelID). This information is used to determine whether a particular file type can be added to an application's Jump List.
-		/// </summary>
-		[SuppressUnmanagedCodeSecurity]
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("36db0196-9665-46d1-9ba7-d3709eecf9ed")]
-		[PInvokeData("Shobjidl.h", MSDNShortId = "dd378302")]
-		public interface IObjectWithAppUserModelId
-		{
-			/// <summary>Sets the application identifier.</summary>
-			/// <param name="pszAppID">The PSZ application identifier.</param>
-			void SetAppID([MarshalAs(UnmanagedType.LPWStr)] string pszAppID);
-
-			/// <summary>Retrieves a file type handler's explicit Application User Model ID (AppUserModelID), if one has been declared.</summary>
-			/// <returns></returns>
-			SafeCoTaskMemString GetAppID();
-		}
-
-		/// <summary>Exposes methods that provide access to the ProgID associated with an object.</summary>
-		[SuppressUnmanagedCodeSecurity]
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("71e806fb-8dee-46fc-bf8c-7748a8a1ae13")]
-		[PInvokeData("Shobjidl.h", MSDNShortId = "dd378294")]
-		public interface IObjectWithProgId
-		{
-			/// <summary>Sets the ProgID of an object.</summary>
-			/// <param name="pszProgID">A pointer to a string that contains the new ProgID.</param>
-			void SetProgID([MarshalAs(UnmanagedType.LPWStr)] string pszProgID);
-
-			/// <summary>Retrieves the ProgID associated with an object.</summary>
-			/// <returns>A pointer to a string that, when this method returns successfully, contains the ProgID.</returns>
-			SafeCoTaskMemString GetProgID();
-		}
-
-		/// <summary>
-		/// Provides a simple way to support communication between an object and its site in the container.
-		/// <para>
-		/// Often an object needs to communicate directly with a container site object and, in effect, manage the site object itself.Outside
-		/// of IOleObject::SetClientSite, there is no generic means through which an object becomes aware of its site. IObjectWithSite
-		/// provides simple objects with a simple siting mechanism (lighter than IOleObject) This interface should only be used when
-		/// IOleObject is not already in use.
-		/// </para>
-		/// <para>
-		/// Through IObjectWithSite, a container can pass the IUnknown pointer of its site to the object through
-		/// IObjectWithSite::SetSite.Callers can also retrieve the latest site passed to SetSite through IObjectWithSite::GetSite.This latter
-		/// method is included as a hooking mechanism, allowing a third party to intercept calls from the object to the site.
-		/// </para>
-		/// </summary>
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("fc4801a3-2ba9-11cf-a229-00aa003d7352")]
-		[PInvokeData("ocidl.h")]
-		public interface IObjectWithSite
-		{
-			/// <summary>Enables a container to pass an object a pointer to the interface for its site.</summary>
-			/// <param name="pUnkSite">
-			/// A pointer to the IUnknown interface pointer of the site managing this object. If NULL, the object should call Release on any
-			/// existing site at which point the object no longer knows its site.
-			/// </param>
-			void SetSite([In, MarshalAs(UnmanagedType.IUnknown)] object pUnkSite);
-
-			/// <summary>Retrieves the latest site passed using SetSite.</summary>
-			/// <param name="riid">The IID of the interface pointer that should be returned in ppvSite.</param>
-			/// <returns>
-			/// Address of pointer variable that receives the interface pointer requested in riid. Upon successful return, *ppvSite contains
-			/// the requested interface pointer to the site last seen in SetSite. The specific interface returned depends on the riid
-			/// argument in essence, the two arguments act identically to those in QueryInterface. If the appropriate interface pointer is
-			/// available, the object must call AddRef on that pointer before returning successfully. If no site is available, or the
-			/// requested interface is not supported, this method must *ppvSite to NULL and return a failure code.
-			/// </returns>
-			[return: MarshalAs(UnmanagedType.IUnknown)]
-			object GetSite([In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
-		}
-
 		/// <summary>
 		/// Exposes methods that the Shell uses to retrieve flags and info tip information for an item that resides in an IShellFolder
 		/// implementation. Info tips are usually displayed inside a tooltip control.
@@ -1675,6 +1547,108 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "53953a5a-04a2-4749-a03b-8cbd5ac889f1")]
 		public static extern HRESULT SHGetTemporaryPropertyForItem(IShellItem psi, ref PROPERTYKEY propkey, PROPVARIANT ppropvar);
+
+		/// <summary>
+		/// <para>Applies the default set of properties on a Shell item.</para>
+		/// </summary>
+		/// <param name="hwnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the item's parent window, which receives error notifications. This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="psi">
+		/// <para>Type: <c>IShellItem*</c></para>
+		/// <para>A pointer to the IShellItem object that represents the item.</para>
+		/// </param>
+		/// <param name="dwFileOpFlags">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>Flags that customize the operation. See IFileOperation::SetOperationFlags for flag values.</para>
+		/// </param>
+		/// <param name="pfops">
+		/// <para>Type: <c>IFileOperationProgressSink*</c></para>
+		/// <para>
+		/// A pointer to an IFileOperationProgressSink object used to follow the progress of the operation. See IFileOperation::Advise for
+		/// details. This value can be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The list of properties to set a default value comes from the <c>SetDefaultsFor</c> registry entry under the ProgID for the file
+		/// association of the item. The list is prefixed by "" and contains the canonical names of the properties to set the default value,
+		/// for example, "". The possible properties for this list are System.Author, System.Document.DateCreated, and
+		/// System.Photo.DateTaken. If the <c>SetDefaultsFor</c> entry does not exist on the ProgID, this function uses the default found on
+		/// the <c>SetDefaultsFor</c> entry of <c>HKEY_CLASSES_ROOT</c>&lt;b&gt;*.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl/nf-shobjidl-shsetdefaultproperties SHSTDAPI SHSetDefaultProperties(
+		// HWND hwnd, IShellItem *psi, DWORD dwFileOpFlags, IFileOperationProgressSink *pfops );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shobjidl.h", MSDNShortId = "c3ab80a3-c1f3-4223-9fe3-f7fe48c36460")]
+		public static extern HRESULT SHSetDefaultProperties(HandleRef hwnd, IShellItem psi, FILEOP_FLAGS dwFileOpFlags, IFileOperationProgressSink pfops);
+
+		/// <summary>
+		/// <para>
+		/// Sets a temporary property for the specified item. A temporary property is kept in a read/write store that holds properties only
+		/// for the lifetime of the IShellItem object, instead of writing them back into the item.
+		/// </para>
+		/// </summary>
+		/// <param name="psi">
+		/// <para>Type: <c>IShellItem*</c></para>
+		/// <para>A pointer to the item on which the temporary property is to be set.</para>
+		/// </param>
+		/// <param name="propkey">
+		/// <para>Type: <c>REFPROPERTYKEY</c></para>
+		/// <para>Reference to the PROPERTYKEY that identifies the temporary property that is being set.</para>
+		/// </param>
+		/// <param name="propvar">
+		/// <para>Type: <c>REFPROPVARIANT</c></para>
+		/// <para>Reference to a PROPVARIANT that contains the value of the temporary property.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>A temporary value can only be read with SHGetTemporaryPropertyForItem or by passing GPS_TEMPORARY to IShellItem2::GetPropertyStore.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shsettemporarypropertyforitem SHSTDAPI
+		// SHSetTemporaryPropertyForItem( IShellItem *psi, REFPROPERTYKEY propkey, REFPROPVARIANT propvar );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "779b1b2e-cd4b-404f-9d50-ac87b81640d2")]
+		public static extern HRESULT SHSetTemporaryPropertyForItem(IShellItem psi, [MarshalAs(UnmanagedType.LPStruct)] PROPERTYKEY propkey, PROPVARIANT propvar);
+
+		/// <summary>
+		/// <para>Deprecated. Returns a pointer to an ITEMIDLIST structure when passed a path.</para>
+		/// </summary>
+		/// <param name="pszPath">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>A pointer to a null-terminated string that contains the path to be converted to a PIDL.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>PIDLIST_ABSOLUTE</c></para>
+		/// <para>Returns a pointer to an ITEMIDLIST structure if successful, or <c>NULL</c> otherwise.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Prior to Windows 7, this function was declared in Shlobj.h. In Windows 7 and later versions, it is declared in Shobjidl.h.</para>
+		/// <para>
+		/// <c>Note</c> This function is available through Windows 7 and Windows Server 2003. It is possible that it will not be present in
+		/// future versions of Windows.
+		/// </para>
+		/// <para>An alternative to this function is as follows:</para>
+		/// <list type="number">
+		/// <item>Call SHGetDesktopFolder to obtain IShellFolder for the desktop folder.</item>
+		/// <item>Get the IShellFolder's bind context (IBindCtx).</item>
+		/// <item>Call IShellFolder::ParseDisplayName with the IBindCtx and the path.</item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shsimpleidlistfrompath PIDLIST_ABSOLUTE
+		// SHSimpleIDListFromPath( PCWSTR pszPath );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "349974c2-4ab9-4eb2-897d-a5934893ed07")]
+		public static extern PIDL SHSimpleIDListFromPath([MarshalAs(UnmanagedType.LPWStr)] string pszPath);
 
 		/// <summary>Clones an ITEMIDLIST structure.</summary>
 		/// <param name="pidl">A pointer to the ITEMIDLIST structure to be cloned.</param>
