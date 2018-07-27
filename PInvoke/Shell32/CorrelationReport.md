@@ -1,15 +1,14 @@
 ## Correlation report for shell32.dll  
-### Methods (95% complete)  
+### Methods (100% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
-[AssocCreateForClasses](https://www.google.com/search?num=5&q=AssocCreateForClasses+site%3Amicrosoft.com) | shell32.dll |  |   
+[AssocCreateForClasses](http://msdn2.microsoft.com/en-us/library/43257507-dd5e-4622-8445-c132187fd1e5) | shell32.dll | shellapi.h | Vanara.PInvoke.Shell32.AssocCreateForClasses  
 [AssocGetDetailsOfPropKey](http://msdn2.microsoft.com/en-us/library/f13af5f4-1b6a-419c-a042-e05c9ec51d02) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.AssocGetDetailsOfPropKey  
-[CDefFolderMenu_Create2](https://www.google.com/search?num=5&q=CDefFolderMenu_Create2+site%3Amicrosoft.com) | shell32.dll |  |   
+[CDefFolderMenu_Create2](http://msdn2.microsoft.com/en-us/library/7b5e012d-1c8b-42c5-8181-9923fd389fc5) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.CDefFolderMenu_Create2  
 [CommandLineToArgvW](http://msdn2.microsoft.com/en-us/library/9889a016-b7a5-402b-8305-6f7c199d41b3) | shell32.dll | shellapi.h | Vanara.PInvoke.Shell32.CommandLineToArgvW  
 [DragAcceptFiles](http://msdn2.microsoft.com/en-us/library/1f16f6e4-7847-4bc7-adce-995876db24bd) | shell32.dll | shellapi.h | Vanara.PInvoke.Shell32.DragAcceptFiles  
 [DragFinish](http://msdn2.microsoft.com/en-us/library/9b15e8a5-de68-4dcb-8e1a-0ee0393aa9db) | shell32.dll | shellapi.h | Vanara.PInvoke.Shell32.DragFinish  
 [DragQueryFile](https://www.google.com/search?num=5&q=DragQueryFile+site%3Amicrosoft.com) | shell32.dll | shellapi.h | Vanara.PInvoke.Shell32.DragQueryFile  
-[DragQueryFileAorW](https://www.google.com/search?num=5&q=DragQueryFileAorW+site%3Amicrosoft.com) | shell32.dll |  |   
 [DragQueryPoint](http://msdn2.microsoft.com/en-us/library/87794ab0-a075-4a1f-869f-5998bdc57a1d) | shell32.dll | shellapi.h | Vanara.PInvoke.Shell32.DragQueryPoint  
 [DuplicateIcon](http://msdn2.microsoft.com/en-us/library/bb776411) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.DuplicateIcon  
 [ExtractAssociatedIcon](http://msdn2.microsoft.com/en-us/library/bb776414) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.ExtractAssociatedIcon  
@@ -43,7 +42,6 @@ Native Method | Native DLL | Header | Managed Method
 [PathIsExe](http://msdn2.microsoft.com/en-us/library/54e9dae7-f9c4-48b8-9b91-32ed21365fb7) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.PathIsExe  
 [PathIsSlow](http://msdn2.microsoft.com/en-us/library/f848a098-9248-453b-a957-77c35d70e528) | shell32.dll | shlobj.h | Vanara.PInvoke.Shell32.PathIsSlow  
 [PathMakeUniqueName](http://msdn2.microsoft.com/en-us/library/8456ae0c-e83c-43d0-a86a-1861a373d237) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.PathMakeUniqueName  
-[PathQualify](https://www.google.com/search?num=5&q=PathQualify+site%3Amicrosoft.com) | shell32.dll |  |   
 [PathResolve](http://msdn2.microsoft.com/en-us/library/84bf0b56-513f-4ac6-b2cf-11f0c471da1e) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.PathResolve  
 [PathYetAnotherMakeUniqueName](http://msdn2.microsoft.com/en-us/library/1f76ecfa-6f2f-4dde-b05e-4252c92660d9) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.PathYetAnotherMakeUniqueName  
 [PickIconDlg](http://msdn2.microsoft.com/en-us/library/3dfcda10-26d8-495d-8c92-7ff16da098c1) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.PickIconDlg  
@@ -71,8 +69,8 @@ Native Method | Native DLL | Header | Managed Method
 [SHChangeNotification_Lock](http://msdn2.microsoft.com/en-us/library/8e22d5d0-64be-403c-982d-c23705d85223) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.SHChangeNotification_Lock  
 [SHChangeNotification_Unlock](http://msdn2.microsoft.com/en-us/library/967ede1f-ee9c-46ee-a371-dcfc3a57d824) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.SHChangeNotification_Unlock  
 [SHChangeNotify](https://www.google.com/search?num=5&q=SHChangeNotify+site%3Amicrosoft.com) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHChangeNotify  
-[SHChangeNotifyDeregister](https://www.google.com/search?num=5&q=SHChangeNotifyDeregister+site%3Amicrosoft.com) | shell32.dll |  |   
-[SHChangeNotifyRegister](https://www.google.com/search?num=5&q=SHChangeNotifyRegister+site%3Amicrosoft.com) | shell32.dll |  |   
+[SHChangeNotifyDeregister](http://msdn2.microsoft.com/en-us/library/fad021dc-8199-4384-b623-c98bc618799f) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.SHChangeNotifyDeregister  
+[SHChangeNotifyRegister](http://msdn2.microsoft.com/en-us/library/73143865-ca2f-4578-a7a2-2ba4833eddd8) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.SHChangeNotifyRegister  
 [SHChangeNotifyRegisterThread](http://msdn2.microsoft.com/en-us/library/170afefc-b4de-4661-9c12-1341656b0fdb) | shell32.dll | shlobj.h | Vanara.PInvoke.Shell32.SHChangeNotifyRegisterThread  
 [SHCreateAssociationRegistration](http://msdn2.microsoft.com/en-us/library/7998f49d-2515-4c77-991e-62c0fefa43df) | shell32.dll | shobjidl_core.h | Vanara.PInvoke.Shell32.SHCreateAssociationRegistration  
 [SHCreateDataObject](http://msdn2.microsoft.com/en-us/library/d56cdafe-9463-43a5-8ef0-6cfaf0c524a8) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.SHCreateDataObject  
@@ -108,7 +106,7 @@ Native Method | Native DLL | Header | Managed Method
 [ShellExecute](http://msdn2.microsoft.com/en-us/library/8b1f3978-a0ee-4684-8a37-98e270b63897) | shell32.dll | shellapi.h | Vanara.PInvoke.Shell32.ShellExecute  
 [ShellExecuteEx](https://www.google.com/search?num=5&q=ShellExecuteEx+site%3Amicrosoft.com) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.ShellExecuteEx  
 [SHEmptyRecycleBin](http://msdn2.microsoft.com/en-us/library/c3995be7-bc8b-4e1f-8ef6-fdf4c0a75720) | shell32.dll | shellapi.h | Vanara.PInvoke.Shell32.SHEmptyRecycleBin  
-[SHEnumerateUnreadMailAccountsW](https://www.google.com/search?num=5&q=SHEnumerateUnreadMailAccountsW+site%3Amicrosoft.com) | shell32.dll |  |   
+[SHEnumerateUnreadMailAccountsW](http://msdn2.microsoft.com/en-us/library/67ec8355-f902-4b71-972f-94e403701f96) | shell32.dll | shellapi.h | Vanara.PInvoke.Shell32.SHEnumerateUnreadMailAccountsW  
 [SHEvaluateSystemCommandTemplate](http://msdn2.microsoft.com/en-us/library/554b941d-7d03-47ae-a23a-2c47c5ca1044) | shell32.dll | shellapi.h | Vanara.PInvoke.Shell32.SHEvaluateSystemCommandTemplate  
 [SHFileOperation](https://www.google.com/search?num=5&q=SHFileOperation+site%3Amicrosoft.com) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.SHFileOperation  
 [SHFind_InitMenuPopup](http://msdn2.microsoft.com/en-us/library/ca44bd57-6af0-45b3-9331-914e93360743) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.SHFind_InitMenuPopup  
@@ -126,7 +124,7 @@ Native Method | Native DLL | Header | Managed Method
 [SHGetFileInfo](https://www.google.com/search?num=5&q=SHGetFileInfo+site%3Amicrosoft.com) | shell32.dll | Shellapi.h | Vanara.PInvoke.Shell32.SHGetFileInfo  
 [SHGetFolderLocation](http://msdn2.microsoft.com/en-us/library/bb762180) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHGetFolderLocation  
 [SHGetFolderPath](http://msdn2.microsoft.com/en-us/library/bb762181) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHGetFolderPath  
-[SHGetFolderPathAndSubDir](https://www.google.com/search?num=5&q=SHGetFolderPathAndSubDirA+site%3Amicrosoft.com) | shell32.dll |  |   
+[SHGetFolderPathAndSubDir](http://msdn2.microsoft.com/en-us/library/7e92e136-1036-4c96-931f-6e0129fb839a) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.SHGetFolderPathAndSubDir  
 [SHGetFolderPathEx](http://msdn2.microsoft.com/en-us/library/mt757093) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHGetFolderPathEx  
 [SHGetIconOverlayIndex](http://msdn2.microsoft.com/en-us/library/20001ae0-05d0-46a7-8bb8-9bb722f5d795) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.SHGetIconOverlayIndex  
 [SHGetIDListFromObject](http://msdn2.microsoft.com/en-us/library/bb762184) | shell32.dll | Shlobj.h | Vanara.PInvoke.Shell32.SHGetIDListFromObject  

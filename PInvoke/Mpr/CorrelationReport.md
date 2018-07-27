@@ -1,5 +1,5 @@
 ## Correlation report for mpr.dll  
-### Methods (81% complete)  
+### Methods (100% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [MultinetGetConnectionPerformance](http://msdn2.microsoft.com/en-us/library/aa385342) | mpr.dll | Winnetwk.h | Vanara.PInvoke.Mpr.MultinetGetConnectionPerformance  
@@ -21,13 +21,8 @@ Native Method | Native DLL | Header | Managed Method
 [WNetGetResourceParent](http://msdn2.microsoft.com/en-us/library/aa385470) | mpr.dll | Winnetwk.h | Vanara.PInvoke.Mpr.WNetGetResourceParent  
 [WNetGetUniversalName](http://msdn2.microsoft.com/en-us/library/aa385474) | mpr.dll | Winnetwk.h | Vanara.PInvoke.Mpr.WNetGetUniversalName  
 [WNetGetUser](http://msdn2.microsoft.com/en-us/library/aa385476) | mpr.dll | Winnetwk.h | Vanara.PInvoke.Mpr.WNetGetUser  
-[WNetLogonNotify](https://www.google.com/search?num=5&q=WNetLogonNotify+site%3Amicrosoft.com) | mpr.dll |  |   
 [WNetOpenEnum](http://msdn2.microsoft.com/en-us/library/aa385478) | mpr.dll | Winnetwk.h | Vanara.PInvoke.Mpr.WNetOpenEnum  
-[WNetPasswordChangeNotify](https://www.google.com/search?num=5&q=WNetPasswordChangeNotify+site%3Amicrosoft.com) | mpr.dll |  |   
-[WNetPropertyDialog](https://www.google.com/search?num=5&q=WNetPropertyDialogA+site%3Amicrosoft.com) | mpr.dll |  |   
-[WNetSetConnection](https://www.google.com/search?num=5&q=WNetSetConnectionA+site%3Amicrosoft.com) | mpr.dll |  |   
 [WNetSetLastError](http://msdn2.microsoft.com/en-us/library/ee472f01-de44-4c47-9ae5-8bbac74de78b) | mpr.dll | npapi.h | Vanara.PInvoke.Mpr.WNetSetLastError  
-[WNetSupportGlobalEnum](https://www.google.com/search?num=5&q=WNetSupportGlobalEnum+site%3Amicrosoft.com) | mpr.dll |  |   
 [WNetUseConnection](http://msdn2.microsoft.com/en-us/library/aa385482) | mpr.dll | Winnetwk.h | Vanara.PInvoke.Mpr.WNetUseConnection  
 ### Structures  
 Native Structure | Header | Managed Structure  

@@ -2573,8 +2573,6 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool PathMakeUniqueName([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszUniqueName, uint cchMax, [MarshalAs(UnmanagedType.LPWStr)] string pszTemplate, [MarshalAs(UnmanagedType.LPWStr)] string pszLongPlate, [MarshalAs(UnmanagedType.LPWStr)] string pszDir);
 
-		PathQualify
-
 		/// <summary>
 		/// <para>
 		/// [PathResolve is available for use in the operating systems specified in the Requirements section. It may be altered or
