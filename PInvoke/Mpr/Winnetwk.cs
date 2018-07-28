@@ -106,6 +106,10 @@ namespace Vanara.PInvoke
 			/// </summary>
 			CONNECT_REDIRECT = 0x00000080,
 
+			/// <summary>
+			/// If this flag is set, the connection was made using a local device redirection. If the lpAccessName parameter points to a
+			/// buffer, the local device name is copied to the buffer.
+			/// </summary>
 			CONNECT_LOCALDRIVE = 0x00000100,
 
 			/// <summary>
@@ -141,6 +145,22 @@ namespace Vanara.PInvoke
 
 			CONNECT_REQUIRE_INTEGRITY = 0x00004000,
 			CONNECT_REQUIRE_PRIVACY = 0x00008000
+		}
+
+		/// <summary>Used by DISCDLGSTRUCT</summary>
+		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385339")]
+		[Flags]
+		public enum DISC
+		{
+			/// <summary>
+			/// If this value is set, the specified connection is no longer a persistent one (automatically restored every time the user logs on). This flag is valid only if the lpLocalName member specifies a local device.
+			/// </summary>
+			DISC_UPDATE_PROFILE = 0x00000001,
+			/// <summary>
+			/// If this value is not set, the system applies force when attempting to disconnect from the network resource.
+			/// <para>This situation typically occurs when the user has files open over the connection. This value means that the user will be informed if there are open files on the connection, and asked if he or she still wants to disconnect. If the user wants to proceed, the disconnect procedure re-attempts with additional force.</para>
+			/// </summary>
+			DISC_NO_FORCE = 0x00000040,
 		}
 
 		/// <summary>Info level for WNetGetUniversalName.</summary>
@@ -318,6 +338,82 @@ namespace Vanara.PInvoke
 			WNCON_DYNAMIC = 0x00000008,
 		}
 
+		/// <summary>Network types</summary>
+		[PInvokeData("wnnc.h")]
+		public enum WNNC_NET
+		{
+			WNNC_NET_MSNET       = 0x00010000,
+			WNNC_NET_SMB         = 0x00020000,
+			WNNC_NET_NETWARE     = 0x00030000,
+			WNNC_NET_VINES       = 0x00040000,
+			WNNC_NET_10NET       = 0x00050000,
+			WNNC_NET_LOCUS       = 0x00060000,
+			WNNC_NET_SUN_PC_NFS  = 0x00070000,
+			WNNC_NET_LANSTEP     = 0x00080000,
+			WNNC_NET_9TILES      = 0x00090000,
+			WNNC_NET_LANTASTIC   = 0x000A0000,
+			WNNC_NET_AS400       = 0x000B0000,
+			WNNC_NET_FTP_NFS     = 0x000C0000,
+			WNNC_NET_PATHWORKS   = 0x000D0000,
+			WNNC_NET_LIFENET     = 0x000E0000,
+			WNNC_NET_POWERLAN    = 0x000F0000,
+			WNNC_NET_BWNFS       = 0x00100000,
+			WNNC_NET_COGENT      = 0x00110000,
+			WNNC_NET_FARALLON    = 0x00120000,
+			WNNC_NET_APPLETALK   = 0x00130000,
+			WNNC_NET_INTERGRAPH  = 0x00140000,
+			WNNC_NET_SYMFONET    = 0x00150000,
+			WNNC_NET_CLEARCASE   = 0x00160000,
+			WNNC_NET_FRONTIER    = 0x00170000,
+			WNNC_NET_BMC         = 0x00180000,
+			WNNC_NET_DCE         = 0x00190000,
+			WNNC_NET_AVID        = 0x001A0000,
+			WNNC_NET_DOCUSPACE   = 0x001B0000,
+			WNNC_NET_MANGOSOFT   = 0x001C0000,
+			WNNC_NET_SERNET      = 0x001D0000,
+			WNNC_NET_RIVERFRONT1 = 0X001E0000,
+			WNNC_NET_RIVERFRONT2 = 0x001F0000,
+			WNNC_NET_DECORB      = 0x00200000,
+			WNNC_NET_PROTSTOR    = 0x00210000,
+			WNNC_NET_FJ_REDIR    = 0x00220000,
+			WNNC_NET_DISTINCT    = 0x00230000,
+			WNNC_NET_TWINS       = 0x00240000,
+			WNNC_NET_RDR2SAMPLE  = 0x00250000,
+			WNNC_NET_CSC         = 0x00260000,
+			WNNC_NET_3IN1        = 0x00270000,
+			WNNC_NET_EXTENDNET   = 0x00290000,
+			WNNC_NET_STAC        = 0x002A0000,
+			WNNC_NET_FOXBAT      = 0x002B0000,
+			WNNC_NET_YAHOO       = 0x002C0000,
+			WNNC_NET_EXIFS       = 0x002D0000,
+			WNNC_NET_DAV         = 0x002E0000,
+			WNNC_NET_KNOWARE     = 0x002F0000,
+			WNNC_NET_OBJECT_DIRE = 0x00300000,
+			WNNC_NET_MASFAX      = 0x00310000,
+			WNNC_NET_HOB_NFS     = 0x00320000,
+			WNNC_NET_SHIVA       = 0x00330000,
+			WNNC_NET_IBMAL       = 0x00340000,
+			WNNC_NET_LOCK        = 0x00350000,
+			WNNC_NET_TERMSRV     = 0x00360000,
+			WNNC_NET_SRT         = 0x00370000,
+			WNNC_NET_QUINCY      = 0x00380000,
+			WNNC_NET_OPENAFS     = 0x00390000,
+			WNNC_NET_AVID1       = 0X003A0000,
+			WNNC_NET_DFS         = 0x003B0000,
+			WNNC_NET_KWNP        = 0x003C0000,
+			WNNC_NET_ZENWORKS    = 0x003D0000,
+			WNNC_NET_DRIVEONWEB  = 0x003E0000,
+			WNNC_NET_VMWARE      = 0x003F0000,
+			WNNC_NET_RSFX        = 0x00400000,
+			WNNC_NET_MFILES      = 0x00410000,
+			WNNC_NET_MS_NFS      = 0x00420000,
+			WNNC_NET_GOOGLE      = 0x00430000,
+			WNNC_NET_NDFS        = 0x00440000,
+			WNNC_NET_DOCUSHARE   = 0x00450000,
+			WNNC_NET_AURISTOR_FS = 0x00460000,
+			WNNC_NET_SECUREAGENT = 0x00470000,
+		}
+
 		/// <summary>
 		/// The <c>MultinetGetConnectionPerformance</c> function returns information about the expected performance of a connection used to
 		/// access a network resource.
@@ -425,7 +521,7 @@ namespace Vanara.PInvoke
 		// DWORD MultinetGetConnectionPerformance( _In_ LPNETRESOURCE lpNetResource, _Out_ LPNETCONNECTINFOSTRUCT lpNetConnectInfoStruct); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385342(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385342")]
-		public static extern uint MultinetGetConnectionPerformance(ref NETRESOURCE lpNetResource, out NETCONNECTINFOSTRUCT lpNetConnectInfoStruct);
+		public static extern Win32Error MultinetGetConnectionPerformance(NETRESOURCE lpNetResource, ref NETCONNECTINFOSTRUCT lpNetConnectInfoStruct);
 
 		/// <summary>
 		/// The <c>WNetAddConnection</c> function enables the calling application to connect a local device to a network resource. A
@@ -814,7 +910,7 @@ namespace Vanara.PInvoke
 		// DWORD WNetAddConnection2( _In_ LPNETRESOURCE lpNetResource, _In_ LPCTSTR lpPassword, _In_ LPCTSTR lpUsername, _In_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385413(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385413")]
-		public static extern Win32Error WNetAddConnection2(ref NETRESOURCE lpNetResource, string lpPassword, string lpUsername, CONNECT dwFlags);
+		public static extern Win32Error WNetAddConnection2(NETRESOURCE lpNetResource, string lpPassword, string lpUsername, CONNECT dwFlags);
 
 		/// <summary>
 		/// <para>
@@ -1057,7 +1153,7 @@ namespace Vanara.PInvoke
 		// _In_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385418(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385418")]
-		public static extern Win32Error WNetAddConnection3(HandleRef hwndOwner, ref NETRESOURCE lpNetResource, string lpPassword, string lpUserName, CONNECT dwFlags);
+		public static extern Win32Error WNetAddConnection3(HandleRef hwndOwner, NETRESOURCE lpNetResource, string lpPassword, string lpUserName, CONNECT dwFlags);
 
 		/// <summary>
 		/// <para>
@@ -1239,7 +1335,7 @@ namespace Vanara.PInvoke
 		// DWORD WNetConnectionDialog( _In_ HWND hwnd, _In_ DWORD dwType); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385433(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385433")]
-		public static extern Win32Error WNetConnectionDialog(HandleRef hwnd, uint dwType);
+		public static extern Win32Error WNetConnectionDialog(HandleRef hwnd, NETRESOURCEType dwType = NETRESOURCEType.RESOURCETYPE_DISK);
 
 		/// <summary>
 		/// The <c>WNetConnectionDialog1</c> function brings up a general browsing dialog for connecting to network resources. The function
@@ -1348,7 +1444,7 @@ namespace Vanara.PInvoke
 		// DWORD WNetDisconnectDialog( _In_ HWND hwnd, _In_ DWORD dwType); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385440(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385440")]
-		public static extern Win32Error WNetDisconnectDialog(HandleRef hwnd, uint dwType);
+		public static extern Win32Error WNetDisconnectDialog(HandleRef hwnd, NETRESOURCEType dwType = NETRESOURCEType.RESOURCETYPE_DISK);
 
 		/// <summary>
 		/// The <c>WNetDisconnectDialog1</c> function attempts to disconnect a network resource. If the underlying network returns
@@ -1480,7 +1576,7 @@ namespace Vanara.PInvoke
 		// DWORD WNetEnumResource( _In_ HANDLE hEnum, _Inout_ LPDWORD lpcCount, _Out_ LPVOID lpBuffer, _Inout_ LPDWORD lpBufferSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385449(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385449")]
-		public static extern Win32Error WNetEnumResource(IntPtr hEnum, ref uint lpcCount, IntPtr lpBuffer, ref uint lpBufferSize);
+		public static extern Win32Error WNetEnumResource(SafeWNetEnumHandle hEnum, ref int lpcCount, IntPtr lpBuffer, ref uint lpBufferSize);
 
 		/// <summary>The <c>WNetGetConnection</c> function retrieves the name of the network resource associated with a local device.</summary>
 		/// <param name="lpLocalName">
@@ -1604,7 +1700,7 @@ namespace Vanara.PInvoke
 		// DWORD WNetGetNetworkInformation( _In_ LPCTSTR lpProvider, _Out_ LPNETINFOSTRUCT lpNetInfoStruct); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385461(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385461")]
-		public static extern Win32Error WNetGetNetworkInformation(string lpProvider, out NETINFOSTRUCT lpNetInfoStruct);
+		public static extern Win32Error WNetGetNetworkInformation(string lpProvider, ref NETINFOSTRUCT lpNetInfoStruct);
 
 		/// <summary>The <c>WNetGetProviderName</c> function obtains the provider name for a specific type of network.</summary>
 		/// <param name="dwNetType">
@@ -1651,7 +1747,7 @@ namespace Vanara.PInvoke
 		// DWORD WNetGetProviderName( _In_ DWORD dwNetType, _Out_ LPTSTR lpProviderName, _Inout_ LPDWORD lpBufferSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385464(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385464")]
-		public static extern Win32Error WNetGetProviderName(uint dwNetType, StringBuilder lpProviderName, ref uint lpBufferSize);
+		public static extern Win32Error WNetGetProviderName(WNNC_NET dwNetType, StringBuilder lpProviderName, ref uint lpBufferSize);
 
 		/// <summary>
 		/// When provided with a remote path to a network resource, the <c>WNetGetResourceInformation</c> function identifies the network
@@ -1739,7 +1835,7 @@ namespace Vanara.PInvoke
 		// LPTSTR *lplpSystem); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385469(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385469")]
-		public static extern Win32Error WNetGetResourceInformation(ref NETRESOURCE lpNetResource, IntPtr lpBuffer, ref uint lpcbBuffer, out string lplpSystem);
+		public static extern Win32Error WNetGetResourceInformation(NETRESOURCE lpNetResource, IntPtr lpBuffer, ref uint lpcbBuffer, out IntPtr lplpSystem);
 
 		/// <summary>
 		/// <para>
@@ -1838,7 +1934,7 @@ namespace Vanara.PInvoke
 		// DWORD WNetGetResourceParent( _In_ LPNETRESOURCE lpNetResource, _Out_ LPVOID lpBuffer, _Inout_ LPDWORD lpcbBuffer); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385470(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385470")]
-		public static extern Win32Error WNetGetResourceParent(ref NETRESOURCE lpNetResource, IntPtr lpBuffer, ref uint lpcbBuffer);
+		public static extern Win32Error WNetGetResourceParent(NETRESOURCE lpNetResource, IntPtr lpBuffer, ref uint lpcbBuffer);
 
 		/// <summary>
 		/// The <c>WNetGetUniversalName</c> function takes a drive-based path for a network resource and returns an information structure
@@ -2157,7 +2253,7 @@ namespace Vanara.PInvoke
 		// lphEnum); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385478(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385478")]
-		public static extern Win32Error WNetOpenEnum(NETRESOURCEScope dwScope, NETRESOURCEType dwType, NETRESOURCEUsage dwUsage, ref NETRESOURCE lpNetResource, out IntPtr lphEnum);
+		public static extern Win32Error WNetOpenEnum(NETRESOURCEScope dwScope, NETRESOURCEType dwType, NETRESOURCEUsage dwUsage, NETRESOURCE lpNetResource, out SafeWNetEnumHandle lphEnum);
 
 		/// <summary>
 		/// The <c>WNetOpenEnum</c> function starts an enumeration of network resources or existing connections. You can continue the
@@ -2316,7 +2412,7 @@ namespace Vanara.PInvoke
 		// lphEnum); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385478(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385478")]
-		public static extern Win32Error WNetOpenEnum(NETRESOURCEScope dwScope, NETRESOURCEType dwType, NETRESOURCEUsage dwUsage, IntPtr lpNetResource, out IntPtr lphEnum);
+		public static extern Win32Error WNetOpenEnum(NETRESOURCEScope dwScope, NETRESOURCEType dwType, NETRESOURCEUsage dwUsage, IntPtr lpNetResource, out SafeWNetEnumHandle lphEnum);
 
 		/// <summary>
 		/// <para>Sets extended error information. Network providers should call this function instead of SetLastError.</para>
@@ -2631,7 +2727,7 @@ namespace Vanara.PInvoke
 		// _In_ DWORD dwFlags, _Out_ LPTSTR lpAccessName, _Inout_ LPDWORD lpBufferSize, _Out_ LPDWORD lpResult); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385482(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385482")]
-		public static extern Win32Error WNetUseConnection(HandleRef hwndOwner, ref NETRESOURCE lpNetResource, string lpPassword, string lpUserID, CONNECT dwFlags, StringBuilder lpAccessName, ref uint lpBufferSize, out uint lpResult);
+		public static extern Win32Error WNetUseConnection(HandleRef hwndOwner, NETRESOURCE lpNetResource, string lpPassword, string lpUserID, CONNECT dwFlags, StringBuilder lpAccessName, ref uint lpBufferSize, out CONNECT lpResult);
 
 		/// <summary>
 		/// The <c>CONNECTDLGSTRUCT</c> structure is used by the <c>WNetConnectionDialog1</c> function to establish browsing dialog box parameters.
@@ -2722,7 +2818,10 @@ namespace Vanara.PInvoke
 			/// device. The value is 1 for A:, 2 for B:, 3 for C:, and so on. If the user made a deviceless connection, the value is –1.
 			/// </para>
 			/// </summary>
-			public uint dwDevNum;
+			public int dwDevNum;
+
+			/// <summary>Gets an empty instance of the structure with the cbStructure value set.</summary>
+			public static CONNECTDLGSTRUCT Empty => new CONNECTDLGSTRUCT { cbStructure = (uint)Marshal.SizeOf(typeof(CONNECTDLGSTRUCT)) };
 		}
 
 		/// <summary>
@@ -2794,7 +2893,25 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </para>
 			/// </summary>
-			public uint dwFlags;
+			public DISC dwFlags;
+
+			/// <summary>Gets an empty instance of the structure with the cbStructure value set.</summary>
+			public static DISCDLGSTRUCT Empty => new DISCDLGSTRUCT { cbStructure = (uint)Marshal.SizeOf(typeof(DISCDLGSTRUCT)) };
+
+			/// <summary>
+			/// Initializes a new instance of the <see cref="DISCDLGSTRUCT"/> struct.
+			/// </summary>
+			/// <param name="localName">Name of the local device.</param>
+			/// <param name="updateProfile">if set to <c>true</c> update profile.</param>
+			/// <param name="force">if set to <c>true</c> force disconnect.</param>
+			public DISCDLGSTRUCT(string localName, bool updateProfile = false, bool force = true)
+			{
+				cbStructure = (uint)Marshal.SizeOf(typeof(DISCDLGSTRUCT));
+				hwndOwner = IntPtr.Zero;
+				lpLocalName = localName;
+				lpRemoteName = null;
+				dwFlags = (updateProfile ? DISC.DISC_UPDATE_PROFILE : 0) | (force ? 0 : DISC.DISC_NO_FORCE);
+			}
 		}
 
 		/// <summary>
@@ -2888,6 +3005,9 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public uint dwOptDataSize;
+
+			/// <summary>Gets an empty instance of the structure with the cbStructure value set.</summary>
+			public static NETCONNECTINFOSTRUCT Empty => new NETCONNECTINFOSTRUCT { cbStructure = (uint)Marshal.SizeOf(typeof(NETCONNECTINFOSTRUCT)) };
 		}
 
 		/// <summary>
@@ -3005,6 +3125,9 @@ namespace Vanara.PInvoke
 			/// <para><c>Windows Me/98/95:</c> This value is always set to –1.</para>
 			/// </summary>
 			public uint dwDrives;
+
+			/// <summary>Gets an empty instance of the structure with the cbStructure value set.</summary>
+			public static NETINFOSTRUCT Empty => new NETINFOSTRUCT { cbStructure = (uint)Marshal.SizeOf(typeof(NETINFOSTRUCT)) };
 		}
 
 		/// <summary>The <c>NETRESOURCE</c> structure contains information about a network resource.</summary>
@@ -3012,7 +3135,7 @@ namespace Vanara.PInvoke
 		// lpRemoteName; LPTSTR lpComment; LPTSTR lpProvider;} NETRESOURCE; https://msdn.microsoft.com/en-us/library/windows/desktop/aa385353(v=vs.85).aspx
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385353")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		public struct NETRESOURCE
+		public class NETRESOURCE
 		{
 			/// <summary>The scope of the enumeration.</summary>
 			public NETRESOURCEScope dwScope;
@@ -3033,7 +3156,8 @@ namespace Vanara.PInvoke
 			/// If the dwScope member is equal to RESOURCE_CONNECTED or RESOURCE_REMEMBERED, this member is a pointer to a null-terminated
 			/// character string that specifies the name of a local device. This member is NULL if the connection does not use a device.
 			/// </summary>
-			public StrPtrAuto lpLocalName;
+			[MarshalAs(UnmanagedType.LPTStr, SizeConst = 260)]
+			public string lpLocalName;
 
 			/// <summary>
 			/// If the entry is a network resource, this member is a pointer to a null-terminated character string that specifies the remote
@@ -3044,16 +3168,57 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>The string can be MAX_PATH characters in length, and it must follow the network provider's naming conventions.</para>
 			/// </summary>
-			public StrPtrAuto lpRemoteName;
+			[MarshalAs(UnmanagedType.LPTStr, SizeConst = 260)]
+			public string lpRemoteName;
 
 			/// <summary>A pointer to a NULL-terminated string that contains a comment supplied by the network provider.</summary>
-			public StrPtrAuto lpComment;
+			[MarshalAs(UnmanagedType.LPTStr, SizeConst = 1024)]
+			public string lpComment;
 
 			/// <summary>
 			/// A pointer to a NULL-terminated string that contains the name of the provider that owns the resource. This member can be NULL
 			/// if the provider name is unknown. To retrieve the provider name, you can call the WNetGetProviderName function.
 			/// </summary>
-			public StrPtrAuto lpProvider;
+			[MarshalAs(UnmanagedType.LPTStr, SizeConst = 260)]
+			public string lpProvider;
+
+			/// <summary>The root network resource.</summary>
+			public static readonly NETRESOURCE Root = new NETRESOURCE();
+
+			/// <summary>Initializes a new instance of the <see cref="NETRESOURCE"/> class.</summary>
+			public NETRESOURCE() { }
+
+			/// <summary>Initializes a new instance of the <see cref="NETRESOURCE"/> class.</summary>
+			/// <param name="remoteName">
+			/// The network resource to connect to. The string can be up to MAX_PATH characters in length, and must follow the network
+			/// provider's naming conventions.
+			/// </param>
+			/// <param name="localName">
+			/// The name of a local device to redirect, such as "F:" or "LPT1". The string is treated in a case-insensitive manner.
+			/// <para>
+			/// If the string is empty, or if lpLocalName is NULL, the function makes a connection to the network resource without
+			/// redirecting a local device.
+			/// </para>
+			/// </param>
+			/// <param name="provider">
+			/// The network provider to connect to.
+			/// <para>
+			/// If lpProvider is NULL, or if it points to an empty string, the operating system attempts to determine the correct provider by
+			/// parsing the string pointed to by the lpRemoteName member.
+			/// </para>
+			/// <para>If this member is not NULL, the operating system attempts to make a connection only to the named network provider.</para>
+			/// <para>
+			/// You should set this member only if you know the network provider you want to use.Otherwise, let the operating system
+			/// determine which provider the network name maps to.
+			/// </para>
+			/// </param>
+			public NETRESOURCE(string remoteName, string localName = null, string provider = null)
+			{
+				lpLocalName = localName;
+				lpRemoteName = remoteName;
+				lpProvider = provider;
+				dwType = NETRESOURCEType.RESOURCETYPE_DISK;
+			}
 		}
 
 		/// <summary>
@@ -3088,6 +3253,19 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Pointer to the null-terminated UNC name string that identifies a network resource.</summary>
 			public string lpUniversalName;
+		}
+
+		/// <summary>Safe handle for WNetOpenEnum related calls.</summary>
+		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
+		public class SafeWNetEnumHandle : GenericSafeHandle
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeWNetEnumHandle"/> class.</summary>
+			public SafeWNetEnumHandle() : this(IntPtr.Zero, true) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeWNetEnumHandle"/> class.</summary>
+			/// <param name="handle">The handle.</param>
+			/// <param name="own">if set to <c>true</c>, handle will be closed when disposed.</param>
+			public SafeWNetEnumHandle(IntPtr handle, bool own = true) : base(handle, h => WNetCloseEnum(h).Succeeded, own) { }
 		}
 	}
 }

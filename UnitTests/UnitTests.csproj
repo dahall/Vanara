@@ -70,6 +70,7 @@
     <Compile Include="PInvoke\InteropServices\SafeLocalHandleTests.cs" />
     <Compile Include="PInvoke\IpHlpApi\IpHlpApiTests.cs" />
     <Compile Include="PInvoke\Kernel32\Kernel32Tests.cs" />
+    <Compile Include="PInvoke\Mpr\WinNetWkTests.cs" />
     <Compile Include="PInvoke\NetApi\NetApi32Tests.cs" />
     <None Include="PInvoke\NetListMgr\NetListMgrTests.cs" />
     <Compile Include="PInvoke\NTDSApi\NTDSApiTests.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="System\BackgroundCopyTests.cs" />
     <Compile Include="System\NetworkListTests.cs" />
     <Compile Include="System\VirtualDiskTests.cs" />
+    <Compile Include="UI\Controls\NetworkConnectionDialogTests.cs" />
     <Compile Include="UI\VisualThemeTests.cs" />
     <Compile Include="UI\Controls\ImageListTests.cs" />
     <Compile Include="UI\Controls\CredentialsDialogTests.cs" />

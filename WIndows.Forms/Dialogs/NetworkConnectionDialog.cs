@@ -1,0 +1,95 @@
+﻿using System;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using Vanara.Extensions;
+using Vanara.InteropServices;
+using static Vanara.PInvoke.Mpr;
+
+namespace Vanara.Windows.Forms
+{
+	/// <summary>
+	/// A dialog box that allows the user to browse and connect to network resources.
+	/// </summary>
+	/// <seealso cref="System.Windows.Forms.CommonDialog" />
+	public class NetworkConnectionDialog : CommonDialog
+	{
+		private SafeCoTaskMemHandle lpnres;
+		private NETRESOURCE nres = new NETRESOURCE();
+		private CONNECTDLGSTRUCT opts;
+
+		/// <summary>Initializes a new instance of the <see cref="NetworkConnectionDialog"/> class.</summary>
+		public NetworkConnectionDialog()
+		{
+			opts.cbStructure = (uint)Marshal.SizeOf(typeof(CONNECTDLGSTRUCT));
+			nres.dwType = NETRESOURCEType.RESOURCETYPE_DISK;
+		}
+
+		/// <summary>Gets the connected device count. This value is only valid after successfully running the dialog.</summary>
+		/// <value>The connected device count.</value>
+		[Browsable(false)]
+		public int ConnectedDeviceCount => opts.dwDevNum;
+
+		/// <summary>Gets or sets a value indicating whether to hide the check box allowing the user to restore the connection at logon.</summary>
+		/// <value><c>true</c> if hiding restore connection check box; otherwise, <c>false</c>.</value>
+		[DefaultValue(false), Category("Appearance"), Description("Hide the check box allowing the user to restore the connection at logon.")]
+		public bool HideRestoreConnectionCheckBox
+		{
+			get => opts.dwFlags.IsFlagSet(CONN_DLG.CONNDLG_HIDE_BOX);
+			set => opts.dwFlags = opts.dwFlags.SetFlags(CONN_DLG.CONNDLG_HIDE_BOX, value);
+		}
+
+		/// <summary>Gets or sets a value indicating whether restore the connection at logon.</summary>
+		/// <value><c>true</c> to restore connection at logon; otherwise, <c>false</c>.</value>
+		[DefaultValue(false), Category("Behavior"), Description("Restore the connection at logon.")]
+		public bool PersistConnectionAtLogon
+		{
+			get => opts.dwFlags.IsFlagSet(CONN_DLG.CONNDLG_PERSIST);
+			set
+			{
+				opts.dwFlags = opts.dwFlags.SetFlags(CONN_DLG.CONNDLG_PERSIST, value);
+				opts.dwFlags = opts.dwFlags.SetFlags(CONN_DLG.CONNDLG_NOT_PERSIST, !value);
+			}
+		}
+
+		/// <summary>Gets or sets the name of the remote network.</summary>
+		/// <value>The name of the remote network.</value>
+		[DefaultValue(null), Category("Behavior"), Description("The value displayed in the path field.")]
+		public string RemoteNetworkName { get => nres.lpRemoteName; set => nres.lpRemoteName = value; }
+
+		/// <summary>Gets or sets a value indicating whether to enter the most recently used paths into the combination box.</summary>
+		/// <value><c>true</c> to use MRU path; otherwise, <c>false</c>.</value>
+		/// <exception cref="InvalidOperationException">UseMostRecentPath</exception>
+		[DefaultValue(false), Category("Behavior"), Description("Enter the most recently used paths into the combination box.")]
+		public bool UseMostRecentPath
+		{
+			get => opts.dwFlags.IsFlagSet(CONN_DLG.CONNDLG_USE_MRU);
+			set
+			{
+				if (value && !string.IsNullOrEmpty(RemoteNetworkName))
+					throw new InvalidOperationException($"{nameof(UseMostRecentPath)} cannot be set to true if {nameof(RemoteNetworkName)} has a value.");
+				opts.dwFlags = opts.dwFlags.SetFlags(CONN_DLG.CONNDLG_USE_MRU, value);
+			}
+		}
+
+		/// <inheritdoc/>
+		public override void Reset()
+		{
+			opts.dwDevNum = -1;
+			opts.dwFlags = 0;
+			opts.lpConnRes = IntPtr.Zero;
+		}
+
+		/// <inheritdoc/>
+		protected override bool RunDialog(IntPtr hwndOwner)
+		{
+			opts.hwndOwner = hwndOwner;
+			lpnres = SafeCoTaskMemHandle.CreateFromStructure(nres);
+			opts.lpConnRes = lpnres.DangerousGetHandle();
+			var ret = WNetConnectionDialog1(ref opts);
+			if (ret == -1) return false;
+			ret.ThrowIfFailed();
+			return true;
+		}
+	}
+}
