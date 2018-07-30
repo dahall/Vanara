@@ -7,7 +7,7 @@
     <ProjectGuid>{8EDF4429-251A-416D-BB68-93F227191BCF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UnitTests</RootNamespace>
+    <RootNamespace>Vanara</RootNamespace>
     <AssemblyName>UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -93,6 +93,7 @@
     <Compile Include="PInvoke\Shared\WinUser\MacrosTests.cs" />
     <Compile Include="PInvoke\Shell32\ExplorerTests.cs" />
     <Compile Include="PInvoke\Shell32\KnownFolderIdExtTests.cs" />
+    <Compile Include="PInvoke\Shell32\ProgressDialogTests.cs" />
     <Compile Include="PInvoke\TaskSchd\TaskSchdTests.cs" />
     <Compile Include="PInvoke\User32\User32Tests.cs" />
     <Compile Include="PInvoke\UxTheme\UxThemeTests.cs" />
