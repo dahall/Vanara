@@ -25,7 +25,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-PathFindOnPathA, PathFindOnPathW, SHCreateStreamOnFileEx
+PathCompactPathExA, PathCompactPathExW, PathFindOnPathA, PathFindOnPathW, SHCreateStreamOnFileEx
 
 Interfaces
 IQueryAssociations

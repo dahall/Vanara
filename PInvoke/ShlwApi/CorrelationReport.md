@@ -1,5 +1,5 @@
 ## Correlation report for shlwapi.dll  
-### Methods (0% complete)  
+### Methods (1% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AssocCreate](https://www.google.com/search?num=5&q=AssocCreate+site%3Amicrosoft.com) | shlwapi.dll |  |   
@@ -48,7 +48,7 @@ Native Method | Native DLL | Header | Managed Method
 [PathCombine](https://www.google.com/search?num=5&q=PathCombineA+site%3Amicrosoft.com) | shlwapi.dll |  |   
 [PathCommonPrefix](https://www.google.com/search?num=5&q=PathCommonPrefixA+site%3Amicrosoft.com) | shlwapi.dll |  |   
 [PathCompactPath](https://www.google.com/search?num=5&q=PathCompactPathA+site%3Amicrosoft.com) | shlwapi.dll |  |   
-[PathCompactPathEx](https://www.google.com/search?num=5&q=PathCompactPathExA+site%3Amicrosoft.com) | shlwapi.dll |  |   
+[PathCompactPathEx](http://msdn2.microsoft.com/en-us/library/ff108ee6-3d71-4ab2-a04a-d4bcce408f88) | shlwapi.dll | shlwapi.h | Vanara.PInvoke.ShlwApi.PathCompactPathEx  
 [PathCreateFromUrl](https://www.google.com/search?num=5&q=PathCreateFromUrlA+site%3Amicrosoft.com) | shlwapi.dll |  |   
 [PathCreateFromUrlAlloc](https://www.google.com/search?num=5&q=PathCreateFromUrlAlloc+site%3Amicrosoft.com) | shlwapi.dll |  |   
 [PathFileExists](https://www.google.com/search?num=5&q=PathFileExistsA+site%3Amicrosoft.com) | shlwapi.dll |  |   

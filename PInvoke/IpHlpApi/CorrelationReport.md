@@ -3,8 +3,6 @@
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AddIPAddress](https://www.google.com/search?num=5&q=AddIPAddress+site%3Amicrosoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.AddIPAddress  
-[AllocateAndGetInterfaceInfoFromStack](https://www.google.com/search?num=5&q=AllocateAndGetInterfaceInfoFromStack+site%3Amicrosoft.com) | iphlpapi.dll |  |   
-[AllocateAndGetIpAddrTableFromStack](https://www.google.com/search?num=5&q=AllocateAndGetIpAddrTableFromStack+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [CancelIPChangeNotify](https://www.google.com/search?num=5&q=CancelIPChangeNotify+site%3Amicrosoft.com) | iphlpapi.dll | Iphlpapi.h | Vanara.PInvoke.IpHlpApi.CancelIPChangeNotify  
 [CancelMibChangeNotify2](https://www.google.com/search?num=5&q=CancelMibChangeNotify2+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [ConvertInterfaceAliasToLuid](https://www.google.com/search?num=5&q=ConvertInterfaceAliasToLuid+site%3Amicrosoft.com) | iphlpapi.dll |  |   
