@@ -10,12 +10,15 @@ namespace Vanara.PInvoke
 		[PInvokeData("servprov.h")]
 		public interface IServiceProvider
 		{
-			/// <summary>Performs as a factory for services that are exposed through an implementation of IServiceProvider.</summary>
+			/// <summary>
+			/// Performs as a factory for services that are exposed through an implementation of IServiceProvider.
+			/// </summary>
 			/// <param name="guidService">A unique identifier of the requested service.</param>
 			/// <param name="riid">A unique identifier of the interface which the caller wishes to receive for the service.</param>
-			/// <returns>The interface specified by the riid parameter.</returns>
-			[return: MarshalAs(UnmanagedType.IUnknown)]
-			object QueryService([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidService, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
-		};
+			/// <param name="ppvObject">The interface specified by the <paramref name="riid"/> parameter.</param>
+			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
+			[PreserveSig]
+			HRESULT QueryService([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidService, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObject);
+		}
 	}
 }

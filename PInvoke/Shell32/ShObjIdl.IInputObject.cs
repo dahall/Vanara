@@ -82,7 +82,9 @@ namespace Vanara.PInvoke
 			/// Indicates if the object has gained or lost the focus. If this value is nonzero, the object has gained the focus. If this
 			/// value is zero, the object has lost the focus.
 			/// </param>
-			void OnFocusChangeIS([In, MarshalAs(UnmanagedType.IUnknown)] object punkObj, [In, MarshalAs(UnmanagedType.Bool)] bool fSetFocus);
+			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
+			[PreserveSig]
+			HRESULT OnFocusChangeIS([In, MarshalAs(UnmanagedType.IUnknown)] object punkObj, [In, MarshalAs(UnmanagedType.Bool)] bool fSetFocus);
 		}
 	}
 }

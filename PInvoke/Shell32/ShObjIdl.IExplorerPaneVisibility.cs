@@ -52,14 +52,56 @@ namespace Vanara.PInvoke
 		[PInvokeData("Shobjidl.h", MSDNShortId = "b940adc2-dfef-49c5-b86c-d0da83db0aad")]
 		public interface IExplorerPaneVisibility
 		{
-			/// <summary>Gets the visibility state of the given Windows Explorer pane.</summary>
+			/// <summary>
+			/// <para>Gets the visibility state of the given Windows Explorer pane.</para>
+			/// </summary>
 			/// <param name="ep">
-			/// A reference to a GUID that uniquely identifies a Windows Explorer pane. One of the constants as defined in Shlguid.h.
+			/// <para>Type: <c>REFEXPLORERPANE</c></para>
+			/// <para>
+			/// A reference to a GUID that uniquely identifies a Windows Explorer pane. One of the following constants as defined in Shlguid.h.
+			/// </para>
+			/// <para>EP_NavPane (cb316b22-25f7-42b8-8a09-540d23a43c2f)</para>
+			/// <para>The pane on the left side of the Windows Explorer window that hosts the folders tree and <c>Favorites</c>.</para>
+			/// <para>EP_Commands (d9745868-ca5f-4a76-91cd-f5a129fbb076)</para>
+			/// <para><c>Commands</c> module along the top of the Windows Explorer window.</para>
+			/// <para>EP_Commands_Organize (72e81700-e3ec-4660-bf24-3c3b7b648806)</para>
+			/// <para><c>Organize</c> menu within the commands module.</para>
+			/// <para>EP_Commands_View (21f7c32d-eeaa-439b-bb51-37b96fd6a943)</para>
+			/// <para><c>View</c> menu within the commands module.</para>
+			/// <para>EP_DetailsPane (43abf98b-89b8-472d-b9ce-e69b8229f019)</para>
+			/// <para>Pane showing metadata along the bottom of the Windows Explorer window.</para>
+			/// <para>EP_PreviewPane (893c63d1-45c8-4d17-be19-223be71be365)</para>
+			/// <para>Pane on the right of the Windows Explorer window that shows a large reading preview of the file.</para>
+			/// <para>EP_QueryPane (65bcde4f-4f07-4f27-83a7-1afca4df7ddd)</para>
+			/// <para>Quick filter buttons to aid in a search.</para>
+			/// <para>EP_AdvQueryPane (b4e9db8b-34ba-4c39-b5cc-16a1bd2c411c)</para>
+			/// <para>Additional fields and options to aid in a search.</para>
+			/// <para>EP_StatusBar (65fe56ce-5cfe-4bc4-ad8a-7ae3fe7e8f7c)</para>
+			/// <para><c>Introduced in Windows 8</c>: A status bar that indicates the progress of some process, such as copying or downloading.</para>
+			/// <para>EP_Ribbon (d27524a8-c9f2-4834-a106-df8889fd4f37)</para>
+			/// <para>
+			/// <c>Introduced in Windows 8</c>: The ribbon, which is the control that replaced menus and toolbars at the top of many
+			/// Microsoft applications.
+			/// </para>
+			/// </param>
+			/// <param name="peps">
+			/// <para>Type: <c>EXPLORERPANESTATE*</c></para>
+			/// <para>
+			/// When this method returns, contains the visibility state of the given Windows Explorer pane as one of the EXPLORERPANESTATE constants.
+			/// </para>
 			/// </param>
 			/// <returns>
-			/// When this method returns, contains the visibility state of the given Windows Explorer pane as one of the EXPLORERPANESTATE constants.
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 			/// </returns>
-			EXPLORERPANESTATE GetPaneState([In, MarshalAs(UnmanagedType.LPStruct)] Guid ep);
+			/// <remarks>
+			/// If the implementer does not care about the state of a given pane and therefore does not want to change it, then the
+			/// implementer should return a success code for the method and EPS_DONTCARE for the parameter. If the method fails, it is
+			/// treated as if EPS_DONTCARE was returned for the parameter.
+			/// </remarks>
+			[PInvokeData("shobjidl_core.h", MSDNShortId = "6c051cdc-b7f9-48dc-ba32-38f0f1ee5fda")]
+			[PreserveSig]
+			HRESULT GetPaneState([In, MarshalAs(UnmanagedType.LPStruct)] Guid ep, ref EXPLORERPANESTATE peps);
 		}
 
 		/// <summary>Constant GUIDs used by IExplorerPaneVisibility::GetPaneState.</summary>

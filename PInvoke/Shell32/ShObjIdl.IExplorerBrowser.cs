@@ -34,7 +34,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			EBO_NOWRAPPERWINDOW = 0x00000010,
 
-			/// <summary>Show WebView for sharepoint sites.</summary>
+			/// <summary>Show WebView for SharePoint sites.</summary>
 			EBO_HTMLSHAREPOINTVIEW = 0x00000020,
 
 			/// <summary>Introduced in Windows Vista. Do not draw a border around the browser window.</summary>
@@ -66,15 +66,96 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// IExplorerBrowser is a browser object that can be either navigated or that can host a view of a data object. As a full-featured
-		/// browser object, it also supports an automatic travel log.
 		/// <para>
-		/// The Shell provides a default implementation of IExplorerBrowser as CLSID_ExplorerBrowser.Typically, a developer does not need to
-		/// provide a custom implementation of this interface.
+		/// <c>IExplorerBrowser</c> is a browser object that can be either navigated or that can host a view of a data object. As a
+		/// full-featured browser object, it also supports an automatic travel log.
+		/// </para>
+		/// <para>
+		/// The Shell provides a default implementation of <c>IExplorerBrowser</c> as CLSID_ExplorerBrowser. Typically, a developer does not
+		/// need to provide a custom implementation of this interface.
+		/// </para>
+		/// <para>
+		/// The Windows Software Development Kit (SDK) provides full samples that demonstrate the use of and interaction with
+		/// <c>IExplorerBrowser</c>. Download the Explorer Browser Search Sample and the Explorer Browser Custom Contents Sample.
 		/// </para>
 		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// For example code that shows typical use of <c>IExplorerBrowser</c> and its methods, see the Explorer Browser Custom Contents and
+		/// Explorer Browser Custom Contents samples.
+		/// </para>
+		/// <para>
+		/// After calling this object's Initialize method, its Destroy method must be called to free any windowed resources that were
+		/// generated in the call to <c>Initialize</c>.
+		/// </para>
+		/// <para>
+		/// The object that hosts the ExplorerBrowser object should derive from IServiceProvider and implement QueryService to respond to any
+		/// queries for service. For example, the number of panes shown by the browser can be controlled by implementing
+		/// IExplorerPaneVisibility and responding to any SID_ExplorerPaneVisibility service requests.
+		/// </para>
+		/// <para>
+		/// Frames are disabled by default. To enable frames and get the default set of panes, set the EBO_SHOWFRAMES flag using the
+		/// IExplorerBrowser::SetOptions method. The default panes, listed as IExplorerPaneVisibility constants, are these:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>EP_NavPane</item>
+		/// <item>EP_Commands</item>
+		/// <item>EP_Commands_Organize</item>
+		/// <item>EP_Commands_View</item>
+		/// <item>EP_DetailsPane</item>
+		/// <item>EP_PreviewPane</item>
+		/// <item>EP_QueryPane</item>
+		/// <item>EP_AdvQueryPane</item>
+		/// <item>EP_StatusBar</item>
+		/// <item>EP_Ribbon</item>
+		/// </list>
+		/// <para>See IExplorerPaneVisibility::GetPaneState for more information.</para>
+		/// <para>
+		/// Clients of the ExplorerBrowser object can implement the ICommDlgBrowser, ICommDlgBrowser2, or ICommDlgBrowser3 interfaces and
+		/// respond to an SID_SExplorerBrowserFrame service request in their QueryService implementations that are called when any
+		/// <c>ICommDlgBrowser</c> interfaces are called on the browser (usually called from the view as a result of user actions). Note that
+		/// the client does not receive a call to ICommDlgBrowser::IncludeObject if a folder filter has been set on the browser by a call to IFolderFilterSite::SetFilter.
+		/// </para>
+		/// <para>
+		/// To remain compatible with some older applications, the default Shell view (DefView) performs filtering operations (for example,
+		/// searching operations executed by a search folder) on the UI thread. For new applications, this is typically not desired; the
+		/// search should execute on a background thread. To stop the UI thread from filtering and instead run filtering on a background
+		/// thread, provide ICommDlgBrowser2 through the SID_SExplorerBrowserFrame service request. When ICommDlgBrowser2::GetViewFlags is
+		/// called, it should return CDB2GVF_NOINCLUDEITEM. For example, if you navigate to a search folder in ExplorerBrowser and you do not
+		/// return CDB2GVF_NOINCLUDEITEM, the view can stop responding until the entire search is complete.
+		/// </para>
+		/// <para>
+		/// The Shell architecture has three main components: the browser, the views, and the data sources (for example, IShellFolder). The
+		/// ExplorerBrowser object maintains the current location and navigation to other locations throughout the Shell namespace. It also
+		/// keeps a travel log (forward and back history). The browser is notified when things happen in the view; for example, when the user
+		/// double-clicks a folder. In response, the browser navigates to that location. The data sources are the objects that supply the
+		/// items and folders in the namespace. They also have information about the location, such as the properties of the items and what
+		/// to add to the context menu when the view requests it. Additionally, the data sources know what view should be created to
+		/// represent their items at a location. In almost all instances, the folders create the Shell's default view (DefView). Therefore,
+		/// as the browser navigates, it receives an IShellFolder object for the new location and asks it what view to create. The browser
+		/// then creates that view and makes it visible, while hiding and then destroying the view that was showing the previous location.
+		/// The view is responsible for communicating with <c>IShellFolder</c> for the current location and requesting it to enumerate the
+		/// items, which allows the view to show these items to the user. As the user interacts with the items, the view communicates with
+		/// the <c>IShellFolder</c> to get any additional information it needs, such as specific properties of the items or the context menu
+		/// entries for the item.
+		/// </para>
+		/// <para>
+		/// If an application uses the default implementation provided by CLSID_ExplorerBrowser, inserting it into the window of an
+		/// application and then browsing to a location, ExplorerBrowser creates the proper IShellView as specified by the location that it
+		/// is browsing to. The application can then ask ExplorerBrowser to give it an interface on the current view, allowing the
+		/// application to manipulate the view directly if required. The default implementation of the Windows Explorer view object, created
+		/// by SHCreateShellFolderViewEx, supports the interface <c>IShellView</c>. You may verify that you have the default Shell folder
+		/// view object by calling IExplorerBrowser::GetCurrentView and then calling QueryInterface on the object returned using the
+		/// interface ID IID_CDefView.
+		/// </para>
+		/// <para>
+		/// <c>Windows 7 and later</c>. CExplorerBrowser can support in-place navigation by using IServiceProvider::QueryService with the
+		/// Service ID SID_SlnPlaceBrowser. When using SID_SInPlaceBrowser, the CExplorerBrowser state cannot be set to EBO_NAVIGATEONCE.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nn-shobjidl_core-iexplorerbrowser
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "da2cf5d4-5a68-4d18-807b-b9d4e2712c10")]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("dfd3b6b5-c10c-4be9-85f6-a66969f402f6"), CoClass(typeof(ExplorerBrowser))]
-		[PInvokeData("Shobjidl.h", MSDNShortId = "da2cf5d4-5a68-4d18-807b-b9d4e2712c10")]
 		public interface IExplorerBrowser
 		{
 			/// <summary>Prepares the browser to be navigated.</summary>

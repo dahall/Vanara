@@ -5,9 +5,32 @@ namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
-		/// <summary>Exposes a method that unpins an application shortcut from the Start menu or the taskbar.</summary>
+		/// <summary>
+		/// <para>Exposes a method that unpins an application shortcut from the <c>Start</c> menu or the taskbar.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>When to Implement</para>
+		/// <para>Windows provides an implementation of this interface as CLSID_StartMenuPin. Third parties do not provide their own implementation.</para>
+		/// <para>When to Use</para>
+		/// <para>
+		/// Any shortcut installed by an application might have been subsequently pinned by the user, and there is no way for an application
+		/// to know this. Therefore, we recommend that, during uninstallation, all applications call IStartMenuPinnedList::RemoveFromList on
+		/// each shortcut they installed.
+		/// </para>
+		/// <para>
+		/// Note that <c>IStartMenuPinnedList</c> does not remove the shortcuts themselves, it only unpins them. Applications first call
+		/// IStartMenuPinnedList::RemoveFromList on a shortcut, then delete that shortcut.
+		/// </para>
+		/// <para>Compatibility</para>
+		/// <para>
+		/// In Windows 8, the Start screen replaces the legacy Start menu. CLSID_StartMenuPin and IStartMenuPinnedList are present in Windows
+		/// 8 to provide backward compatibility with existing applications, but they do not affect tiles pinned to the Windows 8 Start
+		/// screen. CLSID_StartMenuPin and IStartMenuPinnedList do continue to impact items pinned to the Windows 8 desktop taskbar.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl/nn-shobjidl-istartmenupinnedlist
+		[PInvokeData("shobjidl.h", MSDNShortId = "e1f4dbdb-34c0-4bf5-bb8b-a622a81c1617")]
 		[ComImport, Guid("4CD19ADA-25A5-4A32-B3B7-347BEE5BE36B"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), CoClass(typeof(StartMenuPin))]
-		[PInvokeData("shobjidl.h")]
 		public interface IStartMenuPinnedList
 		{
 			/// <summary>

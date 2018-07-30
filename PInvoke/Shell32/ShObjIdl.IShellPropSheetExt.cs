@@ -25,8 +25,9 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Exposes methods that allow a property sheet handler to add or replace pages in the property sheet displayed for a file object.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nn-shobjidl_core-ishellpropsheetext
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "1671ad3e-c131-4de0-a213-b22c9966bae2")]
 		[ComImport, Guid("000214E9-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		[PInvokeData("Shobjidl.h")]
 		public interface IShellPropSheetExt
 		{
 			/// <summary>
