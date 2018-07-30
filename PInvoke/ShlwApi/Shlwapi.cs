@@ -7,6 +7,46 @@ namespace Vanara.PInvoke
 {
 	public static partial class ShlwApi
 	{
+		/// <summary>
+		/// <para>Truncates a path to fit within a certain number of characters by replacing path components with ellipses.</para>
+		/// </summary>
+		/// <param name="pszOut">
+		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>The address of the string that has been altered.</para>
+		/// </param>
+		/// <param name="pszSrc">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>A pointer to a null-terminated string of length MAX_PATH that contains the path to be altered.</para>
+		/// </param>
+		/// <param name="cchMax">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// The maximum number of characters to be contained in the new string, including the terminating null character. For example, if =
+		/// 8, the resulting string can contain a maximum of 7 characters plus the terminating null character.
+		/// </para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>Reserved. Must be 0.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The '/' separator will be used instead of '' if the original string used it. If points to a file name that is too long, instead
+		/// of a path, the file name will be truncated to characters, including the ellipsis and the terminating <c>NULL</c> character. For
+		/// example, if the input file name is "My Filename" and is 10, <c>PathCompactPathEx</c> will return "My Fil...".
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-pathcompactpathexa
+		// BOOL PathCompactPathExA( LPSTR pszOut, LPCSTR pszSrc, UINT cchMax, DWORD dwFlags );
+		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shlwapi.h", MSDNShortId = "ff108ee6-3d71-4ab2-a04a-d4bcce408f88")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool PathCompactPathEx(StringBuilder pszOut, string pszSrc, uint cchMax, uint dwFlags = 0);
+
 		/// <summary>Searches for a file.</summary>
 		/// <param name="pszFile">
 		/// <para>Type: <c>LPTSTR</c></para>
