@@ -15,6 +15,7 @@ namespace Vanara.PInvoke
 		public const string CMDSTR_VIEWLIST = "ViewList";
 
 		/// <summary>Flag options for the IContextMenu interface.</summary>
+		[PInvokeData("Shobjidl.h")]
 		[Flags]
 		public enum CMF : uint
 		{
@@ -106,6 +107,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Indicate desired behavior and indicate that other fields in the structure are to be used for <see cref="CMINVOKECOMMANDINFOEX"/>.</summary>
+		[PInvokeData("Shobjidl.h")]
 		[Flags]
 		public enum CMIC : uint
 		{
@@ -164,6 +166,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Flags specifying the information to return.</summary>
+		[PInvokeData("Shobjidl.h")]
 		public enum GCS : uint
 		{
 			/// <summary>Sets pszName to an ANSI string containing the language-independent command name for the menu item.</summary>
@@ -184,10 +187,9 @@ namespace Vanara.PInvoke
 			GCS_UNICODE = 0x00000004,
 		}
 
-		/// <summary>
-		/// Exposes methods that either create or merge a shortcut menu associated with a Shell object. Allows client objects to handle messages associated with
-		/// owner-drawn menu items and extends IContextMenu2 by accepting a return value from that message handling.
-		/// </summary>
+		/// <summary>Exposes methods that either create or merge a shortcut menu associated with a Shell object.</summary>
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb776095(v=vs.85).aspx
+		[PInvokeData("Shobjidl.h", MSDNShortId = "bb776095")]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("000214E4-0000-0000-c000-000000000046")]
 		public interface IContextMenu
 		{
@@ -222,9 +224,36 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Exposes methods that either create or merge a shortcut (context) menu associated with a Shell object. Extends IContextMenu by adding a method that
-		/// allows client objects to handle messages associated with owner-drawn menu items.
+		/// Exposes methods that either create or merge a shortcut (context) menu associated with a Shell object. Extends IContextMenu by
+		/// adding a method that allows client objects to handle messages associated with owner-drawn menu items.
 		/// </summary>
+		/// <remarks>
+		/// <para>This interface also provides the methods of the IContextMenu interface, from which it inherits.</para>
+		/// <para><c>Note</c><c>Windows Vista and later.</c> Prior to Windows Vista this interface was declared in Shlobj.h.</para>
+		/// <para>When to Implement</para>
+		/// <para>
+		/// Implement IContextMenu2 if your namespace extension or shortcut menu handler needs to process one or more of the following messages.
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>MENUPOPUP</term>
+		/// </item>
+		/// <item>
+		/// <term>ITEM</term>
+		/// </item>
+		/// <item>
+		/// <term>WM_MEASUREITEM</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// These messages are forwarded to IContextMenu2—through the HandleMenuMsg method—only if a QueryInterface call for an IContextMenu2
+		/// interface pointer is successful, indicating that the object supports this interface.
+		/// </para>
+		/// <para>When to Use</para>
+		/// <para>Applications do not normally call this interface directly.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nn-shobjidl_core-icontextmenu2
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "4e3331ad-4adc-4ea9-8a22-6aad15f618c8")]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("000214F4-0000-0000-c000-000000000046")]
 		public interface IContextMenu2 : IContextMenu
 		{
@@ -268,9 +297,25 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Exposes methods that either create or merge a shortcut menu associated with a Shell object. Allows client objects to handle messages associated with
-		/// owner-drawn menu items and extends IContextMenu2 by accepting a return value from that message handling.
+		/// <para>
+		/// Exposes methods that either create or merge a shortcut menu associated with a Shell object. Allows client objects to handle
+		/// messages associated with owner-drawn menu items and extends IContextMenu2 by accepting a return value from that message handling.
+		/// </para>
 		/// </summary>
+		/// <remarks>
+		/// <para>This interface also provides the methods of the IContextMenu and IContextMenu2 interfaces, from which it inherits.</para>
+		/// <para>When to Implement</para>
+		/// <para>Implement IContextMenu3 if your shortcut menu extension needs to process the WM_MENUCHAR message.</para>
+		/// <para>
+		/// This message is forwarded to IContextMenu3::HandleMenuMsg2 only if a QueryInterface call for an <c>IContextMenu3</c> interface
+		/// pointer is successful, which indicates that the object supports this interface.
+		/// </para>
+		/// <para>When to Use</para>
+		/// <para>You do not call this interface directly. IContextMenu3 is used by the operating system only when it has confirmed that your application is aware of this interface.</para>
+		/// <para><c>Note</c><c>Windows Vista and later.</c> Prior to Windows Vista this interface was declared in Shlobj.h.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nn-shobjidl_core-icontextmenu3
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "c08e1b98-2b8b-41f6-93c5-3a5937bd3b2c")]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), GuidAttribute("bcfce0a0-ec17-11d0-8d10-00a0c90f2719")]
 		public interface IContextMenu3 : IContextMenu2
 		{
@@ -324,8 +369,18 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Exposes a method that enables the callback of a context menu. For example, to add a shield icon to a menuItem that requires elevation.
+		/// Exposes a method that enables the callback of a context menu. For example, to add a shield icon to a <c>menuItem</c> that
+		/// requires elevation.
 		/// </summary>
+		/// <remarks>
+		/// <para>This is the callback interface specified in the DEFCONTEXTMENU structure passed with the function SHCreateDefaultContextMenu.</para>
+		/// <para>
+		/// This interface enables IShellFolder implementations to manage context menu messages before, after, and during the context menu
+		/// handling of these messages.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nn-shobjidl_core-icontextmenucb
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "1a4c183b-97cf-4c9a-af5a-bcea7c2755a5")]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("3409E930-5A39-11d1-83FA-00A0C90DC849")]
 		public interface IContextMenuCB
 		{
@@ -376,9 +431,29 @@ namespace Vanara.PInvoke
 		*/
 
 		/// <summary>
-		/// Contains extended information about a shortcut menu command. This structure is an extended version of CMINVOKECOMMANDINFO that allows the use of
-		/// Unicode values.
+		/// Contains extended information about a shortcut menu command. This structure is an extended version of CMINVOKECOMMANDINFO that
+		/// allows the use of Unicode values.
 		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// Although the IContextMenu::InvokeCommand declaration specifies a CMINVOKECOMMANDINFO structure for the parameter, it can also
+		/// accept a <c>CMINVOKECOMMANDINFOEX</c> structure. If you are implementing this method, you must inspect <c>cbSize</c> to determine
+		/// which structure has been passed.
+		/// </para>
+		/// <para>
+		/// By default, all 16-bit Windows-based applications run as threads in a single, shared VDM. The advantage of running separately is
+		/// that a crash only terminates the single VDM; any other programs running in distinct VDMs continue to function normally. Also,
+		/// 16-bit Windows-based applications that are run in separate VDMs have separate input queues. That means that if one application
+		/// stops responding momentarily, applications in separate VDMs continue to receive input. The disadvantage of running separately is
+		/// that it takes significantly more memory to do so.
+		/// </para>
+		/// <para>
+		/// <c>CMINVOKECOMMANDINFOEX</c> itself is defined in Shobjidl.h, but you must also include Shellapi.h to have full access to all flags.
+		/// </para>
+		/// <para><c>Note</c> Prior to Windows Vista, this structure was declared in Shlobj.h.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/ns-shobjidl_core-_cminvokecommandinfoex
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "c4c7f053-fdb1-4bba-9eb9-a514ce1d90f6")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct CMINVOKECOMMANDINFOEX
 		{
