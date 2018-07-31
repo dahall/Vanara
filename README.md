@@ -23,7 +23,7 @@ I have tried to follow the concepts below in laying out the libraries.
 ## Installation
 This project's assemblies are available via NuGet.
 
-NuGet Link | Assembly | Description | Dependencies
+NuGet&nbsp;Link | Assembly | Description | Dependencies
 --- | --- | --- | ---
 [![NuGet Package](https://img.shields.io/nuget/v/Vanara.Core.svg?style=flat-square)](https://www.nuget.org/packages/Vanara.Core) | [Vanara.Core](https://github.com/dahall/Vanara/blob/master/Core/AssemblyReport.md) | Shared methods, structures and constants for use throughout the Vanara assemblies. Think of it as windows.h with some useful extensions. | None
 [![NuGet Package](https://img.shields.io/nuget/v/Vanara.PInvoke.Shared.svg?style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Shared)| [Vanara.PInvoke.Shared](https://github.com/dahall/Vanara/blob/master/PInvoke/Shared/AssemblyReport.md) | Shared methods, structures and constants for use throughout the Vanara.PInvoke assemblies | Vanara.Core
