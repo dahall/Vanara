@@ -10,12 +10,19 @@ namespace Vanara.PInvoke
 {
 	public static partial class CredUI
 	{
+		/// <summary>The maximum domain target name length.</summary>
 		public const int CRED_MAX_DOMAIN_TARGET_NAME_LENGTH = 256 + 1 + 80;
+		/// <summary>The maximum username length</summary>
 		public const int CRED_MAX_USERNAME_LENGTH = (256 + 1 + 256);
+		/// <summary>The maximum caption length</summary>
 		public const int CREDUI_MAX_CAPTION_LENGTH = 128;
+		/// <summary>The maximum domain target length</summary>
 		public const int CREDUI_MAX_DOMAIN_TARGET_LENGTH = CREDUI_MAX_USERNAME_LENGTH;
+		/// <summary>The maximum message length</summary>
 		public const int CREDUI_MAX_MESSAGE_LENGTH = 32767;
+		/// <summary>The maximum password length</summary>
 		public const int CREDUI_MAX_PASSWORD_LENGTH = (512 / 2);
+		/// <summary>The maximum username length</summary>
 		public const int CREDUI_MAX_USERNAME_LENGTH = CRED_MAX_USERNAME_LENGTH;
 
 		/// <summary>Options for the display of the <see cref="CredUIPromptForCredentials"/> and its functionality.</summary>

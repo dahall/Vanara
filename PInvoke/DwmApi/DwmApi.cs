@@ -6,6 +6,7 @@ using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
+	/// <summary>Encapsulates classes exposed by DWNAPI.DLL</summary>
 	public static partial class DwmApi
 	{
 		/// <summary>Flags used by the DWM_BLURBEHIND structure to indicate which of its members contain valid information.</summary>

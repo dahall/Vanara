@@ -10,6 +10,7 @@ namespace Vanara.PInvoke
 	/// <summary>Platform invokable enumerated types, constants and functions from aclui.h</summary>
 	public static partial class AclUI
 	{
+		/// <summary>Specifies the security descriptor to use.</summary>
 		public enum SECURITY_OBJECT_ID
 		{
 			/// <summary>

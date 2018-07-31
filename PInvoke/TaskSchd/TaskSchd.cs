@@ -10,6 +10,7 @@ using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
+	/// <summary>Exposes methods and interfaces for Task Scheduler 2.0.</summary>
 	public static class TaskSchd
 	{
 		/// <summary>Defines the type of actions that a task can perform.</summary>

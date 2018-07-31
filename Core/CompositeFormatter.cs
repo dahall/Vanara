@@ -117,8 +117,7 @@ namespace Vanara
 		/// <param name="format">A format string containing formatting specifications.</param>
 		/// <param name="arg">An object to format.</param>
 		/// <returns>
-		/// The string representation of the value of <paramref name="arg"/>, formatted as specified by <paramref name="format"/> and
-		/// <paramref name="formatProvider"/>.
+		/// The string representation of the value of <paramref name="arg"/>, formatted as specified by <paramref name="format"/>.
 		/// </returns>
 		protected string HandleOtherFormats(string format, object arg) => (arg as IFormattable)?.ToString(format, Culture) ?? (arg?.ToString() ?? string.Empty);
 	}

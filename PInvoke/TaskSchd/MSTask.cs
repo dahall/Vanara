@@ -7,6 +7,7 @@ using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
+	/// <summary>Exposes interfaces for Task Scheduler 1.0.</summary>
 	public static class MSTask
 	{
 		/// <summary>Valid types of triggers</summary>

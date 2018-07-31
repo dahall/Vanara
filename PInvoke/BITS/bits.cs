@@ -445,25 +445,40 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>The BITS_COST_STATE enumeration defines the constant values that specify the BITS cost state.</summary>
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/mt595901(v=vs.85).aspx
-		[PInvokeData("Bits5_0.h", MSDNShortId = "mt595901")]
+		// https://docs.microsoft.com/en-us/windows/desktop/Bits/bits-cost-state
+		[PInvokeData("Bits5_0.h", MSDNShortId = "A8C36D4E-98B3-45C4-9ECD-9B5280133176")]
 		[Flags]
 		public enum BITS_COST_STATE : uint
 		{
+			/// <summary>Unrestricted.</summary>
 			BITS_COST_STATE_UNRESTRICTED = 0x1,
+			/// <summary>Capped usage unknown.</summary>
 			BITS_COST_STATE_CAPPED_USAGE_UNKNOWN = 0x2,
+			/// <summary>Below cap.</summary>
 			BITS_COST_STATE_BELOW_CAP = 0x4,
+			/// <summary>Near cap.</summary>
 			BITS_COST_STATE_NEAR_CAP = 0x8,
+			/// <summary>Overcap charged.</summary>
 			BITS_COST_STATE_OVERCAP_CHARGED = 0x10,
+			/// <summary>Overcap throttled.</summary>
 			BITS_COST_STATE_OVERCAP_THROTTLED = 0x20,
+			/// <summary>Usage-based.</summary>
 			BITS_COST_STATE_USAGE_BASED = 0x40,
+			/// <summary>Roaming</summary>
 			BITS_COST_STATE_ROAMING = 0x80,
+			/// <summary>Ignore congestion.</summary>
 			BITS_COST_OPTION_IGNORE_CONGESTION = 0x80000000,
+			/// <summary>Reserved.</summary>
 			BITS_COST_STATE_RESERVED = 0x40000000,
+			/// <summary>Transfer not roaming.</summary>
 			BITS_COST_STATE_TRANSFER_NOT_ROAMING = (BITS_COST_OPTION_IGNORE_CONGESTION | BITS_COST_STATE_USAGE_BASED | BITS_COST_STATE_OVERCAP_THROTTLED | BITS_COST_STATE_OVERCAP_CHARGED | BITS_COST_STATE_NEAR_CAP | BITS_COST_STATE_BELOW_CAP | BITS_COST_STATE_CAPPED_USAGE_UNKNOWN | BITS_COST_STATE_UNRESTRICTED),
+			/// <summary>Transfer no surcharge.</summary>
 			BITS_COST_STATE_TRANSFER_NO_SURCHARGE = (BITS_COST_OPTION_IGNORE_CONGESTION | BITS_COST_STATE_USAGE_BASED | BITS_COST_STATE_OVERCAP_THROTTLED | BITS_COST_STATE_NEAR_CAP | BITS_COST_STATE_BELOW_CAP | BITS_COST_STATE_CAPPED_USAGE_UNKNOWN | BITS_COST_STATE_UNRESTRICTED),
+			/// <summary>Transfer standard.</summary>
 			BITS_COST_STATE_TRANSFER_STANDARD = (BITS_COST_OPTION_IGNORE_CONGESTION | BITS_COST_STATE_USAGE_BASED | BITS_COST_STATE_OVERCAP_THROTTLED | BITS_COST_STATE_BELOW_CAP | BITS_COST_STATE_CAPPED_USAGE_UNKNOWN | BITS_COST_STATE_UNRESTRICTED),
+			/// <summary>Transfer unrestricted.</summary>
 			BITS_COST_STATE_TRANSFER_UNRESTRICTED = (BITS_COST_OPTION_IGNORE_CONGESTION | BITS_COST_STATE_OVERCAP_THROTTLED | BITS_COST_STATE_UNRESTRICTED),
+			/// <summary>Transfer always.</summary>
 			BITS_COST_STATE_TRANSFER_ALWAYS = (BITS_COST_OPTION_IGNORE_CONGESTION | BITS_COST_STATE_ROAMING | BITS_COST_STATE_USAGE_BASED | BITS_COST_STATE_OVERCAP_THROTTLED | BITS_COST_STATE_OVERCAP_CHARGED | BITS_COST_STATE_NEAR_CAP | BITS_COST_STATE_BELOW_CAP | BITS_COST_STATE_CAPPED_USAGE_UNKNOWN | BITS_COST_STATE_UNRESTRICTED),
 		}
 
