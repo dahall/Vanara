@@ -43,13 +43,17 @@ namespace Vanara.PInvoke
 			ES_USER_PRESENT = 0x00000004,
 		}
 
-		/// <summary>Flags for <c>CreateFiberEx</c>.</summary>
+		/// <summary>Flags used by <see cref="ConvertThreadToFiberEx"/>.</summary>
+		[PInvokeData("winbase.h", MSDNShortId = "cb0473f8-bc49-44c9-a8b7-6d5b55aa37a5")]
 		public enum FIBER_FLAG
 		{
-			/// <summary>The floating-point state on x86 systems is not switched and data can be corrupted if a fiber uses floating-point arithmetic.</summary>
-			FIBER_FLAG_UNSPECIFIED = 0,
+			/// <summary>
+			/// The floating-point state on x86 systems is not switched and data can be corrupted if a fiber uses floating-point arithmetic.
+			/// </summary>
+			FIBER_FLAG_NONE = 0,
+
 			/// <summary>The floating-point state is switched for the fiber.</summary>
-			FIBER_FLAG_FLOAT_SWITCH = 1
+			FIBER_FLAG_FLOAT_SWITCH = 1,
 		}
 
 		/// <summary>Converts the current fiber into a thread.</summary>
@@ -75,6 +79,39 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682115")]
 		public static extern IntPtr ConvertThreadToFiber([In] IntPtr lpParameter);
+
+		/// <summary>
+		/// <para>Converts the current thread into a fiber. You must convert a thread into a fiber before you can schedule other fibers.</para>
+		/// </summary>
+		/// <param name="lpParameter">
+		/// <para>A pointer to a variable that is passed to the fiber. The fiber can retrieve this data by using the GetFiberData macro.</para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>
+		/// If this parameter is zero, the floating-point state on x86 systems is not switched and data can be corrupted if a fiber uses
+		/// floating-point arithmetic. If this parameter is FIBER_FLAG_FLOAT_SWITCH, the floating-point state is switched for the fiber.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is the address of the fiber.</para>
+		/// <para>If the function fails, the return value is NULL. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Only fibers can execute other fibers. If a thread needs to execute a fiber, it must call ConvertTheadToFiber or
+		/// <c>ConvertThreadToFiberEx</c> to create an area in which to save fiber state information. The thread is now the current fiber.
+		/// The state information for this fiber includes the fiber data specified by .
+		/// </para>
+		/// <para>
+		/// To compile an application that uses this function, define _WIN32_WINNT as 0x0400 or later. For more information, see Using the
+		/// Windows Headers.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-convertthreadtofiberex LPVOID ConvertThreadToFiberEx(
+		// LPVOID lpParameter, DWORD dwFlags );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winbase.h", MSDNShortId = "cb0473f8-bc49-44c9-a8b7-6d5b55aa37a5")]
+		public static extern IntPtr ConvertThreadToFiberEx(IntPtr lpParameter, FIBER_FLAG dwFlags);
 
 		/// <summary>
 		/// Allocates a fiber object, assigns it a stack, and sets up execution to begin at the specified start address, typically the fiber function. This

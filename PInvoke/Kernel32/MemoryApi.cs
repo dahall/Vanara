@@ -2840,22 +2840,23 @@ namespace Vanara.PInvoke
 		public static extern SizeT VirtualQueryEx([In] IntPtr hProcess, [In] IntPtr lpAddress, IntPtr lpBuffer, SizeT dwLength);
 
 		/// <summary>
-		/// Unlocks a specified range of pages in the virtual address space of a process, enabling the system to swap the pages out to the paging file if necessary.
+		/// Unlocks a specified range of pages in the virtual address space of a process, enabling the system to swap the pages out to the
+		/// paging file if necessary.
 		/// </summary>
 		/// <param name="lpAddress">A pointer to the base address of the region of pages to be unlocked.</param>
 		/// <param name="dwSize">
-		/// The size of the region being unlocked, in bytes. The region of affected pages includes all pages containing one or more bytes in the range from the
-		/// lpAddress parameter to . This means that a 2-byte range straddling a page boundary causes both pages to be unlocked.
+		/// The size of the region being unlocked, in bytes. The region of affected pages includes all pages containing one or more bytes in
+		/// the range from the lpAddress parameter to . This means that a 2-byte range straddling a page boundary causes both pages to be unlocked.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		// BOOL WINAPI VirtualUnlock( _In_ LPVOID lpAddress, _In_ SIZE_T dwSize);
+		// BOOL WINAPI VirtualUnlock( _In_ LPVOID lpAddress, _In_ SIZE_T dwSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa366910(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366910")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool VirtualUnlock([In] IntPtr lpAddress, SizeT dwSize);
+		public static extern bool VirtualUnlock(IntPtr lpAddress, SizeT dwSize);
 
 		/// <summary>Writes data to an area of memory in a specified process. The entire area to be written to must be accessible or the operation fails.</summary>
 		/// <param name="hProcess">

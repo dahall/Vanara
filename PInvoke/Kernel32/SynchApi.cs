@@ -969,7 +969,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms683560(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683560")]
-		public static extern int InterlockedCompareExchange(ref int Destination, int Exchange, int Comperand);
+		public static extern int InterlockedCompareExchange(ref int Destination, int Exchange, int Comparand);
 
 		/// <summary>
 		/// <para>Decrements (decreases by one) the value of the specified 32-bit variable as an atomic operation.</para>
@@ -980,7 +980,7 @@ namespace Vanara.PInvoke
 		// LONG __cdecl InterlockedDecrement( _Inout_ LONG volatile *Addend); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683580(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683580")]
-		public static extern int InterlockedDecrement(ref int lpAddend);
+		public static extern int InterlockedDecrement(ref int Addend);
 
 		/// <summary>
 		/// <para>Sets a 32-bit variable to the specified value as an atomic operation.</para>
@@ -1017,7 +1017,7 @@ namespace Vanara.PInvoke
 		// LONG __cdecl InterlockedIncrement( _Inout_ LONG volatile *Addend); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683614(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683614")]
-		public static extern int InterlockedIncrement(ref int lpAddend);
+		public static extern int InterlockedIncrement(ref int Addend);
 
 		/// <summary>Releases ownership of the specified critical section object.</summary>
 		/// <param name="lpCriticalSection">A pointer to the critical section object.</param>
@@ -1300,7 +1300,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms686289")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetWaitableTimer([In] IntPtr hTimer, [In] ref FILETIME lpDueTime, int lPeriod, PTIMERAPCROUTINE pfnCompletionRoutine,
+		public static extern bool SetWaitableTimer([In] IntPtr hTimer, [In] ref FILETIME pDueTime, int lPeriod, PTIMERAPCROUTINE pfnCompletionRoutine,
 			[In] IntPtr lpArgToCompletionRoutine, [MarshalAs(UnmanagedType.Bool)] bool fResume);
 
 		/// <summary>

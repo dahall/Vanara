@@ -92,33 +92,65 @@ namespace Vanara.PInvoke
 			CALLBACK_STREAM_SWITCH = 0x00000001,
 		}
 
-		/// <summary>Flags that specify how the file is to be copied.</summary>
+		/// <summary>Flags used by <see cref="COPYFILE2_EXTENDED_PARAMETERS"/>.</summary>
+		[PInvokeData("winbase.h", MSDNShortId = "a8da62e5-bc49-4aff-afaa-e774393b7120")]
 		[Flags]
-		public enum COPY_FILE
+		public enum COPY_FILE : uint
 		{
-			/// <summary>An attempt to copy an encrypted file will succeed even if the destination copy cannot be encrypted.</summary>
+			/// <summary>The copy will be attempted even if the destination file cannot be encrypted.</summary>
 			COPY_FILE_ALLOW_DECRYPTED_DESTINATION = 0x00000008,
+
 			/// <summary>
-			/// If the source file is a symbolic link, the destination file is also a symbolic link pointing to the same file that the source symbolic link is
-			/// pointing to.
-			/// <para>Windows Server 2003 and Windows XP: This value is not supported.</para>
+			/// If the source file is a symbolic link, the destination file is also a symbolic link pointing to the same file as the source
+			/// symbolic link.
 			/// </summary>
 			COPY_FILE_COPY_SYMLINK = 0x00000800,
-			/// <summary>The copy operation fails immediately if the target file already exists.</summary>
-			COPY_FILE_FAIL_IF_EXISTS = 0x00000001,
+
 			/// <summary>
-			/// The copy operation is performed using unbuffered I/O, bypassing system I/O cache resources. Recommended for very large file transfers.
-			/// <para>Windows Server 2003 and Windows XP: This value is not supported.</para>
+			/// If the destination file exists the copy operation fails immediately. If a file or directory exists with the destination name
+			/// then the CopyFile2 function call will fail with either HRESULT_FROM_WIN32(ERROR_ALREADY_EXISTS) or
+			/// HRESULT_FROM_WIN32(ERROR_FILE_EXISTS). If COPY_FILE_RESUME_FROM_PAUSE is also specified then a failure is only triggered if
+			/// the destination file does not have a valid restart header.
+			/// </summary>
+			COPY_FILE_FAIL_IF_EXISTS = 0x00000001,
+
+			/// <summary>
+			/// The copy is performed using unbuffered I/O, bypassing the system cache resources. This flag is recommended for very large
+			/// file copies. It is not recommended to pause copies that are using this flag.
 			/// </summary>
 			COPY_FILE_NO_BUFFERING = 0x00001000,
-			/// <summary>The file is copied and the original file is opened for write access.</summary>
+
+			/// <summary>Do not attempt to use the Windows Copy Offload mechanism. This is not generally recommended.</summary>
+			COPY_FILE_NO_OFFLOAD = 0x00040000,
+
+			/// <summary>The file is copied and the source file is opened for write access.</summary>
 			COPY_FILE_OPEN_SOURCE_FOR_WRITE = 0x00000004,
+
 			/// <summary>
-			/// Progress of the copy is tracked in the target file in case the copy fails. The failed copy can be restarted at a later time by specifying the
-			/// same values for lpExistingFileName and lpNewFileName as those used in the call that failed. This can significantly slow down the copy operation
-			/// as the new file may be flushed multiple times during the copy operation.
+			/// The file is copied in a manner that can be restarted if the same source and destination filenames are used again. This is slower.
 			/// </summary>
 			COPY_FILE_RESTARTABLE = 0x00000002,
+
+			/// <summary>
+			/// The copy is attempted, specifying ACCESS_SYSTEM_SECURITY for the source file and ACCESS_SYSTEM_SECURITY | WRITE_DAC |
+			/// WRITE_OWNER for the destination file. If these requests are denied the access request will be reduced to the highest
+			/// privilege level for which access is granted. For more information see SACL Access Right. This can be used to allow the
+			/// CopyFile2ProgressRoutine callback to perform operations requiring higher privileges, such as copying the security attributes
+			/// for the file.
+			/// </summary>
+			COPY_FILE_REQUEST_SECURITY_PRIVILEGES = 0x00002000,
+
+			/// <summary>
+			/// The destination file is examined to see if it was copied using COPY_FILE_RESTARTABLE. If so the copy is resumed. If not the
+			/// file will be fully copied.
+			/// </summary>
+			COPY_FILE_RESUME_FROM_PAUSE = 0x00004000,
+
+			/// <summary>Undocumented.</summary>
+			COPY_FILE_IGNORE_EDP_BLOCK = 0x00400000,
+
+			/// <summary>Undocumented.</summary>
+			COPY_FILE_IGNORE_SOURCE_ENCRYPTION = 0x00800000,
 		}
 
 		/// <summary>

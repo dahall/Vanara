@@ -160,8 +160,12 @@ namespace Vanara.PInvoke
 		public static extern bool SetDynamicTimeZoneInformation(ref DYNAMIC_TIME_ZONE_INFORMATION lpTimeZoneInformation);
 
 		/// <summary>
-		/// <para>Sets the current time zone settings. These settings control translations from Coordinated Universal Time (UTC) to local time.</para>
-		/// <para>To support boundaries for daylight saving time that change from year to year, use the <c>SetDynamicTimeZoneInformation</c> function.</para>
+		/// <para>
+		/// Sets the current time zone settings. These settings control translations from Coordinated Universal Time (UTC) to local time.
+		/// </para>
+		/// <para>
+		/// To support boundaries for daylight saving time that change from year to year, use the <c>SetDynamicTimeZoneInformation</c> function.
+		/// </para>
 		/// </summary>
 		/// <param name="lpTimeZoneInformation">A pointer to a <c>TIME_ZONE_INFORMATION</c> structure that contains the new settings.</param>
 		/// <returns>
@@ -172,7 +176,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724944")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetTimeZoneInformation([In] ref TIME_ZONE_INFORMATION lpTimeZoneInformation);
+		public static extern bool SetTimeZoneInformation(ref TIME_ZONE_INFORMATION lpTimeZoneInformation);
 
 		/// <summary>Converts a system time to file time format. System time is based on Coordinated Universal Time (UTC).</summary>
 		/// <param name="lpSystemTime">

@@ -1546,6 +1546,26 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683180")]
 		public static extern uint GetCurrentProcessId();
 
+		/// <summary>
+		/// <para>Retrieves the number of the processor the current thread was running on during the call to this function.</para>
+		/// </summary>
+		/// <returns>
+		/// <para>The function returns the current processor number.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>This function is used to provide information for estimating process performance.</para>
+		/// <para>
+		/// On systems with more than 64 logical processors, the <c>GetCurrentProcessorNumber</c> function returns the processor number
+		/// within the processor group to which the logical processor is assigned. Use the GetCurrentProcessorNumberEx function to retrieve
+		/// the processor group and number of the current processor.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-getcurrentprocessornumber
+		// DWORD GetCurrentProcessorNumber( );
+		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("processthreadsapi.h", MSDNShortId = "1f2bebc7-a548-409a-ab74-78a4b55c8fa7")]
+		public static extern uint GetCurrentProcessorNumber();
+
 		/// <summary>Retrieves the processor group and number of the logical processor in which the calling thread is running.</summary>
 		/// <param name="ProcNumber">
 		/// A pointer to a <c>PROCESSOR_NUMBER</c> structure that receives the processor group to which the logical processor is assigned and the number of the

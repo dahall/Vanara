@@ -1371,22 +1371,40 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetConsoleCursorInfo(IntPtr hConsoleOutput, ref CONSOLE_CURSOR_INFO lpConsoleCursorInfo);
 
-		/// <summary>Sets the cursor position in the specified console screen buffer.</summary>
+		/// <summary>
+		/// <para>Sets the cursor position in the specified console screen buffer.</para>
+		/// </summary>
 		/// <param name="hConsoleOutput">
-		/// A handle to the console screen buffer. The handle must have the <c>GENERIC_READ</c> access right. For more information, see Console Buffer Security
-		/// and Access Rights.
+		/// <para>
+		/// [in]A handle to the console screen buffer. The handle must have the <c>GENERIC_READ</c> access right. For more information, see
+		/// Console Buffer Security and Access Rights.
+		/// </para>
 		/// </param>
 		/// <param name="dwCursorPosition">
-		/// A <c>COORD</c> structure that specifies the new cursor position, in characters. The coordinates are the column and row of a screen buffer character
-		/// cell. The coordinates must be within the boundaries of the console screen buffer.
+		/// <para>
+		/// [in]A <c>COORD</c> structure that specifies the new cursor position, in characters. The coordinates are the column and row of a
+		/// screen buffer character cell. The coordinates must be within the boundaries of the console screen buffer.
+		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The cursor position determines where characters written by the <c>WriteFile</c> or <c>WriteConsole</c> function, or echoed by the
+		/// <c>ReadFile</c> or <c>ReadConsole</c> function, are displayed. To determine the current position of the cursor, use the
+		/// <c>GetConsoleScreenBufferInfo</c> function.
+		/// </para>
+		/// <para>
+		/// If the new cursor position is not within the boundaries of the console screen buffer's window, the window origin changes to make
+		/// the cursor visible.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/console/setconsolecursorposition
 		// BOOL WINAPI SetConsoleCursorPosition( _In_ HANDLE hConsoleOutput, _In_ COORD dwCursorPosition );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("Wincon.h", MSDNShortId = "")]
+		[PInvokeData("Wincon.h", MSDNShortId = "8e9abada-a64e-429f-8286-ced1169c7104")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetConsoleCursorPosition(IntPtr hConsoleOutput, COORD dwCursorPosition);
 
