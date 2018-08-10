@@ -6157,7 +6157,7 @@ namespace Vanara.PInvoke
 			/// <para>FALSE</para>
 			/// <para>Display only the file name in the title bar.</para>
 			/// </summary>
-			public bool fFullPathTitle { get => GetBit(ref fFlags, 0); set => SetBit(ref fFlags, 0, value); }
+			public bool fFullPathTitle { get => GetBit(fFlags, 0); set => SetBit(ref fFlags, 0, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
@@ -6166,25 +6166,25 @@ namespace Vanara.PInvoke
 			/// <para>FALSE</para>
 			/// <para>Use global settings for all folders.</para>
 			/// </summary>
-			public bool fSaveLocalView { get => GetBit(ref fFlags, 1); set => SetBit(ref fFlags, 1, value); }
+			public bool fSaveLocalView { get => GetBit(fFlags, 1); set => SetBit(ref fFlags, 1, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para>Not used.</para>
 			/// </summary>
-			public bool fNotShell { get => GetBit(ref fFlags, 2); set => SetBit(ref fFlags, 2, value); }
+			public bool fNotShell { get => GetBit(fFlags, 2); set => SetBit(ref fFlags, 2, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para>Not used.</para>
 			/// </summary>
-			public bool fSimpleDefault { get => GetBit(ref fFlags, 3); set => SetBit(ref fFlags, 3, value); }
+			public bool fSimpleDefault { get => GetBit(fFlags, 3); set => SetBit(ref fFlags, 3, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para>Not used.</para>
 			/// </summary>
-			public bool fDontShowDescBar { get => GetBit(ref fFlags, 4); set => SetBit(ref fFlags, 4, value); }
+			public bool fDontShowDescBar { get => GetBit(fFlags, 4); set => SetBit(ref fFlags, 4, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
@@ -6193,7 +6193,7 @@ namespace Vanara.PInvoke
 			/// <para>FALSE</para>
 			/// <para>Display in the current window.</para>
 			/// </summary>
-			public bool fNewWindowMode { get => GetBit(ref fFlags, 5); set => SetBit(ref fFlags, 5, value); }
+			public bool fNewWindowMode { get => GetBit(fFlags, 5); set => SetBit(ref fFlags, 5, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
@@ -6202,13 +6202,13 @@ namespace Vanara.PInvoke
 			/// <para>FALSE</para>
 			/// <para>Do not show encrypted or compressed NTFS files in color.</para>
 			/// </summary>
-			public bool fShowCompColor { get => GetBit(ref fFlags, 6); set => SetBit(ref fFlags, 6, value); }
+			public bool fShowCompColor { get => GetBit(fFlags, 6); set => SetBit(ref fFlags, 6, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para>Not used.</para>
 			/// </summary>
-			public bool fDontPrettyNames { get => GetBit(ref fFlags, 7); set => SetBit(ref fFlags, 7, value); }
+			public bool fDontPrettyNames { get => GetBit(fFlags, 7); set => SetBit(ref fFlags, 7, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
@@ -6218,7 +6218,7 @@ namespace Vanara.PInvoke
 			/// <para>FALSE</para>
 			/// <para>Add the icon to only the current user (CSIDL_STARTMENU).</para>
 			/// </summary>
-			public bool fAdminsCreateCommonGroups { get => GetBit(ref fFlags, 8); set => SetBit(ref fFlags, 8, value); }
+			public bool fAdminsCreateCommonGroups { get => GetBit(fFlags, 8); set => SetBit(ref fFlags, 8, value); }
 		}
 
 		/// <summary>
@@ -6786,13 +6786,13 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to show all objects, including hidden files and folders. <c>FALSE</c> to hide hidden files and folders.</para>
 			/// </summary>
-			public bool fShowAllObjects { get => GetBit(ref bits1, 0); set => SetBit(ref bits1, 0, value); }
+			public bool fShowAllObjects { get => GetBit(bits1, 0); set => SetBit(ref bits1, 0, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to show file name extensions, <c>FALSE</c> to hide them.</para>
 			/// </summary>
-			public bool fShowExtensions { get => GetBit(ref bits1, 1); set => SetBit(ref bits1, 1, value); }
+			public bool fShowExtensions { get => GetBit(bits1, 1); set => SetBit(ref bits1, 1, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
@@ -6801,67 +6801,67 @@ namespace Vanara.PInvoke
 			/// confirmation dialog box.
 			/// </para>
 			/// </summary>
-			public bool fNoConfirmRecycle { get => GetBit(ref bits1, 2); set => SetBit(ref bits1, 2, value); }
+			public bool fNoConfirmRecycle { get => GetBit(bits1, 2); set => SetBit(ref bits1, 2, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to show system files, <c>FALSE</c> to hide them.</para>
 			/// </summary>
-			public bool fShowSysFiles { get => GetBit(ref bits1, 3); set => SetBit(ref bits1, 3, value); }
+			public bool fShowSysFiles { get => GetBit(bits1, 3); set => SetBit(ref bits1, 3, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to show encrypted or compressed NTFS files in color.</para>
 			/// </summary>
-			public bool fShowCompColor { get => GetBit(ref bits1, 4); set => SetBit(ref bits1, 4, value); }
+			public bool fShowCompColor { get => GetBit(bits1, 4); set => SetBit(ref bits1, 4, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to require a double-click to open an item when in web view.</para>
 			/// </summary>
-			public bool fDoubleClickInWebView { get => GetBit(ref bits1, 5); set => SetBit(ref bits1, 5, value); }
+			public bool fDoubleClickInWebView { get => GetBit(bits1, 5); set => SetBit(ref bits1, 5, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to use Active Desktop, <c>FALSE</c> otherwise.</para>
 			/// </summary>
-			public bool fDesktopHTML { get => GetBit(ref bits1, 6); set => SetBit(ref bits1, 6, value); }
+			public bool fDesktopHTML { get => GetBit(bits1, 6); set => SetBit(ref bits1, 6, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to enforce Windows 95 Shell behavior and restrictions.</para>
 			/// </summary>
-			public bool fWin95Classic { get => GetBit(ref bits1, 7); set => SetBit(ref bits1, 7, value); }
+			public bool fWin95Classic { get => GetBit(bits1, 7); set => SetBit(ref bits1, 7, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to prevent the conversion of the path to all lowercase characters.</para>
 			/// </summary>
-			public bool fDontPrettyPath { get => GetBit(ref bits1, 8); set => SetBit(ref bits1, 8, value); }
+			public bool fDontPrettyPath { get => GetBit(bits1, 8); set => SetBit(ref bits1, 8, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para>Not used.</para>
 			/// </summary>
-			public bool fShowAttribCol { get => GetBit(ref bits1, 9); set => SetBit(ref bits1, 9, value); }
+			public bool fShowAttribCol { get => GetBit(bits1, 9); set => SetBit(ref bits1, 9, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to display a <c>Map Network Drive</c> button.</para>
 			/// </summary>
-			public bool fMapNetDrvBtn { get => GetBit(ref bits1, 10); set => SetBit(ref bits1, 10, value); }
+			public bool fMapNetDrvBtn { get => GetBit(bits1, 10); set => SetBit(ref bits1, 10, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to show a pop-up description for folders and files.</para>
 			/// </summary>
-			public bool fShowInfoTip { get => GetBit(ref bits1, 11); set => SetBit(ref bits1, 11, value); }
+			public bool fShowInfoTip { get => GetBit(bits1, 11); set => SetBit(ref bits1, 11, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to hide desktop icons, <c>FALSE</c> to show them.</para>
 			/// </summary>
-			public bool fHideIcons { get => GetBit(ref bits1, 12); set => SetBit(ref bits1, 12, value); }
+			public bool fHideIcons { get => GetBit(bits1, 12); set => SetBit(ref bits1, 12, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
@@ -6870,7 +6870,7 @@ namespace Vanara.PInvoke
 			/// classic views.
 			/// </para>
 			/// </summary>
-			public bool fAutoCheckSelect { get => GetBit(ref bits1, 13); set => SetBit(ref bits1, 13, value); }
+			public bool fAutoCheckSelect { get => GetBit(bits1, 13); set => SetBit(ref bits1, 13, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
@@ -6878,7 +6878,7 @@ namespace Vanara.PInvoke
 			/// <c>Introduced in Windows Vista</c>. <c>TRUE</c> to show generic icons only, <c>FALSE</c> to show thumbnail-style icons in folders.
 			/// </para>
 			/// </summary>
-			public bool fIconsOnly { get => GetBit(ref bits1, 14); set => SetBit(ref bits1, 14, value); }
+			public bool fIconsOnly { get => GetBit(bits1, 14); set => SetBit(ref bits1, 14, value); }
 		}
 
 		/// <summary>Contains settings for the Shell's state. This structure is used with the <c>SHGetSetSettings</c> function.</summary>
@@ -6938,13 +6938,13 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to show all objects, including hidden files and folders. <c>FALSE</c> to hide hidden files and folders.</para>
 			/// </summary>
-			public bool fShowAllObjects { get => GetBit(ref bits1, 0); set => SetBit(ref bits1, 0, value); }
+			public bool fShowAllObjects { get => GetBit(bits1, 0); set => SetBit(ref bits1, 0, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to show file name extensions, <c>FALSE</c> to hide them.</para>
 			/// </summary>
-			public bool fShowExtensions { get => GetBit(ref bits1, 1); set => SetBit(ref bits1, 1, value); }
+			public bool fShowExtensions { get => GetBit(bits1, 1); set => SetBit(ref bits1, 1, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
@@ -6953,97 +6953,97 @@ namespace Vanara.PInvoke
 			/// confirmation dialog box.
 			/// </para>
 			/// </summary>
-			public bool fNoConfirmRecycle { get => GetBit(ref bits1, 2); set => SetBit(ref bits1, 2, value); }
+			public bool fNoConfirmRecycle { get => GetBit(bits1, 2); set => SetBit(ref bits1, 2, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to show system files, <c>FALSE</c> to hide them.</para>
 			/// </summary>
-			public bool fShowSysFiles { get => GetBit(ref bits1, 3); set => SetBit(ref bits1, 3, value); }
+			public bool fShowSysFiles { get => GetBit(bits1, 3); set => SetBit(ref bits1, 3, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to show encrypted or compressed NTFS files in color.</para>
 			/// </summary>
-			public bool fShowCompColor { get => GetBit(ref bits1, 4); set => SetBit(ref bits1, 4, value); }
+			public bool fShowCompColor { get => GetBit(bits1, 4); set => SetBit(ref bits1, 4, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to require a double-click to open an item when in web view.</para>
 			/// </summary>
-			public bool fDoubleClickInWebView { get => GetBit(ref bits1, 5); set => SetBit(ref bits1, 5, value); }
+			public bool fDoubleClickInWebView { get => GetBit(bits1, 5); set => SetBit(ref bits1, 5, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to use Active Desktop, <c>FALSE</c> otherwise.</para>
 			/// </summary>
-			public bool fDesktopHTML { get => GetBit(ref bits1, 6); set => SetBit(ref bits1, 6, value); }
+			public bool fDesktopHTML { get => GetBit(bits1, 6); set => SetBit(ref bits1, 6, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to enforce Windows 95 Shell behavior and restrictions.</para>
 			/// </summary>
-			public bool fWin95Classic { get => GetBit(ref bits1, 7); set => SetBit(ref bits1, 7, value); }
+			public bool fWin95Classic { get => GetBit(bits1, 7); set => SetBit(ref bits1, 7, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to prevent the conversion of the path to all lowercase characters.</para>
 			/// </summary>
-			public bool fDontPrettyPath { get => GetBit(ref bits1, 8); set => SetBit(ref bits1, 8, value); }
+			public bool fDontPrettyPath { get => GetBit(bits1, 8); set => SetBit(ref bits1, 8, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para>Not used.</para>
 			/// </summary>
-			public bool fShowAttribCol { get => GetBit(ref bits1, 9); set => SetBit(ref bits1, 9, value); }
+			public bool fShowAttribCol { get => GetBit(bits1, 9); set => SetBit(ref bits1, 9, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to display a <c>Map Network Drive</c> button.</para>
 			/// </summary>
-			public bool fMapNetDrvBtn { get => GetBit(ref bits1, 10); set => SetBit(ref bits1, 10, value); }
+			public bool fMapNetDrvBtn { get => GetBit(bits1, 10); set => SetBit(ref bits1, 10, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to show a pop-up description for folders and files.</para>
 			/// </summary>
-			public bool fShowInfoTip { get => GetBit(ref bits1, 11); set => SetBit(ref bits1, 11, value); }
+			public bool fShowInfoTip { get => GetBit(bits1, 11); set => SetBit(ref bits1, 11, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to hide desktop icons, <c>FALSE</c> to show them.</para>
 			/// </summary>
-			public bool fHideIcons { get => GetBit(ref bits1, 12); set => SetBit(ref bits1, 12, value); }
+			public bool fHideIcons { get => GetBit(bits1, 12); set => SetBit(ref bits1, 12, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to display as a web view.</para>
 			/// </summary>
-			public bool fWebView { get => GetBit(ref bits1, 13); set => SetBit(ref bits1, 13, value); }
+			public bool fWebView { get => GetBit(bits1, 13); set => SetBit(ref bits1, 13, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para>Not used.</para>
 			/// </summary>
-			public bool fFilter { get => GetBit(ref bits1, 14); set => SetBit(ref bits1, 14, value); }
+			public bool fFilter { get => GetBit(bits1, 14); set => SetBit(ref bits1, 14, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to show operating system files.</para>
 			/// </summary>
-			public bool fShowSuperHidden { get => GetBit(ref bits1, 15); set => SetBit(ref bits1, 15, value); }
+			public bool fShowSuperHidden { get => GetBit(bits1, 15); set => SetBit(ref bits1, 15, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to disable automatic searching for network folders and printers.</para>
 			/// </summary>
-			public bool fNoNetCrawling { get => GetBit(ref bits1, 16); set => SetBit(ref bits1, 16, value); }
+			public bool fNoNetCrawling { get => GetBit(bits1, 16); set => SetBit(ref bits1, 16, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>TRUE</c> to launch folder windows in separate processes, <c>FALSE</c> to launch in the same process.</para>
 			/// </summary>
-			public bool fSepProcess { get => GetBit(ref bits2, 0); set => SetBit(ref bits2, 0, value); }
+			public bool fSepProcess { get => GetBit(bits2, 0); set => SetBit(ref bits2, 0, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
@@ -7051,13 +7051,13 @@ namespace Vanara.PInvoke
 			/// <c>Windows XP only</c>. <c>TRUE</c> to use the Windows XP-style Start menu, <c>FALSE</c> to use the classic Start menu.
 			/// </para>
 			/// </summary>
-			public bool fStartPanelOn { get => GetBit(ref bits2, 1); set => SetBit(ref bits2, 1, value); }
+			public bool fStartPanelOn { get => GetBit(bits2, 1); set => SetBit(ref bits2, 1, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para>Not used.</para>
 			/// </summary>
-			public bool fShowStartPage { get => GetBit(ref bits2, 2); set => SetBit(ref bits2, 2, value); }
+			public bool fShowStartPage { get => GetBit(bits2, 2); set => SetBit(ref bits2, 2, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
@@ -7066,7 +7066,7 @@ namespace Vanara.PInvoke
 			/// classic views.
 			/// </para>
 			/// </summary>
-			public bool fAutoCheckSelect { get => GetBit(ref bits2, 3); set => SetBit(ref bits2, 3, value); }
+			public bool fAutoCheckSelect { get => GetBit(bits2, 3); set => SetBit(ref bits2, 3, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
@@ -7074,7 +7074,7 @@ namespace Vanara.PInvoke
 			/// <c>Introduced in Windows Vista</c>. <c>TRUE</c> to show generic icons only, <c>FALSE</c> to show thumbnail-style icons in folders.
 			/// </para>
 			/// </summary>
-			public bool fIconsOnly { get => GetBit(ref bits2, 4); set => SetBit(ref bits2, 4, value); }
+			public bool fIconsOnly { get => GetBit(bits2, 4); set => SetBit(ref bits2, 4, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
@@ -7083,13 +7083,13 @@ namespace Vanara.PInvoke
 			/// opening the item, <c>FALSE</c> indicates that no application will be shown.
 			/// </para>
 			/// </summary>
-			public bool fShowTypeOverlay { get => GetBit(ref bits2, 5); set => SetBit(ref bits2, 5, value); }
+			public bool fShowTypeOverlay { get => GetBit(bits2, 5); set => SetBit(ref bits2, 5, value); }
 
 			/// <summary>
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para><c>Introduced in Windows 8</c>. <c>TRUE</c> to show the status bar; otherwise, <c>FALSE</c>.</para>
 			/// </summary>
-			public bool fShowStatusBar { get => GetBit(ref bits2, 6); set => SetBit(ref bits2, 6, value); }
+			public bool fShowStatusBar { get => GetBit(bits2, 6); set => SetBit(ref bits2, 6, value); }
 		}
 
 		/// <summary>
