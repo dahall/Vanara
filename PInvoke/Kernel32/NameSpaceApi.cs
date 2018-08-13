@@ -66,7 +66,7 @@ namespace Vanara.PInvoke
 		// lpAliasPrefix); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682419(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682419")]
-		public static extern IntPtr CreatePrivateNamespace(ref SECURITY_ATTRIBUTES lpPrivateNamespaceAttributes, IntPtr lpBoundaryDescriptor, string lpAliasPrefix);
+		public static extern IntPtr CreatePrivateNamespace(SECURITY_ATTRIBUTES lpPrivateNamespaceAttributes, IntPtr lpBoundaryDescriptor, string lpAliasPrefix);
 
 		/// <summary>Deletes the specified boundary descriptor.</summary>
 		/// <param name="BoundaryDescriptor">A handle to the boundary descriptor. The <c>CreateBoundaryDescriptor</c> function returns this handle.</param>

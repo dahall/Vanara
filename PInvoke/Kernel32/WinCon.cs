@@ -433,7 +433,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		public static extern SafeFileHandle CreateConsoleScreenBuffer(ACCESS_MASK dwDesiredAccess, FileShare dwShareMode,
-			ref SECURITY_ATTRIBUTES lpSecurityAttributes, CONSOLE_TEXTMODE dwFlags = CONSOLE_TEXTMODE.CONSOLE_TEXTMODE_BUFFER, IntPtr lpScreenBufferData = default(IntPtr));
+			SECURITY_ATTRIBUTES lpSecurityAttributes, CONSOLE_TEXTMODE dwFlags = CONSOLE_TEXTMODE.CONSOLE_TEXTMODE_BUFFER, IntPtr lpScreenBufferData = default(IntPtr));
 
 		/// <summary>Sets the character attributes for a specified number of character cells, beginning at the specified coordinates in a screen buffer.</summary>
 		/// <param name="hConsoleOutput">

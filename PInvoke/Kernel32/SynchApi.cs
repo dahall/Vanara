@@ -252,7 +252,7 @@ namespace Vanara.PInvoke
 		// lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682396(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682396")]
-		public static extern IntPtr CreateEvent([In] ref SECURITY_ATTRIBUTES lpEventAttributes, [MarshalAs(UnmanagedType.Bool)] bool bManualReset,
+		public static extern IntPtr CreateEvent([In] SECURITY_ATTRIBUTES lpEventAttributes, [MarshalAs(UnmanagedType.Bool)] bool bManualReset,
 			[MarshalAs(UnmanagedType.Bool)] bool bInitialState, [In] string lpName);
 
 		/// <summary>Creates or opens a named or unnamed event object and returns a handle to the object.</summary>
@@ -317,7 +317,7 @@ namespace Vanara.PInvoke
 		// dwDesiredAccess); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682400(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682400")]
-		public static extern IntPtr CreateEventEx([In] ref SECURITY_ATTRIBUTES lpEventAttributes, [In] string lpName, CREATE_EVENT_FLAGS dwFlags, uint dwDesiredAccess);
+		public static extern IntPtr CreateEventEx([In] SECURITY_ATTRIBUTES lpEventAttributes, [In] string lpName, CREATE_EVENT_FLAGS dwFlags, uint dwDesiredAccess);
 
 		/// <summary>
 		/// <para>Creates or opens a named or unnamed mutex object.</para>
@@ -367,7 +367,7 @@ namespace Vanara.PInvoke
 		// HANDLE WINAPI CreateMutex( _In_opt_ LPSECURITY_ATTRIBUTES lpMutexAttributes, _In_ BOOL bInitialOwner, _In_opt_ LPCTSTR lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682411(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682411")]
-		public static extern IntPtr CreateMutex([In] ref SECURITY_ATTRIBUTES lpMutexAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInitialOwner, string lpName);
+		public static extern IntPtr CreateMutex([In] SECURITY_ATTRIBUTES lpMutexAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInitialOwner, string lpName);
 
 		/// <summary>Creates or opens a named or unnamed mutex object and returns a handle to the object.</summary>
 		/// <param name="lpMutexAttributes">
@@ -475,7 +475,7 @@ namespace Vanara.PInvoke
 		// LPCTSTR lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682438(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682438")]
-		public static extern IntPtr CreateSemaphore([In] ref SECURITY_ATTRIBUTES lpSemaphoreAttributes, int lInitialCount, int lMaximumCount, [In] string lpName);
+		public static extern IntPtr CreateSemaphore([In] SECURITY_ATTRIBUTES lpSemaphoreAttributes, int lInitialCount, int lMaximumCount, [In] string lpName);
 
 		/// <summary>Creates or opens a named or unnamed semaphore object and returns a handle to the object.</summary>
 		/// <param name="lpSemaphoreAttributes">
@@ -573,7 +573,7 @@ namespace Vanara.PInvoke
 		// HANDLE WINAPI CreateWaitableTimer( _In_opt_ LPSECURITY_ATTRIBUTES lpTimerAttributes, _In_ BOOL bManualReset, _In_opt_ LPCTSTR lpTimerName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682492(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682492")]
-		public static extern IntPtr CreateWaitableTimer([In] ref SECURITY_ATTRIBUTES lpTimerAttributes, [MarshalAs(UnmanagedType.Bool)] bool bManualReset, string lpTimerName);
+		public static extern IntPtr CreateWaitableTimer([In] SECURITY_ATTRIBUTES lpTimerAttributes, [MarshalAs(UnmanagedType.Bool)] bool bManualReset, string lpTimerName);
 
 		/// <summary>Creates or opens a waitable timer object and returns a handle to the object.</summary>
 		/// <param name="lpTimerAttributes">
@@ -627,7 +627,7 @@ namespace Vanara.PInvoke
 		// dwDesiredAccess); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682494(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682494")]
-		public static extern IntPtr CreateWaitableTimerEx([In] ref SECURITY_ATTRIBUTES lpTimerAttributes, string lpTimerName, CREATE_WAITABLE_TIMER_FLAG dwFlags, uint dwDesiredAccess);
+		public static extern IntPtr CreateWaitableTimerEx([In] SECURITY_ATTRIBUTES lpTimerAttributes, string lpTimerName, CREATE_WAITABLE_TIMER_FLAG dwFlags, uint dwDesiredAccess);
 
 		/// <summary>Releases all resources used by an unowned critical section object.</summary>
 		/// <param name="lpCriticalSection">

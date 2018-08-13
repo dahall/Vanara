@@ -633,7 +633,7 @@ namespace Vanara.PInvoke
 		// _In_ DWORD dwMaximumSizeLow, _In_opt_ LPCTSTR lpName);
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366537")]
-		public static extern IntPtr CreateFileMapping([In] SafeFileHandle hFile, [In] ref SECURITY_ATTRIBUTES lpAttributes, MEM_PROTECTION flProtect,
+		public static extern IntPtr CreateFileMapping([In] SafeFileHandle hFile, [In] SECURITY_ATTRIBUTES lpAttributes, MEM_PROTECTION flProtect,
 			uint dwMaximumSizeHigh, uint dwMaximumSizeLow, [In] string lpName);
 
 		/// <summary>Creates or opens a named or unnamed file mapping object for a specified file from a Windows Store app.</summary>
@@ -801,7 +801,7 @@ namespace Vanara.PInvoke
 		// MaximumSize, _In_opt_ PCWSTR Name);
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("MemoryApi.h", MSDNShortId = "hh994453")]
-		public static extern IntPtr CreateFileMappingFromApp([In] SafeFileHandle hFile, [In] ref SECURITY_ATTRIBUTES SecurityAttributes,
+		public static extern IntPtr CreateFileMappingFromApp([In] SafeFileHandle hFile, [In] SECURITY_ATTRIBUTES SecurityAttributes,
 			MEM_PROTECTION PageProtection, ulong MaximumSize, [In] string Name);
 
 		/// <summary>Creates or opens a named or unnamed file mapping object for a specified file and specifies the NUMA node for the physical memory.</summary>
@@ -1009,7 +1009,7 @@ namespace Vanara.PInvoke
 		// dwMaximumSizeHigh, _In_ DWORD dwMaximumSizeLow, _In_opt_ LPCTSTR lpName, _In_ DWORD nndPreferred);
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366539")]
-		public static extern IntPtr CreateFileMappingNuma([In] SafeFileHandle hFile, [In] ref SECURITY_ATTRIBUTES lpFileMappingAttributes, MEM_PROTECTION flProtect,
+		public static extern IntPtr CreateFileMappingNuma([In] SafeFileHandle hFile, [In] SECURITY_ATTRIBUTES lpFileMappingAttributes, MEM_PROTECTION flProtect,
 			uint dwMaximumSizeHigh, uint dwMaximumSizeLow, [In] string lpName, uint nndPreferred);
 
 		/// <summary>

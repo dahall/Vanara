@@ -94,7 +94,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms682409(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682409")]
-		public static extern IntPtr CreateJobObject([In] ref SECURITY_ATTRIBUTES lpJobAttributes, [In] string lpName);
+		public static extern IntPtr CreateJobObject([In] SECURITY_ATTRIBUTES lpJobAttributes, [In] string lpName);
 
 		/// <summary>Frees memory that a function related to job objects allocated. Functions related to job objects that allocate memory include <c>QueryIoRateControlInformationJobObject</c>.</summary>
 		/// <param name="Buffer">A pointer to the buffer of allocated memory that you want to free.</param>

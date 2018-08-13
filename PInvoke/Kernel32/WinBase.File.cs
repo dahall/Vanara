@@ -645,7 +645,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa363856")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CreateDirectoryEx([In] string lpTemplateDirectory, [In] string lpNewDirectory, [In] ref SECURITY_ATTRIBUTES lpSecurityAttributes);
+		public static extern bool CreateDirectoryEx([In] string lpTemplateDirectory, [In] string lpNewDirectory, [In] SECURITY_ATTRIBUTES lpSecurityAttributes);
 
 		/// <summary>
 		/// Establishes a hard link between an existing file and a new file. This function is only supported on the NTFS file system, and only for files, not directories.

@@ -413,7 +413,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa365150")]
 		public static extern IntPtr CreateNamedPipe([In] string lpName, uint dwOpenMode, PIPE_TYPE dwPipeMode, uint nMaxInstances, uint nOutBufferSize, uint nInBufferSize,
-			uint nDefaultTimeOut, [In] ref SECURITY_ATTRIBUTES lpSecurityAttributes);
+			uint nDefaultTimeOut, [In] SECURITY_ATTRIBUTES lpSecurityAttributes);
 
 		/// <summary>Creates an anonymous pipe, and returns handles to the read and write ends of the pipe.</summary>
 		/// <param name="hReadPipe">A pointer to a variable that receives the read handle for the pipe.</param>
@@ -440,7 +440,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa365152")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CreatePipe(out IntPtr hReadPipe, out IntPtr hWritePipe, [In] ref SECURITY_ATTRIBUTES lpPipeAttributes, uint nSize);
+		public static extern bool CreatePipe(out IntPtr hReadPipe, out IntPtr hWritePipe, [In] SECURITY_ATTRIBUTES lpPipeAttributes, uint nSize);
 
 		/// <summary>Disconnects the server end of a named pipe instance from a client process.</summary>
 		/// <param name="hNamedPipe">A handle to an instance of a named pipe. This handle must be created by the <c>CreateNamedPipe</c> function.</param>

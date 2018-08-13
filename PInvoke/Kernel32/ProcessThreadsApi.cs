@@ -1091,8 +1091,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682425")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CreateProcess([In] string lpApplicationName, StringBuilder lpCommandLine, [In] ref SECURITY_ATTRIBUTES lpProcessAttributes,
-			[In] ref SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles, CREATE_PROCESS dwCreationFlags, [In] IntPtr lpEnvironment,
+		public static extern bool CreateProcess([In] string lpApplicationName, StringBuilder lpCommandLine, [In] SECURITY_ATTRIBUTES lpProcessAttributes,
+			[In] SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles, CREATE_PROCESS dwCreationFlags, [In] IntPtr lpEnvironment,
 			[In] string lpCurrentDirectory, [In] ref STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
 
 		/// <summary>
@@ -1277,7 +1277,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682429")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CreateProcessAsUser(IntPtr hToken, string lpApplicationName, StringBuilder lpCommandLine,
-			ref SECURITY_ATTRIBUTES lpProcessAttributes, ref SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles,
+			SECURITY_ATTRIBUTES lpProcessAttributes, SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles,
 			CREATE_PROCESS dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, ref STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
 
 		/// <summary>
@@ -1355,7 +1355,7 @@ namespace Vanara.PInvoke
 		// LPTHREAD_START_ROUTINE lpStartAddress, _In_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _Out_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682437(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682437")]
-		public static extern IntPtr CreateRemoteThread([In] IntPtr hProcess, [In] ref SECURITY_ATTRIBUTES lpThreadAttributes, SizeT dwStackSize,
+		public static extern IntPtr CreateRemoteThread([In] IntPtr hProcess, [In] SECURITY_ATTRIBUTES lpThreadAttributes, SizeT dwStackSize,
 			PTHREAD_START_ROUTINE lpStartAddress, [In] IntPtr lpParameter, CREATE_THREAD_FLAGS dwCreationFlags, out uint lpThreadId);
 
 		/// <summary>
@@ -1422,7 +1422,7 @@ namespace Vanara.PInvoke
 		// _Out_opt_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/dd405484(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "dd405484")]
-		public static extern void CreateRemoteThreadEx([In] IntPtr hProcess, [In] ref SECURITY_ATTRIBUTES lpThreadAttributes, SizeT dwStackSize,
+		public static extern void CreateRemoteThreadEx([In] IntPtr hProcess, [In] SECURITY_ATTRIBUTES lpThreadAttributes, SizeT dwStackSize,
 			PTHREAD_START_ROUTINE lpStartAddress, [In] IntPtr lpParameter, CREATE_THREAD_FLAGS dwCreationFlags, IntPtr lpAttributeList,
 			out uint lpThreadId);
 
@@ -1491,7 +1491,7 @@ namespace Vanara.PInvoke
 		// _In_opt_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _Out_opt_ LPDWORD lpThreadId); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682453(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682453")]
-		public static extern IntPtr CreateThread([In] ref SECURITY_ATTRIBUTES lpThreadAttributes, SizeT dwStackSize, PTHREAD_START_ROUTINE lpStartAddress,
+		public static extern IntPtr CreateThread([In] SECURITY_ATTRIBUTES lpThreadAttributes, SizeT dwStackSize, PTHREAD_START_ROUTINE lpStartAddress,
 			[In] IntPtr lpParameter, CREATE_THREAD_FLAGS dwCreationFlags, out uint lpThreadId);
 
 		/// <summary>Deletes the specified list of attributes for process and thread creation.</summary>
