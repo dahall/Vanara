@@ -8807,14 +8807,23 @@ namespace Vanara.PInvoke
 		/// <summary>This function can be used only if a program is running in the local console session. It cannot be used if the program is running on a remote desktop session or on a terminal server session.</summary>
 		public const uint ERROR_GRAPHICS_ONLY_CONSOLE_SESSION_SUPPORTED = 0xC02625E0;
 
+		/// <summary>User responded "Yes" to the dialog.</summary>
 		public const uint COPYENGINE_S_YES = 0x00270001;
+		/// <summary>Undocumented.</summary>
 		public const uint COPYENGINE_S_NOT_HANDLED = 0x00270003;
+		/// <summary>User responded to retry the current action.</summary>
 		public const uint COPYENGINE_S_USER_RETRY = 0x00270004;
+		/// <summary>User responded "No" to the dialog.</summary>
 		public const uint COPYENGINE_S_USER_IGNORED = 0x00270005;
+		/// <summary>User responded to merge folders.</summary>
 		public const uint COPYENGINE_S_MERGE = 0x00270006;
+		/// <summary>Child items should not be processed.</summary>
 		public const uint COPYENGINE_S_DONT_PROCESS_CHILDREN = 0x00270008;
+		/// <summary>Undocumented.</summary>
 		public const uint COPYENGINE_S_ALREADY_DONE = 0x0027000A;
+		/// <summary>Error has been queued and will display later.</summary>
 		public const uint COPYENGINE_S_PENDING = 0x0027000B;
+		/// <summary>Undocumented.</summary>
 		public const uint COPYENGINE_S_KEEP_BOTH = 0x0027000C;
 		/// <summary>Close the program using the current file</summary>
 		public const uint COPYENGINE_S_CLOSE_PROGRAM = 0x0027000D;

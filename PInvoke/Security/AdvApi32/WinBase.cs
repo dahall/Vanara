@@ -192,63 +192,103 @@ namespace Vanara.PInvoke
 			[In, MarshalAs(UnmanagedType.Bool)] bool DisableAllPrivileges, [In] SafeCoTaskMemHandle NewState,
 			[In] uint BufferLength, [In, Out] SafeCoTaskMemHandle PreviousState, [In, Out] ref uint ReturnLength);
 
-		/// <summary>The AllocateLocallyUniqueId function allocates a locally unique identifier (LUID).</summary>
-		/// <param name="Luid">A pointer to a LUID structure that receives the allocated LUID.</param>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// <summary>The <c>AllocateLocallyUniqueId</c> function allocates a locally unique identifier (LUID).</summary>
+		/// <param name="Luid">A pointer to a <c>LUID</c> structure that receives the allocated LUID.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI AllocateLocallyUniqueId( _Out_ PLUID Luid); https://msdn.microsoft.com/en-us/library/windows/desktop/aa375260(v=vs.85).aspx
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("Winbase.h", MSDNShortId = "aa375260")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool AllocateLocallyUniqueId(out LUID Luid);
 
-		/// <summary>The DuplicateToken function creates a new access token that duplicates one already in existence.</summary>
-		/// <param name="existingObjectHandle">A handle to an access token opened with TOKEN_DUPLICATE access.</param>
+		/// <summary>The <c>DuplicateToken</c> function creates a new access token that duplicates one already in existence.</summary>
+		/// <param name="ExistingTokenHandle">A handle to an access token opened with TOKEN_DUPLICATE access.</param>
 		/// <param name="ImpersonationLevel">
-		/// Specifies a SECURITY_IMPERSONATION_LEVEL enumerated type that supplies the impersonation level of the new token.
+		/// Specifies a <c>SECURITY_IMPERSONATION_LEVEL</c> enumerated type that supplies the impersonation level of the new token.
 		/// </param>
-		/// <param name="duplicateObjectHandle">
+		/// <param name="DuplicateTokenHandle">
+		/// <para>
 		/// A pointer to a variable that receives a handle to the duplicate token. This handle has TOKEN_IMPERSONATE and TOKEN_QUERY access
-		/// to the new token. When you have finished using the new token, call the CloseHandle function to close the token handle.
+		/// to the new token.
+		/// </para>
+		/// <para>When you have finished using the new token, call the <c>CloseHandle</c> function to close the token handle.</para>
 		/// </param>
 		/// <returns>
-		/// If the function succeeds, the return value is nonzero. If the function fails, the return value is zero. To get extended error
-		/// information, call GetLastError.
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
+		// BOOL WINAPI DuplicateToken( _In_ HANDLE ExistingTokenHandle, _In_ SECURITY_IMPERSONATION_LEVEL ImpersonationLevel, _Out_ PHANDLE
+		// DuplicateTokenHandle); https://msdn.microsoft.com/en-us/library/windows/desktop/aa446616(v=vs.85).aspx
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("Winbase.h", MSDNShortId = "aa446616")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DuplicateToken(SafeTokenHandle existingObjectHandle,
-			SECURITY_IMPERSONATION_LEVEL ImpersonationLevel, out SafeTokenHandle duplicateObjectHandle);
+		public static extern bool DuplicateToken(SafeTokenHandle ExistingTokenHandle,
+			SECURITY_IMPERSONATION_LEVEL ImpersonationLevel, out SafeTokenHandle DuplicateTokenHandle);
 
 		/// <summary>
-		/// The DuplicateTokenEx function creates a new access token that duplicates an existing token. This function can create either a
-		/// primary token or an impersonation token.
+		/// The <c>DuplicateTokenEx</c> function creates a new access token that duplicates an existing token. This function can create
+		/// either a primary token or an impersonation token.
 		/// </summary>
 		/// <param name="hExistingToken">A handle to an access token opened with TOKEN_DUPLICATE access.</param>
 		/// <param name="dwDesiredAccess">
-		/// Specifies the requested access rights for the new token. The DuplicateTokenEx function compares the requested access rights with
-		/// the existing token's discretionary access control list (DACL) to determine which rights are granted or denied. To request the
-		/// same access rights as the existing token, specify zero. To request all access rights that are valid for the caller, specify MAXIMUM_ALLOWED.
+		/// <para>
+		/// Specifies the requested access rights for the new token. The <c>DuplicateTokenEx</c> function compares the requested access
+		/// rights with the existing token's discretionary access control list (DACL) to determine which rights are granted or denied. To
+		/// request the same access rights as the existing token, specify zero. To request all access rights that are valid for the caller,
+		/// specify MAXIMUM_ALLOWED.
+		/// </para>
+		/// <para>For a list of access rights for access tokens, see Access Rights for Access-Token Objects.</para>
 		/// </param>
 		/// <param name="lpTokenAttributes">
-		/// A pointer to a SECURITY_ATTRIBUTES structure that specifies a security descriptor for the new token and determines whether child
-		/// processes can inherit the token. If lpTokenAttributes is NULL, the token gets a default security descriptor and the handle cannot
-		/// be inherited. If the security descriptor contains a system access control list (SACL), the token gets ACCESS_SYSTEM_SECURITY
-		/// access right, even if it was not requested in dwDesiredAccess.
 		/// <para>
-		/// To set the owner in the security descriptor for the new token, the caller's process token must have the SE_RESTORE_NAME privilege set.
+		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new token and determines whether
+		/// child processes can inherit the token. If lpTokenAttributes is <c>NULL</c>, the token gets a default security descriptor and the
+		/// handle cannot be inherited. If the security descriptor contains a system access control list (SACL), the token gets
+		/// ACCESS_SYSTEM_SECURITY access right, even if it was not requested in dwDesiredAccess.
+		/// </para>
+		/// <para>
+		/// To set the owner in the security descriptor for the new token, the caller's process token must have the <c>SE_RESTORE_NAME</c>
+		/// privilege set.
 		/// </para>
 		/// </param>
 		/// <param name="ImpersonationLevel">
-		/// Specifies a value from the SECURITY_IMPERSONATION_LEVEL enumeration that indicates the impersonation level of the new token.
+		/// Specifies a value from the <c>SECURITY_IMPERSONATION_LEVEL</c> enumeration that indicates the impersonation level of the new token.
 		/// </param>
-		/// <param name="TokenType">Specifies one of the values from the TOKEN_TYPE enumeration.</param>
+		/// <param name="TokenType">
+		/// <para>Specifies one of the following values from the <c>TOKEN_TYPE</c> enumeration.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>TokenPrimary</term>
+		/// <term>The new token is a primary token that you can use in the CreateProcessAsUser function.</term>
+		/// </item>
+		/// <item>
+		/// <term>TokenImpersonation</term>
+		/// <term>The new token is an impersonation token.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
 		/// <param name="phNewToken">
-		/// A pointer to a HANDLE variable that receives the new token. When you have finished using the new token, call the CloseHandle
-		/// function to close the token handle.
+		/// <para>A pointer to a <c>HANDLE</c> variable that receives the new token.</para>
+		/// <para>When you have finished using the new token, call the <c>CloseHandle</c> function to close the token handle.</para>
 		/// </param>
 		/// <returns>
-		/// If the function succeeds, the function returns nonzero. If the function fails, it returns zero. To get extended error
-		/// information, call GetLastError.
+		/// <para>If the function succeeds, the function returns a nonzero value.</para>
+		/// <para>If the function fails, it returns zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail), DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
+		// BOOL WINAPI DuplicateTokenEx( _In_ HANDLE hExistingToken, _In_ DWORD dwDesiredAccess, _In_opt_ LPSECURITY_ATTRIBUTES
+		// lpTokenAttributes, _In_ SECURITY_IMPERSONATION_LEVEL ImpersonationLevel, _In_ TOKEN_TYPE TokenType, _Out_ PHANDLE phNewToken); https://msdn.microsoft.com/en-us/library/windows/desktop/aa446617(v=vs.85).aspx
+		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("Winbase.h", MSDNShortId = "aa446617")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool DuplicateTokenEx(SafeTokenHandle hExistingToken, TokenAccess dwDesiredAccess, SECURITY_ATTRIBUTES lpTokenAttributes,
 			SECURITY_IMPERSONATION_LEVEL ImpersonationLevel, TOKEN_TYPE TokenType, out SafeTokenHandle phNewToken);
@@ -800,8 +840,6 @@ namespace Vanara.PInvoke
 		// lpSystemName, PLUID lpLuid, LPSTR lpName, LPDWORD cchName );
 		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "580fb58f-1470-4389-9f07-8f37403e2bdf")]
-		// [return: MarshalAs(UnmanagedType.Bool)] public static extern bool LookupPrivilegeName( string lpSystemName, PLUID lpLuid,
-		// StringBuilder lpName, ref uint cchName);
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool LookupPrivilegeName(string lpSystemName, ref LUID lpLuid, StringBuilder lpName, ref int cchName);
 
@@ -911,8 +949,6 @@ namespace Vanara.PInvoke
 		// BOOL WINAPI OpenThreadToken( _In_ HANDLE ThreadHandle, _In_ DWORD DesiredAccess, _In_ BOOL OpenAsSelf, _Out_ PHANDLE TokenHandle); https://msdn.microsoft.com/en-us/library/windows/desktop/aa379296(v=vs.85).aspx
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa379296")]
-		// [return: MarshalAs(UnmanagedType.Bool)] public static extern bool WINAPI OpenThreadToken([In] IntPtr ThreadHandle, [In] uint
-		// DesiredAccess, [In] [MarshalAs(UnmanagedType.Bool)] bool OpenAsSelf, [Out] ref IntPtr TokenHandle);
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool OpenThreadToken([In] IntPtr ThreadHandle, TokenAccess DesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool OpenAsSelf, out SafeTokenHandle TokenHandle);
 

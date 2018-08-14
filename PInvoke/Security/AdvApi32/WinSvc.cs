@@ -308,18 +308,51 @@ namespace Vanara.PInvoke
 		[PInvokeData("winsvc.h", MSDNShortId = "23eea346-9899-4214-88f4-9b7eb7ce1332")]
 		public static extern IntPtr RegisterServiceCtrlHandlerEx(string lpServiceName, LphandlerFunction lpHandlerProc, IntPtr lpContext);
 
+		/// <summary>Contains configuration information for an installed service. It is used by the QueryServiceConfig function.</summary>
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		[PInvokeData("Winsvc.h", MSDNShortId = "ms684950")]
 		public struct QUERY_SERVICE_CONFIG
 		{
+			/// <summary>
+			/// The type of service.
+			/// </summary>
 			public ServiceTypes dwServiceType;
+			/// <summary>
+			/// When to start the service.
+			/// </summary>
 			public ServiceStartType dwStartType;
+			/// <summary>
+			/// The severity of the error, and action taken, if this service fails to start.
+			/// </summary>
 			public ServiceErrorControlType dwErrorControl;
+			/// <summary>
+			/// The fully qualified path to the service binary file.
+			/// <para>The path can also include arguments for an auto-start service.These arguments are passed to the service entry point (typically the main function).</para></summary>
 			public string lpBinaryPathName;
+			/// <summary>
+			/// The name of the load ordering group to which this service belongs. If the member is NULL or an empty string, the service does not belong to a load ordering group.
+			/// <para>The startup program uses load ordering groups to load groups of services in a specified order with respect to the other groups.The list of load ordering groups is contained in the following registry value:</para>
+			/// <para><c>HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\ServiceGroupOrder</c></para></summary>
 			public string lpLoadOrderGroup;
+			/// <summary>
+			/// A unique tag value for this service in the group specified by the lpLoadOrderGroup parameter. A value of zero indicates that the service has not been assigned a tag. You can use a tag for ordering service startup within a load order group by specifying a tag order vector in the registry located at:
+			/// <para><c>HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\GroupOrderList</c></para>
+			/// <para>Tags are only evaluated for SERVICE_KERNEL_DRIVER and SERVICE_FILE_SYSTEM_DRIVER type services that have SERVICE_BOOT_START or SERVICE_SYSTEM_START start types.</para></summary>
 			public uint dwTagID;
+			/// <summary>
+			/// A pointer to an array of null-separated names of services or load ordering groups that must start before this service. The array is doubly null-terminated. If the pointer is NULL or if it points to an empty string, the service has no dependencies. If a group name is specified, it must be prefixed by the SC_GROUP_IDENTIFIER (defined in WinSvc.h) character to differentiate it from a service name, because services and service groups share the same name space. Dependency on a service means that this service can only run if the service it depends on is running. Dependency on a group means that this service can run if at least one member of the group is running after an attempt to start all members of the group.
+			/// </summary>
 			public IntPtr lpDependencies;
+			/// <summary>
+			/// If the service type is SERVICE_WIN32_OWN_PROCESS or SERVICE_WIN32_SHARE_PROCESS, this member is the name of the account that the service process will be logged on as when it runs. This name can be of the form Domain\UserName. If the account belongs to the built-in domain, the name can be of the form .\UserName. The name can also be "LocalSystem" if the process is running under the LocalSystem account.
+			/// <para>If the service type is SERVICE_KERNEL_DRIVER or SERVICE_FILE_SYSTEM_DRIVER, this member is the driver object name(that is, \FileSystem\Rdr or \Driver\Xns) which the input and output(I/O) system uses to load the device driver.If this member is NULL, the driver is to be run with a default object name created by the I/O system, based on the service name.</para></summary>
 			public string lpServiceStartName;
+			/// <summary>
+			/// The display name to be used by service control programs to identify the service. This string has a maximum length of 256 characters. The name is case-preserved in the service control manager. Display name comparisons are always case-insensitive.
+			/// <para>This parameter can specify a localized string using the following format:</para>
+			/// <para>@[Path] DLLName,-StrID</para>
+			/// <para>The string with identifier StrID is loaded from DLLName; the Path is optional.For more information, see RegLoadMUIString.</para>
+			/// <para>Windows Server 2003 and Windows XP:  Localized strings are not supported until Windows Vista.</para></summary>
 			public string lpDisplayName;
 		}
 

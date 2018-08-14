@@ -8,6 +8,7 @@ namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
+		/// <summary>Access mask for accounts.</summary>
 		[Flags]
 		[PInvokeData("ntlsa.h")]
 		public enum LsaAccountAccessMask : uint
@@ -48,6 +49,7 @@ namespace Vanara.PInvoke
 			ACCOUNT_EXECUTE = ACCESS_MASK.STANDARD_RIGHTS_EXECUTE,
 		}
 
+		/// <summary>Flags used by LsaLookupNames2.</summary>
 		[Flags]
 		[PInvokeData("ntlsa.h")]
 		public enum LsaLookupNamesFlags : uint
@@ -59,6 +61,7 @@ namespace Vanara.PInvoke
 			LSA_LOOKUP_ISOLATED_AS_LOCAL = 0x80000000
 		}
 
+		/// <summary>Flags used by LsaLookupSids2.</summary>
 		[Flags]
 		[PInvokeData("ntlsa.h")]
 		public enum LsaLookupSidsFlags : uint

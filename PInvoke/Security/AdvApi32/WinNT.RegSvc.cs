@@ -11,6 +11,7 @@ namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
+		/// <summary>Access mask values for the registry.</summary>
 		[PInvokeData("winnt.h")]
 		public enum RegAccessTypes
 		{
@@ -77,6 +78,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("winnt.h")]
 		public enum RegOpenOptions
 		{
+			/// <summary>Reserved.</summary>
 			REG_OPTION_RESERVED = 0x00000000,
 			/// <summary>
 			/// This key is not volatile; this is the default. The information is stored in a file and is preserved when the system is restarted. The RegSaveKey

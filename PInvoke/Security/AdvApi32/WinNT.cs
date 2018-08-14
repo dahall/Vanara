@@ -14,19 +14,30 @@ namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
+		/// <summary>Known RIDs</summary>
 		public static class KnownSIDRelativeID
 		{
+			/// <summary>The security creator group rid</summary>
 			public const int SECURITY_CREATOR_GROUP_RID = 0x00000001;
+			/// <summary>The security creator group server rid</summary>
 			public const int SECURITY_CREATOR_GROUP_SERVER_RID = 0x00000003;
+			/// <summary>The security creator owner rid</summary>
 			public const int SECURITY_CREATOR_OWNER_RID = 0x00000000;
+			/// <summary>The security creator owner rights rid</summary>
 			public const int SECURITY_CREATOR_OWNER_RIGHTS_RID = 0x00000004;
+			/// <summary>The security creator owner server rid</summary>
 			public const int SECURITY_CREATOR_OWNER_SERVER_RID = 0x00000002;
+			/// <summary>The security local logon rid</summary>
 			public const int SECURITY_LOCAL_LOGON_RID = 0x00000001;
+			/// <summary>The security local rid</summary>
 			public const int SECURITY_LOCAL_RID = 0x00000000;
+			/// <summary>The security null rid</summary>
 			public const int SECURITY_NULL_RID = 0x00000000;
+			/// <summary>The security world rid</summary>
 			public const int SECURITY_WORLD_RID = 0x00000000;
 		}
 
+		/// <summary>Known SID authorities.</summary>
 		public static class KnownSIDAuthority
 		{
 			/// <summary>The application package authority</summary>
@@ -65,6 +76,7 @@ namespace Vanara.PInvoke
 			AclSizeInformation
 		}
 
+		/// <summary>Group attributes.</summary>
 		[Flags]
 		[PInvokeData("winnt.h")]
 		public enum GroupAttributes : uint
@@ -89,6 +101,7 @@ namespace Vanara.PInvoke
 			SE_GROUP_RESOURCE = 0x20000000
 		}
 
+		/// <summary>Privilege attributes.</summary>
 		[Flags]
 		[PInvokeData("winnt.h")]
 		public enum PrivilegeAttributes : uint
@@ -112,6 +125,7 @@ namespace Vanara.PInvoke
 			SE_PRIVILEGE_USED_FOR_ACCESS = 0x80000000
 		}
 
+		/// <summary>Flags used by PRIVILEGE_SET.</summary>
 		[PInvokeData("winnt.h")]
 		public enum PrivilegeSetControl
 		{
@@ -1163,7 +1177,7 @@ namespace Vanara.PInvoke
 			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 			public override string ToString() => $"Count:{PrivilegeCount}";
 
-			public class Marshaler : ICustomMarshaler
+			internal class Marshaler : ICustomMarshaler
 			{
 				public static ICustomMarshaler GetInstance(string cookie) => new Marshaler();
 
@@ -1203,8 +1217,11 @@ namespace Vanara.PInvoke
 			}
 		}
 
+		/// <summary><para>The <c>SID_IDENTIFIER_AUTHORITY</c> structure represents the top-level authority of a security identifier (SID).</para></summary><remarks><para>The identifier authority value identifies the agency that issued the SID. The following identifier authorities are predefined.</para><list type="table"><listheader><term>Identifier authority</term><term>Value</term></listheader><item><term>SECURITY_NULL_SID_AUTHORITY</term><term>0</term></item><item><term>SECURITY_WORLD_SID_AUTHORITY</term><term>1</term></item><item><term>SECURITY_LOCAL_SID_AUTHORITY</term><term>2</term></item><item><term>SECURITY_CREATOR_SID_AUTHORITY</term><term>3</term></item><item><term>SECURITY_NON_UNIQUE_AUTHORITY</term><term>4</term></item><item><term>SECURITY_NT_AUTHORITY</term><term>5</term></item><item><term>SECURITY_RESOURCE_MANAGER_AUTHORITY</term><term>9</term></item></list><para>A SID must contain a top-level authority and at least one relative identifier (RID) value.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_sid_identifier_authority
+		// typedef struct _SID_IDENTIFIER_AUTHORITY { BYTE Value[6]; } SID_IDENTIFIER_AUTHORITY, *PSID_IDENTIFIER_AUTHORITY;
+		[PInvokeData("winnt.h", MSDNShortId = "450a6d2d-d2e4-4098-90af-a8024ddcfcb5")]
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		[PInvokeData("Winnt.h", MSDNShortId = "aa379598")]
 		public class PSID_IDENTIFIER_AUTHORITY
 		{
 			/// <summary>An array of 6 bytes specifying a SID's top-level authority.</summary>
@@ -1252,8 +1269,14 @@ namespace Vanara.PInvoke
 				}
 			}
 
+			/// <summary>Performs an implicit conversion from byte[] to <see cref="PSID_IDENTIFIER_AUTHORITY"/>.</summary>
+			/// <param name="bytes">The bytes.</param>
+			/// <returns>The result of the conversion.</returns>
 			public static implicit operator PSID_IDENTIFIER_AUTHORITY(byte[] bytes) => new PSID_IDENTIFIER_AUTHORITY(bytes);
 
+			/// <summary>Performs an implicit conversion from <see cref="SID_IDENTIFIER_AUTHORITY"/> to <see cref="PSID_IDENTIFIER_AUTHORITY"/>.</summary>
+			/// <param name="sia">The sia.</param>
+			/// <returns>The result of the conversion.</returns>
 			public static implicit operator PSID_IDENTIFIER_AUTHORITY(SID_IDENTIFIER_AUTHORITY sia) => new PSID_IDENTIFIER_AUTHORITY(sia.Value);
 		}
 

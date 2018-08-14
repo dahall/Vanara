@@ -9,6 +9,7 @@ using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
+	/// <summary>Functions, enumerations and structures found in ADVAPI32.DLL.</summary>
 	public static partial class AdvApi32
 	{
 		/// <summary>The Policy object has the following object-specific access types:</summary>
@@ -295,6 +296,12 @@ namespace Vanara.PInvoke
 			return mem.DangerousGetHandle().ToIEnum<LSA_ENUMERATION_INFORMATION>(cnt).Select(u => PSID.CreateFromPtr(u.Sid));
 		}
 
+		/// <summary>Gets system access for an account.</summary>
+		/// <param name="AccountHandle">The account handle.</param>
+		/// <param name="SystemAccess">The system access.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns one of the following <c>NTSTATUS</c> values.</para>
+		/// </returns>
 		[DllImport(Lib.AdvApi32, ExactSpelling = true)]
 		public static extern uint LsaGetSystemAccessAccount(SafeLsaPolicyHandle AccountHandle, out int SystemAccess);
 
@@ -641,6 +648,14 @@ namespace Vanara.PInvoke
 		// public static extern uint LsaNtStatusToWinError(NTSTATUS Status);
 		public static extern Win32Error LsaNtStatusToWinError(uint Status);
 
+		/// <summary>
+		/// Undocumented. Opens an account.
+		/// </summary>
+		/// <param name="PolicyHandle">The policy handle.</param>
+		/// <param name="AccountSid">The account sid.</param>
+		/// <param name="DesiredAccess">The desired access.</param>
+		/// <param name="AccountHandle">The account handle.</param>
+		/// <returns>NTSTATUS</returns>
 		[DllImport(Lib.AdvApi32, ExactSpelling = true)]
 		public static extern uint LsaOpenAccount(SafeLsaPolicyHandle PolicyHandle, PSID AccountSid, LsaAccountAccessMask DesiredAccess, out SafeLsaPolicyHandle AccountHandle);
 

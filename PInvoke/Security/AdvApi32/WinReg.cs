@@ -694,7 +694,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winreg.h", MSDNShortId = "ms724837")]
-		public static extern Win32Error RegCloseKey(SafeRegistryHandle hKey);
+		public static extern Win32Error RegCloseKey(IntPtr hKey);
 
 		/// <summary>
 		/// <para>Establishes a connection to a predefined registry key on another computer.</para>

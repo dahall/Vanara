@@ -8,6 +8,7 @@ using static Vanara.PInvoke.AdvApi32;
 
 namespace Vanara.PInvoke
 {
+	/// <summary>Functions, enumerations and structures found in NetSecApi.dll.</summary>
 	public static partial class NetSecApi
 	{
 		/// <summary>The MSV1_0 authentication package name.</summary>
