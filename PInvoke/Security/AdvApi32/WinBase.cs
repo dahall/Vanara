@@ -818,6 +818,46 @@ namespace Vanara.PInvoke
 			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRIVILEGE_SET.Marshaler))] PRIVILEGE_SET RequiredPrivileges,
 			[MarshalAs(UnmanagedType.Bool)] out bool pfResult);
 
+		/// <summary>
+		/// <para>Retrieves a registered handle to the specified event log.</para>
+		/// </summary>
+		/// <param name="lpUNCServerName">
+		/// <para>
+		/// The Universal Naming Convention (UNC) name of the remote server on which this operation is to be performed. If this parameter is
+		/// <c>NULL</c>, the local computer is used.
+		/// </para>
+		/// </param>
+		/// <param name="lpSourceName">
+		/// <para>
+		/// The name of the event source whose handle is to be retrieved. The source name must be a subkey of a log under the <c>Eventlog</c>
+		/// registry key. Note that the <c>Security</c> log is for system use only.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> This string must not contain characters prohibited in XML Attributes, with the exception of XML Escape sequences such
+		/// as <c>&amp;lt &amp;gl</c>.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a handle to the event log.</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call GetLastError.</para>
+		/// <para>The function returns <c>ERROR_ACCESS_DENIED</c> if lpSourceName specifies the <c>Security</c> event log.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If the source name cannot be found, the event logging service uses the <c>Application</c> log. Although events will be reported ,
+		/// the events will not include descriptions because there are no message and category message files for looking up descriptions
+		/// related to the event identifiers.
+		/// </para>
+		/// <para>To close the handle to the event log, use the DeregisterEventSource function.</para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Reporting an Event.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-registereventsourcea
+		// HANDLE RegisterEventSourceA( LPCSTR lpUNCServerName, LPCSTR lpSourceName );
+		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winbase.h", MSDNShortId = "53706f83-6bc9-45d6-981c-bd0680d7bc08")]
+		public static extern IntPtr RegisterEventSource(string lpUNCServerName, string lpSourceName);
+
 		/// <summary>The RevertToSelf function terminates the impersonation of a client application.</summary>
 		/// <returns>
 		/// If the function succeeds, the function returns nonzero. If the function fails, it returns zero. To get extended error information, call GetLastError.
