@@ -1,16 +1,32 @@
 using System;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
-using static Vanara.PInvoke.NetSecApi;
 
 namespace Vanara.PInvoke
 {
 	public static partial class AdvApi32
 	{
 		/// <summary>
-		/// The LSA_OBJECT_ATTRIBUTES structure is used with the LsaOpenPolicy function to specify the attributes of the connection to the Policy object. When
-		/// you call LsaOpenPolicy, initialize the members of this structure to NULL or zero because the function does not use the information.
+		/// <para>
+		/// The <c>LSA_OBJECT_ATTRIBUTES</c> structure is used with the LsaOpenPolicy function to specify the attributes of the connection to
+		/// the Policy object.
+		/// </para>
+		/// <para>
+		/// When you call LsaOpenPolicy, initialize the members of this structure to <c>NULL</c> or zero because the function does not use
+		/// the information.
+		/// </para>
 		/// </summary>
+		/// <remarks>
+		/// <para>The <c>LSA_OBJECT_ATTRIBUTES</c> structure is defined in the LsaLookup.h header file.</para>
+		/// <para>
+		/// <c>Windows Server 2008 with SP2 and earlier, Windows Vista with SP2 and earlier, Windows Server 2003, Windows XP/2000:</c> The
+		/// <c>LSA_OBJECT_ATTRIBUTES</c> structure is defined in the NTSecAPI.h header file.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/lsalookup/ns-lsalookup-_lsa_object_attributes typedef struct
+		// _LSA_OBJECT_ATTRIBUTES { ULONG Length; HANDLE RootDirectory; PLSA_UNICODE_STRING ObjectName; ULONG Attributes; PVOID
+		// SecurityDescriptor; PVOID SecurityQualityOfService; } LSA_OBJECT_ATTRIBUTES, *PLSA_OBJECT_ATTRIBUTES;
+		[PInvokeData("lsalookup.h", MSDNShortId = "ad05cb52-8e58-46a9-b3e8-0c9c2a24a997")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct LSA_OBJECT_ATTRIBUTES
 		{
@@ -33,7 +49,8 @@ namespace Vanara.PInvoke
 			public IntPtr SecurityQualityOfService;
 
 			/// <summary>
-			/// Returns a completely empty reference. This value should be used when calling <see cref="LsaOpenPolicy(string, ref LSA_OBJECT_ATTRIBUTES, LsaPolicyRights, out SafeLsaPolicyHandle)"/>.
+			/// Returns a completely empty reference. This value should be used when calling <see cref="LsaOpenPolicy(string, ref
+			/// LSA_OBJECT_ATTRIBUTES, LsaPolicyRights, out SafeLsaPolicyHandle)"/>.
 			/// </summary>
 			/// <value>An <see cref="LSA_OBJECT_ATTRIBUTES"/> instance with all members set to <c>NULL</c> or zero.</value>
 			public static LSA_OBJECT_ATTRIBUTES Empty { get; } = new LSA_OBJECT_ATTRIBUTES();
@@ -48,13 +65,14 @@ namespace Vanara.PInvoke
 		public struct LSA_STRING
 		{
 			/// <summary>
-			/// Specifies the length, in bytes, of the string pointed to by the Buffer member, not including the terminating null character, if any.
+			/// Specifies the length, in bytes, of the string pointed to by the Buffer member, not including the terminating null character,
+			/// if any.
 			/// </summary>
 			public ushort length;
 
 			/// <summary>
-			/// Specifies the total size, in bytes, of the memory allocated for Buffer. Up to MaximumLength bytes can be written into the buffer without
-			/// trampling memory.
+			/// Specifies the total size, in bytes, of the memory allocated for Buffer. Up to MaximumLength bytes can be written into the
+			/// buffer without trampling memory.
 			/// </summary>
 			public ushort MaximumLength;
 
@@ -95,32 +113,49 @@ namespace Vanara.PInvoke
 			public static implicit operator string(LSA_STRING value) => value.ToString();
 		}
 
-		/// <summary>The LSA_TRANSLATED_NAME structure is used with the LsaLookupSids function to return information about the account identified by a SID.</summary>
+		/// <summary>
+		/// <para>
+		/// The <c>LSA_TRANSLATED_NAME</c> structure is used with the LsaLookupSids function to return information about the account
+		/// identified by a SID.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/lsalookup/ns-lsalookup-_lsa_translated_name typedef struct
+		// _LSA_TRANSLATED_NAME { SID_NAME_USE Use; LSA_UNICODE_STRING Name; LONG DomainIndex; } LSA_TRANSLATED_NAME, *PLSA_TRANSLATED_NAME;
+		[PInvokeData("lsalookup.h", MSDNShortId = "edea8317-5cdf-4d1e-9e6d-fcf17b91adb7")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct LSA_TRANSLATED_NAME
 		{
-			/// <summary>
-			/// An SID_NAME_USE enumeration value that identifies the type of SID.
-			/// </summary>
+			/// <summary>An SID_NAME_USE enumeration value that identifies the type of SID.</summary>
 			public SID_NAME_USE Use;
 
-			/// <summary>An LSA_UNICODE_STRING structure that contains the isolated name of the translated SID. An isolated name is a user, group, or local group account name without the domain name (for example, user_name, rather than Acctg\user_name).</summary>
+			/// <summary>
+			/// An LSA_UNICODE_STRING structure that contains the isolated name of the translated SID. An isolated name is a user, group, or
+			/// local group account name without the domain name (for example, user_name, rather than Acctg\user_name).
+			/// </summary>
 			public LSA_UNICODE_STRING Name;
 
 			/// <summary>
-			/// The index of an entry in a related LSA_REFERENCED_DOMAIN_LIST data structure which describes the domain that owns the account. If there is no
-			/// corresponding reference domain for an entry, then DomainIndex will contain a negative value.
+			/// The index of an entry in a related LSA_REFERENCED_DOMAIN_LIST data structure which describes the domain that owns the
+			/// account. If there is no corresponding reference domain for an entry, then DomainIndex will contain a negative value.
 			/// </summary>
 			public int DomainIndex;
 		}
 
-		/// <summary>Contains SIDs that are retrieved based on account names. This structure is used by the LsaLookupNames2 function.</summary>
+		/// <summary>
+		/// <para>
+		/// The <c>LSA_TRANSLATED_SID2</c> structure contains SIDs that are retrieved based on account names. This structure is used by the
+		/// LsaLookupNames2 function.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/lsalookup/ns-lsalookup-_lsa_translated_sid2 typedef struct
+		// _LSA_TRANSLATED_SID2 { SID_NAME_USE Use; PSID Sid; LONG DomainIndex; ULONG Flags; } LSA_TRANSLATED_SID2, *PLSA_TRANSLATED_SID2;
+		[PInvokeData("lsalookup.h", MSDNShortId = "792de958-8e24-46d8-b484-159435bc96e3")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct LSA_TRANSLATED_SID2
 		{
 			/// <summary>
-			/// An SID_NAME_USE enumeration value that identifies the use of the SID. If this value is SidTypeUnknown or SidTypeInvalid, the rest of the
-			/// information in the structure is not valid and should be ignored.
+			/// An SID_NAME_USE enumeration value that identifies the use of the SID. If this value is SidTypeUnknown or SidTypeInvalid, the
+			/// rest of the information in the structure is not valid and should be ignored.
 			/// </summary>
 			public SID_NAME_USE Use;
 
@@ -128,8 +163,8 @@ namespace Vanara.PInvoke
 			public IntPtr Sid;
 
 			/// <summary>
-			/// The index of an entry in a related LSA_REFERENCED_DOMAIN_LIST data structure which describes the domain that owns the account. If there is no
-			/// corresponding reference domain for an entry, then DomainIndex will contain a negative value.
+			/// The index of an entry in a related LSA_REFERENCED_DOMAIN_LIST data structure which describes the domain that owns the
+			/// account. If there is no corresponding reference domain for an entry, then DomainIndex will contain a negative value.
 			/// </summary>
 			public int DomainIndex;
 
