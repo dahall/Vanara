@@ -515,7 +515,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "d9281eb2-39b7-444f-85b7-1e1e76c38ae2")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PathFindOnPath(StringBuilder pszFile, [In] string[] ppszOtherDirs);
+		public static extern bool PathFindOnPath(StringBuilder pszFile, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPTStr)] string[] ppszOtherDirs);
 
 		/// <summary>
 		/// <para>Determines whether a given file name has one of a list of suffixes.</para>
