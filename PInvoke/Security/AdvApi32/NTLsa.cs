@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static Vanara.PInvoke.NetSecApi;
+using static Vanara.PInvoke.Secur32;
 
 // ReSharper disable InconsistentNaming ReSharper disable FieldCanBeMadeReadOnly.Global ReSharper disable InconsistentNaming
 
