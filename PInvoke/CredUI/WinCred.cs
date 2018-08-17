@@ -459,7 +459,7 @@ namespace Vanara.PInvoke
 		/// <returns>Status of the operation is returned.</returns>
 		[DllImport(Lib.CredUI, CharSet = CharSet.Auto)]
 		[PInvokeData("wincred.h", MSDNShortId = "aa375177")]
-		public static extern Win32Error CredUIReadSSOCred(string pszRealm, [Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LocalStringMarshaler), MarshalCookie = "Auto")] string ppszUsername);
+		public static extern Win32Error CredUIReadSSOCred(string pszRealm, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(LocalStringMarshaler), MarshalCookie = "Auto")] out string ppszUsername);
 
 		/// <summary>The CredUIStoreSSOCred function stores a single logon credential.</summary>
 		/// <param name="pszRealm">Pointer to a null-terminated string that specifies the realm. If this parameter is NULL, the default realm is used.</param>
