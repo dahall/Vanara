@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Macros;
 
@@ -78,16 +77,16 @@ namespace Vanara.PInvoke
 		RT_VXD = 20,
 	}
 
-/* ===================================================================================
- * Removing struct based ResourceId as they can cause resource leaks with improper
- * use. Opted for using IntPtr in structs and SafeResourceId in functions.
- * ===================================================================================
- * 
 	/// <summary>Helper structure to use for a pointer that can morph into a string, pointer or integer.</summary>
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+	[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Auto)]
 	public struct ResourceId : IEquatable<string>, IEquatable<IntPtr>, IEquatable<int>, IEquatable<ResourceId>
 	{
+		/// <summary>The name</summary>
+		[FieldOffset(0)]
+		public string name;
+
 		/// <summary>The PTR</summary>
+		[FieldOffset(0)]
 		public IntPtr ptr;
 
 		/// <summary>Gets or sets an integer identifier.</summary>
@@ -118,7 +117,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="string"/> to <see cref="ResourceId"/>.</summary>
 		/// <param name="resName">Name of the resource.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator ResourceId(string resName) => new ResourceId { ptr = StringHelper.AllocString(resName) };
+		public static implicit operator ResourceId(string resName) => new ResourceId { name = resName };
 
 		/// <summary>Performs an implicit conversion from <see cref="int"/> to <see cref="ResourceId"/>.</summary>
 		/// <param name="resId">The resource identifier.</param>
@@ -200,10 +199,15 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>Helper structure to use for a pointer that can morph into a string, pointer or integer.</summary>
-	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+	[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Unicode)]
 	public struct ResourceIdUni : IEquatable<string>, IEquatable<IntPtr>, IEquatable<int>, IEquatable<ResourceIdUni>
 	{
+		/// <summary>The name</summary>
+		[FieldOffset(0)]
+		public string name;
+
 		/// <summary>The PTR</summary>
+		[FieldOffset(0)]
 		public IntPtr ptr;
 
 		/// <summary>Gets or sets an integer identifier.</summary>
@@ -234,7 +238,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="string"/> to <see cref="ResourceIdUni"/>.</summary>
 		/// <param name="resName">Name of the resource.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator ResourceIdUni(string resName) => new ResourceIdUni { ptr = StringHelper.AllocString(resName, CharSet.Unicode) };
+		public static implicit operator ResourceIdUni(string resName) => new ResourceIdUni { name = resName };
 
 		/// <summary>Performs an implicit conversion from <see cref="int"/> to <see cref="ResourceIdUni"/>.</summary>
 		/// <param name="resId">The resource identifier.</param>
@@ -315,27 +319,21 @@ namespace Vanara.PInvoke
 		bool IEquatable<ResourceIdUni>.Equals(ResourceIdUni other) => string.Equals(other.ToString(), ToString());
 	}
 
-*/
-
 	/// <summary>Represents a system resource name that can identify as a string, integer, or pointer.</summary>
 	/// <seealso cref="SafeHandle"/>
-	public class SafeResourceId : GenericSafeHandle, IEquatable<string>, IEquatable<int>, IEquatable<SafeResourceId>, IEquatable<IntPtr>
+	public sealed class SafeResourceId : GenericSafeHandle, IEquatable<string>, IEquatable<int>, IEquatable<SafeResourceId>, IEquatable<IntPtr>
 	{
-		/// <summary>Represent a NULL value.</summary>
-		public static readonly SafeResourceId Null = new SafeResourceId();
-
 		/// <summary>Initializes a new instance of the <see cref="SafeResourceId"/> class.</summary>
 		/// <param name="resName">Name of the resource.</param>
-		public SafeResourceId(string resName, CharSet charSet = CharSet.Auto)
+		public SafeResourceId(string resName) : base(CloseHandle)
 		{
 			if (string.IsNullOrEmpty(resName)) throw new ArgumentNullException(nameof(resName));
-			CharSet = charSet;
-			SetHandle(StringHelper.AllocString(resName, charSet));
+			SetHandle(Marshal.StringToCoTaskMemUni(resName));
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="SafeResourceId"/> class.</summary>
 		/// <param name="resId">The resource identifier.</param>
-		public SafeResourceId(int resId)
+		public SafeResourceId(int resId) : base(CloseHandle)
 		{
 			if (resId > ushort.MaxValue || resId <= 0) throw new ArgumentOutOfRangeException(nameof(resId));
 			SetHandle((IntPtr)(ushort)resId);
@@ -349,51 +347,26 @@ namespace Vanara.PInvoke
 
 		/// <summary>Initializes a new instance of the <see cref="SafeResourceId"/> class.</summary>
 		/// <param name="ptr">The PTR.</param>
-		public SafeResourceId(IntPtr ptr)
+		public SafeResourceId(IntPtr ptr) : base(CloseHandle)
 		{
 			if (IS_INTRESOURCE(ptr))
 				SetHandle(ptr);
 			else
 			{
-				var s = StringHelper.GetString(ptr, CharSet);
+				var s = (string)Marshal.PtrToStringUni(ptr)?.Clone();
 				if (s != null)
-					SetHandle(StringHelper.AllocString(s, CharSet));
+					SetHandle(Marshal.StringToCoTaskMemUni(s));
 			}
 		}
 
-		/// <summary>Initializes a new instance of the <see cref="SafeResourceId"/> class.</summary>
-		protected SafeResourceId() { }
-
-		/// <summary>Gets or sets the character set to use on resource strings.</summary>
-		/// <value>The character set.</value>
-		public virtual CharSet CharSet { get; set; } = CharSet.Auto;
-
-		/// <summary>Gets or sets an integer identifier.</summary>
-		/// <value>The identifier.</value>
-		public int id
-		{
-			get => IsIntResource ? (ushort)handle.ToInt32() : 0;
-			set
-			{
-				if (value > ushort.MaxValue || value <= 0) throw new ArgumentOutOfRangeException(nameof(id));
-				SetHandle((IntPtr)(ushort)value);
-			}
-		}
-
-		/// <inheritdoc/>
+		/// <summary>When overridden in a derived class, gets a value indicating whether the handle value is invalid.</summary>
 		public override bool IsInvalid => handle == IntPtr.Zero;
-
-		/// <summary>Gets a value indicating whether this instance is an integer-based resource.</summary>
-		/// <value><c>true</c> if this instance is an integer-based resource; otherwise, <c>false</c>.</value>
-		public bool IsIntResource => IS_INTRESOURCE(handle);
-
-		/// <inheritdoc/>
-		protected override Func<IntPtr, bool> CloseMethod => h => { if (h != IntPtr.Zero && !IS_INTRESOURCE(h)) StringHelper.FreeString(h); return true; };
 
 		/// <summary>Performs an implicit conversion from <see cref="SafeResourceId"/> to <see cref="System.Int32"/>.</summary>
 		/// <param name="r">The r.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator int(SafeResourceId r) => r.IsIntResource ? (ushort)r.handle.ToInt32() : 0;
+		public static implicit operator int(SafeResourceId r)
+			=> IS_INTRESOURCE(r.handle) ? (ushort)r.handle.ToInt32() : 0;
 
 		/// <summary>Performs an implicit conversion from <see cref="SafeResourceId"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="r">The r.</param>
@@ -438,61 +411,46 @@ namespace Vanara.PInvoke
 				case string s:
 					return Equals(s);
 
-				case int i:
-					return Equals(i);
-
-				case IntPtr p:
-					return Equals(p);
-
-				case SafeResourceId r:
-					return Equals(r);
-
 				default:
 					if (!obj.GetType().IsPrimitive) return false;
 					try { return Equals(Convert.ToInt32(obj)); } catch { return false; }
 			}
 		}
 
-		/// <summary>
-		/// Gets a cloned handle that also, if a string resource, copies the string to a new handle which must be released using StringHelper.FreeString.
-		/// </summary>
-		/// <returns>A copy of the handle. Warning: This method can cause memory leaks if this is a string resource which is not freed.</returns>
-		public IntPtr GetClonedHandle()
-		{
-			if (IsIntResource || IsIntResource) return handle;
-			return StringHelper.AllocString(StringHelper.GetString(handle, CharSet), CharSet);
-		}
+		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		public bool Equals(string other) => string.Equals(ToString(), other);
 
-		/// <inheritdoc/>
+		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		public bool Equals(int other) => other == handle.ToInt32();
+
+		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		public bool Equals(SafeResourceId other)
+			=> IS_INTRESOURCE(handle) && other != null ? handle == other.handle : Equals(other?.ToString());
+
+		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		public bool Equals(IntPtr other) => new SafeResourceId(other).Equals(this);
+
+		/// <summary>Returns a hash code for this instance.</summary>
+		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 		public override int GetHashCode() => handle.GetHashCode();
 
-		/// <inheritdoc/>
-		public override string ToString() => GetString(handle, CharSet);
+		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+		/// <returns>A <see cref="string"/> that represents this instance.</returns>
+		public override string ToString()
+			=> IS_INTRESOURCE(handle) ? $"#{handle.ToInt32()}" : Marshal.PtrToStringUni(handle);
 
-		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
-		/// <param name="other">An object to compare with this object.</param>
-		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		bool IEquatable<string>.Equals(string other) => string.Equals(ToString(), other);
-
-		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
-		/// <param name="other">An object to compare with this object.</param>
-		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		bool IEquatable<int>.Equals(int other) => other == handle.ToInt32();
-
-		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
-		/// <param name="other">An object to compare with this object.</param>
-		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		bool IEquatable<SafeResourceId>.Equals(SafeResourceId other) => string.Equals(other.ToString(), ToString());
-
-		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
-		/// <param name="other">An object to compare with this object.</param>
-		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		bool IEquatable<IntPtr>.Equals(IntPtr other) => new SafeResourceId(other).Equals(this);
-
-		/// <summary>Gets the string representation of a resource identifier.</summary>
-		/// <param name="ptr">The resource identifier.</param>
-		/// <param name="charSet">The character set.</param>
-		/// <returns>The string representation.</returns>
-		public static string GetString(IntPtr ptr, CharSet charSet = CharSet.Auto) => IS_INTRESOURCE(ptr) ? $"#{ptr.ToInt32()}" : StringHelper.GetString(ptr, charSet);
+		private static bool CloseHandle(IntPtr handle)
+		{
+			if (handle != IntPtr.Zero && !IS_INTRESOURCE(handle)) Marshal.FreeCoTaskMem(handle);
+			return true;
+		}
 	}
 }

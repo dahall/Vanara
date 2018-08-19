@@ -1,9 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using static Vanara.PInvoke.Kernel32;
-using static Vanara.PInvoke.Macros;
 using static Vanara.PInvoke.User32_Gdi;
 
 // ReSharper disable InconsistentNaming
@@ -21,7 +19,6 @@ namespace Vanara.PInvoke
 		/// <param name="refData">The reference data that was set to TaskDialog.CallbackData.</param>
 		/// <returns>A HRESULT value. The return value is specific to the message being processed.</returns>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760542")]
-		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		public delegate HRESULT TaskDialogCallbackProc([In] IntPtr hwnd, [In] TaskDialogNotification msg, [In] IntPtr wParam, [In] IntPtr lParam, [In] IntPtr refData);
 
 		/// <summary>Specifies the push buttons displayed in the task dialog. If no common buttons are specified and no custom buttons are specified using the cButtons and pButtons members, the task dialog will contain the OK button by default. This parameter may be a combination of flags</summary>
@@ -320,7 +317,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760544")]
 		[DllImport(Lib.ComCtl32, CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public static extern HRESULT TaskDialogIndirect(TASKDIALOGCONFIG pTaskConfig, out int pnButton, out int pnRadioButton, [MarshalAs(UnmanagedType.Bool)] out bool pfVerificationFlagChecked);
+		public static extern HRESULT TaskDialogIndirect(ref TASKDIALOGCONFIG pTaskConfig, out int pnButton, out int pnRadioButton, [MarshalAs(UnmanagedType.Bool)] out bool pfVerificationFlagChecked);
 
 		/// <summary>
 		/// The TASKDIALOG_BUTTON structure contains information used to display a button in a task dialog. The TASKDIALOGCONFIG structure uses this structure.
@@ -332,283 +329,99 @@ namespace Vanara.PInvoke
 			/// <summary>Indicates the value to be returned when this button is selected.</summary>
 			public int nButtonID;
 			/// <summary>Pointer that references the string to be used to label the button. This parameter can be either a null-terminated string or an integer resource identifier passed to the MAKEINTRESOURCE macro. When using Command Links, you delineate the command from the note by placing a new line character in the string.</summary>
-			public IntPtr pszButtonText;
+			public ResourceIdUni pszButtonText;
 		}
 
-		/// <summary>
-		/// The <c>TASKDIALOGCONFIG</c> structure contains information used to display a task dialog. The TaskDialogIndirect function uses
-		/// this structure.
-		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/commctrl/ns-commctrl-_taskdialogconfig
-		[PInvokeData("commctrl.h", MSDNShortId = "bb787473")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-		public class TASKDIALOGCONFIG : IDisposable
+		/// <summary>The TASKDIALOGCONFIG structure contains information used to display a task dialog. The TaskDialogIndirect function uses this structure.</summary>
+		[PInvokeData("Commctrl.h", MSDNShortId = "bb787473")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 1)]
+		public struct TASKDIALOGCONFIG
 		{
 			/// <summary>Specifies the structure size, in bytes.</summary>
 			public uint cbSize;
 
 			/// <summary>Handle to the parent window. This member can be NULL.</summary>
+			[SuppressMessage("Microsoft.Reliability", "CA2006:UseSafeHandleToEncapsulateNativeResources")]
 			public IntPtr hwndParent;
 
-			/// <summary>
-			/// Handle to the module that contains the icon resource identified by the pszMainIcon or pszFooterIcon members, and the string
-			/// resources identified by the pszWindowTitle, pszMainInstruction, pszContent, pszVerificationText, pszExpandedInformation,
-			/// pszExpandedControlText, pszCollapsedControlText or pszFooter members.
-			/// </summary>
+			/// <summary>Handle to the module that contains the icon resource identified by the pszMainIcon or pszFooterIcon members, and the string resources identified by the pszWindowTitle, pszMainInstruction, pszContent, pszVerificationText, pszExpandedInformation, pszExpandedControlText, pszCollapsedControlText or pszFooter members.</summary>
+			[SuppressMessage("Microsoft.Reliability", "CA2006:UseSafeHandleToEncapsulateNativeResources")]
 			public IntPtr hInstance;
 
 			/// <summary>Specifies the behavior of the task dialog. This parameter can be a combination of flags.</summary>
 			public TASKDIALOG_FLAGS dwFlags;
 
-			/// <summary>
-			/// Specifies the push buttons displayed in the task dialog. If no common buttons are specified and no custom buttons are
-			/// specified using the cButtons and pButtons members, the task dialog will contain the OK button by default. This parameter may
-			/// be a combination of flags.
-			/// </summary>
+			/// <summary>Specifies the push buttons displayed in the task dialog. If no common buttons are specified and no custom buttons are specified using the cButtons and pButtons members, the task dialog will contain the OK button by default. This parameter may be a combination of flags.</summary>
 			public TASKDIALOG_COMMON_BUTTON_FLAGS dwCommonButtons;
 
-			/// <summary>
-			/// Pointer that references the string to be used for the task dialog title. This parameter can be either a null-terminated
-			/// string or an integer resource identifier passed to the MAKEINTRESOURCE macro. If this parameter is NULL, the filename of the
-			/// executable program is used.
-			/// </summary>
-			public IntPtr pszWindowTitle;
+			/// <summary>Pointer that references the string to be used for the task dialog title. This parameter can be either a null-terminated string or an integer resource identifier passed to the MAKEINTRESOURCE macro. If this parameter is NULL, the filename of the executable program is used.</summary>
+			public ResourceIdUni pszWindowTitle;
 
-			/// <summary>
-			/// A handle to an Icon that is to be displayed in the task dialog. This member is ignored unless the TDF_USE_HICON_MAIN flag is
-			/// specified. If this member is NULL and the TDF_USE_HICON_MAIN is specified, no icon will be displayed.
+			/// <summary>A handle to an Icon that is to be displayed in the task dialog. This member is ignored unless the TDF_USE_HICON_MAIN flag is specified. If this member is NULL and the TDF_USE_HICON_MAIN is specified, no icon will be displayed.
 			/// <para><c>OR</c></para>
-			/// <para>
-			/// Pointer that references the icon to be displayed in the task dialog. This parameter is ignored if the USE_HICON_MAIN flag is
-			/// specified. Otherwise, if this parameter is NULL or the hInstance parameter is NULL, no icon will be displayed. This parameter
-			/// must be an integer resource identifier passed to the MAKEINTRESOURCE macro.
-			/// </para>
+			/// <para>Pointer that references the icon to be displayed in the task dialog. This parameter is ignored if the USE_HICON_MAIN flag is specified. Otherwise, if this parameter is NULL or the hInstance parameter is NULL, no icon will be displayed. This parameter must be an integer resource identifier passed to the MAKEINTRESOURCE macro.</para>
 			/// </summary>
-			public IntPtr mainIcon;
+			[SuppressMessage("Microsoft.Reliability", "CA2006:UseSafeHandleToEncapsulateNativeResources")]
+			public ResourceIdUni mainIcon;
 
-			/// <summary>
-			/// Pointer that references the string to be used for the main instruction. This parameter can be either a null-terminated string
-			/// or an integer resource identifier passed to the MAKEINTRESOURCE macro.
-			/// </summary>
-			public IntPtr pszMainInstruction;
+			/// <summary>Pointer that references the string to be used for the main instruction. This parameter can be either a null-terminated string or an integer resource identifier passed to the MAKEINTRESOURCE macro.</summary>
+			public ResourceIdUni pszMainInstruction;
 
-			/// <summary>
-			/// Pointer that references the string to be used for the dialog's primary content. This parameter can be either a
-			/// null-terminated string or an integer resource identifier passed to the MAKEINTRESOURCE macro. If the ENABLE_HYPERLINKS flag
-			/// is specified for the dwFlags member, then this string may contain hyperlinks in the form: <A
-			/// HREF="executablestring">Hyperlink Text</A>. WARNING: Enabling hyperlinks when using content from an unsafe source may cause
-			/// security vulnerabilities.
-			/// </summary>
-			public IntPtr pszContent;
+			/// <summary>Pointer that references the string to be used for the dialog's primary content. This parameter can be either a null-terminated string or an integer resource identifier passed to the MAKEINTRESOURCE macro. If the ENABLE_HYPERLINKS flag is specified for the dwFlags member, then this string may contain hyperlinks in the form: <A HREF="executablestring">Hyperlink Text</A>. WARNING: Enabling hyperlinks when using content from an unsafe source may cause security vulnerabilities.</summary>
+			public ResourceIdUni pszContent;
 
-			/// <summary>
-			/// The number of entries in the pButtons array that is used to create buttons or command links in the task dialog. If this
-			/// member is zero and no common buttons have been specified using the dwCommonButtons member, then the task dialog will have a
-			/// single OK button displayed.
-			/// </summary>
+			/// <summary>The number of entries in the pButtons array that is used to create buttons or command links in the task dialog. If this member is zero and no common buttons have been specified using the dwCommonButtons member, then the task dialog will have a single OK button displayed.</summary>
 			public uint cButtons;
 
-			/// <summary>
-			/// Pointer to an array of TASKDIALOG_BUTTON structures containing the definition of the custom buttons that are to be displayed
-			/// in the task dialog. This array must contain at least the number of entries that are specified by the cButtons member.
-			/// </summary>
+			/// <summary>Pointer to an array of TASKDIALOG_BUTTON structures containing the definition of the custom buttons that are to be displayed in the task dialog. This array must contain at least the number of entries that are specified by the cButtons member.</summary>
+			[SuppressMessage("Microsoft.Reliability", "CA2006:UseSafeHandleToEncapsulateNativeResources")]
 			public IntPtr pButtons;
 
-			/// <summary>
-			/// The default button for the task dialog. This may be any of the values specified in nButtonID members of one of the
-			/// TASKDIALOG_BUTTON structures in the pButtons array, or one of the IDs corresponding to the buttons specified in the
-			/// dwCommonButtons member. If this member is zero or its value does not correspond to any button ID in the dialog, then the
-			/// first button in the dialog will be the default.
-			/// </summary>
+			/// <summary>The default button for the task dialog. This may be any of the values specified in nButtonID members of one of the TASKDIALOG_BUTTON structures in the pButtons array, or one of the IDs corresponding to the buttons specified in the dwCommonButtons member. If this member is zero or its value does not correspond to any button ID in the dialog, then the first button in the dialog will be the default.</summary>
 			public int nDefaultButton;
 
 			/// <summary>The number of entries in the pRadioButtons array that is used to create radio buttons in the task dialog.</summary>
 			public uint cRadioButtons;
 
-			/// <summary>
-			/// Pointer to an array of TASKDIALOG_BUTTON structures containing the definition of the radio buttons that are to be displayed
-			/// in the task dialog. This array must contain at least the number of entries that are specified by the cRadioButtons member.
-			/// This parameter can be NULL.
-			/// </summary>
+			/// <summary>Pointer to an array of TASKDIALOG_BUTTON structures containing the definition of the radio buttons that are to be displayed in the task dialog. This array must contain at least the number of entries that are specified by the cRadioButtons member. This parameter can be NULL.</summary>
+			[SuppressMessage("Microsoft.Reliability", "CA2006:UseSafeHandleToEncapsulateNativeResources")]
 			public IntPtr pRadioButtons;
 
-			/// <summary>
-			/// The button ID of the radio button that is selected by default. If this value does not correspond to a button ID, the first
-			/// button in the array is selected by default.
-			/// </summary>
+			/// <summary>The button ID of the radio button that is selected by default. If this value does not correspond to a button ID, the first button in the array is selected by default.</summary>
 			public int nDefaultRadioButton;
 
-			/// <summary>
-			/// Pointer that references the string to be used to label the verification checkbox. This parameter can be either a
-			/// null-terminated string or an integer resource identifier passed to the MAKEINTRESOURCE macro. If this parameter is NULL, the
-			/// verification checkbox is not displayed in the task dialog. If the pfVerificationFlagChecked parameter of TaskDialogIndirect
-			/// is NULL, the checkbox is not enabled.
-			/// </summary>
-			public IntPtr pszVerificationText;
+			/// <summary>Pointer that references the string to be used to label the verification checkbox. This parameter can be either a null-terminated string or an integer resource identifier passed to the MAKEINTRESOURCE macro. If this parameter is NULL, the verification checkbox is not displayed in the task dialog. If the pfVerificationFlagChecked parameter of TaskDialogIndirect is NULL, the checkbox is not enabled.</summary>
+			public ResourceIdUni pszVerificationText;
 
-			/// <summary>
-			/// Pointer that references the string to be used for displaying additional information. This parameter can be either a
-			/// null-terminated string or an integer resource identifier passed to the MAKEINTRESOURCE macro. The additional information is
-			/// displayed either immediately below the content or below the footer text depending on whether the TDF_EXPAND_FOOTER_AREA flag
-			/// is specified. If the TDF_ENABLE_HYPERLINKS flag is specified for the dwFlags member, then this string may contain hyperlinks
-			/// in the form: <A HREF="executablestring">Hyperlink Text</A>. WARNING: Enabling hyperlinks when using content from an unsafe
-			/// source may cause security vulnerabilities.
-			/// </summary>
-			public IntPtr pszExpandedInformation;
+			/// <summary>Pointer that references the string to be used for displaying additional information. This parameter can be either a null-terminated string or an integer resource identifier passed to the MAKEINTRESOURCE macro. The additional information is displayed either immediately below the content or below the footer text depending on whether the TDF_EXPAND_FOOTER_AREA flag is specified. If the TDF_ENABLE_HYPERLINKS flag is specified for the dwFlags member, then this string may contain hyperlinks in the form: <A HREF="executablestring">Hyperlink Text</A>. WARNING: Enabling hyperlinks when using content from an unsafe source may cause security vulnerabilities.</summary>
+			public ResourceIdUni pszExpandedInformation;
 
-			/// <summary>
-			/// Pointer that references the string to be used to label the button for collapsing the expandable information. This parameter
-			/// can be either a null-terminated string or an integer resource identifier passed to the MAKEINTRESOURCE macro. This member is
-			/// ignored when the pszExpandedInformation member is NULL. If this member is NULL and the pszCollapsedControlText is specified,
-			/// then the pszCollapsedControlText value will be used for this member as well.
-			/// </summary>
-			public IntPtr pszExpandedControlText;
+			/// <summary>Pointer that references the string to be used to label the button for collapsing the expandable information. This parameter can be either a null-terminated string or an integer resource identifier passed to the MAKEINTRESOURCE macro. This member is ignored when the pszExpandedInformation member is NULL. If this member is NULL and the pszCollapsedControlText is specified, then the pszCollapsedControlText value will be used for this member as well.</summary>
+			public ResourceIdUni pszExpandedControlText;
 
-			/// <summary>
-			/// Pointer that references the string to be used to label the button for expanding the expandable information. This parameter
-			/// can be either a null-terminated string or an integer resource identifier passed to the MAKEINTRESOURCE macro. This member is
-			/// ignored when the pszExpandedInformation member is NULL. If this member is NULL and the pszCollapsedControlText is specified,
-			/// then the pszCollapsedControlText value will be used for this member as well.
-			/// </summary>
-			public IntPtr pszCollapsedControlText;
+			/// <summary>Pointer that references the string to be used to label the button for expanding the expandable information. This parameter can be either a null-terminated string or an integer resource identifier passed to the MAKEINTRESOURCE macro. This member is ignored when the pszExpandedInformation member is NULL. If this member is NULL and the pszCollapsedControlText is specified, then the pszCollapsedControlText value will be used for this member as well.</summary>
+			public ResourceIdUni pszCollapsedControlText;
 
-			/// <summary>
-			/// A handle to an Icon that is to be displayed in the footer of the task dialog. This member is ignored unless the
-			/// TDF_USE_HICON_FOOTER flag is specified and the pszFooterIcon is not. If this member is NULL and the TDF_USE_HICON_FOOTER is
-			/// specified, no icon is displayed.
+			/// <summary>A handle to an Icon that is to be displayed in the footer of the task dialog. This member is ignored unless the TDF_USE_HICON_FOOTER flag is specified and the pszFooterIcon is not. If this member is NULL and the TDF_USE_HICON_FOOTER is specified, no icon is displayed.
 			/// <para><c>OR</c></para>
-			/// <para>
-			/// Pointer that references the icon to be displayed in the footer area of the task dialog. This parameter is ignored if the
-			/// TDF_USE_HICON_FOOTER flag is specified, or if pszFooter is NULL. Otherwise, if this parameter is NULL or the hInstance
-			/// parameter is NULL, no icon is displayed. This parameter must be an integer resource identifier passed to the MAKEINTRESOURCE
-			/// macro or one of the predefined values listed for pszMainIcon.
-			/// </para>
+			/// <para>Pointer that references the icon to be displayed in the footer area of the task dialog. This parameter is ignored if the TDF_USE_HICON_FOOTER flag is specified, or if pszFooter is NULL. Otherwise, if this parameter is NULL or the hInstance parameter is NULL, no icon is displayed. This parameter must be an integer resource identifier passed to the MAKEINTRESOURCE macro or one of the predefined values listed for pszMainIcon.</para>
 			/// </summary>
-			public IntPtr footerIcon;
+			[SuppressMessage("Microsoft.Reliability", "CA2006:UseSafeHandleToEncapsulateNativeResources")]
+			public ResourceIdUni footerIcon;
 
-			/// <summary>
-			/// Pointer to the string to be used in the footer area of the task dialog. This parameter can be either a null-terminated string
-			/// or an integer resource identifier passed to the MAKEINTRESOURCE macro. If the TDF_ENABLE_HYPERLINKS flag is specified for the
-			/// dwFlags member, then this string may contain hyperlinks in this form.
-			/// <para>&lt;A HREF="executablestring"&gt;Hyperlink Text&lt;/A&gt;</para>
-			/// <note type="warning">Enabling hyperlinks when using content from an unsafe source may cause security vulnerabilities.</note>
-			/// </summary>
-			public IntPtr pszFooter;
+			/// <summary>Pointer that references the icon to be displayed in the footer area of the task dialog. This parameter is ignored if the TDF_USE_HICON_FOOTER flag is specified, or if pszFooter is NULL. Otherwise, if this parameter is NULL or the hInstance parameter is NULL, no icon is displayed. This parameter must be an integer resource identifier passed to the MAKEINTRESOURCE macro or one of the predefined values listed for pszMainIcon.</summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public ResourceIdUni pszFooter;
 
 			/// <summary>Pointer to an application-defined callback function. For more information see TaskDialogCallbackProc.</summary>
-			[MarshalAs(UnmanagedType.FunctionPtr)]
 			public TaskDialogCallbackProc pfCallbackProc;
 
 			/// <summary>A pointer to application-defined reference data. This value is defined by the caller.</summary>
+			[SuppressMessage("Microsoft.Reliability", "CA2006:UseSafeHandleToEncapsulateNativeResources")]
 			public IntPtr lpCallbackData;
 
-			/// <summary>
-			/// The width of the task dialog's client area, in dialog units. If 0, the task dialog manager will calculate the ideal width.
-			/// </summary>
+			/// <summary>The width of the task dialog's client area, in dialog units. If 0, the task dialog manager will calculate the ideal width.</summary>
 			public uint cxWidth;
-
-			/// <summary>
-			/// The string to be used for the task dialog title. If this parameter is NULL, the filename of the executable program is used.
-			/// </summary>
-			public string WindowTitle
-			{
-				get => SafeResourceId.GetString(pszWindowTitle, CharSet.Unicode);
-				set => StringHelper.RefreshString(ref pszWindowTitle, out var _, value, CharSet.Unicode);
-			}
-
-			/// <summary>The string to be used for the main instruction.</summary>
-			public string MainInstruction
-			{
-				get => SafeResourceId.GetString(pszMainInstruction, CharSet.Unicode);
-				set => StringHelper.RefreshString(ref pszMainInstruction, out var _, value, CharSet.Unicode);
-			}
-
-			/// <summary>
-			/// The string to be used for the dialog's primary content. If the ENABLE_HYPERLINKS flag is specified for the dwFlags member,
-			/// then this string may contain hyperlinks in the form: &lt;A HREF="executablestring"&gt;Hyperlink Text&lt;/A&gt;. WARNING:
-			/// Enabling hyperlinks when using content from an unsafe source may cause security vulnerabilities.
-			/// </summary>
-			public string Content
-			{
-				get => SafeResourceId.GetString(pszContent, CharSet.Unicode);
-				set => StringHelper.RefreshString(ref pszContent, out var _, value, CharSet.Unicode);
-			}
-
-			/// <summary>
-			/// The string to be used to label the verification checkbox. If this parameter is NULL, the verification checkbox is not
-			/// displayed in the task dialog. If the pfVerificationFlagChecked parameter of TaskDialogIndirect is NULL, the checkbox is not enabled.
-			/// </summary>
-			public string VerificationText
-			{
-				get => SafeResourceId.GetString(pszVerificationText, CharSet.Unicode);
-				set => StringHelper.RefreshString(ref pszVerificationText, out var _, value, CharSet.Unicode);
-			}
-
-			/// <summary>
-			/// The string to be used for displaying additional information. The additional information is displayed either immediately below
-			/// the content or below the footer text depending on whether the TDF_EXPAND_FOOTER_AREA flag is specified. If the
-			/// TDF_ENABLE_HYPERLINKS flag is specified for the dwFlags member, then this string may contain hyperlinks in the form: &lt;A
-			/// HREF="executablestring"&gt;Hyperlink Text&lt;/A&gt;. WARNING: Enabling hyperlinks when using content from an unsafe source
-			/// may cause security vulnerabilities.
-			/// </summary>
-			public string ExpandedInformation
-			{
-				get => SafeResourceId.GetString(pszExpandedInformation, CharSet.Unicode);
-				set => StringHelper.RefreshString(ref pszExpandedInformation, out var _, value, CharSet.Unicode);
-			}
-
-			/// <summary>
-			/// The string to be used to label the button for collapsing the expandable information. This member is ignored when the
-			/// pszExpandedInformation member is NULL. If this member is NULL and the pszCollapsedControlText is specified, then the
-			/// pszCollapsedControlText value will be used for this member as well.
-			/// </summary>
-			public string ExpandedControlText
-			{
-				get => SafeResourceId.GetString(pszExpandedControlText, CharSet.Unicode);
-				set => StringHelper.RefreshString(ref pszExpandedControlText, out var _, value, CharSet.Unicode);
-			}
-
-			/// <summary>
-			/// The string to be used to label the button for expanding the expandable information. This member is ignored when the
-			/// pszExpandedInformation member is NULL. If this member is NULL and the pszCollapsedControlText is specified, then the
-			/// pszCollapsedControlText value will be used for this member as well.
-			/// </summary>
-			public string CollapsedControlText
-			{
-				get => SafeResourceId.GetString(pszCollapsedControlText, CharSet.Unicode);
-				set => StringHelper.RefreshString(ref pszCollapsedControlText, out var _, value, CharSet.Unicode);
-			}
-
-			/// <summary>
-			/// The string to be used in the footer area of the task dialog. If the TDF_ENABLE_HYPERLINKS flag is specified for the dwFlags
-			/// member, then this string may contain hyperlinks in this form.
-			/// <para>&lt;A HREF="executablestring"&gt;Hyperlink Text&lt;/A&gt;</para>
-			/// <note type="warning">Enabling hyperlinks when using content from an unsafe source may cause security vulnerabilities.</note>
-			/// </summary>
-			public string Footer
-			{
-				get => SafeResourceId.GetString(pszFooter, CharSet.Unicode);
-				set => StringHelper.RefreshString(ref pszFooter, out var _, value, CharSet.Unicode);
-			}
-
-			/// <inheritdoc/>
-			void IDisposable.Dispose()
-			{
-				FreeResource(ref pszWindowTitle);
-				FreeResource(ref pszMainInstruction);
-				FreeResource(ref pszContent);
-				FreeResource(ref pszVerificationText);
-				FreeResource(ref pszExpandedInformation);
-				FreeResource(ref pszExpandedControlText);
-				FreeResource(ref pszCollapsedControlText);
-				FreeResource(ref pszFooter);
-			}
-
-			private static void FreeResource(ref IntPtr ptr)
-			{
-				StringHelper.FreeString(ptr, CharSet.Unicode);
-				ptr = IntPtr.Zero;
-			}
 		}
 	}
 }

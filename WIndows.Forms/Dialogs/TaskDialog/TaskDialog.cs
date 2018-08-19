@@ -25,7 +25,6 @@ using System.Drawing;
 using System.Drawing.Design;
 using System.Drawing.Drawing2D;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Vanara.Extensions;
@@ -197,8 +196,7 @@ namespace Vanara.Windows.Forms
 		[Category("Behavior"), Description("Dialog can be closed by keys with no Cancel button.")]
 		public bool AllowDialogCancellation
 		{
-			get => flags[TASKDIALOG_FLAGS.TDF_ALLOW_DIALOG_CANCELLATION];
-			set => flags[TASKDIALOG_FLAGS.TDF_ALLOW_DIALOG_CANCELLATION] = value;
+			get => flags[TASKDIALOG_FLAGS.TDF_ALLOW_DIALOG_CANCELLATION]; set => flags[TASKDIALOG_FLAGS.TDF_ALLOW_DIALOG_CANCELLATION] = value;
 		}
 
 		/// <summary>Gets or sets the placement of buttons added to the <see cref="Buttons"/> collection.</summary>
@@ -250,8 +248,7 @@ namespace Vanara.Windows.Forms
 		[Category("Behavior"), Description("Callback timer should be called every 200 ms.")]
 		public bool CallbackTimer
 		{
-			get => flags[TASKDIALOG_FLAGS.TDF_CALLBACK_TIMER];
-			set => flags[TASKDIALOG_FLAGS.TDF_CALLBACK_TIMER] = value;
+			get => flags[TASKDIALOG_FLAGS.TDF_CALLBACK_TIMER]; set => flags[TASKDIALOG_FLAGS.TDF_CALLBACK_TIMER] = value;
 		}
 
 		/// <summary>Indicates that the TaskDialog can be minimized. Works only if there if parent window is null. Will enable cancellation also.</summary>
@@ -259,8 +256,7 @@ namespace Vanara.Windows.Forms
 		[Category("Behavior"), Description("TaskDialog can be minimized.")]
 		public bool CanBeMinimized
 		{
-			get => flags[TASKDIALOG_FLAGS.TDF_CAN_BE_MINIMIZED];
-			set => flags[TASKDIALOG_FLAGS.TDF_CAN_BE_MINIMIZED] = value;
+			get => flags[TASKDIALOG_FLAGS.TDF_CAN_BE_MINIMIZED]; set => flags[TASKDIALOG_FLAGS.TDF_CAN_BE_MINIMIZED] = value;
 		}
 
 		/// <summary>
@@ -291,8 +287,7 @@ namespace Vanara.Windows.Forms
 		[Category("Appearance"), Description("Optional text for the primary content area.")]
 		public string Content
 		{
-			get => content;
-			set
+			get => content; set
 			{
 				if (content == value) return;
 				content = value;
@@ -309,8 +304,7 @@ namespace Vanara.Windows.Forms
 		[Category("Appearance"), Description("")]
 		public Icon CustomFooterIcon
 		{
-			get => customFooterIcon;
-			set
+			get => customFooterIcon; set
 			{
 				if (customFooterIcon == value) return;
 				customFooterIcon = value;
@@ -327,8 +321,7 @@ namespace Vanara.Windows.Forms
 		[Category("Appearance"), Description("")]
 		public Icon CustomMainIcon
 		{
-			get => customMainIcon;
-			set
+			get => customMainIcon; set
 			{
 				if (customMainIcon == value) return;
 				customMainIcon = value;
@@ -366,8 +359,7 @@ namespace Vanara.Windows.Forms
 		[Category("Behavior"), Description("")]
 		public bool EnableHyperlinks
 		{
-			get => flags[TASKDIALOG_FLAGS.TDF_ENABLE_HYPERLINKS];
-			set => flags[TASKDIALOG_FLAGS.TDF_ENABLE_HYPERLINKS] = value;
+			get => flags[TASKDIALOG_FLAGS.TDF_ENABLE_HYPERLINKS]; set => flags[TASKDIALOG_FLAGS.TDF_ENABLE_HYPERLINKS] = value;
 		}
 
 		/// <summary>
@@ -378,8 +370,7 @@ namespace Vanara.Windows.Forms
 		[Category("Appearance"), Description("")]
 		public bool ExpandedByDefault
 		{
-			get => flags[TASKDIALOG_FLAGS.TDF_EXPANDED_BY_DEFAULT];
-			set => flags[TASKDIALOG_FLAGS.TDF_EXPANDED_BY_DEFAULT] = value;
+			get => flags[TASKDIALOG_FLAGS.TDF_EXPANDED_BY_DEFAULT]; set => flags[TASKDIALOG_FLAGS.TDF_EXPANDED_BY_DEFAULT] = value;
 		}
 
 		/// <summary>
@@ -402,8 +393,7 @@ namespace Vanara.Windows.Forms
 		[Category("Appearance"), Description("")]
 		public string ExpandedInformation
 		{
-			get => expandedInformation;
-			set
+			get => expandedInformation; set
 			{
 				if (expandedInformation == value) return;
 				expandedInformation = value;
@@ -421,8 +411,7 @@ namespace Vanara.Windows.Forms
 		[Category("Appearance"), Description("")]
 		public bool ExpandFooterArea
 		{
-			get => flags[TASKDIALOG_FLAGS.TDF_EXPAND_FOOTER_AREA];
-			set => flags[TASKDIALOG_FLAGS.TDF_EXPAND_FOOTER_AREA] = value;
+			get => flags[TASKDIALOG_FLAGS.TDF_EXPAND_FOOTER_AREA]; set => flags[TASKDIALOG_FLAGS.TDF_EXPAND_FOOTER_AREA] = value;
 		}
 
 		/// <summary>
@@ -435,8 +424,7 @@ namespace Vanara.Windows.Forms
 		[Category("Appearance"), Description("")]
 		public string Footer
 		{
-			get => footer;
-			set
+			get => footer; set
 			{
 				if (footer == value) return;
 				footer = value;
@@ -453,8 +441,7 @@ namespace Vanara.Windows.Forms
 		[Category("Appearance"), Description("")]
 		public TaskDialogIcon FooterIcon
 		{
-			get => footerIcon;
-			set
+			get => footerIcon; set
 			{
 				if (footerIcon == value) return;
 				footerIcon = value;
@@ -481,8 +468,7 @@ namespace Vanara.Windows.Forms
 		[Category("Appearance"), Description("")]
 		public TaskDialogIcon MainIcon
 		{
-			get => mainIcon;
-			set
+			get => mainIcon; set
 			{
 				if (mainIcon != value)
 				{
@@ -505,8 +491,7 @@ namespace Vanara.Windows.Forms
 		[Category("Appearance"), Description("")]
 		public string MainInstruction
 		{
-			get => mainInstruction;
-			set
+			get => mainInstruction; set
 			{
 				if (mainInstruction != value)
 				{
@@ -523,8 +508,7 @@ namespace Vanara.Windows.Forms
 		[Category("Behavior"), Description("")]
 		public bool NoDefaultRadioButton
 		{
-			get => flags[TASKDIALOG_FLAGS.TDF_NO_DEFAULT_RADIO_BUTTON];
-			set => flags[TASKDIALOG_FLAGS.TDF_NO_DEFAULT_RADIO_BUTTON] = value;
+			get => flags[TASKDIALOG_FLAGS.TDF_NO_DEFAULT_RADIO_BUTTON]; set => flags[TASKDIALOG_FLAGS.TDF_NO_DEFAULT_RADIO_BUTTON] = value;
 		}
 
 		/// <summary>
@@ -535,8 +519,7 @@ namespace Vanara.Windows.Forms
 		[Category("Window Style"), Description("")]
 		public bool PositionRelativeToWindow
 		{
-			get => flags[TASKDIALOG_FLAGS.TDF_POSITION_RELATIVE_TO_WINDOW];
-			set => flags[TASKDIALOG_FLAGS.TDF_POSITION_RELATIVE_TO_WINDOW] = value;
+			get => flags[TASKDIALOG_FLAGS.TDF_POSITION_RELATIVE_TO_WINDOW]; set => flags[TASKDIALOG_FLAGS.TDF_POSITION_RELATIVE_TO_WINDOW] = value;
 		}
 
 		/// <summary>
@@ -563,8 +546,7 @@ namespace Vanara.Windows.Forms
 		[Category("Appearance"), Description("")]
 		public bool RightToLeftLayout
 		{
-			get => flags[TASKDIALOG_FLAGS.TDF_RTL_LAYOUT];
-			set => flags[TASKDIALOG_FLAGS.TDF_RTL_LAYOUT] = value;
+			get => flags[TASKDIALOG_FLAGS.TDF_RTL_LAYOUT]; set => flags[TASKDIALOG_FLAGS.TDF_RTL_LAYOUT] = value;
 		}
 
 		/// <summary>
@@ -574,8 +556,7 @@ namespace Vanara.Windows.Forms
 		[Category("Layout"), Description("")]
 		public bool SizeToContent
 		{
-			get => flags[TASKDIALOG_FLAGS.TDF_SIZE_TO_CONTENT];
-			set => flags[TASKDIALOG_FLAGS.TDF_SIZE_TO_CONTENT] = value;
+			get => flags[TASKDIALOG_FLAGS.TDF_SIZE_TO_CONTENT]; set => flags[TASKDIALOG_FLAGS.TDF_SIZE_TO_CONTENT] = value;
 		}
 
 		/// <summary>Gets or sets a value indicating whether the form should be displayed as a topmost form.</summary>
@@ -583,8 +564,7 @@ namespace Vanara.Windows.Forms
 		[Category("Window Style"), Description("")]
 		public bool TopMost
 		{
-			get => !flags[TASKDIALOG_FLAGS.TDF_NO_SET_FOREGROUND];
-			set => flags[TASKDIALOG_FLAGS.TDF_NO_SET_FOREGROUND] = !value;
+			get => !flags[TASKDIALOG_FLAGS.TDF_NO_SET_FOREGROUND]; set => flags[TASKDIALOG_FLAGS.TDF_NO_SET_FOREGROUND] = !value;
 		}
 
 		/// <summary>
@@ -595,8 +575,7 @@ namespace Vanara.Windows.Forms
 		[Category("Appearance"), Description("")]
 		public bool VerificationFlagChecked
 		{
-			get => flags[TASKDIALOG_FLAGS.TDF_VERIFICATION_FLAG_CHECKED];
-			set => flags[TASKDIALOG_FLAGS.TDF_VERIFICATION_FLAG_CHECKED] = value;
+			get => flags[TASKDIALOG_FLAGS.TDF_VERIFICATION_FLAG_CHECKED]; set => flags[TASKDIALOG_FLAGS.TDF_VERIFICATION_FLAG_CHECKED] = value;
 		}
 
 		/// <summary>
@@ -629,8 +608,7 @@ namespace Vanara.Windows.Forms
 		[DefaultValue(false)]
 		internal bool ShowProgressBar
 		{
-			get => flags[TASKDIALOG_FLAGS.TDF_SHOW_PROGRESS_BAR];
-			set => flags[TASKDIALOG_FLAGS.TDF_SHOW_PROGRESS_BAR] = value;
+			get => flags[TASKDIALOG_FLAGS.TDF_SHOW_PROGRESS_BAR]; set => flags[TASKDIALOG_FLAGS.TDF_SHOW_PROGRESS_BAR] = value;
 		}
 
 		/// <summary>
@@ -643,8 +621,7 @@ namespace Vanara.Windows.Forms
 		 DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		internal bool UseCommandLinks
 		{
-			get => flags[TASKDIALOG_FLAGS.TDF_USE_COMMAND_LINKS];
-			set => flags[TASKDIALOG_FLAGS.TDF_USE_COMMAND_LINKS] = value;
+			get => flags[TASKDIALOG_FLAGS.TDF_USE_COMMAND_LINKS]; set => flags[TASKDIALOG_FLAGS.TDF_USE_COMMAND_LINKS] = value;
 		}
 
 		/// <summary>
@@ -656,8 +633,7 @@ namespace Vanara.Windows.Forms
 		 DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		internal bool UseCommandLinksNoIcon
 		{
-			get => flags[TASKDIALOG_FLAGS.TDF_USE_COMMAND_LINKS_NO_ICON];
-			set => flags[TASKDIALOG_FLAGS.TDF_USE_COMMAND_LINKS_NO_ICON] = value;
+			get => flags[TASKDIALOG_FLAGS.TDF_USE_COMMAND_LINKS_NO_ICON]; set => flags[TASKDIALOG_FLAGS.TDF_USE_COMMAND_LINKS_NO_ICON] = value;
 		}
 
 		/// <summary>Gets or sets a value indicating whether this instance can raise events.</summary>
@@ -1121,7 +1097,7 @@ namespace Vanara.Windows.Forms
 
 
 			if (!string.IsNullOrEmpty(WindowTitle))
-				config.WindowTitle = WindowTitle;
+				config.pszWindowTitle = WindowTitle;
 
 			if (CustomMainIcon != null)
 			{
@@ -1132,10 +1108,10 @@ namespace Vanara.Windows.Forms
 				config.mainIcon = (IntPtr)MainIcon;
 
 			if (!string.IsNullOrEmpty(MainInstruction))
-				config.MainInstruction = MainInstruction;
+				config.pszMainInstruction = MainInstruction;
 
 			if (!string.IsNullOrEmpty(Content))
-				config.Content = Content;
+				config.pszContent = Content;
 
 			foreach (var b in Buttons) b.parent = this;
 			config.pButtons = (IntPtr)Buttons;
@@ -1148,16 +1124,16 @@ namespace Vanara.Windows.Forms
 			config.nDefaultRadioButton = DefaultRadioButton;
 
 			if (!string.IsNullOrEmpty(VerificationText))
-				config.VerificationText = VerificationText;
+				config.pszVerificationText = VerificationText;
 
 			if (!string.IsNullOrEmpty(ExpandedInformation))
-				config.ExpandedInformation = ExpandedInformation;
+				config.pszExpandedInformation = ExpandedInformation;
 
 			if (!string.IsNullOrEmpty(ExpandedControlText))
-				config.ExpandedControlText = ExpandedControlText;
+				config.pszExpandedControlText = ExpandedControlText;
 
 			if (!string.IsNullOrEmpty(CollapsedControlText))
-				config.CollapsedControlText = CollapsedControlText;
+				config.pszCollapsedControlText = CollapsedControlText;
 
 			config.footerIcon = (IntPtr)FooterIcon;
 			if (CustomFooterIcon != null)
@@ -1169,21 +1145,18 @@ namespace Vanara.Windows.Forms
 				config.footerIcon = (IntPtr)FooterIcon;
 
 			if (!string.IsNullOrEmpty(Footer))
-				config.Footer = Footer;
+				config.pszFooter = Footer;
 
 			config.pfCallbackProc = PrivateCallback;
 
 			config.cxWidth = (uint)Width;
 
 			// The call all this mucking about is here for.
-			using (new ComCtl32v6Context())
-			{
-				TaskDialogResult res;
-				TaskDialogIndirect(config, out res.dialogResult, out res.selectedRadioButton, out res.verificationFlagChecked).ThrowIfFailed();
-				Result = res;
-			}
+			TaskDialogResult res;
+			TaskDialogIndirect(ref config, out res.dialogResult, out res.selectedRadioButton, out res.verificationFlagChecked);
+			Result = res;
 
-			return Result;
+			return res;
 		}
 
 		//private bool ShouldSerializeProgressBar() { return ProgressBar != TaskDialogProgressBar.Default; }
@@ -1331,7 +1304,7 @@ namespace Vanara.Windows.Forms
 		{
 			private const int hashSeed = 17;
 			private IntPtr ptr = IntPtr.Zero;
-			private int ptrHash = hashSeed;
+			private int ptrHash = hashSeed, ptrCount;
 
 			/// <summary>Initializes a new instance of the <see cref="TaskDialogButtonCollection{T}"/> class.</summary>
 			internal TaskDialogButtonCollection() { }
@@ -1356,8 +1329,17 @@ namespace Vanara.Windows.Forms
 				{
 					// Clean up old array
 					((IDisposable)c).Dispose();
+
 					// Build new
-					c.ptr = c.Select(b => b.nativeButton).MarshalToPtr(Marshal.AllocHGlobal, out var _);
+					if (c.Count > 0)
+					{
+						var elementSize = Marshal.SizeOf(typeof(TaskDialogButtonBase.TASKDIALOG_BUTTON));
+						c.ptrCount = c.Count;
+						c.ptr = Marshal.AllocHGlobal(elementSize*c.ptrCount);
+						for (var i = 0; i < c.ptrCount; i++)
+							Marshal.StructureToPtr(c[i].nativeButton, c.ptr.Offset(i*elementSize), false);
+					}
+
 					// Set hash to new value
 					c.ptrHash = h;
 				}
@@ -1378,9 +1360,13 @@ namespace Vanara.Windows.Forms
 				if (ptr == IntPtr.Zero) return;
 				lock (this)
 				{
+					var elementSize = Marshal.SizeOf(typeof(TaskDialogButtonBase.TASKDIALOG_BUTTON));
+					for (var i = 0; i < ptrCount; i++)
+						Marshal.DestroyStructure(ptr.Offset(i*elementSize), typeof(TaskDialogButtonBase.TASKDIALOG_BUTTON));
 					Marshal.FreeHGlobal(ptr);
 					ptr = IntPtr.Zero;
 					ptrHash = hashSeed;
+					ptrCount = 0;
 				}
 			}
 		}

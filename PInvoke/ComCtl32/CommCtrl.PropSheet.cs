@@ -1,8 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
-using Vanara.Extensions;
 using Vanara.InteropServices;
-using static Vanara.PInvoke.Macros;
 using static Vanara.PInvoke.User32_Gdi;
 
 // ReSharper disable FieldCanBeMadeReadOnly.Global
@@ -41,7 +39,7 @@ namespace Vanara.PInvoke
 		/// <returns>The return value depends on the value of the uMsg parameter.</returns>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760813")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
-		public delegate uint PropSheetPageProc(IntPtr hwnd, PropSheetPageCallbackAction uMsg, PROPSHEETPAGE ppsp);
+		public delegate uint PropSheetPageProc(IntPtr hwnd, PropSheetPageCallbackAction uMsg, ref PROPSHEETPAGE ppsp);
 
 		/// <summary>
 		/// An application-defined callback function that the system calls when the property sheet is being created and initialized.
@@ -218,7 +216,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb760807(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Prsht.h", MSDNShortId = "bb760807")]
-		public static extern SafePropertySheetPagehandle CreatePropertySheetPage(PROPSHEETPAGE lppsp);
+		public static extern SafePropertySheetPagehandle CreatePropertySheetPage(ref PROPSHEETPAGE lppsp);
 
 		/// <summary>Destroys a property sheet page. An application must call this function for pages that have not been passed to the <c>PropertySheet</c> function.</summary><param name="hPSPage"><para>Type: <c>HPROPSHEETPAGE</c></para><para>Handle to the property sheet page to delete.</para></param><returns><para>Type: <c><c>BOOL</c></c></para><para>Returns nonzero if successful, or zero otherwise.</para></returns>
 		// BOOL DestroyPropertySheetPage( HPROPSHEETPAGE hPSPage);
@@ -236,7 +234,6 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.SysInt)]
 		public static extern int PropertySheet(ref PROPSHEETHEADER psh);
 
-		// TODO: Convert resource id fields to managed properties.
 		/// <summary>Defines the frame and pages of a property sheet.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb774546")]
 		[StructLayout(LayoutKind.Sequential)]
@@ -330,10 +327,10 @@ namespace Vanara.PInvoke
 		/// <summary>Defines a page in a property sheet.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb774548")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		public class PROPSHEETPAGE : IDisposable
+		public struct PROPSHEETPAGE
 		{
 			/// <summary>Size, in bytes, of this structure.</summary>
-			public uint dwSize;
+			public int dwSize;
 			/// <summary>Flags that indicate which options to use when creating the property sheet page.</summary>
 			public PropSheetFlags dwFlags;
 			/// <summary>
@@ -346,7 +343,7 @@ namespace Vanara.PInvoke
 			/// that specifies the name of the template. If the PSP_DLGINDIRECT flag in the dwFlags member is set, pszTemplate is ignored. This member is
 			/// declared as a union with pResource.
 			/// </summary>
-			private IntPtr _pszTemplate;
+			public ResourceId pszTemplate;
 			/// <summary>
 			/// Handle to the icon to use as the icon in the tab of the page. If the dwFlags member does not include PSP_USEHICON, this member is ignored. This
 			/// member is declared as a union with pszIcon.
@@ -357,13 +354,14 @@ namespace Vanara.PInvoke
 			/// is declared as a union with hIcon.
 			/// </para>
 			/// </summary>
-			private IntPtr _hIcon;
+			public ResourceId hIcon;
 			/// <summary>
 			/// Title of the property sheet dialog box. This title overrides the title specified in the dialog box template. This member can specify either the
 			/// identifier of a string resource or the address of a string that specifies the title. To use this member, you must set the PSP_USETITLE flag in
 			/// the dwFlags member.
 			/// </summary>
-			private IntPtr _pszTitle;
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string pszTitle;
 			/// <summary>
 			/// Pointer to the dialog box procedure for the page. Because the pages are created as modeless dialog boxes, the dialog box procedure must not call
 			/// the EndDialog function.
@@ -379,9 +377,9 @@ namespace Vanara.PInvoke
 			/// Pointer to an application-defined callback function that is called when the page is created and when it is about to be destroyed. For more
 			/// information about the callback function, see PropSheetPageProc. To use this member, you must set the PSP_USECALLBACK flag in the dwFlags member.
 			/// </summary>
-			private PropSheetPageProc _pfnCallback;
+			public PropSheetPageProc pfnCallback;
 			/// <summary>Pointer to the reference count value. To use this member, you must set the PSP_USEREFPARENT flag in the dwFlags member.</summary>
-			private IntPtr _pcRefParent;
+			public IntPtr pcRefParent;
 			/// <summary>
 			/// Version 5.80 or later. Title of the header area. To use this member under the Wizard97-style wizard, you must also do the following:
 			/// <list type="bullet">
@@ -396,7 +394,8 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			private IntPtr _pszHeaderTitle;
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string pszHeaderTitle;
 			/// <summary>
 			/// Version 5.80 or later. Subtitle of the header area. To use this member, you must do the following:
 			/// <list type="bullet">
@@ -412,188 +411,13 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// <note>This member is ignored when using the Aero-style wizard (PSH_AEROWIZARD).</note>
 			/// </summary>
-			private IntPtr _pszHeaderSubTitle;
+			[MarshalAs(UnmanagedType.LPTStr)]
+			public string pszHeaderSubTitle;
 			/// <summary>
 			/// Version 6.0 or later. An activation context handle. Set this member to the handle that is returned when you create the activation context with
 			/// CreateActCtx. The system will activate this context before creating the dialog box. You do not need to use this member if you use a global manifest.
 			/// </summary>
 			public IntPtr hActCtx;
-
-			/// <summary>Initializes a new instance of the <see cref="PROPSHEETPAGE"/> class and sets the value of <see cref="dwSize"/>.</summary>
-			public PROPSHEETPAGE()
-			{
-				dwSize = (uint)Marshal.SizeOf(this);
-			}
-
-			/// <summary>
-			/// Dialog box template to use to create the page. This member can specify either the resource identifier of the template or the address of a string
-			/// that specifies the name of the template. If the PSP_DLGINDIRECT flag in the dwFlags member is set, pszTemplate is ignored.
-			/// </summary>
-			public SafeResourceId pszTemplate
-			{
-				get => dwFlags.IsFlagSet(PropSheetFlags.PSP_DLGINDIRECT) ? SafeResourceId.Null : new SafeResourceId(_pszTemplate);
-				set
-				{
-					if (!dwFlags.IsFlagSet(PropSheetFlags.PSP_DLGINDIRECT)) FreeResource(ref _pszTemplate);
-					dwFlags = dwFlags.SetFlags(PropSheetFlags.PSP_DLGINDIRECT, false);
-					_pszTemplate = value.GetClonedHandle();
-				}
-			}
-
-			/// <summary>
-			/// A pointer to a dialog box template in memory. The PropertySheet function assumes that the template is in writeable memory; a
-			/// read-only template will cause an exception on some versions of Windows. If dwFlags does not include the PSP_DLGINDIRECT
-			/// value, this member is ignored.
-			/// </summary>
-			public IntPtr pResource
-			{
-				get => _pszTemplate;
-				set
-				{
-					if (!dwFlags.IsFlagSet(PropSheetFlags.PSP_DLGINDIRECT)) FreeResource(ref _pszTemplate);
-					_pszTemplate = value;
-					dwFlags = dwFlags.SetFlags(PropSheetFlags.PSP_DLGINDIRECT, true);
-				}
-			}
-
-			/// <summary>
-			/// A handle to the icon to use as the small icon in the tab for the page. If dwFlags does not include the PSP_USEHICON value, this member is ignored.
-			/// </summary>
-			public IntPtr hIcon
-			{
-				get => dwFlags.IsFlagSet(PropSheetFlags.PSP_USEHICON) ? _hIcon : IntPtr.Zero;
-				set
-				{
-					if (dwFlags.IsFlagSet(PropSheetFlags.PSP_USEICONID)) FreeResource(ref _pszTemplate);
-					_hIcon = value;
-					dwFlags = dwFlags.SetFlags(PropSheetFlags.PSP_USEICONID, false) | PropSheetFlags.PSP_USEHICON;
-				}
-			}
-
-			/// <summary>
-			/// Icon resource to use as the small icon in the tab for the page. This member can specify either the identifier of the icon
-			/// resource or the pointer to the string that specifies the name of the icon resource. If dwFlags does not include the
-			/// PSP_USEICONID value, this member is ignored.
-			/// </summary>
-			public SafeResourceId pszIcon
-			{
-				get => dwFlags.IsFlagSet(PropSheetFlags.PSP_USEICONID) ? new SafeResourceId(_hIcon) : SafeResourceId.Null;
-				set
-				{
-					if (dwFlags.IsFlagSet(PropSheetFlags.PSP_USEICONID)) FreeResource(ref _hIcon);
-					dwFlags = dwFlags.SetFlags(PropSheetFlags.PSP_USEHICON, false) | PropSheetFlags.PSP_USEICONID;
-					_hIcon = value.GetClonedHandle();
-				}
-			}
-
-			/// <summary>
-			/// Title of the property sheet dialog box. This title overrides the title specified in the dialog box template. This member can
-			/// specify either the identifier of a string resource or the pointer to a string that specifies the title. If dwFlags does not
-			/// include the PSP_USETITLE value, this member is ignored.
-			/// </summary>
-			public SafeResourceId pszTitle
-			{
-				get => dwFlags.IsFlagSet(PropSheetFlags.PSP_USETITLE) ? new SafeResourceId(_pszTitle) : SafeResourceId.Null;
-				set
-				{
-					if (dwFlags.IsFlagSet(PropSheetFlags.PSP_USETITLE)) FreeResource(ref _pszTitle);
-					dwFlags = dwFlags.SetFlags(PropSheetFlags.PSP_USETITLE, !value.IsInvalid);
-					_pszTitle = value.GetClonedHandle();
-				}
-			}
-
-			/// <summary>
-			/// Version 5.80 or later. Title of the header area. To use this member under the Wizard97-style wizard, you must also do the following:
-			/// <list type="bullet">
-			/// <item>
-			/// <term>Set the PSP_USEHEADERTITLE flag in the dwFlags member.</term>
-			/// </item>
-			/// <item>
-			/// <term>Set the PSH_WIZARD97 flag in the dwFlags member of the page's PROPSHEETHEADER structure.</term>
-			/// </item>
-			/// <item>
-			/// <term>Make sure that the PSP_HIDEHEADER flag in the dwFlags member is not set.</term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public SafeResourceId pszHeaderTitle
-			{
-				get => dwFlags.IsFlagSet(PropSheetFlags.PSP_USEHEADERTITLE) ? new SafeResourceId(_pszHeaderTitle) : SafeResourceId.Null;
-				set
-				{
-					if (dwFlags.IsFlagSet(PropSheetFlags.PSP_USEHEADERTITLE)) FreeResource(ref _pszHeaderTitle);
-					dwFlags = dwFlags.SetFlags(PropSheetFlags.PSP_USEHEADERTITLE, !value.IsInvalid);
-					_pszHeaderTitle = value.GetClonedHandle();
-				}
-			}
-
-			/// <summary>
-			/// Version 5.80 or later. Subtitle of the header area. To use this member, you must do the following:
-			/// <list type="bullet">
-			/// <item>
-			/// <term>Set the PSP_USEHEADERSUBTITLE flag in the dwFlags member.</term>
-			/// </item>
-			/// <item>
-			/// <term>Set the PSH_WIZARD97 flag in the dwFlags member of the page's PROPSHEETHEADER structure.</term>
-			/// </item>
-			/// <item>
-			/// <term>Make sure that the PSP_HIDEHEADER flag in the dwFlags member is not set.</term>
-			/// </item>
-			/// </list>
-			/// <note>This member is ignored when using the Aero-style wizard (PSH_AEROWIZARD).</note>
-			/// </summary>
-			public SafeResourceId pszHeaderSubTitle
-			{
-				get => dwFlags.IsFlagSet(PropSheetFlags.PSP_USEHEADERSUBTITLE) ? new SafeResourceId(_pszHeaderSubTitle) : SafeResourceId.Null;
-				set
-				{
-					if (dwFlags.IsFlagSet(PropSheetFlags.PSP_USEHEADERSUBTITLE)) FreeResource(ref _pszHeaderSubTitle);
-					dwFlags = dwFlags.SetFlags(PropSheetFlags.PSP_USEHEADERSUBTITLE, !value.IsInvalid);
-					_pszHeaderSubTitle = value.GetClonedHandle();
-				}
-			}
-
-			/// <summary>
-			/// Pointer to an application-defined callback function that is called when the page is created and when it is about to be destroyed. For more
-			/// information about the callback function, see PropSheetPageProc. To use this member, you must set the PSP_USECALLBACK flag in the dwFlags member.
-			/// </summary>
-			public PropSheetPageProc pfnCallback
-			{
-				get => _pfnCallback;
-				set
-				{
-					dwFlags = dwFlags.SetFlags(PropSheetFlags.PSP_USECALLBACK, value != null);
-					_pfnCallback = value;
-				}
-			}
-
-			/// <summary>Pointer to the reference count value. To use this member, you must set the PSP_USEREFPARENT flag in the dwFlags member.</summary>
-			public IntPtr pcRefParent
-			{
-				get => _pcRefParent;
-				set
-				{
-					dwFlags = dwFlags.SetFlags(PropSheetFlags.PSP_USEREFPARENT, value != IntPtr.Zero);
-					_pcRefParent = value;
-				}
-			}
-
-			/// <inheritdoc/>
-			void IDisposable.Dispose()
-			{
-				if (!dwFlags.IsFlagSet(PropSheetFlags.PSP_DLGINDIRECT)) FreeResource(ref _pszTemplate);
-				if (dwFlags.IsFlagSet(PropSheetFlags.PSP_USEICONID)) FreeResource(ref _hIcon);
-				FreeResource(ref _pszTitle);
-				FreeResource(ref _pszHeaderTitle);
-				FreeResource(ref _pszHeaderSubTitle);
-			}
-
-			private static void FreeResource(ref IntPtr ptr)
-			{
-				if (IS_INTRESOURCE(ptr) || ptr == IntPtr.Zero) return;
-				StringHelper.FreeString(ptr);
-				ptr = IntPtr.Zero;
-			}
 		}
 
 		/// <summary>Safe handle for property sheet pages.</summary>
