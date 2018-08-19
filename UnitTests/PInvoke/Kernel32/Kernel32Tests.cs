@@ -365,7 +365,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			using (var hlib = new SafeLibraryHandle("ole32.dll", LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE))
 			{
-				var hres = FindResource(hlib, new SafeResourceId(4), new SafeResourceId(ResourceType.RT_CURSOR));
+				var hres = FindResource(hlib, 4, ResourceType.RT_CURSOR);
 				Assert.That(hres, Is.Not.EqualTo(IntPtr.Zero));
 				var sz = SizeofResource(hlib, hres);
 				Assert.That(sz, Is.GreaterThan(0));
