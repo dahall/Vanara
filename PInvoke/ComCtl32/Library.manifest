@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+  <noInherit/>
+  <assemblyIdentity version="1.0.18.0" name="Vanara.PInvoke.ComCtl32" type="win32" processorArchitecture="*" />
+  <dependency optional="yes">
+    <dependentAssembly>
+      <assemblyIdentity type="win32" name="Microsoft.Windows.Common-Controls" version="6.0.1.0" publicKeyToken="6595b64144ccf1df" language="*" processorArchitecture="*"/>
+    </dependentAssembly>
+  </dependency>
+</assembly>
