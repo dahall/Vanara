@@ -64,6 +64,7 @@ BackgroundCopyACLFlags, BackgroundCopyCost, BackgroundCopyErrorContext, Backgrou
     <ProjectReference Include="..\PInvoke\BITS\Vanara.PInvoke.BITS.csproj" />
     <ProjectReference Include="..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\PInvoke\NetListMgr\Vanara.PInvoke.NetListMgr.csproj" />
+    <ProjectReference Include="..\PInvoke\ShlwApi\Vanara.PInvoke.ShlwApi.csproj" />
     <ProjectReference Include="..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
     <ProjectReference Include="..\PInvoke\VirtDisk\Vanara.PInvoke.VirtDisk.csproj" />
     <ProjectReference Include="..\Security\Vanara.Security.csproj" />

@@ -11,13 +11,18 @@ namespace Vanara.Windows.Forms
 		private ActCtxSafeHandle hActCtx;
 		private IntPtr localCookie;
 
-		public ActivationContext(string source = null)
+		public ActivationContext(string source = null, string assemblyDirectory = null)
 		{
 			if (source == null)
 				GetCurrentActCtx(out hActCtx);
 			else
 			{
 				var actctx = new ACTCTX(source);
+				if (assemblyDirectory != null)
+				{
+					actctx.lpAssemblyDirectory = assemblyDirectory;
+					actctx.dwFlags |= ActCtxFlags.ACTCTX_FLAG_ASSEMBLY_DIRECTORY_VALID;
+				}
 				Create(ref actctx);
 			}
 			Activate();
