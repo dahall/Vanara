@@ -59,7 +59,7 @@ namespace Vanara.PInvoke
 				try
 				{
 					var pk = this;
-					PropSys.PSGetNameFromPropertyKey(ref pk, out var str);
+					PropSys.PSGetNameFromPropertyKey(pk, out var str);
 					return str;
 				}
 				catch { }
