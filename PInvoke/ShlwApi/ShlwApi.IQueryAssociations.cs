@@ -6,6 +6,9 @@ namespace Vanara.PInvoke
 {
 	public static partial class ShlwApi
 	{
+		/// <summary>CLSID_QueryAssociations</summary>
+		public static readonly Guid CLSID_QueryAssociations = new Guid("a07034fd-6caa-4954-ac3f-97a27216f98a");
+
 		/// <summary>Provides information to the <c>IQueryAssociations</c> interface methods.</summary>
 		// typedef enum { ASSOCF_NONE = 0x00000000, ASSOCF_INIT_NOREMAPCLSID = 0x00000001, ASSOCF_INIT_BYEXENAME = 0x00000002,
 		// ASSOCF_OPEN_BYEXENAME = 0x00000002, ASSOCF_INIT_DEFAULTTOSTAR = 0x00000004, ASSOCF_INIT_DEFAULTTOFOLDER = 0x00000008,
@@ -251,6 +254,93 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// <para>Specifies a file's perceived type. This set of constants is used in the AssocGetPerceivedType function.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>Prior to Windows Vista, this enumeration was declared in Shlwapi.h.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shtypes/ne-shtypes-tagperceived typedef enum tagPERCEIVED {
+		// PERCEIVED_TYPE_FIRST , PERCEIVED_TYPE_CUSTOM , PERCEIVED_TYPE_UNSPECIFIED , PERCEIVED_TYPE_FOLDER , PERCEIVED_TYPE_UNKNOWN ,
+		// PERCEIVED_TYPE_TEXT , PERCEIVED_TYPE_IMAGE , PERCEIVED_TYPE_AUDIO , PERCEIVED_TYPE_VIDEO , PERCEIVED_TYPE_COMPRESSED ,
+		// PERCEIVED_TYPE_DOCUMENT , PERCEIVED_TYPE_SYSTEM , PERCEIVED_TYPE_APPLICATION , PERCEIVED_TYPE_GAMEMEDIA , PERCEIVED_TYPE_CONTACTS
+		// , PERCEIVED_TYPE_LAST } PERCEIVED;
+		[PInvokeData("shtypes.h", MSDNShortId = "dbaf5894-1ed6-446f-ac15-12ba4c7326e7")]
+		public enum PERCEIVED
+		{
+			/// <summary>The file's perceived type as defined in the registry is not a known type.</summary>
+			PERCEIVED_TYPE_CUSTOM = -3,
+
+			/// <summary>The file does not have a perceived type.</summary>
+			PERCEIVED_TYPE_UNSPECIFIED = -2,
+
+			/// <summary>Not used.</summary>
+			PERCEIVED_TYPE_FOLDER = -1,
+
+			/// <summary>
+			/// The file's perceived type hasn't yet been requested. This is the cached type of the object when it is created. This value is
+			/// never returned by AssocGetPerceivedType.
+			/// </summary>
+			PERCEIVED_TYPE_UNKNOWN = 0,
+
+			/// <summary>The file's perceived type is "text".</summary>
+			PERCEIVED_TYPE_TEXT = 1,
+
+			/// <summary>The file's perceived type is "image".</summary>
+			PERCEIVED_TYPE_IMAGE = 2,
+
+			/// <summary>The file's perceived type is "audio".</summary>
+			PERCEIVED_TYPE_AUDIO = 3,
+
+			/// <summary>The file's perceived type is "video".</summary>
+			PERCEIVED_TYPE_VIDEO = 4,
+
+			/// <summary>The file's perceived type is "compressed".</summary>
+			PERCEIVED_TYPE_COMPRESSED = 5,
+
+			/// <summary>The file's perceived type is "document".</summary>
+			PERCEIVED_TYPE_DOCUMENT = 6,
+
+			/// <summary>The file's perceived type is "system".</summary>
+			PERCEIVED_TYPE_SYSTEM = 7,
+
+			/// <summary>The file's perceived type is "application".</summary>
+			PERCEIVED_TYPE_APPLICATION = 8,
+
+			/// <summary>Windows Vista and later. The file's perceived type is "gamemedia".</summary>
+			PERCEIVED_TYPE_GAMEMEDIA = 9,
+
+			/// <summary>Windows Vista and later.The file's perceived type is "contacts"</summary>
+			PERCEIVED_TYPE_CONTACTS = 10,
+		}
+
+		/// <summary>Indicates the source of the perceived type information.</summary>
+		[PInvokeData("shlwapi.h", MSDNShortId = "d37f1574-b261-43bf-9712-05a569ab4246")]
+		[Flags]
+		public enum PERCEIVEDFLAG : uint
+		{
+			/// <summary>No perceived type was found (PERCEIVED_TYPE_UNSPECIFIED).</summary>
+			PERCEIVEDFLAG_UNDEFINED = 0x0000,
+
+			/// <summary>The perceived type was determined through an association in the registry.</summary>
+			PERCEIVEDFLAG_SOFTCODED = 0x0001,
+
+			/// <summary>The perceived type is inherently known to Windows.</summary>
+			PERCEIVEDFLAG_HARDCODED = 0x0002,
+
+			/// <summary>The perceived type was determined through a codec provided with Windows.</summary>
+			PERCEIVEDFLAG_NATIVESUPPORT = 0x0004,
+
+			/// <summary>The perceived type is supported by the GDI+ library.</summary>
+			PERCEIVEDFLAG_GDIPLUS = 0x0010,
+
+			/// <summary>The perceived type is supported by the Windows Media SDK.</summary>
+			PERCEIVEDFLAG_WMSDK = 0x0020,
+
+			/// <summary>The perceived type is supported by Windows compressed folders.</summary>
+			PERCEIVEDFLAG_ZIPFOLDER = 0x0040,
+		}
+
+		/// <summary>
 		/// Exposes methods that simplify the process of retrieving information stored in the registry in association with defining a file
 		/// type or protocol and associating it with an application.
 		/// </summary>
@@ -347,6 +437,128 @@ namespace Vanara.PInvoke
 			/// <param name="ppvOut">Undocumented.</param>
 			void GetEnum(ASSOCF flags, ASSOCENUM assocenum, [MarshalAs(UnmanagedType.LPWStr)] string pszExtra, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IntPtr ppvOut);
 		}
+
+		/// <summary>
+		/// <para>Returns a pointer to an IQueryAssociations object.</para>
+		/// </summary>
+		/// <param name="clsid">
+		/// <para>Type: <c>CLSID</c></para>
+		/// <para>
+		/// The CLSID of the object that exposes the interface. This parameter must be set to CLSID_QueryAssociations, which is defined in Shlguid.h.
+		/// </para>
+		/// </param>
+		/// <param name="riid">
+		/// <para>Type: <c>REFIID</c></para>
+		/// <para>Reference to the IID IID_IQueryAssociations, which is defined in Shlguid.h.</para>
+		/// </param>
+		/// <param name="ppv">
+		/// <para>Type: <c>void*</c></para>
+		/// <para>When this method returns, contains the IQueryAssociations interface pointer requested in riid.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>As of Windows Vista, AssocCreateForClasses is preferred to <c>AssocCreate</c>.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-assoccreate LWSTDAPI AssocCreate( CLSID clsid, REFIID
+		// riid, void **ppv );
+		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlwapi.h", MSDNShortId = "33099e0e-73e3-4047-804f-765a59e42e3f")]
+		public static extern HRESULT AssocCreate([In] Guid clsid, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IQueryAssociations ppv);
+
+		/// <summary>
+		/// <para>Retrieves a file's perceived type based on its extension.</para>
+		/// </summary>
+		/// <param name="pszExt">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>A pointer to a buffer that contains the file's extension. This should include the leading period, for example ".txt".</para>
+		/// </param>
+		/// <param name="ptype">
+		/// <para>Type: <c>PERCEIVED*</c></para>
+		/// <para>A pointer to a PERCEIVED value that indicates the perceived type.</para>
+		/// </param>
+		/// <param name="pflag">
+		/// <para>Type: <c>PERCEIVEDFLAG*</c></para>
+		/// <para>A pointer to a value that indicates the source of the perceived type information. One or more of the following values.</para>
+		/// <para>PERCEIVEDFLAG_UNDEFINED (0x0000)</para>
+		/// <para>No perceived type was found (PERCEIVED_TYPE_UNSPECIFIED).</para>
+		/// <para>PERCEIVEDFLAG_SOFTCODED (0x0001)</para>
+		/// <para>The perceived type was determined through an association in the registry.</para>
+		/// <para>PERCEIVEDFLAG_HARDCODED (0x0002)</para>
+		/// <para>The perceived type is inherently known to Windows.</para>
+		/// <para>PERCEIVEDFLAG_NATIVESUPPORT (0x0004)</para>
+		/// <para>The perceived type was determined through a codec provided with Windows.</para>
+		/// <para>PERCEIVEDFLAG_GDIPLUS (0x0010)</para>
+		/// <para>The perceived type is supported by the GDI+ library.</para>
+		/// <para>PERCEIVEDFLAG_WMSDK (0x0020)</para>
+		/// <para>The perceived type is supported by the Windows Media SDK.</para>
+		/// <para>PERCEIVEDFLAG_ZIPFOLDER (0x0040)</para>
+		/// <para>The perceived type is supported by Windows compressed folders.</para>
+		/// </param>
+		/// <param name="ppszType">
+		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>
+		/// If the function returns a success code, this contains the address of a pointer to a buffer that receives the perceived type
+		/// string, for instance "text" or "video". This value can be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function first compares the extension against a hard-coded set of extensions known to Windows. If that search fails to
+		/// reveal a match, the registered associations under HKEY_CLASSES_ROOT are searched for a key that matches the extension and
+		/// contains a PerceivedType value. If that value is found, the extension set is again searched for a match. If again no match is
+		/// found, the perceived type is determined to be PERCEIVED_TYPE_CUSTOM. If either a key that matches the extension or a
+		/// PerceivedType value is not found, the perceived type is reported as PERCEIVED_TYPE_UNSPECIFIED.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-assocgetperceivedtype LWSTDAPI AssocGetPerceivedType(
+		// PCWSTR pszExt, PERCEIVED *ptype, PERCEIVEDFLAG *pflag, PWSTR *ppszType );
+		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlwapi.h", MSDNShortId = "d37f1574-b261-43bf-9712-05a569ab4246")]
+		public static extern HRESULT AssocGetPerceivedType([MarshalAs(UnmanagedType.LPWStr)] string pszExt, ref PERCEIVED ptype, ref PERCEIVEDFLAG pflag, [MarshalAs(UnmanagedType.LPWStr)] ref StringBuilder ppszType);
+
+		/// <summary>
+		/// <para>Determines whether a file type is considered a potential security risk.</para>
+		/// </summary>
+		/// <param name="pszAssoc">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>
+		/// A pointer to a string that contains the type of file in question. This may be either an extension such as ".exe" or a progid such
+		/// as "exefile".
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Returns <c>TRUE</c> if the file type is considered dangerous; otherwise, <c>FALSE</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Files that are determined to be potentially dangerous, such as .exe files, should be handled with more care than other files. For
+		/// example, Windows Internet Explorer version 6.01 or later uses <c>AssocIsDangerous</c> to determine whether it should issue
+		/// stronger warning language in its download dialog box. ShellExecuteEx uses <c>AssocIsDangerous</c> to trigger zone checking using
+		/// the methods of the IInternetSecurityManager interface in conjunction with the URLACTION_SHELL_SHELLEXECUTE flag.
+		/// </para>
+		/// <para>
+		/// The determination of a file's potential risk is made by checking its type against several sources, including a list of known
+		/// dangerous types and the presence of the FTA_AlwaysUnsafe flag in the registry. On systems running Windows XPService Pack 1 (SP1)
+		/// or later or Windows Server 2003, it also uses the SaferiIsExecutableFileType function to determine whether a file type is executable.
+		/// </para>
+		/// <para>
+		/// Applications that can take advantage of <c>AssocIsDangerous</c> include email programs, browsers, chat clients capable of
+		/// downloading files, and any application that moves files or data from one zone of trust to another.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-associsdangerous BOOL AssocIsDangerous( PCWSTR pszAssoc );
+		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlwapi.h", MSDNShortId = "4e0bc3ce-f9d2-4766-8b19-c0954d71e890")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AssocIsDangerous([MarshalAs(UnmanagedType.LPWStr)] string pszAssoc);
 
 		/// <summary>
 		/// <para>Searches for and retrieves a key related to a file or protocol association from the registry.</para>

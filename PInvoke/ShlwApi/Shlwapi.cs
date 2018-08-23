@@ -129,6 +129,56 @@ namespace Vanara.PInvoke
 			FDTF_NOAUTOREADINGORDER = 0x00000400,
 		}
 
+		/// <summary><para>Indicates <c>FILETYPEATTRIBUTEFLAGS</c> constants that are used in the EditFlags value of a file association PROGID registry key.</para></summary><remarks><para>These flags represent possible attributes stored in the EditFlags value of a ProgID registration. The EditFlags data is a single REG_DWORD.</para><para>The following example shows the <c><c>FTA_NoRemove</c></c> (0x00000010) and <c><c>FTA_NoNewVerb</c></c> (0x00000020) attributes assigned to the .myp file type.</para><para><c>.myp</c> (Default) = MyProgram.1 <c>MyProgram.1</c> (Default) = MyProgram Application <c>EditFlags</c> = 0x00000030</para><para>APIs such as IQueryAssociations::GetData can retrieve that EditFlags data. Compare the numerical equivalents of these <c>FILETYPEATTRIBUTEFLAGS</c> flags against that retrived value to determine which flags are set.</para><para>The following example demonstrates the use of IQueryAssociations::GetData to determine if those values are set.</para><para>To set an EditFlags attribute, you can use the RegSetValueEx or SHSetValue functions. First use IQueryAssociations::GetData to retrieve the current set of attributes as shown in the example above, add the desired <c>FILETYPEATTRIBUTEFLAGS</c> to that value, then write that value back to the registry using one of the two set functions.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/ne-shlwapi-filetypeattributeflags
+		// typedef enum FILETYPEATTRIBUTEFLAGS { FTA_None , FTA_Exclude , FTA_Show , FTA_HasExtension , FTA_NoEdit , FTA_NoRemove , FTA_NoNewVerb , FTA_NoEditVerb , FTA_NoRemoveVerb , FTA_NoEditDesc , FTA_NoEditIcon , FTA_NoEditDflt , FTA_NoEditVerbCmd , FTA_NoEditVerbExe , FTA_NoDDE , FTA_NoEditMIME , FTA_OpenIsSafe , FTA_AlwaysUnsafe , FTA_NoRecentDocs , FTA_SafeForElevation , FTA_AlwaysUseDirectInvoke } ;
+		[PInvokeData("shlwapi.h", MSDNShortId = "63b58659-9c4c-4b39-98d1-743724523dcd")]
+		public enum FILETYPEATTRIBUTEFLAGS : uint
+		{
+			/// <summary>No FILETYPEATTRIBUTEFLAGS options set.</summary>
+			FTA_None = 0x00000000,
+			/// <summary>Excludes the file type.</summary>
+			FTA_Exclude = 0x00000001,
+			/// <summary>Shows file types, such as folders, that are not associated with a file name extension.</summary>
+			FTA_Show = 0x00000002,
+			/// <summary>Indicates that the file type has a file name extension.</summary>
+			FTA_HasExtension = 0x00000004,
+			/// <summary>Prohibits editing of the registry entries associated with this file type, the addition of new entries, and the deletion or modification of existing entries.</summary>
+			FTA_NoEdit = 0x00000008,
+			/// <summary>Prohibits deletion of the registry entries associated with this file type.</summary>
+			FTA_NoRemove = 0x00000010,
+			/// <summary>Prohibits the addition of new verbs to the file type.</summary>
+			FTA_NoNewVerb = 0x00000020,
+			/// <summary>Prohibits the modification or deletion of canonical verbs such as open and print.</summary>
+			FTA_NoEditVerb = 0x00000040,
+			/// <summary>Prohibits the deletion of canonical verbs such as open and print.</summary>
+			FTA_NoRemoveVerb = 0x00000080,
+			/// <summary>Prohibits the modification or deletion of the description of the file type.</summary>
+			FTA_NoEditDesc = 0x00000100,
+			/// <summary>Prohibits the modification or deletion of the icon assigned to the file type.</summary>
+			FTA_NoEditIcon = 0x00000200,
+			/// <summary>Prohibits the modification of the default verb.</summary>
+			FTA_NoEditDflt = 0x00000400,
+			/// <summary>Prohibits the modification of the commands associated with verbs.</summary>
+			FTA_NoEditVerbCmd = 0x00000800,
+			/// <summary>Prohibits the modification or deletion of verbs.</summary>
+			FTA_NoEditVerbExe = 0x00001000,
+			/// <summary>Prohibits the modification or deletion of the entries related to DDE.</summary>
+			FTA_NoDDE = 0x00002000,
+			/// <summary>Prohibits the modification or deletion of the content type and default extension entries.</summary>
+			FTA_NoEditMIME = 0x00008000,
+			/// <summary>Indicates that the file type&#39;s open verb can be safely invoked for downloaded files. This flag applies only to safe file types, as identified by AssocIsDangerous. To improve the user experience and reduce unnecessary user prompts when downloading and activating items, file type owners should specify this flag and applications that download and activate files should respect this flag.</summary>
+			FTA_OpenIsSafe = 0x00010000,
+			/// <summary>Prevents the Never ask me check box from being enabled. Use of this flag means FTA_OpenIsSafe is not respected and AssocIsDangerous always returns TRUE. If your file type can execute code, you should always use this flag or ensure that the file type handlers mitigate risks, for example, by producing warning prompts before running the code. The user can override this attribute through the File Type dialog box.</summary>
+			FTA_AlwaysUnsafe = 0x00020000,
+			/// <summary>Prohibits the addition of members of this file type to the Recent Documents folder. Additionally, in Windows 7 and later, prohibits the addition of members of this file type to the automatic Recent or Frequent category of an application&#39;s Jump List. This flag does not restrict members of this file type from being added to a custom Jump List. It also places no restriction on the file type being added to the automatic Jump Lists of other applications in the case that other applications use this file type.</summary>
+			FTA_NoRecentDocs = 0x00100000,
+			/// <summary>Introduced in Windows 8. Marks the file as safe to be passed from a low trust application to a full trust application. Files that originate from the Internet or an app container are examples where the file is considered untrusted. Untrusted files that contain code are especially dangerous, and appropriate security mitigations must be applied if the file is to be opened by a full trust application. File type owners for file formats that have the ability to execute code should specify this flag only if their program mitigates elevation-of-privilege threats that are associated with running code at a higher integrity level. Mitigations include prompting the user before code is executed or executing the code with reduced privileges. By specifying this flag for an entire file type, an app running within an app container can pass files of this type to a program running at full trust. Some file types are recognized as inherently dangerous due to their ability to execute code and will be blocked if you don&#39;t specify this value.</summary>
+			FTA_SafeForElevation = 0x00200000,
+			/// <summary>Introduced in Windows 8. Ensures that the verbs for the file type are invoked with a URI instead of a downloaded version of the file. Use this flag only if you&#39;ve registered the file type&#39;s verb to support DirectInvoke through the SupportedProtocols or UseUrl registration.</summary>
+			FTA_AlwaysUseDirectInvoke = 0x00400000,
+		}
+
 		/// <summary>Return values for <see cref="PathGetCharType"/></summary>
 		[PInvokeData("shlwapi.h", MSDNShortId = "838a255f-413e-424c-819e-47265224208d")]
 		[Flags]
@@ -298,93 +348,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>The program is running on Windows Appliance Server.</summary>
 			OS_APPLIANCE = 36,
-		}
-
-		/// <summary>
-		/// <para>Specifies a file's perceived type. This set of constants is used in the AssocGetPerceivedType function.</para>
-		/// </summary>
-		/// <remarks>
-		/// <para>Prior to Windows Vista, this enumeration was declared in Shlwapi.h.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shtypes/ne-shtypes-tagperceived typedef enum tagPERCEIVED {
-		// PERCEIVED_TYPE_FIRST , PERCEIVED_TYPE_CUSTOM , PERCEIVED_TYPE_UNSPECIFIED , PERCEIVED_TYPE_FOLDER , PERCEIVED_TYPE_UNKNOWN ,
-		// PERCEIVED_TYPE_TEXT , PERCEIVED_TYPE_IMAGE , PERCEIVED_TYPE_AUDIO , PERCEIVED_TYPE_VIDEO , PERCEIVED_TYPE_COMPRESSED ,
-		// PERCEIVED_TYPE_DOCUMENT , PERCEIVED_TYPE_SYSTEM , PERCEIVED_TYPE_APPLICATION , PERCEIVED_TYPE_GAMEMEDIA , PERCEIVED_TYPE_CONTACTS
-		// , PERCEIVED_TYPE_LAST } PERCEIVED;
-		[PInvokeData("shtypes.h", MSDNShortId = "dbaf5894-1ed6-446f-ac15-12ba4c7326e7")]
-		public enum PERCEIVED
-		{
-			/// <summary>The file's perceived type as defined in the registry is not a known type.</summary>
-			PERCEIVED_TYPE_CUSTOM = -3,
-
-			/// <summary>The file does not have a perceived type.</summary>
-			PERCEIVED_TYPE_UNSPECIFIED = -2,
-
-			/// <summary>Not used.</summary>
-			PERCEIVED_TYPE_FOLDER = -1,
-
-			/// <summary>
-			/// The file's perceived type hasn't yet been requested. This is the cached type of the object when it is created. This value is
-			/// never returned by AssocGetPerceivedType.
-			/// </summary>
-			PERCEIVED_TYPE_UNKNOWN = 0,
-
-			/// <summary>The file's perceived type is "text".</summary>
-			PERCEIVED_TYPE_TEXT = 1,
-
-			/// <summary>The file's perceived type is "image".</summary>
-			PERCEIVED_TYPE_IMAGE = 2,
-
-			/// <summary>The file's perceived type is "audio".</summary>
-			PERCEIVED_TYPE_AUDIO = 3,
-
-			/// <summary>The file's perceived type is "video".</summary>
-			PERCEIVED_TYPE_VIDEO = 4,
-
-			/// <summary>The file's perceived type is "compressed".</summary>
-			PERCEIVED_TYPE_COMPRESSED = 5,
-
-			/// <summary>The file's perceived type is "document".</summary>
-			PERCEIVED_TYPE_DOCUMENT = 6,
-
-			/// <summary>The file's perceived type is "system".</summary>
-			PERCEIVED_TYPE_SYSTEM = 7,
-
-			/// <summary>The file's perceived type is "application".</summary>
-			PERCEIVED_TYPE_APPLICATION = 8,
-
-			/// <summary>Windows Vista and later. The file's perceived type is "gamemedia".</summary>
-			PERCEIVED_TYPE_GAMEMEDIA = 9,
-
-			/// <summary>Windows Vista and later.The file's perceived type is "contacts"</summary>
-			PERCEIVED_TYPE_CONTACTS = 10,
-		}
-
-		/// <summary>Indicates the source of the perceived type information.</summary>
-		[PInvokeData("shlwapi.h", MSDNShortId = "d37f1574-b261-43bf-9712-05a569ab4246")]
-		[Flags]
-		public enum PERCEIVEDFLAG : uint
-		{
-			/// <summary>No perceived type was found (PERCEIVED_TYPE_UNSPECIFIED).</summary>
-			PERCEIVEDFLAG_UNDEFINED = 0x0000,
-
-			/// <summary>The perceived type was determined through an association in the registry.</summary>
-			PERCEIVEDFLAG_SOFTCODED = 0x0001,
-
-			/// <summary>The perceived type is inherently known to Windows.</summary>
-			PERCEIVEDFLAG_HARDCODED = 0x0002,
-
-			/// <summary>The perceived type was determined through a codec provided with Windows.</summary>
-			PERCEIVEDFLAG_NATIVESUPPORT = 0x0004,
-
-			/// <summary>The perceived type is supported by the GDI+ library.</summary>
-			PERCEIVEDFLAG_GDIPLUS = 0x0010,
-
-			/// <summary>The perceived type is supported by the Windows Media SDK.</summary>
-			PERCEIVEDFLAG_WMSDK = 0x0020,
-
-			/// <summary>The perceived type is supported by Windows compressed folders.</summary>
-			PERCEIVEDFLAG_ZIPFOLDER = 0x0040,
 		}
 
 		/// <summary>The flags to control the operation of SHAutoComplete.</summary>
@@ -877,128 +840,6 @@ namespace Vanara.PInvoke
 			/// <summary>When retrieving a value, if the requested key is virtualized, fail with ERROR_FILE_NOT_FOUND.</summary>
 			SRRF_NOVIRT = 0x40000000,
 		}
-
-		/// <summary>
-		/// <para>Returns a pointer to an IQueryAssociations object.</para>
-		/// </summary>
-		/// <param name="clsid">
-		/// <para>Type: <c>CLSID</c></para>
-		/// <para>
-		/// The CLSID of the object that exposes the interface. This parameter must be set to CLSID_QueryAssociations, which is defined in Shlguid.h.
-		/// </para>
-		/// </param>
-		/// <param name="riid">
-		/// <para>Type: <c>REFIID</c></para>
-		/// <para>Reference to the IID IID_IQueryAssociations, which is defined in Shlguid.h.</para>
-		/// </param>
-		/// <param name="ppv">
-		/// <para>Type: <c>void*</c></para>
-		/// <para>When this method returns, contains the IQueryAssociations interface pointer requested in riid.</para>
-		/// </param>
-		/// <returns>
-		/// <para>Type: <c>HRESULT</c></para>
-		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>As of Windows Vista, AssocCreateForClasses is preferred to <c>AssocCreate</c>.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-assoccreate LWSTDAPI AssocCreate( CLSID clsid, REFIID
-		// riid, void **ppv );
-		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("shlwapi.h", MSDNShortId = "33099e0e-73e3-4047-804f-765a59e42e3f")]
-		public static extern HRESULT AssocCreate([In, MarshalAs(UnmanagedType.LPStruct)] Guid clsid, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IQueryAssociations ppv);
-
-		/// <summary>
-		/// <para>Retrieves a file's perceived type based on its extension.</para>
-		/// </summary>
-		/// <param name="pszExt">
-		/// <para>Type: <c>PCWSTR</c></para>
-		/// <para>A pointer to a buffer that contains the file's extension. This should include the leading period, for example ".txt".</para>
-		/// </param>
-		/// <param name="ptype">
-		/// <para>Type: <c>PERCEIVED*</c></para>
-		/// <para>A pointer to a PERCEIVED value that indicates the perceived type.</para>
-		/// </param>
-		/// <param name="pflag">
-		/// <para>Type: <c>PERCEIVEDFLAG*</c></para>
-		/// <para>A pointer to a value that indicates the source of the perceived type information. One or more of the following values.</para>
-		/// <para>PERCEIVEDFLAG_UNDEFINED (0x0000)</para>
-		/// <para>No perceived type was found (PERCEIVED_TYPE_UNSPECIFIED).</para>
-		/// <para>PERCEIVEDFLAG_SOFTCODED (0x0001)</para>
-		/// <para>The perceived type was determined through an association in the registry.</para>
-		/// <para>PERCEIVEDFLAG_HARDCODED (0x0002)</para>
-		/// <para>The perceived type is inherently known to Windows.</para>
-		/// <para>PERCEIVEDFLAG_NATIVESUPPORT (0x0004)</para>
-		/// <para>The perceived type was determined through a codec provided with Windows.</para>
-		/// <para>PERCEIVEDFLAG_GDIPLUS (0x0010)</para>
-		/// <para>The perceived type is supported by the GDI+ library.</para>
-		/// <para>PERCEIVEDFLAG_WMSDK (0x0020)</para>
-		/// <para>The perceived type is supported by the Windows Media SDK.</para>
-		/// <para>PERCEIVEDFLAG_ZIPFOLDER (0x0040)</para>
-		/// <para>The perceived type is supported by Windows compressed folders.</para>
-		/// </param>
-		/// <param name="ppszType">
-		/// <para>Type: <c>PWSTR*</c></para>
-		/// <para>
-		/// If the function returns a success code, this contains the address of a pointer to a buffer that receives the perceived type
-		/// string, for instance "text" or "video". This value can be <c>NULL</c>.
-		/// </para>
-		/// </param>
-		/// <returns>
-		/// <para>Type: <c>HRESULT</c></para>
-		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// This function first compares the extension against a hard-coded set of extensions known to Windows. If that search fails to
-		/// reveal a match, the registered associations under HKEY_CLASSES_ROOT are searched for a key that matches the extension and
-		/// contains a PerceivedType value. If that value is found, the extension set is again searched for a match. If again no match is
-		/// found, the perceived type is determined to be PERCEIVED_TYPE_CUSTOM. If either a key that matches the extension or a
-		/// PerceivedType value is not found, the perceived type is reported as PERCEIVED_TYPE_UNSPECIFIED.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-assocgetperceivedtype LWSTDAPI AssocGetPerceivedType(
-		// PCWSTR pszExt, PERCEIVED *ptype, PERCEIVEDFLAG *pflag, PWSTR *ppszType );
-		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("shlwapi.h", MSDNShortId = "d37f1574-b261-43bf-9712-05a569ab4246")]
-		public static extern HRESULT AssocGetPerceivedType([MarshalAs(UnmanagedType.LPWStr)] string pszExt, ref PERCEIVED ptype, ref PERCEIVEDFLAG pflag, [MarshalAs(UnmanagedType.LPWStr)] ref StringBuilder ppszType);
-
-		/// <summary>
-		/// <para>Determines whether a file type is considered a potential security risk.</para>
-		/// </summary>
-		/// <param name="pszAssoc">
-		/// <para>Type: <c>PCWSTR</c></para>
-		/// <para>
-		/// A pointer to a string that contains the type of file in question. This may be either an extension such as ".exe" or a progid such
-		/// as "exefile".
-		/// </para>
-		/// </param>
-		/// <returns>
-		/// <para>Type: <c>BOOL</c></para>
-		/// <para>Returns <c>TRUE</c> if the file type is considered dangerous; otherwise, <c>FALSE</c>.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// Files that are determined to be potentially dangerous, such as .exe files, should be handled with more care than other files. For
-		/// example, Windows Internet Explorer version 6.01 or later uses <c>AssocIsDangerous</c> to determine whether it should issue
-		/// stronger warning language in its download dialog box. ShellExecuteEx uses <c>AssocIsDangerous</c> to trigger zone checking using
-		/// the methods of the IInternetSecurityManager interface in conjunction with the URLACTION_SHELL_SHELLEXECUTE flag.
-		/// </para>
-		/// <para>
-		/// The determination of a file's potential risk is made by checking its type against several sources, including a list of known
-		/// dangerous types and the presence of the FTA_AlwaysUnsafe flag in the registry. On systems running Windows XPService Pack 1 (SP1)
-		/// or later or Windows Server 2003, it also uses the SaferiIsExecutableFileType function to determine whether a file type is executable.
-		/// </para>
-		/// <para>
-		/// Applications that can take advantage of <c>AssocIsDangerous</c> include email programs, browsers, chat clients capable of
-		/// downloading files, and any application that moves files or data from one zone of trust to another.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-associsdangerous BOOL AssocIsDangerous( PCWSTR pszAssoc );
-		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("shlwapi.h", MSDNShortId = "4e0bc3ce-f9d2-4766-8b19-c0954d71e890")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AssocIsDangerous([MarshalAs(UnmanagedType.LPWStr)] string pszAssoc);
 
 		/// <summary>
 		/// <para>Performs a comparison between two characters. The comparison is not case-sensitive.</para>
