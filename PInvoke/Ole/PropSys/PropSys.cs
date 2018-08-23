@@ -1,8 +1,6 @@
 using System;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using System.Security;
+using System.Text;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 
@@ -10,42 +8,6 @@ namespace Vanara.PInvoke
 {
 	public static partial class PropSys
 	{
-		/// <summary>Provides a set of flags to be used with following methods to indicate the operation in ICondition::GetComparisonInfo, ICondition2::GetLeafConditionInfo, IConditionFactory::MakeLeaf, IConditionFactory2::CreateBooleanLeaf, IConditionFactory2::CreateIntegerLeaf, IConditionFactory2::MakeLeaf, IConditionFactory2::CreateStringLeaf, and IConditionGenerator::GenerateForLeaf.</summary>
-		[PInvokeData("Propsys.h", MSDNShortId = "aa965691")]
-		public enum CONDITION_OPERATION
-		{ 
-			/// <summary>An implicit comparison between the value of the property and the value of the constant. For an unresolved condition, COP_IMPLICIT means that a user did not type an operation. In contrast, a resolved condition will always have a condition other than the COP_IMPLICIT operation.</summary>
-			COP_IMPLICIT              = 0,
-			/// <summary>The value of the property and the value of the constant must be equal.</summary>
-			COP_EQUAL                 = 1,
-			/// <summary>The value of the property and the value of the constant must not be equal.</summary>
-			COP_NOTEQUAL              = 2,
-			/// <summary>The value of the property must be less than the value of the constant.</summary>
-			COP_LESSTHAN              = 3,
-			/// <summary>The value of the property must be greater than the value of the constant.</summary>
-			COP_GREATERTHAN           = 4,
-			/// <summary>The value of the property must be less than or equal to the value of the constant.</summary>
-			COP_LESSTHANOREQUAL       = 5,
-			/// <summary>The value of the property must be greater than or equal to the value of the constant.</summary>
-			COP_GREATERTHANOREQUAL    = 6,
-			/// <summary>The value of the property must begin with the value of the constant.</summary>
-			COP_VALUE_STARTSWITH      = 7,
-			/// <summary>The value of the property must end with the value of the constant.</summary>
-			COP_VALUE_ENDSWITH        = 8,
-			/// <summary>The value of the property must contain the value of the constant.</summary>
-			COP_VALUE_CONTAINS        = 9,
-			/// <summary>The value of the property must not contain the value of the constant.</summary>
-			COP_VALUE_NOTCONTAINS     = 10,
-			/// <summary>The value of the property must match the value of the constant, where '?' matches any single character and '*' matches any sequence of characters.</summary>
-			COP_DOSWILDCARDS          = 11,
-			/// <summary>The value of the property must contain a word that is the value of the constant.</summary>
-			COP_WORD_EQUAL            = 12,
-			/// <summary>The value of the property must contain a word that begins with the value of the constant.</summary>
-			COP_WORD_STARTSWITH       = 13,
-			/// <summary>The application is free to interpret this in any suitable way.</summary>
-			COP_APPLICATION_SPECIFIC  = 14
-		}
-
 		/// <summary>
 		/// <para>
 		/// Indicates flags that modify the property store object retrieved by methods that create a property store, such as
@@ -179,577 +141,6 @@ namespace Vanara.PInvoke
 			GPS_VOLATILEPROPERTIESONLY = 0x1000,
 		}
 
-		/// <summary>Describes how property values are displayed when multiple items are selected. For a particular property, PROPDESC_AGGREGATION_TYPE describes how the property should be displayed when multiple items that have a value for the property are selected, such as whether the values should be summed, or averaged, or just displayed with the default "Multiple Values" string.</summary>
-		[PInvokeData("Propsys.h", MSDNShortId = "bb762522")]
-		public enum PROPDESC_AGGREGATION_TYPE
-		{
-			/// <summary>Display the string "Multiple Values".</summary>
-			PDAT_DEFAULT = 0,
-			/// <summary>Display the first value in the selection.</summary>
-			PDAT_FIRST = 1,
-			/// <summary>Display the sum of the selected values. This flag is never returned for data types VT_LPWSTR, VT_BOOL, and VT_FILETIME.</summary>
-			PDAT_SUM = 2,
-			/// <summary>Display the numerical average of the selected values. This flag is never returned for data types VT_LPWSTR, VT_BOOL, and VT_FILETIME.</summary>
-			PDAT_AVERAGE = 3,
-			/// <summary>Display the date range of the selected values. This flag is returned only for values of the VT_FILETIME data type.</summary>
-			PDAT_DATERANGE = 4,
-			/// <summary>Display a concatenated string of all the values. The order of individual values in the string is undefined. The concatenated string omits duplicate values; if a value occurs more than once, it appears only once in the concatenated string.</summary>
-			PDAT_UNION = 5,
-			/// <summary>Display the highest of the selected values.</summary>
-			PDAT_MAX = 6,
-			/// <summary>Display the lowest of the selected values.</summary>
-			PDAT_MIN = 7
-		}
-
-		/// <summary>Describes the condition type to use when displaying the property in the query builder UI in Windows Vista, but not in Windows 7 and later.</summary>
-		[PInvokeData("Propsys.h", MSDNShortId = "bb762523")]
-		public enum PROPDESC_CONDITION_TYPE
-		{
-			/// <summary>The default value; it means the condition type is unspecified.</summary>
-			PDCOT_NONE = 0,
-			/// <summary>Use the string condition type.</summary>
-			PDCOT_STRING = 1,
-			/// <summary>Use the size condition type.</summary>
-			PDCOT_SIZE = 2,
-			/// <summary>Use the date/time condition type.</summary>
-			PDCOT_DATETIME = 3,
-			/// <summary>Use the Boolean condition type.</summary>
-			PDCOT_BOOLEAN = 4,
-			/// <summary>Use the number condition type.</summary>
-			PDCOT_NUMBER = 5
-		}
-
-		/// <summary>A value that indicates the display type.</summary>
-		[PInvokeData("Propsys.h", MSDNShortId = "bb761535")]
-		public enum PROPDESC_DISPLAYTYPE
-		{
-			/// <summary>The value is displayed as a string.</summary>
-			PDDT_STRING = 0,
-			/// <summary>The value is displayed as an integer.</summary>
-			PDDT_NUMBER = 1,
-			/// <summary>The value is displayed as a Boolean value.</summary>
-			PDDT_BOOLEAN = 2,
-			/// <summary>The value is displayed as date and time.</summary>
-			PDDT_DATETIME = 3,
-			/// <summary>The value is displayed as an enumerated type-list. Use IPropertyDescription::GetEnumTypeList to handle this type.</summary>
-			PDDT_ENUMERATED = 4
-		}
-
-		/// <summary>Describes the filtered list of property descriptions that is returned.</summary>
-		public enum PROPDESC_ENUMFILTER
-		{
-			/// <summary>The list contains all property descriptions in the system.</summary>
-			PDEF_ALL = 0,        // All properties in system
-								 /// <summary>The list contains system property descriptions only. It excludes third-party property descriptions that are registered on the computer.</summary>
-			PDEF_SYSTEM = 1,        // Only system properties
-									/// <summary>The list contains only third-party property descriptions that are registered on the computer.</summary>
-			PDEF_NONSYSTEM = 2,        // Only non-system properties
-									   /// <summary>The list contains only viewable properties, where &lt;typeInfo isViewable="true"&gt;.</summary>
-			PDEF_VIEWABLE = 3,        // Only viewable properties
-									  /// <summary>Deprecated in Windows 7 and later. The list contains only queryable properties, where &lt;typeInfo isViewable="true" isQueryable="true"&gt;.</summary>
-			PDEF_QUERYABLE = 4,        // Deprecated
-									   /// <summary>Deprecated in Windows 7 and later. The list contains only properties to be included in full-text queries.</summary>
-			PDEF_INFULLTEXTQUERY = 5,        // Deprecated
-											 /// <summary>The list contains only properties that are columns.</summary>
-			PDEF_COLUMN = 6,        // Only properties that are columns
-		}
-
-		/// <summary>Used by property description helper functions, such as PSFormatForDisplay, to indicate the format of a property string.</summary>
-		[PInvokeData("Propsys.h", MSDNShortId = "bb762525")]
-		[Flags]
-		public enum PROPDESC_FORMAT_FLAGS
-		{
-			/// <summary>Use the format settings specified in the property's .propdesc file.</summary>
-			PDFF_DEFAULT = 0,
-			/// <summary>Precede the value with the property's display name. If the hideLabelPrefix attribute of the labelInfo element in the property's .propinfo file is set to true, then this flag is ignored.</summary>
-			PDFF_PREFIXNAME = 0x1,
-			/// <summary>Treat the string as a file name.</summary>
-			PDFF_FILENAME = 0x2,
-			/// <summary>Byte sizes are always displayed in KB, regardless of size. This enables clean alignment of the values in the column. This flag applies only to properties that have been declared as type Integer in the displayType attribute of the displayInfo element in the property's .propinfo file. This flag overrides the numberFormat setting.</summary>
-			PDFF_ALWAYSKB = 0x4,
-			/// <summary>Reserved.</summary>
-			PDFF_RESERVED_RIGHTTOLEFT = 0x8,
-			/// <summary>Display time as "hh:mm am/pm".</summary>
-			PDFF_SHORTTIME = 0x10,
-			/// <summary>Display time as "hh:mm:ss am/pm".</summary>
-			PDFF_LONGTIME = 0x20,
-			/// <summary>Hide the time portion of datetime.</summary>
-			PDFF_HIDETIME = 0x40,
-			/// <summary>Display date as "MM/DD/YY". For example, "03/21/04".</summary>
-			PDFF_SHORTDATE = 0x80,
-			/// <summary>Display date as "DayOfWeek, Month day, year". For example, "Monday, March 21, 2009".</summary>
-			PDFF_LONGDATE = 0x100,
-			/// <summary>Hide the date portion of datetime.</summary>
-			PDFF_HIDEDATE = 0x200,
-			/// <summary>Use friendly date descriptions. For example, "Yesterday".</summary>
-			PDFF_RELATIVEDATE = 0x400,
-			/// <summary>Return the invitation text if formatting failed or the value was empty. Invitation text is text displayed in a text box as a cue for the user, such as "Enter your name". Formatting can fail if the data entered is not of an expected type, such as when alpha characters have been entered in a phone-number field.</summary>
-			PDFF_USEEDITINVITATION = 0x800,
-			/// <summary>If this flag is used, the PDFF_USEEDITINVITATION flag must also be specified. When the formatting flags are PDFF_READONLY | PDFF_USEEDITINVITATION and the algorithm would have shown invitation text, a string is returned that indicates the value is "Unknown" instead of returning the invitation text.</summary>
-			PDFF_READONLY = 0x1000,
-			/// <summary>Do not detect reading order automatically. Useful when converting to ANSI to omit the Unicode reading order characters. However, reading order characters for some values are still returned.</summary>
-			PDFF_NOAUTOREADINGORDER = 0x2000
-		}
-
-		/// <summary>A flag value that indicates the grouping type.</summary>
-		[PInvokeData("Propsys.h", MSDNShortId = "bb761542")]
-		public enum PROPDESC_GROUPING_RANGE
-		{
-			/// <summary>Displays individual values.</summary>
-			PDGR_DISCRETE = 0,
-			/// <summary>Displays static alphanumeric ranges.</summary>
-			PDGR_ALPHANUMERIC = 1,
-			/// <summary>Displays static size ranges.</summary>
-			PDGR_SIZE = 2,
-			/// <summary>Displays dynamically created ranges.</summary>
-			PDGR_DYNAMIC = 3,
-			/// <summary>Displays month and year groups.</summary>
-			PDGR_DATE = 4,
-			/// <summary>Displays percent groups.</summary>
-			PDGR_PERCENT = 5,
-			/// <summary>Displays percent groups returned by IPropertyDescription::GetEnumTypeList.		</summary>
-			PDGR_ENUMERATED = 6
-		}
-
-		/// <summary>Describes the relative description type for a property description, as determined by the relativeDescriptionType attribute of the displayInfo element.</summary>
-		[PInvokeData("Propsys.h", MSDNShortId = "bb762526")]
-		public enum PROPDESC_RELATIVEDESCRIPTION_TYPE
-		{
-			/// <summary>General type.</summary>
-			PDRDT_GENERAL = 0,
-			/// <summary>Date type.</summary>
-			PDRDT_DATE = 1,
-			/// <summary>Size type.</summary>
-			PDRDT_SIZE = 2,
-			/// <summary>Count type.</summary>
-			PDRDT_COUNT = 3,
-			/// <summary>Revision type.</summary>
-			PDRDT_REVISION = 4,
-			/// <summary>Length type.</summary>
-			PDRDT_LENGTH = 5,
-			/// <summary>Duration type.</summary>
-			PDRDT_DURATION = 6,
-			/// <summary>Speed type.</summary>
-			PDRDT_SPEED = 7,
-			/// <summary>Rate type.</summary>
-			PDRDT_RATE = 8,
-			/// <summary>Rating type.</summary>
-			PDRDT_RATING = 9,
-			/// <summary>Priority type.</summary>
-			PDRDT_PRIORITY = 10
-		}
-
-		/// <summary>Indicate the sort types available to the user.</summary>
-		[PInvokeData("Propsys.h", MSDNShortId = "bb761551")]
-		public enum PROPDESC_SORTDESCRIPTION
-		{
-			/// <summary>Default. "Sort going up", "Sort going down"</summary>
-			PDSD_GENERAL = 0,
-			/// <summary>"A on top", "Z on top"</summary>
-			PDSD_A_Z = 1,
-			/// <summary>"Lowest on top", "Highest on top"</summary>
-			PDSD_LOWEST_HIGHEST = 2,
-			/// <summary>"Smallest on top", "Largest on top"</summary>
-			PDSD_SMALLEST_BIGGEST = 3,
-			/// <summary>"Oldest on top", "Newest on top"		</summary>
-			PDSD_OLDEST_NEWEST = 4
-		}
-
-		/// <summary>Describes attributes of the typeInfo element in the property's .propdesc file.</summary>
-		[PInvokeData("Propsys.h", MSDNShortId = "bb762527")]
-		[Flags]
-		public enum PROPDESC_TYPE_FLAGS : uint
-		{
-			/// <summary>The property uses the default values for all attributes.</summary>
-			PDTF_DEFAULT	= 0,
-			/// <summary>The property can have multiple values. These values are stored as a VT_VECTOR in the PROPVARIANT structure. This value is set by the multipleValues attribute of the typeInfo element in the property's .propdesc file.</summary>
-			PDTF_MULTIPLEVALUES	= 0x1,
-			/// <summary>This flag indicates that a property is read-only, and cannot be written to. This value is set by the isInnate attribute of the typeInfo element in the property's .propdesc file.</summary>
-			PDTF_ISINNATE	= 0x2,
-			/// <summary>The property is a group heading. This value is set by the isGroup attribute of the typeInfo element in the property's .propdesc file.</summary>
-			PDTF_ISGROUP	= 0x4,
-			/// <summary>The user can group by this property. This value is set by the canGroupBy attribute of the typeInfo element in the property's .propdesc file.</summary>
-			PDTF_CANGROUPBY	= 0x8,
-			/// <summary>The user can stack by this property. This value is set by the canStackBy attribute of the typeInfo element in the property's .propdesc file.</summary>
-			PDTF_CANSTACKBY	= 0x10,
-			/// <summary>This property contains a hierarchy. This value is set by the isTreeProperty attribute of the typeInfo element in the property's .propdesc file.</summary>
-			PDTF_ISTREEPROPERTY	= 0x20,
-			/// <summary>Deprecated in Windows 7 and later. Include this property in any full text query that is performed. This value is set by the includeInFullTextQuery attribute of the typeInfo element in the property's .propdesc file.</summary>
-			PDTF_INCLUDEINFULLTEXTQUERY	= 0x40,
-			/// <summary>This property is meant to be viewed by the user. This influences whether the property shows up in the "Choose Columns" dialog box, for example. This value is set by the isViewable attribute of the typeInfo element in the property's .propdesc file.</summary>
-			PDTF_ISVIEWABLE	= 0x80,
-			/// <summary>Deprecated in Windows 7 and later. This property is included in the list of properties that can be queried. A queryable property must also be viewable. This influences whether the property shows up in the query builder UI. This value is set by the isQueryable attribute of the typeInfo element in the property's .propdesc file.</summary>
-			PDTF_ISQUERYABLE	= 0x100,
-			/// <summary>Windows Vista with Service Pack 1 (SP1) and later. Used with an innate property (that is, a value calculated from other property values) to indicate that it can be deleted. This value is used by the Remove Properties UI to determine whether to display a check box next to a property that enables that property to be selected for removal. Note that a property that is not innate can always be purged regardless of the presence or absence of this flag.</summary>
-			PDTF_CANBEPURGED	= 0x200,
-			/// <summary>Windows 7 and later. The unformatted (raw) property value should be used for searching.</summary>
-			PDTF_SEARCHRAWVALUE	= 0x400,
-			PDTF_DONTCOERCEEMPTYSTRINGS	= 0x800,
-			PDTF_ALWAYSINSUPPLEMENTALSTORE	= 0x1000,
-			/// <summary>This property is owned by the system.</summary>
-			PDTF_ISSYSTEMPROPERTY	= 0x80000000,
-			/// <summary>A mask used to retrieve all flags.</summary>
-			PDTF_MASK_ALL	= 0x80001fff
-		}
-
-		/// <summary>These flags describe properties in property description list strings.</summary>
-		[PInvokeData("Propsys.h", MSDNShortId = "bb762528")]
-		[Flags]
-		public enum PROPDESC_VIEW_FLAGS
-		{
-			/// <summary>Show this property by default.</summary>
-			PDVF_DEFAULT	= 0,
-			/// <summary>This property should be centered.</summary>
-			PDVF_CENTERALIGN	= 0x1,
-			/// <summary>This property should be right aligned.</summary>
-			PDVF_RIGHTALIGN	= 0x2,
-			/// <summary>Show this property as the beginning of the next collection of properties in the view.</summary>
-			PDVF_BEGINNEWGROUP	= 0x4,
-			/// <summary>Fill the remainder of the view area with the content of this property.</summary>
-			PDVF_FILLAREA	= 0x8,
-			/// <summary>Sort this property in reverse (descending) order. Applies to a property in a list of sorted properties.</summary>
-			PDVF_SORTDESCENDING	= 0x10,
-			/// <summary>Show this property only if it is present.</summary>
-			PDVF_SHOWONLYIFPRESENT	= 0x20,
-			/// <summary>This property should be shown by default in a view (where applicable).</summary>
-			PDVF_SHOWBYDEFAULT	= 0x40,
-			/// <summary>This property should be shown by default in the primary column selection UI.</summary>
-			PDVF_SHOWINPRIMARYLIST	= 0x80,
-			/// <summary>This property should be shown by default in the secondary column selection UI.</summary>
-			PDVF_SHOWINSECONDARYLIST	= 0x100,
-			/// <summary>Hide the label of this property if the view normally shows the label.</summary>
-			PDVF_HIDELABEL	= 0x200,
-			/// <summary>This property should not be displayed as a column in the UI.</summary>
-			PDVF_HIDDEN	= 0x800,
-			/// <summary>This property can be wrapped to the next row.</summary>
-			PDVF_CANWRAP	= 0x1000,
-			/// <summary>A mask used to retrieve all flags.</summary>
-			PDVF_MASK_ALL	= 0x1bff
-		}
-
-		/// <summary>Property Enumeration Types</summary>
-		public enum PROPENUMTYPE
-		{
-			/// <summary>Use DisplayText and either RangeMinValue or RangeSetValue.</summary>
-			PET_DISCRETEVALUE = 0,
-
-			/// <summary>Use DisplayText and either RangeMinValue or RangeSetValue</summary>
-			PET_RANGEDVALUE = 1,
-
-			/// <summary>Use DisplayText</summary>
-			PET_DEFAULTVALUE = 2,
-
-			/// <summary>Use Value or RangeMinValue</summary>
-			PET_ENDRANGE = 3
-		}
-
-		/// <summary>Exposes a method that initializes a handler, such as a property handler, thumbnail handler, or preview handler, with a stream.</summary>
-		[ComImport, Guid("b824b49d-22ac-4161-ac8a-9916e8fa3f7f"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		[PInvokeData("Propsys.h", MSDNShortId = "bb761810")]
-		public interface IInitializeWithStream
-		{
-			/// <summary>Initializes a handler with a stream.</summary>
-			/// <param name="pstream">A pointer to an IStream interface that represents the stream source.</param>
-			/// <param name="grfMode">One of the following STGM values that indicates the access mode for pstream. STGM_READ or STGM_READWRITE.</param>
-			void Initialize(IStream pstream, STGM grfMode);
-		}
-
-		// <summary>Exposes methods that enumerate and retrieve individual property description details.</summary>
-		[ComImport, Guid("6F79D558-3E96-4549-A1D1-7D75D2288814"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		[PInvokeData("Propsys.h", MSDNShortId = "bb761561")]
-		public interface IPropertyDescription
-		{
-			/// <summary>Gets a structure that acts as a property's unique identifier.</summary>
-			/// <returns>When this method returns, contains a pointer to a PROPERTYKEY structure.</returns>
-			PROPERTYKEY GetPropertyKey();
-			/// <summary>Gets the case-sensitive name by which a property is known to the system, regardless of its localized name.</summary>
-			/// <returns>When this method returns, contains the address of a pointer to the property's canonical name as a null-terminated Unicode string.</returns>
-			SafeCoTaskMemString GetCanonicalName();
-			/// <summary>Gets the variant type of the property.</summary>
-			/// <returns>When this method returns, contains a pointer to a VARTYPE that indicates the property type. If the property is multi-valued, the value pointed to is a VT_VECTOR mask (VT_VECTOR ORed to the VARTYPE.</returns>
-			VARTYPE GetPropertyType();
-			/// <summary>Gets the display name of the property as it is shown in any UI.</summary>
-			/// <param name="pszName">Contains the address of a pointer to the property's name as a null-terminated Unicode string.</param>
-			[PreserveSig]
-			HRESULT GetDisplayName(out SafeCoTaskMemString pszName);
-			/// <summary>Gets the text used in edit controls hosted in various dialog boxes.</summary>
-			/// <returns>When this method returns, contains the address of a pointer to a null-terminated Unicode buffer that holds the invitation text.</returns>
-			SafeCoTaskMemString GetEditInvitation();
-			/// <summary>Gets a set of flags that describe the uses and capabilities of the property.</summary>
-			/// <param name="mask">A mask that specifies which type flags to retrieve. A combination of values found in the PROPDESC_TYPE_FLAGS constants. To retrieve all type flags, pass PDTF_MASK_ALL</param>
-			/// <returns>When this method returns, contains a pointer to a value that consists of bitwise PROPDESC_TYPE_FLAGS values.</returns>
-			PROPDESC_TYPE_FLAGS GetTypeFlags([In] PROPDESC_TYPE_FLAGS mask);
-			/// <summary>Gets the current set of flags governing the property's view.</summary>
-			/// <returns>When this method returns, contains a pointer to a value that includes one or more of the following flags. See PROPDESC_VIEW_FLAGS for valid values.</returns>
-			PROPDESC_VIEW_FLAGS GetViewFlags();
-			/// <summary>Gets the default column width of the property in a list view.</summary>
-			/// <returns>A pointer to the column width value, in characters.</returns>
-			uint GetDefaultColumnWidth();
-			/// <summary>Gets the current data type used to display the property.</summary>
-			/// <returns>Contains a pointer to a value that indicates the display type.</returns>
-			PROPDESC_DISPLAYTYPE GetDisplayType();
-			/// <summary>Gets the column state flag, which describes how the property should be treated by interfaces or APIs that use this flag.</summary>
-			/// <returns>When this method returns, contains a pointer to the column state flag.</returns>
-			SHCOLSTATE GetColumnState();
-			/// <summary>Gets the grouping method to be used when a view is grouped by a property, and retrieves the grouping type.</summary>
-			/// <returns>Receives a pointer to a flag value that indicates the grouping type.</returns>
-			PROPDESC_GROUPING_RANGE GetGroupingRange();
-			/// <summary>Gets the relative description type for a property description.</summary>
-			/// <returns>When this method returns, contains a pointer to the relative description type value. See PROPDESC_RELATIVEDESCRIPTION_TYPE for valid values.</returns>
-			PROPDESC_RELATIVEDESCRIPTION_TYPE GetRelativeDescriptionType();
-			/// <summary>Compares two property values in the manner specified by the property description. Returns two display strings that describe how the two properties compare.</summary>
-			/// <param name="propvar1">A reference to a PROPVARIANT structure that contains the type and value of the first property.</param>
-			/// <param name="propvar2">A reference to a PROPVARIANT structure that contains the type and value of the second property.</param>
-			/// <param name="ppszDesc1">When this method returns, contains the address of a pointer to the description string that compares the first property with the second property. The string is null-terminated.</param>
-			/// <param name="ppszDesc2">When this method returns, contains the address of a pointer to the description string that compares the second property with the first property. The string is null-terminated.</param>
-			void GetRelativeDescription([In] PROPVARIANT propvar1, [In] PROPVARIANT propvar2, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszDesc1, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszDesc2);
-			/// <summary>Gets the current sort description flags for the property, which indicate the particular wordings of sort offerings.</summary>
-			/// <returns>When this method returns, contains a pointer to the value of one or more of the following flags that indicate the sort types available to the user. Note that the strings shown are English versions only. Localized strings are used for other locales.</returns>
-			PROPDESC_SORTDESCRIPTION GetSortDescription();
-			/// <summary>Gets the localized display string that describes the current sort order.</summary>
-			/// <param name="fDescending">TRUE if ppszDescription should reference the string "Z on top"; FALSE to reference the string "A on top".</param>
-			/// <returns>When this method returns, contains the address of a pointer to the sort description as a null-terminated Unicode string.</returns>
-			SafeCoTaskMemString GetSortDescriptionLabel([In, MarshalAs(UnmanagedType.Bool)] bool fDescending);
-			/// <summary>Gets a value that describes how the property values are displayed when multiple items are selected in the UI.</summary>
-			/// <returns>When this method returns, contains a pointer to a value that indicates the aggregation type.</returns>
-			PROPDESC_AGGREGATION_TYPE GetAggregationType();
-			/// <summary>Gets the condition type and default condition operation to use when displaying the property in the query builder UI. This influences the list of predicate conditions (for example, equals, less than, and contains) that are shown for this property.</summary>
-			/// <param name="pcontype">A pointer to a value that indicates the condition type.</param>
-			/// <param name="popDefault">When this method returns, contains a pointer to a value that indicates the default condition operation.</param>
-			void GetConditionType(out PROPDESC_CONDITION_TYPE pcontype, out CONDITION_OPERATION popDefault);
-			/// <summary>Gets an instance of an IPropertyEnumTypeList, which can be used to enumerate the possible values for a property.</summary>
-			/// <param name="riid">Reference to the interface ID of the requested interface.</param>
-			/// <returns>When this method returns, contains the address of an IPropertyEnumTypeList interface pointer.</returns>
-			[return: MarshalAs(UnmanagedType.Interface)]
-			IPropertyEnumTypeList GetEnumTypeList([MarshalAs(UnmanagedType.LPStruct)] Guid riid);
-			/// <summary>Coerces the value to the canonical value, according to the property description.</summary>
-			/// <param name="propvar">On entry, contains a pointer to a PROPVARIANT structure that contains the original value. When this method returns, contains the canonical value.</param>
-			[PreserveSig]
-			HRESULT CoerceToCanonicalValue([In, Out] PROPVARIANT propvar);
-			/// <summary>Gets a formatted, Unicode string representation of a property value.</summary>
-			/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
-			/// <param name="pdfFlags">One or more of the PROPDESC_FORMAT_FLAGS flags, which are either bitwise or multiple values, that indicate the property string format.</param>
-			/// <param name="pszText">When this method returns, contains the formatted value as a null-terminated, Unicode string. The calling application must allocate memory for the buffer, and use CoTaskMemFree to release the string specified by pszText when it is no longer needed.</param>
-			SafeCoTaskMemString FormatForDisplay([In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags);
-			/// <summary>Gets a value that indicates whether a property is canonical according to the definition of the property description.</summary>
-			/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
-			/// <returns>Returns one of the following values: S_OK = The value is canonical; S_FALSE = The value is not canonical.</returns>
-			[PreserveSig]
-			HRESULT IsValueCanonical([In] PROPVARIANT propvar);
-		}
-
-		[ComImport, Guid("57d2eded-5062-400e-b107-5dae79fe57a6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		[PInvokeData("Propsys.h", MSDNShortId = "bb761561")]
-		public interface IPropertyDescription2 : IPropertyDescription
-		{
-			/// <summary>Gets a structure that acts as a property's unique identifier.</summary>
-			/// <returns>When this method returns, contains a pointer to a PROPERTYKEY structure.</returns>
-			new PROPERTYKEY GetPropertyKey();
-			/// <summary>Gets the case-sensitive name by which a property is known to the system, regardless of its localized name.</summary>
-			/// <returns>When this method returns, contains the address of a pointer to the property's canonical name as a null-terminated Unicode string.</returns>
-			new SafeCoTaskMemString GetCanonicalName();
-			/// <summary>Gets the variant type of the property.</summary>
-			/// <returns>When this method returns, contains a pointer to a VARTYPE that indicates the property type. If the property is multi-valued, the value pointed to is a VT_VECTOR mask (VT_VECTOR ORed to the VARTYPE.</returns>
-			new VARTYPE GetPropertyType();
-			/// <summary>Gets the display name of the property as it is shown in any UI.</summary>
-			/// <param name="pszName">Contains the address of a pointer to the property's name as a null-terminated Unicode string.</param>
-			[PreserveSig]
-			new HRESULT GetDisplayName(out SafeCoTaskMemString pszName);
-			/// <summary>Gets the text used in edit controls hosted in various dialog boxes.</summary>
-			/// <returns>When this method returns, contains the address of a pointer to a null-terminated Unicode buffer that holds the invitation text.</returns>
-			new SafeCoTaskMemString GetEditInvitation();
-			/// <summary>Gets a set of flags that describe the uses and capabilities of the property.</summary>
-			/// <param name="mask">A mask that specifies which type flags to retrieve. A combination of values found in the PROPDESC_TYPE_FLAGS constants. To retrieve all type flags, pass PDTF_MASK_ALL</param>
-			/// <returns>When this method returns, contains a pointer to a value that consists of bitwise PROPDESC_TYPE_FLAGS values.</returns>
-			new PROPDESC_TYPE_FLAGS GetTypeFlags([In] PROPDESC_TYPE_FLAGS mask);
-			/// <summary>Gets the current set of flags governing the property's view.</summary>
-			/// <returns>When this method returns, contains a pointer to a value that includes one or more of the following flags. See PROPDESC_VIEW_FLAGS for valid values.</returns>
-			new PROPDESC_VIEW_FLAGS GetViewFlags();
-			/// <summary>Gets the default column width of the property in a list view.</summary>
-			/// <returns>A pointer to the column width value, in characters.</returns>
-			new uint GetDefaultColumnWidth();
-			/// <summary>Gets the current data type used to display the property.</summary>
-			/// <returns>Contains a pointer to a value that indicates the display type.</returns>
-			new PROPDESC_DISPLAYTYPE GetDisplayType();
-			/// <summary>Gets the column state flag, which describes how the property should be treated by interfaces or APIs that use this flag.</summary>
-			/// <returns>When this method returns, contains a pointer to the column state flag.</returns>
-			new SHCOLSTATE GetColumnState();
-			/// <summary>Gets the grouping method to be used when a view is grouped by a property, and retrieves the grouping type.</summary>
-			/// <returns>Receives a pointer to a flag value that indicates the grouping type.</returns>
-			new PROPDESC_GROUPING_RANGE GetGroupingRange();
-			/// <summary>Gets the relative description type for a property description.</summary>
-			/// <returns>When this method returns, contains a pointer to the relative description type value. See PROPDESC_RELATIVEDESCRIPTION_TYPE for valid values.</returns>
-			new PROPDESC_RELATIVEDESCRIPTION_TYPE GetRelativeDescriptionType();
-			/// <summary>Compares two property values in the manner specified by the property description. Returns two display strings that describe how the two properties compare.</summary>
-			/// <param name="propvar1">A reference to a PROPVARIANT structure that contains the type and value of the first property.</param>
-			/// <param name="propvar2">A reference to a PROPVARIANT structure that contains the type and value of the second property.</param>
-			/// <param name="ppszDesc1">When this method returns, contains the address of a pointer to the description string that compares the first property with the second property. The string is null-terminated.</param>
-			/// <param name="ppszDesc2">When this method returns, contains the address of a pointer to the description string that compares the second property with the first property. The string is null-terminated.</param>
-			new void GetRelativeDescription([In] PROPVARIANT propvar1, [In] PROPVARIANT propvar2, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszDesc1, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszDesc2);
-			/// <summary>Gets the current sort description flags for the property, which indicate the particular wordings of sort offerings.</summary>
-			/// <returns>When this method returns, contains a pointer to the value of one or more of the following flags that indicate the sort types available to the user. Note that the strings shown are English versions only. Localized strings are used for other locales.</returns>
-			new PROPDESC_SORTDESCRIPTION GetSortDescription();
-			/// <summary>Gets the localized display string that describes the current sort order.</summary>
-			/// <param name="fDescending">TRUE if ppszDescription should reference the string "Z on top"; FALSE to reference the string "A on top".</param>
-			/// <returns>When this method returns, contains the address of a pointer to the sort description as a null-terminated Unicode string.</returns>
-			new SafeCoTaskMemString GetSortDescriptionLabel([In, MarshalAs(UnmanagedType.Bool)] bool fDescending);
-			/// <summary>Gets a value that describes how the property values are displayed when multiple items are selected in the UI.</summary>
-			/// <returns>When this method returns, contains a pointer to a value that indicates the aggregation type.</returns>
-			new PROPDESC_AGGREGATION_TYPE GetAggregationType();
-			/// <summary>Gets the condition type and default condition operation to use when displaying the property in the query builder UI. This influences the list of predicate conditions (for example, equals, less than, and contains) that are shown for this property.</summary>
-			/// <param name="pcontype">A pointer to a value that indicates the condition type.</param>
-			/// <param name="popDefault">When this method returns, contains a pointer to a value that indicates the default condition operation.</param>
-			new void GetConditionType(out PROPDESC_CONDITION_TYPE pcontype, out CONDITION_OPERATION popDefault);
-			/// <summary>Gets an instance of an IPropertyEnumTypeList, which can be used to enumerate the possible values for a property.</summary>
-			/// <param name="riid">Reference to the interface ID of the requested interface.</param>
-			/// <returns>When this method returns, contains the address of an IPropertyEnumTypeList interface pointer.</returns>
-			[return: MarshalAs(UnmanagedType.Interface)]
-			new IPropertyEnumTypeList GetEnumTypeList([MarshalAs(UnmanagedType.LPStruct)] Guid riid);
-			/// <summary>Coerces the value to the canonical value, according to the property description.</summary>
-			/// <param name="propvar">On entry, contains a pointer to a PROPVARIANT structure that contains the original value. When this method returns, contains the canonical value.</param>
-			[PreserveSig]
-			new HRESULT CoerceToCanonicalValue([In, Out] PROPVARIANT propvar);
-			/// <summary>Gets a formatted, Unicode string representation of a property value.</summary>
-			/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
-			/// <param name="pdfFlags">One or more of the PROPDESC_FORMAT_FLAGS flags, which are either bitwise or multiple values, that indicate the property string format.</param>
-			/// <param name="pszText">When this method returns, contains the formatted value as a null-terminated, Unicode string. The calling application must allocate memory for the buffer, and use CoTaskMemFree to release the string specified by pszText when it is no longer needed.</param>
-			new SafeCoTaskMemString FormatForDisplay([In] PROPVARIANT propvar, [In] PROPDESC_FORMAT_FLAGS pdfFlags);
-			/// <summary>Gets a value that indicates whether a property is canonical according to the definition of the property description.</summary>
-			/// <param name="propvar">A reference to a PROPVARIANT structure that contains the type and value of the property.</param>
-			/// <returns>Returns one of the following values: S_OK = The value is canonical; S_FALSE = The value is not canonical.</returns>
-			[PreserveSig]
-			new HRESULT IsValueCanonical([In] PROPVARIANT propvar);
-			/// <summary>Gets the image reference associated with a property value.</summary>
-			/// <param name="propvar">The PROPVARIANT for which to get an image.</param>
-			/// <param name="ppszImageRes">A string that receives, when this method returns successfully, a string of the form &lt;dll name&gt;,-&lt;resid&gt; that is suitable to be passed to PathParseIconLocation.</param>
-			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-			[PreserveSig]
-			HRESULT GetImageReferenceForValue([In] PROPVARIANT propvar, out SafeCoTaskMemString ppszImageRes);
-		}
-
-		[ComImport, Guid("1F9FC1D0-C39B-4B26-817F-011967D3440E"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		[PInvokeData("Propsys.h", MSDNShortId = "bb761511")]
-		public interface IPropertyDescriptionList
-		{
-			uint GetCount();
-			IPropertyDescription GetAt([In] uint iElem, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
-		}
-
-		/// <summary>
-		/// Exposes methods that extract data from enumeration information. IPropertyEnumType gives access to the enum and enumRange elements in the property
-		/// schema in a programmatic way at run time.
-		/// </summary>
-		[ComImport, Guid("11e1fbf9-2d56-4a6b-8db3-7cd193a471f2"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		[PInvokeData("Propsys.h")]
-		public interface IPropertyEnumType
-		{
-			/// <summary>Gets an enumeration type from an enumeration information structure.</summary>
-			/// <returns>When this method returns, contains a value that indicate the enumeration type.</returns>
-			PROPENUMTYPE GetEnumType();
-			/// <summary>Gets a value from an enumeration information structure.</summary>
-			/// <param name="ppropvar">When this method returns, contains a pointer to the property value.</param>
-			void GetValue([Out] PROPVARIANT ppropvar);
-			/// <summary>Gets a minimum value from an enumeration information structure.</summary>
-			/// <param name="ppropvarMin">When this method returns, contains a pointer to the minimum value.</param>
-			void GetRangeMinValue([Out] PROPVARIANT ppropvarMin);
-			/// <summary>Gets a set value from an enumeration information structure.</summary>
-			/// <param name="ppropvarSet">When this method returns, contains a pointer to the set value.</param>
-			void GetRangeSetValue([Out] PROPVARIANT ppropvarSet);
-			/// <summary>Gets display text from an enumeration information structure.</summary>
-			/// <param name="ppszDisplay">When this method returns, contains the address of a pointer to a null-terminated Unicode string that contains the display text.</param>
-			void GetDisplayText([Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszDisplay);
-		}
-
-		/// <summary>Exposes methods that extract data from enumeration information. IPropertyEnumType2 extends IPropertyEnumType.</summary>
-		/// <seealso cref="Vanara.PInvoke.PropSys.IPropertyEnumType"/>
-		[ComImport, Guid("9b6e051c-5ddd-4321-9070-fe2acb55e794"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		[PInvokeData("Propsys.h")]
-		public interface IPropertyEnumType2 : IPropertyEnumType
-		{
-			/// <summary>Gets an enumeration type from an enumeration information structure.</summary>
-			/// <returns>When this method returns, contains a value that indicate the enumeration type.</returns>
-			new PROPENUMTYPE GetEnumType();
-			/// <summary>Gets a value from an enumeration information structure.</summary>
-			/// <param name="ppropvar">When this method returns, contains a pointer to the property value.</param>
-			new void GetValue([Out] PROPVARIANT ppropvar);
-			/// <summary>Gets a minimum value from an enumeration information structure.</summary>
-			/// <param name="ppropvarMin">When this method returns, contains a pointer to the minimum value.</param>
-			new void GetRangeMinValue([Out] PROPVARIANT ppropvarMin);
-			/// <summary>Gets a set value from an enumeration information structure.</summary>
-			/// <param name="ppropvarSet">When this method returns, contains a pointer to the set value.</param>
-			new void GetRangeSetValue([Out] PROPVARIANT ppropvarSet);
-			/// <summary>Gets display text from an enumeration information structure.</summary>
-			/// <param name="ppszDisplay">When this method returns, contains the address of a pointer to a null-terminated Unicode string that contains the display text.</param>
-			new void GetDisplayText([Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszDisplay);
-			/// <summary>Retrieves the image reference associated with a property enumeration.</summary>
-			/// <param name="ppszImageRes">A pointer to a buffer that, when this method returns successfully, receives a string of the form &lt;dll name&gt;,-&lt;resid&gt; that is suitable to be passed to PathParseIconLocation.</param>
-			[PreserveSig] HRESULT GetImageReference([Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszImageRes);
-		}
-
-		[ComImport, Guid("A99400F4-3D84-4557-94BA-1242FB2CC9A6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-		[PInvokeData("Propsys.h")]
-		public interface IPropertyEnumTypeList
-		{
-			uint GetCount();
-
-			[return: MarshalAs(UnmanagedType.Interface)]
-			IPropertyEnumType GetAt([In] uint itype, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
-
-			[return: MarshalAs(UnmanagedType.Interface)]
-			object GetConditionAt([In] uint index, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
-
-			/// <summary>Compares the specified property value against the enumerated values in a list and returns the matching index.</summary>
-			/// <param name="propvarCmp">A reference to a PROPVARIANT structure that represents the property value.</param>
-			/// <param name="pnIndex">When this method returns, contains a pointer to the index in the enumerated type list that matches the property value, if any.</param>
-			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
-			[PreserveSig]
-			HRESULT FindMatchingIndex([In] PROPVARIANT propvarCmp, out uint pnIndex);
-		}
-
-		[SuppressUnmanagedCodeSecurity]
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("886d8eeb-8cf2-4446-8d02-cdba1dbdcf99")]
-		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762502")]
-		public interface IPropertyStore
-		{
-			uint GetCount();
-
-			PROPERTYKEY GetAt(uint iProp);
-
-			void GetValue([In] ref PROPERTYKEY pkey, [In, Out] PROPVARIANT pv);
-
-			void SetValue([In] ref PROPERTYKEY pkey, [In] PROPVARIANT pv);
-
-			void Commit();
-		}
-
-		[SuppressUnmanagedCodeSecurity]
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("ca724e8a-c3e6-442b-88a4-6fb0db8035a3")]
-		[PInvokeData("PropSys.h")]
-		public interface IPropertySystem
-		{
-			[return: MarshalAs(UnmanagedType.Interface)]
-			IPropertyDescription GetPropertyDescription(ref PROPERTYKEY propkey, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
-
-			[return: MarshalAs(UnmanagedType.Interface)]
-			IPropertyDescription GetPropertyDescriptionByName([In, MarshalAs(UnmanagedType.LPWStr)] string pszCanonicalName, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
-
-			[return: MarshalAs(UnmanagedType.Interface)]
-			IPropertyDescriptionList GetPropertyDescriptionListFromString([In, MarshalAs(UnmanagedType.LPWStr)] string pszPropList, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
-
-			[return: MarshalAs(UnmanagedType.Interface)]
-			IPropertyDescriptionList EnumeratePropertyDescriptions(PROPDESC_ENUMFILTER filterOn, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
-
-			void FormatForDisplay(ref PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, System.Text.StringBuilder pszText, uint cchText);
-
-			SafeCoTaskMemString FormatForDisplayAlloc(ref PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff);
-
-			void RegisterPropertySchema([In, MarshalAs(UnmanagedType.LPWStr)] string pszPath);
-
-			void UnregisterPropertySchema([In, MarshalAs(UnmanagedType.LPWStr)] string pszPath);
-
-			void RefreshPropertySchema();
-		}
-
 		/// <summary>
 		/// Retrieves the property's canonical name given its PROPERTYKEY.
 		/// </summary>
@@ -758,7 +149,7 @@ namespace Vanara.PInvoke
 		/// <returns>The result of the operation. S_OK indicates success.</returns>
 		[DllImport(Lib.PropSys, ExactSpelling = true)]
 		[PInvokeData("Propsys.h", MSDNShortId = "bb776502")]
-		public static extern HRESULT PSGetNameFromPropertyKey(ref PROPERTYKEY propkey, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszCanonicalName);
+		public static extern HRESULT PSGetNameFromPropertyKey([In, MarshalAs(UnmanagedType.LPStruct)] PROPERTYKEY propkey, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszCanonicalName);
 
 		/// <summary>Gets an instance of a property description interface for a property specified by a PROPERTYKEY structure.</summary>
 		/// <param name="propkey">Reference to a PROPERTYKEY.</param>
@@ -770,7 +161,7 @@ namespace Vanara.PInvoke
 		/// <returns>The result of the operation. S_OK indicates success.</returns>
 		[DllImport(Lib.PropSys, ExactSpelling = true)]
 		[PInvokeData("Propsys.h", MSDNShortId = "bb776503")]
-		public static extern HRESULT PSGetPropertyDescription(ref PROPERTYKEY propkey, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+		public static extern HRESULT PSGetPropertyDescription([In, MarshalAs(UnmanagedType.LPStruct)] PROPERTYKEY propkey, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
 
 		/// <summary>Gets the property key for a canonical property name.</summary>
 		/// <param name="pszName">Pointer to a property name as a null-terminated, Unicode string.</param>
@@ -779,5 +170,445 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.PropSys, ExactSpelling = true)]
 		[PInvokeData("Propsys.h", MSDNShortId = "bb762081")]
 		public static extern HRESULT PSGetPropertyKeyFromName([MarshalAs(UnmanagedType.LPWStr)] string pszName, out PROPERTYKEY ppropkey);
+
+		/// <summary><para>Converts the value of a property to the canonical value, according to the property description.</para></summary><param name="key"><para>Type: <c>REFPROPERTYKEY</c></para><para>Reference to a PROPERTYKEY structure that identifies the property whose value is to be coerced.</para></param><param name="ppropvar"><para>Type: <c>PROPVARIANT*</c></para><para>On entry, contains a pointer to a PROPVARIANT structure that contains the original value. When this function returns successfully, contains the canonical value.</para></param><returns><para>Type: <c>HRESULT</c></para><para>Possible return values include the following:</para><list type="table"><listheader><term>Return code</term><term>Description</term></listheader><item><term> S_OK </term><term> The function succeeded. The property value specified by ppropvar is now in a canonical form. </term></item><item><term> INPLACE_S_TRUNCATED </term><term> The property value specified by ppropvar is now in a truncated, canonical form. </term></item><item><term> E_INVALIDARG </term><term> The ppropvar parameter is invalid. The PROPVARIANT structure has been cleared. </term></item><item><term> TYPE_E_TYPEMISMATCH </term><term> Coercion from the value&#39;s type to the property description&#39;s type was not possible. The PROPVARIANT structure has been cleared. </term></item><item><term> Any other failure code </term><term> Coercion from the value&#39;s type to the property description&#39;s type was not possible. The PROPVARIANT structure has been cleared. </term></item></list></returns><remarks><para>This function is a wrapper around the system&#39;s implementation of IPropertyDescription::CoerceToCanonicalValue.</para><para>Most property descriptions specify the type that their values are expected to use. For example, the property description for System.Title specifies that System.Title values should be of type VT_LPWSTR. This function coerces values to this type, and then coerces the result into a canonical form.</para><para>It is important to note that if this function fails, it will have already called PropVariantClear on the input PROPVARIANT structure. Only if this function succeeds is the calling application responsible for calling <c>PropVariantClear</c> on ppropvar when the structure is no longer needed.</para><para>The coercion performed by this function is also performed by the property system during calls to IPropertyStore::GetValue and IPropertyStore::SetValue. Applications can either depend on the property system to perform the coercions or can use this function to perform the coercion at a time of the application&#39;s choosing.</para><para>The coercion is performed in four steps, as follows:</para><list type="number"><item><term>The following values are converted to VT_EMPTY. </term></item><item><term>If the value is not of type VT_EMPTY after Step 1, it is converted to the type specified by the property description. The type of a property description can be obtained by calling IPropertyDescription::GetPropertyType. For information on how the property schema influences the type of a property description, see typeInfo. Conversions are performed as follows: </term></item><item><term>After Steps 2 and 3, the value is coerced into a canonical form based on its type. The canonical forms are summarized in the following table. </term></item><item><term>If applicable, the value is checked against the property description type enumeration. The checks in the following table apply. </term></item></list><para>Examples</para><para>The following example, to be included as part of a larger program, demonstrates how to use PSCoerceToCanonicalValue to coerce a value to the type required for PKEY_Keywords.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-pscoercetocanonicalvalue
+		// PSSTDAPI PSCoerceToCanonicalValue( REFPROPERTYKEY key, PROPVARIANT *ppropvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "8225dd01-47cc-451e-b6a6-c16ddf62ca20")]
+		public static extern HRESULT PSCoerceToCanonicalValue([In, MarshalAs(UnmanagedType.LPStruct)] PROPERTYKEY key, PROPVARIANT ppropvar);
+
+		/// <summary>
+		/// <para>Creates an adapter from an IPropertyStore.</para>
+		/// </summary>
+		/// <param name="pps">
+		/// <para>Type: <c>IPropertyStore*</c></para>
+		/// <para>Pointer to an IPropertyStore object that represents the property store.</para>
+		/// </param>
+		/// <param name="riid">
+		/// <para>Type: <c>REFIID</c></para>
+		/// <para>Reference to an IID.</para>
+		/// </param>
+		/// <param name="ppv">
+		/// <para>Type: <c>void**</c></para>
+		/// <para>When this function returns, contains the interface pointer requested in riid.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>The adapter object implements IPropertySetStorage, IPropertyStore, IPropertyStoreCapabilities, and IObjectProvider.</para>
+		/// <para>
+		/// Use this function if you need an object that implements IPropertyStore with an API that requires an IPropertySetStorage
+		/// interface. The object created can also be useful to a namespace extension that wants to provide support for binding to namespace
+		/// items using <c>IPropertySetStorage</c>. Applications must call this object from only one thread at a time.
+		/// </para>
+		/// <para>
+		/// The adapter property store created by this function retains a reference to the source IPropertyStore interface. Therefore, the
+		/// calling application is free to release its reference to the source <c>IPropertyStore</c> whenever convenient after calling this function.
+		/// </para>
+		/// <para>
+		/// The adapter property store makes calls to methods on the IPropertyStore interface as appropriate. Therefore, if the calling
+		/// application is writing values to the store, it should call the IPropertyStore::Commit method on only one of the interfaces.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>
+		/// The following example, to be included as part of a larger program, demonstrates how to use PSCreateAdapterFromPropertyStore to
+		/// use an adapter property store to convert an IPropertyStore interface into an IPropertySetStorage interface.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-pscreateadapterfrompropertystore
+		// PSSTDAPI PSCreateAdapterFromPropertyStore( IPropertyStore *pps, REFIID riid, void **ppv );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "a3489f95-e790-481a-af6e-f30527dc476c")]
+		public static extern HRESULT PSCreateAdapterFromPropertyStore(IPropertyStore pps, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+
+		/// <summary><para>Creates a read-only, delayed-binding property store that contains multiple property stores.</para></summary><param name="flags"><para>Type: <c>GETPROPERTYSTOREFLAGS</c></para><para>One or more GETPROPERTYSTOREFLAGS values. These values specify details of the created property store object.</para></param><param name="pdpsf"><para>Type: <c>IDelayedPropertyStoreFactory*</c></para><para>Interface pointer to an instance of IDelayedPropertyStoreFactory.</para></param><param name="rgStoreIds"><para>Type: <c>const DWORD*</c></para><para>Pointer to an array of property store IDs. This array does not need to be initialized.</para></param><param name="cStores"><para>Type: <c>DWORD</c></para><para>The number of elements in the array pointed to by rgStoreIds.</para></param><param name="riid"><para>Type: <c>REFIID</c></para><para>Reference to the requested IID of the interface that will represent the created property store.</para></param><param name="ppv"><para>Type: <c>void**</c></para><para>When this function returns, contains the interface pointer requested in riid. This is typically IPropertyStore.</para></param><returns><para>Type: <c>HRESULT</c></para><para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para></returns><remarks><para>This function creates a Component Object Model (COM) object that implements IPropertyStore, INamedPropertyStore, IObjectProvider, and IPropertyStoreCapabilities.</para><para>Applications must call this object from only one thread at a time.</para><para>You must initialize COM with CoInitialize or OleInitialize before you call PSCreateDelayedMultiplexPropertyStore. COM must remain initialized for the lifetime of this object.</para><para>PSCreateDelayedMultiplexPropertyStore is designed as an alternative to PSCreateMultiplexPropertyStore, which requires that the array of property stores be initialized before it creates the multiplex property store.</para><para>The delayed binding mechanism is designed as a performance enhancement for calls to IPropertyStore::GetValue on a multiplex property store. When asked for the value of a property, the delayed multiplex property store checks each of the property stores for the value. After the value is found, there is no need to create and initialize subsequent stores. The delayed multiplex property store stops searching for a value when one of the property stores returns a success code and a non-VT_EMPTY value.</para><para>When the delayed multiplex property store needs to access a particular property store, it first checks to see if it has already obtained an interface to that property store. If not, it calls IDelayedPropertyStoreFactory::GetDelayedPropertyStore with the appropriate property store ID to obtain the property store. It always uses the property store IDs in the order in which they are provided by the application. It is possible that not all IDs will be used.</para><para>If the call to IDelayedPropertyStoreFactory fails with E_NOTIMPL or E_ACCESSDENIED for a particular property store ID, or if the application specified GPS_BESTEFFORT, then the failure is ignored and the delayed multiplex property store moves on to the next property store.</para><para>In some cases, it might be beneficial to use PSCreateDelayedMultiplexPropertyStore in place of PSCreateMultiplexPropertyStore. For example, if an application needs to multiplex two property stores and the first property store is not memory-intensive to initialize and provides PKEY_Size information. Often, calling applications ask for a multiplex property store and then ask for only PKEY_Size before they release the object. In such a case, the application could avoid the cost of initializing the second property store by calling <c>PSCreateDelayedMultiplexPropertyStore</c> and implementing IDelayedPropertyStoreFactory.</para><para>Examples</para><para>The following example, to be included as part of a larger program, demonstrates how to use PSCreateDelayedMultiplexPropertyStore in an implementation of IPropertyStoreFactory::GetPropertyStore.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-pscreatedelayedmultiplexpropertystore
+		// PSSTDAPI PSCreateDelayedMultiplexPropertyStore( GETPROPERTYSTOREFLAGS flags, IDelayedPropertyStoreFactory *pdpsf, const DWORD *rgStoreIds, DWORD cStores, REFIID riid, void **ppv );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "8b264d7e-6124-4724-8d23-605101705893")]
+		public static extern HRESULT PSCreateDelayedMultiplexPropertyStore(GETPROPERTYSTOREFLAGS flags, IDelayedPropertyStoreFactory pdpsf,
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] uint[] rgStoreIds, uint cStores, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+			[MarshalAs(UnmanagedType.Interface)] out object ppv);
+
+		/// <summary><para>Creates an in-memory property store.</para></summary><param name="riid"><para>Type: <c>REFIID</c></para><para>Reference to the requested interface ID.</para></param><param name="ppv"><para>Type: <c>void**</c></para><para>When this function returns, contains a pointer to the desired interface, typically IPropertyStore or IPersistSerializedPropStorage.</para></param><returns><para>Type: <c>HRESULT</c></para><para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para></returns><remarks><para>This function creates an in-memory property store object that implements IPropertyStore, INamedPropertyStore, IPropertyStoreCache, IPersistStream, IPropertyBag, and IPersistSerializedPropStorage.</para><para>The memory property store does not correspond to a file and is designed for use as a cache. IPropertyStore::Commit is a no-op, and the data stored in the object persists only as long as the object does.</para><para>The memory property store is thread safe. It aggregates the free-threaded marshaller and uses critical sections to protect its data members.</para><para>Examples</para><para>The following example, to be included as part of a larger program, demonstrates how to use PSCreateMemoryPropertyStore.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-pscreatememorypropertystore
+		// PSSTDAPI PSCreateMemoryPropertyStore( REFIID riid, void **ppv );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "6e7a2ac0-2a4a-41ec-a2a8-ddbe8aa45bc9")]
+		public static extern HRESULT PSCreateMemoryPropertyStore([In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+
+		/// <summary><para>Creates a read-only property store that contains multiple property stores, each of which must support either IPropertyStore or IPropertySetStorage.</para></summary><param name="prgpunkStores"><para>Type: <c>IUnknown**</c></para><para>Address of a pointer to an array of property stores that implement either IPropertyStore or IPropertySetStorage.</para></param><param name="cStores"><para>Type: <c>DWORD</c></para><para>The number of elements in the array referenced in prgpunkStores.</para></param><param name="riid"><para>Type: <c>REFIID</c></para><para>Reference to the requested IID.</para></param><param name="ppv"><para>Type: <c>void**</c></para><para>When this function returns, contains the interface pointer requested in riid. This is typically IPropertyStore.</para></param><returns><para>Type: <c>HRESULT</c></para><para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para></returns><remarks><para>This function creates a Component Object Model (COM) object that implements IPropertyStore, INamedPropertyStore, IObjectProvider, and IPropertyStoreCapabilities. The multiplex property store object aggregates the properties exposed from multiple property stores.</para><para>This object can be useful for aggregating the properties from multiple existing property store implementations in a Shell namespace extension, or for reusing an existing property store and providing additional read-only properties.</para><para>Applications must call this object from only one thread at a time.</para><para>You must initialize COM with CoInitialize or OleInitialize before you call PSCreateDelayedMultiplexPropertyStore. COM must remain initialized for the lifetime of this object.</para><para>Each of the objects in the array prgpunkStores must implement either IPropertyStore or IPropertySetStorage. If an object implements <c>IPropertySetStorage</c>, it is wrapped using PSCreatePropertyStoreFromPropertySetStorage for use in the multiplex property store.</para><para>The multiplex property store implementation of IPropertyStore::GetValue asks each of the provided property stores for the value. The multiplex property store stops searching when one of the property stores returns a success code and a non-VT_EMPTY value. Failure codes cause the search to end and are passed back to the calling application.</para><para>The multiplex property store implementation of IPropertyStoreCapabilities::IsPropertyWritable delegates the call to the first store that implements IPropertyStoreCapabilities. If multiple stores implement <c>IPropertyStoreCapabilities</c>, the subsequent ones are ignored. If no store implements <c>IPropertyStoreCapabilities</c>, this method returns <c>S_OK</c>.</para><para>Examples</para><para>The following example, to be included as part of a larger program, demonstrates how to use PSCreateMultiplexPropertyStore in an implementation of IPropertyStoreFactory::GetPropertyStore.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-pscreatemultiplexpropertystore
+		// PSSTDAPI PSCreateMultiplexPropertyStore( IUnknown **prgpunkStores, DWORD cStores, REFIID riid, void **ppv );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "4a6b5a10-5ef2-42c7-bf3b-dfa743be252f")]
+		public static extern HRESULT PSCreateMultiplexPropertyStore([MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 1)] object[] prgpunkStores,
+			uint cStores, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+
+		/// <summary><para>Accepts the IUnknown interface of an object that supports IPropertyStore or IPropertySetStorage. If the object supports <c>IPropertySetStorage</c>, it is wrapped so that it supports <c>IPropertyStore</c>.</para></summary><param name="punk"><para>Type: <c>IUnknown*</c></para><para>A pointer to an interface that supports either IPropertyStore or IPropertySetStorage.</para></param><param name="grfMode"><para>Type: <c>DWORD</c></para><para>Specifies the access mode to use. One of these values:</para><para>STGM_READ</para><para>Open for reading.</para><para>STGM_READWRITE</para><para>Open for reading and writing.</para></param><param name="riid"><para>Type: <c>REFIID</c></para><para>Reference to the requested IID.</para></param><param name="ppv"><para>Type: <c>void**</c></para><para>When this function returns successfully, contains the address of a pointer to an interface guaranteed to support IPropertyStore.</para></param><returns><para>Type: <c>HRESULT</c></para><para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para></returns><remarks><para>If the object pointed to by punk already supports IPropertyStore, no wrapper is created and the punk is returned unaltered.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-pscreatepropertystorefromobject
+		// PSSTDAPI PSCreatePropertyStoreFromObject( IUnknown *punk, DWORD grfMode, REFIID riid, void **ppv );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "010572d5-0357-4101-803e-0a27fc60ca5e")]
+		public static extern HRESULT PSCreatePropertyStoreFromObject([MarshalAs(UnmanagedType.IUnknown)] object punk, STGM grfMode, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+			[MarshalAs(UnmanagedType.Interface)] out object ppv);
+
+		/// <summary><para>Wraps an IPropertySetStorage interface in an IPropertyStore interface.</para></summary><param name="ppss"><para>Type: <c>IPropertySetStorage*</c></para><para>A pointer to an IPropertySetStorage interface.</para></param><param name="grfMode"><para>Type: <c>DWORD</c></para><para>Specifies the access mode to enforce. grfMode should match the access mode used to open the IPropertySetStorage. Valid values are as follows:</para><para>STGM_READ</para><para>Calls to IPropertyStore::SetValueupdate an internal cache of properties, and calls to IPropertyStore::Commitcall the appropriate IPropertySetStorage methods to write out the changed properties.</para><para>STGM_WRITE</para><para>Not supported.</para><para>STGM_READWRITE</para><para>Not supported.</para></param><param name="riid"><para>Type: <c>REFIID</c></para><para>Reference to an IID.</para></param><param name="ppv"><para>Type: <c>void**</c></para><para>When this function returns, contains the interface pointer specified in riid.</para></param><returns><para>Type: <c>HRESULT</c></para><para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para></returns><remarks><para>This function wraps an IPropertySetStorage interface in an IPropertyStore interface. Any value other than <c>STGM_READ</c> for grfMode, causes calls to IPropertyStore::SetValue and IPropertyStore::Commit to fail with <c>STG_E_ACCESSDENIED.</c></para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-pscreatepropertystorefrompropertysetstorage
+		// PSSTDAPI PSCreatePropertyStoreFromPropertySetStorage( IPropertySetStorage *ppss, DWORD grfMode, REFIID riid, void **ppv );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "efba5a2a-df26-4f7e-9ddf-ec471e3d547c")]
+		public static extern HRESULT PSCreatePropertyStoreFromPropertySetStorage(IPropertySetStorage ppss, STGM grfMode, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+
+		/// <summary><para>A wrapper API that calls the schema subsystem&#39;s IPropertySystem::EnumeratePropertyDescriptions. This function retrieves an instance of the subsystem object that implements IPropertyDescriptionList, to obtain either the entire list or a partial list of property descriptions in the system.</para></summary><param name="filterOn"><para>Type: <c>PROPDESC_ENUMFILTER</c></para><para>The list to return. PROPDESC_ENUMFILTER shows the valid values for this method.</para></param><param name="riid"><para>Type: <c>REFIID</c></para><para>Reference to the interface ID of the requested interface.</para></param><param name="ppv"><para>Type: <c>void**</c></para><para>The address of an IPropertyDescriptionList interface pointer.</para></param><returns><para>Type: <c>PSSTDAPI</c></para><para>Returns one of the following values.</para><list type="table"><listheader><term>Return code</term><term>Description</term></listheader><item><term> S_OK </term><term>Indicates an interface is obtained.</term></item><item><term> E_INVALIDARG </term><term> Indicates that ppv is NULL. </term></item></list></returns><remarks><para>We recommend that you use the IID_PPV_ARGS macro, defined in objbase.h, to package the riid and ppv parameters. This macro provides the correct IID based on the interface pointed to by the value in ppv, eliminating the possibility of a coding error.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psenumeratepropertydescriptions
+		// PSSTDAPI PSEnumeratePropertyDescriptions( PROPDESC_ENUMFILTER filterOn, REFIID riid, void **ppv );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "687d5a32-3a2e-4b9b-b06c-ca06a6cd1595")]
+		public static extern HRESULT PSEnumeratePropertyDescriptions(PROPDESC_ENUMFILTER filterOn, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+
+		/// <summary><para>Gets a formatted, Unicode string representation of a property value stored in a PROPVARIANT structure. The caller is responsible for allocating the output buffer.</para></summary><param name="propkey"><para>Type: <c>REFPROPERTYKEY</c></para><para>Reference to a PROPERTYKEY that names the property whose value is being retrieved.</para></param><param name="propvar"><para>Type: <c>REFPROPVARIANT</c></para><para>Reference to a PROPVARIANT structure that contains the type and value of the property.</para></param><param name="pdfFlags"><para>Type: <c>PROPDESC_FORMAT_FLAGS</c></para><para>A flag that specifies the format to apply to the property string. See PROPDESC_FORMAT_FLAGS for possible values.</para></param><param name="pwszText"><para>Type: <c>LPWSTR</c></para><para>When the function returns, contains a pointer to the formatted value as a null-terminated, Unicode string. The calling application is responsible for allocating memory for the buffer before it calls PSFormatForDisplay.</para></param><param name="cchText"><para>Type: <c>DWORD</c></para><para>Specifies the length of the buffer at pwszText in <c>WCHAR</c><c>s</c>, including the terminating null character.</para></param><returns><para>Type: <c>HRESULT</c></para><para>Returns one of the following values.</para><list type="table"><listheader><term>Return code</term><term>Description</term></listheader><item><term> S_OK </term><term>The formatted string was successfully created.</term></item><item><term> S_FALSE </term><term>The formatted string was not created. S_FALSE indicates that an empty string resulted from a VT_EMPTY.</term></item><item><term> E_OUTOFMEMORY </term><term>Indicates allocation failed.</term></item></list></returns><remarks><para>This function calls the schema subsystem&#39;s implementation of IPropertySystem::FormatForDisplay. That call provides a Unicode string representation of a property value, with additional formatting based on one or more PROPDESC_FORMAT_FLAGS. If the PROPERTYKEY is not recognized by the schema subsystem, <c>IPropertySystem::FormatForDisplay</c> attempts to format the value according to the value&#39;s VARTYPE.</para><para>You must initialize Component Object Model (COM) with CoInitialize or OleInitialize before you call PSFormatPropertyValue.</para><para>The purpose of this function is to convert data into a string suitable for display to the user. The value is formatted according to the current locale, the language of the user, the PROPDESC_FORMAT_FLAGS, and the property description specified by the property key. For information on how the property description schema influences the formatting of the value, see the following topics:</para><list type="bullet"><item><term>displayInfo</term></item><item><term>stringFormat</term></item><item><term>booleanFormat</term></item><item><term>numberFormat</term></item><item><term>NMDATETIMEFORMAT</term></item><item><term>enumeratedList</term></item></list><para>Typically, the <c>PROPDESC_FORMAT_FLAGS</c> are used to modify the format prescribed by the property description.</para><para>The output string can contain Unicode directional characters. These nonspacing characters influence the Unicode bidirectional algorithm so that the values appear correctly when a left-to-right (LTR) language is drawn on a right-to-left (RTL) window, or an RTL is drawn on a LTR window. These characters include the following: </para><para>The following properties use special formats and are unaffected by the PROPDESC_FORMAT_FLAGS. Note that examples cited are for strings with a current locale set to English; typically, output is localized except where noted.</para><list type="table"><listheader><term>Property</term><term>Format</term></listheader><item><term>System.FileAttributes</term><term>The following file attributes are converted to letters and appended to create a string (for example, a value of 0x1801 is converted to &quot;RCO&quot;):</term></item><item><term /><term>FILE_ATTRIBUTE_READONLY- &#39;R&#39;</term></item><item><term /><term>FILE_ATTRIBUTE_SYSTEM - &#39;S&#39;</term></item><item><term /><term>FILE_ATTRIBUTE_ARCHIVE -&#39;A&#39;</term></item><item><term /><term>FILE_ATTRIBUTE_COMPRESSED - &#39;C&#39;</term></item><item><term /><term>FILE_ATTRIBUTE_ENCRYPTED - &#39;E&#39;</term></item><item><term /><term>FILE_ATTRIBUTE_OFFLINE - &#39;O&#39;</term></item><item><term /><term>FILE_ATTRIBUTE_NOT_CONTENT_INDEXED - &#39;I&#39;</term></item><item><term>System.Photo.ISOSpeed</term><term>For example, &quot;ISO-400&quot;.</term></item><item><term>System.Photo.ShutterSpeed</term><term> The APEX value is converted to an exposure time using this formula: For example, &quot;2 sec.&quot;or &quot;1/125 sec.&quot;.</term></item><item><term>System.Photo.ExposureTime</term><term>For example, &quot;2 sec.&quot;or &quot;1/125 sec.&quot;</term></item><item><term>System.Photo.Aperture</term><term> The APEX value is converted to an F number using this formula: For example, &quot;f/5.6&quot;.</term></item><item><term>System.Photo.FNumber</term><term>For example, &quot;f/5.6&quot;.</term></item><item><term>System.Photo.SubjectDistance</term><term>For example, &quot;15 m&quot;or &quot;250 mm&quot;.</term></item><item><term>System.Photo.FocalLength</term><term>For example, &quot;50 mm&quot;.</term></item><item><term>System.Photo.FlashEnergy</term><term>For example, &quot;500 bpcs&quot;.</term></item><item><term>System.Photo.ExposureBias</term><term>For example, &quot;-2 step&quot;, &quot; 0 step&quot;, or &quot;+3 step&quot;.</term></item><item><term>System.Computer.DecoratedFreeSpace</term><term>For example, &quot;105 MB free of 13.2 GB&quot;.</term></item><item><term>System.ItemType</term><term>For example, &quot;Application&quot; or &quot;JPEG Image&quot;.</term></item><item><term>System.ControlPanel.Category</term><term>For example, &quot;Appearance and Personalization&quot;.</term></item><item><term>System.ComputerName</term><term>For example, &quot;LITWARE05 (this computer)&quot; or &quot;testbox07&quot;.</term></item></list><para>If the property key does not correspond to a property description in any of the registered property schemas, then this function chooses a format based on the type of the value.</para><list type="table"><listheader><term>Type of the value</term><term>Format</term></listheader><item><term>VT_BOOLEAN</term><term>Not supported.</term></item><item><term>VT_FILETIME</term><term>Date/time string as specified by PROPDESC_FORMAT_FLAGS and the current locale. PDFF_SHORTTIME and PDFF_SHORTDATE are the default. For example, &quot;11/13/2006 3:22 PM&quot;.</term></item><item><term>Numeric VARTYPE</term><term>Decimal string in the current locale. For example, &quot;42&quot;.</term></item><item><term>VT_LPWSTR or other</term><term>Converted to a string. Sequences of &quot;\r&quot;, &quot;\t&quot;, or &quot;\n&quot; are replaced with a single space.</term></item><item><term>VT_VECTOR | anything</term><term>Semicolon separated values. A semicolon is used regardless of locale.</term></item></list><para>Examples</para><para>The following example, to be included as part of a larger program, demonstrates how to use PSFormatForDisplay to format a rating value.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psformatfordisplay
+		// PSSTDAPI PSFormatForDisplay( REFPROPERTYKEY propkey, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdfFlags, LPWSTR pwszText, DWORD cchText );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "71442967-ee8a-448c-83cf-949934ddd152")]
+		public static extern HRESULT PSFormatForDisplay([In, MarshalAs(UnmanagedType.LPStruct)] PROPERTYKEY propkey, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdfFlags,
+			[MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszText, uint cchText);
+
+		/// <summary>
+		/// <para>
+		/// Gets a formatted, Unicode string representation of a property value stored in a PROPVARIANT structure. This function allocates
+		/// memory for the output string.
+		/// </para>
+		/// </summary>
+		/// <param name="key">
+		/// <para>Type: <c>REFPROPERTYKEY</c></para>
+		/// <para>Reference to a PROPERTYKEY that names the property whose value is being retrieved.</para>
+		/// </param>
+		/// <param name="propvar">
+		/// <para>Type: <c>REFPROPVARIANT</c></para>
+		/// <para>Reference to a PROPVARIANT structure that contains the type and value of the property.</para>
+		/// </param>
+		/// <param name="pdff">
+		/// <para>Type: <c>PROPDESC_FORMAT_FLAGS</c></para>
+		/// <para>One or more flags that specify the format to apply to the property string. See PROPDESC_FORMAT_FLAGS for possible values.</para>
+		/// </param>
+		/// <param name="ppszDisplay">
+		/// <para>Type: <c>PWSTR*</c></para>
+		/// <para>
+		/// When the function returns, contains a pointer to a null-terminated, Unicode string representation of the requested property value.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>Returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>
+		/// The formatted string was successfully created. S_OK together with an empty return string indicates that there was an empty input
+		/// string or a non-empty value that was formatted as an empty string.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>S_FALSE</term>
+		/// <term>
+		/// The formatted string was not created. S_FALSE together with an empty return string indicates that the empty string resulted from
+		/// a VT_EMPTY.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>Indicates allocation failed.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function calls the schema subsystem's implementation of IPropertySystem::FormatForDisplayAlloc. That call provides a Unicode
+		/// string representation of a property value, with additional formatting based on one or more PROPDESC_FORMAT_FLAGS. If the
+		/// PROPERTYKEY is not recognized by the schema subsystem, <c>IPropertySystem::FormatForDisplayAlloc</c> attempts to format the value
+		/// according to the value's VARTYPE.
+		/// </para>
+		/// <para>You must initialize Component Object Model (COM) with CoInitialize or OleInitialize before you call PSFormatForDisplayAlloc.</para>
+		/// <para>
+		/// The function allocates memory through CoTaskMemAlloc and returns a pointer to that memory through the ppszDisplay parameter. The
+		/// calling application must use CoTaskMemFree to release that resource when it is no longer needed.
+		/// </para>
+		/// <para>
+		/// The purpose of this function is to convert data into a string suitable for display to the user. The value is formatted according
+		/// to the current locale, the language of the user, the PROPDESC_FORMAT_FLAGS, and the property description specified by the
+		/// property key. For information on how the property description schema influences the formatting of the value, see the following topics:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>displayInfo</term>
+		/// </item>
+		/// <item>
+		/// <term>stringFormat</term>
+		/// </item>
+		/// <item>
+		/// <term>booleanFormat</term>
+		/// </item>
+		/// <item>
+		/// <term>numberFormat</term>
+		/// </item>
+		/// <item>
+		/// <term>NMDATETIMEFORMAT</term>
+		/// </item>
+		/// <item>
+		/// <term>enumeratedList</term>
+		/// </item>
+		/// </list>
+		/// <para>Typically, the <c>PROPDESC_FORMAT_FLAGS</c> are used to modify the format prescribed by the property description.</para>
+		/// <para>
+		/// The output string can contain Unicode directional characters. These nonspacing characters influence the Unicode bidirectional
+		/// algorithm so that the values appear correctly when a left-to-right (LTR) language is drawn on a right-to-left (RTL) window, or an
+		/// RTL is drawn on a LTR window. These characters include the following:
+		/// </para>
+		/// <para>
+		/// The following properties use special formats and are unaffected by the PROPDESC_FORMAT_FLAGS. Note that examples cited are for
+		/// strings with a current locale set to English; typically, output is localized except where noted.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Property</term>
+		/// <term>Format</term>
+		/// </listheader>
+		/// <item>
+		/// <term>System.FileAttributes</term>
+		/// <term>
+		/// The following file attributes are converted to letters and appended to create a string (for example, a value of 0x1801
+		/// (FILE_ATTRIBUTE_READONLY | FILE_ATTRIBUTE_COMPRESSED | FILE_ATTRIBUTE_OFFLINE) is converted to "RCO"):
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>System.Photo.ISOSpeed</term>
+		/// <term>For example, "ISO-400".</term>
+		/// </item>
+		/// <item>
+		/// <term>System.Photo.ShutterSpeed</term>
+		/// <term>The APEX value is converted to an exposure time using this formula: For example, "2 sec."or "1/125 sec.".</term>
+		/// </item>
+		/// <item>
+		/// <term>System.Photo.ExposureTime</term>
+		/// <term>For example, "2 sec."or "1/125 sec."</term>
+		/// </item>
+		/// <item>
+		/// <term>System.Photo.Aperture</term>
+		/// <term>The APEX value is converted to an F number using this formula: For example, "f/5.6".</term>
+		/// </item>
+		/// <item>
+		/// <term>System.Photo.FNumber</term>
+		/// <term>For example, "f/5.6".</term>
+		/// </item>
+		/// <item>
+		/// <term>System.Photo.SubjectDistance</term>
+		/// <term>For example, "15 m"or "250 mm".</term>
+		/// </item>
+		/// <item>
+		/// <term>System.Photo.FocalLength</term>
+		/// <term>For example, "50 mm".</term>
+		/// </item>
+		/// <item>
+		/// <term>System.Photo.FlashEnergy</term>
+		/// <term>For example, "500 bpcs".</term>
+		/// </item>
+		/// <item>
+		/// <term>System.Photo.ExposureBias</term>
+		/// <term>For example, "-2 step", " 0 step", or "+3 step".</term>
+		/// </item>
+		/// <item>
+		/// <term>System.Computer.DecoratedFreeSpace</term>
+		/// <term>For example, "105 MB free of 13.2 GB".</term>
+		/// </item>
+		/// <item>
+		/// <term>System.ItemType</term>
+		/// <term>For example, "Application" or "JPEG Image".</term>
+		/// </item>
+		/// <item>
+		/// <term>System.ControlPanel.Category</term>
+		/// <term>For example, "Appearance and Personalization".</term>
+		/// </item>
+		/// <item>
+		/// <term>System.ComputerName</term>
+		/// <term>For example, "LITWARE05 (this computer)" or "testbox07".</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// If the property key does not correspond to a property description in any of the registered property schemas, then this function
+		/// chooses a format based on the type of the value.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Type of the value</term>
+		/// <term>Format</term>
+		/// </listheader>
+		/// <item>
+		/// <term>VT_BOOLEAN</term>
+		/// <term>Not supported.</term>
+		/// </item>
+		/// <item>
+		/// <term>VT_FILETIME</term>
+		/// <term>
+		/// Date/time string as specified by PROPDESC_FORMAT_FLAGS and the current locale. PDFF_SHORTTIME and PDFF_SHORTDATE are the default.
+		/// For example, "11/13/2006 3:22 PM".
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>Numeric VARTYPE</term>
+		/// <term>Decimal string in the current locale. For example, "42".</term>
+		/// </item>
+		/// <item>
+		/// <term>VT_LPWSTR or other</term>
+		/// <term>Converted to a string. Sequences of "\r", "\t", or "\n" are replaced with a single space.</term>
+		/// </item>
+		/// <item>
+		/// <term>VT_VECTOR | anything</term>
+		/// <term>Semicolon separated values. A semicolon is used regardless of locale.</term>
+		/// </item>
+		/// </list>
+		/// <para>Examples</para>
+		/// <para>
+		/// The following example, to be included as part of a larger program, demonstrates how to use PSFormatForDisplayAlloc to format a
+		/// rating value.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psformatfordisplayalloc
+		// PSSTDAPI PSFormatForDisplayAlloc( REFPROPERTYKEY key, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, PWSTR *ppszDisplay );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "d411ea72-fb29-47b6-a7f6-0839b3e2caf2")]
+		public static extern HRESULT PSFormatForDisplayAlloc([In, MarshalAs(UnmanagedType.LPStruct)] PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff,
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszDisplay);
+
+		/// <summary><para>Gets a formatted, Unicode string representation of a property value stored in a property store. This function allocates memory for the output string.</para></summary><param name="pps"><para>Type: <c>IPropertyStore*</c></para><para>Pointer to an IPropertyStore, which represents the property store from which the property value is taken.</para></param><param name="ppd"><para>Type: <c>IPropertyDescription*</c></para><para>Pointer to an IPropertyDescription, which represents the property whose value is being retrieved.</para></param><param name="pdff"><para>Type: <c>PROPDESC_FORMAT_FLAGS</c></para><para>One or more PROPDESC_FORMAT_FLAGS that specify the format to apply to the property string. See <c>PROPDESC_FORMAT_FLAGS</c> for possible values.</para></param><param name="ppszDisplay"><para>Type: <c>LPWSTR*</c></para><para>When the function returns, contains a pointer to the formatted value as a null-terminated, Unicode string.</para></param><returns><para>Type: <c>HRESULT</c></para><para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para></returns><remarks><para>This function uses the ppd parameter to call IPropertyDescription::FormatForDisplay. That call provides a Unicode string representation of a property value, with additional formatting based on one or more PROPDESC_FORMAT_FLAGS.</para><para>You must initialize Component Object Model (COM) with CoInitialize or OleInitialize before you call PSFormatPropertyValue.</para><para>The function allocates memory and returns a pointer to that memory in ppszDisplay. The calling application must use CoTaskMemFree to release the string specified by ppszDisplay when it is no longer needed.</para><para>The purpose of this function is to convert data into a string suitable for display to the user. The value is formatted according to the current locale, the language of the user, the PROPDESC_FORMAT_FLAGS, and the property description specified by the property key. For information on how the property description schema influences the formatting of the value, see the following topics:</para><list type="bullet"><item><term>displayInfo</term></item><item><term>stringFormat</term></item><item><term>booleanFormat</term></item><item><term>numberFormat</term></item><item><term>NMDATETIMEFORMAT</term></item><item><term>enumeratedList</term></item></list><para>Typically, the <c>PROPDESC_FORMAT_FLAGS</c> are used to modify the format prescribed by the property description.</para><para>The output string can contain Unicode directional characters. These nonspacing characters influence the Unicode bidirectional algorithm so that the values appear correctly when a left-to-right (LTR) language is drawn on a right-to-left (RTL) window, or an RTL is drawn on a LTR window. These characters include the following: </para><para>The following properties use special formats and are unaffected by the PROPDESC_FORMAT_FLAGS. Note that examples cited are for strings with a current locale set to English; typically, output is localized except where noted.</para><list type="table"><listheader><term>Property</term><term>Format</term></listheader><item><term>System.FileAttributes</term><term>The following file attributes are converted to letters and appended to create a string (for example, a value of 0x1801 (FILE_ATTRIBUTE_READONLY | FILE_ATTRIBUTE_COMPRESSED | FILE_ATTRIBUTE_OFFLINE) is converted to &quot;RCO&quot;): </term></item><item><term>System.Photo.ISOSpeed</term><term>For example, &quot;ISO-400&quot;.</term></item><item><term>System.Photo.ShutterSpeed</term><term> The APEX value is converted to an exposure time using this formula: For example, &quot;2 sec.&quot;or &quot;1/125 sec.&quot;.</term></item><item><term>System.Photo.ExposureTime</term><term>For example, &quot;2 sec.&quot;or &quot;1/125 sec.&quot;</term></item><item><term>System.Photo.Aperture</term><term> The APEX value is converted to an F number using this formula: For example, &quot;f/5.6&quot;.</term></item><item><term>System.Photo.FNumber</term><term>For example, &quot;f/5.6&quot;.</term></item><item><term>System.Photo.SubjectDistance</term><term>For example, &quot;15 m&quot;or &quot;250 mm&quot;.</term></item><item><term>System.Photo.FocalLength</term><term>For example, &quot;50 mm&quot;.</term></item><item><term>System.Photo.FlashEnergy</term><term>For example, &quot;500 bpcs&quot;.</term></item><item><term>System.Photo.ExposureBias</term><term>For example, &quot;-2 step&quot;, &quot; 0 step&quot;, or &quot;+3 step&quot;.</term></item><item><term>System.Computer.DecoratedFreeSpace</term><term>For example, &quot;105 MB free of 13.2 GB&quot;.</term></item><item><term>System.ItemType</term><term>For example, &quot;Application&quot; or &quot;JPEG Image&quot;.</term></item><item><term>System.ControlPanel.Category</term><term>For example, &quot;Appearance and Personalization&quot;.</term></item><item><term>System.ComputerName</term><term>For example, &quot;LITWARE05 (this computer)&quot; or &quot;testbox07&quot;.</term></item></list><para>If the property key does not correspond to a property description in any of the registered property schemas, then this function chooses a format based on the type of the value.</para><list type="table"><listheader><term>Type of the value</term><term>Format</term></listheader><item><term>VT_BOOLEAN</term><term>Not supported.</term></item><item><term>VT_FILETIME</term><term>Date/time string as specified by PROPDESC_FORMAT_FLAGS and the current locale. PDFF_SHORTTIME and PDFF_SHORTDATE are the default. For example, &quot;11/13/2006 3:22 PM&quot;.</term></item><item><term>Numeric VARTYPE</term><term>Decimal string in the current locale. For example, &quot;42&quot;.</term></item><item><term>VT_LPWSTR or other</term><term>Converted to a string. Sequences of &quot;\r&quot;, &quot;\t&quot;, or &quot;\n&quot; are replaced with a single space.</term></item><item><term>VT_VECTOR | anything</term><term>Semicolon separated values. A semicolon is used regardless of locale.</term></item></list><para>Examples</para><para>The following example, to be included as part of a larger program, demonstrates how to use PSFormatPropertyValue to format a rating value.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psformatpropertyvalue
+		// PSSTDAPI PSFormatPropertyValue( IPropertyStore *pps, IPropertyDescription *ppd, PROPDESC_FORMAT_FLAGS pdff, LPWSTR *ppszDisplay );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "35c2b424-05bd-4d7d-8365-5900e165e2e2")]
+		public static extern HRESULT PSFormatPropertyValue(IPropertyStore pps, IPropertyDescription ppd, PROPDESC_FORMAT_FLAGS pdff, 
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszDisplay);
+
+		/// <summary><para>Gets an instance of a property description interface for a specified property.</para></summary><param name="propkey"><para>Type: <c>REFPROPERTYKEY</c></para><para>A reference to a PROPERTYKEY structure that specifies the property.</para></param><param name="propvar"><para>Type: <c>REFIID</c></para><para>A reference to the IID of the interface to retrieve through ppv.</para></param><param name="ppszImageRes"><para>Type: <c>void**</c></para><para>When this function returns successfully, contains the interface pointer requested in riid.</para></param><returns><para>Type: <c>HRESULT</c></para><para>Returns <c>S_OK</c> if successful, or an error value otherwise, including the following:</para><list type="table"><listheader><term>Return code</term><term>Description</term></listheader><item><term> TYPE_E_ELEMENTNOTFOUND </term><term /></item></list></returns><remarks><para>We recommend that you use the IID_PPV_ARGS macro, defined in Objbase.h, to package the riid and ppv parameters. This macro provides the correct IID based on the interface pointed to by the value in ppv, which eliminates the possibility of a coding error in riid that could lead to unexpected results.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psgetimagereferenceforvalue
+		// PSSTDAPI PSGetImageReferenceForValue( REFPROPERTYKEY propkey, REFPROPVARIANT propvar, PWSTR *ppszImageRes );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "E37AF2ED-E3F9-4e50-9317-9DAF03AC543F")]
+		public static extern HRESULT PSGetImageReferenceForValue([In, MarshalAs(UnmanagedType.LPStruct)] PROPERTYKEY propkey, PROPVARIANT propvar,
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszImageRes);
+
+		/// <summary><para>Retrieves a property handler for a Shell item.</para></summary><param name="punkItem"><para>Type: <c>IUnknown*</c></para><para>A pointer to the IUnknown interface of a Shell item that supports IShellItem.</para><para><c>Windows XP:</c> Use SHCreateShellItem to create the Shell item.</para><para><c>Windows Vista:</c> Use SHCreateItemFromIDList, SHCreateItemFromParsingName, SHCreateItemFromRelativeName, SHCreateItemInKnownFolder, or SHCreateItemWithParent to create the Shell item.</para></param><param name="fReadWrite"><para>Type: <c>BOOL</c></para><para><c>TRUE</c> to retrieve a read/write property handler. <c>FALSE</c> to retrieve a read-only property handler.</para></param><param name="riid"><para>Type: <c>REFIID</c></para><para>Reference to the IID of the interface the handler object should return. This should be IPropertyStore or an interface derived from <c>IPropertyStore</c>.</para></param><param name="ppv"><para>Type: <c>void**</c></para><para>When this function returns, contains the interface pointer requested in riid.</para></param><returns><para>Type: <c>PSSTDAPI</c></para><para>Returns <c>S_OK</c> if successful, or an error value otherwise.</para></returns><remarks><para>This function is supported in Windows XP and Windows Vista. For applications supported only on Windows Vista or later, it is recommended that you use IShellItem2::GetPropertyStore instead of PSGetItemPropertyHandler. That method provides a richer set of properties in the property store that is returned.</para><para>This function is approximately equivalent to passing the GPS_HANDLERPROPERTIESONLY flag to IShellItem2::GetPropertyStore.</para><para>You must initialize Component Object Model (COM) with CoInitialize or OleInitialize before you call PSGetItemPropertyHandler. COM must remain initialized for the lifetime of this object.</para><para>Examples</para><para>The following example, to be included as part of a larger program, demonstrates how to use PSGetItemPropertyHandler to obtain a property handler for an item.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psgetitempropertyhandler
+		// PSSTDAPI PSGetItemPropertyHandler( IUnknown *punkItem, BOOL fReadWrite, REFIID riid, void **ppv );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "7b7fd260-c863-41f7-8594-4ee435090228")]
+		public static extern HRESULT PSGetItemPropertyHandler([MarshalAs(UnmanagedType.IUnknown)] object punkItem, [MarshalAs(UnmanagedType.Bool)] bool fReadWrite,
+			[In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+
+		/// <summary><para>Retrieves a property handler for a Shell item.</para></summary><param name="punkItem"><para>Type: <c>IUnknown*</c></para><para>A pointer to the IUnknown interface of a Shell item that supports IShellItem.</para><para><c>Windows XP:</c> Use SHCreateShellItem to create the Shell item.</para><para><c>Windows Vista:</c> Use SHCreateItemFromIDList, SHCreateItemFromParsingName, SHCreateItemFromRelativeName, SHCreateItemInKnownFolder, or SHCreateItemWithParent to create the Shell item.</para></param><param name="fReadWrite"><para>Type: <c>BOOL</c></para><para><c>TRUE</c> to retrieve a read/write property handler. <c>FALSE</c> to retrieve a read-only property handler.</para></param><param name="punkCreateObject"><para>Type: <c>IUnknown*</c></para><para>Pointer to the IUnknown interface of a class factory object that supports ICreateObject.</para></param><param name="riid"><para>Type: <c>REFIID</c></para><para>A reference to the IID of the interface to retrieve through ppv.</para></param><param name="ppv"><para>Type: <c>void**</c></para><para>When this function returns successfully, contains the interface pointer requested in riid. This is typically IPropertyStore or IPropertyStoreCapabilities.</para></param><returns><para>Type: <c>PSSTDAPI</c></para><para>Returns <c>S_OK</c> if successful, or an error value otherwise.</para></returns><remarks><para>This function is supported in Windows XP as part of the Microsoft Windows Desktop Search (WDS) redistributable which includes IPropertyStore and supporting interfaces. For applications supported only on Windows Vista or later, we recommend that you use IShellItem2::GetPropertyStoreWithCreateObject instead of PSGetItemPropertyHandlerWithCreateObject because <c>IShellItem2::GetPropertyStoreWithCreateObject</c> provides a richer set of properties in the property store that is returned.</para><para>This function is approximately equivalent to passing the GPS_HANDLERPROPERTIESONLY flag to IShellItem2::GetPropertyStoreWithCreateObject.</para><para>The punkCreateObject parameter enables the creation of a property store in a different context than that of the caller. For instance, the ICreateObject implementation can cause the property store to be created in another process. This parameter is used only for property handlers that support it and that are registered under</para><para>You must initialize Component Object Model (COM) with CoInitialize or OleInitialize before you call PSGetItemPropertyHandlerWithCreateObject. COM must remain initialized for the lifetime of this object.</para><para>Examples</para><para>The following example, to be included as part of a larger program, demonstrates how to use PSGetItemPropertyHandlerWithCreateObject to obtain a property handler for an item.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psgetitempropertyhandlerwithcreateobject
+		// PSSTDAPI PSGetItemPropertyHandlerWithCreateObject( IUnknown *punkItem, BOOL fReadWrite, IUnknown *punkCreateObject, REFIID riid, void **ppv );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "82e0aa15-b67c-4c0a-bafb-f1dc5f822aec")]
+		public static extern HRESULT PSGetItemPropertyHandlerWithCreateObject([MarshalAs(UnmanagedType.IUnknown)] object punkItem, [MarshalAs(UnmanagedType.Bool)] bool fReadWrite,
+			[MarshalAs(UnmanagedType.IUnknown)] object punkCreateObject, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+
+		/// <summary><para>Gets a value from serialized property storage by property name.</para></summary><param name="psps"><para>Type: <c>PCUSERIALIZEDPROPSTORAGE</c></para><para>A pointer to an allocated buffer that contains the serialized properties. Call IPersistSerializedPropStorage::GetPropertyStorage to obtain the buffer.</para></param><param name="cb"><para>Type: <c>DWORD</c></para><para>The size, in bytes, of the USERIALIZESPROPSTORAGE buffer pointed to by psps.</para></param><param name="pszName"><para>Type: <c>LPCWSTR</c></para><para>A pointer to a null-terminated, Unicode string that contains the name of the property.</para></param><param name="ppropvar"><para>Type: <c>PROPVARIANT*</c></para><para>When this function returns, contains the requested value.</para></param><returns><para>Type: <c>PSSTDAPI</c></para><para>Returns <c>S_OK</c> if successful, or an error value otherwise.</para></returns><remarks><para>This function is intended to be called if the calling application already has a serialized property storage and needs no more than a few properties from storage. If many properties need to be retrieved, performance can be enhanced by creating a memory property store by calling PSCreateMemoryPropertyStore, initializing the property store by calling IPersistSerializedPropStorage::SetPropertyStorage, and using INamedPropertyStore or IPropertyStore to retrieve the properties.</para><para>Note that PSGetNamedPropertyFromPropertyStorage works only on serialized buffers created by the system implementation of IPersistSerializedPropStorage. You must first obtain a memory property store by calling PSCreateMemoryPropertyStore; that store can then create a serialized buffer using the <c>IPersistSerializedPropStorage</c> interface.</para><para>Although SERIALIZEDPROPSTORAGE is an opaque serialized data structure whose format may change in the future, earlier formats will be supported on subsequent versions of Windows. Because the format is opaque, applications should use supported property storage APIs to access and manipulate the serialized buffer (see IPersistSerializedPropStorage and PSGetPropertyFromPropertyStorage).</para><para>Examples</para><para>The following example, to be included as part of a larger program, demonstrates how to use PSGetNamedPropertyFromPropertyStorage to read a value from serialized property storage.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psgetnamedpropertyfrompropertystorage
+		// PSSTDAPI PSGetNamedPropertyFromPropertyStorage( PCUSERIALIZEDPROPSTORAGE psps, DWORD cb, LPCWSTR pszName, PROPVARIANT *ppropvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "bb4eedc0-9ef5-46f2-83e5-340b77b3d876")]
+		public static extern HRESULT PSGetNamedPropertyFromPropertyStorage(IntPtr psps, uint cb, [MarshalAs(UnmanagedType.LPWStr)] string pszName, PROPVARIANT ppropvar);
+
+		/// <summary><para>Gets an instance of a property description interface for a specified property name.</para></summary><param name="pszCanonicalName"><para>Type: <c>LPCWSTR</c></para><para>A pointer to a null-terminated, Unicode string that identifies the property.</para></param><param name="riid"><para>Type: <c>REFIID</c></para><para>Reference to the interface ID of the requested property.</para></param><param name="ppv"><para>Type: <c>void**</c></para><para>When this function returns, contains the interface pointer requested in riid. This is typically IPropertyDescription, IPropertyDescriptionAliasInfo, or IPropertyDescriptionSearchInfo.</para></param><returns><para>Type: <c>PSSTDAPI</c></para><para>Returns one of the following values.</para><list type="table"><listheader><term>Return code</term><term>Description</term></listheader><item><term> S_OK </term><term>The interface was obtained.</term></item><item><term> E_INVALIDARG </term><term> The pszCanonicalName parameter is NULL. </term></item><item><term> TYPE_E_ELEMENTNOTFOUND </term><term>The canonical name does not exist in the schema subsystem cache.</term></item></list></returns><remarks><para>It is recommended that you use the IID_PPV_ARGS macro, defined in objbase.h, to package the riid and ppv parameters. This macro provides the correct IID based on the interface pointed to by the value in ppv, eliminating the possibility of a coding error.</para><para>We recommend that pszCanonicalName point to the canonical name of a property, for example, . The canonical name is case sensitive.</para><para>In addition to the new canonical names, callers can pass a legacy name for a property. The following table contains the complete list of supported legacy names and the canonical names they correspond to.</para><list type="table"><listheader><term>Property name</term><term>Maps to property</term></listheader><item><term>Access</term><term>System.DateAccessed</term></item><item><term>Album</term><term>System.Music.AlbumTitle</term></item><item><term>AllocSize</term><term>System.FileAllocationSize</term></item><item><term>Aperture</term><term>System.Photo.Aperture</term></item><item><term>Artist</term><term>System.Music.Artist</term></item><item><term>Attrib</term><term>System.FileAttributes</term></item><item><term>Attributes</term><term>System.FileAttributes</term></item><item><term>AttributesDescription</term><term>System.FileAttributesDisplay</term></item><item><term>Audio Format</term><term>System.Audio.Format</term></item><item><term>Audio Sample Size</term><term>System.Audio.SampleSize</term></item><item><term>BitDepth</term><term>System.Image.BitDepth</term></item><item><term>Bitrate</term><term>System.Audio.EncodingBitrate</term></item><item><term>CameraModel</term><term>System.Photo.CameraModel</term></item><item><term>Capacity</term><term>System.Capacity</term></item><item><term>Channels</term><term>System.Audio.ChannelCount</term></item><item><term>ColorSpace</term><term>System.Image.ColorSpace</term></item><item><term>Company</term><term>System.Company</term></item><item><term>Compression</term><term>System.Video.Compression</term></item><item><term>Compression</term><term>System.Video.Compression</term></item><item><term>Copyright</term><term>System.Copyright</term></item><item><term>Copyright</term><term>System.Copyright</term></item><item><term>Copyright</term><term>System.Image.Copyright</term></item><item><term>Create</term><term>System.DateCreated</term></item><item><term>CSCStatus</term><term>System.OfflineStatus</term></item><item><term>Data Rate</term><term>System.Video.EncodingBitrate</term></item><item><term>DateDeleted</term><term>System.Recycle.DateDeleted</term></item><item><term>DeletedFrom</term><term>System.Recycle.DeletedFrom</term></item><item><term>Dimensions</term><term>System.Image.Dimensions</term></item><item><term>Directory</term><term>System.ItemFolderNameDisplay</term></item><item><term>Distance</term><term>System.Photo.SubjectDistance</term></item><item><term>DocAppName</term><term>System.ApplicationName</term></item><item><term>DocAuthor</term><term>System.Author</term></item><item><term>DocByteCount</term><term>System.Document.ByteCount</term></item><item><term>DocCategory</term><term>System.Category</term></item><item><term>DocCharCount</term><term>System.Document.CharacterCount</term></item><item><term>DocComments</term><term>System.Comment</term></item><item><term>DocCompany</term><term>System.Company</term></item><item><term>DocCreatedTm</term><term>System.Document.DateCreated</term></item><item><term>DocEditTime</term><term>System.Document.TotalEditingTime</term></item><item><term>DocHiddenCount</term><term>System.Document.HiddenSlideCount</term></item><item><term>DocKeywords</term><term>System.Keywords</term></item><item><term>DocLastAuthor</term><term>System.Document.LastAuthor</term></item><item><term>DocLastPrinted</term><term>System.Document.DatePrinted</term></item><item><term>DocLastSavedTm</term><term>System.Document.DateSaved</term></item><item><term>DocLineCount</term><term>System.Document.LineCount</term></item><item><term>DocManager</term><term>System.Document.Manager</term></item><item><term>DocNoteCount</term><term>System.Document.NoteCount</term></item><item><term>DocPageCount</term><term>System.Document.PageCount</term></item><item><term>DocParaCount</term><term>System.Document.ParagraphCount</term></item><item><term>DocPresentationTarget</term><term>System.Document.PresentationFormat</term></item><item><term>DocRevNumber</term><term>System.Document.RevisionNumber</term></item><item><term>DocSlideCount</term><term>System.Document.SlideCount</term></item><item><term>DocSubject</term><term>System.Subject</term></item><item><term>DocTemplate</term><term>System.Document.Template</term></item><item><term>DocTitle</term><term>System.Title</term></item><item><term>DocWordCount</term><term>System.Document.WordCount</term></item><item><term>DRM Description</term><term>System.DRM.Description</term></item><item><term>Duration</term><term>System.Media.Duration</term></item><item><term>EquipMake</term><term>System.Photo.CameraManufacturer</term></item><item><term>ExposureBias</term><term>System.Photo.ExposureBias</term></item><item><term>ExposureProg</term><term>System.Photo.ExposureProgram</term></item><item><term>ExposureTime</term><term>System.Photo.ExposureTime</term></item><item><term>FaxCallerID</term><term>System.Fax.CallerID</term></item><item><term>FaxCSID</term><term>System.Fax.CSID</term></item><item><term>FaxRecipientName</term><term>System.Fax.RecipientName</term></item><item><term>FaxRecipientNumber</term><term>System.Fax.RecipientNumber</term></item><item><term>FaxRouting</term><term>System.Fax.Routing</term></item><item><term>FaxSenderName</term><term>System.Fax.SenderName</term></item><item><term>FaxTime</term><term>System.Fax.Time</term></item><item><term>FaxTSID</term><term>System.Fax.TSID</term></item><item><term>FileDescription</term><term>System.FileDescription</term></item><item><term>FileSystem</term><term>System.Volume.FileSystem</term></item><item><term>FileType</term><term>System.Image.FileType</term></item><item><term>FileVersion</term><term>System.FileVersion</term></item><item><term>Flash</term><term>System.Photo.Flash</term></item><item><term>FlashEnergy</term><term>System.Photo.FlashEnergy</term></item><item><term>FNumber</term><term>System.Photo.FNumber</term></item><item><term>FocalLength</term><term>System.Photo.FocalLength</term></item><item><term>Frame Rate</term><term>System.Video.FrameRate</term></item><item><term>FrameCount</term><term>System.Media.FrameCount</term></item><item><term>FreeSpace</term><term>System.FreeSpace</term></item><item><term>Genre</term><term>System.Music.Genre</term></item><item><term>ImageX</term><term>System.Image.HorizontalSize</term></item><item><term>ImageY</term><term>System.Image.VerticalSize</term></item><item><term>ISOSpeed</term><term>System.Photo.ISOSpeed</term></item><item><term>LightSource</term><term>System.Photo.LightSource</term></item><item><term>LinksUpToDate</term><term>System.Document.LinksDirty</term></item><item><term>LinkTarget</term><term>System.Link.TargetParsingPath</term></item><item><term>Lyrics</term><term>System.Music.Lyrics</term></item><item><term>Manager</term><term>System.Document.Manager</term></item><item><term>MeteringMode</term><term>System.Photo.MeteringMode</term></item><item><term>MMClipCount</term><term>System.Document.MultimediaClipCount</term></item><item><term>Name</term><term>System.ItemNameDisplay</term></item><item><term>Owner</term><term>System.FileOwner</term></item><item><term>Play Count</term><term>System.DRM.PlayCount</term></item><item><term>Play Expires</term><term>System.DRM.DatePlayExpires</term></item><item><term>Play Starts</term><term>System.DRM.DatePlayStarts</term></item><item><term>PresentationTarget</term><term>System.Document.PresentationFormat</term></item><item><term>ProductName</term><term>System.Software.ProductName</term></item><item><term>ProductVersion</term><term>System.Software.ProductVersion</term></item><item><term>Project</term><term>System.Media.Project</term></item><item><term>Protected</term><term>System.DRM.IsProtected</term></item><item><term>Rank</term><term>System.Search.Rank</term></item><item><term>Rating</term><term>System.Rating</term></item><item><term>ResolutionX</term><term>System.Image.HorizontalResolution</term></item><item><term>ResolutionY</term><term>System.Image.VerticalResolution</term></item><item><term>Sample Rate</term><term>System.Audio.SampleRate</term></item><item><term>Scale</term><term>System.Document.Scale</term></item><item><term>ShutterSpeed</term><term>System.Photo.ShutterSpeed</term></item><item><term>Size</term><term>System.Size</term></item><item><term>Software</term><term>System.SoftwareUsed</term></item><item><term>Status</term><term>System.Media.Status</term></item><item><term>Status</term><term>System.Status</term></item><item><term>Stream Name</term><term>System.Video.StreamName</term></item><item><term>SyncCopyIn</term><term>System.Sync.CopyIn</term></item><item><term>Track</term><term>System.Music.TrackNumber</term></item><item><term>Type</term><term>System.ItemTypeText</term></item><item><term>Video Sample Size</term><term>System.Video.SampleSize</term></item><item><term>WhenTaken</term><term>System.Photo.DateTaken</term></item><item><term>Write</term><term>System.DateModified</term></item><item><term>Year</term><term>System.Media.Year</term></item></list><para>Examples</para><para>The following example, to be included as part of a larger program, demonstrates how to use PSGetPropertyDescriptionByName to retrieve the description for the ratings property.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psgetpropertydescriptionbyname
+		// PSSTDAPI PSGetPropertyDescriptionByName( LPCWSTR pszCanonicalName, REFIID riid, void **ppv );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "181ebbfb-66ed-4763-ad2d-acf3c800f9d2")]
+		public static extern HRESULT PSGetPropertyDescriptionByName([MarshalAs(UnmanagedType.LPWStr)] string pszCanonicalName, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+
+		/// <summary><para>Gets an instance of a property description list interface for a specified property list.</para></summary><param name="pszPropList"><para>Type: <c>LPCWSTR</c></para><para>Pointer to a null-terminated, Unicode string that identifies the property list. See IPropertySystem::GetPropertyDescriptionListFromString for more information about the format of this parameter.</para></param><param name="riid"><para>Type: <c>REFIID</c></para><para>Reference to the interface ID of the requested interface.</para></param><param name="ppv"><para>Type: <c>void**</c></para><para>When this function returns, contains the interface pointer requested in riid. This is typically IPropertyDescriptionList.</para></param><returns><para>Type: <c>PSSTDAPI</c></para><para>Returns one of the following values.</para><list type="table"><listheader><term>Return code</term><term>Description</term></listheader><item><term> S_OK </term><term>The interface was obtained.</term></item><item><term> E_INVALIDARG </term><term> The ppv parameter is NULL. </term></item></list></returns><remarks><para>This function calls the property subsystem implementation of IPropertySystem::GetPropertyDescriptionListFromString to obtain a collection of properties provided as a semicolon-delimited property list string.</para><para>We recommend that you use the <c>IID_PPV_ARGS</c> macro, defined in Objbase.h, to package the riid and ppv parameters. This macro provides the correct IID based on the interface pointed to by the value in ppv, which eliminates the possibility of a coding error.</para><para>For more information about property schemas, see Property Schemas.</para><para>Examples</para><para>The following example, to be included as part of a larger program, demonstrates how to use PSGetPropertyDescriptionListFromString.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psgetpropertydescriptionlistfromstring
+		// PSSTDAPI PSGetPropertyDescriptionListFromString( LPCWSTR pszPropList, REFIID riid, void **ppv );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "348253ed-46ac-4643-bbf8-2d286ae97f07")]
+		public static extern HRESULT PSGetPropertyDescriptionListFromString([MarshalAs(UnmanagedType.LPWStr)] string pszPropList, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+
+		/// <summary><para>Gets the value of a property as stored in serialized property storage.</para></summary><param name="psps"><para>Type: <c>PCUSERIALIZEDPROPSTORAGE</c></para><para>Pointer to an allocated buffer that contains the serialized properties. This buffer is obtained by a call to IPersistSerializedPropStorage::GetPropertyStorage.</para></param><param name="cb"><para>Type: <c>DWORD</c></para><para>The size, in bytes, of the <c>USERIALIZESPROPSTORAGE</c> buffer pointed to by psps.</para></param><param name="rpkey"><para>Type: <c>REFPROPERTYKEY</c></para><para>Reference to the PROPERTYKEY that identifies the property for which to get the value.</para></param><param name="ppropvar"><para>Type: <c>PROPVARIANT**</c></para><para>When this function returns, contains the requested value.</para></param><returns><para>Type: <c>PSSTDAPI</c></para><para>Returns <c>S_OK</c> if successful, or an error value otherwise.</para></returns><remarks><para>This function is intended to be called if the calling application already has a serialized property storage and needs no more than a few properties from storage. If many properties need to be retrieved, performance can be enhanced by creating a memory property store through PSCreateMemoryPropertyStore, initializing the property store by calling IPersistSerializedPropStorage::SetPropertyStorage, and by using IPropertyStore to retrieve the properties.</para><para>Note that PSGetPropertyFromPropertyStorage works only on serialized buffers created by the system implementation of IPersistSerializedPropStorage. You must first obtain a memory property store by calling PSCreateMemoryPropertyStore. That store can then create a serialized buffer using the <c>IPersistSerializedPropStorage</c> interface.</para><para>Although SERIALIZEDPROPSTORAGE is an opaque serialized data structure whose format may change in the future, earlier formats will be supported on subsequent versions of Windows. Because the format is opaque, applications should use supported property storage APIs to access and manipulate the serialized buffer (see IPersistSerializedPropStorage).</para><para>Examples</para><para>The following example, to be included as part of a larger program, demonstrates how to use PSGetPropertyFromPropertyStorage to read a value from serialized property storage.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psgetpropertyfrompropertystorage
+		// PSSTDAPI PSGetPropertyFromPropertyStorage( PCUSERIALIZEDPROPSTORAGE psps, DWORD cb, REFPROPERTYKEY rpkey, PROPVARIANT *ppropvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "c649d25d-7971-4804-a5a2-3fd6860659b4")]
+		public static extern HRESULT PSGetPropertyFromPropertyStorage(IntPtr psps, uint cb, [In, MarshalAs(UnmanagedType.LPStruct)] PROPERTYKEY rpkey, PROPVARIANT ppropvar);
+
+		/// <summary><para>Gets an instance of the subsystem object that implements IPropertySystem.</para></summary><param name="riid"><para>Type: <c>REFIID</c></para><para>Reference to the IID of the requested interface.</para></param><param name="ppv"><para>Type: <c>void**</c></para><para>When this function returns, contains the interface pointer requested in riid. This is typically IPropertySystem.</para></param><returns><para>Type: <c>PSSTDAPI</c></para><para>Returns one of the following values.</para><list type="table"><listheader><term>Return code</term><term>Description</term></listheader><item><term> S_OK </term><term>The interface was obtained.</term></item><item><term> E_INVALIDARG </term><term> The ppv parameter is NULL. </term></item></list></returns><remarks><para>You must initialize Component Object Model (COM) with CoInitialize or OleInitialize prior to calling PSGetPropertySystem. COM must remain initialized for the lifetime of this object. The property system object aggregates the free-threaded marshaller and is thread-safe.</para><para>We recommend that you use the IID_PPV_ARGS macro defined in Objbase.h to package the riid and ppv parameters. This macro provides the correct IID based on the interface pointed to by the value in ppv, which eliminates the possibility of a coding error.</para><para>Examples</para><para>The following example, to be included as part of a larger program, demonstrates how to use PSGetPropertySystem.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psgetpropertysystem
+		// PSSTDAPI PSGetPropertySystem( REFIID riid, void **ppv );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "ddbf7cea-b22f-4cf9-8b5f-804640086466")]
+		public static extern HRESULT PSGetPropertySystem([In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+
+		/// <summary><para>Gets a property value from a property store.</para></summary><param name="pps"><para>Type: <c>IPropertyStore*</c></para><para>Pointer to an instance of the IPropertyStore interface, which represents the property store from which to get the value.</para></param><param name="ppd"><para>Type: <c>IPropertyDescription*</c></para><para>Pointer to an instance of the IPropertyDescription interface, which represents the property in the property store.</para></param><param name="ppropvar"><para>Type: <c>PROPVARIANT*</c></para><para>Pointer to an uninitialized PROPVARIANT structure. When this function returns, points to the requested property value.</para></param><returns><para>Type: <c>HRESULT</c></para><para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para></returns><remarks><para>This helper function is used to read a property value from a store. If the calling code already has a PROPERTYKEY structure, it might be simpler to call IPropertyStore::GetValue directly.</para><para>Examples</para><para>The following example, to be included as part of a larger program, demonstrates how to use PSGetPropertyValue.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psgetpropertyvalue
+		// PSSTDAPI PSGetPropertyValue( IPropertyStore *pps, IPropertyDescription *ppd, PROPVARIANT *ppropvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "9369dc85-b006-4b30-a25e-58d53b76f334")]
+		public static extern HRESULT PSGetPropertyValue(IPropertyStore pps, IPropertyDescription ppd, PROPVARIANT ppropvar);
+
+		/// <summary><para>Gets the class identifier (CLSID) of a per-computer, registered file property handler.</para></summary><param name="pszFilePath"><para>Type: <c>PCWSTR</c></para><para>Pointer to a null-terminated, Unicode buffer that contains the absolute path of the file whose property handler CLSID is requested.</para></param><param name="pclsid"><para>Type: <c>CLSID*</c></para><para>When this function returns, contains the requested property handler CLSID.</para></param><returns><para>Type: <c>PSSTDAPI</c></para><para>Returns <c>S_OK</c> if successful, or an error value otherwise.</para></returns><remarks><para>For information on how to register your handler, see Initializing Property Handlers.</para><para>This function returns only those handlers registered under <c>HKEY_LOCAL_MACHINE</c>.</para><para>Most calling applications should not need to call this method or use CoCreateInstance to create a property handler directly. Instead, calling applications should use IShellItem2::GetPropertyStore to create a property store for a Shell item on Windows Vista. <c>IShellItem2::GetPropertyStore</c> provides the largest set of available properties for a Shell item, and the most options for customizing exactly which properties to return.</para><para>If no property handler is registered for the specified file, this function returns an error code. When this happens, it might still be possible to read certain file system properties from the property store returned from IShellItem2::GetPropertyStore.</para><para>Applications that need to create a property handler from code and that must run both on Windows Vista and on Windows XP can call PSGetItemPropertyHandler to create a property store for a Shell item through the Microsoft Windows Desktop Search (WDS) redistributable.</para><para>Examples</para><para>The following example, to be included as part of a larger program, demonstrates how to use PSLookupPropertyHandlerCLSID.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-pslookuppropertyhandlerclsid
+		// PSSTDAPI PSLookupPropertyHandlerCLSID( PCWSTR pszFilePath, CLSID *pclsid );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "43f90a33-9bd6-4e47-ab92-5e0d01ba268a")]
+		public static extern HRESULT PSLookupPropertyHandlerCLSID([MarshalAs(UnmanagedType.LPWStr)] string pszFilePath, out Guid pclsid);
+
+		/// <summary><para>Converts a string to a PROPERTYKEY structure.</para></summary><param name="pszString"><para>Type: <c>LPCWSTR</c></para><para>Pointer to a null-terminated, Unicode string to be converted.</para></param><param name="pkey"><para>Type: <c>PROPERTYKEY*</c></para><para>When this function returns, contains a pointer to a PROPERTYKEY structure.</para></param><returns><para>Type: <c>HRESULT</c></para><para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para></returns><remarks><para>The string to be converted must be formatted as . For instance, the string that corresponds to is: . PSStringFromPropertyKey outputs strings in this format.</para><para>This function succeeds for any valid property key string, even if the property does not exist in the property schema.</para><para>Examples</para><para>The following example, to be included as part of a larger program, demonstrates how to use PSPropertyKeyFromString.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-pspropertykeyfromstring
+		// PSSTDAPI PSPropertyKeyFromString( LPCWSTR pszString, PROPERTYKEY *pkey );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "9096912a-14ad-4a45-a564-08f98fce3f96")]
+		public static extern HRESULT PSPropertyKeyFromString([MarshalAs(UnmanagedType.LPWStr)] string pszString, out PROPERTYKEY pkey);
+
+		/// <summary><para>Not supported.</para><para>It is valid to call this function, but it is not implemented to perform any function so there is no reason to do so.</para></summary><returns><para>Type: <c>HRESULT</c></para><para>Returns one of the following values.</para><list type="table"><listheader><term>Return code</term><term>Description</term></listheader><item><term> S_OK </term><term>Schema files reloaded.</term></item><item><term> E_ACCESSDENIED </term><term>The calling context does not have proper privileges.</term></item></list></returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psrefreshpropertyschema
+		// PSSTDAPI PSRefreshPropertySchema( );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "07efbf66-3594-4b9d-b959-278dc9000572")]
+		public static extern HRESULT PSRefreshPropertySchema();
+
+		/// <summary><para>Informs the schema subsystem of the addition of a property description schema file.</para></summary><param name="pszPath"><para>Type: <c>PCWSTR</c></para><para>Pointer to the full file path, as a Unicode string, to the property description schema (.propdesc) file on the local machine. This can be either a fully-specified full path, or a full path that includes environment variables such as .</para></param><returns><para>Type: <c>HRESULT</c></para><para>Returns one of the following values.</para><list type="table"><listheader><term>Return code</term><term>Description</term></listheader><item><term> S_OK </term><term>All property descriptions in the schema were registered.</term></item><item><term> E_ACCESSDENIED </term><term>The calling context does not have proper privileges.</term></item><item><term> INPLACE_S_TRUNCATED </term><term>One or more property descriptions in the schema failed to register. The specific failures are logged in the application event log.</term></item></list></returns><remarks><para>This function is a wrapper API for the schema subsystem&#39;s implementation of IPropertySystem::RegisterPropertySchema. Call this function only when the file is first installed on the computer. Typically, a setup application calls this function after it installs the .propdesc file, which should be stored in the install directory of the application under Program Files. Multiple calls can be made to <c>IPropertySystem::RegisterPropertySchema</c> in order to register multiple schema files.</para><para>When registering property schema files, remember that they can be read by processes running as different users. Therefore, it is important to place a schema file in a location that grants read access to all users on the machine. Similarly, use the absolute path to the file in this function&#39;s pszPath parameter.</para><para><c>Note</c> Because schemas are specific to the machine and cannot be registered for each individual user, registering a file path under user profiles is not supported on Windows Vista.</para><para>If a full or partial failure is encountered that prevents a property description from being loaded, the cause is recorded in the application event log. This function fails with E_ACCESSDENIED if the calling context does not have proper privileges, which includes write access to HKEY_LOCAL_MACHINE. It is the responsibility of the calling application to obtain privileges through User Account Control (UAC) mechanisms.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psregisterpropertyschema
+		// PSSTDAPI PSRegisterPropertySchema( PCWSTR pszPath );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "ea9c4361-fada-4b07-b450-dd0c6409745a")]
+		public static extern HRESULT PSRegisterPropertySchema([MarshalAs(UnmanagedType.LPWStr)] string pszPath);
+
+		/// <summary><para>Sets the value of a property in a property store.</para></summary><param name="pps"><para>Type: <c>IPropertyStore*</c></para><para>Pointer to an instance of the IPropertyStore interface, which represents the property store that contains the property.</para></param><param name="ppd"><para>Type: <c>IPropertyDescription*</c></para><para>Pointer to an instance of the IPropertyDescription interface, which identifies the individual property.</para></param><param name="propvar"><para>Type: <c>REFPROPVARIANT</c></para><para>Reference to a PROPVARIANT structure that contains the new value.</para></param><returns><para>Type: <c>HRESULT</c></para><para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para></returns><remarks><para>This helper function is used to write a property value to a store. If the calling code already has a PROPERTYKEY structure, it might be simpler to call IPropertyStore::SetValue directly.</para><para>Examples</para><para>The following example, to be included as part of a larger program, demonstrates how to use PSSetPropertyValue.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-pssetpropertyvalue
+		// PSSTDAPI PSSetPropertyValue( IPropertyStore *pps, IPropertyDescription *ppd, REFPROPVARIANT propvar );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "b4f8c50d-93cd-4371-88b0-6ce58f023981")]
+		public static extern HRESULT PSSetPropertyValue(IPropertyStore pps, IPropertyDescription ppd, PROPVARIANT propvar);
+
+		/// <summary><para>Creates a string that identifies a property from that property&#39;s key.</para></summary><param name="pkey"><para>Type: <c>REFPROPERTYKEY</c></para><para>Reference to a PROPERTYKEY structure that identifies a property.</para></param><param name="psz"><para>Type: <c>LPWSTR</c></para><para>Pointer to a buffer that receives the output string. The buffer should be large enough to contain PKEYSTR_MAX <c>WCHAR</c><c>s</c>.</para></param><param name="cch"><para>Type: <c>UINT</c></para><para>The length of the buffer pointed to by psz, in <c>WCHAR</c><c>s</c>.</para></param><returns><para>Type: <c>HRESULT</c></para><para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para></returns><remarks><para>The string format retrieved is . For example, the output string for is .</para><para>Examples</para><para>The following example, to be included as part of a larger program, demonstrates the use of PSPropertyKeyFromString.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psstringfrompropertykey
+		// PSSTDAPI PSStringFromPropertyKey( REFPROPERTYKEY pkey, LPWSTR psz, UINT cch );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "081f8e6d-9189-44f9-9b27-e85f4793da48")]
+		public static extern HRESULT PSStringFromPropertyKey([In, MarshalAs(UnmanagedType.LPStruct)] PROPERTYKEY pkey, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder psz, uint cch);
+
+		/// <summary><para>Informs the schema subsystem of the removal of a property description schema file.</para></summary><param name="pszPath"><para>Type: <c>PCWSTR</c></para><para>Pointer to the full file path, as a Unicode string, to the property description schema (.propdesc) file on the local machine. This can be either a fully-specified full path, or a full path that includes environment variables such as .</para></param><returns><para>Type: <c>HRESULT</c></para><para>Returns one of the following values.</para><list type="table"><listheader><term>Return code</term><term>Description</term></listheader><item><term> S_OK </term><term>The schema was unregistered.</term></item><item><term> E_ACCESSDENIED </term><term>The calling context does not have proper privileges.</term></item></list></returns><remarks><para>This function is a wrapper for the schema subsystem&#39;s implementation of IPropertySystem::UnregisterPropertySchema. Call this method when the file is being uninstalled from the computer. Typically, a setup application calls this method before or after uninstalling the .propdesc file. This method can be called after the file no longer exists.</para><para>This function fails with a code of E_ACCESSDENIED if the calling context does not have proper privileges, which include write access to HKLM (HKEY_LOCAL_MACHINE). It is the responsibility of the calling application to obtain privileges through User Account Control (UAC) mechanisms.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-psunregisterpropertyschema
+		// PSSTDAPI PSUnregisterPropertySchema( PCWSTR pszPath );
+		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("propsys.h", MSDNShortId = "57df82a9-8954-4c2b-b794-82ac542149e2")]
+		public static extern HRESULT PSUnregisterPropertySchema([MarshalAs(UnmanagedType.LPWStr)] string pszPath);
 	}
 }
