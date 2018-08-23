@@ -641,6 +641,124 @@ namespace Vanara.PInvoke
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IPropertyDescription GetPropertyDescriptionByName([In, MarshalAs(UnmanagedType.LPWStr)] string pszCanonicalName, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
 
+			/// <summary>
+			/// <para>
+			/// Gets an instance of the subsystem object that implements IPropertyDescriptionList, to obtain an ordered collection of
+			/// property descriptions, based on the provided string.
+			/// </para>
+			/// </summary>
+			/// <param name="pszPropList">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>A pointer to a string that identifies the property list.</para>
+			/// </param>
+			/// <param name="riid">
+			/// <para>Type: <c>REFIID</c></para>
+			/// <para>A reference to the desired IID.</para>
+			/// </param>
+			/// <returns>
+			/// <para>The address of an IPropertyDescriptionList interface pointer.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// The property description list string ("proplist") syntax consists of a sequence of canonical property names, with flags
+			/// associated with each property name. The string starts with "prop:". The syntax looks like this:
+			/// </para>
+			/// <para>The flags are optional and can be any of those below. Note: These flags translate to the PROPDESC_VIEW_FLAGS enum.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Flag</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>-</term>
+			/// <term>Sort in reverse order (PDVF_REVERSESORT).</term>
+			/// </item>
+			/// <item>
+			/// <term>0</term>
+			/// <term>Show by default in both the primary and secondary lists (PDVF_SHOWBYDEFAULT | PDVF_SHOWINPRIMARYLIST | PDVF_SHOWINSECONDARYLIST).</term>
+			/// </item>
+			/// <item>
+			/// <term>1</term>
+			/// <term>Show in the primary and secondary lists (PDVF_SHOWINPRIMARYLIST | PDVF_SHOWINSECONDARYLIST).</term>
+			/// </item>
+			/// <item>
+			/// <term>2</term>
+			/// <term>Show in secondary list (PDVF_SHOWINSECONDARYLIST).</term>
+			/// </item>
+			/// <item>
+			/// <term>^</term>
+			/// <term>Begin a new group (PDVF_BEGINNEWGROUP).</term>
+			/// </item>
+			/// <item>
+			/// <term>/</term>
+			/// <term>Right align (PDVF_RIGHTALIGN).</term>
+			/// </item>
+			/// <item>
+			/// <term>*</term>
+			/// <term>Hide if the value is not present.</term>
+			/// </item>
+			/// <item>
+			/// <term>|</term>
+			/// <term>Center align. (PDVF_CENTERALIGN).</term>
+			/// </item>
+			/// <item>
+			/// <term>~</term>
+			/// <term>Hide the label. (PDVF_HIDELABEL).</term>
+			/// </item>
+			/// <item>
+			/// <term>#</term>
+			/// <term>Fill area. (PDVF_FILLAREA).</term>
+			/// </item>
+			/// <item>
+			/// <term>?</term>
+			/// <term>Hide if unsupported by property handler (PDVF_HIDEIFUNSUPPORTED).</term>
+			/// </item>
+			/// <item>
+			/// <term>&lt;</term>
+			/// <term>Parse as link (PDVF_PARSEASLINK).</term>
+			/// </item>
+			/// <item>
+			/// <term>&amp;</term>
+			/// <term>Show as whole link (PDVF_SHOWASWHOLELINK).</term>
+			/// </item>
+			/// </list>
+			/// <para>From the dbfolder and file folder perspective:</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>0</term>
+			/// <term>Show as a column in defview, column chooser menu, and column chooser dialog.</term>
+			/// </listheader>
+			/// <item>
+			/// <term>1</term>
+			/// <term>Show in the column chooser menu and dialog.</term>
+			/// </item>
+			/// <item>
+			/// <term>2</term>
+			/// <term>Show in the column chooser dialog.</term>
+			/// </item>
+			/// <item>
+			/// <term>NULL</term>
+			/// <term>Include in the search results, but hide in the UI.</term>
+			/// </item>
+			/// </list>
+			/// <para>The endflags are also optional and can be the following:</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>EndFlag</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>]</term>
+			/// <term>End column (used for extended tiles view).</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// It is recommended that you use the IID_PPV_ARGS macro, defined in objbase.h, to package the riid and ppv parameters. This
+			/// macro provides the correct IID based on the interface pointed to by the value in ppv, eliminating the possibility of a coding error.
+			/// </para>
+			/// <para>For more information about property schemas, see Property Schemas.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-ipropertysystem-getpropertydescriptionlistfromstring
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IPropertyDescriptionList GetPropertyDescriptionListFromString([In, MarshalAs(UnmanagedType.LPWStr)] string pszPropList, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
 
