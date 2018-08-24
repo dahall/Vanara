@@ -20,15 +20,15 @@ namespace Vanara.Collections
 			IsReadOnly = readOnly;
 		}
 
+		/// <summary>Gets the number of elements in the collection.</summary>
+		/// <value>The number of elements in the collection.</value>
+		public virtual int Count => Keys.Count;
+
 		/// <inheritdoc />
 		public bool IsReadOnly { get; internal set; }
 
 		/// <inheritdoc />
 		public abstract ICollection<TKey> Keys { get; }
-
-		/// <summary>Gets the number of elements in the collection.</summary>
-		/// <value>The number of elements in the collection.</value>
-		public virtual int Count => Keys.Count();
 
 		/// <inheritdoc />
 		IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => Keys;
@@ -116,5 +116,79 @@ namespace Vanara.Collections
 
 		/// <inheritdoc />
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+	}
+
+	/// <summary>
+	/// A generic base class for providing a read-only dictionary that gets its values using virtual method calls. Useful for exposing lookups
+	/// into existing list environments like the file system, registry, service controller, etc.
+	/// </summary>
+	/// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+	/// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
+	public abstract class VirtualReadOnlyDictionary<TKey, TValue> : IReadOnlyDictionary<TKey, TValue>
+	{
+		/// <inheritdoc />
+		public abstract IEnumerable<TKey> Keys { get; }
+
+		/// <inheritdoc />
+		public virtual int Count => Keys.Count();
+
+		/// <inheritdoc />
+		public virtual IEnumerable<TValue> Values => Keys.Select(k => this[k]).ToList();
+
+		/// <summary>Gets the enumerated list of items.</summary>
+		/// <value>The enumerated list of items.</value>
+		protected IEnumerable<KeyValuePair<TKey, TValue>> Items =>
+			Keys.Select(k => new KeyValuePair<TKey, TValue>(k, this[k]));
+
+		/// <inheritdoc />
+		public virtual TValue this[TKey key] => TryGetValue(key, out var value) ? value : default(TValue);
+
+		/// <inheritdoc />
+		public abstract bool ContainsKey(TKey key);
+
+		/// <inheritdoc />
+		public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => Items.GetEnumerator();
+
+		/// <inheritdoc />
+		public abstract bool TryGetValue(TKey key, out TValue value);
+
+		/// <inheritdoc />
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+	}
+
+	/// <summary>A generic class that creates a read-only dictionary from a list and getter function.</summary>
+	/// <typeparam name="TKey">The type of the key.</typeparam>
+	/// <typeparam name="TValue">The type of the value.</typeparam>
+	public class GenericVirtualReadOnlyDictionaryy<TKey, TValue> : VirtualReadOnlyDictionary<TKey, TValue>
+	{
+		public delegate bool TryGetValueDelegate(TKey key, out TValue value);
+
+		private readonly TryGetValueDelegate getValFunc;
+		private readonly Func<TKey, bool> hasKeyFunc;
+
+		/// <summary>Initializes a new instance of the <see cref="GenericVirtualReadOnlyDictionaryy{TKey, TValue}"/> class.</summary>
+		/// <param name="keys">The enumerated list of keys.</param>
+		/// <param name="getValue">The function used to get a value given a key. Called directly by <c>TryGetValue</c>.</param>
+		/// <param name="hasKey">
+		/// An optional function to directly determine if a key exists. If not supplied, the default implementation checks for equality on
+		/// every value in <paramref name="keys"/>.
+		/// </param>
+		public GenericVirtualReadOnlyDictionaryy(IEnumerable<TKey> keys, TryGetValueDelegate getValue, Func<TKey, bool> hasKey = null)
+		{
+			Keys = keys ?? throw new ArgumentNullException(nameof(keys));
+			getValFunc = getValue ?? throw new ArgumentNullException(nameof(getValue));
+			hasKeyFunc = hasKey ?? DefHasKey;
+		}
+
+		/// <inheritdoc />
+		public override IEnumerable<TKey> Keys { get; }
+
+		/// <inheritdoc />
+		public override bool ContainsKey(TKey key) => hasKeyFunc(key);
+
+		/// <inheritdoc />
+		public override bool TryGetValue(TKey key, out TValue value) => getValFunc(key, out value);
+
+		private bool DefHasKey(TKey k1) => Keys.Any(k2 => Equals(k1, k2));
 	}
 }
