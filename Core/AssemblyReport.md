@@ -2,6 +2,9 @@
 ### Classes
 Class | Description
 ---- | ----
+BitHelper | Static methods to help with bit manipulation.
+ByteSizeFormatter | A custom formatter for byte sizes (things like files, network bandwidth, etc.) that will automatically determine the best abbreviation.
+ComConnectionPoint | Helper class to create an advised COM sink. When this class is constructed, the source is queried for an `IConnectionPointContainer` reference.
 ComReleaser<T> | A safe variable to hold an instance of a COM class that automatically calls `Marshal.ReleaseComObject(System.Object)` on disposal.
 CorrespondingTypeAttribute | Attribute for enum values that provides information about corresponding types and related actions. Useful for Get/Set methods that use an enumeration value to determine the type to get or set.
 CoTaskMemoryMethods | Unmanaged memory methods for COM.
@@ -9,6 +12,8 @@ EnumerableEqualityComparer<T> | Checks the linear equality of two enumerated lis
 EnumExtensions | Extensions for enumerated types.
 EventedList<T> | A generic list that provides event for changes to the list. This is an alternative to ObservableCollection that provides distinct events for each action (add, insert, remove, changed).
 FileTimeExtensions | Extensions for `FILETIME`.
+Formatter | Base class for expandable formatters.
+FormatterComposer | Extension method to combine formatter instances.
 GenericSafeHandle | A `SafeHandle` that takes a delegate in the constructor that closes the supplied handle.
 HGlobalMemoryMethods | Unmanaged memory methods for HGlobal.
 InteropExtensions | Extension methods for System.Runtime.InteropServices.

@@ -1,4 +1,4 @@
-﻿#if (NET20 || NET35 || NET40)
+﻿#if NET20 || NET35 || NET40
 namespace System.Collections.Generic
 {
 	/// <summary>Represents a strongly-typed, read-only collection of elements.</summary>
@@ -22,6 +22,7 @@ namespace System.Collections.Generic
 		/// <see langword="true"/> if the read-only dictionary contains an element that has the specified key; otherwise, <see langword="false"/>.
 		/// </returns>
 		bool ContainsKey(TKey key);
+
 		/// <summary>Gets the value that is associated with the specified key.</summary>
 		/// <param name="key">The key to locate.</param>
 		/// <param name="value">
@@ -33,13 +34,16 @@ namespace System.Collections.Generic
 		/// element that has the specified key; otherwise, <see langword="false"/>.
 		/// </returns>
 		bool TryGetValue(TKey key, out TValue value);
+
 		/// <summary>Gets the element that has the specified key in the read-only dictionary.</summary>
 		/// <value>The key to locate.</value>
 		/// <returns>The element that has the specified key in the read-only dictionary.</returns>
 		TValue this[TKey key] { get; }
+
 		/// <summary>Gets an enumerable collection that contains the keys in the read-only dictionary.</summary>
 		/// <value>An enumerable collection that contains the keys in the read-only dictionary.</value>
 		IEnumerable<TKey> Keys { get; }
+
 		/// <summary>Gets an enumerable collection that contains the values in the read-only dictionary.</summary>
 		/// <value>An enumerable collection that contains the values in the read-only dictionary.</value>
 		IEnumerable<TValue> Values { get; }
