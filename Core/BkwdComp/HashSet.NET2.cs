@@ -113,7 +113,7 @@ namespace System.Collections.Generic
 		public HashSet(IEnumerable<T> collection, IEqualityComparer<T> comparer)
 		{
 			dict = new Dictionary<T, object>(comparer);
-			foreach (T elem in collection)
+			foreach (var elem in collection)
 			{
 				Add(elem);
 			}
@@ -256,6 +256,7 @@ namespace System.Collections.Generic
 			var l = this.ToList();
 			foreach (var elem in l)
 			{
+				// ReSharper disable once PossibleMultipleEnumeration
 				if (!other.Contains(elem))
 				{
 					Remove(elem);
