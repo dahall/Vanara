@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
+using Vanara.Extensions;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 
@@ -25,13 +28,13 @@ namespace Vanara.Windows.Shell
 		public PropertyDescription(PROPERTYKEY propkey)
 		{
 			key = propkey;
-			if (PSGetPropertyDescription(ref propkey, typeof(IPropertyDescription).GUID, out var ppv).Succeeded)
+			if (PSGetPropertyDescription(propkey, typeof(IPropertyDescription).GUID, out var ppv).Succeeded)
 				iDesc = (IPropertyDescription)ppv;
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="PropertyDescription"/> class.</summary>
 		/// <param name="propertyDescription">The property description.</param>
-		internal protected PropertyDescription(IPropertyDescription propertyDescription)
+		protected internal PropertyDescription(IPropertyDescription propertyDescription)
 		{
 			iDesc = propertyDescription;
 			key = iDesc.GetPropertyKey();
@@ -53,8 +56,7 @@ namespace Vanara.Windows.Shell
 			{
 				PROPDESC_CONDITION_TYPE ct = 0;
 				CONDITION_OPERATION co = 0;
-				if (iDesc != null)
-					iDesc.GetConditionType(out ct, out co);
+				iDesc?.GetConditionType(out ct, out co);
 				return new Tuple<PROPDESC_CONDITION_TYPE, CONDITION_OPERATION>(ct, co);
 			}
 		}
@@ -172,21 +174,26 @@ namespace Vanara.Windows.Shell
 		/// <summary>The IPropertyDescriptionList instance.</summary>
 		protected IPropertyDescriptionList iList;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="PropertyDescriptionList"/> class from a string.
+		/// </summary>
+		/// <param name="propList">The property list. See <see cref="IPropertySystem.GetPropertyDescriptionListFromString"/> for the required format.</param>
+		public PropertyDescriptionList(string propList)
+		{
+			PSGetPropertyDescriptionListFromString(propList, typeof(IPropertyDescriptionList).GUID, out iList).ThrowIfFailed();
+		}
+
 		/// <summary>Initializes a new instance of the <see cref="PropertyDescriptionList"/> class.</summary>
 		/// <param name="list">The COM interface pointer.</param>
-		internal protected PropertyDescriptionList(IPropertyDescriptionList list)
+		protected internal PropertyDescriptionList(IPropertyDescriptionList list)
 		{
 			iList = list;
 		}
 
-		/// <summary>Gets the number of elements in the collection.</summary>
-		/// <value>The number of elements in the collection.</value>
+		/// <inheritdoc />
 		public virtual int Count => (int)(iList?.GetCount() ?? 0);
 
-		/// <summary>Gets the <see cref="PropertyDescription"/> at the specified index.</summary>
-		/// <value>The <see cref="PropertyDescription"/>.</value>
-		/// <param name="index">The index.</param>
-		/// <returns>The <see cref="PropertyDescription"/> at the specified index.</returns>
+		/// <inheritdoc />
 		public virtual PropertyDescription this[int index] =>
 			new PropertyDescription(iList?.GetAt((uint)index, typeof(IPropertyDescription).GUID));
 
@@ -196,7 +203,7 @@ namespace Vanara.Windows.Shell
 		/// <returns>The <see cref="PropertyDescription" /> for the specified key.</returns>
 		public virtual PropertyDescription this[PROPERTYKEY propkey] => new PropertyDescription(propkey);
 
-		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+		/// <inheritdoc />
 		public virtual void Dispose()
 		{
 			if (iList != null)
@@ -206,12 +213,13 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
-		/// <summary>Returns an enumerator that iterates through the collection.</summary>
-		/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
+		/// <inheritdoc />
 		public IEnumerator<PropertyDescription> GetEnumerator() => Enum().GetEnumerator();
 
-		/// <summary>Returns an enumerator that iterates through a collection.</summary>
-		/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
+		/// <inheritdoc />
+		public override string ToString() => "prop:" + string.Join(";", this.Select(d => $"{GetPrefixForViewFlags(d.ViewFlags)}{d.CanonicalName}").ToArray());
+
+		/// <inheritdoc />
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 		/// <summary>Enumerates through the items in this instance.</summary>
@@ -220,7 +228,46 @@ namespace Vanara.Windows.Shell
 		{
 			for (var i = 0; i < Count; i++)
 				yield return this[i];
-			yield break;
+		}
+
+		// TODO: Incomplete. Needs to also include ?, < and & flags, but they are not documented.
+		private static string GetPrefixForViewFlags(PROPDESC_VIEW_FLAGS flags)
+		{
+			var sb = new StringBuilder();
+			foreach (var e in flags.GetFlags())
+			{
+				switch (e)
+				{
+					case PROPDESC_VIEW_FLAGS.PDVF_CENTERALIGN:
+						sb.Append('|');
+						break;
+					case PROPDESC_VIEW_FLAGS.PDVF_RIGHTALIGN:
+						sb.Append('/');
+						break;
+					case PROPDESC_VIEW_FLAGS.PDVF_BEGINNEWGROUP:
+						sb.Append('^');
+						break;
+					case PROPDESC_VIEW_FLAGS.PDVF_FILLAREA:
+						sb.Append('#');
+						break;
+					case PROPDESC_VIEW_FLAGS.PDVF_SORTDESCENDING:
+						sb.Append('-');
+						break;
+					case PROPDESC_VIEW_FLAGS.PDVF_SHOWONLYIFPRESENT:
+						sb.Append('*');
+						break;
+					case PROPDESC_VIEW_FLAGS.PDVF_HIDELABEL:
+						sb.Append('~');
+						break;
+				}
+			}
+			if (flags.IsFlagSet(PROPDESC_VIEW_FLAGS.PDVF_SHOWBYDEFAULT | PROPDESC_VIEW_FLAGS.PDVF_SHOWINPRIMARYLIST | PROPDESC_VIEW_FLAGS.PDVF_SHOWINSECONDARYLIST))
+				sb.Append('0');
+			else if (flags.IsFlagSet(PROPDESC_VIEW_FLAGS.PDVF_SHOWINPRIMARYLIST | PROPDESC_VIEW_FLAGS.PDVF_SHOWINSECONDARYLIST))
+				sb.Append('1');
+			if (flags.IsFlagSet(PROPDESC_VIEW_FLAGS.PDVF_SHOWINSECONDARYLIST))
+				sb.Append('2');
+			return sb.ToString();
 		}
 	}
 
@@ -235,7 +282,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Initializes a new instance of the <see cref="PropertyType"/> class.</summary>
 		/// <param name="type">The IPropertyEnumType object.</param>
-		internal protected PropertyType(IPropertyEnumType type)
+		protected internal PropertyType(IPropertyEnumType type)
 		{
 			iType = type;
 		}
@@ -302,7 +349,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Initializes a new instance of the <see cref="PropertyTypeList"/> class.</summary>
 		/// <param name="list">The IPropertyEnumTypeList object.</param>
-		internal protected PropertyTypeList(IPropertyEnumTypeList list)
+		protected internal PropertyTypeList(IPropertyEnumTypeList list)
 		{
 			iList = list;
 		}
@@ -350,7 +397,6 @@ namespace Vanara.Windows.Shell
 		{
 			for (var i = 0; i < Count; i++)
 				yield return this[i];
-			yield break;
 		}
 	}
 }

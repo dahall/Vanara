@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Vanara</RootNamespace>
     <AssemblyName>UnitTests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <TestProjectType>UnitTest</TestProjectType>
@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="nunit.framework, Version=3.10.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
@@ -42,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Collections\EventedListTests.cs" />
+    <Compile Include="Core\Collections\HashSet2.0Tests.cs" />
     <Compile Include="Core\Collections\HierarchyTests.cs" />
     <Compile Include="Core\Collections\SparseArrayTests.cs" />
     <Compile Include="Core\Extensions\EnumExtensionsTests.cs" />
@@ -101,6 +104,7 @@
     <Compile Include="PInvoke\WinInet\WinInetTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\AccessControl\SystemSecurityTests.cs" />
+    <Compile Include="Shell\ShellAssocTests.cs" />
     <Compile Include="Shell\ShellFileOperationsTests.cs" />
     <Compile Include="Shell\ControlPanelTests.cs" />
     <Compile Include="Shell\ShellItemTests.cs" />

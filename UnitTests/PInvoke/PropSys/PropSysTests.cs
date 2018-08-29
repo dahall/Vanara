@@ -172,7 +172,7 @@ namespace Vanara.PInvoke.Tests
 		public void PSGetNameFromPropertyKeyTest()
 		{
 			var pkey = new PROPERTYKEY {fmtid = new Guid("{F29F85E0-4FF9-1068-AB91-08002B27B3D9}"), pid = 5};
-			var hr = PSGetNameFromPropertyKey(ref pkey, out var str);
+			var hr = PSGetNameFromPropertyKey(pkey, out var str);
 			Assert.That(hr.Succeeded);
 			Assert.That(str, Is.Not.Null);
 			TestContext.WriteLine(str);
