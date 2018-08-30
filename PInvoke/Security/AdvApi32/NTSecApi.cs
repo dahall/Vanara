@@ -946,7 +946,7 @@ namespace Vanara.PInvoke
 		/// The LSA_UNICODE_STRING structure is used by various Local Security Authority (LSA) functions to specify a Unicode string. Also an
 		/// example of unnecessary over-engineering and re-engineering.
 		/// </summary>
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Size = 8)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Size = 8, Pack = 2)]
 		[PInvokeData("Ntsecapi.h", MSDNShortId = "ms721841")]
 		public struct LSA_UNICODE_STRING
 		{
