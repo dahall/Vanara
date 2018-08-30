@@ -21,7 +21,8 @@ namespace Vanara.PInvoke
 		/// If the function handles the control signal, it should return TRUE (1). If it returns FALSE (0), the next handler function in the list of handlers for
 		/// this process is used.
 		/// </returns>
-		public delegate int PHANDLER_ROUTINE(CTRL_EVENT CtrlType);
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public delegate bool PHANDLER_ROUTINE(CTRL_EVENT CtrlType);
 
 		[Flags]
 		public enum CHARACTER_ATTRIBUTE : ushort
