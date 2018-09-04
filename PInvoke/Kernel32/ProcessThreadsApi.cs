@@ -1096,6 +1096,172 @@ namespace Vanara.PInvoke
 			[In] string lpCurrentDirectory, [In] ref STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
 
 		/// <summary>
+		/// <para>Creates a new process and its primary thread. The new process runs in the security context of the calling process.</para>
+		/// <para>
+		/// If the calling process is impersonating another user, the new process uses the token for the calling process, not the impersonation token. To run the
+		/// new process in the security context of the user represented by the impersonation token, use the <c>CreateProcessAsUser</c> or
+		/// <c>CreateProcessWithLogonW</c> function.
+		/// </para>
+		/// </summary>
+		/// <param name="lpApplicationName">
+		/// <para>
+		/// The name of the module to be executed. This module can be a Windows-based application. It can be some other type of module (for example, MS-DOS or
+		/// OS/2) if the appropriate subsystem is available on the local computer.
+		/// </para>
+		/// <para>
+		/// The string can specify the full path and file name of the module to execute or it can specify a partial name. In the case of a partial name, the
+		/// function uses the current drive and current directory to complete the specification. The function will not use the search path. This parameter must
+		/// include the file name extension; no default extension is assumed.
+		/// </para>
+		/// <para>
+		/// The lpApplicationName parameter can be <c>NULL</c>. In that case, the module name must be the first white space–delimited token in the lpCommandLine
+		/// string. If you are using a long file name that contains a space, use quoted strings to indicate where the file name ends and the arguments begin;
+		/// otherwise, the file name is ambiguous. For example, consider the string "c:\program files\sub dir\program name". This string can be interpreted in a
+		/// number of ways. The system tries to interpret the possibilities in the following order:
+		/// </para>
+		/// <para>
+		/// If the executable module is a 16-bit application, lpApplicationName should be <c>NULL</c>, and the string pointed to by lpCommandLine should specify
+		/// the executable module as well as its arguments.
+		/// </para>
+		/// <para>
+		/// To run a batch file, you must start the command interpreter; set lpApplicationName to cmd.exe and set lpCommandLine to the following arguments: /c
+		/// plus the name of the batch file.
+		/// </para>
+		/// </param>
+		/// <param name="lpCommandLine">
+		/// <para>
+		/// The command line to be executed. The maximum length of this string is 32,768 characters, including the Unicode terminating null character. If
+		/// lpApplicationName is <c>NULL</c>, the module name portion of lpCommandLine is limited to <c>MAX_PATH</c> characters.
+		/// </para>
+		/// <para>
+		/// The Unicode version of this function, <c>CreateProcessW</c>, can modify the contents of this string. Therefore, this parameter cannot be a pointer to
+		/// read-only memory (such as a <c>const</c> variable or a literal string). If this parameter is a constant string, the function may cause an access violation.
+		/// </para>
+		/// <para>The lpCommandLine parameter can be NULL. In that case, the function uses the string pointed to by lpApplicationName as the command line.</para>
+		/// <para>
+		/// If both lpApplicationName and lpCommandLine are non- <c>NULL</c>, the null-terminated string pointed to by lpApplicationName specifies the module to
+		/// execute, and the null-terminated string pointed to by lpCommandLine specifies the command line. The new process can use <c>GetCommandLine</c> to
+		/// retrieve the entire command line. Console processes written in C can use the argc and argv arguments to parse the command line. Because argv[0] is
+		/// the module name, C programmers generally repeat the module name as the first token in the command line.
+		/// </para>
+		/// <para>
+		/// If lpApplicationName is NULL, the first white space–delimited token of the command line specifies the module name. If you are using a long file name
+		/// that contains a space, use quoted strings to indicate where the file name ends and the arguments begin (see the explanation for the lpApplicationName
+		/// parameter). If the file name does not contain an extension, .exe is appended. Therefore, if the file name extension is .com, this parameter must
+		/// include the .com extension. If the file name ends in a period (.) with no extension, or if the file name contains a path, .exe is not appended. If
+		/// the file name does not contain a directory path, the system searches for the executable file in the following sequence:
+		/// </para>
+		/// <para>
+		/// The system adds a terminating null character to the command-line string to separate the file name from the arguments. This divides the original
+		/// string into two strings for internal processing.
+		/// </para>
+		/// </param>
+		/// <param name="lpProcessAttributes">
+		/// <para>
+		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that determines whether the returned handle to the new process object can be inherited by child
+		/// processes. If lpProcessAttributes is <c>NULL</c>, the handle cannot be inherited.
+		/// </para>
+		/// <para>
+		/// The <c>lpSecurityDescriptor</c> member of the structure specifies a security descriptor for the new process. If lpProcessAttributes is NULL or
+		/// <c>lpSecurityDescriptor</c> is <c>NULL</c>, the process gets a default security descriptor. The ACLs in the default security descriptor for a process
+		/// come from the primary token of the creator.
+		/// </para>
+		/// <para>
+		/// <c>Windows XP:</c> The ACLs in the default security descriptor for a process come from the primary or impersonation token of the creator. This
+		/// behavior changed with Windows XP with SP2 and Windows Server 2003.
+		/// </para>
+		/// </param>
+		/// <param name="lpThreadAttributes">
+		/// <para>
+		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that determines whether the returned handle to the new thread object can be inherited by child
+		/// processes. If lpThreadAttributes is NULL, the handle cannot be inherited.
+		/// </para>
+		/// <para>
+		/// The <c>lpSecurityDescriptor</c> member of the structure specifies a security descriptor for the main thread. If lpThreadAttributes is NULL or
+		/// <c>lpSecurityDescriptor</c> is NULL, the thread gets a default security descriptor. The ACLs in the default security descriptor for a thread come
+		/// from the process token.
+		/// </para>
+		/// <para>
+		/// <c>Windows XP:</c> The ACLs in the default security descriptor for a thread come from the primary or impersonation token of the creator. This
+		/// behavior changed with Windows XP with SP2 and Windows Server 2003.
+		/// </para>
+		/// </param>
+		/// <param name="bInheritHandles">
+		/// <para>
+		/// If this parameter is TRUE, each inheritable handle in the calling process is inherited by the new process. If the parameter is FALSE, the handles are
+		/// not inherited. Note that inherited handles have the same value and access rights as the original handles.
+		/// </para>
+		/// <para>
+		/// <c>Terminal Services:</c> You cannot inherit handles across sessions. Additionally, if this parameter is TRUE, you must create the process in the
+		/// same session as the caller.
+		/// </para>
+		/// <para>
+		/// <c>Protected Process Light (PPL) processes:</c> The generic handle inheritance is blocked when a PPL process creates a non-PPL process since
+		/// PROCESS_DUP_HANDLE is not allowed from a non-PPL process to a PPL process. See Process Security and Access Rights
+		/// </para>
+		/// </param>
+		/// <param name="dwCreationFlags">
+		/// <para>The flags that control the priority class and the creation of the process. For a list of values, see Process Creation Flags.</para>
+		/// <para>
+		/// This parameter also controls the new process's priority class, which is used to determine the scheduling priorities of the process's threads. For a
+		/// list of values, see <c>GetPriorityClass</c>. If none of the priority class flags is specified, the priority class defaults to
+		/// <c>NORMAL_PRIORITY_CLASS</c> unless the priority class of the creating process is <c>IDLE_PRIORITY_CLASS</c> or <c>BELOW_NORMAL_PRIORITY_CLASS</c>.
+		/// In this case, the child process receives the default priority class of the calling process.
+		/// </para>
+		/// </param>
+		/// <param name="lpEnvironment">
+		/// <para>
+		/// A pointer to the environment block for the new process. If this parameter is <c>NULL</c>, the new process uses the environment of the calling process.
+		/// </para>
+		/// <para>An environment block consists of a null-terminated block of null-terminated strings. Each string is in the following form:</para>
+		/// <para>name=value\0</para>
+		/// <para>Because the equal sign is used as a separator, it must not be used in the name of an environment variable.</para>
+		/// <para>
+		/// An environment block can contain either Unicode or ANSI characters. If the environment block pointed to by lpEnvironment contains Unicode characters,
+		/// be sure that dwCreationFlags includes <c>CREATE_UNICODE_ENVIRONMENT</c>. If this parameter is <c>NULL</c> and the environment block of the parent
+		/// process contains Unicode characters, you must also ensure that dwCreationFlags includes <c>CREATE_UNICODE_ENVIRONMENT</c>.
+		/// </para>
+		/// <para>The ANSI version of this function, <c>CreateProcessA</c> fails if the total size of the environment block for the process exceeds 32,767 characters.</para>
+		/// <para>
+		/// Note that an ANSI environment block is terminated by two zero bytes: one for the last string, one more to terminate the block. A Unicode environment
+		/// block is terminated by four zero bytes: two for the last string, two more to terminate the block.
+		/// </para>
+		/// </param>
+		/// <param name="lpCurrentDirectory">
+		/// <para>The full path to the current directory for the process. The string can also specify a UNC path.</para>
+		/// <para>
+		/// If this parameter is <c>NULL</c>, the new process will have the same current drive and directory as the calling process. (This feature is provided
+		/// primarily for shells that need to start an application and specify its initial drive and working directory.)
+		/// </para>
+		/// </param>
+		/// <param name="lpStartupInfo">
+		/// <para>A pointer to a <c>STARTUPINFO</c> or <c>STARTUPINFOEX</c> structure.</para>
+		/// <para>To set extended attributes, use a <c>STARTUPINFOEX</c> structure and specify EXTENDED_STARTUPINFO_PRESENT in the dwCreationFlags parameter.</para>
+		/// <para>Handles in <c>STARTUPINFO</c> or <c>STARTUPINFOEX</c> must be closed with <c>CloseHandle</c> when they are no longer needed.</para>
+		/// </param>
+		/// <param name="lpProcessInformation">
+		/// <para>A pointer to a <c>PROCESS_INFORMATION</c> structure that receives identification information about the new process.</para>
+		/// <para>Handles in <c>PROCESS_INFORMATION</c> must be closed with <c>CloseHandle</c> when they are no longer needed.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>
+		/// Note that the function returns before the process has finished initialization. If a required DLL cannot be located or fails to initialize, the
+		/// process is terminated. To get the termination status of a process, call <c>GetExitCodeProcess</c>.
+		/// </para>
+		/// </returns>
+		// BOOL WINAPI CreateProcess( _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ LPTSTR lpCommandLine, _In_opt_ LPSECURITY_ATTRIBUTES lpProcessAttributes,
+		// _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ BOOL bInheritHandles, _In_ DWORD dwCreationFlags, _In_opt_ LPVOID lpEnvironment, _In_opt_
+		// LPCTSTR lpCurrentDirectory, _In_ LPSTARTUPINFO lpStartupInfo, _Out_ LPPROCESS_INFORMATION lpProcessInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("WinBase.h", MSDNShortId = "ms682425")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CreateProcess([In] string lpApplicationName, StringBuilder lpCommandLine, [In] IntPtr lpProcessAttributes,
+			[In] IntPtr lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles, CREATE_PROCESS dwCreationFlags, [In] IntPtr lpEnvironment,
+			[In] string lpCurrentDirectory, [In] ref STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
+			
+		/// <summary>
 		/// <para>Creates a new process and its primary thread. The new process runs in the security context of the user represented by the specified token.</para>
 		/// <para>
 		/// Typically, the process that calls the <c>CreateProcessAsUser</c> function must have the <c>SE_INCREASE_QUOTA_NAME</c> privilege and may require the
@@ -1278,6 +1444,191 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CreateProcessAsUser(IntPtr hToken, string lpApplicationName, StringBuilder lpCommandLine,
 			SECURITY_ATTRIBUTES lpProcessAttributes, SECURITY_ATTRIBUTES lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles,
+			CREATE_PROCESS dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, ref STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
+
+		/// <summary>
+		/// <para>Creates a new process and its primary thread. The new process runs in the security context of the user represented by the specified token.</para>
+		/// <para>
+		/// Typically, the process that calls the <c>CreateProcessAsUser</c> function must have the <c>SE_INCREASE_QUOTA_NAME</c> privilege and may require the
+		/// <c>SE_ASSIGNPRIMARYTOKEN_NAME</c> privilege if the token is not assignable. If this function fails with <c>ERROR_PRIVILEGE_NOT_HELD</c> (1314), use
+		/// the <c>CreateProcessWithLogonW</c> function instead. <c>CreateProcessWithLogonW</c> requires no special privileges, but the specified user account
+		/// must be allowed to log on interactively. Generally, it is best to use <c>CreateProcessWithLogonW</c> to create a process with alternate credentials.
+		/// </para>
+		/// </summary>
+		/// <param name="hToken">
+		/// <para>
+		/// A handle to the primary token that represents a user. The handle must have the <c>TOKEN_QUERY</c>, <c>TOKEN_DUPLICATE</c>, and
+		/// <c>TOKEN_ASSIGN_PRIMARY</c> access rights. For more information, see <c>Access Rights for Access-Token Objects</c>. The user represented by the token
+		/// must have read and execute access to the application specified by the lpApplicationName or the lpCommandLine parameter.
+		/// </para>
+		/// <para>
+		/// To get a primary token that represents the specified user, call the <c>LogonUser</c> function. Alternatively, you can call the
+		/// <c>DuplicateTokenEx</c> function to convert an impersonation token into a primary token. This allows a server application that is impersonating a
+		/// client to create a process that has the security context of the client.
+		/// </para>
+		/// <para>
+		/// If hToken is a restricted version of the caller's primary token, the <c>SE_ASSIGNPRIMARYTOKEN_NAME</c> privilege is not required. If the necessary
+		/// privileges are not already enabled, <c>CreateProcessAsUser</c> enables them for the duration of the call. For more information, see Running with
+		/// Special Privileges.
+		/// </para>
+		/// <para>
+		/// <c>Terminal Services:</c> The process is run in the session specified in the token. By default, this is the same session that called
+		/// <c>LogonUser</c>. To change the session, use the <c>SetTokenInformation</c> function.
+		/// </para>
+		/// </param>
+		/// <param name="lpApplicationName">
+		/// <para>
+		/// The name of the module to be executed. This module can be a Windows-based application. It can be some other type of module (for example, MS-DOS or
+		/// OS/2) if the appropriate subsystem is available on the local computer.
+		/// </para>
+		/// <para>
+		/// The string can specify the full path and file name of the module to execute or it can specify a partial name. In the case of a partial name, the
+		/// function uses the current drive and current directory to complete the specification. The function will not use the search path. This parameter must
+		/// include the file name extension; no default extension is assumed.
+		/// </para>
+		/// <para>
+		/// The lpApplicationName parameter can be <c>NULL</c>. In that case, the module name must be the first white space–delimited token in the lpCommandLine
+		/// string. If you are using a long file name that contains a space, use quoted strings to indicate where the file name ends and the arguments begin;
+		/// otherwise, the file name is ambiguous. For example, consider the string "c:\program files\sub dir\program name". This string can be interpreted in a
+		/// number of ways. The system tries to interpret the possibilities in the following order:
+		/// </para>
+		/// <para>
+		/// If the executable module is a 16-bit application, lpApplicationName should be <c>NULL</c>, and the string pointed to by lpCommandLine should specify
+		/// the executable module as well as its arguments. By default, all 16-bit Windows-based applications created by <c>CreateProcessAsUser</c> are run in a
+		/// separate VDM (equivalent to <c>CREATE_SEPARATE_WOW_VDM</c> in <c>CreateProcess</c>).
+		/// </para>
+		/// </param>
+		/// <param name="lpCommandLine">
+		/// <para>
+		/// The command line to be executed. The maximum length of this string is 32K characters. If lpApplicationName is <c>NULL</c>, the module name portion of
+		/// lpCommandLine is limited to <c>MAX_PATH</c> characters.
+		/// </para>
+		/// <para>
+		/// The Unicode version of this function, <c>CreateProcessAsUserW</c>, can modify the contents of this string. Therefore, this parameter cannot be a
+		/// pointer to read-only memory (such as a <c>const</c> variable or a literal string). If this parameter is a constant string, the function may cause an
+		/// access violation.
+		/// </para>
+		/// <para>
+		/// The lpCommandLine parameter can be <c>NULL</c>. In that case, the function uses the string pointed to by lpApplicationName as the command line.
+		/// </para>
+		/// <para>
+		/// If both lpApplicationName and lpCommandLine are non- <c>NULL</c>, *lpApplicationName specifies the module to execute, and *lpCommandLine specifies
+		/// the command line. The new process can use <c>GetCommandLine</c> to retrieve the entire command line. Console processes written in C can use the argc
+		/// and argv arguments to parse the command line. Because argv[0] is the module name, C programmers generally repeat the module name as the first token
+		/// in the command line.
+		/// </para>
+		/// <para>
+		/// If lpApplicationName is <c>NULL</c>, the first white space–delimited token of the command line specifies the module name. If you are using a long
+		/// file name that contains a space, use quoted strings to indicate where the file name ends and the arguments begin (see the explanation for the
+		/// lpApplicationName parameter). If the file name does not contain an extension, .exe is appended. Therefore, if the file name extension is .com, this
+		/// parameter must include the .com extension. If the file name ends in a period (.) with no extension, or if the file name contains a path, .exe is not
+		/// appended. If the file name does not contain a directory path, the system searches for the executable file in the following sequence:
+		/// </para>
+		/// <para>
+		/// The system adds a null character to the command line string to separate the file name from the arguments. This divides the original string into two
+		/// strings for internal processing.
+		/// </para>
+		/// </param>
+		/// <param name="lpProcessAttributes">
+		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new process object and determines whether child
+		/// processes can inherit the returned handle to the process. If lpProcessAttributes is <c>NULL</c> or <c>lpSecurityDescriptor</c> is <c>NULL</c>, the
+		/// process gets a default security descriptor and the handle cannot be inherited. The default security descriptor is that of the user referenced in the
+		/// hToken parameter. This security descriptor may not allow access for the caller, in which case the process may not be opened again after it is run.
+		/// The process handle is valid and will continue to have full access rights.
+		/// </param>
+		/// <param name="lpThreadAttributes">
+		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new thread object and determines whether child
+		/// processes can inherit the returned handle to the thread. If lpThreadAttributes is <c>NULL</c> or <c>lpSecurityDescriptor</c> is <c>NULL</c>, the
+		/// thread gets a default security descriptor and the handle cannot be inherited. The default security descriptor is that of the user referenced in the
+		/// hToken parameter. This security descriptor may not allow access for the caller.
+		/// </param>
+		/// <param name="bInheritHandles">
+		/// <para>
+		/// If this parameter is <c>TRUE</c>, each inheritable handle in the calling process is inherited by the new process. If the parameter is <c>FALSE</c>,
+		/// the handles are not inherited. Note that inherited handles have the same value and access rights as the original handles.
+		/// </para>
+		/// <para>
+		/// <c>Terminal Services:</c> You cannot inherit handles across sessions. Additionally, if this parameter is <c>TRUE</c>, you must create the process in
+		/// the same session as the caller.
+		/// </para>
+		/// <para>
+		/// <c>Protected Process Light (PPL) processes:</c> The generic handle inheritance is blocked when a PPL process creates a non-PPL process since
+		/// PROCESS_DUP_HANDLE is not allowed from a non-PPL process to a PPL process. See Process Security and Access Rights
+		/// </para>
+		/// </param>
+		/// <param name="dwCreationFlags">
+		/// <para>The flags that control the priority class and the creation of the process. For a list of values, see Process Creation Flags.</para>
+		/// <para>
+		/// This parameter also controls the new process's priority class, which is used to determine the scheduling priorities of the process's threads. For a
+		/// list of values, see <c>GetPriorityClass</c>. If none of the priority class flags is specified, the priority class defaults to
+		/// <c>NORMAL_PRIORITY_CLASS</c> unless the priority class of the creating process is <c>IDLE_PRIORITY_CLASS</c> or <c>BELOW_NORMAL_PRIORITY_CLASS</c>.
+		/// In this case, the child process receives the default priority class of the calling process.
+		/// </para>
+		/// </param>
+		/// <param name="lpEnvironment">
+		/// <para>
+		/// A pointer to an environment block for the new process. If this parameter is <c>NULL</c>, the new process uses the environment of the calling process.
+		/// </para>
+		/// <para>An environment block consists of a null-terminated block of null-terminated strings. Each string is in the following form:</para>
+		/// <para>name=value\0</para>
+		/// <para>Because the equal sign is used as a separator, it must not be used in the name of an environment variable.</para>
+		/// <para>
+		/// An environment block can contain either Unicode or ANSI characters. If the environment block pointed to by lpEnvironment contains Unicode characters,
+		/// be sure that dwCreationFlags includes <c>CREATE_UNICODE_ENVIRONMENT</c>. If this parameter is <c>NULL</c> and the environment block of the parent
+		/// process contains Unicode characters, you must also ensure that dwCreationFlags includes <c>CREATE_UNICODE_ENVIRONMENT</c>.
+		/// </para>
+		/// <para>
+		/// The ANSI version of this function, <c>CreateProcessAsUserA</c> fails if the total size of the environment block for the process exceeds 32,767 characters.
+		/// </para>
+		/// <para>
+		/// Note that an ANSI environment block is terminated by two zero bytes: one for the last string, one more to terminate the block. A Unicode environment
+		/// block is terminated by four zero bytes: two for the last string, two more to terminate the block.
+		/// </para>
+		/// <para>
+		/// <c>Windows Server 2003 and Windows XP:</c> If the size of the combined user and system environment variable exceeds 8192 bytes, the process created
+		/// by <c>CreateProcessAsUser</c> no longer runs with the environment block passed to the function by the parent process. Instead, the child process runs
+		/// with the environment block returned by the <c>CreateEnvironmentBlock</c> function.
+		/// </para>
+		/// <para>To retrieve a copy of the environment block for a given user, use the <c>CreateEnvironmentBlock</c> function.</para>
+		/// </param>
+		/// <param name="lpCurrentDirectory">
+		/// <para>The full path to the current directory for the process. The string can also specify a UNC path.</para>
+		/// <para>
+		/// If this parameter is NULL, the new process will have the same current drive and directory as the calling process. (This feature is provided primarily
+		/// for shells that need to start an application and specify its initial drive and working directory.)
+		/// </para>
+		/// </param>
+		/// <param name="lpStartupInfo">
+		/// <para>A pointer to a <c>STARTUPINFO</c> or <c>STARTUPINFOEX</c> structure.</para>
+		/// <para>
+		/// The user must have full access to both the specified window station and desktop. If you want the process to be interactive, specify winsta0\default.
+		/// If the <c>lpDesktop</c> member is NULL, the new process inherits the desktop and window station of its parent process. If this member is an empty
+		/// string, "", the new process connects to a window station using the rules described in Process Connection to a Window Station.
+		/// </para>
+		/// <para>To set extended attributes, use a <c>STARTUPINFOEX</c> structure and specify <c>EXTENDED_STARTUPINFO_PRESENT</c> in the dwCreationFlags parameter.</para>
+		/// <para>Handles in <c>STARTUPINFO</c> or <c>STARTUPINFOEX</c> must be closed with <c>CloseHandle</c> when they are no longer needed.</para>
+		/// </param>
+		/// <param name="lpProcessInformation">
+		/// <para>A pointer to a <c>PROCESS_INFORMATION</c> structure that receives identification information about the new process.</para>
+		/// <para>Handles in <c>PROCESS_INFORMATION</c> must be closed with <c>CloseHandle</c> when they are no longer needed.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// <para>
+		/// Note that the function returns before the process has finished initialization. If a required DLL cannot be located or fails to initialize, the
+		/// process is terminated. To get the termination status of a process, call <c>GetExitCodeProcess</c>.
+		/// </para>
+		/// </returns>
+		// BOOL WINAPI CreateProcessAsUser( _In_opt_ HANDLE hToken, _In_opt_ LPCTSTR lpApplicationName, _Inout_opt_ LPTSTR lpCommandLine, _In_opt_
+		// LPSECURITY_ATTRIBUTES lpProcessAttributes, _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes, _In_ BOOL bInheritHandles, _In_ DWORD dwCreationFlags,
+		// _In_opt_ LPVOID lpEnvironment, _In_opt_ LPCTSTR lpCurrentDirectory, _In_ LPSTARTUPINFO lpStartupInfo, _Out_ LPPROCESS_INFORMATION
+		// lpProcessInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682429(v=vs.85).aspx
+		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("WinBase.h", MSDNShortId = "ms682429")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool CreateProcessAsUser(IntPtr hToken, string lpApplicationName, StringBuilder lpCommandLine,
+			IntPtr lpProcessAttributes, IntPtr lpThreadAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles,
 			CREATE_PROCESS dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, ref STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
 
 		/// <summary>
