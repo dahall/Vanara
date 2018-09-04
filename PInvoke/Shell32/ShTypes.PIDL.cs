@@ -144,7 +144,7 @@ namespace Vanara.PInvoke
 			/// <param name="childPidl">Child instance to test.</param>
 			/// <param name="immediate">If <c>true</c>, narrows test to immediate children only.</param>
 			/// <returns><c>true</c> if this instance is a parent or ancestor of a supplied PIDL.</returns>
-			public bool IsParentOf(PIDL childPidl, bool immediate = true) => ILIsParent(this, childPidl, immediate);
+			public bool IsParentOf(PIDL childPidl, bool immediate = true) => ILIsParent((IntPtr)this, (IntPtr)childPidl, immediate);
 
 			/// <summary>Removes the last identifier from the list.</summary>
 			public bool RemoveLastId() => ILRemoveLastID(handle);
