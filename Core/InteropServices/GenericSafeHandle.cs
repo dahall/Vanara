@@ -38,7 +38,7 @@ namespace Vanara.InteropServices
 		/// <summary>Performs an explicit conversion from <see cref="GenericSafeHandle"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="h">The <see cref="GenericSafeHandle"/> instance.</param>
 		/// <returns>The value of the handle. Use caution when using this value as it can be closed by the disposal of the parent <see cref="GenericSafeHandle"/>.</returns>
-		public static explicit operator IntPtr(GenericSafeHandle h) => h.DangerousGetHandle();
+		//public static explicit operator IntPtr(GenericSafeHandle h) => h.DangerousGetHandle();
 
 		/// <summary>When overridden in a derived class, executes the code required to free the handle.</summary>
 		/// <returns>
