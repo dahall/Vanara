@@ -330,6 +330,65 @@ namespace Vanara.PInvoke
 			VmOfferPriorityNormal
 		}
 
+		/// <summary>Flags that determines the allocation attributes of the section, file, page, etc.</summary>
+		[PInvokeData("winbase.h", MSDNShortId = "d3302183-76a0-47ec-874f-1173db353dfe")]
+		public enum SEC_ALLOC : uint
+		{
+			/// <summary>
+			/// If the file mapping object is backed by the operating system paging file (the hfile parameter is INVALID_HANDLE_VALUE), specifies that when a view of
+			/// the file is mapped into a process address space, the entire range of pages is committed rather than reserved. The system must have enough committable
+			/// pages to hold the entire mapping. Otherwise, CreateFileMapping fails.This attribute has no effect for file mapping objects that are backed by
+			/// executable image files or data files (the hfile parameter is a handle to a file).SEC_COMMIT cannot be combined with SEC_RESERVE.If no attribute is
+			/// specified, SEC_COMMIT is assumed.
+			/// </summary>
+			SEC_COMMIT = 0x8000000,
+			/// <summary>
+			/// Specifies that the file that the hFile parameter specifies is an executable image file.The SEC_IMAGE attribute must be combined with a page
+			/// protection value such as PAGE_READONLY. However, this page protection value has no effect on views of the executable image file. Page protection for
+			/// views of an executable image file is determined by the executable file itself.No other attributes are valid with SEC_IMAGE.
+			/// </summary>
+			SEC_IMAGE = 0x1000000,
+			/// <summary>
+			/// Specifies that the file that the hFile parameter specifies is an executable image file that will not be executed and the loaded image file will have
+			/// no forced integrity checks run. Additionally, mapping a view of a file mapping object created with the SEC_IMAGE_NO_EXECUTE attribute will not invoke
+			/// driver callbacks registered using the PsSetLoadImageNotifyRoutine kernel API.The SEC_IMAGE_NO_EXECUTE attribute must be combined with the
+			/// PAGE_READONLY page protection value. No other attributes are valid with SEC_IMAGE_NO_EXECUTE.Windows Server 2008 R2, Windows 7, Windows Server 2008,
+			/// Windows Vista, Windows Server 2003 and Windows XP: This value is not supported before Windows Server 2012 and Windows 8.
+			/// </summary>
+			SEC_IMAGE_NO_EXECUTE = 0x11000000,
+			/// <summary>
+			/// Enables large pages to be used for file mapping objects that are backed by the operating system paging file (the hfile parameter is
+			/// INVALID_HANDLE_VALUE). This attribute is not supported for file mapping objects that are backed by executable image files or data files (the hFile
+			/// parameter is a handle to an executable image or data file).The maximum size of the file mapping object must be a multiple of the minimum size of a
+			/// large page returned by the GetLargePageMinimum function. If it is not, CreateFileMapping fails. When mapping a view of a file mapping object created
+			/// with SEC_LARGE_PAGES, the base address and view size must also be multiples of the minimum large page size.SEC_LARGE_PAGES requires the
+			/// SeLockMemoryPrivilege privilege to be enabled in the caller&amp;#39;s token.If SEC_LARGE_PAGES is specified, SEC_COMMIT must also be
+			/// specified.Windows Server 2003: This value is not supported until Windows Server 2003 with SP1.Windows XP: This value is not supported.
+			/// </summary>
+			SEC_LARGE_PAGES = 0x80000000,
+			/// <summary>
+			/// Sets all pages to be non-cachable.Applications should not use this attribute except when explicitly required for a device. Using the interlocked
+			/// functions with memory that is mapped with SEC_NOCACHE can result in an EXCEPTION_ILLEGAL_INSTRUCTION exception.SEC_NOCACHE requires either the
+			/// SEC_RESERVE or SEC_COMMIT attribute to be set.
+			/// </summary>
+			SEC_NOCACHE = 0x10000000,
+			/// <summary>
+			/// If the file mapping object is backed by the operating system paging file (the hfile parameter is INVALID_HANDLE_VALUE), specifies that when a view of
+			/// the file is mapped into a process address space, the entire range of pages is reserved for later use by the process rather than committed.Reserved
+			/// pages can be committed in subsequent calls to the VirtualAlloc function. After the pages are committed, they cannot be freed or decommitted with the
+			/// VirtualFree function.This attribute has no effect for file mapping objects that are backed by executable image files or data files (the hfile
+			/// parameter is a handle to a file).SEC_RESERVE cannot be combined with SEC_COMMIT.
+			/// </summary>
+			SEC_RESERVE = 0x4000000,
+			/// <summary>
+			/// Sets all pages to be write-combined.Applications should not use this attribute except when explicitly required for a device. Using the interlocked
+			/// functions with memory that is mapped with SEC_WRITECOMBINE can result in an EXCEPTION_ILLEGAL_INSTRUCTION exception.SEC_WRITECOMBINE requires either
+			/// the SEC_RESERVE or SEC_COMMIT attribute to be set.Windows Server 2003 and Windows XP: This flag is not supported until Windows Vista.
+			/// </summary>
+			SEC_WRITECOMBINE = 0x40000000,
+
+		}
+
 		/// <summary>Used by <see cref="QueryVirtualMemoryInformation"/>.</summary>
 		public enum WIN32_MEMORY_INFORMATION_CLASS
 		{
