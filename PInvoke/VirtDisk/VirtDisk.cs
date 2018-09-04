@@ -790,7 +790,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		[PInvokeData("VirtDisk.h")]
-		public static extern Win32Error AttachVirtualDisk(SafeFileHandle VirtualDiskHandle, IntPtr SecurityDescriptor, ATTACH_VIRTUAL_DISK_FLAG Flags, uint ProviderSpecificFlags, ref ATTACH_VIRTUAL_DISK_PARAMETERS Parameters, [In] IntPtr Overlapped);
+		public static extern Win32Error AttachVirtualDisk(SafeFileHandle VirtualDiskHandle, SafeHandle SecurityDescriptor, ATTACH_VIRTUAL_DISK_FLAG Flags, uint ProviderSpecificFlags, ref ATTACH_VIRTUAL_DISK_PARAMETERS Parameters, [In] IntPtr Overlapped);
 
 		/// <summary>Attaches a virtual hard disk (VHD) or CD or DVD image file (ISO) by locating an appropriate VHD provider to accomplish the attachment.</summary>
 		/// <param name="VirtualDiskHandle">A handle to an open virtual disk. For information on how to open a virtual disk, see the OpenVirtualDisk function.</param>
@@ -815,7 +815,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
 		[PInvokeData("VirtDisk.h")]
-		public static extern Win32Error AttachVirtualDisk(SafeFileHandle VirtualDiskHandle, IntPtr SecurityDescriptor, ATTACH_VIRTUAL_DISK_FLAG Flags, uint ProviderSpecificFlags, ref ATTACH_VIRTUAL_DISK_PARAMETERS Parameters, ref NativeOverlapped Overlapped);
+		public static extern Win32Error AttachVirtualDisk(SafeFileHandle VirtualDiskHandle, SafeHandle SecurityDescriptor, ATTACH_VIRTUAL_DISK_FLAG Flags, uint ProviderSpecificFlags, ref ATTACH_VIRTUAL_DISK_PARAMETERS Parameters, ref NativeOverlapped Overlapped);
 
 		/// <summary>
 		/// Breaks a previously initiated mirror operation and sets the mirror to be the active virtual disk.
@@ -941,7 +941,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public static extern Win32Error CreateVirtualDisk(ref VIRTUAL_STORAGE_TYPE VirtualStorageType, string Path, VIRTUAL_DISK_ACCESS_MASK VirtualDiskAccessMask, IntPtr SecurityDescriptor, CREATE_VIRTUAL_DISK_FLAG Flags, int ProviderSpecificFlags, ref CREATE_VIRTUAL_DISK_PARAMETERS Parameters, IntPtr Overlapped, out SafeFileHandle Handle);
+		public static extern Win32Error CreateVirtualDisk(ref VIRTUAL_STORAGE_TYPE VirtualStorageType, string Path, VIRTUAL_DISK_ACCESS_MASK VirtualDiskAccessMask, SafeHandle SecurityDescriptor, CREATE_VIRTUAL_DISK_FLAG Flags, int ProviderSpecificFlags, ref CREATE_VIRTUAL_DISK_PARAMETERS Parameters, IntPtr Overlapped, out SafeFileHandle Handle);
 
 		/// <summary>Creates a virtual hard disk (VHD) image file, either using default parameters or using an existing VHD or physical disk.</summary>
 		/// <param name="VirtualStorageType">A pointer to a VIRTUAL_STORAGE_TYPE structure that contains the desired disk type and vendor information.</param>
@@ -962,7 +962,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public static extern Win32Error CreateVirtualDisk(ref VIRTUAL_STORAGE_TYPE VirtualStorageType, string Path, VIRTUAL_DISK_ACCESS_MASK VirtualDiskAccessMask, IntPtr SecurityDescriptor, CREATE_VIRTUAL_DISK_FLAG Flags, int ProviderSpecificFlags, ref CREATE_VIRTUAL_DISK_PARAMETERS Parameters, ref NativeOverlapped Overlapped, out SafeFileHandle Handle);
+		public static extern Win32Error CreateVirtualDisk(ref VIRTUAL_STORAGE_TYPE VirtualStorageType, string Path, VIRTUAL_DISK_ACCESS_MASK VirtualDiskAccessMask, SafeHandle SecurityDescriptor, CREATE_VIRTUAL_DISK_FLAG Flags, int ProviderSpecificFlags, ref CREATE_VIRTUAL_DISK_PARAMETERS Parameters, ref NativeOverlapped Overlapped, out SafeFileHandle Handle);
 
 		/// <summary>Deletes a snapshot from a VHD Set file.</summary>
 		/// <param name="VirtualDiskHandle">A handle to the open virtual disk.</param>

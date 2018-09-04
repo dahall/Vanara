@@ -402,7 +402,7 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa446646")]
 		public static extern bool GetPrivateObjectSecurity(SafeSecurityDescriptor ObjectDescriptor, SECURITY_INFORMATION SecurityInformation,
-			IntPtr ResultantDescriptor, uint DescriptorLength, out uint ReturnLength);
+			SafeSecurityDescriptor ResultantDescriptor, uint DescriptorLength, out uint ReturnLength);
 
 		/// <summary>
 		/// The GetSecurityDescriptorDacl function retrieves a pointer to the discretionary access control list (DACL) in a specified

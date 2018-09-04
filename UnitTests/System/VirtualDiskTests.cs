@@ -179,9 +179,9 @@ namespace Vanara.IO.Tests
 					Assert.That(vhd.Attached, Is.False);
 					var flags = ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_READ_ONLY;
 					var aparam = ATTACH_VIRTUAL_DISK_PARAMETERS.Default;
-					if (!ConvertStringSecurityDescriptorToSecurityDescriptor("O:BAG:BAD:(A;;GA;;;WD)", SDDL_REVISION.SDDL_REVISION_1, out SafeHGlobalHandle sd, out uint hLen))
+					if (!ConvertStringSecurityDescriptorToSecurityDescriptor("O:BAG:BAD:(A;;GA;;;WD)", SDDL_REVISION.SDDL_REVISION_1, out var sd, out uint hLen))
 						Win32Error.ThrowLastError();
-					vhd.Attach(flags, ref aparam, (IntPtr)sd);
+					vhd.Attach(flags, ref aparam, sd);
 					Assert.That(vhd.Attached, Is.True);
 					vhd.Detach();
 					Assert.That(vhd.Attached, Is.False);

@@ -109,9 +109,8 @@ namespace Vanara.PInvoke.Tests
 		{
 			var pSD = GetSD(fn);
 			var b = ConvertSecurityDescriptorToStringSecurityDescriptor(pSD, SDDL_REVISION.SDDL_REVISION_1,
-				SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, out SafeHGlobalHandle str, out uint len);
+				SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, out var s, out uint len);
 			Assert.That(b, Is.True);
-			var s = str.ToString(-1, CharSet.Auto);
 			Assert.That(s, Is.Not.Null);
 			TestContext.WriteLine(s);
 		}
@@ -181,12 +180,8 @@ namespace Vanara.PInvoke.Tests
 		{
 			using (var pSD = GetSD(fn))
 			{
-				var b = GetPrivateObjectSecurity(pSD, SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION, IntPtr.Zero, 0, out uint rightSize);
-				Assert.That(rightSize, Is.GreaterThan(0));
-				var sdo = new SafeHGlobalHandle((int)rightSize);
-				b = GetPrivateObjectSecurity(pSD, SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION, (IntPtr)sdo, (uint)sdo.Size, out rightSize);
-				Assert.That(b);
-				Assert.That(!sdo.IsInvalid);
+				var pos = pSD.GetPrivateObjectSecurity(SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION);
+				Assert.That(!pos.IsInvalid);
 			}
 		}
 

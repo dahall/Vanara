@@ -140,7 +140,8 @@ namespace Vanara.Security.AccessControl
 		/// <returns>An array of access masks.</returns>
 		public virtual uint[] GetEffectivePermission(PSID pUserSid, string serverName, IntPtr pSecurityDescriptor)
 		{
-			var mask = GetEffectiveRights(pUserSid, pSecurityDescriptor);
+			var sd = new SafeSecurityDescriptor(pSecurityDescriptor, false);
+			var mask = pUserSid.GetEffectiveRights(sd);
 			return new[] { mask };
 		}
 

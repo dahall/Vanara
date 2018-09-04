@@ -38,6 +38,18 @@ namespace Vanara.Security.AccessControl
 		}
 	}
 
+	/// <summary>Enables access to managed <see cref="ObjectSecurity"/> as unmanaged <see cref="T:byte[]"/>.</summary>
+	public class PinnedSecurityDescriptor : PinnedObject
+	{
+		private readonly byte[] bytes;
+
+		public PinnedSecurityDescriptor(ObjectSecurity sd)
+		{
+			bytes = sd.GetSecurityDescriptorBinaryForm();
+			SetObject(bytes);
+		}
+	}
+
 	/// <summary>Helper methods for working with Access Control structures.</summary>
 	public static class AccessControlHelper
 	{
@@ -60,7 +72,7 @@ namespace Vanara.Security.AccessControl
 
 		public static uint GetAclSize(IntPtr pAcl) => GetAclInfo(pAcl).AclBytesInUse;
 
-		public static uint GetEffectiveRights(PSID pSid, IntPtr pSD)
+		public static uint GetEffectiveRights(this PSID pSid, SafeSecurityDescriptor pSD)
 		{
 			var t = new TRUSTEE(pSid);
 			GetSecurityDescriptorDacl(pSD, out bool daclPresent, out IntPtr pDacl, out bool daclDefaulted);
@@ -93,19 +105,15 @@ namespace Vanara.Security.AccessControl
 
 		public static PSID GetPSID(this SecurityIdentifier sid) { using (var ps = new PinnedSid(sid)) return ps.PSID; }
 
-		public static IntPtr GetPrivateObjectSecurity(IntPtr pSD, SECURITY_INFORMATION si)
+		public static SafeSecurityDescriptor GetPrivateObjectSecurity(this SafeSecurityDescriptor pSD, SECURITY_INFORMATION si)
 		{
-			var pResSD = IntPtr.Zero;
-			AdvApi32.GetPrivateObjectSecurity(pSD, si, IntPtr.Zero, 0, out uint ret);
+			var pResSD = SafeSecurityDescriptor.Null;
+			AdvApi32.GetPrivateObjectSecurity(pSD, si, pResSD, 0, out uint ret);
 			if (ret > 0)
 			{
-				pResSD = Marshal.AllocHGlobal((int)ret);
-				if (pResSD != IntPtr.Zero && !AdvApi32.GetPrivateObjectSecurity(pSD, si, pResSD, ret, out ret))
-				{
-					Marshal.FreeHGlobal(pResSD);
-					pResSD = IntPtr.Zero;
+				pResSD = new SafeSecurityDescriptor((int)ret);
+				if (!pResSD.IsInvalid && !AdvApi32.GetPrivateObjectSecurity(pSD, si, pResSD, ret, out ret))
 					Win32Error.GetLastError().ThrowIfFailed();
-				}
 			}
 			return pResSD;
 		}
@@ -118,6 +126,6 @@ namespace Vanara.Security.AccessControl
 			return new RawAcl(dest, 0);
 		}
 
-		public static string SecurityDescriptorPtrToSdll(IntPtr pSD, SECURITY_INFORMATION si) => ConvertSecurityDescriptorToStringSecurityDescriptor(pSD, SDDL_REVISION.SDDL_REVISION_1, si, out SafeHGlobalHandle ssd, out uint ssdLen) ? ssd.ToString(-1, CharSet.Auto) : null;
+		public static string ToSddl(this SafeSecurityDescriptor pSD, SECURITY_INFORMATION si) => ConvertSecurityDescriptorToStringSecurityDescriptor(pSD, SDDL_REVISION.SDDL_REVISION_1, si, out var ssd, out var _) ? ssd : null;
 	}
 }

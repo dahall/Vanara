@@ -33,7 +33,7 @@ namespace Vanara.PInvoke
 			var resumeHandle = IntPtr.Zero;
 			var ret = NetServerEnum(null, level, out SafeNetApiBuffer bufptr, MAX_PREFERRED_LENGTH, out int entriesRead, out int totalEntries, netServerEnumFilter, domain, resumeHandle);
 			ret.ThrowIfFailed();
-			return ((IntPtr)bufptr).ToIEnum<T>(entriesRead);
+			return bufptr.DangerousGetHandle().ToIEnum<T>(entriesRead);
 		}
 
 		/// <summary>The NetServerGetInfo function retrieves current configuration information for the specified server.</summary>
@@ -53,7 +53,7 @@ namespace Vanara.PInvoke
 				throw new ArgumentOutOfRangeException(nameof(level), @"Only SERVER_INFO_100, SERVER_INFO_101, or SERVER_INFO_102 are supported as valid structures.");
 			var ret = NetServerGetInfo(serverName, level, out SafeNetApiBuffer ptr);
 			ret.ThrowIfFailed();
-			return ((IntPtr)ptr).ToStructure<T>();
+			return ptr.DangerousGetHandle().ToStructure<T>();
 		}
 
 		private static int GetLevelFromStructure<T>()

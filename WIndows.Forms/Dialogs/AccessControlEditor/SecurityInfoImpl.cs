@@ -14,13 +14,15 @@ namespace Vanara.Security.AccessControl
 {
 	internal class SecurityEventArg : EventArgs
 	{
-		public SecurityEventArg(IntPtr sd, SECURITY_INFORMATION parts)
+		public SecurityEventArg(SafeSecurityDescriptor sd, SECURITY_INFORMATION parts)
 		{
 			Parts = parts;
 			SecurityDesciptor = sd;
 		}
+
 		public SECURITY_INFORMATION Parts { get; }
-		public IntPtr SecurityDesciptor { get; }
+
+		public SafeSecurityDescriptor SecurityDesciptor { get; }
 	}
 
 	internal class SecurityInfoImpl : ISecurityInformation, ISecurityInformation3, ISecurityObjectTypeInfo, IEffectivePermission, ISecurityInformation4, IEffectivePermission2
@@ -91,9 +93,12 @@ namespace Vanara.Security.AccessControl
 		void ISecurityInformation.GetSecurity(SECURITY_INFORMATION requestInformation, out IntPtr ppSecurityDescriptor, bool fDefault)
 		{
 			System.Diagnostics.Debug.WriteLine($"GetSecurity: {requestInformation}{(fDefault ? " (Def)" : "")}");
-			ppSecurityDescriptor = GetPrivateObjectSecurity(fDefault ? prov.GetDefaultSecurity() : (IntPtr)pSD, requestInformation);
+			var sd = new SafeSecurityDescriptor(fDefault ? prov.GetDefaultSecurity() : (IntPtr)pSD, false);
+			var ret = sd.GetPrivateObjectSecurity(requestInformation);
 			System.Diagnostics.Debug.WriteLine(
-				$"GetSecurity={SecurityDescriptorPtrToSdll(ppSecurityDescriptor, requestInformation) ?? "null"} <- {SecurityDescriptorPtrToSdll((IntPtr)pSD, requestInformation) ?? "null"}");
+				$"GetSecurity={ret.ToSddl(requestInformation) ?? "null"} <- {sd.ToSddl(requestInformation) ?? "null"}");
+			ppSecurityDescriptor = ret.DangerousGetHandle();
+			ret.SetHandleAsInvalid();
 		}
 
 		void ISecurityInformation.MapGeneric(Guid guidObjectType, ref sbyte AceFlags, ref uint Mask)
@@ -114,7 +119,7 @@ namespace Vanara.Security.AccessControl
 
 		void ISecurityInformation.SetSecurity(SECURITY_INFORMATION requestInformation, IntPtr sd)
 		{
-			OnSetSecurity?.Invoke(this, new SecurityEventArg(sd, requestInformation));
+			OnSetSecurity?.Invoke(this, new SecurityEventArg(new SafeSecurityDescriptor(sd, false), requestInformation));
 		}
 
 		string ISecurityInformation3.GetFullResourceName() => fullObjectName;
@@ -196,7 +201,7 @@ namespace Vanara.Security.AccessControl
 				}
 				if (sd != null)
 				{
-					var sddl = SecurityDescriptorPtrToSdll(sd.SecurityDesciptor, sd.Parts);
+					var sddl = sd.SecurityDesciptor.ToSddl(sd.Parts);
 					if (!string.IsNullOrEmpty(sddl))
 					{
 						System.Diagnostics.Debug.WriteLine($"ShowDialog: Return: {sddl}");

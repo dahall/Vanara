@@ -1389,16 +1389,22 @@ namespace Vanara.PInvoke
 		/// </summary>
 		public class SafeSecurityDescriptor : GenericSafeHandle
 		{
+			private static LocalMemoryMethods lmem = new LocalMemoryMethods();
+
 			/// <summary>Initializes a new instance of the <see cref="SafeSecurityDescriptor"/> class.</summary>
 			public SafeSecurityDescriptor() : this(IntPtr.Zero) { }
 
 			/// <summary>Initializes a new instance of the <see cref="SafeSecurityDescriptor"/> class from an existing pointer.</summary>
 			/// <param name="pSecurityDescriptor">The security descriptor pointer.</param>
 			/// <param name="own">if set to <c>true</c> indicates that this pointer should be freed when disposed.</param>
-			public SafeSecurityDescriptor(IntPtr pSecurityDescriptor, bool own = true) : base(pSecurityDescriptor, h => LocalFree(h) == IntPtr.Zero, own) { }
+			public SafeSecurityDescriptor(IntPtr pSecurityDescriptor, bool own = true) : base(pSecurityDescriptor, h => { lmem.FreeMem(h); return true; }, own) { }
 
-			[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-			private static extern IntPtr LocalFree(IntPtr hMem);
+			/// <summary>Initializes a new instance of the <see cref="SafeSecurityDescriptor"/> class to an empty memory buffer.</summary>
+			/// <param name="size">The size of the uninitialized security descriptor.</param>
+			public SafeSecurityDescriptor(int size) : this(lmem.AllocMem(size), true) { }
+
+			/// <summary>The null value for a SafeSecurityDescriptor.</summary>
+			public static readonly SafeSecurityDescriptor Null = new SafeSecurityDescriptor();
 		}
 	}
 }

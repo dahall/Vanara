@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
+using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.VirtDisk;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -224,11 +225,11 @@ namespace Vanara.IO
 		/// security descriptor will be used.
 		/// </param>
 		/// <returns>If successful, returns a valid <see cref="VirtualDisk"/> instance for the newly created virtual disk.</returns>
-		public static VirtualDisk Create(string path, ref CREATE_VIRTUAL_DISK_PARAMETERS param, CREATE_VIRTUAL_DISK_FLAG flags = CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_NONE, VIRTUAL_DISK_ACCESS_MASK mask = VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_NONE, IntPtr securityDescriptor = default(IntPtr))
+		public static VirtualDisk Create(string path, ref CREATE_VIRTUAL_DISK_PARAMETERS param, CREATE_VIRTUAL_DISK_FLAG flags = CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_NONE, VIRTUAL_DISK_ACCESS_MASK mask = VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_NONE, SafeSecurityDescriptor securityDescriptor = null)
 		{
 			if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
 			var stType = new VIRTUAL_STORAGE_TYPE();
-			CreateVirtualDisk(ref stType, path, mask, securityDescriptor, flags, 0, ref param, IntPtr.Zero, out SafeFileHandle handle).ThrowIfFailed();
+			CreateVirtualDisk(ref stType, path, mask, securityDescriptor ?? SafeSecurityDescriptor.Null, flags, 0, ref param, IntPtr.Zero, out SafeFileHandle handle).ThrowIfFailed();
 			return new VirtualDisk(handle, (OPEN_VIRTUAL_DISK_VERSION)param.Version);
 		}
 
@@ -274,7 +275,7 @@ namespace Vanara.IO
 			if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
 
 			var mask = IsPreWin8 ? VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_CREATE : VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_NONE;
-			var sd = new PinnedObject(access?.GetSecurityDescriptorBinaryForm());
+			var sd = FileSecToSd(access);
 			var param = new CREATE_VIRTUAL_DISK_PARAMETERS(size, IsPreWin8 ? 1U : 2U, blockSize, logicalSectorSize);
 			var flags = dynamic ? CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_NONE : CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_FULL_PHYSICAL_ALLOCATION;
 			return Create(path, ref param, flags, mask, sd);
@@ -299,7 +300,7 @@ namespace Vanara.IO
 
 			// If this is V2 (>=Win8), then let the file extension determine type, otherwise, it has to be a VHD
 			var mask = IsPreWin8 ? VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_CREATE : VIRTUAL_DISK_ACCESS_MASK.VIRTUAL_DISK_ACCESS_NONE;
-			var sd = new PinnedObject(access?.GetSecurityDescriptorBinaryForm());
+			var sd = FileSecToSd(access);
 			var param = new CREATE_VIRTUAL_DISK_PARAMETERS { Version = IsPreWin8 ? CREATE_VIRTUAL_DISK_VERSION.CREATE_VIRTUAL_DISK_VERSION_1 : CREATE_VIRTUAL_DISK_VERSION.CREATE_VIRTUAL_DISK_VERSION_2 };
 			var pp = new SafeCoTaskMemString(parentPath);
 			if (IsPreWin8)
@@ -328,7 +329,7 @@ namespace Vanara.IO
 				param.Version1.SourcePath = (IntPtr)sp;
 			else
 				param.Version2.SourcePath = (IntPtr)sp;
-			return Create(path, ref param, CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_NONE, mask, IntPtr.Zero);
+			return Create(path, ref param, CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_NONE, mask);
 		}
 
 		/// <summary>
@@ -418,10 +419,10 @@ namespace Vanara.IO
 		/// accesses the attached virtual disk: The Recycle Bin is corrupted. Do you want to empty the Recycle Bin for this drive?
 		/// </para>
 		/// </param>
-		public void Attach(ATTACH_VIRTUAL_DISK_FLAG flags, ref ATTACH_VIRTUAL_DISK_PARAMETERS param, IntPtr securityDescriptor = default(IntPtr))
+		public void Attach(ATTACH_VIRTUAL_DISK_FLAG flags, ref ATTACH_VIRTUAL_DISK_PARAMETERS param, SafeSecurityDescriptor securityDescriptor)
 		{
-			AdvApi32.ConvertSecurityDescriptorToStringSecurityDescriptor(securityDescriptor, AdvApi32.SDDL_REVISION.SDDL_REVISION_1, (SECURITY_INFORMATION)7, out SafeHGlobalHandle ssd, out uint _);
-			Debug.WriteLine($"AttachVD: flags={flags}; sddl={ssd.ToString(-1)}, param={param.Version},{param.Version1.Reserved}");
+			AdvApi32.ConvertSecurityDescriptorToStringSecurityDescriptor(securityDescriptor, AdvApi32.SDDL_REVISION.SDDL_REVISION_1, (SECURITY_INFORMATION)7, out var ssd, out uint _);
+			Debug.WriteLine($"AttachVD: flags={flags}; sddl={ssd}, param={param.Version},{param.Version1.Reserved}");
 			AttachVirtualDisk(hVhd, securityDescriptor, flags, 0, ref param, IntPtr.Zero).ThrowIfFailed();
 			if (!flags.IsFlagSet(ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_PERMANENT_LIFETIME)) attached = true;
 		}
@@ -447,7 +448,7 @@ namespace Vanara.IO
 			if (!autoDetach) flags |= ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_PERMANENT_LIFETIME;
 			if (noDriveLetter) flags |= ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_NO_DRIVE_LETTER;
 			var param = ATTACH_VIRTUAL_DISK_PARAMETERS.Default;
-			var sd = new PinnedObject(access?.GetSecurityDescriptorBinaryForm());
+			var sd = FileSecToSd(access);
 			Attach(flags, ref param, sd);
 		}
 
@@ -564,7 +565,7 @@ namespace Vanara.IO
 					}
 					var flags = CREATE_VIRTUAL_DISK_FLAG.CREATE_VIRTUAL_DISK_FLAG_NONE;
 
-					return CreateVirtualDisk(ref stType, path, mask, IntPtr.Zero, flags, 0, ref param, ref vhdOverlap, out hVhd);
+					return CreateVirtualDisk(ref stType, path, mask, SafeSecurityDescriptor.Null, flags, 0, ref param, ref vhdOverlap, out hVhd);
 				}
 			);
 			if (!b) throw new OperationCanceledException(cancellationToken);
@@ -730,6 +731,14 @@ namespace Vanara.IO
 			void ReportProgress(int percent) { progress.Report(new Tuple<int, string>(percent, $"Compacting VHD volume \"{loc}\"")); }
 		}*/
 #endif
+
+		private static SafeSecurityDescriptor FileSecToSd(FileSecurity sec)
+		{
+			if (sec == null) return SafeSecurityDescriptor.Null;
+			if (ConvertStringSecurityDescriptorToSecurityDescriptor(sec.GetSecurityDescriptorSddlForm(AccessControlSections.All), SDDL_REVISION.SDDL_REVISION_1, out var sd, out var _))
+				return sd;
+			throw Win32Error.GetLastError().GetException();
+		}
 
 		private T GetInformation<T>(GET_VIRTUAL_DISK_INFO_VERSION info, long offset = 0)
 		{
