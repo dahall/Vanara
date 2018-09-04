@@ -360,7 +360,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("HeapApi.h", MSDNShortId = "aa366703")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool HeapQueryInformation([In] IntPtr HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, IntPtr HeapInformation, SizeT HeapInformationLength, out SizeT ReturnLength);
+		public static extern bool HeapQueryInformation([In] SafePrivateHeapHandle HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, IntPtr HeapInformation, SizeT HeapInformationLength, out SizeT ReturnLength);
 
 		/// <summary>
 		/// Reallocates a block of memory from a heap. This function enables you to resize a memory block and change other memory block properties. The allocated
@@ -613,7 +613,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("HeapApi.h", MSDNShortId = "aa366708")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool HeapValidate([In] IntPtr hHeap, HeapFlags dwFlags, [In] IntPtr lpMem);
+		public static extern bool HeapValidate([In] SafePrivateHeapHandle hHeap, HeapFlags dwFlags, [In] IntPtr lpMem);
 
 		/// <summary>Enumerates the memory blocks in the specified heap.</summary>
 		/// <param name="hHeap">A handle to the heap. This handle is returned by either the <c>HeapCreate</c> or <c>GetProcessHeap</c> function.</param>
