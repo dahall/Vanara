@@ -401,7 +401,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa446646")]
-		public static extern bool GetPrivateObjectSecurity(IntPtr ObjectDescriptor, SECURITY_INFORMATION SecurityInformation,
+		public static extern bool GetPrivateObjectSecurity(SafeSecurityDescriptor ObjectDescriptor, SECURITY_INFORMATION SecurityInformation,
 			IntPtr ResultantDescriptor, uint DescriptorLength, out uint ReturnLength);
 
 		/// <summary>
@@ -444,7 +444,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa446648")]
-		public static extern bool GetSecurityDescriptorDacl(IntPtr pSecurityDescriptor, [MarshalAs(UnmanagedType.Bool)] out bool lpbDaclPresent,
+		public static extern bool GetSecurityDescriptorDacl(SafeSecurityDescriptor pSecurityDescriptor, [MarshalAs(UnmanagedType.Bool)] out bool lpbDaclPresent,
 			out IntPtr pDacl, [MarshalAs(UnmanagedType.Bool)] out bool lpbDaclDefaulted);
 
 		/// <summary>The GetSecurityDescriptorOwner function retrieves the owner information from a security descriptor.</summary>
@@ -466,7 +466,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa446651")]
-		public static extern bool GetSecurityDescriptorOwner(IntPtr pSecurityDescriptor,
+		public static extern bool GetSecurityDescriptorOwner(SafeSecurityDescriptor pSecurityDescriptor,
 			out IntPtr pOwner, [MarshalAs(UnmanagedType.Bool)] out bool lpbOwnerDefaulted);
 
 		/// <summary>

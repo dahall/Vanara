@@ -54,6 +54,7 @@ INHERITED_FROM, TRUSTEE, LSA_OBJECT_ATTRIBUTES, LSA_STRING, LSA_TRANSLATED_NAME,
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

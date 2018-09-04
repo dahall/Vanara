@@ -36,8 +36,7 @@ namespace Vanara.Windows.Forms
 		/// <exception cref="Win32Exception"></exception>
 		public VisualTheme(IWin32Window window, string classList, OpenThemeDataOptions opt = OpenThemeDataOptions.None)
 		{
-			var ptr = OpenThemeDataEx(window == null ? new HandleRef() : new HandleRef(window, window.Handle), classList, opt);
-			Handle = new SafeThemeHandle(ptr);
+			Handle = OpenThemeDataEx(window == null ? new HandleRef() : new HandleRef(window, window.Handle), classList, opt);
 			if (Handle.IsInvalid)
 				throw new Win32Exception();
 		}
@@ -1009,7 +1008,7 @@ namespace Vanara.Windows.Forms
 		/// <returns>The data stream.</returns>
 		public byte[] GetStream(int partId, int stateId)
 		{
-			var r = GetThemeStream(Handle, partId, stateId, (int)ThemeProperty.TMT_STREAM, out var bytes, out var bLen, IntPtr.Zero);
+			var r = GetThemeStream(Handle, partId, stateId, (int)ThemeProperty.TMT_STREAM, out var bytes, out var bLen, SafeLibraryHandle.Null);
 			if (r.Succeeded) return bytes.ToArray<byte>((int)bLen);
 			if (r != 0x80070490) throw new InvalidOperationException("Bad GetThemeStream");
 			return null;

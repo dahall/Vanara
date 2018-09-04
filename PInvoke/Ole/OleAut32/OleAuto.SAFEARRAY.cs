@@ -236,11 +236,11 @@ namespace Vanara.PInvoke
 		public class SafeArrayScopedAccessData : IDisposable
 		{
 			private IntPtr ppvData;
-			private readonly IntPtr psa;
+			private readonly SafeSafeArrayDescriptor psa;
 
 			/// <summary>Initializes a new instance of the <see cref="SafeArrayScopedAccessData"/> class using the array descriptor that holds the data.</summary>
 			/// <param name="psa">An array descriptor created by SafeArrayCreate.</param>
-			public SafeArrayScopedAccessData(IntPtr psa)
+			public SafeArrayScopedAccessData(SafeSafeArrayDescriptor psa)
 			{
 				var hr = SafeArrayAccessData(psa, out ppvData);
 				hr.ThrowIfFailed();

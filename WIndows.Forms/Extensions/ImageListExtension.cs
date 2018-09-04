@@ -67,6 +67,13 @@ namespace Vanara.Extensions
 
 		/// <summary>Creates an <see cref="ImageList"/> from a handle.
 		/// <note type="warning">This is a super hack involving a lot of reflection against internal structures that can change. Use with caution!</note></summary>
+		/// <param name="himl">The SafeImageListHandle value.</param>
+		/// <returns>An <c>ImageList</c> instance hosting the supplied handle.</returns>
+		/// <exception cref="PlatformNotSupportedException" />
+		public static ImageList ImageListFromHandle(this SafeImageListHandle himl) => ImageListFromHandle(himl.DangerousGetHandle());
+
+		/// <summary>Creates an <see cref="ImageList"/> from a handle.
+		/// <note type="warning">This is a super hack involving a lot of reflection against internal structures that can change. Use with caution!</note></summary>
 		/// <param name="himl">The HIMAGELIST value.</param>
 		/// <returns>An <c>ImageList</c> instance hosting the supplied handle.</returns>
 		/// <exception cref="PlatformNotSupportedException" />

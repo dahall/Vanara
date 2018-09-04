@@ -1787,9 +1787,9 @@ namespace Vanara.PInvoke
 			public SafeLibraryHandle(string fileName, LoadLibraryExFlags flags = 0) : base(FreeLibrary)
 			{
 				var hLib = LoadLibraryEx(fileName, IntPtr.Zero, flags);
-				if (hLib == IntPtr.Zero)
+				if (hLib.IsInvalid)
 					throw new Win32Exception();
-				SetHandle(hLib);
+				SetHandle((IntPtr)hLib);
 			}
 
 			/// <summary>Initializes a new instance of the <see cref="SafeLibraryHandle"/> class.</summary>

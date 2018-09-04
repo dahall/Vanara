@@ -633,7 +633,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Open a new Windows Explorer window with this item selected.</summary>
 		public void ViewInExplorer()
 		{
-			SHOpenFolderAndSelectItems(Parent.PIDL, 1, new IntPtr[] { PIDL }, OFASI.OFASI_NONE);
+			SHOpenFolderAndSelectItems(Parent.PIDL, 1, new IntPtr[] { (IntPtr)PIDL }, OFASI.OFASI_NONE);
 		}
 
 		/// <summary>

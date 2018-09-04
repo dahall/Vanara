@@ -325,39 +325,23 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void LoadLibraryTest()
 		{
-			var hlib = IntPtr.Zero;
-			try
-			{
-				hlib = LoadLibrary(badlibfn);
-				Assert.That(hlib, Is.EqualTo(IntPtr.Zero));
-				Assert.That(Marshal.GetLastWin32Error(), Is.Not.Zero);
+			var hlib = LoadLibrary(badlibfn);
+			Assert.That(hlib, Is.EqualTo(SafeLibraryHandle.Null));
+			Assert.That(Marshal.GetLastWin32Error(), Is.Not.Zero);
 
-				hlib = LoadLibrary(libfn);
-				Assert.That(hlib, Is.Not.EqualTo(IntPtr.Zero));
-			}
-			finally
-			{
-				FreeLibrary(hlib);
-			}
+			hlib = LoadLibrary(libfn);
+			Assert.That(hlib, Is.Not.EqualTo(SafeLibraryHandle.Null));
 		}
 
 		[Test]
 		public void LoadLibraryExTest()
 		{
-			var hlib = IntPtr.Zero;
-			try
-			{
-				hlib = LoadLibraryEx(badlibfn, IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE);
-				Assert.That(hlib, Is.EqualTo(IntPtr.Zero));
-				Assert.That(Marshal.GetLastWin32Error(), Is.Not.Zero);
+			var hlib = LoadLibraryEx(badlibfn, IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE);
+			Assert.That(hlib, Is.EqualTo(SafeLibraryHandle.Null));
+			Assert.That(Marshal.GetLastWin32Error(), Is.Not.Zero);
 
-				hlib = LoadLibraryEx(libfn, IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE);
-				Assert.That(hlib, Is.Not.EqualTo(IntPtr.Zero));
-			}
-			finally
-			{
-				FreeLibrary(hlib);
-			}
+			hlib = LoadLibraryEx(libfn, IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE);
+			Assert.That(hlib, Is.Not.EqualTo(SafeLibraryHandle.Null));
 		}
 
 		[Test]
@@ -401,15 +385,15 @@ namespace Vanara.PInvoke.Tests
 		{
 			var ph = new SafeProcessHeapBlockHandle(512);
 			var fw = new WIN32_FIND_DATA {ftCreationTime = DateTime.Today.ToFileTimeStruct(), cFileName = "test.txt", dwFileAttributes = FileAttributes.Normal};
-			Marshal.StructureToPtr(fw, ph, false);
-			Assert.That(Marshal.ReadInt32(ph), Is.EqualTo((int)FileAttributes.Normal));
+			Marshal.StructureToPtr(fw, (IntPtr)ph, false);
+			Assert.That(Marshal.ReadInt32((IntPtr)ph), Is.EqualTo((int)FileAttributes.Normal));
 			Assert.That(ph.Size, Is.EqualTo(512));
 
 			using (var hh = HeapCreate(0, IntPtr.Zero, IntPtr.Zero))
 			{
 				var hb = hh.GetBlock(512);
-				Marshal.StructureToPtr(fw, hb, false);
-				Assert.That(Marshal.ReadInt32(hb), Is.EqualTo((int) FileAttributes.Normal));
+				Marshal.StructureToPtr(fw, (IntPtr)hb, false);
+				Assert.That(Marshal.ReadInt32((IntPtr)hb), Is.EqualTo((int) FileAttributes.Normal));
 				Assert.That(hb.Size, Is.EqualTo(512));
 			}
 		}

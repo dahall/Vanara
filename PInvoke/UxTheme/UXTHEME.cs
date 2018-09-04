@@ -1950,7 +1950,7 @@ namespace Vanara.PInvoke
 		// _In_ HINSTANCE hInst); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759768(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759768")]
-		public static extern HRESULT GetThemeStream(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out IntPtr ppvStream, out uint pcbStream, IntPtr hInst);
+		public static extern HRESULT GetThemeStream(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out IntPtr ppvStream, out uint pcbStream, Kernel32.SafeLibraryHandle hInst);
 
 		/// <summary>Retrieves the value of a string property.</summary>
 		/// <param name="hTheme">

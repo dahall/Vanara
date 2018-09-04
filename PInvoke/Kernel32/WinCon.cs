@@ -920,7 +920,7 @@ namespace Vanara.PInvoke
 		// DWORD WINAPI GetConsoleProcessList( _Out_ LPDWORD lpdwProcessList, _In_ DWORD dwProcessCount );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
-		public static extern uint GetConsoleProcessList(IntPtr lpdwProcessList, uint dwProcessCount);
+		public static extern uint GetConsoleProcessList(SafeProcessHeapBlockHandle lpdwProcessList, uint dwProcessCount);
 
 		/// <summary>Retrieves a list of the processes attached to the current console.</summary>
 		/// <returns>An array of process identifiers upon success.</returns>
