@@ -121,13 +121,32 @@ namespace Vanara.PInvoke
 			PROCESS_HEAP_ENTRY_DDESHARE = 32,
 		}
 
-		/// <summary>Retrieves a handle to the default heap of the calling process. This handle can then be used in subsequent calls to the heap functions.</summary>
+		/// <summary>
+		/// <para>
+		/// Retrieves a handle to the default heap of the calling process. This handle can then be used in subsequent calls to the heap functions.
+		/// </para>
+		/// </summary>
 		/// <returns>
-		/// If the function succeeds, the return value is a handle to the calling process's heap. If the function fails, the return value is NULL. To get
-		/// extended error information, call GetLastError.
+		/// <para>If the function succeeds, the return value is a handle to the calling process's heap.</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call GetLastError.</para>
 		/// </returns>
-		[PInvokeData("HeapApi.h", MSDNShortId = "aa366569")]
-		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
+		/// <remarks>
+		/// <para>
+		/// The <c>GetProcessHeap</c> function obtains a handle to the default heap for the calling process. A process can use this handle to
+		/// allocate memory from the process heap without having to first create a private heap using the HeapCreate function.
+		/// </para>
+		/// <para>
+		/// <c>Windows Server 2003 and Windows XP:</c> To enable the low-fragmentation heap for the default heap of the process, call the
+		/// HeapSetInformation function with the handle returned by <c>GetProcessHeap</c>.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Getting Process Heaps.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/heapapi/nf-heapapi-getprocessheap
+		// HANDLE GetProcessHeap( );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("heapapi.h", MSDNShortId = "ecd716b2-df48-4914-9de4-47d8ad8ff9a2")]
+		//  public static extern IntPtr GetProcessHeap();
 		public static extern IntPtr GetProcessHeap();
 
 		/// <summary>Returns the number of active heaps and retrieves handles to all of the active heaps for the calling process.</summary>
@@ -148,10 +167,11 @@ namespace Vanara.PInvoke
 		/// extended error information, call <c>GetLastError</c>.
 		/// </para>
 		/// </returns>
-		// DWORD WINAPI GetProcessHeaps( _In_ DWORD NumberOfHeaps, _Out_ PHANDLE ProcessHeaps);// https://msdn.microsoft.com/en-us/library/windows/desktop/aa366571(v=vs.85).aspx
+		// DWORD WINAPI GetProcessHeaps( _In_ DWORD NumberOfHeaps, _Out_ PHANDLE ProcessHeaps);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/aa366571(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("HeapApi.h", MSDNShortId = "aa366571")]
-		public static extern uint GetProcessHeaps(uint NumberOfHeaps, out IntPtr ProcessHeaps);
+		public static extern uint GetProcessHeaps(uint NumberOfHeaps, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] ProcessHeaps);
 
 		/// <summary>Allocates a block of memory from a heap. The allocated memory is not movable.</summary>
 		/// <param name="hHeap">A handle to the heap from which the memory will be allocated. This handle is returned by the HeapCreate or GetProcessHeap function.</param>
@@ -173,7 +193,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("HeapApi.h", MSDNShortId = "aa366597")]
 		[DllImport(Lib.Kernel32, ExactSpelling = true)]
-		public static extern IntPtr HeapAlloc(IntPtr hHeap, HeapFlags dwFlags, [MarshalAs(UnmanagedType.SysInt)] IntPtr dwBytes);
+		public static extern IntPtr HeapAlloc(SafePrivateHeapHandle hHeap, HeapFlags dwFlags, [MarshalAs(UnmanagedType.SysInt)] IntPtr dwBytes);
 
 		/// <summary>
 		/// Returns the size of the largest committed free block in the specified heap. If the Disable heap coalesce on free global flag is set, this function
@@ -211,7 +231,7 @@ namespace Vanara.PInvoke
 		// SIZE_T WINAPI HeapCompact( _In_ HANDLE hHeap, _In_ DWORD dwFlags);// https://msdn.microsoft.com/en-us/library/windows/desktop/aa366598(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("HeapApi.h", MSDNShortId = "aa366598")]
-		public static extern SizeT HeapCompact([In] IntPtr hHeap, HeapFlags dwFlags);
+		public static extern SizeT HeapCompact([In] SafePrivateHeapHandle hHeap, HeapFlags dwFlags);
 
 		/// <summary>
 		/// Creates a private heap object that can be used by the calling process. The function reserves space in the virtual address space of the process and
@@ -283,7 +303,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("HeapApi.h", MSDNShortId = "aa366701")]
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool HeapFree(IntPtr hHeap, HeapFlags dwFlags, IntPtr lpMem);
+		public static extern bool HeapFree(SafePrivateHeapHandle hHeap, HeapFlags dwFlags, IntPtr lpMem);
 
 		/// <summary>Attempts to acquire the critical section object, or lock, that is associated with a specified heap.</summary>
 		/// <param name="hHeap">A handle to the heap to be locked. This handle is returned by either the <c>HeapCreate</c> or <c>GetProcessHeap</c> function.</param>
@@ -295,7 +315,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("HeapApi.h", MSDNShortId = "aa366702")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool HeapLock([In] IntPtr hHeap);
+		public static extern bool HeapLock([In] SafePrivateHeapHandle hHeap);
 
 		/// <summary>Retrieves information about the specified heap.</summary>
 		/// <param name="HeapHandle">
@@ -433,7 +453,7 @@ namespace Vanara.PInvoke
 		// LPVOID WINAPI HeapReAlloc( _In_ HANDLE hHeap, _In_ DWORD dwFlags, _In_ LPVOID lpMem, _In_ SIZE_T dwBytes);// https://msdn.microsoft.com/en-us/library/windows/desktop/aa366704(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("HeapApi.h", MSDNShortId = "aa366704")]
-		public static extern IntPtr HeapReAlloc(IntPtr hHeap, HeapFlags dwFlags, IntPtr lpMem, SizeT dwBytes);
+		public static extern IntPtr HeapReAlloc(SafePrivateHeapHandle hHeap, HeapFlags dwFlags, IntPtr lpMem, SizeT dwBytes);
 
 		/// <summary>Enables features for a specified heap.</summary>
 		/// <param name="HeapHandle">
@@ -525,12 +545,12 @@ namespace Vanara.PInvoke
 		[PInvokeData("HeapApi.h", MSDNShortId = "aa366706")]
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.SysInt)]
-		public static extern IntPtr HeapSize(IntPtr hHeap, HeapFlags dwFlags, IntPtr lpMem);
+		public static extern IntPtr HeapSize(SafePrivateHeapHandle hHeap, HeapFlags dwFlags, IntPtr lpMem);
 
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("HeapApi.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool HeapSummary([In] IntPtr hHeap, HeapFlags dwFlags, out HEAP_SUMMARY lpSummary);
+		public static extern bool HeapSummary([In] SafePrivateHeapHandle hHeap, HeapFlags dwFlags, out HEAP_SUMMARY lpSummary);
 
 		/// <summary>
 		/// Releases ownership of the critical section object, or lock, that is associated with a specified heap. It reverses the action of the <c>HeapLock</c> function.
@@ -544,7 +564,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("HeapApi.h", MSDNShortId = "aa366707")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool HeapUnlock([In] IntPtr hHeap);
+		public static extern bool HeapUnlock([In] SafePrivateHeapHandle hHeap);
 
 		/// <summary>
 		/// Validates the specified heap. The function scans all the memory blocks in the heap and verifies that the heap control structures maintained by the
@@ -620,7 +640,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("HeapApi.h", MSDNShortId = "aa366710")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool HeapWalk([In] IntPtr hHeap, ref PROCESS_HEAP_ENTRY lpEntry);
+		public static extern bool HeapWalk([In] SafePrivateHeapHandle hHeap, ref PROCESS_HEAP_ENTRY lpEntry);
 
 		/// <summary>Specifies flags for a HeapOptimizeResources operation initiated with HeapSetInformation.</summary>
 		[StructLayout(LayoutKind.Sequential)]
@@ -850,6 +870,10 @@ namespace Vanara.PInvoke
 			/// <param name="size">The size of the block.</param>
 			/// <returns>A safe handle for the memory that will call HeapFree on disposal.</returns>
 			public SafePrivateHeapBlockHandle GetBlock(int size) => new SafePrivateHeapBlockHandle(this, size);
+
+			/// <summary>Gets the process heap by calling <see cref="GetProcessHeap"/>.</summary>
+			/// <value>The process heap.</value>
+			public static SafePrivateHeapHandle ProcessHeap => new SafePrivateHeapHandle(GetProcessHeap(), false);
 		}
 
 		/// <summary>Safe handle for memory heaps.</summary>
@@ -862,17 +886,17 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="SafeProcessHeapBlockHandle"/> class.</summary>
 			/// <param name="ptr">The handle created by <see cref="HeapAlloc"/>.</param>
 			/// <param name="own">if set to <c>true</c> this safe handle disposes the handle when done.</param>
-			public SafeProcessHeapBlockHandle(IntPtr ptr, bool own = true) : base(ptr, h => HeapFree(GetProcessHeap(), 0, h), own) { }
+			public SafeProcessHeapBlockHandle(IntPtr ptr, bool own = true) : base(ptr, h => HeapFree(SafePrivateHeapHandle.ProcessHeap, 0, h), own) { }
 
 			/// <summary>
 			/// Initializes a new instance of the <see cref="SafeProcessHeapBlockHandle"/> class and allocates the specified amount of memory from the process heap.
 			/// </summary>
 			/// <param name="size">The size. This value cannot be zero.</param>
-			public SafeProcessHeapBlockHandle(ulong size) : this(HeapAlloc(GetProcessHeap(), HeapFlags.HEAP_ZERO_MEMORY, (IntPtr)size)) { }
+			public SafeProcessHeapBlockHandle(ulong size) : this(HeapAlloc(SafePrivateHeapHandle.ProcessHeap, HeapFlags.HEAP_ZERO_MEMORY, (IntPtr)size)) { }
 
 			/// <summary>Retrieves the size of this memory block.</summary>
 			/// <value>The size in bytes of this memory block.</value>
-			public long Size => HeapSize(GetProcessHeap(), 0, handle).ToInt64();
+			public long Size => HeapSize(SafePrivateHeapHandle.ProcessHeap, 0, handle).ToInt64();
 		}
 	}
 }
