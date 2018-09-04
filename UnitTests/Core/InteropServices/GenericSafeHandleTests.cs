@@ -29,7 +29,7 @@ namespace Vanara.InteropServices.Tests
 		{
 			var h = new GenericSafeHandle(p => true);
 			Assert.That(h.IsInvalid && h.DangerousGetHandle() == IntPtr.Zero);
-			Assert.That(IntPtr.Zero.Equals((IntPtr)h));
+			Assert.That(IntPtr.Zero.Equals(h.DangerousGetHandle()));
 			h.Dispose();
 		}
 

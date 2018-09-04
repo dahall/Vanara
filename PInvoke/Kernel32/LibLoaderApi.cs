@@ -1789,7 +1789,8 @@ namespace Vanara.PInvoke
 				var hLib = LoadLibraryEx(fileName, IntPtr.Zero, flags);
 				if (hLib.IsInvalid)
 					throw new Win32Exception();
-				SetHandle((IntPtr)hLib);
+				SetHandle(hLib.DangerousGetHandle());
+				hLib.SetHandleAsInvalid();
 			}
 
 			/// <summary>Initializes a new instance of the <see cref="SafeLibraryHandle"/> class.</summary>

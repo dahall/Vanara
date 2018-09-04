@@ -932,7 +932,7 @@ namespace Vanara.PInvoke
 				cnt = cnt << 1;
 				var h = new SafeProcessHeapBlockHandle((uint)Marshal.SizeOf(typeof(uint)) * cnt);
 				var c = GetConsoleProcessList(h, cnt);
-				if (c >= 1 && c <= cnt) return ((IntPtr)h).ToArray<uint>((int)c);
+				if (c >= 1 && c <= cnt) return h.DangerousGetHandle().ToArray<uint>((int)c);
 			} while (cnt > 0);
 			throw Win32Error.GetLastError().GetException();
 		}

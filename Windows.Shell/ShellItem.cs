@@ -586,7 +586,7 @@ namespace Vanara.Windows.Shell
 					throw new InvalidOperationException("Thumbnails are not supported by this item.");
 				hres.ThrowIfFailed();
 				//Marshal.ReleaseComObject(fctry);
-				return GetTransparentBitmap((IntPtr)hbitmap);
+				return GetTransparentBitmap(hbitmap.DangerousGetHandle());
 			}
 			if (!flags.IsFlagSet(ShellItemGetImageOptions.IconOnly))
 				return GetThumbnail(size.Width);

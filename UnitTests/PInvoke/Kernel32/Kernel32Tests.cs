@@ -385,15 +385,15 @@ namespace Vanara.PInvoke.Tests
 		{
 			var ph = new SafeProcessHeapBlockHandle(512);
 			var fw = new WIN32_FIND_DATA {ftCreationTime = DateTime.Today.ToFileTimeStruct(), cFileName = "test.txt", dwFileAttributes = FileAttributes.Normal};
-			Marshal.StructureToPtr(fw, (IntPtr)ph, false);
-			Assert.That(Marshal.ReadInt32((IntPtr)ph), Is.EqualTo((int)FileAttributes.Normal));
+			Marshal.StructureToPtr(fw, ph.DangerousGetHandle(), false);
+			Assert.That(Marshal.ReadInt32(ph.DangerousGetHandle()), Is.EqualTo((int)FileAttributes.Normal));
 			Assert.That(ph.Size, Is.EqualTo(512));
 
 			using (var hh = HeapCreate(0, IntPtr.Zero, IntPtr.Zero))
 			{
 				var hb = hh.GetBlock(512);
-				Marshal.StructureToPtr(fw, (IntPtr)hb, false);
-				Assert.That(Marshal.ReadInt32((IntPtr)hb), Is.EqualTo((int) FileAttributes.Normal));
+				Marshal.StructureToPtr(fw, hb.DangerousGetHandle(), false);
+				Assert.That(Marshal.ReadInt32(hb.DangerousGetHandle()), Is.EqualTo((int) FileAttributes.Normal));
 				Assert.That(hb.Size, Is.EqualTo(512));
 			}
 		}
