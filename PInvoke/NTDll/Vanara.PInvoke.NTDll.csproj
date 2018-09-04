@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Description>Methods, structures and constants imported from NTDll.dll.</Description>
+    <Description>Methods, structures and constants imported from NtDll.dll.</Description>
     <Copyright>Copyright © 2017-2018</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.0.19</VersionPrefix>
+    <VersionPrefix>1.1.0</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard20</TargetFrameworks>
-    <AssemblyName>Vanara.PInvoke.NTDll</AssemblyName>
+    <AssemblyName>Vanara.PInvoke.NtDll</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <RootNamespace>Vanara.PInvoke</RootNamespace>
     <Authors>David Hall</Authors>
@@ -22,7 +22,15 @@
     <Company>GitHub Community</Company>
     <Product>Vanara</Product>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+NtQueryKey
+
+Structures
+KEY_BASIC_INFORMATION, KEY_NODE_INFORMATION, KEY_FULL_INFORMATION, KEY_NAME_INFORMATION
+
+</PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -42,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

@@ -79,7 +79,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.BITS", "PInv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.NTDll", "PInvoke\NTDll\Vanara.PInvoke.NTDll.csproj", "{9E0C0DC0-E1B6-42A7-BD31-9A62EEADA780}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.NtDll", "PInvoke\NtDll\Vanara.PInvoke.NtDll.csproj", "{9E0C0DC0-E1B6-42A7-BD31-9A62EEADA780}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

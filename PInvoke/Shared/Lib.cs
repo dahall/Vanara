@@ -34,7 +34,7 @@
 		/// <summary>The normaliz</summary>
 		public const string Normaliz = "normaliz.dll";
 		/// <summary>The nt DLL</summary>
-		public const string NTDll= "ntdll.dll";
+		public const string NtDll= "ntdll.dll";
 		/// <summary>The NTDS API</summary>
 		public const string NTDSApi = "ntdsapi.dll";
 		/// <summary>The ole32</summary>

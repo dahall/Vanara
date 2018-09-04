@@ -421,7 +421,7 @@ namespace Vanara.PInvoke
 		/// The function returns the corresponding system error code. ERROR_MR_MID_NOT_FOUND is returned when the specified NTSTATUS code does not have a
 		/// corresponding system error code.
 		/// </returns>
-		[DllImport(Lib.NTDll, ExactSpelling = true)]
+		[DllImport(Lib.NtDll, ExactSpelling = true)]
 		[PInvokeData("Winternl.h", MSDNShortId = "ms680600")]
 		public static extern int RtlNtStatusToDosError(uint status);
 	}
