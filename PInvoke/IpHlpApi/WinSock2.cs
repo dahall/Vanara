@@ -245,6 +245,34 @@ namespace Vanara.PInvoke
 			public override string ToString() => $"{sin6_addr}" + (sin6_scope_id == 0 ? "" : "%" + sin6_scope_id.ToString()) + $":{sin6_port}";
 		}
 
+		/// <summary>
+		/// <para>
+		/// The <c>SOCKADDR_IN6_PAIR</c> structure contains pointers to a pair of IP addresses that represent a source and destination
+		/// address pair.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>The <c>SOCKADDR_IN6_PAIR</c> structure is defined on Windows Vista and later.</para>
+		/// <para>
+		/// Any IPv4 addresses in the <c>SOCKADDR_IN6_PAIR</c> structure must be represented in the IPv4-mapped IPv6 address format which
+		/// enables an IPv6 only application to communicate with an IPv4 node. For more information on the IPv4-mapped IPv6 address format,
+		/// see Dual-Stack Sockets.
+		/// </para>
+		/// <para>The <c>SOCKADDR_IN6_PAIR</c> structure is used by the CreateSortedAddressPairs function.</para>
+		/// <para>Note that the Ws2ipdef.h header file is automatically included in Ws2tcpip.h header file, and should never be used directly.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ws2ipdef/ns-ws2ipdef-_sockaddr_in6_pair
+		// typedef struct _sockaddr_in6_pair { PSOCKADDR_IN6 SourceAddress; PSOCKADDR_IN6 DestinationAddress; } SOCKADDR_IN6_PAIR, *PSOCKADDR_IN6_PAIR;
+		[PInvokeData("ws2ipdef.h", MSDNShortId = "0265f8e0-8b35-4d9d-bf22-e98e9ff36a17")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct SOCKADDR_IN6_PAIR
+		{
+			/// <summary><para>A pointer to an IP source address represented as a SOCKADDR_IN6 structure. The address family is in host byte order and the IPv6 address, port, flow information, and zone ID are in network byte order.</para></summary>
+			public IntPtr SourceAddress;
+			/// <summary><para>A pointer to an IP source address represented as a SOCKADDR_IN6 structure. The address family is in host byte order and the IPv6 address, port, flow information, and zone ID are in network byte order.</para></summary>
+			public IntPtr DestinationAddress;
+		}
+
 		[PInvokeData("winsock2.h")]
 		[StructLayout(LayoutKind.Explicit)]
 		public struct SOCKADDR_INET
