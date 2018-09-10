@@ -120,6 +120,24 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.Bool)]
 			public bool EnableDns;
+
+			/// <summary>
+			/// <para>A list of IP_ADDR_STRING structures that specify the set of DNS servers used by the local computer.</para>
+			/// </summary>
+			public IEnumerable<IP_ADDR_STRING> DnsServers
+			{
+				get
+				{
+					if (DnsServerList.IpAddress != null)
+						yield return DnsServerList;
+					var next = DnsServerList.GetNext();
+					while (next != null)
+					{
+						yield return next.Value;
+						next = next.Value.GetNext();
+					}
+				}
+			}
 		}
 
 		/// <summary>
@@ -720,15 +738,9 @@ namespace Vanara.PInvoke
 			public IEnumerable<IP_ADAPTER_GATEWAY_ADDRESS> GatewayAddresses => FirstGatewayAddress.LinkedListToIEnum<IP_ADAPTER_GATEWAY_ADDRESS>(t => t.Next);
 			public IEnumerable<IP_ADAPTER_DNS_SUFFIX> DnsSuffixes => FirstDnsSuffix.LinkedListToIEnum<IP_ADAPTER_DNS_SUFFIX>(t => t.Next);
 
-			public IP_ADAPTER_ADDRESSES? GetNext()
-			{
-				return Next.ToNullableStructure<IP_ADAPTER_ADDRESSES>();
-			}
+			public IP_ADAPTER_ADDRESSES? GetNext() => Next.ToNullableStructure<IP_ADAPTER_ADDRESSES>();
 
-			public static IEnumerable<IP_ADAPTER_ADDRESSES> ListFromPtr(IntPtr ptr)
-			{
-				return ptr.LinkedListToIEnum<IP_ADAPTER_ADDRESSES>(t => t.Next);
-			}
+			public static IEnumerable<IP_ADAPTER_ADDRESSES> ListFromPtr(IntPtr ptr) => ptr.LinkedListToIEnum<IP_ADAPTER_ADDRESSES>(t => t.Next);
 		}
 	}
 }

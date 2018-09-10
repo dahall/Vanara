@@ -10,41 +10,77 @@ namespace Vanara.PInvoke
 		[PInvokeData("winsock2.h")]
 		public enum ADDRESS_FAMILY : ushort
 		{
-			AF_UNSPEC = 0,       // unspecified
-			AF_UNIX = 1,         // local to host (pipes, portals)
-			AF_INET = 2,         // internetwork: UDP, TCP, etc.
-			AF_IMPLINK = 3,      // arpanet imp addresses
-			AF_PUP = 4,          // pup protocols: e.g. BSP
-			AF_CHAOS = 5,        // mit CHAOS protocols
-			AF_NS = 6,           // XEROX NS protocols
-			AF_IPX = AF_NS,      // IPX protocols: IPX, SPX, etc.
-			AF_ISO = 7,          // ISO protocols
-			AF_OSI = AF_ISO,     // OSI is ISO
-			AF_ECMA = 8,         // european computer manufacturers
-			AF_DATAKIT = 9,      // datakit protocols
-			AF_CCITT = 10,       // CCITT protocols, X.25 etc
-			AF_SNA = 11,         // IBM SNA
-			AF_DECnet = 12,      // DECnet
-			AF_DLI = 13,         // Direct data link interface
-			AF_LAT = 14,         // LAT
-			AF_HYLINK = 15,      // NSC Hyperchannel
-			AF_APPLETALK = 16,   // AppleTalk
-			AF_NETBIOS = 17,     // NetBios-style addresses
-			AF_VOICEVIEW = 18,   // VoiceView
-			AF_FIREFOX = 19,     // Protocols from Firefox
-			AF_UNKNOWN1 = 20,    // Somebody is using this!
-			AF_BAN = 21,         // Banyan
-			AF_ATM = 22,         // Native ATM Services
-			AF_INET6 = 23,       // Internetwork Version 6
-			AF_CLUSTER = 24,     // Microsoft Wolfpack
-			AF_12844 = 25,       // IEEE 1284.4 WG AF
-			AF_IRDA = 26,        // IrDA
-			AF_NETDES = 28,      // Network Designers OSI & gateway
+			/// <summary>Unspecified address family.</summary>
+			AF_UNSPEC = 0,
+			/// <summary>Unix local to host address.</summary>
+			AF_UNIX = 1,
+			/// <summary>Address for IP version 4.</summary>
+			AF_INET = 2,
+			/// <summary>ARPANET IMP address.</summary>
+			AF_IMPLINK = 3,
+			/// <summary>Address for PUP protocols.</summary>
+			AF_PUP = 4,
+			/// <summary>Address for MIT CHAOS protocols.</summary>
+			AF_CHAOS = 5,
+			/// <summary>Address for Xerox NS protocols.</summary>
+			AF_NS = 6,
+			/// <summary>IPX or SPX address.</summary>
+			AF_IPX = AF_NS,
+			/// <summary>Address for ISO protocols.</summary>
+			AF_ISO = 7,
+			/// <summary>Address for OSI protocols.</summary>
+			AF_OSI = AF_ISO,
+			/// <summary>European Computer Manufacturers Association (ECMA) address.</summary>
+			AF_ECMA = 8,
+			/// <summary>Address for Datakit protocols.</summary>
+			AF_DATAKIT = 9,
+			/// <summary>Addresses for CCITT protocols, such as X.25.</summary>
+			AF_CCITT = 10,
+			/// <summary>IBM SNA address.</summary>
+			AF_SNA = 11,
+			/// <summary>DECnet address.</summary>
+			AF_DECnet = 12,
+			/// <summary>Direct data-link interface address.</summary>
+			AF_DLI = 13,
+			/// <summary>LAT address.</summary>
+			AF_LAT = 14,
+			/// <summary>NSC Hyperchannel address.</summary>
+			AF_HYLINK = 15,
+			/// <summary>AppleTalk address.</summary>
+			AF_APPLETALK = 16,
+			/// <summary>NetBios address.</summary>
+			AF_NETBIOS = 17,
+			/// <summary>VoiceView address.</summary>
+			AF_VOICEVIEW = 18,
+			/// <summary>FireFox address.</summary>
+			AF_FIREFOX = 19,
+			/// <summary>Undocumented.</summary>
+			AF_UNKNOWN1 = 20,
+			/// <summary>Banyan address.</summary>
+			AF_BAN = 21,
+			/// <summary>Native ATM services address.</summary>
+			AF_ATM = 22,
+			/// <summary>Address for IP version 6.</summary>
+			AF_INET6 = 23,
+			/// <summary>Address for Microsoft cluster products.</summary>
+			AF_CLUSTER = 24,
+			/// <summary>IEEE 1284.4 workgroup address.</summary>
+			AF_12844 = 25,
+			/// <summary>IrDA address.</summary>
+			AF_IRDA = 26,
+			/// <summary>Address for Network Designers OSI gateway-enabled protocols.</summary>
+			AF_NETDES = 28,
+			/// <summary>Undocumented.</summary>
 			AF_TCNPROCESS = 29,
+			/// <summary>Undocumented.</summary>
 			AF_TCNMESSAGE = 30,
+			/// <summary>Undocumented.</summary>
 			AF_ICLFXBM = 31,
-			AF_BTH = 32,         // Bluetooth RFCOMM/L2CAP protocols
+			/// <summary>Bluetooth RFCOMM/L2CAP protocols.</summary>
+			AF_BTH = 32,
+			/// <summary>Link layer interface.</summary>
 			AF_LINK = 33,
+			/// <summary>Windows Hyper-V.</summary>
 			AF_HYPERV = 34,
 		}
 
@@ -120,26 +156,32 @@ namespace Vanara.PInvoke
 
 		[PInvokeData("winsock2.h")]
 		[StructLayout(LayoutKind.Sequential, Size = IN6_ADDR_SIZE)]
-		public unsafe struct IN6_ADDR
+		public struct IN6_ADDR : IEquatable<IN6_ADDR>
 		{
 			private const int IN6_ADDR_SIZE = 16;
 
-			private fixed byte _u_bytes[IN6_ADDR_SIZE];
+			private ulong lower;
+			private ulong upper;
+
+			public static readonly IN6_ADDR Loopback = new IN6_ADDR { lower = 0xff_01_00_00_00_00_00_00, upper = 0x00_00_00_00_00_00_00_01 };
+			public static readonly IN6_ADDR Unspecified = new IN6_ADDR { lower = 0, upper = 0 };
 
 			public IN6_ADDR(byte[] v6addr)
 			{
-				u_bytes = v6addr;
+				lower = upper = 0;
+				bytes = v6addr;
 			}
 
-			public byte[] u_bytes
+			public unsafe byte[] bytes
 			{
 				get
 				{
 					var v6addr = new byte[IN6_ADDR_SIZE];
-					fixed (byte* src = _u_bytes, dest = v6addr)
+					fixed (byte* usp = &v6addr[0])
 					{
-						for (var i = 0; i < IN6_ADDR_SIZE; i++)
-							*(dest + i) = *(src + i);
+						var ulp2 = (ulong*)usp;
+						ulp2[0] = lower;
+						ulp2[1] = upper;
 					}
 					return v6addr;
 				}
@@ -148,25 +190,25 @@ namespace Vanara.PInvoke
 					if (value == null) value = new byte[IN6_ADDR_SIZE];
 					if (value.Length != IN6_ADDR_SIZE)
 						throw new ArgumentException("Byte array must have 16 items.", nameof(value));
-					fixed (byte* src = value, dest = _u_bytes)
+					fixed (byte* bp = &value[0])
 					{
-						for (var i = 0; i < IN6_ADDR_SIZE; i++)
-							*(dest + i) = *(src + i);
+						var ulp = (ulong*)bp;
+						lower = ulp[0];
+						upper = ulp[1];
 					}
 				}
 			}
 
-			public ushort[] u_words
+			public unsafe ushort[] words
 			{
 				get
 				{
 					var v6addr = new ushort[IN6_ADDR_SIZE / 2];
-					fixed (byte* pbytes = _u_bytes)
-					fixed (ushort* dest = v6addr)
+					fixed (ushort* usp = &v6addr[0])
 					{
-						var src = (ushort*)pbytes;
-						for (var i = 0; i < IN6_ADDR_SIZE / 2; i++)
-							*(dest + i) = *(src + i);
+						var ulp2 = (ulong*)usp;
+						ulp2[0] = lower;
+						ulp2[1] = upper;
 					}
 					return v6addr;
 				}
@@ -175,28 +217,29 @@ namespace Vanara.PInvoke
 					if (value == null) value = new ushort[IN6_ADDR_SIZE / 2];
 					if (value.Length != IN6_ADDR_SIZE / 2)
 						throw new ArgumentException("UInt16 array must have 8 items.", nameof(value));
-					fixed (ushort* src = value)
-					fixed (byte* pbytes = _u_bytes)
+					fixed (ushort* bp = &value[0])
 					{
-						var dest = (ushort*)pbytes;
-						for (var i = 0; i < IN6_ADDR_SIZE / 2; i++)
-							*(dest + i) = *(src + i);
+						var ulp = (ulong*)bp;
+						lower = ulp[0];
+						upper = ulp[1];
 					}
 				}
 			}
 
 			public static implicit operator IN6_ADDR(byte[] a) => new IN6_ADDR(a);
 
-			public static implicit operator byte[] (IN6_ADDR a) => a.u_bytes;
+			public static implicit operator byte[] (IN6_ADDR a) => a.bytes;
 
 			public override string ToString()
 			{
 				const string numberFormat = "{0:x4}:{1:x4}:{2:x4}:{3:x4}:{4:x4}:{5:x4}:{6}.{7}.{8}.{9}";
-				var m_Numbers = u_words;
+				var m_Numbers = words;
 				return string.Format(System.Globalization.CultureInfo.InvariantCulture, numberFormat,
 					m_Numbers[0], m_Numbers[1], m_Numbers[2], m_Numbers[3], m_Numbers[4], m_Numbers[5],
 					((m_Numbers[6] >> 8) & 0xFF), (m_Numbers[6] & 0xFF), ((m_Numbers[7] >> 8) & 0xFF), (m_Numbers[7] & 0xFF));
 			}
+
+			public bool Equals(IN6_ADDR other) => lower == other.lower && upper == other.upper;
 		}
 
 		[PInvokeData("winsock2.h")]
@@ -216,6 +259,8 @@ namespace Vanara.PInvoke
 				sin_zero = 0;
 			}
 
+			public static implicit operator SOCKADDR_IN(IN_ADDR addr) => new SOCKADDR_IN(addr);
+
 			public override string ToString() => $"{sin_addr}:{sin_port}";
 		}
 
@@ -229,18 +274,18 @@ namespace Vanara.PInvoke
 			public IN6_ADDR sin6_addr;
 			public uint sin6_scope_id;
 
-			public SOCKADDR_IN6(IN6_ADDR addr, uint scope_id, ushort port = 0) : this(addr.u_bytes, scope_id, port) { }
+			public SOCKADDR_IN6(byte[] addr, uint scope_id, ushort port = 0) : this(new IN6_ADDR(addr), scope_id, port) { }
 
-			public SOCKADDR_IN6(byte[] addr, uint scope_id, ushort port = 0)
+			public SOCKADDR_IN6(IN6_ADDR addr, uint scope_id, ushort port = 0)
 			{
-				if (addr.Length != 16) throw new ArgumentException();
 				sin6_family = ADDRESS_FAMILY.AF_INET6;
 				sin6_port = port;
 				sin6_flowinfo = 0;
-				sin6_addr = new byte[16];
-				Array.ConstrainedCopy(addr, 0, sin6_addr, 0, addr.Length);
+				sin6_addr = addr;
 				sin6_scope_id = scope_id;
 			}
+
+			public static implicit operator SOCKADDR_IN6(IN6_ADDR addr) => new SOCKADDR_IN6(addr, 0);
 
 			public override string ToString() => $"{sin6_addr}" + (sin6_scope_id == 0 ? "" : "%" + sin6_scope_id.ToString()) + $":{sin6_port}";
 		}
@@ -264,18 +309,20 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/ws2ipdef/ns-ws2ipdef-_sockaddr_in6_pair
 		// typedef struct _sockaddr_in6_pair { PSOCKADDR_IN6 SourceAddress; PSOCKADDR_IN6 DestinationAddress; } SOCKADDR_IN6_PAIR, *PSOCKADDR_IN6_PAIR;
 		[PInvokeData("ws2ipdef.h", MSDNShortId = "0265f8e0-8b35-4d9d-bf22-e98e9ff36a17")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct SOCKADDR_IN6_PAIR
 		{
+			private IntPtr _SourceAddress;
+			private IntPtr _DestinationAddress;
 			/// <summary><para>A pointer to an IP source address represented as a SOCKADDR_IN6 structure. The address family is in host byte order and the IPv6 address, port, flow information, and zone ID are in network byte order.</para></summary>
-			public IntPtr SourceAddress;
+			public SOCKADDR_IN6 SourceAddress => _SourceAddress.ToStructure<SOCKADDR_IN6>();
 			/// <summary><para>A pointer to an IP source address represented as a SOCKADDR_IN6 structure. The address family is in host byte order and the IPv6 address, port, flow information, and zone ID are in network byte order.</para></summary>
-			public IntPtr DestinationAddress;
+			public SOCKADDR_IN6 DestinationAddress => _DestinationAddress.ToStructure<SOCKADDR_IN6>();
 		}
 
 		[PInvokeData("winsock2.h")]
 		[StructLayout(LayoutKind.Explicit)]
-		public struct SOCKADDR_INET
+		public struct SOCKADDR_INET : IEquatable<SOCKADDR_INET>, IEquatable<SOCKADDR_IN>, IEquatable<SOCKADDR_IN6>
 		{
 			[FieldOffset(0)]
 			public SOCKADDR_IN Ipv4;
@@ -283,6 +330,13 @@ namespace Vanara.PInvoke
 			public SOCKADDR_IN6 Ipv6;
 			[FieldOffset(0)]
 			public ADDRESS_FAMILY si_family;
+
+			public bool Equals(SOCKADDR_INET other) => (si_family == ADDRESS_FAMILY.AF_INET && Ipv4.Equals(other.Ipv4)) || (si_family == ADDRESS_FAMILY.AF_INET6 && Ipv6.Equals(other.Ipv6));
+			public bool Equals(SOCKADDR_IN other) => si_family == ADDRESS_FAMILY.AF_INET && Ipv4.Equals(other);
+			public bool Equals(SOCKADDR_IN6 other) => si_family == ADDRESS_FAMILY.AF_INET6 && Ipv6.Equals(other);
+
+			public static implicit operator SOCKADDR_INET(SOCKADDR_IN address) => new SOCKADDR_INET { Ipv4 = address };
+			public static implicit operator SOCKADDR_INET(SOCKADDR_IN6 address) => new SOCKADDR_INET { Ipv6 = address };
 
 			public override string ToString()
 			{

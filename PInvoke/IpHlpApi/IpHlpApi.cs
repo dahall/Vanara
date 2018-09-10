@@ -3791,6 +3791,8 @@ namespace Vanara.PInvoke
 			public IP_ADAPTER_CAST_FLAGS Flags;
 			public IntPtr Next;
 			public SOCKET_ADDRESS Address;
+
+			public override string ToString() => Address.ToString();
 		}
 
 		[PInvokeData("IpHlpApi.h")]
@@ -3801,6 +3803,8 @@ namespace Vanara.PInvoke
 			public uint Reserved;
 			public IntPtr Next;
 			public SOCKET_ADDRESS Address;
+
+			public override string ToString() => Address.ToString();
 		}
 
 		[PInvokeData("IpHlpApi.h")]
@@ -3821,6 +3825,8 @@ namespace Vanara.PInvoke
 			public uint Reserved;
 			public IntPtr Next;
 			public SOCKET_ADDRESS Address;
+
+			public override string ToString() => Address.ToString();
 		}
 
 		[PInvokeData("IpHlpApi.h")]
@@ -3833,41 +3839,53 @@ namespace Vanara.PInvoke
 			public string Name;
 		}
 
-		[PInvokeData("IpHlpApi.h")]
+		/// <summary><para>The <c>IP_ADAPTER_INFO</c> structure contains information about a particular network adapter on the local computer.</para></summary><remarks><para>The <c>IP_ADAPTER_INFO</c> structure is limited to IPv4 information about a particular network adapter on the local computer. The <c>IP_ADAPTER_INFO</c> structure is retrieved by calling the GetAdaptersInfofunction.</para><para>When using Visual Studio 2005 and later, the <c>time_t</c> datatype defaults to an 8-byte datatype, not the 4-byte datatype used for the <c>LeaseObtained</c> and <c>LeaseExpires</c> members on a 32-bit platform. To properly use the <c>IP_ADAPTER_INFO</c> structure on a 32-bit platform, define <c>_USE_32BIT_TIME_T</c> (use as an option, for example) when compiling the application to force the <c>time_t</c> datatype to a 4-byte datatype.</para><para>For use on Windows XP and later, the IP_ADAPTER_ADDRESSES structure contains both IPv4 and IPv6 information. The GetAdaptersAddresses function retrieves IPv4 and IPv6 adapter information.</para><para>Examples</para><para>This example retrieves the adapter information and prints various properties of each adapter.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/iptypes/ns-iptypes-_ip_adapter_info
+		// typedef struct _IP_ADAPTER_INFO { struct _IP_ADAPTER_INFO *Next; DWORD ComboIndex; char AdapterName[MAX_ADAPTER_NAME_LENGTH + 4]; char Description[MAX_ADAPTER_DESCRIPTION_LENGTH + 4]; UINT AddressLength; BYTE Address[MAX_ADAPTER_ADDRESS_LENGTH]; DWORD Index; UINT Type; UINT DhcpEnabled; PIP_ADDR_STRING CurrentIpAddress; IP_ADDR_STRING IpAddressList; IP_ADDR_STRING GatewayList; IP_ADDR_STRING DhcpServer; BOOL HaveWins; IP_ADDR_STRING PrimaryWinsServer; IP_ADDR_STRING SecondaryWinsServer; time_t LeaseObtained; time_t LeaseExpires; } IP_ADAPTER_INFO, *PIP_ADAPTER_INFO;
+		[PInvokeData("iptypes.h", MSDNShortId = "f8035801-ca0c-4d86-bfc5-8e2d746af1b4")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		public struct IP_ADAPTER_INFO
 		{
+			/// <summary><para>Type: <c>struct _IP_ADAPTER_INFO*</c></para><para>A pointer to the next adapter in the list of adapters.</para></summary>
 			public IntPtr Next;
+			/// <summary><para>Type: <c>DWORD</c></para><para>Reserved.</para></summary>
 			public uint ComboIndex;
-
+			/// <summary><para>Type: <c>char[MAX_ADAPTER_NAME_LENGTH + 4]</c></para><para>An ANSI character string of the name of the adapter.</para></summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_ADAPTER_NAME_LENGTH + 4)]
 			public string AdapterName;
-
+			/// <summary><para>Type: <c>char[MAX_ADAPTER_DESCRIPTION_LENGTH + 4]</c></para><para>An ANSI character string that contains the description of the adapter.</para></summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_ADAPTER_DESCRIPTION_LENGTH + 4)]
 			public string AdapterDescription;
-
+			/// <summary><para>Type: <c>UINT</c></para><para>The length, in bytes, of the hardware address for the adapter.</para></summary>
 			public uint AddressLength;
-
+			/// <summary><para>Type: <c>BYTE[MAX_ADAPTER_ADDRESS_LENGTH]</c></para><para>The hardware address for the adapter represented as a <c>BYTE</c> array.</para></summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = MAX_ADAPTER_ADDRESS_LENGTH)]
 			public byte[] Address;
-
+			/// <summary><para>Type: <c>DWORD</c></para><para>The adapter index.</para><para>The adapter index may change when an adapter is disabled and then enabled, or under other circumstances, and should not be considered persistent.</para></summary>
 			public uint Index;
+			/// <summary><para>Type: <c>UINT</c></para><para>The adapter type. Possible values for the adapter type are listed in the Ipifcons.h header file.</para><para>The table below lists common values for the adapter type although other values are possible on Windows Vista and later.</para><list type="table"><listheader><term>Value</term><term>Meaning</term></listheader><item><term> MIB_IF_TYPE_OTHER 1 </term><term>Some other type of network interface.</term></item><item><term> MIB_IF_TYPE_ETHERNET 6 </term><term>An Ethernet network interface.</term></item><item><term> IF_TYPE_ISO88025_TOKENRING 9 </term><term>MIB_IF_TYPE_TOKENRING</term></item><item><term> MIB_IF_TYPE_PPP 23 </term><term>A PPP network interface.</term></item><item><term> MIB_IF_TYPE_LOOPBACK 24 </term><term>A software loopback network interface.</term></item><item><term> MIB_IF_TYPE_SLIP 28 </term><term>An ATM network interface.</term></item><item><term> IF_TYPE_IEEE80211 71 </term><term> An IEEE 802.11 wireless network interface. </term></item></list></summary>
 			public IFTYPE Type;
-
+			/// <summary><para>Type: <c>UINT</c></para><para>An option value that specifies whether the dynamic host configuration protocol (DHCP) is enabled for this adapter.</para></summary>
 			[MarshalAs(UnmanagedType.Bool)]
 			public bool DhcpEnabled;
-
+			/// <summary><para>Type: <c>PIP_ADDR_STRING</c></para><para>Reserved.</para></summary>
 			public IntPtr CurrentIpAddress;
+			/// <summary><para>Type: <c>IP_ADDR_STRING</c></para><para>The list of IPv4 addresses associated with this adapter represented as a linked list of <c>IP_ADDR_STRING</c> structures. An adapter can have multiple IPv4 addresses assigned to it.</para></summary>
 			public IP_ADDR_STRING IpAddressList;
+			/// <summary><para>Type: <c>IP_ADDR_STRING</c></para><para>The IPv4 address of the gateway for this adapter represented as a linked list of <c>IP_ADDR_STRING</c> structures. An adapter can have multiple IPv4 gateway addresses assigned to it. This list usually contains a single entry for IPv4 address of the default gateway for this adapter.</para></summary>
 			public IP_ADDR_STRING GatewayList;
+			/// <summary><para>Type: <c>IP_ADDR_STRING</c></para><para>The IPv4 address of the DHCP server for this adapter represented as a linked list of <c>IP_ADDR_STRING</c> structures. This list contains a single entry for the IPv4 address of the DHCP server for this adapter. A value of 255.255.255.255 indicates the DHCP server could not be reached, or is in the process of being reached.</para><para>This member is only valid when the <c>DhcpEnabled</c> member is nonzero.</para></summary>
 			public IP_ADDR_STRING DhcpServer;
-
+			/// <summary><para>Type: <c>BOOL</c></para><para>An option value that specifies whether this adapter uses the Windows Internet Name Service (WINS).</para></summary>
 			[MarshalAs(UnmanagedType.Bool)]
 			public bool HaveWins;
-
+			/// <summary><para>Type: <c>IP_ADDR_STRING</c></para><para>The IPv4 address of the primary WINS server represented as a linked list of <c>IP_ADDR_STRING</c> structures. This list contains a single entry for the IPv4 address of the primary WINS server for this adapter.</para><para>This member is only valid when the <c>HaveWins</c> member is <c>TRUE</c>.</para></summary>
 			public IP_ADDR_STRING PrimaryWinsServer;
+			/// <summary><para>Type: <c>IP_ADDR_STRING</c></para><para>The IPv4 address of the secondary WINS server represented as a linked list of <c>IP_ADDR_STRING</c> structures. An adapter can have multiple secondary WINS server addresses assigned to it.</para><para>This member is only valid when the <c>HaveWins</c> member is <c>TRUE</c>.</para></summary>
 			public IP_ADDR_STRING SecondaryWinsServer;
+			/// <summary><para>Type: <c>time_t</c></para><para>The time when the current DHCP lease was obtained.</para><para>This member is only valid when the <c>DhcpEnabled</c> member is nonzero.</para></summary>
 			public uint LeaseObtained;
+			/// <summary><para>Type: <c>time_t</c></para><para>The time when the current DHCP lease expires.</para><para>This member is only valid when the <c>DhcpEnabled</c> member is nonzero.</para></summary>
 			public uint LeaseExpires;
 		}
 
@@ -3879,6 +3897,8 @@ namespace Vanara.PInvoke
 			public IP_ADAPTER_CAST_FLAGS Flags;
 			public IntPtr Next;
 			public SOCKET_ADDRESS Address;
+
+			public override string ToString() => Address.ToString();
 		}
 
 		[PInvokeData("IpHlpApi.h")]
@@ -3907,6 +3927,8 @@ namespace Vanara.PInvoke
 			public uint PreferredLifetime;
 			public uint LeaseLifetime;
 			public byte OnLinkPrefixLength;
+
+			public override string ToString() => Address.ToString();
 		}
 
 		[PInvokeData("IpHlpApi.h")]
@@ -3917,6 +3939,8 @@ namespace Vanara.PInvoke
 			public uint Reserved;
 			public IntPtr Next;
 			public SOCKET_ADDRESS Address;
+
+			public override string ToString() => Address.ToString();
 		}
 
 		[PInvokeData("IpHlpApi.h")]
@@ -3932,13 +3956,8 @@ namespace Vanara.PInvoke
 			public string IpMask;
 
 			public uint Context;
-		}
 
-		[StructLayout(LayoutKind.Sequential, Pack = 1)]
-		public struct IP_ADDRESS_PREFIX
-		{
-			public SOCKADDR_INET Prefix;
-			public byte PrefixLength;
+			public IP_ADDR_STRING? GetNext() => Next.ToNullableStructure<IP_ADDR_STRING>();
 		}
 
 		[PInvokeData("IpHlpApi.h")]

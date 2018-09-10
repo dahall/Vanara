@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.IpHlpApi;
@@ -30,13 +32,8 @@ namespace Vanara.PInvoke.Tests
 	[TestFixture()]
 	public class IpHlpApiTests
 	{
+		private static readonly IntPtr NotifyData = new IntPtr(8943934);
 		private static IP_ADAPTER_ADDRESSES primaryAdapter;
-
-		[SetUp]
-		public void Setup()
-		{
-			primaryAdapter = GetAdaptersAddresses(GetAdaptersAddressesFlags.GAA_FLAG_INCLUDE_GATEWAYS).FirstOrDefault(r => r.OperStatus == IF_OPER_STATUS.IfOperStatusUp && r.TunnelType == TUNNEL_TYPE.TUNNEL_TYPE_NONE);
-		}
 
 		[Test]
 		public void AddDeleteIPAddressTest()
@@ -50,18 +47,36 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
-		public void CreateSetDeleteIpNetEntryTest()
+		public void SetGetIpInterfaceEntryTest()
+		{
+			var mibrow = new MIB_IPINTERFACE_ROW(ADDRESS_FAMILY.AF_INET, primaryAdapter.Luid);
+			Assert.That(GetIpInterfaceEntry(ref mibrow), Is.Zero);
+			var prev = mibrow.SitePrefixLength;
+			mibrow.SitePrefixLength = 0;
+			Assert.That(SetIpInterfaceEntry(ref mibrow), Is.Zero);
+
+			mibrow = new MIB_IPINTERFACE_ROW(ADDRESS_FAMILY.AF_INET, primaryAdapter.Luid);
+			Assert.That(GetIpInterfaceEntry(ref mibrow), Is.Zero);
+			Assert.That(mibrow.PathMtuDiscoveryTimeout, Is.Zero);
+
+			mibrow.SitePrefixLength = prev;
+			Assert.That(SetIpInterfaceEntry(ref mibrow), Is.Zero);
+		}
+
+		[Test]
+		public void CreateSetDeleteIpNetEntry2Test()
 		{
 			var target = new IN_ADDR(192, 168, 0, 202);
 			Assert.That(GetBestRoute(target, 0, out var fwdRow), Is.Zero);
 			var mibrow = new MIB_IPNET_ROW2(new SOCKADDR_IN(target), fwdRow.dwForwardIfIndex, SendARP(target));
 			Assert.That(GetIpNetTable2(ADDRESS_FAMILY.AF_INET, out MIB_IPNET_TABLE2 t1), Is.Zero);
-			foreach (var r in t1) Debug.WriteLine(r);
 			if (HasVal(t1, mibrow))
 				Assert.That(DeleteIpNetEntry2(ref mibrow), Is.Zero);
+
 			Assert.That(CreateIpNetEntry2(ref mibrow), Is.Zero);
 			GetIpNetTable2(ADDRESS_FAMILY.AF_INET, out var t2);
 			Assert.That(HasVal(t2, mibrow), Is.True);
+
 			Assert.That(DeleteIpNetEntry2(ref mibrow), Is.Zero);
 			GetIpNetTable2(ADDRESS_FAMILY.AF_INET, out var t3);
 			Assert.That(HasVal(t3, mibrow), Is.False);
@@ -71,9 +86,83 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void CreateGetDeleteAnycastIpAddressEntryTest()
+		{
+			var target = new IN6_ADDR(new byte[] { 0xfe, 0x3f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x20, 0x00 });
+			var mibrow = new MIB_ANYCASTIPADDRESS_ROW(new SOCKADDR_IN6(target, 0), primaryAdapter.Luid);
+			Assert.That(GetAnycastIpAddressTable(ADDRESS_FAMILY.AF_INET6, out var t1), Is.Zero);
+			if (t1.Contains(mibrow))
+				Assert.That(DeleteAnycastIpAddressEntry(ref mibrow), Is.Zero);
+
+			Assert.That(CreateAnycastIpAddressEntry(ref mibrow), Is.Zero);
+			GetAnycastIpAddressTable(ADDRESS_FAMILY.AF_INET6, out var t2);
+			Assert.That(t2, Has.Member(mibrow));
+
+			Assert.That(GetAnycastIpAddressEntry(ref mibrow), Is.Zero);
+
+			Assert.That(DeleteAnycastIpAddressEntry(ref mibrow), Is.Zero);
+			GetAnycastIpAddressTable(ADDRESS_FAMILY.AF_INET6, out var t3);
+			Assert.That(t3, Has.No.Member(mibrow));
+		}
+
+		[Test]
+		public void CreateSetGetDeleteUnicastIpAddressEntryTest()
+		{
+			var target = new IN6_ADDR(new byte[] { 0xfe, 0x3f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x20, 0x00 });
+			var mibrow = new MIB_UNICASTIPADDRESS_ROW(new SOCKADDR_IN6(target, 0), primaryAdapter.Luid);
+			Assert.That(GetUnicastIpAddressTable(ADDRESS_FAMILY.AF_INET6, out var t1), Is.Zero);
+			if (t1.Contains(mibrow))
+				Assert.That(DeleteUnicastIpAddressEntry(ref mibrow), Is.Zero);
+
+			Assert.That(CreateUnicastIpAddressEntry(ref mibrow), Is.Zero);
+			GetUnicastIpAddressTable(ADDRESS_FAMILY.AF_INET6, out var t2);
+			Assert.That(t2, Has.Member(mibrow));
+
+			mibrow.PreferredLifetime = 500000;
+			Assert.That(SetUnicastIpAddressEntry(ref mibrow), Is.Zero);
+			Assert.That(GetUnicastIpAddressEntry(ref mibrow), Is.Zero);
+
+			Assert.That(DeleteUnicastIpAddressEntry(ref mibrow), Is.Zero);
+			GetUnicastIpAddressTable(ADDRESS_FAMILY.AF_INET6, out var t4);
+			Assert.That(t4, Has.No.Member(mibrow));
+		}
+
+		[Test]
+		public void CreateSetDeleteIpForwardEntry2Test()
+		{
+			var target = new IN6_ADDR(new byte[] { 0xfe, 0x3f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x20, 0x00 });
+			var mibrow = new MIB_IPFORWARD_ROW2(new IP_ADDRESS_PREFIX((SOCKADDR_IN6)IN6_ADDR.Unspecified, 128), (SOCKADDR_IN6)target, primaryAdapter.Luid)
+			{
+				Protocol = MIB_IPPROTOCOL.MIB_IPPROTO_NETMGMT,
+				Metric = 1
+			};
+			DeleteIpForwardEntry2(ref mibrow);
+
+			Assert.That(CreateIpForwardEntry2(ref mibrow), Is.Zero);
+
+			mibrow.PreferredLifetime = 500000;
+			Assert.That(SetIpForwardEntry2(ref mibrow), Is.Zero);
+			Assert.That(GetIpForwardEntry2(ref mibrow), Is.Zero);
+
+			Assert.That(DeleteIpForwardEntry2(ref mibrow), Is.Zero);
+		}
+
+		[Test]
 		public void EnableUnenableRouterTest()
 		{
 			Assert.Fail();
+		}
+
+		[Test]
+		public void FlushIpNetTable2Test()
+		{
+			Assert.That(FlushIpNetTable2(ADDRESS_FAMILY.AF_INET6, primaryAdapter.IfIndex), Is.Zero);
+		}
+
+		[Test]
+		public void FlushIpPathTableTest()
+		{
+			Assert.That(FlushIpPathTable(ADDRESS_FAMILY.AF_INET6), Is.Zero);
 		}
 
 		[Test]
@@ -118,14 +207,13 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
-		public void GetBestInterfaceTest()
+		public void GetAnycastIpAddressEntryTableTest()
 		{
-#pragma warning disable CS0618 // Type or member is obsolete
-			var gw = (uint)primaryAdapter.GatewayAddresses.Select(a => a.Address.Convert()).FirstOrDefault().Address;
-#pragma warning restore CS0618 // Type or member is obsolete
-			Assert.That(gw, Is.Not.Zero);
-			Assert.That(GetBestInterface(gw, out var idx), Is.Zero);
-			Assert.That(idx, Is.EqualTo(primaryAdapter.IfIndex));
+			Assert.That(GetAnycastIpAddressTable(ADDRESS_FAMILY.AF_UNSPEC, out var table), Is.Zero);
+			Assert.That(table.NumEntries, Is.Zero);
+
+			var row = new MIB_ANYCASTIPADDRESS_ROW();
+			Assert.That(GetAnycastIpAddressEntry(ref row), Is.Not.Zero);
 		}
 
 		[Test]
@@ -140,12 +228,23 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void GetBestInterfaceTest()
+		{
+#pragma warning disable CS0618 // Type or member is obsolete
+			var gw = (uint)primaryAdapter.GatewayAddresses.Select(a => a.Address.Convert()).FirstOrDefault().Address;
+#pragma warning restore CS0618 // Type or member is obsolete
+			Assert.That(gw, Is.Not.Zero);
+			Assert.That(GetBestInterface(gw, out var idx), Is.Zero);
+			Assert.That(idx, Is.EqualTo(primaryAdapter.IfIndex));
+		}
+
+		[Test]
 		public void GetBestRoute2Test()
 		{
-			var addr = new SOCKADDR_INET { Ipv4 = new SOCKADDR_IN(new IN_ADDR(192,168,0,202)) };
+			var addr = new SOCKADDR_INET { Ipv4 = new SOCKADDR_IN(new IN_ADDR(192, 168, 0, 202)) };
 			Assert.That(GetBestRoute2(IntPtr.Zero, primaryAdapter.IfIndex, IntPtr.Zero, ref addr, 0, out var rt, out var src), Is.Zero);
 			Assert.That(rt.InterfaceIndex, Is.EqualTo(primaryAdapter.IfIndex));
-			Assert.That(src.Ipv4.sin_addr, Is.EqualTo(new IN_ADDR(192,168,0,113)));
+			Assert.That(src.Ipv4.sin_addr, Is.EqualTo(new IN_ADDR(192, 168, 0, 203)));
 		}
 
 		[Test]
@@ -211,6 +310,14 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void GetIfEntry2ExTest()
+		{
+			var row = new MIB_IF_ROW2(primaryAdapter.IfIndex);
+			Assert.That(GetIfEntry2Ex(MIB_IF_ENTRY_LEVEL.MibIfEntryNormalWithoutStatistics, ref row), Is.Zero);
+			Assert.That(row.InterfaceLuid, Is.EqualTo(primaryAdapter.Luid));
+		}
+
+		[Test]
 		public void GetIfEntry2Test()
 		{
 			var row = new MIB_IF_ROW2(primaryAdapter.IfIndex);
@@ -219,12 +326,31 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
-		public void GetIfEntry2ExTest()
+		public void GetIfStackTableTest()
 		{
-			return;
-			//var row = new MIB_IF_ROW2(primaryAdapter.IfIndex);
-			//Assert.That(GetIfEntry2Ex(MIB_IF_ENTRY_LEVEL.MibIfEntryNormalWithoutStatistics, ref row), Is.Zero);
-			//Assert.That(row.InterfaceLuid, Is.EqualTo(primaryAdapter.Luid));
+			Assert.That(GetIfStackTable(out var table), Is.Zero);
+			Assert.That(table.NumEntries, Is.GreaterThan(0));
+			Assert.That(() => table.Table, Throws.Nothing);
+		}
+
+		[Test]
+		public void GetIfTable2ExTest()
+		{
+			var e = GetIfTable2Ex(MIB_IF_TABLE_LEVEL.MibIfTableNormal, out var itbl);
+			Assert.That(e.Succeeded);
+			Assert.That(itbl.Table, Is.Not.Empty);
+			itbl.Dispose();
+			Assert.That(itbl.IsInvalid);
+		}
+
+		[Test]
+		public void GetIfTable2Test()
+		{
+			var e = GetIfTable2(out var itbl);
+			Assert.That(e.Succeeded);
+			Assert.That(itbl.Table, Is.Not.Empty);
+			itbl.Dispose();
+			Assert.That(itbl.IsInvalid);
 		}
 
 		[Test]
@@ -239,26 +365,6 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
-		public void GetIfTable2Test()
-		{
-			var e = GetIfTable2(out var itbl);
-			Assert.That(e.Succeeded);
-			Assert.That(itbl.Elements, Is.Not.Empty);
-			itbl.Dispose();
-			Assert.That(itbl.IsInvalid);
-		}
-
-		[Test]
-		public void GetIfTable2ExTest()
-		{
-			var e = GetIfTable2Ex(MIB_IF_TABLE_LEVEL.MibIfTableNormal, out var itbl);
-			Assert.That(e.Succeeded);
-			Assert.That(itbl.Elements, Is.Not.Empty);
-			itbl.Dispose();
-			Assert.That(itbl.IsInvalid);
-		}
-
-		[Test]
 		public void GetInterfaceInfoTest()
 		{
 			Assert.That(() =>
@@ -270,6 +376,14 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void GetInvertedIfStackTableTest()
+		{
+			Assert.That(GetInvertedIfStackTable(out var table), Is.Zero);
+			Assert.That(table.NumEntries, Is.GreaterThan(0));
+			Assert.That(() => table.Table, Throws.Nothing);
+		}
+
+		[Test]
 		public void GetIpAddrTableTest()
 		{
 			Assert.That(() =>
@@ -278,6 +392,79 @@ namespace Vanara.PInvoke.Tests
 				Assert.That(t.dwNumEntries, Is.GreaterThan(0));
 				foreach (var r in t) ;
 			}, Throws.Nothing);
+		}
+
+		[Test]
+		public void GetIpForwardEntryTable2Test()
+		{
+			Assert.That(GetIpForwardTable2(ADDRESS_FAMILY.AF_UNSPEC, out var table), Is.Zero);
+			Assert.That(table.NumEntries, Is.GreaterThan(0));
+			Assert.That(() => table.Table, Throws.Nothing);
+
+			var goodRow = table.Table[0];
+			var row = new MIB_IPFORWARD_ROW2 { DestinationPrefix = goodRow.DestinationPrefix, NextHop = goodRow.NextHop, InterfaceLuid = goodRow.InterfaceLuid };
+			Assert.That(GetIpForwardEntry2(ref row), Is.Zero);
+			Assert.That(row.InterfaceIndex, Is.Not.Zero.And.EqualTo(goodRow.InterfaceIndex));
+		}
+
+		[Test]
+		public void GetIpInterfaceEntryTableTest()
+		{
+			Assert.That(GetIpInterfaceTable(ADDRESS_FAMILY.AF_UNSPEC, out var table), Is.Zero);
+			Assert.That(table.NumEntries, Is.GreaterThan(0));
+			Assert.That(() => table.Table, Throws.Nothing);
+
+			var goodRow = table.Table[0];
+			var row = new MIB_IPINTERFACE_ROW { Family = goodRow.Family, InterfaceLuid = goodRow.InterfaceLuid };
+			Assert.That(GetIpInterfaceEntry(ref row), Is.Zero);
+			Assert.That(row.InterfaceIndex, Is.Not.Zero.And.EqualTo(goodRow.InterfaceIndex));
+		}
+
+		[Test]
+		public void GetIpNetEntryTable2Test()
+		{
+			Assert.That(GetIpNetTable2(ADDRESS_FAMILY.AF_UNSPEC, out var table), Is.Zero);
+			Assert.That(table.NumEntries, Is.GreaterThan(0));
+			Assert.That(() => table.Table, Throws.Nothing);
+
+			var goodRow = table.Table[0];
+			var row = new MIB_IPNET_ROW2 { Address = goodRow.Address, InterfaceLuid = goodRow.InterfaceLuid };
+			Assert.That(GetIpNetEntry2(ref row), Is.Zero);
+			Assert.That(row.InterfaceIndex, Is.Not.Zero.And.EqualTo(goodRow.InterfaceIndex));
+		}
+
+		[Test]
+		public void GetIpNetworkConnectionBandwidthEstimatesTest()
+		{
+			Assert.That(GetIpNetworkConnectionBandwidthEstimates(primaryAdapter.IfIndex, ADDRESS_FAMILY.AF_INET, out var est), Is.Zero);
+			Assert.That(est.InboundBandwidthInformation.Bandwidth, Is.GreaterThan(0));
+			Assert.That(est.OutboundBandwidthInformation.Bandwidth, Is.GreaterThan(0));
+		}
+
+		[Test]
+		public void GetIpPathEntryTableTest()
+		{
+			Assert.That(GetIpPathTable(ADDRESS_FAMILY.AF_UNSPEC, out var table), Is.Zero);
+			Assert.That(table.NumEntries, Is.GreaterThan(0));
+			Assert.That(() => table.Table, Throws.Nothing);
+
+			var goodRow = table.Table[0];
+			var row = new MIB_IPPATH_ROW { Destination = goodRow.Destination, InterfaceLuid = goodRow.InterfaceLuid };
+			Assert.That(GetIpPathEntry(ref row), Is.Zero);
+			Assert.That((int)row.Source.si_family, Is.Not.Zero);
+		}
+
+		[Test]
+		public void GetMulticastIpAddressEntryTableTest()
+		{
+			Assert.That(GetMulticastIpAddressTable(ADDRESS_FAMILY.AF_UNSPEC, out var table), Is.Zero);
+			Assert.That(table.NumEntries, Is.GreaterThan(0));
+			Assert.That(() => table.Table, Throws.Nothing);
+
+			var goodRow = table.Table[0];
+			var row = new MIB_MULTICASTIPADDRESS_ROW { Address = goodRow.Address, InterfaceLuid = goodRow.InterfaceLuid };
+			Assert.That(GetMulticastIpAddressEntry(ref row), Is.Zero);
+			Assert.That(row.InterfaceIndex, Is.Not.Zero.And.EqualTo(goodRow.InterfaceIndex));
 		}
 
 		[Test]
@@ -301,6 +488,25 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void GetTeredoPortTest()
+		{
+			Assert.That(GetTeredoPort(out var port), Is.Zero.Or.EqualTo(Win32Error.ERROR_NOT_READY));
+		}
+
+		[Test]
+		public void GetUnicastIpAddressEntryTableTest()
+		{
+			Assert.That(GetUnicastIpAddressTable(ADDRESS_FAMILY.AF_UNSPEC, out var table), Is.Zero);
+			Assert.That(table.NumEntries, Is.GreaterThan(0));
+			Assert.That(() => table.Table, Throws.Nothing);
+
+			var goodRow = table.Table[0];
+			var row = new MIB_UNICASTIPADDRESS_ROW { Address = goodRow.Address, InterfaceLuid = goodRow.InterfaceLuid };
+			Assert.That(GetUnicastIpAddressEntry(ref row), Is.Zero);
+			Assert.That(row.CreationTimeStamp, Is.Not.Zero.And.EqualTo(goodRow.CreationTimeStamp));
+		}
+
+		[Test]
 		public void GetUniDirectionalAdapterInfoTest()
 		{
 			Assert.That(() =>
@@ -311,15 +517,37 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
-		public void NotifyAddrChangeTest()
+		public void if_indextonameANDif_nametoindexTest()
 		{
-			Assert.Fail();
+			var sb = new StringBuilder(IF_MAX_STRING_SIZE, IF_MAX_STRING_SIZE);
+			Assert.That(if_indextoname(primaryAdapter.IfIndex, sb), Is.Not.EqualTo(IntPtr.Zero));
+			TestContext.WriteLine(sb);
+			Assert.That(if_nametoindex(sb.ToString()), Is.EqualTo(primaryAdapter.IfIndex));
 		}
 
 		[Test]
-		public void NotifyRouteChangeTest()
+		public void InitializeIpForwardEntryTest()
 		{
-			Assert.Fail();
+			InitializeIpForwardEntry(out var entry);
+			Assert.That(entry.ValidLifetime, Is.Not.Zero);
+			Assert.That(entry.Loopback, Is.True);
+		}
+
+		[Test]
+		public void InitializeIpInterfaceEntryTest()
+		{
+			InitializeIpInterfaceEntry(out var entry);
+			Assert.That((int)entry.Family, Is.Zero);
+			Assert.That(entry.InterfaceIdentifier, Is.Not.Zero);
+			Assert.That(entry.SupportsNeighborDiscovery, Is.True);
+		}
+
+		[Test]
+		public void InitializeUnicastIpAddressEntryTest()
+		{
+			InitializeUnicastIpAddressEntry(out var entry);
+			Assert.That(entry.ValidLifetime, Is.Not.Zero);
+			Assert.That(entry.PrefixOrigin, Is.EqualTo(NL_PREFIX_ORIGIN.IpPrefixOriginUnchanged));
 		}
 
 		[Test]
@@ -334,9 +562,168 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test]
+		public void NotifyAddrChangeTest()
+		{
+			Assert.Fail();
+		}
+
+		[Test]
+		public void NotifyIpInterfaceChangeTest()
+		{
+			var fired = new ManualResetEvent(false);
+			var done = new ManualResetEvent(false);
+			new Thread(() =>
+			{
+				try
+				{
+					Assert.That(NotifyIpInterfaceChange(ADDRESS_FAMILY.AF_UNSPEC, NotifyFunc, NotifyData, true, out var hNot), Is.Zero);
+					fired.WaitOne(3000);
+					Assert.That(CancelMibChangeNotify2(hNot), Is.Zero);
+				}
+				finally
+				{
+					done.Set();
+				}
+			}).Start();
+			Assert.That(done.WaitOne(5000), Is.True);
+
+			void NotifyFunc(IntPtr CallerContext, IntPtr Row, MIB_NOTIFICATION_TYPE NotificationType)
+			{
+				Assert.That(CallerContext, Is.EqualTo(NotifyData));
+				TestContext.WriteLine(Row.ToString());
+				Assert.That(NotificationType, Is.EqualTo(MIB_NOTIFICATION_TYPE.MibInitialNotification));
+				fired.Set();
+			}
+		}
+
+		[Test]
+		public void NotifyRouteChange2Test()
+		{
+			var fired = new ManualResetEvent(false);
+			var done = new ManualResetEvent(false);
+			new Thread(() =>
+			{
+				try
+				{
+					Assert.That(NotifyRouteChange2(ADDRESS_FAMILY.AF_UNSPEC, NotifyFunc, NotifyData, true, out var hNot), Is.Zero);
+					fired.WaitOne(3000);
+					Assert.That(CancelMibChangeNotify2(hNot), Is.Zero);
+				}
+				finally
+				{
+					done.Set();
+				}
+			}).Start();
+			Assert.That(done.WaitOne(5000), Is.True);
+
+			void NotifyFunc(IntPtr CallerContext, ref MIB_IPFORWARD_ROW2 Row, MIB_NOTIFICATION_TYPE NotificationType)
+			{
+				Assert.That(CallerContext, Is.EqualTo(NotifyData));
+				TestContext.WriteLine(Row.ToString());
+				Assert.That(NotificationType, Is.EqualTo(MIB_NOTIFICATION_TYPE.MibInitialNotification));
+				fired.Set();
+			}
+		}
+
+		[Test]
+		public void NotifyRouteChangeTest()
+		{
+			Assert.Fail();
+		}
+
+		[Test]
+		public void NotifyStableUnicastIpAddressTableTest()
+		{
+			var fired = new ManualResetEvent(false);
+			var done = new ManualResetEvent(false);
+			new Thread(() =>
+			{
+				try
+				{
+					Assert.That(NotifyStableUnicastIpAddressTable(ADDRESS_FAMILY.AF_UNSPEC, out var table, NotifyFunc, NotifyData, out var hNot), Is.Zero.Or.EqualTo(Win32Error.ERROR_IO_PENDING));
+					if (table == IntPtr.Zero)
+					{
+						fired.WaitOne(3000);
+						Assert.That(CancelMibChangeNotify2(hNot), Is.Zero);
+					}
+				}
+				finally
+				{
+					done.Set();
+				}
+			}).Start();
+			Assert.That(done.WaitOne(5000), Is.True);
+
+			void NotifyFunc(IntPtr CallerContext, IntPtr Table)
+			{
+				Assert.That(CallerContext, Is.EqualTo(NotifyData));
+				TestContext.WriteLine(Table.ToString());
+				fired.Set();
+			}
+		}
+
+		[Test]
+		public void NotifyTeredoPortChangeTest()
+		{
+			var fired = new ManualResetEvent(false);
+			var done = new ManualResetEvent(false);
+			new Thread(() =>
+			{
+				try
+				{
+					Assert.That(NotifyTeredoPortChange(NotifyFunc, NotifyData, true, out var hNot), Is.Zero);
+					fired.WaitOne(3000);
+					Assert.That(CancelMibChangeNotify2(hNot), Is.Zero);
+				}
+				finally
+				{
+					done.Set();
+				}
+			}).Start();
+			Assert.That(done.WaitOne(5000), Is.True);
+
+			void NotifyFunc(IntPtr CallerContext, ushort Port, MIB_NOTIFICATION_TYPE NotificationType)
+			{
+				Assert.That(CallerContext, Is.EqualTo(NotifyData));
+				TestContext.WriteLine(Port.ToString());
+				Assert.That(NotificationType, Is.EqualTo(MIB_NOTIFICATION_TYPE.MibInitialNotification));
+				fired.Set();
+			}
+		}
+
+		[Test]
+		public void NotifyUnicastIpAddressChangeTest()
+		{
+			var fired = new ManualResetEvent(false);
+			var done = new ManualResetEvent(false);
+			new Thread(() =>
+			{
+				try
+				{
+					Assert.That(NotifyUnicastIpAddressChange(ADDRESS_FAMILY.AF_UNSPEC, NotifyFunc, NotifyData, true, out var hNot), Is.Zero);
+					fired.WaitOne(3000);
+					Assert.That(CancelMibChangeNotify2(hNot), Is.Zero);
+				}
+				finally
+				{
+					done.Set();
+				}
+			}).Start();
+			Assert.That(done.WaitOne(5000), Is.True);
+
+			void NotifyFunc(IntPtr CallerContext, IntPtr Row, MIB_NOTIFICATION_TYPE NotificationType)
+			{
+				Assert.That(CallerContext, Is.EqualTo(NotifyData));
+				TestContext.WriteLine(Row.ToString());
+				Assert.That(NotificationType, Is.EqualTo(MIB_NOTIFICATION_TYPE.MibInitialNotification));
+				fired.Set();
+			}
+		}
+
+		[Test]
 		public void ResolveIpNetEntry2Test()
 		{
-			var e = new MIB_IPNET_ROW2(new SOCKADDR_IN(new IN_ADDR(192,168,0,202)), primaryAdapter.IfIndex);
+			var e = new MIB_IPNET_ROW2(new SOCKADDR_IN(new IN_ADDR(192, 168, 0, 202)), primaryAdapter.IfIndex);
 			Assert.That(ResolveIpNetEntry2(ref e), Is.Zero);
 			Assert.That(e.State, Is.EqualTo(NL_NEIGHBOR_STATE.NlnsReachable));
 		}
@@ -352,5 +739,12 @@ namespace Vanara.PInvoke.Tests
 				Assert.That(mac, Has.Some.Not.EqualTo(0));
 			}, Throws.Nothing);
 		}
+
+		[SetUp]
+		public void Setup()
+		{
+			primaryAdapter = GetAdaptersAddresses(GetAdaptersAddressesFlags.GAA_FLAG_INCLUDE_GATEWAYS).FirstOrDefault(r => r.OperStatus == IF_OPER_STATUS.IfOperStatusUp && r.TunnelType == TUNNEL_TYPE.TUNNEL_TYPE_NONE);
+		}
 	}
 }
+ 
