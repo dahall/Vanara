@@ -5,17 +5,17 @@ namespace Vanara.PInvoke
 {
 	/// <summary>Managed instance of the SIZE_T type.</summary>
 	[StructLayout(LayoutKind.Sequential)]
-	public struct SizeT
+	public struct SizeT : IEquatable<SizeT>, IComparable<SizeT>, IConvertible
 	{
 		private UIntPtr val;
 
 		/// <summary>Initializes a new instance of the <see cref="SizeT"/> struct.</summary>
 		/// <param name="value">The value.</param>
-		public SizeT(uint value) { val = (UIntPtr)value; }
+		public SizeT(uint value) => val = (UIntPtr)value;
 
 		/// <summary>Initializes a new instance of the <see cref="SizeT"/> struct.</summary>
 		/// <param name="value">The value.</param>
-		public SizeT(ulong value) { val = new UIntPtr(value); }
+		public SizeT(ulong value) => val = new UIntPtr(value);
 
 		/// <summary>Gets the value.</summary>
 		/// <value>The value.</value>
@@ -30,5 +30,68 @@ namespace Vanara.PInvoke
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator SizeT(ulong value) => new SizeT(value);
+
+		/// <inheritdoc/>
+		public int CompareTo(SizeT other) => Value.CompareTo(other.Value);
+
+		/// <inheritdoc/>
+		public bool Equals(SizeT other) => Value.Equals(other.Value);
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => Value.GetHashCode();
+
+		/// <inheritdoc/>
+		public TypeCode GetTypeCode() => Value.GetTypeCode();
+
+		/// <inheritdoc/>
+		public override string ToString() => Value.ToString();
+
+		/// <inheritdoc/>
+		public string ToString(IFormatProvider provider) => Value.ToString(provider);
+
+		/// <inheritdoc/>
+		bool IConvertible.ToBoolean(IFormatProvider provider) => ((IConvertible)Value).ToBoolean(provider);
+
+		/// <inheritdoc/>
+		char IConvertible.ToChar(IFormatProvider provider) => ((IConvertible)Value).ToChar(provider);
+
+		/// <inheritdoc/>
+		sbyte IConvertible.ToSByte(IFormatProvider provider) => ((IConvertible)Value).ToSByte(provider);
+
+		/// <inheritdoc/>
+		byte IConvertible.ToByte(IFormatProvider provider) => ((IConvertible)Value).ToByte(provider);
+
+		/// <inheritdoc/>
+		short IConvertible.ToInt16(IFormatProvider provider) => ((IConvertible)Value).ToInt16(provider);
+
+		/// <inheritdoc/>
+		ushort IConvertible.ToUInt16(IFormatProvider provider) => ((IConvertible)Value).ToUInt16(provider);
+
+		/// <inheritdoc/>
+		int IConvertible.ToInt32(IFormatProvider provider) => ((IConvertible)Value).ToInt32(provider);
+
+		/// <inheritdoc/>
+		uint IConvertible.ToUInt32(IFormatProvider provider) => ((IConvertible)Value).ToUInt32(provider);
+
+		/// <inheritdoc/>
+		long IConvertible.ToInt64(IFormatProvider provider) => ((IConvertible)Value).ToInt64(provider);
+
+		/// <inheritdoc/>
+		ulong IConvertible.ToUInt64(IFormatProvider provider) => ((IConvertible)Value).ToUInt64(provider);
+
+		/// <inheritdoc/>
+		float IConvertible.ToSingle(IFormatProvider provider) => ((IConvertible)Value).ToSingle(provider);
+
+		/// <inheritdoc/>
+		double IConvertible.ToDouble(IFormatProvider provider) => ((IConvertible)Value).ToDouble(provider);
+
+		/// <inheritdoc/>
+		decimal IConvertible.ToDecimal(IFormatProvider provider) => ((IConvertible)Value).ToDecimal(provider);
+
+		/// <inheritdoc/>
+		DateTime IConvertible.ToDateTime(IFormatProvider provider) => ((IConvertible)Value).ToDateTime(provider);
+
+		/// <inheritdoc/>
+		object IConvertible.ToType(Type conversionType, IFormatProvider provider) => ((IConvertible)Value).ToBoolean(provider);
 	}
 }
