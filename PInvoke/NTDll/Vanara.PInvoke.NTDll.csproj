@@ -25,10 +25,10 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-NtQueryKey
+DbgBreakPoint, DbgPrompt, LdrFastFailInLoaderCallout, LdrRegisterDllNotification, LdrUnregisterDllNotification, NtAllocateVirtualMemory, NtClose, NtCommitComplete, NtCommitEnlistment, NtCommitTransaction, NtCompareTokens, NtCreateEnlistment, NtCreateFileA, NtCreateFileW, NtCreateResourceManager, NtCreateSectionA, NtCreateSectionW, NtQueryKey, NtQuerySystemInformation
 
 Structures
-KEY_BASIC_INFORMATION, KEY_NODE_INFORMATION, KEY_FULL_INFORMATION, KEY_NAME_INFORMATION
+IO_STATUS_BLOCK, KEY_BASIC_INFORMATION, KEY_FULL_INFORMATION, KEY_NAME_INFORMATION, KEY_NODE_INFORMATION, OBJECT_ATTRIBUTES, UNICODE_STRING, LDR_DLL_NOTIFICATION_DATA, SYSTEM_BASIC_INFORMATION, SYSTEM_REGISTRY_QUOTA_INFORMATION, SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION, SYSTEM_PROCESS_INFORMATION, SYSTEM_THREAD_INFORMATION, CLIENT_ID
 
 </PackageReleaseNotes>
   </PropertyGroup>

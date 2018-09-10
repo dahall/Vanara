@@ -75,6 +75,8 @@
     <Compile Include="PInvoke\Kernel32\Kernel32Tests.cs" />
     <Compile Include="PInvoke\Mpr\WinNetWkTests.cs" />
     <Compile Include="PInvoke\NetApi\NetApi32Tests.cs" />
+    <Compile Include="PInvoke\NtDll\NtDllTests.cs" />
+    <Compile Include="UnitTestHelper.cs" />
     <None Include="PInvoke\NetListMgr\NetListMgrTests.cs" />
     <Compile Include="PInvoke\NTDSApi\NTDSApiTests.cs" />
     <Compile Include="PInvoke\Ole32\Ole32Tests.cs" />
@@ -177,6 +179,10 @@
       <Project>{d7575cdb-0aa6-4029-a8fa-64b49dc178ce}</Project>
       <Name>Vanara.PInvoke.NetListMgr</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PInvoke\NtDll\Vanara.PInvoke.NtDll.csproj">
+      <Project>{9e0c0dc0-e1b6-42a7-bd31-9a62eeada780}</Project>
+      <Name>Vanara.PInvoke.NtDll</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PInvoke\NTDSApi\Vanara.PInvoke.NTDSApi.csproj">
       <Project>{ff26f707-5f0e-461b-bcc9-013724f87bd4}</Project>
       <Name>Vanara.PInvoke.NTDSApi</Name>
@@ -242,6 +248,7 @@
       <Name>Vanara.Windows.Shell</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

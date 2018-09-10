@@ -159,11 +159,11 @@ Native Method | Native DLL | Header | Managed Method
 [ConvertSDToStringSDRootDomain](https://www.google.com/search?num=5&q=ConvertSDToStringSDRootDomainA+site%3Amicrosoft.com) | advapi32.dll |  |   
 [ConvertSecurityDescriptorToAccess](https://www.google.com/search?num=5&q=ConvertSecurityDescriptorToAccessA+site%3Amicrosoft.com) | advapi32.dll |  |   
 [ConvertSecurityDescriptorToAccessNamed](https://www.google.com/search?num=5&q=ConvertSecurityDescriptorToAccessNamedA+site%3Amicrosoft.com) | advapi32.dll |  |   
-[ConvertSecurityDescriptorToStringSecurityDescriptor](http://msdn2.microsoft.com/en-us/library/aa376397) | advapi32.dll | sddl.h | Vanara.PInvoke.AdvApi32.ConvertSecurityDescriptorToStringSecurityDescriptor  
+[ConvertSecurityDescriptorToStringSecurityDescriptor](http://msdn2.microsoft.com/en-us/library/36140833-8e30-4c32-a88a-c10751b6c223) | advapi32.dll | sddl.h | Vanara.PInvoke.AdvApi32.ConvertSecurityDescriptorToStringSecurityDescriptor  
 [ConvertSidToStringSid](http://msdn2.microsoft.com/en-us/library/aa376399) | advapi32.dll | sddl.h | Vanara.PInvoke.AdvApi32.ConvertSidToStringSid  
 [ConvertStringSDToSDDomain](https://www.google.com/search?num=5&q=ConvertStringSDToSDDomainA+site%3Amicrosoft.com) | advapi32.dll |  |   
 [ConvertStringSDToSDRootDomain](https://www.google.com/search?num=5&q=ConvertStringSDToSDRootDomainA+site%3Amicrosoft.com) | advapi32.dll |  |   
-[ConvertStringSecurityDescriptorToSecurityDescriptor](http://msdn2.microsoft.com/en-us/library/aa376401) | advapi32.dll | sddl.h | Vanara.PInvoke.AdvApi32.ConvertStringSecurityDescriptorToSecurityDescriptor  
+[ConvertStringSecurityDescriptorToSecurityDescriptor](http://msdn2.microsoft.com/en-us/library/c5654148-fb4c-436d-9378-a1168fc82607) | advapi32.dll | sddl.h | Vanara.PInvoke.AdvApi32.ConvertStringSecurityDescriptorToSecurityDescriptor  
 [ConvertStringSidToSid](http://msdn2.microsoft.com/en-us/library/aa376402) | advapi32.dll | sddl.h | Vanara.PInvoke.AdvApi32.ConvertStringSidToSid  
 [ConvertToAutoInheritPrivateObjectSecurity](https://www.google.com/search?num=5&q=ConvertToAutoInheritPrivateObjectSecurity+site%3Amicrosoft.com) | advapi32.dll |  |   
 [CopySid](http://msdn2.microsoft.com/en-us/library/aa376404) | advapi32.dll | Winbase.h | Vanara.PInvoke.AdvApi32.CopySid  
@@ -317,7 +317,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetWindowsAccountDomainSid](https://www.google.com/search?num=5&q=GetWindowsAccountDomainSid+site%3Amicrosoft.com) | advapi32.dll |  |   
 [IdentifyCodeAuthzLevelW](https://www.google.com/search?num=5&q=IdentifyCodeAuthzLevelW+site%3Amicrosoft.com) | advapi32.dll |  |   
 [ImpersonateAnonymousToken](https://www.google.com/search?num=5&q=ImpersonateAnonymousToken+site%3Amicrosoft.com) | advapi32.dll |  |   
-[ImpersonateLoggedOnUser](https://www.google.com/search?num=5&q=ImpersonateLoggedOnUser+site%3Amicrosoft.com) | advapi32.dll |  |   
+[ImpersonateLoggedOnUser](http://msdn2.microsoft.com/en-us/library/cf5c31ae-6749-45c2-888f-697060cc8c75) | advapi32.dll | securitybaseapi.h | Vanara.PInvoke.AdvApi32.ImpersonateLoggedOnUser  
 [ImpersonateNamedPipeClient](http://msdn2.microsoft.com/en-us/library/aa378618) | advapi32.dll | Winbase.h | Vanara.PInvoke.AdvApi32.ImpersonateNamedPipeClient  
 [ImpersonateSecurityContext](https://www.google.com/search?num=5&q=ImpersonateSecurityContext+site%3Amicrosoft.com) | secur32.dll |  |   
 [ImpersonateSelf](https://www.google.com/search?num=5&q=ImpersonateSelf+site%3Amicrosoft.com) | advapi32.dll |  |   

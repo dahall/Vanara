@@ -1,5 +1,5 @@
 ## Correlation report for kernel32.dll, kernelbase.dll  
-### Methods (99% complete)  
+### Methods (100% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AcquireSRWLockExclusive](http://msdn2.microsoft.com/en-us/library/ms681930) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive  
@@ -444,7 +444,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetProcessDEPPolicy](http://msdn2.microsoft.com/en-us/library/adf15b9c-24f4-49ea-9283-0db5f3f13e65) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.GetProcessDEPPolicy  
 [GetProcessGroupAffinity](http://msdn2.microsoft.com/en-us/library/dd405496) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessGroupAffinity  
 [GetProcessHandleCount](http://msdn2.microsoft.com/en-us/library/ms683214) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessHandleCount  
-[GetProcessHeap](http://msdn2.microsoft.com/en-us/library/aa366569) | kernel32.dll | HeapApi.h | Vanara.PInvoke.Kernel32.GetProcessHeap  
+[GetProcessHeap](http://msdn2.microsoft.com/en-us/library/ecd716b2-df48-4914-9de4-47d8ad8ff9a2) | kernel32.dll | heapapi.h | Vanara.PInvoke.Kernel32.GetProcessHeap  
 [GetProcessHeaps](http://msdn2.microsoft.com/en-us/library/aa366571) | kernel32.dll | HeapApi.h | Vanara.PInvoke.Kernel32.GetProcessHeaps  
 [GetProcessId](http://msdn2.microsoft.com/en-us/library/ms683215) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessId  
 [GetProcessIdOfThread](http://msdn2.microsoft.com/en-us/library/ms683216) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetProcessIdOfThread  
@@ -664,7 +664,7 @@ Native Method | Native DLL | Header | Managed Method
 [Module32Next](https://www.google.com/search?num=5&q=Module32Next+site%3Amicrosoft.com) | kernel32.dll | tlhelp32.h | Vanara.PInvoke.Kernel32.Module32Next  
 [MoveFile](http://msdn2.microsoft.com/en-us/library/aa365239) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MoveFile  
 [MoveFileEx](http://msdn2.microsoft.com/en-us/library/aa365240) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MoveFileEx  
-[MoveFileTransacted](https://www.google.com/search?num=5&q=MoveFileTransactedA+site%3Amicrosoft.com) | kernel32.dll |  |   
+[MoveFileTransacted](http://msdn2.microsoft.com/en-us/library/466d733b-30d2-4297-a0e6-77038f1a21d5) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.MoveFileTransacted  
 [MoveFileWithProgress](http://msdn2.microsoft.com/en-us/library/aa365242) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MoveFileWithProgress  
 [MulDiv](http://msdn2.microsoft.com/en-us/library/aa383718) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.MulDiv  
 [MultiByteToWideChar](http://msdn2.microsoft.com/en-us/library/dd319072) | kernel32.dll | Stringapiset.h | Vanara.PInvoke.Kernel32.MultiByteToWideChar  
@@ -691,6 +691,28 @@ Native Method | Native DLL | Header | Managed Method
 [PackageIdFromFullName](http://msdn2.microsoft.com/en-us/library/EED832F8-E4F7-4A0F-93E2-451F78F67767) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.PackageIdFromFullName  
 [PackageNameAndPublisherIdFromFamilyName](http://msdn2.microsoft.com/en-us/library/4AA5BD75-F865-40D6-9C10-E54C197D47C4) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.PackageNameAndPublisherIdFromFamilyName  
 [ParseApplicationUserModelId](http://msdn2.microsoft.com/en-us/library/03B29E82-611F-47D1-8CB6-047B9BEB4D9E) | kernel32.dll | appmodel.h | Vanara.PInvoke.Kernel32.ParseApplicationUserModelId  
+[PathAllocCanonicalize](http://msdn2.microsoft.com/en-us/library/3179fe78-a969-4ee2-a50b-5f4f7d4dad71) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathAllocCanonicalize  
+[PathAllocCombine](http://msdn2.microsoft.com/en-us/library/dd619138-f867-4517-bc67-a52c598efad0) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathAllocCombine  
+[PathCchAddBackslash](http://msdn2.microsoft.com/en-us/library/b50677cd-8815-4d84-b70a-c83863378c56) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchAddBackslash  
+[PathCchAddBackslashEx](http://msdn2.microsoft.com/en-us/library/89adf45f-f16d-49d1-9e76-b57b73b4d4c3) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchAddBackslashEx  
+[PathCchAddExtension](http://msdn2.microsoft.com/en-us/library/c37b438b-39e7-4f24-b076-2401900dab71) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchAddExtension  
+[PathCchAppend](http://msdn2.microsoft.com/en-us/library/b64884ad-15c7-495e-8037-34daf68f8cf7) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchAppend  
+[PathCchAppendEx](http://msdn2.microsoft.com/en-us/library/5421c666-1c8a-4ae8-baba-9e6f69c877df) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchAppendEx  
+[PathCchCanonicalize](http://msdn2.microsoft.com/en-us/library/25ff08b2-5978-4d44-9877-ba4230ef7d12) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchCanonicalize  
+[PathCchCanonicalizeEx](http://msdn2.microsoft.com/en-us/library/fd7b8ce0-3c67-48fb-8e7e-521a6b438676) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchCanonicalizeEx  
+[PathCchCombine](http://msdn2.microsoft.com/en-us/library/506a4165-f572-4521-958f-56a0296f9c05) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchCombine  
+[PathCchCombineEx](http://msdn2.microsoft.com/en-us/library/798c2e49-04a5-4270-b584-41faf1519e4b) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchCombineEx  
+[PathCchFindExtension](http://msdn2.microsoft.com/en-us/library/dac6cf02-7b53-449c-b788-4a7b6d1622ed) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchFindExtension  
+[PathCchIsRoot](http://msdn2.microsoft.com/en-us/library/b9770030-b298-47f8-98a7-3ce9b4d44dd1) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchIsRoot  
+[PathCchRemoveBackslash](http://msdn2.microsoft.com/en-us/library/61afc20e-ee6c-46ad-a058-64c57de41ba4) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchRemoveBackslash  
+[PathCchRemoveBackslashEx](http://msdn2.microsoft.com/en-us/library/250c2faa-94bb-42c1-97d4-37f8f59dbde6) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchRemoveBackslashEx  
+[PathCchRemoveExtension](http://msdn2.microsoft.com/en-us/library/9adfb054-6d62-41bb-9036-0bf670ea24b2) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchRemoveExtension  
+[PathCchRemoveFileSpec](http://msdn2.microsoft.com/en-us/library/c37aeddc-ed24-4828-b92b-bce0e6384726) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchRemoveFileSpec  
+[PathCchRenameExtension](http://msdn2.microsoft.com/en-us/library/79cd9499-03b7-4482-abd3-a42edd1b2b67) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchRenameExtension  
+[PathCchSkipRoot](http://msdn2.microsoft.com/en-us/library/187bc49e-c5ae-42b8-acbd-a765f871d73b) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchSkipRoot  
+[PathCchStripPrefix](http://msdn2.microsoft.com/en-us/library/2e50b23e-2725-4200-bd5e-845ff3458026) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchStripPrefix  
+[PathCchStripToRoot](http://msdn2.microsoft.com/en-us/library/e0539478-8c64-4445-ab99-22f1df70afe8) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathCchStripToRoot  
+[PathIsUNCEx](http://msdn2.microsoft.com/en-us/library/3b2a4158-63ec-49eb-a031-7493d02f2caa) | kernelbase.dll | pathcch.h | Vanara.PInvoke.Kernel32.PathIsUNCEx  
 [PeekConsoleInput](https://www.google.com/search?num=5&q=PeekConsoleInputA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.PeekConsoleInput  
 [PeekNamedPipe](http://msdn2.microsoft.com/en-us/library/aa365779) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.PeekNamedPipe  
 [PostQueuedCompletionStatus](http://msdn2.microsoft.com/en-us/library/aa365458) | kernel32.dll | IoAPI.h | Vanara.PInvoke.Kernel32.PostQueuedCompletionStatus  

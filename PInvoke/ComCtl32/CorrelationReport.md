@@ -138,6 +138,9 @@ Native Structure | Header | Managed Structure
 [NMUPDOWN](http://msdn2.microsoft.com/en-us/library/bb759893) | Commctrl.h | Vanara.PInvoke.ComCtl32+NMUPDOWN  
 [PBRANGE](http://msdn2.microsoft.com/en-us/library/bb760822) | Commctrl.h | Vanara.PInvoke.ComCtl32+PBRANGE  
 [PROPSHEETHEADER](http://msdn2.microsoft.com/en-us/library/bb774546) | Commctrl.h | Vanara.PInvoke.ComCtl32+PROPSHEETHEADER  
+[PROPSHEETPAGE](http://msdn2.microsoft.com/en-us/library/bb774548) | Commctrl.h | Vanara.PInvoke.ComCtl32+PROPSHEETPAGE  
+[TASKDIALOG_BUTTON](http://msdn2.microsoft.com/en-us/library/bb787475) | Commctrl.h | Vanara.PInvoke.ComCtl32+TASKDIALOG_BUTTON  
+[TASKDIALOGCONFIG](http://msdn2.microsoft.com/en-us/library/bb787473) | commctrl.h | Vanara.PInvoke.ComCtl32+TASKDIALOGCONFIG  
 [TBADDBITMAP](http://msdn2.microsoft.com/en-us/library/bb760475) | Commctrl.h | Vanara.PInvoke.ComCtl32+TBADDBITMAP  
 [TBBUTTON](http://msdn2.microsoft.com/en-us/library/bb760476) | Commctrl.h | Vanara.PInvoke.ComCtl32+TBBUTTON  
 [TBBUTTONINFO](http://msdn2.microsoft.com/en-us/library/bb760478) | Commctrl.h | Vanara.PInvoke.ComCtl32+TBBUTTONINFO  

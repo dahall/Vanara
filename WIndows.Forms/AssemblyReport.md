@@ -63,6 +63,8 @@ LiveThumbnail | Extracts all or a portion of a window and renders it as a thumbn
 MapPointExtension | 
 MenuStripMRUManager | A class that manages a Most Recently Used file listing and interacts with a MenuStrip to display a menu list of the files. By default, the application settings are used to store the history. Optionally a constructor can be used to provide an alternate class to handle that work.
 MRUManager | A class that manages a Most Recently Used file listing.
+NetworkConnectionDialog | A dialog box that allows the user to browse and connect to network resources.
+NetworkDisconnectDialog | A dialog box that allows the user to browse and connect to network resources.
 PaintAction<T> | A method delegate to paint a stateful image.
 PasswordValidatorEventArgs | Used by the `ValidatePassword` event.
 PreventShutdownContext | Used to define a set of operations within which any shutdown request will be met with a reason why this application is blocking it.
@@ -72,6 +74,7 @@ RedirectedDesignerPropertyAttribute |
 RegistryFileListStorage | 
 ResourceFile | 
 ServiceProviderExtension | 
+ShellProgressDialog | Wrapper for IProgressDialog which displays a system progress dialog. This object is a generic way to show a user how an operation is progressing. It is typically used when deleting, uploading, copying, moving, or downloading large numbers of files. The dialog is shown on a separate thread and will not block operations in the current thread.
 SmartBitmapLock | A self-disposing LockBits class for Bitmaps.
 SplitButton | The SplitButton is a composite control with which the user can select from a drop-down list bound to the button.
 SplitMenuEventArgs | Provides data for the clicking of split buttons and the opening of context menus.
@@ -132,6 +135,7 @@ PropertyOrigin | Returned by <c>GetPropertyOrigin</c> to specify where a propert
 RectangleProperty | Properties accessible via `VisualTheme.GetRect(System.Int32,System.Int32,Vanara.Windows.Forms.VisualTheme.RectangleProperty)`. | DefaultPane, CustomSplit, AnimationButton, Atlas
 RenderStyle |  | SystemTheme, Custom
 SecurityPageType | Values that indicate the types of property pages in an access control editor property sheet. | BasicPermissions, AdvancedPermissions, Audit, Owner, EffectiveRights, TakeOwnership, Share
+ShellProgressDialogStyle | Display style for a `ShellProgressDialog`. | Normal, Marquee, Hidden
 SizeMode | Sizing mode for the CustomComboBox drop-down area. | UseComboSize, UseControlSize, UseDropDownSize
 StringProperty | Properties accessible via `VisualTheme.GetString(System.Int32,System.Int32,Vanara.Windows.Forms.VisualTheme.StringProperty)`. | ColorSchemes, Sizes, Name, DisplayName, Tooltip, Company, Author, Copyright, Url, Version, Description, CssName, XmlName, LastUpdated, Alias, Text, ClassicValue, AtlasInputImage
 TaskDialogButtonDisplay | Indicates how buttons are displayed on a `TaskDialog`. | StandardButton, CommandLink, CommandLinkNoIcon

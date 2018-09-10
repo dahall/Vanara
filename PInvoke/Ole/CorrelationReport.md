@@ -1,5 +1,5 @@
 ## Correlation report for ole32.dll, oleaut32.dll, propsys.dll  
-### Methods (7% complete)  
+### Methods (18% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BindMoniker](https://www.google.com/search?num=5&q=BindMoniker+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -14,7 +14,7 @@ Native Method | Native DLL | Header | Managed Method
 [BstrFromVector](https://www.google.com/search?num=5&q=BstrFromVector+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [CheckInitDde](https://www.google.com/search?num=5&q=CheckInitDde+site%3Amicrosoft.com) | ole32.dll |  |   
 [ClearCustData](https://www.google.com/search?num=5&q=ClearCustData+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[ClearPropVariantArray](https://www.google.com/search?num=5&q=ClearPropVariantArray+site%3Amicrosoft.com) | propsys.dll |  |   
+[ClearPropVariantArray](http://msdn2.microsoft.com/en-us/library/e8d7f951-8a9e-441b-9fa7-bf21cf08c8ac) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.ClearPropVariantArray  
 [ClearVariantArray](https://www.google.com/search?num=5&q=ClearVariantArray+site%3Amicrosoft.com) | propsys.dll |  |   
 [ClipboardProcessUninitialize](https://www.google.com/search?num=5&q=ClipboardProcessUninitialize+site%3Amicrosoft.com) | ole32.dll |  |   
 [CLSIDFromProgID](https://www.google.com/search?num=5&q=CLSIDFromProgID+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -204,7 +204,6 @@ Native Method | Native DLL | Header | Managed Method
 [GetHGlobalFromStream](https://www.google.com/search?num=5&q=GetHGlobalFromStream+site%3Amicrosoft.com) | ole32.dll |  |   
 [GetHookInterface](https://www.google.com/search?num=5&q=GetHookInterface+site%3Amicrosoft.com) | ole32.dll |  |   
 [GetObjectFromRotByPath](https://www.google.com/search?num=5&q=GetObjectFromRotByPath+site%3Amicrosoft.com) | ole32.dll |  |   
-[GetProxyDllInfo](https://www.google.com/search?num=5&q=GetProxyDllInfo+site%3Amicrosoft.com) | propsys.dll |  |   
 [GetRecordInfoFromGuids](https://www.google.com/search?num=5&q=GetRecordInfoFromGuids+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [GetRecordInfoFromTypeInfo](https://www.google.com/search?num=5&q=GetRecordInfoFromTypeInfo+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [GetRunningObjectTable](https://www.google.com/search?num=5&q=GetRunningObjectTable+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -224,15 +223,15 @@ Native Method | Native DLL | Header | Managed Method
 [InitPropVariantFromDoubleVector](http://msdn2.microsoft.com/en-us/library/bb762292) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.InitPropVariantFromDoubleVector  
 [InitPropVariantFromFileTime](http://msdn2.microsoft.com/en-us/library/bb762293) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.InitPropVariantFromFileTime  
 [InitPropVariantFromFileTimeVector](http://msdn2.microsoft.com/en-us/library/bb762294) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.InitPropVariantFromFileTimeVector  
-[InitPropVariantFromGUIDAsString](https://www.google.com/search?num=5&q=InitPropVariantFromGUIDAsString+site%3Amicrosoft.com) | propsys.dll |  |   
+[InitPropVariantFromGUIDAsString](http://msdn2.microsoft.com/en-us/library/bcc343f7-741f-4cdd-bd2f-ae4786faab0e) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.InitPropVariantFromGUIDAsString  
 [InitPropVariantFromInt16Vector](http://msdn2.microsoft.com/en-us/library/bb762298) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.InitPropVariantFromInt16Vector  
 [InitPropVariantFromInt32Vector](http://msdn2.microsoft.com/en-us/library/bb762300) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.InitPropVariantFromInt32Vector  
 [InitPropVariantFromInt64Vector](http://msdn2.microsoft.com/en-us/library/bb762302) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.InitPropVariantFromInt64Vector  
 [InitPropVariantFromPropVariantVectorElem](http://msdn2.microsoft.com/en-us/library/bb762303) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.InitPropVariantFromPropVariantVectorElem  
-[InitPropVariantFromResource](https://www.google.com/search?num=5&q=InitPropVariantFromResource+site%3Amicrosoft.com) | propsys.dll |  |   
-[InitPropVariantFromStringAsVector](https://www.google.com/search?num=5&q=InitPropVariantFromStringAsVector+site%3Amicrosoft.com) | propsys.dll |  |   
+[InitPropVariantFromResource](http://msdn2.microsoft.com/en-us/library/c958f823-f820-4b0b-86ed-84ad18befbd1) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.InitPropVariantFromResource  
+[InitPropVariantFromStringAsVector](http://msdn2.microsoft.com/en-us/library/fc48f2e0-ce4a-4f48-a624-202def4bcff0) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.InitPropVariantFromStringAsVector  
 [InitPropVariantFromStringVector](http://msdn2.microsoft.com/en-us/library/bb762307) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.InitPropVariantFromStringVector  
-[InitPropVariantFromStrRet](https://www.google.com/search?num=5&q=InitPropVariantFromStrRet+site%3Amicrosoft.com) | propsys.dll |  |   
+[InitPropVariantFromStrRet](http://msdn2.microsoft.com/en-us/library/5c02e2ee-14c2-4966-83e7-16dfbf81b879) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.InitPropVariantFromStrRet  
 [InitPropVariantFromUInt16Vector](http://msdn2.microsoft.com/en-us/library/bb762310) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.InitPropVariantFromUInt16Vector  
 [InitPropVariantFromUInt32Vector](http://msdn2.microsoft.com/en-us/library/bb762312) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.InitPropVariantFromUInt32Vector  
 [InitPropVariantFromUInt64Vector](http://msdn2.microsoft.com/en-us/library/bb762314) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.InitPropVariantFromUInt64Vector  
@@ -371,128 +370,128 @@ Native Method | Native DLL | Header | Managed Method
 [PropVariantClear](http://msdn2.microsoft.com/en-us/library/aa380073) | ole32.dll | Propidl.h | Vanara.PInvoke.Ole32.PropVariantClear  
 [PropVariantCompareEx](http://msdn2.microsoft.com/en-us/library/bb776517) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantCompareEx  
 [PropVariantCopy](http://msdn2.microsoft.com/en-us/library/aa380192) | ole32.dll | Propidl.h | Vanara.PInvoke.Ole32.PropVariantCopy  
-[PropVariantGetBooleanElem](https://www.google.com/search?num=5&q=PropVariantGetBooleanElem+site%3Amicrosoft.com) | propsys.dll |  |   
-[PropVariantGetDoubleElem](https://www.google.com/search?num=5&q=PropVariantGetDoubleElem+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantGetBooleanElem](http://msdn2.microsoft.com/en-us/library/830dca70-1777-418d-b3ac-78028411700e) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantGetBooleanElem  
+[PropVariantGetDoubleElem](http://msdn2.microsoft.com/en-us/library/387e23df-bfbd-42c0-adef-dc53ba95a9f2) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantGetDoubleElem  
 [PropVariantGetElementCount](http://msdn2.microsoft.com/en-us/library/bb776522) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantGetElementCount  
-[PropVariantGetFileTimeElem](https://www.google.com/search?num=5&q=PropVariantGetFileTimeElem+site%3Amicrosoft.com) | propsys.dll |  |   
-[PropVariantGetInt16Elem](https://www.google.com/search?num=5&q=PropVariantGetInt16Elem+site%3Amicrosoft.com) | propsys.dll |  |   
-[PropVariantGetInt32Elem](https://www.google.com/search?num=5&q=PropVariantGetInt32Elem+site%3Amicrosoft.com) | propsys.dll |  |   
-[PropVariantGetInt64Elem](https://www.google.com/search?num=5&q=PropVariantGetInt64Elem+site%3Amicrosoft.com) | propsys.dll |  |   
-[PropVariantGetStringElem](https://www.google.com/search?num=5&q=PropVariantGetStringElem+site%3Amicrosoft.com) | propsys.dll |  |   
-[PropVariantGetUInt16Elem](https://www.google.com/search?num=5&q=PropVariantGetUInt16Elem+site%3Amicrosoft.com) | propsys.dll |  |   
-[PropVariantGetUInt32Elem](https://www.google.com/search?num=5&q=PropVariantGetUInt32Elem+site%3Amicrosoft.com) | propsys.dll |  |   
-[PropVariantGetUInt64Elem](https://www.google.com/search?num=5&q=PropVariantGetUInt64Elem+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantGetFileTimeElem](http://msdn2.microsoft.com/en-us/library/e38b16ed-84cb-4444-bfbd-1165595bc9b5) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantGetFileTimeElem  
+[PropVariantGetInt16Elem](http://msdn2.microsoft.com/en-us/library/1dbb6887-81c9-411d-9fce-c9e2f3479a43) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantGetInt16Elem  
+[PropVariantGetInt32Elem](http://msdn2.microsoft.com/en-us/library/de7dc6d4-d85a-44cb-8af7-840fd6e68d5c) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantGetInt32Elem  
+[PropVariantGetInt64Elem](http://msdn2.microsoft.com/en-us/library/6dd7212a-587f-4f9e-a2e5-dbd2a9c15a5b) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantGetInt64Elem  
+[PropVariantGetStringElem](http://msdn2.microsoft.com/en-us/library/6e803d93-5b55-4b73-8e23-a584f5f91969) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantGetStringElem  
+[PropVariantGetUInt16Elem](http://msdn2.microsoft.com/en-us/library/da50e35b-f17f-4de6-b2e7-5a885e2149e5) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantGetUInt16Elem  
+[PropVariantGetUInt32Elem](http://msdn2.microsoft.com/en-us/library/b31975b6-d717-4e8d-bf5a-2ade96034031) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantGetUInt32Elem  
+[PropVariantGetUInt64Elem](http://msdn2.microsoft.com/en-us/library/35955104-b567-4c4f-850a-0a4778673ce8) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantGetUInt64Elem  
 [PropVariantToBoolean](http://msdn2.microsoft.com/en-us/library/bb776531) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToBoolean  
-[PropVariantToBooleanVector](https://www.google.com/search?num=5&q=PropVariantToBooleanVector+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantToBooleanVector](http://msdn2.microsoft.com/en-us/library/93ccd129-4fa4-40f3-96f3-b87b50414b0a) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToBooleanVector  
 [PropVariantToBooleanVectorAlloc](http://msdn2.microsoft.com/en-us/library/bb776533) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToBooleanVectorAlloc  
-[PropVariantToBooleanWithDefault](https://www.google.com/search?num=5&q=PropVariantToBooleanWithDefault+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantToBooleanWithDefault](http://msdn2.microsoft.com/en-us/library/223767a7-a4de-4e7e-ad8b-2a6bdcea0a47) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToBooleanWithDefault  
 [PropVariantToBSTR](http://msdn2.microsoft.com/en-us/library/bb776535) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToBSTR  
 [PropVariantToBuffer](http://msdn2.microsoft.com/en-us/library/bb776536) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToBuffer  
 [PropVariantToDouble](http://msdn2.microsoft.com/en-us/library/bb776538) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToDouble  
-[PropVariantToDoubleVector](https://www.google.com/search?num=5&q=PropVariantToDoubleVector+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantToDoubleVector](http://msdn2.microsoft.com/en-us/library/2d90bf96-8a3f-4949-8480-bb75f0deeb2e) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToDoubleVector  
 [PropVariantToDoubleVectorAlloc](http://msdn2.microsoft.com/en-us/library/bb776540) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToDoubleVectorAlloc  
-[PropVariantToDoubleWithDefault](https://www.google.com/search?num=5&q=PropVariantToDoubleWithDefault+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantToDoubleWithDefault](http://msdn2.microsoft.com/en-us/library/81584e13-0ef7-47ce-b78f-b4a79712ff1e) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToDoubleWithDefault  
 [PropVariantToFileTime](http://msdn2.microsoft.com/en-us/library/bb776542) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToFileTime  
-[PropVariantToFileTimeVector](https://www.google.com/search?num=5&q=PropVariantToFileTimeVector+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantToFileTimeVector](http://msdn2.microsoft.com/en-us/library/ef665f50-3f3b-47db-9133-490305da5341) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToFileTimeVector  
 [PropVariantToFileTimeVectorAlloc](http://msdn2.microsoft.com/en-us/library/bb776544) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToFileTimeVectorAlloc  
 [PropVariantToGUID](http://msdn2.microsoft.com/en-us/library/bb776545) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToGUID  
 [PropVariantToInt16](http://msdn2.microsoft.com/en-us/library/bb776546) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToInt16  
-[PropVariantToInt16Vector](https://www.google.com/search?num=5&q=PropVariantToInt16Vector+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantToInt16Vector](http://msdn2.microsoft.com/en-us/library/33240552-7caa-4114-aad6-7341551b1fbe) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToInt16Vector  
 [PropVariantToInt16VectorAlloc](http://msdn2.microsoft.com/en-us/library/bb776548) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToInt16VectorAlloc  
-[PropVariantToInt16WithDefault](https://www.google.com/search?num=5&q=PropVariantToInt16WithDefault+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantToInt16WithDefault](http://msdn2.microsoft.com/en-us/library/51221281-6e06-49f4-83c0-7330f2a6d67e) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToInt16WithDefault  
 [PropVariantToInt32](http://msdn2.microsoft.com/en-us/library/bb776550) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToInt32  
-[PropVariantToInt32Vector](https://www.google.com/search?num=5&q=PropVariantToInt32Vector+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantToInt32Vector](http://msdn2.microsoft.com/en-us/library/771fa1d7-c648-49d4-a6a2-5aa23f8c20b7) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToInt32Vector  
 [PropVariantToInt32VectorAlloc](http://msdn2.microsoft.com/en-us/library/bb776552) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToInt32VectorAlloc  
-[PropVariantToInt32WithDefault](https://www.google.com/search?num=5&q=PropVariantToInt32WithDefault+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantToInt32WithDefault](http://msdn2.microsoft.com/en-us/library/1d014cad-a9a5-4a58-855e-21c6d3ba6dcd) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToInt32WithDefault  
 [PropVariantToInt64](http://msdn2.microsoft.com/en-us/library/bb776554) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToInt64  
-[PropVariantToInt64Vector](https://www.google.com/search?num=5&q=PropVariantToInt64Vector+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantToInt64Vector](http://msdn2.microsoft.com/en-us/library/cda5589a-726f-4e43-aec4-bb7a7ca62b1a) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToInt64Vector  
 [PropVariantToInt64VectorAlloc](http://msdn2.microsoft.com/en-us/library/bb776557) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToInt64VectorAlloc  
-[PropVariantToInt64WithDefault](https://www.google.com/search?num=5&q=PropVariantToInt64WithDefault+site%3Amicrosoft.com) | propsys.dll |  |   
-[PropVariantToString](https://www.google.com/search?num=5&q=PropVariantToString+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantToInt64WithDefault](http://msdn2.microsoft.com/en-us/library/6a051235-3e32-40d3-a17e-efc571592dae) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToInt64WithDefault  
+[PropVariantToString](http://msdn2.microsoft.com/en-us/library/d545dc12-a780-4d95-8660-13b3f65725f9) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToString  
 [PropVariantToStringAlloc](http://msdn2.microsoft.com/en-us/library/bb776560) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToStringAlloc  
-[PropVariantToStringVector](https://www.google.com/search?num=5&q=PropVariantToStringVector+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantToStringVector](http://msdn2.microsoft.com/en-us/library/6618ee02-1939-4c9c-8690-a8cd5d668cdb) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToStringVector  
 [PropVariantToStringVectorAlloc](http://msdn2.microsoft.com/en-us/library/bb776562) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToStringVectorAlloc  
 [PropVariantToStringWithDefault](http://msdn2.microsoft.com/en-us/library/bb776563) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToStringWithDefault  
-[PropVariantToStrRet](https://www.google.com/search?num=5&q=PropVariantToStrRet+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantToStrRet](http://msdn2.microsoft.com/en-us/library/a1a33606-172d-4ee7-98c9-ffec8eed98bf) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToStrRet  
 [PropVariantToUInt16](http://msdn2.microsoft.com/en-us/library/bb776565) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToUInt16  
-[PropVariantToUInt16Vector](https://www.google.com/search?num=5&q=PropVariantToUInt16Vector+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantToUInt16Vector](http://msdn2.microsoft.com/en-us/library/34fe404c-cef6-47d9-9eaf-8ab151bd4726) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToUInt16Vector  
 [PropVariantToUInt16VectorAlloc](http://msdn2.microsoft.com/en-us/library/bb776567) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToUInt16VectorAlloc  
-[PropVariantToUInt16WithDefault](https://www.google.com/search?num=5&q=PropVariantToUInt16WithDefault+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantToUInt16WithDefault](http://msdn2.microsoft.com/en-us/library/4346cef2-5e43-47bf-9bfb-0ede923872fd) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToUInt16WithDefault  
 [PropVariantToUInt32](http://msdn2.microsoft.com/en-us/library/bb776569) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToUInt32  
-[PropVariantToUInt32Vector](https://www.google.com/search?num=5&q=PropVariantToUInt32Vector+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantToUInt32Vector](http://msdn2.microsoft.com/en-us/library/721a2f67-dfd1-4d95-8290-4457b8954a02) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToUInt32Vector  
 [PropVariantToUInt32VectorAlloc](http://msdn2.microsoft.com/en-us/library/bb776571) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToUInt32VectorAlloc  
-[PropVariantToUInt32WithDefault](https://www.google.com/search?num=5&q=PropVariantToUInt32WithDefault+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantToUInt32WithDefault](http://msdn2.microsoft.com/en-us/library/8ace8c3f-fea2-4b20-9e0b-3abfbd569b54) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToUInt32WithDefault  
 [PropVariantToUInt64](http://msdn2.microsoft.com/en-us/library/bb776573) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToUInt64  
-[PropVariantToUInt64Vector](https://www.google.com/search?num=5&q=PropVariantToUInt64Vector+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantToUInt64Vector](http://msdn2.microsoft.com/en-us/library/596c7a35-6645-4f66-b924-b71278778776) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToUInt64Vector  
 [PropVariantToUInt64VectorAlloc](http://msdn2.microsoft.com/en-us/library/bb776575) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToUInt64VectorAlloc  
-[PropVariantToUInt64WithDefault](https://www.google.com/search?num=5&q=PropVariantToUInt64WithDefault+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantToUInt64WithDefault](http://msdn2.microsoft.com/en-us/library/8ca0e25e-6a3f-41ff-9a4a-7cca9a02d07c) | propsys.dll | propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToUInt64WithDefault  
 [PropVariantToVariant](http://msdn2.microsoft.com/en-us/library/bb776577) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.PropVariantToVariant  
-[PropVariantToWinRTPropertyValue](https://www.google.com/search?num=5&q=PropVariantToWinRTPropertyValue+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSCoerceToCanonicalValue](https://www.google.com/search?num=5&q=PSCoerceToCanonicalValue+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSCreateAdapterFromPropertyStore](https://www.google.com/search?num=5&q=PSCreateAdapterFromPropertyStore+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSCreateDelayedMultiplexPropertyStore](https://www.google.com/search?num=5&q=PSCreateDelayedMultiplexPropertyStore+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSCreateMemoryPropertyStore](https://www.google.com/search?num=5&q=PSCreateMemoryPropertyStore+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSCreateMultiplexPropertyStore](https://www.google.com/search?num=5&q=PSCreateMultiplexPropertyStore+site%3Amicrosoft.com) | propsys.dll |  |   
+[PropVariantToWinRTPropertyValue](http://msdn2.microsoft.com/en-us/library/38DD3673-17FD-4F2A-BA58-A1A9983B92BF) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PropVariantToWinRTPropertyValue  
+[PSCoerceToCanonicalValue](http://msdn2.microsoft.com/en-us/library/8225dd01-47cc-451e-b6a6-c16ddf62ca20) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSCoerceToCanonicalValue  
+[PSCreateAdapterFromPropertyStore](http://msdn2.microsoft.com/en-us/library/a3489f95-e790-481a-af6e-f30527dc476c) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSCreateAdapterFromPropertyStore  
+[PSCreateDelayedMultiplexPropertyStore](http://msdn2.microsoft.com/en-us/library/8b264d7e-6124-4724-8d23-605101705893) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSCreateDelayedMultiplexPropertyStore  
+[PSCreateMemoryPropertyStore](http://msdn2.microsoft.com/en-us/library/6e7a2ac0-2a4a-41ec-a2a8-ddbe8aa45bc9) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSCreateMemoryPropertyStore  
+[PSCreateMultiplexPropertyStore](http://msdn2.microsoft.com/en-us/library/4a6b5a10-5ef2-42c7-bf3b-dfa743be252f) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSCreateMultiplexPropertyStore  
 [PSCreatePropertyChangeArray](http://msdn2.microsoft.com/en-us/library/bb776491) | propsys.dll | Propsys.h | Vanara.PInvoke.PropSys.PSCreatePropertyChangeArray  
-[PSCreatePropertyStoreFromObject](https://www.google.com/search?num=5&q=PSCreatePropertyStoreFromObject+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSCreatePropertyStoreFromPropertySetStorage](https://www.google.com/search?num=5&q=PSCreatePropertyStoreFromPropertySetStorage+site%3Amicrosoft.com) | propsys.dll |  |   
+[PSCreatePropertyStoreFromObject](http://msdn2.microsoft.com/en-us/library/010572d5-0357-4101-803e-0a27fc60ca5e) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSCreatePropertyStoreFromObject  
+[PSCreatePropertyStoreFromPropertySetStorage](http://msdn2.microsoft.com/en-us/library/efba5a2a-df26-4f7e-9ddf-ec471e3d547c) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSCreatePropertyStoreFromPropertySetStorage  
 [PSCreateSimplePropertyChange](http://msdn2.microsoft.com/en-us/library/bb776494) | propsys.dll | Propsys.h | Vanara.PInvoke.PropSys.PSCreateSimplePropertyChange  
-[PSEnumeratePropertyDescriptions](https://www.google.com/search?num=5&q=PSEnumeratePropertyDescriptions+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSFormatForDisplay](https://www.google.com/search?num=5&q=PSFormatForDisplay+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSFormatForDisplayAlloc](https://www.google.com/search?num=5&q=PSFormatForDisplayAlloc+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSFormatPropertyValue](https://www.google.com/search?num=5&q=PSFormatPropertyValue+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSGetImageReferenceForValue](https://www.google.com/search?num=5&q=PSGetImageReferenceForValue+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSGetItemPropertyHandler](https://www.google.com/search?num=5&q=PSGetItemPropertyHandler+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSGetItemPropertyHandlerWithCreateObject](https://www.google.com/search?num=5&q=PSGetItemPropertyHandlerWithCreateObject+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSGetNamedPropertyFromPropertyStorage](https://www.google.com/search?num=5&q=PSGetNamedPropertyFromPropertyStorage+site%3Amicrosoft.com) | propsys.dll |  |   
+[PSEnumeratePropertyDescriptions](http://msdn2.microsoft.com/en-us/library/687d5a32-3a2e-4b9b-b06c-ca06a6cd1595) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSEnumeratePropertyDescriptions  
+[PSFormatForDisplay](http://msdn2.microsoft.com/en-us/library/71442967-ee8a-448c-83cf-949934ddd152) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSFormatForDisplay  
+[PSFormatForDisplayAlloc](http://msdn2.microsoft.com/en-us/library/d411ea72-fb29-47b6-a7f6-0839b3e2caf2) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSFormatForDisplayAlloc  
+[PSFormatPropertyValue](http://msdn2.microsoft.com/en-us/library/35c2b424-05bd-4d7d-8365-5900e165e2e2) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSFormatPropertyValue  
+[PSGetImageReferenceForValue](http://msdn2.microsoft.com/en-us/library/E37AF2ED-E3F9-4e50-9317-9DAF03AC543F) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSGetImageReferenceForValue  
+[PSGetItemPropertyHandler](http://msdn2.microsoft.com/en-us/library/7b7fd260-c863-41f7-8594-4ee435090228) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSGetItemPropertyHandler  
+[PSGetItemPropertyHandlerWithCreateObject](http://msdn2.microsoft.com/en-us/library/82e0aa15-b67c-4c0a-bafb-f1dc5f822aec) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSGetItemPropertyHandlerWithCreateObject  
+[PSGetNamedPropertyFromPropertyStorage](http://msdn2.microsoft.com/en-us/library/bb4eedc0-9ef5-46f2-83e5-340b77b3d876) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSGetNamedPropertyFromPropertyStorage  
 [PSGetNameFromPropertyKey](http://msdn2.microsoft.com/en-us/library/bb776502) | propsys.dll | Propsys.h | Vanara.PInvoke.PropSys.PSGetNameFromPropertyKey  
 [PSGetPropertyDescription](http://msdn2.microsoft.com/en-us/library/bb776503) | propsys.dll | Propsys.h | Vanara.PInvoke.PropSys.PSGetPropertyDescription  
-[PSGetPropertyDescriptionByName](https://www.google.com/search?num=5&q=PSGetPropertyDescriptionByName+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSGetPropertyDescriptionListFromString](https://www.google.com/search?num=5&q=PSGetPropertyDescriptionListFromString+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSGetPropertyFromPropertyStorage](https://www.google.com/search?num=5&q=PSGetPropertyFromPropertyStorage+site%3Amicrosoft.com) | propsys.dll |  |   
+[PSGetPropertyDescriptionByName](http://msdn2.microsoft.com/en-us/library/181ebbfb-66ed-4763-ad2d-acf3c800f9d2) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSGetPropertyDescriptionByName  
+[PSGetPropertyDescriptionListFromString](http://msdn2.microsoft.com/en-us/library/348253ed-46ac-4643-bbf8-2d286ae97f07) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSGetPropertyDescriptionListFromString  
+[PSGetPropertyFromPropertyStorage](http://msdn2.microsoft.com/en-us/library/c649d25d-7971-4804-a5a2-3fd6860659b4) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSGetPropertyFromPropertyStorage  
 [PSGetPropertyKeyFromName](http://msdn2.microsoft.com/en-us/library/bb762081) | propsys.dll | Propsys.h | Vanara.PInvoke.PropSys.PSGetPropertyKeyFromName  
-[PSGetPropertySystem](https://www.google.com/search?num=5&q=PSGetPropertySystem+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSGetPropertyValue](https://www.google.com/search?num=5&q=PSGetPropertyValue+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSLookupPropertyHandlerCLSID](https://www.google.com/search?num=5&q=PSLookupPropertyHandlerCLSID+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_Delete](https://www.google.com/search?num=5&q=PSPropertyBag_Delete+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_ReadBOOL](https://www.google.com/search?num=5&q=PSPropertyBag_ReadBOOL+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_ReadBSTR](https://www.google.com/search?num=5&q=PSPropertyBag_ReadBSTR+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_ReadDWORD](https://www.google.com/search?num=5&q=PSPropertyBag_ReadDWORD+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_ReadGUID](https://www.google.com/search?num=5&q=PSPropertyBag_ReadGUID+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_ReadInt](https://www.google.com/search?num=5&q=PSPropertyBag_ReadInt+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_ReadLONG](https://www.google.com/search?num=5&q=PSPropertyBag_ReadLONG+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_ReadPOINTL](https://www.google.com/search?num=5&q=PSPropertyBag_ReadPOINTL+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_ReadPOINTS](https://www.google.com/search?num=5&q=PSPropertyBag_ReadPOINTS+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_ReadPropertyKey](https://www.google.com/search?num=5&q=PSPropertyBag_ReadPropertyKey+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_ReadRECTL](https://www.google.com/search?num=5&q=PSPropertyBag_ReadRECTL+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_ReadSHORT](https://www.google.com/search?num=5&q=PSPropertyBag_ReadSHORT+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_ReadStr](https://www.google.com/search?num=5&q=PSPropertyBag_ReadStr+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_ReadStrAlloc](https://www.google.com/search?num=5&q=PSPropertyBag_ReadStrAlloc+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_ReadStream](https://www.google.com/search?num=5&q=PSPropertyBag_ReadStream+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_ReadType](https://www.google.com/search?num=5&q=PSPropertyBag_ReadType+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_ReadULONGLONG](https://www.google.com/search?num=5&q=PSPropertyBag_ReadULONGLONG+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_ReadUnknown](https://www.google.com/search?num=5&q=PSPropertyBag_ReadUnknown+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_WriteBOOL](https://www.google.com/search?num=5&q=PSPropertyBag_WriteBOOL+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_WriteBSTR](https://www.google.com/search?num=5&q=PSPropertyBag_WriteBSTR+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_WriteDWORD](https://www.google.com/search?num=5&q=PSPropertyBag_WriteDWORD+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_WriteGUID](https://www.google.com/search?num=5&q=PSPropertyBag_WriteGUID+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_WriteInt](https://www.google.com/search?num=5&q=PSPropertyBag_WriteInt+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_WriteLONG](https://www.google.com/search?num=5&q=PSPropertyBag_WriteLONG+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_WritePOINTL](https://www.google.com/search?num=5&q=PSPropertyBag_WritePOINTL+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_WritePOINTS](https://www.google.com/search?num=5&q=PSPropertyBag_WritePOINTS+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_WritePropertyKey](https://www.google.com/search?num=5&q=PSPropertyBag_WritePropertyKey+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_WriteRECTL](https://www.google.com/search?num=5&q=PSPropertyBag_WriteRECTL+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_WriteSHORT](https://www.google.com/search?num=5&q=PSPropertyBag_WriteSHORT+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_WriteStr](https://www.google.com/search?num=5&q=PSPropertyBag_WriteStr+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_WriteStream](https://www.google.com/search?num=5&q=PSPropertyBag_WriteStream+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_WriteULONGLONG](https://www.google.com/search?num=5&q=PSPropertyBag_WriteULONGLONG+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyBag_WriteUnknown](https://www.google.com/search?num=5&q=PSPropertyBag_WriteUnknown+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSPropertyKeyFromString](https://www.google.com/search?num=5&q=PSPropertyKeyFromString+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSRefreshPropertySchema](https://www.google.com/search?num=5&q=PSRefreshPropertySchema+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSRegisterPropertySchema](https://www.google.com/search?num=5&q=PSRegisterPropertySchema+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSSetPropertyValue](https://www.google.com/search?num=5&q=PSSetPropertyValue+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSStringFromPropertyKey](https://www.google.com/search?num=5&q=PSStringFromPropertyKey+site%3Amicrosoft.com) | propsys.dll |  |   
-[PSUnregisterPropertySchema](https://www.google.com/search?num=5&q=PSUnregisterPropertySchema+site%3Amicrosoft.com) | propsys.dll |  |   
+[PSGetPropertySystem](http://msdn2.microsoft.com/en-us/library/ddbf7cea-b22f-4cf9-8b5f-804640086466) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSGetPropertySystem  
+[PSGetPropertyValue](http://msdn2.microsoft.com/en-us/library/9369dc85-b006-4b30-a25e-58d53b76f334) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSGetPropertyValue  
+[PSLookupPropertyHandlerCLSID](http://msdn2.microsoft.com/en-us/library/43f90a33-9bd6-4e47-ab92-5e0d01ba268a) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSLookupPropertyHandlerCLSID  
+[PSPropertyBag_Delete](http://msdn2.microsoft.com/en-us/library/53ED1C87-5141-4925-B70E-C0304817A871) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_Delete  
+[PSPropertyBag_ReadBOOL](http://msdn2.microsoft.com/en-us/library/95F9CB5E-E690-4d83-A094-02981F0578CF) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_ReadBOOL  
+[PSPropertyBag_ReadBSTR](http://msdn2.microsoft.com/en-us/library/14F21A4D-4867-4c4d-9BD8-C733B1C50266) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_ReadBSTR  
+[PSPropertyBag_ReadDWORD](http://msdn2.microsoft.com/en-us/library/31977E3F-FA2F-4c2d-8A95-6BF937EDC45C) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_ReadDWORD  
+[PSPropertyBag_ReadGUID](http://msdn2.microsoft.com/en-us/library/BCC6E830-CF05-42c1-874F-CCC97E58A4BC) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_ReadGUID  
+[PSPropertyBag_ReadInt](http://msdn2.microsoft.com/en-us/library/9CEC97E6-C88F-4182-876C-D77EA14915DA) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_ReadInt  
+[PSPropertyBag_ReadLONG](http://msdn2.microsoft.com/en-us/library/A39E1F7C-A4FB-47da-A05E-39F6176F2878) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_ReadLONG  
+[PSPropertyBag_ReadPOINTL](http://msdn2.microsoft.com/en-us/library/B8F66DF9-A366-41a7-8311-B9E1CDE14ADB) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_ReadPOINTL  
+[PSPropertyBag_ReadPOINTS](http://msdn2.microsoft.com/en-us/library/60ED145A-7712-43b7-A2AD-C366DD32E19E) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_ReadPOINTS  
+[PSPropertyBag_ReadPropertyKey](http://msdn2.microsoft.com/en-us/library/910D1356-DC61-470b-90BB-0DCF1B861E05) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_ReadPropertyKey  
+[PSPropertyBag_ReadRECTL](http://msdn2.microsoft.com/en-us/library/4DAABF63-7CBA-4361-9E58-7072869CFDEC) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_ReadRECTL  
+[PSPropertyBag_ReadSHORT](http://msdn2.microsoft.com/en-us/library/F6E71602-86D0-41be-854F-83C5D5B64BF8) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_ReadSHORT  
+[PSPropertyBag_ReadStr](http://msdn2.microsoft.com/en-us/library/2E3E86D6-B070-49fc-AAF0-D6DCF0EA16B7) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_ReadStr  
+[PSPropertyBag_ReadStrAlloc](http://msdn2.microsoft.com/en-us/library/2F58A6DB-3563-42fa-9B6F-327D0A87AE81) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_ReadStrAlloc  
+[PSPropertyBag_ReadStream](http://msdn2.microsoft.com/en-us/library/3D1D8B3E-DD16-4b34-918C-C8478EBF0930) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_ReadStream  
+[PSPropertyBag_ReadType](http://msdn2.microsoft.com/en-us/library/826038F7-FD93-474e-BCA7-910E214F3E01) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_ReadType  
+[PSPropertyBag_ReadULONGLONG](http://msdn2.microsoft.com/en-us/library/6DB59A95-D571-452b-8974-76B4CC3FA36F) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_ReadULONGLONG  
+[PSPropertyBag_ReadUnknown](http://msdn2.microsoft.com/en-us/library/87921F52-308F-4ed7-8390-A3C0217ACEFD) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_ReadUnknown  
+[PSPropertyBag_WriteBOOL](http://msdn2.microsoft.com/en-us/library/3703A7C4-CFDC-4453-AA8F-6A5D6B7D3E66) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_WriteBOOL  
+[PSPropertyBag_WriteBSTR](http://msdn2.microsoft.com/en-us/library/9C2DBD1F-6760-4812-A33E-9A71C5A421A9) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_WriteBSTR  
+[PSPropertyBag_WriteDWORD](http://msdn2.microsoft.com/en-us/library/59142C21-032F-462c-B4A7-337483917ABC) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_WriteDWORD  
+[PSPropertyBag_WriteGUID](http://msdn2.microsoft.com/en-us/library/F50CF010-3A4E-4723-BA9F-CE1B48CA4AA4) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_WriteGUID  
+[PSPropertyBag_WriteInt](http://msdn2.microsoft.com/en-us/library/1FCC59B1-5084-4981-8F1D-A5860744F221) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_WriteInt  
+[PSPropertyBag_WriteLONG](http://msdn2.microsoft.com/en-us/library/A623D097-FEF8-4864-A80A-C6EF824EC245) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_WriteLONG  
+[PSPropertyBag_WritePOINTL](http://msdn2.microsoft.com/en-us/library/881A9D35-DF77-44d1-86DF-D6BC97AC0DD4) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_WritePOINTL  
+[PSPropertyBag_WritePOINTS](http://msdn2.microsoft.com/en-us/library/B1E3E061-042A-4ba0-98F2-EA8A022882CC) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_WritePOINTS  
+[PSPropertyBag_WritePropertyKey](http://msdn2.microsoft.com/en-us/library/52965079-ECC6-411a-BBB9-4EA2B7C01631) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_WritePropertyKey  
+[PSPropertyBag_WriteRECTL](http://msdn2.microsoft.com/en-us/library/83C29519-CAB0-4989-85B5-70AD79E69D04) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_WriteRECTL  
+[PSPropertyBag_WriteSHORT](http://msdn2.microsoft.com/en-us/library/9A8F0974-E7BE-4d66-8DBF-68744C0124A2) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_WriteSHORT  
+[PSPropertyBag_WriteStr](http://msdn2.microsoft.com/en-us/library/D3614CAE-D594-4050-B80E-20D8BBB93744) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_WriteStr  
+[PSPropertyBag_WriteStream](http://msdn2.microsoft.com/en-us/library/48C3E7F7-ED7E-4797-A66A-A8529BF2A79C) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_WriteStream  
+[PSPropertyBag_WriteULONGLONG](http://msdn2.microsoft.com/en-us/library/37854C80-00B9-465c-88D9-619695D418CD) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_WriteULONGLONG  
+[PSPropertyBag_WriteUnknown](http://msdn2.microsoft.com/en-us/library/D96643E7-9A14-4410-BD2C-A264B74E0590) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyBag_WriteUnknown  
+[PSPropertyKeyFromString](http://msdn2.microsoft.com/en-us/library/9096912a-14ad-4a45-a564-08f98fce3f96) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSPropertyKeyFromString  
+[PSRefreshPropertySchema](http://msdn2.microsoft.com/en-us/library/07efbf66-3594-4b9d-b959-278dc9000572) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSRefreshPropertySchema  
+[PSRegisterPropertySchema](http://msdn2.microsoft.com/en-us/library/ea9c4361-fada-4b07-b450-dd0c6409745a) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSRegisterPropertySchema  
+[PSSetPropertyValue](http://msdn2.microsoft.com/en-us/library/b4f8c50d-93cd-4371-88b0-6ce58f023981) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSSetPropertyValue  
+[PSStringFromPropertyKey](http://msdn2.microsoft.com/en-us/library/081f8e6d-9189-44f9-9b27-e85f4793da48) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSStringFromPropertyKey  
+[PSUnregisterPropertySchema](http://msdn2.microsoft.com/en-us/library/57df82a9-8954-4c2b-b794-82ac542149e2) | propsys.dll | propsys.h | Vanara.PInvoke.PropSys.PSUnregisterPropertySchema  
 [QueryPathOfRegTypeLib](https://www.google.com/search?num=5&q=QueryPathOfRegTypeLib+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [ReadClassStg](https://www.google.com/search?num=5&q=ReadClassStg+site%3Amicrosoft.com) | ole32.dll |  |   
 [ReadClassStm](https://www.google.com/search?num=5&q=ReadClassStm+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -558,7 +557,7 @@ Native Method | Native DLL | Header | Managed Method
 [StgCreatePropSetStg](https://www.google.com/search?num=5&q=StgCreatePropSetStg+site%3Amicrosoft.com) | ole32.dll |  |   
 [StgCreatePropStg](https://www.google.com/search?num=5&q=StgCreatePropStg+site%3Amicrosoft.com) | ole32.dll |  |   
 [StgCreateStorageEx](http://msdn2.microsoft.com/en-us/library/aa380328) | ole32.dll | Objbase.h | Vanara.PInvoke.Ole32.StgCreateStorageEx  
-[StgDeserializePropVariant](https://www.google.com/search?num=5&q=StgDeserializePropVariant+site%3Amicrosoft.com) | propsys.dll |  |   
+[StgDeserializePropVariant](http://msdn2.microsoft.com/en-us/library/bb776578) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.StgDeserializePropVariant  
 [StgGetIFillLockBytesOnFile](https://www.google.com/search?num=5&q=StgGetIFillLockBytesOnFile+site%3Amicrosoft.com) | ole32.dll |  |   
 [StgGetIFillLockBytesOnILockBytes](https://www.google.com/search?num=5&q=StgGetIFillLockBytesOnILockBytes+site%3Amicrosoft.com) | ole32.dll |  |   
 [StgIsStorageFile](http://msdn2.microsoft.com/en-us/library/aa380334) | ole32.dll | Objbase.h | Vanara.PInvoke.Ole32.StgIsStorageFile  
@@ -570,7 +569,7 @@ Native Method | Native DLL | Header | Managed Method
 [StgOpenStorageOnHandle](https://www.google.com/search?num=5&q=StgOpenStorageOnHandle+site%3Amicrosoft.com) | ole32.dll |  |   
 [StgOpenStorageOnILockBytes](https://www.google.com/search?num=5&q=StgOpenStorageOnILockBytes+site%3Amicrosoft.com) | ole32.dll |  |   
 [StgPropertyLengthAsVariant](https://www.google.com/search?num=5&q=StgPropertyLengthAsVariant+site%3Amicrosoft.com) | ole32.dll |  |   
-[StgSerializePropVariant](https://www.google.com/search?num=5&q=StgSerializePropVariant+site%3Amicrosoft.com) | propsys.dll |  |   
+[StgSerializePropVariant](http://msdn2.microsoft.com/en-us/library/bb776579) | propsys.dll | Propvarutil.h | Vanara.PInvoke.PropSys.StgSerializePropVariant  
 [StgSetTimes](https://www.google.com/search?num=5&q=StgSetTimes+site%3Amicrosoft.com) | ole32.dll |  |   
 [StringFromCLSID](https://www.google.com/search?num=5&q=StringFromCLSID+site%3Amicrosoft.com) | ole32.dll |  |   
 [StringFromGUID2](https://www.google.com/search?num=5&q=StringFromGUID2+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -971,6 +970,7 @@ Native Structure | Header | Managed Structure
 ### Interfaces  
 Native Interface | Native DLL | Header | Managed Interface  
 --- | --- | --- | ---  
+[IDelayedPropertyStoreFactory](http://msdn2.microsoft.com/en-us/library/855c9f10-9f40-4c60-a669-551fa51133f5) | propsys.h | Vanara.PInvoke.PropSys+IDelayedPropertyStoreFactory  
 [IEnumSTATPROPSETSTG](http://msdn2.microsoft.com/en-us/library/8d5e658f-312c-4c91-8794-808b2e8dd182) | propidl.h | Vanara.PInvoke.Ole32+IEnumSTATPROPSETSTG  
 [IEnumSTATPROPSTG](http://msdn2.microsoft.com/en-us/library/e625e52a-5628-4d18-9282-aa1c141c83af) | propidl.h | Vanara.PInvoke.Ole32+IEnumSTATPROPSTG  
 [IEnumSTATSTG](http://msdn2.microsoft.com/en-us/library/aa379217) | Objidl.h | Vanara.PInvoke.Ole32+IEnumSTATSTG  
@@ -990,5 +990,6 @@ Native Interface | Native DLL | Header | Managed Interface
 [IPropertySetStorage](http://msdn2.microsoft.com/en-us/library/0ea3e1e0-c135-4138-81e4-f72412fc3128) | Propidl.h | Vanara.PInvoke.Ole32+IPropertySetStorage  
 [IPropertyStorage](http://msdn2.microsoft.com/en-us/library/c021f695-db54-4861-9f30-35a81d2dccd5) | propidl.h | Vanara.PInvoke.Ole32+IPropertyStorage  
 [IPropertyStore](http://msdn2.microsoft.com/en-us/library/bb762502) | Shobjidl.h | Vanara.PInvoke.PropSys+IPropertyStore  
+[IPropertyStoreFactory](http://msdn2.microsoft.com/en-us/library/78ea822d-da8e-4883-b0eb-4277e7eb87a2) | propsys.h | Vanara.PInvoke.PropSys+IPropertyStoreFactory  
 [IPropertySystem](https://www.google.com/search?num=5&q=IPropertySystem+site%3Amicrosoft.com) | PropSys.h | Vanara.PInvoke.PropSys+IPropertySystem  
 [IStorage](http://msdn2.microsoft.com/en-us/library/aa380015) | Objidl.h | Vanara.PInvoke.Ole32+IStorage  
