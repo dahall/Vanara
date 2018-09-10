@@ -47,6 +47,26 @@ namespace Vanara.Extensions
 			return (T)val;
 		}
 
+		/// <summary>
+		/// Invokes a generic named method on an object with parameters and no return value.
+		/// </summary>
+		/// <param name="obj">The object on which to invoke the method or constructor. If a method is static, this argument is ignored. If a constructor is static, this argument must be null or an instance of the class that defines the constructor.</param>
+		/// <param name="methodName">The string containing the name of the public method to get.</param>
+		/// <param name="typeArguments">An array of types to be substituted for the type parameters of the current generic method definition.</param>
+		/// <param name="argTypes">An array of Type objects representing the number, order, and type of the parameters for the method to get.
+		/// <para>-or-</para>
+		/// <para>An empty array of Type objects(as provided by the EmptyTypes field) to get a method that takes no parameters.</para></param>
+		/// <param name="args">An argument list for the invoked method or constructor. This is an array of objects with the same number, order, and type as the parameters of the method or constructor to be invoked. If there are no parameters, this should be null.</param>
+		/// <returns>An Object containing the return value of the invoked method, or null in the case of a constructor, or null if the method's return type is void. Before calling the method or constructor, Invoke checks to see if the user has access permission and verifies that the parameters are valid.</returns>
+		/// <exception cref="ArgumentException">Method not found - methodName</exception>
+		public static object InvokeGenericMethod(this object obj, string methodName, Type[] typeArguments, Type[] argTypes, object[] args)
+		{
+			var mi = obj?.GetType().GetMethod(methodName, argTypes);
+			if (mi == null) throw new ArgumentException(@"Method not found", nameof(methodName));
+			var gmi = mi.MakeGenericMethod(typeArguments);
+			return gmi.Invoke(obj, args);
+		}
+
 		/// <summary>Invokes a named method on a created instance of a type with parameters.</summary>
 		/// <typeparam name="T">The expected type of the method's return value.</typeparam>
 		/// <param name="type">The type to be instantiated and then used to invoke the method. This method assumes the type has a default public constructor.</param>
