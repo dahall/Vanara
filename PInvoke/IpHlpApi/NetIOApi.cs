@@ -6386,7 +6386,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public MIB_IPPROTOCOL Protocol;
+			public MIB_IPFORWARD_PROTO Protocol;
 
 			/// <summary>
 			/// <para>Type: <c>BOOLEAN</c></para>

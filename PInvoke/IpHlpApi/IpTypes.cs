@@ -246,7 +246,7 @@ namespace Vanara.PInvoke
 		// IP_ADAPTER_ADDRESSES_LH, *PIP_ADAPTER_ADDRESSES_LH;
 		[PInvokeData("iptypes.h", MSDNShortId = "a2df3749-6c75-40c0-8952-1656bbe639a6")]
 		[StructLayout(LayoutKind.Sequential)]
-		public struct IP_ADAPTER_ADDRESSES
+		public struct IP_ADAPTER_ADDRESSES : ILinkedListElement<IP_ADAPTER_ADDRESSES>
 		{
 			public uint Length;
 			public uint IfIndex;
@@ -739,8 +739,6 @@ namespace Vanara.PInvoke
 			public IEnumerable<IP_ADAPTER_DNS_SUFFIX> DnsSuffixes => FirstDnsSuffix.LinkedListToIEnum<IP_ADAPTER_DNS_SUFFIX>(t => t.Next);
 
 			public IP_ADAPTER_ADDRESSES? GetNext() => Next.ToNullableStructure<IP_ADAPTER_ADDRESSES>();
-
-			public static IEnumerable<IP_ADAPTER_ADDRESSES> ListFromPtr(IntPtr ptr) => ptr.LinkedListToIEnum<IP_ADAPTER_ADDRESSES>(t => t.Next);
 		}
 	}
 }

@@ -133,7 +133,7 @@ namespace Vanara.PInvoke.Tests
 			var target = new IN6_ADDR(new byte[] { 0xfe, 0x3f, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x20, 0x00 });
 			var mibrow = new MIB_IPFORWARD_ROW2(new IP_ADDRESS_PREFIX((SOCKADDR_IN6)IN6_ADDR.Unspecified, 128), (SOCKADDR_IN6)target, primaryAdapter.Luid)
 			{
-				Protocol = MIB_IPPROTOCOL.MIB_IPPROTO_NETMGMT,
+				Protocol = MIB_IPFORWARD_PROTO.MIB_IPPROTO_NETMGMT,
 				Metric = 1
 			};
 			DeleteIpForwardEntry2(ref mibrow);
