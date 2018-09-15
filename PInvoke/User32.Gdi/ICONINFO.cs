@@ -48,16 +48,6 @@ namespace Vanara.PInvoke
 				if (hbmColor != IntPtr.Zero) DeleteObject(hbmColor);
 			}
 		}
-
-		/// <summary>Retrieves information about the specified icon or cursor.</summary>
-		/// <param name="hIcon">A handle to the icon or cursor. To retrieve information about a standard icon or cursor, specify one of the following values.</param>
-		/// <param name="info">A pointer to an ICONINFO structure. The function fills in the structure's members.</param>
-		/// <returns>
-		/// If the function succeeds, the return value is nonzero and the function fills in the members of the specified ICONINFO structure. If the function
-		/// fails, the return value is zero.To get extended error information, call GetLastError.
-		/// </returns>
-		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
-		public static extern bool GetIconInfo(IntPtr hIcon, [In, Out] ICONINFO info);
 	}
 }
  

@@ -96,30 +96,6 @@ namespace Vanara.PInvoke
 			EDGE_BUMP = (BDR_RAISEDOUTER | BDR_SUNKENINNER),
 		}
 
-		/// <summary>
-		/// For use with ChildWindowFromPointEx 
-		/// </summary>
-		[Flags]
-		public enum ChildWindowSkipOptions
-		{
-			/// <summary>
-			/// Does not skip any child windows
-			/// </summary>
-			CWP_ALL = 0x0000,
-			/// <summary>
-			/// Skips invisible child windows
-			/// </summary>
-			CWP_SKIPINVISIBLE = 0x0001,
-			/// <summary>
-			/// Skips disabled child windows
-			/// </summary>
-			CWP_SKIPDISABLED = 0x0002,
-			/// <summary>
-			/// Skips transparent child windows
-			/// </summary>
-			CWP_SKIPTRANSPARENT = 0x0004
-		}
-
 		[Flags]
 		public enum CopyImageOptions
 		{
@@ -230,152 +206,6 @@ namespace Vanara.PInvoke
 			HTZOOM = HTMAXBUTTON,
 		}
 
-		/// <summary>Window sizing and positioning flags.</summary>
-		[Flags]
-		public enum SetWindowPosFlags : uint
-		{
-			/// <summary>
-			/// If the calling thread and the thread that owns the window are attached to different input queues, the
-			/// system posts the request to the thread that owns the window. This prevents the calling thread from
-			/// blocking its execution while other threads process the request.
-			/// </summary>
-			SWP_ASYNCWINDOWPOS = 0x4000,
-
-			/// <summary>Prevents generation of the WM_SYNCPAINT message.</summary>
-			SWP_DEFERERASE = 0x2000,
-
-			/// <summary>Draws a frame (defined in the window's class description) around the window.</summary>
-			SWP_DRAWFRAME = 0x0020,
-
-			/// <summary>
-			/// Applies new frame styles set using the SetWindowLong function. Sends a WM_NCCALCSIZE message to the
-			/// window, even if the window's size is not being changed. If this flag is not specified, WM_NCCALCSIZE is
-			/// sent only when the window's size is being changed.
-			/// </summary>
-			SWP_FRAMECHANGED = 0x0020,
-
-			/// <summary>Hides the window.</summary>
-			SWP_HIDEWINDOW = 0x0080,
-
-			/// <summary>
-			/// Does not activate the window. If this flag is not set, the window is activated and moved to the top of
-			/// either the topmost or non-topmost group (depending on the setting of the hWndInsertAfter parameter).
-			/// </summary>
-			SWP_NOACTIVATE = 0x0010,
-
-			/// <summary>
-			/// Discards the entire contents of the client area. If this flag is not specified, the valid contents of the
-			/// client area are saved and copied back into the client area after the window is sized or repositioned.
-			/// </summary>
-			SWP_NOCOPYBITS = 0x0100,
-
-			/// <summary>Retains the current position (ignores X and Y parameters).</summary>
-			SWP_NOMOVE = 0x0002,
-
-			/// <summary>Does not change the owner window's position in the Z order.</summary>
-			SWP_NOOWNERZORDER = 0x0200,
-
-			/// <summary>
-			/// Does not redraw changes. If this flag is set, no repainting of any kind occurs. This applies to the
-			/// client area, the nonclient area (including the title bar and scroll bars), and any part of the parent
-			/// window uncovered as a result of the window being moved. When this flag is set, the application must
-			/// explicitly invalidate or redraw any parts of the window and parent window that need redrawing.
-			/// </summary>
-			SWP_NOREDRAW = 0x0008,
-
-			/// <summary>Same as the SWP_NOOWNERZORDER flag.</summary>
-			SWP_NOREPOSITION = 0x0200,
-
-			/// <summary>Prevents the window from receiving the WM_WINDOWPOSCHANGING message.</summary>
-			SWP_NOSENDCHANGING = 0x0400,
-
-			/// <summary>Retains the current size (ignores the cx and cy parameters).</summary>
-			SWP_NOSIZE = 0x0001,
-
-			/// <summary>Retains the current Z order (ignores the hWndInsertAfter parameter).</summary>
-			SWP_NOZORDER = 0x0004,
-
-			/// <summary>Displays the window.</summary>
-			SWP_SHOWWINDOW = 0x0040,
-		}
-
-		/// <summary>Color index used to get a system color from <see cref="GetSysColor"/>.</summary>
-		public enum SystemColorIndex
-		{
-			/// <summary>Scroll bar gray area.</summary>
-			COLOR_SCROLLBAR = 0,
-			/// <summary>Desktop.</summary>
-			COLOR_BACKGROUND = 1,
-			/// <summary>Active window title bar. The associated foreground color is COLOR_CAPTIONTEXT. Specifies the left side color in the color gradient of an active window's title bar if the gradient effect is enabled.</summary>
-			COLOR_ACTIVECAPTION = 2,
-			/// <summary>Inactive window caption. The associated foreground color is COLOR_INACTIVECAPTIONTEXT. Specifies the left side color in the color gradient of an inactive window's title bar if the gradient effect is enabled.</summary>
-			COLOR_INACTIVECAPTION = 3,
-			/// <summary>Menu background. The associated foreground color is COLOR_MENUTEXT.</summary>
-			COLOR_MENU = 4,
-			/// <summary>Window background. The associated foreground colors are COLOR_WINDOWTEXT and COLOR_HOTLITE.</summary>
-			COLOR_WINDOW = 5,
-			/// <summary>Window frame.</summary>
-			COLOR_WINDOWFRAME = 6,
-			/// <summary>Text in menus. The associated background color is COLOR_MENU.</summary>
-			COLOR_MENUTEXT = 7,
-			/// <summary>Text in windows. The associated background color is COLOR_WINDOW.</summary>
-			COLOR_WINDOWTEXT = 8,
-			/// <summary>Text in caption, size box, and scroll bar arrow box. The associated background color is COLOR_ACTIVECAPTION.</summary>
-			COLOR_CAPTIONTEXT = 9,
-			/// <summary>Active window border.</summary>
-			COLOR_ACTIVEBORDER = 10,
-			/// <summary>Inactive window border.</summary>
-			COLOR_INACTIVEBORDER = 11,
-			/// <summary>Background color of multiple document interface (MDI) applications.</summary>
-			COLOR_APPWORKSPACE = 12,
-			/// <summary>Item(s) selected in a control. The associated foreground color is COLOR_HIGHLIGHTTEXT.</summary>
-			COLOR_HIGHLIGHT = 13,
-			/// <summary>Text of item(s) selected in a control. The associated background color is COLOR_HIGHLIGHT.</summary>
-			COLOR_HIGHLIGHTTEXT = 14,
-			/// <summary>Face color for three-dimensional display elements and for dialog box backgrounds. The associated foreground color is COLOR_BTNTEXT.</summary>
-			COLOR_BTNFACE = 15,
-			/// <summary>Shadow color for three-dimensional display elements (for edges facing away from the light source).</summary>
-			COLOR_BTNSHADOW = 16,
-			/// <summary>Grayed (disabled) text. This color is set to 0 if the current display driver does not support a solid gray color.</summary>
-			COLOR_GRAYTEXT = 17,
-			/// <summary>Text on push buttons. The associated background color is COLOR_BTNFACE.</summary>
-			COLOR_BTNTEXT = 18,
-			/// <summary>Inactive window caption. The associated foreground color is COLOR_INACTIVECAPTIONTEXT. Specifies the left side color in the color gradient of an inactive window's title bar if the gradient effect is enabled.</summary>
-			COLOR_INACTIVECAPTIONTEXT = 19,
-			/// <summary>Highlight color for three-dimensional display elements (for edges facing the light source.)</summary>
-			COLOR_BTNHIGHLIGHT = 20,
-			/// <summary>Dark shadow for three-dimensional display elements.</summary>
-			COLOR_3DDKSHADOW = 21,
-			/// <summary>Light color for three-dimensional display elements (for edges facing the light source.)</summary>
-			COLOR_3DLIGHT = 22,
-			/// <summary>Text color for tooltip controls. The associated background color is COLOR_INFOBK.</summary>
-			COLOR_INFOTEXT = 23,
-			/// <summary>Background color for tooltip controls. The associated foreground color is COLOR_INFOTEXT.</summary>
-			COLOR_INFOBK = 24,
-			/// <summary>Item(s) selected in a control. The associated foreground color is COLOR_HIGHLIGHTTEXT.</summary>
-			COLOR_HOTLIGHT = 26,
-			/// <summary>Right side color in the color gradient of an active window's title bar. COLOR_ACTIVECAPTION specifies the left side color. Use SPI_GETGRADIENTCAPTIONS with the SystemParametersInfo function to determine whether the gradient effect is enabled.</summary>
-			COLOR_GRADIENTACTIVECAPTION = 27,
-			/// <summary>Right side color in the color gradient of an inactive window's title bar. COLOR_INACTIVECAPTION specifies the left side color.</summary>
-			COLOR_GRADIENTINACTIVECAPTION = 28,
-			/// <summary>The color used to highlight menu items when the menu appears as a flat menu (see SystemParametersInfo). The highlighted menu item is outlined with COLOR_HIGHLIGHT. Windows 2000:  This value is not supported.</summary>
-			COLOR_MENUHILIGHT = 29,
-			/// <summary>The background color for the menu bar when menus appear as flat menus (see SystemParametersInfo). However, COLOR_MENU continues to specify the background color of the menu popup. Windows 2000:  This value is not supported.</summary>
-			COLOR_MENUBAR = 30,
-			/// <summary>Desktop.</summary>
-			COLOR_DESKTOP = COLOR_BACKGROUND,
-			/// <summary>Face color for three-dimensional display elements and for dialog box backgrounds.</summary>
-			COLOR_3DFACE = COLOR_BTNFACE,
-			/// <summary>Shadow color for three-dimensional display elements (for edges facing away from the light source).</summary>
-			COLOR_3DSHADOW = COLOR_BTNSHADOW,
-			/// <summary>Highlight color for three-dimensional display elements (for edges facing the light source.)</summary>
-			COLOR_3DHIGHLIGHT = COLOR_BTNHIGHLIGHT,
-			/// <summary>Highlight color for three-dimensional display elements (for edges facing the light source.)</summary>
-			COLOR_3DHILIGHT = COLOR_BTNHIGHLIGHT,
-			/// <summary>Highlight color for three-dimensional display elements (for edges facing the light source.)</summary>
-			COLOR_BTNHILIGHT = COLOR_BTNHIGHLIGHT,
-		}
-
 		/// <summary>Flags used for <see cref="GetWindowLong"/> and <see cref="SetWindowLong"/> methods to retrieve information about a window.</summary>
 		[Flags]
 		public enum WindowLongFlags
@@ -401,27 +231,6 @@ namespace Vanara.PInvoke
 			/// <summary>The dialog procedure address or handle</summary>
 			DWLP_DLGPROC = 0x4
 		}
-
-		/// <summary>
-		/// Determines which, if any, of the child windows belonging to the specified parent window contains the specified point. The function can ignore invisible, disabled, and transparent child windows. The search is restricted to immediate child windows. Grandchildren and deeper descendants are not searched.
-		/// </summary>
-		/// <param name="hwndParent">A handle to the parent window.</param>
-		/// <param name="pt">A structure that defines the client coordinates (relative to hwndParent) of the point to be checked.</param>
-		/// <param name="uFlags">The child windows to be skipped. This parameter can be one or more of the following values.</param>
-		/// <returns>The return value is a handle to the first child window that contains the point and meets the criteria specified by uFlags. If the point is within the parent window but not within any child window that meets the criteria, the return value is a handle to the parent window. If the point lies outside the parent window or if the function fails, the return value is NULL.</returns>
-		[DllImport(Lib.User32, CharSet = CharSet.Auto, ExactSpelling = true)]
-		[System.Security.SecurityCritical]
-		public static extern IntPtr ChildWindowFromPointEx(HandleRef hwndParent, ref Point pt, ChildWindowSkipOptions uFlags);
-
-		/// <summary>
-		/// Destroys an icon and frees any memory the icon occupied.
-		/// </summary>
-		/// <param name="hIcon">A handle to the icon to be destroyed. The icon must not be in use.</param>
-		/// <returns>If the function succeeds, the return value is true. If the function fails, the return value is false. To get extended error information, call GetLastError.</returns>
-		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[System.Security.SecurityCritical]
-		public static extern bool DestroyIcon(IntPtr hIcon);
 
 		/// <summary>The <c>DrawEdge</c> function draws one or more edges of rectangle.</summary>
 		/// <param name="hdc">A handle to the device context.</param>
@@ -603,47 +412,6 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
 		public static extern int DrawText(SafeDCHandle hDC, string lpchText, int nCount, ref RECT lpRect, DrawTextFlags uFormat);
 
-		/// <summary>Retrieves a handle to the top-level window whose class name and window name match the specified strings. This function does not search child windows. This function does not perform a case-sensitive search.</summary>
-		/// <param name="lpClassName">The class name or a class atom created by a previous call to the RegisterClass or RegisterClassEx function. The atom must be in the low-order word of lpClassName; the high-order word must be zero.		
-		/// <para>If lpClassName points to a string, it specifies the window class name. The class name can be any name registered with RegisterClass or RegisterClassEx, or any of the predefined control-class names.</para>
-		/// <para>If lpClassName is NULL, it finds any window whose title matches the lpWindowName parameter.</para></param>
-		/// <param name="lpWindowName">The window name (the window's title). If this parameter is NULL, all window names match.</param>
-		/// <returns>If the function succeeds, the return value is a handle to the window that has the specified class name and window name. If the function fails, the return value is NULL. To get extended error information, call GetLastError.</returns>
-		[PInvokeData("WinUser.h", MSDNShortId = "ms633499")]
-		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
-		public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-		/// <summary>
-		/// Retrieves the window handle to the active window attached to the calling thread's message queue.
-		/// </summary>
-		/// <returns>The return value is the handle to the active window attached to the calling thread's message queue. Otherwise, the return value is NULL.</returns>
-		[DllImport(Lib.User32, ExactSpelling = true)]
-		[System.Security.SecurityCritical]
-		public static extern IntPtr GetActiveWindow();
-
-		/// <summary>
-		/// Retrieves the coordinates of a window's client area. The client coordinates specify the upper-left and lower-right corners of the client area. Because client coordinates are relative to the upper-left corner of a window's client area, the coordinates of the upper-left corner are (0,0).
-		/// </summary>
-		/// <param name="hWnd">A handle to the window whose client coordinates are to be retrieved.</param>
-		/// <param name="lpRect">A pointer to a RECT structure that receives the client coordinates. The left and top members are zero. The right and bottom members contain the width and height of the window.</param>
-		/// <returns>If the function succeeds, the return value is true. If the function fails, the return value is false. To get extended error information, call GetLastError.</returns>
-		[PInvokeData("WinUser.h", MSDNShortId = "ms633503")]
-		[DllImport(Lib.User32, CharSet = CharSet.Auto, ExactSpelling = true, SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[System.Security.SecurityCritical]
-		public static extern bool GetClientRect(HandleRef hWnd, [In, Out] ref RECT lpRect);
-
-		/// <summary>
-		/// Retrieves a handle to the desktop window. The desktop window covers the entire screen. The desktop window is the area on top of which other windows
-		/// are painted.
-		/// </summary>
-		/// <returns>The return value is a handle to the desktop window.</returns>
-		// HWND WINAPI GetDesktopWindow(void);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms633504(v=vs.85).aspx
-		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("Winuser.h", MSDNShortId = "ms633504")]
-		public static extern IntPtr GetDesktopWindow();
-
 		/// <summary>
 		/// The GetDC function retrieves a handle to a device context (DC) for the client area of a specified window or for the entire screen. You can use the
 		/// returned handle in subsequent GDI functions to draw in the DC. The device context is an opaque data structure, whose values are used internally by GDI.
@@ -714,18 +482,6 @@ namespace Vanara.PInvoke
 		public static extern IntPtr GetWindowLongPtr(HandleRef hWnd, int nIndex);
 
 		/// <summary>
-		/// Retrieves the dimensions of the bounding rectangle of the specified window. The dimensions are given in screen coordinates that are relative to the upper-left corner of the screen.
-		/// </summary>
-		/// <param name="hWnd">A handle to the window.</param>
-		/// <param name="lpRect">A pointer to a RECT structure that receives the screen coordinates of the upper-left and lower-right corners of the window.</param>
-		/// <returns>If the function succeeds, the return value is true. If the function fails, the return value is false. To get extended error information, call GetLastError.</returns>
-		[PInvokeData("WinUser.h", MSDNShortId = "ms633519")]
-		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[System.Security.SecurityCritical]
-		public static extern bool GetWindowRect(HandleRef hWnd, out RECT lpRect);
-
-		/// <summary>
 		/// The InvalidateRect function adds a rectangle to the specified window's update region. The update region represents the portion of the window's client area that must be redrawn.
 		/// </summary>
 		/// <param name="hWnd">A handle to the window whose update region has changed. If this parameter is NULL, the system invalidates and redraws all windows, not just the windows for this application, and sends the WM_ERASEBKGND and WM_NCPAINT messages before the function returns. Setting this parameter to NULL is not recommended.</param>
@@ -776,9 +532,6 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinUser.h", MSDNShortId = "")]
 		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
 		public static extern int MapWindowPoints(HandleRef hWndFrom, HandleRef hWndTo, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] Point[] lpPoints, [MarshalAs(UnmanagedType.U4)] int cPoints);
-
-		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
-		public static extern int RealGetWindowClass(HandleRef hwnd, System.Text.StringBuilder pszType, int cchType);
 
 		/// <summary>
 		/// Defines a new window message that is guaranteed to be unique throughout the system. The message value can be used when sending or posting messages.
@@ -1015,50 +768,6 @@ namespace Vanara.PInvoke
 			return ret;
 		}
 
-		/// <summary>
-		/// Changes the size, position, and Z order of a child, pop-up, or top-level window. These windows are ordered according to their appearance on the screen. The topmost window receives the highest rank and is the first window in the Z order.
-		/// </summary>
-		/// <param name="hWnd">A handle to the window.</param>
-		/// <param name="hWndInsertAfter">A handle to the window to precede the positioned window in the Z order. This parameter must be a window handle or one of the following values.
-		/// <list type="table">
-		/// <listheader><term>Value</term><description>Meaning</description></listheader>
-		/// <item><term><c>HWND_BOTTOM</c> (HWND)1</term><description>Places the window at the bottom of the Z order. If the hWnd parameter identifies a topmost window, the window loses its topmost status and is placed at the bottom of all other windows.</description></item>
-		/// <item><term><c>HWND_NOTOPMOST</c> (HWND)-2</term><description>Places the window above all non-topmost windows (that is, behind all topmost windows). This flag has no effect if the window is already a non-topmost window.</description></item>
-		/// <item><term><c>HWND_TOP</c> (HWND)0</term><description>Places the window at the top of the Z order.</description></item>
-		/// <item><term><c>HWND_TOPMOST</c> (HWND)-1</term><description>Places the window above all non-topmost windows. The window maintains its topmost position even when it is deactivated.</description></item>
-		/// </list>
-		/// </param>
-		/// <param name="X">The new position of the left side of the window, in client coordinates.</param>
-		/// <param name="Y">The new position of the top of the window, in client coordinates.</param>
-		/// <param name="cx">The new width of the window, in pixels.</param>
-		/// <param name="cy">The new height of the window, in pixels.</param>
-		/// <param name="uFlags">The window sizing and positioning flags.</param>
-		/// <returns>If the function succeeds, the return value is true. If the function fails, the return value is false. To get extended error information, call GetLastError.</returns>
-		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[System.Security.SecurityCritical]
-		public static extern bool SetWindowPos(HandleRef hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
-
-		/// <summary>
-		/// Changes the text of the specified window's title bar (if it has one). If the specified window is a control, the text of the control is changed. However, SetWindowText cannot change the text of a control in another application.
-		/// </summary>
-		/// <param name="hWnd">A handle to the window or control whose text is to be changed.</param>
-		/// <param name="lpString">The new title or control text.</param>
-		/// <returns>If the function succeeds, the return value is true. If the function fails, the return value is false. To get extended error information, call GetLastError.</returns>
-		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[System.Security.SecurityCritical]
-		public static extern bool SetWindowText(HandleRef hWnd, string lpString);
-
-		/// <summary>Retrieves a handle to the window that contains the specified point.</summary>
-		/// <param name="Point">The point to be checked.</param>
-		/// <returns>
-		/// The return value is a handle to the window that contains the point. If no window exists at the given point, the return value is NULL. If the point is
-		/// over a static text control, the return value is a handle to the window under the static text control.
-		/// </returns>
-		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
-		public static extern IntPtr WindowFromPoint(Point Point);
-
 		private static SafeCoTaskMemHandle GetPtr<T>(T val)
 		{
 			if (typeof(T).Equals(typeof(IntPtr))) return new SafeCoTaskMemHandle((IntPtr)(object)val, 0, false);
@@ -1066,6 +775,92 @@ namespace Vanara.PInvoke
 				try { return new SafeCoTaskMemHandle((IntPtr)ic.ToInt32(System.Globalization.CultureInfo.InvariantCulture.NumberFormat), 0, false); } catch { }
 			return SafeCoTaskMemHandle.CreateFromStructure(val);
 		}
+
+		/// <summary>Color index used to get a system color from <see cref="GetSysColor"/>.</summary>
+		[PInvokeData("WinUser.h", MSDNShortId = "ms724371")]
+		public enum SystemColorIndex
+		{
+			/// <summary>Scroll bar gray area.</summary>
+			COLOR_SCROLLBAR = 0,
+			/// <summary>Desktop.</summary>
+			COLOR_BACKGROUND = 1,
+			/// <summary>Active window title bar. The associated foreground color is COLOR_CAPTIONTEXT. Specifies the left side color in the color gradient of an active window's title bar if the gradient effect is enabled.</summary>
+			COLOR_ACTIVECAPTION = 2,
+			/// <summary>Inactive window caption. The associated foreground color is COLOR_INACTIVECAPTIONTEXT. Specifies the left side color in the color gradient of an inactive window's title bar if the gradient effect is enabled.</summary>
+			COLOR_INACTIVECAPTION = 3,
+			/// <summary>Menu background. The associated foreground color is COLOR_MENUTEXT.</summary>
+			COLOR_MENU = 4,
+			/// <summary>Window background. The associated foreground colors are COLOR_WINDOWTEXT and COLOR_HOTLITE.</summary>
+			COLOR_WINDOW = 5,
+			/// <summary>Window frame.</summary>
+			COLOR_WINDOWFRAME = 6,
+			/// <summary>Text in menus. The associated background color is COLOR_MENU.</summary>
+			COLOR_MENUTEXT = 7,
+			/// <summary>Text in windows. The associated background color is COLOR_WINDOW.</summary>
+			COLOR_WINDOWTEXT = 8,
+			/// <summary>Text in caption, size box, and scroll bar arrow box. The associated background color is COLOR_ACTIVECAPTION.</summary>
+			COLOR_CAPTIONTEXT = 9,
+			/// <summary>Active window border.</summary>
+			COLOR_ACTIVEBORDER = 10,
+			/// <summary>Inactive window border.</summary>
+			COLOR_INACTIVEBORDER = 11,
+			/// <summary>Background color of multiple document interface (MDI) applications.</summary>
+			COLOR_APPWORKSPACE = 12,
+			/// <summary>Item(s) selected in a control. The associated foreground color is COLOR_HIGHLIGHTTEXT.</summary>
+			COLOR_HIGHLIGHT = 13,
+			/// <summary>Text of item(s) selected in a control. The associated background color is COLOR_HIGHLIGHT.</summary>
+			COLOR_HIGHLIGHTTEXT = 14,
+			/// <summary>Face color for three-dimensional display elements and for dialog box backgrounds. The associated foreground color is COLOR_BTNTEXT.</summary>
+			COLOR_BTNFACE = 15,
+			/// <summary>Shadow color for three-dimensional display elements (for edges facing away from the light source).</summary>
+			COLOR_BTNSHADOW = 16,
+			/// <summary>Grayed (disabled) text. This color is set to 0 if the current display driver does not support a solid gray color.</summary>
+			COLOR_GRAYTEXT = 17,
+			/// <summary>Text on push buttons. The associated background color is COLOR_BTNFACE.</summary>
+			COLOR_BTNTEXT = 18,
+			/// <summary>Inactive window caption. The associated foreground color is COLOR_INACTIVECAPTIONTEXT. Specifies the left side color in the color gradient of an inactive window's title bar if the gradient effect is enabled.</summary>
+			COLOR_INACTIVECAPTIONTEXT = 19,
+			/// <summary>Highlight color for three-dimensional display elements (for edges facing the light source.)</summary>
+			COLOR_BTNHIGHLIGHT = 20,
+			/// <summary>Dark shadow for three-dimensional display elements.</summary>
+			COLOR_3DDKSHADOW = 21,
+			/// <summary>Light color for three-dimensional display elements (for edges facing the light source.)</summary>
+			COLOR_3DLIGHT = 22,
+			/// <summary>Text color for tooltip controls. The associated background color is COLOR_INFOBK.</summary>
+			COLOR_INFOTEXT = 23,
+			/// <summary>Background color for tooltip controls. The associated foreground color is COLOR_INFOTEXT.</summary>
+			COLOR_INFOBK = 24,
+			/// <summary>Item(s) selected in a control. The associated foreground color is COLOR_HIGHLIGHTTEXT.</summary>
+			COLOR_HOTLIGHT = 26,
+			/// <summary>Right side color in the color gradient of an active window's title bar. COLOR_ACTIVECAPTION specifies the left side color. Use SPI_GETGRADIENTCAPTIONS with the SystemParametersInfo function to determine whether the gradient effect is enabled.</summary>
+			COLOR_GRADIENTACTIVECAPTION = 27,
+			/// <summary>Right side color in the color gradient of an inactive window's title bar. COLOR_INACTIVECAPTION specifies the left side color.</summary>
+			COLOR_GRADIENTINACTIVECAPTION = 28,
+			/// <summary>The color used to highlight menu items when the menu appears as a flat menu (see SystemParametersInfo). The highlighted menu item is outlined with COLOR_HIGHLIGHT. Windows 2000:  This value is not supported.</summary>
+			COLOR_MENUHILIGHT = 29,
+			/// <summary>The background color for the menu bar when menus appear as flat menus (see SystemParametersInfo). However, COLOR_MENU continues to specify the background color of the menu popup. Windows 2000:  This value is not supported.</summary>
+			COLOR_MENUBAR = 30,
+			/// <summary>Desktop.</summary>
+			COLOR_DESKTOP = COLOR_BACKGROUND,
+			/// <summary>Face color for three-dimensional display elements and for dialog box backgrounds.</summary>
+			COLOR_3DFACE = COLOR_BTNFACE,
+			/// <summary>Shadow color for three-dimensional display elements (for edges facing away from the light source).</summary>
+			COLOR_3DSHADOW = COLOR_BTNSHADOW,
+			/// <summary>Highlight color for three-dimensional display elements (for edges facing the light source.)</summary>
+			COLOR_3DHIGHLIGHT = COLOR_BTNHIGHLIGHT,
+			/// <summary>Highlight color for three-dimensional display elements (for edges facing the light source.)</summary>
+			COLOR_3DHILIGHT = COLOR_BTNHIGHLIGHT,
+			/// <summary>Highlight color for three-dimensional display elements (for edges facing the light source.)</summary>
+			COLOR_BTNHILIGHT = COLOR_BTNHIGHLIGHT,
+		}
+
+		/// <summary><para>Sets the colors for the specified display elements. Display elements are the various parts of a window and the display that appear on the system display screen.</para></summary><param name="cElements"><para>Type: <c>int</c></para><para>The number of display elements in the lpaElements array.</para></param><param name="lpaElements"><para>Type: <c>const INT*</c></para><para>An array of integers that specify the display elements to be changed. For a list of display elements, see GetSysColor.</para></param><param name="lpaRgbValues"><para>Type: <c>const COLORREF*</c></para><para>An array of COLORREF values that contain the new red, green, blue (RGB) color values for the display elements in the array pointed to by the lpaElements parameter.</para><para>To generate a COLORREF, use the RGB macro.</para></param><returns><para>Type: <c>Type: <c>BOOL</c> </c></para><para>If the function succeeds, the return value is a nonzero value.</para><para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para></returns><remarks><para>The <c>SetSysColors</c> function sends a WM_SYSCOLORCHANGE message to all windows to inform them of the change in color. It also directs the system to repaint the affected portions of all currently visible windows.</para><para>It is best to respect the color settings specified by the user. If you are writing an application to enable the user to change the colors, then it is appropriate to use this function. However, this function affects only the current session. The new colors are not saved when the system terminates.</para><para>Examples</para><para>The following example demonstrates the use of the GetSysColor and <c>SetSysColors</c> functions. First, the example uses <c>GetSysColor</c> to retrieve the colors of the window background and active caption and displays the red, green, blue (RGB) values in hexadecimal notation. Next, example uses <c>SetSysColors</c> to change the color of the window background to light gray and the active title bars to dark purple. After a 10-second delay, the example restores the previous colors for these elements using SetSysColors.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setsyscolors
+		// BOOL SetSysColors( int cElements, CONST INT *lpaElements, CONST COLORREF *lpaRgbValues );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "41a7a96c-f9d1-44e3-a7e1-fd7d155c4ed0")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetSysColors(int cElements, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U4, SizeConst = 0)] SystemColorIndex[] lpaElements, [In, MarshalAs(UnmanagedType.LPArray, SizeConst = 0)] COLORREF[] lpaRgbValues);
 
 		/// <summary>
 		/// Changes an attribute of the specified window. The function also sets a value at the specified offset in the extra window memory.
