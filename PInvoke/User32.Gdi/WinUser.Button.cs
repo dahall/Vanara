@@ -450,7 +450,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-checkdlgbutton BOOL CheckDlgButton( HWND hDlg, int
 		// nIDButton, UINT uCheck );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("winuser.h", MSDNShortId = "VS|Controls|~\controls\buttons\buttonreference\buttonfunctions\checkdlgbutton.htm")]
+		[PInvokeData("winuser.h", MSDNShortId = "checkdlgbutton")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CheckDlgButton(HandleRef hDlg, int nIDButton, ButtonStateFlags uCheck);
 
@@ -492,7 +492,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-checkradiobutton BOOL CheckRadioButton( HWND hDlg, int
 		// nIDFirstButton, int nIDLastButton, int nIDCheckButton );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("winuser.h", MSDNShortId = "VS|Controls|~\controls\buttons\buttonreference\buttonfunctions\checkradiobutton.htm")]
+		[PInvokeData("winuser.h", MSDNShortId = "checkradiobutton")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CheckRadioButton(HandleRef hDlg, int nIDFirstButton, int nIDLastButton, int nIDCheckButton);
 
@@ -543,7 +543,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-isdlgbuttonchecked UINT IsDlgButtonChecked( HWND hDlg, int
 		// nIDButton );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("winuser.h", MSDNShortId = "VS|Controls|~\controls\buttons\buttonreference\buttonfunctions\isdlgbuttonchecked.htm")]
+		[PInvokeData("winuser.h", MSDNShortId = "isdlgbuttonchecked")]
 		public static extern ButtonStateFlags IsDlgButtonChecked(HandleRef hDlg, int nIDButton);
 	}
 }

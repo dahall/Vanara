@@ -4,9 +4,10 @@ using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
 {
-	public static partial class ComCtl32
+	public static partial class User32_Gdi
 	{
 		/// <summary>Specifies the scroll bar type.</summary>
+		[PInvokeData("winuser.h")]
 		public enum SB
 		{
 			/// <summary>The horizontal and vertical scroll bars.</summary>
@@ -20,6 +21,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Flags used to enable or disable scroll bars.</summary>
+		[PInvokeData("winuser.h")]
 		public enum ESB_FLAGS : uint
 		{
 			/// <summary>Disables both direction buttons on the specified scroll bar.</summary>
