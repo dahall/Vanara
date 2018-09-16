@@ -17,9 +17,6 @@ namespace Vanara.PInvoke
 	{
 		public const int OCM_NOTIFY = 0x204E; // WM_NOTIFY + WM_REFLECT
 
-		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
-		public delegate IntPtr DialogProc(IntPtr hwndDlg, uint uMsg, IntPtr wParam, IntPtr lParam);
-
 		/// <summary>Flags used by the <see cref="DrawEdge"/> method.</summary>
 		[PInvokeData("WinUser.h")]
 		[Flags]

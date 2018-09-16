@@ -168,7 +168,6 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-createdialogindirecta void CreateDialogIndirectA(
 		// hInstance, lpTemplate, hWndParent, lpDialogFunc );
-		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "createdialogindirect")]
 		public static void CreateDialogIndirect(SafeLibraryHandle hInstance, IntPtr lpTemplate, HandleRef hWndParent, DialogProc lpDialogFunc) => CreateDialogIndirectParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
 
@@ -479,7 +478,6 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-dialogboxindirecta void DialogBoxIndirectA( hInstance,
 		// lpTemplate, hWndParent, lpDialogFunc );
-		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "dialogboxindirect")]
 		public static void DialogBoxIndirect(SafeLibraryHandle hInstance, IntPtr lpTemplate, HandleRef hWndParent, DialogProc lpDialogFunc) => DialogBoxIndirectParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
 
@@ -1259,7 +1257,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-dlgitemtemplate typedef struct DLGITEMTEMPLATE { DWORD
 		// style; DWORD dwExtendedStyle; short x; short y; short cx; short cy; WORD id; };
-		[PInvokeData("winuser.h", MSDNShortId = "VS|winui|~\winui\windowsuserinterface\windowing\dialogboxes\dialogboxreference\dialogboxstructures\dlgitemtemplate")]
+		[PInvokeData("winuser.h", MSDNShortId = "dlgitemtemplate")]
 		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct DLGITEMTEMPLATE
 		{
@@ -1370,7 +1368,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-dlgtemplate typedef struct DLGTEMPLATE { DWORD style;
 		// DWORD dwExtendedStyle; WORD cdit; short x; short y; short cx; short cy; };
-		[PInvokeData("winuser.h", MSDNShortId = "VS|winui|~\winui\windowsuserinterface\windowing\dialogboxes\dialogboxreference\dialogboxstructures\dlgtemplate")]
+		[PInvokeData("winuser.h", MSDNShortId = "dlgtemplate")]
 		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct DLGTEMPLATE
 		{

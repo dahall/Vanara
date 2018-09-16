@@ -4104,7 +4104,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-messagebox
 		// int MessageBox( HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("winuser.h", MSDNShortId = "VS|winui|~\winui\windowsuserinterface\windowing\dialogboxes\dialogboxreference\dialogboxfunctions\messagebox.htm")]
+		[PInvokeData("winuser.h", MSDNShortId = "messagebox")]
 		public static extern MB_RESULT MessageBox(HandleRef hWnd, string lpText, string lpCaption, MB_FLAGS uType);
 
 		/// <summary>
