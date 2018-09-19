@@ -15,6 +15,7 @@ FileTimeExtensions | Extensions for `FILETIME`.
 Formatter | Base class for expandable formatters.
 FormatterComposer | Extension method to combine formatter instances.
 GenericSafeHandle | A `SafeHandle` that takes a delegate in the constructor that closes the supplied handle.
+GenericVirtualReadOnlyDictionaryy<T> | A generic class that creates a read-only dictionary from a list and getter function.
 HGlobalMemoryMethods | Unmanaged memory methods for HGlobal.
 InteropExtensions | Extension methods for System.Runtime.InteropServices.
 IOExtensions | Extensions for classes in System.IO.
@@ -31,6 +32,9 @@ SafeMemoryHandle<T> | Abstract base class for all SafeAllocatedMemoryHandle deri
 SafeMemoryHandleExt<T> | A `SafeHandle` for memory allocated via COM.
 SparseArray<T> | A sparse array based on a dictionary.
 StringHelper | A safe class that represents an object that is pinned in memory.
+TryGetValueDelegate | 
+VirtualDictionary<T> | A generic base class for providing a dictionary that gets and sets its values using virtual method calls. Useful for exposing lookups into existing list environments like the file system, registry, service controller, etc.
+VirtualReadOnlyDictionary<T> | A generic base class for providing a read-only dictionary that gets its values using virtual method calls. Useful for exposing lookups into existing list environments like the file system, registry, service controller, etc.
 ### Structures
 Struct | Description
 ---- | ----

@@ -23,10 +23,10 @@
     <PackageReleaseNotes>Currently implements:
 
 Classes
-ControlPanel, IconLocation, PropertyDescription, PropertyDescriptionList, PropertyStore, PropertyType, PropertyTypeList, ShellFileInfo, ShellFileNewOpEventArgs, ShellFileOperations, ShellFileOpEventArgs, ShellFolder, ShellImageList, ShellItem, ShellItemArray, ShellItemPropertyStore, ShellItemPropertyUpdates, ShellLibrary, ShellLibraryFolders, ShellLink, TaskbarList
+CommandVerb, CommandVerbDictionary, ControlPanel, IconLocation, IndirectString, ProgId, PropertyDescription, PropertyDescriptionList, PropertyStore, PropertyType, PropertyTypeList, RegBasedSettings, RegistryBasedVirtualDictionary&lt;T&gt;, ShellAssociation, ShellFileInfo, ShellFileNewOpEventArgs, ShellFileOperations, ShellFileOpEventArgs, ShellFolder, ShellImageList, ShellItem, ShellItemArray, ShellItemPropertyStore, ShellItemPropertyUpdates, ShellLibrary, ShellLibraryFolders, ShellLink, ShellRegistrar, TaskbarList
 
 Enumerations
-ExecutableType, FolderItemFilter, LibraryFolderFilter, LibraryViewTemplate, LinkResolution, OperationFlags, ShellIconType, ShellImageSize, ShellItemAttribute, ShellItemComparison, ShellItemDisplayString, ShellItemGetImageOptions, ShellItemToolTipOptions, TransferFlags
+ExecutableType, FolderItemFilter, LibraryFolderFilter, LibraryViewTemplate, LinkResolution, OperationFlags, ShellIconType, ShellImageSize, ShellItemAttribute, ShellItemComparison, ShellItemDisplayString, ShellItemGetImageOptions, ShellItemToolTipOptions, TransferFlags, VerbMultiSelectModel, VerbPosition, VerbSelectionModel
 
 </PackageReleaseNotes>
   </PropertyGroup>

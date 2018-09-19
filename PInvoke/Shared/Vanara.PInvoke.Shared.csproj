@@ -35,7 +35,7 @@ Classes
 AssociateAttribute, CoTaskMemStringMarshaler, IEnumFromIndexer&lt;T&gt;, IEnumFromNext&lt;T&gt;, Lib, Macros, OBJECT_TYPE_LIST, OverlappedAsync, OverlappedAsyncResult, PInvokeDataAttribute, PRECT, SafeElementArray&lt;T&gt;, SafeResourceId, SECURITY_ATTRIBUTES, TryGetNext, WIN32_FIND_DATA
 
 Structures
-COLORREF, HRESULT, LOGFONT, MSG, NTStatus, OBJECT_TYPE_LIST, PRECT, RECT, SECURITY_ATTRIBUTES, SIZE, SizeT, SYSTEMTIME, WIN32_FIND_DATA, Win32Error
+COLORREF, HRESULT, LOGFONT, MSG, NTStatus, OBJECT_TYPE_LIST, POINTS, PRECT, RECT, SECURITY_ATTRIBUTES, SIZE, SizeT, SYSTEMTIME, WIN32_FIND_DATA, Win32Error
 
 Enumerations
 ACCESS_MASK, DrawTextFlags, FacilityCode, FacilityCode, FileFlagsAndAttributes, FontFamily, FontPitch, LogFontCharSet, LogFontClippingPrecision, LogFontOutputPrecision, LogFontOutputQuality, ObjectTypeListLevel, PInvokeClient, ProcessorArchitecture, ResourceType, SECURITY_INFORMATION, SeverityLevel, SeverityLevel, ShowWindowCommand, STGM, SystemShutDownReason

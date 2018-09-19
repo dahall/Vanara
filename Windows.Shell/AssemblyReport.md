@@ -2,13 +2,20 @@
 ### Classes
 Class | Description
 ---- | ----
+CommandVerb | Encapsulates a shortcut menu verb in the registry.
+CommandVerbDictionary | 
 ControlPanel | Provides a means to open Control Panel items and get their paths.
 IconLocation | Wraps the icon location string used by some Shell classes.
+IndirectString | Wraps the icon location string used by some Shell classes.
+ProgId | Represents a programmatic identifier in the registry for an application.
 PropertyDescription | Enumerate and retrieve individual property description details. Wraps the `IPropertyDescription` shell interface
 PropertyDescriptionList | Exposes methods that extract information from a collection of property descriptions presented as a list.
 PropertyStore | Encapsulates the IPropertyStore object.
 PropertyType | Exposes methods that extract data from enumeration information.
 PropertyTypeList | Exposes methods that enumerate the possible values for a property.
+RegBasedSettings | Base class for registry based settings.
+RegistryBasedVirtualDictionary<T> | 
+ShellAssociation | 
 ShellFileInfo | Information and icons for any shell file.
 ShellFileNewOpEventArgs | Arguments supplied to the `PostNewItem` event.
 ShellFileOperations | Queued and static file operations using the Shell.
@@ -22,6 +29,7 @@ ShellItemPropertyUpdates | A dictionary of properties that can be used to set or
 ShellLibrary | Shell library encapsulation.
 ShellLibraryFolders | Folders of a `ShellLibrary`.
 ShellLink | Represents a Shell Shortcut (.lnk) file.
+ShellRegistrar | Static class that has methods used to register and unregister shell items in the Windows Registry.
 TaskbarList | Methods that control the Windows taskbar. It allows you to dynamically add, remove, and activate items on the taskbar. This wraps all of the ITaskbarListX interfaces.
 ### Enumerations
 Enum | Description | Values
@@ -40,3 +48,6 @@ ShellItemDisplayString | Requests the form of an item's display name to retrieve
 ShellItemGetImageOptions | Options for retrieving images from a `ShellItem`. | ResizeToFit, BiggerSizeOk, MemoryOnly, IconOnly, ThumbnailOnly, InCacheOnly, CropToSquare, WideThumbnails, IconBackground, ScaleUp
 ShellItemToolTipOptions | Flags that direct the handling of the item from which you're retrieving the info tip text. | Default, Name, LinkNotTarget, LinkTarget, AllowDelay, SingleLine
 TransferFlags | Used by methods of the ITransferSource and ITransferDestination interfaces to control their file operations. | Normal, FailExist, RenameExist, OverwriteExist, AllowDecryption, NoSecurity, CopyCreationTime, CopyWriteTime, UseFullAccess, DeleteRecycleIfPossible, CopyHardLink, CopyLocalizedName, MoveAsCopyDelete, SuspendShellEvents
+VerbMultiSelectModel |  | Unset, Player, Single, Document
+VerbPosition |  | Unset, Top, Bottom
+VerbSelectionModel |  | Item, BackgroundShortcutMenu

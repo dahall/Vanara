@@ -10,6 +10,7 @@ BadValueException | Exception raised when value(s) of a claim value type is inva
 ClaimValue | Class to represent the type of claims values held, the value(s) and obtain native (unmanaged) pointers to the value as they are stored in the union members of AUTHZ_SECURITY_ATTRIBUTE_V1 structure's 'Values' field.
 LogonRights | Allows for the privileges of a user to be retrieved, enumerated and set.
 PinnedAcl | Enables access to managed `RawAcl` as unmanaged <see cref="T:byte[]" />.
+PinnedSecurityDescriptor | Enables access to managed `ObjectSecurity` as unmanaged <see cref="T:byte[]" />.
 PinnedSid | Enables access to managed `SecurityIdentifier` as unmanaged `PSID`.
 PrivilegeAndAttributes | Class to hold associated `SystemPrivilege` and `PrivilegeAttributes` pairs.
 PrivilegedCodeBlock | Elevate user privileges for a code block similar to a <c>lock</c> or <c>using</c> statement.

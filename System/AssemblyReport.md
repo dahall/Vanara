@@ -18,7 +18,10 @@ FileInfoExtension | Extension methods for `FileSystemInfo` and derived classes t
 NetworkConnection | Represents a single network connection. Wraps `INetworkConnection`.
 NetworkListManager | Provides a set of methods to perform network list management functions.
 NetworkProfile | Represents a wireless network profile
+PathEx | Performs operations on String instances that contain file or directory path information. These operations are performed in a cross-platform manner.
 ProcessExtension | Extension methods for `Process` for privilegs, status, elevation and relationships.
+RegistryEventArgs | Argument used in `RegistryEventMonitor` events.
+RegistryEventMonitor | Watches the Windows Registry for any changes.
 ServiceControllerExtension | Extension methods for `ServiceController`.
 SystemShutdown | Provides access to system shutdown, restart, lock and notifications.
 VirtualDisk | Class that represents a virtual disk and allows for performing actions on it. This wraps most of the methods found in virtdisk.h.
@@ -43,5 +46,6 @@ BackgroundCopyJobSecurity | HTTP security flags that indicate which errors to ig
 BackgroundCopyJobState | Defines constant values for the different states of a job. | Queued, Connecting, Transferring, Suspended, Error, TransientError, Transferred, Acknowledged, Cancelled
 BackgroundCopyJobType | Defines constant values that specify the type of transfer job, such as download. | Download, Upload, UploadReply
 DeviceType | Represents the format of the virtual disk. | Unknown, Iso, Vhd, Vhdx, VhdSet
+PathCharType |  | Invalid, LongFileName, ShortFileName, Wildcard, Separator
 ProcessIntegrityLevel | Values which define a processes integrity level. | Untrusted, Undefined, Low, Medium, High, System
 Subtype | Represents the subtype of a virtual disk. | Fixed, Dynamic, Differencing

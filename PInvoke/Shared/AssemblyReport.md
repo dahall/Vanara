@@ -27,6 +27,7 @@ LOGFONT | The LOGFONT structure defines the attributes of a font.
 MSG | Contains message information from a thread's message queue.
 NTStatus | Formal replacement for the Windows NTStatus definition. In ntstatus.h, it is a defined UINT value. For .NET, this class strongly types the value.
 OBJECT_TYPE_LIST | Identifies an object type element in a hierarchy of object types. An array of OBJECT_TYPE_LIST structures to define a hierarchy of an object and its subobjects, such as property sets and properties.
+POINTS | The POINTS structure defines the coordinates of a point.
 PRECT | Defines the coordinates of the upper-left and lower-right corners of a rectangle.
 RECT | Defines the coordinates of the upper-left and lower-right corners of a rectangle.
 SECURITY_ATTRIBUTES | The SECURITY_ATTRIBUTES structure contains the security descriptor for an object and specifies whether the handle retrieved by specifying this structure is inheritable. This structure provides security settings for objects created by various functions, such as CreateFile, CreatePipe, CreateProcess, RegCreateKeyEx, or RegSaveKeyEx.
