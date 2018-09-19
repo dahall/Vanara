@@ -16,7 +16,9 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void NtQuerySystemInformationTest()
 		{
+#pragma warning disable CS0618 // Type or member is obsolete
 			var bi = NtQuerySystemInformation<SYSTEM_BASIC_INFORMATION>(SYSTEM_INFORMATION_CLASS.SystemBasicInformation);
+#pragma warning restore CS0618 // Type or member is obsolete
 			Assert.That(bi.NumberOfProcessors, Is.Not.Zero);
 			var qi = NtQuerySystemInformation<SYSTEM_REGISTRY_QUOTA_INFORMATION>(SYSTEM_INFORMATION_CLASS.SystemRegistryQuotaInformation);
 			Assert.That(qi.RegistryQuotaUsed, Is.Not.Zero);
