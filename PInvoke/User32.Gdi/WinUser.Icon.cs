@@ -61,6 +61,30 @@ namespace Vanara.PInvoke
 		public static extern SafeIconHandle CopyIcon(SafeIconHandle hIcon);
 
 		/// <summary>
+		/// <para>Copies the specified icon from another module to the current module.</para>
+		/// </summary>
+		/// <param name="hIcon">
+		/// <para>Type: <c>HICON</c></para>
+		/// <para>A handle to the icon to be copied.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HICON</c></para>
+		/// <para>If the function succeeds, the return value is a handle to the duplicate icon.</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>CopyIcon</c> function enables an application or DLL to get its own handle to an icon owned by another module. If the other
+		/// module is freed, the application icon will still be able to use the icon.
+		/// </para>
+		/// <para>Before closing, an application must call the DestroyIcon function to free any system resources associated with the icon.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-copyicon HICON CopyIcon( HICON hIcon );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "copyicon")]
+		private static extern IntPtr CopyIcon(IntPtr hIcon);
+
+		/// <summary>
 		/// <para>Creates an icon that has the specified size, colors, and bit patterns.</para>
 		/// </summary>
 		/// <param name="hInstance">
