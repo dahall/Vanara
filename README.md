@@ -28,9 +28,13 @@ I have tried to follow the concepts below in laying out the libraries.
   * (e.g. In the Vanara.PInvoke.Kernel32 project directory, you'll find a FileApi.cs, a WinBase.cs and a WinNT.cs file representing fileapi.h, winbase.h and winnt.h respectively.)
 * Where the direct interpretation of a structure leads to memory leaks or misuse, I have tried to simplify their use
 * Where structures are always passed by reference and where that structure needs to clean up memory allocations, I have changed the structure to a class implementing `IDisposable`.
-* Wherever possible, all handles have been turned into `SafeHandle` derivatives.
+* Wherever possible, all handles have been turned into `SafeHandle` derivatives named after the Windows API handle. If those handles require a call to a function to release/close/destroy, a derived `SafeHANDLE` exists that performs that function on disposal.
+  * (e.g. `HTOKEN` is defined. `SafeHTOKEN` builds upon that handle with an automated release calling `CloseHandle`)
 * Wherever possible, all functions that allocate memory that is to be freed by the caller use a safe memory handle.
 * All PInvoke calls are in assemblies prefixed by `Vanara.PInvoke`
+* If a structure is to passed into a function, and the structure is 64 bytes or less, that structure is marshaled using the `LPStruct` type which will pass the structure by reference without requiring the `ref` keyword.
+  * Windows API: `BOOL MapDialogRect(HWND hDlg, LPRECT lpRect)`
+  * Vanara: `bool MapDialogRect(HWND hDlg, [MarshalAs(UnmanagedType.LPStruct)] RECT lpRect);`
 * If there are classes or extensions that make use of the PInvoke calls, they are in wrapper assemblies prefixed by `Vanara` and then followed by a logical name for the functionality. Today, those are Core, Security, SystemServices, Windows.Forms and Windows.Shell.
 
 ## Supported Libraries
