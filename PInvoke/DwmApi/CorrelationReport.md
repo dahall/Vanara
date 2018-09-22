@@ -26,7 +26,7 @@ Native Method | Native DLL | Header | Managed Method
 [DwmTetherContact](https://www.google.com/search?num=5&q=DwmTetherContact+site%3Amicrosoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmTetherContact  
 [DwmTransitionOwnedWindow](https://www.google.com/search?num=5&q=DwmTransitionOwnedWindow+site%3Amicrosoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmTransitionOwnedWindow  
 [DwmUnregisterThumbnail](https://www.google.com/search?num=5&q=DwmUnregisterThumbnail+site%3Amicrosoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmUnregisterThumbnail  
-[DwmUpdateThumbnailProperties](https://www.google.com/search?num=5&q=DwmUpdateThumbnailProperties+site%3Amicrosoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmUpdateThumbnailProperties  
+[DwmUpdateThumbnailProperties](http://msdn2.microsoft.com/en-us/library/dwmupdatethumbnailproperties) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmUpdateThumbnailProperties  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  

@@ -4,7 +4,7 @@
     <Description>Methods, structures and constants imported from NetApi32.dll.</Description>
     <Copyright>Copyright © 2017-2018</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>1.1.0</VersionPrefix>
+    <VersionPrefix>2.0.0</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard20</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.NetApi32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>

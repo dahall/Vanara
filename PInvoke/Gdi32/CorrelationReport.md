@@ -46,7 +46,7 @@ Native Method | Native DLL | Header | Managed Method
 [CreateBitmapFromDxSurface](https://www.google.com/search?num=5&q=CreateBitmapFromDxSurface+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateBitmapFromDxSurface2](https://www.google.com/search?num=5&q=CreateBitmapFromDxSurface2+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateBitmapIndirect](https://www.google.com/search?num=5&q=CreateBitmapIndirect+site%3Amicrosoft.com) | gdi32.dll |  |   
-[CreateBrushIndirect](https://www.google.com/search?num=5&q=CreateBrushIndirect+site%3Amicrosoft.com) | gdi32.dll |  |   
+[CreateBrushIndirect](http://msdn2.microsoft.com/en-us/library/75f94ad1-ca25-4ad1-9e8c-ad1a4b8475a7) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreateBrushIndirect  
 [CreateColorSpace](https://www.google.com/search?num=5&q=CreateColorSpaceA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateCompatibleBitmap](https://www.google.com/search?num=5&q=CreateCompatibleBitmap+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateCompatibleDC](http://msdn2.microsoft.com/en-us/library/dd183489) | gdi32.dll | Wingdi.h | Vanara.PInvoke.Gdi32.CreateCompatibleDC  
@@ -799,5 +799,6 @@ Native Structure | Header | Managed Structure
 [BITMAPINFOHEADER](http://msdn2.microsoft.com/en-us/library/dd183376) | Wingdi.h | Vanara.PInvoke.Gdi32+BITMAPINFOHEADER  
 [BLENDFUNCTION](http://msdn2.microsoft.com/en-us/library/dd183393) | Wingdi.h | Vanara.PInvoke.Gdi32+BLENDFUNCTION  
 [DIBSECTION](http://msdn2.microsoft.com/en-us/library/dd183567) | Wingdi.h | Vanara.PInvoke.Gdi32+DIBSECTION  
+[LOGBRUSH](http://msdn2.microsoft.com/en-us/library/ded2c7a4-2248-4d01-95c6-ab4050719094) | wingdi.h | Vanara.PInvoke.Gdi32+LOGBRUSH  
 [RGBQUAD](http://msdn2.microsoft.com/en-us/library/dd162938) | Wingdi.h | Vanara.PInvoke.Gdi32+RGBQUAD  
 [TEXTMETRIC](https://www.google.com/search?num=5&q=TEXTMETRIC+site%3Amicrosoft.com) |  | Vanara.PInvoke.Gdi32+TEXTMETRIC  
