@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Vanara.Extensions;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.User32_Gdi;
 
@@ -222,15 +223,9 @@ namespace Vanara.Windows.Forms
 			base.WndProc(ref m);
 		}
 
-		private IntPtr SendMessage(IPAddressMessage msg, IntPtr wParam = default(IntPtr), IntPtr lParam = default(IntPtr)) =>
-			PInvoke.User32_Gdi.SendMessage(new HandleRef(this, Handle), (uint)msg, wParam, lParam);
+		private IntPtr SendMessage(IPAddressMessage msg, IntPtr wParam = default(IntPtr), IntPtr lParam = default(IntPtr)) => this.SendMessage((uint)msg, wParam, lParam);
 
-		private IntPtr SendMessage(IPAddressMessage msg, IntPtr wParam, ref uint lParam) =>
-			SendMessage(new HandleRef(this, Handle), (uint)msg, wParam, ref lParam);
-
-		[DllImport(PInvoke.Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		[System.Security.SecurityCritical]
-		private static extern IntPtr SendMessage(HandleRef hWnd, uint msg, IntPtr wParam, ref uint lParam);
+		private IntPtr SendMessage(IPAddressMessage msg, IntPtr wParam, ref uint lParam) => User32_Gdi.SendMessage(Handle, msg, wParam, ref lParam);
 	}
 
 	/// <summary>

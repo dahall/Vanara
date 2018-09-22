@@ -69,7 +69,7 @@ namespace Vanara.PInvoke.Tests
 			var target = new IN_ADDR(192, 168, 0, 202);
 			Assert.That(GetBestRoute(target, 0, out var fwdRow), Is.Zero);
 			var mibrow = new MIB_IPNET_ROW2(new SOCKADDR_IN(target), fwdRow.dwForwardIfIndex, SendARP(target));
-			Assert.That(GetIpNetTable2(ADDRESS_FAMILY.AF_INET, out MIB_IPNET_TABLE2 t1), Is.Zero);
+			Assert.That(GetIpNetTable2(ADDRESS_FAMILY.AF_INET, out var t1), Is.Zero);
 			if (HasVal(t1, mibrow))
 				Assert.That(DeleteIpNetEntry2(ref mibrow), Is.Zero);
 

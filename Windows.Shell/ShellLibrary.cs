@@ -169,7 +169,7 @@ namespace Vanara.Windows.Shell
 		/// <param name="allowUnindexableLocations">if set to <c>true</c> do not display a warning dialog to the user in collisions that concern network locations that cannot be indexed.</param>
 		public void ShowLibraryManagementDialog(IWin32Window parentWindow = null, string title = null, string instruction = null, bool allowUnindexableLocations = false)
 		{
-			SHShowManageLibraryUI(iShellItem, new HandleRef(parentWindow, parentWindow?.Handle ?? IntPtr.Zero), title, instruction,
+			SHShowManageLibraryUI(iShellItem, parentWindow?.Handle ?? IntPtr.Zero, title, instruction,
 				allowUnindexableLocations ? LIBRARYMANAGEDIALOGOPTIONS.LMD_ALLOWUNINDEXABLENETWORKLOCATIONS : LIBRARYMANAGEDIALOGOPTIONS.LMD_DEFAULT).ThrowIfFailed();
 		}
 

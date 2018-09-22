@@ -1374,7 +1374,7 @@ namespace Vanara.PInvoke
 		// int id, LPCSTR pszPath );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "05737525-d906-482c-847f-bdbf0ba0ce3d")]
-		public static extern void PathSetDlgItemPath(HandleRef hDlg, int id, string pszPath);
+		public static extern void PathSetDlgItemPath(HWND hDlg, int id, string pszPath);
 
 		/// <summary>
 		/// <para>

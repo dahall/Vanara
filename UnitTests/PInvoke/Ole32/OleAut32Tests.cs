@@ -16,7 +16,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			using (SafeSafeArrayDescriptor psa = SafeArrayCreateVector(VARTYPE.VT_I8, 0, 5))
 			{
-				Assert.That(SafeArrayAccessData(psa, out IntPtr pData).Succeeded);
+				Assert.That(SafeArrayAccessData(psa, out var pData).Succeeded);
 				Assert.That(pData, Is.Not.EqualTo(IntPtr.Zero));
 				Assert.That(SafeArrayUnaccessData(psa).Succeeded);
 				using (var d = new SafeArrayScopedAccessData(psa))
@@ -37,9 +37,9 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(psa, Is.Not.EqualTo(IntPtr.Zero));
 			Assert.That(SafeArrayGetDim(psa), Is.EqualTo(1));
 			Assert.That(SafeArrayGetElemsize(psa), Is.EqualTo(Marshal.SizeOf<T>()));
-			Assert.That(SafeArrayGetLBound(psa, 1, out int b).Succeeded);
+			Assert.That(SafeArrayGetLBound(psa, 1, out var b).Succeeded);
 			Assert.That(b, Is.EqualTo(0));
-			Assert.That(SafeArrayGetUBound(psa, 1, out int u).Succeeded);
+			Assert.That(SafeArrayGetUBound(psa, 1, out var u).Succeeded);
 			Assert.That(u, Is.EqualTo(count - 1));
 		}
 
@@ -63,12 +63,12 @@ namespace Vanara.PInvoke.Tests
 		{
 			using (SafeSafeArrayDescriptor psa = SafeArrayCreateVector(VARTYPE.VT_I4, 0, 5))
 			{
-				for (int i = 0; i < 5; i++)
+				for (var i = 0; i < 5; i++)
 				{
 					var p = SafeCoTaskMemHandle.CreateFromStructure(i);
 					Assert.That(SafeArrayPutElement(psa, new[] {i}, (IntPtr)p).Succeeded);
 				}
-				for (int i = 0; i < 5; i++)
+				for (var i = 0; i < 5; i++)
 				{
 					var p = SafeCoTaskMemHandle.CreateFromStructure<int>();
 					Assert.That(SafeArrayGetElement(psa, new[] {i}, (IntPtr)p).Succeeded);
@@ -95,7 +95,7 @@ namespace Vanara.PInvoke.Tests
 					//Assert.That(a, Is.EquivalentTo(new long[] {0, 1, 2, 3, 4}));
 					new[] { 0, 1, 2, 3, 4 }.MarshalToPtr(d.Data);
 				}
-				for (int i = 0; i < 5; i++)
+				for (var i = 0; i < 5; i++)
 				{
 					var p = new SafeCoTaskMemHandle(16);
 					Assert.That(SafeArrayGetElement(psa, new[] { i }, (IntPtr)p).Succeeded);

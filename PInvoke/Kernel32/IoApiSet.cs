@@ -148,7 +148,7 @@ namespace Vanara.PInvoke
 		/// <param name="userCallback">An AsyncCallback delegate that references the method to invoke when the operation is complete.</param>
 		/// <returns>An IAsyncResult instance that references the asynchronous request.</returns>
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
-		public static IAsyncResult BeginDeviceIoControl<TIn, TOut>(SafeFileHandle hDevice, uint dwIoControlCode, TIn? inVal, TOut? outVal, AsyncCallback userCallback) where TIn : struct where TOut : struct
+		public static IAsyncResult BeginDeviceIoControl<TIn, TOut>(HFILE hDevice, uint dwIoControlCode, TIn? inVal, TOut? outVal, AsyncCallback userCallback) where TIn : struct where TOut : struct
 		{
 			var buffer = Pack(inVal, outVal);
 			return BeginDeviceIoControl<TIn, TOut>(hDevice, dwIoControlCode, buffer, userCallback, null);
@@ -177,7 +177,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("IoAPI.h", MSDNShortId = "aa363791")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CancelIo([In] SafeFileHandle hFile);
+		public static extern bool CancelIo([In] HFILE hFile);
 
 		/// <summary>
 		/// Marks any outstanding I/O operations for the specified file handle. The function only cancels I/O operations in the current process, regardless of
@@ -207,7 +207,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("IoAPI.h", MSDNShortId = "aa363792")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool CancelIoEx([In] SafeFileHandle hFile, [In] NativeOverlapped* lpOverlapped);
+		public static extern unsafe bool CancelIoEx([In] HFILE hFile, [In] NativeOverlapped* lpOverlapped);
 
 		/// <summary>Marks pending synchronous I/O operations that are issued by the specified thread as canceled.</summary>
 		/// <param name="hThread">A handle to the thread.</param>
@@ -274,7 +274,7 @@ namespace Vanara.PInvoke
 		// NumberOfConcurrentThreads); https://msdn.microsoft.com/en-us/library/windows/desktop/aa363862(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("IoAPI.h", MSDNShortId = "aa363862")]
-		public static extern IntPtr CreateIoCompletionPort([In] SafeFileHandle FileHandle, [In] IntPtr ExistingCompletionPort, UIntPtr CompletionKey, uint NumberOfConcurrentThreads);
+		public static extern IntPtr CreateIoCompletionPort([In] HFILE FileHandle, [In] IntPtr ExistingCompletionPort, UIntPtr CompletionKey, uint NumberOfConcurrentThreads);
 
 		/// <summary>This macro is used to create a unique system I/O control code (IOCTL).</summary>
 		/// <param name="deviceType">
@@ -446,7 +446,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
-		public static extern bool DeviceIoControl(SafeFileHandle hDevice, uint dwIoControlCode, IntPtr lpInBuffer, uint nInBufferSize, IntPtr lpOutBuffer,
+		public static extern bool DeviceIoControl(HFILE hDevice, uint dwIoControlCode, IntPtr lpInBuffer, uint nInBufferSize, IntPtr lpOutBuffer,
 			uint nOutBufferSize, out uint lpBytesReturned, IntPtr lpOverlapped);
 
 		/// <summary>Sends a control code directly to a specified device driver, causing the corresponding device to perform the corresponding operation.</summary>
@@ -538,7 +538,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
-		public static extern unsafe bool DeviceIoControl(SafeFileHandle hDevice, uint dwIoControlCode, byte* lpInBuffer, uint nInBufferSize, byte* lpOutBuffer,
+		public static extern unsafe bool DeviceIoControl(HFILE hDevice, uint dwIoControlCode, byte* lpInBuffer, uint nInBufferSize, byte* lpOutBuffer,
 					uint nOutBufferSize, out uint lpBytesReturned, NativeOverlapped* lpOverlapped);
 
 		/// <summary>Sends a control code directly to a specified device driver, causing the corresponding device to perform the corresponding operation.</summary>
@@ -555,7 +555,7 @@ namespace Vanara.PInvoke
 		/// <param name="outVal">The data returned by the operation. The format of this data depends on the value of the dwIoControlCode parameter.</param>
 		/// <returns><c>true</c> if successful.</returns>
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
-		public static bool DeviceIoControl<TIn, TOut>(SafeFileHandle hDev, uint ioControlCode, TIn inVal, out TOut outVal) where TIn : struct where TOut : struct
+		public static bool DeviceIoControl<TIn, TOut>(HFILE hDev, uint ioControlCode, TIn inVal, out TOut outVal) where TIn : struct where TOut : struct
 		{
 			using (SafeHGlobalHandle ptrIn = SafeHGlobalHandle.CreateFromStructure(inVal), ptrOut = SafeHGlobalHandle.CreateFromStructure<TOut>())
 			{
@@ -577,7 +577,7 @@ namespace Vanara.PInvoke
 		/// <param name="outVal">The data returned by the operation. The format of this data depends on the value of the dwIoControlCode parameter.</param>
 		/// <returns><c>true</c> if successful.</returns>
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
-		public static bool DeviceIoControl<TOut>(SafeFileHandle hDev, uint ioControlCode, out TOut outVal) where TOut : struct
+		public static bool DeviceIoControl<TOut>(HFILE hDev, uint ioControlCode, out TOut outVal) where TOut : struct
 		{
 			using (var ptrOut = SafeHGlobalHandle.CreateFromStructure<TOut>())
 			{
@@ -599,7 +599,7 @@ namespace Vanara.PInvoke
 		/// <param name="inVal">The data required to perform the operation. The format of this data depends on the value of the dwIoControlCode parameter.</param>
 		/// <returns><c>true</c> if successful.</returns>
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
-		public static bool DeviceIoControl<TIn>(SafeFileHandle hDev, uint ioControlCode, TIn inVal) where TIn : struct
+		public static bool DeviceIoControl<TIn>(HFILE hDev, uint ioControlCode, TIn inVal) where TIn : struct
 		{
 			using (var ptrIn = SafeHGlobalHandle.CreateFromStructure(inVal))
 			{
@@ -607,10 +607,10 @@ namespace Vanara.PInvoke
 			}
 		}
 
-		/// <summary>Ends the asynchronous call to <see cref="BeginDeviceIoControl{TIn, TOut}(SafeFileHandle, uint, TIn?, TOut?, AsyncCallback)"/>.</summary>
+		/// <summary>Ends the asynchronous call to <see cref="BeginDeviceIoControl{TIn, TOut}(HFILE, uint, TIn?, TOut?, AsyncCallback)"/>.</summary>
 		/// <typeparam name="TIn">The type of the input value.</typeparam>
 		/// <typeparam name="TOut">The type of the output value.</typeparam>
-		/// <param name="asyncResult">The asynchronous result returned from <see cref="BeginDeviceIoControl{TIn, TOut}(SafeFileHandle, uint, TIn?, TOut?, AsyncCallback)"/>.</param>
+		/// <param name="asyncResult">The asynchronous result returned from <see cref="BeginDeviceIoControl{TIn, TOut}(HFILE, uint, TIn?, TOut?, AsyncCallback)"/>.</param>
 		/// <returns>The output value, if exists; <c>null</c> otherwise.</returns>
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
 		public static TOut? EndDeviceIoControl<TIn, TOut>(IAsyncResult asyncResult) where TIn : struct where TOut : struct
@@ -646,7 +646,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683209")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool GetOverlappedResult([In] SafeFileHandle hFile, [In] NativeOverlapped* lpOverlapped, out uint lpNumberOfBytesTransferred, [MarshalAs(UnmanagedType.Bool)] bool bWait);
+		public static extern unsafe bool GetOverlappedResult([In] HFILE hFile, [In] NativeOverlapped* lpOverlapped, out uint lpNumberOfBytesTransferred, [MarshalAs(UnmanagedType.Bool)] bool bWait);
 
 		/// <summary>
 		/// Retrieves the results of an overlapped operation on the specified file, named pipe, or communications device within the specified time-out interval.
@@ -696,7 +696,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Ioapiset.h", MSDNShortId = "hh448542")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool GetOverlappedResultEx([In] SafeFileHandle hFile, [In] NativeOverlapped* lpOverlapped, out uint lpNumberOfBytesTransferred, uint dwMilliseconds, [MarshalAs(UnmanagedType.Bool)] bool bAlertable);
+		public static extern unsafe bool GetOverlappedResultEx([In] HFILE hFile, [In] NativeOverlapped* lpOverlapped, out uint lpNumberOfBytesTransferred, uint dwMilliseconds, [MarshalAs(UnmanagedType.Bool)] bool bAlertable);
 
 		/// <summary>
 		/// <para>
@@ -810,7 +810,7 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern unsafe bool PostQueuedCompletionStatus([In] IntPtr CompletionPort, uint dwNumberOfBytesTransferred, UIntPtr dwCompletionKey, NativeOverlapped* lpOverlapped);
 
-		private static unsafe IAsyncResult BeginDeviceIoControl<TIn, TOut>(SafeFileHandle hDevice, uint dwIoControlCode, byte[] buffer, AsyncCallback userCallback, object userState) where TIn : struct where TOut : struct
+		private static unsafe IAsyncResult BeginDeviceIoControl<TIn, TOut>(HFILE hDevice, uint dwIoControlCode, byte[] buffer, AsyncCallback userCallback, object userState) where TIn : struct where TOut : struct
 		{
 			var ar = OverlappedAsync.SetupOverlappedFunction(hDevice, userCallback, buffer);
 			var inSz = Marshal.SizeOf(typeof(TIn));

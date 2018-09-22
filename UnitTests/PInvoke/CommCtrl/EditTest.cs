@@ -15,7 +15,7 @@ namespace Vanara.PInvoke.Tests
 			var f = new Form { Size = new System.Drawing.Size(100, 100) };
 			var btn = new TextBox { Size = new System.Drawing.Size(50, 12), Location = new System.Drawing.Point(5, 5) };
 			var tip = new EDITBALLOONTIP("Test", "tested");
-			btn.HandleCreated += (s, a) => SendMessage(new System.Runtime.InteropServices.HandleRef(btn, btn.Handle), User32_Gdi.EditMessage.EM_SHOWBALLOONTIP, 0, ref tip);
+			btn.HandleCreated += (s, a) => SendMessage(btn.Handle, User32_Gdi.EditMessage.EM_SHOWBALLOONTIP, 0, ref tip);
 			f.Controls.Add(btn);
 			f.ShowDialog();
 		}

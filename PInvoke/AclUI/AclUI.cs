@@ -574,7 +574,7 @@ namespace Vanara.PInvoke
 			/// <param name="uPage">
 			/// A value from the SI_PAGE_TYPE enumeration type that indicates the type of access control editor property page being created or destroyed.
 			/// </param>
-			void PropertySheetPageCallback([In] IntPtr hwnd, [In] PropertySheetCallbackMessage uMsg, [In] SI_PAGE_TYPE uPage);
+			void PropertySheetPageCallback([In] HWND hwnd, [In] PropertySheetCallbackMessage uMsg, [In] SI_PAGE_TYPE uPage);
 		}
 
 		/// <summary>
@@ -631,7 +631,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			/// <param name="hWnd">The parent window of the access control editor.</param>
 			/// <param name="uPage">A value of the SI_PAGE_TYPE enumeration that indicates the page type on which to display the elevated access control editor.</param>
-			void OpenElevatedEditor([In] IntPtr hWnd, [In] SI_PAGE_TYPE uPage);
+			void OpenElevatedEditor([In] HWND hWnd, [In] SI_PAGE_TYPE uPage);
 		}
 
 		/// <summary>
@@ -706,7 +706,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AclUI, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("aclui.h", Dll = "Aclui.dll", MSDNShortId = "aa446618")]
-		public static extern bool EditSecurity(IntPtr hwnd, ISecurityInformation psi);
+		public static extern bool EditSecurity(HWND hwnd, ISecurityInformation psi);
 
 		/// <summary>
 		/// The EditSecurityAdvanced function extends the EditSecurity function to include the security page type when displaying the property sheet that
@@ -722,7 +722,7 @@ namespace Vanara.PInvoke
 		/// <returns>If the function succeeds, the return value is S_OK. If the function fails, any other HRESULT value indicates an error.</returns>
 		[DllImport(Lib.AclUI, ExactSpelling = true, PreserveSig = true)]
 		[PInvokeData("aclui.h", Dll = "Aclui.dll", MSDNShortId = "hh285677")]
-		public static extern HRESULT EditSecurityAdvanced(IntPtr hwnd, ISecurityInformation psi, uint pageType);
+		public static extern HRESULT EditSecurityAdvanced(HWND hwnd, ISecurityInformation psi, uint pageType);
 
 		/// <summary>
 		/// The EditSecurityAdvanced function extends the EditSecurity function to include the security page type when displaying the property sheet that
@@ -738,7 +738,7 @@ namespace Vanara.PInvoke
 		/// <param name="pageActivated">A value of the SI_PAGE_ACTIVATED enumeration that indicates the page type that is activated when the editor opens.</param>
 		/// <returns>If the function succeeds, the return value is S_OK. If the function fails, any other HRESULT value indicates an error.</returns>
 		[PInvokeData("aclui.h", Dll = "Aclui.dll", MSDNShortId = "hh285677")]
-		public static HRESULT EditSecurityAdvanced(IntPtr hwnd, ISecurityInformation psi, SI_PAGE_TYPE pageType, SI_PAGE_ACTIVATED pageActivated)
+		public static HRESULT EditSecurityAdvanced(HWND hwnd, ISecurityInformation psi, SI_PAGE_TYPE pageType, SI_PAGE_ACTIVATED pageActivated)
 		{
 			return EditSecurityAdvanced(hwnd, psi, COMBINE_PAGE_ACTIVATION(pageType, pageActivated));
 		}

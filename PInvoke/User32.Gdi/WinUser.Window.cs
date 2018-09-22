@@ -717,8 +717,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Flags for <see cref="UpdateLayeredWindow(HandleRef, Gdi32.SafeDCHandle, Point, SIZE, Gdi32.SafeDCHandle, Point, COLORREF,
-		/// Gdi32.BLENDFUNCTION, UpdateLayeredWindowFlags)"/>
+		/// Flags for <see cref="UpdateLayeredWindow"/>
 		/// </summary>
 		[PInvokeData("winuser.h", MSDNShortId = "updatelayeredwindow")]
 		[Flags]
@@ -1072,7 +1071,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "animatewindow")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AnimateWindow(HandleRef hWnd, uint dwTime, uint dwFlags);
+		public static extern bool AnimateWindow(HWND hWnd, uint dwTime, uint dwFlags);
 
 		/// <summary>
 		/// <para>
@@ -1121,7 +1120,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-arrangeiconicwindows UINT ArrangeIconicWindows( HWND hWnd );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "arrangeiconicwindows")]
-		public static extern uint ArrangeIconicWindows(HandleRef hWnd);
+		public static extern uint ArrangeIconicWindows(HWND hWnd);
 
 		/// <summary>
 		/// <para>Allocates memory for a multiple-window- position structure and returns the handle to the structure.</para>
@@ -1162,7 +1161,7 @@ namespace Vanara.PInvoke
 		// nNumWindows );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "begindeferwindowpos")]
-		public static extern IntPtr BeginDeferWindowPos(int nNumWindows);
+		public static extern HDWP BeginDeferWindowPos(int nNumWindows);
 
 		/// <summary>
 		/// <para>
@@ -1190,7 +1189,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "bringwindowtotop")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool BringWindowToTop(HandleRef hWnd);
+		public static extern bool BringWindowToTop(HWND hWnd);
 
 		/// <summary>
 		/// <para>
@@ -1377,7 +1376,7 @@ namespace Vanara.PInvoke
 		// wHow, CONST RECT *lpRect, UINT cKids, const HWND *lpKids );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "cascadewindows")]
-		public static extern ushort CascadeWindows(HandleRef hwndParent, uint wHow, [MarshalAs(UnmanagedType.LPStruct)] RECT lpRect, uint cKids, [Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] IntPtr[] lpKids);
+		public static extern ushort CascadeWindows(HWND hwndParent, uint wHow, [MarshalAs(UnmanagedType.LPStruct)] RECT lpRect, uint cKids, [Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] HWND[] lpKids);
 
 		/// <summary>
 		/// <para>
@@ -1519,7 +1518,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "changewindowmessagefilterex")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ChangeWindowMessageFilterEx(HandleRef hwnd, uint message, MessageFilterExAction action, ref CHANGEFILTERSTRUCT pChangeFilterStruct);
+		public static extern bool ChangeWindowMessageFilterEx(HWND hwnd, uint message, MessageFilterExAction action, ref CHANGEFILTERSTRUCT pChangeFilterStruct);
 
 		/// <summary>
 		/// <para>
@@ -1564,7 +1563,7 @@ namespace Vanara.PInvoke
 		// hWndParent, POINT Point );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "childwindowfrompoint")]
-		public static extern IntPtr ChildWindowFromPoint(HandleRef hWndParent, Point Point);
+		public static extern HWND ChildWindowFromPoint(HWND hWndParent, Point Point);
 
 		/// <summary>
 		/// <para>
@@ -1626,7 +1625,7 @@ namespace Vanara.PInvoke
 		// hwnd, POINT pt, UINT flags );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "childwindowfrompointex")]
-		public static extern IntPtr ChildWindowFromPointEx(HandleRef hwndParent, Point pt, ChildWindowSkipOptions uFlags);
+		public static extern HWND ChildWindowFromPointEx(HWND hwndParent, Point pt, ChildWindowSkipOptions uFlags);
 
 		/// <summary>
 		/// <para>Minimizes (but does not destroy) the specified window.</para>
@@ -1647,7 +1646,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "closewindow")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CloseWindow(HandleRef hWnd);
+		public static extern bool CloseWindow(HWND hWnd);
 
 		/// <summary>
 		/// <para>
@@ -1898,7 +1897,7 @@ namespace Vanara.PInvoke
 		// HINSTANCE hInstance, LPVOID lpParam );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "createwindowex")]
-		public static extern IntPtr CreateWindowEx(WindowStylesEx dwExStyle, string lpClassName, string lpWindowName, WindowStyles dwStyle, int X, int Y, int nWidth, int nHeight, [Optional] IntPtr hWndParent, [Optional] IntPtr hMenu, SafeLibraryHandle hInstance, [Optional] IntPtr lpParam);
+		public static extern SafeHWND CreateWindowEx(WindowStylesEx dwExStyle, string lpClassName, string lpWindowName, WindowStyles dwStyle, int X, int Y, int nWidth, int nHeight, [Optional] HWND hWndParent, [Optional] HMENU hMenu, HINSTANCE hInstance, [Optional] IntPtr lpParam);
 
 		/// <summary>
 		/// <para>
@@ -2107,7 +2106,7 @@ namespace Vanara.PInvoke
 		// hWnd, HWND hWndInsertAfter, int x, int y, int cx, int cy, UINT uFlags );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "deferwindowpos")]
-		public static extern IntPtr DeferWindowPos(IntPtr hWinPosInfo, HandleRef hWnd, HandleRef hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPosFlags uFlags);
+		public static extern IntPtr DeferWindowPos(IntPtr hWinPosInfo, HWND hWnd, HWND hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPosFlags uFlags);
 
 		/// <summary>
 		/// <para>[This function is not intended for general use. It may be altered or unavailable in subsequent versions of Windows.]</para>
@@ -2132,7 +2131,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "deregistershellhookwindow")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DeregisterShellHookWindow(HandleRef hwnd);
+		public static extern bool DeregisterShellHookWindow(HWND hwnd);
 
 		/// <summary>
 		/// <para>
@@ -2169,7 +2168,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "destroywindow")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DestroyWindow(HandleRef hWnd);
+		public static extern bool DestroyWindow(HWND hWnd);
 
 		/// <summary>
 		/// <para>Simultaneously updates the position and size of one or more windows in a single screen-refreshing cycle.</para>
@@ -2233,7 +2232,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "endtask")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EndTask(HandleRef hWnd, [MarshalAs(UnmanagedType.Bool)] bool fShutDown, [MarshalAs(UnmanagedType.Bool)] bool fForce);
+		public static extern bool EndTask(HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool fShutDown, [MarshalAs(UnmanagedType.Bool)] bool fForce);
 
 		/// <summary>
 		/// <para>
@@ -2273,7 +2272,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "enumchildwindows")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumChildWindows(HandleRef hWndParent, WNDENUMPROC lpEnumFunc, IntPtr lParam);
+		public static extern bool EnumChildWindows(HWND hWndParent, WNDENUMPROC lpEnumFunc, IntPtr lParam);
 
 		/// <summary>
 		/// <para>
@@ -2390,7 +2389,7 @@ namespace Vanara.PInvoke
 		// lpWindowName );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "findwindow")]
-		public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+		public static extern HWND FindWindow(string lpClassName, string lpWindowName);
 
 		/// <summary>
 		/// <para>
@@ -2454,7 +2453,7 @@ namespace Vanara.PInvoke
 		// hWndChildAfter, LPCSTR lpszClass, LPCSTR lpszWindow );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "findwindowex")]
-		public static extern IntPtr FindWindowEx(HandleRef hWndParent, HandleRef hWndChildAfter, string lpszClass, string lpszWindow);
+		public static extern HWND FindWindowEx(HWND hWndParent, HWND hWndChildAfter, string lpszClass, string lpszWindow);
 
 		/// <summary>
 		/// <para>Retrieves the window handle to the active window attached to the calling thread's message queue.</para>
@@ -2473,7 +2472,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getactivewindow HWND GetActiveWindow( );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getactivewindow")]
-		public static extern IntPtr GetActiveWindow();
+		public static extern HWND GetActiveWindow();
 
 		/// <summary>
 		/// <para>Retrieves status information for the specified window if it is the application-switching (ALT+TAB) window.</para>
@@ -2521,7 +2520,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "getalttabinfo")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetAltTabInfo(HandleRef hwnd, int iItem, ref ALTTABINFO pati, StringBuilder pszItemText, uint cchItemText);
+		public static extern bool GetAltTabInfo(HWND hwnd, int iItem, ref ALTTABINFO pati, StringBuilder pszItemText, uint cchItemText);
 
 		/// <summary>
 		/// <para>Retrieves the handle to the ancestor of the specified window.</para>
@@ -2561,7 +2560,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getancestor HWND GetAncestor( HWND hwnd, UINT gaFlags );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getancestor")]
-		public static extern IntPtr GetAncestor(HandleRef hwnd, GetAncestorFlag gaFlags);
+		public static extern HWND GetAncestor(HWND hwnd, GetAncestorFlag gaFlags);
 
 		/// <summary>
 		/// Retrieves the coordinates of a window's client area. The client coordinates specify the upper-left and lower-right corners of the
@@ -2581,7 +2580,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, CharSet = CharSet.Auto, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[System.Security.SecurityCritical]
-		public static extern bool GetClientRect(HandleRef hWnd, [In, Out] ref RECT lpRect);
+		public static extern bool GetClientRect(HWND hWnd, [In, Out] ref RECT lpRect);
 
 		/// <summary>
 		/// Retrieves a handle to the desktop window. The desktop window covers the entire screen. The desktop window is the area on top of
@@ -2591,7 +2590,7 @@ namespace Vanara.PInvoke
 		// HWND WINAPI GetDesktopWindow(void); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633504(v=vs.85).aspx
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winuser.h", MSDNShortId = "ms633504")]
-		public static extern IntPtr GetDesktopWindow();
+		public static extern HWND GetDesktopWindow();
 
 		/// <summary>
 		/// <para>
@@ -2609,7 +2608,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getforegroundwindow HWND GetForegroundWindow( );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getforegroundwindow")]
-		public static extern IntPtr GetForegroundWindow();
+		public static extern HWND GetForegroundWindow();
 
 		/// <summary>
 		/// <para>Retrieves information about the active window or a specified GUI thread.</para>
@@ -2734,7 +2733,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getlastactivepopup HWND GetLastActivePopup( HWND hWnd );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getlastactivepopup")]
-		public static extern IntPtr GetLastActivePopup(HandleRef hWnd);
+		public static extern HWND GetLastActivePopup(HWND hWnd);
 
 		/// <summary>
 		/// <para>Retrieves the opacity and transparency color key of a layered window.</para>
@@ -2799,7 +2798,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getlayeredwindowattributes")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetLayeredWindowAttributes(HandleRef hwnd, out COLORREF pcrKey, out byte pbAlpha, out LayeredWindowAttributes pdwFlags);
+		public static extern bool GetLayeredWindowAttributes(HWND hwnd, out COLORREF pcrKey, out byte pbAlpha, out LayeredWindowAttributes pdwFlags);
 
 		/// <summary>
 		/// <para>
@@ -2845,7 +2844,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getnextwindow void GetNextWindow( hWnd, wCmd );
 		[PInvokeData("winuser.h", MSDNShortId = "getnextwindow")]
-		public static void GetNextWindow(HandleRef hWnd, GetWindowCmd uCmd) => GetWindow(hWnd, uCmd);
+		public static void GetNextWindow(HWND hWnd, GetWindowCmd uCmd) => GetWindow(hWnd, uCmd);
 
 		/// <summary>
 		/// <para>Retrieves a handle to the specified window's parent or owner.</para>
@@ -2883,7 +2882,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getparent HWND GetParent( HWND hWnd );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getparent")]
-		public static extern IntPtr GetParent(HandleRef hWnd);
+		public static extern HWND GetParent(HWND hWnd);
 
 		/// <summary>
 		/// <para>Retrieves the default layout that is used when windows are created with no parent or owner.</para>
@@ -2920,7 +2919,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getshellwindow HWND GetShellWindow( );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getshellwindow")]
-		public static extern IntPtr GetShellWindow();
+		public static extern HWND GetShellWindow();
 
 		/// <summary>
 		/// <para>Retrieves information about the specified title bar.</para>
@@ -2946,7 +2945,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "gettitlebarinfo")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetTitleBarInfo(HandleRef hwnd, ref TITLEBARINFO pti);
+		public static extern bool GetTitleBarInfo(HWND hwnd, ref TITLEBARINFO pti);
 
 		/// <summary>
 		/// <para>
@@ -2971,7 +2970,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-gettopwindow HWND GetTopWindow( HWND hWnd );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "gettopwindow")]
-		public static extern IntPtr GetTopWindow(HandleRef hWnd);
+		public static extern HWND GetTopWindow(HWND hWnd);
 
 		/// <summary>
 		/// <para>Retrieves a handle to a window that has the specified relationship (Z-Order or owner) to the specified window.</para>
@@ -3060,7 +3059,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindow HWND GetWindow( HWND hWnd, UINT uCmd );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getwindow")]
-		public static extern IntPtr GetWindow(HandleRef hWnd, GetWindowCmd uCmd);
+		public static extern HWND GetWindow(HWND hWnd, GetWindowCmd uCmd);
 
 		/// <summary>
 		/// <para>Retrieves the current display affinity setting, from any process, for a given window.</para>
@@ -3101,7 +3100,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getwindowdisplayaffinity")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetWindowDisplayAffinity(HandleRef hWnd, out WindowDisplayAffinity pdwAffinity);
+		public static extern bool GetWindowDisplayAffinity(HWND hWnd, out WindowDisplayAffinity pdwAffinity);
 
 		/// <summary>
 		/// <para>Retrieves information about the specified window.</para>
@@ -3128,7 +3127,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getwindowinfo")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetWindowInfo(HandleRef hwnd, ref WINDOWINFO pwi);
+		public static extern bool GetWindowInfo(HWND hwnd, ref WINDOWINFO pwi);
 
 		/// <summary>
 		/// <para>Retrieves the full path and file name of the module associated with the specified window handle.</para>
@@ -3153,7 +3152,7 @@ namespace Vanara.PInvoke
 		// HWND hwnd, LPSTR pszFileName, UINT cchFileNameMax );
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "getwindowmodulefilename")]
-		public static extern uint GetWindowModuleFileName(HandleRef hwnd, StringBuilder pszFileName, uint cchFileNameMax);
+		public static extern uint GetWindowModuleFileName(HWND hwnd, StringBuilder pszFileName, uint cchFileNameMax);
 
 		/// <summary>
 		/// <para>Retrieves the show state and the restored, minimized, and maximized positions of the specified window.</para>
@@ -3190,7 +3189,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getwindowplacement")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetWindowPlacement(HandleRef hWnd, ref WINDOWPLACEMENT lpwndpl);
+		public static extern bool GetWindowPlacement(HWND hWnd, ref WINDOWPLACEMENT lpwndpl);
 
 		/// <summary>
 		/// Retrieves the dimensions of the bounding rectangle of the specified window. The dimensions are given in screen coordinates that
@@ -3208,7 +3207,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[System.Security.SecurityCritical]
-		public static extern bool GetWindowRect(HandleRef hWnd, out RECT lpRect);
+		public static extern bool GetWindowRect(HWND hWnd, out RECT lpRect);
 
 		/// <summary>
 		/// <para>
@@ -3259,7 +3258,7 @@ namespace Vanara.PInvoke
 		// lpString, int nMaxCount );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "getwindowtext")]
-		public static extern int GetWindowText(HandleRef hWnd, StringBuilder lpString, int nMaxCount);
+		public static extern int GetWindowText(HWND hWnd, StringBuilder lpString, int nMaxCount);
 
 		/// <summary>
 		/// <para>
@@ -3301,7 +3300,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindowtextlengtha int GetWindowTextLengthA( HWND hWnd );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "getwindowtextlength")]
-		public static extern int GetWindowTextLength(HandleRef hWnd);
+		public static extern int GetWindowTextLength(HWND hWnd);
 
 		/// <summary>
 		/// <para>
@@ -3328,7 +3327,7 @@ namespace Vanara.PInvoke
 		// HWND hWnd, LPDWORD lpdwProcessId );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getwindowthreadprocessid")]
-		public static extern uint GetWindowThreadProcessId(HandleRef hWnd, out uint lpdwProcessId);
+		public static extern uint GetWindowThreadProcessId(HWND hWnd, out uint lpdwProcessId);
 
 		/// <summary>
 		/// <para>[This function is not intended for general use. It may be altered or unavailable in subsequent versions of Windows.]</para>
@@ -3373,7 +3372,7 @@ namespace Vanara.PInvoke
 		// hWnd, LPWSTR pString, int cchMaxCount );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "internalgetwindowtext")]
-		public static extern int InternalGetWindowText(HandleRef hWnd, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pString, int cchMaxCount);
+		public static extern int InternalGetWindowText(HWND hWnd, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pString, int cchMaxCount);
 
 		/// <summary>
 		/// <para>
@@ -3399,7 +3398,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "ischild")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool IsChild(HandleRef hWndParent, HandleRef hWnd);
+		public static extern bool IsChild(HWND hWndParent, HWND hWnd);
 
 		/// <summary>
 		/// <para>Determines whether the calling thread is already a GUI thread. It can also optionally convert the thread to a GUI thread.</para>
@@ -3459,7 +3458,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "ishungappwindow")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool IsHungAppWindow(HandleRef hwnd);
+		public static extern bool IsHungAppWindow(HWND hwnd);
 
 		/// <summary>
 		/// <para>Determines whether the specified window is minimized (iconic).</para>
@@ -3477,7 +3476,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "isiconic")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool IsIconic(HandleRef hWnd);
+		public static extern bool IsIconic(HWND hWnd);
 
 		/// <summary>
 		/// <para>[</para>
@@ -3525,7 +3524,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "iswindow")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool IsWindow(HandleRef hWnd);
+		public static extern bool IsWindow(HWND hWnd);
 
 		/// <summary>
 		/// <para>Determines whether the specified window is a native Unicode window.</para>
@@ -3555,7 +3554,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "iswindowunicode")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool IsWindowUnicode(HandleRef hWnd);
+		public static extern bool IsWindowUnicode(HWND hWnd);
 
 		/// <summary>
 		/// <para>Determines the visibility state of the specified window.</para>
@@ -3589,7 +3588,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "iswindowvisible")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool IsWindowVisible(HandleRef hWnd);
+		public static extern bool IsWindowVisible(HWND hWnd);
 
 		/// <summary>
 		/// <para>Determines whether a window is maximized.</para>
@@ -3607,7 +3606,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "iszoomed")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool IsZoomed(HandleRef hWnd);
+		public static extern bool IsZoomed(HWND hWnd);
 
 		/// <summary>
 		/// <para>
@@ -3711,7 +3710,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "logicaltophysicalpoint")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool LogicalToPhysicalPoint(HandleRef hWnd, ref Point lpPoint);
+		public static extern bool LogicalToPhysicalPoint(HWND hWnd, ref Point lpPoint);
 
 		/// <summary>
 		/// <para>
@@ -3769,7 +3768,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "movewindow")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool MoveWindow(HandleRef hWnd, int X, int Y, int nWidth, int nHeight, [MarshalAs(UnmanagedType.Bool)] bool bRepaint);
+		public static extern bool MoveWindow(HWND hWnd, int X, int Y, int nWidth, int nHeight, [MarshalAs(UnmanagedType.Bool)] bool bRepaint);
 
 		/// <summary>
 		/// <para>Restores a minimized (iconic) window to its previous size and position; it then activates the window.</para>
@@ -3790,7 +3789,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "openicon")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool OpenIcon(HandleRef hWnd);
+		public static extern bool OpenIcon(HWND hWnd);
 
 		/// <summary>
 		/// <para>Converts the physical coordinates of a point in a window to logical coordinates.</para>
@@ -3847,7 +3846,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "physicaltologicalpoint")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PhysicalToLogicalPoint(HandleRef hWnd, ref Point lpPoint);
+		public static extern bool PhysicalToLogicalPoint(HWND hWnd, ref Point lpPoint);
 
 		/// <summary>
 		/// <para>
@@ -3880,7 +3879,7 @@ namespace Vanara.PInvoke
 		// HWND hwndParent, POINT ptParentClientCoords );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "realchildwindowfrompoint")]
-		public static extern IntPtr RealChildWindowFromPoint(HandleRef hwndParent, Point ptParentClientCoords);
+		public static extern HWND RealChildWindowFromPoint(HWND hwndParent, Point ptParentClientCoords);
 
 		/// <summary>
 		/// <para>Retrieves a string that specifies the window type.</para>
@@ -3906,7 +3905,7 @@ namespace Vanara.PInvoke
 		// LPWSTR ptszClassName, UINT cchClassNameMax );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "realgetwindowclass")]
-		public static extern uint RealGetWindowClass(HandleRef hwnd, StringBuilder ptszClassName, uint cchClassNameMax);
+		public static extern uint RealGetWindowClass(HWND hwnd, StringBuilder ptszClassName, uint cchClassNameMax);
 
 		/// <summary>
 		/// <para>[This function is not intended for general use. It may be altered or unavailable in subsequent versions of Windows.]</para>
@@ -4016,7 +4015,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "registershellhookwindow")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool RegisterShellHookWindow(HandleRef hwnd);
+		public static extern bool RegisterShellHookWindow(HWND hwnd);
 
 		/// <summary>
 		/// <para>
@@ -4084,7 +4083,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "setforegroundwindow")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetForegroundWindow(HandleRef hWnd);
+		public static extern bool SetForegroundWindow(HWND hWnd);
 
 		/// <summary>
 		/// <para>Sets the opacity and transparency color key of a layered window.</para>
@@ -4149,7 +4148,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "setlayeredwindowattributes")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetLayeredWindowAttributes(HandleRef hwnd, COLORREF crKey, byte bAlpha, LayeredWindowAttributes dwFlags);
+		public static extern bool SetLayeredWindowAttributes(HWND hwnd, COLORREF crKey, byte bAlpha, LayeredWindowAttributes dwFlags);
 
 		/// <summary>
 		/// <para>Changes the parent window of the specified child window.</para>
@@ -4213,7 +4212,7 @@ namespace Vanara.PInvoke
 		// hWndNewParent );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "setparent")]
-		public static extern IntPtr SetParent(HandleRef hWndChild, HandleRef hWndNewParent);
+		public static extern HWND SetParent(HWND hWndChild, HWND hWndNewParent);
 
 		/// <summary>
 		/// <para>Changes the default layout when windows are created with no parent or owner only for the currently running process.</para>
@@ -4349,7 +4348,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "setwindowdisplayaffinity")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetWindowDisplayAffinity(HandleRef hWnd, WindowDisplayAffinity dwAffinity);
+		public static extern bool SetWindowDisplayAffinity(HWND hWnd, WindowDisplayAffinity dwAffinity);
 
 		/// <summary>
 		/// <para>Sets the show state and the restored, minimized, and maximized positions of the specified window.</para>
@@ -4387,7 +4386,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "setwindowplacement")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetWindowPlacement(HandleRef hWnd, ref WINDOWPLACEMENT lpwndpl);
+		public static extern bool SetWindowPlacement(HWND hWnd, ref WINDOWPLACEMENT lpwndpl);
 
 		/// <summary>
 		/// <para>
@@ -4597,7 +4596,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "setwindowpos")]
 		[System.Security.SecurityCritical]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetWindowPos(HandleRef hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
+		public static extern bool SetWindowPos(HWND hWnd, HWND hWndInsertAfter, int X, int Y, int cx, int cy, SetWindowPosFlags uFlags);
 
 		/// <summary>
 		/// <para>
@@ -4637,7 +4636,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "setwindowtext")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetWindowText(HandleRef hWnd, string lpString);
+		public static extern bool SetWindowText(HWND hWnd, string lpString);
 
 		/// <summary>
 		/// <para>Shows or hides all pop-up windows owned by the specified window.</para>
@@ -4670,7 +4669,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "showownedpopups")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ShowOwnedPopups(HandleRef hWnd, [MarshalAs(UnmanagedType.Bool)] bool fShow);
+		public static extern bool ShowOwnedPopups(HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool fShow);
 
 		/// <summary>
 		/// <para>Sets the specified window's show state.</para>
@@ -4799,7 +4798,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "showwindow")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ShowWindow(HandleRef hWnd, ShowWindowCommand nCmdShow);
+		public static extern bool ShowWindow(HWND hWnd, ShowWindowCommand nCmdShow);
 
 		/// <summary>
 		/// <para>Sets the show state of a window without waiting for the operation to complete.</para>
@@ -4827,7 +4826,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "showwindowasync")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ShowWindowAsync(HandleRef hWnd, ShowWindowCommand nCmdShow);
+		public static extern bool ShowWindowAsync(HWND hWnd, ShowWindowCommand nCmdShow);
 
 		/// <summary>
 		/// <para>Triggers a visual signal to indicate that a sound is playing.</para>
@@ -4888,7 +4887,7 @@ namespace Vanara.PInvoke
 		// BOOL fUnknown );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "switchtothiswindow")]
-		public static extern void SwitchToThisWindow(HandleRef hwnd, [MarshalAs(UnmanagedType.Bool)] bool fUnknown);
+		public static extern void SwitchToThisWindow(HWND hwnd, [MarshalAs(UnmanagedType.Bool)] bool fUnknown);
 
 		/// <summary>
 		/// <para>Tiles the specified child windows of the specified parent window.</para>
@@ -4949,7 +4948,7 @@ namespace Vanara.PInvoke
 		// CONST RECT *lpRect, UINT cKids, const HWND *lpKids );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "tilewindows")]
-		public static extern ushort TileWindows(HandleRef hwndParent, MdiTileFlags wHow, PRECT lpRect, uint cKids, [In] IntPtr[] lpKids);
+		public static extern ushort TileWindows(HWND hwndParent, MdiTileFlags wHow, PRECT lpRect, uint cKids, [In] HWND[] lpKids);
 
 		/// <summary>
 		/// <para>Updates the position, size, shape, content, and translucency of a layered window.</para>
@@ -5072,7 +5071,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "updatelayeredwindow")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool UpdateLayeredWindow(HandleRef hWnd, Gdi32.SafeDCHandle hdcDst, [In, MarshalAs(UnmanagedType.LPStruct)] Point pptDst, [In, MarshalAs(UnmanagedType.LPStruct)] SIZE psize, Gdi32.SafeDCHandle hdcSrc, [In, MarshalAs(UnmanagedType.LPStruct)] Point pptSrc, COLORREF crKey, [In, MarshalAs(UnmanagedType.LPStruct)] Gdi32.BLENDFUNCTION pblend, UpdateLayeredWindowFlags dwFlags);
+		public static extern bool UpdateLayeredWindow(HWND hWnd, HDC hdcDst, [In, MarshalAs(UnmanagedType.LPStruct)] Point pptDst, [In, MarshalAs(UnmanagedType.LPStruct)] SIZE psize, HDC hdcSrc, [In, MarshalAs(UnmanagedType.LPStruct)] Point pptSrc, COLORREF crKey, [In, MarshalAs(UnmanagedType.LPStruct)] Gdi32.BLENDFUNCTION pblend, UpdateLayeredWindowFlags dwFlags);
 
 		/// <summary>
 		/// <para>Updates the position, size, shape, content, and translucency of a layered window.</para>
@@ -5195,7 +5194,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "updatelayeredwindow")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool UpdateLayeredWindow(HandleRef hWnd, [In, Optional] IntPtr hdcDst, [In, Optional] IntPtr pptDst, [In, Optional] IntPtr psize, [In, Optional] IntPtr hdcSrc, [In, Optional] IntPtr pptSrc, COLORREF crKey, [In, MarshalAs(UnmanagedType.LPStruct)] Gdi32.BLENDFUNCTION pblend, UpdateLayeredWindowFlags dwFlags);
+		public static extern bool UpdateLayeredWindow(HWND hWnd, [In, Optional] HDC hdcDst, [In, Optional] IntPtr pptDst, [In, Optional] IntPtr psize, [In, Optional] HDC hdcSrc, [In, Optional] IntPtr pptSrc, COLORREF crKey, [In, MarshalAs(UnmanagedType.LPStruct)] Gdi32.BLENDFUNCTION pblend, UpdateLayeredWindowFlags dwFlags);
 
 		/// <summary>Updates the position, size, shape, content, and translucency of a layered window.</summary>
 		/// <param name="hwnd">
@@ -5222,7 +5221,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winuser.h", MSDNShortId = "ms633557")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool UpdateLayeredWindowIndirect([In] HandleRef hwnd, [In] ref UPDATELAYEREDWINDOWINFO pULWInfo);
+		public static extern bool UpdateLayeredWindowIndirect([In] HWND hwnd, [In] ref UPDATELAYEREDWINDOWINFO pULWInfo);
 
 		/// <summary>
 		/// <para>Retrieves a handle to the window that contains the specified physical point.</para>
@@ -5245,7 +5244,7 @@ namespace Vanara.PInvoke
 		// POINT Point );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "windowfromphysicalpoint")]
-		public static extern IntPtr WindowFromPhysicalPoint(Point Point);
+		public static extern HWND WindowFromPhysicalPoint(Point Point);
 
 		/// <summary>
 		/// <para>Retrieves a handle to the window that contains the specified point.</para>
@@ -5272,7 +5271,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-windowfrompoint HWND WindowFromPoint( POINT Point );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "windowfrompoint")]
-		public static extern IntPtr WindowFromPoint(Point Point);
+		public static extern HWND WindowFromPoint(Point Point);
 
 		/// <summary>
 		/// <para>Contains status information for the application-switching (ALT+TAB) window.</para>
@@ -6010,6 +6009,23 @@ namespace Vanara.PInvoke
 
 			/// <summary/>
 			public RECT rcDevice;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> to a window or dialog that releases a created HWND instance at disposal using DestroyWindow.</summary>
+		public class SafeHWND : HWND
+		{
+			/// <summary>Initializes a new instance of the <see cref="HWND"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeHWND(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle()
+			{
+				var hp = GetAncestor(this, GetAncestorFlag.GA_ROOT);
+				if (hp != this) return true;
+				return DestroyWindow(this);
+			}
 		}
 	}
 }

@@ -132,7 +132,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "registerhotkey")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool RegisterHotKey(HandleRef hWnd, int id, HotKeyModifiers fsModifiers, uint vk);
+		public static extern bool RegisterHotKey(HWND hWnd, int id, HotKeyModifiers fsModifiers, uint vk);
 
 		/// <summary>
 		/// <para>Frees a hot key previously registered by the calling thread.</para>
@@ -157,6 +157,6 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "unregisterhotkey")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool UnregisterHotKey(HandleRef hWnd, int id);
+		public static extern bool UnregisterHotKey(HWND hWnd, int id);
 	}
 }

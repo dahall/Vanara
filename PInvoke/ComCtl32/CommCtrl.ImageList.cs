@@ -7,10 +7,6 @@ using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32_Gdi;
 
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable InconsistentNaming
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-
 namespace Vanara.PInvoke
 {
 	public static partial class ComCtl32
@@ -220,7 +216,7 @@ namespace Vanara.PInvoke
 			/// When this method returns, contains a pointer to the index of the first new image. If the method fails to successfully add the new image, this
 			/// value is -1.
 			/// </returns>
-			int Add(IntPtr hbmImage, [Optional] IntPtr hbmMask);
+			int Add(SafeHBITMAP hbmImage, [Optional] SafeHBITMAP hbmMask);
 
 			/// <summary>Replaces an image with an icon or cursor.</summary>
 			/// <param name="i">
@@ -228,7 +224,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="hicon">A handle to the icon or cursor that contains the bitmap and mask for the new image.</param>
 			/// <returns>A pointer to an int that will contain the index of the image on return if successful, or -1 otherwise.</returns>
-			int ReplaceIcon(int i, IntPtr hicon);
+			int ReplaceIcon(int i, SafeHICON hicon);
 
 			/// <summary>
 			/// Adds a specified image to the list of images used as overlay masks. An image list can have up to four overlay masks in Common Controls version
@@ -244,7 +240,7 @@ namespace Vanara.PInvoke
 			/// <param name="i">A value of type int that contains the index of the image to replace.</param>
 			/// <param name="hbmImage">A handle to the bitmap that contains the image.</param>
 			/// <param name="hbmMask">A handle to the bitmap that contains the mask. If no mask is used with the image list, this parameter is ignored.</param>
-			void Replace(int i, IntPtr hbmImage, [Optional] IntPtr hbmMask);
+			void Replace(int i, SafeHBITMAP hbmImage, [Optional] SafeHBITMAP hbmMask);
 
 			/// <summary>Adds an image or images to an image list, generating a mask from the specified bitmap.</summary>
 			/// <param name="hbmImage">A handle to the bitmap that contains one or more images. The number of images is inferred from the width of the bitmap.</param>
@@ -253,7 +249,7 @@ namespace Vanara.PInvoke
 			/// is set to 1.
 			/// </param>
 			/// <returns>A pointer to an int that contains the index of the first new image when it returns, if successful, or -1 otherwise.</returns>
-			int AddMasked(IntPtr hbmImage, COLORREF crMask);
+			int AddMasked(SafeHBITMAP hbmImage, COLORREF crMask);
 
 			/// <summary>Draws an image list item in the specified device context.</summary>
 			/// <param name="pimldp">A pointer to an IMAGELISTDRAWPARAMS structure that contains the drawing parameters.</param>
@@ -267,7 +263,7 @@ namespace Vanara.PInvoke
 			/// <param name="i">A value of type int that contains the index of the image.</param>
 			/// <param name="flags">A combination of flags that specify the drawing style. For a list of values, see IImageList::Draw.</param>
 			/// <returns>A pointer to an int that contains the handle to the icon if successful, or NULL if otherwise.</returns>
-			IntPtr GetIcon(int i, IMAGELISTDRAWFLAGS flags);
+			SafeHICON GetIcon(int i, IMAGELISTDRAWFLAGS flags);
 
 			/// <summary>Gets information about an image.</summary>
 			/// <param name="i">A value of type int that contains the index of the image.</param>
@@ -355,11 +351,11 @@ namespace Vanara.PInvoke
 			/// <param name="y">
 			/// The y-coordinate at which to display the drag image. The coordinate is relative to the upper-left corner of the window, not the client area.
 			/// </param>
-			void DragEnter(HandleRef hwndLock, int x, int y);
+			void DragEnter(HWND hwndLock, int x, int y);
 
 			/// <summary>Unlocks the specified window and hides the drag image, which enables the window to update.</summary>
 			/// <param name="hwndLock">A handle to the window that contains the drag image.</param>
-			void DragLeave(HandleRef hwndLock);
+			void DragLeave(HWND hwndLock);
 
 			/// <summary>
 			/// Moves the image that is being dragged during a drag-and-drop operation. This function is typically called in response to a WM_MOUSEMOVE message.
@@ -438,7 +434,7 @@ namespace Vanara.PInvoke
 			/// When this method returns, contains a pointer to the index of the first new image. If the method fails to successfully add the new image, this
 			/// value is -1.
 			/// </returns>
-			new int Add(IntPtr hbmImage, [Optional] IntPtr hbmMask);
+			new int Add(SafeHBITMAP hbmImage, [Optional] SafeHBITMAP hbmMask);
 
 			/// <summary>Replaces an image with an icon or cursor.</summary>
 			/// <param name="i">
@@ -446,7 +442,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="hicon">A handle to the icon or cursor that contains the bitmap and mask for the new image.</param>
 			/// <returns>A pointer to an int that will contain the index of the image on return if successful, or -1 otherwise.</returns>
-			new int ReplaceIcon(int i, IntPtr hicon);
+			new int ReplaceIcon(int i, SafeHICON hicon);
 
 			/// <summary>
 			/// Adds a specified image to the list of images used as overlay masks. An image list can have up to four overlay masks in Common Controls version
@@ -462,7 +458,7 @@ namespace Vanara.PInvoke
 			/// <param name="i">A value of type int that contains the index of the image to replace.</param>
 			/// <param name="hbmImage">A handle to the bitmap that contains the image.</param>
 			/// <param name="hbmMask">A handle to the bitmap that contains the mask. If no mask is used with the image list, this parameter is ignored.</param>
-			new void Replace(int i, IntPtr hbmImage, [Optional] IntPtr hbmMask);
+			new void Replace(int i, SafeHBITMAP hbmImage, [Optional] SafeHBITMAP hbmMask);
 
 			/// <summary>Adds an image or images to an image list, generating a mask from the specified bitmap.</summary>
 			/// <param name="hbmImage">A handle to the bitmap that contains one or more images. The number of images is inferred from the width of the bitmap.</param>
@@ -471,7 +467,7 @@ namespace Vanara.PInvoke
 			/// is set to 1.
 			/// </param>
 			/// <returns>A pointer to an int that contains the index of the first new image when it returns, if successful, or -1 otherwise.</returns>
-			new int AddMasked(IntPtr hbmImage, COLORREF crMask);
+			new int AddMasked(SafeHBITMAP hbmImage, COLORREF crMask);
 
 			/// <summary>Draws an image list item in the specified device context.</summary>
 			/// <param name="pimldp">A pointer to an IMAGELISTDRAWPARAMS structure that contains the drawing parameters.</param>
@@ -574,11 +570,11 @@ namespace Vanara.PInvoke
 			/// <param name="y">
 			/// The y-coordinate at which to display the drag image. The coordinate is relative to the upper-left corner of the window, not the client area.
 			/// </param>
-			new void DragEnter(HandleRef hwndLock, int x, int y);
+			new void DragEnter(HWND hwndLock, int x, int y);
 
 			/// <summary>Unlocks the specified window and hides the drag image, which enables the window to update.</summary>
 			/// <param name="hwndLock">A handle to the window that contains the drag image.</param>
-			new void DragLeave(HandleRef hwndLock);
+			new void DragLeave(HWND hwndLock);
 
 			/// <summary>
 			/// Moves the image that is being dragged during a drag-and-drop operation. This function is typically called in response to a WM_MOUSEMOVE message.
@@ -723,7 +719,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h")]
-		public static extern HRESULT HIMAGELIST_QueryInterface(IntPtr himl, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT HIMAGELIST_QueryInterface(HIMAGELIST himl, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, [Out, MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>Get an image list interface from an image list handle.</summary>
 		/// <param name="himl">
@@ -734,11 +730,7 @@ namespace Vanara.PInvoke
 		/// When this method returns, contains the interface pointer requested. This is normally <c>IImageList2</c>, which provides the <c>Initialize</c> method.
 		/// </returns>
 		[PInvokeData("Commctrl.h")]
-		public static TIntf HIMAGELIST_QueryInterface<TIntf>(IntPtr himl)
-		{
-			if (himl == IntPtr.Zero) throw new ArgumentNullException(nameof(himl));
-			return (TIntf)Marshal.GetTypedObjectForIUnknown(himl, typeof(TIntf));
-		}
+		public static TIntf HIMAGELIST_QueryInterface<TIntf>(HIMAGELIST himl) => !himl.IsNull ? (TIntf)Marshal.GetTypedObjectForIUnknown(himl, typeof(TIntf)) : throw new ArgumentNullException(nameof(himl));
 
 		/// <summary>Get an image list handle from an image list interface.</summary>
 		/// <param name="himl">
@@ -746,7 +738,7 @@ namespace Vanara.PInvoke
 		/// <para>An IImageList object.</para>
 		/// </param>
 		/// <returns>An image list handle.</returns>
-		public static IntPtr IImageListToHIMAGELIST(IImageList himl) => Marshal.GetIUnknownForObject(himl);
+		public static HIMAGELIST IImageListToHIMAGELIST(IImageList himl) => Marshal.GetIUnknownForObject(himl);
 
 		/// <summary>Creates a single instance of an imagelist and returns an interface pointer to it.</summary>
 		/// <param name="rclsid">
@@ -811,7 +803,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb761522(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761522")]
-		public static extern SafeImageListHandle ImageList_Create(int cx, int cy, ILC flags, int cInitial, int cGrow);
+		public static extern SafeHIMAGELIST ImageList_Create(int cx, int cy, ILC flags, int cInitial, int cGrow);
 
 		/// <summary>Destroys an image list.</summary>
 		/// <param name="himl">
@@ -827,14 +819,14 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761524")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ImageList_Destroy(IntPtr himl);
+		public static extern bool ImageList_Destroy(HIMAGELIST himl);
 
 		/// <summary>Creates a duplicate of an existing image list.</summary><param name="himl"><para>Type: <c>HIMAGELIST</c></para><para>A handle to the image list to be duplicated. All information contained in the original image list for normal images is copied to the new image list. Overlay images are not copied.</para></param><returns><para>Type: <c>HIMAGELIST</c></para><para>Returns the handle to the new duplicate image list if successful, or <c>NULL</c> otherwise.</para></returns>
 		// HIMAGELIST ImageList_Duplicate( HIMAGELIST himl);
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb761540(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761540")]
-		public static extern IntPtr ImageList_Duplicate(IntPtr himl);
+		public static extern SafeHIMAGELIST ImageList_Duplicate(HIMAGELIST himl);
 
 		/// <summary>Creates an icon from an image and mask in an image list.</summary>
 		/// <param name="himl">
@@ -859,21 +851,21 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb761548(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761548")]
-		public static extern IntPtr ImageList_GetIcon(IntPtr himl, int i, IMAGELISTDRAWFLAGS flags);
+		public static extern SafeHICON ImageList_GetIcon(HIMAGELIST himl, int i, IMAGELISTDRAWFLAGS flags);
 
 		/// <summary>Creates an image list from the specified bitmap.</summary><param name="hi"><para>Type: <c><c>HINSTANCE</c></c></para><para>A handle to the instance that contains the resource. This parameter can be <c>NULL</c> if you are loading an image from a file or loading an OEM resource.</para></param><param name="lpbmp"><para>Type: <c><c>LPCTSTR</c></c></para><para>The image to load.</para><para>If the uFlags parameter includes LR_LOADFROMFILE, lpbmp is the address of a null-terminated string that names the file containing the image to load.</para><para>If the hi parameter is non-<c>NULL</c> and LR_LOADFROMFILE is not specified, lpbmp is the address of a null-terminated string that contains the name of the image resource in the hi module.</para><para>If hi is <c>NULL</c> and LR_LOADFROMFILE is not specified, the <c>LOWORD</c> of this parameter must be the identifier of an OEM image to load. To create this value, use the <c>MAKEINTRESOURCE</c> macro with one of the OEM image identifiers defined in Winuser.h. These identifiers have the following prefixes.</para><para><list type="table"><listheader><term>Value</term><term>Meaning</term></listheader><item><term>OBM_ for OEM bitmaps</term><term /></item><item><term>OIC_ for OEM icons</term><term /></item><item><term>OCR_ for OEM cursors</term><term /></item></list></para></param><param name="cx"><para>Type: <c>int</c></para><para>The width of each image. The height of each image and the initial number of images are inferred by the dimensions of the specified resource.</para></param><param name="cGrow"><para>Type: <c>int</c></para><para>The number of images by which the image list can grow when the system needs to make room for new images. This parameter represents the number of new images that the resized image list can contain.</para></param><param name="crMask"><para>Type: <c><c>COLORREF</c></c></para><para>The color used to generate a mask. Each pixel of this color in the specified bitmap, cursor, or icon is changed to black, and the corresponding bit in the mask is set to 1. If this parameter is the CLR_NONE value, no mask is generated. If this parameter is the CLR_DEFAULT value, the color of the pixel at the upper-left corner of the image is treated as the mask color.</para></param><param name="uType"><para>Type: <c><c>UINT</c></c></para><para>A flag that specifies the type of image to load. This parameter must be IMAGE_BITMAP to indicate that a bitmap is being loaded.</para><para><list type="table"><listheader><term>Value</term><term>Meaning</term></listheader><item><term>IMAGE_BITMAP</term><term>Loads a bitmap.</term></item></list></para></param><param name="uFlags"><para>Type: <c><c>UINT</c></c></para><para>Flags that specify how to load the image. This parameter can be a combination of the following values.</para><para><list type="table"><listheader><term>Value</term><term>Meaning</term></listheader><item><term>LR_CREATEDIBSECTION</term><term>Causes the function to return a DIB section bitmap rather than a compatible bitmap when the uType parameter specifies IMAGE_BITMAP. LR_CREATEDIBSECTION is useful for loading a bitmap without mapping it to the colors of the display device.</term></item><item><term>LR_DEFAULTCOLOR</term><term>Uses the color format of the display.</term></item><item><term>LR_DEFAULTSIZE</term><term>Uses the width or height specified by the system metric values for cursors and icons if the cx parameter is set to zero. If this value is not specified and cx is set to zero, the function sets the size to the one specified in the resource. If the resource contains multiple images, the function sets the size to that of the first image. </term></item><item><term>LR_LOADFROMFILE</term><term>Loads the image from the file specified by the lpbmp parameter.</term></item><item><term>LR_LOADMAP3DCOLORS</term><term>Searches the color table for the image and replaces the following shades of gray with the corresponding three-dimensional color: Dk Gray: RGB(128, 128, 128)COLOR_3DSHADOW Gray: RGB(192, 192, 192)COLOR_3DFACE Lt Gray: RGB(223, 223, 223)COLOR_3DLIGHT For more information, see the Remarks section.</term></item><item><term>LR_LOADTRANSPARENT</term><term>Retrieves the color value of the first pixel in the image and replaces the corresponding entry in the color table with the default window color (the COLOR_WINDOW display color). All pixels in the image that use that color become the default window value color. This value applies only to images that have a corresponding color table. For more information, see the Remarks section.</term></item><item><term>LR_MONOCHROME</term><term>Loads the image in black and white.</term></item><item><term>LR_SHARED</term><term>Shares the image handle if the image is loaded multiple times. Do not use this value for images that have nontraditional sizes that might change after loading or for images that are loaded from a file. </term></item></list></para></param><returns><para>Type: <c>HIMAGELIST</c></para><para>Returns the handle to the image list if successful, or <c>NULL</c> otherwise.</para></returns>
 		// HIMAGELIST ImageList_LoadImage( HINSTANCE hi, LPCTSTR lpbmp, int cx, int cGrow, COLORREF crMask, UINT uType, UINT uFlags);
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb761557(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761557")]
-		public static extern SafeImageListHandle ImageList_LoadImage(SafeLibraryHandle hi, string lpbmp, int cx, int cGrow, COLORREF crMask, LoadImageType uType, LoadImageOptions uFlags);
+		public static extern SafeHIMAGELIST ImageList_LoadImage(HINSTANCE hi, string lpbmp, int cx, int cGrow, COLORREF crMask, LoadImageType uType, LoadImageOptions uFlags);
 
 		/// <summary>Reads an image list from a stream.</summary><param name="pstm"><para>Type: <c>LPSTREAM</c></para><para>A pointer to the stream.</para></param><returns><para>Type: <c>HIMAGELIST</c></para><para>Returns the handle to the image list if successful, or <c>NULL</c> otherwise.</para></returns>
 		// HIMAGELIST ImageList_Read( LPSTREAM pstm);
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb761560(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761560")]
-		public static extern SafeImageListHandle ImageList_Read(IStream pstm);
+		public static extern SafeHIMAGELIST ImageList_Read(IStream pstm);
 
 		/// <summary>Reads an image list from a stream, and returns an <c>IImageList</c> interface to the image list.</summary>
 		/// <param name="dwFlags">
@@ -936,7 +928,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775228")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ImageList_Write(IntPtr himl, IStream pstm);
+		public static extern bool ImageList_Write(HIMAGELIST himl, IStream pstm);
 
 		/// <summary>Writes an image list to a stream.</summary>
 		/// <param name="himl">
@@ -978,7 +970,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb775229(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775229")]
-		public static extern HRESULT ImageList_WriteEx(IntPtr himl, ILP dwFlags, IStream pstm);
+		public static extern HRESULT ImageList_WriteEx(HIMAGELIST himl, ILP dwFlags, IStream pstm);
 
 		/// <summary>Prepares the index of an overlay mask so that the <c>ImageList_Draw</c> function can use it.</summary>
 		/// <param name="iOverlay">
@@ -1126,10 +1118,10 @@ namespace Vanara.PInvoke
 			/// <param name="index">The zero-based index of the image to be drawn.</param>
 			/// <param name="bgColor">The image background color.</param>
 			/// <param name="style">A flag specifying the drawing style and, optionally, the overlay image.</param>
-			public IMAGELISTDRAWPARAMS(IntPtr hdcDst, RECT bounds, int index, COLORREF bgColor, IMAGELISTDRAWFLAGS style = IMAGELISTDRAWFLAGS.ILD_NORMAL) : this()
+			public IMAGELISTDRAWPARAMS(HDC hdcDst, RECT bounds, int index, COLORREF bgColor, IMAGELISTDRAWFLAGS style = IMAGELISTDRAWFLAGS.ILD_NORMAL) : this()
 			{
 				i = index;
-				this.hdcDst = hdcDst;
+				this.hdcDst = hdcDst.DangerousGetHandle();
 				x = bounds.X;
 				y = bounds.Y;
 				cx = bounds.Width;
@@ -1140,24 +1132,25 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Safe image list handle. Be aware that if this is instantiated with ownership of the handle, it will be destroyed on disposal.</summary>
-		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
-		public class SafeImageListHandle : GenericSafeHandle
+		public class SafeHIMAGELIST : HIMAGELIST
 		{
 			private IImageList iImageList;
 
-			/// <summary>Initializes a new instance of the <see cref="SafeImageListHandle"/> class.</summary>
-			public SafeImageListHandle() : this(IntPtr.Zero) { }
-			/// <summary>Initializes a new instance of the <see cref="SafeImageListHandle"/> class.</summary>
-			/// <param name="handle">The handle.</param>
-			/// <param name="owns">if set to <c>true</c> the handle will be destroyed on disposal.</param>
-			public SafeImageListHandle(IntPtr handle, bool owns = true) : base(handle, ImageList_Destroy, owns) { }
-			/// <summary>Initializes a new instance of the <see cref="SafeImageListHandle"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="HIMAGELIST"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeHIMAGELIST(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHIMAGELIST"/> class.</summary>
 			/// <param name="iil">An IImageList object.</param>
-			public SafeImageListHandle(IImageList iil) : this(ImageList_Duplicate(IImageListToHIMAGELIST(iil)), true) { }
+			public SafeHIMAGELIST(IImageList iil) : this(ImageList_Duplicate(IImageListToHIMAGELIST(iil)), true) { }
 
 			/// <summary>Gets the IImageList interface for this handle.</summary>
 			/// <value>The interface.</value>
 			public IImageList Interface => iImageList ?? (iImageList = HIMAGELIST_QueryInterface<IImageList>(handle));
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => ImageList_Destroy(this);
 		}
 	}
 }

@@ -202,7 +202,7 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="title">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage(HandleRef hWnd, EditMessage Msg, int wParam, ref TTGETTITLE title) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref title);
+		public static IntPtr SendMessage(HWND hWnd, EditMessage Msg, int wParam, ref TTGETTITLE title) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref title);
 
 		/// <summary>
 		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
@@ -212,7 +212,7 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="toolInfo">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage(HandleRef hWnd, EditMessage Msg, int wParam, ref TOOLINFO toolInfo) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref toolInfo);
+		public static IntPtr SendMessage(HWND hWnd, EditMessage Msg, int wParam, ref TOOLINFO toolInfo) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref toolInfo);
 
 		/// <summary>
 		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
@@ -222,6 +222,6 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="hitTestInfo">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage(HandleRef hWnd, EditMessage Msg, int wParam, ref TTHITTESTINFO hitTestInfo) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref hitTestInfo);
+		public static IntPtr SendMessage(HWND hWnd, EditMessage Msg, int wParam, ref TTHITTESTINFO hitTestInfo) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref hitTestInfo);
 	}
 }

@@ -103,7 +103,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773252(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773252")]
-		public static extern SafeBufferedAnimationHandle BeginBufferedAnimation(HandleRef hwnd, SafeDCHandle hdcTarget, [In] ref RECT rcTarget, BP_BUFFERFORMAT dwFormat,
+		public static extern SafeBufferedAnimationHandle BeginBufferedAnimation(HWND hwnd, HDC hdcTarget, [In] ref RECT rcTarget, BP_BUFFERFORMAT dwFormat,
 			[In] BP_PAINTPARAMS pPaintParams, [In] ref BP_ANIMATIONPARAMS pAnimationParams, out IntPtr phdcFrom, out IntPtr phdcTo);
 
 		/// <summary>Begins a buffered paint operation.</summary>
@@ -144,7 +144,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773257(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773257")]
-		public static extern SafeBufferedPaintHandle BeginBufferedPaint(SafeDCHandle hdcTarget, [In] ref RECT prcTarget, BP_BUFFERFORMAT dwFormat, [In] BP_PAINTPARAMS pPaintParams, out IntPtr phdc);
+		public static extern SafeBufferedPaintHandle BeginBufferedPaint(HDC hdcTarget, [In] ref RECT prcTarget, BP_BUFFERFORMAT dwFormat, [In] BP_PAINTPARAMS pPaintParams, out IntPtr phdc);
 
 		/// <summary>Clears a specified rectangle in the buffer to ARGB = {0,0,0,0}.</summary>
 		/// <param name="hBufferedPaint">
@@ -194,7 +194,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773271")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool BufferedPaintRenderAnimation(HandleRef hwnd, SafeDCHandle hdcTarget);
+		public static extern bool BufferedPaintRenderAnimation(HWND hwnd, HDC hdcTarget);
 
 		/// <summary>
 		/// Sets the alpha to a specified value in a given rectangle. The alpha controls the amount of transparency applied when blending with the buffer onto
@@ -237,7 +237,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773280(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773280")]
-		public static extern HRESULT BufferedPaintStopAllAnimations(HandleRef hwnd);
+		public static extern HRESULT BufferedPaintStopAllAnimations(HWND hwnd);
 
 		/// <summary>
 		/// Closes down buffered painting for the current thread. Called once for each call to <c>BufferedPaintInit</c> after calls to <c>BeginBufferedPaint</c>

@@ -37,7 +37,7 @@ namespace Vanara.Extensions.Tests
 			var sptr = StringHelper.AllocString("X", CharSet.Ansi);
 			Assert.That(sptr, Is.Not.EqualTo(IntPtr.Zero));
 			Assert.That(StringHelper.GetString(sptr, CharSet.Ansi), Is.EqualTo("X"));
-			StringHelper.RefreshString(ref sptr, out uint l, "ZZZ", CharSet.Ansi);
+			StringHelper.RefreshString(ref sptr, out var l, "ZZZ", CharSet.Ansi);
 			Assert.That(l, Is.EqualTo(4));
 			Assert.That(StringHelper.GetString(sptr, CharSet.Ansi), Is.EqualTo("ZZZ"));
 			StringHelper.FreeString(sptr, CharSet.Ansi);

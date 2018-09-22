@@ -28,7 +28,7 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void CompareTest()
 		{
-			SYSTEMTIME st3 = new SYSTEMTIME(DateTime.Today);
+			var st3 = new SYSTEMTIME(DateTime.Today);
 			var st4 = new SYSTEMTIME(2003, 6, 5, 4, 3, 2, 1);
 			Assert.That(SYSTEMTIME.Compare(st3, st4), Is.GreaterThan(0));
 			Assert.That(SYSTEMTIME.Compare(st4, st3), Is.LessThan(0));
@@ -38,7 +38,7 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void CompareToTest()
 		{
-			SYSTEMTIME st3 = new SYSTEMTIME(DateTime.Today);
+			var st3 = new SYSTEMTIME(DateTime.Today);
 			var st4 = new SYSTEMTIME(2003, 6, 5, 4, 3, 2, 1);
 			Assert.That(st3.CompareTo(st4), Is.GreaterThan(0));
 			Assert.That(st4.CompareTo(st3), Is.LessThan(0));
@@ -101,7 +101,7 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void ToStringTest()
 		{
-			SYSTEMTIME st3 = new SYSTEMTIME(DateTime.Today);
+			var st3 = new SYSTEMTIME(DateTime.Today);
 			Assert.That(st3.ToString(), Is.EqualTo(DateTime.Today.ToString()));
 			Assert.That(st3.GetHashCode(), Is.Not.EqualTo(SYSTEMTIME.MinValue.GetHashCode()));
 		}

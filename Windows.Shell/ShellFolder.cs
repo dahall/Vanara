@@ -228,10 +228,7 @@ namespace Vanara.Windows.Shell
 		/// <returns>An <see cref="IEnumerator"/> object that can be used to iterate through the collection.</returns>
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-		internal static IntPtr IWin2Ptr(System.Windows.Forms.IWin32Window wnd, bool desktopIfNull = true)
-		{
-			return wnd == null ? User32_Gdi.FindWindow("Progman", null) : (IntPtr)new HandleRef(wnd, wnd.Handle);
-		}
+		internal static HWND IWin2Ptr(System.Windows.Forms.IWin32Window wnd, bool desktopIfNull = true) => wnd?.Handle ?? User32_Gdi.FindWindow("Progman", null);
 
 		/// <summary>Enumerates all the children of the current item. Not valid before Vista.</summary>
 		/// <returns>An enumeration of the child objects.</returns>

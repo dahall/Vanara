@@ -51,7 +51,7 @@ namespace Vanara.PInvoke.Tests
 		public void WNetAddConnection3Test()
 		{
 			var drv = "Q:";
-			WNetAddConnection3(new HandleRef(), new NETRESOURCE(remSh, drv), null, null, CONNECT.CONNECT_INTERACTIVE).ThrowIfFailed();
+			WNetAddConnection3(HWND.NULL, new NETRESOURCE(remSh, drv), null, null, CONNECT.CONNECT_INTERACTIVE).ThrowIfFailed();
 			WNetCancelConnection2(drv, 0, true).ThrowIfFailed();
 		}
 
@@ -61,7 +61,7 @@ namespace Vanara.PInvoke.Tests
 			WNetOpenEnum(NETRESOURCEScope.RESOURCE_CONNECTED, NETRESOURCEType.RESOURCETYPE_ANY, NETRESOURCEUsage.RESOURCEUSAGE_ALL, IntPtr.Zero, out var h).ThrowIfFailed();
 			Assert.That(h.IsInvalid, Is.False);
 
-			int count = -1;
+			var count = -1;
 			uint sz = 1;
 			var ptr = new SafeCoTaskMemHandle((int)sz);
 			Assert.That(WNetEnumResource(h, ref count, (IntPtr)ptr, ref sz), Is.EqualTo(Win32Error.ERROR_MORE_DATA));
@@ -73,7 +73,7 @@ namespace Vanara.PInvoke.Tests
 			NETRESOURCE[] nets = null;
 			Assert.That(() => nets = ptr.ToArray<NETRESOURCE>(count), Throws.Nothing);
 
-			for (int i = 0; i < count; i++)
+			for (var i = 0; i < count; i++)
 				TestContext.WriteLine(nets[i].lpProvider);
 		}
 
@@ -190,7 +190,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			var sz = 20U;
 			var sb = new StringBuilder((int)sz);
-			WNetUseConnection(new HandleRef(), new NETRESOURCE(remSh), null, null, CONNECT.CONNECT_REDIRECT, sb, ref sz, out var drv).ThrowIfFailed();
+			WNetUseConnection(HWND.NULL, new NETRESOURCE(remSh), null, null, CONNECT.CONNECT_REDIRECT, sb, ref sz, out var drv).ThrowIfFailed();
 			Assert.That(sb.Length, Is.GreaterThan(0));
 			TestContext.WriteLine($"{sb} {drv}");
 			WNetCancelConnection2(sb.ToString(), 0, true);

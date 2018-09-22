@@ -37,7 +37,7 @@ namespace Vanara.Windows.Forms.Tests
 			Assert.That(MessageBox.Show("Confirm new dlg and no save chkbox", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes);
 			cd.ConfirmCredentials(true);
 
-			CredentialsDialog.ParseUserName(cd.UserName, out string user, out string dom);
+			CredentialsDialog.ParseUserName(cd.UserName, out var user, out var dom);
 
 			void CredDlgOnValidatePassword(object sender, CredentialsDialog.PasswordValidatorEventArgs e)
 			{

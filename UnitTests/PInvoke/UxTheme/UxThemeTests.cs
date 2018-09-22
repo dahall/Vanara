@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using Vanara.Extensions;
 using Vanara.InteropServices;
+using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.UxTheme;
 
 namespace Vanara.PInvoke.Tests
@@ -15,14 +16,14 @@ namespace Vanara.PInvoke.Tests
 	public class UxThemeTests
 	{
 		private const int bufSz = 1024;
-		private SafeThemeHandle hwt, hbt;
+		private SafeHTHEME hwt, hbt;
 
 		[OneTimeSetUp]
 		public void _Setup()
 		{
-			hwt = OpenThemeDataEx(new HandleRef(), "Window", OpenThemeDataOptions.None);
+			hwt = OpenThemeDataEx(HWND.NULL, "Window", OpenThemeDataOptions.None);
 			Assert.That(hwt.IsInvalid, Is.False);
-			hbt = OpenThemeDataEx(new HandleRef(), "Button", OpenThemeDataOptions.None);
+			hbt = OpenThemeDataEx(HWND.NULL, "Button", OpenThemeDataOptions.None);
 			Assert.That(hbt.IsInvalid, Is.False);
 		}
 
@@ -124,7 +125,7 @@ namespace Vanara.PInvoke.Tests
 			var f = new Form() { Size = new Size(300, 300) };
 			f.Shown += (s, e) =>
 			{
-				var hr = EnableThemeDialogTexture(new HandleRef(f, f.Handle), ThemeDialogTextureFlags.ETDT_ENABLEAEROWIZARDTAB);
+				var hr = EnableThemeDialogTexture(f.Handle, ThemeDialogTextureFlags.ETDT_ENABLEAEROWIZARDTAB);
 				Assert.That(hr.Succeeded);
 				///f.Close();
 			};
@@ -193,7 +194,7 @@ namespace Vanara.PInvoke.Tests
 		public void GetThemeBackgroundContentRectTest()
 		{
 			var rect = new RECT(0, 0, 400, 400);
-			Assert.That(GetThemeBackgroundContentRect(hwt, Gdi32.SafeDCHandle.Null, 1, 0, ref rect, out var cntRect).Succeeded);
+			Assert.That(GetThemeBackgroundContentRect(hwt, HDC.NULL, 1, 0, ref rect, out var cntRect).Succeeded);
 			Assert.That(cntRect, Is.Not.EqualTo(new RECT()));
 			TestContext.WriteLine(cntRect);
 		}
@@ -202,8 +203,8 @@ namespace Vanara.PInvoke.Tests
 		public void GetThemeBackgroundExtentTest()
 		{
 			var rect = new RECT(0, 0, 400, 400);
-			GetThemeBackgroundContentRect(hwt, Gdi32.SafeDCHandle.Null, 21, 1, ref rect, out var cntRect);
-			Assert.That(GetThemeBackgroundExtent(hwt, Gdi32.SafeDCHandle.Null, 21, 1, ref cntRect, out var r).Succeeded);
+			GetThemeBackgroundContentRect(hwt, HDC.NULL, 21, 1, ref rect, out var cntRect);
+			Assert.That(GetThemeBackgroundExtent(hwt, HDC.NULL, 21, 1, ref cntRect, out var r).Succeeded);
 			Assert.That(r.IsEmpty, Is.False);
 		}
 
@@ -211,10 +212,9 @@ namespace Vanara.PInvoke.Tests
 		public void GetThemeBackgroundRegionTest()
 		{
 			var rect = new RECT(0, 0, 400, 400);
-			GetThemeBackgroundContentRect(hwt, Gdi32.SafeDCHandle.Null, 21, 1, ref rect, out var cntRect);
-			Assert.That(GetThemeBackgroundRegion(hwt, Gdi32.SafeDCHandle.Null, 21, 1, ref cntRect, out var r).Succeeded);
+			GetThemeBackgroundContentRect(hwt, HDC.NULL, 21, 1, ref rect, out var cntRect);
+			Assert.That(GetThemeBackgroundRegion(hwt, HDC.NULL, 21, 1, ref cntRect, out var r).Succeeded);
 			Assert.That(r, Is.Not.EqualTo(IntPtr.Zero));
-			Assert.That(Gdi32.DeleteObject(r));
 		}
 
 		[TestCase(21, 1, 0)]
@@ -226,7 +226,6 @@ namespace Vanara.PInvoke.Tests
 			if (hr.Failed) TestContext.WriteLine(hr);
 			Assert.That(hr.Succeeded);
 			Assert.That(hbmp, Is.Not.EqualTo(IntPtr.Zero));
-			Windows.Forms.Tests.ImageListTests.ShowImage(Image.FromHbitmap(hbmp));
 		}
 
 		[Test]
@@ -285,7 +284,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void GetThemeFontTest()
 		{
-			Assert.That(GetThemeFont(hbt, Gdi32.SafeDCHandle.Null, 6, 0, (int)ThemeProperty.TMT_FONT, out var result).Succeeded);
+			Assert.That(GetThemeFont(hbt, HDC.NULL, 6, 0, (int)ThemeProperty.TMT_FONT, out var result).Succeeded);
 			Assert.That(result.lfHeight, Is.EqualTo(-16));
 			Assert.That(() => System.Drawing.Font.FromLogFont(result), Throws.Nothing);
 		}
@@ -300,7 +299,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void GetThemeIntTest()
 		{
-			using (var hat = OpenThemeDataEx(new HandleRef(), "AeroWizard", OpenThemeDataOptions.None))
+			using (var hat = OpenThemeDataEx(HWND.NULL, "AeroWizard", OpenThemeDataOptions.None))
 			{
 				Assert.That(GetThemeInt(hat, 1, 0, (int)ThemeProperty.TMT_TEXTGLOWSIZE, out var result).Succeeded);
 				Assert.That(result, Is.EqualTo(12));
@@ -309,21 +308,21 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void GetThemeMarginsTest()
 		{
-			Assert.That(GetThemeMargins(hbt, Gdi32.SafeDCHandle.Null, 1, 0, (int)ThemeProperty.TMT_SIZINGMARGINS, null, out var result).Succeeded);
+			Assert.That(GetThemeMargins(hbt, HDC.NULL, 1, 0, (int)ThemeProperty.TMT_SIZINGMARGINS, null, out var result).Succeeded);
 			Assert.That(result.cyBottomHeight, Is.GreaterThan(0));
 		}
 
 		[Test]
 		public void GetThemeMetricTest()
 		{
-			Assert.That(GetThemeMetric(hbt, Gdi32.SafeDCHandle.Null, 1, 2, (int)ThemeProperty.TMT_IMAGECOUNT, out var result).Succeeded);
+			Assert.That(GetThemeMetric(hbt, HDC.NULL, 1, 2, (int)ThemeProperty.TMT_IMAGECOUNT, out var result).Succeeded);
 			Assert.That(result, Is.EqualTo(6));
 		}
 
 		[Test]
 		public void GetThemePartSizeTest()
 		{
-			Assert.That(GetThemePartSize(hbt, Gdi32.SafeDCHandle.Null, 1, 2, null, THEMESIZE.TS_MIN, out var result).Succeeded);
+			Assert.That(GetThemePartSize(hbt, HDC.NULL, 1, 2, null, THEMESIZE.TS_MIN, out var result).Succeeded);
 			Assert.That(result.cx, Is.EqualTo(6));
 		}
 
@@ -345,7 +344,7 @@ namespace Vanara.PInvoke.Tests
 		public void GetThemeRectTest()
 		{
 			Application.EnableVisualStyles();
-			using (var h = OpenThemeData(new HandleRef(), "DWMWINDOW"))
+			using (var h = OpenThemeData(HWND.NULL, "DWMWINDOW"))
 			{
 				Assert.That(h.IsInvalid, Is.False);
 				var hr = GetThemeRect(h, 3, 1, (int)ThemeProperty.TMT_ATLASRECT, out var result);
@@ -359,10 +358,10 @@ namespace Vanara.PInvoke.Tests
 		public void GetThemeStreamTest()
 		{
 			Application.EnableVisualStyles();
-			using (var h = OpenThemeData(new HandleRef(), "DWMWINDOW"))
+			using (var h = OpenThemeData(HWND.NULL, "DWMWINDOW"))
 			{
 				Assert.That(h.IsInvalid, Is.False);
-				using (var hInstance = Kernel32.LoadLibraryEx(@"C:\Windows\resources\themes\Aero\Aero.msstyles", dwFlags: Kernel32.LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE))
+				using (var hInstance = Kernel32.LoadLibraryEx(@"C:\Windows\resources\themes\Aero\Aero.msstyles", Kernel32.LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE))
 				{
 					var hr = UxTheme.GetThemeStream(h, 0, 0, 213, out var themeStream, out var streamSize, hInstance);
 					Assert.That(hr.Succeeded);
@@ -400,7 +399,6 @@ namespace Vanara.PInvoke.Tests
 		{
 			var hbr = GetThemeSysColorBrush(hwt, (int)User32_Gdi.SystemColorIndex.COLOR_WINDOW);
 			Assert.That(hbr, Is.Not.EqualTo(IntPtr.Zero));
-			Assert.That(Gdi32.DeleteObject(hbr));
 		}
 
 		[Test]
@@ -437,7 +435,7 @@ namespace Vanara.PInvoke.Tests
 		public void GetThemeTextExtentTest()
 		{
 			const string text = "ButtonText";
-			var hr = GetThemeTextExtent(hbt, Gdi32.SafeDCHandle.ScreenCompatibleDCHandle, 1, 0, text, -1, DrawTextFlags.DT_SINGLELINE, null, out var ext);
+			var hr = GetThemeTextExtent(hbt, SafeHDC.ScreenCompatibleDCHandle, 1, 0, text, -1, DrawTextFlags.DT_SINGLELINE, null, out var ext);
 			Assert.That(hr.Succeeded);
 			Assert.That(ext.IsEmpty, Is.False);
 		}
@@ -445,7 +443,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void GetThemeTextMetricsTest()
 		{
-			var hr = GetThemeTextMetrics(hbt, Gdi32.SafeDCHandle.ScreenCompatibleDCHandle, 1, 0, out var m);
+			var hr = GetThemeTextMetrics(hbt, SafeHDC.ScreenCompatibleDCHandle, 1, 0, out var m);
 			Assert.That(hr.Succeeded);
 			Assert.That(m, Is.Not.Zero);
 		}
@@ -474,9 +472,9 @@ namespace Vanara.PInvoke.Tests
 			try
 			{
 				w.CreateHandle(new CreateParams { ClassName = "BUTTON", Style = 0x10000000 });
-				var hr = SetWindowTheme(new HandleRef(w, w.Handle), "Start", null);
+				var hr = SetWindowTheme(w.Handle, "Start", null);
 				Assert.That(hr.Succeeded);
-				var htheme = GetWindowTheme(new HandleRef(w, w.Handle));
+				var htheme = GetWindowTheme(w.Handle);
 				Assert.That(htheme, Is.Not.EqualTo(IntPtr.Zero));
 			}
 			finally
@@ -491,11 +489,11 @@ namespace Vanara.PInvoke.Tests
 			var f = new Form() { Size = new Size(300, 300) };
 			f.Shown += (s, e) =>
 			{
-				using (var htheme = OpenThemeData(new HandleRef(f, f.Handle), "Window"))
+				using (var htheme = OpenThemeData(f.Handle, "Window"))
 				{
 					Assert.That(htheme, Is.Not.EqualTo(IntPtr.Zero));
 					RECT r = f.ClientRectangle;
-					var hr = HitTestThemeBackground(htheme, new Gdi32.SafeDCHandle(f.CreateGraphics()), 1, 1, HitTestOptions.HTTB_CAPTION, ref r, IntPtr.Zero, new Point(1, 1), out var code);
+					var hr = HitTestThemeBackground(htheme, new SafeHDC(f.CreateGraphics()), 1, 1, HitTestOptions.HTTB_CAPTION, ref r, SafeHRGN.NULL, new Point(1, 1), out var code);
 					Assert.That(hr.Succeeded);
 				}
 				f.Close();
@@ -534,10 +532,10 @@ namespace Vanara.PInvoke.Tests
 			var f = new Form() { Size = new Size(300, 300) };
 			f.Shown += (s, e) =>
 			{
-				using (var htheme = OpenThemeData(new HandleRef(f, f.Handle), "Window"))
+				using (var htheme = OpenThemeData(f.Handle, "Window"))
 				{
 					Assert.That(htheme, Is.Not.EqualTo(IntPtr.Zero));
-					Assert.That(IsThemeDialogTextureEnabled(new HandleRef(f, f.Handle)), Is.False);
+					Assert.That(IsThemeDialogTextureEnabled(f.Handle), Is.False);
 				}
 				f.Close();
 			};
@@ -563,7 +561,7 @@ namespace Vanara.PInvoke.Tests
 			var f = new Form() { Size = new Size(300, 300) };
 			f.Shown += (s, e) =>
 			{
-				Assert.That(() => SetWindowThemeNonClientAttributes(new HandleRef(f, f.Handle), WTNCA.WTNCA_NOSYSMENU), Throws.Nothing);
+				Assert.That(() => SetWindowThemeNonClientAttributes(f.Handle, WTNCA.WTNCA_NOSYSMENU), Throws.Nothing);
 				f.Close();
 			};
 			f.ShowDialog();

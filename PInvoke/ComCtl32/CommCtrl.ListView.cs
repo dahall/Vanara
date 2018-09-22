@@ -705,23 +705,23 @@ namespace Vanara.PInvoke
 			LVTVIM_LABELMARGIN = 0x00000004,
 		}
 
-		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, int wParam, [In, Out] LVBKIMAGE bkImage) => User32_Gdi.SendMessage(hWnd, message, wParam, bkImage);
+		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, [In, Out] LVBKIMAGE bkImage) => User32_Gdi.SendMessage(hWnd, message, wParam, bkImage);
 
-		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, int wParam, [In, Out] LVCOLUMN column) => User32_Gdi.SendMessage(hWnd, message, wParam, column);
+		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, [In, Out] LVCOLUMN column) => User32_Gdi.SendMessage(hWnd, message, wParam, column);
 
-		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, int wParam, [In, Out] ref LVFINDINFO findInfo) => User32_Gdi.SendMessage(hWnd, message, wParam, ref findInfo);
+		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, [In, Out] ref LVFINDINFO findInfo) => User32_Gdi.SendMessage(hWnd, message, wParam, ref findInfo);
 
-		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, int wParam, [In, Out] LVGROUP group) => User32_Gdi.SendMessage(hWnd, message, wParam, group);
+		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, [In, Out] LVGROUP group) => User32_Gdi.SendMessage(hWnd, message, wParam, group);
 
-		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, int wParam, ref LVGROUPMETRICS metrics) => User32_Gdi.SendMessage(hWnd, message, wParam, ref metrics);
+		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, ref LVGROUPMETRICS metrics) => User32_Gdi.SendMessage(hWnd, message, wParam, ref metrics);
 
-		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, int wParam, ref LVHITTESTINFO hitTestInfo) => User32_Gdi.SendMessage(hWnd, message, wParam, ref hitTestInfo);
+		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, ref LVHITTESTINFO hitTestInfo) => User32_Gdi.SendMessage(hWnd, message, wParam, ref hitTestInfo);
 
-		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, int wParam, ref LVINSERTMARK insertMark) => User32_Gdi.SendMessage(hWnd, message, wParam, ref insertMark);
+		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, ref LVINSERTMARK insertMark) => User32_Gdi.SendMessage(hWnd, message, wParam, ref insertMark);
 
-		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, ref Point wParam, ref LVINSERTMARK insertMark) => User32_Gdi.SendMessage(hWnd, message, wParam, ref insertMark);
+		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, ref Point wParam, ref LVINSERTMARK insertMark) => User32_Gdi.SendMessage(hWnd, message, wParam, ref insertMark);
 
-		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, int wParam, [In, Out] LVITEM item) => User32_Gdi.SendMessage(hWnd, message, wParam, item);
+		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, [In, Out] LVITEM item) => User32_Gdi.SendMessage(hWnd, message, wParam, item);
 
 		/// <summary>
 		/// <para>
@@ -756,11 +756,11 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
 		[System.Security.SecurityCritical]
-		public static extern IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, [In, Out] ref LVITEMINDEX wParam, int lParam);
+		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, [In, Out] ref LVITEMINDEX wParam, int lParam);
 
-		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, int wParam, ref LVTILEVIEWINFO tileViewInfo) => User32_Gdi.SendMessage(hWnd, message, wParam, ref tileViewInfo);
+		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, ref LVTILEVIEWINFO tileViewInfo) => User32_Gdi.SendMessage(hWnd, message, wParam, ref tileViewInfo);
 
-		public static IntPtr SendMessage(HandleRef hWnd, ListViewMessage message, ListViewImageList wParam, [In, Out] IntPtr hImageList) => User32_Gdi.SendMessage(hWnd, (uint)message, (IntPtr)wParam, hImageList);
+		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, ListViewImageList wParam, [In, Out] HIMAGELIST hImageList) => User32_Gdi.SendMessage(hWnd, (uint)message, (IntPtr)wParam, hImageList);
 
 		/// <summary>
 		/// Contains information used when searching for a list-view item. This structure is identical to LV_FINDINFO but has been renamed to fit standard naming conventions.

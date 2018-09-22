@@ -409,11 +409,11 @@ namespace Vanara.PInvoke
 			HDS_OVERFLOW = 0x1000,
 		}
 
-		public static IntPtr SendMessage(HandleRef hWnd, HeaderMessage message, int wParam, [In, Out] HDITEM item) => User32_Gdi.SendMessage(hWnd, message, wParam, item);
+		public static IntPtr SendMessage(HWND hWnd, HeaderMessage message, int wParam, [In, Out] HDITEM item) => User32_Gdi.SendMessage(hWnd, message, wParam, item);
 
-		public static IntPtr SendMessage(HandleRef hWnd, HeaderMessage message, int wParam, [In, Out] HDLAYOUT layout) => User32_Gdi.SendMessage(hWnd, message, wParam, layout);
+		public static IntPtr SendMessage(HWND hWnd, HeaderMessage message, int wParam, [In, Out] HDLAYOUT layout) => User32_Gdi.SendMessage(hWnd, message, wParam, layout);
 
-		public static IntPtr SendMessage(HandleRef hWnd, HeaderMessage message, int wParam, [In, Out] HDHITTESTINFO hittest) => User32_Gdi.SendMessage(hWnd, message, wParam, hittest);
+		public static IntPtr SendMessage(HWND hWnd, HeaderMessage message, int wParam, [In, Out] HDHITTESTINFO hittest) => User32_Gdi.SendMessage(hWnd, message, wParam, hittest);
 
 		/// <summary>Contains information about header control text filters.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775251")]

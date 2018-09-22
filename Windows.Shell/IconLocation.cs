@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using Vanara.PInvoke;
+using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32_Gdi;
 
 namespace Vanara.Windows.Shell
@@ -27,8 +28,8 @@ namespace Vanara.Windows.Shell
 			get
 			{
 				if (!IsValid) return null;
-				using (var lib = new Kernel32.SafeLibraryHandle(ModuleFileName, Kernel32.LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE))
-					return GetClonedIcon(User32_Gdi.LoadImage(lib, ResourceId, User32_Gdi.LoadImageType.IMAGE_ICON, 0, 0, 0));
+				using (var lib = LoadLibraryEx(ModuleFileName, LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE))
+					return new SafeHICON(LoadImage(lib, ResourceId, LoadImageType.IMAGE_ICON, 0, 0, 0)).ToIcon();
 				//var hIconEx = new[] { IntPtr.Zero };
 				//if (large)
 				//	ExtractIconEx(loc.ModuleFileName, loc.ResourceId, hIconEx, null, 1);
@@ -72,16 +73,5 @@ namespace Vanara.Windows.Shell
 		/// <summary>Returns a <see cref="System.String" /> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String" /> that represents this instance.</returns>
 		public override string ToString() => IsValid ? $"{ModuleFileName},{ResourceId}" : string.Empty;
-
-		/// <summary>Gets an <see cref="System.Drawing.Icon"/> from an icon handle.</summary>
-		/// <param name="hIcon">The icon handle.</param>
-		/// <returns>An <see cref="System.Drawing.Icon"/> instance.</returns>
-		internal static Icon GetClonedIcon(IntPtr hIcon)
-		{
-			if (hIcon == IntPtr.Zero) return null;
-			var icon = (Icon)Icon.FromHandle(hIcon).Clone();
-			DestroyIcon(hIcon);
-			return icon;
-		}
 	}
 }

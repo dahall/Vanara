@@ -34,7 +34,7 @@ namespace Vanara.PInvoke
 		/// <returns>Undocumented</returns>
 		[PInvokeData("Uxtheme.h")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
-		public delegate int DTT_CALLBACK_PROC(SafeDCHandle hdc, string pszText, int cchText, ref RECT prc, DrawTextFlags dwFlags, IntPtr lParam);
+		public delegate int DTT_CALLBACK_PROC(IntPtr hdc, string pszText, int cchText, ref RECT prc, DrawTextFlags dwFlags, IntPtr lParam);
 
 		/// <summary>Flags that specify the selected options for DTBGOPTS.</summary>
 		[PInvokeData("Uxtheme.h")]
@@ -379,7 +379,7 @@ namespace Vanara.PInvoke
 		// HRESULT CloseThemeData( _In_ HTHEME hTheme); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773287(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773287")]
-		public static extern HRESULT CloseThemeData(IntPtr hTheme);
+		public static extern HRESULT CloseThemeData(HTHEME hTheme);
 
 		/// <summary>Draws the border and fill defined by the visual style for the specified control part.</summary>
 		/// <param name="hTheme">
@@ -414,7 +414,7 @@ namespace Vanara.PInvoke
 		// *pClipRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773289(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773289")]
-		public static extern HRESULT DrawThemeBackground(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, ref RECT pRect, PRECT pClipRect);
+		public static extern HRESULT DrawThemeBackground(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, ref RECT pRect, PRECT pClipRect);
 
 		/// <summary>
 		/// <para>
@@ -455,7 +455,7 @@ namespace Vanara.PInvoke
 		// *pOptions); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773294(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773294")]
-		public static extern HRESULT DrawThemeBackgroundEx(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, ref RECT pRect, DTBGOPTS pOptions);
+		public static extern HRESULT DrawThemeBackgroundEx(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, ref RECT pRect, DTBGOPTS pOptions);
 
 		/// <summary>Draws one or more edges defined by the visual style of a rectangle.</summary>
 		/// <param name="hTheme">
@@ -628,7 +628,7 @@ namespace Vanara.PInvoke
 		// uFlags, _Out_ LPRECT pContentRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773298(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773298")]
-		public static extern HRESULT DrawThemeEdge(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, ref RECT pDestRect, BorderStyles3D uEdge, BorderFlags uFlags, out RECT pContentRect);
+		public static extern HRESULT DrawThemeEdge(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, ref RECT pDestRect, BorderStyles3D uEdge, BorderFlags uFlags, out RECT pContentRect);
 
 		/// <summary>Draws an image from an image list with the icon effect defined by the visual style.</summary>
 		/// <param name="hTheme">
@@ -667,7 +667,7 @@ namespace Vanara.PInvoke
 		// iImageIndex); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773301(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773301")]
-		public static extern HRESULT DrawThemeIcon(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, ref RECT pRect, HandleRef himl, int iImageIndex);
+		public static extern HRESULT DrawThemeIcon(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, ref RECT pRect, HIMAGELIST himl, int iImageIndex);
 
 		/// <summary>Draws the part of a parent control that is covered by a partially-transparent or alpha-blended child control.</summary>
 		/// <param name="hwnd">
@@ -692,7 +692,7 @@ namespace Vanara.PInvoke
 		// HRESULT DrawThemeParentBackground( _In_ HWND hwnd, _In_ HDC hdc, _In_ const RECT *prc); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773306(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773306")]
-		public static extern HRESULT DrawThemeParentBackground(HandleRef hwnd, SafeDCHandle hdc, PRECT prc);
+		public static extern HRESULT DrawThemeParentBackground(HWND hwnd, HDC hdc, PRECT prc);
 
 		/// <summary>
 		/// Used by partially-transparent or alpha-blended child controls to draw the part of their parent in front of which they appear. Sends a
@@ -743,7 +743,7 @@ namespace Vanara.PInvoke
 		// HRESULT DrawThemeParentBackgroundEx( _In_ HWND hwnd, _In_ HDC hdc, _In_ DWORD dwFlags, _In_ const RECT *prc); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773309(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773309")]
-		public static extern HRESULT DrawThemeParentBackgroundEx(HandleRef hwnd, SafeDCHandle hdc, DrawThemeParentBackgroundFlags dwFlags, PRECT prc);
+		public static extern HRESULT DrawThemeParentBackgroundEx(HWND hwnd, HDC hdc, DrawThemeParentBackgroundFlags dwFlags, PRECT prc);
 
 		/// <summary>Draws text using the color and font defined by the visual style.</summary>
 		/// <param name="hTheme">
@@ -798,7 +798,7 @@ namespace Vanara.PInvoke
 		// dwTextFlags, _In_ DWORD dwTextFlags2, _In_ LPCRECT pRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773312(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773312")]
-		public static extern HRESULT DrawThemeText(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, string pszText, int iCharCount, DrawTextFlags dwTextFlags, [Optional] int dwTextFlags2, ref RECT pRect);
+		public static extern HRESULT DrawThemeText(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, string pszText, int iCharCount, DrawTextFlags dwTextFlags, [Optional] int dwTextFlags2, ref RECT pRect);
 
 		/// <summary>Draws text using the color and font defined by the visual style. Extends <c>DrawThemeText</c> by allowing additional text format options.</summary>
 		/// <param name="hTheme">
@@ -850,7 +850,7 @@ namespace Vanara.PInvoke
 		// dwFlags, _Inout_ LPRECT pRect, _In_ const DTTOPTS *pOptions); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773317(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773317")]
-		public static extern HRESULT DrawThemeTextEx(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, string pszText, int iCharCount, DrawTextFlags dwFlags, ref RECT pRect, ref DTTOPTS pOptions);
+		public static extern HRESULT DrawThemeTextEx(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, string pszText, int iCharCount, DrawTextFlags dwFlags, ref RECT pRect, ref DTTOPTS pOptions);
 
 		/// <summary>Enables or disables the visual style of the background of a dialog window.</summary>
 		/// <param name="hwnd">
@@ -907,7 +907,7 @@ namespace Vanara.PInvoke
 		// HRESULT EnableThemeDialogTexture( _In_ HWND hwnd, _In_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773320(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773320")]
-		public static extern HRESULT EnableThemeDialogTexture(HandleRef hwnd, ThemeDialogTextureFlags dwFlags);
+		public static extern HRESULT EnableThemeDialogTexture(HWND hwnd, ThemeDialogTextureFlags dwFlags);
 
 		/// <summary>
 		/// <para><c>Windows Vista through Windows 7</c>: Enables or disables visual styles for the current user in the current and later sessions.</para>
@@ -1039,7 +1039,7 @@ namespace Vanara.PInvoke
 		// *pvProperty, _In_ DWORD cbSize, _Out_ DWORD pcbSizeOut); https://msdn.microsoft.com/en-us/library/windows/desktop/hh404183(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "hh404183")]
-		public static extern HRESULT GetThemeAnimationProperty(SafeThemeHandle hTheme, int iStoryboardId, int iTargetId, TA_PROPERTY eProperty, IntPtr pvProperty, uint cbSize, out uint pcbSizeOut);
+		public static extern HRESULT GetThemeAnimationProperty(HTHEME hTheme, int iStoryboardId, int iTargetId, TA_PROPERTY eProperty, IntPtr pvProperty, uint cbSize, out uint pcbSizeOut);
 
 		/// <summary>Gets an animation transform operationbased on storyboard id, target id and transformindex.</summary>
 		/// <param name="hTheme">An opened theme handle.</param>
@@ -1054,7 +1054,7 @@ namespace Vanara.PInvoke
 		// TA_TRANSFORM *pTransform, _In_ DWORD cbSize, _Out_ DWORD pcbSizeOut); https://msdn.microsoft.com/en-us/library/windows/desktop/hh404186(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "hh404186")]
-		public static extern HRESULT GetThemeAnimationTransform(SafeThemeHandle hTheme, int iStoryboardId, int iTargetId, uint dwTransformIndex, ref TA_TRANSFORM pTransform, uint cbSize, out uint pcbSizeOut);
+		public static extern HRESULT GetThemeAnimationTransform(HTHEME hTheme, int iStoryboardId, int iTargetId, uint dwTransformIndex, ref TA_TRANSFORM pTransform, uint cbSize, out uint pcbSizeOut);
 
 		/// <summary>Retrieves the property flags that control how visual styles are applied in the current application.</summary>
 		/// <returns>
@@ -1124,7 +1124,7 @@ namespace Vanara.PInvoke
 		// pContentRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773375(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773375")]
-		public static extern HRESULT GetThemeBackgroundContentRect(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, ref RECT pBoundingRect, out RECT pContentRect);
+		public static extern HRESULT GetThemeBackgroundContentRect(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, ref RECT pBoundingRect, out RECT pContentRect);
 
 		/// <summary>Calculates the size and location of the background, defined by the visual style, given the content area.</summary>
 		/// <param name="hTheme">
@@ -1161,7 +1161,7 @@ namespace Vanara.PInvoke
 		// pExtentRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773380(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773380")]
-		public static extern HRESULT GetThemeBackgroundExtent(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, ref RECT pContentRect, out RECT pExtentRect);
+		public static extern HRESULT GetThemeBackgroundExtent(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, ref RECT pContentRect, out RECT pExtentRect);
 
 		/// <summary>Computes the region for a regular or partially transparent background that is bounded by a specified rectangle.</summary>
 		/// <param name="hTheme">
@@ -1195,7 +1195,7 @@ namespace Vanara.PInvoke
 		// HRESULT GetThemeBackgroundRegion( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ LPCRECT pRect, _Out_ HRGN *pRegion); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773384(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773384")]
-		public static extern HRESULT GetThemeBackgroundRegion(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, ref RECT pRect, out IntPtr pRegion);
+		public static extern HRESULT GetThemeBackgroundRegion(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, ref RECT pRect, out SafeHRGN pRegion);
 
 		/// <summary>Retrieves the bitmap associated with a particular theme, part, state, and property.</summary>
 		/// <param name="hTheme">
@@ -1271,7 +1271,7 @@ namespace Vanara.PInvoke
 		// HRESULT GetThemeBitmap( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _In_ ULONG dwFlags, _Out_ HBITMAP *phBitmap); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773388(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773388")]
-		public static extern HRESULT GetThemeBitmap(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, GBF dwFlags, out IntPtr phBitmap);
+		public static extern HRESULT GetThemeBitmap(HTHEME hTheme, int iPartId, int iStateId, int iPropId, GBF dwFlags, out SafeHBITMAP phBitmap);
 
 		/// <summary>Retrieves the value of a <c>BOOL</c> property from the SysMetrics section of theme data.</summary>
 		/// <param name="hTheme">
@@ -1371,7 +1371,7 @@ namespace Vanara.PInvoke
 		// HRESULT GetThemeBool( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ BOOL *pfVal); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773392(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773392")]
-		public static extern HRESULT GetThemeBool(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, [MarshalAs(UnmanagedType.Bool)] out bool pfVal);
+		public static extern HRESULT GetThemeBool(HTHEME hTheme, int iPartId, int iStateId, int iPropId, [MarshalAs(UnmanagedType.Bool)] out bool pfVal);
 
 		/// <summary>Retrieves the value of a color property.</summary>
 		/// <param name="hTheme">
@@ -1401,7 +1401,7 @@ namespace Vanara.PInvoke
 		// HRESULT GetThemeColor( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ COLORREF *pColor); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773397(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773397")]
-		public static extern HRESULT GetThemeColor(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out COLORREF pColor);
+		public static extern HRESULT GetThemeColor(HTHEME hTheme, int iPartId, int iStateId, int iPropId, out COLORREF pColor);
 
 		/// <summary>Retrieves the value for a theme property from the documentation section of the specified theme file.</summary>
 		/// <param name="pszThemeName">
@@ -1481,7 +1481,7 @@ namespace Vanara.PInvoke
 		// HRESULT GetThemeEnumValue( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ int *piVal); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773406(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773406")]
-		public static extern HRESULT GetThemeEnumValue(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out int piVal);
+		public static extern HRESULT GetThemeEnumValue(HTHEME hTheme, int iPartId, int iStateId, int iPropId, out int piVal);
 
 		/// <summary>Retrieves the value of a filename property.</summary>
 		/// <param name="hTheme">
@@ -1516,7 +1516,7 @@ namespace Vanara.PInvoke
 		// cchMaxBuffChars); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759743(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759743")]
-		public static extern HRESULT GetThemeFilename(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, StringBuilder pszThemeFilename, int cchMaxBuffChars);
+		public static extern HRESULT GetThemeFilename(HTHEME hTheme, int iPartId, int iStateId, int iPropId, StringBuilder pszThemeFilename, int cchMaxBuffChars);
 
 		/// <summary>Retrieves the value of an <c>int</c> property.</summary>
 		/// <param name="hTheme">
@@ -1546,7 +1546,7 @@ namespace Vanara.PInvoke
 		// HRESULT GetThemeInt( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ int *piVal); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759749(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759749")]
-		public static extern HRESULT GetThemeInt(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out int piVal);
+		public static extern HRESULT GetThemeInt(HTHEME hTheme, int iPartId, int iStateId, int iPropId, out int piVal);
 
 		/// <summary>Retrieves a list of <c>int</c> data from a visual style.</summary>
 		/// <param name="hTheme">
@@ -1566,7 +1566,7 @@ namespace Vanara.PInvoke
 		/// <para>Value of type <c>int</c> that specifies the property to retrieve. See Property Identifiers.</para>
 		/// </param>
 		/// <returns>An array of integers.</returns>
-		public static int[] GetThemeIntList(SafeThemeHandle hTheme, int partId, int stateId, int propId)
+		public static int[] GetThemeIntList(HTHEME hTheme, int partId, int stateId, int propId)
 		{
 			if (Environment.OSVersion.Version.Major < 6)
 			{
@@ -1614,7 +1614,7 @@ namespace Vanara.PInvoke
 		// HRESULT GetThemeIntList( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ INTLIST *pIntList); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759752(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("UxTheme.h", MSDNShortId = "bb759752", MinClient = PInvokeClient.WindowsVista)]
-		public static extern HRESULT GetThemeIntList(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out INTLIST pIntList);
+		public static extern HRESULT GetThemeIntList(HTHEME hTheme, int iPartId, int iStateId, int iPropId, out INTLIST pIntList);
 
 		/// <summary>Retrieves the value of a <c>MARGINS</c> property.</summary>
 		/// <param name="hTheme">
@@ -1653,7 +1653,7 @@ namespace Vanara.PInvoke
 		// *pMargins); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759755(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759755")]
-		public static extern HRESULT GetThemeMargins(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, int iPropId, PRECT prc, out MARGINS pMargins);
+		public static extern HRESULT GetThemeMargins(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, int iPropId, PRECT prc, out MARGINS pMargins);
 
 		/// <summary>Retrieves the value of a metric property.</summary>
 		/// <param name="hTheme">
@@ -1794,7 +1794,7 @@ namespace Vanara.PInvoke
 		// HRESULT GetThemeMetric( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ int *piVal); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759757(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759757")]
-		public static extern HRESULT GetThemeMetric(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, int iPropId, out int piVal);
+		public static extern HRESULT GetThemeMetric(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, int iPropId, out int piVal);
 
 		/// <summary>Calculates the original size of the part defined by a visual style.</summary>
 		/// <param name="hTheme">
@@ -1833,7 +1833,7 @@ namespace Vanara.PInvoke
 		// *psz); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759759(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759759")]
-		public static extern HRESULT GetThemePartSize(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, PRECT prc, THEMESIZE eSize, out SIZE psz);
+		public static extern HRESULT GetThemePartSize(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, PRECT prc, THEMESIZE eSize, out SIZE psz);
 
 		/// <summary>Retrieves the value of a position property.</summary>
 		/// <param name="hTheme">
@@ -1863,7 +1863,7 @@ namespace Vanara.PInvoke
 		// HRESULT GetThemePosition( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ POINT *pPoint); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759762(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759762")]
-		public static extern HRESULT GetThemePosition(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out Point pPoint);
+		public static extern HRESULT GetThemePosition(HTHEME hTheme, int iPartId, int iStateId, int iPropId, out Point pPoint);
 
 		/// <summary>Retrieves the location of the theme property definition for a property.</summary>
 		/// <param name="hTheme">Handle to a window's specified theme data. Use OpenThemeData to create an HTHEME.</param>
@@ -1881,7 +1881,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759764")]
-		public static extern HRESULT GetThemePropertyOrigin(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out PROPERTYORIGIN pOrigin);
+		public static extern HRESULT GetThemePropertyOrigin(HTHEME hTheme, int iPartId, int iStateId, int iPropId, out PROPERTYORIGIN pOrigin);
 
 		/// <summary>Retrieves the value of a <c>RECT</c> property.</summary>
 		/// <param name="hTheme">
@@ -1911,7 +1911,7 @@ namespace Vanara.PInvoke
 		// HRESULT GetThemeRect( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ LPRECT pRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759766(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759766")]
-		public static extern HRESULT GetThemeRect(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out RECT pRect);
+		public static extern HRESULT GetThemeRect(HTHEME hTheme, int iPartId, int iStateId, int iPropId, out RECT pRect);
 
 		/// <summary>Retrieves a data stream corresponding to a specified theme, starting from a specified part, state, and property.</summary>
 		/// <param name="hTheme">
@@ -1950,7 +1950,7 @@ namespace Vanara.PInvoke
 		// _In_ HINSTANCE hInst); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759768(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759768")]
-		public static extern HRESULT GetThemeStream(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out IntPtr ppvStream, out uint pcbStream, Kernel32.SafeLibraryHandle hInst);
+		public static extern HRESULT GetThemeStream(HTHEME hTheme, int iPartId, int iStateId, int iPropId, out IntPtr ppvStream, out uint pcbStream, HINSTANCE hInst);
 
 		/// <summary>Retrieves the value of a string property.</summary>
 		/// <param name="hTheme">
@@ -1984,7 +1984,7 @@ namespace Vanara.PInvoke
 		// HRESULT GetThemeString( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ LPWSTR pszBuff, _In_ int cchMaxBuffChars); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759770(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759770")]
-		public static extern HRESULT GetThemeString(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszBuff, int cchMaxBuffChars);
+		public static extern HRESULT GetThemeString(HTHEME hTheme, int iPartId, int iStateId, int iPropId, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszBuff, int cchMaxBuffChars);
 
 		/// <summary>Retrieves the Boolean value of a system metric.</summary>
 		/// <param name="hTheme">
@@ -2015,7 +2015,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759773")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetThemeSysBool(SafeThemeHandle hTheme, int iBoolID);
+		public static extern bool GetThemeSysBool(HTHEME hTheme, int iBoolID);
 
 		/// <summary>Retrieves the value of a system color.</summary>
 		/// <param name="hTheme">
@@ -2033,7 +2033,7 @@ namespace Vanara.PInvoke
 		// COLORREF GetThemeSysColor( _In_ HTHEME hTheme, _In_ int iColorID); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759776(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759776")]
-		public static extern COLORREF GetThemeSysColor(SafeThemeHandle hTheme, SystemColorIndex iColorID);
+		public static extern COLORREF GetThemeSysColor(HTHEME hTheme, SystemColorIndex iColorID);
 
 		/// <summary>Retrieves a system color brush.</summary>
 		/// <param name="hTheme">
@@ -2179,7 +2179,7 @@ namespace Vanara.PInvoke
 		// HBRUSH GetThemeSysColorBrush( _In_ HTHEME hTheme, _In_ int iColorID); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759780(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759780")]
-		public static extern IntPtr GetThemeSysColorBrush(SafeThemeHandle hTheme, int iColorID);
+		public static extern SafeHBRUSH GetThemeSysColorBrush(HTHEME hTheme, int iColorID);
 
 		/// <summary>Retrieves the value of a system <c>int</c>.</summary>
 		/// <param name="hTheme">
@@ -2213,7 +2213,7 @@ namespace Vanara.PInvoke
 		// HRESULT GetThemeSysInt( _In_ HTHEME hTheme, _In_ int iIntID, _In_ int *piValue); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759787(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759787")]
-		public static extern HRESULT GetThemeSysInt(SafeThemeHandle hTheme, int iIntID, out int piValue);
+		public static extern HRESULT GetThemeSysInt(HTHEME hTheme, int iIntID, out int piValue);
 
 		/// <summary>Retrieves the value of a system size metric from theme data.</summary>
 		/// <param name="hTheme">
@@ -2279,7 +2279,7 @@ namespace Vanara.PInvoke
 		// int GetThemeSysSize( _In_ HTHEME hTheme, _In_ int iSizeID); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759790(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759790")]
-		public static extern int GetThemeSysSize(SafeThemeHandle hTheme, int iSizeID);
+		public static extern int GetThemeSysSize(HTHEME hTheme, int iSizeID);
 
 		/// <summary>Retrieves the value of a system string.</summary>
 		/// <param name="hTheme">
@@ -2321,7 +2321,7 @@ namespace Vanara.PInvoke
 		// HRESULT GetThemeSysString( _In_ HTHEME hTheme, _In_ int iStringID, _Out_ LPWSTR pszStringBuff, _In_ int cchMaxStringChars); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759793(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759793")]
-		public static extern HRESULT GetThemeSysString(SafeThemeHandle hTheme, int iStringID, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszStringBuff, int cchMaxStringChars);
+		public static extern HRESULT GetThemeSysString(HTHEME hTheme, int iStringID, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszStringBuff, int cchMaxStringChars);
 
 		/// <summary>Calculates the size and location of the specified text when rendered in the visual style font.</summary>
 		/// <param name="hTheme">
@@ -2370,7 +2370,7 @@ namespace Vanara.PInvoke
 		// DWORD dwTextFlags, _In_ LPCRECT pBoundingRect, _Out_ LPRECT pExtentRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759798(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759798")]
-		public static extern HRESULT GetThemeTextExtent(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, string pszText, int iCharCount, DrawTextFlags dwTextFlags, PRECT pBoundingRect, out RECT pExtentRect);
+		public static extern HRESULT GetThemeTextExtent(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, string pszText, int iCharCount, DrawTextFlags dwTextFlags, PRECT pBoundingRect, out RECT pExtentRect);
 
 		/// <summary>Retrieves information about the font specified by a visual style for a particular part.</summary>
 		/// <param name="hTheme">
@@ -2400,7 +2400,7 @@ namespace Vanara.PInvoke
 		// HRESULT GetThemeTextMetrics( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _Out_ TEXTMETRIC *ptm); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759801(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759801")]
-		public static extern HRESULT GetThemeTextMetrics(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, out TEXTMETRIC ptm);
+		public static extern HRESULT GetThemeTextMetrics(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, out TEXTMETRIC ptm);
 
 		/// <summary>Gets a predefined timing function based ona timing function identifier.</summary>
 		/// <param name="hTheme">An opened theme handle.</param>
@@ -2413,7 +2413,7 @@ namespace Vanara.PInvoke
 		// _Out_ DWORD pcbSizeOut); https://msdn.microsoft.com/en-us/library/windows/desktop/hh404194(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "hh404194")]
-		public static extern HRESULT GetThemeTimingFunction(SafeThemeHandle hTheme, int iTimingFunctionId, IntPtr pTimingFunction, uint cbSize, out uint pcbSizeOut);
+		public static extern HRESULT GetThemeTimingFunction(HTHEME hTheme, int iTimingFunctionId, IntPtr pTimingFunction, uint cbSize, out uint pcbSizeOut);
 
 		/// <summary>Gets the duration for the specified transition.</summary>
 		/// <param name="hTheme">
@@ -2447,7 +2447,7 @@ namespace Vanara.PInvoke
 		// HRESULT GetThemeTransitionDuration( HTHEME hTheme, int iPartId, int iStateIdFrom, int iStateIdTo, int iPropId, _Out_ DWORD *pdwDuration); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759804(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759804")]
-		public static extern HRESULT GetThemeTransitionDuration(SafeThemeHandle hTheme, int iPartId, int iStateIdFrom, int iStateIdTo, int iPropId, out uint pdwDuration);
+		public static extern HRESULT GetThemeTransitionDuration(HTHEME hTheme, int iPartId, int iStateIdFrom, int iStateIdTo, int iPropId, out uint pdwDuration);
 
 		/// <summary>Retrieves a theme handle to a window that has visual styles applied.</summary>
 		/// <param name="hWnd">
@@ -2461,7 +2461,7 @@ namespace Vanara.PInvoke
 		// HTHEME GetWindowTheme( _In_ HWND hWnd); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759806(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759806")]
-		public static extern IntPtr GetWindowTheme(HandleRef hWnd);
+		public static extern HTHEME GetWindowTheme(HWND hWnd);
 
 		/// <summary>Retrieves a hit test code for a point in the background specified by a visual style.</summary>
 		/// <param name="hTheme">
@@ -2511,7 +2511,7 @@ namespace Vanara.PInvoke
 		// HRGN hrgn, _In_ POINT ptTest, _Out_ WORD *pwHitTestCode); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759808(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759808")]
-		public static extern HRESULT HitTestThemeBackground(SafeThemeHandle hTheme, SafeDCHandle hdc, int iPartId, int iStateId, HitTestOptions dwOptions, ref RECT pRect, IntPtr hrgn, Point ptTest, out HitTestValues pwHitTestCode);
+		public static extern HRESULT HitTestThemeBackground(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, HitTestOptions dwOptions, ref RECT pRect, SafeHRGN hrgn, Point ptTest, out HitTestValues pwHitTestCode);
 
 		/// <summary>Reports whether the current application's user interface displays using visual styles.</summary>
 		/// <returns>
@@ -2617,7 +2617,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759815")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool IsThemeBackgroundPartiallyTransparent(SafeThemeHandle hTheme, int iPartId, int iStateId);
+		public static extern bool IsThemeBackgroundPartiallyTransparent(HTHEME hTheme, int iPartId, int iStateId);
 
 		/// <summary>Reports whether a specified dialog window supports background texturing.</summary>
 		/// <param name="hwnd">
@@ -2648,7 +2648,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759818")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool IsThemeDialogTextureEnabled(HandleRef hwnd);
+		public static extern bool IsThemeDialogTextureEnabled(HWND hwnd);
 
 		/// <summary>Retrieves whether a visual style has defined parameters for the specified part and state.</summary>
 		/// <param name="hTheme">
@@ -2687,7 +2687,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759819")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool IsThemePartDefined(SafeThemeHandle hTheme, int iPartId, int iStateId);
+		public static extern bool IsThemePartDefined(HTHEME hTheme, int iPartId, int iStateId);
 
 		/// <summary>Opens the theme data for a window and its associated class.</summary>
 		/// <param name="hwnd">
@@ -2708,7 +2708,7 @@ namespace Vanara.PInvoke
 		// HTHEME OpenThemeData( _In_ HWND hwnd, _In_ LPCWSTR pszClassList); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759821(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759821")]
-		public static extern SafeThemeHandle OpenThemeData(HandleRef hwnd, string pszClassList);
+		public static extern SafeHTHEME OpenThemeData(HWND hwnd, string pszClassList);
 
 		/// <summary>Opens the theme data associated with a window for specified theme classes.</summary>
 		/// <param name="hwnd">
@@ -2746,7 +2746,7 @@ namespace Vanara.PInvoke
 		// HTHEME OpenThemeDataEx( _In_ HWND hwnd, _In_ LPCWSTR pszClassIdList, _In_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759823(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759823")]
-		public static extern SafeThemeHandle OpenThemeDataEx(HandleRef hwnd, string pszClassIdList, OpenThemeDataOptions dwFlags);
+		public static extern SafeHTHEME OpenThemeDataEx(HWND hwnd, string pszClassIdList, OpenThemeDataOptions dwFlags);
 
 		/// <summary>A variant of OpenThemeData that opens a theme handle associated with a specific DPI.</summary>
 		/// <param name="hwnd">The handle of the window for which theme data is required.</param>
@@ -2759,7 +2759,7 @@ namespace Vanara.PInvoke
 		// HTHEME WINAPI OpenThemeDataForDpi( HWDN hwnd, PCWSTR pszClassIdList, UINT dpi); https://msdn.microsoft.com/en-us/library/windows/desktop/mt807674(v=vs.85).aspx
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "mt807674")]
-		public static extern SafeThemeHandle OpenThemeDataForDpi(HandleRef hwnd, string pszClassIdList, uint dpi);
+		public static extern SafeHTHEME OpenThemeDataForDpi(HWND hwnd, string pszClassIdList, uint dpi);
 
 		/// <summary>Sets the flags that determine how visual styles are implemented in the calling application.</summary>
 		/// <param name="dwFlags">
@@ -2818,7 +2818,7 @@ namespace Vanara.PInvoke
 		// HRESULT SetWindowTheme( _In_ HWND hwnd, _In_ LPCWSTR pszSubAppName, _In_ LPCWSTR pszSubIdList); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759827(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759827")]
-		public static extern HRESULT SetWindowTheme(HandleRef hwnd, string pszSubAppName, string pszSubIdList);
+		public static extern HRESULT SetWindowTheme(HWND hwnd, string pszSubAppName, string pszSubIdList);
 
 		/// <summary>Sets attributes to control how visual styles are applied to a specified window.</summary>
 		/// <param name="hwnd">
@@ -2859,13 +2859,13 @@ namespace Vanara.PInvoke
 		// HRESULT SetWindowThemeAttribute( _In_ HWND hwnd, _In_ enum WINDOWTHEMEATTRIBUTETYPE eAttribute, _In_ PVOID pvAttribute, _In_ DWORD cbAttribute); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759829(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759829")]
-		public static extern HRESULT SetWindowThemeAttribute(HandleRef hwnd, WINDOWTHEMEATTRIBUTETYPE eAttribute, ref WTA_OPTIONS pvAttribute, uint cbAttribute);
+		public static extern HRESULT SetWindowThemeAttribute(HWND hwnd, WINDOWTHEMEATTRIBUTETYPE eAttribute, ref WTA_OPTIONS pvAttribute, uint cbAttribute);
 
 		/// <summary>Sets attributes to control how visual styles are applied to a specified window.</summary>
 		/// <param name="hWnd">Handle to a window to apply changes to.</param>
 		/// <param name="ncAttrs">A combination of flags that modify window visual style attributes.</param>
 		/// <param name="activate">if set to <c>true</c> add the flag to the window attributes, otherwise remove the flag.</param>
-		public static void SetWindowThemeNonClientAttributes(HandleRef hWnd, WTNCA ncAttrs, bool activate = true)
+		public static void SetWindowThemeNonClientAttributes(HWND hWnd, WTNCA ncAttrs, bool activate = true)
 		{
 			var opt = new WTA_OPTIONS { Flags = ncAttrs, Mask = activate ? (uint)ncAttrs : 0 };
 			SetWindowThemeAttribute(hWnd, WINDOWTHEMEATTRIBUTETYPE.WTA_NONCLIENT, ref opt, (uint)Marshal.SizeOf(opt)).ThrowIfFailed();
@@ -2899,7 +2899,7 @@ namespace Vanara.PInvoke
 		// HRESULT GetThemeIntList( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ INTLIST *pIntList); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759752(v=vs.85).aspx
 		[PInvokeData("UxTheme.h", MSDNShortId = "bb759752")]
 		[DllImport(Lib.UxTheme, SetLastError = false, EntryPoint = "GetThemeIntList")]
-		private static extern HRESULT GetThemeIntListPreVista(SafeThemeHandle hTheme, int iPartId, int iStateId, int iPropId, out INTLIST_OLD pIntList);
+		private static extern HRESULT GetThemeIntListPreVista(HTHEME hTheme, int iPartId, int iStateId, int iPropId, out INTLIST_OLD pIntList);
 
 		/// <summary>Defines the options for the <see cref="DrawThemeTextEx"/> function.</summary>
 		/// <summary>Defines the options for the <c>DrawThemeTextEx</c> function.</summary>
@@ -3491,15 +3491,15 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Represents a safe handle for a theme. Use in place of HTHEME.</summary>
-		public class SafeThemeHandle : Vanara.InteropServices.GenericSafeHandle
+		public class SafeHTHEME : HTHEME
 		{
-			/// <summary>Initializes a new instance of the <see cref="SafeThemeHandle"/> class.</summary>
-			public SafeThemeHandle() : this(IntPtr.Zero) { }
-
-			/// <summary>Initializes a new instance of the <see cref="SafeThemeHandle"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeHTHEME"/> class.</summary>
 			/// <param name="hTheme">The h theme.</param>
 			/// <param name="ownsHandle">if set to <c>true</c> [owns handle].</param>
-			public SafeThemeHandle(IntPtr hTheme, bool ownsHandle = true) : base(hTheme, p => CloseThemeData(p) == 0, ownsHandle) { }
+			public SafeHTHEME(IntPtr hTheme, bool ownsHandle = true) : base(hTheme, ownsHandle) { }
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => CloseThemeData(this) == 0;
 		}
 	}
 }

@@ -359,7 +359,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa362509")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool BackupRead([In] SafeFileHandle hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, [MarshalAs(UnmanagedType.Bool)] bool bAbort, [MarshalAs(UnmanagedType.Bool)] bool bProcessSecurity, out IntPtr lpContext);
+		public static extern bool BackupRead([In] HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, [MarshalAs(UnmanagedType.Bool)] bool bAbort, [MarshalAs(UnmanagedType.Bool)] bool bProcessSecurity, out IntPtr lpContext);
 
 		/// <summary>
 		/// The <c>BackupSeek</c> function seeks forward in a data stream initially accessed by using the <c>BackupRead</c> or <c>BackupWrite</c> function.
@@ -389,7 +389,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa362510")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool BackupSeek([In] SafeFileHandle hFile, uint dwLowBytesToSeek, uint dwHighBytesToSeek, out uint lpdwLowByteSeeked, out uint lpdwHighByteSeeked, ref IntPtr lpContext);
+		public static extern bool BackupSeek([In] HFILE hFile, uint dwLowBytesToSeek, uint dwHighBytesToSeek, out uint lpdwLowByteSeeked, out uint lpdwHighByteSeeked, ref IntPtr lpContext);
 
 		/// <summary>
 		/// The <c>BackupWrite</c> function can be used to restore a file or directory that was backed up using <c>BackupRead</c>. Use the <c>ReadFile</c>
@@ -450,7 +450,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa362511")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool BackupWrite([In] SafeFileHandle hFile, [In] IntPtr lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, [MarshalAs(UnmanagedType.Bool)] bool bAbort, [MarshalAs(UnmanagedType.Bool)] bool bProcessSecurity, out IntPtr lpContext);
+		public static extern bool BackupWrite([In] HFILE hFile, [In] IntPtr lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, [MarshalAs(UnmanagedType.Bool)] bool bAbort, [MarshalAs(UnmanagedType.Bool)] bool bProcessSecurity, out IntPtr lpContext);
 
 		/// <summary>The <c>CreateTapePartition</c> function reformats a tape.</summary>
 		/// <param name="hDevice">Handle to the device where the new partition is to be created. This handle is created by using the <c>CreateFile</c> function.</param>
@@ -565,12 +565,12 @@ namespace Vanara.PInvoke
 		// DWORD CreateTapePartition( _In_ HANDLE hDevice, _In_ DWORD dwPartitionMethod, _In_ DWORD dwCount, _In_ DWORD dwSize); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362519(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa362519")]
-		public static extern Win32Error CreateTapePartition([In] SafeFileHandle hDevice, TAPE_PARTITION_METHOD dwPartitionMethod, uint dwCount, uint dwSize);
+		public static extern Win32Error CreateTapePartition([In] HFILE hDevice, TAPE_PARTITION_METHOD dwPartitionMethod, uint dwCount, uint dwSize);
 
 		// DWORD EraseTape( _In_ HANDLE hDevice, _In_ DWORD dwEraseType, _In_ BOOL bImmediate ); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362523(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa362523")]
-		public static extern Win32Error EraseTape([In] SafeFileHandle hDevice, TAPE_ERASE_TYPE dwEraseType, [MarshalAs(UnmanagedType.Bool)] bool bImmediate);
+		public static extern Win32Error EraseTape([In] HFILE hDevice, TAPE_ERASE_TYPE dwEraseType, [MarshalAs(UnmanagedType.Bool)] bool bImmediate);
 
 		/// <summary>The <c>GetTapeParameters</c> function retrieves information that describes the tape or the tape drive.</summary>
 		/// <param name="hDevice">Handle to the device about which information is sought. This handle is created by using the <c>CreateFile</c> function.</param>
@@ -679,7 +679,7 @@ namespace Vanara.PInvoke
 		// DWORD GetTapeParameters( _In_ HANDLE hDevice, _In_ DWORD dwOperation, _Out_ LPDWORD lpdwSize, _Out_ LPVOID lpTapeInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362526(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa362526")]
-		public static extern Win32Error GetTapeParameters([In] SafeFileHandle hDevice, TAPE_PARAM_OP dwOperation, ref uint lpdwSize, IntPtr lpTapeInformation);
+		public static extern Win32Error GetTapeParameters([In] HFILE hDevice, TAPE_PARAM_OP dwOperation, ref uint lpdwSize, IntPtr lpTapeInformation);
 
 		/// <summary>The <c>GetTapePosition</c> function retrieves the current address of the tape, in logical or absolute blocks.</summary>
 		/// <param name="hDevice">Handle to the device on which to get the tape position. This handle is created by using <c>CreateFile</c>.</param>
@@ -788,7 +788,7 @@ namespace Vanara.PInvoke
 		// lpdwOffsetHigh); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362528(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa362528")]
-		public static extern Win32Error GetTapePosition([In] SafeFileHandle hDevice, TAPE_POS_TYPE dwPositionType, out uint lpdwPartition, out uint lpdwOffsetLow, out uint lpdwOffsetHigh);
+		public static extern Win32Error GetTapePosition([In] HFILE hDevice, TAPE_POS_TYPE dwPositionType, out uint lpdwPartition, out uint lpdwOffsetLow, out uint lpdwOffsetHigh);
 
 		/// <summary>The <c>GetTapeStatus</c> function determines whether the tape device is ready to process tape commands.</summary>
 		/// <param name="hDevice">Handle to the device for which to get the device status. This handle is created by using the <c>CreateFile</c> function.</param>
@@ -871,7 +871,7 @@ namespace Vanara.PInvoke
 		// DWORD GetTapeStatus( _In_ HANDLE hDevice); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362530(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa362530")]
-		public static extern Win32Error GetTapeStatus([In] SafeFileHandle hDevice);
+		public static extern Win32Error GetTapeStatus([In] HFILE hDevice);
 
 		/// <summary>The <c>PrepareTape</c> function prepares the tape to be accessed or removed.</summary>
 		/// <param name="hDevice">Handle to the device preparing the tape. This handle is created by using the <c>CreateFile</c> function.</param>
@@ -994,7 +994,7 @@ namespace Vanara.PInvoke
 		// DWORD PrepareTape( _In_ HANDLE hDevice, _In_ DWORD dwOperation, _In_ BOOL bImmediate); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362532(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa362532")]
-		public static extern Win32Error PrepareTape([In] SafeFileHandle hDevice, TAPE_PREP_OP dwOperation, [MarshalAs(UnmanagedType.Bool)] bool bImmediate);
+		public static extern Win32Error PrepareTape([In] HFILE hDevice, TAPE_PREP_OP dwOperation, [MarshalAs(UnmanagedType.Bool)] bool bImmediate);
 
 		/// <summary>The <c>SetTapeParameters</c> function either specifies the block size of a tape or configures the tape device.</summary>
 		/// <param name="hDevice">Handle to the device for which to set configuration information. This handle is created by using the <c>CreateFile</c> function.</param>
@@ -1099,7 +1099,7 @@ namespace Vanara.PInvoke
 		// DWORD SetTapeParameters( _In_ HANDLE hDevice, _In_ DWORD dwOperation, _In_ LPVOID lpTapeInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362534(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa362534")]
-		public static extern Win32Error SetTapeParameters([In] SafeFileHandle hDevice, TAPE_PARAM_OP dwOperation, [In] IntPtr lpTapeInformation);
+		public static extern Win32Error SetTapeParameters([In] HFILE hDevice, TAPE_PARAM_OP dwOperation, [In] IntPtr lpTapeInformation);
 
 		/// <summary>The <c>SetTapePosition</c> function sets the tape position on the specified device.</summary>
 		/// <param name="hDevice">Handle to the device on which to set the tape position. This handle is created by using the <c>CreateFile</c> function.</param>
@@ -1256,7 +1256,7 @@ namespace Vanara.PInvoke
 		// BOOL bImmediate); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362536(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa362536")]
-		public static extern Win32Error SetTapePosition([In] SafeFileHandle hDevice, TAPE_POS_METHOD dwPositionMethod, uint dwPartition, uint dwOffsetLow, uint dwOffsetHigh, [MarshalAs(UnmanagedType.Bool)] bool bImmediate);
+		public static extern Win32Error SetTapePosition([In] HFILE hDevice, TAPE_POS_METHOD dwPositionMethod, uint dwPartition, uint dwOffsetLow, uint dwOffsetHigh, [MarshalAs(UnmanagedType.Bool)] bool bImmediate);
 
 		/// <summary>
 		/// The <c>WriteTapemark</c> function writes a specified number of filemarks, setmarks, short filemarks, or long filemarks to a tape device. These
@@ -1369,7 +1369,7 @@ namespace Vanara.PInvoke
 		// DWORD WriteTapemark( _In_ HANDLE hDevice, _In_ DWORD dwTapemarkType, _In_ DWORD dwTapemarkCount, _In_ BOOL bImmediate); https://msdn.microsoft.com/en-us/library/windows/desktop/aa362668(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa362668")]
-		public static extern Win32Error WriteTapemark([In] SafeFileHandle hDevice, TAPEMARK_TYPE dwTapemarkType, uint dwTapemarkCount, [MarshalAs(UnmanagedType.Bool)] bool bImmediate);
+		public static extern Win32Error WriteTapemark([In] HFILE hDevice, TAPEMARK_TYPE dwTapemarkType, uint dwTapemarkCount, [MarshalAs(UnmanagedType.Bool)] bool bImmediate);
 
 		/// <summary>The TAPE_GET_DRIVE_PARAMETERS structure describes the tape drive. It is used by the GetTapeParameters function.</summary>
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/aa362562(v=vs.85).aspx

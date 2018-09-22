@@ -13,7 +13,7 @@ namespace Vanara.PInvoke.Tests
 	{
 		public static SafeAUTHZ_AUDIT_EVENT_HANDLE GetAuthzInitializeObjectAccessAuditEvent()
 		{
-			var b = AuthzInitializeObjectAccessAuditEvent(AuthzAuditEventFlags.AUTHZ_NO_ALLOC_STRINGS, IntPtr.Zero, "", "", "", "", out SafeAUTHZ_AUDIT_EVENT_HANDLE hEvt, 0);
+			var b = AuthzInitializeObjectAccessAuditEvent(AuthzAuditEventFlags.AUTHZ_NO_ALLOC_STRINGS, IntPtr.Zero, "", "", "", "", out var hEvt, 0);
 			if (!b) TestContext.WriteLine($"AuthzInitializeObjectAccessAuditEvent:{Win32Error.GetLastError()}");
 			Assert.That(b);
 			Assert.That(!hEvt.IsInvalid);
@@ -22,7 +22,7 @@ namespace Vanara.PInvoke.Tests
 
 		public static SafeAUTHZ_RESOURCE_MANAGER_HANDLE GetAuthzInitializeResourceManager()
 		{
-			var b = AuthzInitializeResourceManager(AuthzResourceManagerFlags.AUTHZ_RM_FLAG_NO_AUDIT, null, null, null, "Test", out SafeAUTHZ_RESOURCE_MANAGER_HANDLE hResMgr);
+			var b = AuthzInitializeResourceManager(AuthzResourceManagerFlags.AUTHZ_RM_FLAG_NO_AUDIT, null, null, null, "Test", out var hResMgr);
 			if (!b) TestContext.WriteLine($"AuthzInitializeResourceManager:{Win32Error.GetLastError()}");
 			Assert.That(b);
 			Assert.That(!hResMgr.IsInvalid);
@@ -31,7 +31,7 @@ namespace Vanara.PInvoke.Tests
 
 		public static SafeHGlobalHandle GetCtxInfo(SafeAUTHZ_CLIENT_CONTEXT_HANDLE hCtx, AUTHZ_CONTEXT_INFORMATION_CLASS type)
 		{
-			var b = AuthzGetInformationFromContext(hCtx, type, 0, out uint szReq, IntPtr.Zero);
+			var b = AuthzGetInformationFromContext(hCtx, type, 0, out var szReq, IntPtr.Zero);
 			if (!b && Win32Error.GetLastError() != Win32Error.ERROR_INSUFFICIENT_BUFFER) TestContext.WriteLine($"AuthzGetInformationFromContext:{Win32Error.GetLastError()}");
 			Assert.That(!b);
 			if (szReq == 0) return SafeHGlobalHandle.Null;
@@ -44,7 +44,7 @@ namespace Vanara.PInvoke.Tests
 
 		public static SafeAUTHZ_CLIENT_CONTEXT_HANDLE GetCurrentUserAuthContext(SafeAUTHZ_RESOURCE_MANAGER_HANDLE hResMgr)
 		{
-			var b = AuthzInitializeContextFromSid(AuthzContextFlags.DEFAULT, PSIDTests.GetCurrentSid(), hResMgr, IntPtr.Zero, new LUID(), IntPtr.Zero, out SafeAUTHZ_CLIENT_CONTEXT_HANDLE hCtx);
+			var b = AuthzInitializeContextFromSid(AuthzContextFlags.DEFAULT, PSIDTests.GetCurrentSid(), hResMgr, IntPtr.Zero, new LUID(), IntPtr.Zero, out var hCtx);
 			if (!b) TestContext.WriteLine($"AuthzInitializeContextFromSid:{Win32Error.GetLastError()}");
 			Assert.That(b);
 			Assert.That(!hCtx.IsInvalid);
@@ -53,9 +53,9 @@ namespace Vanara.PInvoke.Tests
 
 		public static SafeAUTHZ_CLIENT_CONTEXT_HANDLE GetTokenAuthContext(SafeAUTHZ_RESOURCE_MANAGER_HANDLE hRM)
 		{
-			using (var hTok = SafeTokenHandle.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_QUERY))
+			using (var hTok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_QUERY))
 			{
-				var b = AuthzInitializeContextFromToken(0, hTok, hRM, IntPtr.Zero, new LUID(), IntPtr.Zero, out SafeAUTHZ_CLIENT_CONTEXT_HANDLE hCtx);
+				var b = AuthzInitializeContextFromToken(0, hTok, hRM, IntPtr.Zero, new LUID(), IntPtr.Zero, out var hCtx);
 				if (!b) TestContext.WriteLine($"AuthzAccessCheck:{Win32Error.GetLastError()}");
 				Assert.That(b);
 				Assert.That(!hCtx.IsInvalid);
@@ -73,7 +73,7 @@ namespace Vanara.PInvoke.Tests
 			using (var reply = new AUTHZ_ACCESS_REPLY(1))
 			{
 				var req = new AUTHZ_ACCESS_REQUEST((uint)ACCESS_MASK.MAXIMUM_ALLOWED);
-				var b = AuthzAccessCheck(AuthzAccessCheckFlags.NONE, hCtx, ref req, hEvt, psd, null, 0, reply, out SafeAUTHZ_ACCESS_CHECK_RESULTS_HANDLE hRes);
+				var b = AuthzAccessCheck(AuthzAccessCheckFlags.NONE, hCtx, ref req, hEvt, psd, null, 0, reply, out var hRes);
 				if (!b) TestContext.WriteLine($"AuthzAccessCheck:{Win32Error.GetLastError()}");
 				Assert.That(b);
 				Assert.That(reply.GrantedAccessMask, Is.Not.EqualTo(IntPtr.Zero));
@@ -108,7 +108,7 @@ namespace Vanara.PInvoke.Tests
 			using (var hCtx = GetCurrentUserAuthContext(hRM))
 			using (var hDevCtx = GetTokenAuthContext(hRM))
 			{
-				var b = AuthzInitializeCompoundContext(hCtx, hDevCtx, out SafeAUTHZ_CLIENT_CONTEXT_HANDLE hCompCtx);
+				var b = AuthzInitializeCompoundContext(hCtx, hDevCtx, out var hCompCtx);
 				if (!b) TestContext.WriteLine($"AuthzAccessCheck:{Win32Error.GetLastError()}");
 				Assert.That(b);
 				Assert.That(!hCompCtx.IsInvalid);

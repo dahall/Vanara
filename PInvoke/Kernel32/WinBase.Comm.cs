@@ -361,7 +361,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363179")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ClearCommBreak([In] SafeFileHandle hFile);
+		public static extern bool ClearCommBreak([In] HFILE hFile);
 
 		/// <summary>
 		/// Retrieves information about a communications error and reports the current status of a communications device. The function is called when a
@@ -414,7 +414,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363180")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ClearCommError([In] SafeFileHandle hFile, out COMM_ERRS lpErrors, out COMSTAT lpStat);
+		public static extern bool ClearCommError([In] HFILE hFile, out COMM_ERRS lpErrors, out COMSTAT lpStat);
 
 		/// <summary>Displays a driver-supplied configuration dialog box.</summary>
 		/// <param name="lpszName">
@@ -435,7 +435,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363187")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CommConfigDialog([In] string lpszName, [In] IntPtr hWnd, ref COMMCONFIG lpCC);
+		public static extern bool CommConfigDialog([In] string lpszName, [In] HWND hWnd, ref COMMCONFIG lpCC);
 
 		/// <summary>Directs the specified communications device to perform an extended function.</summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
@@ -497,7 +497,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363254")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EscapeCommFunction([In] SafeFileHandle hFile, COMM_ESC_FUNC dwFunc);
+		public static extern bool EscapeCommFunction([In] HFILE hFile, COMM_ESC_FUNC dwFunc);
 
 		/// <summary>
 		/// <para>Retrieves the current configuration of a communications device.</para>
@@ -517,7 +517,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363256")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetCommConfig([In] SafeFileHandle hCommDev, out COMMCONFIG lpCC, ref uint lpdwSize);
+		public static extern bool GetCommConfig([In] HFILE hCommDev, out COMMCONFIG lpCC, ref uint lpdwSize);
 
 		/// <summary>Retrieves the value of the event mask for a specified communications device.</summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
@@ -595,7 +595,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363257")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetCommMask([In] SafeFileHandle hFile, out COMM_EVT_MASK lpEvtMask);
+		public static extern bool GetCommMask([In] HFILE hFile, out COMM_EVT_MASK lpEvtMask);
 
 		/// <summary>Retrieves the modem control-register values.</summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
@@ -636,7 +636,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363258")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetCommModemStatus([In] SafeFileHandle hFile, out COMM_MODEM_STATUS lpModemStat);
+		public static extern bool GetCommModemStatus([In] HFILE hFile, out COMM_MODEM_STATUS lpModemStat);
 
 		/// <summary>Retrieves information about the communications properties for a specified communications device.</summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
@@ -652,7 +652,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363259")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetCommProperties([In] SafeFileHandle hFile, out COMMPROP lpCommProp);
+		public static extern bool GetCommProperties([In] HFILE hFile, out COMMPROP lpCommProp);
 
 		/// <summary>Retrieves the current control settings for a specified communications device.</summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
@@ -665,7 +665,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363260")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetCommState([In] SafeFileHandle hFile, out DCB lpDCB);
+		public static extern bool GetCommState([In] HFILE hFile, out DCB lpDCB);
 
 		/// <summary>Retrieves the time-out parameters for all read and write operations on a specified communications device.</summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
@@ -678,7 +678,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363261")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetCommTimeouts([In] SafeFileHandle hFile, out COMMTIMEOUTS lpCommTimeouts);
+		public static extern bool GetCommTimeouts([In] HFILE hFile, out COMMTIMEOUTS lpCommTimeouts);
 
 		/// <summary>Retrieves the default configuration for the specified communications device.</summary>
 		/// <param name="lpszName">The name of the device. For example, COM1 through COM9 are serial ports and LPT1 through LPT9 are parallel ports.</param>
@@ -737,7 +737,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363428")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PurgeComm([In] SafeFileHandle hFile, COMM_PURGE dwFlags);
+		public static extern bool PurgeComm([In] HFILE hFile, COMM_PURGE dwFlags);
 
 		/// <summary>
 		/// Suspends character transmission for a specified communications device and places the transmission line in a break state until the
@@ -752,7 +752,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363433")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetCommBreak([In] SafeFileHandle hFile);
+		public static extern bool SetCommBreak([In] HFILE hFile);
 
 		/// <summary>Sets the current configuration of a communications device.</summary>
 		/// <param name="hCommDev">A handle to the open communications device. The <c>CreateFile</c> function returns this handle.</param>
@@ -766,7 +766,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363434")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetCommConfig([In] SafeFileHandle hCommDev, [In] IntPtr lpCC, uint dwSize);
+		public static extern bool SetCommConfig([In] HFILE hCommDev, [In] IntPtr lpCC, uint dwSize);
 
 		/// <summary>Specifies a set of events to be monitored for a communications device.</summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
@@ -828,7 +828,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363435")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetCommMask([In] SafeFileHandle hFile, COMM_EVT_MASK dwEvtMask);
+		public static extern bool SetCommMask([In] HFILE hFile, COMM_EVT_MASK dwEvtMask);
 
 		/// <summary>
 		/// Configures a communications device according to the specifications in a device-control block (a <c>DCB</c> structure). The function reinitializes all
@@ -844,7 +844,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363436")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetCommState([In] SafeFileHandle hFile, [In] ref DCB lpDCB);
+		public static extern bool SetCommState([In] HFILE hFile, [In] ref DCB lpDCB);
 
 		/// <summary>Sets the time-out parameters for all read and write operations on a specified communications device.</summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
@@ -857,7 +857,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363437")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetCommTimeouts([In] SafeFileHandle hFile, [In] ref COMMTIMEOUTS lpCommTimeouts);
+		public static extern bool SetCommTimeouts([In] HFILE hFile, [In] ref COMMTIMEOUTS lpCommTimeouts);
 
 		/// <summary>Sets the default configuration for a communications device.</summary>
 		/// <param name="lpszName">The name of the device. For example, COM1 through COM9 are serial ports and LPT1 through LPT9 are parallel ports.</param>
@@ -885,7 +885,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363439")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetupComm([In] SafeFileHandle hFile, uint dwInQueue, uint dwOutQueue);
+		public static extern bool SetupComm([In] HFILE hFile, uint dwInQueue, uint dwOutQueue);
 
 		/// <summary>Transmits a specified character ahead of any pending data in the output buffer of the specified communications device.</summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
@@ -898,7 +898,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363473")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool TransmitCommChar([In] SafeFileHandle hFile, byte cChar);
+		public static extern bool TransmitCommChar([In] HFILE hFile, byte cChar);
 
 		/// <summary>
 		/// Waits for an event to occur for a specified communications device. The set of events that are monitored by this function is contained in the event
@@ -982,7 +982,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363479")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static unsafe extern bool WaitCommEvent([In] SafeFileHandle hFile, ref COMM_EVT_MASK lpEvtMask, NativeOverlapped* lpOverlapped);
+		public static unsafe extern bool WaitCommEvent([In] HFILE hFile, ref COMM_EVT_MASK lpEvtMask, NativeOverlapped* lpOverlapped);
 
 		/// <summary>
 		/// <para>Contains information about the configuration state of a communications device.</para>

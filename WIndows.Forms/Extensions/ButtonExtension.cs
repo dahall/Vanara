@@ -14,7 +14,7 @@ namespace Vanara.Extensions
 			{
 				if (!btn.IsHandleCreated) return;
 				if (required) btn.FlatStyle = FlatStyle.System;
-				SendMessage(new HandleRef(btn, btn.Handle), (uint)ButtonMessage.BCM_SETSHIELD, IntPtr.Zero, required ? new IntPtr(1) : IntPtr.Zero);
+				SendMessage(btn.Handle, (uint)ButtonMessage.BCM_SETSHIELD, IntPtr.Zero, required ? new IntPtr(1) : IntPtr.Zero);
 				btn.Invalidate();
 			}
 			else

@@ -47,7 +47,7 @@ namespace Vanara.PInvoke
         ///   </item>
         /// </list>
         /// </remarks>
-        public static Task DeviceIoControlAsync<TIn>(SafeFileHandle hDev, uint ioControlCode, TIn inVal) where TIn : struct
+        public static Task DeviceIoControlAsync<TIn>(HFILE hDev, uint ioControlCode, TIn inVal) where TIn : struct
         {
             return DeviceIoControlAsync(hDev, ioControlCode, (TIn?)inVal, (int?)null);
         }
@@ -88,7 +88,7 @@ namespace Vanara.PInvoke
         ///   </item>
         /// </list>
         /// </remarks>
-        public static Task<TOut?> DeviceIoControlAsync<TOut>(SafeFileHandle hDev, uint ioControlCode) where TOut : struct
+        public static Task<TOut?> DeviceIoControlAsync<TOut>(HFILE hDev, uint ioControlCode) where TOut : struct
         {
             var outVal = default(TOut);
             return DeviceIoControlAsync(hDev, ioControlCode, (int?)null, (TOut?)outVal);
@@ -133,13 +133,13 @@ namespace Vanara.PInvoke
         ///   </item>
         /// </list>
         /// </remarks>
-        public static Task<TOut?> DeviceIoControlAsync<TIn, TOut>(SafeFileHandle hDevice, uint ioControlCode, TIn? inVal, TOut? outVal) where TIn : struct where TOut : struct
+        public static Task<TOut?> DeviceIoControlAsync<TIn, TOut>(HFILE hDevice, uint ioControlCode, TIn? inVal, TOut? outVal) where TIn : struct where TOut : struct
         {
             var buf = Pack(inVal, outVal);
             return new TaskFactory().FromAsync(BeginDeviceIoControl<TIn, TOut>, EndDeviceIoControl<TIn, TOut>, hDevice, ioControlCode, buf, null);
         }
 
-        private static unsafe Task<TOut?> ExplicitDeviceIoControlAsync<TIn, TOut>(SafeFileHandle hDevice, uint ioControlCode, TIn? inVal, TOut? outVal) where TIn : struct where TOut : struct
+        private static unsafe Task<TOut?> ExplicitDeviceIoControlAsync<TIn, TOut>(HFILE hDevice, uint ioControlCode, TIn? inVal, TOut? outVal) where TIn : struct where TOut : struct
         {
             ThreadPool.BindHandle(hDevice);
             var tcs = new TaskCompletionSource<TOut?>();

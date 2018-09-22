@@ -1565,7 +1565,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Windows.h", MSDNShortId = "dn369255")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool InstallELAMCertificateInfo(SafeFileHandle ELAMFile);
+		public static extern bool InstallELAMCertificateInfo(HFILE ELAMFile);
 
 		/// <summary>
 		/// <para>

@@ -275,7 +275,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(uval1, Is.Not.Zero);
 
 			// Try get generic integral value
-			Assert.That(SystemParametersInfo(SPI.SPI_GETFOCUSBORDERHEIGHT, out uint uval2));
+			Assert.That(SystemParametersInfo<uint>(SPI.SPI_GETFOCUSBORDERHEIGHT, out var uval2));
 			Assert.That(uval2, Is.EqualTo(uval1));
 
 			// Try get struct value

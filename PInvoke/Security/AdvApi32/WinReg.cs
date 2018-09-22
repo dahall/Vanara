@@ -2705,7 +2705,7 @@ namespace Vanara.PInvoke
 		// HANDLE hToken, DWORD dwOptions, REGSAM samDesired, PHKEY phkResult );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winreg.h", MSDNShortId = "bd068826-cf88-4fc7-a7d6-96cc03e923c7")]
-		public static extern Win32Error RegOpenUserClassesRoot(SafeTokenHandle hToken, uint dwOptions, REGSAM samDesired, out SafeRegistryHandle phkResult);
+		public static extern Win32Error RegOpenUserClassesRoot(SafeHTOKEN hToken, uint dwOptions, REGSAM samDesired, out SafeRegistryHandle phkResult);
 
 		/// <summary>
 		/// <para>Maps a predefined registry key to the specified registry key.</para>

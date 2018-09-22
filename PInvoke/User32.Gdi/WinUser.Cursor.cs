@@ -126,7 +126,13 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-copycursor void CopyCursor( pcur );
 		[PInvokeData("winuser.h", MSDNShortId = "copycursor")]
-		public static SafeCursorHandle CopyCursor(SafeCursorHandle pcur) => new SafeCursorHandle(CopyIcon(pcur.DangerousGetHandle()));
+		public static SafeHCURSOR CopyCursor(HCURSOR pcur)
+		{
+			var safeHIcon = CopyIcon(new HICON(pcur.DangerousGetHandle()));
+			var ptr = safeHIcon.DangerousGetHandle();
+			safeHIcon.SetHandleAsInvalid();
+			return new SafeHCURSOR(ptr, true);
+		}
 
 		/// <summary>
 		/// <para>Creates a cursor having the specified size, bit patterns, and hot spot.</para>
@@ -184,7 +190,7 @@ namespace Vanara.PInvoke
 		// xHotSpot, int yHotSpot, int nWidth, int nHeight, CONST VOID *pvANDPlane, CONST VOID *pvXORPlane );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "createcursor")]
-		public static extern SafeCursorHandle CreateCursor(SafeLibraryHandle hInst, int xHotSpot, int yHotSpot, int nWidth, int nHeight, IntPtr pvANDPlane, IntPtr pvXORPlane);
+		public static extern SafeHCURSOR CreateCursor(HINSTANCE hInst, int xHotSpot, int yHotSpot, int nWidth, int nHeight, IntPtr pvANDPlane, IntPtr pvXORPlane);
 
 		/// <summary>
 		/// <para>Destroys a cursor and frees any memory the cursor occupied. Do not use this function to destroy a shared cursor.</para>
@@ -222,7 +228,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "destroycursor")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DestroyCursor(IntPtr hCursor);
+		public static extern bool DestroyCursor(HCURSOR hCursor);
 
 		/// <summary>
 		/// <para>Retrieves the screen coordinates of the rectangular area to which the cursor is confined.</para>
@@ -265,7 +271,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getcursor HCURSOR GetCursor( );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getcursor")]
-		public static extern SafeCursorHandle GetCursor();
+		public static extern SafeHCURSOR GetCursor();
 
 		/// <summary>
 		/// <para>Retrieves information about the global cursor.</para>
@@ -453,7 +459,7 @@ namespace Vanara.PInvoke
 		// LPCSTR lpCursorName );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "loadcursor")]
-		public static extern SafeCursorHandle LoadCursor(SafeLibraryHandle hInstance, string lpCursorName);
+		public static extern SafeHCURSOR LoadCursor(HINSTANCE hInstance, string lpCursorName);
 
 		/// <summary>
 		/// <para>Creates a cursor based on data contained in a file.</para>
@@ -492,7 +498,7 @@ namespace Vanara.PInvoke
 		// lpFileName );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "loadcursorfromfile")]
-		public static extern SafeCursorHandle LoadCursorFromFile(string lpFileName);
+		public static extern SafeHCURSOR LoadCursorFromFile(string lpFileName);
 
 		/// <summary>
 		/// <para>Sets the cursor shape.</para>
@@ -530,7 +536,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setcursor HCURSOR SetCursor( HCURSOR hCursor );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "setcursor")]
-		public static extern SafeCursorHandle SetCursor(SafeCursorHandle hCursor);
+		public static extern SafeHCURSOR SetCursor(SafeHCURSOR hCursor);
 
 		/// <summary>
 		/// <para>
@@ -689,7 +695,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "setsystemcursor")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		// Not using SafeCursorHandle as system destroys this cursor.
-		public static extern bool SetSystemCursor(IntPtr hcur, OCR id);
+		public static extern bool SetSystemCursor(HCURSOR hcur, OCR id);
 
 		/// <summary>Displays or hides the cursor.</summary>
 		/// <param name="bShow">
@@ -770,17 +776,16 @@ namespace Vanara.PInvoke
 			public System.Drawing.Point ptScreenPos;
 		}
 
-		/// <summary>SafeHandle for HCURSOR that automatically calls DestroyCursor on disposal.</summary>
-		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
-		public class SafeCursorHandle : GenericSafeHandle
+		/// <summary>Provides a <see cref="SafeHandle"/> to a Windows  that disposes a created HCURSOR instance at disposal using DestroyCursor.</summary>
+		public class SafeHCURSOR : HCURSOR
 		{
-			/// <summary>Initializes a new instance of the <see cref="SafeCursorHandle"/> class.</summary>
-			public SafeCursorHandle() : this(IntPtr.Zero) { }
+			/// <summary>Initializes a new instance of the <see cref="HCURSOR"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeHCURSOR(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			/// <summary>Initializes a new instance of the <see cref="SafeCursorHandle"/> class.</summary>
-			/// <param name="hCursor">The HCURSOR instance.</param>
-			/// <param name="own">if set to <c>true</c> call DestroyCursor on disposal.</param>
-			public SafeCursorHandle(IntPtr hCursor, bool own = true) : base(hCursor, DestroyCursor, own) { }
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => DestroyCursor(this);
 		}
 	}
 }

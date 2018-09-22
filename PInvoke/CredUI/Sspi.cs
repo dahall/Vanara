@@ -41,7 +41,7 @@ namespace Vanara.PInvoke
 		/// <returns>If the function succeeds, it returns SEC_E_OK. If the function fails, it returns a nonzero error code.</returns>
 		[DllImport(Lib.CredUI, ExactSpelling = true)]
 		[PInvokeData("Sspi.h")]
-		public static extern NTStatus SspiGetCredUIContext(IntPtr ContextHandle, [MarshalAs(UnmanagedType.LPStruct)] Guid CredType, LUID LogonId, out PSEC_WINNT_CREDUI_CONTEXT_VECTOR CredUIContexts, out SafeTokenHandle TokenHandle);
+		public static extern NTStatus SspiGetCredUIContext(IntPtr ContextHandle, [MarshalAs(UnmanagedType.LPStruct)] Guid CredType, LUID LogonId, out PSEC_WINNT_CREDUI_CONTEXT_VECTOR CredUIContexts, out SafeHTOKEN TokenHandle);
 
 		/// <summary>Indicates whether an error returned after a call to either the InitializeSecurityContext or the AcceptSecurityContext function requires an additional call to the SspiPromptForCredentials function.</summary>
 		/// <param name="ErrorOrNtStatus">The error to test.</param>

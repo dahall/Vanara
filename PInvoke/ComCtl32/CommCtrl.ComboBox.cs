@@ -107,7 +107,7 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="item">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage(HandleRef hWnd, ComboBoxMessage Msg, int wParam, ref COMBOBOXINFO item) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref item);
+		public static IntPtr SendMessage(HWND hWnd, ComboBoxMessage Msg, int wParam, ref COMBOBOXINFO item) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref item);
 
 		/// <summary>Contains combo box status information.</summary>
 		[PInvokeData("Winuser.h", MSDNShortId = "bb775798")]
@@ -139,9 +139,9 @@ namespace Vanara.PInvoke
 			/// <param name="hComboBox">The handle to a ComboBox.</param>
 			/// <returns>A <see cref="COMBOBOXINFO"/> structure with values from the supplied handle.</returns>
 			[System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.LinkDemand, Flags = System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode)]
-			public static COMBOBOXINFO FromHandle(HandleRef hComboBox)
+			public static COMBOBOXINFO FromHandle(HWND hComboBox)
 			{
-				if (hComboBox.Handle == IntPtr.Zero)
+				if (hComboBox.IsNull)
 					throw new ArgumentException("ComboBox handle cannot be NULL.", nameof(hComboBox));
 
 				var cbi = new COMBOBOXINFO() { cbSize = Marshal.SizeOf(typeof(COMBOBOXINFO)) };

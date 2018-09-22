@@ -1153,7 +1153,7 @@ namespace Vanara.PInvoke
 		// _In_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385418(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385418")]
-		public static extern Win32Error WNetAddConnection3(HandleRef hwndOwner, NETRESOURCE lpNetResource, string lpPassword, string lpUserName, CONNECT dwFlags);
+		public static extern Win32Error WNetAddConnection3(HWND hwndOwner, NETRESOURCE lpNetResource, string lpPassword, string lpUserName, CONNECT dwFlags);
 
 		/// <summary>
 		/// <para>
@@ -1335,7 +1335,7 @@ namespace Vanara.PInvoke
 		// DWORD WNetConnectionDialog( _In_ HWND hwnd, _In_ DWORD dwType); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385433(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385433")]
-		public static extern Win32Error WNetConnectionDialog(HandleRef hwnd, NETRESOURCEType dwType = NETRESOURCEType.RESOURCETYPE_DISK);
+		public static extern Win32Error WNetConnectionDialog(HWND hwnd, NETRESOURCEType dwType = NETRESOURCEType.RESOURCETYPE_DISK);
 
 		/// <summary>
 		/// The <c>WNetConnectionDialog1</c> function brings up a general browsing dialog for connecting to network resources. The function
@@ -1444,7 +1444,7 @@ namespace Vanara.PInvoke
 		// DWORD WNetDisconnectDialog( _In_ HWND hwnd, _In_ DWORD dwType); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385440(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385440")]
-		public static extern Win32Error WNetDisconnectDialog(HandleRef hwnd, NETRESOURCEType dwType = NETRESOURCEType.RESOURCETYPE_DISK);
+		public static extern Win32Error WNetDisconnectDialog(HWND hwnd, NETRESOURCEType dwType = NETRESOURCEType.RESOURCETYPE_DISK);
 
 		/// <summary>
 		/// The <c>WNetDisconnectDialog1</c> function attempts to disconnect a network resource. If the underlying network returns
@@ -2727,7 +2727,7 @@ namespace Vanara.PInvoke
 		// _In_ DWORD dwFlags, _Out_ LPTSTR lpAccessName, _Inout_ LPDWORD lpBufferSize, _Out_ LPDWORD lpResult); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385482(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385482")]
-		public static extern Win32Error WNetUseConnection(HandleRef hwndOwner, NETRESOURCE lpNetResource, string lpPassword, string lpUserID, CONNECT dwFlags, StringBuilder lpAccessName, ref uint lpBufferSize, out CONNECT lpResult);
+		public static extern Win32Error WNetUseConnection(HWND hwndOwner, NETRESOURCE lpNetResource, string lpPassword, string lpUserID, CONNECT dwFlags, StringBuilder lpAccessName, ref uint lpBufferSize, out CONNECT lpResult);
 
 		/// <summary>
 		/// The <c>CONNECTDLGSTRUCT</c> structure is used by the <c>WNetConnectionDialog1</c> function to establish browsing dialog box parameters.

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
-
-// ReSharper disable InconsistentNaming
+using static Vanara.PInvoke.Gdi32;
 
 namespace Vanara.PInvoke
 {
@@ -330,7 +329,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.DwmApi, ExactSpelling = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("dwmapi.h")]
-		public static extern bool DwmDefWindowProc(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam, out IntPtr plResult);
+		public static extern bool DwmDefWindowProc(HWND hwnd, uint msg, IntPtr wParam, IntPtr lParam, out IntPtr plResult);
 
 		/// <summary>Enables the blur effect on a specified window.</summary>
 		/// <param name="hWnd">The handle to the window on which the blur behind data is applied.</param>
@@ -339,7 +338,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[System.Security.SecurityCritical]
 		[PInvokeData("dwmapi.h")]
-		public static extern HRESULT DwmEnableBlurBehindWindow(IntPtr hWnd, ref DWM_BLURBEHIND pDwmBlurbehind);
+		public static extern HRESULT DwmEnableBlurBehindWindow(HWND hWnd, ref DWM_BLURBEHIND pDwmBlurbehind);
 
 		/// <summary>
 		/// Enables or disables Desktop Window Manager (DWM) composition. <note>This function is deprecated as of Windows 8. DWM can no longer be
@@ -371,7 +370,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[System.Security.SecurityCritical]
 		[PInvokeData("dwmapi.h")]
-		public static extern HRESULT DwmExtendFrameIntoClientArea(IntPtr hWnd, ref MARGINS pMarInset);
+		public static extern HRESULT DwmExtendFrameIntoClientArea(HWND hWnd, ref MARGINS pMarInset);
 
 		/// <summary>
 		/// Issues a flush call that blocks the caller until the next present, when all of the Microsoft DirectX surface updates that are currently outstanding
@@ -419,7 +418,7 @@ namespace Vanara.PInvoke
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
-		public static extern HRESULT DwmGetCompositionTimingInfo(IntPtr hwnd, ref DWM_TIMING_INFO dwAttribute);
+		public static extern HRESULT DwmGetCompositionTimingInfo(HWND hwnd, ref DWM_TIMING_INFO dwAttribute);
 
 		/// <summary>Retrieves transport attributes.</summary>
 		/// <param name="pfIsRemoting">
@@ -446,7 +445,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[System.Security.SecurityCritical]
 		[PInvokeData("dwmapi.h")]
-		public static extern HRESULT DwmGetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, IntPtr pvAttribute, int cbAttribute);
+		public static extern HRESULT DwmGetWindowAttribute(HWND hwnd, DWMWINDOWATTRIBUTE dwAttribute, IntPtr pvAttribute, int cbAttribute);
 
 		/// <summary>Retrieves the current value of a specified attribute applied to a window.</summary>
 		/// <param name="hwnd">The handle to the window from which the attribute data is retrieved.</param>
@@ -457,7 +456,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[PInvokeData("dwmapi.h")]
-		public static HRESULT DwmGetWindowAttribute<T>(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, out T pvAttribute)
+		public static HRESULT DwmGetWindowAttribute<T>(HWND hwnd, DWMWINDOWATTRIBUTE dwAttribute, out T pvAttribute)
 		{
 			if (!CorrespondingTypeAttribute.CanGet(dwAttribute, typeof(T))) throw new ArgumentException();
 			var type = typeof(T);
@@ -483,7 +482,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
-		public static extern HRESULT DwmInvalidateIconicBitmaps(IntPtr hwnd);
+		public static extern HRESULT DwmInvalidateIconicBitmaps(HWND hwnd);
 
 		/// <summary>
 		/// Obtains a value that indicates whether Desktop Window Manager (DWM) composition is enabled. Applications on machines running Windows 7 or earlier can
@@ -509,7 +508,7 @@ namespace Vanara.PInvoke
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
-		public static extern HRESULT DwmQueryThumbnailSourceSize(IntPtr hThumbnail, ref SIZE pSize);
+		public static extern HRESULT DwmQueryThumbnailSourceSize(HTHUMBNAIL hThumbnail, ref SIZE pSize);
 
 		/// <summary>Creates a Desktop Window Manager (DWM) thumbnail relationship between the destination and source windows.</summary>
 		/// <param name="hwndDestination">
@@ -524,7 +523,7 @@ namespace Vanara.PInvoke
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
-		public static extern HRESULT DwmRegisterThumbnail(IntPtr hwndDestination, IntPtr hwndSource, out IntPtr phThumbnailId);
+		public static extern HRESULT DwmRegisterThumbnail(HWND hwndDestination, HWND hwndSource, out HTHUMBNAIL phThumbnailId);
 
 		/// <summary>
 		/// Notifies Desktop Window Manager (DWM) that a touch contact has been recognized as a gesture, and that DWM should draw feedback for that gesture.
@@ -561,7 +560,7 @@ namespace Vanara.PInvoke
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
-		public static extern HRESULT DwmSetIconicLivePreviewBitmap(IntPtr hwnd, IntPtr hbmp, ref System.Drawing.Point pptClient, DWM_SETICONICPREVIEW_Flags dwSITFlags);
+		public static extern HRESULT DwmSetIconicLivePreviewBitmap(HWND hwnd, SafeHBITMAP hbmp, ref System.Drawing.Point pptClient, DWM_SETICONICPREVIEW_Flags dwSITFlags);
 
 		/// <summary>
 		/// Sets a static, iconic bitmap to display a live preview (also known as a Peek preview) of a window or tab. The taskbar can use this bitmap to show a
@@ -577,7 +576,7 @@ namespace Vanara.PInvoke
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
-		public static extern HRESULT DwmSetIconicLivePreviewBitmap(IntPtr hwnd, IntPtr hbmp, IntPtr pptClient, DWM_SETICONICPREVIEW_Flags dwSITFlags);
+		public static extern HRESULT DwmSetIconicLivePreviewBitmap(HWND hwnd, SafeHBITMAP hbmp, IntPtr pptClient, DWM_SETICONICPREVIEW_Flags dwSITFlags);
 
 		/// <summary>
 		/// Sets a static, iconic bitmap on a window or tab to use as a thumbnail representation. The taskbar can use this bitmap as a thumbnail switch target
@@ -589,7 +588,7 @@ namespace Vanara.PInvoke
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
-		public static extern HRESULT DwmSetIconicThumbnail(IntPtr hwnd, IntPtr hbmp, DWM_SETICONICPREVIEW_Flags dwSITFlags);
+		public static extern HRESULT DwmSetIconicThumbnail(HWND hwnd, SafeHBITMAP hbmp, DWM_SETICONICPREVIEW_Flags dwSITFlags);
 
 		/// <summary>Sets the value of non-client rendering attributes for a window.</summary>
 		/// <param name="hwnd">The handle to the window that will receive the attributes.</param>
@@ -605,7 +604,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[System.Security.SecurityCritical]
 		[PInvokeData("dwmapi.h")]
-		public static extern HRESULT DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, [In] IntPtr pvAttribute, int cbAttribute);
+		public static extern HRESULT DwmSetWindowAttribute(HWND hwnd, DWMWINDOWATTRIBUTE dwAttribute, [In] IntPtr pvAttribute, int cbAttribute);
 
 		/// <summary>Sets the value of non-client rendering attributes for a window.</summary>
 		/// <param name="hwnd">The handle to the window that will receive the attributes.</param>
@@ -618,7 +617,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[PInvokeData("dwmapi.h")]
-		public static HRESULT DwmSetWindowAttribute<T>(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, [In] T pvAttribute)
+		public static HRESULT DwmSetWindowAttribute<T>(HWND hwnd, DWMWINDOWATTRIBUTE dwAttribute, [In] T pvAttribute)
 		{
 			if (pvAttribute == null || !CorrespondingTypeAttribute.CanSet(dwAttribute, typeof(T))) throw new ArgumentException();
 			var attr = pvAttribute is bool ? Convert.ToUInt32(pvAttribute) : (pvAttribute.GetType().IsEnum ? Convert.ChangeType(pvAttribute, Enum.GetUnderlyingType(pvAttribute.GetType())) : pvAttribute);
@@ -651,7 +650,7 @@ namespace Vanara.PInvoke
 		/// <param name="target">The target.</param>
 		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
-		public static extern HRESULT DwmTransitionOwnedWindow(IntPtr hwnd, DWMTRANSITION_OWNEDWINDOW_TARGET target);
+		public static extern HRESULT DwmTransitionOwnedWindow(HWND hwnd, DWMTRANSITION_OWNEDWINDOW_TARGET target);
 
 		/// <summary>Removes a Desktop Window Manager (DWM) thumbnail relationship created by the DwmRegisterThumbnail function.</summary>
 		/// <param name="hThumbnailId">
@@ -660,18 +659,15 @@ namespace Vanara.PInvoke
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
-		public static extern HRESULT DwmUnregisterThumbnail(IntPtr hThumbnailId);
+		public static extern HRESULT DwmUnregisterThumbnail(HTHUMBNAIL hThumbnailId);
 
-		/// <summary>Updates the properties for a Desktop Window Manager (DWM) thumbnail.</summary>
-		/// <param name="hThumbnailId">
-		/// The handle to the DWM thumbnail to be updated. Null or invalid thumbnails, as well as thumbnails owned by other processes will result in a return
-		/// value of E_INVALIDARG.
-		/// </param>
-		/// <param name="ptnProperties">A pointer to a DWM_THUMBNAIL_PROPERTIES structure that contains the new thumbnail properties.</param>
-		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
+		/// <summary><para>Updates the properties for a Desktop Window Manager (DWM) thumbnail.</para></summary><param name="hThumbnailId"><para>The handle to the DWM thumbnail to be updated. Null or invalid thumbnails, as well as thumbnails owned by other processes will result in a return value of E_INVALIDARG.</para></param><param name="ptnProperties"><para>A pointer to a DWM_THUMBNAIL_PROPERTIES structure that contains the new thumbnail properties.</para></param><returns><para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para></returns><remarks><para>Thumbnail relationships created by the DwmRegisterThumbnail function will not be rendered to the destination window until this function is called. Subsequent calls will update the thumbnail according to the provided properties.</para><para>Examples</para><para>The following example demonstrates how to register and display the desktop thumbnail.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/dwmapi/nf-dwmapi-dwmupdatethumbnailproperties
+		// DWMAPI DwmUpdateThumbnailProperties( HTHUMBNAIL hThumbnailId, const DWM_THUMBNAIL_PROPERTIES *ptnProperties );
 		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("dwmapi.h")]
-		public static extern HRESULT DwmUpdateThumbnailProperties(IntPtr hThumbnailId, ref DWM_THUMBNAIL_PROPERTIES ptnProperties);
+		[PInvokeData("dwmapi.h", MSDNShortId = "dwmupdatethumbnailproperties")]
+		//  public static extern DWMAPI DwmUpdateThumbnailProperties(HTHUMBNAIL hThumbnailId, ref DWM_THUMBNAIL_PROPERTIES ptnProperties);
+		public static extern HRESULT DwmUpdateThumbnailProperties(HTHUMBNAIL hThumbnailId, ref DWM_THUMBNAIL_PROPERTIES ptnProperties);
 
 		/// <summary>Specifies Desktop Window Manager (DWM) blur-behind properties. Used by the DwmEnableBlurBehindWindow function.</summary>
 		[StructLayout(LayoutKind.Sequential)]

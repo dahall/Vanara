@@ -67,14 +67,14 @@ namespace Vanara.PInvoke.Tests
 			using (var f = CreateFile(rofn, Kernel32.FileAccess.GENERIC_READ, FileShare.Read, null, FileMode.Open, FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL, IntPtr.Zero))
 			{
 				var sb = new SafeCoTaskMemString(100, CharSet.Ansi);
-				var b = ReadFile(f, (IntPtr)sb, (uint)sb.Capacity, out uint read, IntPtr.Zero);
+				var b = ReadFile(f, (IntPtr)sb, (uint)sb.Capacity, out var read, IntPtr.Zero);
 				if (!b) TestContext.WriteLine($"ReadFile:{Win32Error.GetLastError()}");
 				Assert.That(b);
 				if (read < sb.Capacity) Marshal.WriteInt16((IntPtr)sb, (int)read, '\0');
 				Assert.That(read, Is.Not.Zero.And.LessThanOrEqualTo(sb.Capacity));
 				Assert.That((string)sb, Is.EqualTo(tmpstr));
 
-				b = SetFilePointerEx(f, 0, out long pos, SeekOrigin.Begin);
+				b = SetFilePointerEx(f, 0, out var pos, SeekOrigin.Begin);
 				if (!b) TestContext.WriteLine($"SetFilePointerEx:{Win32Error.GetLastError()}");
 				Assert.That(b);
 				Assert.That(pos, Is.Zero);
@@ -95,7 +95,7 @@ namespace Vanara.PInvoke.Tests
 			{
 				var txt = "Some text to push.";
 				var bytes = txt.GetBytes(false);
-				var b = WriteFile(f, bytes, (uint)bytes.Length, out uint written, IntPtr.Zero);
+				var b = WriteFile(f, bytes, (uint)bytes.Length, out var written, IntPtr.Zero);
 				if (!b) TestContext.WriteLine($"WriteFile:{Win32Error.GetLastError()}");
 				Assert.That(b);
 				Assert.That(written, Is.EqualTo(bytes.Length));
@@ -104,7 +104,6 @@ namespace Vanara.PInvoke.Tests
 				if (!b) TestContext.WriteLine($"WriteFile:{Win32Error.GetLastError()}");
 				Assert.That(b);
 				Assert.That(written, Is.EqualTo(ptr.Capacity));
-				CloseHandle(f.DangerousGetHandle());
 			}
 		}
 
@@ -141,13 +140,13 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void EnumResourceNamesTest()
 		{
-			using (var hLib = new SafeLibraryHandle(@"C:\Windows\System32\en-US\aclui.dll.mui", LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE))
+			using (var hLib = LoadLibraryEx(@"C:\Windows\System32\en-US\aclui.dll.mui", IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE))
 			{
 				var l = EnumResourceNamesEx(hLib, ResourceType.RT_STRING);
 				Assert.That(l.Count, Is.GreaterThan(0));
 				foreach (var resourceName in l)
 				{
-					LoadString(hLib, resourceName, out IntPtr sptr, 0);
+					LoadString(hLib, resourceName, out var sptr, 0);
 					TestContext.WriteLine($"{resourceName} = {StringHelper.GetString(sptr)}");
 				}
 			}
@@ -169,7 +168,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void FindResourceTest()
 		{
-			using (var hLib = new SafeLibraryHandle(@"comctl32.dll", LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE))
+			using (var hLib = LoadLibraryEx(@"comctl32.dll", IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE))
 			{
 				var ptr = FindResource(hLib, 65, ResourceType.RT_STRING);
 				Assert.That(ptr, Is.Not.EqualTo(IntPtr.Zero));
@@ -183,7 +182,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(s, Is.Not.Null);
 			TestContext.WriteLine(s);
 
-			using (var hLib = new SafeLibraryHandle(@"wininet.dll", LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE))
+			using (var hLib = LoadLibraryEx(@"wininet.dll", IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE))
 			{
 				s = FormatMessage(12175, new[] {"Fred", "Alice"}, hLib);
 				Assert.That(s, Is.Not.Null);
@@ -250,7 +249,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void GetDiskFreeSpaceTest()
 		{
-			var b = GetDiskFreeSpace(null, out uint spc, out uint bps, out uint fc, out uint cc);
+			var b = GetDiskFreeSpace(null, out var spc, out var bps, out var fc, out var cc);
 			Assert.That(b, Is.True);
 			Assert.That(spc, Is.Not.EqualTo(0));
 			Assert.That(bps, Is.Not.EqualTo(0));
@@ -263,7 +262,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void GetDiskFreeSpaceExTest()
 		{
-			var b = GetDiskFreeSpaceEx(null, out ulong fba, out ulong tb, out ulong tfb);
+			var b = GetDiskFreeSpaceEx(null, out var fba, out var tb, out var tfb);
 			Assert.That(b, Is.True);
 			Assert.That(fba, Is.Not.EqualTo(0));
 			Assert.That(tb, Is.Not.EqualTo(0));
@@ -276,7 +275,7 @@ namespace Vanara.PInvoke.Tests
 		public void GetModuleFileNameTest()
 		{
 			const string fn = @"C:\Windows\System32\tzres.dll";
-			using (var hLib = new SafeLibraryHandle(fn))
+			using (var hLib = LoadLibrary(fn))
 			{
 				var f = GetModuleFileName(hLib);
 				Assert.That(f, Is.SamePath(fn));
@@ -287,7 +286,7 @@ namespace Vanara.PInvoke.Tests
 		public void GetProcAddressTest()
 		{
 			const string fn = @"C:\Windows\System32\kernel32.dll";
-			using (var hLib = new SafeLibraryHandle(fn))
+			using (var hLib = LoadLibrary(fn))
 			{
 				var a = GetProcAddress(hLib, "GetNativeSystemInfo");
 				Assert.That(a, Is.Not.EqualTo(IntPtr.Zero));
@@ -297,7 +296,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void GetVolumeInformationTest()
 		{
-			var b = GetVolumeInformation(null, out string vn, out uint vsn, out uint mcl, out FileSystemFlags fsf, out string fsn);
+			var b = GetVolumeInformation(null, out var vn, out var vsn, out var mcl, out var fsf, out var fsn);
 			Assert.That(b, Is.True);
 			Assert.That(vn, Is.Not.Null.And.Not.Empty);
 			Assert.That(vsn, Is.Not.EqualTo(0));
@@ -326,28 +325,28 @@ namespace Vanara.PInvoke.Tests
 		public void LoadLibraryTest()
 		{
 			var hlib = LoadLibrary(badlibfn);
-			Assert.That(hlib, Is.EqualTo(SafeLibraryHandle.Null));
+			Assert.That(hlib, Is.EqualTo(HINSTANCE.NULL));
 			Assert.That(Marshal.GetLastWin32Error(), Is.Not.Zero);
 
 			hlib = LoadLibrary(libfn);
-			Assert.That(hlib, Is.Not.EqualTo(SafeLibraryHandle.Null));
+			Assert.That(hlib, Is.Not.EqualTo(HINSTANCE.NULL));
 		}
 
 		[Test]
 		public void LoadLibraryExTest()
 		{
 			var hlib = LoadLibraryEx(badlibfn, IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE);
-			Assert.That(hlib, Is.EqualTo(SafeLibraryHandle.Null));
+			Assert.That(hlib, Is.EqualTo(HINSTANCE.NULL));
 			Assert.That(Marshal.GetLastWin32Error(), Is.Not.Zero);
 
 			hlib = LoadLibraryEx(libfn, IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE);
-			Assert.That(hlib, Is.Not.EqualTo(SafeLibraryHandle.Null));
+			Assert.That(hlib, Is.Not.EqualTo(HINSTANCE.NULL));
 		}
 
 		[Test]
 		public void LoadResourceTest()
 		{
-			using (var hlib = new SafeLibraryHandle("ole32.dll", LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE))
+			using (var hlib = LoadLibraryEx("ole32.dll", IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE))
 			{
 				var hres = FindResource(hlib, 4, ResourceType.RT_CURSOR);
 				Assert.That(hres, Is.Not.EqualTo(IntPtr.Zero));

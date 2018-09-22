@@ -104,7 +104,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
 		[PInvokeData("Wingdi.h", MSDNShortId = "dd183494")]
-		public static extern IntPtr CreateDIBSection(SafeDCHandle hdc, ref BITMAPINFO pbmi, DIBColorMode iUsage, out IntPtr ppvBits, IntPtr hSection, int dwOffset);
+		public static extern SafeHBITMAP CreateDIBSection(HDC hdc, ref BITMAPINFO pbmi, DIBColorMode iUsage, out IntPtr ppvBits, IntPtr hSection, int dwOffset);
 
 		/// <summary>
 		/// The GetDIBits function retrieves the bits of the specified compatible bitmap and copies them into a buffer as a DIB using the specified format.
@@ -172,7 +172,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
 		[PInvokeData("Wingdi.h", MSDNShortId = "dd144879")]
-		public static extern int GetDIBits(SafeDCHandle hdc, IntPtr hbmp, int uStartScan, int cScanLines, ref byte[] lpvBits, ref BITMAPINFO lpbi, DIBColorMode uUsage);
+		public static extern int GetDIBits(HDC hdc, SafeHBITMAP hbmp, int uStartScan, int cScanLines, ref byte[] lpvBits, ref BITMAPINFO lpbi, DIBColorMode uUsage);
 
 		/// <summary>
 		/// The GetDIBits function retrieves the bits of the specified compatible bitmap and copies them into a buffer as a DIB using the specified format.
@@ -240,7 +240,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
 		[PInvokeData("Wingdi.h", MSDNShortId = "dd144879")]
-		public static extern int GetDIBits(SafeDCHandle hdc, IntPtr hbmp, int uStartScan, int cScanLines, IntPtr lpvBits, ref BITMAPINFO lpbi, DIBColorMode uUsage);
+		public static extern int GetDIBits(HDC hdc, SafeHBITMAP hbmp, int uStartScan, int cScanLines, IntPtr lpvBits, ref BITMAPINFO lpbi, DIBColorMode uUsage);
 
 		/// <summary>The BITMAP structure defines the type, width, height, color format, and bit values of a bitmap.</summary>
 		[StructLayout(LayoutKind.Sequential)]

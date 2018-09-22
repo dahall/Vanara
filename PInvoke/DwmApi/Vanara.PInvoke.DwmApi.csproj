@@ -50,6 +50,7 @@ DWM_BLURBEHIND, DWM_COLORIZATION_PARAMS, DWM_THUMBNAIL_PROPERTIES, DWM_TIMING_IN
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Gdi32\Vanara.PInvoke.Gdi32.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
   </ItemGroup>
 </Project>

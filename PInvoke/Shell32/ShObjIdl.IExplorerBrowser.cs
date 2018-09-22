@@ -165,7 +165,7 @@ namespace Vanara.PInvoke
 			/// relative to hwndParent.
 			/// </param>
 			/// <param name="pfs">A pointer to a FOLDERSETTINGS structure that determines how the folder will be displayed in the view.</param>
-			void Initialize([In] HandleRef hwndParent, [In, MarshalAs(UnmanagedType.LPStruct)] RECT prc, [In, MarshalAs(UnmanagedType.LPStruct)] FOLDERSETTINGS pfs);
+			void Initialize([In] HWND hwndParent, [In, MarshalAs(UnmanagedType.LPStruct)] RECT prc, [In, MarshalAs(UnmanagedType.LPStruct)] FOLDERSETTINGS pfs);
 
 			/// <summary>Destroys the browser.</summary>
 			void Destroy();

@@ -125,7 +125,7 @@ namespace Vanara.Collections.Tests
 		{
 			// Test class values
 			var pidl = KNOWNFOLDERID.FOLDERID_Documents.PIDL();
-			SHGetDesktopFolder(out IShellFolder dt);
+			SHGetDesktopFolder(out var dt);
 			var docs = (IShellFolder) dt.BindToObject(pidl, null, typeof(IShellFolder).GUID);
 			var eo = docs.EnumObjects(IntPtr.Zero, SHCONTF.SHCONTF_FOLDERS);
 
@@ -151,7 +151,7 @@ namespace Vanara.Collections.Tests
 		public void ComEnumeratorTest4()
 		{
 			// Test Get based interfaces with PIDLs
-			SHCreateItemFromParsingName(PInvoke.Tests.AdvApi32Tests.fn, null, typeof(IShellItem2).GUID, out object ppv);
+			SHCreateItemFromParsingName(PInvoke.Tests.AdvApi32Tests.fn, null, typeof(IShellItem2).GUID, out var ppv);
 			Assert.That(ppv, Is.Not.Null);
 			var si2 = (IShellItem2) ppv;
 			var pk = PROPERTYKEY.System.PropList.FullDetails;
@@ -189,7 +189,7 @@ namespace Vanara.Collections.Tests
 			var fn = System.IO.Path.GetTempFileName();
 			var hr = StgCreateStorageEx(fn,
 				STGM.STGM_DELETEONRELEASE | STGM.STGM_CREATE | STGM.STGM_DIRECT | STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE,
-				STGFMT.STGFMT_DOCFILE, 0, IntPtr.Zero, IntPtr.Zero, typeof(IStorage).GUID, out object iptr);
+				STGFMT.STGFMT_DOCFILE, 0, IntPtr.Zero, IntPtr.Zero, typeof(IStorage).GUID, out var iptr);
 			Assert.That(hr, Is.EqualTo((HRESULT) HRESULT.S_OK));
 			var istg = (IStorage) iptr;
 			Assert.That(istg, Is.InstanceOf<IStorage>());
@@ -236,7 +236,7 @@ namespace Vanara.Collections.Tests
 				KNOWNFOLDERID.FOLDERID_Documents.PIDL(), KNOWNFOLDERID.FOLDERID_Pictures.PIDL(),
 				KNOWNFOLDERID.FOLDERID_Videos.PIDL()
 			}.Select(p => (IntPtr) p).ToArray();
-			var hr = SHCreateShellItemArrayFromIDLists((uint) pidls.Length, pidls, out IShellItemArray iarr);
+			var hr = SHCreateShellItemArrayFromIDLists((uint) pidls.Length, pidls, out var iarr);
 			Assert.That(hr, Is.EqualTo((HRESULT) HRESULT.S_OK));
 			var ei = iarr.EnumItems();
 
@@ -273,7 +273,7 @@ namespace Vanara.Collections.Tests
 				KNOWNFOLDERID.FOLDERID_Documents.PIDL(), KNOWNFOLDERID.FOLDERID_Pictures.PIDL(),
 				KNOWNFOLDERID.FOLDERID_Videos.PIDL()
 			}.Select(p => (IntPtr) p).ToArray();
-			var hr = SHCreateShellItemArrayFromIDLists((uint) pidls.Length, pidls, out IShellItemArray iarr);
+			var hr = SHCreateShellItemArrayFromIDLists((uint) pidls.Length, pidls, out var iarr);
 			Assert.That(hr, Is.EqualTo((HRESULT) HRESULT.S_OK));
 
 			// Test IEnumerable
@@ -299,7 +299,7 @@ namespace Vanara.Collections.Tests
 		public void ComEnumeratorTest8()
 		{
 			var oc = new IObjectCollection();
-			SHCreateItemFromParsingName(PInvoke.Tests.AdvApi32Tests.fn, null, typeof(IShellItem).GUID, out object ppv);
+			SHCreateItemFromParsingName(PInvoke.Tests.AdvApi32Tests.fn, null, typeof(IShellItem).GUID, out var ppv);
 			Assert.That(ppv, Is.Not.Null);
 			Assert.That(oc.GetCount(), Is.Zero);
 			oc.AddObject(ppv);
@@ -328,7 +328,7 @@ namespace Vanara.Collections.Tests
 		public void ComEnumeratorTest9()
 		{
 			SHGetPropertyStoreFromParsingName(PInvoke.Tests.AdvApi32Tests.fn, null, GETPROPERTYSTOREFLAGS.GPS_DEFAULT,
-				typeof(IPropertyStore).GUID, out IPropertyStore ps);
+				typeof(IPropertyStore).GUID, out var ps);
 			Assert.That(ps, Is.Not.Null);
 
 			// Test IEnumerable

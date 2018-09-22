@@ -400,7 +400,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms682579")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DisableThreadLibraryCalls([In] SafeLibraryHandle hModule);
+		public static extern bool DisableThreadLibraryCalls([In] HINSTANCE hModule);
 
 		/// <summary>Enumerates language-specific resources, of the specified type and name, associated with a binary module.</summary>
 		/// <param name="hModule">
@@ -444,7 +444,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "EnumResourceLanguagesW")]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648035")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumResourceLanguages([In] SafeLibraryHandle hModule, [In] SafeResourceId lpType, [In] SafeResourceId lpName, EnumResLangProc lpEnumFunc, IntPtr lParam);
+		public static extern bool EnumResourceLanguages([In] HINSTANCE hModule, [In] SafeResourceId lpType, [In] SafeResourceId lpName, EnumResLangProc lpEnumFunc, IntPtr lParam);
 
 		/// <summary>
 		/// Enumerates language-specific resources, of the specified type and name, associated with a specified binary module. Extends
@@ -543,7 +543,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "EnumResourceLanguagesExW")]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648036")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumResourceLanguagesEx([In] SafeLibraryHandle hModule, [In] SafeResourceId lpType, [In] SafeResourceId lpName, EnumResLangProc lpEnumFunc, IntPtr lParam, RESOURCE_ENUM_FLAGS dwFlags, ushort LangId);
+		public static extern bool EnumResourceLanguagesEx([In] HINSTANCE hModule, [In] SafeResourceId lpType, [In] SafeResourceId lpName, EnumResLangProc lpEnumFunc, IntPtr lParam, RESOURCE_ENUM_FLAGS dwFlags, ushort LangId);
 
 		/// <summary>Enumerates language-specific resources, of the specified type and name, associated with a specified binary module.</summary>
 		/// <param name="hModule">
@@ -574,7 +574,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>A list of the language identifiers (see Language Identifiers) for which a resource was found.</returns>
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648036")]
-		public static IList<ushort> EnumResourceLanguagesEx(SafeLibraryHandle hModule, SafeResourceId type, SafeResourceId name, RESOURCE_ENUM_FLAGS flags = 0, ushort langFilter = 0)
+		public static IList<ushort> EnumResourceLanguagesEx(HINSTANCE hModule, SafeResourceId type, SafeResourceId name, RESOURCE_ENUM_FLAGS flags = 0, ushort langFilter = 0)
 		{
 			var list = new List<ushort>();
 			if (!EnumResourceLanguagesEx(hModule, type, name, (p, i, n, luid, l) => { list.Add(luid); return true; }, IntPtr.Zero, flags, langFilter))
@@ -607,7 +607,7 @@ namespace Vanara.PInvoke
 		[SuppressUnmanagedCodeSecurity]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms648037")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumResourceNames(SafeLibraryHandle hModule, SafeResourceId lpszType, EnumResNameProc lpEnumFunc, IntPtr lParam);
+		public static extern bool EnumResourceNames(HINSTANCE hModule, SafeResourceId lpszType, EnumResNameProc lpEnumFunc, IntPtr lParam);
 
 		/// <summary>
 		/// Enumerates resources of a specified type within a binary module. For Windows Vista and later, this is typically a
@@ -671,7 +671,7 @@ namespace Vanara.PInvoke
 		/// ///
 		/// <returns>A list of strings for each of the resources matching <paramref name="type"/>.</returns>
 		[PInvokeData("WinBase.h", MSDNShortId = "ms648037")]
-		public static IList<SafeResourceId> EnumResourceNamesEx(SafeLibraryHandle hModule, SafeResourceId type, RESOURCE_ENUM_FLAGS flags = 0, ushort langFilter = 0)
+		public static IList<SafeResourceId> EnumResourceNamesEx(HINSTANCE hModule, SafeResourceId type, RESOURCE_ENUM_FLAGS flags = 0, ushort langFilter = 0)
 		{
 			var list = new List<SafeResourceId>();
 			if (!EnumResourceNamesEx(hModule, type, (m, t, name, l) => { list.Add(name); return true; }, IntPtr.Zero, flags, langFilter))
@@ -765,7 +765,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "EnumResourceNamesExW")]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648038")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumResourceNamesEx(SafeLibraryHandle hModule, SafeResourceId lpszType, EnumResNameProc lpEnumFunc, IntPtr lParam, RESOURCE_ENUM_FLAGS dwFlags, ushort LangId);
+		public static extern bool EnumResourceNamesEx(HINSTANCE hModule, SafeResourceId lpszType, EnumResNameProc lpEnumFunc, IntPtr lParam, RESOURCE_ENUM_FLAGS dwFlags, ushort LangId);
 
 		/// <summary>
 		/// <para>
@@ -805,7 +805,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "EnumResourceTypesW")]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648039")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumResourceTypes([In] SafeLibraryHandle hModule, EnumResTypeProc lpEnumFunc, IntPtr lParam);
+		public static extern bool EnumResourceTypes([In] HINSTANCE hModule, EnumResTypeProc lpEnumFunc, IntPtr lParam);
 
 		/// <summary>
 		/// <para>
@@ -893,7 +893,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648040")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumResourceTypesEx(SafeLibraryHandle hModule, EnumResTypeProc lpEnumFunc, IntPtr lParam, RESOURCE_ENUM_FLAGS dwFlags, ushort LangId);
+		public static extern bool EnumResourceTypesEx(HINSTANCE hModule, EnumResTypeProc lpEnumFunc, IntPtr lParam, RESOURCE_ENUM_FLAGS dwFlags, ushort LangId);
 
 		/// <summary>
 		/// <para>
@@ -958,7 +958,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </param>
 		/// <returns>List of resource identifiers.</returns>
-		public static IList<SafeResourceId> EnumResourceTypesEx([In] SafeLibraryHandle hModule, RESOURCE_ENUM_FLAGS flags = 0, ushort langFilter = 0)
+		public static IList<SafeResourceId> EnumResourceTypesEx([In] HINSTANCE hModule, RESOURCE_ENUM_FLAGS flags = 0, ushort langFilter = 0)
 		{
 			var list = new List<SafeResourceId>();
 			if (!EnumResourceTypesEx(hModule, (p, t, l) => { list.Add(t); return true; }, IntPtr.Zero, flags, langFilter))
@@ -1003,7 +1003,7 @@ namespace Vanara.PInvoke
 		// HRSRC WINAPI FindResource( _In_opt_ HMODULE hModule, _In_ LPCTSTR lpName, _In_ LPCTSTR lpType); https://msdn.microsoft.com/en-us/library/windows/desktop/ms648042(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "FindResourceW")]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648042")]
-		public static extern SafeResourceHandle FindResource([In] SafeLibraryHandle hModule, [In] SafeResourceId lpName, [In] SafeResourceId lpType);
+		public static extern SafeResourceHandle FindResource([In] HINSTANCE hModule, [In] SafeResourceId lpName, [In] SafeResourceId lpType);
 
 		/// <summary>Determines the location of the resource with the specified type, name, and language in the specified module.</summary>
 		/// <param name="hModule">
@@ -1047,7 +1047,7 @@ namespace Vanara.PInvoke
 		// HRSRC WINAPI FindResourceEx( _In_opt_ HMODULE hModule, _In_ LPCTSTR lpType, _In_ LPCTSTR lpName, _In_ WORD wLanguage); https://msdn.microsoft.com/en-us/library/windows/desktop/ms648043(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Unicode, EntryPoint = "FindResourceExW")]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648043")]
-		public static extern SafeResourceHandle FindResourceEx([In] SafeLibraryHandle hModule, [In] SafeResourceId lpType, [In] SafeResourceId lpName, ushort wLanguage);
+		public static extern SafeResourceHandle FindResourceEx([In] HINSTANCE hModule, [In] SafeResourceId lpType, [In] SafeResourceId lpName, ushort wLanguage);
 
 		/// <summary>Locates a Unicode string (wide characters) in another Unicode string for a non-linguistic comparison.</summary>
 		/// <param name="dwFindStringOrdinalFlags">
@@ -1129,7 +1129,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms683152")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FreeLibrary(IntPtr hModule);
+		public static extern bool FreeLibrary(HINSTANCE hModule);
 
 		/// <summary>
 		/// Decrements the reference count of a loaded dynamic-link library (DLL) by one, then calls <c>ExitThread</c> to terminate the
@@ -1150,7 +1150,7 @@ namespace Vanara.PInvoke
 		// VOID WINAPI FreeLibraryAndExitThread( _In_ HMODULE hModule, _In_ DWORD dwExitCode); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683153(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms683153")]
-		public static extern void FreeLibraryAndExitThread([In] IntPtr hModule, uint dwExitCode);
+		public static extern void FreeLibraryAndExitThread([In] HINSTANCE hModule, uint dwExitCode);
 
 		/// <summary>
 		/// <para>
@@ -1227,7 +1227,7 @@ namespace Vanara.PInvoke
 		// DWORD WINAPI GetModuleFileName( _In_opt_ HMODULE hModule, _Out_ LPTSTR lpFilename, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683197(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms683197")]
-		public static extern uint GetModuleFileName(SafeLibraryHandle hModule, [Out] StringBuilder lpFilename, uint nSize);
+		public static extern uint GetModuleFileName(HINSTANCE hModule, [Out] StringBuilder lpFilename, uint nSize);
 
 		/// <summary>
 		/// Retrieves the fully qualified path for the file that contains the specified module. The module must have been loaded by the
@@ -1248,7 +1248,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[SecurityCritical]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683197")]
-		public static string GetModuleFileName(SafeLibraryHandle hModule)
+		public static string GetModuleFileName(HINSTANCE hModule)
 		{
 			var buffer = new StringBuilder(MAX_PATH);
 			Label_000B:
@@ -1349,7 +1349,7 @@ namespace Vanara.PInvoke
 		// FARPROC WINAPI GetProcAddress( _In_ HMODULE hModule, _In_ LPCSTR lpProcName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683212(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms683212")]
-		public static extern IntPtr GetProcAddress(SafeLibraryHandle hModule, [MarshalAs(UnmanagedType.LPStr)] string lpProcName);
+		public static extern IntPtr GetProcAddress(HINSTANCE hModule, [MarshalAs(UnmanagedType.LPStr)] string lpProcName);
 
 		/// <summary>
 		/// <para>
@@ -1385,7 +1385,7 @@ namespace Vanara.PInvoke
 		// HMODULE WINAPI LoadLibrary( _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684175(v=vs.85).aspx
 		[PInvokeData("Winbase.h", MSDNShortId = "ms684175")]
 		[DllImport(Lib.Kernel32, CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
-		public static extern SafeLibraryHandle LoadLibrary([In, MarshalAs(UnmanagedType.LPTStr)] string lpFileName);
+		public static extern SafeHINSTANCE LoadLibrary([In, MarshalAs(UnmanagedType.LPTStr)] string lpFileName);
 
 		/// <summary>
 		/// Loads the specified module into the address space of the calling process. The specified module may cause other modules to be loaded.
@@ -1554,7 +1554,174 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
 		[PInvokeData("LibLoaderAPI.h", MSDNShortId = "ms684179")]
 		[SuppressUnmanagedCodeSecurity]
-		public static extern SafeLibraryHandle LoadLibraryEx([In] string lpFileName, [Optional] IntPtr hFile, LoadLibraryExFlags dwFlags);
+		public static extern SafeHINSTANCE LoadLibraryEx([In] string lpFileName, [Optional] IntPtr hFile, LoadLibraryExFlags dwFlags);
+
+		/// <summary>
+		/// Loads the specified module into the address space of the calling process. The specified module may cause other modules to be loaded.
+		/// </summary>
+		/// <param name="lpFileName">
+		/// <para>
+		/// A string that specifies the file name of the module to load. This name is not related to the name stored in a library module
+		/// itself, as specified by the <c>LIBRARY</c> keyword in the module-definition (.def) file.
+		/// </para>
+		/// <para>
+		/// The module can be a library module (a .dll file) or an executable module (an .exe file). If the specified module is an executable
+		/// module, static imports are not loaded; instead, the module is loaded as if <c>DONT_RESOLVE_DLL_REFERENCES</c> was specified. See
+		/// the dwFlags parameter for more information.
+		/// </para>
+		/// <para>
+		/// If the string specifies a module name without a path and the file name extension is omitted, the function appends the default
+		/// library extension .dll to the module name. To prevent the function from appending .dll to the module name, include a trailing
+		/// point character (.) in the module name string.
+		/// </para>
+		/// <para>
+		/// If the string specifies a fully qualified path, the function searches only that path for the module. When specifying a path, be
+		/// sure to use backslashes (\), not forward slashes (/). For more information about paths, see Naming Files, Paths, and Namespaces.
+		/// </para>
+		/// <para>
+		/// If the string specifies a module name without a path and more than one loaded module has the same base name and extension, the
+		/// function returns a handle to the module that was loaded first.
+		/// </para>
+		/// <para>
+		/// If the string specifies a module name without a path and a module of the same name is not already loaded, or if the string
+		/// specifies a module name with a relative path, the function searches for the specified module. The function also searches for
+		/// modules if loading the specified module causes the system to load other associated modules (that is, if the module has
+		/// dependencies). The directories that are searched and the order in which they are searched depend on the specified path and the
+		/// dwFlags parameter. For more information, see Remarks.
+		/// </para>
+		/// <para>If the function cannot find the module or one of its dependencies, the function fails.</para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>
+		/// The action to be taken when loading the module. If no flags are specified, the behavior of this function is identical to that of
+		/// the <c>LoadLibrary</c> function. This parameter can be one of the following values.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DONT_RESOLVE_DLL_REFERENCES0x00000001</term>
+		/// <term>
+		/// If this value is used, and the executable module is a DLL, the system does not call DllMain for process and thread initialization
+		/// and termination. Also, the system does not load additional executable modules that are referenced by the specified module.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LOAD_IGNORE_CODE_AUTHZ_LEVEL0x00000010</term>
+		/// <term>
+		/// If this value is used, the system does not check AppLocker rules or apply Software Restriction Policies for the DLL. This action
+		/// applies only to the DLL being loaded and not to its dependencies. This value is recommended for use in setup programs that must
+		/// run extracted DLLs during installation.Windows Server 2008 R2 and Windows 7: On systems with KB2532445 installed, the caller must
+		/// be running as &amp;quot;LocalSystem&amp;quot; or &amp;quot;TrustedInstaller&amp;quot;; otherwise the system ignores this flag.
+		/// For more information, see &amp;quot;You can circumvent AppLocker rules by using an Office macro on a computer that is running
+		/// Windows 7 or Windows Server 2008 R2&amp;quot; in the Help and Support Knowledge Base at
+		/// http://support.microsoft.com/kb/2532445.Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: AppLocker was
+		/// introduced in Windows 7 and Windows Server 2008 R2.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LOAD_LIBRARY_AS_DATAFILE0x00000002</term>
+		/// <term>
+		/// If this value is used, the system maps the file into the calling process&amp;#39;s virtual address space as if it were a data
+		/// file. Nothing is done to execute or prepare to execute the mapped file. Therefore, you cannot call functions like
+		/// GetModuleFileName, GetModuleHandle or GetProcAddress with this DLL. Using this value causes writes to read-only memory to raise
+		/// an access violation. Use this flag when you want to load a DLL only to extract messages or resources from it.This value can be
+		/// used with LOAD_LIBRARY_AS_IMAGE_RESOURCE. For more information, see Remarks.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LOAD_LIBRARY_AS_DATAFILE_EXCLUSIVE0x00000040</term>
+		/// <term>
+		/// Similar to LOAD_LIBRARY_AS_DATAFILE, except that the DLL file is opened with exclusive write access for the calling process.
+		/// Other processes cannot open the DLL file for write access while it is in use. However, the DLL can still be opened by other
+		/// processes.This value can be used with LOAD_LIBRARY_AS_IMAGE_RESOURCE. For more information, see Remarks.Windows Server 2003 and
+		/// Windows XP: This value is not supported until Windows Vista.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LOAD_LIBRARY_AS_IMAGE_RESOURCE0x00000020</term>
+		/// <term>
+		/// If this value is used, the system maps the file into the process&amp;#39;s virtual address space as an image file. However, the
+		/// loader does not load the static imports or perform the other usual initialization steps. Use this flag when you want to load a
+		/// DLL only to extract messages or resources from it.Unless the application depends on the file having the in-memory layout of an
+		/// image, this value should be used with either LOAD_LIBRARY_AS_DATAFILE_EXCLUSIVE or LOAD_LIBRARY_AS_DATAFILE. For more
+		/// information, see the Remarks section.Windows Server 2003 and Windows XP: This value is not supported until Windows Vista.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LOAD_LIBRARY_SEARCH_APPLICATION_DIR0x00000200</term>
+		/// <term>
+		/// If this value is used, the application&amp;#39;s installation directory is searched for the DLL and its dependencies. Directories
+		/// in the standard search path are not searched. This value cannot be combined with LOAD_WITH_ALTERED_SEARCH_PATH.Windows 7, Windows
+		/// Server 2008 R2, Windows Vista and Windows Server 2008: This value requires KB2533623 to be installed.Windows Server 2003 and
+		/// Windows XP: This value is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LOAD_LIBRARY_SEARCH_DEFAULT_DIRS0x00001000</term>
+		/// <term>
+		/// This value is a combination of LOAD_LIBRARY_SEARCH_APPLICATION_DIR, LOAD_LIBRARY_SEARCH_SYSTEM32, and
+		/// LOAD_LIBRARY_SEARCH_USER_DIRS. Directories in the standard search path are not searched. This value cannot be combined with
+		/// LOAD_WITH_ALTERED_SEARCH_PATH.This value represents the recommended maximum number of directories an application should include
+		/// in its DLL search path.Windows 7, Windows Server 2008 R2, Windows Vista and Windows Server 2008: This value requires KB2533623 to
+		/// be installed.Windows Server 2003 and Windows XP: This value is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR0x00000100</term>
+		/// <term>
+		/// If this value is used, the directory that contains the DLL is temporarily added to the beginning of the list of directories that
+		/// are searched for the DLL&amp;#39;s dependencies. Directories in the standard search path are not searched.The lpFileName
+		/// parameter must specify a fully qualified path. This value cannot be combined with LOAD_WITH_ALTERED_SEARCH_PATH.For example, if
+		/// Lib2.dll is a dependency of C:\Dir1\Lib1.dll, loading Lib1.dll with this value causes the system to search for Lib2.dll only in
+		/// C:\Dir1. To search for Lib2.dll in C:\Dir1 and all of the directories in the DLL search path, combine this value with
+		/// LOAD_LIBRARY_DEFAULT_DIRS.Windows 7, Windows Server 2008 R2, Windows Vista and Windows Server 2008: This value requires KB2533623
+		/// to be installed.Windows Server 2003 and Windows XP: This value is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LOAD_LIBRARY_SEARCH_SYSTEM320x00000800</term>
+		/// <term>
+		/// If this value is used, %windows%\system32 is searched for the DLL and its dependencies. Directories in the standard search path
+		/// are not searched. This value cannot be combined with LOAD_WITH_ALTERED_SEARCH_PATH.Windows 7, Windows Server 2008 R2, Windows
+		/// Vista and Windows Server 2008: This value requires KB2533623 to be installed.Windows Server 2003 and Windows XP: This value is
+		/// not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LOAD_LIBRARY_SEARCH_USER_DIRS0x00000400</term>
+		/// <term>
+		/// If this value is used, directories added using the AddDllDirectory or the SetDllDirectory function are searched for the DLL and
+		/// its dependencies. If more than one directory has been added, the order in which the directories are searched is unspecified.
+		/// Directories in the standard search path are not searched. This value cannot be combined with
+		/// LOAD_WITH_ALTERED_SEARCH_PATH.Windows 7, Windows Server 2008 R2, Windows Vista and Windows Server
+		/// 2008: This value requires KB2533623 to be installed.Windows Server 2003 and Windows XP: This value is not supported.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LOAD_WITH_ALTERED_SEARCH_PATH0x00000008</term>
+		/// <term>
+		/// If this value is used and lpFileName specifies an absolute path, the system uses the alternate file search strategy discussed in
+		/// the Remarks section to find associated executable modules that the specified module causes to be loaded. If this value is used
+		/// and lpFileName specifies a relative path, the behavior is undefined.If this value is not used, or if lpFileName does not specify
+		/// a path, the system uses the standard search strategy discussed in the Remarks section to find associated executable modules that
+		/// the specified module causes to be loaded.This value cannot be combined with any LOAD_LIBRARY_SEARCH flag.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is a handle to the loaded module.</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// HMODULE WINAPI LoadLibraryEx( _In_ LPCTSTR lpFileName, _Reserved_ HANDLE hFile, _In_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684179(v=vs.85).aspx
+		[PInvokeData("LibLoaderAPI.h", MSDNShortId = "ms684179")]
+		[SuppressUnmanagedCodeSecurity]
+		public static SafeHINSTANCE LoadLibraryEx([In] string lpFileName, LoadLibraryExFlags dwFlags = 0) => LoadLibraryEx(lpFileName, IntPtr.Zero, dwFlags);
 
 		/// <summary>Retrieves a handle that can be used to obtain a pointer to the first byte of the specified resource in memory.</summary>
 		/// <param name="hModule">
@@ -1577,7 +1744,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648046")]
 		[SuppressUnmanagedCodeSecurity]
-		public static extern SafeResourceDataHandle LoadResource(SafeLibraryHandle hModule, SafeResourceHandle hResInfo);
+		public static extern SafeResourceDataHandle LoadResource(HINSTANCE hModule, SafeResourceHandle hResInfo);
 
 		/// <summary>Retrieves a pointer to the specified resource in memory.</summary>
 		/// <param name="hResData">
@@ -1661,7 +1828,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("libloaderapi2.h", MSDNShortId = "43690689-4372-48ae-ac6d-230250f05f7c")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool QueryOptionalDelayLoadedAPI(SafeLibraryHandle hParentModule, string lpDllName, string lpProcName, uint Reserved = 0);
+		public static extern bool QueryOptionalDelayLoadedAPI(HINSTANCE hParentModule, string lpDllName, string lpProcName, uint Reserved = 0);
 
 		/// <summary>Removes a directory that was added to the process DLL search path by using <c>AddDllDirectory</c>.</summary>
 		/// <param name="Cookie">The cookie returned by <c>AddDllDirectory</c> when the directory was added to the search path.</param>
@@ -1740,66 +1907,16 @@ namespace Vanara.PInvoke
 		// DWORD WINAPI SizeofResource( _In_opt_ HMODULE hModule, _In_ HRSRC hResInfo); https://msdn.microsoft.com/en-us/library/windows/desktop/ms648048(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648048")]
-		public static extern uint SizeofResource(SafeLibraryHandle hModule, SafeResourceHandle hResInfo);
+		public static extern uint SizeofResource(HINSTANCE hModule, SafeResourceHandle hResInfo);
 
-		/// <summary>A safe handle for HMODULE.</summary>
-		/// <seealso cref="GenericSafeHandle"/>
+		/// <summary>Provides a <see cref="SafeHandle"/> to a  that releases a created HINSTANCE instance at disposal using FreeLibrary.</summary>
 		[PInvokeData("LibLoaderAPI.h")]
-		public class SafeLibraryHandle : GenericSafeHandle
+		public class SafeHINSTANCE : HINSTANCE
 		{
-			/// <summary>Initializes a new instance of the <see cref="SafeLibraryHandle"/> class.</summary>
-			public SafeLibraryHandle() : this(IntPtr.Zero) { }
-
-			/// <summary>Initializes a new instance of the <see cref="SafeLibraryHandle"/> class.</summary>
-			/// <param name="fileName">
-			/// <para>
-			/// A string that specifies the file name of the module to load. This name is not related to the name stored in a library module
-			/// itself, as specified by the LIBRARY keyword in the module-definition (.def) file.
-			/// </para>
-			/// <para>
-			/// The module can be a library module (a .dll file) or an executable module (an .exe file). If the specified module is an
-			/// executable module, static imports are not loaded; instead, the module is loaded as if <see
-			/// cref="LoadLibraryExFlags.DONT_RESOLVE_DLL_REFERENCES"/> was specified. See the <paramref name="flags"/> parameter for more information.
-			/// </para>
-			/// <para>
-			/// If the string specifies a module name without a path and the file name extension is omitted, the function appends the default
-			/// library extension .dll to the module name. To prevent the function from appending .dll to the module name, include a trailing
-			/// point character (.) in the module name string.
-			/// </para>
-			/// <para>
-			/// If the string specifies a fully qualified path, the function searches only that path for the module. When specifying a path,
-			/// be sure to use backslashes (\), not forward slashes (/). For more information about paths, see Naming Files, Paths, and Namespaces.
-			/// </para>
-			/// <para>
-			/// If the string specifies a module name without a path and more than one loaded module has the same base name and extension,
-			/// the function returns a handle to the module that was loaded first.
-			/// </para>
-			/// <para>
-			/// If the string specifies a module name without a path and a module of the same name is not already loaded, or if the string
-			/// specifies a module name with a relative path, the function searches for the specified module. The function also searches for
-			/// modules if loading the specified module causes the system to load other associated modules (that is, if the module has
-			/// dependencies). The directories that are searched and the order in which they are searched depend on the specified path and
-			/// the dwFlags parameter.
-			/// </para>
-			/// <para>If the function cannot find the module or one of its dependencies, the function fails.</para>
-			/// </param>
-			/// <param name="flags">The action to be taken when loading the module.</param>
-			public SafeLibraryHandle(string fileName, LoadLibraryExFlags flags = 0) : base(FreeLibrary)
-			{
-				var hLib = LoadLibraryEx(fileName, IntPtr.Zero, flags);
-				if (hLib.IsInvalid)
-					throw new Win32Exception();
-				SetHandle(hLib.DangerousGetHandle());
-				hLib.SetHandleAsInvalid();
-			}
-
-			/// <summary>Initializes a new instance of the <see cref="SafeLibraryHandle"/> class.</summary>
-			/// <param name="handle">An existing handle created by <see cref="LoadLibrary"/> or <see cref="LoadLibraryEx"/>.</param>
-			/// <param name="own">if set to <c>true</c> calls <see cref="FreeLibrary"/> on disposal.</param>
-			public SafeLibraryHandle(IntPtr handle, bool own = true) : base(handle, FreeLibrary, own) { }
-
-			/// <summary>A handle that may be used in place of <see cref="IntPtr.Zero"/>.</summary>
-			public static SafeLibraryHandle Null { get; } = new SafeLibraryHandle(IntPtr.Zero);
+			/// <summary>Initializes a new instance of the <see cref="HINSTANCE"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeHINSTANCE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
 			/// <summary>
 			/// Gets a value indicating whether the module was loaded as a data file (LOAD_LIBRARY_AS_DATAFILE or
@@ -1816,6 +1933,9 @@ namespace Vanara.PInvoke
 			/// Gets a value indicating whether the module was loaded as either a data file or an image file. Equivalent to LDR_IS_RESOURCE.
 			/// </summary>
 			public bool IsResource => (handle.ToInt64() & 3) != 0;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => FreeLibrary(this);
 		}
 
 		/// <summary>Represents a loaded resource handle.</summary>

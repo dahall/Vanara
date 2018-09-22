@@ -15,7 +15,7 @@ namespace Vanara.Security.AccessControl
 	{
 		private bool disposed;
 		private readonly SafeCoTaskMemHandle prev;
-		private readonly SafeTokenHandle hObj;
+		private readonly SafeHTOKEN hObj;
 
 		/// <summary>Initializes a new instance of the <see cref="PrivilegedCodeBlock"/> class.</summary>
 		/// <param name="systemPrivileges">The privileges.</param>
@@ -32,7 +32,7 @@ namespace Vanara.Security.AccessControl
 		{
 			if (systemPrivileges == null || systemPrivileges.Length == 0) return;
 			RuntimeHelpers.PrepareConstrainedRegions();
-			hObj = SafeTokenHandle.FromProcess(process.Handle, TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY);
+			hObj = SafeHTOKEN.FromProcess(process.Handle, TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY);
 			if (systemPrivileges.Length == 1)
 				prev = hObj.AdjustPrivilege(systemPrivileges[0], PrivilegeAttributes.SE_PRIVILEGE_ENABLED);
 			else

@@ -65,6 +65,6 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "cf5c31ae-6749-45c2-888f-697060cc8c75")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ImpersonateLoggedOnUser(SafeTokenHandle hToken);
+		public static extern bool ImpersonateLoggedOnUser(SafeHTOKEN hToken);
 	}
 }

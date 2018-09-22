@@ -925,7 +925,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "drawmenubar.htm")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DrawMenuBar(HandleRef hWnd);
+		public static extern bool DrawMenuBar(HWND hWnd);
 
 		/// <summary>
 		/// <para>Enables, disables, or grays the specified menu item.</para>
@@ -1049,7 +1049,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getmenu HMENU GetMenu( HWND hWnd );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getmenu.htm")]
-		public static extern IntPtr GetMenu(HandleRef hWnd);
+		public static extern IntPtr GetMenu(HWND hWnd);
 
 		/// <summary>
 		/// <para>Retrieves information about the specified menu bar.</para>
@@ -1104,7 +1104,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getmenubarinfo.htm")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetMenuBarInfo(HandleRef hwnd, int idObject, int idItem, ref MENUBARINFO pmbi);
+		public static extern bool GetMenuBarInfo(HWND hwnd, int idObject, int idItem, ref MENUBARINFO pmbi);
 
 		/// <summary>
 		/// <para>
@@ -1326,7 +1326,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getmenuitemrect.htm")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetMenuItemRect(HandleRef hWnd, IntPtr hMenu, uint uItem, out RECT lprcItem);
+		public static extern bool GetMenuItemRect(HWND hWnd, IntPtr hMenu, uint uItem, out RECT lprcItem);
 
 		/// <summary>
 		/// <para>
@@ -1607,7 +1607,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getsystemmenu HMENU GetSystemMenu( HWND hWnd, BOOL bRevert );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getsystemmenu.htm")]
-		public static extern IntPtr GetSystemMenu(HandleRef hWnd, [MarshalAs(UnmanagedType.Bool)] bool bRevert);
+		public static extern IntPtr GetSystemMenu(HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool bRevert);
 
 		/// <summary>
 		/// <para>Adds or removes highlighting from an item in a menu bar.</para>
@@ -1672,7 +1672,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "hilitemenuitem.htm")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool HiliteMenuItem(HandleRef hWnd, IntPtr hMenu, uint uIDHiliteItem, MenuFlags uHilite);
+		public static extern bool HiliteMenuItem(HWND hWnd, IntPtr hMenu, uint uIDHiliteItem, MenuFlags uHilite);
 
 		/// <summary>
 		/// <para>Inserts a new menu item into a menu, moving other items down the menu.</para>
@@ -2204,7 +2204,7 @@ namespace Vanara.PInvoke
 		// hMenu, POINT ptScreen );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "menuitemfrompoint.htm")]
-		public static extern int MenuItemFromPoint(HandleRef hWnd, IntPtr hMenu, System.Drawing.Point ptScreen);
+		public static extern int MenuItemFromPoint(HWND hWnd, IntPtr hMenu, System.Drawing.Point ptScreen);
 
 		/// <summary>
 		/// <para>Changes an existing menu item. This function is used to specify the content, appearance, and behavior of the menu item.</para>
@@ -2682,7 +2682,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "setmenu.htm")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetMenu(HandleRef hWnd, IntPtr hMenu);
+		public static extern bool SetMenu(HWND hWnd, IntPtr hMenu);
 
 		/// <summary>
 		/// <para>Sets the default menu item for the specified menu.</para>
@@ -3037,7 +3037,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "trackpopupmenu.htm")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool TrackPopupMenu(IntPtr hMenu, TrackPopupMenuFlags uFlags, int x, int y, [Optional] int nReserved, HandleRef hWnd, [Optional] PRECT prcRect);
+		public static extern bool TrackPopupMenu(IntPtr hMenu, TrackPopupMenuFlags uFlags, int x, int y, [Optional] int nReserved, HWND hWnd, [Optional] PRECT prcRect);
 
 		/// <summary>
 		/// <para>
@@ -3239,7 +3239,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "trackpopupmenuex.htm")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool TrackPopupMenuEx(IntPtr hMenu, TrackPopupMenuFlags uFlags, int x, int y, HandleRef hwnd, [In, Optional] TPMPARAMS lptpm);
+		public static extern bool TrackPopupMenuEx(IntPtr hMenu, TrackPopupMenuFlags uFlags, int x, int y, HWND hwnd, [In, Optional] TPMPARAMS lptpm);
 
 		/// <summary>
 		/// <para>Contains information about the menu to be activated.</para>

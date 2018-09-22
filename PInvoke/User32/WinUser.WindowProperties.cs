@@ -108,7 +108,7 @@ namespace Vanara.PInvoke
 		// lpEnumFunc );
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "enumprops")]
-		public static extern int EnumProps(HandleRef hWnd, PropEnumProc lpEnumFunc);
+		public static extern int EnumProps(HWND hWnd, PropEnumProc lpEnumFunc);
 
 		/// <summary>
 		/// <para>
@@ -146,7 +146,7 @@ namespace Vanara.PInvoke
 		// lpEnumFunc, LPARAM lParam );
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "enumpropsex")]
-		public static extern int EnumPropsEx(HandleRef hWnd, PropEnumProcEx lpEnumFunc, IntPtr lParam);
+		public static extern int EnumPropsEx(HWND hWnd, PropEnumProcEx lpEnumFunc, IntPtr lParam);
 
 		/// <summary>
 		/// <para>
@@ -174,7 +174,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getpropa HANDLE GetPropA( HWND hWnd, LPCSTR lpString );
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "getprop")]
-		public static extern IntPtr GetProp(HandleRef hWnd, string lpString);
+		public static extern IntPtr GetProp(HWND hWnd, string lpString);
 
 		/// <summary>
 		/// <para>
@@ -221,7 +221,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-removepropa HANDLE RemovePropA( HWND hWnd, LPCSTR lpString );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "removeprop")]
-		public static extern IntPtr RemoveProp(HandleRef hWnd, string lpString);
+		public static extern IntPtr RemoveProp(HWND hWnd, string lpString);
 
 		/// <summary>
 		/// <para>
@@ -269,6 +269,6 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "setprop")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetProp(HandleRef hWnd, string lpString, IntPtr hData);
+		public static extern bool SetProp(HWND hWnd, string lpString, IntPtr hData);
 	}
 }

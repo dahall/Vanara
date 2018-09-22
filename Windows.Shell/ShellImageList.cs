@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Drawing;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Shell32;
+using static Vanara.PInvoke.User32_Gdi;
 
 namespace Vanara.Windows.Shell
 {
@@ -21,11 +23,12 @@ namespace Vanara.Windows.Shell
 		Jumbo = SHIL.SHIL_JUMBO
 	}
 
+	/* *****************************
+	 * Developer Note: Keep these methods synchronized with identical methods in Vanara.Windows.Forms::Vanara.Extensions.IconExtension
+	 * ***************************** */
 	/// <summary>Represents the System Image List holding images for all shell icons.</summary>
 	public static class ShellImageList
 	{
-		private static int shfiSz = SHFILEINFO.Size;
-
 		/// <summary>Gets the system icon for the given file name or extension.</summary>
 		/// <param name="fileNameOrExtension">The file name or extension.</param>
 		/// <param name="iconSize">Size of the icon.</param>
@@ -33,26 +36,25 @@ namespace Vanara.Windows.Shell
 		public static Icon GetSystemIcon(string fileNameOrExtension, ShellImageSize iconSize = ShellImageSize.Large)
 		{
 			var shfi = new SHFILEINFO();
-			var hImageList = SHGetFileInfo(fileNameOrExtension, 0, ref shfi, shfiSz, SHGFI.SHGFI_SYSICONINDEX | (iconSize == ShellImageSize.Small ? SHGFI.SHGFI_SMALLICON : 0));
-			if (hImageList == IntPtr.Zero) return null;
+			var hImageList = (HIMAGELIST)SHGetFileInfo(fileNameOrExtension, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_SYSICONINDEX | (iconSize == ShellImageSize.Small ? SHGFI.SHGFI_SMALLICON : 0));
+			if (hImageList.IsNull) return null;
 			if (iconSize <= ShellImageSize.Small)
-				return IconLocation.GetClonedIcon(ImageList_GetIcon(hImageList, shfi.iIcon, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT));
+				return ImageList_GetIcon(hImageList, shfi.iIcon, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT).ToIcon();
 			SHGetImageList((SHIL)iconSize, typeof(IImageList).GUID, out var il).ThrowIfFailed();
-			return IconLocation.GetClonedIcon(il.GetIcon(shfi.iIcon, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT));
+			return il.GetIcon(shfi.iIcon, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT).ToIcon();
 		}
 
 		/// <summary>Gets the Shell icon for the given file name or extension.</summary>
 		/// <param name="fileNameOrExtension">The file name or extension .</param>
-		/// <param name="iconType">Flags to specify the type of the icon to retrieve. This uses the <see cref="SHGetFileInfo(string, System.IO.FileAttributes, ref SHFILEINFO, int, SHGFI)"/> method and can only retrieve small or large icons.</param>
+		/// <param name="iconType">Flags to specify the type of the icon to retrieve. This uses the <see cref="SHGetFileInfo"/> method and can only retrieve small or large icons.</param>
 		/// <returns>An <see cref="Icon"/> instance if found; otherwise <see langword="null"/>.</returns>
 		public static Icon GetFileIcon(string fileNameOrExtension, ShellIconType iconType = ShellIconType.Large)
 		{
-			const SHGFI baseFlags = SHGFI.SHGFI_USEFILEATTRIBUTES | SHGFI.SHGFI_ICON;
 			var shfi = new SHFILEINFO();
-			var ret = SHGetFileInfo(fileNameOrExtension, 0, ref shfi, shfiSz, baseFlags | (SHGFI)iconType);
+			var ret = SHGetFileInfo(fileNameOrExtension, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_USEFILEATTRIBUTES | SHGFI.SHGFI_ICON | (SHGFI)iconType);
 			if (ret == IntPtr.Zero)
-				ret = SHGetFileInfo(fileNameOrExtension, 0, ref shfi, shfiSz, SHGFI.SHGFI_ICON | (SHGFI)iconType);
-			return ret == IntPtr.Zero ? null : IconLocation.GetClonedIcon(shfi.hIcon);
+				ret = SHGetFileInfo(fileNameOrExtension, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_ICON | (SHGFI)iconType);
+			return ret == IntPtr.Zero ? null : new SafeHICON(shfi.hIcon).ToIcon();
 		}
 	}
 }

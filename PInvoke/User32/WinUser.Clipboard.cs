@@ -389,7 +389,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "addclipboardformatlistener")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AddClipboardFormatListener(HandleRef hwnd);
+		public static extern bool AddClipboardFormatListener(HWND hwnd);
 
 		/// <summary>
 		/// <para>Removes a specified window from the chain of clipboard viewers.</para>
@@ -425,7 +425,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "changeclipboardchain")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ChangeClipboardChain(HandleRef hWndRemove, HandleRef hWndNewNext);
+		public static extern bool ChangeClipboardChain(HWND hWndRemove, HWND hWndNewNext);
 
 		/// <summary>
 		/// <para>Closes the clipboard.</para>
@@ -856,7 +856,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "openclipboard")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool OpenClipboard(HandleRef hWndNewOwner);
+		public static extern bool OpenClipboard(HWND hWndNewOwner);
 
 		/// <summary>
 		/// <para>Registers a new clipboard format. This format can then be used as a valid clipboard format.</para>
@@ -908,7 +908,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "removeclipboardformatlistener")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool RemoveClipboardFormatListener(HandleRef hwnd);
+		public static extern bool RemoveClipboardFormatListener(HWND hwnd);
 
 		/// <summary>
 		/// <para>
@@ -1010,7 +1010,7 @@ namespace Vanara.PInvoke
 		// hWndNewViewer );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "setclipboardviewer")]
-		public static extern IntPtr SetClipboardViewer(HandleRef hWndNewViewer);
+		public static extern IntPtr SetClipboardViewer(HWND hWndNewViewer);
 
 		/// <summary>
 		/// <para>Defines the metafile picture format used for exchanging metafile data through the clipboard.</para>

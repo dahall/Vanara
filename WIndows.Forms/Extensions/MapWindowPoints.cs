@@ -13,21 +13,21 @@ namespace Vanara.Extensions
 
 		public static Point MapPoint(this IWin32Window ctrl, Point pt, IWin32Window newWin = null)
 		{
-			MapWindowPoints(GetHandleRef(ctrl), GetHandleRef(newWin), ref pt, 1);
+			MapWindowPoints(GetHandle(ctrl), GetHandle(newWin), ref pt, 1);
 			return pt;
 		}
 
 		public static Rectangle MapRectangle(this IWin32Window ctrl, Rectangle rectangle, IWin32Window newWin = null)
 		{
 			RECT ir = rectangle;
-			MapWindowPoints(GetHandleRef(ctrl), GetHandleRef(newWin), ref ir, 2);
+			MapWindowPoints(GetHandle(ctrl), GetHandle(newWin), ref ir, 2);
 			return ir;
 		}
 
 		public static void MapPoints(this IWin32Window ctrl, Point[] points, IWin32Window newWin = null)
 		{
 			if (points == null) throw new ArgumentNullException(nameof(points));
-			MapWindowPoints(GetHandleRef(ctrl), GetHandleRef(newWin), points, points.Length);
+			MapWindowPoints(GetHandle(ctrl), GetHandle(newWin), points, points.Length);
 			/*Point[] pts = new Point[points.Length];
 			points.CopyTo(pts, 0);
 			for (int i = 0; i < pts.Length; i++)
@@ -35,7 +35,7 @@ namespace Vanara.Extensions
 			return pts;*/
 		}
 
-		private static HandleRef GetHandleRef(IWin32Window ctrl) => new HandleRef(ctrl, ctrl?.Handle ?? IntPtr.Zero);
+		private static HWND GetHandle(IWin32Window ctrl) => new HWND(ctrl?.Handle ?? IntPtr.Zero);
 	}
 }
  

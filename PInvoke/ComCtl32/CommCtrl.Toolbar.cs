@@ -353,7 +353,7 @@ namespace Vanara.PInvoke
 		// HBITMAP CreateMappedBitmap( HINSTANCE hInstance, INT_PTR idBitmap, UINT wFlags, _In_ LPCOLORMAP lpColorMap, int iNumMaps); https://msdn.microsoft.com/en-us/library/windows/desktop/bb787467(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb787467")]
-		public static extern IntPtr CreateMappedBitmap(SafeLibraryHandle hInstance, SafeResourceId idBitmap, CMB wFlags, ref COLORMAP lpColorMap, int iNumMaps);
+		public static extern IntPtr CreateMappedBitmap(HINSTANCE hInstance, SafeResourceId idBitmap, CMB wFlags, ref COLORMAP lpColorMap, int iNumMaps);
 
 		/// <summary>Contains information used by the <c>CreateMappedBitmap</c> function to map the colors of the bitmap.</summary>
 		// typedef struct _COLORMAP { COLORREF from; COLORREF to;} COLORMAP, *LPCOLORMAP; https://msdn.microsoft.com/en-us/library/windows/desktop/bb760448(v=vs.85).aspx

@@ -117,14 +117,14 @@ namespace Vanara.Extensions
 			if (!ctrl.IsHandleCreated) return null;
 			var cp = ctrl.SendMessage(getLenMsg).ToInt32() + 1;
 			var sb = new System.Text.StringBuilder(cp);
-			Vanara.PInvoke.User32_Gdi.SendMessage(new HandleRef(ctrl, ctrl.Handle), getTextMsg, ref cp, sb);
+			Vanara.PInvoke.User32_Gdi.SendMessage(ctrl.Handle, getTextMsg, ref cp, sb);
 			return sb.ToString();
 		}
 
 		/// <summary>Retrieves the window styles.</summary>
 		/// <param name="ctrl">The control.</param>
 		/// <returns>The window styles</returns>
-		public static int GetStyle(this Control ctrl) => GetWindowLongAuto(new HandleRef(ctrl, ctrl.Handle), (int)WindowLongFlags.GWL_STYLE).ToInt32();
+		public static int GetStyle(this Control ctrl) => GetWindowLongAuto(ctrl.Handle, (int)WindowLongFlags.GWL_STYLE).ToInt32();
 
 		/// <summary>Removes the mnemonic, if one exists, from the string.</summary>
 		/// <param name="str">The string.</param>
@@ -166,7 +166,7 @@ namespace Vanara.Extensions
 		/// <param name="lParam">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
 		public static IntPtr SendMessage(this IWin32Window wnd, uint msg, IntPtr wParam = default(IntPtr), IntPtr lParam = default(IntPtr)) =>
-			Vanara.PInvoke.User32_Gdi.SendMessage(new HandleRef(wnd, wnd.Handle), msg, wParam, lParam);
+			Vanara.PInvoke.User32_Gdi.SendMessage(wnd.Handle, msg, wParam, lParam);
 
 		/// <summary>Sets the windows styles.</summary>
 		/// <param name="ctrl">The control.</param>
@@ -174,7 +174,7 @@ namespace Vanara.Extensions
 		/// <param name="on">if set to <c>true</c> add the style, otherwise remove it.</param>
 		public static void SetStyle(this Control ctrl, int style, bool on = true)
 		{
-			var href = new HandleRef(ctrl, ctrl.Handle);
+			var href = ctrl.Handle;
 			int oldstyle = GetWindowLongAuto(href, (int)WindowLongFlags.GWL_STYLE).ToInt32();
 			if ((oldstyle & style) != style && on)
 				SetWindowLong(href, (int)WindowLongFlags.GWL_STYLE, new IntPtr(oldstyle | style));

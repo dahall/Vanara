@@ -58,11 +58,11 @@ namespace Vanara.Extensions.Tests
 		[Test()]
 		public void MarshalToPtrTest1()
 		{
-			IntPtr h = IntPtr.Zero;
+			var h = IntPtr.Zero;
 			try
 			{
 				var rs = new[] { new RECT(), new RECT(10, 11, 12, 13) };
-				h = rs.MarshalToPtr(Marshal.AllocHGlobal, out int a, i);
+				h = rs.MarshalToPtr(Marshal.AllocHGlobal, out var a, i);
 				Assert.That(h, Is.Not.EqualTo(IntPtr.Zero));
 				Assert.That(a, Is.EqualTo(Marshal.SizeOf(typeof(RECT)) * rs.Length + i));
 				Assert.That(Marshal.ReadInt32(h, 4 * i) == 0);
@@ -89,11 +89,11 @@ namespace Vanara.Extensions.Tests
 		[Test()]
 		public void MarshalToPtrTest2()
 		{
-			IntPtr h = IntPtr.Zero;
+			var h = IntPtr.Zero;
 			try
 			{
 				var rs = new[] { "str1", "str2", "str3" };
-				h = rs.MarshalToPtr(StringListPackMethod.Concatenated, Marshal.AllocHGlobal, out int a, CharSet.Unicode, i);
+				h = rs.MarshalToPtr(StringListPackMethod.Concatenated, Marshal.AllocHGlobal, out var a, CharSet.Unicode, i);
 				Assert.That(h, Is.Not.EqualTo(IntPtr.Zero));
 				var chSz = 2;
 				Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + chSz + i));
@@ -135,17 +135,17 @@ namespace Vanara.Extensions.Tests
 		[Test()]
 		public void MarshalToPtrTest3()
 		{
-			IntPtr h = IntPtr.Zero;
+			var h = IntPtr.Zero;
 			try
 			{
 				var rs = new[] { "str1", "str2", "str3" };
-				h = rs.MarshalToPtr(StringListPackMethod.Packed, Marshal.AllocHGlobal, out int a, CharSet.Unicode, i);
+				h = rs.MarshalToPtr(StringListPackMethod.Packed, Marshal.AllocHGlobal, out var a, CharSet.Unicode, i);
 				Assert.That(h, Is.Not.EqualTo(IntPtr.Zero));
 				var chSz = 2;
 				Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + ((rs.Length + 1) * IntPtr.Size) + i));
 				var ro = h.ToArray<IntPtr>(rs.Length, i);
 				Assert.That(ro, Has.None.EqualTo(IntPtr.Zero));
-				for (int i = 0; i < ro.Length; i++)
+				for (var i = 0; i < ro.Length; i++)
 					Assert.That(StringHelper.GetString(ro[i], CharSet.Unicode), Is.EqualTo(rs[i]));
 				Marshal.FreeHGlobal(h);
 
@@ -155,7 +155,7 @@ namespace Vanara.Extensions.Tests
 				Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + ((rs.Length + 1) * IntPtr.Size) + i));
 				ro = h.ToArray<IntPtr>(rs.Length, i);
 				Assert.That(ro, Has.None.EqualTo(IntPtr.Zero));
-				for (int i = 0; i < ro.Length; i++)
+				for (var i = 0; i < ro.Length; i++)
 					Assert.That(StringHelper.GetString(ro[i], CharSet.Ansi), Is.EqualTo(rs[i]));
 				Marshal.FreeHGlobal(h);
 
@@ -173,7 +173,7 @@ namespace Vanara.Extensions.Tests
 		public void StructureToPtrTest()
 		{
 			var rect = new RECT(10, 11, 12, 13);
-			var ptr = rect.StructureToPtr(Marshal.AllocCoTaskMem, out int a);
+			var ptr = rect.StructureToPtr(Marshal.AllocCoTaskMem, out var a);
 			Assert.That(ptr != IntPtr.Zero);
 			Assert.That(Marshal.ReadInt32(ptr, 1 * i) == 11);
 			Marshal.FreeCoTaskMem(ptr);

@@ -26,7 +26,7 @@ namespace Vanara.Windows.Forms
 		/// <param name="handle">A handle to a theme (HTHEME). This handle will not be freed on disposal.</param>
 		public VisualTheme(IntPtr handle)
 		{
-			Handle = new SafeThemeHandle(handle, false);
+			Handle = new SafeHTHEME(handle, false);
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="VisualTheme"/> class.</summary>
@@ -36,7 +36,7 @@ namespace Vanara.Windows.Forms
 		/// <exception cref="Win32Exception"></exception>
 		public VisualTheme(IWin32Window window, string classList, OpenThemeDataOptions opt = OpenThemeDataOptions.None)
 		{
-			Handle = OpenThemeDataEx(window == null ? new HandleRef() : new HandleRef(window, window.Handle), classList, opt);
+			Handle = OpenThemeDataEx(window?.Handle ?? HWND.NULL, classList, opt);
 			if (Handle.IsInvalid)
 				throw new Win32Exception();
 		}
@@ -596,7 +596,7 @@ namespace Vanara.Windows.Forms
 		public string DisplayName => GetDocumentationProperty(CurrentThemePath, SZ_THDOCPROP_DISPLAYNAME);
 
 		/// <summary>Gets the native theme handle (HTHEME).</summary>
-		public SafeThemeHandle Handle { get; private set; }
+		public SafeHTHEME Handle { get; private set; }
 
 		/// <summary>Gets the tooltip associated with this theme.</summary>
 		public string Tooltip => GetDocumentationProperty(CurrentThemePath, SZ_THDOCPROP_TOOLTIP);
@@ -615,13 +615,13 @@ namespace Vanara.Windows.Forms
 		/// <param name="window">The window or control.</param>
 		/// <param name="enable">If set to <see langword="true"/> apply the background style; <see langword="false"/> to remove.</param>
 		public static void UseAeroWizardTexture(IWin32Window window, bool enable) =>
-					EnableThemeDialogTexture(new HandleRef(window, window.Handle), ThemeDialogTextureFlags.ETDT_USEAEROWIZARDTABTEXTURE | (enable ? ThemeDialogTextureFlags.ETDT_ENABLE : ThemeDialogTextureFlags.ETDT_DISABLE));
+					EnableThemeDialogTexture(window.Handle, ThemeDialogTextureFlags.ETDT_USEAEROWIZARDTABTEXTURE | (enable ? ThemeDialogTextureFlags.ETDT_ENABLE : ThemeDialogTextureFlags.ETDT_DISABLE));
 
 		/// <summary>Uses the tab control background style for a window or control.</summary>
 		/// <param name="window">The window or control.</param>
 		/// <param name="enable">If set to <see langword="true"/> apply the background style; <see langword="false"/> to remove.</param>
 		public static void UseTabTexture(IWin32Window window, bool enable) =>
-					EnableThemeDialogTexture(new HandleRef(window, window.Handle), ThemeDialogTextureFlags.ETDT_USETABTEXTURE | (enable ? ThemeDialogTextureFlags.ETDT_ENABLE : ThemeDialogTextureFlags.ETDT_DISABLE));
+					EnableThemeDialogTexture(window.Handle, ThemeDialogTextureFlags.ETDT_USETABTEXTURE | (enable ? ThemeDialogTextureFlags.ETDT_ENABLE : ThemeDialogTextureFlags.ETDT_DISABLE));
 
 		/// <summary>Retrieves a hit test code for a point in the background specified by a visual style.</summary>
 		/// <param name="dc">Device context.</param>
@@ -634,8 +634,8 @@ namespace Vanara.Windows.Forms
 		public System.Windows.Forms.VisualStyles.HitTestCode BackgroundHitTest(IDeviceContext dc, int partId, int stateId, Rectangle bounds, Point pt, System.Windows.Forms.VisualStyles.HitTestOptions options = 0)
 		{
 			RECT r = bounds;
-			using (var hdc = new SafeDCHandle(dc))
-				return HitTestThemeBackground(Handle, hdc, partId, stateId, (HitTestOptions)options, ref r, IntPtr.Zero, pt, out var htcode).Succeeded ? (System.Windows.Forms.VisualStyles.HitTestCode)htcode : 0;
+			using (var hdc = new SafeHDC(dc))
+				return HitTestThemeBackground(Handle, hdc, partId, stateId, (HitTestOptions)options, ref r, SafeHRGN.NULL, pt, out var htcode).Succeeded ? (System.Windows.Forms.VisualStyles.HitTestCode)htcode : 0;
 		}
 
 		/// <summary>Retrieves a hit test code for a point in the background specified by a visual style.</summary>
@@ -652,8 +652,8 @@ namespace Vanara.Windows.Forms
 		public System.Windows.Forms.VisualStyles.HitTestCode BackgroundHitTest(Graphics graphics, int partId, int stateId, Rectangle bounds, Region region, Point pt, System.Windows.Forms.VisualStyles.HitTestOptions options = 0)
 		{
 			RECT r = bounds;
-			using (var hdc = new SafeDCHandle(graphics))
-				return HitTestThemeBackground(Handle, hdc, partId, stateId, (HitTestOptions)options, ref r, region.GetHrgn(graphics), pt, out var htcode).Succeeded ? (System.Windows.Forms.VisualStyles.HitTestCode)htcode : 0;
+			using (var hdc = new SafeHDC(graphics))
+				return HitTestThemeBackground(Handle, hdc, partId, stateId, (HitTestOptions)options, ref r, new SafeHRGN(region.GetHrgn(graphics)), pt, out var htcode).Succeeded ? (System.Windows.Forms.VisualStyles.HitTestCode)htcode : 0;
 		}
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
@@ -672,7 +672,7 @@ namespace Vanara.Windows.Forms
 		{
 			RECT b = bounds;
 			var o = new DTBGOPTS(clipRect) {HasMirroredDC = rightToLeft, OmitBorder = omitBorder, OmitContent = omitContent};
-			using (var hdc = new SafeDCHandle(graphics))
+			using (var hdc = new SafeHDC(graphics))
 				DrawThemeBackgroundEx(Handle, hdc, partId, stateId, ref b, o);
 		}
 
@@ -688,7 +688,7 @@ namespace Vanara.Windows.Forms
 		public void DrawEdge(IDeviceContext graphics, int partId, int stateId, ref Rectangle bounds, BorderStyles3D edges = BorderStyles3D.BDR_SUNKEN, BorderFlags borderType = BorderFlags.BF_RECT | BorderFlags.BF_ADJUST)
 		{
 			RECT b = bounds;
-			using (var hdc = new SafeDCHandle(graphics))
+			using (var hdc = new SafeHDC(graphics))
 			{
 				DrawThemeEdge(Handle, hdc, partId, stateId, ref b, edges, borderType, out var r);
 				if (borderType.IsFlagSet(BorderFlags.BF_ADJUST))
@@ -706,8 +706,8 @@ namespace Vanara.Windows.Forms
 		public void DrawIcon(IDeviceContext graphics, int partId, int stateId, ImageList imageList, int imageIndex, Rectangle bounds)
 		{
 			RECT b = bounds;
-			using (var hdc = new SafeDCHandle(graphics))
-				DrawThemeIcon(Handle, hdc, partId, stateId, ref b, new HandleRef(imageList, imageList.Handle), imageIndex);
+			using (var hdc = new SafeHDC(graphics))
+				DrawThemeIcon(Handle, hdc, partId, stateId, ref b, imageList.Handle, imageIndex);
 		}
 
 		/// <summary>Draws the part of a parent control that is covered by a partially-transparent or alpha-blended child control.</summary>
@@ -719,8 +719,8 @@ namespace Vanara.Windows.Forms
 		/// </param>
 		public void DrawParentBackground(IWin32Window childWindow, IDeviceContext graphics, Rectangle? bounds = null)
 		{
-			using (var hdc = new SafeDCHandle(graphics))
-				DrawThemeParentBackground(new HandleRef(childWindow, childWindow.Handle), hdc, bounds);
+			using (var hdc = new SafeHDC(graphics))
+				DrawThemeParentBackground(childWindow.Handle, hdc, bounds);
 		}
 
 		/// <summary>Draws text using the color and font defined by the visual style.</summary>
@@ -736,8 +736,9 @@ namespace Vanara.Windows.Forms
 		{
 			RECT b = bounds;
 			var dt = options ?? DTTOPTS.Default; //new DrawThemeTextOptions(true) {AntiAliasedAlpha = true, BorderSize = 10, BorderColor = Color.Red, ApplyOverlay = true, ShadowType = TextShadowType.Continuous, ShadowColor = Color.White, ShadowOffset = new Point(2, 2), GlowSize = 18, TextColor = Color.White, Callback = DrawTextCallback };
-			using (var hdc = new SafeDCHandle(graphics))
-			using (new SafeDCObjectHandle(hdc, font?.ToHfont() ?? IntPtr.Zero))
+			using (var hdc = new SafeHDC(graphics))
+			using (var hfont = new SafeHFONT(font?.ToHfont() ?? IntPtr.Zero))
+			using (hdc.SelectObject(hfont))
 				DrawThemeTextEx(Handle, hdc, partId, stateId, text, text.Length, (DrawTextFlags)fmt, ref b, ref dt);
 		}
 
@@ -750,8 +751,8 @@ namespace Vanara.Windows.Forms
 		public Rectangle? GetBackgroundContentRect([Optional] IDeviceContext graphics, int partId, int stateId, Rectangle bounds)
 		{
 			RECT b = bounds;
-			using (var hdc = new SafeDCHandle(graphics))
-				return GetThemeBackgroundContentRect(Handle, hdc, partId, stateId, ref b, out RECT rc).Succeeded ? (Rectangle?)rc : null;
+			using (var hdc = new SafeHDC(graphics))
+				return GetThemeBackgroundContentRect(Handle, hdc, partId, stateId, ref b, out var rc).Succeeded ? (Rectangle?)rc : null;
 		}
 
 		/// <summary>Calculates the size and location of the background, defined by the visual style, given the content area.</summary>
@@ -763,8 +764,8 @@ namespace Vanara.Windows.Forms
 		public Rectangle? GetBackgroundExtent([Optional] IDeviceContext graphics, int partId, int stateId, Rectangle bounds)
 		{
 			RECT b = bounds;
-			using (var hdc = new SafeDCHandle(graphics))
-				return GetThemeBackgroundExtent(Handle, hdc, partId, stateId, ref b, out RECT rc).Succeeded ? (Rectangle?)rc : null;
+			using (var hdc = new SafeHDC(graphics))
+				return GetThemeBackgroundExtent(Handle, hdc, partId, stateId, ref b, out var rc).Succeeded ? (Rectangle?)rc : null;
 		}
 
 		/// <summary>Retrieves the bitmap associated with a particular theme, part, state, and property.</summary>
@@ -772,7 +773,7 @@ namespace Vanara.Windows.Forms
 		/// <param name="stateId">Value that specifies the state of the part that contains the bitmap.</param>
 		/// <param name="propId">The bitmap property identifier.</param>
 		/// <returns>The requested bitmap, if successful; otherwise <c>null</c>.</returns>
-		public Bitmap GetBitmap(int partId, int stateId, BitmapProperty propId) => GetThemeBitmap(Handle, partId, stateId, (int)propId, 0, out IntPtr hBmp).Succeeded ? Image.FromHbitmap(hBmp) : null;
+		public Bitmap GetBitmap(int partId, int stateId, BitmapProperty propId) => GetThemeBitmap(Handle, partId, stateId, (int)propId, 0, out var hBmp).Succeeded ? hBmp.ToBitmap() : null;
 
 		/// <summary>Retrieves the value of a <c>bool</c> property from the SysMetrics section of theme data.</summary>
 		/// <param name="partId">Value that specifies the part that contains the bool property.</param>
@@ -781,7 +782,7 @@ namespace Vanara.Windows.Forms
 		/// <returns>The requested bool value, if successful; otherwise <c>null</c>.</returns>
 		public bool? GetBool(int partId, int stateId, BoolProperty propId)
 		{
-			if (GetThemeBool(Handle, partId, stateId, (int)propId, out bool b).Succeeded)
+			if (GetThemeBool(Handle, partId, stateId, (int)propId, out var b).Succeeded)
 				return b;
 			else if (propId == BoolProperty.FlatMenus)
 				return GetThemeSysBool(Handle, (int)propId);
@@ -800,7 +801,7 @@ namespace Vanara.Windows.Forms
 		/// <param name="partId">Specifies the part to retrieve a stream from.</param>
 		/// <param name="stateId">Specifies the state of the part.</param>
 		/// <returns>The data stream.</returns>
-		public byte[] GetDiskStream(SafeLibraryHandle hInst, int partId, int stateId)
+		public byte[] GetDiskStream(HINSTANCE hInst, int partId, int stateId)
 		{
 			var r = GetThemeStream(Handle, partId, stateId, (int)ThemeProperty.TMT_DISKSTREAM, out var bytes, out var bLen, hInst);
 			if (r.Succeeded) return bytes.ToArray<byte>((int)bLen);
@@ -813,14 +814,14 @@ namespace Vanara.Windows.Forms
 		/// <param name="stateId">Value that specifies the state of the part that contains the enum property.</param>
 		/// <param name="propId">The enum property identifier.</param>
 		/// <returns>The requested enum value, if successful; otherwise <c>null</c>.</returns>
-		public int? GetEnumValue(int partId, int stateId, EnumProperty propId) => GetThemeEnumValue(Handle, partId, stateId, (int)propId, out int i).Succeeded ? (int?)i : null;
+		public int? GetEnumValue(int partId, int stateId, EnumProperty propId) => GetThemeEnumValue(Handle, partId, stateId, (int)propId, out var i).Succeeded ? (int?)i : null;
 
 		/// <summary>Retrieves the value of a enum property.</summary>
 		/// <param name="partId">Value that specifies the part that contains the enum property.</param>
 		/// <param name="stateId">Value that specifies the state of the part that contains the enum property.</param>
 		/// <param name="propId">The enum property identifier.</param>
 		/// <returns>The requested enum value, if successful; otherwise <c>null</c>.</returns>
-		public T? GetEnumValue<T>(int partId, int stateId, EnumProperty propId) where T : struct, IComparable => GetThemeEnumValue(Handle, partId, stateId, (int)propId, out int i).Succeeded ? (T?)(object)i : null;
+		public T? GetEnumValue<T>(int partId, int stateId, EnumProperty propId) where T : struct, IComparable => GetThemeEnumValue(Handle, partId, stateId, (int)propId, out var i).Succeeded ? (T?)(object)i : null;
 
 		/// <summary>Retrieves the value of a string property.</summary>
 		/// <param name="partId">Value that specifies the part that contains the string property.</param>
@@ -842,9 +843,9 @@ namespace Vanara.Windows.Forms
 		/// <returns>The requested font value, if successful; otherwise <c>null</c>.</returns>
 		public Font GetFont(IDeviceContext graphics, int partId, int stateId, FontProperty propId)
 		{
-			using (var hdc = new SafeDCHandle(graphics))
+			using (var hdc = new SafeHDC(graphics))
 			{
-				if (GetThemeFont(Handle, hdc, partId, stateId, (int)propId, out LOGFONT f).Succeeded)
+				if (GetThemeFont(Handle, hdc, partId, stateId, (int)propId, out var f).Succeeded)
 					return Font.FromLogFont(f);
 				return GetThemeSysFont(Handle, (int)propId, out f).Succeeded ? Font.FromLogFont(f) : null;
 			}
@@ -857,7 +858,7 @@ namespace Vanara.Windows.Forms
 		/// <returns>The requested int value, if successful; otherwise <c>null</c>.</returns>
 		public int? GetInt(int partId, int stateId, IntProperty propId)
 		{
-			if (GetThemeInt(Handle, partId, stateId, (int)propId, out int i).Succeeded)
+			if (GetThemeInt(Handle, partId, stateId, (int)propId, out var i).Succeeded)
 				return i;
 			return GetThemeSysInt(Handle, (int)propId, out var si).Succeeded ? (int?)si : null;
 		}
@@ -877,8 +878,8 @@ namespace Vanara.Windows.Forms
 		/// <returns>The requested margins, if successful; otherwise <c>null</c>.</returns>
 		public Padding? GetMargins(IDeviceContext graphics, int partId, int stateId, MarginsProperty propId)
 		{
-			using (var hdc = new SafeDCHandle(graphics))
-				return GetThemeMargins(Handle, hdc, partId, stateId, (int)propId, null, out MARGINS m).Succeeded ? (Padding?)new Padding(m.cxLeftWidth, m.cyTopHeight, m.cxRightWidth, m.cyBottomHeight) : null;
+			using (var hdc = new SafeHDC(graphics))
+				return GetThemeMargins(Handle, hdc, partId, stateId, (int)propId, null, out var m).Succeeded ? (Padding?)new Padding(m.cxLeftWidth, m.cyTopHeight, m.cxRightWidth, m.cyBottomHeight) : null;
 		}
 
 		/// <summary>Retrieves the value of a metric property.</summary>
@@ -889,8 +890,8 @@ namespace Vanara.Windows.Forms
 		/// <returns>The requested metric value, if successful; otherwise <c>null</c>.</returns>
 		public int? GetMetric(IDeviceContext graphics, int partId, int stateId, MetricProperty propId)
 		{
-			using (var hdc = new SafeDCHandle(graphics))
-				return GetThemeMetric(Handle, hdc, partId, stateId, (int)propId, out int i).Succeeded ? (int?)i : null;
+			using (var hdc = new SafeHDC(graphics))
+				return GetThemeMetric(Handle, hdc, partId, stateId, (int)propId, out var i).Succeeded ? (int?)i : null;
 		}
 
 		/// <summary>Retrives the value of a property</summary>
@@ -977,7 +978,7 @@ namespace Vanara.Windows.Forms
 		/// <returns>The dimensions of the specified part.</returns>
 		public Size? GetPartSize(IDeviceContext graphics, int partId, int stateId, Rectangle? destRect = null, PartSize size = PartSize.Default)
 		{
-			using (var hdc = new SafeDCHandle(graphics))
+			using (var hdc = new SafeHDC(graphics))
 				return GetThemePartSize(Handle, hdc, partId, stateId, destRect, (THEMESIZE)size, out var sz).Succeeded ? (Size?)sz : null;
 		}
 
@@ -986,21 +987,21 @@ namespace Vanara.Windows.Forms
 		/// <param name="stateId">Value that specifies the state of the part that contains the position property.</param>
 		/// <param name="propId">The position property identifier.</param>
 		/// <returns>The requested position value, if successful; otherwise <c>null</c>.</returns>
-		public Point? GetPosition(int partId, int stateId, PositionProperty propId) => GetThemePosition(Handle, partId, stateId, (int)propId, out Point i).Succeeded ? (Point?)i : null;
+		public Point? GetPosition(int partId, int stateId, PositionProperty propId) => GetThemePosition(Handle, partId, stateId, (int)propId, out var i).Succeeded ? (Point?)i : null;
 
 		/// <summary>Retrieves the location of the theme property definition for a property.</summary>
 		/// <param name="partId">Value of type int that specifies the part that contains the theme. See Parts and States.</param>
 		/// <param name="stateId">Value of type int that specifies the state of the part. See Parts and States.</param>
 		/// <param name="propId">Value of type int that specifies the property to retrieve. You may use any of the property enum value cast to an <c>int</c>.</param>
 		/// <returns>Value that indicates where the property was or was not found.</returns>
-		public PropertyOrigin GetPropertyOrigin(int partId, int stateId, int propId) => GetThemePropertyOrigin(Handle, partId, stateId, propId, out PROPERTYORIGIN po).Succeeded ? (PropertyOrigin)po : PropertyOrigin.NotFound;
+		public PropertyOrigin GetPropertyOrigin(int partId, int stateId, int propId) => GetThemePropertyOrigin(Handle, partId, stateId, propId, out var po).Succeeded ? (PropertyOrigin)po : PropertyOrigin.NotFound;
 
 		/// <summary>Retrieves the value of a rectangle property.</summary>
 		/// <param name="partId">Value that specifies the part that contains the rectangle property.</param>
 		/// <param name="stateId">Value that specifies the state of the part that contains the rectangle property.</param>
 		/// <param name="propId">The rectangle property identifier.</param>
 		/// <returns>The requested rectangle value, if successful; otherwise <c>null</c>.</returns>
-		public Rectangle? GetRect(int partId, int stateId, RectangleProperty propId) => GetThemeRect(Handle, partId, stateId, (int)propId, out RECT rc).Succeeded ? (Rectangle?)rc : null;
+		public Rectangle? GetRect(int partId, int stateId, RectangleProperty propId) => GetThemeRect(Handle, partId, stateId, (int)propId, out var rc).Succeeded ? (Rectangle?)rc : null;
 
 		/// <summary>Retrieves a data stream corresponding to this theme, starting from a specified part and state.</summary>
 		/// <param name="partId">Specifies the part to retrieve a stream from.</param>
@@ -1008,7 +1009,7 @@ namespace Vanara.Windows.Forms
 		/// <returns>The data stream.</returns>
 		public byte[] GetStream(int partId, int stateId)
 		{
-			var r = GetThemeStream(Handle, partId, stateId, (int)ThemeProperty.TMT_STREAM, out var bytes, out var bLen, SafeLibraryHandle.Null);
+			var r = GetThemeStream(Handle, partId, stateId, (int)ThemeProperty.TMT_STREAM, out var bytes, out var bLen, HINSTANCE.NULL);
 			if (r.Succeeded) return bytes.ToArray<byte>((int)bLen);
 			if (r != 0x80070490) throw new InvalidOperationException("Bad GetThemeStream");
 			return null;
@@ -1035,7 +1036,7 @@ namespace Vanara.Windows.Forms
 		public Brush GetSystemBrush(SystemColorIndex colorId)
 		{
 			var hbrush = GetThemeSysColorBrush(Handle, (int)colorId);
-			return hbrush != IntPtr.Zero ? new NativeBrush(hbrush) : null;
+			return !hbrush.IsInvalid ? hbrush.ToBrush() : null;
 		}
 
 		/// <summary>Retrieves the value of a system color.</summary>
@@ -1077,7 +1078,7 @@ namespace Vanara.Windows.Forms
 		/// </returns>
 		public Rectangle? GetTextExtent(IDeviceContext dc, int partId, int stateId, string text, DrawTextFlags flags, Rectangle? bounds)
 		{
-			using (var hdc = new SafeDCHandle(dc))
+			using (var hdc = new SafeHDC(dc))
 				return GetThemeTextExtent(Handle, hdc, partId, stateId, text, -1, flags, bounds, out var ext).Succeeded ? (Rectangle?)ext : null;
 		}
 
@@ -1096,7 +1097,7 @@ namespace Vanara.Windows.Forms
 		/// </returns>
 		public TEXTMETRIC? GetTextMetrics(IDeviceContext dc, int partId, int stateId)
 		{
-			using (var hdc = new SafeDCHandle(dc))
+			using (var hdc = new SafeHDC(dc))
 				return GetThemeTextMetrics(Handle, hdc, partId, stateId, out var m).Succeeded ? (TEXTMETRIC?)m : null;
 		}
 
@@ -1162,16 +1163,6 @@ namespace Vanara.Windows.Forms
 				return PropertyType.Stream;
 			System.Diagnostics.Debug.WriteLine($"Unmapped theme property: {propId}");
 			return PropertyType.Unknown;
-		}
-
-		private class NativeBrush : Brush
-		{
-			public NativeBrush(IntPtr hBrush)
-			{
-				SetNativeBrush(hBrush);
-			}
-
-			public override object Clone() => this;
 		}
 	}
 }

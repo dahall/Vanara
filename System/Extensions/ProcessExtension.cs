@@ -28,7 +28,7 @@ namespace Vanara.Extensions
 	{
 		public static void DisablePrivilege(this Process process, SystemPrivilege privilege)
 		{
-			using (var hObj = SafeTokenHandle.FromProcess(process.Handle, TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY))
+			using (var hObj = SafeHTOKEN.FromProcess(process.Handle, TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY))
 			{
 				hObj.AdjustPrivilege(privilege, PrivilegeAttributes.SE_PRIVILEGE_DISABLED);
 			}
@@ -36,7 +36,7 @@ namespace Vanara.Extensions
 
 		public static void EnablePrivilege(this Process process, SystemPrivilege privilege)
 		{
-			using (var hObj = SafeTokenHandle.FromProcess(process.Handle, TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY))
+			using (var hObj = SafeHTOKEN.FromProcess(process.Handle, TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY))
 			{
 				hObj.AdjustPrivilege(privilege, PrivilegeAttributes.SE_PRIVILEGE_ENABLED);
 			}
@@ -77,7 +77,7 @@ namespace Vanara.Extensions
 				throw new ArgumentNullException(nameof(p));
 
 			// Open the access token of the current process with TOKEN_QUERY. 
-			var hObject = SafeTokenHandle.FromProcess(p.Handle, TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE);
+			var hObject = SafeHTOKEN.FromProcess(p.Handle, TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE);
 
 			// Marshal the TOKEN_MANDATORY_LABEL struct from native to .NET object. 
 			var tokenIL = hObject.GetInfo<TOKEN_MANDATORY_LABEL>(TOKEN_INFORMATION_CLASS.TokenIntegrityLevel);
@@ -132,7 +132,7 @@ namespace Vanara.Extensions
 		/// </returns>
 		public static IEnumerable<PrivilegeAndAttributes> GetPrivileges(this Process process)
 		{
-			using (var hObj = SafeTokenHandle.FromProcess(process.Handle, TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE))
+			using (var hObj = SafeHTOKEN.FromProcess(process.Handle, TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE))
 			{
 				return hObj.GetPrivileges().Select(la => new PrivilegeAndAttributes(la.Luid.GetPrivilege(process.MachineName), la.Attributes));
 			}
@@ -151,7 +151,7 @@ namespace Vanara.Extensions
 		/// <returns><c>true</c> if the process has the specified privilege; otherwise, <c>false</c>.</returns>
 		public static bool HasPrivileges(this Process process, bool requireAll, params SystemPrivilege[] privs)
 		{
-			using (var hObj = SafeTokenHandle.FromProcess(process.Handle, TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE))
+			using (var hObj = SafeHTOKEN.FromProcess(process.Handle, TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE))
 				return hObj.HasPrivileges(requireAll, privs);
 		}
 
@@ -179,7 +179,7 @@ namespace Vanara.Extensions
 			try
 			{
 				// Open the access token of the current process with TOKEN_QUERY. 
-				using (var hObject = SafeTokenHandle.FromProcess(p.Handle, TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE))
+				using (var hObject = SafeHTOKEN.FromProcess(p.Handle, TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE))
 					return hObject.IsElevated;
 			}
 			catch { }
@@ -199,7 +199,7 @@ namespace Vanara.Extensions
 
 		public static void RemovePrivilege(this Process process, SystemPrivilege privilege)
 		{
-			using (var hObj = SafeTokenHandle.FromProcess(process.Handle, TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY))
+			using (var hObj = SafeHTOKEN.FromProcess(process.Handle, TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY))
 			{
 				hObj.AdjustPrivilege(privilege, PrivilegeAttributes.SE_PRIVILEGE_REMOVED);
 			}

@@ -95,7 +95,7 @@ namespace Vanara.Windows.Forms
 				newState = value;
 				if (diff)
 				{
-					if (animationsNeedCleanup && IsHandleCreated) BufferedPaintStopAllAnimations(new HandleRef(this, Handle));
+					if (animationsNeedCleanup && IsHandleCreated) BufferedPaintStopAllAnimations(Handle);
 					Invalidate();
 				}
 			}
@@ -286,7 +286,7 @@ namespace Vanara.Windows.Forms
 		/// <param name="data">The data.</param>
 		protected virtual void PaintControl(Graphics dc, Rectangle bounds, ComboBoxState state, int data)
 		{
-			var cbi = COMBOBOXINFO.FromHandle(new HandleRef(this, Handle));
+			var cbi = COMBOBOXINFO.FromHandle(Handle);
 
 			var itemText = SelectedIndex >= 0 ? GetItemText(SelectedItem) : string.Empty;
 			Rectangle tr = cbi.rcItem;
@@ -467,7 +467,7 @@ namespace Vanara.Windows.Forms
 
 			public int IndexFromPoint(int x, int y)
 			{
-				var n = SendMessage(new HandleRef(this, Handle), 0x1a9u /* LB_ITEMFROMPOINT */, IntPtr.Zero, MAKELPARAM((ushort)x, (ushort)y));
+				var n = SendMessage(Handle, 0x1a9u /* LB_ITEMFROMPOINT */, IntPtr.Zero, MAKELPARAM((ushort)x, (ushort)y));
 				if (HIWORD(n) == 0)
 					return LOWORD(n);
 				return -1;

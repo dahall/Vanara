@@ -48,9 +48,9 @@ namespace Vanara.Extensions
 				throw new ArgumentOutOfRangeException(nameof(index));
 			if (overlayImageIndex < 0 || overlayImageIndex > imageList.GetOverlayCount())
 				throw new ArgumentOutOfRangeException(nameof(overlayImageIndex));
-			using (var hg = new SafeDCHandle(g))
+			using (var hg = new SafeHDC(g))
 			{
-				var p = new IMAGELISTDRAWPARAMS(hg.DangerousGetHandle(), bounds, index, bgColor, style | (IMAGELISTDRAWFLAGS)INDEXTOOVERLAYMASK(overlayImageIndex)) { rgbFg = fgColor };
+				var p = new IMAGELISTDRAWPARAMS(hg, bounds, index, bgColor, style | (IMAGELISTDRAWFLAGS)INDEXTOOVERLAYMASK(overlayImageIndex)) { rgbFg = fgColor };
 				imageList.GetIImageList().Draw(p);
 			}
 		}
@@ -63,21 +63,14 @@ namespace Vanara.Extensions
 		/// <summary>Gets an <see cref="IImageList"/> object for the <see cref="ImageList"/> instance.</summary>
 		/// <param name="imageList">The image list.</param>
 		/// <returns>An <see cref="IImageList"/> object.</returns>
-		public static IImageList GetIImageList(this ImageList imageList) => new SafeImageListHandle(imageList.Handle, false).Interface;
+		public static IImageList GetIImageList(this ImageList imageList) => new SafeHIMAGELIST(imageList.Handle, false).Interface;
 
 		/// <summary>Creates an <see cref="ImageList"/> from a handle.
 		/// <note type="warning">This is a super hack involving a lot of reflection against internal structures that can change. Use with caution!</note></summary>
 		/// <param name="himl">The SafeImageListHandle value.</param>
 		/// <returns>An <c>ImageList</c> instance hosting the supplied handle.</returns>
 		/// <exception cref="PlatformNotSupportedException" />
-		public static ImageList ImageListFromHandle(this SafeImageListHandle himl) => ImageListFromHandle(himl.DangerousGetHandle());
-
-		/// <summary>Creates an <see cref="ImageList"/> from a handle.
-		/// <note type="warning">This is a super hack involving a lot of reflection against internal structures that can change. Use with caution!</note></summary>
-		/// <param name="himl">The HIMAGELIST value.</param>
-		/// <returns>An <c>ImageList</c> instance hosting the supplied handle.</returns>
-		/// <exception cref="PlatformNotSupportedException" />
-		public static ImageList ImageListFromHandle(IntPtr himl)
+		public static ImageList ToImageList(this HIMAGELIST himl)
 		{
 			// Duplicate handle and get IImageList for it
 			var dhiml = ImageList_Duplicate(himl);
@@ -119,8 +112,7 @@ namespace Vanara.Extensions
 		public static Icon MergeImage(this ImageList il1, int idx1, ImageList il2, int idx2, Point offset = default(Point))
 		{
 			var il3 = il1.GetIImageList().Merge(idx1, il2.GetIImageList(), idx2, offset.X, offset.Y, typeof(IImageList).GUID);
-			var hico = il3.GetIcon(0, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT | IMAGELISTDRAWFLAGS.ILD_PRESERVEALPHA);
-			return Icon.FromHandle(hico);
+			return il3.GetIcon(0, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT | IMAGELISTDRAWFLAGS.ILD_PRESERVEALPHA).ToIcon();
 		}
 
 		/// <summary>Gets the current background color for an image list.</summary>

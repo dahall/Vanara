@@ -66,7 +66,7 @@ namespace Vanara.PInvoke
 		/// A variable that is passed to all receiving methods in the asynchronous methods. Can be use to hold any user defined object.
 		/// </param>
 		/// <returns>An <see cref="OverlappedAsyncResult"/> instance for the asynchronous calls.</returns>
-		public static unsafe OverlappedAsyncResult SetupOverlappedFunction(SafeFileHandle hDevice, AsyncCallback userCallback, object userState)
+		public static unsafe OverlappedAsyncResult SetupOverlappedFunction(HFILE hDevice, AsyncCallback userCallback, object userState)
 		{
 			ThreadPool.BindHandle(hDevice);
 			var ar = new OverlappedAsyncResult(userState, userCallback, hDevice);
@@ -89,7 +89,7 @@ namespace Vanara.PInvoke
 			internal int endCalled;
 			internal int errorCode;
 
-			[SecurityCritical] private readonly SafeFileHandle handle;
+			[SecurityCritical] private readonly HFILE handle;
 			private readonly object lockObj = new object();
 			private ManualResetEvent evt;
 			[SecurityCritical] private unsafe NativeOverlapped* overlapped;
@@ -98,7 +98,7 @@ namespace Vanara.PInvoke
 			/// <param name="userState">State of the user.</param>
 			/// <param name="callback">The callback method.</param>
 			/// <param name="hFile">The binding handle.</param>
-			internal OverlappedAsyncResult(object userState, AsyncCallback callback, SafeFileHandle hFile)
+			internal OverlappedAsyncResult(object userState, AsyncCallback callback, HFILE hFile)
 			{
 				AsyncState = userState;
 				AsyncCallback = callback;
@@ -132,7 +132,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets the handle to which this operation is bound.</summary>
 			/// <value>The handle.</value>
-			public SafeFileHandle Handle => handle;
+			public HFILE Handle => handle;
 
 			/// <summary>Gets a value that indicates whether the asynchronous operation has completed.</summary>
 			public bool IsCompleted { get; private set; }

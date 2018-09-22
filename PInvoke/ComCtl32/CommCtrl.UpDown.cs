@@ -150,7 +150,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb759977(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb759977")]
-		public static extern IntPtr CreateUpDownControl(uint dwStyle, int x, int y, int cx, int cy, IntPtr hParent, int nID, SafeLibraryHandle hInst, IntPtr hBuddy, int nUpper, int nLower, int nPos);
+		public static extern IntPtr CreateUpDownControl(uint dwStyle, int x, int y, int cx, int cy, HWND hParent, int nID, HINSTANCE hInst, HWND hBuddy, int nUpper, int nLower, int nPos);
 
 		/// <summary>Contains information specific to up-down control notification messages. It is identical to and replaces the <c>NM_UPDOWN</c> structure.</summary>
 		// typedef struct _NM_UPDOWN { NMHDR hdr; int iPos; int iDelta;} NMUPDOWN, *LPNMUPDOWN;

@@ -16,6 +16,7 @@ using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.AdvApi32;
+using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.VirtDisk;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -28,11 +29,11 @@ namespace Vanara.IO
 	{
 		private static readonly bool IsPreWin8 = Environment.OSVersion.Version < new Version(6, 2);
 		private bool attached;
-		private readonly SafeFileHandle hVhd;
+		private readonly SafeHFILE hVhd;
 		private VirtualDiskMetadata metadata;
 		private readonly OPEN_VIRTUAL_DISK_VERSION ver;
 
-		private VirtualDisk(SafeFileHandle handle, OPEN_VIRTUAL_DISK_VERSION version) { hVhd = handle; ver = version; }
+		private VirtualDisk(SafeHFILE handle, OPEN_VIRTUAL_DISK_VERSION version) { hVhd = handle; ver = version; }
 
 		/// <summary>Represents the format of the virtual disk.</summary>
 		public enum DeviceType : uint
@@ -83,7 +84,7 @@ namespace Vanara.IO
 		public uint FragmentationPercentage => GetInformation<uint>(GET_VIRTUAL_DISK_INFO_VERSION.GET_VIRTUAL_DISK_INFO_FRAGMENTATION);
 
 		/// <summary>Gets the safe handle for the current virtual disk.</summary>
-		public SafeFileHandle Handle => hVhd;
+		private SafeHFILE Handle => hVhd;
 
 		/// <summary>Unique identifier of the VHD.</summary>
 		public Guid Identifier
@@ -229,7 +230,7 @@ namespace Vanara.IO
 		{
 			if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
 			var stType = new VIRTUAL_STORAGE_TYPE();
-			CreateVirtualDisk(ref stType, path, mask, securityDescriptor ?? SafeSecurityDescriptor.Null, flags, 0, ref param, IntPtr.Zero, out SafeFileHandle handle).ThrowIfFailed();
+			CreateVirtualDisk(ref stType, path, mask, securityDescriptor ?? SafeSecurityDescriptor.Null, flags, 0, ref param, IntPtr.Zero, out var handle).ThrowIfFailed();
 			return new VirtualDisk(handle, (OPEN_VIRTUAL_DISK_VERSION)param.Version);
 		}
 
@@ -374,7 +375,7 @@ namespace Vanara.IO
 			if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
 			var stType = new VIRTUAL_STORAGE_TYPE();
 			Debug.WriteLine($"OpenVD: mask={mask}; flags={flags}; param={param}");
-			OpenVirtualDisk(ref stType, path, mask, flags, param, out SafeFileHandle hVhd).ThrowIfFailed();
+			OpenVirtualDisk(ref stType, path, mask, flags, param, out var hVhd).ThrowIfFailed();
 			return new VirtualDisk(hVhd, param?.Version ?? (IsPreWin8 ? OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_1 : OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_2));
 		}
 
@@ -548,7 +549,7 @@ namespace Vanara.IO
 			if (string.IsNullOrEmpty(sourcePath)) throw new ArgumentNullException(nameof(sourcePath));
 
 			var param = new CREATE_VIRTUAL_DISK_PARAMETERS(0, IsPreWin8 ? 1U : 2U);
-			SafeFileHandle hVhd = null;
+			SafeHFILE hVhd = null;
 			bool b = await RunAsync(cancellationToken, progress, hVhd, (ref NativeOverlapped vhdOverlap) =>
 				{
 					var stType = new VIRTUAL_STORAGE_TYPE();
@@ -624,7 +625,7 @@ namespace Vanara.IO
 			);
 		}
 
-		private async static Task<bool> GetProgress(SafeFileHandle phVhd, NativeOverlapped reset, CancellationToken cancellationToken, IProgress<int> progress)
+		private async static Task<bool> GetProgress(HFILE phVhd, NativeOverlapped reset, CancellationToken cancellationToken, IProgress<int> progress)
 		{
 			var prog = new VIRTUAL_DISK_PROGRESS();
 			progress?.Report(0);
@@ -657,7 +658,7 @@ namespace Vanara.IO
 
 		private delegate Win32Error RunAsyncMethod(ref NativeOverlapped overlap);
 
-		private static async Task<bool> RunAsync(CancellationToken cancellationToken, IProgress<int> progress, SafeFileHandle hVhd, RunAsyncMethod method)
+		private static async Task<bool> RunAsync(CancellationToken cancellationToken, IProgress<int> progress, HFILE hVhd, RunAsyncMethod method)
 		{
 			var vhdOverlapEvent = new ManualResetEvent(false);
 			var vhdOverlap = new NativeOverlapped { EventHandle = vhdOverlapEvent.SafeWaitHandle.DangerousGetHandle() };
@@ -699,7 +700,7 @@ namespace Vanara.IO
 				await GetProgress(vd.Handle, 2);
 			}
 
-			async Task<bool> GetProgress(SafeFileHandle phVhd, int step)
+			async Task<bool> GetProgress(HFILE phVhd, int step)
 			{
 				var prog = new VIRTUAL_DISK_PROGRESS();
 				var start = step == 1 ? 0 : 50;

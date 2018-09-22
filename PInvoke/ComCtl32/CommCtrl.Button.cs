@@ -81,7 +81,7 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="splitInfo">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage(HandleRef hWnd, ButtonMessage Msg, int wParam, ref BUTTON_SPLITINFO splitInfo) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref splitInfo);
+		public static IntPtr SendMessage(HWND hWnd, ButtonMessage Msg, int wParam, ref BUTTON_SPLITINFO splitInfo) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref splitInfo);
 
 		/// <summary>
 		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window
@@ -96,7 +96,7 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="imageList">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage(HandleRef hWnd, ButtonMessage Msg, int wParam, ref BUTTON_IMAGELIST imageList) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref imageList);
+		public static IntPtr SendMessage(HWND hWnd, ButtonMessage Msg, int wParam, ref BUTTON_IMAGELIST imageList) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref imageList);
 
 		/// <summary>Contains information about an image list that is used with a button control.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775953")]
@@ -146,7 +146,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Initializes a new instance of the <see cref="BUTTON_SPLITINFO"/> struct and sets an ImageList</summary>
 			/// <param name="hImageList">The h image list.</param>
-			public BUTTON_SPLITINFO(HandleRef hImageList) : this() { himlGlyph = hImageList.Handle != IntPtr.Zero ? hImageList.Handle : IntPtr.Zero; mask = SplitButtonInfoMask.BCSIF_IMAGE; }
+			public BUTTON_SPLITINFO(HIMAGELIST hImageList) : this() { himlGlyph = hImageList; mask = SplitButtonInfoMask.BCSIF_IMAGE; }
 		}
 
 		/// <summary>Contains information about a BCN_DROPDOWN notification.</summary>

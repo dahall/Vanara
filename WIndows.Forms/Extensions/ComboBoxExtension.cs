@@ -13,7 +13,7 @@ namespace Vanara.Extensions
 			if (System.Environment.OSVersion.Version.Major >= 6)
 			{
 				if (!cb.IsHandleCreated) return;
-				SendMessage(new HandleRef(cb, cb.Handle), (uint)ComboBoxMessage.CB_SETCUEBANNER, IntPtr.Zero, cueBannerText);
+				SendMessage(cb.Handle, (uint)ComboBoxMessage.CB_SETCUEBANNER, IntPtr.Zero, cueBannerText);
 				cb.Invalidate();
 			}
 			else

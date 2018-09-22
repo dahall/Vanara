@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Security;
 using System.Windows.Forms;
 using Vanara.InteropServices;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.DwmApi;
 
 namespace Vanara.Windows.Forms
@@ -402,7 +403,7 @@ namespace Vanara.Windows.Forms
 
 		internal class ThumbnailMgr : IDisposable
 		{
-			private Dictionary<IntPtr, IntPtr> thumbnails = new Dictionary<IntPtr, IntPtr>();
+			private Dictionary<IntPtr, HTHUMBNAIL> thumbnails = new Dictionary<IntPtr, HTHUMBNAIL>();
 
 			public ThumbnailMgr() { }
 
@@ -413,19 +414,19 @@ namespace Vanara.Windows.Forms
 				thumbnails = null;
 			}
 
-			public IntPtr Register(IWin32Window win)
+			public HTHUMBNAIL Register(IWin32Window win)
 			{
 				if (thumbnails.TryGetValue(win.Handle, out var hThumbnail))
 				{
 					DwmUnregisterThumbnail(hThumbnail);
 					thumbnails.Remove(win.Handle);
 				}
-				DwmRegisterThumbnail(win.Handle, Vanara.PInvoke.User32_Gdi.FindWindow("Progman", null), out var hThumb).ThrowIfFailed();
+				DwmRegisterThumbnail(win.Handle, User32_Gdi.FindWindow("Progman", null), out var hThumb).ThrowIfFailed();
 				thumbnails.Add(win.Handle, hThumb);
 				return hThumb;
 			}
 
-			public void Unregister(IntPtr hThumbnail)
+			public void Unregister(HTHUMBNAIL hThumbnail)
 			{
 				foreach (var kv in thumbnails)
 				{

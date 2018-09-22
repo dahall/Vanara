@@ -12,7 +12,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "dd317331", MinClient = PInvokeClient.Windows7)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool BeginPanningFeedback(HandleRef hwnd);
+		public static extern bool BeginPanningFeedback(HWND hwnd);
 
 		/// <summary>Initializes the window position information for window panning.</summary>
 		/// <param name="hwnd">A handle to the window to end boundary feedback on.</param>
@@ -23,7 +23,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "dd317327", MinClient = PInvokeClient.Windows7)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EndPanningFeedback(HandleRef hwnd, [MarshalAs(UnmanagedType.Bool)] bool fAnimateBack);
+		public static extern bool EndPanningFeedback(HWND hwnd, [MarshalAs(UnmanagedType.Bool)] bool fAnimateBack);
 
 		/// <summary>Triggers repositioning on a window's position when a user pans past a boundary.</summary>
 		/// <param name="hwnd">A handle to the window that will have boundary feedback on it.</param>
@@ -39,6 +39,6 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.UxTheme, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "dd317336", MinClient = PInvokeClient.Windows7)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool UpdatePanningFeedback(HandleRef hwnd, int lTotalOverpanOffsetX, int lTotalOverpanOffsetY, [MarshalAs(UnmanagedType.Bool)] bool fInInertia);
+		public static extern bool UpdatePanningFeedback(HWND hwnd, int lTotalOverpanOffsetX, int lTotalOverpanOffsetY, [MarshalAs(UnmanagedType.Bool)] bool fInInertia);
 	}
 }

@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using Vanara.PInvoke;
+using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.User32_Gdi;
@@ -13,17 +14,16 @@ namespace Vanara.Resources
 {
 	public class ResourceFile : IDisposable
 	{
-		private SafeLibraryHandle hLib;
+		private SafeHINSTANCE hLib;
 
 		public ResourceFile(string filename) : this()
 		{
 			if (filename == null)
 				throw new ArgumentNullException(nameof(filename));
 
-			using (var hm = new SafeLibraryHandle(filename))
+			using (var hm = LoadLibraryEx(filename))
 				FileName = GetModuleFileName(hm);
-			hLib = new SafeLibraryHandle(filename,
-				LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE | LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE);
+			hLib = LoadLibraryEx(filename, IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE | LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE);
 		}
 
 		private ResourceFile()
@@ -56,12 +56,8 @@ namespace Vanara.Resources
 		public static Icon GetResourceIcon(string resourceReference)
 		{
 			var parts = GetResourceRefParts(resourceReference);
-			IntPtr hIcon = IntPtr.Zero, hSmIcon = IntPtr.Zero;
-			SHDefExtractIcon(parts.Item1, parts.Item2, 0, ref hIcon, ref hSmIcon, 0);
-			DestroyIcon(hSmIcon);
-			var ico = (Icon)Icon.FromHandle(hIcon).Clone();
-			DestroyIcon(hIcon);
-			return ico;
+			SHDefExtractIcon(parts.Item1, parts.Item2, 0, out var hIcon, out var _, 0).ThrowIfFailed();
+			return hIcon.ToIcon();
 		}
 
 		public static string GetResourceString(string resourceReference)
@@ -109,13 +105,8 @@ namespace Vanara.Resources
 
 		protected virtual Bitmap GetBitmap(SafeResourceId name, Size size)
 		{
-			var hBmp = LoadImage(hLib, name, LoadImageType.IMAGE_BITMAP, size.Width, size.Height,
-				LoadImageOptions.LR_DEFAULTCOLOR);
-			if (hBmp == IntPtr.Zero)
-				throw new Win32Exception();
-			var bmp = (Bitmap)Image.FromHbitmap(hBmp).Clone();
-			DestroyIcon(hBmp);
-			return bmp;
+			var hBmp = new SafeHBITMAP(LoadImage(hLib, name, LoadImageType.IMAGE_BITMAP, size.Width, size.Height, LoadImageOptions.LR_DEFAULTCOLOR));
+			return !hBmp.IsNull ? hBmp.ToBitmap() : throw new Win32Exception();
 		}
 
 		protected virtual Icon GetGroupIcon(SafeResourceId name)
@@ -160,13 +151,8 @@ namespace Vanara.Resources
 
 		protected virtual Icon GetIcon(SafeResourceId name, Size size)
 		{
-			var hIcon = LoadImage(hLib, name, LoadImageType.IMAGE_ICON, size.Width, size.Height,
-				LoadImageOptions.LR_LOADTRANSPARENT);
-			if (hIcon == IntPtr.Zero)
-				throw new Win32Exception();
-			var ico = (Icon)Icon.FromHandle(hIcon).Clone();
-			DestroyIcon(hIcon);
-			return ico;
+			var hIcon = new SafeHICON(LoadImage(hLib, name, LoadImageType.IMAGE_ICON, size.Width, size.Height, LoadImageOptions.LR_LOADTRANSPARENT));
+			return !hIcon.IsNull ? hIcon.ToIcon() : throw new Win32Exception();
 		}
 
 		protected virtual string GetString(int id)

@@ -259,7 +259,7 @@ namespace Vanara.Windows.Forms
 				else if (Environment.OSVersion.Version.Major >= 6)
 				{
 					btn.FlatStyle = required ? FlatStyle.System : FlatStyle.Standard;
-					SendMessage(new HandleRef(btn, btn.Handle), (int)ButtonMessage.BCM_SETSHIELD, 0, required ? 1 : 0);
+					SendMessage(btn.Handle, (int)ButtonMessage.BCM_SETSHIELD, 0, required ? 1 : 0);
 				}
 				btn.Invalidate();
 			}
@@ -357,7 +357,7 @@ namespace Vanara.Windows.Forms
 			if (progressBar != null && Environment.OSVersion.Version.Major >= 6)
 			{
 				const uint PBM_SETSTATE = 1040;
-				SendMessage(new HandleRef(progressBar, progressBar.Handle), PBM_SETSTATE, (int)value, 0);
+				SendMessage(progressBar.Handle, PBM_SETSTATE, (int)value, 0);
 				progressBar.Invalidate();
 			}
 		}

@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Drawing;
-using Vanara.Extensions;
 using Vanara.PInvoke;
+using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32_Gdi;
 
 namespace Vanara.Windows.Shell
@@ -14,29 +13,14 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Initializes a new instance of the <see cref="IndirectString"/> class.</summary>
 		/// <param name="module">The module file name.</param>
-		/// <param name="resourceIdOrIndex">If this number is positive, this is the index of the resource in the module file. If negative, the absolute value of the number is the resource ID of the icon in the module file.</param>
+		/// <param name="resourceIdOrIndex">
+		/// If this number is positive, this is the index of the resource in the module file. If negative, the absolute value of the number
+		/// is the resource ID of the icon in the module file.
+		/// </param>
 		public IndirectString(string module, int resourceIdOrIndex)
 		{
 			ModuleFileName = module;
 			ResourceId = resourceIdOrIndex;
-		}
-
-		/// <summary>Gets the icon referred to by this instance.</summary>
-		/// <value>The icon.</value>
-		public string Value
-		{
-			get
-			{
-				if (!IsValid) return null;
-				using (var lib = new Kernel32.SafeLibraryHandle(ModuleFileName, Kernel32.LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE))
-				{
-					if (ResourceId >= 0) throw new NotSupportedException();
-					const int sz = 2048;
-					var sb = new System.Text.StringBuilder(sz, sz);
-					LoadString(lib, -ResourceId, sb, sz);
-					return sb.ToString();
-				}
-			}
 		}
 
 		/// <summary>Returns true if this location is valid.</summary>
@@ -48,8 +32,29 @@ namespace Vanara.Windows.Shell
 		public string ModuleFileName { get; set; }
 
 		/// <summary>Gets or sets the resource index or resource ID.</summary>
-		/// <value>If this number is positive, this is the index of the resource in the module file. If negative, the absolute value of the number is the resource ID of the icon in the module file.</value>
+		/// <value>
+		/// If this number is positive, this is the index of the resource in the module file. If negative, the absolute value of the number
+		/// is the resource ID of the icon in the module file.
+		/// </value>
 		public int ResourceId { get; set; }
+
+		/// <summary>Gets the icon referred to by this instance.</summary>
+		/// <value>The icon.</value>
+		public string Value
+		{
+			get
+			{
+				if (!IsValid) return null;
+				using (var lib = LoadLibraryEx(ModuleFileName, Kernel32.LoadLibraryExFlags.LOAD_LIBRARY_AS_IMAGE_RESOURCE))
+				{
+					if (ResourceId >= 0) throw new NotSupportedException();
+					const int sz = 2048;
+					var sb = new System.Text.StringBuilder(sz, sz);
+					LoadString(lib, -ResourceId, sb, sz);
+					return sb.ToString();
+				}
+			}
+		}
 
 		/// <summary>Tries to parse the specified string to create a <see cref="IndirectString"/> instance.</summary>
 		/// <param name="value">The string representation in the format of either "ModuleFileName,ResourceIndex" or "ModuleFileName,-ResourceID".</param>
@@ -67,8 +72,8 @@ namespace Vanara.Windows.Shell
 			return false;
 		}
 
-		/// <summary>Returns a <see cref="System.String" /> that represents this instance.</summary>
-		/// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+		/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
+		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 		public override string ToString() => IsValid ? $"@{ModuleFileName},{ResourceId}" : string.Empty;
 	}
 }

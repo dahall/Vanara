@@ -638,7 +638,7 @@ namespace Vanara.PInvoke
 			/// <param name="hwndOwner">Specifies the handle to the parent window of the dialog box.</param>
 			/// <param name="caption">The string containing the title for the dialog box.</param>
 			/// <param name="message">The string containing a brief message to display in the dialog box.</param>
-			public CREDUI_INFO(IntPtr hwndOwner, string caption, string message)
+			public CREDUI_INFO(HWND hwndOwner, string caption, string message)
 			{
 				cbSize = Marshal.SizeOf(typeof(CREDUI_INFO));
 				hwndParent = hwndOwner;

@@ -233,7 +233,7 @@ namespace Vanara.PInvoke.Tests
 		public void PropVariantToBooleanTest()
 		{
 			var pv1 = new PROPVARIANT(true);
-			var hr = PropVariantToBoolean(pv1, out bool b);
+			var hr = PropVariantToBoolean(pv1, out var b);
 			Assert.That(hr.Succeeded);
 			Assert.That(b, Is.EqualTo(true));
 			var pv2 = new PROPVARIANT(1);
@@ -246,7 +246,7 @@ namespace Vanara.PInvoke.Tests
 		public void PropVariantToBooleanVectorAllocTest()
 		{
 			var pv = new PROPVARIANT(new[] {true, false, true, false});
-			var hr = PropVariantToBooleanVectorAlloc(pv, out SafeCoTaskMemHandle h, out uint cnt);
+			var hr = PropVariantToBooleanVectorAlloc(pv, out var h, out var cnt);
 			Assert.That(hr.Succeeded);
 			bool[] ba = null;
 			Assert.That(() => ba = h.ToEnumerable<uint>((int)cnt).Select(i => i != 0).ToArray(), Throws.Nothing);
@@ -257,7 +257,7 @@ namespace Vanara.PInvoke.Tests
 		public void PropVariantToBSTRTest()
 		{
 			var pv = new PROPVARIANT("Test");
-			var hr = PropVariantToBSTR(pv, out string s);
+			var hr = PropVariantToBSTR(pv, out var s);
 			Assert.That(hr.Succeeded);
 			Assert.That(pv.Value, Is.EqualTo(s));
 			pv = new PROPVARIANT(1);
@@ -293,7 +293,7 @@ namespace Vanara.PInvoke.Tests
 		private static void P2VTest<T>(P2V<T> func, T v1, object v2, T o2)
 		{
 			var pv1 = new PROPVARIANT(v1);
-			var hr = func(pv1, out T val);
+			var hr = func(pv1, out var val);
 			Assert.That(hr.Succeeded);
 			Assert.That(val, Is.EqualTo(v1));
 			var pv2 = new PROPVARIANT(v2);
@@ -319,7 +319,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			var v1 = DateTime.Now.ToFileTimeStruct();
 			var pv1 = new PROPVARIANT(v1);
-			var hr = PropVariantToFileTime(pv1, PSTIME_FLAGS.PSTF_UTC, out FILETIME val);
+			var hr = PropVariantToFileTime(pv1, PSTIME_FLAGS.PSTF_UTC, out var val);
 			Assert.That(hr.Succeeded);
 			Assert.That(val, Is.EqualTo(v1));
 			var pv2 = new PROPVARIANT(DateTime.Today, VarEnum.VT_FILETIME);
@@ -339,7 +339,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			var v1 = Guid.NewGuid();
 			var pv1 = new PROPVARIANT(v1);
-			var hr = PropVariantToGUID(pv1, out Guid val);
+			var hr = PropVariantToGUID(pv1, out var val);
 			Assert.That(hr.Succeeded);
 			Assert.That(val, Is.EqualTo(v1));
 			var pv2 = new PROPVARIANT();
@@ -366,7 +366,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			Assert.That(arr, Is.Not.Null);
 			var pv = new PROPVARIANT(arr);
-			var hr = func(pv, out SafeCoTaskMemHandle oba, out uint cnt);
+			var hr = func(pv, out var oba, out var cnt);
 			Assert.That(hr.Succeeded);
 			Assert.That(!oba.IsInvalid);
 			Assert.That(arr.Length, Is.EqualTo(cnt));
@@ -431,7 +431,7 @@ namespace Vanara.PInvoke.Tests
 			var arr = new[] {"A", "B", "C", "D"};
 			Assert.That(arr, Is.Not.Null);
 			var pv = new PROPVARIANT(arr);
-			var hr = PropVariantToStringVectorAlloc(pv, out SafeCoTaskMemHandle oba, out uint cnt);
+			var hr = PropVariantToStringVectorAlloc(pv, out var oba, out var cnt);
 			Assert.That(hr.Succeeded);
 			Assert.That(!oba.IsInvalid);
 			Assert.That(arr.Length, Is.EqualTo(cnt));

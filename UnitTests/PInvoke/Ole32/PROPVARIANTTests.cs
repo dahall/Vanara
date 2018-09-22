@@ -217,7 +217,7 @@ namespace Vanara.PInvoke.Tests
 				try
 				{
 					SHGetPropertyStoreFromParsingName(f, null, GETPROPERTYSTOREFLAGS.GPS_READWRITE,
-						Marshal.GenerateGuidForType(typeof(IPropertyStore)), out IPropertyStore ps);
+						Marshal.GenerateGuidForType(typeof(IPropertyStore)), out var ps);
 					if (ps == null) continue;
 					using (var pv = new PROPVARIANT())
 					{
@@ -268,10 +268,10 @@ namespace Vanara.PInvoke.Tests
 				case VARTYPE.VT_LPWSTR:
 					return "string";
 				case VARTYPE.VT_STORAGE:
-					StgCreateStorageEx(Path.GetTempFileName(), STGM.STGM_DELETEONRELEASE | STGM.STGM_CREATE | STGM.STGM_DIRECT | STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE, STGFMT.STGFMT_DOCFILE, 0, IntPtr.Zero, IntPtr.Zero, typeof(IStorage).GUID, out object iptr);
+					StgCreateStorageEx(Path.GetTempFileName(), STGM.STGM_DELETEONRELEASE | STGM.STGM_CREATE | STGM.STGM_DIRECT | STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE, STGFMT.STGFMT_DOCFILE, 0, IntPtr.Zero, IntPtr.Zero, typeof(IStorage).GUID, out var iptr);
 					return (IStorage)iptr;
 				case VARTYPE.VT_STREAM:
-					SHCreateStreamOnFileEx(AdvApi32Tests.fn, STGM.STGM_READ | STGM.STGM_SHARE_EXCLUSIVE, 0, false, null, out IStream stm);
+					SHCreateStreamOnFileEx(AdvApi32Tests.fn, STGM.STGM_READ | STGM.STGM_SHARE_EXCLUSIVE, 0, false, null, out var stm);
 					return stm;
 				case VARTYPE.VT_UNKNOWN:
 					return new IShellLinkW();

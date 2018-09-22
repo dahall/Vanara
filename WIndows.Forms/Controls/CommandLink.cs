@@ -94,7 +94,7 @@ namespace Vanara.Windows.Forms
 		private void SetNote()
 		{
 			if (IsPlatformSupported && IsHandleCreated)
-				SendMessage(new HandleRef(this, Handle), BCM_SETNOTE, IntPtr.Zero, noteText);
+				SendMessage(Handle, BCM_SETNOTE, IntPtr.Zero, noteText);
 		}
 
 		/// <summary>

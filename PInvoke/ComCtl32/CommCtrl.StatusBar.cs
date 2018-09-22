@@ -75,7 +75,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb760763(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760763")]
-		public static extern void DrawStatusText(SafeDCHandle hdc, ref RECT lprc, string pszText, SBT uFlags);
+		public static extern void DrawStatusText(HDC hdc, ref RECT lprc, string pszText, SBT uFlags);
 
 		/// <summary>
 		/// Processes <c>WM_MENUSELECT</c> and <c>WM_COMMAND</c> messages and displays Help text about the current menu in the specified status window.
@@ -116,6 +116,6 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb760765(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760765")]
-		public static extern void MenuHelp(uint uMsg, IntPtr wParam, IntPtr lParam, IntPtr hMainMenu, SafeLibraryHandle hInst, HandleRef hwndStatus, IntPtr lpwIDs);
+		public static extern void MenuHelp(uint uMsg, IntPtr wParam, IntPtr lParam, HMENU hMainMenu, HINSTANCE hInst, HWND hwndStatus, IntPtr lpwIDs);
 	}
 }

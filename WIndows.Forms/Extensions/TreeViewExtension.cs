@@ -29,7 +29,7 @@ namespace Vanara.Extensions
 				if (!on) return;
 				treeView.HotTracking = true;
 				treeView.ShowLines = false;
-				SendMessage(new HandleRef(treeView, treeView.Handle), (uint)TreeViewMessage.TVM_SETEXTENDEDSTYLE, (IntPtr)(TreeViewStyleEx.TVS_EX_FADEINOUTEXPANDOS | TreeViewStyleEx.TVS_EX_AUTOHSCROLL), (IntPtr)(TreeViewStyleEx.TVS_EX_FADEINOUTEXPANDOS | TreeViewStyleEx.TVS_EX_AUTOHSCROLL));
+				SendMessage(treeView.Handle, (uint)TreeViewMessage.TVM_SETEXTENDEDSTYLE, (IntPtr)(TreeViewStyleEx.TVS_EX_FADEINOUTEXPANDOS | TreeViewStyleEx.TVS_EX_AUTOHSCROLL), (IntPtr)(TreeViewStyleEx.TVS_EX_FADEINOUTEXPANDOS | TreeViewStyleEx.TVS_EX_AUTOHSCROLL));
 			}
 		}
 
@@ -55,8 +55,6 @@ namespace Vanara.Extensions
 		/// <returns>A <see cref="TreeNode"/> instance created </returns>
 		public static TreeNode AddSystemItemAsNode(this TreeView tv, TreeNodeCollection nodes, string systemItemPath)
 		{
-			var sz = tv.ImageList.ImageSize;
-
 			var ext = Path.GetExtension(systemItemPath);
 			if (string.IsNullOrEmpty(ext))
 				ext = "5EEB255733234c4dBECF9A128E896A1E";
@@ -68,7 +66,7 @@ namespace Vanara.Extensions
 			{
 				try
 				{
-					tv.ImageList.Images.Add(ext, GetIcon(ext, sz.Height == 16));
+					tv.ImageList.Images.Add(ext, IconExtension.GetFileIcon(ext, GetIconSizeFromSize(tv.ImageList.ImageSize)));
 				}
 				catch (ArgumentException ex)
 				{
@@ -83,21 +81,16 @@ namespace Vanara.Extensions
 		/// <returns>An <see cref="IEnumerable{T}"/> of all <see cref="TreeNode"/> instances in this <see cref="TreeView"/>.</returns>
 		public static IEnumerable<TreeNode> EnumerateAllNodes(this TreeView treeView) => AsEnumerable(treeView.Nodes, true);
 
-		private static Icon GetIcon(string path, bool small)
+		private static IconSize GetIconSizeFromSize(Size sz)
 		{
-			var flags = SHGFI.SHGFI_ICON | SHGFI.SHGFI_USEFILEATTRIBUTES | (small ? SHGFI.SHGFI_SMALLICON : SHGFI.SHGFI_LARGEICON);
-			var attribute = path == "5EEB255733234c4dBECF9A128E896A1E" ? FileAttributes.Directory : FileAttributes.Normal;
-			var shfi = new SHFILEINFO();
-			var res = SHGetFileInfo(path, attribute, ref shfi, Marshal.SizeOf(shfi), flags);
-			if (res == IntPtr.Zero) Win32Error.ThrowLastError();
-			try
+			switch (sz.Height)
 			{
-				Icon.FromHandle(shfi.hIcon);
-				return (Icon)Icon.FromHandle(shfi.hIcon).Clone();
-			}
-			finally
-			{
-				DestroyIcon(shfi.hIcon);
+				case 16: return IconSize.Small;
+				case 48: return IconSize.ExtraLarge;
+				case 256: return IconSize.Jumbo;
+				case 32:
+				default:
+					return IconSize.Large;
 			}
 		}
 	}

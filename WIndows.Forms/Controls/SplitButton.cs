@@ -80,7 +80,7 @@ namespace Vanara.Windows.Forms
 					if (IsHandleCreated)
 					{
 						if (splitButtonImageList != null)
-							SetSplitInfo(new BUTTON_SPLITINFO(new HandleRef(splitButtonImageList, splitButtonImageList.Handle)));
+							SetSplitInfo(new BUTTON_SPLITINFO(splitButtonImageList.Handle));
 						else
 							RecreateHandle();
 					}
@@ -143,7 +143,7 @@ namespace Vanara.Windows.Forms
 			if (style != 0)
 				SetSplitInfo(new BUTTON_SPLITINFO(style));
 			if (splitButtonImageList != null)
-				SetSplitInfo(new BUTTON_SPLITINFO(new HandleRef(splitButtonImageList, splitButtonImageList.Handle)));
+				SetSplitInfo(new BUTTON_SPLITINFO(splitButtonImageList.Handle));
 		}
 
 		/// <summary>
@@ -198,7 +198,7 @@ namespace Vanara.Windows.Forms
 		private BUTTON_SPLITINFO GetSplitInfo()
 		{
 			var info = new BUTTON_SPLITINFO();
-			SendMessage(new HandleRef(this, Handle), ButtonMessage.BCM_GETSPLITINFO, 0, ref info);
+			SendMessage(Handle, ButtonMessage.BCM_GETSPLITINFO, 0, ref info);
 			return info;
 		}
 
@@ -206,7 +206,7 @@ namespace Vanara.Windows.Forms
 
 		private void SetSplitInfo(BUTTON_SPLITINFO info)
 		{
-			SendMessage(new HandleRef(this, Handle), ButtonMessage.BCM_SETSPLITINFO, 0, ref info);
+			SendMessage(Handle, ButtonMessage.BCM_SETSPLITINFO, 0, ref info);
 			Refresh();
 		}
 

@@ -231,7 +231,7 @@ namespace Vanara.PInvoke
 		/// A user-defined object that contains information about the operation. This object is passed to the requestCallback delegate when the operation is complete.
 		/// </param>
 		/// <returns>An IAsyncResult instance that references the asynchronous request.</returns>
-		public static unsafe IAsyncResult BeginReadFile(SafeFileHandle hFile, byte[] buffer, uint numberOfBytesToRead, AsyncCallback requestCallback, object stateObject)
+		public static unsafe IAsyncResult BeginReadFile(HFILE hFile, byte[] buffer, uint numberOfBytesToRead, AsyncCallback requestCallback, object stateObject)
 		{
 			var ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
 			fixed (byte* pIn = buffer)
@@ -277,7 +277,7 @@ namespace Vanara.PInvoke
 		/// A user-defined object that contains information about the operation. This object is passed to the requestCallback delegate when the operation is complete.
 		/// </param>
 		/// <returns>An IAsyncResult instance that references the asynchronous request.</returns>
-		public static unsafe IAsyncResult BeginWriteFile(SafeFileHandle hFile, byte[] buffer, uint numberOfBytesToWrite, AsyncCallback requestCallback, object stateObject)
+		public static unsafe IAsyncResult BeginWriteFile(HFILE hFile, byte[] buffer, uint numberOfBytesToWrite, AsyncCallback requestCallback, object stateObject)
 		{
 			var ar = OverlappedAsync.SetupOverlappedFunction(hFile, requestCallback, stateObject);
 			fixed (byte* pIn = buffer)
@@ -445,9 +445,9 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa363858")]
-		public static extern SafeFileHandle CreateFile(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
+		public static extern SafeHFILE CreateFile(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
 			[Optional] SECURITY_ATTRIBUTES lpSecurityAttributes, FileMode dwCreationDisposition, FileFlagsAndAttributes dwFlagsAndAttributes,
-			SafeFileHandle hTemplateFile);
+			HFILE hTemplateFile);
 
 		/// <summary>
 		/// Creates or opens a file or I/O device. The most commonly used I/O devices are as follows: file, file stream, directory, physical disk, volume,
@@ -554,7 +554,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa363858")]
-		public static extern SafeFileHandle CreateFile(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
+		public static extern SafeHFILE CreateFile(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode,
 			[Optional] SECURITY_ATTRIBUTES lpSecurityAttributes, FileMode dwCreationDisposition, FileFlagsAndAttributes dwFlagsAndAttributes,
 			[Optional] IntPtr hTemplateFile);
 
@@ -713,7 +713,7 @@ namespace Vanara.PInvoke
 		// LPCREATEFILE2_EXTENDED_PARAMETERS pCreateExParams);
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "hh449422")]
-		public static extern SafeFileHandle CreateFile2(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode, FileMode dwCreationDisposition, ref CREATEFILE2_EXTENDED_PARAMETERS pCreateExParams);
+		public static extern SafeHFILE CreateFile2(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode, FileMode dwCreationDisposition, ref CREATEFILE2_EXTENDED_PARAMETERS pCreateExParams);
 
 		/// <summary>Defines, redefines, or deletes MS-DOS device names.</summary>
 		/// <param name="dwFlags">The controllable aspects of the DefineDosDevice function.</param>
@@ -972,7 +972,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa364433")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FlushFileBuffers([In] SafeFileHandle hFile);
+		public static extern bool FlushFileBuffers([In] HFILE hFile);
 
 		/// <summary>Retrieves information about the specified disk, including the amount of free space on the disk.</summary>
 		/// <param name="lpRootPathName">
@@ -1091,7 +1091,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa364952")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetFileInformationByHandle([In] SafeFileHandle hFile, [Out] out BY_HANDLE_FILE_INFORMATION lpFileInformation);
+		public static extern bool GetFileInformationByHandle([In] HFILE hFile, [Out] out BY_HANDLE_FILE_INFORMATION lpFileInformation);
 
 		/// <summary>
 		/// <para>Retrieves the size of the specified file, in bytes.</para>
@@ -1124,7 +1124,7 @@ namespace Vanara.PInvoke
 		// DWORD WINAPI GetFileSize( _In_ HANDLE hFile, _Out_opt_ LPDWORD lpFileSizeHigh);
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa364955")]
-		public static extern uint GetFileSize([In] SafeFileHandle hFile, out uint lpFileSizeHigh);
+		public static extern uint GetFileSize([In] HFILE hFile, out uint lpFileSizeHigh);
 
 		/// <summary>
 		/// <para>Retrieves the size of the specified file.</para>
@@ -1146,7 +1146,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa364957")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetFileSizeEx([In] SafeFileHandle hFile, [Out] out long lpFileSize);
+		public static extern bool GetFileSizeEx([In] HFILE hFile, [Out] out long lpFileSize);
 
 		/// <summary>
 		/// <para>Retrieves the date and time that a file or directory was created, last accessed, and last modified.</para>
@@ -1185,7 +1185,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "ms724320")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetFileTime([In] SafeFileHandle hFile, out FILETIME lpCreationTime, out FILETIME lpLastAccessTime, out FILETIME lpLastWriteTime);
+		public static extern bool GetFileTime([In] HFILE hFile, out FILETIME lpCreationTime, out FILETIME lpLastAccessTime, out FILETIME lpLastWriteTime);
 
 		/// <summary>
 		/// <para>Retrieves the file type of the specified file.</para>
@@ -1235,7 +1235,7 @@ namespace Vanara.PInvoke
 		// DWORD WINAPI GetFileType( _In_ HANDLE hFile);
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa364960")]
-		public static extern uint GetFileType([In] SafeFileHandle hFile);
+		public static extern uint GetFileType([In] HFILE hFile);
 
 		/// <summary>
 		/// <para>Retrieves the final path for the specified file.</para>
@@ -1337,7 +1337,7 @@ namespace Vanara.PInvoke
 		// DWORD WINAPI GetFinalPathNameByHandle( _In_ HANDLE hFile, _Out_ LPTSTR lpszFilePath, _In_ DWORD cchFilePath, _In_ DWORD dwFlags);
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa364962")]
-		public static extern uint GetFinalPathNameByHandle([In] SafeFileHandle hFile, StringBuilder lpszFilePath, uint cchFilePath, FinalPathNameOptions dwFlags);
+		public static extern uint GetFinalPathNameByHandle([In] HFILE hFile, StringBuilder lpszFilePath, uint cchFilePath, FinalPathNameOptions dwFlags);
 
 		/// <summary>
 		/// <para>Retrieves the full path and file name of the specified file.</para>
@@ -1887,7 +1887,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa964920")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern uint GetVolumeInformationByHandleW([In] SafeFileHandle hFile, [Out] StringBuilder lpVolumeNameBuffer, uint nVolumeNameSize, out uint lpVolumeSerialNumber, out uint lpMaximumComponentLength, out FileSystemFlags lpFileSystemFlags, [Out] StringBuilder lpFileSystemNameBuffer, uint nFileSystemNameSize);
+		public static extern uint GetVolumeInformationByHandleW([In] HFILE hFile, [Out] StringBuilder lpVolumeNameBuffer, uint nVolumeNameSize, out uint lpVolumeSerialNumber, out uint lpMaximumComponentLength, out FileSystemFlags lpFileSystemFlags, [Out] StringBuilder lpFileSystemNameBuffer, uint nFileSystemNameSize);
 
 		/// <summary>
 		/// <para>
@@ -2033,7 +2033,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365202")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool LockFile([In] SafeFileHandle hFile, uint dwFileOffsetLow, uint dwFileOffsetHigh, uint nNumberOfBytesToLockLow, uint nNumberOfBytesToLockHigh);
+		public static extern bool LockFile([In] HFILE hFile, uint dwFileOffsetLow, uint dwFileOffsetHigh, uint nNumberOfBytesToLockLow, uint nNumberOfBytesToLockHigh);
 
 		/// <summary>
 		/// <para>
@@ -2223,7 +2223,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
-		public static extern bool ReadFile(SafeFileHandle hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, IntPtr lpOverlapped);
+		public static extern bool ReadFile(HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, IntPtr lpOverlapped);
 
 		/// <summary>
 		/// Reads data from the specified file or input/output (I/O) device. Reads occur at the position specified by the file pointer if supported by the device.
@@ -2262,7 +2262,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
-		public static extern unsafe bool ReadFile(SafeFileHandle hFile, byte* lpBuffer, uint nNumberOfBytesToRead, IntPtr lpNumberOfBytesRead, NativeOverlapped* lpOverlapped);
+		public static extern unsafe bool ReadFile(HFILE hFile, byte* lpBuffer, uint nNumberOfBytesToRead, IntPtr lpNumberOfBytesRead, NativeOverlapped* lpOverlapped);
 
 		/// <summary>
 		/// Reads data from the specified file or input/output (I/O) device. Reads occur at the position specified by the file pointer if supported by the device.
@@ -2301,7 +2301,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365467")]
-		public static extern bool ReadFile(SafeFileHandle hFile, byte[] lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, IntPtr lpOverlapped);
+		public static extern bool ReadFile(HFILE hFile, byte[] lpBuffer, uint nNumberOfBytesToRead, out uint lpNumberOfBytesRead, IntPtr lpOverlapped);
 
 		/// <summary>
 		/// <para>
@@ -2380,7 +2380,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365468")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool ReadFileEx([In] SafeFileHandle hFile, byte* lpBuffer, uint nNumberOfBytesToRead, NativeOverlapped* lpOverlapped, FileIOCompletionRoutine lpCompletionRoutine);
+		public static extern unsafe bool ReadFileEx([In] HFILE hFile, byte* lpBuffer, uint nNumberOfBytesToRead, NativeOverlapped* lpOverlapped, FileIOCompletionRoutine lpCompletionRoutine);
 
 		/// <summary>
 		/// <para>Reads data from a file and stores it in an array of buffers.</para>
@@ -2450,7 +2450,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365469")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool ReadFileScatter([In] SafeFileHandle hFile, [In] IntPtr aSegmentArray, uint nNumberOfBytesToRead, IntPtr lpReserved, NativeOverlapped* lpOverlapped);
+		public static extern unsafe bool ReadFileScatter([In] HFILE hFile, [In] IntPtr aSegmentArray, uint nNumberOfBytesToRead, IntPtr lpReserved, NativeOverlapped* lpOverlapped);
 
 		/// <summary>
 		/// <para>Deletes an existing empty directory.</para>
@@ -2494,7 +2494,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365531")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetEndOfFile([In] SafeFileHandle hFile);
+		public static extern bool SetEndOfFile([In] HFILE hFile);
 
 		/// <summary>
 		/// <para>Sets the attributes for a file or directory.</para>
@@ -2608,7 +2608,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365539")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetFileInformationByHandle([In] SafeFileHandle hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass, IntPtr lpFileInformation, uint dwBufferSize);
+		public static extern bool SetFileInformationByHandle([In] HFILE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass, IntPtr lpFileInformation, uint dwBufferSize);
 
 		/// <summary>
 		/// <para>Moves the file pointer of the specified file.</para>
@@ -2684,7 +2684,7 @@ namespace Vanara.PInvoke
 		// DWORD WINAPI SetFilePointer( _In_ HANDLE hFile, _In_ LONG lDistanceToMove, _Inout_opt_ PLONG lpDistanceToMoveHigh, _In_ DWORD dwMoveMethod);
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365541")]
-		public static extern uint SetFilePointer([In] SafeFileHandle hFile, int lDistanceToMove, ref int lpDistanceToMoveHigh, SeekOrigin dwMoveMethod);
+		public static extern uint SetFilePointer([In] HFILE hFile, int lDistanceToMove, ref int lpDistanceToMoveHigh, SeekOrigin dwMoveMethod);
 
 		/// <summary>
 		/// <para>Moves the file pointer of the specified file.</para>
@@ -2734,7 +2734,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365542")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetFilePointerEx([In] SafeFileHandle hFile, long liDistanceToMove, out long lpNewFilePointer, SeekOrigin dwMoveMethod);
+		public static extern bool SetFilePointerEx([In] HFILE hFile, long liDistanceToMove, out long lpNewFilePointer, SeekOrigin dwMoveMethod);
 
 		/// <summary>
 		/// <para>Sets the date and time that the specified file or directory was created, last accessed, or last modified.</para>
@@ -2784,7 +2784,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "ms724933")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetFileTime([In] SafeFileHandle hFile, [In, MarshalAs(UnmanagedType.LPStruct)] FILETIME lpCreationTime, [In, MarshalAs(UnmanagedType.LPStruct)] FILETIME lpLastAccessTime, [In, MarshalAs(UnmanagedType.LPStruct)] FILETIME lpLastWriteTime);
+		public static extern bool SetFileTime([In] HFILE hFile, [In, MarshalAs(UnmanagedType.LPStruct)] FILETIME lpCreationTime, [In, MarshalAs(UnmanagedType.LPStruct)] FILETIME lpLastAccessTime, [In, MarshalAs(UnmanagedType.LPStruct)] FILETIME lpLastWriteTime);
 
 		/// <summary>
 		/// <para>Sets the date and time that the specified file or directory was created, last accessed, or last modified.</para>
@@ -2834,7 +2834,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "ms724933")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool SetFileTime([In] SafeFileHandle hFile, [In] FILETIME* lpCreationTime, [In] FILETIME* lpLastAccessTime, [In] FILETIME* lpLastWriteTime);
+		public static extern unsafe bool SetFileTime([In] HFILE hFile, [In] FILETIME* lpCreationTime, [In] FILETIME* lpLastAccessTime, [In] FILETIME* lpLastWriteTime);
 
 		/// <summary>
 		/// <para>
@@ -2859,7 +2859,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365544")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetFileValidData([In] SafeFileHandle hFile, long ValidDataLength);
+		public static extern bool SetFileValidData([In] HFILE hFile, long ValidDataLength);
 
 		/// <summary>Sets the label of a file system volume.</summary>
 		/// <param name="lpRootPathName">
@@ -2934,7 +2934,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365715")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool UnlockFile([In] SafeFileHandle hFile, uint dwFileOffsetLow, uint dwFileOffsetHigh, uint nNumberOfBytesToUnlockLow, uint nNumberOfBytesToUnlockHigh);
+		public static extern bool UnlockFile([In] HFILE hFile, uint dwFileOffsetLow, uint dwFileOffsetHigh, uint nNumberOfBytesToUnlockLow, uint nNumberOfBytesToUnlockHigh);
 
 		/// <summary>
 		/// <para>Unlocks a region in the specified file. This function can operate either synchronously or asynchronously.</para>
@@ -2970,7 +2970,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365716")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool UnlockFileEx([In] SafeFileHandle hFile, uint dwReserved, uint nNumberOfBytesToUnlockLow, uint nNumberOfBytesToUnlockHigh, NativeOverlapped* lpOverlapped);
+		public static extern unsafe bool UnlockFileEx([In] HFILE hFile, uint dwReserved, uint nNumberOfBytesToUnlockLow, uint nNumberOfBytesToUnlockHigh, NativeOverlapped* lpOverlapped);
 
 		/// <summary>
 		/// Writes data to the specified file or input/output (I/O) device.
@@ -3032,7 +3032,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true), SuppressUnmanagedCodeSecurity]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365747")]
-		public static extern bool WriteFile(SafeFileHandle hFile, IntPtr lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, IntPtr lpOverlapped);
+		public static extern bool WriteFile(HFILE hFile, IntPtr lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, IntPtr lpOverlapped);
 
 		/// <summary>
 		/// Writes data to the specified file or input/output (I/O) device.
@@ -3094,7 +3094,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true), SuppressUnmanagedCodeSecurity]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365747")]
-		public static extern unsafe bool WriteFile(SafeFileHandle hFile, byte* lpBuffer, uint nNumberOfBytesToWrite, IntPtr lpNumberOfBytesWritten, NativeOverlapped* lpOverlapped);
+		public static extern unsafe bool WriteFile(HFILE hFile, byte* lpBuffer, uint nNumberOfBytesToWrite, IntPtr lpNumberOfBytesWritten, NativeOverlapped* lpOverlapped);
 
 		/// <summary>
 		/// Writes data to the specified file or input/output (I/O) device.
@@ -3156,7 +3156,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true), SuppressUnmanagedCodeSecurity]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365747")]
-		public static extern bool WriteFile(SafeFileHandle hFile, byte[] lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, IntPtr lpOverlapped);
+		public static extern bool WriteFile(HFILE hFile, byte[] lpBuffer, uint nNumberOfBytesToWrite, out uint lpNumberOfBytesWritten, IntPtr lpOverlapped);
 
 		/// <summary>
 		/// <para>
@@ -3236,7 +3236,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365748")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool WriteFileEx([In] SafeFileHandle hFile, [In] byte* lpBuffer, uint nNumberOfBytesToWrite, NativeOverlapped* lpOverlapped, FileIOCompletionRoutine lpCompletionRoutine);
+		public static extern unsafe bool WriteFileEx([In] HFILE hFile, [In] byte* lpBuffer, uint nNumberOfBytesToWrite, NativeOverlapped* lpOverlapped, FileIOCompletionRoutine lpCompletionRoutine);
 
 		/// <summary>
 		/// <para>Retrieves data from an array of buffers and writes the data to a file.</para>
@@ -3308,7 +3308,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("FileAPI.h", MSDNShortId = "aa365749")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool WriteFileGather([In] SafeFileHandle hFile, [In] IntPtr aSegmentArray, uint nNumberOfBytesToWrite, IntPtr lpReserved, NativeOverlapped* lpOverlapped);
+		public static extern unsafe bool WriteFileGather([In] HFILE hFile, [In] IntPtr aSegmentArray, uint nNumberOfBytesToWrite, IntPtr lpReserved, NativeOverlapped* lpOverlapped);
 
 		/// <summary>
 		/// <para>
@@ -3682,23 +3682,22 @@ namespace Vanara.PInvoke
 			public IntPtr hTemplateFile;
 		}
 
-		/*/// <summary>Retrieves file information for the specified file.</summary>
-		/// <param name="hFile">A handle to the file that contains the information to be retrieved. This handle should not be a pipe handle.</param>
-		/// <param name="lpFileInformation">A pointer to a BY_HANDLE_FILE_INFORMATION structure that receives the file information.</param>
-		/// <returns>
-		/// If the function succeeds, the return value is nonzero and file information data is contained in the buffer pointed to by the lpFileInformation
-		/// parameter. If the function fails, the return value is zero.To get extended error information, call GetLastError.
-		/// </returns>
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("FileAPI.h", MSDNShortId = "aa364952")]*/
+		/// <summary>Provides a <see cref="SafeHandle"/> that releases a created HFILE instance at disposal using CloseHandle.</summary>
+		public class SafeHFILE : HFILE
+		{
+			/// <summary>Initializes a new instance of the <see cref="HFILE"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeHFILE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => CloseHandle(this);
+		}
 
 		/// <summary>Represents a self-closing change notification handle created by the FindFirstChangeNotification function.</summary>
 		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
 		public class SafeFindChangeNotificationHandle : GenericSafeHandle
 		{
-			/// <summary>Initializes a new instance of the <see cref="SafeFindChangeNotificationHandle"/> class.</summary>
-			public SafeFindChangeNotificationHandle() : this(IntPtr.Zero) { }
-
 			/// <summary>Initializes a new instance of the <see cref="SafeFindChangeNotificationHandle"/> class.</summary>
 			/// <param name="handle">The handle.</param>
 			public SafeFindChangeNotificationHandle(IntPtr handle) : base(handle, FindCloseChangeNotification) { }
@@ -3712,9 +3711,6 @@ namespace Vanara.PInvoke
 		public class SafeSearchHandle : GenericSafeHandle
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeSearchHandle"/> class.</summary>
-			public SafeSearchHandle() : this(IntPtr.Zero) { }
-
-			/// <summary>Initializes a new instance of the <see cref="SafeSearchHandle"/> class.</summary>
 			/// <param name="handle">The handle.</param>
 			public SafeSearchHandle(IntPtr handle) : base(handle, FindClose) { }
 		}
@@ -3723,9 +3719,6 @@ namespace Vanara.PInvoke
 		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
 		public class SafeVolumeSearchHandle : GenericSafeHandle
 		{
-			/// <summary>Initializes a new instance of the <see cref="SafeVolumeSearchHandle"/> class.</summary>
-			public SafeVolumeSearchHandle() : this(IntPtr.Zero) { }
-
 			/// <summary>Initializes a new instance of the <see cref="SafeVolumeSearchHandle"/> class.</summary>
 			/// <param name="handle">The handle.</param>
 			public SafeVolumeSearchHandle(IntPtr handle) : base(handle, FindVolumeClose) { }

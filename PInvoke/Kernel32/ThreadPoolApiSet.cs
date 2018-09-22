@@ -234,7 +234,7 @@ namespace Vanara.PInvoke
 		// PTP_IO WINAPI CreateThreadpoolIo( _In_ HANDLE fl, _In_ PTP_WIN32_IO_CALLBACK pfnio, _Inout_opt_ PVOID pv, _In_opt_ PTP_CALLBACK_ENVIRON pcbe); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682464(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682464")]
-		public static extern PTP_IO CreateThreadpoolIo(SafeFileHandle fl, PTP_WIN32_IO_CALLBACK pfnio, IntPtr pv, PTP_CALLBACK_ENVIRON pcbe);
+		public static extern PTP_IO CreateThreadpoolIo(HFILE fl, PTP_WIN32_IO_CALLBACK pfnio, IntPtr pv, PTP_CALLBACK_ENVIRON pcbe);
 
 		/// <summary>Creates a new timer object.</summary>
 		/// <param name="pfnti">The callback function to call each time the timer object expires. For details, see <c>TimerCallback</c>.</param>

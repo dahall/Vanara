@@ -433,7 +433,7 @@ namespace Vanara.PInvoke
 		// _In_ DWORD dwFlags, _Reserved_ LPVOID lpScreenBufferData );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
-		public static extern SafeFileHandle CreateConsoleScreenBuffer(ACCESS_MASK dwDesiredAccess, FileShare dwShareMode,
+		public static extern SafeHFILE CreateConsoleScreenBuffer(ACCESS_MASK dwDesiredAccess, FileShare dwShareMode,
 			SECURITY_ATTRIBUTES lpSecurityAttributes, CONSOLE_TEXTMODE dwFlags = CONSOLE_TEXTMODE.CONSOLE_TEXTMODE_BUFFER, IntPtr lpScreenBufferData = default(IntPtr));
 
 		/// <summary>Sets the character attributes for a specified number of character cells, beginning at the specified coordinates in a screen buffer.</summary>
@@ -1008,7 +1008,7 @@ namespace Vanara.PInvoke
 		// HWND WINAPI GetConsoleWindow(void);
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
-		public static extern IntPtr GetConsoleWindow();
+		public static extern HWND GetConsoleWindow();
 
 		/// <summary>Retrieves information about the current console font.</summary>
 		/// <param name="hConsoleOutput">

@@ -30,7 +30,7 @@ namespace Vanara.Security
 			try
 			{
 				// Open the access token of the current process with TOKEN_QUERY. 
-				using (var hObject = SafeTokenHandle.FromProcess((process ?? Process.GetCurrentProcess()).Handle, TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE))
+				using (var hObject = SafeHTOKEN.FromProcess((process ?? Process.GetCurrentProcess()).Handle, TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE))
 					return hObject.IsElevated;
 			}
 			catch { }
@@ -63,12 +63,12 @@ namespace Vanara.Security
 		/// </returns>
 		public static bool IsRunningAsAdmin(Process proc = null)
 		{
-			SafeTokenHandle hObjectToCheck = null;
+			SafeHTOKEN hObjectToCheck = null;
 
 			if (proc == null) proc = Process.GetCurrentProcess();
 
 			// Open the access token of the current process for query and duplicate.
-			using (var hObject = SafeTokenHandle.FromProcess(proc.Handle, TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE))
+			using (var hObject = SafeHTOKEN.FromProcess(proc.Handle, TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE))
 			{
 				// Determine whether system is running Windows Vista or later operating systems (major version >= 6) because they support linked tokens, but
 				// previous versions (major version < 6) do not.
@@ -81,7 +81,7 @@ namespace Vanara.Security
 					if (elevType == TOKEN_ELEVATION_TYPE.TokenElevationTypeLimited)
 					{
 						// Marshal the linked token value from native to .NET.
-						hObjectToCheck = new SafeTokenHandle(hObject.GetInfo<IntPtr>(TOKEN_INFORMATION_CLASS.TokenLinkedToken));
+						hObjectToCheck = new SafeHTOKEN(hObject.GetInfo<IntPtr>(TOKEN_INFORMATION_CLASS.TokenLinkedToken));
 					}
 				}
 

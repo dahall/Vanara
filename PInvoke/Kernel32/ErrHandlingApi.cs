@@ -95,7 +95,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// Flags passed to the
-		/// <see cref="Kernel32.FormatMessage(Vanara.PInvoke.Kernel32.FormatMessageFlags,Vanara.PInvoke.Kernel32.SafeLibraryHandle,uint,uint,ref System.IntPtr,uint,string[])"/> method.
+		/// <see cref="Kernel32.FormatMessage(Vanara.PInvoke.Kernel32.FormatMessageFlags,Vanara.PInvoke.Kernel32.HINSTANCE,uint,uint,ref System.IntPtr,uint,string[])"/> method.
 		/// </summary>
 		[PInvokeData("winbase.h")]
 		[Flags]
@@ -391,7 +391,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms679351(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms679351")]
-		public static extern int FormatMessage(FormatMessageFlags dwFlags, SafeLibraryHandle lpSource, uint dwMessageId, uint dwLanguageId, ref IntPtr lpBuffer, uint nSize, string[] arguments);
+		public static extern int FormatMessage(FormatMessageFlags dwFlags, HINSTANCE lpSource, uint dwMessageId, uint dwLanguageId, ref IntPtr lpBuffer, uint nSize, string[] arguments);
 
 		/// <summary>
 		/// Formats a message string. The function requires a message definition as input. The message definition can come from a buffer passed into the
@@ -775,14 +775,14 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is the string that specifies the formatted message. To get extended error information, call GetLastError.
 		/// </returns>
 		[PInvokeData("WinBase.h", MSDNShortId = "ms679351")]
-		public static string FormatMessage(uint id, string[] args = null, SafeLibraryHandle hLib = null, FormatMessageFlags flags = 0, uint langId = 0)
+		public static string FormatMessage(uint id, string[] args = null, HINSTANCE hLib = null, FormatMessageFlags flags = 0, uint langId = 0)
 		{
 			flags &= ~FormatMessageFlags.FORMAT_MESSAGE_FROM_STRING;
 			flags |= FormatMessageFlags.FORMAT_MESSAGE_ALLOCATE_BUFFER | FormatMessageFlags.FORMAT_MESSAGE_FROM_SYSTEM;
 			if (hLib != null) flags |= FormatMessageFlags.FORMAT_MESSAGE_FROM_HMODULE;
 			if (args != null && args.Length > 0 && !flags.IsFlagSet(FormatMessageFlags.FORMAT_MESSAGE_IGNORE_INSERTS)) flags |= FormatMessageFlags.FORMAT_MESSAGE_ARGUMENT_ARRAY;
 			var ptr = IntPtr.Zero;
-			var ret = FormatMessage(flags, hLib ?? SafeLibraryHandle.Null, id, langId, ref ptr, 0, args);
+			var ret = FormatMessage(flags, hLib ?? HINSTANCE.NULL, id, langId, ref ptr, 0, args);
 			if (ret == 0) Win32Error.ThrowLastError();
 			return new SafeLocalHandle(ptr, 0).ToString(-1);
 		}

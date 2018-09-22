@@ -641,7 +641,7 @@ namespace Vanara.PInvoke
 		// HMODULE hModule, LPSTR lpBaseName, DWORD nSize );
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "31a9eb69-95f0-4dd7-8fd5-296f2cff0b8a")]
-		public static extern uint GetModuleBaseName(IntPtr hProcess, SafeLibraryHandle hModule, StringBuilder lpBaseName, uint nSize);
+		public static extern uint GetModuleBaseName(IntPtr hProcess, HINSTANCE hModule, StringBuilder lpBaseName, uint nSize);
 
 		/// <summary>
 		/// <para>Retrieves information about the specified module in the MODULEINFO structure.</para>
@@ -692,7 +692,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("psapi.h", MSDNShortId = "afb9f4c8-c8ae-4497-96c1-b559cfa2cedf")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetModuleInformation(IntPtr hProcess, SafeLibraryHandle hModule, ref MODULEINFO lpmodinfo, uint cb);
+		public static extern bool GetModuleInformation(IntPtr hProcess, HINSTANCE hModule, ref MODULEINFO lpmodinfo, uint cb);
 
 		/// <summary>
 		/// <para>Retrieves the performance values contained in the PERFORMANCE_INFORMATION structure.</para>

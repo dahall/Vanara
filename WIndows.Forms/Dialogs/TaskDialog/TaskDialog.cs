@@ -297,7 +297,7 @@ namespace Vanara.Windows.Forms
 				if (content == value) return;
 				content = value;
 				if (handle != IntPtr.Zero)
-					SendMessage(HRef, (uint)TaskDialogMessage.TDM_SET_ELEMENT_TEXT, (IntPtr)TASKDIALOG_ELEMENTS.TDE_CONTENT, content);
+					SendMessage(handle, (uint)TaskDialogMessage.TDM_SET_ELEMENT_TEXT, (IntPtr)TASKDIALOG_ELEMENTS.TDE_CONTENT, content);
 			}
 		}
 
@@ -315,7 +315,7 @@ namespace Vanara.Windows.Forms
 				if (customFooterIcon == value) return;
 				customFooterIcon = value;
 				if (handle != IntPtr.Zero)
-					SendMessage(HRef, (uint)TaskDialogMessage.TDM_UPDATE_ICON, (IntPtr)TASKDIALOG_ICON_ELEMENTS.TDIE_ICON_FOOTER,
+					SendMessage(handle, (uint)TaskDialogMessage.TDM_UPDATE_ICON, (IntPtr)TASKDIALOG_ICON_ELEMENTS.TDIE_ICON_FOOTER,
 						customFooterIcon?.Handle ?? (IntPtr)footerIcon);
 			}
 		}
@@ -333,7 +333,7 @@ namespace Vanara.Windows.Forms
 				if (customMainIcon == value) return;
 				customMainIcon = value;
 				if (handle != IntPtr.Zero)
-					SendMessage(HRef, (uint)TaskDialogMessage.TDM_UPDATE_ICON, (IntPtr)TASKDIALOG_ICON_ELEMENTS.TDIE_ICON_MAIN,
+					SendMessage(handle, (uint)TaskDialogMessage.TDM_UPDATE_ICON, (IntPtr)TASKDIALOG_ICON_ELEMENTS.TDIE_ICON_MAIN,
 						customMainIcon?.Handle ?? (IntPtr)mainIcon);
 			}
 		}
@@ -408,7 +408,7 @@ namespace Vanara.Windows.Forms
 				if (expandedInformation == value) return;
 				expandedInformation = value;
 				if (handle != IntPtr.Zero)
-					SendMessage(HRef, (uint)TaskDialogMessage.TDM_SET_ELEMENT_TEXT,
+					SendMessage(handle, (uint)TaskDialogMessage.TDM_SET_ELEMENT_TEXT,
 						(IntPtr)TASKDIALOG_ELEMENTS.TDE_EXPANDED_INFORMATION, expandedInformation);
 			}
 		}
@@ -441,7 +441,7 @@ namespace Vanara.Windows.Forms
 				if (footer == value) return;
 				footer = value;
 				if (handle != IntPtr.Zero)
-					SendMessage(HRef, (uint)TaskDialogMessage.TDM_SET_ELEMENT_TEXT, (IntPtr)TASKDIALOG_ELEMENTS.TDE_FOOTER, footer);
+					SendMessage(handle, (uint)TaskDialogMessage.TDM_SET_ELEMENT_TEXT, (IntPtr)TASKDIALOG_ELEMENTS.TDE_FOOTER, footer);
 			}
 		}
 
@@ -459,7 +459,7 @@ namespace Vanara.Windows.Forms
 				if (footerIcon == value) return;
 				footerIcon = value;
 				if (handle != IntPtr.Zero)
-					SendMessage(HRef, (uint)TaskDialogMessage.TDM_UPDATE_ICON, (IntPtr)TASKDIALOG_ICON_ELEMENTS.TDIE_ICON_FOOTER,
+					SendMessage(handle, (uint)TaskDialogMessage.TDM_UPDATE_ICON, (IntPtr)TASKDIALOG_ICON_ELEMENTS.TDIE_ICON_FOOTER,
 						(IntPtr)footerIcon);
 			}
 		}
@@ -488,7 +488,7 @@ namespace Vanara.Windows.Forms
 				{
 					mainIcon = value;
 					if (handle != IntPtr.Zero)
-						SendMessage(HRef, (uint)TaskDialogMessage.TDM_UPDATE_ICON, (IntPtr)TASKDIALOG_ICON_ELEMENTS.TDIE_ICON_MAIN,
+						SendMessage(handle, (uint)TaskDialogMessage.TDM_UPDATE_ICON, (IntPtr)TASKDIALOG_ICON_ELEMENTS.TDIE_ICON_MAIN,
 							(IntPtr)mainIcon);
 				}
 			}
@@ -512,7 +512,7 @@ namespace Vanara.Windows.Forms
 				{
 					mainInstruction = value;
 					if (handle != IntPtr.Zero)
-						SendMessage(HRef, (uint)TaskDialogMessage.TDM_SET_ELEMENT_TEXT, (IntPtr)TASKDIALOG_ELEMENTS.TDE_MAIN_INSTRUCTION,
+						SendMessage(handle, (uint)TaskDialogMessage.TDM_SET_ELEMENT_TEXT, (IntPtr)TASKDIALOG_ELEMENTS.TDE_MAIN_INSTRUCTION,
 							mainInstruction);
 				}
 			}
@@ -664,8 +664,6 @@ namespace Vanara.Windows.Forms
 		/// <value><c>true</c> if this instance can raise events; otherwise, <c>false</c>.</value>
 		protected override bool CanRaiseEvents => true;
 
-		private HandleRef HRef => new HandleRef(this, handle);
-
 		/// <summary>
 		/// Returns true if the current operating system supports TaskDialog. If false TaskDialog.Show should not be called as the results are undefined but
 		/// often results in a crash.
@@ -794,7 +792,7 @@ namespace Vanara.Windows.Forms
 		public void PerformButtonClick(int buttonId)
 		{
 			if (handle != IntPtr.Zero)
-				SendMessage(HRef, (uint)TaskDialogMessage.TDM_CLICK_BUTTON, (IntPtr)buttonId, IntPtr.Zero);
+				SendMessage(handle, (uint)TaskDialogMessage.TDM_CLICK_BUTTON, (IntPtr)buttonId, IntPtr.Zero);
 		}
 
 		/// <summary>Check or uncheck the verification checkbox in the TaskDialog.</summary>
@@ -804,7 +802,7 @@ namespace Vanara.Windows.Forms
 		{
 			// TDM_CLICK_VERIFICATION = WM_USER+113, // wParam = 0 (unchecked), 1 (checked), lParam = 1 (set key focus)
 			if (handle != IntPtr.Zero)
-				SendMessage(HRef, (uint)TaskDialogMessage.TDM_CLICK_VERIFICATION, (checkedState ? new IntPtr(1) : IntPtr.Zero),
+				SendMessage(handle, (uint)TaskDialogMessage.TDM_CLICK_VERIFICATION, (checkedState ? new IntPtr(1) : IntPtr.Zero),
 					(setKeyboardFocusToCheckBox ? new IntPtr(1) : IntPtr.Zero));
 		}
 
@@ -897,7 +895,7 @@ namespace Vanara.Windows.Forms
 		{
 			// TDM_ENABLE_BUTTON = WM_USER+111, // lParam = 0 (disable), lParam != 0 (enable), wParam = Button ID
 			if (handle != IntPtr.Zero)
-				SendMessage(HRef, (uint)TaskDialogMessage.TDM_ENABLE_BUTTON, (IntPtr)buttonId, (IntPtr)(enable ? 1 : 0));
+				SendMessage(handle, (uint)TaskDialogMessage.TDM_ENABLE_BUTTON, (IntPtr)buttonId, (IntPtr)(enable ? 1 : 0));
 		}
 
 		/// <summary>Enable or disable a radio button in the TaskDialog. The passed buttonID is the ButtonID set on a TaskDialogButton set on TaskDialog.RadioButtons.</summary>
@@ -907,7 +905,7 @@ namespace Vanara.Windows.Forms
 		{
 			// TDM_ENABLE_RADIO_BUTTON = WM_USER+112, // lParam = 0 (disable), lParam != 0 (enable), wParam = Radio Button ID
 			if (handle != IntPtr.Zero)
-				SendMessage(HRef, (uint)TaskDialogMessage.TDM_ENABLE_RADIO_BUTTON, (IntPtr)buttonId, (IntPtr)(enable ? 1 : 0));
+				SendMessage(handle, (uint)TaskDialogMessage.TDM_ENABLE_RADIO_BUTTON, (IntPtr)buttonId, (IntPtr)(enable ? 1 : 0));
 		}
 
 		internal void InitializeButtonState()
@@ -993,7 +991,7 @@ namespace Vanara.Windows.Forms
 		{
 			// TDM_CLICK_RADIO_BUTTON = WM_USER+110, // wParam = Radio Button ID
 			if (handle != IntPtr.Zero)
-				SendMessage(HRef, (uint)TaskDialogMessage.TDM_CLICK_RADIO_BUTTON, (IntPtr)buttonId, IntPtr.Zero);
+				SendMessage(handle, (uint)TaskDialogMessage.TDM_CLICK_RADIO_BUTTON, (IntPtr)buttonId, IntPtr.Zero);
 		}
 
 		/// <summary>Designate whether a given Task Dialog button or command link should have a User Account Control (UAC) shield icon.</summary>
@@ -1005,7 +1003,7 @@ namespace Vanara.Windows.Forms
 		{
 			// TDM_SET_BUTTON_ELEVATION_REQUIRED_STATE = WM_USER+115, // wParam = Button ID, lParam = 0 (elevation not required), lParam != 0 (elevation required)
 			if (handle != IntPtr.Zero)
-				SendMessage(HRef, (uint)TaskDialogMessage.TDM_SET_BUTTON_ELEVATION_REQUIRED_STATE, (IntPtr)buttonId,
+				SendMessage(handle, (uint)TaskDialogMessage.TDM_SET_BUTTON_ELEVATION_REQUIRED_STATE, (IntPtr)buttonId,
 					(IntPtr)(elevationRequired ? 1 : 0));
 		}
 
@@ -1445,7 +1443,7 @@ namespace Vanara.Windows.Forms
 						taskDialog.ShowProgressBar = cont;
 						taskDialog.ShowMarqueeProgressBar = !cont;
 						if (taskDialog.handle != IntPtr.Zero)
-							SendMessage(new HandleRef(taskDialog, taskDialog.handle), (uint)TaskDialogMessage.TDM_SET_MARQUEE_PROGRESS_BAR,
+							SendMessage(taskDialog.handle, (uint)TaskDialogMessage.TDM_SET_MARQUEE_PROGRESS_BAR,
 								(value == ProgressBarStyle.Marquee ? (IntPtr)1 : IntPtr.Zero), IntPtr.Zero);
 					}
 				}
@@ -1500,27 +1498,27 @@ namespace Vanara.Windows.Forms
 			private void SetMarqueeSpeed(int value)
 			{
 				if (taskDialog != null && taskDialog.handle != IntPtr.Zero)
-					SendMessage(new HandleRef(taskDialog, taskDialog.handle), (uint)TaskDialogMessage.TDM_SET_PROGRESS_BAR_MARQUEE, (IntPtr)(value != 0 ? 1 : 0),
+					SendMessage(taskDialog.handle, (uint)TaskDialogMessage.TDM_SET_PROGRESS_BAR_MARQUEE, (IntPtr)(value != 0 ? 1 : 0),
 						(IntPtr)value);
 			}
 
 			private void SetProgressBarRange()
 			{
 				if (taskDialog != null && taskDialog.handle != IntPtr.Zero)
-					SendMessage(new HandleRef(taskDialog, taskDialog.handle), (uint)TaskDialogMessage.TDM_SET_PROGRESS_BAR_RANGE, IntPtr.Zero,
+					SendMessage(taskDialog.handle, (uint)TaskDialogMessage.TDM_SET_PROGRESS_BAR_RANGE, IntPtr.Zero,
 						(IntPtr)MakeLong(min, max));
 			}
 
 			private void SetState(ProgressBarState value)
 			{
 				if (taskDialog != null && taskDialog.handle != IntPtr.Zero)
-					SendMessage(new HandleRef(taskDialog, taskDialog.handle), (uint)TaskDialogMessage.TDM_SET_PROGRESS_BAR_STATE, (IntPtr)value, IntPtr.Zero);
+					SendMessage(taskDialog.handle, (uint)TaskDialogMessage.TDM_SET_PROGRESS_BAR_STATE, (IntPtr)value, IntPtr.Zero);
 			}
 
 			private void SetValue(int value)
 			{
 				if (taskDialog != null && taskDialog.handle != IntPtr.Zero)
-					SendMessage(new HandleRef(taskDialog, taskDialog.handle), (uint)TaskDialogMessage.TDM_SET_PROGRESS_BAR_POS, (IntPtr)value, IntPtr.Zero);
+					SendMessage(taskDialog.handle, (uint)TaskDialogMessage.TDM_SET_PROGRESS_BAR_POS, (IntPtr)value, IntPtr.Zero);
 			}
 		}
 

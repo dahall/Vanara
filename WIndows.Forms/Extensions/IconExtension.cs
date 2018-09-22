@@ -30,17 +30,35 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Vanara.PInvoke;
+using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.User32_Gdi;
 
 namespace Vanara.Extensions
 {
+	/// <summary>Used to determine the size of the icon returned by <see cref="ShellImageList.GetSystemIcon"/>.</summary>
+	public enum IconSize
+	{
+		/// <summary>
+		/// The image size is normally 32x32 pixels. However, if the Use large icons option is selected from the Effects section of the Appearance tab in
+		/// Display Properties, the image is 48x48 pixels.
+		/// </summary>
+		Large = SHIL.SHIL_LARGE,
+		/// <summary>The image is the Shell standard small icon size of 16x16, but the size can be customized by the user.</summary>
+		Small = SHIL.SHIL_SMALL,
+		/// <summary>The image is the Shell standard extra-large icon size. This is typically 48x48, but the size can be customized by the user.</summary>
+		ExtraLarge = SHIL.SHIL_EXTRALARGE,
+		/// <summary>Windows Vista and later. The image is normally 256x256 pixels.</summary>
+		Jumbo = SHIL.SHIL_JUMBO
+	}
+
 	public static class IconExtension
 	{
 		private delegate byte[] GetIconDataDelegate(Icon icon);
 		private static readonly GetIconDataDelegate getIconData;
+		private static HIMAGELIST hSystemImageList;
 
 		static IconExtension()
 		{
@@ -88,18 +106,43 @@ namespace Vanara.Extensions
 
 		/// <summary>Gets the icon associated with this ITEMIDLIST, if one does.</summary>
 		/// <param name="pidl">The ITEMIDLIST pointer from which to retrieve the icon.</param>
-		/// <param name="small">if set to <c>true</c> retrieves the small (usually 16x16) icon; other retrieves the large icon (usually 32x32).</param>
+		/// <param name="iconSize">Size of the icon.</param>
 		/// <returns>Icon of the specified size, or <c>null</c> if no icon is associated with this ITEMIDLIST.</returns>
-		public static Icon GetIcon(this PIDL pidl, bool small)
+		public static Icon GetIcon(this PIDL pidl, IconSize iconType = IconSize.Large)
 		{
 			if (pidl.IsInvalid) return null;
 			var shfi = new SHFILEINFO();
-			var shgfi = SHGFI.SHGFI_ICON | SHGFI.SHGFI_PIDL;
-			shgfi |= small ? SHGFI.SHGFI_SMALLICON : SHGFI.SHGFI_LARGEICON;
-			SHGetFileInfo(pidl, 0, ref shfi, Marshal.SizeOf(shfi), shgfi);
-			var ico = (Icon)Icon.FromHandle(shfi.hIcon).Clone();
-			DestroyIcon(shfi.hIcon);
-			return ico;
+			var ret = SHGetFileInfo(pidl, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_ICON | SHGFI.SHGFI_PIDL | (SHGFI)iconType);
+			return ret == IntPtr.Zero ? null : new SafeHICON(shfi.hIcon).ToIcon();
+		}
+
+		/// <summary>Gets the system icon for the given file name or extension.</summary>
+		/// <param name="fileNameOrExtension">The file name or extension.</param>
+		/// <param name="iconSize">Size of the icon.</param>
+		/// <returns>An <see cref="Icon"/> instance if found; otherwise <see langword="null"/>.</returns>
+		public static Icon GetSystemIcon(string fileNameOrExtension, IconSize iconSize = IconSize.Large)
+		{
+			var shfi = new SHFILEINFO();
+			if (hSystemImageList == null)
+				hSystemImageList = SHGetFileInfo(fileNameOrExtension, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_SYSICONINDEX | (iconSize == IconSize.Small ? SHGFI.SHGFI_SMALLICON : 0));
+			if (hSystemImageList.IsNull) return null;
+			if (iconSize <= IconSize.Small)
+				return ImageList_GetIcon(hSystemImageList, shfi.iIcon, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT).ToIcon();
+			SHGetImageList((SHIL)iconSize, typeof(IImageList).GUID, out var il).ThrowIfFailed();
+			return il.GetIcon(shfi.iIcon, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT).ToIcon();
+		}
+
+		/// <summary>Gets the Shell icon for the given file name or extension.</summary>
+		/// <param name="fileNameOrExtension">The file name or extension .</param>
+		/// <param name="iconType">Flags to specify the type of the icon to retrieve. This uses the <see cref="SHGetFileInfo"/> method and can only retrieve small or large icons.</param>
+		/// <returns>An <see cref="Icon"/> instance if found; otherwise <see langword="null"/>.</returns>
+		public static Icon GetFileIcon(string fileNameOrExtension, IconSize iconType = IconSize.Large)
+		{
+			var shfi = new SHFILEINFO();
+			var ret = SHGetFileInfo(fileNameOrExtension, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_USEFILEATTRIBUTES | SHGFI.SHGFI_ICON | (SHGFI)iconType);
+			if (ret == IntPtr.Zero)
+				ret = SHGetFileInfo(fileNameOrExtension, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_ICON | (SHGFI)iconType);
+			return ret == IntPtr.Zero ? null : new SafeHICON(shfi.hIcon).ToIcon();
 		}
 
 		/// <summary>Split an Icon consists of multiple icons into an array of Icon each consists of single icons.</summary>

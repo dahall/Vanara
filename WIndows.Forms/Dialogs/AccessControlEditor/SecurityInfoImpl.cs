@@ -111,7 +111,7 @@ namespace Vanara.Security.AccessControl
 			System.Diagnostics.Debug.WriteLine($"MapGeneric: {guidObjectType}, {(AceFlags)AceFlags}, 0x{stMask:X}->0x{Mask:X}");
 		}
 
-		void ISecurityInformation.PropertySheetPageCallback(IntPtr hwnd, PropertySheetCallbackMessage uMsg, SI_PAGE_TYPE uPage)
+		void ISecurityInformation.PropertySheetPageCallback(HWND hwnd, PropertySheetCallbackMessage uMsg, SI_PAGE_TYPE uPage)
 		{
 			System.Diagnostics.Debug.WriteLine($"PropertySheetPageCallback: {hwnd}, {uMsg}, {uPage}");
 			prov.PropertySheetPageCallback(hwnd, uMsg, uPage);
@@ -124,7 +124,7 @@ namespace Vanara.Security.AccessControl
 
 		string ISecurityInformation3.GetFullResourceName() => fullObjectName;
 
-		void ISecurityInformation3.OpenElevatedEditor(IntPtr hWnd, SI_PAGE_TYPE uPage)
+		void ISecurityInformation3.OpenElevatedEditor(HWND hWnd, SI_PAGE_TYPE uPage)
 		{
 			var pgType = (SI_PAGE_TYPE)LOWORD((uint)uPage);
 			var pgActv = (SI_PAGE_ACTIVATED)HIWORD((uint)uPage);

@@ -76,6 +76,6 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="progressRange">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage(HandleRef hWnd, ProgressMessage Msg, bool wParam, ref PBRANGE progressRange) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref progressRange);
+		public static IntPtr SendMessage(HWND hWnd, ProgressMessage Msg, bool wParam, ref PBRANGE progressRange) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref progressRange);
 	}
 }

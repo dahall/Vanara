@@ -11,7 +11,7 @@ namespace Vanara.Extensions
 		{
 			var size = Size.Empty;
 			var info = new ICONINFO();
-			GetIconInfo(new SafeIconHandle(cursor.Handle, false), info);
+			GetIconInfo(new SafeHICON(cursor.Handle, false), info);
 			if (info.hbmColor != IntPtr.Zero)
 			{
 				using (var bm = Image.FromHbitmap(info.hbmColor))

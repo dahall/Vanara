@@ -37,7 +37,7 @@ namespace Vanara.InteropServices.Tests
 		{
 			var p0 = new StrPtrAuto();
 			Assert.That(p0.IsNull);
-			p0.Assign("Test", out uint cc);
+			p0.Assign("Test", out var cc);
 			Assert.That(!p0.IsNull);
 			Assert.That((string)p0, Is.EqualTo("Test"));
 			Assert.That(cc, Is.EqualTo(5));
@@ -102,7 +102,7 @@ namespace Vanara.InteropServices.Tests
 		{
 			var p0 = new StrPtrUni();
 			Assert.That(p0.IsNull);
-			p0.Assign("Test", out uint cc);
+			p0.Assign("Test", out var cc);
 			Assert.That(!p0.IsNull);
 			Assert.That((string)p0, Is.EqualTo("Test"));
 			Assert.That(cc, Is.EqualTo(5));

@@ -653,7 +653,7 @@ namespace Vanara.PInvoke
 		// LRESULT DefSubclassProc( _In_ HWND hWnd, _In_ UINT uMsg, _In_ WPARAM WPARAM, _In_ LPARAM LPARAM); https://msdn.microsoft.com/en-us/library/windows/desktop/bb776403(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb776403")]
-		public static extern IntPtr DefSubclassProc(HandleRef hWnd, uint uMsg, IntPtr WPARAM, IntPtr LPARAM);
+		public static extern IntPtr DefSubclassProc(HWND hWnd, uint uMsg, IntPtr WPARAM, IntPtr LPARAM);
 
 		/// <summary>Draws text that has a shadow.</summary>
 		/// <param name="hdc">
@@ -700,7 +700,7 @@ namespace Vanara.PInvoke
 		// iyOffset); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775639(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775639")]
-		public static extern int DrawShadowText(SafeDCHandle hdc, string pszText, uint cch, ref RECT pRect, uint dwFlags, COLORREF crText, COLORREF crShadow, int ixOffset, int iyOffset);
+		public static extern int DrawShadowText(HDC hdc, string pszText, uint cch, ref RECT pRect, uint dwFlags, COLORREF crText, COLORREF crShadow, int ixOffset, int iyOffset);
 
 		/// <summary>Calculates the dimensions of a rectangle in the client area that contains all the specified controls.</summary>
 		/// <param name="hWnd">
@@ -723,7 +723,7 @@ namespace Vanara.PInvoke
 		// void GetEffectiveClientRect( HWND hWnd, LPRECT lprc, _In_ const INT *lpInfo); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775674(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775674")]
-		public static extern void GetEffectiveClientRect(HandleRef hWnd, out RECT lprc, IntPtr lpInfo);
+		public static extern void GetEffectiveClientRect(HWND hWnd, out RECT lprc, IntPtr lpInfo);
 
 		/// <summary>Calculates the dimensions of a rectangle in the client area that contains all the specified controls.</summary>
 		/// <param name="hWnd">A handle to the window that has the client area to check.</param>
@@ -731,7 +731,7 @@ namespace Vanara.PInvoke
 		/// <returns>The dimensions of the rectangle.</returns>
 		// void GetEffectiveClientRect( HWND hWnd, LPRECT lprc, _In_ const INT *lpInfo); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775674(v=vs.85).aspx
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775674")]
-		public static RECT GetEffectiveClientRect(HandleRef hWnd, int[] controlIdentifiers)
+		public static RECT GetEffectiveClientRect(HWND hWnd, int[] controlIdentifiers)
 		{
 			var lpInfo = new int[(controlIdentifiers.Length + 2) * 2];
 			for (int i = 0; i < controlIdentifiers.Length; i++)
@@ -801,7 +801,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb776430")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetWindowSubclass(HandleRef hWnd, SUBCLASSPROC pfnSubclass, [MarshalAs(UnmanagedType.SysUInt)] uint uIdSubclass, out IntPtr pdwRefData);
+		public static extern bool GetWindowSubclass(HWND hWnd, SUBCLASSPROC pfnSubclass, [MarshalAs(UnmanagedType.SysUInt)] uint uIdSubclass, out IntPtr pdwRefData);
 
 		/// <summary>
 		/// Ensures that the common control DLL (Comctl32.dll) is loaded, and registers specific common control classes from the DLL. An application must call
@@ -893,7 +893,7 @@ namespace Vanara.PInvoke
 		// HRESULT LoadIconMetric( _In_ HINSTANCE hinst, _In_ PCWSTR pszName, _In_ int lims, _Out_ HICON *phico); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775701(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775701")]
-		public static extern HRESULT LoadIconMetric(SafeLibraryHandle hinst, string pszName, LI_METRIC lims, out IntPtr phico);
+		public static extern HRESULT LoadIconMetric(HINSTANCE hinst, string pszName, LI_METRIC lims, out IntPtr phico);
 
 		/// <summary>Loads an icon. If the icon is not a standard size, this function scales down a larger image instead of scaling up a smaller image.</summary>
 		/// <param name="hinst">
@@ -993,7 +993,7 @@ namespace Vanara.PInvoke
 		// HRESULT WINAPI LoadIconWithScaleDown( _In_ HINSTANCE hinst, _In_ PCWSTR pszName, _In_ int cx, _In_ int cy, _Out_ HICON *phico); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775703(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775703")]
-		public static extern HRESULT LoadIconWithScaleDown(SafeLibraryHandle hinst, string pszName, int cx, int cy, out IntPtr phico);
+		public static extern HRESULT LoadIconWithScaleDown(HINSTANCE hinst, string pszName, int cx, int cy, out IntPtr phico);
 
 		/// <summary>Removes a subclass callback from a window.</summary>
 		/// <param name="hWnd">
@@ -1021,7 +1021,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb762094")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool RemoveWindowSubclass(HandleRef hWnd, SUBCLASSPROC pfnSubclass, [MarshalAs(UnmanagedType.SysUInt)] uint uIdSubclass);
+		public static extern bool RemoveWindowSubclass(HWND hWnd, SUBCLASSPROC pfnSubclass, [MarshalAs(UnmanagedType.SysUInt)] uint uIdSubclass);
 
 		/// <summary>Installs or updates a window subclass callback.</summary>
 		/// <param name="hWnd">
@@ -1056,7 +1056,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb762102")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetWindowSubclass(HandleRef hWnd, SUBCLASSPROC pfnSubclass, [MarshalAs(UnmanagedType.SysUInt)] uint uIdSubclass, IntPtr dwRefData);
+		public static extern bool SetWindowSubclass(HWND hWnd, SUBCLASSPROC pfnSubclass, [MarshalAs(UnmanagedType.SysUInt)] uint uIdSubclass, IntPtr dwRefData);
 
 		/// <summary>
 		/// <para>
@@ -1093,7 +1093,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775731")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ShowHideMenuCtl(HandleRef hWnd, [MarshalAs(UnmanagedType.SysUInt)] uint uFlags, [In, MarshalAs(UnmanagedType.LPArray)] int[] lpInfo);
+		public static extern bool ShowHideMenuCtl(HWND hWnd, [MarshalAs(UnmanagedType.SysUInt)] uint uFlags, [In, MarshalAs(UnmanagedType.LPArray)] int[] lpInfo);
 
 		/// <summary>Contains information for the drawing of buttons in a toolbar or rebar.</summary>
 		[StructLayout(LayoutKind.Sequential)]

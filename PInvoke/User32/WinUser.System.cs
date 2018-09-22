@@ -4105,7 +4105,7 @@ namespace Vanara.PInvoke
 		// int MessageBox( HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "messagebox")]
-		public static extern MB_RESULT MessageBox(HandleRef hWnd, string lpText, string lpCaption, MB_FLAGS uType);
+		public static extern MB_RESULT MessageBox(HWND hWnd, string lpText, string lpCaption, MB_FLAGS uType);
 
 		/// <summary>
 		/// Creates, displays, and operates a message box. The message box contains application-defined message text and title, any icon, and
@@ -4139,7 +4139,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winuser.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ShutdownBlockReasonCreate(HandleRef hWnd, [MarshalAs(UnmanagedType.LPWStr)] string reason);
+		public static extern bool ShutdownBlockReasonCreate(HWND hWnd, [MarshalAs(UnmanagedType.LPWStr)] string reason);
 
 		/// <summary>Indicates that the system can be shut down and frees the reason string.</summary>
 		/// <param name="hWnd">A handle to the main window of the application.</param>
@@ -4150,7 +4150,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winuser.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ShutdownBlockReasonDestroy(HandleRef hWnd);
+		public static extern bool ShutdownBlockReasonDestroy(HWND hWnd);
 
 		/// <summary>Retrieves the reason string set by the <see cref="ShutdownBlockReasonCreate"/> function.</summary>
 		/// <param name="hWnd">A handle to the main window of the application.</param>
@@ -4170,7 +4170,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winuser.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ShutdownBlockReasonQuery(HandleRef hWnd, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszBuff, ref uint pcchBuff);
+		public static extern bool ShutdownBlockReasonQuery(HWND hWnd, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszBuff, ref uint pcchBuff);
 
 		/// <summary>Retrieves the reason string set by the <see cref="ShutdownBlockReasonCreate"/> function.</summary>
 		/// <param name="hWnd">A handle to the main window of the application.</param>
@@ -4179,7 +4179,7 @@ namespace Vanara.PInvoke
 		/// If the call succeeds, the return value is nonzero. If the call fails, the return value is zero. To get extended error
 		/// information, call GetLastError.
 		/// </returns>
-		public static bool ShutdownBlockReasonQuery(HandleRef hWnd, out string reason)
+		public static bool ShutdownBlockReasonQuery(HWND hWnd, out string reason)
 		{
 			uint sz = 0;
 			reason = null;

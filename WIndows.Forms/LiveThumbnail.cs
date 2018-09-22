@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.DwmApi;
 
 namespace Vanara.Windows.Forms
@@ -8,7 +9,7 @@ namespace Vanara.Windows.Forms
 	/// <summary>Extracts all or a portion of a window and renders it as a thumbnail on another portion of the desktop.</summary>
 	public class LiveThumbnail : IDisposable
 	{
-		private IntPtr hThumbnail;
+		private readonly HTHUMBNAIL hThumbnail;
 		private DWM_THUMBNAIL_PROPERTIES tProps;
 
 		/// <summary>Initializes a new instance of the <see cref="LiveThumbnail"/> class.</summary>

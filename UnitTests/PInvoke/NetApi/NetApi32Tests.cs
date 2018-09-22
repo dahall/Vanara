@@ -11,7 +11,7 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void DsGetDcNameTest()
 		{
-			DsGetDcName(null, null, IntPtr.Zero, null, DsGetDcNameFlags.DS_RETURN_DNS_NAME, out SafeNetApiBuffer dcInfo);
+			DsGetDcName(null, null, IntPtr.Zero, null, DsGetDcNameFlags.DS_RETURN_DNS_NAME, out var dcInfo);
 			var dci = dcInfo.ToStructure<DOMAIN_CONTROLLER_INFO>();
 			Assert.NotNull(dci.DomainControllerName);
 		}
@@ -19,7 +19,7 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void NetApiBufferFreeTest()
 		{
-			Assert.That(NetServerGetInfo(null, 100, out SafeNetApiBuffer bufptr).Succeeded);
+			Assert.That(NetServerGetInfo(null, 100, out var bufptr).Succeeded);
 			bufptr.Dispose();
 			Assert.True(bufptr.IsClosed);
 		}

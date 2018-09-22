@@ -27,7 +27,7 @@ namespace Vanara.PInvoke
 		// void DrawInsert( HWND handParent, HWND hLB, int nItem); https://msdn.microsoft.com/en-us/library/windows/desktop/bb761723(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761723")]
-		public static extern void DrawInsert(IntPtr handParent, IntPtr hLB, int nItem);
+		public static extern void DrawInsert(HWND handParent, HWND hLB, int nItem);
 
 		/// <summary>Retrieves the index of the item at the specified point in a list box.</summary>
 		/// <param name="hLB">
@@ -52,7 +52,7 @@ namespace Vanara.PInvoke
 		// int LBItemFromPt( HWND hLB, POINT pt, BOOL bAutoScroll); https://msdn.microsoft.com/en-us/library/windows/desktop/bb761724(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761724")]
-		public static extern int LBItemFromPt(IntPtr hLB, Point pt, [MarshalAs(UnmanagedType.Bool)] bool bAutoScroll);
+		public static extern int LBItemFromPt(HWND hLB, Point pt, [MarshalAs(UnmanagedType.Bool)] bool bAutoScroll);
 
 		/// <summary>Changes the specified single-selection list box to a drag list box.</summary>
 		/// <param name="hLB">
@@ -67,6 +67,6 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761725")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool MakeDragList(IntPtr hLB);
+		public static extern bool MakeDragList(HWND hLB);
 	}
 }

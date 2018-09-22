@@ -47,12 +47,12 @@ namespace Vanara.Windows.Forms
 
 		[DisplayName(MinVisibleItems), DefaultValue(30), Category("Appearance")]
 		[Description("The minimum number of visible items in the drop-down list of a combo box.")]
-		public int GetMinVisibleItems(ComboBox comboBox) => GetValue<int>(comboBox, MinVisibleItems, SendMessage(new HandleRef(comboBox, comboBox.Handle), (uint)ComboBoxMessage.CB_SETMINVISIBLE).ToInt32());
+		public int GetMinVisibleItems(ComboBox comboBox) => GetValue<int>(comboBox, MinVisibleItems, SendMessage(comboBox.Handle, (uint)ComboBoxMessage.CB_SETMINVISIBLE).ToInt32());
 
 		public void SetMinVisibleItems(ComboBox comboBox, int value)
 		{
 			if (SetValue(comboBox, MinVisibleItems, value) && IsMinVista && comboBox.IsHandleCreated)
-				SendMessage(new HandleRef(comboBox, comboBox.Handle), (uint)ComboBoxMessage.CB_SETMINVISIBLE, (IntPtr)value);
+				SendMessage(comboBox.Handle, (uint)ComboBoxMessage.CB_SETMINVISIBLE, (IntPtr)value);
 		}
 
 		/*[DisplayName(CueBanner), DefaultValue(null), Category("Appearance")]

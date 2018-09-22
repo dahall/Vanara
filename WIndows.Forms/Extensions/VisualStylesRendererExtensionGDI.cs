@@ -19,7 +19,7 @@ namespace Vanara.Extensions
 	{
 		private static readonly Dictionary<long, Bitmap> bmpCache = new Dictionary<long, Bitmap>();
 
-		private delegate void DrawWrapperMethod(SafeDCHandle hdc);
+		private delegate void DrawWrapperMethod(HDC hdc);
 
 		/// <summary>
 		/// Draws the background image of the current visual style element within the specified bounding rectangle and optionally clipped to the specified clipping rectangle.
@@ -60,7 +60,7 @@ namespace Vanara.Extensions
 		/// <param name="rightToLeft">If set to <c>true</c> flip the image for right to left layout.</param>
 		public static void DrawGlassBackground(this VisualStyleRenderer rnd, IDeviceContext dc, Rectangle bounds, Rectangle? clipRectangle = null, bool rightToLeft = false)
 		{
-			var ht = new SafeThemeHandle(rnd.Handle, false);
+			var ht = new SafeHTHEME(rnd.Handle, false);
 			DrawWrapper(dc, bounds,
 				memoryHdc =>
 				{
@@ -88,12 +88,12 @@ namespace Vanara.Extensions
 		/// <param name="imageIndex">The index of the <see cref="Image"/> within <paramref name="imageList"/> to draw.</param>
 		public static void DrawGlassImage(this VisualStyleRenderer rnd, IDeviceContext g, Rectangle bounds, ImageList imageList, int imageIndex)
 		{
-			var ht = new SafeThemeHandle(rnd.Handle, false);
+			var ht = new SafeHTHEME(rnd.Handle, false);
 			DrawWrapper(g, bounds,
 				memoryHdc =>
 				{
 					var rBounds = new RECT(bounds);
-					DrawThemeIcon(ht, memoryHdc, rnd.Part, rnd.State, ref rBounds, new System.Runtime.InteropServices.HandleRef(imageList, imageList.Handle), imageIndex);
+					DrawThemeIcon(ht, memoryHdc, rnd.Part, rnd.State, ref rBounds, imageList.Handle, imageIndex);
 				}
 				);
 		}
@@ -135,12 +135,12 @@ namespace Vanara.Extensions
 		/// <param name="glowSize">The size of the glow.</param>
 		public static void DrawGlowingText(this VisualStyleRenderer rnd, IDeviceContext dc, Rectangle bounds, string text, Font font, Color? color, TextFormatFlags flags = TextFormatFlags.Default, int glowSize = 10)
 		{
-			var ht = new SafeThemeHandle(rnd.Handle, false);
+			var ht = new SafeHTHEME(rnd.Handle, false);
 			DrawWrapper(dc, bounds,
 				memoryHdc =>
 				{
 					// Create and select font
-					using (new SafeDCObjectHandle(memoryHdc, font?.ToHfont() ?? IntPtr.Zero))
+					using (new GdiObjectContext(memoryHdc, new SafeHFONT(font?.ToHfont() ?? IntPtr.Zero)))
 					{
 						// Draw glowing text
 						var dttOpts = new DTTOPTS(null) {GlowSize = glowSize, AntiAliasedAlpha = true};
@@ -164,8 +164,8 @@ namespace Vanara.Extensions
 		public static void DrawText(this VisualStyleRenderer rnd, IDeviceContext dc, ref Rectangle bounds, string text, TextFormatFlags flags, ref DTTOPTS options)
 		{
 			var rc = new RECT(bounds);
-			var ht = new SafeThemeHandle(rnd.Handle, false);
-			using (var hdc = new SafeDCHandle(dc))
+			var ht = new SafeHTHEME(rnd.Handle, false);
+			using (var hdc = new SafeHDC(dc))
 				DrawThemeTextEx(ht, hdc, rnd.Part, rnd.State, text, text.Length, FromTFF(flags), ref rc, ref options);
 			bounds = rc;
 		}
@@ -202,14 +202,13 @@ namespace Vanara.Extensions
 			var bounds = new Rectangle(0, 0, imgSz.Width * i, imgSz.Height);
 
 			// Draw each background linearly down the bitmap
-			using (var memoryHdc = SafeDCHandle.ScreenCompatibleDCHandle)
+			using (var memoryHdc = SafeHDC.ScreenCompatibleDCHandle)
 			{
 				// Create a device-independent bitmap and select it into our DC
 				var info = new BITMAPINFO(bounds.Width, -bounds.Height);
-				IntPtr ppv;
-				using (new SafeDCObjectHandle(memoryHdc, CreateDIBSection(SafeDCHandle.Null, ref info, DIBColorMode.DIB_RGB_COLORS, out ppv, IntPtr.Zero, 0)))
+				using (memoryHdc.SelectObject(CreateDIBSection(HDC.NULL, ref info, DIBColorMode.DIB_RGB_COLORS, out var ppv, IntPtr.Zero, 0)))
 				{
-					using (var memoryGraphics = Graphics.FromHdc(memoryHdc.DangerousGetHandle()))
+					using (var memoryGraphics = (Graphics)memoryHdc)
 					{
 						// Setup graphics
 						memoryGraphics.CompositingMode = CompositingMode.SourceOver;
@@ -229,7 +228,7 @@ namespace Vanara.Extensions
 
 					// Copy DIB to Bitmap
 					var bmp = new Bitmap(bounds.Width, bounds.Height, PixelFormat.Format32bppArgb);
-					using (var primaryHdc = new SafeDCHandle(Graphics.FromImage(bmp)))
+					using (var primaryHdc = new SafeHDC(Graphics.FromImage(bmp)))
 						BitBlt(primaryHdc, bounds.Left, bounds.Top, bounds.Width, bounds.Height, memoryHdc, 0, 0, RasterOperationMode.SRCCOPY);
 					return bmp;
 				}
@@ -247,24 +246,23 @@ namespace Vanara.Extensions
 		/// <returns>A <see cref="Font"/> that contains the value of the property specified by the prop parameter for the current visual style element.</returns>
 		public static Font GetFont2(this VisualStyleRenderer rnd, IDeviceContext dc = null, Font defaultValue = null)
 		{
-			using (var hdc = new SafeDCHandle(dc))
+			using (var hdc = new SafeHDC(dc))
 			{
-				return 0 != GetThemeFont(new SafeThemeHandle(rnd.Handle, false), hdc, rnd.Part, rnd.State, 210, out LOGFONT f)
+				return 0 != GetThemeFont(new SafeHTHEME(rnd.Handle, false), hdc, rnd.Part, rnd.State, 210, out LOGFONT f)
 					? defaultValue : Font.FromLogFont(f);
 			}
 		}
 
 		private static void DrawWrapper(IDeviceContext dc, Rectangle bounds, DrawWrapperMethod func)
 		{
-			using (var sdc = new SafeDCHandle(dc))
+			using (var sdc = new SafeHDC(dc))
 			{
 				// Create a memory DC so we can work off screen
 				using (var memoryHdc = sdc.GetCompatibleDCHandle())
 				{
 					// Create a device-independent bitmap and select it into our DC
 					var info = new BITMAPINFO(bounds.Width, -bounds.Height);
-					IntPtr pBits;
-					using (new SafeDCObjectHandle(memoryHdc, CreateDIBSection(sdc, ref info, 0, out pBits, IntPtr.Zero, 0)))
+					using (memoryHdc.SelectObject(CreateDIBSection(sdc, ref info, 0, out var pBits, IntPtr.Zero, 0)))
 					{
 						// Call method
 						func(memoryHdc);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Gdi32;
@@ -58,31 +59,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-copyicon HICON CopyIcon( HICON hIcon );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "copyicon")]
-		public static extern SafeIconHandle CopyIcon(SafeIconHandle hIcon);
-
-		/// <summary>
-		/// <para>Copies the specified icon from another module to the current module.</para>
-		/// </summary>
-		/// <param name="hIcon">
-		/// <para>Type: <c>HICON</c></para>
-		/// <para>A handle to the icon to be copied.</para>
-		/// </param>
-		/// <returns>
-		/// <para>Type: <c>HICON</c></para>
-		/// <para>If the function succeeds, the return value is a handle to the duplicate icon.</para>
-		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call GetLastError.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// The <c>CopyIcon</c> function enables an application or DLL to get its own handle to an icon owned by another module. If the other
-		/// module is freed, the application icon will still be able to use the icon.
-		/// </para>
-		/// <para>Before closing, an application must call the DestroyIcon function to free any system resources associated with the icon.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-copyicon HICON CopyIcon( HICON hIcon );
-		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("winuser.h", MSDNShortId = "copyicon")]
-		private static extern IntPtr CopyIcon(IntPtr hIcon);
+		public static extern SafeHICON CopyIcon(HICON hIcon);
 
 		/// <summary>
 		/// <para>Creates an icon that has the specified size, colors, and bit patterns.</para>
@@ -165,7 +142,7 @@ namespace Vanara.PInvoke
 		// nWidth, int nHeight, BYTE cPlanes, BYTE cBitsPixel, CONST BYTE *lpbANDbits, CONST BYTE *lpbXORbits );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "createicon")]
-		public static extern SafeIconHandle CreateIcon(SafeLibraryHandle hInstance, int nWidth, int nHeight, byte cPlanes, byte cBitsPixel, [In] byte[] lpbANDbits, [In] byte[] lpbXORbits);
+		public static extern SafeHICON CreateIcon(HINSTANCE hInstance, int nWidth, int nHeight, byte cPlanes, byte cBitsPixel, [In] byte[] lpbANDbits, [In] byte[] lpbXORbits);
 
 		/// <summary>
 		/// <para>Creates an icon or cursor from resource bits describing the icon.</para>
@@ -213,7 +190,7 @@ namespace Vanara.PInvoke
 		// presbits, DWORD dwResSize, BOOL fIcon, DWORD dwVer );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "createiconfromresource")]
-		public static extern SafeIconHandle CreateIconFromResource([In] byte[] presbits, uint dwResSize, [MarshalAs(UnmanagedType.Bool)] bool fIcon, uint dwVer);
+		public static extern SafeHICON CreateIconFromResource([In] byte[] presbits, uint dwResSize, [MarshalAs(UnmanagedType.Bool)] bool fIcon, uint dwVer);
 
 		/// <summary>
 		/// <para>Creates an icon or cursor from resource bits describing the icon.</para>
@@ -310,7 +287,7 @@ namespace Vanara.PInvoke
 		// PBYTE presbits, DWORD dwResSize, BOOL fIcon, DWORD dwVer, int cxDesired, int cyDesired, UINT Flags );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "createiconfromresourceex")]
-		public static extern SafeIconHandle CreateIconFromResourceEx([In] byte[] presbits, uint dwResSize, [MarshalAs(UnmanagedType.Bool)] bool fIcon, uint dwVer, int cxDesired, int cyDesired, LoadImageOptions Flags);
+		public static extern SafeHICON CreateIconFromResourceEx([In] byte[] presbits, uint dwResSize, [MarshalAs(UnmanagedType.Bool)] bool fIcon, uint dwVer, int cxDesired, int cyDesired, LoadImageOptions Flags);
 
 		/// <summary>
 		/// <para>Creates an icon or cursor from an ICONINFO structure.</para>
@@ -337,7 +314,7 @@ namespace Vanara.PInvoke
 		// piconinfo );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "createiconindirect")]
-		public static extern SafeIconHandle CreateIconIndirect([In] ICONINFO piconinfo);
+		public static extern SafeHICON CreateIconIndirect([In] ICONINFO piconinfo);
 
 		/// <summary>
 		/// <para>Destroys an icon and frees any memory the icon occupied.</para>
@@ -380,7 +357,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "destroyicon")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DestroyIcon(IntPtr hIcon);
+		public static extern bool DestroyIcon(HICON hIcon);
 
 		/// <summary>
 		/// <para>Draws an icon or cursor into the specified device context.</para>
@@ -423,7 +400,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "drawicon")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DrawIcon(SafeDCHandle hDC, int X, int Y, SafeIconHandle hIcon);
+		public static extern bool DrawIcon(HDC hDC, int X, int Y, HICON hIcon);
 
 		/// <summary>
 		/// <para>
@@ -534,7 +511,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "drawiconex")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DrawIconEx(SafeDCHandle hdc, int xLeft, int yTop, SafeIconHandle hIcon, int cxWidth, int cyWidth, uint istepIfAniCur, SafeDCObjectHandle hbrFlickerFreeDraw, DrawIconExFlags diFlags);
+		public static extern bool DrawIconEx(HDC hdc, int xLeft, int yTop, HICON hIcon, int cxWidth, int cyWidth, uint istepIfAniCur, SafeHBRUSH hbrFlickerFreeDraw, DrawIconExFlags diFlags);
 
 		/// <summary>
 		/// <para>Retrieves information about the specified icon or cursor.</para>
@@ -655,7 +632,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "geticoninfo")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetIconInfo(SafeIconHandle hIcon, [In, Out] ICONINFO piconinfo);
+		public static extern bool GetIconInfo(HICON hIcon, [In, Out] ICONINFO piconinfo);
 
 		/// <summary>
 		/// <para>
@@ -775,7 +752,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "geticoninfoex")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetIconInfoEx(IntPtr hicon, ref ICONINFOEX piconinfo);
+		public static extern bool GetIconInfoEx(HICON hicon, ref ICONINFOEX piconinfo);
 
 		/// <summary>
 		/// <para>Loads the specified icon resource from the executable (.exe) file associated with an application instance.</para>
@@ -865,7 +842,7 @@ namespace Vanara.PInvoke
 		// lpIconName );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "loadicon")]
-		public static extern SafeIconHandle LoadIcon(SafeLibraryHandle hInstance, string lpIconName);
+		public static extern SafeHICON LoadIcon(HINSTANCE hInstance, string lpIconName);
 
 		/// <summary>
 		/// <para>Searches through icon or cursor data for the icon or cursor that best fits the current display device.</para>
@@ -1071,7 +1048,7 @@ namespace Vanara.PInvoke
 		// szFileName, int nIconIndex, int cxIcon, int cyIcon, HICON *phicon, UINT *piconid, UINT nIcons, UINT flags );
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "privateextracticons")]
-		public static extern uint PrivateExtractIcons(string szFileName, int nIconIndex, int cxIcon, int cyIcon, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] IntPtr[] phicon, out uint piconid, uint nIcons, LoadImageOptions flags);
+		public static extern uint PrivateExtractIcons(string szFileName, int nIconIndex, int cxIcon, int cyIcon, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] SafeHICON[] phicon, out uint piconid, uint nIcons, LoadImageOptions flags);
 
 		/// <summary>
 		/// <para>Contains information about an icon or a cursor. Extends ICONINFO. Used by GetIconInfoEx.</para>
@@ -1154,21 +1131,24 @@ namespace Vanara.PInvoke
 			public string szResName;
 		}
 
-		/// <summary>Safe handle for icons. Automatically calls <c>DestroyIcon</c> on disposal.</summary>
-		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
-		public class SafeIconHandle : GenericSafeHandle
+		/// <summary>Provides a <see cref="SafeHandle"/> to a Windows  that disposes a created HICON instance at disposal using DestroyIcon.</summary>
+		public class SafeHICON : HICON
 		{
-			/// <summary>Initializes a new instance of the <see cref="SafeIconHandle"/> class.</summary>
-			public SafeIconHandle() : this(IntPtr.Zero)
-			{
-			}
+			/// <summary>Initializes a new instance of the <see cref="SafeHICON"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeHICON(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			/// <summary>Initializes a new instance of the <see cref="SafeIconHandle"/> class.</summary>
-			/// <param name="hIcon">The icon handle.</param>
-			/// <param name="own">Set to <c>true</c> if handle is to be destroyed on disposal.</param>
-			public SafeIconHandle(IntPtr hIcon, bool own = true) : base(hIcon, DestroyIcon, own)
-			{
-			}
+			/// <summary>Creates a managed <see cref="System.Drawing.Bitmap"/> from this HICON instance.</summary>
+			/// <returns>A managed bitmap instance.</returns>
+			public Bitmap ToBitmap() => IsInvalid ? null : (Bitmap)Bitmap.FromHicon(handle).Clone();
+
+			/// <summary>Creates a managed <see cref="System.Drawing.Icon"/> from this HICON instance.</summary>
+			/// <returns>A managed icon instance.</returns>
+			public Icon ToIcon() => IsInvalid ? null : (Icon)Icon.FromHandle(handle).Clone();
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => DestroyIcon(this);
 		}
 	}
 }

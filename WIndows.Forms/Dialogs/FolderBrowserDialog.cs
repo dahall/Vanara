@@ -404,11 +404,8 @@ namespace Vanara.Windows.Forms
 		private const KnownFolder defaultFolderFolder = KnownFolder.ComputerFolder;
 		private const KnownFolder defaultPrintersFolder = KnownFolder.PrintersFolder;
 
-		private static IImageList sysImgList;
 		private FolderBrowserDialogOptions browseOption;
-		private HandleRef href;
 		private bool initialized;
-		private PIDL pidl;
 		private KnownFolder rootFolder;
 		private PIDL rootPidl;
 
@@ -518,13 +515,13 @@ namespace Vanara.Windows.Forms
 		/// <summary>Gets the image from the system image list associated with the selected item.</summary>
 		/// <value>The selected item's image.</value>
 		[DefaultValue(null), Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public Icon SelectedItemImage => pidl.GetIcon(true);
+		public Icon SelectedItemImage => SelectedItemPIDL.GetIcon(IconSize.Small);
 
 		/// <summary>Gets the PIDL associated with the selected item.</summary>
 		/// <value>The selected item's PIDL.</value>
 		[DefaultValue(0), Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		// ReSharper disable once InconsistentNaming
-		public PIDL SelectedItemPIDL => pidl;
+		public PIDL SelectedItemPIDL { get; private set; }
 
 		/// <summary>Gets or sets whether or not to show file junctions, such as a library or compressed file. This only is available in Windows 7 and later.</summary>
 		[DefaultValue(false), Localizable(false), Category("Behavior"), Description("Whether or not to show file junctions.")]
@@ -546,7 +543,7 @@ namespace Vanara.Windows.Forms
 			Expanded = true;
 			RootFolder = defaultFolderFolder;
 			HideDomainFolders = ShowFileJunctions = LocalFileSystemOnly = ShowFolderPathEditBox = ShowNewFolderButton = initialized = false;
-			pidl = null;
+			SelectedItemPIDL = null;
 		}
 
 		/// <summary>Shows the dialog box to let the user browse for and select a folder.</summary>
@@ -586,20 +583,19 @@ namespace Vanara.Windows.Forms
 			var bi = new BROWSEINFO(parentWindowHandle, rootPidl.DangerousGetHandle(), Description, browseInfoFlag, OnBrowseEvent, dn);
 
 			// Show the dialog
-			pidl = SHBrowseForFolder(ref bi);
-			href = default(HandleRef);
-			if (pidl.IsInvalid) return false;
+			SelectedItemPIDL = SHBrowseForFolder(ref bi);
+			if (SelectedItemPIDL.IsInvalid) return false;
 			if (browseInfoFlag[BrowseInfoFlag.BIF_BROWSEFORPRINTER] || browseInfoFlag[BrowseInfoFlag.BIF_BROWSEFORCOMPUTER])
 				SelectedItem = bi.DisplayName;
 			else
-				SelectedItem = GetNameForPidl(pidl);
+				SelectedItem = GetNameForPidl(SelectedItemPIDL);
 			return true;
 		}
 
 		/// <summary>Enables or disables the OK button in the dialog box.</summary>
 		/// <param name="hwnd">The hwnd of the dialog box.</param>
 		/// <param name="isEnabled">Whether or not the OK button should be enabled.</param>
-		private static void EnableOk(HandleRef hwnd, bool isEnabled) { SendMessage(hwnd, (uint)BrowseForFolderMessages.BFFM_ENABLEOK, (IntPtr)0, (IntPtr)(isEnabled ? 1 : 0)); }
+		private static void EnableOk(HWND hwnd, bool isEnabled) => SendMessage(hwnd, (uint)BrowseForFolderMessages.BFFM_ENABLEOK, (IntPtr)0, (IntPtr)(isEnabled ? 1 : 0));
 
 		private static string GetNameForPidl(PIDL pidl)
 		{
@@ -620,21 +616,12 @@ namespace Vanara.Windows.Forms
 			// Get the image from the system image list
 			try
 			{
-				if (sysImgList == null)
-				{
-					var shfi = new SHFILEINFO();
-					var ptr = SHGetFileInfo(System.IO.Path.GetPathRoot(Environment.SystemDirectory), 0, ref shfi, Marshal.SizeOf(shfi),
-						SHGFI.SHGFI_SYSICONINDEX | SHGFI.SHGFI_SMALLICON);
-					sysImgList = (IImageList)Marshal.GetTypedObjectForIUnknown(ptr, typeof(IImageList));
-				}
-				var hIcon = sysImgList.GetIcon(idx, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT);
-				var ico = (Icon)Icon.FromHandle(hIcon).Clone();
-				DestroyIcon(hIcon);
-				return ico;
+				return IconExtension.GetSystemIcon(System.IO.Path.GetPathRoot(Environment.SystemDirectory), IconSize.Small);
 			}
-			catch { }
-
-			return null;
+			catch
+			{
+				return null;
+			}
 		}
 
 		/// <summary>Callback for Windows.</summary>
@@ -649,22 +636,21 @@ namespace Vanara.Windows.Forms
 		private int OnBrowseEvent(IntPtr hwnd, BrowseForFolderMessages uMsg, IntPtr lParam, IntPtr lpData)
 		{
 			var messsage = uMsg;
-			href = new HandleRef(this, hwnd);
 			switch (messsage)
 			{
 				case BrowseForFolderMessages.BFFM_INITIALIZED:
 					// Dialog is being initialized, so set the initial parameters
 					if (!string.IsNullOrEmpty(Caption))
-						SetWindowText(href, Caption);
+						SetWindowText(hwnd, Caption);
 
 					if (!string.IsNullOrEmpty(SelectedItem))
-						SendMessage(href, (uint)BrowseForFolderMessages.BFFM_SETSELECTIONW, (IntPtr)1, SelectedItem);
+						SendMessage(hwnd, (uint)BrowseForFolderMessages.BFFM_SETSELECTIONW, (IntPtr)1, SelectedItem);
 
 					if (Expanded)
-						SendMessage(href, (uint)BrowseForFolderMessages.BFFM_SETEXPANDED, (IntPtr)1, rootPidl.DangerousGetHandle());
+						SendMessage(hwnd, (uint)BrowseForFolderMessages.BFFM_SETEXPANDED, (IntPtr)1, rootPidl.DangerousGetHandle());
 
 					if (!string.IsNullOrEmpty(OkText))
-						SendMessage(href, (uint)BrowseForFolderMessages.BFFM_SETOKTEXT, (IntPtr)0, OkText);
+						SendMessage(hwnd, (uint)BrowseForFolderMessages.BFFM_SETOKTEXT, (IntPtr)0, OkText);
 
 					Initialized?.Invoke(this, new FolderBrowserDialogInitializedEventArgs(hwnd));
 					initialized = true;
@@ -673,13 +659,13 @@ namespace Vanara.Windows.Forms
 				case BrowseForFolderMessages.BFFM_SELCHANGED:
 					try
 					{
-						if (!initialized || pidl?.DangerousGetHandle() == lParam) return 0;
+						if (!initialized || SelectedItemPIDL?.DangerousGetHandle() == lParam) return 0;
 						var tmpPidl = new PIDL(lParam, false, false);
 						var str = GetNameForPidl(tmpPidl);
 						if (string.IsNullOrEmpty(str))
 							return 0;
 						SelectedItem = str;
-						pidl = tmpPidl;
+						SelectedItemPIDL = tmpPidl;
 					}
 					catch
 					{

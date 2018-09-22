@@ -44,8 +44,8 @@ namespace Vanara.PInvoke
 			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 			void IDisposable.Dispose()
 			{
-				if (hbmMask != IntPtr.Zero) DeleteObject(hbmMask);
-				if (hbmColor != IntPtr.Zero) DeleteObject(hbmColor);
+				if (hbmMask != IntPtr.Zero) DeleteObject((HGDIOBJ)hbmMask);
+				if (hbmColor != IntPtr.Zero) DeleteObject((HGDIOBJ)hbmColor);
 			}
 		}
 	}

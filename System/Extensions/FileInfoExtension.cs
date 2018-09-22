@@ -14,16 +14,14 @@ namespace Vanara.Extensions
 	/// <summary>Extension methods for <see cref="FileSystemInfo"/> and derived classes to facilitate retrieval of extended properties.</summary>
 	public static class FileInfoExtension
 	{
-		private static readonly SafeFileHandle nullSafeHandle = new SafeFileHandle(IntPtr.Zero, false);
-
-		public static SafeFileHandle GetFileHandle(this FileSystemInfo fi, bool readOnly = true, bool overlapped = false)
+		public static SafeHFILE GetFileHandle(this FileSystemInfo fi, bool readOnly = true, bool overlapped = false)
 		{
 			var fa = readOnly ? System.IO.FileAccess.Read : System.IO.FileAccess.ReadWrite;
 			var fs = readOnly ? FileShare.Read : FileShare.None;
 			var ff = FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL;
 			if (overlapped) ff |= FileFlagsAndAttributes.FILE_FLAG_OVERLAPPED;
 			if (fi is DirectoryInfo) ff |= FileFlagsAndAttributes.FILE_FLAG_BACKUP_SEMANTICS;
-			return CreateFile(fi.FullName, (Kernel32.FileAccess)fa, fs, null, FileMode.Open, ff, nullSafeHandle);
+			return CreateFile(fi.FullName, (Kernel32.FileAccess)fa, fs, null, FileMode.Open, ff, HFILE.NULL);
 		}
 
 		public static FileSystemFlags GetFileSystemFlags(this DriveInfo di)

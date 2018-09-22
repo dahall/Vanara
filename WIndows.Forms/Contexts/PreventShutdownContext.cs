@@ -44,16 +44,16 @@ namespace Vanara.Windows.Forms.Forms
 		{
 			get
 			{
-				if (!ShutdownBlockReasonQuery(href, out var reason))
+				if (!ShutdownBlockReasonQuery(href.Handle, out var reason))
 					Win32Error.ThrowLastError();
 				return reason;
 			}
 			set
 			{
 				if (value == null) value = string.Empty;
-				if (ShutdownBlockReasonQuery(href, out var _))
-					ShutdownBlockReasonDestroy(href);
-				if (!ShutdownBlockReasonCreate(href, value))
+				if (ShutdownBlockReasonQuery(href.Handle, out var _))
+					ShutdownBlockReasonDestroy(href.Handle);
+				if (!ShutdownBlockReasonCreate(href.Handle, value))
 					Win32Error.ThrowLastError();
 			}
 		}
@@ -61,7 +61,7 @@ namespace Vanara.Windows.Forms.Forms
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public void Dispose()
 		{
-			ShutdownBlockReasonDestroy(href);
+			ShutdownBlockReasonDestroy(href.Handle);
 		}
 	}
 }

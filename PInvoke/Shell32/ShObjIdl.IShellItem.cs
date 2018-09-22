@@ -628,7 +628,7 @@ namespace Vanara.PInvoke
 			/// <param name="phbm">Pointer to a value that, when this method returns successfully, receives the handle of the retrieved bitmap. It is the responsibility of the caller to free this retrieved resource through DeleteObject when it is no longer needed.</param>
 			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 			[PreserveSig]
-			HRESULT GetImage([In, MarshalAs(UnmanagedType.Struct)] SIZE size, [In] SIIGBF flags, out Gdi32.SafeObjectHandle phbm);
+			HRESULT GetImage([In, MarshalAs(UnmanagedType.Struct)] SIZE size, [In] SIIGBF flags, out Gdi32.SafeHBITMAP phbm);
 		}
 	}
 }

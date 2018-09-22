@@ -46,7 +46,7 @@ namespace Vanara.PInvoke
 		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724211")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CloseHandle(IntPtr hObject);
+		public static extern bool CloseHandle(HANDLE hObject);
 
 		/// <summary>Compares two object handles to determine if they refer to the same underlying kernel object.</summary>
 		/// <param name="hFirstObjectHandle">The first object handle to compare.</param>
@@ -56,7 +56,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Handleapi.h", MSDNShortId = "mt438733")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CompareObjectHandles(IntPtr hFirstObjectHandle, IntPtr hSecondObjectHandle);
+		public static extern bool CompareObjectHandles(HANDLE hFirstObjectHandle, HANDLE hSecondObjectHandle);
 
 		/// <summary>Duplicates an object handle.</summary>
 		/// <param name="hSourceProcessHandle">
@@ -122,7 +122,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724251")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool DuplicateHandle(
-			[In] IntPtr hSourceProcessHandle, [In] IntPtr hSourceHandle, [In] IntPtr hTargetProcessHandle, out IntPtr lpTargetHandle, uint dwDesiredAccess,
+			[In] IntPtr hSourceProcessHandle, [In] HANDLE hSourceHandle, [In] IntPtr hTargetProcessHandle, out HANDLE lpTargetHandle, uint dwDesiredAccess,
 			[MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, DUPLICATE_HANDLE_OPTIONS dwOptions);
 
 		/// <summary>Retrieves certain properties of an object handle.</summary>
@@ -160,7 +160,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724329")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetHandleInformation([In] IntPtr hObject, out HANDLE_FLAG lpdwFlags);
+		public static extern bool GetHandleInformation([In] HANDLE hObject, out HANDLE_FLAG lpdwFlags);
 
 		/// <summary>Sets certain properties of an object handle.</summary>
 		/// <param name="hObject">
@@ -198,6 +198,6 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724935")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetHandleInformation([In] IntPtr hObject, HANDLE_FLAG dwMask, HANDLE_FLAG dwFlags);
+		public static extern bool SetHandleInformation([In] HANDLE hObject, HANDLE_FLAG dwMask, HANDLE_FLAG dwFlags);
 	}
 }

@@ -123,7 +123,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "861e57b2-061c-4598-ad38-6aef7b79ca54")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CloseDesktop(IntPtr hDesktop);
+		public static extern bool CloseDesktop(HDESK hDesktop);
 
 		/// <summary>
 		/// <para>Closes an open window station handle.</para>
@@ -149,7 +149,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "417cb01b-c206-4b5b-9516-94e5d90717f4")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CloseWindowStation(IntPtr hWinSta);
+		public static extern bool CloseWindowStation(HWINSTA hWinSta);
 
 		/// <summary>
 		/// <para>
@@ -246,7 +246,7 @@ namespace Vanara.PInvoke
 		// LPCSTR lpszDevice, DEVMODEA *pDevmode, DWORD dwFlags, ACCESS_MASK dwDesiredAccess, LPSECURITY_ATTRIBUTES lpsa );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "c6ed40c5-13a9-4697-a727-730adc6a912d")]
-		public static extern SafeDesktopHandle CreateDesktop(string lpszDesktop, [Optional] string lpszDevice, [Optional] IntPtr pDevmode, CreateDesktopFlags dwFlags, ACCESS_MASK dwDesiredAccess, SECURITY_ATTRIBUTES lpsa);
+		public static extern SafeHDESK CreateDesktop(string lpszDesktop, [Optional] string lpszDevice, [Optional] IntPtr pDevmode, CreateDesktopFlags dwFlags, ACCESS_MASK dwDesiredAccess, SECURITY_ATTRIBUTES lpsa);
 
 		/// <summary>
 		/// <para>
@@ -352,7 +352,7 @@ namespace Vanara.PInvoke
 		// ulHeapSize, PVOID pvoid );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "2fe8859d-1fe3-4f44-aa97-58e61779c4cc")]
-		public static extern SafeDesktopHandle CreateDesktopEx(string lpszDesktop, [Optional] string lpszDevice, [Optional] IntPtr pDevmode, CreateDesktopFlags dwFlags, ACCESS_MASK dwDesiredAccess, SECURITY_ATTRIBUTES lpsa, uint ulHeapSize, [Optional] IntPtr pvoid);
+		public static extern SafeHDESK CreateDesktopEx(string lpszDesktop, [Optional] string lpszDevice, [Optional] IntPtr pDevmode, CreateDesktopFlags dwFlags, ACCESS_MASK dwDesiredAccess, SECURITY_ATTRIBUTES lpsa, uint ulHeapSize, [Optional] IntPtr pvoid);
 
 		/// <summary>
 		/// <para>Creates a window station object, associates it with the calling process, and assigns it to the current session.</para>
@@ -404,7 +404,7 @@ namespace Vanara.PInvoke
 		// lpwinsta, DWORD dwFlags, ACCESS_MASK dwDesiredAccess, LPSECURITY_ATTRIBUTES lpsa );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "c1aee546-decd-46c9-8d02-d6792f5a6a0d")]
-		public static extern SafeWindowsStationHandle CreateWindowStation(string lpwinsta, CreateWindowStationFlags dwFlags, ACCESS_MASK dwDesiredAccess, SECURITY_ATTRIBUTES lpsa);
+		public static extern SafeHWINSTA CreateWindowStation(string lpwinsta, CreateWindowStationFlags dwFlags, ACCESS_MASK dwDesiredAccess, SECURITY_ATTRIBUTES lpsa);
 
 		/// <summary>
 		/// <para>
@@ -451,7 +451,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "3e900b34-2c60-4281-881f-13a746674aec")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumDesktops(SafeWindowsStationHandle hwinsta, EnumDesktopProc lpEnumFunc, IntPtr lParam);
+		public static extern bool EnumDesktops(HWINSTA hwinsta, EnumDesktopProc lpEnumFunc, IntPtr lParam);
 
 		/// <summary>Enumerates all desktops associated with the specified window station of the calling process.</summary>
 		/// <param name="hwinsta">
@@ -469,7 +469,7 @@ namespace Vanara.PInvoke
 		/// right. For more information, see Desktop Security and Access Rights.
 		/// </para>
 		/// </remarks>
-		public static IEnumerable<string> EnumDesktops(SafeWindowsStationHandle hwinsta)
+		public static IEnumerable<string> EnumDesktops(HWINSTA hwinsta)
 		{
 			var ret = new List<string>();
 			if (!EnumDesktops(hwinsta, EnumProc, IntPtr.Zero))
@@ -520,7 +520,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "b399ff19-e2e5-4509-8bb5-9647734881b3")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumDesktopWindows(SafeDesktopHandle hDesktop, WNDENUMPROC lpfn, IntPtr lParam);
+		public static extern bool EnumDesktopWindows(HDESK hDesktop, WNDENUMPROC lpfn, IntPtr lParam);
 
 		/// <summary>
 		/// <para>
@@ -815,7 +815,7 @@ namespace Vanara.PInvoke
 		// dwFlags, BOOL fInherit, ACCESS_MASK dwDesiredAccess );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "7f805f47-1737-4f4b-a74a-9c1423b65f2c")]
-		public static extern SafeDesktopHandle OpenDesktop(string lpszDesktop, CreateDesktopFlags dwFlags, [MarshalAs(UnmanagedType.Bool)] bool fInherit, ACCESS_MASK dwDesiredAccess);
+		public static extern SafeHDESK OpenDesktop(string lpszDesktop, CreateDesktopFlags dwFlags, [MarshalAs(UnmanagedType.Bool)] bool fInherit, ACCESS_MASK dwDesiredAccess);
 
 		/// <summary>
 		/// <para>Opens the desktop that receives user input.</para>
@@ -868,7 +868,7 @@ namespace Vanara.PInvoke
 		// BOOL fInherit, ACCESS_MASK dwDesiredAccess );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "023d421e-bf32-4e08-b5b3-b7b2ca6c4e00")]
-		public static extern SafeDesktopHandle OpenInputDesktop(CreateDesktopFlags dwFlags, [MarshalAs(UnmanagedType.Bool)] bool fInherit, ACCESS_MASK dwDesiredAccess);
+		public static extern SafeHDESK OpenInputDesktop(CreateDesktopFlags dwFlags, [MarshalAs(UnmanagedType.Bool)] bool fInherit, ACCESS_MASK dwDesiredAccess);
 
 		/// <summary>
 		/// <para>Opens the specified window station.</para>
@@ -897,7 +897,7 @@ namespace Vanara.PInvoke
 		// lpszWinSta, BOOL fInherit, ACCESS_MASK dwDesiredAccess );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "78ee7100-1bad-4c2d-b923-c5e67191bd41")]
-		public static extern SafeWindowsStationHandle OpenWindowStation(string lpszWinSta, [MarshalAs(UnmanagedType.Bool)] bool fInherit, ACCESS_MASK dwDesiredAccess);
+		public static extern SafeHWINSTA OpenWindowStation(string lpszWinSta, [MarshalAs(UnmanagedType.Bool)] bool fInherit, ACCESS_MASK dwDesiredAccess);
 
 		/// <summary>
 		/// <para>
@@ -922,7 +922,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "d64814a7-945c-4e73-a977-5f696d60610e")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetProcessWindowStation(SafeWindowsStationHandle hWinSta);
+		public static extern bool SetProcessWindowStation(HWINSTA hWinSta);
 
 		/// <summary>
 		/// <para>
@@ -956,7 +956,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "619c591f-54b7-4b61-aa07-fc57e05ee37a")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetThreadDesktop(SafeDesktopHandle hDesktop);
+		public static extern bool SetThreadDesktop(HDESK hDesktop);
 
 		/// <summary>
 		/// <para>Sets information about the specified window station or desktop object.</para>
@@ -1054,7 +1054,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "401be515-ada9-42be-b8e8-4e86f513bb8d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SwitchDesktop(SafeDesktopHandle hDesktop);
+		public static extern bool SwitchDesktop(HDESK hDesktop);
 
 		/// <summary>
 		/// <para>Contains information about a window station or desktop handle.</para>
@@ -1104,36 +1104,28 @@ namespace Vanara.PInvoke
 			public uint dwFlags;
 		}
 
-		/// <summary>SafeHandle for HDESK that automatically calls CloseDesktop on disposal.</summary>
-		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
-		public class SafeDesktopHandle : GenericSafeHandle
+		/// <summary>Provides a <see cref="SafeHandle"/> to a  that releases a created HDESK instance at disposal using CloseDesktop.</summary>
+		public class SafeHDESK : HDESK
 		{
-			/// <summary>
-			/// Initializes a new instance of the <see cref="SafeDesktopHandle"/> class.
-			/// </summary>
-			public SafeDesktopHandle() : this(IntPtr.Zero) { }
-			/// <summary>
-			/// Initializes a new instance of the <see cref="SafeDesktopHandle"/> class.
-			/// </summary>
-			/// <param name="hDesktop">The HDESK instance.</param>
-			/// <param name="own">if set to <c>true</c> call CloseDesktop on disposal.</param>
-			public SafeDesktopHandle(IntPtr hDesktop, bool own = true) : base(hDesktop, CloseDesktop, own) { }
+			/// <summary>Initializes a new instance of the <see cref="HDESK"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeHDESK(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => CloseDesktop(this);
 		}
 
-		/// <summary>SafeHandle for HWINSTA that automatically calls CloseWindowStation on disposal.</summary>
-		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle" />
-		public class SafeWindowsStationHandle : GenericSafeHandle
+		/// <summary>Provides a <see cref="SafeHandle"/> to a  that releases a created HWINSTA instance at disposal using CloseWindowStation.</summary>
+		public class SafeHWINSTA : HWINSTA
 		{
-			/// <summary>
-			/// Initializes a new instance of the <see cref="SafeWindowsStationHandle"/> class.
-			/// </summary>
-			public SafeWindowsStationHandle() : this(IntPtr.Zero) { }
-			/// <summary>
-			/// Initializes a new instance of the <see cref="SafeWindowsStationHandle"/> class.
-			/// </summary>
-			/// <param name="hWinSta">The HWINSTA instance.</param>
-			/// <param name="own">if set to <c>true</c> call CloseWindowStation on disposal.</param>
-			public SafeWindowsStationHandle(IntPtr hWinSta, bool own = true) : base(hWinSta, CloseWindowStation, own) { }
+			/// <summary>Initializes a new instance of the <see cref="HWINSTA"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeHWINSTA(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => CloseWindowStation(this);
 		}
 	}
 }

@@ -86,7 +86,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinUser.h", MSDNShortId = "ms648045")]
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[System.Security.SecurityCritical]
-		public static extern IntPtr LoadImage(SafeLibraryHandle hinst, SafeResourceId lpszName, LoadImageType uType, int cxDesired, int cyDesired, LoadImageOptions fuLoad);
+		public static extern IntPtr LoadImage(HINSTANCE hinst, SafeResourceId lpszName, LoadImageType uType, int cxDesired, int cyDesired, LoadImageOptions fuLoad);
 
 		/// <summary>
 		/// Loads a string resource from the executable file associated with a specified module, copies the string into a buffer, and appends a terminating null character.
@@ -99,7 +99,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinUser.h", MSDNShortId = "ms647486")]
 		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
 		[System.Security.SecurityCritical]
-		public static extern int LoadString(SafeLibraryHandle hInstance, int uID, StringBuilder lpBuffer, int nBufferMax);
+		public static extern int LoadString(HINSTANCE hInstance, int uID, StringBuilder lpBuffer, int nBufferMax);
 
 		/// <summary>
 		/// Loads a string resource from the executable file associated with a specified module, copies the string into a buffer, and appends a terminating null character.
@@ -112,7 +112,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinUser.h", MSDNShortId = "ms647486")]
 		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
 		[System.Security.SecurityCritical]
-		public static extern int LoadString(SafeLibraryHandle hInstance, int uID, out IntPtr lpBuffer, int nBufferMax);
+		public static extern int LoadString(HINSTANCE hInstance, int uID, out IntPtr lpBuffer, int nBufferMax);
 
 		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		public struct GRPICONDIR

@@ -131,7 +131,7 @@ namespace Vanara.PInvoke
 		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail), DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winbase.h", MSDNShortId = "aa375202")]
-		public static extern bool AdjustTokenPrivileges([In] SafeTokenHandle objectHandle,
+		public static extern bool AdjustTokenPrivileges([In] HTOKEN objectHandle,
 			[In, MarshalAs(UnmanagedType.Bool)] bool DisableAllPrivileges,
 			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PTOKEN_PRIVILEGES.Marshaler))] PTOKEN_PRIVILEGES NewState,
 			[In] uint BufferLength,
@@ -188,7 +188,7 @@ namespace Vanara.PInvoke
 		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail), DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winbase.h", MSDNShortId = "aa375202")]
-		public static extern bool AdjustTokenPrivileges([In] SafeTokenHandle objectHandle,
+		public static extern bool AdjustTokenPrivileges([In] HTOKEN objectHandle,
 			[In, MarshalAs(UnmanagedType.Bool)] bool DisableAllPrivileges, [In] SafeCoTaskMemHandle NewState,
 			[In] uint BufferLength, [In, Out] SafeCoTaskMemHandle PreviousState, [In, Out] ref uint ReturnLength);
 
@@ -225,8 +225,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa446616")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DuplicateToken(SafeTokenHandle ExistingTokenHandle,
-			SECURITY_IMPERSONATION_LEVEL ImpersonationLevel, out SafeTokenHandle DuplicateTokenHandle);
+		public static extern bool DuplicateToken(HTOKEN ExistingTokenHandle,
+			SECURITY_IMPERSONATION_LEVEL ImpersonationLevel, out SafeHTOKEN DuplicateTokenHandle);
 
 		/// <summary>
 		/// The <c>DuplicateTokenEx</c> function creates a new access token that duplicates an existing token. This function can create
@@ -290,8 +290,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa446617")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DuplicateTokenEx(SafeTokenHandle hExistingToken, TokenAccess dwDesiredAccess, SECURITY_ATTRIBUTES lpTokenAttributes,
-			SECURITY_IMPERSONATION_LEVEL ImpersonationLevel, TOKEN_TYPE TokenType, out SafeTokenHandle phNewToken);
+		public static extern bool DuplicateTokenEx(HTOKEN hExistingToken, TokenAccess dwDesiredAccess, SECURITY_ATTRIBUTES lpTokenAttributes,
+			SECURITY_IMPERSONATION_LEVEL ImpersonationLevel, TOKEN_TYPE TokenType, out SafeHTOKEN phNewToken);
 
 		/// <summary>The GetAce function obtains a pointer to an access control entry (ACE) in an access control list (ACL).</summary>
 		/// <param name="pAcl">A pointer to an ACL that contains the ACE to be retrieved.</param>
@@ -507,7 +507,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winbase.h", MSDNShortId = "aa446671")]
-		public static extern bool GetTokenInformation(SafeTokenHandle hObject, TOKEN_INFORMATION_CLASS tokenInfoClass, SafeCoTaskMemHandle pTokenInfo, int tokenInfoLength, out int returnLength);
+		public static extern bool GetTokenInformation(HTOKEN hObject, TOKEN_INFORMATION_CLASS tokenInfoClass, SafeCoTaskMemHandle pTokenInfo, int tokenInfoLength, out int returnLength);
 
 		/// <summary>The <c>ImpersonateNamedPipeClient</c> function impersonates a named-pipe client application.</summary>
 		/// <param name="hNamedPipe">A handle to a named pipe.</param>
@@ -562,7 +562,7 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa378184")]
 		public static extern bool LogonUser(string lpszUserName, string lpszDomain, string lpszPassword, LogonUserType dwLogonType, LogonUserProvider dwLogonProvider,
-			out SafeTokenHandle phObject);
+			out SafeHTOKEN phObject);
 
 		/// <summary>
 		/// The LogonUserEx function attempts to log a user on to the local computer. The local computer is the computer from which
@@ -616,7 +616,7 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa378189")]
 		public static extern bool LogonUserEx(string lpszUserName, string lpszDomain, string lpszPassword, LogonUserType dwLogonType, LogonUserProvider dwLogonProvider,
-			out SafeTokenHandle phObject, out PSID ppLogonSid, out SafeLsaReturnBufferHandle ppProfileBuffer, out uint pdwProfileLength, out QUOTA_LIMITS pQuotaLimits);
+			out SafeHTOKEN phObject, out PSID ppLogonSid, out SafeLsaReturnBufferHandle ppProfileBuffer, out uint pdwProfileLength, out QUOTA_LIMITS pQuotaLimits);
 
 		/// <summary>
 		/// The LookupAccountName function accepts the name of a system and an account as input. It retrieves a security identifier (SID) for
@@ -914,7 +914,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winbase.h", MSDNShortId = "aa379295")]
-		public static extern bool OpenProcessToken([In] IntPtr ProcessHandle, TokenAccess DesiredAccess, out SafeTokenHandle TokenHandle);
+		public static extern bool OpenProcessToken([In] IntPtr ProcessHandle, TokenAccess DesiredAccess, out SafeHTOKEN TokenHandle);
 
 		/// <summary>The <c>OpenThreadToken</c> function opens the access token associated with a thread.</summary>
 		/// <param name="ThreadHandle">A handle to the thread whose access token is opened.</param>
@@ -950,7 +950,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa379296")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool OpenThreadToken([In] IntPtr ThreadHandle, TokenAccess DesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool OpenAsSelf, out SafeTokenHandle TokenHandle);
+		public static extern bool OpenThreadToken([In] IntPtr ThreadHandle, TokenAccess DesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool OpenAsSelf, out SafeHTOKEN TokenHandle);
 
 		/// <summary>
 		/// The PrivilegeCheck function determines whether a specified set of privileges are enabled in an access token. The PrivilegeCheck
@@ -982,7 +982,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "aa379304")]
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PrivilegeCheck(SafeTokenHandle ClientToken,
+		public static extern bool PrivilegeCheck(HTOKEN ClientToken,
 			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRIVILEGE_SET.Marshaler))] PRIVILEGE_SET RequiredPrivileges,
 			[MarshalAs(UnmanagedType.Bool)] out bool pfResult);
 
@@ -1059,21 +1059,10 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa379590")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetThreadToken(IntPtr Thread, SafeTokenHandle Token);
+		public static extern bool SetThreadToken(IntPtr Thread, HTOKEN Token);
 
-		/// <summary>Closes an open object handle.</summary>
-		/// <param name="hObject">A valid handle to an open object.</param>
-		/// <returns>
-		/// If the function succeeds, the return value is nonzero. If the function fails, the return value is zero.To get extended error
-		/// information, call GetLastError.
-		/// </returns>
-		[PInvokeData("WinBase.h", MSDNShortId = "ms724211")]
-		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success), DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		private static extern bool CloseHandle(IntPtr hObject);
-
-		/// <summary>Represents a safe handle for HTOKEN.</summary>
-		public class SafeTokenHandle : GenericSafeHandle
+		/// <summary>Provides a <see cref="SafeHandle"/> to a  that releases a created HTOKEN instance at disposal using CloseHandle.</summary>
+		public class SafeHTOKEN : HTOKEN
 		{
 			/// <summary>
 			/// Retrieves a pseudo-handle that you can use as a shorthand way to refer to the access token associated with a process.
@@ -1093,7 +1082,7 @@ namespace Vanara.PInvoke
 			/// close the duplicate handle.
 			/// </para>
 			/// </remarks>
-			public static readonly SafeTokenHandle CurrentProcessToken = new SafeTokenHandle((IntPtr)4, false);
+			public static readonly SafeHTOKEN CurrentProcessToken = new SafeHTOKEN((IntPtr)4, false);
 
 			/// <summary>
 			/// Retrieves a pseudo-handle that you can use as a shorthand way to refer to the token that is currently in effect for the
@@ -1114,7 +1103,7 @@ namespace Vanara.PInvoke
 			/// close the duplicate handle.
 			/// </para>
 			/// </remarks>
-			public static readonly SafeTokenHandle CurrentThreadEffectiveToken = new SafeTokenHandle((IntPtr)6, false);
+			public static readonly SafeHTOKEN CurrentThreadEffectiveToken = new SafeHTOKEN((IntPtr)6, false);
 
 			/// <summary>
 			/// Retrieves a pseudo-handle that you can use as a shorthand way to refer to the impersonation token that was assigned to the
@@ -1135,20 +1124,12 @@ namespace Vanara.PInvoke
 			/// close the duplicate handle.
 			/// </para>
 			/// </remarks>
-			public static readonly SafeTokenHandle CurrentThreadToken = new SafeTokenHandle((IntPtr)5, false);
+			public static readonly SafeHTOKEN CurrentThreadToken = new SafeHTOKEN((IntPtr)5, false);
 
-			/// <summary>Initializes a new instance of the <see cref="SafeTokenHandle"/> class.</summary>
-			/// <param name="hToken">The h token.</param>
-			/// <param name="own">if set to <c>true</c> [own].</param>
-			public SafeTokenHandle(IntPtr hToken, bool own = true) : base(hToken, CloseHandle, own)
-			{
-			}
-
-			/// <summary>Initializes a new instance of the <see cref="SafeTokenHandle"/> class.</summary>
-			internal SafeTokenHandle() : base(CloseHandle) { }
-
-			/// <summary>Gets an instance that is equivalent to NULL HTOKEN.</summary>
-			public static SafeTokenHandle Null { get; } = new SafeTokenHandle(IntPtr.Zero, false);
+			/// <summary>Initializes a new instance of the <see cref="HTOKEN"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeHTOKEN(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
 			/// <summary>Gets a value indicating whether this token is elevated.</summary>
 			/// <value><c>true</c> if this instance is elevated; otherwise, <c>false</c>.</value>
@@ -1158,17 +1139,17 @@ namespace Vanara.PInvoke
 			/// <param name="hProcess">The process handle.</param>
 			/// <param name="desiredAccess">The desired access. TOKEN_DUPLICATE must usually be included.</param>
 			/// <returns>Resulting token handle.</returns>
-			public static SafeTokenHandle FromProcess(IntPtr hProcess, TokenAccess desiredAccess = TokenAccess.TOKEN_DUPLICATE) =>
-				!OpenProcessToken(hProcess, desiredAccess, out SafeTokenHandle val) ? throw new Win32Exception() : val;
+			public static SafeHTOKEN FromProcess(IntPtr hProcess, TokenAccess desiredAccess = TokenAccess.TOKEN_DUPLICATE) =>
+				!OpenProcessToken(hProcess, desiredAccess, out SafeHTOKEN val) ? throw new Win32Exception() : val;
 
 			/// <summary>Get the token handle instance from a process handle.</summary>
 			/// <param name="hThread">The thread handle.</param>
 			/// <param name="desiredAccess">The desired access. TOKEN_DUPLICATE must usually be included.</param>
 			/// <param name="openAsSelf">if set to <c>true</c> open as self.</param>
 			/// <returns>Resulting token handle.</returns>
-			public static SafeTokenHandle FromThread(IntPtr hThread, TokenAccess desiredAccess = TokenAccess.TOKEN_DUPLICATE, bool openAsSelf = true)
+			public static SafeHTOKEN FromThread(IntPtr hThread, TokenAccess desiredAccess = TokenAccess.TOKEN_DUPLICATE, bool openAsSelf = true)
 			{
-				if (!OpenThreadToken(hThread, desiredAccess, openAsSelf, out SafeTokenHandle val))
+				if (!OpenThreadToken(hThread, desiredAccess, openAsSelf, out SafeHTOKEN val))
 				{
 					if (Marshal.GetLastWin32Error() == Win32Error.ERROR_NO_TOKEN)
 					{
@@ -1291,6 +1272,9 @@ namespace Vanara.PInvoke
 
 				return pType;
 			}
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => Kernel32.CloseHandle(this);
 		}
 	}
 }

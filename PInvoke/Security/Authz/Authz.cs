@@ -998,7 +998,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("authz.h", MSDNShortId = "75a7fb3f-6b3a-42ca-b467-f57baf6c60c6")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzInitializeContextFromToken(uint Flags, SafeTokenHandle TokenHandle, SafeAUTHZ_RESOURCE_MANAGER_HANDLE hAuthzResourceManager,
+		public static extern bool AuthzInitializeContextFromToken(uint Flags, SafeHTOKEN TokenHandle, SafeAUTHZ_RESOURCE_MANAGER_HANDLE hAuthzResourceManager,
 			[Optional] IntPtr pExpirationTime, LUID Identifier, [Optional] IntPtr DynamicGroupArgs, out SafeAUTHZ_CLIENT_CONTEXT_HANDLE phAuthzClientContext);
 
 		/// <summary>

@@ -7,6 +7,7 @@ using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.PropSys;
+using static Vanara.PInvoke.User32_Gdi;
 
 namespace Vanara.PInvoke
 {
@@ -1185,7 +1186,7 @@ namespace Vanara.PInvoke
 		// fAccept );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "1f16f6e4-7847-4bc7-adce-995876db24bd")]
-		public static extern void DragAcceptFiles(HandleRef hWnd, [MarshalAs(UnmanagedType.Bool)] bool fAccept);
+		public static extern void DragAcceptFiles(HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool fAccept);
 
 		/// <summary>
 		/// <para>Releases memory that the system allocated for use in transferring file names to the application.</para>
@@ -1202,7 +1203,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-dragfinish void DragFinish( HDROP hDrop );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "9b15e8a5-de68-4dcb-8e1a-0ee0393aa9db")]
-		public static extern void DragFinish(IntPtr hDrop);
+		public static extern void DragFinish(HDROP hDrop);
 
 		/// <summary>
 		/// <para>Retrieves the names of dropped files that result from a successful drag-and-drop operation.</para>
@@ -1250,7 +1251,7 @@ namespace Vanara.PInvoke
 		// iFile, LPSTR lpszFile, UINT cch );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shellapi.h", MSDNShortId = "93fab381-9035-46c4-ba9d-efb2d0801d84")]
-		public static extern uint DragQueryFile(IntPtr hDrop, uint iFile, string lpszFile, uint cch);
+		public static extern uint DragQueryFile(HDROP hDrop, uint iFile, string lpszFile, uint cch);
 
 		/// <summary>
 		/// <para>Retrieves the position of the mouse pointer at the time a file was dropped during a drag-and-drop operation.</para>
@@ -1274,7 +1275,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "87794ab0-a075-4a1f-869f-5998bdc57a1d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DragQueryPoint(IntPtr hDrop, ref System.Drawing.Point ppt);
+		public static extern bool DragQueryPoint(HDROP hDrop, ref System.Drawing.Point ppt);
 
 		/// <summary>Creates a duplicate of a specified icon.</summary>
 		/// <param name="hInst">Type: <c>HINSTANCE</c></param>
@@ -1289,7 +1290,7 @@ namespace Vanara.PInvoke
 		// HICON DuplicateIcon( _Reserved_ HINSTANCE hInst, _In_ HICON hIcon); https://msdn.microsoft.com/en-us/library/windows/desktop/bb776411(v=vs.85).aspx
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Shellapi.h", MSDNShortId = "bb776411")]
-		public static extern IntPtr DuplicateIcon(SafeLibraryHandle hInst, IntPtr hIcon);
+		public static extern SafeHICON DuplicateIcon(HINSTANCE hInst, HICON hIcon);
 
 		/// <summary>Gets a handle to an icon stored as a resource in a file or an icon stored in a file's associated executable file.</summary>
 		/// <param name="hInst">A handle to the instance of the calling application.</param>
@@ -1318,7 +1319,7 @@ namespace Vanara.PInvoke
 		// public static Icon ExtractAssociatedIcon( string filePath ) https://msdn.microsoft.com/en-us/library/system.drawing.icon.extractassociatedicon(v=vs.110).aspx
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Shellapi.h", MSDNShortId = "bb776414")]
-		public static extern IntPtr ExtractAssociatedIcon(SafeLibraryHandle hInst, StringBuilder lpIconPath, ref ushort lpiIcon);
+		public static extern SafeHICON ExtractAssociatedIcon(HINSTANCE hInst, StringBuilder lpIconPath, ref ushort lpiIcon);
 
 		/// <summary>
 		/// <para>
@@ -1350,7 +1351,7 @@ namespace Vanara.PInvoke
 		// HINSTANCE hInst, LPSTR pszIconPath, WORD *piIconIndex, WORD *piIconId );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shellapi.h", MSDNShortId = "f32260b0-917b-4406-aeee-34f71a7c7309")]
-		public static extern IntPtr ExtractAssociatedIconEx(SafeLibraryHandle hInst, StringBuilder pszIconPath, ref ushort piIconIndex, ref ushort piIconId);
+		public static extern SafeHICON ExtractAssociatedIconEx(HINSTANCE hInst, StringBuilder pszIconPath, ref ushort piIconIndex, ref ushort piIconId);
 
 		/// <summary>
 		/// <para>Gets a handle to an icon from the specified executable file, DLL, or icon file.</para>
@@ -1390,7 +1391,7 @@ namespace Vanara.PInvoke
 		// HICON ExtractIcon( _Reserved_ HINSTANCE hInst, _In_ LPCTSTR lpszExeFileName, UINT nIconIndex); https://msdn.microsoft.com/en-us/library/windows/desktop/bb776416(v=vs.85).aspx
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Shellapi.h", MSDNShortId = "bb776416")]
-		public static extern IntPtr ExtractIcon(SafeLibraryHandle hInst, string lpszExeFileName, uint nIconIndex);
+		public static extern SafeHICON ExtractIcon(HINSTANCE hInst, string lpszExeFileName, uint nIconIndex);
 
 		/// <summary>
 		/// The ExtractIconEx function creates an array of handles to large or small icons extracted from the specified executable file, DLL,
@@ -1428,8 +1429,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
 		[PInvokeData("Shellapi.h", MSDNShortId = "ms648069")]
 		public static extern int ExtractIconEx([MarshalAs(UnmanagedType.LPTStr)] string lpszFile, int nIconIndex,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] IntPtr[] phIconLarge,
-			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] IntPtr[] phIconSmall, int nIcons);
+			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] SafeHICON[] phIconLarge,
+			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] SafeHICON[] phIconSmall, int nIcons);
 
 		/// <summary>
 		/// <para>Retrieves the name of and handle to the executable (.exe) file associated with a specific document file.</para>
@@ -1895,7 +1896,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shellapi.h", MSDNShortId = "0919e356-84e8-475e-8628-23097b19c50d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ShellAbout(HandleRef hWnd, string szApp, string szOtherStuff, IntPtr hIcon);
+		public static extern bool ShellAbout(HWND hWnd, string szApp, string szOtherStuff, IntPtr hIcon);
 
 		/// <summary>
 		/// <para>Performs an operation on a specified file.</para>
@@ -2103,7 +2104,7 @@ namespace Vanara.PInvoke
 		// lpOperation, LPCSTR lpFile, LPCSTR lpParameters, LPCSTR lpDirectory, INT nShowCmd );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shellapi.h", MSDNShortId = "8b1f3978-a0ee-4684-8a37-98e270b63897")]
-		public static extern IntPtr ShellExecute(HandleRef hwnd, string lpOperation, string lpFile, string lpParameters, string lpDirectory, ShowWindowCommand nShowCmd);
+		public static extern IntPtr ShellExecute(HWND hwnd, string lpOperation, string lpFile, string lpParameters, string lpDirectory, ShowWindowCommand nShowCmd);
 
 		/// <summary>Performs an operation on a specified file.</summary>
 		/// <param name="lpExecInfo">
@@ -2151,7 +2152,7 @@ namespace Vanara.PInvoke
 		// hwnd, LPCSTR pszRootPath, DWORD dwFlags );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shellapi.h", MSDNShortId = "c3995be7-bc8b-4e1f-8ef6-fdf4c0a75720")]
-		public static extern HRESULT SHEmptyRecycleBin(HandleRef hwnd, string pszRootPath, SHERB dwFlags);
+		public static extern HRESULT SHEmptyRecycleBin(HWND hwnd, string pszRootPath, SHERB dwFlags);
 
 		/// <summary>
 		/// <para>Enumerates the user accounts that have unread email.</para>
@@ -2186,7 +2187,7 @@ namespace Vanara.PInvoke
 		// SHEnumerateUnreadMailAccountsW( HKEY hKeyUser, DWORD dwIndex, LPWSTR pszMailAddress, int cchMailAddress );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "67ec8355-f902-4b71-972f-94e403701f96")]
-		public static extern HRESULT SHEnumerateUnreadMailAccountsW(IntPtr hKeyUser, uint dwIndex, StringBuilder pszMailAddress, int cchMailAddress);
+		public static extern HRESULT SHEnumerateUnreadMailAccountsW(HKEY hKeyUser, uint dwIndex, StringBuilder pszMailAddress, int cchMailAddress);
 
 		/// <summary>
 		/// <para>Enforces strict validation of parameters used in a call to CreateProcess or ShellExecute.</para>
@@ -2625,7 +2626,7 @@ namespace Vanara.PInvoke
 		// SHGetPropertyStoreForWindow( HWND hwnd, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "772aa2c8-6dd1-480c-a008-58f30902cb80")]
-		public static extern HRESULT SHGetPropertyStoreForWindow(HandleRef hwnd, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT SHGetPropertyStoreForWindow(HWND hwnd, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>
 		/// <para>Retrieves information about system-defined Shell icons.</para>
@@ -2834,7 +2835,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shellapi.h", MSDNShortId = "32a5802f-cef7-4dbd-affd-82285fe97a8c")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SHInvokePrinterCommand(HandleRef hwnd, PRINTACTION uAction, string lpBuf1, string lpBuf2, [MarshalAs(UnmanagedType.Bool)] bool fModal);
+		public static extern bool SHInvokePrinterCommand(HWND hwnd, PRINTACTION uAction, string lpBuf1, string lpBuf2, [MarshalAs(UnmanagedType.Bool)] bool fModal);
 
 		/// <summary>
 		/// <para>
@@ -3125,7 +3126,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "ac2d591a-f431-4da7-aa9f-0476634ec9cf")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SHTestTokenMembership(SafeTokenHandle hToken, uint ulRID);
+		public static extern bool SHTestTokenMembership(SafeHTOKEN hToken, uint ulRID);
 
 		/// <summary>
 		/// <para>Contains information about a system appbar message.</para>

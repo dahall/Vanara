@@ -178,7 +178,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "a7668c28-77c9-4373-ae1a-eab3cb98f866")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumDisplayMonitors(SafeDCHandle hdc, PRECT lprcClip, MonitorEnumProc lpfnEnum, IntPtr dwData);
+		public static extern bool EnumDisplayMonitors(HDC hdc, PRECT lprcClip, MonitorEnumProc lpfnEnum, IntPtr dwData);
 
 		/// <summary>
 		/// <para>The <c>GetMonitorInfo</c> function retrieves information about a display monitor.</para>
@@ -336,7 +336,7 @@ namespace Vanara.PInvoke
 		// DWORD dwFlags );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "fe6505c9-b481-4fec-ae9d-995943234a3a")]
-		public static extern HMONITOR MonitorFromWindow(HandleRef hwnd, MonitorFlags dwFlags);
+		public static extern HMONITOR MonitorFromWindow(HWND hwnd, MonitorFlags dwFlags);
 
 		/// <summary>
 		/// <para>The <c>MONITORINFO</c> structure contains information about a display monitor.</para>
@@ -457,17 +457,6 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
 			public string szDevice;
-		}
-
-		/// <summary>Represents a monitor handle. No method is called on disposal.</summary>
-		public class HMONITOR : SafeHandle
-		{
-			/// <summary>Initializes a new instance of the <see cref="HMONITOR"/> class.</summary>
-			public HMONITOR() : base(IntPtr.Zero, false) { }
-			/// <inheritdoc/>
-			public override bool IsInvalid => handle == IntPtr.Zero;
-			/// <inheritdoc/>
-			protected override bool ReleaseHandle() => true;
 		}
 	}
 }

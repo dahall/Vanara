@@ -302,7 +302,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760540")]
 		[DllImport(Lib.ComCtl32, CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public static extern HRESULT TaskDialog(HandleRef hwndParent, SafeLibraryHandle hInstance, string pszWindowTitle, string pszMainInstruction, string pszContent, TASKDIALOG_COMMON_BUTTON_FLAGS dwCommonButtons, IntPtr pszIcon, out int pnButton);
+		public static extern HRESULT TaskDialog(HWND hwndParent, HINSTANCE hInstance, string pszWindowTitle, string pszMainInstruction, string pszContent, TASKDIALOG_COMMON_BUTTON_FLAGS dwCommonButtons, IntPtr pszIcon, out int pnButton);
 
 		/// <summary>The TaskDialogIndirect function creates, displays, and operates a task dialog. The task dialog contains application-defined icons, messages, title, verification check box, command links, push buttons, and radio buttons. This function can register a callback function to receive notification messages.</summary>
 		/// <param name="pTaskConfig">Pointer to a TASKDIALOGCONFIG structure that contains information used to display the task dialog.</param>

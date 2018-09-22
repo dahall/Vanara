@@ -218,7 +218,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb760807(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Prsht.h", MSDNShortId = "bb760807")]
-		public static extern SafePropertySheetPagehandle CreatePropertySheetPage(PROPSHEETPAGE lppsp);
+		public static extern SafeHPROPSHEETPAGE CreatePropertySheetPage(PROPSHEETPAGE lppsp);
 
 		/// <summary>Destroys a property sheet page. An application must call this function for pages that have not been passed to the <c>PropertySheet</c> function.</summary><param name="hPSPage"><para>Type: <c>HPROPSHEETPAGE</c></para><para>Handle to the property sheet page to delete.</para></param><returns><para>Type: <c><c>BOOL</c></c></para><para>Returns nonzero if successful, or zero otherwise.</para></returns>
 		// BOOL DestroyPropertySheetPage( HPROPSHEETPAGE hPSPage);
@@ -226,7 +226,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Prsht.h", MSDNShortId = "bb760809")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DestroyPropertySheetPage(IntPtr hPSPage);
+		public static extern bool DestroyPropertySheetPage(HPROPSHEETPAGE hPSPage);
 
 		/// <summary>Creates a property sheet and adds the pages defined in the specified property sheet header structure.</summary><param name="lppsph"><para>Type: <c>LPCPROPSHEETHEADER</c></para><para>Pointer to a <c>PROPSHEETHEADER</c> structure that defines the frame and pages of a property sheet.</para></param><returns><para>Type: <c><c>INT_PTR</c></c></para><para>For modal property sheets, the return value is as follows:</para><para><list type="table"><listheader><term>&amp;gt;=1</term><term>Changes were saved by the user.</term></listheader><item><term>0</term><term>No changes were saved by the user.</term></item><item><term>-1</term><term>An error occurred.</term></item></list></para><para>For modeless property sheets, the return value is the property sheet&#39;s window handle.</para><para>The following return values have a special meaning.</para><para><list type="table"><listheader><term>Return code</term><term>Description</term></listheader><item><term>ID_PSREBOOTSYSTEM</term><term>A page sent the PSM_REBOOTSYSTEM message to the property sheet. The computer must be restarted for the user&amp;#39;s changes to take effect.</term></item><item><term>ID_PSRESTARTWINDOWS</term><term>A page sent the PSM_RESTARTWINDOWS message to the property sheet. Windows must be restarted for the user&amp;#39;s changes to take effect.</term></item></list></para></returns>
 		// INT_PTR PropertySheet( LPCPROPSHEETHEADER lppsph);
@@ -596,16 +596,16 @@ namespace Vanara.PInvoke
 			}
 		}
 
-		/// <summary>Safe handle for property sheet pages.</summary>
-		/// <seealso cref="GenericSafeHandle"/>
-		public class SafePropertySheetPagehandle : GenericSafeHandle
+		/// <summary>Provides a <see cref="SafeHandle"/> to a  that releases a created HPROPSHEETPAGE instance at disposal using DestroyPropertySheetPage.</summary>
+		public class SafeHPROPSHEETPAGE : HPROPSHEETPAGE
 		{
-			/// <summary>Initializes a new instance of the <see cref="SafePropertySheetPagehandle"/> class.</summary>
-			public SafePropertySheetPagehandle() : this(IntPtr.Zero) { }
-			/// <summary>Initializes a new instance of the <see cref="SafePropertySheetPagehandle"/> class.</summary>
-			/// <param name="handle">The handle.</param>
-			/// <param name="owns">if set to <c>true</c> calls DestroyPropertySheetPage on disposal.</param>
-			public SafePropertySheetPagehandle(IntPtr handle, bool owns = true) : base(handle, DestroyPropertySheetPage, owns) { }
+			/// <summary>Initializes a new instance of the <see cref="HPROPSHEETPAGE"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeHPROPSHEETPAGE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => DestroyPropertySheetPage(this);
 		}
 	}
 }

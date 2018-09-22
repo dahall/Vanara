@@ -18,7 +18,7 @@ namespace Vanara.PInvoke
 			/// <param name="prc">A pointer to a RECT defining the area for the previewer.</param>
 			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 			[PreserveSig]
-			HRESULT SetWindow([In] HandleRef hwnd, [In, MarshalAs(UnmanagedType.LPStruct)] RECT prc);
+			HRESULT SetWindow([In] HWND hwnd, [In, MarshalAs(UnmanagedType.LPStruct)] RECT prc);
 
 			/// <summary>Directs the preview handler to change the area within the parent hwnd that it draws into.</summary>
 			/// <param name="prc">A pointer to a RECT to be used for the preview.</param>

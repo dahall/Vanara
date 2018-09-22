@@ -104,7 +104,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa363484")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool BindIoCompletionCallback([In] SafeFileHandle FileHandle, FileIOCompletionRoutine Function, [Optional] uint Flags);
+		public static extern bool BindIoCompletionCallback([In] HFILE FileHandle, FileIOCompletionRoutine Function, [Optional] uint Flags);
 
 		/// <summary>Updates a timer-queue timer that was created by the <c>CreateTimerQueueTimer</c> function.</summary>
 		/// <param name="TimerQueue">

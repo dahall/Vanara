@@ -1587,7 +1587,7 @@ namespace Vanara.PInvoke
 		// HWND hwnd, IShellItem *psi, DWORD dwFileOpFlags, IFileOperationProgressSink *pfops );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shobjidl.h", MSDNShortId = "c3ab80a3-c1f3-4223-9fe3-f7fe48c36460")]
-		public static extern HRESULT SHSetDefaultProperties(HandleRef hwnd, IShellItem psi, FILEOP_FLAGS dwFileOpFlags, IFileOperationProgressSink pfops);
+		public static extern HRESULT SHSetDefaultProperties(HWND hwnd, IShellItem psi, FILEOP_FLAGS dwFileOpFlags, IFileOperationProgressSink pfops);
 
 		/// <summary>
 		/// <para>

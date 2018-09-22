@@ -7,6 +7,7 @@ using System.Text;
 using Microsoft.Win32.SafeHandles;
 using Vanara.Extensions;
 using Vanara.InteropServices;
+using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke
 {
@@ -501,7 +502,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.NtDll, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("ntifs.h", MSDNShortId = "c40b99be-5627-44f3-9853-c3ae31a8035c")]
 		//  public static extern __kernel_entry NTSYSCALLAPI NTSTATUS NtCreateFile(ref IntPtr FileHandle, ACCESS_MASK DesiredAccess, POBJECT_ATTRIBUTES ObjectAttributes, PIO_STATUS_BLOCK IoStatusBlock, PLARGE_INTEGER AllocationSize, uint FileAttributes, uint ShareAccess, uint CreateDisposition, uint CreateOptions, IntPtr EaBuffer, uint EaLength);
-		public static extern NTStatus NtCreateFile(out SafeFileHandle FileHandle, ACCESS_MASK DesiredAccess, [In] ref OBJECT_ATTRIBUTES ObjectAttributes, out IO_STATUS_BLOCK IoStatusBlock,
+		public static extern NTStatus NtCreateFile(out SafeHFILE FileHandle, ACCESS_MASK DesiredAccess, [In] ref OBJECT_ATTRIBUTES ObjectAttributes, out IO_STATUS_BLOCK IoStatusBlock,
 			ref long AllocationSize, FileFlagsAndAttributes FileAttributes, FileShare ShareAccess, NtFileMode CreateDisposition, NtFileCreateOptions CreateOptions, IntPtr EaBuffer, uint EaLength);
 
 		/// <summary>Specifies the action to perform if the file does or does not exist.</summary>
@@ -774,7 +775,7 @@ namespace Vanara.PInvoke
 		// __kernel_entry NTSYSCALLAPI NTSTATUS NtCreateSection( PHANDLE SectionHandle, ACCESS_MASK DesiredAccess, POBJECT_ATTRIBUTES ObjectAttributes, PLARGE_INTEGER MaximumSize, ULONG SectionPageProtection, ULONG AllocationAttributes, HANDLE FileHandle );
 		[DllImport(Lib.NtDll, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("ntifs.h", MSDNShortId = "805d7eff-19be-47a1-acc9-1b97e5493031")]
-		public static extern NTStatus NtCreateSection(ref IntPtr SectionHandle, ACCESS_MASK DesiredAccess, [In] ref OBJECT_ATTRIBUTES ObjectAttributes, ref long MaximumSize, Kernel32.MEM_PROTECTION SectionPageProtection, Kernel32.SEC_ALLOC AllocationAttributes, SafeFileHandle FileHandle);
+		public static extern NTStatus NtCreateSection(ref IntPtr SectionHandle, ACCESS_MASK DesiredAccess, [In] ref OBJECT_ATTRIBUTES ObjectAttributes, ref long MaximumSize, Kernel32.MEM_PROTECTION SectionPageProtection, Kernel32.SEC_ALLOC AllocationAttributes, HFILE FileHandle);
 
 		/// <summary>
 		/// <para>

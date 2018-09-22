@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Security;
 using System.Text;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Macros;
 using static Vanara.PInvoke.Shell32;
@@ -101,7 +102,7 @@ namespace Vanara.Windows.Shell
 				if (ret == IntPtr.Zero)
 				{
 					ret = SHGetFileInfo(FullPath, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_ICONLOCATION | SHGFI.SHGFI_ICON);
-					if (ret != IntPtr.Zero) DestroyIcon(shfi.hIcon);
+					if (ret != IntPtr.Zero) DestroyIcon(new HICON(shfi.hIcon));
 				}
 				return ret != IntPtr.Zero ? new IconLocation(shfi.szDisplayName, shfi.iIcon) : new IconLocation();
 			}
@@ -116,7 +117,7 @@ namespace Vanara.Windows.Shell
 				var shfi = new SHFILEINFO();
 				var ret = SHGetFileInfo(FullPath, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_ICON | SHGFI.SHGFI_USEFILEATTRIBUTES | SHGFI.SHGFI_OVERLAYINDEX | SHGFI.SHGFI_LINKOVERLAY);
 				if (ret == IntPtr.Zero) return -1;
-				DestroyIcon(shfi.hIcon);
+				DestroyIcon(new HICON(shfi.hIcon));
 				return (shfi.iIcon >> 24) - 1;
 			}
 		}

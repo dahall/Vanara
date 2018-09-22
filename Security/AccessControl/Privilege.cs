@@ -151,10 +151,10 @@ namespace Vanara.Security.AccessControl
 		UnsolicitedInput
 	}
 
-	/// <summary>Extension methods for <see cref="SafeTokenHandle"/> for working with privileges.</summary>
+	/// <summary>Extension methods for <see cref="SafeHTOKEN"/> for working with privileges.</summary>
 	public static class PrivilegeExtension
 	{
-		public static SafeCoTaskMemHandle AdjustPrivilege(this SafeTokenHandle hObj, SystemPrivilege priv, PrivilegeAttributes attr)
+		public static SafeCoTaskMemHandle AdjustPrivilege(this SafeHTOKEN hObj, SystemPrivilege priv, PrivilegeAttributes attr)
 		{
 			var newState = new PTOKEN_PRIVILEGES(priv.GetLUID(), attr);
 			var prevState = PTOKEN_PRIVILEGES.GetAllocatedAndEmptyInstance();
@@ -165,7 +165,7 @@ namespace Vanara.Security.AccessControl
 			return prevState;
 		}
 
-		public static SafeCoTaskMemHandle AdjustPrivileges(this SafeTokenHandle hObj, params PrivilegeAndAttributes[] privileges)
+		public static SafeCoTaskMemHandle AdjustPrivileges(this SafeHTOKEN hObj, params PrivilegeAndAttributes[] privileges)
 		{
 			if (privileges == null || privileges.Length == 0) return SafeCoTaskMemHandle.Null;
 			var newState = new PTOKEN_PRIVILEGES(privileges.Select(pa => new LUID_AND_ATTRIBUTES(pa.Privilege.GetLUID(), pa.Attributes)).ToArray());
@@ -177,7 +177,7 @@ namespace Vanara.Security.AccessControl
 			return prevState;
 		}
 
-		public static void AdjustPrivileges(this SafeTokenHandle hObj, PTOKEN_PRIVILEGES privileges)
+		public static void AdjustPrivileges(this SafeHTOKEN hObj, PTOKEN_PRIVILEGES privileges)
 		{
 			if (privileges == null) return;
 			uint retLen = 0;
@@ -185,7 +185,7 @@ namespace Vanara.Security.AccessControl
 				throw new Win32Exception();
 		}
 
-		public static void AdjustPrivileges(this SafeTokenHandle hObj, SafeCoTaskMemHandle privileges)
+		public static void AdjustPrivileges(this SafeHTOKEN hObj, SafeCoTaskMemHandle privileges)
 		{
 			if (privileges == null || privileges.IsInvalid) return;
 			uint retLen = 0;
@@ -197,16 +197,16 @@ namespace Vanara.Security.AccessControl
 
 		public static SystemPrivilege GetPrivilege(this LUID luid, string systemName = null) => SystemPrivilegeTypeConverter.GetPrivilege(luid, systemName);
 
-		public static bool HasPrivilege(this SafeTokenHandle hObj, SystemPrivilege priv) => HasPrivileges(hObj, true, priv);
+		public static bool HasPrivilege(this SafeHTOKEN hObj, SystemPrivilege priv) => HasPrivileges(hObj, true, priv);
 
-		public static bool HasPrivileges(this SafeTokenHandle hObj, bool requireAll, params SystemPrivilege[] privs)
+		public static bool HasPrivileges(this SafeHTOKEN hObj, bool requireAll, params SystemPrivilege[] privs)
 		{
 			if (!PrivilegeCheck(hObj, new PRIVILEGE_SET((PrivilegeSetControl)(requireAll ? 1 : 0), privs.Select(p => new LUID_AND_ATTRIBUTES(p.GetLUID(), PrivilegeAttributes.SE_PRIVILEGE_ENABLED)).ToArray()), out bool ret))
 				Win32Error.ThrowLastError();
 			return ret;
 		}
 
-		public static IEnumerable<LUID_AND_ATTRIBUTES> GetPrivileges(this SafeTokenHandle hObj) =>
+		public static IEnumerable<LUID_AND_ATTRIBUTES> GetPrivileges(this SafeHTOKEN hObj) =>
 			hObj.GetInfo<PTOKEN_PRIVILEGES>(TOKEN_INFORMATION_CLASS.TokenPrivileges).Privileges;
 	}
 

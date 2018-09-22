@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.User32_Gdi;
 
@@ -113,14 +114,14 @@ namespace Vanara.Extensions
 		public static IntPtr GetHeaderHandle(this ListView listView)
 		{
 			if (listView.IsHandleCreated)
-				return SendMessage(new HandleRef(listView, listView.Handle), (uint)ListViewMessage.LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero);
+				return SendMessage(listView.Handle, (uint)ListViewMessage.LVM_GETHEADER, IntPtr.Zero, IntPtr.Zero);
 			return IntPtr.Zero;
 		}
 
 		public static void InvalidateHeader(this ListView listView)
 		{
 			if (listView.IsHandleCreated && listView.View == View.Details)
-				InvalidateRect(new HandleRef(listView, GetHeaderHandle(listView)), null, true);
+				InvalidateRect(GetHeaderHandle(listView), null, true);
 		}
 
 		public static void SetCollapsed(this ListViewGroup group, bool value)
@@ -147,7 +148,7 @@ namespace Vanara.Extensions
 			if (listView.IsHandleCreated)
 			{
 				var lvc = new LVCOLUMN(ListViewColumMask.LVCF_FMT);
-				var hr = new HandleRef(listView, listView.Handle);
+				var hr = listView.Handle;
 				SendMessage(hr, ListViewMessage.LVM_GETCOLUMN, columnIndex, lvc);
 				if (enable)
 					lvc.Format |= ListViewColumnFormat.LVCFMT_SPLITBUTTON;
@@ -165,25 +166,23 @@ namespace Vanara.Extensions
 			if (lvi.ListView == null)
 				throw new ArgumentNullException(nameof(lvi), @"ListViewItem must be attached to a valid ListView.");
 			var nItem = new LVITEM(lvi.Index) {OverlayImageIndex = (uint)imageIndex};
-			if (SendMessage(new HandleRef(lvi.ListView, lvi.ListView.Handle), ListViewMessage.LVM_SETITEM, 0, nItem).ToInt32() == 0)
+			if (SendMessage(lvi.ListView.Handle, ListViewMessage.LVM_SETITEM, 0, nItem).ToInt32() == 0)
 				throw new Win32Exception();
 		}
 
 		public static void SetSortIcon(this ListView listView, int columnIndex, SortOrder order)
 		{
-			var hr = new HandleRef(listView, listView.Handle);
-			var columnHeader = SendMessage(hr, (uint)ListViewMessage.LVM_GETHEADER);
-			var chr = new HandleRef(listView, columnHeader);
+			var columnHeader = (HWND)SendMessage(listView.Handle, (uint)ListViewMessage.LVM_GETHEADER);
 
 			for (var columnNumber = 0; columnNumber <= listView.Columns.Count - 1; columnNumber++)
 			{
 				// Get current ListView column info
 				var lvcol = new LVCOLUMN(ListViewColumMask.LVCF_FMT);
-				SendMessage(hr, ListViewMessage.LVM_GETCOLUMN, columnNumber, lvcol);
+				SendMessage(listView.Handle, ListViewMessage.LVM_GETCOLUMN, columnNumber, lvcol);
 
 				// Get current header info
 				var hditem = new HDITEM(HeaderItemMask.HDI_FORMAT | HeaderItemMask.HDI_DI_SETITEM);
-				SendMessage(chr, HeaderMessage.HDM_GETITEM, columnNumber, hditem);
+				SendMessage(columnHeader, HeaderMessage.HDM_GETITEM, columnNumber, hditem);
 
 				// Update header with column info
 				hditem.Format |= (HeaderItemFormat)((uint)lvcol.Format & 0x1001803);
@@ -197,7 +196,7 @@ namespace Vanara.Extensions
 					hditem.ImageDisplay = HeaderItemImageDisplay.None;
 
 				// Update header
-				SendMessage(chr, HeaderMessage.HDM_SETITEM, columnNumber, hditem);
+				SendMessage(columnHeader, HeaderMessage.HDM_SETITEM, columnNumber, hditem);
 			}
 		}
 
@@ -207,7 +206,7 @@ namespace Vanara.Extensions
 			if (groupId >= 0)
 			{
 				using (var lvgroup = new LVGROUP { Footer = footer, Alignment = MakeAlignment(group.HeaderAlignment, footerAlignment) })
-					SendMessage(new HandleRef(group.ListView, group.ListView.Handle), ListViewMessage.LVM_SETGROUPINFO, groupId, lvgroup);
+					SendMessage(group.ListView.Handle, ListViewMessage.LVM_SETGROUPINFO, groupId, lvgroup);
 			}
 		}
 
@@ -224,7 +223,7 @@ namespace Vanara.Extensions
 			if (groupId >= 0)
 			{
 				using (var lvgroup = new LVGROUP { TaskLink = taskLink })
-					SendMessage(new HandleRef(group.ListView, group.ListView.Handle), ListViewMessage.LVM_SETGROUPINFO, groupId, lvgroup);
+					SendMessage(group.ListView.Handle, ListViewMessage.LVM_SETGROUPINFO, groupId, lvgroup);
 			}
 		}
 
@@ -233,7 +232,7 @@ namespace Vanara.Extensions
 			if (!group.ListView.IsHandleCreated)
 				throw new InvalidOperationException();
 			var lparam = imageList?.Handle ?? IntPtr.Zero;
-			SendMessage(new HandleRef(group.ListView, group.ListView.Handle), (uint)ListViewMessage.LVM_SETIMAGELIST, (IntPtr)3, lparam);
+			SendMessage(group.ListView.Handle, (uint)ListViewMessage.LVM_SETIMAGELIST, (IntPtr)3, lparam);
 		}
 
 		[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
@@ -248,7 +247,7 @@ namespace Vanara.Extensions
 						lvgroup.DescriptionBottom = descriptionBottom;
 					if (descriptionTop != null)
 						lvgroup.DescriptionTop = descriptionTop;
-					SendMessage(new HandleRef(group.ListView, group.ListView.Handle), ListViewMessage.LVM_SETGROUPINFO, groupId, lvgroup);
+					SendMessage(group.ListView.Handle, ListViewMessage.LVM_SETGROUPINFO, groupId, lvgroup);
 				}
 			}
 		}
@@ -265,7 +264,7 @@ namespace Vanara.Extensions
 			var groupId = GetGroupId(group);
 			if (groupId < 0)
 				return false;
-			return (SendMessage(new HandleRef(group.ListView, group.ListView.Handle), (uint)ListViewMessage.LVM_GETGROUPSTATE, (IntPtr)groupId, new IntPtr((int)state)).ToInt32() & (int)state) != 0;
+			return (SendMessage(group.ListView.Handle, (uint)ListViewMessage.LVM_GETGROUPSTATE, (IntPtr)groupId, new IntPtr((int)state)).ToInt32() & (int)state) != 0;
 		}
 
 		private static bool IsWinVista() => Environment.OSVersion.Version.Major >= 6;
@@ -278,7 +277,7 @@ namespace Vanara.Extensions
 				var lvgroup = new LVGROUP(ListViewGroupMask.LVGF_STATE);
 				{
 					lvgroup.SetState(state, value);
-					SendMessage(new HandleRef(group.ListView, group.ListView.Handle), ListViewMessage.LVM_SETGROUPINFO, groupId, lvgroup);
+					SendMessage(group.ListView.Handle, ListViewMessage.LVM_SETGROUPINFO, groupId, lvgroup);
 				}
 			}
 		}
@@ -289,7 +288,7 @@ namespace Vanara.Extensions
 			{
 				listView.SetWindowTheme(on ? "explorer" : null);
 				if (!on) return;
-				SendMessage(new HandleRef(listView, listView.Handle), (uint)ListViewMessage.LVM_SETEXTENDEDLISTVIEWSTYLE, (IntPtr)ListViewStyleEx.LVS_EX_DOUBLEBUFFER, (IntPtr)ListViewStyleEx.LVS_EX_DOUBLEBUFFER);
+				SendMessage(listView.Handle, (uint)ListViewMessage.LVM_SETEXTENDEDLISTVIEWSTYLE, (IntPtr)ListViewStyleEx.LVS_EX_DOUBLEBUFFER, (IntPtr)ListViewStyleEx.LVS_EX_DOUBLEBUFFER);
 			}
 		}
 

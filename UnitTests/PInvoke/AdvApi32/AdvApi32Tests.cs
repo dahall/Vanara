@@ -23,9 +23,9 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void AdjustTokenPrivilegesTest()
 		{
-			using (var t = SafeTokenHandle.FromThread(GetCurrentThread(), TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY))
+			using (var t = SafeHTOKEN.FromThread(GetCurrentThread(), TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY))
 			{
-				Assert.That(LookupPrivilegeValue(null, "SeShutdownPrivilege", out LUID luid));
+				Assert.That(LookupPrivilegeValue(null, "SeShutdownPrivilege", out var luid));
 				var ptp = new PTOKEN_PRIVILEGES(luid, PrivilegeAttributes.SE_PRIVILEGE_ENABLED);
 				var old = PTOKEN_PRIVILEGES.GetAllocatedAndEmptyInstance();
 				var rLen = (uint)old.Size;
@@ -39,7 +39,7 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void AllocateAndInitializeSidTest()
 		{
-			var b = AllocateAndInitializeSid(KnownSIDAuthority.SECURITY_WORLD_SID_AUTHORITY, 1, KnownSIDRelativeID.SECURITY_WORLD_RID, 0, 0, 0, 0, 0, 0, 0, out IntPtr pSid);
+			var b = AllocateAndInitializeSid(KnownSIDAuthority.SECURITY_WORLD_SID_AUTHORITY, 1, KnownSIDRelativeID.SECURITY_WORLD_RID, 0, 0, 0, 0, 0, 0, 0, out var pSid);
 			Assert.That(b);
 			var everyone = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
 			var esid = new byte[everyone.BinaryLength];
@@ -65,7 +65,7 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void AllocateLocallyUniqueIdTest()
 		{
-			Assert.That(AllocateLocallyUniqueId(out LUID luid));
+			Assert.That(AllocateLocallyUniqueId(out var luid));
 			TestContext.WriteLine($"{luid.LowPart:X} {luid.HighPart:X}");
 			Assert.That(luid.LowPart, Is.Not.Zero);
 		}
@@ -95,7 +95,7 @@ namespace Vanara.PInvoke.Tests
 					{
 						using (var info = new SafeHGlobalHandle(1024))
 						{
-							Assert.That(QueryServiceConfig(hSvc, (IntPtr)info, (uint)info.Size, out uint _), Is.True);
+							Assert.That(QueryServiceConfig(hSvc, (IntPtr)info, (uint)info.Size, out var _), Is.True);
 							var qsc = info.ToStructure<QUERY_SERVICE_CONFIG>();
 							return qsc.dwStartType;
 						}
@@ -109,7 +109,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			var pSD = GetSD(fn);
 			var b = ConvertSecurityDescriptorToStringSecurityDescriptor(pSD, SDDL_REVISION.SDDL_REVISION_1,
-				SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, out var s, out uint len);
+				SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, out var s, out var len);
 			Assert.That(b, Is.True);
 			Assert.That(s, Is.Not.Null);
 			TestContext.WriteLine(s);
@@ -118,7 +118,7 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void DuplicateTokenExTest()
 		{
-			using (var tok = SafeTokenHandle.FromThread(GetCurrentThread()))
+			using (var tok = SafeHTOKEN.FromThread(GetCurrentThread()))
 			{
 				Assert.That(tok.IsInvalid, Is.False);
 			}
@@ -127,9 +127,9 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void DuplicateTokenTest()
 		{
-			var pval = SafeTokenHandle.FromProcess(System.Diagnostics.Process.GetCurrentProcess().Handle);
+			var pval = SafeHTOKEN.FromProcess(System.Diagnostics.Process.GetCurrentProcess().Handle);
 			Assert.That(pval.IsInvalid, Is.False);
-			Assert.That(DuplicateToken(pval, SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation, out SafeTokenHandle dtok));
+			Assert.That(DuplicateToken(pval, SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation, out var dtok));
 			Assert.That(dtok.IsInvalid, Is.False);
 		}
 
@@ -139,7 +139,7 @@ namespace Vanara.PInvoke.Tests
 			var fun = $"{domain}\\{username}";
 
 			var pSD = GetSD(fn);
-			var b = GetSecurityDescriptorDacl(pSD, out bool daclPresent, out IntPtr pAcl, out bool defaulted);
+			var b = GetSecurityDescriptorDacl(pSD, out var daclPresent, out var pAcl, out var defaulted);
 			Assert.That(b, Is.True);
 			Assert.That(daclPresent, Is.True);
 			Assert.That(pAcl, Is.Not.EqualTo(IntPtr.Zero));
@@ -153,7 +153,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(b, Is.True);
 			Assert.That(asi.AceCount, Is.GreaterThan(0));
 			Assert.That(asi.AceCount, Is.EqualTo(hardAcl.AceCount));
-			b = GetAce(pAcl, 0, out IntPtr pAce);
+			b = GetAce(pAcl, 0, out var pAce);
 			Assert.That(b, Is.True);
 			var accessRights = 0U;
 			var pTrustee = new TRUSTEE(fun);
@@ -189,7 +189,7 @@ namespace Vanara.PInvoke.Tests
 		public void GetTokenInformationTest()
 		{
 			//var p = SafeTokenHandle.CurrentProcessToken.GetInfo<PTOKEN_PRIVILEGES>(TOKEN_INFORMATION_CLASS.TokenPrivileges).Privileges;
-			using (var t = SafeTokenHandle.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_QUERY))
+			using (var t = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_QUERY))
 			{
 				Assert.That(t, Is.Not.Null);
 
@@ -200,7 +200,7 @@ namespace Vanara.PInvoke.Tests
 
 				using (var hMem = PTOKEN_PRIVILEGES.GetAllocatedAndEmptyInstance(50))
 				{
-					var b = GetTokenInformation(t, TOKEN_INFORMATION_CLASS.TokenPrivileges, hMem, hMem.Size, out int sz);
+					var b = GetTokenInformation(t, TOKEN_INFORMATION_CLASS.TokenPrivileges, hMem, hMem.Size, out var sz);
 					Assert.That(b);
 					var p1 = PTOKEN_PRIVILEGES.FromPtr((IntPtr)hMem);
 					Assert.That(p1.PrivilegeCount, Is.EqualTo(p.PrivilegeCount));
@@ -209,7 +209,7 @@ namespace Vanara.PInvoke.Tests
 				}
 			}
 
-			using (var t = SafeTokenHandle.FromThread(GetCurrentThread(), TokenAccess.TOKEN_QUERY))
+			using (var t = SafeHTOKEN.FromThread(GetCurrentThread(), TokenAccess.TOKEN_QUERY))
 			{
 				var id = t.GetInfo<uint>(TOKEN_INFORMATION_CLASS.TokenSessionId);
 				Assert.That(id, Is.Not.Zero);
@@ -268,8 +268,8 @@ namespace Vanara.PInvoke.Tests
 		public void LogonUserExTest()
 		{
 			var b = LogonUserEx("david.a.hall@hpe.com", null, "Itsdav1dg", LogonUserType.LOGON32_LOGON_INTERACTIVE,
-				LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle hTok, out PSID _,
-				out SafeLsaReturnBufferHandle _, out uint _, out QUOTA_LIMITS _);
+				LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out var hTok, out var _,
+				out var _, out var _, out var _);
 			if (!b) TestContext.WriteLine(Win32Error.GetLastError());
 			Assert.That(b);
 			hTok.Dispose();
@@ -279,7 +279,7 @@ namespace Vanara.PInvoke.Tests
 		public void LogonUserTest()
 		{
 			var b = LogonUser("david.a.hall@hpe.com", null, "Itsdav1dg", LogonUserType.LOGON32_LOGON_INTERACTIVE,
-				LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle hTok);
+				LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out var hTok);
 			if (!b) TestContext.WriteLine(Win32Error.GetLastError());
 			Assert.That(b);
 			hTok.Dispose();
@@ -294,7 +294,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			var fun = $"{domain}\\{username}";
 			TestContext.WriteLine(fun);
-			Assert.That(LookupAccountName(null, fun, out PSID sid, out string dom, out SID_NAME_USE snu), Is.EqualTo(validUser));
+			Assert.That(LookupAccountName(null, fun, out var sid, out var dom, out var snu), Is.EqualTo(validUser));
 			Assert.That(sid.IsValidSid, Is.EqualTo(validUser));
 			if (!validUser) return;
 
@@ -314,7 +314,7 @@ namespace Vanara.PInvoke.Tests
 		public void LookupPrivilegeNameValueTest()
 		{
 			const string priv = "SeBackupPrivilege";
-			Assert.That(LookupPrivilegeValue(null, priv, out LUID luid));
+			Assert.That(LookupPrivilegeValue(null, priv, out var luid));
 			var chSz = 100;
 			var sb = new StringBuilder(chSz);
 			Assert.That(LookupPrivilegeName(null, ref luid, sb, ref chSz));
@@ -329,10 +329,10 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void PrivilegeCheckTest()
 		{
-			using (var t = SafeTokenHandle.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_QUERY))
+			using (var t = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_QUERY))
 			{
-				Assert.That(LookupPrivilegeValue(null, "SeDebugPrivilege", out LUID luid));
-				Assert.That(PrivilegeCheck(t, new PRIVILEGE_SET(PrivilegeSetControl.PRIVILEGE_SET_ALL_NECESSARY, luid, PrivilegeAttributes.SE_PRIVILEGE_ENABLED), out bool res));
+				Assert.That(LookupPrivilegeValue(null, "SeDebugPrivilege", out var luid));
+				Assert.That(PrivilegeCheck(t, new PRIVILEGE_SET(PrivilegeSetControl.PRIVILEGE_SET_ALL_NECESSARY, luid, PrivilegeAttributes.SE_PRIVILEGE_ENABLED), out var res));
 				TestContext.WriteLine($"Has {luid}={res}");
 
 				Assert.That(LookupPrivilegeValue(null, "SeChangeNotifyPrivilege", out luid));
@@ -373,7 +373,7 @@ namespace Vanara.PInvoke.Tests
 				Microsoft.Win32.Registry.CurrentUser.DeleteSubKey(tmpRegKey);
 			}).Start();
 			Assert.That(RegOpenKeyEx(HKEY_CURRENT_USER, "Software", RegOpenOptions.REG_OPTION_NON_VOLATILE, RegAccessTypes.KEY_NOTIFY,
-				out SafeRegistryHandle h), Is.EqualTo(0));
+				out var h), Is.EqualTo(0));
 			var evt = new EventWaitHandle(false, EventResetMode.ManualReset);
 			var hEvent = evt.SafeWaitHandle;
 			Assert.That(RegNotifyChangeKeyValue(h, false, RegNotifyChangeFilter.REG_NOTIFY_CHANGE_NAME, hEvent.DangerousGetHandle(), true), Is.EqualTo(0));
@@ -386,7 +386,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			using (var pSD = GetSD(fn))
 			{
-				Assert.That(GetSecurityDescriptorOwner(pSD, out IntPtr pOwner, out bool def));
+				Assert.That(GetSecurityDescriptorOwner(pSD, out var pOwner, out var def));
 				Assert.That(pOwner, Is.Not.EqualTo(IntPtr.Zero));
 
 				var owner = PSID.CreateFromPtr(pOwner);
@@ -412,9 +412,9 @@ namespace Vanara.PInvoke.Tests
 				{
 					var items = lines[i].Split('\t').Select(s => s == string.Empty ? null : s).Cast<object>().ToArray();
 					if (items.Length < 9) continue;
-					bool.TryParse(items[0].ToString(), out bool validUser);
+					bool.TryParse(items[0].ToString(), out var validUser);
 					items[0] = validUser;
-					bool.TryParse(items[1].ToString(), out bool validCred);
+					bool.TryParse(items[1].ToString(), out var validCred);
 					items[1] = validCred;
 					ret[i] = items;
 				}
@@ -426,7 +426,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			var err = GetNamedSecurityInfo(filename, SE_OBJECT_TYPE.SE_FILE_OBJECT,
 				SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION,
-				out IntPtr pOwn, out IntPtr pGrp, out IntPtr pAcl, out IntPtr pSacl, out SafeSecurityDescriptor pSD);
+				out var pOwn, out var pGrp, out var pAcl, out var pSacl, out var pSD);
 			Assert.That(err, Is.EqualTo(0));
 			Assert.That(!pSD.IsInvalid);
 			Assert.That(pOwn, Is.Not.EqualTo(IntPtr.Zero));

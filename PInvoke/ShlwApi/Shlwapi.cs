@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using Vanara.InteropServices;
+using static Vanara.PInvoke.Kernel32;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
@@ -2178,7 +2179,7 @@ namespace Vanara.PInvoke
 		// DWORD dwFlags );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "b47efa8d-2118-4805-bb04-97bd143228dc")]
-		public static extern HRESULT SHAutoComplete(HandleRef hwndEdit, SHACF dwFlags);
+		public static extern HRESULT SHAutoComplete(HWND hwndEdit, SHACF dwFlags);
 
 		/// <summary>
 		/// <para>
@@ -2606,7 +2607,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shlwapi, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "22a3a97a-857f-46b8-a2e0-8f3a14f40322")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SHCreateThreadWithHandle(LPTHREAD_START_ROUTINE pfnThreadProc, IntPtr pData, SHCT_FLAGS flags, LPTHREAD_START_ROUTINE pfnCallback, out SafeFileHandle pHandle);
+		public static extern bool SHCreateThreadWithHandle(LPTHREAD_START_ROUTINE pfnThreadProc, IntPtr pData, SHCT_FLAGS flags, LPTHREAD_START_ROUTINE pfnCallback, out SafeHFILE pHandle);
 
 		/// <summary>
 		/// <para>Deletes an empty key.</para>
@@ -3207,7 +3208,7 @@ namespace Vanara.PInvoke
 		// HRESULT SHIsChildOrSelf( _In_ HWND hwndParent, _In_ HWND hwnd); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773834(v=vs.85).aspx
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Shlwapi.h", MSDNShortId = "bb773834")]
-		public static extern HRESULT SHIsChildOrSelf([In] HandleRef hwndParent, [In] HandleRef hwnd);
+		public static extern HRESULT SHIsChildOrSelf([In] HWND hwndParent, [In] HWND hwnd);
 
 		/// <summary>
 		/// <para>Not supported.</para>
@@ -3445,7 +3446,7 @@ namespace Vanara.PInvoke
 		// LPCSTR pszText, LPCSTR pszCaption, UINT uType, int iDefault, LPCSTR pszRegVal );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "7e62cde0-2b9f-44d3-afb8-5df71f98453a")]
-		public static extern int SHMessageBoxCheck(HandleRef hwnd, string pszText, string pszCaption, uint uType, int iDefault, string pszRegVal);
+		public static extern int SHMessageBoxCheck(HWND hwnd, string pszText, string pszCaption, uint uType, int iDefault, string pszRegVal);
 
 		/// <summary></summary>
 		/// <returns></returns>

@@ -1342,7 +1342,7 @@ namespace Vanara.PInvoke
 		// HFILE WINAPI OpenFile( _In_ LPCSTR lpFileName, _Out_ LPOFSTRUCT lpReOpenBuff, _In_ UINT uStyle); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365430(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa365430")]
-		public static extern SafeFileHandle OpenFile([In] [MarshalAs(UnmanagedType.LPStr)] string lpFileName, ref OFSTRUCT lpReOpenBuff, uint uStyle);
+		public static extern SafeHFILE OpenFile([In] [MarshalAs(UnmanagedType.LPStr)] string lpFileName, ref OFSTRUCT lpReOpenBuff, uint uStyle);
 
 		/// <summary>
 		/// <para>
@@ -1449,7 +1449,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, EntryPoint = "ReadDirectoryChangesW", CharSet = CharSet.Unicode)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa365465")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool ReadDirectoryChanges([In] SafeFileHandle hDirectory, IntPtr lpBuffer, uint nBufferLength, [MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter,
+		public static extern unsafe bool ReadDirectoryChanges([In] HFILE hDirectory, IntPtr lpBuffer, uint nBufferLength, [MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, FILE_NOTIFY_CHANGE dwNotifyFilter,
 					out uint lpBytesReturned, NativeOverlapped* lpOverlapped, FileIOCompletionRoutine lpCompletionRoutine);
 
 		/// <summary>
@@ -1620,7 +1620,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa365540")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetFileIoOverlappedRange([In] SafeFileHandle FileHandle, IntPtr OverlappedRangeStart, uint Length);
+		public static extern bool SetFileIoOverlappedRange([In] HFILE FileHandle, IntPtr OverlappedRangeStart, uint Length);
 
 		/// <summary>Sets the short name for the specified file. The file must be on an NTFS file system volume.</summary>
 		/// <param name="hFile">
@@ -1665,7 +1665,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa365543")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetFileShortName([In] SafeFileHandle hFile, [In] string lpShortName);
+		public static extern bool SetFileShortName([In] HFILE hFile, [In] string lpShortName);
 
 		/// <summary>Template method for using FindXX methods to get a list of strings.</summary>
 		/// <typeparam name="THandle">The type of the handle returned by the <paramref name="first"/> method.</typeparam>

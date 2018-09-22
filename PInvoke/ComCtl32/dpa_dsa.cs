@@ -333,7 +333,7 @@ namespace Vanara.PInvoke
 		/// <returns>Returns the index of the new item or , if the append action fails.</returns>
 		// int DPA_AppendPtr( HDPA pdpa, void *pitem); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775585(v=vs.85).aspx
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775585")]
-		public static int DPA_AppendPtr(SafeDPAHandle hdpa, IntPtr pitem) => DPA_InsertPtr(hdpa, DA_LAST, pitem);
+		public static int DPA_AppendPtr(HDPA hdpa, IntPtr pitem) => DPA_InsertPtr(hdpa, DA_LAST, pitem);
 
 		/// <summary>
 		/// <para>[ <c>DPA_Clone</c> is available through Windows XP with Service Pack 2 (SP2). It might be altered or unavailable in subsequent versions.]</para>
@@ -358,7 +358,7 @@ namespace Vanara.PInvoke
 		// HDPA WINAPI DPA_Clone( _In_ const HDPA hdpaSource, _Inout_opt_ HDPA hdpaNew); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775601(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775601")]
-		public static extern SafeDPAHandle DPA_Clone(SafeDPAHandle hdpaSource, [Optional] SafeDPAHandle hdpaNew);
+		public static extern SafeHDPA DPA_Clone(HDPA hdpaSource, [Optional] HDPA hdpaNew);
 
 		/// <summary>
 		/// <para>
@@ -378,7 +378,7 @@ namespace Vanara.PInvoke
 		// HDPA WINAPI DPA_Create( int cpGrow); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775603(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775603")]
-		public static extern SafeDPAHandle DPA_Create(int cpGrow);
+		public static extern SafeHDPA DPA_Create(int cpGrow);
 
 		/// <summary>Creates a dynamic pointer array (DPA) using a given specified size and heap location.</summary>
 		/// <param name="cpGrow">
@@ -396,7 +396,7 @@ namespace Vanara.PInvoke
 		// HDPA WINAPI DPA_CreateEx( _In_ int cpGrow, _In_opt_ HANDLE hheap); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775605(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775605")]
-		public static extern SafeDPAHandle DPA_CreateEx(int cpGrow, [Optional] IntPtr hheap);
+		public static extern SafeHDPA DPA_CreateEx(int cpGrow, [Optional] IntPtr hheap);
 
 		/// <summary>
 		/// <para>
@@ -417,7 +417,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775607")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DPA_DeleteAllPtrs(SafeDPAHandle pdpa);
+		public static extern bool DPA_DeleteAllPtrs(HDPA pdpa);
 
 		/// <summary>
 		/// <para>
@@ -438,7 +438,7 @@ namespace Vanara.PInvoke
 		// void* WINAPI DPA_DeletePtr( HDPA pdpa, int index); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775609(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775609")]
-		public static extern IntPtr DPA_DeletePtr(SafeDPAHandle pdpa, int index);
+		public static extern IntPtr DPA_DeletePtr(HDPA pdpa, int index);
 
 		/// <summary>
 		/// <para>
@@ -459,7 +459,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775611")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DPA_Destroy(IntPtr pdpa);
+		public static extern bool DPA_Destroy(HDPA pdpa);
 
 		/// <summary>
 		/// <para>
@@ -484,7 +484,7 @@ namespace Vanara.PInvoke
 		// void WINAPI DPA_DestroyCallback( HDPA pdpa, PFNDPAENUMCALLBACK pfnCB, void *pData); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775613(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775613")]
-		public static extern void DPA_DestroyCallback(IntPtr pdpa, PFNDAENUMCALLBACK pfnCB, IntPtr pData);
+		public static extern void DPA_DestroyCallback(HDPA pdpa, PFNDAENUMCALLBACK pfnCB, IntPtr pData);
 
 		/// <summary>
 		/// <para>
@@ -509,14 +509,14 @@ namespace Vanara.PInvoke
 		// void WINAPI DPA_EnumCallback( HDPA pdpa, PFNDPAENUMCALLBACK pfnCB, void *pData); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775615(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775615")]
-		public static extern void DPA_EnumCallback(SafeDPAHandle pdpa, PFNDAENUMCALLBACK pfnCB, IntPtr pData);
+		public static extern void DPA_EnumCallback(HDPA pdpa, PFNDAENUMCALLBACK pfnCB, IntPtr pData);
 
 		/// <summary>Deletes the last pointer from a dynamic pointer array (DPA).</summary>
 		/// <param name="hdpa">A handle to an existing DPA.</param>
 		/// <returns>This macro does not return a value.</returns>
 		// void DPA_FastDeleteLastPtr( [in] HDPA hdpa); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775586(v=vs.85).aspx
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775586")]
-		public static void DPA_FastDeleteLastPtr(SafeDPAHandle hdpa) => DPA_SetPtrCount(hdpa, DPA_GetPtrCount(hdpa) - 1);
+		public static void DPA_FastDeleteLastPtr(HDPA hdpa) => DPA_SetPtrCount(hdpa, DPA_GetPtrCount(hdpa) - 1);
 
 		/// <summary>Gets the value of the specified pointer in the dynamic pointer array (DPA).</summary>
 		/// <param name="hdpa">A handle to an existing DPA.</param>
@@ -524,7 +524,7 @@ namespace Vanara.PInvoke
 		/// <returns>No return value.</returns>
 		// void DPA_FastGetPtr( [in] HDPA hdpa, [in] int i); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775587(v=vs.85).aspx
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775587")]
-		public static IntPtr DPA_FastGetPtr(SafeDPAHandle hdpa, int i) => Marshal.ReadIntPtr(DPA_GetPtrPtr(hdpa), IntPtr.Size * i);
+		public static IntPtr DPA_FastGetPtr(HDPA hdpa, int i) => Marshal.ReadIntPtr(DPA_GetPtrPtr(hdpa), IntPtr.Size * i);
 
 		/// <summary>
 		/// <para>
@@ -545,14 +545,14 @@ namespace Vanara.PInvoke
 		// void* WINAPI DPA_GetPtr( HDPA pdpa, int index); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775617(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775617")]
-		public static extern IntPtr DPA_GetPtr(SafeDPAHandle pdpa, int index);
+		public static extern IntPtr DPA_GetPtr(HDPA pdpa, int index);
 
 		/// <summary>Gets the number of pointers in a dynamic pointer array (DPA).</summary>
 		/// <param name="hdpa">A handle to an existing DPA.</param>
 		/// <returns>Returns the number of pointers (elements) the DPA contains.</returns>
 		// int DPA_GetPtrCount( [in] HDPA hdpa); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775588(v=vs.85).aspx
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775588")]
-		public static int DPA_GetPtrCount(SafeDPAHandle hdpa) => Marshal.ReadInt32(hdpa.DangerousGetHandle());
+		public static int DPA_GetPtrCount(HDPA hdpa) => Marshal.ReadInt32(hdpa.DangerousGetHandle());
 
 		/// <summary>
 		/// <para>[ <c>DPA_GetPtrIndex</c> is available through Windows XP with Service Pack 2 (SP2). It might be altered or unavailable in subsequent versions.]</para>
@@ -573,14 +573,14 @@ namespace Vanara.PInvoke
 		// int WINAPI DPA_GetPtrIndex( _In_ HDPA hdpa, _In_ const void *pvoid); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775619(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775619")]
-		public static extern int DPA_GetPtrIndex(SafeDPAHandle pdpa, IntPtr pvoid);
+		public static extern int DPA_GetPtrIndex(HDPA pdpa, IntPtr pvoid);
 
 		/// <summary>Gets the pointer to the internal pointer array of a dynamic pointer array (DPA).</summary>
 		/// <param name="hdpa">A handle to an existing DPA.</param>
 		/// <returns>Returns a pointer to the array of pointers managed by the DPA. To retrieve the number of pointers in the array, call macro <c>DPA_GetPtrCount</c>.</returns>
 		// void DPA_GetPtrPtr( [in] HDPA hdpa); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775589(v=vs.85).aspx
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775589")]
-		public static IntPtr DPA_GetPtrPtr(SafeDPAHandle hdpa) => new IntPtr(hdpa.DangerousGetHandle().ToInt64() + IntPtr.Size);
+		public static IntPtr DPA_GetPtrPtr(HDPA hdpa) => new IntPtr(hdpa.DangerousGetHandle().ToInt64() + IntPtr.Size);
 
 		/// <summary>Gets the size of a dynamic pointer array (DPA).</summary>
 		/// <param name="pdpa">
@@ -594,7 +594,7 @@ namespace Vanara.PInvoke
 		// ULONGLONG DPA_GetSize( _In_ HDPA pdpa); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775621(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775621")]
-		public static extern ulong DPA_GetSize(SafeDPAHandle pdpa);
+		public static extern ulong DPA_GetSize(HDPA pdpa);
 
 		/// <summary>Changes the number of pointers in a dynamic pointer array (DPA).</summary>
 		/// <param name="hdpa">
@@ -613,7 +613,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775623")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DPA_Grow(SafeDPAHandle pdpa, int cp);
+		public static extern bool DPA_Grow(HDPA pdpa, int cp);
 
 		/// <summary>
 		/// <para>
@@ -641,7 +641,7 @@ namespace Vanara.PInvoke
 		// int WINAPI DPA_InsertPtr( HDPA pdpa, int index, void *p); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775625(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775625")]
-		public static extern int DPA_InsertPtr(SafeDPAHandle pdpa, int index, IntPtr p);
+		public static extern int DPA_InsertPtr(HDPA pdpa, int index, IntPtr p);
 
 		/// <summary>
 		/// <para>[ <c>DPA_LoadStream</c> is available in Windows Vista. It might be altered or unavailable in subsequent versions. ]</para>
@@ -698,7 +698,7 @@ namespace Vanara.PInvoke
 		// HRESULT WINAPI DPA_LoadStream( _Out_ HDPA *ppdpa, _In_ PFNDPASTREAM pfn, _In_ IStream *pstm, _In_ void *pvInstData); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775627(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775627")]
-		public static extern HRESULT DPA_LoadStream(out SafeDPAHandle ppdpa, PFNDPASTREAM pfn, IStream pstm, IntPtr pvInstData);
+		public static extern HRESULT DPA_LoadStream(out SafeHDPA ppdpa, PFNDPASTREAM pfn, IStream pstm, IntPtr pvInstData);
 
 		/// <summary>
 		/// <para>[ <c>DPA_Merge</c> is available through Windows XP with Service Pack 2 (SP2). It might be altered or unavailable in subsequent versions.]</para>
@@ -780,7 +780,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775629")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DPA_Merge(SafeDPAHandle hdpaDest, SafeDPAHandle hdpaSrc, DPAM dwFlags, PFNDACOMPARE pfnCompare, PFNDPAMERGE pfnMerge, IntPtr lParam);
+		public static extern bool DPA_Merge(HDPA hdpaDest, HDPA hdpaSrc, DPAM dwFlags, PFNDACOMPARE pfnCompare, PFNDPAMERGE pfnMerge, IntPtr lParam);
 
 		/// <summary>
 		/// <para>[ <c>DPA_SaveStream</c> is available in Windows Vista. It might be altered or unavailable in subsequent versions. ]</para>
@@ -831,7 +831,7 @@ namespace Vanara.PInvoke
 		// HRESULT WINAPI DPA_SaveStream( _In_ HDPA pdpa, _In_ PFNDPASTREAM pfn, _In_ IStream *pstm, _In_ void *pvInstData); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775631(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775631")]
-		public static extern HRESULT DPA_SaveStream(SafeDPAHandle pdpa, PFNDPASTREAM pfn, IStream pstm, IntPtr pvInstData);
+		public static extern HRESULT DPA_SaveStream(HDPA pdpa, PFNDPASTREAM pfn, IStream pstm, IntPtr pvInstData);
 
 		/// <summary>
 		/// <para>
@@ -897,7 +897,7 @@ namespace Vanara.PInvoke
 		// int WINAPI DPA_Search( HDPA pdpa, void *pFind, int iStart, PFNDPACOMPARE pfnCmp, LPARAM lParam, UINT options); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775633(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775633")]
-		public static extern int DPA_Search(SafeDPAHandle pdpa, IntPtr pFind, int iStart, PFNDACOMPARE pfnCmp, IntPtr lParam, DPAS options);
+		public static extern int DPA_Search(HDPA pdpa, IntPtr pFind, int iStart, PFNDACOMPARE pfnCmp, IntPtr lParam, DPAS options);
 
 		/// <summary>
 		/// <para>
@@ -926,7 +926,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775635")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DPA_SetPtr(SafeDPAHandle pdpa, int index, IntPtr p);
+		public static extern bool DPA_SetPtr(HDPA pdpa, int index, IntPtr p);
 
 		/// <summary>Sets the number of pointers in a dynamic pointer array (DPA).</summary>
 		/// <param name="hdpa">A handle to an existing DPA.</param>
@@ -934,7 +934,7 @@ namespace Vanara.PInvoke
 		/// <returns>Returns the number of pointers (elements) the DPA contains.</returns>
 		// int DPA_SetPtrCount( [in] HDPA hdpa, [in] int cItems); https://msdn.microsoft.com/en-us/library/windows/desktop/dd375911(v=vs.85).aspx
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "dd375911")]
-		public static int DPA_SetPtrCount(SafeDPAHandle hdpa, int cItems) { Marshal.WriteInt32(hdpa.DangerousGetHandle(), cItems); return cItems; }
+		public static int DPA_SetPtrCount(HDPA hdpa, int cItems) { Marshal.WriteInt32(hdpa.DangerousGetHandle(), cItems); return cItems; }
 
 		/// <summary>
 		/// <para>
@@ -962,7 +962,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775637")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DPA_Sort(SafeDPAHandle pdpa, PFNDACOMPARE pfnCmp, IntPtr lParam);
+		public static extern bool DPA_Sort(HDPA pdpa, PFNDACOMPARE pfnCmp, IntPtr lParam);
 
 		/// <summary>Inserts a new item before or after a specified existing item.</summary>
 		/// <param name="pdpa">
@@ -1012,7 +1012,7 @@ namespace Vanara.PInvoke
 		/// <returns>Returns the index of the new item or , if the insert action fails.</returns>
 		// int DPA_SortedInsertPtr( HDPA pdpa, void *pFind, int iStart, PFNDPACOMPARE pfnCmp, LPARAM lParam, UINT options, void *pitem); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775590(v=vs.85).aspx
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775590")]
-		public static int DPA_SortedInsertPtr(SafeDPAHandle hdpa, IntPtr pFind, int iStart, PFNDACOMPARE pfnCompare, IntPtr lParam, DPAS options, IntPtr pitem) =>
+		public static int DPA_SortedInsertPtr(HDPA hdpa, IntPtr pFind, int iStart, PFNDACOMPARE pfnCompare, IntPtr lParam, DPAS options, IntPtr pitem) =>
 			DPA_InsertPtr(hdpa, DPA_Search(hdpa, pFind, iStart, pfnCompare, lParam, DPAS.DPAS_SORTED | options), pitem);
 
 		/// <summary>Appends a new item to the end of a dynamic structure array (DSA).</summary>
@@ -1021,7 +1021,7 @@ namespace Vanara.PInvoke
 		/// <returns>Returns the index of the new item if the append action succeeds, or if the append action fails.</returns>
 		// int DSA_AppendItem( [in] HDSA pdsa, [in] void *pItem); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775591(v=vs.85).aspx
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775591")]
-		public static int DSA_AppendItem(SafeDSAHandle hdsa, IntPtr pitem) => DSA_InsertItem(hdsa, DA_LAST, pitem);
+		public static int DSA_AppendItem(HDSA hdsa, IntPtr pitem) => DSA_InsertItem(hdsa, DA_LAST, pitem);
 
 		/// <summary>Duplicates a dynamic structure array (DSA).</summary>
 		/// <param name="hdsa">
@@ -1035,7 +1035,7 @@ namespace Vanara.PInvoke
 		// HDSA DSA_Clone( _In_ HDSA hdsa); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775645(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775645")]
-		public static extern SafeDSAHandle DSA_Clone(SafeDSAHandle hdsa);
+		public static extern SafeHDSA DSA_Clone(HDSA hdsa);
 
 		/// <summary>
 		/// <para>
@@ -1059,7 +1059,7 @@ namespace Vanara.PInvoke
 		// HDSA WINAPI DSA_Create( _In_ int cbItem, _In_ int cbItemGrow); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775647(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775647")]
-		public static extern SafeDSAHandle DSA_Create(int cbItem, int cbItemGrow);
+		public static extern SafeHDSA DSA_Create(int cbItem, int cbItemGrow);
 
 		/// <summary>Deletes all items from a dynamic structure array (DSA).</summary>
 		/// <param name="hdsa">
@@ -1074,7 +1074,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775649")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DSA_DeleteAllItems(SafeDSAHandle hdsa);
+		public static extern bool DSA_DeleteAllItems(HDSA hdsa);
 
 		/// <summary>
 		/// <para>[ <c>DSA_DeleteItem</c> is available through Windows XP with Service Pack 2 (SP2). It might be altered or unavailable in subsequent versions.]</para>
@@ -1096,7 +1096,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775651")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DSA_DeleteItem(SafeDSAHandle hdsa, int nPosition);
+		public static extern bool DSA_DeleteItem(HDSA hdsa, int nPosition);
 
 		/// <summary>
 		/// <para>
@@ -1117,7 +1117,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775653")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DSA_Destroy(IntPtr pdsa);
+		public static extern bool DSA_Destroy(HDSA pdsa);
 
 		/// <summary>
 		/// <para>
@@ -1144,7 +1144,7 @@ namespace Vanara.PInvoke
 		// void WINAPI DSA_DestroyCallback( _In_ HDSA pdsa, _In_ PFNDSAENUMCALLBACK pfnCB, _In_ void *pData); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775655(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775655")]
-		public static extern void DSA_DestroyCallback(SafeDSAHandle pdsa, PFNDAENUMCALLBACK pfnCB, IntPtr pData);
+		public static extern void DSA_DestroyCallback(HDSA pdsa, PFNDAENUMCALLBACK pfnCB, IntPtr pData);
 
 		/// <summary>Iterates through the dynamic structure array (DSA) and calls pfnCB on each item.</summary>
 		/// <param name="hdsa">
@@ -1163,7 +1163,7 @@ namespace Vanara.PInvoke
 		// void DSA_EnumCallback( _In_ HDSA hdsa, _In_ PFNDAENUMCALLBACK *pfnCB, _In_ void *pData); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775657(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775657")]
-		public static extern void DSA_EnumCallback(SafeDSAHandle hdsa, PFNDAENUMCALLBACK pfnCB, IntPtr pData);
+		public static extern void DSA_EnumCallback(HDSA hdsa, PFNDAENUMCALLBACK pfnCB, IntPtr pData);
 
 		/// <summary>Gets an element from a dynamic structure array (DSA).</summary>
 		/// <param name="pdsa">
@@ -1186,14 +1186,14 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775659")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DSA_GetItem(SafeDSAHandle pdsa, int index, [Out] IntPtr pitem);
+		public static extern bool DSA_GetItem(HDSA pdsa, int index, [Out] IntPtr pitem);
 
 		/// <summary>Gets the number of items in a dynamic structure array (DSA).</summary>
 		/// <param name="hdsa">A handle to an existing DSA.</param>
 		/// <returns>Returns the number of items in the DSA.</returns>
 		// int DSA_GetItemCount( [in] HDSA hdsa); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775592(v=vs.85).aspx
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775592")]
-		public static int DSA_GetItemCount(SafeDSAHandle hdsa) => Marshal.ReadInt32(hdsa.DangerousGetHandle());
+		public static int DSA_GetItemCount(HDSA hdsa) => Marshal.ReadInt32(hdsa.DangerousGetHandle());
 
 		/// <summary>
 		/// <para>
@@ -1214,7 +1214,7 @@ namespace Vanara.PInvoke
 		// void* WINAPI DSA_GetItemPtr( _In_ HDSA pdsa, _In_ int index); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775661(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775661")]
-		public static extern IntPtr DSA_GetItemPtr(SafeDSAHandle pdsa, int index);
+		public static extern IntPtr DSA_GetItemPtr(HDSA pdsa, int index);
 
 		/// <summary>Gets the size of the dynamic structure array (DSA).</summary>
 		/// <param name="hdsa">
@@ -1228,7 +1228,7 @@ namespace Vanara.PInvoke
 		// ULONGLONG DSA_GetSize( _In_ HDSA hdsa); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775663(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775663")]
-		public static extern ulong DSA_GetSize(SafeDSAHandle pdsa);
+		public static extern ulong DSA_GetSize(HDSA pdsa);
 
 		/// <summary>
 		/// <para>
@@ -1256,7 +1256,7 @@ namespace Vanara.PInvoke
 		// int WINAPI DSA_InsertItem( _In_ HDSA pdsa, _In_ int index, _In_ void *pItem); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775665(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775665")]
-		public static extern int DSA_InsertItem(SafeDSAHandle pdsa, int index, IntPtr pItem);
+		public static extern int DSA_InsertItem(HDSA pdsa, int index, IntPtr pItem);
 
 		/// <summary>
 		/// <para>
@@ -1285,7 +1285,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775668")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DSA_SetItem(SafeDSAHandle hdsa, int index, IntPtr pItem);
+		public static extern bool DSA_SetItem(HDSA hdsa, int index, IntPtr pItem);
 
 		/// <summary>Sorts the items in a dynamic structure array (DSA).</summary>
 		/// <param name="pdsa">
@@ -1308,7 +1308,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775670")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DSA_Sort(SafeDSAHandle pdsa, PFNDACOMPARE pfnCompare, IntPtr lParam);
+		public static extern bool DSA_Sort(HDSA pdsa, PFNDACOMPARE pfnCompare, IntPtr lParam);
 
 		/// <summary>Sets ppszCurrent to a copy of pszNew and frees the previous value, if necessary.</summary>
 		/// <param name="ppszCurrent">
@@ -1347,30 +1347,28 @@ namespace Vanara.PInvoke
 			public IntPtr pvItem;
 		}
 
-		/// <summary>A safe handle to a Dynamic Pointer Array (DPA).</summary>
-		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
-		public class SafeDPAHandle : GenericSafeHandle
+		/// <summary>Provides a <see cref="SafeHandle"/> to a  that releases a created HDPA instance at disposal using DPA_Destroy.</summary>
+		public class SafeHDPA : HDPA
 		{
-			/// <summary>Initializes a new instance of the <see cref="SafeDPAHandle"/> class.</summary>
-			public SafeDPAHandle() : this(IntPtr.Zero) { }
+			/// <summary>Initializes a new instance of the <see cref="HDPA"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeHDPA(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			/// <summary>Initializes a new instance of the <see cref="SafeDPAHandle"/> class.</summary>
-			/// <param name="handle">The handle.</param>
-			/// <param name="owns">if set to <c>true</c> the handle will be released at disposal.</param>
-			public SafeDPAHandle(IntPtr handle, bool owns = true) : base(handle, DPA_Destroy, owns) { }
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => DPA_Destroy(this);
 		}
 
-		/// <summary>A safe handle to a Dynamic Structure Array (DSA).</summary>
-		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
-		public class SafeDSAHandle : GenericSafeHandle
+		/// <summary>Provides a <see cref="SafeHandle"/> to a  that releases a created HDSA instance at disposal using DSA_Destroy.</summary>
+		public class SafeHDSA : HDSA
 		{
-			/// <summary>Initializes a new instance of the <see cref="SafeDSAHandle"/> class.</summary>
-			public SafeDSAHandle() : this(IntPtr.Zero) { }
+			/// <summary>Initializes a new instance of the <see cref="HDSA"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeHDSA(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			/// <summary>Initializes a new instance of the <see cref="SafeDSAHandle"/> class.</summary>
-			/// <param name="handle">The handle.</param>
-			/// <param name="owns">if set to <c>true</c> the handle will be released at disposal.</param>
-			public SafeDSAHandle(IntPtr handle, bool owns = true) : base(handle, DSA_Destroy, owns) { }
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => DSA_Destroy(this);
 		}
 	}
 }

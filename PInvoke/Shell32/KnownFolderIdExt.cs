@@ -22,7 +22,7 @@ namespace Vanara.PInvoke
 		/// <returns>The path.</returns>
 		public static string FullPath(this KNOWNFOLDERID id)
 		{
-			SHGetKnownFolderPath(id.Guid(), stdGetFlags, SafeTokenHandle.Null, out var path);
+			SHGetKnownFolderPath(id.Guid(), stdGetFlags, HTOKEN.NULL, out var path);
 			return path.ToString(-1);
 		}
 
@@ -44,7 +44,7 @@ namespace Vanara.PInvoke
 		/// <returns>The <see cref="IShellItem"/> instance.</returns>
 		public static IShellItem GetIShellItem(this KNOWNFOLDERID id)
 		{
-			SHGetKnownFolderItem(id.Guid(), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, SafeTokenHandle.Null, typeof(IShellItem).GUID, out var ppv).ThrowIfFailed();
+			SHGetKnownFolderItem(id.Guid(), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, HTOKEN.NULL, typeof(IShellItem).GUID, out var ppv).ThrowIfFailed();
 			return (IShellItem) ppv;
 		}
 
@@ -70,7 +70,7 @@ namespace Vanara.PInvoke
 		/// <returns>The PIDL.</returns>
 		public static PIDL PIDL(this KNOWNFOLDERID id)
 		{
-			SHGetKnownFolderIDList(id.Guid(), stdGetFlags, SafeTokenHandle.Null, out var pidl);
+			SHGetKnownFolderIDList(id.Guid(), stdGetFlags, HTOKEN.NULL, out var pidl);
 			return pidl;
 		}
 

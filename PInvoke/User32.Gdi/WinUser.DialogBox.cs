@@ -48,7 +48,7 @@ namespace Vanara.PInvoke
 		// INT_PTR CALLBACK DialogProc( _In_ HWND hwndDlg, _In_ UINT uMsg, _In_ WPARAM wParam, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms645469(v=vs.85).aspx
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		[PInvokeData("Winuser.h", MSDNShortId = "ms645469")]
-		public delegate IntPtr DialogProc([In] HandleRef hwndDlg, [In] uint uMsg, [In] IntPtr wParam, [In] IntPtr lParam);
+		public delegate IntPtr DialogProc([In] HWND hwndDlg, [In] uint uMsg, [In] IntPtr wParam, [In] IntPtr lParam);
 
 		/// <summary>
 		/// <para>
@@ -99,7 +99,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-createdialoga void CreateDialogA( hInstance, lpName,
 		// hWndParent, lpDialogFunc );
 		[PInvokeData("winuser.h", MSDNShortId = "createdialog")]
-		public static void CreateDialog(SafeLibraryHandle hInstance, string lpName, HandleRef hWndParent, DialogProc lpDialogFunc) => CreateDialogParam(hInstance, lpName, hWndParent, lpDialogFunc);
+		public static void CreateDialog(HINSTANCE hInstance, string lpName, HWND hWndParent, DialogProc lpDialogFunc) => CreateDialogParam(hInstance, lpName, hWndParent, lpDialogFunc);
 
 		/// <summary>
 		/// <para>
@@ -169,7 +169,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-createdialogindirecta void CreateDialogIndirectA(
 		// hInstance, lpTemplate, hWndParent, lpDialogFunc );
 		[PInvokeData("winuser.h", MSDNShortId = "createdialogindirect")]
-		public static void CreateDialogIndirect(SafeLibraryHandle hInstance, IntPtr lpTemplate, HandleRef hWndParent, DialogProc lpDialogFunc) => CreateDialogIndirectParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
+		public static void CreateDialogIndirect(HINSTANCE hInstance, IntPtr lpTemplate, HWND hWndParent, DialogProc lpDialogFunc) => CreateDialogIndirectParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
 
 		/// <summary>
 		/// <para>
@@ -248,7 +248,7 @@ namespace Vanara.PInvoke
 		// dwInitParam );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "createdialogindirectparam")]
-		public static extern HandleRef CreateDialogIndirectParam(SafeLibraryHandle hInstance, IntPtr lpTemplate, HandleRef hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
+		public static extern HWND CreateDialogIndirectParam(HINSTANCE hInstance, IntPtr lpTemplate, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
 
 		/// <summary>
 		/// <para>
@@ -306,7 +306,7 @@ namespace Vanara.PInvoke
 		// hInstance, LPCSTR lpTemplateName, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "createdialogparam")]
-		public static extern IntPtr CreateDialogParam(SafeLibraryHandle hInstance, string lpTemplateName, HandleRef hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
+		public static extern IntPtr CreateDialogParam(HINSTANCE hInstance, string lpTemplateName, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
 
 		/// <summary>
 		/// <para>
@@ -353,7 +353,7 @@ namespace Vanara.PInvoke
 		// Msg, WPARAM wParam, LPARAM lParam );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "defdlgproc")]
-		public static extern IntPtr DefDlgProc(HandleRef hDlg, uint Msg, IntPtr wParam, IntPtr lParam);
+		public static extern IntPtr DefDlgProc(HWND hDlg, uint Msg, IntPtr wParam, IntPtr lParam);
 
 		/// <summary>
 		/// <para>
@@ -406,7 +406,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-dialogboxa void DialogBoxA( hInstance, lpTemplate,
 		// hWndParent, lpDialogFunc );
 		[PInvokeData("winuser.h", MSDNShortId = "dialogbox")]
-		public static void DialogBox(SafeLibraryHandle hInstance, string lpTemplate, HandleRef hWndParent, DialogProc lpDialogFunc) => DialogBoxParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
+		public static void DialogBox(HINSTANCE hInstance, string lpTemplate, HWND hWndParent, DialogProc lpDialogFunc) => DialogBoxParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
 
 		/// <summary>
 		/// <para>
@@ -479,7 +479,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-dialogboxindirecta void DialogBoxIndirectA( hInstance,
 		// lpTemplate, hWndParent, lpDialogFunc );
 		[PInvokeData("winuser.h", MSDNShortId = "dialogboxindirect")]
-		public static void DialogBoxIndirect(SafeLibraryHandle hInstance, IntPtr lpTemplate, HandleRef hWndParent, DialogProc lpDialogFunc) => DialogBoxIndirectParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
+		public static void DialogBoxIndirect(HINSTANCE hInstance, IntPtr lpTemplate, HWND hWndParent, DialogProc lpDialogFunc) => DialogBoxIndirectParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
 
 		/// <summary>
 		/// <para>
@@ -561,7 +561,7 @@ namespace Vanara.PInvoke
 		// HINSTANCE hInstance, LPCDLGTEMPLATEA hDialogTemplate, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "dialogboxindirectparam")]
-		public static extern IntPtr DialogBoxIndirectParam(SafeLibraryHandle hInstance, IntPtr hDialogTemplate, HandleRef hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
+		public static extern IntPtr DialogBoxIndirectParam(HINSTANCE hInstance, IntPtr hDialogTemplate, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
 
 		/// <summary>
 		/// <para>
@@ -626,7 +626,7 @@ namespace Vanara.PInvoke
 		// hInstance, LPCSTR lpTemplateName, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "dialogboxparam")]
-		public static extern IntPtr DialogBoxParam(SafeLibraryHandle hInstance, string lpTemplateName, HandleRef hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
+		public static extern IntPtr DialogBoxParam(HINSTANCE hInstance, string lpTemplateName, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
 
 		/// <summary>
 		/// <para>Destroys a modal dialog box, causing the system to end any processing for the dialog box.</para>
@@ -666,7 +666,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "enddialog")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EndDialog(HandleRef hDlg, IntPtr nResult);
+		public static extern bool EndDialog(HWND hDlg, IntPtr nResult);
 
 		/// <summary>
 		/// <para>
@@ -746,7 +746,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getdlgctrlid int GetDlgCtrlID( HWND hWnd );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getdlgctrlid")]
-		public static extern int GetDlgCtrlID(HandleRef hWnd);
+		public static extern int GetDlgCtrlID(HWND hWnd);
 
 		/// <summary>
 		/// <para>Retrieves a handle to a control in the specified dialog box.</para>
@@ -779,7 +779,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getdlgitem HWND GetDlgItem( HWND hDlg, int nIDDlgItem );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getdlgitem")]
-		public static extern IntPtr GetDlgItem(HandleRef hDlg, int nIDDlgItem);
+		public static extern IntPtr GetDlgItem(HWND hDlg, int nIDDlgItem);
 
 		/// <summary>
 		/// <para>Translates the text of a specified control in a dialog box into an integer value.</para>
@@ -839,7 +839,7 @@ namespace Vanara.PInvoke
 		// nIDDlgItem, BOOL *lpTranslated, BOOL bSigned );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getdlgitemint")]
-		public static extern uint GetDlgItemInt(HandleRef hDlg, int nIDDlgItem, [MarshalAs(UnmanagedType.Bool)] out bool lpTranslated, [MarshalAs(UnmanagedType.Bool)] bool bSigned);
+		public static extern uint GetDlgItemInt(HWND hDlg, int nIDDlgItem, [MarshalAs(UnmanagedType.Bool)] out bool lpTranslated, [MarshalAs(UnmanagedType.Bool)] bool bSigned);
 
 		/// <summary>
 		/// <para>Retrieves the title or text associated with a control in a dialog box.</para>
@@ -883,7 +883,7 @@ namespace Vanara.PInvoke
 		// nIDDlgItem, LPSTR lpString, int cchMax );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "getdlgitemtext")]
-		public static extern uint GetDlgItemText(HandleRef hDlg, int nIDDlgItem, StringBuilder lpString, int cchMax);
+		public static extern uint GetDlgItemText(HWND hDlg, int nIDDlgItem, StringBuilder lpString, int cchMax);
 
 		/// <summary>
 		/// <para>
@@ -941,7 +941,7 @@ namespace Vanara.PInvoke
 		// HWND hCtl, BOOL bPrevious );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getnextdlggroupitem")]
-		public static extern IntPtr GetNextDlgGroupItem(HandleRef hDlg, HandleRef hCtl, [MarshalAs(UnmanagedType.Bool)] bool bPrevious);
+		public static extern IntPtr GetNextDlgGroupItem(HWND hDlg, HWND hCtl, [MarshalAs(UnmanagedType.Bool)] bool bPrevious);
 
 		/// <summary>
 		/// <para>Retrieves a handle to the first control that has the WS_TABSTOP style that precedes (or follows) the specified control.</para>
@@ -985,7 +985,7 @@ namespace Vanara.PInvoke
 		// hCtl, BOOL bPrevious );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getnextdlgtabitem")]
-		public static extern IntPtr GetNextDlgTabItem(HandleRef hDlg, HandleRef hCtl, [MarshalAs(UnmanagedType.Bool)] bool bPrevious);
+		public static extern IntPtr GetNextDlgTabItem(HWND hDlg, HWND hCtl, [MarshalAs(UnmanagedType.Bool)] bool bPrevious);
 
 		/// <summary>
 		/// <para>Determines whether a message is intended for the specified dialog box and, if it is, processes the message.</para>
@@ -1028,7 +1028,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "isdialogmessage")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool IsDialogMessage(HandleRef hDlg, ref MSG lpMsg);
+		public static extern bool IsDialogMessage(HWND hDlg, ref MSG lpMsg);
 
 		/// <summary>
 		/// <para>
@@ -1068,7 +1068,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "mapdialogrect")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool MapDialogRect(HandleRef hDlg, [MarshalAs(UnmanagedType.LPStruct)] RECT lpRect);
+		public static extern bool MapDialogRect(HWND hDlg, [MarshalAs(UnmanagedType.LPStruct)] RECT lpRect);
 
 		/// <summary>
 		/// <para>Sends a message to the specified control in a dialog box.</para>
@@ -1110,7 +1110,7 @@ namespace Vanara.PInvoke
 		// hDlg, int nIDDlgItem, UINT Msg, WPARAM wParam, LPARAM lParam );
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "senddlgitemmessage")]
-		public static extern IntPtr SendDlgItemMessage(HandleRef hDlg, int nIDDlgItem, uint Msg, IntPtr wParam, IntPtr lParam);
+		public static extern IntPtr SendDlgItemMessage(HWND hDlg, int nIDDlgItem, uint Msg, IntPtr wParam, IntPtr lParam);
 
 		/// <summary>
 		/// <para>Sets the text of a control in a dialog box to the string representation of a specified integer value.</para>
@@ -1148,7 +1148,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "setdlgitemint")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetDlgItemInt(HandleRef hDlg, int nIDDlgItem, uint uValue, [MarshalAs(UnmanagedType.Bool)] bool bSigned);
+		public static extern bool SetDlgItemInt(HWND hDlg, int nIDDlgItem, uint uValue, [MarshalAs(UnmanagedType.Bool)] bool bSigned);
 
 		/// <summary>
 		/// <para>Sets the title or text of a control in a dialog box.</para>
@@ -1180,7 +1180,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "setdlgitemtext")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetDlgItemText(HandleRef hDlg, int nIDDlgItem, string lpString);
+		public static extern bool SetDlgItemText(HWND hDlg, int nIDDlgItem, string lpString);
 
 		/// <summary>
 		/// <para>

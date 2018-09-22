@@ -24,9 +24,9 @@ namespace Vanara.Windows.Forms.Tests
 		public void ImageListFromHandleTest()
 		{
 			var himl = ImageList_Create(32, 32, ILC.ILC_COLOR32 | ILC.ILC_MASK, 8, 8);
-			himl.Interface.Add((Image.FromFile(@"C:\Temp\TriggerTypeLogon.png", true) as Bitmap).GetHbitmap(), IntPtr.Zero);
+			himl.Interface.Add(new Gdi32.SafeHBITMAP((Image.FromFile(@"C:\Temp\TriggerTypeLogon.png", true) as Bitmap).GetHbitmap()), Gdi32.SafeHBITMAP.NULL);
 			Assert.That(himl.IsInvalid, Is.False);
-			var il2 = ImageListExtension.ImageListFromHandle(himl);
+			var il2 = ImageListExtension.ToImageList(himl);
 			Assert.That(il2.HandleCreated, Is.True);
 			Assert.That(il2.ColorDepth, Is.EqualTo(ColorDepth.Depth32Bit));
 			Assert.That(il2.ImageSize, Is.EqualTo(new Size(32, 32)));

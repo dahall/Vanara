@@ -990,7 +990,7 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="item">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage(HandleRef hWnd, TreeViewMessage Msg, int wParam, TVGETITEMPARTRECTINFO item) => User32_Gdi.SendMessage(hWnd, Msg, wParam, item);
+		public static IntPtr SendMessage(HWND hWnd, TreeViewMessage Msg, int wParam, TVGETITEMPARTRECTINFO item) => User32_Gdi.SendMessage(hWnd, Msg, wParam, item);
 
 		/// <summary>
 		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
@@ -1000,7 +1000,7 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="hitTestInfo">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage(HandleRef hWnd, TreeViewMessage Msg, [MarshalAs(UnmanagedType.Bool)] bool wParam, ref TVHITTESTINFO hitTestInfo) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref hitTestInfo);
+		public static IntPtr SendMessage(HWND hWnd, TreeViewMessage Msg, [MarshalAs(UnmanagedType.Bool)] bool wParam, ref TVHITTESTINFO hitTestInfo) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref hitTestInfo);
 
 		/// <summary>
 		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
@@ -1010,7 +1010,7 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="item">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage(HandleRef hWnd, TreeViewMessage Msg, int wParam, ref TVINSERTSTRUCT item) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref item);
+		public static IntPtr SendMessage(HWND hWnd, TreeViewMessage Msg, int wParam, ref TVINSERTSTRUCT item) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref item);
 
 		/// <summary>
 		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
@@ -1020,7 +1020,7 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="sortInfo">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage(HandleRef hWnd, TreeViewMessage Msg, int wParam, ref TVSORTCB sortInfo) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref sortInfo);
+		public static IntPtr SendMessage(HWND hWnd, TreeViewMessage Msg, int wParam, ref TVSORTCB sortInfo) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref sortInfo);
 
 		/// <summary>
 		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window and does not return until the window procedure has processed the message.
@@ -1030,6 +1030,6 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="item">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage(HandleRef hWnd, TreeViewMessage Msg, int wParam, ref TVITEMEX item) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref item);
+		public static IntPtr SendMessage(HWND hWnd, TreeViewMessage Msg, int wParam, ref TVITEMEX item) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref item);
 	}
 }

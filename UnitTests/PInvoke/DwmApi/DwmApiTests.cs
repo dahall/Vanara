@@ -38,7 +38,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			var err = DwmEnableComposition(1);
 			Assert.That(err.Succeeded);
-			Assert.That(DwmIsCompositionEnabled(out bool b).Succeeded);
+			Assert.That(DwmIsCompositionEnabled(out var b).Succeeded);
 			Assert.That(b);
 		}
 

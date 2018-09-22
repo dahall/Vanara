@@ -389,7 +389,7 @@ namespace Vanara.Windows.Shell
 		{
 			if (IsMin7)
 			{
-				SHGetKnownFolderItem(knownFolder.Guid(), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, SafeTokenHandle.Null, typeof(IShellItem).GUID, out var ppv).ThrowIfFailed();
+				SHGetKnownFolderItem(knownFolder.Guid(), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, HTOKEN.NULL, typeof(IShellItem).GUID, out var ppv).ThrowIfFailed();
 				Init((IShellItem)ppv);
 			}
 			else
@@ -397,7 +397,7 @@ namespace Vanara.Windows.Shell
 				var csidl = knownFolder.SpecialFolder();
 				if (csidl == null) throw new ArgumentOutOfRangeException(nameof(knownFolder), @"Cannot translate this known folder to a value understood by systems prior to Windows 7.");
 				var path = new StringBuilder(MAX_PATH);
-				SHGetFolderPath(IntPtr.Zero, (int)csidl.Value, SafeTokenHandle.Null, SHGFP.SHGFP_TYPE_CURRENT, path).ThrowIfFailed();
+				SHGetFolderPath(IntPtr.Zero, (int)csidl.Value, HTOKEN.NULL, SHGFP.SHGFP_TYPE_CURRENT, path).ThrowIfFailed();
 				Init(ShellUtil.GetShellItemForPath(path.ToString()));
 			}
 		}
@@ -586,7 +586,7 @@ namespace Vanara.Windows.Shell
 					throw new InvalidOperationException("Thumbnails are not supported by this item.");
 				hres.ThrowIfFailed();
 				//Marshal.ReleaseComObject(fctry);
-				return GetTransparentBitmap(hbitmap.DangerousGetHandle());
+				return GetTransparentBitmap(hbitmap);
 			}
 			if (!flags.IsFlagSet(ShellItemGetImageOptions.IconOnly))
 				return GetThumbnail(size.Width);
@@ -761,7 +761,7 @@ namespace Vanara.Windows.Shell
 			return left.Compare(right, SICHINTF.SICHINT_TEST_FILESYSPATH_IF_NOT_EQUAL) == 0;
 		}
 
-		private static Bitmap GetTransparentBitmap(IntPtr hbitmap)
+		private static Bitmap GetTransparentBitmap(SafeHBITMAP hbitmap)
 		{
 			var dibsection = GetObject<DIBSECTION>(hbitmap);
 			var bitmap = new Bitmap(dibsection.dsBm.bmWidth, dibsection.dsBm.bmHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
@@ -866,7 +866,7 @@ namespace Vanara.Windows.Shell
 
 			private IShellFolder GetIShellFolder()
 			{
-				SHGetFolderLocation(IntPtr.Zero, 0, SafeTokenHandle.Null, 0, out var dtPidl);
+				SHGetFolderLocation(IntPtr.Zero, 0, HTOKEN.NULL, 0, out var dtPidl);
 				if (ShellFolder.Desktop.PIDL.Equals(dtPidl))
 					return ShellFolder.Desktop.iShellFolder;
 				return (IShellFolder)ShellFolder.Desktop.iShellFolder.BindToObject(PIDL, null, typeof(IShellFolder).GUID);

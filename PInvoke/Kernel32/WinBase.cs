@@ -1942,7 +1942,7 @@ namespace Vanara.PInvoke
 		// DWORD dwFlagsAndAttributes, HANDLE hTemplateFile, HANDLE hTransaction, PUSHORT pusMiniVersion, PVOID lpExtendedParameter );
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "0cbc081d-8787-409b-84bc-a6a28d8f83a0")]
-		public static extern SafeFileHandle CreateFileTransacted(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, FileMode dwCreationDisposition, FileFlagsAndAttributes dwFlagsAndAttributes,
+		public static extern SafeHFILE CreateFileTransacted(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, FileMode dwCreationDisposition, FileFlagsAndAttributes dwFlagsAndAttributes,
 			IntPtr hTemplateFile, IntPtr hTransaction, ref ushort pusMiniVersion, IntPtr lpExtendedParameter);
 
 		/// <summary>
@@ -3265,7 +3265,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "3caf38f6-e853-4057-a192-71cda4443dbd")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetFileBandwidthReservation(SafeFileHandle hFile, out uint lpPeriodMilliseconds, out uint lpBytesPerPeriod, [MarshalAs(UnmanagedType.Bool)] out bool pDiscardable, out uint lpTransferSize, out uint lpNumOutstandingRequests);
+		public static extern bool GetFileBandwidthReservation(HFILE hFile, out uint lpPeriodMilliseconds, out uint lpBytesPerPeriod, [MarshalAs(UnmanagedType.Bool)] out bool pDiscardable, out uint lpTransferSize, out uint lpNumOutstandingRequests);
 
 		/// <summary>
 		/// <para>Retrieves file information for the specified file.</para>
@@ -3417,7 +3417,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "e261ea45-d084-490e-94b4-129bd76f6a04")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetFileInformationByHandleEx(SafeFileHandle hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass, IntPtr lpFileInformation, uint dwBufferSize);
+		public static extern bool GetFileInformationByHandleEx(HFILE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass, IntPtr lpFileInformation, uint dwBufferSize);
 
 		/// <summary>
 		/// <para>Retrieves the value of the specified firmware environment variable and its attributes.</para>
@@ -4364,7 +4364,7 @@ namespace Vanara.PInvoke
 		// lpwLibFileName, DWORD Reserved );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "4a103753-a2c9-487f-b797-01d5f5d489f3")]
-		public static extern SafeLibraryHandle LoadPackagedLibrary([MarshalAs(UnmanagedType.LPWStr)] string lpwLibFileName, uint Reserved = 0);
+		public static extern SafeHINSTANCE LoadPackagedLibrary([MarshalAs(UnmanagedType.LPWStr)] string lpwLibFileName, uint Reserved = 0);
 
 		/// <summary>
 		/// <para>Retrieves a pointer to the processor state for an XState feature within a CONTEXT structure.</para>
@@ -5593,7 +5593,7 @@ namespace Vanara.PInvoke
 		// dwDesiredAccess, DWORD dwShareMode, DWORD dwFlagsAndAttributes );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "56d8a4b1-e3b5-4134-8d21-bf40761e9dcc")]
-		public static extern SafeFileHandle ReOpenFile(IntPtr hOriginalFile, FileAccess dwDesiredAccess, FileShare dwShareMode, FileFlagsAndAttributes dwFlagsAndAttributes);
+		public static extern SafeHFILE ReOpenFile(IntPtr hOriginalFile, FileAccess dwDesiredAccess, FileShare dwShareMode, FileFlagsAndAttributes dwFlagsAndAttributes);
 
 		/// <summary>
 		/// <para>
@@ -5822,7 +5822,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "a22bd8f3-4fbf-4f77-b8b6-7e786942615a")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetFileBandwidthReservation(SafeFileHandle hFile, uint nPeriodMilliseconds, uint nBytesPerPeriod, [MarshalAs(UnmanagedType.Bool)] bool bDiscardable, out uint lpTransferSize, out uint lpNumOutstandingRequests);
+		public static extern bool SetFileBandwidthReservation(HFILE hFile, uint nPeriodMilliseconds, uint nBytesPerPeriod, [MarshalAs(UnmanagedType.Bool)] bool bDiscardable, out uint lpTransferSize, out uint lpNumOutstandingRequests);
 
 		/// <summary>
 		/// <para>
@@ -5905,7 +5905,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "23796484-ee47-4f80-856d-5a5d5635547c")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetFileCompletionNotificationModes(SafeFileHandle FileHandle, FILE_NOTIFICATION_MODE Flags);
+		public static extern bool SetFileCompletionNotificationModes(HFILE FileHandle, FILE_NOTIFICATION_MODE Flags);
 
 		/// <summary>
 		/// <para>
@@ -7138,17 +7138,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>A bitfield that specifies a UMS thread type.</summary>
 			public ThreadUmsFlags ThreadUmsFlags;
-		}
-
-		/// <summary>SafeHandle instance using <see cref="CloseHandle"/> upon disposal.</summary>
-		public class SafeObjectHandle : GenericSafeHandle
-		{
-			/// <summary>Initializes a new instance of the <see cref="SafeObjectHandle"/> class.</summary>
-			public SafeObjectHandle() : this(IntPtr.Zero) { }
-
-			/// <summary>Initializes a new instance of the <see cref="SafeObjectHandle"/> class.</summary>
-			/// <param name="handle">The handle.</param>
-			public SafeObjectHandle(IntPtr handle) : base(handle, CloseHandle) { }
 		}
 	}
 }

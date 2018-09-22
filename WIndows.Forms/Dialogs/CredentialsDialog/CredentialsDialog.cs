@@ -133,7 +133,7 @@ namespace Vanara.Windows.Forms
 			ParseUserName(userName, out string user, out string domain);
 			try
 			{
-				if (LogonUser(user, domain, password, LogonUserType.LOGON32_LOGON_NETWORK, LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle obj))
+				if (LogonUser(user, domain, password, LogonUserType.LOGON32_LOGON_NETWORK, LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out SafeHTOKEN obj))
 					return true;
 			}
 			catch { }
@@ -284,7 +284,7 @@ namespace Vanara.Windows.Forms
 			finally
 			{
 				if (info.hbmBanner != IntPtr.Zero)
-					DeleteObject(info.hbmBanner);
+					DeleteObject((HGDIOBJ)info.hbmBanner);
 			}
 		}
 
