@@ -31,6 +31,7 @@ Structures
 DOMAIN_CONTROLLER_INFO, SERVER_INFO_100, SERVER_INFO_101, SERVER_INFO_102
 
 </PackageReleaseNotes>
+	<LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

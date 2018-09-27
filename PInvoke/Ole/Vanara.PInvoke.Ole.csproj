@@ -34,6 +34,7 @@ Interfaces
 IErrorLog, IPropertyBag, IEnumSTATSTG, IStorage, IOleWindow, IEnumSTATPROPSETSTG, IEnumSTATPROPSTG, IPropertySetStorage, IPropertyStorage, IDelayedPropertyStoreFactory, IInitializeWithStream, IPropertyDescription, IPropertyDescription2, IPropertyDescriptionList, IPropertyEnumType, IPropertyEnumType2, IPropertyEnumTypeList, IPropertyStore, IPropertyStoreFactory, IPropertySystem, IObjectWithPropertyKey, IPropertyChange, IPropertyChangeArray
 
 </PackageReleaseNotes>
+	<LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

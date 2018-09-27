@@ -34,6 +34,7 @@ Interfaces
 IEffectivePermission, IEffectivePermission2, ISecurityInformation, ISecurityInformation2, ISecurityInformation3, ISecurityInformation4, ISecurityObjectTypeInfo
 
 </PackageReleaseNotes>
+	<LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

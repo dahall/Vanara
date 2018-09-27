@@ -39,6 +39,7 @@ Enumerations
 CorrepsondingAction, StringListPackMethod
 
 </PackageReleaseNotes>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

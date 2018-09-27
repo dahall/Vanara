@@ -31,6 +31,7 @@ Structures
 CONNECTDLGSTRUCT, DISCDLGSTRUCT, NETCONNECTINFOSTRUCT, NETINFOSTRUCT, NETRESOURCE, REMOTE_NAME_INFO, UNIVERSAL_NAME_INFO
 
 </PackageReleaseNotes>
+	<LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

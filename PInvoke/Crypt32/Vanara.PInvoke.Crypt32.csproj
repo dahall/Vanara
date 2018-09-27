@@ -28,6 +28,7 @@ Structures
 CERT_CONTEXT, CERT_EXTENSION, CERT_INFO, CERT_PUBLIC_KEY_INFO, CRYPT_ALGORITHM_IDENTIFIER, CRYPTOAPI_BLOB
 
 </PackageReleaseNotes>
+	<LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

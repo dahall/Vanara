@@ -41,6 +41,7 @@ Enumerations
 ACCESS_MASK, DrawTextFlags, FacilityCode, FacilityCode, FileFlagsAndAttributes, FontFamily, FontPitch, LogFontCharSet, LogFontClippingPrecision, LogFontOutputPrecision, LogFontOutputQuality, ObjectTypeListLevel, PInvokeClient, ProcessorArchitecture, ResourceType, SECURITY_INFORMATION, SeverityLevel, SeverityLevel, ShowWindowCommand, STGM, SystemShutDownReason
 
 </PackageReleaseNotes>
+	<LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

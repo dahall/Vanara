@@ -29,6 +29,7 @@ Enumerations
 ExecutableType, FolderItemFilter, LibraryFolderFilter, LibraryViewTemplate, LinkResolution, OperationFlags, ShellIconType, ShellImageSize, ShellItemAttribute, ShellItemComparison, ShellItemDisplayString, ShellItemGetImageOptions, ShellItemToolTipOptions, TransferFlags, VerbMultiSelectModel, VerbPosition, VerbSelectionModel
 
 </PackageReleaseNotes>
+	<LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

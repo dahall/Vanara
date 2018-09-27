@@ -31,6 +31,7 @@ Structures
 DWM_BLURBEHIND, DWM_COLORIZATION_PARAMS, DWM_THUMBNAIL_PROPERTIES, DWM_TIMING_INFO, MARGINS, UNSIGNED_RATIO
 
 </PackageReleaseNotes>
+	<LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

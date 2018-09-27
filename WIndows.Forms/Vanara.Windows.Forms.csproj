@@ -32,6 +32,7 @@ Enumerations
 BitmapProperty, BoolProperty, CloakingSource, CollapsiblePanelBorderCondition, CollapsiblePanelHeaderState, ColorProperty, ControlState, Corners, EnumProperty, FilenameProperty, Flip3DWindowPolicy, FolderBrowserDialogOptions, FontProperty, IntProperty, KnownFolder, MarginsProperty, MetricProperty, NonClientRenderingPolicy, PartSize, PositionProperty, ProgressBarState, PropertyOrigin, RectangleProperty, RenderStyle, SecurityPageType, ShellProgressDialogStyle, SizeMode, StringProperty, TaskDialogButtonDisplay, TaskDialogCommonButtons, TaskDialogIcon
 
 </PackageReleaseNotes>
+	<LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
