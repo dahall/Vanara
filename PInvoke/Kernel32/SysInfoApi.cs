@@ -2311,7 +2311,7 @@ namespace Vanara.PInvoke
 			/// <summary>A pointer to the highest memory address accessible to applications and DLLs.</summary>
 			public IntPtr lpMaximumApplicationAddress;
 			/// <summary>A mask representing the set of processors configured into the system. Bit 0 is processor 0; bit 31 is processor 31.</summary>
-			public uint dwActiveProcessorMask;
+			public IntPtr dwActiveProcessorMask;
 			/// <summary>The number of logical processors in the current group. To retrieve this value, use the <c>GetLogicalProcessorInformation</c> function.</summary>
 			public uint dwNumberOfProcessors;
 			/// <summary>
