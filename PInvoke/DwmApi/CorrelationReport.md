@@ -30,7 +30,6 @@ Native Method | Native DLL | Header | Managed Method
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
-[DWM_BLURBEHIND](https://www.google.com/search?num=5&q=DWM_BLURBEHIND+site%3Amicrosoft.com) | dwmapi.h | Vanara.PInvoke.DwmApi+DWM_BLURBEHIND  
 [DWM_COLORIZATION_PARAMS](https://www.google.com/search?num=5&q=DWM_COLORIZATION_PARAMS+site%3Amicrosoft.com) | dwmapi.h | Vanara.PInvoke.DwmApi+DWM_COLORIZATION_PARAMS  
 [DWM_THUMBNAIL_PROPERTIES](http://msdn2.microsoft.com/en-us/library/aa969502) | Dwmapi.h | Vanara.PInvoke.DwmApi+DWM_THUMBNAIL_PROPERTIES  
 [DWM_TIMING_INFO](https://www.google.com/search?num=5&q=DWM_TIMING_INFO+site%3Amicrosoft.com) | dwmapi.h | Vanara.PInvoke.DwmApi+DWM_TIMING_INFO  

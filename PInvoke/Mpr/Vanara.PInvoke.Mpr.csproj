@@ -28,10 +28,10 @@ Functions
 MultinetGetConnectionPerformanceA, MultinetGetConnectionPerformanceW, WNetAddConnection2A, WNetAddConnection2W, WNetAddConnection3A, WNetAddConnection3W, WNetAddConnectionA, WNetAddConnectionW, WNetCancelConnection2A, WNetCancelConnection2W, WNetCloseEnum, WNetConnectionDialog, WNetConnectionDialog1A, WNetConnectionDialog1W, WNetDisconnectDialog, WNetDisconnectDialog1A, WNetDisconnectDialog1W, WNetEnumResourceA, WNetEnumResourceW, WNetGetConnectionA, WNetGetConnectionW, WNetGetLastErrorA, WNetGetLastErrorW, WNetGetNetworkInformationA, WNetGetNetworkInformationW, WNetGetProviderNameA, WNetGetProviderNameW, WNetGetResourceInformationA, WNetGetResourceInformationW, WNetGetResourceParentA, WNetGetResourceParentW, WNetGetUniversalNameA, WNetGetUniversalNameW, WNetGetUserA, WNetGetUserW, WNetOpenEnumA, WNetOpenEnumW, WNetSetLastErrorA, WNetSetLastErrorW, WNetUseConnectionA, WNetUseConnectionW
 
 Structures
-CONNECTDLGSTRUCT, DISCDLGSTRUCT, NETCONNECTINFOSTRUCT, NETINFOSTRUCT, NETRESOURCE, REMOTE_NAME_INFO, UNIVERSAL_NAME_INFO
+NETCONNECTINFOSTRUCT, NETINFOSTRUCT, NETRESOURCE, REMOTE_NAME_INFO, UNIVERSAL_NAME_INFO
 
 </PackageReleaseNotes>
-	<LangVersion>latest</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

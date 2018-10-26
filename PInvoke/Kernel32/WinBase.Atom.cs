@@ -22,7 +22,7 @@ namespace Vanara.PInvoke
 		// ATOM WINAPI AddAtom( _In_ LPCTSTR lpString); https://msdn.microsoft.com/en-us/library/windows/desktop/ms649056(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms649056")]
-		public static extern ushort AddAtom([In] string lpString);
+		public static extern ushort AddAtom(string lpString);
 
 		/// <summary>
 		/// Decrements the reference count of a local string atom. If the atom's reference count is reduced to zero, <c>DeleteAtom</c> removes the string
@@ -56,7 +56,7 @@ namespace Vanara.PInvoke
 		// ATOM WINAPI FindAtom( _In_ LPCTSTR lpString); https://msdn.microsoft.com/en-us/library/windows/desktop/ms649058(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms649058")]
-		public static extern ushort FindAtom([In] string lpString);
+		public static extern ushort FindAtom(string lpString);
 
 		/// <summary>Retrieves a copy of the character string associated with the specified local atom.</summary>
 		/// <param name="nAtom">
@@ -81,7 +81,15 @@ namespace Vanara.PInvoke
 		// UINT WINAPI GetAtomName( _In_ ATOM nAtom, _Out_ LPTSTR lpBuffer, _In_ int nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms649059(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms649059")]
-		public static extern uint GetAtomName(ushort nAtom, [Out] StringBuilder lpBuffer, int nSize);
+		public static extern uint GetAtomName(ushort nAtom, StringBuilder lpBuffer, int nSize);
+
+		/// <summary>Retrieves a copy of the character string associated with the specified local atom.</summary>
+		/// <param name="nAtom">
+		/// <para>Type: <c>ATOM</c></para>
+		/// <para>The local atom that identifies the character string to be retrieved.</para>
+		/// </param>
+		/// <returns>On success, the character string associated with the specified local atom. On failure, <see langword="null"/>.</returns>
+		public static string GetAtomName(ushort nAtom) => FunctionHelper.CallMethodWithStrBuf((sb, sz) => GetAtomName(nAtom, sb, sz), 255, out var result) > 0 ? result : null;
 
 		/// <summary>Adds a character string to the global atom table and returns a unique value (an atom) identifying the string.</summary>
 		/// <param name="lpString">
@@ -100,7 +108,7 @@ namespace Vanara.PInvoke
 		// ATOM WINAPI GlobalAddAtom( _In_ LPCTSTR lpString); https://msdn.microsoft.com/en-us/library/windows/desktop/ms649060(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms649060")]
-		public static extern ushort GlobalAddAtom([In] string lpString);
+		public static extern ushort GlobalAddAtom(string lpString);
 
 		/// <summary>Adds a character string to the global atom table and returns a unique value (an atom) identifying the string.</summary>
 		/// <param name="lpString">
@@ -120,7 +128,7 @@ namespace Vanara.PInvoke
 		// ATOM WINAPI GlobalAddAtom( _In_ LPCTSTR lpString); https://msdn.microsoft.com/en-us/library/windows/desktop/dn764994(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "dn764994")]
-		public static extern ushort GlobalAddAtomEx([In] string lpString, uint Flags);
+		public static extern ushort GlobalAddAtomEx(string lpString, uint Flags);
 
 		/// <summary>
 		/// Decrements the reference count of a global string atom. If the atom's reference count reaches zero, <c>GlobalDeleteAtom</c> removes the string
@@ -157,7 +165,7 @@ namespace Vanara.PInvoke
 		// ATOM WINAPI GlobalFindAtom( _In_ LPCTSTR lpString); https://msdn.microsoft.com/en-us/library/windows/desktop/ms649062(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms649062")]
-		public static extern ushort GlobalFindAtom([In] string lpString);
+		public static extern ushort GlobalFindAtom(string lpString);
 
 		/// <summary>Retrieves a copy of the character string associated with the specified global atom.</summary>
 		/// <param name="nAtom">
@@ -182,7 +190,15 @@ namespace Vanara.PInvoke
 		// UINT WINAPI GlobalGetAtomName( _In_ ATOM nAtom, _Out_ LPTSTR lpBuffer, _In_ int nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms649063(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms649063")]
-		public static extern uint GlobalGetAtomName(ushort nAtom, [Out] StringBuilder lpBuffer, int nSize);
+		public static extern uint GlobalGetAtomName(ushort nAtom, StringBuilder lpBuffer, int nSize);
+
+		/// <summary>Retrieves a copy of the character string associated with the specified global atom.</summary>
+		/// <param name="nAtom">
+		/// <para>Type: <c>ATOM</c></para>
+		/// <para>The global atom associated with the character string to be retrieved.</para>
+		/// </param>
+		/// <returns>On success, the character string associated with the specified global atom. On failure, <see langword="null"/>.</returns>
+		public static string GlobalGetAtomName(ushort nAtom) => FunctionHelper.CallMethodWithStrBuf((sb, sz) => GlobalGetAtomName(nAtom, sb, sz), 255, out var result) > 0 ? result : null;
 
 		/// <summary>Initializes the local atom table and sets the number of hash buckets to the specified size.</summary>
 		/// <param name="nSize">

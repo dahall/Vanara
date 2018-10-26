@@ -59,7 +59,7 @@ namespace Vanara.PInvoke.Tests
 		public void ReleaseStgMediumTest()
 		{
 			var m = new STGMEDIUM {tymed = TYMED.TYMED_HGLOBAL, unionmember = Marshal.AllocHGlobal(16)};
-			Assert.That(() => ReleaseStgMedium(ref m), Throws.Nothing);
+			Assert.That(() => ReleaseStgMedium(m), Throws.Nothing);
 		}
 	}
 }

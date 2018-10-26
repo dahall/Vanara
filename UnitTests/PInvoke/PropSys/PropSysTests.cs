@@ -60,7 +60,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			var pv = new PROPVARIANT();
 			var ft = DateTime.Now.ToFileTimeStruct();
-			InitPropVariantFromFileTime(ref ft, pv);
+			InitPropVariantFromFileTime(ft, pv);
 			Assert.That(pv.VarType, Is.EqualTo(VarEnum.VT_FILETIME));
 			Assert.That(pv.Value, Is.EqualTo(ft));
 			pv.Dispose();

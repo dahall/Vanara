@@ -115,7 +115,7 @@ namespace Vanara.PInvoke
 			void SetProperties(PropSys.IPropertyChangeArray pproparray);
 			/// <summary>Sets the parent or owner window for progress and dialog windows.</summary>
 			/// <param name="hwndParent">A handle to the owner window of the operation. This window will receive error messages.</param>
-			void SetOwnerWindow(IntPtr hwndParent);
+			void SetOwnerWindow(HWND hwndParent);
 			/// <summary>Declares a single item whose property values are to be set.</summary>
 			/// <param name="psiItem">Pointer to the item to receive the new property values.</param>
 			void ApplyPropertiesToItem(IShellItem psiItem);

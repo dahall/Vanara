@@ -12,7 +12,6 @@ Native Structure | Header | Managed Structure
 [SECURITY_OBJECT](http://msdn2.microsoft.com/en-us/library/hh448532) | aclui.h | Vanara.PInvoke.AclUI+SECURITY_OBJECT  
 [SI_ACCESS](http://msdn2.microsoft.com/en-us/library/aa379603) | aclui.h | Vanara.PInvoke.AclUI+SI_ACCESS  
 [SI_INHERIT_TYPE](http://msdn2.microsoft.com/en-us/library/aa379604) | aclui.h | Vanara.PInvoke.AclUI+SI_INHERIT_TYPE  
-[SI_OBJECT_INFO](http://msdn2.microsoft.com/en-us/library/aa379605) | aclui.h | Vanara.PInvoke.AclUI+SI_OBJECT_INFO  
 [SID_INFO](http://msdn2.microsoft.com/en-us/library/aa379599) | aclui.h | Vanara.PInvoke.AclUI+SID_INFO  
 ### Interfaces  
 Native Interface | Native DLL | Header | Managed Interface  

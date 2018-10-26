@@ -28,10 +28,7 @@ namespace Vanara.InteropServices
 
 		/// <summary>Performs necessary cleanup of the unmanaged data when it is no longer needed.</summary>
 		/// <param name="pNativeData">A pointer to the unmanaged data to be destroyed.</param>
-		public void CleanUpNativeData(IntPtr pNativeData)
-		{
-			mm.FreeMem(pNativeData);
-		}
+		public void CleanUpNativeData(IntPtr pNativeData) => mm.FreeMem(pNativeData);
 
 		/// <summary>Returns the size of the native data to be marshaled.</summary>
 		/// <returns>The size in bytes of the native data.</returns>

@@ -52,8 +52,7 @@ namespace Vanara.Security.Principal
 			if (string.IsNullOrEmpty(userName)) throw new ArgumentNullException(nameof(userName));
 			if (string.IsNullOrEmpty(password)) throw new ArgumentNullException(nameof(password));
 			if (string.IsNullOrEmpty(domainName) && !userName.Contains("@")) throw new ArgumentNullException(nameof(domainName));
-			SafeHTOKEN hToken;
-			if (LogonUser(userName, domainName, password, logonType, provider, out hToken))
+			if (LogonUser(userName, domainName, password, logonType, provider, out var hToken))
 			{
 				using (hToken)
 				{

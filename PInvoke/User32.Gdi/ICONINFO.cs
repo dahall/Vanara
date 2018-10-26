@@ -28,24 +28,24 @@ namespace Vanara.PInvoke
 			/// bitmask and the lower half is the icon XOR bitmask. Under this condition, the height should be an even multiple of two. If this structure defines
 			/// a color icon, this mask only defines the AND bitmask of the icon.
 			/// </summary>
-			public IntPtr hbmMask;
+			public HBITMAP hbmMask;
 			/// <summary>
 			/// A handle to the icon color bitmap. This member can be optional if this structure defines a black and white icon. The AND bitmask of hbmMask is
 			/// applied with the SRCAND flag to the destination; subsequently, the color bitmap is applied (using XOR) to the destination by using the SRCINVERT flag.
 			/// </summary>
-			public IntPtr hbmColor;
+			public HBITMAP hbmColor;
 
 			/// <summary>Gets the color bitmap associated with the icon.</summary>
-			public Bitmap Bitmap => Image.FromHbitmap(hbmColor);
+			public Bitmap Bitmap => Image.FromHbitmap((IntPtr)hbmColor);
 
 			/// <summary>Gets the AND bitmap mask associated with the icon.</summary>
-			public Bitmap Mask => Image.FromHbitmap(hbmMask);
+			public Bitmap Mask => Image.FromHbitmap((IntPtr)hbmMask);
 
 			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 			void IDisposable.Dispose()
 			{
-				if (hbmMask != IntPtr.Zero) DeleteObject((HGDIOBJ)hbmMask);
-				if (hbmColor != IntPtr.Zero) DeleteObject((HGDIOBJ)hbmColor);
+				if (!hbmMask.IsNull) DeleteObject(hbmMask);
+				if (!hbmColor.IsNull) DeleteObject(hbmColor);
 			}
 		}
 	}

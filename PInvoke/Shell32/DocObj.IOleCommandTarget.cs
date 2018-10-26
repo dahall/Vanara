@@ -193,7 +193,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <returns>This method returns S_OK on success.</returns>
 			[PreserveSig]
-			HRESULT QueryStatus([In, MarshalAs(UnmanagedType.LPStruct)] Guid pguidCmdGroup, uint cCmds, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] OLECMD[] prgCmds, OLECMDTEXT pCmdText);
+			HRESULT QueryStatus(in Guid pguidCmdGroup, uint cCmds, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] OLECMD[] prgCmds, OLECMDTEXT pCmdText);
 
 			/// <summary>Executes the specified command or displays help for the command.</summary>
 			/// <param name="pguidCmdGroup">The unique identifier of the command group; can be NULL to specify the standard group.</param>
@@ -206,7 +206,7 @@ namespace Vanara.PInvoke
 			/// <param name="pvaOut">Pointer to a VARIANTARG structure to receive command output. This parameter can be NULL.</param>
 			/// <returns>This method returns S_OK on success.</returns>
 			[PreserveSig]
-			HRESULT Exec([In, MarshalAs(UnmanagedType.LPStruct)] Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, [In, MarshalAs(UnmanagedType.LPArray)] object[] pvaIn, IntPtr pvaOut);
+			HRESULT Exec(in Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, [In, MarshalAs(UnmanagedType.LPArray)] object[] pvaIn, IntPtr pvaOut);
 		}
 
 		/// <summary>Associates command flags from the OLECMDF enumeration with a command identifier through a call to IOleCommandTarget::QueryStatus.</summary>

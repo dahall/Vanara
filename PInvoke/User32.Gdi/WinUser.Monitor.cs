@@ -289,7 +289,7 @@ namespace Vanara.PInvoke
 		// DWORD dwFlags );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "81c3fffb-bbc9-4adb-bb6b-edd59f7a77b4")]
-		public static extern HMONITOR MonitorFromRect([MarshalAs(UnmanagedType.LPStruct)] RECT lprc, MonitorFlags dwFlags);
+		public static extern HMONITOR MonitorFromRect(in RECT lprc, MonitorFlags dwFlags);
 
 		/// <summary>
 		/// <para>

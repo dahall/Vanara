@@ -1068,7 +1068,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "mapdialogrect")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool MapDialogRect(HWND hDlg, [MarshalAs(UnmanagedType.LPStruct)] RECT lpRect);
+		public static extern bool MapDialogRect(HWND hDlg, in RECT lpRect);
 
 		/// <summary>
 		/// <para>Sends a message to the specified control in a dialog box.</para>

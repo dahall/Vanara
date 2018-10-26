@@ -74,7 +74,7 @@ namespace Vanara.Extensions
 		{
 			// Duplicate handle and get IImageList for it
 			var dhiml = ImageList_Duplicate(himl);
-			var iil = HIMAGELIST_QueryInterface<IImageList>(dhiml);
+			var iil = dhiml.Interface;
 			// Get internal handle class
 			var nilfi = typeof(ImageList).GetField("nativeImageList", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
 			if (nilfi == null) throw new PlatformNotSupportedException();
@@ -93,7 +93,7 @@ namespace Vanara.Extensions
 				add1 = true;
 				iil.SetImageCount(1);
 			}
-			var bmp = Image.FromHbitmap(iil.GetImageInfo(0).hbmImage);
+			var bmp = Image.FromHbitmap((IntPtr)iil.GetImageInfo(0).hbmImage);
 			var depth = (ColorDepth)(((uint)bmp.PixelFormat & 0x3C00) >> 8);
 			if (add1) iil.SetImageCount(0);
 			depthfi.SetValue(il, depth);
@@ -109,7 +109,7 @@ namespace Vanara.Extensions
 		/// <param name="idx2">The index of the second existing image.</param>
 		/// <param name="offset">The offset of the second image relative to the first image.</param>
 		/// <returns>A merged image.</returns>
-		public static Icon MergeImage(this ImageList il1, int idx1, ImageList il2, int idx2, Point offset = default(Point))
+		public static Icon MergeImage(this ImageList il1, int idx1, ImageList il2, int idx2, Point offset = default)
 		{
 			var il3 = il1.GetIImageList().Merge(idx1, il2.GetIImageList(), idx2, offset.X, offset.Y, typeof(IImageList).GUID);
 			return il3.GetIcon(0, IMAGELISTDRAWFLAGS.ILD_TRANSPARENT | IMAGELISTDRAWFLAGS.ILD_PRESERVEALPHA).ToIcon();
@@ -131,7 +131,7 @@ namespace Vanara.Extensions
 		{
 			if (imageIndex < 0 || imageIndex >= imageList.Images.Count)
 				throw new ArgumentOutOfRangeException(nameof(imageIndex));
-			if (!imageListOverlays.TryGetValue(imageList, out List<int> vals))
+			if (!imageListOverlays.TryGetValue(imageList, out var vals))
 			{
 				imageList.RecreateHandle += ImageList_RecreateHandle;
 				imageListOverlays.Add(imageList, vals = new List<int>(15));
@@ -142,11 +142,11 @@ namespace Vanara.Extensions
 			return overlayIndex;
 		}
 
-		private static int GetOverlayCount(this ImageList imageList) => imageListOverlays.TryGetValue(imageList, out List<int> vals) ? vals.Count : 0;
+		private static int GetOverlayCount(this ImageList imageList) => imageListOverlays.TryGetValue(imageList, out var vals) ? vals.Count : 0;
 
 		private static void ImageList_RecreateHandle(object sender, EventArgs e)
 		{
-			if (!(sender is ImageList il) || !imageListOverlays.TryGetValue(il, out List<int> vals)) return;
+			if (!(sender is ImageList il) || !imageListOverlays.TryGetValue(il, out var vals)) return;
 			var iil = il.GetIImageList();
 			for (var i = 0; i < vals.Count; i++)
 				iil.SetOverlayImage(vals[i], i + 1);

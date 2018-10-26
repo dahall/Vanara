@@ -124,7 +124,7 @@ namespace Vanara.PInvoke
 		// UINT WINAPI GetSystemWow64Directory( _Out_ LPTSTR lpBuffer, _In_ UINT uSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724405(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724405")]
-		public static extern uint GetSystemWow64Directory([Out] StringBuilder lpBuffer, uint uSize);
+		public static extern uint GetSystemWow64Directory(StringBuilder lpBuffer, uint uSize);
 
 		/// <summary>
 		/// Retrieves the path of the system directory used by WOW64, using the specified image file machine type. This directory is not present on 32-bit Windows.
@@ -142,7 +142,7 @@ namespace Vanara.PInvoke
 		// UINT WINAPI GetSystemWow64Directory( _Out_ LPTSTR lpBuffer, _In_ UINT uSize, _In_ WORD ImageFileMachineType); https://msdn.microsoft.com/en-us/library/windows/desktop/mt804319(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Wow64apiset.h", MSDNShortId = "mt804319")]
-		public static extern uint GetSystemWow64Directory2([Out] StringBuilder lpBuffer, uint uSize, IMAGE_FILE_MACHINE ImageFileMachineType);
+		public static extern uint GetSystemWow64Directory2(StringBuilder lpBuffer, uint uSize, IMAGE_FILE_MACHINE ImageFileMachineType);
 
 		/// <summary>
 		/// <para>
@@ -181,7 +181,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms684139")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool IsWow64Process([In] IntPtr hProcess, [MarshalAs(UnmanagedType.Bool)] out bool Wow64Process);
+		public static extern bool IsWow64Process([In] HPROCESS hProcess, [MarshalAs(UnmanagedType.Bool)] out bool Wow64Process);
 
 		/// <summary>Determines whether the specified process is running under WOW64; also returns additional machine process and architecture information.</summary>
 		/// <param name="hProcess">
@@ -203,7 +203,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Wow64apiset.h", MSDNShortId = "mt804318")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool IsWow64Process2([In] IntPtr hProcess, out IMAGE_FILE_MACHINE pProcessMachine, out IMAGE_FILE_MACHINE pNativeMachine);
+		public static extern bool IsWow64Process2([In] HPROCESS hProcess, out IMAGE_FILE_MACHINE pProcessMachine, out IMAGE_FILE_MACHINE pNativeMachine);
 
 		/// <summary>Disables file system redirection for the calling thread. File system redirection is enabled by default.</summary>
 		/// <param name="OldValue">

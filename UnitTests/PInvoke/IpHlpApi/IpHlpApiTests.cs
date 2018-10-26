@@ -10,6 +10,7 @@ using System.Threading;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.IpHlpApi;
+using static Vanara.PInvoke.Ws2_32;
 
 namespace Vanara.PInvoke.Tests
 {
@@ -53,14 +54,14 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(GetIpInterfaceEntry(ref mibrow), Is.Zero);
 			var prev = mibrow.SitePrefixLength;
 			mibrow.SitePrefixLength = 0;
-			Assert.That(SetIpInterfaceEntry(ref mibrow), Is.Zero);
+			Assert.That(SetIpInterfaceEntry(mibrow), Is.Zero);
 
 			mibrow = new MIB_IPINTERFACE_ROW(ADDRESS_FAMILY.AF_INET, primaryAdapter.Luid);
 			Assert.That(GetIpInterfaceEntry(ref mibrow), Is.Zero);
 			Assert.That(mibrow.PathMtuDiscoveryTimeout, Is.Zero);
 
 			mibrow.SitePrefixLength = prev;
-			Assert.That(SetIpInterfaceEntry(ref mibrow), Is.Zero);
+			Assert.That(SetIpInterfaceEntry(mibrow), Is.Zero);
 		}
 
 		[Test]
@@ -119,7 +120,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(t2, Has.Member(mibrow));
 
 			mibrow.PreferredLifetime = 500000;
-			Assert.That(SetUnicastIpAddressEntry(ref mibrow), Is.Zero);
+			Assert.That(SetUnicastIpAddressEntry(mibrow), Is.Zero);
 			Assert.That(GetUnicastIpAddressEntry(ref mibrow), Is.Zero);
 
 			Assert.That(DeleteUnicastIpAddressEntry(ref mibrow), Is.Zero);
@@ -141,7 +142,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(CreateIpForwardEntry2(ref mibrow), Is.Zero);
 
 			mibrow.PreferredLifetime = 500000;
-			Assert.That(SetIpForwardEntry2(ref mibrow), Is.Zero);
+			Assert.That(SetIpForwardEntry2(mibrow), Is.Zero);
 			Assert.That(GetIpForwardEntry2(ref mibrow), Is.Zero);
 
 			Assert.That(DeleteIpForwardEntry2(ref mibrow), Is.Zero);

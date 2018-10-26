@@ -1,5 +1,5 @@
 ## Correlation report for gdi32.dll  
-### Methods (1% complete)  
+### Methods (3% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AbortDoc](https://www.google.com/search?num=5&q=AbortDoc+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -53,10 +53,11 @@ Native Method | Native DLL | Header | Managed Method
 [CreateDC](https://www.google.com/search?num=5&q=CreateDCA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateDCExW](https://www.google.com/search?num=5&q=CreateDCExW+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateDIBitmap](https://www.google.com/search?num=5&q=CreateDIBitmap+site%3Amicrosoft.com) | gdi32.dll |  |   
-[CreateDIBPatternBrush](https://www.google.com/search?num=5&q=CreateDIBPatternBrush+site%3Amicrosoft.com) | gdi32.dll |  |   
-[CreateDIBPatternBrushPt](https://www.google.com/search?num=5&q=CreateDIBPatternBrushPt+site%3Amicrosoft.com) | gdi32.dll |  |   
+[CreateDIBPatternBrush](http://msdn2.microsoft.com/en-us/library/d123ef44-e047-4188-a2bc-20e479869dc3) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreateDIBPatternBrush  
+[CreateDIBPatternBrushPt](http://msdn2.microsoft.com/en-us/library/0e34d108-fd35-4512-9eb3-c7710af36e95) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreateDIBPatternBrushPt  
 [CreateDIBSection](http://msdn2.microsoft.com/en-us/library/dd183494) | gdi32.dll | Wingdi.h | Vanara.PInvoke.Gdi32.CreateDIBSection  
 [CreateDiscardableBitmap](https://www.google.com/search?num=5&q=CreateDiscardableBitmap+site%3Amicrosoft.com) | gdi32.dll |  |   
+[CreateDPIScaledDIBSection](https://www.google.com/search?num=5&q=CreateDPIScaledDIBSection+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateEllipticRgn](https://www.google.com/search?num=5&q=CreateEllipticRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateEllipticRgnIndirect](https://www.google.com/search?num=5&q=CreateEllipticRgnIndirect+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateEnhMetaFile](https://www.google.com/search?num=5&q=CreateEnhMetaFileA+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -64,15 +65,15 @@ Native Method | Native DLL | Header | Managed Method
 [CreateFontIndirect](https://www.google.com/search?num=5&q=CreateFontIndirectA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateFontIndirectEx](https://www.google.com/search?num=5&q=CreateFontIndirectExA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateHalftonePalette](https://www.google.com/search?num=5&q=CreateHalftonePalette+site%3Amicrosoft.com) | gdi32.dll |  |   
-[CreateHatchBrush](https://www.google.com/search?num=5&q=CreateHatchBrush+site%3Amicrosoft.com) | gdi32.dll |  |   
+[CreateHatchBrush](http://msdn2.microsoft.com/en-us/library/0b5849d6-1e22-4ac5-980c-2f2a73b16adb) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreateHatchBrush  
 [CreateIC](https://www.google.com/search?num=5&q=CreateICA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateMetaFile](https://www.google.com/search?num=5&q=CreateMetaFileA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateOPMProtectedOutput](https://www.google.com/search?num=5&q=CreateOPMProtectedOutput+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateOPMProtectedOutputs](https://www.google.com/search?num=5&q=CreateOPMProtectedOutputs+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreatePalette](https://www.google.com/search?num=5&q=CreatePalette+site%3Amicrosoft.com) | gdi32.dll |  |   
-[CreatePatternBrush](https://www.google.com/search?num=5&q=CreatePatternBrush+site%3Amicrosoft.com) | gdi32.dll |  |   
-[CreatePen](https://www.google.com/search?num=5&q=CreatePen+site%3Amicrosoft.com) | gdi32.dll |  |   
-[CreatePenIndirect](https://www.google.com/search?num=5&q=CreatePenIndirect+site%3Amicrosoft.com) | gdi32.dll |  |   
+[CreatePatternBrush](http://msdn2.microsoft.com/en-us/library/a3cf347e-9803-4bb0-bdb3-98929ef859ab) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreatePatternBrush  
+[CreatePen](http://msdn2.microsoft.com/en-us/library/882facd2-7e06-48f6-82e4-f20e4d5adc92) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreatePen  
+[CreatePenIndirect](http://msdn2.microsoft.com/en-us/library/638c0294-9a8f-44ed-a791-1be152cd92dd) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreatePenIndirect  
 [CreatePolygonRgn](https://www.google.com/search?num=5&q=CreatePolygonRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreatePolyPolygonRgn](https://www.google.com/search?num=5&q=CreatePolyPolygonRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateRectRgn](https://www.google.com/search?num=5&q=CreateRectRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -80,11 +81,12 @@ Native Method | Native DLL | Header | Managed Method
 [CreateRoundRectRgn](https://www.google.com/search?num=5&q=CreateRoundRectRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateScalableFontResource](https://www.google.com/search?num=5&q=CreateScalableFontResourceA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [CreateSessionMappedDIBSection](https://www.google.com/search?num=5&q=CreateSessionMappedDIBSection+site%3Amicrosoft.com) | gdi32.dll |  |   
-[CreateSolidBrush](https://www.google.com/search?num=5&q=CreateSolidBrush+site%3Amicrosoft.com) | gdi32.dll |  |   
+[CreateSolidBrush](http://msdn2.microsoft.com/en-us/library/e39b5f77-97d8-4ea6-8277-7da12b3367f3) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.CreateSolidBrush  
 [D3DKMTAbandonSwapChain](https://www.google.com/search?num=5&q=D3DKMTAbandonSwapChain+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTAcquireKeyedMutex](https://www.google.com/search?num=5&q=D3DKMTAcquireKeyedMutex+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTAcquireKeyedMutex2](https://www.google.com/search?num=5&q=D3DKMTAcquireKeyedMutex2+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTAcquireSwapChain](https://www.google.com/search?num=5&q=D3DKMTAcquireSwapChain+site%3Amicrosoft.com) | gdi32.dll |  |   
+[D3DKMTAddSurfaceToSwapChain](https://www.google.com/search?num=5&q=D3DKMTAddSurfaceToSwapChain+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTAdjustFullscreenGamma](https://www.google.com/search?num=5&q=D3DKMTAdjustFullscreenGamma+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTCacheHybridQueryValue](https://www.google.com/search?num=5&q=D3DKMTCacheHybridQueryValue+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTChangeVideoMemoryReservation](https://www.google.com/search?num=5&q=D3DKMTChangeVideoMemoryReservation+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -100,6 +102,7 @@ Native Method | Native DLL | Header | Managed Method
 [D3DKMTConfigureSharedResource](https://www.google.com/search?num=5&q=D3DKMTConfigureSharedResource+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTCreateAllocation](https://www.google.com/search?num=5&q=D3DKMTCreateAllocation+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTCreateAllocation2](https://www.google.com/search?num=5&q=D3DKMTCreateAllocation2+site%3Amicrosoft.com) | gdi32.dll |  |   
+[D3DKMTCreateBundleObject](https://www.google.com/search?num=5&q=D3DKMTCreateBundleObject+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTCreateContext](https://www.google.com/search?num=5&q=D3DKMTCreateContext+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTCreateContextVirtual](https://www.google.com/search?num=5&q=D3DKMTCreateContextVirtual+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTCreateDCFromMemory](https://www.google.com/search?num=5&q=D3DKMTCreateDCFromMemory+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -111,9 +114,11 @@ Native Method | Native DLL | Header | Managed Method
 [D3DKMTCreateOutputDupl](https://www.google.com/search?num=5&q=D3DKMTCreateOutputDupl+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTCreateOverlay](https://www.google.com/search?num=5&q=D3DKMTCreateOverlay+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTCreatePagingQueue](https://www.google.com/search?num=5&q=D3DKMTCreatePagingQueue+site%3Amicrosoft.com) | gdi32.dll |  |   
+[D3DKMTCreateProtectedSession](https://www.google.com/search?num=5&q=D3DKMTCreateProtectedSession+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTCreateSwapChain](https://www.google.com/search?num=5&q=D3DKMTCreateSwapChain+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTCreateSynchronizationObject](https://www.google.com/search?num=5&q=D3DKMTCreateSynchronizationObject+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTCreateSynchronizationObject2](https://www.google.com/search?num=5&q=D3DKMTCreateSynchronizationObject2+site%3Amicrosoft.com) | gdi32.dll |  |   
+[D3DKMTDDisplayEnum](https://www.google.com/search?num=5&q=D3DKMTDDisplayEnum+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTDestroyAllocation](https://www.google.com/search?num=5&q=D3DKMTDestroyAllocation+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTDestroyAllocation2](https://www.google.com/search?num=5&q=D3DKMTDestroyAllocation2+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTDestroyContext](https://www.google.com/search?num=5&q=D3DKMTDestroyContext+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -125,11 +130,16 @@ Native Method | Native DLL | Header | Managed Method
 [D3DKMTDestroyOutputDupl](https://www.google.com/search?num=5&q=D3DKMTDestroyOutputDupl+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTDestroyOverlay](https://www.google.com/search?num=5&q=D3DKMTDestroyOverlay+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTDestroyPagingQueue](https://www.google.com/search?num=5&q=D3DKMTDestroyPagingQueue+site%3Amicrosoft.com) | gdi32.dll |  |   
+[D3DKMTDestroyProtectedSession](https://www.google.com/search?num=5&q=D3DKMTDestroyProtectedSession+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTDestroySynchronizationObject](https://www.google.com/search?num=5&q=D3DKMTDestroySynchronizationObject+site%3Amicrosoft.com) | gdi32.dll |  |   
+[D3DKMTDispMgrCreate](https://www.google.com/search?num=5&q=D3DKMTDispMgrCreate+site%3Amicrosoft.com) | gdi32.dll |  |   
+[D3DKMTDispMgrSourceOperation](https://www.google.com/search?num=5&q=D3DKMTDispMgrSourceOperation+site%3Amicrosoft.com) | gdi32.dll |  |   
+[D3DKMTDispMgrTargetOperation](https://www.google.com/search?num=5&q=D3DKMTDispMgrTargetOperation+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTEnumAdapters](https://www.google.com/search?num=5&q=D3DKMTEnumAdapters+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTEnumAdapters2](https://www.google.com/search?num=5&q=D3DKMTEnumAdapters2+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTEscape](https://www.google.com/search?num=5&q=D3DKMTEscape+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTEvict](https://www.google.com/search?num=5&q=D3DKMTEvict+site%3Amicrosoft.com) | gdi32.dll |  |   
+[D3DKMTExtractBundleObject](https://www.google.com/search?num=5&q=D3DKMTExtractBundleObject+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTFlipOverlay](https://www.google.com/search?num=5&q=D3DKMTFlipOverlay+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTFlushHeapTransitions](https://www.google.com/search?num=5&q=D3DKMTFlushHeapTransitions+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTFreeGpuVirtualAddress](https://www.google.com/search?num=5&q=D3DKMTFreeGpuVirtualAddress+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -147,6 +157,7 @@ Native Method | Native DLL | Header | Managed Method
 [D3DKMTGetPostCompositionCaps](https://www.google.com/search?num=5&q=D3DKMTGetPostCompositionCaps+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTGetPresentHistory](https://www.google.com/search?num=5&q=D3DKMTGetPresentHistory+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTGetPresentQueueEvent](https://www.google.com/search?num=5&q=D3DKMTGetPresentQueueEvent+site%3Amicrosoft.com) | gdi32.dll |  |   
+[D3DKMTGetProcessDeviceLostSupport](https://www.google.com/search?num=5&q=D3DKMTGetProcessDeviceLostSupport+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTGetProcessSchedulingPriorityBand](https://www.google.com/search?num=5&q=D3DKMTGetProcessSchedulingPriorityBand+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTGetProcessSchedulingPriorityClass](https://www.google.com/search?num=5&q=D3DKMTGetProcessSchedulingPriorityClass+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTGetResourcePresentPrivateDriverData](https://www.google.com/search?num=5&q=D3DKMTGetResourcePresentPrivateDriverData+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -179,6 +190,7 @@ Native Method | Native DLL | Header | Managed Method
 [D3DKMTOpenKeyedMutex](https://www.google.com/search?num=5&q=D3DKMTOpenKeyedMutex+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTOpenKeyedMutex2](https://www.google.com/search?num=5&q=D3DKMTOpenKeyedMutex2+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTOpenNtHandleFromName](https://www.google.com/search?num=5&q=D3DKMTOpenNtHandleFromName+site%3Amicrosoft.com) | gdi32.dll |  |   
+[D3DKMTOpenProtectedSessionFromNtHandle](https://www.google.com/search?num=5&q=D3DKMTOpenProtectedSessionFromNtHandle+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTOpenResource](https://www.google.com/search?num=5&q=D3DKMTOpenResource+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTOpenResource2](https://www.google.com/search?num=5&q=D3DKMTOpenResource2+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTOpenResourceFromNtHandle](https://www.google.com/search?num=5&q=D3DKMTOpenResourceFromNtHandle+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -198,11 +210,14 @@ Native Method | Native DLL | Header | Managed Method
 [D3DKMTPresentMultiPlaneOverlay](https://www.google.com/search?num=5&q=D3DKMTPresentMultiPlaneOverlay+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTPresentMultiPlaneOverlay2](https://www.google.com/search?num=5&q=D3DKMTPresentMultiPlaneOverlay2+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTPresentMultiPlaneOverlay3](https://www.google.com/search?num=5&q=D3DKMTPresentMultiPlaneOverlay3+site%3Amicrosoft.com) | gdi32.dll |  |   
+[D3DKMTPresentRedirected](https://www.google.com/search?num=5&q=D3DKMTPresentRedirected+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTQueryAdapterInfo](https://www.google.com/search?num=5&q=D3DKMTQueryAdapterInfo+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTQueryAllocationResidency](https://www.google.com/search?num=5&q=D3DKMTQueryAllocationResidency+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTQueryClockCalibration](https://www.google.com/search?num=5&q=D3DKMTQueryClockCalibration+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTQueryFSEBlock](https://www.google.com/search?num=5&q=D3DKMTQueryFSEBlock+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTQueryProcessOfferInfo](https://www.google.com/search?num=5&q=D3DKMTQueryProcessOfferInfo+site%3Amicrosoft.com) | gdi32.dll |  |   
+[D3DKMTQueryProtectedSessionInfoFromNtHandle](https://www.google.com/search?num=5&q=D3DKMTQueryProtectedSessionInfoFromNtHandle+site%3Amicrosoft.com) | gdi32.dll |  |   
+[D3DKMTQueryProtectedSessionStatus](https://www.google.com/search?num=5&q=D3DKMTQueryProtectedSessionStatus+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTQueryRemoteVidPnSourceFromGdiDisplayName](https://www.google.com/search?num=5&q=D3DKMTQueryRemoteVidPnSourceFromGdiDisplayName+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTQueryResourceInfo](https://www.google.com/search?num=5&q=D3DKMTQueryResourceInfo+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTQueryResourceInfoFromNtHandle](https://www.google.com/search?num=5&q=D3DKMTQueryResourceInfoFromNtHandle+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -216,11 +231,13 @@ Native Method | Native DLL | Header | Managed Method
 [D3DKMTReleaseKeyedMutex2](https://www.google.com/search?num=5&q=D3DKMTReleaseKeyedMutex2+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTReleaseProcessVidPnSourceOwners](https://www.google.com/search?num=5&q=D3DKMTReleaseProcessVidPnSourceOwners+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTReleaseSwapChain](https://www.google.com/search?num=5&q=D3DKMTReleaseSwapChain+site%3Amicrosoft.com) | gdi32.dll |  |   
+[D3DKMTRemoveSurfaceFromSwapChain](https://www.google.com/search?num=5&q=D3DKMTRemoveSurfaceFromSwapChain+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTRender](https://www.google.com/search?num=5&q=D3DKMTRender+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTReserveGpuVirtualAddress](https://www.google.com/search?num=5&q=D3DKMTReserveGpuVirtualAddress+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTSetAllocationPriority](https://www.google.com/search?num=5&q=D3DKMTSetAllocationPriority+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTSetContextInProcessSchedulingPriority](https://www.google.com/search?num=5&q=D3DKMTSetContextInProcessSchedulingPriority+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTSetContextSchedulingPriority](https://www.google.com/search?num=5&q=D3DKMTSetContextSchedulingPriority+site%3Amicrosoft.com) | gdi32.dll |  |   
+[D3DKMTSetDeviceLostSupport](https://www.google.com/search?num=5&q=D3DKMTSetDeviceLostSupport+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTSetDisplayMode](https://www.google.com/search?num=5&q=D3DKMTSetDisplayMode+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTSetDisplayPrivateDriverFormat](https://www.google.com/search?num=5&q=D3DKMTSetDisplayPrivateDriverFormat+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTSetDodIndirectSwapchain](https://www.google.com/search?num=5&q=D3DKMTSetDodIndirectSwapchain+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -228,6 +245,7 @@ Native Method | Native DLL | Header | Managed Method
 [D3DKMTSetGammaRamp](https://www.google.com/search?num=5&q=D3DKMTSetGammaRamp+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTSetHwProtectionTeardownRecovery](https://www.google.com/search?num=5&q=D3DKMTSetHwProtectionTeardownRecovery+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTSetMemoryBudgetTarget](https://www.google.com/search?num=5&q=D3DKMTSetMemoryBudgetTarget+site%3Amicrosoft.com) | gdi32.dll |  |   
+[D3DKMTSetMonitorColorSpaceTransform](https://www.google.com/search?num=5&q=D3DKMTSetMonitorColorSpaceTransform+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTSetProcessSchedulingPriorityBand](https://www.google.com/search?num=5&q=D3DKMTSetProcessSchedulingPriorityBand+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTSetProcessSchedulingPriorityClass](https://www.google.com/search?num=5&q=D3DKMTSetProcessSchedulingPriorityClass+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTSetQueuedLimit](https://www.google.com/search?num=5&q=D3DKMTSetQueuedLimit+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -237,6 +255,7 @@ Native Method | Native DLL | Header | Managed Method
 [D3DKMTSetVidPnSourceHwProtection](https://www.google.com/search?num=5&q=D3DKMTSetVidPnSourceHwProtection+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTSetVidPnSourceOwner](https://www.google.com/search?num=5&q=D3DKMTSetVidPnSourceOwner+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTSetVidPnSourceOwner1](https://www.google.com/search?num=5&q=D3DKMTSetVidPnSourceOwner1+site%3Amicrosoft.com) | gdi32.dll |  |   
+[D3DKMTSetVidPnSourceOwner2](https://www.google.com/search?num=5&q=D3DKMTSetVidPnSourceOwner2+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTSetYieldPercentage](https://www.google.com/search?num=5&q=D3DKMTSetYieldPercentage+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTSharedPrimaryLockNotification](https://www.google.com/search?num=5&q=D3DKMTSharedPrimaryLockNotification+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTSharedPrimaryUnLockNotification](https://www.google.com/search?num=5&q=D3DKMTSharedPrimaryUnLockNotification+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -253,6 +272,7 @@ Native Method | Native DLL | Header | Managed Method
 [D3DKMTTrimProcessCommitment](https://www.google.com/search?num=5&q=D3DKMTTrimProcessCommitment+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTUnlock](https://www.google.com/search?num=5&q=D3DKMTUnlock+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTUnlock2](https://www.google.com/search?num=5&q=D3DKMTUnlock2+site%3Amicrosoft.com) | gdi32.dll |  |   
+[D3DKMTUnOrderedPresentSwapChain](https://www.google.com/search?num=5&q=D3DKMTUnOrderedPresentSwapChain+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTUnpinDirectFlipResources](https://www.google.com/search?num=5&q=D3DKMTUnpinDirectFlipResources+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTUnregisterTrimNotification](https://www.google.com/search?num=5&q=D3DKMTUnregisterTrimNotification+site%3Amicrosoft.com) | gdi32.dll |  |   
 [D3DKMTUpdateAllocationProperty](https://www.google.com/search?num=5&q=D3DKMTUpdateAllocationProperty+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -349,7 +369,7 @@ Native Method | Native DLL | Header | Managed Method
 [EudcLoadLinkW](https://www.google.com/search?num=5&q=EudcLoadLinkW+site%3Amicrosoft.com) | gdi32.dll |  |   
 [EudcUnloadLinkW](https://www.google.com/search?num=5&q=EudcUnloadLinkW+site%3Amicrosoft.com) | gdi32.dll |  |   
 [ExcludeClipRect](https://www.google.com/search?num=5&q=ExcludeClipRect+site%3Amicrosoft.com) | gdi32.dll |  |   
-[ExtCreatePen](https://www.google.com/search?num=5&q=ExtCreatePen+site%3Amicrosoft.com) | gdi32.dll |  |   
+[ExtCreatePen](http://msdn2.microsoft.com/en-us/library/a1e81314-4fe6-481f-af96-24ebf56332cf) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.ExtCreatePen  
 [ExtCreateRegion](https://www.google.com/search?num=5&q=ExtCreateRegion+site%3Amicrosoft.com) | gdi32.dll |  |   
 [ExtEscape](https://www.google.com/search?num=5&q=ExtEscape+site%3Amicrosoft.com) | gdi32.dll |  |   
 [ExtFloodFill](https://www.google.com/search?num=5&q=ExtFloodFill+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -370,6 +390,7 @@ Native Method | Native DLL | Header | Managed Method
 [FONTOBJ_pxoGetXform](https://www.google.com/search?num=5&q=FONTOBJ_pxoGetXform+site%3Amicrosoft.com) | gdi32.dll |  |   
 [FONTOBJ_vGetInfo](https://www.google.com/search?num=5&q=FONTOBJ_vGetInfo+site%3Amicrosoft.com) | gdi32.dll |  |   
 [FrameRgn](https://www.google.com/search?num=5&q=FrameRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
+[g_systemCallFilterId](https://www.google.com/search?num=5&q=g_systemCallFilterId+site%3Amicrosoft.com) | gdi32.dll |  |   
 [Gdi32DllInitialize](https://www.google.com/search?num=5&q=Gdi32DllInitialize+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GdiAddFontResourceW](https://www.google.com/search?num=5&q=GdiAddFontResourceW+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GdiAddGlsBounds](https://www.google.com/search?num=5&q=GdiAddGlsBounds+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -483,7 +504,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetBkMode](https://www.google.com/search?num=5&q=GetBkMode+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetBoundsRect](https://www.google.com/search?num=5&q=GetBoundsRect+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetBrushAttributes](https://www.google.com/search?num=5&q=GetBrushAttributes+site%3Amicrosoft.com) | gdi32.dll |  |   
-[GetBrushOrgEx](https://www.google.com/search?num=5&q=GetBrushOrgEx+site%3Amicrosoft.com) | gdi32.dll |  |   
+[GetBrushOrgEx](http://msdn2.microsoft.com/en-us/library/0b938237-cb06-4776-86f8-14478abcee00) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.GetBrushOrgEx  
 [GetCertificate](https://www.google.com/search?num=5&q=GetCertificate+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetCertificateByHandle](https://www.google.com/search?num=5&q=GetCertificateByHandle+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetCertificateSize](https://www.google.com/search?num=5&q=GetCertificateSize+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -571,6 +592,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetStretchBltMode](https://www.google.com/search?num=5&q=GetStretchBltMode+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetStringBitmap](https://www.google.com/search?num=5&q=GetStringBitmapA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetSuggestedOPMProtectedOutputArraySize](https://www.google.com/search?num=5&q=GetSuggestedOPMProtectedOutputArraySize+site%3Amicrosoft.com) | gdi32.dll |  |   
+[GetSysColorBrush](http://msdn2.microsoft.com/en-us/library/07a1d8e3-eae8-40ab-9d0f-4efa9fac0117) | user32.dll | winuser.h | Vanara.PInvoke.Gdi32.GetSysColorBrush  
 [GetSystemPaletteEntries](https://www.google.com/search?num=5&q=GetSystemPaletteEntries+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetSystemPaletteUse](https://www.google.com/search?num=5&q=GetSystemPaletteUse+site%3Amicrosoft.com) | gdi32.dll |  |   
 [GetTextAlign](https://www.google.com/search?num=5&q=GetTextAlign+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -607,7 +629,7 @@ Native Method | Native DLL | Header | Managed Method
 [IsValidEnhMetaRecordOffExt](https://www.google.com/search?num=5&q=IsValidEnhMetaRecordOffExt+site%3Amicrosoft.com) | gdi32.dll |  |   
 [LineDDA](https://www.google.com/search?num=5&q=LineDDA+site%3Amicrosoft.com) | gdi32.dll |  |   
 [LineTo](https://www.google.com/search?num=5&q=LineTo+site%3Amicrosoft.com) | gdi32.dll |  |   
-[LPtoDP](https://www.google.com/search?num=5&q=LPtoDP+site%3Amicrosoft.com) | gdi32.dll |  |   
+[LPtoDP](http://msdn2.microsoft.com/en-us/library/670a16fb-842e-4250-9ad7-dc08e849c2ba) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.LPtoDP  
 [MaskBlt](https://www.google.com/search?num=5&q=MaskBlt+site%3Amicrosoft.com) | gdi32.dll |  |   
 [MirrorRgn](https://www.google.com/search?num=5&q=MirrorRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
 [ModerncoreGdiInit](https://www.google.com/search?num=5&q=ModerncoreGdiInit+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -619,7 +641,7 @@ Native Method | Native DLL | Header | Managed Method
 [OffsetViewportOrgEx](https://www.google.com/search?num=5&q=OffsetViewportOrgEx+site%3Amicrosoft.com) | gdi32.dll |  |   
 [OffsetWindowOrgEx](https://www.google.com/search?num=5&q=OffsetWindowOrgEx+site%3Amicrosoft.com) | gdi32.dll |  |   
 [PaintRgn](https://www.google.com/search?num=5&q=PaintRgn+site%3Amicrosoft.com) | gdi32.dll |  |   
-[PatBlt](https://www.google.com/search?num=5&q=PatBlt+site%3Amicrosoft.com) | gdi32.dll |  |   
+[PatBlt](http://msdn2.microsoft.com/en-us/library/6deea8ef-b55d-4086-a54e-3f89bb17c6cd) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.PatBlt  
 [PATHOBJ_bEnum](https://www.google.com/search?num=5&q=PATHOBJ_bEnum+site%3Amicrosoft.com) | gdi32.dll |  |   
 [PATHOBJ_bEnumClipLines](https://www.google.com/search?num=5&q=PATHOBJ_bEnumClipLines+site%3Amicrosoft.com) | gdi32.dll |  |   
 [PATHOBJ_vEnumStart](https://www.google.com/search?num=5&q=PATHOBJ_vEnumStart+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -718,10 +740,11 @@ Native Method | Native DLL | Header | Managed Method
 [SetBkMode](http://msdn2.microsoft.com/en-us/library/dd162965) | gdi32.dll | Wingdi.h | Vanara.PInvoke.Gdi32.SetBkMode  
 [SetBoundsRect](https://www.google.com/search?num=5&q=SetBoundsRect+site%3Amicrosoft.com) | gdi32.dll |  |   
 [SetBrushAttributes](https://www.google.com/search?num=5&q=SetBrushAttributes+site%3Amicrosoft.com) | gdi32.dll |  |   
-[SetBrushOrgEx](https://www.google.com/search?num=5&q=SetBrushOrgEx+site%3Amicrosoft.com) | gdi32.dll |  |   
+[SetBrushOrgEx](http://msdn2.microsoft.com/en-us/library/dcc7575a-49fd-4306-8baa-57e9e0d5ed1f) | gdi32.dll | wingdi.h | Vanara.PInvoke.Gdi32.SetBrushOrgEx  
 [SetColorAdjustment](https://www.google.com/search?num=5&q=SetColorAdjustment+site%3Amicrosoft.com) | gdi32.dll |  |   
 [SetColorSpace](https://www.google.com/search?num=5&q=SetColorSpace+site%3Amicrosoft.com) | gdi32.dll |  |   
 [SetDCBrushColor](https://www.google.com/search?num=5&q=SetDCBrushColor+site%3Amicrosoft.com) | gdi32.dll |  |   
+[SetDCDpiScaleValue](https://www.google.com/search?num=5&q=SetDCDpiScaleValue+site%3Amicrosoft.com) | gdi32.dll |  |   
 [SetDCPenColor](https://www.google.com/search?num=5&q=SetDCPenColor+site%3Amicrosoft.com) | gdi32.dll |  |   
 [SetDeviceGammaRamp](https://www.google.com/search?num=5&q=SetDeviceGammaRamp+site%3Amicrosoft.com) | gdi32.dll |  |   
 [SetDIBColorTable](https://www.google.com/search?num=5&q=SetDIBColorTable+site%3Amicrosoft.com) | gdi32.dll |  |   
@@ -799,6 +822,8 @@ Native Structure | Header | Managed Structure
 [BITMAPINFOHEADER](http://msdn2.microsoft.com/en-us/library/dd183376) | Wingdi.h | Vanara.PInvoke.Gdi32+BITMAPINFOHEADER  
 [BLENDFUNCTION](http://msdn2.microsoft.com/en-us/library/dd183393) | Wingdi.h | Vanara.PInvoke.Gdi32+BLENDFUNCTION  
 [DIBSECTION](http://msdn2.microsoft.com/en-us/library/dd183567) | Wingdi.h | Vanara.PInvoke.Gdi32+DIBSECTION  
+[EXTLOGPEN](http://msdn2.microsoft.com/en-us/library/34ffa71d-e94d-425e-9f9d-21e3df4990b7) | wingdi.h | Vanara.PInvoke.Gdi32+EXTLOGPEN  
 [LOGBRUSH](http://msdn2.microsoft.com/en-us/library/ded2c7a4-2248-4d01-95c6-ab4050719094) | wingdi.h | Vanara.PInvoke.Gdi32+LOGBRUSH  
+[LOGPEN](http://msdn2.microsoft.com/en-us/library/0e098b5a-e249-43ad-a6d8-2509b6562453) | wingdi.h | Vanara.PInvoke.Gdi32+LOGPEN  
 [RGBQUAD](http://msdn2.microsoft.com/en-us/library/dd162938) | Wingdi.h | Vanara.PInvoke.Gdi32+RGBQUAD  
-[TEXTMETRIC](https://www.google.com/search?num=5&q=TEXTMETRIC+site%3Amicrosoft.com) |  | Vanara.PInvoke.Gdi32+TEXTMETRIC  
+[TEXTMETRIC](http://msdn2.microsoft.com/en-us/library/0a46da58-5d0f-4db4-bba6-9e1b6c1f892c) | wingdi.h | Vanara.PInvoke.Gdi32+TEXTMETRIC  

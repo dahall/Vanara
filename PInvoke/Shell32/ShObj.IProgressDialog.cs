@@ -79,7 +79,7 @@ namespace Vanara.PInvoke
 			/// <param name="punkEnableModless">Reserved. Set to null.</param>
 			/// <param name="dwFlags">Flags that control the operation of the progress dialog box.</param>
 			/// <param name="pvResevered">Reserved. Set to IntPtr.Zero</param>
-			void StartProgressDialog(IntPtr hwndParent, [MarshalAs(UnmanagedType.IUnknown), Optional] object punkEnableModless, PROGDLG dwFlags, IntPtr pvResevered = default(IntPtr));
+			void StartProgressDialog(HWND hwndParent, [MarshalAs(UnmanagedType.IUnknown), Optional] object punkEnableModless, PROGDLG dwFlags, IntPtr pvResevered = default(IntPtr));
 
 			/// <summary>Stops the progress dialog box and removes it from the screen.</summary>
 			void StopProgressDialog();
@@ -97,7 +97,7 @@ namespace Vanara.PInvoke
 			/// An AVI resource identifier. To create this value, use the MAKEINTRESOURCE macro. The control loads the AVI resource from the
 			/// module specified by hInstAnimation.
 			/// </param>
-			void SetAnimation(IntPtr hInstAnimation, ushort idAnimation);
+			void SetAnimation(HINSTANCE hInstAnimation, ushort idAnimation);
 
 			/// <summary>Checks whether the user has canceled the operation.</summary>
 			/// <returns>TRUE if the user has canceled the operation; otherwise, FALSE.</returns>

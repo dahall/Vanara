@@ -212,7 +212,7 @@ namespace Vanara.PInvoke
 			/// <para>E_NOTIMPL is not allowed any object implementing this interface must be able to return the last site seen in IObjectWithSite::SetSite.</para>
 			/// </remarks>
 			[PreserveSig]
-			HRESULT GetSite([In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvSite);
+			HRESULT GetSite(in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvSite);
 		}
 	}
 }

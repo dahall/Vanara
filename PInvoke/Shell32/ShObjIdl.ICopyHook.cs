@@ -28,7 +28,7 @@ namespace Vanara.PInvoke
 			/// <item><term>IDCANCEL (0x02)</term><description>Prevents the current operation and cancels any pending operations.</description></item>
 			/// </list>
 			/// </returns>
-			int CopyCallback([In, Optional] IntPtr hwnd, ShellFileOperation wFunc, FILEOP_FLAGS wFlags, [In, MarshalAs(UnmanagedType.LPStr)] string pszSrcFile, FileFlagsAndAttributes dwSrcAttribs, [In, Optional, MarshalAs(UnmanagedType.LPStr)] string pszDestFile, FileFlagsAndAttributes dwDestAttribs);
+			int CopyCallback([In, Optional] HWND hwnd, ShellFileOperation wFunc, FILEOP_FLAGS wFlags, [In, MarshalAs(UnmanagedType.LPStr)] string pszSrcFile, FileFlagsAndAttributes dwSrcAttribs, [In, Optional, MarshalAs(UnmanagedType.LPStr)] string pszDestFile, FileFlagsAndAttributes dwDestAttribs);
 		}
 
 		/// <summary>Exposes a method that creates a copy hook handler. A copy hook handler is a Shell extension that determines if a Shell folder or printer object can be moved, copied, renamed, or deleted. The Shell calls the ICopyHook::CopyCallback method prior to performing one of these operations.</summary>
@@ -54,7 +54,7 @@ namespace Vanara.PInvoke
 			/// <item><term>IDCANCEL (0x02)</term><description>Prevents the current operation and cancels any pending operations.</description></item>
 			/// </list>
 			/// </returns>
-			int CopyCallback([In, Optional] IntPtr hwnd, ShellFileOperation wFunc, FILEOP_FLAGS wFlags, [In, MarshalAs(UnmanagedType.LPWStr)] string pszSrcFile, FileFlagsAndAttributes dwSrcAttribs, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pszDestFile, FileFlagsAndAttributes dwDestAttribs);
+			int CopyCallback([In, Optional] HWND hwnd, ShellFileOperation wFunc, FILEOP_FLAGS wFlags, [In, MarshalAs(UnmanagedType.LPWStr)] string pszSrcFile, FileFlagsAndAttributes dwSrcAttribs, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pszDestFile, FileFlagsAndAttributes dwDestAttribs);
 		}
 	}
 }

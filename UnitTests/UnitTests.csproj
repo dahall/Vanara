@@ -23,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -72,10 +73,13 @@
     <Compile Include="PInvoke\Gdi32\Gdi32Tests.cs" />
     <Compile Include="PInvoke\InteropServices\SafeLocalHandleTests.cs" />
     <Compile Include="PInvoke\IpHlpApi\IpHlpApiTests.cs" />
+    <Compile Include="PInvoke\Kernel32\SnapshotTests.cs" />
+    <Compile Include="PInvoke\Kernel32\SysInfoTests.cs" />
     <Compile Include="PInvoke\Kernel32\Kernel32Tests.cs" />
     <Compile Include="PInvoke\Mpr\WinNetWkTests.cs" />
     <Compile Include="PInvoke\NetApi\NetApi32Tests.cs" />
     <Compile Include="PInvoke\NtDll\NtDllTests.cs" />
+    <Compile Include="PInvoke\Shared\InteropServices\SafeNativeArrayTests.cs" />
     <Compile Include="UnitTestHelper.cs" />
     <None Include="PInvoke\NetListMgr\NetListMgrTests.cs" />
     <Compile Include="PInvoke\NTDSApi\NTDSApiTests.cs" />
@@ -230,6 +234,10 @@
     <ProjectReference Include="..\PInvoke\WinInet\Vanara.PInvoke.WinINet.csproj">
       <Project>{e8a0c4df-541c-4435-937b-2865cd61bb17}</Project>
       <Name>Vanara.PInvoke.WinINet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PInvoke\Ws2_32\Vanara.PInvoke.Ws2_32.csproj">
+      <Project>{74d00c4c-da94-4046-b3cd-318fecde3794}</Project>
+      <Name>Vanara.PInvoke.Ws2_32</Name>
     </ProjectReference>
     <ProjectReference Include="..\Security\Vanara.Security.csproj">
       <Project>{b1af8b23-b1cb-4cdb-9345-5e0c0e836b7c}</Project>

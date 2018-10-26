@@ -1,7 +1,7 @@
-﻿using Microsoft.Win32.SafeHandles;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
@@ -307,7 +307,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363143")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool BuildCommDCB([In] string lpDef, out DCB lpDCB);
+		public static extern bool BuildCommDCB(string lpDef, out DCB lpDCB);
 
 		/// <summary>
 		/// Translates a device-definition string into appropriate device-control block codes and places them into a device control block. The function can also
@@ -349,7 +349,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363145")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool BuildCommDCBAndTimeouts([In] string lpDef, out DCB lpDCB, out COMMTIMEOUTS lpCommTimeouts);
+		public static extern bool BuildCommDCBAndTimeouts(string lpDef, out DCB lpDCB, out COMMTIMEOUTS lpCommTimeouts);
 
 		/// <summary>Restores character transmission for a specified communications device and places the transmission line in a nonbreak state.</summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
@@ -435,7 +435,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363187")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CommConfigDialog([In] string lpszName, [In] HWND hWnd, ref COMMCONFIG lpCC);
+		public static extern bool CommConfigDialog(string lpszName, [In] HWND hWnd, ref COMMCONFIG lpCC);
 
 		/// <summary>Directs the specified communications device to perform an extended function.</summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
@@ -576,7 +576,7 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>EV_RXFLAG0x0002</term>
 		/// <term>
-		/// The event character was received and placed in the input buffer. The event character is specified in the device&amp;#39;s DCB structure, which is
+		/// The event character was received and placed in the input buffer. The event character is specified in the device's DCB structure, which is
 		/// applied to a serial port by using the SetCommState function.
 		/// </term>
 		/// </item>
@@ -695,7 +695,47 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363262")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetDefaultCommConfig([In] string lpszName, IntPtr lpCC, ref uint lpdwSize);
+		public static extern bool GetDefaultCommConfig(string lpszName, SafeAllocatedMemoryHandle lpCC, ref uint lpdwSize);
+
+		/// <summary>
+		/// <para>Attempts to open a communication device.</para>
+		/// </summary>
+		/// <param name="uPortNumber">
+		/// <para>A one-based port number for the communication device to open.</para>
+		/// </param>
+		/// <param name="dwDesiredAccess">
+		/// <para>The requested access to the device.</para>
+		/// <para>For more information about requested access, see CreateFile and Creating and Opening Files.</para>
+		/// </param>
+		/// <param name="dwFlagsAndAttributes">
+		/// <para>The requested flags and attributes to the device.</para>
+		/// <para><c>Note</c> For this function, only values of <c>FILE_FLAG_OVERLAPPED</c> or 0x0 are expected for this parameter.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>FILE_FLAG_OVERLAPPED 0x40000000</term>
+		/// <term>The file or device is being opened or created for asynchronous I/O.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns a valid <c>HANDLE</c>. Use CloseHandle to close that handle.</para>
+		/// <para>If an error occurs, the function returns <c>INVALID_HANDLE_VALUE</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The uPortNumber parameter accepts one-based values. A value of 1 for uPortNumber causes this function to attempt to open COM1.
+		/// </para>
+		/// <para>To support UWP, link against WindowsApp.lib.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-opencommport
+		// HANDLE OpenCommPort( ULONG uPortNumber, DWORD dwDesiredAccess, DWORD dwFlagsAndAttributes );
+		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winbase.h", MSDNShortId = "D96D3F6D-2158-4E6A-84A8-DC3BAE9624FA")]
+		public static extern SafeHFILE OpenCommPort(uint uPortNumber, FileAccess dwDesiredAccess, uint dwFlagsAndAttributes);
 
 		/// <summary>
 		/// Discards all characters from the output or input buffer of a specified communications resource. It can also terminate pending read or write
@@ -766,7 +806,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363434")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetCommConfig([In] HFILE hCommDev, [In] IntPtr lpCC, uint dwSize);
+		public static extern bool SetCommConfig([In] HFILE hCommDev, [In] SafeAllocatedMemoryHandle lpCC, uint dwSize);
 
 		/// <summary>Specifies a set of events to be monitored for a communications device.</summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
@@ -809,7 +849,7 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>EV_RXFLAG0x0002</term>
 		/// <term>
-		/// The event character was received and placed in the input buffer. The event character is specified in the device&amp;#39;s DCB structure, which is
+		/// The event character was received and placed in the input buffer. The event character is specified in the device's DCB structure, which is
 		/// applied to a serial port by using the SetCommState function.
 		/// </term>
 		/// </item>
@@ -844,7 +884,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363436")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetCommState([In] HFILE hFile, [In] ref DCB lpDCB);
+		public static extern bool SetCommState([In] HFILE hFile, in DCB lpDCB);
 
 		/// <summary>Sets the time-out parameters for all read and write operations on a specified communications device.</summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
@@ -857,7 +897,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363437")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetCommTimeouts([In] HFILE hFile, [In] ref COMMTIMEOUTS lpCommTimeouts);
+		public static extern bool SetCommTimeouts([In] HFILE hFile, in COMMTIMEOUTS lpCommTimeouts);
 
 		/// <summary>Sets the default configuration for a communications device.</summary>
 		/// <param name="lpszName">The name of the device. For example, COM1 through COM9 are serial ports and LPT1 through LPT9 are parallel ports.</param>
@@ -871,7 +911,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa363438")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetDefaultCommConfig([In] string lpszName, [In] IntPtr lpCC, uint dwSize);
+		public static extern bool SetDefaultCommConfig(string lpszName, [In] SafeAllocatedMemoryHandle lpCC, uint dwSize);
 
 		/// <summary>Initializes the communications parameters for a specified communications device.</summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
@@ -947,7 +987,7 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>EV_RXFLAG0x0002</term>
 		/// <term>
-		/// The event character was received and placed in the input buffer. The event character is specified in the device&amp;#39;s DCB structure, which is
+		/// The event character was received and placed in the input buffer. The event character is specified in the device's DCB structure, which is
 		/// applied to a serial port by using the SetCommState function.
 		/// </term>
 		/// </item>

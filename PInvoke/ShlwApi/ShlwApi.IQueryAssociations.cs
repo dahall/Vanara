@@ -381,7 +381,7 @@ namespace Vanara.PInvoke
 			/// pwszAssoc, set this parameter to NULL.
 			/// </param>
 			/// <param name="hwnd">The HWND.</param>
-			void Init(ASSOCF flags, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pszAssoc, [Optional] IntPtr hkProgid, [Optional] IntPtr hwnd);
+			void Init(ASSOCF flags, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pszAssoc, [Optional] IntPtr hkProgid, [Optional] HWND hwnd);
 
 			/// <summary>Searches for and retrieves a file or protocol association-related string from the registry.</summary>
 			/// <param name="flags">A flag that can be used to control the search. It can be any combination of the following ASSOCF values.</param>
@@ -435,7 +435,7 @@ namespace Vanara.PInvoke
 			/// <param name="pszExtra">Undocumented.</param>
 			/// <param name="riid">Undocumented.</param>
 			/// <param name="ppvOut">Undocumented.</param>
-			void GetEnum(ASSOCF flags, ASSOCENUM assocenum, [MarshalAs(UnmanagedType.LPWStr)] string pszExtra, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IntPtr ppvOut);
+			void GetEnum(ASSOCF flags, ASSOCENUM assocenum, [MarshalAs(UnmanagedType.LPWStr)] string pszExtra, in Guid riid, out IntPtr ppvOut);
 		}
 
 		/// <summary>
@@ -466,7 +466,7 @@ namespace Vanara.PInvoke
 		// riid, void **ppv );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "33099e0e-73e3-4047-804f-765a59e42e3f")]
-		public static extern HRESULT AssocCreate([In] Guid clsid, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IQueryAssociations ppv);
+		public static extern HRESULT AssocCreate([In] Guid clsid, in Guid riid, out IQueryAssociations ppv);
 
 		/// <summary>
 		/// <para>Retrieves a file's perceived type based on its extension.</para>

@@ -130,7 +130,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa365144")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CallNamedPipe([In] string lpNamedPipeName, [In] IntPtr lpInBuffer, uint nInBufferSize, IntPtr lpOutBuffer, uint nOutBufferSize,
+		public static extern bool CallNamedPipe(string lpNamedPipeName, [In] IntPtr lpInBuffer, uint nInBufferSize, IntPtr lpOutBuffer, uint nOutBufferSize,
 			[Out] out uint lpBytesRead, uint nTimeOut);
 
 		/// <summary>
@@ -174,7 +174,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa365146")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool ConnectNamedPipe([In] IntPtr hNamedPipe, NativeOverlapped* lpOverlapped);
+		public static extern unsafe bool ConnectNamedPipe([In] HFILE hNamedPipe, NativeOverlapped* lpOverlapped);
 
 		/// <summary>
 		/// Creates an instance of a named pipe and returns a handle for subsequent pipe operations. A named pipe server process uses this function either to
@@ -245,7 +245,7 @@ namespace Vanara.PInvoke
 		/// <term>
 		/// Write-through mode is enabled. This mode affects only write operations on byte-type pipes and, then, only when the client and server processes are on
 		/// different computers. If this mode is enabled, functions writing to a named pipe do not return until the data written is transmitted across the
-		/// network and is in the pipe&amp;#39;s buffer on the remote computer. If this mode is not enabled, the system enhances the efficiency of network
+		/// network and is in the pipe's buffer on the remote computer. If this mode is not enabled, the system enhances the efficiency of network
 		/// operations by buffering data until a minimum number of bytes accumulate or until a maximum time elapses.
 		/// </term>
 		/// </item>
@@ -274,16 +274,16 @@ namespace Vanara.PInvoke
 		/// </listheader>
 		/// <item>
 		/// <term>WRITE_DAC0x00040000L</term>
-		/// <term>The caller will have write access to the named pipe&amp;#39;s discretionary access control list (ACL).</term>
+		/// <term>The caller will have write access to the named pipe's discretionary access control list (ACL).</term>
 		/// </item>
 		/// <item>
 		/// <term>WRITE_OWNER0x00080000L</term>
-		/// <term>The caller will have write access to the named pipe&amp;#39;s owner.</term>
+		/// <term>The caller will have write access to the named pipe's owner.</term>
 		/// </item>
 		/// <item>
 		/// <term>ACCESS_SYSTEM_SECURITY0x01000000L</term>
 		/// <term>
-		/// The caller will have write access to the named pipe&amp;#39;s SACL. For more information, see Access-Control Lists (ACLs) and SACL Access Right.
+		/// The caller will have write access to the named pipe's SACL. For more information, see Access-Control Lists (ACLs) and SACL Access Right.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -412,7 +412,7 @@ namespace Vanara.PInvoke
 		// _In_ DWORD nInBufferSize, _In_ DWORD nDefaultTimeOut, _In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365150(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa365150")]
-		public static extern IntPtr CreateNamedPipe([In] string lpName, uint dwOpenMode, PIPE_TYPE dwPipeMode, uint nMaxInstances, uint nOutBufferSize, uint nInBufferSize,
+		public static extern SafeHFILE CreateNamedPipe(string lpName, uint dwOpenMode, PIPE_TYPE dwPipeMode, uint nMaxInstances, uint nOutBufferSize, uint nInBufferSize,
 			uint nDefaultTimeOut, [In] SECURITY_ATTRIBUTES lpSecurityAttributes);
 
 		/// <summary>Creates an anonymous pipe, and returns handles to the read and write ends of the pipe.</summary>
@@ -440,7 +440,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa365152")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CreatePipe(out IntPtr hReadPipe, out IntPtr hWritePipe, [In] SECURITY_ATTRIBUTES lpPipeAttributes, uint nSize);
+		public static extern bool CreatePipe(out SafeHFILE hReadPipe, out SafeHFILE hWritePipe, [In] SECURITY_ATTRIBUTES lpPipeAttributes, uint nSize);
 
 		/// <summary>Disconnects the server end of a named pipe instance from a client process.</summary>
 		/// <param name="hNamedPipe">A handle to an instance of a named pipe. This handle must be created by the <c>CreateNamedPipe</c> function.</param>
@@ -452,7 +452,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa365166")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DisconnectNamedPipe([In] IntPtr hNamedPipe);
+		public static extern bool DisconnectNamedPipe([In] HFILE hNamedPipe);
 
 		/// <summary>Retrieves the client computer name for the specified named pipe.</summary>
 		/// <param name="Pipe">A handle to an instance of a named pipe. This handle must be created by the <c>CreateNamedPipe</c> function.</param>
@@ -466,7 +466,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa365437")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetNamedPipeClientComputerName(IntPtr Pipe, StringBuilder ClientComputerName, uint ClientComputerNameLength);
+		public static extern bool GetNamedPipeClientComputerName(HFILE Pipe, StringBuilder ClientComputerName, uint ClientComputerNameLength);
 
 		/// <summary>
 		/// Retrieves information about a specified named pipe. The information returned can vary during the lifetime of an instance of the named pipe.
@@ -535,8 +535,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa365443")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetNamedPipeHandleState([In] IntPtr hNamedPipe, out PIPE_TYPE lpState, out uint lpCurInstances, out uint lpMaxCollectionCount, out uint lpCollectDataTimeout,
-			[Out] StringBuilder lpUserName, uint nMaxUserNameSize);
+		public static extern bool GetNamedPipeHandleState([In] HFILE hNamedPipe, out PIPE_TYPE lpState, out uint lpCurInstances, out uint lpMaxCollectionCount, out uint lpCollectDataTimeout,
+			StringBuilder lpUserName, uint nMaxUserNameSize);
 
 		/// <summary>Retrieves information about the specified named pipe.</summary>
 		/// <param name="hNamedPipe">
@@ -600,7 +600,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa365445")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetNamedPipeInfo([In] IntPtr hNamedPipe, out PIPE_TYPE lpFlags, out uint lpOutBufferSize, out uint lpInBufferSize, out uint lpMaxInstances);
+		public static extern bool GetNamedPipeInfo([In] HFILE hNamedPipe, out PIPE_TYPE lpFlags, out uint lpOutBufferSize, out uint lpInBufferSize, out uint lpMaxInstances);
 
 		/// <summary>
 		/// Copies data from a named or anonymous pipe into a buffer without removing it from the pipe. It also returns information about data in the pipe.
@@ -632,7 +632,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa365779")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PeekNamedPipe([In] IntPtr hNamedPipe, IntPtr lpBuffer, uint nBufferSize, out uint lpBytesRead, out uint lpTotalBytesAvail, out uint lpBytesLeftThisMessage);
+		public static extern bool PeekNamedPipe([In] HFILE hNamedPipe, IntPtr lpBuffer, uint nBufferSize, out uint lpBytesRead, out uint lpTotalBytesAvail, out uint lpBytesLeftThisMessage);
 
 		/// <summary>
 		/// Sets the read mode and the blocking mode of the specified named pipe. If the specified handle is to the client end of a named pipe and if the named
@@ -713,7 +713,88 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa365787")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetNamedPipeHandleState([In] IntPtr hNamedPipe, [In] IntPtr lpMode, [In] IntPtr lpMaxCollectionCount, [In] IntPtr lpCollectDataTimeout);
+		public static extern bool SetNamedPipeHandleState([In] HFILE hNamedPipe, [In] in uint lpMode, [In] in uint lpMaxCollectionCount, [In] in uint lpCollectDataTimeout);
+
+		/// <summary>
+		/// Sets the read mode and the blocking mode of the specified named pipe. If the specified handle is to the client end of a named pipe and if the named
+		/// pipe server process is on a remote computer, the function can also be used to control local buffering.
+		/// </summary>
+		/// <param name="hNamedPipe">
+		/// <para>
+		/// A handle to the named pipe instance. This parameter can be a handle to the server end of the pipe, as returned by the <c>CreateNamedPipe</c>
+		/// function, or to the client end of the pipe, as returned by the <c>CreateFile</c> function. The handle must have GENERIC_WRITE access to the named
+		/// pipe for a write-only or read/write pipe, or it must have GENERIC_READ and FILE_WRITE_ATTRIBUTES access for a read-only pipe.
+		/// </para>
+		/// <para>This parameter can also be a handle to an anonymous pipe, as returned by the <c>CreatePipe</c> function.</para>
+		/// </param>
+		/// <param name="lpMode">
+		/// <para>
+		/// The new pipe mode. The mode is a combination of a read-mode flag and a wait-mode flag. This parameter can be <c>NULL</c> if the mode is not being
+		/// set. Specify one of the following modes.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Mode</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>PIPE_READMODE_BYTE0x00000000</term>
+		/// <term>Data is read from the pipe as a stream of bytes. This mode is the default if no read-mode flag is specified.</term>
+		/// </item>
+		/// <item>
+		/// <term>PIPE_READMODE_MESSAGE0x00000002</term>
+		/// <term>Data is read from the pipe as a stream of messages. The function fails if this flag is specified for a byte-type pipe.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// <para>One of the following wait modes can be specified.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Mode</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>PIPE_WAIT0x00000000</term>
+		/// <term>
+		/// Blocking mode is enabled. This mode is the default if no wait-mode flag is specified. When a blocking mode pipe handle is specified in the ReadFile,
+		/// WriteFile, or ConnectNamedPipe function, operations are not finished until there is data to read, all data is written, or a client is connected. Use
+		/// of this mode can mean waiting indefinitely in some situations for a client process to perform an action.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>PIPE_NOWAIT0x00000001</term>
+		/// <term>
+		/// Nonblocking mode is enabled. In this mode, ReadFile, WriteFile, and ConnectNamedPipe always return immediately. Note that nonblocking mode is
+		/// supported for compatibility with Microsoft LAN Manager version 2.0 and should not be used to achieve asynchronous input and output (I/O) with named pipes.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="lpMaxCollectionCount">
+		/// The maximum number of bytes collected on the client computer before transmission to the server. This parameter must be <c>NULL</c> if the specified
+		/// pipe handle is to the server end of a named pipe or if client and server processes are on the same machine. This parameter is ignored if the client
+		/// process specifies the FILE_FLAG_WRITE_THROUGH flag in the <c>CreateFile</c> function when the handle was created. This parameter can be <c>NULL</c>
+		/// if the collection count is not being set.
+		/// </param>
+		/// <param name="lpCollectDataTimeout">
+		/// The maximum time, in milliseconds, that can pass before a remote named pipe transfers information over the network. This parameter must be
+		/// <c>NULL</c> if the specified pipe handle is to the server end of a named pipe or if client and server processes are on the same computer. This
+		/// parameter is ignored if the client process specified the FILE_FLAG_WRITE_THROUGH flag in the <c>CreateFile</c> function when the handle was created.
+		/// This parameter can be <c>NULL</c> if the collection count is not being set.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI SetNamedPipeHandleState( _In_ HANDLE hNamedPipe, _In_opt_ LPDWORD lpMode, _In_opt_ LPDWORD lpMaxCollectionCount, _In_opt_ LPDWORD
+		// lpCollectDataTimeout); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365787(v=vs.85).aspx
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("Winbase.h", MSDNShortId = "aa365787")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetNamedPipeHandleState([In] HFILE hNamedPipe, [In] IntPtr lpMode, [In] IntPtr lpMaxCollectionCount, [In] IntPtr lpCollectDataTimeout);
 
 		/// <summary>Combines the functions that write a message to and read a message from the specified named pipe into a single network operation.</summary>
 		/// <param name="hNamedPipe">
@@ -765,7 +846,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa365790")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool TransactNamedPipe([In] IntPtr hNamedPipe, [In] IntPtr lpInBuffer, uint nInBufferSize, IntPtr lpOutBuffer, uint nOutBufferSize, [Out] out uint lpBytesRead,
+		public static extern unsafe bool TransactNamedPipe([In] HFILE hNamedPipe, [In] IntPtr lpInBuffer, uint nInBufferSize, IntPtr lpOutBuffer, uint nOutBufferSize, [Out] out uint lpBytesRead,
 			NativeOverlapped* lpOverlapped);
 
 		/// <summary>
@@ -811,6 +892,6 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa365800")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool WaitNamedPipe([In] string lpNamedPipeName, uint nTimeOut);
+		public static extern bool WaitNamedPipe(string lpNamedPipeName, uint nTimeOut);
 	}
 }

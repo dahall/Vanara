@@ -166,7 +166,7 @@ namespace Vanara.PInvoke
 			/// IShellItem and IShellLink objects that represent the removed items.
 			/// </returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			object BeginList(out uint pcMaxSlots, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			object BeginList(out uint pcMaxSlots, in Guid riid);
 
 			/// <summary>Defines a custom category and the destinations that it contains, for inclusion in a custom Jump List.</summary>
 			/// <param name="pszCategory">
@@ -207,7 +207,7 @@ namespace Vanara.PInvoke
 			/// IShellItem or IShellLink objects that represent the items in the list of removed destinations.
 			/// </returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			object GetRemovedDestinations([In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			object GetRemovedDestinations(in Guid riid);
 
 			/// <summary>Deletes a custom Jump List for a specified application.</summary>
 			/// <param name="pszAppID">
@@ -233,21 +233,21 @@ namespace Vanara.PInvoke
 
 			/// <summary>Adds an item to the taskbar.</summary>
 			/// <param name="hwnd">A handle to the window to be added to the taskbar.</param>
-			void AddTab(IntPtr hwnd);
+			void AddTab(HWND hwnd);
 
 			/// <summary>Deletes an item from the taskbar.</summary>
 			/// <param name="hwnd">A handle to the window to be deleted from the taskbar.</param>
-			void DeleteTab(IntPtr hwnd);
+			void DeleteTab(HWND hwnd);
 
 			/// <summary>
 			/// Activates an item on the taskbar. The window is not actually activated; the window's item on the taskbar is merely displayed as active.
 			/// </summary>
 			/// <param name="hwnd">A handle to the window on the taskbar to be displayed as active.</param>
-			void ActivateTab(IntPtr hwnd);
+			void ActivateTab(HWND hwnd);
 
 			/// <summary>Marks a taskbar item as active but does not visually activate it.</summary>
 			/// <param name="hwnd">A handle to the window to be marked as active.</param>
-			void SetActiveAlt(IntPtr hwnd);
+			void SetActiveAlt(HWND hwnd);
 		}
 
 		/// <summary>Extends the ITaskbarList interface by exposing a method to mark a window as a full-screen display.</summary>
@@ -262,26 +262,26 @@ namespace Vanara.PInvoke
 
 			/// <summary>Adds an item to the taskbar.</summary>
 			/// <param name="hwnd">A handle to the window to be added to the taskbar.</param>
-			new void AddTab(IntPtr hwnd);
+			new void AddTab(HWND hwnd);
 
 			/// <summary>Deletes an item from the taskbar.</summary>
 			/// <param name="hwnd">A handle to the window to be deleted from the taskbar.</param>
-			new void DeleteTab(IntPtr hwnd);
+			new void DeleteTab(HWND hwnd);
 
 			/// <summary>
 			/// Activates an item on the taskbar. The window is not actually activated; the window's item on the taskbar is merely displayed as active.
 			/// </summary>
 			/// <param name="hwnd">A handle to the window on the taskbar to be displayed as active.</param>
-			new void ActivateTab(IntPtr hwnd);
+			new void ActivateTab(HWND hwnd);
 
 			/// <summary>Marks a taskbar item as active but does not visually activate it.</summary>
 			/// <param name="hwnd">A handle to the window to be marked as active.</param>
-			new void SetActiveAlt(IntPtr hwnd);
+			new void SetActiveAlt(HWND hwnd);
 
 			/// <summary>Marks a window as full-screen.</summary>
 			/// <param name="hwnd">The handle of the window to be marked.</param>
 			/// <param name="fFullscreen">A Boolean value marking the desired full-screen status of the window.</param>
-			void MarkFullscreenWindow(IntPtr hwnd, [MarshalAs(UnmanagedType.Bool)] bool fFullscreen);
+			void MarkFullscreenWindow(HWND hwnd, [MarshalAs(UnmanagedType.Bool)] bool fFullscreen);
 		}
 
 		/// <summary>
@@ -300,26 +300,26 @@ namespace Vanara.PInvoke
 
 			/// <summary>Adds an item to the taskbar.</summary>
 			/// <param name="hwnd">A handle to the window to be added to the taskbar.</param>
-			new void AddTab(IntPtr hwnd);
+			new void AddTab(HWND hwnd);
 
 			/// <summary>Deletes an item from the taskbar.</summary>
 			/// <param name="hwnd">A handle to the window to be deleted from the taskbar.</param>
-			new void DeleteTab(IntPtr hwnd);
+			new void DeleteTab(HWND hwnd);
 
 			/// <summary>
 			/// Activates an item on the taskbar. The window is not actually activated; the window's item on the taskbar is merely displayed as active.
 			/// </summary>
 			/// <param name="hwnd">A handle to the window on the taskbar to be displayed as active.</param>
-			new void ActivateTab(IntPtr hwnd);
+			new void ActivateTab(HWND hwnd);
 
 			/// <summary>Marks a taskbar item as active but does not visually activate it.</summary>
 			/// <param name="hwnd">A handle to the window to be marked as active.</param>
-			new void SetActiveAlt(IntPtr hwnd);
+			new void SetActiveAlt(HWND hwnd);
 
 			/// <summary>Marks a window as full-screen.</summary>
 			/// <param name="hwnd">The handle of the window to be marked.</param>
 			/// <param name="fFullscreen">A Boolean value marking the desired full-screen status of the window.</param>
-			new void MarkFullscreenWindow(IntPtr hwnd, [MarshalAs(UnmanagedType.Bool)] bool fFullscreen);
+			new void MarkFullscreenWindow(HWND hwnd, [MarshalAs(UnmanagedType.Bool)] bool fFullscreen);
 
 			/// <summary>Displays or updates a progress bar hosted in a taskbar button to show the specific percentage completed of the full operation.</summary>
 			/// <param name="hwnd">The handle of the window whose associated taskbar button is being used as a progress indicator.</param>
@@ -327,7 +327,7 @@ namespace Vanara.PInvoke
 			/// An application-defined value that indicates the proportion of the operation that has been completed at the time the method is called.
 			/// </param>
 			/// <param name="ullTotal">An application-defined value that specifies the value ullCompleted will have when the operation is complete.</param>
-			void SetProgressValue(IntPtr hwnd, ulong ullCompleted, ulong ullTotal);
+			void SetProgressValue(HWND hwnd, ulong ullCompleted, ulong ullTotal);
 
 			/// <summary>Sets the type and state of the progress indicator displayed on a taskbar button.</summary>
 			/// <param name="hwnd">
@@ -336,7 +336,7 @@ namespace Vanara.PInvoke
 			/// <param name="tbpFlags">
 			/// Flags that control the current state of the progress button. Specify only one of the following flags; all states are mutually exclusive of all others.
 			/// </param>
-			void SetProgressState(IntPtr hwnd, TBPFLAG tbpFlags);
+			void SetProgressState(HWND hwnd, TBPFLAG tbpFlags);
 
 			/// <summary>Informs the taskbar that a new tab or document thumbnail has been provided for display in an application's taskbar group flyout.</summary>
 			/// <param name="hwndTab">Handle of the tab or document window. This value is required and cannot be NULL.</param>
@@ -348,7 +348,7 @@ namespace Vanara.PInvoke
 			/// By itself, registering a tab thumbnail alone will not result in its being displayed. You must also call ITaskbarList3::SetTabOrder to instruct
 			/// the group where to display it.
 			/// </remarks>
-			void RegisterTab(IntPtr hwndTab, IntPtr hwndMDI);
+			void RegisterTab(HWND hwndTab, HWND hwndMDI);
 
 			/// <summary>Removes a thumbnail from an application's preview group when that tab or document is closed in the application.</summary>
 			/// <param name="hwndTab">
@@ -358,7 +358,7 @@ namespace Vanara.PInvoke
 			/// <remarks>
 			/// It is the responsibility of the calling application to free hwndTab through DestroyWindow. UnregisterTab must be called before the handle is freed.
 			/// </remarks>
-			void UnregisterTab(IntPtr hwndTab);
+			void UnregisterTab(HWND hwndTab);
 
 			/// <summary>
 			/// Inserts a new thumbnail into a tabbed-document interface (TDI) or multiple-document interface (MDI) application's group flyout or moves an
@@ -373,7 +373,7 @@ namespace Vanara.PInvoke
 			/// ITaskbarList3::RegisterTab. If this value is NULL, the new thumbnail is added to the end of the list.
 			/// </param>
 			/// <remarks>This method must be called for the thumbnail to be shown in the group. Call it after you have called ITaskbarList3::RegisterTab.</remarks>
-			void SetTabOrder(IntPtr hwndTab, IntPtr hwndInsertBefore);
+			void SetTabOrder(HWND hwndTab, HWND hwndInsertBefore);
 
 			/// <summary>Informs the taskbar that a tab or document window has been made the active window.</summary>
 			/// <param name="hwndTab">
@@ -384,7 +384,7 @@ namespace Vanara.PInvoke
 			/// be NULL.
 			/// </param>
 			/// <param name="dwReserved">Reserved; set to 0.</param>
-			void SetTabActive(IntPtr hwndTab, IntPtr hwndMDI, uint dwReserved);
+			void SetTabActive(HWND hwndTab, HWND hwndMDI, uint dwReserved);
 
 			/// <summary>Adds a thumbnail toolbar with a specified set of buttons to the thumbnail image of a window in a taskbar button flyout.</summary>
 			/// <param name="hwnd">
@@ -396,7 +396,7 @@ namespace Vanara.PInvoke
 			/// added or deleted later, so this must be the full defined set. Buttons also cannot be reordered, so their order in the array, which is the order
 			/// in which they are displayed left to right, will be their permanent order.
 			/// </param>
-			void ThumbBarAddButtons(IntPtr hwnd, uint cButtons, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] THUMBBUTTON[] pButtons);
+			void ThumbBarAddButtons(HWND hwnd, uint cButtons, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] THUMBBUTTON[] pButtons);
 
 			/// <summary>
 			/// Shows, enables, disables, or hides buttons in a thumbnail toolbar as required by the window's current state. A thumbnail toolbar is a toolbar
@@ -411,7 +411,7 @@ namespace Vanara.PInvoke
 			/// A pointer to an array of THUMBBUTTON structures. Each THUMBBUTTON defines an individual button. If the button already exists (the iId value is
 			/// already defined), then that existing button is updated with the information provided in the structure.
 			/// </param>
-			void ThumbBarUpdateButtons(IntPtr hwnd, uint cButtons, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] THUMBBUTTON[] pButtons);
+			void ThumbBarUpdateButtons(HWND hwnd, uint cButtons, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] THUMBBUTTON[] pButtons);
 
 			/// <summary>
 			/// Specifies an image list that contains button images for a toolbar embedded in a thumbnail image of a window in a taskbar button flyout.
@@ -435,7 +435,7 @@ namespace Vanara.PInvoke
 			/// button's clicked, disabled, and hover states.
 			/// </para>
 			/// </remarks>
-			void ThumbBarSetImageList(IntPtr hwnd, IntPtr himl);
+			void ThumbBarSetImageList(HWND hwnd, IntPtr himl);
 
 			/// <summary>Applies an overlay to a taskbar button to indicate application status or a notification to the user.</summary>
 			/// <param name="hwnd">
@@ -465,7 +465,7 @@ namespace Vanara.PInvoke
 			/// <param name="pszDescription">
 			/// A pointer to a string that provides an alt text version of the information conveyed by the overlay, for accessibility purposes.
 			/// </param>
-			void SetOverlayIcon(IntPtr hwnd, IntPtr hIcon, [MarshalAs(UnmanagedType.LPWStr)] string pszDescription);
+			void SetOverlayIcon(HWND hwnd, IntPtr hIcon, [MarshalAs(UnmanagedType.LPWStr)] string pszDescription);
 
 			/// <summary>
 			/// Specifies or updates the text of the tooltip that is displayed when the mouse pointer rests on an individual preview thumbnail in a taskbar
@@ -476,7 +476,7 @@ namespace Vanara.PInvoke
 			/// The pointer to the text to be displayed in the tooltip. This value can be NULL, in which case the title of the window specified by hwnd is used
 			/// as the tooltip.
 			/// </param>
-			void SetThumbnailTooltip(IntPtr hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszTip);
+			void SetThumbnailTooltip(HWND hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszTip);
 
 			/// <summary>Selects a portion of a window's client area to display as that window's thumbnail in the taskbar.</summary>
 			/// <param name="hwnd">The handle to a window represented in the taskbar.</param>
@@ -484,7 +484,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a RECT structure that specifies a selection within the window's client area, relative to the upper-left corner of that client area.
 			/// To clear a clip that is already in place and return to the default display of the thumbnail, set this parameter to NULL.
 			/// </param>
-			void SetThumbnailClip(IntPtr hwnd, ref RECT prcClip);
+			void SetThumbnailClip(HWND hwnd, ref RECT prcClip);
 		}
 
 		/// <summary>Extends ITaskbarList3 by providing a method that allows the caller to control two property values for the tab thumbnail and peek feature.</summary>
@@ -499,26 +499,26 @@ namespace Vanara.PInvoke
 
 			/// <summary>Adds an item to the taskbar.</summary>
 			/// <param name="hwnd">A handle to the window to be added to the taskbar.</param>
-			new void AddTab(IntPtr hwnd);
+			new void AddTab(HWND hwnd);
 
 			/// <summary>Deletes an item from the taskbar.</summary>
 			/// <param name="hwnd">A handle to the window to be deleted from the taskbar.</param>
-			new void DeleteTab(IntPtr hwnd);
+			new void DeleteTab(HWND hwnd);
 
 			/// <summary>
 			/// Activates an item on the taskbar. The window is not actually activated; the window's item on the taskbar is merely displayed as active.
 			/// </summary>
 			/// <param name="hwnd">A handle to the window on the taskbar to be displayed as active.</param>
-			new void ActivateTab(IntPtr hwnd);
+			new void ActivateTab(HWND hwnd);
 
 			/// <summary>Marks a taskbar item as active but does not visually activate it.</summary>
 			/// <param name="hwnd">A handle to the window to be marked as active.</param>
-			new void SetActiveAlt(IntPtr hwnd);
+			new void SetActiveAlt(HWND hwnd);
 
 			/// <summary>Marks a window as full-screen.</summary>
 			/// <param name="hwnd">The handle of the window to be marked.</param>
 			/// <param name="fFullscreen">A Boolean value marking the desired full-screen status of the window.</param>
-			new void MarkFullscreenWindow(IntPtr hwnd, [MarshalAs(UnmanagedType.Bool)] bool fFullscreen);
+			new void MarkFullscreenWindow(HWND hwnd, [MarshalAs(UnmanagedType.Bool)] bool fFullscreen);
 
 			/// <summary>Displays or updates a progress bar hosted in a taskbar button to show the specific percentage completed of the full operation.</summary>
 			/// <param name="hwnd">The handle of the window whose associated taskbar button is being used as a progress indicator.</param>
@@ -526,7 +526,7 @@ namespace Vanara.PInvoke
 			/// An application-defined value that indicates the proportion of the operation that has been completed at the time the method is called.
 			/// </param>
 			/// <param name="ullTotal">An application-defined value that specifies the value ullCompleted will have when the operation is complete.</param>
-			new void SetProgressValue(IntPtr hwnd, ulong ullCompleted, ulong ullTotal);
+			new void SetProgressValue(HWND hwnd, ulong ullCompleted, ulong ullTotal);
 
 			/// <summary>Sets the type and state of the progress indicator displayed on a taskbar button.</summary>
 			/// <param name="hwnd">
@@ -535,7 +535,7 @@ namespace Vanara.PInvoke
 			/// <param name="tbpFlags">
 			/// Flags that control the current state of the progress button. Specify only one of the following flags; all states are mutually exclusive of all others.
 			/// </param>
-			new void SetProgressState(IntPtr hwnd, TBPFLAG tbpFlags);
+			new void SetProgressState(HWND hwnd, TBPFLAG tbpFlags);
 
 			/// <summary>Informs the taskbar that a new tab or document thumbnail has been provided for display in an application's taskbar group flyout.</summary>
 			/// <param name="hwndTab">Handle of the tab or document window. This value is required and cannot be NULL.</param>
@@ -547,7 +547,7 @@ namespace Vanara.PInvoke
 			/// By itself, registering a tab thumbnail alone will not result in its being displayed. You must also call ITaskbarList3::SetTabOrder to instruct
 			/// the group where to display it.
 			/// </remarks>
-			new void RegisterTab(IntPtr hwndTab, IntPtr hwndMDI);
+			new void RegisterTab(HWND hwndTab, HWND hwndMDI);
 
 			/// <summary>Removes a thumbnail from an application's preview group when that tab or document is closed in the application.</summary>
 			/// <param name="hwndTab">
@@ -557,7 +557,7 @@ namespace Vanara.PInvoke
 			/// <remarks>
 			/// It is the responsibility of the calling application to free hwndTab through DestroyWindow. UnregisterTab must be called before the handle is freed.
 			/// </remarks>
-			new void UnregisterTab(IntPtr hwndTab);
+			new void UnregisterTab(HWND hwndTab);
 
 			/// <summary>
 			/// Inserts a new thumbnail into a tabbed-document interface (TDI) or multiple-document interface (MDI) application's group flyout or moves an
@@ -572,7 +572,7 @@ namespace Vanara.PInvoke
 			/// ITaskbarList3::RegisterTab. If this value is NULL, the new thumbnail is added to the end of the list.
 			/// </param>
 			/// <remarks>This method must be called for the thumbnail to be shown in the group. Call it after you have called ITaskbarList3::RegisterTab.</remarks>
-			new void SetTabOrder(IntPtr hwndTab, IntPtr hwndInsertBefore);
+			new void SetTabOrder(HWND hwndTab, HWND hwndInsertBefore);
 
 			/// <summary>Informs the taskbar that a tab or document window has been made the active window.</summary>
 			/// <param name="hwndTab">
@@ -583,7 +583,7 @@ namespace Vanara.PInvoke
 			/// be NULL.
 			/// </param>
 			/// <param name="dwReserved">Reserved; set to 0.</param>
-			new void SetTabActive(IntPtr hwndTab, IntPtr hwndMDI, uint dwReserved);
+			new void SetTabActive(HWND hwndTab, HWND hwndMDI, uint dwReserved);
 
 			/// <summary>Adds a thumbnail toolbar with a specified set of buttons to the thumbnail image of a window in a taskbar button flyout.</summary>
 			/// <param name="hwnd">
@@ -595,7 +595,7 @@ namespace Vanara.PInvoke
 			/// added or deleted later, so this must be the full defined set. Buttons also cannot be reordered, so their order in the array, which is the order
 			/// in which they are displayed left to right, will be their permanent order.
 			/// </param>
-			new void ThumbBarAddButtons(IntPtr hwnd, uint cButtons, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] THUMBBUTTON[] pButtons);
+			new void ThumbBarAddButtons(HWND hwnd, uint cButtons, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] THUMBBUTTON[] pButtons);
 
 			/// <summary>
 			/// Shows, enables, disables, or hides buttons in a thumbnail toolbar as required by the window's current state. A thumbnail toolbar is a toolbar
@@ -610,7 +610,7 @@ namespace Vanara.PInvoke
 			/// A pointer to an array of THUMBBUTTON structures. Each THUMBBUTTON defines an individual button. If the button already exists (the iId value is
 			/// already defined), then that existing button is updated with the information provided in the structure.
 			/// </param>
-			new void ThumbBarUpdateButtons(IntPtr hwnd, uint cButtons, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] THUMBBUTTON[] pButtons);
+			new void ThumbBarUpdateButtons(HWND hwnd, uint cButtons, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] THUMBBUTTON[] pButtons);
 
 			/// <summary>
 			/// Specifies an image list that contains button images for a toolbar embedded in a thumbnail image of a window in a taskbar button flyout.
@@ -634,7 +634,7 @@ namespace Vanara.PInvoke
 			/// button's clicked, disabled, and hover states.
 			/// </para>
 			/// </remarks>
-			new void ThumbBarSetImageList(IntPtr hwnd, IntPtr himl);
+			new void ThumbBarSetImageList(HWND hwnd, IntPtr himl);
 
 			/// <summary>Applies an overlay to a taskbar button to indicate application status or a notification to the user.</summary>
 			/// <param name="hwnd">
@@ -664,7 +664,7 @@ namespace Vanara.PInvoke
 			/// <param name="pszDescription">
 			/// A pointer to a string that provides an alt text version of the information conveyed by the overlay, for accessibility purposes.
 			/// </param>
-			new void SetOverlayIcon(IntPtr hwnd, IntPtr hIcon, [MarshalAs(UnmanagedType.LPWStr)] string pszDescription);
+			new void SetOverlayIcon(HWND hwnd, IntPtr hIcon, [MarshalAs(UnmanagedType.LPWStr)] string pszDescription);
 
 			/// <summary>
 			/// Specifies or updates the text of the tooltip that is displayed when the mouse pointer rests on an individual preview thumbnail in a taskbar
@@ -675,7 +675,7 @@ namespace Vanara.PInvoke
 			/// The pointer to the text to be displayed in the tooltip. This value can be NULL, in which case the title of the window specified by hwnd is used
 			/// as the tooltip.
 			/// </param>
-			new void SetThumbnailTooltip(IntPtr hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszTip);
+			new void SetThumbnailTooltip(HWND hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszTip);
 
 			/// <summary>Selects a portion of a window's client area to display as that window's thumbnail in the taskbar.</summary>
 			/// <param name="hwnd">The handle to a window represented in the taskbar.</param>
@@ -683,7 +683,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a RECT structure that specifies a selection within the window's client area, relative to the upper-left corner of that client area.
 			/// To clear a clip that is already in place and return to the default display of the thumbnail, set this parameter to NULL.
 			/// </param>
-			new void SetThumbnailClip(IntPtr hwnd, ref RECT prcClip);
+			new void SetThumbnailClip(HWND hwnd, ref RECT prcClip);
 
 			/// <summary>
 			/// Allows a tab to specify whether the main application frame window or the tab window should be used as a thumbnail or in the peek feature under
@@ -693,7 +693,7 @@ namespace Vanara.PInvoke
 			/// <param name="stpFlags">
 			/// One or more members of the STPFLAG enumeration that specify the displayed thumbnail and peek image source of the tab thumbnail.
 			/// </param>
-			void SetTabProperties(IntPtr hwndTab, STPFLAG stpFlags);
+			void SetTabProperties(HWND hwndTab, STPFLAG stpFlags);
 		}
 
 		/// <summary>Used by methods of the ITaskbarList3 interface to define buttons used in a toolbar embedded in a window's thumbnail representation.</summary>

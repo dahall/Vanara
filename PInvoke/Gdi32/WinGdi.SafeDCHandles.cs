@@ -10,18 +10,18 @@ namespace Vanara.PInvoke
 		/// <code language="cs" title="Using a pen and brush">
 		/// using (var screenDC = SafeHDC.ScreenCompatibleDCHandle)
 		/// {
-		///    var brush = CreateSolidBrush(Color.Red);
-		///    using (new GdiObjectContext(screenDC, brush))
-		///    {
-		///       // Do brush stuff
-		///    }
-		///	   
-		///    var pen = CreatePen(PS_SOLID, 1, Color.Black);
-		///    // Alternatively, call the SelectObject method on the SafeHDC object
-		///    using (screenDC.SelectObject(pen))
-		///    {
-		///       // Do pen stuff
-		///    }
+		/// var brush = CreateSolidBrush(Color.Red);
+		/// using (new GdiObjectContext(screenDC, brush))
+		/// {
+		/// // Do brush stuff
+		/// }
+		///
+		/// var pen = CreatePen(PS_SOLID, 1, Color.Black);
+		/// // Alternatively, call the SelectObject method on the SafeHDC object
+		/// using (screenDC.SelectObject(pen))
+		/// {
+		/// // Do pen stuff
+		/// }
 		/// }
 		/// </code>
 		/// </example>
@@ -37,7 +37,7 @@ namespace Vanara.PInvoke
 			/// <exception cref="ArgumentNullException">hdc - Device context cannot be null.</exception>
 			public GdiObjectContext(HDC hdc, HGDIOBJ hObj)
 			{
-				if (hdc == null || hdc.IsInvalid) throw new ArgumentNullException(nameof(hdc), "Device context cannot be null.");
+				if (hdc.IsNull) throw new ArgumentNullException(nameof(hdc), "Device context cannot be null.");
 				hDC = hdc;
 				hOld = SelectObject(hdc, hObj);
 			}
@@ -52,8 +52,64 @@ namespace Vanara.PInvoke
 			void IDisposable.Dispose() => SelectObject(hDC, hOld);
 		}
 
+		/// <summary>
+		/// Provides a <see cref="SafeHandle"/> to a graphics bitmap object that releases a created HBITMAP instance at disposal using DeleteObject.
+		/// </summary>
+		public class SafeHBITMAP : HANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeHBITMAP"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHBITMAP(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			private SafeHBITMAP() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHBITMAP"/> to <see cref="HBITMAP"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HBITMAP(SafeHBITMAP h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHBITMAP"/> to <see cref="HGDIOBJ"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HGDIOBJ(SafeHBITMAP h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => DeleteObject(this);
+		}
+
+		/// <summary>
+		/// Provides a <see cref="SafeHandle"/> to a graphics bitmap object that releases a created HBRUSH instance at disposal using DeleteObject.
+		/// </summary>
+		public class SafeHBRUSH : HANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeHBRUSH"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHBRUSH(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			private SafeHBRUSH() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHBRUSH"/> to <see cref="HBRUSH"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HBRUSH(SafeHBRUSH h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHBRUSH"/> to <see cref="HGDIOBJ"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HGDIOBJ(SafeHBRUSH h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => DeleteObject(this);
+		}
+
 		/// <summary>A SafeHandle to track DC handles.</summary>
-		public class SafeHDC : HDC
+		public class SafeHDC : HANDLE
 		{
 			private readonly IDeviceContext idc;
 
@@ -73,14 +129,21 @@ namespace Vanara.PInvoke
 				SetHandle(dc.GetHdc());
 			}
 
+			private SafeHDC() : base() { }
+
 			/// <summary>Gets the screen compatible device context handle.</summary>
 			/// <value>The screen compatible device context handle.</value>
-			public static SafeHDC ScreenCompatibleDCHandle => CreateCompatibleDC(NULL);
+			public static SafeHDC ScreenCompatibleDCHandle => CreateCompatibleDC(HDC.NULL);
 
 			/// <summary>Performs an explicit conversion from <see cref="SafeHDC"/> to <see cref="Graphics"/>.</summary>
 			/// <param name="hdc">The HDC.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static explicit operator Graphics(SafeHDC hdc) => Graphics.FromHdc(hdc.handle);
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHDC"/> to <see cref="HDC"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HDC(SafeHDC h) => h.handle;
 
 			/// <summary>Performs an implicit conversion from <see cref="Graphics"/> to <see cref="SafeHDC"/>.</summary>
 			/// <param name="graphics">The <see cref="Graphics"/> instance.</param>
@@ -107,78 +170,9 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Provides a <see cref="SafeHandle"/> to a graphics object that releases a created HGDIOBJ instance at disposal using DeleteObject.
-		/// </summary>
-		public abstract class SafeHGDIOBJ : HGDIOBJ
-		{
-			/// <summary>Initializes a new instance of the <see cref="SafeHGDIOBJ"/> class and assigns an existing handle.</summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-			/// </param>
-			protected SafeHGDIOBJ(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => DeleteObject(this);
-		}
-
-		/// <summary>
-		/// Provides a <see cref="SafeHandle"/> to a graphics bitmap object that releases a created HBITMAP instance at disposal using DeleteObject.
-		/// </summary>
-		public class SafeHBITMAP : SafeHGDIOBJ
-		{
-			/// <summary>Initializes a new instance of the <see cref="SafeHBITMAP"/> class and assigns an existing handle.</summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-			/// </param>
-			public SafeHBITMAP(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-			/// <summary>Returns an invalid handle by instantiating a <see cref="HGDIOBJ"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			new public static SafeHBITMAP NULL => new SafeHBITMAP(IntPtr.Zero);
-
-			/// <summary>Creates a managed <see cref="System.Drawing.Bitmap"/> from this HBITMAP instance.</summary>
-			/// <returns>A managed bitmap instance.</returns>
-			public Bitmap ToBitmap() => IsInvalid ? null : (Bitmap)Image.FromHbitmap(handle).Clone();
-		}
-
-		/// <summary>
-		/// Provides a <see cref="SafeHandle"/> to a graphics bitmap object that releases a created HBRUSH instance at disposal using DeleteObject.
-		/// </summary>
-		public class SafeHBRUSH : SafeHGDIOBJ
-		{
-			/// <summary>Initializes a new instance of the <see cref="SafeHBRUSH"/> class and assigns an existing handle.</summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-			/// </param>
-			public SafeHBRUSH(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-			/// <summary>Returns an invalid handle by instantiating a <see cref="HGDIOBJ"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			new public static SafeHBRUSH NULL => new SafeHBRUSH(IntPtr.Zero);
-
-			/// <summary>Creates a managed <see cref="System.Drawing.Brush"/> from this HBRUSH instance.</summary>
-			/// <returns>A managed brush instance.</returns>
-			public Brush ToBrush() => IsInvalid ? null : new NativeBrush(this);
-
-			private class NativeBrush : Brush
-			{
-				public NativeBrush(SafeHBRUSH hBrush)
-				{
-					var lb = GetObject<LOGBRUSH>(hBrush);
-					var b2 = CreateBrushIndirect(ref lb);
-					SetNativeBrush(b2.DangerousGetHandle());
-					b2.SetHandleAsInvalid();
-				}
-
-				public override object Clone() => this;
-			}
-		}
-
-		/// <summary>
 		/// Provides a <see cref="SafeHandle"/> to a graphics bitmap object that releases a created HFONT instance at disposal using DeleteObject.
 		/// </summary>
-		public class SafeHFONT : SafeHGDIOBJ
+		public class SafeHFONT : HANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHFONT"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -187,14 +181,55 @@ namespace Vanara.PInvoke
 			/// </param>
 			public SafeHFONT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			/// <summary>Returns an invalid handle by instantiating a <see cref="HGDIOBJ"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			new public static SafeHFONT NULL => new SafeHFONT(IntPtr.Zero);
+			private SafeHFONT() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHFONT"/> to <see cref="HFONT"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HFONT(SafeHFONT h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHFONT"/> to <see cref="HGDIOBJ"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HGDIOBJ(SafeHFONT h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => DeleteObject(this);
+		}
+
+		/// <summary>
+		/// Provides a <see cref="SafeHandle"/> to a graphics color palette object that releases a created HPALETTE instance at disposal
+		/// using DeleteObject.
+		/// </summary>
+		public class SafeHPALETTE : HANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeHPALETTE"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHPALETTE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			private SafeHPALETTE() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHPALETTE"/> to <see cref="HGDIOBJ"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HGDIOBJ(SafeHPALETTE h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHPALETTE"/> to <see cref="HPALETTE"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HPALETTE(SafeHPALETTE h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => DeleteObject(this);
 		}
 
 		/// <summary>
 		/// Provides a <see cref="SafeHandle"/> to a graphics bitmap object that releases a created HPEN instance at disposal using DeleteObject.
 		/// </summary>
-		public class SafeHPEN : SafeHGDIOBJ
+		public class SafeHPEN : HANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHPEN"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -203,14 +238,26 @@ namespace Vanara.PInvoke
 			/// </param>
 			public SafeHPEN(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			/// <summary>Returns an invalid handle by instantiating a <see cref="HGDIOBJ"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			new public static SafeHPEN NULL => new SafeHPEN(IntPtr.Zero);
+			private SafeHPEN() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHPEN"/> to <see cref="HGDIOBJ"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HGDIOBJ(SafeHPEN h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHPEN"/> to <see cref="HPEN"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HPEN(SafeHPEN h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => DeleteObject(this);
 		}
 
 		/// <summary>
 		/// Provides a <see cref="SafeHandle"/> to a graphics bitmap object that releases a created HRGN instance at disposal using DeleteObject.
 		/// </summary>
-		public class SafeHRGN : SafeHGDIOBJ
+		public class SafeHRGN : HANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHRGN"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -219,8 +266,20 @@ namespace Vanara.PInvoke
 			/// </param>
 			public SafeHRGN(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			/// <summary>Returns an invalid handle by instantiating a <see cref="HGDIOBJ"/> object with <see cref="IntPtr.Zero"/>.</summary>
-			new public static SafeHRGN NULL => new SafeHRGN(IntPtr.Zero);
+			private SafeHRGN() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHRGN"/> to <see cref="HGDIOBJ"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HGDIOBJ(SafeHRGN h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHRGN"/> to <see cref="HRGN"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HRGN(SafeHRGN h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => DeleteObject(this);
 		}
 	}
 }

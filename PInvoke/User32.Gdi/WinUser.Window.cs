@@ -112,7 +112,7 @@ namespace Vanara.PInvoke
 		// int CALLBACK WinMain( _In_ HINSTANCE hInstance, _In_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms633559")]
-		public delegate int WinMain([In] IntPtr hInstance, [In] IntPtr hPrevInstance, [In] [MarshalAs(UnmanagedType.LPStr)] string lpCmdLine, [In] ShowWindowCommand nCmdShow);
+		public delegate int WinMain([In] HINSTANCE hInstance, [In] IntPtr hPrevInstance, [In] [MarshalAs(UnmanagedType.LPStr)] string lpCmdLine, [In] ShowWindowCommand nCmdShow);
 
 		/// <summary>
 		/// An application-defined callback function used with the <c>EnumChildWindows</c> function. It receives the child window handles.
@@ -126,7 +126,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winuser.h", MSDNShortId = "ms633493")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool WNDENUMPROC([In] IntPtr hwnd, [In] IntPtr lParam);
+		public delegate bool WNDENUMPROC([In] HWND hwnd, [In] IntPtr lParam);
 
 		/// <summary>
 		/// The type of animation. Note that, by default, these flags take effect when showing a window. To take effect when hiding a window,
@@ -1312,7 +1312,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "calculatepopupwindowposition")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CalculatePopupWindowPosition([MarshalAs(UnmanagedType.LPStruct)] Point anchorPoint, [MarshalAs(UnmanagedType.LPStruct)] SIZE windowSize, TrackPopupMenuFlags flags, [Optional] PRECT excludeRect, out RECT popupWindowPosition);
+		public static extern bool CalculatePopupWindowPosition(in Point anchorPoint, in SIZE windowSize, TrackPopupMenuFlags flags, [Optional] PRECT excludeRect, out RECT popupWindowPosition);
 
 		/// <summary>
 		/// <para>Cascades the specified child windows of the specified parent window.</para>
@@ -1376,7 +1376,7 @@ namespace Vanara.PInvoke
 		// wHow, CONST RECT *lpRect, UINT cKids, const HWND *lpKids );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "cascadewindows")]
-		public static extern ushort CascadeWindows(HWND hwndParent, uint wHow, [MarshalAs(UnmanagedType.LPStruct)] RECT lpRect, uint cKids, [Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] HWND[] lpKids);
+		public static extern ushort CascadeWindows(HWND hwndParent, uint wHow, in RECT lpRect, uint cKids, [Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] HWND[] lpKids);
 
 		/// <summary>
 		/// <para>
@@ -5071,7 +5071,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "updatelayeredwindow")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool UpdateLayeredWindow(HWND hWnd, HDC hdcDst, [In, MarshalAs(UnmanagedType.LPStruct)] Point pptDst, [In, MarshalAs(UnmanagedType.LPStruct)] SIZE psize, HDC hdcSrc, [In, MarshalAs(UnmanagedType.LPStruct)] Point pptSrc, COLORREF crKey, [In, MarshalAs(UnmanagedType.LPStruct)] Gdi32.BLENDFUNCTION pblend, UpdateLayeredWindowFlags dwFlags);
+		public static extern bool UpdateLayeredWindow(HWND hWnd, HDC hdcDst, in Point pptDst, in SIZE psize, HDC hdcSrc, in Point pptSrc, COLORREF crKey, in Gdi32.BLENDFUNCTION pblend, UpdateLayeredWindowFlags dwFlags);
 
 		/// <summary>
 		/// <para>Updates the position, size, shape, content, and translucency of a layered window.</para>
@@ -5194,7 +5194,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "updatelayeredwindow")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool UpdateLayeredWindow(HWND hWnd, [In, Optional] HDC hdcDst, [In, Optional] IntPtr pptDst, [In, Optional] IntPtr psize, [In, Optional] HDC hdcSrc, [In, Optional] IntPtr pptSrc, COLORREF crKey, [In, MarshalAs(UnmanagedType.LPStruct)] Gdi32.BLENDFUNCTION pblend, UpdateLayeredWindowFlags dwFlags);
+		public static extern bool UpdateLayeredWindow(HWND hWnd, [In, Optional] HDC hdcDst, [In, Optional] IntPtr pptDst, [In, Optional] IntPtr psize, [In, Optional] HDC hdcSrc, [In, Optional] IntPtr pptSrc, COLORREF crKey, in Gdi32.BLENDFUNCTION pblend, UpdateLayeredWindowFlags dwFlags);
 
 		/// <summary>Updates the position, size, shape, content, and translucency of a layered window.</summary>
 		/// <param name="hwnd">
@@ -5221,7 +5221,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winuser.h", MSDNShortId = "ms633557")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool UpdateLayeredWindowIndirect([In] HWND hwnd, [In] ref UPDATELAYEREDWINDOWINFO pULWInfo);
+		public static extern bool UpdateLayeredWindowIndirect([In] HWND hwnd, in UPDATELAYEREDWINDOWINFO pULWInfo);
 
 		/// <summary>
 		/// <para>Retrieves a handle to the window that contains the specified physical point.</para>
@@ -5536,37 +5536,37 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>HWND</c></para>
 			/// <para>A handle to the active window within the thread.</para>
 			/// </summary>
-			public IntPtr hwndActive;
+			public HWND hwndActive;
 
 			/// <summary>
 			/// <para>Type: <c>HWND</c></para>
 			/// <para>A handle to the window that has the keyboard focus.</para>
 			/// </summary>
-			public IntPtr hwndFocus;
+			public HWND hwndFocus;
 
 			/// <summary>
 			/// <para>Type: <c>HWND</c></para>
 			/// <para>A handle to the window that has captured the mouse.</para>
 			/// </summary>
-			public IntPtr hwndCapture;
+			public HWND hwndCapture;
 
 			/// <summary>
 			/// <para>Type: <c>HWND</c></para>
 			/// <para>A handle to the window that owns any active menus.</para>
 			/// </summary>
-			public IntPtr hwndMenuOwner;
+			public HWND hwndMenuOwner;
 
 			/// <summary>
 			/// <para>Type: <c>HWND</c></para>
 			/// <para>A handle to the window in a move or size loop.</para>
 			/// </summary>
-			public IntPtr hwndMoveSize;
+			public HWND hwndMoveSize;
 
 			/// <summary>
 			/// <para>Type: <c>HWND</c></para>
 			/// <para>A handle to the window that is displaying the caret.</para>
 			/// </summary>
-			public IntPtr hwndCaret;
+			public HWND hwndCaret;
 
 			/// <summary>
 			/// <para>Type: <c>RECT</c></para>
@@ -5687,7 +5687,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>If <c>hdcSrc</c> is <c>NULL</c>, <c>hdcDst</c> must be <c>NULL</c>.</para>
 			/// </summary>
-			public IntPtr hdcDst;
+			public HDC hdcDst;
 
 			/// <summary>
 			/// <para>Type: <c>const POINT*</c></para>
@@ -5714,7 +5714,7 @@ namespace Vanara.PInvoke
 			/// CreateCompatibleDC function. If the shape and visual context of the window will not change, <c>hdcSrc</c> can be <c>NULL</c>.
 			/// </para>
 			/// </summary>
-			public IntPtr hdcSrc;
+			public HDC hdcSrc;
 
 			/// <summary>
 			/// <para>Type: <c>const POINT*</c></para>
@@ -6012,12 +6012,19 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a window or dialog that releases a created HWND instance at disposal using DestroyWindow.</summary>
-		public class SafeHWND : HWND
+		public class SafeHWND : HANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="HWND"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
 			public SafeHWND(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			private SafeHWND() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHWND"/> to <see cref="HWND"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HWND(SafeHWND h) => h.handle;
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle()

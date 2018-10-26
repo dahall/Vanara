@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32.SafeHandles;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 
@@ -199,7 +198,7 @@ namespace Vanara.PInvoke
 		/// <summary>Type of partition to create.</summary>
 		public enum TAPE_PARTITION_METHOD
 		{
-			/// <summary>Partitions the tape based on the device&amp;#39;s default definition of partitions. The dwCount and dwSize parameters are ignored.</summary>
+			/// <summary>Partitions the tape based on the device's default definition of partitions. The dwCount and dwSize parameters are ignored.</summary>
 			TAPE_FIXED_PARTITIONS = 0,
 			/// <summary>
 			/// Partitions the tape into the number and size of partitions specified by dwCount and dwSize, respectively, except for the last partition. The size
@@ -208,7 +207,7 @@ namespace Vanara.PInvoke
 			TAPE_INITIATOR_PARTITIONS = 2,
 			/// <summary>
 			/// Partitions the tape into the number of partitions specified by dwCount. The dwSize parameter is ignored. The size of the partitions is determined
-			/// by the device&amp;#39;s default partition size. For more specific information, see the documentation for your tape device.
+			/// by the device's default partition size. For more specific information, see the documentation for your tape device.
 			/// </summary>
 			TAPE_SELECT_PARTITIONS = 1
 		}
@@ -467,7 +466,7 @@ namespace Vanara.PInvoke
 		/// </listheader>
 		/// <item>
 		/// <term>TAPE_FIXED_PARTITIONS0L</term>
-		/// <term>Partitions the tape based on the device&amp;#39;s default definition of partitions. The dwCount and dwSize parameters are ignored.</term>
+		/// <term>Partitions the tape based on the device's default definition of partitions. The dwCount and dwSize parameters are ignored.</term>
 		/// </item>
 		/// <item>
 		/// <term>TAPE_INITIATOR_PARTITIONS2L</term>
@@ -480,7 +479,7 @@ namespace Vanara.PInvoke
 		/// <term>TAPE_SELECT_PARTITIONS1L</term>
 		/// <term>
 		/// Partitions the tape into the number of partitions specified by dwCount. The dwSize parameter is ignored. The size of the partitions is determined by
-		/// the device&amp;#39;s default partition size. For more specific information, see the documentation for your tape device.
+		/// the device's default partition size. For more specific information, see the documentation for your tape device.
 		/// </term>
 		/// </item>
 		/// </list>

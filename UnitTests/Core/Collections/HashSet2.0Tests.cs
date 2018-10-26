@@ -1,35 +1,13 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
 
 namespace Vanara.Collections.Generic.Tests
 {
 	[TestFixture()]
 	public class HashSetTests
 	{
-		[Test]
-		public void CtorTest()
-		{
-			var s1 = new HashSet<string>(NumGen(0, 2, 20));
-			Assert.That(s1.Count, Is.EqualTo(20));
-			Assert.That(s1.Comparer.Equals("S", "s"), Is.False);
-			var s3 = new HashSet<string>(NumGen(0, 2, 20), StringComparer.CurrentCultureIgnoreCase);
-			Assert.That(s3.Count, Is.EqualTo(20));
-			Assert.That(s3.Comparer.Equals("S", "s"), Is.True);
-			var s5 = new HashSet<string>();
-			Assert.That(s5.Count, Is.EqualTo(0));
-			Assert.That(s5.Comparer.Equals("S", "s"), Is.False);
-			var s6 = new HashSet<string>(StringComparer.CurrentCultureIgnoreCase);
-			Assert.That(s6.Count, Is.EqualTo(0));
-			Assert.That(s6.Comparer.Equals("S", "s"), Is.True);
-
-			// Test dup values
-			var s7 = new HashSet<string>(NumGen(3, 0, 10));
-			Assert.That(s7.Count, Is.EqualTo(1));
-			Assert.That(s7.First(), Is.EqualTo("3"));
-		}
-
 		[Test]
 		public void ClearTest()
 		{
@@ -59,6 +37,28 @@ namespace Vanara.Collections.Generic.Tests
 			Assert.That(() => s1.CopyTo(sa, 10), Throws.Exception);
 			sa = new string[10];
 			Assert.That(() => s1.CopyTo(sa, 0), Throws.Exception);
+		}
+
+		[Test]
+		public void CtorTest()
+		{
+			var s1 = new HashSet<string>(NumGen(0, 2, 20));
+			Assert.That(s1.Count, Is.EqualTo(20));
+			Assert.That(s1.Comparer.Equals("S", "s"), Is.False);
+			var s3 = new HashSet<string>(NumGen(0, 2, 20), StringComparer.CurrentCultureIgnoreCase);
+			Assert.That(s3.Count, Is.EqualTo(20));
+			Assert.That(s3.Comparer.Equals("S", "s"), Is.True);
+			var s5 = new HashSet<string>();
+			Assert.That(s5.Count, Is.EqualTo(0));
+			Assert.That(s5.Comparer.Equals("S", "s"), Is.False);
+			var s6 = new HashSet<string>(StringComparer.CurrentCultureIgnoreCase);
+			Assert.That(s6.Count, Is.EqualTo(0));
+			Assert.That(s6.Comparer.Equals("S", "s"), Is.True);
+
+			// Test dup values
+			var s7 = new HashSet<string>(NumGen(3, 0, 10));
+			Assert.That(s7.Count, Is.EqualTo(1));
+			Assert.That(s7.First(), Is.EqualTo("3"));
 		}
 
 		[Test]
@@ -96,7 +96,7 @@ namespace Vanara.Collections.Generic.Tests
 			Assert.That(s1.Count, Is.EqualTo(4));
 			Assert.That(s1, Is.EquivalentTo(e));
 
-			s1.IntersectWith(new[] {"3"});
+			s1.IntersectWith(new[] { "3" });
 			Assert.That(s1.Count, Is.EqualTo(0));
 		}
 
@@ -196,10 +196,10 @@ namespace Vanara.Collections.Generic.Tests
 			var s2 = new HashSet<string>(NumGen(4, 2, 10));
 			Assert.That(s1.Overlaps(s2), Is.True);
 
-			Assert.That(s1.Overlaps(new[] {"0"}), Is.True);
-			Assert.That(s1.Overlaps(new[] {"38"}), Is.True);
-			Assert.That(s1.Overlaps(new[] {"40"}), Is.False);
-			Assert.That(s1.Overlaps(new[] {"0", "X", "."}), Is.True);
+			Assert.That(s1.Overlaps(new[] { "0" }), Is.True);
+			Assert.That(s1.Overlaps(new[] { "38" }), Is.True);
+			Assert.That(s1.Overlaps(new[] { "40" }), Is.False);
+			Assert.That(s1.Overlaps(new[] { "0", "X", "." }), Is.True);
 
 			s1.Clear();
 			Assert.That(s1.Overlaps(s2), Is.False);

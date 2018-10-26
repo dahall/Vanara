@@ -1450,7 +1450,7 @@ namespace Vanara.PInvoke
 			/// pCount run times. You must free this array by a calling the CoTaskMemFree function.
 			/// </returns>
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime), DispId(0x60020011)]
-			SafeCoTaskMemHandle GetRunTimes([In] ref SYSTEMTIME pstStart, [In] ref SYSTEMTIME pstEnd, [In, Out] ref uint pCount);
+			SafeCoTaskMemHandle GetRunTimes(in SYSTEMTIME pstStart, in SYSTEMTIME pstEnd, [In, Out] ref uint pCount);
 		}
 
 		/// <summary>Contains all the tasks that are registered.</summary>

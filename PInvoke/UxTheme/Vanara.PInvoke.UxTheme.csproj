@@ -31,7 +31,7 @@ Structures
 DTTOPTS, INTLIST, MARGINS, TA_TIMINGFUNCTION, TA_TRANSFORM, WTA_OPTIONS, DTBGOPTS, BP_ANIMATIONPARAMS, BP_PAINTPARAMS
 
 </PackageReleaseNotes>
-	<LangVersion>latest</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

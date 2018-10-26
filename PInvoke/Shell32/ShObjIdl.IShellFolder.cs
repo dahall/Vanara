@@ -177,7 +177,7 @@ namespace Vanara.PInvoke
 			/// The value used to query for file attributes. If not used, it should be set to NULL. To query for one or more attributes, initialize this
 			/// parameter with the SFGAO flags that represent the attributes of interest. On return, those attributes that are true and were requested will be set.
 			/// </param>
-			void ParseDisplayName(IntPtr hwnd, [In, Optional] IBindCtx pbc, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName, out uint pchEaten, out PIDL ppidl, [In, Out] ref SFGAO pdwAttributes);
+			void ParseDisplayName(HWND hwnd, [In, Optional] IBindCtx pbc, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName, out uint pchEaten, out PIDL ppidl, [In, Out] ref SFGAO pdwAttributes);
 
 			/// <summary>
 			/// Enables a client to determine the contents of a folder by creating an item identifier enumeration object and returning its IEnumIDList interface.
@@ -195,7 +195,7 @@ namespace Vanara.PInvoke
 			/// The address that receives a pointer to the IEnumIDList interface of the enumeration object created by this method. If an error occurs or no
 			/// suitable subobjects are found, ppenumIDList is set to NULL.
 			/// </returns>
-			IEnumIDList EnumObjects(IntPtr hwnd, SHCONTF grfFlags);
+			IEnumIDList EnumObjects(HWND hwnd, SHCONTF grfFlags);
 
 			/// <summary>
 			/// Retrieves a handler, typically the Shell folder object that implements IShellFolder for a particular item. Optional parameters that control the
@@ -221,7 +221,7 @@ namespace Vanara.PInvoke
 			/// When this method returns, contains the address of a pointer to the requested interface. If an error occurs, a NULL pointer is returned at this address.
 			/// </returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			object BindToObject([In] PIDL pidl, [In, Optional] IBindCtx pbc, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			object BindToObject([In] PIDL pidl, [In, Optional] IBindCtx pbc, in Guid riid);
 
 			/// <summary>Requests a pointer to an object's storage interface.</summary>
 			/// <param name="pidl">
@@ -238,7 +238,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <returns>The address that receives the interface pointer specified by riid. If an error occurs, a NULL pointer is returned in this address.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			object BindToStorage([In] PIDL pidl, [In, Optional] IBindCtx pbc, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			object BindToStorage([In] PIDL pidl, [In, Optional] IBindCtx pbc, in Guid riid);
 
 			/// <summary>Determines the relative order of two file objects or folders, given their item identifier lists.</summary>
 			/// <param name="lParam">
@@ -298,7 +298,7 @@ namespace Vanara.PInvoke
 			/// for more details.
 			/// </returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			object CreateViewObject(IntPtr hwndOwner, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			object CreateViewObject(HWND hwndOwner, in Guid riid);
 
 			/// <summary>Gets the attributes of one or more file or folder objects contained in the object represented by IShellFolder.</summary>
 			/// <param name="cidl">The number of items from which to retrieve attributes.</param>
@@ -326,7 +326,7 @@ namespace Vanara.PInvoke
 			/// <param name="rgfReserved">Reserved.</param>
 			/// <returns>When this method returns successfully, contains the interface pointer requested in riid.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			object GetUIObjectOf(IntPtr hwndOwner, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, IntPtr rgfReserved = default(IntPtr));
+			object GetUIObjectOf(HWND hwndOwner, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, in Guid riid, IntPtr rgfReserved = default);
 
 			/// <summary>Retrieves the display name for the specified file object or subfolder.</summary>
 			/// <param name="pidl">PIDL that uniquely identifies the file object or subfolder relative to the parent folder.</param>
@@ -352,7 +352,7 @@ namespace Vanara.PInvoke
 			/// Optional. If specified, the address of a pointer to an ITEMIDLIST structure that receives the ITEMIDLIST of the renamed item. The caller requests
 			/// this value by passing a non-null ppidlOut. Implementations of IShellFolder::SetNameOf must return a pointer to the new ITEMIDLIST in the ppidlOut parameter.
 			/// </param>
-			void SetNameOf(IntPtr hwnd, [In] PIDL pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszName, SHGDNF uFlags, out PIDL ppidlOut);
+			void SetNameOf(HWND hwnd, [In] PIDL pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszName, SHGDNF uFlags, out PIDL ppidlOut);
 		}
 
 		/// <summary>Extends the capabilities of IShellFolder. Its methods provide a variety of information about the contents of a Shell folder.</summary>
@@ -394,7 +394,7 @@ namespace Vanara.PInvoke
 			/// The value used to query for file attributes. If not used, it should be set to NULL. To query for one or more attributes, initialize this
 			/// parameter with the SFGAO flags that represent the attributes of interest. On return, those attributes that are true and were requested will be set.
 			/// </param>
-			new void ParseDisplayName(IntPtr hwnd, [In, Optional] IBindCtx pbc, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName, out uint pchEaten, out PIDL ppidl, [In, Out] ref SFGAO pdwAttributes);
+			new void ParseDisplayName(HWND hwnd, [In, Optional] IBindCtx pbc, [MarshalAs(UnmanagedType.LPWStr)] string pszDisplayName, out uint pchEaten, out PIDL ppidl, [In, Out] ref SFGAO pdwAttributes);
 
 			/// <summary>
 			/// Enables a client to determine the contents of a folder by creating an item identifier enumeration object and returning its IEnumIDList interface.
@@ -412,7 +412,7 @@ namespace Vanara.PInvoke
 			/// The address that receives a pointer to the IEnumIDList interface of the enumeration object created by this method. If an error occurs or no
 			/// suitable subobjects are found, ppenumIDList is set to NULL.
 			/// </returns>
-			new IEnumIDList EnumObjects(IntPtr hwnd, SHCONTF grfFlags);
+			new IEnumIDList EnumObjects(HWND hwnd, SHCONTF grfFlags);
 
 			/// <summary>
 			/// Retrieves a handler, typically the Shell folder object that implements IShellFolder for a particular item. Optional parameters that control the
@@ -438,7 +438,7 @@ namespace Vanara.PInvoke
 			/// When this method returns, contains the address of a pointer to the requested interface. If an error occurs, a NULL pointer is returned at this address.
 			/// </returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			new object BindToObject([In] PIDL pidl, [In, Optional] IBindCtx pbc, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			new object BindToObject([In] PIDL pidl, [In, Optional] IBindCtx pbc, in Guid riid);
 
 			/// <summary>Requests a pointer to an object's storage interface.</summary>
 			/// <param name="pidl">
@@ -455,7 +455,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <returns>The address that receives the interface pointer specified by riid. If an error occurs, a NULL pointer is returned in this address.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			new object BindToStorage([In] PIDL pidl, [In, Optional] IBindCtx pbc, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			new object BindToStorage([In] PIDL pidl, [In, Optional] IBindCtx pbc, in Guid riid);
 
 			/// <summary>Determines the relative order of two file objects or folders, given their item identifier lists.</summary>
 			/// <param name="lParam">
@@ -515,7 +515,7 @@ namespace Vanara.PInvoke
 			/// for more details.
 			/// </returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			new object CreateViewObject(IntPtr hwndOwner, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			new object CreateViewObject(HWND hwndOwner, in Guid riid);
 
 			/// <summary>Gets the attributes of one or more file or folder objects contained in the object represented by IShellFolder.</summary>
 			/// <param name="cidl">The number of items from which to retrieve attributes.</param>
@@ -543,7 +543,7 @@ namespace Vanara.PInvoke
 			/// <param name="rgfReserved">Reserved.</param>
 			/// <returns>When this method returns successfully, contains the interface pointer requested in riid.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			new object GetUIObjectOf(IntPtr hwndOwner, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, IntPtr rgfReserved = default(IntPtr));
+			new object GetUIObjectOf(HWND hwndOwner, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl, in Guid riid, IntPtr rgfReserved = default(IntPtr));
 
 			/// <summary>Retrieves the display name for the specified file object or subfolder.</summary>
 			/// <param name="pidl">PIDL that uniquely identifies the file object or subfolder relative to the parent folder.</param>
@@ -569,7 +569,7 @@ namespace Vanara.PInvoke
 			/// Optional. If specified, the address of a pointer to an ITEMIDLIST structure that receives the ITEMIDLIST of the renamed item. The caller requests
 			/// this value by passing a non-null ppidlOut. Implementations of IShellFolder::SetNameOf must return a pointer to the new ITEMIDLIST in the ppidlOut parameter.
 			/// </param>
-			new void SetNameOf(IntPtr hwnd, [In] PIDL pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszName, SHGDNF uFlags, out PIDL ppidlOut);
+			new void SetNameOf(HWND hwnd, [In] PIDL pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszName, SHGDNF uFlags, out PIDL ppidlOut);
 
 			/// <summary>Returns the globally unique identifier (GUID) of the default search object for the folder.</summary>
 			/// <returns>The GUID of the default search object.</returns>

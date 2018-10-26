@@ -1,6 +1,3 @@
-// ReSharper disable InconsistentNaming
-
-using System;
 using System.Runtime.InteropServices;
 using static Vanara.PInvoke.User32_Gdi;
 
@@ -28,8 +25,8 @@ namespace Vanara.PInvoke
 		public enum TrackBarMessage
 		{
 			/// <summary>
-			/// Retrieves the current logical position of the slider in a trackbar. The logical positions are the integer values in the trackbar's range of
-			/// minimum to maximum slider positions.
+			/// Retrieves the current logical position of the slider in a trackbar. The logical positions are the integer values in the
+			/// trackbar's range of minimum to maximum slider positions.
 			/// </summary>
 			TBM_GETPOS = WindowMessage.WM_USER,
 
@@ -40,8 +37,8 @@ namespace Vanara.PInvoke
 			TBM_GETRANGEMAX = WindowMessage.WM_USER + 2,
 
 			/// <summary>
-			/// Retrieves the logical position of a tick mark in a trackbar. The logical position can be any of the integer values in the trackbar's range of
-			/// minimum to maximum slider positions.
+			/// Retrieves the logical position of a tick mark in a trackbar. The logical position can be any of the integer values in the
+			/// trackbar's range of minimum to maximum slider positions.
 			/// </summary>
 			TBM_GETTIC = WindowMessage.WM_USER + 3,
 
@@ -61,8 +58,8 @@ namespace Vanara.PInvoke
 			TBM_SETRANGEMAX = WindowMessage.WM_USER + 8,
 
 			/// <summary>
-			/// Removes the current tick marks from a trackbar. This message does not remove the first and last tick marks, which are created automatically by
-			/// the trackbar.
+			/// Removes the current tick marks from a trackbar. This message does not remove the first and last tick marks, which are created
+			/// automatically by the trackbar.
 			/// </summary>
 			TBM_CLEARTICS = WindowMessage.WM_USER + 9,
 
@@ -70,14 +67,14 @@ namespace Vanara.PInvoke
 			TBM_SETSEL = WindowMessage.WM_USER + 10,
 
 			/// <summary>
-			/// Sets the starting logical position of the current selection range in a trackbar. This message is ignored if the trackbar does not have the
-			/// TBS_ENABLESELRANGE style.
+			/// Sets the starting logical position of the current selection range in a trackbar. This message is ignored if the trackbar does
+			/// not have the TBS_ENABLESELRANGE style.
 			/// </summary>
 			TBM_SETSELSTART = WindowMessage.WM_USER + 11,
 
 			/// <summary>
-			/// Sets the ending logical position of the current selection range in a trackbar. This message is ignored if the trackbar does not have the
-			/// TBS_ENABLESELRANGE style.
+			/// Sets the ending logical position of the current selection range in a trackbar. This message is ignored if the trackbar does
+			/// not have the TBS_ENABLESELRANGE style.
 			/// </summary>
 			TBM_SETSELEND = WindowMessage.WM_USER + 12,
 
@@ -100,32 +97,35 @@ namespace Vanara.PInvoke
 			TBM_CLEARSEL = WindowMessage.WM_USER + 19,
 
 			/// <summary>
-			/// Sets the interval frequency for tick marks in a trackbar. For example, if the frequency is set to two, a tick mark is displayed for every other
-			/// increment in the trackbar's range. The default setting for the frequency is one; that is, every increment in the range is associated with a tick mark.
+			/// Sets the interval frequency for tick marks in a trackbar. For example, if the frequency is set to two, a tick mark is
+			/// displayed for every other increment in the trackbar's range. The default setting for the frequency is one; that is, every
+			/// increment in the range is associated with a tick mark.
 			/// </summary>
 			TBM_SETTICFREQ = WindowMessage.WM_USER + 20,
 
 			/// <summary>
-			/// Sets the number of logical positions the trackbar's slider moves in response to keyboard input, such as the or keys, or mouse input, such as
-			/// clicks in the trackbar's channel. The logical positions are the integer increments in the trackbar's range of minimum to maximum slider positions.
+			/// Sets the number of logical positions the trackbar's slider moves in response to keyboard input, such as the or keys, or mouse
+			/// input, such as clicks in the trackbar's channel. The logical positions are the integer increments in the trackbar's range of
+			/// minimum to maximum slider positions.
 			/// </summary>
 			TBM_SETPAGESIZE = WindowMessage.WM_USER + 21,
 
 			/// <summary>
-			/// Retrieves the number of logical positions the trackbar's slider moves in response to keyboard input, such as the or keys, or mouse input, such as
-			/// clicks in the trackbar's channel. The logical positions are the integer increments in the trackbar's range of minimum to maximum slider positions.
+			/// Retrieves the number of logical positions the trackbar's slider moves in response to keyboard input, such as the or keys, or
+			/// mouse input, such as clicks in the trackbar's channel. The logical positions are the integer increments in the trackbar's
+			/// range of minimum to maximum slider positions.
 			/// </summary>
 			TBM_GETPAGESIZE = WindowMessage.WM_USER + 22,
 
 			/// <summary>
-			/// Sets the number of logical positions the trackbar's slider moves in response to keyboard input from the arrow keys, such as the or keys. The
-			/// logical positions are the integer increments in the trackbar's range of minimum to maximum slider positions.
+			/// Sets the number of logical positions the trackbar's slider moves in response to keyboard input from the arrow keys, such as
+			/// the or keys. The logical positions are the integer increments in the trackbar's range of minimum to maximum slider positions.
 			/// </summary>
 			TBM_SETLINESIZE = WindowMessage.WM_USER + 23,
 
 			/// <summary>
-			/// Retrieves the number of logical positions the trackbar's slider moves in response to keyboard input from the arrow keys, such as the or keys. The
-			/// logical positions are the integer increments in the trackbar's range of minimum to maximum slider positions.
+			/// Retrieves the number of logical positions the trackbar's slider moves in response to keyboard input from the arrow keys, such
+			/// as the or keys. The logical positions are the integer increments in the trackbar's range of minimum to maximum slider positions.
 			/// </summary>
 			TBM_GETLINESIZE = WindowMessage.WM_USER + 24,
 
@@ -133,12 +133,14 @@ namespace Vanara.PInvoke
 			TBM_GETTHUMBRECT = WindowMessage.WM_USER + 25,
 
 			/// <summary>
-			/// Retrieves the size and position of the bounding rectangle for a trackbar's channel. (The channel is the area over which the slider moves. It
-			/// contains the highlight when a range is selected.)
+			/// Retrieves the size and position of the bounding rectangle for a trackbar's channel. (The channel is the area over which the
+			/// slider moves. It contains the highlight when a range is selected.)
 			/// </summary>
 			TBM_GETCHANNELRECT = WindowMessage.WM_USER + 26,
 
-			/// <summary>Sets the length of the slider in a trackbar. This message is ignored if the trackbar does not have the TBS_FIXEDLENGTH style.</summary>
+			/// <summary>
+			/// Sets the length of the slider in a trackbar. This message is ignored if the trackbar does not have the TBS_FIXEDLENGTH style.
+			/// </summary>
 			TBM_SETTHUMBLENGTH = WindowMessage.WM_USER + 27,
 
 			/// <summary>Retrieves the length of the slider in a trackbar.</summary>
@@ -150,18 +152,20 @@ namespace Vanara.PInvoke
 			/// <summary>Retrieves the handle to the tooltip control assigned to the trackbar, if any.</summary>
 			TBM_GETTOOLTIPS = WindowMessage.WM_USER + 30,
 
-			/// <summary>Positions a tooltip control used by a trackbar control. TrackBar controls that use the TBS_TOOLTIPS style display tooltips.</summary>
+			/// <summary>
+			/// Positions a tooltip control used by a trackbar control. TrackBar controls that use the TBS_TOOLTIPS style display tooltips.
+			/// </summary>
 			TBM_SETTIPSIDE = WindowMessage.WM_USER + 31,
 
 			/// <summary>
-			/// Assigns a window as the buddy window for a trackbar control. TrackBar buddy windows are automatically displayed in a location relative to the
-			/// control's orientation (horizontal or vertical).
+			/// Assigns a window as the buddy window for a trackbar control. TrackBar buddy windows are automatically displayed in a location
+			/// relative to the control's orientation (horizontal or vertical).
 			/// </summary>
 			TBM_SETBUDDY = WindowMessage.WM_USER + 32,
 
 			/// <summary>
-			/// Retrieves the handle to a trackbar control buddy window at a given location. The specified location is relative to the control's orientation
-			/// (horizontal or vertical).
+			/// Retrieves the handle to a trackbar control buddy window at a given location. The specified location is relative to the
+			/// control's orientation (horizontal or vertical).
 			/// </summary>
 			TBM_GETBUDDY = WindowMessage.WM_USER + 33,
 
@@ -169,8 +173,8 @@ namespace Vanara.PInvoke
 			TBM_SETPOSNOTIFY = WindowMessage.WM_USER + 34,
 
 			/// <summary>
-			/// Sets the Unicode character format flag for the control. This message allows you to change the character set used by the control at run time
-			/// rather than having to re-create the control.
+			/// Sets the Unicode character format flag for the control. This message allows you to change the character set used by the
+			/// control at run time rather than having to re-create the control.
 			/// </summary>
 			TBM_SETUNICODEFORMAT = CommonControlMessage.CCM_SETUNICODEFORMAT,
 
@@ -181,11 +185,13 @@ namespace Vanara.PInvoke
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760172")]
 		public enum TrackBarNotification
 		{
-			/// <summary>Notifies that the thumb position on a trackbar is changing. This notification code is sent in the form of a WM_NOTIFY message.</summary>
+			/// <summary>
+			/// Notifies that the thumb position on a trackbar is changing. This notification code is sent in the form of a WM_NOTIFY message.
+			/// </summary>
 			/// <remarks>Send this notification to clients that do not listen for WM_HSCROLL or WM_VSCROLL messages.</remarks>
 			/// <paramref name="lParam">
-			/// Pointer to a NMTRBTHUMBPOSCHANGING structure. The caller is responsible for allocating this structure and setting its members, including the
-			/// members of the contained NMHDR structure.
+			/// Pointer to a NMTRBTHUMBPOSCHANGING structure. The caller is responsible for allocating this structure and setting its
+			/// members, including the members of the contained NMHDR structure.
 			/// </paramref>
 			/// <returns>The return value is ignored.</returns>
 			TRBN_THUMBPOSCHANGING = TRBN_FIRST
@@ -249,8 +255,8 @@ namespace Vanara.PInvoke
 			TBS_RIGHT = 0x0000,
 
 			/// <summary>
-			/// The trackbar control displays tick marks on both sides of the control. This will be both top and bottom when used with TBS_HORZ or both left and
-			/// right if used with TBS_VERT.
+			/// The trackbar control displays tick marks on both sides of the control. This will be both top and bottom when used with
+			/// TBS_HORZ or both left and right if used with TBS_VERT.
 			/// </summary>
 			TBS_BOTH = 0x0008,
 
@@ -258,8 +264,8 @@ namespace Vanara.PInvoke
 			TBS_NOTICKS = 0x0010,
 
 			/// <summary>
-			/// The trackbar control displays a selection range only. The tick marks at the starting and ending positions of a selection range are displayed as
-			/// triangles (instead of vertical dashes), and the selection range is highlighted.
+			/// The trackbar control displays a selection range only. The tick marks at the starting and ending positions of a selection
+			/// range are displayed as triangles (instead of vertical dashes), and the selection range is highlighted.
 			/// </summary>
 			TBS_ENABLESELRANGE = 0x0020,
 
@@ -270,20 +276,22 @@ namespace Vanara.PInvoke
 			TBS_NOTHUMB = 0x0080,
 
 			/// <summary>
-			/// The trackbar control supports tooltips. When a trackbar control is created using this style, it automatically creates a default tooltip control
-			/// that displays the slider's current position. You can change where the tooltips are displayed by using the TBM_SETTIPSIDE message.
+			/// The trackbar control supports tooltips. When a trackbar control is created using this style, it automatically creates a
+			/// default tooltip control that displays the slider's current position. You can change where the tooltips are displayed by using
+			/// the TBM_SETTIPSIDE message.
 			/// </summary>
 			TBS_TOOLTIPS = 0x0100,
 
 			/// <summary>
-			/// This style bit is used for "reversed" trackbars, where a smaller number indicates "higher" and a larger number indicates "lower." It has no
-			/// effect on the control; it is simply a label that can be checked to determine whether a trackbar is normal or reversed.
+			/// This style bit is used for "reversed" trackbars, where a smaller number indicates "higher" and a larger number indicates
+			/// "lower." It has no effect on the control; it is simply a label that can be checked to determine whether a trackbar is normal
+			/// or reversed.
 			/// </summary>
 			TBS_REVERSED = 0x0200,
 
 			/// <summary>
-			/// By default, the trackbar control uses down equal to right and up equal to left. Use the TBS_DOWNISLEFT style to reverse the default, making down
-			/// equal left and up equal right.
+			/// By default, the trackbar control uses down equal to right and up equal to left. Use the TBS_DOWNISLEFT style to reverse the
+			/// default, making down equal left and up equal right.
 			/// </summary>
 			TBS_DOWNISLEFT = 0x0400,
 
@@ -323,8 +331,8 @@ namespace Vanara.PInvoke
 			public NMHDR hdr;
 
 			/// <summary>
-			/// Type of movement as one of the following values: TB_LINEUP, TB_LINEDOWN, TB_PAGEUP, TB_PAGEDOWN, TB_THUMBPOSITION, TB_THUMBTRACK, TB_TOP,
-			/// TB_BOTTOM, or TB_ENDTRACK.
+			/// Type of movement as one of the following values: TB_LINEUP, TB_LINEDOWN, TB_PAGEUP, TB_PAGEDOWN, TB_THUMBPOSITION,
+			/// TB_THUMBTRACK, TB_TOP, TB_BOTTOM, or TB_ENDTRACK.
 			/// </summary>
 			public TrackBarScrollNotification nReason;
 		}

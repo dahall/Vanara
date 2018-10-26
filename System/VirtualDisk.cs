@@ -375,7 +375,7 @@ namespace Vanara.IO
 			if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
 			var stType = new VIRTUAL_STORAGE_TYPE();
 			Debug.WriteLine($"OpenVD: mask={mask}; flags={flags}; param={param}");
-			OpenVirtualDisk(ref stType, path, mask, flags, param, out var hVhd).ThrowIfFailed();
+			OpenVirtualDisk(stType, path, mask, flags, param, out var hVhd).ThrowIfFailed();
 			return new VirtualDisk(hVhd, param?.Version ?? (IsPreWin8 ? OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_1 : OPEN_VIRTUAL_DISK_VERSION.OPEN_VIRTUAL_DISK_VERSION_2));
 		}
 

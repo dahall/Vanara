@@ -31,7 +31,7 @@ Interfaces
 IBackgroundCopyCallback, IBackgroundCopyCallback2, IBackgroundCopyCallback3, IBackgroundCopyError, IBackgroundCopyFile, IBackgroundCopyFile2, IBackgroundCopyFile3, IBackgroundCopyFile4, IBackgroundCopyFile5, IBackgroundCopyFile6, IBackgroundCopyJob, IBackgroundCopyJob2, IBackgroundCopyJob3, IBackgroundCopyJob4, IBackgroundCopyJob5, IBackgroundCopyJobHttpOptions, IBackgroundCopyManager, IBitsPeer, IBitsPeerCacheAdministration, IBitsPeerCacheRecord, IBitsTokenOptions, IEnumBackgroundCopyFiles, IEnumBackgroundCopyJobs, IEnumBitsPeerCacheRecords, IEnumBitsPeers
 
 </PackageReleaseNotes>
-	<LangVersion>latest</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

@@ -25,13 +25,13 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-DsGetDcNameA, DsGetDcNameW, NetApiBufferFree, NetServerEnum, NetServerGetInfo
+DsAddressToSiteNamesA, DsAddressToSiteNamesExA, DsAddressToSiteNamesExW, DsAddressToSiteNamesW, DsDeregisterDnsHostRecordsA, DsDeregisterDnsHostRecordsW, DsEnumerateDomainTrustsA, DsEnumerateDomainTrustsW, DsGetDcCloseW, DsGetDcNameA, DsGetDcNameW, DsGetDcNextA, DsGetDcNextW, DsGetDcOpenA, DsGetDcOpenW, DsGetDcSiteCoverageA, DsGetDcSiteCoverageW, DsGetForestTrustInformationW, DsGetSiteNameA, DsGetSiteNameW, DsMergeForestTrustInformationW, DsRoleFreeMemory, DsRoleGetPrimaryDomainInformation, DsValidateSubnetNameA, DsValidateSubnetNameW, NetApiBufferFree, NetServerComputerNameAdd, NetServerComputerNameDel, NetServerDiskEnum, NetServerEnum, NetServerGetInfo, NetServerSetInfo, NetServerTransportAdd, NetServerTransportAddEx, NetServerTransportDel, NetServerTransportEnum
 
 Structures
-DOMAIN_CONTROLLER_INFO, SERVER_INFO_100, SERVER_INFO_101, SERVER_INFO_102
+DOMAIN_CONTROLLER_INFO, DS_DOMAIN_TRUSTS, DSROLE_OPERATION_STATE_INFO, DSROLE_PRIMARY_DOMAIN_INFO_BASIC, DSROLE_UPGRADE_STATUS_INFO, SERVER_INFO_100, SERVER_INFO_101, SERVER_INFO_102, SERVER_INFO_402, SERVER_INFO_403, SERVER_TRANSPORT_INFO_0, SERVER_TRANSPORT_INFO_1, SERVER_TRANSPORT_INFO_2, SERVER_TRANSPORT_INFO_3
 
 </PackageReleaseNotes>
-	<LangVersion>latest</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -51,6 +51,8 @@ DOMAIN_CONTROLLER_INFO, SERVER_INFO_100, SERVER_INFO_101, SERVER_INFO_102
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Security\Vanara.PInvoke.Security.csproj" />
     <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+    <ProjectReference Include="..\Ws2_32\Vanara.PInvoke.Ws2_32.csproj" />
   </ItemGroup>
 </Project>

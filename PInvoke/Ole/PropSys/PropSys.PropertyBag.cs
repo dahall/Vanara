@@ -598,7 +598,7 @@ namespace Vanara.PInvoke
 		// PSPropertyBag_ReadUnknown( IPropertyBag *propBag, LPCWSTR propName, REFIID riid, void **ppv );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "87921F52-308F-4ed7-8390-A3C0217ACEFD")]
-		public static extern HRESULT PSPropertyBag_ReadUnknown(IPropertyBag propBag, [MarshalAs(UnmanagedType.LPWStr)] string propName, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT PSPropertyBag_ReadUnknown(IPropertyBag propBag, [MarshalAs(UnmanagedType.LPWStr)] string propName, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>
 		/// <para>Sets the <c>BOOL</c> value of a property in a property bag.</para>
@@ -722,7 +722,7 @@ namespace Vanara.PInvoke
 		// IPropertyBag *propBag, LPCWSTR propName, const GUID *value );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "F50CF010-3A4E-4723-BA9F-CE1B48CA4AA4")]
-		public static extern HRESULT PSPropertyBag_WriteGUID(IPropertyBag propBag, [MarshalAs(UnmanagedType.LPWStr)] string propName, [In, MarshalAs(UnmanagedType.LPStruct)] Guid value);
+		public static extern HRESULT PSPropertyBag_WriteGUID(IPropertyBag propBag, [MarshalAs(UnmanagedType.LPWStr)] string propName, in Guid value);
 
 		/// <summary>
 		/// <para>Sets the <c>int</c> value of a property in a property bag.</para>
@@ -815,7 +815,7 @@ namespace Vanara.PInvoke
 		// PSPropertyBag_WritePOINTL( IPropertyBag *propBag, LPCWSTR propName, const POINTL *value );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "881A9D35-DF77-44d1-86DF-D6BC97AC0DD4")]
-		public static extern HRESULT PSPropertyBag_WritePOINTL(IPropertyBag propBag, [MarshalAs(UnmanagedType.LPWStr)] string propName, [In, MarshalAs(UnmanagedType.LPStruct)] Point value);
+		public static extern HRESULT PSPropertyBag_WritePOINTL(IPropertyBag propBag, [MarshalAs(UnmanagedType.LPWStr)] string propName, in Point value);
 
 		/// <summary>
 		/// <para>Stores the property coordinates in aPOINTS structure of a specified property bag.</para>
@@ -846,7 +846,7 @@ namespace Vanara.PInvoke
 		// PSPropertyBag_WritePOINTS( IPropertyBag *propBag, LPCWSTR propName, const POINTS *value );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "B1E3E061-042A-4ba0-98F2-EA8A022882CC")]
-		public static extern HRESULT PSPropertyBag_WritePOINTS(IPropertyBag propBag, [MarshalAs(UnmanagedType.LPWStr)] string propName, [In, MarshalAs(UnmanagedType.LPStruct)] POINTS value);
+		public static extern HRESULT PSPropertyBag_WritePOINTS(IPropertyBag propBag, [MarshalAs(UnmanagedType.LPWStr)] string propName, in POINTS value);
 
 		/// <summary>
 		/// <para>Sets the property key value of a property in a property bag.</para>
@@ -881,7 +881,7 @@ namespace Vanara.PInvoke
 		// PSPropertyBag_WritePropertyKey( IPropertyBag *propBag, LPCWSTR propName, REFPROPERTYKEY value );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "52965079-ECC6-411a-BBB9-4EA2B7C01631")]
-		public static extern HRESULT PSPropertyBag_WritePropertyKey(IPropertyBag propBag, [MarshalAs(UnmanagedType.LPWStr)] string propName, [In, MarshalAs(UnmanagedType.LPStruct)] PROPERTYKEY value);
+		public static extern HRESULT PSPropertyBag_WritePropertyKey(IPropertyBag propBag, [MarshalAs(UnmanagedType.LPWStr)] string propName, in PROPERTYKEY value);
 
 		/// <summary>
 		/// <para>Stores the coordinates of a rectangle in a property in a property bag.</para>
@@ -912,7 +912,7 @@ namespace Vanara.PInvoke
 		// PSPropertyBag_WriteRECTL( IPropertyBag *propBag, LPCWSTR propName, const RECTL *value );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "83C29519-CAB0-4989-85B5-70AD79E69D04")]
-		public static extern HRESULT PSPropertyBag_WriteRECTL(IPropertyBag propBag, [MarshalAs(UnmanagedType.LPWStr)] string propName, [In, MarshalAs(UnmanagedType.LPStruct)] RECT value);
+		public static extern HRESULT PSPropertyBag_WriteRECTL(IPropertyBag propBag, [MarshalAs(UnmanagedType.LPWStr)] string propName, in RECT value);
 
 		/// <summary>
 		/// <para>Sets the SHORT value of a property in a property bag.</para>

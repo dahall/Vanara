@@ -21,18 +21,15 @@ namespace Vanara.Security.AccessControl.Tests
 			SystemSecurity ss;
 			using (ss = new SystemSecurity(SystemSecurity.DesiredAccess.ViewLocalInformation | SystemSecurity.DesiredAccess.LookupNames))
 				Assert.That(ss.EnumerateAccountsWithRight(SystemPrivilege.Backup), Is.Not.Empty);
-			Assert.That(ss.Handle.IsClosed);
 		}
 
 		[TestCase("SYSTEM")]
 		[TestCase("Administrators")]
 		[TestCase("Everyone")]
-		[TestCase("david.a.hall@hpe.com")]
 		[TestCase("dahall")]
 		[TestCase("AMERICAS\\dahall")]
 		[TestCase("AAADELETE")]
 		[TestCase("DAHALL17")]
-		[TestCase("AAADELE.americas.cpqcorp.net", false)]
 		[TestCase("DAHALL12", false)]
 		public void GetAccountInfoTest(string acctName, bool valid = true)
 		{
@@ -52,7 +49,7 @@ namespace Vanara.Security.AccessControl.Tests
 			using (ss = new SystemSecurity(SystemSecurity.DesiredAccess.LookupNames))
 			{
 				IList<SystemSecurity.SystemAccountInfo> sa = null;
-				Assert.That(() => sa = ss.GetAccountInfo(false, "SYSTEM", "Administrator", "Everyone", "david.a.hall@hpe.com", "dahall", "AMERICAS\\dahall", "AAADELETE", "DAHALL17", "AAADELE.americas.cpqcorp.net", "DAHALL12"), Throws.Nothing);
+				Assert.That(() => sa = ss.GetAccountInfo(false, "SYSTEM", "Administrator", "Everyone", "dahall", "AMERICAS\\dahall", "AAADELETE", "DAHALL17", "DAHALL12"), Throws.Nothing);
 				foreach (var sai in sa)
 					TestContext.WriteLine($"{sai.SidType}:{sai.Name}");
 			}

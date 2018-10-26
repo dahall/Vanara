@@ -31,7 +31,7 @@ Interfaces
 IEnumNetworkConnections, IEnumNetworks, INetwork, INetworkConnection, INetworkConnectionCost, INetworkConnectionCostEvents, INetworkConnectionEvents, INetworkCostManager, INetworkCostManagerEvents, INetworkEvents, INetworkListManager, INetworkListManagerEvents
 
 </PackageReleaseNotes>
-	<LangVersion>latest</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

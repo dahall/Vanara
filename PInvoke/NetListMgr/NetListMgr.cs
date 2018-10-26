@@ -7,9 +7,6 @@ using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-
 [assembly: Guid("DCB00D01-570F-4A9B-8D69-199FDBA5723B")]
 #if !NETSTANDARD2_0
 [assembly: TypeLibVersion(1, 0)]
@@ -503,7 +500,7 @@ namespace Vanara.PInvoke.NetListMgr
 		/// An <see cref="NLM_SOCKADDR"/> structure containing an IPv4/IPv6 address that identifies the destination on which the event occurred. If destAddr is NULL, the
 		/// change is a machine-wide Internet connectivity change.
 		/// </param>
-		void CostChanged([In] NLM_CONNECTION_COST newCost, [In] ref NLM_SOCKADDR pDestAddr);
+		void CostChanged([In] NLM_CONNECTION_COST newCost, in NLM_SOCKADDR pDestAddr);
 
 		/// <summary>
 		/// The DataPlanStatusChanged method is called to indicate a change to the status of a data plan associated with either a connection used for
@@ -513,7 +510,7 @@ namespace Vanara.PInvoke.NetListMgr
 		/// An <see cref="NLM_SOCKADDR"/> structure containing an IPv4/IPv6 address that identifies the destination for which the event occurred. If destAddr is NULL, the
 		/// change is a machine-wide Internet connectivity change.
 		/// </param>
-		void DataPlanStatusChanged([In] ref NLM_SOCKADDR pDestAddr);
+		void DataPlanStatusChanged(in NLM_SOCKADDR pDestAddr);
 	}
 
 	/// <summary>
@@ -607,7 +604,7 @@ namespace Vanara.PInvoke.NetListMgr
 		/// Child Session
 		/// </param>
 		[DispId(8)]
-		void SetSimulatedProfileInfo([In] ref NLM_SIMULATED_PROFILE_INFO pSimulatedInfo);
+		void SetSimulatedProfileInfo(in NLM_SIMULATED_PROFILE_INFO pSimulatedInfo);
 
 		/// <summary>
 		/// Clears the connection profile values previously applied to the internet connection profile by SetSimulatedProfileInfo. The next internet

@@ -409,19 +409,13 @@ namespace Vanara.Windows.Forms
 		///   </description></item>
 		/// </list>
 		/// </remarks>
-		public void Initialize(object knownObject)
-		{
-			Initialize(new SecuredObject(knownObject));
-		}
+		public void Initialize(object knownObject) => Initialize(new SecuredObject(knownObject));
 
 		/// <summary>Initializes the dialog with the specified <see cref="CommonObjectSecurity"/> value and names.</summary>
 		/// <param name="objSecurity">The object security.</param>
 		/// <param name="objName">Name of the object.</param>
 		/// <param name="displayName">The display name.</param>
-		public void Initialize(CommonObjectSecurity objSecurity, string objName, string displayName)
-		{
-			Initialize(new SecuredObject(objSecurity, objName, displayName));
-		}
+		public void Initialize(CommonObjectSecurity objSecurity, string objName, string displayName) => Initialize(new SecuredObject(objSecurity, objName, displayName));
 
 		private void Initialize(SecuredObject secObject)
 		{
@@ -435,10 +429,7 @@ namespace Vanara.Windows.Forms
 		/// <param name="server">Name of the server. This value can be <c>null</c>.</param>
 		/// <param name="resourceType">Type of the object resource.</param>
 		/// <exception cref="System.ArgumentException">Unable to create an object from supplied arguments.</exception>
-		public void Initialize(string fullObjectName, string server, ResourceType resourceType)
-		{
-			Initialize(SecuredObject.GetKnownObject(resourceType, fullObjectName, server));
-		}
+		public void Initialize(string fullObjectName, string server, ResourceType resourceType) => Initialize(SecuredObject.GetKnownObject(resourceType, fullObjectName, server));
 
 		/// <summary>Initializes the dialog with a custom provider.</summary>
 		/// <param name="displayName">The object name.</param>
@@ -483,15 +474,9 @@ namespace Vanara.Windows.Forms
 		/// <exception cref="System.InvalidOperationException">
 		/// AccessControlEditorDialog cannot be reset. It must be instantiated with a valid securable object.
 		/// </exception>
-		public override void Reset()
-		{
-			throw new InvalidOperationException("AccessControlEditorDialog cannot be reset. It must be instantiated with a valid securable object.");
-		}
+		public override void Reset() => throw new InvalidOperationException("AccessControlEditorDialog cannot be reset. It must be instantiated with a valid securable object.");
 
-		internal void ResetFlags()
-		{
-			flags = defaultFlags;
-		}
+		internal void ResetFlags() => flags = defaultFlags;
 
 		internal bool ShouldSerializeFlags() => flags != defaultFlags;
 

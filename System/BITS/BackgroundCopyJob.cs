@@ -326,7 +326,7 @@ namespace Vanara.IO
 		{
 			get
 			{
-				SafeCoTaskMemString p, a;
+				string p, a;
 				try
 				{
 					IJob2.GetNotifyCmdLine(out p, out a);

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
+using Vanara.InteropServices;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
@@ -9,20 +11,20 @@ namespace Vanara.PInvoke
 		// PINIT_ONCE_FN PTIMERAPCROUTINE
 
 		/// <summary>
-		/// An application-defined callback function. Specify a pointer to this function when calling the InitOnceExecuteOnce function. The PINIT_ONCE_FN type
-		/// defines a pointer to this callback function.
+		/// An application-defined callback function. Specify a pointer to this function when calling the InitOnceExecuteOnce function. The
+		/// PINIT_ONCE_FN type defines a pointer to this callback function.
 		/// </summary>
 		/// <param name="InitOnce">A pointer to the one-time initialization structure.</param>
 		/// <param name="Parameter">An optional parameter that was passed to the callback function.</param>
 		/// <param name="Context">
-		/// The data to be stored with the one-time initialization structure. If Context references a value, the low-order INIT_ONCE_CTX_RESERVED_BITS of the
-		/// value must be zero. If Context points to a data structure, the data structure must be DWORD-aligned.
+		/// The data to be stored with the one-time initialization structure. If Context references a value, the low-order
+		/// INIT_ONCE_CTX_RESERVED_BITS of the value must be zero. If Context points to a data structure, the data structure must be DWORD-aligned.
 		/// </param>
 		/// <returns>
 		/// <para>If the function returns TRUE, the block is marked as initialized.</para>
 		/// <para>
-		/// If the function returns FALSE, the block is not marked as initialized and the call to InitOnceExecuteOnce fails. To communicate additional error
-		/// information, call SetLastError before returning FALSE.
+		/// If the function returns FALSE, the block is not marked as initialized and the call to InitOnceExecuteOnce fails. To communicate
+		/// additional error information, call SetLastError before returning FALSE.
 		/// </para>
 		/// </returns>
 		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -30,16 +32,19 @@ namespace Vanara.PInvoke
 		public delegate bool PINIT_ONCE_FN(ref INIT_ONCE InitOnce, IntPtr Parameter, out IntPtr Context);
 
 		/// <summary>
-		/// An application-defined timer completion routine. Specify this address when calling the SetWaitableTimer function. The PTIMERAPCROUTINE type defines a
-		/// pointer to this callback function.
+		/// An application-defined timer completion routine. Specify this address when calling the SetWaitableTimer function. The
+		/// PTIMERAPCROUTINE type defines a pointer to this callback function.
 		/// </summary>
-		/// <param name="lpArgToCompletionRoutine">The value passed to the function using the lpArgToCompletionRoutine parameter of the SetWaitableTimer function.</param>
+		/// <param name="lpArgToCompletionRoutine">
+		/// The value passed to the function using the lpArgToCompletionRoutine parameter of the SetWaitableTimer function.
+		/// </param>
 		/// <param name="dwTimerLowValue">
-		/// The low-order portion of the UTC-based time at which the timer was signaled. This value corresponds to the dwLowDateTime member of the FILETIME
-		/// structure. For more information about UTC-based time, see System Time.
+		/// The low-order portion of the UTC-based time at which the timer was signaled. This value corresponds to the dwLowDateTime member
+		/// of the FILETIME structure. For more information about UTC-based time, see System Time.
 		/// </param>
 		/// <param name="dwTimerHighValue">
-		/// The high-order portion of the UTC-based time at which the timer was signaled. This value corresponds to the dwHighDateTime member of the FILETIME structure.
+		/// The high-order portion of the UTC-based time at which the timer was signaled. This value corresponds to the dwHighDateTime member
+		/// of the FILETIME structure.
 		/// </param>
 		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
 		public delegate void PTIMERAPCROUTINE([In] IntPtr lpArgToCompletionRoutine, uint dwTimerLowValue, uint dwTimerHighValue);
@@ -50,6 +55,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>The SRW lock is in exclusive mode.</summary>
 			CONDITION_VARIABLE_INIT = 0,
+
 			/// <summary>The SRW lock is in shared mode.</summary>
 			CONDITION_VARIABLE_LOCKMODE_SHARED = 1,
 		}
@@ -59,11 +65,12 @@ namespace Vanara.PInvoke
 		public enum CREATE_EVENT_FLAGS : uint
 		{
 			/// <summary>
-			/// The event must be manually reset using the ResetEvent function. Any number of waiting threads, or threads that subsequently begin wait operations
-			/// for the specified event object, can be released while the object&amp;#39;s state is signaled.If this flag is not specified, the system
-			/// automatically resets the event after releasing a single waiting thread.
+			/// The event must be manually reset using the ResetEvent function. Any number of waiting threads, or threads that subsequently
+			/// begin wait operations for the specified event object, can be released while the object's state is signaled.If this flag is
+			/// not specified, the system automatically resets the event after releasing a single waiting thread.
 			/// </summary>
 			CREATE_EVENT_MANUAL_RESET = 0x00000001,
+
 			/// <summary>The initial state of the event object is signaled; otherwise, it is nonsignaled.</summary>
 			CREATE_EVENT_INITIAL_SET = 0x00000002,
 		}
@@ -81,6 +88,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>The system automatically resets the timer after releasing a single waiting thread.</summary>
 			CREATE_WAITABLE_TIMER_AUTOMATIC_RESET = 0x00000000,
+
 			/// <summary>The timer must be manually reset.</summary>
 			CREATE_WAITABLE_TIMER_MANUAL_RESET = 0x00000001,
 		}
@@ -91,6 +99,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>The critical section is created without debug information.</summary>
 			CRITICAL_SECTION_FLAG_NO_DEBUG_INFO = 0x01000000,
+
 			CRITICAL_SECTION_FLAG_DYNAMIC_SPIN = 0x02000000,
 			CRITICAL_SECTION_FLAG_STATIC_INIT = 0x04000000,
 			CRITICAL_SECTION_FLAG_RESOURCE_TYPE = 0x08000000,
@@ -101,10 +110,14 @@ namespace Vanara.PInvoke
 		/// <summary>Used by <c>REASON_CONTEXT</c>.</summary>
 		public enum DIAGNOSTIC_REASON : uint
 		{
-			/// <summary>The SimpleReasonString parameter contains a simple, non-localizable string that describes the reason for the power request.</summary>
+			/// <summary>
+			/// The SimpleReasonString parameter contains a simple, non-localizable string that describes the reason for the power request.
+			/// </summary>
 			DIAGNOSTIC_REASON_SIMPLE_STRING = 0x00000001,
+
 			/// <summary>The Detailed structure identifies a localizable string resource that describes the reason for the power request.</summary>
 			DIAGNOSTIC_REASON_DETAILED_STRING = 0x00000002,
+
 			/// <summary>Unspecified.</summary>
 			DIAGNOSTIC_REASON_NOT_SPECIFIED = 0x80000000
 		}
@@ -121,15 +134,17 @@ namespace Vanara.PInvoke
 		public enum INIT_ONCE_FLAGS : uint
 		{
 			/// <summary>
-			/// This function call does not begin initialization. The return value indicates whether initialization has already completed. If the function
-			/// returns TRUE, the lpContext parameter receives the data.
+			/// This function call does not begin initialization. The return value indicates whether initialization has already completed. If
+			/// the function returns TRUE, the lpContext parameter receives the data.
 			/// </summary>
 			INIT_ONCE_CHECK_ONLY = 0x00000001,
+
 			/// <summary>
-			/// Enables multiple initialization attempts to execute in parallel. If this flag is used, subsequent calls to this function will fail unless this
-			/// flag is also specified.
+			/// Enables multiple initialization attempts to execute in parallel. If this flag is used, subsequent calls to this function will
+			/// fail unless this flag is also specified.
 			/// </summary>
 			INIT_ONCE_ASYNC = 0x00000002,
+
 			/// <summary>The initialize once initialize failed</summary>
 			INIT_ONCE_INIT_FAILED = 0x00000004,
 		}
@@ -139,15 +154,18 @@ namespace Vanara.PInvoke
 		public enum SYNC_BARRIER_FLAGS
 		{
 			/// <summary>
-			/// Specifies that the thread entering the barrier should spin until the last thread enters the barrier, even if the spinning thread exceeds the
-			/// barrier's maximum spin count.
+			/// Specifies that the thread entering the barrier should spin until the last thread enters the barrier, even if the spinning
+			/// thread exceeds the barrier's maximum spin count.
 			/// </summary>
 			SYNCHRONIZATION_BARRIER_FLAGS_SPIN_ONLY = 0x01,
+
 			/// <summary>Specifies that the thread entering the barrier should block immediately until the last thread enters the barrier.</summary>
 			SYNCHRONIZATION_BARRIER_FLAGS_BLOCK_ONLY = 0x02,
+
 			/// <summary>
-			/// Specifies that the function can skip the work required to ensure that it is safe to delete the barrier, which can improve performance. All
-			/// threads that enter this barrier must specify the flag; otherwise, the flag is ignored. This flag should be used only if the barrier will never be deleted.
+			/// Specifies that the function can skip the work required to ensure that it is safe to delete the barrier, which can improve
+			/// performance. All threads that enter this barrier must specify the flag; otherwise, the flag is ignored. This flag should be
+			/// used only if the barrier will never be deleted.
 			/// </summary>
 			SYNCHRONIZATION_BARRIER_FLAGS_NO_DELETE = 0x04,
 		}
@@ -156,17 +174,21 @@ namespace Vanara.PInvoke
 		public enum WAIT_STATUS : uint
 		{
 			/// <summary>
-			/// The specified object is a mutex object that was not released by the thread that owned the mutex object before the owning thread terminated.
-			/// Ownership of the mutex object is granted to the calling thread, and the mutex is set to nonsignaled.If the mutex was protecting persistent state
-			/// information, you should check it for consistency.
+			/// The specified object is a mutex object that was not released by the thread that owned the mutex object before the owning
+			/// thread terminated. Ownership of the mutex object is granted to the calling thread, and the mutex is set to nonsignaled.If the
+			/// mutex was protecting persistent state information, you should check it for consistency.
 			/// </summary>
 			WAIT_ABANDONED = 0x00000080,
+
 			/// <summary>The wait was ended by one or more user-mode asynchronous procedure calls (APC) queued to the thread.</summary>
 			WAIT_IO_COMPLETION = 0x000000C0,
+
 			/// <summary>The state of the specified object is signaled.</summary>
 			WAIT_OBJECT_0 = 0x00000000,
-			/// <summary>The time-out interval elapsed, and the object&amp;#39;s state is nonsignaled.</summary>
+
+			/// <summary>The time-out interval elapsed, and the object's state is nonsignaled.</summary>
 			WAIT_TIMEOUT = 0x00000102,
+
 			/// <summary>The function has failed. To get extended error information, call GetLastError.</summary>
 			WAIT_FAILED = 0xFFFFFFFF,
 		}
@@ -177,7 +199,7 @@ namespace Vanara.PInvoke
 		// VOID WINAPI AcquireSRWLockExclusive( _Inout_ PSRWLOCK SRWLock); https://msdn.microsoft.com/en-us/library/windows/desktop/ms681930(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms681930")]
-		public static extern void AcquireSRWLockExclusive(ref SRWLOCK SRWLock);
+		public static extern void AcquireSRWLockExclusive(out SRWLOCK SRWLock);
 
 		/// <summary>Acquires a slim reader/writer (SRW) lock in shared mode.</summary>
 		/// <param name="SRWLock">A pointer to the SRW lock.</param>
@@ -185,12 +207,12 @@ namespace Vanara.PInvoke
 		// VOID WINAPI AcquireSRWLockShared( _Inout_ PSRWLOCK SRWLock); https://msdn.microsoft.com/en-us/library/windows/desktop/ms681934(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms681934")]
-		public static extern void AcquireSRWLockShared(ref SRWLOCK SRWLock);
+		public static extern void AcquireSRWLockShared(out SRWLOCK SRWLock);
 
 		/// <summary>Sets the specified waitable timer to the inactive state.</summary>
 		/// <param name="hTimer">
-		/// A handle to the timer object. The <c>CreateWaitableTimer</c> or <c>OpenWaitableTimer</c> function returns this handle. The handle must have the
-		/// <c>TIMER_MODIFY_STATE</c> access right. For more information, see Synchronization Object Security and Access Rights.
+		/// A handle to the timer object. The <c>CreateWaitableTimer</c> or <c>OpenWaitableTimer</c> function returns this handle. The handle
+		/// must have the <c>TIMER_MODIFY_STATE</c> access right. For more information, see Synchronization Object Security and Access Rights.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -200,83 +222,91 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms681985")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CancelWaitableTimer([In] IntPtr hTimer);
+		public static extern bool CancelWaitableTimer([In] SafeWaitableTimerHandle hTimer);
 
 		/// <summary>
 		/// <para>Creates or opens a named or unnamed event object.</para>
 		/// <para>To specify an access mask for the object, use the <c>CreateEventEx</c> function.</para>
 		/// </summary>
 		/// <param name="lpEventAttributes">
-		/// <para>A pointer to a <c>SECURITY_ATTRIBUTES</c> structure. If this parameter is <c>NULL</c>, the handle cannot be inherited by child processes.</para>
 		/// <para>
-		/// The <c>lpSecurityDescriptor</c> member of the structure specifies a security descriptor for the new event. If lpEventAttributes is <c>NULL</c>, the
-		/// event gets a default security descriptor. The ACLs in the default security descriptor for an event come from the primary or impersonation token of
-		/// the creator.
+		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure. If this parameter is <c>NULL</c>, the handle cannot be inherited by child processes.
+		/// </para>
+		/// <para>
+		/// The <c>lpSecurityDescriptor</c> member of the structure specifies a security descriptor for the new event. If lpEventAttributes
+		/// is <c>NULL</c>, the event gets a default security descriptor. The ACLs in the default security descriptor for an event come from
+		/// the primary or impersonation token of the creator.
 		/// </para>
 		/// </param>
 		/// <param name="bManualReset">
-		/// If this parameter is <c>TRUE</c>, the function creates a manual-reset event object, which requires the use of the <c>ResetEvent</c> function to set
-		/// the event state to nonsignaled. If this parameter is <c>FALSE</c>, the function creates an auto-reset event object, and system automatically resets
-		/// the event state to nonsignaled after a single waiting thread has been released.
+		/// If this parameter is <c>TRUE</c>, the function creates a manual-reset event object, which requires the use of the
+		/// <c>ResetEvent</c> function to set the event state to nonsignaled. If this parameter is <c>FALSE</c>, the function creates an
+		/// auto-reset event object, and system automatically resets the event state to nonsignaled after a single waiting thread has been released.
 		/// </param>
-		/// <param name="bInitialState">If this parameter is <c>TRUE</c>, the initial state of the event object is signaled; otherwise, it is nonsignaled.</param>
+		/// <param name="bInitialState">
+		/// If this parameter is <c>TRUE</c>, the initial state of the event object is signaled; otherwise, it is nonsignaled.
+		/// </param>
 		/// <param name="lpName">
 		/// <para>The name of the event object. The name is limited to <c>MAX_PATH</c> characters. Name comparison is case sensitive.</para>
 		/// <para>
-		/// If lpName matches the name of an existing named event object, this function requests the <c>EVENT_ALL_ACCESS</c> access right. In this case, the
-		/// bManualReset and bInitialState parameters are ignored because they have already been set by the creating process. If the lpEventAttributes parameter
-		/// is not <c>NULL</c>, it determines whether the handle can be inherited, but its security-descriptor member is ignored.
+		/// If lpName matches the name of an existing named event object, this function requests the <c>EVENT_ALL_ACCESS</c> access right. In
+		/// this case, the bManualReset and bInitialState parameters are ignored because they have already been set by the creating process.
+		/// If the lpEventAttributes parameter is not <c>NULL</c>, it determines whether the handle can be inherited, but its
+		/// security-descriptor member is ignored.
 		/// </para>
 		/// <para>If lpName is <c>NULL</c>, the event object is created without a name.</para>
 		/// <para>
-		/// If lpName matches the name of another kind of object in the same namespace (such as an existing semaphore, mutex, waitable timer, job, or
-		/// file-mapping object), the function fails and the <c>GetLastError</c> function returns <c>ERROR_INVALID_HANDLE</c>. This occurs because these objects
-		/// share the same namespace.
+		/// If lpName matches the name of another kind of object in the same namespace (such as an existing semaphore, mutex, waitable timer,
+		/// job, or file-mapping object), the function fails and the <c>GetLastError</c> function returns <c>ERROR_INVALID_HANDLE</c>. This
+		/// occurs because these objects share the same namespace.
 		/// </para>
 		/// <para>
-		/// The name can have a "Global\" or "Local\" prefix to explicitly create the object in the global or session namespace. The remainder of the name can
-		/// contain any character except the backslash character (\). For more information, see Kernel Object Namespaces. Fast user switching is implemented
-		/// using Terminal Services sessions. Kernel object names must follow the guidelines outlined for Terminal Services so that applications can support
-		/// multiple users.
+		/// The name can have a "Global\" or "Local\" prefix to explicitly create the object in the global or session namespace. The
+		/// remainder of the name can contain any character except the backslash character (\). For more information, see Kernel Object
+		/// Namespaces. Fast user switching is implemented using Terminal Services sessions. Kernel object names must follow the guidelines
+		/// outlined for Terminal Services so that applications can support multiple users.
 		/// </para>
 		/// <para>The object can be created in a private namespace. For more information, see Object Namespaces.</para>
 		/// </param>
 		/// <returns>
 		/// <para>
-		/// If the function succeeds, the return value is a handle to the event object. If the named event object existed before the function call, the function
-		/// returns a handle to the existing object and <c>GetLastError</c> returns <c>ERROR_ALREADY_EXISTS</c>.
+		/// If the function succeeds, the return value is a handle to the event object. If the named event object existed before the function
+		/// call, the function returns a handle to the existing object and <c>GetLastError</c> returns <c>ERROR_ALREADY_EXISTS</c>.
 		/// </para>
 		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		// HANDLE WINAPI CreateEvent( _In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes, _In_ BOOL bManualReset, _In_ BOOL bInitialState, _In_opt_ LPCTSTR
-		// lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682396(v=vs.85).aspx
+		// HANDLE WINAPI CreateEvent( _In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes, _In_ BOOL bManualReset, _In_ BOOL bInitialState,
+		// _In_opt_ LPCTSTR lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682396(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682396")]
-		public static extern IntPtr CreateEvent([In] SECURITY_ATTRIBUTES lpEventAttributes, [MarshalAs(UnmanagedType.Bool)] bool bManualReset,
-			[MarshalAs(UnmanagedType.Bool)] bool bInitialState, [In] string lpName);
+		public static extern SafeEventHandle CreateEvent([In, Optional] SECURITY_ATTRIBUTES lpEventAttributes, [MarshalAs(UnmanagedType.Bool)] bool bManualReset,
+			[MarshalAs(UnmanagedType.Bool)] bool bInitialState, [In, Optional] string lpName);
 
 		/// <summary>Creates or opens a named or unnamed event object and returns a handle to the object.</summary>
 		/// <param name="lpEventAttributes">
-		/// <para>A pointer to a <c>SECURITY_ATTRIBUTES</c> structure. If lpEventAttributes is <c>NULL</c>, the event handle cannot be inherited by child processes.</para>
 		/// <para>
-		/// The <c>lpSecurityDescriptor</c> member of the structure specifies a security descriptor for the new event. If lpEventAttributes is <c>NULL</c>, the
-		/// event gets a default security descriptor. The ACLs in the default security descriptor for an event come from the primary or impersonation token of
-		/// the creator.
+		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure. If lpEventAttributes is <c>NULL</c>, the event handle cannot be inherited by
+		/// child processes.
+		/// </para>
+		/// <para>
+		/// The <c>lpSecurityDescriptor</c> member of the structure specifies a security descriptor for the new event. If lpEventAttributes
+		/// is <c>NULL</c>, the event gets a default security descriptor. The ACLs in the default security descriptor for an event come from
+		/// the primary or impersonation token of the creator.
 		/// </para>
 		/// </param>
 		/// <param name="lpName">
 		/// <para>The name of the event object. The name is limited to <c>MAX_PATH</c> characters. Name comparison is case sensitive.</para>
 		/// <para>If lpName is <c>NULL</c>, the event object is created without a name.</para>
 		/// <para>
-		/// If lpName matches the name of another kind of object in the same namespace (such as an existing semaphore, mutex, waitable timer, job, or
-		/// file-mapping object), the function fails and the <c>GetLastError</c> function returns <c>ERROR_INVALID_HANDLE</c>. This occurs because these objects
-		/// share the same namespace.
+		/// If lpName matches the name of another kind of object in the same namespace (such as an existing semaphore, mutex, waitable timer,
+		/// job, or file-mapping object), the function fails and the <c>GetLastError</c> function returns <c>ERROR_INVALID_HANDLE</c>. This
+		/// occurs because these objects share the same namespace.
 		/// </para>
 		/// <para>
-		/// The name can have a "Global\" or "Local\" prefix to explicitly create the object in the global or session namespace. The remainder of the name can
-		/// contain any character except the backslash character (\). For more information, see Kernel Object Namespaces. Fast user switching is implemented
-		/// using Terminal Services sessions. Kernel object names must follow the guidelines outlined for Terminal Services so that applications can support
-		/// multiple users.
+		/// The name can have a "Global\" or "Local\" prefix to explicitly create the object in the global or session namespace. The
+		/// remainder of the name can contain any character except the backslash character (\). For more information, see Kernel Object
+		/// Namespaces. Fast user switching is implemented using Terminal Services sessions. Kernel object names must follow the guidelines
+		/// outlined for Terminal Services so that applications can support multiple users.
 		/// </para>
 		/// <para>The object can be created in a private namespace. For more information, see Object Namespaces.</para>
 		/// </param>
@@ -295,9 +325,9 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>CREATE_EVENT_MANUAL_RESET = 0x00000001</term>
 		/// <term>
-		/// The event must be manually reset using the ResetEvent function. Any number of waiting threads, or threads that subsequently begin wait operations for
-		/// the specified event object, can be released while the object&amp;#39;s state is signaled.If this flag is not specified, the system automatically
-		/// resets the event after releasing a single waiting thread.
+		/// The event must be manually reset using the ResetEvent function. Any number of waiting threads, or threads that subsequently begin
+		/// wait operations for the specified event object, can be released while the object's state is signaled.If this flag is not
+		/// specified, the system automatically resets the event after releasing a single waiting thread.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -308,50 +338,54 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>
 		/// <para>
-		/// If the function succeeds, the return value is a handle to the event object. If the named event object existed before the function call, the function
-		/// returns a handle to the existing object and <c>GetLastError</c> returns <c>ERROR_ALREADY_EXISTS</c>.
+		/// If the function succeeds, the return value is a handle to the event object. If the named event object existed before the function
+		/// call, the function returns a handle to the existing object and <c>GetLastError</c> returns <c>ERROR_ALREADY_EXISTS</c>.
 		/// </para>
 		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		// HANDLE WINAPI CreateEventEx( _In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes, _In_opt_ LPCTSTR lpName, _In_ DWORD dwFlags, _In_ DWORD
-		// dwDesiredAccess); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682400(v=vs.85).aspx
+		// HANDLE WINAPI CreateEventEx( _In_opt_ LPSECURITY_ATTRIBUTES lpEventAttributes, _In_opt_ LPCTSTR lpName, _In_ DWORD dwFlags, _In_
+		// DWORD dwDesiredAccess); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682400(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682400")]
-		public static extern IntPtr CreateEventEx([In] SECURITY_ATTRIBUTES lpEventAttributes, [In] string lpName, CREATE_EVENT_FLAGS dwFlags, uint dwDesiredAccess);
+		public static extern SafeEventHandle CreateEventEx([In, Optional] SECURITY_ATTRIBUTES lpEventAttributes, [In, Optional] string lpName, CREATE_EVENT_FLAGS dwFlags, uint dwDesiredAccess);
 
 		/// <summary>
 		/// <para>Creates or opens a named or unnamed mutex object.</para>
 		/// <para>To specify an access mask for the object, use the <c>CreateMutexEx</c> function.</para>
 		/// </summary>
 		/// <param name="lpMutexAttributes">
-		/// <para>A pointer to a <c>SECURITY_ATTRIBUTES</c> structure. If this parameter is <c>NULL</c>, the handle cannot be inherited by child processes.</para>
 		/// <para>
-		/// The <c>lpSecurityDescriptor</c> member of the structure specifies a security descriptor for the new mutex. If lpMutexAttributes is <c>NULL</c>, the
-		/// mutex gets a default security descriptor. The ACLs in the default security descriptor for a mutex come from the primary or impersonation token of the
-		/// creator. For more information, see Synchronization Object Security and Access Rights.
+		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure. If this parameter is <c>NULL</c>, the handle cannot be inherited by child processes.
+		/// </para>
+		/// <para>
+		/// The <c>lpSecurityDescriptor</c> member of the structure specifies a security descriptor for the new mutex. If lpMutexAttributes
+		/// is <c>NULL</c>, the mutex gets a default security descriptor. The ACLs in the default security descriptor for a mutex come from
+		/// the primary or impersonation token of the creator. For more information, see Synchronization Object Security and Access Rights.
 		/// </para>
 		/// </param>
 		/// <param name="bInitialOwner">
-		/// If this value is <c>TRUE</c> and the caller created the mutex, the calling thread obtains initial ownership of the mutex object. Otherwise, the
-		/// calling thread does not obtain ownership of the mutex. To determine if the caller created the mutex, see the Return Values section.
+		/// If this value is <c>TRUE</c> and the caller created the mutex, the calling thread obtains initial ownership of the mutex object.
+		/// Otherwise, the calling thread does not obtain ownership of the mutex. To determine if the caller created the mutex, see the
+		/// Return Values section.
 		/// </param>
 		/// <param name="lpName">
 		/// <para>The name of the mutex object. The name is limited to <c>MAX_PATH</c> characters. Name comparison is case sensitive.</para>
 		/// <para>
-		/// If lpName matches the name of an existing named mutex object, this function requests the <c>MUTEX_ALL_ACCESS</c> access right. In this case, the
-		/// bInitialOwner parameter is ignored because it has already been set by the creating process. If the lpMutexAttributes parameter is not <c>NULL</c>, it
-		/// determines whether the handle can be inherited, but its security-descriptor member is ignored.
+		/// If lpName matches the name of an existing named mutex object, this function requests the <c>MUTEX_ALL_ACCESS</c> access right. In
+		/// this case, the bInitialOwner parameter is ignored because it has already been set by the creating process. If the
+		/// lpMutexAttributes parameter is not <c>NULL</c>, it determines whether the handle can be inherited, but its security-descriptor
+		/// member is ignored.
 		/// </para>
 		/// <para>If lpName is <c>NULL</c>, the mutex object is created without a name.</para>
 		/// <para>
-		/// If lpName matches the name of an existing event, semaphore, waitable timer, job, or file-mapping object, the function fails and the
-		/// <c>GetLastError</c> function returns <c>ERROR_INVALID_HANDLE</c>. This occurs because these objects share the same namespace.
+		/// If lpName matches the name of an existing event, semaphore, waitable timer, job, or file-mapping object, the function fails and
+		/// the <c>GetLastError</c> function returns <c>ERROR_INVALID_HANDLE</c>. This occurs because these objects share the same namespace.
 		/// </para>
 		/// <para>
-		/// The name can have a "Global\" or "Local\" prefix to explicitly create the object in the global or session namespace. The remainder of the name can
-		/// contain any character except the backslash character (\). For more information, see Kernel Object Namespaces. Fast user switching is implemented
-		/// using Terminal Services sessions. Kernel object names must follow the guidelines outlined for Terminal Services so that applications can support
-		/// multiple users.
+		/// The name can have a "Global\" or "Local\" prefix to explicitly create the object in the global or session namespace. The
+		/// remainder of the name can contain any character except the backslash character (\). For more information, see Kernel Object
+		/// Namespaces. Fast user switching is implemented using Terminal Services sessions. Kernel object names must follow the guidelines
+		/// outlined for Terminal Services so that applications can support multiple users.
 		/// </para>
 		/// <para>The object can be created in a private namespace. For more information, see Object Namespaces.</para>
 		/// </param>
@@ -359,37 +393,41 @@ namespace Vanara.PInvoke
 		/// <para>If the function succeeds, the return value is a handle to the newly created mutex object.</para>
 		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
 		/// <para>
-		/// If the mutex is a named mutex and the object existed before this function call, the return value is a handle to the existing object,
-		/// <c>GetLastError</c> returns <c>ERROR_ALREADY_EXISTS</c>, bInitialOwner is ignored, and the calling thread is not granted ownership. However, if the
-		/// caller has limited access rights, the function will fail with <c>ERROR_ACCESS_DENIED</c> and the caller should use the <c>OpenMutex</c> function.
+		/// If the mutex is a named mutex and the object existed before this function call, the return value is a handle to the existing
+		/// object, <c>GetLastError</c> returns <c>ERROR_ALREADY_EXISTS</c>, bInitialOwner is ignored, and the calling thread is not granted
+		/// ownership. However, if the caller has limited access rights, the function will fail with <c>ERROR_ACCESS_DENIED</c> and the
+		/// caller should use the <c>OpenMutex</c> function.
 		/// </para>
 		/// </returns>
 		// HANDLE WINAPI CreateMutex( _In_opt_ LPSECURITY_ATTRIBUTES lpMutexAttributes, _In_ BOOL bInitialOwner, _In_opt_ LPCTSTR lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682411(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682411")]
-		public static extern IntPtr CreateMutex([In] SECURITY_ATTRIBUTES lpMutexAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInitialOwner, string lpName);
+		public static extern SafeMutexHandle CreateMutex([In, Optional] SECURITY_ATTRIBUTES lpMutexAttributes, [MarshalAs(UnmanagedType.Bool)] bool bInitialOwner, [In, Optional] string lpName);
 
 		/// <summary>Creates or opens a named or unnamed mutex object and returns a handle to the object.</summary>
 		/// <param name="lpMutexAttributes">
-		/// <para>A pointer to a <c>SECURITY_ATTRIBUTES</c> structure. If this parameter is <c>NULL</c>, the mutex handle cannot be inherited by child processes.</para>
 		/// <para>
-		/// The <c>lpSecurityDescriptor</c> member of the structure specifies a security descriptor for the new mutex. If lpMutexAttributes is <c>NULL</c>, the
-		/// mutex gets a default security descriptor. The ACLs in the default security descriptor for a mutex come from the primary or impersonation token of the
-		/// creator. For more information, see Synchronization Object Security and Access Rights.
+		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure. If this parameter is <c>NULL</c>, the mutex handle cannot be inherited by
+		/// child processes.
+		/// </para>
+		/// <para>
+		/// The <c>lpSecurityDescriptor</c> member of the structure specifies a security descriptor for the new mutex. If lpMutexAttributes
+		/// is <c>NULL</c>, the mutex gets a default security descriptor. The ACLs in the default security descriptor for a mutex come from
+		/// the primary or impersonation token of the creator. For more information, see Synchronization Object Security and Access Rights.
 		/// </para>
 		/// </param>
 		/// <param name="lpName">
 		/// <para>The name of the mutex object. The name is limited to <c>MAX_PATH</c> characters. Name comparison is case sensitive.</para>
 		/// <para>If lpName is <c>NULL</c>, the mutex object is created without a name.</para>
 		/// <para>
-		/// If lpName matches the name of an existing event, semaphore, waitable timer, job, or file-mapping object, the function fails and the
-		/// <c>GetLastError</c> function returns <c>ERROR_INVALID_HANDLE</c>. This occurs because these objects share the same namespace.
+		/// If lpName matches the name of an existing event, semaphore, waitable timer, job, or file-mapping object, the function fails and
+		/// the <c>GetLastError</c> function returns <c>ERROR_INVALID_HANDLE</c>. This occurs because these objects share the same namespace.
 		/// </para>
 		/// <para>
-		/// The name can have a "Global\" or "Local\" prefix to explicitly create the object in the global or session namespace. The remainder of the name can
-		/// contain any character except the backslash character (\). For more information, see Kernel Object Namespaces. Fast user switching is implemented
-		/// using Terminal Services sessions. Kernel object names must follow the guidelines outlined for Terminal Services so that applications can support
-		/// multiple users.
+		/// The name can have a "Global\" or "Local\" prefix to explicitly create the object in the global or session namespace. The
+		/// remainder of the name can contain any character except the backslash character (\). For more information, see Kernel Object
+		/// Namespaces. Fast user switching is implemented using Terminal Services sessions. Kernel object names must follow the guidelines
+		/// outlined for Terminal Services so that applications can support multiple users.
 		/// </para>
 		/// <para>The object can be created in a private namespace. For more information, see Object Namespaces.</para>
 		/// </param>
@@ -415,102 +453,112 @@ namespace Vanara.PInvoke
 		/// <para>If the function succeeds, the return value is a handle to the newly created mutex object.</para>
 		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
 		/// <para>
-		/// If the mutex is a named mutex and the object existed before this function call, the return value is a handle to the existing object,
-		/// <c>GetLastError</c> returns <c>ERROR_ALREADY_EXISTS</c>, bInitialOwner is ignored, and the calling thread is not granted ownership. However, if the
-		/// caller has limited access rights, the function will fail with <c>ERROR_ACCESS_DENIED</c> and the caller should use the <c>OpenMutex</c> function.
+		/// If the mutex is a named mutex and the object existed before this function call, the return value is a handle to the existing
+		/// object, <c>GetLastError</c> returns <c>ERROR_ALREADY_EXISTS</c>, bInitialOwner is ignored, and the calling thread is not granted
+		/// ownership. However, if the caller has limited access rights, the function will fail with <c>ERROR_ACCESS_DENIED</c> and the
+		/// caller should use the <c>OpenMutex</c> function.
 		/// </para>
 		/// </returns>
-		// HANDLE WINAPI CreateMutexEx( _In_opt_ LPSECURITY_ATTRIBUTES lpMutexAttributes, _In_opt_ LPCTSTR lpName, _In_ DWORD dwFlags, _In_ DWORD
-		// dwDesiredAccess); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682418(v=vs.85).aspx
+		// HANDLE WINAPI CreateMutexEx( _In_opt_ LPSECURITY_ATTRIBUTES lpMutexAttributes, _In_opt_ LPCTSTR lpName, _In_ DWORD dwFlags, _In_
+		// DWORD dwDesiredAccess); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682418(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682418")]
-		public static extern IntPtr CreateMutexEx(IntPtr lpMutexAttributes, string lpName, CREATE_MUTEX_FLAGS dwFlags, uint dwDesiredAccess);
+		public static extern SafeMutexHandle CreateMutexEx([In, Optional] SECURITY_ATTRIBUTES lpMutexAttributes, [In, Optional] string lpName, CREATE_MUTEX_FLAGS dwFlags, uint dwDesiredAccess);
 
 		/// <summary>
 		/// <para>Creates or opens a named or unnamed semaphore object.</para>
 		/// <para>To specify an access mask for the object, use the <c>CreateSemaphoreEx</c> function.</para>
 		/// </summary>
 		/// <param name="lpSemaphoreAttributes">
-		/// <para>A pointer to a <c>SECURITY_ATTRIBUTES</c> structure. If this parameter is <c>NULL</c>, the handle cannot be inherited by child processes.</para>
 		/// <para>
-		/// The <c>lpSecurityDescriptor</c> member of the structure specifies a security descriptor for the new semaphore. If this parameter is <c>NULL</c>, the
-		/// semaphore gets a default security descriptor. The ACLs in the default security descriptor for a semaphore come from the primary or impersonation
-		/// token of the creator.
+		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure. If this parameter is <c>NULL</c>, the handle cannot be inherited by child processes.
+		/// </para>
+		/// <para>
+		/// The <c>lpSecurityDescriptor</c> member of the structure specifies a security descriptor for the new semaphore. If this parameter
+		/// is <c>NULL</c>, the semaphore gets a default security descriptor. The ACLs in the default security descriptor for a semaphore
+		/// come from the primary or impersonation token of the creator.
 		/// </para>
 		/// </param>
 		/// <param name="lInitialCount">
-		/// The initial count for the semaphore object. This value must be greater than or equal to zero and less than or equal to lMaximumCount. The state of a
-		/// semaphore is signaled when its count is greater than zero and nonsignaled when it is zero. The count is decreased by one whenever a wait function
-		/// releases a thread that was waiting for the semaphore. The count is increased by a specified amount by calling the <c>ReleaseSemaphore</c> function.
+		/// The initial count for the semaphore object. This value must be greater than or equal to zero and less than or equal to
+		/// lMaximumCount. The state of a semaphore is signaled when its count is greater than zero and nonsignaled when it is zero. The
+		/// count is decreased by one whenever a wait function releases a thread that was waiting for the semaphore. The count is increased
+		/// by a specified amount by calling the <c>ReleaseSemaphore</c> function.
 		/// </param>
 		/// <param name="lMaximumCount">The maximum count for the semaphore object. This value must be greater than zero.</param>
 		/// <param name="lpName">
 		/// <para>The name of the semaphore object. The name is limited to <c>MAX_PATH</c> characters. Name comparison is case sensitive.</para>
 		/// <para>
-		/// If lpName matches the name of an existing named semaphore object, this function requests the <c>SEMAPHORE_ALL_ACCESS</c> access right. In this case,
-		/// the lInitialCount and lMaximumCount parameters are ignored because they have already been set by the creating process. If the lpSemaphoreAttributes
-		/// parameter is not <c>NULL</c>, it determines whether the handle can be inherited, but its security-descriptor member is ignored.
+		/// If lpName matches the name of an existing named semaphore object, this function requests the <c>SEMAPHORE_ALL_ACCESS</c> access
+		/// right. In this case, the lInitialCount and lMaximumCount parameters are ignored because they have already been set by the
+		/// creating process. If the lpSemaphoreAttributes parameter is not <c>NULL</c>, it determines whether the handle can be inherited,
+		/// but its security-descriptor member is ignored.
 		/// </para>
 		/// <para>If lpName is <c>NULL</c>, the semaphore object is created without a name.</para>
 		/// <para>
-		/// If lpName matches the name of an existing event, mutex, waitable timer, job, or file-mapping object, the function fails and the <c>GetLastError</c>
-		/// function returns <c>ERROR_INVALID_HANDLE</c>. This occurs because these objects share the same namespace.
+		/// If lpName matches the name of an existing event, mutex, waitable timer, job, or file-mapping object, the function fails and the
+		/// <c>GetLastError</c> function returns <c>ERROR_INVALID_HANDLE</c>. This occurs because these objects share the same namespace.
 		/// </para>
 		/// <para>
-		/// The name can have a "Global\" or "Local\" prefix to explicitly create the object in the global or session namespace. The remainder of the name can
-		/// contain any character except the backslash character (\). For more information, see Kernel Object Namespaces. Fast user switching is implemented
-		/// using Terminal Services sessions. Kernel object names must follow the guidelines outlined for Terminal Services so that applications can support
-		/// multiple users.
+		/// The name can have a "Global\" or "Local\" prefix to explicitly create the object in the global or session namespace. The
+		/// remainder of the name can contain any character except the backslash character (\). For more information, see Kernel Object
+		/// Namespaces. Fast user switching is implemented using Terminal Services sessions. Kernel object names must follow the guidelines
+		/// outlined for Terminal Services so that applications can support multiple users.
 		/// </para>
 		/// <para>The object can be created in a private namespace. For more information, see Object Namespaces.</para>
 		/// </param>
 		/// <returns>
 		/// <para>
-		/// If the function succeeds, the return value is a handle to the semaphore object. If the named semaphore object existed before the function call, the
-		/// function returns a handle to the existing object and <c>GetLastError</c> returns <c>ERROR_ALREADY_EXISTS</c>.
+		/// If the function succeeds, the return value is a handle to the semaphore object. If the named semaphore object existed before the
+		/// function call, the function returns a handle to the existing object and <c>GetLastError</c> returns <c>ERROR_ALREADY_EXISTS</c>.
 		/// </para>
 		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		// HANDLE WINAPI CreateSemaphore( _In_opt_ LPSECURITY_ATTRIBUTES lpSemaphoreAttributes, _In_ LONG lInitialCount, _In_ LONG lMaximumCount, _In_opt_
-		// LPCTSTR lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682438(v=vs.85).aspx
+		// HANDLE WINAPI CreateSemaphore( _In_opt_ LPSECURITY_ATTRIBUTES lpSemaphoreAttributes, _In_ LONG lInitialCount, _In_ LONG
+		// lMaximumCount, _In_opt_ LPCTSTR lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682438(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682438")]
-		public static extern IntPtr CreateSemaphore([In] SECURITY_ATTRIBUTES lpSemaphoreAttributes, int lInitialCount, int lMaximumCount, [In] string lpName);
+		public static extern SafeSemaphoreHandle CreateSemaphore([In, Optional] SECURITY_ATTRIBUTES lpSemaphoreAttributes, int lInitialCount, int lMaximumCount, [In, Optional] string lpName);
 
 		/// <summary>Creates or opens a named or unnamed semaphore object and returns a handle to the object.</summary>
 		/// <param name="lpSemaphoreAttributes">
-		/// <para>A pointer to a <c>SECURITY_ATTRIBUTES</c> structure. If this parameter is <c>NULL</c>, the semaphore handle cannot be inherited by child processes.</para>
 		/// <para>
-		/// The <c>lpSecurityDescriptor</c> member of the structure specifies a security descriptor for the new semaphore. If this parameter is <c>NULL</c>, the
-		/// semaphore gets a default security descriptor. The ACLs in the default security descriptor for a semaphore come from the primary or impersonation
-		/// token of the creator.
+		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure. If this parameter is <c>NULL</c>, the semaphore handle cannot be inherited
+		/// by child processes.
+		/// </para>
+		/// <para>
+		/// The <c>lpSecurityDescriptor</c> member of the structure specifies a security descriptor for the new semaphore. If this parameter
+		/// is <c>NULL</c>, the semaphore gets a default security descriptor. The ACLs in the default security descriptor for a semaphore
+		/// come from the primary or impersonation token of the creator.
 		/// </para>
 		/// </param>
 		/// <param name="lInitialCount">
-		/// The initial count for the semaphore object. This value must be greater than or equal to zero and less than or equal to lMaximumCount. The state of a
-		/// semaphore is signaled when its count is greater than zero and nonsignaled when it is zero. The count is decreased by one whenever a wait function
-		/// releases a thread that was waiting for the semaphore. The count is increased by a specified amount by calling the <c>ReleaseSemaphore</c> function.
+		/// The initial count for the semaphore object. This value must be greater than or equal to zero and less than or equal to
+		/// lMaximumCount. The state of a semaphore is signaled when its count is greater than zero and nonsignaled when it is zero. The
+		/// count is decreased by one whenever a wait function releases a thread that was waiting for the semaphore. The count is increased
+		/// by a specified amount by calling the <c>ReleaseSemaphore</c> function.
 		/// </param>
 		/// <param name="lMaximumCount">The maximum count for the semaphore object. This value must be greater than zero.</param>
 		/// <param name="lpName">
 		/// <para>
-		/// A pointer to a null-terminated string specifying the name of the semaphore object. The name is limited to <c>MAX_PATH</c> characters. Name comparison
-		/// is case sensitive.
+		/// A pointer to a null-terminated string specifying the name of the semaphore object. The name is limited to <c>MAX_PATH</c>
+		/// characters. Name comparison is case sensitive.
 		/// </para>
 		/// <para>
-		/// If lpName matches the name of an existing named semaphore object, the lInitialCount and lMaximumCount parameters are ignored because they have
-		/// already been set by the creating process. If the lpSemaphoreAttributes parameter is not <c>NULL</c>, it determines whether the handle can be inherited.
+		/// If lpName matches the name of an existing named semaphore object, the lInitialCount and lMaximumCount parameters are ignored
+		/// because they have already been set by the creating process. If the lpSemaphoreAttributes parameter is not <c>NULL</c>, it
+		/// determines whether the handle can be inherited.
 		/// </para>
 		/// <para>If lpName is <c>NULL</c>, the semaphore object is created without a name.</para>
 		/// <para>
-		/// If lpName matches the name of an existing event, mutex, waitable timer, job, or file-mapping object, the function fails and the <c>GetLastError</c>
-		/// function returns <c>ERROR_INVALID_HANDLE</c>. This occurs because these objects share the same namespace.
+		/// If lpName matches the name of an existing event, mutex, waitable timer, job, or file-mapping object, the function fails and the
+		/// <c>GetLastError</c> function returns <c>ERROR_INVALID_HANDLE</c>. This occurs because these objects share the same namespace.
 		/// </para>
 		/// <para>
-		/// The name can have a "Global\" or "Local\" prefix to explicitly create the object in the global or session namespace. The remainder of the name can
-		/// contain any character except the backslash character (\). For more information, see Kernel Object Namespaces. Fast user switching is implemented
-		/// using Terminal Services sessions. Kernel object names must follow the guidelines outlined for Terminal Services so that applications can support
-		/// multiple users.
+		/// The name can have a "Global\" or "Local\" prefix to explicitly create the object in the global or session namespace. The
+		/// remainder of the name can contain any character except the backslash character (\). For more information, see Kernel Object
+		/// Namespaces. Fast user switching is implemented using Terminal Services sessions. Kernel object names must follow the guidelines
+		/// outlined for Terminal Services so that applications can support multiple users.
 		/// </para>
 		/// <para>The object can be created in a private namespace. For more information, see Object Namespaces.</para>
 		/// </param>
@@ -520,16 +568,16 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>
 		/// <para>
-		/// If the function succeeds, the return value is a handle to the semaphore object. If the named semaphore object existed before the function call, the
-		/// function returns a handle to the existing object and <c>GetLastError</c> returns <c>ERROR_ALREADY_EXISTS</c>.
+		/// If the function succeeds, the return value is a handle to the semaphore object. If the named semaphore object existed before the
+		/// function call, the function returns a handle to the existing object and <c>GetLastError</c> returns <c>ERROR_ALREADY_EXISTS</c>.
 		/// </para>
 		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		// HANDLE WINAPI CreateSemaphoreEx( _In_opt_ LPSECURITY_ATTRIBUTES lpSemaphoreAttributes, _In_ LONG lInitialCount, _In_ LONG lMaximumCount, _In_opt_
-		// LPCTSTR lpName, _Reserved_ DWORD dwFlags, _In_ DWORD dwDesiredAccess); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682446(v=vs.85).aspx
+		// HANDLE WINAPI CreateSemaphoreEx( _In_opt_ LPSECURITY_ATTRIBUTES lpSemaphoreAttributes, _In_ LONG lInitialCount, _In_ LONG
+		// lMaximumCount, _In_opt_ LPCTSTR lpName, _Reserved_ DWORD dwFlags, _In_ DWORD dwDesiredAccess); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682446(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682446")]
-		public static extern IntPtr CreateSemaphoreEx(IntPtr lpSemaphoreAttributes, int lInitialCount, int lMaximumCount, string lpName, uint dwFlags, uint dwDesiredAccess);
+		public static extern SafeSemaphoreHandle CreateSemaphoreEx([In, Optional] SECURITY_ATTRIBUTES lpSemaphoreAttributes, int lInitialCount, int lMaximumCount, [In, Optional] string lpName, [Optional] uint dwFlags, uint dwDesiredAccess);
 
 		/// <summary>
 		/// <para>Creates or opens a waitable timer object.</para>
@@ -537,12 +585,12 @@ namespace Vanara.PInvoke
 		/// </summary>
 		/// <param name="lpTimerAttributes">
 		/// <para>
-		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new timer object and determines whether child
-		/// processes can inherit the returned handle.
+		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new timer object and determines
+		/// whether child processes can inherit the returned handle.
 		/// </para>
 		/// <para>
-		/// If lpTimerAttributes is <c>NULL</c>, the timer object gets a default security descriptor and the handle cannot be inherited. The ACLs in the default
-		/// security descriptor for a timer come from the primary or impersonation token of the creator.
+		/// If lpTimerAttributes is <c>NULL</c>, the timer object gets a default security descriptor and the handle cannot be inherited. The
+		/// ACLs in the default security descriptor for a timer come from the primary or impersonation token of the creator.
 		/// </para>
 		/// </param>
 		/// <param name="bManualReset">
@@ -552,49 +600,53 @@ namespace Vanara.PInvoke
 		/// <para>The name of the timer object. The name is limited to <c>MAX_PATH</c> characters. Name comparison is case sensitive.</para>
 		/// <para>If lpTimerName is <c>NULL</c>, the timer object is created without a name.</para>
 		/// <para>
-		/// If lpTimerName matches the name of an existing event, semaphore, mutex, job, or file-mapping object, the function fails and <c>GetLastError</c>
-		/// returns <c>ERROR_INVALID_HANDLE</c>. This occurs because these objects share the same namespace.
+		/// If lpTimerName matches the name of an existing event, semaphore, mutex, job, or file-mapping object, the function fails and
+		/// <c>GetLastError</c> returns <c>ERROR_INVALID_HANDLE</c>. This occurs because these objects share the same namespace.
 		/// </para>
 		/// <para>
-		/// The name can have a "Global\" or "Local\" prefix to explicitly create the object in the global or session namespace. The remainder of the name can
-		/// contain any character except the backslash character (\). For more information, see Kernel Object Namespaces. Fast user switching is implemented
-		/// using Terminal Services sessions. Kernel object names must follow the guidelines outlined for Terminal Services so that applications can support
-		/// multiple users.
+		/// The name can have a "Global\" or "Local\" prefix to explicitly create the object in the global or session namespace. The
+		/// remainder of the name can contain any character except the backslash character (\). For more information, see Kernel Object
+		/// Namespaces. Fast user switching is implemented using Terminal Services sessions. Kernel object names must follow the guidelines
+		/// outlined for Terminal Services so that applications can support multiple users.
 		/// </para>
 		/// <para>The object can be created in a private namespace. For more information, see Object Namespaces.</para>
 		/// </param>
 		/// <returns>
 		/// <para>
-		/// If the function succeeds, the return value is a handle to the timer object. If the named timer object exists before the function call, the function
-		/// returns a handle to the existing object and <c>GetLastError</c> returns <c>ERROR_ALREADY_EXISTS</c>.
+		/// If the function succeeds, the return value is a handle to the timer object. If the named timer object exists before the function
+		/// call, the function returns a handle to the existing object and <c>GetLastError</c> returns <c>ERROR_ALREADY_EXISTS</c>.
 		/// </para>
 		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		// HANDLE WINAPI CreateWaitableTimer( _In_opt_ LPSECURITY_ATTRIBUTES lpTimerAttributes, _In_ BOOL bManualReset, _In_opt_ LPCTSTR lpTimerName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682492(v=vs.85).aspx
+		// HANDLE WINAPI CreateWaitableTimer( _In_opt_ LPSECURITY_ATTRIBUTES lpTimerAttributes, _In_ BOOL bManualReset, _In_opt_ LPCTSTR
+		// lpTimerName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682492(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682492")]
-		public static extern IntPtr CreateWaitableTimer([In] SECURITY_ATTRIBUTES lpTimerAttributes, [MarshalAs(UnmanagedType.Bool)] bool bManualReset, string lpTimerName);
+		public static extern SafeWaitableTimerHandle CreateWaitableTimer([In, Optional] SECURITY_ATTRIBUTES lpTimerAttributes, [MarshalAs(UnmanagedType.Bool)] bool bManualReset, [In, Optional] string lpTimerName);
 
 		/// <summary>Creates or opens a waitable timer object and returns a handle to the object.</summary>
 		/// <param name="lpTimerAttributes">
-		/// <para>A pointer to a <c>SECURITY_ATTRIBUTES</c> structure. If this parameter is <c>NULL</c>, the timer handle cannot be inherited by child processes.</para>
 		/// <para>
-		/// If lpTimerAttributes is <c>NULL</c>, the timer object gets a default security descriptor and the handle cannot be inherited. The ACLs in the default
-		/// security descriptor for a timer come from the primary or impersonation token of the creator.
+		/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure. If this parameter is <c>NULL</c>, the timer handle cannot be inherited by
+		/// child processes.
+		/// </para>
+		/// <para>
+		/// If lpTimerAttributes is <c>NULL</c>, the timer object gets a default security descriptor and the handle cannot be inherited. The
+		/// ACLs in the default security descriptor for a timer come from the primary or impersonation token of the creator.
 		/// </para>
 		/// </param>
 		/// <param name="lpTimerName">
 		/// <para>The name of the timer object. The name is limited to <c>MAX_PATH</c> characters. Name comparison is case sensitive.</para>
 		/// <para>If lpTimerName is <c>NULL</c>, the timer object is created without a name.</para>
 		/// <para>
-		/// If lpTimerName matches the name of an existing event, semaphore, mutex, job, or file-mapping object, the function fails and <c>GetLastError</c>
-		/// returns <c>ERROR_INVALID_HANDLE</c>. This occurs because these objects share the same namespace.
+		/// If lpTimerName matches the name of an existing event, semaphore, mutex, job, or file-mapping object, the function fails and
+		/// <c>GetLastError</c> returns <c>ERROR_INVALID_HANDLE</c>. This occurs because these objects share the same namespace.
 		/// </para>
 		/// <para>
-		/// The name can have a "Global\" or "Local\" prefix to explicitly create the object in the global or session namespace. The remainder of the name can
-		/// contain any character except the backslash character (\). For more information, see Kernel Object Namespaces. Fast user switching is implemented
-		/// using Terminal Services sessions. Kernel object names must follow the guidelines outlined for Terminal Services so that applications can support
-		/// multiple users.
+		/// The name can have a "Global\" or "Local\" prefix to explicitly create the object in the global or session namespace. The
+		/// remainder of the name can contain any character except the backslash character (\). For more information, see Kernel Object
+		/// Namespaces. Fast user switching is implemented using Terminal Services sessions. Kernel object names must follow the guidelines
+		/// outlined for Terminal Services so that applications can support multiple users.
 		/// </para>
 		/// <para>The object can be created in a private namespace. For more information, see Object Namespaces.</para>
 		/// </param>
@@ -608,7 +660,9 @@ namespace Vanara.PInvoke
 		/// </listheader>
 		/// <item>
 		/// <term>CREATE_WAITABLE_TIMER_MANUAL_RESET0x00000001</term>
-		/// <term>The timer must be manually reset. Otherwise, the system automatically resets the timer after releasing a single waiting thread.</term>
+		/// <term>
+		/// The timer must be manually reset. Otherwise, the system automatically resets the timer after releasing a single waiting thread.
+		/// </term>
 		/// </item>
 		/// </list>
 		/// </para>
@@ -618,20 +672,21 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>
 		/// <para>
-		/// If the function succeeds, the return value is a handle to the timer object. If the named timer object exists before the function call, the function
-		/// returns a handle to the existing object and <c>GetLastError</c> returns <c>ERROR_ALREADY_EXISTS</c>.
+		/// If the function succeeds, the return value is a handle to the timer object. If the named timer object exists before the function
+		/// call, the function returns a handle to the existing object and <c>GetLastError</c> returns <c>ERROR_ALREADY_EXISTS</c>.
 		/// </para>
 		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		// HANDLE WINAPI CreateWaitableTimerEx( _In_opt_ LPSECURITY_ATTRIBUTES lpTimerAttributes, _In_opt_ LPCTSTR lpTimerName, _In_ DWORD dwFlags, _In_ DWORD
-		// dwDesiredAccess); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682494(v=vs.85).aspx
+		// HANDLE WINAPI CreateWaitableTimerEx( _In_opt_ LPSECURITY_ATTRIBUTES lpTimerAttributes, _In_opt_ LPCTSTR lpTimerName, _In_ DWORD
+		// dwFlags, _In_ DWORD dwDesiredAccess); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682494(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682494")]
-		public static extern IntPtr CreateWaitableTimerEx([In] SECURITY_ATTRIBUTES lpTimerAttributes, string lpTimerName, CREATE_WAITABLE_TIMER_FLAG dwFlags, uint dwDesiredAccess);
+		public static extern SafeWaitableTimerHandle CreateWaitableTimerEx([In, Optional] SECURITY_ATTRIBUTES lpTimerAttributes, [In, Optional] string lpTimerName, CREATE_WAITABLE_TIMER_FLAG dwFlags, uint dwDesiredAccess);
 
 		/// <summary>Releases all resources used by an unowned critical section object.</summary>
 		/// <param name="lpCriticalSection">
-		/// A pointer to the critical section object. The object must have been previously initialized with the <c>InitializeCriticalSection</c> function.
+		/// A pointer to the critical section object. The object must have been previously initialized with the
+		/// <c>InitializeCriticalSection</c> function.
 		/// </param>
 		/// <returns>This function does not return a value.</returns>
 		// void WINAPI DeleteCriticalSection( _Inout_ LPCRITICAL_SECTION lpCriticalSection); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682552(v=vs.85).aspx
@@ -660,14 +715,16 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool DeleteTimerQueue([In] IntPtr TimerQueue);
 
-		/// <summary>Waits for ownership of the specified critical section object. The function returns when the calling thread is granted ownership.</summary>
+		/// <summary>
+		/// Waits for ownership of the specified critical section object. The function returns when the calling thread is granted ownership.
+		/// </summary>
 		/// <param name="lpCriticalSection">A pointer to the critical section object.</param>
 		/// <returns>
 		/// <para>This function does not return a value.</para>
 		/// <para>
-		/// This function can raise <c>EXCEPTION_POSSIBLE_DEADLOCK</c> if a wait operation on the critical section times out. The timeout interval is specified
-		/// by the following registry value: <c>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager</c>\ <c>CriticalSectionTimeout</c>. Do not
-		/// handle a possible deadlock exception; instead, debug the application.
+		/// This function can raise <c>EXCEPTION_POSSIBLE_DEADLOCK</c> if a wait operation on the critical section times out. The timeout
+		/// interval is specified by the following registry value: <c>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session
+		/// Manager</c>\ <c>CriticalSectionTimeout</c>. Do not handle a possible deadlock exception; instead, debug the application.
 		/// </para>
 		/// </returns>
 		// void WINAPI EnterCriticalSection( _Inout_ LPCRITICAL_SECTION lpCriticalSection); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682608(v=vs.85).aspx
@@ -675,13 +732,17 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682608")]
 		public static extern void EnterCriticalSection(ref CRITICAL_SECTION lpCriticalSection);
 
-		/// <summary>Causes the calling thread to wait at a synchronization barrier until the maximum number of threads have entered the barrier.</summary>
+		/// <summary>
+		/// Causes the calling thread to wait at a synchronization barrier until the maximum number of threads have entered the barrier.
+		/// </summary>
 		/// <param name="lpBarrier">
-		/// A pointer to an initialized synchronization barrier. Use the <c>InitializeSynchronizationBarrier</c> function to initialize the barrier.
-		/// <c>SYNCHRONIZATION_BARRIER</c> is an opaque structure that should not be modified by the application.
+		/// A pointer to an initialized synchronization barrier. Use the <c>InitializeSynchronizationBarrier</c> function to initialize the
+		/// barrier. <c>SYNCHRONIZATION_BARRIER</c> is an opaque structure that should not be modified by the application.
 		/// </param>
 		/// <param name="dwFlags">
-		/// <para>Flags that control the behavior of threads that enter this barrier. This parameter can be one or more of the following values.</para>
+		/// <para>
+		/// Flags that control the behavior of threads that enter this barrier. This parameter can be one or more of the following values.
+		/// </para>
 		/// <para>
 		/// <list type="table">
 		/// <listheader>
@@ -691,28 +752,31 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>SYNCHRONIZATION_BARRIER_FLAGS_BLOCK_ONLY</term>
 		/// <term>
-		/// Specifies that the thread entering the barrier should block immediately until the last thread enters the barrier. For more information, see Remarks.
+		/// Specifies that the thread entering the barrier should block immediately until the last thread enters the barrier. For more
+		/// information, see Remarks.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>SYNCHRONIZATION_BARRIER_FLAGS_SPIN_ONLY</term>
 		/// <term>
-		/// Specifies that the thread entering the barrier should spin until the last thread enters the barrier, even if the spinning thread exceeds the
-		/// barrier's maximum spin count. For more information, see Remarks.
+		/// Specifies that the thread entering the barrier should spin until the last thread enters the barrier, even if the spinning thread
+		/// exceeds the barrier's maximum spin count. For more information, see Remarks.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>SYNCHRONIZATION_BARRIER_FLAGS_NO_DELETE</term>
 		/// <term>
-		/// Specifies that the function can skip the work required to ensure that it is safe to delete the barrier, which can improve performance. All threads
-		/// that enter this barrier must specify the flag; otherwise, the flag is ignored. This flag should be used only if the barrier will never be deleted.
+		/// Specifies that the function can skip the work required to ensure that it is safe to delete the barrier, which can improve
+		/// performance. All threads that enter this barrier must specify the flag; otherwise, the flag is ignored. This flag should be used
+		/// only if the barrier will never be deleted.
 		/// </term>
 		/// </item>
 		/// </list>
 		/// </para>
 		/// </param>
 		/// <returns>
-		/// <c>TRUE</c> for the last thread to signal the barrier. Threads that signal the barrier before the last thread signals it receive a return value of <c>FALSE</c>.
+		/// <c>TRUE</c> for the last thread to signal the barrier. Threads that signal the barrier before the last thread signals it receive
+		/// a return value of <c>FALSE</c>.
 		/// </returns>
 		// BOOL WINAPI EnterSynchronizationBarrier( _Inout_ LPSYNCHRONIZATION_BARRIER lpBarrier, _In_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/hh706889(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
@@ -733,8 +797,9 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// <para>This function does not return a value.</para>
 		/// <para>
-		/// <c>Windows Server 2003 and Windows XP:</c> In low memory situations, <c>InitializeCriticalSection</c> can raise a <c>STATUS_NO_MEMORY</c> exception.
-		/// Starting with Windows Vista, this exception was eliminated and <c>InitializeCriticalSection</c> always succeeds, even in low memory situations.
+		/// <c>Windows Server 2003 and Windows XP:</c> In low memory situations, <c>InitializeCriticalSection</c> can raise a
+		/// <c>STATUS_NO_MEMORY</c> exception. Starting with Windows Vista, this exception was eliminated and
+		/// <c>InitializeCriticalSection</c> always succeeds, even in low memory situations.
 		/// </para>
 		/// </returns>
 		// void WINAPI InitializeCriticalSection( _Out_ LPCRITICAL_SECTION lpCriticalSection); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683472(v=vs.85).aspx
@@ -743,23 +808,23 @@ namespace Vanara.PInvoke
 		public static extern void InitializeCriticalSection(out CRITICAL_SECTION lpCriticalSection);
 
 		/// <summary>
-		/// Initializes a critical section object and sets the spin count for the critical section. When a thread tries to acquire a critical section that is
-		/// locked, the thread spins: it enters a loop which iterates spin count times, checking to see if the lock is released. If the lock is not released
-		/// before the loop finishes, the thread goes to sleep to wait for the lock to be released.
+		/// Initializes a critical section object and sets the spin count for the critical section. When a thread tries to acquire a critical
+		/// section that is locked, the thread spins: it enters a loop which iterates spin count times, checking to see if the lock is
+		/// released. If the lock is not released before the loop finishes, the thread goes to sleep to wait for the lock to be released.
 		/// </summary>
 		/// <param name="lpCriticalSection">A pointer to the critical section object.</param>
 		/// <param name="dwSpinCount">
-		/// The spin count for the critical section object. On single-processor systems, the spin count is ignored and the critical section spin count is set to
-		/// 0 (zero). On multiprocessor systems, if the critical section is unavailable, the calling thread spins dwSpinCount times before performing a wait
-		/// operation on a semaphore associated with the critical section. If the critical section becomes free during the spin operation, the calling thread
-		/// avoids the wait operation.
+		/// The spin count for the critical section object. On single-processor systems, the spin count is ignored and the critical section
+		/// spin count is set to 0 (zero). On multiprocessor systems, if the critical section is unavailable, the calling thread spins
+		/// dwSpinCount times before performing a wait operation on a semaphore associated with the critical section. If the critical section
+		/// becomes free during the spin operation, the calling thread avoids the wait operation.
 		/// </param>
 		/// <returns>
 		/// <para>This function always succeeds and returns a nonzero value.</para>
 		/// <para>
-		/// <c>Windows Server 2003 and Windows XP:</c> If the function succeeds, the return value is nonzero. If the function fails, the return value is zero
-		/// (0). To get extended error information, call <c>GetLastError</c>. Starting with Windows Vista, the <c>InitializeCriticalSectionAndSpinCount</c>
-		/// function always succeeds, even in low memory situations.
+		/// <c>Windows Server 2003 and Windows XP:</c> If the function succeeds, the return value is nonzero. If the function fails, the
+		/// return value is zero (0). To get extended error information, call <c>GetLastError</c>. Starting with Windows Vista, the
+		/// <c>InitializeCriticalSectionAndSpinCount</c> function always succeeds, even in low memory situations.
 		/// </para>
 		/// </returns>
 		// BOOL WINAPI InitializeCriticalSectionAndSpinCount( _Out_ LPCRITICAL_SECTION lpCriticalSection, _In_ DWORD dwSpinCount); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683476(v=vs.85).aspx
@@ -771,10 +836,10 @@ namespace Vanara.PInvoke
 		/// <summary>Initializes a critical section object with a spin count and optional flags.</summary>
 		/// <param name="lpCriticalSection">A pointer to the critical section object.</param>
 		/// <param name="dwSpinCount">
-		/// The spin count for the critical section object. On single-processor systems, the spin count is ignored and the critical section spin count is set to
-		/// 0 (zero). On multiprocessor systems, if the critical section is unavailable, the calling thread spin dwSpinCount times before performing a wait
-		/// operation on a semaphore associated with the critical section. If the critical section becomes free during the spin operation, the calling thread
-		/// avoids the wait operation.
+		/// The spin count for the critical section object. On single-processor systems, the spin count is ignored and the critical section
+		/// spin count is set to 0 (zero). On multiprocessor systems, if the critical section is unavailable, the calling thread spin
+		/// dwSpinCount times before performing a wait operation on a semaphore associated with the critical section. If the critical section
+		/// becomes free during the spin operation, the calling thread avoids the wait operation.
 		/// </param>
 		/// <param name="Flags">
 		/// <para>This parameter can be 0 or the following value.</para>
@@ -811,20 +876,24 @@ namespace Vanara.PInvoke
 
 		/// <summary>Initializes a new synchronization barrier.</summary>
 		/// <param name="lpBarrier">
-		/// A pointer to the <c>SYNCHRONIZATION_BARRIER</c> structure to initialize. This is an opaque structure that should not be modified by applications.
+		/// A pointer to the <c>SYNCHRONIZATION_BARRIER</c> structure to initialize. This is an opaque structure that should not be modified
+		/// by applications.
 		/// </param>
 		/// <param name="lTotalThreads">
-		/// The maximum number of threads that can enter this barrier. After the maximum number of threads have entered the barrier, all threads continue.
+		/// The maximum number of threads that can enter this barrier. After the maximum number of threads have entered the barrier, all
+		/// threads continue.
 		/// </param>
 		/// <param name="lSpinCount">
-		/// The number of times an individual thread should spin while waiting for other threads to arrive at the barrier. If this parameter is -1, the thread
-		/// spins 2000 times. If the thread exceeds lSpinCount, the thread blocks unless it called <c>EnterSynchronizationBarrier</c> with <c>SYNCHRONIZATION_BARRIER_FLAGS_SPIN_ONLY</c>.
+		/// The number of times an individual thread should spin while waiting for other threads to arrive at the barrier. If this parameter
+		/// is -1, the thread spins 2000 times. If the thread exceeds lSpinCount, the thread blocks unless it called
+		/// <c>EnterSynchronizationBarrier</c> with <c>SYNCHRONIZATION_BARRIER_FLAGS_SPIN_ONLY</c>.
 		/// </param>
 		/// <returns>
-		/// <c>TRUE</c> if the barrier was successfully initialized. If the barrier was not successfully initialized, this function returns <c>FALSE</c>. Use
-		/// <c>GetLastError</c> to get extended error information.
+		/// <c>TRUE</c> if the barrier was successfully initialized. If the barrier was not successfully initialized, this function returns
+		/// <c>FALSE</c>. Use <c>GetLastError</c> to get extended error information.
 		/// </returns>
-		// BOOL WINAPI InitializeSynchronizationBarrier( _Out_ LPSYNCHRONIZATION_BARRIER lpBarrier, _In_ LONG lTotalThreads, _In_ LONG lSpinCount); https://msdn.microsoft.com/en-us/library/windows/desktop/hh706890(v=vs.85).aspx
+		// BOOL WINAPI InitializeSynchronizationBarrier( _Out_ LPSYNCHRONIZATION_BARRIER lpBarrier, _In_ LONG lTotalThreads, _In_ LONG
+		// lSpinCount); https://msdn.microsoft.com/en-us/library/windows/desktop/hh706890(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("SynchAPI.h", MSDNShortId = "hh706890")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -843,15 +912,15 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>INIT_ONCE_ASYNC = 0x00000002UL</term>
 		/// <term>
-		/// Enables multiple initialization attempts to execute in parallel. If this flag is used, subsequent calls to this function will fail unless this flag
-		/// is also specified.
+		/// Enables multiple initialization attempts to execute in parallel. If this flag is used, subsequent calls to this function will
+		/// fail unless this flag is also specified.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>INIT_ONCE_CHECK_ONLY = 0x00000001UL</term>
 		/// <term>
-		/// This function call does not begin initialization. The return value indicates whether initialization has already completed. If the function returns
-		/// TRUE, the lpContext parameter receives the data.
+		/// This function call does not begin initialization. The return value indicates whether initialization has already completed. If the
+		/// function returns TRUE, the lpContext parameter receives the data.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -859,11 +928,17 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="fPending">
 		/// <para>If the function succeeds, this parameter indicates the current initialization status.</para>
-		/// <para>If this parameter is <c>TRUE</c> and dwFlags contains <c>INIT_ONCE_CHECK_ONLY</c>, the initialization is pending and the context data is invalid.</para>
-		/// <para>If this parameter is <c>FALSE</c>, initialization has already completed and the caller can retrieve the context data from the lpContext parameter.</para>
 		/// <para>
-		/// If this parameter is <c>TRUE</c> and dwFlags does not contain <c>INIT_ONCE_CHECK_ONLY</c>, initialization has been started and the caller can perform
-		/// the initialization tasks.
+		/// If this parameter is <c>TRUE</c> and dwFlags contains <c>INIT_ONCE_CHECK_ONLY</c>, the initialization is pending and the context
+		/// data is invalid.
+		/// </para>
+		/// <para>
+		/// If this parameter is <c>FALSE</c>, initialization has already completed and the caller can retrieve the context data from the
+		/// lpContext parameter.
+		/// </para>
+		/// <para>
+		/// If this parameter is <c>TRUE</c> and dwFlags does not contain <c>INIT_ONCE_CHECK_ONLY</c>, initialization has been started and
+		/// the caller can perform the initialization tasks.
 		/// </para>
 		/// </param>
 		/// <param name="lpContext">
@@ -875,7 +950,8 @@ namespace Vanara.PInvoke
 		/// <para>If <c>INIT_ONCE_CHECK_ONLY</c> is specified and initialization has completed, the return value is <c>TRUE</c>.</para>
 		/// <para>Otherwise, the return value is <c>FALSE</c>. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		// BOOL WINAPI InitOnceBeginInitialize( _Inout_ LPINIT_ONCE lpInitOnce, _In_ DWORD dwFlags, _Out_ PBOOL fPending, _Out_opt_ LPVOID *lpContext); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683487(v=vs.85).aspx
+		// BOOL WINAPI InitOnceBeginInitialize( _Inout_ LPINIT_ONCE lpInitOnce, _In_ DWORD dwFlags, _Out_ PBOOL fPending, _Out_opt_ LPVOID
+		// *lpContext); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683487(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683487")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -894,24 +970,24 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>INIT_ONCE_ASYNC0x00000002UL</term>
 		/// <term>
-		/// Operate in asynchronous mode. This enables multiple completion attempts to execute in parallel. This flag must match the flag passed in the
-		/// corresponding call to the InitOnceBeginInitialize function. This flag may not be combined with INIT_ONCE_INIT_FAILED.
+		/// Operate in asynchronous mode. This enables multiple completion attempts to execute in parallel. This flag must match the flag
+		/// passed in the corresponding call to the InitOnceBeginInitialize function. This flag may not be combined with INIT_ONCE_INIT_FAILED.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>INIT_ONCE_INIT_FAILED0x00000004UL</term>
 		/// <term>
-		/// The initialization attempt failed. This flag may not be combined with INIT_ONCE_ASYNC. To fail an asynchronous initialization, merely abandon it
-		/// (that is, do not call the InitOnceComplete function).
+		/// The initialization attempt failed. This flag may not be combined with INIT_ONCE_ASYNC. To fail an asynchronous initialization,
+		/// merely abandon it (that is, do not call the InitOnceComplete function).
 		/// </term>
 		/// </item>
 		/// </list>
 		/// </para>
 		/// </param>
 		/// <param name="lpContext">
-		/// A pointer to the data to be stored with the one-time initialization structure. This data is returned in the lpContext parameter passed to subsequent
-		/// calls to the <c>InitOnceBeginInitialize</c> function. If lpContext points to a value, the low-order <c>INIT_ONCE_CTX_RESERVED_BITS</c> of the value
-		/// must be zero. If lpContext points to a data structure, the data structure must be <c>DWORD</c>-aligned.
+		/// A pointer to the data to be stored with the one-time initialization structure. This data is returned in the lpContext parameter
+		/// passed to subsequent calls to the <c>InitOnceBeginInitialize</c> function. If lpContext points to a value, the low-order
+		/// <c>INIT_ONCE_CTX_RESERVED_BITS</c> of the value must be zero. If lpContext points to a data structure, the data structure must be <c>DWORD</c>-aligned.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -924,21 +1000,22 @@ namespace Vanara.PInvoke
 		public static extern bool InitOnceComplete(ref INIT_ONCE lpInitOnce, INIT_ONCE_FLAGS dwFlags, IntPtr lpContext);
 
 		/// <summary>
-		/// Executes the specified function successfully one time. No other threads that specify the same one-time initialization structure can execute the
-		/// specified function while it is being executed by the current thread.
+		/// Executes the specified function successfully one time. No other threads that specify the same one-time initialization structure
+		/// can execute the specified function while it is being executed by the current thread.
 		/// </summary>
 		/// <param name="InitOnce">A pointer to the one-time initialization structure.</param>
 		/// <param name="InitFn">A pointer to an application-defined InitOnceCallback function.</param>
 		/// <param name="Parameter">A parameter to be passed to the callback function.</param>
 		/// <param name="Context">
-		/// A parameter that receives data stored with the one-time initialization structure upon success. The low-order <c>INIT_ONCE_CTX_RESERVED_BITS</c> bits
-		/// of the data are always zero.
+		/// A parameter that receives data stored with the one-time initialization structure upon success. The low-order
+		/// <c>INIT_ONCE_CTX_RESERVED_BITS</c> bits of the data are always zero.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
-		// BOOL WINAPI InitOnceExecuteOnce( _Inout_ PINIT_ONCE InitOnce, _In_ PINIT_ONCE_FN InitFn, _Inout_opt_ PVOID Parameter, _Out_opt_ LPVOID *Context); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683493(v=vs.85).aspx
+		// BOOL WINAPI InitOnceExecuteOnce( _Inout_ PINIT_ONCE InitOnce, _In_ PINIT_ONCE_FN InitFn, _Inout_opt_ PVOID Parameter, _Out_opt_
+		// LPVOID *Context); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683493(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683493")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -951,22 +1028,23 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683495")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool InitOnceInitialize(ref INIT_ONCE InitOnce);
+		public static extern bool InitOnceInitialize(out INIT_ONCE InitOnce);
 
 		/// <summary>
 		/// <para>
-		/// Performs an atomic compare-and-exchange operation on the specified values. The function compares two specified 32-bit values and exchanges with
-		/// another 32-bit value based on the outcome of the comparison.
+		/// Performs an atomic compare-and-exchange operation on the specified values. The function compares two specified 32-bit values and
+		/// exchanges with another 32-bit value based on the outcome of the comparison.
 		/// </para>
-		/// <para>If you are exchanging pointer values, this function has been superseded by the <c>InterlockedCompareExchangePointer</c> function.</para>
+		/// <para>
+		/// If you are exchanging pointer values, this function has been superseded by the <c>InterlockedCompareExchangePointer</c> function.
+		/// </para>
 		/// <para>To operate on 64-bit values, use the <c>InterlockedCompareExchange64</c> function.</para>
 		/// </summary>
 		/// <param name="Destination">A pointer to the destination value.</param>
 		/// <param name="Exchange">The exchange value.</param>
 		/// <param name="Comparand">The value to compare to Destination.</param>
 		/// <returns>The function returns the initial value of the Destination parameter.</returns>
-		// LONG __cdecl InterlockedCompareExchange( _Inout_ LONG volatile *Destination, _In_ LONG Exchange, _In_ LONG Comparand);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms683560(v=vs.85).aspx
+		// LONG __cdecl InterlockedCompareExchange( _Inout_ LONG volatile *Destination, _In_ LONG Exchange, _In_ LONG Comparand); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683560(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683560")]
 		public static extern int InterlockedCompareExchange(ref int Destination, int Exchange, int Comparand);
@@ -988,7 +1066,9 @@ namespace Vanara.PInvoke
 		/// <para>To operate on a 16-bit variable, use the <c>InterlockedExchange16</c> function.</para>
 		/// <para>To operate on a 64-bit variable, use the <c>InterlockedExchange64</c> function.</para>
 		/// </summary>
-		/// <param name="Target">A pointer to the value to be exchanged. The function sets this variable to Value, and returns its prior value.</param>
+		/// <param name="Target">
+		/// A pointer to the value to be exchanged. The function sets this variable to Value, and returns its prior value.
+		/// </param>
 		/// <param name="Value">The value to be exchanged with the value pointed to by Target.</param>
 		/// <returns>The function returns the initial value of the Target parameter.</returns>
 		// LONG __cdecl InterlockedExchange( _Inout_ LONG volatile *Target, _In_ LONG Value); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683590(v=vs.85).aspx
@@ -1029,22 +1109,25 @@ namespace Vanara.PInvoke
 
 		/// <summary>Opens an existing named event object.</summary>
 		/// <param name="dwDesiredAccess">
-		/// The access to the event object. The function fails if the security descriptor of the specified object does not permit the requested access for the
-		/// calling process. For a list of access rights, see Synchronization Object Security and Access Rights.
+		/// The access to the event object. The function fails if the security descriptor of the specified object does not permit the
+		/// requested access for the calling process. For a list of access rights, see Synchronization Object Security and Access Rights.
 		/// </param>
 		/// <param name="bInheritHandle">
-		/// If this value is <c>TRUE</c>, processes created by this process will inherit the handle. Otherwise, the processes do not inherit this handle.
+		/// If this value is <c>TRUE</c>, processes created by this process will inherit the handle. Otherwise, the processes do not inherit
+		/// this handle.
 		/// </param>
 		/// <param name="lpName">
 		/// <para>The name of the event to be opened. Name comparisons are case sensitive.</para>
 		/// <para>This function can open objects in a private namespace. For more information, see Object Namespaces.</para>
 		/// <para>
-		/// <c>Terminal Services:</c> The name can have a "Global\" or "Local\" prefix to explicitly open an object in the global or session namespace. The
-		/// remainder of the name can contain any character except the backslash character (\). For more information, see Kernel Object Namespaces.
+		/// <c>Terminal Services:</c> The name can have a "Global\" or "Local\" prefix to explicitly open an object in the global or session
+		/// namespace. The remainder of the name can contain any character except the backslash character (\). For more information, see
+		/// Kernel Object Namespaces.
 		/// </para>
 		/// <para>
-		/// <c>Note</c> Fast user switching is implemented using Terminal Services sessions. The first user to log on uses session 0, the next user to log on
-		/// uses session 1, and so on. Kernel object names must follow the guidelines outlined for Terminal Services so that applications can support multiple users.
+		/// <c>Note</c> Fast user switching is implemented using Terminal Services sessions. The first user to log on uses session 0, the
+		/// next user to log on uses session 1, and so on. Kernel object names must follow the guidelines outlined for Terminal Services so
+		/// that applications can support multiple users.
 		/// </para>
 		/// </param>
 		/// <returns>
@@ -1054,27 +1137,30 @@ namespace Vanara.PInvoke
 		// HANDLE WINAPI OpenEvent( _In_ DWORD dwDesiredAccess, _In_ BOOL bInheritHandle, _In_ LPCTSTR lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684305(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms684305")]
-		public static extern IntPtr OpenEvent(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpName);
+		public static extern SafeEventHandle OpenEvent(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpName);
 
 		/// <summary>Opens an existing named mutex object.</summary>
 		/// <param name="dwDesiredAccess">
-		/// The access to the mutex object. Only the <c>SYNCHRONIZE</c> access right is required to use a mutex; to change the mutex's security, specify
-		/// <c>MUTEX_ALL_ACCESS</c>. The function fails if the security descriptor of the specified object does not permit the requested access for the calling
-		/// process. For a list of access rights, see Synchronization Object Security and Access Rights.
+		/// The access to the mutex object. Only the <c>SYNCHRONIZE</c> access right is required to use a mutex; to change the mutex's
+		/// security, specify <c>MUTEX_ALL_ACCESS</c>. The function fails if the security descriptor of the specified object does not permit
+		/// the requested access for the calling process. For a list of access rights, see Synchronization Object Security and Access Rights.
 		/// </param>
 		/// <param name="bInheritHandle">
-		/// If this value is <c>TRUE</c>, processes created by this process will inherit the handle. Otherwise, the processes do not inherit this handle.
+		/// If this value is <c>TRUE</c>, processes created by this process will inherit the handle. Otherwise, the processes do not inherit
+		/// this handle.
 		/// </param>
 		/// <param name="lpName">
 		/// <para>The name of the mutex to be opened. Name comparisons are case sensitive.</para>
 		/// <para>This function can open objects in a private namespace. For more information, see Object Namespaces.</para>
 		/// <para>
-		/// <c>Terminal Services:</c> The name can have a "Global\" or "Local\" prefix to explicitly open an object in the global or session namespace. The
-		/// remainder of the name can contain any character except the backslash character (\). For more information, see Kernel Object Namespaces.
+		/// <c>Terminal Services:</c> The name can have a "Global\" or "Local\" prefix to explicitly open an object in the global or session
+		/// namespace. The remainder of the name can contain any character except the backslash character (\). For more information, see
+		/// Kernel Object Namespaces.
 		/// </para>
 		/// <para>
-		/// <c>Note</c> Fast user switching is implemented using Terminal Services sessions. The first user to log on uses session 0, the next user to log on
-		/// uses session 1, and so on. Kernel object names must follow the guidelines outlined for Terminal Services so that applications can support multiple users.
+		/// <c>Note</c> Fast user switching is implemented using Terminal Services sessions. The first user to log on uses session 0, the
+		/// next user to log on uses session 1, and so on. Kernel object names must follow the guidelines outlined for Terminal Services so
+		/// that applications can support multiple users.
 		/// </para>
 		/// </param>
 		/// <returns>
@@ -1085,26 +1171,29 @@ namespace Vanara.PInvoke
 		// HANDLE WINAPI OpenMutex( _In_ DWORD dwDesiredAccess, _In_ BOOL bInheritHandle, _In_ LPCTSTR lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684315(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms684315")]
-		public static extern IntPtr OpenMutex(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpName);
+		public static extern SafeMutexHandle OpenMutex(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpName);
 
 		/// <summary>Opens an existing named semaphore object.</summary>
 		/// <param name="dwDesiredAccess">
-		/// The access to the semaphore object. The function fails if the security descriptor of the specified object does not permit the requested access for
-		/// the calling process. For a list of access rights, see Synchronization Object Security and Access Rights.
+		/// The access to the semaphore object. The function fails if the security descriptor of the specified object does not permit the
+		/// requested access for the calling process. For a list of access rights, see Synchronization Object Security and Access Rights.
 		/// </param>
 		/// <param name="bInheritHandle">
-		/// If this value is <c>TRUE</c>, processes created by this process will inherit the handle. Otherwise, the processes do not inherit this handle.
+		/// If this value is <c>TRUE</c>, processes created by this process will inherit the handle. Otherwise, the processes do not inherit
+		/// this handle.
 		/// </param>
 		/// <param name="lpName">
 		/// <para>The name of the semaphore to be opened. Name comparisons are case sensitive.</para>
 		/// <para>This function can open objects in a private namespace. For more information, see Object Namespaces.</para>
 		/// <para>
-		/// <c>Terminal Services:</c> The name can have a "Global\" or "Local\" prefix to explicitly open an object in the global or session namespace. The
-		/// remainder of the name can contain any character except the backslash character (\). For more information, see Kernel Object Namespaces.
+		/// <c>Terminal Services:</c> The name can have a "Global\" or "Local\" prefix to explicitly open an object in the global or session
+		/// namespace. The remainder of the name can contain any character except the backslash character (\). For more information, see
+		/// Kernel Object Namespaces.
 		/// </para>
 		/// <para>
-		/// <c>Note</c> Fast user switching is implemented using Terminal Services sessions. The first user to log on uses session 0, the next user to log on
-		/// uses session 1, and so on. Kernel object names must follow the guidelines outlined for Terminal Services so that applications can support multiple users.
+		/// <c>Note</c> Fast user switching is implemented using Terminal Services sessions. The first user to log on uses session 0, the
+		/// next user to log on uses session 1, and so on. Kernel object names must follow the guidelines outlined for Terminal Services so
+		/// that applications can support multiple users.
 		/// </para>
 		/// </param>
 		/// <returns>
@@ -1114,26 +1203,29 @@ namespace Vanara.PInvoke
 		// HANDLE WINAPI OpenSemaphore( _In_ DWORD dwDesiredAccess, _In_ BOOL bInheritHandle, _In_ LPCTSTR lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684326(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms684326")]
-		public static extern IntPtr OpenSemaphore(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpName);
+		public static extern SafeSemaphoreHandle OpenSemaphore(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpName);
 
 		/// <summary>Opens an existing named waitable timer object.</summary>
 		/// <param name="dwDesiredAccess">
-		/// The access to the timer object. The function fails if the security descriptor of the specified object does not permit the requested access for the
-		/// calling process. For a list of access rights, see Synchronization Object Security and Access Rights.
+		/// The access to the timer object. The function fails if the security descriptor of the specified object does not permit the
+		/// requested access for the calling process. For a list of access rights, see Synchronization Object Security and Access Rights.
 		/// </param>
 		/// <param name="bInheritHandle">
-		/// If this value is <c>TRUE</c>, processes created by this process will inherit the handle. Otherwise, the processes do not inherit this handle.
+		/// If this value is <c>TRUE</c>, processes created by this process will inherit the handle. Otherwise, the processes do not inherit
+		/// this handle.
 		/// </param>
 		/// <param name="lpTimerName">
 		/// <para>The name of the timer object. The name is limited to <c>MAX_PATH</c> characters. Name comparison is case sensitive.</para>
 		/// <para>This function can open objects in a private namespace. For more information, see Object Namespaces.</para>
 		/// <para>
-		/// <c>Terminal Services:</c> The name can have a "Global\" or "Local\" prefix to explicitly open an object in the global or session namespace. The
-		/// remainder of the name can contain any character except the backslash character (\). For more information, see Kernel Object Namespaces.
+		/// <c>Terminal Services:</c> The name can have a "Global\" or "Local\" prefix to explicitly open an object in the global or session
+		/// namespace. The remainder of the name can contain any character except the backslash character (\). For more information, see
+		/// Kernel Object Namespaces.
 		/// </para>
 		/// <para>
-		/// <c>Note</c> Fast user switching is implemented using Terminal Services sessions. The first user to log on uses session 0, the next user to log on
-		/// uses session 1, and so on. Kernel object names must follow the guidelines outlined for Terminal Services so that applications can support multiple users.
+		/// <c>Note</c> Fast user switching is implemented using Terminal Services sessions. The first user to log on uses session 0, the
+		/// next user to log on uses session 1, and so on. Kernel object names must follow the guidelines outlined for Terminal Services so
+		/// that applications can support multiple users.
 		/// </para>
 		/// </param>
 		/// <returns>
@@ -1143,14 +1235,17 @@ namespace Vanara.PInvoke
 		// HANDLE WINAPI OpenWaitableTimer( _In_ DWORD dwDesiredAccess, _In_ BOOL bInheritHandle, _In_ LPCTSTR lpTimerName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684337(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms684337")]
-		public static extern IntPtr OpenWaitableTimer(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpTimerName);
+		public static extern SafeWaitableTimerHandle OpenWaitableTimer(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpTimerName);
 
 		/// <summary>
-		/// Sets the specified event object to the signaled state and then resets it to the nonsignaled state after releasing the appropriate number of waiting threads.
+		/// Sets the specified event object to the signaled state and then resets it to the nonsignaled state after releasing the appropriate
+		/// number of waiting threads.
 		/// </summary>
 		/// <param name="hEvent">
 		/// <para>A handle to the event object. The <c>CreateEvent</c> or <c>OpenEvent</c> function returns this handle.</para>
-		/// <para>The handle must have the EVENT_MODIFY_STATE access right. For more information, see Synchronization Object Security and Access Rights.</para>
+		/// <para>
+		/// The handle must have the EVENT_MODIFY_STATE access right. For more information, see Synchronization Object Security and Access Rights.
+		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -1160,7 +1255,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms684914")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PulseEvent([In] IntPtr hEvent);
+		public static extern bool PulseEvent([In] SafeEventHandle hEvent);
 
 		/// <summary>Releases ownership of the specified mutex object.</summary>
 		/// <param name="hMutex">A handle to the mutex object. The <c>CreateMutex</c> or <c>OpenMutex</c> function returns this handle.</param>
@@ -1172,22 +1267,24 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms685066")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ReleaseMutex([In] IntPtr hMutex);
+		public static extern bool ReleaseMutex([In] SafeMutexHandle hMutex);
 
 		/// <summary>Increases the count of the specified semaphore object by a specified amount.</summary>
 		/// <param name="hSemaphore">
 		/// <para>A handle to the semaphore object. The <c>CreateSemaphore</c> or <c>OpenSemaphore</c> function returns this handle.</para>
 		/// <para>
-		/// This handle must have the <c>SEMAPHORE_MODIFY_STATE</c> access right. For more information, see Synchronization Object Security and Access Rights.
+		/// This handle must have the <c>SEMAPHORE_MODIFY_STATE</c> access right. For more information, see Synchronization Object Security
+		/// and Access Rights.
 		/// </para>
 		/// </param>
 		/// <param name="lReleaseCount">
-		/// The amount by which the semaphore object's current count is to be increased. The value must be greater than zero. If the specified amount would cause
-		/// the semaphore's count to exceed the maximum count that was specified when the semaphore was created, the count is not changed and the function
-		/// returns <c>FALSE</c>.
+		/// The amount by which the semaphore object's current count is to be increased. The value must be greater than zero. If the
+		/// specified amount would cause the semaphore's count to exceed the maximum count that was specified when the semaphore was created,
+		/// the count is not changed and the function returns <c>FALSE</c>.
 		/// </param>
 		/// <param name="lpPreviousCount">
-		/// A pointer to a variable to receive the previous count for the semaphore. This parameter can be <c>NULL</c> if the previous count is not required.
+		/// A pointer to a variable to receive the previous count for the semaphore. This parameter can be <c>NULL</c> if the previous count
+		/// is not required.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -1197,7 +1294,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms685071")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ReleaseSemaphore([In] IntPtr hSemaphore, int lReleaseCount, out int lpPreviousCount);
+		public static extern bool ReleaseSemaphore([In] SafeSemaphoreHandle hSemaphore, int lReleaseCount, out int lpPreviousCount);
 
 		/// <summary>Releases a slim reader/writer (SRW) lock that was acquired in exclusive mode.</summary>
 		/// <param name="SRWLock">A pointer to the SRW lock.</param>
@@ -1218,7 +1315,9 @@ namespace Vanara.PInvoke
 		/// <summary>Sets the specified event object to the nonsignaled state.</summary>
 		/// <param name="hEvent">
 		/// <para>A handle to the event object. The <c>CreateEvent</c> or <c>OpenEvent</c> function returns this handle.</para>
-		/// <para>The handle must have the EVENT_MODIFY_STATE access right. For more information, see Synchronization Object Security and Access Rights.</para>
+		/// <para>
+		/// The handle must have the EVENT_MODIFY_STATE access right. For more information, see Synchronization Object Security and Access Rights.
+		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -1228,18 +1327,19 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms685081")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ResetEvent([In] IntPtr hEvent);
+		public static extern bool ResetEvent([In] SafeEventHandle hEvent);
 
 		/// <summary>
-		/// Sets the spin count for the specified critical section. Spinning means that when a thread tries to acquire a critical section that is locked, the
-		/// thread enters a loop, checks to see if the lock is released, and if the lock is not released, the thread goes to sleep.
+		/// Sets the spin count for the specified critical section. Spinning means that when a thread tries to acquire a critical section
+		/// that is locked, the thread enters a loop, checks to see if the lock is released, and if the lock is not released, the thread goes
+		/// to sleep.
 		/// </summary>
 		/// <param name="lpCriticalSection">A pointer to the critical section object.</param>
 		/// <param name="dwSpinCount">
-		/// The spin count for the critical section object. On single-processor systems, the spin count is ignored and the critical section spin count is set to
-		/// zero (0). On multiprocessor systems, if the critical section is unavailable, the calling thread spins dwSpinCount times before performing a wait
-		/// operation on a semaphore associated with the critical section. If the critical section becomes free during the spin operation, the calling thread
-		/// avoids the wait operation.
+		/// The spin count for the critical section object. On single-processor systems, the spin count is ignored and the critical section
+		/// spin count is set to zero (0). On multiprocessor systems, if the critical section is unavailable, the calling thread spins
+		/// dwSpinCount times before performing a wait operation on a semaphore associated with the critical section. If the critical section
+		/// becomes free during the spin operation, the calling thread avoids the wait operation.
 		/// </param>
 		/// <returns>The function returns the previous spin count for the critical section.</returns>
 		// DWORD WINAPI SetCriticalSectionSpinCount( _Inout_ LPCRITICAL_SECTION lpCriticalSection, _In_ DWORD dwSpinCount); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686197(v=vs.85).aspx
@@ -1250,7 +1350,9 @@ namespace Vanara.PInvoke
 		/// <summary>Sets the specified event object to the signaled state.</summary>
 		/// <param name="hEvent">
 		/// <para>A handle to the event object. The <c>CreateEvent</c> or <c>OpenEvent</c> function returns this handle.</para>
-		/// <para>The handle must have the EVENT_MODIFY_STATE access right. For more information, see Synchronization Object Security and Access Rights.</para>
+		/// <para>
+		/// The handle must have the EVENT_MODIFY_STATE access right. For more information, see Synchronization Object Security and Access Rights.
+		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -1260,36 +1362,40 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms686211")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetEvent([In] IntPtr hEvent);
+		public static extern bool SetEvent([In] SafeEventHandle hEvent);
 
 		/// <summary>
-		/// Activates the specified waitable timer. When the due time arrives, the timer is signaled and the thread that set the timer calls the optional
-		/// completion routine.
+		/// Activates the specified waitable timer. When the due time arrives, the timer is signaled and the thread that set the timer calls
+		/// the optional completion routine.
 		/// </summary>
 		/// <param name="hTimer">
 		/// <para>A handle to the timer object. The <c>CreateWaitableTimer</c> or <c>OpenWaitableTimer</c> function returns this handle.</para>
-		/// <para>The handle must have the <c>TIMER_MODIFY_STATE</c> access right. For more information, see Synchronization Object Security and Access Rights.</para>
+		/// <para>
+		/// The handle must have the <c>TIMER_MODIFY_STATE</c> access right. For more information, see Synchronization Object Security and
+		/// Access Rights.
+		/// </para>
 		/// </param>
 		/// <param name="pDueTime">
-		/// The time after which the state of the timer is to be set to signaled, in 100 nanosecond intervals. Use the format described by the <c>FILETIME</c>
-		/// structure. Positive values indicate absolute time. Be sure to use a UTC-based absolute time, as the system uses UTC-based time internally. Negative
-		/// values indicate relative time. The actual timer accuracy depends on the capability of your hardware. For more information about UTC-based time, see
-		/// System Time.
+		/// The time after which the state of the timer is to be set to signaled, in 100 nanosecond intervals. Use the format described by
+		/// the <c>FILETIME</c> structure. Positive values indicate absolute time. Be sure to use a UTC-based absolute time, as the system
+		/// uses UTC-based time internally. Negative values indicate relative time. The actual timer accuracy depends on the capability of
+		/// your hardware. For more information about UTC-based time, see System Time.
 		/// </param>
 		/// <param name="lPeriod">
-		/// The period of the timer, in milliseconds. If lPeriod is zero, the timer is signaled once. If lPeriod is greater than zero, the timer is periodic. A
-		/// periodic timer automatically reactivates each time the period elapses, until the timer is canceled using the <c>CancelWaitableTimer</c> function or
-		/// reset using <c>SetWaitableTimer</c>. If lPeriod is less than zero, the function fails.
+		/// The period of the timer, in milliseconds. If lPeriod is zero, the timer is signaled once. If lPeriod is greater than zero, the
+		/// timer is periodic. A periodic timer automatically reactivates each time the period elapses, until the timer is canceled using the
+		/// <c>CancelWaitableTimer</c> function or reset using <c>SetWaitableTimer</c>. If lPeriod is less than zero, the function fails.
 		/// </param>
 		/// <param name="pfnCompletionRoutine">
-		/// A pointer to an optional completion routine. The completion routine is application-defined function of type <c>PTIMERAPCROUTINE</c> to be executed
-		/// when the timer is signaled. For more information on the timer callback function, see <c>TimerAPCProc</c>. For more information about APCs and thread
-		/// pool threads, see Remarks.
+		/// A pointer to an optional completion routine. The completion routine is application-defined function of type
+		/// <c>PTIMERAPCROUTINE</c> to be executed when the timer is signaled. For more information on the timer callback function, see
+		/// <c>TimerAPCProc</c>. For more information about APCs and thread pool threads, see Remarks.
 		/// </param>
 		/// <param name="lpArgToCompletionRoutine">A pointer to a structure that is passed to the completion routine.</param>
 		/// <param name="fResume">
-		/// If this parameter is <c>TRUE</c>, restores a system in suspended power conservation mode when the timer state is set to signaled. Otherwise, the
-		/// system is not restored. If the system does not support a restore, the call succeeds, but <c>GetLastError</c> returns <c>ERROR_NOT_SUPPORTED</c>.
+		/// If this parameter is <c>TRUE</c>, restores a system in suspended power conservation mode when the timer state is set to signaled.
+		/// Otherwise, the system is not restored. If the system does not support a restore, the call succeeds, but <c>GetLastError</c>
+		/// returns <c>ERROR_NOT_SUPPORTED</c>.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -1300,32 +1406,35 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms686289")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetWaitableTimer([In] IntPtr hTimer, [In] ref FILETIME pDueTime, int lPeriod, PTIMERAPCROUTINE pfnCompletionRoutine,
+		public static extern bool SetWaitableTimer([In] SafeWaitableTimerHandle hTimer, in FILETIME pDueTime, int lPeriod, PTIMERAPCROUTINE pfnCompletionRoutine,
 			[In] IntPtr lpArgToCompletionRoutine, [MarshalAs(UnmanagedType.Bool)] bool fResume);
 
 		/// <summary>
-		/// Activates the specified waitable timer and provides context information for the timer. When the due time arrives, the timer is signaled and the
-		/// thread that set the timer calls the optional completion routine.
+		/// Activates the specified waitable timer and provides context information for the timer. When the due time arrives, the timer is
+		/// signaled and the thread that set the timer calls the optional completion routine.
 		/// </summary>
 		/// <param name="hTimer">
 		/// <para>A handle to the timer object. The <c>CreateWaitableTimer</c> or <c>OpenWaitableTimer</c> function returns this handle.</para>
-		/// <para>The handle must have the <c>TIMER_MODIFY_STATE</c> access right. For more information, see Synchronization Object Security and Access Rights.</para>
+		/// <para>
+		/// The handle must have the <c>TIMER_MODIFY_STATE</c> access right. For more information, see Synchronization Object Security and
+		/// Access Rights.
+		/// </para>
 		/// </param>
 		/// <param name="lpDueTime">
-		/// The time after which the state of the timer is to be set to signaled, in 100 nanosecond intervals. Use the format described by the <c>FILETIME</c>
-		/// structure. Positive values indicate absolute time. Be sure to use a UTC-based absolute time, as the system uses UTC-based time internally. Negative
-		/// values indicate relative time. The actual timer accuracy depends on the capability of your hardware. For more information about UTC-based time, see
-		/// System Time.
+		/// The time after which the state of the timer is to be set to signaled, in 100 nanosecond intervals. Use the format described by
+		/// the <c>FILETIME</c> structure. Positive values indicate absolute time. Be sure to use a UTC-based absolute time, as the system
+		/// uses UTC-based time internally. Negative values indicate relative time. The actual timer accuracy depends on the capability of
+		/// your hardware. For more information about UTC-based time, see System Time.
 		/// </param>
 		/// <param name="lPeriod">
-		/// The period of the timer, in milliseconds. If lPeriod is zero, the timer is signaled once. If lPeriod is greater than zero, the timer is periodic. A
-		/// periodic timer automatically reactivates each time the period elapses, until the timer is canceled using the <c>CancelWaitableTimer</c> function or
-		/// reset using <c>SetWaitableTimerEx</c>. If lPeriod is less than zero, the function fails.
+		/// The period of the timer, in milliseconds. If lPeriod is zero, the timer is signaled once. If lPeriod is greater than zero, the
+		/// timer is periodic. A periodic timer automatically reactivates each time the period elapses, until the timer is canceled using the
+		/// <c>CancelWaitableTimer</c> function or reset using <c>SetWaitableTimerEx</c>. If lPeriod is less than zero, the function fails.
 		/// </param>
 		/// <param name="pfnCompletionRoutine">
-		/// A pointer to an optional completion routine. The completion routine is application-defined function of type <c>PTIMERAPCROUTINE</c> to be executed
-		/// when the timer is signaled. For more information on the timer callback function, see <c>TimerAPCProc</c>. For more information about APCs and thread
-		/// pool threads, see Remarks.
+		/// A pointer to an optional completion routine. The completion routine is application-defined function of type
+		/// <c>PTIMERAPCROUTINE</c> to be executed when the timer is signaled. For more information on the timer callback function, see
+		/// <c>TimerAPCProc</c>. For more information about APCs and thread pool threads, see Remarks.
 		/// </param>
 		/// <param name="lpArgToCompletionRoutine">A pointer to a structure that is passed to the completion routine.</param>
 		/// <param name="WakeContext">Pointer to a <c>REASON_CONTEXT</c> structure that contains context information for the timer.</param>
@@ -1339,38 +1448,43 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "dd405521")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetWaitableTimerEx([In] IntPtr hTimer, [In] ref FILETIME lpDueTime, int lPeriod, PTIMERAPCROUTINE pfnCompletionRoutine,
-			[In] IntPtr lpArgToCompletionRoutine, ref REASON_CONTEXT WakeContext, uint TolerableDelay);
+		public static extern bool SetWaitableTimerEx([In] SafeWaitableTimerHandle hTimer, in FILETIME lpDueTime, int lPeriod, PTIMERAPCROUTINE pfnCompletionRoutine,
+			[In] IntPtr lpArgToCompletionRoutine, in REASON_CONTEXT WakeContext, uint TolerableDelay);
 
 		/// <summary>Signals one object and waits on another object as a single operation.</summary>
 		/// <param name="hObjectToSignal">
 		/// <para>A handle to the object to be signaled. This object can be a semaphore, a mutex, or an event.</para>
 		/// <para>
-		/// If the handle is a semaphore, the <c>SEMAPHORE_MODIFY_STATE</c> access right is required. If the handle is an event, the <c>EVENT_MODIFY_STATE</c>
-		/// access right is required. If the handle is a mutex and the caller does not own the mutex, the function fails with <c>ERROR_NOT_OWNER</c>.
+		/// If the handle is a semaphore, the <c>SEMAPHORE_MODIFY_STATE</c> access right is required. If the handle is an event, the
+		/// <c>EVENT_MODIFY_STATE</c> access right is required. If the handle is a mutex and the caller does not own the mutex, the function
+		/// fails with <c>ERROR_NOT_OWNER</c>.
 		/// </para>
 		/// </param>
 		/// <param name="hObjectToWaitOn">
-		/// A handle to the object to wait on. The <c>SYNCHRONIZE</c> access right is required; for more information, see Synchronization Object Security and
-		/// Access Rights. For a list of the object types whose handles you can specify, see the Remarks section.
+		/// A handle to the object to wait on. The <c>SYNCHRONIZE</c> access right is required; for more information, see Synchronization
+		/// Object Security and Access Rights. For a list of the object types whose handles you can specify, see the Remarks section.
 		/// </param>
 		/// <param name="dwMilliseconds">
-		/// The time-out interval, in milliseconds. The function returns if the interval elapses, even if the object's state is nonsignaled and no completion or
-		/// asynchronous procedure call (APC) objects are queued. If dwMilliseconds is zero, the function tests the object's state, checks for queued completion
-		/// routines or APCs, and returns immediately. If dwMilliseconds is <c>INFINITE</c>, the function's time-out interval never elapses.
+		/// The time-out interval, in milliseconds. The function returns if the interval elapses, even if the object's state is nonsignaled
+		/// and no completion or asynchronous procedure call (APC) objects are queued. If dwMilliseconds is zero, the function tests the
+		/// object's state, checks for queued completion routines or APCs, and returns immediately. If dwMilliseconds is <c>INFINITE</c>, the
+		/// function's time-out interval never elapses.
 		/// </param>
 		/// <param name="bAlertable">
 		/// <para>
-		/// If this parameter is <c>TRUE</c>, the function returns when the system queues an I/O completion routine or APC function, and the thread calls the
-		/// function. If <c>FALSE</c>, the function does not return, and the thread does not call the completion routine or APC function.
+		/// If this parameter is <c>TRUE</c>, the function returns when the system queues an I/O completion routine or APC function, and the
+		/// thread calls the function. If <c>FALSE</c>, the function does not return, and the thread does not call the completion routine or
+		/// APC function.
 		/// </para>
 		/// <para>
-		/// A completion routine is queued when the function call that queued the APC has completed. This function returns and the completion routine is called
-		/// only if bAlertable is <c>TRUE</c>, and the calling thread is the thread that queued the APC.
+		/// A completion routine is queued when the function call that queued the APC has completed. This function returns and the completion
+		/// routine is called only if bAlertable is <c>TRUE</c>, and the calling thread is the thread that queued the APC.
 		/// </para>
 		/// </param>
 		/// <returns>
-		/// <para>If the function succeeds, the return value indicates the event that caused the function to return. It can be one of the following values.</para>
+		/// <para>
+		/// If the function succeeds, the return value indicates the event that caused the function to return. It can be one of the following values.
+		/// </para>
 		/// <para>
 		/// <list type="table">
 		/// <listheader>
@@ -1380,9 +1494,9 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>WAIT_ABANDONED = 0x00000080L</term>
 		/// <term>
-		/// The specified object is a mutex object that was not released by the thread that owned the mutex object before the owning thread terminated. Ownership
-		/// of the mutex object is granted to the calling thread, and the mutex is set to nonsignaled.If the mutex was protecting persistent state information,
-		/// you should check it for consistency.
+		/// The specified object is a mutex object that was not released by the thread that owned the mutex object before the owning thread
+		/// terminated. Ownership of the mutex object is granted to the calling thread, and the mutex is set to nonsignaled.If the mutex was
+		/// protecting persistent state information, you should check it for consistency.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1395,7 +1509,7 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>WAIT_TIMEOUT = 0x00000102L</term>
-		/// <term>The time-out interval elapsed, and the object&amp;#39;s state is nonsignaled.</term>
+		/// <term>The time-out interval elapsed, and the object's state is nonsignaled.</term>
 		/// </item>
 		/// <item>
 		/// <term>WAIT_FAILED = (DWORD)0xFFFFFFFF</term>
@@ -1404,10 +1518,11 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </para>
 		/// </returns>
-		// DWORD WINAPI SignalObjectAndWait( _In_ HANDLE hObjectToSignal, _In_ HANDLE hObjectToWaitOn, _In_ DWORD dwMilliseconds, _In_ BOOL bAlertable); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686293(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		// DWORD WINAPI SignalObjectAndWait( _In_ HANDLE hObjectToSignal, _In_ HANDLE hObjectToWaitOn, _In_ DWORD dwMilliseconds, _In_ BOOL
+		// bAlertable); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686293(v=vs.85).aspx
 		[PInvokeData("WinBase.h", MSDNShortId = "ms686293")]
-		public static extern WAIT_STATUS SignalObjectAndWait([In] IntPtr hObjectToSignal, [In] IntPtr hObjectToWaitOn, uint dwMilliseconds, [MarshalAs(UnmanagedType.Bool)] bool bAlertable);
+		public static WAIT_STATUS SignalObjectAndWait([In] ISyncHandle hObjectToSignal, [In] ISyncHandle hObjectToWaitOn, uint dwMilliseconds, bool bAlertable) =>
+			SignalObjectAndWait(hObjectToSignal?.DangerousGetHandle() ?? IntPtr.Zero, hObjectToWaitOn?.DangerousGetHandle() ?? IntPtr.Zero, dwMilliseconds, bAlertable);
 
 		/// <summary>
 		/// <para>Suspends the execution of the current thread until the time-out interval elapses.</para>
@@ -1416,13 +1531,13 @@ namespace Vanara.PInvoke
 		/// <param name="dwMilliseconds">
 		/// <para>The time interval for which execution is to be suspended, in milliseconds.</para>
 		/// <para>
-		/// A value of zero causes the thread to relinquish the remainder of its time slice to any other thread that is ready to run. If there are no other
-		/// threads ready to run, the function returns immediately, and the thread continues execution.
+		/// A value of zero causes the thread to relinquish the remainder of its time slice to any other thread that is ready to run. If
+		/// there are no other threads ready to run, the function returns immediately, and the thread continues execution.
 		/// </para>
 		/// <para>
-		/// <c>Windows XP:</c> A value of zero causes the thread to relinquish the remainder of its time slice to any other thread of equal priority that is
-		/// ready to run. If there are no other threads of equal priority ready to run, the function returns immediately, and the thread continues execution.
-		/// This behavior changed starting with Windows Server 2003.
+		/// <c>Windows XP:</c> A value of zero causes the thread to relinquish the remainder of its time slice to any other thread of equal
+		/// priority that is ready to run. If there are no other threads of equal priority ready to run, the function returns immediately,
+		/// and the thread continues execution. This behavior changed starting with Windows Server 2003.
 		/// </para>
 		/// <para>A value of INFINITE indicates that the suspension should not time out.</para>
 		/// </param>
@@ -1441,20 +1556,20 @@ namespace Vanara.PInvoke
 		/// <c>SleepConditionVariableCS</c> is called.
 		/// </param>
 		/// <param name="dwMilliseconds">
-		/// The time-out interval, in milliseconds. If the time-out interval elapses, the function re-acquires the critical section and returns zero. If
-		/// dwMilliseconds is zero, the function tests the states of the specified objects and returns immediately. If dwMilliseconds is <c>INFINITE</c>, the
-		/// function's time-out interval never elapses. For more information, see Remarks.
+		/// The time-out interval, in milliseconds. If the time-out interval elapses, the function re-acquires the critical section and
+		/// returns zero. If dwMilliseconds is zero, the function tests the states of the specified objects and returns immediately. If
+		/// dwMilliseconds is <c>INFINITE</c>, the function's time-out interval never elapses. For more information, see Remarks.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
 		/// <para>
-		/// If the function fails or the time-out interval elapses, the return value is zero. To get extended error information, call <c>GetLastError</c>.
-		/// Possible error codes include <c>ERROR_TIMEOUT</c>, which indicates that the time-out interval has elapsed before another thread has attempted to wake
-		/// the sleeping thread.
+		/// If the function fails or the time-out interval elapses, the return value is zero. To get extended error information, call
+		/// <c>GetLastError</c>. Possible error codes include <c>ERROR_TIMEOUT</c>, which indicates that the time-out interval has elapsed
+		/// before another thread has attempted to wake the sleeping thread.
 		/// </para>
 		/// </returns>
-		// BOOL WINAPI SleepConditionVariableCS( _Inout_ PCONDITION_VARIABLE ConditionVariable, _Inout_ PCRITICAL_SECTION CriticalSection, _In_ DWORD
-		// dwMilliseconds); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686301(v=vs.85).aspx
+		// BOOL WINAPI SleepConditionVariableCS( _Inout_ PCONDITION_VARIABLE ConditionVariable, _Inout_ PCRITICAL_SECTION CriticalSection,
+		// _In_ DWORD dwMilliseconds); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686301(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms686301")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -1466,19 +1581,21 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="SRWLock">A pointer to the lock. This lock must be held in the manner specified by the Flags parameter.</param>
 		/// <param name="dwMilliseconds">
-		/// The time-out interval, in milliseconds. The function returns if the interval elapses. If dwMilliseconds is zero, the function tests the states of the
-		/// specified objects and returns immediately. If dwMilliseconds is <c>INFINITE</c>, the function's time-out interval never elapses.
+		/// The time-out interval, in milliseconds. The function returns if the interval elapses. If dwMilliseconds is zero, the function
+		/// tests the states of the specified objects and returns immediately. If dwMilliseconds is <c>INFINITE</c>, the function's time-out
+		/// interval never elapses.
 		/// </param>
 		/// <param name="Flags">
-		/// If this parameter is <c>CONDITION_VARIABLE_LOCKMODE_SHARED</c>, the SRW lock is in shared mode. Otherwise, the lock is in exclusive mode.
+		/// If this parameter is <c>CONDITION_VARIABLE_LOCKMODE_SHARED</c>, the SRW lock is in shared mode. Otherwise, the lock is in
+		/// exclusive mode.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// <para>If the timeout expires the function returns FALSE and <c>GetLastError</c> returns ERROR_TIMEOUT.</para>
 		/// </returns>
-		// BOOL WINAPI SleepConditionVariableSRW( _Inout_ PCONDITION_VARIABLE ConditionVariable, _Inout_ PSRWLOCK SRWLock, _In_ DWORD dwMilliseconds, _In_ ULONG
-		// Flags); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686304(v=vs.85).aspx
+		// BOOL WINAPI SleepConditionVariableSRW( _Inout_ PCONDITION_VARIABLE ConditionVariable, _Inout_ PSRWLOCK SRWLock, _In_ DWORD
+		// dwMilliseconds, _In_ ULONG Flags); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686304(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms686304")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -1488,34 +1605,36 @@ namespace Vanara.PInvoke
 		/// <param name="dwMilliseconds">
 		/// <para>The time interval for which execution is to be suspended, in milliseconds.</para>
 		/// <para>
-		/// A value of zero causes the thread to relinquish the remainder of its time slice to any other thread that is ready to run. If there are no other
-		/// threads ready to run, the function returns immediately, and the thread continues execution.
+		/// A value of zero causes the thread to relinquish the remainder of its time slice to any other thread that is ready to run. If
+		/// there are no other threads ready to run, the function returns immediately, and the thread continues execution.
 		/// </para>
 		/// <para>
-		/// <c>Windows XP:</c> A value of zero causes the thread to relinquish the remainder of its time slice to any other thread of equal priority that is
-		/// ready to run. If there are no other threads of equal priority ready to run, the function returns immediately, and the thread continues execution.
-		/// This behavior changed starting with Windows Server 2003.
+		/// <c>Windows XP:</c> A value of zero causes the thread to relinquish the remainder of its time slice to any other thread of equal
+		/// priority that is ready to run. If there are no other threads of equal priority ready to run, the function returns immediately,
+		/// and the thread continues execution. This behavior changed starting with Windows Server 2003.
 		/// </para>
 		/// <para>A value of INFINITE indicates that the suspension should not time out.</para>
 		/// </param>
 		/// <param name="bAlertable">
 		/// <para>
-		/// If this parameter is FALSE, the function does not return until the time-out period has elapsed. If an I/O completion callback occurs, the function
-		/// does not return and the I/O completion function is not executed. If an APC is queued to the thread, the function does not return and the APC function
-		/// is not executed.
+		/// If this parameter is FALSE, the function does not return until the time-out period has elapsed. If an I/O completion callback
+		/// occurs, the function does not return and the I/O completion function is not executed. If an APC is queued to the thread, the
+		/// function does not return and the APC function is not executed.
 		/// </para>
 		/// <para>
-		/// If the parameter is TRUE and the thread that called this function is the same thread that called the extended I/O function ( <c>ReadFileEx</c> or
-		/// <c>WriteFileEx</c>), the function returns when either the time-out period has elapsed or when an I/O completion callback function occurs. If an I/O
-		/// completion callback occurs, the I/O completion function is called. If an APC is queued to the thread ( <c>QueueUserAPC</c>), the function returns
-		/// when either the timer-out period has elapsed or when the APC function is called.
+		/// If the parameter is TRUE and the thread that called this function is the same thread that called the extended I/O function (
+		/// <c>ReadFileEx</c> or <c>WriteFileEx</c>), the function returns when either the time-out period has elapsed or when an I/O
+		/// completion callback function occurs. If an I/O completion callback occurs, the I/O completion function is called. If an APC is
+		/// queued to the thread ( <c>QueueUserAPC</c>), the function returns when either the timer-out period has elapsed or when the APC
+		/// function is called.
 		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>The return value is zero if the specified time interval expired.</para>
 		/// <para>
-		/// The return value is <c>WAIT_IO_COMPLETION</c> if the function returned due to one or more I/O completion callback functions. This can happen only if
-		/// bAlertable is TRUE, and if the thread that called the <c>SleepEx</c> function is the same thread that called the extended I/O function.
+		/// The return value is <c>WAIT_IO_COMPLETION</c> if the function returned due to one or more I/O completion callback functions. This
+		/// can happen only if bAlertable is TRUE, and if the thread that called the <c>SleepEx</c> function is the same thread that called
+		/// the extended I/O function.
 		/// </para>
 		/// </returns>
 		// DWORD WINAPI SleepEx( _In_ DWORD dwMilliseconds, _In_ BOOL bAlertable); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686307(v=vs.85).aspx
@@ -1524,7 +1643,8 @@ namespace Vanara.PInvoke
 		public static extern WAIT_STATUS SleepEx(uint dwMilliseconds, [MarshalAs(UnmanagedType.Bool)] bool bAlertable);
 
 		/// <summary>
-		/// Attempts to acquire a slim reader/writer (SRW) lock in exclusive mode. If the call is successful, the calling thread takes ownership of the lock.
+		/// Attempts to acquire a slim reader/writer (SRW) lock in exclusive mode. If the call is successful, the calling thread takes
+		/// ownership of the lock.
 		/// </summary>
 		/// <param name="SRWLock">A pointer to the SRW lock.</param>
 		/// <returns>
@@ -1538,7 +1658,8 @@ namespace Vanara.PInvoke
 		public static extern bool TryAcquireSRWLockExclusive(ref SRWLOCK SRWLock);
 
 		/// <summary>
-		/// Attempts to acquire a slim reader/writer (SRW) lock in shared mode. If the call is successful, the calling thread takes ownership of the lock.
+		/// Attempts to acquire a slim reader/writer (SRW) lock in shared mode. If the call is successful, the calling thread takes ownership
+		/// of the lock.
 		/// </summary>
 		/// <param name="SRWLock">A pointer to the SRW lock.</param>
 		/// <returns>
@@ -1552,11 +1673,14 @@ namespace Vanara.PInvoke
 		public static extern bool TryAcquireSRWLockShared(ref SRWLOCK SRWLock);
 
 		/// <summary>
-		/// Attempts to enter a critical section without blocking. If the call is successful, the calling thread takes ownership of the critical section.
+		/// Attempts to enter a critical section without blocking. If the call is successful, the calling thread takes ownership of the
+		/// critical section.
 		/// </summary>
 		/// <param name="lpCriticalSection">A pointer to the critical section object.</param>
 		/// <returns>
-		/// <para>If the critical section is successfully entered or the current thread already owns the critical section, the return value is nonzero.</para>
+		/// <para>
+		/// If the critical section is successfully entered or the current thread already owns the critical section, the return value is nonzero.
+		/// </para>
 		/// <para>If another thread already owns the critical section, the return value is zero.</para>
 		/// </returns>
 		// BOOL WINAPI TryEnterCriticalSection( _Inout_ LPCRITICAL_SECTION lpCriticalSection); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686857(v=vs.85).aspx
@@ -1578,38 +1702,35 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms686870")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool UnregisterWait([In] IntPtr WaitHandle);
+		public static extern bool UnregisterWait([In] SafeRegisteredWaitHandle WaitHandle);
 
 		/// <summary>
 		/// <para>Waits until one or all of the specified objects are in the signaled state or the time-out interval elapses.</para>
 		/// <para>To enter an alertable wait state, use the <c>WaitForMultipleObjectsEx</c> function.</para>
 		/// </summary>
-		/// <param name="nCount">
-		/// The number of object handles in the array pointed to by lpHandles. The maximum number of object handles is <c>MAXIMUM_WAIT_OBJECTS</c>. This
-		/// parameter cannot be zero.
-		/// </param>
 		/// <param name="lpHandles">
 		/// <para>
-		/// An array of object handles. For a list of the object types whose handles can be specified, see the following Remarks section. The array can contain
-		/// handles to objects of different types. It may not contain multiple copies of the same handle.
+		/// An array of object handles. For a list of the object types whose handles can be specified, see the following Remarks section. The
+		/// array can contain handles to objects of different types. It may not contain multiple copies of the same handle.
 		/// </para>
 		/// <para>If one of these handles is closed while the wait is still pending, the function's behavior is undefined.</para>
 		/// <para>The handles must have the <c>SYNCHRONIZE</c> access right. For more information, see Standard Access Rights.</para>
 		/// </param>
 		/// <param name="bWaitAll">
-		/// If this parameter is <c>TRUE</c>, the function returns when the state of all objects in the lpHandles array is signaled. If <c>FALSE</c>, the
-		/// function returns when the state of any one of the objects is set to signaled. In the latter case, the return value indicates the object whose state
-		/// caused the function to return.
+		/// If this parameter is <c>TRUE</c>, the function returns when the state of all objects in the lpHandles array is signaled. If
+		/// <c>FALSE</c>, the function returns when the state of any one of the objects is set to signaled. In the latter case, the return
+		/// value indicates the object whose state caused the function to return.
 		/// </param>
 		/// <param name="dwMilliseconds">
-		/// The time-out interval, in milliseconds. If a nonzero value is specified, the function waits until the specified objects are signaled or the interval
-		/// elapses. If dwMilliseconds is zero, the function does not enter a wait state if the specified objects are not signaled; it always returns
-		/// immediately. If dwMilliseconds is <c>INFINITE</c>, the function will return only when the specified objects are signaled.
+		/// The time-out interval, in milliseconds. If a nonzero value is specified, the function waits until the specified objects are
+		/// signaled or the interval elapses. If dwMilliseconds is zero, the function does not enter a wait state if the specified objects
+		/// are not signaled; it always returns immediately. If dwMilliseconds is <c>INFINITE</c>, the function will return only when the
+		/// specified objects are signaled.
 		/// </param>
 		/// <returns>
 		/// <para>
-		/// If the function succeeds, the return value indicates the event that caused the function to return. It can be one of the following values. (Note that
-		/// <c>WAIT_OBJECT_0</c> is defined as 0 and <c>WAIT_ABANDONED_0</c> is defined as 0x00000080L.)
+		/// If the function succeeds, the return value indicates the event that caused the function to return. It can be one of the following
+		/// values. (Note that <c>WAIT_OBJECT_0</c> is defined as 0 and <c>WAIT_ABANDONED_0</c> is defined as 0x00000080L.)
 		/// </para>
 		/// <para>
 		/// <list type="table">
@@ -1620,18 +1741,19 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>WAIT_OBJECT_0 to (WAIT_OBJECT_0 + nCount– 1)</term>
 		/// <term>
-		/// If bWaitAll is TRUE, the return value indicates that the state of all specified objects is signaled. If bWaitAll is FALSE, the return value minus
-		/// WAIT_OBJECT_0 indicates the lpHandles array index of the object that satisfied the wait. If more than one object became signaled during the call,
-		/// this is the array index of the signaled object with the smallest index value of all the signaled objects.
+		/// If bWaitAll is TRUE, the return value indicates that the state of all specified objects is signaled. If bWaitAll is FALSE, the
+		/// return value minus WAIT_OBJECT_0 indicates the lpHandles array index of the object that satisfied the wait. If more than one
+		/// object became signaled during the call, this is the array index of the signaled object with the smallest index value of all the
+		/// signaled objects.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>WAIT_ABANDONED_0 to (WAIT_ABANDONED_0 + nCount– 1)</term>
 		/// <term>
-		/// If bWaitAll is TRUE, the return value indicates that the state of all specified objects is signaled and at least one of the objects is an abandoned
-		/// mutex object. If bWaitAll is FALSE, the return value minus WAIT_ABANDONED_0 indicates the lpHandles array index of an abandoned mutex object that
-		/// satisfied the wait. Ownership of the mutex object is granted to the calling thread, and the mutex is set to nonsignaled.If a mutex was protecting
-		/// persistent state information, you should check it for consistency.
+		/// If bWaitAll is TRUE, the return value indicates that the state of all specified objects is signaled and at least one of the
+		/// objects is an abandoned mutex object. If bWaitAll is FALSE, the return value minus WAIT_ABANDONED_0 indicates the lpHandles array
+		/// index of an abandoned mutex object that satisfied the wait. Ownership of the mutex object is granted to the calling thread, and
+		/// the mutex is set to nonsignaled.If a mutex was protecting persistent state information, you should check it for consistency.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1645,54 +1767,51 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </para>
 		/// </returns>
-		// DWORD WINAPI WaitForMultipleObjects( _In_ DWORD nCount, _In_ const HANDLE *lpHandles, _In_ BOOL bWaitAll, _In_ DWORD dwMilliseconds); https://msdn.microsoft.com/en-us/library/windows/desktop/ms687025(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		// DWORD WINAPI WaitForMultipleObjects( _In_ DWORD nCount, _In_ const HANDLE *lpHandles, _In_ BOOL bWaitAll, _In_ DWORD
+		// dwMilliseconds); https://msdn.microsoft.com/en-us/library/windows/desktop/ms687025(v=vs.85).aspx
 		[PInvokeData("WinBase.h", MSDNShortId = "ms687025")]
-		public static extern uint WaitForMultipleObjects(uint nCount, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 0)] IntPtr[] lpHandles,
-			[MarshalAs(UnmanagedType.Bool)] bool bWaitAll, uint dwMilliseconds);
+		public static WAIT_STATUS WaitForMultipleObjects(ISyncHandle[] lpHandles, bool bWaitAll, uint dwMilliseconds) =>
+			WaitForMultipleObjects((uint)(lpHandles?.Length ?? 0), lpHandles == null ? null : Array.ConvertAll(lpHandles, i => i.DangerousGetHandle()), bWaitAll, dwMilliseconds);
 
 		/// <summary>
-		/// Waits until one or all of the specified objects are in the signaled state, an I/O completion routine or asynchronous procedure call (APC) is queued
-		/// to the thread, or the time-out interval elapses.
+		/// Waits until one or all of the specified objects are in the signaled state, an I/O completion routine or asynchronous procedure
+		/// call (APC) is queued to the thread, or the time-out interval elapses.
 		/// </summary>
-		/// <param name="nCount">
-		/// The number of object handles to wait for in the array pointed to by lpHandles. The maximum number of object handles is <c>MAXIMUM_WAIT_OBJECTS</c>.
-		/// This parameter cannot be zero.
-		/// </param>
 		/// <param name="lpHandles">
 		/// <para>
-		/// An array of object handles. For a list of the object types whose handles can be specified, see the following Remarks section. The array can contain
-		/// handles of objects of different types. It may not contain multiple copies of the same handle.
+		/// An array of object handles. For a list of the object types whose handles can be specified, see the following Remarks section. The
+		/// array can contain handles of objects of different types. It may not contain multiple copies of the same handle.
 		/// </para>
 		/// <para>If one of these handles is closed while the wait is still pending, the function's behavior is undefined.</para>
 		/// <para>The handles must have the <c>SYNCHRONIZE</c> access right. For more information, see Standard Access Rights.</para>
 		/// </param>
 		/// <param name="bWaitAll">
-		/// If this parameter is <c>TRUE</c>, the function returns when the state of all objects in the lpHandles array is set to signaled. If <c>FALSE</c>, the
-		/// function returns when the state of any one of the objects is set to signaled. In the latter case, the return value indicates the object whose state
-		/// caused the function to return.
+		/// If this parameter is <c>TRUE</c>, the function returns when the state of all objects in the lpHandles array is set to signaled.
+		/// If <c>FALSE</c>, the function returns when the state of any one of the objects is set to signaled. In the latter case, the return
+		/// value indicates the object whose state caused the function to return.
 		/// </param>
 		/// <param name="dwMilliseconds">
-		/// The time-out interval, in milliseconds. If a nonzero value is specified, the function waits until the specified objects are signaled, an I/O
-		/// completion routine or APC is queued, or the interval elapses. If dwMilliseconds is zero, the function does not enter a wait state if the criteria is
-		/// not met; it always returns immediately. If dwMilliseconds is <c>INFINITE</c>, the function will return only when the specified objects are signaled
-		/// or an I/O completion routine or APC is queued.
+		/// The time-out interval, in milliseconds. If a nonzero value is specified, the function waits until the specified objects are
+		/// signaled, an I/O completion routine or APC is queued, or the interval elapses. If dwMilliseconds is zero, the function does not
+		/// enter a wait state if the criteria is not met; it always returns immediately. If dwMilliseconds is <c>INFINITE</c>, the function
+		/// will return only when the specified objects are signaled or an I/O completion routine or APC is queued.
 		/// </param>
 		/// <param name="bAlertable">
 		/// <para>
-		/// If this parameter is <c>TRUE</c> and the thread is in the waiting state, the function returns when the system queues an I/O completion routine or
-		/// APC, and the thread runs the routine or function. Otherwise, the function does not return and the completion routine or APC function is not executed.
+		/// If this parameter is <c>TRUE</c> and the thread is in the waiting state, the function returns when the system queues an I/O
+		/// completion routine or APC, and the thread runs the routine or function. Otherwise, the function does not return and the
+		/// completion routine or APC function is not executed.
 		/// </para>
 		/// <para>
-		/// A completion routine is queued when the <c>ReadFileEx</c> or <c>WriteFileEx</c> function in which it was specified has completed. The wait function
-		/// returns and the completion routine is called only if bAlertable is <c>TRUE</c> and the calling thread is the thread that initiated the read or write
-		/// operation. An APC is queued when you call <c>QueueUserAPC</c>.
+		/// A completion routine is queued when the <c>ReadFileEx</c> or <c>WriteFileEx</c> function in which it was specified has completed.
+		/// The wait function returns and the completion routine is called only if bAlertable is <c>TRUE</c> and the calling thread is the
+		/// thread that initiated the read or write operation. An APC is queued when you call <c>QueueUserAPC</c>.
 		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>
-		/// If the function succeeds, the return value indicates the event that caused the function to return. It can be one of the following values. (Note that
-		/// <c>WAIT_OBJECT_0</c> is defined as 0 and <c>WAIT_ABANDONED_0</c> is defined as 0x00000080L.)
+		/// If the function succeeds, the return value indicates the event that caused the function to return. It can be one of the following
+		/// values. (Note that <c>WAIT_OBJECT_0</c> is defined as 0 and <c>WAIT_ABANDONED_0</c> is defined as 0x00000080L.)
 		/// </para>
 		/// <para>
 		/// <list type="table">
@@ -1703,18 +1822,20 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>WAIT_OBJECT_0 to (WAIT_OBJECT_0 + nCount– 1)</term>
 		/// <term>
-		/// If bWaitAll is TRUE, a return value in this range indicates that the state of all specified objects is signaled. If bWaitAll is FALSE, the return
-		/// value minus WAIT_OBJECT_0 indicates the lpHandles array index of the object that satisfied the wait. If more than one object became signaled during
-		/// the call, this is the array index of the signaled object with the smallest index value of all the signaled objects.
+		/// If bWaitAll is TRUE, a return value in this range indicates that the state of all specified objects is signaled. If bWaitAll is
+		/// FALSE, the return value minus WAIT_OBJECT_0 indicates the lpHandles array index of the object that satisfied the wait. If more
+		/// than one object became signaled during the call, this is the array index of the signaled object with the smallest index value of
+		/// all the signaled objects.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>WAIT_ABANDONED_0 to (WAIT_ABANDONED_0 + nCount– 1)</term>
 		/// <term>
-		/// If bWaitAll is TRUE, a return value in this range indicates that the state of all specified objects is signaled, and at least one of the objects is
-		/// an abandoned mutex object. If bWaitAll is FALSE, the return value minus WAIT_ABANDONED_0 indicates the lpHandles array index of an abandoned mutex
-		/// object that satisfied the wait. Ownership of the mutex object is granted to the calling thread, and the mutex is set to nonsignaled.If a mutex was
-		/// protecting persistent state information, you should check it for consistency.
+		/// If bWaitAll is TRUE, a return value in this range indicates that the state of all specified objects is signaled, and at least one
+		/// of the objects is an abandoned mutex object. If bWaitAll is FALSE, the return value minus WAIT_ABANDONED_0 indicates the
+		/// lpHandles array index of an abandoned mutex object that satisfied the wait. Ownership of the mutex object is granted to the
+		/// calling thread, and the mutex is set to nonsignaled.If a mutex was protecting persistent state information, you should check it
+		/// for consistency.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1723,7 +1844,10 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>WAIT_TIMEOUT0x00000102L</term>
-		/// <term>The time-out interval elapsed, the conditions specified by the bWaitAll parameter were not satisfied, and no completion routines are queued.</term>
+		/// <term>
+		/// The time-out interval elapsed, the conditions specified by the bWaitAll parameter were not satisfied, and no completion routines
+		/// are queued.
+		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>WAIT_FAILED(DWORD)0xFFFFFFFF</term>
@@ -1732,12 +1856,11 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </para>
 		/// </returns>
-		// DWORD WINAPI WaitForMultipleObjectsEx( _In_ DWORD nCount, _In_ const HANDLE *lpHandles, _In_ BOOL bWaitAll, _In_ DWORD dwMilliseconds, _In_ BOOL
-		// bAlertable); https://msdn.microsoft.com/en-us/library/windows/desktop/ms687028(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		// DWORD WINAPI WaitForMultipleObjectsEx( _In_ DWORD nCount, _In_ const HANDLE *lpHandles, _In_ BOOL bWaitAll, _In_ DWORD
+		// dwMilliseconds, _In_ BOOL bAlertable); https://msdn.microsoft.com/en-us/library/windows/desktop/ms687028(v=vs.85).aspx
 		[PInvokeData("WinBase.h", MSDNShortId = "ms687028")]
-		public static extern uint WaitForMultipleObjectsEx(uint nCount, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 0)] IntPtr[] lpHandles,
-			[MarshalAs(UnmanagedType.Bool)] bool bWaitAll, uint dwMilliseconds, [MarshalAs(UnmanagedType.Bool)] bool bAlertable);
+		public static WAIT_STATUS WaitForMultipleObjectsEx(ISyncHandle[] lpHandles, bool bWaitAll, uint dwMilliseconds, bool bAlertable) =>
+			WaitForMultipleObjectsEx((uint)(lpHandles?.Length ?? 0), lpHandles == null ? null : Array.ConvertAll(lpHandles, i => i.DangerousGetHandle()), bWaitAll, dwMilliseconds, bAlertable);
 
 		/// <summary>
 		/// <para>Waits until the specified object is in the signaled state or the time-out interval elapses.</para>
@@ -1750,21 +1873,25 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="dwMilliseconds">
 		/// <para>
-		/// The time-out interval, in milliseconds. If a nonzero value is specified, the function waits until the object is signaled or the interval elapses. If
-		/// dwMilliseconds is zero, the function does not enter a wait state if the object is not signaled; it always returns immediately. If dwMilliseconds is
-		/// <c>INFINITE</c>, the function will return only when the object is signaled.
+		/// The time-out interval, in milliseconds. If a nonzero value is specified, the function waits until the object is signaled or the
+		/// interval elapses. If dwMilliseconds is zero, the function does not enter a wait state if the object is not signaled; it always
+		/// returns immediately. If dwMilliseconds is <c>INFINITE</c>, the function will return only when the object is signaled.
 		/// </para>
 		/// <para>
-		/// <c>Windows XP, Windows Server 2003, Windows Vista, Windows 7, Windows Server 2008 and Windows Server 2008 R2:</c> The dwMilliseconds value does
-		/// include time spent in low-power states. For example, the timeout does keep counting down while the computer is asleep.
+		/// <c>Windows XP, Windows Server 2003, Windows Vista, Windows 7, Windows Server 2008 and Windows Server 2008 R2:</c> The
+		/// dwMilliseconds value does include time spent in low-power states. For example, the timeout does keep counting down while the
+		/// computer is asleep.
 		/// </para>
 		/// <para>
-		/// <c>Windows 8, Windows Server 2012, Windows 8.1, Windows Server 2012 R2, Windows 10 and Windows Server 2016:</c> The dwMilliseconds value does not
-		/// include time spent in low-power states. For example, the timeout does not keep counting down while the computer is asleep.
+		/// <c>Windows 8, Windows Server 2012, Windows 8.1, Windows Server 2012 R2, Windows 10 and Windows Server 2016:</c> The
+		/// dwMilliseconds value does not include time spent in low-power states. For example, the timeout does not keep counting down while
+		/// the computer is asleep.
 		/// </para>
 		/// </param>
 		/// <returns>
-		/// <para>If the function succeeds, the return value indicates the event that caused the function to return. It can be one of the following values.</para>
+		/// <para>
+		/// If the function succeeds, the return value indicates the event that caused the function to return. It can be one of the following values.
+		/// </para>
 		/// <para>
 		/// <list type="table">
 		/// <listheader>
@@ -1774,9 +1901,9 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>WAIT_ABANDONED0x00000080L</term>
 		/// <term>
-		/// The specified object is a mutex object that was not released by the thread that owned the mutex object before the owning thread terminated. Ownership
-		/// of the mutex object is granted to the calling thread and the mutex state is set to nonsignaled.If the mutex was protecting persistent state
-		/// information, you should check it for consistency.
+		/// The specified object is a mutex object that was not released by the thread that owned the mutex object before the owning thread
+		/// terminated. Ownership of the mutex object is granted to the calling thread and the mutex state is set to nonsignaled.If the mutex
+		/// was protecting persistent state information, you should check it for consistency.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1785,7 +1912,7 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>WAIT_TIMEOUT0x00000102L</term>
-		/// <term>The time-out interval elapsed, and the object&amp;#39;s state is nonsignaled.</term>
+		/// <term>The time-out interval elapsed, and the object's state is nonsignaled.</term>
 		/// </item>
 		/// <item>
 		/// <term>WAIT_FAILED(DWORD)0xFFFFFFFF</term>
@@ -1795,14 +1922,13 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </returns>
 		// DWORD WINAPI WaitForSingleObject( _In_ HANDLE hHandle, _In_ DWORD dwMilliseconds); https://msdn.microsoft.com/en-us/library/windows/desktop/ms687032(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms687032")]
-		public static extern uint WaitForSingleObject([In] IntPtr hHandle, uint dwMilliseconds);
+		public static WAIT_STATUS WaitForSingleObject([In] ISyncHandle hHandle, uint dwMilliseconds) => WaitForSingleObject(hHandle?.DangerousGetHandle() ?? IntPtr.Zero, dwMilliseconds);
 
 		/// <summary>
 		/// <para>
-		/// Waits until the specified object is in the signaled state, an I/O completion routine or asynchronous procedure call (APC) is queued to the thread, or
-		/// the time-out interval elapses.
+		/// Waits until the specified object is in the signaled state, an I/O completion routine or asynchronous procedure call (APC) is
+		/// queued to the thread, or the time-out interval elapses.
 		/// </para>
 		/// <para>To wait for multiple objects, use the <c>WaitForMultipleObjectsEx</c>.</para>
 		/// </summary>
@@ -1812,24 +1938,27 @@ namespace Vanara.PInvoke
 		/// <para>The handle must have the <c>SYNCHRONIZE</c> access right. For more information, see Standard Access Rights.</para>
 		/// </param>
 		/// <param name="dwMilliseconds">
-		/// The time-out interval, in milliseconds. If a nonzero value is specified, the function waits until the object is signaled, an I/O completion routine
-		/// or APC is queued, or the interval elapses. If dwMilliseconds is zero, the function does not enter a wait state if the criteria is not met; it always
-		/// returns immediately. If dwMilliseconds is <c>INFINITE</c>, the function will return only when the object is signaled or an I/O completion routine or
-		/// APC is queued.
+		/// The time-out interval, in milliseconds. If a nonzero value is specified, the function waits until the object is signaled, an I/O
+		/// completion routine or APC is queued, or the interval elapses. If dwMilliseconds is zero, the function does not enter a wait state
+		/// if the criteria is not met; it always returns immediately. If dwMilliseconds is <c>INFINITE</c>, the function will return only
+		/// when the object is signaled or an I/O completion routine or APC is queued.
 		/// </param>
 		/// <param name="bAlertable">
 		/// <para>
-		/// If this parameter is <c>TRUE</c> and the thread is in the waiting state, the function returns when the system queues an I/O completion routine or
-		/// APC, and the thread runs the routine or function. Otherwise, the function does not return, and the completion routine or APC function is not executed.
+		/// If this parameter is <c>TRUE</c> and the thread is in the waiting state, the function returns when the system queues an I/O
+		/// completion routine or APC, and the thread runs the routine or function. Otherwise, the function does not return, and the
+		/// completion routine or APC function is not executed.
 		/// </para>
 		/// <para>
-		/// A completion routine is queued when the <c>ReadFileEx</c> or <c>WriteFileEx</c> function in which it was specified has completed. The wait function
-		/// returns and the completion routine is called only if bAlertable is <c>TRUE</c>, and the calling thread is the thread that initiated the read or write
-		/// operation. An APC is queued when you call <c>QueueUserAPC</c>.
+		/// A completion routine is queued when the <c>ReadFileEx</c> or <c>WriteFileEx</c> function in which it was specified has completed.
+		/// The wait function returns and the completion routine is called only if bAlertable is <c>TRUE</c>, and the calling thread is the
+		/// thread that initiated the read or write operation. An APC is queued when you call <c>QueueUserAPC</c>.
 		/// </para>
 		/// </param>
 		/// <returns>
-		/// <para>If the function succeeds, the return value indicates the event that caused the function to return. It can be one of the following values.</para>
+		/// <para>
+		/// If the function succeeds, the return value indicates the event that caused the function to return. It can be one of the following values.
+		/// </para>
 		/// <para>
 		/// <list type="table">
 		/// <listheader>
@@ -1839,9 +1968,9 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>WAIT_ABANDONED0x00000080L</term>
 		/// <term>
-		/// The specified object is a mutex object that was not released by the thread that owned the mutex object before the owning thread terminated. Ownership
-		/// of the mutex object is granted to the calling thread and the mutex is set to nonsignaled.If the mutex was protecting persistent state information,
-		/// you should check it for consistency.
+		/// The specified object is a mutex object that was not released by the thread that owned the mutex object before the owning thread
+		/// terminated. Ownership of the mutex object is granted to the calling thread and the mutex is set to nonsignaled.If the mutex was
+		/// protecting persistent state information, you should check it for consistency.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1854,7 +1983,7 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>WAIT_TIMEOUT0x00000102L</term>
-		/// <term>The time-out interval elapsed, and the object&amp;#39;s state is nonsignaled.</term>
+		/// <term>The time-out interval elapsed, and the object's state is nonsignaled.</term>
 		/// </item>
 		/// <item>
 		/// <term>WAIT_FAILED(DWORD)0xFFFFFFFF</term>
@@ -1864,28 +1993,29 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </returns>
 		// DWORD WINAPI WaitForSingleObjectEx( _In_ HANDLE hHandle, _In_ DWORD dwMilliseconds, _In_ BOOL bAlertable); https://msdn.microsoft.com/en-us/library/windows/desktop/ms687036(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms687036")]
-		public static extern uint WaitForSingleObjectEx([In] IntPtr hHandle, uint dwMilliseconds, [MarshalAs(UnmanagedType.Bool)] bool bAlertable);
+		public static WAIT_STATUS WaitForSingleObjectEx([In] ISyncHandle hHandle, uint dwMilliseconds, bool bAlertable) => WaitForSingleObjectEx(hHandle?.DangerousGetHandle() ?? IntPtr.Zero, dwMilliseconds, bAlertable);
 
 		/// <summary>Waits for the value at the specified address to change.</summary>
 		/// <param name="Address">
-		/// The address on which to wait. If the value at Address differs from the value at CompareAddress, the function returns immediately. If the values are
-		/// the same, the function does not return until another thread in the same process signals that the value at Address has changed by calling
-		/// <c>WakeByAddressSingle</c> or <c>WakeByAddressAll</c> or the timeout elapses, whichever comes first.
+		/// The address on which to wait. If the value at Address differs from the value at CompareAddress, the function returns immediately.
+		/// If the values are the same, the function does not return until another thread in the same process signals that the value at
+		/// Address has changed by calling <c>WakeByAddressSingle</c> or <c>WakeByAddressAll</c> or the timeout elapses, whichever comes first.
 		/// </param>
 		/// <param name="CompareAddress">
-		/// A pointer to the location of the previously observed value at Address. The function returns when the value at Address differs from the value at CompareAddress.
+		/// A pointer to the location of the previously observed value at Address. The function returns when the value at Address differs
+		/// from the value at CompareAddress.
 		/// </param>
 		/// <param name="AddressSize">The size of the value, in bytes. This parameter can be 1, 2, 4, or 8.</param>
 		/// <param name="dwMilliseconds">
 		/// The number of milliseconds to wait before the operation times out. If this parameter is <c>INFINITE</c>, the thread waits indefinitely.
 		/// </param>
 		/// <returns>
-		/// TRUE if the wait succeeded. If the operation fails, the function returns FALSE. If the wait fails, call <c>GetLastError</c> to obtain extended error
-		/// information. In particular, if the operation times out, <c>GetLastError</c> returns <c>ERROR_TIMEOUT</c>.
+		/// TRUE if the wait succeeded. If the operation fails, the function returns FALSE. If the wait fails, call <c>GetLastError</c> to
+		/// obtain extended error information. In particular, if the operation times out, <c>GetLastError</c> returns <c>ERROR_TIMEOUT</c>.
 		/// </returns>
-		// BOOL WINAPI WaitOnAddress( _In_ VOID volatile *Address, _In_ PVOID CompareAddress, _In_ SIZE_T AddressSize, _In_opt_ DWORD dwMilliseconds); https://msdn.microsoft.com/en-us/library/windows/desktop/hh706898(v=vs.85).aspx
+		// BOOL WINAPI WaitOnAddress( _In_ VOID volatile *Address, _In_ PVOID CompareAddress, _In_ SIZE_T AddressSize, _In_opt_ DWORD
+		// dwMilliseconds); https://msdn.microsoft.com/en-us/library/windows/desktop/hh706898(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("SynchAPI.h", MSDNShortId = "hh706898")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -1901,7 +2031,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>Wakes all threads that are waiting for the value of an address to change.</summary>
 		/// <param name="Address">
-		/// The address to signal. If any threads have previously called <c>WaitOnAddress</c> for this address, the system wakes all of the waiting threads.
+		/// The address to signal. If any threads have previously called <c>WaitOnAddress</c> for this address, the system wakes all of the
+		/// waiting threads.
 		/// </param>
 		/// <returns>This function does not return a value.</returns>
 		// VOID WINAPI WakeByAddressAll( _In_ PVOID Address); https://msdn.microsoft.com/en-us/library/windows/desktop/hh706899(v=vs.85).aspx
@@ -1911,8 +2042,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>Wakes one thread that is waiting for the value of an address to change.</summary>
 		/// <param name="Address">
-		/// The address to signal. If another thread has previously called <c>WaitOnAddress</c> for this address, the system wakes the waiting thread. If
-		/// multiple threads are waiting for this address, the system wakes the first thread to wait.
+		/// The address to signal. If another thread has previously called <c>WaitOnAddress</c> for this address, the system wakes the
+		/// waiting thread. If multiple threads are waiting for this address, the system wakes the first thread to wait.
 		/// </param>
 		/// <returns>This function does not return a value.</returns>
 		// VOID WINAPI WakeByAddressSingle( _In_ PVOID Address); https://msdn.microsoft.com/en-us/library/windows/desktop/hh706900(v=vs.85).aspx
@@ -1928,41 +2059,64 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "ms687080")]
 		public static extern void WakeConditionVariable(ref CONDITION_VARIABLE ConditionVariable);
 
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		private static extern WAIT_STATUS SignalObjectAndWait([In] IntPtr hObjectToSignal, [In] IntPtr hObjectToWaitOn, uint dwMilliseconds, [MarshalAs(UnmanagedType.Bool)] bool bAlertable);
+
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		private static extern WAIT_STATUS WaitForMultipleObjects(uint nCount, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 0)] IntPtr[] lpHandles,
+					[MarshalAs(UnmanagedType.Bool)] bool bWaitAll, uint dwMilliseconds);
+
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		private static extern WAIT_STATUS WaitForMultipleObjectsEx(uint nCount, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 0)] IntPtr[] lpHandles,
+					[MarshalAs(UnmanagedType.Bool)] bool bWaitAll, uint dwMilliseconds, [MarshalAs(UnmanagedType.Bool)] bool bAlertable);
+
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		private static extern WAIT_STATUS WaitForSingleObject([In] IntPtr hHandle, uint dwMilliseconds);
+
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		private static extern WAIT_STATUS WaitForSingleObjectEx([In] IntPtr hHandle, uint dwMilliseconds, [MarshalAs(UnmanagedType.Bool)] bool bAlertable);
+
 		/// <summary>A condition variable.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct CONDITION_VARIABLE
 		{
-			private IntPtr Ptr;
+			private readonly IntPtr ptr;
 		}
 
-		/// <summary>A critical section.</summary>
+		/// <summary>A critical section object.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct CRITICAL_SECTION
 		{
-			private IntPtr DebugInfo;
-			private int LockCount;
-			private int RecursionCount;
-			private IntPtr OwningThread;
-			private IntPtr LockSemaphore;
-			private UIntPtr SpinCount;
+			private readonly IntPtr DebugInfo;
+			private readonly int LockCount;
+			private readonly int RecursionCount;
+			private readonly IntPtr OwningThread;
+			private readonly IntPtr LockSemaphore;
+			private readonly UIntPtr SpinCount;
 		}
 
 		/// <summary>A one-time initialization structure.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct INIT_ONCE
 		{
-			private IntPtr Ptr;
+			private readonly IntPtr ptr;
+
+			public static readonly INIT_ONCE INIT_ONCE_STATIC_INIT = new INIT_ONCE();
 		}
 
-		/// <summary>Contains information about a power request. This structure is used by the <c>PowerCreateRequest</c> and <c>SetWaitableTimerEx</c> functions.</summary>
-		// typedef struct _REASON_CONTEXT { ULONG Version; DWORD Flags; union { struct { HMODULE LocalizedReasonModule; ULONG LocalizedReasonId; ULONG
-		// ReasonStringCount; LPWSTR *ReasonStrings; } Detailed; LPWSTR SimpleReasonString; } Reason;} REASON_CONTEXT, *PREASON_CONTEXT; https://msdn.microsoft.com/en-us/library/windows/desktop/dd405536(v=vs.85).aspx
+		/// <summary>
+		/// Contains information about a power request. This structure is used by the <c>PowerCreateRequest</c> and <c>SetWaitableTimerEx</c> functions.
+		/// </summary>
+		// typedef struct _REASON_CONTEXT { ULONG Version; DWORD Flags; union { struct { HMODULE LocalizedReasonModule; ULONG
+		// LocalizedReasonId; ULONG ReasonStringCount; LPWSTR *ReasonStrings; } Detailed; LPWSTR SimpleReasonString; } Reason;}
+		// REASON_CONTEXT, *PREASON_CONTEXT; https://msdn.microsoft.com/en-us/library/windows/desktop/dd405536(v=vs.85).aspx
 		[PInvokeData("MinWinBase.h", MSDNShortId = "dd405536")]
 		[StructLayout(LayoutKind.Sequential)]
-		public struct REASON_CONTEXT
+		public class REASON_CONTEXT : IDisposable
 		{
 			/// <summary>The version number of the structure. This parameter must be set to <c>DIAGNOSTIC_REASON_VERSION</c>.</summary>
 			public DIAGNOSTIC_REASON_VERSION Version;
+
 			/// <summary>
 			/// <para>The format of the reason for the power request. This parameter can be one of the following values:</para>
 			/// <para>
@@ -1977,59 +2131,163 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// <item>
 			/// <term>POWER_REQUEST_CONTEXT_SIMPLE_STRING = 0x00000001</term>
-			/// <term>The SimpleReasonString parameter contains a simple, non-localizable string that describes the reason for the power request.</term>
+			/// <term>
+			/// The SimpleReasonString parameter contains a simple, non-localizable string that describes the reason for the power request.
+			/// </term>
 			/// </item>
 			/// </list>
 			/// </para>
 			/// </summary>
 			public DIAGNOSTIC_REASON Flags;
-			/// <summary>A union that consists of either a <c>Detailed</c> structure or a string.</summary>
-			public REASON Reason;
 
-			/// <summary>A union that consists of either a Detailed structure or a string.</summary>
-			[StructLayout(LayoutKind.Explicit)]
-			public struct REASON
+			private DETAIL _reason;
+
+			/// <summary>A structure that identifies a localizable string resource to describe the reason for the power request.</summary>
+			[StructLayout(LayoutKind.Sequential)]
+			public struct DETAIL
 			{
-				/// <summary>A structure that identifies a localizable string resource to describe the reason for the power request.</summary>
-				[FieldOffset(0)]
-				public DETAIL Detail;
-				/// <summary>A non-localized string that describes the reason for the power request.</summary>
-				[FieldOffset(0)]
-				public IntPtr SimpleReasonString;
+				/// <summary>The module that contains the string resource.</summary>
+				public IntPtr LocalizedReasonModule;
 
-				/// <summary>A structure that identifies a localizable string resource to describe the reason for the power request.</summary>
-				[StructLayout(LayoutKind.Sequential)]
-				public struct DETAIL
-				{
-					/// <summary>The module that contains the string resource.</summary>
-					public IntPtr LocalizedReasonModule;
-					/// <summary>The ID of the string resource.</summary>
-					public uint LocalizedReasonId;
-					/// <summary>The number of strings in the ReasonStrings parameter.</summary>
-					public uint ReasonStringCount;
-					/// <summary>An array of strings to be substituted in the string resource at run time.</summary>
-					public IntPtr ReasonStrings;
-				}
-			};
+				/// <summary>The ID of the string resource.</summary>
+				public uint LocalizedReasonId;
+
+				/// <summary>The number of strings in the ReasonStrings parameter.</summary>
+				public uint ReasonStringCount;
+
+				/// <summary>An array of strings to be substituted in the string resource at run time.</summary>
+				public IntPtr ReasonStrings;
+			}
+
+			public REASON_CONTEXT(string reason)
+			{
+				Version = DIAGNOSTIC_REASON_VERSION.DIAGNOSTIC_REASON_VERSION;
+				Flags = DIAGNOSTIC_REASON.DIAGNOSTIC_REASON_SIMPLE_STRING;
+				_reason.LocalizedReasonModule = Marshal.StringToHGlobalAuto(reason);
+			}
+
+			public REASON_CONTEXT(HINSTANCE localizedReasonModule, uint reasonId, string[] substituionValues = null)
+			{
+				Version = DIAGNOSTIC_REASON_VERSION.DIAGNOSTIC_REASON_VERSION;
+				Flags = DIAGNOSTIC_REASON.DIAGNOSTIC_REASON_DETAILED_STRING;
+				_reason.LocalizedReasonModule = (IntPtr)localizedReasonModule;
+				_reason.LocalizedReasonId = reasonId;
+				_reason.ReasonStringCount = (uint)(substituionValues?.Length ?? 0);
+				_reason.ReasonStrings = substituionValues?.MarshalToPtr(Marshal.AllocHGlobal, out var _) ?? IntPtr.Zero;
+			}
+
+			void IDisposable.Dispose()
+			{
+				if (Flags == DIAGNOSTIC_REASON.DIAGNOSTIC_REASON_SIMPLE_STRING)
+					Marshal.FreeHGlobal(_reason.LocalizedReasonModule);
+				else if (Flags == DIAGNOSTIC_REASON.DIAGNOSTIC_REASON_DETAILED_STRING)
+					Marshal.FreeHGlobal(_reason.ReasonStrings);
+			}
 		}
 
 		/// <summary>A slim reader/writer (SRW) lock.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct SRWLOCK
 		{
-			private IntPtr Ptr;
+			private readonly IntPtr ptr;
 		}
 
-		/// <summary>A synchronization barrier.</summary>
+		/// <summary>Provides a handle to a synchronization barrier.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct SYNCHRONIZATION_BARRIER
 		{
-			private uint Reserved1;
-			private uint Reserved2;
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-			private UIntPtr[] Reserved3;
-			private uint Reserved4;
-			private uint Reserved5;
+			private readonly IntPtr ptr;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> to an event that is automatically disposed using CloseHandle.</summary>
+		public class SafeEventHandle : SafeSyncHandle
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeEventHandle"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeEventHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			private SafeEventHandle() : base() { }
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> to a mutex that is automatically disposed using CloseHandle.</summary>
+		public class SafeMutexHandle : SafeSyncHandle
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeMutexHandle"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeMutexHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			private SafeMutexHandle() : base() { }
+		}
+
+		/// <summary>
+		/// Provides a <see cref="SafeHandle"/> to a wait handle created by RegisterWaitForSingleObject and closed on disposal by UnregisterWaitEx.
+		/// </summary>
+		public class SafeRegisteredWaitHandle : HANDLE
+		{
+			private static readonly SafeEventHandle invalidEvent = new SafeEventHandle(new IntPtr(-1), false);
+
+			private static readonly SafeEventHandle nullEvent = new SafeEventHandle(IntPtr.Zero, false);
+
+			/// <summary>Initializes a new instance of the <see cref="Register"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeRegisteredWaitHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			private SafeRegisteredWaitHandle() : base() { }
+
+			/// <summary>
+			/// Gets or sets the event object to be signaled when the wait operation has been unregistered. This property can be <see langword="null"/>.
+			/// </summary>
+			/// <value>The completion event.</value>
+			public SafeEventHandle CompletionEvent { get; set; }
+
+			/// <summary>Gets or sets a value indicating whether the disposal waits for all callback functions to complete before returning.</summary>
+			/// <value><c>true</c> if disposal wait for all functions to complete; otherwise, <c>false</c>.</value>
+			public bool WaitForAllFunctions { get; set; }
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle()
+			{
+				if (UnregisterWaitEx(this, CompletionEvent ?? (WaitForAllFunctions ? invalidEvent : nullEvent)))
+					return true;
+				if (CompletionEvent != null && Win32Error.GetLastError() == Win32Error.ERROR_IO_PENDING)
+					return WaitForSingleObject(CompletionEvent, INFINITE) == WAIT_STATUS.WAIT_OBJECT_0;
+				return false;
+			}
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> to a semaphore that is automatically disposed using CloseHandle.</summary>
+		public class SafeSemaphoreHandle : SafeSyncHandle
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeSemaphoreHandle"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeSemaphoreHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			private SafeSemaphoreHandle() : base() { }
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> to a waitable timer that is automatically disposed using CloseHandle.</summary>
+		public class SafeWaitableTimerHandle : SafeSyncHandle
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeWaitableTimerHandle"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeWaitableTimerHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			private SafeWaitableTimerHandle() : base() { }
 		}
 	}
 }

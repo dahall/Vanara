@@ -15,7 +15,6 @@ namespace Vanara.InteropServices
 		private static int ElemSize = Marshal.SizeOf(typeof(TElem));
 		private static int PrefixSize = Marshal.SizeOf(typeof(TPrefix));
 
-
 		/// <summary>Initializes a new instance of the <see cref="SafeElementArray{TElem, TPrefix, TMem}"/> class.</summary>
 		protected SafeElementArray() : this(0) { }
 

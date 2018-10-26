@@ -52,6 +52,7 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="balloonTip">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage(HWND hWnd, User32_Gdi.EditMessage Msg, int wParam, ref EDITBALLOONTIP balloonTip) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref balloonTip);
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		public static extern IntPtr SendMessage(HWND hWnd, User32_Gdi.EditMessage Msg, int wParam, ref EDITBALLOONTIP balloonTip);
 	}
 }

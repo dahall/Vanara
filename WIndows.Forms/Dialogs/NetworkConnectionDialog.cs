@@ -86,7 +86,7 @@ namespace Vanara.Windows.Forms
 			opts.hwndOwner = hwndOwner;
 			lpnres = SafeCoTaskMemHandle.CreateFromStructure(nres);
 			opts.lpConnRes = lpnres.DangerousGetHandle();
-			var ret = WNetConnectionDialog1(ref opts);
+			var ret = WNetConnectionDialog1(opts);
 			if (ret == -1) return false;
 			ret.ThrowIfFailed();
 			return true;

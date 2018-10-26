@@ -95,7 +95,7 @@ namespace Vanara.Security.AccessControl
 		/// <param name="hwnd">The HWND.</param>
 		/// <param name="uMsg">The message.</param>
 		/// <param name="uPage">The page type.</param>
-		void PropertySheetPageCallback(IntPtr hwnd, PropertySheetCallbackMessage uMsg, SI_PAGE_TYPE uPage);
+		void PropertySheetPageCallback(HWND hwnd, PropertySheetCallbackMessage uMsg, SI_PAGE_TYPE uPage);
 	}
 
 	/// <summary>Base implementation of <see cref="IAccessControlEditorDialogProvider"/>.</summary>
@@ -208,7 +208,7 @@ namespace Vanara.Security.AccessControl
 		/// <param name="hwnd">The HWND.</param>
 		/// <param name="uMsg">The message.</param>
 		/// <param name="uPage">The page type.</param>
-		public virtual void PropertySheetPageCallback(IntPtr hwnd, PropertySheetCallbackMessage uMsg, SI_PAGE_TYPE uPage)
+		public virtual void PropertySheetPageCallback(HWND hwnd, PropertySheetCallbackMessage uMsg, SI_PAGE_TYPE uPage)
 		{
 		}
 

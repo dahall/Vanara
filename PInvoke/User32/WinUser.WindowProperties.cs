@@ -40,7 +40,7 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		[PInvokeData("winuser.h", MSDNShortId = "propenumproc")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool PropEnumProc(IntPtr hwnd, string lpszString, IntPtr hData);
+		public delegate bool PropEnumProc(HWND hwnd, string lpszString, IntPtr hData);
 
 		/// <summary>
 		/// Application-defined callback function used with the EnumPropsEx function. The function receives property entries from a window's
@@ -75,7 +75,7 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		[PInvokeData("winuser.h", MSDNShortId = "propenumprocex")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool PropEnumProcEx(IntPtr hwnd, string lpszString, IntPtr hData, UIntPtr dwData);
+		public delegate bool PropEnumProcEx(HWND hwnd, string lpszString, IntPtr hData, UIntPtr dwData);
 
 		/// <summary>
 		/// <para>

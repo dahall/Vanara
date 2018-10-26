@@ -1219,7 +1219,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("authz.h", MSDNShortId = "740569A5-6159-409B-B8CB-B3A8BAE4F398")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool AuthzModifySids(SafeAUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, AUTHZ_CONTEXT_INFORMATION_CLASS SidClass,
-			AUTHZ_SID_OPERATION[] pSidOperations, ref TOKEN_GROUPS pSids);
+			AUTHZ_SID_OPERATION[] pSidOperations, in TOKEN_GROUPS pSids);
 
 		/// <summary>
 		/// <para>The <c>AUTHZ_ACCESS_REQUEST</c> structure defines an access check request.</para>

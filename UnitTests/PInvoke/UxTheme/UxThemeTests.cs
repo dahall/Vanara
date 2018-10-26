@@ -391,13 +391,13 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void GetThemeSysColorTest()
 		{
-			Assert.That(GetThemeSysColor(hwt, User32_Gdi.SystemColorIndex.COLOR_WINDOW), Is.EqualTo(new COLORREF(255, 255, 255)));
+			Assert.That(GetThemeSysColor(hwt, SystemColorIndex.COLOR_WINDOW), Is.EqualTo(new COLORREF(255, 255, 255)));
 		}
 
 		[Test]
 		public void GetThemeSysColorBrushTest()
 		{
-			var hbr = GetThemeSysColorBrush(hwt, (int)User32_Gdi.SystemColorIndex.COLOR_WINDOW);
+			var hbr = GetThemeSysColorBrush(hwt, (int)SystemColorIndex.COLOR_WINDOW);
 			Assert.That(hbr, Is.Not.EqualTo(IntPtr.Zero));
 		}
 
@@ -493,7 +493,7 @@ namespace Vanara.PInvoke.Tests
 				{
 					Assert.That(htheme, Is.Not.EqualTo(IntPtr.Zero));
 					RECT r = f.ClientRectangle;
-					var hr = HitTestThemeBackground(htheme, new SafeHDC(f.CreateGraphics()), 1, 1, HitTestOptions.HTTB_CAPTION, ref r, SafeHRGN.NULL, new Point(1, 1), out var code);
+					var hr = HitTestThemeBackground(htheme, new SafeHDC(f.CreateGraphics()), 1, 1, HitTestOptions.HTTB_CAPTION, ref r, HRGN.NULL, new Point(1, 1), out var code);
 					Assert.That(hr.Succeeded);
 				}
 				f.Close();

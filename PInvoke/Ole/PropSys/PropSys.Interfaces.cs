@@ -330,7 +330,7 @@ namespace Vanara.PInvoke
 			/// <summary><para>Gets an IPropertyStore interface object, as specified.</para></summary><param name="flags"><para>Type: <c>GETPROPERTYSTOREFLAGS</c></para><para>The GPS_XXX flags that modify the store that is returned. See GETPROPERTYSTOREFLAGS.</para></param><param name="dwStoreId"><para>Type: <c>DWORD</c></para><para>The property store ID. Valid values are.</para><para>STOREID_INNATE</para><para>Value is 0.</para><para>STOREID_FILE</para><para>Value is 1.</para><para>STOREID_FALLBACK</para><para>Value is 2.</para></param><param name="riid"><para>Type: <c>REFIID</c></para><para>A reference to the desired IID.</para></param><param name="ppv"><para>Type: <c>void**</c></para><para>The address of an IPropertyStore interface pointer.</para></param><returns><para>Type: <c>HRESULT</c></para><para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para></returns>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-idelayedpropertystorefactory-getdelayedpropertystore
 			// HRESULT GetDelayedPropertyStore( GETPROPERTYSTOREFLAGS flags, DWORD dwStoreId, REFIID riid, void **ppv );
-			void GetDelayedPropertyStore(GETPROPERTYSTOREFLAGS flags, STOREID dwStoreId, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IPropertyStore ppv);
+			void GetDelayedPropertyStore(GETPROPERTYSTOREFLAGS flags, STOREID dwStoreId, in Guid riid, out IPropertyStore ppv);
 		}
 
 		/// <summary>Exposes a method that initializes a handler, such as a property handler, thumbnail handler, or preview handler, with a stream.</summary>
@@ -411,7 +411,7 @@ namespace Vanara.PInvoke
 			/// <param name="riid">Reference to the interface ID of the requested interface.</param>
 			/// <returns>When this method returns, contains the address of an IPropertyEnumTypeList interface pointer.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IPropertyEnumTypeList GetEnumTypeList([MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			IPropertyEnumTypeList GetEnumTypeList(in Guid riid);
 			/// <summary>Coerces the value to the canonical value, according to the property description.</summary>
 			/// <param name="propvar">On entry, contains a pointer to a PROPVARIANT structure that contains the original value. When this method returns, contains the canonical value.</param>
 			[PreserveSig]
@@ -494,7 +494,7 @@ namespace Vanara.PInvoke
 			/// <param name="riid">Reference to the interface ID of the requested interface.</param>
 			/// <returns>When this method returns, contains the address of an IPropertyEnumTypeList interface pointer.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			new IPropertyEnumTypeList GetEnumTypeList([MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			new IPropertyEnumTypeList GetEnumTypeList(in Guid riid);
 			/// <summary>Coerces the value to the canonical value, according to the property description.</summary>
 			/// <param name="propvar">On entry, contains a pointer to a PROPVARIANT structure that contains the original value. When this method returns, contains the canonical value.</param>
 			[PreserveSig]
@@ -522,7 +522,7 @@ namespace Vanara.PInvoke
 		public interface IPropertyDescriptionList
 		{
 			uint GetCount();
-			IPropertyDescription GetAt([In] uint iElem, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			IPropertyDescription GetAt([In] uint iElem, in Guid riid);
 		}
 
 		/// <summary>
@@ -583,10 +583,10 @@ namespace Vanara.PInvoke
 			uint GetCount();
 
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IPropertyEnumType GetAt([In] uint itype, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			IPropertyEnumType GetAt([In] uint itype, in Guid riid);
 
 			[return: MarshalAs(UnmanagedType.Interface)]
-			object GetConditionAt([In] uint index, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			object GetConditionAt([In] uint index, in Guid riid);
 
 			/// <summary>Compares the specified property value against the enumerated values in a list and returns the matching index.</summary>
 			/// <param name="propvarCmp">A reference to a PROPVARIANT structure that represents the property value.</param>
@@ -605,9 +605,9 @@ namespace Vanara.PInvoke
 
 			PROPERTYKEY GetAt(uint iProp);
 
-			void GetValue([In] ref PROPERTYKEY pkey, [In, Out] PROPVARIANT pv);
+			void GetValue(in PROPERTYKEY pkey, [In, Out] PROPVARIANT pv);
 
-			void SetValue([In] ref PROPERTYKEY pkey, [In] PROPVARIANT pv);
+			void SetValue(in PROPERTYKEY pkey, [In] PROPVARIANT pv);
 
 			void Commit();
 		}
@@ -621,13 +621,13 @@ namespace Vanara.PInvoke
 			/// <summary><para>Gets an IPropertyStore object that corresponds to the supplied flags.</para></summary><param name="flags"><para>Type: <c>GETPROPERTYSTOREFLAGS</c></para><para>GETPROPERTYSTOREFLAGS values that modify the store that is returned.</para></param><param name="pUnkFactory"><para>Type: <c>IUnknown*</c></para><para>Optional. A pointer to the IUnknown of an object that implements ICreateObject. If pUnkFactory is provided, this method can create the handler instance using <c>ICreateObject</c> rather than CoCreateInstance, if implemented. The reason to provide pUnkFactory is usually to create the handler in a different process. However, for most users, passing <c>NULL</c> in this parameter is sufficient.</para></param><param name="riid"><para>Type: <c>REFIID</c></para><para>A reference to IID of the object to create.</para></param><param name="ppv"><para>Type: <c>void**</c></para><para>When this method returns, contains the address of an IPropertyStore interface pointer.</para></param><returns><para>Type: <c>HRESULT</c></para><para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para></returns><remarks><para>It is recommended that you use the IID_PPV_ARGS macro, defined in Objbase.h, to package the riid and ppv parameters. This macro provides the correct IID based on the interface pointed to by the value in ppv, which eliminates the possibility of a coding error.</para></remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-ipropertystorefactory-getpropertystore
 			// HRESULT GetPropertyStore( GETPROPERTYSTOREFLAGS flags, IUnknown *pUnkFactory, REFIID riid, void **ppv );
-			void GetPropertyStore(GETPROPERTYSTOREFLAGS flags, [MarshalAs(UnmanagedType.IUnknown)] object pUnkFactory, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IPropertyStore ppv);
+			void GetPropertyStore(GETPROPERTYSTOREFLAGS flags, [MarshalAs(UnmanagedType.IUnknown)] object pUnkFactory, in Guid riid, out IPropertyStore ppv);
 
 			/// <summary><para>Gets an IPropertyStore object, given a set of property keys. This provides an alternative, possibly faster, method of getting an <c>IPropertyStore</c> object compared to calling IPropertyStoreFactory::GetPropertyStore.</para></summary><param name="rgKeys"><para>Type: <c>const PROPERTYKEY*</c></para><para>A pointer to an array of PROPERTYKEY structures.</para></param><param name="cKeys"><para>Type: <c>UINT</c></para><para>The number of PROPERTYKEY structures in the array pointed to by rgKeys.</para></param><param name="flags"><para>Type: <c>GETPROPERTYSTOREFLAGS</c></para><para>GETPROPERTYSTOREFLAGS values that modify the store that is returned.</para></param><param name="riid"><para>Type: <c>REFIID</c></para><para>A reference to IID of the object to create.</para></param><param name="ppv"><para>Type: <c>void**</c></para><para>When this method returns, contains the address of an IPropertyStore interface pointer.</para></param><returns><para>Type: <c>HRESULT</c></para><para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para></returns><remarks><para>It is recommended that you use the IID_PPV_ARGS macro, defined in Objbase.h, to package the riid and ppv parameters. This macro provides the correct IID based on the interface pointed to by the value in ppv, which eliminates the possibility of a coding error.</para></remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-ipropertystorefactory-getpropertystoreforkeys
 			// HRESULT GetPropertyStoreForKeys( const PROPERTYKEY *rgKeys, UINT cKeys, GETPROPERTYSTOREFLAGS flags, REFIID riid, void **ppv );
 			void GetPropertyStoreForKeys([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] PROPERTYKEY[] rgKeys, uint cKeys, GETPROPERTYSTOREFLAGS flags,
-				[In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IPropertyStore ppv);
+				in Guid riid, out IPropertyStore ppv);
 		}
 
 		[SuppressUnmanagedCodeSecurity]
@@ -636,10 +636,10 @@ namespace Vanara.PInvoke
 		public interface IPropertySystem
 		{
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IPropertyDescription GetPropertyDescription(ref PROPERTYKEY propkey, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			IPropertyDescription GetPropertyDescription(ref PROPERTYKEY propkey, in Guid riid);
 
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IPropertyDescription GetPropertyDescriptionByName([In, MarshalAs(UnmanagedType.LPWStr)] string pszCanonicalName, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			IPropertyDescription GetPropertyDescriptionByName([In, MarshalAs(UnmanagedType.LPWStr)] string pszCanonicalName, in Guid riid);
 
 			/// <summary>
 			/// <para>
@@ -760,10 +760,10 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-ipropertysystem-getpropertydescriptionlistfromstring
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IPropertyDescriptionList GetPropertyDescriptionListFromString([In, MarshalAs(UnmanagedType.LPWStr)] string pszPropList, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			IPropertyDescriptionList GetPropertyDescriptionListFromString([In, MarshalAs(UnmanagedType.LPWStr)] string pszPropList, in Guid riid);
 
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IPropertyDescriptionList EnumeratePropertyDescriptions(PROPDESC_ENUMFILTER filterOn, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			IPropertyDescriptionList EnumeratePropertyDescriptions(PROPDESC_ENUMFILTER filterOn, in Guid riid);
 
 			void FormatForDisplay(ref PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, System.Text.StringBuilder pszText, uint cchText);
 

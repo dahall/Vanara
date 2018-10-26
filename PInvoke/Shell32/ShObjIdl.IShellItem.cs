@@ -379,7 +379,7 @@ namespace Vanara.PInvoke
 			/// <param name="riid">IID of the object type to retrieve.</param>
 			/// <returns>When this method returns, contains a pointer of type riid that is returned by the handler specified by rbhid.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			object BindToHandler(IBindCtx pbc, [In, MarshalAs(UnmanagedType.LPStruct)] Guid bhid, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			object BindToHandler(IBindCtx pbc, in Guid bhid, in Guid riid);
 
 			/// <summary>Gets the parent of an IShellItem object.</summary>
 			/// <returns>The address of a pointer to the parent of an IShellItem interface.</returns>
@@ -430,7 +430,7 @@ namespace Vanara.PInvoke
 			/// <param name="riid">IID of the object type to retrieve.</param>
 			/// <returns>When this method returns, contains a pointer of type riid that is returned by the handler specified by rbhid.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			new object BindToHandler(IBindCtx pbc, [In, MarshalAs(UnmanagedType.LPStruct)] Guid bhid, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			new object BindToHandler(IBindCtx pbc, in Guid bhid, in Guid riid);
 
 			/// <summary>Gets the parent of an IShellItem object.</summary>
 			/// <returns>The address of a pointer to the parent of an IShellItem interface.</returns>
@@ -467,7 +467,7 @@ namespace Vanara.PInvoke
 			/// <param name="riid">A reference to the IID of the object to be retrieved.</param>
 			/// <returns>When this method returns, contains the address of an IPropertyStore interface pointer.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IPropertyStore GetPropertyStore(GETPROPERTYSTOREFLAGS flags, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			IPropertyStore GetPropertyStore(GETPROPERTYSTOREFLAGS flags, in Guid riid);
 
 			/// <summary>
 			/// Uses the specified ICreateObject instead of CoCreateInstance to create an instance of the property handler associated with the Shell item on
@@ -491,7 +491,7 @@ namespace Vanara.PInvoke
 			// TODO: Create ICreateObject for second param
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IPropertyStore GetPropertyStoreWithCreateObject(GETPROPERTYSTOREFLAGS flags, [MarshalAs(UnmanagedType.IUnknown)] object punkCreateObject,
-				[In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+				in Guid riid);
 
 			/// <summary>Gets property store object for specified property keys.</summary>
 			/// <param name="rgKeys">
@@ -502,13 +502,13 @@ namespace Vanara.PInvoke
 			/// <param name="riid">A reference to the IID of the object to be retrieved.</param>
 			/// <returns></returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IPropertyStore GetPropertyStoreForKeys([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] PROPERTYKEY[] rgKeys, uint cKeys, GETPROPERTYSTOREFLAGS flags, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			IPropertyStore GetPropertyStoreForKeys([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] PROPERTYKEY[] rgKeys, uint cKeys, GETPROPERTYSTOREFLAGS flags, in Guid riid);
 
 			/// <summary>Gets a property description list object given a reference to a property key.</summary>
 			/// <param name="keyType">A reference to a PROPERTYKEY structure.</param>
 			/// <param name="riid">A reference to a desired IID.</param>
 			/// <returns>Contains the address of an IPropertyDescriptionList interface pointer.</returns>
-			IPropertyDescriptionList GetPropertyDescriptionList([In] ref PROPERTYKEY keyType, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			IPropertyDescriptionList GetPropertyDescriptionList(in PROPERTYKEY keyType, in Guid riid);
 
 			/// <summary>Ensures that any cached information in this item is updated.</summary>
 			/// <param name="pbc">A pointer to an IBindCtx interface on a bind context object.</param>
@@ -517,43 +517,43 @@ namespace Vanara.PInvoke
 			/// <summary>Gets a PROPVARIANT structure from a specified property key.</summary>
 			/// <param name="key">A reference to a PROPERTYKEY structure.</param>
 			/// <returns>Contains a pointer to a PROPVARIANT structure.</returns>
-			PROPVARIANT GetProperty([In] ref PROPERTYKEY key);
+			PROPVARIANT GetProperty(in PROPERTYKEY key);
 
 			/// <summary>Gets the class identifier (CLSID) value of specified property key.</summary>
 			/// <param name="key">A reference to a PROPERTYKEY structure.</param>
 			/// <returns>A pointer to a CLSID value.</returns>
-			Guid GetCLSID([In] ref PROPERTYKEY key);
+			Guid GetCLSID(in PROPERTYKEY key);
 
 			/// <summary>Gets the date and time value of a specified property key.</summary>
 			/// <param name="key">A reference to a PROPERTYKEY structure.</param>
 			/// <returns>A pointer to a date and time value.</returns>
-			System.Runtime.InteropServices.ComTypes.FILETIME GetFileTime([In] ref PROPERTYKEY key);
+			System.Runtime.InteropServices.ComTypes.FILETIME GetFileTime(in PROPERTYKEY key);
 
 			/// <summary>Gets the Int32 value of specified property key.</summary>
 			/// <param name="key">A reference to a PROPERTYKEY structure.</param>
 			/// <returns>A pointer to an Int32 value.</returns>
-			int GetInt32([In] ref PROPERTYKEY key);
+			int GetInt32(in PROPERTYKEY key);
 
 			/// <summary>Gets the string value of a specified property key.</summary>
 			/// <param name="key">A reference to a PROPERTYKEY structure.</param>
 			/// <returns>A pointer to a Unicode string value.</returns>
-			SafeCoTaskMemString GetString([In] ref PROPERTYKEY key);
+			SafeCoTaskMemString GetString(in PROPERTYKEY key);
 
 			/// <summary>Gets the UInt32 value of specified property key.</summary>
 			/// <param name="key">A reference to a PROPERTYKEY structure.</param>
 			/// <returns>A pointer to an UInt32 value.</returns>
-			uint GetUInt32([In] ref PROPERTYKEY key);
+			uint GetUInt32(in PROPERTYKEY key);
 
 			/// <summary>Gets the UInt64 value of specified property key.</summary>
 			/// <param name="key">A reference to a PROPERTYKEY structure.</param>
 			/// <returns>A pointer to an UInt64 value.</returns>
-			ulong GetUInt64([In] ref PROPERTYKEY key);
+			ulong GetUInt64(in PROPERTYKEY key);
 
 			/// <summary>Gets the boolean value of a specified property key.</summary>
 			/// <param name="key">A reference to a PROPERTYKEY structure.</param>
 			/// <returns>A pointer to a boolean value.</returns>
 			[return: MarshalAs(UnmanagedType.Bool)]
-			bool GetBool([In] ref PROPERTYKEY key);
+			bool GetBool(in PROPERTYKEY key);
 		}
 
 		/// <summary>Exposes methods that create and manipulate Shell item arrays.</summary>
@@ -573,21 +573,21 @@ namespace Vanara.PInvoke
 			/// <param name="riid">The IID of the object type to retrieve.</param>
 			/// <returns>When this /// methods returns, contains the object specified in riid that is returned by the handler specified by rbhid.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			object BindToHandler(IBindCtx pbc, [In, MarshalAs(UnmanagedType.LPStruct)] Guid rbhid, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			object BindToHandler(IBindCtx pbc, in Guid rbhid, in Guid riid);
 
 			/// <summary>Gets a property store.</summary>
 			/// <param name="flags">One of the GETPROPERTYSTOREFLAGS constants.</param>
 			/// <param name="riid">The IID of the object type to retrieve.</param>
 			/// <returns>When this method returns, contains interface pointer requested in riid. This is typically IPropertyStore or IPropertyStoreCapabilities.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			object GetPropertyStore(GETPROPERTYSTOREFLAGS flags, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			object GetPropertyStore(GETPROPERTYSTOREFLAGS flags, in Guid riid);
 
 			/// <summary>Gets a property description list for the items in the shell item array.</summary>
 			/// <param name="keyType">A reference to the PROPERTYKEY structure specifying which property list to retrieve.</param>
 			/// <param name="riid">The IID of the object type to retrieve.</param>
 			/// <returns>When this method returns, contains the interface requested in riid. This will typically be IPropertyDescriptionList.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			object GetPropertyDescriptionList([In] ref PROPERTYKEY keyType, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			object GetPropertyDescriptionList(in PROPERTYKEY keyType, in Guid riid);
 
 			/// <summary>
 			/// Gets the attributes of the set of items contained in an IShellItemArray. If the array contains more than one item, the attributes retrieved by

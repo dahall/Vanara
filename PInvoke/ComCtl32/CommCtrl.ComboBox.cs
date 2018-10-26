@@ -107,7 +107,8 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="item">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage(HWND hWnd, ComboBoxMessage Msg, int wParam, ref COMBOBOXINFO item) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref item);
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		public static extern IntPtr SendMessage(HWND hWnd, ComboBoxMessage Msg, int wParam, ref COMBOBOXINFO item);
 
 		/// <summary>Contains combo box status information.</summary>
 		[PInvokeData("Winuser.h", MSDNShortId = "bb775798")]
@@ -127,13 +128,13 @@ namespace Vanara.PInvoke
 			public ComboBoxInfoState buttonState;
 
 			/// <summary>A handle to the combo box.</summary>
-			public IntPtr hwndCombo;
+			public HWND hwndCombo;
 
 			/// <summary>A handle to the edit box.</summary>
-			public IntPtr hwndEdit;
+			public HWND hwndEdit;
 
 			/// <summary>A handle to the drop-down list.</summary>
-			public IntPtr hwndList;
+			public HWND hwndList;
 
 			/// <summary>Creates an instance of the <see cref="COMBOBOXINFO"/> structure from a handle and retrieves its values.</summary>
 			/// <param name="hComboBox">The handle to a ComboBox.</param>

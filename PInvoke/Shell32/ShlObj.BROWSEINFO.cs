@@ -35,7 +35,7 @@ namespace Vanara.PInvoke
 		/// Returns zero except in the case of BFFM_VALIDATEFAILED. For that flag, returns zero to dismiss the dialog or nonzero to keep the dialog displayed.
 		/// </returns>
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762598")]
-		public delegate int BrowseCallbackProc(IntPtr hwnd, BrowseForFolderMessages uMsg, IntPtr lParam, IntPtr lpData);
+		public delegate int BrowseCallbackProc(HWND hwnd, BrowseForFolderMessages uMsg, IntPtr lParam, IntPtr lpData);
 
 		/// <summary>Enumeration with dialog messages used by the SHBrowseForFolder dialog box.</summary>
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762598")]
@@ -155,7 +155,7 @@ namespace Vanara.PInvoke
 		public struct BROWSEINFO
 		{
 			/// <summary>A handle to the owner window for the dialog box.</summary>
-			public IntPtr hwndOwner;
+			public HWND hwndOwner;
 
 			/// <summary>
 			/// A PIDL that specifies the location of the root folder from which to start browsing. Only the specified folder and its subfolders in the namespace
@@ -201,7 +201,7 @@ namespace Vanara.PInvoke
 			/// <param name="flags">Flags that specify the options for the dialog box.</param>
 			/// <param name="callback">The callback function that the dialog box calls when an event occurs..</param>
 			/// <param name="displayNameBuffer">Buffer that receives the display name of the folder selected by the user.</param>
-			public BROWSEINFO(IntPtr hWnd, IntPtr rootPidl, string title, BrowseInfoFlag flags, BrowseCallbackProc callback, SafeCoTaskMemString displayNameBuffer)
+			public BROWSEINFO(HWND hWnd, IntPtr rootPidl, string title, BrowseInfoFlag flags, BrowseCallbackProc callback, SafeCoTaskMemString displayNameBuffer)
 			{
 				hwndOwner = hWnd;
 				pidlRoot = rootPidl;

@@ -345,7 +345,7 @@ namespace Vanara.PInvoke
 			/// A pointer to an array of SYSTEMTIME structures. A NULL LPSYSTEMTIME object should be passed into this parameter. On return, this array contains
 			/// pCount run times. You must free this array by a calling the CoTaskMemFree function.
 			/// </returns>
-			SafeCoTaskMemHandle GetRunTimes([In] ref SYSTEMTIME pstBegin, [In] ref SYSTEMTIME pstEnd, ref ushort pCount);
+			SafeCoTaskMemHandle GetRunTimes(in SYSTEMTIME pstBegin, in SYSTEMTIME pstEnd, ref ushort pCount);
 
 			/// <summary>Retrieves the next time the work item will run.</summary>
 			/// <returns>A pointer to a SYSTEMTIME structure that contains the next time the work item will run.</returns>
@@ -633,7 +633,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <returns>A pointer to an interface pointer that receives the address of the requested interface.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			ITask Activate([In, MarshalAs(UnmanagedType.LPWStr)] string pwszName, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			ITask Activate([In, MarshalAs(UnmanagedType.LPWStr)] string pwszName, in Guid riid);
 
 			/// <summary>The Delete method deletes a task.</summary>
 			/// <param name="pwszName">A null-terminated string that specifies the name of the task to delete.</param>
@@ -654,7 +654,7 @@ namespace Vanara.PInvoke
 			/// A pointer to an interface pointer that receives the requested interface. See Remarks for information on saving the work item to disk.
 			/// </returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			ITask NewWorkItem([In, MarshalAs(UnmanagedType.LPWStr)] string pwszTaskName, [In, MarshalAs(UnmanagedType.LPStruct)] Guid rclsid, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			ITask NewWorkItem([In, MarshalAs(UnmanagedType.LPWStr)] string pwszTaskName, in Guid rclsid, in Guid riid);
 
 			/// <summary>The AddWorkItem method adds a task to the schedule of tasks.</summary>
 			/// <param name="pwszTaskName">
@@ -671,7 +671,7 @@ namespace Vanara.PInvoke
 			/// The IsOfType method returns S_OK if the object named by pwszName supports the interface specified in riid. Otherwise, S_FALSE is returned.
 			/// </returns>
 			[PreserveSig]
-			HRESULT IsOfType([In, MarshalAs(UnmanagedType.LPWStr)] string pwszName, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			HRESULT IsOfType([In, MarshalAs(UnmanagedType.LPWStr)] string pwszName, in Guid riid);
 		}
 
 		/// <summary>

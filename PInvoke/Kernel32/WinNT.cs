@@ -161,54 +161,83 @@ namespace Vanara.PInvoke
 		// SchedulerParam ) {...}
 		[PInvokeData("winnt.h", MSDNShortId = "10de1c48-255d-45c3-acf0-25f8a564b585")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate void RtlUmsSchedulerEntryPoint(RTL_UMS_SCHEDULER_REASON Reason, UIntPtr ActivationPayload, IntPtr SchedulerParam);
+		public delegate void RtlUmsSchedulerEntryPoint(RTL_UMS_SCHEDULER_REASON Reason, IntPtr ActivationPayload, IntPtr SchedulerParam);
 
 		/// <summary>Used by thread context functions.</summary>
 		[PInvokeData("winnt.h")]
-		[Flags]
-		public enum CONTEXT_FLAG : uint
+		public static class CONTEXT_FLAG
 		{
-			/// <summary>Undocumented.</summary>
-			CONTEXT_AMD64 = 0x00100000,
+			private static readonly uint systemContext;
+
+			static CONTEXT_FLAG()
+			{
+				GetNativeSystemInfo(out var info);
+				switch (info.wProcessorArchitecture)
+				{
+					case ProcessorArchitecture.PROCESSOR_ARCHITECTURE_INTEL:
+						systemContext = CONTEXT_i386;
+						break;
+					case ProcessorArchitecture.PROCESSOR_ARCHITECTURE_ARM:
+						systemContext = CONTEXT_ARM;
+						break;
+					case ProcessorArchitecture.PROCESSOR_ARCHITECTURE_AMD64:
+						systemContext = CONTEXT_AMD64;
+						break;
+					default:
+						throw new InvalidOperationException("Processor context not recognized.");
+				}
+			}
 
 			/// <summary>Undocumented.</summary>
-			CONTEXT_CONTROL = (CONTEXT_AMD64 | 0x00000001),
+			public const uint CONTEXT_AMD64 = 0x00100000;
 
 			/// <summary>Undocumented.</summary>
-			CONTEXT_INTEGER = (CONTEXT_AMD64 | 0x00000002),
+			public const uint CONTEXT_ARM = 0x00200000;
 
 			/// <summary>Undocumented.</summary>
-			CONTEXT_SEGMENTS = (CONTEXT_AMD64 | 0x00000004),
+			public const uint CONTEXT_i386 = 0x00010000;
 
 			/// <summary>Undocumented.</summary>
-			CONTEXT_FLOATING_POINT = (CONTEXT_AMD64 | 0x00000008),
+			public static uint CONTEXT_CONTROL => systemContext | 0x00000001;
 
 			/// <summary>Undocumented.</summary>
-			CONTEXT_DEBUG_REGISTERS = (CONTEXT_AMD64 | 0x00000010),
+			public static uint CONTEXT_INTEGER => systemContext | 0x00000002;
 
 			/// <summary>Undocumented.</summary>
-			CONTEXT_FULL = (CONTEXT_CONTROL | CONTEXT_INTEGER | CONTEXT_FLOATING_POINT),
+			public static uint CONTEXT_SEGMENTS => systemContext | 0x00000004;
 
 			/// <summary>Undocumented.</summary>
-			CONTEXT_ALL = (CONTEXT_CONTROL | CONTEXT_INTEGER | CONTEXT_SEGMENTS | CONTEXT_FLOATING_POINT | CONTEXT_DEBUG_REGISTERS),
+			public static uint CONTEXT_FLOATING_POINT => systemContext | 0x00000008;
 
 			/// <summary>Undocumented.</summary>
-			CONTEXT_XSTATE = (CONTEXT_AMD64 | 0x00000040),
+			public static uint CONTEXT_DEBUG_REGISTERS => systemContext | 0x00000010;
 
 			/// <summary>Undocumented.</summary>
-			CONTEXT_KERNEL_DEBUGGER = 0x04000000,
+			public static uint CONTEXT_EXTENDED_REGISTERS => systemContext | 0x00000020;
 
 			/// <summary>Undocumented.</summary>
-			CONTEXT_EXCEPTION_ACTIVE = 0x08000000,
+			public static uint CONTEXT_FULL => CONTEXT_CONTROL | CONTEXT_INTEGER | CONTEXT_FLOATING_POINT;
 
 			/// <summary>Undocumented.</summary>
-			CONTEXT_SERVICE_ACTIVE = 0x10000000,
+			public static uint CONTEXT_ALL => CONTEXT_CONTROL | CONTEXT_INTEGER | CONTEXT_SEGMENTS | CONTEXT_FLOATING_POINT | CONTEXT_DEBUG_REGISTERS;
 
 			/// <summary>Undocumented.</summary>
-			CONTEXT_EXCEPTION_REQUEST = 0x40000000,
+			public static uint CONTEXT_XSTATE => systemContext | 0x00000040;
 
 			/// <summary>Undocumented.</summary>
-			CONTEXT_EXCEPTION_REPORTING = 0x80000000
+			public const uint CONTEXT_KERNEL_DEBUGGER = 0x04000000;
+
+			/// <summary>Undocumented.</summary>
+			public const uint CONTEXT_EXCEPTION_ACTIVE = 0x08000000;
+
+			/// <summary>Undocumented.</summary>
+			public const uint CONTEXT_SERVICE_ACTIVE = 0x10000000;
+
+			/// <summary>Undocumented.</summary>
+			public const uint CONTEXT_EXCEPTION_REQUEST = 0x40000000;
+
+			/// <summary>Undocumented.</summary>
+			public const uint CONTEXT_EXCEPTION_REPORTING = 0x80000000;
 		}
 
 		/// <summary>The flags that control the enforcement of the minimum and maximum working set sizes.</summary>
@@ -285,16 +314,24 @@ namespace Vanara.PInvoke
 			UmsThreadMaxInfoClass,
 		}
 
+		/// <summary>Section access rights.</summary>
 		[PInvokeData("winnt.h")]
 		[Flags]
 		public enum SECTION_MAP : uint
 		{
+			/// <summary>Query the section object for information about the section. Drivers should set this flag.</summary>
 			SECTION_QUERY = 0x0001,
+			/// <summary>Write views of the section.</summary>
 			SECTION_MAP_WRITE = 0x0002,
+			/// <summary>Read views of the section.</summary>
 			SECTION_MAP_READ = 0x0004,
+			/// <summary>Execute views of the section.</summary>
 			SECTION_MAP_EXECUTE = 0x0008,
+			/// <summary>Dynamically extend the size of the section.</summary>
 			SECTION_EXTEND_SIZE = 0x0010,
+			/// <summary>Undocumented.</summary>
 			SECTION_MAP_EXECUTE_EXPLICIT = 0x0020,
+			/// <summary>All of the previous flags combined with STANDARD_RIGHTS_REQUIRED.</summary>
 			SECTION_ALL_ACCESS = ACCESS_MASK.STANDARD_RIGHTS_REQUIRED | SECTION_QUERY | SECTION_MAP_WRITE | SECTION_MAP_READ | SECTION_MAP_EXECUTE | SECTION_EXTEND_SIZE,
 		}
 

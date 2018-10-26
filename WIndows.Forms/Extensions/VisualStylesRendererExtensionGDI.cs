@@ -111,7 +111,7 @@ namespace Vanara.Extensions
 			DrawWrapper(g, bounds,
 				memoryHdc =>
 				{
-					using (var mg = Graphics.FromHdc(memoryHdc.DangerousGetHandle()))
+					using (var mg = Graphics.FromHdc((IntPtr)memoryHdc))
 					{
 						if (disabled)
 							ControlPaint.DrawImageDisabled(mg, image, bounds.X, bounds.Y, Color.Transparent);

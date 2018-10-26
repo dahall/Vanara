@@ -30,7 +30,7 @@ namespace Vanara.Windows.Forms
 			{
 				tProps.dwFlags = DWM_TNP.DWM_TNP_RECTDESTINATION;
 				tProps.rcDestination = value;
-				DwmUpdateThumbnailProperties(hThumbnail, ref tProps).ThrowIfFailed();
+				DwmUpdateThumbnailProperties(hThumbnail, tProps).ThrowIfFailed();
 			}
 		}
 
@@ -45,7 +45,7 @@ namespace Vanara.Windows.Forms
 			{
 				tProps.dwFlags = DWM_TNP.DWM_TNP_OPACITY;
 				tProps.opacity = value;
-				DwmUpdateThumbnailProperties(hThumbnail, ref tProps).ThrowIfFailed();
+				DwmUpdateThumbnailProperties(hThumbnail, tProps).ThrowIfFailed();
 			}
 		}
 
@@ -58,7 +58,7 @@ namespace Vanara.Windows.Forms
 			{
 				tProps.dwFlags = DWM_TNP.DWM_TNP_SOURCECLIENTAREAONLY;
 				tProps.fSourceClientAreaOnly = value;
-				DwmUpdateThumbnailProperties(hThumbnail, ref tProps).ThrowIfFailed();
+				DwmUpdateThumbnailProperties(hThumbnail, tProps).ThrowIfFailed();
 			}
 		}
 
@@ -71,7 +71,7 @@ namespace Vanara.Windows.Forms
 			{
 				tProps.dwFlags = DWM_TNP.DWM_TNP_RECTSOURCE;
 				tProps.rcSource = value;
-				DwmUpdateThumbnailProperties(hThumbnail, ref tProps).ThrowIfFailed();
+				DwmUpdateThumbnailProperties(hThumbnail, tProps).ThrowIfFailed();
 			}
 		}
 
@@ -81,8 +81,7 @@ namespace Vanara.Windows.Forms
 		{
 			get
 			{
-				var sz = new PInvoke.SIZE();
-				DwmQueryThumbnailSourceSize(hThumbnail, ref sz).ThrowIfFailed();
+				DwmQueryThumbnailSourceSize(hThumbnail, out var sz).ThrowIfFailed();
 				return sz;
 			}
 		}
@@ -96,7 +95,7 @@ namespace Vanara.Windows.Forms
 			{
 				tProps.dwFlags = DWM_TNP.DWM_TNP_VISIBLE;
 				tProps.fVisible = value;
-				DwmUpdateThumbnailProperties(hThumbnail, ref tProps).ThrowIfFailed();
+				DwmUpdateThumbnailProperties(hThumbnail, tProps).ThrowIfFailed();
 			}
 		}
 
@@ -116,7 +115,7 @@ namespace Vanara.Windows.Forms
 			tProps.dwFlags = DWM_TNP.DWM_TNP_VISIBLE | DWM_TNP.DWM_TNP_RECTDESTINATION;
 			tProps.fVisible = true;
 			tProps.rcDestination = destRect;
-			DwmUpdateThumbnailProperties(hThumbnail, ref tProps).ThrowIfFailed();
+			DwmUpdateThumbnailProperties(hThumbnail, tProps).ThrowIfFailed();
 		}
 
 		/// <summary>Shows the thumbnail at the location specified by <paramref name="destRect"/> and at the specified opacity.</summary>
@@ -128,7 +127,7 @@ namespace Vanara.Windows.Forms
 			tProps.fVisible = true;
 			tProps.rcDestination = destRect;
 			tProps.opacity = opacity;
-			DwmUpdateThumbnailProperties(hThumbnail, ref tProps).ThrowIfFailed();
+			DwmUpdateThumbnailProperties(hThumbnail, tProps).ThrowIfFailed();
 		}
 	}
 }

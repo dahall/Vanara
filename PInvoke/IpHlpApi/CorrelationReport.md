@@ -1,5 +1,5 @@
 ## Correlation report for iphlpapi.dll  
-### Methods (56% complete)  
+### Methods (57% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AddIPAddress](http://msdn2.microsoft.com/en-us/library/669264cd-a43c-4681-9416-2704d4232685) | iphlpapi.dll | iphlpapi.h | Vanara.PInvoke.IpHlpApi.AddIPAddress  
@@ -76,6 +76,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetIpNetEntry2](http://msdn2.microsoft.com/en-us/library/c77e01da-2d5a-4c74-b581-62fa6ee52c9e) | iphlpapi.dll | netioapi.h | Vanara.PInvoke.IpHlpApi.GetIpNetEntry2  
 [GetIpNetTable](http://msdn2.microsoft.com/en-us/library/01bcf86e-5fcc-4ce9-bb89-02d393e75d1d) | iphlpapi.dll | iphlpapi.h | Vanara.PInvoke.IpHlpApi.GetIpNetTable  
 [GetIpNetTable2](http://msdn2.microsoft.com/en-us/library/6c45d735-9a07-41ca-8d8a-919f32c98a3c) | iphlpapi.dll | netioapi.h | Vanara.PInvoke.IpHlpApi.GetIpNetTable2  
+[GetIpNetworkConnectionBandwidthEstimates](http://msdn2.microsoft.com/en-us/library/FE60AF0D-15B0-4223-8AE1-3E65483A1C5F) | Iphlpapi.dll | netioapi.h | Vanara.PInvoke.IpHlpApi.GetIpNetworkConnectionBandwidthEstimates  
 [GetIpPathEntry](http://msdn2.microsoft.com/en-us/library/8ad43a1d-428a-41cc-bba8-5eec7f87c11f) | iphlpapi.dll | netioapi.h | Vanara.PInvoke.IpHlpApi.GetIpPathEntry  
 [GetIpPathTable](http://msdn2.microsoft.com/en-us/library/e03816a4-0b86-4e0b-a45e-8148c8ba5472) | iphlpapi.dll | netioapi.h | Vanara.PInvoke.IpHlpApi.GetIpPathTable  
 [GetIpStatistics](https://www.google.com/search?num=5&q=GetIpStatistics+site%3Amicrosoft.com) | iphlpapi.dll |  |   
@@ -100,12 +101,14 @@ Native Method | Native DLL | Header | Managed Method
 [GetTcp6Table2](https://www.google.com/search?num=5&q=GetTcp6Table2+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [GetTcpStatistics](https://www.google.com/search?num=5&q=GetTcpStatistics+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [GetTcpStatisticsEx](https://www.google.com/search?num=5&q=GetTcpStatisticsEx+site%3Amicrosoft.com) | iphlpapi.dll |  |   
+[GetTcpStatisticsEx2](https://www.google.com/search?num=5&q=GetTcpStatisticsEx2+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [GetTcpTable](https://www.google.com/search?num=5&q=GetTcpTable+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [GetTcpTable2](https://www.google.com/search?num=5&q=GetTcpTable2+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [GetTeredoPort](http://msdn2.microsoft.com/en-us/library/59d3764d-e560-4474-a73e-ab50bbddbf07) | iphlpapi.dll | netioapi.h | Vanara.PInvoke.IpHlpApi.GetTeredoPort  
 [GetUdp6Table](https://www.google.com/search?num=5&q=GetUdp6Table+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [GetUdpStatistics](https://www.google.com/search?num=5&q=GetUdpStatistics+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [GetUdpStatisticsEx](https://www.google.com/search?num=5&q=GetUdpStatisticsEx+site%3Amicrosoft.com) | iphlpapi.dll |  |   
+[GetUdpStatisticsEx2](https://www.google.com/search?num=5&q=GetUdpStatisticsEx2+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [GetUdpTable](https://www.google.com/search?num=5&q=GetUdpTable+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [GetUnicastIpAddressEntry](http://msdn2.microsoft.com/en-us/library/d5475c09-05dd-41d7-80ff-63c52d78468c) | iphlpapi.dll | netioapi.h | Vanara.PInvoke.IpHlpApi.GetUnicastIpAddressEntry  
 [GetUnicastIpAddressTable](http://msdn2.microsoft.com/en-us/library/bdafc4a4-5f3c-4dd5-ba9b-4f6045a82652) | iphlpapi.dll | netioapi.h | Vanara.PInvoke.IpHlpApi.GetUnicastIpAddressTable  
@@ -141,6 +144,7 @@ Native Method | Native DLL | Header | Managed Method
 [ResolveNeighbor](https://www.google.com/search?num=5&q=ResolveNeighbor+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [RestoreMediaSense](https://www.google.com/search?num=5&q=RestoreMediaSense+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [SendARP](http://msdn2.microsoft.com/en-us/library/5cbaf45a-a64e-49fd-a920-01759b5c4f81) | iphlpapi.dll | iphlpapi.h | Vanara.PInvoke.IpHlpApi.SendARP  
+[SetCurrentThreadCompartmentId](http://msdn2.microsoft.com/en-us/library/15c634b5-c621-430d-99d7-c55ad8b6864e) | Iphlpapi.dll | netioapi.h | Vanara.PInvoke.IpHlpApi.SetCurrentThreadCompartmentId  
 [SetIfEntry](https://www.google.com/search?num=5&q=SetIfEntry+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [SetIpForwardEntry](https://www.google.com/search?num=5&q=SetIpForwardEntry+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [SetIpForwardEntry2](http://msdn2.microsoft.com/en-us/library/e11aab0b-6d6c-4e90-a60a-f7d68c09751b) | iphlpapi.dll | netioapi.h | Vanara.PInvoke.IpHlpApi.SetIpForwardEntry2  
@@ -150,10 +154,12 @@ Native Method | Native DLL | Header | Managed Method
 [SetIpStatistics](https://www.google.com/search?num=5&q=SetIpStatistics+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [SetIpStatisticsEx](https://www.google.com/search?num=5&q=SetIpStatisticsEx+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [SetIpTTL](https://www.google.com/search?num=5&q=SetIpTTL+site%3Amicrosoft.com) | iphlpapi.dll |  |   
+[SetNetworkInformation](http://msdn2.microsoft.com/en-us/library/e196e978-2eb7-4b22-af3b-e14736c5ac94) | Iphlpapi.dll | netioapi.h | Vanara.PInvoke.IpHlpApi.SetNetworkInformation  
 [SetPerTcp6ConnectionEStats](https://www.google.com/search?num=5&q=SetPerTcp6ConnectionEStats+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [SetPerTcp6ConnectionStats](https://www.google.com/search?num=5&q=SetPerTcp6ConnectionStats+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [SetPerTcpConnectionEStats](https://www.google.com/search?num=5&q=SetPerTcpConnectionEStats+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [SetPerTcpConnectionStats](https://www.google.com/search?num=5&q=SetPerTcpConnectionStats+site%3Amicrosoft.com) | iphlpapi.dll |  |   
+[SetSessionCompartmentId](http://msdn2.microsoft.com/en-us/library/d8192a40-0122-44cd-87a8-3999204322b4) | Iphlpapi.dll | netioapi.h | Vanara.PInvoke.IpHlpApi.SetSessionCompartmentId  
 [SetTcpEntry](https://www.google.com/search?num=5&q=SetTcpEntry+site%3Amicrosoft.com) | iphlpapi.dll |  |   
 [SetUnicastIpAddressEntry](http://msdn2.microsoft.com/en-us/library/906a3895-2e42-4bed-90a3-7c10487d76cb) | iphlpapi.dll | netioapi.h | Vanara.PInvoke.IpHlpApi.SetUnicastIpAddressEntry  
 [UnenableRouter](http://msdn2.microsoft.com/en-us/library/95f0387f-24e8-4382-b78e-e59bcec0f2ed) | iphlpapi.dll | iphlpapi.h | Vanara.PInvoke.IpHlpApi.UnenableRouter  
@@ -161,8 +167,6 @@ Native Method | Native DLL | Header | Managed Method
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
 [FIXED_INFO](http://msdn2.microsoft.com/en-us/library/6dcf33c6-33dc-4583-9b04-5231948d3d9a) | iptypes.h | Vanara.PInvoke.IpHlpApi+FIXED_INFO  
-[IN_ADDR](https://www.google.com/search?num=5&q=IN_ADDR+site%3Amicrosoft.com) | winsock2.h | Vanara.PInvoke.IpHlpApi+IN_ADDR  
-[IN6_ADDR](https://www.google.com/search?num=5&q=IN6_ADDR+site%3Amicrosoft.com) | winsock2.h | Vanara.PInvoke.IpHlpApi+IN6_ADDR  
 [IP_ADAPTER_ADDRESSES](http://msdn2.microsoft.com/en-us/library/a2df3749-6c75-40c0-8952-1656bbe639a6) | iptypes.h | Vanara.PInvoke.IpHlpApi+IP_ADAPTER_ADDRESSES  
 [IP_ADAPTER_ANYCAST_ADDRESS](http://msdn2.microsoft.com/en-us/library/2626fc86-e29b-4162-8625-207c709d67ed) | iptypes.h | Vanara.PInvoke.IpHlpApi+IP_ADAPTER_ANYCAST_ADDRESS  
 [IP_ADAPTER_DNS_SERVER_ADDRESS](http://msdn2.microsoft.com/en-us/library/96855386-9010-40df-8260-16b43ad6646f) | iptypes.h | Vanara.PInvoke.IpHlpApi+IP_ADAPTER_DNS_SERVER_ADDRESS  
@@ -179,7 +183,7 @@ Native Structure | Header | Managed Structure
 [IP_PER_ADAPTER_INFO](http://msdn2.microsoft.com/en-us/library/10cfdded-4184-4d34-9ccd-85446c13d497) | iptypes.h | Vanara.PInvoke.IpHlpApi+IP_PER_ADAPTER_INFO  
 [MIB_ANYCASTIPADDRESS_ROW](http://msdn2.microsoft.com/en-us/library/bdbe43b8-88aa-48af-aa6b-c88c4e8e404e) | netioapi.h | Vanara.PInvoke.IpHlpApi+MIB_ANYCASTIPADDRESS_ROW  
 [MIB_IF_ROW2](http://msdn2.microsoft.com/en-us/library/e8bb79f9-e7e9-470b-8883-36d08061661b) | netioapi.h | Vanara.PInvoke.IpHlpApi+MIB_IF_ROW2  
-[MIB_IFROW](https://www.google.com/search?num=5&q=MIB_IFROW+site%3Amicrosoft.com) | IpHlpApi.h | Vanara.PInvoke.IpHlpApi+MIB_IFROW  
+[MIB_IFROW](http://msdn2.microsoft.com/en-us/library/b08631e9-6036-4377-b2f2-4ea899acb787) | ifmib.h | Vanara.PInvoke.IpHlpApi+MIB_IFROW  
 [MIB_IFSTACK_ROW](http://msdn2.microsoft.com/en-us/library/ff559207) | Netioapi.h | Vanara.PInvoke.IpHlpApi+MIB_IFSTACK_ROW  
 [MIB_INVERTEDIFSTACK_ROW](http://msdn2.microsoft.com/en-us/library/ff559234) | Netioapi.h | Vanara.PInvoke.IpHlpApi+MIB_INVERTEDIFSTACK_ROW  
 [MIB_IP_NETWORK_CONNECTION_BANDWIDTH_ESTIMATES](http://msdn2.microsoft.com/en-us/library/E3109F71-E103-4586-9274-B83C4DC22382) | netioapi.h | Vanara.PInvoke.IpHlpApi+MIB_IP_NETWORK_CONNECTION_BANDWIDTH_ESTIMATES  
@@ -211,8 +215,3 @@ Native Structure | Header | Managed Structure
 [NL_BANDWIDTH_INFORMATION](http://msdn2.microsoft.com/en-us/library/F5D7238A-EAE0-4D60-A0A4-D839F738EF48) | nldef.h | Vanara.PInvoke.IpHlpApi+NL_BANDWIDTH_INFORMATION  
 [NL_INTERFACE_OFFLOAD_ROD](http://msdn2.microsoft.com/en-us/library/764c7f5a-00df-461d-99ee-07f9e1f77ec7) | nldef.h | Vanara.PInvoke.IpHlpApi+NL_INTERFACE_OFFLOAD_ROD  
 [SCOPE_ID](https://www.google.com/search?num=5&q=SCOPE_ID+site%3Amicrosoft.com) | ws2def.h | Vanara.PInvoke.IpHlpApi+SCOPE_ID  
-[SOCKADDR_IN](https://www.google.com/search?num=5&q=SOCKADDR_IN+site%3Amicrosoft.com) | winsock2.h | Vanara.PInvoke.IpHlpApi+SOCKADDR_IN  
-[SOCKADDR_IN6](https://www.google.com/search?num=5&q=SOCKADDR_IN6+site%3Amicrosoft.com) | winsock2.h | Vanara.PInvoke.IpHlpApi+SOCKADDR_IN6  
-[SOCKADDR_IN6_PAIR](http://msdn2.microsoft.com/en-us/library/0265f8e0-8b35-4d9d-bf22-e98e9ff36a17) | ws2ipdef.h | Vanara.PInvoke.IpHlpApi+SOCKADDR_IN6_PAIR  
-[SOCKADDR_INET](https://www.google.com/search?num=5&q=SOCKADDR_INET+site%3Amicrosoft.com) | winsock2.h | Vanara.PInvoke.IpHlpApi+SOCKADDR_INET  
-[SOCKET_ADDRESS](https://www.google.com/search?num=5&q=SOCKET_ADDRESS+site%3Amicrosoft.com) | winsock2.h | Vanara.PInvoke.IpHlpApi+SOCKET_ADDRESS  

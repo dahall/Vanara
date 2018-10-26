@@ -159,7 +159,7 @@ namespace Vanara.PInvoke
 		// pdwFlags );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("werapi.h", MSDNShortId = "8c5f08c0-e2d1-448c-9a57-ef19897f64c6")]
-		public static extern HRESULT WerGetFlags(IntPtr hProcess, out WER_FAULT_REPORTING pdwFlags);
+		public static extern HRESULT WerGetFlags(HPROCESS hProcess, out WER_FAULT_REPORTING pdwFlags);
 
 		/// <summary>
 		/// Registers a process to be included in the error report along with the main application process. Optionally specifies a thread
@@ -201,6 +201,53 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Werapi.h", MSDNShortId = "mt492585")]
 		public static extern HRESULT WerRegisterAdditionalProcess(uint processId, uint captureExtraInfoForThreadId);
+
+		/// <summary>
+		/// <para>
+		/// Registers a path relative to the local app store for the calling application where Windows Error Reporting (WER) should save a
+		/// copy of the diagnostic memory dump that WER collects when one of the processes for the application stops responding.
+		/// </para>
+		/// </summary>
+		/// <param name="localAppDataRelativePath">
+		/// <para>
+		/// The path relative to the local app store for the calling application where WER should save a copy of the diagnostic memory dump
+		/// that WER collects when one of the processes for the application stops responding. The maximum length for this relative path in
+		/// characters is <c>WER_MAX_LOCAL_DUMP_SUBPATH_LENGTH</c>, which has a value of 64. This maximum length includes the
+		/// null-termination character.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>This function returns <c>S_OK</c> on success or an error code on failure, including the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WER_E_INVALID_STATE</term>
+		/// <term>The process cannot store the memory dump, or WER cannot create a location to store the memory dump.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>The localAppDataRelativePath parameter is NULL or is longer than 64 characters.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// A packaged application calls <c>WerRegisterAppLocalDump</c> when the application launches to request a copy of the diagnostic
+		/// memory dump that WER collects if or when one of the processes for the application stops responding.
+		/// </para>
+		/// <para>
+		/// WER does not manage storage at the location that the relative path specifies or the number of memory dumps that are collected for
+		/// the application.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/werapi/nf-werapi-werregisterapplocaldump HRESULT WerRegisterAppLocalDump(
+		// PCWSTR localAppDataRelativePath );
+		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("werapi.h", MSDNShortId = "C57F5758-2BF7-444E-A22C-62C925B899A1")]
+		public static extern HRESULT WerRegisterAppLocalDump([MarshalAs(UnmanagedType.LPWStr)] string localAppDataRelativePath);
 
 		/// <summary>
 		/// <para>Registers app-specific metadata to be collected (in the form of key/value strings) when WER creates an error report.</para>
@@ -583,6 +630,20 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("werapi.h", MSDNShortId = "CE840EE8-5EB6-4F0F-935E-5DA9097E950F")]
 		public static extern HRESULT WerUnregisterAdditionalProcess(uint processId);
+
+		/// <summary>
+		/// <para>
+		/// Cancels the registration that was made by calling the WerRegisterAppLocalDump function to specify that Windows Error Reporting
+		/// (WER) should save a copy of the diagnostic memory dump that WER collects when one of the processes for the application stops responding.
+		/// </para>
+		/// </summary>
+		/// <returns>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/werapi/nf-werapi-werunregisterapplocaldump HRESULT WerUnregisterAppLocalDump( );
+		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("werapi.h", MSDNShortId = "A3AD976A-9C44-494C-ABF0-90D151001E30")]
+		public static extern HRESULT WerUnregisterAppLocalDump();
 
 		/// <summary>
 		/// <para>Removes an item of app-specific metadata being collected during error reporting for the application.</para>

@@ -1426,7 +1426,7 @@ namespace Vanara.PInvoke
 		public static extern IntPtr InternetSetStatusCallback(SafeInternetHandle hInternet, INTERNET_STATUS_CALLBACK lpfnInternetCallback);
 
 		[DllImport("inetcpl.cpl", SetLastError = true)]
-		private static extern int LaunchInternetControlPanel(IntPtr hWnd);
+		private static extern int LaunchInternetControlPanel(HWND hWnd);
 
 		/// <summary>Contains the global HTTP version.</summary>
 		/// <remarks>

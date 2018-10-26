@@ -16,18 +16,18 @@ namespace Vanara.PInvoke.Tests
 			wnd.Show();
 			Thread.Sleep(1000);
 			var bb = new DWM_BLURBEHIND(true);
-			var err = DwmEnableBlurBehindWindow(wnd.Handle, ref bb);
+			var err = DwmEnableBlurBehindWindow(wnd.Handle, bb);
 			Assert.That(err.Succeeded);
 			Thread.Sleep(1000);
 			using (var g = wnd.CreateGraphics())
 			{
 				bb.SetRegion(g, new Region(new Rectangle(0, 0, 20, 20)));
-				err = DwmEnableBlurBehindWindow(wnd.Handle, ref bb);
+				err = DwmEnableBlurBehindWindow(wnd.Handle, bb);
 				Assert.That(err.Succeeded);
 				Thread.Sleep(1000);
 			}
 			var bb2 = new DWM_BLURBEHIND(false);
-			err = DwmEnableBlurBehindWindow(wnd.Handle, ref bb2);
+			err = DwmEnableBlurBehindWindow(wnd.Handle, bb2);
 			Assert.That(err.Succeeded);
 			Thread.Sleep(1000);
 			wnd.Hide();
@@ -36,7 +36,7 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void DwmEnableCompositionTest()
 		{
-			var err = DwmEnableComposition(1);
+			var err = DwmEnableComposition(true);
 			Assert.That(err.Succeeded);
 			Assert.That(DwmIsCompositionEnabled(out var b).Succeeded);
 			Assert.That(b);
@@ -49,7 +49,7 @@ namespace Vanara.PInvoke.Tests
 			wnd.Show();
 			Thread.Sleep(1000);
 			var margins = new MARGINS(10);
-			var err = DwmExtendFrameIntoClientArea(wnd.Handle, ref margins);
+			var err = DwmExtendFrameIntoClientArea(wnd.Handle, margins);
 			Assert.That(err.Succeeded);
 			wnd.Hide();
 		}
@@ -84,7 +84,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			var err = DwmpGetColorizationParameters(out var p);
 			Assert.That(err.Succeeded);
-			err = DwmpSetColorizationParameters(ref p, 0);
+			err = DwmpSetColorizationParameters(p, 0);
 			Assert.That(err.Succeeded);
 		}
 

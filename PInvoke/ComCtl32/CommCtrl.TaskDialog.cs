@@ -2,12 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
-using static Vanara.PInvoke.Kernel32;
-using static Vanara.PInvoke.Macros;
 using static Vanara.PInvoke.User32_Gdi;
-
-// ReSharper disable InconsistentNaming
-// ReSharper disable FieldCanBeMadeReadOnly.Global
 
 namespace Vanara.PInvoke
 {
@@ -22,9 +17,13 @@ namespace Vanara.PInvoke
 		/// <returns>A HRESULT value. The return value is specific to the message being processed.</returns>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760542")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate HRESULT TaskDialogCallbackProc([In] IntPtr hwnd, [In] TaskDialogNotification msg, [In] IntPtr wParam, [In] IntPtr lParam, [In] IntPtr refData);
+		public delegate HRESULT TaskDialogCallbackProc([In] HWND hwnd, [In] TaskDialogNotification msg, [In] IntPtr wParam, [In] IntPtr lParam, [In] IntPtr refData);
 
-		/// <summary>Specifies the push buttons displayed in the task dialog. If no common buttons are specified and no custom buttons are specified using the cButtons and pButtons members, the task dialog will contain the OK button by default. This parameter may be a combination of flags</summary>
+		/// <summary>
+		/// Specifies the push buttons displayed in the task dialog. If no common buttons are specified and no custom buttons are specified
+		/// using the cButtons and pButtons members, the task dialog will contain the OK button by default. This parameter may be a
+		/// combination of flags
+		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760540")]
 		[Flags]
 		public enum TASKDIALOG_COMMON_BUTTON_FLAGS
@@ -39,7 +38,8 @@ namespace Vanara.PInvoke
 			TDCBF_NO_BUTTON = 0x0004,
 
 			/// <summary>
-			/// The task dialog contains the push button: Cancel. If this button is specified, the task dialog will respond to typical cancel actions (Alt-F4 and Escape).
+			/// The task dialog contains the push button: Cancel. If this button is specified, the task dialog will respond to typical cancel
+			/// actions (Alt-F4 and Escape).
 			/// </summary>
 			TDCBF_CANCEL_BUTTON = 0x0008,
 
@@ -72,34 +72,68 @@ namespace Vanara.PInvoke
 		[Flags]
 		public enum TASKDIALOG_FLAGS
 		{
-			/// <summary>Enables hyperlink processing for the strings specified in the pszContent, pszExpandedInformation and pszFooter members. When enabled, these members may point to strings that contain hyperlinks in the following form:
-			/// <code><![CDATA[<A HREF = "executablestring" > Hyperlink Text</A>]]></code>
-			/// <note type="warning">Enabling hyperlinks when using content from an unsafe source may cause security vulnerabilities.</note>
-			/// <note>Task Dialogs will not actually execute any hyperlinks.Hyperlink execution must be handled in the callback function specified by pfCallback.For more details, see TaskDialogCallbackProc.</note></summary>
+			/// <summary>
+			/// Enables hyperlink processing for the strings specified in the pszContent, pszExpandedInformation and pszFooter members. When
+			/// enabled, these members may point to strings that contain hyperlinks in the following form:
+			/// <code>
+			/// <![CDATA[<A HREF = "executablestring" > Hyperlink Text</A>]]>
+			/// </code>
+			/// <note type="warning">Enabling hyperlinks when using content from an unsafe source may cause security
+			/// vulnerabilities.</note><note>Task Dialogs will not actually execute any hyperlinks.Hyperlink execution must be handled in the
+			/// callback function specified by pfCallback.For more details, see TaskDialogCallbackProc.</note>
+			/// </summary>
 			TDF_ENABLE_HYPERLINKS = 0x0001,
 
-			/// <summary>Indicates that the dialog should use the icon referenced by the handle in the hMainIcon member as the primary icon in the task dialog. If this flag is specified, the pszMainIcon member is ignored.</summary>
+			/// <summary>
+			/// Indicates that the dialog should use the icon referenced by the handle in the hMainIcon member as the primary icon in the
+			/// task dialog. If this flag is specified, the pszMainIcon member is ignored.
+			/// </summary>
 			TDF_USE_HICON_MAIN = 0x0002,
 
-			/// <summary>Indicates that the dialog should use the icon referenced by the handle in the hFooterIcon member as the footer icon in the task dialog. If this flag is specified, the pszFooterIcon member is ignored.</summary>
+			/// <summary>
+			/// Indicates that the dialog should use the icon referenced by the handle in the hFooterIcon member as the footer icon in the
+			/// task dialog. If this flag is specified, the pszFooterIcon member is ignored.
+			/// </summary>
 			TDF_USE_HICON_FOOTER = 0x0004,
 
-			/// <summary>Indicates that the dialog should be able to be closed using Alt-F4, Escape, and the title bar's close button even if no cancel button is specified in either the dwCommonButtons or pButtons members.</summary>
+			/// <summary>
+			/// Indicates that the dialog should be able to be closed using Alt-F4, Escape, and the title bar's close button even if no
+			/// cancel button is specified in either the dwCommonButtons or pButtons members.
+			/// </summary>
 			TDF_ALLOW_DIALOG_CANCELLATION = 0x0008,
 
-			/// <summary>Indicates that the buttons specified in the pButtons member are to be displayed as command links (using a standard task dialog glyph) instead of push buttons. When using command links, all characters up to the first new line character in the pszButtonText member will be treated as the command link's main text, and the remainder will be treated as the command link's note. This flag is ignored if the cButtons member is zero.</summary>
+			/// <summary>
+			/// Indicates that the buttons specified in the pButtons member are to be displayed as command links (using a standard task
+			/// dialog glyph) instead of push buttons. When using command links, all characters up to the first new line character in the
+			/// pszButtonText member will be treated as the command link's main text, and the remainder will be treated as the command link's
+			/// note. This flag is ignored if the cButtons member is zero.
+			/// </summary>
 			TDF_USE_COMMAND_LINKS = 0x0010,
 
-			/// <summary>Indicates that the buttons specified in the pButtons member are to be displayed as command links (without a glyph) instead of push buttons. When using command links, all characters up to the first new line character in the pszButtonText member will be treated as the command link's main text, and the remainder will be treated as the command link's note. This flag is ignored if the cButtons member is zero.</summary>
+			/// <summary>
+			/// Indicates that the buttons specified in the pButtons member are to be displayed as command links (without a glyph) instead of
+			/// push buttons. When using command links, all characters up to the first new line character in the pszButtonText member will be
+			/// treated as the command link's main text, and the remainder will be treated as the command link's note. This flag is ignored
+			/// if the cButtons member is zero.
+			/// </summary>
 			TDF_USE_COMMAND_LINKS_NO_ICON = 0x0020,
 
-			/// <summary>Indicates that the string specified by the pszExpandedInformation member is displayed at the bottom of the dialog's footer area instead of immediately after the dialog's content. This flag is ignored if the pszExpandedInformation member is NULL.</summary>
+			/// <summary>
+			/// Indicates that the string specified by the pszExpandedInformation member is displayed at the bottom of the dialog's footer
+			/// area instead of immediately after the dialog's content. This flag is ignored if the pszExpandedInformation member is NULL.
+			/// </summary>
 			TDF_EXPAND_FOOTER_AREA = 0x0040,
 
-			/// <summary>Indicates that the string specified by the pszExpandedInformation member is displayed when the dialog is initially displayed. This flag is ignored if the pszExpandedInformation member is NULL.</summary>
+			/// <summary>
+			/// Indicates that the string specified by the pszExpandedInformation member is displayed when the dialog is initially displayed.
+			/// This flag is ignored if the pszExpandedInformation member is NULL.
+			/// </summary>
 			TDF_EXPANDED_BY_DEFAULT = 0x0080,
 
-			/// <summary>Indicates that the verification checkbox in the dialog is checked when the dialog is initially displayed. This flag is ignored if the pszVerificationText parameter is NULL.</summary>
+			/// <summary>
+			/// Indicates that the verification checkbox in the dialog is checked when the dialog is initially displayed. This flag is
+			/// ignored if the pszVerificationText parameter is NULL.
+			/// </summary>
 			TDF_VERIFICATION_FLAG_CHECKED = 0x0100,
 
 			/// <summary>Indicates that a Progress Bar is to be displayed.</summary>
@@ -111,7 +145,10 @@ namespace Vanara.PInvoke
 			/// <summary>Indicates that the task dialog's callback is to be called approximately every 200 milliseconds.</summary>
 			TDF_CALLBACK_TIMER = 0x0800,
 
-			/// <summary>Indicates that the task dialog is positioned (centered) relative to the window specified by hwndParent. If the flag is not supplied (or no hwndParent member is specified), the task dialog is positioned (centered) relative to the monitor.</summary>
+			/// <summary>
+			/// Indicates that the task dialog is positioned (centered) relative to the window specified by hwndParent. If the flag is not
+			/// supplied (or no hwndParent member is specified), the task dialog is positioned (centered) relative to the monitor.
+			/// </summary>
 			TDF_POSITION_RELATIVE_TO_WINDOW = 0x1000,
 
 			/// <summary>Indicates that text is displayed reading right to left.</summary>
@@ -127,7 +164,8 @@ namespace Vanara.PInvoke
 			TDF_NO_SET_FOREGROUND = 0x00010000,
 
 			/// <summary>
-			/// Indicates that the width of the task dialog is determined by the width of its content area. This flag is ignored if cxWidth is not set to 0.
+			/// Indicates that the width of the task dialog is determined by the width of its content area. This flag is ignored if cxWidth
+			/// is not set to 0.
 			/// </summary>
 			TDF_SIZE_TO_CONTENT = 0x01000000
 		}
@@ -141,6 +179,39 @@ namespace Vanara.PInvoke
 
 			/// <summary>Footer icon.</summary>
 			TDIE_ICON_FOOTER
+		}
+
+		/// <summary>The System icons the TaskDialog supports for <see cref="TASKDIALOGCONFIG.footerIcon"/> and <see cref="TASKDIALOGCONFIG.mainIcon"/>.</summary>
+		[PInvokeData("Commctrl.h", MSDNShortId = "bb787473")]
+		[SuppressMessage("Microsoft.Design", "CA1028:EnumStorageShouldBeInt32")] // Type comes from CommCtrl.h
+		public enum TaskDialogIcon : uint
+		{
+			/// <summary>An exclamation-point icon appears in the task dialog.</summary>
+			TD_WARNING_ICON = 0xFFFF, // MAKEINTRESOURCEW(-1)
+
+			/// <summary>A stop-sign icon appears in the task dialog.</summary>
+			TD_ERROR_ICON = 0xFFFE, // MAKEINTRESOURCEW(-2)
+
+			/// <summary>An icon consisting of a lowercase letter i in a circle appears in the task dialog.</summary>
+			TD_INFORMATION_ICON = 0xFFFD, // MAKEINTRESOURCEW(-3)
+
+			/// <summary>A shield icon appears in the task dialog.</summary>
+			TD_SHIELD_ICON = 0xFFFC, // MAKEINTRESOURCEW(-4)
+
+			/// <summary>Shield icon on a blue background. Only available on Windows 8 and later.</summary>
+			TD_SHIELDBLUE_ICON = 0xFFFB, // MAKEINTRESOURCEW(-5)
+
+			/// <summary>Warning Shield icon on a yellow background. Only available on Windows 8 and later.</summary>
+			TD_SECURITYWARNING_ICON = 0xFFFA, // MAKEINTRESOURCEW(-6)
+
+			/// <summary>Error Shield icon on a red background. Only available on Windows 8 and later.</summary>
+			TD_SECURITYERROR_ICON = 0xFFF9, // MAKEINTRESOURCEW(-7)
+
+			/// <summary>Success Shield icon on a green background. Only available on Windows 8 and later.</summary>
+			TD_SECURITYSUCCESS_ICON = 0xFFF8, // MAKEINTRESOURCEW(-8)
+
+			/// <summary>Shield icon on a gray background. Only available on Windows 8 and later.</summary>
+			TD_SHIELDGRAY_ICON = 0xFFF7, // MAKEINTRESOURCEW(-9)
 		}
 
 		/// <summary>TaskDialogMessage taken from CommCtrl.h.</summary>
@@ -186,136 +257,198 @@ namespace Vanara.PInvoke
 			/// <summary>Update the text of an element (no effect if originally set as null).</summary>
 			TDM_UPDATE_ELEMENT_TEXT = WindowMessage.WM_USER + 114, // wParam = element (TASKDIALOG_ELEMENTS), lParam = new element text (LPCWSTR)
 
-			/// <summary>Designate whether a given Task Dialog button or command link should have a User Account Control (UAC) shield icon.</summary>
+			/// <summary>
+			/// Designate whether a given Task Dialog button or command link should have a User Account Control (UAC) shield icon.
+			/// </summary>
 			TDM_SET_BUTTON_ELEVATION_REQUIRED_STATE = WindowMessage.WM_USER + 115, // wParam = Button ID, lParam = 0 (elevation not required), lParam != 0 (elevation required)
 
 			/// <summary>Refreshes the icon of the task dialog.</summary>
 			TDM_UPDATE_ICON = WindowMessage.WM_USER + 116 // wParam = icon element (TASKDIALOG_ICON_ELEMENTS), lParam = new icon (hIcon if TDF_USE_HICON_* was set, PCWSTR otherwise)
 		}
 
-		/// <summary>The System icons the TaskDialog supports for <see cref="TASKDIALOGCONFIG.footerIcon"/> and <see cref="TASKDIALOGCONFIG.mainIcon"/>.</summary>
-		[PInvokeData("Commctrl.h", MSDNShortId = "bb787473")]
-		[SuppressMessage("Microsoft.Design", "CA1028:EnumStorageShouldBeInt32")] // Type comes from CommCtrl.h
-		public enum TaskDialogIcon : uint
-		{
-			/// <summary>An exclamation-point icon appears in the task dialog.</summary>
-			TD_WARNING_ICON = 0xFFFF, // MAKEINTRESOURCEW(-1)
-
-			/// <summary>A stop-sign icon appears in the task dialog.</summary>
-			TD_ERROR_ICON = 0xFFFE, // MAKEINTRESOURCEW(-2)
-
-			/// <summary>An icon consisting of a lowercase letter i in a circle appears in the task dialog.</summary>
-			TD_INFORMATION_ICON = 0xFFFD, // MAKEINTRESOURCEW(-3)
-
-			/// <summary>A shield icon appears in the task dialog.</summary>
-			TD_SHIELD_ICON = 0xFFFC, // MAKEINTRESOURCEW(-4)
-
-			/// <summary>Shield icon on a blue background. Only available on Windows 8 and later.</summary>
-			TD_SHIELDBLUE_ICON = 0xFFFB, // MAKEINTRESOURCEW(-5)
-
-			/// <summary>Warning Shield icon on a yellow background. Only available on Windows 8 and later.</summary>
-			TD_SECURITYWARNING_ICON = 0xFFFA, // MAKEINTRESOURCEW(-6)
-
-			/// <summary>Error Shield icon on a red background. Only available on Windows 8 and later.</summary>
-			TD_SECURITYERROR_ICON = 0xFFF9, // MAKEINTRESOURCEW(-7)
-
-			/// <summary>Success Shield icon on a green background. Only available on Windows 8 and later.</summary>
-			TD_SECURITYSUCCESS_ICON = 0xFFF8, // MAKEINTRESOURCEW(-8)
-
-			/// <summary>Shield icon on a gray background. Only available on Windows 8 and later.</summary>
-			TD_SHIELDGRAY_ICON = 0xFFF7, // MAKEINTRESOURCEW(-9)
-		}
-
 		/// <summary>Task Dialog callback notifications.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb787473")]
 		public enum TaskDialogNotification : uint
 		{
-			/// <summary>Sent by the task dialog after the dialog has been created and before it is displayed. This notification code is received only through the task dialog callback function, which can be registered using the TaskDialogIndirect method.</summary>
+			/// <summary>
+			/// Sent by the task dialog after the dialog has been created and before it is displayed. This notification code is received only
+			/// through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
+			/// </summary>
 			TDN_CREATED = 0,
 
 			/// <summary>
-			/// Sent by a task dialog when navigation has occurred. This notification code is received only through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
+			/// Sent by a task dialog when navigation has occurred. This notification code is received only through the task dialog callback
+			/// function, which can be registered using the TaskDialogIndirect method.
 			/// </summary>
 			TDN_NAVIGATED = 1,
 
 			/// <summary>
-			/// Sent by a task dialog when the user selects a button or command link in the task dialog. This notification code is received only through the task dialog callback function, which can be registered using the TaskDialogIndirect method. To prevent the task dialog from closing, the application must return S_FALSE, otherwise the task dialog is closed and the button ID is returned via the original application call.
+			/// Sent by a task dialog when the user selects a button or command link in the task dialog. This notification code is received
+			/// only through the task dialog callback function, which can be registered using the TaskDialogIndirect method. To prevent the
+			/// task dialog from closing, the application must return S_FALSE, otherwise the task dialog is closed and the button ID is
+			/// returned via the original application call.
 			/// </summary>
 			TDN_BUTTON_CLICKED = 2,
 
 			/// <summary>
-			/// Sent by a task dialog when the user clicks a hyperlink in the task dialog content. This notification code is received only through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
+			/// Sent by a task dialog when the user clicks a hyperlink in the task dialog content. This notification code is received only
+			/// through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
 			/// </summary>
 			TDN_HYPERLINK_CLICKED = 3,
 
 			/// <summary>
-			/// Sent by a task dialog approximately every 200 milliseconds. This notification code is sent when the TDF_CALLBACK_TIMER flag has been set in the dwFlags member of the TASKDIALOGCONFIG structure that was passed to the TaskDialogIndirect function. This notification code is received only through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
+			/// Sent by a task dialog approximately every 200 milliseconds. This notification code is sent when the TDF_CALLBACK_TIMER flag
+			/// has been set in the dwFlags member of the TASKDIALOGCONFIG structure that was passed to the TaskDialogIndirect function. This
+			/// notification code is received only through the task dialog callback function, which can be registered using the
+			/// TaskDialogIndirect method.
 			/// </summary>
 			TDN_TIMER = 4,
 
-			/// <summary>Sent by a task dialog when it is destroyed and its window handle is no longer valid. This notification code is received only through the task dialog callback function, which can be registered using the TaskDialogIndirect method.</summary>
+			/// <summary>
+			/// Sent by a task dialog when it is destroyed and its window handle is no longer valid. This notification code is received only
+			/// through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
+			/// </summary>
 			TDN_DESTROYED = 5,
 
 			/// <summary>
-			/// Sent by a task dialog when the user selects a radio button or command link in the task dialog. This notification code is received only through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
+			/// Sent by a task dialog when the user selects a radio button or command link in the task dialog. This notification code is
+			/// received only through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
 			/// </summary>
 			TDN_RADIO_BUTTON_CLICKED = 6,
 
-			/// <summary>Sent by a task dialog after the dialog has been created and before it is displayed. This notification code is received only through the task dialog callback function, which can be registered using the TaskDialogIndirect method.</summary>
+			/// <summary>
+			/// Sent by a task dialog after the dialog has been created and before it is displayed. This notification code is received only
+			/// through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
+			/// </summary>
 			TDN_DIALOG_CONSTRUCTED = 7,
 
 			/// <summary>
-			/// Sent by a task dialog when the user clicks the task dialog verification check box. This notification code is received only through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
+			/// Sent by a task dialog when the user clicks the task dialog verification check box. This notification code is received only
+			/// through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
 			/// </summary>
 			TDN_VERIFICATION_CLICKED = 8,
 
 			/// <summary>
-			/// Sent by a task dialog when the user presses F1 on the keyboard while the dialog has focus. This notification code is received only through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
+			/// Sent by a task dialog when the user presses F1 on the keyboard while the dialog has focus. This notification code is received
+			/// only through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
 			/// </summary>
 			TDN_HELP = 9,
 
 			/// <summary>
-			/// Sent by the task dialog when the user clicks on the dialog's expando button. This notification is received only through the task dialog callback function, which can be registered using the TaskDialogIndirect method.
+			/// Sent by the task dialog when the user clicks on the dialog's expando button. This notification is received only through the
+			/// task dialog callback function, which can be registered using the TaskDialogIndirect method.
 			/// </summary>
 			TDN_EXPANDO_BUTTON_CLICKED = 10
 		}
 
 		/// <summary>
-		/// The TaskDialog function creates, displays, and operates a task dialog. The task dialog contains application-defined message text and title, icons, and any combination of predefined push buttons. This function does not support the registration of a callback function to receive notifications.
+		/// The TaskDialog function creates, displays, and operates a task dialog. The task dialog contains application-defined message text
+		/// and title, icons, and any combination of predefined push buttons. This function does not support the registration of a callback
+		/// function to receive notifications.
 		/// </summary>
-		/// <param name="hwndParent">Handle to the owner window of the task dialog to be created. If this parameter is NULL, the task dialog has no owner window.</param>
-		/// <param name="hInstance">Handle to the module that contains the icon resource identified by the pszIcon member, and the string resources identified by the pszWindowTitle and pszMainInstruction members. If this parameter is NULL, pszIcon must be NULL or a pointer to a null-terminated, Unicode string that contains a system resource identifier, for example, TD_ERROR_ICON.</param>
-		/// <param name="pszWindowTitle">Pointer to the string to be used for the task dialog title. This parameter is a null-terminated, Unicode string that contains either text, or an integer resource identifier passed through the MAKEINTRESOURCE macro. If this parameter is NULL, the filename of the executable program is used.</param>
-		/// <param name="pszMainInstruction">Pointer to the string to be used for the main instruction. This parameter is a null-terminated, Unicode string that contains either text, or an integer resource identifier passed through the MAKEINTRESOURCE macro. This parameter can be NULL if no main instruction is wanted.</param>
-		/// <param name="pszContent">Pointer to a string used for additional text that appears below the main instruction, in a smaller font. This parameter is a null-terminated, Unicode string that contains either text, or an integer resource identifier passed through the MAKEINTRESOURCE macro. Can be NULL if no additional text is wanted.</param>
-		/// <param name="dwCommonButtons">Specifies the push buttons displayed in the dialog box. This parameter may be a combination of flags from the following group.</param>
-		/// <param name="pszIcon">Pointer to a string that identifies the icon to display in the task dialog. This parameter must be an integer resource identifier passed to the MAKEINTRESOURCE macro or one of the following predefined values. If this parameter is NULL, no icon will be displayed. If the hInstance parameter is NULL and one of the predefined values is not used, the TaskDialog function fails.</param>
-		/// <param name="pnButton">When this function returns, contains a pointer to an integer location that receives one of the standard button result values.</param>
-		/// <returns>This function can return one of these values.
+		/// <param name="hwndParent">
+		/// Handle to the owner window of the task dialog to be created. If this parameter is NULL, the task dialog has no owner window.
+		/// </param>
+		/// <param name="hInstance">
+		/// Handle to the module that contains the icon resource identified by the pszIcon member, and the string resources identified by the
+		/// pszWindowTitle and pszMainInstruction members. If this parameter is NULL, pszIcon must be NULL or a pointer to a null-terminated,
+		/// Unicode string that contains a system resource identifier, for example, TD_ERROR_ICON.
+		/// </param>
+		/// <param name="pszWindowTitle">
+		/// Pointer to the string to be used for the task dialog title. This parameter is a null-terminated, Unicode string that contains
+		/// either text, or an integer resource identifier passed through the MAKEINTRESOURCE macro. If this parameter is NULL, the filename
+		/// of the executable program is used.
+		/// </param>
+		/// <param name="pszMainInstruction">
+		/// Pointer to the string to be used for the main instruction. This parameter is a null-terminated, Unicode string that contains
+		/// either text, or an integer resource identifier passed through the MAKEINTRESOURCE macro. This parameter can be NULL if no main
+		/// instruction is wanted.
+		/// </param>
+		/// <param name="pszContent">
+		/// Pointer to a string used for additional text that appears below the main instruction, in a smaller font. This parameter is a
+		/// null-terminated, Unicode string that contains either text, or an integer resource identifier passed through the MAKEINTRESOURCE
+		/// macro. Can be NULL if no additional text is wanted.
+		/// </param>
+		/// <param name="dwCommonButtons">
+		/// Specifies the push buttons displayed in the dialog box. This parameter may be a combination of flags from the following group.
+		/// </param>
+		/// <param name="pszIcon">
+		/// Pointer to a string that identifies the icon to display in the task dialog. This parameter must be an integer resource identifier
+		/// passed to the MAKEINTRESOURCE macro or one of the following predefined values. If this parameter is NULL, no icon will be
+		/// displayed. If the hInstance parameter is NULL and one of the predefined values is not used, the TaskDialog function fails.
+		/// </param>
+		/// <param name="pnButton">
+		/// When this function returns, contains a pointer to an integer location that receives one of the standard button result values.
+		/// </param>
+		/// <returns>
+		/// This function can return one of these values.
 		/// <list type="table">
-		/// <listheader><term>Return code</term><term>Description</term></listheader>
-		/// <item><term>S_OK</term><term>The operation completed successfully.</term></item>
-		/// <item><term>E_OUTOFMEMORY</term><term>There is insufficient memory to complete the operation.</term></item>
-		/// <item><term>E_INVALIDARG</term><term>One or more arguments are not valid.</term></item>
-		/// <item><term>E_FAIL</term><term>The operation failed.</term></item>
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>The operation completed successfully.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>There is insufficient memory to complete the operation.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One or more arguments are not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_FAIL</term>
+		/// <term>The operation failed.</term>
+		/// </item>
 		/// </list>
 		/// </returns>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760540")]
 		[DllImport(Lib.ComCtl32, CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public static extern HRESULT TaskDialog(HWND hwndParent, HINSTANCE hInstance, string pszWindowTitle, string pszMainInstruction, string pszContent, TASKDIALOG_COMMON_BUTTON_FLAGS dwCommonButtons, IntPtr pszIcon, out int pnButton);
+		public static extern HRESULT TaskDialog(HWND hwndParent, HINSTANCE hInstance, string pszWindowTitle, string pszMainInstruction, string pszContent, TASKDIALOG_COMMON_BUTTON_FLAGS dwCommonButtons, SafeResourceId pszIcon, out int pnButton);
 
-		/// <summary>The TaskDialogIndirect function creates, displays, and operates a task dialog. The task dialog contains application-defined icons, messages, title, verification check box, command links, push buttons, and radio buttons. This function can register a callback function to receive notification messages.</summary>
+		/// <summary>
+		/// The TaskDialogIndirect function creates, displays, and operates a task dialog. The task dialog contains application-defined
+		/// icons, messages, title, verification check box, command links, push buttons, and radio buttons. This function can register a
+		/// callback function to receive notification messages.
+		/// </summary>
 		/// <param name="pTaskConfig">Pointer to a TASKDIALOGCONFIG structure that contains information used to display the task dialog.</param>
-		/// <param name="pnButton">Address of a variable that receives one of the button IDs specified in the pButtons member of the pTaskConfig parameter or a standard button ID value.</param>
-		/// <param name="pnRadioButton">Address of a variable that receives one of the button IDs specified in the pRadioButtons member of the pTaskConfig parameter. If this parameter is NULL, no value is returned.</param>
-		/// <param name="pfVerificationFlagChecked">Address of a variable that receives a value indicating if the verification checkbox was checked when the dialog was dismissed.</param>
-		/// <returns>This function can return one of these values.
+		/// <param name="pnButton">
+		/// Address of a variable that receives one of the button IDs specified in the pButtons member of the pTaskConfig parameter or a
+		/// standard button ID value.
+		/// </param>
+		/// <param name="pnRadioButton">
+		/// Address of a variable that receives one of the button IDs specified in the pRadioButtons member of the pTaskConfig parameter. If
+		/// this parameter is NULL, no value is returned.
+		/// </param>
+		/// <param name="pfVerificationFlagChecked">
+		/// Address of a variable that receives a value indicating if the verification checkbox was checked when the dialog was dismissed.
+		/// </param>
+		/// <returns>
+		/// This function can return one of these values.
 		/// <list type="table">
-		/// <listheader><term>Return code</term><term>Description</term></listheader>
-		/// <item><term>S_OK</term><term>The operation completed successfully.</term></item>
-		/// <item><term>E_OUTOFMEMORY</term><term>There is insufficient memory to complete the operation.</term></item>
-		/// <item><term>E_INVALIDARG</term><term>One or more arguments are not valid.</term></item>
-		/// <item><term>E_FAIL</term><term>The operation failed.</term></item>
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>The operation completed successfully.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_OUTOFMEMORY</term>
+		/// <term>There is insufficient memory to complete the operation.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_INVALIDARG</term>
+		/// <term>One or more arguments are not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>E_FAIL</term>
+		/// <term>The operation failed.</term>
+		/// </item>
 		/// </list>
 		/// </returns>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760544")]
@@ -323,7 +456,8 @@ namespace Vanara.PInvoke
 		public static extern HRESULT TaskDialogIndirect(TASKDIALOGCONFIG pTaskConfig, out int pnButton, out int pnRadioButton, [MarshalAs(UnmanagedType.Bool)] out bool pfVerificationFlagChecked);
 
 		/// <summary>
-		/// The TASKDIALOG_BUTTON structure contains information used to display a button in a task dialog. The TASKDIALOGCONFIG structure uses this structure.
+		/// The TASKDIALOG_BUTTON structure contains information used to display a button in a task dialog. The TASKDIALOGCONFIG structure
+		/// uses this structure.
 		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb787475")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -331,7 +465,12 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Indicates the value to be returned when this button is selected.</summary>
 			public int nButtonID;
-			/// <summary>Pointer that references the string to be used to label the button. This parameter can be either a null-terminated string or an integer resource identifier passed to the MAKEINTRESOURCE macro. When using Command Links, you delineate the command from the note by placing a new line character in the string.</summary>
+
+			/// <summary>
+			/// Pointer that references the string to be used to label the button. This parameter can be either a null-terminated string or
+			/// an integer resource identifier passed to the MAKEINTRESOURCE macro. When using Command Links, you delineate the command from
+			/// the note by placing a new line character in the string.
+			/// </summary>
 			public IntPtr pszButtonText;
 		}
 
@@ -348,14 +487,14 @@ namespace Vanara.PInvoke
 			public uint cbSize;
 
 			/// <summary>Handle to the parent window. This member can be NULL.</summary>
-			public IntPtr hwndParent;
+			public HWND hwndParent;
 
 			/// <summary>
 			/// Handle to the module that contains the icon resource identified by the pszMainIcon or pszFooterIcon members, and the string
 			/// resources identified by the pszWindowTitle, pszMainInstruction, pszContent, pszVerificationText, pszExpandedInformation,
 			/// pszExpandedControlText, pszCollapsedControlText or pszFooter members.
 			/// </summary>
-			public IntPtr hInstance;
+			public HINSTANCE hInstance;
 
 			/// <summary>Specifies the behavior of the task dialog. This parameter can be a combination of flags.</summary>
 			public TASKDIALOG_FLAGS dwFlags;

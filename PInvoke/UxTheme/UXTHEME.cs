@@ -34,7 +34,7 @@ namespace Vanara.PInvoke
 		/// <returns>Undocumented</returns>
 		[PInvokeData("Uxtheme.h")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
-		public delegate int DTT_CALLBACK_PROC(IntPtr hdc, string pszText, int cchText, ref RECT prc, DrawTextFlags dwFlags, IntPtr lParam);
+		public delegate int DTT_CALLBACK_PROC(HDC hdc, string pszText, int cchText, ref RECT prc, DrawTextFlags dwFlags, IntPtr lParam);
 
 		/// <summary>Flags that specify the selected options for DTBGOPTS.</summary>
 		[PInvokeData("Uxtheme.h")]
@@ -1570,7 +1570,7 @@ namespace Vanara.PInvoke
 		{
 			if (Environment.OSVersion.Version.Major < 6)
 			{
-				if (0 != GetThemeIntListPreVista(hTheme, partId, stateId, propId, out INTLIST_OLD l))
+				if (0 != GetThemeIntListPreVista(hTheme, partId, stateId, propId, out var l))
 					return null;
 				var outlist = new int[l.iValueCount];
 				Array.Copy(l.iValues, outlist, l.iValueCount);
@@ -1578,7 +1578,7 @@ namespace Vanara.PInvoke
 			}
 			else
 			{
-				if (0 != GetThemeIntList(hTheme, partId, stateId, propId, out INTLIST l))
+				if (0 != GetThemeIntList(hTheme, partId, stateId, propId, out var l))
 					return null;
 				var outlist = new int[l.iValueCount];
 				Array.Copy(l.iValues, outlist, l.iValueCount);
@@ -1758,11 +1758,11 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>TMT_ROUNDCORNERWIDTH</term>
-		/// <term>The roundness (0-100%) of the part&amp;#39;s corners.</term>
+		/// <term>The roundness (0-100%) of the part's corners.</term>
 		/// </item>
 		/// <item>
 		/// <term>TMT_ROUNDCORNERHEIGHT</term>
-		/// <term>The roundness (0-100%) of the part&amp;#39;s corners.</term>
+		/// <term>The roundness (0-100%) of the part's corners.</term>
 		/// </item>
 		/// <item>
 		/// <term>TMT_SATURATION</term>
@@ -1774,7 +1774,7 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>TMT_TRUESIZESTRETCHMARK</term>
-		/// <term>The percentage of a true-size image&amp;#39;s original size at which the image will be stretched.</term>
+		/// <term>The percentage of a true-size image's original size at which the image will be stretched.</term>
 		/// </item>
 		/// <item>
 		/// <term>TMT_WIDTH</term>
@@ -2511,7 +2511,7 @@ namespace Vanara.PInvoke
 		// HRGN hrgn, _In_ POINT ptTest, _Out_ WORD *pwHitTestCode); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759808(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759808")]
-		public static extern HRESULT HitTestThemeBackground(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, HitTestOptions dwOptions, ref RECT pRect, SafeHRGN hrgn, Point ptTest, out HitTestValues pwHitTestCode);
+		public static extern HRESULT HitTestThemeBackground(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, HitTestOptions dwOptions, ref RECT pRect, HRGN hrgn, Point ptTest, out HitTestValues pwHitTestCode);
 
 		/// <summary>Reports whether the current application's user interface displays using visual styles.</summary>
 		/// <returns>
@@ -3095,10 +3095,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Initializes a new instance of the <see cref="DTTOPTS"/> struct.</summary>
 			/// <param name="shouldBeNull">This value must be specified to initialize. Use null.</param>
-			public DTTOPTS(byte? shouldBeNull) : this()
-			{
-				dwSize = (uint)Marshal.SizeOf(typeof(DTTOPTS));
-			}
+			public DTTOPTS(byte? shouldBeNull) : this() => dwSize = (uint)Marshal.SizeOf(typeof(DTTOPTS));
 
 			/// <summary>Gets or sets a value that specifies an alternate color property to use when drawing text.</summary>
 			/// <value>The alternate color of the text.</value>
@@ -3269,10 +3266,7 @@ namespace Vanara.PInvoke
 			/// <summary>Gets an instance with default values set.</summary>
 			public static DTTOPTS Default => new DTTOPTS(null);
 
-			private void SetFlag(DrawThemeTextOptionsMasks f, bool value)
-			{
-				dwMasks = dwMasks.SetFlags(f, value);
-			}
+			private void SetFlag(DrawThemeTextOptionsMasks f, bool value) => dwMasks = dwMasks.SetFlags(f, value);
 		}
 
 		/// <summary>Contains an array or list of <c>int</c> data items from a visual style.</summary>
@@ -3484,19 +3478,23 @@ namespace Vanara.PInvoke
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator DTBGOPTS(Rectangle clipRectangle) => new DTBGOPTS(clipRectangle);
 
-			private void SetFlag(DrawThemeBackgroundFlags f, bool value)
-			{
-				dwFlags = dwFlags.SetFlags(f, value);
-			}
+			private void SetFlag(DrawThemeBackgroundFlags f, bool value) => dwFlags = dwFlags.SetFlags(f, value);
 		}
 
 		/// <summary>Represents a safe handle for a theme. Use in place of HTHEME.</summary>
-		public class SafeHTHEME : HTHEME
+		public class SafeHTHEME : HANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHTHEME"/> class.</summary>
 			/// <param name="hTheme">The h theme.</param>
 			/// <param name="ownsHandle">if set to <c>true</c> [owns handle].</param>
 			public SafeHTHEME(IntPtr hTheme, bool ownsHandle = true) : base(hTheme, ownsHandle) { }
+
+			private SafeHTHEME() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHTHEME"/> to <see cref="HTHEME"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HTHEME(SafeHTHEME h) => h.handle;
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => CloseThemeData(this) == 0;

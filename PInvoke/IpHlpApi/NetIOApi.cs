@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
 using Vanara.InteropServices;
+using static Vanara.PInvoke.Ws2_32;
 
 namespace Vanara.PInvoke
 {
@@ -438,7 +439,7 @@ namespace Vanara.PInvoke
 		// NETIOAPI_API ConvertInterfaceGuidToLuid( CONST GUID *InterfaceGuid, PNET_LUID InterfaceLuid );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "cae669dc-899b-4485-b70a-5f58207a07df")]
-		public static extern Win32Error ConvertInterfaceGuidToLuid([MarshalAs(UnmanagedType.LPStruct)] Guid InterfaceGuid, out NET_LUID InterfaceLuid);
+		public static extern Win32Error ConvertInterfaceGuidToLuid(in Guid InterfaceGuid, out NET_LUID InterfaceLuid);
 
 		/// <summary>
 		/// <para>
@@ -554,7 +555,7 @@ namespace Vanara.PInvoke
 		// NETIOAPI_API ConvertInterfaceLuidToAlias( CONST NET_LUID *InterfaceLuid, PWSTR InterfaceAlias, SIZE_T Length );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "86a821c1-e04b-4bc3-846d-767c55008aed")]
-		public static extern Win32Error ConvertInterfaceLuidToAlias([MarshalAs(UnmanagedType.LPStruct)] NET_LUID InterfaceLuid, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder InterfaceAlias, SizeT Length);
+		public static extern Win32Error ConvertInterfaceLuidToAlias(in NET_LUID InterfaceLuid, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder InterfaceAlias, SizeT Length);
 
 		/// <summary>
 		/// <para>
@@ -598,7 +599,7 @@ namespace Vanara.PInvoke
 		// NETIOAPI_API ConvertInterfaceLuidToGuid( CONST NET_LUID *InterfaceLuid, GUID *InterfaceGuid );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "9d5bd1e9-0bf1-405a-8726-8e2c9ba4e022")]
-		public static extern Win32Error ConvertInterfaceLuidToGuid([MarshalAs(UnmanagedType.LPStruct)] NET_LUID InterfaceLuid, out Guid InterfaceGuid);
+		public static extern Win32Error ConvertInterfaceLuidToGuid(in NET_LUID InterfaceLuid, out Guid InterfaceGuid);
 
 		/// <summary>
 		/// The <c>ConvertInterfaceLuidToIndex</c> function converts a locally unique identifier (LUID) for a network interface to the local
@@ -630,7 +631,7 @@ namespace Vanara.PInvoke
 		// NETIO_STATUS WINAPI ConvertInterfaceLuidToIndex( _In_ const NET_LUID *InterfaceLuid, _Out_ PNET_IFINDEX InterfaceIndex); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365835(v=vs.85).aspx
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Netioapi.h", MSDNShortId = "aa365835")]
-		public static extern Win32Error ConvertInterfaceLuidToIndex([In, MarshalAs(UnmanagedType.LPStruct)] NET_LUID InterfaceLuid, out uint InterfaceIndex);
+		public static extern Win32Error ConvertInterfaceLuidToIndex(in NET_LUID InterfaceLuid, out uint InterfaceIndex);
 
 		/// <summary>
 		/// <para>
@@ -695,7 +696,7 @@ namespace Vanara.PInvoke
 		// NETIOAPI_API ConvertInterfaceLuidToNameA( CONST NET_LUID *InterfaceLuid, PSTR InterfaceName, SIZE_T Length );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("netioapi.h", MSDNShortId = "c65f7b3c-55f4-40f8-9a7a-19d1066deca4")]
-		public static extern Win32Error ConvertInterfaceLuidToName([In, MarshalAs(UnmanagedType.LPStruct)] NET_LUID InterfaceLuid, StringBuilder InterfaceName, SizeT Length);
+		public static extern Win32Error ConvertInterfaceLuidToName(in NET_LUID InterfaceLuid, StringBuilder InterfaceName, SizeT Length);
 
 		/// <summary>
 		/// <para>
@@ -820,9 +821,96 @@ namespace Vanara.PInvoke
 		[PInvokeData("netioapi.h", MSDNShortId = "5d986301-368e-4984-9f90-e2af1f87cbea")]
 		public static extern Win32Error ConvertLengthToIpv4Mask(uint MaskLength, out uint Mask);
 
-		/// <summary><para>The <c>CreateAnycastIpAddressEntry</c> function adds a new anycast IP address entry on the local computer.</para></summary><param name="Row"><para>A pointer to a MIB_ANYCASTIPADDRESS_ROW structure entry for an anycast IP address entry.</para></param><returns><para>If the function succeeds, the return value is NO_ERROR.</para><para>If the function fails, the return value is one of the following error codes.</para><list type="table"><listheader><term>Return code</term><term>Description</term></listheader><item><term> ERROR_ACCESS_DENIED </term><term>Access is denied. This error is returned under several conditions that include the following: the user lacks the required administrative privileges on the local computer or the application is not running in an enhanced shell as the built-in Administrator (RunAs administrator).</term></item><item><term> ERROR_INVALID_PARAMETER </term><term> An invalid parameter was passed to the function. This error is returned if a NULL pointer is passed in the Row parameter, the Address member of the MIB_ANYCASTIPADDRESS_ROW pointed to by the Row parameter was not set to a valid unicast IPv4 or IPv6 address, or both the InterfaceLuid or InterfaceIndex members of the MIB_ANYCASTIPADDRESS_ROW pointed to by the Row parameter were unspecified. </term></item><item><term> ERROR_NOT_FOUND </term><term> The specified interface could not be found. This error is returned if the network interface specified by the InterfaceLuid or InterfaceIndex member of the MIB_ANYCASTIPADDRESS_ROW pointed to by the Row parameter could not be found. </term></item><item><term> ERROR_NOT_SUPPORTED </term><term> The request is not supported. This error is returned if no IPv4 stack is on the local computer and an IPv4 address was specified in the Address member of the MIB_ANYCASTIPADDRESS_ROW pointed to by the Row parameter. This error is also returned if no IPv6 stack is on the local computer and an IPv6 address was specified in the Address member. </term></item><item><term> ERROR_OBJECT_ALREADY_EXISTS </term><term> The object already exists. This error is returned if the Address member of the MIB_ANYCASTIPADDRESS_ROW pointed to by the Row parameter is a duplicate of an existing anycast IP address on the interface specified by the InterfaceLuid or InterfaceIndex member of the MIB_ANYCASTIPADDRESS_ROW. </term></item><item><term> Other </term><term> Use FormatMessage to obtain the message string for the returned error. </term></item></list></returns><remarks><para>The <c>CreateAnycastIpAddressEntry</c> function is defined on Windows Vista and later.</para><para>The <c>CreateAnycastIpAddressEntry</c> function is used to add a new anycast IP address entry on a local computer.</para><para>The <c>Address</c> member in the MIB_ANYCASTIPADDRESS_ROW structure pointed to by the Row parameter must be initialized to a valid unicast IPv4 or IPv6 address and family. In addition, at least one of the following members in the <c>MIB_ANYCASTIPADDRESS_ROW</c> structure pointed to the Row parameter must be initialized to the interface: the <c>InterfaceLuid</c> or <c>InterfaceIndex</c>.</para><para>The <c>ScopeId</c> member of the MIB_ANYCASTIPADDRESS_ROW structure pointed to by the Row is ignored when the <c>CreateAnycastIpAddressEntry</c> function is called. The <c>ScopeId</c> member is automatically determined by the interface on which the address is added.</para><para>The <c>CreateAnycastIpAddressEntry</c> function will fail if the anycast IP address passed in the <c>Address</c> member of the MIB_ANYCASTIPADDRESS_ROW pointed to by the Row parameter is a duplicate of an existing anycast IP address on the interface.</para><para>The <c>CreateAnycastIpAddressEntry</c> function can only be called by a user logged on as a member of the Administrators group. If <c>CreateAnycastIpAddressEntry</c> is called by a user that is not a member of the Administrators group, the function call will fail and <c>ERROR_ACCESS_DENIED</c> is returned. This function can also fail because of user account control (UAC) on Windows Vista and later. If an application that contains this function is executed by a user logged on as a member of the Administrators group other than the built-in Administrator, this call will fail unless the application has been marked in the manifest file with a <c>requestedExecutionLevel</c> set to requireAdministrator. If the application lacks this manifest file, a user logged on as a member of the Administrators group other than the built-in Administrator must then be executing the application in an enhanced shell as the built-in Administrator (RunAs administrator) for this function to succeed.</para></remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/netioapi/nf-netioapi-createanycastipaddressentry
-		// _NETIOAPI_SUCCESS_ NETIOAPI_API CreateAnycastIpAddressEntry( CONST MIB_ANYCASTIPADDRESS_ROW *Row );
+		/// <summary>
+		/// <para>The <c>CreateAnycastIpAddressEntry</c> function adds a new anycast IP address entry on the local computer.</para>
+		/// </summary>
+		/// <param name="Row">
+		/// <para>A pointer to a MIB_ANYCASTIPADDRESS_ROW structure entry for an anycast IP address entry.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is NO_ERROR.</para>
+		/// <para>If the function fails, the return value is one of the following error codes.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_ACCESS_DENIED</term>
+		/// <term>
+		/// Access is denied. This error is returned under several conditions that include the following: the user lacks the required
+		/// administrative privileges on the local computer or the application is not running in an enhanced shell as the built-in
+		/// Administrator (RunAs administrator).
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER</term>
+		/// <term>
+		/// An invalid parameter was passed to the function. This error is returned if a NULL pointer is passed in the Row parameter, the
+		/// Address member of the MIB_ANYCASTIPADDRESS_ROW pointed to by the Row parameter was not set to a valid unicast IPv4 or IPv6
+		/// address, or both the InterfaceLuid or InterfaceIndex members of the MIB_ANYCASTIPADDRESS_ROW pointed to by the Row parameter were unspecified.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_NOT_FOUND</term>
+		/// <term>
+		/// The specified interface could not be found. This error is returned if the network interface specified by the InterfaceLuid or
+		/// InterfaceIndex member of the MIB_ANYCASTIPADDRESS_ROW pointed to by the Row parameter could not be found.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_NOT_SUPPORTED</term>
+		/// <term>
+		/// The request is not supported. This error is returned if no IPv4 stack is on the local computer and an IPv4 address was specified
+		/// in the Address member of the MIB_ANYCASTIPADDRESS_ROW pointed to by the Row parameter. This error is also returned if no IPv6
+		/// stack is on the local computer and an IPv6 address was specified in the Address member.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_OBJECT_ALREADY_EXISTS</term>
+		/// <term>
+		/// The object already exists. This error is returned if the Address member of the MIB_ANYCASTIPADDRESS_ROW pointed to by the Row
+		/// parameter is a duplicate of an existing anycast IP address on the interface specified by the InterfaceLuid or InterfaceIndex
+		/// member of the MIB_ANYCASTIPADDRESS_ROW.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>Other</term>
+		/// <term>Use FormatMessage to obtain the message string for the returned error.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>The <c>CreateAnycastIpAddressEntry</c> function is defined on Windows Vista and later.</para>
+		/// <para>The <c>CreateAnycastIpAddressEntry</c> function is used to add a new anycast IP address entry on a local computer.</para>
+		/// <para>
+		/// The <c>Address</c> member in the MIB_ANYCASTIPADDRESS_ROW structure pointed to by the Row parameter must be initialized to a
+		/// valid unicast IPv4 or IPv6 address and family. In addition, at least one of the following members in the
+		/// <c>MIB_ANYCASTIPADDRESS_ROW</c> structure pointed to the Row parameter must be initialized to the interface: the
+		/// <c>InterfaceLuid</c> or <c>InterfaceIndex</c>.
+		/// </para>
+		/// <para>
+		/// The <c>ScopeId</c> member of the MIB_ANYCASTIPADDRESS_ROW structure pointed to by the Row is ignored when the
+		/// <c>CreateAnycastIpAddressEntry</c> function is called. The <c>ScopeId</c> member is automatically determined by the interface on
+		/// which the address is added.
+		/// </para>
+		/// <para>
+		/// The <c>CreateAnycastIpAddressEntry</c> function will fail if the anycast IP address passed in the <c>Address</c> member of the
+		/// MIB_ANYCASTIPADDRESS_ROW pointed to by the Row parameter is a duplicate of an existing anycast IP address on the interface.
+		/// </para>
+		/// <para>
+		/// The <c>CreateAnycastIpAddressEntry</c> function can only be called by a user logged on as a member of the Administrators group.
+		/// If <c>CreateAnycastIpAddressEntry</c> is called by a user that is not a member of the Administrators group, the function call
+		/// will fail and <c>ERROR_ACCESS_DENIED</c> is returned. This function can also fail because of user account control (UAC) on
+		/// Windows Vista and later. If an application that contains this function is executed by a user logged on as a member of the
+		/// Administrators group other than the built-in Administrator, this call will fail unless the application has been marked in the
+		/// manifest file with a <c>requestedExecutionLevel</c> set to requireAdministrator. If the application lacks this manifest file, a
+		/// user logged on as a member of the Administrators group other than the built-in Administrator must then be executing the
+		/// application in an enhanced shell as the built-in Administrator (RunAs administrator) for this function to succeed.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/netioapi/nf-netioapi-createanycastipaddressentry _NETIOAPI_SUCCESS_
+		// NETIOAPI_API CreateAnycastIpAddressEntry( CONST MIB_ANYCASTIPADDRESS_ROW *Row );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "30393132-0fad-4687-b9e3-7b5cf47fbb96")]
 		public static extern Win32Error CreateAnycastIpAddressEntry(ref MIB_ANYCASTIPADDRESS_ROW Row);
@@ -1140,7 +1228,7 @@ namespace Vanara.PInvoke
 		/// <returns>An array of SOCKADDR_IN6_PAIR structures that contain the sorted address pairs.</returns>
 		public static SOCKADDR_IN6_PAIR[] CreateSortedAddressPairs(SOCKADDR_IN6[] DestinationAddressList)
 		{
-			CreateSortedAddressPairs(IntPtr.Zero, 0, DestinationAddressList, (uint)DestinationAddressList.Length, 0, out SafeMibTableHandle pairs, out uint cnt).ThrowIfFailed();
+			CreateSortedAddressPairs(IntPtr.Zero, 0, DestinationAddressList, (uint)DestinationAddressList.Length, 0, out var pairs, out var cnt).ThrowIfFailed();
 			return pairs.ToArray<SOCKADDR_IN6_PAIR>((int)cnt);
 		}
 
@@ -5396,7 +5484,7 @@ namespace Vanara.PInvoke
 		// SetIpForwardEntry2( CONST MIB_IPFORWARD_ROW2 *Route );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "e11aab0b-6d6c-4e90-a60a-f7d68c09751b")]
-		public static extern Win32Error SetIpForwardEntry2([In] ref MIB_IPFORWARD_ROW2 Route);
+		public static extern Win32Error SetIpForwardEntry2(in MIB_IPFORWARD_ROW2 Route);
 
 		/// <summary>
 		/// <para>The <c>SetIpInterfaceEntry</c> function sets the properties of an IP interface on the local computer.</para>
@@ -5526,7 +5614,7 @@ namespace Vanara.PInvoke
 		// SetIpInterfaceEntry( PMIB_IPINTERFACE_ROW Row );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "8e6d2c14-29c3-47a7-9eb8-0989df9da68c")]
-		public static extern Win32Error SetIpInterfaceEntry([In] ref MIB_IPINTERFACE_ROW Row);
+		public static extern Win32Error SetIpInterfaceEntry(in MIB_IPINTERFACE_ROW Row);
 
 		/// <summary>
 		/// <para>The <c>SetIpNetEntry2</c> function sets the physical address of an existing neighbor IP address entry on the local computer.</para>
@@ -5636,7 +5724,7 @@ namespace Vanara.PInvoke
 		// SetNetworkInformation( CONST NET_IF_NETWORK_GUID *NetworkGuid, NET_IF_COMPARTMENT_ID CompartmentId, CONST WCHAR *NetworkName );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "e196e978-2eb7-4b22-af3b-e14736c5ac94")]
-		public static extern Win32Error SetNetworkInformation([MarshalAs(UnmanagedType.LPStruct)] Guid NetworkGuid, uint CompartmentId, [MarshalAs(UnmanagedType.LPWStr)] string NetworkName);
+		public static extern Win32Error SetNetworkInformation(in Guid NetworkGuid, uint CompartmentId, [MarshalAs(UnmanagedType.LPWStr)] string NetworkName);
 
 		/// <summary>
 		/// <para>Reserved for future use. Do not use this function.</para>
@@ -5764,7 +5852,7 @@ namespace Vanara.PInvoke
 		// SetUnicastIpAddressEntry( CONST MIB_UNICASTIPADDRESS_ROW *Row );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "906a3895-2e42-4bed-90a3-7c10487d76cb")]
-		public static extern Win32Error SetUnicastIpAddressEntry([In] ref MIB_UNICASTIPADDRESS_ROW Row);
+		public static extern Win32Error SetUnicastIpAddressEntry(in MIB_UNICASTIPADDRESS_ROW Row);
 
 		/// <summary>
 		/// <para>The <c>IP_ADDRESS_PREFIX</c> structure stores an IP address prefix.</para>
@@ -6087,17 +6175,11 @@ namespace Vanara.PInvoke
 
 			/// <summary>Initializes a new instance of the <see cref="MIB_IF_ROW2"/> struct.</summary>
 			/// <param name="interfaceIndex">Index of the interface.</param>
-			public MIB_IF_ROW2(uint interfaceIndex) : this()
-			{
-				InterfaceIndex = interfaceIndex;
-			}
+			public MIB_IF_ROW2(uint interfaceIndex) : this() => InterfaceIndex = interfaceIndex;
 
 			/// <summary>Initializes a new instance of the <see cref="MIB_IF_ROW2"/> struct.</summary>
 			/// <param name="interfaceLuid">The interface luid.</param>
-			public MIB_IF_ROW2(NET_LUID interfaceLuid) : this()
-			{
-				InterfaceLuid = interfaceLuid;
-			}
+			public MIB_IF_ROW2(NET_LUID interfaceLuid) : this() => InterfaceLuid = interfaceLuid;
 		}
 
 		/// <summary>The MIB_IFSTACK_ROW structure represents the relationship between two network interfaces.</summary>
@@ -6831,10 +6913,7 @@ namespace Vanara.PInvoke
 			/// <param name="ipV4">The neighbor IP address.</param>
 			/// <param name="ifLuid">The locally unique identifier (LUID) for the network interface associated with this IP address.</param>
 			/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
-			public MIB_IPNET_ROW2(SOCKADDR_IN ipV4, NET_LUID ifLuid, byte[] macAddr = null) : this(ipV4, macAddr)
-			{
-				InterfaceLuid = ifLuid;
-			}
+			public MIB_IPNET_ROW2(SOCKADDR_IN ipV4, NET_LUID ifLuid, byte[] macAddr = null) : this(ipV4, macAddr) => InterfaceLuid = ifLuid;
 
 			/// <summary>Initializes a new instance of the <see cref="MIB_IPNET_ROW2"/> struct.</summary>
 			/// <param name="ipV4">The neighbor IP address.</param>
@@ -6843,19 +6922,13 @@ namespace Vanara.PInvoke
 			/// adapter is disabled and then enabled, or under other circumstances, and should not be considered persistent.
 			/// </param>
 			/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
-			public MIB_IPNET_ROW2(SOCKADDR_IN ipV4, uint ifIdx, byte[] macAddr = null) : this(ipV4, macAddr)
-			{
-				InterfaceIndex = ifIdx;
-			}
+			public MIB_IPNET_ROW2(SOCKADDR_IN ipV4, uint ifIdx, byte[] macAddr = null) : this(ipV4, macAddr) => InterfaceIndex = ifIdx;
 
 			/// <summary>Initializes a new instance of the <see cref="MIB_IPNET_ROW2"/> struct.</summary>
 			/// <param name="ipV6">The neighbor IP address.</param>
 			/// <param name="ifLuid">The locally unique identifier (LUID) for the network interface associated with this IP address.</param>
 			/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
-			public MIB_IPNET_ROW2(SOCKADDR_IN6 ipV6, NET_LUID ifLuid, byte[] macAddr = null) : this(ipV6, macAddr)
-			{
-				InterfaceLuid = ifLuid;
-			}
+			public MIB_IPNET_ROW2(SOCKADDR_IN6 ipV6, NET_LUID ifLuid, byte[] macAddr = null) : this(ipV6, macAddr) => InterfaceLuid = ifLuid;
 
 			/// <summary>Initializes a new instance of the <see cref="MIB_IPNET_ROW2"/> struct.</summary>
 			/// <param name="ipV6">The neighbor IP address.</param>
@@ -6864,10 +6937,7 @@ namespace Vanara.PInvoke
 			/// adapter is disabled and then enabled, or under other circumstances, and should not be considered persistent.
 			/// </param>
 			/// <param name="macAddr">The physical hardware address of the adapter for the network interface associated with this IP address.</param>
-			public MIB_IPNET_ROW2(SOCKADDR_IN6 ipV6, uint ifIdx, byte[] macAddr = null) : this(ipV6, macAddr)
-			{
-				InterfaceIndex = ifIdx;
-			}
+			public MIB_IPNET_ROW2(SOCKADDR_IN6 ipV6, uint ifIdx, byte[] macAddr = null) : this(ipV6, macAddr) => InterfaceIndex = ifIdx;
 
 			private MIB_IPNET_ROW2(SOCKADDR_IN ipV4, byte[] macAddr) : this()
 			{
@@ -6894,10 +6964,7 @@ namespace Vanara.PInvoke
 			}
 
 			/// <inheritdoc/>
-			public override string ToString()
-			{
-				return $"{Address}; MAC:{PhysicalAddressToString(PhysicalAddress)}; If:{(InterfaceIndex != 0 ? InterfaceIndex.ToString() : InterfaceLuid.ToString())}";
-			}
+			public override string ToString() => $"{Address}; MAC:{PhysicalAddressToString(PhysicalAddress)}; If:{(InterfaceIndex != 0 ? InterfaceIndex.ToString() : InterfaceLuid.ToString())}";
 		}
 
 		/// <summary>

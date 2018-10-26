@@ -165,7 +165,7 @@ namespace Vanara.PInvoke
 			/// relative to hwndParent.
 			/// </param>
 			/// <param name="pfs">A pointer to a FOLDERSETTINGS structure that determines how the folder will be displayed in the view.</param>
-			void Initialize([In] HWND hwndParent, [In, MarshalAs(UnmanagedType.LPStruct)] RECT prc, [In, MarshalAs(UnmanagedType.LPStruct)] FOLDERSETTINGS pfs);
+			void Initialize([In] HWND hwndParent, in RECT prc, in FOLDERSETTINGS pfs);
 
 			/// <summary>Destroys the browser.</summary>
 			void Destroy();
@@ -188,7 +188,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Sets the folder settings for the current view.</summary>
 			/// <param name="pfs">A pointer to a FOLDERSETTINGS structure that contains the folder settings to be applied.</param>
-			void SetFolderSettings([In, MarshalAs(UnmanagedType.LPStruct)] FOLDERSETTINGS pfs);
+			void SetFolderSettings(in FOLDERSETTINGS pfs);
 
 			/// <summary>Initiates a connection with IExplorerBrowser for event callbacks.</summary>
 			/// <param name="psbe">A pointer to the IExplorerBrowserEvents interface of the object to be advised of IExplorerBrowser events.</param>
@@ -243,7 +243,7 @@ namespace Vanara.PInvoke
 			/// IFolderView, or a related interface.
 			/// </returns>
 			[return: MarshalAs(UnmanagedType.IUnknown)]
-			object GetCurrentView([In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			object GetCurrentView(in Guid riid);
 		}
 
 		/// <summary>Exposes methods for notification of Explorer browser navigation and view creation events.</summary>

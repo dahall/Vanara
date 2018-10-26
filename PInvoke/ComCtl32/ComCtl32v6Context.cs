@@ -13,8 +13,8 @@ namespace Vanara.Windows.Forms
 	/// <code lang="cs">
 	/// using (new ComCtl32v6Context())
 	/// {
-	///    // Code that needs the right lib
-	///    TaskDialog.Show(...)
+	/// // Code that needs the right lib
+	/// TaskDialog.Show(...)
 	/// }
 	/// </code>
 	/// </remarks>
@@ -22,12 +22,10 @@ namespace Vanara.Windows.Forms
 	[SuppressUnmanagedCodeSecurity]
 	public class ComCtl32v6Context : IDisposable
 	{
-		private ActCtxSafeHandle hActCtx;
+		private SafeHACTCTX hActCtx;
 		private IntPtr localCookie;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ComCtl32v6Context"/> class.
-		/// </summary>
+		/// <summary>Initializes a new instance of the <see cref="ComCtl32v6Context"/> class.</summary>
 		public ComCtl32v6Context()
 		{
 			if (Environment.OSVersion.Version.Major < 6) return;
@@ -36,7 +34,7 @@ namespace Vanara.Windows.Forms
 				dwFlags = ActCtxFlags.ACTCTX_FLAG_RESOURCE_NAME_VALID,
 				lpResourceName = "#2"
 			};
-			Create(ref actctx);
+			Create(actctx);
 			Activate();
 		}
 
@@ -57,6 +55,6 @@ namespace Vanara.Windows.Forms
 				localCookie = IntPtr.Zero;
 		}
 
-		private void Create(ref ACTCTX context) { hActCtx = CreateActCtx(ref context); }
+		private void Create(in ACTCTX context) => hActCtx = CreateActCtx(context);
 	}
 }

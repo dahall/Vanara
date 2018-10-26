@@ -56,7 +56,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Handleapi.h", MSDNShortId = "mt438733")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CompareObjectHandles(HANDLE hFirstObjectHandle, HANDLE hSecondObjectHandle);
+		public static extern bool CompareObjectHandles(IntPtr hFirstObjectHandle, IntPtr hSecondObjectHandle);
 
 		/// <summary>Duplicates an object handle.</summary>
 		/// <param name="hSourceProcessHandle">
@@ -122,7 +122,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724251")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool DuplicateHandle(
-			[In] IntPtr hSourceProcessHandle, [In] HANDLE hSourceHandle, [In] IntPtr hTargetProcessHandle, out HANDLE lpTargetHandle, uint dwDesiredAccess,
+			[In] HPROCESS hSourceProcessHandle, [In] IntPtr hSourceHandle, [In] HPROCESS hTargetProcessHandle, out HANDLE lpTargetHandle, uint dwDesiredAccess,
 			[MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, DUPLICATE_HANDLE_OPTIONS dwOptions);
 
 		/// <summary>Retrieves certain properties of an object handle.</summary>
@@ -160,7 +160,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724329")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetHandleInformation([In] HANDLE hObject, out HANDLE_FLAG lpdwFlags);
+		public static extern bool GetHandleInformation([In] IntPtr hObject, out HANDLE_FLAG lpdwFlags);
 
 		/// <summary>Sets certain properties of an object handle.</summary>
 		/// <param name="hObject">
@@ -198,6 +198,36 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724935")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetHandleInformation([In] HANDLE hObject, HANDLE_FLAG dwMask, HANDLE_FLAG dwFlags);
+		public static extern bool SetHandleInformation([In] IntPtr hObject, HANDLE_FLAG dwMask, HANDLE_FLAG dwFlags);
+
+		/// <summary>Provides a <see cref="SafeHandle"/> to a handle that releases a created HANDLE instance at disposal using CloseHandle.</summary>
+		public abstract class SafeKernelHandle : HANDLE, IKernelHandle
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeSyncHandle"/> class.</summary>
+			protected SafeKernelHandle() : base() { }
+
+			/// <summary>Initializes a new instance of the <see cref="HANDLE"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			protected SafeKernelHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => CloseHandle(this);
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> to a synchronization object that is automatically disposed using CloseHandle.</summary>
+		/// <remarks></remarks>
+		public abstract class SafeSyncHandle : SafeKernelHandle, ISyncHandle
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeSyncHandle"/> class.</summary>
+			protected SafeSyncHandle() : base() { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeSyncHandle"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			protected SafeSyncHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+		}
 	}
 }

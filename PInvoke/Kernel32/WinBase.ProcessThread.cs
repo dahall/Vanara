@@ -187,7 +187,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms683179(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683179")]
-		public static extern IntPtr GetCurrentProcess();
+		public static extern HPROCESS GetCurrentProcess();
 
 		/// <summary>
 		/// <para>Retrieves the amount of memory available in the specified node.</para>
@@ -280,7 +280,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683213")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetProcessAffinityMask([In] IntPtr hProcess, out UIntPtr lpProcessAffinityMask, out UIntPtr lpSystemAffinityMask);
+		public static extern bool GetProcessAffinityMask([In] HPROCESS hProcess, out UIntPtr lpProcessAffinityMask, out UIntPtr lpSystemAffinityMask);
 
 		/// <summary>Retrieves accounting information for all I/O operations performed by the specified process.</summary>
 		/// <param name="hProcess">
@@ -299,7 +299,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683218")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetProcessIoCounters([In] IntPtr hProcess, out IO_COUNTERS lpIoCounters);
+		public static extern bool GetProcessIoCounters([In] HPROCESS hProcess, out IO_COUNTERS lpIoCounters);
 
 		/// <summary>Retrieves the minimum and maximum working set sizes of the specified process.</summary>
 		/// <param name="hProcess">
@@ -325,7 +325,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683226")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetProcessWorkingSetSize([In] IntPtr hProcess, [Out] out SizeT lpMinimumWorkingSetSize, [Out] out SizeT lpMaximumWorkingSetSize);
+		public static extern bool GetProcessWorkingSetSize([In] HPROCESS hProcess, [Out] out SizeT lpMinimumWorkingSetSize, [Out] out SizeT lpMaximumWorkingSetSize);
+
 		/// <summary>Sets a processor affinity mask for the threads of the specified process.</summary>
 		/// <param name="hProcess">
 		/// A handle to the process whose affinity mask is to be set. This handle must have the <c>PROCESS_SET_INFORMATION</c> access right. For more
@@ -347,7 +348,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms686223")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetProcessAffinityMask([In] IntPtr hProcess, UIntPtr dwProcessAffinityMask);
+		public static extern bool SetProcessAffinityMask([In] HPROCESS hProcess, UIntPtr dwProcessAffinityMask);
 
 		/// <summary>Sets the minimum and maximum working set sizes for the specified process.</summary>
 		/// <param name="hProcess">
@@ -390,7 +391,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms686234")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetProcessWorkingSetSize([In] IntPtr hProcess, SizeT dwMinimumWorkingSetSize, SizeT dwMaximumWorkingSetSize);
+		public static extern bool SetProcessWorkingSetSize([In] HPROCESS hProcess, SizeT dwMinimumWorkingSetSize, SizeT dwMaximumWorkingSetSize);
 
 		/// <summary>Sets a processor affinity mask for the specified thread.</summary>
 		/// <param name="hThread">
@@ -415,7 +416,7 @@ namespace Vanara.PInvoke
 		// DWORD_PTR WINAPI SetThreadAffinityMask( _In_ HANDLE hThread, _In_ DWORD_PTR dwThreadAffinityMask); https://msdn.microsoft.com/en-us/library/windows/desktop/ms686247(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms686247")]
-		public static extern UIntPtr SetThreadAffinityMask([In] IntPtr hThread, UIntPtr dwThreadAffinityMask);
+		public static extern UIntPtr SetThreadAffinityMask([In] HTHREAD hThread, UIntPtr dwThreadAffinityMask);
 
 		/// <summary>
 		/// Enables an application to inform the system that it is in use, thereby preventing the system from entering sleep or turning off the display while the

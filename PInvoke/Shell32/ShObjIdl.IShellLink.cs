@@ -404,7 +404,7 @@ namespace Vanara.PInvoke
 			/// for more information while resolving a Shell link.
 			/// </param>
 			/// <param name="fFlags">Action flags.</param>
-			void Resolve(IntPtr hwnd, SLR_FLAGS fFlags);
+			void Resolve(HWND hwnd, SLR_FLAGS fFlags);
 
 			/// <summary>Sets the path and file name for the target of a Shell link object.</summary>
 			/// <param name="pszFile">The address of a buffer that contains the new path.</param>

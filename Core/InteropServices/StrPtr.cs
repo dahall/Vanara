@@ -12,25 +12,23 @@ namespace Vanara.InteropServices
 
 		/// <summary>Initializes a new instance of the <see cref="StrPtrAuto"/> struct.</summary>
 		/// <param name="s">The string value.</param>
-		public StrPtrAuto(string s)
-		{
-			ptr = StringHelper.AllocString(s);
-		}
+		public StrPtrAuto(string s) => ptr = StringHelper.AllocString(s);
 
 		/// <summary>Initializes a new instance of the <see cref="StrPtrAuto"/> struct.</summary>
 		/// <param name="charLen">Number of characters to reserve in memory.</param>
-		public StrPtrAuto(uint charLen)
-		{
-			ptr = StringHelper.AllocChars(charLen);
-		}
+		public StrPtrAuto(uint charLen) => ptr = StringHelper.AllocChars(charLen);
 
 		/// <summary>Gets a value indicating whether this instance is equivalent to null pointer or void*.</summary>
 		/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
 		public bool IsNull => ptr == IntPtr.Zero;
 
+		/// <summary>Assigns a string pointer value to the pointer.</summary>
+		/// <param name="stringPtr">The string pointer value.</param>
+		public void Assign(IntPtr stringPtr) { Free(); ptr = stringPtr; }
+
 		/// <summary>Assigns a new string value to the pointer.</summary>
 		/// <param name="s">The string value.</param>
-		public void Assign(string s) { StringHelper.RefreshString(ref ptr, out uint _, s); }
+		public void Assign(string s) => StringHelper.RefreshString(ref ptr, out var _, s);
 
 		/// <summary>Assigns a new string value to the pointer.</summary>
 		/// <param name="s">The string value.</param>
@@ -68,17 +66,11 @@ namespace Vanara.InteropServices
 
 		/// <summary>Initializes a new instance of the <see cref="StrPtrUni"/> struct.</summary>
 		/// <param name="s">The string value.</param>
-		public StrPtrUni(string s)
-		{
-			ptr = StringHelper.AllocString(s, CharSet.Unicode);
-		}
+		public StrPtrUni(string s) => ptr = StringHelper.AllocString(s, CharSet.Unicode);
 
 		/// <summary>Initializes a new instance of the <see cref="StrPtrUni"/> struct.</summary>
 		/// <param name="charLen">Number of characters to reserve in memory.</param>
-		public StrPtrUni(uint charLen)
-		{
-			ptr = StringHelper.AllocChars(charLen, CharSet.Unicode);
-		}
+		public StrPtrUni(uint charLen) => ptr = StringHelper.AllocChars(charLen, CharSet.Unicode);
 
 		/// <summary>Gets a value indicating whether this instance is equivalent to null pointer or void*.</summary>
 		/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
@@ -86,7 +78,7 @@ namespace Vanara.InteropServices
 
 		/// <summary>Assigns a new string value to the pointer.</summary>
 		/// <param name="s">The string value.</param>
-		public void Assign(string s) { StringHelper.RefreshString(ref ptr, out uint _, s, CharSet.Unicode); }
+		public void Assign(string s) => StringHelper.RefreshString(ref ptr, out var _, s, CharSet.Unicode);
 
 		/// <summary>Assigns a new string value to the pointer.</summary>
 		/// <param name="s">The string value.</param>
@@ -124,17 +116,11 @@ namespace Vanara.InteropServices
 
 		/// <summary>Initializes a new instance of the <see cref="StrPtrAnsi"/> struct.</summary>
 		/// <param name="s">The string value.</param>
-		public StrPtrAnsi(string s)
-		{
-			ptr = StringHelper.AllocString(s, CharSet.Ansi);
-		}
+		public StrPtrAnsi(string s) => ptr = StringHelper.AllocString(s, CharSet.Ansi);
 
 		/// <summary>Initializes a new instance of the <see cref="StrPtrAnsi"/> struct.</summary>
 		/// <param name="charLen">Number of characters to reserve in memory.</param>
-		public StrPtrAnsi(uint charLen)
-		{
-			ptr = StringHelper.AllocChars(charLen, CharSet.Ansi);
-		}
+		public StrPtrAnsi(uint charLen) => ptr = StringHelper.AllocChars(charLen, CharSet.Ansi);
 
 		/// <summary>Gets a value indicating whether this instance is equivalent to null pointer or void*.</summary>
 		/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
@@ -142,7 +128,7 @@ namespace Vanara.InteropServices
 
 		/// <summary>Assigns a new string value to the pointer.</summary>
 		/// <param name="s">The string value.</param>
-		public void Assign(string s) { StringHelper.RefreshString(ref ptr, out uint _, s, CharSet.Ansi); }
+		public void Assign(string s) => StringHelper.RefreshString(ref ptr, out var _, s, CharSet.Ansi);
 
 		/// <summary>Assigns a new string value to the pointer.</summary>
 		/// <param name="s">The string value.</param>

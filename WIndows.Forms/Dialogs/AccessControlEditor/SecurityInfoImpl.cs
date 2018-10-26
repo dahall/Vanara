@@ -47,7 +47,7 @@ namespace Vanara.Security.AccessControl
 			get => pSD.ToArray(); set => pSD = new SafeByteArray(value);
 		}
 
-		void IEffectivePermission.GetEffectivePermission(Guid pguidObjectType, PSID pUserSid, string pszServerName, IntPtr pSecDesc, out OBJECT_TYPE_LIST[] ppObjectTypeList, out uint pcObjectTypeListLength, out uint[] ppGrantedAccessList, out uint pcGrantedAccessListLength)
+		void IEffectivePermission.GetEffectivePermission(in Guid pguidObjectType, PSID pUserSid, string pszServerName, IntPtr pSecDesc, out OBJECT_TYPE_LIST[] ppObjectTypeList, out uint pcObjectTypeListLength, out uint[] ppGrantedAccessList, out uint pcGrantedAccessListLength)
 		{
 			System.Diagnostics.Debug.WriteLine($"GetEffectivePermission: {pguidObjectType}, {pszServerName}");
 			if (pguidObjectType == Guid.Empty)
@@ -65,12 +65,10 @@ namespace Vanara.Security.AccessControl
 			}
 		}
 
-		void ISecurityInformation.GetAccessRights(Guid guidObject, int dwFlags, out SI_ACCESS[] access, ref uint accessCount, out uint defaultAccess)
+		void ISecurityInformation.GetAccessRights(in Guid guidObject, int dwFlags, out SI_ACCESS[] access, ref uint accessCount, out uint defaultAccess)
 		{
 			System.Diagnostics.Debug.WriteLine($"GetAccessRight: {guidObject}, {(SI_OBJECT_INFO_Flags)dwFlags}");
-			uint defAcc;
-			SI_ACCESS[] ari;
-			prov.GetAccessListInfo((SI_OBJECT_INFO_Flags)dwFlags, out ari, out defAcc);
+			prov.GetAccessListInfo((SI_OBJECT_INFO_Flags)dwFlags, out var ari, out var defAcc);
 			defaultAccess = defAcc;
 			access = ari;
 			accessCount = (uint)access.Length;
@@ -101,7 +99,7 @@ namespace Vanara.Security.AccessControl
 			ret.SetHandleAsInvalid();
 		}
 
-		void ISecurityInformation.MapGeneric(Guid guidObjectType, ref sbyte AceFlags, ref uint Mask)
+		void ISecurityInformation.MapGeneric(in Guid guidObjectType, ref sbyte AceFlags, ref uint Mask)
 		{
 			var stMask = Mask;
 			var gm = prov.GetGenericMapping(AceFlags);
@@ -182,7 +180,7 @@ namespace Vanara.Security.AccessControl
 			prov = provider;
 		}
 
-		public RawSecurityDescriptor ShowDialog(IntPtr hWnd, SI_PAGE_TYPE pageType = SI_PAGE_TYPE.SI_PAGE_PERM, SI_PAGE_ACTIVATED pageAct = SI_PAGE_ACTIVATED.SI_SHOW_DEFAULT)
+		public RawSecurityDescriptor ShowDialog(HWND hWnd, SI_PAGE_TYPE pageType = SI_PAGE_TYPE.SI_PAGE_PERM, SI_PAGE_ACTIVATED pageAct = SI_PAGE_ACTIVATED.SI_SHOW_DEFAULT)
 		{
 			System.Diagnostics.Debug.WriteLine($"ShowDialog: {pageType} {pageAct}");
 			SecurityEventArg sd = null;
@@ -217,7 +215,7 @@ namespace Vanara.Security.AccessControl
 			return null;
 		}
 
-		public uint ComputeEffectivePermissionWithSecondarySecurity(PSID pSid, PSID pDeviceSid, string pszServerName, SECURITY_OBJECT[] pSecurityObjects, uint dwSecurityObjectCount, ref TOKEN_GROUPS pUserGroups, Authz.AUTHZ_SID_OPERATION[] pAuthzUserGroupsOperations, ref TOKEN_GROUPS pDeviceGroups, Authz.AUTHZ_SID_OPERATION[] pAuthzDeviceGroupsOperations, ref Authz.AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAuthzUserClaims, Authz.AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pAuthzUserClaimsOperations, ref Authz.AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAuthzDeviceClaims, Authz.AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pAuthzDeviceClaimsOperations, EFFPERM_RESULT_LIST[] pEffpermResultLists)
+		public uint ComputeEffectivePermissionWithSecondarySecurity(PSID pSid, PSID pDeviceSid, string pszServerName, SECURITY_OBJECT[] pSecurityObjects, uint dwSecurityObjectCount, in TOKEN_GROUPS pUserGroups, Authz.AUTHZ_SID_OPERATION[] pAuthzUserGroupsOperations, in TOKEN_GROUPS pDeviceGroups, Authz.AUTHZ_SID_OPERATION[] pAuthzDeviceGroupsOperations, in Authz.AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAuthzUserClaims, Authz.AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pAuthzUserClaimsOperations, in Authz.AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAuthzDeviceClaims, Authz.AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pAuthzDeviceClaimsOperations, EFFPERM_RESULT_LIST[] pEffpermResultLists)
 		{
 			System.Diagnostics.Debug.WriteLine($"ComputeEffectivePermissionWithSecondarySecurity({dwSecurityObjectCount}):{new SecurityIdentifier((IntPtr)pSid).Value};{new SecurityIdentifier((IntPtr)pDeviceSid).Value}");
 			if (dwSecurityObjectCount != 1)
@@ -227,20 +225,17 @@ namespace Vanara.Security.AccessControl
 			if (pSid == null || pSid.IsInvalid)
 				return HRESULT.E_INVALIDARG;
 
-			SafeAUTHZ_RESOURCE_MANAGER_HANDLE hAuthzResourceManager;
-			if (!AuthzInitializeResourceManager(AuthzResourceManagerFlags.AUTHZ_RM_FLAG_NO_AUDIT, null, null, null, prov.ToString(), out hAuthzResourceManager))
+			if (!AuthzInitializeResourceManager(AuthzResourceManagerFlags.AUTHZ_RM_FLAG_NO_AUDIT, null, null, null, prov.ToString(), out var hAuthzResourceManager))
 				return HRESULT.S_OK;
 
 			var identifier = new LUID();
-			SafeAUTHZ_CLIENT_CONTEXT_HANDLE hAuthzUserContext;
 			SafeAUTHZ_CLIENT_CONTEXT_HANDLE hAuthzCompoundContext = null;
-			if (!AuthzInitializeContextFromSid(AuthzContextFlags.DEFAULT, pSid, hAuthzResourceManager, IntPtr.Zero, identifier, IntPtr.Zero, out hAuthzUserContext))
+			if (!AuthzInitializeContextFromSid(AuthzContextFlags.DEFAULT, pSid, hAuthzResourceManager, IntPtr.Zero, identifier, IntPtr.Zero, out var hAuthzUserContext))
 				return HRESULT.S_OK;
 
 			if (pDeviceSid != null && !pDeviceSid.IsInvalid)
 			{
-				SafeAUTHZ_CLIENT_CONTEXT_HANDLE hAuthzDeviceContext;
-				if (AuthzInitializeContextFromSid(AuthzContextFlags.DEFAULT, pDeviceSid, hAuthzResourceManager, IntPtr.Zero, identifier, IntPtr.Zero, out hAuthzDeviceContext))
+				if (AuthzInitializeContextFromSid(AuthzContextFlags.DEFAULT, pDeviceSid, hAuthzResourceManager, IntPtr.Zero, identifier, IntPtr.Zero, out var hAuthzDeviceContext))
 					if (AuthzInitializeCompoundContext(hAuthzUserContext, hAuthzDeviceContext, out hAuthzCompoundContext))
 						if (pAuthzDeviceClaims.Version != 0)
 							AuthzModifyClaims(hAuthzCompoundContext, AUTHZ_CONTEXT_INFORMATION_CLASS.AuthzContextInfoDeviceClaims, pAuthzDeviceClaimsOperations, pAuthzDeviceClaims);
@@ -258,18 +253,17 @@ namespace Vanara.Security.AccessControl
 					return HRESULT.S_OK;
 
 			if (pDeviceGroups.GroupCount != 0)
-				if (!AuthzModifySids(hAuthzCompoundContext, AUTHZ_CONTEXT_INFORMATION_CLASS.AuthzContextInfoDeviceSids, pAuthzDeviceGroupsOperations, ref pDeviceGroups))
+				if (!AuthzModifySids(hAuthzCompoundContext, AUTHZ_CONTEXT_INFORMATION_CLASS.AuthzContextInfoDeviceSids, pAuthzDeviceGroupsOperations, pDeviceGroups))
 					return HRESULT.S_OK;
 
 			if (pUserGroups.GroupCount != 0 && pAuthzUserGroupsOperations != null)
-				if (!AuthzModifySids(hAuthzCompoundContext, AUTHZ_CONTEXT_INFORMATION_CLASS.AuthzContextInfoGroupsSids, pAuthzUserGroupsOperations, ref pUserGroups))
+				if (!AuthzModifySids(hAuthzCompoundContext, AUTHZ_CONTEXT_INFORMATION_CLASS.AuthzContextInfoGroupsSids, pAuthzUserGroupsOperations, pUserGroups))
 					return HRESULT.S_OK;
 
 			var request = new AUTHZ_ACCESS_REQUEST((uint)ACCESS_MASK.MAXIMUM_ALLOWED);
 			var sd = new SafeSecurityDescriptor(pSecurityObjects[0].pData, false);
 			var reply = new AUTHZ_ACCESS_REPLY(1);
-			SafeAUTHZ_ACCESS_CHECK_RESULTS_HANDLE phAccessCheckResults;
-			if (!AuthzAccessCheck(AuthzAccessCheckFlags.NONE, hAuthzCompoundContext, ref request, null, sd, null, 0, reply, out phAccessCheckResults))
+			if (!AuthzAccessCheck(AuthzAccessCheckFlags.NONE, hAuthzCompoundContext, ref request, null, sd, null, 0, reply, out var phAccessCheckResults))
 				return HRESULT.S_OK;
 
 			pEffpermResultLists[0].fEvaluated = true;

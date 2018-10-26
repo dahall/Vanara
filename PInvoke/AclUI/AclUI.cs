@@ -3,8 +3,6 @@ using System.Runtime.InteropServices;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Authz;
 
-// ReSharper disable InconsistentNaming ReSharper disable FieldCanBeMadeReadOnly.Global
-
 namespace Vanara.PInvoke
 {
 	/// <summary>Platform invokable enumerated types, constants and functions from aclui.h</summary>
@@ -358,7 +356,7 @@ namespace Vanara.PInvoke
 			/// <param name="pcGrantedAccessListLength">
 			/// A pointer to a ULONG variable that receives the count of granted access masks pointed to by the ppGrantedAccessList parameter.
 			/// </param>
-			void GetEffectivePermission([In, MarshalAs(UnmanagedType.LPStruct)] Guid pguidObjectType, [In] PSID pUserSid,
+			void GetEffectivePermission(in Guid pguidObjectType, [In] PSID pUserSid,
 				[In, MarshalAs(UnmanagedType.LPWStr)] string pszServerName, [In] IntPtr pSD,
 				[MarshalAs(UnmanagedType.LPArray)] out OBJECT_TYPE_LIST[] ppObjectTypeList,
 				out uint pcObjectTypeListLength,
@@ -446,19 +444,19 @@ namespace Vanara.PInvoke
 			/// </param>
 			[PreserveSig]
 			uint ComputeEffectivePermissionWithSecondarySecurity(
-				PSID pSid,
-				PSID pDeviceSid,
-				[MarshalAs(UnmanagedType.LPWStr)] string pszServerName,
-				[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] SECURITY_OBJECT[] pSecurityObjects,
+				[In] PSID pSid,
+				[In, Optional] PSID pDeviceSid,
+				[In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pszServerName,
+				[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] SECURITY_OBJECT[] pSecurityObjects,
 				uint dwSecurityObjectCount,
-				ref TOKEN_GROUPS pUserGroups,
-				AUTHZ_SID_OPERATION[] pAuthzUserGroupsOperations,
-				ref TOKEN_GROUPS pDeviceGroups,
-				AUTHZ_SID_OPERATION[] pAuthzDeviceGroupsOperations,
-				ref AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAuthzUserClaims,
-				AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pAuthzUserClaimsOperations,
-				ref AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAuthzDeviceClaims,
-				AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pAuthzDeviceClaimsOperations,
+				in TOKEN_GROUPS pUserGroups,
+				[In, Optional] AUTHZ_SID_OPERATION[] pAuthzUserGroupsOperations,
+				in TOKEN_GROUPS pDeviceGroups,
+				[In, Optional] AUTHZ_SID_OPERATION[] pAuthzDeviceGroupsOperations,
+				in AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAuthzUserClaims,
+				[In, Optional] AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pAuthzUserClaimsOperations,
+				in AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAuthzDeviceClaims,
+				[In, Optional] AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pAuthzDeviceClaimsOperations,
 				[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)] EFFPERM_RESULT_LIST[] pEffpermResultLists);
 		}
 
@@ -538,7 +536,7 @@ namespace Vanara.PInvoke
 			/// A pointer to ULONG that indicates the zero-based index of the array entry that contains the default access rights. The access control editor uses
 			/// this entry as the initial access rights in a new ACE.
 			/// </param>
-			void GetAccessRights([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidObject, [In] int dwFlags, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] out SI_ACCESS[] access, ref uint access_count, out uint DefaultAccess);
+			void GetAccessRights(in Guid guidObject, [In] int dwFlags, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] out SI_ACCESS[] access, ref uint access_count, out uint DefaultAccess);
 
 			/// <summary>
 			/// The MapGeneric method requests that the generic access rights in an access mask be mapped to their corresponding standard and specific access
@@ -553,7 +551,7 @@ namespace Vanara.PInvoke
 			/// A pointer to an access mask that contains the generic access rights to map. Your implementation must map the generic access rights to the
 			/// corresponding standard and specific access rights for the specified object type.
 			/// </param>
-			void MapGeneric([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidObjectType, [In] ref sbyte AceFlags, [In] ref uint Mask);
+			void MapGeneric(in Guid guidObjectType, ref sbyte AceFlags, ref uint Mask);
 
 			/// <summary>
 			/// The GetInheritTypes method requests information about how ACEs can be inherited by child objects. For more information, see ACE Inheritance.
@@ -563,7 +561,7 @@ namespace Vanara.PInvoke
 			/// combination of inheritance flags and child object type that you support.
 			/// </param>
 			/// <param name="InheritTypesCount">A pointer to a variable that you should set to indicate the number of entries in the ppInheritTypes array.</param>
-			void GetInheritTypes([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)]out SI_INHERIT_TYPE[] InheritType, out uint InheritTypesCount);
+			void GetInheritTypes([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] out SI_INHERIT_TYPE[] InheritType, out uint InheritTypesCount);
 
 			/// <summary>
 			/// The PropertySheetPageCallback method notifies an EditSecurity or CreateSecurityPage caller that an access control editor property page is being
@@ -936,7 +934,7 @@ namespace Vanara.PInvoke
 			/// Identifies a module that contains string resources to be used in the property sheet. The ISecurityInformation::GetAccessRights and
 			/// ISecurityInformation::GetInheritTypes methods can specify string resource identifiers for display names.
 			/// </summary>
-			public IntPtr hInstance;
+			public HINSTANCE hInstance;
 			/// <summary>
 			/// A pointer to a null-terminated, Unicode string that names the computer on which to look up account names and SIDs. This value can be NULL to
 			/// specify the local computer. The access control editor does not free this pointer.

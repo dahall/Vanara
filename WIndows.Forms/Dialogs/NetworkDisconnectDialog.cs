@@ -66,7 +66,7 @@ namespace Vanara.Windows.Forms
 		protected override bool RunDialog(IntPtr hwndOwner)
 		{
 			opts.hwndOwner = hwndOwner;
-			var ret = WNetDisconnectDialog1(ref opts);
+			var ret = WNetDisconnectDialog1(opts);
 			if (ret == -1) return false;
 			ret.ThrowIfFailed();
 			return true;

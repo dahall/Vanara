@@ -735,7 +735,7 @@ namespace Vanara.PInvoke
 			/// <param name="riid">A reference to the IID of the requested interface.</param>
 			/// <returns>When this method returns, contains the interface pointer requested in riid. This is typically IShellItem or IShellItem2.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IShellItem GetShellItem([In] KNOWN_FOLDER_FLAG dwFlags, [MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			IShellItem GetShellItem([In] KNOWN_FOLDER_FLAG dwFlags, in Guid riid);
 
 			/// <summary>Retrieves the path of a known folder as a string.</summary>
 			/// <param name="dwFlags">Flags that specify special retrieval options. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.</param>
@@ -796,7 +796,7 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the legacy CSIDL value that is the equivalent of a given KNOWNFOLDERID.</summary>
 			/// <param name="rfid">Reference to the KNOWNFOLDERID.</param>
 			/// <returns>When this method returns, contains a pointer to the CSIDL value. This pointer is passed uninitialized.</returns>
-			int FolderIdToCsidl([In, MarshalAs(UnmanagedType.LPStruct)] Guid rfid);
+			int FolderIdToCsidl(in Guid rfid);
 
 			/// <summary>Gets an array of all registered known folder IDs. This can be used in enumerating all known folders.</summary>
 			/// <param name="ppKFId">
@@ -816,7 +816,7 @@ namespace Vanara.PInvoke
 			/// <param name="rfid">Reference to the KNOWNFOLDERID.</param>
 			/// <returns>When this method returns, contains an interface pointer to the IKnownFolder object that represents the folder.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IKnownFolder GetFolder([In, MarshalAs(UnmanagedType.LPStruct)] Guid rfid);
+			IKnownFolder GetFolder(in Guid rfid);
 
 			/// <summary>
 			/// Gets an object that represents a known folder identified by its canonical name. The object allows you to query certain folder properties, get the
@@ -837,13 +837,13 @@ namespace Vanara.PInvoke
 			/// </summary>
 			/// <param name="rfid">A GUID that represents the known folder.</param>
 			/// <param name="pKFD">A pointer to a valid KNOWNFOLDER_DEFINITION structure that provides the details of the new folder.</param>
-			void RegisterFolder([In, MarshalAs(UnmanagedType.LPStruct)] Guid rfid, [In] ref KNOWNFOLDER_DEFINITION pKFD);
+			void RegisterFolder(in Guid rfid, in KNOWNFOLDER_DEFINITION pKFD);
 
 			/// <summary>
 			/// Remove a known folder from the registry, which makes it unknown to the known folder system. This method does not remove the folder itself.
 			/// </summary>
 			/// <param name="rfid">GUID or KNOWNFOLDERID that represents the known folder.</param>
-			void UnregisterFolder([In, MarshalAs(UnmanagedType.LPStruct)] Guid rfid);
+			void UnregisterFolder(in Guid rfid);
 
 			/// <summary>
 			/// Gets an object that represents a known folder based on a file system path. The object allows you to query certain folder properties, get the
@@ -885,8 +885,8 @@ namespace Vanara.PInvoke
 			/// When this method returns, contains the address of a pointer to a null-terminated Unicode string that contains an error message if one was
 			/// generated. This value can be NULL.
 			/// </returns>
-			SafeCoTaskMemString Redirect([In, MarshalAs(UnmanagedType.LPStruct)] Guid rfid, [In] IntPtr hwnd, [In] KF_REDIRECT_FLAGS flags,
-				[In, MarshalAs(UnmanagedType.LPWStr)] string pszTargetPath, [In] uint cFolders, [In, MarshalAs(UnmanagedType.LPStruct)] Guid pExclusion);
+			SafeCoTaskMemString Redirect(in Guid rfid, [In] HWND hwnd, [In] KF_REDIRECT_FLAGS flags,
+				[In, MarshalAs(UnmanagedType.LPWStr)] string pszTargetPath, [In] uint cFolders, in Guid pExclusion);
 		}
 
 		/// <summary>Defines the specifics of a known folder.</summary>

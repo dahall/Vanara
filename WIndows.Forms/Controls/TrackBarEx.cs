@@ -459,7 +459,7 @@ namespace Vanara.Windows.Forms
 					switch ((TrackBarCustomDraw)cd.dwItemSpec.ToInt32())
 					{
 						case TrackBarCustomDraw.TBCD_CHANNEL:
-							using (var g = Graphics.FromHdc(cd.hdc))
+							using (var g = Graphics.FromHdc((IntPtr)cd.hdc))
 							{
 								if (OnDrawChannel(new PaintEventArgs(g, cd.rc)))
 									return CustomDrawResponse.CDRF_SKIPDEFAULT;
@@ -467,7 +467,7 @@ namespace Vanara.Windows.Forms
 							break;
 
 						case TrackBarCustomDraw.TBCD_THUMB:
-							using (var g = Graphics.FromHdc(cd.hdc))
+							using (var g = Graphics.FromHdc((IntPtr)cd.hdc))
 							{
 								if (OnDrawThumb(new PaintEventArgs(g, cd.rc)))
 									return CustomDrawResponse.CDRF_SKIPDEFAULT;
@@ -475,7 +475,7 @@ namespace Vanara.Windows.Forms
 							break;
 
 						case TrackBarCustomDraw.TBCD_TICS:
-							using (var g = Graphics.FromHdc(cd.hdc))
+							using (var g = Graphics.FromHdc((IntPtr)cd.hdc))
 							{
 								if (OnDrawTics(new PaintEventArgs(g, cd.rc)))
 									return CustomDrawResponse.CDRF_SKIPDEFAULT;

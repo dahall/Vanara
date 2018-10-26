@@ -377,7 +377,7 @@ namespace Vanara.Windows.Shell
 			return target.ToString();
 		}
 
-		private void LoadAndResolve(string linkFile, SLR_FLAGS resolveFlags, IntPtr hWin = default(IntPtr), ushort timeOut = 0)
+		private void LoadAndResolve(string linkFile, SLR_FLAGS resolveFlags, HWND hWin = default, ushort timeOut = 0)
 		{
 			if (string.IsNullOrEmpty(linkFile)) throw new ArgumentNullException(nameof(linkFile));
 			var fullPath = Path.GetFullPath(linkFile);

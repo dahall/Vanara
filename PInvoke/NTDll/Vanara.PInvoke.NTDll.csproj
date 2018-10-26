@@ -25,13 +25,13 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-DbgBreakPoint, DbgPrompt, LdrFastFailInLoaderCallout, LdrRegisterDllNotification, LdrUnregisterDllNotification, NtAllocateVirtualMemory, NtClose, NtCommitComplete, NtCommitEnlistment, NtCommitTransaction, NtCompareTokens, NtCreateEnlistment, NtCreateFileA, NtCreateFileW, NtCreateResourceManager, NtCreateSectionA, NtCreateSectionW, NtQueryKey, NtQuerySystemInformation
+DbgBreakPoint, DbgPrompt, LdrFastFailInLoaderCallout, LdrRegisterDllNotification, LdrUnregisterDllNotification, NtAllocateVirtualMemory, NtClose, NtCommitComplete, NtCommitEnlistment, NtCommitTransaction, NtCompareTokens, NtCreateEnlistment, NtCreateFileA, NtCreateFileW, NtCreateResourceManager, NtCreateSectionA, NtCreateSectionW, NtCreateTransactionA, NtCreateTransactionManagerA, NtCreateTransactionManagerW, NtCreateTransactionW, NtQueryKey, NtQuerySystemInformation
 
 Structures
-IO_STATUS_BLOCK, KEY_BASIC_INFORMATION, KEY_FULL_INFORMATION, KEY_NAME_INFORMATION, KEY_NODE_INFORMATION, OBJECT_ATTRIBUTES, UNICODE_STRING, LDR_DLL_NOTIFICATION_DATA, SYSTEM_BASIC_INFORMATION, SYSTEM_REGISTRY_QUOTA_INFORMATION, SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION, SYSTEM_PROCESS_INFORMATION, SYSTEM_THREAD_INFORMATION, CLIENT_ID
+CLIENT_ID, IO_STATUS_BLOCK, KEY_BASIC_INFORMATION, KEY_FULL_INFORMATION, KEY_NAME_INFORMATION, KEY_NODE_INFORMATION, LDR_DLL_NOTIFICATION_DATA, OBJECT_ATTRIBUTES, SYSTEM_BASIC_INFORMATION, SYSTEM_PROCESS_INFORMATION, SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION, SYSTEM_REGISTRY_QUOTA_INFORMATION, SYSTEM_THREAD_INFORMATION, UNICODE_STRING
 
 </PackageReleaseNotes>
-	<LangVersion>latest</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

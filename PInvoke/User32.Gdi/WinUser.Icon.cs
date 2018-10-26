@@ -1095,7 +1095,7 @@ namespace Vanara.PInvoke
 			/// multiple of two. If this structure defines a color icon, this mask only defines the AND bitmask of the icon.
 			/// </para>
 			/// </summary>
-			public IntPtr hbmMask;
+			public HBITMAP hbmMask;
 
 			/// <summary>
 			/// <para>Type: <c>HBITMAP</c></para>
@@ -1105,7 +1105,7 @@ namespace Vanara.PInvoke
 			/// applied (using XOR) to the destination by using the <c>SRCINVERT</c> flag.
 			/// </para>
 			/// </summary>
-			public IntPtr hbmColor;
+			public HBITMAP hbmColor;
 
 			/// <summary>
 			/// <para>Type: <c>WORD</c></para>
@@ -1132,12 +1132,19 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a Windows  that disposes a created HICON instance at disposal using DestroyIcon.</summary>
-		public class SafeHICON : HICON
+		public class SafeHICON : HANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHICON"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
 			public SafeHICON(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			private SafeHICON() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHICON"/> to <see cref="HICON"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HICON(SafeHICON h) => h.handle;
 
 			/// <summary>Creates a managed <see cref="System.Drawing.Bitmap"/> from this HICON instance.</summary>
 			/// <returns>A managed bitmap instance.</returns>

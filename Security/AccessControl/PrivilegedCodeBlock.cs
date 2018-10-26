@@ -32,7 +32,7 @@ namespace Vanara.Security.AccessControl
 		{
 			if (systemPrivileges == null || systemPrivileges.Length == 0) return;
 			RuntimeHelpers.PrepareConstrainedRegions();
-			hObj = SafeHTOKEN.FromProcess(process.Handle, TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY);
+			hObj = SafeHTOKEN.FromProcess(process, TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY);
 			if (systemPrivileges.Length == 1)
 				prev = hObj.AdjustPrivilege(systemPrivileges[0], PrivilegeAttributes.SE_PRIVILEGE_ENABLED);
 			else

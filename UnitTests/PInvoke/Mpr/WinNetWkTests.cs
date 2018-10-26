@@ -44,7 +44,7 @@ namespace Vanara.PInvoke.Tests
 			var drv = "Q:";
 			WNetAddConnection2(new NETRESOURCE(remSh, drv), null, null, CONNECT.CONNECT_INTERACTIVE).ThrowIfFailed();
 			var dds = new DISCDLGSTRUCT { cbStructure = (uint)Marshal.SizeOf<DISCDLGSTRUCT>(), lpLocalName = drv };
-			WNetDisconnectDialog1(ref dds).ThrowIfFailed();
+			WNetDisconnectDialog1(dds).ThrowIfFailed();
 		}
 
 		[Test]

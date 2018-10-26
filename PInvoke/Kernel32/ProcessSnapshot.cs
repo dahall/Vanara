@@ -342,7 +342,7 @@ namespace Vanara.PInvoke
 		// PssCaptureSnapshot( HANDLE ProcessHandle, PSS_CAPTURE_FLAGS CaptureFlags, DWORD ThreadContextFlags, HPSS *SnapshotHandle );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("processsnapshot.h", MSDNShortId = "44F2CB48-A9F6-4131-B21C-9F27A27CECD5")]
-		public static extern Win32Error PssCaptureSnapshot(IntPtr ProcessHandle, PSS_CAPTURE_FLAGS CaptureFlags, uint ThreadContextFlags, out IntPtr SnapshotHandle);
+		public static extern Win32Error PssCaptureSnapshot(HPROCESS ProcessHandle, PSS_CAPTURE_FLAGS CaptureFlags, uint ThreadContextFlags, out IntPtr SnapshotHandle);
 
 		/// <summary>
 		/// <para>Duplicates a snapshot handle from one process to another.</para>
@@ -390,7 +390,7 @@ namespace Vanara.PInvoke
 		// *TargetSnapshotHandle, PSS_DUPLICATE_FLAGS Flags );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("processsnapshot.h", MSDNShortId = "5D2751F3-E7E1-4917-8060-E2BC8A7A3DEA")]
-		public static extern Win32Error PssDuplicateSnapshot(IntPtr SourceProcessHandle, IntPtr SnapshotHandle, IntPtr TargetProcessHandle, out IntPtr TargetSnapshotHandle, PSS_DUPLICATE_FLAGS Flags);
+		public static extern Win32Error PssDuplicateSnapshot(HPROCESS SourceProcessHandle, IntPtr SnapshotHandle, HPROCESS TargetProcessHandle, out IntPtr TargetSnapshotHandle, PSS_DUPLICATE_FLAGS Flags);
 
 		/// <summary>
 		/// <para>Frees a snapshot.</para>
@@ -444,7 +444,7 @@ namespace Vanara.PInvoke
 		// PssFreeSnapshot( HANDLE ProcessHandle, HPSS SnapshotHandle );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("processsnapshot.h", MSDNShortId = "5D062AE6-2F7C-4121-AB6E-9BFA06AB36C6")]
-		public static extern Win32Error PssFreeSnapshot(IntPtr ProcessHandle, IntPtr SnapshotHandle);
+		public static extern Win32Error PssFreeSnapshot(HPROCESS ProcessHandle, IntPtr SnapshotHandle);
 
 		/// <summary>
 		/// <para>Queries the snapshot.</para>

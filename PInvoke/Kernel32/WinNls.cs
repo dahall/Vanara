@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
@@ -996,8 +998,8 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>
 			/// MUI_FILETYPE_NOT_LANGUAGE_NEUTRAL: The specified input file does not have resource configuration data. Thus it is neither an
-			///                                    LN file nor a language-specific resource file. This type of file is typical for older
-			/// executable files. If this file type is specified, the function will not retrieve useful information for the other types.
+			/// LN file nor a language-specific resource file. This type of file is typical for older executable files. If this file type is
+			/// specified, the function will not retrieve useful information for the other types.
 			/// </term>
 			/// </item>
 			/// <item>
@@ -1508,7 +1510,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317819")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumLanguageGroupLocales(EnumLanguageGroupLocalesProc lpLangGroupLocaleEnumProc, LGRPID LanguageGroup, [Optional] uint dwFlags, IntPtr lParam);
+		public static extern bool EnumLanguageGroupLocales(EnumLanguageGroupLocalesProc lpLangGroupLocaleEnumProc, LGRPID LanguageGroup, [Optional] uint dwFlags, [Optional] IntPtr lParam);
 
 		/// <summary>Enumerates the code pages that are either installed on or supported by an operating system.</summary>
 		/// <param name="lpCodePageEnumProc">
@@ -2152,7 +2154,7 @@ namespace Vanara.PInvoke
 		// _Out_opt_ LPDWORD lpValue); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318072(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318072")]
-		public static extern int GetCalendarInfo(uint Locale, uint Calendar, CALTYPE CalType, [Out] StringBuilder lpCalData, int cchData, out uint lpValue);
+		public static extern int GetCalendarInfo(uint Locale, uint Calendar, CALTYPE CalType, StringBuilder lpCalData, int cchData, out uint lpValue);
 
 		/// <summary>Retrieves information about a calendar for a locale specified by name.</summary>
 		/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
@@ -2195,7 +2197,7 @@ namespace Vanara.PInvoke
 		// _Out_opt_ LPWSTR lpCalData, _In_ int cchData, _Out_opt_ LPDWORD lpValue); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318075(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318075")]
-		public static extern int GetCalendarInfoEx(string lpLocaleName, uint Calendar, string lpReserved, CALTYPE CalType, [Out] StringBuilder lpCalData, int cchData, out uint lpValue);
+		public static extern int GetCalendarInfoEx(string lpLocaleName, uint Calendar, string lpReserved, CALTYPE CalType, StringBuilder lpCalData, int cchData, out uint lpValue);
 
 		/// <summary>Deprecated. Gets the supported date range for a specified calendar.</summary>
 		/// <param name="Calendar">The calendar.</param>
@@ -2271,7 +2273,7 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>CP_THREAD_ACP</term>
-		/// <term>Use the current thread&amp;#39;s ANSI code page.</term>
+		/// <term>Use the current thread's ANSI code page.</term>
 		/// </item>
 		/// </list>
 		/// </para>
@@ -2326,7 +2328,7 @@ namespace Vanara.PInvoke
 		// LPTSTR lpCurrencyStr, _In_ int cchCurrency); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318083(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318083")]
-		public static extern int GetCurrencyFormat(uint Locale, LOCALE_FORMAT_FLAG dwFlags, [In] string lpValue, [In] ref CURRENCYFMT lpFormat, [Out] StringBuilder lpCurrencyStr, int cchCurrency);
+		public static extern int GetCurrencyFormat(uint Locale, LOCALE_FORMAT_FLAG dwFlags, string lpValue, in CURRENCYFMT lpFormat, StringBuilder lpCurrencyStr, int cchCurrency);
 
 		/// <summary>Formats a number string as a currency string for a locale specified by identifier.</summary>
 		/// <param name="Locale">
@@ -2366,7 +2368,7 @@ namespace Vanara.PInvoke
 		// LPTSTR lpCurrencyStr, _In_ int cchCurrency); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318083(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318083")]
-		public static extern int GetCurrencyFormat(uint Locale, LOCALE_FORMAT_FLAG dwFlags, [In] string lpValue, [Optional] IntPtr lpFormat, [Out] StringBuilder lpCurrencyStr, int cchCurrency);
+		public static extern int GetCurrencyFormat(uint Locale, LOCALE_FORMAT_FLAG dwFlags, string lpValue, [Optional] IntPtr lpFormat, StringBuilder lpCurrencyStr, int cchCurrency);
 
 		/// <summary>Formats a number string as a currency string for a locale specified by name.</summary>
 		/// <param name="lpLocaleName">Pointer to a locale name or one of the following predefined values.</param>
@@ -2405,7 +2407,7 @@ namespace Vanara.PInvoke
 		// *lpFormat, _Out_opt_ LPWSTR lpCurrencyStr, _In_ int cchCurrency); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318084(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318084")]
-		public static extern int GetCurrencyFormatEx(string lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, [In] string lpValue, [In] ref CURRENCYFMT lpFormat, [Out] StringBuilder lpCurrencyStr, int cchCurrency);
+		public static extern int GetCurrencyFormatEx(string lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, string lpValue, in CURRENCYFMT lpFormat, StringBuilder lpCurrencyStr, int cchCurrency);
 
 		/// <summary>Formats a number string as a currency string for a locale specified by name.</summary>
 		/// <param name="lpLocaleName">Pointer to a locale name or one of the following predefined values.</param>
@@ -2444,7 +2446,7 @@ namespace Vanara.PInvoke
 		// *lpFormat, _Out_opt_ LPWSTR lpCurrencyStr, _In_ int cchCurrency); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318084(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318084")]
-		public static extern int GetCurrencyFormatEx(string lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, [In] string lpValue, [Optional] IntPtr lpFormat, [Out] StringBuilder lpCurrencyStr, int cchCurrency);
+		public static extern int GetCurrencyFormatEx(string lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, string lpValue, [Optional] IntPtr lpFormat, StringBuilder lpCurrencyStr, int cchCurrency);
 
 		/// <summary>Formats a duration of time as a time string for a locale specified by identifier.</summary>
 		/// <param name="Locale">
@@ -2499,7 +2501,7 @@ namespace Vanara.PInvoke
 		// _In_opt_ LPCWSTR lpFormat, _Out_opt_ LPWSTR lpDurationStr, _In_ int cchDuration); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318091(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318091")]
-		public static extern int GetDurationFormat(uint Locale, LOCALE_FORMAT_FLAG dwFlags, [In] ref SYSTEMTIME lpDuration, ulong ullDuration, string lpFormat, [Out] StringBuilder lpDurationStr, int cchDuration);
+		public static extern int GetDurationFormat(uint Locale, LOCALE_FORMAT_FLAG dwFlags, in SYSTEMTIME lpDuration, ulong ullDuration, string lpFormat, StringBuilder lpDurationStr, int cchDuration);
 
 		/// <summary>Formats a duration of time as a time string for a locale specified by name.</summary>
 		/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
@@ -2594,7 +2596,7 @@ namespace Vanara.PInvoke
 		// ullDuration, _In_opt_ LPCWSTR lpFormat, _Out_opt_ LPWSTR lpDurationStr, _In_ int cchDuration); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318092(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318092")]
-		public static extern int GetDurationFormatEx(string lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, [In] ref SYSTEMTIME lpDuration, ulong ullDuration, string lpFormat, [Out] StringBuilder lpDurationStr, int cchDuration);
+		public static extern int GetDurationFormatEx(string lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, in SYSTEMTIME lpDuration, ulong ullDuration, string lpFormat, StringBuilder lpDurationStr, int cchDuration);
 
 		/// <summary>Retrieves resource-related information about a file.</summary>
 		/// <param name="dwFlags">
@@ -2867,7 +2869,7 @@ namespace Vanara.PInvoke
 		// int GetGeoInfo( _In_ GEOID Location, _In_ GEOTYPE GeoType, _Out_opt_ LPTSTR lpGeoData, _In_ int cchData, _In_ LANGID LangId); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318099(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318099")]
-		public static extern int GetGeoInfo(int Location, SYSGEOTYPE GeoType, [Out] StringBuilder lpGeoData, int cchData, ushort LangId);
+		public static extern int GetGeoInfo(int Location, SYSGEOTYPE GeoType, StringBuilder lpGeoData, int cchData, ushort LangId);
 
 		/// <summary>
 		/// Retrieves information about a geographic location that you specify by using a two-letter International Organization for
@@ -2892,7 +2894,7 @@ namespace Vanara.PInvoke
 		// int WINAPI GetGeoInfoEx( _In_ PWSTR location, _In_ GEOTYPE geoType, _Out_opt_ PWSTR geoData, _In_ int geoDataCount ); https://msdn.microsoft.com/en-us/library/windows/desktop/mt826489(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "mt826489")]
-		public static extern int GetGeoInfoEx(string location, SYSGEOTYPE geoType, [Out] StringBuilder geoData, int geoDataCount);
+		public static extern int GetGeoInfoEx(string location, SYSGEOTYPE geoType, StringBuilder geoData, int geoDataCount);
 
 		/// <summary>Retrieves information about a locale specified by identifier.</summary>
 		/// <param name="Locale">
@@ -2924,7 +2926,7 @@ namespace Vanara.PInvoke
 		// int GetLocaleInfo( _In_ LCID Locale, _In_ LCTYPE LCType, _Out_opt_ LPTSTR lpLCData, _In_ int cchData); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318101(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318101")]
-		public static extern int GetLocaleInfo(uint Locale, LCTYPE LCType, [Out] StringBuilder lpLCData, int cchData);
+		public static extern int GetLocaleInfo(uint Locale, LCTYPE LCType, StringBuilder lpLCData, int cchData);
 
 		/// <summary>Retrieves information about a locale specified by name.</summary>
 		/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
@@ -2968,7 +2970,7 @@ namespace Vanara.PInvoke
 		// int GetLocaleInfoEx( _In_opt_ LPCWSTR lpLocaleName, _In_ LCTYPE LCType, _Out_opt_ LPWSTR lpLCData, _In_ int cchData); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318103(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318103")]
-		public static extern int GetLocaleInfoEx(string lpLocaleName, LCTYPE LCType, [Out] StringBuilder lpLCData, int cchData);
+		public static extern int GetLocaleInfoEx(string lpLocaleName, LCTYPE LCType, StringBuilder lpLCData, int cchData);
 
 		/// <summary>Retrieves information about the current version of a specified NLS capability for a locale specified by identifier.</summary>
 		/// <param name="Function">The NLS capability to query. This value must be COMPARE_STRING. See the <c>SYSNLS_FUNCTION</c> enumeration.</param>
@@ -3050,7 +3052,7 @@ namespace Vanara.PInvoke
 		// LPTSTR lpNumberStr, _In_ int cchNumber); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318110(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318110")]
-		public static extern int GetNumberFormat(uint Locale, LOCALE_FORMAT_FLAG dwFlags, [In] string lpValue, [In] ref NUMBERFMT lpFormat, [Out] StringBuilder lpNumberStr, int cchNumber);
+		public static extern int GetNumberFormat(uint Locale, LOCALE_FORMAT_FLAG dwFlags, string lpValue, in NUMBERFMT lpFormat, StringBuilder lpNumberStr, int cchNumber);
 
 		/// <summary>Formats a number string as a number string customized for a locale specified by name.</summary>
 		/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
@@ -3093,7 +3095,7 @@ namespace Vanara.PInvoke
 		// *lpFormat, _Out_opt_ LPWSTR lpNumberStr, _In_ int cchNumber); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318113(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318113")]
-		public static extern int GetNumberFormatEx(string lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, [In] string lpValue, [In] ref NUMBERFMT lpFormat, [Out] StringBuilder lpNumberStr, int cchNumber);
+		public static extern int GetNumberFormatEx(string lpLocaleName, LOCALE_FORMAT_FLAG dwFlags, string lpValue, in NUMBERFMT lpFormat, StringBuilder lpNumberStr, int cchNumber);
 
 		/// <summary>Returns the current original equipment manufacturer (OEM) code page identifier for the operating system.</summary>
 		/// <returns>Returns the current OEM code page identifier for the operating system.</returns>
@@ -3231,7 +3233,7 @@ namespace Vanara.PInvoke
 		// cchScripts); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318116(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318116")]
-		public static extern int GetStringScripts(GetStringScriptsFlag dwFlags, string lpString, int cchString, [Out] StringBuilder lpScripts, int cchScripts);
+		public static extern int GetStringScripts(GetStringScriptsFlag dwFlags, string lpString, int cchString, StringBuilder lpScripts, int cchScripts);
 
 		/// <summary>Returns the language identifier for the system locale.</summary>
 		/// <returns>
@@ -3272,7 +3274,7 @@ namespace Vanara.PInvoke
 		// int GetSystemDefaultLocaleName( _Out_ LPWSTR lpLocaleName, _In_ int cchLocaleName); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318122(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318122")]
-		public static extern int GetSystemDefaultLocaleName([Out] StringBuilder lpLocaleName, int cchLocaleName);
+		public static extern int GetSystemDefaultLocaleName(StringBuilder lpLocaleName, int cchLocaleName);
 
 		/// <summary>
 		/// Retrieves the language identifier for the system default UI language of the operating system, also known as the "install
@@ -3595,6 +3597,98 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetUILanguageInfo(MUI_LANGUAGE_ENUM dwFlags, IntPtr pwmszLanguage, IntPtr pwszFallbackLanguages, ref uint pcchFallbackLanguages, out MUI_LANGUAGE pdwAttributes);
 
+		/// <summary>Retrieves a variety of information about an installed UI language:</summary>
+		/// <param name="dwFlags">
+		/// <para>Flags defining the format of the specified language. The flags are mutually exclusive, and the default is MUI_LANGUAGE_NAME.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MUI_LANGUAGE_ID</term>
+		/// <term>Retrieve the language strings in language identifier format.</term>
+		/// </item>
+		/// <item>
+		/// <term>MUI_LANGUAGE_NAME</term>
+		/// <term>Retrieve the language strings in language name format.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="pwmszLanguage">
+		/// Languages for which the function is to retrieve information. This parameter indicates an ordered array of language identifiers or
+		/// language names, depending on the flag setting. For information on the use of this parameter, see the Remarks section.
+		/// </param>
+		/// <param name="pwszFallbackLanguages">
+		/// <para>A list of fallback languages, formatted as defined by the setting for dwFlags.</para>
+		/// </param>
+		/// <param name="pdwAttributes">
+		/// <para>
+		/// Pointer to flags indicating attributes of the input language list. The function always retrieves the flag characterizing the last
+		/// language listed.
+		/// </para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MUI_FULL_LANGUAGE</term>
+		/// <term>The language is fully localized.</term>
+		/// </item>
+		/// <item>
+		/// <term>MUI_PARTIAL_LANGUAGE</term>
+		/// <term>The language is partially localized.</term>
+		/// </item>
+		/// <item>
+		/// <term>MUI_LIP_LANGUAGE</term>
+		/// <term>The language is an LIP language.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// <para>In addition, pdwAttributes includes one or both of the following flags, as appropriate.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MUI_LANGUAGE_INSTALLED</term>
+		/// <term>The language is installed on this computer.</term>
+		/// </item>
+		/// <item>
+		/// <term>MUI_LANGUAGE_LICENSED</term>
+		/// <term>The language is appropriately licensed for the current user.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// Returns <c>TRUE</c> if successful or <c>FALSE</c> otherwise. To get extended error information, the application can call
+		/// <c>GetLastError</c>, which can return the following error codes:
+		/// </para>
+		/// <para>If <c>GetLastError</c> returns any other error code, the parameters pcchFallbackLanguages and pdwAttributes are undefined.</para>
+		/// </returns>
+		public static bool GetUILanguageInfo(MUI_LANGUAGE_ENUM dwFlags, string[] pwmszLanguage, out string[] pwszFallbackLanguages, out MUI_LANGUAGE pdwAttributes)
+		{
+			using (var mem = SafeCoTaskMemHandle.CreateFromStringList(pwmszLanguage, StringListPackMethod.Concatenated, CharSet.Unicode))
+			{
+				uint sz = 0;
+				if (!GetUILanguageInfo(dwFlags, (IntPtr)mem, IntPtr.Zero, ref sz, out var _) && sz == 0) Win32Error.ThrowLastError();
+				using (var rmem = new SafeCoTaskMemHandle((int)sz))
+				{
+					var ret = GetUILanguageInfo(dwFlags, (IntPtr)mem, IntPtr.Zero, ref sz, out pdwAttributes);
+					pwszFallbackLanguages = rmem.ToStringEnum(CharSet.Unicode).ToArray();
+					return ret;
+				}
+			}
+		}
+
 		/// <summary>
 		/// Retrieves the two-letter International Organization for Standardization (ISO) 3166-1 code or numeric United Nations (UN) Series
 		/// M, Number 49 (M.49) code for the default geographical location of the user.
@@ -3641,7 +3735,7 @@ namespace Vanara.PInvoke
 		// int WINAPI GetUserDefaultGeoName( _Out_ LPWSTR geoName, _In_ geoNameCount int); https://msdn.microsoft.com/en-us/library/windows/desktop/mt826490(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "mt826490")]
-		public static extern int GetUserDefaultGeoName([Out] StringBuilder geoName, int geoNameCount);
+		public static extern int GetUserDefaultGeoName(StringBuilder geoName, int geoNameCount);
 
 		/// <summary>Returns the language identifier of the Region Format setting for the current user.</summary>
 		/// <returns>
@@ -3683,7 +3777,7 @@ namespace Vanara.PInvoke
 		// int GetUserDefaultLocaleName( _Out_ LPWSTR lpLocaleName, _In_ int cchLocaleName); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318136(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318136")]
-		public static extern int GetUserDefaultLocaleName([Out] StringBuilder lpLocaleName, int cchLocaleName);
+		public static extern int GetUserDefaultLocaleName(StringBuilder lpLocaleName, int cchLocaleName);
 
 		/// <summary>
 		/// Returns the language identifier for the user UI language for the current user. If the current user has not set a language,
@@ -3851,7 +3945,7 @@ namespace Vanara.PInvoke
 		// int cchASCIIChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318149(v=vs.85).aspx
 		[DllImport(Lib.Normaliz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318149")]
-		public static extern int IdnToAscii(IDN_FLAGS dwFlags, string lpUnicodeCharStr, int cchUnicodeChar, [Out] StringBuilder lpASCIICharStr, int cchASCIIChar);
+		public static extern int IdnToAscii(IDN_FLAGS dwFlags, string lpUnicodeCharStr, int cchUnicodeChar, StringBuilder lpASCIICharStr, int cchASCIIChar);
 
 		/// <summary>
 		/// Converts an internationalized domain name (IDN) or another internationalized label to the NamePrep form specified by Network
@@ -3888,7 +3982,7 @@ namespace Vanara.PInvoke
 		// lpNameprepCharStr, _In_ int cchNameprepChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318150(v=vs.85).aspx
 		[DllImport(Lib.Normaliz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318150")]
-		public static extern int IdnToNameprepUnicode(IDN_FLAGS dwFlags, string lpUnicodeCharStr, int cchUnicodeChar, [Out] StringBuilder lpNameprepCharStr, int cchNameprepChar);
+		public static extern int IdnToNameprepUnicode(IDN_FLAGS dwFlags, string lpUnicodeCharStr, int cchUnicodeChar, StringBuilder lpNameprepCharStr, int cchNameprepChar);
 
 		/// <summary>
 		/// Converts the Punycode form of an internationalized domain name (IDN) or another internationalized label to the normal Unicode
@@ -3927,7 +4021,7 @@ namespace Vanara.PInvoke
 		// int cchUnicodeChar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318151(v=vs.85).aspx
 		[DllImport(Lib.Normaliz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318151")]
-		public static extern int IdnToUnicode(IDN_FLAGS dwFlags, string lpASCIICharStr, int cchASCIIChar, [Out] StringBuilder lpUnicodeCharStr, int cchUnicodeChar);
+		public static extern int IdnToUnicode(IDN_FLAGS dwFlags, string lpASCIICharStr, int cchASCIIChar, StringBuilder lpUnicodeCharStr, int cchUnicodeChar);
 
 		/// <summary>
 		/// Determines if a specified character is a lead byte for the system default Windows ANSI code page ( <c>CP_ACP</c>). A lead byte is
@@ -4192,7 +4286,7 @@ namespace Vanara.PInvoke
 		// int LCIDToLocaleName( _In_ LCID Locale, _Out_opt_ LPWSTR lpName, _In_ int cchName, _In_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318698(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318698")]
-		public static extern int LCIDToLocaleName(uint Locale, [Out] StringBuilder lpName, int cchName, LCTYPE dwFlags);
+		public static extern int LCIDToLocaleName(uint Locale, StringBuilder lpName, int cchName, LCTYPE dwFlags);
 
 		/// <summary>
 		/// For a locale specified by identifier, maps one input character string to another using a specified transformation, or generates a
@@ -4260,7 +4354,7 @@ namespace Vanara.PInvoke
 		// int cchDest); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318700(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318700")]
-		public static extern int LCMapString(uint Locale, uint dwMapFlags, [In] string lpSrcStr, int cchSrc, [Out] StringBuilder lpDestStr, int cchDest);
+		public static extern int LCMapString(uint Locale, uint dwMapFlags, string lpSrcStr, int cchSrc, StringBuilder lpDestStr, int cchDest);
 
 		/// <summary>
 		/// For a locale specified by name, maps an input character string to another using a specified transformation, or generates a sort
@@ -4469,7 +4563,7 @@ namespace Vanara.PInvoke
 		// sortHandle); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318702(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318702")]
-		public static extern int LCMapStringEx(string lpLocaleName, uint dwMapFlags, string lpSrcStr, int cchSrc, [Out] StringBuilder lpDestStr, int cchDest, ref NLSVERSIONINFO lpVersionInformation, [Optional] IntPtr lpReserved, [Optional] IntPtr sortHandle);
+		public static extern int LCMapStringEx(string lpLocaleName, uint dwMapFlags, string lpSrcStr, int cchSrc, StringBuilder lpDestStr, int cchDest, ref NLSVERSIONINFO lpVersionInformation, [Optional] IntPtr lpReserved, [Optional] IntPtr sortHandle);
 
 		/// <summary>
 		/// <para>Unsupported. <c>LoadStringByReference</c> may be altered or unavailable. Instead, use SHLoadIndirectString.</para>
@@ -4608,7 +4702,7 @@ namespace Vanara.PInvoke
 		// int cwDstLength); https://msdn.microsoft.com/en-us/library/windows/desktop/dd319093(v=vs.85).aspx
 		[DllImport(Lib.Normaliz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd319093")]
-		public static extern int NormalizeString(NORM_FORM NormForm, string lpSrcString, int cwSrcLength, [Out] StringBuilder lpDstString, int cwDstLength);
+		public static extern int NormalizeString(NORM_FORM NormForm, string lpSrcString, int cwSrcLength, StringBuilder lpDstString, int cwDstLength);
 
 		/// <summary>Extracts a primary language identifier from a language identifier.</summary>
 		/// <param name="lgid">
@@ -4644,7 +4738,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd319112")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ResolveLocaleName(string lpNameToResolve, [Out] StringBuilder lpLocaleName, int cchLocaleName);
+		public static extern bool ResolveLocaleName(string lpNameToResolve, StringBuilder lpLocaleName, int cchLocaleName);
 
 		/// <summary>Sets an item of locale information for a calendar. For more information, see Date and Calendar.</summary>
 		/// <param name="Locale">
@@ -4676,7 +4770,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd374048")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetCalendarInfo(uint Locale, uint Calendar, CALTYPE CalType, [In] string lpCalData);
+		public static extern bool SetCalendarInfo(uint Locale, uint Calendar, CALTYPE CalType, string lpCalData);
 
 		/// <summary>
 		/// Sets an item of information in the user override portion of the current locale. This function does not set the system defaults.
@@ -4707,7 +4801,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd374049")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetLocaleInfo(uint Locale, LCTYPE LCType, [In] string lpLCData);
+		public static extern bool SetLocaleInfo(uint Locale, LCTYPE LCType, string lpLCData);
 
 		/// <summary>
 		/// Sets the process preferred UI languages for the application process. For more information, see User Interface Language Management.
@@ -4762,7 +4856,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd374050")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetProcessPreferredUILanguages(MUI_LANGUAGE_ENUM dwFlags, IntPtr pwszLanguagesBuffer, out uint pulNumLanguages);
+		public static extern bool SetProcessPreferredUILanguages(MUI_LANGUAGE_ENUM dwFlags,
+			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Unicode")] string[] pwszLanguagesBuffer, out uint pulNumLanguages);
 
 		/// <summary>Sets the current locale of the calling thread.</summary>
 		/// <param name="Locale">
@@ -4859,7 +4954,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd374052")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetThreadPreferredUILanguages(MUI_LANGUAGE_ENUM dwFlags, IntPtr pwszLanguagesBuffer, out uint pulNumLanguages);
+		public static extern bool SetThreadPreferredUILanguages(MUI_LANGUAGE_ENUM dwFlags,
+			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NullTermStringArrayMarshaler), MarshalCookie = "Unicode")] string[] pwszLanguagesBuffer, out uint pulNumLanguages);
 
 		/// <summary>
 		/// <para>Sets the user interface language for the current thread.</para>

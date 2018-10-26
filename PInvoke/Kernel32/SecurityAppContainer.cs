@@ -26,6 +26,6 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Securityappcontainer.h", MSDNShortId = "hh448493")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetAppContainerNamedObjectPath(IntPtr Token, IntPtr AppContainerSid, uint ObjectPathLength, [Out] StringBuilder ObjectPath, out uint ReturnLength);
+		public static extern bool GetAppContainerNamedObjectPath([Optional] HTOKEN Token, IntPtr AppContainerSid, uint ObjectPathLength, StringBuilder ObjectPath, out uint ReturnLength);
 	}
 }

@@ -155,7 +155,7 @@ namespace Vanara.Collections.Tests
 			Assert.That(ppv, Is.Not.Null);
 			var si2 = (IShellItem2) ppv;
 			var pk = PROPERTYKEY.System.PropList.FullDetails;
-			var pdl = si2.GetPropertyDescriptionList(ref pk, typeof(IPropertyDescriptionList).GUID);
+			var pdl = si2.GetPropertyDescriptionList(pk, typeof(IPropertyDescriptionList).GUID);
 			var pdRiid = typeof(IPropertyDescription).GUID;
 
 			// Test IEnumerable

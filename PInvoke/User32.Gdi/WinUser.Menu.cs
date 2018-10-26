@@ -2146,7 +2146,7 @@ namespace Vanara.PInvoke
 		// lpMenuName );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "loadmenu.htm")]
-		public static extern IntPtr LoadMenu(IntPtr hInstance, SafeResourceId lpMenuName);
+		public static extern IntPtr LoadMenu(HINSTANCE hInstance, SafeResourceId lpMenuName);
 
 		/// <summary>
 		/// <para>Loads the specified menu template in memory.</para>
@@ -2731,7 +2731,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "setmenuinfo.htm")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetMenuInfo(IntPtr hMenu, [In] ref MENUINFO lpcmi);
+		public static extern bool SetMenuInfo(IntPtr hMenu, in MENUINFO lpcmi);
 
 		/// <summary>
 		/// <para>
@@ -2802,7 +2802,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "setmenuitembitmaps.htm")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetMenuItemBitmaps(IntPtr hMenu, uint uPosition, MenuFlags uFlags, IntPtr hBitmapUnchecked, IntPtr hBitmapChecked);
+		public static extern bool SetMenuItemBitmaps(IntPtr hMenu, uint uPosition, MenuFlags uFlags, HBITMAP hBitmapUnchecked, HBITMAP hBitmapChecked);
 
 		/// <summary>
 		/// <para>Changes information about a menu item.</para>
@@ -2847,7 +2847,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "setmenuiteminfo.htm")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetMenuItemInfo(IntPtr hmenu, uint item, [MarshalAs(UnmanagedType.Bool)] bool fByPositon, [In] ref MENUITEMINFO lpmii);
+		public static extern bool SetMenuItemInfo(IntPtr hmenu, uint item, [MarshalAs(UnmanagedType.Bool)] bool fByPositon, in MENUITEMINFO lpmii);
 
 		/// <summary>
 		/// <para>
@@ -3266,7 +3266,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>HWND</c></para>
 			/// <para>A handle to the window to receive the menu notification messages.</para>
 			/// </summary>
-			public IntPtr hwndNext;
+			public HWND hwndNext;
 		}
 
 		/// <summary>
@@ -3300,7 +3300,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>HWND</c></para>
 			/// <para>A handle to the submenu.</para>
 			/// </summary>
-			public IntPtr hwndMenu;
+			public HWND hwndMenu;
 
 			private uint uFlags;
 
@@ -3812,7 +3812,7 @@ namespace Vanara.PInvoke
 			/// Set <c>fMask</c> to <c>MIIM_CHECKMARKS</c> to use <c>hbmpChecked</c>.
 			/// </para>
 			/// </summary>
-			public IntPtr hbmpChecked;
+			public HBITMAP hbmpChecked;
 
 			/// <summary>
 			/// <para>Type: <c>HBITMAP</c></para>
@@ -3821,7 +3821,7 @@ namespace Vanara.PInvoke
 			/// Set <c>fMask</c> to <c>MIIM_CHECKMARKS</c> to use <c>hbmpUnchecked</c>.
 			/// </para>
 			/// </summary>
-			public IntPtr hbmpUnchecked;
+			public HBITMAP hbmpUnchecked;
 
 			/// <summary>
 			/// <para>Type: <c>ULONG_PTR</c></para>
@@ -3925,7 +3925,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public IntPtr hbmpItem;
+			public HBITMAP hbmpItem;
 		}
 
 		/// <summary>

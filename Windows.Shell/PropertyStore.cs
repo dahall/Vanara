@@ -288,7 +288,7 @@ namespace Vanara.Windows.Shell
 				try
 				{
 					var pv = new PROPVARIANT();
-					iprops.GetValue(ref key, pv);
+					iprops.GetValue(key, pv);
 					value = pv;
 					return true;
 				}

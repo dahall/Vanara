@@ -222,7 +222,7 @@ namespace Vanara.Configuration
 		}
 
 		[DllImport("shell32.dll", CharSet = CharSet.Ansi)]
-		private static extern void SHAddToRecentDocs(int flag, [In] string path);
+		private static extern void SHAddToRecentDocs(int flag, string path);
 
 		private void OnClearListMenuItemClick()
 		{

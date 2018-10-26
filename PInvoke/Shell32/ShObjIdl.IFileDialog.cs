@@ -318,7 +318,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Enables a calling application to associate a GUID with a dialog's persisted state.</summary>
 			/// <param name="guid">The GUID to associate with this dialog state.</param>
-			void SetClientGuid([MarshalAs(UnmanagedType.LPStruct)] Guid guid);
+			void SetClientGuid(in Guid guid);
 
 			/// <summary>Instructs the dialog to clear all persisted state information.</summary>
 			void ClearClientData();
@@ -453,7 +453,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Enables a calling application to associate a GUID with a dialog's persisted state.</summary>
 			/// <param name="guid">The GUID to associate with this dialog state.</param>
-			new void SetClientGuid([MarshalAs(UnmanagedType.LPStruct)] Guid guid);
+			new void SetClientGuid(in Guid guid);
 
 			/// <summary>Instructs the dialog to clear all persisted state information.</summary>
 			new void ClearClientData();
@@ -828,7 +828,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Enables a calling application to associate a GUID with a dialog's persisted state.</summary>
 			/// <param name="guid">The GUID to associate with this dialog state.</param>
-			new void SetClientGuid([MarshalAs(UnmanagedType.LPStruct)] Guid guid);
+			new void SetClientGuid(in Guid guid);
 
 			/// <summary>Instructs the dialog to clear all persisted state information.</summary>
 			new void ClearClientData();
@@ -1090,7 +1090,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Enables a calling application to associate a GUID with a dialog's persisted state.</summary>
 			/// <param name="guid">The GUID to associate with this dialog state.</param>
-			new void SetClientGuid([MarshalAs(UnmanagedType.LPStruct)] Guid guid);
+			new void SetClientGuid(in Guid guid);
 
 			/// <summary>Instructs the dialog to clear all persisted state information.</summary>
 			new void ClearClientData();
@@ -1129,7 +1129,7 @@ namespace Vanara.PInvoke
 			/// Pointer to an optional IFileOperationProgressSink that the calling application can use if they want to be notified of the progress of the
 			/// property stamping. This value may be NULL.
 			/// </param>
-			void ApplyProperties(IShellItem psi, PropSys.IPropertyStore pStore, IntPtr hwnd, IFileOperationProgressSink pSink);
+			void ApplyProperties(IShellItem psi, PropSys.IPropertyStore pStore, HWND hwnd, IFileOperationProgressSink pSink);
 		}
 
 		/// <summary>Exposes a method that represents a modal window. This interface is used in the Windows XP Passport Wizard.</summary>

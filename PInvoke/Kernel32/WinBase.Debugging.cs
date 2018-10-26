@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
 {
@@ -18,7 +17,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms679298")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DebugBreakProcess([In] IntPtr Process);
+		public static extern bool DebugBreakProcess([In] HPROCESS Process);
 
 		/// <summary>Sets the action to be performed when the calling thread exits.</summary>
 		/// <param name="KillOnExit">
@@ -66,7 +65,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms679363")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetThreadSelectorEntry([In] IntPtr hThread, uint dwSelector, out LDT_ENTRY lpSelectorEntry);
+		public static extern bool GetThreadSelectorEntry([In] HTHREAD hThread, uint dwSelector, out LDT_ENTRY lpSelectorEntry);
 
 		/// <summary>Describes an entry in the descriptor table. This structure is valid only on x86-based systems.</summary>
 		// typedef struct _LDT_ENTRY { WORD LimitLow; WORD BaseLow; union { struct { BYTE BaseMid; BYTE Flags1; BYTE Flags2; BYTE BaseHi; } Bytes; struct { DWORD BaseMid :8; DWORD Type :5; DWORD Dpl :2; DWORD Pres :1; DWORD LimitHi :4; DWORD Sys :1; DWORD Reserved_0 :1; DWORD Default_Big :1; DWORD Granularity :1; DWORD BaseHi :8; } Bits; } HighWord;} LDT_ENTRY, *PLDT_ENTRY;
@@ -79,6 +78,7 @@ namespace Vanara.PInvoke
 			public ushort LimitLow;
 			/// <summary>The low-order part of the base address of the segment.</summary>
 			public ushort BaseLow;
+
 			private uint bits;
 
 			/// <summary>The middle bits (16â€“23) of the base address of the segment.</summary>
@@ -126,6 +126,5 @@ namespace Vanara.PInvoke
 
 			private void SetBits(int offset, int len, byte value) { var mask = (uint)(((1 << len) - 1) << offset); bits = (bits & ~mask) | (uint)(value << offset); }
 		}
-
 	}
 }

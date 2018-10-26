@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32.SafeHandles;
 using NUnit.Framework;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -127,7 +128,7 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void DuplicateTokenTest()
 		{
-			var pval = SafeHTOKEN.FromProcess(System.Diagnostics.Process.GetCurrentProcess().Handle);
+			var pval = SafeHTOKEN.FromProcess(System.Diagnostics.Process.GetCurrentProcess());
 			Assert.That(pval.IsInvalid, Is.False);
 			Assert.That(DuplicateToken(pval, SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation, out var dtok));
 			Assert.That(dtok.IsInvalid, Is.False);
@@ -162,7 +163,7 @@ namespace Vanara.PInvoke.Tests
 			var map = new GENERIC_MAPPING((uint)Kernel32.FileAccess.FILE_GENERIC_READ, (uint)Kernel32.FileAccess.FILE_GENERIC_WRITE, (uint)Kernel32.FileAccess.FILE_GENERIC_EXECUTE, (uint)Kernel32.FileAccess.FILE_ALL_ACCESS);
 			var ifArray = new SafeInheritedFromArray(hardAcl.AceCount);
 			var err = GetInheritanceSource(fn, SE_OBJECT_TYPE.SE_FILE_OBJECT, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, false, null,
-				0, pAcl, IntPtr.Zero, ref map, ifArray);
+				0, pAcl, IntPtr.Zero, map, ifArray);
 			Assert.That(err, Is.EqualTo(0));
 			TestContext.WriteLine($"{hardAcl.AceCount}: {string.Join("; ", ifArray.Results.Select(i => i.ToString()))}");
 			Assert.That(() => ifArray.Dispose(), Throws.Nothing);
@@ -189,7 +190,7 @@ namespace Vanara.PInvoke.Tests
 		public void GetTokenInformationTest()
 		{
 			//var p = SafeTokenHandle.CurrentProcessToken.GetInfo<PTOKEN_PRIVILEGES>(TOKEN_INFORMATION_CLASS.TokenPrivileges).Privileges;
-			using (var t = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_QUERY))
+			using (var t = SafeHTOKEN.FromProcess(Process.GetCurrentProcess(), TokenAccess.TOKEN_QUERY))
 			{
 				Assert.That(t, Is.Not.Null);
 
@@ -264,29 +265,24 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
-		[Test()]
-		public void LogonUserExTest()
+		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AuthCasesFromFile))]
+		public void LogonUserExTest(bool validUser, bool validCred, string urn, string dn, string dcn, string domain, string un, string pwd, string notes)
 		{
-			var b = LogonUserEx("david.a.hall@hpe.com", null, "Itsdav1dg", LogonUserType.LOGON32_LOGON_INTERACTIVE,
+			var b = LogonUserEx(urn, null, pwd, LogonUserType.LOGON32_LOGON_INTERACTIVE,
 				LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out var hTok, out var _,
 				out var _, out var _, out var _);
 			if (!b) TestContext.WriteLine(Win32Error.GetLastError());
-			Assert.That(b);
+			Assert.That(b, Is.EqualTo(validCred && validUser));
 			hTok.Dispose();
 		}
 
-		[Test()]
-		public void LogonUserTest()
+		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AuthCasesFromFile))]
+		public void LogonUserTest(bool validUser, bool validCred, string urn, string dn, string dcn, string domain, string un, string pwd, string notes)
 		{
-			var b = LogonUser("david.a.hall@hpe.com", null, "Itsdav1dg", LogonUserType.LOGON32_LOGON_INTERACTIVE,
-				LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out var hTok);
+			var b = LogonUser(urn, null, pwd, LogonUserType.LOGON32_LOGON_INTERACTIVE, LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out var hTok);
 			if (!b) TestContext.WriteLine(Win32Error.GetLastError());
-			Assert.That(b);
+			Assert.That(b, Is.EqualTo(validCred && validUser));
 			hTok.Dispose();
-			b = LogonUser("david.hall@hpe.com", null, "pwd", LogonUserType.LOGON32_LOGON_INTERACTIVE,
-				LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out hTok);
-			if (!b) TestContext.WriteLine(Win32Error.GetLastError());
-			Assert.That(b, Is.False);
 		}
 
 		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AuthCasesFromFile))]

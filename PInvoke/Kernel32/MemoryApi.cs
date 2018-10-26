@@ -1,6 +1,4 @@
-﻿// ReSharper disable UnusedMember.Global ReSharper disable InconsistentNaming
-
-using Microsoft.Win32.SafeHandles;
+﻿using Microsoft.Win32.SafeHandles;
 using System;
 using System.Runtime.InteropServices;
 
@@ -109,7 +107,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			MEM_COMMIT = 0x00001000,
 			/// <summary>
-			/// Reserves a range of the process&amp;#39;s virtual address space without allocating any actual physical storage in memory or in the paging file on
+			/// Reserves a range of the process's virtual address space without allocating any actual physical storage in memory or in the paging file on
 			/// disk.You can commit reserved pages in subsequent calls to the VirtualAlloc function. To reserve and commit pages in one step, call VirtualAlloc
 			/// with MEM_COMMIT | MEM_RESERVE.Other memory allocation functions, such as malloc and LocalAlloc, cannot use a reserved range of memory until it is released.
 			/// </summary>
@@ -362,7 +360,7 @@ namespace Vanara.PInvoke
 			/// parameter is a handle to an executable image or data file).The maximum size of the file mapping object must be a multiple of the minimum size of a
 			/// large page returned by the GetLargePageMinimum function. If it is not, CreateFileMapping fails. When mapping a view of a file mapping object created
 			/// with SEC_LARGE_PAGES, the base address and view size must also be multiples of the minimum large page size.SEC_LARGE_PAGES requires the
-			/// SeLockMemoryPrivilege privilege to be enabled in the caller&amp;#39;s token.If SEC_LARGE_PAGES is specified, SEC_COMMIT must also be
+			/// SeLockMemoryPrivilege privilege to be enabled in the caller's token.If SEC_LARGE_PAGES is specified, SEC_COMMIT must also be
 			/// specified.Windows Server 2003: This value is not supported until Windows Server 2003 with SP1.Windows XP: This value is not supported.
 			/// </summary>
 			SEC_LARGE_PAGES = 0x80000000,
@@ -445,7 +443,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366528")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AllocateUserPhysicalPages([In] IntPtr hProcess, ref SizeT NumberOfPages, out IntPtr UserPfnArray);
+		public static extern bool AllocateUserPhysicalPages([In] HPROCESS hProcess, ref SizeT NumberOfPages, out IntPtr UserPfnArray);
 
 		/// <summary>
 		/// Allocates physical memory pages to be mapped and unmapped within any Address Windowing Extensions (AWE) region of a specified process and specifies
@@ -484,7 +482,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366529")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AllocateUserPhysicalPagesNuma([In] IntPtr hProcess, ref SizeT NumberOfPages, out IntPtr PageArray, uint nndPreferred);
+		public static extern bool AllocateUserPhysicalPagesNuma([In] HPROCESS hProcess, ref SizeT NumberOfPages, out IntPtr PageArray, uint nndPreferred);
 
 		/// <summary>
 		/// <para>Creates or opens a named or unnamed file mapping object for a specified file.</para>
@@ -615,7 +613,7 @@ namespace Vanara.PInvoke
 		/// parameter is a handle to an executable image or data file).The maximum size of the file mapping object must be a multiple of the minimum size of a
 		/// large page returned by the GetLargePageMinimum function. If it is not, CreateFileMapping fails. When mapping a view of a file mapping object created
 		/// with SEC_LARGE_PAGES, the base address and view size must also be multiples of the minimum large page size.SEC_LARGE_PAGES requires the
-		/// SeLockMemoryPrivilege privilege to be enabled in the caller&amp;#39;s token.If SEC_LARGE_PAGES is specified, SEC_COMMIT must also be
+		/// SeLockMemoryPrivilege privilege to be enabled in the caller's token.If SEC_LARGE_PAGES is specified, SEC_COMMIT must also be
 		/// specified.Windows Server 2003: This value is not supported until Windows Server 2003 with SP1.Windows XP: This value is not supported.
 		/// </term>
 		/// </item>
@@ -693,7 +691,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366537")]
 		public static extern IntPtr CreateFileMapping([In] HFILE hFile, [In] SECURITY_ATTRIBUTES lpAttributes, MEM_PROTECTION flProtect,
-			uint dwMaximumSizeHigh, uint dwMaximumSizeLow, [In] string lpName);
+			uint dwMaximumSizeHigh, uint dwMaximumSizeLow, string lpName);
 
 		/// <summary>Creates or opens a named or unnamed file mapping object for a specified file from a Windows Store app.</summary>
 		/// <param name="hFile">
@@ -788,7 +786,7 @@ namespace Vanara.PInvoke
 		/// parameter is a handle to an executable image or data file).The maximum size of the file mapping object must be a multiple of the minimum size of a
 		/// large page returned by the GetLargePageMinimum function. If it is not, CreateFileMappingFromApp fails. When mapping a view of a file mapping object
 		/// created with SEC_LARGE_PAGES, the base address and view size must also be multiples of the minimum large page size.SEC_LARGE_PAGES requires the
-		/// SeLockMemoryPrivilege privilege to be enabled in the caller&amp;#39;s token.If SEC_LARGE_PAGES is specified, SEC_COMMIT must also be specified.
+		/// SeLockMemoryPrivilege privilege to be enabled in the caller's token.If SEC_LARGE_PAGES is specified, SEC_COMMIT must also be specified.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -861,7 +859,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("MemoryApi.h", MSDNShortId = "hh994453")]
 		public static extern IntPtr CreateFileMappingFromApp([In] HFILE hFile, [In] SECURITY_ATTRIBUTES SecurityAttributes,
-			MEM_PROTECTION PageProtection, ulong MaximumSize, [In] string Name);
+			MEM_PROTECTION PageProtection, ulong MaximumSize, string Name);
 
 		/// <summary>Creates or opens a named or unnamed file mapping object for a specified file and specifies the NUMA node for the physical memory.</summary>
 		/// <param name="hFile">
@@ -1069,7 +1067,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366539")]
 		public static extern SafeHFILE CreateFileMappingNuma([In] HFILE hFile, [In] SECURITY_ATTRIBUTES lpFileMappingAttributes, MEM_PROTECTION flProtect,
-			uint dwMaximumSizeHigh, uint dwMaximumSizeLow, [In] string lpName, uint nndPreferred);
+			uint dwMaximumSizeHigh, uint dwMaximumSizeLow, string lpName, uint nndPreferred);
 
 		/// <summary>
 		/// <para>Creates a memory resource notification object.</para>
@@ -1103,7 +1101,7 @@ namespace Vanara.PInvoke
 		// HANDLE WINAPI CreateMemoryResourceNotification( _In_ MEMORY_RESOURCE_NOTIFICATION_TYPE NotificationType);
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366541")]
-		public static extern SafeHFILE CreateMemoryResourceNotification(MEMORY_RESOURCE_NOTIFICATION_TYPE NotificationType);
+		public static extern SafeMemoryResourceNotification CreateMemoryResourceNotification(MEMORY_RESOURCE_NOTIFICATION_TYPE NotificationType);
 
 		/// <summary>
 		/// Discards the memory contents of a range of memory pages, without decommitting the memory. The contents of discarded memory is undefined and must be
@@ -1162,7 +1160,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366566")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FreeUserPhysicalPages([In] IntPtr hProcess, ref SizeT NumberOfPages, [In] IntPtr UserPfnArray);
+		public static extern bool FreeUserPhysicalPages([In] HPROCESS hProcess, ref SizeT NumberOfPages, [In] IntPtr UserPfnArray);
 
 		/// <summary>Retrieves the minimum size of a large page.</summary>
 		/// <returns>
@@ -1225,7 +1223,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683226")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetProcessWorkingSetSizeEx([In] IntPtr hProcess, [Out] out SizeT lpMinimumWorkingSetSize, [Out] out SizeT lpMaximumWorkingSetSize, out QUOTA_LIMITS_HARDWS Flags);
+		public static extern bool GetProcessWorkingSetSizeEx([In] HPROCESS hProcess, [Out] out SizeT lpMinimumWorkingSetSize, [Out] out SizeT lpMaximumWorkingSetSize, out QUOTA_LIMITS_HARDWS Flags);
 
 		/// <summary>Retrieves the current size limits for the working set of the system cache.</summary>
 		/// <param name="lpMinimumFileCacheSize">
@@ -1636,7 +1634,7 @@ namespace Vanara.PInvoke
 		// SIZE_T ViewSize, _In_ ULONG AllocationType, _In_ ULONG PageProtection, _In_ ULONG PreferredNode);
 		[DllImport("Api-ms-win-core-memory-l1-1-5.dll", SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "mt492558")]
-		public static extern IntPtr MapViewOfFileNuma2([In] HFILE FileMappingHandle, [In] IntPtr ProcessHandle, ulong Offset, IntPtr BaseAddress, SizeT ViewSize,
+		public static extern IntPtr MapViewOfFileNuma2([In] HFILE FileMappingHandle, [In] HPROCESS ProcessHandle, ulong Offset, IntPtr BaseAddress, SizeT ViewSize,
 			MEM_ALLOCATION_TYPE AllocationType, MEM_PROTECTION PageProtection, uint PreferredNode);
 
 		/// <summary>
@@ -1708,7 +1706,7 @@ namespace Vanara.PInvoke
 		// HANDLE WINAPI OpenFileMapping( _In_ DWORD dwDesiredAccess, _In_ BOOL bInheritHandle, _In_ LPCTSTR lpName);
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366791")]
-		public static extern SafeHFILE OpenFileMapping(FILE_MAP dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, [In] string lpName);
+		public static extern SafeHFILE OpenFileMapping(FILE_MAP dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpName);
 
 		/// <summary>Opens a named file mapping object.</summary>
 		/// <param name="DesiredAccess">
@@ -1754,7 +1752,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "hh780543")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PrefetchVirtualMemory(IntPtr hProcess, UIntPtr NumberOfEntries, IntPtr VirtualAddresses, uint Flags);
+		public static extern bool PrefetchVirtualMemory(HPROCESS hProcess, UIntPtr NumberOfEntries, IntPtr VirtualAddresses, uint Flags);
 
 		/// <summary>Retrieves the state of the specified memory resource object.</summary>
 		/// <param name="ResourceNotificationHandle">
@@ -1772,7 +1770,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366799")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool QueryMemoryResourceNotification([In] HFILE ResourceNotificationHandle, [Out, MarshalAs(UnmanagedType.Bool)] out bool ResourceState);
+		public static extern bool QueryMemoryResourceNotification([In] SafeMemoryResourceNotification ResourceNotificationHandle, [Out, MarshalAs(UnmanagedType.Bool)] out bool ResourceState);
 
 		/// <summary>
 		/// The <c>QueryVirtualMemoryInformation</c> function returns information about a page or a set of pages within the virtual address space of the
@@ -1795,7 +1793,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("MemoryApi.h", MSDNShortId = "mt845761")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool QueryVirtualMemoryInformation([In] IntPtr Process, IntPtr VirtualAddress, WIN32_MEMORY_INFORMATION_CLASS MemoryInformationClass, IntPtr MemoryInformation, SizeT MemoryInformationSize, out SizeT ReturnSize);
+		public static extern bool QueryVirtualMemoryInformation([In] HPROCESS Process, IntPtr VirtualAddress, WIN32_MEMORY_INFORMATION_CLASS MemoryInformationClass, IntPtr MemoryInformation, SizeT MemoryInformationSize, out SizeT ReturnSize);
 
 		/// <summary>Reads data from an area of memory in a specified process. The entire area to be read must be accessible or the operation fails.</summary>
 		/// <param name="hProcess">A handle to the process with memory that is being read. The handle must have PROCESS_VM_READ access to the process.</param>
@@ -1818,7 +1816,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms680553")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ReadProcessMemory([In] IntPtr hProcess, [In] IntPtr lpBaseAddress, IntPtr lpBuffer, SizeT nSize, out SizeT lpNumberOfBytesRead);
+		public static extern bool ReadProcessMemory([In] HPROCESS hProcess, [In] IntPtr lpBaseAddress, IntPtr lpBuffer, SizeT nSize, out SizeT lpNumberOfBytesRead);
 
 		/// <summary>
 		/// <para>Reclaims a range of memory pages that were offered to the system with <c>OfferVirtualMemory</c>.</para>
@@ -1898,7 +1896,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "dn934202")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetProcessValidCallTargets(IntPtr hProcess, IntPtr VirtualAddress, SizeT RegionSize, uint NumberOfOffsets, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] CFG_CALL_TARGET_INFO[] OffsetInformation);
+		public static extern bool SetProcessValidCallTargets(HPROCESS hProcess, IntPtr VirtualAddress, SizeT RegionSize, uint NumberOfOffsets, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] CFG_CALL_TARGET_INFO[] OffsetInformation);
 
 		/// <summary>Sets the minimum and maximum working set sizes for the specified process.</summary>
 		/// <param name="hProcess">
@@ -1971,7 +1969,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms686237")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetProcessWorkingSetSizeEx([In] IntPtr hProcess, SizeT dwMinimumWorkingSetSize, SizeT dwMaximumWorkingSetSize, QUOTA_LIMITS_HARDWS Flags);
+		public static extern bool SetProcessWorkingSetSizeEx([In] HPROCESS hProcess, SizeT dwMinimumWorkingSetSize, SizeT dwMaximumWorkingSetSize, QUOTA_LIMITS_HARDWS Flags);
 
 		/// <summary>Limits the size of the working set for the file system cache.</summary>
 		/// <param name="MinimumFileCacheSize">
@@ -2055,7 +2053,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("MemoryApi.h", MSDNShortId = "mt492559")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool UnmapViewOfFile2([In] IntPtr ProcessHandle, IntPtr BaseAddress, uint UnmapFlags);
+		public static extern bool UnmapViewOfFile2([In] HPROCESS ProcessHandle, IntPtr BaseAddress, uint UnmapFlags);
 
 		/// <summary>This is an extended version of UnmapViewOfFile that takes an additional flags parameter.</summary>
 		/// <param name="BaseAddress">
@@ -2137,7 +2135,7 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>MEM_RESERVE0x00002000</term>
 		/// <term>
-		/// Reserves a range of the process&amp;#39;s virtual address space without allocating any actual physical storage in memory or in the paging file on
+		/// Reserves a range of the process's virtual address space without allocating any actual physical storage in memory or in the paging file on
 		/// disk.You can commit reserved pages in subsequent calls to the VirtualAlloc function. To reserve and commit pages in one step, call VirtualAlloc with
 		/// MEM_COMMIT | MEM_RESERVE.Other memory allocation functions, such as malloc and LocalAlloc, cannot use a reserved range of memory until it is released.
 		/// </term>
@@ -2275,7 +2273,7 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>MEM_RESERVE0x00002000</term>
 		/// <term>
-		/// Reserves a range of the process&amp;#39;s virtual address space without allocating any actual physical storage in memory or in the paging file on
+		/// Reserves a range of the process's virtual address space without allocating any actual physical storage in memory or in the paging file on
 		/// disk.You commit reserved pages by calling VirtualAllocEx again with MEM_COMMIT. To reserve and commit pages in one step, call VirtualAllocEx with
 		/// .Other memory allocation functions, such as malloc and LocalAlloc, cannot use reserved memory until it has been released.
 		/// </term>
@@ -2345,7 +2343,7 @@ namespace Vanara.PInvoke
 		// LPVOID WINAPI VirtualAllocEx( _In_ HANDLE hProcess, _In_opt_ LPVOID lpAddress, _In_ SIZE_T dwSize, _In_ DWORD flAllocationType, _In_ DWORD flProtect);
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366890")]
-		public static extern IntPtr VirtualAllocEx([In] IntPtr hProcess, [In] IntPtr lpAddress, SizeT dwSize, MEM_ALLOCATION_TYPE flAllocationType, MEM_PROTECTION flProtect);
+		public static extern IntPtr VirtualAllocEx([In] HPROCESS hProcess, [In] IntPtr lpAddress, SizeT dwSize, MEM_ALLOCATION_TYPE flAllocationType, MEM_PROTECTION flProtect);
 
 		/// <summary>
 		/// Reserves, commits, or changes the state of a region of memory within the virtual address space of the specified process, and specifies the NUMA node
@@ -2394,7 +2392,7 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>MEM_RESERVE0x00002000</term>
 		/// <term>
-		/// Reserves a range of the process&amp;#39;s virtual address space without allocating any actual physical storage in memory or in the paging file on
+		/// Reserves a range of the process's virtual address space without allocating any actual physical storage in memory or in the paging file on
 		/// disk.You commit reserved pages by calling the function again with MEM_COMMIT. To reserve and commit pages in one step, call the function with .Other
 		/// memory allocation functions, such as malloc and LocalAlloc, cannot use reserved memory until it has been released.
 		/// </term>
@@ -2472,7 +2470,7 @@ namespace Vanara.PInvoke
 		// flProtect, _In_ DWORD nndPreferred);
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366891")]
-		public static extern IntPtr VirtualAllocExNuma([In] IntPtr hProcess, [In] IntPtr lpAddress, SizeT dwSize, MEM_ALLOCATION_TYPE flAllocationType, MEM_PROTECTION flProtect, uint nndPreferred);
+		public static extern IntPtr VirtualAllocExNuma([In] HPROCESS hProcess, [In] IntPtr lpAddress, SizeT dwSize, MEM_ALLOCATION_TYPE flAllocationType, MEM_PROTECTION flProtect, uint nndPreferred);
 
 		/// <summary>
 		/// Reserves, commits, or changes the state of a region of pages in the virtual address space of the calling process. Memory allocated by this function
@@ -2511,7 +2509,7 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>MEM_RESERVE0x00002000</term>
 		/// <term>
-		/// Reserves a range of the process&amp;#39;s virtual address space without allocating any actual physical storage in memory or in the paging file on
+		/// Reserves a range of the process's virtual address space without allocating any actual physical storage in memory or in the paging file on
 		/// disk.You can commit reserved pages in subsequent calls to the VirtualAllocFromApp function. To reserve and commit pages in one step, call
 		/// VirtualAllocFromApp with MEM_COMMIT | MEM_RESERVE.Other memory allocation functions, such as malloc and LocalAlloc, cannot use a reserved range of
 		/// memory until it is released.
@@ -2715,7 +2713,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366894")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool VirtualFreeEx([In] IntPtr hProcess, [In] IntPtr lpAddress, SizeT dwSize, MEM_ALLOCATION_TYPE dwFreeType);
+		public static extern bool VirtualFreeEx([In] HPROCESS hProcess, [In] IntPtr lpAddress, SizeT dwSize, MEM_ALLOCATION_TYPE dwFreeType);
 
 		/// <summary>
 		/// Locks the specified region of the process's virtual address space into physical memory, ensuring that subsequent access to the region will not incur
@@ -2811,7 +2809,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366899")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool VirtualProtectEx([In] IntPtr hProcess, [In] IntPtr lpAddress, SizeT dwSize, MEM_PROTECTION flNewProtect, [Out] out MEM_PROTECTION lpflOldProtect);
+		public static extern bool VirtualProtectEx([In] HPROCESS hProcess, [In] IntPtr lpAddress, SizeT dwSize, MEM_PROTECTION flNewProtect, [Out] out MEM_PROTECTION lpflOldProtect);
 
 		/// <summary>Changes the protection on a region of committed pages in the virtual address space of the calling process.</summary>
 		/// <param name="Address">
@@ -2896,7 +2894,7 @@ namespace Vanara.PInvoke
 		// SIZE_T WINAPI VirtualQueryEx( _In_ HANDLE hProcess, _In_opt_ LPCVOID lpAddress, _Out_ PMEMORY_BASIC_INFORMATION lpBuffer, _In_ SIZE_T dwLength);
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa366907")]
-		public static extern SizeT VirtualQueryEx([In] IntPtr hProcess, [In] IntPtr lpAddress, IntPtr lpBuffer, SizeT dwLength);
+		public static extern SizeT VirtualQueryEx([In] HPROCESS hProcess, [In] IntPtr lpAddress, IntPtr lpBuffer, SizeT dwLength);
 
 		/// <summary>
 		/// Unlocks a specified range of pages in the virtual address space of a process, enabling the system to swap the pages out to the
@@ -2942,7 +2940,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms681674")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool WriteProcessMemory([In] IntPtr hProcess, [In] IntPtr lpBaseAddress, [In] IntPtr lpBuffer, SizeT nSize, out SizeT lpNumberOfBytesWritten);
+		public static extern bool WriteProcessMemory([In] HPROCESS hProcess, [In] IntPtr lpBaseAddress, [In] IntPtr lpBuffer, SizeT nSize, out SizeT lpNumberOfBytesWritten);
 
 		/// <summary>Represents information about call targets for Control Flow Guard (CFG).</summary>
 		// typedef struct _CFG_CALL_TARGET_INFO { ULONG_PTR Offset; ULONG_PTR Flags;} CFG_CALL_TARGET_INFO, *PCFG_CALL_TARGET_INFO;
@@ -2967,6 +2965,15 @@ namespace Vanara.PInvoke
 			public SizeT NumberOfBytes;
 			/// <summary></summary>
 			public IntPtr VirtualAddress;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> to a  memory resource notification object that releases its instance at disposal using CloseHandle.</summary>
+		public class SafeMemoryResourceNotification : SafeSyncHandle
+		{
+			/// <summary>Initializes a new instance of the <see cref="MemoryResourceNotification"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeMemoryResourceNotification(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 		}
 	}
 }

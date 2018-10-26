@@ -241,7 +241,7 @@ namespace Vanara.Extensions
 		/// <param name="ptr">A pointer to an unmanaged block of memory.</param>
 		/// <returns>A managed object that contains the data that the <paramref name="ptr"/> parameter points to.</returns>
 		[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
-		public static T ToStructure<T>(this IntPtr ptr) => (T)Marshal.PtrToStructure(ptr, typeof(T).IsEnum ? Enum.GetUnderlyingType(typeof(T)) : typeof(T));
+		public static T ToStructure<T>(this IntPtr ptr) => typeof(T) == typeof(IntPtr) ? (T)(object)ptr : ((T)Marshal.PtrToStructure(ptr, typeof(T).IsEnum ? Enum.GetUnderlyingType(typeof(T)) : typeof(T)));
 
 		/// <summary>Marshals data from an unmanaged block of memory to a managed object.</summary>
 		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a formatted class.</typeparam>
@@ -276,7 +276,7 @@ namespace Vanara.Extensions
 		/// <returns>Enumeration of strings.</returns>
 		public static IEnumerable<string> ToStringEnum(this IntPtr ptr, int count, CharSet charSet = CharSet.Auto, int prefixBytes = 0)
 		{
-			if (ptr == IntPtr.Zero) yield break;
+			if (ptr == IntPtr.Zero || count == 0) yield break;
 			var lPtrVal = ptr.ToInt64();
 			for (var i = 0; i < count; i++)
 			{

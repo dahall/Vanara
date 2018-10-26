@@ -18,13 +18,13 @@ namespace Vanara.PInvoke
 			/// <param name="prc">A pointer to a RECT defining the area for the previewer.</param>
 			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 			[PreserveSig]
-			HRESULT SetWindow([In] HWND hwnd, [In, MarshalAs(UnmanagedType.LPStruct)] RECT prc);
+			HRESULT SetWindow([In] HWND hwnd, in RECT prc);
 
 			/// <summary>Directs the preview handler to change the area within the parent hwnd that it draws into.</summary>
 			/// <param name="prc">A pointer to a RECT to be used for the preview.</param>
 			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 			[PreserveSig]
-			HRESULT SetRect([In, MarshalAs(UnmanagedType.LPStruct)] RECT prc);
+			HRESULT SetRect(in RECT prc);
 
 			/// <summary>
 			/// Directs the preview handler to load data from the source specified in an earlier Initialize method call, and to begin
@@ -66,7 +66,7 @@ namespace Vanara.PInvoke
 			/// returns S_FALSE.
 			/// </returns>
 			[PreserveSig]
-			HRESULT TranslateAccelerator([In, MarshalAs(UnmanagedType.LPStruct)] MSG pmsg);
+			HRESULT TranslateAccelerator(in MSG pmsg);
 		}
 
 		/// <summary>
@@ -91,7 +91,7 @@ namespace Vanara.PInvoke
 			/// returns S_FALSE.
 			/// </returns>
 			[PreserveSig]
-			HRESULT TranslateAccelerator([In, MarshalAs(UnmanagedType.LPStruct)] MSG pmsg);
+			HRESULT TranslateAccelerator(in MSG pmsg);
 		}
 
 		/// <summary>Exposes methods for applying color and font information to preview handlers.</summary>
@@ -110,7 +110,7 @@ namespace Vanara.PInvoke
 			/// <param name="plf">A pointer to a LOGFONTW Structure containing the necessary attributes for the font to use.</param>
 			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 			[PreserveSig]
-			HRESULT SetFont([In, MarshalAs(UnmanagedType.LPStruct)] LOGFONT plf);
+			HRESULT SetFont(in LOGFONT plf);
 
 			/// <summary>Sets the color of the text within the preview handler.</summary>
 			/// <param name="color">A value of type COLORREF to use for the preview handler text color.</param>

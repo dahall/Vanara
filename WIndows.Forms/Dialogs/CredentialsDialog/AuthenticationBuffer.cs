@@ -42,12 +42,12 @@ namespace Vanara.Security
 
 		public int Size => bufferSize;
 
-		private void Init(CredPackFlags flags, SafeCoTaskMemString pUserName, SafeCoTaskMemString pPassword)
+		private void Init(CredPackFlags flags, string pUserName, string pPassword)
 		{
-			if (!CredPackAuthenticationBuffer(flags, (IntPtr)pUserName, (IntPtr)pPassword, IntPtr.Zero, ref bufferSize) && Marshal.GetLastWin32Error() == 122) /*ERROR_INSUFFICIENT_BUFFER*/
+			if (!CredPackAuthenticationBuffer(flags, pUserName, pPassword, IntPtr.Zero, ref bufferSize) && Marshal.GetLastWin32Error() == 122) /*ERROR_INSUFFICIENT_BUFFER*/
 			{
 				buffer = Marshal.AllocCoTaskMem(bufferSize);
-				if (!CredPackAuthenticationBuffer(flags, (IntPtr)pUserName, (IntPtr)pPassword, buffer, ref bufferSize))
+				if (!CredPackAuthenticationBuffer(flags, pUserName, pPassword, buffer, ref bufferSize))
 					throw new Win32Exception();
 			}
 			else
@@ -59,11 +59,11 @@ namespace Vanara.Security
 			var pUserName = new StringBuilder(CRED_MAX_USERNAME_LENGTH);
 			var pDomainName = new StringBuilder(CRED_MAX_USERNAME_LENGTH);
 			var pPassword = new StringBuilder(CREDUI_MAX_PASSWORD_LENGTH);
-			int userNameSize = pUserName.Capacity;
-			int domainNameSize = pDomainName.Capacity;
-			int passwordSize = pPassword.Capacity;
+			var userNameSize = pUserName.Capacity;
+			var domainNameSize = pDomainName.Capacity;
+			var passwordSize = pPassword.Capacity;
 
-			if (!CredUnPackAuthenticationBuffer(decryptProtectedCredentials ? 0x1 : 0x0, buffer, bufferSize,
+			if (!CredUnPackAuthenticationBuffer(decryptProtectedCredentials ? CredPackFlags.CRED_PACK_PROTECTED_CREDENTIALS : 0x0, buffer, bufferSize,
 				pUserName, ref userNameSize, pDomainName, ref domainNameSize, pPassword, ref passwordSize))
 				throw new Win32Exception();
 
@@ -81,7 +81,7 @@ namespace Vanara.Security
 			var domainNameSize = pDomainName.CharCapacity;
 			var passwordSize = pPassword.CharCapacity;
 
-			if (!CredUnPackAuthenticationBuffer(decryptProtectedCredentials ? 0x1 : 0x0, buffer, bufferSize,
+			if (!CredUnPackAuthenticationBuffer(decryptProtectedCredentials ? CredPackFlags.CRED_PACK_PROTECTED_CREDENTIALS : 0x0, buffer, bufferSize,
 				(IntPtr)pUserName, ref userNameSize, (IntPtr)pDomainName, ref domainNameSize, (IntPtr)pPassword, ref passwordSize))
 				throw new Win32Exception();
 

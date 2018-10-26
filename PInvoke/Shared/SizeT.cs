@@ -21,15 +21,45 @@ namespace Vanara.PInvoke
 		/// <value>The value.</value>
 		public ulong Value => val.ToUInt64();
 
+		/// <summary>Performs an implicit conversion from <see cref="System.Int32"/> to <see cref="SizeT"/>.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator SizeT(int value) => new SizeT((uint)value);
+
 		/// <summary>Performs an implicit conversion from <see cref="System.UInt32"/> to <see cref="SizeT"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator SizeT(uint value) => new SizeT(value);
 
+		/// <summary>Performs an implicit conversion from <see cref="System.Int64"/> to <see cref="SizeT"/>.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator SizeT(long value) => new SizeT((ulong)value);
+
 		/// <summary>Performs an implicit conversion from <see cref="System.UInt64"/> to <see cref="SizeT"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator SizeT(ulong value) => new SizeT(value);
+
+		/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="System.Int32"/>.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator int(SizeT value) => (int)value.Value;
+
+		/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="System.UInt32"/>.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator uint(SizeT value) => (uint)value.Value;
+
+		/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="System.Int64"/>.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator long(SizeT value) => (long)value.Value;
+
+		/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="System.UInt64"/>.</summary>
+		/// <param name="value">The value.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator ulong(SizeT value) => (ulong)value.Value;
 
 		/// <inheritdoc/>
 		public int CompareTo(SizeT other) => Value.CompareTo(other.Value);

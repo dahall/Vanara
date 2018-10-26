@@ -1,5 +1,5 @@
 ## Correlation report for netapi32.dll  
-### Methods (1% complete)  
+### Methods (11% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [DavAddConnection](https://www.google.com/search?num=5&q=DavAddConnection+site%3Amicrosoft.com) | netapi32.dll |  |   
@@ -8,22 +8,22 @@ Native Method | Native DLL | Header | Managed Method
 [DavGetExtendedError](https://www.google.com/search?num=5&q=DavGetExtendedError+site%3Amicrosoft.com) | netapi32.dll |  |   
 [DavGetHTTPFromUNCPath](https://www.google.com/search?num=5&q=DavGetHTTPFromUNCPath+site%3Amicrosoft.com) | netapi32.dll |  |   
 [DavGetUNCFromHTTPPath](https://www.google.com/search?num=5&q=DavGetUNCFromHTTPPath+site%3Amicrosoft.com) | netapi32.dll |  |   
-[DsAddressToSiteNames](https://www.google.com/search?num=5&q=DsAddressToSiteNamesA+site%3Amicrosoft.com) | netapi32.dll |  |   
-[DsAddressToSiteNamesEx](https://www.google.com/search?num=5&q=DsAddressToSiteNamesExA+site%3Amicrosoft.com) | netapi32.dll |  |   
-[DsDeregisterDnsHostRecords](https://www.google.com/search?num=5&q=DsDeregisterDnsHostRecordsA+site%3Amicrosoft.com) | netapi32.dll |  |   
-[DsEnumerateDomainTrusts](https://www.google.com/search?num=5&q=DsEnumerateDomainTrustsA+site%3Amicrosoft.com) | netapi32.dll |  |   
-[DsGetDcCloseW](https://www.google.com/search?num=5&q=DsGetDcCloseW+site%3Amicrosoft.com) | netapi32.dll |  |   
+[DsAddressToSiteNames](http://msdn2.microsoft.com/en-us/library/4d70dbee-be33-4d2a-a200-3696443fa853) | netapi32.dll | dsgetdc.h | Vanara.PInvoke.NetApi32.DsAddressToSiteNames  
+[DsAddressToSiteNamesEx](http://msdn2.microsoft.com/en-us/library/60ac6195-6e43-46da-a1e6-74ec989cd0c4) | netapi32.dll | dsgetdc.h | Vanara.PInvoke.NetApi32.DsAddressToSiteNamesEx  
+[DsDeregisterDnsHostRecords](http://msdn2.microsoft.com/en-us/library/18ab6455-dab2-42d9-b68e-a8f0ad2d8091) | netapi32.dll | dsgetdc.h | Vanara.PInvoke.NetApi32.DsDeregisterDnsHostRecords  
+[DsEnumerateDomainTrusts](http://msdn2.microsoft.com/en-us/library/6c3b788f-ee53-4637-acdb-04316e8464fe) | netapi32.dll | dsgetdc.h | Vanara.PInvoke.NetApi32.DsEnumerateDomainTrusts  
+[DsGetDcCloseW](http://msdn2.microsoft.com/en-us/library/d193e4cd-ad66-4d93-b912-348f17e93a6f) | netapi32.dll | dsgetdc.h | Vanara.PInvoke.NetApi32.DsGetDcClose  
 [DsGetDcName](http://msdn2.microsoft.com/en-us/library/ms675983) | netapi32.dll | DsGetDC.h | Vanara.PInvoke.NetApi32.DsGetDcName  
 [DsGetDcNameWithAccount](https://www.google.com/search?num=5&q=DsGetDcNameWithAccountA+site%3Amicrosoft.com) | netapi32.dll |  |   
-[DsGetDcNext](https://www.google.com/search?num=5&q=DsGetDcNextA+site%3Amicrosoft.com) | netapi32.dll |  |   
-[DsGetDcOpen](https://www.google.com/search?num=5&q=DsGetDcOpenA+site%3Amicrosoft.com) | netapi32.dll |  |   
-[DsGetDcSiteCoverage](https://www.google.com/search?num=5&q=DsGetDcSiteCoverageA+site%3Amicrosoft.com) | netapi32.dll |  |   
-[DsGetForestTrustInformationW](https://www.google.com/search?num=5&q=DsGetForestTrustInformationW+site%3Amicrosoft.com) | netapi32.dll |  |   
-[DsGetSiteName](https://www.google.com/search?num=5&q=DsGetSiteNameA+site%3Amicrosoft.com) | netapi32.dll |  |   
-[DsMergeForestTrustInformationW](https://www.google.com/search?num=5&q=DsMergeForestTrustInformationW+site%3Amicrosoft.com) | netapi32.dll |  |   
-[DsRoleFreeMemory](https://www.google.com/search?num=5&q=DsRoleFreeMemory+site%3Amicrosoft.com) | netapi32.dll |  |   
-[DsRoleGetPrimaryDomainInformation](https://www.google.com/search?num=5&q=DsRoleGetPrimaryDomainInformation+site%3Amicrosoft.com) | netapi32.dll |  |   
-[DsValidateSubnetName](https://www.google.com/search?num=5&q=DsValidateSubnetNameA+site%3Amicrosoft.com) | netapi32.dll |  |   
+[DsGetDcNext](http://msdn2.microsoft.com/en-us/library/2906772f-4391-411b-b0a9-5a20ebb6c0ee) | netapi32.dll | dsgetdc.h | Vanara.PInvoke.NetApi32.DsGetDcNext  
+[DsGetDcOpen](http://msdn2.microsoft.com/en-us/library/2811cc30-f367-4f1a-8f0c-ed0a77dad24c) | netapi32.dll | dsgetdc.h | Vanara.PInvoke.NetApi32.DsGetDcOpen  
+[DsGetDcSiteCoverage](http://msdn2.microsoft.com/en-us/library/e0f757d9-36b6-40f8-a1db-fb5b9862b46a) | netapi32.dll | dsgetdc.h | Vanara.PInvoke.NetApi32.DsGetDcSiteCoverage  
+[DsGetForestTrustInformationW](http://msdn2.microsoft.com/en-us/library/c94fdc5b-920b-4807-9cbf-3172ec1c7386) | netapi32.dll | dsgetdc.h | Vanara.PInvoke.NetApi32.DsGetForestTrustInformationW  
+[DsGetSiteName](http://msdn2.microsoft.com/en-us/library/2dfffd9a-af4f-4a93-8b3c-966e4f7c455f) | netapi32.dll | dsgetdc.h | Vanara.PInvoke.NetApi32.DsGetSiteName  
+[DsMergeForestTrustInformationW](http://msdn2.microsoft.com/en-us/library/f42e16d0-62b2-49c4-b182-d1e744afe58c) | netapi32.dll | dsgetdc.h | Vanara.PInvoke.NetApi32.DsMergeForestTrustInformationW  
+[DsRoleFreeMemory](http://msdn2.microsoft.com/en-us/library/5560dfec-2134-4e02-9c87-26d246cd5841) | netapi32.dll | dsrole.h | Vanara.PInvoke.NetApi32.DsRoleFreeMemory  
+[DsRoleGetPrimaryDomainInformation](http://msdn2.microsoft.com/en-us/library/d54876e3-a622-4b44-a597-db0f710f7758) | netapi32.dll | dsrole.h | Vanara.PInvoke.NetApi32.DsRoleGetPrimaryDomainInformation  
+[DsValidateSubnetName](http://msdn2.microsoft.com/en-us/library/bed49e08-4cb7-439c-bfb7-815263ec7568) | netapi32.dll | dsgetdc.h | Vanara.PInvoke.NetApi32.DsValidateSubnetName  
 [NetAccessAdd](https://www.google.com/search?num=5&q=NetAccessAdd+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetAccessDel](https://www.google.com/search?num=5&q=NetAccessDel+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetAccessEnum](https://www.google.com/search?num=5&q=NetAccessEnum+site%3Amicrosoft.com) | netapi32.dll |  |   
@@ -178,20 +178,16 @@ Native Method | Native DLL | Header | Managed Method
 [NetScheduleJobDel](https://www.google.com/search?num=5&q=NetScheduleJobDel+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetScheduleJobEnum](https://www.google.com/search?num=5&q=NetScheduleJobEnum+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetScheduleJobGetInfo](https://www.google.com/search?num=5&q=NetScheduleJobGetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetServerAliasAdd](https://www.google.com/search?num=5&q=NetServerAliasAdd+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetServerAliasDel](https://www.google.com/search?num=5&q=NetServerAliasDel+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetServerAliasEnum](https://www.google.com/search?num=5&q=NetServerAliasEnum+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetServerComputerNameAdd](https://www.google.com/search?num=5&q=NetServerComputerNameAdd+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetServerComputerNameDel](https://www.google.com/search?num=5&q=NetServerComputerNameDel+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetServerDiskEnum](https://www.google.com/search?num=5&q=NetServerDiskEnum+site%3Amicrosoft.com) | netapi32.dll |  |   
+[NetServerComputerNameAdd](http://msdn2.microsoft.com/en-us/library/0789fbfe-be91-4849-a31c-1e1a6ae1e70d) | netapi32.dll | lmserver.h | Vanara.PInvoke.NetApi32.NetServerComputerNameAdd  
+[NetServerComputerNameDel](http://msdn2.microsoft.com/en-us/library/501232ad-2821-4bbd-9f16-0f49984f6101) | netapi32.dll | lmserver.h | Vanara.PInvoke.NetApi32.NetServerComputerNameDel  
+[NetServerDiskEnum](http://msdn2.microsoft.com/en-us/library/56c981f4-7a1d-4465-bd7b-5996222c4210) | netapi32.dll | lmserver.h | Vanara.PInvoke.NetApi32.NetServerDiskEnum  
 [NetServerEnum](http://msdn2.microsoft.com/en-us/library/aa370623) | netapi32.dll | lm.h | Vanara.PInvoke.NetApi32.NetServerEnum  
-[NetServerEnumEx](https://www.google.com/search?num=5&q=NetServerEnumEx+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetServerGetInfo](http://msdn2.microsoft.com/en-us/library/aa370624) | netapi32.dll | lm.h | Vanara.PInvoke.NetApi32.NetServerGetInfo  
-[NetServerSetInfo](https://www.google.com/search?num=5&q=NetServerSetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetServerTransportAdd](https://www.google.com/search?num=5&q=NetServerTransportAdd+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetServerTransportAddEx](https://www.google.com/search?num=5&q=NetServerTransportAddEx+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetServerTransportDel](https://www.google.com/search?num=5&q=NetServerTransportDel+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetServerTransportEnum](https://www.google.com/search?num=5&q=NetServerTransportEnum+site%3Amicrosoft.com) | netapi32.dll |  |   
+[NetServerSetInfo](http://msdn2.microsoft.com/en-us/library/1a04a43d-34f9-4a08-ac66-750120792af0) | netapi32.dll | lmserver.h | Vanara.PInvoke.NetApi32.NetServerSetInfo  
+[NetServerTransportAdd](http://msdn2.microsoft.com/en-us/library/c8521aed-0762-4412-b117-c911fc77049b) | netapi32.dll | lmserver.h | Vanara.PInvoke.NetApi32.NetServerTransportAdd  
+[NetServerTransportAddEx](http://msdn2.microsoft.com/en-us/library/d1edc75d-8313-422c-a6fb-8b51a309a252) | netapi32.dll | lmserver.h | Vanara.PInvoke.NetApi32.NetServerTransportAddEx  
+[NetServerTransportDel](http://msdn2.microsoft.com/en-us/library/69b22f30-62b1-4dcb-bbb0-aceae8d77f61) | netapi32.dll | lmserver.h | Vanara.PInvoke.NetApi32.NetServerTransportDel  
+[NetServerTransportEnum](http://msdn2.microsoft.com/en-us/library/db42ac44-d70d-4b89-882a-6ac83fd611fd) | netapi32.dll | lmserver.h | Vanara.PInvoke.NetApi32.NetServerTransportEnum  
 [NetServiceControl](https://www.google.com/search?num=5&q=NetServiceControl+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetServiceEnum](https://www.google.com/search?num=5&q=NetServiceEnum+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetServiceGetInfo](https://www.google.com/search?num=5&q=NetServiceGetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
@@ -242,6 +238,16 @@ Native Method | Native DLL | Header | Managed Method
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
 [DOMAIN_CONTROLLER_INFO](http://msdn2.microsoft.com/en-us/library/ms675912) | DsGetDC.h | Vanara.PInvoke.NetApi32+DOMAIN_CONTROLLER_INFO  
+[DS_DOMAIN_TRUSTS](http://msdn2.microsoft.com/en-us/library/cd260fd1-dc38-4405-95ba-097a23faf668) | dsgetdc.h | Vanara.PInvoke.NetApi32+DS_DOMAIN_TRUSTS  
+[DSROLE_OPERATION_STATE_INFO](http://msdn2.microsoft.com/en-us/library/c6c8e510-190a-47ad-805c-b8d3fbee836d) | dsrole.h | Vanara.PInvoke.NetApi32+DSROLE_OPERATION_STATE_INFO  
+[DSROLE_PRIMARY_DOMAIN_INFO_BASIC](http://msdn2.microsoft.com/en-us/library/8a7b34e8-46d6-46dc-9fef-ec37b0f65eea) | dsrole.h | Vanara.PInvoke.NetApi32+DSROLE_PRIMARY_DOMAIN_INFO_BASIC  
+[DSROLE_UPGRADE_STATUS_INFO](http://msdn2.microsoft.com/en-us/library/c368d8d9-a91d-4013-880e-36a47d42a697) | dsrole.h | Vanara.PInvoke.NetApi32+DSROLE_UPGRADE_STATUS_INFO  
 [SERVER_INFO_100](http://msdn2.microsoft.com/en-us/library/aa370897) | lm.h | Vanara.PInvoke.NetApi32+SERVER_INFO_100  
 [SERVER_INFO_101](http://msdn2.microsoft.com/en-us/library/aa370903) | lm.h | Vanara.PInvoke.NetApi32+SERVER_INFO_101  
 [SERVER_INFO_102](http://msdn2.microsoft.com/en-us/library/aa370904) | lm.h | Vanara.PInvoke.NetApi32+SERVER_INFO_102  
+[SERVER_INFO_402](http://msdn2.microsoft.com/en-us/library/51e5c27e-6a7d-45ac-9cfa-37b1f7f241f9) | lmserver.h | Vanara.PInvoke.NetApi32+SERVER_INFO_402  
+[SERVER_INFO_403](http://msdn2.microsoft.com/en-us/library/14309dbe-ad7b-4ae0-8acc-39e9999f411b) | lmserver.h | Vanara.PInvoke.NetApi32+SERVER_INFO_403  
+[SERVER_TRANSPORT_INFO_0](http://msdn2.microsoft.com/en-us/library/5b94cf7a-74d1-4ae8-87bd-22b2daf292cb) | lmserver.h | Vanara.PInvoke.NetApi32+SERVER_TRANSPORT_INFO_0  
+[SERVER_TRANSPORT_INFO_1](http://msdn2.microsoft.com/en-us/library/f21fed49-207a-4f64-becd-3d3c1e995eb0) | lmserver.h | Vanara.PInvoke.NetApi32+SERVER_TRANSPORT_INFO_1  
+[SERVER_TRANSPORT_INFO_2](http://msdn2.microsoft.com/en-us/library/b422eb71-1f93-432d-8283-81432edfe568) | lmserver.h | Vanara.PInvoke.NetApi32+SERVER_TRANSPORT_INFO_2  
+[SERVER_TRANSPORT_INFO_3](http://msdn2.microsoft.com/en-us/library/045d60d4-518f-4ce4-b611-e23d1588d5d3) | lmserver.h | Vanara.PInvoke.NetApi32+SERVER_TRANSPORT_INFO_3  

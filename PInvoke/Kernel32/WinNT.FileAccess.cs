@@ -1,5 +1,4 @@
 ﻿using System;
-// ReSharper disable InconsistentNaming
 
 namespace Vanara.PInvoke
 {

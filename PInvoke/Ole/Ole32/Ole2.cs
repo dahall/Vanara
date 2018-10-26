@@ -10,7 +10,7 @@ namespace Vanara.PInvoke
 		/// <param name="pMedium">Pointer to the storage medium that is to be freed.</param>
 		[DllImport(Lib.Ole32, ExactSpelling = true)]
 		[PInvokeData("Ole2.h", MSDNShortId = "ms693491")]
-		public static extern void ReleaseStgMedium([In] ref STGMEDIUM pMedium);
+		public static extern void ReleaseStgMedium(in STGMEDIUM pMedium);
 
 		/// <summary>Closes the COM library on the apartment, releases any class factories, other COM objects, or servers held by the apartment, disables RPC on the apartment, and frees any resources the apartment maintains.</summary>
 		[DllImport(Lib.Ole32, ExactSpelling = true, SetLastError = false)]

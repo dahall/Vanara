@@ -190,7 +190,7 @@ namespace Vanara.PInvoke
 		// int CompareString( _In_ LCID Locale, _In_ DWORD dwCmpFlags, _In_ LPCTSTR lpString1, _In_ int cchCount1, _In_ LPCTSTR lpString2, _In_ int cchCount2); https://msdn.microsoft.com/en-us/library/windows/desktop/dd317759(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317759")]
-		public static extern int CompareString(uint Locale, COMPARE_STRING dwCmpFlags, [In] string lpString1, int cchCount1, [In] string lpString2, int cchCount2);
+		public static extern int CompareString(uint Locale, COMPARE_STRING dwCmpFlags, string lpString1, int cchCount1, string lpString2, int cchCount2);
 
 		/// <summary>Compares two Unicode (wide character) strings, for a locale specified by name.</summary>
 		/// <param name="lpLocaleName">Pointer to a locale name, or one of the following predefined values.</param>
@@ -397,7 +397,7 @@ namespace Vanara.PInvoke
 		// int FoldString( _In_ DWORD dwMapFlags, _In_ LPCTSTR lpSrcStr, _In_ int cchSrc, _Out_opt_ LPTSTR lpDestStr, _In_ int cchDest); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318063(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318063")]
-		public static extern int FoldString(STRING_MAPPING dwMapFlags, [In] string lpSrcStr, int cchSrc, [Out] StringBuilder lpDestStr, int cchDest);
+		public static extern int FoldString(STRING_MAPPING dwMapFlags, string lpSrcStr, int cchSrc, StringBuilder lpDestStr, int cchDest);
 
 		/// <summary>
 		/// Deprecated. Retrieves character type information for the characters in the specified source string. For each character in the string, the function
@@ -493,7 +493,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Stringapiset.h", MSDNShortId = "dd318119")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetStringTypeW(CHAR_TYPE_INFO dwInfoType, [In] string lpSrcStr, int cchSrc, out ushort lpCharType);
+		public static extern bool GetStringTypeW(CHAR_TYPE_INFO dwInfoType, string lpSrcStr, int cchSrc, out ushort lpCharType);
 
 		/// <summary>
 		/// Retrieves character type information for the characters in the specified source string. For each character in the string, the function sets one or
@@ -533,7 +533,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd318118")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetStringTypeEx(uint Locale, CHAR_TYPE_INFO dwInfoType, [In] string lpSrcStr, int cchSrc, out ushort lpCharType);
+		public static extern bool GetStringTypeEx(uint Locale, CHAR_TYPE_INFO dwInfoType, string lpSrcStr, int cchSrc, out ushort lpCharType);
 
 		/// <summary>Maps a character string to a UTF-16 (wide character) string. The character string is not necessarily from a multibyte character set.</summary>
 		/// <param name="CodePage">

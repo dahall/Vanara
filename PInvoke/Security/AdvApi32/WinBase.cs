@@ -914,7 +914,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("winbase.h", MSDNShortId = "aa379295")]
-		public static extern bool OpenProcessToken([In] IntPtr ProcessHandle, TokenAccess DesiredAccess, out SafeHTOKEN TokenHandle);
+		public static extern bool OpenProcessToken([In] HPROCESS ProcessHandle, TokenAccess DesiredAccess, out SafeHTOKEN TokenHandle);
 
 		/// <summary>The <c>OpenThreadToken</c> function opens the access token associated with a thread.</summary>
 		/// <param name="ThreadHandle">A handle to the thread whose access token is opened.</param>
@@ -950,7 +950,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa379296")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool OpenThreadToken([In] IntPtr ThreadHandle, TokenAccess DesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool OpenAsSelf, out SafeHTOKEN TokenHandle);
+		public static extern bool OpenThreadToken([In] HTHREAD ThreadHandle, TokenAccess DesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool OpenAsSelf, out SafeHTOKEN TokenHandle);
 
 		/// <summary>
 		/// The PrivilegeCheck function determines whether a specified set of privileges are enabled in an access token. The PrivilegeCheck
@@ -1062,7 +1062,7 @@ namespace Vanara.PInvoke
 		public static extern bool SetThreadToken(IntPtr Thread, HTOKEN Token);
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a  that releases a created HTOKEN instance at disposal using CloseHandle.</summary>
-		public class SafeHTOKEN : HTOKEN
+		public class SafeHTOKEN : HANDLE
 		{
 			/// <summary>
 			/// Retrieves a pseudo-handle that you can use as a shorthand way to refer to the access token associated with a process.
@@ -1131,6 +1131,8 @@ namespace Vanara.PInvoke
 			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
 			public SafeHTOKEN(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
+			private SafeHTOKEN() : base() { }
+
 			/// <summary>Gets a value indicating whether this token is elevated.</summary>
 			/// <value><c>true</c> if this instance is elevated; otherwise, <c>false</c>.</value>
 			public bool IsElevated => GetInfo<TOKEN_ELEVATION>(TOKEN_INFORMATION_CLASS.TokenElevation).TokenIsElevated;
@@ -1139,21 +1141,28 @@ namespace Vanara.PInvoke
 			/// <param name="hProcess">The process handle.</param>
 			/// <param name="desiredAccess">The desired access. TOKEN_DUPLICATE must usually be included.</param>
 			/// <returns>Resulting token handle.</returns>
-			public static SafeHTOKEN FromProcess(IntPtr hProcess, TokenAccess desiredAccess = TokenAccess.TOKEN_DUPLICATE) =>
-				!OpenProcessToken(hProcess, desiredAccess, out SafeHTOKEN val) ? throw new Win32Exception() : val;
+			public static SafeHTOKEN FromProcess(HPROCESS hProcess, TokenAccess desiredAccess = TokenAccess.TOKEN_DUPLICATE) =>
+				!OpenProcessToken(hProcess, desiredAccess, out var val) ? throw new Win32Exception() : val;
+
+			/// <summary>Get the token handle instance from a process instance.</summary>
+			/// <param name="process">The process instance. If this value is <see langword="null"/>, the current process will be used.</param>
+			/// <param name="desiredAccess">The desired access. TOKEN_DUPLICATE must usually be included.</param>
+			/// <returns>Resulting token handle.</returns>
+			public static SafeHTOKEN FromProcess(System.Diagnostics.Process process, TokenAccess desiredAccess = TokenAccess.TOKEN_DUPLICATE) =>
+				FromProcess((process ?? System.Diagnostics.Process.GetCurrentProcess()).Handle, desiredAccess);
 
 			/// <summary>Get the token handle instance from a process handle.</summary>
 			/// <param name="hThread">The thread handle.</param>
 			/// <param name="desiredAccess">The desired access. TOKEN_DUPLICATE must usually be included.</param>
 			/// <param name="openAsSelf">if set to <c>true</c> open as self.</param>
 			/// <returns>Resulting token handle.</returns>
-			public static SafeHTOKEN FromThread(IntPtr hThread, TokenAccess desiredAccess = TokenAccess.TOKEN_DUPLICATE, bool openAsSelf = true)
+			public static SafeHTOKEN FromThread(HTHREAD hThread, TokenAccess desiredAccess = TokenAccess.TOKEN_DUPLICATE, bool openAsSelf = true)
 			{
-				if (!OpenThreadToken(hThread, desiredAccess, openAsSelf, out SafeHTOKEN val))
+				if (!OpenThreadToken(hThread, desiredAccess, openAsSelf, out var val))
 				{
 					if (Marshal.GetLastWin32Error() == Win32Error.ERROR_NO_TOKEN)
 					{
-						var pval = FromProcess(System.Diagnostics.Process.GetCurrentProcess().Handle);
+						var pval = FromProcess(System.Diagnostics.Process.GetCurrentProcess());
 						if (!DuplicateTokenEx(pval, TokenAccess.TOKEN_IMPERSONATE | desiredAccess, null, SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation, TOKEN_TYPE.TokenImpersonation, out val))
 							Win32Error.ThrowLastError();
 						if (!SetThreadToken(IntPtr.Zero, val))
@@ -1272,6 +1281,11 @@ namespace Vanara.PInvoke
 
 				return pType;
 			}
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHTOKEN"/> to <see cref="HTOKEN"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HTOKEN(SafeHTOKEN h) => h.handle;
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => Kernel32.CloseHandle(this);

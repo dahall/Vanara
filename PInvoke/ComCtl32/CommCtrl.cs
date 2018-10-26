@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static Vanara.PInvoke.Gdi32;
-using static Vanara.PInvoke.Kernel32;
+using static Vanara.PInvoke.User32;
 using static Vanara.PInvoke.User32_Gdi;
-
-// ReSharper disable FieldCanBeMadeReadOnly.Global ReSharper disable InconsistentNaming
 
 namespace Vanara.PInvoke
 {
@@ -47,18 +44,25 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="dwRefData">
 		/// <para>Type: <c>DWORD_PTR</c></para>
-		/// <para>The reference data provided to the <c>SetWindowSubclass</c> function. This can be used to associate the subclass instance with a "this" pointer.</para>
+		/// <para>
+		/// The reference data provided to the <c>SetWindowSubclass</c> function. This can be used to associate the subclass instance with a
+		/// "this" pointer.
+		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>LRESULT</c></para>
 		/// <para>The return value is the result of the message processing and depends on the message sent.</para>
 		/// </returns>
-		// typedef LRESULT ( CALLBACK *SUBCLASSPROC)( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData); https://msdn.microsoft.com/en-us/library/windows/desktop/bb776774(v=vs.85).aspx
+		// typedef LRESULT ( CALLBACK *SUBCLASSPROC)( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR
+		// dwRefData); https://msdn.microsoft.com/en-us/library/windows/desktop/bb776774(v=vs.85).aspx
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb776774")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate IntPtr SUBCLASSPROC(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam, [MarshalAs(UnmanagedType.SysUInt)] uint uIdSubclass, IntPtr dwRefData);
+		public delegate IntPtr SUBCLASSPROC(HWND hWnd, uint uMsg, IntPtr wParam, IntPtr lParam, [MarshalAs(UnmanagedType.SysUInt)] uint uIdSubclass, IntPtr dwRefData);
 
-		/// <summary>The set of bit flags that indicate which common control classes will be loaded from the DLL when calling <see cref="InitCommonControlsEx(ref INITCOMMONCONTROLSEX)"/>.</summary>
+		/// <summary>
+		/// The set of bit flags that indicate which common control classes will be loaded from the DLL when calling <see
+		/// cref="InitCommonControlsEx(ref INITCOMMONCONTROLSEX)"/>.
+		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775507")]
 		[Flags]
 		public enum CommonControlClass
@@ -97,7 +101,8 @@ namespace Vanara.PInvoke
 			ICC_PROGRESS_CLASS = 0X00000020,
 
 			/// <summary>
-			/// Load one of the intrinsic User32_Gdi control classes. The user controls include button, edit, static, listbox, combobox, and scroll bar.
+			/// Load one of the intrinsic User32_Gdi control classes. The user controls include button, edit, static, listbox, combobox, and
+			/// scroll bar.
 			/// </summary>
 			ICC_STANDARD_CLASSES = 0X00004000,
 
@@ -114,7 +119,8 @@ namespace Vanara.PInvoke
 			ICC_USEREX_CLASSES = 0X00000200,
 
 			/// <summary>
-			/// Load animate control, header, hot key, list-view, progress bar, status bar, tab, tooltip, toolbar, trackbar, tree-view, and up-down control classes.
+			/// Load animate control, header, hot key, list-view, progress bar, status bar, tab, tooltip, toolbar, trackbar, tree-view, and
+			/// up-down control classes.
 			/// </summary>
 			ICC_WIN95_CLASSES = 0X000000FF
 		}
@@ -123,8 +129,8 @@ namespace Vanara.PInvoke
 		public enum CommonControlNotification
 		{
 			/// <summary>
-			/// Notifies a control's parent window that the control could not complete an operation because there was not enough memory available. This
-			/// notification code is sent in the form of a WM_NOTIFY message.
+			/// Notifies a control's parent window that the control could not complete an operation because there was not enough memory
+			/// available. This notification code is sent in the form of a WM_NOTIFY message.
 			/// <list>
 			/// <item>
 			/// <term>lParam</term>
@@ -134,17 +140,20 @@ namespace Vanara.PInvoke
 			/// </summary>
 			NM_OUTOFMEMORY = NM_FIRST - 1,
 
-			/// <summary>Sent by a control when the user clicks with the left mouse button. This notification code is sent in the form of a WM_NOTIFY message.</summary>
+			/// <summary>
+			/// Sent by a control when the user clicks with the left mouse button. This notification code is sent in the form of a WM_NOTIFY message.
+			/// </summary>
 			NM_CLICK = NM_FIRST - 2,
 
 			/// <summary>
-			/// Sent by a control when the user double-clicks with the left mouse button. This notification code is sent in the form of a WM_NOTIFY message.
+			/// Sent by a control when the user double-clicks with the left mouse button. This notification code is sent in the form of a
+			/// WM_NOTIFY message.
 			/// </summary>
 			NM_DBLCLK = NM_FIRST - 3,
 
 			/// <summary>
-			/// Notifies a control's parent window that the control has the input focus and that the user has pressed the ENTER key. This notification code is
-			/// sent in the form of a WM_NOTIFY message.
+			/// Notifies a control's parent window that the control has the input focus and that the user has pressed the ENTER key. This
+			/// notification code is sent in the form of a WM_NOTIFY message.
 			/// <list>
 			/// <item>
 			/// <term>lParam</term>
@@ -154,16 +163,20 @@ namespace Vanara.PInvoke
 			/// </summary>
 			NM_RETURN = NM_FIRST - 4,
 
-			/// <summary>Sent by a control when the user clicks with the right mouse button. This notification code is sent in the form of a WM_NOTIFY message.</summary>
+			/// <summary>
+			/// Sent by a control when the user clicks with the right mouse button. This notification code is sent in the form of a WM_NOTIFY message.
+			/// </summary>
 			NM_RCLICK = NM_FIRST - 5,
 
 			/// <summary>
-			/// Sent by a control when the user double-clicks with the right mouse button. This notification code is sent in the form of a WM_NOTIFY message.
+			/// Sent by a control when the user double-clicks with the right mouse button. This notification code is sent in the form of a
+			/// WM_NOTIFY message.
 			/// </summary>
 			NM_RDBLCLK = NM_FIRST - 6,
 
 			/// <summary>
-			/// Notifies a control's parent window that the control has received the input focus. This notification code is sent in the form of a WM_NOTIFY message.
+			/// Notifies a control's parent window that the control has received the input focus. This notification code is sent in the form
+			/// of a WM_NOTIFY message.
 			/// <list>
 			/// <item>
 			/// <term>lParam</term>
@@ -174,7 +187,8 @@ namespace Vanara.PInvoke
 			NM_SETFOCUS = NM_FIRST - 7,
 
 			/// <summary>
-			/// Notifies a control's parent window that the control has lost the input focus. This notification code is sent in the form of a WM_NOTIFY message.
+			/// Notifies a control's parent window that the control has lost the input focus. This notification code is sent in the form of a
+			/// WM_NOTIFY message.
 			/// <list>
 			/// <item>
 			/// <term>lParam</term>
@@ -190,8 +204,8 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>lParam</term>
 			/// <description>
-			/// A pointer to a custom draw-related structure that contains information about the drawing operation. The following list specifies the controls and
-			/// their associated structures.
+			/// A pointer to a custom draw-related structure that contains information about the drawing operation. The following list
+			/// specifies the controls and their associated structures.
 			/// <list type="table">
 			/// <listheader>
 			/// <term>Control</term>
@@ -224,8 +238,8 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>Return value</term>
 			/// <description>
-			/// The value your application can return depends on the current drawing stage. The dwDrawStage member of the associated NMCUSTOMDRAW structure holds
-			/// a value that specifies the drawing stage.
+			/// The value your application can return depends on the current drawing stage. The dwDrawStage member of the associated
+			/// NMCUSTOMDRAW structure holds a value that specifies the drawing stage.
 			/// </description>
 			/// </item>
 			/// </summary>
@@ -241,7 +255,8 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>Return value</term>
 			/// <description>
-			/// Unless otherwise specified, return zero to allow the control to process the hover normally, or nonzero to prevent the hover from being processed.
+			/// Unless otherwise specified, return zero to allow the control to process the hover normally, or nonzero to prevent the hover
+			/// from being processed.
 			/// </description>
 			/// </item>
 			/// </list>
@@ -249,20 +264,21 @@ namespace Vanara.PInvoke
 			NM_HOVER = NM_FIRST - 13,
 
 			/// <summary>
-			/// Sent by a rebar control when the control receives a WM_NCHITTEST message. This notification code is sent in the form of a WM_NOTIFY message.
+			/// Sent by a rebar control when the control receives a WM_NCHITTEST message. This notification code is sent in the form of a
+			/// WM_NOTIFY message.
 			/// <list>
 			/// <item>
 			/// <term>lParam</term>
 			/// <description>
-			/// A pointer to a NMMOUSE structure that contains information about the notification code. The pt member contains the mouse coordinates of the hit
-			/// test message.
+			/// A pointer to a NMMOUSE structure that contains information about the notification code. The pt member contains the mouse
+			/// coordinates of the hit test message.
 			/// </description>
 			/// </item>
 			/// <item>
 			/// <term>Return value</term>
 			/// <description>
-			/// Unless otherwise specified, return zero to allow the control to perform default processing of the hit test message, or return one of the HT*
-			/// values documented under WM_NCHITTEST to override the default hit test processing.
+			/// Unless otherwise specified, return zero to allow the control to perform default processing of the hit test message, or return
+			/// one of the HT* values documented under WM_NCHITTEST to override the default hit test processing.
 			/// </description>
 			/// </item>
 			/// </list>
@@ -270,11 +286,14 @@ namespace Vanara.PInvoke
 			NM_NCHITTEST = NM_FIRST - 14,
 
 			/// <summary>
-			/// Sent by a control when the control has the keyboard focus and the user presses a key. This notification code is sent in the form of a WM_NOTIFY message.
+			/// Sent by a control when the control has the keyboard focus and the user presses a key. This notification code is sent in the
+			/// form of a WM_NOTIFY message.
 			/// <list>
 			/// <item>
 			/// <term>lParam</term>
-			/// <description>A pointer to an NMKEY structure that contains additional information about the key that caused the notification code.</description>
+			/// <description>
+			/// A pointer to an NMKEY structure that contains additional information about the key that caused the notification code.
+			/// </description>
 			/// </item>
 			/// <item>
 			/// <term>Return value</term>
@@ -285,7 +304,8 @@ namespace Vanara.PInvoke
 			NM_KEYDOWN = NM_FIRST - 15,
 
 			/// <summary>
-			/// Notifies a control's parent window that the control is releasing mouse capture. This notification code is sent in the form of a WM_NOTIFY message.
+			/// Notifies a control's parent window that the control is releasing mouse capture. This notification code is sent in the form of
+			/// a WM_NOTIFY message.
 			/// <list>
 			/// <item>
 			/// <term>lParam</term>
@@ -296,8 +316,8 @@ namespace Vanara.PInvoke
 			NM_RELEASEDCAPTURE = NM_FIRST - 16,
 
 			/// <summary>
-			/// Notifies a control's parent window that the control is setting the cursor in response to a WM_SETCURSOR message. This notification code is sent
-			/// in the form of a WM_NOTIFY message.
+			/// Notifies a control's parent window that the control is setting the cursor in response to a WM_SETCURSOR message. This
+			/// notification code is sent in the form of a WM_NOTIFY message.
 			/// <list>
 			/// <item>
 			/// <term>lParam</term>
@@ -305,25 +325,31 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// <item>
 			/// <term>Return value</term>
-			/// <description>Return zero to enable the control to set the cursor or nonzero to prevent the control from setting the cursor.</description>
+			/// <description>
+			/// Return zero to enable the control to set the cursor or nonzero to prevent the control from setting the cursor.
+			/// </description>
 			/// </item>
 			/// </list>
 			/// </summary>
 			NM_SETCURSOR = NM_FIRST - 17,
 
 			/// <summary>
-			/// The NM_CHAR notification code is sent by a control when a character key is processed. This notification code is sent in the form of a WM_NOTIFY message.
+			/// The NM_CHAR notification code is sent by a control when a character key is processed. This notification code is sent in the
+			/// form of a WM_NOTIFY message.
 			/// <list>
 			/// <item>
 			/// <term>lParam</term>
-			/// <description>A pointer to an NMCHAR structure that contains additional information about the character that caused the notification code.</description>
+			/// <description>
+			/// A pointer to an NMCHAR structure that contains additional information about the character that caused the notification code.
+			/// </description>
 			/// </item>
 			/// </list>
 			/// </summary>
 			NM_CHAR = NM_FIRST - 18,
 
 			/// <summary>
-			/// Notifies a control's parent window that the control has created a tooltip control. This notification code is sent in the form of a WM_NOTIFY message.
+			/// Notifies a control's parent window that the control has created a tooltip control. This notification code is sent in the form
+			/// of a WM_NOTIFY message.
 			/// <list>
 			/// <item>
 			/// <term>lParam</term>
@@ -334,7 +360,8 @@ namespace Vanara.PInvoke
 			NM_TOOLTIPSCREATED = NM_FIRST - 19,
 
 			/// <summary>
-			/// Notifies a control's parent window that the left mouse button has been pressed. This notification code is sent in the form of a WM_NOTIFY message.
+			/// Notifies a control's parent window that the left mouse button has been pressed. This notification code is sent in the form of
+			/// a WM_NOTIFY message.
 			/// <list>
 			/// <item>
 			/// <term>lParam</term>
@@ -381,7 +408,8 @@ namespace Vanara.PInvoke
 			NM_CUSTOMTEXT = NM_FIRST - 24,
 
 			/// <summary>
-			/// Sent by a tree-view control to its parent window that the state image is changing. This notification code is sent in the form of a WM_NOTIFY message.
+			/// Sent by a tree-view control to its parent window that the state image is changing. This notification code is sent in the form
+			/// of a WM_NOTIFY message.
 			/// <list>
 			/// <item>
 			/// <term>lParam</term>
@@ -419,8 +447,9 @@ namespace Vanara.PInvoke
 			CDIS_HOT = 0x0040,
 
 			/// <summary>
-			/// The item is marked. The meaning of this is determined by the implementation. <note>This flag does not work correctly for owner-drawn list-view
-			/// controls that have the LVS_SHOWSELALWAYS style. For these controls, you can determine whether an item is selected by using LVM_GETITEMSTATE (or
+			/// The item is marked. The meaning of this is determined by the implementation. <note>This flag does not work correctly for
+			/// owner-drawn list-view controls that have the LVS_SHOWSELALWAYS style. For these controls, you can determine whether an item
+			/// is selected by using LVM_GETITEMSTATE (or
 			/// ListView_GetItemState) and checking for the LVIS_SELECTED flag.</note>
 			/// </summary>
 			CDIS_MARKED = 0x0080,
@@ -429,20 +458,20 @@ namespace Vanara.PInvoke
 			CDIS_INDETERMINATE = 0x0100,
 
 			/// <summary>
-			/// Version 6.0.The item is showing its keyboard cues. <note>Comctl32 version 6 is not redistributable. operating systems. To use Comctl32.dll
-			/// version 6, specify it in the manifest. For more information on manifests, see Enabling Visual Styles.</note>
+			/// Version 6.0.The item is showing its keyboard cues. <note>Comctl32 version 6 is not redistributable. operating systems. To use
+			/// Comctl32.dll version 6, specify it in the manifest. For more information on manifests, see Enabling Visual Styles.</note>
 			/// </summary>
 			CDIS_SHOWKEYBOARDCUES = 0x0200,
 
 			/// <summary>
-			/// The item is part of a control that is currently under the mouse pointer ("hot"), but the item is not "hot" itself. The meaning of this is
-			/// determined by the implementation.
+			/// The item is part of a control that is currently under the mouse pointer ("hot"), but the item is not "hot" itself. The
+			/// meaning of this is determined by the implementation.
 			/// </summary>
 			CDIS_NEARHOT = 0x0400,
 
 			/// <summary>
-			/// The item is part of a splitbutton that is currently under the mouse pointer ("hot"), but the item is not "hot" itself. The meaning of this is
-			/// determined by the implementation.
+			/// The item is part of a splitbutton that is currently under the mouse pointer ("hot"), but the item is not "hot" itself. The
+			/// meaning of this is determined by the implementation.
 			/// </summary>
 			CDIS_OTHERSIDEHOT = 0x0800,
 
@@ -456,19 +485,20 @@ namespace Vanara.PInvoke
 		public enum CustomDrawResponse
 		{
 			/// <summary>
-			/// The control will draw itself. It will not send any additional NM_CUSTOMDRAW notification codes for this paint cycle. This occurs when the
-			/// dwDrawStage of the NMCUSTOMDRAW structure equals CDDS_PREPAINT.
+			/// The control will draw itself. It will not send any additional NM_CUSTOMDRAW notification codes for this paint cycle. This
+			/// occurs when the dwDrawStage of the NMCUSTOMDRAW structure equals CDDS_PREPAINT.
 			/// </summary>
 			CDRF_DODEFAULT = 0x00000000,
 
 			/// <summary>
-			/// The application specified a new font for the item; the control will use the new font. For more information about changing fonts, see Changing
-			/// fonts and colors. This occurs when the dwDrawStage of the NMCUSTOMDRAW structure equals CDDS_ITEMPREPAINT.
+			/// The application specified a new font for the item; the control will use the new font. For more information about changing
+			/// fonts, see Changing fonts and colors. This occurs when the dwDrawStage of the NMCUSTOMDRAW structure equals CDDS_ITEMPREPAINT.
 			/// </summary>
 			CDRF_NEWFONT = 0x00000002,
 
 			/// <summary>
-			/// The application drew the item manually. The control will not draw the item. This occurs when the dwDrawStage of the NMCUSTOMDRAW structure equals CDDS_ITEMPREPAINT.
+			/// The application drew the item manually. The control will not draw the item. This occurs when the dwDrawStage of the
+			/// NMCUSTOMDRAW structure equals CDDS_ITEMPREPAINT.
 			/// </summary>
 			CDRF_SKIPDEFAULT = 0x00000004,
 
@@ -476,25 +506,27 @@ namespace Vanara.PInvoke
 			CDRF_DOERASE = 0x00000008,
 
 			/// <summary>
-			/// The control will notify the parent after painting an item. This occurs when the dwDrawStage of the NMCUSTOMDRAW structure equals CDDS_PREPAINT.
+			/// The control will notify the parent after painting an item. This occurs when the dwDrawStage of the NMCUSTOMDRAW structure
+			/// equals CDDS_PREPAINT.
 			/// </summary>
 			CDRF_NOTIFYPOSTPAINT = 0x00000010,
 
 			/// <summary>
-			/// The control will notify the parent of any item-related drawing operations. It will send NM_CUSTOMDRAW notification codes before and after drawing
-			/// items. This occurs when the dwDrawStage of the NMCUSTOMDRAW structure equals CDDS_PREPAINT.
+			/// The control will notify the parent of any item-related drawing operations. It will send NM_CUSTOMDRAW notification codes
+			/// before and after drawing items. This occurs when the dwDrawStage of the NMCUSTOMDRAW structure equals CDDS_PREPAINT.
 			/// </summary>
 			CDRF_NOTIFYITEMDRAW = 0x00000020,
 
 			/// <summary>
-			/// Internet Explorer 4.0 and later. The control will notify the parent of any item-related drawing operations. It will send NM_CUSTOMDRAW
-			/// notification codes before and after drawing items. This occurs when the dwDrawStage of the NMCUSTOMDRAW structure equals CDDS_PREPAINT. This flag
-			/// is identical to CDRF_NOTIFYITEMDRAW and its use is context-dependent.
+			/// Internet Explorer 4.0 and later. The control will notify the parent of any item-related drawing operations. It will send
+			/// NM_CUSTOMDRAW notification codes before and after drawing items. This occurs when the dwDrawStage of the NMCUSTOMDRAW
+			/// structure equals CDDS_PREPAINT. This flag is identical to CDRF_NOTIFYITEMDRAW and its use is context-dependent.
 			/// </summary>
 			CDRF_NOTIFYSUBITEMDRAW = 0x00000020,
 
 			/// <summary>
-			/// The control will notify the parent after erasing an item. This occurs when the dwDrawStage of the NMCUSTOMDRAW structure equals CDDS_PREPAINT.
+			/// The control will notify the parent after erasing an item. This occurs when the dwDrawStage of the NMCUSTOMDRAW structure
+			/// equals CDDS_PREPAINT.
 			/// </summary>
 			CDRF_NOTIFYPOSTERASE = 0x00000040,
 
@@ -535,8 +567,8 @@ namespace Vanara.PInvoke
 			CDDS_ITEMPOSTERASE = (CDDS_ITEM | CDDS_POSTERASE),
 
 			/// <summary>
-			/// Flag combined with CDDS_ITEMPREPAINT or CDDS_ITEMPOSTPAINT if a subitem is being drawn. This will only be set if CDRF_NOTIFYITEMDRAW is returned
-			/// from CDDS_PREPAINT.
+			/// Flag combined with CDDS_ITEMPREPAINT or CDDS_ITEMPOSTPAINT if a subitem is being drawn. This will only be set if
+			/// CDRF_NOTIFYITEMDRAW is returned from CDDS_PREPAINT.
 			/// </summary>
 			CDDS_SUBITEM = 0x00020000,
 		}
@@ -547,8 +579,8 @@ namespace Vanara.PInvoke
 		public enum HotItemChangeFlags
 		{
 			/// <summary>
-			/// The change in the hot item resulted from an event that could not be determined. This will most often be due to a change in focus or the
-			/// TB_SETHOTITEM message.
+			/// The change in the hot item resulted from an event that could not be determined. This will most often be due to a change in
+			/// focus or the TB_SETHOTITEM message.
 			/// </summary>
 			HICF_OTHER = 0x00000000,
 
@@ -564,10 +596,14 @@ namespace Vanara.PInvoke
 			/// <summary>Modifies HICF_ACCELERATOR. If this flag is set, more than one item has the same shortcut key character.</summary>
 			HICF_DUPACCEL = 0x00000008,
 
-			/// <summary>Modifies the other reason flags. If this flag is set, there is no previous hot item and idOld does not contain valid information.</summary>
+			/// <summary>
+			/// Modifies the other reason flags. If this flag is set, there is no previous hot item and idOld does not contain valid information.
+			/// </summary>
 			HICF_ENTERING = 0x00000010,
 
-			/// <summary>Modifies the other reason flags. If this flag is set, there is no new hot item and idNew does not contain valid information.</summary>
+			/// <summary>
+			/// Modifies the other reason flags. If this flag is set, there is no new hot item and idNew does not contain valid information.
+			/// </summary>
 			HICF_LEAVING = 0x00000020,
 
 			/// <summary>The change in the hot item resulted from the user entering the shortcut key for an item that was already hot.</summary>
@@ -601,13 +637,14 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Corresponds to SM_CXSMICON, the recommended pixel width of a small icon.</summary>
 			LIM_SMALL,
+
 			/// <summary>Corresponds toSM_CXICON, the default pixel width of an icon.</summary>
 			LIM_LARGE,
 		}
 
 		/// <summary>
-		/// Posts messages when the mouse pointer leaves a window or hovers over a window for a specified amount of time. This function calls TrackMouseEvent if
-		/// it exists, otherwise it emulates it.
+		/// Posts messages when the mouse pointer leaves a window or hovers over a window for a specified amount of time. This function calls
+		/// TrackMouseEvent if it exists, otherwise it emulates it.
 		/// </summary>
 		/// <param name="lpEventTrack">
 		/// <para>Type: <c>LPTRACKMOUSEEVENT</c></para>
@@ -622,10 +659,11 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("CommCtrl.h", MSDNShortId = "ms646266")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool _TrackMouseEvent(ref User32.TRACKMOUSEEVENT lpEventTrack);
+		public static extern bool _TrackMouseEvent(ref TRACKMOUSEEVENT lpEventTrack);
 
 		/// <summary>
-		/// Calls the next handler in a window's subclass chain. The last handler in the subclass chain calls the original window procedure for the window.
+		/// Calls the next handler in a window's subclass chain. The last handler in the subclass chain calls the original window procedure
+		/// for the window.
 		/// </summary>
 		/// <param name="hWnd">
 		/// <para>Type: <c>HWND</c></para>
@@ -642,8 +680,8 @@ namespace Vanara.PInvoke
 		/// <param name="LPARAM">
 		/// <para>Type: <c>LPARAM</c></para>
 		/// <para>
-		/// Specifies additional message information. The contents of this parameter depend on the value of the window message. Note: On 64-bit versions of
-		/// Windows LPARAM is a 64-bit value.
+		/// Specifies additional message information. The contents of this parameter depend on the value of the window message. Note: On
+		/// 64-bit versions of Windows LPARAM is a 64-bit value.
 		/// </para>
 		/// </param>
 		/// <returns>
@@ -696,11 +734,11 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>int</c></para>
 		/// <para>Returns the height of the text in logical units if the function succeeds, otherwise returns zero.</para>
 		/// </returns>
-		// int DrawShadowText( HDC hdc, LPCWSTR pszText, UINT cch, const RECT *pRect, DWORD dwFlags, COLORREF crText, COLORREF crShadow, int ixOffset, int
-		// iyOffset); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775639(v=vs.85).aspx
+		// int DrawShadowText( HDC hdc, LPCWSTR pszText, UINT cch, const RECT *pRect, DWORD dwFlags, COLORREF crText, COLORREF crShadow, int
+		// ixOffset, int iyOffset); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775639(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775639")]
-		public static extern int DrawShadowText(HDC hdc, string pszText, uint cch, ref RECT pRect, uint dwFlags, COLORREF crText, COLORREF crShadow, int ixOffset, int iyOffset);
+		public static extern int DrawShadowText(HDC hdc, string pszText, uint cch, in RECT pRect, uint dwFlags, COLORREF crText, COLORREF crShadow, int ixOffset, int iyOffset);
 
 		/// <summary>Calculates the dimensions of a rectangle in the client area that contains all the specified controls.</summary>
 		/// <param name="hWnd">
@@ -714,9 +752,9 @@ namespace Vanara.PInvoke
 		/// <param name="lpInfo">
 		/// <para>Type: <c>const <c>INT</c>*</c></para>
 		/// <para>
-		/// A pointer to a null-terminated array of integers that identify controls in the client area. Each control requires a pair of consecutive elements. The
-		/// first element of the pair must be nonzero and the second element of the pair must be the control identifier. The first pair represents the menu and
-		/// is ignored. The last element must be zero to identify the end of the array.
+		/// A pointer to a null-terminated array of integers that identify controls in the client area. Each control requires a pair of
+		/// consecutive elements. The first element of the pair must be nonzero and the second element of the pair must be the control
+		/// identifier. The first pair represents the menu and is ignored. The last element must be zero to identify the end of the array.
 		/// </para>
 		/// </param>
 		/// <returns>No return value.</returns>
@@ -734,7 +772,7 @@ namespace Vanara.PInvoke
 		public static RECT GetEffectiveClientRect(HWND hWnd, int[] controlIdentifiers)
 		{
 			var lpInfo = new int[(controlIdentifiers.Length + 2) * 2];
-			for (int i = 0; i < controlIdentifiers.Length; i++)
+			for (var i = 0; i < controlIdentifiers.Length; i++)
 			{
 				lpInfo[(i + 1) * 2] = 1;
 				lpInfo[((i + 1) * 2) + 1] = controlIdentifiers[i];
@@ -748,9 +786,10 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// <para>Type: <c><c>LANGID</c></c></para>
 		/// <para>
-		/// Returns the language identifier of the language an application has specified for the common controls by calling <c>InitMUILanguage</c>.
-		/// <c>GetMUILanguage</c> returns the value for the process from which it is called. If <c>InitMUILanguage</c> has not been called or was not called from
-		/// the same process, <c>GetMUILanguage</c> returns the language-neutral LANGID, <c>MAKELANGID</c>(LANG_NEUTRAL, SUBLANG_NEUTRAL).
+		/// Returns the language identifier of the language an application has specified for the common controls by calling
+		/// <c>InitMUILanguage</c>. <c>GetMUILanguage</c> returns the value for the process from which it is called. If
+		/// <c>InitMUILanguage</c> has not been called or was not called from the same process, <c>GetMUILanguage</c> returns the
+		/// language-neutral LANGID, <c>MAKELANGID</c>(LANG_NEUTRAL, SUBLANG_NEUTRAL).
 		/// </para>
 		/// </returns>
 		// LANGID GetMUILanguage(void); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775676(v=vs.85).aspx
@@ -770,13 +809,15 @@ namespace Vanara.PInvoke
 		/// <param name="uIdSubclass">
 		/// <para>Type: <c>UINT_PTR</c></para>
 		/// <para>
-		/// <c>UINT_PTR</c> subclass ID. This ID and the callback pointer uniquely identify this subclass callback. Note: On 64-bit versions of Windows this is a
-		/// 64-bit value.
+		/// <c>UINT_PTR</c> subclass ID. This ID and the callback pointer uniquely identify this subclass callback. Note: On 64-bit versions
+		/// of Windows this is a 64-bit value.
 		/// </para>
 		/// </param>
 		/// <param name="pdwRefData">
 		/// <para>Type: <c>DWORD_PTR*</c></para>
-		/// <para>A pointer to a <c>DWORD</c> which will return the reference data. Note: On 64-bit versions of Windows, pointers are 64-bit values.</para>
+		/// <para>
+		/// A pointer to a <c>DWORD</c> which will return the reference data. Note: On 64-bit versions of Windows, pointers are 64-bit values.
+		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>BOOL</c></para>
@@ -804,30 +845,30 @@ namespace Vanara.PInvoke
 		public static extern bool GetWindowSubclass(HWND hWnd, SUBCLASSPROC pfnSubclass, [MarshalAs(UnmanagedType.SysUInt)] uint uIdSubclass, out IntPtr pdwRefData);
 
 		/// <summary>
-		/// Ensures that the common control DLL (Comctl32.dll) is loaded, and registers specific common control classes from the DLL. An application must call
-		/// this function before creating a common control.
+		/// Ensures that the common control DLL (Comctl32.dll) is loaded, and registers specific common control classes from the DLL. An
+		/// application must call this function before creating a common control.
 		/// </summary>
-		/// <param name="icc">A pointer to an INITCOMMONCONTROLSEX structure that contains information specifying which control classes will be registered.</param>
+		/// <param name="icc">
+		/// A pointer to an INITCOMMONCONTROLSEX structure that contains information specifying which control classes will be registered.
+		/// </param>
 		/// <returns>Returns TRUE if successful, or FALSE otherwise.</returns>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775697")]
 		[DllImport(Lib.ComCtl32, ExactSpelling = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool InitCommonControlsEx(ref INITCOMMONCONTROLSEX icc);
+		public static extern bool InitCommonControlsEx(in INITCOMMONCONTROLSEX icc);
 
 		/// <summary>
-		/// Ensures that the common control DLL (Comctl32.dll) is loaded, and registers specific common control classes from the DLL. An application must call
-		/// this function before creating a common control.
+		/// Ensures that the common control DLL (Comctl32.dll) is loaded, and registers specific common control classes from the DLL. An
+		/// application must call this function before creating a common control.
 		/// </summary>
 		/// <param name="ccc">The <see cref="CommonControlClass"/> value to assign to the dwICC field in <see cref="INITCOMMONCONTROLSEX"/>.</param>
 		/// <returns>Returns TRUE if successful, or FALSE otherwise.</returns>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775697")]
-		public static bool InitCommonControlsEx(CommonControlClass ccc)
-		{
-			var icc = new INITCOMMONCONTROLSEX(ccc);
-			return InitCommonControlsEx(ref icc);
-		}
+		public static bool InitCommonControlsEx(CommonControlClass ccc) => InitCommonControlsEx(new INITCOMMONCONTROLSEX(ccc));
 
-		/// <summary>Enables an application to specify a language to be used with the common controls that is different from the system language.</summary>
+		/// <summary>
+		/// Enables an application to specify a language to be used with the common controls that is different from the system language.
+		/// </summary>
 		/// <param name="uiLang">
 		/// <para>Type: <c><c>LANGID</c></c></para>
 		/// <para>The language identifier of the language to be used by the common controls.</para>
@@ -841,12 +882,16 @@ namespace Vanara.PInvoke
 		/// <summary>Loads a specified icon resource with a client-specified system metric.</summary>
 		/// <param name="hinst">
 		/// <para>Type: <c><c>HINSTANCE</c></c></para>
-		/// <para>A handle to the module of either a DLL or executable (.exe) file that contains the icon to be loaded. For more information, see <c>GetModuleHandle</c>.</para>
+		/// <para>
+		/// A handle to the module of either a DLL or executable (.exe) file that contains the icon to be loaded. For more information, see <c>GetModuleHandle</c>.
+		/// </para>
 		/// <para>To load a predefined icon or a standalone icon file, set this parameter to <c>NULL</c>.</para>
 		/// </param>
 		/// <param name="pszName">
 		/// <para>Type: <c><c>PCWSTR</c></c></para>
-		/// <para>A pointer to a null-terminated, Unicode buffer that contains location information about the icon to load. It is interpreted as follows:</para>
+		/// <para>
+		/// A pointer to a null-terminated, Unicode buffer that contains location information about the icon to load. It is interpreted as follows:
+		/// </para>
 		/// <para>If hinst is <c>NULL</c>, pszName can specify one of two things.</para>
 		/// <para>If hinst is non-null, pszName can specify one of two things.</para>
 		/// </param>
@@ -893,25 +938,30 @@ namespace Vanara.PInvoke
 		// HRESULT LoadIconMetric( _In_ HINSTANCE hinst, _In_ PCWSTR pszName, _In_ int lims, _Out_ HICON *phico); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775701(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775701")]
-		public static extern HRESULT LoadIconMetric(HINSTANCE hinst, string pszName, LI_METRIC lims, out IntPtr phico);
+		public static extern HRESULT LoadIconMetric(HINSTANCE hinst, string pszName, LI_METRIC lims, out SafeHICON phico);
 
-		/// <summary>Loads an icon. If the icon is not a standard size, this function scales down a larger image instead of scaling up a smaller image.</summary>
+		/// <summary>
+		/// Loads an icon. If the icon is not a standard size, this function scales down a larger image instead of scaling up a smaller image.
+		/// </summary>
 		/// <param name="hinst">
 		/// <para>Type: <c><c>HINSTANCE</c></c></para>
-		/// <para>A handle to the module of either a DLL or executable (.exe) file that contains the icon to be loaded. For more information, see <c>GetModuleHandle</c>.</para>
+		/// <para>
+		/// A handle to the module of either a DLL or executable (.exe) file that contains the icon to be loaded. For more information, see <c>GetModuleHandle</c>.
+		/// </para>
 		/// <para>To load a predefined icon or a standalone icon file, set this parameter to <c>NULL</c>.</para>
 		/// </param>
 		/// <param name="pszName">
 		/// <para>Type: <c><c>PCWSTR</c></c></para>
 		/// <para>A pointer to a null-terminated, Unicode buffer that contains location information about the icon to load.</para>
 		/// <para>
-		/// If hinst is non- <c>NULL</c>, pszName specifies the icon resource either by name or ordinal. This ordinal must be packaged by using the
-		/// <c>MAKEINTRESOURCE</c> macro.
+		/// If hinst is non- <c>NULL</c>, pszName specifies the icon resource either by name or ordinal. This ordinal must be packaged by
+		/// using the <c>MAKEINTRESOURCE</c> macro.
 		/// </para>
 		/// <para>
-		/// If hinst is <c>NULL</c>, pszName specifies either the name of a standalone icon (.ico) file or the identifier of a predefined icon to load. The
-		/// following identifiers are recognized. To pass these constants to the <c>LoadIconWithScaleDown</c> function, use the <c>MAKEINTRESOURCE</c> macro. For
-		/// example, to load the IDI_ERROR icon, pass as the pszName parameter and <c>NULL</c> as the hinst parameter.
+		/// If hinst is <c>NULL</c>, pszName specifies either the name of a standalone icon (.ico) file or the identifier of a predefined
+		/// icon to load. The following identifiers are recognized. To pass these constants to the <c>LoadIconWithScaleDown</c> function, use
+		/// the <c>MAKEINTRESOURCE</c> macro. For example, to load the IDI_ERROR icon, pass as the pszName parameter and <c>NULL</c> as the
+		/// hinst parameter.
 		/// </para>
 		/// <para>
 		/// <list type="table">
@@ -1003,14 +1053,15 @@ namespace Vanara.PInvoke
 		/// <param name="pfnSubclass">
 		/// <para>Type: <c><c>SUBCLASSPROC</c></c></para>
 		/// <para>
-		/// A pointer to a window procedure. This pointer and the subclass ID uniquely identify this subclass callback. For the callback function prototype, see <c>SUBCLASSPROC</c>.
+		/// A pointer to a window procedure. This pointer and the subclass ID uniquely identify this subclass callback. For the callback
+		/// function prototype, see <c>SUBCLASSPROC</c>.
 		/// </para>
 		/// </param>
 		/// <param name="uIdSubclass">
 		/// <para>Type: <c>UINT_PTR</c></para>
 		/// <para>
-		/// The <c>UINT_PTR</c> subclass ID. This ID and the callback pointer uniquely identify this subclass callback. Note: On 64-bit versions of Windows this
-		/// is a 64-bit value.
+		/// The <c>UINT_PTR</c> subclass ID. This ID and the callback pointer uniquely identify this subclass callback. Note: On 64-bit
+		/// versions of Windows this is a 64-bit value.
 		/// </para>
 		/// </param>
 		/// <returns>
@@ -1031,21 +1082,24 @@ namespace Vanara.PInvoke
 		/// <param name="pfnSubclass">
 		/// <para>Type: <c><c>SUBCLASSPROC</c></c></para>
 		/// <para>
-		/// A pointer to a window procedure. This pointer and the subclass ID uniquely identify this subclass callback. For the callback function prototype, see <c>SUBCLASSPROC</c>.
+		/// A pointer to a window procedure. This pointer and the subclass ID uniquely identify this subclass callback. For the callback
+		/// function prototype, see <c>SUBCLASSPROC</c>.
 		/// </para>
 		/// </param>
 		/// <param name="uIdSubclass">
 		/// <para>Type: <c>UINT_PTR</c></para>
 		/// <para>
-		/// The subclass ID. This ID together with the subclass procedure uniquely identify a subclass. To remove a subclass, pass the subclass procedure and
-		/// this value to the <c>RemoveWindowSubclass</c> function. This value is passed to the subclass procedure in the uIdSubclass parameter.
+		/// The subclass ID. This ID together with the subclass procedure uniquely identify a subclass. To remove a subclass, pass the
+		/// subclass procedure and this value to the <c>RemoveWindowSubclass</c> function. This value is passed to the subclass procedure in
+		/// the uIdSubclass parameter.
 		/// </para>
 		/// </param>
 		/// <param name="dwRefData">
 		/// <para>Type: <c>DWORD_PTR</c></para>
 		/// <para>
-		/// <c>DWORD_PTR</c> to reference data. The meaning of this value is determined by the calling application. This value is passed to the subclass
-		/// procedure in the dwRefData parameter. A different dwRefData is associated with each combination of window handle, subclass procedure and uIdSubclass.
+		/// <c>DWORD_PTR</c> to reference data. The meaning of this value is determined by the calling application. This value is passed to
+		/// the subclass procedure in the dwRefData parameter. A different dwRefData is associated with each combination of window handle,
+		/// subclass procedure and uIdSubclass.
 		/// </para>
 		/// </param>
 		/// <returns>
@@ -1060,13 +1114,13 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// [ <c>ShowHideMenuCtl</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
-		/// subsequent versions.]
+		/// [ <c>ShowHideMenuCtl</c> is available for use in the operating systems specified in the Requirements section. It may be altered
+		/// or unavailable in subsequent versions.]
 		/// </para>
 		/// <para>
-		/// Sets or removes the specified menu item's check mark attribute and shows or hides the corresponding control. The function adds a check mark to the
-		/// specified menu item if it does not have one and then displays the corresponding control. If the menu item already has a check mark, the function
-		/// removes the check mark and hides the corresponding control.
+		/// Sets or removes the specified menu item's check mark attribute and shows or hides the corresponding control. The function adds a
+		/// check mark to the specified menu item if it does not have one and then displays the corresponding control. If the menu item
+		/// already has a check mark, the function removes the check mark and hides the corresponding control.
 		/// </para>
 		/// </summary>
 		/// <param name="hWnd">
@@ -1080,9 +1134,10 @@ namespace Vanara.PInvoke
 		/// <param name="lpInfo">
 		/// <para>Type: <c><c>LPINT</c></c></para>
 		/// <para>
-		/// A pointer to an array that contains pairs of values. The second value in the first pair must be the handle to the application's main menu. Each
-		/// subsequent pair consists of a menu item identifier and a control window identifier. The function searches the array for a value that matches uFlags
-		/// and, if the value is found, checks or unchecks the menu item and shows or hides the corresponding control.
+		/// A pointer to an array that contains pairs of values. The second value in the first pair must be the handle to the application's
+		/// main menu. Each subsequent pair consists of a menu item identifier and a control window identifier. The function searches the
+		/// array for a value that matches uFlags and, if the value is found, checks or unchecks the menu item and shows or hides the
+		/// corresponding control.
 		/// </para>
 		/// </param>
 		/// <returns>
@@ -1102,16 +1157,18 @@ namespace Vanara.PInvoke
 			/// <summary>The size of this structure, in bytes.</summary>
 			public uint dwSize;
 
-			/// <summary>The COLORREF value that represents the highlight color of the buttons. Use CLR_DEFAULT for the default highlight color.</summary>
-			public uint clrBtnHighlight;
+			/// <summary>
+			/// The COLORREF value that represents the highlight color of the buttons. Use CLR_DEFAULT for the default highlight color.
+			/// </summary>
+			public COLORREF clrBtnHighlight;
 
 			/// <summary>The COLORREF value that represents the shadow color of the buttons. Use CLR_DEFAULT for the default shadow color.</summary>
-			public uint clrBtnShadow;
+			public COLORREF clrBtnShadow;
 		}
 
 		/// <summary>
-		/// Carries information used to load common control classes from the dynamic-link library (DLL). This structure is used with the
-		/// <see cref="InitCommonControlsEx(ref INITCOMMONCONTROLSEX)"/> function.
+		/// Carries information used to load common control classes from the dynamic-link library (DLL). This structure is used with the <see
+		/// cref="InitCommonControlsEx(ref INITCOMMONCONTROLSEX)"/> function.
 		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775507")]
 		[StructLayout(LayoutKind.Sequential)]
@@ -1120,7 +1177,10 @@ namespace Vanara.PInvoke
 			/// <summary>The size of the structure, in bytes.</summary>
 			public int dwSize;
 
-			/// <summary>The set of bit flags that indicate which common control classes will be loaded from the DLL when calling <see cref="InitCommonControlsEx(ref INITCOMMONCONTROLSEX)"/>.</summary>
+			/// <summary>
+			/// The set of bit flags that indicate which common control classes will be loaded from the DLL when calling <see
+			/// cref="InitCommonControlsEx(ref INITCOMMONCONTROLSEX)"/>.
+			/// </summary>
 			public CommonControlClass dwICC;
 
 			/// <summary>Initializes a new instance of the <see cref="INITCOMMONCONTROLSEX"/> class and sets the dwICC field.</summary>
@@ -1143,16 +1203,19 @@ namespace Vanara.PInvoke
 			/// <para>An <c>NMHDR</c> structure that contains additional information about this notification.</para>
 			/// </summary>
 			public NMHDR hdr;
+
 			/// <summary>
 			/// <para>Type: <c><c>UINT</c></c></para>
 			/// <para>The character that is being processed.</para>
 			/// </summary>
 			public uint ch;
+
 			/// <summary>
 			/// <para>Type: <c><c>DWORD</c></c></para>
 			/// <para>A 32-bit value that is determined by the control that is sending the notification.</para>
 			/// </summary>
 			public uint dwItemPrev;
+
 			/// <summary>
 			/// <para>Type: <c><c>DWORD</c></c></para>
 			/// <para>A 32-bit value that is determined by the control that is sending the notification.</para>
@@ -1172,17 +1235,17 @@ namespace Vanara.PInvoke
 			public CustomDrawStage dwDrawStage;
 
 			/// <summary>A handle to the control's device context. Use this HDC to perform any GDI functions.</summary>
-			public IntPtr hdc;
+			public HDC hdc;
 
 			/// <summary>
-			/// The RECT structure that describes the bounding rectangle of the area being drawn. This member is initialized only by the CDDS_ITEMPREPAINT
-			/// notification. Version 5.80. This member is also initialized by the CDDS_PREPAINT notification.
+			/// The RECT structure that describes the bounding rectangle of the area being drawn. This member is initialized only by the
+			/// CDDS_ITEMPREPAINT notification. Version 5.80. This member is also initialized by the CDDS_PREPAINT notification.
 			/// </summary>
 			public RECT rc;
 
 			/// <summary>
-			/// The item number. What is contained in this member will depend on the type of control that is sending the notification. See the NM_CUSTOMDRAW
-			/// notification reference for the specific control to determine what, if anything, is contained in this member.
+			/// The item number. What is contained in this member will depend on the type of control that is sending the notification. See
+			/// the NM_CUSTOMDRAW notification reference for the specific control to determine what, if anything, is contained in this member.
 			/// </summary>
 			public IntPtr dwItemSpec;
 
@@ -1223,33 +1286,40 @@ namespace Vanara.PInvoke
 			/// <para>An <c>NMHDR</c> structure that contains additional information about this notification.</para>
 			/// </summary>
 			public NMHDR hdr;
+
 			/// <summary>
 			/// <para>Type: <c><c>HDC</c></c></para>
 			/// <para>The device context to draw to.</para>
 			/// </summary>
-			public IntPtr hDC;
+			public HDC hDC;
+
 			/// <summary>
 			/// <para>Type: <c><c>LPCWSTR</c></c></para>
 			/// <para>The string to draw.</para>
 			/// </summary>
 			public string lpString;
+
 			/// <summary>
 			/// <para>Type: <c>int</c></para>
 			/// <para>Length of lpString.</para>
 			/// </summary>
 			public int nCount;
+
 			/// <summary>
 			/// <para>Type: <c>LPRECT</c></para>
 			/// <para>The rect to draw in.</para>
 			/// </summary>
 			public IntPtr lpRect;
+
 			/// <summary>
 			/// <para>Type: <c><c>UINT</c></c></para>
 			/// <para>
-			/// One or more of the DT_* flags. For more information, see the description of the uFormat parameter of the <c>DrawText</c> function. This may be <c>NULL</c>.
+			/// One or more of the DT_* flags. For more information, see the description of the uFormat parameter of the <c>DrawText</c>
+			/// function. This may be <c>NULL</c>.
 			/// </para>
 			/// </summary>
 			public uint uFormat;
+
 			/// <summary>
 			/// <para>Type: <c><c>BOOL</c></c></para>
 			/// <para>Whether the text is a link.</para>
@@ -1269,22 +1339,26 @@ namespace Vanara.PInvoke
 			/// <para>An <c>NMHDR</c> structure that contains additional information about this notification.</para>
 			/// </summary>
 			public NMHDR hdr;
+
 			/// <summary>
 			/// <para>Type: <c><c>UINT</c></c></para>
 			/// <para>A virtual key code of the key that caused the event.</para>
 			/// </summary>
 			public uint nVKey;
+
 			/// <summary>
 			/// <para>Type: <c><c>UINT</c></c></para>
 			/// <para>
-			/// Flags associated with the key. These are the same flags that are passed in the high word of the lParam parameter of the <c>WM_KEYDOWN</c> message.
+			/// Flags associated with the key. These are the same flags that are passed in the high word of the lParam parameter of the
+			/// <c>WM_KEYDOWN</c> message.
 			/// </para>
 			/// </summary>
 			public uint uFlags;
 		}
 
 		/// <summary>Contains information used with mouse notification messages.</summary>
-		// typedef struct tagNMMOUSE { NMHDR hdr; DWORD_PTR dwItemSpec; DWORD_PTR dwItemData; POINT pt; LPARAM dwHitInfo;} NMMOUSE, *LPNMMOUSE; https://msdn.microsoft.com/en-us/library/windows/desktop/bb775518(v=vs.85).aspx
+		// typedef struct tagNMMOUSE { NMHDR hdr; DWORD_PTR dwItemSpec; DWORD_PTR dwItemData; POINT pt; LPARAM dwHitInfo;} NMMOUSE,
+		// *LPNMMOUSE; https://msdn.microsoft.com/en-us/library/windows/desktop/bb775518(v=vs.85).aspx
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775518")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct NMMOUSE
@@ -1294,21 +1368,25 @@ namespace Vanara.PInvoke
 			/// <para>An <c>NMHDR</c> structure that contains additional information about this notification.</para>
 			/// </summary>
 			public NMHDR hdr;
+
 			/// <summary>
 			/// <para>Type: <c><c>DWORD_PTR</c></c></para>
 			/// <para>A control-specific item identifier.</para>
 			/// </summary>
 			public IntPtr dwItemSpec;
+
 			/// <summary>
 			/// <para>Type: <c><c>DWORD_PTR</c></c></para>
 			/// <para>A control-specific item data.</para>
 			/// </summary>
 			public IntPtr dwItemData;
+
 			/// <summary>
 			/// <para>Type: <c><c>POINT</c></c></para>
 			/// <para>A <c>POINT</c> structure that contains the client coordinates of the mouse when the click occurred.</para>
 			/// </summary>
 			public System.Drawing.Point pt;
+
 			/// <summary>
 			/// <para>Type: <c><c>LPARAM</c></c></para>
 			/// <para>Carries information about where on the item or control the cursor is pointing.</para>
@@ -1317,7 +1395,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Contains information used with the TBN_GETOBJECT, TCN_GETOBJECT, and PSN_GETOBJECT notification codes.</summary>
-		// typedef struct tagNMOBJECTNOTIFY { NMHDR hdr; int iItem; IID *piid; IUnknown *pObject; HRESULT hResult;} NMOBJECTNOTIFY, *LPNMOBJECTNOTIFY; https://msdn.microsoft.com/en-us/library/windows/desktop/bb775520(v=vs.85).aspx
+		// typedef struct tagNMOBJECTNOTIFY { NMHDR hdr; int iItem; IID *piid; IUnknown *pObject; HRESULT hResult;} NMOBJECTNOTIFY,
+		// *LPNMOBJECTNOTIFY; https://msdn.microsoft.com/en-us/library/windows/desktop/bb775520(v=vs.85).aspx
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775520")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct NMOBJECTNOTIFY
@@ -1327,31 +1406,37 @@ namespace Vanara.PInvoke
 			/// <para>An <c>NMHDR</c> structure that contains additional information about this notification.</para>
 			/// </summary>
 			public NMHDR hdr;
+
 			/// <summary>
 			/// <para>Type: <c>int</c></para>
 			/// <para>
-			/// A control-specific item identifier. This value will comply to item identification standards for the control sending the notification. However,
-			/// this member is not used with the PSN_GETOBJECT notification code.
+			/// A control-specific item identifier. This value will comply to item identification standards for the control sending the
+			/// notification. However, this member is not used with the PSN_GETOBJECT notification code.
 			/// </para>
 			/// </summary>
 			public int iItem;
+
 			/// <summary>
 			/// <para>Type: <c>IID*</c></para>
 			/// <para>A pointer to an interface identifier of the requested object.</para>
 			/// </summary>
 			public IntPtr piid;
+
 			/// <summary>
 			/// <para>Type: <c><c>IUnknown</c>*</c></para>
 			/// <para>
-			/// A pointer to an object provided by the window processing the notification code. The application processing the notification code sets this member.
+			/// A pointer to an object provided by the window processing the notification code. The application processing the notification
+			/// code sets this member.
 			/// </para>
 			/// </summary>
 			public IntPtr pObject;
+
 			/// <summary>
 			/// <para>Type: <c><c>HRESULT</c></c></para>
 			/// <para>COM success or failure flags. The application processing the notification code sets this member.</para>
 			/// </summary>
 			public HRESULT hResult;
+
 			/// <summary>Undocumented</summary>
 			public uint dwFlags;
 		}
@@ -1367,11 +1452,12 @@ namespace Vanara.PInvoke
 			/// <para>An <c>NMHDR</c> structure that contains additional information about this notification.</para>
 			/// </summary>
 			public NMHDR hdr;
+
 			/// <summary>
 			/// <para>Type: <c><c>HWND</c></c></para>
 			/// <para>The window handle to the tooltip control created.</para>
 			/// </summary>
-			public IntPtr hwndToolTips;
+			public HWND hwndToolTips;
 		}
 	}
 }

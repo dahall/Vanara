@@ -222,7 +222,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa374151")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ActivateActCtx(ActCtxSafeHandle hActCtx, out IntPtr lpCookie);
+		public static extern bool ActivateActCtx(HACTCTX hActCtx, out IntPtr lpCookie);
 
 		/// <summary>The <c>AddRefActCtx</c> function increments the reference count of the specified activation context.</summary>
 		/// <param name="hActCtx">
@@ -232,7 +232,7 @@ namespace Vanara.PInvoke
 		// void AddRefActCtx( _In_ HANDLE hActCtx); https://msdn.microsoft.com/en-us/library/windows/desktop/aa374171(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa374171")]
-		public static extern void AddRefActCtx(IntPtr hActCtx);
+		public static extern void AddRefActCtx(HACTCTX hActCtx);
 
 		/// <summary>Indicates that the calling application has completed its data recovery.</summary>
 		/// <param name="bSuccess">Specify <c>TRUE</c> to indicate that the data was successfully recovered; otherwise, <c>FALSE</c>.</param>
@@ -280,7 +280,7 @@ namespace Vanara.PInvoke
 		// HANDLE CreateActCtx( _Inout_ PACTCTX pActCtx); https://msdn.microsoft.com/en-us/library/windows/desktop/aa375125(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa375125")]
-		public static extern ActCtxSafeHandle CreateActCtx(ref ACTCTX actctx);
+		public static extern SafeHACTCTX CreateActCtx(in ACTCTX actctx);
 
 		/// <summary>The <c>DeactivateActCtx</c> function deactivates the activation context corresponding to the specified cookie.</summary>
 		/// <param name="dwFlags">
@@ -370,7 +370,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa375148")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FindActCtxSectionGuid(FIND_ACTCTX_SECTION dwFlags, [MarshalAs(UnmanagedType.LPStruct)] Guid lpExtensionGuid, uint ulSectionId, [MarshalAs(UnmanagedType.LPStruct)] Guid lpGuidToFind, out ACTCTX_SECTION_KEYED_DATA ReturnedData);
+		public static extern bool FindActCtxSectionGuid(FIND_ACTCTX_SECTION dwFlags, in Guid lpExtensionGuid, uint ulSectionId, in Guid lpGuidToFind, out ACTCTX_SECTION_KEYED_DATA ReturnedData);
 
 		/// <summary>
 		/// The <c>FindActCtxSectionString</c> function retrieves information on a specific string in the current activation context and returns a
@@ -413,7 +413,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa375149")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FindActCtxSectionString(FIND_ACTCTX_SECTION dwFlags, [MarshalAs(UnmanagedType.LPStruct)] Guid lpExtensionGuid, ACTCTX_SECTION ulSectionId, [In] string lpStringToFind, out ACTCTX_SECTION_KEYED_DATA ReturnedData);
+		public static extern bool FindActCtxSectionString(FIND_ACTCTX_SECTION dwFlags, in Guid lpExtensionGuid, ACTCTX_SECTION ulSectionId, string lpStringToFind, out ACTCTX_SECTION_KEYED_DATA ReturnedData);
 
 		/// <summary>
 		/// Retrieves a pointer to the callback routine registered for the specified process. The address returned is in the virtual address space of the process.
@@ -446,7 +446,7 @@ namespace Vanara.PInvoke
 		// *ppvParameter, _Out_ PDWORD pdwPingInterval, _Out_ PDWORD pdwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa373343(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa373343")]
-		public static extern HRESULT GetApplicationRecoveryCallback(IntPtr hProcess, out ApplicationRecoveryCallback pRecoveryCallback, out IntPtr ppvParameter, out uint pdwPingInterval, out int pdwFlags);
+		public static extern HRESULT GetApplicationRecoveryCallback(HPROCESS hProcess, out ApplicationRecoveryCallback pRecoveryCallback, out IntPtr ppvParameter, out uint pdwPingInterval, out int pdwFlags);
 
 		/// <summary>Retrieves the restart information registered for the specified process.</summary>
 		/// <param name="hProcess">A handle to the process. This handle must have the PROCESS_VM_READ access right.</param>
@@ -498,7 +498,7 @@ namespace Vanara.PInvoke
 		// pdwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/aa373344(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa373344")]
-		public static extern HRESULT GetApplicationRestartSettings(IntPtr hProcess, [Out] StringBuilder pwzCommandline, ref uint pcchSize, out ApplicationRestartFlags pdwFlags);
+		public static extern HRESULT GetApplicationRestartSettings(HPROCESS hProcess, StringBuilder pwzCommandline, ref uint pcchSize, out ApplicationRestartFlags pdwFlags);
 
 		/// <summary>The <c>GetCurrentActCtx</c> function returns the handle to the active activation context of the calling thread.</summary>
 		/// <param name="lphActCtx">Pointer to the returned <c>ACTCTX</c> structure that contains information on the active activation context.</param>
@@ -513,7 +513,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa375152")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetCurrentActCtx(out ActCtxSafeHandle handle);
+		public static extern bool GetCurrentActCtx(out HACTCTX handle);
 
 		/// <summary>
 		/// The <c>QueryActCtxSettingsW</c> function specifies the activation context, and the namespace and name of the attribute that is to be queried.
@@ -547,7 +547,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa375700")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool QueryActCtxSettingsW(QueryActCtxFlag dwFlags, [In] IntPtr hActCtx, string settingsNameSpace, string settingName, [Out] StringBuilder pvBuffer, SizeT dwBuffer, out SizeT pdwWrittenOrRequired);
+		public static extern bool QueryActCtxSettingsW(QueryActCtxFlag dwFlags, [In] HACTCTX hActCtx, string settingsNameSpace, string settingName, StringBuilder pvBuffer, SizeT dwBuffer, out SizeT pdwWrittenOrRequired);
 
 		/// <summary>The <c>QueryActCtxW</c> function queries the activation context.</summary>
 		/// <param name="dwFlags">
@@ -690,7 +690,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa375704")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool QueryActCtxW(QueryActCtxFlag dwFlags, [In] IntPtr hActCtx, [In] IntPtr pvSubInstance, ACTIVATION_CONTEXT_INFO_CLASS ulInfoClass, IntPtr pvBuffer, SizeT cbBuffer, out SizeT pcbWrittenOrRequired);
+		public static extern bool QueryActCtxW(QueryActCtxFlag dwFlags, [In] HACTCTX hActCtx, [In] IntPtr pvSubInstance, ACTIVATION_CONTEXT_INFO_CLASS ulInfoClass, IntPtr pvBuffer, SizeT cbBuffer, out SizeT pcbWrittenOrRequired);
 
 		/// <summary>Registers the active instance of an application for recovery.</summary>
 		/// <param name="pRecoveryCallback">A pointer to the recovery callback function. For more information, see <c>ApplicationRecoveryCallback</c>.</param>
@@ -808,7 +808,7 @@ namespace Vanara.PInvoke
 		// void ReleaseActCtx( _In_ HANDLE hActCtx); https://msdn.microsoft.com/en-us/library/windows/desktop/aa375713(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa375713")]
-		public static extern void ReleaseActCtx(IntPtr hActCtx);
+		public static extern void ReleaseActCtx(HACTCTX hActCtx);
 
 		/// <summary>Removes the active instance of an application from the recovery list.</summary>
 		/// <param name="RegisterApplicationRecoveryCallback"></param>
@@ -859,7 +859,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa376622")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ZombifyActCtx(IntPtr hActCtx);
+		public static extern bool ZombifyActCtx(HACTCTX hActCtx);
 
 		/// <summary>The ACTCTX structure is used by the CreateActCtx function to create the activation context.</summary>
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -927,7 +927,7 @@ namespace Vanara.PInvoke
 			/// Use this member rather than lpSource if you have already loaded a DLL and wish to use it to create activation contexts rather than using a path
 			/// in lpSource. See lpResourceName for the rules of looking up resources in this module.
 			/// </summary>
-			public IntPtr hModule;
+			public HINSTANCE hModule;
 
 			/// <summary>Initializes a new instance of the <see cref="ACTCTX"/> struct.</summary>
 			/// <param name="source">The source.</param>
@@ -937,8 +937,8 @@ namespace Vanara.PInvoke
 				lpSource = source;
 			}
 
-			/// <summary>The empty</summary>
-			public static ACTCTX Empty = new ACTCTX { cbSize = Marshal.SizeOf(typeof(ACTCTX)) };
+			/// <summary>Gets an empty instance with only the cbSize parameter initialized.</summary>
+			public static ACTCTX Empty => new ACTCTX { cbSize = Marshal.SizeOf(typeof(ACTCTX)) };
 		}
 
 		/// <summary>
@@ -1022,7 +1022,7 @@ namespace Vanara.PInvoke
 			/// resources when all other references to the activation context have been released.
 			/// </para>
 			/// </summary>
-			public IntPtr hActCtx;
+			public HACTCTX hActCtx;
 
 			/// <summary>
 			/// <para>
@@ -1033,24 +1033,76 @@ namespace Vanara.PInvoke
 			public uint ulAssemblyRosterIndex;
 		}
 
-		/// <summary>A safe handle for an Activation Context.</summary>
-		/// <seealso cref="GenericSafeHandle"/>
-		[PInvokeData("Winbase.h")]
-		public class ActCtxSafeHandle : GenericSafeHandle
+		/// <summary>Provides a handle to an account context.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HACTCTX
 		{
-			/// <summary>Initializes a new instance of the <see cref="ActCtxSafeHandle"/> class.</summary>
-			public ActCtxSafeHandle() : base(ReleaseHandle) { }
+			private IntPtr handle;
 
-			/// <summary>Initializes a new instance of the <see cref="ActCtxSafeHandle"/> class.</summary>
-			/// <param name="hActCtx">The h act CTX.</param>
-			/// <param name="ownsHandle">if set to <c>true</c> [owns handle].</param>
-			public ActCtxSafeHandle(IntPtr hActCtx, bool ownsHandle) : base(hActCtx, ReleaseHandle, ownsHandle) { }
+			/// <summary>Initializes a new instance of the <see cref="HACTCTX"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public HACTCTX(IntPtr preexistingHandle) => handle = preexistingHandle;
 
-			private static bool ReleaseHandle(IntPtr handle)
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HACTCTX"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HACTCTX NULL => new HACTCTX(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HACTCTX"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HACTCTX h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HACTCTX"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HACTCTX(IntPtr h) => new HACTCTX(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HACTCTX h1, HACTCTX h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HACTCTX h1, HACTCTX h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HACTCTX h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> to an account context that releases a created HACTCTX instance at disposal using ReleaseActCtx.</summary>
+		public class SafeHACTCTX : HANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="HACTCTX"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeHACTCTX(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			private SafeHACTCTX() : base() { }
+
+			/// <summary>Gets the handle to the active activation context of the calling thread.</summary>
+			public static SafeHACTCTX GetCurrent()
 			{
-				ReleaseActCtx(handle);
-				return true;
+				if (!GetCurrentActCtx(out var h))
+					Win32Error.ThrowLastError();
+				return new SafeHACTCTX((IntPtr)h, false);
 			}
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHACTCTX"/> to <see cref="HACTCTX"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HACTCTX(SafeHACTCTX h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() { ReleaseActCtx(this); return true; }
 		}
 	}
 }

@@ -101,7 +101,7 @@ namespace Vanara.InteropServices.Tests
 			h.Dispose();
 			Assert.That(h.IsClosed && h.IsInvalid);
 
-			h = LocalAlloc(LMEM.LPTR, (UIntPtr)5);
+			h = new SafeLocalHandle(LocalAlloc(LMEM.LPTR, 5), 5);
 			Assert.That(!h.IsClosed && !h.IsInvalid);
 			Assert.That(h, Is.Not.EqualTo(SafeHGlobalHandle.Null));
 			h.Dispose();
@@ -113,7 +113,7 @@ namespace Vanara.InteropServices.Tests
 		[Test()]
 		public void SafeLocalHandleTest1()
 		{
-			var h = new SafeLocalHandle(LocalAlloc(LMEM.LPTR, (UIntPtr)5), 5);
+			var h = new SafeLocalHandle(LocalAlloc(LMEM.LPTR, 5), 5);
 			Assert.That(!h.IsClosed && !h.IsInvalid);
 			Assert.That(h.Size, Is.EqualTo(5));
 			h.Dispose();

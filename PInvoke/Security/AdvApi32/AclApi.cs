@@ -43,7 +43,7 @@ namespace Vanara.PInvoke
 		public static extern Win32Error GetInheritanceSource([MarshalAs(UnmanagedType.LPTStr)] string pObjectName, SE_OBJECT_TYPE ObjectType,
 			SECURITY_INFORMATION SecurityInfo, [MarshalAs(UnmanagedType.Bool)] bool Container,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 5, ArraySubType = UnmanagedType.LPStruct), Optional] Guid[] pObjectClassGuids,
-			uint GuidCount, [In] IntPtr pAcl, [In] IntPtr pfnArray, [In] ref GENERIC_MAPPING pGenericMapping, SafeInheritedFromArray pInheritArray);
+			uint GuidCount, [In] IntPtr pAcl, [In] IntPtr pfnArray, in GENERIC_MAPPING pGenericMapping, SafeInheritedFromArray pInheritArray);
 
 		/// <summary>
 		/// The GetEffectiveRightsFromAcl function retrieves the effective access rights that an ACL structure grants to a specified trustee. The trustee's

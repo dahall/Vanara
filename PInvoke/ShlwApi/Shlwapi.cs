@@ -487,7 +487,7 @@ namespace Vanara.PInvoke
 		/// procedure attempts to send a Windows message with SendMessage to a window hosted on the calling thread, the message will arrive
 		/// successfully. If the synchronous procedure attempts to use COM to communicate with an STA object hosted on the calling thread,
 		/// the function call will successfully reach the intended object. The calling thread is open to re-entrance fragility. While the
-		/// calling thread can handle the synchronous procedure&amp;#39;s use of SendMessage and COM, if other threads are using SendMessage
+		/// calling thread can handle the synchronous procedure's use of SendMessage and COM, if other threads are using SendMessage
 		/// or COM to communicate to objects hosted on the calling thread, then these might be unexpected messages or function calls which
 		/// are processed while the synchronous procedure is completing.
 		/// </term>
@@ -1004,7 +1004,7 @@ namespace Vanara.PInvoke
 		// IConnectionPoint **ppcpOut );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "f0c6051e-cced-4f38-a35d-d4c184d39084")]
-		public static extern HRESULT ConnectToConnectionPoint([MarshalAs(UnmanagedType.IUnknown)] object punk, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riidEvent, [MarshalAs(UnmanagedType.Bool)] bool fConnect, [MarshalAs(UnmanagedType.IUnknown)] object punkTarget, ref uint pdwCookie, out IConnectionPoint ppcpOut);
+		public static extern HRESULT ConnectToConnectionPoint([MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid riidEvent, [MarshalAs(UnmanagedType.Bool)] bool fConnect, [MarshalAs(UnmanagedType.IUnknown)] object punkTarget, ref uint pdwCookie, out IConnectionPoint ppcpOut);
 
 		/// <summary>
 		/// <para>Retrieves a string used with websites when specifying language preferences.</para>
@@ -1674,7 +1674,7 @@ namespace Vanara.PInvoke
 		// *punk, REFIID riid, void **ppv );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "95e83078-ab74-40d6-8e31-653e578770f2")]
-		public static extern HRESULT IUnknown_GetSite([MarshalAs(UnmanagedType.IUnknown)] object punk, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT IUnknown_GetSite([MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>
 		/// <para>
@@ -1761,7 +1761,7 @@ namespace Vanara.PInvoke
 		// IUnknown *punk, REFGUID guidService, REFIID riid, void **ppvOut );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "3e3f3ed0-ad36-40ef-b30c-8c85ff159f21")]
-		public static extern HRESULT IUnknown_QueryService([MarshalAs(UnmanagedType.IUnknown)] object punk, [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidService, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvOut);
+		public static extern HRESULT IUnknown_QueryService([MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid guidService, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvOut);
 
 		/// <summary>
 		/// <para>Changes the value of a Component Object Model (COM) interface pointer and releases the previous interface.</para>
@@ -1859,7 +1859,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shlwapi, CharSet = CharSet.Auto)]
 		[PInvokeData("Shlwapi.h", MSDNShortId = "bb773822")]
 		[Obsolete]
-		public static extern IntPtr MLLoadLibrary(string lpszLibFileName, IntPtr hModule, uint dwCrossCodePage);
+		public static extern IntPtr MLLoadLibrary(string lpszLibFileName, HINSTANCE hModule, uint dwCrossCodePage);
 
 		/// <summary>
 		/// <para>A table-driven implementation of the IUnknown::QueryInterface method.</para>
@@ -1937,7 +1937,7 @@ namespace Vanara.PInvoke
 		// REFIID riid, void **ppv );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "8429778b-bc9c-43f6-8d75-0fb78e36e790")]
-		public static extern HRESULT QISearch(IntPtr that, QITAB[] pqit, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT QISearch(IntPtr that, QITAB[] pqit, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>
 		/// <para>
@@ -2328,7 +2328,7 @@ namespace Vanara.PInvoke
 		// hdc );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "49afb04a-34e3-4696-a046-bc9308ae7adf")]
-		public static extern IntPtr SHCreateShellPalette(IntPtr hdc);
+		public static extern IntPtr SHCreateShellPalette(HDC hdc);
 
 		/// <summary>
 		/// <para>
@@ -2932,7 +2932,7 @@ namespace Vanara.PInvoke
 		// *pft, DWORD *pdwFlags, LPWSTR pszBuf, UINT cchBuf );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "2208ed29-6029-4051-bdcc-885c42fe5c1b")]
-		public static extern int SHFormatDateTime([MarshalAs(UnmanagedType.LPStruct)] FILETIME pft, ref FDTF pdwFlags, StringBuilder pszBuf, uint cchBuf);
+		public static extern int SHFormatDateTime(in FILETIME pft, ref FDTF pdwFlags, StringBuilder pszBuf, uint cchBuf);
 
 		/// <summary>
 		/// <para>
@@ -3180,7 +3180,7 @@ namespace Vanara.PInvoke
 		// SHGetViewStatePropertyBag( PCIDLIST_ABSOLUTE pidl, PCWSTR pszBagName, DWORD dwFlags, REFIID riid, void **ppv );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "6852867a-30a5-4d4e-b790-3746104e3ed8")]
-		public static extern HRESULT SHGetViewStatePropertyBag(IntPtr pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszBagName, SHGVSPB dwFlags, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT SHGetViewStatePropertyBag(IntPtr pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszBagName, SHGVSPB dwFlags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>
 		/// <para>
@@ -4817,7 +4817,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "73af64a4-57eb-43db-91bb-75fe7134ad28")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SHSkipJunction(IBindCtx pbc, [In, MarshalAs(UnmanagedType.LPStruct)] Guid pclsid);
+		public static extern bool SHSkipJunction(IBindCtx pbc, in Guid pclsid);
 
 		/// <summary>
 		/// <para>Makes a copy of a string in newly allocated memory.</para>

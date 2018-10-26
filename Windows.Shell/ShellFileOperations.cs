@@ -963,7 +963,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Determines whether the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> contains an element with the specified key.</summary>
 		/// <param name="key">The key to locate in the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.</param>
 		/// <returns>true if the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> contains an element with the key; otherwise, false.</returns>
-		public bool ContainsKey(PROPERTYKEY key) => changes.IsKeyInArray(ref key).Succeeded;
+		public bool ContainsKey(PROPERTYKEY key) => changes.IsKeyInArray(key).Succeeded;
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
 		/// <returns>A <see cref="System.Collections.Generic.IEnumerator{T}"/> that can be used to iterate through the collection.</returns>
@@ -1043,7 +1043,7 @@ namespace Vanara.Windows.Shell
 
 		private IPropertyChange ToPC(PROPERTYKEY key, object value, PKA_FLAGS flags = PKA_FLAGS.PKA_SET)
 		{
-			PSCreateSimplePropertyChange(PKA_FLAGS.PKA_SET, ref key, new PROPVARIANT(value), typeof(IPropertyChange).GUID, out var pc).ThrowIfFailed();
+			PSCreateSimplePropertyChange(PKA_FLAGS.PKA_SET, key, new PROPVARIANT(value), typeof(IPropertyChange).GUID, out var pc).ThrowIfFailed();
 			return pc;
 		}
 	}

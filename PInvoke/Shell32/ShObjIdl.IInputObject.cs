@@ -20,7 +20,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 			[PreserveSig]
-			HRESULT UIActivateIO([In, MarshalAs(UnmanagedType.Bool)] bool fActivate, [In, MarshalAs(UnmanagedType.LPStruct)] MSG pMsg);
+			HRESULT UIActivateIO([In, MarshalAs(UnmanagedType.Bool)] bool fActivate, in MSG pMsg);
 
 			/// <summary>Determines if one of the object's windows has the keyboard focus.</summary>
 			/// <returns>Returns S_OK if one of the object's windows has the keyboard focus, or S_FALSE otherwise.</returns>
@@ -31,7 +31,7 @@ namespace Vanara.PInvoke
 			/// <param name="pMsg">The address of an MSG structure that contains the keyboard message that is being translated.</param>
 			/// <returns>Returns S_OK if the accelerator was translated, or S_FALSE otherwise.</returns>
 			[PreserveSig]
-			HRESULT TranslateAcceleratorIO([In, MarshalAs(UnmanagedType.LPStruct)] MSG pMsg);
+			HRESULT TranslateAcceleratorIO(in MSG pMsg);
 		}
 
 		/// <summary>Exposes a method that extends IInputObject by handling global accelerators.</summary>
@@ -49,7 +49,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 			[PreserveSig]
-			new HRESULT UIActivateIO([In, MarshalAs(UnmanagedType.Bool)] bool fActivate, [In, MarshalAs(UnmanagedType.LPStruct)] MSG pMsg);
+			new HRESULT UIActivateIO([In, MarshalAs(UnmanagedType.Bool)] bool fActivate, in MSG pMsg);
 
 			/// <summary>Determines if one of the object's windows has the keyboard focus.</summary>
 			/// <returns>Returns S_OK if one of the object's windows has the keyboard focus, or S_FALSE otherwise.</returns>
@@ -60,7 +60,7 @@ namespace Vanara.PInvoke
 			/// <param name="pMsg">The address of an MSG structure that contains the keyboard message that is being translated.</param>
 			/// <returns>Returns S_OK if the accelerator was translated, or S_FALSE otherwise.</returns>
 			[PreserveSig]
-			new HRESULT TranslateAcceleratorIO([In, MarshalAs(UnmanagedType.LPStruct)] MSG pMsg);
+			new HRESULT TranslateAcceleratorIO(in MSG pMsg);
 
 			/// <summary>
 			/// Handles global accelerators so that input objects can respond to the keyboard even when they are not active in the UI.
@@ -68,7 +68,7 @@ namespace Vanara.PInvoke
 			/// <param name="pMsg">A pointer to an MSG structure that contains a keyboard message.</param>
 			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 			[PreserveSig]
-			HRESULT TranslateAcceleratorGlobal([In, MarshalAs(UnmanagedType.LPStruct)] MSG pMsg);
+			HRESULT TranslateAcceleratorGlobal(in MSG pMsg);
 		}
 
 		/// <summary>Exposes a method that is used to communicate focus changes for a user input object contained in the Shell.</summary>

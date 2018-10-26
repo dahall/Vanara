@@ -633,7 +633,7 @@ namespace Vanara.Windows.Forms
 		/// Returns 0 except in the case of BFFM_VALIDATEFAILED. For that flag, returns 0 to dismiss the dialog or nonzero to keep the dialog displayed.
 		/// </returns>
 		//[CLSCompliant(false)]
-		private int OnBrowseEvent(IntPtr hwnd, BrowseForFolderMessages uMsg, IntPtr lParam, IntPtr lpData)
+		private int OnBrowseEvent(HWND hwnd, BrowseForFolderMessages uMsg, IntPtr lParam, IntPtr lpData)
 		{
 			var messsage = uMsg;
 			switch (messsage)
@@ -731,11 +731,11 @@ namespace Vanara.Windows.Forms
 	public class FolderBrowserDialogInitializedEventArgs : EventArgs
 	{
 		/// <summary>The HWND of the dialog box.</summary>
-		public readonly IntPtr hwnd;
+		public readonly HWND hwnd;
 
 		/// <summary>Initializes a new instance of the <see cref="FolderBrowserDialogInitializedEventArgs"/> class.</summary>
 		/// <param name="hwnd">The HWND of the dialog box.</param>
-		public FolderBrowserDialogInitializedEventArgs(IntPtr hwnd) { this.hwnd = hwnd; }
+		public FolderBrowserDialogInitializedEventArgs(HWND hwnd) { this.hwnd = hwnd; }
 	}
 
 	/// <summary>Event arguments for when an invalid folder is selected.</summary>

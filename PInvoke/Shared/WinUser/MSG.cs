@@ -10,7 +10,7 @@ namespace Vanara.PInvoke
 	public struct MSG
 	{
 		/// <summary>A handle to the window whose window procedure receives the message. This member is NULL when the message is a thread message.</summary>
-		public IntPtr hwnd;
+		public HWND hwnd;
 		/// <summary>The message identifier. Applications can only use the low word; the high word is reserved by the system.</summary>
 		public uint message;
 		/// <summary>Additional information about the message. The exact meaning depends on the value of the message member.</summary>

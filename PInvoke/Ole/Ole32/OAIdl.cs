@@ -18,7 +18,7 @@ namespace Vanara.PInvoke
 			/// <param name="pExcepInfo">
 			/// A pointer to the caller-initialized EXCEPINFO structure that describes the error to log. This cannot be NULL.
 			/// </param>
-			void AddError([In, MarshalAs(UnmanagedType.LPWStr)] string pszPropName, [In] ref EXCEPINFO pExcepInfo);
+			void AddError([In, MarshalAs(UnmanagedType.LPWStr)] string pszPropName, in EXCEPINFO pExcepInfo);
 		}
 
 		/// <summary>Provides an object with a property bag in which the object can save its properties persistently.</summary>
@@ -71,7 +71,7 @@ namespace Vanara.PInvoke
 			/// location. This avoids potential extra copy operations that might be involved with other property-based persistence mechanisms.
 			/// </para>
 			/// </remarks>
-			void Write([In, MarshalAs(UnmanagedType.LPWStr)] string pszPropName, [In] ref object pVar);
+			void Write([In, MarshalAs(UnmanagedType.LPWStr)] string pszPropName, in object pVar);
 		}
 	}
 }

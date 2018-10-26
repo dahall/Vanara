@@ -33,7 +33,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb776770(v=vs.85).aspx
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		[PInvokeData("Shlobj_core.h", MSDNShortId = "bb776770")]
-		public delegate HRESULT LPFNDFMCALLBACK(IShellFolder psf, IntPtr hwnd, IDataObject pdtobj, uint uMsg, IntPtr wParam, IntPtr lParam);
+		public delegate HRESULT LPFNDFMCALLBACK(IShellFolder psf, HWND hwnd, IDataObject pdtobj, uint uMsg, IntPtr wParam, IntPtr lParam);
 
 		/// <summary>
 		/// <para>
@@ -77,7 +77,7 @@ namespace Vanara.PInvoke
 		// WPARAM wParam, LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/bb776771(v=vs.85).aspx
 		[PInvokeData("Shlobj_core.h", MSDNShortId = "bb776771")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate HRESULT LPFNVIEWCALLBACK(IShellView psvOuter, IShellFolder psf, IntPtr hwndMain, uint uMsg, IntPtr wParam, IntPtr lParam);
+		public delegate HRESULT LPFNVIEWCALLBACK(IShellView psvOuter, IShellFolder psf, HWND hwndMain, uint uMsg, IntPtr wParam, IntPtr lParam);
 
 		/// <summary>A flag that controls how PifMgr_CloseProperties operates.</summary>
 		[PInvokeData("shlobj_core.h", MSDNShortId = "fd50d4f8-87c8-4162-9e88-3c8592b929fa")]
@@ -3123,7 +3123,7 @@ namespace Vanara.PInvoke
 		// SHBindToFolderIDListParent( IShellFolder *psfRoot, PCUIDLIST_RELATIVE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "72a79d1b-15ed-475e-9ebd-03345579a06a")]
-		public static extern HRESULT SHBindToFolderIDListParent(IShellFolder psfRoot, PIDL pidl, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, IntPtr ppidlLast);
+		public static extern HRESULT SHBindToFolderIDListParent(IShellFolder psfRoot, PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, IntPtr ppidlLast);
 
 		/// <summary>
 		/// <para>Extends the SHBindToFolderIDListParent function by allowing the caller to specify a bind context.</para>
@@ -3173,7 +3173,7 @@ namespace Vanara.PInvoke
 		// PCUITEMID_CHILD *ppidlLast );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "4f9b68cb-d0ae-45f7-90f5-2db1da3ab599")]
-		public static extern HRESULT SHBindToFolderIDListParentEx(IShellFolder psfRoot, PIDL pidl, IBindCtx ppbc, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, IntPtr ppidlLast);
+		public static extern HRESULT SHBindToFolderIDListParentEx(IShellFolder psfRoot, PIDL pidl, IBindCtx ppbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, IntPtr ppidlLast);
 
 		/// <summary>
 		/// <para>Retrieves and binds to a specified object by using the Shell namespace IShellFolder::BindToObject method.</para>
@@ -3221,7 +3221,7 @@ namespace Vanara.PInvoke
 		// IShellFolder *psf, PCUIDLIST_RELATIVE pidl, IBindCtx *pbc, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "acc16097-8301-4118-8cb5-00aa2705306a")]
-		public static extern HRESULT SHBindToObject(IShellFolder psf, PIDL pidl, IBindCtx pbc, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT SHBindToObject(IShellFolder psf, PIDL pidl, IBindCtx pbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>
 		/// <para>
@@ -3259,7 +3259,7 @@ namespace Vanara.PInvoke
 		// PCIDLIST_ABSOLUTE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "1cb283a6-3ebf-4986-9f32-5f6ab8d977ad")]
-		public static extern HRESULT SHBindToParent(PIDL pidl, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, ref IntPtr ppidlLast);
+		public static extern HRESULT SHBindToParent(PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, ref IntPtr ppidlLast);
 
 		/// <summary>Displays a dialog box that enables the user to select a Shell folder.</summary>
 		/// <param name="lpbi">A pointer to a BROWSEINFO structure that contains information used to display the dialog box.</param>
@@ -3546,7 +3546,7 @@ namespace Vanara.PInvoke
 		// PCIDLIST_ABSOLUTE pidlFolder, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, IDataObject *pdtInner, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "d56cdafe-9463-43a5-8ef0-6cfaf0c524a8")]
-		public static extern HRESULT SHCreateDataObject(PIDL pidlFolder, uint cidl, [In, MarshalAs(UnmanagedType.LPArray)] PIDL[] apidl, IDataObject pdtInner, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IDataObject ppv);
+		public static extern HRESULT SHCreateDataObject(PIDL pidlFolder, uint cidl, [In, MarshalAs(UnmanagedType.LPArray)] PIDL[] apidl, IDataObject pdtInner, in Guid riid, out IDataObject ppv);
 
 		/// <summary>
 		/// <para>Creates an object that represents the Shell's default context menu implementation.</para>
@@ -3581,7 +3581,7 @@ namespace Vanara.PInvoke
 		// SHCreateDefaultContextMenu( const DEFCONTEXTMENU *pdcm, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "055ff0a0-9ba7-463d-9684-3fd072b190da")]
-		public static extern HRESULT SHCreateDefaultContextMenu(ref DEFCONTEXTMENU pdcm, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT SHCreateDefaultContextMenu(ref DEFCONTEXTMENU pdcm, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>
 		/// <para>
@@ -3771,7 +3771,7 @@ namespace Vanara.PInvoke
 		// SHCreateFileExtractIconW( LPCWSTR pszFile, DWORD dwFileAttributes, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "af3beb0a-892b-43e5-b5b8-8005f497b6e5")]
-		public static extern HRESULT SHCreateFileExtractIconW([MarshalAs(UnmanagedType.LPWStr)] string pszFile, FileFlagsAndAttributes dwFileAttributes, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT SHCreateFileExtractIconW([MarshalAs(UnmanagedType.LPWStr)] string pszFile, FileFlagsAndAttributes dwFileAttributes, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>
 		/// <para>
@@ -4554,7 +4554,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762180")]
-		public static extern HRESULT SHGetFolderLocation(IntPtr hwndOwner, int nFolder, HTOKEN hToken,
+		public static extern HRESULT SHGetFolderLocation(HWND hwndOwner, int nFolder, HTOKEN hToken,
 			int dwReserved, out PIDL ppidl);
 
 		/// <summary>
@@ -4610,7 +4610,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762181")]
-		public static extern HRESULT SHGetFolderPath(IntPtr hwndOwner, int nFolder, [In, Optional] HTOKEN hToken,
+		public static extern HRESULT SHGetFolderPath(HWND hwndOwner, int nFolder, [In, Optional] HTOKEN hToken,
 			SHGFP dwFlags, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPath);
 
 		/// <summary>
@@ -4704,7 +4704,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, CharSet = CharSet.Unicode, ExactSpelling = true)]
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Shlobj.h", MSDNShortId = "mt757093")]
-		public static extern HRESULT SHGetFolderPathEx([In, MarshalAs(UnmanagedType.LPStruct)]
+		public static extern HRESULT SHGetFolderPathEx(in
 			Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] HTOKEN hToken,
 			[Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPath, uint cchPath);
 
@@ -4772,7 +4772,7 @@ namespace Vanara.PInvoke
 		/// <param name="ppv">When this method returns, contains the interface pointer requested in riid. This is typically IImageList.</param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762185")]
-		public static extern HRESULT SHGetImageList(SHIL iImageList, [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+		public static extern HRESULT SHGetImageList(SHIL iImageList, in Guid riid,
 			out IImageList ppv);
 
 		/// <summary>
@@ -4853,7 +4853,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762187")]
-		public static extern HRESULT SHGetKnownFolderIDList([In, MarshalAs(UnmanagedType.LPStruct)]
+		public static extern HRESULT SHGetKnownFolderIDList(in
 			Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] HTOKEN hToken, out PIDL ppidl);
 
 		/// <summary>Retrieves an IShellItem object that represents a known folder.</summary>
@@ -4882,9 +4882,9 @@ namespace Vanara.PInvoke
 		/// <param name="ppv">When this method returns, contains the interface pointer requested in riid.</param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "dd378429")]
-		public static extern HRESULT SHGetKnownFolderItem([In, MarshalAs(UnmanagedType.LPStruct)]
+		public static extern HRESULT SHGetKnownFolderItem(in
 			Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] HTOKEN hToken,
-			[In, MarshalAs(UnmanagedType.LPStruct)]
+			in
 			Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
 
 		/// <summary>Retrieves the full path of a known folder identified by the folder's KNOWNFOLDERID.</summary>
@@ -4917,7 +4917,7 @@ namespace Vanara.PInvoke
 		/// <remarks>This function replaces SHGetFolderPath. That older function is now simply a wrapper for SHGetKnownFolderPath.</remarks>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762188")]
-		public static extern HRESULT SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid,
+		public static extern HRESULT SHGetKnownFolderPath(in Guid rfid,
 			KNOWN_FOLDER_FLAG dwFlags, [In, Optional] HTOKEN hToken, out SafeCoTaskMemHandle pszPath);
 
 		/// <summary>Retrieves the full path of a known folder identified by the folder's KNOWNFOLDERID.</summary>
@@ -4944,9 +4944,9 @@ namespace Vanara.PInvoke
 		/// <returns>String that specifies the path of the known folder.</returns>
 		/// <remarks>This function replaces SHGetFolderPath. That older function is now simply a wrapper for SHGetKnownFolderPath.</remarks>
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762188")]
-		public static string SHGetKnownFolderPath(KNOWNFOLDERID id, KNOWN_FOLDER_FLAG dwFlags, HTOKEN hToken = null)
+		public static string SHGetKnownFolderPath(KNOWNFOLDERID id, KNOWN_FOLDER_FLAG dwFlags, HTOKEN hToken = default)
 		{
-			SHGetKnownFolderPath(id.Guid(), dwFlags, hToken ?? HTOKEN.NULL, out var path);
+			SHGetKnownFolderPath(id.Guid(), dwFlags, hToken, out var path);
 			return path.ToString(-1);
 		}
 
@@ -5258,7 +5258,7 @@ namespace Vanara.PInvoke
 		// rclsid );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "307b99d9-2d0a-47c5-8a10-dfdc0a408942")]
-		public static extern HRESULT SHLoadInProc([MarshalAs(UnmanagedType.LPStruct)] Guid rclsid);
+		public static extern HRESULT SHLoadInProc(in Guid rclsid);
 
 		/// <summary>
 		/// <para>
@@ -5578,7 +5578,7 @@ namespace Vanara.PInvoke
 		// IPropertyStorage **ppstg, UINT *puCodePage );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "fd99e04e-ef96-4357-9226-da6604fb0e84")]
-		public static extern HRESULT SHPropStgCreate(IPropertySetStorage psstg, [MarshalAs(UnmanagedType.LPStruct)] Guid fmtid, [MarshalAs(UnmanagedType.LPStruct)] Guid pclsid, PROPSETFLAG grfFlags, STGM grfMode, uint dwDisposition, out IPropertyStorage ppstg, out uint puCodePage);
+		public static extern HRESULT SHPropStgCreate(IPropertySetStorage psstg, in Guid fmtid, in Guid pclsid, PROPSETFLAG grfFlags, STGM grfMode, uint dwDisposition, out IPropertyStorage ppstg, out uint puCodePage);
 
 		/// <summary>
 		/// <para>
@@ -5838,7 +5838,7 @@ namespace Vanara.PInvoke
 		// REFKNOWNFOLDERID rfid, DWORD dwFlags, HANDLE hToken, PCWSTR pszPath );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "b5758086-93d1-49d6-b9ac-ba8927f3bd1e")]
-		public static extern HRESULT SHSetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, KNOWN_FOLDER_FLAG dwFlags, HTOKEN hToken, [MarshalAs(UnmanagedType.LPWStr)] string pszPath);
+		public static extern HRESULT SHSetKnownFolderPath(in Guid rfid, KNOWN_FOLDER_FLAG dwFlags, HTOKEN hToken, [MarshalAs(UnmanagedType.LPWStr)] string pszPath);
 
 		/// <summary>
 		/// <para>
@@ -6063,7 +6063,7 @@ namespace Vanara.PInvoke
 		// IStorage *pstgParent, PCWSTR pszFileSpec, DWORD grfMode, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "d45ec25c-359b-46f8-b0f6-5888525c7349")]
-		public static extern HRESULT StgMakeUniqueName(IStorage pstgParent, [MarshalAs(UnmanagedType.LPWStr)] string pszFileSpec, STGM grfMode, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT StgMakeUniqueName(IStorage pstgParent, [MarshalAs(UnmanagedType.LPWStr)] string pszFileSpec, STGM grfMode, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>
 		/// <para>
@@ -6308,7 +6308,7 @@ namespace Vanara.PInvoke
 		public struct DEFCONTEXTMENU
 		{
 			/// <summary>A handle to the context menu. Set this member to the handle returned from CreateMenu.</summary>
-			public IntPtr hwnd;
+			public HWND hwnd;
 
 			/// <summary>
 			/// A pointer to the IContextMenuCB interface supported by the callback object. This value is optional and can be NULL.

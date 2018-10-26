@@ -1,5 +1,4 @@
 ﻿using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
-// ReSharper disable InconsistentNaming
 
 namespace Vanara.PInvoke
 {
@@ -10,8 +9,7 @@ namespace Vanara.PInvoke
 		/// <returns>The converted <see cref="FILETIME"/> value.</returns>
 		public static FILETIME ToFILETIME(this SYSTEMTIME st)
 		{
-			var ft = new FILETIME();
-			SystemTimeToFileTime(ref st, ref ft);
+			SystemTimeToFileTime(st, out var ft);
 			return ft;
 		}
 
@@ -20,8 +18,7 @@ namespace Vanara.PInvoke
 		/// <returns>The converted <see cref="SYSTEMTIME"/> value.</returns>
 		public static SYSTEMTIME ToSYSTEMTIME(this FILETIME ft)
 		{
-			var st = new SYSTEMTIME();
-			FileTimeToSystemTime(ref ft, ref st);
+			FileTimeToSystemTime(ft, out var st);
 			return st;
 		}
 	}

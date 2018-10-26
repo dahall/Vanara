@@ -7,9 +7,6 @@ using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.User32_Gdi;
 
-// ReSharper disable InconsistentNaming ReSharper disable PrivateFieldCanBeConvertedToLocalVariable ReSharper disable FieldCanBeMadeReadOnly.Global ReSharper
-// disable NotAccessedField.Global
-
 namespace Vanara.PInvoke
 {
 	public static partial class ComCtl32
@@ -37,55 +34,86 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>The list-view control has no background image.</summary>
 			LVBKIF_SOURCE_NONE = 0X00000000,
-			/// <summary>A background bitmap is supplied via the hbm member of LVBKIMAGE. If the message LVM_SETBKIMAGE succeeds, then the list-view takes ownership of the bitmap.</summary>
+
+			/// <summary>
+			/// A background bitmap is supplied via the hbm member of LVBKIMAGE. If the message LVM_SETBKIMAGE succeeds, then the list-view
+			/// takes ownership of the bitmap.
+			/// </summary>
 			LVBKIF_SOURCE_HBITMAP = 0X00000001,
+
 			/// <summary>The pszImage member contains the URL of the background image.</summary>
 			LVBKIF_SOURCE_URL = 0X00000002,
+
 			/// <summary>You can use the LVBKIF_SOURCE_MASK value to mask off all but the source flags.</summary>
 			LVBKIF_SOURCE_MASK = 0X00000003,
+
 			/// <summary>The background image is displayed normally.</summary>
 			LVBKIF_STYLE_NORMAL = 0X00000000,
+
 			/// <summary>The background image will be tiled to fill the entire background of the control.</summary>
 			LVBKIF_STYLE_TILE = 0X00000010,
+
 			/// <summary>You can use the LVBKIF_STYLE_MASK value to mask off all but the style flags.</summary>
 			LVBKIF_STYLE_MASK = 0X00000010,
-			/// <summary>Specify the coordinates of the first tile. This flag is valid only if the LVBKIF_STYLE_TILE flag is also specified. If this flag is not specified, the first tile begins at the upper-left corner of the client area. If you use ComCtl32.dll Version 6.0 the xOffsetPercent and yOffsetPercent fields contain pixels, not percentage values, to specify the coordinates of the first tile. Comctl32.dll version 6 is not redistributable but it is included in Windows or later. Also, you must specify Comctl32.dll version 6 in a manifest. For more information on manifests, see Enabling Visual Styles.</summary>
+
+			/// <summary>
+			/// Specify the coordinates of the first tile. This flag is valid only if the LVBKIF_STYLE_TILE flag is also specified. If this
+			/// flag is not specified, the first tile begins at the upper-left corner of the client area. If you use ComCtl32.dll Version 6.0
+			/// the xOffsetPercent and yOffsetPercent fields contain pixels, not percentage values, to specify the coordinates of the first
+			/// tile. Comctl32.dll version 6 is not redistributable but it is included in Windows or later. Also, you must specify
+			/// Comctl32.dll version 6 in a manifest. For more information on manifests, see Enabling Visual Styles.
+			/// </summary>
 			LVBKIF_FLAG_TILEOFFSET = 0X00000100,
-			/// <summary>A watermark background bitmap is supplied via the hbm member of LVBKIMAGE. If the LVM_SETBKIMAGE message succeeds, then the list-view control takes ownership of the bitmap.</summary>
+
+			/// <summary>
+			/// A watermark background bitmap is supplied via the hbm member of LVBKIMAGE. If the LVM_SETBKIMAGE message succeeds, then the
+			/// list-view control takes ownership of the bitmap.
+			/// </summary>
 			LVBKIF_TYPE_WATERMARK = 0X10000000,
-			/// <summary>Valid only when LVBKIF_TYPE_WATERMARK is also specified. This flag indicates the bitmap provided via LVBKIF_TYPE_WATERMARK contains a valid alpha channel.</summary>
+
+			/// <summary>
+			/// Valid only when LVBKIF_TYPE_WATERMARK is also specified. This flag indicates the bitmap provided via LVBKIF_TYPE_WATERMARK
+			/// contains a valid alpha channel.
+			/// </summary>
 			LVBKIF_FLAG_ALPHABLEND = 0X20000000,
 		}
 
-		/// <summary>
-		/// Mask flags used by <see cref="LVCOLUMN.mask"/>.
-		/// </summary>
+		/// <summary>Mask flags used by <see cref="LVCOLUMN.mask"/>.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761385")]
 		[Flags]
 		public enum ListViewColumMask
 		{
 			/// <summary>The fmt member is valid.</summary>
 			LVCF_FMT = 0X0001,
+
 			/// <summary>The cx member is valid.</summary>
 			LVCF_WIDTH = 0X0002,
+
 			/// <summary>The pszText member is valid.</summary>
 			LVCF_TEXT = 0X0004,
+
 			/// <summary>The iSubItem member is valid.</summary>
 			LVCF_SUBITEM = 0X0008,
+
 			/// <summary>Version 4.70. The iImage member is valid.</summary>
 			LVCF_IMAGE = 0X0010,
+
 			/// <summary>Version 4.70. The iOrder member is valid</summary>
 			LVCF_ORDER = 0X0020,
+
 			/// <summary>Version 6.00 and Windows Vista.The cxMin member is valid.</summary>
 			LVCF_MINWIDTH = 0X0040,
+
 			/// <summary>Version 6.00 and Windows Vista.The cxDefault member is valid.</summary>
 			LVCF_DEFAULTWIDTH = 0X0080,
+
 			/// <summary>Version 6.00 and Windows Vista.The cxIdeal member is valid</summary>
 			LVCF_IDEALWIDTH = 0X0100,
 		}
 
 		/// <summary>
-		/// Alignment of the column header and the subitem text in the column. The alignment of the leftmost column is always LVCFMT_LEFT; it cannot be changed. This member can be a combination of the following values. Note that not all combinations are valid.
+		/// Alignment of the column header and the subitem text in the column. The alignment of the leftmost column is always LVCFMT_LEFT; it
+		/// cannot be changed. This member can be a combination of the following values. Note that not all combinations are valid.
 		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb774743")]
 		[Flags]
@@ -93,35 +121,60 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Text is left-aligned.</summary>
 			LVCFMT_LEFT = 0X0000,
+
 			/// <summary>Text is right-aligned.</summary>
 			LVCFMT_RIGHT = 0X0001,
+
 			/// <summary>Text is centered.</summary>
 			LVCFMT_CENTER = 0X0002,
-			/// <summary>A bitmask used to select those bits of fmt that control field justification. To check the format of a column, use a logical "and" to combine LCFMT_JUSTIFYMASK with fmt. You can then use a switch statement to determine whether the LVCFMT_LEFT, LVCFMT_RIGHT, or LVCFMT_CENTER bits are set.</summary>
+
+			/// <summary>
+			/// A bitmask used to select those bits of fmt that control field justification. To check the format of a column, use a logical
+			/// "and" to combine LCFMT_JUSTIFYMASK with fmt. You can then use a switch statement to determine whether the LVCFMT_LEFT,
+			/// LVCFMT_RIGHT, or LVCFMT_CENTER bits are set.
+			/// </summary>
 			LVCFMT_JUSTIFYMASK = 0X0003,
+
 			/// <summary>Version 4.70. The item displays an image from an image list.</summary>
 			LVCFMT_IMAGE = 0X0800,
-			/// <summary>Version 4.70. The bitmap appears to the right of text. This does not affect an image from an image list assigned to the header item.</summary>
+
+			/// <summary>
+			/// Version 4.70. The bitmap appears to the right of text. This does not affect an image from an image list assigned to the
+			/// header item.
+			/// </summary>
 			LVCFMT_BITMAP_ON_RIGHT = 0X1000,
+
 			/// <summary>Version 4.70. The header item contains an image in the image list.</summary>
 			LVCFMT_COL_HAS_IMAGES = 0X8000,
+
 			/// <summary>Version 6.00 and Windows Vista. Can't resize the column; same as HDF_FIXEDWIDTH.</summary>
 			LVCFMT_FIXED_WIDTH = 0X00100,
+
 			/// <summary>Version 6.00 and Windows Vista. If not set, CCM_DPISCALE will govern scaling up fixed width.</summary>
 			LVCFMT_NO_DPI_SCALE = 0X40000,
+
 			/// <summary>Version 6.00 and Windows Vista. Width will augment with the row height.</summary>
 			LVCFMT_FIXED_RATIO = 0X80000,
+
 			/// <summary>Forces the column to wrap to the top of the next list of columns.</summary>
 			LVCFMT_LINE_BREAK = 0X100000,
+
 			/// <summary>Fills the remainder of the tile area. Might have a title.</summary>
 			LVCFMT_FILL = 0X200000,
+
 			/// <summary>Allows the column to wrap within the remaining space in its list of columns.</summary>
 			LVCFMT_WRAP = 0X400000,
+
 			/// <summary>Removes the title from the subitem.</summary>
 			LVCFMT_NO_TITLE = 0X800000,
+
 			/// <summary>Equivalent to a combination of LVCFMT_LINE_BREAK and LVCFMT_FILL.</summary>
 			LVCFMT_TILE_PLACEMENTMASK = LVCFMT_LINE_BREAK | LVCFMT_FILL,
-			/// <summary>Version 6.00 and Windows Vista. Column is a split button (same as HDF_SPLITBUTTON). The header of the column displays a split button (same as HDF_SPLITBUTTON).</summary>
+
+			/// <summary>
+			/// Version 6.00 and Windows Vista. Column is a split button (same as HDF_SPLITBUTTON). The header of the column displays a split
+			/// button (same as HDF_SPLITBUTTON).
+			/// </summary>
 			LVCFMT_SPLITBUTTON = 0X1000000,
 		}
 
@@ -134,25 +187,28 @@ namespace Vanara.PInvoke
 			LVFI_PARAM = 0X0001,
 
 			/// <summary>
-			/// Searches based on the item text. Unless additional values are specified, the item text of the matching item must exactly match the string pointed
-			/// to by the psz member. However, the search is case-insensitive.
+			/// Searches based on the item text. Unless additional values are specified, the item text of the matching item must exactly
+			/// match the string pointed to by the psz member. However, the search is case-insensitive.
 			/// </summary>
 			LVFI_STRING = 0X0002,
 
 			/// <summary>Windows Vista and later. Equivalent to LVFI_PARTIAL.</summary>
 			LVFI_SUBSTRING = 0X0004,
 
-			/// <summary>Checks to see if the item text begins with the string pointed to by the psz member. This value implies use of LVFI_STRING.</summary>
+			/// <summary>
+			/// Checks to see if the item text begins with the string pointed to by the psz member. This value implies use of LVFI_STRING.
+			/// </summary>
 			LVFI_PARTIAL = 0X0008,
 
 			/// <summary>
-			/// Continues the search at the beginning if no match is found. If this flag is used by itself, it is assumed that a string search is wanted.
+			/// Continues the search at the beginning if no match is found. If this flag is used by itself, it is assumed that a string
+			/// search is wanted.
 			/// </summary>
 			LVFI_WRAP = 0X0020,
 
 			/// <summary>
-			/// Finds the item nearest to the position specified in the pt member, in the direction specified by the vkDirection member. This flag is supported
-			/// only by large icon and small icon modes. If LVFI_NEARESTXY is specified, all other flags are ignored.
+			/// Finds the item nearest to the position specified in the pt member, in the direction specified by the vkDirection member. This
+			/// flag is supported only by large icon and small icon modes. If LVFI_NEARESTXY is specified, all other flags are ignored.
 			/// </summary>
 			LVFI_NEARESTXY = 0X0040,
 		}
@@ -176,32 +232,46 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>No other items are valid.</summary>
 			LVGF_NONE = 0x00000000,
+
 			/// <summary>pszHeader and cchHeader members are valid.</summary>
 			LVGF_HEADER = 0x00000001,
+
 			/// <summary>pszFooter and cchFooter members are valid.</summary>
 			LVGF_FOOTER = 0x00000002,
+
 			/// <summary>state and stateMask members are valid.</summary>
 			LVGF_STATE = 0x00000004,
+
 			/// <summary>uAlign member is valid.</summary>
 			LVGF_ALIGN = 0x00000008,
+
 			/// <summary>iGroupId member is valid.</summary>
 			LVGF_GROUPID = 0x00000010,
+
 			/// <summary>Version 6.00 and later. The pszSubtitle member is valid.</summary>
 			LVGF_SUBTITLE = 0x00000100,
+
 			/// <summary>Version 6.00 and later. The pszTask member is valid.</summary>
 			LVGF_TASK = 0x00000200,
+
 			/// <summary>Version 6.00 and later. The pszDescriptionTop member is valid.</summary>
 			LVGF_DESCRIPTIONTOP = 0x00000400,
+
 			/// <summary>Version 6.00 and later. The pszDescriptionBottom member is valid.</summary>
 			LVGF_DESCRIPTIONBOTTOM = 0x00000800,
+
 			/// <summary>Version 6.00 and later. The iTitleImage member is valid.</summary>
 			LVGF_TITLEIMAGE = 0x00001000,
+
 			/// <summary>Version 6.00 and later. The iExtendedImage member is valid.</summary>
 			LVGF_EXTENDEDIMAGE = 0x00002000,
+
 			/// <summary>Version 6.00 and later. The cItems member is valid.</summary>
 			LVGF_ITEMS = 0x00004000,
+
 			/// <summary>Version 6.00 and later. The pszSubsetTitle member is valid.</summary>
 			LVGF_SUBSET = 0x00008000,
+
 			/// <summary>Version 6.00 and later. The cchSubsetTitle member is valid.</summary>
 			LVGF_SUBSETITEMS = 0x00010000,
 		}
@@ -213,10 +283,13 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>No members are valid.</summary>
 			LVGMF_NONE = 0x00000000,
+
 			/// <summary>The Left, Top, Right, and Bottom members are valid.</summary>
 			LVGMF_BORDERSIZE = 0x00000001,
+
 			/// <summary>Not implemented.</summary>
 			LVGMF_BORDERCOLOR = 0x00000002,
+
 			/// <summary>Not implemented.</summary>
 			LVGMF_TEXTCOLOR = 0x00000004,
 		}
@@ -263,47 +336,65 @@ namespace Vanara.PInvoke
 			LVGS_SUBSETLINKFOCUSED = 0x00000080,
 		}
 
-		/// <summary>
-		/// The results of a hit test. This member can be one or more of the following values:
-		/// </summary>
+		/// <summary>The results of a hit test. This member can be one or more of the following values:</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb774754")]
 		[Flags]
 		public enum ListViewHitTestFlag : uint
 		{
 			/// <summary>The position is inside the list-view control's client window, but it is not over a list item.</summary>
 			LVHT_NOWHERE = 0X00000001,
+
 			/// <summary>The position is over a list-view item's icon.</summary>
 			LVHT_ONITEMICON = 0X00000002,
+
 			/// <summary>The position is over a list-view item's text.</summary>
 			LVHT_ONITEMLABEL = 0X00000004,
+
 			/// <summary>The position is over the state image of a list-view item.</summary>
 			LVHT_ONITEMSTATEICON = 0X00000008,
+
 			/// <summary>The position is over a list-view item.</summary>
 			LVHT_ONITEM = LVHT_ONITEMICON | LVHT_ONITEMLABEL | LVHT_ONITEMSTATEICON,
+
 			/// <summary>The position is above the control's client area.</summary>
 			LVHT_ABOVE = 0X00000008,
+
 			/// <summary>The position is below the control's client area.</summary>
 			LVHT_BELOW = 0X00000010,
+
 			/// <summary>The position is to the right of the list-view control's client area.</summary>
 			LVHT_TORIGHT = 0X00000020,
+
 			/// <summary>The position is to the left of the list-view control's client area.</summary>
 			LVHT_TOLEFT = 0X00000040,
+
 			/// <summary>Windows Vista. The point is within the group header.</summary>
 			LVHT_EX_GROUP_HEADER = 0X10000000,
+
 			/// <summary>Windows Vista. The point is within the group footer.</summary>
 			LVHT_EX_GROUP_FOOTER = 0X20000000,
+
 			/// <summary>Windows Vista. The point is within the collapse/expand button of the group.</summary>
 			LVHT_EX_GROUP_COLLAPSE = 0X40000000,
+
 			/// <summary>Windows Vista. The point is within the area of the group where items are displayed.</summary>
 			LVHT_EX_GROUP_BACKGROUND = 0X80000000,
+
 			/// <summary>Windows Vista. The point is within the state icon of the group.</summary>
 			LVHT_EX_GROUP_STATEICON = 0X01000000,
+
 			/// <summary>Windows Vista. The point is within the subset link of the group.</summary>
 			LVHT_EX_GROUP_SUBSETLINK = 0X02000000,
-			/// <summary>Windows Vista. LVHT_EX_GROUP_BACKGROUND | LVHT_EX_GROUP_COLLAPSE | LVHT_EX_GROUP_FOOTER | LVHT_EX_GROUP_HEADER | LVHT_EX_GROUP_STATEICON | LVHT_EX_GROUP_SUBSETLINK.</summary>
+
+			/// <summary>
+			/// Windows Vista. LVHT_EX_GROUP_BACKGROUND | LVHT_EX_GROUP_COLLAPSE | LVHT_EX_GROUP_FOOTER | LVHT_EX_GROUP_HEADER |
+			/// LVHT_EX_GROUP_STATEICON | LVHT_EX_GROUP_SUBSETLINK.
+			/// </summary>
 			LVHT_EX_GROUP = LVHT_EX_GROUP_BACKGROUND | LVHT_EX_GROUP_COLLAPSE | LVHT_EX_GROUP_FOOTER | LVHT_EX_GROUP_HEADER | LVHT_EX_GROUP_STATEICON | LVHT_EX_GROUP_SUBSETLINK,
+
 			/// <summary>Windows Vista. The point is within the icon or text content of the item and not on the background.</summary>
 			LVHT_EX_ONCONTENTS = 0X04000000,
+
 			/// <summary>Windows Vista. The point is within the footer of the list-view control.</summary>
 			LVHT_EX_FOOTER = 0X08000000,
 		}
@@ -329,8 +420,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Set of flags that specify which members of the <see cref="LVITEM"/> structure contain data to be set or which members are being requested. This
-		/// member can have one or more of the following flags set:
+		/// Set of flags that specify which members of the <see cref="LVITEM"/> structure contain data to be set or which members are being
+		/// requested. This member can have one or more of the following flags set:
 		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb774760")]
 		[Flags]
@@ -352,14 +443,14 @@ namespace Vanara.PInvoke
 			LVIF_INDENT = 0x00000010,
 
 			/// <summary>
-			/// The control will not generate LVN_GETDISPINFO to retrieve text information if it receives an LVM_GETITEM message. Instead, the pszText member
-			/// will contain LPSTR_TEXTCALLBACK.
+			/// The control will not generate LVN_GETDISPINFO to retrieve text information if it receives an LVM_GETITEM message. Instead,
+			/// the pszText member will contain LPSTR_TEXTCALLBACK.
 			/// </summary>
 			LVIF_NORECOMPUTE = 0x00000800,
 
 			/// <summary>
-			/// The iGroupId member is valid or must be set. If this flag is not set when an LVM_INSERTITEM message is sent, the value of iGroupId is assumed to
-			/// be I_GROUPIDCALLBACK.
+			/// The iGroupId member is valid or must be set. If this flag is not set when an LVM_INSERTITEM message is sent, the value of
+			/// iGroupId is assumed to be I_GROUPIDCALLBACK.
 			/// </summary>
 			LVIF_GROUPID = 0x00000100,
 
@@ -367,13 +458,14 @@ namespace Vanara.PInvoke
 			LVIF_COLUMNS = 0x00000200,
 
 			/// <summary>
-			/// Windows Vista and later. The piColFmt member is valid or must be set. If this flag is used, the cColumns member is valid or must be set.
+			/// Windows Vista and later. The piColFmt member is valid or must be set. If this flag is used, the cColumns member is valid or
+			/// must be set.
 			/// </summary>
 			LVIF_COLFMT = 0x00010000,
 
 			/// <summary>
-			/// The operating system should store the requested list item information and not ask for it again. This flag is used only with the LVN_GETDISPINFO
-			/// notification code.
+			/// The operating system should store the requested list item information and not ask for it again. This flag is used only with
+			/// the LVN_GETDISPINFO notification code.
 			/// </summary>
 			LVIF_DISETITEM = 0x1000,
 
@@ -391,8 +483,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// An item's state value consists of the item's state, an optional overlay mask index, and an optional state image mask index. An item's state
-		/// determines its appearance and functionality. The state can be zero or one or more of the following values:
+		/// An item's state value consists of the item's state, an optional overlay mask index, and an optional state image mask index. An
+		/// item's state determines its appearance and functionality. The state can be zero or one or more of the following values:
 		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761385")]
 		[Flags]
@@ -402,13 +494,14 @@ namespace Vanara.PInvoke
 			LVIS_NONE = 0x0000,
 
 			/// <summary>
-			/// The item has the focus, so it is surrounded by a standard focus rectangle. Although more than one item may be selected, only one item can have
-			/// the focus.
+			/// The item has the focus, so it is surrounded by a standard focus rectangle. Although more than one item may be selected, only
+			/// one item can have the focus.
 			/// </summary>
 			LVIS_FOCUSED = 0x0001,
 
 			/// <summary>
-			/// The item is selected. The appearance of a selected item depends on whether it has the focus and also on the system colors used for selection.
+			/// The item is selected. The appearance of a selected item depends on whether it has the focus and also on the system colors
+			/// used for selection.
 			/// </summary>
 			LVIS_SELECTED = 0x0002,
 
@@ -682,12 +775,16 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Size the tiles automatically.</summary>
 			LVTVIF_AUTOSIZE = 0x00000000,
+
 			/// <summary>Apply a fixed width to the tiles.</summary>
 			LVTVIF_FIXEDWIDTH = 0x00000001,
+
 			/// <summary>Apply a fixed height to the tiles.</summary>
 			LVTVIF_FIXEDHEIGHT = 0x00000002,
+
 			/// <summary>Apply a fixed height and width to the tiles.</summary>
 			LVTVIF_FIXEDSIZE = 0x00000003,
+
 			/// <summary>This flag is not supported and should not be used.</summary>
 			LVTVIF_EXTENDED = 0x00000004,
 		}
@@ -699,49 +796,60 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>sizeTile is valid.</summary>
 			LVTVIM_TILESIZE = 0x00000001,
+
 			/// <summary>cLines is valid.</summary>
 			LVTVIM_COLUMNS = 0x00000002,
+
 			/// <summary>rcLabelMargin is valid.</summary>
 			LVTVIM_LABELMARGIN = 0x00000004,
 		}
 
-		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, [In, Out] LVBKIMAGE bkImage) => User32_Gdi.SendMessage(hWnd, message, wParam, bkImage);
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, [In, Out] LVBKIMAGE bkImage);
 
-		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, [In, Out] LVCOLUMN column) => User32_Gdi.SendMessage(hWnd, message, wParam, column);
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, [In, Out] LVCOLUMN column);
 
-		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, [In, Out] ref LVFINDINFO findInfo) => User32_Gdi.SendMessage(hWnd, message, wParam, ref findInfo);
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, ref LVFINDINFO findInfo);
 
-		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, [In, Out] LVGROUP group) => User32_Gdi.SendMessage(hWnd, message, wParam, group);
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, [In, Out] LVGROUP group);
 
-		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, ref LVGROUPMETRICS metrics) => User32_Gdi.SendMessage(hWnd, message, wParam, ref metrics);
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, ref LVGROUPMETRICS metrics);
 
-		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, ref LVHITTESTINFO hitTestInfo) => User32_Gdi.SendMessage(hWnd, message, wParam, ref hitTestInfo);
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, ref LVHITTESTINFO hitTestInfo);
 
-		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, ref LVINSERTMARK insertMark) => User32_Gdi.SendMessage(hWnd, message, wParam, ref insertMark);
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, ref LVINSERTMARK insertMark);
 
-		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, ref Point wParam, ref LVINSERTMARK insertMark) => User32_Gdi.SendMessage(hWnd, message, wParam, ref insertMark);
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, ref Point wParam, ref LVINSERTMARK insertMark);
 
-		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, [In, Out] LVITEM item) => User32_Gdi.SendMessage(hWnd, message, wParam, item);
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, [In, Out] LVITEM item);
 
 		/// <summary>
 		/// <para>
-		/// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified window and does not
-		/// return until the window procedure has processed the message.
+		/// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified
+		/// window and does not return until the window procedure has processed the message.
 		/// </para>
 		/// <para>
-		/// To send a message and return immediately, use the <c>SendMessageCallback</c> or <c>SendNotifyMessage</c> function. To post a message to a thread's
-		/// message queue and return immediately, use the <c>PostMessage</c> or <c>PostThreadMessage</c> function.
+		/// To send a message and return immediately, use the <c>SendMessageCallback</c> or <c>SendNotifyMessage</c> function. To post a
+		/// message to a thread's message queue and return immediately, use the <c>PostMessage</c> or <c>PostThreadMessage</c> function.
 		/// </para>
 		/// </summary>
 		/// <param name="hWnd">
 		/// <para>
-		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c> ((HWND)0xffff), the message is
-		/// sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and pop-up windows; but the message
-		/// is not sent to child windows.
+		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c>
+		/// ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows,
+		/// overlapped windows, and pop-up windows; but the message is not sent to child windows.
 		/// </para>
 		/// <para>
-		/// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of lesser or equal
-		/// integrity level.
+		/// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of
+		/// lesser or equal integrity level.
 		/// </para>
 		/// </param>
 		/// <param name="Msg">
@@ -751,19 +859,21 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="lParam">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		// LRESULT WINAPI SendMessage( _In_ HWND hWnd, _In_ UINT Msg, _In_ WPARAM wParam, _In_ LPARAM lParam);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx
+		// LRESULT WINAPI SendMessage( _In_ HWND hWnd, _In_ UINT Msg, _In_ WPARAM wParam, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
 		[System.Security.SecurityCritical]
 		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, [In, Out] ref LVITEMINDEX wParam, int lParam);
 
-		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, ref LVTILEVIEWINFO tileViewInfo) => User32_Gdi.SendMessage(hWnd, message, wParam, ref tileViewInfo);
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, ref LVTILEVIEWINFO tileViewInfo);
 
-		public static IntPtr SendMessage(HWND hWnd, ListViewMessage message, ListViewImageList wParam, [In, Out] HIMAGELIST hImageList) => User32_Gdi.SendMessage(hWnd, (uint)message, (IntPtr)wParam, hImageList);
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, ListViewImageList wParam, [In, Out] HIMAGELIST hImageList);
 
 		/// <summary>
-		/// Contains information used when searching for a list-view item. This structure is identical to LV_FINDINFO but has been renamed to fit standard naming conventions.
+		/// Contains information used when searching for a list-view item. This structure is identical to LV_FINDINFO but has been renamed to
+		/// fit standard naming conventions.
 		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb774745")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -773,12 +883,14 @@ namespace Vanara.PInvoke
 			public ListViewFindInfoFlag flags;
 
 			/// <summary>
-			/// Address of a null-terminated string to compare with the item text. It is valid only if LVFI_STRING or LVFI_PARTIAL is set in the flags member.
+			/// Address of a null-terminated string to compare with the item text. It is valid only if LVFI_STRING or LVFI_PARTIAL is set in
+			/// the flags member.
 			/// </summary>
 			public string psz;
 
 			/// <summary>
-			/// Value to compare with the lParam member of a list-view item's LVITEM structure. It is valid only if LVFI_PARAM is set in the flags member.
+			/// Value to compare with the lParam member of a list-view item's LVITEM structure. It is valid only if LVFI_PARAM is set in the
+			/// flags member.
 			/// </summary>
 			public IntPtr lParam;
 
@@ -828,26 +940,37 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Size of the LVGROUPMETRICS structure.</summary>
 			public uint cbSize;
-			/// <summary>Flags that specify which members contain or are to receive valid data. </summary>
+
+			/// <summary>Flags that specify which members contain or are to receive valid data.</summary>
 			public ListViewGroupMetricsMask mask;
+
 			/// <summary>Specifies the width of the left border in icon, small icon, or tile view.</summary>
 			public int Left;
+
 			/// <summary>Specifies the width of the top border in all group views.</summary>
 			public int Top;
+
 			/// <summary>Specifies the width of the right border in icon, small icon, or tile view.</summary>
 			public int Right;
+
 			/// <summary>Specifies the width of the bottom border in all group views.</summary>
 			public int Bottom;
+
 			/// <summary>Specifies the color of the left border. Not implemented.</summary>
 			public uint crLeft;
+
 			/// <summary>Specifies the color of the top border. Not implemented.</summary>
 			public uint crTop;
+
 			/// <summary>Specifies the color of the right border. Not implemented.</summary>
 			public uint crRight;
+
 			/// <summary>Specifies the color of the bottom border. Not implemented.</summary>
 			public uint crBottom;
+
 			/// <summary>Specifies the color of the header text. Not implemented.</summary>
 			public uint crHeader;
+
 			/// <summary>Specifies the color of the footer text. Not implemented.</summary>
 			public uint crFooter;
 
@@ -886,7 +1009,9 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Contains information about a hit test. This structure has been extended to accommodate subitem hit-testing. It is used in association with the LVM_HITTEST and LVM_SUBITEMHITTEST messages and their related macros. This structure supersedes the LVHITTESTINFO structure.
+		/// Contains information about a hit test. This structure has been extended to accommodate subitem hit-testing. It is used in
+		/// association with the LVM_HITTEST and LVM_SUBITEMHITTEST messages and their related macros. This structure supersedes the
+		/// LVHITTESTINFO structure.
 		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb774754")]
 		[StructLayout(LayoutKind.Sequential)]
@@ -894,23 +1019,38 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>The position to hit test, in client coordinates.</summary>
 			public Point pt;
-			/// <summary>The variable that receives information about the results of a hit test. This member can be one or more of the following values:
-			/// <para>You can use LVHT_ABOVE, LVHT_BELOW, LVHT_TOLEFT, and LVHT_TORIGHT to determine whether to scroll the contents of a list-view control.Two of these values may be combined. For example, if the position is above and to the left of the client area, you could use both LVHT_ABOVE and LVHT_TOLEFT.</para>
-			/// <para>You can test for LVHT_ONITEM to determine whether a specified position is over a list-view item. This value is a bitwise-OR operation on LVHT_ONITEMICON, LVHT_ONITEMLABEL, and LVHT_ONITEMSTATEICON.</para></summary>
+
+			/// <summary>
+			/// The variable that receives information about the results of a hit test. This member can be one or more of the following values:
+			/// <para>
+			/// You can use LVHT_ABOVE, LVHT_BELOW, LVHT_TOLEFT, and LVHT_TORIGHT to determine whether to scroll the contents of a list-view
+			/// control.Two of these values may be combined. For example, if the position is above and to the left of the client area, you
+			/// could use both LVHT_ABOVE and LVHT_TOLEFT.
+			/// </para>
+			/// <para>
+			/// You can test for LVHT_ONITEM to determine whether a specified position is over a list-view item. This value is a bitwise-OR
+			/// operation on LVHT_ONITEMICON, LVHT_ONITEMLABEL, and LVHT_ONITEMSTATEICON.
+			/// </para>
+			/// </summary>
 			public ListViewHitTestFlag flags;
-			/// <summary>Receives the index of the matching item. Or if hit-testing a subitem, this value represents the subitem's parent item.</summary>
+
+			/// <summary>
+			/// Receives the index of the matching item. Or if hit-testing a subitem, this value represents the subitem's parent item.
+			/// </summary>
 			public int iItem;
+
 			/// <summary>Version 4.70. Receives the index of the matching subitem. When hit-testing an item, this member will be zero.</summary>
 			public int iSubItem;
-			/// <summary>Windows Vista. Group index of the item hit (read only). Valid only for owner data. If the point is within an item that is displayed in multiple groups then iGroup will specify the group index of the item.</summary>
+
+			/// <summary>
+			/// Windows Vista. Group index of the item hit (read only). Valid only for owner data. If the point is within an item that is
+			/// displayed in multiple groups then iGroup will specify the group index of the item.
+			/// </summary>
 			public int iGroup;
 
 			/// <summary>Initializes a new instance of the <see cref="LVHITTESTINFO"/> class.</summary>
 			/// <param name="pt">The pt.</param>
-			public LVHITTESTINFO(Point pt) : this()
-			{
-				this.pt = pt;
-			}
+			public LVHITTESTINFO(Point pt) : this() => this.pt = pt;
 		}
 
 		/// <summary>Used to describe insertion points.</summary>
@@ -920,10 +1060,13 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Size of the LVINSERTMARK structure.</summary>
 			public uint cbSize;
+
 			/// <summary>Flag that specifies where the insertion point should appear.</summary>
 			public ListViewInsertMarkFlag dwFlags;
+
 			/// <summary>Item next to which the insertion point appears. If this member contains -1, there is no insertion point.</summary>
 			public int iItem;
+
 			/// <summary>Reserved. Must be zero.</summary>
 			public uint dwReserved;
 
@@ -946,7 +1089,9 @@ namespace Vanara.PInvoke
 			/// <summary>The column index</summary>
 			public uint columnIndex;
 
-			/// <summary>Windows Vista: Not implemented. Windows 7 and later: A flag specifying the format of this column in extended tile view.</summary>
+			/// <summary>
+			/// Windows Vista: Not implemented. Windows 7 and later: A flag specifying the format of this column in extended tile view.
+			/// </summary>
 			public ListViewColumnFormat format;
 
 			/// <summary>Initializes a new instance of the <see cref="LVITEMCOLUMNINFO"/> struct.</summary>
@@ -971,9 +1116,89 @@ namespace Vanara.PInvoke
 			public int iGroup;
 		}
 
+		/// <summary>Provides information about a list-view control when it is displayed in tile view.</summary>
+		[PInvokeData("Commctrl.h", MSDNShortId = "bb774768")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct LVTILEVIEWINFO
+		{
+			/// <summary>Size of the LVTILEVIEWINFO structure.</summary>
+			public uint cbSize;
+
+			/// <summary>Mask that determines which members are valid. This member may be one of the following values.</summary>
+			public ListViewTileViewMask dwMask;
+
+			/// <summary>Flags that determines how the tiles are sized in tile view. This member may be one of the following values.</summary>
+			public ListViewTileViewFlag dwFlags;
+
+			/// <summary>Size of an individual tile. Values for dimensions not specified as fixed in dwFlags are ignored.</summary>
+			public SIZE sizeTile;
+
+			/// <summary>Maximum number of text lines in each item label, not counting the title.</summary>
+			public int cLines;
+
+			/// <summary>RECT that contains coordinates of the label margin.</summary>
+			public RECT rcLabelMargin;
+
+			/// <summary>Initializes a new instance of the <see cref="LVTILEVIEWINFO"/> struct.</summary>
+			/// <param name="mask">The mask.</param>
+			public LVTILEVIEWINFO(ListViewTileViewMask mask) : this()
+			{
+				cbSize = (uint)Marshal.SizeOf(typeof(LVTILEVIEWINFO));
+				dwMask = mask;
+			}
+
+			/// <summary>Gets or sets a value indicating whether to size the tiles automatically.</summary>
+			/// <value><c>true</c> if tiles are automatically sized; otherwise, <c>false</c>.</value>
+			public bool AutoSize
+			{
+				get => dwFlags.IsFlagSet(ListViewTileViewFlag.LVTVIF_AUTOSIZE);
+				set { dwFlags = ListViewTileViewFlag.LVTVIF_AUTOSIZE; dwMask |= ListViewTileViewMask.LVTVIM_TILESIZE; sizeTile.cy = sizeTile.cx = 0; }
+			}
+
+			/// <summary>Gets or sets the size of an individual tile.</summary>
+			/// <value>The size of an individual tile.</value>
+			public Size TileSize
+			{
+				get => sizeTile;
+				set { sizeTile = value; dwMask |= ListViewTileViewMask.LVTVIM_TILESIZE; dwFlags |= ListViewTileViewFlag.LVTVIF_FIXEDSIZE; }
+			}
+
+			/// <summary>Gets or sets the height of an individual tile.</summary>
+			/// <value>The height of an individual tile.</value>
+			public int TileHeight
+			{
+				get => sizeTile.cy;
+				set { sizeTile.cy = value; dwMask |= ListViewTileViewMask.LVTVIM_TILESIZE; dwFlags |= ListViewTileViewFlag.LVTVIF_FIXEDHEIGHT; }
+			}
+
+			/// <summary>Gets or sets the width of an individual tile.</summary>
+			/// <value>The width of an individual tile.</value>
+			public int TileWidth
+			{
+				get => sizeTile.cx;
+				set { sizeTile.cx = value; dwMask |= ListViewTileViewMask.LVTVIM_TILESIZE; dwFlags |= ListViewTileViewFlag.LVTVIF_FIXEDWIDTH; }
+			}
+
+			/// <summary>Gets or sets the maximum number of text lines in each item label, not counting the title.</summary>
+			/// <value>The maximum number of text lines in each item label, not counting the title.</value>
+			public int MaxTextLines
+			{
+				get => cLines;
+				set { cLines = value; dwMask |= ListViewTileViewMask.LVTVIM_COLUMNS; }
+			}
+
+			/// <summary>Gets or sets the tile padding.</summary>
+			/// <value>The tile padding.</value>
+			public RECT TilePadding
+			{
+				get => rcLabelMargin;
+				set { rcLabelMargin = value; dwMask |= ListViewTileViewMask.LVTVIM_LABELMARGIN; }
+			}
+		}
+
 		/// <summary>
-		/// Contains information about a list-view notification message. This structure is the same as the NM_LISTVIEW structure but has been renamed to fit
-		/// standard naming conventions.
+		/// Contains information about a list-view notification message. This structure is the same as the NM_LISTVIEW structure but has been
+		/// renamed to fit standard naming conventions.
 		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb774773")]
 		[StructLayout(LayoutKind.Sequential)]
@@ -989,23 +1214,26 @@ namespace Vanara.PInvoke
 			public int iSubItem;
 
 			/// <summary>
-			/// New item state. This member is zero for notification messages that do not use it. For a list of possible values, see List-View Item States.
+			/// New item state. This member is zero for notification messages that do not use it. For a list of possible values, see
+			/// List-View Item States.
 			/// </summary>
 			public ListViewItemState uNewState;
 
 			/// <summary>
-			/// Old item state. This member is zero for notification messages that do not use it. For a list of possible values, see List-View Item States.
+			/// Old item state. This member is zero for notification messages that do not use it. For a list of possible values, see
+			/// List-View Item States.
 			/// </summary>
 			public ListViewItemState uOldState;
 
 			/// <summary>
-			/// Set of flags that indicate the item attributes that have changed. This member is zero for notifications that do not use it. Otherwise, it can
-			/// have the same values as the mask member of the LVITEM structure.
+			/// Set of flags that indicate the item attributes that have changed. This member is zero for notifications that do not use it.
+			/// Otherwise, it can have the same values as the mask member of the LVITEM structure.
 			/// </summary>
 			public ListViewItemMask uChanged;
 
 			/// <summary>
-			/// POINT structure that indicates the location at which the event occurred. This member is undefined for notification messages that do not use it.
+			/// POINT structure that indicates the location at which the event occurred. This member is undefined for notification messages
+			/// that do not use it.
 			/// </summary>
 			public Point ptAction;
 
@@ -1013,28 +1241,52 @@ namespace Vanara.PInvoke
 			public IntPtr lParam;
 		}
 
-		/// <summary>Contains information about the background image of a list-view control. This structure is used for both setting and retrieving background image information.</summary>
+		/// <summary>
+		/// Contains information about the background image of a list-view control. This structure is used for both setting and retrieving
+		/// background image information.
+		/// </summary>
 		/// <seealso cref="System.IDisposable"/>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb774742")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public sealed class LVBKIMAGE : IDisposable
 		{
-			/// <summary>This member may be one or more of the following flags. You can use the LVBKIF_SOURCE_MASK value to mask off all but the source flags. You can use the LVBKIF_STYLE_MASK value to mask off all but the style flags.</summary>
+			/// <summary>
+			/// This member may be one or more of the following flags. You can use the LVBKIF_SOURCE_MASK value to mask off all but the
+			/// source flags. You can use the LVBKIF_STYLE_MASK value to mask off all but the style flags.
+			/// </summary>
 			public ListViewBkImageFlag ulFlags;
 
 			/// <summary>The handle of the background bitmap. This member is valid only if the LVBKIF_SOURCE_HBITMAP flag is set in ulFlags.</summary>
-			public IntPtr hBmp = IntPtr.Zero;
+			public HBITMAP hBmp = IntPtr.Zero;
 
-			/// <summary>Address of a NULL-terminated string that contains the URL of the background image. This member is valid only if the LVBKIF_SOURCE_URL flag is set in ulFlags. This member must be initialized to point to the buffer that contains or receives the text before sending the message.</summary>
+			/// <summary>
+			/// Address of a NULL-terminated string that contains the URL of the background image. This member is valid only if the
+			/// LVBKIF_SOURCE_URL flag is set in ulFlags. This member must be initialized to point to the buffer that contains or receives
+			/// the text before sending the message.
+			/// </summary>
 			public StrPtrAuto pszImage;
 
 			/// <summary>Size of the buffer at the address in pszImage. If information is being sent to the control, this member is ignored.</summary>
 			public uint cchImageMax;
 
-			/// <summary>Percentage of the control's client area that the image should be offset horizontally. For example, at 0 percent, the image will be displayed against the left edge of the control's client area. At 50 percent, the image will be displayed horizontally centered in the control's client area. At 100 percent, the image will be displayed against the right edge of the control's client area. This member is valid only when LVBKIF_STYLE_NORMAL is specified in ulFlags. If both LVBKIF_FLAG_TILEOFFSET and LVBKIF_STYLE_TILE are specified in ulFlags, then the value specifies the pixel, not percentage offset, of the first tile. Otherwise, the value is ignored.</summary>
+			/// <summary>
+			/// Percentage of the control's client area that the image should be offset horizontally. For example, at 0 percent, the image
+			/// will be displayed against the left edge of the control's client area. At 50 percent, the image will be displayed horizontally
+			/// centered in the control's client area. At 100 percent, the image will be displayed against the right edge of the control's
+			/// client area. This member is valid only when LVBKIF_STYLE_NORMAL is specified in ulFlags. If both LVBKIF_FLAG_TILEOFFSET and
+			/// LVBKIF_STYLE_TILE are specified in ulFlags, then the value specifies the pixel, not percentage offset, of the first tile.
+			/// Otherwise, the value is ignored.
+			/// </summary>
 			public int xOffset;
 
-			/// <summary>Percentage of the control's client area that the image should be offset vertically. For example, at 0 percent, the image will be displayed against the top edge of the control's client area. At 50 percent, the image will be displayed vertically centered in the control's client area. At 100 percent, the image will be displayed against the bottom edge of the control's client area. This member is valid only when LVBKIF_STYLE_NORMAL is specified in ulFlags. If both LVBKIF_FLAG_TILEOFFSET and LVBKIF_STYLE_TILE are specified in ulFlags, then the value specifies the pixel, not percentage offset, of the first tile. Otherwise, the value is ignored.</summary>
+			/// <summary>
+			/// Percentage of the control's client area that the image should be offset vertically. For example, at 0 percent, the image will
+			/// be displayed against the top edge of the control's client area. At 50 percent, the image will be displayed vertically
+			/// centered in the control's client area. At 100 percent, the image will be displayed against the bottom edge of the control's
+			/// client area. This member is valid only when LVBKIF_STYLE_NORMAL is specified in ulFlags. If both LVBKIF_FLAG_TILEOFFSET and
+			/// LVBKIF_STYLE_TILE are specified in ulFlags, then the value specifies the pixel, not percentage offset, of the first tile.
+			/// Otherwise, the value is ignored.
+			/// </summary>
 			public int yOffset;
 
 			/// <summary>Initializes a new instance of the <see cref="LVBKIMAGE"/> class.</summary>
@@ -1089,7 +1341,7 @@ namespace Vanara.PInvoke
 			/// <value>The bitmap.</value>
 			public Bitmap Bitmap
 			{
-				get => hBmp != IntPtr.Zero ? System.Drawing.Image.FromHbitmap(hBmp) : null;
+				get => hBmp.IsNull ? null : System.Drawing.Image.FromHbitmap((IntPtr)hBmp);
 				set => hBmp = value?.GetHbitmap() ?? IntPtr.Zero;
 			}
 
@@ -1102,42 +1354,71 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-			void IDisposable.Dispose()
-			{
-				pszImage.Free();
-			}
+			void IDisposable.Dispose() => pszImage.Free();
 		}
 
 		/// <summary>
-		/// Contains information about a column in report view. This structure is used both for creating and manipulating columns. This structure supersedes the
-		/// LV_COLUMN structure.
+		/// Contains information about a column in report view. This structure is used both for creating and manipulating columns. This
+		/// structure supersedes the LV_COLUMN structure.
 		/// </summary>
 		/// <seealso cref="System.IDisposable"/>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb774743")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public sealed class LVCOLUMN : IDisposable
 		{
-			/// <summary>Variable specifying which members contain valid information. This member can be zero, or one or more of the following values:</summary>
+			/// <summary>
+			/// Variable specifying which members contain valid information. This member can be zero, or one or more of the following values:
+			/// </summary>
 			public ListViewColumMask mask;
-			/// <summary>Alignment of the column header and the subitem text in the column. The alignment of the leftmost column is always LVCFMT_LEFT; it cannot be changed. This member can be a combination of the following values. Note that not all combinations are valid.</summary>
+
+			/// <summary>
+			/// Alignment of the column header and the subitem text in the column. The alignment of the leftmost column is always
+			/// LVCFMT_LEFT; it cannot be changed. This member can be a combination of the following values. Note that not all combinations
+			/// are valid.
+			/// </summary>
 			public ListViewColumnFormat fmt;
+
 			/// <summary>Width of the column, in pixels.</summary>
 			public int cx;
-			/// <summary>If column information is being set, this member is the address of a null-terminated string that contains the column header text. If the structure is receiving information about a column, this member specifies the address of the buffer that receives the column header text.</summary>
+
+			/// <summary>
+			/// If column information is being set, this member is the address of a null-terminated string that contains the column header
+			/// text. If the structure is receiving information about a column, this member specifies the address of the buffer that receives
+			/// the column header text.
+			/// </summary>
 			public StrPtrAuto pszText;
-			/// <summary>Size in TCHARs of the buffer pointed to by the pszText member. If the structure is not receiving information about a column, this member is ignored.</summary>
+
+			/// <summary>
+			/// Size in TCHARs of the buffer pointed to by the pszText member. If the structure is not receiving information about a column,
+			/// this member is ignored.
+			/// </summary>
 			public uint cchTextMax;
+
 			/// <summary>Index of subitem associated with the column.</summary>
 			public int iSubItem;
-			/// <summary>Version 4.70. Zero-based index of an image within the image list. The specified image will appear within the column.</summary>
+
+			/// <summary>
+			/// Version 4.70. Zero-based index of an image within the image list. The specified image will appear within the column.
+			/// </summary>
 			public int iImage;
-			/// <summary>Version 4.70. Zero-based column offset. Column offset is in left-to-right order. For example, zero indicates the leftmost column.</summary>
+
+			/// <summary>
+			/// Version 4.70. Zero-based column offset. Column offset is in left-to-right order. For example, zero indicates the leftmost column.
+			/// </summary>
 			public int iOrder;
+
 			/// <summary>Windows Vista. Minimum width of the column in pixels.</summary>
 			public int cxMin;
-			/// <summary>Windows Vista. Application-defined value typically used to store the default width of the column. This member is ignored by the list-view control.</summary>
+
+			/// <summary>
+			/// Windows Vista. Application-defined value typically used to store the default width of the column. This member is ignored by
+			/// the list-view control.
+			/// </summary>
 			public int cxDefault;
-			/// <summary>Windows Vista. Read-only. The ideal width of the column in pixels, as the column may currently be autosized to a lesser width.</summary>
+
+			/// <summary>
+			/// Windows Vista. Read-only. The ideal width of the column in pixels, as the column may currently be autosized to a lesser width.
+			/// </summary>
 			public int cxIdeal;
 
 			/// <summary>Initializes a new instance of the <see cref="LVCOLUMN"/> class.</summary>
@@ -1158,7 +1439,9 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary>Gets or sets the header text.</summary>
-			/// <value>The header text. Setting this value will free any previous buffer and will allocate a new buffer sufficient to hold the string.</value>
+			/// <value>
+			/// The header text. Setting this value will free any previous buffer and will allocate a new buffer sufficient to hold the string.
+			/// </value>
 			public string Text
 			{
 				get => pszText.ToString();
@@ -1214,13 +1497,8 @@ namespace Vanara.PInvoke
 				get => cx; set { cx = value; EnumExtensions.SetFlags(ref mask, ListViewColumMask.LVCF_WIDTH); }
 			}
 
-			/// <summary>
-			/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-			/// </summary>
-			void IDisposable.Dispose()
-			{
-				pszText.Free();
-			}
+			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+			void IDisposable.Dispose() => pszText.Free();
 		}
 
 		/// <summary>Used to set and retrieve groups.</summary>
@@ -1231,51 +1509,126 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Size of this structure, in bytes.</summary>
 			public int cbSize = Marshal.SizeOf(typeof(LVGROUP));
+
 			/// <summary>Mask that specifies which members of the structure are valid input.</summary>
 			public ListViewGroupMask mask;
-			/// <summary>Pointer to a null-terminated string that contains the header text when item information is being set. If group information is being retrieved, this member specifies the address of the buffer that receives the header text.</summary>
+
+			/// <summary>
+			/// Pointer to a null-terminated string that contains the header text when item information is being set. If group information is
+			/// being retrieved, this member specifies the address of the buffer that receives the header text.
+			/// </summary>
 			public StrPtrAuto pszHeader;
-			/// <summary>Size in TCHARs of the buffer pointed to by the pszHeader member. If the structure is not receiving information about a group, this member is ignored.</summary>
+
+			/// <summary>
+			/// Size in TCHARs of the buffer pointed to by the pszHeader member. If the structure is not receiving information about a group,
+			/// this member is ignored.
+			/// </summary>
 			public uint cchHeader;
-			/// <summary>Pointer to a null-terminated string that contains the footer text when item information is being set. If group information is being retrieved, this member specifies the address of the buffer that receives the footer text.</summary>
+
+			/// <summary>
+			/// Pointer to a null-terminated string that contains the footer text when item information is being set. If group information is
+			/// being retrieved, this member specifies the address of the buffer that receives the footer text.
+			/// </summary>
 			public StrPtrAuto pszFooter;
-			/// <summary>Size in TCHARs of the buffer pointed to by the pszFooter member. If the structure is not receiving information about a group, this member is ignored.</summary>
+
+			/// <summary>
+			/// Size in TCHARs of the buffer pointed to by the pszFooter member. If the structure is not receiving information about a group,
+			/// this member is ignored.
+			/// </summary>
 			public uint cchFooter;
+
 			/// <summary>ID of the group.</summary>
 			public int iGroupId;
-			/// <summary>Mask used with LVM_GETGROUPINFO and LVM_SETGROUPINFO to specify which flags in the state value are being retrieved or set.</summary>
+
+			/// <summary>
+			/// Mask used with LVM_GETGROUPINFO and LVM_SETGROUPINFO to specify which flags in the state value are being retrieved or set.
+			/// </summary>
 			public ListViewGroupState stateMask;
+
 			/// <summary>Flag that can have one of the following values:</summary>
 			public ListViewGroupState state;
-			/// <summary>Indicates the alignment of the header or footer text for the group. It can have one or more of the following values. Use one of the header flags. Footer flags are optional.</summary>
+
+			/// <summary>
+			/// Indicates the alignment of the header or footer text for the group. It can have one or more of the following values. Use one
+			/// of the header flags. Footer flags are optional.
+			/// </summary>
 			public ListViewGroupAlignment uAlign;
-			/// <summary>Pointer to a null-terminated string that contains the subtitle text when item information is being set. If group information is being retrieved, this member specifies the address of the buffer that receives the subtitle text. This element is drawn under the header text.</summary>
+
+			/// <summary>
+			/// Pointer to a null-terminated string that contains the subtitle text when item information is being set. If group information
+			/// is being retrieved, this member specifies the address of the buffer that receives the subtitle text. This element is drawn
+			/// under the header text.
+			/// </summary>
 			public StrPtrAuto pszSubtitle;
-			/// <summary>Size, in TCHARs, of the buffer pointed to by the pszSubtitle member. If the structure is not receiving information about a group, this member is ignored.</summary>
+
+			/// <summary>
+			/// Size, in TCHARs, of the buffer pointed to by the pszSubtitle member. If the structure is not receiving information about a
+			/// group, this member is ignored.
+			/// </summary>
 			public uint cchSubtitle;
-			/// <summary>Pointer to a null-terminated string that contains the text for a task link when item information is being set. If group information is being retrieved, this member specifies the address of the buffer that receives the task text. This item is drawn right-aligned opposite the header text. When clicked by the user, the task link generates an LVN_LINKCLICK notification.</summary>
+
+			/// <summary>
+			/// Pointer to a null-terminated string that contains the text for a task link when item information is being set. If group
+			/// information is being retrieved, this member specifies the address of the buffer that receives the task text. This item is
+			/// drawn right-aligned opposite the header text. When clicked by the user, the task link generates an LVN_LINKCLICK notification.
+			/// </summary>
 			public StrPtrAuto pszTask;
-			/// <summary>Size in TCHARs of the buffer pointed to by the pszTask member. If the structure is not receiving information about a group, this member is ignored.</summary>
+
+			/// <summary>
+			/// Size in TCHARs of the buffer pointed to by the pszTask member. If the structure is not receiving information about a group,
+			/// this member is ignored.
+			/// </summary>
 			public uint cchTask;
-			/// <summary>Pointer to a null-terminated string that contains the top description text when item information is being set. If group information is being retrieved, this member specifies the address of the buffer that receives the top description text. This item is drawn opposite the title image when there is a title image, no extended image, and uAlign==LVGA_HEADER_CENTER.</summary>
+
+			/// <summary>
+			/// Pointer to a null-terminated string that contains the top description text when item information is being set. If group
+			/// information is being retrieved, this member specifies the address of the buffer that receives the top description text. This
+			/// item is drawn opposite the title image when there is a title image, no extended image, and uAlign==LVGA_HEADER_CENTER.
+			/// </summary>
 			public StrPtrAuto pszDescriptionTop;
-			/// <summary>Size in TCHARs of the buffer pointed to by the pszDescriptionTop member. If the structure is not receiving information about a group, this member is ignored.</summary>
+
+			/// <summary>
+			/// Size in TCHARs of the buffer pointed to by the pszDescriptionTop member. If the structure is not receiving information about
+			/// a group, this member is ignored.
+			/// </summary>
 			public uint cchDescriptionTop;
-			/// <summary>Pointer to a null-terminated string that contains the bottom description text when item information is being set. If group information is being retrieved, this member specifies the address of the buffer that receives the bottom description text. This item is drawn under the top description text when there is a title image, no extended image, and uAlign==LVGA_HEADER_CENTER.</summary>
+
+			/// <summary>
+			/// Pointer to a null-terminated string that contains the bottom description text when item information is being set. If group
+			/// information is being retrieved, this member specifies the address of the buffer that receives the bottom description text.
+			/// This item is drawn under the top description text when there is a title image, no extended image, and uAlign==LVGA_HEADER_CENTER.
+			/// </summary>
 			public StrPtrAuto pszDescriptionBottom;
-			/// <summary>Size in TCHARs of the buffer pointed to by the pszDescriptionBottom member. If the structure is not receiving information about a group, this member is ignored.</summary>
+
+			/// <summary>
+			/// Size in TCHARs of the buffer pointed to by the pszDescriptionBottom member. If the structure is not receiving information
+			/// about a group, this member is ignored.
+			/// </summary>
 			public uint cchDescriptionBottom;
+
 			/// <summary>Index of the title image in the control imagelist.</summary>
 			public int iTitleImage;
+
 			/// <summary>Index of the extended image in the control imagelist.</summary>
 			public int iExtendedImage;
+
 			/// <summary>Read-only.</summary>
 			public int iFirstItem;
+
 			/// <summary>Read-only in non-owner data mode.</summary>
 			public uint cItems;
-			/// <summary>NULL if group is not a subset. Pointer to a null-terminated string that contains the subset title text when item information is being set. If group information is being retrieved, this member specifies the address of the buffer that receives the subset title text.</summary>
+
+			/// <summary>
+			/// NULL if group is not a subset. Pointer to a null-terminated string that contains the subset title text when item information
+			/// is being set. If group information is being retrieved, this member specifies the address of the buffer that receives the
+			/// subset title text.
+			/// </summary>
 			public StrPtrAuto pszSubsetTitle;
-			/// <summary>Size in TCHARs of the buffer pointed to by the pszSubsetTitle member. If the structure is not receiving information about a group, this member is ignored.</summary>
+
+			/// <summary>
+			/// Size in TCHARs of the buffer pointed to by the pszSubsetTitle member. If the structure is not receiving information about a
+			/// group, this member is ignored.
+			/// </summary>
 			public uint cchSubsetTitle;
 
 			/*public LVGROUP(ListViewGroup grp) : this(ListViewGroupMask.LVGF_NONE, grp.Header)
@@ -1403,9 +1756,7 @@ namespace Vanara.PInvoke
 				set => EnumExtensions.SetFlags(ref mask, ListViewGroupMask.LVGF_TASK, pszTask.Assign(value, out cchTask));
 			}
 
-			/// <summary>
-			/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-			/// </summary>
+			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 			public void Dispose()
 			{
 				pszHeader.Free();
@@ -1426,10 +1777,12 @@ namespace Vanara.PInvoke
 				EnumExtensions.SetFlags(ref state, gState, on);
 			}
 		}
+
 		/// <summary>
-		/// Specifies or receives the attributes of a list-view item. This structure has been updated to support a new mask value (LVIF_INDENT) that enables item indenting. This structure supersedes the LV_ITEM structure.
+		/// Specifies or receives the attributes of a list-view item. This structure has been updated to support a new mask value
+		/// (LVIF_INDENT) that enables item indenting. This structure supersedes the LV_ITEM structure.
 		/// </summary>
-		/// <seealso cref="System.IDisposable" />
+		/// <seealso cref="System.IDisposable"/>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb774760")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public sealed class LVITEM : IDisposable
@@ -1438,45 +1791,129 @@ namespace Vanara.PInvoke
 			private const int OverlayShift = 8;
 			private const int StateImageShift = 12;
 
-			/// <summary>Set of flags that specify which members of this structure contain data to be set or which members are being requested. This member can have one or more of the following flags set:</summary>
+			/// <summary>
+			/// Set of flags that specify which members of this structure contain data to be set or which members are being requested. This
+			/// member can have one or more of the following flags set:
+			/// </summary>
 			public ListViewItemMask mask;
+
 			/// <summary>Zero-based index of the item to which this structure refers.</summary>
 			public int iItem;
-			/// <summary>One-based index of the subitem to which this structure refers, or zero if this structure refers to an item rather than a subitem.</summary>
+
+			/// <summary>
+			/// One-based index of the subitem to which this structure refers, or zero if this structure refers to an item rather than a subitem.
+			/// </summary>
 			public int iSubItem;
-			/// <summary>Indicates the item's state, state image, and overlay image. The stateMask member indicates the valid bits of this member.
+
+			/// <summary>
+			/// Indicates the item's state, state image, and overlay image. The stateMask member indicates the valid bits of this member.
 			/// <para>Bits 0 through 7 of this member contain the item state flags. This can be one or more of the item state values.</para>
-			/// <para>Bits 8 through 11 of this member specify the one-based overlay image index. Both the full-sized icon image list and the small icon image list can have overlay images. The overlay image is superimposed over the item's icon image. If these bits are zero, the item has no overlay image. To isolate these bits, use the LVIS_OVERLAYMASK mask. To set the overlay image index in this member, you should use the INDEXTOOVERLAYMASK macro. The image list's overlay images are set with the ImageList_SetOverlayImage function.</para>
-			/// <para>Bits 12 through 15 of this member specify the state image index. The state image is displayed next to an item's icon to indicate an application-defined state. If these bits are zero, the item has no state image. To isolate these bits, use the LVIS_STATEIMAGEMASK mask. To set the state image index, use the INDEXTOSTATEIMAGEMASK macro. The state image index specifies the index of the image in the state image list that should be drawn. The state image list is specified with the LVM_SETIMAGELIST message.</para></summary>
+			/// <para>
+			/// Bits 8 through 11 of this member specify the one-based overlay image index. Both the full-sized icon image list and the small
+			/// icon image list can have overlay images. The overlay image is superimposed over the item's icon image. If these bits are
+			/// zero, the item has no overlay image. To isolate these bits, use the LVIS_OVERLAYMASK mask. To set the overlay image index in
+			/// this member, you should use the INDEXTOOVERLAYMASK macro. The image list's overlay images are set with the
+			/// ImageList_SetOverlayImage function.
+			/// </para>
+			/// <para>
+			/// Bits 12 through 15 of this member specify the state image index. The state image is displayed next to an item's icon to
+			/// indicate an application-defined state. If these bits are zero, the item has no state image. To isolate these bits, use the
+			/// LVIS_STATEIMAGEMASK mask. To set the state image index, use the INDEXTOSTATEIMAGEMASK macro. The state image index specifies
+			/// the index of the image in the state image list that should be drawn. The state image list is specified with the
+			/// LVM_SETIMAGELIST message.
+			/// </para>
+			/// </summary>
 			public uint state;
-			/// <summary>Value specifying which bits of the state member will be retrieved or modified. For example, setting this member to LVIS_SELECTED will cause only the item's selection state to be retrieved.
-			/// <para>This member allows you to modify one or more item states without having to retrieve all of the item states first.For example, setting this member to LVIS_SELECTED and state to zero will cause the item's selection state to be cleared, but none of the other states will be affected.</para>
+
+			/// <summary>
+			/// Value specifying which bits of the state member will be retrieved or modified. For example, setting this member to
+			/// LVIS_SELECTED will cause only the item's selection state to be retrieved.
+			/// <para>
+			/// This member allows you to modify one or more item states without having to retrieve all of the item states first.For example,
+			/// setting this member to LVIS_SELECTED and state to zero will cause the item's selection state to be cleared, but none of the
+			/// other states will be affected.
+			/// </para>
 			/// <para>To retrieve or modify all of the states, set this member to(UINT)-1.</para>
-			/// <para>You can use the macro ListView_SetItemState both to set and to clear bits.</para></summary>
+			/// <para>You can use the macro ListView_SetItemState both to set and to clear bits.</para>
+			/// </summary>
 			public ListViewItemState stateMask;
-			/// <summary>If the structure specifies item attributes, pszText is a pointer to a null-terminated string containing the item text. When responding to an LVN_GETDISPINFO notification, be sure that this pointer remains valid until after the next notification has been received.
-			/// <para>If the structure receives item attributes, pszText is a pointer to a buffer that receives the item text. Note that although the list-view control allows any length string to be stored as item text, only the first 260 TCHARs are displayed.</para>
-			/// <para>If the value of pszText is LPSTR_TEXTCALLBACK, the item is a callback item.If the callback text changes, you must explicitly set pszText to LPSTR_TEXTCALLBACK and notify the list-view control of the change by sending an LVM_SETITEM or LVM_SETITEMTEXT message.</para>
-			/// <para>Do not set pszText to LPSTR_TEXTCALLBACK if the list-view control has the LVS_SORTASCENDING or LVS_SORTDESCENDING style.</para></summary>
+
+			/// <summary>
+			/// If the structure specifies item attributes, pszText is a pointer to a null-terminated string containing the item text. When
+			/// responding to an LVN_GETDISPINFO notification, be sure that this pointer remains valid until after the next notification has
+			/// been received.
+			/// <para>
+			/// If the structure receives item attributes, pszText is a pointer to a buffer that receives the item text. Note that although
+			/// the list-view control allows any length string to be stored as item text, only the first 260 TCHARs are displayed.
+			/// </para>
+			/// <para>
+			/// If the value of pszText is LPSTR_TEXTCALLBACK, the item is a callback item.If the callback text changes, you must explicitly
+			/// set pszText to LPSTR_TEXTCALLBACK and notify the list-view control of the change by sending an LVM_SETITEM or LVM_SETITEMTEXT message.
+			/// </para>
+			/// <para>
+			/// Do not set pszText to LPSTR_TEXTCALLBACK if the list-view control has the LVS_SORTASCENDING or LVS_SORTDESCENDING style.
+			/// </para>
+			/// </summary>
 			public StrPtrAuto pszText;
-			/// <summary>Number of TCHARs in the buffer pointed to by pszText, including the terminating NULL.
-			/// <para>This member is only used when the structure receives item attributes.It is ignored when the structure specifies item attributes.For example, cchTextMax is ignored during LVM_SETITEM and LVM_INSERTITEM.It is read-only during LVN_GETDISPINFO and other LVN_ notifications.</para>
-			/// <note>Never copy more than cchTextMax TCHARs—where cchTextMax includes the terminating NULL—into pszText during an LVN_ notification, otherwise your program can fail.</note></summary>
+
+			/// <summary>
+			/// Number of TCHARs in the buffer pointed to by pszText, including the terminating NULL.
+			/// <para>
+			/// This member is only used when the structure receives item attributes.It is ignored when the structure specifies item
+			/// attributes.For example, cchTextMax is ignored during LVM_SETITEM and LVM_INSERTITEM.It is read-only during LVN_GETDISPINFO
+			/// and other LVN_ notifications.
+			/// </para>
+			/// <note>Never copy more than cchTextMax TCHARs—where cchTextMax includes the terminating NULL—into pszText during an LVN_
+			/// notification, otherwise your program can fail.</note>
+			/// </summary>
 			public uint cchTextMax;
-			/// <summary>Index of the item's icon in the control's image list. This applies to both the large and small image list. If this member is the I_IMAGECALLBACK value, the parent window is responsible for storing the index. In this case, the list-view control sends the parent an LVN_GETDISPINFO notification code to retrieve the index when it needs to display the image.</summary>
+
+			/// <summary>
+			/// Index of the item's icon in the control's image list. This applies to both the large and small image list. If this member is
+			/// the I_IMAGECALLBACK value, the parent window is responsible for storing the index. In this case, the list-view control sends
+			/// the parent an LVN_GETDISPINFO notification code to retrieve the index when it needs to display the image.
+			/// </summary>
 			public int iImage;
-			/// <summary>Value specific to the item. If you use the LVM_SORTITEMS message, the list-view control passes this value to the application-defined comparison function. You can also use the LVM_FINDITEM message to search a list-view control for an item with a specified lParam value.</summary>
+
+			/// <summary>
+			/// Value specific to the item. If you use the LVM_SORTITEMS message, the list-view control passes this value to the
+			/// application-defined comparison function. You can also use the LVM_FINDITEM message to search a list-view control for an item
+			/// with a specified lParam value.
+			/// </summary>
 			public IntPtr lParam;
-			/// <summary>Version 4.70. Number of image widths to indent the item. A single indentation equals the width of an item image. Therefore, the value 1 indents the item by the width of one image, the value 2 indents by two images, and so on. Note that this field is supported only for items. Attempting to set subitem indentation will cause the calling function to fail.</summary>
+
+			/// <summary>
+			/// Version 4.70. Number of image widths to indent the item. A single indentation equals the width of an item image. Therefore,
+			/// the value 1 indents the item by the width of one image, the value 2 indents by two images, and so on. Note that this field is
+			/// supported only for items. Attempting to set subitem indentation will cause the calling function to fail.
+			/// </summary>
 			public int iIndent;
-			/// <summary>Version 6.0 Identifier of the group that the item belongs to, or one of the following values: I_GROUPIDCALLBACK = The listview control sends the parent an LVN_GETDISPINFO notification code to retrieve the index of the group; I_GROUPIDNONE = The item does not belong to a group.</summary>
+
+			/// <summary>
+			/// Version 6.0 Identifier of the group that the item belongs to, or one of the following values: I_GROUPIDCALLBACK = The
+			/// listview control sends the parent an LVN_GETDISPINFO notification code to retrieve the index of the group; I_GROUPIDNONE =
+			/// The item does not belong to a group.
+			/// </summary>
 			public int iGroupId;
-			/// <summary>Version 6.0 Number of data columns (subitems) to display for this item in tile view. The maximum value is 20. If this value is I_COLUMNSCALLBACK, the size of the column array and the array itself (puColumns) are obtained by sending a LVN_GETDISPINFO notification.</summary>
+
+			/// <summary>
+			/// Version 6.0 Number of data columns (subitems) to display for this item in tile view. The maximum value is 20. If this value
+			/// is I_COLUMNSCALLBACK, the size of the column array and the array itself (puColumns) are obtained by sending a LVN_GETDISPINFO notification.
+			/// </summary>
 			public uint cColumns;
-			/// <summary>Version 6.0 A pointer to an array of column indices, specifying which columns are displayed for this item, and the order of those columns.</summary>
+
+			/// <summary>
+			/// Version 6.0 A pointer to an array of column indices, specifying which columns are displayed for this item, and the order of
+			/// those columns.
+			/// </summary>
 			public IntPtr puColumns;
-			/// <summary>Windows Vista: Not implemented. Windows 7 and later: A pointer to an array of the following flags (alone or in combination), specifying the format of each subitem in extended tile view.</summary>
+
+			/// <summary>
+			/// Windows Vista: Not implemented. Windows 7 and later: A pointer to an array of the following flags (alone or in combination),
+			/// specifying the format of each subitem in extended tile view.
+			/// </summary>
 			public IntPtr piColFmt;
+
 			/// <summary>Windows Vista: Group index of the item. Valid only for owner data/callback (single item in multiple groups).</summary>
 			public int iGroup;
 
@@ -1668,8 +2105,8 @@ namespace Vanara.PInvoke
 				}
 			}
 
-			/// <summary>Returns a <see cref="string" /> that represents this instance.</summary>
-			/// <returns>A <see cref="string" /> that represents this instance.</returns>
+			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+			/// <returns>A <see cref="string"/> that represents this instance.</returns>
 			public override string ToString() => $"LVITEM: pszText={Text}; iItem={iItem}; iSubItem={iSubItem}; state={state}; iGroupId={iGroupId}; cColumns={cColumns}";
 
 			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
@@ -1678,81 +2115,6 @@ namespace Vanara.PInvoke
 				Marshal.FreeHGlobal(puColumns);
 				Marshal.FreeHGlobal(piColFmt);
 				pszText.Free();
-			}
-		}
-
-		/// <summary>Provides information about a list-view control when it is displayed in tile view.</summary>
-		[PInvokeData("Commctrl.h", MSDNShortId = "bb774768")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct LVTILEVIEWINFO
-		{
-			/// <summary>Size of the LVTILEVIEWINFO structure.</summary>
-			public uint cbSize;
-			/// <summary>Mask that determines which members are valid. This member may be one of the following values.</summary>
-			public ListViewTileViewMask dwMask;
-			/// <summary>Flags that determines how the tiles are sized in tile view. This member may be one of the following values.</summary>
-			public ListViewTileViewFlag dwFlags;
-			/// <summary>Size of an individual tile. Values for dimensions not specified as fixed in dwFlags are ignored.</summary>
-			public SIZE sizeTile;
-			/// <summary>Maximum number of text lines in each item label, not counting the title.</summary>
-			public int cLines;
-			/// <summary>RECT that contains coordinates of the label margin.</summary>
-			public RECT rcLabelMargin;
-
-			/// <summary>Initializes a new instance of the <see cref="LVTILEVIEWINFO"/> struct.</summary>
-			/// <param name="mask">The mask.</param>
-			public LVTILEVIEWINFO(ListViewTileViewMask mask) : this()
-			{
-				cbSize = (uint)Marshal.SizeOf(typeof(LVTILEVIEWINFO));
-				dwMask = mask;
-			}
-
-			/// <summary>Gets or sets a value indicating whether to size the tiles automatically.</summary>
-			/// <value><c>true</c> if tiles are automatically sized; otherwise, <c>false</c>.</value>
-			public bool AutoSize
-			{
-				get => dwFlags.IsFlagSet(ListViewTileViewFlag.LVTVIF_AUTOSIZE);
-				set { dwFlags = ListViewTileViewFlag.LVTVIF_AUTOSIZE; dwMask |= ListViewTileViewMask.LVTVIM_TILESIZE; sizeTile.cy = sizeTile.cx = 0; }
-			}
-
-			/// <summary>Gets or sets the size of an individual tile.</summary>
-			/// <value>The size of an individual tile.</value>
-			public Size TileSize
-			{
-				get => sizeTile;
-				set { sizeTile = value; dwMask |= ListViewTileViewMask.LVTVIM_TILESIZE; dwFlags |= ListViewTileViewFlag.LVTVIF_FIXEDSIZE; }
-			}
-
-			/// <summary>Gets or sets the height of an individual tile.</summary>
-			/// <value>The height of an individual tile.</value>
-			public int TileHeight
-			{
-				get => sizeTile.cy;
-				set { sizeTile.cy = value; dwMask |= ListViewTileViewMask.LVTVIM_TILESIZE; dwFlags |= ListViewTileViewFlag.LVTVIF_FIXEDHEIGHT; }
-			}
-
-			/// <summary>Gets or sets the width of an individual tile.</summary>
-			/// <value>The width of an individual tile.</value>
-			public int TileWidth
-			{
-				get => sizeTile.cx;
-				set { sizeTile.cx = value; dwMask |= ListViewTileViewMask.LVTVIM_TILESIZE; dwFlags |= ListViewTileViewFlag.LVTVIF_FIXEDWIDTH; }
-			}
-
-			/// <summary>Gets or sets the maximum number of text lines in each item label, not counting the title.</summary>
-			/// <value>The maximum number of text lines in each item label, not counting the title.</value>
-			public int MaxTextLines
-			{
-				get => cLines;
-				set { cLines = value; dwMask |= ListViewTileViewMask.LVTVIM_COLUMNS; }
-			}
-
-			/// <summary>Gets or sets the tile padding.</summary>
-			/// <value>The tile padding.</value>
-			public RECT TilePadding
-			{
-				get => rcLabelMargin;
-				set { rcLabelMargin = value; dwMask |= ListViewTileViewMask.LVTVIM_LABELMARGIN; }
 			}
 		}
 	}

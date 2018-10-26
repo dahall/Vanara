@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
-using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
@@ -61,7 +60,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648033")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool EnumResLangProc([In] IntPtr hModule, [In] SafeResourceId lpszType, [In] SafeResourceId lpszName, ushort wIDLanguage, [In] IntPtr lParam);
+		public delegate bool EnumResLangProc([In] HINSTANCE hModule, [In] SafeResourceId lpszType, [In] SafeResourceId lpszName, ushort wIDLanguage, [In] IntPtr lParam);
 
 		/// <summary>
 		/// An application-defined callback function used with the <c>EnumResourceNames</c> and <c>EnumResourceNamesEx</c> functions. It
@@ -106,7 +105,7 @@ namespace Vanara.PInvoke
 		[SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648034")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool EnumResNameProc(IntPtr hModule, SafeResourceId lpszType, SafeResourceId lpszName, IntPtr lParam);
+		public delegate bool EnumResNameProc(HINSTANCE hModule, SafeResourceId lpszType, SafeResourceId lpszName, IntPtr lParam);
 
 		/// <summary>
 		/// An application-defined callback function used with the <c>EnumResourceTypes</c> and <c>EnumResourceTypesEx</c> functions. It
@@ -143,7 +142,7 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648041")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool EnumResTypeProc(IntPtr hModule, SafeResourceId lpszType, IntPtr lParam);
+		public delegate bool EnumResTypeProc(HINSTANCE hModule, SafeResourceId lpszType, IntPtr lParam);
 
 		/// <summary>Flags used by <see cref="GetModuleHandleEx"/>.</summary>
 		[PInvokeData("Winbase.h", MSDNShortId = "ms683200")]
@@ -1227,7 +1226,7 @@ namespace Vanara.PInvoke
 		// DWORD WINAPI GetModuleFileName( _In_opt_ HMODULE hModule, _Out_ LPTSTR lpFilename, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683197(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms683197")]
-		public static extern uint GetModuleFileName(HINSTANCE hModule, [Out] StringBuilder lpFilename, uint nSize);
+		public static extern uint GetModuleFileName(HINSTANCE hModule, StringBuilder lpFilename, uint nSize);
 
 		/// <summary>
 		/// Retrieves the fully qualified path for the file that contains the specified module. The module must have been loaded by the
@@ -1290,7 +1289,7 @@ namespace Vanara.PInvoke
 		// HMODULE WINAPI GetModuleHandle( _In_opt_ LPCTSTR lpModuleName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683199(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms683199")]
-		public static extern IntPtr GetModuleHandle([Optional] string lpModuleName);
+		public static extern HINSTANCE GetModuleHandle([Optional] string lpModuleName);
 
 		/// <summary>
 		/// Retrieves a module handle for the specified module and increments the module's reference count unless
@@ -1457,7 +1456,7 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>LOAD_LIBRARY_AS_DATAFILE0x00000002</term>
 		/// <term>
-		/// If this value is used, the system maps the file into the calling process&amp;#39;s virtual address space as if it were a data
+		/// If this value is used, the system maps the file into the calling process's virtual address space as if it were a data
 		/// file. Nothing is done to execute or prepare to execute the mapped file. Therefore, you cannot call functions like
 		/// GetModuleFileName, GetModuleHandle or GetProcAddress with this DLL. Using this value causes writes to read-only memory to raise
 		/// an access violation. Use this flag when you want to load a DLL only to extract messages or resources from it.This value can be
@@ -1476,7 +1475,7 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>LOAD_LIBRARY_AS_IMAGE_RESOURCE0x00000020</term>
 		/// <term>
-		/// If this value is used, the system maps the file into the process&amp;#39;s virtual address space as an image file. However, the
+		/// If this value is used, the system maps the file into the process's virtual address space as an image file. However, the
 		/// loader does not load the static imports or perform the other usual initialization steps. Use this flag when you want to load a
 		/// DLL only to extract messages or resources from it.Unless the application depends on the file having the in-memory layout of an
 		/// image, this value should be used with either LOAD_LIBRARY_AS_DATAFILE_EXCLUSIVE or LOAD_LIBRARY_AS_DATAFILE. For more
@@ -1486,7 +1485,7 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>LOAD_LIBRARY_SEARCH_APPLICATION_DIR0x00000200</term>
 		/// <term>
-		/// If this value is used, the application&amp;#39;s installation directory is searched for the DLL and its dependencies. Directories
+		/// If this value is used, the application's installation directory is searched for the DLL and its dependencies. Directories
 		/// in the standard search path are not searched. This value cannot be combined with LOAD_WITH_ALTERED_SEARCH_PATH.Windows 7, Windows
 		/// Server 2008 R2, Windows Vista and Windows Server 2008: This value requires KB2533623 to be installed.Windows Server 2003 and
 		/// Windows XP: This value is not supported.
@@ -1506,7 +1505,7 @@ namespace Vanara.PInvoke
 		/// <term>LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR0x00000100</term>
 		/// <term>
 		/// If this value is used, the directory that contains the DLL is temporarily added to the beginning of the list of directories that
-		/// are searched for the DLL&amp;#39;s dependencies. Directories in the standard search path are not searched.The lpFileName
+		/// are searched for the DLL's dependencies. Directories in the standard search path are not searched.The lpFileName
 		/// parameter must specify a fully qualified path. This value cannot be combined with LOAD_WITH_ALTERED_SEARCH_PATH.For example, if
 		/// Lib2.dll is a dependency of C:\Dir1\Lib1.dll, loading Lib1.dll with this value causes the system to search for Lib2.dll only in
 		/// C:\Dir1. To search for Lib2.dll in C:\Dir1 and all of the directories in the DLL search path, combine this value with
@@ -1554,7 +1553,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
 		[PInvokeData("LibLoaderAPI.h", MSDNShortId = "ms684179")]
 		[SuppressUnmanagedCodeSecurity]
-		public static extern SafeHINSTANCE LoadLibraryEx([In] string lpFileName, [Optional] IntPtr hFile, LoadLibraryExFlags dwFlags);
+		public static extern SafeHINSTANCE LoadLibraryEx(string lpFileName, [Optional] IntPtr hFile, LoadLibraryExFlags dwFlags);
 
 		/// <summary>
 		/// Loads the specified module into the address space of the calling process. The specified module may cause other modules to be loaded.
@@ -1625,7 +1624,7 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>LOAD_LIBRARY_AS_DATAFILE0x00000002</term>
 		/// <term>
-		/// If this value is used, the system maps the file into the calling process&amp;#39;s virtual address space as if it were a data
+		/// If this value is used, the system maps the file into the calling process's virtual address space as if it were a data
 		/// file. Nothing is done to execute or prepare to execute the mapped file. Therefore, you cannot call functions like
 		/// GetModuleFileName, GetModuleHandle or GetProcAddress with this DLL. Using this value causes writes to read-only memory to raise
 		/// an access violation. Use this flag when you want to load a DLL only to extract messages or resources from it.This value can be
@@ -1644,7 +1643,7 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>LOAD_LIBRARY_AS_IMAGE_RESOURCE0x00000020</term>
 		/// <term>
-		/// If this value is used, the system maps the file into the process&amp;#39;s virtual address space as an image file. However, the
+		/// If this value is used, the system maps the file into the process's virtual address space as an image file. However, the
 		/// loader does not load the static imports or perform the other usual initialization steps. Use this flag when you want to load a
 		/// DLL only to extract messages or resources from it.Unless the application depends on the file having the in-memory layout of an
 		/// image, this value should be used with either LOAD_LIBRARY_AS_DATAFILE_EXCLUSIVE or LOAD_LIBRARY_AS_DATAFILE. For more
@@ -1654,7 +1653,7 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>LOAD_LIBRARY_SEARCH_APPLICATION_DIR0x00000200</term>
 		/// <term>
-		/// If this value is used, the application&amp;#39;s installation directory is searched for the DLL and its dependencies. Directories
+		/// If this value is used, the application's installation directory is searched for the DLL and its dependencies. Directories
 		/// in the standard search path are not searched. This value cannot be combined with LOAD_WITH_ALTERED_SEARCH_PATH.Windows 7, Windows
 		/// Server 2008 R2, Windows Vista and Windows Server 2008: This value requires KB2533623 to be installed.Windows Server 2003 and
 		/// Windows XP: This value is not supported.
@@ -1674,7 +1673,7 @@ namespace Vanara.PInvoke
 		/// <term>LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR0x00000100</term>
 		/// <term>
 		/// If this value is used, the directory that contains the DLL is temporarily added to the beginning of the list of directories that
-		/// are searched for the DLL&amp;#39;s dependencies. Directories in the standard search path are not searched.The lpFileName
+		/// are searched for the DLL's dependencies. Directories in the standard search path are not searched.The lpFileName
 		/// parameter must specify a fully qualified path. This value cannot be combined with LOAD_WITH_ALTERED_SEARCH_PATH.For example, if
 		/// Lib2.dll is a dependency of C:\Dir1\Lib1.dll, loading Lib1.dll with this value causes the system to search for Lib2.dll only in
 		/// C:\Dir1. To search for Lib2.dll in C:\Dir1 and all of the directories in the DLL search path, combine this value with
@@ -1721,7 +1720,7 @@ namespace Vanara.PInvoke
 		// HMODULE WINAPI LoadLibraryEx( _In_ LPCTSTR lpFileName, _Reserved_ HANDLE hFile, _In_ DWORD dwFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684179(v=vs.85).aspx
 		[PInvokeData("LibLoaderAPI.h", MSDNShortId = "ms684179")]
 		[SuppressUnmanagedCodeSecurity]
-		public static SafeHINSTANCE LoadLibraryEx([In] string lpFileName, LoadLibraryExFlags dwFlags = 0) => LoadLibraryEx(lpFileName, IntPtr.Zero, dwFlags);
+		public static SafeHINSTANCE LoadLibraryEx(string lpFileName, LoadLibraryExFlags dwFlags = 0) => LoadLibraryEx(lpFileName, IntPtr.Zero, dwFlags);
 
 		/// <summary>Retrieves a handle that can be used to obtain a pointer to the first byte of the specified resource in memory.</summary>
 		/// <param name="hModule">
@@ -1856,7 +1855,7 @@ namespace Vanara.PInvoke
 		/// </listheader>
 		/// <item>
 		/// <term>LOAD_LIBRARY_SEARCH_APPLICATION_DIR0x00000200</term>
-		/// <term>If this value is used, the application&amp;#39;s installation directory is searched.</term>
+		/// <term>If this value is used, the application's installation directory is searched.</term>
 		/// </item>
 		/// <item>
 		/// <term>LOAD_LIBRARY_SEARCH_DEFAULT_DIRS0x00001000</term>
@@ -1909,14 +1908,18 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648048")]
 		public static extern uint SizeofResource(HINSTANCE hModule, SafeResourceHandle hResInfo);
 
-		/// <summary>Provides a <see cref="SafeHandle"/> to a  that releases a created HINSTANCE instance at disposal using FreeLibrary.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HINSTANCE instance at disposal using FreeLibrary.</summary>
 		[PInvokeData("LibLoaderAPI.h")]
-		public class SafeHINSTANCE : HINSTANCE
+		public class SafeHINSTANCE : HANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="HINSTANCE"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
 			public SafeHINSTANCE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			private SafeHINSTANCE() : base() { }
 
 			/// <summary>
 			/// Gets a value indicating whether the module was loaded as a data file (LOAD_LIBRARY_AS_DATAFILE or
@@ -1934,22 +1937,27 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public bool IsResource => (handle.ToInt64() & 3) != 0;
 
+			/// <summary>Performs an implicit conversion from <see cref="SafeHINSTANCE"/> to <see cref="HINSTANCE"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HINSTANCE(SafeHINSTANCE h) => h.handle;
+
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => FreeLibrary(this);
 		}
 
 		/// <summary>Represents a loaded resource handle.</summary>
 		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
-		public class SafeResourceDataHandle : GenericSafeHandle
+		public class SafeResourceDataHandle : HANDLE
 		{
 			private IntPtr bptr;
 
 			/// <summary>Initializes a new instance of the <see cref="SafeResourceDataHandle"/> class.</summary>
-			public SafeResourceDataHandle() : this(IntPtr.Zero) { }
+			public SafeResourceDataHandle() : base() { }
 
 			/// <summary>Initializes a new instance of the <see cref="SafeResourceDataHandle"/> class.</summary>
 			/// <param name="handle">The handle.</param>
-			public SafeResourceDataHandle(IntPtr handle) : base(handle, h => true, false) { }
+			public SafeResourceDataHandle(IntPtr handle) : base(handle, false) { }
 
 			/// <summary>Gets the pointer to the memory of the resource.</summary>
 			public IntPtr LockedPtr => bptr != null ? bptr : (bptr = LockResource(this));
@@ -1957,14 +1965,14 @@ namespace Vanara.PInvoke
 
 		/// <summary>Represents a resource data block handle.</summary>
 		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
-		public class SafeResourceHandle : GenericSafeHandle
+		public class SafeResourceHandle : HANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeResourceHandle"/> class.</summary>
-			public SafeResourceHandle() : this(IntPtr.Zero) { }
+			public SafeResourceHandle() : base() { }
 
 			/// <summary>Initializes a new instance of the <see cref="SafeResourceHandle"/> class.</summary>
 			/// <param name="handle">The handle.</param>
-			public SafeResourceHandle(IntPtr handle) : base(handle, h => true, false) { }
+			public SafeResourceHandle(IntPtr handle) : base(handle, false) { }
 		}
 	}
 }

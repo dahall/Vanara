@@ -79,7 +79,7 @@ namespace Vanara.PInvoke
 			/// <summary>Loads the library that is referenced by a KNOWNFOLDERID.</summary>
 			/// <param name="knownfidLibrary">The KNOWNFOLDERID value that identifies the library to load.</param>
 			/// <param name="grfMode">One or more STGM storage medium flags that specify access and sharing modes for the library object.</param>
-			void LoadLibraryFromKnownFolder([In, MarshalAs(UnmanagedType.LPStruct)] Guid knownfidLibrary, [In] STGM grfMode);
+			void LoadLibraryFromKnownFolder(in Guid knownfidLibrary, [In] STGM grfMode);
 
 			/// <summary>Adds a folder to the library.</summary>
 			/// <param name="location">An IShellItem object that represents the folder to be added to the library.</param>
@@ -94,7 +94,7 @@ namespace Vanara.PInvoke
 			/// <param name="riid">A reference to the IID of the interface to get in ppv. This value is typically IID_IShellItemArray, but it can also be IID_IObjectCollection, IID_IObjectArray, or the IID of any other interface that is implemented by CShellItemArray.</param>
 			/// <returns>A pointer to the interface requested in riid. If this call fails, this value is NULL.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IShellItemArray GetFolders([In] LIBRARYFOLDERFILTER lff, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			IShellItemArray GetFolders([In] LIBRARYFOLDERFILTER lff, in Guid riid);
 
 			/// <summary>Resolves the target location of a library folder, even if the folder has been moved or renamed.</summary>
 			/// <param name="folderToResolve">An IShellItem object that represents the library folder to locate.</param>
@@ -102,14 +102,14 @@ namespace Vanara.PInvoke
 			/// <param name="riid">A reference to the IID of the interface to get in ppv that will represent the resolved target location. This value is typically IID_IShellItem, but it can also be IID_IShellItem2 or the IID of any other interface that is implemented by CShellItem.</param>
 			/// <returns>A pointer to the interface requested in riid.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IShellItem ResolveFolder([In, MarshalAs(UnmanagedType.Interface)] IShellItem folderToResolve, [In] uint timeout, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			IShellItem ResolveFolder([In, MarshalAs(UnmanagedType.Interface)] IShellItem folderToResolve, [In] uint timeout, in Guid riid);
 
 			/// <summary>Retrieves the default target folder that the library uses for save operations.</summary>
 			/// <param name="dsft">The DEFAULTSAVEFOLDERTYPE value that specifies the save folder to get.</param>
 			/// <param name="riid">A reference to the IID of the interface to get in ppv that will represent the save location. This value is typically IID_IShellItem, but it can also be IID_IShellItem2 or the IID of any other interface that is implemented by CShellItem.</param>
 			/// <returns>A pointer to the interface requested in riid.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IShellItem GetDefaultSaveFolder([In] DEFAULTSAVEFOLDERTYPE dsft, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			IShellItem GetDefaultSaveFolder([In] DEFAULTSAVEFOLDERTYPE dsft, in Guid riid);
 
 			/// <summary>Sets the default target folder that the library will use for save operations.</summary>
 			/// <param name="dsft">The DEFAULTSAVEFOLDERTYPE value that specifies the default save location to set.</param>
@@ -132,7 +132,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Sets the library's folder type.</summary>
 			/// <param name="ftid">The GUID or FOLDERTYPEID that represents the view template that is applied to a folder, usually based on its intended use and contents.</param>
-			void SetFolderType([In, MarshalAs(UnmanagedType.LPStruct)] Guid ftid);
+			void SetFolderType(in Guid ftid);
 
 			/// <summary>Gets the default icon for the library.</summary>
 			/// <returns>A null-terminated Unicode string that describes the location of the default icon. The string is returned as ModuleFileName,ResourceIndex or ModuleFileName,-ResourceID.</returns>
@@ -159,7 +159,7 @@ namespace Vanara.PInvoke
 			/// <param name="lsf">The LIBRARYSAVEFLAGS value that specifies how to handle a library name collision.</param>
 			/// <returns>The IShellItem object that represents the library description file into which the library was saved.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IShellItem SaveInKnownFolder([In, MarshalAs(UnmanagedType.LPStruct)] Guid kfidToSaveIn, [In, MarshalAs(UnmanagedType.LPWStr)] string libraryName, [In] LIBRARYSAVEFLAGS lsf);
+			IShellItem SaveInKnownFolder(in Guid kfidToSaveIn, [In, MarshalAs(UnmanagedType.LPWStr)] string libraryName, [In] LIBRARYSAVEFLAGS lsf);
 		}
 
 		/// <summary>Resolves all locations in a library, even those locations that have been moved or renamed.</summary>

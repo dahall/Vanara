@@ -1,10 +1,8 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using Vanara.InteropServices;
-
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable InconsistentNaming
+using Vanara.Extensions;
+using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke
 {
@@ -12,6 +10,7 @@ namespace Vanara.PInvoke
 	{
 		/// <summary>Indicates a failure on the DSA_InsertItem when returned.</summary>
 		public const int DA_ERR = -1;
+
 		/// <summary>Used by DSA_InsertItem to indicate that the item should be inserted at the end of the array.</summary>
 		public const int DA_LAST = 0x7FFFFFFF;
 
@@ -31,7 +30,8 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// <para>Type: <c>int</c></para>
 		/// <para>
-		/// The meaning of the return values depends on the function that uses this callback prototype. The return values for <c>DSA_Sort</c> are the following.
+		/// The meaning of the return values depends on the function that uses this callback prototype. The return values for <c>DSA_Sort</c>
+		/// are the following.
 		/// </para>
 		/// <para>
 		/// <list type="table">
@@ -55,7 +55,9 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		public delegate int PFNDACOMPARE(IntPtr p1, IntPtr p2, IntPtr lParam);
 
-		/// <summary>Defines the prototype for the compare function used by <c>DSA_Sort</c> when the items being compared are constant objects.</summary>
+		/// <summary>
+		/// Defines the prototype for the compare function used by <c>DSA_Sort</c> when the items being compared are constant objects.
+		/// </summary>
 		/// <param name="p1">
 		/// <para>Type: <c>const void*</c></para>
 		/// <para>A pointer to the first item in the comparison.</para>
@@ -70,7 +72,10 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>int</c></para>
-		/// <para>The meaning of the return values depends on the function that uses this callback prototype. The return values for <c>DSA_Sort</c> are as follows:</para>
+		/// <para>
+		/// The meaning of the return values depends on the function that uses this callback prototype. The return values for <c>DSA_Sort</c>
+		/// are as follows:
+		/// </para>
 		/// <para>
 		/// <list type="table">
 		/// <listheader>
@@ -93,7 +98,9 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		public delegate int PFNDACOMPARECONST(IntPtr p1, IntPtr p2, IntPtr lParam);
 
-		/// <summary>Defines the prototype for the callback function used by dynamic structure array (DSA) and dynamic pointer array (DPA) functions.</summary>
+		/// <summary>
+		/// Defines the prototype for the callback function used by dynamic structure array (DSA) and dynamic pointer array (DPA) functions.
+		/// </summary>
 		/// <param name="p">
 		/// <para>Type: <c>void*</c></para>
 		/// <para>A pointer to the structure to be enumerated.</para>
@@ -105,8 +112,8 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// <para>Type: <c>int</c></para>
 		/// <para>
-		/// The return value is used to determine whether to terminate or continue the iteration. A return value of zero indicates that the iteration should
-		/// stop; nonzero indicates that the iteration should continue.
+		/// The return value is used to determine whether to terminate or continue the iteration. A return value of zero indicates that the
+		/// iteration should stop; nonzero indicates that the iteration should continue.
 		/// </para>
 		/// </returns>
 		// typedef int ( CALLBACK *PFNDAENUMCALLBACK)( _In_opt_ void *p, _In_opt_ void *pData); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775711(v=vs.85).aspx
@@ -115,8 +122,8 @@ namespace Vanara.PInvoke
 		public delegate int PFNDAENUMCALLBACK(IntPtr p, IntPtr pData);
 
 		/// <summary>
-		/// Defines the prototype for the callback function used by dynamic structure array (DSA) and dynamic pointer array (DPA) functions when the items
-		/// involved are pointers to constant data.
+		/// Defines the prototype for the callback function used by dynamic structure array (DSA) and dynamic pointer array (DPA) functions
+		/// when the items involved are pointers to constant data.
 		/// </summary>
 		/// <param name="p">
 		/// <para>Type: <c>const void*</c></para>
@@ -129,8 +136,8 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// <para>Type: <c>int</c></para>
 		/// <para>
-		/// The return value is used to determine whether to terminate or continue the iteration. A return value of zero indicates that the iteration should
-		/// stop; nonzero indicates that the iteration should continue.
+		/// The return value is used to determine whether to terminate or continue the iteration. A return value of zero indicates that the
+		/// iteration should stop; nonzero indicates that the iteration should continue.
 		/// </para>
 		/// </returns>
 		// typedef int ( CALLBACK *PFNDAENUMCALLBACKCONST)( _In_opt_ const void *p, _In_opt_ void *pData); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775713(v=vs.85).aspx
@@ -151,9 +158,9 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>DPAMM_MERGE0x1</term>
 		/// <term>
-		/// Perform any additional processing needed when merging pvSrc into pvDest. The function should return a pointer to an item that contains the result of
-		/// the merge. The value returned by the merge function is stored into the destination, which overwrites the previous value. If the merge function
-		/// returns NULL, then the merge operation is abandoned.
+		/// Perform any additional processing needed when merging pvSrc into pvDest. The function should return a pointer to an item that
+		/// contains the result of the merge. The value returned by the merge function is stored into the destination, which overwrites the
+		/// previous value. If the merge function returns NULL, then the merge operation is abandoned.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -163,8 +170,9 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>DPAMM_INSERT0x3</term>
 		/// <term>
-		/// Perform any user-defined processing when the merge results in an item being inserted as part of the merge. The return value of this function should
-		/// point to the item result that is inserted as part of the merge. If the merge function returns NULL, then the merge operation is abandoned.
+		/// Perform any user-defined processing when the merge results in an item being inserted as part of the merge. The return value of
+		/// this function should point to the item result that is inserted as part of the merge. If the merge function returns NULL, then the
+		/// merge operation is abandoned.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -183,7 +191,8 @@ namespace Vanara.PInvoke
 		/// <para>Additional data that can be used by the merge callback.</para>
 		/// </param>
 		/// <returns>
-		/// A pointer to the item which results from the merge or <c>NULL</c> if there is a failure when <c>DPAMM_MERGE</c> or <c>DPAMM_INSERT</c> is used.
+		/// A pointer to the item which results from the merge or <c>NULL</c> if there is a failure when <c>DPAMM_MERGE</c> or
+		/// <c>DPAMM_INSERT</c> is used.
 		/// </returns>
 		// typedef void* ( CALLBACK *PFNDPAMERGE)( _In_ UINT uMsg, _In_ void *pvDest, _In_ void *pvSrc, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775721(v=vs.85).aspx
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775721")]
@@ -203,7 +212,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>DPAMM_MERGE0x1</term>
 		/// <term>
-		/// Perform any additional processing needed when merging p2 into p1. The function should return a pointer to an item that contains the result of the merge.
+		/// Perform any additional processing needed when merging p2 into p1. The function should return a pointer to an item that contains
+		/// the result of the merge.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -213,8 +223,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>DPAMM_INSERT0x3</term>
 		/// <term>
-		/// Perform any user-defined processing when the merge results in an item being inserted as part of the merge. The return value of this function should
-		/// point to the item result that is inserted as part of the merge.
+		/// Perform any user-defined processing when the merge results in an item being inserted as part of the merge. The return value of
+		/// this function should point to the item result that is inserted as part of the merge.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -234,9 +244,12 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>const void*</c></para>
-		/// <para>A pointer to constant data which results from the merge, or <c>NULL</c> if there is a failure when DPAMM_MERGE or DPAMM_INSERT is used.</para>
+		/// <para>
+		/// A pointer to constant data which results from the merge, or <c>NULL</c> if there is a failure when DPAMM_MERGE or DPAMM_INSERT is used.
+		/// </para>
 		/// </returns>
-		// typedef const void* ( CALLBACK *PFNDPAMERGECONST)( _In_ UINT uMsg, _In_ const void *pvDest, _In_ const void *pvSrc, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775723(v=vs.85).aspx
+		// typedef const void* ( CALLBACK *PFNDPAMERGECONST)( _In_ UINT uMsg, _In_ const void *pvDest, _In_ const void *pvSrc, _In_ LPARAM
+		// lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775723(v=vs.85).aspx
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775723")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		public delegate IntPtr PFNDPAMERGECONST(DPAMM uMsg, IntPtr pvDest, IntPtr pvSrc, IntPtr lParam);
@@ -264,29 +277,34 @@ namespace Vanara.PInvoke
 		public delegate HRESULT PFNDPASTREAM(ref DPASTREAMINFO pinfo, IStream pstream, IntPtr pvInstData);
 
 		/// <summary>
-		/// Options determining the method used to merge the two arrays. DPAM_NORMAL, DPAM_UNION, and DPAM_UNION are mutually exclusive—only one of those flags
-		/// can be set, optionally in conjunction with DPAM_SORTED.
+		/// Options determining the method used to merge the two arrays. DPAM_NORMAL, DPAM_UNION, and DPAM_UNION are mutually exclusive—only
+		/// one of those flags can be set, optionally in conjunction with DPAM_SORTED.
 		/// </summary>
 		[Flags]
 		public enum DPAM
 		{
 			/// <summary>The arrays are presorted; skip sorting. If this flag is not set, the arrays are sorted before they are merged.</summary>
 			DPAM_SORTED = 0x00000001,
+
 			/// <summary>
-			/// The final array consists of all of the elements originally present in hdpaDest. If any of those elements are also found in hdpaSrc, those
-			/// elements are merged in the final array. The PFNDPAMERGE callback function is called with the DPAMM_MERGE message. When this flag is set, the
-			/// final size of the array at hdpaDest is the same as its initial size.
+			/// The final array consists of all of the elements originally present in hdpaDest. If any of those elements are also found in
+			/// hdpaSrc, those elements are merged in the final array. The PFNDPAMERGE callback function is called with the DPAMM_MERGE
+			/// message. When this flag is set, the final size of the array at hdpaDest is the same as its initial size.
 			/// </summary>
 			DPAM_NORMAL = 0x00000002,
+
 			/// <summary>
-			/// The final array is the union of all elements in both arrays. Elements found in both arrays are merged in the final array. Elements found in only
-			/// one array or the other are added as found. When this flag is set, the PFNDPAMERGE callback function can be called with the DPAMM_MERGE or
-			/// DPAMM_INSERT message. The final size of the array is at least the size of the larger of hdpaDest and hdpaSrc, and at most the sum of the two.
+			/// The final array is the union of all elements in both arrays. Elements found in both arrays are merged in the final array.
+			/// Elements found in only one array or the other are added as found. When this flag is set, the PFNDPAMERGE callback function
+			/// can be called with the DPAMM_MERGE or DPAMM_INSERT message. The final size of the array is at least the size of the larger of
+			/// hdpaDest and hdpaSrc, and at most the sum of the two.
 			/// </summary>
 			DPAM_UNION = 0x00000004,
+
 			/// <summary>
-			/// Only elements found in both hdpaSrc and hdpaDest are merged to form the final array. When this flag is set, the PFNDPAMERGE callback function can
-			/// be called with the DPAMM_MERGE or DPAMM_DELETE message. The final size of the array can range between 0 and the smaller of hdpaDest and hdpaSrc.
+			/// Only elements found in both hdpaSrc and hdpaDest are merged to form the final array. When this flag is set, the PFNDPAMERGE
+			/// callback function can be called with the DPAMM_MERGE or DPAMM_DELETE message. The final size of the array can range between 0
+			/// and the smaller of hdpaDest and hdpaSrc.
 			/// </summary>
 			DPAM_INTERSECT = 0x00000008,
 		}
@@ -295,16 +313,21 @@ namespace Vanara.PInvoke
 		public enum DPAMM
 		{
 			/// <summary>
-			/// Perform any additional processing needed when merging pvSrc into pvDest. The function should return a pointer to an item that contains the result
-			/// of the merge. The value returned by the merge function is stored into the destination, which overwrites the previous value. If the merge function
-			/// returns NULL, then the merge operation is abandoned.
+			/// Perform any additional processing needed when merging pvSrc into pvDest. The function should return a pointer to an item that
+			/// contains the result of the merge. The value returned by the merge function is stored into the destination, which overwrites
+			/// the previous value. If the merge function returns NULL, then the merge operation is abandoned.
 			/// </summary>
 			DPAMM_MERGE = 1,
-			/// <summary>Perform any additional processing needed when a delete occurs as part of the merge. The function should return NULL.</summary>
-			DPAMM_DELETE = 2,
+
 			/// <summary>
-			/// Perform any user-defined processing when the merge results in an item being inserted as part of the merge. The return value of this function
-			/// should point to the item result that is inserted as part of the merge. If the merge function returns NULL, then the merge operation is abandoned.
+			/// Perform any additional processing needed when a delete occurs as part of the merge. The function should return NULL.
+			/// </summary>
+			DPAMM_DELETE = 2,
+
+			/// <summary>
+			/// Perform any user-defined processing when the merge results in an item being inserted as part of the merge. The return value
+			/// of this function should point to the item result that is inserted as part of the merge. If the merge function returns NULL,
+			/// then the merge operation is abandoned.
 			/// </summary>
 			DPAMM_INSERT = 3
 		}
@@ -315,14 +338,16 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Indicates that the DPA is sorted.</summary>
 			DPAS_SORTED = 0x0001,
+
 			/// <summary>
-			/// This value is only valid in conjunction with DPAS_SORTED. If the item is not found, return the position where the item is expected to be found in
-			/// the sorted DPA.
+			/// This value is only valid in conjunction with DPAS_SORTED. If the item is not found, return the position where the item is
+			/// expected to be found in the sorted DPA.
 			/// </summary>
 			DPAS_INSERTBEFORE = 0x0002,
+
 			/// <summary>
-			/// This value is only valid in conjunction with DPAS_SORTED. If the item is not found, return the position where the item is expected to be found in
-			/// the sorted DPA.
+			/// This value is only valid in conjunction with DPAS_SORTED. If the item is not found, return the position where the item is
+			/// expected to be found in the sorted DPA.
 			/// </summary>
 			DPAS_INSERTAFTER = 0x0004
 		}
@@ -336,7 +361,9 @@ namespace Vanara.PInvoke
 		public static int DPA_AppendPtr(HDPA hdpa, IntPtr pitem) => DPA_InsertPtr(hdpa, DA_LAST, pitem);
 
 		/// <summary>
-		/// <para>[ <c>DPA_Clone</c> is available through Windows XP with Service Pack 2 (SP2). It might be altered or unavailable in subsequent versions.]</para>
+		/// <para>
+		/// [ <c>DPA_Clone</c> is available through Windows XP with Service Pack 2 (SP2). It might be altered or unavailable in subsequent versions.]
+		/// </para>
 		/// <para>Duplicates a dynamic pointer array (DPA).</para>
 		/// </summary>
 		/// <param name="hdpaSource">
@@ -347,8 +374,8 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>HDPA</c></para>
 		/// <para>When <c>NULL</c>, a new array is copied from hdpaSource.</para>
 		/// <para>
-		/// This parameter can also contain an array created with <c>DPA_Create</c> or <c>DPA_CreateEx</c>. The data is overwritten but the original delta size
-		/// and heap handle retained.
+		/// This parameter can also contain an array created with <c>DPA_Create</c> or <c>DPA_CreateEx</c>. The data is overwritten but the
+		/// original delta size and heap handle retained.
 		/// </para>
 		/// </param>
 		/// <returns>
@@ -362,8 +389,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// [ <c>DPA_Create</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
-		/// subsequent versions.]
+		/// [ <c>DPA_Create</c> is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
 		/// </para>
 		/// <para>Creates a dynamic pointer array (DPA).</para>
 		/// </summary>
@@ -396,12 +423,12 @@ namespace Vanara.PInvoke
 		// HDPA WINAPI DPA_CreateEx( _In_ int cpGrow, _In_opt_ HANDLE hheap); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775605(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775605")]
-		public static extern SafeHDPA DPA_CreateEx(int cpGrow, [Optional] IntPtr hheap);
+		public static extern SafeHDPA DPA_CreateEx(int cpGrow, [Optional] HHEAP hheap);
 
 		/// <summary>
 		/// <para>
-		/// [ <c>DPA_DeleteAllPtrs</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
-		/// subsequent versions.]
+		/// [ <c>DPA_DeleteAllPtrs</c> is available for use in the operating systems specified in the Requirements section. It may be altered
+		/// or unavailable in subsequent versions.]
 		/// </para>
 		/// <para>Removes all items from a dynamic pointer array (DPA) and shrinks the DPA accordingly.</para>
 		/// </summary>
@@ -421,8 +448,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// [ <c>DPA_DeletePtr</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
-		/// subsequent versions.]
+		/// [ <c>DPA_DeletePtr</c> is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
 		/// </para>
 		/// <para>Removes an item from a dynamic pointer array (DPA). The DPA shrinks if necessary to accommodate the removed item.</para>
 		/// </summary>
@@ -442,8 +469,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// [ <c>DPA_Destroy</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
-		/// subsequent versions.]
+		/// [ <c>DPA_Destroy</c> is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
 		/// </para>
 		/// <para>Frees a Dynamic Pointer Array (DPA).</para>
 		/// </summary>
@@ -463,8 +490,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// [ <c>DPA_DestroyCallback</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
-		/// subsequent versions.]
+		/// [ <c>DPA_DestroyCallback</c> is available for use in the operating systems specified in the Requirements section. It may be
+		/// altered or unavailable in subsequent versions.]
 		/// </para>
 		/// <para>Calls pfnCB on each element of the dynamic pointer array (DPA), then frees the DPA.</para>
 		/// </summary>
@@ -488,8 +515,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// [ <c>DPA_EnumCallback</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
-		/// subsequent versions.]
+		/// [ <c>DPA_EnumCallback</c> is available for use in the operating systems specified in the Requirements section. It may be altered
+		/// or unavailable in subsequent versions.]
 		/// </para>
 		/// <para>Iterates through the Dynamic Pointer Array (DPA) and calls pfnCB on each item.</para>
 		/// </summary>
@@ -528,8 +555,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// [ <c>DPA_GetPtr</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
-		/// subsequent versions.]
+		/// [ <c>DPA_GetPtr</c> is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
 		/// </para>
 		/// <para>Gets an item from a dynamic pointer array (DPA).</para>
 		/// </summary>
@@ -552,10 +579,13 @@ namespace Vanara.PInvoke
 		/// <returns>Returns the number of pointers (elements) the DPA contains.</returns>
 		// int DPA_GetPtrCount( [in] HDPA hdpa); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775588(v=vs.85).aspx
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775588")]
-		public static int DPA_GetPtrCount(HDPA hdpa) => Marshal.ReadInt32(hdpa.DangerousGetHandle());
+		public static int DPA_GetPtrCount(HDPA hdpa) => Marshal.ReadInt32((IntPtr)hdpa);
 
 		/// <summary>
-		/// <para>[ <c>DPA_GetPtrIndex</c> is available through Windows XP with Service Pack 2 (SP2). It might be altered or unavailable in subsequent versions.]</para>
+		/// <para>
+		/// [ <c>DPA_GetPtrIndex</c> is available through Windows XP with Service Pack 2 (SP2). It might be altered or unavailable in
+		/// subsequent versions.]
+		/// </para>
 		/// <para>Gets the index of a matching item found in a dynamic pointer array (DPA).</para>
 		/// </summary>
 		/// <param name="hdpa">
@@ -577,10 +607,12 @@ namespace Vanara.PInvoke
 
 		/// <summary>Gets the pointer to the internal pointer array of a dynamic pointer array (DPA).</summary>
 		/// <param name="hdpa">A handle to an existing DPA.</param>
-		/// <returns>Returns a pointer to the array of pointers managed by the DPA. To retrieve the number of pointers in the array, call macro <c>DPA_GetPtrCount</c>.</returns>
+		/// <returns>
+		/// Returns a pointer to the array of pointers managed by the DPA. To retrieve the number of pointers in the array, call macro <c>DPA_GetPtrCount</c>.
+		/// </returns>
 		// void DPA_GetPtrPtr( [in] HDPA hdpa); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775589(v=vs.85).aspx
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775589")]
-		public static IntPtr DPA_GetPtrPtr(HDPA hdpa) => new IntPtr(hdpa.DangerousGetHandle().ToInt64() + IntPtr.Size);
+		public static IntPtr DPA_GetPtrPtr(HDPA hdpa) => ((IntPtr)hdpa).Offset(IntPtr.Size);
 
 		/// <summary>Gets the size of a dynamic pointer array (DPA).</summary>
 		/// <param name="pdpa">
@@ -589,7 +621,9 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c><c>ULONGLONG</c></c></para>
-		/// <para>Returns the size of the DPA, including the internal bookkeeping information. If pdpa is <c>NULL</c>, the function returns zero.</para>
+		/// <para>
+		/// Returns the size of the DPA, including the internal bookkeeping information. If pdpa is <c>NULL</c>, the function returns zero.
+		/// </para>
 		/// </returns>
 		// ULONGLONG DPA_GetSize( _In_ HDPA pdpa); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775621(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
@@ -617,10 +651,13 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// [ <c>DPA_InsertPtr</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
-		/// subsequent versions.]
+		/// [ <c>DPA_InsertPtr</c> is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
 		/// </para>
-		/// <para>Inserts a new item at a specified position in a dynamic pointer array (DPA). If neccessary, the DPA expands to accommodate the new item.</para>
+		/// <para>
+		/// Inserts a new item at a specified position in a dynamic pointer array (DPA). If neccessary, the DPA expands to accommodate the
+		/// new item.
+		/// </para>
 		/// </summary>
 		/// <param name="pdpa">
 		/// <para>Type: <c>HDPA</c></para>
@@ -701,12 +738,16 @@ namespace Vanara.PInvoke
 		public static extern HRESULT DPA_LoadStream(out SafeHDPA ppdpa, PFNDPASTREAM pfn, IStream pstm, IntPtr pvInstData);
 
 		/// <summary>
-		/// <para>[ <c>DPA_Merge</c> is available through Windows XP with Service Pack 2 (SP2). It might be altered or unavailable in subsequent versions.]</para>
+		/// <para>
+		/// [ <c>DPA_Merge</c> is available through Windows XP with Service Pack 2 (SP2). It might be altered or unavailable in subsequent versions.]
+		/// </para>
 		/// <para>Combines the contents of two dynamic pointer arrays (DPAs).</para>
 		/// </summary>
 		/// <param name="hdpaDest">
 		/// <para>Type: <c>HDPA</c></para>
-		/// <para>A handle to the first DPA. This array can be optionally presorted. When this function returns, contains the handle to the merged array.</para>
+		/// <para>
+		/// A handle to the first DPA. This array can be optionally presorted. When this function returns, contains the handle to the merged array.
+		/// </para>
 		/// </param>
 		/// <param name="hdpaSrc">
 		/// <para>Type: <c>HDPA</c></para>
@@ -715,8 +756,8 @@ namespace Vanara.PInvoke
 		/// <param name="dwFlags">
 		/// <para>Type: <c><c>DWORD</c></c></para>
 		/// <para>
-		/// Options determining the method used to merge the two arrays. DPAM_NORMAL, DPAM_UNION, and DPAM_UNION are mutually exclusive—only one of those flags
-		/// can be set, optionally in conjunction with DPAM_SORTED.
+		/// Options determining the method used to merge the two arrays. DPAM_NORMAL, DPAM_UNION, and DPAM_UNION are mutually exclusive—only
+		/// one of those flags can be set, optionally in conjunction with DPAM_SORTED.
 		/// </para>
 		/// <para>
 		/// <list type="table">
@@ -731,24 +772,26 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>DPAM_NORMAL0x00000002</term>
 		/// <term>
-		/// The final array consists of all of the elements originally present in hdpaDest. If any of those elements are also found in hdpaSrc, those elements
-		/// are merged in the final array. The PFNDPAMERGE callback function is called with the DPAMM_MERGE message. When this flag is set, the final size of the
-		/// array at hdpaDest is the same as its initial size.
+		/// The final array consists of all of the elements originally present in hdpaDest. If any of those elements are also found in
+		/// hdpaSrc, those elements are merged in the final array. The PFNDPAMERGE callback function is called with the DPAMM_MERGE message.
+		/// When this flag is set, the final size of the array at hdpaDest is the same as its initial size.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>DPAM_UNION0x00000004</term>
 		/// <term>
-		/// The final array is the union of all elements in both arrays. Elements found in both arrays are merged in the final array. Elements found in only one
-		/// array or the other are added as found. When this flag is set, the PFNDPAMERGE callback function can be called with the DPAMM_MERGE or DPAMM_INSERT
-		/// message. The final size of the array is at least the size of the larger of hdpaDest and hdpaSrc, and at most the sum of the two.
+		/// The final array is the union of all elements in both arrays. Elements found in both arrays are merged in the final array.
+		/// Elements found in only one array or the other are added as found. When this flag is set, the PFNDPAMERGE callback function can be
+		/// called with the DPAMM_MERGE or DPAMM_INSERT message. The final size of the array is at least the size of the larger of hdpaDest
+		/// and hdpaSrc, and at most the sum of the two.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>DPAM_INTERSECT0x00000008</term>
 		/// <term>
-		/// Only elements found in both hdpaSrc and hdpaDest are merged to form the final array. When this flag is set, the PFNDPAMERGE callback function can be
-		/// called with the DPAMM_MERGE or DPAMM_DELETE message. The final size of the array can range between 0 and the smaller of hdpaDest and hdpaSrc.
+		/// Only elements found in both hdpaSrc and hdpaDest are merged to form the final array. When this flag is set, the PFNDPAMERGE
+		/// callback function can be called with the DPAMM_MERGE or DPAMM_DELETE message. The final size of the array can range between 0 and
+		/// the smaller of hdpaDest and hdpaSrc.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -757,14 +800,15 @@ namespace Vanara.PInvoke
 		/// <param name="pfnCompare">
 		/// <para>Type: <c><c>PFNDPACOMPARE</c></c></para>
 		/// <para>
-		/// The <c>PFNDPACOMPARE</c> callback function that compares two elements, one from each DPA, to determine whether they are the same item. If so, the
-		/// callback function pointed to by pfnCompare is called.
+		/// The <c>PFNDPACOMPARE</c> callback function that compares two elements, one from each DPA, to determine whether they are the same
+		/// item. If so, the callback function pointed to by pfnCompare is called.
 		/// </para>
 		/// </param>
 		/// <param name="pfnMerge">
 		/// <para>Type: <c><c>PFNDPAMERGE</c></c></para>
 		/// <para>
-		/// The <c>PFNDPAMERGE</c> callback function that merges the contents when an element is found in both DPAs and is found to be the same item by <c>PFNDPACOMPARE</c>.
+		/// The <c>PFNDPAMERGE</c> callback function that merges the contents when an element is found in both DPAs and is found to be the
+		/// same item by <c>PFNDPACOMPARE</c>.
 		/// </para>
 		/// </param>
 		/// <param name="lParam">
@@ -775,8 +819,8 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>BOOL</c></c></para>
 		/// <para><c>TRUE</c> if successful; otherwise, <c>FALSE</c>.</para>
 		/// </returns>
-		// BOOL WINAPI DPA_Merge( _Inout_ HDPA hdpaDest, _In_ HDPA hdpaSrc, _In_ DWORD dwFlags, _In_ PFNDPACOMPARE pfnCompare, _In_ PFNDPAMERGE pfnMerge, _In_
-		// LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775629(v=vs.85).aspx
+		// BOOL WINAPI DPA_Merge( _Inout_ HDPA hdpaDest, _In_ HDPA hdpaSrc, _In_ DWORD dwFlags, _In_ PFNDPACOMPARE pfnCompare, _In_
+		// PFNDPAMERGE pfnMerge, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775629(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775629")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -785,7 +829,8 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// <para>[ <c>DPA_SaveStream</c> is available in Windows Vista. It might be altered or unavailable in subsequent versions. ]</para>
 		/// <para>
-		/// Saves the dynamic pointer array (DPA) to a stream by writing out a header, and then calling the specified callback function to write each element.
+		/// Saves the dynamic pointer array (DPA) to a stream by writing out a header, and then calling the specified callback function to
+		/// write each element.
 		/// </para>
 		/// </summary>
 		/// <param name="pdpa">
@@ -835,8 +880,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// [ <c>DPA_Search</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
-		/// subsequent versions.]
+		/// [ <c>DPA_Search</c> is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
 		/// </para>
 		/// <para>Finds an item in a dynamic pointer array (DPA).</para>
 		/// </summary>
@@ -876,15 +921,15 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>DPAS_INSERTBEFORE</term>
 		/// <term>
-		/// This value is only valid in conjunction with DPAS_SORTED. If the item is not found, return the position where the item is expected to be found in the
-		/// sorted DPA.
+		/// This value is only valid in conjunction with DPAS_SORTED. If the item is not found, return the position where the item is
+		/// expected to be found in the sorted DPA.
 		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>DPAS_INSERTAFTER</term>
 		/// <term>
-		/// This value is only valid in conjunction with DPAS_SORTED. If the item is not found, return the position where the item is expected to be found in the
-		/// sorted DPA.
+		/// This value is only valid in conjunction with DPAS_SORTED. If the item is not found, return the position where the item is
+		/// expected to be found in the sorted DPA.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -901,8 +946,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// [ <c>DPA_SetPtr</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
-		/// subsequent versions.]
+		/// [ <c>DPA_SetPtr</c> is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
 		/// </para>
 		/// <para>Assigns a value to an item in a dynamic pointer array (DPA).</para>
 		/// </summary>
@@ -934,11 +979,12 @@ namespace Vanara.PInvoke
 		/// <returns>Returns the number of pointers (elements) the DPA contains.</returns>
 		// int DPA_SetPtrCount( [in] HDPA hdpa, [in] int cItems); https://msdn.microsoft.com/en-us/library/windows/desktop/dd375911(v=vs.85).aspx
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "dd375911")]
-		public static int DPA_SetPtrCount(HDPA hdpa, int cItems) { Marshal.WriteInt32(hdpa.DangerousGetHandle(), cItems); return cItems; }
+		public static int DPA_SetPtrCount(HDPA hdpa, int cItems) { Marshal.WriteInt32((IntPtr)hdpa, cItems); return cItems; }
 
 		/// <summary>
 		/// <para>
-		/// [ <c>DPA_Sort</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in subsequent versions.]
+		/// [ <c>DPA_Sort</c> is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
 		/// </para>
 		/// <para>Sorts the items in a Dynamic Pointer Array (DPA).</para>
 		/// </summary>
@@ -979,7 +1025,9 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="pfnCmp">
 		/// <para>Type: <c><c>PFNDPACOMPARE</c></c></para>
-		/// <para>A pointer to the comparison function. See <c>PFNDPACOMPARE</c> or <c>PFNDPACOMPARECONST</c> for the comparison function prototype.</para>
+		/// <para>
+		/// A pointer to the comparison function. See <c>PFNDPACOMPARE</c> or <c>PFNDPACOMPARECONST</c> for the comparison function prototype.
+		/// </para>
 		/// </param>
 		/// <param name="lParam">
 		/// <para>Type: <c><c>LPARAM</c></c></para>
@@ -1039,8 +1087,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// [ <c>DSA_Create</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
-		/// subsequent versions.]
+		/// [ <c>DSA_Create</c> is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
 		/// </para>
 		/// <para>Creates a dynamic structure array (DSA).</para>
 		/// </summary>
@@ -1077,7 +1125,10 @@ namespace Vanara.PInvoke
 		public static extern bool DSA_DeleteAllItems(HDSA hdsa);
 
 		/// <summary>
-		/// <para>[ <c>DSA_DeleteItem</c> is available through Windows XP with Service Pack 2 (SP2). It might be altered or unavailable in subsequent versions.]</para>
+		/// <para>
+		/// [ <c>DSA_DeleteItem</c> is available through Windows XP with Service Pack 2 (SP2). It might be altered or unavailable in
+		/// subsequent versions.]
+		/// </para>
 		/// <para>Deletes an item from a dynamic structure array (DSA).</para>
 		/// </summary>
 		/// <param name="hdsa">
@@ -1100,8 +1151,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// [ <c>DSA_Destroy</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
-		/// subsequent versions.]
+		/// [ <c>DSA_Destroy</c> is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
 		/// </para>
 		/// <para>Frees a dynamic structure array (DSA).</para>
 		/// </summary>
@@ -1121,11 +1172,12 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// [ <c>DSA_DestroyCallback</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
-		/// subsequent versions.]
+		/// [ <c>DSA_DestroyCallback</c> is available for use in the operating systems specified in the Requirements section. It may be
+		/// altered or unavailable in subsequent versions.]
 		/// </para>
 		/// <para>
-		/// Iterates through a dynamic structure array (DSA), calling a specified callback function on each item. Upon reaching the end of the array, the DSA is freed.
+		/// Iterates through a dynamic structure array (DSA), calling a specified callback function on each item. Upon reaching the end of
+		/// the array, the DSA is freed.
 		/// </para>
 		/// </summary>
 		/// <param name="pdsa">
@@ -1193,12 +1245,12 @@ namespace Vanara.PInvoke
 		/// <returns>Returns the number of items in the DSA.</returns>
 		// int DSA_GetItemCount( [in] HDSA hdsa); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775592(v=vs.85).aspx
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775592")]
-		public static int DSA_GetItemCount(HDSA hdsa) => Marshal.ReadInt32(hdsa.DangerousGetHandle());
+		public static int DSA_GetItemCount(HDSA hdsa) => Marshal.ReadInt32((IntPtr)hdsa);
 
 		/// <summary>
 		/// <para>
-		/// [ <c>DSA_GetItemPtr</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
-		/// subsequent versions.]
+		/// [ <c>DSA_GetItemPtr</c> is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
 		/// </para>
 		/// <para>Gets a pointer to an element from a dynamic structure array (DSA).</para>
 		/// </summary>
@@ -1223,7 +1275,10 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c><c>ULONGLONG</c></c></para>
-		/// <para>Returns the size of the DSA, including the internal bookkeeping information, in bytes. If hdsa is <c>NULL</c>, the function returns zero.</para>
+		/// <para>
+		/// Returns the size of the DSA, including the internal bookkeeping information, in bytes. If hdsa is <c>NULL</c>, the function
+		/// returns zero.
+		/// </para>
 		/// </returns>
 		// ULONGLONG DSA_GetSize( _In_ HDSA hdsa); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775663(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
@@ -1232,8 +1287,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// [ <c>DSA_InsertItem</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
-		/// subsequent versions.]
+		/// [ <c>DSA_InsertItem</c> is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
 		/// </para>
 		/// <para>Inserts a new item into a dynamic structure array (DSA). If necessary, the DSA expands to accommodate the new item.</para>
 		/// </summary>
@@ -1260,8 +1315,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// [ <c>DSA_SetItem</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in
-		/// subsequent versions.]
+		/// [ <c>DSA_SetItem</c> is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
 		/// </para>
 		/// <para>Inserts a new item into a dynamic structure array (DSA). If necessary, the DSA expands to accommodate the new item.</para>
 		/// </summary>
@@ -1340,6 +1395,7 @@ namespace Vanara.PInvoke
 			/// <para>An index of the item in the DPA.</para>
 			/// </summary>
 			public int iPos;
+
 			/// <summary>
 			/// <para>Type: <c>void*</c></para>
 			/// <para>A void pointer to the item data.</para>
@@ -1347,25 +1403,43 @@ namespace Vanara.PInvoke
 			public IntPtr pvItem;
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> to a  that releases a created HDPA instance at disposal using DPA_Destroy.</summary>
-		public class SafeHDPA : HDPA
+		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HDPA instance at disposal using DPA_Destroy.</summary>
+		public class SafeHDPA : HANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="HDPA"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
 			public SafeHDPA(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			private SafeHDPA() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHDPA"/> to <see cref="HDPA"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HDPA(SafeHDPA h) => h.handle;
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => DPA_Destroy(this);
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> to a  that releases a created HDSA instance at disposal using DSA_Destroy.</summary>
-		public class SafeHDSA : HDSA
+		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HDSA instance at disposal using DSA_Destroy.</summary>
+		public class SafeHDSA : HANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="HDSA"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
 			public SafeHDSA(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			private SafeHDSA() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHDSA"/> to <see cref="HDSA"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HDSA(SafeHDSA h) => h.handle;
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => DSA_Destroy(this);

@@ -986,7 +986,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error DeleteVirtualDiskMetadata(HFILE VirtualDiskHandle, [MarshalAs(UnmanagedType.LPStruct)] Guid Item);
+		public static extern Win32Error DeleteVirtualDiskMetadata(HFILE VirtualDiskHandle, in Guid Item);
 
 		/// <summary>
 		/// Detaches a virtual hard disk (VHD) or CD or DVD image file (ISO) by locating an appropriate virtual disk provider to accomplish the operation.
@@ -1102,7 +1102,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error GetVirtualDiskMetadata(HFILE VirtualDiskHandle, [MarshalAs(UnmanagedType.LPStruct)] Guid Item, ref uint MetaDataSize, SafeCoTaskMemHandle MetaData);
+		public static extern Win32Error GetVirtualDiskMetadata(HFILE VirtualDiskHandle, in Guid Item, ref uint MetaDataSize, SafeCoTaskMemHandle MetaData);
 
 		/// <summary>Checks the progress of an asynchronous virtual hard disk (VHD) operation.</summary>
 		/// <param name="VirtualDiskHandle">A valid handle to a virtual disk with a pending asynchronous operation.</param>
@@ -1194,7 +1194,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("VirtDisk.h")]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true, ThrowOnUnmappableChar = true)]
-		public static extern Win32Error OpenVirtualDisk([In] ref VIRTUAL_STORAGE_TYPE VirtualStorageType, [MarshalAs(UnmanagedType.LPWStr)] string Path, VIRTUAL_DISK_ACCESS_MASK VirtualDiskAccessMask, OPEN_VIRTUAL_DISK_FLAG Flags, [In] OPEN_VIRTUAL_DISK_PARAMETERS Parameters, out SafeHFILE Handle);
+		public static extern Win32Error OpenVirtualDisk(in VIRTUAL_STORAGE_TYPE VirtualStorageType, [MarshalAs(UnmanagedType.LPWStr)] string Path, VIRTUAL_DISK_ACCESS_MASK VirtualDiskAccessMask, OPEN_VIRTUAL_DISK_FLAG Flags, [In] OPEN_VIRTUAL_DISK_PARAMETERS Parameters, out SafeHFILE Handle);
 
 		/// <summary>Retrieves information about changes to the specified areas of a virtual hard disk (VHD) that are tracked by resilient change tracking (RCT).</summary>
 		/// <param name="VirtualDiskHandle">A handle to the open VHD, which must have been opened using the VIRTUAL_DISK_ACCESS_GET_INFO flag set in the VirtualDiskAccessMask parameter to the OpenVirtualDisk function. For information on how to open a VHD, see the OpenVirtualDisk function.</param>
@@ -1269,7 +1269,7 @@ namespace Vanara.PInvoke
 		/// <returns>Status of the request. If the function succeeds, the return value is ERROR_SUCCESS. If the function fails, the return value is an error code.For more information, see System Error Codes.</returns>
 		[PInvokeData("VirtDisk.h", MinClient = PInvokeClient.Windows8)]
 		[DllImport(Lib.VirtDisk, ExactSpelling = true)]
-		public static extern Win32Error SetVirtualDiskMetadata(HFILE VirtualDiskHandle, [MarshalAs(UnmanagedType.LPStruct)] Guid Item, uint MetaDataSize, IntPtr MetaData);
+		public static extern Win32Error SetVirtualDiskMetadata(HFILE VirtualDiskHandle, in Guid Item, uint MetaDataSize, IntPtr MetaData);
 
 		/// <summary>Creates a snapshot of the current virtual disk for VHD Set files.</summary>
 		/// <param name="VirtualDiskHandle">A handle to the open virtual disk. This must be a VHD Set file.</param>

@@ -21,7 +21,7 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms682612")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool EnumDesktopProc([In] string lpszDesktop, [In] IntPtr lParam);
+		public delegate bool EnumDesktopProc(string lpszDesktop, [In] IntPtr lParam);
 
 		/// <summary>
 		/// <para>
@@ -39,7 +39,7 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Auto)]
 		[PInvokeData("Winuser.h", MSDNShortId = "ms682643")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool EnumWindowStationProc([In] string lpszWindowStation, [In] IntPtr lParam);
+		public delegate bool EnumWindowStationProc(string lpszWindowStation, [In] IntPtr lParam);
 
 		/// <summary>Flags used by CreateDesktop.</summary>
 		[Flags]
@@ -1105,24 +1105,38 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a  that releases a created HDESK instance at disposal using CloseDesktop.</summary>
-		public class SafeHDESK : HDESK
+		public class SafeHDESK : HANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="HDESK"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
 			public SafeHDESK(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
+			private SafeHDESK() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHDESK"/> to <see cref="HDESK"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HDESK(SafeHDESK h) => h.handle;
+
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => CloseDesktop(this);
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a  that releases a created HWINSTA instance at disposal using CloseWindowStation.</summary>
-		public class SafeHWINSTA : HWINSTA
+		public class SafeHWINSTA : HANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="HWINSTA"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
 			public SafeHWINSTA(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			private SafeHWINSTA() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHWINSTA"/> to <see cref="HWINSTA"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HWINSTA(SafeHWINSTA h) => h.handle;
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => CloseWindowStation(this);

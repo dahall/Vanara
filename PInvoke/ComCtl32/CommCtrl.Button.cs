@@ -81,7 +81,8 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="splitInfo">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage(HWND hWnd, ButtonMessage Msg, int wParam, ref BUTTON_SPLITINFO splitInfo) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref splitInfo);
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		public static extern IntPtr SendMessage(HWND hWnd, ButtonMessage Msg, int wParam, ref BUTTON_SPLITINFO splitInfo);
 
 		/// <summary>
 		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window
@@ -96,7 +97,8 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="imageList">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage(HWND hWnd, ButtonMessage Msg, int wParam, ref BUTTON_IMAGELIST imageList) => User32_Gdi.SendMessage(hWnd, Msg, wParam, ref imageList);
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		public static extern IntPtr SendMessage(HWND hWnd, ButtonMessage Msg, int wParam, ref BUTTON_IMAGELIST imageList);
 
 		/// <summary>Contains information about an image list that is used with a button control.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775953")]
@@ -107,7 +109,7 @@ namespace Vanara.PInvoke
 			/// A handle to the image list. The provider retains ownership of the image list and is ultimately responsible for its disposal.
 			/// Under Windows Vista, you can pass BCCL_NOGLYPH in this parameter to indicate that no glyph should be displayed.
 			/// </summary>
-			public IntPtr himl;
+			public HIMAGELIST himl;
 
 			/// <summary>A RECT that specifies the margin around the icon.</summary>
 			public RECT margin;
@@ -132,7 +134,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// A handle to the image list. The provider retains ownership of the image list and is ultimately responsible for its disposal.
 			/// </summary>
-			public IntPtr himlGlyph;
+			public HIMAGELIST himlGlyph;
 
 			/// <summary>The split button style.</summary>
 			public SplitButtonInfoStyle uSplitButtonInfoStyle;

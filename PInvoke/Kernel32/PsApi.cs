@@ -88,7 +88,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("psapi.h", MSDNShortId = "76f2252e-7305-46b0-b1af-40ac084e6696")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EmptyWorkingSet(IntPtr hProcess);
+		public static extern bool EmptyWorkingSet(HPROCESS hProcess);
 
 		/// <summary>
 		/// <para>Retrieves the load address for each device driver in the system.</para>
@@ -136,16 +136,16 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("psapi.h", MSDNShortId = "55925741-da23-44b1-93e8-0e9468434a61")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumDeviceDrivers([In, MarshalAs(UnmanagedType.LPArray)] IntPtr[] lpImageBase, uint cb, out uint lpcbNeeded);
+		public static extern bool EnumDeviceDrivers([In, Out, MarshalAs(UnmanagedType.LPArray)] IntPtr[] lpImageBase, uint cb, out uint lpcbNeeded);
 
 		/// <summary>
 		/// <para>Calls the callback routine for each installed pagefile in the system.</para>
 		/// </summary>
 		/// <param name="pCallBackRoutine">
-		/// <para>TBD</para>
+		/// <para>A pointer to the routine called for each pagefile. For more information, see EnumPageFilesProc.</para>
 		/// </param>
 		/// <param name="pContext">
-		/// <para>TBD</para>
+		/// <para>The user-defined data passed to the callback routine.</para>
 		/// </param>
 		/// <returns>
 		/// <para>
@@ -171,7 +171,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-enumpagefilesa BOOL EnumPageFilesA( PENUM_PAGE_FILE_CALLBACKA
 		// pCallBackRoutine, LPVOID pContext );
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "9289fe3c-a7d9-4acb-aeb6-a50de65db0a2")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool EnumPageFiles(PenumPageFileCallback pCallBackRoutine, IntPtr pContext);
@@ -180,13 +180,13 @@ namespace Vanara.PInvoke
 		/// <para>Retrieves the process identifier for each process object in the system.</para>
 		/// </summary>
 		/// <param name="lpidProcess">
-		/// <para>TBD</para>
+		/// <para>A pointer to an array that receives the list of process identifiers.</para>
 		/// </param>
 		/// <param name="cb">
 		/// <para>The size of the pProcessIds array, in bytes.</para>
 		/// </param>
 		/// <param name="lpcbNeeded">
-		/// <para>TBD</para>
+		/// <para>The number of bytes returned in the pProcessIds array.</para>
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
@@ -221,10 +221,10 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/psapi/nf-psapi-enumprocesses BOOL EnumProcesses( DWORD *lpidProcess, DWORD
 		// cb, LPDWORD lpcbNeeded );
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "0c0445cb-27d2-4857-a4a5-7a4c180b068b")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumProcesses([In, MarshalAs(UnmanagedType.LPArray)] uint[] lpidProcess, uint cb, out uint lpcbNeeded);
+		public static extern bool EnumProcesses([In, Out, MarshalAs(UnmanagedType.LPArray)] uint[] lpidProcess, uint cb, out uint lpcbNeeded);
 
 		/// <summary>
 		/// <para>Retrieves a handle for each module in the specified process.</para>
@@ -304,7 +304,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("psapi.h", MSDNShortId = "b4088506-2f69-4cf0-9bab-3e6a7185f5b2")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumProcessModules(IntPtr hProcess, [In, MarshalAs(UnmanagedType.LPArray)] IntPtr[] lphModule, uint cb, out uint lpcbNeeded);
+		public static extern bool EnumProcessModules(HPROCESS hProcess, [In, Out, MarshalAs(UnmanagedType.LPArray)] IntPtr[] lphModule, uint cb, out uint lpcbNeeded);
 
 		/// <summary>
 		/// <para>Retrieves a handle for each module in the specified process that meets the specified filter criteria.</para>
@@ -403,7 +403,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("psapi.h", MSDNShortId = "0f982f32-31f4-47b6-85d2-d6e17aa4eeb9")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumProcessModulesEx(IntPtr hProcess, [In, MarshalAs(UnmanagedType.LPArray)] IntPtr[] lphModule, uint cb, out uint lpcbNeeded, LIST_MODULES dwFilterFlag);
+		public static extern bool EnumProcessModulesEx(HPROCESS hProcess, [In, Out, MarshalAs(UnmanagedType.LPArray)] IntPtr[] lphModule, uint cb, out uint lpcbNeeded, LIST_MODULES dwFilterFlag);
 
 		/// <summary>
 		/// <para>Retrieves the base name of the specified device driver.</para>
@@ -412,7 +412,7 @@ namespace Vanara.PInvoke
 		/// <para>The load address of the device driver. This value can be retrieved using the EnumDeviceDrivers function.</para>
 		/// </param>
 		/// <param name="lpFilename">
-		/// <para>TBD</para>
+		/// <para>A pointer to the buffer that receives the base name of the device driver.</para>
 		/// </param>
 		/// <param name="nSize">
 		/// <para>
@@ -569,7 +569,7 @@ namespace Vanara.PInvoke
 		// LPVOID lpv, LPSTR lpFilename, DWORD nSize );
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "10a2e5ab-f495-486d-8ef7-ef763716afd1")]
-		public static extern uint GetMappedFileName(IntPtr hProcess, IntPtr lpv, StringBuilder lpFilename, uint nSize);
+		public static extern uint GetMappedFileName(HPROCESS hProcess, IntPtr lpv, StringBuilder lpFilename, uint nSize);
 
 		/// <summary>
 		/// <para>Retrieves the base name of the specified module.</para>
@@ -641,7 +641,7 @@ namespace Vanara.PInvoke
 		// HMODULE hModule, LPSTR lpBaseName, DWORD nSize );
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "31a9eb69-95f0-4dd7-8fd5-296f2cff0b8a")]
-		public static extern uint GetModuleBaseName(IntPtr hProcess, HINSTANCE hModule, StringBuilder lpBaseName, uint nSize);
+		public static extern uint GetModuleBaseName(HPROCESS hProcess, [Optional] HINSTANCE hModule, StringBuilder lpBaseName, uint nSize);
 
 		/// <summary>
 		/// <para>Retrieves information about the specified module in the MODULEINFO structure.</para>
@@ -692,7 +692,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("psapi.h", MSDNShortId = "afb9f4c8-c8ae-4497-96c1-b559cfa2cedf")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetModuleInformation(IntPtr hProcess, HINSTANCE hModule, ref MODULEINFO lpmodinfo, uint cb);
+		public static extern bool GetModuleInformation(HPROCESS hProcess, HINSTANCE hModule, out MODULEINFO lpmodinfo, uint cb);
 
 		/// <summary>
 		/// <para>Retrieves the performance values contained in the PERFORMANCE_INFORMATION structure.</para>
@@ -790,7 +790,7 @@ namespace Vanara.PInvoke
 		// HANDLE hProcess, LPSTR lpImageFileName, DWORD nSize );
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "819fc2f4-0801-417b-9cbb-d7fd2894634e")]
-		public static extern uint GetProcessImageFileName(IntPtr hProcess, StringBuilder lpImageFileName, uint nSize);
+		public static extern uint GetProcessImageFileName(HPROCESS hProcess, StringBuilder lpImageFileName, uint nSize);
 
 		/// <summary>
 		/// <para>Retrieves information about the memory usage of the specified process.</para>
@@ -841,7 +841,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "12990e8d-6097-4502-824e-db6c3f76c715")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetProcessMemoryInfo(IntPtr Process, ref PROCESS_MEMORY_COUNTERS ppsmemCounters, uint cb);
+		public static extern bool GetProcessMemoryInfo(HPROCESS Process, ref PROCESS_MEMORY_COUNTERS ppsmemCounters, uint cb);
 
 		/// <summary>
 		/// <para>
@@ -913,7 +913,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("psapi.h", MSDNShortId = "ace5106c-9c7b-4d5f-a69a-c3a8bff0bb2d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetWsChanges(IntPtr hProcess, IntPtr lpWatchInfo, uint cb);
+		public static extern bool GetWsChanges(HPROCESS hProcess, IntPtr lpWatchInfo, uint cb);
 
 		/// <summary>
 		/// <para>
@@ -980,7 +980,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "8572db5c-2ffc-424f-8cec-b6a6902fed62")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetWsChangesEx(IntPtr hProcess, IntPtr lpWatchInfoEx, ref uint cb);
+		public static extern bool GetWsChangesEx(HPROCESS hProcess, IntPtr lpWatchInfoEx, ref uint cb);
 
 		/// <summary>
 		/// <para>
@@ -1018,7 +1018,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("psapi.h", MSDNShortId = "c928656c-a59d-41b5-9434-911329b0278e")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool InitializeProcessForWsWatch(IntPtr hProcess);
+		public static extern bool InitializeProcessForWsWatch(HPROCESS hProcess);
 
 		/// <summary>
 		/// <para>Retrieves information about the pages currently added to the working set of the specified process.</para>
@@ -1069,7 +1069,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("psapi.h", MSDNShortId = "b932153f-2bbd-460e-8ff7-b3e493c397bb")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool QueryWorkingSet(IntPtr hProcess, IntPtr pv, uint cb);
+		public static extern bool QueryWorkingSet(HPROCESS hProcess, IntPtr pv, uint cb);
 
 		/// <summary>
 		/// <para>Retrieves extended information about the pages at specific virtual addresses in the address space of the specified process.</para>
@@ -1121,7 +1121,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("psapi.h", MSDNShortId = "59ae76c9-e954-4648-9c9f-787136375b02")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool QueryWorkingSetEx(IntPtr hProcess, IntPtr pv, uint cb);
+		public static extern bool QueryWorkingSetEx(HPROCESS hProcess, IntPtr pv, uint cb);
 
 		/// <summary>
 		/// <para>Contains information about a pagefile.</para>

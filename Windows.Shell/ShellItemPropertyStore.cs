@@ -117,7 +117,7 @@ namespace Vanara.Windows.Shell
 		public Guid GetCLSID(PROPERTYKEY propertyKey)
 		{
 			shellItem.ThrowIfNoShellItem2();
-			return shellItem.iShellItem2.GetCLSID(ref propertyKey);
+			return shellItem.iShellItem2.GetCLSID(propertyKey);
 		}
 
 		/// <summary>Refreshes this instance. This call is intended for internal use only and should not need to be called.</summary>

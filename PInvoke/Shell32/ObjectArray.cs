@@ -38,7 +38,7 @@ namespace Vanara.PInvoke
 			/// <param name="riid">Reference to the desired interface ID.</param>
 			/// <returns>Receives the interface pointer requested in riid.</returns>
 			[return: MarshalAs(UnmanagedType.IUnknown)]
-			object GetAt([In] uint uiIndex, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			object GetAt([In] uint uiIndex, in Guid riid);
 		}
 
 		/// <summary>
@@ -65,7 +65,7 @@ namespace Vanara.PInvoke
 			/// <param name="riid">Reference to the desired interface ID.</param>
 			/// <returns>Receives the interface pointer requested in riid.</returns>
 			[return: MarshalAs(UnmanagedType.IUnknown)]
-			new object GetAt([In] uint uiIndex, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			new object GetAt([In] uint uiIndex, in Guid riid);
 
 			/// <summary>Adds a single object to the collection.</summary>
 			/// <param name="punk">Pointer to the IUnknown of the object to be added to the collection.</param>

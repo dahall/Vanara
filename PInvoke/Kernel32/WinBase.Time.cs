@@ -119,7 +119,6 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724274")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FileTimeToDosDateTime([In] ref FILETIME lpFileTime, out ushort lpFatDate, out ushort lpFatTime);
-
+		public static extern bool FileTimeToDosDateTime(in FILETIME lpFileTime, out ushort lpFatDate, out ushort lpFatTime);
 	}
 }

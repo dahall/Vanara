@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Threading;
-using Microsoft.Win32.SafeHandles;
 
 namespace Vanara.PInvoke
 {
@@ -44,7 +43,9 @@ namespace Vanara.PInvoke
 		/// <param name="asyncResult">The asynchronous result.</param>
 		/// <param name="functionResult">if set to <c>true</c> sets the return value as Complete.</param>
 		/// <returns>A completed or errored <see cref="IAsyncResult"/> for the function</returns>
-		/// <exception cref="Win32Exception">Thrown when <paramref name="functionResult"/> is false and the system is reporting a Win32 error.</exception>
+		/// <exception cref="Win32Exception">
+		/// Thrown when <paramref name="functionResult"/> is false and the system is reporting a Win32 error.
+		/// </exception>
 		public static IAsyncResult EvaluateOverlappedFunction(OverlappedAsyncResult asyncResult, bool functionResult)
 		{
 			if (functionResult)
@@ -68,16 +69,18 @@ namespace Vanara.PInvoke
 		/// <returns>An <see cref="OverlappedAsyncResult"/> instance for the asynchronous calls.</returns>
 		public static unsafe OverlappedAsyncResult SetupOverlappedFunction(HFILE hDevice, AsyncCallback userCallback, object userState)
 		{
-			ThreadPool.BindHandle(hDevice);
+#pragma warning disable CS0618 // Type or member is obsolete
+			ThreadPool.BindHandle((IntPtr)hDevice);
+#pragma warning restore CS0618 // Type or member is obsolete
 			var ar = new OverlappedAsyncResult(userState, userCallback, hDevice);
 			var o = new Overlapped(0, 0, IntPtr.Zero, ar);
 			ar.Overlapped = o.Pack((code, bytes, pOverlapped) =>
 			{
-				var asyncResult = (OverlappedAsyncResult) Overlapped.Unpack(pOverlapped).AsyncResult;
+				var asyncResult = (OverlappedAsyncResult)Overlapped.Unpack(pOverlapped).AsyncResult;
 				if (asyncResult.IsCompleted) return;
 				asyncResult.FreeOverlapped();
 				if (code == 0x217) code = 0;
-				asyncResult.Complete(true, (int) code);
+				asyncResult.Complete(true, (int)code);
 			}, userState);
 			return ar;
 		}

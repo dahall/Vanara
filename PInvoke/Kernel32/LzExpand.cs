@@ -15,7 +15,7 @@ namespace Vanara.PInvoke
 		// INT WINAPI GetExpandedName( _In_ LPTSTR lpszSource, _Out_ LPTSTR lpszBuffer); https://msdn.microsoft.com/en-us/library/windows/desktop/aa364941(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("LzExpand.h", MSDNShortId = "aa364941")]
-		public static extern int GetExpandedName(string lpszSource, [Out] StringBuilder lpszBuffer);
+		public static extern int GetExpandedName(string lpszSource, StringBuilder lpszBuffer);
 
 		/// <summary>Closes a file that was opened by using the <c>LZOpenFile</c> function.</summary>
 		/// <param name="hFile">A handle to the file to be closed.</param>
@@ -144,7 +144,7 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>OF_EXIST0x4000</term>
-		/// <term>Opens the file and then closes it to test for a file&amp;#39;s existence.</term>
+		/// <term>Opens the file and then closes it to test for a file's existence.</term>
 		/// </item>
 		/// <item>
 		/// <term>OF_PARSE0x0100</term>
@@ -288,7 +288,7 @@ namespace Vanara.PInvoke
 		// INT WINAPI LZRead( _In_ INT hFile, _Out_ LPSTR lpBuffer, _In_ INT cbRead); https://msdn.microsoft.com/en-us/library/windows/desktop/aa365226(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("LzExpand.h", MSDNShortId = "aa365226")]
-		public static extern int LZRead(int hFile, [Out] StringBuilder lpBuffer, int cbRead);
+		public static extern int LZRead(int hFile, StringBuilder lpBuffer, int cbRead);
 
 		/// <summary>Moves a file pointer the specified number of bytes from a starting position.</summary>
 		/// <param name="hFile">A handle to the file.</param>

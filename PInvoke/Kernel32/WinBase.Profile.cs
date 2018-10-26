@@ -23,7 +23,7 @@ namespace Vanara.PInvoke
 		// UINT WINAPI GetPrivateProfileInt( _In_ LPCTSTR lpAppName, _In_ LPCTSTR lpKeyName, _In_ INT nDefault, _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724345(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724345")]
-		public static extern uint GetPrivateProfileInt([In] string lpAppName, [In] string lpKeyName, int nDefault, [In] string lpFileName);
+		public static extern uint GetPrivateProfileInt(string lpAppName, string lpKeyName, int nDefault, string lpFileName);
 
 		/// <summary>Retrieves all the keys and values for the specified section of an initialization file.</summary>
 		/// <param name="lpAppName">The name of the section in the initialization file.</param>
@@ -44,7 +44,7 @@ namespace Vanara.PInvoke
 		// DWORD WINAPI GetPrivateProfileSection( _In_ LPCTSTR lpAppName, _Out_ LPTSTR lpReturnedString, _In_ DWORD nSize, _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724348(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724348")]
-		public static extern uint GetPrivateProfileSection([In] string lpAppName, [Out] StringBuilder lpReturnedString, uint nSize, [In] string lpFileName);
+		public static extern uint GetPrivateProfileSection(string lpAppName, StringBuilder lpReturnedString, uint nSize, string lpFileName);
 
 		/// <summary>Retrieves the names of all sections in an initialization file.</summary>
 		/// <param name="lpszReturnBuffer">
@@ -64,7 +64,7 @@ namespace Vanara.PInvoke
 		// DWORD WINAPI GetPrivateProfileSectionNames( _Out_ LPTSTR lpszReturnBuffer, _In_ DWORD nSize, _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724352(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724352")]
-		public static extern uint GetPrivateProfileSectionNames([Out] StringBuilder lpszReturnBuffer, uint nSize, [In] string lpFileName);
+		public static extern uint GetPrivateProfileSectionNames(StringBuilder lpszReturnBuffer, uint nSize, string lpFileName);
 
 		/// <summary>Retrieves a string from the specified section in an initialization file.</summary>
 		/// <param name="lpAppName">
@@ -109,7 +109,7 @@ namespace Vanara.PInvoke
 		// DWORD nSize, _In_ LPCTSTR lpFileName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724353(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724353")]
-		public static extern uint GetPrivateProfileString([In] string lpAppName, [In] string lpKeyName, [In] string lpDefault, [Out] StringBuilder lpReturnedString, uint nSize, [In] string lpFileName);
+		public static extern uint GetPrivateProfileString(string lpAppName, string lpKeyName, string lpDefault, StringBuilder lpReturnedString, uint nSize, string lpFileName);
 
 		/// <summary>
 		/// Retrieves the data associated with a key in the specified section of an initialization file. As it retrieves the data, the function calculates a
@@ -131,7 +131,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724356")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetPrivateProfileStruct([In] string lpszSection, [In] string lpszKey, IntPtr lpStruct, uint uSizeStruct, [In] string szFile);
+		public static extern bool GetPrivateProfileStruct(string lpszSection, string lpszKey, IntPtr lpStruct, uint uSizeStruct, string szFile);
 
 		/// <summary>Retrieves an integer from a key in the specified section of the Win.ini file.</summary>
 		/// <param name="lpAppName">The name of the section containing the key name.</param>
@@ -148,7 +148,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724360")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern uint GetProfileInt([In] string lpAppName, [In] string lpKeyName, int nDefault);
+		public static extern uint GetProfileInt(string lpAppName, string lpKeyName, int nDefault);
 
 		/// <summary>Retrieves all the keys and values for the specified section of the Win.ini file.</summary>
 		/// <param name="lpAppName">The name of the section in the Win.ini file.</param>
@@ -166,7 +166,7 @@ namespace Vanara.PInvoke
 		// DWORD WINAPI GetProfileSection( _In_ LPCTSTR lpAppName, _Out_ LPTSTR lpReturnedString, _In_ DWORD nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724363(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724363")]
-		public static extern uint GetProfileSection([In] string lpAppName, [Out] StringBuilder lpReturnedString, uint nSize);
+		public static extern uint GetProfileSection(string lpAppName, StringBuilder lpReturnedString, uint nSize);
 
 		/// <summary>Retrieves the string associated with a key in the specified section of the Win.ini file.</summary>
 		/// <param name="lpAppName">
@@ -203,7 +203,7 @@ namespace Vanara.PInvoke
 		// nSize); https://msdn.microsoft.com/en-us/library/windows/desktop/ms724366(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724366")]
-		public static extern uint GetProfileString([In] string lpAppName, [In] string lpKeyName, [In] string lpDefault, [Out] StringBuilder lpReturnedString, uint nSize);
+		public static extern uint GetProfileString(string lpAppName, string lpKeyName, string lpDefault, StringBuilder lpReturnedString, uint nSize);
 
 		/// <summary>Replaces the keys and values for the specified section in an initialization file.</summary>
 		/// <param name="lpAppName">The name of the section in which data is written. This section name is typically the name of the calling application.</param>
@@ -226,7 +226,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms725500")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool WritePrivateProfileSection([In] string lpAppName, [In] string lpString, [In] string lpFileName);
+		public static extern bool WritePrivateProfileSection(string lpAppName, string lpString, string lpFileName);
 
 		/// <summary>Copies a string into the specified section of an initialization file.</summary>
 		/// <param name="lpAppName">
@@ -257,7 +257,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms725501")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool WritePrivateProfileString([In] string lpAppName, [In] string lpKeyName, [In] string lpString, [In] string lpFileName);
+		public static extern bool WritePrivateProfileString(string lpAppName, string lpKeyName, string lpString, string lpFileName);
 
 		/// <summary>
 		/// Copies data into a key in the specified section of an initialization file. As it copies the data, the function calculates a checksum and appends it
@@ -291,7 +291,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms725502")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool WritePrivateProfileStruct([In] string lpszSection, [In] string lpszKey, [In] IntPtr lpStruct, uint uSizeStruct, [In] string szFile);
+		public static extern bool WritePrivateProfileStruct(string lpszSection, string lpszKey, [In] IntPtr lpStruct, uint uSizeStruct, string szFile);
 
 		/// <summary>
 		/// Replaces the contents of the specified section in the Win.ini file with specified keys and values. If Win.ini uses Unicode characters, the function
@@ -313,7 +313,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms725503")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool WriteProfileSection([In] string lpAppName, [In] string lpString);
+		public static extern bool WriteProfileSection(string lpAppName, string lpString);
 
 		/// <summary>
 		/// Copies a string into the specified section of the Win.ini file. If Win.ini uses Unicode characters, the function writes Unicode characters to the
@@ -338,6 +338,6 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms725504")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool WriteProfileString([In] string lpAppName, [In] string lpKeyName, [In] string lpString);
+		public static extern bool WriteProfileString(string lpAppName, string lpKeyName, string lpString);
 	}
 }

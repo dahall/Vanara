@@ -53,7 +53,7 @@ namespace Vanara.PInvoke
 		// typedef struct _GROUP_AFFINITY { KAFFINITY Mask; WORD Group; WORD Reserved[3];} GROUP_AFFINITY, *PGROUP_AFFINITY;
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/dd405500(v=vs.85).aspx
 		[PInvokeData("WinNT.h", MSDNShortId = "dd405500")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public struct GROUP_AFFINITY
 		{
 			/// <summary>A bitmap that specifies the affinity for zero or more processors within the specified group.</summary>
@@ -61,8 +61,11 @@ namespace Vanara.PInvoke
 			/// <summary>The processor group number.</summary>
 			public ushort Group;
 			/// <summary>This member is reserved.</summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-			public ushort[] Reserved;
+			private ushort Reserved1;
+			/// <summary>This member is reserved.</summary>
+			private ushort Reserved2;
+			/// <summary>This member is reserved.</summary>
+			private ushort Reserved3;
 		}
 	}
 }

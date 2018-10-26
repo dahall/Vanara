@@ -47,7 +47,7 @@ namespace Vanara.PInvoke
 					return null;
 
 				var pathBuilder = new StringBuilder(260);
-				if (SHGetFolderPathEx(knownFolder, 0, null, pathBuilder, (uint)pathBuilder.Capacity).Failed)
+				if (SHGetFolderPathEx(knownFolder, 0, HTOKEN.NULL, pathBuilder, (uint)pathBuilder.Capacity).Failed)
 				    return null;
 				return pathBuilder.ToString();
 			}
@@ -92,7 +92,7 @@ namespace Vanara.PInvoke
 
 				public IntFileSysBindData() { }
 
-				public void SetFindData([In] ref WIN32_FIND_DATA pfd) => fd = pfd;
+				public void SetFindData(in WIN32_FIND_DATA pfd) => fd = pfd;
 
 				public void GetFindData(out WIN32_FIND_DATA pfd) => pfd = fd;
 
@@ -100,7 +100,7 @@ namespace Vanara.PInvoke
 
 				public long GetFileID() => fileId;
 
-				public void SetJunctionCLSID([In, MarshalAs(UnmanagedType.LPStruct)] Guid clsid) => clsidJunction = clsid;
+				public void SetJunctionCLSID(in Guid clsid) => clsidJunction = clsid;
 
 				[return: MarshalAs(UnmanagedType.LPStruct)]
 				public Guid GetJunctionCLSID() => clsidJunction != CLSID_UnknownJunction ? clsidJunction : throw new COMException("Unable to handle junctions", unchecked((int)HRESULT.E_FAIL));

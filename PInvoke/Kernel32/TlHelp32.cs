@@ -193,7 +193,7 @@ namespace Vanara.PInvoke
 		// CreateToolhelp32Snapshot( DWORD dwFlags, DWORD th32ProcessID );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("tlhelp32.h", MSDNShortId = "df643c25-7558-424c-b187-b3f86ba51358")]
-		public static extern IntPtr CreateToolhelp32Snapshot(TH32CS dwFlags, uint th32ProcessID);
+		public static extern SafeHSNAPSHOT CreateToolhelp32Snapshot(TH32CS dwFlags, uint th32ProcessID);
 
 		/// <summary>
 		/// <para>Retrieves information about the first block of a heap that has been allocated by a process.</para>
@@ -263,7 +263,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("tlhelp32.h", MSDNShortId = "b9a2992b-0dc1-41c3-aa23-796def674831")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool Heap32ListFirst(IntPtr hSnapshot, ref HEAPLIST32 lphl);
+		public static extern bool Heap32ListFirst(HSNAPSHOT hSnapshot, ref HEAPLIST32 lphl);
 
 		/// <summary>
 		/// <para>Retrieves information about the next heap that has been allocated by a process.</para>
@@ -290,7 +290,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("tlhelp32.h", MSDNShortId = "bb4d573c-a82f-48ac-be22-440d6a1d0c9c")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool Heap32ListNext(IntPtr hSnapshot, ref HEAPLIST32 lphl);
+		public static extern bool Heap32ListNext(HSNAPSHOT hSnapshot, ref HEAPLIST32 lphl);
 
 		/// <summary>
 		/// <para>Retrieves information about the next block of a heap that has been allocated by a process.</para>
@@ -348,7 +348,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("tlhelp32.h", MSDNShortId = "bb41cab9-13a1-469d-bf76-68c172e982f6")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool Module32First(IntPtr hSnapshot, out MODULEENTRY32 lpme);
+		public static extern bool Module32First(HSNAPSHOT hSnapshot, out MODULEENTRY32 lpme);
 
 		/// <summary>
 		/// <para>Retrieves information about the next module associated with a process or thread.</para>
@@ -375,7 +375,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("tlhelp32.h", MSDNShortId = "88ec1af4-bae7-4cd7-b830-97a98fb337f4")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool Module32Next(IntPtr hSnapshot, out MODULEENTRY32 lpme);
+		public static extern bool Module32Next(HSNAPSHOT hSnapshot, out MODULEENTRY32 lpme);
 
 		/// <summary>
 		/// <para>Retrieves information about the first process encountered in a system snapshot.</para>
@@ -407,7 +407,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("tlhelp32.h", MSDNShortId = "097790e8-30c2-4b00-9256-fa26e2ceb893")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool Process32First(IntPtr hSnapshot, ref PROCESSENTRY32 lppe);
+		public static extern bool Process32First(HSNAPSHOT hSnapshot, ref PROCESSENTRY32 lppe);
 
 		/// <summary>
 		/// <para>Retrieves information about the next process recorded in a system snapshot.</para>
@@ -435,7 +435,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("tlhelp32.h", MSDNShortId = "843a95fd-27ae-4215-83d0-82fc402b82b6")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool Process32Next(IntPtr hSnapshot, ref PROCESSENTRY32 lppe);
+		public static extern bool Process32Next(HSNAPSHOT hSnapshot, ref PROCESSENTRY32 lppe);
 
 		/// <summary>
 		/// <para>Retrieves information about the first thread of any process encountered in a system snapshot.</para>
@@ -469,7 +469,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("tlhelp32.h", MSDNShortId = "d4cb7a19-850e-43b5-bda5-91be48382d2a")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool Thread32First(IntPtr hSnapshot, ref THREADENTRY32 lpte);
+		public static extern bool Thread32First(HSNAPSHOT hSnapshot, ref THREADENTRY32 lpte);
 
 		/// <summary>
 		/// <para>Retrieves information about the next thread of any process encountered in the system memory snapshot.</para>
@@ -497,7 +497,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("tlhelp32.h", MSDNShortId = "5efe514e-626c-4138-97a0-bdad217c424f")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool Thread32Next(IntPtr hSnapshot, ref THREADENTRY32 lpte);
+		public static extern bool Thread32Next(HSNAPSHOT hSnapshot, ref THREADENTRY32 lpte);
 
 		/// <summary>
 		/// <para>Copies memory allocated to another process into an application-supplied buffer.</para>
@@ -654,6 +654,54 @@ namespace Vanara.PInvoke
 			public HEAPLIST32_FLAGS dwFlags;
 		}
 
+		/// <summary>Provides a handle to a snapshot.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HSNAPSHOT : IKernelHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="HSNAPSHOT"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public HSNAPSHOT(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HSNAPSHOT"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HSNAPSHOT NULL => new HSNAPSHOT(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HSNAPSHOT"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HSNAPSHOT h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HSNAPSHOT"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HSNAPSHOT(IntPtr h) => new HSNAPSHOT(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HSNAPSHOT h1, HSNAPSHOT h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HSNAPSHOT h1, HSNAPSHOT h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HSNAPSHOT h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
 		/// <summary>
 		/// <para>Describes an entry from a list of the modules belonging to the specified process.</para>
 		/// </summary>
@@ -666,7 +714,7 @@ namespace Vanara.PInvoke
 		// dwSize; DWORD th32ModuleID; DWORD th32ProcessID; DWORD GlblcntUsage; DWORD ProccntUsage; BYTE *modBaseAddr; DWORD modBaseSize;
 		// HMODULE hModule; char szModule[MAX_MODULE_NAME32 + 1]; char szExePath[MAX_PATH]; } MODULEENTRY32;
 		[PInvokeData("tlhelp32.h", MSDNShortId = "305fab35-625c-42e3-a434-e2513e4c8870")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct MODULEENTRY32
 		{
 			private const int MAX_MODULE_NAME32 = 255;
@@ -712,7 +760,7 @@ namespace Vanara.PInvoke
 			/// <summary>
 			/// <para>A handle to the module in the context of the owning process.</para>
 			/// </summary>
-			public IntPtr hModule;
+			public HINSTANCE hModule;
 
 			/// <summary>
 			/// <para>The module name.</para>
@@ -734,7 +782,7 @@ namespace Vanara.PInvoke
 		// DWORD dwSize; DWORD cntUsage; DWORD th32ProcessID; ULONG_PTR th32DefaultHeapID; DWORD th32ModuleID; DWORD cntThreads; DWORD
 		// th32ParentProcessID; LONG pcPriClassBase; DWORD dwFlags; CHAR szExeFile[MAX_PATH]; } PROCESSENTRY32;
 		[PInvokeData("tlhelp32.h", MSDNShortId = "9e2f7345-52bf-4bfc-9761-90b0b374c727")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct PROCESSENTRY32
 		{
 			/// <summary>
@@ -846,6 +894,24 @@ namespace Vanara.PInvoke
 			/// <para>This member is no longer used and is always set to zero.</para>
 			/// </summary>
 			public uint dwFlags;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> to a snapshot that releases a created HSNAPSHOT instance at disposal using CloseHandle.</summary>
+		public class SafeHSNAPSHOT : SafeKernelHandle
+		{
+			/// <summary>Initializes a new instance of the <see cref="HSNAPSHOT"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHSNAPSHOT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			private SafeHSNAPSHOT() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHSNAPSHOT"/> to <see cref="HSNAPSHOT"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HSNAPSHOT(SafeHSNAPSHOT h) => h.handle;
 		}
 	}
 }

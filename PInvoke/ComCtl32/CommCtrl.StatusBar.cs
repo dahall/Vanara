@@ -1,11 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using static Vanara.PInvoke.Gdi32;
-using static Vanara.PInvoke.Kernel32;
-
-// ReSharper disable InconsistentNaming
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable InconsistentNaming
 
 namespace Vanara.PInvoke
 {
@@ -17,39 +11,46 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Prevents borders from being drawn around the specified text.</summary>
 			SBT_NOBORDERS = 0x0100,
+
 			/// <summary>Draws highlighted borders that make the text stand out.</summary>
 			SBT_POPOUT = 0x0200,
-			/// <summary>Indicates that the string pointed to by pszText will be displayed in the opposite direction to the text in the parent window.</summary>
+
+			/// <summary>
+			/// Indicates that the string pointed to by pszText will be displayed in the opposite direction to the text in the parent window.
+			/// </summary>
 			SBT_RTLREADING = 0x0400,
+
 			/// <summary>Tab characters are ignored.</summary>
 			SBT_NOTABPARSING = 0x0800,
+
 			/// <summary>The text is drawn by the parent window.</summary>
 			SBT_OWNERDRAW = 0x1000,
 		}
 
-		/// <summary>The <c>DrawStatusText</c> function draws the specified text in the style of a status window with borders.</summary>
-		/// <param name="hdc">
-		/// <para>Type: <c><c>HDC</c></c></para>
+		/// <summary>
+		/// <para>The <c>DrawStatusText</c> function draws the specified text in the style of a status window with borders.</para>
+		/// </summary>
+		/// <param name="hDC">
+		/// <para>Type: <c>HDC</c></para>
 		/// <para>Handle to the display context for the window.</para>
 		/// </param>
 		/// <param name="lprc">
 		/// <para>Type: <c>LPCRECT</c></para>
 		/// <para>
-		/// Pointer to a <c>RECT</c> structure that contains the position, in client coordinates, of the rectangle in which the text is drawn. The function draws
-		/// the borders just inside the edges of the specified rectangle.
+		/// Pointer to a RECT structure that contains the position, in client coordinates, of the rectangle in which the text is drawn. The
+		/// function draws the borders just inside the edges of the specified rectangle.
 		/// </para>
 		/// </param>
 		/// <param name="pszText">
-		/// <para>Type: <c><c>LPCTSTR</c></c></para>
+		/// <para>Type: <c>LPCTSTR</c></para>
 		/// <para>
-		/// Pointer to a null-terminated string that specifies the text to display. Tab characters in the string determine whether the string is left-aligned,
-		/// right-aligned, or centered.
+		/// Pointer to a null-terminated string that specifies the text to display. Tab characters in the string determine whether the string
+		/// is left-aligned, right-aligned, or centered.
 		/// </para>
 		/// </param>
 		/// <param name="uFlags">
-		/// <para>Type: <c><c>UINT</c></c></para>
+		/// <para>Type: <c>UINT</c></para>
 		/// <para>Text drawing flags. This parameter can be a combination of these values:</para>
-		/// <para>
 		/// <list type="table">
 		/// <listheader>
 		/// <term>Value</term>
@@ -65,20 +66,31 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>SBT_RTLREADING</term>
-		/// <term>Indicates that the string pointed to by pszText will be displayed in the opposite direction to the text in the parent window.</term>
+		/// <term>
+		/// Indicates that the string pointed to by pszText will be displayed in the opposite direction to the text in the parent window.
+		/// </term>
 		/// </item>
 		/// </list>
-		/// </para>
 		/// </param>
-		/// <returns>This function does not return a value.</returns>
-		// void DrawStatusText( HDC hdc, LPCRECT lprc, LPCTSTR pszText, UINT uFlags);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb760763(v=vs.85).aspx
+		/// <returns>
+		/// <para>This function does not return a value.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Normal windows display text left-to-right (LTR). Windows can be mirrored to display languages such as Hebrew or Arabic that read
+		/// right-to-left (RTL). Normally, the pszText string will be displayed in the same direction as the text in its parent window. If
+		/// SBT_RTLREADING is set, the pszText string will read in the opposite direction from the text in the parent window.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/commctrl/nf-commctrl-drawstatustexta
+		// void DrawStatusTextA( HDC hDC, LPCRECT lprc, LPCSTR pszText, UINT uFlags );
 		[DllImport(Lib.ComCtl32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760763")]
-		public static extern void DrawStatusText(HDC hdc, ref RECT lprc, string pszText, SBT uFlags);
+		public static extern void DrawStatusText(HDC hdc, in RECT lprc, string pszText, SBT uFlags);
 
 		/// <summary>
-		/// Processes <c>WM_MENUSELECT</c> and <c>WM_COMMAND</c> messages and displays Help text about the current menu in the specified status window.
+		/// Processes <c>WM_MENUSELECT</c> and <c>WM_COMMAND</c> messages and displays Help text about the current menu in the specified
+		/// status window.
 		/// </summary>
 		/// <param name="uMsg">
 		/// <para>Type: <c><c>UINT</c></c></para>
@@ -107,13 +119,12 @@ namespace Vanara.PInvoke
 		/// <param name="lpwIDs">
 		/// <para>Type: <c>LPUINT</c></para>
 		/// <para>
-		/// Pointer to an array of values that contains pairs of string resource identifiers and menu handles. The function searches the array for the handle to
-		/// the selected menu and, if found, uses the corresponding resource identifier to load the appropriate Help string.
+		/// Pointer to an array of values that contains pairs of string resource identifiers and menu handles. The function searches the
+		/// array for the handle to the selected menu and, if found, uses the corresponding resource identifier to load the appropriate Help string.
 		/// </para>
 		/// </param>
 		/// <returns>No return value.</returns>
-		// void MenuHelp( UINT uMsg, WPARAM wParam, LPARAM lParam, HMENU hMainMenu, HINSTANCE hInst, HWND hwndStatus, LPUINT lpwIDs);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb760765(v=vs.85).aspx
+		// void MenuHelp( UINT uMsg, WPARAM wParam, LPARAM lParam, HMENU hMainMenu, HINSTANCE hInst, HWND hwndStatus, LPUINT lpwIDs); https://msdn.microsoft.com/en-us/library/windows/desktop/bb760765(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760765")]
 		public static extern void MenuHelp(uint uMsg, IntPtr wParam, IntPtr lParam, HMENU hMainMenu, HINSTANCE hInst, HWND hwndStatus, IntPtr lpwIDs);

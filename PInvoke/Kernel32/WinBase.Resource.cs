@@ -33,7 +33,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms648030(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648030")]
-		public static extern IntPtr BeginUpdateResource([In] string pFileName, [MarshalAs(UnmanagedType.Bool)] bool bDeleteExistingResources);
+		public static extern UpdateResourceHandle BeginUpdateResource(string pFileName, [MarshalAs(UnmanagedType.Bool)] bool bDeleteExistingResources);
 
 		/// <summary>Commits or discards changes made prior to a call to <c>UpdateResource</c>.</summary>
 		/// <param name="hUpdate">
@@ -59,7 +59,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648032")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EndUpdateResource([In] IntPtr hUpdate, [MarshalAs(UnmanagedType.Bool)] bool fDiscard);
+		public static extern bool EndUpdateResource([In] UpdateResourceHandle hUpdate, [MarshalAs(UnmanagedType.Bool)] bool fDiscard);
 
 		/// <summary>
 		/// Adds, deletes, or replaces a resource in a portable executable (PE) file. There are some restrictions on resource updates in files that contain
@@ -115,6 +115,54 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648049")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool UpdateResource([In] IntPtr hUpdate, [In] string lpType, [In] string lpName, ushort wLanguage, [In] IntPtr lpData, uint cbData);
+		public static extern bool UpdateResource([In] UpdateResourceHandle hUpdate, string lpType, string lpName, ushort wLanguage, [In] IntPtr lpData, uint cbData);
+
+		/// <summary>Provides a handle that can be used by UpdateResource.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct UpdateResourceHandle : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="UpdateResourceHandle"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public UpdateResourceHandle(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="UpdateResourceHandle"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static UpdateResourceHandle NULL => new UpdateResourceHandle(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="UpdateResourceHandle"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(UpdateResourceHandle h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="UpdateResourceHandle"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator UpdateResourceHandle(IntPtr h) => new UpdateResourceHandle(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(UpdateResourceHandle h1, UpdateResourceHandle h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(UpdateResourceHandle h1, UpdateResourceHandle h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is UpdateResourceHandle h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
 	}
 }

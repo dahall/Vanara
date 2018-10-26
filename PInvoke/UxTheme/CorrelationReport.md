@@ -44,7 +44,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetThemeFilename](http://msdn2.microsoft.com/en-us/library/bb759743) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeFilename  
 [GetThemeFont](http://msdn2.microsoft.com/en-us/library/bb759745) | uxtheme.dll | uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeFont  
 [GetThemeInt](http://msdn2.microsoft.com/en-us/library/bb759749) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeInt  
-[GetThemeIntList](http://msdn2.microsoft.com/en-us/library/bb759752) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeIntList  
+[GetThemeIntList](http://msdn2.microsoft.com/en-us/library/bb759752) | uxtheme.dll | UxTheme.h | Vanara.PInvoke.UxTheme.GetThemeIntListPreVista  
 [GetThemeMargins](http://msdn2.microsoft.com/en-us/library/bb759755) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeMargins  
 [GetThemeMetric](http://msdn2.microsoft.com/en-us/library/bb759757) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemeMetric  
 [GetThemePartSize](http://msdn2.microsoft.com/en-us/library/bb759759) | uxtheme.dll | Uxtheme.h | Vanara.PInvoke.UxTheme.GetThemePartSize  

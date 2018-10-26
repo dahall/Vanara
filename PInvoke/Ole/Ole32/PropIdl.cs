@@ -461,7 +461,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertysetstorage-create
 			[PreserveSig]
-			HRESULT Create([In, MarshalAs(UnmanagedType.LPStruct)] Guid rfmtid, [In] IntPtr pclsid, [In] STGM grfFlags, [In] STGM grfMode, out IPropertyStorage propertyStorage);
+			HRESULT Create(in Guid rfmtid, [In] IntPtr pclsid, [In] STGM grfFlags, [In] STGM grfMode, out IPropertyStorage propertyStorage);
 
 			/// <summary>
 			/// <para>The <c>Open</c> method opens a property set contained in the property set storage object.</para>
@@ -557,7 +557,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertysetstorage-open
 			[PreserveSig]
-			HRESULT Open([In, MarshalAs(UnmanagedType.LPStruct)] Guid rfmtid, [In] STGM grfMode, out IPropertyStorage propertyStorage);
+			HRESULT Open(in Guid rfmtid, [In] STGM grfMode, out IPropertyStorage propertyStorage);
 
 			/// <summary>
 			/// <para>The <c>Delete</c> method deletes one of the property sets contained in the property set storage object.</para>
@@ -575,7 +575,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertysetstorage-delete
 			[PreserveSig]
-			HRESULT Delete([In, MarshalAs(UnmanagedType.LPStruct)] Guid rfmtid);
+			HRESULT Delete(in Guid rfmtid);
 
 			/// <summary>
 			/// <para>
@@ -1065,7 +1065,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertystorage-settimes
 			[PreserveSig]
-			HRESULT SetTimes([In, MarshalAs(UnmanagedType.LPStruct)] FILETIME pctime, [In, MarshalAs(UnmanagedType.LPStruct)] FILETIME patime, [In, MarshalAs(UnmanagedType.LPStruct)] FILETIME pmtime);
+			HRESULT SetTimes(in FILETIME pctime, in FILETIME patime, in FILETIME pmtime);
 
 			/// <summary>
 			/// <para>
@@ -1100,7 +1100,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertystorage-setclass
 			[PreserveSig]
-			HRESULT SetClass([In, MarshalAs(UnmanagedType.LPStruct)] Guid clsid);
+			HRESULT SetClass(in Guid clsid);
 
 			/// <summary>
 			/// <para>The <c>Stat</c> method retrieves information about the current open property set.</para>

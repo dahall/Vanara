@@ -1,8 +1,7 @@
 ﻿using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
-
-// ReSharper disable InconsistentNaming
 
 namespace Vanara.PInvoke
 {
@@ -422,39 +421,6 @@ namespace Vanara.PInvoke
 		[PInvokeData("Wingdi.h", MSDNShortId = "dd183370")]
 		public static extern bool BitBlt(HDC hdc, int nXDest, int nYDest, int nWidth, int nHeight, HDC hdcSrc, int nXSrc, int nYSrc, RasterOperationMode dwRop);
 
-		/// <summary>
-		/// <para>The <c>CreateBrushIndirect</c> function creates a logical brush that has the specified style, color, and pattern.</para>
-		/// </summary>
-		/// <param name="plbrush">
-		/// <para>A pointer to a LOGBRUSH structure that contains information about the brush.</para>
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value identifies a logical brush.</para>
-		/// <para>If the function fails, the return value is <c>NULL</c>.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>A brush is a bitmap that the system uses to paint the interiors of filled shapes.</para>
-		/// <para>
-		/// After an application creates a brush by calling <c>CreateBrushIndirect</c>, it can select it into any device context by calling
-		/// the SelectObject function.
-		/// </para>
-		/// <para>
-		/// A brush created by using a monochrome bitmap (one color plane, one bit per pixel) is drawn using the current text and background
-		/// colors. Pixels represented by a bit set to 0 are drawn with the current text color; pixels represented by a bit set to 1 are
-		/// drawn with the current background color.
-		/// </para>
-		/// <para>When you no longer need the brush, call the DeleteObject function to delete it.</para>
-		/// <para>
-		/// <c>ICM:</c> No color is done at brush creation. However, color management is performed when the brush is selected into an
-		/// ICM-enabled device context.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/nf-wingdi-createbrushindirect HBRUSH CreateBrushIndirect( CONST
-		// LOGBRUSH *plbrush );
-		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("wingdi.h", MSDNShortId = "75f94ad1-ca25-4ad1-9e8c-ad1a4b8475a7")]
-		public static extern SafeHBRUSH CreateBrushIndirect(ref LOGBRUSH plbrush);
-
 		/// <summary>The CreateCompatibleDC function creates a memory device context (DC) compatible with the specified device.</summary>
 		/// <param name="hDC">
 		/// A handle to an existing DC. If this handle is NULL, the function creates a memory DC compatible with the application's current screen.
@@ -609,15 +575,89 @@ namespace Vanara.PInvoke
 		[PInvokeData("Wingdi.h", MSDNShortId = "dd144904")]
 		public static T GetObject<T>(HGDIOBJ hgdiobj) where T : struct
 		{
-			var result = default(T);
-			using (var ptr = SafeHGlobalHandle.CreateFromStructure(result))
-			{
-				var ret = GetObject(hgdiobj, ptr.Size, (IntPtr)ptr);
-				if (ret == 0)
-					throw new System.ComponentModel.Win32Exception();
+			using (var ptr = GetObject(hgdiobj))
 				return ptr.ToStructure<T>();
-			}
 		}
+
+		/// <summary>The GetObject function retrieves information for the specified graphics object.</summary>
+		/// <param name="hgdiobj">
+		/// A handle to the graphics object of interest. This can be a handle to one of the following: a logical bitmap, a brush, a font, a
+		/// palette, a pen, or a device independent bitmap created by calling the CreateDIBSection function.
+		/// </param>
+		/// <returns>Allocated memory holding the information for the graphics object.</returns>
+		[PInvokeData("Wingdi.h", MSDNShortId = "dd144904")]
+		public static SafeHGlobalHandle GetObject(HGDIOBJ hgdiobj)
+		{
+			var sz = GetObject(hgdiobj, 0, IntPtr.Zero);
+			var ptr = new SafeHGlobalHandle(sz);
+			var ret = GetObject(hgdiobj, ptr.Size, (IntPtr)ptr);
+			if (ret == 0)
+				Win32Error.ThrowLastError();
+			return ptr;
+		}
+
+		/// <summary>Converts a height in logical units to pixels.</summary>
+		/// <param name="width">The height in logical units.</param>
+		/// <param name="hdc">The device context handle.</param>
+		/// <returns>The height in pixels.</returns>
+		public static int LogicalHeightToDeviceWidth(int height, HDC hdc = default)
+		{
+			var pts = new[] { new Point(0, height) };
+			LPtoDP(hdc.IsNull ? SafeHDC.ScreenCompatibleDCHandle : hdc, pts, 1);
+			return pts[0].Y;
+		}
+
+		/// <summary>Converts a width in logical units to pixels.</summary>
+		/// <param name="width">The width in logical units.</param>
+		/// <param name="hdc">The device context handle.</param>
+		/// <returns>The width in pixels.</returns>
+		public static int LogicalWidthToDeviceWidth(int width, HDC hdc = default)
+		{
+			var pts = new[] { new Point(width, 0) };
+			LPtoDP(hdc.IsNull ? SafeHDC.ScreenCompatibleDCHandle : hdc, pts, 1);
+			return pts[0].X;
+		}
+
+		/// <summary>
+		/// <para>
+		/// The <c>LPtoDP</c> function converts logical coordinates into device coordinates. The conversion depends on the mapping mode of
+		/// the device context, the settings of the origins and extents for the window and viewport, and the world transformation.
+		/// </para>
+		/// </summary>
+		/// <param name="hdc">
+		/// <para>A handle to the device context.</para>
+		/// </param>
+		/// <param name="lppt">
+		/// <para>
+		/// A pointer to an array of POINT structures. The x-coordinates and y-coordinates contained in each of the <c>POINT</c> structures
+		/// will be transformed.
+		/// </para>
+		/// </param>
+		/// <param name="c">
+		/// <para>The number of points in the array.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>LPtoDP</c> function fails if the logical coordinates exceed 32 bits, or if the converted device coordinates exceed 27
+		/// bits. In the case of such an overflow, the results for all the points are undefined.
+		/// </para>
+		/// <para>
+		/// <c>LPtoDP</c> calculates complex floating-point arithmetic, and it has a caching system for efficiency. Therefore, the conversion
+		/// result of an initial call to <c>LPtoDP</c> might not exactly match the conversion result of a later call to <c>LPtoDP</c>. We
+		/// recommend not to write code that relies on the exact match of the conversion results from multiple calls to <c>LPtoDP</c> even if
+		/// the parameters that are passed to each call are identical.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/nf-wingdi-lptodp
+		// BOOL LPtoDP( HDC hdc, LPPOINT lppt, int c );
+		[DllImport(Lib.Gdi32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("wingdi.h", MSDNShortId = "670a16fb-842e-4250-9ad7-dc08e849c2ba")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool LPtoDP(HDC hdc, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] Point[] lppt, int c);
 
 		/// <summary>
 		/// The SelectObject function selects an object into the specified device context (DC). The new object replaces the previous object
@@ -702,223 +742,5 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Wingdi.h", MSDNShortId = "dd145141")]
 		public static extern bool TransparentBlt(HDC hdcDest, int xOriginDest, int yOriginDest, int wDest, int hDest, HDC hdcSrc, int xOriginSrc, int yOriginSrc, int wSrc, int hSrc, int crTransparent);
-
-		/// <summary>
-		/// <para>
-		/// The <c>LOGBRUSH</c> structure defines the style, color, and pattern of a physical brush. It is used by the CreateBrushIndirect
-		/// and ExtCreatePen functions.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// Although <c>lbColor</c> controls the foreground color of a hatch brush, the SetBkMode and SetBkColor functions control the
-		/// background color.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/ns-wingdi-taglogbrush typedef struct tagLOGBRUSH { UINT lbStyle;
-		// COLORREF lbColor; ULONG_PTR lbHatch; } LOGBRUSH, *PLOGBRUSH, *NPLOGBRUSH, *LPLOGBRUSH;
-		[PInvokeData("wingdi.h", MSDNShortId = "ded2c7a4-2248-4d01-95c6-ab4050719094")]
-		[StructLayout(LayoutKind.Explicit)]
-		public struct LOGBRUSH
-		{
-			/// <summary>
-			/// <para>The brush style. The <c>lbStyle</c> member must be one of the following styles.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>BS_DIBPATTERN</term>
-			/// <term>
-			/// A pattern brush defined by a device-independent bitmap (DIB) specification. If lbStyle is BS_DIBPATTERN, the lbHatch member
-			/// contains a handle to a packed DIB. For more information, see discussion in lbHatch.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>BS_DIBPATTERN8X8</term>
-			/// <term>See BS_DIBPATTERN.</term>
-			/// </item>
-			/// <item>
-			/// <term>BS_DIBPATTERNPT</term>
-			/// <term>
-			/// A pattern brush defined by a device-independent bitmap (DIB) specification. If lbStyle is BS_DIBPATTERNPT, the lbHatch member
-			/// contains a pointer to a packed DIB. For more information, see discussion in lbHatch.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>BS_HATCHED</term>
-			/// <term>Hatched brush.</term>
-			/// </item>
-			/// <item>
-			/// <term>BS_HOLLOW</term>
-			/// <term>Hollow brush.</term>
-			/// </item>
-			/// <item>
-			/// <term>BS_NULL</term>
-			/// <term>Same as BS_HOLLOW.</term>
-			/// </item>
-			/// <item>
-			/// <term>BS_PATTERN</term>
-			/// <term>Pattern brush defined by a memory bitmap.</term>
-			/// </item>
-			/// <item>
-			/// <term>BS_PATTERN8X8</term>
-			/// <term>See BS_PATTERN.</term>
-			/// </item>
-			/// <item>
-			/// <term>BS_SOLID</term>
-			/// <term>Solid brush.</term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			[FieldOffset(0)]
-			public BrushStyle lbStyle;
-
-			/// <summary>
-			/// <para>
-			/// The color in which the brush is to be drawn. If <c>lbStyle</c> is the BS_HOLLOW or BS_PATTERN style, <c>lbColor</c> is ignored.
-			/// </para>
-			/// <para>
-			/// If <c>lbStyle</c> is BS_DIBPATTERN or BS_DIBPATTERNPT, the low-order word of <c>lbColor</c> specifies whether the
-			/// <c>bmiColors</c> members of the BITMAPINFO structure contain explicit red, green, blue (RGB) values or indexes into the
-			/// currently realized logical palette. The <c>lbColor</c> member must be one of the following values.
-			/// </para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>DIB_PAL_COLORS</term>
-			/// <term>The color table consists of an array of 16-bit indexes into the currently realized logical palette.</term>
-			/// </item>
-			/// <item>
-			/// <term>DIB_RGB_COLORS</term>
-			/// <term>The color table contains literal RGB values.</term>
-			/// </item>
-			/// </list>
-			/// <para>
-			/// If <c>lbStyle</c> is BS_HATCHED or BS_SOLID, <c>lbColor</c> is a COLORREF color value. To create a <c>COLORREF</c> color
-			/// value, use the RGB macro.
-			/// </para>
-			/// </summary>
-			[FieldOffset(4)]
-			public COLORREF lbColor;
-
-			/// <summary>
-			/// <para>A hatch style. The meaning depends on the brush style defined by <c>lbStyle</c>.</para>
-			/// <para>
-			/// If <c>lbStyle</c> is BS_DIBPATTERN, the <c>lbHatch</c> member contains a handle to a packed DIB. To obtain this handle, an
-			/// application calls the GlobalAlloc function with GMEM_MOVEABLE (or LocalAlloc with LMEM_MOVEABLE) to allocate a block of
-			/// memory and then fills the memory with the packed DIB. A packed DIB consists of a BITMAPINFO structure immediately followed by
-			/// the array of bytes that define the pixels of the bitmap.
-			/// </para>
-			/// <para>
-			/// If <c>lbStyle</c> is BS_DIBPATTERNPT, the <c>lbHatch</c> member contains a pointer to a packed DIB. The pointer derives from
-			/// the memory block created by LocalAlloc with LMEM_FIXED set or by GlobalAlloc with GMEM_FIXED set, or it is the pointer
-			/// returned by a call like LocalLock (handle_to_the_dib). A packed DIB consists of a BITMAPINFO structure immediately followed
-			/// by the array of bytes that define the pixels of the bitmap.
-			/// </para>
-			/// <para>
-			/// If <c>lbStyle</c> is BS_HATCHED, the <c>lbHatch</c> member specifies the orientation of the lines used to create the hatch.
-			/// It can be one of the following values.
-			/// </para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>HS_BDIAGONAL</term>
-			/// <term>A 45-degree upward, left-to-right hatch</term>
-			/// </item>
-			/// <item>
-			/// <term>HS_CROSS</term>
-			/// <term>Horizontal and vertical cross-hatch</term>
-			/// </item>
-			/// <item>
-			/// <term>HS_DIAGCROSS</term>
-			/// <term>45-degree crosshatch</term>
-			/// </item>
-			/// <item>
-			/// <term>HS_FDIAGONAL</term>
-			/// <term>A 45-degree downward, left-to-right hatch</term>
-			/// </item>
-			/// <item>
-			/// <term>HS_HORIZONTAL</term>
-			/// <term>Horizontal hatch</term>
-			/// </item>
-			/// <item>
-			/// <term>HS_VERTICAL</term>
-			/// <term>Vertical hatch</term>
-			/// </item>
-			/// </list>
-			/// <para>
-			/// If <c>lbStyle</c> is BS_PATTERN, <c>lbHatch</c> is a handle to the bitmap that defines the pattern. The bitmap cannot be a
-			/// DIB section bitmap, which is created by the CreateDIBSection function.
-			/// </para>
-			/// <para>If <c>lbStyle</c> is BS_SOLID or BS_HOLLOW, <c>lbHatch</c> is ignored.</para>
-			/// </summary>
-			[FieldOffset(8)]
-			public HatchStyle lbHatchStyle;
-
-			/// <summary>
-			/// <para>A hatch style. The meaning depends on the brush style defined by <c>lbStyle</c>.</para>
-			/// <para>
-			/// If <c>lbStyle</c> is BS_DIBPATTERN, the <c>lbHatch</c> member contains a handle to a packed DIB. To obtain this handle, an
-			/// application calls the GlobalAlloc function with GMEM_MOVEABLE (or LocalAlloc with LMEM_MOVEABLE) to allocate a block of
-			/// memory and then fills the memory with the packed DIB. A packed DIB consists of a BITMAPINFO structure immediately followed by
-			/// the array of bytes that define the pixels of the bitmap.
-			/// </para>
-			/// <para>
-			/// If <c>lbStyle</c> is BS_DIBPATTERNPT, the <c>lbHatch</c> member contains a pointer to a packed DIB. The pointer derives from
-			/// the memory block created by LocalAlloc with LMEM_FIXED set or by GlobalAlloc with GMEM_FIXED set, or it is the pointer
-			/// returned by a call like LocalLock (handle_to_the_dib). A packed DIB consists of a BITMAPINFO structure immediately followed
-			/// by the array of bytes that define the pixels of the bitmap.
-			/// </para>
-			/// <para>
-			/// If <c>lbStyle</c> is BS_HATCHED, the <c>lbHatch</c> member specifies the orientation of the lines used to create the hatch.
-			/// It can be one of the following values.
-			/// </para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>HS_BDIAGONAL</term>
-			/// <term>A 45-degree upward, left-to-right hatch</term>
-			/// </item>
-			/// <item>
-			/// <term>HS_CROSS</term>
-			/// <term>Horizontal and vertical cross-hatch</term>
-			/// </item>
-			/// <item>
-			/// <term>HS_DIAGCROSS</term>
-			/// <term>45-degree crosshatch</term>
-			/// </item>
-			/// <item>
-			/// <term>HS_FDIAGONAL</term>
-			/// <term>A 45-degree downward, left-to-right hatch</term>
-			/// </item>
-			/// <item>
-			/// <term>HS_HORIZONTAL</term>
-			/// <term>Horizontal hatch</term>
-			/// </item>
-			/// <item>
-			/// <term>HS_VERTICAL</term>
-			/// <term>Vertical hatch</term>
-			/// </item>
-			/// </list>
-			/// <para>
-			/// If <c>lbStyle</c> is BS_PATTERN, <c>lbHatch</c> is a handle to the bitmap that defines the pattern. The bitmap cannot be a
-			/// DIB section bitmap, which is created by the CreateDIBSection function.
-			/// </para>
-			/// <para>If <c>lbStyle</c> is BS_SOLID or BS_HOLLOW, <c>lbHatch</c> is ignored.</para>
-			/// </summary>
-			[FieldOffset(8)]
-			public IntPtr lbHatch;
-		}
 	}
 }

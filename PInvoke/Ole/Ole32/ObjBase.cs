@@ -67,7 +67,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.Ole32, ExactSpelling = true, CallingConvention = CallingConvention.StdCall, SetLastError = false)]
 		[PInvokeData("Objbase.h", MSDNShortId = "ms695279")]
-		public static extern HRESULT CoInitializeEx(IntPtr pvReserved, COINIT coInit);
+		public static extern HRESULT CoInitializeEx([Optional] IntPtr pvReserved, COINIT coInit);
 
 		/// <summary>Registers security and sets the default security values for the process.</summary>
 		/// <param name="pSecDesc">
@@ -147,7 +147,9 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms693736(v=vs.85).aspx
 		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Objbase.h", MSDNShortId = "ms693736")]
-		public static extern HRESULT CoInitializeSecurity(IntPtr secDesc, int cAuthSvc, IntPtr asAuthSvc, IntPtr pReserved1, uint dwAuthnLevel, uint dwImpLevel, IntPtr pAuthList, uint dwCapabilities, IntPtr pReserved3);
+		public static extern HRESULT CoInitializeSecurity([Optional] IntPtr pSecDesc, int cAuthSvc, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SOLE_AUTHENTICATION_SERVICE[] asAuthSvc,
+			[Optional] IntPtr pReserved1, RPC_C_AUTHN_LEVEL dwAuthnLevel, RPC_C_IMP_LEVEL dwImpLevel, in SOLE_AUTHENTICATION_LIST pAuthList, EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities,
+			[Optional] IntPtr pReserved3);
 
 		/// <summary>
 		/// Closes the COM library on the current thread, unloads all DLLs loaded by the thread, frees any other resources that the thread maintains, and forces
@@ -163,7 +165,7 @@ namespace Vanara.PInvoke
 		/// <returns>This function can return the standard return values E_OUTOFMEMORY and S_OK.</returns>
 		[DllImport(Lib.Ole32, ExactSpelling = true)]
 		[PInvokeData("Objbase.h", MSDNShortId = "ms678542")]
-		public static extern HRESULT CreateBindCtx(uint reserved, out IBindCtx ppbc);
+		public static extern HRESULT CreateBindCtx([Optional] uint reserved, out IBindCtx ppbc);
 
 		/// <summary>The StgCreateStorageEx function creates a new storage object using a provided implementation for the IStorage or IPropertySetStorage interfaces. To open an existing file, use the StgOpenStorageEx function instead.
 		/// <para>Applications written for Windows 2000, Windows Server 2003 and Windows XP must use StgCreateStorageEx rather than StgCreateDocfile to take advantage of the enhanced Windows 2000 and Windows XP Structured Storage features.</para></summary>
@@ -186,7 +188,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Ole32, ExactSpelling = true, SetLastError = false)]
 		[PInvokeData("Objbase.h", MSDNShortId = "aa380328")]
 		public static extern HRESULT StgCreateStorageEx([MarshalAs(UnmanagedType.LPWStr)] string pwcsName, STGM grfMode,
-			STGFMT stgfmt, FileFlagsAndAttributes grfAttrs, [In] IntPtr pStgOptions, IntPtr pSecurityDescriptor, [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+			STGFMT stgfmt, FileFlagsAndAttributes grfAttrs, [In] IntPtr pStgOptions, IntPtr pSecurityDescriptor, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object ppObjectOpen);
 
 		/// <summary>The StgCreateStorageEx function creates a new storage object using a provided implementation for the IStorage or IPropertySetStorage interfaces. To open an existing file, use the StgOpenStorageEx function instead.
@@ -210,7 +212,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Ole32, ExactSpelling = true, SetLastError = false)]
 		[PInvokeData("Objbase.h", MSDNShortId = "aa380328")]
 		public static extern HRESULT StgCreateStorageEx([MarshalAs(UnmanagedType.LPWStr)] string pwcsName, STGM grfMode,
-			STGFMT stgfmt, FileFlagsAndAttributes grfAttrs, [In] ref STGOPTIONS pStgOptions, IntPtr pSecurityDescriptor, [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+			STGFMT stgfmt, FileFlagsAndAttributes grfAttrs, in STGOPTIONS pStgOptions, IntPtr pSecurityDescriptor, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object ppObjectOpen);
 
 		/// <summary>The StgIsStorageFile function indicates whether a particular disk file contains a storage object.</summary>
@@ -238,7 +240,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Ole32, ExactSpelling = true, SetLastError = false)]
 		[PInvokeData("Objbase.h", MSDNShortId = "aa380341")]
 		public static extern HRESULT StgOpenStorage([MarshalAs(UnmanagedType.LPWStr)] string pwcsName,
-			IStorage pstgPriority, STGM grfMode, [In] SNB snbExclude, uint reserved, out IStorage ppstgOpen);
+			IStorage pstgPriority, STGM grfMode, [In] SNB snbExclude, [Optional] uint reserved, out IStorage ppstgOpen);
 
 		/// <summary>STGs the open storage ex.</summary>
 		/// <param name="pwcsName">A pointer to the path of the null-terminated Unicode string file that contains the storage object. This string size cannot exceed MAX_PATH characters.
@@ -256,7 +258,26 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Ole32, ExactSpelling = true, SetLastError = false)]
 		[PInvokeData("Objbase.h", MSDNShortId = "aa380342")]
 		public static extern HRESULT StgOpenStorageEx([MarshalAs(UnmanagedType.LPWStr)] string pwcsName, STGM grfMode, STGFMT stgfmt,
-			FileFlagsAndAttributes grfAttrs, ref STGOPTIONS pStgOptions, IntPtr reserved2, [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+			FileFlagsAndAttributes grfAttrs, ref STGOPTIONS pStgOptions, [Optional] IntPtr reserved2, in Guid riid,
+			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object ppObjectOpen);
+
+		/// <summary>STGs the open storage ex.</summary>
+		/// <param name="pwcsName">A pointer to the path of the null-terminated Unicode string file that contains the storage object. This string size cannot exceed MAX_PATH characters.
+		/// <para>Windows Server 2003 and Windows XP/2000:  Unlike the CreateFile function, the MAX_PATH limit cannot be exceeded by using the "\\?\" prefix.</para></param>
+		/// <param name="grfMode">A value that specifies the access mode to open the new storage object. For more information, see STGM Constants. If the caller specifies transacted mode together with STGM_CREATE or STGM_CONVERT, the overwrite or conversion occurs when the commit operation is called for the root storage. If IStorage::Commit is not called for the root storage object, previous contents of the file will be restored. STGM_CREATE and STGM_CONVERT cannot be combined with the STGM_NOSNAPSHOT flag, because a snapshot copy is required when a file is overwritten or converted in transacted mode.
+		/// <para>If the storage object is opened in direct mode(STGM_DIRECT) with access to either STGM_WRITE or STGM_READWRITE, the sharing mode must be STGM_SHARE_EXCLUSIVE unless the STGM_DIRECT_SWMR mode is specified.For more information, see the Remarks section.If the storage object is opened in direct mode with access to STGM_READ, the sharing mode must be either STGM_SHARE_EXCLUSIVE or STGM_SHARE_DENY_WRITE, unless STGM_PRIORITY or STGM_DIRECT_SWMR is specified.For more information, see the Remarks section.</para>
+		/// <para>The mode in which a file is opened can affect implementation performance.For more information, see Compound File Implementation Limits.</para></param>
+		/// <param name="stgfmt">A value that specifies the storage file format. For more information, see the STGFMT enumeration.</param>
+		/// <param name="grfAttrs">A value that depends upon the value of the stgfmt parameter. STGFMT_DOCFILE must be zero (0) or FILE_FLAG_NO_BUFFERING. For more information about this value, see CreateFile. If the sector size of the file, specified in pStgOptions, is not an integer multiple of the physical sector size of the underlying disk, then this operation will fail. All other values of stgfmt must be zero.</param>
+		/// <param name="pStgOptions">A pointer to an STGOPTIONS structure that contains data about the storage object opened. The pStgOptions parameter is valid only if the stgfmt parameter is set to STGFMT_DOCFILE. The usVersion member must be set before calling StgOpenStorageEx. For more information, see the STGOPTIONS structure.</param>
+		/// <param name="reserved2">Reserved; must be zero.</param>
+		/// <param name="riid">A value that specifies the GUID of the interface pointer to return. Can also be the header-specified value for IID_IStorage to obtain the IStorage interface or for IID_IPropertySetStorage to obtain the IPropertySetStorage interface.</param>
+		/// <param name="ppObjectOpen">The address of an interface pointer variable that receives a pointer for an interface on the storage object opened; contains NULL if operation failed.</param>
+		/// <returns>This function can also return any file system errors or system errors wrapped in an HRESULT. For more information, see Error Handling Strategies and Handling Unknown Errors.</returns>
+		[DllImport(Lib.Ole32, ExactSpelling = true, SetLastError = false)]
+		[PInvokeData("Objbase.h", MSDNShortId = "aa380342")]
+		public static extern HRESULT StgOpenStorageEx([MarshalAs(UnmanagedType.LPWStr)] string pwcsName, STGM grfMode, STGFMT stgfmt,
+			FileFlagsAndAttributes grfAttrs, [Optional] IntPtr pStgOptions, [Optional] IntPtr reserved2, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object ppObjectOpen);
 
 		/// <summary>

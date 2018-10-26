@@ -224,7 +224,7 @@ namespace Vanara.PInvoke
 		// LONG WINAPI AppPolicyGetCreateFileAccess( _In_ HANDLE processToken, _Out_ AppPolicyCreateFileAccess *policy); https://msdn.microsoft.com/en-us/library/windows/desktop/mt829655(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("AppModel.h", MSDNShortId = "mt829655")]
-		public static extern Win32Error AppPolicyGetCreateFileAccess(IntPtr processToken, out AppPolicyCreateFileAccess policy);
+		public static extern Win32Error AppPolicyGetCreateFileAccess(HTOKEN processToken, out AppPolicyCreateFileAccess policy);
 
 		/// <summary>Retrieves the method used to end a process.</summary>
 		/// <param name="processToken">A handle that identifies the access token for a process.</param>
@@ -243,7 +243,7 @@ namespace Vanara.PInvoke
 		// LONG WINAPI AppPolicyGetProcessTerminationMethod( _In_ HANDLE processToken, _Out_ AppPolicyProcessTerminationMethod *policy); https://msdn.microsoft.com/en-us/library/windows/desktop/mt829656(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("AppModel.h", MSDNShortId = "mt829656")]
-		public static extern Win32Error AppPolicyGetProcessTerminationMethod(IntPtr processToken, out AppPolicyProcessTerminationMethod policy);
+		public static extern Win32Error AppPolicyGetProcessTerminationMethod(HTOKEN processToken, out AppPolicyProcessTerminationMethod policy);
 
 		/// <summary>Retrieves the method used for a process to surface developer information, such as asserts, to the user.</summary>
 		/// <param name="processToken">A handle that identifies the access token for a process.</param>
@@ -263,7 +263,7 @@ namespace Vanara.PInvoke
 		// LONG WINAPI AppPolicyGetShowDeveloperDiagnostic( _In_ HANDLE processToken, _Out_ AppPolicyShowDeveloperDiagnostic *policy); https://msdn.microsoft.com/en-us/library/windows/desktop/mt829657(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("AppModel.h", MSDNShortId = "mt829657")]
-		public static extern Win32Error AppPolicyGetShowDeveloperDiagnostic(IntPtr processToken, out AppPolicyShowDeveloperDiagnostic policy);
+		public static extern Win32Error AppPolicyGetShowDeveloperDiagnostic(HTOKEN processToken, out AppPolicyShowDeveloperDiagnostic policy);
 
 		/// <summary>
 		/// Retrieves the kind of initialization that should be automatically performed for a process when beginthread[ex] creates a thread.
@@ -285,7 +285,7 @@ namespace Vanara.PInvoke
 		// LONG WINAPI AppPolicyGetThreadInitializationType( _In_ HANDLE processToken, _Out_ AppPolicyThreadInitializationType *policy); https://msdn.microsoft.com/en-us/library/windows/desktop/mt829658(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("AppModel.h", MSDNShortId = "mt829658")]
-		public static extern Win32Error AppPolicyGetThreadInitializationType(IntPtr processToken, out AppPolicyThreadInitializationType policy);
+		public static extern Win32Error AppPolicyGetThreadInitializationType(HTOKEN processToken, out AppPolicyThreadInitializationType policy);
 
 		/// <summary>
 		/// <para>Closes a reference to the specified package information.</para>
@@ -472,7 +472,7 @@ namespace Vanara.PInvoke
 		// GetApplicationUserModelId( HANDLE hProcess, UINT32 *applicationUserModelIdLength, PWSTR applicationUserModelId );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("appmodel.h", MSDNShortId = "FE4E0818-F548-494B-B3BD-FB51DC748451")]
-		public static extern Win32Error GetApplicationUserModelId(IntPtr hProcess, ref uint applicationUserModelIdLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder applicationUserModelId);
+		public static extern Win32Error GetApplicationUserModelId(HPROCESS hProcess, ref uint applicationUserModelIdLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder applicationUserModelId);
 
 		/// <summary>
 		/// <para>Gets the application user model ID for the specified token.</para>
@@ -520,7 +520,7 @@ namespace Vanara.PInvoke
 		// GetApplicationUserModelIdFromToken( HANDLE token, UINT32 *applicationUserModelIdLength, PWSTR applicationUserModelId );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("appmodel.h", MSDNShortId = "80036518-927E-4CD0-B499-8EA472AB7E5A")]
-		public static extern Win32Error GetApplicationUserModelIdFromToken(IntPtr token, ref uint applicationUserModelIdLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder applicationUserModelId);
+		public static extern Win32Error GetApplicationUserModelIdFromToken(HTOKEN token, ref uint applicationUserModelIdLength, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder applicationUserModelId);
 
 		/// <summary>
 		/// <para>Gets the application user model ID for the current process.</para>
@@ -875,7 +875,7 @@ namespace Vanara.PInvoke
 		// hProcess, UINT32 *packageFamilyNameLength, PWSTR packageFamilyName );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "AC239898-9924-4193-9072-7A7EEC2D03E9")]
-		public static extern Win32Error GetPackageFamilyName(IntPtr hProcess, ref uint packageFamilyNameLength, StringBuilder packageFamilyName);
+		public static extern Win32Error GetPackageFamilyName(HPROCESS hProcess, ref uint packageFamilyNameLength, StringBuilder packageFamilyName);
 
 		/// <summary>
 		/// <para>Gets the package family name for the specified token.</para>
@@ -924,7 +924,7 @@ namespace Vanara.PInvoke
 		// GetPackageFamilyNameFromToken( HANDLE token, UINT32 *packageFamilyNameLength, PWSTR packageFamilyName );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "C4FAF5DE-DF1F-4AFA-813B-5D80C786031B")]
-		public static extern Win32Error GetPackageFamilyNameFromToken(IntPtr token, ref uint packageFamilyNameLength, StringBuilder packageFamilyName);
+		public static extern Win32Error GetPackageFamilyNameFromToken(HTOKEN token, ref uint packageFamilyNameLength, StringBuilder packageFamilyName);
 
 		/// <summary>
 		/// <para>Gets the package full name for the specified token.</para>
@@ -969,7 +969,7 @@ namespace Vanara.PInvoke
 		// GetPackageFullNameFromToken( HANDLE token, UINT32 *packageFullNameLength, PWSTR packageFullName );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("appmodel.h", MSDNShortId = "7B0D574E-A2F5-4D08-AEFB-9E040BBC729F")]
-		public static extern Win32Error GetPackageFullNameFromToken(IntPtr token, ref uint packageFullNameLength, StringBuilder packageFullName);
+		public static extern Win32Error GetPackageFullNameFromToken(HTOKEN token, ref uint packageFullNameLength, StringBuilder packageFullName);
 
 		/// <summary>
 		/// <para>Gets the package information for the specified package.</para>

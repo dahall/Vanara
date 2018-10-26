@@ -55,14 +55,8 @@ namespace Vanara.Extensions
 		/// <returns>The actual size of the file on the disk in bytes, compressed or uncompressed.</returns>
 		public static ulong GetPhysicalLength(this FileInfo fi)
 		{
-			var high = 0U;
-			var low = GetCompressedFileSize(fi.FullName, ref high);
-			var error = Marshal.GetLastWin32Error();
-			if (error == Win32Error.ERROR_SHARING_VIOLATION)
-				return (ulong)fi.Length;
-			if (high == 0 && low == INVALID_FILE_SIZE && error != 0)
-				throw new Win32Exception(error);
-			return ((ulong)high << 32) | (uint)low;
+			GetCompressedFileSize(fi.FullName, out ulong sz).ThrowIfFailed();
+			return sz;
 		}
 
 		public static void SetNtfsCompression(this FileSystemInfo fi, bool compressed)

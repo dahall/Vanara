@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Security;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
@@ -23,17 +24,39 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Enumerates <c>DYNAMIC_TIME_ZONE_INFORMATION</c> entries stored in the registry. This information is used to support time zones that experience annual
-		/// boundary changes due to daylight saving time adjustments. Use the information returned by this function when calling
-		/// <c>GetDynamicTimeZoneInformationEffectiveYears</c> to retrieve the specific range of years to pass to <c>GetTimeZoneInformationForYear</c>.
+		/// <para>
+		/// Enumerates DYNAMIC_TIME_ZONE_INFORMATION entries stored in the registry. This information is used to support time zones that
+		/// experience annual boundary changes due to daylight saving time adjustments. Use the information returned by this function when
+		/// calling GetDynamicTimeZoneInformationEffectiveYears to retrieve the specific range of years to pass to GetTimeZoneInformationForYear.
+		/// </para>
 		/// </summary>
-		/// <param name="dwIndex">Index value that represents the location of a <c>DYNAMIC_TIME_ZONE_INFORMATION</c> entry.</param>
-		/// <param name="lpTimeZoneInformation">Specifies settings for a time zone and dynamic daylight saving time.</param>
-		/// <returns></returns>
-		// DWORD WINAPI EnumDynamicTimeZoneInformation( _In_ const DWORD dwIndex, _Out_ PDYNAMIC_TIME_ZONE_INFORMATION lpTimeZoneInformation); https://msdn.microsoft.com/en-us/library/windows/desktop/hh706893(v=vs.85).aspx
+		/// <param name="dwIndex">
+		/// <para>Index value that represents the location of a DYNAMIC_TIME_ZONE_INFORMATION entry.</para>
+		/// </param>
+		/// <param name="lpTimeZoneInformation">
+		/// <para>Specifies settings for a time zone and dynamic daylight saving time.</para>
+		/// </param>
+		/// <returns>
+		/// <para>None</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/timezoneapi/nf-timezoneapi-enumdynamictimezoneinformation
+		// DWORD EnumDynamicTimeZoneInformation( const DWORD dwIndex, PDYNAMIC_TIME_ZONE_INFORMATION lpTimeZoneInformation );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("Winbase.h", MSDNShortId = "hh706893")]
+		[PInvokeData("timezoneapi.h", MSDNShortId = "EBB2366A-86FE-4764-B7F9-5D305993CE0A")]
 		public static extern uint EnumDynamicTimeZoneInformation(uint dwIndex, out DYNAMIC_TIME_ZONE_INFORMATION lpTimeZoneInformation);
+
+		/// <summary>
+		/// Enumerates DYNAMIC_TIME_ZONE_INFORMATION entries stored in the registry. This information is used to support time zones that
+		/// experience annual boundary changes due to daylight saving time adjustments. Use the information returned by this function when
+		/// calling GetDynamicTimeZoneInformationEffectiveYears to retrieve the specific range of years to pass to GetTimeZoneInformationForYear.
+		/// </summary>
+		/// <returns>An enumeration of settings for a time zone and dynamic daylight saving time.</returns>
+		public static IEnumerable<DYNAMIC_TIME_ZONE_INFORMATION> EnumDynamicTimeZoneInformation()
+		{
+			var i = 0U;
+			while (EnumDynamicTimeZoneInformation(i++, out var tz) != 0)
+				yield return tz;
+		}
 
 		/// <summary>Converts a file time to system time format. System time is based on Coordinated Universal Time (UTC).</summary>
 		/// <param name="lpFileTime">
@@ -47,7 +70,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("FileAPI.h", MSDNShortId = "ms724280")]
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true), SuppressUnmanagedCodeSecurity]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FileTimeToSystemTime(ref FILETIME lpFileTime, ref SYSTEMTIME lpSystemTime);
+		public static extern bool FileTimeToSystemTime(in FILETIME lpFileTime, out SYSTEMTIME lpSystemTime);
 
 		/// <summary>
 		/// Retrieves the current time zone and dynamic daylight saving time settings. These settings control the translations between Coordinated Universal Time
@@ -142,7 +165,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "bb540851")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetTimeZoneInformationForYear(ushort wYear, [In] ref DYNAMIC_TIME_ZONE_INFORMATION pdtzi, out TIME_ZONE_INFORMATION ptzi);
+		public static extern bool GetTimeZoneInformationForYear(ushort wYear, in DYNAMIC_TIME_ZONE_INFORMATION pdtzi, out TIME_ZONE_INFORMATION ptzi);
 
 		/// <summary>
 		/// Sets the current time zone and dynamic daylight saving time settings. These settings control translations from Coordinated Universal Time (UTC) to
@@ -157,7 +180,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724932")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetDynamicTimeZoneInformation(ref DYNAMIC_TIME_ZONE_INFORMATION lpTimeZoneInformation);
+		public static extern bool SetDynamicTimeZoneInformation(in DYNAMIC_TIME_ZONE_INFORMATION lpTimeZoneInformation);
 
 		/// <summary>
 		/// <para>
@@ -176,7 +199,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724944")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetTimeZoneInformation(ref TIME_ZONE_INFORMATION lpTimeZoneInformation);
+		public static extern bool SetTimeZoneInformation(in TIME_ZONE_INFORMATION lpTimeZoneInformation);
 
 		/// <summary>Converts a system time to file time format. System time is based on Coordinated Universal Time (UTC).</summary>
 		/// <param name="lpSystemTime">
@@ -190,7 +213,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true), SuppressUnmanagedCodeSecurity]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724948")]
-		public static extern bool SystemTimeToFileTime(ref SYSTEMTIME lpSystemTime, ref FILETIME lpFileTime);
+		public static extern bool SystemTimeToFileTime(in SYSTEMTIME lpSystemTime, out FILETIME lpFileTime);
 
 		/// <summary>Converts a time in Coordinated Universal Time (UTC) to a specified time zone's corresponding local time.</summary>
 		/// <param name="lpTimeZone">
@@ -213,8 +236,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724949")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SystemTimeToTzSpecificLocalTime([In, MarshalAs(UnmanagedType.LPStruct)] TIME_ZONE_INFORMATION lpTimeZone,
-			[In, MarshalAs(UnmanagedType.LPStruct)] SYSTEMTIME lpUniversalTime, [Out] out SYSTEMTIME lpLocalTime);
+		public static extern bool SystemTimeToTzSpecificLocalTime(in TIME_ZONE_INFORMATION lpTimeZone,
+			in SYSTEMTIME lpUniversalTime, [Out] out SYSTEMTIME lpLocalTime);
 
 		/// <summary>
 		/// Converts a time in Coordinated Universal Time (UTC) with dynamic daylight saving time settings to a specified time zone's corresponding local time.
@@ -233,7 +256,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "jj206642")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SystemTimeToTzSpecificLocalTimeEx([In] ref DYNAMIC_TIME_ZONE_INFORMATION lpTimeZoneInformation, [In] ref SYSTEMTIME lpUniversalTime, out SYSTEMTIME lpLocalTime);
+		public static extern bool SystemTimeToTzSpecificLocalTimeEx(in DYNAMIC_TIME_ZONE_INFORMATION lpTimeZoneInformation, in SYSTEMTIME lpUniversalTime, out SYSTEMTIME lpLocalTime);
 
 		/// <summary>
 		/// <para>Converts a local time to a time in Coordinated Universal Time (UTC).</para>
@@ -261,7 +284,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms725485")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool TzSpecificLocalTimeToSystemTime([In, MarshalAs(UnmanagedType.LPStruct)] TIME_ZONE_INFORMATION lpTimeZoneInformation, [In, MarshalAs(UnmanagedType.LPStruct)] SYSTEMTIME lpLocalTime, [Out] out SYSTEMTIME lpUniversalTime);
+		public static extern bool TzSpecificLocalTimeToSystemTime(in TIME_ZONE_INFORMATION lpTimeZoneInformation, in SYSTEMTIME lpLocalTime, [Out] out SYSTEMTIME lpUniversalTime);
 
 		/// <summary>Converts a local time to a time with dynamic daylight saving time settings to Coordinated Universal Time (UTC).</summary>
 		/// <param name="lpTimeZoneInformation">
@@ -277,7 +300,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "jj206643")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool TzSpecificLocalTimeToSystemTimeEx([In] ref DYNAMIC_TIME_ZONE_INFORMATION lpTimeZoneInformation, [In] ref SYSTEMTIME lpLocalTime, out SYSTEMTIME lpUniversalTime);
+		public static extern bool TzSpecificLocalTimeToSystemTimeEx(in DYNAMIC_TIME_ZONE_INFORMATION lpTimeZoneInformation, in SYSTEMTIME lpLocalTime, out SYSTEMTIME lpUniversalTime);
 
 		/// <summary>Specifies settings for a time zone and dynamic daylight saving time.</summary>
 		// typedef struct _TIME_DYNAMIC_ZONE_INFORMATION { LONG Bias; WCHAR StandardName[32]; SYSTEMTIME StandardDate; LONG StandardBias; WCHAR DaylightName[32];

@@ -158,7 +158,7 @@ namespace Vanara.PInvoke
 			/// the new progress dialog for the Windows Vista and later operations engine.
 			/// </para>
 			/// </remarks>
-			void StartProgressDialog([In] IntPtr hwndOwner, [In] OPPROGDLGF flags);
+			void StartProgressDialog([In] HWND hwndOwner, [In] OPPROGDLGF flags);
 
 			/// <summary>Stops current progress dialog.</summary>
 			void StopProgressDialog();

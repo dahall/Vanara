@@ -282,7 +282,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "b8184c98-1f86-4714-baf8-af4ef3e71cf2")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PathCompactPath(IntPtr hDC, StringBuilder pszPath, uint dx);
+		public static extern bool PathCompactPath(HDC hDC, StringBuilder pszPath, uint dx);
 
 		/// <summary>
 		/// <para>Truncates a path to fit within a certain number of characters by replacing path components with ellipses.</para>

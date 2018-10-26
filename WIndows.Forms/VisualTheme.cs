@@ -635,7 +635,7 @@ namespace Vanara.Windows.Forms
 		{
 			RECT r = bounds;
 			using (var hdc = new SafeHDC(dc))
-				return HitTestThemeBackground(Handle, hdc, partId, stateId, (HitTestOptions)options, ref r, SafeHRGN.NULL, pt, out var htcode).Succeeded ? (System.Windows.Forms.VisualStyles.HitTestCode)htcode : 0;
+				return HitTestThemeBackground(Handle, hdc, partId, stateId, (HitTestOptions)options, ref r, HRGN.NULL, pt, out var htcode).Succeeded ? (System.Windows.Forms.VisualStyles.HitTestCode)htcode : 0;
 		}
 
 		/// <summary>Retrieves a hit test code for a point in the background specified by a visual style.</summary>
@@ -653,7 +653,7 @@ namespace Vanara.Windows.Forms
 		{
 			RECT r = bounds;
 			using (var hdc = new SafeHDC(graphics))
-				return HitTestThemeBackground(Handle, hdc, partId, stateId, (HitTestOptions)options, ref r, new SafeHRGN(region.GetHrgn(graphics)), pt, out var htcode).Succeeded ? (System.Windows.Forms.VisualStyles.HitTestCode)htcode : 0;
+				return HitTestThemeBackground(Handle, hdc, partId, stateId, (HitTestOptions)options, ref r, new HRGN(region.GetHrgn(graphics)), pt, out var htcode).Succeeded ? (System.Windows.Forms.VisualStyles.HitTestCode)htcode : 0;
 		}
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>

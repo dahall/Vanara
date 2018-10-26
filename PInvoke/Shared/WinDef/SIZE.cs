@@ -5,7 +5,10 @@ using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
 {
-	/// <summary>The SIZE structure specifies the width and height of a rectangle.</summary>
+	/// <summary>The <c>SIZE</c> structure specifies the width and height of a rectangle.</summary>
+	// typedef struct tagSIZE { LONG cx; LONG cy;} SIZE, *PSIZE;
+	// https://msdn.microsoft.com/en-us/library/windows/desktop/dd145106(v=vs.85).aspx
+	[PInvokeData("Windef.h", MSDNShortId = "dd145106")]
 	[StructLayout(LayoutKind.Sequential), Serializable]
 	public struct SIZE : IEquatable<SIZE>
 	{
@@ -76,5 +79,8 @@ namespace Vanara.PInvoke
 		/// <param name="s">The <see cref="Size"/>.</param>
 		/// <returns>The <see cref="SIZE"/> result of the conversion.</returns>
 		public static implicit operator SIZE(Size s) => new SIZE(s.Width, s.Height);
+
+		/// <summary>Represents a SIZE structures whose values are set to zero.</summary>
+		public static readonly SIZE Empty = new SIZE();
 	}
 }

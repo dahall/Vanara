@@ -12,14 +12,14 @@ namespace Vanara.Extensions
 			var size = Size.Empty;
 			var info = new ICONINFO();
 			GetIconInfo(new SafeHICON(cursor.Handle, false), info);
-			if (info.hbmColor != IntPtr.Zero)
+			if (!info.hbmColor.IsNull)
 			{
-				using (var bm = Image.FromHbitmap(info.hbmColor))
+				using (var bm = Image.FromHbitmap((IntPtr)info.hbmColor))
 					size = bm.Size;
 			}
-			else if (info.hbmMask != IntPtr.Zero)
+			else if (!info.hbmMask.IsNull)
 			{
-				using (var bm = Image.FromHbitmap(info.hbmMask))
+				using (var bm = Image.FromHbitmap((IntPtr)info.hbmMask))
 					size = new Size(bm.Width, bm.Height / 2);
 			}
 			return size;

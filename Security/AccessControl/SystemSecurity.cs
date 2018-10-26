@@ -128,9 +128,9 @@ namespace Vanara.Security.AccessControl
 		/// <value>The current user's account rights.</value>
 		public AccountPrivileges CurrentUserPrivileges { get; }
 
-		/// <summary>Gets the <see cref="SafeLsaPolicyHandle"/> for this instance.</summary>
-		/// <value>The <see cref="SafeLsaPolicyHandle"/>.</value>
-		public SafeLsaPolicyHandle Handle { get; }
+		/// <summary>Gets the <see cref="SafeLSA_HANDLE"/> for this instance.</summary>
+		/// <value>The <see cref="SafeLSA_HANDLE"/>.</value>
+		private SafeLSA_HANDLE Handle { get; }
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 		public void Dispose() { Handle?.Dispose(); }
@@ -249,10 +249,10 @@ namespace Vanara.Security.AccessControl
 			ThrowIfLsaError(LsaAddAccountRights(Handle, GetSid(accountName), privilegeNames, privilegeNames.Length));
 		}
 
-		private SafeLsaPolicyHandle GetAccount(string accountName, LsaAccountAccessMask mask = LsaAccountAccessMask.ACCOUNT_VIEW)
+		private SafeLSA_HANDLE GetAccount(string accountName, LsaAccountAccessMask mask = LsaAccountAccessMask.ACCOUNT_VIEW)
 		{
 			var sid = GetSid(accountName);
-			var res = LsaNtStatusToWinError(LsaOpenAccount(Handle, sid, mask, out SafeLsaPolicyHandle hAcct));
+			var res = LsaNtStatusToWinError(LsaOpenAccount(Handle, sid, mask, out SafeLSA_HANDLE hAcct));
 			if (res == Win32Error.ERROR_FILE_NOT_FOUND)
 				ThrowIfLsaError(LsaCreateAccount(Handle, sid, mask, out hAcct));
 			else
@@ -285,7 +285,7 @@ namespace Vanara.Security.AccessControl
 			return sid;
 		}
 
-		private static AccountLogonRights GetSystemAccess(SafeLsaPolicyHandle hAcct)
+		private static AccountLogonRights GetSystemAccess(SafeLSA_HANDLE hAcct)
 		{
 			ThrowIfLsaError(LsaGetSystemAccessAccount(hAcct, out int rights));
 			return (AccountLogonRights)rights;
@@ -303,7 +303,7 @@ namespace Vanara.Security.AccessControl
 			ThrowIfLsaError(LsaRemoveAccountRights(Handle, GetSid(accountName), false, privilegeNames, privilegeNames.Length));
 		}
 
-		private static void SetSystemAccess(SafeLsaPolicyHandle hAcct, AccountLogonRights rights)
+		private static void SetSystemAccess(SafeLSA_HANDLE hAcct, AccountLogonRights rights)
 		{
 			var cur = GetSystemAccess(hAcct);
 			ThrowIfLsaError(LsaSetSystemAccessAccount(hAcct, (int)(cur | rights)));

@@ -45,7 +45,7 @@ namespace Vanara.PInvoke.Tests
 			{
 				var bytes = GetBigBytes(sz, 1);
 				Assert.That(bytes[1024], Is.EqualTo(1));
-				new TaskFactory().FromAsync(BeginWriteFile, EndWriteFile, hFile, bytes, (uint) bytes.Length, 1).Wait();
+				new TaskFactory().FromAsync<HFILE, byte[], uint>(BeginWriteFile, EndWriteFile, hFile, bytes, (uint) bytes.Length, 1).Wait();
 			}
 			var fi = new FileInfo(fn);
 			Assert.That(fi.Exists);
@@ -55,9 +55,20 @@ namespace Vanara.PInvoke.Tests
 			{
 				var bytes = GetBigBytes(sz);
 				Assert.That(bytes[1024], Is.EqualTo(0));
-				new TaskFactory().FromAsync(BeginReadFile, EndReadFile, hFile, bytes, (uint)bytes.Length, 1).Wait();
+				new TaskFactory().FromAsync<HFILE, byte[], uint>(BeginReadFile, EndReadFile, hFile, bytes, (uint)bytes.Length, 1).Wait();
 				Assert.That(bytes[1024], Is.EqualTo(1));
 			}
+		}
+
+		[Test]
+		public void CreateProcessTest()
+		{
+			var res = CreateProcess(null, new StringBuilder("notepad.exe"), default, default, false, 0, default, null, STARTUPINFO.Default, out var pi);
+			if (!res) TestContext.WriteLine(Win32Error.GetLastError());
+			Assert.That(pi.hProcess.IsInvalid, Is.False);
+			Assert.That(pi.hThread.IsInvalid, Is.False);
+			Assert.That(pi.dwProcessId, Is.GreaterThan(0));
+			Assert.That(pi.dwThreadId, Is.GreaterThan(0));
 		}
 
 		[Test]
@@ -112,7 +123,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			var link = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
 			var fn = CreateTempFile();
-			var b = CreateHardLink(link, fn, IntPtr.Zero);
+			var b = CreateHardLink(link, fn);
 			if (!b) TestContext.WriteLine($"CreateHardLink:{Win32Error.GetLastError()}");
 			Assert.That(b);
 			Assert.That(File.Exists(fn));
@@ -157,8 +168,7 @@ namespace Vanara.PInvoke.Tests
 		{
 			var dt = DateTime.Today;
 			var ft = dt.ToFileTimeStruct();
-			var st = new SYSTEMTIME();
-			var b = FileTimeToSystemTime(ref ft, ref st);
+			var b = FileTimeToSystemTime(ft, out var st);
 			if (!b) TestContext.WriteLine($"FileTimeToSystemTime:{Win32Error.GetLastError()}");
 			Assert.That(b);
 			Assert.That(dt.Year, Is.EqualTo(st.wYear));
@@ -211,18 +221,14 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void GetCompressedFileSizeTest()
 		{
-			var highSz = 0U;
-			var lowSz = GetCompressedFileSize(AdvApi32Tests.fn, ref highSz);
-			Assert.That(lowSz, Is.Not.EqualTo(INVALID_FILE_SIZE));
-			if (lowSz == INVALID_FILE_SIZE)
-				TestContext.WriteLine(Win32Error.GetLastError());
-			var sz = MAKELONG64(lowSz, highSz);
+			var err = GetCompressedFileSize(AdvApi32Tests.fn, out ulong sz);
+			if (err.Failed)
+				TestContext.WriteLine(err);
 			Assert.That(sz, Is.GreaterThan(0));
 
-			highSz = 0;
-			lowSz = GetCompressedFileSize(@"C:\NoFile.txt", ref highSz);
-			Assert.That(lowSz, Is.EqualTo(INVALID_FILE_SIZE));
-			Assert.That(Win32Error.GetLastError() == Win32Error.ERROR_FILE_NOT_FOUND);
+			sz = 0;
+			err = GetCompressedFileSize(@"C:\NoFile.txt", out sz);
+			Assert.That(err == Win32Error.ERROR_FILE_NOT_FOUND);
 		}
 
 		[Test]
@@ -382,19 +388,29 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void HeapTest()
 		{
-			var ph = new SafeProcessHeapBlockHandle(512);
+			var ph = new SafeHeapBlock(512);
 			var fw = new WIN32_FIND_DATA {ftCreationTime = DateTime.Today.ToFileTimeStruct(), cFileName = "test.txt", dwFileAttributes = FileAttributes.Normal};
 			Marshal.StructureToPtr(fw, ph.DangerousGetHandle(), false);
 			Assert.That(Marshal.ReadInt32(ph.DangerousGetHandle()), Is.EqualTo((int)FileAttributes.Normal));
 			Assert.That(ph.Size, Is.EqualTo(512));
 
-			using (var hh = HeapCreate(0, IntPtr.Zero, IntPtr.Zero))
+			using (var hh = HeapCreate(0, 0, 0))
 			{
 				var hb = hh.GetBlock(512);
 				Marshal.StructureToPtr(fw, hb.DangerousGetHandle(), false);
 				Assert.That(Marshal.ReadInt32(hb.DangerousGetHandle()), Is.EqualTo((int) FileAttributes.Normal));
 				Assert.That(hb.Size, Is.EqualTo(512));
 			}
+		}
+
+		[Test]
+		public void PowerRequestTest()
+		{
+			using (var h = PowerCreateRequest(new REASON_CONTEXT("Just because")))
+				Assert.That(h.IsInvalid, Is.False);
+			using (var l = LoadLibraryEx("user32.dll", LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE))
+			using (var h1 = PowerCreateRequest(new REASON_CONTEXT(l, 800)))
+				Assert.That(h1.IsInvalid, Is.False);
 		}
 
 		[Test]
@@ -412,8 +428,7 @@ namespace Vanara.PInvoke.Tests
 			var dt = new DateTime(2000, 1, 1, 4, 4, 4, 444, DateTimeKind.Utc);
 			var st = new SYSTEMTIME(dt, DateTimeKind.Utc);
 			Assert.That(st.ToString(DateTimeKind.Utc, null, null), Is.EqualTo(dt.ToString()));
-			var ft = new System.Runtime.InteropServices.ComTypes.FILETIME();
-			var b = SystemTimeToFileTime(ref st, ref ft);
+			var b = SystemTimeToFileTime(st, out var ft);
 			Assert.That(b, Is.True);
 			Assert.That(FileTimeExtensions.Equals(ft, dt.ToFileTimeStruct()));
 		}

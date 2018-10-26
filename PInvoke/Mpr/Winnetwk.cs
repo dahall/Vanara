@@ -650,7 +650,7 @@ namespace Vanara.PInvoke
 		/// <term>lpRemoteName</term>
 		/// <term>
 		/// A pointer to a null-terminated string that specifies the network resource to connect to. The string can be up to MAX_PATH
-		/// characters in length, and must follow the network provider&amp;#39;s naming conventions.
+		/// characters in length, and must follow the network provider's naming conventions.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -771,7 +771,7 @@ namespace Vanara.PInvoke
 		/// <term>CONNECT_CMD_SAVECRED0x00001000</term>
 		/// <term>
 		/// If this flag is set, and the operating system prompts for a credential, the credential should be saved by the credential manager.
-		/// If the credential manager is disabled for the caller&amp;#39;s logon session, or if the network provider does not support saving
+		/// If the credential manager is disabled for the caller's logon session, or if the network provider does not support saving
 		/// credentials, this flag is ignored. This flag is ignored unless CONNECT_INTERACTIVE is also set. This flag is also ignored unless
 		/// you set the CONNECT_COMMANDLINE flag.Windows XP: This value is supported on Windows XP and later.
 		/// </term>
@@ -780,7 +780,7 @@ namespace Vanara.PInvoke
 		/// <term>CONNECT_CRED_RESET0x00002000</term>
 		/// <term>
 		/// If this flag is set, and the operating system prompts for a credential, the credential is reset by the credential manager. If the
-		/// credential manager is disabled for the caller&amp;#39;s logon session, or if the network provider does not support saving
+		/// credential manager is disabled for the caller's logon session, or if the network provider does not support saving
 		/// credentials, this flag is ignored. This flag is also ignored unless you set the CONNECT_COMMANDLINE flag.Windows Vista: This
 		/// value is supported on Windows Vista and later.
 		/// </term>
@@ -967,7 +967,7 @@ namespace Vanara.PInvoke
 		/// <term>lpRemoteName</term>
 		/// <term>
 		/// A pointer to a null-terminated string that specifies the network resource to connect to. The string can be up to MAX_PATH
-		/// characters in length, and must follow the network provider&amp;#39;s naming conventions.
+		/// characters in length, and must follow the network provider's naming conventions.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1063,7 +1063,7 @@ namespace Vanara.PInvoke
 		/// <term>CONNECT_CMD_SAVECRED</term>
 		/// <term>
 		/// If this flag is set, and the operating system prompts for a credential, the credential should be saved by the credential manager.
-		/// If the credential manager is disabled for the caller&amp;#39;s logon session, or if the network provider does not support saving
+		/// If the credential manager is disabled for the caller's logon session, or if the network provider does not support saving
 		/// credentials, this flag is ignored. This flag is also ignored unless you set the CONNECT_COMMANDLINE flag.Windows 2000/NT and
 		/// Windows Me/98/95: This value is not supported.
 		/// </term>
@@ -1282,7 +1282,7 @@ namespace Vanara.PInvoke
 		// DWORD WNetCloseEnum( _In_ HANDLE hEnum); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385431(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385431")]
-		public static extern Win32Error WNetCloseEnum(IntPtr hEnum);
+		public static extern Win32Error WNetCloseEnum(SafeWNetEnumHandle hEnum);
 
 		/// <summary>
 		/// The <c>WNetConnectionDialog</c> function starts a general browsing dialog box for connecting to network resources. The function
@@ -1395,7 +1395,7 @@ namespace Vanara.PInvoke
 		// DWORD WNetConnectionDialog1( _Inout_ LPCONNECTDLGSTRUCT lpConnDlgStruct); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385436(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385436")]
-		public static extern Win32Error WNetConnectionDialog1(ref CONNECTDLGSTRUCT lpConnDlgStruct);
+		public static extern Win32Error WNetConnectionDialog1(in CONNECTDLGSTRUCT lpConnDlgStruct);
 
 		/// <summary>
 		/// The <c>WNetDisconnectDialog</c> function starts a general browsing dialog box for disconnecting from network resources. The
@@ -1493,7 +1493,7 @@ namespace Vanara.PInvoke
 		// DWORD WNetDisconnectDialog1( _In_ LPDISCDLGSTRUCT lpConnDlgStruct); https://msdn.microsoft.com/en-us/library/windows/desktop/aa385443(v=vs.85).aspx
 		[DllImport(Lib.Mpr, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnetwk.h", MSDNShortId = "aa385443")]
-		public static extern Win32Error WNetDisconnectDialog1(ref DISCDLGSTRUCT lpConnDlgStruct);
+		public static extern Win32Error WNetDisconnectDialog1(in DISCDLGSTRUCT lpConnDlgStruct);
 
 		/// <summary>
 		/// The <c>WNetEnumResource</c> function continues an enumeration of network resources that was started by a call to the
@@ -2505,7 +2505,7 @@ namespace Vanara.PInvoke
 		/// <term>lpRemoteName</term>
 		/// <term>
 		/// Pointer to a null-terminated string that specifies the network resource to connect to. The string can be up to MAX_PATH
-		/// characters in length, and it must follow the network provider&amp;#39;s naming conventions.
+		/// characters in length, and it must follow the network provider's naming conventions.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -2599,7 +2599,7 @@ namespace Vanara.PInvoke
 		/// <term>CONNECT_CMD_SAVECRED</term>
 		/// <term>
 		/// If this flag is set, and the operating system prompts for a credential, the credential should be saved by the credential manager.
-		/// If the credential manager is disabled for the caller&amp;#39;s logon session, or if the network provider does not support saving
+		/// If the credential manager is disabled for the caller's logon session, or if the network provider does not support saving
 		/// credentials, this flag is ignored. This flag is also ignored unless you set the CONNECT_COMMANDLINE flag.Windows 2000/NT and
 		/// Windows Me/98/95: This value is not supported.
 		/// </term>
@@ -2748,7 +2748,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>HWND</c></para>
 			/// <para>The handle to the owner window for the dialog box.</para>
 			/// </summary>
-			public IntPtr hwndOwner;
+			public HWND hwndOwner;
 
 			/// <summary>
 			/// <para>Type: <c>LPNETRESOURCE</c></para>
@@ -2844,7 +2844,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>HWND</c></para>
 			/// <para>A handle to the owner window of the dialog box.</para>
 			/// </summary>
-			public IntPtr hwndOwner;
+			public HWND hwndOwner;
 
 			/// <summary>
 			/// <para>Type: <c>LPTSTR</c></para>
@@ -3255,17 +3255,19 @@ namespace Vanara.PInvoke
 			public string lpUniversalName;
 		}
 
-		/// <summary>Safe handle for WNetOpenEnum related calls.</summary>
-		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
-		public class SafeWNetEnumHandle : GenericSafeHandle
+		/// <summary>Provides a <see cref="SafeHandle"/> to a WNet enumeration that releases a created WNetEnumHandle instance at disposal using WNetCloseEnum.</summary>
+		public class SafeWNetEnumHandle : HANDLE
 		{
-			/// <summary>Initializes a new instance of the <see cref="SafeWNetEnumHandle"/> class.</summary>
-			public SafeWNetEnumHandle() : this(IntPtr.Zero, true) { }
+			/// <summary>Initializes a new instance of the <see cref="WNetEnumHandle"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			public SafeWNetEnumHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			/// <summary>Initializes a new instance of the <see cref="SafeWNetEnumHandle"/> class.</summary>
-			/// <param name="handle">The handle.</param>
-			/// <param name="own">if set to <c>true</c>, handle will be closed when disposed.</param>
-			public SafeWNetEnumHandle(IntPtr handle, bool own = true) : base(handle, h => WNetCloseEnum(h).Succeeded, own) { }
+			/// <summary>Initializes a new instance of the <see cref="WNetEnumHandle"/> class.</summary>
+			private SafeWNetEnumHandle() : base() { }
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => WNetCloseEnum(this).Succeeded;
 		}
 	}
 }

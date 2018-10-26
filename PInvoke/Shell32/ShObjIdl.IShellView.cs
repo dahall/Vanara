@@ -670,7 +670,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="holemenuRes"></param>
 			/// <param name="hwndActiveObject">The view's window handle.</param>
-			void SetMenuSB(IntPtr hmenuShared, IntPtr holemenuRes, IntPtr hwndActiveObject);
+			void SetMenuSB(IntPtr hmenuShared, IntPtr holemenuRes, HWND hwndActiveObject);
 
 			/// <summary>
 			/// Permits the container to remove any of its menu elements from the in-place composite menu and to free all associated resources.
@@ -864,7 +864,7 @@ namespace Vanara.PInvoke
 			/// <param name="riid">The identifier of the COM interface being requested.</param>
 			/// <returns>The address that receives the interface pointer. If an error occurs, the pointer returned must be NULL.</returns>
 			[return: MarshalAs(UnmanagedType.IUnknown)]
-			object GetItemObject(SVGIO uItem, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			object GetItemObject(SVGIO uItem, in Guid riid);
 		}
 
 		/// <summary>
@@ -956,7 +956,7 @@ namespace Vanara.PInvoke
 			/// <param name="riid">The identifier of the COM interface being requested.</param>
 			/// <returns>The address that receives the interface pointer. If an error occurs, the pointer returned must be NULL.</returns>
 			[return: MarshalAs(UnmanagedType.IUnknown)]
-			new object GetItemObject(SVGIO uItem, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			new object GetItemObject(SVGIO uItem, in Guid riid);
 
 			/// <summary>
 			/// Requests the current or default Shell view, together with all other valid view identifiers (VIDs) supported by this
@@ -964,7 +964,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			/// <param name="pvid">A pointer to the GUID of the requested view.</param>
 			/// <param name="uView">The type of view requested.</param>
-			void GetView([MarshalAs(UnmanagedType.LPStruct)] out Guid pvid, SV2GV uView);
+			void GetView(in Guid pvid, SV2GV uView);
 
 			/// <summary>
 			/// Used to request the creation of a new Shell view window. It can be either the right pane of Windows Explorer or the client
@@ -1068,7 +1068,7 @@ namespace Vanara.PInvoke
 			/// <param name="riid">The identifier of the COM interface being requested.</param>
 			/// <returns>The address that receives the interface pointer. If an error occurs, the pointer returned must be NULL.</returns>
 			[return: MarshalAs(UnmanagedType.IUnknown)]
-			new object GetItemObject(SVGIO uItem, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			new object GetItemObject(SVGIO uItem, in Guid riid);
 
 			/// <summary>
 			/// Requests the current or default Shell view, together with all other valid view identifiers (VIDs) supported by this
@@ -1076,7 +1076,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			/// <param name="pvid">A pointer to the GUID of the requested view.</param>
 			/// <param name="uView">The type of view requested.</param>
-			new void GetView([MarshalAs(UnmanagedType.LPStruct)] out Guid pvid, SV2GV uView);
+			new void GetView(in Guid pvid, SV2GV uView);
 
 			/// <summary>
 			/// Used to request the creation of a new Shell view window. It can be either the right pane of Windows Explorer or the client
@@ -1113,7 +1113,7 @@ namespace Vanara.PInvoke
 			/// <param name="prcView">A pointer to a RECT structure that provides the dimensions of the view window.</param>
 			/// <returns>A value that receives a pointer to the handle of the new Shell view window.</returns>
 			IntPtr CreateViewWindow3(IShellBrowser psbOwner, IShellView psvPrevious, SV3CVW3_FLAGS dwViewFlags, FOLDERFLAGS dwMask,
-				FOLDERFLAGS dwFlags, FOLDERVIEWMODE fvMode, [MarshalAs(UnmanagedType.LPStruct)] Guid pvid, PRECT prcView);
+				FOLDERFLAGS dwFlags, FOLDERVIEWMODE fvMode, in Guid pvid, PRECT prcView);
 		}
 
 		/// <summary>Contains folder view information.</summary>
@@ -1174,7 +1174,7 @@ namespace Vanara.PInvoke
 			private IntPtr _pvid;
 
 			/// <summary>A window handle to the new Shell view.</summary>
-			public IntPtr hwndView;
+			public HWND hwndView;
 
 			/// <summary>Initializes a new instance of the <see cref="SV2CVW2_PARAMS"/> class.</summary>
 			/// <param name="viewMode">Folder view mode.</param>

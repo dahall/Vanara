@@ -65,6 +65,7 @@ User32.dll that have GDI references | [Vanara.PInvoke.User32.Gdi](https://github
 UxTheme.dll | [Vanara.PInvoke.UxTheme](https://github.com/dahall/Vanara/blob/master/PInvoke/UxTheme/CorrelationReport.md)<br>![Coverage](https://img.shields.io/badge/coverage-100%25-green.svg) | [![NuGet Package](https://img.shields.io/nuget/v/Vanara.PInvoke.UxTheme.svg?style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.UxTheme)
 VirtDisk.dll | [Vanara.PInvoke.VirtDisk](https://github.com/dahall/Vanara/blob/master/PInvoke/VirtDisk/CorrelationReport.md)<br>![Coverage](https://img.shields.io/badge/coverage-100%25-green.svg) | [![NuGet Package](https://img.shields.io/nuget/v/Vanara.PInvoke.VirtDisk.svg?style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.VirtDisk)
 WinINet.dll | [Vanara.PInvoke.WinINet](https://github.com/dahall/Vanara/blob/master/PInvoke/WinINet/CorrelationReport.md)<br>![Coverage](https://img.shields.io/badge/coverage-3%25-red.svg) | [![NuGet Package](https://img.shields.io/nuget/v/Vanara.PInvoke.WinINet.svg?style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.WinINet)
+Ws2_32.dll | [Vanara.PInvoke.Ws2_32](https://github.com/dahall/Vanara/blob/master/PInvoke/Ws2_32/CorrelationReport.md)<br>![Coverage](https://img.shields.io/badge/coverage-3%25-red.svg) | [![NuGet Package](https://img.shields.io/nuget/v/Vanara.PInvoke.Ws2_32.svg?style=flat-square)](https://www.nuget.org/packages/Vanara.PInvoke.Ws2_32)
 
 ## Supporting Assemblies
 

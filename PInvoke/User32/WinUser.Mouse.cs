@@ -68,7 +68,7 @@ namespace Vanara.PInvoke
 			/// <summary>The services requested</summary>
 			public TME dwFlags;
 			/// <summary>A handle to the window to track.</summary>
-			public IntPtr hwndTrack;
+			public HWND hwndTrack;
 			/// <summary>
 			/// The hover time-out (if TME_HOVER was specified in dwFlags), in milliseconds. Can be HOVER_DEFAULT, which means to use the system default hover time-out.
 			/// </summary>

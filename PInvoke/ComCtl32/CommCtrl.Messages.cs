@@ -1,11 +1,8 @@
-﻿// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable InconsistentNaming
-
-namespace Vanara.PInvoke
+﻿namespace Vanara.PInvoke
 {
 	public static partial class ComCtl32
 	{
-		public const int CCM_FIRST = 0x2000;
+		internal const int CCM_FIRST = 0x2000;
 
 		public enum CommonControlMessage
 		{

@@ -1,5 +1,5 @@
 ## Correlation report for user32.dll  
-### Methods (43% complete)  
+### Methods (44% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [ActivateKeyboardLayout](https://www.google.com/search?num=5&q=ActivateKeyboardLayout+site%3Amicrosoft.com) | user32.dll |  |   
@@ -10,6 +10,8 @@ Native Method | Native DLL | Header | Managed Method
 [AllowSetForegroundWindow](http://msdn2.microsoft.com/en-us/library/allowsetforegroundwindow) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.AllowSetForegroundWindow  
 [AnimateWindow](http://msdn2.microsoft.com/en-us/library/animatewindow) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.AnimateWindow  
 [AnyPopup](http://msdn2.microsoft.com/en-us/library/anypopup) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.AnyPopup  
+[AppendMenuA](http://msdn2.microsoft.com/en-us/library/appendmenu) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.AppendMenu  
+[AppendMenuW](http://msdn2.microsoft.com/en-us/library/appendmenu) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.AppendMenu  
 [AreDpiAwarenessContextsEqual](https://www.google.com/search?num=5&q=AreDpiAwarenessContextsEqual+site%3Amicrosoft.com) | user32.dll |  |   
 [ArrangeIconicWindows](http://msdn2.microsoft.com/en-us/library/arrangeiconicwindows) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.ArrangeIconicWindows  
 [AttachThreadInput](https://www.google.com/search?num=5&q=AttachThreadInput+site%3Amicrosoft.com) | user32.dll |  |   
@@ -55,6 +57,8 @@ Native Method | Native DLL | Header | Managed Method
 [CreateCaret](https://www.google.com/search?num=5&q=CreateCaret+site%3Amicrosoft.com) | user32.dll |  |   
 [CreateCursor](http://msdn2.microsoft.com/en-us/library/createcursor) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.CreateCursor  
 [CreateDesktop](http://msdn2.microsoft.com/en-us/library/c6ed40c5-13a9-4697-a727-730adc6a912d) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.CreateDesktop  
+[CreateDesktopExA](http://msdn2.microsoft.com/en-us/library/2fe8859d-1fe3-4f44-aa97-58e61779c4cc) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.CreateDesktopEx  
+[CreateDesktopExW](http://msdn2.microsoft.com/en-us/library/2fe8859d-1fe3-4f44-aa97-58e61779c4cc) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.CreateDesktopEx  
 [CreateDialogIndirectParam](http://msdn2.microsoft.com/en-us/library/createdialogindirectparam) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.CreateDialogIndirectParam  
 [CreateDialogParam](http://msdn2.microsoft.com/en-us/library/createdialogparam) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.CreateDialogParam  
 [CreateIcon](http://msdn2.microsoft.com/en-us/library/createicon) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.CreateIcon  
@@ -64,6 +68,8 @@ Native Method | Native DLL | Header | Managed Method
 [CreateMenu](http://msdn2.microsoft.com/en-us/library/createmenu.htm) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.CreateMenu  
 [CreatePopupMenu](http://msdn2.microsoft.com/en-us/library/createpopupmenu.htm) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.CreatePopupMenu  
 [CreateWindowEx](http://msdn2.microsoft.com/en-us/library/createwindowex) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.CreateWindowEx  
+[CreateWindowStationA](http://msdn2.microsoft.com/en-us/library/c1aee546-decd-46c9-8d02-d6792f5a6a0d) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.CreateWindowStation  
+[CreateWindowStationW](http://msdn2.microsoft.com/en-us/library/c1aee546-decd-46c9-8d02-d6792f5a6a0d) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.CreateWindowStation  
 [DdeAbandonTransaction](https://www.google.com/search?num=5&q=DdeAbandonTransaction+site%3Amicrosoft.com) | user32.dll |  |   
 [DdeAccessData](https://www.google.com/search?num=5&q=DdeAccessData+site%3Amicrosoft.com) | user32.dll |  |   
 [DdeAddData](https://www.google.com/search?num=5&q=DdeAddData+site%3Amicrosoft.com) | user32.dll |  |   
@@ -93,6 +99,7 @@ Native Method | Native DLL | Header | Managed Method
 [DdeUnaccessData](https://www.google.com/search?num=5&q=DdeUnaccessData+site%3Amicrosoft.com) | user32.dll |  |   
 [DdeUninitialize](https://www.google.com/search?num=5&q=DdeUninitialize+site%3Amicrosoft.com) | user32.dll |  |   
 [DefDlgProc](https://www.google.com/search?num=5&q=DefDlgProcA+site%3Amicrosoft.com) | user32.dll |  |   
+[DefDlgProc](http://msdn2.microsoft.com/en-us/library/defdlgproc) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.DefDlgProc  
 [DeferWindowPos](http://msdn2.microsoft.com/en-us/library/deferwindowpos) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.DeferWindowPos  
 [DefFrameProc](https://www.google.com/search?num=5&q=DefFrameProcA+site%3Amicrosoft.com) | user32.dll |  |   
 [DefMDIChildProc](https://www.google.com/search?num=5&q=DefMDIChildProcA+site%3Amicrosoft.com) | user32.dll |  |   
@@ -126,6 +133,10 @@ Native Method | Native DLL | Header | Managed Method
 [DrawState](https://www.google.com/search?num=5&q=DrawStateA+site%3Amicrosoft.com) | user32.dll |  |   
 [DrawText](http://msdn2.microsoft.com/en-us/library/dd162498) | user32.dll | WinUser.h | Vanara.PInvoke.User32_Gdi.DrawText  
 [DrawTextEx](https://www.google.com/search?num=5&q=DrawTextExA+site%3Amicrosoft.com) | user32.dll |  |   
+[DWMBindCursorToOutputConfig](https://www.google.com/search?num=5&q=DWMBindCursorToOutputConfig+site%3Amicrosoft.com) | user32.dll |  |   
+[DWMCommitInputSystemOutputConfig](https://www.google.com/search?num=5&q=DWMCommitInputSystemOutputConfig+site%3Amicrosoft.com) | user32.dll |  |   
+[DWMSetCursorOrientation](https://www.google.com/search?num=5&q=DWMSetCursorOrientation+site%3Amicrosoft.com) | user32.dll |  |   
+[DWMSetInputSystemOutputConfig](https://www.google.com/search?num=5&q=DWMSetInputSystemOutputConfig+site%3Amicrosoft.com) | user32.dll |  |   
 [EmptyClipboard](http://msdn2.microsoft.com/en-us/library/emptyclipboard) | user32.dll | winuser.h | Vanara.PInvoke.User32.EmptyClipboard  
 [EnableMenuItem](http://msdn2.microsoft.com/en-us/library/enablemenuitem.htm) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.EnableMenuItem  
 [EnableMouseInPointer](https://www.google.com/search?num=5&q=EnableMouseInPointer+site%3Amicrosoft.com) | user32.dll |  |   
@@ -145,7 +156,9 @@ Native Method | Native DLL | Header | Managed Method
 [EnumDisplayMonitors](http://msdn2.microsoft.com/en-us/library/a7668c28-77c9-4373-ae1a-eab3cb98f866) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.EnumDisplayMonitors  
 [EnumDisplaySettings](https://www.google.com/search?num=5&q=EnumDisplaySettingsA+site%3Amicrosoft.com) | user32.dll |  |   
 [EnumDisplaySettingsEx](https://www.google.com/search?num=5&q=EnumDisplaySettingsExA+site%3Amicrosoft.com) | user32.dll |  |   
+[EnumPropsA](http://msdn2.microsoft.com/en-us/library/enumprops) | user32.dll | winuser.h | Vanara.PInvoke.User32.EnumProps  
 [EnumPropsEx](http://msdn2.microsoft.com/en-us/library/enumpropsex) | user32.dll | winuser.h | Vanara.PInvoke.User32.EnumPropsEx  
+[EnumPropsW](http://msdn2.microsoft.com/en-us/library/enumprops) | user32.dll | winuser.h | Vanara.PInvoke.User32.EnumProps  
 [EnumThreadWindows](http://msdn2.microsoft.com/en-us/library/enumthreadwindows) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.EnumThreadWindows  
 [EnumWindows](http://msdn2.microsoft.com/en-us/library/enumwindows) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.EnumWindows  
 [EnumWindowStations](http://msdn2.microsoft.com/en-us/library/418d4d6a-9e4d-4fe3-8e1b-398c732c6e23) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.EnumWindowStations  
@@ -179,6 +192,8 @@ Native Method | Native DLL | Header | Managed Method
 [GetClassWord](https://www.google.com/search?num=5&q=GetClassWord+site%3Amicrosoft.com) | user32.dll |  |   
 [GetClientRect](http://msdn2.microsoft.com/en-us/library/ms633503) | user32.dll | WinUser.h | Vanara.PInvoke.User32_Gdi.GetClientRect  
 [GetClipboardData](http://msdn2.microsoft.com/en-us/library/getclipboarddata) | user32.dll | winuser.h | Vanara.PInvoke.User32.GetClipboardData  
+[GetClipboardFormatNameA](http://msdn2.microsoft.com/en-us/library/getclipboardformatname) | user32.dll | winuser.h | Vanara.PInvoke.User32.GetClipboardFormatName  
+[GetClipboardFormatNameW](http://msdn2.microsoft.com/en-us/library/getclipboardformatname) | user32.dll | winuser.h | Vanara.PInvoke.User32.GetClipboardFormatName  
 [GetClipboardOwner](http://msdn2.microsoft.com/en-us/library/getclipboardowner) | user32.dll | winuser.h | Vanara.PInvoke.User32.GetClipboardOwner  
 [GetClipboardSequenceNumber](http://msdn2.microsoft.com/en-us/library/getclipboardsequencenumber) | user32.dll | winuser.h | Vanara.PInvoke.User32.GetClipboardSequenceNumber  
 [GetClipboardViewer](http://msdn2.microsoft.com/en-us/library/getclipboardviewer) | user32.dll | winuser.h | Vanara.PInvoke.User32.GetClipboardViewer  
@@ -209,6 +224,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetGestureExtraArgs](https://www.google.com/search?num=5&q=GetGestureExtraArgs+site%3Amicrosoft.com) | user32.dll |  |   
 [GetGestureInfo](https://www.google.com/search?num=5&q=GetGestureInfo+site%3Amicrosoft.com) | user32.dll |  |   
 [GetGuiResources](https://www.google.com/search?num=5&q=GetGuiResources+site%3Amicrosoft.com) | user32.dll |  |   
+[GetGUIThreadInfo](http://msdn2.microsoft.com/en-us/library/getguithreadinfo) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.GetGUIThreadInfo  
 [GetIconInfo](http://msdn2.microsoft.com/en-us/library/geticoninfo) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.GetIconInfo  
 [GetIconInfoEx](http://msdn2.microsoft.com/en-us/library/geticoninfoex) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.GetIconInfoEx  
 [GetInputState](https://www.google.com/search?num=5&q=GetInputState+site%3Amicrosoft.com) | user32.dll |  |   
@@ -224,6 +240,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetLastInputInfo](https://www.google.com/search?num=5&q=GetLastInputInfo+site%3Amicrosoft.com) | user32.dll |  |   
 [GetLayeredWindowAttributes](http://msdn2.microsoft.com/en-us/library/getlayeredwindowattributes) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.GetLayeredWindowAttributes  
 [GetListBoxInfo](https://www.google.com/search?num=5&q=GetListBoxInfo+site%3Amicrosoft.com) | user32.dll |  |   
+[GetMagnificationDesktopSamplingMode](https://www.google.com/search?num=5&q=GetMagnificationDesktopSamplingMode+site%3Amicrosoft.com) | user32.dll |  |   
 [GetMenu](http://msdn2.microsoft.com/en-us/library/getmenu.htm) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.GetMenu  
 [GetMenuBarInfo](http://msdn2.microsoft.com/en-us/library/getmenubarinfo.htm) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.GetMenuBarInfo  
 [GetMenuCheckMarkDimensions](http://msdn2.microsoft.com/en-us/library/getmenucheckmarkdimensions.htm) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.GetMenuCheckMarkDimensions  
@@ -232,6 +249,8 @@ Native Method | Native DLL | Header | Managed Method
 [GetMenuInfo](http://msdn2.microsoft.com/en-us/library/getmenuinfo.htm) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.GetMenuInfo  
 [GetMenuItemCount](http://msdn2.microsoft.com/en-us/library/getmenuitemcount.htm) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.GetMenuItemCount  
 [GetMenuItemID](http://msdn2.microsoft.com/en-us/library/getmenuitemid.htm) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.GetMenuItemID  
+[GetMenuItemInfoA](http://msdn2.microsoft.com/en-us/library/getmenuiteminfo.htm) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.GetMenuItemInfo  
+[GetMenuItemInfoW](http://msdn2.microsoft.com/en-us/library/getmenuiteminfo.htm) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.GetMenuItemInfo  
 [GetMenuItemRect](http://msdn2.microsoft.com/en-us/library/getmenuitemrect.htm) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.GetMenuItemRect  
 [GetMenuState](http://msdn2.microsoft.com/en-us/library/getmenustate.htm) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.GetMenuState  
 [GetMenuString](http://msdn2.microsoft.com/en-us/library/getmenustring.htm) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.GetMenuString  
@@ -298,6 +317,8 @@ Native Method | Native DLL | Header | Managed Method
 [GetUpdatedClipboardFormats](http://msdn2.microsoft.com/en-us/library/getupdatedclipboardformats) | user32.dll | winuser.h | Vanara.PInvoke.User32.GetUpdatedClipboardFormats  
 [GetUpdateRect](https://www.google.com/search?num=5&q=GetUpdateRect+site%3Amicrosoft.com) | user32.dll |  |   
 [GetUpdateRgn](https://www.google.com/search?num=5&q=GetUpdateRgn+site%3Amicrosoft.com) | user32.dll |  |   
+[GetUserObjectInformationA](http://msdn2.microsoft.com/en-us/library/64f7361d-1a94-4d5b-86f1-a2a21737668a) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.GetUserObjectInformation  
+[GetUserObjectInformationW](http://msdn2.microsoft.com/en-us/library/64f7361d-1a94-4d5b-86f1-a2a21737668a) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.GetUserObjectInformation  
 [GetUserObjectSecurity](https://www.google.com/search?num=5&q=GetUserObjectSecurity+site%3Amicrosoft.com) | user32.dll |  |   
 [GetWindow](http://msdn2.microsoft.com/en-us/library/getwindow) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.GetWindow  
 [GetWindowContextHelpId](https://www.google.com/search?num=5&q=GetWindowContextHelpId+site%3Amicrosoft.com) | user32.dll |  |   
@@ -349,6 +370,7 @@ Native Method | Native DLL | Header | Managed Method
 [IsWindow](http://msdn2.microsoft.com/en-us/library/iswindow) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.IsWindow  
 [IsWindowEnabled](https://www.google.com/search?num=5&q=IsWindowEnabled+site%3Amicrosoft.com) | user32.dll |  |   
 [IsWindowRedirectedForPrint](https://www.google.com/search?num=5&q=IsWindowRedirectedForPrint+site%3Amicrosoft.com) | user32.dll |  |   
+[IsWindowUnicode](http://msdn2.microsoft.com/en-us/library/iswindowunicode) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.IsWindowUnicode  
 [IsWindowVisible](http://msdn2.microsoft.com/en-us/library/iswindowvisible) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.IsWindowVisible  
 [IsWinEventHookInstalled](https://www.google.com/search?num=5&q=IsWinEventHookInstalled+site%3Amicrosoft.com) | user32.dll |  |   
 [IsWow64Message](https://www.google.com/search?num=5&q=IsWow64Message+site%3Amicrosoft.com) | user32.dll |  |   
@@ -357,6 +379,8 @@ Native Method | Native DLL | Header | Managed Method
 [KillTimer](https://www.google.com/search?num=5&q=KillTimer+site%3Amicrosoft.com) | user32.dll |  |   
 [LoadBitmap](https://www.google.com/search?num=5&q=LoadBitmapA+site%3Amicrosoft.com) | user32.dll |  |   
 [LoadCursor](http://msdn2.microsoft.com/en-us/library/loadcursor) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.LoadCursor  
+[LoadCursorFromFileA](http://msdn2.microsoft.com/en-us/library/loadcursorfromfile) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.LoadCursorFromFile  
+[LoadCursorFromFileW](http://msdn2.microsoft.com/en-us/library/loadcursorfromfile) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.LoadCursorFromFile  
 [LoadIcon](http://msdn2.microsoft.com/en-us/library/loadicon) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.LoadIcon  
 [LoadImage](http://msdn2.microsoft.com/en-us/library/ms648045) | user32.dll | WinUser.h | Vanara.PInvoke.User32_Gdi.LoadImage  
 [LoadKeyboardLayout](https://www.google.com/search?num=5&q=LoadKeyboardLayoutA+site%3Amicrosoft.com) | user32.dll |  |   
@@ -379,6 +403,9 @@ Native Method | Native DLL | Header | Managed Method
 [MessageBeep](http://msdn2.microsoft.com/en-us/library/70681472-36a5-4ae3-b769-0421cf97ff2a) | user32.dll | winuser.h | Vanara.PInvoke.User32.MessageBeep  
 [MessageBox](http://msdn2.microsoft.com/en-us/library/messagebox) | user32.dll | winuser.h | Vanara.PInvoke.User32.MessageBox  
 [MessageBoxIndirect](https://www.google.com/search?num=5&q=MessageBoxIndirectA+site%3Amicrosoft.com) | user32.dll | Winuser.h | Vanara.PInvoke.User32.MessageBoxIndirect  
+[MITGetCursorUpdateHandle](https://www.google.com/search?num=5&q=MITGetCursorUpdateHandle+site%3Amicrosoft.com) | user32.dll |  |   
+[MITGetCursorUpdateHandlee](https://www.google.com/search?num=5&q=MITGetCursorUpdateHandlee+site%3Amicrosoft.com) | user32.dll |  |   
+[MITStopAndEndInertia](https://www.google.com/search?num=5&q=MITStopAndEndInertia+site%3Amicrosoft.com) | user32.dll |  |   
 [ModifyMenu](http://msdn2.microsoft.com/en-us/library/modifymenu.htm) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.ModifyMenu  
 [MonitorFromPoint](http://msdn2.microsoft.com/en-us/library/c46281bf-7e45-4628-be92-736850225a9e) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.MonitorFromPoint  
 [MonitorFromRect](http://msdn2.microsoft.com/en-us/library/81c3fffb-bbc9-4adb-bb6b-edd59f7a77b4) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.MonitorFromRect  
@@ -436,13 +463,15 @@ Native Method | Native DLL | Header | Managed Method
 [RemoveProp](http://msdn2.microsoft.com/en-us/library/removeprop) | user32.dll | winuser.h | Vanara.PInvoke.User32.RemoveProp  
 [ReplyMessage](https://www.google.com/search?num=5&q=ReplyMessage+site%3Amicrosoft.com) | user32.dll |  |   
 [ReuseDDElParam](https://www.google.com/search?num=5&q=ReuseDDElParam+site%3Amicrosoft.com) | user32.dll |  |   
+[RIMEnableMonitorMappingForDevice](https://www.google.com/search?num=5&q=RIMEnableMonitorMappingForDevice+site%3Amicrosoft.com) | user32.dll |  |   
 [ScreenToClient](https://www.google.com/search?num=5&q=ScreenToClient+site%3Amicrosoft.com) | user32.dll |  | Vanara.PInvoke.User32_Gdi.ScreenToClient  
 [ScrollDC](https://www.google.com/search?num=5&q=ScrollDC+site%3Amicrosoft.com) | user32.dll |  |   
 [ScrollWindow](https://www.google.com/search?num=5&q=ScrollWindow+site%3Amicrosoft.com) | user32.dll |  |   
 [ScrollWindowEx](https://www.google.com/search?num=5&q=ScrollWindowEx+site%3Amicrosoft.com) | user32.dll |  |   
 [SendDlgItemMessage](http://msdn2.microsoft.com/en-us/library/senddlgitemmessage) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.SendDlgItemMessage  
 [SendInput](https://www.google.com/search?num=5&q=SendInput+site%3Amicrosoft.com) | user32.dll |  |   
-[SendMessage](https://www.google.com/search?num=5&q=SendMessageA+site%3Amicrosoft.com) | user32.dll | WinUser.h | Vanara.PInvoke.User32_Gdi.SendMessage  
+[SendMessage](http://msdn2.microsoft.com/en-us/library/ms644950) | user32.dll | Winuser.h | Vanara.PInvoke.User32_Gdi.SendMessage  
+[SendMessage](http://msdn2.microsoft.com/en-us/library/ms644950) | user32.dll | Winuser.h | Vanara.PInvoke.User32_Gdi.SendMessageUnsafe  
 [SendMessageTimeout](https://www.google.com/search?num=5&q=SendMessageTimeoutA+site%3Amicrosoft.com) | user32.dll |  |   
 [SendNotifyMessage](https://www.google.com/search?num=5&q=SendNotifyMessageA+site%3Amicrosoft.com) | user32.dll |  |   
 [SetActiveWindow](https://www.google.com/search?num=5&q=SetActiveWindow+site%3Amicrosoft.com) | user32.dll |  |   
@@ -457,6 +486,7 @@ Native Method | Native DLL | Header | Managed Method
 [SetCoalescableTimer](https://www.google.com/search?num=5&q=SetCoalescableTimer+site%3Amicrosoft.com) | user32.dll |  |   
 [SetCursor](http://msdn2.microsoft.com/en-us/library/setcursor) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.SetCursor  
 [SetCursorPos](http://msdn2.microsoft.com/en-us/library/setcursorpos) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.SetCursorPos  
+[SetDesktopColorTransform](https://www.google.com/search?num=5&q=SetDesktopColorTransform+site%3Amicrosoft.com) | user32.dll |  |   
 [SetDialogControlDpiChangeBehavior](https://www.google.com/search?num=5&q=SetDialogControlDpiChangeBehavior+site%3Amicrosoft.com) | user32.dll |  |   
 [SetDialogDpiChangeBehavior](https://www.google.com/search?num=5&q=SetDialogDpiChangeBehavior+site%3Amicrosoft.com) | user32.dll |  |   
 [SetDisplayAutoRotationPreferences](https://www.google.com/search?num=5&q=SetDisplayAutoRotationPreferences+site%3Amicrosoft.com) | user32.dll |  |   
@@ -470,6 +500,7 @@ Native Method | Native DLL | Header | Managed Method
 [SetKeyboardState](https://www.google.com/search?num=5&q=SetKeyboardState+site%3Amicrosoft.com) | user32.dll |  |   
 [SetLastErrorEx](https://www.google.com/search?num=5&q=SetLastErrorEx+site%3Amicrosoft.com) | user32.dll |  |   
 [SetLayeredWindowAttributes](http://msdn2.microsoft.com/en-us/library/setlayeredwindowattributes) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.SetLayeredWindowAttributes  
+[SetMagnificationDesktopSamplingMode](https://www.google.com/search?num=5&q=SetMagnificationDesktopSamplingMode+site%3Amicrosoft.com) | user32.dll |  |   
 [SetMenu](http://msdn2.microsoft.com/en-us/library/setmenu.htm) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.SetMenu  
 [SetMenuContextHelpId](https://www.google.com/search?num=5&q=SetMenuContextHelpId+site%3Amicrosoft.com) | user32.dll |  |   
 [SetMenuDefaultItem](http://msdn2.microsoft.com/en-us/library/setmenudefaultitem.htm) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.SetMenuDefaultItem  
@@ -501,9 +532,13 @@ Native Method | Native DLL | Header | Managed Method
 [SetWindowDisplayAffinity](http://msdn2.microsoft.com/en-us/library/setwindowdisplayaffinity) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.SetWindowDisplayAffinity  
 [SetWindowFeedbackSetting](https://www.google.com/search?num=5&q=SetWindowFeedbackSetting+site%3Amicrosoft.com) | user32.dll |  |   
 [SetWindowLong](https://www.google.com/search?num=5&q=SetWindowLongA+site%3Amicrosoft.com) | user32.dll |  |   
+[SetWindowLong](https://www.google.com/search?num=5&q=SetWindowLong+site%3Amicrosoft.com) | user32.dll |  | Vanara.PInvoke.User32_Gdi.SetWindowLongPtr32  
+[SetWindowLongPtr](https://www.google.com/search?num=5&q=SetWindowLongPtr+site%3Amicrosoft.com) | user32.dll |  | Vanara.PInvoke.User32_Gdi.SetWindowLongPtr64  
 [SetWindowPlacement](http://msdn2.microsoft.com/en-us/library/setwindowplacement) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.SetWindowPlacement  
 [SetWindowPos](http://msdn2.microsoft.com/en-us/library/setwindowpos) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.SetWindowPos  
 [SetWindowRgn](https://www.google.com/search?num=5&q=SetWindowRgn+site%3Amicrosoft.com) | user32.dll |  |   
+[SetWindowsHookExA](http://msdn2.microsoft.com/en-us/library/setwindowshookex) | user32.dll | winuser.h | Vanara.PInvoke.User32.SetWindowsHookEx  
+[SetWindowsHookExW](http://msdn2.microsoft.com/en-us/library/setwindowshookex) | user32.dll | winuser.h | Vanara.PInvoke.User32.SetWindowsHookEx  
 [SetWindowText](http://msdn2.microsoft.com/en-us/library/setwindowtext) | user32.dll | winuser.h | Vanara.PInvoke.User32_Gdi.SetWindowText  
 [SetWinEventHook](https://www.google.com/search?num=5&q=SetWinEventHook+site%3Amicrosoft.com) | user32.dll |  |   
 [ShowCaret](https://www.google.com/search?num=5&q=ShowCaret+site%3Amicrosoft.com) | user32.dll |  |   
@@ -579,19 +614,13 @@ Native Structure | Header | Managed Structure
 [FILTERKEYS](https://www.google.com/search?num=5&q=FILTERKEYS+site%3Amicrosoft.com) | Winuser.h | Vanara.PInvoke.User32+FILTERKEYS  
 [GRPICONDIR](https://www.google.com/search?num=5&q=GRPICONDIR+site%3Amicrosoft.com) |  | Vanara.PInvoke.User32_Gdi+GRPICONDIR  
 [GRPICONDIRENTRY](https://www.google.com/search?num=5&q=GRPICONDIRENTRY+site%3Amicrosoft.com) |  | Vanara.PInvoke.User32_Gdi+GRPICONDIRENTRY  
-[GUITHREADINFO](http://msdn2.microsoft.com/en-us/library/guithreadinfo) | winuser.h | Vanara.PInvoke.User32_Gdi+GUITHREADINFO  
 [HELPINFO](https://www.google.com/search?num=5&q=HELPINFO+site%3Amicrosoft.com) | Winuser.h | Vanara.PInvoke.User32+HELPINFO  
 [HIGHCONTRAST](https://www.google.com/search?num=5&q=HIGHCONTRAST+site%3Amicrosoft.com) | Winuser.h | Vanara.PInvoke.User32+HIGHCONTRAST  
-[ICONINFO](https://www.google.com/search?num=5&q=ICONINFO+site%3Amicrosoft.com) |  | Vanara.PInvoke.User32_Gdi+ICONINFO  
-[ICONINFOEX](http://msdn2.microsoft.com/en-us/library/iconinfoex) | winuser.h | Vanara.PInvoke.User32_Gdi+ICONINFOEX  
 [ICONMETRICS](https://www.google.com/search?num=5&q=ICONMETRICS+site%3Amicrosoft.com) | Winuser.h | Vanara.PInvoke.User32+ICONMETRICS  
-[MDINEXTMENU](http://msdn2.microsoft.com/en-us/library/mdinextmenu.htm) | winuser.h | Vanara.PInvoke.User32_Gdi+MDINEXTMENU  
-[MENUBARINFO](http://msdn2.microsoft.com/en-us/library/menubarinfo.htm) | winuser.h | Vanara.PInvoke.User32_Gdi+MENUBARINFO  
 [MENUEX_TEMPLATE_HEADER](http://msdn2.microsoft.com/en-us/library/df763349-7127-482e-8613-74e68addde5d) | winuser.h | Vanara.PInvoke.User32_Gdi+MENUEX_TEMPLATE_HEADER  
 [MENUEX_TEMPLATE_ITEM](http://msdn2.microsoft.com/en-us/library/f6e2fd0a-16b8-48e3-8597-341085a7adbd) | winuser.h | Vanara.PInvoke.User32_Gdi+MENUEX_TEMPLATE_ITEM  
 [MENUGETOBJECTINFO](http://msdn2.microsoft.com/en-us/library/menugetobjectinfo.htm) | winuser.h | Vanara.PInvoke.User32_Gdi+MENUGETOBJECTINFO  
 [MENUINFO](http://msdn2.microsoft.com/en-us/library/menuinfo.htm) | winuser.h | Vanara.PInvoke.User32_Gdi+MENUINFO  
-[MENUITEMINFO](http://msdn2.microsoft.com/en-us/library/menuiteminfo.htm) | winuser.h | Vanara.PInvoke.User32_Gdi+MENUITEMINFO  
 [MENUITEMTEMPLATE](http://msdn2.microsoft.com/en-us/library/menuitemtemplate.htm) | winuser.h | Vanara.PInvoke.User32_Gdi+MENUITEMTEMPLATE  
 [MENUITEMTEMPLATEHEADER](http://msdn2.microsoft.com/en-us/library/menuitemtemplateheader.htm) | winuser.h | Vanara.PInvoke.User32_Gdi+MENUITEMTEMPLATEHEADER  
 [METAFILEPICT](http://msdn2.microsoft.com/en-us/library/metafilepict) | wingdi.h | Vanara.PInvoke.User32+METAFILEPICT  
@@ -600,8 +629,6 @@ Native Structure | Header | Managed Structure
 [MONITORINFO](http://msdn2.microsoft.com/en-us/library/ca8ec86f-69ba-4cf8-a867-67182a3d630d) | winuser.h | Vanara.PInvoke.User32_Gdi+MONITORINFO  
 [MONITORINFOEX](http://msdn2.microsoft.com/en-us/library/f296ce29-3fc8-41c9-a201-56e222aa2219) | winuser.h | Vanara.PInvoke.User32_Gdi+MONITORINFOEX  
 [MOUSEKEYS](https://www.google.com/search?num=5&q=MOUSEKEYS+site%3Amicrosoft.com) | Winuser.h | Vanara.PInvoke.User32+MOUSEKEYS  
-[MSGBOXPARAMS](https://www.google.com/search?num=5&q=MSGBOXPARAMS+site%3Amicrosoft.com) | Winuser.h | Vanara.PInvoke.User32+MSGBOXPARAMS  
-[NMHDR](https://www.google.com/search?num=5&q=NMHDR+site%3Amicrosoft.com) |  | Vanara.PInvoke.User32_Gdi+NMHDR  
 [NONCLIENTMETRICS](http://msdn2.microsoft.com/en-us/library/ff729175) | Winuser.h | Vanara.PInvoke.User32+NONCLIENTMETRICS  
 [SERIALKEYS](https://www.google.com/search?num=5&q=SERIALKEYS+site%3Amicrosoft.com) | Winuser.h | Vanara.PInvoke.User32+SERIALKEYS  
 [SOUNDSENTRY](https://www.google.com/search?num=5&q=SOUNDSENTRY+site%3Amicrosoft.com) | Winuser.h | Vanara.PInvoke.User32+SOUNDSENTRY  
@@ -610,9 +637,6 @@ Native Structure | Header | Managed Structure
 [TOGGLEKEYS](https://www.google.com/search?num=5&q=TOGGLEKEYS+site%3Amicrosoft.com) | Winuser.h | Vanara.PInvoke.User32+TOGGLEKEYS  
 [TOUCHPREDICTIONPARAMETERS](http://msdn2.microsoft.com/en-us/library/hh969214) | Winuser.h | Vanara.PInvoke.User32+TOUCHPREDICTIONPARAMETERS  
 [TPMPARAMS](http://msdn2.microsoft.com/en-us/library/tpmparams.htm) | winuser.h | Vanara.PInvoke.User32_Gdi+TPMPARAMS  
-[TRACKMOUSEEVENT](http://msdn2.microsoft.com/en-us/library/ms645604) | Winuser.h | Vanara.PInvoke.User32+TRACKMOUSEEVENT  
-[UPDATELAYEREDWINDOWINFO](http://msdn2.microsoft.com/en-us/library/updatelayeredwindowinfo) | winuser.h | Vanara.PInvoke.User32_Gdi+UPDATELAYEREDWINDOWINFO  
 [USEROBJECTFLAGS](http://msdn2.microsoft.com/en-us/library/5a973d45-5ff4-47e7-a927-72d3fdd61dc9) | winuser.h | Vanara.PInvoke.User32_Gdi+USEROBJECTFLAGS  
 [WINDOWINFO](http://msdn2.microsoft.com/en-us/library/windowinfo) | winuser.h | Vanara.PInvoke.User32_Gdi+WINDOWINFO  
 [WINDOWPLACEMENT](http://msdn2.microsoft.com/en-us/library/windowplacement) | winuser.h | Vanara.PInvoke.User32_Gdi+WINDOWPLACEMENT  
-[WINDOWPOS](https://www.google.com/search?num=5&q=WINDOWPOS+site%3Amicrosoft.com) |  | Vanara.PInvoke.User32_Gdi+WINDOWPOS  

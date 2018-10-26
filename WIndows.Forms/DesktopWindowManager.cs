@@ -107,8 +107,8 @@ namespace Vanara.Windows.Forms
 				if (!CompositionSupported)
 					return;
 				DwmpGetColorizationParameters(out var p).ThrowIfFailed();
-				p.clrColor = (uint)value.ToArgb();
-				DwmpSetColorizationParameters(ref p, 1).ThrowIfFailed();
+				p.clrColor = value;
+				DwmpSetColorizationParameters(p, 1).ThrowIfFailed();
 				Microsoft.Win32.Registry.CurrentUser.SetValue(@"Software\Microsoft\Windows\DWM\ColorizationColor", value.ToArgb(), Microsoft.Win32.RegistryValueKind.DWord);
 			}
 		}
@@ -149,7 +149,7 @@ namespace Vanara.Windows.Forms
 					return;
 				DwmpGetColorizationParameters(out var p).ThrowIfFailed();
 				p.fOpaque = value;
-				DwmpSetColorizationParameters(ref p, 1).ThrowIfFailed();
+				DwmpSetColorizationParameters(p, 1).ThrowIfFailed();
 				Microsoft.Win32.Registry.CurrentUser.SetValue(@"Software\Microsoft\Windows\DWM\ColorizationOpaqueBlend", p.fOpaque, Microsoft.Win32.RegistryValueKind.DWord);
 			}
 		}
@@ -190,10 +190,7 @@ namespace Vanara.Windows.Forms
 		/// <summary>Enable the Aero "Blur Behind" effect on the whole client area. Background must be black.</summary>
 		/// <param name="window">The window.</param>
 		/// <param name="enabled"><c>true</c> to enable blur behind for this window, <c>false</c> to disable it.</param>
-		public static void EnableBlurBehind(this IWin32Window window, bool enabled)
-		{
-			EnableBlurBehind(window, null, null, enabled, false);
-		}
+		public static void EnableBlurBehind(this IWin32Window window, bool enabled) => EnableBlurBehind(window, null, null, enabled, false);
 
 		/// <summary>Enable the Aero "Blur Behind" effect on a specific region of a drawing area. Background must be black.</summary>
 		/// <param name="window">The window.</param>
@@ -210,15 +207,12 @@ namespace Vanara.Windows.Forms
 				bb.SetRegion(graphics, region);
 			if (transitionOnMaximized)
 				bb.TransitionOnMaximized = true;
-			DwmEnableBlurBehindWindow(window.Handle, ref bb);
+			DwmEnableBlurBehindWindow(window.Handle, bb);
 		}
 
 		/// <summary>Enables or disables Desktop Window Manager (DWM) composition.</summary>
 		/// <param name="value"><c>true</c> to enable DWM composition; <c>false</c> to disable composition.</param>
-		public static void EnableComposition(bool value)
-		{
-			DwmEnableComposition(value ? 1 : 0);
-		}
+		public static void EnableComposition(bool value) => DwmEnableComposition(value);
 
 		/// <summary>Excludes the specified child control from the glass effect.</summary>
 		/// <param name="parent">The parent control.</param>
@@ -243,7 +237,7 @@ namespace Vanara.Windows.Forms
 					clientScreen.Right - controlScreen.Right, clientScreen.Bottom - controlScreen.Bottom);
 
 				// Extend the Frame into client area
-				DwmExtendFrameIntoClientArea(parent.Handle, ref margins);
+				DwmExtendFrameIntoClientArea(parent.Handle, margins);
 			}
 		}
 
@@ -255,17 +249,14 @@ namespace Vanara.Windows.Forms
 			if (window == null)
 				throw new ArgumentNullException(nameof(window));
 			var m = new MARGINS(padding.Left, padding.Right, padding.Top, padding.Bottom);
-			DwmExtendFrameIntoClientArea(window.Handle, ref m);
+			DwmExtendFrameIntoClientArea(window.Handle, m);
 		}
 
 		/// <summary>
 		/// Issues a flush call that blocks the caller until the next present, when all of the Microsoft DirectX surface updates that are currently outstanding
 		/// have been made. This compensates for very complex scenes or calling processes with very low priority.
 		/// </summary>
-		public static void Flush()
-		{
-			DwmFlush().ThrowIfFailed();
-		}
+		public static void Flush() => DwmFlush().ThrowIfFailed();
 
 		/// <summary>
 		/// Forces the window to display an iconic thumbnail or peek representation (a static bitmap), even if a live or snapshot representation of the window is
@@ -317,7 +308,7 @@ namespace Vanara.Windows.Forms
 		/// Called by an application to indicate that all previously provided iconic bitmaps from a window, both thumbnails and peek representations, should be refreshed.
 		/// </summary>
 		/// <param name="window">The window or tab whose bitmaps are being invalidated through this call. This window must belong to the calling process.</param>
-		public static void InvalidateIconicBitmaps(this IWin32Window window) { DwmInvalidateIconicBitmaps(window.Handle).ThrowIfFailed(); }
+		public static void InvalidateIconicBitmaps(this IWin32Window window) => DwmInvalidateIconicBitmaps(window.Handle).ThrowIfFailed();
 
 		/// <summary>Discovers whether non-client rendering is enabled.</summary>
 		/// <param name="form">The form.</param>
@@ -377,7 +368,7 @@ namespace Vanara.Windows.Forms
 		{
 			if (!CompositionSupported || !global::System.IO.File.Exists(global::System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), @"dwmapi.dll")))
 				return false;
-			DwmIsCompositionEnabled(out bool res);
+			DwmIsCompositionEnabled(out var res);
 			return res;
 		}
 
@@ -451,10 +442,7 @@ namespace Vanara.Windows.Forms
 				CreateHandle(cp);
 			}
 
-			public void Dispose()
-			{
-				DestroyHandle();
-			}
+			public void Dispose() => DestroyHandle();
 
 			[global::System.Security.Permissions.PermissionSet(global::System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
 			protected override void WndProc(ref Message m)

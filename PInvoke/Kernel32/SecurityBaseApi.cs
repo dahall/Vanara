@@ -90,7 +90,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "AA2064E4-6F76-4D7B-8540-D55A91168825")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AddResourceAttributeAce(PACL pAcl, uint dwAceRevision, uint AceFlags, uint AccessMask, PSID pSid, ref CLAIM_SECURITY_ATTRIBUTES_INFORMATION pAttributeInfo, ref uint pReturnLength);
+		public static extern bool AddResourceAttributeAce(PACL pAcl, uint dwAceRevision, uint AceFlags, uint AccessMask, PSID pSid, in CLAIM_SECURITY_ATTRIBUTES_INFORMATION pAttributeInfo, ref uint pReturnLength);
 
 		/// <summary>
 		/// <para>
@@ -199,7 +199,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "436A5110-B79E-4E64-92E8-1C9E713D0948")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CheckTokenCapability(IntPtr TokenHandle, PSID CapabilitySidToCheck, [MarshalAs(UnmanagedType.Bool)] out bool HasCapability);
+		public static extern bool CheckTokenCapability(HTOKEN TokenHandle, PSID CapabilitySidToCheck, [MarshalAs(UnmanagedType.Bool)] out bool HasCapability);
 
 		/// <summary>
 		/// <para>

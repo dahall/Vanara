@@ -1,7 +1,5 @@
 ﻿using System;
 
-// ReSharper disable InconsistentNaming
-
 namespace Vanara.PInvoke
 {
 	/// <summary>Platform invokable enumerated types, constants and functions from windows.h</summary>

@@ -2,11 +2,77 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
+using Vanara.InteropServices;
+using static Vanara.PInvoke.Ws2_32;
 
 namespace Vanara.PInvoke
 {
 	public static partial class IpHlpApi
 	{
+		/// <summary>Flags for an IP address.</summary>
+		[PInvokeData("IpTypes.h")]
+		[Flags]
+		public enum IP_ADAPTER_CAST_FLAGS
+		{
+			/// <summary>The IP address is legal to appear in DNS.</summary>
+			IP_ADAPTER_ADDRESS_DNS_ELIGIBLE = 0x01,
+
+			/// <summary>The IP address is a cluster address and should not be used by most applications.</summary>
+			IP_ADAPTER_ADDRESS_TRANSIENT = 0x02
+		}
+
+		/// <summary>Flags for <see cref="IP_ADAPTER_ADDRESSES"/>.</summary>
+		[PInvokeData("IPTypes.h")]
+		[Flags]
+		public enum IP_ADAPTER_FLAGS : uint
+		{
+			/// <summary>Dynamic DNS is enabled on this adapter.</summary>
+			IP_ADAPTER_DDNS_ENABLED = 0x00000001,
+
+			/// <summary>Register the DNS suffix for this adapter.</summary>
+			IP_ADAPTER_REGISTER_ADAPTER_SUFFIX = 0x00000002,
+
+			/// <summary>Dynamic Host Configuration Protocol is enabled on this adapter.</summary>
+			IP_ADAPTER_DHCP_ENABLED = 0x00000004,
+
+			/// <summary>The adapter is a receive-only adapter.</summary>
+			IP_ADAPTER_RECEIVE_ONLY = 0x00000008,
+
+			/// <summary>The adapter is not a multicast recipient.</summary>
+			IP_ADAPTER_NO_MULTICAST = 0x00000010,
+
+			/// <summary>The adapter contains other IPv6-specific stateful configuration information.</summary>
+			IP_ADAPTER_IPV6_OTHER_STATEFUL_CONFIG = 0x00000020,
+
+			/// <summary>
+			/// The adapter is enabled for NetBIOS over TCP/IP. <note type="note">This flag is only supported on Windows Vista and later when
+			/// the application has been compiled for a target platform with an NTDDI version equal or greater than NTDDI_LONGHORN. This flag
+			/// is defined in the IP_ADAPTER_ADDRESSES_LH structure as the NetbiosOverTcpipEnabled bitfield.</note>
+			/// </summary>
+			IP_ADAPTER_NETBIOS_OVER_TCPIP_ENABLED = 0x00000040,
+
+			/// <summary>
+			/// The adapter is enabled for IPv4. <note type="note">This flag is only supported on Windows Vista and later when the
+			/// application has been compiled for a target platform with an NTDDI version equal or greater than NTDDI_LONGHORN. This flag is
+			/// defined in the IP_ADAPTER_ADDRESSES_LH structure as the Ipv4Enabled bitfield.</note>
+			/// </summary>
+			IP_ADAPTER_IPV4_ENABLED = 0x00000080,
+
+			/// <summary>
+			/// The adapter is enabled for IPv6. <note type="note">This flag is only supported on Windows Vista and later when the
+			/// application has been compiled for a target platform with an NTDDI version equal or greater than NTDDI_LONGHORN. This flag is
+			/// defined in the IP_ADAPTER_ADDRESSES_LH structure as the Ipv6Enabled bitfield.</note>
+			/// </summary>
+			IP_ADAPTER_IPV6_ENABLED = 0x00000100,
+
+			/// <summary>
+			/// The adapter is enabled for IPv6 managed address configuration. <note type="note">This flag is only supported on Windows Vista
+			/// and later when the application has been compiled for a target platform with an NTDDI version equal or greater than
+			/// NTDDI_LONGHORN. This flag is defined in the IP_ADAPTER_ADDRESSES_LH structure as the Ipv6ManagedAddressConfigurationSupported bitfield.</note>
+			/// </summary>
+			IP_ADAPTER_IPV6_MANAGE_ADDRESS_CONFIG = 0x00000200,
+		}
+
 		/// <summary>
 		/// <para>The <c>FIXED_INFO</c> structure contains information that is the same across all the interfaces on a computer.</para>
 		/// </summary>
@@ -739,6 +805,845 @@ namespace Vanara.PInvoke
 			public IEnumerable<IP_ADAPTER_DNS_SUFFIX> DnsSuffixes => FirstDnsSuffix.LinkedListToIEnum<IP_ADAPTER_DNS_SUFFIX>(t => t.Next);
 
 			public IP_ADAPTER_ADDRESSES? GetNext() => Next.ToNullableStructure<IP_ADAPTER_ADDRESSES>();
+		}
+
+		/// <summary>
+		/// <para>
+		/// The <c>IP_ADAPTER_ANYCAST_ADDRESS</c> structure stores a single anycast IP address in a linked list of addresses for a particular adapter.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The IP_ADAPTER_ADDRESSES structure is retrieved by the GetAdaptersAddresses function. The <c>FirstAnycastAddress</c> member of
+		/// the <c>IP_ADAPTER_ADDRESSES</c> structure is a pointer to a linked list of <c>IP_ADAPTER_ANYCAST_ADDRESS</c> structures.
+		/// </para>
+		/// <para>
+		/// The SOCKET_ADDRESS structure is used in the <c>IP_ADAPTER_ANYCAST_ADDRESS</c> structure. On the Microsoft Windows Software
+		/// Development Kit (SDK) released for Windows Vista and later, the organization of header files has changed and the
+		/// <c>SOCKET_ADDRESS</c> structure is defined in the Ws2def.h header file which is automatically included by the Winsock2.h header
+		/// file. On the Platform Software Development Kit (SDK) released for Windows Server 2003 and Windows XP, the <c>SOCKET_ADDRESS</c>
+		/// structure is declared in the Winsock2.h header file. In order to use the <c>IP_ADAPTER_ANYCAST_ADDRESS</c> structure, the
+		/// Winsock2.h header file must be included before the Iphlpapi.h header file.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/iptypes/ns-iptypes-_ip_adapter_anycast_address_xp typedef struct
+		// _IP_ADAPTER_ANYCAST_ADDRESS_XP { union { ULONGLONG Alignment; struct { ULONG Length; DWORD Flags; }; }; struct
+		// _IP_ADAPTER_ANYCAST_ADDRESS_XP *Next; SOCKET_ADDRESS Address; } IP_ADAPTER_ANYCAST_ADDRESS_XP, *PIP_ADAPTER_ANYCAST_ADDRESS_XP;
+		[PInvokeData("iptypes.h", MSDNShortId = "2626fc86-e29b-4162-8625-207c709d67ed")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct IP_ADAPTER_ANYCAST_ADDRESS : ILinkedListElement<IP_ADAPTER_ANYCAST_ADDRESS>
+		{
+			/// <summary>Specifies the length of this structure.</summary>
+			public uint Length;
+
+			/// <summary>Specifies flags for this address.</summary>
+			public IP_ADAPTER_CAST_FLAGS Flags;
+
+			/// <summary>
+			/// <para>Type: <c>struct _IP_ADAPTER_ANYCAST_ADDRESS*</c></para>
+			/// <para>A pointer to the next anycast IP address structure in the list.</para>
+			/// </summary>
+			public IntPtr Next;
+
+			/// <summary>
+			/// <para>Type: <c>SOCKET_ADDRESS</c></para>
+			/// <para>The IP address for this anycast IP address entry. This member can be an IPv6 address or an IPv4 address.</para>
+			/// </summary>
+			public SOCKET_ADDRESS Address;
+
+			/// <summary>
+			/// <para>Gets a reference to the next <c>IP_ADAPTER_ANYCAST_ADDRESS</c> structure in the list.</para>
+			/// </summary>
+			public IP_ADAPTER_ANYCAST_ADDRESS? GetNext() => Next.ToNullableStructure<IP_ADAPTER_ANYCAST_ADDRESS>();
+
+			/// <inheritdoc/>
+			public override string ToString() => Address.ToString();
+		}
+
+		/// <summary>
+		/// <para>
+		/// The <c>IP_ADAPTER_DNS_SERVER_ADDRESS</c> structure stores a single DNS server address in a linked list of DNS server addresses
+		/// for a particular adapter.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The IP_ADAPTER_ADDRESSES structure is retrieved by the GetAdaptersAddresses function. The <c>FirstDnsServerAddress</c> member of
+		/// the <c>IP_ADAPTER_ADDRESSES</c> structure is a pointer to a linked list of <c>IP_ADAPTER_DNS_SERVER_ADDRESS</c> structures.
+		/// </para>
+		/// <para>
+		/// The SOCKET_ADDRESS structure is used in the <c>IP_ADAPTER_DNS_SERVER_ADDRESS</c> structure. On the Microsoft Windows Software
+		/// Development Kit (SDK) released for Windows Vista and later, the organization of header files has changed and the
+		/// <c>SOCKET_ADDRESS</c> structure is defined in the Ws2def.h header file which is automatically included by the Winsock2.h header
+		/// file. On the Platform Software Development Kit (SDK) released for Windows Server 2003 and Windows XP, the <c>SOCKET_ADDRESS</c>
+		/// structure is declared in the Winsock2.h header file. In order to use the <c>IP_ADAPTER_DNS_SERVER_ADDRESS</c> structure, the
+		/// Winsock2.h header file must be included before the Iphlpapi.h header file.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/iptypes/ns-iptypes-_ip_adapter_dns_server_address_xp typedef struct
+		// _IP_ADAPTER_DNS_SERVER_ADDRESS_XP { union { ULONGLONG Alignment; struct { ULONG Length; DWORD Reserved; }; }; struct
+		// _IP_ADAPTER_DNS_SERVER_ADDRESS_XP *Next; SOCKET_ADDRESS Address; } IP_ADAPTER_DNS_SERVER_ADDRESS_XP, *PIP_ADAPTER_DNS_SERVER_ADDRESS_XP;
+		[PInvokeData("iptypes.h", MSDNShortId = "96855386-9010-40df-8260-16b43ad6646f")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct IP_ADAPTER_DNS_SERVER_ADDRESS : ILinkedListElement<IP_ADAPTER_DNS_SERVER_ADDRESS>
+		{
+			/// <summary>Specifies the length of this structure.</summary>
+			public uint Length;
+
+			/// <summary>Reserved.</summary>
+			public uint Reserved;
+
+			/// <summary>
+			/// <para>A pointer to the next DNS server address structure in the list.</para>
+			/// </summary>
+			public IntPtr Next;
+
+			/// <summary>
+			/// <para>The IP address for this DNS server entry. This member can be an IPv6 address or an IPv4 address.</para>
+			/// </summary>
+			public SOCKET_ADDRESS Address;
+
+			/// <summary>
+			/// <para>Gets a reference to the next <c>IP_ADAPTER_DNS_SERVER_ADDRESS</c> structure in the list.</para>
+			/// </summary>
+			public IP_ADAPTER_DNS_SERVER_ADDRESS? GetNext() => Next.ToNullableStructure<IP_ADAPTER_DNS_SERVER_ADDRESS>();
+
+			/// <inheritdoc/>
+			public override string ToString() => Address.ToString();
+		}
+
+		/// <summary>
+		/// <para>The <c>IP_ADAPTER_DNS_SUFFIX</c> structure stores a DNS suffix in a linked list of DNS suffixes for a particular adapter.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The IP_ADAPTER_ADDRESSES structure is retrieved by the GetAdaptersAddresses function. The <c>FirstDnsSuffix</c> member of the
+		/// <c>IP_ADAPTER_ADDRESSES</c> structure is a pointer to a linked list of <c>IP_ADAPTER_DNS_SUFFIX</c> structures.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/iptypes/ns-iptypes-_ip_adapter_dns_suffix typedef struct
+		// _IP_ADAPTER_DNS_SUFFIX { struct _IP_ADAPTER_DNS_SUFFIX *Next; WCHAR String[MAX_DNS_SUFFIX_STRING_LENGTH]; } IP_ADAPTER_DNS_SUFFIX, *PIP_ADAPTER_DNS_SUFFIX;
+		[PInvokeData("iptypes.h", MSDNShortId = "3730a406-2995-48f7-b70e-1cf8258ee4a6")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct IP_ADAPTER_DNS_SUFFIX : ILinkedListElement<IP_ADAPTER_DNS_SUFFIX>
+		{
+			/// <summary>
+			/// <para>A pointer to the next DNS suffix in the linked list.</para>
+			/// </summary>
+			public IntPtr Next;
+
+			/// <summary>
+			/// <para>The DNS suffix for this DNS suffix entry.</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_DNS_SUFFIX_STRING_LENGTH)]
+			public string String;
+
+			/// <summary>
+			/// <para>Gets a reference to the next <c>IP_ADAPTER_DNS_SUFFIX</c> structure in the list.</para>
+			/// </summary>
+			public IP_ADAPTER_DNS_SUFFIX? GetNext() => Next.ToNullableStructure<IP_ADAPTER_DNS_SUFFIX>();
+
+			/// <inheritdoc/>
+			public override string ToString() => String;
+		}
+
+		/// <summary>
+		/// <para>
+		/// The <c>IP_ADAPTER_GATEWAY_ADDRESS</c> structure stores a single gateway address in a linked list of gateway addresses for a
+		/// particular adapter.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The IP_ADAPTER_ADDRESSES structure is retrieved by the GetAdaptersAddresses function. The <c>FirstGatewayAddress</c> member of
+		/// the <c>IP_ADAPTER_ADDRESSES</c> structure is a pointer to a linked list of <c>IP_ADAPTER_GATEWAY_ADDRESS</c> structures.
+		/// </para>
+		/// <para>
+		/// The SOCKET_ADDRESS structure is used in the <c>IP_ADAPTER_GATEWAY_ADDRESS</c> structure. On the Microsoft Windows Software
+		/// Development Kit (SDK) released for Windows Vista and later, the organization of header files has changed and the
+		/// <c>SOCKET_ADDRESS</c> structure is defined in the Ws2def.h header file which is automatically included by the Winsock2.h header
+		/// file. On the Platform Software Development Kit (SDK) released for Windows Server 2003 and Windows XP, the <c>SOCKET_ADDRESS</c>
+		/// structure is declared in the Winsock2.h header file. In order to use the <c>IP_ADAPTER_GATEWAY_ADDRESS</c> structure, the
+		/// Winsock2.h header file must be included before the Iphlpapi.h header file.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/iptypes/ns-iptypes-_ip_adapter_gateway_address_lh typedef struct
+		// _IP_ADAPTER_GATEWAY_ADDRESS_LH { union { ULONGLONG Alignment; struct { ULONG Length; DWORD Reserved; }; }; struct
+		// _IP_ADAPTER_GATEWAY_ADDRESS_LH *Next; SOCKET_ADDRESS Address; } IP_ADAPTER_GATEWAY_ADDRESS_LH, *PIP_ADAPTER_GATEWAY_ADDRESS_LH;
+		[PInvokeData("iptypes.h", MSDNShortId = "CA38504A-1CC9-4ABA-BD4E-1B2EAD6F588B")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct IP_ADAPTER_GATEWAY_ADDRESS : ILinkedListElement<IP_ADAPTER_GATEWAY_ADDRESS>
+		{
+			/// <summary>Specifies the length of this structure.</summary>
+			public uint Length;
+
+			/// <summary>Reserved.</summary>
+			public uint Reserved;
+
+			/// <summary>
+			/// <para>A pointer to the next gateway address structure in the list.</para>
+			/// </summary>
+			public IntPtr Next;
+
+			/// <summary>
+			/// <para>The IP address for this gateway entry. This member can be an IPv6 address or an IPv4 address.</para>
+			/// </summary>
+			public SOCKET_ADDRESS Address;
+
+			/// <summary>
+			/// <para>Gets a reference to the next <c>IP_ADAPTER_GATEWAY_ADDRESS</c> structure in the list.</para>
+			/// </summary>
+			public IP_ADAPTER_GATEWAY_ADDRESS? GetNext() => Next.ToNullableStructure<IP_ADAPTER_GATEWAY_ADDRESS>();
+
+			/// <inheritdoc/>
+			public override string ToString() => Address.ToString();
+		}
+
+		/// <summary>
+		/// <para>The <c>IP_ADAPTER_INFO</c> structure contains information about a particular network adapter on the local computer.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The <c>IP_ADAPTER_INFO</c> structure is limited to IPv4 information about a particular network adapter on the local computer. The
+		/// <c>IP_ADAPTER_INFO</c> structure is retrieved by calling the GetAdaptersInfofunction.
+		/// </para>
+		/// <para>
+		/// When using Visual Studio 2005 and later, the <c>time_t</c> datatype defaults to an 8-byte datatype, not the 4-byte datatype used
+		/// for the <c>LeaseObtained</c> and <c>LeaseExpires</c> members on a 32-bit platform. To properly use the <c>IP_ADAPTER_INFO</c>
+		/// structure on a 32-bit platform, define <c>_USE_32BIT_TIME_T</c> (use as an option, for example) when compiling the application to
+		/// force the <c>time_t</c> datatype to a 4-byte datatype.
+		/// </para>
+		/// <para>
+		/// For use on Windows XP and later, the IP_ADAPTER_ADDRESSES structure contains both IPv4 and IPv6 information. The
+		/// GetAdaptersAddresses function retrieves IPv4 and IPv6 adapter information.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>This example retrieves the adapter information and prints various properties of each adapter.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/iptypes/ns-iptypes-_ip_adapter_info typedef struct _IP_ADAPTER_INFO { struct
+		// _IP_ADAPTER_INFO *Next; DWORD ComboIndex; char AdapterName[MAX_ADAPTER_NAME_LENGTH + 4]; char
+		// Description[MAX_ADAPTER_DESCRIPTION_LENGTH + 4]; UINT AddressLength; BYTE Address[MAX_ADAPTER_ADDRESS_LENGTH]; DWORD Index; UINT
+		// Type; UINT DhcpEnabled; PIP_ADDR_STRING CurrentIpAddress; IP_ADDR_STRING IpAddressList; IP_ADDR_STRING GatewayList; IP_ADDR_STRING
+		// DhcpServer; BOOL HaveWins; IP_ADDR_STRING PrimaryWinsServer; IP_ADDR_STRING SecondaryWinsServer; time_t LeaseObtained; time_t
+		// LeaseExpires; } IP_ADAPTER_INFO, *PIP_ADAPTER_INFO;
+		[PInvokeData("iptypes.h", MSDNShortId = "f8035801-ca0c-4d86-bfc5-8e2d746af1b4")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+		public struct IP_ADAPTER_INFO : ILinkedListElement<IP_ADAPTER_INFO>
+		{
+			/// <summary>
+			/// <para>Type: <c>struct _IP_ADAPTER_INFO*</c></para>
+			/// <para>A pointer to the next adapter in the list of adapters.</para>
+			/// </summary>
+			public IntPtr Next;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>Reserved.</para>
+			/// </summary>
+			public uint ComboIndex;
+
+			/// <summary>
+			/// <para>Type: <c>char[MAX_ADAPTER_NAME_LENGTH + 4]</c></para>
+			/// <para>An ANSI character string of the name of the adapter.</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_ADAPTER_NAME_LENGTH + 4)]
+			public string AdapterName;
+
+			/// <summary>
+			/// <para>Type: <c>char[MAX_ADAPTER_DESCRIPTION_LENGTH + 4]</c></para>
+			/// <para>An ANSI character string that contains the description of the adapter.</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_ADAPTER_DESCRIPTION_LENGTH + 4)]
+			public string AdapterDescription;
+
+			/// <summary>
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>The length, in bytes, of the hardware address for the adapter.</para>
+			/// </summary>
+			public uint AddressLength;
+
+			/// <summary>
+			/// <para>Type: <c>BYTE[MAX_ADAPTER_ADDRESS_LENGTH]</c></para>
+			/// <para>The hardware address for the adapter represented as a <c>BYTE</c> array.</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = MAX_ADAPTER_ADDRESS_LENGTH)]
+			public byte[] Address;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The adapter index.</para>
+			/// <para>
+			/// The adapter index may change when an adapter is disabled and then enabled, or under other circumstances, and should not be
+			/// considered persistent.
+			/// </para>
+			/// </summary>
+			public uint Index;
+
+			/// <summary>
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>The adapter type. Possible values for the adapter type are listed in the Ipifcons.h header file.</para>
+			/// <para>The table below lists common values for the adapter type although other values are possible on Windows Vista and later.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>MIB_IF_TYPE_OTHER 1</term>
+			/// <term>Some other type of network interface.</term>
+			/// </item>
+			/// <item>
+			/// <term>MIB_IF_TYPE_ETHERNET 6</term>
+			/// <term>An Ethernet network interface.</term>
+			/// </item>
+			/// <item>
+			/// <term>IF_TYPE_ISO88025_TOKENRING 9</term>
+			/// <term>MIB_IF_TYPE_TOKENRING</term>
+			/// </item>
+			/// <item>
+			/// <term>MIB_IF_TYPE_PPP 23</term>
+			/// <term>A PPP network interface.</term>
+			/// </item>
+			/// <item>
+			/// <term>MIB_IF_TYPE_LOOPBACK 24</term>
+			/// <term>A software loopback network interface.</term>
+			/// </item>
+			/// <item>
+			/// <term>MIB_IF_TYPE_SLIP 28</term>
+			/// <term>An ATM network interface.</term>
+			/// </item>
+			/// <item>
+			/// <term>IF_TYPE_IEEE80211 71</term>
+			/// <term>An IEEE 802.11 wireless network interface.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public IFTYPE Type;
+
+			/// <summary>
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>An option value that specifies whether the dynamic host configuration protocol (DHCP) is enabled for this adapter.</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool DhcpEnabled;
+
+			/// <summary>
+			/// <para>Type: <c>PIP_ADDR_STRING</c></para>
+			/// <para>Reserved.</para>
+			/// </summary>
+			public IntPtr CurrentIpAddress;
+
+			/// <summary>
+			/// <para>Type: <c>IP_ADDR_STRING</c></para>
+			/// <para>
+			/// The list of IPv4 addresses associated with this adapter represented as a linked list of <c>IP_ADDR_STRING</c> structures. An
+			/// adapter can have multiple IPv4 addresses assigned to it.
+			/// </para>
+			/// </summary>
+			public IP_ADDR_STRING IpAddressList;
+
+			/// <summary>
+			/// <para>Type: <c>IP_ADDR_STRING</c></para>
+			/// <para>
+			/// The IPv4 address of the gateway for this adapter represented as a linked list of <c>IP_ADDR_STRING</c> structures. An adapter
+			/// can have multiple IPv4 gateway addresses assigned to it. This list usually contains a single entry for IPv4 address of the
+			/// default gateway for this adapter.
+			/// </para>
+			/// </summary>
+			public IP_ADDR_STRING GatewayList;
+
+			/// <summary>
+			/// <para>Type: <c>IP_ADDR_STRING</c></para>
+			/// <para>
+			/// The IPv4 address of the DHCP server for this adapter represented as a linked list of <c>IP_ADDR_STRING</c> structures. This
+			/// list contains a single entry for the IPv4 address of the DHCP server for this adapter. A value of 255.255.255.255 indicates
+			/// the DHCP server could not be reached, or is in the process of being reached.
+			/// </para>
+			/// <para>This member is only valid when the <c>DhcpEnabled</c> member is nonzero.</para>
+			/// </summary>
+			public IP_ADDR_STRING DhcpServer;
+
+			/// <summary>
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>An option value that specifies whether this adapter uses the Windows Internet Name Service (WINS).</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool HaveWins;
+
+			/// <summary>
+			/// <para>Type: <c>IP_ADDR_STRING</c></para>
+			/// <para>
+			/// The IPv4 address of the primary WINS server represented as a linked list of <c>IP_ADDR_STRING</c> structures. This list
+			/// contains a single entry for the IPv4 address of the primary WINS server for this adapter.
+			/// </para>
+			/// <para>This member is only valid when the <c>HaveWins</c> member is <c>TRUE</c>.</para>
+			/// </summary>
+			public IP_ADDR_STRING PrimaryWinsServer;
+
+			/// <summary>
+			/// <para>Type: <c>IP_ADDR_STRING</c></para>
+			/// <para>
+			/// The IPv4 address of the secondary WINS server represented as a linked list of <c>IP_ADDR_STRING</c> structures. An adapter
+			/// can have multiple secondary WINS server addresses assigned to it.
+			/// </para>
+			/// <para>This member is only valid when the <c>HaveWins</c> member is <c>TRUE</c>.</para>
+			/// </summary>
+			public IP_ADDR_STRING SecondaryWinsServer;
+
+			/// <summary>
+			/// <para>Type: <c>time_t</c></para>
+			/// <para>The time when the current DHCP lease was obtained.</para>
+			/// <para>This member is only valid when the <c>DhcpEnabled</c> member is nonzero.</para>
+			/// </summary>
+			public uint LeaseObtained;
+
+			/// <summary>
+			/// <para>Type: <c>time_t</c></para>
+			/// <para>The time when the current DHCP lease expires.</para>
+			/// <para>This member is only valid when the <c>DhcpEnabled</c> member is nonzero.</para>
+			/// </summary>
+			public uint LeaseExpires;
+
+			public IEnumerable<IP_ADDR_STRING> IpAddresses => IpAddressList.GetLinkedList(s => s.IpAddress != null);
+			public IEnumerable<IP_ADDR_STRING> Gateways => GatewayList.GetLinkedList(s => s.IpAddress != null);
+			public IEnumerable<IP_ADDR_STRING> SecondaryWinsServers => SecondaryWinsServer.GetLinkedList(s => s.IpAddress != null);
+
+			/// <summary>
+			/// <para>Gets a reference to the next <c>IP_ADAPTER_INFO</c> structure in the list.</para>
+			/// </summary>
+			public IP_ADAPTER_INFO? GetNext() => Next.ToNullableStructure<IP_ADAPTER_INFO>();
+		}
+
+		/// <summary>
+		/// <para>
+		/// The <c>IP_ADAPTER_MULTICAST_ADDRESS</c> structure stores a single multicast address in a linked-list of addresses for a
+		/// particular adapter.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The IP_ADAPTER_ADDRESSES structure is retrieved by the GetAdaptersAddresses function. The <c>FirstMulticastAddress</c> member of
+		/// the <c>IP_ADAPTER_ADDRESSES</c> structure is a pointer to a linked list of <c>IP_ADAPTER_MULTICAST_ADDRESS</c> structures.
+		/// </para>
+		/// <para>
+		/// The SOCKET_ADDRESS structure is used in the <c>IP_ADAPTER_MULTICAST_ADDRESS</c> structure. On the Microsoft Windows Software
+		/// Development Kit (SDK) released for Windows Vista and later, the organization of header files has changed and the
+		/// <c>SOCKET_ADDRESS</c> structure is defined in the Ws2def.h header file which is automatically included by the Winsock2.h header
+		/// file. On the Platform Software Development Kit (SDK) released for Windows Server 2003 and Windows XP, the <c>SOCKET_ADDRESS</c>
+		/// structure is declared in the Winsock2.h header file. In order to use the <c>IP_ADAPTER_MULTICAST_ADDRESS</c> structure, the
+		/// Winsock2.h header file must be included before the Iphlpapi.h header file.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/iptypes/ns-iptypes-_ip_adapter_multicast_address_xp typedef struct
+		// _IP_ADAPTER_MULTICAST_ADDRESS_XP { union { ULONGLONG Alignment; struct { ULONG Length; DWORD Flags; }; }; struct
+		// _IP_ADAPTER_MULTICAST_ADDRESS_XP *Next; SOCKET_ADDRESS Address; } IP_ADAPTER_MULTICAST_ADDRESS_XP, *PIP_ADAPTER_MULTICAST_ADDRESS_XP;
+		[PInvokeData("iptypes.h", MSDNShortId = "b85a6e0a-df2c-4608-b07a-191b34440a43")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct IP_ADAPTER_MULTICAST_ADDRESS : ILinkedListElement<IP_ADAPTER_MULTICAST_ADDRESS>
+		{
+			/// <summary>Specifies the length of this structure.</summary>
+			public uint Length;
+
+			/// <summary>Specifies flags for this address.</summary>
+			public IP_ADAPTER_CAST_FLAGS Flags;
+
+			/// <summary>
+			/// <para>Type: <c>struct _IP_ADAPTER_MULTICAST_ADDRESS*</c></para>
+			/// <para>A pointer to the next multicast IP address structure in the list.</para>
+			/// </summary>
+			public IntPtr Next;
+
+			/// <summary>
+			/// <para>Type: <c>SOCKET_ADDRESS</c></para>
+			/// <para>The IP address for this multicast IP address entry. This member can be an IPv6 address or an IPv4 address.</para>
+			/// </summary>
+			public SOCKET_ADDRESS Address;
+
+			/// <summary>
+			/// <para>Gets a reference to the next <c>IP_ADAPTER_MULTICAST_ADDRESS</c> structure in the list.</para>
+			/// </summary>
+			public IP_ADAPTER_MULTICAST_ADDRESS? GetNext() => Next.ToNullableStructure<IP_ADAPTER_MULTICAST_ADDRESS>();
+
+			/// <inheritdoc/>
+			public override string ToString() => Address.ToString();
+		}
+
+		/// <summary>
+		/// <para>The <c>IP_ADAPTER_PREFIX</c> structure stores an IP address prefix.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The IP_ADAPTER_ADDRESSES structure is retrieved by the GetAdaptersAddresses function. On Windows XP with Service Pack 1 (SP1) and
+		/// later, the <c>FirstPrefix</c> member of the <c>IP_ADAPTER_ADDRESSES</c> structure is a pointer to a linked list of
+		/// <c>IP_ADAPTER_PREFIX</c> structures.
+		/// </para>
+		/// <para>
+		/// The SOCKET_ADDRESS structure is used in the <c>IP_ADAPTER_PREFIX</c> structure. On the Microsoft Windows Software Development Kit
+		/// (SDK) released for Windows Vista and later, the organization of header files has changed and the <c>SOCKET_ADDRESS</c> structure
+		/// is defined in the Ws2def.h header file which is automatically included by the Winsock2.h header file. On the Platform Software
+		/// Development Kit (SDK) released for Windows Server 2003 and Windows XP, the <c>SOCKET_ADDRESS</c> structure is declared in the
+		/// Winsock2.h header file. In order to use the <c>IP_ADAPTER_PREFIX</c> structure, the Winsock2.h header file must be included
+		/// before the Iphlpapi.h header file.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/iptypes/ns-iptypes-_ip_adapter_prefix_xp typedef struct _IP_ADAPTER_PREFIX_XP
+		// { union { ULONGLONG Alignment; struct { ULONG Length; DWORD Flags; }; }; struct _IP_ADAPTER_PREFIX_XP *Next; SOCKET_ADDRESS
+		// Address; ULONG PrefixLength; } IP_ADAPTER_PREFIX_XP, *PIP_ADAPTER_PREFIX_XP;
+		[PInvokeData("iptypes.h", MSDNShortId = "680b412d-2352-421d-ae58-dcf34ee6cf31")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct IP_ADAPTER_PREFIX : ILinkedListElement<IP_ADAPTER_PREFIX>
+		{
+			/// <summary>Specifies the length of this structure.</summary>
+			public uint Length;
+
+			/// <summary>This member is reserved and should be set to zero.</summary>
+			public uint Flags;
+
+			/// <summary>
+			/// <para>A pointer to the next adapter prefix structure in the list.</para>
+			/// </summary>
+			public IntPtr Next;
+
+			/// <summary>
+			/// <para>The address prefix, in the form of a SOCKET_ADDRESS structure.</para>
+			/// </summary>
+			public SOCKET_ADDRESS Address;
+
+			/// <summary>
+			/// <para>The length of the prefix, in bits.</para>
+			/// </summary>
+			public uint PrefixLength;
+
+			/// <summary>
+			/// <para>Gets a reference to the next <c>IP_ADAPTER_PREFIX</c> structure in the list.</para>
+			/// </summary>
+			public IP_ADAPTER_PREFIX? GetNext() => Next.ToNullableStructure<IP_ADAPTER_PREFIX>();
+
+			/// <inheritdoc/>
+			public override string ToString() => Address.ToString();
+		}
+
+		/// <summary>
+		/// <para>
+		/// The <c>IP_ADAPTER_UNICAST_ADDRESS</c> structure stores a single unicast IP address in a linked list of IP addresses for a
+		/// particular adapter.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The IP_ADAPTER_ADDRESSES structure is retrieved by the GetAdaptersAddresses function. The <c>FirstUnicastAddress</c> member of
+		/// the <c>IP_ADAPTER_ADDRESSES</c> structure is a pointer to a linked list of <c>IP_ADAPTER_UNICAST_ADDRESS</c> structures.
+		/// </para>
+		/// <para>
+		/// The size of the <c>IP_ADAPTER_UNICAST_ADDRESS</c> structure changed on Windows Vista and later. The <c>Length</c> member should
+		/// be used to determine which version of the <c>IP_ADAPTER_UNICAST_ADDRESS</c> structure is being used.
+		/// </para>
+		/// <para>
+		/// The version of the <c>IP_ADAPTER_UNICAST_ADDRESS</c> structure on Windows Vista and later has the following new member added: <c>OnLinkPrefixLength</c>.
+		/// </para>
+		/// <para>
+		/// When this structure is used with the GetAdaptersAddresses function and similar management functions, all configured addresses are
+		/// shown, including duplicate addresses. Such duplicate address entries can occur when addresses are configured statically. Such
+		/// reporting facilitates administrator troubleshooting. The <c>DadState</c> member is effective in identifying and troubleshooting
+		/// such situations.
+		/// </para>
+		/// <para>
+		/// In the Windows SDK, the version of the structure for use on Windows Vista and later is defined as
+		/// <c>IP_ADAPTER_UNICAST_ADDRESS_LH</c>. In the Windows SDK, the version of this structure to be used on earlier systems including
+		/// Windows XP with Service Pack 1 (SP1) and later is defined as <c>IP_ADAPTER_UNICAST_ADDRESS_XP</c>. When compiling an application
+		/// if the target platform is Windows Vista and later (, , or ), the <c>IP_ADAPTER_UNICAST_ADDRESS_LH</c> structure is typedefed to
+		/// the <c>IP_ADAPTER_UNICAST_ADDRESS</c> structure. When compiling an application if the target platform is not Windows Vista and
+		/// later, the <c>IP_ADAPTER_UNICAST_ADDRESS_XP</c> structure is typedefed to the <c>IP_ADAPTER_UNICAST_ADDRESS</c> structure.
+		/// </para>
+		/// <para>
+		/// The SOCKET_ADDRESS structure is used in the <c>IP_ADAPTER_UNICAST_ADDRESS</c> structure. On the Microsoft Windows Software
+		/// Development Kit (SDK) released for Windows Vista and later, the organization of header files has changed and the
+		/// <c>SOCKET_ADDRESS</c> structure is defined in the Ws2def.h header file which is automatically included by the Winsock2.h header
+		/// file. On the Platform Software Development Kit (SDK) released for Windows Server 2003 and Windows XP, the <c>SOCKET_ADDRESS</c>
+		/// structure is declared in the Winsock2.h header file. In order to use the <c>IP_ADAPTER_UNICAST_ADDRESS</c> structure, the
+		/// Winsock2.h header file must be included before the Iphlpapi.h header file.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/iptypes/ns-iptypes-_ip_adapter_unicast_address_lh typedef struct
+		// _IP_ADAPTER_UNICAST_ADDRESS_LH { union { ULONGLONG Alignment; struct { ULONG Length; DWORD Flags; }; }; struct
+		// _IP_ADAPTER_UNICAST_ADDRESS_LH *Next; SOCKET_ADDRESS Address; IP_PREFIX_ORIGIN PrefixOrigin; IP_SUFFIX_ORIGIN SuffixOrigin;
+		// IP_DAD_STATE DadState; ULONG ValidLifetime; ULONG PreferredLifetime; ULONG LeaseLifetime; UINT8 OnLinkPrefixLength; }
+		// IP_ADAPTER_UNICAST_ADDRESS_LH, *PIP_ADAPTER_UNICAST_ADDRESS_LH;
+		[PInvokeData("iptypes.h", MSDNShortId = "65c3648c-89bd-417b-8a9b-feefa6149c4a")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct IP_ADAPTER_UNICAST_ADDRESS : ILinkedListElement<IP_ADAPTER_UNICAST_ADDRESS>
+		{
+			/// <summary>Specifies the length of this structure.</summary>
+			public uint Length;
+
+			/// <summary>This member is reserved and should be set to zero.</summary>
+			public uint Flags;
+
+			/// <summary>
+			/// <para>Type: <c>struct _IP_ADAPTER_UNICAST_ADDRESS*</c></para>
+			/// <para>A pointer to the next IP adapter address structure in the list.</para>
+			/// </summary>
+			public IntPtr Next;
+
+			/// <summary>
+			/// <para>Type: <c>SOCKET_ADDRESS</c></para>
+			/// <para>The IP address for this unicast IP address entry. This member can be an IPv6 address or an IPv4 address.</para>
+			/// </summary>
+			public SOCKET_ADDRESS Address;
+
+			/// <summary>
+			/// <para>Type: <c>IP_PREFIX_ORIGIN</c></para>
+			/// <para>
+			/// The prefix or network part of IP the address. This member can be one of the values from the IP_PREFIX_ORIGIN enumeration type
+			/// defined in the Iptypes.h header file.
+			/// </para>
+			/// </summary>
+			public IP_PREFIX_ORIGIN PrefixOrigin;
+
+			/// <summary>
+			/// <para>Type: <c>IP_SUFFIX_ORIGIN</c></para>
+			/// <para>
+			/// The suffix or host part of the IP address. This member can be one of the values from the IP_SUFFIX_ORIGIN enumeration type
+			/// defined in the Iptypes.h header file.
+			/// </para>
+			/// </summary>
+			public IP_SUFFIX_ORIGIN SuffixOrigin;
+
+			/// <summary>
+			/// <para>Type: <c>IP_DAD_STATE</c></para>
+			/// <para>
+			/// The duplicate address detection (DAD) state. This member can be one of the values from the IP_DAD_STATE enumeration type
+			/// defined in the Iptypes.h header file. Duplicate address detection is available for both IPv4 and IPv6 addresses.
+			/// </para>
+			/// </summary>
+			public IP_DAD_STATE DadState;
+
+			/// <summary>
+			/// <para>Type: <c>ULONG</c></para>
+			/// <para>The maximum lifetime, in seconds, that the IP address is valid. A value of 0xffffffff is considered to be infinite.</para>
+			/// </summary>
+			public uint ValidLifetime;
+
+			/// <summary>
+			/// <para>Type: <c>ULONG</c></para>
+			/// <para>The preferred lifetime, in seconds, that the IP address is valid. A value of 0xffffffff is considered to be infinite.</para>
+			/// </summary>
+			public uint PreferredLifetime;
+
+			/// <summary>
+			/// <para>Type: <c>ULONG</c></para>
+			/// <para>The lease lifetime, in seconds, that the IP address is valid.</para>
+			/// </summary>
+			public uint LeaseLifetime;
+
+			/// <summary>
+			/// <para>Type: <c>UINT8</c></para>
+			/// <para>
+			/// The length, in bits, of the prefix or network part of the IP address. For a unicast IPv4 address, any value greater than 32
+			/// is an illegal value. For a unicast IPv6 address, any value greater than 128 is an illegal value. A value of 255 is commonly
+			/// used to represent an illegal value.
+			/// </para>
+			/// <para><c>Note</c> This structure member is only available on Windows Vista and later.</para>
+			/// </summary>
+			public byte OnLinkPrefixLength;
+
+			/// <summary>
+			/// <para>Gets a reference to the next <c>IP_ADAPTER_UNICAST_ADDRESS</c> structure in the list.</para>
+			/// </summary>
+			public IP_ADAPTER_UNICAST_ADDRESS? GetNext() => Next.ToNullableStructure<IP_ADAPTER_UNICAST_ADDRESS>();
+
+			/// <inheritdoc/>
+			public override string ToString() => Address.ToString();
+		}
+
+		/// <summary>
+		/// <para>
+		/// The <c>IP_ADAPTER_WINS_SERVER_ADDRESS</c> structure stores a single Windows Internet Name Service (WINS) server address in a
+		/// linked list of WINS server addresses for a particular adapter.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The IP_ADAPTER_ADDRESSES structure is retrieved by the GetAdaptersAddresses function. The <c>FirstWinsServerAddress</c> member of
+		/// the <c>IP_ADAPTER_ADDRESSES</c> structure is a pointer to a linked list of <c>IP_ADAPTER_WINS_SERVER_ADDRESS</c> structures.
+		/// </para>
+		/// <para>
+		/// The SOCKET_ADDRESS structure is used in the IP_ADAPTER_GATEWAY_ADDRESS structure. On the Microsoft Windows Software Development
+		/// Kit (SDK) released for Windows Vista and later, the organization of header files has changed and the <c>SOCKET_ADDRESS</c>
+		/// structure is defined in the Ws2def.h header file which is automatically included by the Winsock2.h header file. On the Platform
+		/// Software Development Kit (SDK) released for Windows Server 2003 and Windows XP, the <c>SOCKET_ADDRESS</c> structure is declared
+		/// in the Winsock2.h header file. In order to use the <c>IP_ADAPTER_GATEWAY_ADDRESS</c> structure, the Winsock2.h header file must
+		/// be included before the Iphlpapi.h header file.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/iptypes/ns-iptypes-_ip_adapter_wins_server_address_lh typedef struct
+		// _IP_ADAPTER_WINS_SERVER_ADDRESS_LH { union { ULONGLONG Alignment; struct { ULONG Length; DWORD Reserved; }; }; struct
+		// _IP_ADAPTER_WINS_SERVER_ADDRESS_LH *Next; SOCKET_ADDRESS Address; } IP_ADAPTER_WINS_SERVER_ADDRESS_LH, *PIP_ADAPTER_WINS_SERVER_ADDRESS_LH;
+		[PInvokeData("iptypes.h", MSDNShortId = "AF9A40C4-63DB-4830-A689-1DFE4DC2CAB7")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct IP_ADAPTER_WINS_SERVER_ADDRESS : ILinkedListElement<IP_ADAPTER_WINS_SERVER_ADDRESS>
+		{
+			/// <summary>Specifies the length of this structure.</summary>
+			public uint Length;
+
+			/// <summary>This member is reserved and should be set to zero.</summary>
+			public uint Reserved;
+
+			/// <summary>
+			/// <para>A pointer to the next WINS server address structure in the list.</para>
+			/// </summary>
+			public IntPtr Next;
+
+			/// <summary>
+			/// <para>The IP address for this WINS server entry. This member can be an IPv6 address or an IPv4 address.</para>
+			/// </summary>
+			public SOCKET_ADDRESS Address;
+
+			/// <summary>
+			/// <para>Gets a reference to the next <c>IP_ADAPTER_WINS_SERVER_ADDRESS</c> structure in the list.</para>
+			/// </summary>
+			public IP_ADAPTER_WINS_SERVER_ADDRESS? GetNext() => Next.ToNullableStructure<IP_ADAPTER_WINS_SERVER_ADDRESS>();
+
+			/// <inheritdoc/>
+			public override string ToString() => Address.ToString();
+		}
+
+		/// <summary>
+		/// <para>The <c>IP_ADDR_STRING</c> structure represents a node in a linked-list of IPv4 addresses.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/iptypes/ns-iptypes-_ip_addr_string typedef struct _IP_ADDR_STRING { struct
+		// _IP_ADDR_STRING *Next; IP_ADDRESS_STRING IpAddress; IP_MASK_STRING IpMask; DWORD Context; } IP_ADDR_STRING, *PIP_ADDR_STRING;
+		[PInvokeData("iptypes.h", MSDNShortId = "783c383d-7fd3-45bc-90f6-2e8ce01db3c3")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+		public struct IP_ADDR_STRING : ILinkedListElement<IP_ADDR_STRING>
+		{
+			/// <summary>
+			/// <para>A pointer to the next <c>IP_ADDR_STRING</c> structure in the list.</para>
+			/// </summary>
+			public IntPtr Next;
+
+			/// <summary>
+			/// <para>
+			/// A value that specifies a structure type with a single member, <c>String</c>. The <c>String</c> member is a <c>char</c> array
+			/// of size 16. This array holds an IPv4 address in dotted decimal notation.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+			public string IpAddress;
+
+			/// <summary>
+			/// <para>
+			/// A value that specifies a structure type with a single member, <c>String</c>. The <c>String</c> member is a <c>char</c> array
+			/// of size 16. This array holds the IPv4 subnet mask in dotted decimal notation.
+			/// </para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+			public string IpMask;
+
+			/// <summary>
+			/// <para>
+			/// A network table entry (NTE). This value corresponds to the NTEContext parameters in the AddIPAddress and DeleteIPAddress functions.
+			/// </para>
+			/// </summary>
+			public uint Context;
+
+			/// <summary>
+			/// <para>Gets a reference to the next <c>IP_ADDR_STRING</c> structure in the list.</para>
+			/// </summary>
+			public IP_ADDR_STRING? GetNext() => Next.ToNullableStructure<IP_ADDR_STRING>();
+		}
+
+		/// <summary>
+		/// <para>The <c>IP_PER_ADAPTER_INFO</c> structure contains information specific to a particular adapter.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// APIPA enables automatic IP address configuration on networks without DHCP servers, using the IANA-reserved Class B network
+		/// 169.254.0.0, with a subnet mask of 255.255.0.0. Clients send ARP messages to ensure the selected address is not currently in use.
+		/// Clients auto-configured in this fashion continue to poll for a valid DHCP server every five minutes, and if found, the DHCP
+		/// server configuration overrides all auto-configuration settings.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/iptypes/ns-iptypes-_ip_per_adapter_info_w2ksp1 typedef struct
+		// _IP_PER_ADAPTER_INFO_W2KSP1 { UINT AutoconfigEnabled; UINT AutoconfigActive; PIP_ADDR_STRING CurrentDnsServer; IP_ADDR_STRING
+		// DnsServerList; } IP_PER_ADAPTER_INFO_W2KSP1, *PIP_PER_ADAPTER_INFO_W2KSP1;
+		[PInvokeData("iptypes.h", MSDNShortId = "10cfdded-4184-4d34-9ccd-85446c13d497")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+		public struct IP_PER_ADAPTER_INFO
+		{
+			/// <summary>
+			/// <para>Specifies whether IP address auto-configuration (APIPA) is enabled on this adapter. See Remarks.</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool AutoconfigEnabled;
+
+			/// <summary>
+			/// <para>Specifies whether this adapter's IP address is currently auto-configured by APIPA.</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.Bool)]
+			public bool AutoconfigActive;
+
+			/// <summary>
+			/// <para>Reserved. Use the <c>DnsServerList</c> member to obtain the DNS servers for the local computer.</para>
+			/// </summary>
+			public IntPtr CurrentDnsServer; /* IpAddressList* */
+
+			/// <summary>
+			/// <para>A linked list of IP_ADDR_STRING structures that specify the set of DNS servers used by the local computer.</para>
+			/// </summary>
+			public IP_ADDR_STRING DnsServerList;
+
+			/// <summary>
+			/// <para>
+			/// A list of IP_ADDR_STRING structures pulled from <see cref="DnsServerList"/> that specify the set of DNS servers used by the
+			/// local computer.
+			/// </para>
+			/// </summary>
+			public IEnumerable<IP_ADDR_STRING> DnsServers => DnsServerList.GetLinkedList(s => s.IpAddress != null);
+		}
+
+		/// <summary>
+		/// <para>The <c>IP_PER_ADAPTER_INFO</c> structure contains information specific to a particular adapter.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// APIPA enables automatic IP address configuration on networks without DHCP servers, using the IANA-reserved Class B network
+		/// 169.254.0.0, with a subnet mask of 255.255.0.0. Clients send ARP messages to ensure the selected address is not currently in use.
+		/// Clients auto-configured in this fashion continue to poll for a valid DHCP server every five minutes, and if found, the DHCP
+		/// server configuration overrides all auto-configuration settings.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/iptypes/ns-iptypes-_ip_per_adapter_info_w2ksp1 typedef struct
+		// _IP_PER_ADAPTER_INFO_W2KSP1 { UINT AutoconfigEnabled; UINT AutoconfigActive; PIP_ADDR_STRING CurrentDnsServer; IP_ADDR_STRING
+		// DnsServerList; } IP_PER_ADAPTER_INFO_W2KSP1, *PIP_PER_ADAPTER_INFO_W2KSP1;
+		[PInvokeData("iptypes.h", MSDNShortId = "10cfdded-4184-4d34-9ccd-85446c13d497")]
+		public class PIP_PER_ADAPTER_INFO : SafeMemoryHandle<CoTaskMemoryMethods>
+		{
+			/// <summary>Initializes a new instance of the <see cref="PIP_PER_ADAPTER_INFO"/> class.</summary>
+			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
+			public PIP_PER_ADAPTER_INFO(uint byteSize) : base((int)byteSize)
+			{
+			}
+
+			/// <summary>
+			/// <para>Specifies whether this adapter's IP address is currently auto-configured by APIPA.</para>
+			/// </summary>
+			public bool AutoconfigActive => !IsInvalid && handle.ToStructure<IP_PER_ADAPTER_INFO>().AutoconfigActive;
+
+			/// <summary>
+			/// <para>Specifies whether IP address auto-configuration (APIPA) is enabled on this adapter. See Remarks.</para>
+			/// </summary>
+			public bool AutoconfigEnabled => !IsInvalid && handle.ToStructure<IP_PER_ADAPTER_INFO>().AutoconfigEnabled;
+
+			/// <summary>
+			/// <para>A linked list of IP_ADDR_STRING structures that specify the set of DNS servers used by the local computer.</para>
+			/// </summary>
+			public IEnumerable<IP_ADDR_STRING> DnsServerList => IsInvalid ? new IP_ADDR_STRING[0] : handle.ToStructure<IP_PER_ADAPTER_INFO>().DnsServers;
+
+			/// <summary>Performs an implicit conversion from <see cref="PIP_PER_ADAPTER_INFO"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="info">The PIP_PER_ADAPTER_INFO instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator IntPtr(PIP_PER_ADAPTER_INFO info) => info.DangerousGetHandle();
 		}
 	}
 }

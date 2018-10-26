@@ -157,7 +157,7 @@ namespace Vanara.PInvoke
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[DllImport(Lib.PropSys, ExactSpelling = true)]
 		[PInvokeData("Propvarutil.h", MSDNShortId = "bb762290")]
-		public static extern HRESULT InitPropVariantFromCLSID([In, MarshalAs(UnmanagedType.LPStruct)] Guid clsid, [In, Out] PROPVARIANT ppropvar);
+		public static extern HRESULT InitPropVariantFromCLSID(in Guid clsid, [In, Out] PROPVARIANT ppropvar);
 
 		/// <summary>Initializes a <see cref="PROPVARIANT"/> structure based on a specified vector of double values.</summary>
 		/// <param name="prgn">
@@ -177,7 +177,7 @@ namespace Vanara.PInvoke
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[DllImport(Lib.PropSys, ExactSpelling = true)]
 		[PInvokeData("Propvarutil.h", MSDNShortId = "bb762293")]
-		public static extern HRESULT InitPropVariantFromFileTime([In] ref FILETIME pftIn, [In, Out] PROPVARIANT ppropvar);
+		public static extern HRESULT InitPropVariantFromFileTime(in FILETIME pftIn, [In, Out] PROPVARIANT ppropvar);
 
 		/// <summary>Initializes a <see cref="PROPVARIANT"/> structure from a specified vector of <see cref="FILETIME"/> values.</summary>
 		/// <param name="prgft">
@@ -215,7 +215,7 @@ namespace Vanara.PInvoke
 		// InitPropVariantFromGUIDAsString( REFGUID guid, PROPVARIANT *ppropvar );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propvarutil.h", MSDNShortId = "bcc343f7-741f-4cdd-bd2f-ae4786faab0e")]
-		public static extern HRESULT InitPropVariantFromGUIDAsString([In, MarshalAs(UnmanagedType.LPStruct)] Guid guid, [In, Out] PROPVARIANT ppropvar);
+		public static extern HRESULT InitPropVariantFromGUIDAsString(in Guid guid, [In, Out] PROPVARIANT ppropvar);
 
 		/// <summary>Initializes a <see cref="PROPVARIANT"/> structure based on a specified vector of 16-bit integer values.</summary>
 		/// <param name="prgn">Pointer to a source vector of SHORT values. If this parameter is NULL, the vector is initialized with zeros.</param>
@@ -297,7 +297,7 @@ namespace Vanara.PInvoke
 		// InitPropVariantFromResource( HINSTANCE hinst, UINT id, PROPVARIANT *ppropvar );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propvarutil.h", MSDNShortId = "c958f823-f820-4b0b-86ed-84ad18befbd1")]
-		public static extern HRESULT InitPropVariantFromResource(IntPtr hinst, uint id, [In, Out] PROPVARIANT ppropvar);
+		public static extern HRESULT InitPropVariantFromResource(HINSTANCE hinst, uint id, [In, Out] PROPVARIANT ppropvar);
 
 		/// <summary>
 		/// <para>
@@ -2433,7 +2433,7 @@ namespace Vanara.PInvoke
 		// PropVariantToWinRTPropertyValue( REFPROPVARIANT propvar, REFIID riid, void **ppv );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "38DD3673-17FD-4F2A-BA58-A1A9983B92BF")]
-		public static extern HRESULT PropVariantToWinRTPropertyValue([In] PROPVARIANT propvar, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT PropVariantToWinRTPropertyValue([In] PROPVARIANT propvar, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>Deserializes a specified <c>SERIALIZEDPROPERTYVALUE</c> structure, creating a <c>PROPVARIANT</c> structure.</summary>
 		/// <param name="pprop">

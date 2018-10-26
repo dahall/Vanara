@@ -250,7 +250,7 @@ namespace Vanara.PInvoke
 		// PSCoerceToCanonicalValue( REFPROPERTYKEY key, PROPVARIANT *ppropvar );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "8225dd01-47cc-451e-b6a6-c16ddf62ca20")]
-		public static extern HRESULT PSCoerceToCanonicalValue([In, MarshalAs(UnmanagedType.LPStruct)] PROPERTYKEY key, PROPVARIANT ppropvar);
+		public static extern HRESULT PSCoerceToCanonicalValue(in PROPERTYKEY key, PROPVARIANT ppropvar);
 
 		/// <summary>
 		/// <para>Creates an adapter from an IPropertyStore.</para>
@@ -296,7 +296,7 @@ namespace Vanara.PInvoke
 		// PSCreateAdapterFromPropertyStore( IPropertyStore *pps, REFIID riid, void **ppv );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "a3489f95-e790-481a-af6e-f30527dc476c")]
-		public static extern HRESULT PSCreateAdapterFromPropertyStore(IPropertyStore pps, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+		public static extern HRESULT PSCreateAdapterFromPropertyStore(IPropertyStore pps, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
 
 		/// <summary>
 		/// <para>Creates a read-only, delayed-binding property store that contains multiple property stores.</para>
@@ -379,7 +379,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "8b264d7e-6124-4724-8d23-605101705893")]
 		public static extern HRESULT PSCreateDelayedMultiplexPropertyStore(GETPROPERTYSTOREFLAGS flags, IDelayedPropertyStoreFactory pdpsf,
-			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] uint[] rgStoreIds, uint cStores, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] uint[] rgStoreIds, uint cStores, in Guid riid,
 			out IPropertyStore ppv);
 
 		/// <summary>
@@ -417,7 +417,7 @@ namespace Vanara.PInvoke
 		// PSCreateMemoryPropertyStore( REFIID riid, void **ppv );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "6e7a2ac0-2a4a-41ec-a2a8-ddbe8aa45bc9")]
-		public static extern HRESULT PSCreateMemoryPropertyStore([In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+		public static extern HRESULT PSCreateMemoryPropertyStore(in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
 
 		/// <summary>
 		/// <para>
@@ -484,7 +484,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "4a6b5a10-5ef2-42c7-bf3b-dfa743be252f")]
 		public static extern HRESULT PSCreateMultiplexPropertyStore([MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 1)] object[] prgpunkStores,
-			uint cStores, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IPropertyStore ppv);
+			uint cStores, in Guid riid, out IPropertyStore ppv);
 
 		/// <summary>
 		/// <para>
@@ -523,7 +523,7 @@ namespace Vanara.PInvoke
 		// PSCreatePropertyStoreFromObject( IUnknown *punk, DWORD grfMode, REFIID riid, void **ppv );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "010572d5-0357-4101-803e-0a27fc60ca5e")]
-		public static extern HRESULT PSCreatePropertyStoreFromObject([MarshalAs(UnmanagedType.IUnknown)] object punk, STGM grfMode, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+		public static extern HRESULT PSCreatePropertyStoreFromObject([MarshalAs(UnmanagedType.IUnknown)] object punk, STGM grfMode, in Guid riid,
 			[MarshalAs(UnmanagedType.Interface)] out object ppv);
 
 		/// <summary>
@@ -571,7 +571,7 @@ namespace Vanara.PInvoke
 		// PSCreatePropertyStoreFromPropertySetStorage( IPropertySetStorage *ppss, DWORD grfMode, REFIID riid, void **ppv );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "efba5a2a-df26-4f7e-9ddf-ec471e3d547c")]
-		public static extern HRESULT PSCreatePropertyStoreFromPropertySetStorage(IPropertySetStorage ppss, STGM grfMode, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+		public static extern HRESULT PSCreatePropertyStoreFromPropertySetStorage(IPropertySetStorage ppss, STGM grfMode, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
 
 		/// <summary>
 		/// <para>
@@ -620,7 +620,7 @@ namespace Vanara.PInvoke
 		// PSEnumeratePropertyDescriptions( PROPDESC_ENUMFILTER filterOn, REFIID riid, void **ppv );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "687d5a32-3a2e-4b9b-b06c-ca06a6cd1595")]
-		public static extern HRESULT PSEnumeratePropertyDescriptions(PROPDESC_ENUMFILTER filterOn, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IPropertyDescriptionList ppv);
+		public static extern HRESULT PSEnumeratePropertyDescriptions(PROPDESC_ENUMFILTER filterOn, in Guid riid, out IPropertyDescriptionList ppv);
 
 		/// <summary>
 		/// <para>
@@ -851,7 +851,7 @@ namespace Vanara.PInvoke
 		// REFPROPERTYKEY propkey, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdfFlags, LPWSTR pwszText, DWORD cchText );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "71442967-ee8a-448c-83cf-949934ddd152")]
-		public static extern HRESULT PSFormatForDisplay([In, MarshalAs(UnmanagedType.LPStruct)] PROPERTYKEY propkey, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdfFlags,
+		public static extern HRESULT PSFormatForDisplay(in PROPERTYKEY propkey, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdfFlags,
 			[MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszText, uint cchText);
 
 		/// <summary>
@@ -1061,7 +1061,7 @@ namespace Vanara.PInvoke
 		// REFPROPERTYKEY key, REFPROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff, PWSTR *ppszDisplay );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "d411ea72-fb29-47b6-a7f6-0839b3e2caf2")]
-		public static extern HRESULT PSFormatForDisplayAlloc([In, MarshalAs(UnmanagedType.LPStruct)] PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff,
+		public static extern HRESULT PSFormatForDisplayAlloc(in PROPERTYKEY key, PROPVARIANT propvar, PROPDESC_FORMAT_FLAGS pdff,
 			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszDisplay);
 
 		/// <summary>
@@ -1289,7 +1289,7 @@ namespace Vanara.PInvoke
 		// PSGetImageReferenceForValue( REFPROPERTYKEY propkey, REFPROPVARIANT propvar, PWSTR *ppszImageRes );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "E37AF2ED-E3F9-4e50-9317-9DAF03AC543F")]
-		public static extern HRESULT PSGetImageReferenceForValue([In, MarshalAs(UnmanagedType.LPStruct)] PROPERTYKEY propkey, PROPVARIANT propvar,
+		public static extern HRESULT PSGetImageReferenceForValue(in PROPERTYKEY propkey, PROPVARIANT propvar,
 			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszImageRes);
 
 		/// <summary>
@@ -1345,7 +1345,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "7b7fd260-c863-41f7-8594-4ee435090228")]
 		public static extern HRESULT PSGetItemPropertyHandler([MarshalAs(UnmanagedType.IUnknown)] object punkItem, [MarshalAs(UnmanagedType.Bool)] bool fReadWrite,
-			[In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+			in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
 
 		/// <summary>
 		/// <para>Retrieves a property handler for a Shell item.</para>
@@ -1409,7 +1409,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "82e0aa15-b67c-4c0a-bafb-f1dc5f822aec")]
 		public static extern HRESULT PSGetItemPropertyHandlerWithCreateObject([MarshalAs(UnmanagedType.IUnknown)] object punkItem, [MarshalAs(UnmanagedType.Bool)] bool fReadWrite,
-			[MarshalAs(UnmanagedType.IUnknown)] object punkCreateObject, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+			[MarshalAs(UnmanagedType.IUnknown)] object punkCreateObject, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
 
 		/// <summary>
 		/// <para>Gets a value from serialized property storage by property name.</para>
@@ -1474,7 +1474,7 @@ namespace Vanara.PInvoke
 		/// <returns>The result of the operation. S_OK indicates success.</returns>
 		[DllImport(Lib.PropSys, ExactSpelling = true)]
 		[PInvokeData("Propsys.h", MSDNShortId = "bb776502")]
-		public static extern HRESULT PSGetNameFromPropertyKey([In, MarshalAs(UnmanagedType.LPStruct)] PROPERTYKEY propkey, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszCanonicalName);
+		public static extern HRESULT PSGetNameFromPropertyKey(in PROPERTYKEY propkey, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszCanonicalName);
 
 		/// <summary>Gets an instance of a property description interface for a property specified by a PROPERTYKEY structure.</summary>
 		/// <param name="propkey">Reference to a PROPERTYKEY.</param>
@@ -1486,7 +1486,7 @@ namespace Vanara.PInvoke
 		/// <returns>The result of the operation. S_OK indicates success.</returns>
 		[DllImport(Lib.PropSys, ExactSpelling = true)]
 		[PInvokeData("Propsys.h", MSDNShortId = "bb776503")]
-		public static extern HRESULT PSGetPropertyDescription([In, MarshalAs(UnmanagedType.LPStruct)] PROPERTYKEY propkey, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+		public static extern HRESULT PSGetPropertyDescription(in PROPERTYKEY propkey, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
 
 		/// <summary>
 		/// <para>Gets an instance of a property description interface for a specified property name.</para>
@@ -2040,7 +2040,7 @@ namespace Vanara.PInvoke
 		// PSGetPropertyDescriptionByName( LPCWSTR pszCanonicalName, REFIID riid, void **ppv );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "181ebbfb-66ed-4763-ad2d-acf3c800f9d2")]
-		public static extern HRESULT PSGetPropertyDescriptionByName([MarshalAs(UnmanagedType.LPWStr)] string pszCanonicalName, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+		public static extern HRESULT PSGetPropertyDescriptionByName([MarshalAs(UnmanagedType.LPWStr)] string pszCanonicalName, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
 
 		/// <summary>
 		/// <para>Gets an instance of a property description list interface for a specified property list.</para>
@@ -2095,7 +2095,7 @@ namespace Vanara.PInvoke
 		// PSGetPropertyDescriptionListFromString( LPCWSTR pszPropList, REFIID riid, void **ppv );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "348253ed-46ac-4643-bbf8-2d286ae97f07")]
-		public static extern HRESULT PSGetPropertyDescriptionListFromString([MarshalAs(UnmanagedType.LPWStr)] string pszPropList, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IPropertyDescriptionList ppv);
+		public static extern HRESULT PSGetPropertyDescriptionListFromString([MarshalAs(UnmanagedType.LPWStr)] string pszPropList, in Guid riid, out IPropertyDescriptionList ppv);
 
 		/// <summary>
 		/// <para>Gets the value of a property as stored in serialized property storage.</para>
@@ -2147,7 +2147,7 @@ namespace Vanara.PInvoke
 		// PSGetPropertyFromPropertyStorage( PCUSERIALIZEDPROPSTORAGE psps, DWORD cb, REFPROPERTYKEY rpkey, PROPVARIANT *ppropvar );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "c649d25d-7971-4804-a5a2-3fd6860659b4")]
-		public static extern HRESULT PSGetPropertyFromPropertyStorage(IntPtr psps, uint cb, [In, MarshalAs(UnmanagedType.LPStruct)] PROPERTYKEY rpkey, PROPVARIANT ppropvar);
+		public static extern HRESULT PSGetPropertyFromPropertyStorage(IntPtr psps, uint cb, in PROPERTYKEY rpkey, PROPVARIANT ppropvar);
 
 		/// <summary>Gets the property key for a canonical property name.</summary>
 		/// <param name="pszName">Pointer to a property name as a null-terminated, Unicode string.</param>
@@ -2203,7 +2203,7 @@ namespace Vanara.PInvoke
 		// riid, void **ppv );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "ddbf7cea-b22f-4cf9-8b5f-804640086466")]
-		public static extern HRESULT PSGetPropertySystem([In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IPropertySystem ppv);
+		public static extern HRESULT PSGetPropertySystem(in Guid riid, out IPropertySystem ppv);
 
 		/// <summary>
 		/// <para>Gets a property value from a property store.</para>
@@ -2462,7 +2462,7 @@ namespace Vanara.PInvoke
 		// REFPROPERTYKEY pkey, LPWSTR psz, UINT cch );
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "081f8e6d-9189-44f9-9b27-e85f4793da48")]
-		public static extern HRESULT PSStringFromPropertyKey([In, MarshalAs(UnmanagedType.LPStruct)] PROPERTYKEY pkey, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder psz, uint cch);
+		public static extern HRESULT PSStringFromPropertyKey(in PROPERTYKEY pkey, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder psz, uint cch);
 
 		/// <summary>
 		/// <para>Informs the schema subsystem of the removal of a property description schema file.</para>

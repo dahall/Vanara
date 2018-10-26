@@ -184,7 +184,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms684929")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool QueryProcessCycleTime(IntPtr ProcessHandle, out ulong CycleTime);
+		public static extern bool QueryProcessCycleTime(HPROCESS ProcessHandle, out ulong CycleTime);
 
 		/// <summary>Retrieves the cycle time for the specified thread.</summary>
 		/// <param name="ThreadHandle">
@@ -200,7 +200,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms684943")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool QueryThreadCycleTime(IntPtr ThreadHandle, out ulong CycleTime);
+		public static extern bool QueryThreadCycleTime(HTHREAD ThreadHandle, out ulong CycleTime);
 
 		/// <summary>
 		/// Gets the current unbiased interrupt-time count, in units of 100 nanoseconds. The unbiased interrupt-time count does not include time the system

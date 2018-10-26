@@ -19,15 +19,12 @@ namespace Vanara.Windows.Forms
 	Designer("System.ComponentModel.Design.ComponentDesigner, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
 	public class CredentialsDialog : CommonDialog
 	{
-		private static bool PreVista = Environment.OSVersion.Version.Major <= 5;
+		private static readonly bool PreVista = Environment.OSVersion.Version.Major <= 5;
 		private uint authPackage;
 		private bool saveChecked;
 
 		/// <summary>Initializes a new instance of the <see cref="CredentialsDialog"/> class.</summary>
-		public CredentialsDialog()
-		{
-			Reset();
-		}
+		public CredentialsDialog() => Reset();
 
 		/// <summary>Initializes a new instance of the <see cref="CredentialsDialog"/> class.</summary>
 		/// <param name="caption">The caption.</param>
@@ -130,10 +127,10 @@ namespace Vanara.Windows.Forms
 		/// <returns><c>true</c> if the credentials are validated, otherwise <c>false</c>.</returns>
 		public static bool IsValidPassword(string userName, string password)
 		{
-			ParseUserName(userName, out string user, out string domain);
+			ParseUserName(userName, out var user, out var domain);
 			try
 			{
-				if (LogonUser(user, domain, password, LogonUserType.LOGON32_LOGON_NETWORK, LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out SafeHTOKEN obj))
+				if (LogonUser(user, domain, password, LogonUserType.LOGON32_LOGON_NETWORK, LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out var obj))
 					return true;
 			}
 			catch { }
@@ -192,7 +189,7 @@ namespace Vanara.Windows.Forms
 					var password = new StringBuilder(CREDUI_MAX_PASSWORD_LENGTH);
 
 					if (string.IsNullOrEmpty(Target)) Target = DefaultTarget;
-					var ret = CredUIPromptForCredentials(ref info, Target, IntPtr.Zero,
+					var ret = CredUIPromptForCredentials(info, Target, IntPtr.Zero,
 						AuthenticationError, userName, CREDUI_MAX_USERNAME_LENGTH, password, CREDUI_MAX_PASSWORD_LENGTH, ref saveChecked,
 						CredentialsDialogOptions.CREDUI_FLAGS_DEFAULT | (ShowSaveCheckBox ? CredentialsDialogOptions.CREDUI_FLAGS_SHOW_SAVE_CHECK_BOX : 0));
 					if (ret == Win32Error.ERROR_CANCELLED)
@@ -247,24 +244,23 @@ namespace Vanara.Windows.Forms
 					else
 						buf = new AuthenticationBuffer(UserName, Password);
 
-					var retVal = CredUIPromptForWindowsCredentials(ref info, 0, ref authPackage, buf, (uint)buf.Size, out IntPtr outAuthBuffer, out uint outAuthBufferSize, ref saveChecked, flag);
+					var retVal = CredUIPromptForWindowsCredentials(info, 0, ref authPackage, buf, (uint)buf.Size, out var outAuthBuffer, out var outAuthBufferSize, ref saveChecked, flag);
 					if (retVal == Win32Error.ERROR_CANCELLED)
 						return false;
-					if (retVal != Win32Error.ERROR_SUCCESS)
-						throw new Win32Exception(retVal);
+					retVal.ThrowIfFailed();
 
 					var outAuth = new AuthenticationBuffer(outAuthBuffer, (int)outAuthBufferSize);
 
 					if (EncryptPassword)
 					{
-						outAuth.UnPack(true, out SecureString u, out SecureString d, out SecureString p);
+						outAuth.UnPack(true, out SecureString u, out var d, out var p);
 						Password = null;
 						SecurePassword = p;
 						UserName = d?.Length > 0 ? $"{d.ToInsecureString()}\\{u.ToInsecureString()}" : u.ToInsecureString();
 					}
 					else
 					{
-						outAuth.UnPack(true, out string u, out string d, out string p);
+						outAuth.UnPack(true, out string u, out var d, out var p);
 						Password = p;
 						SecurePassword = null;
 						UserName = string.IsNullOrEmpty(d) ? u : $"{d}\\{u}";
@@ -283,8 +279,8 @@ namespace Vanara.Windows.Forms
 			}
 			finally
 			{
-				if (info.hbmBanner != IntPtr.Zero)
-					DeleteObject((HGDIOBJ)info.hbmBanner);
+				if (!info.hbmBanner.IsNull)
+					DeleteObject(info.hbmBanner);
 			}
 		}
 

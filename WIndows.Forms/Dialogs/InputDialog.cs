@@ -156,10 +156,7 @@ namespace Vanara.Windows.Forms
 			private TableLayoutPanel table;
 
 			/// <summary>Initializes a new instance of the <see cref="InternalInputDialog"/> class.</summary>
-			public InternalInputDialog()
-			{
-				InitializeComponent();
-			}
+			public InternalInputDialog() => InitializeComponent();
 
 			internal InternalInputDialog(string prompt, string caption, Image image, object data, int width) : this()
 			{
@@ -190,13 +187,11 @@ namespace Vanara.Windows.Forms
 						{
 							if (GetAttr(mi)?.Hidden ?? false)
 								continue;
-							var fi = mi as FieldInfo;
-							var pi = mi as PropertyInfo;
-							if (fi != null && IsSupportedType(fi.FieldType))
+							if (mi is FieldInfo fi && IsSupportedType(fi.FieldType))
 							{
 								items.Add(fi);
 							}
-							else if (pi != null && IsSupportedType(pi.PropertyType) && pi.GetIndexParameters().Length == 0 && pi.CanWrite)
+							else if (mi is PropertyInfo pi && IsSupportedType(pi.PropertyType) && pi.GetIndexParameters().Length == 0 && pi.CanWrite)
 							{
 								items.Add(pi);
 							}
@@ -471,10 +466,7 @@ namespace Vanara.Windows.Forms
 					lbl.MinimumSize = lbl.Size;
 			}
 
-			private void cancelBtn_Click(object sender, EventArgs e)
-			{
-				Close();
-			}
+			private void CancelBtn_Click(object sender, EventArgs e) => Close();
 
 			private InputDialogItemAttribute GetAttr(MemberInfo mi) => (InputDialogItemAttribute)Attribute.GetCustomAttribute(mi, typeof(InputDialogItemAttribute), true);
 
@@ -521,7 +513,7 @@ namespace Vanara.Windows.Forms
 				okBtn.TabIndex = 1;
 				okBtn.Text = "OK";
 				okBtn.UseVisualStyleBackColor = true;
-				okBtn.Click += new EventHandler(okBtn_Click);
+				okBtn.Click += new EventHandler(OkBtn_Click);
 				// cancelBtn
 				cancelBtn.DialogResult = DialogResult.Cancel;
 				cancelBtn.Location = new Point(92, 8);
@@ -532,7 +524,7 @@ namespace Vanara.Windows.Forms
 				cancelBtn.TabIndex = 2;
 				cancelBtn.Text = "&Cancel";
 				cancelBtn.UseVisualStyleBackColor = true;
-				cancelBtn.Click += new EventHandler(cancelBtn_Click);
+				cancelBtn.Click += new EventHandler(CancelBtn_Click);
 				// borderPanel
 				borderPanel.BackColor = Color.FromArgb((int)(byte)223, (int)(byte)223, (int)(byte)223);
 				borderPanel.Dock = DockStyle.Bottom;
@@ -586,7 +578,7 @@ namespace Vanara.Windows.Forms
 			{
 				if (char.IsControl(keyChar))
 					return false;
-				keyPressValidChars.TryGetValue(itemType, out char[] chars);
+				keyPressValidChars.TryGetValue(itemType, out var chars);
 				if (chars != null)
 				{
 					var si = Array.BinarySearch(chars, keyChar);
@@ -597,7 +589,7 @@ namespace Vanara.Windows.Forms
 				return false;
 			}
 
-			private void okBtn_Click(object sender, EventArgs e)
+			private void OkBtn_Click(object sender, EventArgs e)
 			{
 				BindToData();
 				DialogResult = DialogResult.OK;
@@ -608,7 +600,7 @@ namespace Vanara.Windows.Forms
 			{
 				if (string.IsNullOrEmpty(tb.Text))
 					return false;
-				validations.TryGetValue(itemType, out Predicate<string> p);
+				validations.TryGetValue(itemType, out var p);
 				return p != null && !p(tb.Text);
 			}
 
@@ -634,10 +626,7 @@ namespace Vanara.Windows.Forms
 
 		/// <summary>Initializes a new instance of the <see cref="InputDialogItemAttribute"/> class.</summary>
 		/// <param name="label">The label to use in the <see cref="InputDialog"/> as the label for this field or property.</param>
-		public InputDialogItemAttribute(string label)
-		{
-			Label = label;
-		}
+		public InputDialogItemAttribute(string label) => Label = label;
 
 		/// <summary>Gets or sets a value indicating whether this item is hidden and not displayed by the <see cref="InputDialog"/>.</summary>
 		/// <value><c>true</c> if hidden; otherwise, <c>false</c>.</value>

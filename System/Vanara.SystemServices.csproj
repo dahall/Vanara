@@ -32,7 +32,7 @@ Enumerations
 BackgroundCopyACLFlags, BackgroundCopyCost, BackgroundCopyErrorContext, BackgroundCopyJobCredentialScheme, BackgroundCopyJobCredentialTarget, BackgroundCopyJobPriority, BackgroundCopyJobSecurity, BackgroundCopyJobState, BackgroundCopyJobType, DeviceType, PathCharType, ProcessIntegrityLevel, Subtype
 
 </PackageReleaseNotes>
-	<LangVersion>latest</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

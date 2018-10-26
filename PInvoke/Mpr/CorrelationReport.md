@@ -27,8 +27,6 @@ Native Method | Native DLL | Header | Managed Method
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
-[CONNECTDLGSTRUCT](http://msdn2.microsoft.com/en-us/library/aa385332) | Winnetwk.h | Vanara.PInvoke.Mpr+CONNECTDLGSTRUCT  
-[DISCDLGSTRUCT](http://msdn2.microsoft.com/en-us/library/aa385339) | Winnetwk.h | Vanara.PInvoke.Mpr+DISCDLGSTRUCT  
 [NETCONNECTINFOSTRUCT](http://msdn2.microsoft.com/en-us/library/aa385345) | Winnetwk.h | Vanara.PInvoke.Mpr+NETCONNECTINFOSTRUCT  
 [NETINFOSTRUCT](http://msdn2.microsoft.com/en-us/library/aa385349) | Winnetwk.h | Vanara.PInvoke.Mpr+NETINFOSTRUCT  
 [NETRESOURCE](http://msdn2.microsoft.com/en-us/library/aa385353) | Winnetwk.h | Vanara.PInvoke.Mpr+NETRESOURCE  

@@ -30,7 +30,7 @@ namespace Vanara.Security
 			try
 			{
 				// Open the access token of the current process with TOKEN_QUERY. 
-				using (var hObject = SafeHTOKEN.FromProcess((process ?? Process.GetCurrentProcess()).Handle, TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE))
+				using (var hObject = SafeHTOKEN.FromProcess(process ?? Process.GetCurrentProcess(), TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE))
 					return hObject.IsElevated;
 			}
 			catch { }
@@ -65,10 +65,8 @@ namespace Vanara.Security
 		{
 			SafeHTOKEN hObjectToCheck = null;
 
-			if (proc == null) proc = Process.GetCurrentProcess();
-
 			// Open the access token of the current process for query and duplicate.
-			using (var hObject = SafeHTOKEN.FromProcess(proc.Handle, TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE))
+			using (var hObject = SafeHTOKEN.FromProcess(proc, TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE))
 			{
 				// Determine whether system is running Windows Vista or later operating systems (major version >= 6) because they support linked tokens, but
 				// previous versions (major version < 6) do not.

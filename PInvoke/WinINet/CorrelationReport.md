@@ -156,6 +156,7 @@ Native Method | Native DLL | Header | Managed Method
 [InternetWriteFileEx](https://www.google.com/search?num=5&q=InternetWriteFileExA+site%3Amicrosoft.com) | wininet.dll |  |   
 [IsHostInProxyBypassList](https://www.google.com/search?num=5&q=IsHostInProxyBypassList+site%3Amicrosoft.com) | wininet.dll |  |   
 [IsUrlCacheEntryExpired](https://www.google.com/search?num=5&q=IsUrlCacheEntryExpiredA+site%3Amicrosoft.com) | wininet.dll |  |   
+[LaunchInternetControlPanelA](https://www.google.com/search?num=5&q=LaunchInternetControlPanelA+site%3Amicrosoft.com) | inetcpl.cpl |  | Vanara.PInvoke.WinINet.LaunchInternetControlPanel  
 [LoadUrlCacheContent](https://www.google.com/search?num=5&q=LoadUrlCacheContent+site%3Amicrosoft.com) | wininet.dll |  |   
 [ParseX509EncodedCertificateForListBoxEntry](https://www.google.com/search?num=5&q=ParseX509EncodedCertificateForListBoxEntry+site%3Amicrosoft.com) | wininet.dll |  |   
 [PrivacyGetZonePreferenceW](https://www.google.com/search?num=5&q=PrivacyGetZonePreferenceW+site%3Amicrosoft.com) | wininet.dll |  |   

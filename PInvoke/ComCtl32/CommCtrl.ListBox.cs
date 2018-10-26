@@ -1,10 +1,5 @@
-using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
-
-// ReSharper disable InconsistentNaming
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable InconsistentNaming
 
 namespace Vanara.PInvoke
 {
@@ -41,8 +36,8 @@ namespace Vanara.PInvoke
 		/// <param name="bAutoScroll">
 		/// <para>Type: <c><c>BOOL</c></c></para>
 		/// <para>
-		/// A scroll flag. If this parameter is <c>TRUE</c> and the point is directly above or below the list box, the function scrolls the list box by one line
-		/// and returns -1. Otherwise, the function does not scroll the list box.
+		/// A scroll flag. If this parameter is <c>TRUE</c> and the point is directly above or below the list box, the function scrolls the
+		/// list box by one line and returns -1. Otherwise, the function does not scroll the list box.
 		/// </para>
 		/// </param>
 		/// <returns>

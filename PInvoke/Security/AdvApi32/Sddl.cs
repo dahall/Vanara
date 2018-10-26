@@ -159,7 +159,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("sddl.h", MSDNShortId = "c5654148-fb4c-436d-9378-a1168fc82607")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ConvertStringSecurityDescriptorToSecurityDescriptor([In] string StringSecurityDescriptor, SDDL_REVISION StringSDRevision,
+		public static extern bool ConvertStringSecurityDescriptorToSecurityDescriptor(string StringSecurityDescriptor, SDDL_REVISION StringSDRevision,
 			out SafeSecurityDescriptor SecurityDescriptor, out uint SecurityDescriptorSize);
 	}
 }

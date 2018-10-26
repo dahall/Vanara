@@ -209,7 +209,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Carries out the command associated with a shortcut menu item.</summary>
 			/// <param name="pici">A pointer to a CMINVOKECOMMANDINFO or CMINVOKECOMMANDINFOEX structure that contains specifics about the command.</param>
-			void InvokeCommand([In] ref CMINVOKECOMMANDINFOEX pici);
+			void InvokeCommand(in CMINVOKECOMMANDINFOEX pici);
 
 			/// <summary>
 			/// Gets information about a shortcut menu command, including the help string and the language-independent, or canonical, name for the command.
@@ -273,7 +273,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Carries out the command associated with a shortcut menu item.</summary>
 			/// <param name="pici">A pointer to a CMINVOKECOMMANDINFO or CMINVOKECOMMANDINFOEX structure that contains specifics about the command.</param>
-			new void InvokeCommand([In] ref CMINVOKECOMMANDINFOEX pici);
+			new void InvokeCommand(in CMINVOKECOMMANDINFOEX pici);
 
 			/// <summary>
 			/// Gets information about a shortcut menu command, including the help string and the language-independent, or canonical, name for the command.
@@ -335,7 +335,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Carries out the command associated with a shortcut menu item.</summary>
 			/// <param name="pici">A pointer to a CMINVOKECOMMANDINFO or CMINVOKECOMMANDINFOEX structure that contains specifics about the command.</param>
-			new void InvokeCommand([In] ref CMINVOKECOMMANDINFOEX pici);
+			new void InvokeCommand(in CMINVOKECOMMANDINFOEX pici);
 
 			/// <summary>
 			/// Gets information about a shortcut menu command, including the help string and the language-independent, or canonical, name for the command.
@@ -407,7 +407,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 			[PreserveSig]
-			HRESULT CallBack(IShellFolder psf, IntPtr hwndOwner, IDataObject pdtobj, uint uMsg, IntPtr wParam, IntPtr lParam);
+			HRESULT CallBack(IShellFolder psf, HWND hwndOwner, IDataObject pdtobj, uint uMsg, IntPtr wParam, IntPtr lParam);
 		}
 
 		/*
@@ -417,7 +417,7 @@ namespace Vanara.PInvoke
 		{
 			public uint cbSize;
 			public CMIC fMask;
-			public IntPtr hwnd;
+			public HWND hwnd;
 			[MarshalAs(UnmanagedType.LPStr)]
 			public string lpVerb;
 			[MarshalAs(UnmanagedType.LPStr)]
@@ -472,7 +472,7 @@ namespace Vanara.PInvoke
 			/// specify an HWND when calling from a UI thread (one with windows already created) will result in reentrancy and possible bugs in the
 			/// implementation of a IContextMenu::InvokeCommand call.
 			/// </summary>
-			public IntPtr hwnd;
+			public HWND hwnd;
 			/// <summary>
 			/// The address of a null-terminated string that specifies the language-independent name of the command to carry out. This member is typically a
 			/// string when a command is being activated by an application.

@@ -172,7 +172,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
 		[PInvokeData("Wingdi.h", MSDNShortId = "dd144879")]
-		public static extern int GetDIBits(HDC hdc, SafeHBITMAP hbmp, int uStartScan, int cScanLines, ref byte[] lpvBits, ref BITMAPINFO lpbi, DIBColorMode uUsage);
+		public static extern int GetDIBits(HDC hdc, HBITMAP hbmp, int uStartScan, int cScanLines, ref byte[] lpvBits, ref BITMAPINFO lpbi, DIBColorMode uUsage);
 
 		/// <summary>
 		/// The GetDIBits function retrieves the bits of the specified compatible bitmap and copies them into a buffer as a DIB using the specified format.
@@ -240,7 +240,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
 		[PInvokeData("Wingdi.h", MSDNShortId = "dd144879")]
-		public static extern int GetDIBits(HDC hdc, SafeHBITMAP hbmp, int uStartScan, int cScanLines, IntPtr lpvBits, ref BITMAPINFO lpbi, DIBColorMode uUsage);
+		public static extern int GetDIBits(HDC hdc, HBITMAP hbmp, int uStartScan, int cScanLines, IntPtr lpvBits, ref BITMAPINFO lpbi, DIBColorMode uUsage);
 
 		/// <summary>The BITMAP structure defines the type, width, height, color format, and bit values of a bitmap.</summary>
 		[StructLayout(LayoutKind.Sequential)]
@@ -530,8 +530,19 @@ namespace Vanara.PInvoke
 			/// <value>The color.</value>
 			public System.Drawing.Color Color
 			{
-				get => System.Drawing.Color.FromArgb(rgbReserved, rgbRed, rgbGreen, rgbBlue); set { rgbReserved = value.A; rgbBlue = value.B; rgbGreen = value.G; rgbRed = value.R; }
+				get => System.Drawing.Color.FromArgb(rgbReserved, rgbRed, rgbGreen, rgbBlue);
+				set { rgbReserved = value.A; rgbBlue = value.B; rgbGreen = value.G; rgbRed = value.R; }
 			}
+
+			/// <summary>Performs an implicit conversion from <see cref="System.Drawing.Color"/> to <see cref="RGBQUAD"/>.</summary>
+			/// <param name="c">The c.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator RGBQUAD(System.Drawing.Color c) => new RGBQUAD() { Color = c };
+
+			/// <summary>Performs an implicit conversion from <see cref="RGBQUAD"/> to <see cref="System.Drawing.Color"/>.</summary>
+			/// <param name="c">The c.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator System.Drawing.Color(RGBQUAD c) => c.Color;
 		}
 	}
 }

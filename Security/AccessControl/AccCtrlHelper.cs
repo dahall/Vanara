@@ -98,7 +98,7 @@ namespace Vanara.Security.AccessControl
 			var aceCount = GetAceCount(pAcl);
 			using (var pInherit = new SafeInheritedFromArray((ushort)aceCount))
 			{
-				AdvApi32.GetInheritanceSource(objectName, (SE_OBJECT_TYPE)objectType, securityInfo, container, null, 0, pAcl, IntPtr.Zero, ref pGenericMapping, pInherit).ThrowIfFailed();
+				AdvApi32.GetInheritanceSource(objectName, (SE_OBJECT_TYPE)objectType, securityInfo, container, null, 0, pAcl, IntPtr.Zero, pGenericMapping, pInherit).ThrowIfFailed();
 				return pInherit.Results;
 			}
 		}

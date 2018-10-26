@@ -25,13 +25,13 @@
     <PackageReleaseNotes>Currently implements:
 
 Functions
-BitBlt, CreateBrushIndirect, CreateCompatibleDC, CreateDIBSection, DeleteDC, DeleteObject, GdiAlphaBlend, GdiFlush, GdiTransparentBlt, GetDeviceCaps, GetDIBits, GetObjectA, GetObjectW, SelectObject, SetBkMode, SetLayout
+BitBlt, CreateBrushIndirect, CreateCompatibleDC, CreateDIBPatternBrush, CreateDIBPatternBrushPt, CreateDIBSection, CreateHatchBrush, CreatePatternBrush, CreatePen, CreatePenIndirect, CreateSolidBrush, DeleteDC, DeleteObject, ExtCreatePen, GdiAlphaBlend, GdiFlush, GdiTransparentBlt, GetBrushOrgEx, GetDeviceCaps, GetDIBits, GetObjectA, GetObjectW, GetSysColorBrush, LPtoDP, PatBlt, SelectObject, SetBkMode, SetBrushOrgEx, SetLayout
 
 Structures
-BITMAP, BITMAPINFO, BITMAPINFOHEADER, DIBSECTION, RGBQUAD, BLENDFUNCTION, LOGBRUSH, TEXTMETRIC
+BITMAP, BITMAPINFO, BITMAPINFOHEADER, DIBSECTION, RGBQUAD, BLENDFUNCTION, LOGBRUSH, EXTLOGPEN, LOGPEN, TEXTMETRIC
 
 </PackageReleaseNotes>
-	<LangVersion>latest</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -48,6 +48,12 @@ BITMAP, BITMAPINFO, BITMAPINFOHEADER, DIBSECTION, RGBQUAD, BLENDFUNCTION, LOGBRU
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="WinGdi.Helpers.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="WinGdi.Helpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />

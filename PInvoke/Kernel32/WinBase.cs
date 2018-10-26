@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32.SafeHandles;
-using System;
+﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -52,6 +51,9 @@ namespace Vanara.PInvoke
 
 		/// <summary>All active processors in the system.</summary>
 		public const ushort ALL_PROCESSOR_GROUPS = 0xffff;
+
+		/// <summary>Infinite timeout.</summary>
+		public const uint INFINITE = 0xffffffff;
 
 		/// <summary>
 		/// An application-defined callback function used with the CopyFileEx, MoveFileTransacted, and MoveFileWithProgress functions. It is
@@ -460,6 +462,30 @@ namespace Vanara.PInvoke
 			OptOut = 3,
 		}
 
+		/// <summary>
+		/// <para>Discriminator for the union in the FILE_ID_DESCRIPTOR structure.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ne-winbase-_file_id_type typedef enum _FILE_ID_TYPE { FileIdType ,
+		// ObjectIdType , ExtendedFileIdType , MaximumFileIdType } FILE_ID_TYPE, *PFILE_ID_TYPE;
+		[PInvokeData("winbase.h", MSDNShortId = "7e46ba94-e3cd-4d6c-962f-5d5bd55d45a1")]
+		public enum FILE_ID_TYPE
+		{
+			/// <summary>Use the FileId member of the union.</summary>
+			FileIdType,
+
+			/// <summary>Use the ObjectId member of the union.</summary>
+			ObjectIdType,
+
+			/// <summary>
+			/// Use the ExtendedFileId member of the union. Windows XP, Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7
+			/// and Windows Server 2008 R2: This value is not supported before Windows 8 and Windows Server 2012.
+			/// </summary>
+			ExtendedFileIdType,
+
+			/// <summary>This value is used for comparison only. All valid values are less than this value.</summary>
+			MaximumFileIdType,
+		}
+
 		/// <summary>The modes to be set in SetFileCompletionNotificationModes.</summary>
 		[PInvokeData("winbase.h", MSDNShortId = "23796484-ee47-4f80-856d-5a5d5635547c")]
 		[Flags]
@@ -768,64 +794,23 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// <para>Adds a new required security identifier (SID) to the specified boundary descriptor.</para>
+		/// Adds an alternate local network name for the computer from which it is called.
 		/// </summary>
-		/// <param name="BoundaryDescriptor">
-		/// <para>A handle to the boundary descriptor. The CreateBoundaryDescriptor function returns this handle.</para>
-		/// </param>
-		/// <param name="IntegrityLabel">
-		/// <para>
-		/// A pointer to a SID structure that represents the mandatory integrity level for the namespace. Use one of the following RID values
-		/// to create the SID:
-		/// </para>
-		/// <para>
-		/// <c>SECURITY_MANDATORY_UNTRUSTED_RID</c><c>SECURITY_MANDATORY_LOW_RID</c><c>SECURITY_MANDATORY_MEDIUM_RID</c><c>SECURITY_MANDATORY_SYSTEM_RID</c><c>SECURITY_MANDATORY_PROTECTED_PROCESS_RID</c>
-		/// For more information, see Well-Known SIDs.
-		/// </para>
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// A process can create a private namespace only with an integrity level that is equal to or lower than the current integrity level
-		/// of the process. Therefore, a high integrity-level process can create a high, medium or low integrity-level namespace. A medium
-		/// integrity-level process can create only a medium or low integrity-level namespace.
-		/// </para>
-		/// <para>
-		/// A process would usually specify a namespace at the same integrity level as the process for protection against squatting attacks
-		/// by lower integrity-level processes.
-		/// </para>
-		/// <para>
-		/// The security descriptor that the creator places on the namespace determines who can open the namespace. So a low or medium
-		/// integrity-level process could be given permission to open a high integrity level namespace if the security descriptor of the
-		/// namespace permits it.
-		/// </para>
-		/// <para>To compile an application that uses this function, define <c>_WIN32_WINNT</c> as 0x0601 or later.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-addintegritylabeltoboundarydescriptor BOOL
-		// AddIntegrityLabelToBoundaryDescriptor( HANDLE *BoundaryDescriptor, PSID IntegrityLabel );
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("winbase.h", MSDNShortId = "6b56e664-7795-4e30-8bca-1e4df2764606")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AddIntegrityLabelToBoundaryDescriptor(ref IntPtr BoundaryDescriptor, IntPtr IntegrityLabel);
-
-		/// <summary>
-		/// <para>Adds an alternate local network name for the computer from which it is called.</para>
-		/// </summary>
+		/// <param name="lpDnsFQHostname">The alternate name to be added. The name must be in the ComputerNameDnsFullyQualified format as defined in the COMPUTER_NAME_FORMAT enumeration, and the DnsValidateName_W function must be able to validate it with its format set to DnsNameHostnameFull.</param>
+		/// <param name="ulFlags">This parameter is reserved and must be set to zero.</param>
 		/// <returns>
 		/// <para>
 		/// If the function succeeds, the function returns <c>ERROR_SUCCESS</c>. If the function fails, it returns a nonzero error code.
 		/// Among the error codes that it returns are the following:
 		/// </para>
-		/// <list type="table"/>
+		/// <list type="table" />
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/DevNotes/addlocalalternatecomputername DWORD AddLocalAlternateComputerName( _In_
-		// LPCTSTR lpDnsFQHostname, _In_ ULONG ulFlags );
+		// https://docs.microsoft.com/en-us/windows/desktop/DevNotes/addlocalalternatecomputername
+		// DWORD AddLocalAlternateComputerName( _In_ LPCTSTR lpDnsFQHostname, _In_ ULONG ulFlags );
 		[DllImport(Lib.Kernel32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("", MSDNShortId = "e4d8355b-0492-4b6f-988f-3887e63a2bba")]
-		public static extern Win32Error AddLocalAlternateComputerName(string lpDnsFQHostname, uint ulFlags = 0);
+		[PInvokeData("winbase.h", MSDNShortId = "e4d8355b-0492-4b6f-988f-3887e63a2bba")]
+		//  public static extern uint AddLocalAlternateComputerName([In]  string lpDnsFQHostname, [In] uint ulFlags);
+		public static extern Win32Error AddLocalAlternateComputerName(string lpDnsFQHostname, [Optional] uint ulFlags);
 
 		/// <summary>
 		/// <para>Registers a callback function to be called when a secured memory range is freed or its protections are changed.</para>
@@ -918,7 +903,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "805CD02A-53BC-487C-83F8-FE804368C770")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CopyContext(ref CONTEXT Destination, CONTEXT_FLAG ContextFlags, ref CONTEXT Source);
+		public static extern bool CopyContext(PCONTEXT Destination, uint ContextFlags, PCONTEXT Source);
 
 		/// <summary>
 		/// <para>Copies an existing file to a new file, notifying the application of its progress through a callback function.</para>
@@ -1943,7 +1928,620 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "0cbc081d-8787-409b-84bc-a6a28d8f83a0")]
 		public static extern SafeHFILE CreateFileTransacted(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, FileMode dwCreationDisposition, FileFlagsAndAttributes dwFlagsAndAttributes,
-			IntPtr hTemplateFile, IntPtr hTransaction, ref ushort pusMiniVersion, IntPtr lpExtendedParameter);
+			IntPtr hTemplateFile, IntPtr hTransaction, in ushort pusMiniVersion, [Optional] IntPtr lpExtendedParameter);
+
+		/// <summary>
+		/// <para>
+		/// [Microsoft strongly recommends developers utilize alternative means to achieve your application’s needs. Many scenarios that TxF
+		/// was developed for can be achieved through simpler and more readily available techniques. Furthermore, TxF may not be available in
+		/// future versions of Microsoft Windows. For more information, and alternatives to TxF, please see
+		/// </para>
+		/// <para>Alternatives to using Transactional NTFS</para>
+		/// <para>.]</para>
+		/// <para>
+		/// Creates or opens a file, file stream, or directory as a transacted operation. The function returns a handle that can be used to
+		/// access the object.
+		/// </para>
+		/// <para>
+		/// To perform this operation as a nontransacted operation or to access objects other than files (for example, named pipes, physical
+		/// devices, mailslots), use the CreateFile function.
+		/// </para>
+		/// <para>For more information about transactions, see the Remarks section of this topic.</para>
+		/// </summary>
+		/// <param name="lpFileName">
+		/// <para>The name of an object to be created or opened.</para>
+		/// <para>The object must reside on the local computer; otherwise, the function fails and the last error code is set to <c>ERROR_TRANSACTIONS_UNSUPPORTED_REMOTE</c>.</para>
+		/// <para>
+		/// In the ANSI version of this function, the name is limited to <c>MAX_PATH</c> characters. To extend this limit to 32,767 wide
+		/// characters, call the Unicode version of the function and prepend "\?" to the path. For more information, see Naming a File. For
+		/// information on special device names, see Defining an MS-DOS Device Name.
+		/// </para>
+		/// <para>
+		/// To create a file stream, specify the name of the file, a colon, and then the name of the stream. For more information, see File Streams.
+		/// </para>
+		/// </param>
+		/// <param name="dwDesiredAccess">
+		/// <para>
+		/// The access to the object, which can be summarized as read, write, both or neither (zero). The most commonly used values are
+		/// <c>GENERIC_READ</c>, <c>GENERIC_WRITE</c>, or both ( <c>GENERIC_READ</c> | <c>GENERIC_WRITE</c>). For more information, see
+		/// Generic Access Rights and File Security and Access Rights.
+		/// </para>
+		/// <para>
+		/// If this parameter is zero, the application can query file, directory, or device attributes without accessing that file or device.
+		/// For more information, see the Remarks section of this topic.
+		/// </para>
+		/// <para>
+		/// You cannot request an access mode that conflicts with the sharing mode that is specified in an open request that has an open
+		/// handle. For more information, see Creating and Opening Files.
+		/// </para>
+		/// </param>
+		/// <param name="dwShareMode">
+		/// <para>The sharing mode of an object, which can be read, write, both, delete, all of these, or none (refer to the following table).</para>
+		/// <para>
+		/// If this parameter is zero and <c>CreateFileTransacted</c> succeeds, the object cannot be shared and cannot be opened again until
+		/// the handle is closed. For more information, see the Remarks section of this topic.
+		/// </para>
+		/// <para>
+		/// You cannot request a sharing mode that conflicts with the access mode that is specified in an open request that has an open
+		/// handle, because that would result in the following sharing violation: <c>ERROR_SHARING_VIOLATION</c>. For more information, see
+		/// Creating and Opening Files.
+		/// </para>
+		/// <para>
+		/// To enable a process to share an object while another process has the object open, use a combination of one or more of the
+		/// following values to specify the access mode they can request to open the object.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> The sharing options for each open handle remain in effect until that handle is closed, regardless of process context.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0 0x00000000</term>
+		/// <term>Disables subsequent open operations on an object to request any type of access to that object.</term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_SHARE_DELETE 0x00000004</term>
+		/// <term>
+		/// Enables subsequent open operations on an object to request delete access. Otherwise, other processes cannot open the object if
+		/// they request delete access. If this flag is not specified, but the object has been opened for delete access, the function fails.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_SHARE_READ 0x00000001</term>
+		/// <term>
+		/// Enables subsequent open operations on an object to request read access. Otherwise, other processes cannot open the object if they
+		/// request read access. If this flag is not specified, but the object has been opened for read access, the function fails.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_SHARE_WRITE 0x00000002</term>
+		/// <term>
+		/// Enables subsequent open operations on an object to request write access. Otherwise, other processes cannot open the object if
+		/// they request write access. If this flag is not specified, but the object has been opened for write access or has a file mapping
+		/// with write access, the function fails.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="lpSecurityAttributes">
+		/// <para>
+		/// A pointer to a SECURITY_ATTRIBUTES structure that contains an optional security descriptor and also determines whether or not the
+		/// returned handle can be inherited by child processes. The parameter can be <c>NULL</c>.
+		/// </para>
+		/// <para>
+		/// If the parameter is <c>NULL</c>, the handle returned by <c>CreateFileTransacted</c> cannot be inherited by any child processes
+		/// your application may create and the object associated with the returned handle gets a default security descriptor.
+		/// </para>
+		/// <para>The <c>bInheritHandle</c> member of the structure specifies whether the returned handle can be inherited.</para>
+		/// <para>
+		/// The <c>lpSecurityDescriptor</c> member of the structure specifies a security descriptor for an object, but may also be <c>NULL</c>.
+		/// </para>
+		/// <para>
+		/// If <c>lpSecurityDescriptor</c> member is <c>NULL</c>, the object associated with the returned handle is assigned a default
+		/// security descriptor.
+		/// </para>
+		/// <para>
+		/// <c>CreateFileTransacted</c> ignores the <c>lpSecurityDescriptor</c> member when opening an existing file, but continues to use
+		/// the <c>bInheritHandle</c> member.
+		/// </para>
+		/// <para>For more information, see the Remarks section of this topic.</para>
+		/// </param>
+		/// <param name="dwCreationDisposition">
+		/// <para>An action to take on files that exist and do not exist.</para>
+		/// <para>For more information, see the Remarks section of this topic.</para>
+		/// <para>This parameter must be one of the following values, which cannot be combined.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CREATE_ALWAYS 2</term>
+		/// <term>
+		/// Creates a new file, always. If the specified file exists and is writable, the function overwrites the file, the function
+		/// succeeds, and last-error code is set to ERROR_ALREADY_EXISTS (183). If the specified file does not exist and is a valid path, a
+		/// new file is created, the function succeeds, and the last-error code is set to zero. For more information, see the Remarks section
+		/// of this topic.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CREATE_NEW 1</term>
+		/// <term>
+		/// Creates a new file, only if it does not already exist. If the specified file exists, the function fails and the last-error code
+		/// is set to ERROR_FILE_EXISTS (80). If the specified file does not exist and is a valid path to a writable location, a new file is created.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>OPEN_ALWAYS 4</term>
+		/// <term>
+		/// Opens a file, always. If the specified file exists, the function succeeds and the last-error code is set to ERROR_ALREADY_EXISTS
+		/// (183). If the specified file does not exist and is a valid path to a writable location, the function creates a file and the
+		/// last-error code is set to zero.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>OPEN_EXISTING 3</term>
+		/// <term>
+		/// Opens a file or device, only if it exists. If the specified file does not exist, the function fails and the last-error code is
+		/// set to ERROR_FILE_NOT_FOUND (2). For more information, see the Remarks section of this topic.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>TRUNCATE_EXISTING 5</term>
+		/// <term>
+		/// Opens a file and truncates it so that its size is zero bytes, only if it exists. If the specified file does not exist, the
+		/// function fails and the last-error code is set to ERROR_FILE_NOT_FOUND (2). The calling process must open the file with the
+		/// GENERIC_WRITE bit set as part of the parameter.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwFlagsAndAttributes">
+		/// <para>The file attributes and flags, <c>FILE_ATTRIBUTE_NORMAL</c> being the most common default value.</para>
+		/// <para>
+		/// This parameter can include any combination of the available file attributes ( <c>FILE_ATTRIBUTE_*</c>). All other file attributes
+		/// override <c>FILE_ATTRIBUTE_NORMAL</c>.
+		/// </para>
+		/// <para>
+		/// This parameter can also contain combinations of flags ( <c>FILE_FLAG_</c>) for control of buffering behavior, access modes, and
+		/// other special-purpose flags. These combine with any <c>FILE_ATTRIBUTE_</c> values.
+		/// </para>
+		/// <para>
+		/// This parameter can also contain Security Quality of Service (SQOS) information by specifying the <c>SECURITY_SQOS_PRESENT</c>
+		/// flag. Additional SQOS-related flags information is presented in the table following the attributes and flags tables.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> When <c>CreateFileTransacted</c> opens an existing file, it generally combines the file flags with the file
+		/// attributes of the existing file, and ignores any file attributes supplied as part of . Special cases are detailed in Creating and
+		/// Opening Files.
+		/// </para>
+		/// <para>The following file attributes and flags are used only for file objects, not other types of objects that</para>
+		/// <para>CreateFileTransacted</para>
+		/// <para>
+		/// opens (additional information can be found in the Remarks section of this topic). For more advanced access to file attributes, see
+		/// </para>
+		/// <para>SetFileAttributes</para>
+		/// <para>. For a complete list of all file attributes with their values and descriptions, see</para>
+		/// <para>File Attribute Constants</para>
+		/// <para>.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Attribute</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>FILE_ATTRIBUTE_ARCHIVE 32 (0x20)</term>
+		/// <term>The file should be archived. Applications use this attribute to mark files for backup or removal.</term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_ATTRIBUTE_ENCRYPTED 16384 (0x4000)</term>
+		/// <term>
+		/// The file or directory is encrypted. For a file, this means that all data in the file is encrypted. For a directory, this means
+		/// that encryption is the default for newly created files and subdirectories. For more information, see File Encryption. This flag
+		/// has no effect if FILE_ATTRIBUTE_SYSTEM is also specified.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_ATTRIBUTE_HIDDEN 2 (0x2)</term>
+		/// <term>The file is hidden. Do not include it in an ordinary directory listing.</term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_ATTRIBUTE_NORMAL 128 (0x80)</term>
+		/// <term>The file does not have other attributes set. This attribute is valid only if used alone.</term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_ATTRIBUTE_OFFLINE 4096 (0x1000)</term>
+		/// <term>
+		/// The data of a file is not immediately available. This attribute indicates that file data is physically moved to offline storage.
+		/// This attribute is used by Remote Storage, the hierarchical storage management software. Applications should not arbitrarily
+		/// change this attribute.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_ATTRIBUTE_READONLY 1 (0x1)</term>
+		/// <term>The file is read only. Applications can read the file, but cannot write to or delete it.</term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_ATTRIBUTE_SYSTEM 4 (0x4)</term>
+		/// <term>The file is part of or used exclusively by an operating system.</term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_ATTRIBUTE_TEMPORARY 256 (0x100)</term>
+		/// <term>
+		/// The file is being used for temporary storage. File systems avoid writing data back to mass storage if sufficient cache memory is
+		/// available, because an application deletes a temporary file after a handle is closed. In that case, the system can entirely avoid
+		/// writing the data. Otherwise, the data is written after the handle is closed.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Flag</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>FILE_FLAG_BACKUP_SEMANTICS 0x02000000</term>
+		/// <term>
+		/// The file is being opened or created for a backup or restore operation. The system ensures that the calling process overrides file
+		/// security checks when the process has SE_BACKUP_NAME and SE_RESTORE_NAME privileges. For more information, see Changing Privileges
+		/// in a Token. You must set this flag to obtain a handle to a directory. A directory handle can be passed to some functions instead
+		/// of a file handle. For more information, see Directory Handles.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_FLAG_DELETE_ON_CLOSE 0x04000000</term>
+		/// <term>
+		/// The file is to be deleted immediately after the last transacted writer handle to the file is closed, provided that the
+		/// transaction is still active. If a file has been marked for deletion and a transacted writer handle is still open after the
+		/// transaction completes, the file will not be deleted. If there are existing open handles to a file, the call fails unless they
+		/// were all opened with the FILE_SHARE_DELETE share mode. Subsequent open requests for the file fail, unless the FILE_SHARE_DELETE
+		/// share mode is specified.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_FLAG_NO_BUFFERING 0x20000000</term>
+		/// <term>
+		/// The file is being opened with no system caching. This flag does not affect hard disk caching or memory mapped files. When
+		/// combined with FILE_FLAG_OVERLAPPED, the flag gives maximum asynchronous performance, because the I/O does not rely on the
+		/// synchronous operations of the memory manager. However, some I/O operations take more time, because data is not being held in the
+		/// cache. Also, the file metadata may still be cached. To flush the metadata to disk, use the FlushFileBuffers function. An
+		/// application must meet certain requirements when working with files that are opened with FILE_FLAG_NO_BUFFERING: One way to align
+		/// buffers on integer multiples of the volume sector size is to use VirtualAlloc to allocate the buffers. It allocates memory that
+		/// is aligned on addresses that are integer multiples of the operating system's memory page size. Because both memory page and
+		/// volume sector sizes are powers of 2, this memory is also aligned on addresses that are integer multiples of a volume sector size.
+		/// Memory pages are 4 or 8 KB in size; sectors are 512 bytes (hard disks), 2048 bytes (CD), or 4096 bytes (hard disks), and
+		/// therefore, volume sectors can never be larger than memory pages. An application can determine a volume sector size by calling the
+		/// GetDiskFreeSpace function.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_FLAG_OPEN_NO_RECALL 0x00100000</term>
+		/// <term>
+		/// The file data is requested, but it should continue to be located in remote storage. It should not be transported back to local
+		/// storage. This flag is for use by remote storage systems.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_FLAG_OPEN_REPARSE_POINT 0x00200000</term>
+		/// <term>
+		/// Normal reparse point processing will not occur; CreateFileTransacted will attempt to open the reparse point. When a file is
+		/// opened, a file handle is returned, whether or not the filter that controls the reparse point is operational. This flag cannot be
+		/// used with the CREATE_ALWAYS flag. If the file is not a reparse point, then this flag is ignored.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_FLAG_OVERLAPPED 0x40000000</term>
+		/// <term>
+		/// The file is being opened or created for asynchronous I/O. When the operation is complete, the event specified in the OVERLAPPED
+		/// structure is set to the signaled state. Operations that take a significant amount of time to process return ERROR_IO_PENDING. If
+		/// this flag is specified, the file can be used for simultaneous read and write operations. The system does not maintain the file
+		/// pointer, therefore you must pass the file position to the read and write functions in the OVERLAPPED structure or update the file
+		/// pointer. If this flag is not specified, then I/O operations are serialized, even if the calls to the read and write functions
+		/// specify an OVERLAPPED structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_FLAG_POSIX_SEMANTICS 0x0100000</term>
+		/// <term>
+		/// The file is to be accessed according to POSIX rules. This includes allowing multiple files with names, differing only in case,
+		/// for file systems that support that naming. Use care when using this option, because files created with this flag may not be
+		/// accessible by applications that are written for MS-DOS or 16-bit Windows.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_FLAG_RANDOM_ACCESS 0x10000000</term>
+		/// <term>The file is to be accessed randomly. The system can use this as a hint to optimize file caching.</term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_FLAG_SESSION_AWARE 0x00800000</term>
+		/// <term>
+		/// The file or device is being opened with session awareness. If this flag is not specified, then per-session devices (such as a
+		/// device using RemoteFX USB Redirection) cannot be opened by processes running in session 0. This flag has no effect for callers
+		/// not in session 0. This flag is supported only on server editions of Windows. Windows Server 2008 R2 and Windows Server 2008: This
+		/// flag is not supported before Windows Server 2012.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_FLAG_SEQUENTIAL_SCAN 0x08000000</term>
+		/// <term>
+		/// The file is to be accessed sequentially from beginning to end. The system can use this as a hint to optimize file caching. If an
+		/// application moves the file pointer for random access, optimum caching may not occur. However, correct operation is still
+		/// guaranteed. Specifying this flag can increase performance for applications that read large files using sequential access.
+		/// Performance gains can be even more noticeable for applications that read large files mostly sequentially, but occasionally skip
+		/// over small ranges of bytes. This flag has no effect if the file system does not support cached I/O and FILE_FLAG_NO_BUFFERING.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_FLAG_WRITE_THROUGH 0x80000000</term>
+		/// <term>
+		/// Write operations will not go through any intermediate cache, they will go directly to disk. If FILE_FLAG_NO_BUFFERING is not also
+		/// specified, so that system caching is in effect, then the data is written to the system cache, but is flushed to disk without
+		/// delay. If FILE_FLAG_NO_BUFFERING is also specified, so that system caching is not in effect, then the data is immediately flushed
+		/// to disk without going through the system cache. The operating system also requests a write-through the hard disk cache to
+		/// persistent media. However, not all hardware supports this write-through capability.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The parameter can also specify Security Quality of Service information. For more information, see Impersonation Levels. When the
+		/// calling application specifies the <c>SECURITY_SQOS_PRESENT</c> flag as part of , it can also contain one or more of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Security flag</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SECURITY_ANONYMOUS</term>
+		/// <term>Impersonates a client at the Anonymous impersonation level.</term>
+		/// </item>
+		/// <item>
+		/// <term>SECURITY_CONTEXT_TRACKING</term>
+		/// <term>The security tracking mode is dynamic. If this flag is not specified, the security tracking mode is static.</term>
+		/// </item>
+		/// <item>
+		/// <term>SECURITY_DELEGATION</term>
+		/// <term>Impersonates a client at the Delegation impersonation level.</term>
+		/// </item>
+		/// <item>
+		/// <term>SECURITY_EFFECTIVE_ONLY</term>
+		/// <term>
+		/// Only the enabled aspects of the client's security context are available to the server. If you do not specify this flag, all
+		/// aspects of the client's security context are available. This allows the client to limit the groups and privileges that a server
+		/// can use while impersonating the client.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>SECURITY_IDENTIFICATION</term>
+		/// <term>Impersonates a client at the Identification impersonation level.</term>
+		/// </item>
+		/// <item>
+		/// <term>SECURITY_IMPERSONATION</term>
+		/// <term>
+		/// Impersonate a client at the impersonation level. This is the default behavior if no other flags are specified along with the
+		/// SECURITY_SQOS_PRESENT flag.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="hTemplateFile">
+		/// <para>
+		/// A valid handle to a template file with the <c>GENERIC_READ</c> access right. The template file supplies file attributes and
+		/// extended attributes for the file that is being created. This parameter can be <c>NULL</c>.
+		/// </para>
+		/// <para>When opening an existing file, <c>CreateFileTransacted</c> ignores the template file.</para>
+		/// <para>When opening a new EFS-encrypted file, the file inherits the DACL from its parent directory.</para>
+		/// </param>
+		/// <param name="hTransaction">
+		/// <para>A handle to the transaction. This handle is returned by the CreateTransaction function.</para>
+		/// </param>
+		/// <param name="pusMiniVersion">
+		/// <para>
+		/// The miniversion to be opened. If the transaction specified in is not the transaction that is modifying the file, this parameter
+		/// should be <c>NULL</c>. Otherwise, this parameter can be a miniversion identifier returned by the FSCTL_TXFS_CREATE_MINIVERSION
+		/// control code, or one of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>TXFS_MINIVERSION_COMMITTED_VIEW 0x0000</term>
+		/// <term>The view of the file as of its last commit.</term>
+		/// </item>
+		/// <item>
+		/// <term>TXFS_MINIVERSION_DIRTY_VIEW 0xFFFF</term>
+		/// <term>The view of the file as it is being modified by the transaction.</term>
+		/// </item>
+		/// <item>
+		/// <term>TXFS_MINIVERSION_DEFAULT_VIEW 0xFFFE</term>
+		/// <term>
+		/// Either the committed or dirty view of the file, depending on the context. A transaction that is modifying the file gets the dirty
+		/// view, while a transaction that is not modifying the file gets the committed view.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="lpExtendedParameter">
+		/// <para>TBD</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is an open handle to the specified file, device, named pipe, or mail slot.</para>
+		/// <para>If the function fails, the return value is <c>INVALID_HANDLE_VALUE</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// When using the handle returned by <c>CreateFileTransacted</c>, use the transacted version of file I/O functions instead of the
+		/// standard file I/O functions where appropriate. For more information, see Programming Considerations for Transactional NTFS.
+		/// </para>
+		/// <para>
+		/// When opening a transacted handle to a directory, that handle must have <c>FILE_WRITE_DATA</c> ( <c>FILE_ADD_FILE</c>) and
+		/// <c>FILE_APPEND_DATA</c> ( <c>FILE_ADD_SUBDIRECTORY</c>) permissions. These are included in <c>FILE_GENERIC_WRITE</c> permissions.
+		/// You should open directories with fewer permissions if you are just using the handle to create files or subdirectories; otherwise,
+		/// sharing violations can occur.
+		/// </para>
+		/// <para>
+		/// You cannot open a file with <c>FILE_EXECUTE</c> access level when that file is a part of another transaction (that is, another
+		/// application opened it by calling <c>CreateFileTransacted</c>). This means that <c>CreateFileTransacted</c> fails if the access
+		/// level <c>FILE_EXECUTE</c> or <c>FILE_ALL_ACCESS</c> is specified
+		/// </para>
+		/// <para>
+		/// When a non-transacted application calls <c>CreateFileTransacted</c> with <c>MAXIMUM_ALLOWED</c> specified for , a handle is
+		/// opened with the same access level every time. When a transacted application calls <c>CreateFileTransacted</c> with
+		/// <c>MAXIMUM_ALLOWED</c> specified for , a handle is opened with a differing amount of access based on whether the file is locked
+		/// by a transaction. For example, if the calling application has <c>FILE_EXECUTE</c> access level for a file, the application only
+		/// obtains this access if the file that is being opened is either not locked by a transaction, or is locked by a transaction and the
+		/// application is already a transacted reader for that file.
+		/// </para>
+		/// <para>See Transactional NTFS for a complete description of transacted operations.</para>
+		/// <para>
+		/// Use the CloseHandle function to close an object handle returned by <c>CreateFileTransacted</c> when the handle is no longer
+		/// needed, and prior to committing or rolling back the transaction.
+		/// </para>
+		/// <para>
+		/// Some file systems, such as the NTFS file system, support compression or encryption for individual files and directories. On
+		/// volumes that are formatted for that kind of file system, a new file inherits the compression and encryption attributes of its directory.
+		/// </para>
+		/// <para>
+		/// You cannot use <c>CreateFileTransacted</c> to control compression on a file or directory. For more information, see File
+		/// Compression and Decompression, and File Encryption.
+		/// </para>
+		/// <para>Symbolic link behavior—If the call to this function creates a new file, there is no change in behavior.</para>
+		/// <para>If <c>FILE_FLAG_OPEN_REPARSE_POINT</c> is specified:</para>
+		/// <list type="bullet">
+		/// <item>If an existing file is opened and it is a symbolic link, the handle returned is a handle to the symbolic link.</item>
+		/// <item>If <c>TRUNCATE_EXISTING</c> or <c>FILE_FLAG_DELETE_ON_CLOSE</c> are specified, the file affected is a symbolic link.</item>
+		/// </list>
+		/// <para>If</para>
+		/// <para>FILE_FLAG_OPEN_REPARSE_POINT</para>
+		/// <para>is not specified:</para>
+		/// <list type="bullet">
+		/// <item>If an existing file is opened and it is a symbolic link, the handle returned is a handle to the target.</item>
+		/// <item>
+		/// If <c>CREATE_ALWAYS</c>, <c>TRUNCATE_EXISTING</c>, or <c>FILE_FLAG_DELETE_ON_CLOSE</c> are specified, the file affected is the target.
+		/// </item>
+		/// </list>
+		/// <para>
+		/// A multi-sector write is not guaranteed to be atomic unless you are using a transaction (that is, the handle created is a
+		/// transacted handle). A single-sector write is atomic. Multi-sector writes that are cached may not always be written to the disk;
+		/// therefore, specify
+		/// </para>
+		/// <para>FILE_FLAG_WRITE_THROUGH</para>
+		/// <para>to ensure that an entire multi-sector write is written to the disk without caching.</para>
+		/// <para>
+		/// As stated previously, if the parameter is <c>NULL</c>, the handle returned by <c>CreateFileTransacted</c> cannot be inherited by
+		/// any child processes your application may create. The following information regarding this parameter also applies:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// If <c>bInheritHandle</c> is not <c>FALSE</c>, which is any nonzero value, then the handle can be inherited. Therefore it is
+		/// critical this structure member be properly initialized to <c>FALSE</c> if you do not intend the handle to be inheritable.
+		/// </item>
+		/// <item>
+		/// The access control lists (ACL) in the default security descriptor for a file or directory are inherited from its parent directory.
+		/// </item>
+		/// <item>
+		/// The target file system must support security on files and directories for the <c>lpSecurityDescriptor</c> to have an effect on
+		/// them, which can be determined by using GetVolumeInformation
+		/// </item>
+		/// </list>
+		/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Technology</term>
+		/// <term>Supported</term>
+		/// </listheader>
+		/// <item>
+		/// <term>Server Message Block (SMB) 3.0 protocol</term>
+		/// <term>No</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 Transparent Failover (TFO)</term>
+		/// <term>No</term>
+		/// </item>
+		/// <item>
+		/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
+		/// <term>No</term>
+		/// </item>
+		/// <item>
+		/// <term>Cluster Shared Volume File System (CsvFS)</term>
+		/// <term>No</term>
+		/// </item>
+		/// <item>
+		/// <term>Resilient File System (ReFS)</term>
+		/// <term>No</term>
+		/// </item>
+		/// </list>
+		/// <para>Note that SMB 3.0 does not support TxF.</para>
+		/// <para>Files</para>
+		/// <para>
+		/// If you try to create a file on a floppy drive that does not have a floppy disk or a CD-ROM drive that does not have a CD, the
+		/// system displays a message for the user to insert a disk or a CD. To prevent the system from displaying this message, call the
+		/// </para>
+		/// <para>SetErrorMode</para>
+		/// <para>function with</para>
+		/// <para>SEM_FAILCRITICALERRORS</para>
+		/// <para>.</para>
+		/// <para>For more information, see Creating and Opening Files.</para>
+		/// <para>
+		/// If you rename or delete a file and then restore it shortly afterward, the system searches the cache for file information to
+		/// restore. Cached information includes its short/long name pair and creation time.
+		/// </para>
+		/// <para>
+		/// If you call <c>CreateFileTransacted</c> on a file that is pending deletion as a result of a previous call to DeleteFile, the
+		/// function fails. The operating system delays file deletion until all handles to the file are closed. GetLastError returns <c>ERROR_ACCESS_DENIED</c>.
+		/// </para>
+		/// <para>
+		/// The parameter can be zero, allowing the application to query file attributes without accessing the file if the application is
+		/// running with adequate security settings. This is useful to test for the existence of a file without opening it for read and/or
+		/// write access, or to obtain other statistics about the file or directory. See Obtaining and Setting File Information and GetFileInformationByHandle.
+		/// </para>
+		/// <para>
+		/// When an application creates a file across a network, it is better to use <c>GENERIC_READ</c> | <c>GENERIC_WRITE</c> than to use
+		/// <c>GENERIC_WRITE</c> alone. The resulting code is faster, because the redirector can use the cache manager and send fewer SMBs
+		/// with more data. This combination also avoids an issue where writing to a file across a network can occasionally return <c>ERROR_ACCESS_DENIED</c>.
+		/// </para>
+		/// <para>File Streams</para>
+		/// <para>On NTFS file systems, you can use</para>
+		/// <para>CreateFileTransacted</para>
+		/// <para>to create separate streams within a file.</para>
+		/// <para>For more information, see File Streams.</para>
+		/// <para>Directories</para>
+		/// <para>An application cannot create a directory by using</para>
+		/// <para>CreateFileTransacted</para>
+		/// <para>, therefore only the</para>
+		/// <para>OPEN_EXISTING</para>
+		/// <para>value is valid for</para>
+		/// <para>dwCreationDisposition</para>
+		/// <para>for this use case. To create a directory, the application must call</para>
+		/// <para>CreateDirectoryTransacted</para>
+		/// <para>,</para>
+		/// <para>CreateDirectory</para>
+		/// <para>or</para>
+		/// <para>CreateDirectoryEx</para>
+		/// <para>.</para>
+		/// <para>
+		/// To open a directory using <c>CreateFileTransacted</c>, specify the <c>FILE_FLAG_BACKUP_SEMANTICS</c> flag as part of .
+		/// Appropriate security checks still apply when this flag is used without <c>SE_BACKUP_NAME</c> and <c>SE_RESTORE_NAME</c> privileges.
+		/// </para>
+		/// <para>
+		/// When using <c>CreateFileTransacted</c> to open a directory during defragmentation of a FAT or FAT32 file system volume, do not
+		/// specify the <c>MAXIMUM_ALLOWED</c> access right. Access to the directory is denied if this is done. Specify the
+		/// <c>GENERIC_READ</c> access right instead.
+		/// </para>
+		/// <para>For more information, see About Directory Management.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-createfiletransacteda HANDLE CreateFileTransactedA( LPCSTR
+		// lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition,
+		// DWORD dwFlagsAndAttributes, HANDLE hTemplateFile, HANDLE hTransaction, PUSHORT pusMiniVersion, PVOID lpExtendedParameter );
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winbase.h", MSDNShortId = "0cbc081d-8787-409b-84bc-a6a28d8f83a0")]
+		public static extern SafeHFILE CreateFileTransacted(string lpFileName, FileAccess dwDesiredAccess, FileShare dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, FileMode dwCreationDisposition, FileFlagsAndAttributes dwFlagsAndAttributes,
+			IntPtr hTemplateFile, IntPtr hTransaction, [Optional] IntPtr pusMiniVersion, [Optional] IntPtr lpExtendedParameter);
 
 		/// <summary>
 		/// <para>
@@ -2098,7 +2696,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "6e77b793-a82e-4e23-8c8b-7aff79d69346")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CreateUmsCompletionList(out IntPtr UmsCompletionList);
+		public static extern bool CreateUmsCompletionList(out SafePUMS_COMPLETION_LIST UmsCompletionList);
 
 		/// <summary>
 		/// <para>Creates a user-mode scheduling (UMS) thread context to represent a UMS worker thread.</para>
@@ -2143,7 +2741,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "b27ce81a-8463-46af-8acf-2de091f625df")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CreateUmsThreadContext(out IntPtr lpUmsThread);
+		public static extern bool CreateUmsThreadContext(out SafePUMS_CONTEXT lpUmsThread);
 
 		/// <summary>
 		/// <para>
@@ -2273,7 +2871,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "98124359-ddd1-468c-9f99-74dd3f631fa1")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DeleteUmsCompletionList(IntPtr UmsCompletionList);
+		public static extern bool DeleteUmsCompletionList(SafePUMS_COMPLETION_LIST UmsCompletionList);
 
 		/// <summary>
 		/// <para>Deletes the specified user-mode scheduling (UMS) thread context. The thread must be terminated.</para>
@@ -2303,7 +2901,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "cdd118fc-f664-44ce-958d-857216ceb9a7")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DeleteUmsThreadContext(IntPtr UmsThread);
+		public static extern bool DeleteUmsThreadContext(SafePUMS_CONTEXT UmsThread);
 
 		/// <summary>
 		/// <para>Retrieves user-mode scheduling (UMS) worker threads from the specified UMS completion list.</para>
@@ -2370,7 +2968,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "91499eb9-9fc5-4135-95f6-1bced78f1e07")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DequeueUmsCompletionListItems(IntPtr UmsCompletionList, uint WaitTimeOut, out IntPtr UmsThreadList);
+		public static extern bool DequeueUmsCompletionListItems(SafePUMS_COMPLETION_LIST UmsCompletionList, uint WaitTimeOut, out SafePUMS_CONTEXT UmsThreadList);
 
 		/// <summary>Disables thread profiling.</summary>
 		/// <param name="PerformanceDataHandle">The handle that the <c>EnableThreadProfiling</c> function returned.</param>
@@ -2378,7 +2976,7 @@ namespace Vanara.PInvoke
 		// DWORD APIENTRY DisableThreadProfiling( _In_ HANDLE PerformanceDataHandle); https://msdn.microsoft.com/en-us/library/windows/desktop/dd796392(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "dd796392")]
-		public static extern Win32Error DisableThreadProfiling(IntPtr PerformanceDataHandle);
+		public static extern Win32Error DisableThreadProfiling(PerformanceDataHandle PerformanceDataHandle);
 
 		/// <summary>Enables thread profiling on the specified thread.</summary>
 		/// <param name="ThreadHandle">The handle to the thread on which you want to enable profiling. This must be the current thread.</param>
@@ -2400,7 +2998,7 @@ namespace Vanara.PInvoke
 		// PerformanceDataHandle); https://msdn.microsoft.com/en-us/library/windows/desktop/dd796393(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "dd796393")]
-		public static extern Win32Error EnableThreadProfiling(IntPtr ThreadHandle, THREAD_PROFILING_FLAG Flags, ulong HardwareCounters, IntPtr PerformanceDataHandle);
+		public static extern Win32Error EnableThreadProfiling(HTHREAD ThreadHandle, THREAD_PROFILING_FLAG Flags, ulong HardwareCounters, out PerformanceDataHandle PerformanceDataHandle);
 
 		/// <summary>
 		/// <para>Converts the calling thread into a user-mode scheduling (UMS) scheduler thread.</para>
@@ -2441,7 +3039,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "792bd7fa-0ae9-4c38-a664-5fb3e3d0c52b")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnterUmsSchedulingMode(ref UMS_SCHEDULER_STARTUP_INFO SchedulerStartupInfo);
+		public static extern bool EnterUmsSchedulingMode(in UMS_SCHEDULER_STARTUP_INFO SchedulerStartupInfo);
 
 		/// <summary>
 		/// <para>Runs the specified UMS worker thread.</para>
@@ -2493,7 +3091,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "e4265351-e8e9-4878-bd42-93258b4cd1a0")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ExecuteUmsThread(IntPtr UmsThread);
+		public static extern bool ExecuteUmsThread(SafePUMS_CONTEXT UmsThread);
 
 		/// <summary>
 		/// <para>
@@ -2759,7 +3357,7 @@ namespace Vanara.PInvoke
 		// DWORD dwAdditionalFlags, HANDLE hTransaction );
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "d94bf32b-f14b-44b4-824b-ed453d0424ef")]
-		public static extern IntPtr FindFirstFileTransacted(string lpFileName, FINDEX_INFO_LEVELS fInfoLevelId, out WIN32_FIND_DATA lpFindFileData, FINDEX_SEARCH_OPS fSearchOp, IntPtr lpSearchFilter, FIND_FIRST dwAdditionalFlags, IntPtr hTransaction);
+		public static extern IntPtr FindFirstFileTransacted(string lpFileName, FINDEX_INFO_LEVELS fInfoLevelId, out WIN32_FIND_DATA lpFindFileData, FINDEX_SEARCH_OPS fSearchOp, [Optional] IntPtr lpSearchFilter, FIND_FIRST dwAdditionalFlags, IntPtr hTransaction);
 
 		/// <summary>
 		/// <para>
@@ -2852,7 +3450,7 @@ namespace Vanara.PInvoke
 		// hTransaction );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("winbase.h", MSDNShortId = "76c64aa9-0501-457d-b774-c209fbac4ccc")]
-		public static extern IntPtr FindFirstStreamTransactedW(string lpFileName, STREAM_INFO_LEVELS InfoLevel, out WIN32_FIND_STREAM_DATA lpFindStreamData, uint dwFlags, IntPtr hTransaction);
+		public static extern IntPtr FindFirstStreamTransactedW(string lpFileName, STREAM_INFO_LEVELS InfoLevel, out WIN32_FIND_STREAM_DATA lpFindStreamData, [Optional] uint dwFlags, IntPtr hTransaction);
 
 		/// <summary>
 		/// <para>Returns the number of active processors in a processor group or in the system.</para>
@@ -3022,7 +3620,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getcurrentumsthread PUMS_CONTEXT GetCurrentUmsThread( );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "f2e20816-919a-443d-96d3-94e98afc28f2")]
-		public static extern IntPtr GetCurrentUmsThread();
+		public static extern SafePUMS_CONTEXT GetCurrentUmsThread();
 
 		/// <summary>
 		/// Gets a range, expressed in years, for which a <c>DYNAMIC_TIME_ZONE_INFORMATION</c> has valid entries. Use the returned value to
@@ -3060,7 +3658,7 @@ namespace Vanara.PInvoke
 		// LPDWORD FirstYear, _Out_ LPDWORD LastYear); https://msdn.microsoft.com/en-us/library/windows/desktop/hh706894(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "hh706894")]
-		public static extern Win32Error GetDynamicTimeZoneInformationEffectiveYears(ref DYNAMIC_TIME_ZONE_INFORMATION lpTimeZoneInformation, out uint FirstYear, out uint LastYear);
+		public static extern Win32Error GetDynamicTimeZoneInformationEffectiveYears(in DYNAMIC_TIME_ZONE_INFORMATION lpTimeZoneInformation, out uint FirstYear, out uint LastYear);
 
 		/// <summary>
 		/// <para>Gets a mask of enabled XState features on x86 or x64 processors.</para>
@@ -3090,334 +3688,6 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "E7DE090F-F83E-440D-B2A3-BCF160889F2E")]
 		public static extern ulong GetEnabledXStateFeatures();
-
-		/// <summary>
-		/// <para>
-		/// [Microsoft strongly recommends developers utilize alternative means to achieve your application’s needs. Many scenarios that TxF
-		/// was developed for can be achieved through simpler and more readily available techniques. Furthermore, TxF may not be available in
-		/// future versions of Microsoft Windows. For more information, and alternatives to TxF, please see Alternatives to using
-		/// Transactional NTFS.]
-		/// </para>
-		/// <para>Retrieves file system attributes for a specified file or directory as a transacted operation.</para>
-		/// </summary>
-		/// <param name="lpFileName">
-		/// <para>The name of the file or directory.</para>
-		/// <para>
-		/// In the ANSI version of this function, the name is limited to <c>MAX_PATH</c> characters. To extend this limit to 32,767 wide
-		/// characters, call the Unicode version of the function and prepend "\?" to the path. For more information, see Naming a File.
-		/// </para>
-		/// <para>
-		/// The file or directory must reside on the local computer; otherwise, the function fails and the last error code is set to <c>ERROR_TRANSACTIONS_UNSUPPORTED_REMOTE</c>.
-		/// </para>
-		/// </param>
-		/// <param name="fInfoLevelId">
-		/// <para>The level of attribute information to retrieve.</para>
-		/// <para>This parameter can be the following value from the GET_FILEEX_INFO_LEVELS enumeration.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>GetFileExInfoStandard</term>
-		/// <term>The lpFileInformation parameter is a WIN32_FILE_ATTRIBUTE_DATA structure.</term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="lpFileInformation">
-		/// <para>A pointer to a buffer that receives the attribute information.</para>
-		/// <para>
-		/// The type of attribute information that is stored into this buffer is determined by the value of fInfoLevelId. If the fInfoLevelId
-		/// parameter is <c>GetFileExInfoStandard</c> then this parameter points to a WIN32_FILE_ATTRIBUTE_DATA structure
-		/// </para>
-		/// </param>
-		/// <param name="hTransaction">
-		/// <para>A handle to the transaction. This handle is returned by the CreateTransaction function.</para>
-		/// </param>
-		/// <returns>
-		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero (0). To get extended error information, call GetLastError.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// When <c>GetFileAttributesTransacted</c> is called on a directory that is a mounted folder, it returns the attributes of the
-		/// directory, not those of the root directory in the volume that the mounted folder associates with the directory. To obtain the
-		/// file attributes of the associated volume, call GetVolumeNameForVolumeMountPoint to obtain the name of the associated volume. Then
-		/// use the resulting name in a call to <c>GetFileAttributesTransacted</c>. The results are the attributes of the root directory on
-		/// the associated volume.
-		/// </para>
-		/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Technology</term>
-		/// <term>Supported</term>
-		/// </listheader>
-		/// <item>
-		/// <term>Server Message Block (SMB) 3.0 protocol</term>
-		/// <term>No</term>
-		/// </item>
-		/// <item>
-		/// <term>SMB 3.0 Transparent Failover (TFO)</term>
-		/// <term>No</term>
-		/// </item>
-		/// <item>
-		/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
-		/// <term>No</term>
-		/// </item>
-		/// <item>
-		/// <term>Cluster Shared Volume File System (CsvFS)</term>
-		/// <term>No</term>
-		/// </item>
-		/// <item>
-		/// <term>Resilient File System (ReFS)</term>
-		/// <term>No</term>
-		/// </item>
-		/// </list>
-		/// <para>SMB 3.0 does not support TxF.</para>
-		/// <para><c>Symbolic links:</c> If the path points to a symbolic link, the function returns attributes for the symbolic link.</para>
-		/// <para>Transacted Operations</para>
-		/// <para>
-		/// If a file is open for modification in a transaction, no other thread can open the file for modification until the transaction is
-		/// committed. Conversely, if a file is open for modification outside of a transaction, no transacted thread can open the file for
-		/// modification until the non-transacted handle is closed. If a non-transacted thread has a handle opened to modify a file, a call
-		/// to <c>GetFileAttributesTransacted</c> for that file will fail with an <c>ERROR_TRANSACTIONAL_CONFLICT</c> error.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getfileattributestransacteda BOOL
-		// GetFileAttributesTransactedA( LPCSTR lpFileName, GET_FILEEX_INFO_LEVELS fInfoLevelId, LPVOID lpFileInformation, HANDLE
-		// hTransaction );
-		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("winbase.h", MSDNShortId = "dd1435da-93e5-440a-913a-9e40e39b4a01")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetFileAttributesTransacted(string lpFileName, GET_FILEEX_INFO_LEVELS fInfoLevelId, ref WIN32_FILE_ATTRIBUTE_DATA lpFileInformation, IntPtr hTransaction);
-
-		/// <summary>
-		/// <para>Retrieves the bandwidth reservation properties of the volume on which the specified file resides.</para>
-		/// </summary>
-		/// <param name="hFile">
-		/// <para>A handle to the file.</para>
-		/// </param>
-		/// <param name="lpPeriodMilliseconds">
-		/// <para>
-		/// A pointer to a variable that receives the period of the reservation, in milliseconds. The period is the time from which the I/O
-		/// is issued to the kernel until the time the I/O should be completed. If no bandwidth has been reserved for this handle, then the
-		/// value returned is the minimum reservation period supported for this volume.
-		/// </para>
-		/// </param>
-		/// <param name="lpBytesPerPeriod">
-		/// <para>
-		/// A pointer to a variable that receives the maximum number of bytes per period that can be reserved on the volume. If no bandwidth
-		/// has been reserved for this handle, then the value returned is the maximum number of bytes per period supported for the volume.
-		/// </para>
-		/// </param>
-		/// <param name="pDiscardable">
-		/// <para>
-		/// <c>TRUE</c> if I/O should be completed with an error if a driver is unable to satisfy an I/O operation before the period expires.
-		/// <c>FALSE</c> if the underlying subsystem does not support failing in this manner.
-		/// </para>
-		/// </param>
-		/// <param name="lpTransferSize">
-		/// <para>
-		/// The minimum size of any individual I/O request that may be issued by the application. All I/O requests should be multiples of
-		/// TransferSize. If no bandwidth has been reserved for this handle, then the value returned is the minimum transfer size supported
-		/// for this volume.
-		/// </para>
-		/// </param>
-		/// <param name="lpNumOutstandingRequests">
-		/// <para>The number of TransferSize chunks allowed to be outstanding with the operating system.</para>
-		/// </param>
-		/// <returns>
-		/// <para>Returns nonzero if successful or zero otherwise.</para>
-		/// <para>To get extended error information, call GetLastError.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Technology</term>
-		/// <term>Supported</term>
-		/// </listheader>
-		/// <item>
-		/// <term>Server Message Block (SMB) 3.0 protocol</term>
-		/// <term>No</term>
-		/// </item>
-		/// <item>
-		/// <term>SMB 3.0 Transparent Failover (TFO)</term>
-		/// <term>No</term>
-		/// </item>
-		/// <item>
-		/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
-		/// <term>No</term>
-		/// </item>
-		/// <item>
-		/// <term>Cluster Shared Volume File System (CsvFS)</term>
-		/// <term>No</term>
-		/// </item>
-		/// <item>
-		/// <term>Resilient File System (ReFS)</term>
-		/// <term>Yes</term>
-		/// </item>
-		/// </list>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getfilebandwidthreservation BOOL
-		// GetFileBandwidthReservation( HANDLE hFile, LPDWORD lpPeriodMilliseconds, LPDWORD lpBytesPerPeriod, LPBOOL pDiscardable, LPDWORD
-		// lpTransferSize, LPDWORD lpNumOutstandingRequests );
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("winbase.h", MSDNShortId = "3caf38f6-e853-4057-a192-71cda4443dbd")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetFileBandwidthReservation(HFILE hFile, out uint lpPeriodMilliseconds, out uint lpBytesPerPeriod, [MarshalAs(UnmanagedType.Bool)] out bool pDiscardable, out uint lpTransferSize, out uint lpNumOutstandingRequests);
-
-		/// <summary>
-		/// <para>Retrieves file information for the specified file.</para>
-		/// <para>For a more basic version of this function for desktop apps, see GetFileInformationByHandle.</para>
-		/// <para>To set file information using a file handle, see SetFileInformationByHandle.</para>
-		/// </summary>
-		/// <param name="hFile">
-		/// <para>A handle to the file that contains the information to be retrieved.</para>
-		/// <para>This handle should not be a pipe handle.</para>
-		/// </param>
-		/// <param name="FileInformationClass">
-		/// <para>A FILE_INFO_BY_HANDLE_CLASS enumeration value that specifies the type of information to be retrieved.</para>
-		/// <para>For a table of valid values, see the Remarks section.</para>
-		/// </param>
-		/// <param name="lpFileInformation">
-		/// <para>
-		/// A pointer to the buffer that receives the requested file information. The structure that is returned corresponds to the class
-		/// that is specified by FileInformationClass. For a table of valid structure types, see the Remarks section.
-		/// </para>
-		/// </param>
-		/// <param name="dwBufferSize">
-		/// <para>The size of the lpFileInformation buffer, in bytes.</para>
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// If the function succeeds, the return value is nonzero and file information data is contained in the buffer pointed to by the
-		/// lpFileInformation parameter.
-		/// </para>
-		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// If FileInformationClass is <c>FileStreamInfo</c> and the calls succeed but no streams are returned, the error that is returned by
-		/// GetLastError is <c>ERROR_HANDLE_EOF</c>.
-		/// </para>
-		/// <para>
-		/// Certain file information classes behave slightly differently on different operating system releases. These classes are supported
-		/// by the underlying drivers, and any information they return is subject to change between operating system releases.
-		/// </para>
-		/// <para>
-		/// The following table shows the valid file information class types and their corresponding data structure types for use with this function.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>FileInformationClass value</term>
-		/// <term>lpFileInformation type</term>
-		/// </listheader>
-		/// <item>
-		/// <term>FileBasicInfo (0)</term>
-		/// <term>FILE_BASIC_INFO</term>
-		/// </item>
-		/// <item>
-		/// <term>FileStandardInfo (1)</term>
-		/// <term>FILE_STANDARD_INFO</term>
-		/// </item>
-		/// <item>
-		/// <term>FileNameInfo (2)</term>
-		/// <term>FILE_NAME_INFO</term>
-		/// </item>
-		/// <item>
-		/// <term>FileStreamInfo (7)</term>
-		/// <term>FILE_STREAM_INFO</term>
-		/// </item>
-		/// <item>
-		/// <term>FileCompressionInfo (8)</term>
-		/// <term>FILE_COMPRESSION_INFO</term>
-		/// </item>
-		/// <item>
-		/// <term>FileAttributeTagInfo (9)</term>
-		/// <term>FILE_ATTRIBUTE_TAG_INFO</term>
-		/// </item>
-		/// <item>
-		/// <term>FileIdBothDirectoryInfo (0xa)</term>
-		/// <term>FILE_ID_BOTH_DIR_INFO</term>
-		/// </item>
-		/// <item>
-		/// <term>FileIdBothDirectoryRestartInfo (0xb)</term>
-		/// <term>FILE_ID_BOTH_DIR_INFO</term>
-		/// </item>
-		/// <item>
-		/// <term>FileRemoteProtocolInfo (0xd)</term>
-		/// <term>FILE_REMOTE_PROTOCOL_INFO</term>
-		/// </item>
-		/// <item>
-		/// <term>FileFullDirectoryInfo (0xe)</term>
-		/// <term>FILE_FULL_DIR_INFO</term>
-		/// </item>
-		/// <item>
-		/// <term>FileFullDirectoryRestartInfo (0xf)</term>
-		/// <term>FILE_FULL_DIR_INFO</term>
-		/// </item>
-		/// <item>
-		/// <term>FileStorageInfo (0x10)</term>
-		/// <term>FILE_STORAGE_INFO</term>
-		/// </item>
-		/// <item>
-		/// <term>FileAlignmentInfo (0x11)</term>
-		/// <term>FILE_ALIGNMENT_INFO</term>
-		/// </item>
-		/// <item>
-		/// <term>FileIdInfo (0x12)</term>
-		/// <term>FILE_ID_INFO</term>
-		/// </item>
-		/// <item>
-		/// <term>FileIdExtdDirectoryInfo (0x13)</term>
-		/// <term>FILE_ID_EXTD_DIR_INFO</term>
-		/// </item>
-		/// <item>
-		/// <term>FileIdExtdDirectoryRestartInfo (0x14)</term>
-		/// <term>FILE_ID_EXTD_DIR_INFO</term>
-		/// </item>
-		/// </list>
-		/// <para>Transacted Operations</para>
-		/// <para>
-		/// If there is a transaction bound to the thread at the time of the call, then the function returns the compressed file size of the
-		/// isolated file view. For more information, see About Transactional NTFS.
-		/// </para>
-		/// <para>In Windows 8 and Windows Server 2012, this function is supported by the following technologies.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Technology</term>
-		/// <term>Supported</term>
-		/// </listheader>
-		/// <item>
-		/// <term>Server Message Block (SMB) 3.0 protocol</term>
-		/// <term>Yes</term>
-		/// </item>
-		/// <item>
-		/// <term>SMB 3.0 Transparent Failover (TFO)</term>
-		/// <term>Yes</term>
-		/// </item>
-		/// <item>
-		/// <term>SMB 3.0 with Scale-out File Shares (SO)</term>
-		/// <term>Yes</term>
-		/// </item>
-		/// <item>
-		/// <term>Cluster Shared Volume File System (CsvFS)</term>
-		/// <term>Yes</term>
-		/// </item>
-		/// <item>
-		/// <term>Resilient File System (ReFS)</term>
-		/// <term>Yes</term>
-		/// </item>
-		/// </list>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getfileinformationbyhandleex BOOL
-		// GetFileInformationByHandleEx( HANDLE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass, LPVOID lpFileInformation, DWORD
-		// dwBufferSize );
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("winbase.h", MSDNShortId = "e261ea45-d084-490e-94b4-129bd76f6a04")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetFileInformationByHandleEx(HFILE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass, IntPtr lpFileInformation, uint dwBufferSize);
 
 		/// <summary>
 		/// <para>Retrieves the value of the specified firmware environment variable and its attributes.</para>
@@ -3765,7 +4035,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "7001eb89-3d91-44e3-b245-b19e8ab5f9fe")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetNamedPipeClientProcessId(IntPtr Pipe, out uint ClientProcessId);
+		public static extern bool GetNamedPipeClientProcessId(HFILE Pipe, out uint ClientProcessId);
 
 		/// <summary>
 		/// <para>Retrieves the client session identifier for the specified named pipe.</para>
@@ -3791,7 +4061,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "b3ea0b7f-fead-4369-b87a-2f522a2a1984")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetNamedPipeClientSessionId(IntPtr Pipe, out uint ClientSessionId);
+		public static extern bool GetNamedPipeClientSessionId(HFILE Pipe, out uint ClientSessionId);
 
 		/// <summary>
 		/// <para>Retrieves the server process identifier for the specified named pipe.</para>
@@ -3817,7 +4087,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "1ee33a66-a71c-4c34-b907-aab7860294c4")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetNamedPipeServerProcessId(IntPtr Pipe, out uint ServerProcessId);
+		public static extern bool GetNamedPipeServerProcessId(HFILE Pipe, out uint ServerProcessId);
 
 		/// <summary>
 		/// <para>Retrieves the server session identifier for the specified named pipe.</para>
@@ -3843,7 +4113,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "cd628d6d-aa13-4762-893b-42f6cf7a2ba6")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetNamedPipeServerSessionId(IntPtr Pipe, out uint ServerSessionId);
+		public static extern bool GetNamedPipeServerSessionId(HFILE Pipe, out uint ServerSessionId);
 
 		/// <summary>
 		/// <para>Retrieves the amount of memory that is available in a node specified as a <c>USHORT</c> value.</para>
@@ -3911,7 +4181,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "7622f7c9-2dfc-4ab7-b3e9-48d483c6cc0e")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetNumaNodeNumberFromHandle(IntPtr hFile, out ushort NodeNumber);
+		public static extern bool GetNumaNodeNumberFromHandle(HFILE hFile, out ushort NodeNumber);
 
 		/// <summary>
 		/// <para>Retrieves the node number as a <c>USHORT</c> value for the specified logical processor.</para>
@@ -4032,7 +4302,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "adf15b9c-24f4-49ea-9283-0db5f3f13e65")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetProcessDEPPolicy(IntPtr hProcess, out PROCESS_DEP lpFlags, [MarshalAs(UnmanagedType.Bool)] out bool lpPermanent);
+		public static extern bool GetProcessDEPPolicy(HPROCESS hProcess, out PROCESS_DEP lpFlags, [MarshalAs(UnmanagedType.Bool)] out bool lpPermanent);
 
 		/// <summary>
 		/// <para>Gets the data execution prevention (DEP) policy setting for the system.</para>
@@ -4133,7 +4403,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "393f6e0a-fbea-4aa0-9c18-f96da18e61e9")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetUmsCompletionListEvent(IntPtr UmsCompletionList, out IntPtr UmsCompletionEvent);
+		public static extern bool GetUmsCompletionListEvent(SafePUMS_COMPLETION_LIST UmsCompletionList, out SafeEventHandle UmsCompletionEvent);
 
 		/// <summary>
 		/// <para>Queries whether the specified thread is a UMS scheduler thread, a UMS worker thread, or a non-UMS thread.</para>
@@ -4168,7 +4438,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "7c8347b6-6546-4ea9-9b2a-11794782f482")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetUmsSystemThreadInformation(IntPtr ThreadHandle, ref UMS_SYSTEM_THREAD_INFORMATION SystemThreadInfo);
+		public static extern bool GetUmsSystemThreadInformation(HTHREAD ThreadHandle, ref UMS_SYSTEM_THREAD_INFORMATION SystemThreadInfo);
 
 		/// <summary>
 		/// <para>Returns the mask of XState features set within a CONTEXT structure.</para>
@@ -4211,17 +4481,11 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "D9A8D0B6-21E3-46B7-AB88-CE2FF4025A17")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetXStateFeaturesMask(IntPtr Context, out ulong FeatureMask);
+		public static extern bool GetXStateFeaturesMask(PCONTEXT Context, out ulong FeatureMask);
 
 		/// <summary>
 		/// <para>Initializes a CONTEXT structure inside a buffer with the necessary size and alignment.</para>
 		/// </summary>
-		/// <param name="Buffer">
-		/// <para>
-		/// A pointer to a buffer within which to initialize a CONTEXT structure. This parameter can be <c>NULL</c> to determine the buffer
-		/// size required to hold a context record with the specified .
-		/// </para>
-		/// </param>
 		/// <param name="ContextFlags">
 		/// <para>
 		/// A value indicating which portions of the structure should be initialized. This parameter influences the size of the initialized structure.
@@ -4233,17 +4497,6 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="Context">
 		/// <para>A pointer to a variable which receives the address of the initialized CONTEXT structure within the .</para>
-		/// <para>
-		/// <c>Note</c> Due to alignment requirements of CONTEXT structures, the value returned in may not be at the beginning of the
-		/// supplied buffer.
-		/// </para>
-		/// </param>
-		/// <param name="ContextLength">
-		/// <para>
-		/// On input, specifies the length of the buffer pointed to by , in bytes. If the buffer is not large enough to contain the specified
-		/// portions of the CONTEXT, the function fails, GetLastError returns <c>ERROR_INSUFFICIENT_BUFFER</c>, and is set to the required
-		/// size of the buffer. If the function fails with an error other than <c>ERROR_INSUFFICIENT_BUFFER</c>, the contents of are undefined.
-		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>This function returns <c>TRUE</c> if successful, otherwise <c>FALSE</c>. To get extended error information, call GetLastError.</para>
@@ -4268,12 +4521,8 @@ namespace Vanara.PInvoke
 		/// GetModuleHandle on "Kernel32.dll", followed by calls to GetProcAddress. See Working with XState Context for details.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-initializecontext BOOL InitializeContext( PVOID Buffer,
-		// DWORD ContextFlags, PCONTEXT *Context, PDWORD ContextLength );
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "909BF5F7-0622-4B22-A2EC-27722389700A")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool InitializeContext(IntPtr Buffer, CONTEXT_FLAG ContextFlags, out IntPtr Context, ref uint ContextLength);
+		public static bool InitializeContext(uint ContextFlags, out PCONTEXT Context) { Context = new PCONTEXT(ContextFlags); return true; }
 
 		/// <summary>
 		/// <para>Indicates if the OS was booted from a VHD container.</para>
@@ -4424,7 +4673,7 @@ namespace Vanara.PInvoke
 		// Context, DWORD FeatureId, PDWORD Length );
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "7AAEA13B-E4A4-4410-BFC7-09B81B92FF26")]
-		public static extern IntPtr LocateXStateFeature(IntPtr Context, uint FeatureId, out uint Length);
+		public static extern IntPtr LocateXStateFeature(PCONTEXT Context, uint FeatureId, out uint Length);
 
 		/// <summary>
 		/// <para>Compares two character strings. The comparison is case-sensitive.</para>
@@ -4814,7 +5063,7 @@ namespace Vanara.PInvoke
 		// lpBaseAddress, DWORD nndPreferred );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "1e28c8db-112d-481d-b470-8ca618e125ce")]
-		public static extern IntPtr MapViewOfFileExNuma(IntPtr hFileMappingObject, FileAccess dwDesiredAccess, uint dwFileOffsetHigh, uint dwFileOffsetLow, SizeT dwNumberOfBytesToMap, IntPtr lpBaseAddress, uint nndPreferred);
+		public static extern IntPtr MapViewOfFileExNuma(HFILE hFileMappingObject, FileAccess dwDesiredAccess, uint dwFileOffsetHigh, uint dwFileOffsetLow, SizeT dwNumberOfBytesToMap, IntPtr lpBaseAddress, uint nndPreferred);
 
 		/// <summary>
 		/// <para>
@@ -5004,10 +5253,10 @@ namespace Vanara.PInvoke
 		/// <para>Opens the file that matches the specified identifier.</para>
 		/// </summary>
 		/// <param name="hVolumeHint">
-		/// <para>TBD</para>
+		/// <para>A handle to any file on a volume or share on which the file to be opened is stored.</para>
 		/// </param>
 		/// <param name="lpFileId">
-		/// <para>TBD</para>
+		/// <para>A pointer to a FILE_ID_DESCRIPTOR that identifies the file to open.</para>
 		/// </param>
 		/// <param name="dwDesiredAccess">
 		/// <para>The access to the object. Access can be read, write, or both.</para>
@@ -5070,7 +5319,91 @@ namespace Vanara.PInvoke
 		/// <para>Reserved.</para>
 		/// </param>
 		/// <param name="dwFlagsAndAttributes">
-		/// <para>TBD</para>
+		/// <para>The file flags.</para>
+		/// <para>
+		/// When <c>OpenFileById</c> opens a file, it combines the file flags with existing file attributes, and ignores any supplied file
+		/// attributes. This parameter can include any combination of the following flags.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>FILE_FLAG_BACKUP_SEMANTICS 0x02000000</term>
+		/// <term>
+		/// A file is being opened for a backup or restore operation. The system ensures that the calling process overrides file security
+		/// checks when the process has SE_BACKUP_NAME and SE_RESTORE_NAME privileges. For more information, see Changing Privileges in a
+		/// Token. You must set this flag to obtain a handle to a directory. A directory handle can be passed to some functions instead of a
+		/// file handle. For more information, see Directory Handles.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_FLAG_NO_BUFFERING 0x20000000</term>
+		/// <term>
+		/// The system opens a file with no system caching. This flag does not affect hard disk caching. When combined with
+		/// FILE_FLAG_OVERLAPPED, the flag gives maximum asynchronous performance, because the I/O does not rely on the synchronous
+		/// operations of the memory manager. However, some I/O operations take more time, because data is not being held in the cache. Also,
+		/// the file metadata may still be cached. To flush the metadata to disk, use the FlushFileBuffers function. An application must meet
+		/// certain requirements when working with files that are opened with FILE_FLAG_NO_BUFFERING: One way to align buffers on integer
+		/// multiples of the volume sector size is to use VirtualAlloc to allocate the buffers. It allocates memory that is aligned on
+		/// addresses that are integer multiples of the operating system's memory page size. Because both memory page and volume sector sizes
+		/// are powers of 2, this memory is also aligned on addresses that are integer multiples of a volume sector size. Memory pages are
+		/// 4-8 KB in size; sectors are 512 bytes (hard disks) or 2048 bytes (CD), and therefore, volume sectors can never be larger than
+		/// memory pages. An application can determine a volume sector size by calling the GetDiskFreeSpace function.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_FLAG_OPEN_NO_RECALL 0x00100000</term>
+		/// <term>
+		/// The file data is requested, but it should continue to be located in remote storage. It should not be transported back to local
+		/// storage. This flag is for use by remote storage systems.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_FLAG_OPEN_REPARSE_POINT 0x00200000</term>
+		/// <term>
+		/// When this flag is used, normal reparse point processing does not occur, and OpenFileById attempts to open the reparse point. When
+		/// a file is opened, a file handle is returned, whether or not the filter that controls the reparse point is operational. This flag
+		/// cannot be used with the CREATE_ALWAYS flag. If the file is not a reparse point, then this flag is ignored.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_FLAG_OVERLAPPED 0x40000000</term>
+		/// <term>
+		/// The file is being opened or created for asynchronous I/O. When the operation is complete, the event specified to the call in the
+		/// OVERLAPPED structure is set to the signaled state. Operations that take a significant amount of time to process return
+		/// ERROR_IO_PENDING. If this flag is specified, the file can be used for simultaneous read and write operations. The system does not
+		/// maintain the file pointer, therefore you must pass the file position to the read and write functions in the OVERLAPPED structure
+		/// or update the file pointer. If this flag is not specified, then I/O operations are serialized, even if the calls to the read and
+		/// write functions specify an OVERLAPPED structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_FLAG_RANDOM_ACCESS 0x10000000</term>
+		/// <term>A file is accessed randomly. The system can use this as a hint to optimize file caching.</term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_FLAG_SEQUENTIAL_SCAN 0x08000000</term>
+		/// <term>
+		/// A file is accessed sequentially from beginning to end. The system can use this as a hint to optimize file caching. If an
+		/// application moves the file pointer for random access, optimum caching may not occur. However, correct operation is still
+		/// guaranteed. Specifying this flag can increase performance for applications that read large files using sequential access.
+		/// Performance gains can be even more noticeable for applications that read large files mostly sequentially, but occasionally skip
+		/// over small ranges of bytes.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>FILE_FLAG_WRITE_THROUGH 0x80000000</term>
+		/// <term>
+		/// The system writes through any intermediate cache and goes directly to disk. If FILE_FLAG_NO_BUFFERING is not also specified, so
+		/// that system caching is in effect, then the data is written to the system cache, but is flushed to disk without delay. If
+		/// FILE_FLAG_NO_BUFFERING is also specified, so that system caching is not in effect, then the data is immediately flushed to disk
+		/// without going through the system cache. The operating system also requests a write-through the hard disk cache to persistent
+		/// media. However, not all hardware supports this write-through capability.
+		/// </term>
+		/// </item>
+		/// </list>
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is an open handle to a specified file.</para>
@@ -5115,7 +5448,7 @@ namespace Vanara.PInvoke
 		// dwFlagsAndAttributes );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "caa757a2-fc3f-4883-8d3e-b98d28f92517")]
-		public static extern IntPtr OpenFileById(IntPtr hVolumeHint, IntPtr lpFileId, FileAccess dwDesiredAccess, FileShare dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, FileFlagsAndAttributes dwFlagsAndAttributes);
+		public static extern IntPtr OpenFileById(HFILE hVolumeHint, in FILE_ID_DESCRIPTOR lpFileId, FileAccess dwDesiredAccess, FileShare dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, FileFlagsAndAttributes dwFlagsAndAttributes);
 
 		/// <summary>
 		/// <para>Decrements the count of power requests of the specified type for a power request object.</para>
@@ -5166,7 +5499,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "794248b1-5aa8-495e-aca6-1a1f35dc9c7f")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PowerClearRequest(IntPtr PowerRequest, POWER_REQUEST_TYPE RequestType);
+		public static extern bool PowerClearRequest(SafePowerRequestObject PowerRequest, POWER_REQUEST_TYPE RequestType);
 
 		/// <summary>
 		/// <para>Creates a new power request object.</para>
@@ -5185,7 +5518,7 @@ namespace Vanara.PInvoke
 		// PREASON_CONTEXT Context );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "2122bf00-9e6b-48ab-89b0-f53dd6804902")]
-		public static extern IntPtr PowerCreateRequest(ref REASON_CONTEXT Context);
+		public static extern SafePowerRequestObject PowerCreateRequest([In] REASON_CONTEXT Context);
 
 		/// <summary>
 		/// <para>Increments the count of power requests of the specified type for a power request object.</para>
@@ -5242,7 +5575,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "85249de8-5832-4f25-bbd9-3576cfd1caa0")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PowerSetRequest(IntPtr PowerRequest, POWER_REQUEST_TYPE RequestType);
+		public static extern bool PowerSetRequest(SafePowerRequestObject PowerRequest, POWER_REQUEST_TYPE RequestType);
 
 		/// <summary>
 		/// <para>Retrieves the full name of the executable image for the specified process.</para>
@@ -5291,7 +5624,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winbase.h", MSDNShortId = "49a9d1aa-30f3-45ea-a4ec-9f55df692b8b")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool QueryFullProcessImageName(IntPtr hProcess, PROCESS_NAME dwFlags, StringBuilder lpExeName, ref uint lpdwSize);
+		public static extern bool QueryFullProcessImageName(HPROCESS hProcess, PROCESS_NAME dwFlags, StringBuilder lpExeName, ref uint lpdwSize);
 
 		/// <summary>Determines whether thread profiling is enabled for the specified thread.</summary>
 		/// <param name="ThreadHandle">The handle to the thread of interest.</param>
@@ -5300,7 +5633,7 @@ namespace Vanara.PInvoke
 		// DWORD APIENTRY QueryThreadProfiling( _In_ HANDLE ThreadHandle, _Out_ PBOOLEAN Enabled); https://msdn.microsoft.com/en-us/library/windows/desktop/dd796402(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "dd796402")]
-		public static extern Win32Error QueryThreadProfiling(IntPtr ThreadHandle, [MarshalAs(UnmanagedType.U1)] out bool Enabled);
+		public static extern Win32Error QueryThreadProfiling(HTHREAD ThreadHandle, [MarshalAs(UnmanagedType.U1)] out bool Enabled);
 
 		/// <summary>
 		/// <para>Retrieves information about the specified user-mode scheduling (UMS) worker thread.</para>
@@ -5363,7 +5696,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "5f694edf-ba5e-45a2-a938-5013edddcae2")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool QueryUmsThreadInformation(IntPtr UmsThread, RTL_UMS_THREAD_INFO_CLASS UmsThreadInfoClass, IntPtr UmsThreadInformation, uint UmsThreadInformationLength, out uint ReturnLength);
+		public static extern bool QueryUmsThreadInformation(SafePUMS_CONTEXT UmsThread, RTL_UMS_THREAD_INFO_CLASS UmsThreadInfoClass, IntPtr UmsThreadInformation, uint UmsThreadInformationLength, out uint ReturnLength);
 
 		/// <summary>Reads the specified profiling data associated with the thread.</summary>
 		/// <param name="PerformanceDataHandle">The handle that the <c>EnableThreadProfiling</c> function returned.</param>
@@ -5395,7 +5728,7 @@ namespace Vanara.PInvoke
 		// PerformanceData); https://msdn.microsoft.com/en-us/library/windows/desktop/dd796403(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "dd796403")]
-		public static extern Win32Error ReadThreadProfilingData(IntPtr PerformanceDataHandle, uint Flags, out PERFORMANCE_DATA PerformanceData);
+		public static extern Win32Error ReadThreadProfilingData(PerformanceDataHandle PerformanceDataHandle, uint Flags, out PERFORMANCE_DATA PerformanceData);
 
 		/// <summary>
 		/// <para>
@@ -5593,7 +5926,7 @@ namespace Vanara.PInvoke
 		// dwDesiredAccess, DWORD dwShareMode, DWORD dwFlagsAndAttributes );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "56d8a4b1-e3b5-4134-8d21-bf40761e9dcc")]
-		public static extern SafeHFILE ReOpenFile(IntPtr hOriginalFile, FileAccess dwDesiredAccess, FileShare dwShareMode, FileFlagsAndAttributes dwFlagsAndAttributes);
+		public static extern SafeHFILE ReOpenFile(HFILE hOriginalFile, FileAccess dwDesiredAccess, FileShare dwShareMode, FileFlagsAndAttributes dwFlagsAndAttributes);
 
 		/// <summary>
 		/// <para>
@@ -6295,7 +6628,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "19f190fd-1f78-4bb6-93eb-73a5c522b44d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetUmsThreadInformation(IntPtr UmsThread, UMS_THREAD_INFO_CLASS UmsThreadInfoClass, IntPtr UmsThreadInformation, uint UmsThreadInformationLength);
+		public static extern bool SetUmsThreadInformation(SafePUMS_CONTEXT UmsThread, UMS_THREAD_INFO_CLASS UmsThreadInfoClass, IntPtr UmsThreadInformation, uint UmsThreadInformationLength);
 
 		/// <summary>
 		/// <para>Sets the mask of XState features set within a CONTEXT structure.</para>
@@ -6328,7 +6661,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "64ADEA8A-DE78-437E-AE68-A68E7214C5FD")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetXStateFeaturesMask(IntPtr Context, ulong FeatureMask);
+		public static extern bool SetXStateFeaturesMask(PCONTEXT Context, ulong FeatureMask);
 
 		/// <summary>
 		/// <para>[This function is not supported and should not be used. It may change or disappear completely without advance notice.]</para>
@@ -6488,7 +6821,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "1bac28e1-3558-43c4-97e4-d8bb9514c38e")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool Wow64GetThreadContext(IntPtr hThread, IntPtr lpContext);
+		public static extern bool Wow64GetThreadContext(HTHREAD hThread, PCONTEXT lpContext);
 
 		/// <summary>
 		/// <para>Retrieves a descriptor table entry for the specified selector and WOW64 thread.</para>
@@ -6532,7 +6865,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "68393913-6725-4cc6-90b9-57da2a96c91e")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool Wow64GetThreadSelectorEntry(IntPtr hThread, uint dwSelector, ref WOW64_LDT_ENTRY lpSelectorEntry);
+		public static extern bool Wow64GetThreadSelectorEntry(HTHREAD hThread, uint dwSelector, ref WOW64_LDT_ENTRY lpSelectorEntry);
 
 		/// <summary>
 		/// <para>Sets the context of the specified WOW64 thread.</para>
@@ -6568,7 +6901,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "4119c945-b654-4634-a88b-e41bc762018a")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool Wow64SetThreadContext(IntPtr hThread, ref WOW64_CONTEXT lpContext);
+		public static extern bool Wow64SetThreadContext(HTHREAD hThread, PCONTEXT lpContext);
 
 		/// <summary>
 		/// <para>Suspends the specified WOW64 thread.</para>
@@ -6612,7 +6945,69 @@ namespace Vanara.PInvoke
 		// hThread );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winbase.h", MSDNShortId = "d976675a-5400-41ac-a11d-c39a1b2dd50d")]
-		public static extern uint Wow64SuspendThread(IntPtr hThread);
+		public static extern uint Wow64SuspendThread(HTHREAD hThread);
+
+		/// <summary>
+		/// <para>Initializes a CONTEXT structure inside a buffer with the necessary size and alignment.</para>
+		/// </summary>
+		/// <param name="Buffer">
+		/// <para>
+		/// A pointer to a buffer within which to initialize a CONTEXT structure. This parameter can be <c>NULL</c> to determine the buffer
+		/// size required to hold a context record with the specified .
+		/// </para>
+		/// </param>
+		/// <param name="ContextFlags">
+		/// <para>
+		/// A value indicating which portions of the structure should be initialized. This parameter influences the size of the initialized structure.
+		/// </para>
+		/// <para>
+		/// <c>Note</c><c>CONTEXT_XSTATE</c> is not part of <c>CONTEXT_FULL</c> or <c>CONTEXT_ALL</c>. It must be specified separately if an
+		/// XState context is desired.
+		/// </para>
+		/// </param>
+		/// <param name="Context">
+		/// <para>A pointer to a variable which receives the address of the initialized CONTEXT structure within the .</para>
+		/// <para>
+		/// <c>Note</c> Due to alignment requirements of CONTEXT structures, the value returned in may not be at the beginning of the
+		/// supplied buffer.
+		/// </para>
+		/// </param>
+		/// <param name="ContextLength">
+		/// <para>
+		/// On input, specifies the length of the buffer pointed to by , in bytes. If the buffer is not large enough to contain the specified
+		/// portions of the CONTEXT, the function fails, GetLastError returns <c>ERROR_INSUFFICIENT_BUFFER</c>, and is set to the required
+		/// size of the buffer. If the function fails with an error other than <c>ERROR_INSUFFICIENT_BUFFER</c>, the contents of are undefined.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>This function returns <c>TRUE</c> if successful, otherwise <c>FALSE</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// can be used to initialize a CONTEXT structure within a buffer with the required size and alignment characteristics. This routine
+		/// is required if the <c>CONTEXT_XSTATE</c> is specified since the required context size and alignment may change depending on which
+		/// processor features are enabled on the system.
+		/// </para>
+		/// <para>
+		/// First, call this function with the parameter set to the maximum number of features you will be using and the parameter to
+		/// <c>NULL</c>. The function returns the required buffer size in bytes in the parameter. Allocate enough space for the data in the
+		/// and call the function again to initialize the . Upon successful completion of this routine, the member of the structure is
+		/// initialized, but the remaining contents of the structure are undefined. Some bits specified in the parameter may not be set in
+		/// -&gt; if they are not supported by the system. Applications may subsequently remove, but must never add, bits from the member of CONTEXT.
+		/// </para>
+		/// <para>
+		/// <c>Windows 7 with SP1 and Windows Server 2008 R2 with SP1:</c> The AVX API is first implemented on Windows 7 with SP1 and Windows
+		/// Server 2008 R2 with SP1 . Since there is no SDK for SP1, that means there are no available headers and library files to work
+		/// with. In this situation, a caller must declare the needed functions from this documentation and get pointers to them using
+		/// GetModuleHandle on "Kernel32.dll", followed by calls to GetProcAddress. See Working with XState Context for details.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-initializecontext BOOL InitializeContext( PVOID Buffer,
+		// DWORD ContextFlags, PCONTEXT *Context, PDWORD ContextLength );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winbase.h", MSDNShortId = "909BF5F7-0622-4B22-A2EC-27722389700A")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		private static extern bool InitializeContext(IntPtr Buffer, uint ContextFlags, out IntPtr Context, ref uint ContextLength);
 
 		/// <summary>
 		/// <para>Contains extended parameters for the CopyFile2 function.</para>
@@ -6708,11 +7103,9 @@ namespace Vanara.PInvoke
 			public IntPtr pfCancel;
 
 			/// <summary>
-			/// <para>
 			/// The optional address of a callback function of type <c>PCOPYFILE2_PROGRESS_ROUTINE</c> that is called each time another
 			/// portion of the file has been copied. This parameter can be <c>NULL</c>. For more information on the progress callback
 			/// function, see the CopyFile2ProgressRoutine callback function.
-			/// </para>
 			/// </summary>
 			[MarshalAs(UnmanagedType.FunctionPtr)]
 			public Pcopyfile2ProgressRoutine pProgressRoutine;
@@ -6727,10 +7120,8 @@ namespace Vanara.PInvoke
 		/// <para>Passed to the CopyFile2ProgressRoutine callback function with information about a pending copy operation.</para>
 		/// </summary>
 		/// <remarks>
-		/// <para>
 		/// To compile an application that uses the <c>COPYFILE2_MESSAGE</c> structure, define the <c>_WIN32_WINNT</c> macro as 0x0601 or
 		/// later. For more information, see Using the Windows Headers.
-		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-copyfile2_message
 		[PInvokeData("winbase.h", MSDNShortId = "ab841bee-90a0-4beb-99d3-764e608c3872")]
@@ -6783,7 +7174,7 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public COPYFILE2_MESSAGE_TYPE Type;
 
-			private uint dwPadding;
+			private readonly uint dwPadding;
 
 			/// <summary>Union</summary>
 			public Union Info;
@@ -7080,9 +7471,85 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// <para>
+		/// <para>Specifies the type of ID that is being used.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-file_id_descriptor typedef struct FILE_ID_DESCRIPTOR {
+		// DWORD dwSize; FILE_ID_TYPE Type; union { LARGE_INTEGER FileId; GUID ObjectId; FILE_ID_128 ExtendedFileId; } DUMMYUNIONNAME; } *LPFILE_ID_DESCRIPTOR;
+		[PInvokeData("winbase.h", MSDNShortId = "9092a701-3b47-4c4c-8221-54fa3220d322")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct FILE_ID_DESCRIPTOR
+		{
+			/// <summary>
+			/// <para>The size of this <c>FILE_ID_DESCRIPTOR</c> structure.</para>
+			/// </summary>
+			public uint dwSize;
+
+			/// <summary>
+			/// <para>The discriminator for the union indicating the type of identifier that is being passed.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>FileIdType 0</term>
+			/// <term>Use the FileId member of the union.</term>
+			/// </item>
+			/// <item>
+			/// <term>ObjectIdType 1</term>
+			/// <term>Use the ObjectId member of the union.</term>
+			/// </item>
+			/// <item>
+			/// <term>ExtendedFileIdType 2</term>
+			/// <term>
+			/// Use the ExtendedFileId member of the union. Windows XP, Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7
+			/// and Windows Server 2008 R2: This value is not supported before Windows 8 and Windows Server 2012.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public FILE_ID_TYPE Type;
+
+			/// <summary>Undocumented.</summary>
+			public DUMMYUNIONNAME Id;
+
+			/// <summary>Undocumented.</summary>
+			[StructLayout(LayoutKind.Explicit)]
+			public struct DUMMYUNIONNAME
+			{
+				/// <summary>
+				/// <para>The ID of the file to open.</para>
+				/// </summary>
+				[FieldOffset(0)]
+				public long FileId;
+
+				/// <summary>
+				/// <para>The ID of the object to open.</para>
+				/// </summary>
+				[FieldOffset(0)]
+				public Guid ObjectId;
+
+				/// <summary>
+				/// <para>A FILE_ID_128 structure containing the 128-bit file ID of the file. This is used on ReFS file systems.</para>
+				/// <para>
+				/// <c>Windows XP, Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7 and Windows Server 2008 R2:</c> This
+				/// member is not supported before Windows 8 and Windows Server 2012.
+				/// </para>
+				/// </summary>
+				[FieldOffset(0)]
+				public FILE_ID_128 ExtendedFileId;
+			}
+		}
+
+		/// <summary>A performance data handle.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PerformanceDataHandle
+		{
+			private readonly IntPtr handle;
+		}
+
+		/// <summary>
 		/// Specifies attributes for a user-mode scheduling (UMS) scheduler thread. The EnterUmsSchedulingMode function uses this structure.
-		/// </para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/ns-winbase-_ums_scheduler_startup_info typedef struct
 		// _UMS_SCHEDULER_STARTUP_INFO { ULONG UmsVersion; PUMS_COMPLETION_LIST CompletionList; PUMS_SCHEDULER_ENTRY_POINT SchedulerProc;
@@ -7117,9 +7584,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// <para>
 		/// Specifies a UMS scheduler thread, UMS worker thread, or non-UMS thread. The GetUmsSystemThreadInformation function uses this structure.
-		/// </para>
 		/// </summary>
 		/// <remarks>
 		/// <para>If both <c>IsUmsSchedulerThread</c> and <c>IsUmsWorkerThread</c> are clear, the structure specifies a non-UMS thread.</para>
@@ -7138,6 +7603,84 @@ namespace Vanara.PInvoke
 
 			/// <summary>A bitfield that specifies a UMS thread type.</summary>
 			public ThreadUmsFlags ThreadUmsFlags;
+		}
+
+		public class PCONTEXT : SafeHandle
+		{
+			private SafeHGlobalHandle buffer;
+
+			public PCONTEXT(uint contextFlags) : base(IntPtr.Zero, true)
+			{
+				uint len = 0;
+				InitializeContext(IntPtr.Zero, contextFlags, out var ptr, ref len);
+				buffer = new SafeHGlobalHandle((int)len);
+				if (!InitializeContext(buffer.DangerousGetHandle(), contextFlags, out ptr, ref len))
+					Win32Error.ThrowLastError();
+				SetHandle(ptr);
+			}
+
+			public override bool IsInvalid => handle == IntPtr.Zero;
+
+			public TContext ToContextStruct<TContext>() where TContext : struct => (TContext)Marshal.PtrToStructure(handle, typeof(TContext));
+
+			protected override bool ReleaseHandle()
+			{
+				buffer.Dispose();
+				SetHandle(IntPtr.Zero);
+				return true;
+			}
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created PowerRequestObject instance at disposal using CloseHandle.</summary>
+		public class SafePowerRequestObject : SafeKernelHandle
+		{
+			/// <summary>Initializes a new instance of the <see cref="PowerRequestObject"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafePowerRequestObject(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="PowerRequestObject"/> class.</summary>
+			private SafePowerRequestObject() : base() { }
+		}
+
+		/// <summary>
+		/// Provides a <see cref="SafeHandle"/> to a UMS completion list that releases a created UmsCompletionList instance at disposal using DeleteUmsCompletionList.
+		/// </summary>
+		public class SafePUMS_COMPLETION_LIST : HANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="UmsCompletionList"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafePUMS_COMPLETION_LIST(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="UmsCompletionList"/> class.</summary>
+			private SafePUMS_COMPLETION_LIST() : base() { }
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => DeleteUmsCompletionList(this);
+		}
+
+		/// <summary>
+		/// Provides a <see cref="SafeHandle"/> to a UMS thread context that releases a created UmsThreadContext instance at disposal using DeleteUmsThreadContext.
+		/// </summary>
+		public class SafePUMS_CONTEXT : HANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="UmsThreadContext"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafePUMS_CONTEXT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="UmsThreadContext"/> class.</summary>
+			private SafePUMS_CONTEXT() : base() { }
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => DeleteUmsThreadContext(this);
 		}
 	}
 }

@@ -1,5 +1,4 @@
 ﻿using System.Runtime.InteropServices;
-// ReSharper disable InconsistentNaming
 
 namespace Vanara.PInvoke
 {

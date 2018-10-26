@@ -146,7 +146,7 @@ namespace Vanara.Windows.Forms
 		private string footer;
 		private TaskDialogIcon footerIcon;
 		// When active, holds the handle of the current window.
-		private IntPtr handle = IntPtr.Zero;
+		private HWND handle = HWND.NULL;
 		private TaskDialogIcon mainIcon;
 		private string mainInstruction;
 
@@ -296,7 +296,7 @@ namespace Vanara.Windows.Forms
 			{
 				if (content == value) return;
 				content = value;
-				if (handle != IntPtr.Zero)
+				if (!handle.IsNull)
 					SendMessage(handle, (uint)TaskDialogMessage.TDM_SET_ELEMENT_TEXT, (IntPtr)TASKDIALOG_ELEMENTS.TDE_CONTENT, content);
 			}
 		}
@@ -314,7 +314,7 @@ namespace Vanara.Windows.Forms
 			{
 				if (customFooterIcon == value) return;
 				customFooterIcon = value;
-				if (handle != IntPtr.Zero)
+				if (!handle.IsNull)
 					SendMessage(handle, (uint)TaskDialogMessage.TDM_UPDATE_ICON, (IntPtr)TASKDIALOG_ICON_ELEMENTS.TDIE_ICON_FOOTER,
 						customFooterIcon?.Handle ?? (IntPtr)footerIcon);
 			}
@@ -332,7 +332,7 @@ namespace Vanara.Windows.Forms
 			{
 				if (customMainIcon == value) return;
 				customMainIcon = value;
-				if (handle != IntPtr.Zero)
+				if (!handle.IsNull)
 					SendMessage(handle, (uint)TaskDialogMessage.TDM_UPDATE_ICON, (IntPtr)TASKDIALOG_ICON_ELEMENTS.TDIE_ICON_MAIN,
 						customMainIcon?.Handle ?? (IntPtr)mainIcon);
 			}
@@ -407,7 +407,7 @@ namespace Vanara.Windows.Forms
 			{
 				if (expandedInformation == value) return;
 				expandedInformation = value;
-				if (handle != IntPtr.Zero)
+				if (!handle.IsNull)
 					SendMessage(handle, (uint)TaskDialogMessage.TDM_SET_ELEMENT_TEXT,
 						(IntPtr)TASKDIALOG_ELEMENTS.TDE_EXPANDED_INFORMATION, expandedInformation);
 			}
@@ -440,7 +440,7 @@ namespace Vanara.Windows.Forms
 			{
 				if (footer == value) return;
 				footer = value;
-				if (handle != IntPtr.Zero)
+				if (!handle.IsNull)
 					SendMessage(handle, (uint)TaskDialogMessage.TDM_SET_ELEMENT_TEXT, (IntPtr)TASKDIALOG_ELEMENTS.TDE_FOOTER, footer);
 			}
 		}
@@ -458,7 +458,7 @@ namespace Vanara.Windows.Forms
 			{
 				if (footerIcon == value) return;
 				footerIcon = value;
-				if (handle != IntPtr.Zero)
+				if (!handle.IsNull)
 					SendMessage(handle, (uint)TaskDialogMessage.TDM_UPDATE_ICON, (IntPtr)TASKDIALOG_ICON_ELEMENTS.TDIE_ICON_FOOTER,
 						(IntPtr)footerIcon);
 			}
@@ -472,7 +472,7 @@ namespace Vanara.Windows.Forms
 		/// <summary>Gets the handle for the active dialog.</summary>
 		/// <value>The handle. This value will be <c>IntPtr.Zero</c> if no active dialog is being displayed.</value>
 		[Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
-		IntPtr IWin32Window.Handle => handle;
+		public IntPtr Handle => (IntPtr)handle;
 
 		/// <summary>
 		/// Specifies a built in icon for the main icon in the dialog. If this is set to none and the CustomMainIcon is null then no main icon will be displayed.
@@ -487,7 +487,7 @@ namespace Vanara.Windows.Forms
 				if (mainIcon != value)
 				{
 					mainIcon = value;
-					if (handle != IntPtr.Zero)
+					if (!handle.IsNull)
 						SendMessage(handle, (uint)TaskDialogMessage.TDM_UPDATE_ICON, (IntPtr)TASKDIALOG_ICON_ELEMENTS.TDIE_ICON_MAIN,
 							(IntPtr)mainIcon);
 				}
@@ -511,7 +511,7 @@ namespace Vanara.Windows.Forms
 				if (mainInstruction != value)
 				{
 					mainInstruction = value;
-					if (handle != IntPtr.Zero)
+					if (!handle.IsNull)
 						SendMessage(handle, (uint)TaskDialogMessage.TDM_SET_ELEMENT_TEXT, (IntPtr)TASKDIALOG_ELEMENTS.TDE_MAIN_INSTRUCTION,
 							mainInstruction);
 				}
@@ -791,7 +791,7 @@ namespace Vanara.Windows.Forms
 		// TDM_CLICK_BUTTON = WM_USER+102, // wParam = Button ID
 		public void PerformButtonClick(int buttonId)
 		{
-			if (handle != IntPtr.Zero)
+			if (!handle.IsNull)
 				SendMessage(handle, (uint)TaskDialogMessage.TDM_CLICK_BUTTON, (IntPtr)buttonId, IntPtr.Zero);
 		}
 
@@ -801,7 +801,7 @@ namespace Vanara.Windows.Forms
 		public void PerformVerificationClick(bool checkedState, bool setKeyboardFocusToCheckBox)
 		{
 			// TDM_CLICK_VERIFICATION = WM_USER+113, // wParam = 0 (unchecked), 1 (checked), lParam = 1 (set key focus)
-			if (handle != IntPtr.Zero)
+			if (!handle.IsNull)
 				SendMessage(handle, (uint)TaskDialogMessage.TDM_CLICK_VERIFICATION, (checkedState ? new IntPtr(1) : IntPtr.Zero),
 					(setKeyboardFocusToCheckBox ? new IntPtr(1) : IntPtr.Zero));
 		}
@@ -894,7 +894,7 @@ namespace Vanara.Windows.Forms
 		internal void EnableButton(int buttonId, bool enable)
 		{
 			// TDM_ENABLE_BUTTON = WM_USER+111, // lParam = 0 (disable), lParam != 0 (enable), wParam = Button ID
-			if (handle != IntPtr.Zero)
+			if (!handle.IsNull)
 				SendMessage(handle, (uint)TaskDialogMessage.TDM_ENABLE_BUTTON, (IntPtr)buttonId, (IntPtr)(enable ? 1 : 0));
 		}
 
@@ -904,7 +904,7 @@ namespace Vanara.Windows.Forms
 		internal void EnableRadioButton(int buttonId, bool enable)
 		{
 			// TDM_ENABLE_RADIO_BUTTON = WM_USER+112, // lParam = 0 (disable), lParam != 0 (enable), wParam = Radio Button ID
-			if (handle != IntPtr.Zero)
+			if (!handle.IsNull)
 				SendMessage(handle, (uint)TaskDialogMessage.TDM_ENABLE_RADIO_BUTTON, (IntPtr)buttonId, (IntPtr)(enable ? 1 : 0));
 		}
 
@@ -932,30 +932,18 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>Raises the <see cref="Closed"/> event.</summary>
-		internal virtual void OnClosed()
-		{
-			Closed?.Invoke(this, EventArgs.Empty);
-		}
+		internal virtual void OnClosed() => Closed?.Invoke(this, EventArgs.Empty);
 
 		/// <summary>Called when the expando button is clicked and the dialog expands or contracts.</summary>
 		/// <param name="expanded"><c>true</c> if dialog is expanded; otherwise <c>false</c>.</param>
-		internal virtual void OnExpanded(bool expanded)
-		{
-			Expanded?.Invoke(this, new ExpandedEventArgs(expanded));
-		}
+		internal virtual void OnExpanded(bool expanded) => Expanded?.Invoke(this, new ExpandedEventArgs(expanded));
 
 		/// <summary>Raises the <see cref="LinkClicked"/> event.</summary>
 		/// <param name="url">The URL of the link.</param>
-		internal virtual void OnLinkClicked(string url)
-		{
-			LinkClicked?.Invoke(this, new LinkClickedEventArgs(url));
-		}
+		internal virtual void OnLinkClicked(string url) => LinkClicked?.Invoke(this, new LinkClickedEventArgs(url));
 
 		/// <summary>Raises the <see cref="Load"/> event.</summary>
-		internal virtual void OnLoad()
-		{
-			Load?.Invoke(this, EventArgs.Empty);
-		}
+		internal virtual void OnLoad() => Load?.Invoke(this, EventArgs.Empty);
 
 		/// <summary>Raises the <see cref="RadioButtonClicked"/> event.</summary>
 		/// <param name="id">The radio button identifier.</param>
@@ -978,10 +966,7 @@ namespace Vanara.Windows.Forms
 
 		/// <summary>Called when the verification check box is checked or unchecked.</summary>
 		/// <param name="verificationChecked"><c>true</c> if check box is checked; otherwise <c>false</c>.</param>
-		internal virtual void OnVerificationClicked(bool verificationChecked)
-		{
-			VerificationClicked?.Invoke(this, new VerificationClickedEventArgs(verificationChecked));
-		}
+		internal virtual void OnVerificationClicked(bool verificationChecked) => VerificationClicked?.Invoke(this, new VerificationClickedEventArgs(verificationChecked));
 
 		/// <summary>
 		/// Simulate the action of a radio button click in the TaskDialog. The passed buttonID is the ButtonID set on a TaskDialogButton set on TaskDialog.RadioButtons.
@@ -990,7 +975,7 @@ namespace Vanara.Windows.Forms
 		internal void PerformRadioButtonClick(int buttonId)
 		{
 			// TDM_CLICK_RADIO_BUTTON = WM_USER+110, // wParam = Radio Button ID
-			if (handle != IntPtr.Zero)
+			if (!handle.IsNull)
 				SendMessage(handle, (uint)TaskDialogMessage.TDM_CLICK_RADIO_BUTTON, (IntPtr)buttonId, IntPtr.Zero);
 		}
 
@@ -1002,7 +987,7 @@ namespace Vanara.Windows.Forms
 		internal void SetButtonElevationRequiredState(int buttonId, bool elevationRequired)
 		{
 			// TDM_SET_BUTTON_ELEVATION_REQUIRED_STATE = WM_USER+115, // wParam = Button ID, lParam = 0 (elevation not required), lParam != 0 (elevation required)
-			if (handle != IntPtr.Zero)
+			if (!handle.IsNull)
 				SendMessage(handle, (uint)TaskDialogMessage.TDM_SET_BUTTON_ELEVATION_REQUIRED_STATE, (IntPtr)buttonId,
 					(IntPtr)(elevationRequired ? 1 : 0));
 		}
@@ -1080,8 +1065,8 @@ namespace Vanara.Windows.Forms
 		/// <param name="lparam">Specifies additional notification information. The contents of this parameter depends on the value of the msg parameter.</param>
 		/// <param name="refData">Specifies the application-defined value given in the call to TaskDialogIndirect.</param>
 		/// <returns>A HRESULT. It's not clear in the spec what a failed result will do.</returns>
-		private HRESULT PrivateCallback([In] IntPtr hwnd, [In] TaskDialogNotification msg, [In] IntPtr wparam, [In] IntPtr lparam,
-			[In] IntPtr refData) => HookProc(hwnd, (int)msg, wparam, lparam).ToInt32();
+		private HRESULT PrivateCallback([In] HWND hwnd, [In] TaskDialogNotification msg, [In] IntPtr wparam, [In] IntPtr lparam,
+			[In] IntPtr refData) => HookProc((IntPtr)hwnd, (int)msg, wparam, lparam).ToInt32();
 
 		/// <summary>
 		/// Creates, displays, and operates a task dialog. The task dialog contains application-defined messages, title, verification check box, command links
@@ -1089,7 +1074,7 @@ namespace Vanara.Windows.Forms
 		/// </summary>
 		/// <param name="hwndOwner">Owner window the task Dialog will modal to.</param>
 		/// <returns>The set of results of the dialog.</returns>
-		private TaskDialogResult PrivateShow(IntPtr hwndOwner)
+		private TaskDialogResult PrivateShow(HWND hwndOwner)
 		{
 			if (!IsAvailable)
 			{
@@ -1235,7 +1220,7 @@ namespace Vanara.Windows.Forms
 		/// <summary>Provides data for the <see cref="Expanded"/> event.</summary>
 		public class ExpandedEventArgs : EventArgs
 		{
-			internal ExpandedEventArgs(bool exp) { Expanded = exp; }
+			internal ExpandedEventArgs(bool exp) => Expanded = exp;
 
 			/// <summary>Gets a value indicating whether the <see cref="TaskDialog"/> is expanded.</summary>
 			/// <value><c>true</c> if expanded; otherwise, <c>false</c>.</value>
@@ -1291,11 +1276,7 @@ namespace Vanara.Windows.Forms
 			/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 			/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 			/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-			public override bool Equals(object obj)
-			{
-				var bb = obj as TaskDialogButtonBase;
-				return bb != null ? Equals(bb) : base.Equals(obj);
-			}
+			public override bool Equals(object obj) => obj is TaskDialogButtonBase bb ? Equals(bb) : base.Equals(obj);
 
 			/// <summary>Determines whether the specified <see cref="TaskDialogButtonBase"/>, is equal to this instance.</summary>
 			/// <param name="other">The <see cref="TaskDialogButtonBase"/> to compare with this instance.</param>
@@ -1392,7 +1373,7 @@ namespace Vanara.Windows.Forms
 			private ProgressBarState state = ProgressBarState.Normal;
 			private ProgressBarStyle style = ProgressBarStyle.Continuous;
 
-			internal TaskDialogProgressBar(TaskDialog td) { taskDialog = td; }
+			internal TaskDialogProgressBar(TaskDialog td) => taskDialog = td;
 
 			[DefaultValue(100)]
 			public int MarqueeAnimationSpeed
@@ -1442,7 +1423,7 @@ namespace Vanara.Windows.Forms
 						var cont = (style == ProgressBarStyle.Continuous);
 						taskDialog.ShowProgressBar = cont;
 						taskDialog.ShowMarqueeProgressBar = !cont;
-						if (taskDialog.handle != IntPtr.Zero)
+						if (taskDialog.Handle != IntPtr.Zero)
 							SendMessage(taskDialog.handle, (uint)TaskDialogMessage.TDM_SET_MARQUEE_PROGRESS_BAR,
 								(value == ProgressBarStyle.Marquee ? (IntPtr)1 : IntPtr.Zero), IntPtr.Zero);
 					}
@@ -1497,27 +1478,25 @@ namespace Vanara.Windows.Forms
 
 			private void SetMarqueeSpeed(int value)
 			{
-				if (taskDialog != null && taskDialog.handle != IntPtr.Zero)
-					SendMessage(taskDialog.handle, (uint)TaskDialogMessage.TDM_SET_PROGRESS_BAR_MARQUEE, (IntPtr)(value != 0 ? 1 : 0),
-						(IntPtr)value);
+				if (taskDialog != null && taskDialog.Handle != IntPtr.Zero)
+					SendMessage(taskDialog.handle, (uint)TaskDialogMessage.TDM_SET_PROGRESS_BAR_MARQUEE, (IntPtr)(value != 0 ? 1 : 0), (IntPtr)value);
 			}
 
 			private void SetProgressBarRange()
 			{
-				if (taskDialog != null && taskDialog.handle != IntPtr.Zero)
-					SendMessage(taskDialog.handle, (uint)TaskDialogMessage.TDM_SET_PROGRESS_BAR_RANGE, IntPtr.Zero,
-						(IntPtr)MakeLong(min, max));
+				if (taskDialog != null && taskDialog.Handle != IntPtr.Zero)
+					SendMessage(taskDialog.handle, (uint)TaskDialogMessage.TDM_SET_PROGRESS_BAR_RANGE, IntPtr.Zero, (IntPtr)MakeLong(min, max));
 			}
 
 			private void SetState(ProgressBarState value)
 			{
-				if (taskDialog != null && taskDialog.handle != IntPtr.Zero)
+				if (taskDialog != null && taskDialog.Handle != IntPtr.Zero)
 					SendMessage(taskDialog.handle, (uint)TaskDialogMessage.TDM_SET_PROGRESS_BAR_STATE, (IntPtr)value, IntPtr.Zero);
 			}
 
 			private void SetValue(int value)
 			{
-				if (taskDialog != null && taskDialog.handle != IntPtr.Zero)
+				if (taskDialog != null && taskDialog.Handle != IntPtr.Zero)
 					SendMessage(taskDialog.handle, (uint)TaskDialogMessage.TDM_SET_PROGRESS_BAR_POS, (IntPtr)value, IntPtr.Zero);
 			}
 		}
@@ -1525,7 +1504,7 @@ namespace Vanara.Windows.Forms
 		/// <summary>Provides data for the <see cref="Timer"/> event.</summary>
 		public class TimerEventArgs : EventArgs
 		{
-			internal TimerEventArgs(int ticks) { TickCount = ticks; }
+			internal TimerEventArgs(int ticks) => TickCount = ticks;
 
 			/// <summary>Gets or sets a value indicating whether to reset the tick count.</summary>
 			/// <value><c>true</c> to reset tick count; otherwise, <c>false</c> to continue to increment.</value>
@@ -1539,7 +1518,7 @@ namespace Vanara.Windows.Forms
 		/// <summary>Provides data for the <see cref="VerificationClicked"/> event.</summary>
 		public class VerificationClickedEventArgs : EventArgs
 		{
-			internal VerificationClickedEventArgs(bool check) { Checked = check; }
+			internal VerificationClickedEventArgs(bool check) => Checked = check;
 
 			/// <summary>Gets a value indicating whether the verification check box is checked.</summary>
 			/// <value><c>true</c> if checked; otherwise, <c>false</c>.</value>
@@ -1657,15 +1636,9 @@ namespace Vanara.Windows.Forms
 
 		/// <summary>Raises the <see cref="E:Click"/> event.</summary>
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-		public void OnClick(EventArgs e)
-		{
-			Click?.Invoke(this, e);
-		}
+		public void OnClick(EventArgs e) => Click?.Invoke(this, e);
 
 		/// <summary>Generates a <see cref="Click"/> event for the button.</summary>
-		public void PerformClick()
-		{
-			parent?.PerformRadioButtonClick(ButtonId);
-		}
+		public void PerformClick() => parent?.PerformRadioButtonClick(ButtonId);
 	}
 }

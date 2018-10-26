@@ -104,7 +104,7 @@ namespace Vanara.IO
 			set
 			{
 				var hdr = new BITS_FILE_PROPERTY_VALUE { String = value };
-				IFile5.SetProperty(BITS_FILE_PROPERTY_ID.BITS_FILE_PROPERTY_ID_HTTP_RESPONSE_HEADERS, ref hdr);
+				IFile5.SetProperty(BITS_FILE_PROPERTY_ID.BITS_FILE_PROPERTY_ID_HTTP_RESPONSE_HEADERS, hdr);
 			}
 		}
 

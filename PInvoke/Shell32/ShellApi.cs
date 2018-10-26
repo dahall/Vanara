@@ -1086,7 +1086,7 @@ namespace Vanara.PInvoke
 		// const ASSOCIATIONELEMENT *rgClasses, ULONG cClasses, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "43257507-dd5e-4622-8445-c132187fd1e5")]
-		public static extern HRESULT AssocCreateForClasses([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ASSOCIATIONELEMENT[] rgClasses, uint cClasses, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT AssocCreateForClasses([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ASSOCIATIONELEMENT[] rgClasses, uint cClasses, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>
 		/// <para>
@@ -2261,7 +2261,7 @@ namespace Vanara.PInvoke
 		/// <returns>Returns zero if successful; otherwise nonzero. Applications normally should simply check for zero or nonzero.</returns>
 		[PInvokeData("Shellapi.h")]
 		[DllImport("shell32.dll", CharSet = CharSet.Auto)]
-		public static extern int SHFileOperation([In] ref SHFILEOPSTRUCT lpFileOp);
+		public static extern int SHFileOperation(in SHFILEOPSTRUCT lpFileOp);
 
 		/// <summary>
 		/// <para>Frees a file name mapping object that was retrieved by the SHFileOperation function.</para>
@@ -2626,7 +2626,7 @@ namespace Vanara.PInvoke
 		// SHGetPropertyStoreForWindow( HWND hwnd, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "772aa2c8-6dd1-480c-a008-58f30902cb80")]
-		public static extern HRESULT SHGetPropertyStoreForWindow(HWND hwnd, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT SHGetPropertyStoreForWindow(HWND hwnd, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>
 		/// <para>Retrieves information about system-defined Shell icons.</para>
@@ -3149,7 +3149,7 @@ namespace Vanara.PInvoke
 			/// provide an <c>hWind</c> value.
 			/// </para>
 			/// </summary>
-			public IntPtr hWnd;
+			public HWND hWnd;
 
 			/// <summary>
 			/// <para>Type: <c>LPARAM</c></para>
@@ -3333,7 +3333,7 @@ namespace Vanara.PInvoke
 			/// Handle to the window that receives notification messages associated with an icon in the taskbar status area. The Shell uses
 			/// hWnd and uID to identify which icon to operate on when Shell_NotifyIcon is invoked.
 			/// </summary>
-			public IntPtr hwnd;
+			public HWND hwnd;
 
 			/// <summary>
 			/// Application-defined identifier of the taskbar icon. The Shell uses hWnd and uID to identify which icon to operate on when
@@ -3456,7 +3456,7 @@ namespace Vanara.PInvoke
 			/// NOTIFYICONDATA structure.
 			/// </para>
 			/// </summary>
-			public IntPtr hWnd;
+			public HWND hWnd;
 
 			/// <summary>
 			/// <para>Type: <c>UINT</c></para>
@@ -3489,7 +3489,7 @@ namespace Vanara.PInvoke
 			/// Optional. A handle to the parent window, used to display any message boxes that the system might produce while executing this
 			/// function. This value can be NULL.
 			/// </summary>
-			public IntPtr hwnd;
+			public HWND hwnd;
 
 			/// <summary>
 			/// A string, referred to as a verb, that specifies the action to be performed. The set of available verbs depends on the
@@ -3562,7 +3562,7 @@ namespace Vanara.PInvoke
 			/// declared as an HINSTANCE for compatibility with 16-bit Windows applications, it is not a true HINSTANCE. It can be cast only
 			/// to an int and compared to either 32 or the following SE_ERR_XXX error codes.
 			/// </summary>
-			public IntPtr hInstApp;
+			public HINSTANCE hInstApp;
 
 			/// <summary>
 			/// The address of an absolute ITEMIDLIST structure (PCIDLIST_ABSOLUTE) to contain an item identifier list that uniquely
@@ -3678,7 +3678,7 @@ namespace Vanara.PInvoke
 		public struct SHFILEOPSTRUCT
 		{
 			/// <summary>A window handle to the dialog box to display information about the status of the file operation.</summary>
-			public IntPtr hwnd;
+			public HWND hwnd;
 
 			/// <summary>A value that indicates which operation to perform.</summary>
 			public ShellFileOperation wFunc;

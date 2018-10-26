@@ -41,7 +41,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("sddl.h", MSDNShortId = "aa376402")]
-		public static extern bool ConvertStringSidToSid([In] string pStringSid, out PSID sid);
+		public static extern bool ConvertStringSidToSid(string pStringSid, out PSID sid);
 
 		/// <summary>
 		/// The ConvertStringSidToSid function converts a string-format security identifier (SID) into a valid, functional SID. You can use this function to
@@ -58,6 +58,6 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false, ThrowOnUnmappableChar = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Sddl.h", MSDNShortId = "aa376402")]
-		public static extern bool ConvertStringSidToSid([In] string pStringSid, out IntPtr sid);
+		public static extern bool ConvertStringSidToSid(string pStringSid, out IntPtr sid);
 	}
 }

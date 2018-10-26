@@ -19,7 +19,11 @@ namespace Vanara.PInvoke
 		// DWORD WINAPI GetDllDirectory( _In_ DWORD nBufferLength, _Out_ LPTSTR lpBuffer); https://msdn.microsoft.com/en-us/library/windows/desktop/ms683186(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms683186")]
-		public static extern uint GetDllDirectory(uint nBufferLength, [Out] StringBuilder lpBuffer);
+		public static extern uint GetDllDirectory(uint nBufferLength, StringBuilder lpBuffer);
+
+		/// <summary>Retrieves the application-specific portion of the search path used to locate DLLs for the application.</summary>
+		/// <returns>The application-specific portion of the search path.</returns>
+		public static string GetDllDirectory() => FunctionHelper.CallMethodWithStrBuf((StringBuilder sb, ref uint sz) => GetDllDirectory(sz, sb), out var str, (sz, r) => r <= sz) > 0 ? str : throw Win32Error.GetLastError().GetException();
 
 		/// <summary>Loads and executes an application or creates a new instance of an existing application.</summary>
 		/// <param name="lpModuleName">
@@ -61,7 +65,7 @@ namespace Vanara.PInvoke
 		// DWORD WINAPI LoadModule( _In_ LPCSTR lpModuleName, _In_ LPVOID lpParameterBlock); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684183(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms684183")]
-		public static extern Win32Error LoadModule([In] string lpModuleName, [In] IntPtr lpParameterBlock);
+		public static extern Win32Error LoadModule(string lpModuleName, [In] IntPtr lpParameterBlock);
 
 		/// <summary>Adds a directory to the search path used to locate DLLs for the application.</summary>
 		/// <param name="lpPathName">
@@ -76,6 +80,6 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms686203")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetDllDirectory([In] string lpPathName);
+		public static extern bool SetDllDirectory(string lpPathName);
 	}
 }

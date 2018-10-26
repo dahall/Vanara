@@ -3180,7 +3180,7 @@ namespace Vanara.PInvoke
 		/// <term>
 		/// Reflects the state of the laptop or slate mode, 0 for Slate Mode and non-zero otherwise. When this system metric changes, the
 		/// system sends a broadcast message via WM_SETTINGCHANGE with &amp;quot;ConvertibleSlateMode&amp;quot; in the LPARAM. Note that this
-		/// system metric doesn&amp;#39;t apply to desktop PCs. In that case, use GetAutoRotationState.
+		/// system metric doesn't apply to desktop PCs. In that case, use GetAutoRotationState.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -4122,7 +4122,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winuser.h")]
-		public static extern MB_RESULT MessageBoxIndirect([In, MarshalAs(UnmanagedType.LPStruct)] MSGBOXPARAMS lpMsgBoxParams);
+		public static extern MB_RESULT MessageBoxIndirect(in MSGBOXPARAMS lpMsgBoxParams);
 
 		/// <summary>
 		/// Indicates that the system cannot be shut down and sets a reason string to be displayed to the user if system shutdown is initiated.
@@ -4744,13 +4744,13 @@ namespace Vanara.PInvoke
 			public uint cbSize;
 
 			/// <summary>A handle to the owner window. This member can be NULL.</summary>
-			public IntPtr hwndOwner;
+			public HWND hwndOwner;
 
 			/// <summary>
 			/// A handle to the module that contains the icon resource identified by the lpszIcon member, and the string resource identified
 			/// by the lpszText or lpszCaption member.
 			/// </summary>
-			public IntPtr hInstance;
+			public HINSTANCE hInstance;
 
 			/// <summary>A null-terminated string, or the identifier of a string resource, that contains the message to be displayed.</summary>
 			public string lpszText;

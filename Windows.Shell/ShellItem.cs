@@ -337,8 +337,8 @@ namespace Vanara.Windows.Shell
 		SingleLine = 0x00000010,
 	}
 
-	// TODO: object GetPropertyStoreForKeys(IntPtr rgKeys, uint cKeys, GPS flags, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
-	// TODO: object GetPropertyStoreWithCreateObject(GPS flags, object punkCreateObject, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+	// TODO: object GetPropertyStoreForKeys(IntPtr rgKeys, uint cKeys, GPS flags, in Guid riid);
+	// TODO: object GetPropertyStoreWithCreateObject(GPS flags, object punkCreateObject, in Guid riid);
 	/// <summary>Encapsulates an item in the Windows Shell.</summary>
 	/// <seealso cref="System.IComparable{ShellItem}"/>
 	/// <seealso cref="System.IDisposable"/>
@@ -599,7 +599,7 @@ namespace Vanara.Windows.Shell
 		public PropertyDescriptionList GetPropertyDescriptionList(PROPERTYKEY keyType)
 		{
 			ThrowIfNoShellItem2();
-			return new PropertyDescriptionList(iShellItem2.GetPropertyDescriptionList(ref keyType, typeof(IPropertyDescriptionList).GUID));
+			return new PropertyDescriptionList(iShellItem2.GetPropertyDescriptionList(keyType, typeof(IPropertyDescriptionList).GUID));
 		}
 
 		/// <summary>Gets the formatted tool tip text associated with this item.</summary>
@@ -691,7 +691,7 @@ namespace Vanara.Windows.Shell
 			// Try to get specialized folder type from property
 			var pk = PROPERTYKEY.System.ItemType;
 			string itemType = null;
-			try { itemType = (iItem as IShellItem2)?.GetString(ref pk)?.ToString().ToLowerInvariant(); } catch { }
+			try { itemType = (iItem as IShellItem2)?.GetString(pk)?.ToString().ToLowerInvariant(); } catch { }
 			switch (itemType)
 			{
 				case ".library-ms":
@@ -761,7 +761,7 @@ namespace Vanara.Windows.Shell
 			return left.Compare(right, SICHINTF.SICHINT_TEST_FILESYSPATH_IF_NOT_EQUAL) == 0;
 		}
 
-		private static Bitmap GetTransparentBitmap(SafeHBITMAP hbitmap)
+		private static Bitmap GetTransparentBitmap(HBITMAP hbitmap)
 		{
 			var dibsection = GetObject<DIBSECTION>(hbitmap);
 			var bitmap = new Bitmap(dibsection.dsBm.bmWidth, dibsection.dsBm.bmHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
@@ -811,7 +811,7 @@ namespace Vanara.Windows.Shell
 			private PIDL PIDL { get; set; }
 
 			[return: MarshalAs(UnmanagedType.Interface)]
-			public object BindToHandler(IBindCtx pbc, [In, MarshalAs(UnmanagedType.LPStruct)] Guid bhid, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid)
+			public object BindToHandler(IBindCtx pbc, in Guid bhid, in Guid riid)
 			{
 				if (riid == typeof(IShellFolder).GUID)
 					return Marshal.GetIUnknownForObject(GetIShellFolder());

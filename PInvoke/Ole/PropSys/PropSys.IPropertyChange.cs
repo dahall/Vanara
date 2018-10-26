@@ -62,7 +62,7 @@ namespace Vanara.PInvoke
 			/// <param name="riid">A reference to the desired IID.</param>
 			/// <returns>The address of a pointer to the interface specified by riid, usually IPropertyChange.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			object GetAt([In] uint iIndex, [MarshalAs(UnmanagedType.LPStruct)] Guid riid);
+			object GetAt([In] uint iIndex, in Guid riid);
 			/// <summary>Inserts a change operation into an array at the specified position.</summary>
 			/// <param name="iIndex">The index at which the change is inserted.</param>
 			/// <param name="ppropChange">A pointer to the interface that contains the change.</param>
@@ -78,7 +78,7 @@ namespace Vanara.PInvoke
 			void RemoveAt([In] uint iIndex);
 			/// <summary>Specifies whether a particular property key exists in the change array.</summary>
 			/// <param name="key">A reference to the PROPERTYKEY structure of interest.</param>
-			[PreserveSig] HRESULT IsKeyInArray([In] ref PROPERTYKEY key);
+			[PreserveSig] HRESULT IsKeyInArray(in PROPERTYKEY key);
 		}
 
 		/// <summary>Creates a container for a set of IPropertyChange objects. This container can be used with IFileOperation to apply a set of property changes to a set of files.</summary>
@@ -95,7 +95,7 @@ namespace Vanara.PInvoke
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] PROPERTYKEY[] rgpropkey,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] PKA_FLAGS[] rgflags,
 			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] PROPVARIANT[] rgpropvar,
-			uint cChanges, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IPropertyChangeArray ppv);
+			uint cChanges, in Guid riid, out IPropertyChangeArray ppv);
 
 		/// <summary>Creates a simple property change.</summary>
 		/// <param name="flags">PKA_FLAGS flags.</param>
@@ -106,7 +106,7 @@ namespace Vanara.PInvoke
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[DllImport(Lib.PropSys, ExactSpelling = true)]
 		[PInvokeData("Propsys.h", MSDNShortId = "bb776494")]
-		public static extern HRESULT PSCreateSimplePropertyChange([In] PKA_FLAGS flags, [In] ref PROPERTYKEY key,
-			[In] PROPVARIANT propvar, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IPropertyChange ppv);
+		public static extern HRESULT PSCreateSimplePropertyChange([In] PKA_FLAGS flags, in PROPERTYKEY key,
+			[In] PROPVARIANT propvar, in Guid riid, out IPropertyChange ppv);
 	}
 }

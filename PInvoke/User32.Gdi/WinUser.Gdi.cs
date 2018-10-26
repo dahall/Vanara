@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Gdi32;
 
@@ -252,141 +253,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>In a Maximize button.</summary>
 			HTZOOM = HTMAXBUTTON,
-		}
-
-		/// <summary>Color index used to get a system color from <see cref="GetSysColor"/>.</summary>
-		[PInvokeData("WinUser.h", MSDNShortId = "ms724371")]
-		public enum SystemColorIndex
-		{
-			/// <summary>Scroll bar gray area.</summary>
-			COLOR_SCROLLBAR = 0,
-
-			/// <summary>Desktop.</summary>
-			COLOR_BACKGROUND = 1,
-
-			/// <summary>
-			/// Active window title bar. The associated foreground color is COLOR_CAPTIONTEXT. Specifies the left side color in the color
-			/// gradient of an active window's title bar if the gradient effect is enabled.
-			/// </summary>
-			COLOR_ACTIVECAPTION = 2,
-
-			/// <summary>
-			/// Inactive window caption. The associated foreground color is COLOR_INACTIVECAPTIONTEXT. Specifies the left side color in the
-			/// color gradient of an inactive window's title bar if the gradient effect is enabled.
-			/// </summary>
-			COLOR_INACTIVECAPTION = 3,
-
-			/// <summary>Menu background. The associated foreground color is COLOR_MENUTEXT.</summary>
-			COLOR_MENU = 4,
-
-			/// <summary>Window background. The associated foreground colors are COLOR_WINDOWTEXT and COLOR_HOTLITE.</summary>
-			COLOR_WINDOW = 5,
-
-			/// <summary>Window frame.</summary>
-			COLOR_WINDOWFRAME = 6,
-
-			/// <summary>Text in menus. The associated background color is COLOR_MENU.</summary>
-			COLOR_MENUTEXT = 7,
-
-			/// <summary>Text in windows. The associated background color is COLOR_WINDOW.</summary>
-			COLOR_WINDOWTEXT = 8,
-
-			/// <summary>Text in caption, size box, and scroll bar arrow box. The associated background color is COLOR_ACTIVECAPTION.</summary>
-			COLOR_CAPTIONTEXT = 9,
-
-			/// <summary>Active window border.</summary>
-			COLOR_ACTIVEBORDER = 10,
-
-			/// <summary>Inactive window border.</summary>
-			COLOR_INACTIVEBORDER = 11,
-
-			/// <summary>Background color of multiple document interface (MDI) applications.</summary>
-			COLOR_APPWORKSPACE = 12,
-
-			/// <summary>Item(s) selected in a control. The associated foreground color is COLOR_HIGHLIGHTTEXT.</summary>
-			COLOR_HIGHLIGHT = 13,
-
-			/// <summary>Text of item(s) selected in a control. The associated background color is COLOR_HIGHLIGHT.</summary>
-			COLOR_HIGHLIGHTTEXT = 14,
-
-			/// <summary>
-			/// Face color for three-dimensional display elements and for dialog box backgrounds. The associated foreground color is COLOR_BTNTEXT.
-			/// </summary>
-			COLOR_BTNFACE = 15,
-
-			/// <summary>Shadow color for three-dimensional display elements (for edges facing away from the light source).</summary>
-			COLOR_BTNSHADOW = 16,
-
-			/// <summary>Grayed (disabled) text. This color is set to 0 if the current display driver does not support a solid gray color.</summary>
-			COLOR_GRAYTEXT = 17,
-
-			/// <summary>Text on push buttons. The associated background color is COLOR_BTNFACE.</summary>
-			COLOR_BTNTEXT = 18,
-
-			/// <summary>
-			/// Inactive window caption. The associated foreground color is COLOR_INACTIVECAPTIONTEXT. Specifies the left side color in the
-			/// color gradient of an inactive window's title bar if the gradient effect is enabled.
-			/// </summary>
-			COLOR_INACTIVECAPTIONTEXT = 19,
-
-			/// <summary>Highlight color for three-dimensional display elements (for edges facing the light source.)</summary>
-			COLOR_BTNHIGHLIGHT = 20,
-
-			/// <summary>Dark shadow for three-dimensional display elements.</summary>
-			COLOR_3DDKSHADOW = 21,
-
-			/// <summary>Light color for three-dimensional display elements (for edges facing the light source.)</summary>
-			COLOR_3DLIGHT = 22,
-
-			/// <summary>Text color for tooltip controls. The associated background color is COLOR_INFOBK.</summary>
-			COLOR_INFOTEXT = 23,
-
-			/// <summary>Background color for tooltip controls. The associated foreground color is COLOR_INFOTEXT.</summary>
-			COLOR_INFOBK = 24,
-
-			/// <summary>Item(s) selected in a control. The associated foreground color is COLOR_HIGHLIGHTTEXT.</summary>
-			COLOR_HOTLIGHT = 26,
-
-			/// <summary>
-			/// Right side color in the color gradient of an active window's title bar. COLOR_ACTIVECAPTION specifies the left side color.
-			/// Use SPI_GETGRADIENTCAPTIONS with the SystemParametersInfo function to determine whether the gradient effect is enabled.
-			/// </summary>
-			COLOR_GRADIENTACTIVECAPTION = 27,
-
-			/// <summary>
-			/// Right side color in the color gradient of an inactive window's title bar. COLOR_INACTIVECAPTION specifies the left side color.
-			/// </summary>
-			COLOR_GRADIENTINACTIVECAPTION = 28,
-
-			/// <summary>
-			/// The color used to highlight menu items when the menu appears as a flat menu (see SystemParametersInfo). The highlighted menu
-			/// item is outlined with COLOR_HIGHLIGHT. Windows 2000: This value is not supported.
-			/// </summary>
-			COLOR_MENUHILIGHT = 29,
-
-			/// <summary>
-			/// The background color for the menu bar when menus appear as flat menus (see SystemParametersInfo). However, COLOR_MENU
-			/// continues to specify the background color of the menu popup. Windows 2000: This value is not supported.
-			/// </summary>
-			COLOR_MENUBAR = 30,
-
-			/// <summary>Desktop.</summary>
-			COLOR_DESKTOP = COLOR_BACKGROUND,
-
-			/// <summary>Face color for three-dimensional display elements and for dialog box backgrounds.</summary>
-			COLOR_3DFACE = COLOR_BTNFACE,
-
-			/// <summary>Shadow color for three-dimensional display elements (for edges facing away from the light source).</summary>
-			COLOR_3DSHADOW = COLOR_BTNSHADOW,
-
-			/// <summary>Highlight color for three-dimensional display elements (for edges facing the light source.)</summary>
-			COLOR_3DHIGHLIGHT = COLOR_BTNHIGHLIGHT,
-
-			/// <summary>Highlight color for three-dimensional display elements (for edges facing the light source.)</summary>
-			COLOR_3DHILIGHT = COLOR_BTNHIGHLIGHT,
-
-			/// <summary>Highlight color for three-dimensional display elements (for edges facing the light source.)</summary>
-			COLOR_BTNHILIGHT = COLOR_BTNHIGHLIGHT,
 		}
 
 		/// <summary>
@@ -878,22 +744,38 @@ namespace Vanara.PInvoke
 		public static extern bool ScreenToClient(HWND hWnd, [In, Out] ref Point lpPoint);
 
 		/// <summary>
-		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window
-		/// and does not return until the window procedure has processed the message.
+		/// <para>
+		/// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified
+		/// window and does not return until the window procedure has processed the message.
+		/// </para>
+		/// <para>
+		/// To send a message and return immediately, use the <c>SendMessageCallback</c> or <c>SendNotifyMessage</c> function. To post a
+		/// message to a thread's message queue and return immediately, use the <c>PostMessage</c> or <c>PostThreadMessage</c> function.
+		/// </para>
 		/// </summary>
 		/// <param name="hWnd">
-		/// A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the
-		/// message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and
-		/// pop-up windows; but the message is not sent to child windows.
+		/// <para>
+		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c>
+		/// ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows,
+		/// overlapped windows, and pop-up windows; but the message is not sent to child windows.
+		/// </para>
+		/// <para>
+		/// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of
+		/// lesser or equal integrity level.
+		/// </para>
 		/// </param>
-		/// <param name="msg">The message to be sent.</param>
+		/// <param name="msg">
+		/// <para>The message to be sent.</para>
+		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+		/// </param>
 		/// <param name="wParam">Additional message-specific information.</param>
-		/// <param name="rect">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		[PInvokeData("WinUser.h", MSDNShortId = "")]
-		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = false)]
+		// LRESULT WINAPI SendMessage( _In_ HWND hWnd, _In_ UINT Msg, _In_ WPARAM wParam, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
 		[System.Security.SecurityCritical]
-		public static extern IntPtr SendMessage(HWND hWnd, uint msg, IntPtr wParam, ref RECT rect);
+		public static extern IntPtr SendMessage(HWND hWnd, uint msg, IntPtr wParam = default, IntPtr lParam = default);
 
 		/// <summary>
 		/// <para>
@@ -927,41 +809,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
 		[System.Security.SecurityCritical]
-		public static extern IntPtr SendMessage(HWND hWnd, uint msg, IntPtr wParam = default(IntPtr), IntPtr lParam = default(IntPtr));
-
-		/// <summary>
-		/// <para>
-		/// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified
-		/// window and does not return until the window procedure has processed the message.
-		/// </para>
-		/// <para>
-		/// To send a message and return immediately, use the <c>SendMessageCallback</c> or <c>SendNotifyMessage</c> function. To post a
-		/// message to a thread's message queue and return immediately, use the <c>PostMessage</c> or <c>PostThreadMessage</c> function.
-		/// </para>
-		/// </summary>
-		/// <param name="hWnd">
-		/// <para>
-		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c>
-		/// ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows,
-		/// overlapped windows, and pop-up windows; but the message is not sent to child windows.
-		/// </para>
-		/// <para>
-		/// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of
-		/// lesser or equal integrity level.
-		/// </para>
-		/// </param>
-		/// <param name="msg">
-		/// <para>The message to be sent.</para>
-		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
-		/// </param>
-		/// <param name="wParam">Additional message-specific information.</param>
-		/// <param name="lParam">Additional message-specific information.</param>
-		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		// LRESULT WINAPI SendMessage( _In_ HWND hWnd, _In_ UINT Msg, _In_ WPARAM wParam, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx
-		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[System.Security.SecurityCritical]
-		public static unsafe extern int* SendMessage(void* hWnd, uint msg, ushort* wParam, int* lParam);
+		public static extern IntPtr SendMessage(HWND hWnd, uint msg, IntPtr wParam, ref RECT lParam);
 
 		/// <summary>
 		/// <para>
@@ -1047,10 +895,13 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="lParam">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage<TEnum, TWP, TLP>(HWND hWnd, TEnum msg, TWP wParam, TLP lParam) where TEnum : struct, IConvertible where TWP : struct where TLP : class
+		public static IntPtr SendMessage<TEnum, TWP, TLP>(HWND hWnd, TEnum msg, in TWP wParam, TLP lParam)
+			where TEnum : struct, IConvertible where TWP : struct where TLP : class
 		{
 			var m = (uint)Convert.ChangeType(msg, typeof(uint));
-			return SendMessage(hWnd, m, (IntPtr)GetPtr(wParam), (IntPtr)GetPtr(lParam));
+			using (var wp = new PinnedObject(wParam))
+			using (var lp = new PinnedObject(lParam))
+				return SendMessage(hWnd, m, (IntPtr)wp, (IntPtr)lp);
 		}
 
 		/// <summary>
@@ -1069,19 +920,80 @@ namespace Vanara.PInvoke
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="lParam">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage<TEnum, TWP, TLP>(HWND hWnd, TEnum msg, TWP wParam, ref TLP lParam) where TEnum : IConvertible where TWP : struct where TLP : struct
+		public static IntPtr SendMessage<TEnum, TWP, TLP>(HWND hWnd, TEnum msg, in TWP wParam, ref TLP lParam)
+			where TEnum : struct, IConvertible where TWP : struct where TLP : struct
 		{
 			var m = (uint)Convert.ChangeType(msg, typeof(uint));
-			return SendMessage(hWnd, m, (IntPtr)GetPtr(ref wParam), (IntPtr)GetPtr(ref lParam));
-
-			SafeCoTaskMemHandle GetPtr<T>(ref T val)
+			using (var lp = GetPtr(lParam))
 			{
-				if (typeof(T).Equals(typeof(IntPtr))) return new SafeCoTaskMemHandle((IntPtr)(object)val, 0, false);
-				if (val is IConvertible ic)
-					try { return new SafeCoTaskMemHandle((IntPtr)ic.ToInt32(System.Globalization.CultureInfo.InvariantCulture.NumberFormat), 0, false); } catch { }
-				return SafeCoTaskMemHandle.CreateFromStructure(val);
+				var lr = SendMessage(hWnd, m, (IntPtr)GetPtr(wParam), (IntPtr)lp);
+				lParam = lp.ToStructure<TLP>();
+				return lr;
 			}
 		}
+
+		/// <summary>
+		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window
+		/// and does not return until the window procedure has processed the message.
+		/// </summary>
+		/// <typeparam name="TEnum">The type of the <paramref name="msg"/> value.</typeparam>
+		/// <typeparam name="TWP">The type of the <paramref name="wParam"/> value.</typeparam>
+		/// <typeparam name="TLP">The type of the <paramref name="lParam"/> value.</typeparam>
+		/// <param name="hWnd">
+		/// A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the
+		/// message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and
+		/// pop-up windows; but the message is not sent to child windows.
+		/// </param>
+		/// <param name="msg">The message to be sent.</param>
+		/// <param name="wParam">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
+		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		private static IntPtr SendMessageUnmanaged<TEnum, TWP, TLP>(HWND hWnd, TEnum msg, in TWP wParam, ref TLP lParam)
+			where TEnum : struct, IConvertible where TWP : unmanaged where TLP : unmanaged
+		{
+			var m = (uint)Convert.ChangeType(msg, typeof(uint));
+			unsafe
+			{
+				fixed (void* wp = &wParam, lp = &lParam)
+				{
+					return (IntPtr)SendMessageUnsafe((void*)(IntPtr)hWnd, m, wp, lp);
+				}
+			}
+		}
+
+		/// <summary>
+		/// <para>
+		/// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified
+		/// window and does not return until the window procedure has processed the message.
+		/// </para>
+		/// <para>
+		/// To send a message and return immediately, use the <c>SendMessageCallback</c> or <c>SendNotifyMessage</c> function. To post a
+		/// message to a thread's message queue and return immediately, use the <c>PostMessage</c> or <c>PostThreadMessage</c> function.
+		/// </para>
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>
+		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c>
+		/// ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows,
+		/// overlapped windows, and pop-up windows; but the message is not sent to child windows.
+		/// </para>
+		/// <para>
+		/// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of
+		/// lesser or equal integrity level.
+		/// </para>
+		/// </param>
+		/// <param name="msg">
+		/// <para>The message to be sent.</para>
+		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+		/// </param>
+		/// <param name="wParam">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
+		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		// LRESULT WINAPI SendMessage( _In_ HWND hWnd, _In_ UINT Msg, _In_ WPARAM wParam, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto, EntryPoint = "SendMessage")]
+		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
+		[System.Security.SecurityCritical]
+		public static unsafe extern void* SendMessageUnsafe(void* hWnd, uint msg, void* wParam, void* lParam);
 
 		/// <summary>
 		/// <para>
@@ -1170,13 +1082,7 @@ namespace Vanara.PInvoke
 			return ret;
 		}
 
-		private static SafeCoTaskMemHandle GetPtr<T>(T val)
-		{
-			if (typeof(T).Equals(typeof(IntPtr))) return new SafeCoTaskMemHandle((IntPtr)(object)val, 0, false);
-			if (val is IConvertible ic)
-				try { return new SafeCoTaskMemHandle((IntPtr)ic.ToInt32(System.Globalization.CultureInfo.InvariantCulture.NumberFormat), 0, false); } catch { }
-			return SafeCoTaskMemHandle.CreateFromStructure(val);
-		}
+		private static SafeCoTaskMemHandle GetPtr<T>(in T val) => SafeCoTaskMemHandle.CreateFromStructure(val);
 
 		/// <summary>
 		/// Changes an attribute of the specified window. The function also sets a value at the specified offset in the extra window memory.
@@ -1269,13 +1175,13 @@ namespace Vanara.PInvoke
 		public struct WINDOWPOS
 		{
 			/// <summary>A handle to the window.</summary>
-			public IntPtr hwnd;
+			public HWND hwnd;
 
 			/// <summary>
 			/// The position of the window in Z order (front-to-back position). This member can be a handle to the window behind which this
 			/// window is placed, or can be one of the special values listed with the SetWindowPos function.
 			/// </summary>
-			public IntPtr hwndInsertAfter;
+			public HWND hwndInsertAfter;
 
 			/// <summary>The position of the left edge of the window.</summary>
 			public int x;
@@ -1300,19 +1206,19 @@ namespace Vanara.PInvoke
 			/// Places the window at the bottom of the Z order. If the hWnd parameter identifies a topmost window, the window loses its
 			/// topmost status and is placed at the bottom of all other windows.
 			/// </summary>
-			public static IntPtr HWND_BOTTOM = new IntPtr(1);
+			public static HWND HWND_BOTTOM = new IntPtr(1);
 
 			/// <summary>
 			/// Places the window above all non-topmost windows (that is, behind all topmost windows). This flag has no effect if the window
 			/// is already a non-topmost window.
 			/// </summary>
-			public static IntPtr HWND_NOTOPMOST = new IntPtr(-2);
+			public static HWND HWND_NOTOPMOST = new IntPtr(-2);
 
 			/// <summary>Places the window at the top of the Z order.</summary>
-			public static IntPtr HWND_TOP = new IntPtr(0);
+			public static HWND HWND_TOP = new IntPtr(0);
 
 			/// <summary>Places the window above all non-topmost windows. The window maintains its topmost position even when it is deactivated.</summary>
-			public static IntPtr HWND_TOPMOST = new IntPtr(-1);
+			public static HWND HWND_TOPMOST = new IntPtr(-1);
 		}
 	}
 }
