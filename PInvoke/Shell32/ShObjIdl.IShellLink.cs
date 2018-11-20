@@ -4,13 +4,6 @@ using System.Security;
 using System.Text;
 using Vanara.InteropServices;
 
-// ReSharper disable UnusedParameter.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable InconsistentNaming
-// ReSharper disable MemberHidesStaticFromOuterClass
-// ReSharper disable UnusedMethodReturnValue.Global
-
 namespace Vanara.PInvoke
 {
 	public static partial class Shell32
@@ -27,9 +20,9 @@ namespace Vanara.PInvoke
 			SLDF_HAS_ID_LIST = 0x00000001,
 
 			/// <summary>
-			/// The Shell link was saved with link information to enable distributed tracking. This information is used by .lnk files to locate the target if the
-			/// targets's path has changed. It includes information such as volume label and serial number, although the specific stored information can change
-			/// from release to release.
+			/// The Shell link was saved with link information to enable distributed tracking. This information is used by .lnk files to
+			/// locate the target if the targets's path has changed. It includes information such as volume label and serial number, although
+			/// the specific stored information can change from release to release.
 			/// </summary>
 			SLDF_HAS_LINK_INFO = 0x00000002,
 
@@ -52,8 +45,8 @@ namespace Vanara.PInvoke
 			SLDF_UNICODE = 0x00000080,
 
 			/// <summary>
-			/// Prevents the storage of link tracking information. If this flag is set, it is less likely, though not impossible, that a target can be found by
-			/// the link if that target is moved.
+			/// Prevents the storage of link tracking information. If this flag is set, it is less likely, though not impossible, that a
+			/// target can be found by the link if that target is moved.
 			/// </summary>
 			SLDF_FORCE_NO_LINKINFO = 0x00000100,
 
@@ -82,8 +75,8 @@ namespace Vanara.PInvoke
 			SLDF_FORCE_UNCNAME = 0x00010000,
 
 			/// <summary>
-			/// Causes the target of this link to launch with a shim layer active. A shim is an intermediate DLL that facilitates compatibility between otherwise
-			/// incompatible software services. Shims are typically used to provide version compatibility.
+			/// Causes the target of this link to launch with a shim layer active. A shim is an intermediate DLL that facilitates
+			/// compatibility between otherwise incompatible software services. Shims are typically used to provide version compatibility.
 			/// </summary>
 			SLDF_RUN_WITH_SHIMLAYER = 0x00020000,
 
@@ -109,16 +102,20 @@ namespace Vanara.PInvoke
 			SLDF_UNALIAS_ON_SAVE = 0x01000000,
 
 			/// <summary>
-			/// Introduced in Windows 7. Recalculate the IDList from the path with the environmental variables at load time, rather than persisting the IDList.
+			/// Introduced in Windows 7. Recalculate the IDList from the path with the environmental variables at load time, rather than
+			/// persisting the IDList.
 			/// </summary>
 			SLDF_PREFER_ENVIRONMENT_PATH = 0x02000000,
 
 			/// <summary>
-			/// Introduced in Windows 7. If the target is a UNC location on a local machine, keep the local IDList target in addition to the remote target.
+			/// Introduced in Windows 7. If the target is a UNC location on a local machine, keep the local IDList target in addition to the
+			/// remote target.
 			/// </summary>
 			SLDF_KEEP_LOCAL_IDLIST_FOR_UNC_TARGET = 0x04000000,
 
-			/// <summary>Introduced in Windows 8. Persist the target IDlist in its volume-ID-relative form to avoid a dependency on drive letters.</summary>
+			/// <summary>
+			/// Introduced in Windows 8. Persist the target IDlist in its volume-ID-relative form to avoid a dependency on drive letters.
+			/// </summary>
 			SLDF_PERSIST_VOLUME_ID_RELATIVE = 0x08000000,
 		}
 
@@ -157,10 +154,11 @@ namespace Vanara.PInvoke
 			SLR_NONE = 0,
 
 			/// <summary>
-			/// Do not display a dialog box if the link cannot be resolved. When SLR_NO_UI is set, the high-order word of fFlags can be set to a time-out value
-			/// that specifies the maximum amount of time to be spent resolving the link. The function returns if the link cannot be resolved within the time-out
-			/// duration. If the high-order word is set to zero, the time-out duration will be set to the default value of 3,000 milliseconds (3 seconds). To
-			/// specify a value, set the high word of fFlags to the desired time-out duration, in milliseconds.
+			/// Do not display a dialog box if the link cannot be resolved. When SLR_NO_UI is set, the high-order word of fFlags can be set
+			/// to a time-out value that specifies the maximum amount of time to be spent resolving the link. The function returns if the
+			/// link cannot be resolved within the time-out duration. If the high-order word is set to zero, the time-out duration will be
+			/// set to the default value of 3,000 milliseconds (3 seconds). To specify a value, set the high word of fFlags to the desired
+			/// time-out duration, in milliseconds.
 			/// </summary>
 			SLR_NO_UI = 0x1,
 
@@ -168,8 +166,8 @@ namespace Vanara.PInvoke
 			SLR_ANY_MATCH = 0x2,
 
 			/// <summary>
-			/// If the link object has changed, update its path and list of identifiers. If SLR_UPDATE is set, you do not need to call IPersistFile::IsDirty to
-			/// determine whether the link object has changed.
+			/// If the link object has changed, update its path and list of identifiers. If SLR_UPDATE is set, you do not need to call
+			/// IPersistFile::IsDirty to determine whether the link object has changed.
 			/// </summary>
 			SLR_UPDATE = 0x4,
 
@@ -183,8 +181,9 @@ namespace Vanara.PInvoke
 			SLR_NOTRACK = 0x20,
 
 			/// <summary>
-			/// Disable distributed link tracking. By default, distributed link tracking tracks removable media across multiple devices based on the volume name.
-			/// It also uses the UNC path to track remote file systems whose drive letter has changed. Setting SLR_NOLINKINFO disables both types of tracking.
+			/// Disable distributed link tracking. By default, distributed link tracking tracks removable media across multiple devices based
+			/// on the volume name. It also uses the UNC path to track remote file systems whose drive letter has changed. Setting
+			/// SLR_NOLINKINFO disables both types of tracking.
 			/// </summary>
 			SLR_NOLINKINFO = 0x40,
 
@@ -195,18 +194,20 @@ namespace Vanara.PInvoke
 			SLR_NO_UI_WITH_MSG_PUMP = 0x101,
 
 			/// <summary>
-			/// Windows 7 and later. Offer the option to delete the shortcut when this method is unable to resolve it, even if the shortcut is not a shortcut to
-			/// a file.
+			/// Windows 7 and later. Offer the option to delete the shortcut when this method is unable to resolve it, even if the shortcut
+			/// is not a shortcut to a file.
 			/// </summary>
 			SLR_OFFER_DELETE_WITHOUT_FILE = 0x200,
 
 			/// <summary>
-			/// Windows 7 and later. Report as dirty if the target is a known folder and the known folder was redirected. This only works if the original target
-			/// path was a file system path or ID list and not an aliased known folder ID list.
+			/// Windows 7 and later. Report as dirty if the target is a known folder and the known folder was redirected. This only works if
+			/// the original target path was a file system path or ID list and not an aliased known folder ID list.
 			/// </summary>
 			SLR_KNOWNFOLDER = 0x400,
 
-			/// <summary>Windows 7 and later. Resolve the computer name in UNC targets that point to a local computer. This value is used with SLDF_KEEP_LOCAL_IDLIST_FOR_UNC_TARGET.</summary>
+			/// <summary>
+			/// Windows 7 and later. Resolve the computer name in UNC targets that point to a local computer. This value is used with SLDF_KEEP_LOCAL_IDLIST_FOR_UNC_TARGET.
+			/// </summary>
 			SLR_MACHINE_IN_LOCAL_TARGET = 0x800,
 
 			/// <summary>Windows 7 and later. Update the computer GUID and user SID if necessary.</summary>
@@ -216,7 +217,9 @@ namespace Vanara.PInvoke
 			SLR_NO_OBJECT_ID = 0x2000
 		}
 
-		/// <summary>Exposes methods that allow an application to attach extra data blocks to a Shell link. These methods add, copy, or remove data blocks.</summary>
+		/// <summary>
+		/// Exposes methods that allow an application to attach extra data blocks to a Shell link. These methods add, copy, or remove data blocks.
+		/// </summary>
 		[SuppressUnmanagedCodeSecurity]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("45e2b4ae-b1c3-11d0-b92f-00a0c90312e1")]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb774916")]
@@ -228,19 +231,19 @@ namespace Vanara.PInvoke
 
 			/// <summary>Retrieves a copy of a link's data block.</summary>
 			/// <param name="dwSig">
-			/// The data block's signature. The signature value for a particular type of data block can be found in its structure reference. For a list of
-			/// supported data block types and their associated structures, see IShellLinkDataList.
+			/// The data block's signature. The signature value for a particular type of data block can be found in its structure reference.
+			/// For a list of supported data block types and their associated structures, see IShellLinkDataList.
 			/// </param>
 			/// <returns>
-			/// The address of a pointer to a copy of the data block structure. If IShellLinkDataList::CopyDataBlock returns a successful result, the calling
-			/// application must free the memory when it is no longer needed by calling LocalFree.
+			/// The address of a pointer to a copy of the data block structure. If IShellLinkDataList::CopyDataBlock returns a successful
+			/// result, the calling application must free the memory when it is no longer needed by calling LocalFree.
 			/// </returns>
 			SafeLocalHandle CopyDataBlock(ShellDataBlockSignature dwSig);
 
 			/// <summary>Removes a data block from a link.</summary>
 			/// <param name="dwSig">
-			/// The data block's signature. The signature value for a particular type of data block can be found in its structure reference. For a list of
-			/// supported data block types and their associated structures, see IShellLinkDataList.
+			/// The data block's signature. The signature value for a particular type of data block can be found in its structure reference.
+			/// For a list of supported data block types and their associated structures, see IShellLinkDataList.
 			/// </param>
 			void RemoveDataBlock(ShellDataBlockSignature dwSig);
 
@@ -262,12 +265,13 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the path and file name of the target of a Shell link object.</summary>
 			/// <param name="pszFile">The address of a buffer that receives the path and file name of the target of the Shell link object.</param>
 			/// <param name="cchMaxPath">
-			/// The size, in characters, of the buffer pointed to by the pszFile parameter, including the terminating null character. The maximum path size that
-			/// can be returned is MAX_PATH. This parameter is commonly set by calling ARRAYSIZE(pszFile). The ARRAYSIZE macro is defined in Winnt.h.
+			/// The size, in characters, of the buffer pointed to by the pszFile parameter, including the terminating null character. The
+			/// maximum path size that can be returned is MAX_PATH. This parameter is commonly set by calling ARRAYSIZE(pszFile). The
+			/// ARRAYSIZE macro is defined in Winnt.h.
 			/// </param>
 			/// <param name="pfd">
-			/// A pointer to a WIN32_FIND_DATA structure that receives information about the target of the Shell link object. If this parameter is NULL, then no
-			/// additional information is returned.
+			/// A pointer to a WIN32_FIND_DATA structure that receives information about the target of the Shell link object. If this
+			/// parameter is NULL, then no additional information is returned.
 			/// </param>
 			/// <param name="fFlags">Flags that specify the type of path information to retrieve.</param>
 			void GetPath([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszFile, int cchMaxPath,
@@ -293,8 +297,8 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the name of the working directory for a Shell link object.</summary>
 			/// <param name="pszDir">The address of a buffer that receives the name of the working directory.</param>
 			/// <param name="cchMaxPath">
-			/// The maximum number of characters to copy to the buffer pointed to by the pszDir parameter. The name of the working directory is truncated if it
-			/// is longer than the maximum specified by this parameter.
+			/// The maximum number of characters to copy to the buffer pointed to by the pszDir parameter. The name of the working directory
+			/// is truncated if it is longer than the maximum specified by this parameter.
 			/// </param>
 			void GetWorkingDirectory([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszDir, int cchMaxPath);
 
@@ -305,30 +309,32 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the command-line arguments associated with a Shell link object.</summary>
 			/// <param name="pszArgs">A pointer to the buffer that, when this method returns successfully, receives the command-line arguments.</param>
 			/// <param name="cchMaxPath">
-			/// The maximum number of characters that can be copied to the buffer supplied by the pszArgs parameter. In the case of a Unicode string, there is no
-			/// limitation on maximum string length. In the case of an ANSI string, the maximum length of the returned string varies depending on the version of
-			/// Windows—MAX_PATH prior to Windows 2000 and INFOTIPSIZE (defined in Commctrl.h) in Windows 2000 and later.
+			/// The maximum number of characters that can be copied to the buffer supplied by the pszArgs parameter. In the case of a Unicode
+			/// string, there is no limitation on maximum string length. In the case of an ANSI string, the maximum length of the returned
+			/// string varies depending on the version of Windows—MAX_PATH prior to Windows 2000 and INFOTIPSIZE (defined in Commctrl.h) in
+			/// Windows 2000 and later.
 			/// </param>
 			void GetArguments([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszArgs, int cchMaxPath);
 
 			/// <summary>Sets the command-line arguments for a Shell link object.</summary>
 			/// <param name="pszArgs">
-			/// A pointer to a buffer that contains the new command-line arguments. In the case of a Unicode string, there is no limitation on maximum string
-			/// length. In the case of an ANSI string, the maximum length of the returned string varies depending on the version of Windows—MAX_PATH prior to
-			/// Windows 2000 and INFOTIPSIZE (defined in Commctrl.h) in Windows 2000 and later.
+			/// A pointer to a buffer that contains the new command-line arguments. In the case of a Unicode string, there is no limitation
+			/// on maximum string length. In the case of an ANSI string, the maximum length of the returned string varies depending on the
+			/// version of Windows—MAX_PATH prior to Windows 2000 and INFOTIPSIZE (defined in Commctrl.h) in Windows 2000 and later.
 			/// </param>
 			void SetArguments([MarshalAs(UnmanagedType.LPWStr)] string pszArgs);
 
 			/// <summary>Gets the keyboard shortcut (hot key) for a Shell link object.</summary>
 			/// <returns>
-			/// The address of the keyboard shortcut. The virtual key code is in the low-order byte, and the modifier flags are in the high-order byte.
+			/// The address of the keyboard shortcut. The virtual key code is in the low-order byte, and the modifier flags are in the
+			/// high-order byte.
 			/// </returns>
 			ushort GetHotKey();
 
 			/// <summary>Sets a keyboard shortcut (hot key) for a Shell link object.</summary>
 			/// <param name="wHotKey">
-			/// The new keyboard shortcut. The virtual key code is in the low-order byte, and the modifier flags are in the high-order byte. The modifier flags
-			/// can be a combination of the values specified in the description of the IShellLink::GetHotkey method.
+			/// The new keyboard shortcut. The virtual key code is in the low-order byte, and the modifier flags are in the high-order byte.
+			/// The modifier flags can be a combination of the values specified in the description of the IShellLink::GetHotkey method.
 			/// </param>
 			void SetHotKey(ushort wHotKey);
 
@@ -339,8 +345,8 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>SW_SHOWNORMAL</term>
 			/// <description>
-			/// Activates and displays a window. If the window is minimized or maximized, the system restores it to its original size and position. An
-			/// application should specify this flag when displaying the window for the first time.
+			/// Activates and displays a window. If the window is minimized or maximized, the system restores it to its original size and
+			/// position. An application should specify this flag when displaying the window for the first time.
 			/// </description>
 			/// </item>
 			/// <item>
@@ -362,8 +368,8 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>SW_SHOWNORMAL</term>
 			/// <description>
-			/// Activates and displays a window. If the window is minimized or maximized, the system restores it to its original size and position. An
-			/// application should specify this flag when displaying the window for the first time.
+			/// Activates and displays a window. If the window is minimized or maximized, the system restores it to its original size and
+			/// position. An application should specify this flag when displaying the window for the first time.
 			/// </description>
 			/// </item>
 			/// <item>
@@ -392,16 +398,16 @@ namespace Vanara.PInvoke
 
 			/// <summary>Sets the relative path to the Shell link object.</summary>
 			/// <param name="pszPathRel">
-			/// The address of a buffer that contains the fully-qualified path of the shortcut file, relative to which the shortcut resolution should be
-			/// performed. It should be a file name, not a folder name.
+			/// The address of a buffer that contains the fully-qualified path of the shortcut file, relative to which the shortcut
+			/// resolution should be performed. It should be a file name, not a folder name.
 			/// </param>
 			/// <param name="dwReserved">Reserved. Set this parameter to zero.</param>
 			void SetRelativePath([MarshalAs(UnmanagedType.LPWStr)] string pszPathRel, [Optional] uint dwReserved);
 
 			/// <summary>Attempts to find the target of a Shell link, even if it has been moved or renamed.</summary>
 			/// <param name="hwnd">
-			/// A handle to the window that the Shell will use as the parent for a dialog box. The Shell displays the dialog box if it needs to prompt the user
-			/// for more information while resolving a Shell link.
+			/// A handle to the window that the Shell will use as the parent for a dialog box. The Shell displays the dialog box if it needs
+			/// to prompt the user for more information while resolving a Shell link.
 			/// </param>
 			/// <param name="fFlags">Action flags.</param>
 			void Resolve(HWND hwnd, SLR_FLAGS fFlags);

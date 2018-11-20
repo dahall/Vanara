@@ -5,21 +5,38 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
 
-// ReSharper disable InconsistentNaming
-
 namespace Vanara.PInvoke
 {
 	/// <summary>
-	/// Formal replacement for the Windows HRESULT definition. In windows.h, it is a defined UINT value. For .NET, this class strongly types the value.
+	/// Formal replacement for the Windows HRESULT definition. In windows.h, it is a defined UINT value. For .NET, this class strongly types
+	/// the value.
 	/// <para>The 32-bit value is organized as follows:</para>
 	/// <list type="table">
-	/// <item><term>Bit</term><description>31</description><description>30</description><description>29</description><description>28</description><description>27</description><description>26 - 16</description><description>15 - 0</description></item>
-	/// <item><term>Field</term><description>Severity</description><description>Severity</description><description>Customer</description><description>NT status</description><description>MsgID</description><description>Facility</description><description>Code</description></item>
+	/// <item>
+	/// <term>Bit</term>
+	/// <description>31</description>
+	/// <description>30</description>
+	/// <description>29</description>
+	/// <description>28</description>
+	/// <description>27</description>
+	/// <description>26 - 16</description>
+	/// <description>15 - 0</description>
+	/// </item>
+	/// <item>
+	/// <term>Field</term>
+	/// <description>Severity</description>
+	/// <description>Severity</description>
+	/// <description>Customer</description>
+	/// <description>NT status</description>
+	/// <description>MsgID</description>
+	/// <description>Facility</description>
+	/// <description>Code</description>
+	/// </item>
 	/// </list>
 	/// </summary>
-	/// <seealso cref="System.IComparable" />
-	/// <seealso cref="System.IComparable{HRESULT}" />
-	/// <seealso cref="System.IEquatable{HRESULT}" />
+	/// <seealso cref="System.IComparable"/>
+	/// <seealso cref="System.IComparable{HRESULT}"/>
+	/// <seealso cref="System.IEquatable{HRESULT}"/>
 	[StructLayout(LayoutKind.Sequential)]
 	[TypeConverter(typeof(HRESULTTypeConverter))]
 	public partial struct HRESULT : IComparable, IComparable<HRESULT>, IEquatable<HRESULT>, IConvertible
@@ -65,7 +82,7 @@ namespace Vanara.PInvoke
 			/// <summary>The source of the error code is the control mechanism.</summary>
 			FACILITY_CONTROL = 10,
 
-			/// <summary>The source of the error code is a certificate client or server? </summary>
+			/// <summary>The source of the error code is a certificate client or server?</summary>
 			FACILITY_CERT = 11,
 
 			/// <summary>The source of the error code is Wininet related.</summary>
@@ -170,7 +187,7 @@ namespace Vanara.PInvoke
 			/// <summary>The source of the error code is the user mode virtualization subsystem.</summary>
 			FACILITY_USERMODE_VIRTUALIZATION = 55,
 
-			/// <summary>The source of the error code is  the user mode volume manager</summary>
+			/// <summary>The source of the error code is the user mode volume manager</summary>
 			FACILITY_USERMODE_VOLMGR = 56,
 
 			/// <summary>The source of the error code is the Boot Configuration Database.</summary>
@@ -197,16 +214,14 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Success</summary>
 			Success = 0,
+
 			/// <summary>Failure</summary>
 			Fail = 1
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="HRESULT"/> structure.</summary>
 		/// <param name="rawValue">The raw HRESULT value.</param>
-		public HRESULT(uint rawValue)
-		{
-			_value = rawValue;
-		}
+		public HRESULT(uint rawValue) => _value = rawValue;
 
 		/// <summary>Gets the code portion of the <see cref="HRESULT"/>.</summary>
 		/// <value>The code value (bits 0-15).</value>
@@ -231,21 +246,21 @@ namespace Vanara.PInvoke
 		/// <summary>Compares the current object with another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>
-		/// A value that indicates the relative order of the objects being compared. The return value has the following meanings: Value Meaning Less than zero
-		/// This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref name="other"/>. Greater than zero This object
-		/// is greater than <paramref name="other"/>.
+		/// A value that indicates the relative order of the objects being compared. The return value has the following meanings: Value
+		/// Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref
+		/// name="other"/>. Greater than zero This object is greater than <paramref name="other"/>.
 		/// </returns>
 		public int CompareTo(HRESULT other) => _value.CompareTo(other._value);
 
 		/// <summary>
-		/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes,
-		/// follows, or occurs in the same position in the sort order as the other object.
+		/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current
+		/// instance precedes, follows, or occurs in the same position in the sort order as the other object.
 		/// </summary>
 		/// <param name="obj">An object to compare with this instance.</param>
 		/// <returns>
-		/// A value that indicates the relative order of the objects being compared. The return value has these meanings: Value Meaning Less than zero This
-		/// instance precedes <paramref name="obj"/> in the sort order. Zero This instance occurs in the same position in the sort order as <paramref
-		/// name="obj"/>. Greater than zero This instance follows <paramref name="obj"/> in the sort order.
+		/// A value that indicates the relative order of the objects being compared. The return value has these meanings: Value Meaning Less
+		/// than zero This instance precedes <paramref name="obj"/> in the sort order. Zero This instance occurs in the same position in the
+		/// sort order as <paramref name="obj"/>. Greater than zero This instance follows <paramref name="obj"/> in the sort order.
 		/// </returns>
 		public int CompareTo(object obj)
 		{
@@ -328,7 +343,9 @@ namespace Vanara.PInvoke
 		public static HRESULT Make(bool severe, uint facility, uint code) => new HRESULT(
 			(severe ? severityMask : 0) | (facility << facilityShift) | code);
 
-		/// <summary>If this <see cref="HRESULT"/> represents a failure, throw the associated <see cref="Exception"/> with the optionally supplied message.</summary>
+		/// <summary>
+		/// If this <see cref="HRESULT"/> represents a failure, throw the associated <see cref="Exception"/> with the optionally supplied message.
+		/// </summary>
 		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
 		[SecurityCritical, SecuritySafeCritical]
 		[System.Diagnostics.DebuggerStepThrough]
@@ -345,10 +362,7 @@ namespace Vanara.PInvoke
 		/// <param name="hresult">The 32-bit raw HRESULT value.</param>
 		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
 		[System.Diagnostics.DebuggerStepThrough]
-		public static void ThrowIfFailed(int hresult, string message = null)
-		{
-			new HRESULT((uint)hresult).ThrowIfFailed(message);
-		}
+		public static void ThrowIfFailed(int hresult, string message = null) => new HRESULT((uint)hresult).ThrowIfFailed(message);
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>

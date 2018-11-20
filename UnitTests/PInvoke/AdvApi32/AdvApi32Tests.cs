@@ -24,7 +24,7 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void AdjustTokenPrivilegesTest()
 		{
-			using (var t = SafeHTOKEN.FromThread(GetCurrentThread(), TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY))
+			using (var t = SafeHTOKEN.FromThread(SafeHTHREAD.Current, TokenAccess.TOKEN_ADJUST_PRIVILEGES | TokenAccess.TOKEN_QUERY))
 			{
 				Assert.That(LookupPrivilegeValue(null, "SeShutdownPrivilege", out var luid));
 				var ptp = new PTOKEN_PRIVILEGES(luid, PrivilegeAttributes.SE_PRIVILEGE_ENABLED);
@@ -47,19 +47,18 @@ namespace Vanara.PInvoke.Tests
 			everyone.GetBinaryForm(esid, 0);
 			var peSid = new SafeByteArray(esid);
 			Assert.That(EqualSid(pSid, (IntPtr)peSid));
-			ConvertStringSidToSid("S-1-2-0", out PSID lsid);
+			ConvertStringSidToSid("S-1-2-0", out var lsid);
 			Assert.That(EqualSid(pSid, (IntPtr)lsid), Is.False);
 			string s = null;
-			var p = new PSID(pSid);
-			Assert.That(IsValidSid(p), Is.True);
-			Assert.That(() => s = ConvertSidToStringSid(p), Throws.Nothing);
+			Assert.That(IsValidSid(pSid), Is.True);
+			Assert.That(() => s = ConvertSidToStringSid(pSid), Throws.Nothing);
 			Assert.That(s, Is.EqualTo("S-1-1-0"));
-			var saptr = GetSidSubAuthority(p, 0);
+			var saptr = GetSidSubAuthority(pSid, 0);
 			Assert.That(Marshal.ReadInt32(saptr), Is.EqualTo(0));
 			var len = GetLengthSid(pSid);
-			var p2 = new PSID(len);
+			var p2 = new SafePSID(len);
 			b = CopySid(len, (IntPtr)p2, pSid);
-			Assert.That(EqualSid(p2, p));
+			Assert.That(EqualSid(p2, pSid));
 			Assert.That(b);
 		}
 
@@ -119,6 +118,11 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void DuplicateTokenExTest()
 		{
+			using (var tok = SafeHTOKEN.FromThread(SafeHTHREAD.Current))
+			{
+				Assert.That(tok.IsInvalid, Is.False);
+			}
+
 			using (var tok = SafeHTOKEN.FromThread(GetCurrentThread()))
 			{
 				Assert.That(tok.IsInvalid, Is.False);
@@ -128,10 +132,13 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void DuplicateTokenTest()
 		{
-			var pval = SafeHTOKEN.FromProcess(System.Diagnostics.Process.GetCurrentProcess());
-			Assert.That(pval.IsInvalid, Is.False);
-			Assert.That(DuplicateToken(pval, SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation, out var dtok));
-			Assert.That(dtok.IsInvalid, Is.False);
+			using (var pval = SafeHTOKEN.FromProcess(System.Diagnostics.Process.GetCurrentProcess()))
+			{
+				Assert.That(pval.IsInvalid, Is.False);
+				Assert.That(DuplicateToken(pval, SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation, out var dtok));
+				Assert.That(dtok.IsInvalid, Is.False);
+				dtok.Close();
+			}
 		}
 
 		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AuthCasesFromFile))]
@@ -144,7 +151,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(b, Is.True);
 			Assert.That(daclPresent, Is.True);
 			Assert.That(pAcl, Is.Not.EqualTo(IntPtr.Zero));
-			var hardAcl = pAcl.ToStructure<ACL>();
+			var hardAcl = ((IntPtr)pAcl).ToStructure<ACL>();
 			var ari = new ACL_REVISION_INFORMATION();
 			b = GetAclInformation(pAcl, ref ari, (uint)Marshal.SizeOf(typeof(ACL_REVISION_INFORMATION)), ACL_INFORMATION_CLASS.AclRevisionInformation);
 			Assert.That(b, Is.True);
@@ -156,9 +163,8 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(asi.AceCount, Is.EqualTo(hardAcl.AceCount));
 			b = GetAce(pAcl, 0, out var pAce);
 			Assert.That(b, Is.True);
-			var accessRights = 0U;
-			var pTrustee = new TRUSTEE(fun);
-			Assert.That(GetEffectiveRightsFromAcl(pAcl, pTrustee, ref accessRights), Is.EqualTo(Win32Error.ERROR_NONE_MAPPED).Or.Zero);
+			BuildTrusteeWithName(out var pTrustee, fun);
+			Assert.That(GetEffectiveRightsFromAcl(pAcl, pTrustee, out var accessRights), Is.EqualTo(Win32Error.ERROR_NONE_MAPPED).Or.Zero);
 
 			var map = new GENERIC_MAPPING((uint)Kernel32.FileAccess.FILE_GENERIC_READ, (uint)Kernel32.FileAccess.FILE_GENERIC_WRITE, (uint)Kernel32.FileAccess.FILE_GENERIC_EXECUTE, (uint)Kernel32.FileAccess.FILE_ALL_ACCESS);
 			var ifArray = new SafeInheritedFromArray(hardAcl.AceCount);
@@ -216,7 +222,8 @@ namespace Vanara.PInvoke.Tests
 				Assert.That(id, Is.Not.Zero);
 				TestContext.WriteLine($"SessId: {id}");
 
-				var ve = t.GetInfo<bool>(TOKEN_INFORMATION_CLASS.TokenVirtualizationEnabled);
+				var ve = t.GetInfo<uint>(TOKEN_INFORMATION_CLASS.TokenVirtualizationEnabled);
+				Assert.That(ve, Is.Zero);
 				TestContext.WriteLine($"VirtEnable: {ve}");
 
 				var et = t.GetInfo<TOKEN_ELEVATION_TYPE>(TOKEN_INFORMATION_CLASS.TokenElevationType);
@@ -241,7 +248,7 @@ namespace Vanara.PInvoke.Tests
 					SystemShutDownReason.SHTDN_REASON_MAJOR_APPLICATION | SystemShutDownReason.SHTDN_REASON_MINOR_MAINTENANCE |
 					SystemShutDownReason.SHTDN_REASON_FLAG_PLANNED);
 				Assert.That(e, Is.EqualTo(0));
-				Thread.Sleep(5000);
+				Thread.Sleep(2000);
 				var b = AbortSystemShutdown(null);
 				Assert.That(b);
 			}
@@ -259,7 +266,7 @@ namespace Vanara.PInvoke.Tests
 					SystemShutDownReason.SHTDN_REASON_MAJOR_APPLICATION | SystemShutDownReason.SHTDN_REASON_MINOR_MAINTENANCE |
 					SystemShutDownReason.SHTDN_REASON_FLAG_PLANNED);
 				Assert.That(e, Is.True);
-				Thread.Sleep(5000);
+				Thread.Sleep(2000);
 				var b = AbortSystemShutdown(null);
 				Assert.That(b);
 			}
@@ -313,13 +320,13 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(LookupPrivilegeValue(null, priv, out var luid));
 			var chSz = 100;
 			var sb = new StringBuilder(chSz);
-			Assert.That(LookupPrivilegeName(null, ref luid, sb, ref chSz));
+			Assert.That(LookupPrivilegeName(null, luid, sb, ref chSz));
 			Assert.That(sb.ToString(), Is.EqualTo(priv));
 
 			// Look at bad values
 			Assert.That(LookupPrivilegeValue(null, "SeBadPrivilege", out luid), Is.False);
 			luid = LUID.NewLUID();
-			Assert.That(LookupPrivilegeName(null, ref luid, sb, ref chSz), Is.False);
+			Assert.That(LookupPrivilegeName(null, luid, sb, ref chSz), Is.False);
 		}
 
 		[Test()]
@@ -370,11 +377,10 @@ namespace Vanara.PInvoke.Tests
 			}).Start();
 			Assert.That(RegOpenKeyEx(HKEY_CURRENT_USER, "Software", RegOpenOptions.REG_OPTION_NON_VOLATILE, RegAccessTypes.KEY_NOTIFY,
 				out var h), Is.EqualTo(0));
-			var evt = new EventWaitHandle(false, EventResetMode.ManualReset);
-			var hEvent = evt.SafeWaitHandle;
-			Assert.That(RegNotifyChangeKeyValue(h, false, RegNotifyChangeFilter.REG_NOTIFY_CHANGE_NAME, hEvent.DangerousGetHandle(), true), Is.EqualTo(0));
-			var b = evt.WaitOne(5000);
-			Assert.That(b);
+			var hEvent = CreateEvent(null, true, false);
+			Assert.That(RegNotifyChangeKeyValue(h, false, RegNotifyChangeFilter.REG_NOTIFY_CHANGE_NAME, hEvent, true), Is.EqualTo(0));
+			var b = WaitForSingleObject(hEvent, 5000);
+			Assert.That(b == WAIT_STATUS.WAIT_OBJECT_0);
 		}
 
 		[Test()]
@@ -382,16 +388,15 @@ namespace Vanara.PInvoke.Tests
 		{
 			using (var pSD = GetSD(fn))
 			{
-				Assert.That(GetSecurityDescriptorOwner(pSD, out var pOwner, out var def));
-				Assert.That(pOwner, Is.Not.EqualTo(IntPtr.Zero));
+				Assert.That(GetSecurityDescriptorOwner(pSD, out var owner, out var def));
+				Assert.That((IntPtr)owner, Is.Not.EqualTo(IntPtr.Zero));
 
-				var owner = PSID.CreateFromPtr(pOwner);
-				var admins = new PSID("S-1-5-32-544");
+				var admins = new SafePSID("S-1-5-32-544");
 
-				var err = SetNamedSecurityInfo(fn, SE_OBJECT_TYPE.SE_FILE_OBJECT, SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION, admins, PSID.Null, IntPtr.Zero, IntPtr.Zero);
+				var err = SetNamedSecurityInfo(fn, SE_OBJECT_TYPE.SE_FILE_OBJECT, SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION, admins, PSID.NULL, IntPtr.Zero, IntPtr.Zero);
 				if (err.Failed) TestContext.WriteLine($"SetNamedSecurityInfo failed: {err}");
 				Assert.That(err.Succeeded);
-				err = SetNamedSecurityInfo(fn, SE_OBJECT_TYPE.SE_FILE_OBJECT, SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION, owner, PSID.Null, IntPtr.Zero, IntPtr.Zero);
+				err = SetNamedSecurityInfo(fn, SE_OBJECT_TYPE.SE_FILE_OBJECT, SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION, owner, PSID.NULL, IntPtr.Zero, IntPtr.Zero);
 				if (err.Failed) TestContext.WriteLine($"SetNamedSecurityInfo failed: {err}");
 				Assert.That(err.Succeeded);
 			}

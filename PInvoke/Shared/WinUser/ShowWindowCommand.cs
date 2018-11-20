@@ -1,7 +1,4 @@
-﻿// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable InconsistentNaming
-
-namespace Vanara.PInvoke
+﻿namespace Vanara.PInvoke
 {
 	/// <summary>The flags that specify how an application is to be displayed when it is opened.</summary>
 	[PInvokeData("WinUser.h", MSDNShortId = "bb759784")]
@@ -11,14 +8,14 @@ namespace Vanara.PInvoke
 		SW_HIDE = 0,
 
 		/// <summary>
-		/// Activates and displays a window. If the window is minimized or maximized, Windows restores it to its original size and position. An application
-		/// should specify this flag when displaying the window for the first time.
+		/// Activates and displays a window. If the window is minimized or maximized, Windows restores it to its original size and position.
+		/// An application should specify this flag when displaying the window for the first time.
 		/// </summary>
 		SW_SHOWNORMAL = 1,
 
 		/// <summary>
-		/// Activates and displays a window. If the window is minimized or maximized, Windows restores it to its original size and position. An application
-		/// should specify this flag when displaying the window for the first time.
+		/// Activates and displays a window. If the window is minimized or maximized, Windows restores it to its original size and position.
+		/// An application should specify this flag when displaying the window for the first time.
 		/// </summary>
 		SW_NORMAL = 1,
 
@@ -47,20 +44,21 @@ namespace Vanara.PInvoke
 		SW_SHOWNA = 8,
 
 		/// <summary>
-		/// Activates and displays the window. If the window is minimized or maximized, Windows restores it to its original size and position. An application
-		/// should specify this flag when restoring a minimized window.
+		/// Activates and displays the window. If the window is minimized or maximized, Windows restores it to its original size and
+		/// position. An application should specify this flag when restoring a minimized window.
 		/// </summary>
 		SW_RESTORE = 9,
 
 		/// <summary>
-		/// Sets the show state based on the SW_ flag specified in the STARTUPINFO structure passed to the CreateProcess function by the program that started
-		/// the application. An application should call ShowWindow with this flag to set the initial show state of its main window.
+		/// Sets the show state based on the SW_ flag specified in the STARTUPINFO structure passed to the CreateProcess function by the
+		/// program that started the application. An application should call ShowWindow with this flag to set the initial show state of its
+		/// main window.
 		/// </summary>
 		SW_SHOWDEFAULT = 10,
 
 		/// <summary>
-		/// Minimizes a window, even if the thread that owns the window is not responding. This flag should only be used when minimizing windows from a
-		/// different thread.
+		/// Minimizes a window, even if the thread that owns the window is not responding. This flag should only be used when minimizing
+		/// windows from a different thread.
 		/// </summary>
 		SW_FORCEMINIMIZE = 11,
 	}

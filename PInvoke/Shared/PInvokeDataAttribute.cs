@@ -8,22 +8,31 @@ namespace Vanara.PInvoke
 	{
 		/// <summary>No minimum (default).</summary>
 		None = 0,
+
 		/// <summary>Windows 2000</summary>
 		Windows2000 = 0x1,
+
 		/// <summary>Windows XP</summary>
 		WindowsXP = 0x3,
+
 		/// <summary>Windows XP SP2</summary>
 		WindowsXP_SP2 = 0x7,
+
 		/// <summary>Windows Vista</summary>
 		WindowsVista = 0xF,
+
 		/// <summary>Windows Vista SP2</summary>
 		WindowsVista_SP2 = 0x1F,
+
 		/// <summary>Windows 7</summary>
 		Windows7 = 0x3F,
+
 		/// <summary>Windows 8</summary>
 		Windows8 = 0x7F,
+
 		/// <summary>Windows 8.1</summary>
 		Windows81 = 0xFF,
+
 		/// <summary>Windows 10</summary>
 		Windows10 = 0x1FF
 	}
@@ -37,10 +46,7 @@ namespace Vanara.PInvoke
 	{
 		/// <summary>Initializes a new instance of the <see cref="PInvokeDataAttribute"/> class.</summary>
 		/// <param name="header">The header.</param>
-		public PInvokeDataAttribute(string header)
-		{
-			Header = header;
-		}
+		public PInvokeDataAttribute(string header) => Header = header;
 
 		/// <summary>Gets or sets the DLL in which this element is defined.</summary>
 		/// <value>The DLL file name without the path (e.g. "advapi32.dll").</value>

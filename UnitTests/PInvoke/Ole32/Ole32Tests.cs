@@ -46,6 +46,7 @@ namespace Vanara.PInvoke.Tests
 				var strArr = new[] {"A", "B", "C", "D"};
 				InitPropVariantFromStringVector(strArr, 4, pv);
 				Assert.That(pv.vt == (VARTYPE.VT_VECTOR | VARTYPE.VT_LPWSTR));
+				Assert.That(pv.Value, Is.EquivalentTo(strArr));
 				using (var pvc = new PROPVARIANT())
 				{
 					Assert.That(PropVariantCopy(pvc, pv).Succeeded);

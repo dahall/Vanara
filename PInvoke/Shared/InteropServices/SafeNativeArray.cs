@@ -29,9 +29,7 @@ namespace Vanara.InteropServices
 		/// <param name="elementCount">The element count. This value can be 0.</param>
 		public SafeNativeArray(int elementCount) : base(GetRequiredSize(elementCount)) => Zero();
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="SafeNativeArray{TElem}"/> class.
-		/// </summary>
+		/// <summary>Initializes a new instance of the <see cref="SafeNativeArray{TElem}"/> class.</summary>
 		/// <param name="ptr">The PTR.</param>
 		/// <param name="size">The size.</param>
 		/// <param name="ownsHandle">if set to <c>true</c> [owns handle].</param>

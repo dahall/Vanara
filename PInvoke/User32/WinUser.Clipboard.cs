@@ -679,7 +679,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclipboardowner HWND GetClipboardOwner( );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getclipboardowner")]
-		public static extern IntPtr GetClipboardOwner();
+		public static extern HWND GetClipboardOwner();
 
 		/// <summary>
 		/// <para>Retrieves the clipboard sequence number for the current window station.</para>
@@ -716,7 +716,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclipboardviewer HWND GetClipboardViewer( );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getclipboardviewer")]
-		public static extern IntPtr GetClipboardViewer();
+		public static extern HWND GetClipboardViewer();
 
 		/// <summary>
 		/// <para>Retrieves the handle to the window that currently has the clipboard open.</para>
@@ -737,7 +737,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getopenclipboardwindow HWND GetOpenClipboardWindow( );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getopenclipboardwindow")]
-		public static extern IntPtr GetOpenClipboardWindow();
+		public static extern HWND GetOpenClipboardWindow();
 
 		/// <summary>
 		/// <para>Retrieves the first available clipboard format in the specified list.</para>
@@ -1010,7 +1010,7 @@ namespace Vanara.PInvoke
 		// hWndNewViewer );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "setclipboardviewer")]
-		public static extern IntPtr SetClipboardViewer(HWND hWndNewViewer);
+		public static extern HWND SetClipboardViewer(HWND hWndNewViewer);
 
 		/// <summary>
 		/// <para>Defines the metafile picture format used for exchanging metafile data through the clipboard.</para>
@@ -1056,7 +1056,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>HMETAFILE</c></para>
 			/// <para>A handle to a memory metafile.</para>
 			/// </summary>
-			public IntPtr hMF;
+			public HMETAFILE hMF;
 		}
 	}
 }

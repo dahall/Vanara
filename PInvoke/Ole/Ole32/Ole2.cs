@@ -33,6 +33,6 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.Ole32, ExactSpelling = true, SetLastError = false)]
 		[PInvokeData("Ole2.h", MSDNShortId = "ms690134")]
-		public static extern HRESULT OleInitialize(IntPtr pvReserved);
+		public static extern HRESULT OleInitialize([Optional] IntPtr pvReserved);
 	}
 }

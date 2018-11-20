@@ -188,7 +188,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Ole32, ExactSpelling = true, SetLastError = false)]
 		[PInvokeData("Objbase.h", MSDNShortId = "aa380328")]
 		public static extern HRESULT StgCreateStorageEx([MarshalAs(UnmanagedType.LPWStr)] string pwcsName, STGM grfMode,
-			STGFMT stgfmt, FileFlagsAndAttributes grfAttrs, [In] IntPtr pStgOptions, IntPtr pSecurityDescriptor, in Guid riid,
+			STGFMT stgfmt, FileFlagsAndAttributes grfAttrs, [In] IntPtr pStgOptions, PSECURITY_DESCRIPTOR pSecurityDescriptor, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object ppObjectOpen);
 
 		/// <summary>The StgCreateStorageEx function creates a new storage object using a provided implementation for the IStorage or IPropertySetStorage interfaces. To open an existing file, use the StgOpenStorageEx function instead.
@@ -212,7 +212,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Ole32, ExactSpelling = true, SetLastError = false)]
 		[PInvokeData("Objbase.h", MSDNShortId = "aa380328")]
 		public static extern HRESULT StgCreateStorageEx([MarshalAs(UnmanagedType.LPWStr)] string pwcsName, STGM grfMode,
-			STGFMT stgfmt, FileFlagsAndAttributes grfAttrs, in STGOPTIONS pStgOptions, IntPtr pSecurityDescriptor, in Guid riid,
+			STGFMT stgfmt, FileFlagsAndAttributes grfAttrs, in STGOPTIONS pStgOptions, PSECURITY_DESCRIPTOR pSecurityDescriptor, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object ppObjectOpen);
 
 		/// <summary>The StgIsStorageFile function indicates whether a particular disk file contains a storage object.</summary>

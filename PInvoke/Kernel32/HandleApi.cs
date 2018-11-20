@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32.SafeHandles;
+using System;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 
@@ -46,7 +47,7 @@ namespace Vanara.PInvoke
 		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724211")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CloseHandle(HANDLE hObject);
+		public static extern bool CloseHandle(IntPtr hObject);
 
 		/// <summary>Compares two object handles to determine if they refer to the same underlying kernel object.</summary>
 		/// <param name="hFirstObjectHandle">The first object handle to compare.</param>
@@ -57,6 +58,51 @@ namespace Vanara.PInvoke
 		[PInvokeData("Handleapi.h", MSDNShortId = "mt438733")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CompareObjectHandles(IntPtr hFirstObjectHandle, IntPtr hSecondObjectHandle);
+
+		/// <summary>Duplicates an object handle.</summary>
+		/// <param name="hSourceHandle">
+		/// The handle to be duplicated. This is an open object handle that is valid in the context of the source process. For a list of objects whose handles
+		/// can be duplicated, see the following Remarks section.
+		/// </param>
+		/// <param name="bInheritHandle">
+		/// A variable that indicates whether the handle is inheritable. If <c>TRUE</c>, the duplicate handle can be inherited by new processes created by the
+		/// target process. If <c>FALSE</c>, the new handle cannot be inherited.
+		/// </param>
+		/// <param name="dwOptions">
+		/// <para>Optional actions. This parameter can be zero, or any combination of the following values.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DUPLICATE_CLOSE_SOURCE0x00000001</term>
+		/// <term>Closes the source handle. This occurs regardless of any error status returned.</term>
+		/// </item>
+		/// <item>
+		/// <term>DUPLICATE_SAME_ACCESS0x00000002</term>
+		/// <term>Ignores the dwDesiredAccess parameter. The duplicate handle has the same access as the source handle.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="dwDesiredAccess">
+		/// <para>The access requested for the new handle. For the flags that can be specified for each object type, see the following Remarks section.</para>
+		/// <para>
+		/// This parameter is ignored if the dwOptions parameter specifies the DUPLICATE_SAME_ACCESS flag. Otherwise, the flags that can be specified depend on
+		/// the type of object whose handle is to be duplicated.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>The duplicate handle. This handle value is valid in the context of the target process.</para>
+		/// <para>
+		/// If hSourceHandle is a pseudo handle returned by <c>GetCurrentProcess</c> or <c>GetCurrentThread</c>, <c>DuplicateHandle</c> converts it to a real
+		/// handle to a process or thread, respectively.
+		/// </para>
+		/// </returns>
+		public static IntPtr Duplicate(this IKernelHandle sourceHandle, bool bInheritHandle = true, DUPLICATE_HANDLE_OPTIONS dwOptions = DUPLICATE_HANDLE_OPTIONS.DUPLICATE_SAME_ACCESS, uint dwDesiredAccess = 0) =>
+			DuplicateHandle(GetCurrentProcess(), sourceHandle.DangerousGetHandle(), GetCurrentProcess(), out var h, dwDesiredAccess, bInheritHandle, dwOptions) ? h : IntPtr.Zero;
 
 		/// <summary>Duplicates an object handle.</summary>
 		/// <param name="hSourceProcessHandle">
@@ -121,9 +167,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724251")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DuplicateHandle(
-			[In] HPROCESS hSourceProcessHandle, [In] IntPtr hSourceHandle, [In] HPROCESS hTargetProcessHandle, out HANDLE lpTargetHandle, uint dwDesiredAccess,
-			[MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, DUPLICATE_HANDLE_OPTIONS dwOptions);
+		public static extern bool DuplicateHandle([In] HPROCESS hSourceProcessHandle, [In] IntPtr hSourceHandle, [In] HPROCESS hTargetProcessHandle, 
+			out IntPtr lpTargetHandle, uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, DUPLICATE_HANDLE_OPTIONS dwOptions);
 
 		/// <summary>Retrieves certain properties of an object handle.</summary>
 		/// <param name="hObject">
@@ -212,7 +257,7 @@ namespace Vanara.PInvoke
 			protected SafeKernelHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
 			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => CloseHandle(this);
+			protected override bool InternalReleaseHandle() => CloseHandle(handle);
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a synchronization object that is automatically disposed using CloseHandle.</summary>
@@ -228,6 +273,11 @@ namespace Vanara.PInvoke
 			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
 			/// </param>
 			protected SafeSyncHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeSyncHandle"/> to <see cref="SafeWaitHandle"/>.</summary>
+			/// <param name="h">The SafeSyncHandle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator SafeWaitHandle(SafeSyncHandle h) => new SafeWaitHandle(h.handle, false);
 		}
 	}
 }

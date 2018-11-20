@@ -15,7 +15,7 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void PRECTTest()
 		{
-			Assert.That(Marshal.SizeOf<RECT>() == Marshal.SizeOf<PRECT>());
+			Assert.That(Marshal.SizeOf(typeof(RECT)) == Marshal.SizeOf(typeof(PRECT)));
 			using (var h = SafeHGlobalHandle.CreateFromStructure(new PRECT(1, 2, 3, 4)))
 			{
 				var r = h.ToStructure<RECT>();
@@ -85,7 +85,6 @@ namespace Vanara.PInvoke.Tests
 			var r1 = new PRECT(1, 2, 3, 4);
 			var r2 = new PRECT(new RECT(1, 2, 3, 4));
 			var r3 = new PRECT(1, 2, 1, 4);
-			// ReSharper disable once EqualExpressionComparison
 #pragma warning disable CS1718 // Comparison made to same variable
 			Assert.That(r1 == r1);
 #pragma warning restore CS1718 // Comparison made to same variable

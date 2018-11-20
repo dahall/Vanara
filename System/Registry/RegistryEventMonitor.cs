@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Threading;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.AdvApi32;
 
 namespace Vanara.Registry
@@ -259,7 +260,7 @@ namespace Vanara.Registry
 			var index = keyName.IndexOf('\\');
 			var str = index != -1 ? keyName.Substring(0, index).ToUpper(System.Globalization.CultureInfo.InvariantCulture) : keyName.ToUpper(System.Globalization.CultureInfo.InvariantCulture);
 
-			if (!(typeof(Vanara.PInvoke.AdvApi32).GetField(str)?.GetValue(null) is SafeRegistryHandle hive))
+			if (!(typeof(Vanara.PInvoke.AdvApi32).GetField(str)?.GetValue(null) is HKEY hive))
 				return null;
 
 			try
@@ -344,7 +345,7 @@ namespace Vanara.Registry
 				while (!breakEvent.WaitOne(0, true))
 				{
 					Debug.WriteLine($"Calling RegNotify for {filter}");
-					RegNotifyChangeKeyValue(hkey, includeSubKeys, filter, hEvent.DangerousGetHandle(), true).ThrowIfFailed();
+					RegNotifyChangeKeyValue(hkey, includeSubKeys, filter, hEvent, true).ThrowIfFailed();
 					threadsStarted[idx].Set();
 					Debug.WriteLine($"Waiting for {filter}");
 					if (WaitHandle.WaitAny(waitHandles) == 0)

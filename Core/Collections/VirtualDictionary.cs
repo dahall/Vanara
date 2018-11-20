@@ -50,7 +50,7 @@ namespace Vanara.Collections
 		/// <returns></returns>
 		public virtual TValue this[TKey key]
 		{
-			get => TryGetValue(key, out var value) ? value : default(TValue);
+			get => TryGetValue(key, out var value) ? value : default;
 			set => SetValue(key, value);
 		}
 
@@ -141,7 +141,7 @@ namespace Vanara.Collections
 			Keys.Select(k => new KeyValuePair<TKey, TValue>(k, this[k]));
 
 		/// <inheritdoc />
-		public virtual TValue this[TKey key] => TryGetValue(key, out var value) ? value : default(TValue);
+		public virtual TValue this[TKey key] => TryGetValue(key, out var value) ? value : default;
 
 		/// <inheritdoc />
 		public abstract bool ContainsKey(TKey key);

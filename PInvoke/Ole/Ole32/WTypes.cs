@@ -3,8 +3,6 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using Vanara.InteropServices;
 
-// ReSharper disable InconsistentNaming
-
 namespace Vanara.PInvoke
 {
 	/// <summary>Platform invokable enumerated types, constants and functions from ole32.h</summary>

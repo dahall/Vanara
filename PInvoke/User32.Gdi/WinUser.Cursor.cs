@@ -1,7 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using Vanara.InteropServices;
-using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke
 {
@@ -103,7 +101,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "clipcursor")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ClipCursor(PRECT lpRect);
+		public static extern bool ClipCursor(in RECT lpRect);
 
 		/// <summary>
 		/// <para>Copies the specified cursor.</para>
@@ -767,7 +765,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>HCURSOR</c></para>
 			/// <para>A handle to the cursor.</para>
 			/// </summary>
-			public IntPtr hCursor;
+			public HCURSOR hCursor;
 
 			/// <summary>
 			/// <para>Type: <c>POINT</c></para>
@@ -776,15 +774,19 @@ namespace Vanara.PInvoke
 			public System.Drawing.Point ptScreenPos;
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> to a Windows  that disposes a created HCURSOR instance at disposal using DestroyCursor.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> to a Windows that disposes a created HCURSOR instance at disposal using DestroyCursor.</summary>
 		public class SafeHCURSOR : HANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="HCURSOR"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
 			public SafeHCURSOR(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			private SafeHCURSOR() : base() { }
+			private SafeHCURSOR() : base()
+			{
+			}
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeHCURSOR"/> to <see cref="HCURSOR"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>

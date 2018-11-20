@@ -1,5 +1,3 @@
-using System;
-
 namespace Vanara.PInvoke
 {
 	public static partial class Shell32
@@ -9,51 +7,76 @@ namespace Vanara.PInvoke
 			/// <summary>Restricts usage to BindToObject.</summary>
 			[Associate("{3981e224-f559-11d3-8e3a-00c04f6837d5}")]
 			BHID_SFObject = 1,
+
 			/// <summary>Restricts usage to GetUIObjectOf.</summary>
 			[Associate("{3981e225-f559-11d3-8e3a-00c04f6837d5}")]
 			BHID_SFUIObject,
+
 			/// <summary>Restricts usage to CreateViewObject.</summary>
 			[Associate("{3981e226-f559-11d3-8e3a-00c04f6837d5}")]
 			BHID_SFViewObject,
+
 			/// <summary>Attempts to retrieve the storage RIID, but defaults to Shell implementation on failure.</summary>
 			[Associate("{3981e227-f559-11d3-8e3a-00c04f6837d5}")]
 			BHID_Storage,
+
 			/// <summary>Restricts usage to IStream.</summary>
 			[Associate("{1CEBB3AB-7C10-499a-A417-92CA16C4CB83}")]
 			BHID_Stream,
+
 			/// <summary>Introduced in Windows 8: Gets an IRandomAccessStream object for the item.</summary>
 			[Associate("{f16fc93b-77ae-4cfe-bda7-a866eea6878d}")]
 			BHID_RandomAccessStream,
-			/// <summary>CLSID_ShellItem is initialized with the target of this item (can only be SFGAO_LINK). See GetAttributesOf for a description of SFGAO_LINK.</summary>
+
+			/// <summary>
+			/// CLSID_ShellItem is initialized with the target of this item (can only be SFGAO_LINK). See GetAttributesOf for a description
+			/// of SFGAO_LINK.
+			/// </summary>
 			[Associate("{3981e228-f559-11d3-8e3a-00c04f6837d5}")]
 			BHID_LinkTargetItem,
+
 			/// <summary>If the item is a folder, gets an IEnumShellItems object with which to enumerate the storage contents.</summary>
 			[Associate("{4621A4E3-F0D6-4773-8A9C-46E77B174840}")]
 			BHID_StorageEnum,
+
 			/// <summary>Introduced in Windows Vista: If the item is a folder, gets an ITransferSource or ITransferDestination object.</summary>
 			[Associate("{5D080304-FE2C-48fc-84CE-CF620B0F3C53}")]
 			BHID_Transfer,
+
 			/// <summary>Introduced in Windows Vista: Restricts usage to IPropertyStore or IPropertyStoreFactory.</summary>
 			[Associate("{0384e1a4-1523-439c-a4c8-ab911052f586}")]
 			BHID_PropertyStore,
+
 			/// <summary>Introduced in Windows Vista: Restricts usage to IExtractImage or IThumbnailProvider.</summary>
 			[Associate("{7b2e650a-8e20-4f4a-b09e-6597afc72fb0}")]
 			BHID_ThumbnailHandler,
-			/// <summary>Introduced in Windows Vista: If the item is a folder, gets an IEnumShellItems object that enumerates all items in the folder. This includes folders, nonfolders, and hidden items.</summary>
+
+			/// <summary>
+			/// Introduced in Windows Vista: If the item is a folder, gets an IEnumShellItems object that enumerates all items in the folder.
+			/// This includes folders, nonfolders, and hidden items.
+			/// </summary>
 			[Associate("{94f60519-2850-4924-aa5a-d15e84868039}")]
 			BHID_EnumItems,
+
 			/// <summary>Introduced in Windows Vista: Gets an IDataObject object for use with an item or an array of items.</summary>
 			[Associate("{B8C0BD9F-ED24-455c-83E6-D5390C4FE8C4}")]
 			BHID_DataObject,
+
 			/// <summary>Introduced in Windows Vista: Gets an IQueryAssociations object for use with an item or an array of items.</summary>
 			[Associate("{bea9ef17-82f1-4f60-9284-4f8db75c3be9}")]
 			BHID_AssociationArray,
+
 			/// <summary>Introduced in Windows Vista: Restricts usage to IFilter.</summary>
 			[Associate("{38d08778-f557-4690-9ebf-ba54706ad8f7}")]
 			BHID_Filter,
-			/// <summary>Introduced in Windows 7: Gets an IEnumAssocHandlers object used to enumerate the recommended association handlers for the given item.</summary>
+
+			/// <summary>
+			/// Introduced in Windows 7: Gets an IEnumAssocHandlers object used to enumerate the recommended association handlers for the
+			/// given item.
+			/// </summary>
 			[Associate("{b8ab0b9c-c2ec-4f7a-918d-314900e6280a}")]
 			BHID_EnumAssocHandlers,
+
 			/// <summary>Introduced in Windows 8.1: Gets an object used to provide placeholder file functionality.</summary>
 			[Associate("{8677DCEB-AAE0-4005-8D3D-547FA852F825}")]
 			BHID_FilePlaceholder,
@@ -67,7 +90,9 @@ namespace Vanara.PInvoke
 			[Associate("{db2a5d8f-06e6-4007-aba6-af877d526ea6}")]
 			FOLDERTYPEID_AccountPictures,
 
-			/// <summary>Introduced in Windows 7. A folder that contains communication-related files such as emails, calendar information, and contact information.</summary>
+			/// <summary>
+			/// Introduced in Windows 7. A folder that contains communication-related files such as emails, calendar information, and contact information.
+			/// </summary>
 			[Associate("{91475fe5-586b-4eba-8d75-d17434b8cdf6}")]
 			FOLDERTYPEID_Communications,
 
@@ -107,7 +132,10 @@ namespace Vanara.PInvoke
 			[Associate("{7fde1a1e-8b31-49a5-93b8-6be14cfa4943}")]
 			FOLDERTYPEID_GenericSearchResults,
 
-			/// <summary>The folder is invalid. There are several things that can cause this judgement: hard disk errors, file system errors, and compression errors among them.</summary>
+			/// <summary>
+			/// The folder is invalid. There are several things that can cause this judgement: hard disk errors, file system errors, and
+			/// compression errors among them.
+			/// </summary>
 			[Associate("{57807898-8c4f-4462-bb63-71042380b109}")]
 			FOLDERTYPEID_Invalid,
 
@@ -171,23 +199,35 @@ namespace Vanara.PInvoke
 			[Associate("{ef87b4cb-f2ce-4785-8658-4ca6c63e38c6}")]
 			FOLDERTYPEID_StartMenu,
 
-			/// <summary>Introduced in Windows 8.1. The folder is a MSFT_StorageProvider folder and contains document files. These can be of mixed format—.doc, .txt, and others.</summary>
+			/// <summary>
+			/// Introduced in Windows 8.1. The folder is a MSFT_StorageProvider folder and contains document files. These can be of mixed
+			/// format—.doc, .txt, and others.
+			/// </summary>
 			[Associate("{DD61BD66-70E8-48dd-9655-65C5E1AAC2D1}")]
 			FOLDERTYPEID_StorageProviderDocuments,
 
-			/// <summary>Introduced in Windows 8.1. The folder is a MSFT_StorageProvider folder and does not fall under one of the other FOLDERTYPEID categories.</summary>
+			/// <summary>
+			/// Introduced in Windows 8.1. The folder is a MSFT_StorageProvider folder and does not fall under one of the other FOLDERTYPEID categories.
+			/// </summary>
 			[Associate("{4F01EBC5-2385-41f2-A28E-2C5C91FB56E0}")]
 			FOLDERTYPEID_StorageProviderGeneric,
 
-			/// <summary>Introduced in Windows 8.1. The folder is a MSFT_StorageProvider folder and contains audio files, such as .mp3 and .wma files.</summary>
+			/// <summary>
+			/// Introduced in Windows 8.1. The folder is a MSFT_StorageProvider folder and contains audio files, such as .mp3 and .wma files.
+			/// </summary>
 			[Associate("{672ECD7E-AF04-4399-875C-0290845B6247}")]
 			FOLDERTYPEID_StorageProviderMusic,
 
-			/// <summary>Introduced in Windows 8.1. The folder is a MSFT_StorageProvider folder and contains image files, such as .jpg, .tif, or .png files.</summary>
+			/// <summary>
+			/// Introduced in Windows 8.1. The folder is a MSFT_StorageProvider folder and contains image files, such as .jpg, .tif, or .png files.
+			/// </summary>
 			[Associate("{71D642A9-F2B1-42cd-AD92-EB9300C7CC0A}")]
 			FOLDERTYPEID_StorageProviderPictures,
 
-			/// <summary>Introduced in Windows 8.1. The folder is a MSFT_StorageProvider folder and contains video files. These can be of mixed format—.wmv, .mov, and others.</summary>
+			/// <summary>
+			/// Introduced in Windows 8.1. The folder is a MSFT_StorageProvider folder and contains video files. These can be of mixed
+			/// format—.wmv, .mov, and others.
+			/// </summary>
 			[Associate("{51294DA1-D7B1-485b-9E9A-17CFFE33E187}")]
 			FOLDERTYPEID_StorageProviderVideos,
 

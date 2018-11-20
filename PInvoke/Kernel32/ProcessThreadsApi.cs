@@ -6722,6 +6722,10 @@ namespace Vanara.PInvoke
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator HPROCESS(SafeHPROCESS h) => h.handle;
+
+			/// <summary>Gets a handle to the current process that can be used across processes.</summary>
+			/// <value>The current process handle.</value>
+			public static SafeHPROCESS Current => new SafeHPROCESS(GetCurrentProcess().Duplicate());
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a thread that releases a created HTHREAD instance at disposal using CloseHandle.</summary>
@@ -6740,6 +6744,10 @@ namespace Vanara.PInvoke
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator HTHREAD(SafeHTHREAD h) => h.handle;
+
+			/// <summary>Gets a handle to the current thread that can be used across processes.</summary>
+			/// <value>The current thread handle.</value>
+			public static SafeHTHREAD Current => new SafeHTHREAD(GetCurrentThread().Duplicate());
 		}
 	}
 }

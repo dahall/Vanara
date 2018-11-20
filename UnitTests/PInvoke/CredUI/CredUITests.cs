@@ -3,46 +3,46 @@ using System;
 
 namespace Vanara.PInvoke.Tests
 {
-	[TestFixture()]
+	//[TestFixture()]
 	public class CredUITests
 	{
-		[Test()]
+		// TODO:  [Test]
 		public void CredPackAuthenticationBufferTest()
 		{
 			throw new NotImplementedException();
 		}
 
-		[Test()]
+		// TODO:  [Test]
 		public void CredUIConfirmCredentialsTest()
 		{
 			throw new NotImplementedException();
 		}
 
-		[Test()]
+		// TODO:  [Test]
 		public void CredUIParseUserNameTest()
 		{
 			throw new NotImplementedException();
 		}
 
-		[Test()]
+		// TODO:  [Test]
 		public void CredUIPromptForCredentialsTest()
 		{
 			throw new NotImplementedException();
 		}
 
-		[Test()]
+		// TODO:  [Test]
 		public void CredUIPromptForWindowsCredentialsTest()
 		{
 			throw new NotImplementedException();
 		}
 
-		[Test()]
+		// TODO:  [Test]
 		public void CredUnPackAuthenticationBufferTest()
 		{
 			throw new NotImplementedException();
 		}
 
-		[Test()]
+		// TODO:  [Test]
 		public void CredUnPackAuthenticationBufferTest1()
 		{
 			throw new NotImplementedException();

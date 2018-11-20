@@ -79,7 +79,7 @@ namespace Vanara.PInvoke
 			/// <param name="punkEnableModless">Reserved. Set to null.</param>
 			/// <param name="dwFlags">Flags that control the operation of the progress dialog box.</param>
 			/// <param name="pvResevered">Reserved. Set to IntPtr.Zero</param>
-			void StartProgressDialog(HWND hwndParent, [MarshalAs(UnmanagedType.IUnknown), Optional] object punkEnableModless, PROGDLG dwFlags, IntPtr pvResevered = default(IntPtr));
+			void StartProgressDialog(HWND hwndParent, [MarshalAs(UnmanagedType.IUnknown), Optional] object punkEnableModless, PROGDLG dwFlags, IntPtr pvResevered = default);
 
 			/// <summary>Stops the progress dialog box and removes it from the screen.</summary>
 			void StopProgressDialog();
@@ -142,7 +142,7 @@ namespace Vanara.PInvoke
 			/// This function is typically used to display a message such as "Item XXX is now being processed." typically, messages are
 			/// displayed on lines 1 and 2, with line 3 reserved for the estimated time.
 			/// </remarks>
-			void SetLine(uint dwLineNum, [MarshalAs(UnmanagedType.LPWStr)] string pwzString, [MarshalAs(UnmanagedType.VariantBool)] bool fCompactPath, IntPtr pvResevered = default(IntPtr));
+			void SetLine(uint dwLineNum, [MarshalAs(UnmanagedType.LPWStr)] string pwzString, [MarshalAs(UnmanagedType.VariantBool)] bool fCompactPath, IntPtr pvResevered = default);
 
 			/// <summary>Sets a message to be displayed if the user cancels the operation.</summary>
 			/// <param name="pwzCancelMsg">A pointer to a null-terminated Unicode string that contains the message to be displayed.</param>
@@ -155,7 +155,7 @@ namespace Vanara.PInvoke
 			/// the user know that the delay is normal and that the progress dialog box will be closed shortly. It is typically is set to
 			/// something like "Please wait while ...".
 			/// </remarks>
-			void SetCancelMsg([MarshalAs(UnmanagedType.LPWStr)] string pwzCancelMsg, IntPtr pvResevered = default(IntPtr));
+			void SetCancelMsg([MarshalAs(UnmanagedType.LPWStr)] string pwzCancelMsg, IntPtr pvResevered = default);
 
 			/// <summary>Resets the progress dialog box timer to zero.</summary>
 			/// <param name="dwTimerAction">Flags that indicate the action to be taken by the timer.</param>
@@ -166,7 +166,7 @@ namespace Vanara.PInvoke
 			/// starting the operation. This practice ensures that the time estimates will be as accurate as possible. This method should not
 			/// be called after the first call to IProgressDialog::SetProgress.
 			/// </remarks>
-			void Timer(PDTIMER dwTimerAction, IntPtr pvResevered = default(IntPtr));
+			void Timer(PDTIMER dwTimerAction, IntPtr pvResevered = default);
 		}
 
 		/// <summary>Class object for IProgressDialog (CLSID_ProgressDialog).</summary>

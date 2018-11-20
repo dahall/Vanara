@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
-using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke
 {
@@ -99,7 +98,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-createdialoga void CreateDialogA( hInstance, lpName,
 		// hWndParent, lpDialogFunc );
 		[PInvokeData("winuser.h", MSDNShortId = "createdialog")]
-		public static void CreateDialog(HINSTANCE hInstance, string lpName, HWND hWndParent, DialogProc lpDialogFunc) => CreateDialogParam(hInstance, lpName, hWndParent, lpDialogFunc);
+		public static SafeHWND CreateDialog(HINSTANCE hInstance, string lpName, HWND hWndParent, DialogProc lpDialogFunc) => CreateDialogParam(hInstance, lpName, hWndParent, lpDialogFunc);
 
 		/// <summary>
 		/// <para>
@@ -169,7 +168,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-createdialogindirecta void CreateDialogIndirectA(
 		// hInstance, lpTemplate, hWndParent, lpDialogFunc );
 		[PInvokeData("winuser.h", MSDNShortId = "createdialogindirect")]
-		public static void CreateDialogIndirect(HINSTANCE hInstance, IntPtr lpTemplate, HWND hWndParent, DialogProc lpDialogFunc) => CreateDialogIndirectParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
+		public static SafeHWND CreateDialogIndirect(HINSTANCE hInstance, IntPtr lpTemplate, HWND hWndParent, DialogProc lpDialogFunc) => CreateDialogIndirectParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
 
 		/// <summary>
 		/// <para>
@@ -248,7 +247,7 @@ namespace Vanara.PInvoke
 		// dwInitParam );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "createdialogindirectparam")]
-		public static extern HWND CreateDialogIndirectParam(HINSTANCE hInstance, IntPtr lpTemplate, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
+		public static extern SafeHWND CreateDialogIndirectParam(HINSTANCE hInstance, IntPtr lpTemplate, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
 
 		/// <summary>
 		/// <para>
@@ -306,7 +305,7 @@ namespace Vanara.PInvoke
 		// hInstance, LPCSTR lpTemplateName, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "createdialogparam")]
-		public static extern IntPtr CreateDialogParam(HINSTANCE hInstance, string lpTemplateName, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
+		public static extern SafeHWND CreateDialogParam(HINSTANCE hInstance, string lpTemplateName, HWND hWndParent, DialogProc lpDialogFunc, [Optional] IntPtr dwInitParam);
 
 		/// <summary>
 		/// <para>
@@ -406,7 +405,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-dialogboxa void DialogBoxA( hInstance, lpTemplate,
 		// hWndParent, lpDialogFunc );
 		[PInvokeData("winuser.h", MSDNShortId = "dialogbox")]
-		public static void DialogBox(HINSTANCE hInstance, string lpTemplate, HWND hWndParent, DialogProc lpDialogFunc) => DialogBoxParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
+		public static IntPtr DialogBox(HINSTANCE hInstance, string lpTemplate, HWND hWndParent, DialogProc lpDialogFunc) => DialogBoxParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
 
 		/// <summary>
 		/// <para>
@@ -479,7 +478,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-dialogboxindirecta void DialogBoxIndirectA( hInstance,
 		// lpTemplate, hWndParent, lpDialogFunc );
 		[PInvokeData("winuser.h", MSDNShortId = "dialogboxindirect")]
-		public static void DialogBoxIndirect(HINSTANCE hInstance, IntPtr lpTemplate, HWND hWndParent, DialogProc lpDialogFunc) => DialogBoxIndirectParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
+		public static IntPtr DialogBoxIndirect(HINSTANCE hInstance, IntPtr lpTemplate, HWND hWndParent, DialogProc lpDialogFunc) => DialogBoxIndirectParam(hInstance, lpTemplate, hWndParent, lpDialogFunc);
 
 		/// <summary>
 		/// <para>
@@ -779,7 +778,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getdlgitem HWND GetDlgItem( HWND hDlg, int nIDDlgItem );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getdlgitem")]
-		public static extern IntPtr GetDlgItem(HWND hDlg, int nIDDlgItem);
+		public static extern HWND GetDlgItem(HWND hDlg, int nIDDlgItem);
 
 		/// <summary>
 		/// <para>Translates the text of a specified control in a dialog box into an integer value.</para>
@@ -941,7 +940,7 @@ namespace Vanara.PInvoke
 		// HWND hCtl, BOOL bPrevious );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getnextdlggroupitem")]
-		public static extern IntPtr GetNextDlgGroupItem(HWND hDlg, HWND hCtl, [MarshalAs(UnmanagedType.Bool)] bool bPrevious);
+		public static extern HWND GetNextDlgGroupItem(HWND hDlg, HWND hCtl, [MarshalAs(UnmanagedType.Bool)] bool bPrevious);
 
 		/// <summary>
 		/// <para>Retrieves a handle to the first control that has the WS_TABSTOP style that precedes (or follows) the specified control.</para>
@@ -985,7 +984,7 @@ namespace Vanara.PInvoke
 		// hCtl, BOOL bPrevious );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "getnextdlgtabitem")]
-		public static extern IntPtr GetNextDlgTabItem(HWND hDlg, HWND hCtl, [MarshalAs(UnmanagedType.Bool)] bool bPrevious);
+		public static extern HWND GetNextDlgTabItem(HWND hDlg, HWND hCtl, [MarshalAs(UnmanagedType.Bool)] bool bPrevious);
 
 		/// <summary>
 		/// <para>Determines whether a message is intended for the specified dialog box and, if it is, processes the message.</para>
@@ -1028,7 +1027,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "isdialogmessage")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool IsDialogMessage(HWND hDlg, ref MSG lpMsg);
+		public static extern bool IsDialogMessage(HWND hDlg, in MSG lpMsg);
 
 		/// <summary>
 		/// <para>
@@ -1429,5 +1428,158 @@ namespace Vanara.PInvoke
 			/// </summary>
 			public short cy;
 		}
+
+		/*
+		/// <summary>
+		/// <para>
+		/// An extended dialog box template begins with a <c>DLGTEMPLATEEX</c> header that describes the dialog box and specifies the number
+		/// of controls in the dialog box. For each control in a dialog box, an extended dialog box template has a block of data that uses
+		/// the <c>DLGITEMTEMPLATEEX</c> format to describe the control.
+		/// </para>
+		/// <para>
+		/// The <c>DLGTEMPLATEEX</c> structure is not defined in any standard header file. The structure definition is provided here to
+		/// explain the format of an extended template for a dialog box.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// You can use an extended dialog box template instead of a standard dialog box template in the <c>CreateDialogIndirectParam</c>,
+		/// <c>DialogBoxIndirectParam</c>, <c>CreateDialogIndirect</c>, and <c>DialogBoxIndirect</c> functions.
+		/// </para>
+		/// <para>
+		/// Following the <c>DLGTEMPLATEEX</c> header in an extended dialog box template is one or more <c>DLGITEMTEMPLATEEX</c> structures
+		/// that describe the controls of the dialog box. The <c>cDlgItems</c> member of the <c>DLGITEMTEMPLATEEX</c> structure specifies the
+		/// number of <c>DLGITEMTEMPLATEEX</c> structures that follow in the template.
+		/// </para>
+		/// <para>
+		/// Each <c>DLGITEMTEMPLATEEX</c> structure in the template must be aligned on a <c>DWORD</c> boundary. If the <c>style</c> member
+		/// specifies the <c>DS_SETFONT</c> or <c>DS_SHELLFONT</c> style, the first <c>DLGITEMTEMPLATEEX</c> structure begins on the first
+		/// <c>DWORD</c> boundary after the <c>typeface</c> string. If these styles are not specified, the first structure begins on the
+		/// first <c>DWORD</c> boundary after the <c>title</c> string.
+		/// </para>
+		/// <para>The <c>menu</c>, <c>windowClass</c>, <c>title</c>, and <c>typeface</c> arrays must be aligned on <c>WORD</c> boundaries.</para>
+		/// <para>
+		/// If you specify character strings in the <c>menu</c>, <c>windowClass</c>, <c>title</c>, and <c>typeface</c> arrays, you must use
+		/// Unicode strings. Use the <c>MultiByteToWideChar</c> function to generate these Unicode strings from ANSI strings.
+		/// </para>
+		/// <para>
+		/// The <c>x</c>, <c>y</c>, <c>cx</c>, and <c>cy</c> members specify values in dialog box units. You can convert these values to
+		/// screen units (pixels) by using the <c>MapDialogRect</c> function.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/dlgbox/dlgtemplateex typedef struct { WORD dlgVer; WORD signature; DWORD helpID;
+		// DWORD exStyle; DWORD style; WORD cDlgItems; short x; short y; short cx; short cy; sz_Or_Ord menu; sz_Or_Ord windowClass; WCHAR
+		// title[titleLen]; WORD pointsize; WORD weight; BYTE italic; BYTE charset; WCHAR typeface[stringLen]; } DLGTEMPLATEEX;
+		[PInvokeData("", MSDNShortId = "9f016cc6-56e2-45d3-8773-1b405fc10d29")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct DLGTEMPLATEEX
+		{
+			/// <summary>The version number of the extended dialog box template. This member must be set to 1.</summary>
+			public ushort dlgVer;
+
+			/// <summary>
+			/// Indicates whether a template is an extended dialog box template. If signature is 0xFFFF, this is an extended dialog box
+			/// template. In this case, the dlgVer member specifies the template version number. If signature is any value other than 0xFFFF,
+			/// this is a standard dialog box template that uses the DLGTEMPLATE and DLGITEMTEMPLATE structures.
+			/// </summary>
+			public ushort signature;
+
+			/// <summary>
+			/// The help context identifier for the dialog box window. When the system sends a WM_HELP message, it passes this value in the
+			/// wContextId member of the HELPINFO structure.
+			/// </summary>
+			public uint helpID;
+
+			/// <summary>
+			/// The extended windows styles. This member is not used when creating dialog boxes, but applications that use dialog box
+			/// templates can use it to create other types of windows. For a list of values, see Extended Window Styles.
+			/// </summary>
+			public WindowStylesEx exStyle;
+
+			/// <summary>
+			/// The style of the dialog box. This member can be a combination of window style values and dialog box style values.
+			/// <para>
+			/// If style includes the DS_SETFONT or DS_SHELLFONT dialog box style, the DLGTEMPLATEEX header of the extended dialog box
+			/// template contains four additional members(pointsize, weight, italic, and typeface) that describe the font to use for the text
+			/// in the client area and controls of the dialog box.If possible, the system creates a font according to the values specified in
+			/// these members.Then the system sends a WM_SETFONT message to the dialog box and to each control to provide a handle to the font.
+			/// </para>
+			/// <para>For more information, see Dialog Box Fonts.</para>
+			/// </summary>
+			public WindowStyles style;
+
+			/// <summary>The number of controls in the dialog box.</summary>
+			public ushort cDlgItems;
+
+			/// <summary>The x-coordinate, in dialog box units, of the upper-left corner of the dialog box.</summary>
+			public short x;
+
+			/// <summary>The y-coordinate, in dialog box units, of the upper-left corner of the dialog box.</summary>
+			public short y;
+
+			/// <summary>The width, in dialog box units, of the dialog box.</summary>
+			public short cx;
+
+			/// <summary>The height, in dialog box units, of the dialog box.</summary>
+			public short cy;
+
+			/// <summary>
+			/// A variable-length array of 16-bit elements that identifies a menu resource for the dialog box. If the first element of this
+			/// array is 0x0000, the dialog box has no menu and the array has no other elements. If the first element is 0xFFFF, the array
+			/// has one additional element that specifies the ordinal value of a menu resource in an executable file. If the first element
+			/// has any other value, the system treats the array as a null-terminated Unicode string that specifies the name of a menu
+			/// resource in an executable file.
+			/// </summary>
+			public IntPtr menu;
+
+			/// <summary>
+			/// A variable-length array of 16-bit elements that identifies the window class of the dialog box. If the first element of the
+			/// array is 0x0000, the system uses the predefined dialog box class for the dialog box and the array has no other elements. If
+			/// the first element is 0xFFFF, the array has one additional element that specifies the ordinal value of a predefined system
+			/// window class. If the first element has any other value, the system treats the array as a null-terminated Unicode string that
+			/// specifies the name of a registered window class.
+			/// </summary>
+			public IntPtr windowClass;
+
+			/// <summary>
+			/// The title of the dialog box. If the first element of this array is 0x0000, the dialog box has no title and the array has no
+			/// other elements.
+			/// </summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = titleLen)]
+			public string title;
+
+			/// <summary>
+			/// The point size of the font to use for the text in the dialog box and its controls.
+			/// <para>This member is present only if the style member specifies DS_SETFONT or DS_SHELLFONT.</para>
+			/// </summary>
+			public ushort pointsize;
+
+			/// <summary>
+			/// The weight of the font. Note that, although this can be any of the values listed for the lfWeight member of the LOGFONT
+			/// structure, any value that is used will be automatically changed to FW_NORMAL.
+			/// <para>This member is present only if the style member specifies DS_SETFONT or DS_SHELLFONT.</para>
+			/// </summary>
+			public ushort weight;
+
+			/// <summary>
+			/// Indicates whether the font is italic. If this value is TRUE, the font is italic.
+			/// <para>This member is present only if the style member specifies DS_SETFONT or DS_SHELLFONT.</para>
+			/// </summary>
+			public byte italic;
+
+			/// <summary>
+			/// The character set to be used. For more information, see the lfcharset member of LOGFONT.
+			/// <para>This member is present only if the style member specifies DS_SETFONT or DS_SHELLFONT.</para>
+			/// </summary>
+			public byte charset;
+
+			/// <summary>
+			/// The name of the typeface for the font.
+			/// <para>This member is present only if the style member specifies DS_SETFONT or DS_SHELLFONT.</para>
+			/// </summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = stringLen)]
+			public string typeface;
+		}
+		*/
 	}
 }

@@ -5,14 +5,12 @@ using System.Globalization;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable InconsistentNaming
 
 namespace Vanara.PInvoke
 {
 	/// <summary>
-	/// Formal replacement for the Windows NTStatus definition. In ntstatus.h, it is a defined UINT value. For .NET, this class strongly types the value.
+	/// Formal replacement for the Windows NTStatus definition. In ntstatus.h, it is a defined UINT value. For .NET, this class strongly
+	/// types the value.
 	/// <para>The 32-bit value is organized as follows:</para>
 	/// <list type="table">
 	/// <item>
@@ -54,108 +52,160 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>The default facility code.</summary>
 			FACILITY_NULL = 0,
+
 			/// <summary>The facility debugger</summary>
 			FACILITY_DEBUGGER = 0x1,
+
 			/// <summary>The facility RPC runtime</summary>
 			FACILITY_RPC_RUNTIME = 0x2,
+
 			/// <summary>The facility RPC stubs</summary>
 			FACILITY_RPC_STUBS = 0x3,
+
 			/// <summary>The facility io error code</summary>
 			FACILITY_IO_ERROR_CODE = 0x4,
+
 			/// <summary>The facility codclass error code</summary>
 			FACILITY_CODCLASS_ERROR_CODE = 0x6,
+
 			/// <summary>The facility ntwi N32</summary>
 			FACILITY_NTWIN32 = 0x7,
+
 			/// <summary>The facility ntcert</summary>
 			FACILITY_NTCERT = 0x8,
+
 			/// <summary>The facility ntsspi</summary>
 			FACILITY_NTSSPI = 0x9,
+
 			/// <summary>The facility terminal server</summary>
 			FACILITY_TERMINAL_SERVER = 0xA,
+
 			/// <summary>The faciltiy MUI error code</summary>
 			FACILTIY_MUI_ERROR_CODE = 0xB,
+
 			/// <summary>The facility usb error code</summary>
 			FACILITY_USB_ERROR_CODE = 0x10,
+
 			/// <summary>The facility hid error code</summary>
 			FACILITY_HID_ERROR_CODE = 0x11,
+
 			/// <summary>The facility firewire error code</summary>
 			FACILITY_FIREWIRE_ERROR_CODE = 0x12,
+
 			/// <summary>The facility cluster error code</summary>
 			FACILITY_CLUSTER_ERROR_CODE = 0x13,
+
 			/// <summary>The facility acpi error code</summary>
 			FACILITY_ACPI_ERROR_CODE = 0x14,
+
 			/// <summary>The facility SXS error code</summary>
 			FACILITY_SXS_ERROR_CODE = 0x15,
+
 			/// <summary>The facility transaction</summary>
 			FACILITY_TRANSACTION = 0x19,
+
 			/// <summary>The facility commonlog</summary>
 			FACILITY_COMMONLOG = 0x1A,
+
 			/// <summary>The facility video</summary>
 			FACILITY_VIDEO = 0x1B,
+
 			/// <summary>The facility filter manager</summary>
 			FACILITY_FILTER_MANAGER = 0x1C,
+
 			/// <summary>The facility monitor</summary>
 			FACILITY_MONITOR = 0x1D,
+
 			/// <summary>The facility graphics kernel</summary>
 			FACILITY_GRAPHICS_KERNEL = 0x1E,
+
 			/// <summary>The facility driver framework</summary>
 			FACILITY_DRIVER_FRAMEWORK = 0x20,
+
 			/// <summary>The facility fve error code</summary>
 			FACILITY_FVE_ERROR_CODE = 0x21,
+
 			/// <summary>The facility FWP error code</summary>
 			FACILITY_FWP_ERROR_CODE = 0x22,
+
 			/// <summary>The facility ndis error code</summary>
 			FACILITY_NDIS_ERROR_CODE = 0x23,
+
 			/// <summary>The facility TPM</summary>
 			FACILITY_TPM = 0x29,
+
 			/// <summary>The facility RTPM</summary>
 			FACILITY_RTPM = 0x2A,
+
 			/// <summary>The facility hypervisor</summary>
 			FACILITY_HYPERVISOR = 0x35,
+
 			/// <summary>The facility ipsec</summary>
 			FACILITY_IPSEC = 0x36,
+
 			/// <summary>The facility virtualization</summary>
 			FACILITY_VIRTUALIZATION = 0x37,
+
 			/// <summary>The facility volmgr</summary>
 			FACILITY_VOLMGR = 0x38,
+
 			/// <summary>The facility BCD error code</summary>
 			FACILITY_BCD_ERROR_CODE = 0x39,
+
 			/// <summary>The facility wi N32 k ntuser</summary>
 			FACILITY_WIN32K_NTUSER = 0x3E,
+
 			/// <summary>The facility wi N32 k ntgdi</summary>
 			FACILITY_WIN32K_NTGDI = 0x3F,
+
 			/// <summary>The facility resume key filter</summary>
 			FACILITY_RESUME_KEY_FILTER = 0x40,
+
 			/// <summary>The facility RDBSS</summary>
 			FACILITY_RDBSS = 0x41,
+
 			/// <summary>The facility BTH att</summary>
 			FACILITY_BTH_ATT = 0x42,
+
 			/// <summary>The facility secureboot</summary>
 			FACILITY_SECUREBOOT = 0x43,
+
 			/// <summary>The facility audio kernel</summary>
 			FACILITY_AUDIO_KERNEL = 0x44,
+
 			/// <summary>The facility VSM</summary>
 			FACILITY_VSM = 0x45,
+
 			/// <summary>The facility volsnap</summary>
 			FACILITY_VOLSNAP = 0x50,
+
 			/// <summary>The facility sdbus</summary>
 			FACILITY_SDBUS = 0x51,
+
 			/// <summary>The facility shared VHDX</summary>
 			FACILITY_SHARED_VHDX = 0x5C,
+
 			/// <summary>The facility SMB</summary>
 			FACILITY_SMB = 0x5D,
+
 			/// <summary>The facility interix</summary>
 			FACILITY_INTERIX = 0x99,
+
 			/// <summary>The facility spaces</summary>
 			FACILITY_SPACES = 0xE7,
+
 			/// <summary>The facility security core</summary>
 			FACILITY_SECURITY_CORE = 0xE8,
+
 			/// <summary>The facility system integrity</summary>
 			FACILITY_SYSTEM_INTEGRITY = 0xE9,
+
 			/// <summary>The facility licensing</summary>
 			FACILITY_LICENSING = 0xEA,
+
 			/// <summary>The facility platform manifest</summary>
 			FACILITY_PLATFORM_MANIFEST = 0xEB,
+
 			/// <summary>The facility maximum value</summary>
 			FACILITY_MAXIMUM_VALUE = 0xEC
 		}
@@ -163,7 +213,9 @@ namespace Vanara.PInvoke
 		/// <summary>A value indicating the severity of an <see cref="NTStatus"/> value (bits 30-31).</summary>
 		public enum SeverityLevel : byte
 		{
-			/// <summary>Indicates a successful NTSTATUS value, such as STATUS_SUCCESS, or the value IO_ERR_RETRY_SUCCEEDED in error log packets.</summary>
+			/// <summary>
+			/// Indicates a successful NTSTATUS value, such as STATUS_SUCCESS, or the value IO_ERR_RETRY_SUCCEEDED in error log packets.
+			/// </summary>
 			STATUS_SEVERITY_SUCCESS = 0x0,
 
 			/// <summary>Indicates an informational NTSTATUS value, such as STATUS_SERIAL_MORE_WRITES.</summary>
@@ -173,18 +225,15 @@ namespace Vanara.PInvoke
 			STATUS_SEVERITY_WARNING = 0x2,
 
 			/// <summary>
-			/// Indicates an error NTSTATUS value, such as STATUS_INSUFFICIENT_RESOURCES for a FinalStatus value or IO_ERR_CONFIGURATION_ERROR for an ErrorCode
-			/// value in error log packets.
+			/// Indicates an error NTSTATUS value, such as STATUS_INSUFFICIENT_RESOURCES for a FinalStatus value or
+			/// IO_ERR_CONFIGURATION_ERROR for an ErrorCode value in error log packets.
 			/// </summary>
 			STATUS_SEVERITY_ERROR = 0x3
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="NTStatus"/> structure.</summary>
 		/// <param name="rawValue">The raw NTStatus value.</param>
-		public NTStatus(uint rawValue)
-		{
-			_value = rawValue;
-		}
+		public NTStatus(uint rawValue) => _value = rawValue;
 
 		/// <summary>Gets the code portion of the <see cref="NTStatus"/>.</summary>
 		/// <value>The code value (bits 0-15).</value>
@@ -214,20 +263,20 @@ namespace Vanara.PInvoke
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>
 		/// A value that indicates the relative order of the objects being compared. The return value has the following
-		/// meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to
-		///           <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>.
+		/// meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal
+		///           to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>.
 		/// </returns>
 		public int CompareTo(NTStatus other) => _value.CompareTo(other._value);
 
 		/// <summary>
-		/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes,
-		/// follows, or occurs in the same position in the sort order as the other object.
+		/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current
+		/// instance precedes, follows, or occurs in the same position in the sort order as the other object.
 		/// </summary>
 		/// <param name="obj">An object to compare with this instance.</param>
 		/// <returns>
-		/// A value that indicates the relative order of the objects being compared. The return value has these meanings: Value Meaning Less than zero This
-		/// instance precedes <paramref name="obj"/> in the sort order. Zero This instance occurs in the same position in the sort order as
-		/// <paramref name="obj"/> . Greater than zero This instance follows <paramref name="obj"/> in the sort order.
+		/// A value that indicates the relative order of the objects being compared. The return value has these meanings: Value Meaning Less
+		/// than zero This instance precedes <paramref name="obj"/> in the sort order. Zero This instance occurs in the same position in the
+		/// sort order as <paramref name="obj"/> . Greater than zero This instance follows <paramref name="obj"/> in the sort order.
 		/// </returns>
 		public int CompareTo(object obj)
 		{
@@ -305,10 +354,12 @@ namespace Vanara.PInvoke
 		/// <param name="facility">The facility.</param>
 		/// <param name="code">The code.</param>
 		/// <returns>The resulting <see cref="NTStatus"/>.</returns>
-		public static NTStatus Make(SeverityLevel severity, bool customerDefined, ushort facility, ushort code) => 
+		public static NTStatus Make(SeverityLevel severity, bool customerDefined, ushort facility, ushort code) =>
 			new NTStatus(((uint)severity << severityShift) | (customerDefined ? customerMask : 0) | ((uint)facility << facilityShift) | code);
 
-		/// <summary>If this <see cref="NTStatus"/> represents a failure, throw the associated <see cref="Exception"/> with the optionally supplied message.</summary>
+		/// <summary>
+		/// If this <see cref="NTStatus"/> represents a failure, throw the associated <see cref="Exception"/> with the optionally supplied message.
+		/// </summary>
 		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
 		[SecurityCritical]
 		[SecuritySafeCritical]
@@ -320,14 +371,12 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// If the supplied raw NTStatus value represents a failure, throw the associated <see cref="Exception"/> with the optionally supplied message.
+		/// If the supplied raw NTStatus value represents a failure, throw the associated <see cref="Exception"/> with the optionally
+		/// supplied message.
 		/// </summary>
 		/// <param name="ntstatus">The 32-bit raw NTStatus value.</param>
 		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
-		public static void ThrowIfFailed(uint ntstatus, string message = null)
-		{
-			new NTStatus(ntstatus).ThrowIfFailed(message);
-		}
+		public static void ThrowIfFailed(uint ntstatus, string message = null) => new NTStatus(ntstatus).ThrowIfFailed(message);
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
@@ -418,8 +467,8 @@ namespace Vanara.PInvoke
 		/// <summary>Converts the specified NTSTATUS code to its equivalent system error code.</summary>
 		/// <param name="status">The NTSTATUS code to be converted.</param>
 		/// <returns>
-		/// The function returns the corresponding system error code. ERROR_MR_MID_NOT_FOUND is returned when the specified NTSTATUS code does not have a
-		/// corresponding system error code.
+		/// The function returns the corresponding system error code. ERROR_MR_MID_NOT_FOUND is returned when the specified NTSTATUS code
+		/// does not have a corresponding system error code.
 		/// </returns>
 		[DllImport(Lib.NtDll, ExactSpelling = true)]
 		[PInvokeData("Winternl.h", MSDNShortId = "ms680600")]

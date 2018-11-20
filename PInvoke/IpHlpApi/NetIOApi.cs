@@ -5286,7 +5286,7 @@ namespace Vanara.PInvoke
 		// ResolveIpNetEntry2( PMIB_IPNET_ROW2 Row, CONST SOCKADDR_INET *SourceAddress );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "37f9dc58-362d-413e-a593-4dda52fb7d8b")]
-		public static extern Win32Error ResolveIpNetEntry2(ref MIB_IPNET_ROW2 Row, IntPtr SourceAddress = default(IntPtr));
+		public static extern Win32Error ResolveIpNetEntry2(ref MIB_IPNET_ROW2 Row, IntPtr SourceAddress = default);
 
 		/// <summary>
 		/// <para>The <c>ResolveIpNetEntry2</c> function resolves the physical address for a neighbor IP address entry on the local computer.</para>

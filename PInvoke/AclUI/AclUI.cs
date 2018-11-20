@@ -64,52 +64,6 @@ namespace Vanara.PInvoke
 			SECURITY_OBJECT_ID_CENTRAL_ACCESS_RULE = 4
 		}
 
-		/// <summary>Flags that indicate where the access right is displayed or whether other containers or objects can inherit the access right.</summary>
-		[Flags]
-		public enum SI_ACCESS_Flags : uint
-		{
-			/// <summary>The access right is displayed on the advanced security pages.</summary>
-			SI_ACCESS_SPECIFIC = 0x00010000,
-			/// <summary>The access right is displayed on the basic security page.</summary>
-			SI_ACCESS_GENERAL = 0x00020000,
-			/// <summary>
-			/// Indicates an access right that applies only to containers. If this flag is set, the access right is displayed on the basic security page only if
-			/// the <see cref="ISecurityInformation.GetObjectInformation(ref SI_OBJECT_INFO)"/> specifies the SI_CONTAINER flag.
-			/// </summary>
-			SI_ACCESS_CONTAINER = 0x00040000,
-			/// <summary>Indicates a property-specific access right.</summary>
-			SI_ACCESS_PROPERTY = 0x00080000,
-			/// <summary>Other containers that are contained by the primary object inherit the entry.</summary>
-			CONTAINER_INHERIT_ACE = 2,
-			/// <summary>
-			/// The ACE is inherited. Operations that change the security on a tree of objects may modify inherited ACEs without changing ACEs that were directly
-			/// applied to the object.
-			/// </summary>
-			INHERITED_ACE = 0x10,
-			/// <summary>
-			/// The ACE does not apply to the primary object to which the ACL is attached, but objects contained by the primary object inherit the entry.
-			/// </summary>
-			INHERIT_ONLY_ACE = 8,
-			/// <summary>The ObjectInheritAce and ContainerInheritAce bits are not propagated to an inherited ACE.</summary>
-			NO_PROPAGATE_INHERIT_ACE = 4,
-			/// <summary>Noncontainer objects contained by the primary object inherit the entry.</summary>
-			OBJECT_INHERIT_ACE = 1,
-		}
-
-		/// <summary>Indicate the types of ACEs that can be inherited in a <see cref="SI_INHERIT_TYPE"/> structure.</summary>
-		[Flags]
-		public enum SI_INHERIT_Flags : uint
-		{
-			/// <summary>The specified object type can inherit ACEs that have the <c>CONTAINER_INHERIT_ACE</c> flag set.</summary>
-			CONTAINER_INHERIT_ACE = 2,
-
-			/// <summary>The specified object type can inherit ACEs that have the <c>INHERIT_ONLY_ACE</c> flag set.</summary>
-			INHERIT_ONLY_ACE = 8,
-
-			/// <summary>The specified object type can inherit ACEs that have the <c>OBJECT_INHERIT_ACE</c> flag set.</summary>
-			OBJECT_INHERIT_ACE = 1
-		}
-
 		/// <summary>A set of bit flags that determine the editing options available to the user.</summary>
 		[Flags]
 		public enum SI_OBJECT_INFO_Flags : uint
@@ -357,7 +311,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a ULONG variable that receives the count of granted access masks pointed to by the ppGrantedAccessList parameter.
 			/// </param>
 			void GetEffectivePermission(in Guid pguidObjectType, [In] PSID pUserSid,
-				[In, MarshalAs(UnmanagedType.LPWStr)] string pszServerName, [In] IntPtr pSD,
+				[In, MarshalAs(UnmanagedType.LPWStr)] string pszServerName, [In] PSECURITY_DESCRIPTOR pSD,
 				[MarshalAs(UnmanagedType.LPArray)] out OBJECT_TYPE_LIST[] ppObjectTypeList,
 				out uint pcObjectTypeListLength,
 				[MarshalAs(UnmanagedType.LPArray)] out uint[] ppGrantedAccessList,
@@ -501,7 +455,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>If this flag is FALSE, ppSecurityDescriptor should return the object's current security descriptor.</para>
 			/// </param>
-			void GetSecurity([In] SECURITY_INFORMATION RequestInformation, out IntPtr SecurityDescriptor, [In, MarshalAs(UnmanagedType.Bool)] bool fDefault);
+			void GetSecurity([In] SECURITY_INFORMATION RequestInformation, out PSECURITY_DESCRIPTOR SecurityDescriptor, [In, MarshalAs(UnmanagedType.Bool)] bool fDefault);
 
 			/// <summary>
 			/// The SetSecurity method provides a security descriptor containing the security information the user wants to apply to the securable object. The
@@ -512,7 +466,7 @@ namespace Vanara.PInvoke
 			/// A pointer to a security descriptor containing the new security information. Do not assume the security descriptor is in self-relative form; it
 			/// can be either absolute or self-relative.
 			/// </param>
-			void SetSecurity([In] SECURITY_INFORMATION RequestInformation, [In] IntPtr SecurityDescriptor);
+			void SetSecurity([In] SECURITY_INFORMATION RequestInformation, [In] PSECURITY_DESCRIPTOR SecurityDescriptor);
 
 			/// <summary>
 			/// The GetAccessRights method requests information about the access rights that can be controlled for a securable object. The access control editor
@@ -594,7 +548,7 @@ namespace Vanara.PInvoke
 			/// client. Returns FALSE if the ACEs are not ordered correctly.
 			/// </returns>
 			[return: MarshalAs(UnmanagedType.Bool)]
-			bool IsDaclCanonical([In] IntPtr pDacl);
+			bool IsDaclCanonical([In] PACL pDacl);
 
 			/// <summary>The LookupSids method returns the common names corresponding to each of the elements in the specified list of SIDs.</summary>
 			/// <param name="cSids">The number of pointers to SID structures pointed to by rgpSids.</param>
@@ -672,7 +626,7 @@ namespace Vanara.PInvoke
 			/// as the number of ACEs in the ACL referenced by pACL. Each INHERITED_FROM entry in ppInheritArray provides inheritance information for the
 			/// corresponding ACE entry in pACL.
 			/// </param>
-			void GetInheritSource([In] int si, [In] IntPtr pACL, [MarshalAs(UnmanagedType.LPArray)] out INHERITED_FROM[] ppInheritArray);
+			void GetInheritSource([In] int si, [In] PACL pACL, [MarshalAs(UnmanagedType.LPArray)] out INHERITED_FROM[] ppInheritArray);
 		}
 
 		/// <summary>
@@ -812,15 +766,15 @@ namespace Vanara.PInvoke
 			[MarshalAs(UnmanagedType.LPWStr)]
 			public string pszName;
 
-			/// <summary>A set of <see cref="SI_ACCESS_Flags"/> that indicate where the access right is displayed.</summary>
-			public SI_ACCESS_Flags dwFlags;
+			/// <summary>A set of <see cref="INHERIT_FLAGS"/> that indicate where the access right is displayed.</summary>
+			public INHERIT_FLAGS dwFlags;
 
 			/// <summary>Initializes a new instance of the <see cref="SI_ACCESS"/> class.</summary>
 			/// <param name="mask">The access mask.</param>
 			/// <param name="name">The display name.</param>
 			/// <param name="flags">The access flags.</param>
 			/// <param name="objType">Type of the object.</param>
-			public SI_ACCESS(uint mask, string name, SI_ACCESS_Flags flags, Guid? objType = null)
+			public SI_ACCESS(uint mask, string name, INHERIT_FLAGS flags, Guid? objType = null)
 			{
 				this.mask = mask;
 				pszName = name;
@@ -868,10 +822,10 @@ namespace Vanara.PInvoke
 			public IntPtr pguid;
 
 			/// <summary>
-			/// A set of <see cref="SI_INHERIT_Flags"/> that indicate the types of ACEs that can be inherited by the <see cref="ChildObjectTypeId"/>. These flags
+			/// A set of <see cref="INHERIT_FLAGS"/> that indicate the types of ACEs that can be inherited by the <see cref="ChildObjectTypeId"/>. These flags
 			/// correspond to the AceFlags member of an ACE_HEADER structure.
 			/// </summary>
-			public SI_INHERIT_Flags dwFlags;
+			public INHERIT_FLAGS dwFlags;
 
 			/// <summary>A display string that describes the child object.</summary>
 			[MarshalAs(UnmanagedType.LPWStr)]
@@ -880,7 +834,7 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="SI_INHERIT_TYPE"/> struct.</summary>
 			/// <param name="flags">The inheritance flags.</param>
 			/// <param name="name">The display name.</param>
-			public SI_INHERIT_TYPE(SI_INHERIT_Flags flags, string name)
+			public SI_INHERIT_TYPE(INHERIT_FLAGS flags, string name)
 			{
 				dwFlags = flags;
 				pszName = name;
@@ -890,7 +844,7 @@ namespace Vanara.PInvoke
 			/// <param name="childObjectType">Type of the child object.</param>
 			/// <param name="flags">The inheritance flags.</param>
 			/// <param name="name">The display name.</param>
-			public SI_INHERIT_TYPE(Guid childObjectType, SI_INHERIT_Flags flags, string name) : this(flags, name)
+			public SI_INHERIT_TYPE(Guid childObjectType, INHERIT_FLAGS flags, string name) : this(flags, name)
 			{
 				ChildObjectTypeId = childObjectType;
 			}

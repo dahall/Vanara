@@ -21,7 +21,7 @@ namespace Vanara.Extensions.Tests
 				bw.Write<string>(null);
 				Assert.That(() => bw.Write(DateTime.Today), Throws.ArgumentException);
 				var buf = ms.ToArray();
-				Assert.That(buf.Length == Marshal.SizeOf<int>() + Marshal.SizeOf<RECT>() + Marshal.SizeOf<PRECT>());
+				Assert.That(buf.Length == Marshal.SizeOf(typeof(int)) + Marshal.SizeOf(typeof(RECT)) + Marshal.SizeOf(typeof(PRECT)));
 				Assert.That(buf[0] == 1 && buf[1] == 1 && buf[4] == 1);
 			}
 		}

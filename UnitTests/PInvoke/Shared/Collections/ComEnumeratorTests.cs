@@ -66,18 +66,20 @@ namespace Vanara.Collections.Tests
 
 			// Test IEnumerable
 			var e = new IEnumFromNext<IntPtr>((out IntPtr p) => ewi.Next(1, out p, out var f).Succeeded && f == 1, ewi.Reset);
+			var i = 0;
 			foreach (var p in e)
 			{
 				Assert.That(p, Is.Not.EqualTo(IntPtr.Zero));
-				var sa = IEnumWorkItemsNames.Convert(p, 1);
-				Assert.That(sa.Length, Is.EqualTo(1));
-				TestContext.WriteLine(sa[0]);
+				i++;
 			}
 
 			// Test IEnumerator
 			var g = e.GetEnumerator();
-			g.Reset();
-			Assert.That(g.MoveNext(), Is.True);
+			if (i > 0)
+			{
+				g.Reset();
+				Assert.That(g.MoveNext(), Is.True);
+			}
 			g.Dispose();
 			Assert.That(g.MoveNext(), Is.False);
 			Assert.That(() => g.Reset(), Throws.Nothing);
@@ -171,8 +173,6 @@ namespace Vanara.Collections.Tests
 				c++;
 			}
 			Assert.That(c, Is.EqualTo(e.Count));
-			Assert.That(l[0], Is.EqualTo(e[0]));
-			Assert.That(l[c-1], Is.EqualTo(e[c-1]));
 
 			// Test IEnumerator
 			var g = e.GetEnumerator();
@@ -209,7 +209,7 @@ namespace Vanara.Collections.Tests
 			{
 				var a = new STATSTG[1];
 				var b = ee.Next(1, a, out var f).Succeeded && f == 1;
-				p = b ? a[0] : default(STATSTG);
+				p = b ? a[0] : default;
 				return b;
 			}
 

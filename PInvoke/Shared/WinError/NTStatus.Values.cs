@@ -1,6 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-
-namespace Vanara.PInvoke
+﻿namespace Vanara.PInvoke
 {
 	public partial struct NTStatus
 	{

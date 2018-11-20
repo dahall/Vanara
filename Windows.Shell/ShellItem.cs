@@ -789,7 +789,7 @@ namespace Vanara.Windows.Shell
 				provider = GetHandler<IThumbnailProvider>(BHID.BHID_ThumbnailHandler);
 				if (provider == null) return null;
 				provider.GetThumbnail((uint)width, out var hbmp, out var alpha);
-				return Image.FromHbitmap(hbmp);
+				return hbmp.ToBitmap();
 			}
 			catch
 			{

@@ -832,7 +832,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wincred.h", MSDNShortId = "b62cb9c9-2a64-4ef4-97f0-e1ea85976d3e")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CredReadDomainCredentials(ref CREDENTIAL_TARGET_INFORMATION TargetInfo, uint Flags, out uint Count, out SafeCredMemoryHandle Credential);
+		public static extern bool CredReadDomainCredentials(in CREDENTIAL_TARGET_INFORMATION TargetInfo, uint Flags, out uint Count, out SafeCredMemoryHandle Credential);
 
 		/// <summary>
 		/// <para>[ <c>CredRename</c> is no longer supported. Starting with Windows Vista, calls to <c>CredRename</c> always return ERROR_NOT_SUPPORTED.]</para>
@@ -910,7 +910,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wincred.h", MSDNShortId = "65757235-d92c-479f-8e2b-1f8d8564792b")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CredUnmarshalCredential(string MarshaledCredential, ref CRED_MARSHAL_TYPE CredType, out SafeCredMemoryHandle Credential);
+		public static extern bool CredUnmarshalCredential(string MarshaledCredential, out CRED_MARSHAL_TYPE CredType, out SafeCredMemoryHandle Credential);
 
 		/// <summary>
 		/// <para>
@@ -1071,7 +1071,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wincred.h", MSDNShortId = "9a590347-d610-4916-bf63-60fbec173ac2")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CredWrite(ref CREDENTIAL Credential, CRED_WRITE Flags = CRED_WRITE.CRED_PRESERVE_CREDENTIAL_BLOB);
+		public static extern bool CredWrite(in CREDENTIAL Credential, CRED_WRITE Flags);
 
 		/// <summary>
 		/// <para>
@@ -1184,7 +1184,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("wincred.h", MSDNShortId = "6b54c14f-a736-4fb0-b4e4-97765a792a5e")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool CredWriteDomainCredentials(ref CREDENTIAL_TARGET_INFORMATION TargetInfo, ref CREDENTIAL Credential, uint Flags);
+		public static extern bool CredWriteDomainCredentials(in CREDENTIAL_TARGET_INFORMATION TargetInfo, in CREDENTIAL Credential, CRED_WRITE Flags);
 
 		/// <summary>Undocumented.</summary>
 		[PInvokeData("wincred.h", MSDNShortId = "20a1d54b-04a7-4b0a-88e4-1970d1f71502")]

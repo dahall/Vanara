@@ -8,7 +8,7 @@ namespace Vanara.InteropServices
 	/// <seealso cref="System.Runtime.InteropServices.ICustomMarshaler"/>
 	public class CoTaskMemStringMarshaler : ICustomMarshaler
 	{
-		private CharSet charSet = CharSet.Unicode;
+		private readonly CharSet charSet = CharSet.Unicode;
 
 		private CoTaskMemStringMarshaler(string cookie)
 		{
@@ -29,10 +29,7 @@ namespace Vanara.InteropServices
 
 		/// <summary>Performs necessary cleanup of the unmanaged data when it is no longer needed.</summary>
 		/// <param name="pNativeData">A pointer to the unmanaged data to be destroyed.</param>
-		public void CleanUpNativeData(IntPtr pNativeData)
-		{
-			Marshal.FreeCoTaskMem(pNativeData);
-		}
+		public void CleanUpNativeData(IntPtr pNativeData) => Marshal.FreeCoTaskMem(pNativeData);
 
 		/// <summary>Returns the size of the native data to be marshaled.</summary>
 		/// <returns>The size in bytes of the native data.</returns>

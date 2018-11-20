@@ -5,9 +5,6 @@ using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Gdi32;
 
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable InconsistentNaming
-
 namespace Vanara.PInvoke
 {
 	public static partial class UxTheme
@@ -19,10 +16,13 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>No animation. Not implemented in Windows Vista.</summary>
 			BPAS_NONE,
+
 			/// <summary>Linear fade animation.</summary>
 			BPAS_LINEAR,
+
 			/// <summary>Cubic fade animation. Not implemented in Windows Vista.</summary>
 			BPAS_CUBIC,
+
 			/// <summary>Sinusoid fade animation. Not implemented in Windows Vista.</summary>
 			BPAS_SINE
 		}
@@ -31,12 +31,18 @@ namespace Vanara.PInvoke
 		[PInvokeData("UxTheme.h")]
 		public enum BP_BUFFERFORMAT
 		{
-			/// <summary>Compatible bitmap. The number of bits per pixel is based on the color format of the device associated with the HDC specified with BeginBufferedPaint or BeginBufferedAnimation—typically, this is the display device.</summary>
+			/// <summary>
+			/// Compatible bitmap. The number of bits per pixel is based on the color format of the device associated with the HDC specified
+			/// with BeginBufferedPaint or BeginBufferedAnimation—typically, this is the display device.
+			/// </summary>
 			BPBF_COMPATIBLEBITMAP,
+
 			/// <summary>Bottom-up device-independent bitmap. The origin of the bitmap is the lower-left corner. Uses 32 bits per pixel.</summary>
 			BPBF_DIB,
+
 			/// <summary>Top-down device-independent bitmap. The origin of the bitmap is the upper-left corner. Uses 32 bits per pixel.</summary>
 			BPBF_TOPDOWNDIB,
+
 			/// <summary>Top-down, monochrome, device-independent bitmap. Uses 1 bit per pixel.</summary>
 			BPBF_TOPDOWNMONODIB
 		}
@@ -48,16 +54,25 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>No flag.</summary>
 			BPPF_NONE = 0,
-			/// <summary>Initialize the buffer to ARGB = {0, 0, 0, 0} during BeginBufferedPaint. This erases the previous contents of the buffer.</summary>
+
+			/// <summary>
+			/// Initialize the buffer to ARGB = {0, 0, 0, 0} during BeginBufferedPaint. This erases the previous contents of the buffer.
+			/// </summary>
 			BPPF_ERASE = 1,
-			/// <summary>Do not apply the clip region of the target DC to the double buffer. If this flag is not set and if the target DC is a window DC, then clipping due to overlapping windows is applied to the double buffer.</summary>
+
+			/// <summary>
+			/// Do not apply the clip region of the target DC to the double buffer. If this flag is not set and if the target DC is a window
+			/// DC, then clipping due to overlapping windows is applied to the double buffer.
+			/// </summary>
 			BPPF_NOCLIP = 2,
+
 			/// <summary>A non-client DC is being used.</summary>
 			BPPF_NONCLIENT = 4,
 		}
 
 		/// <summary>
-		/// Begins a buffered animation operation. The animation consists of a cross-fade between the contents of two buffers over a specified period of time.
+		/// Begins a buffered animation operation. The animation consists of a cross-fade between the contents of two buffers over a
+		/// specified period of time.
 		/// </summary>
 		/// <param name="hwnd">
 		/// <para>Type: <c><c>HWND</c></c></para>
@@ -86,24 +101,26 @@ namespace Vanara.PInvoke
 		/// <param name="phdcFrom">
 		/// <para>Type: <c><c>HDC</c>*</c></para>
 		/// <para>
-		/// When this function returns, this value points to the handle of the DC where the application should paint the initial state of the animation, if not <c>NULL</c>.
+		/// When this function returns, this value points to the handle of the DC where the application should paint the initial state of the
+		/// animation, if not <c>NULL</c>.
 		/// </para>
 		/// </param>
 		/// <param name="phdcTo">
 		/// <para>Type: <c><c>HDC</c>*</c></para>
 		/// <para>
-		/// When this function returns, this value points to the handle of the DC where the application should paint the final state of the animation, if not <c>NULL</c>.
+		/// When this function returns, this value points to the handle of the DC where the application should paint the final state of the
+		/// animation, if not <c>NULL</c>.
 		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>HANIMATIONBUFFER</c></para>
 		/// <para>A handle to the buffered paint animation.</para>
 		/// </returns>
-		// HANIMATIONBUFFER BeginBufferedAnimation( HWND hwnd, HDC hdcTarget, const RECT *rcTarget, BP_BUFFERFORMAT dwFormat, _In_ BP_PAINTPARAMS *pPaintParams, _In_ BP_ANIMATIONPARAMS *pAnimationParams, _Out_ HDC *phdcFrom, _Out_ HDC *phdcTo);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773252(v=vs.85).aspx
+		// HANIMATIONBUFFER BeginBufferedAnimation( HWND hwnd, HDC hdcTarget, const RECT *rcTarget, BP_BUFFERFORMAT dwFormat, _In_
+		// BP_PAINTPARAMS *pPaintParams, _In_ BP_ANIMATIONPARAMS *pAnimationParams, _Out_ HDC *phdcFrom, _Out_ HDC *phdcTo); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773252(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773252")]
-		public static extern SafeBufferedAnimationHandle BeginBufferedAnimation(HWND hwnd, HDC hdcTarget, in RECT rcTarget, BP_BUFFERFORMAT dwFormat,
+		public static extern SafeHANIMATIONBUFFER BeginBufferedAnimation(HWND hwnd, HDC hdcTarget, in RECT rcTarget, BP_BUFFERFORMAT dwFormat,
 			[In] BP_PAINTPARAMS pPaintParams, in BP_ANIMATIONPARAMS pAnimationParams, out HDC phdcFrom, out HDC phdcTo);
 
 		/// <summary>Begins a buffered paint operation.</summary>
@@ -130,21 +147,21 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// <para>Type: <c>HPAINTBUFFER</c></para>
 		/// <para>
-		/// A handle to the buffered paint context. If this function fails, the return value is <c>NULL</c>, and phdc is <c>NULL</c>. To get extended error
-		/// information, call <c>GetLastError</c>.
+		/// A handle to the buffered paint context. If this function fails, the return value is <c>NULL</c>, and phdc is <c>NULL</c>. To get
+		/// extended error information, call <c>GetLastError</c>.
 		/// </para>
 		/// <para>The returned handle is freed when <c>EndBufferedPaint</c> is called.</para>
 		/// <para>
-		/// An application should call <c>BufferedPaintInit</c> on the calling thread before calling <c>BeginBufferedPaint</c>, and <c>BufferedPaintUnInit</c>
-		/// before the thread is terminated. Failure to call <c>BufferedPaintInit</c> may result in degraded performance due to internal data being initialized
-		/// and destroyed for each buffered paint operation.
+		/// An application should call <c>BufferedPaintInit</c> on the calling thread before calling <c>BeginBufferedPaint</c>, and
+		/// <c>BufferedPaintUnInit</c> before the thread is terminated. Failure to call <c>BufferedPaintInit</c> may result in degraded
+		/// performance due to internal data being initialized and destroyed for each buffered paint operation.
 		/// </para>
 		/// </returns>
-		// HPAINTBUFFER BeginBufferedPaint( HDC hdcTarget, const RECT *prcTarget, BP_BUFFERFORMAT dwFormat, _In_ BP_PAINTPARAMS *pPaintParams, _Out_ HDC *phdc);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773257(v=vs.85).aspx
+		// HPAINTBUFFER BeginBufferedPaint( HDC hdcTarget, const RECT *prcTarget, BP_BUFFERFORMAT dwFormat, _In_ BP_PAINTPARAMS
+		// *pPaintParams, _Out_ HDC *phdc); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773257(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773257")]
-		public static extern SafeBufferedPaintHandle BeginBufferedPaint(HDC hdcTarget, in RECT prcTarget, BP_BUFFERFORMAT dwFormat, [In] BP_PAINTPARAMS pPaintParams, out HDC phdc);
+		public static extern SafeHPAINTBUFFER BeginBufferedPaint(HDC hdcTarget, in RECT prcTarget, BP_BUFFERFORMAT dwFormat, [In] BP_PAINTPARAMS pPaintParams, out HDC phdc);
 
 		/// <summary>Clears a specified rectangle in the buffer to ARGB = {0,0,0,0}.</summary>
 		/// <param name="hBufferedPaint">
@@ -153,25 +170,26 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="prc">
 		/// <para>Type: <c>const <c>RECT</c>*</c></para>
-		/// <para>A pointer to a <c>RECT</c> structure that specifies the rectangle to clear. Set this parameter to <c>NULL</c> to specify the entire buffer.</para>
+		/// <para>
+		/// A pointer to a <c>RECT</c> structure that specifies the rectangle to clear. Set this parameter to <c>NULL</c> to specify the
+		/// entire buffer.
+		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT BufferedPaintClear( HPAINTBUFFER hBufferedPaint, _In_ const RECT *prc);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773262(v=vs.85).aspx
+		// HRESULT BufferedPaintClear( HPAINTBUFFER hBufferedPaint, _In_ const RECT *prc); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773262(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773262")]
-		public static extern HRESULT BufferedPaintClear(SafeBufferedPaintHandle hBufferedPaint, ref RECT prc);
+		public static extern HRESULT BufferedPaintClear(HPAINTBUFFER hBufferedPaint, in RECT prc);
 
 		/// <summary>Initialize buffered painting for the current thread.</summary>
 		/// <returns>
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT BufferedPaintInit(void);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773266(v=vs.85).aspx
+		// HRESULT BufferedPaintInit(void); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773266(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773266")]
 		public static extern HRESULT BufferedPaintInit();
@@ -189,16 +207,15 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>BOOL</c></c></para>
 		/// <para>Returns <c>TRUE</c> if the frame has been painted, or <c>FALSE</c> otherwise.</para>
 		/// </returns>
-		// BOOL BufferedPaintRenderAnimation( HWND hwnd, HDC hdcTarget);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773271(v=vs.85).aspx
+		// BOOL BufferedPaintRenderAnimation( HWND hwnd, HDC hdcTarget); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773271(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773271")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool BufferedPaintRenderAnimation(HWND hwnd, HDC hdcTarget);
 
 		/// <summary>
-		/// Sets the alpha to a specified value in a given rectangle. The alpha controls the amount of transparency applied when blending with the buffer onto
-		/// the destination target device context (DC).
+		/// Sets the alpha to a specified value in a given rectangle. The alpha controls the amount of transparency applied when blending
+		/// with the buffer onto the destination target device context (DC).
 		/// </summary>
 		/// <param name="hBufferedPaint">
 		/// <para>Type: <c>HPAINTBUFFER</c></para>
@@ -207,7 +224,8 @@ namespace Vanara.PInvoke
 		/// <param name="prc">
 		/// <para>Type: <c>const <c>RECT</c>*</c></para>
 		/// <para>
-		/// A pointer to a <c>RECT</c> structure that specifies the rectangle in which to set the alpha. Set this parameter to <c>NULL</c> to specify the entire buffer.
+		/// A pointer to a <c>RECT</c> structure that specifies the rectangle in which to set the alpha. Set this parameter to <c>NULL</c> to
+		/// specify the entire buffer.
 		/// </para>
 		/// </param>
 		/// <param name="alpha">
@@ -218,11 +236,10 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT BufferedPaintSetAlpha( HPAINTBUFFER hBufferedPaint, _In_ const RECT *prc, BYTE alpha);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773276(v=vs.85).aspx
+		// HRESULT BufferedPaintSetAlpha( HPAINTBUFFER hBufferedPaint, _In_ const RECT *prc, BYTE alpha); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773276(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773276")]
-		public static extern HRESULT BufferedPaintSetAlpha(SafeBufferedPaintHandle hBufferedPaint, ref RECT prc, byte alpha);
+		public static extern HRESULT BufferedPaintSetAlpha(HPAINTBUFFER hBufferedPaint, in RECT prc, byte alpha);
 
 		/// <summary>Stops all buffered animations for the given window.</summary>
 		/// <param name="hwnd">
@@ -233,22 +250,20 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT BufferedPaintStopAllAnimations( HWND hwnd);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773280(v=vs.85).aspx
+		// HRESULT BufferedPaintStopAllAnimations( HWND hwnd); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773280(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773280")]
 		public static extern HRESULT BufferedPaintStopAllAnimations(HWND hwnd);
 
 		/// <summary>
-		/// Closes down buffered painting for the current thread. Called once for each call to <c>BufferedPaintInit</c> after calls to <c>BeginBufferedPaint</c>
-		/// are no longer needed.
+		/// Closes down buffered painting for the current thread. Called once for each call to <c>BufferedPaintInit</c> after calls to
+		/// <c>BeginBufferedPaint</c> are no longer needed.
 		/// </summary>
 		/// <returns>
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT BufferedPaintUnInit(void);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773284(v=vs.85).aspx
+		// HRESULT BufferedPaintUnInit(void); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773284(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773284")]
 		public static extern HRESULT BufferedPaintUnInit();
@@ -261,19 +276,18 @@ namespace Vanara.PInvoke
 		/// <param name="fUpdateTarget">
 		/// <para>Type: <c><c>BOOL</c></c></para>
 		/// <para>
-		/// If <c>TRUE</c>, updates the target DC with the animation. If <c>FALSE</c>, the animation is not started, the target DC is not updated, and the
-		/// hbpAnimation parameter is freed.
+		/// If <c>TRUE</c>, updates the target DC with the animation. If <c>FALSE</c>, the animation is not started, the target DC is not
+		/// updated, and the hbpAnimation parameter is freed.
 		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT EndBufferedAnimation( HANIMATIONBUFFER hbpAnimation, BOOL fUpdateTarget);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773328(v=vs.85).aspx
+		// HRESULT EndBufferedAnimation( HANIMATIONBUFFER hbpAnimation, BOOL fUpdateTarget); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773328(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773328")]
-		public static extern HRESULT EndBufferedAnimation(IntPtr hbpAnimation, [MarshalAs(UnmanagedType.Bool)] bool fUpdateTarget);
+		public static extern HRESULT EndBufferedAnimation(HANIMATIONBUFFER hbpAnimation, [MarshalAs(UnmanagedType.Bool)] bool fUpdateTarget);
 
 		/// <summary>Completes a buffered paint operation and frees the associated buffered paint handle.</summary>
 		/// <param name="hBufferedPaint">
@@ -288,11 +302,10 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT EndBufferedPaint( HPAINTBUFFER hBufferedPaint, BOOL fUpdateTarget);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773343(v=vs.85).aspx
+		// HRESULT EndBufferedPaint( HPAINTBUFFER hBufferedPaint, BOOL fUpdateTarget); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773343(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773343")]
-		public static extern HRESULT EndBufferedPaint(IntPtr hBufferedPaint, [MarshalAs(UnmanagedType.Bool)] bool fUpdateTarget);
+		public static extern HRESULT EndBufferedPaint(HPAINTBUFFER hBufferedPaint, [MarshalAs(UnmanagedType.Bool)] bool fUpdateTarget);
 
 		/// <summary>Retrieves a pointer to the buffer bitmap if the buffer is a device-independent bitmap (DIB).</summary>
 		/// <param name="hBufferedPaint">
@@ -306,19 +319,20 @@ namespace Vanara.PInvoke
 		/// <param name="pcxRow">
 		/// <para>Type: <c>int*</c></para>
 		/// <para>
-		/// When this function returns, contains a pointer to the width, in pixels, of the buffer bitmap. This value is not necessarily equal to the buffer
-		/// width. It may be larger.
+		/// When this function returns, contains a pointer to the width, in pixels, of the buffer bitmap. This value is not necessarily equal
+		/// to the buffer width. It may be larger.
 		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c><c>HRESULT</c></c></para>
-		/// <para>Returns S_OK if successful, or an error value otherwise. If an error occurs, ppbBuffer is set to <c>NULL</c> and pcxRow is set to zero.</para>
+		/// <para>
+		/// Returns S_OK if successful, or an error value otherwise. If an error occurs, ppbBuffer is set to <c>NULL</c> and pcxRow is set to zero.
+		/// </para>
 		/// </returns>
-		// HRESULT GetBufferedPaintBits( HPAINTBUFFER hBufferedPaint, _Out_ RGBQUAD **ppbBuffer, _Out_ int *pcxRow);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773348(v=vs.85).aspx
+		// HRESULT GetBufferedPaintBits( HPAINTBUFFER hBufferedPaint, _Out_ RGBQUAD **ppbBuffer, _Out_ int *pcxRow); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773348(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773348")]
-		public static extern HRESULT GetBufferedPaintBits(SafeBufferedPaintHandle hBufferedPaint, out IntPtr ppbBuffer, out int pcxRow);
+		public static extern HRESULT GetBufferedPaintBits(HPAINTBUFFER hBufferedPaint, out IntPtr ppbBuffer, out int pcxRow);
 
 		/// <summary>Gets the paint device context (DC). This is the same value retrieved by <c>BeginBufferedPaint</c>.</summary>
 		/// <param name="hBufferedPaint">
@@ -327,13 +341,14 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c><c>HDC</c></c></para>
-		/// <para>Handle of the requested DC. This is the same DC that is returned by <c>BeginBufferedPaint</c>. Returns <c>NULL</c> upon failure.</para>
+		/// <para>
+		/// Handle of the requested DC. This is the same DC that is returned by <c>BeginBufferedPaint</c>. Returns <c>NULL</c> upon failure.
+		/// </para>
 		/// </returns>
-		// HDC GetBufferedPaintDC( HPAINTBUFFER hBufferedPaint);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773351(v=vs.85).aspx
+		// HDC GetBufferedPaintDC( HPAINTBUFFER hBufferedPaint); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773351(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773351")]
-		public static extern IntPtr GetBufferedPaintDC(SafeBufferedPaintHandle hBufferedPaint);
+		public static extern HDC GetBufferedPaintDC(HPAINTBUFFER hBufferedPaint);
 
 		/// <summary>Retrieves the target device context (DC).</summary>
 		/// <param name="hBufferedPaint">
@@ -344,11 +359,10 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HDC</c></c></para>
 		/// <para>A handle to the requested DC, or <c>NULL</c> otherwise.</para>
 		/// </returns>
-		// HDC GetBufferedPaintTargetDC( HPAINTBUFFER hBufferedPaint);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773356(v=vs.85).aspx
+		// HDC GetBufferedPaintTargetDC( HPAINTBUFFER hBufferedPaint); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773356(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773356")]
-		public static extern IntPtr GetBufferedPaintTargetDC(SafeBufferedPaintHandle hBufferedPaint);
+		public static extern HDC GetBufferedPaintTargetDC(HPAINTBUFFER hBufferedPaint);
 
 		/// <summary>Retrieves the target rectangle specified by BeginBufferedPaint.</summary>
 		/// <param name="hBufferedPaint">
@@ -363,25 +377,27 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT GetBufferedPaintTargetRect( HPAINTBUFFER hBufferedPaint, _Out_ RECT *prc);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773361(v=vs.85).aspx
+		// HRESULT GetBufferedPaintTargetRect( HPAINTBUFFER hBufferedPaint, _Out_ RECT *prc); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773361(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773361")]
-		public static extern HRESULT GetBufferedPaintTargetRect(SafeBufferedPaintHandle hBufferedPaint, out RECT prc);
+		public static extern HRESULT GetBufferedPaintTargetRect(HPAINTBUFFER hBufferedPaint, out RECT prc);
 
 		/// <summary>Defines animation parameters for the <c>BP_PAINTPARAMS</c> structure used by <c>BeginBufferedPaint</c>.</summary>
-		// typedef struct _BP_ANIMATIONPARAMS { DWORD cbSize; DWORD dwFlags; BP_ANIMATIONSTYLE style; DWORD dwDuration;} BP_ANIMATIONPARAMS, *PBP_ANIMATIONPARAMS;
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773224(v=vs.85).aspx
+		// typedef struct _BP_ANIMATIONPARAMS { DWORD cbSize; DWORD dwFlags; BP_ANIMATIONSTYLE style; DWORD dwDuration;} BP_ANIMATIONPARAMS,
+		// *PBP_ANIMATIONPARAMS; https://msdn.microsoft.com/en-us/library/windows/desktop/bb773224(v=vs.85).aspx
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773224")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct BP_ANIMATIONPARAMS
 		{
 			/// <summary>The size, in bytes, of this structure.</summary>
 			public uint cbSize;
+
 			/// <summary>Reserved.</summary>
 			public uint dwFlags;
+
 			/// <summary>Animation style.</summary>
 			public BP_ANIMATIONSTYLE style;
+
 			/// <summary>Length of the animation, in milliseconds.</summary>
 			public uint dwDuration;
 
@@ -400,20 +416,124 @@ namespace Vanara.PInvoke
 			public static BP_ANIMATIONPARAMS Empty => new BP_ANIMATIONPARAMS { cbSize = (uint)Marshal.SizeOf(typeof(BP_ANIMATIONPARAMS)) };
 		}
 
+		/// <summary>Provides a handle to an animation buffer.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HANIMATIONBUFFER : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="HANIMATIONBUFFER"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public HANIMATIONBUFFER(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HANIMATIONBUFFER"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HANIMATIONBUFFER NULL => new HANIMATIONBUFFER(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HANIMATIONBUFFER"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HANIMATIONBUFFER h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HANIMATIONBUFFER"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HANIMATIONBUFFER(IntPtr h) => new HANIMATIONBUFFER(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HANIMATIONBUFFER h1, HANIMATIONBUFFER h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HANIMATIONBUFFER h1, HANIMATIONBUFFER h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HANIMATIONBUFFER h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>Provides a handle to a paint buffer.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HPAINTBUFFER : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="HPAINTBUFFER"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public HPAINTBUFFER(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HPAINTBUFFER"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HPAINTBUFFER NULL => new HPAINTBUFFER(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HPAINTBUFFER"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HPAINTBUFFER h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPAINTBUFFER"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HPAINTBUFFER(IntPtr h) => new HPAINTBUFFER(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HPAINTBUFFER h1, HPAINTBUFFER h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HPAINTBUFFER h1, HPAINTBUFFER h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HPAINTBUFFER h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
 		/// <summary>Defines paint operation parameters for <c>BeginBufferedPaint</c>.</summary>
-		// typedef struct _BP_PAINTPARAMS { DWORD cbSize; DWORD dwFlags; const RECT *prcExclude; const BLENDFUNCTION *pBlendFunction;} BP_PAINTPARAMS, *PBP_PAINTPARAMS;
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb773228(v=vs.85).aspx
+		// typedef struct _BP_PAINTPARAMS { DWORD cbSize; DWORD dwFlags; const RECT *prcExclude; const BLENDFUNCTION *pBlendFunction;}
+		// BP_PAINTPARAMS, *PBP_PAINTPARAMS; https://msdn.microsoft.com/en-us/library/windows/desktop/bb773228(v=vs.85).aspx
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773228")]
 		[StructLayout(LayoutKind.Sequential)]
 		public class BP_PAINTPARAMS : IDisposable
 		{
 			/// <summary>The size, in bytes, of this structure.</summary>
 			public int cbSize;
+
 			/// <summary>One or more of the following values.</summary>
 			public BufferedPaintParamsFlags Flags;
-			/// <summary>A pointer to exclusion RECT structure. This rectangle is excluded from the clipping region. May be NULL for no exclusion rectangle.</summary>
+
+			/// <summary>
+			/// A pointer to exclusion RECT structure. This rectangle is excluded from the clipping region. May be NULL for no exclusion rectangle.
+			/// </summary>
 			public IntPtr prcExclude;
-			/// <summary>A pointer to BLENDFUNCTION structure, which controls blending by specifying the blending functions for source and destination bitmaps. If NULL, the source buffer is copied to the destination with no blending.</summary>
+
+			/// <summary>
+			/// A pointer to BLENDFUNCTION structure, which controls blending by specifying the blending functions for source and destination
+			/// bitmaps. If NULL, the source buffer is copied to the destination with no blending.
+			/// </summary>
 			public IntPtr pBlendFunction;
 
 			/// <summary>Initializes a new instance of the <see cref="BP_PAINTPARAMS"/> class.</summary>
@@ -434,7 +554,7 @@ namespace Vanara.PInvoke
 				{
 					if (prcExclude != IntPtr.Zero) Marshal.FreeCoTaskMem(prcExclude);
 					if (value.HasValue && !value.Value.IsEmpty)
-						prcExclude = value.StructureToPtr(Marshal.AllocCoTaskMem, out int _);
+						prcExclude = value.StructureToPtr(Marshal.AllocCoTaskMem, out var _);
 				}
 			}
 
@@ -447,13 +567,11 @@ namespace Vanara.PInvoke
 				{
 					if (pBlendFunction != IntPtr.Zero) Marshal.FreeCoTaskMem(pBlendFunction);
 					if (value.HasValue && !value.Value.IsEmpty)
-						pBlendFunction = value.StructureToPtr(Marshal.AllocCoTaskMem, out int _);
+						pBlendFunction = value.StructureToPtr(Marshal.AllocCoTaskMem, out var _);
 				}
 			}
 
-			/// <summary>
-			/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-			/// </summary>
+			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
 			public void Dispose()
 			{
 				if (prcExclude != IntPtr.Zero) Marshal.FreeCoTaskMem(prcExclude);
@@ -468,12 +586,12 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Automated initialization and uninitialization of buffered painting for the current thread. Automatically calls <see cref="BufferedPaintInit"/> on
-		/// construction and <see cref="BufferedPaintUnInit"/> on disposal.
+		/// Automated initialization and uninitialization of buffered painting for the current thread. Automatically calls <see
+		/// cref="BufferedPaintInit"/> on construction and <see cref="BufferedPaintUnInit"/> on disposal.
 		/// </summary>
 		/// <example>
-		/// Best used by declaring a static field within the class that calls buffered paint methods. This will ensure that the initialization only happens once
-		/// per thread and then is uninitialized when all methods are complete.
+		/// Best used by declaring a static field within the class that calls buffered paint methods. This will ensure that the
+		/// initialization only happens once per thread and then is uninitialized when all methods are complete.
 		/// <code lang="cs">
 		/// private static BufferedPaintBlock buffPaintBlock = new BufferedPaintBlock();
 		/// </code>
@@ -482,46 +600,58 @@ namespace Vanara.PInvoke
 		public class BufferedPaintBlock : IDisposable
 		{
 			/// <summary>Initializes a new instance of the <see cref="BufferedPaintBlock"/> class calling <see cref="BufferedPaintInit"/>.</summary>
-			public BufferedPaintBlock()
-			{
-				BufferedPaintInit().ThrowIfFailed();
-			}
+			public BufferedPaintBlock() => BufferedPaintInit().ThrowIfFailed();
 
 			/// <summary>Automatically calls <see cref="BufferedPaintUnInit"/>.</summary>
-			public void Dispose()
-			{
-				BufferedPaintUnInit();
-			}
+			public void Dispose() => BufferedPaintUnInit();
 		}
 
-		/// <summary>A safe handle for buffered paint calls. Get handle by calling <see cref="BeginBufferedPaint"/>.</summary>
-		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
-		public class SafeBufferedPaintHandle : GenericSafeHandle
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HANIMATIONBUFFER"/> that is disposed using <see cref="EndBufferedAnimation"/>.</summary>
+		public class SafeHANIMATIONBUFFER : HANDLE
 		{
-			/// <summary>Initializes a new instance of the <see cref="SafeBufferedPaintHandle"/> class.</summary>
-			public SafeBufferedPaintHandle() : this(IntPtr.Zero) { }
+			private readonly bool fUpdateTarget = true;
 
-			/// <summary>Initializes a new instance of the <see cref="SafeBufferedPaintHandle"/> class.</summary>
-			/// <param name="ptr">The PTR.</param>
-			/// <param name="updateTargetDC">if set to <c>true</c> [update target dc].</param>
-			/// <param name="owns">if set to <c>true</c> [owns].</param>
-			public SafeBufferedPaintHandle(IntPtr ptr, bool updateTargetDC = true, bool owns = true) : 
-				base(ptr, h => EndBufferedPaint(h, updateTargetDC).Succeeded, owns) { }
+			/// <summary>Initializes a new instance of the <see cref="SafeHANIMATIONBUFFER"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHANIMATIONBUFFER(IntPtr preexistingHandle, bool updateTargetDC = true, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) => fUpdateTarget = updateTargetDC;
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHANIMATIONBUFFER"/> class.</summary>
+			private SafeHANIMATIONBUFFER() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHANIMATIONBUFFER"/> to <see cref="HANIMATIONBUFFER"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HANIMATIONBUFFER(SafeHANIMATIONBUFFER h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => EndBufferedAnimation(this, fUpdateTarget).Succeeded;
 		}
 
-		/// <summary>A safe handle for buffered paint animation calls. Get handle by calling <see cref="BeginBufferedAnimation"/>.</summary>
-		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle" />
-		public class SafeBufferedAnimationHandle : GenericSafeHandle
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPAINTBUFFER"/> that is disposed using <see cref="EndBufferedPaint"/>.</summary>
+		public class SafeHPAINTBUFFER : HANDLE
 		{
-			/// <summary>Initializes a new instance of the <see cref="SafeBufferedAnimationHandle"/> class.</summary>
-			public SafeBufferedAnimationHandle() : this(IntPtr.Zero) { }
+			private readonly bool fUpdateTarget = true;
 
-			/// <summary>Initializes a new instance of the <see cref="SafeBufferedAnimationHandle"/> class.</summary>
-			/// <param name="ptr">The PTR.</param>
-			/// <param name="updateTargetDC">if set to <c>true</c> [update target dc].</param>
-			/// <param name="owns">if set to <c>true</c> [owns].</param>
-			public SafeBufferedAnimationHandle(IntPtr ptr, bool updateTargetDC = true, bool owns = true) :
-				base(ptr, h => EndBufferedAnimation(h, updateTargetDC).Succeeded, owns) { }
+			/// <summary>Initializes a new instance of the <see cref="SafeHPAINTBUFFER"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHPAINTBUFFER(IntPtr preexistingHandle, bool updateTargetDC = true, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) => fUpdateTarget = updateTargetDC;
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHPAINTBUFFER"/> class.</summary>
+			private SafeHPAINTBUFFER() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHPAINTBUFFER"/> to <see cref="HPAINTBUFFER"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HPAINTBUFFER(SafeHPAINTBUFFER h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => EndBufferedPaint(this, fUpdateTarget).Succeeded;
 		}
 	}
 }

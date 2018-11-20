@@ -2,26 +2,22 @@
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 
-//using static Vanara.Shell32.PIDLUtil;
-// ReSharper disable InconsistentNaming
-
 namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
-		/// <summary>
-		/// Utilities to work with <see cref="PIDL"/> and raw ITEMIDLIST pointers.
-		/// </summary>
+		/// <summary>Utilities to work with <see cref="PIDL"/> and raw ITEMIDLIST pointers.</summary>
 		public static class PIDLUtil
 		{
 			/// <summary>Clones an ITEMIDLIST structure</summary>
 			public static PIDL ILClone(IntPtr pidl) => new PIDL(IntILClone(pidl));
 
-			/// <summary>
-			/// Clones the first SHITEMID structure in an ITEMIDLIST structure
-			/// </summary>
+			/// <summary>Clones the first SHITEMID structure in an ITEMIDLIST structure</summary>
 			/// <param name="pidl">A pointer to the ITEMIDLIST structure that you want to clone.</param>
-			/// <returns>A pointer to an ITEMIDLIST structure that contains the first SHITEMID structure from the ITEMIDLIST structure specified by pidl. Returns NULL on failure.</returns>
+			/// <returns>
+			/// A pointer to an ITEMIDLIST structure that contains the first SHITEMID structure from the ITEMIDLIST structure specified by
+			/// pidl. Returns NULL on failure.
+			/// </returns>
 			public static PIDL ILCloneFirst(IntPtr pidl)
 			{
 				var size = ItemIdSize(pidl);
@@ -35,17 +31,18 @@ namespace Vanara.PInvoke
 				return new PIDL(newPidl);
 			}
 
-			/// <summary>
-			/// Combines two ITEMIDLIST structures.
-			/// </summary>
+			/// <summary>Combines two ITEMIDLIST structures.</summary>
 			/// <param name="pidl1">A pointer to the first ITEMIDLIST structure.</param>
-			/// <param name="pidl2">A pointer to the second ITEMIDLIST structure. This structure is appended to the structure pointed to by pidl1.</param>
-			/// <returns>Returns an ITEMIDLIST containing the combined structures. If you set either pidl1 or pidl2 to NULL, the returned ITEMIDLIST structure is a clone of the non-NULL parameter. Returns NULL if pidl1 and pidl2 are both set to NULL.</returns>
+			/// <param name="pidl2">
+			/// A pointer to the second ITEMIDLIST structure. This structure is appended to the structure pointed to by pidl1.
+			/// </param>
+			/// <returns>
+			/// Returns an ITEMIDLIST containing the combined structures. If you set either pidl1 or pidl2 to NULL, the returned ITEMIDLIST
+			/// structure is a clone of the non-NULL parameter. Returns NULL if pidl1 and pidl2 are both set to NULL.
+			/// </returns>
 			public static PIDL ILCombine(IntPtr pidl1, IntPtr pidl2) => new PIDL(IntILCombine(pidl1, pidl2));
 
-			/// <summary>
-			/// Returns a pointer to the last SHITEMID structure in an ITEMIDLIST structure
-			/// </summary>
+			/// <summary>Returns a pointer to the last SHITEMID structure in an ITEMIDLIST structure</summary>
 			/// <param name="pidl">A pointer to an ITEMIDLIST structure.</param>
 			/// <returns>A pointer to the last SHITEMID structure in pidl.</returns>
 			public static IntPtr ILFindLastId(IntPtr pidl)
@@ -62,21 +59,27 @@ namespace Vanara.PInvoke
 				return ptr1;
 			}
 
-			/// <summary>
-			/// Gets the next SHITEMID structure in an ITEMIDLIST structure
-			/// </summary>
+			/// <summary>Gets the next SHITEMID structure in an ITEMIDLIST structure</summary>
 			/// <param name="pidl">A pointer to a particular SHITEMID structure in a larger ITEMIDLIST structure.</param>
-			/// <returns>Returns a pointer to the SHITEMID structure that follows the one specified by pidl. Returns NULL if pidl points to the last SHITEMID structure.</returns>
+			/// <returns>
+			/// Returns a pointer to the SHITEMID structure that follows the one specified by pidl. Returns NULL if pidl points to the last
+			/// SHITEMID structure.
+			/// </returns>
 			public static IntPtr ILGetNext(IntPtr pidl)
 			{
 				var size = ItemIdSize(pidl);
 				return size == 0 ? IntPtr.Zero : pidl.Offset(size);
 			}
 
-			/// <summary>
-			/// Removes the last SHITEMID structure from an ITEMIDLIST structure
-			/// </summary>
-			/// <param name="pidl">A pointer to the ITEMIDLIST structure to be shortened. When the function returns, this variable points to the shortened structure.</param>
+			/// <summary>Determines whether the specified ITEMIDLIST has no children.</summary>
+			/// <param name="pidl">A pointer to the ITEMIDLIST structure to be evaluated.</param>
+			/// <returns><c>true</c> if the specified ITEMIDLIST is empty; otherwise, <c>false</c>.</returns>
+			public static bool ILIsEmpty(IntPtr pidl) => ItemIdListSize(pidl) == 0;
+
+			/// <summary>Removes the last SHITEMID structure from an ITEMIDLIST structure</summary>
+			/// <param name="pidl">
+			/// A pointer to the ITEMIDLIST structure to be shortened. When the function returns, this variable points to the shortened structure.
+			/// </param>
 			/// <returns>Returns TRUE if successful, FALSE otherwise.</returns>
 			public static bool ILRemoveLastId(IntPtr pidl)
 			{
@@ -90,14 +93,7 @@ namespace Vanara.PInvoke
 				return true;
 			}
 
-			/// <summary>Determines whether the specified ITEMIDLIST has no children.</summary>
-			/// <param name="pidl">A pointer to the ITEMIDLIST structure to be evaluated.</param>
-			/// <returns><c>true</c> if the specified ITEMIDLIST is empty; otherwise, <c>false</c>.</returns>
-			public static bool ILIsEmpty(IntPtr pidl) => ItemIdListSize(pidl) == 0;
-
-			/// <summary>
-			/// Separates an ITEMIDLIST into the parent SHITEMID and the children SHITEMIDs
-			/// </summary>
+			/// <summary>Separates an ITEMIDLIST into the parent SHITEMID and the children SHITEMIDs</summary>
 			/// <param name="pidl">A pointer to the ITEMIDLIST structure to be evaluated.</param>
 			/// <param name="parent">The parent.</param>
 			/// <param name="child">The children.</param>

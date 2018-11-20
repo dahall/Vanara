@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Kernel32;
 
@@ -511,7 +510,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "drawiconex")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DrawIconEx(HDC hdc, int xLeft, int yTop, HICON hIcon, int cxWidth, int cyWidth, uint istepIfAniCur, SafeHBRUSH hbrFlickerFreeDraw, DrawIconExFlags diFlags);
+		public static extern bool DrawIconEx(HDC hdc, int xLeft, int yTop, HICON hIcon, int cxWidth, int cyWidth, uint istepIfAniCur, HBRUSH hbrFlickerFreeDraw, DrawIconExFlags diFlags);
 
 		/// <summary>
 		/// <para>Retrieves information about the specified icon or cursor.</para>
@@ -1048,7 +1047,16 @@ namespace Vanara.PInvoke
 		// szFileName, int nIconIndex, int cxIcon, int cyIcon, HICON *phicon, UINT *piconid, UINT nIcons, UINT flags );
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "privateextracticons")]
-		public static extern uint PrivateExtractIcons(string szFileName, int nIconIndex, int cxIcon, int cyIcon, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] SafeHICON[] phicon, out uint piconid, uint nIcons, LoadImageOptions flags);
+		public static extern uint PrivateExtractIcons(string szFileName, int nIconIndex, int cxIcon, int cyIcon,
+			[In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] SafeHICON[] phicon, out uint piconid, uint nIcons, LoadImageOptions flags);
+
+		/// <summary>Creates a managed <see cref="System.Drawing.Bitmap"/> from this HICON instance.</summary>
+		/// <returns>A managed bitmap instance.</returns>
+		public static Bitmap ToBitmap(this HICON hIcon) => hIcon.IsNull ? null : (Bitmap)Bitmap.FromHicon((IntPtr)hIcon).Clone();
+
+		/// <summary>Creates a managed <see cref="System.Drawing.Icon"/> from this HICON instance.</summary>
+		/// <returns>A managed icon instance.</returns>
+		public static Icon ToIcon(this HICON hIcon) => hIcon.IsNull ? null : (Icon)Icon.FromHandle((IntPtr)hIcon).Clone();
 
 		/// <summary>
 		/// <para>Contains information about an icon or a cursor. Extends ICONINFO. Used by GetIconInfoEx.</para>
@@ -1131,28 +1139,32 @@ namespace Vanara.PInvoke
 			public string szResName;
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> to a Windows  that disposes a created HICON instance at disposal using DestroyIcon.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> to a Windows that disposes a created HICON instance at disposal using DestroyIcon.</summary>
 		public class SafeHICON : HANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHICON"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
 			public SafeHICON(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			private SafeHICON() : base() { }
+			private SafeHICON() : base()
+			{
+			}
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeHICON"/> to <see cref="HICON"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator HICON(SafeHICON h) => h.handle;
 
-			/// <summary>Creates a managed <see cref="System.Drawing.Bitmap"/> from this HICON instance.</summary>
+			/// <summary>Creates a managed <see cref="System.Drawing.Bitmap"/>.</summary>
 			/// <returns>A managed bitmap instance.</returns>
-			public Bitmap ToBitmap() => IsInvalid ? null : (Bitmap)Bitmap.FromHicon(handle).Clone();
+			public Bitmap ToBitmap() => ((HICON)this).ToBitmap();
 
-			/// <summary>Creates a managed <see cref="System.Drawing.Icon"/> from this HICON instance.</summary>
+			/// <summary>Creates a managed <see cref="System.Drawing.Icon"/>.</summary>
 			/// <returns>A managed icon instance.</returns>
-			public Icon ToIcon() => IsInvalid ? null : (Icon)Icon.FromHandle(handle).Clone();
+			public Icon ToIcon() => ((HICON)this).ToIcon();
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => DestroyIcon(this);

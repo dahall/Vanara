@@ -6,7 +6,7 @@ namespace Vanara.PInvoke.Tests
 	[TestFixture]
 	public class ExplorerTests
 	{
-		[Test]
+		// TODO: [Test]
 		public void GetExplTest()
 		{
 		}

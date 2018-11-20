@@ -28,7 +28,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(r.ToString(), Does.StartWith("#"));
 			Assert.That((string)r, Does.StartWith("#"));
 			Assert.That((int)r, Is.EqualTo(s));
-			Assert.That(((IntPtr)r).ToInt32(), Is.EqualTo(s));
+			Assert.That(((ResourceId)r).id, Is.EqualTo(s));
 		}
 
 		[Test]
@@ -39,7 +39,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(r.ToString(), Does.StartWith("#"));
 			Assert.That((string)r, Does.StartWith("#"));
 			Assert.That((int)r, Is.EqualTo(2));
-			Assert.That(((IntPtr)r).ToInt32(), Is.EqualTo(2));
+			Assert.That(((ResourceId)r).id, Is.EqualTo(2));
 		}
 
 		[Test]
@@ -61,7 +61,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(r.ToString(), Does.StartWith("#"));
 			Assert.That((string)r, Does.StartWith("#"));
 			Assert.That((int)r, Is.EqualTo(i));
-			Assert.That(((IntPtr)r).ToInt32(), Is.EqualTo(i));
+			Assert.That(((ResourceId)r).id, Is.EqualTo(i));
 		}
 
 		[Test]

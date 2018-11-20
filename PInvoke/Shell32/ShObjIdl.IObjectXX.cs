@@ -1,15 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Security;
-using Vanara.InteropServices;
-
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedParameter.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable InconsistentNaming
-// ReSharper disable MemberHidesStaticFromOuterClass
-// ReSharper disable UnusedMethodReturnValue.Global
 
 namespace Vanara.PInvoke
 {
@@ -25,11 +16,11 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// Only file types for which an application is a registered handler appear in that application's Jump List. When an application uses
 		/// an explicit AppUserModelID to identify itself and the windows and processes that belong to it, that AppUserModelID must also be
-		/// set in a handler's implementation so that the handler is recognized as being associated with that application. When the application
-		/// accesses a file such that SHAddToRecentDocs is called as a result, an attempt is made to add the file to the <c>Recent</c> or
-		/// <c>Frequent</c> category, or possibly a custom category, in that application's Jump List. If the application is a registered
-		/// handler for that file type, identified as such by the handler's AppUserModelID matching the application's AppUserModelID, that
-		/// file is added to the Jump List. If not, it is filtered and does not appear.
+		/// set in a handler's implementation so that the handler is recognized as being associated with that application. When the
+		/// application accesses a file such that SHAddToRecentDocs is called as a result, an attempt is made to add the file to the
+		/// <c>Recent</c> or <c>Frequent</c> category, or possibly a custom category, in that application's Jump List. If the application is
+		/// a registered handler for that file type, identified as such by the handler's AppUserModelID matching the application's
+		/// AppUserModelID, that file is added to the Jump List. If not, it is filtered and does not appear.
 		/// </para>
 		/// <para>When to Implement</para>
 		/// <para>

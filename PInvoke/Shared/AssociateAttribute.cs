@@ -14,10 +14,7 @@ namespace Vanara.PInvoke
 	{
 		/// <summary>Initializes a new instance of the <see cref="PInvokeDataAttribute"/> class.</summary>
 		/// <param name="guid">A GUID.</param>
-		public AssociateAttribute(string guid)
-		{
-			Guid = new Guid(guid);
-		}
+		public AssociateAttribute(string guid) => Guid = new Guid(guid);
 
 		/// <summary>Gets or sets the GUID associated with this element.</summary>
 		/// <value>A GUID value.</value>
@@ -43,7 +40,7 @@ namespace Vanara.PInvoke
 				value = (T)f.GetRawConstantValue();
 				return true;
 			}
-			value = default(T);
+			value = default;
 			return false;
 		}
 	}

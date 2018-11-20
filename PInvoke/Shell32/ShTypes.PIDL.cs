@@ -6,8 +6,6 @@ using System.Linq;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 
-// ReSharper disable InconsistentNaming
-
 namespace Vanara.PInvoke
 {
 	public static partial class Shell32
@@ -104,10 +102,13 @@ namespace Vanara.PInvoke
 				{
 					case null:
 						return IsEmpty;
+
 					case PIDL pidl:
 						return Equals(pidl);
+
 					case IntPtr ptr:
 						return Equals(ptr);
+
 					default:
 						return base.Equals(obj);
 				}
@@ -153,15 +154,17 @@ namespace Vanara.PInvoke
 			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 			public override string ToString() => ToString(SIGDN.SIGDN_NORMALDISPLAY);
 
-			/// <summary>Returns a <see cref="System.String"/> that represents this instance base according to the format provided by <paramref name="displayNameFormat"/>.</summary>
+			/// <summary>
+			/// Returns a <see cref="System.String"/> that represents this instance base according to the format provided by <paramref name="displayNameFormat"/>.
+			/// </summary>
 			/// <param name="displayNameFormat">The desired display name format.</param>
 			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 			public string ToString(SIGDN displayNameFormat)
 			{
 				try
 				{
-					SHGetNameFromIDList(this, displayNameFormat, out SafeCoTaskMemHandle name);
-					return name.ToString(-1);
+					SHGetNameFromIDList(this, displayNameFormat, out var name).ThrowIfFailed();
+					return name;
 				}
 				catch (Exception ex) { Debug.WriteLine($"Error: PIDL:ToString = {ex}"); }
 				return null;
@@ -171,7 +174,10 @@ namespace Vanara.PInvoke
 			/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
 			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-			private static bool Free(IntPtr pidl) { ILFree(pidl); return true; }
+			private static bool Free(IntPtr pidl)
+			{
+				ILFree(pidl); return true;
+			}
 
 			private class InternalEnumerator : IEnumerator<PIDL>
 			{
@@ -190,7 +196,9 @@ namespace Vanara.PInvoke
 
 				object IEnumerator.Current => Current;
 
-				public void Dispose() { }
+				public void Dispose()
+				{
+				}
 
 				public bool MoveNext()
 				{

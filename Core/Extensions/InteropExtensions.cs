@@ -11,6 +11,22 @@ namespace Vanara.Extensions
 	/// <summary>Extension methods for System.Runtime.InteropServices.</summary>
 	public static partial class InteropExtensions
 	{
+		/// <summary>
+		/// Gets the length of a null terminated array of pointers. <note type="warning">This is a very dangerous function and can result in
+		/// memory access errors if the <paramref name="lptr"/> does not point to a null-terminated array of pointers.</note>
+		/// </summary>
+		/// <param name="lptr">The <see cref="IntPtr"/> pointing to the native array.</param>
+		/// <returns>
+		/// The number of non-null pointers in the array. If <paramref name="lptr"/> is equal to IntPtr.Zero, this result is 0.
+		/// </returns>
+		public static int GetNulledPtrArrayLength(this IntPtr lptr)
+		{
+			if (lptr == IntPtr.Zero) return 0;
+			var c = 0;
+			while (Marshal.ReadIntPtr(lptr, IntPtr.Size * c++) != IntPtr.Zero) ;
+			return c - 1;
+		}
+
 		/// <summary>Determines whether this type is formatted or blittable.</summary>
 		/// <param name="T">The type to check.</param>
 		/// <returns><c>true</c> if the specified type is blittable; otherwise, <c>false</c>.</returns>
@@ -47,7 +63,7 @@ namespace Vanara.Extensions
 		/// <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the linked list.</returns>
 		public static IEnumerable<T> LinkedListToIEnum<T>(this IntPtr ptr, Func<T, IntPtr> next)
 		{
-			for (var pCurrent = ptr; pCurrent != IntPtr.Zero; )
+			for (var pCurrent = ptr; pCurrent != IntPtr.Zero;)
 			{
 				var ret = pCurrent.ToStructure<T>();
 				yield return ret;
@@ -58,12 +74,13 @@ namespace Vanara.Extensions
 
 		/// <summary>Marshals data from a managed list of specified type to a pre-allocated unmanaged block of memory.</summary>
 		/// <typeparam name="T">
-		/// A type of the enumerated managed object that holds the data to be marshaled. The object must be a structure or an instance of a formatted class.
+		/// A type of the enumerated managed object that holds the data to be marshaled. The object must be a structure or an instance of a
+		/// formatted class.
 		/// </typeparam>
 		/// <param name="items">The enumerated list of items to marshal.</param>
 		/// <param name="ptr">
-		/// A pointer to a pre-allocated block of memory. The allocated memory must be sufficient to hold the size of <typeparamref name="T"/> times the number
-		/// of items in the enumeration plus the number of bytes specified by <paramref name="prefixBytes"/>.
+		/// A pointer to a pre-allocated block of memory. The allocated memory must be sufficient to hold the size of <typeparamref
+		/// name="T"/> times the number of items in the enumeration plus the number of bytes specified by <paramref name="prefixBytes"/>.
 		/// </param>
 		/// <param name="prefixBytes">The number of bytes to skip before writing the first element of <paramref name="items"/>.</param>
 		public static void MarshalToPtr<T>(this IEnumerable<T> items, IntPtr ptr, int prefixBytes = 0)
@@ -74,12 +91,17 @@ namespace Vanara.Extensions
 				Marshal.StructureToPtr(item, ptr.Offset(prefixBytes + i++ * stSize), false);
 		}
 
-		/// <summary>Marshals data from a managed list of specified type to an unmanaged block of memory allocated by the <paramref name="memAlloc"/> method.</summary>
+		/// <summary>
+		/// Marshals data from a managed list of specified type to an unmanaged block of memory allocated by the <paramref name="memAlloc"/> method.
+		/// </summary>
 		/// <typeparam name="T">
-		/// A type of the enumerated managed object that holds the data to be marshaled. The object must be a structure or an instance of a formatted class.
+		/// A type of the enumerated managed object that holds the data to be marshaled. The object must be a structure or an instance of a
+		/// formatted class.
 		/// </typeparam>
 		/// <param name="items">The enumerated list of items to marshal.</param>
-		/// <param name="memAlloc">The function that allocates the memory for the block of items (typically <see cref="Marshal.AllocCoTaskMem(int)"/> or <see cref="Marshal.AllocHGlobal(int)"/>.</param>
+		/// <param name="memAlloc">
+		/// The function that allocates the memory for the block of items (typically <see cref="Marshal.AllocCoTaskMem(int)"/> or <see cref="Marshal.AllocHGlobal(int)"/>.
+		/// </param>
 		/// <param name="bytesAllocated">The bytes allocated by the <paramref name="memAlloc"/> method.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
 		/// <returns>Pointer to the allocated native (unmanaged) array of items stored.</returns>
@@ -104,7 +126,9 @@ namespace Vanara.Extensions
 			return result;
 		}
 
-		/// <summary>Marshals data from a managed list of strings to an unmanaged block of memory allocated by the <paramref name="memAlloc"/> method.</summary>
+		/// <summary>
+		/// Marshals data from a managed list of strings to an unmanaged block of memory allocated by the <paramref name="memAlloc"/> method.
+		/// </summary>
 		/// <param name="values">The enumerated list of strings to marshal.</param>
 		/// <param name="packing">The packing type for the strings.</param>
 		/// <param name="memAlloc">
@@ -114,7 +138,8 @@ namespace Vanara.Extensions
 		/// <param name="charSet">The character set to use for the strings.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
 		/// <returns>
-		/// Pointer to the allocated native (unmanaged) array of strings stored using the <paramref name="packing"/> model and the character set defined by <paramref name="charSet"/>.
+		/// Pointer to the allocated native (unmanaged) array of strings stored using the <paramref name="packing"/> model and the character
+		/// set defined by <paramref name="charSet"/>.
 		/// </returns>
 		public static IntPtr MarshalToPtr(this IEnumerable<string> values, StringListPackMethod packing, Func<int, IntPtr> memAlloc, out int bytesAllocated, CharSet charSet = CharSet.Auto, int prefixBytes = 0)
 		{
@@ -146,7 +171,7 @@ namespace Vanara.Extensions
 				if (packing == StringListPackMethod.Packed)
 				{
 					ms.Position += (count + 1) * IntPtr.Size;
-					for (int i = 0; i < list.Count; i++)
+					for (var i = 0; i < list.Count; i++)
 					{
 						ms.Poke(list[i] == null ? IntPtr.Zero : ms.Pointer.Offset(ms.Position), prefixBytes + (i * IntPtr.Size));
 						ms.Write(list[i]);
@@ -172,8 +197,12 @@ namespace Vanara.Extensions
 
 		/// <summary>Marshals data from a managed object to an unmanaged block of memory that is allocated using <paramref name="memAlloc"/>.</summary>
 		/// <typeparam name="T">The type of the managed object.</typeparam>
-		/// <param name="value">A managed object that holds the data to be marshaled. The object must be a structure or an instance of a formatted class.</param>
-		/// <param name="memAlloc">The function that allocates the memory for the structure (typically <see cref="Marshal.AllocCoTaskMem(int)"/> or <see cref="Marshal.AllocHGlobal(int)"/>.</param>
+		/// <param name="value">
+		/// A managed object that holds the data to be marshaled. The object must be a structure or an instance of a formatted class.
+		/// </param>
+		/// <param name="memAlloc">
+		/// The function that allocates the memory for the structure (typically <see cref="Marshal.AllocCoTaskMem(int)"/> or <see cref="Marshal.AllocHGlobal(int)"/>.
+		/// </param>
 		/// <param name="bytesAllocated">The bytes allocated by the <paramref name="memAlloc"/> method.</param>
 		/// <returns>A pointer to the memory allocated by <paramref name="memAlloc"/>.</returns>
 		public static IntPtr StructureToPtr<T>(this T value, Func<int, IntPtr> memAlloc, out int bytesAllocated)
@@ -214,99 +243,6 @@ namespace Vanara.Extensions
 				yield return ToStructure<T>(ptr.Offset(prefixBytes + i * stSize));
 		}
 
-		/// <summary>Converts a <see cref="UIntPtr"/> to a <see cref="IntPtr"/>.</summary>
-		/// <param name="p">The <see cref="UIntPtr"/>.</param>
-		/// <returns>An equivalent <see cref="IntPtr"/>.</returns>
-		public static IntPtr ToIntPtr(this UIntPtr p)
-		{
-			unsafe { return new IntPtr(p.ToPointer()); }
-		}
-
-		/// <summary>Converts a <see cref="IntPtr"/> to a <see cref="UIntPtr"/>.</summary>
-		/// <param name="p">The <see cref="IntPtr"/>.</param>
-		/// <returns>An equivalent <see cref="UIntPtr"/>.</returns>
-		public static UIntPtr ToUIntPtr(this IntPtr p)
-		{
-			unsafe { return new UIntPtr(p.ToPointer()); }
-		}
-
-		/// <summary>Converts an <see cref="IntPtr"/> to a structure. If pointer has no value, <c>null</c> is returned.</summary>
-		/// <typeparam name="T">Type of the structure.</typeparam>
-		/// <param name="ptr">The <see cref="IntPtr"/> that points to allocated memory holding a structure or <see cref="IntPtr.Zero"/>.</param>
-		/// <returns>The converted structure or <c>null</c>.</returns>
-		public static T? ToNullableStructure<T>(this IntPtr ptr) where T : struct => ptr != IntPtr.Zero ? ptr.ToStructure<T>() : (T?)null;
-
-		/// <summary>Marshals data from an unmanaged block of memory to a newly allocated managed object of the type specified by a generic type parameter.</summary>
-		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
-		/// <param name="ptr">A pointer to an unmanaged block of memory.</param>
-		/// <returns>A managed object that contains the data that the <paramref name="ptr"/> parameter points to.</returns>
-		[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
-		public static T ToStructure<T>(this IntPtr ptr) => typeof(T) == typeof(IntPtr) ? (T)(object)ptr : ((T)Marshal.PtrToStructure(ptr, typeof(T).IsEnum ? Enum.GetUnderlyingType(typeof(T)) : typeof(T)));
-
-		/// <summary>Marshals data from an unmanaged block of memory to a managed object.</summary>
-		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a formatted class.</typeparam>
-		/// <param name="ptr">A pointer to an unmanaged block of memory.</param>
-		/// <param name="instance">The object to which the data is to be copied. This must be an instance of a formatted class.</param>
-		/// <returns>A managed object that contains the data that the <paramref name="ptr"/> parameter points to.</returns>
-		public static T ToStructure<T>(this IntPtr ptr, [In] T instance)
-		{
-			Marshal.PtrToStructure(ptr, instance);
-			return instance;
-		}
-
-		/// <summary>
-		/// Gets the length of a null terminated array of pointers. <note type="warning">This is a very dangerous function and can result in memory access errors
-		/// if the <paramref name="lptr"/> does not point to a null-terminated array of pointers.</note>
-		/// </summary>
-		/// <param name="lptr">The <see cref="IntPtr"/> pointing to the native array.</param>
-		/// <returns>The number of non-null pointers in the array. If <paramref name="lptr"/> is equal to IntPtr.Zero, this result is 0.</returns>
-		public static int GetNulledPtrArrayLength(this IntPtr lptr)
-		{
-			if (lptr == IntPtr.Zero) return 0;
-			var c = 0;
-			while (Marshal.ReadIntPtr(lptr, IntPtr.Size * c++) != IntPtr.Zero) ;
-			return c - 1;
-		}
-
-		/// <summary>Returns an enumeration of strings from memory where each string is pointed to by a preceding list of pointers of length <paramref name="count"/>.</summary>
-		/// <param name="ptr">The <see cref="IntPtr"/> pointing to the native array.</param>
-		/// <param name="count">The count of expected strings.</param>
-		/// <param name="charSet">The character set of the strings.</param>
-		/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
-		/// <returns>Enumeration of strings.</returns>
-		public static IEnumerable<string> ToStringEnum(this IntPtr ptr, int count, CharSet charSet = CharSet.Auto, int prefixBytes = 0)
-		{
-			if (ptr == IntPtr.Zero || count == 0) yield break;
-			var lPtrVal = ptr.ToInt64();
-			for (var i = 0; i < count; i++)
-			{
-				var iptr = new IntPtr(lPtrVal + prefixBytes + i * IntPtr.Size);
-				var sptr = Marshal.ReadIntPtr(iptr);
-				yield return StringHelper.GetString(sptr, charSet);
-			}
-		}
-
-		/// <summary>
-		/// Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character and is terminated by
-		/// two '\0' characters.
-		/// </summary>
-		/// <param name="lptr">The <see cref="IntPtr"/> pointing to the native array.</param>
-		/// <param name="charSet">The character set of the strings.</param>
-		/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
-		/// <returns>An enumerated list of strings.</returns>
-		public static IEnumerable<string> ToStringEnum(this IntPtr lptr, CharSet charSet = CharSet.Auto, int prefixBytes = 0)
-		{
-			if (lptr == IntPtr.Zero) yield break;
-			var charLength = StringHelper.GetCharSize(charSet);
-			int GetCh(IntPtr p) => charLength == 1 ? Marshal.ReadByte(p) : Marshal.ReadInt16(p);
-			for (var ptr = lptr.Offset(prefixBytes); GetCh(ptr) != 0;)
-			{
-				var s = StringHelper.GetString(ptr, charSet);
-				yield return s;
-				ptr = ptr.Offset(((s?.Length ?? 0) + 1) * charLength);
-			}
-		}
-
 		/// <summary>Converts a <see cref="SecureString"/> to a string.</summary>
 		/// <param name="s">The <see cref="SecureString"/> value.</param>
 		/// <returns>The extracted string.</returns>
@@ -325,6 +261,20 @@ namespace Vanara.Extensions
 					Marshal.ZeroFreeCoTaskMemUnicode(p);
 			}
 		}
+
+		/// <summary>Converts a <see cref="UIntPtr"/> to a <see cref="IntPtr"/>.</summary>
+		/// <param name="p">The <see cref="UIntPtr"/>.</param>
+		/// <returns>An equivalent <see cref="IntPtr"/>.</returns>
+		public static IntPtr ToIntPtr(this UIntPtr p)
+		{
+			unsafe { return new IntPtr(p.ToPointer()); }
+		}
+
+		/// <summary>Converts an <see cref="IntPtr"/> to a structure. If pointer has no value, <c>null</c> is returned.</summary>
+		/// <typeparam name="T">Type of the structure.</typeparam>
+		/// <param name="ptr">The <see cref="IntPtr"/> that points to allocated memory holding a structure or <see cref="IntPtr.Zero"/>.</param>
+		/// <returns>The converted structure or <c>null</c>.</returns>
+		public static T? ToNullableStructure<T>(this IntPtr ptr) where T : struct => ptr != IntPtr.Zero ? ptr.ToStructure<T>() : (T?)null;
 
 		/// <summary>Converts a pointer to an unmanaged Unicode string to a <see cref="SecureString"/>.</summary>
 		/// <param name="p">A pointer to an unmanaged Unicode string.</param>
@@ -370,6 +320,75 @@ namespace Vanara.Extensions
 				ss.AppendChar(c);
 			ss.MakeReadOnly();
 			return ss;
+		}
+
+		/// <summary>
+		/// Returns an enumeration of strings from memory where each string is pointed to by a preceding list of pointers of length <paramref name="count"/>.
+		/// </summary>
+		/// <param name="ptr">The <see cref="IntPtr"/> pointing to the native array.</param>
+		/// <param name="count">The count of expected strings.</param>
+		/// <param name="charSet">The character set of the strings.</param>
+		/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
+		/// <returns>Enumeration of strings.</returns>
+		public static IEnumerable<string> ToStringEnum(this IntPtr ptr, int count, CharSet charSet = CharSet.Auto, int prefixBytes = 0)
+		{
+			if (ptr == IntPtr.Zero || count == 0) yield break;
+			var lPtrVal = ptr.ToInt64();
+			for (var i = 0; i < count; i++)
+			{
+				var iptr = new IntPtr(lPtrVal + prefixBytes + i * IntPtr.Size);
+				var sptr = Marshal.ReadIntPtr(iptr);
+				yield return StringHelper.GetString(sptr, charSet);
+			}
+		}
+
+		/// <summary>
+		/// Gets an enumerated list of strings from a block of unmanaged memory where each string is separated by a single '\0' character and
+		/// is terminated by two '\0' characters.
+		/// </summary>
+		/// <param name="lptr">The <see cref="IntPtr"/> pointing to the native array.</param>
+		/// <param name="charSet">The character set of the strings.</param>
+		/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
+		/// <returns>An enumerated list of strings.</returns>
+		public static IEnumerable<string> ToStringEnum(this IntPtr lptr, CharSet charSet = CharSet.Auto, int prefixBytes = 0)
+		{
+			if (lptr == IntPtr.Zero) yield break;
+			var charLength = StringHelper.GetCharSize(charSet);
+			int GetCh(IntPtr p) => charLength == 1 ? Marshal.ReadByte(p) : Marshal.ReadInt16(p);
+			for (var ptr = lptr.Offset(prefixBytes); GetCh(ptr) != 0;)
+			{
+				var s = StringHelper.GetString(ptr, charSet);
+				yield return s;
+				ptr = ptr.Offset(((s?.Length ?? 0) + 1) * charLength);
+			}
+		}
+
+		/// <summary>
+		/// Marshals data from an unmanaged block of memory to a newly allocated managed object of the type specified by a generic type parameter.
+		/// </summary>
+		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
+		/// <param name="ptr">A pointer to an unmanaged block of memory.</param>
+		/// <returns>A managed object that contains the data that the <paramref name="ptr"/> parameter points to.</returns>
+		[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+		public static T ToStructure<T>(this IntPtr ptr) => typeof(T) == typeof(IntPtr) ? (T)(object)ptr : ((T)Marshal.PtrToStructure(ptr, typeof(T).IsEnum ? Enum.GetUnderlyingType(typeof(T)) : typeof(T)));
+
+		/// <summary>Marshals data from an unmanaged block of memory to a managed object.</summary>
+		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a formatted class.</typeparam>
+		/// <param name="ptr">A pointer to an unmanaged block of memory.</param>
+		/// <param name="instance">The object to which the data is to be copied. This must be an instance of a formatted class.</param>
+		/// <returns>A managed object that contains the data that the <paramref name="ptr"/> parameter points to.</returns>
+		public static T ToStructure<T>(this IntPtr ptr, [In] T instance)
+		{
+			Marshal.PtrToStructure(ptr, instance);
+			return instance;
+		}
+
+		/// <summary>Converts a <see cref="IntPtr"/> to a <see cref="UIntPtr"/>.</summary>
+		/// <param name="p">The <see cref="IntPtr"/>.</param>
+		/// <returns>An equivalent <see cref="UIntPtr"/>.</returns>
+		public static UIntPtr ToUIntPtr(this IntPtr p)
+		{
+			unsafe { return new UIntPtr(p.ToPointer()); }
 		}
 	}
 }

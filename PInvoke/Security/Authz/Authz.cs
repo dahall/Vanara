@@ -6,14 +6,6 @@ using System.Security;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.AdvApi32;
-using AUTHZ_ACCESS_CHECK_RESULTS_HANDLE = System.IntPtr;
-
-using AUTHZ_AUDIT_EVENT_HANDLE = System.IntPtr;
-using AUTHZ_CLIENT_CONTEXT_HANDLE = System.IntPtr;
-using AUTHZ_RESOURCE_MANAGER_HANDLE = System.IntPtr;
-
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable InconsistentNaming
 
 namespace Vanara.PInvoke
 {
@@ -99,24 +91,30 @@ namespace Vanara.PInvoke
 		public enum AUTHZ_CONTEXT_INFORMATION_CLASS
 		{
 			/// <summary>Retrieves a TOKEN_USER structure that contains a user security identifier (SID) and its attribute.</summary>
+			[CorrespondingType(typeof(TOKEN_USER))]
 			AuthzContextInfoUserSid = 1,
 
 			/// <summary>Retrieves a TOKEN_GROUPS structure that contains the group SIDs to which the user belongs and their attributes.</summary>
+			[CorrespondingType(typeof(TOKEN_GROUPS))]
 			AuthzContextInfoGroupsSids,
 
 			/// <summary>Retrieves a TOKEN_GROUPS structure that contains the restricted group SIDs in the context and their attributes.</summary>
+			[CorrespondingType(typeof(TOKEN_GROUPS))]
 			AuthzContextInfoRestrictedSids,
 
 			/// <summary>Retrieves a TOKEN_PRIVILEGES structure that contains the privileges held by the user.</summary>
+			[CorrespondingType(typeof(PTOKEN_PRIVILEGES))]
 			AuthzContextInfoPrivileges,
 
 			/// <summary>Retrieves the expiration time set on the context.</summary>
+			[CorrespondingType(typeof(long))]
 			AuthzContextInfoExpirationTime,
 
 			/// <summary>This constant is reserved. Do not use it.</summary>
 			AuthzContextInfoServerContext,
 
 			/// <summary>Retrieves an LUID structures used by the resource manager to identify the context.</summary>
+			[CorrespondingType(typeof(LUID))]
 			AuthzContextInfoIdentifier,
 
 			/// <summary>This constant is reserved. Do not use it.</summary>
@@ -132,6 +130,7 @@ namespace Vanara.PInvoke
 			/// Retrieves an AUTHZ_SECURITY_ATTRIBUTES_INFORMATION structure that contains security attributes.
 			/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value is not supported.</para>
 			/// </summary>
+			[CorrespondingType(typeof(AUTHZ_SECURITY_ATTRIBUTES_INFORMATION))]
 			AuthzContextInfoSecurityAttributes,
 
 			/// <summary>
@@ -141,6 +140,7 @@ namespace Vanara.PInvoke
 			/// is not supported.
 			/// </para>
 			/// </summary>
+			[CorrespondingType(typeof(TOKEN_GROUPS))]
 			AuthzContextInfoDeviceSids,
 
 			/// <summary>
@@ -150,6 +150,7 @@ namespace Vanara.PInvoke
 			/// is not supported.
 			/// </para>
 			/// </summary>
+			[CorrespondingType(typeof(AUTHZ_SECURITY_ATTRIBUTES_INFORMATION))]
 			AuthzContextInfoUserClaims,
 
 			/// <summary>
@@ -159,6 +160,7 @@ namespace Vanara.PInvoke
 			/// is not supported.
 			/// </para>
 			/// </summary>
+			[CorrespondingType(typeof(AUTHZ_SECURITY_ATTRIBUTES_INFORMATION))]
 			AuthzContextInfoDeviceClaims,
 
 			/// <summary>
@@ -168,6 +170,7 @@ namespace Vanara.PInvoke
 			/// is not supported.
 			/// </para>
 			/// </summary>
+			[CorrespondingType(typeof(TOKEN_APPCONTAINER_INFORMATION))]
 			AuthzContextInfoAppContainerSid,
 
 			/// <summary>
@@ -177,6 +180,7 @@ namespace Vanara.PInvoke
 			/// is not supported.
 			/// </para>
 			/// </summary>
+			[CorrespondingType(typeof(TOKEN_GROUPS))]
 			AuthzContextInfoCapabilitySids,
 		}
 
@@ -549,8 +553,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("authz.h", MSDNShortId = "633c2a73-169c-4e0c-abb6-96c360bd63cf")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzAccessCheck(AuthzAccessCheckFlags Flags, SafeAUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, ref AUTHZ_ACCESS_REQUEST pRequest,
-			[Optional] SafeAUTHZ_AUDIT_EVENT_HANDLE hAuditEvent, SafeSecurityDescriptor pSecurityDescriptor,
+		public static extern bool AuthzAccessCheck(AuthzAccessCheckFlags Flags, AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, in AUTHZ_ACCESS_REQUEST pRequest,
+			[Optional] AUTHZ_AUDIT_EVENT_HANDLE hAuditEvent, PSECURITY_DESCRIPTOR pSecurityDescriptor,
 			[Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] SECURITY_DESCRIPTOR[] OptionalSecurityDescriptorArray,
 			uint OptionalSecurityDescriptorCount, [In, Out] AUTHZ_ACCESS_REPLY pReply, out SafeAUTHZ_ACCESS_CHECK_RESULTS_HANDLE phAccessCheckResults);
 
@@ -673,8 +677,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("authz.h", MSDNShortId = "633c2a73-169c-4e0c-abb6-96c360bd63cf")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzAccessCheck(AuthzAccessCheckFlags Flags, SafeAUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, ref AUTHZ_ACCESS_REQUEST pRequest,
-			[Optional] SafeAUTHZ_AUDIT_EVENT_HANDLE hAuditEvent, SafeSecurityDescriptor pSecurityDescriptor,
+		public static extern bool AuthzAccessCheck(AuthzAccessCheckFlags Flags, AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, in AUTHZ_ACCESS_REQUEST pRequest,
+			[Optional] AUTHZ_AUDIT_EVENT_HANDLE hAuditEvent, PSECURITY_DESCRIPTOR pSecurityDescriptor,
 			[Optional, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] SECURITY_DESCRIPTOR[] OptionalSecurityDescriptorArray,
 			uint OptionalSecurityDescriptorCount, [In, Out] AUTHZ_ACCESS_REPLY pReply, [Optional] IntPtr phAccessCheckResults);
 
@@ -787,7 +791,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("authz.h", MSDNShortId = "c365029a-3ff3-49c1-9dfc-b52948e466f3")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzGetInformationFromContext(SafeAUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext,
+		public static extern bool AuthzGetInformationFromContext(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext,
 			AUTHZ_CONTEXT_INFORMATION_CLASS InfoClass, uint BufferSize, out uint pSizeRequired, IntPtr Buffer);
 
 		/// <summary>
@@ -814,7 +818,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("authz.h", MSDNShortId = "2EC9EE76-9A92-40DF-9884-547D96FF3E09")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzInitializeCompoundContext(SafeAUTHZ_CLIENT_CONTEXT_HANDLE UserContext, SafeAUTHZ_CLIENT_CONTEXT_HANDLE DeviceContext, out SafeAUTHZ_CLIENT_CONTEXT_HANDLE phCompoundContext);
+		public static extern bool AuthzInitializeCompoundContext(AUTHZ_CLIENT_CONTEXT_HANDLE UserContext, AUTHZ_CLIENT_CONTEXT_HANDLE DeviceContext, out SafeAUTHZ_CLIENT_CONTEXT_HANDLE phCompoundContext);
 
 		/// <summary>
 		/// <para>
@@ -944,7 +948,7 @@ namespace Vanara.PInvoke
 		public static extern bool AuthzInitializeContextFromSid(
 			AuthzContextFlags Flags,
 			PSID UserSid,
-			[Optional] SafeAUTHZ_RESOURCE_MANAGER_HANDLE hAuthzResourceManager,
+			[Optional] AUTHZ_RESOURCE_MANAGER_HANDLE hAuthzResourceManager,
 			[Optional] IntPtr pExpirationTime,
 			LUID Identifier,
 			[Optional] IntPtr DynamicGroupArgs,
@@ -998,7 +1002,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("authz.h", MSDNShortId = "75a7fb3f-6b3a-42ca-b467-f57baf6c60c6")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzInitializeContextFromToken(uint Flags, SafeHTOKEN TokenHandle, SafeAUTHZ_RESOURCE_MANAGER_HANDLE hAuthzResourceManager,
+		public static extern bool AuthzInitializeContextFromToken(uint Flags, HTOKEN TokenHandle, AUTHZ_RESOURCE_MANAGER_HANDLE hAuthzResourceManager,
 			[Optional] IntPtr pExpirationTime, LUID Identifier, [Optional] IntPtr DynamicGroupArgs, out SafeAUTHZ_CLIENT_CONTEXT_HANDLE phAuthzClientContext);
 
 		/// <summary>
@@ -1057,13 +1061,12 @@ namespace Vanara.PInvoke
 		// AuthzInitializeObjectAccessAuditEvent( DWORD Flags, AUTHZ_AUDIT_EVENT_TYPE_HANDLE hAuditEventType, PWSTR szOperationType, PWSTR
 		// szObjectType, PWSTR szObjectName, PWSTR szAdditionalInfo, PAUTHZ_AUDIT_EVENT_HANDLE phAuditEvent, DWORD
 		// dwAdditionalParameterCount, ... );
-		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.Authz, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("authz.h", MSDNShortId = "cf79a92f-31e0-47cf-8990-4dbd46056a90")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool AuthzInitializeObjectAccessAuditEvent(AuthzAuditEventFlags Flags, IntPtr hAuditEventType,
-			[MarshalAs(UnmanagedType.LPWStr)] string szOperationType, [MarshalAs(UnmanagedType.LPWStr)] string szObjectType,
-			[MarshalAs(UnmanagedType.LPWStr)] string szObjectName, [MarshalAs(UnmanagedType.LPWStr)] string szAdditionalInfo,
-			out SafeAUTHZ_AUDIT_EVENT_HANDLE phAuditEvent, uint dwAdditionalParameterCount);
+			string szOperationType, string szObjectType, string szObjectName, string szAdditionalInfo,
+			out SafeAUTHZ_AUDIT_EVENT_HANDLE phAuditEvent, uint dwAdditionalParameterCount = 0);
 
 		/// <summary>The AuthzInitializeResourceManager function uses Authz to verify that clients have access to various resources.</summary>
 		/// <param name="flags">
@@ -1143,7 +1146,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("authz.h", MSDNShortId = "A93CD1DD-4E87-4C6A-928A-F90AD7F1085E")]
 		[DllImport(Lib.Authz, ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzModifyClaims(SafeAUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, AUTHZ_CONTEXT_INFORMATION_CLASS ClaimClass,
+		public static extern bool AuthzModifyClaims(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, AUTHZ_CONTEXT_INFORMATION_CLASS ClaimClass,
 			AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pClaimOperations,
 			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(AUTHZ_SECURITY_ATTRIBUTES_INFORMATION_Marshaler))] AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pClaims);
 
@@ -1177,7 +1180,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Authz, ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("authz.h", MSDNShortId = "d84873e2-ecfe-45cf-9048-7ed173117efa")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzModifySecurityAttributes(SafeAUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext,
+		public static extern bool AuthzModifySecurityAttributes(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext,
 			AUTHZ_SECURITY_ATTRIBUTE_OPERATION[] pOperations,
 			[In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(AUTHZ_SECURITY_ATTRIBUTES_INFORMATION_Marshaler))] AUTHZ_SECURITY_ATTRIBUTES_INFORMATION pAttributes);
 
@@ -1218,8 +1221,58 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Authz, ExactSpelling = true, SetLastError = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("authz.h", MSDNShortId = "740569A5-6159-409B-B8CB-B3A8BAE4F398")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool AuthzModifySids(SafeAUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, AUTHZ_CONTEXT_INFORMATION_CLASS SidClass,
+		public static extern bool AuthzModifySids(AUTHZ_CLIENT_CONTEXT_HANDLE hAuthzClientContext, AUTHZ_CONTEXT_INFORMATION_CLASS SidClass,
 			AUTHZ_SID_OPERATION[] pSidOperations, in TOKEN_GROUPS pSids);
+
+		/// <summary>Provides a handle to an access check results.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct AUTHZ_ACCESS_CHECK_RESULTS_HANDLE : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="AUTHZ_ACCESS_CHECK_RESULTS_HANDLE"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public AUTHZ_ACCESS_CHECK_RESULTS_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>
+			/// Returns an invalid handle by instantiating a <see cref="AUTHZ_ACCESS_CHECK_RESULTS_HANDLE"/> object with <see cref="IntPtr.Zero"/>.
+			/// </summary>
+			public static AUTHZ_ACCESS_CHECK_RESULTS_HANDLE NULL => new AUTHZ_ACCESS_CHECK_RESULTS_HANDLE(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="AUTHZ_ACCESS_CHECK_RESULTS_HANDLE"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(AUTHZ_ACCESS_CHECK_RESULTS_HANDLE h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="AUTHZ_ACCESS_CHECK_RESULTS_HANDLE"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator AUTHZ_ACCESS_CHECK_RESULTS_HANDLE(IntPtr h) => new AUTHZ_ACCESS_CHECK_RESULTS_HANDLE(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(AUTHZ_ACCESS_CHECK_RESULTS_HANDLE h1, AUTHZ_ACCESS_CHECK_RESULTS_HANDLE h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(AUTHZ_ACCESS_CHECK_RESULTS_HANDLE h1, AUTHZ_ACCESS_CHECK_RESULTS_HANDLE h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is AUTHZ_ACCESS_CHECK_RESULTS_HANDLE h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
 
 		/// <summary>
 		/// <para>The <c>AUTHZ_ACCESS_REQUEST</c> structure defines an access check request.</para>
@@ -1254,11 +1307,155 @@ namespace Vanara.PInvoke
 
 			/// <summary>Initializes a new instance of the <see cref="AUTHZ_ACCESS_REQUEST"/> struct.</summary>
 			/// <param name="access">The access.</param>
-			public AUTHZ_ACCESS_REQUEST(uint access) : this() { DesiredAccess = access; }
+			public AUTHZ_ACCESS_REQUEST(uint access) : this() => DesiredAccess = access;
 
 			/// <summary>Gets or sets the object types.</summary>
 			/// <value>The object types.</value>
 			public OBJECT_TYPE_LIST[] ObjectTypes => ObjectTypeList.ToIEnum<IntPtr>((int)ObjectTypeListLength).Select(p => p.ToStructure<OBJECT_TYPE_LIST>()).ToArray();
+		}
+
+		/// <summary>Provides a handle to an Audit event.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct AUTHZ_AUDIT_EVENT_HANDLE : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="AUTHZ_AUDIT_EVENT_HANDLE"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public AUTHZ_AUDIT_EVENT_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="AUTHZ_AUDIT_EVENT_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static AUTHZ_AUDIT_EVENT_HANDLE NULL => new AUTHZ_AUDIT_EVENT_HANDLE(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="AUTHZ_AUDIT_EVENT_HANDLE"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(AUTHZ_AUDIT_EVENT_HANDLE h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="AUTHZ_AUDIT_EVENT_HANDLE"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator AUTHZ_AUDIT_EVENT_HANDLE(IntPtr h) => new AUTHZ_AUDIT_EVENT_HANDLE(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(AUTHZ_AUDIT_EVENT_HANDLE h1, AUTHZ_AUDIT_EVENT_HANDLE h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(AUTHZ_AUDIT_EVENT_HANDLE h1, AUTHZ_AUDIT_EVENT_HANDLE h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is AUTHZ_AUDIT_EVENT_HANDLE h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>Provides a handle to a client context.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct AUTHZ_CLIENT_CONTEXT_HANDLE : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="AUTHZ_CLIENT_CONTEXT_HANDLE"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public AUTHZ_CLIENT_CONTEXT_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="AUTHZ_CLIENT_CONTEXT_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static AUTHZ_CLIENT_CONTEXT_HANDLE NULL => new AUTHZ_CLIENT_CONTEXT_HANDLE(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="AUTHZ_CLIENT_CONTEXT_HANDLE"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(AUTHZ_CLIENT_CONTEXT_HANDLE h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="AUTHZ_CLIENT_CONTEXT_HANDLE"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator AUTHZ_CLIENT_CONTEXT_HANDLE(IntPtr h) => new AUTHZ_CLIENT_CONTEXT_HANDLE(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(AUTHZ_CLIENT_CONTEXT_HANDLE h1, AUTHZ_CLIENT_CONTEXT_HANDLE h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(AUTHZ_CLIENT_CONTEXT_HANDLE h1, AUTHZ_CLIENT_CONTEXT_HANDLE h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is AUTHZ_CLIENT_CONTEXT_HANDLE h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>Provides a handle to a resource manager.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct AUTHZ_RESOURCE_MANAGER_HANDLE : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="AUTHZ_RESOURCE_MANAGER_HANDLE"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public AUTHZ_RESOURCE_MANAGER_HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="AUTHZ_RESOURCE_MANAGER_HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static AUTHZ_RESOURCE_MANAGER_HANDLE NULL => new AUTHZ_RESOURCE_MANAGER_HANDLE(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="AUTHZ_RESOURCE_MANAGER_HANDLE"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(AUTHZ_RESOURCE_MANAGER_HANDLE h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="AUTHZ_RESOURCE_MANAGER_HANDLE"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator AUTHZ_RESOURCE_MANAGER_HANDLE(IntPtr h) => new AUTHZ_RESOURCE_MANAGER_HANDLE(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(AUTHZ_RESOURCE_MANAGER_HANDLE h1, AUTHZ_RESOURCE_MANAGER_HANDLE h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(AUTHZ_RESOURCE_MANAGER_HANDLE h1, AUTHZ_RESOURCE_MANAGER_HANDLE h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is AUTHZ_RESOURCE_MANAGER_HANDLE h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
 		}
 
 		/// <summary>
@@ -1331,50 +1528,32 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="AUTHZ_SECURITY_ATTRIBUTE_V1"/> struct.</summary>
 			/// <param name="name">The name.</param>
 			/// <param name="values">The value.</param>
-			public AUTHZ_SECURITY_ATTRIBUTE_V1(string name, params long[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_INT64, values.Length)
-			{
-				Values.pInt64 = values;
-			}
+			public AUTHZ_SECURITY_ATTRIBUTE_V1(string name, params long[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_INT64, values.Length) => Values.pInt64 = values;
 
 			/// <summary>Initializes a new instance of the <see cref="AUTHZ_SECURITY_ATTRIBUTE_V1"/> struct.</summary>
 			/// <param name="name">The name.</param>
 			/// <param name="values">The value.</param>
-			public AUTHZ_SECURITY_ATTRIBUTE_V1(string name, params ulong[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_UINT64, values.Length)
-			{
-				Values.pUInt64 = values;
-			}
+			public AUTHZ_SECURITY_ATTRIBUTE_V1(string name, params ulong[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_UINT64, values.Length) => Values.pUInt64 = values;
 
 			/// <summary>Initializes a new instance of the <see cref="AUTHZ_SECURITY_ATTRIBUTE_V1"/> struct.</summary>
 			/// <param name="name">The name.</param>
 			/// <param name="values">The value.</param>
-			public AUTHZ_SECURITY_ATTRIBUTE_V1(string name, params bool[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_BOOLEAN, values.Length)
-			{
-				Values.pInt64 = Array.ConvertAll(values, Convert.ToInt64);
-			}
+			public AUTHZ_SECURITY_ATTRIBUTE_V1(string name, params bool[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_BOOLEAN, values.Length) => Values.pInt64 = Array.ConvertAll(values, Convert.ToInt64);
 
 			/// <summary>Initializes a new instance of the <see cref="AUTHZ_SECURITY_ATTRIBUTE_V1"/> struct.</summary>
 			/// <param name="name">The name.</param>
 			/// <param name="values">The value.</param>
-			public AUTHZ_SECURITY_ATTRIBUTE_V1(string name, params string[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_STRING, values.Length)
-			{
-				Values.ppString = values;
-			}
+			public AUTHZ_SECURITY_ATTRIBUTE_V1(string name, params string[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_STRING, values.Length) => Values.ppString = values;
 
 			/// <summary>Initializes a new instance of the <see cref="AUTHZ_SECURITY_ATTRIBUTE_V1"/> struct.</summary>
 			/// <param name="name">The name.</param>
 			/// <param name="values">The value.</param>
-			public AUTHZ_SECURITY_ATTRIBUTE_V1(string name, params AUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_FQBN, values.Length)
-			{
-				Values.pFqbn = values;
-			}
+			public AUTHZ_SECURITY_ATTRIBUTE_V1(string name, params AUTHZ_SECURITY_ATTRIBUTE_FQBN_VALUE[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_FQBN, values.Length) => Values.pFqbn = values;
 
 			/// <summary>Initializes a new instance of the <see cref="AUTHZ_SECURITY_ATTRIBUTE_V1"/> struct.</summary>
 			/// <param name="name">The name.</param>
 			/// <param name="values">The value.</param>
-			public AUTHZ_SECURITY_ATTRIBUTE_V1(string name, params AUTHZ_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_OCTET_STRING, values.Length)
-			{
-				Values.pOctetString = values;
-			}
+			public AUTHZ_SECURITY_ATTRIBUTE_V1(string name, params AUTHZ_SECURITY_ATTRIBUTE_OCTET_STRING_VALUE[] values) : this(name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE.AUTHZ_SECURITY_ATTRIBUTE_TYPE_OCTET_STRING, values.Length) => Values.pOctetString = values;
 
 			private AUTHZ_SECURITY_ATTRIBUTE_V1(string name, AUTHZ_SECURITY_ATTRIBUTE_DATATYPE type, int count) : this()
 			{
@@ -1472,7 +1651,7 @@ namespace Vanara.PInvoke
 			{
 				var ms = new MemoryStream();
 				var bw = new BinaryWriter(ms);
-				foreach (T item in items)
+				foreach (var item in items)
 					bw.Write(item);
 				Marshal.Copy(ms.ToArray(), 0, ptr, (int)ms.Length);
 			}
@@ -1570,62 +1749,105 @@ namespace Vanara.PInvoke
 			public static AUTHZ_SECURITY_ATTRIBUTES_INFORMATION FromPtr(IntPtr ptr) => (AUTHZ_SECURITY_ATTRIBUTES_INFORMATION)AUTHZ_SECURITY_ATTRIBUTES_INFORMATION_Marshaler.GetInstance(null).MarshalNativeToManaged(ptr);
 		}
 
-		/// <summary>A safe handle for AUTHZ_ACCESS_CHECK_RESULTS_HANDLE.</summary>
-		/// <seealso cref="GenericSafeHandle"/>
-		public class SafeAUTHZ_ACCESS_CHECK_RESULTS_HANDLE : GenericSafeHandle
+		/// <summary>
+		/// Provides a <see cref="SafeHandle"/> to a check results value that releases a created AUTHZ_ACCESS_CHECK_RESULTS_HANDLE instance
+		/// at disposal using AuthzFreeHandle.
+		/// </summary>
+		public class SafeAUTHZ_ACCESS_CHECK_RESULTS_HANDLE : HANDLE
 		{
-			/// <summary>Initializes a new instance of the <see cref="SafeAUTHZ_ACCESS_CHECK_RESULTS_HANDLE"/> class.</summary>
-			public SafeAUTHZ_ACCESS_CHECK_RESULTS_HANDLE() : base(AuthzFreeHandle) { }
+			/// <summary>
+			/// Initializes a new instance of the <see cref="AUTHZ_ACCESS_CHECK_RESULTS_HANDLE"/> class and assigns an existing handle.
+			/// </summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeAUTHZ_ACCESS_CHECK_RESULTS_HANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			/// <summary>Initializes a new instance of the <see cref="SafeAUTHZ_ACCESS_CHECK_RESULTS_HANDLE"/> class.</summary>
-			/// <param name="ptr">An existing handle.</param>
-			/// <param name="own">if set to <c>true</c> free handle when disposed.</param>
-			public SafeAUTHZ_ACCESS_CHECK_RESULTS_HANDLE(AUTHZ_ACCESS_CHECK_RESULTS_HANDLE ptr, bool own = true) : base(ptr, AuthzFreeHandle, own) { }
+			/// <summary>Initializes a new instance of the <see cref="AUTHZ_ACCESS_CHECK_RESULTS_HANDLE"/> class.</summary>
+			private SafeAUTHZ_ACCESS_CHECK_RESULTS_HANDLE() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeAUTHZ_ACCESS_CHECK_RESULTS_HANDLE"/> to <see cref="AUTHZ_ACCESS_CHECK_RESULTS_HANDLE"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator AUTHZ_ACCESS_CHECK_RESULTS_HANDLE(SafeAUTHZ_ACCESS_CHECK_RESULTS_HANDLE h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => AuthzFreeHandle(this);
 		}
 
-		/// <summary>A safe handle for AUTHZ_AUDIT_EVENT_HANDLE.</summary>
-		/// <seealso cref="GenericSafeHandle"/>
-		public class SafeAUTHZ_AUDIT_EVENT_HANDLE : GenericSafeHandle
+		/// <summary>
+		/// Provides a <see cref="SafeHandle"/> to an audit event that releases a created AUTHZ_AUDIT_EVENT_HANDLE instance at disposal using AuthzFreeAuditEvent.
+		/// </summary>
+		public class SafeAUTHZ_AUDIT_EVENT_HANDLE : HANDLE
 		{
-			/// <summary>A <c>null</c> value equivalent.</summary>
-			public static readonly SafeAUTHZ_AUDIT_EVENT_HANDLE Null = new SafeAUTHZ_AUDIT_EVENT_HANDLE();
+			/// <summary>Initializes a new instance of the <see cref="AUTHZ_AUDIT_EVENT_HANDLE"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeAUTHZ_AUDIT_EVENT_HANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			/// <summary>Initializes a new instance of the <see cref="SafeAUTHZ_AUDIT_EVENT_HANDLE"/> class.</summary>
-			public SafeAUTHZ_AUDIT_EVENT_HANDLE() : base(AuthzFreeContext) { }
+			/// <summary>Initializes a new instance of the <see cref="AUTHZ_AUDIT_EVENT_HANDLE"/> class.</summary>
+			private SafeAUTHZ_AUDIT_EVENT_HANDLE() : base() { }
 
-			/// <summary>Initializes a new instance of the <see cref="SafeAUTHZ_AUDIT_EVENT_HANDLE"/> class.</summary>
-			/// <param name="ptr">An existing handle.</param>
-			/// <param name="own">if set to <c>true</c> free handle when disposed.</param>
-			public SafeAUTHZ_AUDIT_EVENT_HANDLE(AUTHZ_AUDIT_EVENT_HANDLE ptr, bool own = true) : base(ptr, AuthzFreeAuditEvent, own) { }
+			/// <summary>Performs an implicit conversion from <see cref="SafeAUTHZ_AUDIT_EVENT_HANDLE"/> to <see cref="AUTHZ_AUDIT_EVENT_HANDLE"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator AUTHZ_AUDIT_EVENT_HANDLE(SafeAUTHZ_AUDIT_EVENT_HANDLE h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => AuthzFreeAuditEvent(this);
 		}
 
-		/// <summary>A safe handle for AUTHZ_CLIENT_CONTEXT_HANDLE.</summary>
-		/// <seealso cref="GenericSafeHandle"/>
-		public class SafeAUTHZ_CLIENT_CONTEXT_HANDLE : GenericSafeHandle
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="AUTHZ_CLIENT_CONTEXT_HANDLE"/> that is disposed using <see cref="AuthzFreeContext"/>.</summary>
+		public class SafeAUTHZ_CLIENT_CONTEXT_HANDLE : HANDLE
 		{
+			/// <summary>
+			/// Initializes a new instance of the <see cref="SafeAUTHZ_CLIENT_CONTEXT_HANDLE"/> class and assigns an existing handle.
+			/// </summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeAUTHZ_CLIENT_CONTEXT_HANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
 			/// <summary>Initializes a new instance of the <see cref="SafeAUTHZ_CLIENT_CONTEXT_HANDLE"/> class.</summary>
-			public SafeAUTHZ_CLIENT_CONTEXT_HANDLE() : base(AuthzFreeContext) { }
+			private SafeAUTHZ_CLIENT_CONTEXT_HANDLE() : base() { }
 
-			/// <summary>Initializes a new instance of the <see cref="SafeAUTHZ_CLIENT_CONTEXT_HANDLE"/> class.</summary>
-			/// <param name="ptr">An existing handle.</param>
-			/// <param name="own">if set to <c>true</c> free handle when disposed.</param>
-			public SafeAUTHZ_CLIENT_CONTEXT_HANDLE(AUTHZ_CLIENT_CONTEXT_HANDLE ptr, bool own = true) : base(ptr, AuthzFreeContext, own) { }
+			/// <summary>Performs an implicit conversion from <see cref="SafeAUTHZ_CLIENT_CONTEXT_HANDLE"/> to <see cref="AUTHZ_CLIENT_CONTEXT_HANDLE"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator AUTHZ_CLIENT_CONTEXT_HANDLE(SafeAUTHZ_CLIENT_CONTEXT_HANDLE h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => AuthzFreeContext(this);
 		}
 
-		/// <summary>A safe handle for AUTHZ_RESOURCE_MANAGER_HANDLE.</summary>
-		/// <seealso cref="GenericSafeHandle"/>
-		public class SafeAUTHZ_RESOURCE_MANAGER_HANDLE : GenericSafeHandle
+		/// <summary>
+		/// Provides a <see cref="SafeHandle"/> for <see cref="AUTHZ_RESOURCE_MANAGER_HANDLE"/> that is disposed using <see cref="AuthzFreeResourceManager"/>.
+		/// </summary>
+		public class SafeAUTHZ_RESOURCE_MANAGER_HANDLE : HANDLE
 		{
-			/// <summary>A <c>null</c> value equivalent.</summary>
-			public static readonly SafeAUTHZ_RESOURCE_MANAGER_HANDLE Null = new SafeAUTHZ_RESOURCE_MANAGER_HANDLE();
+			/// <summary>
+			/// Initializes a new instance of the <see cref="SafeAUTHZ_RESOURCE_MANAGER_HANDLE"/> class and assigns an existing handle.
+			/// </summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeAUTHZ_RESOURCE_MANAGER_HANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
 			/// <summary>Initializes a new instance of the <see cref="SafeAUTHZ_RESOURCE_MANAGER_HANDLE"/> class.</summary>
-			public SafeAUTHZ_RESOURCE_MANAGER_HANDLE() : base(AuthzFreeResourceManager) { }
+			private SafeAUTHZ_RESOURCE_MANAGER_HANDLE() : base() { }
 
-			/// <summary>Initializes a new instance of the <see cref="SafeAUTHZ_RESOURCE_MANAGER_HANDLE"/> class.</summary>
-			/// <param name="ptr">An existing handle.</param>
-			/// <param name="own">if set to <c>true</c> free handle when disposed.</param>
-			public SafeAUTHZ_RESOURCE_MANAGER_HANDLE(AUTHZ_RESOURCE_MANAGER_HANDLE ptr, bool own = true) : base(ptr, AuthzFreeResourceManager, own) { }
+			/// <summary>Performs an implicit conversion from <see cref="SafeAUTHZ_RESOURCE_MANAGER_HANDLE"/> to <see cref="AUTHZ_RESOURCE_MANAGER_HANDLE"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator AUTHZ_RESOURCE_MANAGER_HANDLE(SafeAUTHZ_RESOURCE_MANAGER_HANDLE h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => AuthzFreeResourceManager(this);
 		}
 
 		internal class AUTHZ_SECURITY_ATTRIBUTES_INFORMATION_Marshaler : ICustomMarshaler
@@ -1636,10 +1858,7 @@ namespace Vanara.PInvoke
 			{
 			}
 
-			public void CleanUpNativeData(IntPtr pNativeData)
-			{
-				Marshal.FreeHGlobal(pNativeData);
-			}
+			public void CleanUpNativeData(IntPtr pNativeData) => Marshal.FreeHGlobal(pNativeData);
 
 			public int GetNativeDataSize() => -1;
 

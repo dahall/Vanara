@@ -22,7 +22,7 @@ namespace Vanara.Security.AccessControl
 			SetObject(bytes);
 		}
 
-		public PSID PSID => PSID.CreateFromPtr(this);
+		public PSID PSID => (IntPtr)this;
 	}
 
 	/// <summary>Enables access to managed <see cref="RawAcl"/> as unmanaged <see cref="T:byte[]"/>.</summary>
@@ -36,6 +36,8 @@ namespace Vanara.Security.AccessControl
 			acl.GetBinaryForm(bytes, 0);
 			SetObject(bytes);
 		}
+
+		public PACL PACL => (IntPtr)this;
 	}
 
 	/// <summary>Enables access to managed <see cref="ObjectSecurity"/> as unmanaged <see cref="T:byte[]"/>.</summary>
@@ -48,21 +50,23 @@ namespace Vanara.Security.AccessControl
 			bytes = sd.GetSecurityDescriptorBinaryForm();
 			SetObject(bytes);
 		}
+
+		public PSECURITY_DESCRIPTOR PSECURITY_DESCRIPTOR => (IntPtr)this;
 	}
 
 	/// <summary>Helper methods for working with Access Control structures.</summary>
 	public static class AccessControlHelper
 	{
-		public static ACCESS_ALLOWED_ACE GetAce(IntPtr pAcl, int aceIndex)
+		public static ACCESS_ALLOWED_ACE GetAce(PACL pAcl, int aceIndex)
 		{
-			if (AdvApi32.GetAce(pAcl, aceIndex, out IntPtr acePtr))
-				return (ACCESS_ALLOWED_ACE)Marshal.PtrToStructure(acePtr, typeof(ACCESS_ALLOWED_ACE));
+			if (AdvApi32.GetAce(pAcl, aceIndex, out var acePtr))
+				return (ACCESS_ALLOWED_ACE)Marshal.PtrToStructure((IntPtr)acePtr, typeof(ACCESS_ALLOWED_ACE));
 			throw new System.ComponentModel.Win32Exception();
 		}
 
-		public static uint GetAceCount(IntPtr pAcl) => GetAclInfo(pAcl).AceCount;
+		public static uint GetAceCount(PACL pAcl) => GetAclInfo(pAcl).AceCount;
 
-		public static ACL_SIZE_INFORMATION GetAclInfo(IntPtr pAcl)
+		public static ACL_SIZE_INFORMATION GetAclInfo(PACL pAcl)
 		{
 			var si = new ACL_SIZE_INFORMATION();
 			if (!GetAclInformation(pAcl, ref si, (uint)Marshal.SizeOf(si), ACL_INFORMATION_CLASS.AclSizeInformation))
@@ -70,29 +74,28 @@ namespace Vanara.Security.AccessControl
 			return si;
 		}
 
-		public static uint GetAclSize(IntPtr pAcl) => GetAclInfo(pAcl).AclBytesInUse;
+		public static uint GetAclSize(PACL pAcl) => GetAclInfo(pAcl).AclBytesInUse;
 
-		public static uint GetEffectiveRights(this PSID pSid, SafeSecurityDescriptor pSD)
+		public static uint GetEffectiveRights(this PSID pSid, PSECURITY_DESCRIPTOR pSD)
 		{
-			var t = new TRUSTEE(pSid);
-			GetSecurityDescriptorDacl(pSD, out bool daclPresent, out IntPtr pDacl, out bool daclDefaulted);
-			uint access = 0;
-			GetEffectiveRightsFromAcl(pDacl, t, ref access);
+			BuildTrusteeWithSid(out var t, pSid);
+			GetSecurityDescriptorDacl(pSD, out var daclPresent, out var pDacl, out var daclDefaulted);
+			GetEffectiveRightsFromAcl(pDacl, t, out var access);
 			return access;
 		}
 
 		public static uint GetEffectiveRights(this RawSecurityDescriptor sd, SecurityIdentifier sid)
 		{
-			var t = new TRUSTEE(GetPSID(sid));
-			uint access = 0;
+			BuildTrusteeWithSid(out var t, GetPSID(sid));
 			using (var pDacl = new PinnedAcl(sd.DiscretionaryAcl))
-				GetEffectiveRightsFromAcl(pDacl, t, ref access);
-
-			return access;
+			{
+				GetEffectiveRightsFromAcl(pDacl.PACL, t, out var access);
+				return access;
+			}
 		}
 
 		public static IEnumerable<INHERITED_FROM> GetInheritanceSource(string objectName, System.Security.AccessControl.ResourceType objectType,
-			SECURITY_INFORMATION securityInfo, bool container, IntPtr pAcl, ref GENERIC_MAPPING pGenericMapping)
+			SECURITY_INFORMATION securityInfo, bool container, PACL pAcl, ref GENERIC_MAPPING pGenericMapping)
 		{
 			var objSize = Marshal.SizeOf(typeof(INHERITED_FROM));
 			var aceCount = GetAceCount(pAcl);
@@ -105,10 +108,10 @@ namespace Vanara.Security.AccessControl
 
 		public static PSID GetPSID(this SecurityIdentifier sid) { using (var ps = new PinnedSid(sid)) return ps.PSID; }
 
-		public static SafeSecurityDescriptor GetPrivateObjectSecurity(this SafeSecurityDescriptor pSD, SECURITY_INFORMATION si)
+		public static SafeSecurityDescriptor GetPrivateObjectSecurity(this PSECURITY_DESCRIPTOR pSD, SECURITY_INFORMATION si)
 		{
 			var pResSD = SafeSecurityDescriptor.Null;
-			AdvApi32.GetPrivateObjectSecurity(pSD, si, pResSD, 0, out uint ret);
+			AdvApi32.GetPrivateObjectSecurity(pSD, si, pResSD, 0, out var ret);
 			if (ret > 0)
 			{
 				pResSD = new SafeSecurityDescriptor((int)ret);
@@ -118,14 +121,18 @@ namespace Vanara.Security.AccessControl
 			return pResSD;
 		}
 
-		public static RawAcl RawAclFromPtr(IntPtr pAcl)
+		public static SafeSecurityDescriptor GetPrivateObjectSecurity(this SafeSecurityDescriptor pSD, SECURITY_INFORMATION si) => GetPrivateObjectSecurity((PSECURITY_DESCRIPTOR)pSD, si);
+
+		public static RawAcl RawAclFromPtr(PACL pAcl)
 		{
 			var len = GetAclSize(pAcl);
 			var dest = new byte[len];
-			Marshal.Copy(pAcl, dest, 0, (int)len);
+			Marshal.Copy((IntPtr)pAcl, dest, 0, (int)len);
 			return new RawAcl(dest, 0);
 		}
 
-		public static string ToSddl(this SafeSecurityDescriptor pSD, SECURITY_INFORMATION si) => ConvertSecurityDescriptorToStringSecurityDescriptor(pSD, SDDL_REVISION.SDDL_REVISION_1, si, out var ssd, out var _) ? ssd : null;
+		public static string ToSddl(this PSECURITY_DESCRIPTOR pSD, SECURITY_INFORMATION si) => ConvertSecurityDescriptorToStringSecurityDescriptor(pSD, si);
+
+		public static string ToSddl(this SafeSecurityDescriptor pSD, SECURITY_INFORMATION si) => ConvertSecurityDescriptorToStringSecurityDescriptor(pSD, si);
 	}
 }

@@ -67,7 +67,7 @@ namespace Vanara.Windows.Forms
 
 		bool IExtenderProvider.CanExtend(object extendee) { return extendee is Component; }
 
-		private T GetValue<T>(Component comp, string propName, T defValue = default(T))
+		private T GetValue<T>(Component comp, string propName, T defValue = default)
 		{
 			try { return (T)bag[comp][propName]; } catch { }
 			return defValue;

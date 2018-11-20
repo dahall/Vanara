@@ -14,7 +14,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void SafeArrayAccessDataTest()
 		{
-			using (SafeSafeArrayDescriptor psa = SafeArrayCreateVector(VARTYPE.VT_I8, 0, 5))
+			using (var psa = SafeArrayCreateVector(VARTYPE.VT_I8, 0, 5))
 			{
 				Assert.That(SafeArrayAccessData(psa, out var pData).Succeeded);
 				Assert.That(pData, Is.Not.EqualTo(IntPtr.Zero));
@@ -27,16 +27,15 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void SafeArrayCreateTest()
 		{
-			var saBound = new SAFEARRAYBOUND { cElements = 5 };
-			using (SafeSafeArrayDescriptor psa = SafeArrayCreate(VARTYPE.VT_I8, 1, ref saBound))
+			using (var psa = SafeArrayCreate(VARTYPE.VT_I8, 1, new SAFEARRAYBOUND(5)))
 				SafeArrayMethodTest<long>(psa, 5);
 		}
 
-		private static void SafeArrayMethodTest<T>(SafeSafeArrayDescriptor psa, int count)
+		private static void SafeArrayMethodTest<T>(SafeSAFEARRAY psa, int count)
 		{
 			Assert.That(psa, Is.Not.EqualTo(IntPtr.Zero));
 			Assert.That(SafeArrayGetDim(psa), Is.EqualTo(1));
-			Assert.That(SafeArrayGetElemsize(psa), Is.EqualTo(Marshal.SizeOf<T>()));
+			Assert.That(SafeArrayGetElemsize(psa), Is.EqualTo(Marshal.SizeOf(typeof(T))));
 			Assert.That(SafeArrayGetLBound(psa, 1, out var b).Succeeded);
 			Assert.That(b, Is.EqualTo(0));
 			Assert.That(SafeArrayGetUBound(psa, 1, out var u).Succeeded);
@@ -46,22 +45,21 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void SafeArrayCreateExTest()
 		{
-			var saBound = new SAFEARRAYBOUND { cElements = 5 };
-			using (SafeSafeArrayDescriptor psa = SafeArrayCreateEx(VARTYPE.VT_I8, 1, ref saBound, IntPtr.Zero))
+			using (var psa = SafeArrayCreateEx(VARTYPE.VT_I8, 1, new SAFEARRAYBOUND(5), IntPtr.Zero))
 				SafeArrayMethodTest<long>(psa, 5);
 		}
 
 		[Test]
 		public void SafeArrayCreateVectorTest()
 		{
-			using (SafeSafeArrayDescriptor psa = SafeArrayCreateVector(VARTYPE.VT_I8, 0, 5))
+			using (var psa = SafeArrayCreateVector(VARTYPE.VT_I8, 0, 5))
 				SafeArrayMethodTest<long>(psa, 5);
 		}
 
 		[Test]
 		public void SafeArrayGetPutElementTest()
 		{
-			using (SafeSafeArrayDescriptor psa = SafeArrayCreateVector(VARTYPE.VT_I4, 0, 5))
+			using (var psa = SafeArrayCreateVector(VARTYPE.VT_I4, 0, 5))
 			{
 				for (var i = 0; i < 5; i++)
 				{
@@ -81,7 +79,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void SafeArrayScopedAccessTest()
 		{
-			SafeSafeArrayDescriptor psa = SafeArrayCreateVector(VARTYPE.VT_I4, 0, 5);
+			var psa = SafeArrayCreateVector(VARTYPE.VT_I4, 0, 5);
 			{
 				/*for (int i = 0; i < 5; i++)
 				{
@@ -106,7 +104,7 @@ namespace Vanara.PInvoke.Tests
 			psa.Dispose();
 		}
 
-		[Test]
+		// TODO: [Test]
 		public void VariantClearTest()
 		{
 			throw new NotImplementedException();

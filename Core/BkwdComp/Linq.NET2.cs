@@ -82,7 +82,7 @@ namespace System.Linq
 		/// <param name="source">The sequence to return the specified value for if it is empty.</param>
 		/// <param name="defaultValue">The value to return if the sequence is empty. This value defaults to <c>default(TSource)</c>.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains <paramref name="defaultValue"/> if source is empty; otherwise, source.</returns>
-		public static IEnumerable<TSource> DefaultIfEmpty<TSource>(this IEnumerable<TSource> source, TSource defaultValue = default(TSource))
+		public static IEnumerable<TSource> DefaultIfEmpty<TSource>(this IEnumerable<TSource> source, TSource defaultValue = default)
 		{
 			if (source == null) throw new ArgumentNullException(nameof(source));
 			using (var e = source.GetEnumerator())
@@ -169,7 +169,7 @@ namespace System.Linq
 					if (e.MoveNext()) return e.Current;
 				}
 			}
-			return default(TSource);
+			return default;
 		}
 
 		/// <summary>Returns the first element of the sequence that satisfies a condition or a default value if no such element is found.</summary>
@@ -183,7 +183,7 @@ namespace System.Linq
 			if (predicate == null) throw new ArgumentNullException(nameof(predicate));
 			foreach (var element in source)
 				if (predicate(element)) return element;
-			return default(TSource);
+			return default;
 		}
 
 		/// <summary>Returns the minimum value in a generic sequence.</summary>

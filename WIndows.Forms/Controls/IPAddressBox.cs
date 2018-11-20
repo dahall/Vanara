@@ -223,7 +223,7 @@ namespace Vanara.Windows.Forms
 			base.WndProc(ref m);
 		}
 
-		private IntPtr SendMessage(IPAddressMessage msg, IntPtr wParam = default(IntPtr), IntPtr lParam = default(IntPtr)) => this.SendMessage((uint)msg, wParam, lParam);
+		private IntPtr SendMessage(IPAddressMessage msg, IntPtr wParam = default, IntPtr lParam = default) => this.SendMessage((uint)msg, wParam, lParam);
 
 		private IntPtr SendMessage(IPAddressMessage msg, IntPtr wParam, ref uint lParam) => User32_Gdi.SendMessage(Handle, msg, wParam, ref lParam);
 	}

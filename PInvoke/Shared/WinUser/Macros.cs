@@ -25,6 +25,12 @@ namespace Vanara.PInvoke
 		/// <returns>The return value is the high-order word of the specified value.</returns>
 		public static ushort HIWORD(UIntPtr dwValue) => HIWORD((uint)dwValue.ToUInt64());
 
+		/// <summary>Determines whether a value is an integer identifier for a resource.</summary>
+		/// <param name="ptr">The pointer to be tested whether it contains an integer resource identifier.</param>
+		/// <returns>If the value is a resource identifier, the return value is TRUE. Otherwise, the return value is FALSE.</returns>
+		[PInvokeData("WinBase.h", MSDNShortId = "ms648028")]
+		public static bool IS_INTRESOURCE(IntPtr ptr) => ptr.ToInt64() >> 16 == 0;
+
 		/// <summary>Retrieves the low-order byte from the given 16-bit value.</summary>
 		/// <param name="wValue">The value to be converted.</param>
 		/// <returns>The return value is the low-order byte of the specified value.</returns>
@@ -44,6 +50,15 @@ namespace Vanara.PInvoke
 		/// <param name="dwValue">The value to be converted.</param>
 		/// <returns>The return value is the low-order word of the specified value.</returns>
 		public static ushort LOWORD(UIntPtr dwValue) => LOWORD((uint)dwValue.ToUInt64());
+
+		/// <summary>
+		/// Converts an integer value to a resource type compatible with the resource-management functions. This macro is used in place of a
+		/// string containing the name of the resource.
+		/// </summary>
+		/// <param name="id">The integer value to be converted.</param>
+		/// <returns>The return value is string representation of the integer value.</returns>
+		[PInvokeData("WinUser.h", MSDNShortId = "ms648029")]
+		public static ResourceId MAKEINTRESOURCE(int id) => id;
 
 		/// <summary>Creates a LONG value by concatenating the specified values.</summary>
 		/// <param name="wLow">The low-order word of the new value.</param>
@@ -88,21 +103,6 @@ namespace Vanara.PInvoke
 		/// <param name="iValue">The value to be converted.</param>
 		/// <returns>The return value is the low-order 16-bit value of the specified value.</returns>
 		public static short SignedLOWORD(IntPtr iValue) => SignedLOWORD(unchecked((int)iValue.ToInt64()));
-
-		/// <summary>Determines whether a value is an integer identifier for a resource.</summary>
-		/// <param name="ptr">The pointer to be tested whether it contains an integer resource identifier.</param>
-		/// <returns>If the value is a resource identifier, the return value is TRUE. Otherwise, the return value is FALSE.</returns>
-		[PInvokeData("WinBase.h", MSDNShortId = "ms648028")]
-		public static bool IS_INTRESOURCE(IntPtr ptr) => ptr.ToInt64() >> 16 == 0;
-
-		/// <summary>
-		/// Converts an integer value to a resource type compatible with the resource-management functions. This macro is used in place of a string containing
-		/// the name of the resource.
-		/// </summary>
-		/// <param name="id">The integer value to be converted.</param>
-		/// <returns>The return value is string representation of the integer value.</returns>
-		[PInvokeData("WinUser.h", MSDNShortId = "ms648029")]
-		public static SafeResourceId MAKEINTRESOURCE(int id) => new SafeResourceId(id);
 	}
 
 	//public static T GetLParam<T>(this System.Windows.Forms.Message msg) => (T)msg.GetLParam(typeof(T));

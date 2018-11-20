@@ -1,7 +1,7 @@
-// ReSharper disable InconsistentNaming
 namespace Vanara.PInvoke
 {
 	/// <summary>Processor architecture</summary>
+	[PInvokeData("winnt.h")]
 	public enum ProcessorArchitecture : ushort
 	{
 		/// <summary>x86</summary>

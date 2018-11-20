@@ -281,7 +281,7 @@ namespace Vanara.Windows.Shell
 			if (parent == null)
 				throw new ArgumentNullException(nameof(parent));
 			RECT cr = windowClipRect;
-			taskbar4?.SetThumbnailClip(parent.Handle, ref cr);
+			taskbar4?.SetThumbnailClip(parent.Handle, cr);
 		}
 
 		/// <summary>

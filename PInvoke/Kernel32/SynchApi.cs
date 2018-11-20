@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32.SafeHandles;
+using System;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
@@ -2210,6 +2211,11 @@ namespace Vanara.PInvoke
 			public SafeEventHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
 			private SafeEventHandle() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeSyncHandle"/> to <see cref="SafeWaitHandle"/>.</summary>
+			/// <param name="h">The SafeSyncHandle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator SafeEventHandle(SafeWaitHandle h) => new SafeEventHandle(h.DangerousGetHandle(), false);
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a mutex that is automatically disposed using CloseHandle.</summary>
@@ -2223,6 +2229,11 @@ namespace Vanara.PInvoke
 			public SafeMutexHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
 			private SafeMutexHandle() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeSyncHandle"/> to <see cref="SafeWaitHandle"/>.</summary>
+			/// <param name="h">The SafeSyncHandle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator SafeMutexHandle(SafeWaitHandle h) => new SafeMutexHandle(h.DangerousGetHandle(), false);
 		}
 
 		/// <summary>
@@ -2275,6 +2286,11 @@ namespace Vanara.PInvoke
 			public SafeSemaphoreHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
 			private SafeSemaphoreHandle() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeSyncHandle"/> to <see cref="SafeWaitHandle"/>.</summary>
+			/// <param name="h">The SafeSyncHandle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator SafeSemaphoreHandle(SafeWaitHandle h) => new SafeSemaphoreHandle(h.DangerousGetHandle(), false);
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a waitable timer that is automatically disposed using CloseHandle.</summary>
@@ -2288,6 +2304,11 @@ namespace Vanara.PInvoke
 			public SafeWaitableTimerHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
 			private SafeWaitableTimerHandle() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeSyncHandle"/> to <see cref="SafeWaitHandle"/>.</summary>
+			/// <param name="h">The SafeSyncHandle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator SafeWaitableTimerHandle(SafeWaitHandle h) => new SafeWaitableTimerHandle(h.DangerousGetHandle(), false);
 		}
 	}
 }

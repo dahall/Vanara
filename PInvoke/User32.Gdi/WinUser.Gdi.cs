@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
-using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Gdi32;
 
@@ -530,7 +529,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("WinUser.h", MSDNShortId = "dd144927")]
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
-		public static extern IntPtr GetSysColorBrush(SystemColorIndex nIndex);
+		public static extern HBRUSH GetSysColorBrush(SystemColorIndex nIndex);
 
 		/// <summary>
 		/// Retrieves information about the specified window. The function also retrieves the value at a specified offset into the extra
@@ -620,7 +619,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[System.Security.SecurityCritical]
-		public static extern bool InvalidateRect(HWND hWnd, [In] PRECT rect, [MarshalAs(UnmanagedType.Bool)] bool bErase);
+		public static extern bool InvalidateRect(HWND hWnd, [In, Optional] PRECT rect, [MarshalAs(UnmanagedType.Bool)] bool bErase);
 
 		/// <summary>
 		/// The MapWindowPoints function converts (maps) a set of points from a coordinate space relative to one window to a coordinate space
@@ -652,7 +651,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("WinUser.h", MSDNShortId = "")]
 		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
-		public static extern int MapWindowPoints(HWND hWndFrom, HWND hWndTo, [In, Out] ref RECT lpPoints, [MarshalAs(UnmanagedType.U4)] int cPoints);
+		public static extern int MapWindowPoints(HWND hWndFrom, HWND hWndTo, ref RECT lpPoints, uint cPoints = 2);
 
 		/// <summary>
 		/// The MapWindowPoints function converts (maps) a set of points from a coordinate space relative to one window to a coordinate space
@@ -684,7 +683,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[PInvokeData("WinUser.h", MSDNShortId = "")]
 		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
-		public static extern int MapWindowPoints(HWND hWndFrom, HWND hWndTo, [In, Out] ref Point lpPoints, [MarshalAs(UnmanagedType.U4)] int cPoints);
+		public static extern int MapWindowPoints(HWND hWndFrom, HWND hWndTo, ref Point lpPoints, uint cPoints = 1);
 
 		/// <summary>
 		/// The MapWindowPoints function converts (maps) a set of points from a coordinate space relative to one window to a coordinate space
@@ -901,7 +900,7 @@ namespace Vanara.PInvoke
 			var m = (uint)Convert.ChangeType(msg, typeof(uint));
 			using (var wp = new PinnedObject(wParam))
 			using (var lp = new PinnedObject(lParam))
-				return SendMessage(hWnd, m, (IntPtr)wp, (IntPtr)lp);
+				return SendMessage(hWnd, m, wp, (IntPtr)lp);
 		}
 
 		/// <summary>
@@ -929,35 +928,6 @@ namespace Vanara.PInvoke
 				var lr = SendMessage(hWnd, m, (IntPtr)GetPtr(wParam), (IntPtr)lp);
 				lParam = lp.ToStructure<TLP>();
 				return lr;
-			}
-		}
-
-		/// <summary>
-		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window
-		/// and does not return until the window procedure has processed the message.
-		/// </summary>
-		/// <typeparam name="TEnum">The type of the <paramref name="msg"/> value.</typeparam>
-		/// <typeparam name="TWP">The type of the <paramref name="wParam"/> value.</typeparam>
-		/// <typeparam name="TLP">The type of the <paramref name="lParam"/> value.</typeparam>
-		/// <param name="hWnd">
-		/// A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the
-		/// message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and
-		/// pop-up windows; but the message is not sent to child windows.
-		/// </param>
-		/// <param name="msg">The message to be sent.</param>
-		/// <param name="wParam">Additional message-specific information.</param>
-		/// <param name="lParam">Additional message-specific information.</param>
-		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		private static IntPtr SendMessageUnmanaged<TEnum, TWP, TLP>(HWND hWnd, TEnum msg, in TWP wParam, ref TLP lParam)
-			where TEnum : struct, IConvertible where TWP : unmanaged where TLP : unmanaged
-		{
-			var m = (uint)Convert.ChangeType(msg, typeof(uint));
-			unsafe
-			{
-				fixed (void* wp = &wParam, lp = &lParam)
-				{
-					return (IntPtr)SendMessageUnsafe((void*)(IntPtr)hWnd, m, wp, lp);
-				}
 			}
 		}
 
@@ -1083,6 +1053,35 @@ namespace Vanara.PInvoke
 		}
 
 		private static SafeCoTaskMemHandle GetPtr<T>(in T val) => SafeCoTaskMemHandle.CreateFromStructure(val);
+
+		/// <summary>
+		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window
+		/// and does not return until the window procedure has processed the message.
+		/// </summary>
+		/// <typeparam name="TEnum">The type of the <paramref name="msg"/> value.</typeparam>
+		/// <typeparam name="TWP">The type of the <paramref name="wParam"/> value.</typeparam>
+		/// <typeparam name="TLP">The type of the <paramref name="lParam"/> value.</typeparam>
+		/// <param name="hWnd">
+		/// A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the
+		/// message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and
+		/// pop-up windows; but the message is not sent to child windows.
+		/// </param>
+		/// <param name="msg">The message to be sent.</param>
+		/// <param name="wParam">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
+		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		private static IntPtr SendMessageUnmanaged<TEnum, TWP, TLP>(HWND hWnd, TEnum msg, in TWP wParam, ref TLP lParam)
+			where TEnum : struct, IConvertible where TWP : unmanaged where TLP : unmanaged
+		{
+			var m = (uint)Convert.ChangeType(msg, typeof(uint));
+			unsafe
+			{
+				fixed (void* wp = &wParam, lp = &lParam)
+				{
+					return (IntPtr)SendMessageUnsafe((void*)(IntPtr)hWnd, m, wp, lp);
+				}
+			}
+		}
 
 		/// <summary>
 		/// Changes an attribute of the specified window. The function also sets a value at the specified offset in the extra window memory.

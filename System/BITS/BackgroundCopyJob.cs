@@ -686,7 +686,7 @@ namespace Vanara.IO
 			catch (COMException cex) { HandleCOMException(cex); }
 		}
 
-		private T RunAction<T>(Func<T> action, T def = default(T))
+		private T RunAction<T>(Func<T> action, T def = default)
 		{
 			try { return action(); }
 			catch (COMException cex) { HandleCOMException(cex); }

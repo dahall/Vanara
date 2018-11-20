@@ -102,7 +102,7 @@ namespace Vanara.Windows.Shell
 				if (ret == IntPtr.Zero)
 				{
 					ret = SHGetFileInfo(FullPath, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_ICONLOCATION | SHGFI.SHGFI_ICON);
-					if (ret != IntPtr.Zero) DestroyIcon(new HICON(shfi.hIcon));
+					if (ret != IntPtr.Zero) DestroyIcon(shfi.hIcon);
 				}
 				return ret != IntPtr.Zero ? new IconLocation(shfi.szDisplayName, shfi.iIcon) : new IconLocation();
 			}
@@ -117,7 +117,7 @@ namespace Vanara.Windows.Shell
 				var shfi = new SHFILEINFO();
 				var ret = SHGetFileInfo(FullPath, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_ICON | SHGFI.SHGFI_USEFILEATTRIBUTES | SHGFI.SHGFI_OVERLAYINDEX | SHGFI.SHGFI_LINKOVERLAY);
 				if (ret == IntPtr.Zero) return -1;
-				DestroyIcon(new HICON(shfi.hIcon));
+				DestroyIcon(shfi.hIcon);
 				return (shfi.iIcon >> 24) - 1;
 			}
 		}

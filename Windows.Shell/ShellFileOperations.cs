@@ -786,7 +786,7 @@ namespace Vanara.Windows.Shell
 		/// <seealso cref="System.EventArgs"/>
 		public class ShellFileOpEventArgs : EventArgs
 		{
-			internal ShellFileOpEventArgs(TRANSFER_SOURCE_FLAGS flags, IShellItem source, IShellItem folder = null, IShellItem dest = null, string name = null, HRESULT hr = default(HRESULT))
+			internal ShellFileOpEventArgs(TRANSFER_SOURCE_FLAGS flags, IShellItem source, IShellItem folder = null, IShellItem dest = null, string name = null, HRESULT hr = default)
 			{
 				Flags = (TransferFlags)flags;
 				if (source != null) SourceItem = ShellItem.Open(source);

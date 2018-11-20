@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.PInvoke.Tests
 {
@@ -9,43 +10,37 @@ namespace Vanara.PInvoke.Tests
 		[Test()]
 		public void FullPathTest()
 		{
-			throw new NotImplementedException();
+			Assert.That(KNOWNFOLDERID.FOLDERID_Documents.FullPath(), Is.EqualTo(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)));
 		}
 
 		[Test()]
 		public void GetRegistryPropertyTest()
 		{
-			throw new NotImplementedException();
+			Assert.That(KNOWNFOLDERID.FOLDERID_Documents.GetRegistryProperty<string>("RelativePath"), Is.EqualTo("Documents"));
 		}
 
 		[Test()]
 		public void GuidTest()
 		{
-			throw new NotImplementedException();
-		}
-
-		[Test()]
-		public void KnownFolderIdTest()
-		{
-			throw new NotImplementedException();
+			Assert.That(KNOWNFOLDERID.FOLDERID_Documents.Guid(), Is.EqualTo(new Guid("{FDD39AD0-238F-46AF-ADB4-6C85480369C7}")));
 		}
 
 		[Test()]
 		public void NameTest()
 		{
-			throw new NotImplementedException();
+			Assert.That(KNOWNFOLDERID.FOLDERID_Documents.Name(), Is.EqualTo("Personal"));
 		}
 
 		[Test()]
 		public void PIDLTest()
 		{
-			throw new NotImplementedException();
+			Assert.That((IntPtr)KNOWNFOLDERID.FOLDERID_Documents.PIDL(), Is.Not.EqualTo(IntPtr.Zero));
 		}
 
 		[Test()]
 		public void SpecialFolderTest()
 		{
-			throw new NotImplementedException();
+			Assert.That(KNOWNFOLDERID.FOLDERID_Documents.SpecialFolder(), Is.EqualTo(Environment.SpecialFolder.MyDocuments));
 		}
 	}
 }

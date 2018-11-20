@@ -6,8 +6,8 @@ using System.Diagnostics.CodeAnalysis;
 namespace Vanara.Collections
 {
 	/// <summary>
-	/// Creates an enumerable class from a counter and an indexer. Useful if a class doesn't support <see cref="IEnumerable"/> or <see cref="IEnumerable{T}"/>
-	/// like some COM objects.
+	/// Creates an enumerable class from a counter and an indexer. Useful if a class doesn't support <see cref="IEnumerable"/> or <see
+	/// cref="IEnumerable{T}"/> like some COM objects.
 	/// </summary>
 	/// <typeparam name="TItem">The type of the item.</typeparam>
 	public class IEnumFromIndexer<TItem> : IReadOnlyList<TItem>
@@ -16,7 +16,7 @@ namespace Vanara.Collections
 		private readonly Func<uint, TItem> indexer;
 		private readonly uint startIndex;
 
-		/// <summary>Initializes a new instance of the <see cref="IEnumFromIndexer{TItem}" /> class.</summary>
+		/// <summary>Initializes a new instance of the <see cref="IEnumFromIndexer{TItem}"/> class.</summary>
 		/// <param name="getCount">The method used to get the total count of items.</param>
 		/// <param name="indexer">The method used to get a single item.</param>
 		/// <param name="startIndex">The index at which the collection begins (usually 1 or 0).</param>
@@ -51,19 +51,31 @@ namespace Vanara.Collections
 		{
 			private uint i;
 			private IEnumFromIndexer<TItem> ienum;
-			public Enumerator(IEnumFromIndexer<TItem> ienum) { this.ienum = ienum; ((IEnumerator)this).Reset(); }
-			bool IEnumerator.MoveNext() => ienum != null && ++i < ienum.getCount() + ienum.startIndex;
-			void IEnumerator.Reset() { if (ienum != null) i = ienum.startIndex - 1; }
-			TItem IEnumerator<TItem>.Current => ienum == null ? default(TItem) : ienum.indexer(i);
+
+			public Enumerator(IEnumFromIndexer<TItem> ienum)
+			{
+				this.ienum = ienum; ((IEnumerator)this).Reset();
+			}
+
+			TItem IEnumerator<TItem>.Current => ienum == null ? default : ienum.indexer(i);
+
 			[ExcludeFromCodeCoverage]
 			object IEnumerator.Current => ((IEnumerator<TItem>)this).Current;
-			void IDisposable.Dispose() { ienum = null; }
+
+			void IDisposable.Dispose() => ienum = null;
+
+			bool IEnumerator.MoveNext() => ienum != null && ++i < ienum.getCount() + ienum.startIndex;
+
+			void IEnumerator.Reset()
+			{
+				if (ienum != null) i = ienum.startIndex - 1;
+			}
 		}
 	}
 
 	/// <summary>
-	/// Creates an enumerable class from a get next method and a reset method. Useful if a class doesn't support <see cref="IEnumerable"/> or <see cref="IEnumerable{T}"/>
-	/// like some COM objects.
+	/// Creates an enumerable class from a get next method and a reset method. Useful if a class doesn't support <see cref="IEnumerable"/> or
+	/// <see cref="IEnumerable{T}"/> like some COM objects.
 	/// </summary>
 	/// <typeparam name="TItem">The type of the item.</typeparam>
 	public class IEnumFromNext<TItem> : IEnumerable<TItem>
@@ -71,12 +83,7 @@ namespace Vanara.Collections
 		private readonly TryGetNext next;
 		private readonly Action reset;
 
-		/// <summary>Delegate that gets the next value in an enumeration and returns true or returns false to indicate there are no more items in the enumeration.</summary>
-		/// <param name="value">The value, on success, of the next item.</param>
-		/// <returns><c>true</c> if an item is returned, otherwise <c>false</c>.</returns>
-		public delegate bool TryGetNext(out TItem value);
-
-		/// <summary>Initializes a new instance of the <see cref="IEnumFromNext{TItem}" /> class.</summary>
+		/// <summary>Initializes a new instance of the <see cref="IEnumFromNext{TItem}"/> class.</summary>
 		/// <param name="next">The method used to try to get the next item in the enumeration.</param>
 		/// <param name="reset">The method used to reset the enumeration to the first element.</param>
 		public IEnumFromNext(TryGetNext next, Action reset)
@@ -85,6 +92,13 @@ namespace Vanara.Collections
 			this.next = next;
 			this.reset = reset;
 		}
+
+		/// <summary>
+		/// Delegate that gets the next value in an enumeration and returns true or returns false to indicate there are no more items in the enumeration.
+		/// </summary>
+		/// <param name="value">The value, on success, of the next item.</param>
+		/// <returns><c>true</c> if an item is returned, otherwise <c>false</c>.</returns>
+		public delegate bool TryGetNext(out TItem value);
 
 		/// <summary>Returns an enumerator that iterates through the collection.</summary>
 		/// <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
@@ -98,23 +112,32 @@ namespace Vanara.Collections
 		private class Enumerator : IEnumerator<TItem>
 		{
 			private IEnumFromNext<TItem> ienum;
-			public Enumerator(IEnumFromNext<TItem> ienum) { this.ienum = ienum; ((IEnumerator)this).Reset(); }
+
+			public Enumerator(IEnumFromNext<TItem> ienum)
+			{
+				this.ienum = ienum; ((IEnumerator)this).Reset();
+			}
+
+			public TItem Current { get; private set; }
+
+			[ExcludeFromCodeCoverage]
+			object IEnumerator.Current => Current;
+
+			void IDisposable.Dispose() => ienum = null;
+
 			bool IEnumerator.MoveNext()
 			{
-				if (ienum == null || !ienum.next(out TItem p)) return false;
+				if (ienum == null || !ienum.next(out var p)) return false;
 				Current = p;
 				return true;
 			}
+
 			void IEnumerator.Reset()
 			{
 				if (ienum == null) return;
 				ienum.reset();
-				Current = default(TItem);
+				Current = default;
 			}
-			public TItem Current { get; private set; }
-			[ExcludeFromCodeCoverage]
-			object IEnumerator.Current => Current;
-			void IDisposable.Dispose() { ienum = null; }
 		}
 	}
 }

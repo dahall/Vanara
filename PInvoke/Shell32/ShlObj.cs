@@ -5,20 +5,11 @@ using System.Security;
 using System.Text;
 using Vanara.InteropServices;
 using static Vanara.Extensions.BitHelper;
-using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.ShlwApi;
 using static Vanara.PInvoke.User32_Gdi;
-
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedParameter.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable InconsistentNaming
-// ReSharper disable MemberHidesStaticFromOuterClass
-// ReSharper disable UnusedMethodReturnValue.Global
 
 namespace Vanara.PInvoke
 {
@@ -28,9 +19,78 @@ namespace Vanara.PInvoke
 		// Defined in wingdi.h
 		private const int LF_FACESIZE = 32;
 
-		/// <summary><para>[<c>LPFNDFMCALLBACK</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable in subsequent versions.]</para><para>Defines the prototype for the callback function that receives messages from the Shell&#39;s default context menu implementation.</para></summary><param name="psf"><para>Type: <c><c>IShellFolder</c>*</c></para><para>A pointer to the <c>IShellFolder</c> object the message applies to. This value can be <c>NULL</c>.</para></param><param name="hwnd"><para>Type: <c>HWND</c></para><para>The handle of the window that contains the view. This value can be <c>NULL</c>.</para></param><param name="pdtobj"><para>Type: <c><c>IDataObject</c>*</c></para><para><c>IDataObject</c> that represents the selection the context menu is based on. This value can be <c>NULL</c>.</para></param><param name="uMsg"><para>Type: <c>UINT</c></para><para>One of the following notifications.</para><para><list type="table"><listheader><term>Notification</term><term>Usage</term></listheader><item><term>DFM_MERGECONTEXTMENU</term><term>Sent by the default context menu implementation to allow LPFNDFMCALLBACK to add items to the menu.</term></item><item><term>DFM_INVOKECOMMAND</term><term>Sent by the default context menu implementation to request LPFNDFMCALLBACK to invoke a menu command.</term></item><item><term>DFM_GETDEFSTATICID</term><term>Sent by the default context menu implementation when the default menu command is being created, allowing an alternate choice to be made.</term></item></list></para></param><param name="wParam"><para>Type: <c>WPARAM</c></para><para>Additional information. See the individual notification pages for specific requirements.</para></param><param name="lParam"><para>Type: <c>LPARAM</c></para><para>Additional information. See the individual notification pages for specific requirements.</para></param><returns><para>Type: <c>HRESULT</c></para><para>Returns S_OK if the message was handled, or an error value otherwise, including the following:</para><para><list type="table"><listheader><term>Return code</term><term>Description</term></listheader><item><term>E_NOTIMPL</term><term>The message was not handled.</term></item></list></para></returns>
-		// typedef HRESULT ( CALLBACK *LPFNDFMCALLBACK)( _In_opt_ IShellFolder *psf, _In_opt_ HWND hwnd, _In_opt_ IDataObject *pdtobj, UINT uMsg, WPARAM wParam, LPARAM lParam);
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb776770(v=vs.85).aspx
+		/// <summary>
+		/// <para>
+		/// [ <c>LPFNDFMCALLBACK</c> is available for use in the operating systems specified in the Requirements section. It may be altered
+		/// or unavailable in subsequent versions.]
+		/// </para>
+		/// <para>Defines the prototype for the callback function that receives messages from the Shell's default context menu implementation.</para>
+		/// </summary>
+		/// <param name="psf">
+		/// <para>Type: <c><c>IShellFolder</c>*</c></para>
+		/// <para>A pointer to the <c>IShellFolder</c> object the message applies to. This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="hwnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>The handle of the window that contains the view. This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="pdtobj">
+		/// <para>Type: <c><c>IDataObject</c>*</c></para>
+		/// <para><c>IDataObject</c> that represents the selection the context menu is based on. This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="uMsg">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>One of the following notifications.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Notification</term>
+		/// <term>Usage</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DFM_MERGECONTEXTMENU</term>
+		/// <term>Sent by the default context menu implementation to allow LPFNDFMCALLBACK to add items to the menu.</term>
+		/// </item>
+		/// <item>
+		/// <term>DFM_INVOKECOMMAND</term>
+		/// <term>Sent by the default context menu implementation to request LPFNDFMCALLBACK to invoke a menu command.</term>
+		/// </item>
+		/// <item>
+		/// <term>DFM_GETDEFSTATICID</term>
+		/// <term>
+		/// Sent by the default context menu implementation when the default menu command is being created, allowing an alternate choice to
+		/// be made.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <param name="wParam">
+		/// <para>Type: <c>WPARAM</c></para>
+		/// <para>Additional information. See the individual notification pages for specific requirements.</para>
+		/// </param>
+		/// <param name="lParam">
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>Additional information. See the individual notification pages for specific requirements.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>Returns S_OK if the message was handled, or an error value otherwise, including the following:</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>E_NOTIMPL</term>
+		/// <term>The message was not handled.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </returns>
+		// typedef HRESULT ( CALLBACK *LPFNDFMCALLBACK)( _In_opt_ IShellFolder *psf, _In_opt_ HWND hwnd, _In_opt_ IDataObject *pdtobj, UINT
+		// uMsg, WPARAM wParam, LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/bb776770(v=vs.85).aspx
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		[PInvokeData("Shlobj_core.h", MSDNShortId = "bb776770")]
 		public delegate HRESULT LPFNDFMCALLBACK(IShellFolder psf, HWND hwnd, IDataObject pdtobj, uint uMsg, IntPtr wParam, IntPtr lParam);
@@ -88,45 +148,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>Abandon cached data.</summary>
 			CLOSEPROPS_DISCARD = 0x0001
-		}
-
-		/// <summary>
-		/// <para>
-		/// Represents information about the effects of a drag-and-drop operation. The <c>DoDragDrop</c> function and many of the methods in
-		/// the <c>IDropSource</c> and <c>IDropTarget</c> use the values of this enumeration.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// Your application should always mask values from the <c>DROPEFFECT</c> enumeration to ensure compatibility with future
-		/// implementations. Presently, only some of the positions in a <c>DROPEFFECT</c> value have meaning. In the future, more
-		/// interpretations for the bits will be added. Drag sources and drop targets should carefully mask these values appropriately before
-		/// comparing. They should never compare a <c>DROPEFFECT</c> against, say, DROPEFFECT_COPY by doing the following:
-		/// </para>
-		/// <para>Instead, the application should always mask for the value or values being sought as using one of the following techniques:</para>
-		/// <para>This allows for the definition of new drop effects, while preserving backward compatibility with existing code.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/com/dropeffect-constants
-		[PInvokeData("OleIdl.h", MSDNShortId = "d8e46899-3fbf-4012-8dd3-67fa627526d5")]
-		// public static extern
-		public enum DROPEFFECT : uint
-		{
-			/// <summary>Drop target cannot accept the data.</summary>
-			DROPEFFECT_NONE = 0,
-
-			/// <summary>Drop results in a copy. The original data is untouched by the drag source.</summary>
-			DROPEFFECT_COPY = 1,
-
-			/// <summary>Drag source should remove the data.</summary>
-			DROPEFFECT_MOVE = 2,
-
-			/// <summary>Drag source should create a link to the original data.</summary>
-			DROPEFFECT_LINK = 4,
-
-			/// <summary>
-			/// Scrolling is about to start or is currently occurring in the target. This value is used in addition to the other values.
-			/// </summary>
-			DROPEFFECT_SCROLL = 0x80000000,
 		}
 
 		/// <summary>A flag that controls the action of SHGetSetFolderCustomSettings.</summary>
@@ -1960,7 +1981,7 @@ namespace Vanara.PInvoke
 		/// "C:\Windows" on one system and "C:\Winnt" on another. These constants are defined in Shlobj.h.
 		/// </summary>
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762494")]
-		internal enum CSIDL
+		public enum CSIDL
 		{
 			CSIDL_ADMINTOOLS = 0x0030,
 			CSIDL_CDBURN_AREA = 0x003b,
@@ -2076,14 +2097,69 @@ namespace Vanara.PInvoke
 		// AssocGetDetailsOfPropKey( IShellFolder *psf, PCUITEMID_CHILD pidl, const PROPERTYKEY *pkey, VARIANT *pv, BOOL *pfFoundPropKey );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "f13af5f4-1b6a-419c-a042-e05c9ec51d02")]
-		public static extern HRESULT AssocGetDetailsOfPropKey(IShellFolder psf, PIDL pidl, ref PROPERTYKEY pkey, ref object pv, [MarshalAs(UnmanagedType.Bool)] ref bool pfFoundPropKey);
+		public static extern HRESULT AssocGetDetailsOfPropKey(IShellFolder psf, PIDL pidl, out PROPERTYKEY pkey, out object pv, [MarshalAs(UnmanagedType.Bool)] out bool pfFoundPropKey);
 
-		/// <summary><para>Creates a context menu for a selected group of file folder objects.</para></summary><param name="pidlFolder"><para>Type: <c>PCIDLIST_ABSOLUTE</c></para><para>An ITEMIDLIST structure for the parent folder. This value can be <c>NULL</c>.</para></param><param name="hwnd"><para>Type: <c>HWND</c></para><para>A handle to the parent window. This value can be <c>NULL</c>.</para></param><param name="cidl"><para>Type: <c>UINT</c></para><para>The number of ITEMIDLIST structures in the array pointed to by .</para></param><param name="apidl"><para>Type: <c>PCUITEMID_CHILD_ARRAY*</c></para><para>A pointer to an array of ITEMIDLIST structures, one for each item that is selected.</para></param><param name="psf"><para>Type: <c>IShellFolder*</c></para><para>A pointer to the parent folder&#39;s IShellFolder interface. This <c>IShellFolder</c> must support the IDataObject interface. If it does not, <c>CDefFolderMenu_Create2</c> fails and returns E_NOINTERFACE. This value can be <c>NULL</c>.</para></param><param name="pfn"><para>TBD</para></param><param name="nKeys"><para>Type: <c>UINT</c></para><para>The number of registry keys in the array pointed to by .</para><para><c>Note</c> The maximum number of registry keys is 16. Callers must enforce this limit as the API does not. Failing to do so can result in memory corruption.</para></param><param name="ahkeys"><para>Type: <c>const HKEY*</c></para><para>A pointer to an array of registry keys that specify the context menu handlers used with the menu&#39;s entries. For more information on context menu handlers, see Creating Context Menu Handlers. This array can contain a maximum of 16 registry keys.</para></param><param name="ppcm"><para>Type: <c>IContextMenu**</c></para><para>The address of an IContextMenu interface pointer that, when this function returns successfully, points to the <c>IContextMenu</c> object that represents the context menu.</para></param><returns><para>Type: <c>HRESULT</c></para><para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para></returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-cdeffoldermenu_create2
-		// SHSTDAPI CDefFolderMenu_Create2( PCIDLIST_ABSOLUTE pidlFolder, HWND hwnd, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, IShellFolder *psf, LPFNDFMCALLBACK pfn, UINT nKeys, const HKEY *ahkeys, IContextMenu **ppcm );
+		/// <summary>
+		/// <para>Creates a context menu for a selected group of file folder objects.</para>
+		/// </summary>
+		/// <param name="pidlFolder">
+		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+		/// <para>An ITEMIDLIST structure for the parent folder. This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="hwnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the parent window. This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="cidl">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The number of ITEMIDLIST structures in the array pointed to by .</para>
+		/// </param>
+		/// <param name="apidl">
+		/// <para>Type: <c>PCUITEMID_CHILD_ARRAY*</c></para>
+		/// <para>A pointer to an array of ITEMIDLIST structures, one for each item that is selected.</para>
+		/// </param>
+		/// <param name="psf">
+		/// <para>Type: <c>IShellFolder*</c></para>
+		/// <para>
+		/// A pointer to the parent folder's IShellFolder interface. This <c>IShellFolder</c> must support the IDataObject interface. If it
+		/// does not, <c>CDefFolderMenu_Create2</c> fails and returns E_NOINTERFACE. This value can be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="pfn">
+		/// <para>TBD</para>
+		/// </param>
+		/// <param name="nKeys">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The number of registry keys in the array pointed to by .</para>
+		/// <para>
+		/// <c>Note</c> The maximum number of registry keys is 16. Callers must enforce this limit as the API does not. Failing to do so can
+		/// result in memory corruption.
+		/// </para>
+		/// </param>
+		/// <param name="ahkeys">
+		/// <para>Type: <c>const HKEY*</c></para>
+		/// <para>
+		/// A pointer to an array of registry keys that specify the context menu handlers used with the menu's entries. For more information
+		/// on context menu handlers, see Creating Context Menu Handlers. This array can contain a maximum of 16 registry keys.
+		/// </para>
+		/// </param>
+		/// <param name="ppcm">
+		/// <para>Type: <c>IContextMenu**</c></para>
+		/// <para>
+		/// The address of an IContextMenu interface pointer that, when this function returns successfully, points to the <c>IContextMenu</c>
+		/// object that represents the context menu.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-cdeffoldermenu_create2 SHSTDAPI
+		// CDefFolderMenu_Create2( PCIDLIST_ABSOLUTE pidlFolder, HWND hwnd, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, IShellFolder *psf,
+		// LPFNDFMCALLBACK pfn, UINT nKeys, const HKEY *ahkeys, IContextMenu **ppcm );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "7b5e012d-1c8b-42c5-8181-9923fd389fc5")]
-		public static extern HRESULT CDefFolderMenu_Create2(PIDL pidlFolder, HWND hwnd, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] apidl, IShellFolder psf, LPFNDFMCALLBACK pfn, uint nKeys, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] IntPtr[] ahkeys, out IContextMenu ppcm);
+		public static extern HRESULT CDefFolderMenu_Create2(PIDL pidlFolder, HWND hwnd, uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] apidl, IShellFolder psf, LPFNDFMCALLBACK pfn, uint nKeys, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)] HKEY[] ahkeys, out IContextMenu ppcm);
 
 		/// <summary>
 		/// <para>
@@ -2155,25 +2231,27 @@ namespace Vanara.PInvoke
 		/// </summary>
 		/// <param name="pidl">
 		/// <para>Type: <c>PIDLIST_RELATIVE</c></para>
-		/// <para>A pointer to an ITEMIDLIST structure. When the function returns, the SHITEMID structure specified by is appended or prepended.</para>
+		/// <para>
+		/// A pointer to an ITEMIDLIST structure. When the function returns, the SHITEMID structure specified by pmkid is appended or prepended.
+		/// </para>
 		/// </param>
 		/// <param name="pmkid">
 		/// <para>Type: <c>LPSHITEMID</c></para>
-		/// <para>A pointer to a SHITEMID structure to be appended or prepended to .</para>
+		/// <para>A pointer to a SHITEMID structure to be appended or prepended to pidl.</para>
 		/// </param>
 		/// <param name="fAppend">
 		/// <para>Type: <c>BOOL</c></para>
-		/// <para>Value that is set to <c>TRUE</c> to append to . Set this value to <c>FALSE</c> to prepend to .</para>
+		/// <para>Value that is set to <c>TRUE</c> to append pmkid to pidl. Set this value to <c>FALSE</c> to prepend pmkid to pidl.</para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>PIDLIST_RELATIVE</c></para>
-		/// <para>Returns the ITEMIDLIST structure specified by , with appended or prepended. Returns <c>NULL</c> on failure.</para>
+		/// <para>Returns the ITEMIDLIST structure specified by pidl, with pmkid appended or prepended. Returns <c>NULL</c> on failure.</para>
 		/// </returns>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-ilappendid PIDLIST_RELATIVE ILAppendID(
 		// PIDLIST_RELATIVE pidl, LPCSHITEMID pmkid, BOOL fAppend );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "d1bb5993-fe23-42d4-a2c5-8e54e6e37d09")]
-		public static extern IntPtr ILAppendID(IntPtr pidl, ref SHITEMID pmkid, [MarshalAs(UnmanagedType.Bool)] bool fAppend);
+		public static extern PIDL ILAppendID(PIDL pidl, in SHITEMID pmkid, [MarshalAs(UnmanagedType.Bool)] bool fAppend);
 
 		/// <summary>
 		/// <para>Determines whether a specified ITEMIDLIST structure is the child of another <c>ITEMIDLIST</c> structure.</para>
@@ -2201,7 +2279,7 @@ namespace Vanara.PInvoke
 		// PIDLIST_ABSOLUTE pidlParent, PCIDLIST_ABSOLUTE pidlChild );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "4f07e989-ae74-4cf4-b3d9-0f59f2653095")]
-		public static extern IntPtr ILFindChild(IntPtr pidlParent, IntPtr pidlChild);
+		public static extern PIDL ILFindChild(PIDL pidlParent, PIDL pidlChild);
 
 		/// <summary>
 		/// <para>[</para>
@@ -2230,7 +2308,7 @@ namespace Vanara.PInvoke
 		// IStream *pstm, PIDLIST_RELATIVE *pidl );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "6fb735b6-a8c3-439e-9f20-4fda8f008b28")]
-		public static extern HRESULT ILLoadFromStreamEx(IStream pstm, out IntPtr pidl);
+		public static extern HRESULT ILLoadFromStreamEx(IStream pstm, out PIDL pidl);
 
 		/// <summary>
 		/// <para>Saves an ITEMIDLIST structure to a stream.</para>
@@ -2254,7 +2332,7 @@ namespace Vanara.PInvoke
 		// *pstm, PCUIDLIST_RELATIVE pidl );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "40d5ce57-58dc-4c79-8fe6-5412e3d7dc64")]
-		public static extern HRESULT ILSaveToStream(IStream pstm, IntPtr pidl);
+		public static extern HRESULT ILSaveToStream(IStream pstm, PIDL pidl);
 
 		/// <summary>
 		/// <para>
@@ -2358,7 +2436,7 @@ namespace Vanara.PInvoke
 		// PCWSTR pszSubkey, PCWSTR pszValue, DWORD grfMode );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "e1e35c94-84ac-4aa1-b2a1-47b37a7f224e")]
-		public static extern IStream OpenRegStream(IntPtr hkey, [MarshalAs(UnmanagedType.LPWStr)] string pszSubkey, [MarshalAs(UnmanagedType.LPWStr)] string pszValue, STGM grfMode);
+		public static extern IStream OpenRegStream(HKEY hkey, [MarshalAs(UnmanagedType.LPWStr)] string pszSubkey, [MarshalAs(UnmanagedType.LPWStr)] string pszValue, STGM grfMode);
 
 		/// <summary>
 		/// <para>
@@ -2489,8 +2567,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// <para>
-		/// [PathIsSlow is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable
-		/// in subsequent versions.]
+		/// [ <c>PathIsSlow</c> is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions.]
 		/// </para>
 		/// <para>Determines whether a file path is a high-latency network connection.</para>
 		/// </summary>
@@ -2499,7 +2577,11 @@ namespace Vanara.PInvoke
 		/// <para>A pointer to a null-terminated string that contains the fully qualified path of the file.</para>
 		/// </param>
 		/// <param name="dwAttr">
-		/// <para>TBD</para>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The file attributes, if known; otherwise, pass –1 and this function gets the attributes by calling GetFileAttributes. See
+		/// <c>GetFileAttributes</c> for a list of file attributes.
+		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>BOOL</c></para>
@@ -2517,7 +2599,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlobj.h", MSDNShortId = "f848a098-9248-453b-a957-77c35d70e528")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PathIsSlow(string pszFile, uint dwAttr);
+		public static extern bool PathIsSlow(string pszFile, uint dwAttr = uint.MaxValue);
 
 		/// <summary>
 		/// <para>Creates a unique path name from a template.</para>
@@ -2569,10 +2651,10 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-pathmakeuniquename BOOL PathMakeUniqueName( PWSTR
 		// pszUniqueName, UINT cchMax, PCWSTR pszTemplate, PCWSTR pszLongPlate, PCWSTR pszDir );
-		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "8456ae0c-e83c-43d0-a86a-1861a373d237")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PathMakeUniqueName([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszUniqueName, uint cchMax, [MarshalAs(UnmanagedType.LPWStr)] string pszTemplate, [MarshalAs(UnmanagedType.LPWStr)] string pszLongPlate, [MarshalAs(UnmanagedType.LPWStr)] string pszDir);
+		public static extern bool PathMakeUniqueName(StringBuilder pszUniqueName, uint cchMax, string pszTemplate, string pszLongPlate, string pszDir);
 
 		/// <summary>
 		/// <para>
@@ -2736,7 +2818,7 @@ namespace Vanara.PInvoke
 		// PifMgr_CloseProperties(HANDLE hProps, UINT flOpt);
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "fd50d4f8-87c8-4162-9e88-3c8592b929fa")]
-		public static extern IntPtr PifMgr_CloseProperties(IntPtr hProps, CLOSEPROPS flOpt);
+		public static extern HPIF PifMgr_CloseProperties(HPIF hProps, CLOSEPROPS flOpt);
 
 		/// <summary>
 		/// [PifMgr_GetProperties is available for use in the operating systems specified in the Requirements section.It may be altered or
@@ -2760,7 +2842,7 @@ namespace Vanara.PInvoke
 		// HANDLE hProps, PCSTR pszGroup, void* lpProps, int cbProps, UINT flOpt );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("shlobj_core.h")]
-		public static extern int PifMgr_GetProperties(IntPtr hProps, string pszGroup, IntPtr lpProps, int cbProps, uint flOpt = 0);
+		public static extern int PifMgr_GetProperties(HPIF hProps, string pszGroup, IntPtr lpProps, int cbProps, uint flOpt = 0);
 
 		/// <summary>
 		/// <para>
@@ -2821,7 +2903,7 @@ namespace Vanara.PInvoke
 		// PifMgr_OpenProperties( PCWSTR pszApp, PCWSTR pszPIF, UINT hInf, UINT flOpt );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "0bc11528-7278-4765-b3cb-671ba82c9155")]
-		public static extern IntPtr PifMgr_OpenProperties([MarshalAs(UnmanagedType.LPWStr)] string pszApp, [MarshalAs(UnmanagedType.LPWStr)] string pszPIF, uint hInf, OPENPROPS flOpt);
+		public static extern SafeHPIF PifMgr_OpenProperties([MarshalAs(UnmanagedType.LPWStr)] string pszApp, [MarshalAs(UnmanagedType.LPWStr)] string pszPIF, uint hInf, OPENPROPS flOpt);
 
 		/// <summary>
 		/// [PifMgr_SetProperties is available for use in the operating systems specified in the Requirements section.It may be altered or
@@ -2843,7 +2925,7 @@ namespace Vanara.PInvoke
 		// PifMgr_SetProperties(HANDLE hProps, PCSTR pszGroup, const void* lpProps, int cbProps, UINT flOpt );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Ansi)]
 		[PInvokeData("shlobj_core.h")]
-		public static extern int PifMgr_SetProperties(IntPtr hProps, string pszGroup, IntPtr lpProps, int cbProps, uint flOpt = 0);
+		public static extern int PifMgr_SetProperties(HPIF hProps, string pszGroup, IntPtr lpProps, int cbProps, uint flOpt = 0);
 
 		/// <summary>
 		/// <para>
@@ -2947,14 +3029,48 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </summary>
 		/// <param name="hwnd">
-		/// <para>TBD</para>
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the parent window.</para>
 		/// </param>
 		/// <param name="pszPrompt">
 		/// <para>Type: <c>PCWSTR</c></para>
 		/// <para>A null-terminated Unicode string that contains the text that displays in the dialog box which prompts the user.</para>
 		/// </param>
 		/// <param name="dwReturn">
-		/// <para>TBD</para>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The flags that specify the type of shutdown.</para>
+		/// <para>This parameter must include one of the following values.</para>
+		/// <para>EWX_LOGOFF</para>
+		/// <para>
+		/// Shuts down all processes running in the security context of the process that called this function, then logs the user off.
+		/// </para>
+		/// <para>EWX_POWEROFF</para>
+		/// <para>
+		/// Shuts down the system and turns off the power. The system must support the power-off feature. The calling process must have the
+		/// <c>SE_SHUTDOWN_NAME</c> privilege. For more information, see ExitWindowsEx.
+		/// </para>
+		/// <para>EWX_REBOOT</para>
+		/// <para>
+		/// Shuts down the system and then restarts the system. The calling process must have the <c>SE_SHUTDOWN_NAME</c> privilege. For more
+		/// information, see ExitWindowsEx.
+		/// </para>
+		/// <para>EWX_SHUTDOWN</para>
+		/// <para>
+		/// Shuts down the system to a point at which it is safe to turn off the power. At this point, all file buffers have been flushed to
+		/// disk, and all running processes have stopped. If the system supports the power-off feature, the power is also turned off. The
+		/// calling process must have the <c>SE_SHUTDOWN_NAME</c> privilege. For more information, see ExitWindowsEx.
+		/// </para>
+		/// <para>This parameter can optionally include the following values.</para>
+		/// <para>EWX_FORCE</para>
+		/// <para>
+		/// Forces processes to terminate. When this flag is set, the system does not send the WM_QUERYENDSESSION and WM_ENDSESSION messages.
+		/// This can cause the applications to lose data. Therefore, you should only use this flag in an emergency.
+		/// </para>
+		/// <para>EWX_FORCEIFHUNG</para>
+		/// <para>
+		/// Forces processes to terminate if they do not respond to the WM_QUERYENDSESSION or WM_ENDSESSION message. This flag is ignored if
+		/// <c>EWX_FORCE</c> is used.
+		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>int</c></para>
@@ -3123,7 +3239,7 @@ namespace Vanara.PInvoke
 		// SHBindToFolderIDListParent( IShellFolder *psfRoot, PCUIDLIST_RELATIVE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "72a79d1b-15ed-475e-9ebd-03345579a06a")]
-		public static extern HRESULT SHBindToFolderIDListParent(IShellFolder psfRoot, PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, IntPtr ppidlLast);
+		public static extern HRESULT SHBindToFolderIDListParent(IShellFolder psfRoot, PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, out IntPtr ppidlLast);
 
 		/// <summary>
 		/// <para>Extends the SHBindToFolderIDListParent function by allowing the caller to specify a bind context.</para>
@@ -3173,7 +3289,7 @@ namespace Vanara.PInvoke
 		// PCUITEMID_CHILD *ppidlLast );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "4f9b68cb-d0ae-45f7-90f5-2db1da3ab599")]
-		public static extern HRESULT SHBindToFolderIDListParentEx(IShellFolder psfRoot, PIDL pidl, IBindCtx ppbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, IntPtr ppidlLast);
+		public static extern HRESULT SHBindToFolderIDListParentEx(IShellFolder psfRoot, PIDL pidl, IBindCtx ppbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, out IntPtr ppidlLast);
 
 		/// <summary>
 		/// <para>Retrieves and binds to a specified object by using the Shell namespace IShellFolder::BindToObject method.</para>
@@ -3259,7 +3375,7 @@ namespace Vanara.PInvoke
 		// PCIDLIST_ABSOLUTE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "1cb283a6-3ebf-4986-9f32-5f6ab8d977ad")]
-		public static extern HRESULT SHBindToParent(PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, ref IntPtr ppidlLast);
+		public static extern HRESULT SHBindToParent(PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, out IntPtr ppidlLast);
 
 		/// <summary>Displays a dialog box that enables the user to select a Shell folder.</summary>
 		/// <param name="lpbi">A pointer to a BROWSEINFO structure that contains information used to display the dialog box.</param>
@@ -3269,7 +3385,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762115")]
-		public static extern PIDL SHBrowseForFolder(ref BROWSEINFO lpbi);
+		public static extern PIDL SHBrowseForFolder(in BROWSEINFO lpbi);
 
 		/// <summary>
 		/// <para>Locks the shared memory associated with a Shell change notification event.</para>
@@ -3303,7 +3419,7 @@ namespace Vanara.PInvoke
 		// SHChangeNotification_Lock( HANDLE hChange, DWORD dwProcId, PIDLIST_ABSOLUTE **pppidl, LONG *plEvent );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "8e22d5d0-64be-403c-982d-c23705d85223")]
-		public static extern IntPtr SHChangeNotification_Lock(IntPtr hChange, uint dwProcId, IntPtr pppidl, ref int plEvent);
+		public static extern IntPtr SHChangeNotification_Lock(HWND hChange, uint dwProcId, out IntPtr pppidl, out int plEvent);
 
 		/// <summary>
 		/// <para>Unlocks shared memory for a change notification.</para>
@@ -3805,7 +3921,7 @@ namespace Vanara.PInvoke
 		// SHCreatePropSheetExtArray( HKEY hKey, PCWSTR pszSubKey, UINT max_iface );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj.h", MSDNShortId = "88a72529-325d-431e-bc26-bddca787e62b")]
-		public static extern IntPtr SHCreatePropSheetExtArray(IntPtr hKey, [MarshalAs(UnmanagedType.LPWStr)] string pszSubKey, uint max_iface);
+		public static extern SafeHPSXA SHCreatePropSheetExtArray(HKEY hKey, [MarshalAs(UnmanagedType.LPWStr)] string pszSubKey, uint max_iface);
 
 		/// <summary>
 		/// <para>Creates a new instance of the default Shell folder view object (DefView).</para>
@@ -4039,7 +4155,7 @@ namespace Vanara.PInvoke
 		// SHDestroyPropSheetExtArray( HPSXA hpsxa );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "beb3c1b1-deef-440d-8cf7-f76b3f396efa")]
-		public static extern void SHDestroyPropSheetExtArray(IntPtr hpsxa);
+		public static extern void SHDestroyPropSheetExtArray(HPSXA hpsxa);
 
 		/// <summary>
 		/// <para>Executes a drag-and-drop operation. Supports drag source creation on demand, as well as drag images.</para>
@@ -4105,7 +4221,7 @@ namespace Vanara.PInvoke
 		// IDataObject *pdata, IDropSource *pdsrc, DWORD dwEffect, DWORD *pdwEffect );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "76c98516-ede9-47de-b4ad-257a162775b9")]
-		public static extern HRESULT SHDoDragDrop(HWND hwnd, IDataObject pdata, [Optional] IntPtr pdsrc, DROPEFFECT dwEffect, ref DROPEFFECT pdwEffect);
+		public static extern HRESULT SHDoDragDrop(HWND hwnd, IDataObject pdata, [Optional] IDropSource pdsrc, DROPEFFECT dwEffect, ref DROPEFFECT pdwEffect);
 
 		/// <summary>
 		/// <para>
@@ -4180,7 +4296,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "c3b73616-849c-4149-b04d-a7d389ebf700")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool Shell_GetImageLists(ref IntPtr phiml, ref IntPtr phimlSmall);
+		public static extern bool Shell_GetImageLists(out HIMAGELIST phiml, out HIMAGELIST phimlSmall);
 
 		/// <summary>
 		/// <para>
@@ -4236,7 +4352,7 @@ namespace Vanara.PInvoke
 		// hmDst, HMENU hmSrc, UINT uInsert, UINT uIDAdjust, UINT uIDAdjustMax, ULONG uFlags );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "f9e005fd-b1f2-4a5f-ad36-9c44998dc4eb")]
-		public static extern uint Shell_MergeMenus(IntPtr hmDst, IntPtr hmSrc, uint uInsert, uint uIDAdjust, uint uIDAdjustMax, MM uFlags);
+		public static extern uint Shell_MergeMenus(HMENU hmDst, HMENU hmSrc, uint uInsert, uint uIDAdjust, uint uIDAdjustMax, MM uFlags);
 
 		/// <summary>
 		/// <para>
@@ -4270,7 +4386,7 @@ namespace Vanara.PInvoke
 		// SHFind_InitMenuPopup( HMENU hmenu, HWND hwndOwner, UINT idCmdFirst, UINT idCmdLast );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "ca44bd57-6af0-45b3-9331-914e93360743")]
-		public static extern IContextMenu SHFind_InitMenuPopup(IntPtr hmenu, HWND hwndOwner, uint idCmdFirst, uint idCmdLast);
+		public static extern IContextMenu SHFind_InitMenuPopup(HMENU hmenu, HWND hwndOwner, uint idCmdFirst, uint idCmdLast);
 
 		/// <summary>
 		/// <para>
@@ -4304,7 +4420,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "c54036c2-e6b9-4b21-b2b2-a6721c502ee5")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SHFindFiles(PIDL pidlFolder, IntPtr pidlSaveFile);
+		public static extern bool SHFindFiles(PIDL pidlFolder, [Optional] IntPtr pidlSaveFile);
 
 		/// <summary>
 		/// <para>
@@ -4515,8 +4631,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762174")]
-		public static extern HRESULT SHGetDataFromIDList([In, MarshalAs(UnmanagedType.Interface)]
-			IShellFolder psf, [In] PIDL pidl, SHGetDataFormat nFormat, [In, Out] IntPtr pv, int cb);
+		public static extern HRESULT SHGetDataFromIDList([In, MarshalAs(UnmanagedType.Interface)] IShellFolder psf, [In] PIDL pidl, SHGetDataFormat nFormat,
+			[In, Out] IntPtr pv, int cb);
 
 		/// <summary>Retrieves the IShellFolder interface for the desktop folder, which is the root of the Shell's namespace.</summary>
 		/// <param name="ppv">
@@ -4554,8 +4670,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762180")]
-		public static extern HRESULT SHGetFolderLocation(HWND hwndOwner, int nFolder, HTOKEN hToken,
-			int dwReserved, out PIDL ppidl);
+		public static extern HRESULT SHGetFolderLocation(HWND hwndOwner, int nFolder, [Optional] HTOKEN hToken, [Optional] int dwReserved, out PIDL ppidl);
 
 		/// <summary>
 		/// Deprecated. Gets the path of a folder identified by a CSIDL value. <note>As of Windows Vista, this function is merely a wrapper
@@ -4610,8 +4725,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762181")]
-		public static extern HRESULT SHGetFolderPath(HWND hwndOwner, int nFolder, [In, Optional] HTOKEN hToken,
-			SHGFP dwFlags, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPath);
+		public static extern HRESULT SHGetFolderPath(HWND hwndOwner, int nFolder, [In, Optional] HTOKEN hToken, SHGFP dwFlags, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPath);
 
 		/// <summary>
 		/// <para>Gets the path of a folder and appends a user-provided subfolder path.</para>
@@ -4670,7 +4784,7 @@ namespace Vanara.PInvoke
 		// SHGetFolderPathAndSubDirA( HWND hwnd, int csidl, HANDLE hToken, DWORD dwFlags, LPCSTR pszSubDir, LPSTR pszPath );
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "7e92e136-1036-4c96-931f-6e0129fb839a")]
-		public static extern HRESULT SHGetFolderPathAndSubDir(HWND hwnd, int csidl, HTOKEN hToken, SHGFP dwFlags, string pszSubDir, StringBuilder pszPath);
+		public static extern HRESULT SHGetFolderPathAndSubDir(HWND hwnd, int csidl, [Optional] HTOKEN hToken, SHGFP dwFlags, string pszSubDir, StringBuilder pszPath);
 
 		/// <summary>
 		/// Retrieves the full path of a known folder identified by the folder's KNOWNFOLDERID. This extends SHGetKnownFolderPath by allowing
@@ -4704,9 +4818,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, CharSet = CharSet.Unicode, ExactSpelling = true)]
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Shlobj.h", MSDNShortId = "mt757093")]
-		public static extern HRESULT SHGetFolderPathEx(in
-			Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] HTOKEN hToken,
-			[Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPath, uint cchPath);
+		public static extern HRESULT SHGetFolderPathEx(in Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] HTOKEN hToken, [Out] StringBuilder pszPath, uint cchPath);
 
 		/// <summary>
 		/// <para>Returns the index of the overlay icon in the system image list.</para>
@@ -4763,8 +4875,7 @@ namespace Vanara.PInvoke
 		/// <param name="ppidl">When this function returns, contains a pointer to the PIDL of the given object.</param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762184")]
-		public static extern HRESULT SHGetIDListFromObject([MarshalAs(UnmanagedType.IUnknown)] object iUnknown,
-			out PIDL ppidl);
+		public static extern HRESULT SHGetIDListFromObject([MarshalAs(UnmanagedType.IUnknown)] object iUnknown, out PIDL ppidl);
 
 		/// <summary>Retrieves an image list.</summary>
 		/// <param name="iImageList">The image type contained in the list.</param>
@@ -4772,8 +4883,7 @@ namespace Vanara.PInvoke
 		/// <param name="ppv">When this method returns, contains the interface pointer requested in riid. This is typically IImageList.</param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762185")]
-		public static extern HRESULT SHGetImageList(SHIL iImageList, in Guid riid,
-			out IImageList ppv);
+		public static extern HRESULT SHGetImageList(SHIL iImageList, in Guid riid, out IImageList ppv);
 
 		/// <summary>
 		/// <para>
@@ -4853,8 +4963,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762187")]
-		public static extern HRESULT SHGetKnownFolderIDList(in
-			Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] HTOKEN hToken, out PIDL ppidl);
+		public static extern HRESULT SHGetKnownFolderIDList(in Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] HTOKEN hToken, out PIDL ppidl);
 
 		/// <summary>Retrieves an IShellItem object that represents a known folder.</summary>
 		/// <param name="rfid">A reference to the KNOWNFOLDERID, a GUID that identifies the folder that contains the item.</param>
@@ -4882,10 +4991,7 @@ namespace Vanara.PInvoke
 		/// <param name="ppv">When this method returns, contains the interface pointer requested in riid.</param>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "dd378429")]
-		public static extern HRESULT SHGetKnownFolderItem(in
-			Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] HTOKEN hToken,
-			in
-			Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+		public static extern HRESULT SHGetKnownFolderItem(in Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] HTOKEN hToken, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
 
 		/// <summary>Retrieves the full path of a known folder identified by the folder's KNOWNFOLDERID.</summary>
 		/// <param name="rfid">A reference to the KNOWNFOLDERID that identifies the folder.</param>
@@ -4917,38 +5023,7 @@ namespace Vanara.PInvoke
 		/// <remarks>This function replaces SHGetFolderPath. That older function is now simply a wrapper for SHGetKnownFolderPath.</remarks>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762188")]
-		public static extern HRESULT SHGetKnownFolderPath(in Guid rfid,
-			KNOWN_FOLDER_FLAG dwFlags, [In, Optional] HTOKEN hToken, out SafeCoTaskMemHandle pszPath);
-
-		/// <summary>Retrieves the full path of a known folder identified by the folder's KNOWNFOLDERID.</summary>
-		/// <param name="id">A reference to the KNOWNFOLDERID that identifies the folder.</param>
-		/// <param name="dwFlags">
-		/// Flags that specify special retrieval options. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.
-		/// </param>
-		/// <param name="hToken">
-		/// An access token that represents a particular user. If this parameter is NULL, which is the most common usage, the function
-		/// requests the known folder for the current user.
-		/// <para>
-		/// Request a specific user's folder by passing the hToken of that user. This is typically done in the context of a service that has
-		/// sufficient privileges to retrieve the token of a given user. That token must be opened with TOKEN_QUERY and TOKEN_IMPERSONATE
-		/// rights. In some cases, you also need to include TOKEN_DUPLICATE. In addition to passing the user's hToken, the registry hive of
-		/// that specific user must be mounted. See Access Control for further discussion of access control issues.
-		/// </para>
-		/// <para>
-		/// Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetKnownFolderPath to find
-		/// folder locations (such as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user
-		/// account is created, and includes special folders such as Documents and Desktop. Any items added to the Default User folder also
-		/// appear in any new user account. Note that access to the Default User folders requires administrator privileges.
-		/// </para>
-		/// </param>
-		/// <returns>String that specifies the path of the known folder.</returns>
-		/// <remarks>This function replaces SHGetFolderPath. That older function is now simply a wrapper for SHGetKnownFolderPath.</remarks>
-		[PInvokeData("Shlobj.h", MSDNShortId = "bb762188")]
-		public static string SHGetKnownFolderPath(KNOWNFOLDERID id, KNOWN_FOLDER_FLAG dwFlags, HTOKEN hToken = default)
-		{
-			SHGetKnownFolderPath(id.Guid(), dwFlags, hToken, out var path);
-			return path.ToString(-1);
-		}
+		public static extern HRESULT SHGetKnownFolderPath(in Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] HTOKEN hToken, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string pszPath);
 
 		/// <summary>Retrieves the display name of an item identified by its IDList.</summary>
 		/// <param name="pidl">A PIDL that identifies the item.</param>
@@ -4958,7 +5033,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		[DllImport(Lib.Shell32, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762191")]
-		public static extern HRESULT SHGetNameFromIDList(PIDL pidl, SIGDN sigdnName, out SafeCoTaskMemHandle ppszName);
+		public static extern HRESULT SHGetNameFromIDList(PIDL pidl, SIGDN sigdnName, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszName);
 
 		/// <summary>Converts an item identifier list to a file system path.</summary>
 		/// <param name="pidl">
@@ -4971,7 +5046,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762194")]
-		public static extern bool SHGetPathFromIDList(PIDL pidl, [MarshalAs(UnmanagedType.LPTStr)] StringBuilder pszPath);
+		public static extern bool SHGetPathFromIDList(PIDL pidl, StringBuilder pszPath);
 
 		/// <summary>
 		/// <para>
@@ -5056,7 +5131,7 @@ namespace Vanara.PInvoke
 		// *psf, PCUITEMID_CHILD pidlSimple, PITEMID_CHILD *ppidlReal );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "0c0b63c9-7ca7-4f73-be74-9c492f8506fc")]
-		public static extern HRESULT SHGetRealIDL(IShellFolder psf, PIDL pidlSimple, out IntPtr ppidlReal);
+		public static extern HRESULT SHGetRealIDL(IShellFolder psf, PIDL pidlSimple, out PIDL ppidlReal);
 
 		/// <summary>
 		/// <para>
@@ -5135,11 +5210,12 @@ namespace Vanara.PInvoke
 		/// <para>Retrieves the current Shell option settings.</para>
 		/// </summary>
 		/// <param name="psfs">
-		/// <para>TBD</para>
+		/// <para>Type: <c>LPSHELLFLAGSTATE</c></para>
+		/// <para>The address of a SHELLFLAGSTATE structure that receives the Shell option settings.</para>
 		/// </param>
 		/// <param name="dwMask">
 		/// <para>Type: <c>DWORD</c></para>
-		/// <para>A set of flags that determine which members of are being requested. This can be one or more of the following values.</para>
+		/// <para>A set of flags that determine which members of lpsfs are being requested. This can be one or more of the following values.</para>
 		/// <para>SSF_DESKTOPHTML</para>
 		/// <para>The <c>fDesktopHTML</c> member is being requested.</para>
 		/// <para>SSF_DONTPRETTYPATH</para>
@@ -5175,7 +5251,7 @@ namespace Vanara.PInvoke
 		// *psfs, DWORD dwMask );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "728a4004-f35d-4592-baf1-456a613a3344")]
-		public static extern void SHGetSettings(ref SHELLFLAGSTATE psfs, SSF dwMask);
+		public static extern void SHGetSettings(out SHELLFLAGSTATE psfs, SSF dwMask);
 
 		/// <summary>
 		/// <para>
@@ -5416,7 +5492,7 @@ namespace Vanara.PInvoke
 		// hwndParent, const OPENASINFO *poainfo );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "026bfb34-a8a5-4bd7-9bc0-4aa395e6d535")]
-		public static extern HRESULT SHOpenWithDialog(HWND hwndParent, ref OPENASINFO poainfo);
+		public static extern HRESULT SHOpenWithDialog(HWND hwndParent, in OPENASINFO poainfo);
 
 		/// <summary>
 		/// Translates a Shell namespace object's display name into an item identifier list and returns the attributes of the object. This
@@ -5618,7 +5694,8 @@ namespace Vanara.PInvoke
 		// SHPropStgReadMultiple( IPropertyStorage *pps, UINT uCodePage, ULONG cpspec, PROPSPEC const [] rgpspec, PROPVARIANT [] rgvar );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "5350a1b1-a099-4b09-af89-f652e40b1d20")]
-		public static extern HRESULT SHPropStgReadMultiple(IPropertyStorage pps, uint uCodePage, uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PROPSPEC[] rgpspec, [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PROPVARIANT[] rgvar);
+		public static extern HRESULT SHPropStgReadMultiple(IPropertyStorage pps, uint uCodePage, uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PROPSPEC[] rgpspec,
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PROPVARIANT[] rgvar);
 
 		/// <summary>
 		/// <para>
@@ -5662,7 +5739,8 @@ namespace Vanara.PInvoke
 		// PROPID propidNameFirst );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "38bc4d53-818d-48c5-9ec5-d2e33d98c63e")]
-		public static extern HRESULT SHPropStgWriteMultiple(IPropertyStorage pps, ref uint puCodePage, uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PROPSPEC[] rgpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PROPVARIANT[] rgvar, uint propidNameFirst);
+		public static extern HRESULT SHPropStgWriteMultiple(IPropertyStorage pps, ref uint puCodePage, uint cpspec, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PROPSPEC[] rgpspec,
+			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] PROPVARIANT[] rgvar, uint propidNameFirst);
 
 		/// <summary>
 		/// <para>
@@ -5695,7 +5773,7 @@ namespace Vanara.PInvoke
 		// SHReplaceFromPropSheetExtArray( HPSXA hpsxa, UINT uPageID, LPFNADDPROPSHEETPAGE lpfnReplaceWith, LPARAM lParam );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "a8bdde44-d668-46c4-9e58-7a45b775fe09")]
-		public static extern uint SHReplaceFromPropSheetExtArray(IntPtr hpsxa, uint uPageID, AddPropSheetPageProc lpfnReplaceWith, IntPtr lParam);
+		public static extern uint SHReplaceFromPropSheetExtArray(HPSXA hpsxa, uint uPageID, AddPropSheetPageProc lpfnReplaceWith, IntPtr lParam);
 
 		/// <summary>
 		/// <para>
@@ -5838,7 +5916,7 @@ namespace Vanara.PInvoke
 		// REFKNOWNFOLDERID rfid, DWORD dwFlags, HANDLE hToken, PCWSTR pszPath );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "b5758086-93d1-49d6-b9ac-ba8927f3bd1e")]
-		public static extern HRESULT SHSetKnownFolderPath(in Guid rfid, KNOWN_FOLDER_FLAG dwFlags, HTOKEN hToken, [MarshalAs(UnmanagedType.LPWStr)] string pszPath);
+		public static extern HRESULT SHSetKnownFolderPath(in Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [Optional] HTOKEN hToken, [MarshalAs(UnmanagedType.LPWStr)] string pszPath);
 
 		/// <summary>
 		/// <para>
@@ -6358,7 +6436,8 @@ namespace Vanara.PInvoke
 			/// NULL. If the value is NULL, the extensions are loaded based on the object that supports interface IQueryAssociations as
 			/// specified in punkAssociationInfo.
 			/// </summary>
-			public IntPtr aKeys;
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+			public HKEY[] aKeys;
 		}
 
 		/// <summary>Holds an extra data block used by IShellLinkDataList. It holds the link's Windows Installer ID.</summary>
@@ -6422,6 +6501,102 @@ namespace Vanara.PInvoke
 			public string swzTarget;
 		}
 
+		/// <summary>Provides a handle to a .pif file.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HPIF : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="HPIF"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public HPIF(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HPIF"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HPIF NULL => new HPIF(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HPIF"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HPIF h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPIF"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HPIF(IntPtr h) => new HPIF(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HPIF h1, HPIF h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HPIF h1, HPIF h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HPIF h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>Provides a handle to a property sheet array.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HPSXA : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="HPSXA"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public HPSXA(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HPSXA"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HPSXA NULL => new HPSXA(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HPSXA"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HPSXA h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HPSXA"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HPSXA(IntPtr h) => new HPSXA(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HPSXA h1, HPSXA h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HPSXA h1, HPSXA h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HPSXA h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
 		/// <summary>Holds an extra data block used by IShellLinkDataList. It holds console properties.</summary>
 		[StructLayout(LayoutKind.Sequential, Pack = 2)]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb773359")]
@@ -6458,7 +6633,7 @@ namespace Vanara.PInvoke
 			public COORD dwFontSize;
 
 			/// <summary>The font family/</summary>
-			public uint uFontFamily;
+			public FontFamily uFontFamily;
 
 			/// <summary>The font weight.</summary>
 			public uint uFontWeight;
@@ -7237,6 +7412,50 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public uint cchLogo;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPIF"/> that is disposed using <see cref="PifMgr_CloseProperties"/>.</summary>
+		public class SafeHPIF : HANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeHPIF"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHPIF(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHPIF"/> class.</summary>
+			private SafeHPIF() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHPIF"/> to <see cref="HPIF"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HPIF(SafeHPIF h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => PifMgr_CloseProperties(this, CLOSEPROPS.CLOSEPROPS_DISCARD) == default;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPSXA"/> that is disposed using <see cref="SHDestroyPropSheetExtArray"/>.</summary>
+		public class SafeHPSXA : HANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeHPSXA"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHPSXA(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHPSXA"/> class.</summary>
+			private SafeHPSXA() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHPSXA"/> to <see cref="HPSXA"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HPSXA(SafeHPSXA h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() { SHDestroyPropSheetExtArray(this); return true; }
 		}
 
 		/*[StructLayout(LayoutKind.Sequential)]

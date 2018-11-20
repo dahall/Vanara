@@ -5,14 +5,6 @@ using Vanara.Extensions;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Ole32;
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedParameter.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable InconsistentNaming
-// ReSharper disable MemberHidesStaticFromOuterClass
-// ReSharper disable UnusedMethodReturnValue.Global
-
 namespace Vanara.PInvoke
 {
 	public static partial class Shell32
@@ -647,7 +639,7 @@ namespace Vanara.PInvoke
 			/// Retrieves a handle to one of the windows participating in in-place activation (frame, document, parent, or in-place object window).
 			/// </summary>
 			/// <returns>A pointer to a variable that receives the window handle.</returns>
-			new IntPtr GetWindow();
+			new HWND GetWindow();
 
 			/// <summary>Determines whether context-sensitive help mode should be entered during an in-place activation session.</summary>
 			/// <param name="fEnterMode"><c>true</c> if help mode should be entered; <c>false</c> if it should be exited.</param>
@@ -662,7 +654,7 @@ namespace Vanara.PInvoke
 			/// The address of an OLEMENUGROUPWIDTHS array of six LONG values. The container fills in elements 0, 2, and 4 to reflect the
 			/// number of menu elements it provided in the File, View, and Window menu groups.
 			/// </param>
-			void InsertMenusSB(IntPtr hmenuShared, ref OLEMENUGROUPWIDTHS lpMenuWidths);
+			void InsertMenusSB(HMENU hmenuShared, ref OLEMENUGROUPWIDTHS lpMenuWidths);
 
 			/// <summary>Installs the composite menu in the view window.</summary>
 			/// <param name="hmenuShared">
@@ -670,7 +662,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="holemenuRes"></param>
 			/// <param name="hwndActiveObject">The view's window handle.</param>
-			void SetMenuSB(IntPtr hmenuShared, IntPtr holemenuRes, HWND hwndActiveObject);
+			void SetMenuSB(HMENU hmenuShared, IntPtr holemenuRes, HWND hwndActiveObject);
 
 			/// <summary>
 			/// Permits the container to remove any of its menu elements from the in-place composite menu and to free all associated resources.
@@ -678,7 +670,7 @@ namespace Vanara.PInvoke
 			/// <param name="hmenuShared">
 			/// A handle to the in-place composite menu that was constructed by calls to IShellBrowser::InsertMenusSB and the InsertMenu function.
 			/// </param>
-			void RemoveMenusSB(IntPtr hmenuShared);
+			void RemoveMenusSB(HMENU hmenuShared);
 
 			/// <summary>Sets and displays status text about the in-place object in the container's frame-window status bar.</summary>
 			/// <param name="pszStatusText">A pointer to a null-terminated character string that contains the message to display.</param>
@@ -742,7 +734,7 @@ namespace Vanara.PInvoke
 			/// <param name="lpButtons">The address of an array of TBBUTTON structures.</param>
 			/// <param name="nButtons">The number of TBBUTTON structures in the lpButtons array.</param>
 			/// <param name="uFlags">Flags specifying where the toolbar buttons should go.</param>
-			void SetToolbarItems([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ComCtl32.TBBUTTON[] lpButtons, uint nButtons, FCT uFlags);
+			void SetToolbarItems([MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] TBBUTTON[] lpButtons, uint nButtons, FCT uFlags);
 		}
 
 		/// <summary>
@@ -797,7 +789,7 @@ namespace Vanara.PInvoke
 			/// Retrieves a handle to one of the windows participating in in-place activation (frame, document, parent, or in-place object window).
 			/// </summary>
 			/// <returns>A pointer to a variable that receives the window handle.</returns>
-			new IntPtr GetWindow();
+			new HWND GetWindow();
 
 			/// <summary>Determines whether context-sensitive help mode should be entered during an in-place activation session.</summary>
 			/// <param name="fEnterMode"><c>true</c> if help mode should be entered; <c>false</c> if it should be exited.</param>
@@ -805,7 +797,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Translates keyboard shortcut (accelerator) key strokes when a namespace extension's view has the focus.</summary>
 			/// <param name="lpmsg">The address of the message to be translated.</param>
-			void TranslateAccelerator(ref MSG lpmsg);
+			void TranslateAccelerator(in MSG lpmsg);
 
 			/// <summary>Enables or disables modeless dialog boxes. This method is not currently implemented.</summary>
 			/// <param name="enable"><c>true</c> to enable modeless dialog box windows or <c>false</c> to disable them.</param>
@@ -836,7 +828,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="prcView">The dimensions of the new view, in client coordinates.</param>
 			/// <returns>The address of the window handle being created.</returns>
-			IntPtr CreateViewWindow(IShellView psvPrevious, ref FOLDERSETTINGS pfs, IShellBrowser psb, ref RECT prcView);
+			HWND CreateViewWindow(IShellView psvPrevious, in FOLDERSETTINGS pfs, IShellBrowser psb, in RECT prcView);
 
 			/// <summary>Destroys the view window.</summary>
 			void DestroyViewWindow();
@@ -889,7 +881,7 @@ namespace Vanara.PInvoke
 			/// Retrieves a handle to one of the windows participating in in-place activation (frame, document, parent, or in-place object window).
 			/// </summary>
 			/// <returns>A pointer to a variable that receives the window handle.</returns>
-			new IntPtr GetWindow();
+			new HWND GetWindow();
 
 			/// <summary>Determines whether context-sensitive help mode should be entered during an in-place activation session.</summary>
 			/// <param name="fEnterMode"><c>true</c> if help mode should be entered; <c>false</c> if it should be exited.</param>
@@ -897,7 +889,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Translates keyboard shortcut (accelerator) key strokes when a namespace extension's view has the focus.</summary>
 			/// <param name="lpmsg">The address of the message to be translated.</param>
-			new void TranslateAccelerator(ref MSG lpmsg);
+			new void TranslateAccelerator(in MSG lpmsg);
 
 			/// <summary>Enables or disables modeless dialog boxes. This method is not currently implemented.</summary>
 			/// <param name="enable"><c>true</c> to enable modeless dialog box windows or <c>false</c> to disable them.</param>
@@ -928,7 +920,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="prcView">The dimensions of the new view, in client coordinates.</param>
 			/// <returns>The address of the window handle being created.</returns>
-			new IntPtr CreateViewWindow(IShellView psvPrevious, ref FOLDERSETTINGS pfs, IShellBrowser psb, ref RECT prcView);
+			new HWND CreateViewWindow(IShellView psvPrevious, in FOLDERSETTINGS pfs, IShellBrowser psb, in RECT prcView);
 
 			/// <summary>Destroys the view window.</summary>
 			new void DestroyViewWindow();
@@ -983,7 +975,7 @@ namespace Vanara.PInvoke
 			/// <param name="pidlItem">A pointer to an ITEMIDLIST structure that uniquely identifies the item of interest.</param>
 			/// <param name="flags">One of the _SVSIF constants that specify the type of selection to apply.</param>
 			/// <param name="point">A pointer to a POINT structure containing the new position.</param>
-			void SelectAndPositionItem(PIDL pidlItem, SVSIF flags, ref System.Drawing.Point point);
+			void SelectAndPositionItem(PIDL pidlItem, SVSIF flags, in System.Drawing.Point point);
 		}
 
 		/// <summary>
@@ -1001,7 +993,7 @@ namespace Vanara.PInvoke
 			/// Retrieves a handle to one of the windows participating in in-place activation (frame, document, parent, or in-place object window).
 			/// </summary>
 			/// <returns>A pointer to a variable that receives the window handle.</returns>
-			new IntPtr GetWindow();
+			new HWND GetWindow();
 
 			/// <summary>Determines whether context-sensitive help mode should be entered during an in-place activation session.</summary>
 			/// <param name="fEnterMode"><c>true</c> if help mode should be entered; <c>false</c> if it should be exited.</param>
@@ -1009,7 +1001,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Translates keyboard shortcut (accelerator) key strokes when a namespace extension's view has the focus.</summary>
 			/// <param name="lpmsg">The address of the message to be translated.</param>
-			new void TranslateAccelerator(ref MSG lpmsg);
+			new void TranslateAccelerator(in MSG lpmsg);
 
 			/// <summary>Enables or disables modeless dialog boxes. This method is not currently implemented.</summary>
 			/// <param name="enable"><c>true</c> to enable modeless dialog box windows or <c>false</c> to disable them.</param>
@@ -1040,7 +1032,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="prcView">The dimensions of the new view, in client coordinates.</param>
 			/// <returns>The address of the window handle being created.</returns>
-			new IntPtr CreateViewWindow(IShellView psvPrevious, ref FOLDERSETTINGS pfs, IShellBrowser psb, ref RECT prcView);
+			new HWND CreateViewWindow(IShellView psvPrevious, in FOLDERSETTINGS pfs, IShellBrowser psb, in RECT prcView);
 
 			/// <summary>Destroys the view window.</summary>
 			new void DestroyViewWindow();
@@ -1095,7 +1087,7 @@ namespace Vanara.PInvoke
 			/// <param name="pidlItem">A pointer to an ITEMIDLIST structure that uniquely identifies the item of interest.</param>
 			/// <param name="flags">One of the _SVSIF constants that specify the type of selection to apply.</param>
 			/// <param name="point">A pointer to a POINT structure containing the new position.</param>
-			new void SelectAndPositionItem(PIDL pidlItem, SVSIF flags, ref System.Drawing.Point point);
+			new void SelectAndPositionItem(PIDL pidlItem, SVSIF flags, in System.Drawing.Point point);
 
 			/// <summary>
 			/// Requests the creation of a new Shell view window. The view can be either the right pane of Windows Explorer or the client
@@ -1112,8 +1104,8 @@ namespace Vanara.PInvoke
 			/// <param name="pvid">A pointer to Shell view ID as a GUID.</param>
 			/// <param name="prcView">A pointer to a RECT structure that provides the dimensions of the view window.</param>
 			/// <returns>A value that receives a pointer to the handle of the new Shell view window.</returns>
-			IntPtr CreateViewWindow3(IShellBrowser psbOwner, IShellView psvPrevious, SV3CVW3_FLAGS dwViewFlags, FOLDERFLAGS dwMask,
-				FOLDERFLAGS dwFlags, FOLDERVIEWMODE fvMode, in Guid pvid, PRECT prcView);
+			HWND CreateViewWindow3(IShellBrowser psbOwner, IShellView psvPrevious, SV3CVW3_FLAGS dwViewFlags, FOLDERFLAGS dwMask,
+				FOLDERFLAGS dwFlags, FOLDERVIEWMODE fvMode, in Guid pvid, in RECT prcView);
 		}
 
 		/// <summary>Contains folder view information.</summary>
@@ -1137,9 +1129,12 @@ namespace Vanara.PInvoke
 			}
 		}
 
-		/// <summary><para>Holds the parameters for the IShellView2::CreateViewWindow2 method.</para></summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/ns-shobjidl_core-_sv2cvw2_params
-		// typedef struct _SV2CVW2_PARAMS { DWORD cbSize; IShellView *psvPrev; LPCFOLDERSETTINGS pfs; IShellBrowser *psbOwner; RECT *prcView; const SHELLVIEWID *pvid; HWND hwndView; } SV2CVW2_PARAMS, *LPSV2CVW2_PARAMS;
+		/// <summary>
+		/// <para>Holds the parameters for the IShellView2::CreateViewWindow2 method.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/ns-shobjidl_core-_sv2cvw2_params typedef struct _SV2CVW2_PARAMS
+		// { DWORD cbSize; IShellView *psvPrev; LPCFOLDERSETTINGS pfs; IShellBrowser *psbOwner; RECT *prcView; const SHELLVIEWID *pvid; HWND
+		// hwndView; } SV2CVW2_PARAMS, *LPSV2CVW2_PARAMS;
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "7e165654-74ea-4d8b-81b7-11257f87af53")]
 		[StructLayout(LayoutKind.Sequential)]
 		public class SV2CVW2_PARAMS : IDisposable

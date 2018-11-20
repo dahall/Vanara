@@ -39,6 +39,8 @@ namespace Vanara.InteropServices
 
 		/// <summary>Gets the reallocation method.</summary>
 		public Func<IntPtr, int, IntPtr> ReAllocMem => (p, i) => { var o = LocalReAlloc(p, i, LMEM.LMEM_MOVEABLE); return !o.IsNull ? (IntPtr)o : throw Win32Error.GetLastError().GetException(); };
+
+		public static IMemoryMethods Instance { get; } = new LocalMemoryMethods();
 	}
 
 	/// <summary>A <see cref="SafeHandle"/> for memory allocated via LocalAlloc.</summary>
@@ -111,7 +113,7 @@ namespace Vanara.InteropServices
 		/// <typeparam name="T">Native type</typeparam>
 		/// <param name="value">The value.</param>
 		/// <returns><see cref="SafeLocalHandle"/> object to an native (unmanaged) memory block the size of T.</returns>
-		public static SafeLocalHandle CreateFromStructure<T>(T value = default(T)) => new SafeLocalHandle(InteropExtensions.StructureToPtr(value, new LocalMemoryMethods().AllocMem, out var s), s);
+		public static SafeLocalHandle CreateFromStructure<T>(T value = default) => new SafeLocalHandle(InteropExtensions.StructureToPtr(value, new LocalMemoryMethods().AllocMem, out var s), s);
 
 		/// <summary>Converts an <see cref="IntPtr"/> to a <see cref="SafeLocalHandle"/> where it owns the reference.</summary>
 		/// <param name="ptr">The <see cref="IntPtr"/>.</param>

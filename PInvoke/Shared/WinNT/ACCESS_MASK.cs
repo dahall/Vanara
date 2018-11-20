@@ -1,7 +1,5 @@
 ﻿using System;
 
-// ReSharper disable InconsistentNaming ReSharper disable FieldCanBeMadeReadOnly.Global ReSharper disable InconsistentNaming
-
 namespace Vanara.PInvoke
 {
 	/// <summary>Access flags.</summary>
@@ -12,7 +10,8 @@ namespace Vanara.PInvoke
 		DELETE = 0x00010000,
 
 		/// <summary>
-		/// The right to read the information in the object's security descriptor, not including the information in the system access control list (SACL).
+		/// The right to read the information in the object's security descriptor, not including the information in the system access control
+		/// list (SACL).
 		/// </summary>
 		READ_CONTROL = 0x00020000,
 
@@ -23,8 +22,8 @@ namespace Vanara.PInvoke
 		WRITE_OWNER = 0x00080000,
 
 		/// <summary>
-		/// The right to use the object for synchronization. This enables a thread to wait until the object is in the signaled state. Some object types do not
-		/// support this access right.
+		/// The right to use the object for synchronization. This enables a thread to wait until the object is in the signaled state. Some
+		/// object types do not support this access right.
 		/// </summary>
 		SYNCHRONIZE = 0x00100000,
 
@@ -47,8 +46,8 @@ namespace Vanara.PInvoke
 		SPECIFIC_RIGHTS_ALL = 0x0000FFFF,
 
 		/// <summary>
-		/// Controls the ability to get or set the SACL in an object's security descriptor. The system grants this access right only if the SE_SECURITY_NAME
-		/// privilege is enabled in the access token of the requesting thread.
+		/// Controls the ability to get or set the SACL in an object's security descriptor. The system grants this access right only if the
+		/// SE_SECURITY_NAME privilege is enabled in the access token of the requesting thread.
 		/// </summary>
 		ACCESS_SYSTEM_SECURITY = 0x01000000,
 

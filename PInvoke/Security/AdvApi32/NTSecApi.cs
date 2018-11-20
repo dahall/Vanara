@@ -453,7 +453,7 @@ namespace Vanara.PInvoke
 			if (ret == NTStatus.STATUS_NO_MORE_ENTRIES) return new PSID[0];
 			var wret = LsaNtStatusToWinError(ret);
 			wret.ThrowIfFailed();
-			return mem.DangerousGetHandle().ToIEnum<LSA_ENUMERATION_INFORMATION>(cnt).Select(u => PSID.CreateFromPtr(u.Sid));
+			return mem.DangerousGetHandle().ToIEnum<LSA_ENUMERATION_INFORMATION>(cnt).Select(u => u.Sid);
 		}
 
 		/// <summary>Gets system access for an account.</summary>
@@ -1269,7 +1269,7 @@ namespace Vanara.PInvoke
 		public struct LSA_ENUMERATION_INFORMATION
 		{
 			/// <summary>Pointer to a SID.</summary>
-			public IntPtr Sid;
+			public PSID Sid;
 		}
 
 		/// <summary>
@@ -1297,7 +1297,7 @@ namespace Vanara.PInvoke
 		public struct LSA_FOREST_TRUST_DOMAIN_INFO
 		{
 			/// <summary/>
-			public IntPtr Sid;
+			public PSID Sid;
 
 			/// <summary>
 			/// <para>LSA_UNICODE_STRING structure that contains the DNS name of the domain.</para>
@@ -1531,7 +1531,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 			/// <returns>A <see cref="string"/> that represents this instance.</returns>
-			public override string ToString() => Buffer;
+			public override string ToString() => Buffer.Substring(0, Length);
 
 			/// <summary>Performs an implicit conversion from <see cref="LSA_UNICODE_STRING"/> to <see cref="string"/>.</summary>
 			/// <param name="value">The value.</param>
@@ -1998,5 +1998,60 @@ namespace Vanara.PInvoke
 				return s;
 			}
 		}
+
+		/*
+		AuditComputeEffectivePolicyBySid function
+		AuditComputeEffectivePolicyByToken function
+		AuditEnumerateCategories function
+		AuditEnumeratePerUserPolicy function
+		AuditEnumerateSubCategories function
+		AuditFree function
+		AuditLookupCategoryGuidFromCategoryId function
+		AuditLookupCategoryIdFromCategoryGuid function
+		AuditLookupCategoryNameA function
+		AuditLookupCategoryNameW function
+		AuditLookupSubCategoryNameA function
+		AuditLookupSubCategoryNameW function
+		AuditQueryGlobalSaclA function
+		AuditQueryGlobalSaclW function
+		AuditQueryPerUserPolicy function
+		AuditQuerySecurity function
+		AuditQuerySystemPolicy function
+		AuditSetGlobalSaclA function
+		AuditSetGlobalSaclW function
+		AuditSetPerUserPolicy function
+		AuditSetSecurity function
+		AuditSetSystemPolicy function
+		KERB_CRYPTO_KEY structure
+		LsaCallAuthenticationPackage function
+		LsaCreateTrustedDomainEx function
+		LsaDeleteTrustedDomain function
+		LsaEnumerateLogonSessions function
+		LsaEnumerateTrustedDomains function
+		LsaEnumerateTrustedDomainsEx function
+		LsaGetLogonSessionData function
+		LsaLogonUser function
+		LsaLookupNames function
+		LsaLookupSids function
+		LsaOpenTrustedDomainByName function
+		LsaQueryDomainInformationPolicy function
+		LsaQueryForestTrustInformation function
+		LsaQueryInformationPolicy function
+		LsaQueryTrustedDomainInfoByName function
+		LsaRegisterPolicyChangeNotification function
+		LsaRetrievePrivateData function
+		LsaSetDomainInformationPolicy function
+		LsaSetForestTrustInformation function
+		LsaSetInformationPolicy function
+		LsaSetTrustedDomainInfoByName function
+		LsaStorePrivateData function
+		LsaUnregisterPolicyChangeNotification function
+		PSAM_INIT_NOTIFICATION_ROUTINE callback function
+		PSAM_PASSWORD_FILTER_ROUTINE callback function
+		PSAM_PASSWORD_NOTIFICATION_ROUTINE callback function
+		RtlDecryptMemory function
+		RtlEncryptMemory function
+		RtlGenRandom function
+		*/
 	}
 }

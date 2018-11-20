@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-// ReSharper disable InconsistentNaming
-
 namespace Vanara.PInvoke
 {
 	/// <summary>Valid values for the <see cref="OBJECT_TYPE_LIST.level"/> field.</summary>
@@ -22,16 +20,20 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>
-	/// Identifies an object type element in a hierarchy of object types. An array of OBJECT_TYPE_LIST structures to define a hierarchy of an object and its
-	/// subobjects, such as property sets and properties.
+	/// The <c>OBJECT_TYPE_LIST</c> structure identifies an object type element in a hierarchy of object types. The AccessCheckByType
+	/// functions use an array of <c>OBJECT_TYPE_LIST</c> structures to define a hierarchy of an object and its subobjects, such as property
+	/// sets and properties.
 	/// </summary>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_object_type_list
+	// typedef struct _OBJECT_TYPE_LIST { WORD Level; WORD Sbz; GUID *ObjectType; } OBJECT_TYPE_LIST, *POBJECT_TYPE_LIST;
+	[PInvokeData("winnt.h", MSDNShortId = "c729ff1a-65f3-4f6f-84dd-5700aead75ce")]
 	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 2)]
 	public partial class OBJECT_TYPE_LIST : IDisposable
 	{
 		/// <summary>
-		/// Specifies the level of the object type in the hierarchy of an object and its subobjects. Level zero indicates the object itself. Level one
-		/// indicates a subobject of the object, such as a property set. Level two indicates a subobject of the level one subobject, such as a property.
-		/// There can be a maximum of five levels numbered zero through four.
+		/// Specifies the level of the object type in the hierarchy of an object and its subobjects. Level zero indicates the object itself.
+		/// Level one indicates a subobject of the object, such as a property set. Level two indicates a subobject of the level one
+		/// subobject, such as a property. There can be a maximum of five levels numbered zero through four.
 		/// </summary>
 		public ObjectTypeListLevel level;
 

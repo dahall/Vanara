@@ -2,6 +2,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using static Vanara.PInvoke.Kernel32;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
@@ -18,14 +19,14 @@ namespace Vanara.PInvoke
 		/// Registry entries subordinate to this key define types (or classes) of documents and the properties associated with those types.
 		/// Shell and COM applications use the information stored under this key.
 		/// </summary>
-		public static readonly SafeRegistryHandle HKEY_CLASSES_ROOT = new SafeRegistryHandle(new IntPtr(unchecked((int)0x80000000)), false);
+		public static readonly HKEY HKEY_CLASSES_ROOT = new HKEY(new IntPtr(unchecked((int)0x80000000)));
 
 		/// <summary>
 		/// Contains information about the current hardware profile of the local computer system. The information under HKEY_CURRENT_CONFIG
 		/// describes only the differences between the current hardware configuration and the standard configuration. Information about the
 		/// standard hardware configuration is stored under the Software and System keys of HKEY_LOCAL_MACHINE.
 		/// </summary>
-		public static readonly SafeRegistryHandle HKEY_CURRENT_CONFIG = new SafeRegistryHandle(new IntPtr(unchecked((int)0x80000005)), false);
+		public static readonly HKEY HKEY_CURRENT_CONFIG = new HKEY(new IntPtr(unchecked((int)0x80000005)));
 
 		/// <summary>
 		/// Registry entries subordinate to this key define the preferences of the current user. These preferences include the settings of
@@ -35,10 +36,10 @@ namespace Vanara.PInvoke
 		/// for example, creates the HKEY_CURRENT_USER\Software\Microsoft key for its applications to use, with each application creating its
 		/// own subkey under the Microsoft key.
 		/// </summary>
-		public static readonly SafeRegistryHandle HKEY_CURRENT_USER = new SafeRegistryHandle(new IntPtr(unchecked((int)0x80000001)), false);
+		public static readonly HKEY HKEY_CURRENT_USER = new HKEY(new IntPtr(unchecked((int)0x80000001)));
 
 		/// <summary></summary>
-		public static readonly SafeRegistryHandle HKEY_DYN_DATA = new SafeRegistryHandle(new IntPtr(unchecked((int)0x80000006)), false);
+		public static readonly HKEY HKEY_DYN_DATA = new HKEY(new IntPtr(unchecked((int)0x80000006)));
 
 		/// <summary>
 		/// Registry entries subordinate to this key define the physical state of the computer, including data about the bus type, system
@@ -47,19 +48,19 @@ namespace Vanara.PInvoke
 		/// preferences, network security information, software-related information (such as server names and the location of the server),
 		/// and other system information.
 		/// </summary>
-		public static readonly SafeRegistryHandle HKEY_LOCAL_MACHINE = new SafeRegistryHandle(new IntPtr(unchecked((int)0x80000002)), false);
+		public static readonly HKEY HKEY_LOCAL_MACHINE = new HKEY(new IntPtr(unchecked((int)0x80000002)));
 
 		/// <summary>
 		/// Registry entries subordinate to this key allow you to access performance data. The data is not actually stored in the registry;
 		/// the registry functions cause the system to collect the data from its source.
 		/// </summary>
-		public static readonly SafeRegistryHandle HKEY_PERFORMANCE_DATA = new SafeRegistryHandle(new IntPtr(unchecked((int)0x80000004)), false);
+		public static readonly HKEY HKEY_PERFORMANCE_DATA = new HKEY(new IntPtr(unchecked((int)0x80000004)));
 
 		/// <summary>
 		/// Registry entries subordinate to this key define the default user configuration for new users on the local computer and the user
 		/// configuration for the current user.
 		/// </summary>
-		public static readonly SafeRegistryHandle HKEY_USERS = new SafeRegistryHandle(new IntPtr(unchecked((int)0x80000003)), false);
+		public static readonly HKEY HKEY_USERS = new HKEY(new IntPtr(unchecked((int)0x80000003)));
 
 		/// <summary>Flags used by RegLoadAppKey.</summary>
 		[PInvokeData("winreg.h", MSDNShortId = "88eb79c1-9ea0-436e-ad2e-9ce05b8dcb2c")]
@@ -694,7 +695,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winreg.h", MSDNShortId = "ms724837")]
-		public static extern Win32Error RegCloseKey(IntPtr hKey);
+		public static extern Win32Error RegCloseKey(HKEY hKey);
 
 		/// <summary>
 		/// <para>Establishes a connection to a predefined registry key on another computer.</para>
@@ -750,7 +751,7 @@ namespace Vanara.PInvoke
 		// lpMachineName, HKEY hKey, PHKEY phkResult );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "d7fb41cc-4855-4ad7-879c-b1ac85ac5803")]
-		public static extern Win32Error RegConnectRegistry(string lpMachineName, SafeRegistryHandle hKey, out SafeRegistryHandle phkResult);
+		public static extern Win32Error RegConnectRegistry(string lpMachineName, HKEY hKey, out SafeRegistryHandle phkResult);
 
 		/// <summary>
 		/// <para>Copies the specified registry key, along with its values and subkeys, to the specified destination key.</para>
@@ -789,7 +790,7 @@ namespace Vanara.PInvoke
 		// lpSubKey, HKEY hKeyDest );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "d16f2b47-e537-42b0-90b3-9f9a00e61e76")]
-		public static extern Win32Error RegCopyTree(SafeRegistryHandle hKeySrc, string lpSubKey, SafeRegistryHandle hKeyDest);
+		public static extern Win32Error RegCopyTree(HKEY hKeySrc, string lpSubKey, HKEY hKeyDest);
 
 		/// <summary>
 		/// <para>Creates the specified registry key. If the key already exists in the registry, the function opens it.</para>
@@ -859,7 +860,7 @@ namespace Vanara.PInvoke
 		// lpSubKey, PHKEY phkResult );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "cb4d30f4-e288-41e8-86e0-807c313db53d")]
-		public static extern Win32Error RegCreateKey(SafeRegistryHandle hKey, string lpSubKey, out SafeRegistryHandle phkResult);
+		public static extern Win32Error RegCreateKey(HKEY hKey, string lpSubKey, out SafeRegistryHandle phkResult);
 
 		/// <summary>
 		/// <para>
@@ -1018,7 +1019,7 @@ namespace Vanara.PInvoke
 		// PHKEY phkResult, LPDWORD lpdwDisposition );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "e9ffad7f-c0b6-44ce-bf22-fbe45ca98bf4")]
-		public static extern Win32Error RegCreateKeyEx(SafeRegistryHandle hKey, string lpSubKey, uint Reserved, string lpClass, REG_OPTION dwOptions, REGSAM samDesired, SECURITY_ATTRIBUTES lpSecurityAttributes, out SafeRegistryHandle phkResult, out REG_DISPOSITION lpdwDisposition);
+		public static extern Win32Error RegCreateKeyEx(HKEY hKey, string lpSubKey, uint Reserved, string lpClass, REG_OPTION dwOptions, REGSAM samDesired, SECURITY_ATTRIBUTES lpSecurityAttributes, out SafeRegistryHandle phkResult, out REG_DISPOSITION lpdwDisposition);
 
 		/// <summary>
 		/// <para>
@@ -1179,7 +1180,7 @@ namespace Vanara.PInvoke
 		// lpSecurityAttributes, PHKEY phkResult, LPDWORD lpdwDisposition, HANDLE hTransaction, PVOID pExtendedParemeter );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "f18e5ff9-41c3-4c26-8d01-a8ec69bcdef2")]
-		public static extern Win32Error RegCreateKeyTransacted(SafeRegistryHandle hKey, string lpSubKey, uint Reserved, string lpClass, REG_OPTION dwOptions, REGSAM samDesired, SECURITY_ATTRIBUTES lpSecurityAttributes, out SafeRegistryHandle phkResult, out REG_DISPOSITION lpdwDisposition, IntPtr hTransaction, IntPtr pExtendedParemeter);
+		public static extern Win32Error RegCreateKeyTransacted(HKEY hKey, string lpSubKey, uint Reserved, string lpClass, REG_OPTION dwOptions, REGSAM samDesired, SECURITY_ATTRIBUTES lpSecurityAttributes, out SafeRegistryHandle phkResult, out REG_DISPOSITION lpdwDisposition, IntPtr hTransaction, IntPtr pExtendedParemeter);
 
 		/// <summary>
 		/// <para>Deletes a subkey and its values. Note that key names are not case sensitive.</para>
@@ -1230,7 +1231,7 @@ namespace Vanara.PInvoke
 		// lpSubKey );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "a2310ca0-1b9f-48d1-a3b5-ea3a528bfaba")]
-		public static extern Win32Error RegDeleteKey(SafeRegistryHandle hKey, string lpSubKey);
+		public static extern Win32Error RegDeleteKey(HKEY hKey, string lpSubKey);
 
 		/// <summary>
 		/// <para>
@@ -1303,7 +1304,7 @@ namespace Vanara.PInvoke
 		// lpSubKey, REGSAM samDesired, DWORD Reserved );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "41fde6a5-647c-4293-92b8-74be54fa4136")]
-		public static extern Win32Error RegDeleteKeyEx(SafeRegistryHandle hKey, string lpSubKey, REGSAM samDesired, uint Reserved = 0);
+		public static extern Win32Error RegDeleteKeyEx(HKEY hKey, string lpSubKey, REGSAM samDesired, uint Reserved = 0);
 
 		/// <summary>
 		/// <para>
@@ -1387,7 +1388,7 @@ namespace Vanara.PInvoke
 		// HKEY hKey, LPCSTR lpSubKey, REGSAM samDesired, DWORD Reserved, HANDLE hTransaction, PVOID pExtendedParameter );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "4c67e08b-4338-4441-8300-6b6ed31d4b21")]
-		public static extern Win32Error RegDeleteKeyTransacted(SafeRegistryHandle hKey, string lpSubKey, REGSAM samDesired, uint Reserved, IntPtr hTransaction, IntPtr pExtendedParameter);
+		public static extern Win32Error RegDeleteKeyTransacted(HKEY hKey, string lpSubKey, REGSAM samDesired, uint Reserved, IntPtr hTransaction, IntPtr pExtendedParameter);
 
 		/// <summary>
 		/// <para>Removes the specified value from the specified registry key and subkey.</para>
@@ -1423,7 +1424,7 @@ namespace Vanara.PInvoke
 		// LPCSTR lpSubKey, LPCSTR lpValueName );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "a4a082c2-8cf3-41eb-87c0-a6c453821f8b")]
-		public static extern Win32Error RegDeleteKeyValue(SafeRegistryHandle hKey, string lpSubKey, string lpValueName);
+		public static extern Win32Error RegDeleteKeyValue(HKEY hKey, string lpSubKey, string lpValueName);
 
 		/// <summary>
 		/// <para>Deletes the subkeys and values of the specified key recursively.</para>
@@ -1465,7 +1466,7 @@ namespace Vanara.PInvoke
 		// lpSubKey );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "984813a9-e191-498f-8288-b8a4c567112b")]
-		public static extern Win32Error RegDeleteTree(SafeRegistryHandle hKey, string lpSubKey);
+		public static extern Win32Error RegDeleteTree(HKEY hKey, string lpSubKey);
 
 		/// <summary>
 		/// <para>Removes a named value from the specified registry key. Note that value names are not case sensitive.</para>
@@ -1499,7 +1500,7 @@ namespace Vanara.PInvoke
 		// lpValueName );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "4393b4ef-cd10-40d4-bb12-2d84e7cb7d3c")]
-		public static extern Win32Error RegDeleteValue(SafeRegistryHandle hKey, string lpValueName);
+		public static extern Win32Error RegDeleteValue(HKEY hKey, string lpValueName);
 
 		/// <summary>
 		/// <para>
@@ -1577,7 +1578,7 @@ namespace Vanara.PInvoke
 		// hBase );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winreg.h", MSDNShortId = "294a1d28-d09f-44a3-8bc0-6fae50c3a8f8")]
-		public static extern Win32Error RegDisableReflectionKey(SafeRegistryHandle hBase);
+		public static extern Win32Error RegDisableReflectionKey(HKEY hBase);
 
 		/// <summary>
 		/// <para>
@@ -1611,7 +1612,7 @@ namespace Vanara.PInvoke
 		// hBase );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winreg.h", MSDNShortId = "6dfbc3d8-cd71-4ee9-a10b-955c26a6894c")]
-		public static extern Win32Error RegEnableReflectionKey(SafeRegistryHandle hBase);
+		public static extern Win32Error RegEnableReflectionKey(HKEY hBase);
 
 		/// <summary>
 		/// <para>
@@ -1688,7 +1689,7 @@ namespace Vanara.PInvoke
 		// LPSTR lpName, DWORD cchName );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "18a05c60-6c6d-438f-9003-f07d688d86a3")]
-		public static extern Win32Error RegEnumKey(SafeRegistryHandle hKey, uint dwIndex, StringBuilder lpName, uint cchName);
+		public static extern Win32Error RegEnumKey(HKEY hKey, uint dwIndex, StringBuilder lpName, uint cchName);
 
 		/// <summary>
 		/// <para>
@@ -1791,7 +1792,7 @@ namespace Vanara.PInvoke
 		// dwIndex, LPSTR lpName, LPDWORD lpcchName, LPDWORD lpReserved, LPSTR lpClass, LPDWORD lpcchClass, PFILETIME lpftLastWriteTime );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "647d34cc-01ba-4389-be29-b099ed198e7c")]
-		public static extern Win32Error RegEnumKeyEx(SafeRegistryHandle hKey, uint dwIndex, StringBuilder lpName, ref uint lpcchName, IntPtr lpReserved, StringBuilder lpClass, ref uint lpcchClass, out FILETIME lpftLastWriteTime);
+		public static extern Win32Error RegEnumKeyEx(HKEY hKey, uint dwIndex, StringBuilder lpName, ref uint lpcchName, IntPtr lpReserved, StringBuilder lpClass, ref uint lpcchClass, out FILETIME lpftLastWriteTime);
 
 		/// <summary>
 		/// <para>
@@ -1908,7 +1909,7 @@ namespace Vanara.PInvoke
 		// LPDWORD lpcbData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "7014ff96-c655-486f-af32-180b87281b06")]
-		public static extern Win32Error RegEnumValue(SafeRegistryHandle hKey, uint dwIndex, StringBuilder lpValueName, ref uint lpcchValueName, IntPtr lpReserved, out REG_VALUE_TYPE lpType, IntPtr lpData, ref uint lpcbData);
+		public static extern Win32Error RegEnumValue(HKEY hKey, uint dwIndex, StringBuilder lpValueName, ref uint lpcchValueName, IntPtr lpReserved, out REG_VALUE_TYPE lpType, IntPtr lpData, ref uint lpcbData);
 
 		/// <summary>
 		/// <para>Writes all the attributes of the specified open registry key into the registry.</para>
@@ -1963,7 +1964,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regflushkey LSTATUS RegFlushKey( HKEY hKey );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winreg.h", MSDNShortId = "ae1160be-1da7-4621-a0fc-727aa229ec06")]
-		public static extern Win32Error RegFlushKey(SafeRegistryHandle hKey);
+		public static extern Win32Error RegFlushKey(HKEY hKey);
 
 		/// <summary>
 		/// <para>
@@ -2012,7 +2013,7 @@ namespace Vanara.PInvoke
 		// SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR pSecurityDescriptor, LPDWORD lpcbSecurityDescriptor );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winreg.h", MSDNShortId = "26bd8f89-9241-4c13-a214-c2b276d68c92")]
-		public static extern Win32Error RegGetKeySecurity(SafeRegistryHandle hKey, SECURITY_INFORMATION SecurityInformation, IntPtr pSecurityDescriptor, ref uint lpcbSecurityDescriptor);
+		public static extern Win32Error RegGetKeySecurity(HKEY hKey, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR pSecurityDescriptor, ref uint lpcbSecurityDescriptor);
 
 		/// <summary>
 		/// <para>Retrieves the type and data for the specified registry value.</para>
@@ -2204,7 +2205,7 @@ namespace Vanara.PInvoke
 		// lpSubKey, LPCSTR lpValue, DWORD dwFlags, LPDWORD pdwType, PVOID pvData, LPDWORD pcbData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "1c06facb-6735-4b3f-b77d-f162e3faaada")]
-		public static extern Win32Error RegGetValue(SafeRegistryHandle hkey, string lpSubKey, string lpValue, RRF dwFlags, out REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData);
+		public static extern Win32Error RegGetValue(HKEY hkey, string lpSubKey, string lpValue, RRF dwFlags, out REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData);
 
 		/// <summary>
 		/// <para>Loads the specified registry hive as an application hive.</para>
@@ -2337,7 +2338,7 @@ namespace Vanara.PInvoke
 		// LPCSTR lpFile );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "536395aa-03ba-430d-a66d-fcabdc9dfe22")]
-		public static extern Win32Error RegLoadKey(SafeRegistryHandle hKey, string lpSubKey, string lpFile);
+		public static extern Win32Error RegLoadKey(HKEY hKey, string lpSubKey, string lpFile);
 
 		/// <summary>
 		/// <para>Loads the specified string from the specified key and subkey.</para>
@@ -2416,7 +2417,7 @@ namespace Vanara.PInvoke
 		// LPCSTR pszValue, LPSTR pszOutBuf, DWORD cbOutBuf, LPDWORD pcbData, DWORD Flags, LPCSTR pszDirectory );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "76ffc77f-a1bc-4e01-858f-4a76563a2bbc")]
-		public static extern Win32Error RegLoadMUIString(SafeRegistryHandle hKey, string pszValue, StringBuilder pszOutBuf, uint cbOutBuf, IntPtr pcbData, REG_MUI_STRING Flags, string pszDirectory);
+		public static extern Win32Error RegLoadMUIString(HKEY hKey, string pszValue, StringBuilder pszOutBuf, uint cbOutBuf, IntPtr pcbData, REG_MUI_STRING Flags, string pszDirectory);
 
 		/// <summary>Notifies the caller about changes to the attributes or contents of a specified registry key.</summary>
 		/// <param name="hKey">A handle to an open registry key. This handle is returned by the RegCreateKeyEx or RegOpenKeyEx function.</param>
@@ -2443,7 +2444,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winreg.h", MSDNShortId = "ms724892")]
-		public static extern Win32Error RegNotifyChangeKeyValue(SafeRegistryHandle hKey, [MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, RegNotifyChangeFilter dwFilter, IntPtr hEvent, [MarshalAs(UnmanagedType.Bool)] bool fAsynchronous);
+		public static extern Win32Error RegNotifyChangeKeyValue(HKEY hKey, [MarshalAs(UnmanagedType.Bool)] bool bWatchSubtree, RegNotifyChangeFilter dwFilter, SafeEventHandle hEvent, [MarshalAs(UnmanagedType.Bool)] bool fAsynchronous);
 
 		/// <summary>
 		/// <para>Retrieves a handle to the <c>HKEY_CURRENT_USER</c> key for the user the current thread is impersonating.</para>
@@ -2531,7 +2532,7 @@ namespace Vanara.PInvoke
 		// PHKEY phkResult );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "bad0a0f8-1889-4eff-98be-084c95d69f3b")]
-		public static extern Win32Error RegOpenKey(SafeRegistryHandle hKey, string lpSubKey, out SafeRegistryHandle phkResult);
+		public static extern Win32Error RegOpenKey(HKEY hKey, string lpSubKey, out SafeRegistryHandle phkResult);
 
 		/// <summary>Opens the specified registry key. Note that key names are not case sensitive.</summary>
 		/// <param name="hKey">
@@ -2569,7 +2570,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.AdvApi32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "ms724897")]
-		public static extern Win32Error RegOpenKeyEx(SafeRegistryHandle hKey, string lpSubKey, RegOpenOptions ulOptions, RegAccessTypes samDesired, out SafeRegistryHandle phkResult);
+		public static extern Win32Error RegOpenKeyEx(HKEY hKey, string lpSubKey, RegOpenOptions ulOptions, RegAccessTypes samDesired, out SafeRegistryHandle phkResult);
 
 		/// <summary>
 		/// <para>Opens the specified registry key and associates it with a transaction. Note that key names are not case sensitive.</para>
@@ -2645,7 +2646,7 @@ namespace Vanara.PInvoke
 		// hKey, LPCSTR lpSubKey, DWORD ulOptions, REGSAM samDesired, PHKEY phkResult, HANDLE hTransaction, PVOID pExtendedParemeter );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "11663ed2-d17c-4f08-be7b-9b591271fbcd")]
-		public static extern Win32Error RegOpenKeyTransacted(SafeRegistryHandle hKey, string lpSubKey, uint ulOptions, REGSAM samDesired, out SafeRegistryHandle phkResult, IntPtr hTransaction, IntPtr pExtendedParemeter);
+		public static extern Win32Error RegOpenKeyTransacted(HKEY hKey, string lpSubKey, uint ulOptions, REGSAM samDesired, out SafeRegistryHandle phkResult, IntPtr hTransaction, IntPtr pExtendedParemeter);
 
 		/// <summary>
 		/// <para>
@@ -2705,7 +2706,7 @@ namespace Vanara.PInvoke
 		// HANDLE hToken, DWORD dwOptions, REGSAM samDesired, PHKEY phkResult );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winreg.h", MSDNShortId = "bd068826-cf88-4fc7-a7d6-96cc03e923c7")]
-		public static extern Win32Error RegOpenUserClassesRoot(SafeHTOKEN hToken, uint dwOptions, REGSAM samDesired, out SafeRegistryHandle phkResult);
+		public static extern Win32Error RegOpenUserClassesRoot(HTOKEN hToken, uint dwOptions, REGSAM samDesired, out SafeRegistryHandle phkResult);
 
 		/// <summary>
 		/// <para>Maps a predefined registry key to the specified registry key.</para>
@@ -2753,7 +2754,7 @@ namespace Vanara.PInvoke
 		// hKey, HKEY hNewHKey );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winreg.h", MSDNShortId = "ad58b7ff-cd61-4719-9028-b470ae7e9bb0")]
-		public static extern Win32Error RegOverridePredefKey(SafeRegistryHandle hKey, SafeRegistryHandle hNewHKey);
+		public static extern Win32Error RegOverridePredefKey(HKEY hKey, HKEY hNewHKey);
 
 		/// <summary>
 		/// <para>Retrieves information about the specified registry key.</para>
@@ -2839,7 +2840,7 @@ namespace Vanara.PInvoke
 		// lpcValues, LPDWORD lpcbMaxValueNameLen, LPDWORD lpcbMaxValueLen, LPDWORD lpcbSecurityDescriptor, PFILETIME lpftLastWriteTime );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "25eb2cd2-9fdd-4d6f-8071-daab56f9aae1")]
-		public static extern Win32Error RegQueryInfoKey(SafeRegistryHandle hKey, StringBuilder lpClass, ref uint lpcchClass, IntPtr lpReserved, out uint lpcSubKeys, out uint lpcbMaxSubKeyLen, out uint lpcbMaxClassLen, out uint lpcValues, out uint lpcbMaxValueNameLen, out uint lpcbMaxValueLen, out uint lpcbSecurityDescriptor, out FILETIME lpftLastWriteTime);
+		public static extern Win32Error RegQueryInfoKey(HKEY hKey, StringBuilder lpClass, ref uint lpcchClass, IntPtr lpReserved, out uint lpcSubKeys, out uint lpcbMaxSubKeyLen, out uint lpcbMaxClassLen, out uint lpcValues, out uint lpcbMaxValueNameLen, out uint lpcbMaxValueLen, out uint lpcbSecurityDescriptor, out FILETIME lpftLastWriteTime);
 
 		/// <summary>
 		/// <para>Retrieves the type and data for a list of value names associated with an open registry key.</para>
@@ -2927,7 +2928,7 @@ namespace Vanara.PInvoke
 		// HKEY hKey, PVALENTA val_list, DWORD num_vals, __out_data_source(REGISTRY)LPSTR lpValueBuf, LPDWORD ldwTotsize );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "e718534a-6e68-40f5-9cdd-170ce9b5e6e5")]
-		public static extern Win32Error RegQueryMultipleValues(SafeRegistryHandle hKey, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] VALENT[] val_list, uint num_vals, IntPtr lpValueBuf, ref uint ldwTotsize);
+		public static extern Win32Error RegQueryMultipleValues(HKEY hKey, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] VALENT[] val_list, uint num_vals, IntPtr lpValueBuf, ref uint ldwTotsize);
 
 		/// <summary>
 		/// <para>Determines whether reflection has been disabled or enabled for the specified key.</para>
@@ -2962,7 +2963,7 @@ namespace Vanara.PInvoke
 		// hBase, BOOL *bIsReflectionDisabled );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winreg.h", MSDNShortId = "d7516eab-dbcf-4ece-931e-d7bb2a983503")]
-		public static extern Win32Error RegQueryReflectionKey(SafeRegistryHandle hBase, [MarshalAs(UnmanagedType.Bool)] out bool bIsReflectionDisabled);
+		public static extern Win32Error RegQueryReflectionKey(HKEY hBase, [MarshalAs(UnmanagedType.Bool)] out bool bIsReflectionDisabled);
 
 		/// <summary>
 		/// <para>
@@ -3047,7 +3048,7 @@ namespace Vanara.PInvoke
 		// lpSubKey, __out_data_source(REGISTRY)LPSTR lpData, PLONG lpcbData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "18f27717-3bd9-45ac-a1ea-61abc1753a52")]
-		public static extern Win32Error RegQueryValue(SafeRegistryHandle hKey, string lpSubKey, IntPtr lpData, ref int lpcbData);
+		public static extern Win32Error RegQueryValue(HKEY hKey, string lpSubKey, IntPtr lpData, ref int lpcbData);
 
 		/// <summary>
 		/// <para>Retrieves the type and data for the specified value name associated with an open registry key.</para>
@@ -3171,7 +3172,7 @@ namespace Vanara.PInvoke
 		// lpValueName, LPDWORD lpReserved, LPDWORD lpType, __out_data_source(REGISTRY)LPBYTE lpData, LPDWORD lpcbData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "202d253a-10ff-40e7-8eec-a49717443b81")]
-		public static extern Win32Error RegQueryValueEx(SafeRegistryHandle hKey, string lpValueName, IntPtr lpReserved, out REG_VALUE_TYPE lpType, IntPtr lpData, ref uint lpcbData);
+		public static extern Win32Error RegQueryValueEx(HKEY hKey, string lpValueName, IntPtr lpReserved, out REG_VALUE_TYPE lpType, IntPtr lpData, ref uint lpcbData);
 
 		/// <summary>
 		/// <para>
@@ -3233,7 +3234,7 @@ namespace Vanara.PInvoke
 		// lpSubKey, LPCSTR lpNewFile, LPCSTR lpOldFile );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "f968fa71-edc8-4f49-b9fa-1e89224df33b")]
-		public static extern Win32Error RegReplaceKey(SafeRegistryHandle hKey, string lpSubKey, string lpNewFile, string lpOldFile);
+		public static extern Win32Error RegReplaceKey(HKEY hKey, string lpSubKey, string lpNewFile, string lpOldFile);
 
 		/// <summary>
 		/// <para>
@@ -3315,7 +3316,7 @@ namespace Vanara.PInvoke
 		// lpFile, DWORD dwFlags );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "6267383d-427a-4ae8-b9cc-9c1861d3b7bb")]
-		public static extern Win32Error RegRestoreKey(SafeRegistryHandle hKey, string lpFile, REG_HIVE dwFlags);
+		public static extern Win32Error RegRestoreKey(HKEY hKey, string lpFile, REG_HIVE dwFlags);
 
 		/// <summary>
 		/// <para>Saves the specified key and all of its subkeys and values to a new file, in the standard format.</para>
@@ -3375,7 +3376,7 @@ namespace Vanara.PInvoke
 		// CONST LPSECURITY_ATTRIBUTES lpSecurityAttributes );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "da80f40d-0099-4748-94ca-5d3b001e633e")]
-		public static extern Win32Error RegSaveKey(SafeRegistryHandle hKey, string lpFile, SECURITY_ATTRIBUTES lpSecurityAttributes);
+		public static extern Win32Error RegSaveKey(HKEY hKey, string lpFile, SECURITY_ATTRIBUTES lpSecurityAttributes);
 
 		/// <summary>
 		/// <para>Saves the specified key and all of its subkeys and values to a registry file, in the specified format.</para>
@@ -3467,7 +3468,7 @@ namespace Vanara.PInvoke
 		// lpFile, CONST LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD Flags );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "f93b4162-cac4-42f7-bfd4-9e23fff80a03")]
-		public static extern Win32Error RegSaveKeyEx(SafeRegistryHandle hKey, string lpFile, SECURITY_ATTRIBUTES lpSecurityAttributes, REG_SAVE Flags);
+		public static extern Win32Error RegSaveKeyEx(HKEY hKey, string lpFile, SECURITY_ATTRIBUTES lpSecurityAttributes, REG_SAVE Flags);
 
 		/// <summary>
 		/// <para>The <c>RegSetKeySecurity</c> function sets the security of an open registry key.</para>
@@ -3501,7 +3502,7 @@ namespace Vanara.PInvoke
 		// SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR pSecurityDescriptor );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winreg.h", MSDNShortId = "08bf8fc1-6a08-490e-b589-730211774257")]
-		public static extern Win32Error RegSetKeySecurity(SafeRegistryHandle hKey, SECURITY_INFORMATION SecurityInformation, IntPtr pSecurityDescriptor);
+		public static extern Win32Error RegSetKeySecurity(HKEY hKey, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR pSecurityDescriptor);
 
 		/// <summary>
 		/// <para>Sets the data for the specified value in the specified registry key and subkey.</para>
@@ -3559,7 +3560,7 @@ namespace Vanara.PInvoke
 		// lpSubKey, LPCSTR lpValueName, DWORD dwType, LPCVOID lpData, DWORD cbData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "e27d2dd6-b139-4ac1-8dd8-527022333364")]
-		public static extern Win32Error RegSetKeyValue(SafeRegistryHandle hKey, string lpSubKey, string lpValueName, REG_VALUE_TYPE dwType, IntPtr lpData, uint cbData);
+		public static extern Win32Error RegSetKeyValue(HKEY hKey, string lpSubKey, string lpValueName, REG_VALUE_TYPE dwType, IntPtr lpData, uint cbData);
 
 		/// <summary>
 		/// <para>Sets the data for the default or unnamed value of a specified registry key. The data must be a text string.</para>
@@ -3626,7 +3627,7 @@ namespace Vanara.PInvoke
 		// lpSubKey, DWORD dwType, LPCSTR lpData, DWORD cbData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "f99774d4-575b-43a3-8887-e15acb0477fd")]
-		public static extern Win32Error RegSetValue(SafeRegistryHandle hKey, string lpSubKey, REG_VALUE_TYPE dwType, string lpData, uint cbData = 0);
+		public static extern Win32Error RegSetValue(HKEY hKey, string lpSubKey, REG_VALUE_TYPE dwType, string lpData, uint cbData = 0);
 
 		/// <summary>
 		/// <para>Sets the data and type of a specified value under a registry key.</para>
@@ -3714,7 +3715,7 @@ namespace Vanara.PInvoke
 		// lpValueName, DWORD Reserved, DWORD dwType, CONST BYTE *lpData, DWORD cbData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "29b0e27c-4999-4e92-bd8b-bba74920bccc")]
-		public static extern Win32Error RegSetValueEx(SafeRegistryHandle hKey, string lpValueName, uint Reserved, REG_VALUE_TYPE dwType, IntPtr lpData, uint cbData);
+		public static extern Win32Error RegSetValueEx(HKEY hKey, string lpValueName, uint Reserved, REG_VALUE_TYPE dwType, IntPtr lpData, uint cbData);
 
 		/// <summary>
 		/// <para>Unloads the specified registry key and its subkeys from the registry.</para>
@@ -3759,7 +3760,7 @@ namespace Vanara.PInvoke
 		// lpSubKey );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "73b4b6a9-4acb-4247-bd7f-82024ba3e14a")]
-		public static extern Win32Error RegUnLoadKey(SafeRegistryHandle hKey, string lpSubKey);
+		public static extern Win32Error RegUnLoadKey(HKEY hKey, string lpSubKey);
 
 		/// <summary>Contains information about a registry value. The RegQueryMultipleValues function uses this structure.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/ns-winreg-value_enta typedef struct value_entA { LPSTR ve_valuename;

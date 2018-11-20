@@ -4,8 +4,6 @@ using System.Security.AccessControl;
 using System.Threading;
 using System.Threading.Tasks;
 using Vanara.InteropServices;
-using Vanara.IO;
-using Vanara.PInvoke;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.VirtDisk;
 
@@ -16,7 +14,7 @@ namespace Vanara.IO.Tests
 	{
 		const string tmpfn = @"C:\Temp\TestVHD.vhd";
 		const string tmpcfn = @"C:\Temp\TestVHD-Diff.vhd";
-		const string fn = @"C:\Users\dahall\VirtualBox VMs\Windows Client\Windows XP Pro\Windows XP Pro.vhd";
+		const string fn = @"D:\VirtualBox VMs\Windows Client\Windows XP Pro\Windows XP Pro.vhd";
 
 		[Test()]
 		public void CreateDynPropTest()
@@ -71,6 +69,7 @@ namespace Vanara.IO.Tests
 				using (var vhd = VirtualDisk.CreateFromSource(tmpfn, fn))
 				{
 					Assert.That(System.IO.File.Exists(tmpfn));
+					vhd.Close();
 				}
 			}
 			finally
@@ -79,27 +78,27 @@ namespace Vanara.IO.Tests
 			}
 		}
 
-		[Test()]
-		public async Task CreateFromSourceTest1()
-		{
-			VirtualDisk h = null;
-			try
-			{
-				var cts = new CancellationTokenSource();
-				var rpt = new Reporter();
-				var lastVal = 0;
-				rpt.NewVal += (o, e) => TestContext.WriteLine($"{DateTime.Now:o} NewVal={lastVal = e}");
-				h = await VirtualDisk.CreateFromSource(tmpfn, fn, cts.Token, rpt);
-				Assert.That(lastVal, Is.EqualTo(100));
-				Assert.That(System.IO.File.Exists(tmpfn));
-				TestContext.WriteLine($"New file sz: {new System.IO.FileInfo(tmpfn).Length}");
-			}
-			finally
-			{
-				h?.Close();
-				System.IO.File.Delete(tmpfn);
-			}
-		}
+		//[Test()]
+		//public async Task CreateFromSourceTest1()
+		//{
+		//	VirtualDisk vd = null;
+		//	try
+		//	{
+		//		var cts = new CancellationTokenSource();
+		//		var rpt = new Reporter();
+		//		var lastVal = 0;
+		//		rpt.NewVal += (o, e) => TestContext.WriteLine($"{DateTime.Now:o} NewVal={lastVal = e}");
+		//		vd = await VirtualDisk.CreateFromSource(tmpfn, fn, cts.Token, rpt);
+		//		Assert.That(lastVal, Is.EqualTo(100));
+		//		Assert.That(System.IO.File.Exists(tmpfn));
+		//		TestContext.WriteLine($"New file sz: {new System.IO.FileInfo(tmpfn).Length}");
+		//	}
+		//	finally
+		//	{
+		//		vd?.Close();
+		//		try { System.IO.File.Delete(tmpfn); } catch { }
+		//	}
+		//}
 
 		[Test()]
 		public void CreateFixedPropTest()
@@ -179,8 +178,7 @@ namespace Vanara.IO.Tests
 					Assert.That(vhd.Attached, Is.False);
 					var flags = ATTACH_VIRTUAL_DISK_FLAG.ATTACH_VIRTUAL_DISK_FLAG_READ_ONLY;
 					var aparam = ATTACH_VIRTUAL_DISK_PARAMETERS.Default;
-					if (!ConvertStringSecurityDescriptorToSecurityDescriptor("O:BAG:BAD:(A;;GA;;;WD)", SDDL_REVISION.SDDL_REVISION_1, out var sd, out var hLen))
-						Win32Error.ThrowLastError();
+					var sd = ConvertStringSecurityDescriptorToSecurityDescriptor("O:BAG:BAD:(A;;GA;;;WD)");
 					vhd.Attach(flags, ref aparam, sd);
 					Assert.That(vhd.Attached, Is.True);
 					vhd.Detach();
@@ -206,7 +204,7 @@ namespace Vanara.IO.Tests
 		{
 			try
 			{
-				using (var vhd = VirtualDisk.Open(fn))
+				using (var vhd = VirtualDisk.Open(fn, true))
 				{
 					Assert.That(vhd.Attached, Is.False);
 					vhd.Attach(true, true, false, GetWorldFullFileSecurity());
@@ -292,7 +290,7 @@ namespace Vanara.IO.Tests
 		public void GetAllAttachedVirtualDiskPathsTest()
 		{
 			Assert.That(VirtualDisk.GetAllAttachedVirtualDiskPaths(), Is.Empty);
-			using (var vhd = VirtualDisk.Open(fn))
+			using (var vhd = VirtualDisk.Open(fn, true))
 			{
 				vhd.Attach();
 				Assert.That(VirtualDisk.GetAllAttachedVirtualDiskPaths(), Has.Some.EqualTo(fn));
@@ -303,7 +301,7 @@ namespace Vanara.IO.Tests
 		[Test()]
 		public void CompactTest()
 		{
-			using (var vhd = VirtualDisk.Open(fn))
+			using (var vhd = VirtualDisk.Open(fn, false))
 			{
 				Assert.That(() => vhd.Compact(), Throws.Nothing);
 			}
@@ -413,7 +411,7 @@ namespace Vanara.IO.Tests
 		[Test()]
 		public async Task CompactTest1()
 		{
-			using (var vhd = VirtualDisk.Open(fn))
+			using (var vhd = VirtualDisk.Open(fn, false))
 			{
 				var cts = new CancellationTokenSource();
 				var rpt = new Reporter();

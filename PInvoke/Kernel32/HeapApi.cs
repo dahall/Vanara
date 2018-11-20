@@ -1070,6 +1070,10 @@ namespace Vanara.PInvoke
 			internal HHEAP HeapHandle { get; set; } = GetProcessHeap();
 
 			private int GetSize(IntPtr ptr) => (int)HeapSize(HeapHandle, 0, ptr).Value;
+
+			/// <summary>Gets a static instance of this class.</summary>
+			/// <value>The instance.</value>
+			public static IMemoryMethods Instance { get; } = new HeapMemoryMethods();
 		}
 
 		/// <summary>Provides a handle to a heap.</summary>

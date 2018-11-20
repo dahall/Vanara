@@ -36,7 +36,8 @@ namespace Vanara.PInvoke
 		// SameSuppliedUser, PBOOLEAN SameSuppliedIdentity );
 		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("sspi.h", MSDNShortId = "d2c4f363-3d86-48f0-bae1-4f9240d68bab")]
-		public static extern Win32Error SspiCompareAuthIdentities(PSEC_WINNT_AUTH_IDENTITY_OPAQUE AuthIdentity1, PSEC_WINNT_AUTH_IDENTITY_OPAQUE AuthIdentity2, [MarshalAs(UnmanagedType.U1)] out bool SameSuppliedUser, [MarshalAs(UnmanagedType.U1)] out bool SameSuppliedIdentity);
+		public static extern Win32Error SspiCompareAuthIdentities(PSEC_WINNT_AUTH_IDENTITY_OPAQUE AuthIdentity1, PSEC_WINNT_AUTH_IDENTITY_OPAQUE AuthIdentity2,
+			[MarshalAs(UnmanagedType.U1)] out bool SameSuppliedUser, [MarshalAs(UnmanagedType.U1)] out bool SameSuppliedIdentity);
 
 		/// <summary>
 		/// <para>Creates a copy of the specified opaque credential structure.</para>
@@ -146,7 +147,8 @@ namespace Vanara.PInvoke
 		// PSEC_WINNT_AUTH_IDENTITY_OPAQUE *ppAuthIdentity );
 		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("sspi.h", MSDNShortId = "0aea2f00-fcf1-4c4e-a22f-a669dd4fb294")]
-		public static extern Win32Error SspiEncodeStringsAsAuthIdentity([MarshalAs(UnmanagedType.LPWStr)] string pszUserName, [MarshalAs(UnmanagedType.LPWStr)] string pszDomainName, [MarshalAs(UnmanagedType.LPWStr)] string pszPackedCredentialsString, out SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE ppAuthIdentity);
+		public static extern Win32Error SspiEncodeStringsAsAuthIdentity([MarshalAs(UnmanagedType.LPWStr)] string pszUserName, [MarshalAs(UnmanagedType.LPWStr)] string pszDomainName,
+			[MarshalAs(UnmanagedType.LPWStr)] string pszPackedCredentialsString, out SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE ppAuthIdentity);
 
 		/// <summary>
 		/// <para>Encrypts the specified identity structure.</para>
@@ -406,46 +408,77 @@ namespace Vanara.PInvoke
 		[PInvokeData("sspi.h", MSDNShortId = "50b1f24a-c802-4691-a450-316cb31bf44d")]
 		public static extern void SspiZeroAuthIdentity(PSEC_WINNT_AUTH_IDENTITY_OPAQUE AuthData);
 
-		[DllImport(Lib.Secur32, SetLastError = false, ExactSpelling = true)]
-		private static extern void SspiFreeAuthIdentity(IntPtr AuthData);
-
-		/// <summary>Provides a handle to an authorization identity.</summary>
-		public class PSEC_WINNT_AUTH_IDENTITY_OPAQUE : HANDLE
+		/// <summary>Provides a handle to a auth identity.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PSEC_WINNT_AUTH_IDENTITY_OPAQUE : IHandle
 		{
-			/// <summary>
-			/// Initializes a new instance of the <see cref="PSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> class and assigns an existing handle.
-			/// </summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			public PSEC_WINNT_AUTH_IDENTITY_OPAQUE(IntPtr preexistingHandle) : base(preexistingHandle, true) { }
+			private IntPtr handle;
 
-			/// <summary>
-			/// Initializes a new instance of the <see cref="PSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> class and assigns an existing handle.
-			/// </summary>
+			/// <summary>Initializes a new instance of the <see cref="PSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-			/// </param>
-			protected PSEC_WINNT_AUTH_IDENTITY_OPAQUE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+			public PSEC_WINNT_AUTH_IDENTITY_OPAQUE(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>
 			/// Returns an invalid handle by instantiating a <see cref="PSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> object with <see cref="IntPtr.Zero"/>.
 			/// </summary>
 			public static PSEC_WINNT_AUTH_IDENTITY_OPAQUE NULL => new PSEC_WINNT_AUTH_IDENTITY_OPAQUE(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="PSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(PSEC_WINNT_AUTH_IDENTITY_OPAQUE h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PSEC_WINNT_AUTH_IDENTITY_OPAQUE"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PSEC_WINNT_AUTH_IDENTITY_OPAQUE(IntPtr h) => new PSEC_WINNT_AUTH_IDENTITY_OPAQUE(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(PSEC_WINNT_AUTH_IDENTITY_OPAQUE h1, PSEC_WINNT_AUTH_IDENTITY_OPAQUE h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(PSEC_WINNT_AUTH_IDENTITY_OPAQUE h1, PSEC_WINNT_AUTH_IDENTITY_OPAQUE h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is PSEC_WINNT_AUTH_IDENTITY_OPAQUE h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
 		}
 
 		/// <summary>
-		/// Provides a <see cref="SafeHandle"/> to a that releases a created PSEC_WINNT_AUTH_IDENTITY_OPAQUE instance at disposal using SspiFreeAuthIdentity.
+		/// Provides a <see cref="SafeHandle"/> for <see cref="PSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> that is disposed using <see cref="SspiFreeAuthIdentity"/>.
 		/// </summary>
-		public class SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE : PSEC_WINNT_AUTH_IDENTITY_OPAQUE
+		public class SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE : HANDLE
 		{
 			/// <summary>
-			/// Initializes a new instance of the <see cref="PSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> class and assigns an existing handle.
+			/// Initializes a new instance of the <see cref="SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> class and assigns an existing handle.
 			/// </summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle">
 			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
 			/// </param>
 			public SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> class.</summary>
+			private SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> to <see cref="PSEC_WINNT_AUTH_IDENTITY_OPAQUE"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator PSEC_WINNT_AUTH_IDENTITY_OPAQUE(SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE h) => h.handle;
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() { SspiFreeAuthIdentity(this); return true; }
@@ -464,15 +497,111 @@ namespace Vanara.PInvoke
 			public void CleanUpNativeData(IntPtr pNativeData)
 			{
 				if (pNativeData == IntPtr.Zero) return;
-				SspiFreeAuthIdentity(pNativeData);
+				SspiFreeAuthIdentity(new PSEC_WINNT_AUTH_IDENTITY_OPAQUE(pNativeData));
 				pNativeData = IntPtr.Zero;
 			}
 
-			public int GetNativeDataSize() => 0;
+			public int GetNativeDataSize() => -1;
 
 			public IntPtr MarshalManagedToNative(object ManagedObj) => IntPtr.Zero;
 
 			public object MarshalNativeToManaged(IntPtr pNativeData) => Marshal.PtrToStringAuto(pNativeData);
 		}
+
+		/*
+		_CREDUIWIN_MARSHALED_CONTEXT
+		_SEC_APPLICATION_PROTOCOL_NEGOTIATION_STATUS enumeration
+		_SEC_CHANNEL_BINDINGS
+		_SEC_WINNT_AUTH_BYTE_VECTOR
+		_SEC_WINNT_AUTH_CERTIFICATE_DATA
+		_SEC_WINNT_AUTH_DATA
+		_SEC_WINNT_AUTH_DATA_PASSWORD
+		_SEC_WINNT_AUTH_IDENTITY_EX2
+		_SEC_WINNT_AUTH_IDENTITY_EX
+		_SEC_WINNT_AUTH_IDENTITY_
+		_SEC_WINNT_AUTH_PACKED_CREDENTIALS
+		_SEC_WINNT_AUTH_PACKED_CREDENTIALS_EX
+		_SEC_WINNT_AUTH_SHORT_VECTOR
+		_SEC_WINNT_CREDUI_CONTEXT
+		_SEC_WINNT_CREDUI_CONTEXT_VECTOR
+		_SecBuffer
+		_SecBufferDesc
+		_SECPKG_ATTR_LCT_STATUS enumeration
+		_SECPKG_CRED_CLASS enumeration
+		_SecPkgContext_AccessToken
+		_SecPkgContext_Authority
+		_SecPkgContext_Bindings
+		_SecPkgContext_ClientSpecifiedTarget
+		_SecPkgContext_CredentialName
+		_SecPkgContext_CredInfo
+		_SecPkgContext_DceInfo
+		_SecPkgContext_Flags
+		_SecPkgContext_KeyInfo
+		_SecPkgContext_LastClientTokenStatus
+		_SecPkgContext_Lifespan
+		_SecPkgContext_Names
+		_SecPkgContext_NativeNames
+		_SecPkgContext_NegoStatus
+		_SecPkgContext_NegotiationInfo
+		_SecPkgContext_PackageInfo
+		_SecPkgContext_PasswordExpiry
+		_SecPkgContext_ProtoInfo
+		_SecPkgContext_SessionKey
+		_SecPkgContext_Sizes
+		_SecPkgContext_StreamSizes
+		_SecPkgContext_SubjectAttributes
+		_SecPkgContext_TargetInformation
+		_SecPkgCredentials_Cert
+		_SecPkgCredentials_KdcProxySettings
+		_SecPkgCredentials_Names
+		_SecPkgCredentials_SSIProvider
+		_SecPkgInfo
+		_SECURITY_FUNCTION_TABLE
+		_SECURITY_INTEGER
+		_SECURITY_PACKAGE_OPTIONS
+		_SECURITY_STRING
+		AcceptSecurityContext
+		AcquireCredentialsHandle
+		AddSecurityPackage
+		ApplyControlToken
+		ChangeAccountPassword
+		CompleteAuthToken
+		DecryptMessage
+		DeleteSecurityContext
+		DeleteSecurityPackage
+		EncryptMessage
+		EnumerateSecurityPackages
+		ExportSecurityContext
+		FreeContextBuffer
+		FreeCredentialsHandle
+		ImpersonateSecurityContext
+		ImportSecurityContext
+		InitializeSecurityContext
+		InitSecurityInterface
+		MakeSignature
+		QueryContextAttributesEx
+		QueryContextAttributes
+		QueryCredentialsAttributes
+		QuerySecurityContextToken
+		QuerySecurityPackageInfo
+		RevertSecurityContext
+		SaslAcceptSecurityContext
+		SaslEnumerateProfiles
+		SaslGetContextOption
+		SaslGetProfilePackage
+		SaslIdentifyPackage
+		SaslInitializeSecurityContext
+		SaslSetContextOption
+		SetContextAttributes
+		SetCredentialsAttributes
+		SspiDecryptAuthIdentityEx
+		SspiEncryptAuthIdentityEx
+		SspiGetCredUIContext
+		SspiIsPromptingNeeded
+		SspiPromptForCredentials
+		SspiUnmarshalCredUIContext
+		SspiUpdateCredentials
+		VerifySignature
+		*/
 	}
 }

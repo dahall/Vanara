@@ -5,8 +5,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
 
-// ReSharper disable InconsistentNaming
-
 namespace Vanara.PInvoke
 {
 	/// <summary>Represents a Win32 Error Code. This can be used in place of a return value.</summary>
@@ -18,10 +16,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Initializes a new instance of the <see cref="Win32Error"/> struct with an error value.</summary>
 		/// <param name="i">The i.</param>
-		public Win32Error(int i)
-		{
-			value = i;
-		}
+		public Win32Error(int i) => value = i;
 
 		/// <summary>Gets a value indicating whether this <see cref="Win32Error"/> is a failure.</summary>
 		/// <value><c>true</c> if failed; otherwise, <c>false</c>.</value>
@@ -34,21 +29,21 @@ namespace Vanara.PInvoke
 		/// <summary>Compares the current object with another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>
-		/// A value that indicates the relative order of the objects being compared. The return value has the following meanings: Value Meaning Less than zero
-		/// This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref name="other"/>. Greater than zero This object
-		/// is greater than <paramref name="other"/>.
+		/// A value that indicates the relative order of the objects being compared. The return value has the following meanings: Value
+		/// Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref
+		/// name="other"/>. Greater than zero This object is greater than <paramref name="other"/>.
 		/// </returns>
 		public int CompareTo(Win32Error other) => value.CompareTo(other.value);
 
 		/// <summary>
-		/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes,
-		/// follows, or occurs in the same position in the sort order as the other object.
+		/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current
+		/// instance precedes, follows, or occurs in the same position in the sort order as the other object.
 		/// </summary>
 		/// <param name="obj">An object to compare with this instance.</param>
 		/// <returns>
-		/// A value that indicates the relative order of the objects being compared. The return value has these meanings: Value Meaning Less than zero This
-		/// instance precedes <paramref name="obj"/> in the sort order. Zero This instance occurs in the same position in the sort order as <paramref
-		/// name="obj"/>. Greater than zero This instance follows <paramref name="obj"/> in the sort order.
+		/// A value that indicates the relative order of the objects being compared. The return value has these meanings: Value Meaning Less
+		/// than zero This instance precedes <paramref name="obj"/> in the sort order. Zero This instance occurs in the same position in the
+		/// sort order as <paramref name="obj"/>. Greater than zero This instance follows <paramref name="obj"/> in the sort order.
 		/// </returns>
 		public int CompareTo(object obj)
 		{
@@ -125,10 +120,7 @@ namespace Vanara.PInvoke
 		/// <param name="err">The error.</param>
 		/// <param name="message">The message.</param>
 		[System.Diagnostics.DebuggerStepThrough]
-		public static void ThrowIfFailed(Win32Error err, string message = null)
-		{
-			err.ThrowIfFailed(message);
-		}
+		public static void ThrowIfFailed(Win32Error err, string message = null) => err.ThrowIfFailed(message);
 
 		/// <summary>Performs an explicit conversion from <see cref="System.Int32"/> to <see cref="Win32Error"/>.</summary>
 		/// <param name="value">The value.</param>

@@ -11,7 +11,7 @@ namespace Vanara.InteropServices.Tests
 		[Test()]
 		public void StrPtrTest()
 		{
-			Assert.That(Marshal.SizeOf<StrPtrAuto>() == Marshal.SizeOf<IntPtr>());
+			Assert.That(Marshal.SizeOf(typeof(StrPtrAuto)) == Marshal.SizeOf(typeof(IntPtr)));
 			var p0 = new StrPtrAuto();
 			Assert.That(p0.IsNull);
 			var p1 = new StrPtrAuto("Test");
@@ -76,7 +76,7 @@ namespace Vanara.InteropServices.Tests
 		[Test()]
 		public void StrPtrUniTest()
 		{
-			Assert.That(Marshal.SizeOf<StrPtrUni>() == Marshal.SizeOf<IntPtr>());
+			Assert.That(Marshal.SizeOf(typeof(StrPtrUni)) == Marshal.SizeOf(typeof(IntPtr)));
 			var p0 = new StrPtrUni();
 			Assert.That(p0.IsNull);
 			var p1 = new StrPtrUni("Test");

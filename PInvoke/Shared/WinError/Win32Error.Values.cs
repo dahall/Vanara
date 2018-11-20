@@ -1,5 +1,3 @@
-// ReSharper disable InconsistentNaming
-
 namespace Vanara.PInvoke
 {
 	public partial struct Win32Error

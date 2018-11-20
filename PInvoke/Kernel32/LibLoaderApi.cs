@@ -60,7 +60,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648033")]
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool EnumResLangProc([In] HINSTANCE hModule, [In] SafeResourceId lpszType, [In] SafeResourceId lpszName, ushort wIDLanguage, [In] IntPtr lParam);
+		public delegate bool EnumResLangProc([In] HINSTANCE hModule, [In] ResourceId lpszType, [In] ResourceId lpszName, ushort wIDLanguage, [In] IntPtr lParam);
 
 		/// <summary>
 		/// An application-defined callback function used with the <c>EnumResourceNames</c> and <c>EnumResourceNamesEx</c> functions. It
@@ -105,7 +105,7 @@ namespace Vanara.PInvoke
 		[SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648034")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool EnumResNameProc(HINSTANCE hModule, SafeResourceId lpszType, SafeResourceId lpszName, IntPtr lParam);
+		public delegate bool EnumResNameProc(HINSTANCE hModule, ResourceId lpszType, ResourceId lpszName, IntPtr lParam);
 
 		/// <summary>
 		/// An application-defined callback function used with the <c>EnumResourceTypes</c> and <c>EnumResourceTypesEx</c> functions. It
@@ -142,7 +142,7 @@ namespace Vanara.PInvoke
 		[UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Unicode)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms648041")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public delegate bool EnumResTypeProc(HINSTANCE hModule, SafeResourceId lpszType, IntPtr lParam);
+		public delegate bool EnumResTypeProc(HINSTANCE hModule, ResourceId lpszType, IntPtr lParam);
 
 		/// <summary>Flags used by <see cref="GetModuleHandleEx"/>.</summary>
 		[PInvokeData("Winbase.h", MSDNShortId = "ms683200")]
@@ -670,9 +670,9 @@ namespace Vanara.PInvoke
 		/// ///
 		/// <returns>A list of strings for each of the resources matching <paramref name="type"/>.</returns>
 		[PInvokeData("WinBase.h", MSDNShortId = "ms648037")]
-		public static IList<SafeResourceId> EnumResourceNamesEx(HINSTANCE hModule, SafeResourceId type, RESOURCE_ENUM_FLAGS flags = 0, ushort langFilter = 0)
+		public static IList<ResourceId> EnumResourceNamesEx(HINSTANCE hModule, SafeResourceId type, RESOURCE_ENUM_FLAGS flags = 0, ushort langFilter = 0)
 		{
-			var list = new List<SafeResourceId>();
+			var list = new List<ResourceId>();
 			if (!EnumResourceNamesEx(hModule, type, (m, t, name, l) => { list.Add(name); return true; }, IntPtr.Zero, flags, langFilter))
 				Win32Error.ThrowLastError();
 			return list;
@@ -957,9 +957,9 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </param>
 		/// <returns>List of resource identifiers.</returns>
-		public static IList<SafeResourceId> EnumResourceTypesEx([In] HINSTANCE hModule, RESOURCE_ENUM_FLAGS flags = 0, ushort langFilter = 0)
+		public static IList<ResourceId> EnumResourceTypesEx([In] HINSTANCE hModule, RESOURCE_ENUM_FLAGS flags = 0, ushort langFilter = 0)
 		{
-			var list = new List<SafeResourceId>();
+			var list = new List<ResourceId>();
 			if (!EnumResourceTypesEx(hModule, (p, t, l) => { list.Add(t); return true; }, IntPtr.Zero, flags, langFilter))
 				Win32Error.ThrowLastError();
 			return list;

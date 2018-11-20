@@ -165,7 +165,7 @@ namespace Vanara.Extensions
 		/// <param name="wParam">Additional message-specific information.</param>
 		/// <param name="lParam">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		public static IntPtr SendMessage(this IWin32Window wnd, uint msg, IntPtr wParam = default(IntPtr), IntPtr lParam = default(IntPtr)) =>
+		public static IntPtr SendMessage(this IWin32Window wnd, uint msg, IntPtr wParam = default, IntPtr lParam = default) =>
 			Vanara.PInvoke.User32_Gdi.SendMessage(wnd.Handle, msg, wParam, lParam);
 
 		/// <summary>Sets the windows styles.</summary>

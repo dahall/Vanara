@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Vanara.Extensions;
-using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Shell32;
-// ReSharper disable InconsistentNaming
 
 namespace Vanara.PInvoke
 {
@@ -23,7 +21,16 @@ namespace Vanara.PInvoke
 		public static string FullPath(this KNOWNFOLDERID id)
 		{
 			SHGetKnownFolderPath(id.Guid(), stdGetFlags, HTOKEN.NULL, out var path);
-			return path.ToString(-1);
+			return path;
+		}
+
+		/// <summary>Retrieves the IShellItem associated with a <see cref="KNOWNFOLDERID"/>.</summary>
+		/// <param name="id">The known folder.</param>
+		/// <returns>The <see cref="IShellItem"/> instance.</returns>
+		public static IShellItem GetIShellItem(this KNOWNFOLDERID id)
+		{
+			SHGetKnownFolderItem(id.Guid(), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, HTOKEN.NULL, typeof(IShellItem).GUID, out var ppv).ThrowIfFailed();
+			return (IShellItem)ppv;
 		}
 
 		/// <summary>Gets a registry property associated with this known folder.</summary>
@@ -38,15 +45,6 @@ namespace Vanara.PInvoke
 		/// <param name="id">The known folder.</param>
 		/// <returns>The GUID associated with the <paramref name="id"/> or <see cref="Guid.Empty"/> if no association exists.</returns>
 		public static Guid Guid(this KNOWNFOLDERID id) => AssociateAttribute.GetGuidFromEnum(id);
-
-		/// <summary>Retrieves the IShellItem associated with a <see cref="KNOWNFOLDERID"/>.</summary>
-		/// <param name="id">The known folder.</param>
-		/// <returns>The <see cref="IShellItem"/> instance.</returns>
-		public static IShellItem GetIShellItem(this KNOWNFOLDERID id)
-		{
-			SHGetKnownFolderItem(id.Guid(), KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, HTOKEN.NULL, typeof(IShellItem).GUID, out var ppv).ThrowIfFailed();
-			return (IShellItem) ppv;
-		}
 
 		/// <summary>Retrieves the <see cref="KNOWNFOLDERID"/> associated with the <see cref="Environment.SpecialFolder"/>.</summary>
 		/// <param name="spFolder">The <see cref="Environment.SpecialFolder"/>.</param>

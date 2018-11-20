@@ -3,7 +3,7 @@ using System;
 
 namespace Vanara.PInvoke.Tests
 {
-	[TestFixture()]
+	//[TestFixture()]
 	public class VirtDiskTests
 	{
 		[Test()]

@@ -91,7 +91,7 @@ namespace Vanara.Windows.Forms
 			return t;
 		}
 
-		public T GetSelectedValue<T>() => SelectedValue == null ? default(T) : (T)SelectedValue;
+		public T GetSelectedValue<T>() => SelectedValue == null ? default : (T)SelectedValue;
 
 		[Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new ComboBoxStyle DropDownStyle { get => base.DropDownStyle; set => base.DropDownStyle = value; }

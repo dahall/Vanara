@@ -189,8 +189,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropsetstg-reset
-			[PreserveSig]
-			HRESULT Reset();
+			void Reset();
 
 			/// <summary>
 			/// <para>
@@ -199,12 +198,10 @@ namespace Vanara.PInvoke
 			/// to that point later. The new enumerator supports the same IEnumSTATPROPSETSTG interface.
 			/// </para>
 			/// </summary>
-			/// <param name="ppenum">
+			/// <returns>
 			/// <para>A pointer to the variable that receives the IEnumSTATPROPSETSTG interface pointer.</para>
 			/// <para>If the method does not succeed, the value of the parameter is undefined.</para>
-			/// </param>
-			/// <returns>
-			/// <para>This method supports return values listed in the following table.</para>
+			/// <para>This method supports exceptions listed in the following table.</para>
 			/// <list type="table">
 			/// <listheader>
 			/// <term>Return code</term>
@@ -225,8 +222,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropsetstg-clone
-			[PreserveSig]
-			HRESULT Clone(out IEnumSTATPROPSETSTG ppenum);
+			IEnumSTATPROPSETSTG Clone();
 		}
 
 		/// <summary>
@@ -328,8 +324,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropstg-reset
-			[PreserveSig]
-			HRESULT Reset();
+			void Reset();
 
 			/// <summary>
 			/// <para>
@@ -364,8 +359,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropstg-clone
-			[PreserveSig]
-			HRESULT Clone(out IEnumSTATPROPSTG ppenum);
+			IEnumSTATPROPSTG Clone();
 		}
 
 		/// <summary>

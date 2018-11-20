@@ -2,14 +2,6 @@
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedParameter.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable InconsistentNaming
-// ReSharper disable MemberHidesStaticFromOuterClass
-// ReSharper disable UnusedMethodReturnValue.Global
-
 namespace Vanara.PInvoke
 {
 	public static partial class Shell32
@@ -30,26 +22,27 @@ namespace Vanara.PInvoke
 		public enum KF_CATEGORY
 		{
 			/// <summary>
-			/// Virtual folders are not part of the file system, which is to say that they have no path. For example, Control Panel and Printers are virtual
-			/// folders. A number of features such as folder path and redirection do not apply to this category.
+			/// Virtual folders are not part of the file system, which is to say that they have no path. For example, Control Panel and
+			/// Printers are virtual folders. A number of features such as folder path and redirection do not apply to this category.
 			/// </summary>
 			KF_CATEGORY_VIRTUAL = 1,
 
 			/// <summary>
-			/// Fixed file system folders are not managed by the Shell and are usually given a permanent path when the system is installed. For example, the
-			/// Windows and Program Files folders are fixed folders. A number of features such as redirection do not apply to this category.
+			/// Fixed file system folders are not managed by the Shell and are usually given a permanent path when the system is installed.
+			/// For example, the Windows and Program Files folders are fixed folders. A number of features such as redirection do not apply
+			/// to this category.
 			/// </summary>
 			KF_CATEGORY_FIXED = 2,
 
 			/// <summary>
-			/// Common folders are those file system folders used for sharing data and settings, accessible by all users of a system. For example, all users
-			/// share a common Documents folder as well as their per-user Documents folder.
+			/// Common folders are those file system folders used for sharing data and settings, accessible by all users of a system. For
+			/// example, all users share a common Documents folder as well as their per-user Documents folder.
 			/// </summary>
 			KF_CATEGORY_COMMON = 3,
 
 			/// <summary>
-			/// Per-user folders are those stored under each user's profile and accessible only by that user. For example, %USERPROFILE%\Pictures. This category
-			/// of folder usually supports many features including aliasing, redirection and customization.
+			/// Per-user folders are those stored under each user's profile and accessible only by that user. For example,
+			/// %USERPROFILE%\Pictures. This category of folder usually supports many features including aliasing, redirection and customization.
 			/// </summary>
 			KF_CATEGORY_PERUSER = 4,
 		}
@@ -60,8 +53,9 @@ namespace Vanara.PInvoke
 		public enum KF_DEFINITION_FLAGS
 		{
 			/// <summary>
-			/// Prevent a per-user known folder from being redirected to a network location. Note that if the known folder has been flagged with
-			/// KFDF_LOCAL_REDIRECT_ONLY but it is a subfolder of a known folder that is redirected to a network location, this subfolder is redirected also.
+			/// Prevent a per-user known folder from being redirected to a network location. Note that if the known folder has been flagged
+			/// with KFDF_LOCAL_REDIRECT_ONLY but it is a subfolder of a known folder that is redirected to a network location, this
+			/// subfolder is redirected also.
 			/// </summary>
 			KFDF_LOCAL_REDIRECT_ONLY = 0x00000002,
 
@@ -69,10 +63,10 @@ namespace Vanara.PInvoke
 			KFDF_ROAMABLE = 0x00000004,
 
 			/// <summary>
-			/// Create the folder when the user first logs on. Normally a known folder is not created until it is first called. At that time, an API such as
-			/// SHCreateItemInKnownFolder or IKnownFolder::GetShellItem is called with the KF_FLAG_CREATE flag. However, some known folders need to exist
-			/// immediately. An example is those known folders under %USERPROFILE%, which must exist to provide a proper view. In those cases, KFDF_PRECREATE is
-			/// set and Windows Explorer calls the creation API during its user initialization.
+			/// Create the folder when the user first logs on. Normally a known folder is not created until it is first called. At that time,
+			/// an API such as SHCreateItemInKnownFolder or IKnownFolder::GetShellItem is called with the KF_FLAG_CREATE flag. However, some
+			/// known folders need to exist immediately. An example is those known folders under %USERPROFILE%, which must exist to provide a
+			/// proper view. In those cases, KFDF_PRECREATE is set and Windows Explorer calls the creation API during its user initialization.
 			/// </summary>
 			KFDF_PRECREATE = 0x00000008,
 
@@ -80,7 +74,8 @@ namespace Vanara.PInvoke
 			KFDF_STREAM = 0x00000010,
 
 			/// <summary>
-			/// Introduced in Windows 7. The full path of the known folder, with any environment variables fully expanded, is stored in the registry under HKEY_CURRENT_USER.
+			/// Introduced in Windows 7. The full path of the known folder, with any environment variables fully expanded, is stored in the
+			/// registry under HKEY_CURRENT_USER.
 			/// </summary>
 			KFDF_PUBLISHEXPANDEDPATH = 0x00000020,
 
@@ -89,7 +84,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Flags used by IKnownFolderManager::Redirect to specify details of a known folder redirection such as permissions and ownership for the redirected folder.
+		/// Flags used by IKnownFolderManager::Redirect to specify details of a known folder redirection such as permissions and ownership
+		/// for the redirected folder.
 		/// </summary>
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762515")]
 		[Flags]
@@ -102,20 +98,20 @@ namespace Vanara.PInvoke
 			KF_REDIRECT_COPY_SOURCE_DACL = 0x00000002,
 
 			/// <summary>
-			/// Sets the user as the owner of a newly created target folder unless the user is a member of the Administrator group, in which case Administrator
-			/// is set as the owner. Must be called with KF_REDIRECT_SET_OWNER_EXPLICIT.
+			/// Sets the user as the owner of a newly created target folder unless the user is a member of the Administrator group, in which
+			/// case Administrator is set as the owner. Must be called with KF_REDIRECT_SET_OWNER_EXPLICIT.
 			/// </summary>
 			KF_REDIRECT_OWNER_USER = 0x00000004,
 
 			/// <summary>
-			/// Set the owner of a newly created target folder. If the user belongs to the Administrators group, Administrators is assigned as the owner. Must be
-			/// called with KF_REDIRECT_OWNER_USER.
+			/// Set the owner of a newly created target folder. If the user belongs to the Administrators group, Administrators is assigned
+			/// as the owner. Must be called with KF_REDIRECT_OWNER_USER.
 			/// </summary>
 			KF_REDIRECT_SET_OWNER_EXPLICIT = 0x00000008,
 
 			/// <summary>
-			/// Do not perform a redirection, simply check whether redirection has occurred. If so, IKnownFolderManager::Redirect returns S_OK; if not, or if
-			/// some actions remain to be completed, it returns S_FALSE.
+			/// Do not perform a redirection, simply check whether redirection has occurred. If so, IKnownFolderManager::Redirect returns
+			/// S_OK; if not, or if some actions remain to be completed, it returns S_FALSE.
 			/// </summary>
 			KF_REDIRECT_CHECK_ONLY = 0x00000010,
 
@@ -147,13 +143,14 @@ namespace Vanara.PInvoke
 		public enum KF_REDIRECTION_CAPABILITIES
 		{
 			/// <summary>
-			/// The folder can be redirected if any of the bits in the lower byte of the value are set but no DENY flag is set. DENY flags are found in the upper
-			/// byte of the value.
+			/// The folder can be redirected if any of the bits in the lower byte of the value are set but no DENY flag is set. DENY flags
+			/// are found in the upper byte of the value.
 			/// </summary>
 			KF_REDIRECTION_CAPABILITIES_ALLOW_ALL = 0x000000FF,
 
 			/// <summary>
-			/// The folder can be redirected. Currently, redirection exists for only common and user folders; fixed and virtual folders cannot be redirected.
+			/// The folder can be redirected. Currently, redirection exists for only common and user folders; fixed and virtual folders
+			/// cannot be redirected.
 			/// </summary>
 			KF_REDIRECTION_CAPABILITIES_REDIRECTABLE = 0x00000001,
 
@@ -177,61 +174,76 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>No flags.</summary>
 			KF_FLAG_DEFAULT = 0x00000000,
+
 			/// <summary>
-			/// Build a simple IDList (PIDL) This value can be used when you want to retrieve the file system path but do not specify this value if you are
-			/// retrieving the localized display name of the folder because it might not resolve correctly.
+			/// Build a simple IDList (PIDL) This value can be used when you want to retrieve the file system path but do not specify this
+			/// value if you are retrieving the localized display name of the folder because it might not resolve correctly.
 			/// </summary>
 			KF_FLAG_SIMPLE_IDLIST = 0x00000100,
-			/// <summary>Gets the folder's default path independent of the current location of its parent. KF_FLAG_DEFAULT_PATH must also be set.</summary>
-			KF_FLAG_NOT_PARENT_RELATIVE = 0x00000200,
+
 			/// <summary>
-			/// Gets the default path for a known folder. If this flag is not set, the function retrieves the current—and possibly redirected—path of the folder.
-			/// The execution of this flag includes a verification of the folder's existence unless KF_FLAG_DONT_VERIFY is set.
+			/// Gets the folder's default path independent of the current location of its parent. KF_FLAG_DEFAULT_PATH must also be set.
+			/// </summary>
+			KF_FLAG_NOT_PARENT_RELATIVE = 0x00000200,
+
+			/// <summary>
+			/// Gets the default path for a known folder. If this flag is not set, the function retrieves the current—and possibly
+			/// redirected—path of the folder. The execution of this flag includes a verification of the folder's existence unless
+			/// KF_FLAG_DONT_VERIFY is set.
 			/// </summary>
 			KF_FLAG_DEFAULT_PATH = 0x00000400,
+
 			/// <summary>
-			/// Initializes the folder using its Desktop.ini settings. If the folder cannot be initialized, the function returns a failure code and no path is
-			/// returned. This flag should always be combined with KF_FLAG_CREATE. If the folder is located on a network, the function might take a longer time
-			/// to execute.
+			/// Initializes the folder using its Desktop.ini settings. If the folder cannot be initialized, the function returns a failure
+			/// code and no path is returned. This flag should always be combined with KF_FLAG_CREATE. If the folder is located on a network,
+			/// the function might take a longer time to execute.
 			/// </summary>
 			KF_FLAG_INIT = 0x00000800,
+
 			/// <summary>
-			/// Gets the true system path for the folder, free of any aliased placeholders such as %USERPROFILE%, returned by SHGetKnownFolderIDList and
-			/// IKnownFolder::GetIDList. This flag has no effect on paths returned by SHGetKnownFolderPath and IKnownFolder::GetPath. By default, known folder
-			/// retrieval functions and methods return the aliased path if an alias exists.
+			/// Gets the true system path for the folder, free of any aliased placeholders such as %USERPROFILE%, returned by
+			/// SHGetKnownFolderIDList and IKnownFolder::GetIDList. This flag has no effect on paths returned by SHGetKnownFolderPath and
+			/// IKnownFolder::GetPath. By default, known folder retrieval functions and methods return the aliased path if an alias exists.
 			/// </summary>
 			KF_FLAG_NO_ALIAS = 0x00001000,
+
 			/// <summary>
-			/// Stores the full path in the registry without using environment strings. If this flag is not set, portions of the path may be represented by
-			/// environment strings such as %USERPROFILE%. This flag can only be used with SHSetKnownFolderPath and IKnownFolder::SetPath.
+			/// Stores the full path in the registry without using environment strings. If this flag is not set, portions of the path may be
+			/// represented by environment strings such as %USERPROFILE%. This flag can only be used with SHSetKnownFolderPath and IKnownFolder::SetPath.
 			/// </summary>
 			KF_FLAG_DONT_UNEXPAND = 0x00002000,
+
 			/// <summary>
-			/// Do not verify the folder's existence before attempting to retrieve the path or IDList. If this flag is not set, an attempt is made to verify that
-			/// the folder is truly present at the path. If that verification fails due to the folder being absent or inaccessible, the function returns a
-			/// failure code and no path is returned. If the folder is located on a network, the function might take a longer time to execute. Setting this flag
-			/// can reduce that lag time.
+			/// Do not verify the folder's existence before attempting to retrieve the path or IDList. If this flag is not set, an attempt is
+			/// made to verify that the folder is truly present at the path. If that verification fails due to the folder being absent or
+			/// inaccessible, the function returns a failure code and no path is returned. If the folder is located on a network, the
+			/// function might take a longer time to execute. Setting this flag can reduce that lag time.
 			/// </summary>
 			KF_FLAG_DONT_VERIFY = 0x00004000,
+
 			/// <summary>
-			/// Forces the creation of the specified folder if that folder does not already exist. The security provisions predefined for that folder are
-			/// applied. If the folder does not exist and cannot be created, the function returns a failure code and no path is returned. This value can be used
-			/// only with the following functions and methods: SHGetKnownFolderPath, SHGetKnownFolderIDList, IKnownFolder::GetIDList, IKnownFolder::GetPath, and IKnownFolder::GetShellItem.
+			/// Forces the creation of the specified folder if that folder does not already exist. The security provisions predefined for
+			/// that folder are applied. If the folder does not exist and cannot be created, the function returns a failure code and no path
+			/// is returned. This value can be used only with the following functions and methods: SHGetKnownFolderPath,
+			/// SHGetKnownFolderIDList, IKnownFolder::GetIDList, IKnownFolder::GetPath, and IKnownFolder::GetShellItem.
 			/// </summary>
 			KF_FLAG_CREATE = 0x00008000,
+
 			/// <summary>
-			/// Introduced in Windows 7: When running inside an app container, or when providing an app container token, this flag prevents redirection to app
-			/// container folders. Instead, it retrieves the path that would be returned where it not running inside an app container.
+			/// Introduced in Windows 7: When running inside an app container, or when providing an app container token, this flag prevents
+			/// redirection to app container folders. Instead, it retrieves the path that would be returned where it not running inside an
+			/// app container.
 			/// </summary>
 			KF_FLAG_NO_APPCONTAINER_REDIRECTION = 0x00010000,
+
 			/// <summary>Introduced in Windows 7. Return only aliased PIDLs. Do not use the file system path.</summary>
 			KF_FLAG_ALIAS_ONLY = 0x80000000
 		}
 
 		/// <summary>
-		/// The KNOWNFOLDERID constants represent GUIDs that identify standard folders registered with the system as Known Folders. These folders are installed
-		/// with Windows Vista and later operating systems, and a computer will have only folders appropriate to it installed. For descriptions of these folders,
-		/// see CSIDL.
+		/// The KNOWNFOLDERID constants represent GUIDs that identify standard folders registered with the system as Known Folders. These
+		/// folders are installed with Windows Vista and later operating systems, and a computer will have only folders appropriate to it
+		/// installed. For descriptions of these folders, see CSIDL.
 		/// </summary>
 		[PInvokeData("Knownfolders.h", MSDNShortId = "dd378457")]
 		public enum KNOWNFOLDERID
@@ -613,7 +625,7 @@ namespace Vanara.PInvoke
 			FOLDERID_SEARCH_MAPI,
 
 			/// <summary>Templates</summary>
-			[KnownFolderDetail("{7E636BFE-DFA9-4D5E-B456-D7B39851D8A9}")] 
+			[KnownFolderDetail("{7E636BFE-DFA9-4D5E-B456-D7B39851D8A9}")]
 			FOLDERID_SearchTemplates,
 
 			/// <summary>SendTo</summary>
@@ -705,7 +717,7 @@ namespace Vanara.PInvoke
 			FOLDERID_Videos,
 
 			/// <summary>Videos</summary>
-			[KnownFolderDetail("{491E922F-5643-4AF4-A7EB-4E7A138D8174}")] 
+			[KnownFolderDetail("{491E922F-5643-4AF4-A7EB-4E7A138D8174}")]
 			FOLDERID_VideosLibrary,
 
 			/// <summary>Windows</summary>
@@ -714,34 +726,44 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Exposes methods that allow an application to retrieve information about a known folder's category, type, GUID, pointer to an item identifier list
-		/// (PIDL) value, redirection capabilities, and definition. It provides a method for the retrival of a known folder's IShellItem object. It also provides
-		/// methods to get or set the path of the known folder.
+		/// Exposes methods that allow an application to retrieve information about a known folder's category, type, GUID, pointer to an item
+		/// identifier list (PIDL) value, redirection capabilities, and definition. It provides a method for the retrival of a known folder's
+		/// IShellItem object. It also provides methods to get or set the path of the known folder.
 		/// </summary>
 		[ComImport, Guid("3AA7AF7E-9B36-420c-A8E3-F77D4674A488"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762502")]
 		public interface IKnownFolder
 		{
 			/// <summary>Gets the ID of the selected folder.</summary>
-			/// <returns>When this method returns, returns the KNOWNFOLDERID value of the known folder. Note, KNOWNFOLDERID values are GUIDs.</returns>
+			/// <returns>
+			/// When this method returns, returns the KNOWNFOLDERID value of the known folder. Note, KNOWNFOLDERID values are GUIDs.
+			/// </returns>
 			Guid GetId();
 
 			/// <summary>Retrieves the category—virtual, fixed, common, or per-user—of the selected folder.</summary>
 			/// <returns>When this method returns, contains a pointer to the KF_CATEGORY of the selected folder.</returns>
 			KF_CATEGORY GetCategory();
 
-			/// <summary>Retrieves the location of a known folder in the Shell namespace in the form of a Shell item (IShellItem or derived interface).</summary>
-			/// <param name="dwFlags">Flags that specify special retrieval options. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.</param>
+			/// <summary>
+			/// Retrieves the location of a known folder in the Shell namespace in the form of a Shell item (IShellItem or derived interface).
+			/// </summary>
+			/// <param name="dwFlags">
+			/// Flags that specify special retrieval options. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.
+			/// </param>
 			/// <param name="riid">A reference to the IID of the requested interface.</param>
-			/// <returns>When this method returns, contains the interface pointer requested in riid. This is typically IShellItem or IShellItem2.</returns>
+			/// <returns>
+			/// When this method returns, contains the interface pointer requested in riid. This is typically IShellItem or IShellItem2.
+			/// </returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IShellItem GetShellItem([In] KNOWN_FOLDER_FLAG dwFlags, in Guid riid);
 
 			/// <summary>Retrieves the path of a known folder as a string.</summary>
-			/// <param name="dwFlags">Flags that specify special retrieval options. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.</param>
+			/// <param name="dwFlags">
+			/// Flags that specify special retrieval options. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.
+			/// </param>
 			/// <returns>
-			/// When this method returns, contains the address of a pointer to a null-terminated buffer that contains the path. The calling application is
-			/// responsible for calling CoTaskMemFree to free this resource when it is no longer needed.
+			/// When this method returns, contains the address of a pointer to a null-terminated buffer that contains the path. The calling
+			/// application is responsible for calling CoTaskMemFree to free this resource when it is no longer needed.
 			/// </returns>
 			SafeCoTaskMemString GetPath([In] KNOWN_FOLDER_FLAG dwFlags);
 
@@ -751,10 +773,12 @@ namespace Vanara.PInvoke
 			void SetPath([In] KNOWN_FOLDER_FLAG dwFlags, [In, MarshalAs(UnmanagedType.LPWStr)] string pszPath);
 
 			/// <summary>Gets the location of the Shell namespace folder in the IDList (ITEMIDLIST) form.</summary>
-			/// <param name="dwFlags">Flags that specify special retrieval options. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.</param>
+			/// <param name="dwFlags">
+			/// Flags that specify special retrieval options. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.
+			/// </param>
 			/// <returns>
-			/// When this method returns, contains the address of an absolute PIDL. This parameter is passed uninitialized. The calling application is
-			/// responsible for freeing this resource when it is no longer needed.
+			/// When this method returns, contains the address of an absolute PIDL. This parameter is passed uninitialized. The calling
+			/// application is responsible for freeing this resource when it is no longer needed.
 			/// </returns>
 			[return: ComAliasName("ShellObjects.wirePIDL")]
 			PIDL GetIDList([In] KNOWN_FOLDER_FLAG dwFlags);
@@ -764,21 +788,22 @@ namespace Vanara.PInvoke
 			Guid GetFolderType();
 
 			/// <summary>
-			/// Gets a value that states whether the known folder can have its path set to a new value or what specific restrictions or prohibitions are placed
-			/// on that redirection.
+			/// Gets a value that states whether the known folder can have its path set to a new value or what specific restrictions or
+			/// prohibitions are placed on that redirection.
 			/// </summary>
 			/// <returns>
-			/// When this method returns, contains a pointer to a KF_REDIRECTION_CAPABILITIES value that indicates the redirection capabilities for this folder.
+			/// When this method returns, contains a pointer to a KF_REDIRECTION_CAPABILITIES value that indicates the redirection
+			/// capabilities for this folder.
 			/// </returns>
 			KF_REDIRECTION_CAPABILITIES GetRedirectionCapabilities();
 
 			/// <summary>
-			/// Retrieves a structure that contains the defining elements of a known folder, which includes the folder's category, name, path, description,
-			/// tooltip, icon, and other properties.
+			/// Retrieves a structure that contains the defining elements of a known folder, which includes the folder's category, name,
+			/// path, description, tooltip, icon, and other properties.
 			/// </summary>
 			/// <returns>
-			/// When this method returns, contains a pointer to the KNOWNFOLDER_DEFINITION structure. When no longer needed, the calling application is
-			/// responsible for calling FreeKnownFolderDefinitionFields to free this resource.
+			/// When this method returns, contains a pointer to the KNOWNFOLDER_DEFINITION structure. When no longer needed, the calling
+			/// application is responsible for calling FreeKnownFolderDefinitionFields to free this resource.
 			/// </returns>
 			KNOWNFOLDER_DEFINITION GetFolderDefinition();
 		}
@@ -796,22 +821,37 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the legacy CSIDL value that is the equivalent of a given KNOWNFOLDERID.</summary>
 			/// <param name="rfid">Reference to the KNOWNFOLDERID.</param>
 			/// <returns>When this method returns, contains a pointer to the CSIDL value. This pointer is passed uninitialized.</returns>
-			int FolderIdToCsidl(in Guid rfid);
-
-			/// <summary>Gets an array of all registered known folder IDs. This can be used in enumerating all known folders.</summary>
-			/// <param name="ppKFId">
-			/// When this method returns, contains a pointer to an array of all KNOWNFOLDERID values registered with the system. Use CoTaskMemFree to free these
-			/// resources when they are no longer needed.
-			/// </param>
-			/// <retruns>
-			/// When this method returns, contains a pointer to the number of KNOWNFOLDERID values in the array at ppKFId. The [in] functionality of this
-			/// parameter is not used.
-			/// </retruns>
-			uint GetFolderIds(out SafeCoTaskMemHandle ppKFId);
+			CSIDL FolderIdToCsidl(in Guid rfid);
 
 			/// <summary>
-			/// Gets an object that represents a known folder identified by its KNOWNFOLDERID. The object allows you to query certain folder properties, get the
-			/// current path of the folder, redirect the folder to another location, and get the path of the folder as an ITEMIDLIST.
+			/// <para>Gets an array of all registered known folder IDs. This can be used in enumerating all known folders.</para>
+			/// </summary>
+			/// <param name="ppKFId">
+			/// <para>Type: <c>KNOWNFOLDERID**</c></para>
+			/// <para>
+			/// When this method returns, contains a pointer to an array of all KNOWNFOLDERID values registered with the system. Use
+			/// CoTaskMemFree to free these resources when they are no longer needed.
+			/// </para>
+			/// </param>
+			/// <param name="pCount">
+			/// <para>Type: <c>UINT*</c></para>
+			/// <para>
+			/// When this method returns, contains a pointer to the number of KNOWNFOLDERID values in the array at ppKFId. The [in]
+			/// functionality of this parameter is not used.
+			/// </para>
+			/// </param>
+			/// <remarks>
+			/// <para>The caller of this method must have User privileges.</para>
+			/// <para>You can use StringFromCLSID or StringFromGUID2 to convert the retrieved KNOWNFOLDERID values to strings.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iknownfoldermanager-getfolderids HRESULT
+			// GetFolderIds( KNOWNFOLDERID **ppKFId, UINT *pCount );
+			[PInvokeData("shobjidl_core.h", MSDNShortId = "3ac09fc4-15c4-4346-94ad-2a4617c463d1")]
+			void GetFolderIds(out SafeCoTaskMemHandle ppKFId, out uint pCount);
+
+			/// <summary>
+			/// Gets an object that represents a known folder identified by its KNOWNFOLDERID. The object allows you to query certain folder
+			/// properties, get the current path of the folder, redirect the folder to another location, and get the path of the folder as an ITEMIDLIST.
 			/// </summary>
 			/// <param name="rfid">Reference to the KNOWNFOLDERID.</param>
 			/// <returns>When this method returns, contains an interface pointer to the IKnownFolder object that represents the folder.</returns>
@@ -819,74 +859,83 @@ namespace Vanara.PInvoke
 			IKnownFolder GetFolder(in Guid rfid);
 
 			/// <summary>
-			/// Gets an object that represents a known folder identified by its canonical name. The object allows you to query certain folder properties, get the
-			/// current path of the folder, redirect the folder to another location, and get the path of the folder as an ITEMIDLIST.
+			/// Gets an object that represents a known folder identified by its canonical name. The object allows you to query certain folder
+			/// properties, get the current path of the folder, redirect the folder to another location, and get the path of the folder as an ITEMIDLIST.
 			/// </summary>
 			/// <param name="pszCanonicalName">
-			/// A pointer to the non-localized, canonical name for the known folder, stored as a null-terminated Unicode string. If this folder is a common or
-			/// per-user folder, this value is also used as the value name of the "User Shell Folders" registry settings. This value is retrieved through the
-			/// pszName member of the folder's KNOWNFOLDER_DEFINITION structure.
+			/// A pointer to the non-localized, canonical name for the known folder, stored as a null-terminated Unicode string. If this
+			/// folder is a common or per-user folder, this value is also used as the value name of the "User Shell Folders" registry
+			/// settings. This value is retrieved through the pszName member of the folder's KNOWNFOLDER_DEFINITION structure.
 			/// </param>
-			/// <returns>When this method returns, contains the address of a pointer to the IKnownFolder object that represents the known folder.</returns>
+			/// <returns>
+			/// When this method returns, contains the address of a pointer to the IKnownFolder object that represents the known folder.
+			/// </returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IKnownFolder GetFolderByName([In, MarshalAs(UnmanagedType.LPWStr)] string pszCanonicalName);
 
 			/// <summary>
-			/// Adds a new known folder to the registry. Used particularly by independent software vendors (ISVs) that are adding one of their own folders to the
-			/// known folder system.
+			/// Adds a new known folder to the registry. Used particularly by independent software vendors (ISVs) that are adding one of
+			/// their own folders to the known folder system.
 			/// </summary>
 			/// <param name="rfid">A GUID that represents the known folder.</param>
 			/// <param name="pKFD">A pointer to a valid KNOWNFOLDER_DEFINITION structure that provides the details of the new folder.</param>
 			void RegisterFolder(in Guid rfid, in KNOWNFOLDER_DEFINITION pKFD);
 
 			/// <summary>
-			/// Remove a known folder from the registry, which makes it unknown to the known folder system. This method does not remove the folder itself.
+			/// Remove a known folder from the registry, which makes it unknown to the known folder system. This method does not remove the
+			/// folder itself.
 			/// </summary>
 			/// <param name="rfid">GUID or KNOWNFOLDERID that represents the known folder.</param>
 			void UnregisterFolder(in Guid rfid);
 
 			/// <summary>
-			/// Gets an object that represents a known folder based on a file system path. The object allows you to query certain folder properties, get the
-			/// current path of the folder, redirect the folder to another location, and get the path of the folder as an ITEMIDLIST.
+			/// Gets an object that represents a known folder based on a file system path. The object allows you to query certain folder
+			/// properties, get the current path of the folder, redirect the folder to another location, and get the path of the folder as an ITEMIDLIST.
 			/// </summary>
 			/// <param name="pszPath">Pointer to a null-terminated Unicode string of length MAX_PATH that contains a path to a known folder.</param>
 			/// <param name="mode">
-			/// One of the following values that specify the precision of the match of path and known folder: FFFP_EXACTMATCH = Retrieve only the specific known
-			/// folder for the given file path; FFFP_NEARESTPARENTMATCH = If an exact match is not found for the given file path, retrieve the first known folder
-			/// that matches one of its parent folders walking up the parent tree.
+			/// One of the following values that specify the precision of the match of path and known folder: FFFP_EXACTMATCH = Retrieve only
+			/// the specific known folder for the given file path; FFFP_NEARESTPARENTMATCH = If an exact match is not found for the given
+			/// file path, retrieve the first known folder that matches one of its parent folders walking up the parent tree.
 			/// </param>
-			/// <returns>When this method returns, contains the address of a pointer to the IKnownFolder object that represents the known folder.</returns>
+			/// <returns>
+			/// When this method returns, contains the address of a pointer to the IKnownFolder object that represents the known folder.
+			/// </returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IKnownFolder FindFolderFromPath([In, MarshalAs(UnmanagedType.LPWStr)] string pszPath, [In] FFFP_MODE mode);
 
 			/// <summary>
-			/// Gets an object that represents a known folder based on an IDList. The object allows you to query certain folder properties, get the current path
-			/// of the folder, redirect the folder to another location, and get the path of the folder as an ITEMIDLIST.
+			/// Gets an object that represents a known folder based on an IDList. The object allows you to query certain folder properties,
+			/// get the current path of the folder, redirect the folder to another location, and get the path of the folder as an ITEMIDLIST.
 			/// </summary>
 			/// <param name="pidl">A pointer to the IDList.</param>
-			/// <returns>When this method returns, contains the address of a pointer to the IKnownFolder object that represents the known folder.</returns>
+			/// <returns>
+			/// When this method returns, contains the address of a pointer to the IKnownFolder object that represents the known folder.
+			/// </returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IKnownFolder FindFolderFromIDList([In] PIDL pidl);
 
 			/// <summary>Redirects folder requests for common and per-user folders.</summary>
 			/// <param name="rfid">A reference to the KNOWNFOLDERID of the folder to be redirected.</param>
 			/// <param name="hwnd">
-			/// The handle of the parent window used to display copy engine progress UI dialogs when KF_REDIRECT_WITH_UI i passed in the flags parameter. If no
-			/// progress dialog is needed, this value can be NULL.
+			/// The handle of the parent window used to display copy engine progress UI dialogs when KF_REDIRECT_WITH_UI i passed in the
+			/// flags parameter. If no progress dialog is needed, this value can be NULL.
 			/// </param>
 			/// <param name="flags">The KF_REDIRECT_FLAGS options for redirection.</param>
-			/// <param name="pszTargetPath">A pointer to the new path for the folder. This is a null-terminated Unicode string. This value can be NULL.</param>
+			/// <param name="pszTargetPath">
+			/// A pointer to the new path for the folder. This is a null-terminated Unicode string. This value can be NULL.
+			/// </param>
 			/// <param name="cFolders">The number of KNOWNFOLDERID values in the array at pExclusion.</param>
 			/// <param name="pExclusion">
-			/// Pointer to an array of KNOWNFOLDERID values that refer to subfolders of rfid that should be excluded from the redirection. If no subfolders are
-			/// excluded, this value can be NULL.
+			/// Pointer to an array of KNOWNFOLDERID values that refer to subfolders of rfid that should be excluded from the redirection. If
+			/// no subfolders are excluded, this value can be NULL.
 			/// </param>
 			/// <returns>
-			/// When this method returns, contains the address of a pointer to a null-terminated Unicode string that contains an error message if one was
-			/// generated. This value can be NULL.
+			/// When this method returns, contains the address of a pointer to a null-terminated Unicode string that contains an error
+			/// message if one was generated. This value can be NULL.
 			/// </returns>
 			SafeCoTaskMemString Redirect(in Guid rfid, [In] HWND hwnd, [In] KF_REDIRECT_FLAGS flags,
-				[In, MarshalAs(UnmanagedType.LPWStr)] string pszTargetPath, [In] uint cFolders, in Guid pExclusion);
+				[In, MarshalAs(UnmanagedType.LPWStr)] string pszTargetPath, [In] uint cFolders, [In] Guid[] pExclusion);
 		}
 
 		/// <summary>Defines the specifics of a known folder.</summary>
@@ -898,88 +947,99 @@ namespace Vanara.PInvoke
 			public KF_CATEGORY category;
 
 			/// <summary>
-			/// A pointer to the non-localized, canonical name for the known folder, stored as a null-terminated Unicode string. If this folder is a common or
-			/// per-user folder, this value is also used as the value name of the "User Shell Folders" registry settings. This name is meant to be a unique,
-			/// human-readable name. Third parties are recommended to follow the format Company.Application.Name. The name given here should not be confused with
-			/// the display name.
+			/// A pointer to the non-localized, canonical name for the known folder, stored as a null-terminated Unicode string. If this
+			/// folder is a common or per-user folder, this value is also used as the value name of the "User Shell Folders" registry
+			/// settings. This name is meant to be a unique, human-readable name. Third parties are recommended to follow the format
+			/// Company.Application.Name. The name given here should not be confused with the display name.
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPWStr)] public string pszName;
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] public string pszName;
 
 			/// <summary>
-			/// A pointer to a short description of the known folder, stored as a null-terminated Unicode string. This description should include the folder's
-			/// purpose and usage.
+			/// A pointer to a short description of the known folder, stored as a null-terminated Unicode string. This description should
+			/// include the folder's purpose and usage.
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPWStr)] public string pszDescription;
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] public string pszDescription;
 
 			/// <summary>
-			/// A KNOWNFOLDERID value that names another known folder to serve as the parent folder. Applies to common and per-user folders only. This value is
-			/// used in conjunction with pszRelativePath. See Remarks for more details. This value is optional if no value is provided for pszRelativePath.
+			/// A KNOWNFOLDERID value that names another known folder to serve as the parent folder. Applies to common and per-user folders
+			/// only. This value is used in conjunction with pszRelativePath. See Remarks for more details. This value is optional if no
+			/// value is provided for pszRelativePath.
 			/// </summary>
 			public Guid fidParent;
 
 			/// <summary>
-			/// Optional. A pointer to a path relative to the parent folder specified in fidParent. This is a null-terminated Unicode string, refers to the
-			/// physical file system path, and is not localized. Applies to common and per-user folders only. See Remarks for more details.
+			/// Optional. A pointer to a path relative to the parent folder specified in fidParent. This is a null-terminated Unicode string,
+			/// refers to the physical file system path, and is not localized. Applies to common and per-user folders only. See Remarks for
+			/// more details.
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPWStr)] public string pszRelativePath;
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] public string pszRelativePath;
 
 			/// <summary>
-			/// A pointer to the Shell namespace folder path of the folder, stored as a null-terminated Unicode string. Applies to virtual folders only. For
-			/// example, Control Panel has a parsing name of ::%CLSID_MyComputer%\::%CLSID_ControlPanel%.
+			/// A pointer to the Shell namespace folder path of the folder, stored as a null-terminated Unicode string. Applies to virtual
+			/// folders only. For example, Control Panel has a parsing name of ::%CLSID_MyComputer%\::%CLSID_ControlPanel%.
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPWStr)] public string pszParsingName;
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] public string pszParsingName;
 
 			/// <summary>
-			/// Optional. A pointer to the default tooltip resource used for this known folder when it is created. This is a null-terminated Unicode string in
-			/// this form:
+			/// Optional. A pointer to the default tooltip resource used for this known folder when it is created. This is a null-terminated
+			/// Unicode string in this form:
 			/// <para><c>Module name, Resource ID</c></para>
 			/// <para>
-			/// For example, @%_SYS_MOD_PATH%,-12688 is the tooltip for Common Pictures.When the folder is created, this string is stored in that folder's copy
-			/// of Desktop.ini. It can be changed later by other Shell APIs. This resource might be localized.
+			/// For example, @%_SYS_MOD_PATH%,-12688 is the tooltip for Common Pictures.When the folder is created, this string is stored in
+			/// that folder's copy of Desktop.ini. It can be changed later by other Shell APIs. This resource might be localized.
 			/// </para>
 			/// <para>This information is not required for virtual folders.</para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPWStr)] public string pszTooltip;
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] public string pszTooltip;
 
 			/// <summary>
-			/// Optional. A pointer to the default localized name resource used when the folder is created. This is a null-terminated Unicode string in this form:
+			/// Optional. A pointer to the default localized name resource used when the folder is created. This is a null-terminated Unicode
+			/// string in this form:
 			/// <para><c>Module name, Resource ID</c></para>
-			/// <para>When the folder is created, this string is stored in that folder's copy of Desktop.ini. It can be changed later by other Shell APIs.</para>
+			/// <para>
+			/// When the folder is created, this string is stored in that folder's copy of Desktop.ini. It can be changed later by other
+			/// Shell APIs.
+			/// </para>
 			/// <para>This information is not required for virtual folders.</para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPWStr)] public string pszLocalizedName;
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] public string pszLocalizedName;
 
 			/// <summary>
-			/// Optional. A pointer to the default icon resource used when the folder is created. This is a null-terminated Unicode string in this form:
+			/// Optional. A pointer to the default icon resource used when the folder is created. This is a null-terminated Unicode string in
+			/// this form:
 			/// <para><c>Module name, Resource ID</c></para>
-			/// <para>When the folder is created, this string is stored in that folder's copy of Desktop.ini. It can be changed later by other Shell APIs.</para>
+			/// <para>
+			/// When the folder is created, this string is stored in that folder's copy of Desktop.ini. It can be changed later by other
+			/// Shell APIs.
+			/// </para>
 			/// <para>This information is not required for virtual folders.</para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPWStr)] public string pszIcon;
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] public string pszIcon;
 
 			/// <summary>
-			/// Optional. A pointer to a Security Descriptor Definition Language format string. This is a null-terminated Unicode string that describes the
-			/// default security descriptor that the folder receives when it is created. If this parameter is NULL, the new folder inherits the security
-			/// descriptor of its parent. This is particularly useful for common folders that are accessed by all users.
+			/// Optional. A pointer to a Security Descriptor Definition Language format string. This is a null-terminated Unicode string that
+			/// describes the default security descriptor that the folder receives when it is created. If this parameter is NULL, the new
+			/// folder inherits the security descriptor of its parent. This is particularly useful for common folders that are accessed by
+			/// all users.
 			/// </summary>
-			[MarshalAs(UnmanagedType.LPWStr)] public string pszSecurity;
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] public string pszSecurity;
 
 			/// <summary>
-			/// Optional. Default file system attributes given to the folder when it is created. For example, the file could be hidden and read-only
-			/// (FILE_ATTRIBUTE_HIDDEN and FILE_ATTRIBUTE_READONLY). For a complete list of possible values, see the dwFlagsAndAttributes parameter of the
-			/// CreateFile function. Set to -1 if not needed.
+			/// Optional. Default file system attributes given to the folder when it is created. For example, the file could be hidden and
+			/// read-only (FILE_ATTRIBUTE_HIDDEN and FILE_ATTRIBUTE_READONLY). For a complete list of possible values, see the
+			/// dwFlagsAndAttributes parameter of the CreateFile function. Set to -1 if not needed.
 			/// </summary>
 			public uint dwAttributes;
 
 			/// <summary>
-			/// Optional. One of more values from the KF_DEFINITION_FLAGS enumeration that allow you to restrict redirection, allow PC-to-PC roaming, and control
-			/// the time at which the known folder is created. Set to 0 if not needed.
+			/// Optional. One of more values from the KF_DEFINITION_FLAGS enumeration that allow you to restrict redirection, allow PC-to-PC
+			/// roaming, and control the time at which the known folder is created. Set to 0 if not needed.
 			/// </summary>
 			public KF_DEFINITION_FLAGS kfdFlags;
 
 			/// <summary>
-			/// One of the FOLDERTYPEID values that identifies the known folder type based on its contents (such as documents, music, or photographs). This value
-			/// is a GUID.
+			/// One of the FOLDERTYPEID values that identifies the known folder type based on its contents (such as documents, music, or
+			/// photographs). This value is a GUID.
 			/// </summary>
 			public Guid ftidType;
 		}
@@ -992,14 +1052,14 @@ namespace Vanara.PInvoke
 		[AttributeUsage(AttributeTargets.Field)]
 		internal class KnownFolderDetailAttribute : AssociateAttribute
 		{
+			/// <summary>The equivalent SpecialFolder.</summary>
+			public Environment.SpecialFolder Equivalent = (Environment.SpecialFolder)0XFFFF;
+
 			/// <summary>Initializes a new instance of the <see cref="KnownFolderDetailAttribute"/> class with a GUID for the <see cref="KNOWNFOLDERID"/>.</summary>
 			/// <param name="knownFolderGuid">The GUID for the <see cref="KNOWNFOLDERID"/>.</param>
 			public KnownFolderDetailAttribute(string knownFolderGuid) : base(knownFolderGuid)
 			{
 			}
-
-			/// <summary>The equivalent SpecialFolder.</summary>
-			public Environment.SpecialFolder Equivalent = (Environment.SpecialFolder) 0XFFFF;
 		}
 	}
 }

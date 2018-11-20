@@ -610,7 +610,7 @@ namespace Vanara.Collections
 			{
 				Array.Copy(internalItems, index + 1, internalItems, index, Count - index);
 			}
-			internalItems[Count] = default(T);
+			internalItems[Count] = default;
 			version++;
 			OnItemDeleted(index, oldVal);
 		}
@@ -906,7 +906,7 @@ namespace Vanara.Collections
 				this.list = list;
 				index = 0;
 				version = list.version;
-				Current = default(T);
+				Current = default;
 			}
 
 			/// <summary>Gets the current.</summary>
@@ -939,7 +939,7 @@ namespace Vanara.Collections
 					throw new InvalidOperationException();
 				}
 				index = 0;
-				Current = default(T);
+				Current = default;
 			}
 
 			/// <summary>Advances the enumerator to the next element of the collection.</summary>
@@ -958,7 +958,7 @@ namespace Vanara.Collections
 					return true;
 				}
 				index = list.Count + 1;
-				Current = default(T);
+				Current = default;
 				return false;
 			}
 		}

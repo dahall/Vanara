@@ -105,7 +105,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 			/// <returns>A <see cref="string"/> that represents this instance.</returns>
-			public override string ToString() => Buffer;
+			public override string ToString() => Buffer.Substring(0, Length);
 
 			/// <summary>Performs an implicit conversion from <see cref="LSA_STRING"/> to <see cref="string"/>.</summary>
 			/// <param name="value">The value.</param>

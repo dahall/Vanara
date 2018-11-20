@@ -42,7 +42,7 @@ namespace Vanara.Registry.Tests
 
 				ev2.Reset();
 				k.DeleteSubKey(subkey2);
-				Assert.That(ev2.WaitOne(100));
+				Assert.That(ev2.WaitOne(1000));
 			}
 		}
 	}

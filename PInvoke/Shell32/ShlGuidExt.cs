@@ -1,6 +1,5 @@
 ﻿using System;
 using static Vanara.PInvoke.Shell32;
-// ReSharper disable InconsistentNaming
 
 namespace Vanara.PInvoke
 {
@@ -20,6 +19,6 @@ namespace Vanara.PInvoke
 		/// <summary>Lookups the specified unique identifier.</summary>
 		/// <param name="guid">The unique identifier.</param>
 		/// <returns>Corresponding BHID.</returns>
-		public static TEnum Lookup<TEnum>(Guid guid) => AssociateAttribute.TryEnumLookup(guid, out TEnum val) ? val : (TEnum)Convert.ChangeType(-1, typeof(TEnum));
+		public static TEnum Lookup<TEnum>(Guid guid) where TEnum : System.Enum => AssociateAttribute.TryEnumLookup(guid, out TEnum val) ? val : (TEnum)Convert.ChangeType(-1, typeof(TEnum));
 	}
 }

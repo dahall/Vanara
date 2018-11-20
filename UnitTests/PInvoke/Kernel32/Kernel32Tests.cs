@@ -235,14 +235,14 @@ namespace Vanara.PInvoke.Tests
 		public void GetCurrentProcessTest()
 		{
 			var h = GetCurrentProcess();
-			Assert.That(h, Is.EqualTo(new IntPtr(-1)));
+			Assert.That(h, Is.EqualTo((HPROCESS)new IntPtr(-1)));
 		}
 
 		[Test]
 		public void GetCurrentThreadTest()
 		{
 			var h = GetCurrentThread();
-			Assert.That(h, Is.EqualTo(new IntPtr(-2)));
+			Assert.That(h, Is.EqualTo((HTHREAD)new IntPtr(-2)));
 		}
 
 		[Test]
@@ -331,22 +331,22 @@ namespace Vanara.PInvoke.Tests
 		public void LoadLibraryTest()
 		{
 			var hlib = LoadLibrary(badlibfn);
-			Assert.That(hlib, Is.EqualTo(HINSTANCE.NULL));
+			Assert.That((HINSTANCE)hlib, Is.EqualTo(HINSTANCE.NULL));
 			Assert.That(Marshal.GetLastWin32Error(), Is.Not.Zero);
 
 			hlib = LoadLibrary(libfn);
-			Assert.That(hlib, Is.Not.EqualTo(HINSTANCE.NULL));
+			Assert.That((HINSTANCE)hlib, Is.Not.EqualTo(HINSTANCE.NULL));
 		}
 
 		[Test]
 		public void LoadLibraryExTest()
 		{
 			var hlib = LoadLibraryEx(badlibfn, IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE);
-			Assert.That(hlib, Is.EqualTo(HINSTANCE.NULL));
+			Assert.That((HINSTANCE)hlib, Is.EqualTo(HINSTANCE.NULL));
 			Assert.That(Marshal.GetLastWin32Error(), Is.Not.Zero);
 
 			hlib = LoadLibraryEx(libfn, IntPtr.Zero, LoadLibraryExFlags.LOAD_LIBRARY_AS_DATAFILE);
-			Assert.That(hlib, Is.Not.EqualTo(HINSTANCE.NULL));
+			Assert.That((HINSTANCE)hlib, Is.Not.EqualTo(HINSTANCE.NULL));
 		}
 
 		[Test]

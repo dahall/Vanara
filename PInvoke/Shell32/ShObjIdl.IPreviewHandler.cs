@@ -54,7 +54,7 @@ namespace Vanara.PInvoke
 			/// handler's foreground thread.</param>
 			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 			[PreserveSig]
-			HRESULT QueryFocus(out IntPtr phwnd);
+			HRESULT QueryFocus(out HWND phwnd);
 
 			/// <summary>
 			/// Directs the preview handler to handle a keystroke passed up from the message pump of the process in which the preview handler
@@ -119,13 +119,15 @@ namespace Vanara.PInvoke
 			HRESULT SetTextColor(COLORREF color);
 		}
 
-		/// <summary>Accelerator table structure. Used by IPreviewHandlerFrame::GetWindowContext.</summary>
-		[StructLayout(LayoutKind.Sequential)]
-		[PInvokeData("Shobjidl.h")]
+		/// <summary><para>Accelerator table structure. Used by IPreviewHandlerFrame::GetWindowContext.</para></summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/ns-shobjidl_core-previewhandlerframeinfo
+		// typedef struct PREVIEWHANDLERFRAMEINFO { HACCEL haccel; UINT cAccelEntries; } PREVIEWHANDLERFRAMEINFO;
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "dd93675e-fd69-4fa3-a8e7-5238c27783d8")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct PREVIEWHANDLERFRAMEINFO
 		{
 			/// <summary>A handle to the accelerator table.</summary>
-			public IntPtr haccel;
+			public HACCEL haccel;
 
 			/// <summary>The number of entries in the accelerator table.</summary>
 			public uint cAccelEntries;

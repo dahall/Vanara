@@ -226,7 +226,7 @@ namespace Vanara.Windows.Shell
 		public bool TryGetValue<TVal>(PROPERTYKEY key, out TVal value)
 		{
 			var ret = TryGetValue(key, out PROPVARIANT val);
-			value = ret ? (TVal)val.Value : default(TVal);
+			value = ret ? (TVal)val.Value : default;
 			return ret;
 		}
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using Vanara.InteropServices;
-using static Vanara.PInvoke.Gdi32;
 
 namespace Vanara.PInvoke
 {
@@ -122,8 +121,10 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>No shadow will be drawn.</summary>
 			TST_NONE = 0,
+
 			/// <summary>The shadow will be drawn to appear detailed underneath text.</summary>
 			TST_SINGLE = 1,
+
 			/// <summary>The shadow will be drawn to appear blurred underneath text.</summary>
 			TST_CONTINUOUS = 2,
 		}
@@ -291,7 +292,9 @@ namespace Vanara.PInvoke
 			/// <summary></summary>
 			TMT_LASTFONT = TMT_BODYFONT,
 
-			/// <summary>Describes how menus are drawn. If TRUE, menus are drawn without shadows. If FALSE, menus have shadows underneath them.</summary>
+			/// <summary>
+			/// Describes how menus are drawn. If TRUE, menus are drawn without shadows. If FALSE, menus have shadows underneath them.
+			/// </summary>
 			[CorrespondingType(typeof(bool))]
 			TMT_FLATMENUS = 1001,
 
@@ -609,7 +612,10 @@ namespace Vanara.PInvoke
 			[CorrespondingType(typeof(bool))]
 			TMT_BGFILL = 2205,
 
-			/// <summary>TRUE if the glyph associated with the part and state have transparent areas. See GetThemeColor for the definition of the TMT_GLYPHCOLOR value that defines the transparent color.</summary>
+			/// <summary>
+			/// TRUE if the glyph associated with the part and state have transparent areas. See GetThemeColor for the definition of the
+			/// TMT_GLYPHCOLOR value that defines the transparent color.
+			/// </summary>
 			[CorrespondingType(typeof(bool))]
 			TMT_GLYPHTRANSPARENT = 2206,
 
@@ -621,7 +627,9 @@ namespace Vanara.PInvoke
 			[CorrespondingType(typeof(bool))]
 			TMT_ALWAYSSHOWSIZINGBAR = 2208,
 
-			/// <summary>TRUE if the image associated with the part and state should be flipped if the window is being viewed in right-to-left reading mode.</summary>
+			/// <summary>
+			/// TRUE if the image associated with the part and state should be flipped if the window is being viewed in right-to-left reading mode.
+			/// </summary>
 			[CorrespondingType(typeof(bool))]
 			TMT_MIRRORIMAGE = 2209,
 
@@ -689,7 +697,10 @@ namespace Vanara.PInvoke
 			[CorrespondingType(typeof(int))]
 			TMT_ROUNDCORNERHEIGHT = 2405,
 
-			/// <summary>The amount of the first gradient color (TMT_GRADIENTCOLOR1) to use in drawing the part. This value can be from 0 to 255, but this value plus the values of each of the GRADIENTRATIO values must add up to 255.</summary>
+			/// <summary>
+			/// The amount of the first gradient color (TMT_GRADIENTCOLOR1) to use in drawing the part. This value can be from 0 to 255, but
+			/// this value plus the values of each of the GRADIENTRATIO values must add up to 255.
+			/// </summary>
 			[CorrespondingType(typeof(int))]
 			TMT_GRADIENTRATIO1 = 2406,
 
@@ -809,7 +820,10 @@ namespace Vanara.PInvoke
 			[CorrespondingType(typeof(LOGFONT))]
 			TMT_GLYPHFONT = 2601,
 
-			/// <summary>The filename of the image associated with this part and state, or the base filename for multiple images associated with this part and state.</summary>
+			/// <summary>
+			/// The filename of the image associated with this part and state, or the base filename for multiple images associated with this
+			/// part and state.
+			/// </summary>
 			[CorrespondingType(typeof(string))]
 			TMT_IMAGEFILE = 3001,
 
@@ -941,7 +955,10 @@ namespace Vanara.PInvoke
 			[CorrespondingType(typeof(COLORREF))]
 			TMT_EDGEFILLCOLOR = 3808,
 
-			/// <summary>The transparent color associated with this part and state. If the TMT_TRANSPARENT value for this part and state is TRUE, parts of the graphic that use this color are not drawn.</summary>
+			/// <summary>
+			/// The transparent color associated with this part and state. If the TMT_TRANSPARENT value for this part and state is TRUE,
+			/// parts of the graphic that use this color are not drawn.
+			/// </summary>
 			[CorrespondingType(typeof(COLORREF))]
 			TMT_TRANSPARENTCOLOR = 3809,
 
@@ -985,7 +1002,10 @@ namespace Vanara.PInvoke
 			[CorrespondingType(typeof(COLORREF))]
 			TMT_GLYPHTEXTCOLOR = 3819,
 
-			/// <summary>The transparent glyph color associated with this part and state. If the TMT_GLYPHTRANSPARENT value for this part and state is TRUE, parts of the glyph that use this color are not drawn.</summary>
+			/// <summary>
+			/// The transparent glyph color associated with this part and state. If the TMT_GLYPHTRANSPARENT value for this part and state is
+			/// TRUE, parts of the glyph that use this color are not drawn.
+			/// </summary>
 			[CorrespondingType(typeof(COLORREF))]
 			TMT_GLYPHTRANSPARENTCOLOR = 3820,
 

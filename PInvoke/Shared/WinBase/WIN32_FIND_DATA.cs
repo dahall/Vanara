@@ -12,8 +12,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// The file attributes of a file.
 		/// <para>
-		/// For possible values and their descriptions, see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/gg258117(v=vs.85).aspx">File
-		/// Attribute Constants</a>.
+		/// For possible values and their descriptions, see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/gg258117(v=vs.85).aspx">File Attribute Constants</a>.
 		/// </para>
 		/// <para>The FILE_ATTRIBUTE_SPARSE_FILE attribute on the file is set if any of the streams of the file have ever been sparse.</para>
 		/// </summary>
@@ -29,22 +28,24 @@ namespace Vanara.PInvoke
 		/// A FILETIME structure.
 		/// <para>For a file, the structure specifies when the file was last read from, written to, or for executable files, run.</para>
 		/// <para>
-		/// For a directory, the structure specifies when the directory is created. If the underlying file system does not support last access time, this member
-		/// is zero.
+		/// For a directory, the structure specifies when the directory is created. If the underlying file system does not support last
+		/// access time, this member is zero.
 		/// </para>
-		/// <para>On the FAT file system, the specified date for both files and directories is correct, but the time of day is always set to midnight.</para>
+		/// <para>
+		/// On the FAT file system, the specified date for both files and directories is correct, but the time of day is always set to midnight.
+		/// </para>
 		/// </summary>
 		public FILETIME ftLastAccessTime;
 
 		/// <summary>
 		/// A FILETIME structure.
 		/// <para>
-		/// For a file, the structure specifies when the file was last written to, truncated, or overwritten, for example, when WriteFile or SetEndOfFile are
-		/// used. The date and time are not updated when file attributes or security descriptors are changed.
+		/// For a file, the structure specifies when the file was last written to, truncated, or overwritten, for example, when WriteFile or
+		/// SetEndOfFile are used. The date and time are not updated when file attributes or security descriptors are changed.
 		/// </para>
 		/// <para>
-		/// For a directory, the structure specifies when the directory is created. If the underlying file system does not support last write time, this member
-		/// is zero.
+		/// For a directory, the structure specifies when the directory is created. If the underlying file system does not support last write
+		/// time, this member is zero.
 		/// </para>
 		/// </summary>
 		public FILETIME ftLastWriteTime;

@@ -4,47 +4,78 @@ using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
 {
-	public class HANDLE : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<HANDLE>, IHandle
+	/// <summary>Signals that a structure or class holds a handle to a synchronization object.</summary>
+	public interface IGraphicsObjectHandle : IHandle { }
+
+	/// <summary>Signals that a structure or class holds a HANDLE.</summary>
+	public interface IHandle
 	{
-		public HANDLE() : base(true)
-		{
-		}
+		/// <summary>Returns the value of the handle field.</summary>
+		/// <returns>An IntPtr representing the value of the handle field.</returns>
+		IntPtr DangerousGetHandle();
+	}
 
-		protected HANDLE(IntPtr ptr, bool ownsHandle = true) : base(ownsHandle) => SetHandle(ptr);
+	/// <summary>Signals that a structure or class holds a handle to a synchronization object.</summary>
+	public interface IKernelHandle : IHandle { }
 
+	/// <summary>Signals that a structure or class holds a pointer to a security object.</summary>
+	public interface ISecurityObject : IHandle { }
+
+	/// <summary>Signals that a structure or class holds a handle to a synchronization object.</summary>
+	public interface IShellHandle : IHandle { }
+
+	/// <summary>Signals that a structure or class holds a handle to a synchronization object.</summary>
+	public interface ISyncHandle : IKernelHandle { }
+
+	/// <summary>Signals that a structure or class holds a handle to a synchronization object.</summary>
+	public interface IUserHandle : IHandle { }
+
+	/// <summary>Provides a handle to an accelator table.</summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct HACCEL : IHandle
+	{
+		private IntPtr handle;
+
+		/// <summary>Initializes a new instance of the <see cref="HACCEL"/> struct.</summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+		public HACCEL(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+		/// <summary>Returns an invalid handle by instantiating a <see cref="HACCEL"/> object with <see cref="IntPtr.Zero"/>.</summary>
+		public static HACCEL NULL => new HACCEL(IntPtr.Zero);
+
+		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
 
-		public static bool operator !=(HANDLE h1, HANDLE h2) => !(h1 == h2);
+		/// <summary>Performs an explicit conversion from <see cref="HACCEL"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator IntPtr(HACCEL h) => h.handle;
 
-		public static bool operator ==(HANDLE h1, HANDLE h2) => h1 is null || h2 is null ? false : h1.Equals(h2);
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HACCEL"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HACCEL(IntPtr h) => new HACCEL(h);
 
-		public bool Equals(HANDLE other)
-		{
-			if (other is null)
-				return false;
-			if (ReferenceEquals(this, other))
-				return true;
-			return handle == other.handle && IsClosed == other.IsClosed;
-		}
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(HACCEL h1, HACCEL h2) => !(h1 == h2);
 
-		public override bool Equals(object obj) => obj is HANDLE h ? Equals(h) : base.Equals(obj);
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(HACCEL h1, HACCEL h2) => h1.Equals(h2);
 
-		public override int GetHashCode() => base.GetHashCode();
+		/// <inheritdoc/>
+		public override bool Equals(object obj) => obj is HACCEL h ? handle == h.handle : false;
 
-		/// <summary>
-		/// Internal method that actually releases the handle. This is called by <see cref="ReleaseHandle"/> for valid handles and afterwards
-		/// zeros the handle.
-		/// </summary>
-		/// <returns><c>true</c> to indicate successful release of the handle; <c>false</c> otherwise.</returns>
-		protected virtual bool InternalReleaseHandle() => true;
+		/// <inheritdoc/>
+		public override int GetHashCode() => handle.GetHashCode();
 
-		protected override bool ReleaseHandle()
-		{
-			if (IsClosed) return true;
-			if (!InternalReleaseHandle()) return false;
-			handle = IntPtr.Zero;
-			return true;
-		}
+		/// <inheritdoc/>
+		public IntPtr DangerousGetHandle() => handle;
 	}
 
 	/// <summary>Provides a handle to a bitmap.</summary>
@@ -492,6 +523,54 @@ namespace Vanara.PInvoke
 		public IntPtr DangerousGetHandle() => handle;
 	}
 
+	/// <summary>Provides a handle to an enhanced metafile.</summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct HENHMETAFILE : IHandle
+	{
+		private IntPtr handle;
+
+		/// <summary>Initializes a new instance of the <see cref="HENHMETAFILE"/> struct.</summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+		public HENHMETAFILE(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+		/// <summary>Returns an invalid handle by instantiating a <see cref="HENHMETAFILE"/> object with <see cref="IntPtr.Zero"/>.</summary>
+		public static HENHMETAFILE NULL => new HENHMETAFILE(IntPtr.Zero);
+
+		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+		public bool IsNull => handle == IntPtr.Zero;
+
+		/// <summary>Performs an explicit conversion from <see cref="HENHMETAFILE"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator IntPtr(HENHMETAFILE h) => h.handle;
+
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HENHMETAFILE"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HENHMETAFILE(IntPtr h) => new HENHMETAFILE(h);
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(HENHMETAFILE h1, HENHMETAFILE h2) => !(h1 == h2);
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(HENHMETAFILE h1, HENHMETAFILE h2) => h1.Equals(h2);
+
+		/// <inheritdoc/>
+		public override bool Equals(object obj) => obj is HENHMETAFILE h ? handle == h.handle : false;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => handle.GetHashCode();
+
+		/// <inheritdoc/>
+		public IntPtr DangerousGetHandle() => handle;
+	}
+
 	/// <summary>Provides a handle to a file.</summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct HFILE : IKernelHandle
@@ -841,6 +920,11 @@ namespace Vanara.PInvoke
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator HKEY(IntPtr h) => new HKEY(h);
 
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HKEY"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HKEY(SafeRegistryHandle h) => new HKEY(h.DangerousGetHandle());
+
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
 		/// <param name="h2">The second handle.</param>
@@ -903,6 +987,54 @@ namespace Vanara.PInvoke
 
 		/// <inheritdoc/>
 		public override bool Equals(object obj) => obj is HMENU h ? handle == h.handle : false;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => handle.GetHashCode();
+
+		/// <inheritdoc/>
+		public IntPtr DangerousGetHandle() => handle;
+	}
+
+	/// <summary>Provides a handle to a metafile.</summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct HMETAFILE : IHandle
+	{
+		private IntPtr handle;
+
+		/// <summary>Initializes a new instance of the <see cref="HMETAFILE"/> struct.</summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+		public HMETAFILE(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+		/// <summary>Returns an invalid handle by instantiating a <see cref="HMETAFILE"/> object with <see cref="IntPtr.Zero"/>.</summary>
+		public static HMETAFILE NULL => new HMETAFILE(IntPtr.Zero);
+
+		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+		public bool IsNull => handle == IntPtr.Zero;
+
+		/// <summary>Performs an explicit conversion from <see cref="HMETAFILE"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator IntPtr(HMETAFILE h) => h.handle;
+
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HMETAFILE"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HMETAFILE(IntPtr h) => new HMETAFILE(h);
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(HMETAFILE h1, HMETAFILE h2) => !(h1 == h2);
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(HMETAFILE h1, HMETAFILE h2) => h1.Equals(h2);
+
+		/// <inheritdoc/>
+		public override bool Equals(object obj) => obj is HMETAFILE h ? handle == h.handle : false;
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -1064,29 +1196,6 @@ namespace Vanara.PInvoke
 		/// <inheritdoc/>
 		public IntPtr DangerousGetHandle() => handle;
 	}
-
-	/// <summary>Signals that a structure or class holds a HANDLE.</summary>
-	public interface IHandle
-	{
-		/// <summary>Returns the value of the handle field.</summary>
-		/// <returns>An IntPtr representing the value of the handle field.</returns>
-		IntPtr DangerousGetHandle();
-	}
-
-	/// <summary>Signals that a structure or class holds a handle to a synchronization object.</summary>
-	public interface IUserHandle : IHandle { }
-
-	/// <summary>Signals that a structure or class holds a handle to a synchronization object.</summary>
-	public interface IShellHandle : IHandle { }
-
-	/// <summary>Signals that a structure or class holds a handle to a synchronization object.</summary>
-	public interface IGraphicsObjectHandle : IHandle { }
-
-	/// <summary>Signals that a structure or class holds a handle to a synchronization object.</summary>
-	public interface IKernelHandle : IHandle { }
-
-	/// <summary>Signals that a structure or class holds a handle to a synchronization object.</summary>
-	public interface ISyncHandle : IKernelHandle { }
 
 	/// <summary>Provides a handle to a process.</summary>
 	[StructLayout(LayoutKind.Sequential)]
@@ -1571,5 +1680,221 @@ namespace Vanara.PInvoke
 
 		/// <inheritdoc/>
 		public IntPtr DangerousGetHandle() => handle;
+	}
+
+	/// <summary>Provides a pointer to an access control entry.</summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct PACE : ISecurityObject
+	{
+		private IntPtr handle;
+
+		/// <summary>Initializes a new instance of the <see cref="PACE"/> struct.</summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+		public PACE(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+		/// <summary>Returns an invalid handle by instantiating a <see cref="PACE"/> object with <see cref="IntPtr.Zero"/>.</summary>
+		public static PACE NULL => new PACE(IntPtr.Zero);
+
+		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+		public bool IsNull => handle == IntPtr.Zero;
+
+		/// <summary>Performs an explicit conversion from <see cref="PACE"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator IntPtr(PACE h) => h.handle;
+
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PACE"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator PACE(IntPtr h) => new PACE(h);
+
+		/// <inheritdoc/>
+		public override bool Equals(object obj) => obj is PACE h ? handle == h.handle : false;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => handle.GetHashCode();
+
+		/// <inheritdoc/>
+		public IntPtr DangerousGetHandle() => handle;
+	}
+
+	/// <summary>Provides a pointer to an access control list.</summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct PACL : ISecurityObject
+	{
+		private IntPtr handle;
+
+		/// <summary>Initializes a new instance of the <see cref="PACL"/> struct.</summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+		public PACL(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+		/// <summary>Returns an invalid handle by instantiating a <see cref="PACL"/> object with <see cref="IntPtr.Zero"/>.</summary>
+		public static PACL NULL => new PACL(IntPtr.Zero);
+
+		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+		public bool IsNull => handle == IntPtr.Zero;
+
+		/// <summary>Performs an explicit conversion from <see cref="PACL"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator IntPtr(PACL h) => h.handle;
+
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PACL"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator PACL(IntPtr h) => new PACL(h);
+
+		/// <inheritdoc/>
+		public override bool Equals(object obj) => obj is PACL h ? handle == h.handle : false;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => handle.GetHashCode();
+
+		/// <inheritdoc/>
+		public IntPtr DangerousGetHandle() => handle;
+	}
+
+	/// <summary>Provides a pointer to a security descriptor.</summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct PSECURITY_DESCRIPTOR : ISecurityObject
+	{
+		private IntPtr handle;
+
+		/// <summary>Initializes a new instance of the <see cref="PSECURITY_DESCRIPTOR"/> struct.</summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+		public PSECURITY_DESCRIPTOR(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+		/// <summary>Returns an invalid handle by instantiating a <see cref="PSECURITY_DESCRIPTOR"/> object with <see cref="IntPtr.Zero"/>.</summary>
+		public static PSECURITY_DESCRIPTOR NULL => new PSECURITY_DESCRIPTOR(IntPtr.Zero);
+
+		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+		public bool IsNull => handle == IntPtr.Zero;
+
+		/// <summary>Performs an explicit conversion from <see cref="PSECURITY_DESCRIPTOR"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator IntPtr(PSECURITY_DESCRIPTOR h) => h.handle;
+
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PSECURITY_DESCRIPTOR"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator PSECURITY_DESCRIPTOR(IntPtr h) => new PSECURITY_DESCRIPTOR(h);
+
+		/// <inheritdoc/>
+		public override bool Equals(object obj) => obj is PSECURITY_DESCRIPTOR h ? handle == h.handle : false;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => handle.GetHashCode();
+
+		/// <inheritdoc/>
+		public IntPtr DangerousGetHandle() => handle;
+	}
+
+	/// <summary>Provides a pointer to a security identifier.</summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct PSID : ISecurityObject
+	{
+		private IntPtr handle;
+
+		/// <summary>Initializes a new instance of the <see cref="PSID"/> struct.</summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+		public PSID(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+		/// <summary>Returns an invalid handle by instantiating a <see cref="PSID"/> object with <see cref="IntPtr.Zero"/>.</summary>
+		public static PSID NULL => new PSID(IntPtr.Zero);
+
+		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+		public bool IsNull => handle == IntPtr.Zero;
+
+		/// <summary>Performs an explicit conversion from <see cref="PSID"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator IntPtr(PSID h) => h.handle;
+
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PSID"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator PSID(IntPtr h) => new PSID(h);
+
+		/// <inheritdoc/>
+		public override bool Equals(object obj) => obj is PSID h ? handle == h.handle : false;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => handle.GetHashCode();
+
+		/// <inheritdoc/>
+		public IntPtr DangerousGetHandle() => handle;
+	}
+
+	/// <summary>Base class for all native handles.</summary>
+	/// <seealso cref="Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid"/>
+	/// <seealso cref="System.IEquatable{Vanara.PInvoke.HANDLE}"/>
+	/// <seealso cref="Vanara.PInvoke.IHandle"/>
+	public class HANDLE : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<HANDLE>, IHandle
+	{
+		/// <summary>Initializes a new instance of the <see cref="HANDLE"/> class.</summary>
+		public HANDLE() : base(true)
+		{
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="HANDLE"/> class and assigns an existing handle.</summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+		/// <param name="ownsHandle">
+		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+		/// </param>
+		protected HANDLE(IntPtr ptr, bool ownsHandle = true) : base(ownsHandle) => SetHandle(ptr);
+
+		/// <summary>Gets a value indicating whether this instance is null.</summary>
+		/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
+		public bool IsNull => handle == IntPtr.Zero;
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(HANDLE h1, HANDLE h2) => !(h1 == h2);
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(HANDLE h1, HANDLE h2) => h1 is null || h2 is null ? false : h1.Equals(h2);
+
+		/// <summary>Determines whether the specified <see cref="HANDLE"/>, is equal to this instance.</summary>
+		/// <param name="other">The <see cref="HANDLE"/> to compare with this instance.</param>
+		/// <returns><c>true</c> if the specified <see cref="HANDLE"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+		public bool Equals(HANDLE other)
+		{
+			if (other is null)
+				return false;
+			if (ReferenceEquals(this, other))
+				return true;
+			return handle == other.handle && IsClosed == other.IsClosed;
+		}
+
+		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
+		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+		public override bool Equals(object obj) => obj is HANDLE h ? Equals(h) : base.Equals(obj);
+
+		/// <summary>Returns a hash code for this instance.</summary>
+		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+		public override int GetHashCode() => base.GetHashCode();
+
+		/// <summary>
+		/// Internal method that actually releases the handle. This is called by <see cref="ReleaseHandle"/> for valid handles and afterwards
+		/// zeros the handle.
+		/// </summary>
+		/// <returns><c>true</c> to indicate successful release of the handle; <c>false</c> otherwise.</returns>
+		protected virtual bool InternalReleaseHandle() => true;
+
+		/// <inheritdoc/>
+		protected override bool ReleaseHandle()
+		{
+			if (IsInvalid) return true;
+			if (!InternalReleaseHandle()) return false;
+			handle = IntPtr.Zero;
+			return true;
+		}
 	}
 }

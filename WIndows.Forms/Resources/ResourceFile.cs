@@ -101,7 +101,7 @@ namespace Vanara.Resources
 			return buf;
 		}
 
-		public IList<SafeResourceId> GetResourceNames(SafeResourceId type) => EnumResourceNamesEx(hLib, type);
+		public IList<ResourceId> GetResourceNames(SafeResourceId type) => EnumResourceNamesEx(hLib, type);
 
 		protected virtual Bitmap GetBitmap(SafeResourceId name, Size size)
 		{
@@ -198,9 +198,9 @@ namespace Vanara.Resources
 			internal ImageResIndexer(IndexerGetter getFn) { getter = getFn; }
 
 			internal delegate T IndexerGetter(SafeResourceId name, Size size);
-			public T this[int index] => getter(index, default(Size));
+			public T this[int index] => getter(index, default);
 			public T this[int index, Size size] => getter(index, size);
-			public T this[string index] => getter(index, default(Size));
+			public T this[string index] => getter(index, default);
 			public T this[string index, Size size] => getter(index, size);
 		}
 

@@ -17,8 +17,8 @@
 		COLOR_ACTIVECAPTION = 2,
 
 		/// <summary>
-		/// Inactive window caption. The associated foreground color is COLOR_INACTIVECAPTIONTEXT. Specifies the left side color in the
-		/// color gradient of an inactive window's title bar if the gradient effect is enabled.
+		/// Inactive window caption. The associated foreground color is COLOR_INACTIVECAPTIONTEXT. Specifies the left side color in the color
+		/// gradient of an inactive window's title bar if the gradient effect is enabled.
 		/// </summary>
 		COLOR_INACTIVECAPTION = 3,
 
@@ -70,8 +70,8 @@
 		COLOR_BTNTEXT = 18,
 
 		/// <summary>
-		/// Inactive window caption. The associated foreground color is COLOR_INACTIVECAPTIONTEXT. Specifies the left side color in the
-		/// color gradient of an inactive window's title bar if the gradient effect is enabled.
+		/// Inactive window caption. The associated foreground color is COLOR_INACTIVECAPTIONTEXT. Specifies the left side color in the color
+		/// gradient of an inactive window's title bar if the gradient effect is enabled.
 		/// </summary>
 		COLOR_INACTIVECAPTIONTEXT = 19,
 
@@ -94,8 +94,8 @@
 		COLOR_HOTLIGHT = 26,
 
 		/// <summary>
-		/// Right side color in the color gradient of an active window's title bar. COLOR_ACTIVECAPTION specifies the left side color.
-		/// Use SPI_GETGRADIENTCAPTIONS with the SystemParametersInfo function to determine whether the gradient effect is enabled.
+		/// Right side color in the color gradient of an active window's title bar. COLOR_ACTIVECAPTION specifies the left side color. Use
+		/// SPI_GETGRADIENTCAPTIONS with the SystemParametersInfo function to determine whether the gradient effect is enabled.
 		/// </summary>
 		COLOR_GRADIENTACTIVECAPTION = 27,
 
@@ -105,14 +105,14 @@
 		COLOR_GRADIENTINACTIVECAPTION = 28,
 
 		/// <summary>
-		/// The color used to highlight menu items when the menu appears as a flat menu (see SystemParametersInfo). The highlighted menu
-		/// item is outlined with COLOR_HIGHLIGHT. Windows 2000: This value is not supported.
+		/// The color used to highlight menu items when the menu appears as a flat menu (see SystemParametersInfo). The highlighted menu item
+		/// is outlined with COLOR_HIGHLIGHT. Windows 2000: This value is not supported.
 		/// </summary>
 		COLOR_MENUHILIGHT = 29,
 
 		/// <summary>
-		/// The background color for the menu bar when menus appear as flat menus (see SystemParametersInfo). However, COLOR_MENU
-		/// continues to specify the background color of the menu popup. Windows 2000: This value is not supported.
+		/// The background color for the menu bar when menus appear as flat menus (see SystemParametersInfo). However, COLOR_MENU continues
+		/// to specify the background color of the menu popup. Windows 2000: This value is not supported.
 		/// </summary>
 		COLOR_MENUBAR = 30,
 

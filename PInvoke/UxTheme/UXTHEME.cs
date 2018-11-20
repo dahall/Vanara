@@ -6,30 +6,36 @@ using Vanara.Extensions;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.User32_Gdi;
 
-// ReSharper disable FieldCanBeMadeReadOnly.Global ReSharper disable InconsistentNaming ReSharper disable FieldCanBeMadeReadOnly.Local
-
 namespace Vanara.PInvoke
 {
 	/// <summary>Methods and enumerations from uxtheme.dll</summary>
 	public static partial class UxTheme
 	{
-		/// <summary>Retrieves the display name of the theme.</summary>
-		public const string SZ_THDOCPROP_DISPLAYNAME = "DisplayName";
-		/// <summary>Retrieves the name of the theme.</summary>
-		public const string SZ_THDOCPROP_CANONICALNAME = "ThemeName";
-		/// <summary>Retrieves the tooltip associated with this theme.</summary>
-		public const string SZ_THDOCPROP_TOOLTIP = "ToolTip";
 		/// <summary>Retrieves the name of the author of the theme.</summary>
 		public const string SZ_THDOCPROP_AUTHOR = "author";
+
+		/// <summary>Retrieves the name of the theme.</summary>
+		public const string SZ_THDOCPROP_CANONICALNAME = "ThemeName";
+
+		/// <summary>Retrieves the display name of the theme.</summary>
+		public const string SZ_THDOCPROP_DISPLAYNAME = "DisplayName";
+
+		/// <summary>Retrieves the tooltip associated with this theme.</summary>
+		public const string SZ_THDOCPROP_TOOLTIP = "ToolTip";
 
 		/// <summary>Callback function for DrawThemeTextEx.</summary>
 		/// <param name="hdc">HDC to use for drawing.</param>
 		/// <param name="pszText">Pointer to a string that contains the text to draw.</param>
 		/// <param name="cchText">
-		/// Value of type int that contains the number of characters to draw. If the parameter is set to -1, all the characters in the string are drawn.
+		/// Value of type int that contains the number of characters to draw. If the parameter is set to -1, all the characters in the string
+		/// are drawn.
 		/// </param>
-		/// <param name="prc">Pointer to a RECT structure that contains the rectangle, in logical coordinates, in which the text is to be drawn.</param>
-		/// <param name="dwFlags">DWORD that contains one or more values that specify the string's formatting. See Format Values for possible parameter values.</param>
+		/// <param name="prc">
+		/// Pointer to a RECT structure that contains the rectangle, in logical coordinates, in which the text is to be drawn.
+		/// </param>
+		/// <param name="dwFlags">
+		/// DWORD that contains one or more values that specify the string's formatting. See Format Values for possible parameter values.
+		/// </param>
 		/// <param name="lParam">Parameter for callback back function specified by pfnDrawTextCallback.</param>
 		/// <returns>Undocumented</returns>
 		[PInvokeData("Uxtheme.h")]
@@ -43,18 +49,25 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>No flags are set.</summary>
 			None = 0,
+
 			/// <summary>rcClip specifies the rectangle to which drawing is clipped.</summary>
 			DTBG_CLIPRECT = 1,
+
 			/// <summary>Deprecated. Draw transparent and alpha images as solid.</summary>
 			DTBG_DRAWSOLID = 2,
+
 			/// <summary>Do not draw the border of the part (currently this value is only supported for bgtype=borderfill).</summary>
 			DTBG_OMITBORDER = 4,
+
 			/// <summary>Do not draw the content area of the part (currently this value is only supported for bgtype=borderfill).</summary>
 			DTBG_OMITCONTENT = 8,
+
 			/// <summary>Deprecated.</summary>
 			DTBG_COMPUTINGREGION = 16,
+
 			/// <summary>Assume the hdc is mirrored and flip images as appropriate (currently this value is only supported for bgtype=imagefile).</summary>
 			DTBG_MIRRORDC = 32,
+
 			/// <summary>Do not mirror the output; even in right-to-left (RTL) layout.</summary>
 			DTBG_NOMIRROR = 64
 		}
@@ -66,19 +79,25 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>No flags are set.</summary>
 			None = 0,
+
 			/// <summary>If set, hdc is assumed to be a window DC, not a client DC.</summary>
 			DTPB_WINDOWDC = 1,
+
 			/// <summary>
-			/// If set, this function sends a WM_CTLCOLORSTATIC message to the parent and uses the brush if one is provided. Otherwise, it uses COLOR_BTNFACE.
+			/// If set, this function sends a WM_CTLCOLORSTATIC message to the parent and uses the brush if one is provided. Otherwise, it
+			/// uses COLOR_BTNFACE.
 			/// </summary>
 			DTPB_USECTLCOLORSTATIC = 2,
-			/// <summary>If set, this function returns S_OK without sending a WM_CTLCOLORSTATIC message if the parent actually painted on WM_ERASEBKGND.</summary>
+
+			/// <summary>
+			/// If set, this function returns S_OK without sending a WM_CTLCOLORSTATIC message if the parent actually painted on WM_ERASEBKGND.
+			/// </summary>
 			DTPB_USEERASEBKGND = 4
 		}
 
 		/// <summary>
-		/// A combination of flags that specify whether certain values of the DTTOPTS structure have been specified, and how to interpret these values. This
-		/// member can be a combination of the following.
+		/// A combination of flags that specify whether certain values of the DTTOPTS structure have been specified, and how to interpret
+		/// these values. This member can be a combination of the following.
 		/// </summary>
 		[PInvokeData("Uxtheme.h")]
 		[Flags]
@@ -86,36 +105,49 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>The crText member value is valid.</summary>
 			DTT_TEXTCOLOR = 1,
+
 			/// <summary>The crBorder member value is valid.</summary>
 			DTT_BORDERCOLOR = 2,
+
 			/// <summary>The crShadow member value is valid.</summary>
 			DTT_SHADOWCOLOR = 4,
+
 			/// <summary>The iTextShadowType member value is valid.</summary>
 			DTT_SHADOWTYPE = 8,
+
 			/// <summary>The ptShadowOffset member value is valid.</summary>
 			DTT_SHADOWOFFSET = 16,
+
 			/// <summary>The iBorderSize member value is valid.</summary>
 			DTT_BORDERSIZE = 32,
+
 			/// <summary>The iFontPropId member value is valid.</summary>
 			DTT_FONTPROP = 64,
+
 			/// <summary>The iColorPropId member value is valid.</summary>
 			DTT_COLORPROP = 128,
+
 			/// <summary>The iStateId member value is valid.</summary>
 			DTT_STATEID = 256,
+
 			/// <summary>
-			/// The pRect parameter of the DrawThemeTextEx function that uses this structure will be used as both an in and an out parameter. After the function
-			/// returns, the pRect parameter will contain the rectangle that corresponds to the region calculated to be drawn.
+			/// The pRect parameter of the DrawThemeTextEx function that uses this structure will be used as both an in and an out parameter.
+			/// After the function returns, the pRect parameter will contain the rectangle that corresponds to the region calculated to be drawn.
 			/// </summary>
 			DTT_CALCRECT = 512,
+
 			/// <summary>The fApplyOverlay member value is valid.</summary>
 			DTT_APPLYOVERLAY = 1024,
+
 			/// <summary>The iGlowSize member value is valid.</summary>
 			DTT_GLOWSIZE = 2048,
+
 			/// <summary>The pfnDrawTextCallback member value is valid.</summary>
 			DTT_CALLBACK = 4096,
+
 			/// <summary>
-			/// Draws text with antialiased alpha. Use of this flag requires a top-down DIB section. This flag works only if the HDC passed to function
-			/// DrawThemeTextEx has a top-down DIB section currently selected in it. For more information, see Device-Independent Bitmaps.
+			/// Draws text with antialiased alpha. Use of this flag requires a top-down DIB section. This flag works only if the HDC passed
+			/// to function DrawThemeTextEx has a top-down DIB section currently selected in it. For more information, see Device-Independent Bitmaps.
 			/// </summary>
 			DTT_COMPOSITED = 8192
 		}
@@ -127,6 +159,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Retrieves a handle to the existing bitmap.</summary>
 			GBF_DIRECT = 1,
+
 			/// <summary>Retrieves a copy of the bitmap.</summary>
 			GBF_COPY = 2
 		}
@@ -138,23 +171,38 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Theme background segment hit test option.</summary>
 			HTTB_BACKGROUNDSEG = 0x00000000,
+
 			/// <summary>Fixed border hit test option.</summary>
 			HTTB_FIXEDBORDER = 0x00000002,
+
 			/// <summary>Caption hit test option.</summary>
 			HTTB_CAPTION = 0x00000004,
+
 			/// <summary>Resizing left border hit test option.</summary>
 			HTTB_RESIZINGBORDER_LEFT = 0x00000010,
+
 			/// <summary>Resizing top border hit test option.</summary>
 			HTTB_RESIZINGBORDER_TOP = 0x00000020,
+
 			/// <summary>Resizing right border hit test option.</summary>
 			HTTB_RESIZINGBORDER_RIGHT = 0x00000040,
+
 			/// <summary>Resizing bottom border hit test option.</summary>
 			HTTB_RESIZINGBORDER_BOTTOM = 0x00000080,
+
 			/// <summary>Resizing border hit test options.</summary>
 			HTTB_RESIZINGBORDER = (HTTB_RESIZINGBORDER_LEFT | HTTB_RESIZINGBORDER_TOP | HTTB_RESIZINGBORDER_RIGHT | HTTB_RESIZINGBORDER_BOTTOM),
-			/// <summary>Resizing border is specified as a template, not just window edges. This option is mutually exclusive with HTTB_SYSTEMSIZINGMARGINS; HTTB_SIZINGTEMPLATE takes precedence.</summary>
+
+			/// <summary>
+			/// Resizing border is specified as a template, not just window edges. This option is mutually exclusive with
+			/// HTTB_SYSTEMSIZINGMARGINS; HTTB_SIZINGTEMPLATE takes precedence.
+			/// </summary>
 			HTTB_SIZINGTEMPLATE = 0x00000100,
-			/// <summary>Uses the system resizing border width rather than visual style content margins. This option is mutually exclusive with HTTB_SIZINGTEMPLATE; HTTB_SIZINGTEMPLATE takes precedence.</summary>
+
+			/// <summary>
+			/// Uses the system resizing border width rather than visual style content margins. This option is mutually exclusive with
+			/// HTTB_SIZINGTEMPLATE; HTTB_SIZINGTEMPLATE takes precedence.
+			/// </summary>
 			HTTB_SYSTEMSIZINGMARGINS = 0x00000200,
 		}
 
@@ -165,15 +213,16 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>No flags are set.</summary>
 			None = 0,
+
 			/// <summary>Forces drawn images from this theme to stretch to fit the rectangles specified by drawing functions.</summary>
 			OTD_FORCE_RECT_SIZING = 1,
+
 			/// <summary>Allows theme elements to be drawn in the non-client area of the window.</summary>
 			OTD_NONCLIENT = 2
 		}
 
 		/// <summary>Returned by <c>GetThemePropertyOrigin</c> to specify where a property was found.</summary>
-		// typedef enum { PO_STATE = 0, PO_PART = 1, PO_CLASS = 2, PO_GLOBAL = 3, PO_NOTFOUND = 4} PROPERTYORIGIN;
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb759837(v=vs.85).aspx
+		// typedef enum { PO_STATE = 0, PO_PART = 1, PO_CLASS = 2, PO_GLOBAL = 3, PO_NOTFOUND = 4} PROPERTYORIGIN; https://msdn.microsoft.com/en-us/library/windows/desktop/bb759837(v=vs.85).aspx
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759837")]
 		public enum PROPERTYORIGIN
 		{
@@ -199,14 +248,19 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Undocumented</summary>
 			TAP_FLAGS,
+
 			/// <summary>Undocumented</summary>
 			TAP_TRANSFORMCOUNT,
+
 			/// <summary>Undocumented</summary>
 			TAP_STAGGERDELAY,
+
 			/// <summary>Undocumented</summary>
 			TAP_STAGGERDELAYCAP,
+
 			/// <summary>Undocumented</summary>
 			TAP_STAGGERDELAYFACTOR,
+
 			/// <summary>Undocumented</summary>
 			TAP_ZORDER,
 		}
@@ -218,14 +272,19 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Undocumented</summary>
 			TAPF_NONE = 0x0,
+
 			/// <summary>Undocumented</summary>
 			TAPF_HASSTAGGER = 0x1,
+
 			/// <summary>Undocumented</summary>
 			TAPF_ISRTLAWARE = 0x2,
+
 			/// <summary>Undocumented</summary>
 			TAPF_ALLOWCOLLECTION = 0x4,
+
 			/// <summary>Undocumented</summary>
 			TAPF_HASBACKGROUND = 0x8,
+
 			/// <summary>Undocumented</summary>
 			TAPF_HASPERSPECTIVE = 0x10,
 		}
@@ -236,6 +295,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Undocumented</summary>
 			TTFT_UNDEFINED,
+
 			/// <summary>Undocumented</summary>
 			TTFT_CUBIC_BEZIER,
 		}
@@ -247,10 +307,13 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Undocumented</summary>
 			TATF_NONE = 0x0,
+
 			/// <summary>Undocumented</summary>
 			TATF_TARGETVALUES_USER = 0x1,
+
 			/// <summary>Undocumented</summary>
 			TATF_HASINITIALVALUES = 0x2,
+
 			/// <summary>Undocumented</summary>
 			TATF_HASORIGINVALUES = 0x4,
 		}
@@ -261,10 +324,13 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Undocumented</summary>
 			TATT_TRANSLATE_2D,
+
 			/// <summary>Undocumented</summary>
 			TATT_SCALE_2D,
+
 			/// <summary>Undocumented</summary>
 			TATT_OPACITY,
+
 			/// <summary>Undocumented</summary>
 			TATT_CLIP,
 		}
@@ -276,9 +342,11 @@ namespace Vanara.PInvoke
 			/// <summary>No shadow will be drawn.</summary>
 			/// <remarks>TST_NONE</remarks>
 			TST_NONE = 0,
+
 			/// <summary>The shadow will be drawn to appear detailed underneath text.</summary>
 			/// <remarks>TST_SINGLE</remarks>
 			TST_SINGLE = 1,
+
 			/// <summary>The shadow will be drawn to appear blurred underneath text.</summary>
 			/// <remarks>TST_CONTINUOUS</remarks>
 			TST_CONTINUOUS = 2
@@ -314,8 +382,8 @@ namespace Vanara.PInvoke
 			ETDT_USETABTEXTURE = 0x00000004,
 
 			/// <summary>
-			/// Enables dialog window background texturing. The texture is the Tab control texture defined by the visual style. This flag is equivalent to
-			/// (ETDT_ENABLE | ETDT_USETABTEXTURE).
+			/// Enables dialog window background texturing. The texture is the Tab control texture defined by the visual style. This flag is
+			/// equivalent to (ETDT_ENABLE | ETDT_USETABTEXTURE).
 			/// </summary>
 			ETDT_ENABLETAB = (ETDT_ENABLE | ETDT_USETABTEXTURE),
 
@@ -330,15 +398,16 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Identifies the type of size value to retrieve for a visual style part.</summary>
-		// typedef enum { TS_MIN, TS_TRUE, TS_DRAW} THEME_SIZE;
-		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb759839(v=vs.85).aspx
+		// typedef enum { TS_MIN, TS_TRUE, TS_DRAW} THEME_SIZE; https://msdn.microsoft.com/en-us/library/windows/desktop/bb759839(v=vs.85).aspx
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759839")]
 		public enum THEMESIZE
 		{
 			/// <summary>Receives the minimum size of a visual style part.</summary>
 			TS_MIN,
+
 			/// <summary>Receives the size of the visual style part that will best fit the available space.</summary>
 			TS_TRUE,
+
 			/// <summary>Receives the size that the theme manager uses to draw a part.</summary>
 			TS_DRAW
 		}
@@ -359,10 +428,13 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Prevents the window caption from being drawn.</summary>
 			WTNCA_NODRAWCAPTION = 0x00000001,
+
 			/// <summary>Prevents the system icon from being drawn.</summary>
 			WTNCA_NODRAWICON = 0x00000002,
+
 			/// <summary>Prevents the system icon menu from appearing.</summary>
 			WTNCA_NOSYSMENU = 0x00000004,
+
 			/// <summary>Prevents mirroring of the question mark, even in right-to-left (RTL) layout.</summary>
 			WTNCA_NOMIRRORHELP = 0x00000008
 		}
@@ -400,7 +472,9 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="pRect">
 		/// <para>Type: <c>const <c>RECT</c>*</c></para>
-		/// <para>Pointer to a <c>RECT</c> structure that contains the rectangle, in logical coordinates, in which the background image is drawn.</para>
+		/// <para>
+		/// Pointer to a <c>RECT</c> structure that contains the rectangle, in logical coordinates, in which the background image is drawn.
+		/// </para>
 		/// </param>
 		/// <param name="pClipRect">
 		/// <para>Type: <c>const <c>RECT</c>*</c></para>
@@ -410,16 +484,17 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT DrawThemeBackground( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ const RECT *pRect, _In_ const RECT
+		// HRESULT DrawThemeBackground( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ const RECT *pRect, _In_
+		// const RECT
 		// *pClipRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773289(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773289")]
-		public static extern HRESULT DrawThemeBackground(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, ref RECT pRect, PRECT pClipRect);
+		public static extern HRESULT DrawThemeBackground(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, in RECT pRect, PRECT pClipRect);
 
 		/// <summary>
 		/// <para>
-		/// [ <c>DrawThemeBackgroundEx</c> is available for use in the operating systems specified in the Requirements section. It may be altered or unavailable
-		/// in subsequent versions.]
+		/// [ <c>DrawThemeBackgroundEx</c> is available for use in the operating systems specified in the Requirements section. It may be
+		/// altered or unavailable in subsequent versions.]
 		/// </para>
 		/// <para>Draws the background image defined by the visual style for the specified control part.</para>
 		/// </summary>
@@ -441,7 +516,9 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="pRect">
 		/// <para>Type: <c>const <c>RECT</c>*</c></para>
-		/// <para>Pointer to a <c>RECT</c> structure that contains the rectangle, in logical coordinates, in which the background image is drawn.</para>
+		/// <para>
+		/// Pointer to a <c>RECT</c> structure that contains the rectangle, in logical coordinates, in which the background image is drawn.
+		/// </para>
 		/// </param>
 		/// <param name="pOptions">
 		/// <para>Type: <c>const <c>DTBGOPTS</c>*</c></para>
@@ -451,11 +528,12 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT DrawThemeBackgroundEx( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ const RECT *pRect, _In_ const DTBGOPTS
+		// HRESULT DrawThemeBackgroundEx( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ const RECT *pRect, _In_
+		// const DTBGOPTS
 		// *pOptions); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773294(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773294")]
-		public static extern HRESULT DrawThemeBackgroundEx(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, ref RECT pRect, DTBGOPTS pOptions);
+		public static extern HRESULT DrawThemeBackgroundEx(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, in RECT pRect, DTBGOPTS pOptions);
 
 		/// <summary>Draws one or more edges defined by the visual style of a rectangle.</summary>
 		/// <param name="hTheme">
@@ -481,8 +559,8 @@ namespace Vanara.PInvoke
 		/// <param name="uEdge">
 		/// <para>Type: <c><c>UINT</c></c></para>
 		/// <para>
-		/// <c>UINT</c> that specifies the type of inner and outer edges to draw. This parameter must be a combination of one inner-border flag and one
-		/// outer-border flag, or one of the combination flags. The border flags are:
+		/// <c>UINT</c> that specifies the type of inner and outer edges to draw. This parameter must be a combination of one inner-border
+		/// flag and one outer-border flag, or one of the combination flags. The border flags are:
 		/// </para>
 		/// <para>
 		/// <list type="table">
@@ -536,7 +614,10 @@ namespace Vanara.PInvoke
 		/// </listheader>
 		/// <item>
 		/// <term>BF_ADJUST</term>
-		/// <term>The rectangle pointed to by the pDestRect parameter is shrunk to exclude the edges that were drawn; otherwise the rectangle does not change.</term>
+		/// <term>
+		/// The rectangle pointed to by the pDestRect parameter is shrunk to exclude the edges that were drawn; otherwise the rectangle does
+		/// not change.
+		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>BF_BOTTOM</term>
@@ -616,19 +697,19 @@ namespace Vanara.PInvoke
 		/// <param name="pContentRect">
 		/// <para>Type: <c>LPRECT</c></para>
 		/// <para>
-		/// Pointer to a <c>RECT</c> structure that contains, in logical coordinates, the rectangle that receives the interior rectangle, if uFlags is set to
-		/// BF_ADJUST. This parameter may be set to <c>NULL</c>.
+		/// Pointer to a <c>RECT</c> structure that contains, in logical coordinates, the rectangle that receives the interior rectangle, if
+		/// uFlags is set to BF_ADJUST. This parameter may be set to <c>NULL</c>.
 		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT DrawThemeEdge( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ LPCRECT pDestRect, _In_ UINT uEdge, _In_ UINT
-		// uFlags, _Out_ LPRECT pContentRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773298(v=vs.85).aspx
+		// HRESULT DrawThemeEdge( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ LPCRECT pDestRect, _In_ UINT
+		// uEdge, _In_ UINT uFlags, _Out_ LPRECT pContentRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773298(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773298")]
-		public static extern HRESULT DrawThemeEdge(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, ref RECT pDestRect, BorderStyles3D uEdge, BorderFlags uFlags, out RECT pContentRect);
+		public static extern HRESULT DrawThemeEdge(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, in RECT pDestRect, BorderStyles3D uEdge, BorderFlags uFlags, out RECT pContentRect);
 
 		/// <summary>Draws an image from an image list with the icon effect defined by the visual style.</summary>
 		/// <param name="hTheme">
@@ -663,11 +744,11 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT DrawThemeIcon( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ LPCRECT pRect, _In_ HIMAGELIST himl, _In_ int
-		// iImageIndex); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773301(v=vs.85).aspx
+		// HRESULT DrawThemeIcon( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ LPCRECT pRect, _In_ HIMAGELIST
+		// himl, _In_ int iImageIndex); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773301(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773301")]
-		public static extern HRESULT DrawThemeIcon(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, ref RECT pRect, HIMAGELIST himl, int iImageIndex);
+		public static extern HRESULT DrawThemeIcon(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, in RECT pRect, HIMAGELIST himl, int iImageIndex);
 
 		/// <summary>Draws the part of a parent control that is covered by a partially-transparent or alpha-blended child control.</summary>
 		/// <param name="hwnd">
@@ -681,8 +762,8 @@ namespace Vanara.PInvoke
 		/// <param name="prc">
 		/// <para>Type: <c>const <c>RECT</c>*</c></para>
 		/// <para>
-		/// The area to be drawn. The rectangle is in the child window's coordinates. If this parameter is NULL, the area to be drawn includes the entire area
-		/// occupied by the child control.
+		/// The area to be drawn. The rectangle is in the child window's coordinates. If this parameter is NULL, the area to be drawn
+		/// includes the entire area occupied by the child control.
 		/// </para>
 		/// </param>
 		/// <returns>
@@ -695,8 +776,8 @@ namespace Vanara.PInvoke
 		public static extern HRESULT DrawThemeParentBackground(HWND hwnd, HDC hdc, PRECT prc);
 
 		/// <summary>
-		/// Used by partially-transparent or alpha-blended child controls to draw the part of their parent in front of which they appear. Sends a
-		/// <c>WM_ERASEBKGND</c> message followed by a <c>WM_PRINTCLIENT</c>.
+		/// Used by partially-transparent or alpha-blended child controls to draw the part of their parent in front of which they appear.
+		/// Sends a <c>WM_ERASEBKGND</c> message followed by a <c>WM_PRINTCLIENT</c>.
 		/// </summary>
 		/// <param name="hwnd">
 		/// <para>Type: <c><c>HWND</c></c></para>
@@ -721,7 +802,9 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>DTPB_USECTLCOLORSTATIC</term>
-		/// <term>If set, this function sends a WM_CTLCOLORSTATIC message to the parent and uses the brush if one is provided. Otherwise, it uses COLOR_BTNFACE.</term>
+		/// <term>
+		/// If set, this function sends a WM_CTLCOLORSTATIC message to the parent and uses the brush if one is provided. Otherwise, it uses COLOR_BTNFACE.
+		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>DTPB_USEERASEBKGND</term>
@@ -733,7 +816,8 @@ namespace Vanara.PInvoke
 		/// <param name="prc">
 		/// <para>Type: <c>const <c>RECT</c>*</c></para>
 		/// <para>
-		/// Optional. The area to be drawn, in child coordinates. If this parameter is NULL, the area to be drawn includes the entire area occupied by the child control.
+		/// Optional. The area to be drawn, in child coordinates. If this parameter is NULL, the area to be drawn includes the entire area
+		/// occupied by the child control.
 		/// </para>
 		/// </param>
 		/// <returns>
@@ -757,8 +841,8 @@ namespace Vanara.PInvoke
 		/// <param name="iPartId">
 		/// <para>Type: <c>int</c></para>
 		/// <para>
-		/// The control part that has the desired text appearance. See Parts and States. If this value is 0, the text is drawn in the default font, or a font
-		/// selected into the device context.
+		/// The control part that has the desired text appearance. See Parts and States. If this value is 0, the text is drawn in the default
+		/// font, or a font selected into the device context.
 		/// </para>
 		/// </param>
 		/// <param name="iStateId">
@@ -772,12 +856,15 @@ namespace Vanara.PInvoke
 		/// <param name="iCharCount">
 		/// <para>Type: <c>int</c></para>
 		/// <para>
-		/// Value of type <c>int</c> that contains the number of characters to draw. If the parameter is set to -1, all the characters in the string are drawn.
+		/// Value of type <c>int</c> that contains the number of characters to draw. If the parameter is set to -1, all the characters in the
+		/// string are drawn.
 		/// </para>
 		/// </param>
 		/// <param name="dwTextFlags">
 		/// <para>Type: <c><c>DWORD</c></c></para>
-		/// <para><c>DWORD</c> that contains one or more values that specify the string's formatting. See Format Values for possible parameter values.</para>
+		/// <para>
+		/// <c>DWORD</c> that contains one or more values that specify the string's formatting. See Format Values for possible parameter values.
+		/// </para>
 		/// </param>
 		/// <param name="dwTextFlags2">
 		/// <para>Type: <c><c>DWORD</c></c></para>
@@ -786,21 +873,23 @@ namespace Vanara.PInvoke
 		/// <param name="pRect">
 		/// <para>Type: <c>LPCRECT</c></para>
 		/// <para>
-		/// Pointer to a <c>RECT</c> structure that contains the rectangle, in logical coordinates, in which the text is to be drawn. It is recommended to use
-		/// <c>pExtentRect</c> from <c>GetThemeTextExtent</c> to retrieve the correct coordinates.
+		/// Pointer to a <c>RECT</c> structure that contains the rectangle, in logical coordinates, in which the text is to be drawn. It is
+		/// recommended to use <c>pExtentRect</c> from <c>GetThemeTextExtent</c> to retrieve the correct coordinates.
 		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT DrawThemeText( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ LPCWSTR pszText, _In_ int iCharCount, _In_ DWORD
-		// dwTextFlags, _In_ DWORD dwTextFlags2, _In_ LPCRECT pRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773312(v=vs.85).aspx
+		// HRESULT DrawThemeText( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ LPCWSTR pszText, _In_ int
+		// iCharCount, _In_ DWORD dwTextFlags, _In_ DWORD dwTextFlags2, _In_ LPCRECT pRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773312(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773312")]
-		public static extern HRESULT DrawThemeText(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, string pszText, int iCharCount, DrawTextFlags dwTextFlags, [Optional] int dwTextFlags2, ref RECT pRect);
+		public static extern HRESULT DrawThemeText(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, string pszText, int iCharCount, DrawTextFlags dwTextFlags, [Optional] int dwTextFlags2, in RECT pRect);
 
-		/// <summary>Draws text using the color and font defined by the visual style. Extends <c>DrawThemeText</c> by allowing additional text format options.</summary>
+		/// <summary>
+		/// Draws text using the color and font defined by the visual style. Extends <c>DrawThemeText</c> by allowing additional text format options.
+		/// </summary>
 		/// <param name="hTheme">
 		/// <para>Type: <c>HTHEME</c></para>
 		/// <para>Handle to a window's specified theme data. Use <c>OpenThemeData</c> to create an HTHEME.</para>
@@ -812,8 +901,8 @@ namespace Vanara.PInvoke
 		/// <param name="iPartId">
 		/// <para>Type: <c>int</c></para>
 		/// <para>
-		/// The control part that has the desired text appearance. See Parts and States. If this value is 0, the text is drawn in the default font, or a font
-		/// selected into the device context.
+		/// The control part that has the desired text appearance. See Parts and States. If this value is 0, the text is drawn in the default
+		/// font, or a font selected into the device context.
 		/// </para>
 		/// </param>
 		/// <param name="iStateId">
@@ -827,12 +916,15 @@ namespace Vanara.PInvoke
 		/// <param name="iCharCount">
 		/// <para>Type: <c>int</c></para>
 		/// <para>
-		/// Value of type <c>int</c> that contains the number of characters to draw. If the parameter is set to -1, all the characters in the string are drawn.
+		/// Value of type <c>int</c> that contains the number of characters to draw. If the parameter is set to -1, all the characters in the
+		/// string are drawn.
 		/// </para>
 		/// </param>
 		/// <param name="dwFlags">
 		/// <para>Type: <c><c>DWORD</c></c></para>
-		/// <para><c>DWORD</c> that contains one or more values that specify the string's formatting. See Format Values for possible parameter values.</para>
+		/// <para>
+		/// <c>DWORD</c> that contains one or more values that specify the string's formatting. See Format Values for possible parameter values.
+		/// </para>
 		/// </param>
 		/// <param name="pRect">
 		/// <para>Type: <c>LPRECT</c></para>
@@ -846,11 +938,11 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT DrawThemeTextEx( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ LPCWSTR pszText, _In_ int iCharCount, _In_ DWORD
-		// dwFlags, _Inout_ LPRECT pRect, _In_ const DTTOPTS *pOptions); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773317(v=vs.85).aspx
+		// HRESULT DrawThemeTextEx( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ LPCWSTR pszText, _In_ int
+		// iCharCount, _In_ DWORD dwFlags, _Inout_ LPRECT pRect, _In_ const DTTOPTS *pOptions); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773317(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773317")]
-		public static extern HRESULT DrawThemeTextEx(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, string pszText, int iCharCount, DrawTextFlags dwFlags, ref RECT pRect, ref DTTOPTS pOptions);
+		public static extern HRESULT DrawThemeTextEx(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, string pszText, int iCharCount, DrawTextFlags dwFlags, ref RECT pRect, in DTTOPTS pOptions);
 
 		/// <summary>Enables or disables the visual style of the background of a dialog window.</summary>
 		/// <param name="hwnd">
@@ -885,8 +977,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>ETDT_ENABLETAB</term>
 		/// <term>
-		/// Enables dialog window background texturing. The texture is the Tab control texture defined by the visual style. This flag is equivalent to
-		/// (ETDT_ENABLE | ETDT_USETABTEXTURE).
+		/// Enables dialog window background texturing. The texture is the Tab control texture defined by the visual style. This flag is
+		/// equivalent to (ETDT_ENABLE | ETDT_USETABTEXTURE).
 		/// </term>
 		/// </item>
 		/// <item>
@@ -910,7 +1002,9 @@ namespace Vanara.PInvoke
 		public static extern HRESULT EnableThemeDialogTexture(HWND hwnd, ThemeDialogTextureFlags dwFlags);
 
 		/// <summary>
-		/// <para><c>Windows Vista through Windows 7</c>: Enables or disables visual styles for the current user in the current and later sessions.</para>
+		/// <para>
+		/// <c>Windows Vista through Windows 7</c>: Enables or disables visual styles for the current user in the current and later sessions.
+		/// </para>
 		/// <para><c>Windows 8 and later</c>: This function does nothing. Visual styles are always enabled in Windows 8 and later.</para>
 		/// </summary>
 		/// <param name="fEnable">
@@ -971,11 +1065,12 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>Returns S_OK if successful, otherwise an error code.</para>
 		/// </returns>
-		// HRESULT GetCurrentThemeName( _Out_ LPWSTR pszThemeFileName, _In_ int dwMaxNameChars, _Out_ LPWSTR pszColorBuff, _In_ int cchMaxColorChars, _Out_
-		// LPWSTR pszSizeBuff, _In_ int cchMaxSizeChars); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773365(v=vs.85).aspx
+		// HRESULT GetCurrentThemeName( _Out_ LPWSTR pszThemeFileName, _In_ int dwMaxNameChars, _Out_ LPWSTR pszColorBuff, _In_ int
+		// cchMaxColorChars, _Out_ LPWSTR pszSizeBuff, _In_ int cchMaxSizeChars); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773365(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773365")]
-		public static extern HRESULT GetCurrentThemeName([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszThemeFileName, int dwMaxNameChars, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszColorBuff, int cchMaxColorChars, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszSizeBuff, int cchMaxSizeChars);
+		public static extern HRESULT GetCurrentThemeName([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszThemeFileName, int dwMaxNameChars, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszColorBuff,
+			int cchMaxColorChars, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszSizeBuff, int cchMaxSizeChars);
 
 		/*
 		/// <summary>Gets the string containing the name of an element like ‘StartBackground’ or ‘StartDesktopTilesBackground’.</summary>
@@ -994,12 +1089,12 @@ namespace Vanara.PInvoke
 		/// <param name="dwImmersiveColorSet">The color set ID (between 0 and 24 for Windows 8)</param>
 		/// <param name="dwImmersiveColorType">The color type (e.g. 0 for 'StartBackground').</param>
 		/// <param name="bIgnoreHighContrast">
-		/// Determines whether high contrast mode should be ignored – set it to <c>true</c> to retrieve the active color set's colors even when high contrast
-		/// mode is enabled.
+		/// Determines whether high contrast mode should be ignored – set it to <c>true</c> to retrieve the active color set's colors even
+		/// when high contrast mode is enabled.
 		/// </param>
 		/// <param name="dwHighContrastCacheMode">
-		/// Set to 1 to force UxTheme to check whether the system is in high contrast mode even with it already thinks it is (this check would otherwise only
-		/// occur if high contrast mode had previously not been enabled).
+		/// Set to 1 to force UxTheme to check whether the system is in high contrast mode even with it already thinks it is (this check
+		/// would otherwise only occur if high contrast mode had previously not been enabled).
 		/// </param>
 		/// <returns></returns>
 		[DllImport(Lib.UxTheme, ExactSpelling = true, EntryPoint = "#95")]
@@ -1015,11 +1110,12 @@ namespace Vanara.PInvoke
 
 		/// <summary>Gets the immersive user color set preference.</summary>
 		/// <param name="bForceCheckRegistry">
-		/// true to force UxTheme to read the value stored in the registry (and update the system setting if what’s in the registry is different to what’s in memory).
+		/// true to force UxTheme to read the value stored in the registry (and update the system setting if what’s in the registry is
+		/// different to what’s in memory).
 		/// </param>
 		/// <param name="bSkipCheckOnFail">
-		/// Setting it to true will stop the function attempting to retrieve the user preference a second time if the first call returns –1. May only be relevant
-		/// in the event that UxTheme doesn’t have permission to update the system setting with the value from the registry.
+		/// Setting it to true will stop the function attempting to retrieve the user preference a second time if the first call returns –1.
+		/// May only be relevant in the event that UxTheme doesn’t have permission to update the system setting with the value from the registry.
 		/// </param>
 		/// <returns></returns>
 		[DllImport(Lib.UxTheme, ExactSpelling = true, EntryPoint = "#98")]
@@ -1035,7 +1131,8 @@ namespace Vanara.PInvoke
 		/// <param name="cbSize">The byte size of a buffer that is pointed by pvProperty.</param>
 		/// <param name="pcbSizeOut">The byte size of the returned property.</param>
 		/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
-		// HRESULT THEMEAPI GetThemeAnimationProperty( _In_ HTHEME hTheme, _In_ int iStoryboardId, _In_ int iTargetId, _In_ TA_PROPERTY eProperty, _Out_ VOID
+		// HRESULT THEMEAPI GetThemeAnimationProperty( _In_ HTHEME hTheme, _In_ int iStoryboardId, _In_ int iTargetId, _In_ TA_PROPERTY
+		// eProperty, _Out_ VOID
 		// *pvProperty, _In_ DWORD cbSize, _Out_ DWORD pcbSizeOut); https://msdn.microsoft.com/en-us/library/windows/desktop/hh404183(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "hh404183")]
@@ -1050,11 +1147,11 @@ namespace Vanara.PInvoke
 		/// <param name="cbSize">The byte size of the buffer pointed by pTransform.</param>
 		/// <param name="pcbSizeOut">The byte size of a transform operation structure.</param>
 		/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
-		// HRESULT THEMEAPI GetThemeAnimationTransform( _In_ HTHEME hTheme, _In_ int iStoryboardId, _In_ int iTargetId, _In_ DWORD dwTransformIndex, _Out_
-		// TA_TRANSFORM *pTransform, _In_ DWORD cbSize, _Out_ DWORD pcbSizeOut); https://msdn.microsoft.com/en-us/library/windows/desktop/hh404186(v=vs.85).aspx
+		// HRESULT THEMEAPI GetThemeAnimationTransform( _In_ HTHEME hTheme, _In_ int iStoryboardId, _In_ int iTargetId, _In_ DWORD
+		// dwTransformIndex, _Out_ TA_TRANSFORM *pTransform, _In_ DWORD cbSize, _Out_ DWORD pcbSizeOut); https://msdn.microsoft.com/en-us/library/windows/desktop/hh404186(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "hh404186")]
-		public static extern HRESULT GetThemeAnimationTransform(HTHEME hTheme, int iStoryboardId, int iTargetId, uint dwTransformIndex, ref TA_TRANSFORM pTransform, uint cbSize, out uint pcbSizeOut);
+		public static extern HRESULT GetThemeAnimationTransform(HTHEME hTheme, int iStoryboardId, int iTargetId, uint dwTransformIndex, out TA_TRANSFORM pTransform, uint cbSize, out uint pcbSizeOut);
 
 		/// <summary>Retrieves the property flags that control how visual styles are applied in the current application.</summary>
 		/// <returns>
@@ -1106,25 +1203,26 @@ namespace Vanara.PInvoke
 		/// <param name="pBoundingRect">
 		/// <para>Type: <c>LPCRECT</c></para>
 		/// <para>
-		/// Pointer to a <c>RECT</c> structure that contains the total background rectangle, in logical coordinates. This is the area inside the borders or margins.
+		/// Pointer to a <c>RECT</c> structure that contains the total background rectangle, in logical coordinates. This is the area inside
+		/// the borders or margins.
 		/// </para>
 		/// </param>
 		/// <param name="pContentRect">
 		/// <para>Type: <c>LPRECT</c></para>
 		/// <para>
-		/// Pointer to a <c>RECT</c> structure that receives the content area background rectangle, in logical coordinates. This rectangle is calculated to fit
-		/// the content area.
+		/// Pointer to a <c>RECT</c> structure that receives the content area background rectangle, in logical coordinates. This rectangle is
+		/// calculated to fit the content area.
 		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT GetThemeBackgroundContentRect( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ LPCRECT pBoundingRect, _Out_ LPRECT
-		// pContentRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773375(v=vs.85).aspx
+		// HRESULT GetThemeBackgroundContentRect( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ LPCRECT
+		// pBoundingRect, _Out_ LPRECT pContentRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773375(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773375")]
-		public static extern HRESULT GetThemeBackgroundContentRect(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, ref RECT pBoundingRect, out RECT pContentRect);
+		public static extern HRESULT GetThemeBackgroundContentRect(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, in RECT pBoundingRect, out RECT pContentRect);
 
 		/// <summary>Calculates the size and location of the background, defined by the visual style, given the content area.</summary>
 		/// <param name="hTheme">
@@ -1146,22 +1244,25 @@ namespace Vanara.PInvoke
 		/// <param name="pContentRect">
 		/// <para>Type: <c>LPCRECT</c></para>
 		/// <para>
-		/// Pointer to a <c>RECT</c> structure that contains the content background rectangle, in logical coordinates. This rectangle is returned from <c>GetThemeBackgroundContentRect</c>.
+		/// Pointer to a <c>RECT</c> structure that contains the content background rectangle, in logical coordinates. This rectangle is
+		/// returned from <c>GetThemeBackgroundContentRect</c>.
 		/// </para>
 		/// </param>
 		/// <param name="pExtentRect">
 		/// <para>Type: <c>LPRECT</c></para>
-		/// <para>Pointer to a <c>RECT</c> structure that receives the background rectangle, in logical coordinates. This rectangle is based on the pContentRect.</para>
+		/// <para>
+		/// Pointer to a <c>RECT</c> structure that receives the background rectangle, in logical coordinates. This rectangle is based on the pContentRect.
+		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT GetThemeBackgroundExtent( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ LPCRECT pContentRect, _Out_ LPRECT
-		// pExtentRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773380(v=vs.85).aspx
+		// HRESULT GetThemeBackgroundExtent( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ LPCRECT
+		// pContentRect, _Out_ LPRECT pExtentRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773380(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773380")]
-		public static extern HRESULT GetThemeBackgroundExtent(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, ref RECT pContentRect, out RECT pExtentRect);
+		public static extern HRESULT GetThemeBackgroundExtent(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, in RECT pContentRect, out RECT pExtentRect);
 
 		/// <summary>Computes the region for a regular or partially transparent background that is bounded by a specified rectangle.</summary>
 		/// <param name="hTheme">
@@ -1182,7 +1283,9 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="pRect">
 		/// <para>Type: <c>LPCRECT</c></para>
-		/// <para>Pointer to a <c>RECT</c> structure that contains, in logical coordinates, the specified rectangle used to compute the region.</para>
+		/// <para>
+		/// Pointer to a <c>RECT</c> structure that contains, in logical coordinates, the specified rectangle used to compute the region.
+		/// </para>
 		/// </param>
 		/// <param name="pRegion">
 		/// <para>Type: <c><c>HRGN</c>*</c></para>
@@ -1192,10 +1295,11 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT GetThemeBackgroundRegion( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ LPCRECT pRect, _Out_ HRGN *pRegion); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773384(v=vs.85).aspx
+		// HRESULT GetThemeBackgroundRegion( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ LPCRECT pRect, _Out_
+		// HRGN *pRegion); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773384(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773384")]
-		public static extern HRESULT GetThemeBackgroundRegion(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, ref RECT pRect, out SafeHRGN pRegion);
+		public static extern HRESULT GetThemeBackgroundRegion(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, in RECT pRect, out SafeHRGN pRegion);
 
 		/// <summary>Retrieves the bitmap associated with a particular theme, part, state, and property.</summary>
 		/// <param name="hTheme">
@@ -1213,7 +1317,8 @@ namespace Vanara.PInvoke
 		/// <param name="iPropId">
 		/// <para>Type: <c>int</c></para>
 		/// <para>
-		/// The property to retrieve. Pass zero to automatically select the first available bitmap for this part and state, or use one of the following values.
+		/// The property to retrieve. Pass zero to automatically select the first available bitmap for this part and state, or use one of the
+		/// following values.
 		/// </para>
 		/// <para>
 		/// <list type="table">
@@ -1268,7 +1373,8 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT GetThemeBitmap( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _In_ ULONG dwFlags, _Out_ HBITMAP *phBitmap); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773388(v=vs.85).aspx
+		// HRESULT GetThemeBitmap( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _In_ ULONG dwFlags, _Out_
+		// HBITMAP *phBitmap); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773388(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773388")]
 		public static extern HRESULT GetThemeBitmap(HTHEME hTheme, int iPartId, int iStateId, int iPropId, GBF dwFlags, out SafeHBITMAP phBitmap);
@@ -1298,8 +1404,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>TMT_TRANSPARENT</term>
 		/// <term>
-		/// TRUE if the image associated with the part and state have transparent areas. See GetThemeColor for the definition of the TMT_TRANSPARENTCOLOR value
-		/// that defines the transparent color.
+		/// TRUE if the image associated with the part and state have transparent areas. See GetThemeColor for the definition of the
+		/// TMT_TRANSPARENTCOLOR value that defines the transparent color.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1321,8 +1427,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>TMT_GLYPHTRANSPARENT</term>
 		/// <term>
-		/// TRUE if the glyph associated with this part and state have transparent areas. See GetThemeColor for the definition of the TMT_GLYPHCOLOR value that
-		/// defines the transparent color.
+		/// TRUE if the glyph associated with this part and state have transparent areas. See GetThemeColor for the definition of the
+		/// TMT_GLYPHCOLOR value that defines the transparent color.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1335,7 +1441,9 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>TMT_MIRRORIMAGE</term>
-		/// <term>TRUE if the image associated with this part and state should be flipped if the window is being viewed in right-to-left reading mode.</term>
+		/// <term>
+		/// TRUE if the image associated with this part and state should be flipped if the window is being viewed in right-to-left reading mode.
+		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>TMT_UNIFORMSIZING</term>
@@ -1448,7 +1556,8 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT GetThemeDocumentationProperty( _In_ LPCWSTR pszThemeName, _In_ LPCWSTR pszPropertyName, _Out_ LPWSTR pszValueBuff, _In_ int cchMaxValChars); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773402(v=vs.85).aspx
+		// HRESULT GetThemeDocumentationProperty( _In_ LPCWSTR pszThemeName, _In_ LPCWSTR pszPropertyName, _Out_ LPWSTR pszValueBuff, _In_
+		// int cchMaxValChars); https://msdn.microsoft.com/en-us/library/windows/desktop/bb773402(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773402")]
 		public static extern HRESULT GetThemeDocumentationProperty(string pszThemeName, string pszPropertyName, StringBuilder pszValueBuff, int cchMaxValChars);
@@ -1512,8 +1621,8 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT GetThemeFilename( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ LPWSTR pszThemeFilename, _In_ int
-		// cchMaxBuffChars); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759743(v=vs.85).aspx
+		// HRESULT GetThemeFilename( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ LPWSTR
+		// pszThemeFilename, _In_ int cchMaxBuffChars); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759743(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759743")]
 		public static extern HRESULT GetThemeFilename(HTHEME hTheme, int iPartId, int iStateId, int iPropId, StringBuilder pszThemeFilename, int cchMaxBuffChars);
@@ -1639,7 +1748,10 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="prc">
 		/// <para>Type: <c>LPRECT</c></para>
-		/// <para>Pointer to a <c>RECT</c> structure that contains the rectangle that specifies the area to be drawn into. This parameter may be set to <c>NULL</c>.</para>
+		/// <para>
+		/// Pointer to a <c>RECT</c> structure that contains the rectangle that specifies the area to be drawn into. This parameter may be
+		/// set to <c>NULL</c>.
+		/// </para>
 		/// </param>
 		/// <param name="pMargins">
 		/// <para>Type: <c><c>MARGINS</c>*</c></para>
@@ -1649,7 +1761,8 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT GetThemeMargins( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _In_ LPRECT prc, _Out_ MARGINS
+		// HRESULT GetThemeMargins( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _In_ LPRECT prc,
+		// _Out_ MARGINS
 		// *pMargins); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759755(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759755")]
@@ -1700,8 +1813,8 @@ namespace Vanara.PInvoke
 		/// <item>
 		/// <term>TMT_GRADIENTRATIO1</term>
 		/// <term>
-		/// The amount of the first gradient color to use in drawing the part. This value can be from 0 to 255, but this value plus the values of each of the
-		/// GRADIENTRATIO values must add up to 255. See the TMT_GRADIENTCOLOR1 value of GetThemeColor.
+		/// The amount of the first gradient color to use in drawing the part. This value can be from 0 to 255, but this value plus the
+		/// values of each of the GRADIENTRATIO values must add up to 255. See the TMT_GRADIENTCOLOR1 value of GetThemeColor.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1791,7 +1904,8 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT GetThemeMetric( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ int *piVal); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759757(v=vs.85).aspx
+		// HRESULT GetThemeMetric( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ int
+		// *piVal); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759757(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759757")]
 		public static extern HRESULT GetThemeMetric(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, int iPropId, out int piVal);
@@ -1815,7 +1929,10 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="prc">
 		/// <para>Type: <c>LPCRECT</c></para>
-		/// <para>Pointer to a <c>RECT</c> structure that contains the rectangle used for the part drawing destination. This parameter may be set to <c>NULL</c>.</para>
+		/// <para>
+		/// Pointer to a <c>RECT</c> structure that contains the rectangle used for the part drawing destination. This parameter may be set
+		/// to <c>NULL</c>.
+		/// </para>
 		/// </param>
 		/// <param name="eSize">
 		/// <para>Type: <c>THEMESIZE</c></para>
@@ -1829,7 +1946,8 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT GetThemePartSize( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ LPCRECT prc, _In_ THEMESIZE eSize, _Out_ SIZE
+		// HRESULT GetThemePartSize( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ LPCRECT prc, _In_ THEMESIZE
+		// eSize, _Out_ SIZE
 		// *psz); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759759(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759759")]
@@ -1870,9 +1988,9 @@ namespace Vanara.PInvoke
 		/// <param name="iPartId">Value of type int that specifies the part that contains the theme. See Parts and States.</param>
 		/// <param name="iStateId">Value of type int that specifies the state of the part. See Parts and States.</param>
 		/// <param name="iPropId">
-		/// Value of type int that specifies the property to retrieve. You may use any of the property values from Vssym32.h. These values are described in the
-		/// reference pages for the functions that use them. For instance, the GetThemeInt function uses the TMT_BORDERSIZE value. See the Visual Styles
-		/// Reference for a list of functions.
+		/// Value of type int that specifies the property to retrieve. You may use any of the property values from Vssym32.h. These values
+		/// are described in the reference pages for the functions that use them. For instance, the GetThemeInt function uses the
+		/// TMT_BORDERSIZE value. See the Visual Styles Reference for a list of functions.
 		/// </param>
 		/// <param name="pOrigin">Pointer to a PROPERTYORIGIN enumerated type that indicates where the property was or was not found.</param>
 		/// <returns>
@@ -1940,14 +2058,16 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="hInst">
 		/// <para>Type: <c><c>HINSTANCE</c></c></para>
-		/// <para>If iPropId is TMT_STREAM, this value is <c>NULL</c>. If iPropId is TMT_DISKSTREAM, this value is the HINSTANCE of a loaded styles file.</para>
+		/// <para>
+		/// If iPropId is TMT_STREAM, this value is <c>NULL</c>. If iPropId is TMT_DISKSTREAM, this value is the HINSTANCE of a loaded styles file.
+		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT GetThemeStream( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ VOID **ppvStream, _Out_ DWORD *pcbStream,
-		// _In_ HINSTANCE hInst); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759768(v=vs.85).aspx
+		// HRESULT GetThemeStream( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ VOID **ppvStream, _Out_
+		// DWORD *pcbStream, _In_ HINSTANCE hInst); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759768(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759768")]
 		public static extern HRESULT GetThemeStream(HTHEME hTheme, int iPartId, int iStateId, int iPropId, out IntPtr ppvStream, out uint pcbStream, HINSTANCE hInst);
@@ -1981,7 +2101,8 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT GetThemeString( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ LPWSTR pszBuff, _In_ int cchMaxBuffChars); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759770(v=vs.85).aspx
+		// HRESULT GetThemeString( _In_ HTHEME hTheme, _In_ int iPartId, _In_ int iStateId, _In_ int iPropId, _Out_ LPWSTR pszBuff, _In_ int
+		// cchMaxBuffChars); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759770(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759770")]
 		public static extern HRESULT GetThemeString(HTHEME hTheme, int iPartId, int iStateId, int iPropId, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszBuff, int cchMaxBuffChars);
@@ -2024,7 +2145,9 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="iColorID">
 		/// <para>Type: <c>int</c></para>
-		/// <para>Value of type <c>int</c> that specifies the color number. May be one of the values listed in <c>GetSysColor</c> for the nIndex parameter.</para>
+		/// <para>
+		/// Value of type <c>int</c> that specifies the color number. May be one of the values listed in <c>GetSysColor</c> for the nIndex parameter.
+		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c><c>COLORREF</c></c></para>
@@ -2347,16 +2470,21 @@ namespace Vanara.PInvoke
 		/// <param name="iCharCount">
 		/// <para>Type: <c>int</c></para>
 		/// <para>
-		/// Value of type <c>int</c> that contains the number of characters to draw. If the parameter is set to -1, all the characters in the string are drawn.
+		/// Value of type <c>int</c> that contains the number of characters to draw. If the parameter is set to -1, all the characters in the
+		/// string are drawn.
 		/// </para>
 		/// </param>
 		/// <param name="dwTextFlags">
 		/// <para>Type: <c><c>DWORD</c></c></para>
-		/// <para><c>DWORD</c> that contains one or more values that specify the string's formatting. See Format Values for possible parameter values.</para>
+		/// <para>
+		/// <c>DWORD</c> that contains one or more values that specify the string's formatting. See Format Values for possible parameter values.
+		/// </para>
 		/// </param>
 		/// <param name="pBoundingRect">
 		/// <para>Type: <c>LPCRECT</c></para>
-		/// <para>Pointer to a <c>RECT</c> structure that contains the rectangle used to control layout of the text. This parameter may be set to <c>NULL</c>.</para>
+		/// <para>
+		/// Pointer to a <c>RECT</c> structure that contains the rectangle used to control layout of the text. This parameter may be set to <c>NULL</c>.
+		/// </para>
 		/// </param>
 		/// <param name="pExtentRect">
 		/// <para>Type: <c>LPRECT</c></para>
@@ -2366,8 +2494,8 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT GetThemeTextExtent( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ LPCWSTR pszText, _In_ int iCharCount, _In_
-		// DWORD dwTextFlags, _In_ LPCRECT pBoundingRect, _Out_ LPRECT pExtentRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759798(v=vs.85).aspx
+		// HRESULT GetThemeTextExtent( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ LPCWSTR pszText, _In_ int
+		// iCharCount, _In_ DWORD dwTextFlags, _In_ LPCRECT pBoundingRect, _Out_ LPRECT pExtentRect); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759798(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759798")]
 		public static extern HRESULT GetThemeTextExtent(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, string pszText, int iCharCount, DrawTextFlags dwTextFlags, PRECT pBoundingRect, out RECT pExtentRect);
@@ -2409,8 +2537,8 @@ namespace Vanara.PInvoke
 		/// <param name="cbSize">The byte size of the buffer pointed by pTimingFunction.</param>
 		/// <param name="pcbSizeOut">The byte size ofthe timing function structure.</param>
 		/// <returns>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
-		// HRESULT THEMEAPI GetThemeTimingFunction( _In_ HTHEME hTheme, _In_ int iTimingFunctionId, _Out_ TA_TIMINGFUNCTION *pTimingFunction, _In_ DWORD cbSize,
-		// _Out_ DWORD pcbSizeOut); https://msdn.microsoft.com/en-us/library/windows/desktop/hh404194(v=vs.85).aspx
+		// HRESULT THEMEAPI GetThemeTimingFunction( _In_ HTHEME hTheme, _In_ int iTimingFunctionId, _Out_ TA_TIMINGFUNCTION *pTimingFunction,
+		// _In_ DWORD cbSize, _Out_ DWORD pcbSizeOut); https://msdn.microsoft.com/en-us/library/windows/desktop/hh404194(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "hh404194")]
 		public static extern HRESULT GetThemeTimingFunction(HTHEME hTheme, int iTimingFunctionId, IntPtr pTimingFunction, uint cbSize, out uint pcbSizeOut);
@@ -2444,7 +2572,8 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT GetThemeTransitionDuration( HTHEME hTheme, int iPartId, int iStateIdFrom, int iStateIdTo, int iPropId, _Out_ DWORD *pdwDuration); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759804(v=vs.85).aspx
+		// HRESULT GetThemeTransitionDuration( HTHEME hTheme, int iPartId, int iStateIdFrom, int iStateIdTo, int iPropId, _Out_ DWORD
+		// *pdwDuration); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759804(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759804")]
 		public static extern HRESULT GetThemeTransitionDuration(HTHEME hTheme, int iPartId, int iStateIdFrom, int iStateIdTo, int iPropId, out uint pdwDuration);
@@ -2499,19 +2628,19 @@ namespace Vanara.PInvoke
 		/// <param name="pwHitTestCode">
 		/// <para>Type: <c><c>WORD</c>*</c></para>
 		/// <para>
-		/// <c>WORD</c> that receives the hit test code that indicates whether the point in ptTest is in the background area bounded by pRect or hrgn. See Hit
-		/// Test Return Values for a list of values returned.
+		/// <c>WORD</c> that receives the hit test code that indicates whether the point in ptTest is in the background area bounded by pRect
+		/// or hrgn. See Hit Test Return Values for a list of values returned.
 		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT HitTestThemeBackground( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ DWORD dwOptions, _In_ LPCRECT pRect, _In_
-		// HRGN hrgn, _In_ POINT ptTest, _Out_ WORD *pwHitTestCode); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759808(v=vs.85).aspx
+		// HRESULT HitTestThemeBackground( _In_ HTHEME hTheme, _In_ HDC hdc, _In_ int iPartId, _In_ int iStateId, _In_ DWORD dwOptions, _In_
+		// LPCRECT pRect, _In_ HRGN hrgn, _In_ POINT ptTest, _Out_ WORD *pwHitTestCode); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759808(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759808")]
-		public static extern HRESULT HitTestThemeBackground(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, HitTestOptions dwOptions, ref RECT pRect, HRGN hrgn, Point ptTest, out HitTestValues pwHitTestCode);
+		public static extern HRESULT HitTestThemeBackground(HTHEME hTheme, HDC hdc, int iPartId, int iStateId, HitTestOptions dwOptions, in RECT pRect, HRGN hrgn, Point ptTest, out HitTestValues pwHitTestCode);
 
 		/// <summary>Reports whether the current application's user interface displays using visual styles.</summary>
 		/// <returns>
@@ -2563,12 +2692,15 @@ namespace Vanara.PInvoke
 		/// </listheader>
 		/// <item>
 		/// <term>TRUE</term>
-		/// <term>A visual style is enabled, and windows with visual styles applied should call OpenThemeData to start using theme drawing services.</term>
+		/// <term>
+		/// A visual style is enabled, and windows with visual styles applied should call OpenThemeData to start using theme drawing services.
+		/// </term>
 		/// </item>
 		/// <item>
 		/// <term>FALSE</term>
 		/// <term>
-		/// A visual style is not enabled, and the window message handler does not need to make another call to IsThemeActive until it receives a WM_THEMECHANGED message.
+		/// A visual style is not enabled, and the window message handler does not need to make another call to IsThemeActive until it
+		/// receives a WM_THEMECHANGED message.
 		/// </term>
 		/// </item>
 		/// </list>
@@ -2608,7 +2740,9 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// <item>
 		/// <term>FALSE</term>
-		/// <term>The theme-specified background for a particular iPartId and iStateId does not have transparent pieces or alpha-blended pieces.</term>
+		/// <term>
+		/// The theme-specified background for a particular iPartId and iStateId does not have transparent pieces or alpha-blended pieces.
+		/// </term>
 		/// </item>
 		/// </list>
 		/// </para>
@@ -2701,8 +2835,8 @@ namespace Vanara.PInvoke
 		/// <returns>
 		/// <para>Type: <c>HTHEME</c></para>
 		/// <para>
-		/// <c>OpenThemeData</c> tries to match each class, one at a time, to a class data section in the active theme. If a match is found, an associated HTHEME
-		/// handle is returned. If no match is found <c>NULL</c> is returned.
+		/// <c>OpenThemeData</c> tries to match each class, one at a time, to a class data section in the active theme. If a match is found,
+		/// an associated HTHEME handle is returned. If no match is found <c>NULL</c> is returned.
 		/// </para>
 		/// </returns>
 		// HTHEME OpenThemeData( _In_ HWND hwnd, _In_ LPCWSTR pszClassList); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759821(v=vs.85).aspx
@@ -2752,8 +2886,8 @@ namespace Vanara.PInvoke
 		/// <param name="hwnd">The handle of the window for which theme data is required.</param>
 		/// <param name="pszClassIdList">A pointer to a string that contains a semicolon-separated list of classes.</param>
 		/// <param name="dpi">
-		/// The specified DPI value with which to associate the theme handle. The function will return an error if this value is outside of those that correspond
-		/// to the set of connected monitors.
+		/// The specified DPI value with which to associate the theme handle. The function will return an error if this value is outside of
+		/// those that correspond to the set of connected monitors.
 		/// </param>
 		/// <returns>See OpenThemeData.</returns>
 		// HTHEME WINAPI OpenThemeDataForDpi( HWDN hwnd, PCWSTR pszClassIdList, UINT dpi); https://msdn.microsoft.com/en-us/library/windows/desktop/mt807674(v=vs.85).aspx
@@ -2800,15 +2934,15 @@ namespace Vanara.PInvoke
 		/// <param name="pszSubAppName">
 		/// <para>Type: <c><c>LPCWSTR</c></c></para>
 		/// <para>
-		/// Pointer to a string that contains the application name to use in place of the calling application's name. If this parameter is <c>NULL</c>, the
-		/// calling application's name is used.
+		/// Pointer to a string that contains the application name to use in place of the calling application's name. If this parameter is
+		/// <c>NULL</c>, the calling application's name is used.
 		/// </para>
 		/// </param>
 		/// <param name="pszSubIdList">
 		/// <para>Type: <c><c>LPCWSTR</c></c></para>
 		/// <para>
-		/// Pointer to a string that contains a semicolon-separated list of CLSID names to use in place of the actual list passed by the window's class. If this
-		/// parameter is <c>NULL</c>, the ID list from the calling class is used.
+		/// Pointer to a string that contains a semicolon-separated list of CLSID names to use in place of the actual list passed by the
+		/// window's class. If this parameter is <c>NULL</c>, the ID list from the calling class is used.
 		/// </para>
 		/// </param>
 		/// <returns>
@@ -2828,8 +2962,8 @@ namespace Vanara.PInvoke
 		/// <param name="eAttribute">
 		/// <para>Type: <c>enum WINDOWTHEMEATTRIBUTETYPE</c></para>
 		/// <para>
-		/// Value of type <c>WINDOWTHEMEATTRIBUTETYPE</c> that specifies the type of attribute to set. The value of this parameter determines the type of data
-		/// that should be passed in the pvAttribute parameter. Can be the following value.
+		/// Value of type <c>WINDOWTHEMEATTRIBUTETYPE</c> that specifies the type of attribute to set. The value of this parameter determines
+		/// the type of data that should be passed in the pvAttribute parameter. Can be the following value.
 		/// </para>
 		/// <para>
 		/// <list type="table">
@@ -2856,10 +2990,11 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c><c>HRESULT</c></c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		// HRESULT SetWindowThemeAttribute( _In_ HWND hwnd, _In_ enum WINDOWTHEMEATTRIBUTETYPE eAttribute, _In_ PVOID pvAttribute, _In_ DWORD cbAttribute); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759829(v=vs.85).aspx
+		// HRESULT SetWindowThemeAttribute( _In_ HWND hwnd, _In_ enum WINDOWTHEMEATTRIBUTETYPE eAttribute, _In_ PVOID pvAttribute, _In_ DWORD
+		// cbAttribute); https://msdn.microsoft.com/en-us/library/windows/desktop/bb759829(v=vs.85).aspx
 		[DllImport(Lib.UxTheme, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb759829")]
-		public static extern HRESULT SetWindowThemeAttribute(HWND hwnd, WINDOWTHEMEATTRIBUTETYPE eAttribute, ref WTA_OPTIONS pvAttribute, uint cbAttribute);
+		public static extern HRESULT SetWindowThemeAttribute(HWND hwnd, WINDOWTHEMEATTRIBUTETYPE eAttribute, in WTA_OPTIONS pvAttribute, uint cbAttribute);
 
 		/// <summary>Sets attributes to control how visual styles are applied to a specified window.</summary>
 		/// <param name="hWnd">Handle to a window to apply changes to.</param>
@@ -2868,7 +3003,7 @@ namespace Vanara.PInvoke
 		public static void SetWindowThemeNonClientAttributes(HWND hWnd, WTNCA ncAttrs, bool activate = true)
 		{
 			var opt = new WTA_OPTIONS { Flags = ncAttrs, Mask = activate ? (uint)ncAttrs : 0 };
-			SetWindowThemeAttribute(hWnd, WINDOWTHEMEATTRIBUTETYPE.WTA_NONCLIENT, ref opt, (uint)Marshal.SizeOf(opt)).ThrowIfFailed();
+			SetWindowThemeAttribute(hWnd, WINDOWTHEMEATTRIBUTETYPE.WTA_NONCLIENT, opt, (uint)Marshal.SizeOf(opt)).ThrowIfFailed();
 		}
 
 		/// <summary>Retrieves a list of <c>int</c> data from a visual style.</summary>
@@ -2903,9 +3038,9 @@ namespace Vanara.PInvoke
 
 		/// <summary>Defines the options for the <see cref="DrawThemeTextEx"/> function.</summary>
 		/// <summary>Defines the options for the <c>DrawThemeTextEx</c> function.</summary>
-		// typedef struct _DTTOPTS { DWORD dwSize; DWORD dwFlags; COLORREF crText; COLORREF crBorder; COLORREF crShadow; int iTextShadowType; POINT
-		// ptShadowOffset; int iBorderSize; int iFontPropId; int iColorPropId; int iStateId; BOOL fApplyOverlay; int iGlowSize; DTT_CALLBACK_PROC
-		// pfnDrawTextCallback; LPARAM lParam;} DTTOPTS, *PDTTOPTS; https://msdn.microsoft.com/en-us/library/windows/desktop/bb773236(v=vs.85).aspx
+		// typedef struct _DTTOPTS { DWORD dwSize; DWORD dwFlags; COLORREF crText; COLORREF crBorder; COLORREF crShadow; int iTextShadowType;
+		// POINT ptShadowOffset; int iBorderSize; int iFontPropId; int iColorPropId; int iStateId; BOOL fApplyOverlay; int iGlowSize;
+		// DTT_CALLBACK_PROC pfnDrawTextCallback; LPARAM lParam;} DTTOPTS, *PDTTOPTS; https://msdn.microsoft.com/en-us/library/windows/desktop/bb773236(v=vs.85).aspx
 		[PInvokeData("Uxtheme.h", MSDNShortId = "bb773236")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct DTTOPTS
@@ -2915,11 +3050,12 @@ namespace Vanara.PInvoke
 			/// <para>Size of the structure.</para>
 			/// </summary>
 			public uint dwSize;
+
 			/// <summary>
 			/// <para>Type: <c><c>DWORD</c></c></para>
 			/// <para>
-			/// A combination of flags that specify whether certain values of the <c>DTTOPTS</c> structure have been specified, and how to interpret these
-			/// values. This member can be a combination of the following.
+			/// A combination of flags that specify whether certain values of the <c>DTTOPTS</c> structure have been specified, and how to
+			/// interpret these values. This member can be a combination of the following.
 			/// </para>
 			/// <para>
 			/// <list type="table">
@@ -2966,8 +3102,8 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>DTT_CALCRECT</term>
 			/// <term>
-			/// The pRect parameter of the DrawThemeTextEx function that uses this structure will be used as both an in and an out parameter. After the function
-			/// returns, the pRect parameter will contain the rectangle that corresponds to the region calculated to be drawn.
+			/// The pRect parameter of the DrawThemeTextEx function that uses this structure will be used as both an in and an out parameter.
+			/// After the function returns, the pRect parameter will contain the rectangle that corresponds to the region calculated to be drawn.
 			/// </term>
 			/// </item>
 			/// <item>
@@ -2985,36 +3121,40 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>DTT_COMPOSITED</term>
 			/// <term>
-			/// Draws text with antialiased alpha. Use of this flag requires a top-down DIB section. This flag works only if the HDC passed to function
-			/// DrawThemeTextEx has a top-down DIB section currently selected in it. For more information, see Device-Independent Bitmaps.
+			/// Draws text with antialiased alpha. Use of this flag requires a top-down DIB section. This flag works only if the HDC passed
+			/// to function DrawThemeTextEx has a top-down DIB section currently selected in it. For more information, see Device-Independent Bitmaps.
 			/// </term>
 			/// </item>
 			/// <item>
 			/// <term>DTT_VALIDBITS</term>
 			/// <term>
-			/// DTT_TEXTCOLOR | DTT_BORDERCOLOR | DTT_SHADOWCOLOR | DTT_SHADOWTYPE | DTT_SHADOWOFFSET | DTT_BORDERSIZE | DTT_FONTPROP | DTT_COLORPROP |
-			/// DTT_STATEID | DTT_CALCRECT | DTT_APPLYOVERLAY | DTT_GLOWSIZE | DTT_COMPOSITED.
+			/// DTT_TEXTCOLOR | DTT_BORDERCOLOR | DTT_SHADOWCOLOR | DTT_SHADOWTYPE | DTT_SHADOWOFFSET | DTT_BORDERSIZE | DTT_FONTPROP |
+			/// DTT_COLORPROP | DTT_STATEID | DTT_CALCRECT | DTT_APPLYOVERLAY | DTT_GLOWSIZE | DTT_COMPOSITED.
 			/// </term>
 			/// </item>
 			/// </list>
 			/// </para>
 			/// </summary>
 			public DrawThemeTextOptionsMasks dwMasks;
+
 			/// <summary>
 			/// <para>Type: <c><c>COLORREF</c></c></para>
 			/// <para>Specifies the color of the text that will be drawn.</para>
 			/// </summary>
 			public COLORREF crText;
+
 			/// <summary>
 			/// <para>Type: <c><c>COLORREF</c></c></para>
 			/// <para>Specifies the color of the outline that will be drawn around the text.</para>
 			/// </summary>
 			public COLORREF crBorder;
+
 			/// <summary>
 			/// <para>Type: <c><c>COLORREF</c></c></para>
 			/// <para>Specifies the color of the shadow that will be drawn behind the text.</para>
 			/// </summary>
 			public COLORREF crShadow;
+
 			/// <summary>
 			/// <para>Type: <c>int</c></para>
 			/// <para>Specifies the type of the shadow that will be drawn behind the text. This member can have one of the following values.</para>
@@ -3040,53 +3180,64 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public TextShadowType iTextShadowType;
+
 			/// <summary>
 			/// <para>Type: <c><c>POINT</c></c></para>
 			/// <para>Specifies the amount of offset, in logical coordinates, between the shadow and the text.</para>
 			/// </summary>
 			public Point ptShadowOffset;
+
 			/// <summary>
 			/// <para>Type: <c>int</c></para>
 			/// <para>Specifies the radius of the outline that will be drawn around the text.</para>
 			/// </summary>
 			public int iBorderSize;
+
 			/// <summary>
 			/// <para>Type: <c>int</c></para>
 			/// <para>Specifies an alternate font property to use when drawing text. For a list of possible values, see <c>GetThemeSysFont</c>.</para>
 			/// </summary>
 			public ThemeProperty iFontPropId;
+
 			/// <summary>
 			/// <para>Type: <c>int</c></para>
 			/// <para>
-			/// Specifies an alternate color property to use when drawing text. If this value is valid and the corresponding flag is set in <c>dwFlags</c>, this
-			/// value will override the value of <c>crText</c>. See the values listed in <c>GetSysColor</c> for the nIndex parameter.
+			/// Specifies an alternate color property to use when drawing text. If this value is valid and the corresponding flag is set in
+			/// <c>dwFlags</c>, this value will override the value of <c>crText</c>. See the values listed in <c>GetSysColor</c> for the
+			/// nIndex parameter.
 			/// </para>
 			/// </summary>
 			public ThemeProperty iColorPropId;
+
 			/// <summary>
 			/// <para>Type: <c>int</c></para>
 			/// <para>Specifies an alternate state to use. This member is not used by <c>DrawThemeTextEx</c>.</para>
 			/// </summary>
 			public int iStateId;
+
 			/// <summary>
 			/// <para>Type: <c><c>BOOL</c></c></para>
 			/// <para>
-			/// If <c>TRUE</c>, text will be drawn on top of the shadow and outline effects. If <c>FALSE</c>, just the shadow and outline effects will be drawn.
+			/// If <c>TRUE</c>, text will be drawn on top of the shadow and outline effects. If <c>FALSE</c>, just the shadow and outline
+			/// effects will be drawn.
 			/// </para>
 			/// </summary>
 			[MarshalAs(UnmanagedType.Bool)]
 			public bool fApplyOverlay;
+
 			/// <summary>
 			/// <para>Type: <c>int</c></para>
 			/// <para>Specifies the size of a glow that will be drawn on the background prior to any text being drawn.</para>
 			/// </summary>
 			public int iGlowSize;
+
 			/// <summary>
 			/// <para>Type: <c>DTT_CALLBACK_PROC</c></para>
 			/// <para>Pointer to callback function for <c>DrawThemeTextEx</c>.</para>
 			/// </summary>
 			[MarshalAs(UnmanagedType.FunctionPtr)]
 			public DTT_CALLBACK_PROC pfnDrawTextCallback;
+
 			/// <summary>
 			/// <para>Type: <c><c>LPARAM</c></c></para>
 			/// <para>Parameter for callback back function specified by <c>pfnDrawTextCallback</c>.</para>
@@ -3122,9 +3273,9 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary>
-			/// Gets or sets a value indicating whether to draw text with antialiased alpha. Use of this flag requires a top-down DIB section. This flag works
-			/// only if the HDC passed to function DrawThemeTextEx has a top-down DIB section currently selected in it. For more information, see
-			/// Device-Independent Bitmaps.
+			/// Gets or sets a value indicating whether to draw text with antialiased alpha. Use of this flag requires a top-down DIB
+			/// section. This flag works only if the HDC passed to function DrawThemeTextEx has a top-down DIB section currently selected in
+			/// it. For more information, see Device-Independent Bitmaps.
 			/// </summary>
 			/// <value><c>true</c> if antialiased alpha; otherwise, <c>false</c>.</value>
 			public bool AntiAliasedAlpha
@@ -3134,8 +3285,8 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary>
-			/// Gets or sets a value indicating whether text will be drawn on top of the shadow and outline effects ( <c>true</c>) or if just the shadow and
-			/// outline effects will be drawn ( <c>false</c>).
+			/// Gets or sets a value indicating whether text will be drawn on top of the shadow and outline effects ( <c>true</c>) or if just
+			/// the shadow and outline effects will be drawn ( <c>false</c>).
 			/// </summary>
 			/// <value><c>true</c> if drawn on top; otherwise, <c>false</c>.</value>
 			public bool ApplyOverlay
@@ -3205,9 +3356,9 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary>
-			/// Gets or sets a value indicating whether the pRect parameter of the <see cref="DrawThemeTextEx"/> function that uses this structure will be used
-			/// as both an in and an out parameter. After the function returns, the pRect parameter will contain the rectangle that corresponds to the region
-			/// calculated to be drawn.
+			/// Gets or sets a value indicating whether the pRect parameter of the <see cref="DrawThemeTextEx"/> function that uses this
+			/// structure will be used as both an in and an out parameter. After the function returns, the pRect parameter will contain the
+			/// rectangle that corresponds to the region calculated to be drawn.
 			/// </summary>
 			/// <value><c>true</c> if returning the calculated rectangle; otherwise, <c>false</c>.</value>
 			public bool ReturnCalculatedRectangle
@@ -3280,10 +3431,12 @@ namespace Vanara.PInvoke
 			/// <para>Number of values in the list.</para>
 			/// </summary>
 			public int iValueCount;
+
 			/// <summary>
 			/// <para>Type: <c>int[MAX_INTLIST_COUNT]</c></para>
 			/// <para>
-			/// List of integers. The constant MAX_INTLIST_COUNT, by definition, is equal to 402 under Windows Vista, but only 10 under earlier versions of Windows.
+			/// List of integers. The constant MAX_INTLIST_COUNT, by definition, is equal to 402 under Windows Vista, but only 10 under
+			/// earlier versions of Windows.
 			/// </para>
 			/// </summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 402)]
@@ -3297,10 +3450,13 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Width of the left border that retains its size.</summary>
 			public int cxLeftWidth;
+
 			/// <summary>Width of the right border that retains its size.</summary>
 			public int cxRightWidth;
+
 			/// <summary>Height of the top border that retains its size.</summary>
 			public int cyTopHeight;
+
 			/// <summary>Height of the bottom border that retains its size.</summary>
 			public int cyBottomHeight;
 		}
@@ -3319,12 +3475,16 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Undocumented.</summary>
 			public uint dwDurationTime;
+
 			/// <summary>Undocumented.</summary>
 			public uint dwStartTime;
+
 			/// <summary>Undocumented.</summary>
 			public uint dwTimingFunctionId;
+
 			/// <summary>Undocumented.</summary>
 			public TA_TRANSFORM_FLAG eFlags;
+
 			/// <summary>Undocumented.</summary>
 			public TA_TRANSFORM_TYPE eTransformType;
 		}
@@ -3340,11 +3500,12 @@ namespace Vanara.PInvoke
 			/// <para>A combination of flags that modify window visual style attributes. Can be a combination of the <c>WTNCA</c> constants.</para>
 			/// </summary>
 			public WTNCA Flags;
+
 			/// <summary>
 			/// <para>Type: <c><c>DWORD</c></c></para>
 			/// <para>
-			/// A bitmask that describes how the values specified in <c>dwFlags</c> should be applied. If the bit corresponding to a value in <c>dwFlags</c> is
-			/// 0, that flag will be removed. If the bit is 1, the flag will be added.
+			/// A bitmask that describes how the values specified in <c>dwFlags</c> should be applied. If the bit corresponding to a value in
+			/// <c>dwFlags</c> is 0, that flag will be removed. If the bit is 1, the flag will be added.
 			/// </para>
 			/// </summary>
 			public uint Mask;
@@ -3361,10 +3522,12 @@ namespace Vanara.PInvoke
 			/// <para>Number of values in the list.</para>
 			/// </summary>
 			public int iValueCount;
+
 			/// <summary>
 			/// <para>Type: <c>int[MAX_INTLIST_COUNT]</c></para>
 			/// <para>
-			/// List of integers. The constant MAX_INTLIST_COUNT, by definition, is equal to 402 under Windows Vista, but only 10 under earlier versions of Windows.
+			/// List of integers. The constant MAX_INTLIST_COUNT, by definition, is equal to 402 under Windows Vista, but only 10 under
+			/// earlier versions of Windows.
 			/// </para>
 			/// </summary>
 			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
@@ -3382,6 +3545,7 @@ namespace Vanara.PInvoke
 			/// <para>Size of the structure. Set this to sizeof(DTBGOPTS).</para>
 			/// </summary>
 			public uint dwSize;
+
 			/// <summary>
 			/// <para>Type: <c><c>DWORD</c></c></para>
 			/// <para>Flags that specify the selected options. This member can be one of the following:</para>
@@ -3427,6 +3591,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public DrawThemeBackgroundFlags dwFlags;
+
 			/// <summary>
 			/// <para>Type: <c><c>RECT</c></c></para>
 			/// <para>A <c>RECT</c> that specifies the bounding rectangle of the clip region.</para>
@@ -3489,7 +3654,9 @@ namespace Vanara.PInvoke
 			/// <param name="ownsHandle">if set to <c>true</c> [owns handle].</param>
 			public SafeHTHEME(IntPtr hTheme, bool ownsHandle = true) : base(hTheme, ownsHandle) { }
 
-			private SafeHTHEME() : base() { }
+			private SafeHTHEME() : base()
+			{
+			}
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeHTHEME"/> to <see cref="HTHEME"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
@@ -3497,7 +3664,7 @@ namespace Vanara.PInvoke
 			public static implicit operator HTHEME(SafeHTHEME h) => h.handle;
 
 			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => CloseThemeData(this) == 0;
+			protected override bool InternalReleaseHandle() => CloseThemeData(this).Succeeded;
 		}
 	}
 }

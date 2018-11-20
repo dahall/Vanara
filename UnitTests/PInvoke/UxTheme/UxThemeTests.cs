@@ -176,7 +176,7 @@ namespace Vanara.PInvoke.Tests
 			// Can't test since not documented
 			return;
 			//var tran = new TA_TRANSFORM();
-			//var hr = GetThemeAnimationTransform(hbt, 1, 2, 0, ref tran, (uint)Marshal.SizeOf<TA_TRANSFORM>(), out var sz);
+			//var hr = GetThemeAnimationTransform(hbt, 1, 2, 0, ref tran, (uint)Marshal.SizeOf(typeof(TA_TRANSFORM)), out var sz);
 			//if (hr.Failed) TestContext.WriteLine(hr);
 			//Assert.That(hr.Succeeded);
 			//Assert.That(sz, Is.Not.Zero);
@@ -194,7 +194,7 @@ namespace Vanara.PInvoke.Tests
 		public void GetThemeBackgroundContentRectTest()
 		{
 			var rect = new RECT(0, 0, 400, 400);
-			Assert.That(GetThemeBackgroundContentRect(hwt, HDC.NULL, 1, 0, ref rect, out var cntRect).Succeeded);
+			Assert.That(GetThemeBackgroundContentRect(hwt, HDC.NULL, 1, 0, rect, out var cntRect).Succeeded);
 			Assert.That(cntRect, Is.Not.EqualTo(new RECT()));
 			TestContext.WriteLine(cntRect);
 		}
@@ -203,8 +203,8 @@ namespace Vanara.PInvoke.Tests
 		public void GetThemeBackgroundExtentTest()
 		{
 			var rect = new RECT(0, 0, 400, 400);
-			GetThemeBackgroundContentRect(hwt, HDC.NULL, 21, 1, ref rect, out var cntRect);
-			Assert.That(GetThemeBackgroundExtent(hwt, HDC.NULL, 21, 1, ref cntRect, out var r).Succeeded);
+			GetThemeBackgroundContentRect(hwt, HDC.NULL, 21, 1, rect, out var cntRect);
+			Assert.That(GetThemeBackgroundExtent(hwt, HDC.NULL, 21, 1, cntRect, out var r).Succeeded);
 			Assert.That(r.IsEmpty, Is.False);
 		}
 
@@ -212,8 +212,8 @@ namespace Vanara.PInvoke.Tests
 		public void GetThemeBackgroundRegionTest()
 		{
 			var rect = new RECT(0, 0, 400, 400);
-			GetThemeBackgroundContentRect(hwt, HDC.NULL, 21, 1, ref rect, out var cntRect);
-			Assert.That(GetThemeBackgroundRegion(hwt, HDC.NULL, 21, 1, ref cntRect, out var r).Succeeded);
+			GetThemeBackgroundContentRect(hwt, HDC.NULL, 21, 1, rect, out var cntRect);
+			Assert.That(GetThemeBackgroundRegion(hwt, HDC.NULL, 21, 1, cntRect, out var r).Succeeded);
 			Assert.That(r, Is.Not.EqualTo(IntPtr.Zero));
 		}
 
@@ -225,7 +225,7 @@ namespace Vanara.PInvoke.Tests
 			var hr = GetThemeBitmap(hwt, p, s, id, GBF.GBF_DIRECT, out var hbmp);
 			if (hr.Failed) TestContext.WriteLine(hr);
 			Assert.That(hr.Succeeded);
-			Assert.That(hbmp, Is.Not.EqualTo(IntPtr.Zero));
+			Assert.That((HBITMAP)hbmp, Is.Not.EqualTo(HBITMAP.NULL));
 		}
 
 		[Test]
@@ -492,8 +492,7 @@ namespace Vanara.PInvoke.Tests
 				using (var htheme = OpenThemeData(f.Handle, "Window"))
 				{
 					Assert.That(htheme, Is.Not.EqualTo(IntPtr.Zero));
-					RECT r = f.ClientRectangle;
-					var hr = HitTestThemeBackground(htheme, new SafeHDC(f.CreateGraphics()), 1, 1, HitTestOptions.HTTB_CAPTION, ref r, HRGN.NULL, new Point(1, 1), out var code);
+					var hr = HitTestThemeBackground(htheme, new SafeHDC(f.CreateGraphics()), 1, 1, HitTestOptions.HTTB_CAPTION, f.ClientRectangle, HRGN.NULL, new Point(1, 1), out var code);
 					Assert.That(hr.Succeeded);
 				}
 				f.Close();

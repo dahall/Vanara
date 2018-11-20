@@ -85,7 +85,7 @@ namespace Vanara.Windows.Shell
 		/// <param name="value">The value of the value.</param>
 		/// <param name="valueKind">Kind of the value.</param>
 		/// <param name="deleteIfValue">The value that, if equal to <paramref name="value"/>, causes the removal of the value.</param>
-		protected void UpdateValue<T>(string name, T value, RegistryValueKind valueKind = RegistryValueKind.Unknown, T deleteIfValue = default(T))
+		protected void UpdateValue<T>(string name, T value, RegistryValueKind valueKind = RegistryValueKind.Unknown, T deleteIfValue = default)
 		{
 			CheckRW();
 			if (Equals(value, deleteIfValue))

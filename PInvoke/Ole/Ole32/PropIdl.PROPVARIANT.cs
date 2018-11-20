@@ -12,8 +12,6 @@ using static Vanara.PInvoke.OleAut32;
 using static Vanara.PInvoke.PropSys;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
-// ReSharper disable InconsistentNaming ReSharper disable FieldCanBeMadeReadOnly.Global ReSharper disable BitwiseOperatorOnEnumWithoutFlags
-
 namespace Vanara.PInvoke
 {
 	/// <summary></summary>
@@ -221,7 +219,7 @@ namespace Vanara.PInvoke
 			public IEnumerable<int> cal => GetVector<int>();
 
 			/// <summary>Gets the ANSI string array value.</summary>
-			public IEnumerable<string> calpstr => GetStringVector();
+			public IEnumerable<string> calpstr => throw new NotSupportedException(); //GetStringVector();
 
 			/// <summary>Gets the Unicode string array value.</summary>
 			public IEnumerable<string> calpwstr => GetStringVector();
@@ -904,8 +902,9 @@ namespace Vanara.PInvoke
 						break;
 
 					case VARTYPE.VT_CF:
-						SetStruct((CLIPDATA?)value, VarType);
-						break;
+						//SetStruct((CLIPDATA?)value, VarType);
+						//break;
+						throw new NotSupportedException();
 
 					case VARTYPE.VT_BLOB:
 					case VARTYPE.VT_BLOB_OBJECT:
@@ -1047,8 +1046,7 @@ namespace Vanara.PInvoke
 
 					case VARTYPE.VT_VECTOR | VARTYPE.VT_BSTR:
 						{
-							var ep = value as IEnumerable<IntPtr>;
-							if (ep != null)
+							if (value is IEnumerable<IntPtr> ep)
 								SetVector(ep, VarType);
 							else
 								SetStringVector(ConvertToEnum<string>(value), VarType);
@@ -1056,6 +1054,8 @@ namespace Vanara.PInvoke
 						break;
 
 					case VARTYPE.VT_VECTOR | VARTYPE.VT_LPSTR:
+						throw new NotSupportedException();
+
 					case VARTYPE.VT_VECTOR | VARTYPE.VT_LPWSTR:
 						SetStringVector(ConvertToEnum<string>(value), VarType);
 						break;
@@ -1167,13 +1167,14 @@ namespace Vanara.PInvoke
 			private IEnumerable<object> GetSafeArray()
 			{
 				if (_ptr == IntPtr.Zero) return null;
-				var dims = SafeArrayGetDim(_ptr);
+				var sa = new SafeSAFEARRAY(_ptr, false);
+				var dims = SafeArrayGetDim(sa);
 				if (dims != 1) throw new NotSupportedException("Only single-dimensional arrays are supported");
-				SafeArrayGetLBound(_ptr, 1U, out int lBound);
-				SafeArrayGetUBound(_ptr, 1U, out int uBound);
-				var elemSz = SafeArrayGetElemsize(_ptr);
+				SafeArrayGetLBound(sa, 1U, out int lBound);
+				SafeArrayGetUBound(sa, 1U, out int uBound);
+				var elemSz = SafeArrayGetElemsize(sa);
 				if (elemSz == 0) throw new Win32Exception();
-				using (var d = new SafeArrayScopedAccessData(_ptr))
+				using (var d = new SafeArrayScopedAccessData(sa))
 					return Marshal.GetObjectsForNativeVariants(d.Data, uBound - lBound + 1);
 			}
 
@@ -1195,7 +1196,10 @@ namespace Vanara.PInvoke
 			private IEnumerable<string> GetStringVector()
 			{
 				var ve = (VarEnum)((int)vt & 0x0FFF);
-				return _blob.pBlobData.ToIEnum<IntPtr>((int)_blob.cbSize).Select(p => GetString(ve, p));
+				if (ve == VarEnum.VT_LPSTR)
+					return _blob.pBlobData.ToIEnum<IntPtr>((int)_blob.cbSize).Select(p => GetString(ve, p));
+				PropVariantToStringVectorAlloc(this, out var mem, out var cnt).ThrowIfFailed();
+				return mem.ToStringEnum((int)cnt, CharSet.Unicode);
 			}
 
 			private IEnumerable<T> GetVector<T>()
@@ -1217,7 +1221,7 @@ namespace Vanara.PInvoke
 				vt = VARTYPE.VT_ARRAY | VARTYPE.VT_VARIANT;
 				if (array == null || array.Count == 0) return;
 				var psa = SafeArrayCreateVector(VARTYPE.VT_VARIANT, 0, (uint)array.Count);
-				if (psa == IntPtr.Zero) throw new Win32Exception();
+				if (psa.IsNull) throw new Win32Exception();
 				using (var p = new SafeArrayScopedAccessData(psa))
 				{
 					var elemSz = SafeArrayGetElemsize(psa);
@@ -1225,7 +1229,8 @@ namespace Vanara.PInvoke
 					for (var i = 0; i < array.Count; ++i)
 						Marshal.GetNativeVariantForObject(array[i], p.Data.Offset(i * elemSz));
 				}
-				_ptr = psa;
+				_ptr = psa.DangerousGetHandle();
+				psa.SetHandleAsInvalid();
 			}
 
 			private void SetString(string value, VarEnum ve)
@@ -1246,35 +1251,25 @@ namespace Vanara.PInvoke
 
 				Clear();
 				var sc = value.ToArray();
-				/*using (var tmp = new PROPVARIANT())
-				{
-					InitPropVariantFromStringVector(sc, (uint) sc.Length, tmp).ThrowIfFailed();
-					PropVariantCopy(this, tmp);
-				}*/
-
-				vt = svt | VARTYPE.VT_VECTOR;
 				if (sc.Length <= 0) return;
-
-				var destPtr = IntPtr.Zero;
-				var index = 0;
-				try
+				switch (svt)
 				{
-					// TODO: Fix this so that it uses the system call in hopes that PropVarClear will actually release the memory.
-					destPtr = Marshal.AllocCoTaskMem(IntPtr.Size * sc.Length);
-					for (index = 0; index < sc.Length; index++)
-						Marshal.WriteIntPtr(destPtr, index * IntPtr.Size, GetStringPtr(sc[index], (VarEnum)svt));
-					_blob.cbSize = (uint)sc.Length;
-					_blob.pBlobData = destPtr;
-					destPtr = IntPtr.Zero;
-				}
-				finally
-				{
-					if (destPtr != IntPtr.Zero)
-					{
-						for (var i = 0; i < index; i++)
-							Marshal.FreeCoTaskMem(Marshal.ReadIntPtr(destPtr, i * IntPtr.Size));
-						Marshal.FreeCoTaskMem(destPtr);
-					}
+					case VARTYPE.VT_BSTR:
+						vt = svt | VARTYPE.VT_VECTOR;
+						_blob.cbSize = (uint)sc.Length;
+						_blob.pBlobData = value.Select(Marshal.StringToBSTR).MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
+						break;
+					case VARTYPE.VT_LPSTR:
+						vt = svt | VARTYPE.VT_VECTOR;
+						_blob.cbSize = (uint)sc.Length;
+						_blob.pBlobData = value.Select(Marshal.StringToCoTaskMemAnsi).MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
+						//_blob.pBlobData = value.MarshalToPtr(StringListPackMethod.Packed, Marshal.AllocCoTaskMem, out var _, CharSet.Ansi);
+						break;
+					case VARTYPE.VT_LPWSTR:
+						InitPropVariantFromStringVector(sc, (uint)sc.Length, this).ThrowIfFailed();
+						break;
+					default:
+						break;
 				}
 			}
 
@@ -1308,12 +1303,52 @@ namespace Vanara.PInvoke
 				vt = (VARTYPE)varEnum | VARTYPE.VT_VECTOR;
 				if (array == null) return;
 
-				var enumerable = array as ICollection<T> ?? array.ToList();
-				_blob.cbSize = (uint)enumerable.Count;
-				var sz = Marshal.SizeOf(typeof(T));
-				// TODO: Fix this so that it uses the system call in hopes that PropVarClear will actually release the memory.
-				_blob.pBlobData = Marshal.AllocCoTaskMem(sz * (int)_blob.cbSize);
-				enumerable.MarshalToPtr(_blob.pBlobData);
+				var sz = 0U;
+				switch (varEnum)
+				{
+					case VarEnum.VT_I2:
+						InitPropVariantFromInt16Vector(GetArray<short>(out sz), sz, this).ThrowIfFailed();
+						break;
+					case VarEnum.VT_I4:
+						InitPropVariantFromInt32Vector(GetArray<int>(out sz), sz, this).ThrowIfFailed();
+						break;
+					case VarEnum.VT_R8:
+						InitPropVariantFromDoubleVector(GetArray<double>(out sz), sz, this).ThrowIfFailed();
+						break;
+					case VarEnum.VT_BOOL:
+						InitPropVariantFromBooleanVector(GetArray<bool>(out sz), sz, this).ThrowIfFailed();
+						break;
+					case VarEnum.VT_UI1:
+						InitPropVariantFromBuffer(GetArray<byte>(out sz), sz, this).ThrowIfFailed();
+						break;
+					case VarEnum.VT_UI2:
+						InitPropVariantFromUInt16Vector(GetArray<ushort>(out sz), sz, this).ThrowIfFailed();
+						break;
+					case VarEnum.VT_UI4:
+						InitPropVariantFromUInt32Vector(GetArray<uint>(out sz), sz, this).ThrowIfFailed();
+						break;
+					case VarEnum.VT_I8:
+						InitPropVariantFromInt64Vector(GetArray<long>(out sz), sz, this).ThrowIfFailed();
+						break;
+					case VarEnum.VT_UI8:
+						InitPropVariantFromUInt64Vector(GetArray<ulong>(out sz), sz, this).ThrowIfFailed();
+						break;
+					case VarEnum.VT_FILETIME:
+						InitPropVariantFromFileTimeVector(GetArray<FILETIME>(out sz), sz, this).ThrowIfFailed();
+						break;
+					default:
+						var enumerable = array as ICollection<T> ?? array.ToList();
+						_blob.cbSize = (uint)enumerable.Count;
+						_blob.pBlobData = enumerable.MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
+						break;
+				}
+
+				TV[] GetArray<TV>(out uint len)
+				{
+					var ret = ConvertToEnum<TV>(array).ToArray();
+					len = (uint)ret.Length;
+					return ret;
+				}
 			}
 
 			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>

@@ -1,5 +1,4 @@
 ﻿using System.Runtime.InteropServices;
-using static Vanara.PInvoke.Gdi32;
 
 namespace Vanara.PInvoke
 {
@@ -10,7 +9,9 @@ namespace Vanara.PInvoke
 		/// <param name="hdc">HDC. This parameter may be set to NULL.</param>
 		/// <param name="iPartId">Value of type int that specifies the part that contains the font property. See Parts and States.</param>
 		/// <param name="iStateId">Value of type int that specifies the state of the part. See Parts and States.</param>
-		/// <param name="iPropId">Value of type int that specifies the property to retrieve. For a list of possible values, see Property Identifiers.</param>
+		/// <param name="iPropId">
+		/// Value of type int that specifies the property to retrieve. For a list of possible values, see Property Identifiers.
+		/// </param>
 		/// <param name="pFont">Pointer to a LOGFONT structure that receives the font property value.</param>
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb759745(v=vs.85).aspx

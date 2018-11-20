@@ -59,7 +59,7 @@ namespace Vanara.PInvoke
 		/// <summary>Performs an implicit conversion from <see cref="SizeT"/> to <see cref="System.UInt64"/>.</summary>
 		/// <param name="value">The value.</param>
 		/// <returns>The result of the conversion.</returns>
-		public static implicit operator ulong(SizeT value) => (ulong)value.Value;
+		public static implicit operator ulong(SizeT value) => value.Value;
 
 		/// <inheritdoc/>
 		public int CompareTo(SizeT other) => Value.CompareTo(other.Value);

@@ -4,8 +4,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.InteropServices;
 
-// ReSharper disable FieldCanBeMadeReadOnly.Global ReSharper disable InconsistentNaming
-
 namespace Vanara.PInvoke
 {
 	public static partial class User32
@@ -797,7 +795,7 @@ namespace Vanara.PInvoke
 			/// Sets the keyboard repeat-delay setting. The uiParam parameter must specify 0, 1, 2, or 3, where zero sets the shortest delay
 			/// (approximately 250
 			/// ms) and 3 sets the longest delay (approximately 1 second). The actual delay associated with each value may vary depending on
-			///     the hardware.
+			/// the hardware.
 			/// </summary>
 			[SPCorrespondingType(typeof(int), CorrepsondingAction.Set, true)]
 			SPI_SETKEYBOARDDELAY = 0x0017,
@@ -3779,8 +3777,7 @@ namespace Vanara.PInvoke
 		/// whereas <c>MessageBeep</c> is not.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-messagebeep
-		// BOOL MessageBeep( UINT uType );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-messagebeep BOOL MessageBeep( UINT uType );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "70681472-36a5-4ae3-b769-0421cf97ff2a")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -4101,8 +4098,8 @@ namespace Vanara.PInvoke
 		/// <para>The following image shows the output from the preceding code example:</para>
 		/// <para>For another message box example, see Displaying a Message Box.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-messagebox
-		// int MessageBox( HWND hWnd, LPCTSTR lpText, LPCTSTR lpCaption, UINT uType );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-messagebox int MessageBox( HWND hWnd, LPCTSTR lpText,
+		// LPCTSTR lpCaption, UINT uType );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "messagebox")]
 		public static extern MB_RESULT MessageBox(HWND hWnd, string lpText, string lpCaption, MB_FLAGS uType);
@@ -4406,7 +4403,7 @@ namespace Vanara.PInvoke
 			using (var ptr = new SafeHGlobalHandle((int)uv))
 			{
 				if (isBool || uv <= sizeof(uint)) uv = 0;
-				getValue = default(T);
+				getValue = default;
 				if (!SystemParametersInfo(uiAction, uv, (IntPtr)ptr, spif))
 					return false;
 				getValue = isBool ? (T)(object)(ptr.ToStructure<uint>() > 0) : ptr.ToStructure<T>();
@@ -5066,10 +5063,7 @@ namespace Vanara.PInvoke
 
 		internal class SPCorrespondingTypeAttribute : CorrespondingTypeAttribute
 		{
-			public SPCorrespondingTypeAttribute(Type typeRef, CorrepsondingAction action, bool useUiParam = false) : base(typeRef, action)
-			{
-				UseUiParam = useUiParam;
-			}
+			public SPCorrespondingTypeAttribute(Type typeRef, CorrepsondingAction action, bool useUiParam = false) : base(typeRef, action) => UseUiParam = useUiParam;
 
 			public bool UseUiParam { get; }
 

@@ -1374,7 +1374,7 @@ namespace Vanara.PInvoke
 		// PCUITEMID_CHILD pidl, LPSTR *ppsz );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "03b0dffb-8ef7-41da-9773-81ed55275802")]
-		public static extern HRESULT StrRetToStr(IntPtr pstr, IntPtr pidl, out SafeCoTaskMemString ppsz);
+		public static extern HRESULT StrRetToStr(IntPtr pstr, IntPtr pidl, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppsz);
 
 		/// <summary>
 		/// <para>Searches for the last occurrence of a specified substring within a string. The comparison is not case-sensitive.</para>

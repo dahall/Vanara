@@ -73,7 +73,7 @@ namespace Vanara.PInvoke.Tests
 			using (var reply = new AUTHZ_ACCESS_REPLY(1))
 			{
 				var req = new AUTHZ_ACCESS_REQUEST((uint)ACCESS_MASK.MAXIMUM_ALLOWED);
-				var b = AuthzAccessCheck(AuthzAccessCheckFlags.NONE, hCtx, ref req, hEvt, psd, null, 0, reply, out var hRes);
+				var b = AuthzAccessCheck(AuthzAccessCheckFlags.NONE, hCtx, req, hEvt, psd, null, 0, reply, out var hRes);
 				if (!b) TestContext.WriteLine($"AuthzAccessCheck:{Win32Error.GetLastError()}");
 				Assert.That(b);
 				Assert.That(reply.GrantedAccessMask, Is.Not.EqualTo(IntPtr.Zero));
@@ -172,7 +172,7 @@ namespace Vanara.PInvoke.Tests
 			using (var hCtx = GetCurrentUserAuthContext(hRM))
 			{
 				var tg = new TOKEN_GROUPS(1);
-				var psid = new PSID("S-1-5-32-551");
+				var psid = new SafePSID("S-1-5-32-551");
 				tg.Groups[0] = new SID_AND_ATTRIBUTES { Attributes = (uint)GroupAttributes.SE_GROUP_ENABLED, Sid = (IntPtr)psid};
 				var b = AuthzModifySids(hCtx, AUTHZ_CONTEXT_INFORMATION_CLASS.AuthzContextInfoGroupsSids, new[] { AUTHZ_SID_OPERATION.AUTHZ_SID_OPERATION_ADD }, in tg);
 				if (!b) TestContext.WriteLine($"AuthzModifySids:{Win32Error.GetLastError()}");

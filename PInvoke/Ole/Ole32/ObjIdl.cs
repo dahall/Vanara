@@ -236,8 +236,8 @@ namespace Vanara.PInvoke
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IStream CreateStream([In, MarshalAs(UnmanagedType.LPWStr)] string pwcsName,
 				[In] STGM grfMode,
-				[In] uint reserved1,
-				[In] uint reserved2);
+				[In, Optional] uint reserved1,
+				[In, Optional] uint reserved2);
 
 			/// <summary>The OpenStream method opens an existing stream object within this storage object in the specified access mode.</summary>
 			/// <param name="pwcsName">
@@ -254,9 +254,9 @@ namespace Vanara.PInvoke
 			/// <returns>A IStream interface pointer to the newly opened stream object.</returns>
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IStream OpenStream([In, MarshalAs(UnmanagedType.LPWStr)] string pwcsName, [In] IntPtr reserved1,
+			IStream OpenStream([In, MarshalAs(UnmanagedType.LPWStr)] string pwcsName, [In, Optional] IntPtr reserved1,
 				[In] STGM grfMode,
-				[In] uint reserved2);
+				[In, Optional] uint reserved2);
 
 			/// <summary>
 			/// The CreateStorage method creates and opens a new storage object nested within this storage object with the specified name in
@@ -279,8 +279,8 @@ namespace Vanara.PInvoke
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IStorage CreateStorage([In, MarshalAs(UnmanagedType.LPWStr)] string pwcsName,
 				[In] STGM grfMode,
-				[In] uint reserved1,
-				[In] uint reserved2);
+				[In, Optional] uint reserved1,
+				[In, Optional] uint reserved2);
 
 			/// <summary>The OpenStorage method opens an existing storage object with the specified name in the specified access mode.</summary>
 			/// <param name="pwcsName">
@@ -302,7 +302,7 @@ namespace Vanara.PInvoke
 				[In, MarshalAs(UnmanagedType.Interface)] IStorage pstgPriority,
 				[In] STGM grfMode,
 				[In] SNB snbExclude,
-				[In] uint reserved);
+				[In, Optional] uint reserved);
 
 			/// <summary>The CopyTo method copies the entire contents of an open storage object to another storage object.</summary>
 			/// <param name="ciidExclude">
@@ -374,7 +374,7 @@ namespace Vanara.PInvoke
 			/// <returns>The interface pointer to the new enumerator object.</returns>
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IEnumSTATSTG EnumElements([In] uint reserved1, [In] IntPtr reserved2, [In] uint reserved3);
+			IEnumSTATSTG EnumElements([In] uint reserved1, [In, Optional] IntPtr reserved2, [In, Optional] uint reserved3);
 
 			/// <summary>The DestroyElement method removes the specified storage or stream from this storage object.</summary>
 			/// <param name="pwcsName">A string that contains the name of the storage or stream to be removed.</param>

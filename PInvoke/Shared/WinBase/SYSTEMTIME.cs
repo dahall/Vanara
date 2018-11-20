@@ -6,11 +6,10 @@ using System.Runtime.InteropServices;
 namespace Vanara.PInvoke
 {
 	/// <summary>
-	/// Specifies a date and time, using individual members for the month, day, year, weekday, hour, minute, second, and millisecond. The time is either in
-	/// coordinated universal time (UTC) or local time, depending on the function that is being called.
+	/// Specifies a date and time, using individual members for the month, day, year, weekday, hour, minute, second, and millisecond. The
+	/// time is either in coordinated universal time (UTC) or local time, depending on the function that is being called.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential, Pack = 2)]
-	// ReSharper disable once InconsistentNaming
 	public struct SYSTEMTIME : IEquatable<SYSTEMTIME>, IComparable<SYSTEMTIME>
 	{
 		/// <summary>The year. The valid values for this member are 1601 through 30827.</summary>
@@ -19,19 +18,58 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// The month. This member can be one of the following values.
 		/// <list type="table">
-		/// <listheader><term>Value</term><term>Meaning</term></listheader>
-		/// <item><term>1</term><term>January</term></item>
-		/// <item><term>2</term><term>February</term></item>
-		/// <item><term>3</term><term>March</term></item>
-		/// <item><term>4</term><term>April</term></item>
-		/// <item><term>5</term><term>May</term></item>
-		/// <item><term>6</term><term>June</term></item>
-		/// <item><term>7</term><term>July</term></item>
-		/// <item><term>8</term><term>August</term></item>
-		/// <item><term>9</term><term>September</term></item>
-		/// <item><term>10</term><term>October</term></item>
-		/// <item><term>11</term><term>November</term></item>
-		/// <item><term>12</term><term>December</term></item>
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>1</term>
+		/// <term>January</term>
+		/// </item>
+		/// <item>
+		/// <term>2</term>
+		/// <term>February</term>
+		/// </item>
+		/// <item>
+		/// <term>3</term>
+		/// <term>March</term>
+		/// </item>
+		/// <item>
+		/// <term>4</term>
+		/// <term>April</term>
+		/// </item>
+		/// <item>
+		/// <term>5</term>
+		/// <term>May</term>
+		/// </item>
+		/// <item>
+		/// <term>6</term>
+		/// <term>June</term>
+		/// </item>
+		/// <item>
+		/// <term>7</term>
+		/// <term>July</term>
+		/// </item>
+		/// <item>
+		/// <term>8</term>
+		/// <term>August</term>
+		/// </item>
+		/// <item>
+		/// <term>9</term>
+		/// <term>September</term>
+		/// </item>
+		/// <item>
+		/// <term>10</term>
+		/// <term>October</term>
+		/// </item>
+		/// <item>
+		/// <term>11</term>
+		/// <term>November</term>
+		/// </item>
+		/// <item>
+		/// <term>12</term>
+		/// <term>December</term>
+		/// </item>
 		/// </list>
 		/// </summary>
 		public ushort wMonth;
@@ -39,14 +77,38 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// The day of the week. This member can be one of the following values.
 		/// <list type="table">
-		/// <listheader><term>Value</term><term>Meaning</term></listheader>
-		/// <item><term>0</term><term>Sunday</term></item>
-		/// <item><term>1</term><term>Monday</term></item>
-		/// <item><term>2</term><term>Tuesday</term></item>
-		/// <item><term>3</term><term>Wednesday</term></item>
-		/// <item><term>4</term><term>Thursday</term></item>
-		/// <item><term>5</term><term>Friday</term></item>
-		/// <item><term>6</term><term>Saturday</term></item>
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0</term>
+		/// <term>Sunday</term>
+		/// </item>
+		/// <item>
+		/// <term>1</term>
+		/// <term>Monday</term>
+		/// </item>
+		/// <item>
+		/// <term>2</term>
+		/// <term>Tuesday</term>
+		/// </item>
+		/// <item>
+		/// <term>3</term>
+		/// <term>Wednesday</term>
+		/// </item>
+		/// <item>
+		/// <term>4</term>
+		/// <term>Thursday</term>
+		/// </item>
+		/// <item>
+		/// <term>5</term>
+		/// <term>Friday</term>
+		/// </item>
+		/// <item>
+		/// <term>6</term>
+		/// <term>Saturday</term>
+		/// </item>
 		/// </list>
 		/// </summary>
 		public ushort wDayOfWeek;
@@ -69,8 +131,8 @@ namespace Vanara.PInvoke
 		private static readonly int[] DaysToMonth365 = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
 		private static readonly int[] DaysToMonth366 = { 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 };
 
-		/// <summary>Initializes a new instance of the <see cref="SYSTEMTIME" /> struct with a <see cref="DateTime" />.</summary>
-		/// <param name="dt">The <see cref="DateTime" /> value.</param>
+		/// <summary>Initializes a new instance of the <see cref="SYSTEMTIME"/> struct with a <see cref="DateTime"/>.</summary>
+		/// <param name="dt">The <see cref="DateTime"/> value.</param>
 		/// <param name="toKind">Indicates whether the <see cref="SYSTEMTIME"/> should represent the local, universal or unknown time.</param>
 		/// <exception cref="ArgumentOutOfRangeException">dt - Year value must be 1601 through 30827</exception>
 		public SYSTEMTIME(DateTime dt, DateTimeKind toKind = DateTimeKind.Unspecified)
@@ -92,19 +154,58 @@ namespace Vanara.PInvoke
 		/// <param name="month">
 		/// The month. This member can be one of the following values.
 		/// <list type="table">
-		/// <listheader><term>Value</term><term>Meaning</term></listheader>
-		/// <item><term>1</term><term>January</term></item>
-		/// <item><term>2</term><term>February</term></item>
-		/// <item><term>3</term><term>March</term></item>
-		/// <item><term>4</term><term>April</term></item>
-		/// <item><term>5</term><term>May</term></item>
-		/// <item><term>6</term><term>June</term></item>
-		/// <item><term>7</term><term>July</term></item>
-		/// <item><term>8</term><term>August</term></item>
-		/// <item><term>9</term><term>September</term></item>
-		/// <item><term>10</term><term>October</term></item>
-		/// <item><term>11</term><term>November</term></item>
-		/// <item><term>12</term><term>December</term></item>
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>1</term>
+		/// <term>January</term>
+		/// </item>
+		/// <item>
+		/// <term>2</term>
+		/// <term>February</term>
+		/// </item>
+		/// <item>
+		/// <term>3</term>
+		/// <term>March</term>
+		/// </item>
+		/// <item>
+		/// <term>4</term>
+		/// <term>April</term>
+		/// </item>
+		/// <item>
+		/// <term>5</term>
+		/// <term>May</term>
+		/// </item>
+		/// <item>
+		/// <term>6</term>
+		/// <term>June</term>
+		/// </item>
+		/// <item>
+		/// <term>7</term>
+		/// <term>July</term>
+		/// </item>
+		/// <item>
+		/// <term>8</term>
+		/// <term>August</term>
+		/// </item>
+		/// <item>
+		/// <term>9</term>
+		/// <term>September</term>
+		/// </item>
+		/// <item>
+		/// <term>10</term>
+		/// <term>October</term>
+		/// </item>
+		/// <item>
+		/// <term>11</term>
+		/// <term>November</term>
+		/// </item>
+		/// <item>
+		/// <term>12</term>
+		/// <term>December</term>
+		/// </item>
 		/// </list>
 		/// </param>
 		/// <param name="day">The day of the month. The valid values for this member are 1 through 31.</param>
@@ -225,9 +326,9 @@ namespace Vanara.PInvoke
 		/// <summary>Compares the current object with another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>
-		/// A value that indicates the relative order of the objects being compared. The return value has the following meanings: Value Meaning Less than zero
-		/// This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref name="other"/>. Greater than zero This object
-		/// is greater than <paramref name="other"/>.
+		/// A value that indicates the relative order of the objects being compared. The return value has the following meanings: Value
+		/// Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref
+		/// name="other"/>. Greater than zero This object is greater than <paramref name="other"/>.
 		/// </returns>
 		public int CompareTo(SYSTEMTIME other) => Compare(this, other);
 

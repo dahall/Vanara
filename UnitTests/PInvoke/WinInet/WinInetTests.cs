@@ -52,7 +52,7 @@ namespace Vanara.PInvoke.Tests
 				var b = hOpen.InternetQueryOption<bool>(InternetOptionFlags.INTERNET_OPTION_ENCODE_EXTRA);
 				Assert.That(b, Is.False);
 
-				SafeInternetHandle hParent = hOpen.InternetQueryOption<IntPtr>(InternetOptionFlags.INTERNET_OPTION_PARENT_HANDLE);
+				var hParent = new SafeInternetHandle(hOpen.InternetQueryOption<IntPtr>(InternetOptionFlags.INTERNET_OPTION_PARENT_HANDLE));
 				Assert.That(hParent.IsClosed, Is.False);
 
 				Assert.That(() => hOpen.InternetQueryOption<uint>(InternetOptionFlags.INTERNET_OPTION_ENCODE_EXTRA), Throws.Exception);

@@ -73,5 +73,299 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			void Write([In, MarshalAs(UnmanagedType.LPWStr)] string pszPropName, in object pVar);
 		}
+
+		/// <summary>
+		/// Describes the structure of a particular UDT. You can use IRecordInfo any time you need to access the description of UDTs
+		/// contained in type libraries. IRecordInfo can be reused as needed; there can be many instances of the UDT for a single IRecordInfo pointer.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/oaidl/nn-oaidl-irecordinfo
+		[PInvokeData("OAIdl.h")]
+		[ComImport, Guid("0000002F-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IRecordInfo
+		{
+			/// <summary>
+			/// <para>Initializes a new instance of a record.</para>
+			/// </summary>
+			/// <param name="pvNew">
+			/// <para>An instance of a record.</para>
+			/// </param>
+			/// <remarks>
+			/// <para>The caller must allocate the memory of the record by its appropriate size using the GetSize method.</para>
+			/// <para><c>RecordInit</c> sets all contents of the record to 0 and the record should hold no resources.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oaidl/nf-oaidl-irecordinfo-recordinit
+			void RecordInit(IntPtr pvNew);
+
+			/// <summary>
+			/// <para>Releases object references and other values of a record without deallocating the record.</para>
+			/// </summary>
+			/// <param name="pvExisting">
+			/// <para>The record to be cleared.</para>
+			/// </param>
+			/// <remarks>
+			/// <c>RecordClear</c> releases memory blocks held by VT_PTR or VT_SAFEARRAY instance fields. The caller needs to free the
+			/// instance fields memory, <c>RecordClear</c> will do nothing if there are no resources held.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oaidl/nf-oaidl-irecordinfo-recordclear
+			void RecordClear(IntPtr pvExisting);
+
+			/// <summary>
+			/// <para>Copies an existing record into the passed in buffer.</para>
+			/// </summary>
+			/// <param name="pvExisting">
+			/// <para>The current record instance.</para>
+			/// </param>
+			/// <param name="pvNew">
+			/// <para>The destination where the record will be copied.</para>
+			/// </param>
+			/// <remarks>
+			/// <c>RecordCopy</c> will release the resources in the destination first. The caller is responsible for allocating sufficient
+			/// memory in the destination by calling GetSize or RecordCreate. If <c>RecordCopy</c> fails to copy any of the fields then all
+			/// fields will be cleared, as though RecordClear had been called.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oaidl/nf-oaidl-irecordinfo-recordcopy
+			void RecordCopy(IntPtr pvExisting, IntPtr pvNew);
+
+			/// <summary>
+			/// <para>Gets the GUID of the record type.</para>
+			/// </summary>
+			/// <returns>
+			/// <para>The class GUID of the TypeInfo that describes the UDT.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oaidl/nf-oaidl-irecordinfo-getguid
+			Guid GetGuid();
+
+			/// <summary>
+			/// <para>
+			/// Gets the name of the record type. This is useful if you want to print out the type of the record, because each UDT has it's
+			/// own IRecordInfo.
+			/// </para>
+			/// </summary>
+			/// <returns>
+			/// <para>The name.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>The caller must free the BSTR by calling SysFreeString.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oaidl/nf-oaidl-irecordinfo-getname
+			[return: MarshalAs(UnmanagedType.BStr)]
+			string GetName();
+
+			/// <summary>
+			/// <para>
+			/// Gets the number of bytes of memory necessary to hold the record instance. This allows you to allocate memory for a record
+			/// instance rather than calling RecordCreate.
+			/// </para>
+			/// </summary>
+			/// <returns>
+			/// <para>The size of a record instance, in bytes.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oaidl/nf-oaidl-irecordinfo-getsize
+			uint GetSize();
+
+			/// <summary>Retrieves the type information that describes a UDT or safearray of UDTs.</summary>
+			/// <param name="ppTypeInfo">The type information.</param>
+			/// <remarks><c>AddRef</c> is called on the pointer ppTypeInfo.</remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oaidl/nf-oaidl-irecordinfo-gettypeinfo
+			void GetTypeInfo([MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "System.Runtime.InteropServices.CustomMarshalers.TypeToTypeInfoMarshaler")] out Type ppTypeInfo);
+
+			/// <summary>
+			/// <para>Returns a pointer to the VARIANT containing the value of a given field name.</para>
+			/// </summary>
+			/// <param name="pvData">
+			/// <para>The instance of a record.</para>
+			/// </param>
+			/// <param name="szFieldName">
+			/// <para>The field name.</para>
+			/// </param>
+			/// <returns>
+			/// The VARIANT that you want to hold the value of the field name, szFieldName. On return, places a copy of the field's value in
+			/// the variant.
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// The VARIANT that you pass in contains a copy of the field's value upon return. If you modify the VARIANT then the underlying
+			/// record field does not change.
+			/// </para>
+			/// <para>The caller allocates memory of the VARIANT.</para>
+			/// <para>The method VariantClear is called for pvarField before copying.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oaidl/nf-oaidl-irecordinfo-getfield
+			[return: MarshalAs(UnmanagedType.Struct)]
+			object GetField(IntPtr pvData, [MarshalAs(UnmanagedType.LPWStr)] string szFieldName);
+
+			/// <summary>
+			/// <para>Returns a pointer to the value of a given field name without copying the value and allocating resources.</para>
+			/// </summary>
+			/// <param name="pvData">
+			/// <para>The instance of a record.</para>
+			/// </param>
+			/// <param name="szFieldName">
+			/// <para>The name of the field.</para>
+			/// </param>
+			/// <param name="pvarField">
+			/// <para>The VARIANT that will contain the UDT upon return.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Receives the value of the field upon return.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// Upon return, the VARIANT you pass contains a direct pointer to the record's field, ppvDataCArray. If you modify the VARIANT,
+			/// then the underlying record field will change.
+			/// </para>
+			/// <para>
+			/// The caller allocates memory of the VARIANT, but does not own the memory so cannot free pvarField. This method calls
+			/// VariantClear for pvarField before filling in the requested field.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oaidl/nf-oaidl-irecordinfo-getfieldnocopy
+			IntPtr GetFieldNoCopy(IntPtr pvData, [MarshalAs(UnmanagedType.LPWStr)] string szFieldName, [MarshalAs(UnmanagedType.Struct)] out object pvarField);
+
+			/// <summary>
+			/// <para>Puts a variant into a field.</para>
+			/// </summary>
+			/// <param name="wFlags">
+			/// <para>The only legal values for the wFlags parameter is INVOKE_PROPERTYPUT or INVOKE_PROPERTYPUTREF.</para>
+			/// <para>
+			/// If INVOKE_PROPERTYPUTREF is passed in then <c>PutField</c> just assigns the value of the variant that is passed in to the
+			/// field using normal coercion rules.
+			/// </para>
+			/// <para>
+			/// If INVOKE_PROPERTYPUT is passed in then specific rules apply. If the field is declared as a class that derives from IDispatch
+			/// and the field's value is NULL then an error will be returned. If the field's value is not NULL then the variant will be
+			/// passed to the default property supported by the object referenced by the field. If the field is not declared as a class
+			/// derived from <c>IDispatch</c> then an error will be returned. If the field is declared as a variant of type VT_Dispatch then
+			/// the default value of the object is assigned to the field. Otherwise, the variant's value is assigned to the field.
+			/// </para>
+			/// </param>
+			/// <param name="pvData">
+			/// <para>The pointer to an instance of the record.</para>
+			/// </param>
+			/// <param name="szFieldName">
+			/// <para>The name of the field of the record.</para>
+			/// </param>
+			/// <param name="pvarField">
+			/// <para>The pointer to the variant.</para>
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oaidl/nf-oaidl-irecordinfo-putfield
+			void PutField(uint wFlags, IntPtr pvData, [MarshalAs(UnmanagedType.LPWStr)] string szFieldName, [In, MarshalAs(UnmanagedType.Struct)] ref object pvarField);
+
+			/// <summary>
+			/// <para>
+			/// Passes ownership of the data to the assigned field by placing the actual data into the field. <c>PutFieldNoCopy</c> is useful
+			/// for saving resources because it allows you to place your data directly into a record field. <c>PutFieldNoCopy</c> differs
+			/// from PutField because it does not copy the data referenced by the variant.
+			/// </para>
+			/// </summary>
+			/// <param name="wFlags">
+			/// <para>The only legal values for the wFlags parameter is INVOKE_PROPERTYPUT or INVOKE_PROPERTYPUTREF.</para>
+			/// </param>
+			/// <param name="pvData">
+			/// <para>An instance of the record described by IRecordInfo.</para>
+			/// </param>
+			/// <param name="szFieldName">
+			/// <para>The name of the field of the record.</para>
+			/// </param>
+			/// <param name="pvarField">
+			/// <para>The variant to be put into the field.</para>
+			/// </param>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oaidl/nf-oaidl-irecordinfo-putfieldnocopy
+			void PutFieldNoCopy(uint wFlags, IntPtr pvData, [MarshalAs(UnmanagedType.LPWStr)] string szFieldName, [In, MarshalAs(UnmanagedType.Struct)] ref object pvarField);
+
+			/// <summary>
+			/// <para>Gets the names of the fields of the record.</para>
+			/// </summary>
+			/// <param name="pcNames">
+			/// <para>The number of names to return.</para>
+			/// </param>
+			/// <param name="rgBstrNames">
+			/// <para>The name of the array of type BSTR.</para>
+			/// <para>If the rgBstrNames parameter is NULL, then pcNames is returned with the number of field names.</para>
+			/// <para>
+			/// It the rgBstrNames parameter is not NULL, then the string names contained in rgBstrNames are returned. If the number of names
+			/// in pcNames and rgBstrNames are not equal then the lesser number of the two is the number of returned field names. The caller
+			/// needs to free the BSTRs inside the array returned in rgBstrNames.
+			/// </para>
+			/// </param>
+			/// <remarks>
+			/// <para>
+			/// The caller should allocate memory for the array of BSTRs. If the array is larger than needed, set the unused portion to 0.
+			/// </para>
+			/// <para>On return, the caller will need to free each contained BSTR using SysFreeString.</para>
+			/// <para>In case of out of memory, pcNames points to error code.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oaidl/nf-oaidl-irecordinfo-getfieldnames
+			void GetFieldNames(ref uint pcNames, [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.BStr, SizeParamIndex = 0)] string[] rgBstrNames);
+
+			/// <summary>
+			/// <para>Determines whether the record that is passed in matches that of the current record information.</para>
+			/// </summary>
+			/// <param name="pRecordInfo">
+			/// <para>The information of the record.</para>
+			/// </param>
+			/// <returns>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>TRUE</term>
+			/// <term>The record that is passed in matches the current record information.</term>
+			/// </item>
+			/// <item>
+			/// <term>FALSE</term>
+			/// <term>The record that is passed in does not match the current record information.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oaidl/nf-oaidl-irecordinfo-ismatchingtype
+			[PreserveSig] [return: MarshalAs(UnmanagedType.Bool)] bool IsMatchingType([In] IRecordInfo pRecordInfo);
+
+			/// <summary>
+			/// <para>Allocates memory for a new record, initializes the instance and returns a pointer to the record.</para>
+			/// </summary>
+			/// <returns>
+			/// <para>This method returns a pointer to the created record.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>The memory is set to zeros before it is returned.</para>
+			/// <para>The records created must be freed by calling RecordDestroy.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oaidl/nf-oaidl-irecordinfo-recordcreate
+			[PreserveSig] IntPtr RecordCreate();
+
+			/// <summary>
+			/// <para>Creates a copy of an instance of a record to the specified location.</para>
+			/// </summary>
+			/// <param name="pvSource">
+			/// <para>An instance of the record to be copied.</para>
+			/// </param>
+			/// <param name="ppvDest">
+			/// <para>The new record with data copied from pvSource.</para>
+			/// </param>
+			/// <remarks>
+			/// <para>The records created must be freed by calling RecordDestroy.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oaidl/nf-oaidl-irecordinfo-recordcreatecopy
+			void RecordCreateCopy(IntPtr pvSource, out IntPtr ppvDest);
+
+			/// <summary>
+			/// <para>Releases the resources and deallocates the memory of the record.</para>
+			/// </summary>
+			/// <param name="pvRecord">
+			/// <para>An instance of the record to be destroyed.</para>
+			/// </param>
+			/// <remarks>
+			/// <para>RecordClear is called to release the resources held by the instance of a record without deallocating memory.</para>
+			/// <para>
+			/// <c>Note</c> This method can only be called on records allocated through RecordCreate and RecordCreateCopy. If you allocate
+			/// the record yourself, you cannot call this method.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oaidl/nf-oaidl-irecordinfo-recorddestroy
+			void RecordDestroy(IntPtr pvRecord);
+		}
 	}
 }

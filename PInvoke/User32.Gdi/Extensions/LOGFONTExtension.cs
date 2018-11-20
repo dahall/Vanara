@@ -1,7 +1,7 @@
 ﻿using System;
 using Vanara.PInvoke;
-using static Vanara.PInvoke.User32_Gdi;
 using static Vanara.PInvoke.Gdi32;
+using static Vanara.PInvoke.User32_Gdi;
 
 namespace Vanara.Extensions
 {

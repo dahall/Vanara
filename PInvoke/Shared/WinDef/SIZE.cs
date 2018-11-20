@@ -6,8 +6,7 @@ using System.Runtime.InteropServices;
 namespace Vanara.PInvoke
 {
 	/// <summary>The <c>SIZE</c> structure specifies the width and height of a rectangle.</summary>
-	// typedef struct tagSIZE { LONG cx; LONG cy;} SIZE, *PSIZE;
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/dd145106(v=vs.85).aspx
+	// typedef struct tagSIZE { LONG cx; LONG cy;} SIZE, *PSIZE; https://msdn.microsoft.com/en-us/library/windows/desktop/dd145106(v=vs.85).aspx
 	[PInvokeData("Windef.h", MSDNShortId = "dd145106")]
 	[StructLayout(LayoutKind.Sequential), Serializable]
 	public struct SIZE : IEquatable<SIZE>
@@ -45,16 +44,16 @@ namespace Vanara.PInvoke
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
-		/// <returns>true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.</returns>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 		public bool Equals(SIZE other) => cx == other.cx || cy == other.cy;
 
-		/// <summary>Determines whether the specified <see cref="System.Object" />, is equal to this instance.</summary>
-		/// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
-		/// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
+		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
+		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
 		public override bool Equals(object obj)
 		{
 			if (obj is SIZE sz) return Equals(sz);
-			if (obj is Size msz) return Equals((SIZE)msz);
+			if (obj is Size msz) return Equals(msz);
 			return false;
 		}
 
@@ -66,8 +65,8 @@ namespace Vanara.PInvoke
 		/// <returns>An equivalent <see cref="System.Drawing.Size"/> structure.</returns>
 		public Size ToSize() => this;
 
-		/// <summary>Returns a <see cref="string" /> that represents this instance.</summary>
-		/// <returns>A <see cref="string" /> that represents this instance.</returns>
+		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+		/// <returns>A <see cref="string"/> that represents this instance.</returns>
 		public override string ToString() => "{cx=" + cx.ToString(CultureInfo.CurrentCulture) + ", cy=" + cy.ToString(CultureInfo.CurrentCulture) + "}";
 
 		/// <summary>Performs an implicit conversion from <see cref="SIZE"/> to <see cref="Size"/>.</summary>

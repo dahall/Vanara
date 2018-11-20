@@ -3,7 +3,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.InteropServices;
-using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.PropSys;
@@ -265,6 +264,46 @@ namespace Vanara.PInvoke
 			/// action, for instance when he or she plugs in a USB device or prints a document.</para> <para>If the current user is not in
 			/// quiet time, this flag has no effect.</para> </summary>
 			NIIF_RESPECT_QUIET_TIME = 0x00000080
+		}
+
+		/// <summary>A value that specifies the action to be taken by <c>Shell_NotifyIcon</c>.</summary>
+		public enum NIM
+		{
+			/// <summary>
+			/// Adds an icon to the status area. The icon is given an identifier in the NOTIFYICONDATA structure pointed to by lpdata—either
+			/// through its uID or guidItem member. This identifier is used in subsequent calls to Shell_NotifyIcon to perform later actions
+			/// on the icon.
+			/// </summary>
+			NIM_ADD = 0x00000000,
+
+			/// <summary>
+			/// Modifies an icon in the status area. NOTIFYICONDATA structure pointed to by lpdata uses the ID originally assigned to the
+			/// icon when it was added to the notification area (NIM_ADD) to identify the icon to be modified.
+			/// </summary>
+			NIM_MODIFY = 0x00000001,
+
+			/// <summary>
+			/// Deletes an icon from the status area. NOTIFYICONDATA structure pointed to by lpdata uses the ID originally assigned to the
+			/// icon when it was added to the notification area (NIM_ADD) to identify the icon to be deleted.
+			/// </summary>
+			NIM_DELETE = 0x00000002,
+
+			/// <summary>
+			/// Shell32.dll version 5.0 and later only. Returns focus to the taskbar notification area. Notification area icons should use
+			/// this message when they have completed their UI operation. For example, if the icon displays a shortcut menu, but the user
+			/// presses ESC to cancel it, use NIM_SETFOCUS to return focus to the notification area.
+			/// </summary>
+			NIM_SETFOCUS = 0x00000003,
+
+			/// <summary>
+			/// Shell32.dll version 5.0 and later only. Instructs the notification area to behave according to the version number specified
+			/// in the uVersion member of the structure pointed to by lpdata. The version number specifies which members are recognized.
+			/// <para>
+			/// NIM_SETVERSION must be called every time a notification area icon is added (NIM_ADD)&gt;. It does not need to be called with
+			/// NIM_MOFIDY. The version setting is not persisted once a user logs off.
+			/// </para>
+			/// </summary>
+			NIM_SETVERSION = 0x00000004,
 		}
 
 		/// <summary>State flags for NOTIFYICONDATA.</summary>
@@ -1614,10 +1653,9 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// <para>
 		/// [This function is available through Windows XP Service Pack 2 (SP2) and Windows Server 2003. It might be altered or unavailable
-		/// in subsequent versions of Windows. Use
+		/// in subsequent versions of Windows. Use CoTaskMemAlloc instead.]
 		/// </para>
-		/// <para>CoTaskMemAlloc</para>
-		/// <para>instead.]</para>
+		/// <para>Allocates memory from the Shell's heap.</para>
 		/// </summary>
 		/// <param name="cb">
 		/// <para>Type: <c>SIZE_T</c></para>
@@ -1630,7 +1668,7 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>You can free this memory by calling SHFree.</para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shalloc void * SHAlloc( SIZE_T cb );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shalloc
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "621e4335-1484-4111-9cfe-7ae5c6d5c609")]
 		public static extern IntPtr SHAlloc(SizeT cb);
@@ -1709,18 +1747,18 @@ namespace Vanara.PInvoke
 		/// <para>NIM_ADD (0x00000000)</para>
 		/// <para>
 		/// 0x00000000. Adds an icon to the status area. The icon is given an identifier in the NOTIFYICONDATA structure pointed to by
-		/// —either through its <c>uID</c> or <c>guidItem</c> member. This identifier is used in subsequent calls to <c>Shell_NotifyIcon</c>
-		/// to perform later actions on the icon.
+		/// lpdata—either through its <c>uID</c> or <c>guidItem</c> member. This identifier is used in subsequent calls to
+		/// <c>Shell_NotifyIcon</c> to perform later actions on the icon.
 		/// </para>
 		/// <para>NIM_MODIFY (0x00000001)</para>
 		/// <para>
-		/// 0x00000001. Modifies an icon in the status area. NOTIFYICONDATA structure pointed to by uses the ID originally assigned to the
-		/// icon when it was added to the notification area (NIM_ADD) to identify the icon to be modified.
+		/// 0x00000001. Modifies an icon in the status area. NOTIFYICONDATA structure pointed to by lpdata uses the ID originally assigned to
+		/// the icon when it was added to the notification area (NIM_ADD) to identify the icon to be modified.
 		/// </para>
 		/// <para>NIM_DELETE (0x00000002)</para>
 		/// <para>
-		/// 0x00000002. Deletes an icon from the status area. NOTIFYICONDATA structure pointed to by uses the ID originally assigned to the
-		/// icon when it was added to the notification area (NIM_ADD) to identify the icon to be deleted.
+		/// 0x00000002. Deletes an icon from the status area. NOTIFYICONDATA structure pointed to by lpdata uses the ID originally assigned
+		/// to the icon when it was added to the notification area (NIM_ADD) to identify the icon to be deleted.
 		/// </para>
 		/// <para>NIM_SETFOCUS (0x00000003)</para>
 		/// <para>
@@ -1731,7 +1769,7 @@ namespace Vanara.PInvoke
 		/// <para>NIM_SETVERSION (0x00000004)</para>
 		/// <para>
 		/// 0x00000004. Shell32.dll version 5.0 and later only. Instructs the notification area to behave according to the version number
-		/// specified in the <c>uVersion</c> member of the structure pointed to by . The version number specifies which members are recognized.
+		/// specified in the <c>uVersion</c> member of the structure pointed to by lpdata. The version number specifies which members are recognized.
 		/// </para>
 		/// <para>
 		/// NIM_SETVERSION must be called every time a notification area icon is added (NIM_ADD)&gt;. It does not need to be called with
@@ -1740,48 +1778,65 @@ namespace Vanara.PInvoke
 		/// <para>For details, see the Remarks section.</para>
 		/// </param>
 		/// <param name="lpData">
-		/// <para>TBD</para>
+		/// <para>Type: <c>PNOTIFYICONDATA</c></para>
+		/// <para>
+		/// A pointer to a NOTIFYICONDATA structure. The content of the structure depends on the value of dwMessage. It can define an icon to
+		/// add to the notification area, cause that icon to display a notification, or identify an icon to modify or delete.
+		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>BOOL</c></para>
 		/// <para>
-		/// Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise. If is set to NIM_SETVERSION, the function returns <c>TRUE</c> if
-		/// the version was successfully changed, or <c>FALSE</c> if the requested version is not supported.
+		/// Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise. If dwMessage is set to NIM_SETVERSION, the function returns
+		/// <c>TRUE</c> if the version was successfully changed, or <c>FALSE</c> if the requested version is not supported.
 		/// </para>
 		/// </returns>
 		/// <remarks>
 		/// <para>
 		/// As of Windows 2000 (Shell32.dll version 5.0), if you set the <c>uVersion</c> member of the NOTIFYICONDATA structure pointed to by
-		/// to NOTIFYICON_VERSION_4 or higher, <c>Shell_NotifyIcon</c> mouse and keyboard events are handled differently than in earlier
-		/// versions of Windows. The differences include the following:
+		/// lpdata to NOTIFYICON_VERSION_4 or higher, <c>Shell_NotifyIcon</c> mouse and keyboard events are handled differently than in
+		/// earlier versions of Windows. The differences include the following:
 		/// </para>
 		/// <list type="bullet">
 		/// <item>
+		/// <term>
 		/// If a user selects a notify icon's shortcut menu with the keyboard, the Shell now sends the associated application a
 		/// WM_CONTEXTMENU message. Earlier versions send WM_RBUTTONDOWN and WM_RBUTTONUP messages.
+		/// </term>
 		/// </item>
 		/// <item>
+		/// <term>
 		/// If a user selects a notify icon with the keyboard and activates it with the SPACEBAR or ENTER key, the version 5.0 Shell sends
 		/// the associated application an NIN_KEYSELECT notification. Earlier versions send WM_RBUTTONDOWN and WM_RBUTTONUP messages.
+		/// </term>
 		/// </item>
 		/// <item>
+		/// <term>
 		/// If a user selects a notify icon with the mouse and activates it with the ENTER key, the Shell now sends the associated
 		/// application an NIN_SELECT notification. Earlier versions send WM_RBUTTONDOWN and WM_RBUTTONUP messages.
+		/// </term>
 		/// </item>
 		/// </list>
-		/// <para>As of Windows XP (</para>
-		/// <para>Shell32.dll version 6.0</para>
 		/// <para>
-		/// ), if a user passes the mouse pointer over an icon with which a balloon notification is associated, the Shell sends the following messages:
+		/// As of Windows XP (Shell32.dll version 6.0), if a user passes the mouse pointer over an icon with which a balloon notification is
+		/// associated, the Shell sends the following messages:
 		/// </para>
 		/// <list type="bullet">
-		/// <item>NIN_BALLOONSHOW. Sent when the balloon is shown (balloons are queued).</item>
 		/// <item>
+		/// <term>NIN_BALLOONSHOW. Sent when the balloon is shown (balloons are queued).</term>
+		/// </item>
+		/// <item>
+		/// <term>
 		/// NIN_BALLOONHIDE. Sent when the balloon disappears. For example, when the icon is deleted. This message is not sent if the balloon
 		/// is dismissed because of a timeout or if the user clicks the mouse.
+		/// </term>
 		/// </item>
-		/// <item>NIN_BALLOONTIMEOUT. Sent when the balloon is dismissed because of a timeout.</item>
-		/// <item>NIN_BALLOONUSERCLICK. Sent when the balloon is dismissed because the user clicked the mouse.</item>
+		/// <item>
+		/// <term>NIN_BALLOONTIMEOUT. Sent when the balloon is dismissed because of a timeout.</term>
+		/// </item>
+		/// <item>
+		/// <term>NIN_BALLOONUSERCLICK. Sent when the balloon is dismissed because the user clicked the mouse.</term>
+		/// </item>
 		/// </list>
 		/// <para>
 		/// In addition to those messages, as of Windows Vista (Shell32.dll version 6.0.6), if a user passes the mouse pointer over an icon
@@ -1789,28 +1844,24 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <list type="bullet">
 		/// <item>
+		/// <term>
 		/// NIN_POPUPOPEN. Sent when the user hovers the cursor over an icon to indicate that the richer pop-up UI should be used in place of
 		/// a standard textual tooltip.
+		/// </term>
 		/// </item>
-		/// <item>NIN_POPUPCLOSE. Sent when a cursor no longer hovers over an icon to indicate that the rich pop-up UI should be closed.</item>
+		/// <item>
+		/// <term>NIN_POPUPCLOSE. Sent when a cursor no longer hovers over an icon to indicate that the rich pop-up UI should be closed.</term>
+		/// </item>
 		/// </list>
-		/// <para>Regardless of the operating system version, you can select which way the Shell should behave by calling</para>
-		/// <para>Shell_NotifyIcon</para>
-		/// <para>with</para>
-		/// <para>dwMessage</para>
-		/// <para>set to</para>
-		/// <para>NIM_SETVERSION</para>
-		/// <para>. Set the</para>
-		/// <para>uVersion</para>
-		/// <para>member of the</para>
-		/// <para>NOTIFYICONDATA</para>
-		/// <para>structure pointed to by</para>
-		/// <para>lpdata</para>
-		/// <para>to indicate whether you want Windows 2000, Windows Vista, or pre-version 5.0 (Windows 95) behavior.</para>
 		/// <para>
-		/// <c>Note</c> The messages discussed above are not conventional Windows messages. They are sent as the value of the
+		/// Regardless of the operating system version, you can select which way the Shell should behave by calling <c>Shell_NotifyIcon</c>
+		/// with dwMessage set to <c>NIM_SETVERSION</c>. Set the <c>uVersion</c> member of the NOTIFYICONDATA structure pointed to by lpdata
+		/// to indicate whether you want Windows 2000, Windows Vista, or pre-version 5.0 (Windows 95) behavior.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> The messages discussed above are not conventional Windows messages. They are sent as the lParam value of the
 		/// application-defined message that is specified in the <c>uCallbackMessage</c> member of the NOTIFYICONDATA structure pointed to by
-		/// , when <c>Shell_NotifyIcon</c> is called with the <c>NIM_ADD</c> flag set in .
+		/// lpdata, when <c>Shell_NotifyIcon</c> is called with the <c>NIM_ADD</c> flag set in dwMessage.
 		/// </para>
 		/// <para>
 		/// As of Windows XP Service Pack 2 (SP2), a custom icon can be displayed in the notification balloon. This allows the calling
@@ -1823,7 +1874,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shellapi.h", MSDNShortId = "a316bc29-5f19-4a04-a32b-f4caeea0c029")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool Shell_NotifyIcon(uint dwMessage, ref NOTIFYICONDATA lpData);
+		public static extern bool Shell_NotifyIcon(NIM dwMessage, in NOTIFYICONDATA lpData);
 
 		/// <summary>
 		/// <para>Gets the screen coordinates of the bounding rectangle of a notification icon.</para>
@@ -1844,7 +1895,7 @@ namespace Vanara.PInvoke
 		// Shell_NotifyIconGetRect( const NOTIFYICONIDENTIFIER *identifier, RECT *iconLocation );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "81ad13be-a908-4079-b47c-6f983919700b")]
-		public static extern HRESULT Shell_NotifyIconGetRect(ref NOTIFYICONIDENTIFIER identifier, ref RECT iconLocation);
+		public static extern HRESULT Shell_NotifyIconGetRect(in NOTIFYICONIDENTIFIER identifier, out RECT iconLocation);
 
 		/// <summary>
 		/// <para>Displays a <c>ShellAbout</c> dialog box.</para>
@@ -1896,7 +1947,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shellapi.h", MSDNShortId = "0919e356-84e8-475e-8628-23097b19c50d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ShellAbout(HWND hWnd, string szApp, string szOtherStuff, IntPtr hIcon);
+		public static extern bool ShellAbout(HWND hWnd, string szApp, string szOtherStuff, HICON hIcon);
 
 		/// <summary>
 		/// <para>Performs an operation on a specified file.</para>
@@ -2185,9 +2236,9 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-shenumerateunreadmailaccountsw HRESULT
 		// SHEnumerateUnreadMailAccountsW( HKEY hKeyUser, DWORD dwIndex, LPWSTR pszMailAddress, int cchMailAddress );
-		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib.Shell32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shellapi.h", MSDNShortId = "67ec8355-f902-4b71-972f-94e403701f96")]
-		public static extern HRESULT SHEnumerateUnreadMailAccountsW(HKEY hKeyUser, uint dwIndex, StringBuilder pszMailAddress, int cchMailAddress);
+		public static extern HRESULT SHEnumerateUnreadMailAccounts(HKEY hKeyUser, uint dwIndex, StringBuilder pszMailAddress, int cchMailAddress);
 
 		/// <summary>
 		/// <para>Enforces strict validation of parameters used in a call to CreateProcess or ShellExecute.</para>
@@ -2247,8 +2298,10 @@ namespace Vanara.PInvoke
 		// SHEvaluateSystemCommandTemplate( PCWSTR pszCmdTemplate, PWSTR *ppszApplication, PWSTR *ppszCommandLine, PWSTR *ppszParameters );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("shellapi.h", MSDNShortId = "554b941d-7d03-47ae-a23a-2c47c5ca1044")]
-		public static extern HRESULT SHEvaluateSystemCommandTemplate(string pszCmdTemplate, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszApplication,
-			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszCommandLine, [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszParameters);
+		public static extern HRESULT SHEvaluateSystemCommandTemplate(string pszCmdTemplate,
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszApplication,
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszCommandLine,
+			[MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CoTaskMemStringMarshaler))] out string ppszParameters);
 
 		/// <summary>
 		/// Copies, moves, renames, or deletes a file system object. This function has been replaced in Windows Vista by <see cref="IFileOperation"/>.
@@ -2261,7 +2314,7 @@ namespace Vanara.PInvoke
 		/// <returns>Returns zero if successful; otherwise nonzero. Applications normally should simply check for zero or nonzero.</returns>
 		[PInvokeData("Shellapi.h")]
 		[DllImport("shell32.dll", CharSet = CharSet.Auto)]
-		public static extern int SHFileOperation(in SHFILEOPSTRUCT lpFileOp);
+		public static extern int SHFileOperation(ref SHFILEOPSTRUCT lpFileOp);
 
 		/// <summary>
 		/// <para>Frees a file name mapping object that was retrieved by the SHFileOperation function.</para>
@@ -2419,8 +2472,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto, SetLastError = true)]
 		[PInvokeData("Shellapi.h", MSDNShortId = "bb762179")]
-		public static extern IntPtr SHGetFileInfo(string pszPath, FileAttributes dwFileAttributes, ref SHFILEINFO psfi,
-			int cbFileInfo, SHGFI uFlags);
+		public static extern IntPtr SHGetFileInfo(string pszPath, FileAttributes dwFileAttributes, ref SHFILEINFO psfi, int cbFileInfo, SHGFI uFlags);
 
 		/// <summary>Retrieves information about an object in the file system, such as a file, folder, directory, or drive root.</summary>
 		/// <param name="itemIdList">
@@ -2456,8 +2508,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.Shell32, CharSet = CharSet.Auto, SetLastError = true)]
 		[PInvokeData("Shellapi.h", MSDNShortId = "bb762179")]
-		public static extern IntPtr SHGetFileInfo(PIDL itemIdList, FileAttributes dwFileAttributes, ref SHFILEINFO psfi,
-			int cbFileInfo, SHGFI uFlags);
+		public static extern IntPtr SHGetFileInfo(PIDL itemIdList, FileAttributes dwFileAttributes, ref SHFILEINFO psfi, int cbFileInfo, SHGFI uFlags);
 
 		/// <summary>
 		/// <para>Retrieves the localized name of a file in a Shell folder.</para>
@@ -2749,7 +2800,7 @@ namespace Vanara.PInvoke
 		// cchShellExecuteCommand );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("shellapi.h", MSDNShortId = "d2a57fa0-13fe-4e12-89cc-8a6dbdb44f08")]
-		public static extern HRESULT SHGetUnreadMailCountW(IntPtr hKeyUser, string pszMailAddress, out uint pdwCount, ref System.Runtime.InteropServices.ComTypes.FILETIME pFileTime, StringBuilder pszShellExecuteCommand, int cchShellExecuteCommand);
+		public static extern HRESULT SHGetUnreadMailCountW(HKEY hKeyUser, string pszMailAddress, out uint pdwCount, ref System.Runtime.InteropServices.ComTypes.FILETIME pFileTime, StringBuilder pszShellExecuteCommand, int cchShellExecuteCommand);
 
 		/// <summary>
 		/// <para>Executes a command on a printer object.</para>
@@ -3126,7 +3177,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "ac2d591a-f431-4da7-aa9f-0476634ec9cf")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SHTestTokenMembership(SafeHTOKEN hToken, uint ulRID);
+		public static extern bool SHTestTokenMembership(HTOKEN hToken, uint ulRID);
 
 		/// <summary>
 		/// <para>Contains information about a system appbar message.</para>
@@ -3218,7 +3269,7 @@ namespace Vanara.PInvoke
 			public ASSOCCLASS ac;
 
 			/// <summary>A registry key that specifies a class that contains association information.</summary>
-			public IntPtr hkClass;
+			public HKEY hkClass;
 
 			/// <summary>A pointer to the name of a class that contains association information.</summary>
 			public string pszClass;
@@ -3352,7 +3403,7 @@ namespace Vanara.PInvoke
 			public uint uCallbackMessage;
 
 			/// <summary>Handle to the icon to be added, modified, or deleted.</summary>
-			public IntPtr hIcon;
+			public HICON hIcon;
 
 			/// <summary>
 			/// String with the text for a standard ToolTip. It can have a maximum of 64 characters including the terminating NULL. For
@@ -3419,7 +3470,7 @@ namespace Vanara.PInvoke
 			/// independently of the notification area icon. If this member is non-NULL and the NIIF_USER flag is set in the dwInfoFlags
 			/// member, this icon is used as the notification icon. If this member is NULL, the legacy behavior is carried out.
 			/// </summary>
-			public IntPtr hBalloonIcon;
+			public HICON hBalloonIcon;
 		}
 
 		/// <summary>
@@ -3597,7 +3648,7 @@ namespace Vanara.PInvoke
 			/// A handle to the registry key for the file type. The access rights for this registry key should be set to KEY_READ. This
 			/// member is ignored if fMask does not include SEE_MASK_CLASSKEY.
 			/// </summary>
-			public IntPtr hkeyClass;
+			public HKEY hkeyClass;
 
 			/// <summary>
 			/// A keyboard shortcut to associate with the application. The low-order word is the virtual key code, and the high-order word is
@@ -3614,7 +3665,7 @@ namespace Vanara.PInvoke
 			/// A handle to the monitor upon which the document is to be displayed. This member is ignored if fMask does not include SEE_MASK_HMONITOR.
 			/// </para>
 			/// </summary>
-			public IntPtr hIcon;
+			public HICON hIcon;
 
 			/// <summary>
 			/// A handle to the newly started application. This member is set on return and is always NULL unless fMask is set to
@@ -3624,7 +3675,7 @@ namespace Vanara.PInvoke
 			/// even if a process is launched as the result of the call. For example, an hProcess does not return when you use
 			/// SEE_MASK_INVOKEIDLIST to invoke IContextMenu.</note>
 			/// </summary>
-			public IntPtr hProcess;
+			public HPROCESS hProcess;
 
 			/// <summary>Initializes a new instance of the <see cref="SHELLEXECUTEINFO"/> struct.</summary>
 			/// <param name="fileName">Name of the file.</param>
@@ -3647,7 +3698,7 @@ namespace Vanara.PInvoke
 			/// A handle to the icon that represents the file. You are responsible for destroying this handle with DestroyIcon when you no
 			/// longer need it.
 			/// </summary>
-			public IntPtr hIcon;
+			public HICON hIcon;
 
 			/// <summary>The index of the icon image within the system image list.</summary>
 			public int iIcon;
@@ -3771,13 +3822,13 @@ namespace Vanara.PInvoke
 		public struct SHQUERYRBINFO
 		{
 			/// <summary>The size of the structure, in bytes. This member must be filled in prior to calling the function.</summary>
-			private uint cbSize;
+			public uint cbSize;
 
 			/// <summary>The total size, in bytes, of all the items currently in the Recycle Bin.</summary>
-			private long i64Size;
+			public long i64Size;
 
 			/// <summary>The total number of items currently in the Recycle Bin.</summary>
-			private long i64NumItems;
+			public long i64NumItems;
 		}
 
 		/// <summary>
@@ -3799,7 +3850,7 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>HICON</c></para>
 			/// <para>When SHGetStockIconInfo is called with the SHGSI_ICON flag, this member receives a handle to the icon.</para>
 			/// </summary>
-			public IntPtr hIcon;
+			public HICON hIcon;
 
 			/// <summary>
 			/// <para>Type: <c>int</c></para>

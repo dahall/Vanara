@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
-using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke
 {
@@ -112,7 +111,7 @@ namespace Vanara.PInvoke
 		// int CALLBACK WinMain( _In_ HINSTANCE hInstance, _In_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633559(v=vs.85).aspx
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms633559")]
-		public delegate int WinMain([In] HINSTANCE hInstance, [In] IntPtr hPrevInstance, [In] [MarshalAs(UnmanagedType.LPStr)] string lpCmdLine, [In] ShowWindowCommand nCmdShow);
+		public delegate int WinMain([In] HINSTANCE hInstance, [In] HINSTANCE hPrevInstance, [In] [MarshalAs(UnmanagedType.LPStr)] string lpCmdLine, [In] ShowWindowCommand nCmdShow);
 
 		/// <summary>
 		/// An application-defined callback function used with the <c>EnumChildWindows</c> function. It receives the child window handles.
@@ -716,9 +715,7 @@ namespace Vanara.PInvoke
 			TPM_WORKAREA = 0x10000,
 		}
 
-		/// <summary>
-		/// Flags for <see cref="UpdateLayeredWindow"/>
-		/// </summary>
+		/// <summary>Flags for <see cref="UpdateLayeredWindow"/></summary>
 		[PInvokeData("winuser.h", MSDNShortId = "updatelayeredwindow")]
 		[Flags]
 		public enum UpdateLayeredWindowFlags
@@ -2106,7 +2103,7 @@ namespace Vanara.PInvoke
 		// hWnd, HWND hWndInsertAfter, int x, int y, int cx, int cy, UINT uFlags );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "deferwindowpos")]
-		public static extern IntPtr DeferWindowPos(IntPtr hWinPosInfo, HWND hWnd, HWND hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPosFlags uFlags);
+		public static extern HDWP DeferWindowPos(HDWP hWinPosInfo, HWND hWnd, HWND hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPosFlags uFlags);
 
 		/// <summary>
 		/// <para>[This function is not intended for general use. It may be altered or unavailable in subsequent versions of Windows.]</para>
@@ -6011,15 +6008,21 @@ namespace Vanara.PInvoke
 			public RECT rcDevice;
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> to a window or dialog that releases a created HWND instance at disposal using DestroyWindow.</summary>
+		/// <summary>
+		/// Provides a <see cref="SafeHandle"/> to a window or dialog that releases a created HWND instance at disposal using DestroyWindow.
+		/// </summary>
 		public class SafeHWND : HANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="HWND"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
 			public SafeHWND(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			private SafeHWND() : base() { }
+			private SafeHWND() : base()
+			{
+			}
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeHWND"/> to <see cref="HWND"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>

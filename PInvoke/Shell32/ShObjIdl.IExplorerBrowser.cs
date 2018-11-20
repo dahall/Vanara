@@ -5,6 +5,27 @@ namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
+		/// <summary>These flags are used with IExplorerBrowser::FillFromObject.</summary>
+		[Flags]
+		[PInvokeData("Shobjidl.h", MSDNShortId = "5be62600-147d-4625-8e6c-aa6687da2168")]
+		public enum EXPLORER_BROWSER_FILL_FLAGS
+		{
+			/// <summary>No flags.</summary>
+			EBF_NONE = 0x0000000,
+
+			/// <summary>
+			/// Causes IExplorerBrowser::FillFromObject to first populate the results folder with the contents of the parent folders of the
+			/// items in the data object, and then select only the items that are in the data object.
+			/// </summary>
+			EBF_SELECTFROMDATAOBJECT = 0x0000100,
+
+			/// <summary>
+			/// Do not allow dropping on the folder. In other words, do not register a drop target for the view. Applications can then
+			/// register their own drop targets.
+			/// </summary>
+			EBF_NODROPTARGET = 0x0000200,
+		}
+
 		/// <summary>These flags are used with IExplorerBrowser::GetOptions and IExplorerBrowser::SetOptions.</summary>
 		[Flags]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "4e2983bc-cad2-4bcc-8169-57b5274b2142")]
@@ -42,27 +63,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>Introduced in Windows Vista. Do not persist the view state.</summary>
 			EBO_NOPERSISTVIEWSTATE = 0x00000080,
-		}
-
-		/// <summary>These flags are used with IExplorerBrowser::FillFromObject.</summary>
-		[Flags]
-		[PInvokeData("Shobjidl.h", MSDNShortId = "5be62600-147d-4625-8e6c-aa6687da2168")]
-		public enum EXPLORER_BROWSER_FILL_FLAGS
-		{
-			/// <summary>No flags.</summary>
-			EBF_NONE = 0x0000000,
-
-			/// <summary>
-			/// Causes IExplorerBrowser::FillFromObject to first populate the results folder with the contents of the parent folders of the
-			/// items in the data object, and then select only the items that are in the data object.
-			/// </summary>
-			EBF_SELECTFROMDATAOBJECT = 0x0000100,
-
-			/// <summary>
-			/// Do not allow dropping on the folder. In other words, do not register a drop target for the view. Applications can then
-			/// register their own drop targets.
-			/// </summary>
-			EBF_NODROPTARGET = 0x0000200,
 		}
 
 		/// <summary>
@@ -242,7 +242,7 @@ namespace Vanara.PInvoke
 			/// When this method returns, contains the interface pointer requested in riid. This will typically be IShellView, IShellView2,
 			/// IFolderView, or a related interface.
 			/// </returns>
-			[return: MarshalAs(UnmanagedType.IUnknown)]
+			[return: MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)]
 			object GetCurrentView(in Guid riid);
 		}
 
@@ -267,7 +267,6 @@ namespace Vanara.PInvoke
 			/// <param name="pidlFolder">A PIDL that specifies the folder.</param>
 			void OnNavigationFailed([In] PIDL pidlFolder);
 		}
-
 
 		/// <summary>The ExplorerBrowser class is the base CoClass for all I ExplorerBrowser interfaces.</summary>
 		[ComImport, Guid("71f96385-ddd6-48d3-a0c1-ae06e8b055fb"), ClassInterface(ClassInterfaceType.None)]

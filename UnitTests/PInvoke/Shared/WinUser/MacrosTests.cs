@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
 using static Vanara.PInvoke.Macros;
-// ReSharper disable All
 
 namespace Vanara.PInvoke.Tests
 {

@@ -42,20 +42,22 @@ namespace Vanara.PInvoke
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
-		/// <returns>true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.</returns>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 		public bool Equals(POINTS other) => x == other.x || y == other.y;
 
-		/// <summary>Determines whether the specified <see cref="object" />, is equal to this instance.</summary>
-		/// <param name="obj">The <see cref="object" /> to compare with this instance.</param>
-		/// <returns><c>true</c> if the specified <see cref="object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
+		/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
+		/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
+		/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
 		public override bool Equals(object obj)
 		{
 			switch (obj)
 			{
 				case POINTS pt:
 					return Equals(pt);
+
 				case Point ptl:
-					return Equals((POINTS)ptl);
+					return Equals(ptl);
+
 				default:
 					return false;
 			}
@@ -69,8 +71,8 @@ namespace Vanara.PInvoke
 		/// <returns>An equivalent <see cref="Point"/> structure.</returns>
 		public Point ToPoint() => this;
 
-		/// <summary>Returns a <see cref="string" /> that represents this instance.</summary>
-		/// <returns>A <see cref="string" /> that represents this instance.</returns>
+		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+		/// <returns>A <see cref="string"/> that represents this instance.</returns>
 		public override string ToString() => "{x=" + x.ToString(CultureInfo.CurrentCulture) + ", y=" + y.ToString(CultureInfo.CurrentCulture) + "}";
 
 		/// <summary>Performs an implicit conversion from <see cref="POINTS"/> to <see cref="Point"/>.</summary>

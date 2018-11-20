@@ -38,7 +38,7 @@ namespace Vanara.Extensions
 		/// <param name="propertyName">Name of the property.</param>
 		/// <param name="defaultValue">The default value to return in the instance that the property is not found.</param>
 		/// <returns>The property value, if found, or the <paramref name="defaultValue"/> if not.</returns>
-		public static T GetPropertyValue<T>(this object obj, string propertyName, T defaultValue = default(T))
+		public static T GetPropertyValue<T>(this object obj, string propertyName, T defaultValue = default)
 		{
 			var prop = obj.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, typeof(T), Type.EmptyTypes, null);
 			if (prop == null) return defaultValue;

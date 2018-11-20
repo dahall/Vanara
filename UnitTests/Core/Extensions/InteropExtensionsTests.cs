@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
@@ -9,7 +10,7 @@ namespace Vanara.Extensions.Tests
 	[TestFixture()]
 	public class InteropExtensionsTests
 	{
-		private readonly int i = Marshal.SizeOf<int>();
+		private readonly int i = Marshal.SizeOf(typeof(int));
 
 		[Test()]
 		public void IsBlittableTest()
@@ -43,7 +44,7 @@ namespace Vanara.Extensions.Tests
 		[Test()]
 		public void MarshalToPtrTest()
 		{
-			var h = new SafeHGlobalHandle(Marshal.SizeOf<RECT>() * 2 + i);
+			var h = new SafeHGlobalHandle(Marshal.SizeOf(typeof(RECT)) * 2 + i);
 			var rs = new[] { new RECT(), new RECT(10, 11, 12, 13) };
 			rs.MarshalToPtr((IntPtr)h, i);
 			Assert.That(Marshal.ReadInt32((IntPtr)h, 4 * i) == 0);
@@ -143,7 +144,7 @@ namespace Vanara.Extensions.Tests
 				Assert.That(h, Is.Not.EqualTo(IntPtr.Zero));
 				var chSz = 2;
 				Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + ((rs.Length + 1) * IntPtr.Size) + i));
-				var ro = h.ToArray<IntPtr>(rs.Length, i);
+				var ro = h.ToIEnum<IntPtr>(rs.Length, i).Select(p => Marshal.ReadIntPtr(p)).ToArray();
 				Assert.That(ro, Has.None.EqualTo(IntPtr.Zero));
 				for (var i = 0; i < ro.Length; i++)
 					Assert.That(StringHelper.GetString(ro[i], CharSet.Unicode), Is.EqualTo(rs[i]));
@@ -153,7 +154,7 @@ namespace Vanara.Extensions.Tests
 				Assert.That(h, Is.Not.EqualTo(IntPtr.Zero));
 				chSz = 1;
 				Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + ((rs.Length + 1) * IntPtr.Size) + i));
-				ro = h.ToArray<IntPtr>(rs.Length, i);
+				ro = h.ToIEnum<IntPtr>(rs.Length, i).Select(p => Marshal.ReadIntPtr(p)).ToArray();
 				Assert.That(ro, Has.None.EqualTo(IntPtr.Zero));
 				for (var i = 0; i < ro.Length; i++)
 					Assert.That(StringHelper.GetString(ro[i], CharSet.Ansi), Is.EqualTo(rs[i]));

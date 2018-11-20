@@ -286,7 +286,7 @@ namespace Vanara.Windows.Forms.Design
 			var p = ComponentProp(propName, typeof(T));
 			if (p != null)
 				return (T)p.GetValue(Component, null);
-			return default(T);
+			return default;
 		}
 
 		protected void SetComponentProperty<T>(string propName, T value)

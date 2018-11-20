@@ -29,7 +29,7 @@ namespace Vanara.Security.AccessControl.Tests
 		[TestCase("dahall")]
 		[TestCase("AMERICAS\\dahall")]
 		[TestCase("AAADELETE")]
-		[TestCase("DAHALL17")]
+		[TestCase("DAHALL18")]
 		[TestCase("DAHALL12", false)]
 		public void GetAccountInfoTest(string acctName, bool valid = true)
 		{

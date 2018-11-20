@@ -753,7 +753,7 @@ namespace Vanara.PInvoke
 				{
 					if (!dwFlags.IsFlagSet(PropSheetFlags.PSP_DLGINDIRECT)) FreeResource(ref _pszTemplate);
 					dwFlags = dwFlags.SetFlags(PropSheetFlags.PSP_DLGINDIRECT, false);
-					_pszTemplate = value.GetClonedHandle();
+					_pszTemplate = GetClonedHandle(value);
 				}
 			}
 
@@ -777,13 +777,13 @@ namespace Vanara.PInvoke
 			/// A handle to the icon to use as the small icon in the tab for the page. If dwFlags does not include the PSP_USEHICON value,
 			/// this member is ignored.
 			/// </summary>
-			public IntPtr hIcon
+			public HICON hIcon
 			{
 				get => dwFlags.IsFlagSet(PropSheetFlags.PSP_USEHICON) ? _hIcon : IntPtr.Zero;
 				set
 				{
 					if (dwFlags.IsFlagSet(PropSheetFlags.PSP_USEICONID)) FreeResource(ref _pszTemplate);
-					_hIcon = value;
+					_hIcon = (IntPtr)value;
 					dwFlags = dwFlags.SetFlags(PropSheetFlags.PSP_USEICONID, false) | PropSheetFlags.PSP_USEHICON;
 				}
 			}
@@ -800,7 +800,7 @@ namespace Vanara.PInvoke
 				{
 					if (dwFlags.IsFlagSet(PropSheetFlags.PSP_USEICONID)) FreeResource(ref _hIcon);
 					dwFlags = dwFlags.SetFlags(PropSheetFlags.PSP_USEHICON, false) | PropSheetFlags.PSP_USEICONID;
-					_hIcon = value.GetClonedHandle();
+					_hIcon = GetClonedHandle(value);
 				}
 			}
 
@@ -816,7 +816,7 @@ namespace Vanara.PInvoke
 				{
 					if (dwFlags.IsFlagSet(PropSheetFlags.PSP_USETITLE)) FreeResource(ref _pszTitle);
 					dwFlags = dwFlags.SetFlags(PropSheetFlags.PSP_USETITLE, !value.IsInvalid);
-					_pszTitle = value.GetClonedHandle();
+					_pszTitle = GetClonedHandle(value);
 				}
 			}
 
@@ -841,7 +841,7 @@ namespace Vanara.PInvoke
 				{
 					if (dwFlags.IsFlagSet(PropSheetFlags.PSP_USEHEADERTITLE)) FreeResource(ref _pszHeaderTitle);
 					dwFlags = dwFlags.SetFlags(PropSheetFlags.PSP_USEHEADERTITLE, !value.IsInvalid);
-					_pszHeaderTitle = value.GetClonedHandle();
+					_pszHeaderTitle = GetClonedHandle(value);
 				}
 			}
 
@@ -867,7 +867,7 @@ namespace Vanara.PInvoke
 				{
 					if (dwFlags.IsFlagSet(PropSheetFlags.PSP_USEHEADERSUBTITLE)) FreeResource(ref _pszHeaderSubTitle);
 					dwFlags = dwFlags.SetFlags(PropSheetFlags.PSP_USEHEADERSUBTITLE, !value.IsInvalid);
-					_pszHeaderSubTitle = value.GetClonedHandle();
+					_pszHeaderSubTitle = GetClonedHandle(value);
 				}
 			}
 
@@ -908,6 +908,8 @@ namespace Vanara.PInvoke
 				FreeResource(ref _pszHeaderTitle);
 				FreeResource(ref _pszHeaderSubTitle);
 			}
+
+			private static IntPtr GetClonedHandle(SafeResourceId rid) => rid == null ? IntPtr.Zero : (rid.IsIntResource ? rid.DangerousGetHandle() : StringHelper.AllocString(rid.ToString()));
 
 			private static void FreeResource(ref IntPtr ptr)
 			{

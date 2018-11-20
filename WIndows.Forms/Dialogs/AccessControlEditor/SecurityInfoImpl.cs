@@ -47,7 +47,7 @@ namespace Vanara.Security.AccessControl
 			get => pSD.ToArray(); set => pSD = new SafeByteArray(value);
 		}
 
-		void IEffectivePermission.GetEffectivePermission(in Guid pguidObjectType, PSID pUserSid, string pszServerName, IntPtr pSecDesc, out OBJECT_TYPE_LIST[] ppObjectTypeList, out uint pcObjectTypeListLength, out uint[] ppGrantedAccessList, out uint pcGrantedAccessListLength)
+		void IEffectivePermission.GetEffectivePermission(in Guid pguidObjectType, PSID pUserSid, string pszServerName, PSECURITY_DESCRIPTOR pSecDesc, out OBJECT_TYPE_LIST[] ppObjectTypeList, out uint pcObjectTypeListLength, out uint[] ppGrantedAccessList, out uint pcGrantedAccessListLength)
 		{
 			System.Diagnostics.Debug.WriteLine($"GetEffectivePermission: {pguidObjectType}, {pszServerName}");
 			if (pguidObjectType == Guid.Empty)
@@ -88,10 +88,10 @@ namespace Vanara.Security.AccessControl
 			objInfo.dwFlags &= ~(currentElevation);
 		}
 
-		void ISecurityInformation.GetSecurity(SECURITY_INFORMATION requestInformation, out IntPtr ppSecurityDescriptor, bool fDefault)
+		void ISecurityInformation.GetSecurity(SECURITY_INFORMATION requestInformation, out PSECURITY_DESCRIPTOR ppSecurityDescriptor, bool fDefault)
 		{
 			System.Diagnostics.Debug.WriteLine($"GetSecurity: {requestInformation}{(fDefault ? " (Def)" : "")}");
-			var sd = new SafeSecurityDescriptor(fDefault ? prov.GetDefaultSecurity() : (IntPtr)pSD, false);
+			var sd = new PSECURITY_DESCRIPTOR(fDefault ? prov.GetDefaultSecurity() : (IntPtr)pSD);
 			var ret = sd.GetPrivateObjectSecurity(requestInformation);
 			System.Diagnostics.Debug.WriteLine(
 				$"GetSecurity={ret.ToSddl(requestInformation) ?? "null"} <- {sd.ToSddl(requestInformation) ?? "null"}");
@@ -115,9 +115,9 @@ namespace Vanara.Security.AccessControl
 			prov.PropertySheetPageCallback(hwnd, uMsg, uPage);
 		}
 
-		void ISecurityInformation.SetSecurity(SECURITY_INFORMATION requestInformation, IntPtr sd)
+		void ISecurityInformation.SetSecurity(SECURITY_INFORMATION requestInformation, PSECURITY_DESCRIPTOR sd)
 		{
-			OnSetSecurity?.Invoke(this, new SecurityEventArg(new SafeSecurityDescriptor(sd, false), requestInformation));
+			OnSetSecurity?.Invoke(this, new SecurityEventArg(new SafeSecurityDescriptor((IntPtr)sd, false), requestInformation));
 		}
 
 		string ISecurityInformation3.GetFullResourceName() => fullObjectName;
@@ -169,7 +169,7 @@ namespace Vanara.Security.AccessControl
 			securityObjectCount = 0;
 		}
 
-		void ISecurityObjectTypeInfo.GetInheritSource(int si, IntPtr pAcl, out INHERITED_FROM[] ppInheritArray)
+		void ISecurityObjectTypeInfo.GetInheritSource(int si, PACL pAcl, out INHERITED_FROM[] ppInheritArray)
 		{
 			System.Diagnostics.Debug.WriteLine($"GetInheritSource: {(SECURITY_INFORMATION)si}");
 			ppInheritArray = prov.GetInheritSource(fullObjectName, objectInfo.pszServerName, objectInfo.IsContainer, (uint)si, pAcl);
@@ -222,7 +222,7 @@ namespace Vanara.Security.AccessControl
 				return HRESULT.E_FAIL;
 			if (pSecurityObjects[0].Id != (uint)SECURITY_OBJECT_ID.SECURITY_OBJECT_ID_OBJECT_SD)
 				return HRESULT.E_FAIL;
-			if (pSid == null || pSid.IsInvalid)
+			if (pSid.IsNull)
 				return HRESULT.E_INVALIDARG;
 
 			if (!AuthzInitializeResourceManager(AuthzResourceManagerFlags.AUTHZ_RM_FLAG_NO_AUDIT, null, null, null, prov.ToString(), out var hAuthzResourceManager))
@@ -233,7 +233,7 @@ namespace Vanara.Security.AccessControl
 			if (!AuthzInitializeContextFromSid(AuthzContextFlags.DEFAULT, pSid, hAuthzResourceManager, IntPtr.Zero, identifier, IntPtr.Zero, out var hAuthzUserContext))
 				return HRESULT.S_OK;
 
-			if (pDeviceSid != null && !pDeviceSid.IsInvalid)
+			if (!pDeviceSid.IsNull)
 			{
 				if (AuthzInitializeContextFromSid(AuthzContextFlags.DEFAULT, pDeviceSid, hAuthzResourceManager, IntPtr.Zero, identifier, IntPtr.Zero, out var hAuthzDeviceContext))
 					if (AuthzInitializeCompoundContext(hAuthzUserContext, hAuthzDeviceContext, out hAuthzCompoundContext))
@@ -263,7 +263,7 @@ namespace Vanara.Security.AccessControl
 			var request = new AUTHZ_ACCESS_REQUEST((uint)ACCESS_MASK.MAXIMUM_ALLOWED);
 			var sd = new SafeSecurityDescriptor(pSecurityObjects[0].pData, false);
 			var reply = new AUTHZ_ACCESS_REPLY(1);
-			if (!AuthzAccessCheck(AuthzAccessCheckFlags.NONE, hAuthzCompoundContext, ref request, null, sd, null, 0, reply, out var phAccessCheckResults))
+			if (!AuthzAccessCheck(AuthzAccessCheckFlags.NONE, hAuthzCompoundContext, request, default, sd, null, 0, reply, out var phAccessCheckResults))
 				return HRESULT.S_OK;
 
 			pEffpermResultLists[0].fEvaluated = true;

@@ -133,7 +133,7 @@ namespace Vanara.Drawing
 		private static readonly BufferedPaintBlock block = new BufferedPaintBlock();
 
 		private bool disposedValue = false;
-		private SafeBufferedAnimationHandle hba;
+		private SafeHANIMATIONBUFFER hba;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="BufferedPainter"/> class and begins a buffered animation operation. The animation consists of a
@@ -206,7 +206,7 @@ namespace Vanara.Drawing
 		private static readonly BufferedPaintBlock block = new BufferedPaintBlock();
 
 		private bool disposedValue = false;
-		private SafeBufferedPaintHandle hbp;
+		private SafeHPAINTBUFFER hbp;
 
 		/// <summary>Initializes a new instance of the <see cref="BufferedPainter"/> class and begins a buffered paint operation.</summary>
 		/// <param name="hdc">The handle of the target DC on which the buffer will be painted.</param>

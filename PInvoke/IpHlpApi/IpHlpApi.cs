@@ -3797,7 +3797,7 @@ namespace Vanara.PInvoke
 		/// this parameter.
 		/// </param>
 		/// <returns>The physical address that corresponds to the IPv4 address specified by the DestIP parameter.</returns>
-		public static byte[] SendARP(IN_ADDR DestIP, IN_ADDR SrcIP = default(IN_ADDR))
+		public static byte[] SendARP(IN_ADDR DestIP, IN_ADDR SrcIP = default)
 		{
 			uint len = 6;
 			var ret = new byte[(int)len];

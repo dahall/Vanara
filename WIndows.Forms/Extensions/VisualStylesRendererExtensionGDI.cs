@@ -71,7 +71,7 @@ namespace Vanara.Extensions
 					if (rightToLeft)
 						if ((oldLayout = SetLayout(memoryHdc, DCLayout.LAYOUT_RTL)) == DCLayout.GDI_ERROR)
 							throw new NotSupportedException("Unable to change graphics layout to RTL.");
-					DrawThemeBackground(ht, memoryHdc, rnd.Part, rnd.State, ref rBounds, clipRectangle);
+					DrawThemeBackground(ht, memoryHdc, rnd.Part, rnd.State, rBounds, clipRectangle);
 					if (oldLayout != DCLayout.GDI_ERROR)
 						SetLayout(memoryHdc, oldLayout);
 				}
@@ -92,8 +92,7 @@ namespace Vanara.Extensions
 			DrawWrapper(g, bounds,
 				memoryHdc =>
 				{
-					var rBounds = new RECT(bounds);
-					DrawThemeIcon(ht, memoryHdc, rnd.Part, rnd.State, ref rBounds, imageList.Handle, imageIndex);
+					DrawThemeIcon(ht, memoryHdc, rnd.Part, rnd.State, bounds, imageList.Handle, imageIndex);
 				}
 				);
 		}
@@ -146,7 +145,7 @@ namespace Vanara.Extensions
 						var dttOpts = new DTTOPTS(null) {GlowSize = glowSize, AntiAliasedAlpha = true};
 						if (color != null) dttOpts.TextColor = color.Value;
 						var textBounds = new RECT(4, 0, bounds.Right - bounds.Left, bounds.Bottom - bounds.Top);
-						DrawThemeTextEx(ht, memoryHdc, rnd.Part, rnd.State, text, text.Length, FromTFF(flags), ref textBounds, ref dttOpts);
+						DrawThemeTextEx(ht, memoryHdc, rnd.Part, rnd.State, text, text.Length, FromTFF(flags), ref textBounds, dttOpts);
 					}
 				}
 				);
@@ -166,7 +165,7 @@ namespace Vanara.Extensions
 			var rc = new RECT(bounds);
 			var ht = new SafeHTHEME(rnd.Handle, false);
 			using (var hdc = new SafeHDC(dc))
-				DrawThemeTextEx(ht, hdc, rnd.Part, rnd.State, text, text.Length, FromTFF(flags), ref rc, ref options);
+				DrawThemeTextEx(ht, hdc, rnd.Part, rnd.State, text, text.Length, FromTFF(flags), ref rc, options);
 			bounds = rc;
 		}
 

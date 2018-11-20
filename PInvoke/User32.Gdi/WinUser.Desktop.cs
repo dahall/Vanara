@@ -586,8 +586,8 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getprocesswindowstation HWINSTA GetProcessWindowStation( );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "f8929122-d277-4260-b2a7-5e76eb3ca876")]
-		// SafeWindowStationHandle not used as this handle should not be closed.
-		public static extern IntPtr GetProcessWindowStation();
+		// SafeHWINSTA not used as this handle should not be closed.
+		public static extern HWINSTA GetProcessWindowStation();
 
 		/// <summary>
 		/// <para>Retrieves a handle to the desktop assigned to the specified thread.</para>
@@ -619,8 +619,8 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getthreaddesktop HDESK GetThreadDesktop( DWORD dwThreadId );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "51eec935-43c7-495b-b1fc-2bd5ba1e0090")]
-		// SafeDesktopHandle not used as this handle should not be closed.
-		public static extern IntPtr GetThreadDesktop(uint dwThreadId);
+		// SafeHDESK not used as this handle should not be closed.
+		public static extern HDESK GetThreadDesktop(uint dwThreadId);
 
 		/// <summary>
 		/// <para>Retrieves information about the specified window station or desktop object.</para>
@@ -697,7 +697,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "64f7361d-1a94-4d5b-86f1-a2a21737668a")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetUserObjectInformation(SafeHandle hObj, UserObjectInformationType nIndex, IntPtr pvInfo, uint nLength, out uint lpnLengthNeeded);
+		public static extern bool GetUserObjectInformation(IntPtr hObj, UserObjectInformationType nIndex, IntPtr pvInfo, uint nLength, out uint lpnLengthNeeded);
 
 		/// <summary>
 		/// <para>Retrieves information about the specified window station or desktop object.</para>
@@ -753,7 +753,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>The value specified by <typeparamref name="T"/> and <paramref name="nIndex"/>.</returns>
 		[PInvokeData("winuser.h", MSDNShortId = "64f7361d-1a94-4d5b-86f1-a2a21737668a")]
-		public static T GetUserObjectInformation<T>(SafeHandle hObj, UserObjectInformationType nIndex)
+		public static T GetUserObjectInformation<T>(IntPtr hObj, UserObjectInformationType nIndex)
 		{
 			if (!CorrespondingTypeAttribute.CanGet(nIndex, typeof(T))) throw new ArgumentException("Type mismatch");
 			GetUserObjectInformation(hObj, nIndex, IntPtr.Zero, 0, out var sz);
@@ -1006,9 +1006,9 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "42ce6946-1659-41a3-8ba7-21588583b4bd")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetUserObjectInformation(SafeHandle hObj, UserObjectInformationType nIndex, IntPtr pvInfo, uint nLength);
+		public static extern bool SetUserObjectInformation(IntPtr hObj, UserObjectInformationType nIndex, IntPtr pvInfo, uint nLength);
 
-		public static void SetUserObjectInformation<T>(SafeHandle hObj, UserObjectInformationType nIndex, T info)
+		public static void SetUserObjectInformation<T>(IntPtr hObj, UserObjectInformationType nIndex, T info)
 		{
 			if (!CorrespondingTypeAttribute.CanSet(nIndex, typeof(T))) throw new ArgumentException("Type mismatch");
 			var mem = typeof(T) == typeof(string) ? new SafeHGlobalHandle(info.ToString()) : SafeHGlobalHandle.CreateFromStructure(info);
@@ -1104,15 +1104,19 @@ namespace Vanara.PInvoke
 			public uint dwFlags;
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> to a  that releases a created HDESK instance at disposal using CloseDesktop.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HDESK instance at disposal using CloseDesktop.</summary>
 		public class SafeHDESK : HANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="HDESK"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
 			public SafeHDESK(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			private SafeHDESK() : base() { }
+			private SafeHDESK() : base()
+			{
+			}
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeHDESK"/> to <see cref="HDESK"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
@@ -1123,15 +1127,19 @@ namespace Vanara.PInvoke
 			protected override bool InternalReleaseHandle() => CloseDesktop(this);
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> to a  that releases a created HWINSTA instance at disposal using CloseWindowStation.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HWINSTA instance at disposal using CloseWindowStation.</summary>
 		public class SafeHWINSTA : HANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="HWINSTA"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
 			public SafeHWINSTA(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			private SafeHWINSTA() : base() { }
+			private SafeHWINSTA() : base()
+			{
+			}
 
 			/// <summary>Performs an implicit conversion from <see cref="SafeHWINSTA"/> to <see cref="HWINSTA"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>

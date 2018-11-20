@@ -7,15 +7,14 @@ using System.Drawing;
 using System.Globalization;
 using System.Runtime.InteropServices;
 
-// ReSharper disable InconsistentNaming
-
 namespace Vanara.PInvoke
 {
 	/// <summary>Defines the coordinates of the upper-left and lower-right corners of a rectangle.</summary>
 	/// <remarks>
-	/// By convention, the right and bottom edges of the rectangle are normally considered exclusive. In other words, the pixel whose coordinates are ( right,
-	/// bottom ) lies immediately outside of the rectangle. For example, when RECT is passed to the FillRect function, the rectangle is filled up to, but not
-	/// including, the right column and bottom row of pixels. This structure is identical to the RECT structure.
+	/// By convention, the right and bottom edges of the rectangle are normally considered exclusive. In other words, the pixel whose
+	/// coordinates are ( right, bottom ) lies immediately outside of the rectangle. For example, when RECT is passed to the FillRect
+	/// function, the rectangle is filled up to, but not including, the right column and bottom row of pixels. This structure is identical to
+	/// the RECT structure.
 	/// </remarks>
 	[StructLayout(LayoutKind.Sequential), TypeConverter(typeof(RECTConverter))]
 	public struct RECT : IEquatable<PRECT>, IEquatable<RECT>, IEquatable<Rectangle>
@@ -165,12 +164,16 @@ namespace Vanara.PInvoke
 			{
 				case null:
 					return false;
+
 				case RECT r:
 					return Equals(r);
+
 				case PRECT r:
 					return Equals(r);
+
 				case Rectangle r:
 					return Equals(r);
+
 				default:
 					return false;
 			}
@@ -187,9 +190,10 @@ namespace Vanara.PInvoke
 
 	/// <summary>Defines the coordinates of the upper-left and lower-right corners of a rectangle.</summary>
 	/// <remarks>
-	/// By convention, the right and bottom edges of the rectangle are normally considered exclusive. In other words, the pixel whose coordinates are ( right,
-	/// bottom ) lies immediately outside of the rectangle. For example, when RECT is passed to the FillRect function, the rectangle is filled up to, but not
-	/// including, the right column and bottom row of pixels. This structure is identical to the RECT structure.
+	/// By convention, the right and bottom edges of the rectangle are normally considered exclusive. In other words, the pixel whose
+	/// coordinates are ( right, bottom ) lies immediately outside of the rectangle. For example, when RECT is passed to the FillRect
+	/// function, the rectangle is filled up to, but not including, the right column and bottom row of pixels. This structure is identical to
+	/// the RECT structure.
 	/// </remarks>
 	[StructLayout(LayoutKind.Sequential), TypeConverter(typeof(PRECTConverter))]
 	public class PRECT : IEquatable<PRECT>, IEquatable<RECT>, IEquatable<Rectangle>
@@ -206,25 +210,16 @@ namespace Vanara.PInvoke
 		/// <param name="top">The top.</param>
 		/// <param name="right">The right.</param>
 		/// <param name="bottom">The bottom.</param>
-		public PRECT(int left, int top, int right, int bottom)
-		{
-			rect = new RECT(left, top, right, bottom);
-		}
+		public PRECT(int left, int top, int right, int bottom) => rect = new RECT(left, top, right, bottom);
 
 		/// <summary>Initializes a new instance of the <see cref="PRECT"/> class.</summary>
 		/// <param name="r">The <see cref="Rectangle"/> structure.</param>
-		public PRECT(Rectangle r)
-		{
-			rect = new RECT(r);
-		}
+		public PRECT(Rectangle r) => rect = new RECT(r);
 
 		/// <summary>Initializes a new instance of the <see cref="PRECT"/> class.</summary>
 		/// <param name="r">The r.</param>
 		[ExcludeFromCodeCoverage]
-		private PRECT(RECT r)
-		{
-			rect = r;
-		}
+		private PRECT(RECT r) => rect = r;
 
 		/// <summary>The x-coordinate of the upper-left corner of the rectangle.</summary>
 		public int left
@@ -374,6 +369,51 @@ namespace Vanara.PInvoke
 		public override string ToString() => rect.ToString();
 	}
 
+	internal class PRECTConverter : RECTConverter
+	{
+		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+		{
+			var b = base.ConvertFrom(context, culture, value);
+			if (b is RECT r)
+				return new PRECT(r);
+			return b;
+		}
+
+		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+		{
+			var prect = value as PRECT;
+			if (destinationType == typeof(InstanceDescriptor) && prect != null)
+			{
+				var ctor = typeof(PRECT).GetConstructor(new[] { typeof(int), typeof(int), typeof(int), typeof(int) });
+				return new InstanceDescriptor(ctor, new object[] { prect.left, prect.top, prect.right, prect.bottom });
+			}
+
+			return base.ConvertTo(context, culture, prect != null ? prect.rect : value, destinationType);
+		}
+
+		public override object CreateInstance(ITypeDescriptorContext context, IDictionary propertyValues)
+		{
+			if (propertyValues == null)
+				throw new ArgumentNullException(nameof(propertyValues));
+
+			var left = propertyValues["left"] ?? 0;
+			var top = propertyValues["top"] ?? 0;
+			var right = propertyValues["right"] ?? 0;
+			var bottom = propertyValues["bottom"] ?? 0;
+
+			if (!(left is int) || !(top is int) || !(right is int) || !(bottom is int))
+				throw new ArgumentException(@"Invalid property value.");
+
+			return new PRECT((int)left, (int)top, (int)right, (int)bottom);
+		}
+
+		public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
+		{
+			var props = TypeDescriptor.GetProperties(typeof(PRECT), attributes);
+			return props.Sort(new[] { "left", "top", "right", "bottom" });
+		}
+	}
+
 	internal class RECTConverter : TypeConverter
 	{
 		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) =>
@@ -425,20 +465,6 @@ namespace Vanara.PInvoke
 			return base.ConvertTo(context, culture, value, destinationType);
 		}
 
-		protected static string IntConvertToString(ITypeDescriptorContext context, CultureInfo culture, RECT rect)
-		{
-			var intConverter = TypeDescriptor.GetConverter(typeof(int));
-			var args = new string[4];
-			var nArg = 0;
-
-			args[nArg++] = intConverter.ConvertToString(context, culture, rect.left);
-			args[nArg++] = intConverter.ConvertToString(context, culture, rect.top);
-			args[nArg++] = intConverter.ConvertToString(context, culture, rect.right);
-			args[nArg++] = intConverter.ConvertToString(context, culture, rect.bottom);
-
-			return string.Join(culture.TextInfo.ListSeparator + " ", args);
-		}
-
 		public override object CreateInstance(ITypeDescriptorContext context, IDictionary propertyValues)
 		{
 			if (propertyValues == null)
@@ -464,50 +490,19 @@ namespace Vanara.PInvoke
 		}
 
 		public override bool GetPropertiesSupported(ITypeDescriptorContext context) => true;
-	}
 
-	internal class PRECTConverter : RECTConverter
-	{
-		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+		protected static string IntConvertToString(ITypeDescriptorContext context, CultureInfo culture, RECT rect)
 		{
-			var b = base.ConvertFrom(context, culture, value);
-			if (b is RECT r)
-				return new PRECT(r);
-			return b;
-		}
+			var intConverter = TypeDescriptor.GetConverter(typeof(int));
+			var args = new string[4];
+			var nArg = 0;
 
-		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-		{
-			var prect = value as PRECT;
-			if (destinationType == typeof(InstanceDescriptor) && prect != null)
-			{
-				var ctor = typeof(PRECT).GetConstructor(new[] { typeof(int), typeof(int), typeof(int), typeof(int) });
-				return new InstanceDescriptor(ctor, new object[] { prect.left, prect.top, prect.right, prect.bottom });
-			}
+			args[nArg++] = intConverter.ConvertToString(context, culture, rect.left);
+			args[nArg++] = intConverter.ConvertToString(context, culture, rect.top);
+			args[nArg++] = intConverter.ConvertToString(context, culture, rect.right);
+			args[nArg++] = intConverter.ConvertToString(context, culture, rect.bottom);
 
-			return base.ConvertTo(context, culture, prect != null ? prect.rect : value, destinationType);
-		}
-
-		public override object CreateInstance(ITypeDescriptorContext context, IDictionary propertyValues)
-		{
-			if (propertyValues == null)
-				throw new ArgumentNullException(nameof(propertyValues));
-
-			var left = propertyValues["left"] ?? 0;
-			var top = propertyValues["top"] ?? 0;
-			var right = propertyValues["right"] ?? 0;
-			var bottom = propertyValues["bottom"] ?? 0;
-
-			if (!(left is int) || !(top is int) || !(right is int) || !(bottom is int))
-				throw new ArgumentException(@"Invalid property value.");
-
-			return new PRECT((int)left, (int)top, (int)right, (int)bottom);
-		}
-
-		public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
-		{
-			var props = TypeDescriptor.GetProperties(typeof(PRECT), attributes);
-			return props.Sort(new[] { "left", "top", "right", "bottom" });
+			return string.Join(culture.TextInfo.ListSeparator + " ", args);
 		}
 	}
 }

@@ -48,9 +48,15 @@ namespace Vanara.PInvoke
 		/// the application-defined function name.
 		/// </summary>
 		/// <param name="hwnd">Handle to the window whose property list is being enumerated.</param>
-		/// <param name="lpszString">Pointer to a null-terminated string. This string is the string component of a property list entry. This is the string that was specified, along with a data handle, when the property was added to the window's property list via a call to the SetProp function.</param>
+		/// <param name="lpszString">
+		/// Pointer to a null-terminated string. This string is the string component of a property list entry. This is the string that was
+		/// specified, along with a data handle, when the property was added to the window's property list via a call to the SetProp function.
+		/// </param>
 		/// <param name="hData">Handle to data. This handle is the data component of a property list entry.</param>
-		/// <param name="dwData">Application-defined data. This is the value that was specified as the lParam parameter of the call to EnumPropsEx that initiated the enumeration.</param>
+		/// <param name="dwData">
+		/// Application-defined data. This is the value that was specified as the lParam parameter of the call to EnumPropsEx that initiated
+		/// the enumeration.
+		/// </param>
 		/// <returns>
 		/// <para>Type: <c>Type: <c>BOOL</c></c></para>
 		/// <para>Return <c>TRUE</c> to continue the property list enumeration.</para>
@@ -59,19 +65,19 @@ namespace Vanara.PInvoke
 		/// <remarks>
 		/// <para>The following restrictions apply to this callback function:</para>
 		/// <list type="bullet">
-		///   <item>
-		///     <term>
+		/// <item>
+		/// <term>
 		/// The callback function can call the RemoveProp function. However, <c>RemoveProp</c> can remove only the property passed to the
 		/// callback function through the callback function's parameters.
 		/// </term>
-		///   </item>
-		///   <item>
-		///     <term>The callback function should not attempt to add properties.</term>
-		///   </item>
+		/// </item>
+		/// <item>
+		/// <term>The callback function should not attempt to add properties.</term>
+		/// </item>
 		/// </list>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nc-winuser-propenumprocexa PROPENUMPROCEXA Propenumprocexa; BOOL
-		// Propenumprocexa( HWND Arg1, LPSTR Arg2, HANDLE Arg3, ULONG_PTR Arg4 ) {...}		
+		// Propenumprocexa( HWND Arg1, LPSTR Arg2, HANDLE Arg3, ULONG_PTR Arg4 ) {...}
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		[PInvokeData("winuser.h", MSDNShortId = "propenumprocex")]
 		[return: MarshalAs(UnmanagedType.Bool)]

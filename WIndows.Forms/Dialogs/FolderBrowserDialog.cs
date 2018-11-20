@@ -583,7 +583,7 @@ namespace Vanara.Windows.Forms
 			var bi = new BROWSEINFO(parentWindowHandle, rootPidl.DangerousGetHandle(), Description, browseInfoFlag, OnBrowseEvent, dn);
 
 			// Show the dialog
-			SelectedItemPIDL = SHBrowseForFolder(ref bi);
+			SelectedItemPIDL = SHBrowseForFolder(bi);
 			if (SelectedItemPIDL.IsInvalid) return false;
 			if (browseInfoFlag[BrowseInfoFlag.BIF_BROWSEFORPRINTER] || browseInfoFlag[BrowseInfoFlag.BIF_BROWSEFORCOMPUTER])
 				SelectedItem = bi.DisplayName;
@@ -599,10 +599,9 @@ namespace Vanara.Windows.Forms
 
 		private static string GetNameForPidl(PIDL pidl)
 		{
-			SafeCoTaskMemHandle mStr;
-			try { SHGetNameFromIDList(pidl, SIGDN.SIGDN_FILESYSPATH, out mStr); return mStr.ToString(-1); } catch { }
-			try { SHGetNameFromIDList(pidl, SIGDN.SIGDN_DESKTOPABSOLUTEEDITING, out mStr); return mStr.ToString(-1); } catch { }
-			try { SHGetNameFromIDList(pidl, SIGDN.SIGDN_NORMALDISPLAY, out mStr); return mStr.ToString(-1); } catch { }
+			try { SHGetNameFromIDList(pidl, SIGDN.SIGDN_FILESYSPATH, out var mStr); return mStr; } catch { }
+			try { SHGetNameFromIDList(pidl, SIGDN.SIGDN_DESKTOPABSOLUTEEDITING, out var mStr); return mStr; } catch { }
+			try { SHGetNameFromIDList(pidl, SIGDN.SIGDN_NORMALDISPLAY, out var mStr); return mStr; } catch { }
 			return string.Empty;
 		}
 

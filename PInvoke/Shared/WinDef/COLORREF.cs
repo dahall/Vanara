@@ -1,12 +1,9 @@
 ﻿using System.Runtime.InteropServices;
 
-// ReSharper disable InconsistentNaming
-
 namespace Vanara.PInvoke
 {
 	/// <summary>The COLORREF value is used to specify an RGB color in the form <c>0x00bbggrr</c>.</summary>
-	// typedef DWORD COLORREF;typedef DWORD* LPCOLORREF;
-	// https://msdn.microsoft.com/en-us/library/windows/desktop/dd183449(v=vs.85).aspx
+	// typedef DWORD COLORREF;typedef DWORD* LPCOLORREF; https://msdn.microsoft.com/en-us/library/windows/desktop/dd183449(v=vs.85).aspx
 	[PInvokeData("Windef.h", MSDNShortId = "dd183449")]
 	[StructLayout(LayoutKind.Explicit, Size = 4)]
 	public struct COLORREF
@@ -14,12 +11,15 @@ namespace Vanara.PInvoke
 		/// <summary>The DWORD value</summary>
 		[FieldOffset(0)]
 		private uint Value;
+
 		/// <summary>The intensity of the red color.</summary>
 		[FieldOffset(0)]
 		public byte R;
+
 		/// <summary>The intensity of the green color.</summary>
 		[FieldOffset(1)]
 		public byte G;
+
 		/// <summary>The intensity of the blue color.</summary>
 		[FieldOffset(2)]
 		public byte B;
@@ -51,7 +51,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Initializes a new instance of the <see cref="COLORREF"/> struct.</summary>
 		/// <param name="color">The color.</param>
-		public COLORREF(System.Drawing.Color color) : this(color == System.Drawing.Color.Transparent ? (uint)CLR_NONE : (uint)color.ToArgb()) { }
+		public COLORREF(System.Drawing.Color color) : this(color == System.Drawing.Color.Transparent ? CLR_NONE : (uint)color.ToArgb()) { }
 
 		/// <summary>Performs an implicit conversion from <see cref="COLORREF"/> to <see cref="System.Drawing.Color"/>.</summary>
 		/// <param name="cr">The <see cref="COLORREF"/> value.</param>

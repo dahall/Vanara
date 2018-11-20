@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
-
-// ReSharper disable InconsistentNaming
+using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke
 {
@@ -10,121 +9,95 @@ namespace Vanara.PInvoke
 	{
 		/// <summary>Class representation of the native SID structure.</summary>
 		/// <seealso cref="SafeHGlobalHandle"/>
-		public class PSID : SafeHGlobalHandle, IEquatable<PSID>, IEquatable<IntPtr>, ICloneable
+		public class SafePSID : SafeMemoryHandle<HeapMemoryMethods>, IEquatable<SafePSID>, IEquatable<PSID>, IEquatable<IntPtr>, ICloneable, ISecurityObject
 		{
 			/// <summary>Equivalent to a NULL pointer to a SID.</summary>
-			public new static readonly PSID Null = new PSID();
+			public static readonly SafePSID Null = new SafePSID(0);
 
-			/// <summary>Initializes a new instance of the <see cref="PSID"/> class.</summary>
-			/// <param name="ptr">A pointer to an existing SID.</param>
-			/// <param name="own">if set to <c>true</c><see cref="Marshal.FreeHGlobal(IntPtr)"/> will be called on the pointer when disposed.</param>
-			public PSID(IntPtr ptr, bool own = true) : base(ptr, GetLengthSid(ptr), own)
-			{
-			}
+			/// <summary>Initializes a new instance of the <see cref="SafePSID"/> class.</summary>
+			/// <param name="psid">The existing <see cref="SafePSID"/> instance to duplicate.</param>
+			public SafePSID(PSID psid) : base(GetLengthSid(psid)) => CopySid(Size, handle, psid);
 
-			/// <summary>Initializes a new instance of the <see cref="PSID"/> class.</summary>
-			/// <param name="psid">The existing <see cref="PSID"/> instance to duplicate.</param>
-			public PSID(PSID psid) : base(GetLengthSid(psid.handle))
-			{
-				CopySid(Size, handle, psid.handle);
-			}
-
-			/// <summary>Initializes a new instance of the <see cref="PSID"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafePSID"/> class.</summary>
 			/// <param name="size">The size of memory to allocate, in bytes.</param>
-			public PSID(int size) : base(size)
+			public SafePSID(int size) : base(size)
 			{
 			}
 
-			/// <summary>Initializes a new instance of the <see cref="PSID"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafePSID"/> class.</summary>
 			/// <param name="sidBytes">An array of bytes that contain a valid Sid.</param>
-			public PSID(byte[] sidBytes) : base(sidBytes?.Length ?? 0)
-			{
-				Marshal.Copy(sidBytes, 0, handle, Size);
-			}
+			public SafePSID(byte[] sidBytes) : base(sidBytes?.Length ?? 0) => Marshal.Copy(sidBytes, 0, handle, Size);
 
-			/// <summary>Initializes a new instance of the <see cref="PSID"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafePSID"/> class.</summary>
 			/// <param name="sidValue">The string SID value.</param>
-			public PSID(string sidValue) : base(IntPtr.Zero, 0, true)
-			{
-				if (ConvertStringSidToSid(sidValue, out IntPtr psid))
-					SetHandle(psid);
-			}
-
-			/// <summary>Initializes a new instance of the <see cref="PSID"/> class.</summary>
-			public PSID() : base(0)
+			public SafePSID(string sidValue) : this(ConvertStringSidToSid(sidValue))
 			{
 			}
 
-			/// <summary>Verifies that the revision number is within a known range, and that the number of subauthorities is less than the maximum.</summary>
+			/// <summary>
+			/// Verifies that the revision number is within a known range, and that the number of subauthorities is less than the maximum.
+			/// </summary>
 			/// <value><c>true</c> if this instance is a valid SID; otherwise, <c>false</c>.</value>
 			public bool IsValidSid => IsValidSid(this);
 
-			/// <summary>Copies the specified SID from a memory pointer to a <see cref="PSID"/> instance.</summary>
+			/// <summary>Copies the specified SID from a memory pointer to a <see cref="SafePSID"/> instance.</summary>
 			/// <param name="psid">The SID pointer. This value remains the responsibility of the caller to release.</param>
-			/// <returns>A <see cref="PSID"/> instance.</returns>
-			public static PSID CreateFromPtr(IntPtr psid)
+			/// <returns>A <see cref="SafePSID"/> instance.</returns>
+			public static SafePSID CreateFromPtr(IntPtr psid)
 			{
-				var newSid = new PSID(GetLengthSid(psid));
+				var newSid = new SafePSID(GetLengthSid(psid));
 				CopySid(newSid.Size, newSid.handle, psid);
 				return newSid;
 			}
 
-			/// <summary>Performs an explicit conversion from <see cref="PSID"/> to <see cref="IntPtr"/>.</summary>
-			/// <param name="psid">The PSID instance.</param>
+			/// <summary>Performs an explicit conversion from <see cref="SafePSID"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="psid">The SafePSID instance.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static explicit operator IntPtr(PSID psid) => psid.DangerousGetHandle();
+			public static explicit operator IntPtr(SafePSID psid) => psid.DangerousGetHandle();
 
-			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="PSID"/>.</summary>
-			/// <param name="psid">The SID pointer.</param>
+			/// <summary>Performs an explicit conversion from <see cref="SafePSID"/> to <see cref="PSID"/>.</summary>
+			/// <param name="psid">The SafePSID instance.</param>
 			/// <returns>The result of the conversion.</returns>
-			public static explicit operator PSID(IntPtr psid) => new PSID(psid, false);
+			public static implicit operator PSID(SafePSID psid) => psid.DangerousGetHandle();
 
-			/// <summary>Initializes a new <see cref="PSID"/> instance from a SID authority and subauthorities.</summary>
+			/// <summary>Initializes a new <see cref="SafePSID"/> instance from a SID authority and subauthorities.</summary>
 			/// <param name="sidAuthority">The SID authority.</param>
 			/// <param name="subAuth0">The first subauthority.</param>
 			/// <param name="subAuthorities1to7">Up to seven other subauthorities.</param>
-			/// <returns>A new <see cref="PSID"/> instance.</returns>
+			/// <returns>A new <see cref="SafePSID"/> instance.</returns>
 			/// <exception cref="System.ArgumentOutOfRangeException">
 			/// <paramref name="sidAuthority"/> is null or an invalid length or more than 8 total subauthorities were submitted.
 			/// </exception>
-			public static PSID Init(PSID_IDENTIFIER_AUTHORITY sidAuthority, int subAuth0, params int[] subAuthorities1to7)
+			public static SafePSID Init(PSID_IDENTIFIER_AUTHORITY sidAuthority, int subAuth0, params int[] subAuthorities1to7)
 			{
 				if (sidAuthority == null)
 					throw new ArgumentOutOfRangeException(nameof(sidAuthority));
 				if (subAuthorities1to7.Length > 7)
 					throw new ArgumentOutOfRangeException(nameof(subAuthorities1to7));
-				var res = IntPtr.Zero;
-				try
-				{
-					AllocateAndInitializeSid(sidAuthority, (byte)(subAuthorities1to7.Length + 1),
-						subAuth0,
-						subAuthorities1to7.Length > 0 ? subAuthorities1to7[0] : 0,
-						subAuthorities1to7.Length > 1 ? subAuthorities1to7[1] : 0,
-						subAuthorities1to7.Length > 2 ? subAuthorities1to7[2] : 0,
-						subAuthorities1to7.Length > 3 ? subAuthorities1to7[3] : 0,
-						subAuthorities1to7.Length > 4 ? subAuthorities1to7[4] : 0,
-						subAuthorities1to7.Length > 5 ? subAuthorities1to7[5] : 0,
-						subAuthorities1to7.Length > 6 ? subAuthorities1to7[6] : 0,
-						out res);
-					return CreateFromPtr(res);
-				}
-				finally
-				{
-					FreeSid(res);
-				}
+				AllocateAndInitializeSid(sidAuthority, (byte)(subAuthorities1to7.Length + 1),
+					subAuth0,
+					subAuthorities1to7.Length > 0 ? subAuthorities1to7[0] : 0,
+					subAuthorities1to7.Length > 1 ? subAuthorities1to7[1] : 0,
+					subAuthorities1to7.Length > 2 ? subAuthorities1to7[2] : 0,
+					subAuthorities1to7.Length > 3 ? subAuthorities1to7[3] : 0,
+					subAuthorities1to7.Length > 4 ? subAuthorities1to7[4] : 0,
+					subAuthorities1to7.Length > 5 ? subAuthorities1to7[5] : 0,
+					subAuthorities1to7.Length > 6 ? subAuthorities1to7[6] : 0,
+					out var res);
+				return new SafePSID(res);
 			}
 
 			/// <summary>Implements the operator !=.</summary>
 			/// <param name="psid1">The psid1.</param>
 			/// <param name="psid2">The psid2.</param>
 			/// <returns>The result of the operator.</returns>
-			public static bool operator !=(PSID psid1, PSID psid2) => !(psid1 == psid2);
+			public static bool operator !=(SafePSID psid1, SafePSID psid2) => !(psid1 == psid2);
 
 			/// <summary>Implements the operator ==.</summary>
 			/// <param name="psid1">The psid1.</param>
 			/// <param name="psid2">The psid2.</param>
 			/// <returns>The result of the operator.</returns>
-			public static bool operator ==(PSID psid1, PSID psid2)
+			public static bool operator ==(SafePSID psid1, SafePSID psid2)
 			{
 				if (ReferenceEquals(psid1, psid2)) return true;
 				if (Equals(null, psid1) || Equals(null, psid2)) return false;
@@ -132,13 +105,18 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary>Clones this instance.</summary>
-			/// <returns>A copy of the current <see cref="PSID"/>.</returns>
-			public PSID Clone() => CreateFromPtr(handle);
+			/// <returns>A copy of the current <see cref="SafePSID"/>.</returns>
+			public SafePSID Clone() => CreateFromPtr(handle);
 
 			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 			/// <param name="other">An object to compare with this object.</param>
 			/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-			public bool Equals(PSID other) => EqualSid(this, other);
+			public bool Equals(SafePSID other) => EqualSid(this, other);
+
+			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+			/// <param name="other">An object to compare with this object.</param>
+			/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+			public bool Equals(PSID other) => Equals(other.DangerousGetHandle());
 
 			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 			/// <param name="other">An object to compare with this object.</param>
@@ -147,19 +125,23 @@ namespace Vanara.PInvoke
 
 			/// <summary>Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.</summary>
 			/// <param name="obj">The object to compare with the current object.</param>
-			/// <returns>true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.</returns>
+			/// <returns>
+			/// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+			/// </returns>
 			public override bool Equals(object obj)
 			{
-				if (obj is PSID psid2)
+				if (obj is SafePSID psid2)
 					return Equals(psid2);
+				if (obj is PSID psidh)
+					return Equals(psidh);
 				if (obj is IntPtr ptr)
 					return Equals(ptr);
 				return false;
 			}
 
-			/// <summary>Gets the binary form of this PSID.</summary>
+			/// <summary>Gets the binary form of this SafePSID.</summary>
 			/// <returns>An array of bytes containing the Sid.</returns>
-			public byte[] GetBinaryForm() => ToArray<byte>(GetLengthSid(handle));
+			public byte[] GetBinaryForm() => base.GetBytes(0, Size);
 
 			/// <summary>Returns a hash code for this instance.</summary>
 			/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>

@@ -45,7 +45,7 @@ namespace Vanara.Security.AccessControl
 		/// <param name="serverName">Name of the server. This can be <c>null</c>.</param>
 		/// <param name="pSecurityDescriptor">A pointer to the security descriptor.</param>
 		/// <returns>An array of access masks.</returns>
-		uint[] GetEffectivePermission(PSID pUserSid, string serverName, IntPtr pSecurityDescriptor);
+		uint[] GetEffectivePermission(PSID pUserSid, string serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor);
 
 		/// <summary>
 		/// Gets the effective permissions for the provided Sid within the Security Descriptor.
@@ -57,7 +57,7 @@ namespace Vanara.Security.AccessControl
 		/// <param name="pSecurityDescriptor">A pointer to the security descriptor.</param>
 		/// <param name="objectTypeList">The object type list.</param>
 		/// <returns>An array of access masks.</returns>
-		uint[] GetEffectivePermission(Guid objTypeId, PSID pUserSid, string serverName, IntPtr pSecurityDescriptor, out OBJECT_TYPE_LIST[] objectTypeList);
+		uint[] GetEffectivePermission(Guid objTypeId, PSID pUserSid, string serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor, out OBJECT_TYPE_LIST[] objectTypeList);
 
 		/// <summary>Gets the generic mapping for standard rights.</summary>
 		/// <param name="aceFlags">The ace flags.</param>
@@ -82,7 +82,7 @@ namespace Vanara.Security.AccessControl
 		/// cref="INHERITED_FROM"/> entry provides inheritance information for the corresponding
 		/// ACE entry in pACL.
 		/// </returns>
-		INHERITED_FROM[] GetInheritSource(string objName, string serverName, bool isContainer, uint si, IntPtr pAcl);
+		INHERITED_FROM[] GetInheritSource(string objName, string serverName, bool isContainer, uint si, PACL pAcl);
 
 		/// <summary>Gets inheritance information for supported object type.</summary>
 		/// <returns>
@@ -138,10 +138,9 @@ namespace Vanara.Security.AccessControl
 		/// <param name="serverName">Name of the server. This can be <c>null</c>.</param>
 		/// <param name="pSecurityDescriptor">A pointer to the security descriptor.</param>
 		/// <returns>An array of access masks.</returns>
-		public virtual uint[] GetEffectivePermission(PSID pUserSid, string serverName, IntPtr pSecurityDescriptor)
+		public virtual uint[] GetEffectivePermission(PSID pUserSid, string serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor)
 		{
-			var sd = new SafeSecurityDescriptor(pSecurityDescriptor, false);
-			var mask = pUserSid.GetEffectiveRights(sd);
+			var mask = pUserSid.GetEffectiveRights(pSecurityDescriptor);
 			return new[] { mask };
 		}
 
@@ -156,7 +155,7 @@ namespace Vanara.Security.AccessControl
 		/// <param name="objectTypeList">The object type list.</param>
 		/// <returns>An array of access masks.</returns>
 		/// <exception cref="System.NotImplementedException"></exception>
-		public virtual uint[] GetEffectivePermission(Guid objTypeId, PSID pUserSid, string serverName, IntPtr pSecurityDescriptor, out OBJECT_TYPE_LIST[] objectTypeList)
+		public virtual uint[] GetEffectivePermission(Guid objTypeId, PSID pUserSid, string serverName, PSECURITY_DESCRIPTOR pSecurityDescriptor, out OBJECT_TYPE_LIST[] objectTypeList)
 		{
 			throw new NotImplementedException();
 		}
@@ -183,7 +182,7 @@ namespace Vanara.Security.AccessControl
 		/// cref="INHERITED_FROM"/> entry provides inheritance information for the corresponding
 		/// ACE entry in pACL.
 		/// </returns>
-		public virtual INHERITED_FROM[] GetInheritSource(string objName, string serverName, bool isContainer, uint si, IntPtr pAcl)
+		public virtual INHERITED_FROM[] GetInheritSource(string objName, string serverName, bool isContainer, uint si, PACL pAcl)
 		{
 			var gMap = GetGenericMapping(0);
 			return GetInheritanceSource(objName, ResourceType, (SECURITY_INFORMATION)si, isContainer, pAcl, ref gMap).ToArray();
@@ -196,12 +195,12 @@ namespace Vanara.Security.AccessControl
 		/// </returns>
 		public virtual SI_INHERIT_TYPE[] GetInheritTypes() => new[] {
 				new SI_INHERIT_TYPE(0, ResStr("StdInheritance")),
-				new SI_INHERIT_TYPE(SI_INHERIT_Flags.CONTAINER_INHERIT_ACE | SI_INHERIT_Flags.OBJECT_INHERIT_ACE, ResStr("StdInheritanceCIOI")),
-				new SI_INHERIT_TYPE(SI_INHERIT_Flags.CONTAINER_INHERIT_ACE, ResStr("StdInheritanceCI")),
-				new SI_INHERIT_TYPE(SI_INHERIT_Flags.OBJECT_INHERIT_ACE, ResStr("StdInheritanceOI")),
-				new SI_INHERIT_TYPE(SI_INHERIT_Flags.INHERIT_ONLY_ACE | SI_INHERIT_Flags.CONTAINER_INHERIT_ACE | SI_INHERIT_Flags.OBJECT_INHERIT_ACE, ResStr("StdInheritanceIOCIOI")),
-				new SI_INHERIT_TYPE(SI_INHERIT_Flags.INHERIT_ONLY_ACE | SI_INHERIT_Flags.CONTAINER_INHERIT_ACE, ResStr("StdInheritanceIOCI")),
-				new SI_INHERIT_TYPE(SI_INHERIT_Flags.INHERIT_ONLY_ACE | SI_INHERIT_Flags.OBJECT_INHERIT_ACE, ResStr("StdInheritanceIOOI"))
+				new SI_INHERIT_TYPE(INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("StdInheritanceCIOI")),
+				new SI_INHERIT_TYPE(INHERIT_FLAGS.CONTAINER_INHERIT_ACE, ResStr("StdInheritanceCI")),
+				new SI_INHERIT_TYPE(INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("StdInheritanceOI")),
+				new SI_INHERIT_TYPE(INHERIT_FLAGS.INHERIT_ONLY_ACE | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("StdInheritanceIOCIOI")),
+				new SI_INHERIT_TYPE(INHERIT_FLAGS.INHERIT_ONLY_ACE | INHERIT_FLAGS.CONTAINER_INHERIT_ACE, ResStr("StdInheritanceIOCI")),
+				new SI_INHERIT_TYPE(INHERIT_FLAGS.INHERIT_ONLY_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("StdInheritanceIOOI"))
 			};
 
 		/// <summary>Callback method for the property pages.</summary>
@@ -225,25 +224,25 @@ namespace Vanara.Security.AccessControl
 		public override void GetAccessListInfo(SI_OBJECT_INFO_Flags flags, out SI_ACCESS[] rights, out uint defaultIndex)
 		{
 			rights = new[] {
-				new SI_ACCESS((uint)FileSystemRights.FullControl, ResStr("FileRightFullControl"), SI_ACCESS_Flags.SI_ACCESS_GENERAL| SI_ACCESS_Flags.SI_ACCESS_SPECIFIC | SI_ACCESS_Flags.CONTAINER_INHERIT_ACE | SI_ACCESS_Flags.OBJECT_INHERIT_ACE),
-				new SI_ACCESS((uint)FileSystemRights.Modify, ResStr("FileRightModify"), SI_ACCESS_Flags.SI_ACCESS_GENERAL | SI_ACCESS_Flags.CONTAINER_INHERIT_ACE | SI_ACCESS_Flags.OBJECT_INHERIT_ACE),
-				new SI_ACCESS((uint)FileSystemRights.ReadAndExecute, ResStr("FileRightReadAndExecute"), SI_ACCESS_Flags.SI_ACCESS_GENERAL | SI_ACCESS_Flags.CONTAINER_INHERIT_ACE | SI_ACCESS_Flags.OBJECT_INHERIT_ACE),
-				new SI_ACCESS((uint)FileSystemRights.ReadAndExecute, ResStr("FileRightListFolderContents"), SI_ACCESS_Flags.SI_ACCESS_CONTAINER | SI_ACCESS_Flags.CONTAINER_INHERIT_ACE),
-				new SI_ACCESS((uint)FileSystemRights.Read, ResStr("FileRightRead"), SI_ACCESS_Flags.SI_ACCESS_GENERAL | SI_ACCESS_Flags.CONTAINER_INHERIT_ACE | SI_ACCESS_Flags.OBJECT_INHERIT_ACE),
-				new SI_ACCESS((uint)FileSystemRights.Write, ResStr("FileRightWrite"), SI_ACCESS_Flags.SI_ACCESS_GENERAL | SI_ACCESS_Flags.CONTAINER_INHERIT_ACE | SI_ACCESS_Flags.OBJECT_INHERIT_ACE),
-				new SI_ACCESS((uint)FileSystemRights.ExecuteFile, ResStr("FileRightExecuteFile"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)FileSystemRights.ReadData, ResStr("FileRightReadData"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)FileSystemRights.ReadAttributes, ResStr("FileRightReadAttributes"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)FileSystemRights.ReadExtendedAttributes, ResStr("FileRightReadExtendedAttributes"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)FileSystemRights.WriteData, ResStr("FileRightWriteData"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)FileSystemRights.AppendData, ResStr("FileRightAppendData"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)FileSystemRights.WriteAttributes, ResStr("FileRightWriteAttributes"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)FileSystemRights.WriteExtendedAttributes, ResStr("FileRightWriteExtendedAttributes"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)FileSystemRights.DeleteSubdirectoriesAndFiles, ResStr("FileRightDeleteSubdirectoriesAndFiles"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)FileSystemRights.Delete, ResStr("StdRightDelete"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)FileSystemRights.ReadPermissions, ResStr("FileRightReadPermissions"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)FileSystemRights.ChangePermissions, ResStr("FileRightChangePermissions"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)FileSystemRights.TakeOwnership, ResStr("StdRightTakeOwnership"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)FileSystemRights.FullControl, ResStr("FileRightFullControl"), INHERIT_FLAGS.SI_ACCESS_GENERAL| INHERIT_FLAGS.SI_ACCESS_SPECIFIC | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
+				new SI_ACCESS((uint)FileSystemRights.Modify, ResStr("FileRightModify"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
+				new SI_ACCESS((uint)FileSystemRights.ReadAndExecute, ResStr("FileRightReadAndExecute"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
+				new SI_ACCESS((uint)FileSystemRights.ReadAndExecute, ResStr("FileRightListFolderContents"), INHERIT_FLAGS.SI_ACCESS_CONTAINER | INHERIT_FLAGS.CONTAINER_INHERIT_ACE),
+				new SI_ACCESS((uint)FileSystemRights.Read, ResStr("FileRightRead"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
+				new SI_ACCESS((uint)FileSystemRights.Write, ResStr("FileRightWrite"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
+				new SI_ACCESS((uint)FileSystemRights.ExecuteFile, ResStr("FileRightExecuteFile"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)FileSystemRights.ReadData, ResStr("FileRightReadData"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)FileSystemRights.ReadAttributes, ResStr("FileRightReadAttributes"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)FileSystemRights.ReadExtendedAttributes, ResStr("FileRightReadExtendedAttributes"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)FileSystemRights.WriteData, ResStr("FileRightWriteData"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)FileSystemRights.AppendData, ResStr("FileRightAppendData"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)FileSystemRights.WriteAttributes, ResStr("FileRightWriteAttributes"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)FileSystemRights.WriteExtendedAttributes, ResStr("FileRightWriteExtendedAttributes"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)FileSystemRights.DeleteSubdirectoriesAndFiles, ResStr("FileRightDeleteSubdirectoriesAndFiles"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)FileSystemRights.Delete, ResStr("StdRightDelete"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)FileSystemRights.ReadPermissions, ResStr("FileRightReadPermissions"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)FileSystemRights.ChangePermissions, ResStr("FileRightChangePermissions"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)FileSystemRights.TakeOwnership, ResStr("StdRightTakeOwnership"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
 				new SI_ACCESS((uint)FileSystemRights.Modify, ResStr("FileRightModify"), 0),
 				new SI_ACCESS((uint)FileSystemRights.ReadAndExecute, ResStr("FileRightReadAndExecute"), 0),
 				new SI_ACCESS((uint)(FileSystemRights.Write | FileSystemRights.ExecuteFile), ResStr("FileRightWriteAndExecute"), 0),
@@ -259,12 +258,12 @@ namespace Vanara.Security.AccessControl
 
 		public override SI_INHERIT_TYPE[] GetInheritTypes() => new[] {
 				new SI_INHERIT_TYPE(0, ResStr("FileInheritance")),
-				new SI_INHERIT_TYPE(SI_INHERIT_Flags.CONTAINER_INHERIT_ACE | SI_INHERIT_Flags.OBJECT_INHERIT_ACE, ResStr("FileInheritanceCIOI")),
-				new SI_INHERIT_TYPE(SI_INHERIT_Flags.CONTAINER_INHERIT_ACE, ResStr("FileInheritanceCI")),
-				new SI_INHERIT_TYPE(SI_INHERIT_Flags.OBJECT_INHERIT_ACE, ResStr("FileInheritanceOI")),
-				new SI_INHERIT_TYPE(SI_INHERIT_Flags.INHERIT_ONLY_ACE | SI_INHERIT_Flags.CONTAINER_INHERIT_ACE | SI_INHERIT_Flags.OBJECT_INHERIT_ACE, ResStr("FileInheritanceIOCIOI")),
-				new SI_INHERIT_TYPE(SI_INHERIT_Flags.INHERIT_ONLY_ACE | SI_INHERIT_Flags.CONTAINER_INHERIT_ACE, ResStr("FileInheritanceIOCI")),
-				new SI_INHERIT_TYPE(SI_INHERIT_Flags.INHERIT_ONLY_ACE | SI_INHERIT_Flags.OBJECT_INHERIT_ACE, ResStr("FileInheritanceIOOI"))
+				new SI_INHERIT_TYPE(INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("FileInheritanceCIOI")),
+				new SI_INHERIT_TYPE(INHERIT_FLAGS.CONTAINER_INHERIT_ACE, ResStr("FileInheritanceCI")),
+				new SI_INHERIT_TYPE(INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("FileInheritanceOI")),
+				new SI_INHERIT_TYPE(INHERIT_FLAGS.INHERIT_ONLY_ACE | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("FileInheritanceIOCIOI")),
+				new SI_INHERIT_TYPE(INHERIT_FLAGS.INHERIT_ONLY_ACE | INHERIT_FLAGS.CONTAINER_INHERIT_ACE, ResStr("FileInheritanceIOCI")),
+				new SI_INHERIT_TYPE(INHERIT_FLAGS.INHERIT_ONLY_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("FileInheritanceIOOI"))
 			};
 	}
 
@@ -280,18 +279,18 @@ namespace Vanara.Security.AccessControl
 		public override void GetAccessListInfo(SI_OBJECT_INFO_Flags flags, out SI_ACCESS[] rights, out uint defaultIndex)
 		{
 			rights = new[] {
-				new SI_ACCESS((uint)RegistryRights.FullControl, ResStr("FileRightFullControl"), SI_ACCESS_Flags.SI_ACCESS_GENERAL | SI_ACCESS_Flags.SI_ACCESS_SPECIFIC | SI_ACCESS_Flags.CONTAINER_INHERIT_ACE | SI_ACCESS_Flags.OBJECT_INHERIT_ACE),
-				new SI_ACCESS((uint)RegistryRights.ReadKey, ResStr("FileRightRead"), SI_ACCESS_Flags.SI_ACCESS_GENERAL | SI_ACCESS_Flags.CONTAINER_INHERIT_ACE | SI_ACCESS_Flags.OBJECT_INHERIT_ACE),
-				new SI_ACCESS((uint)RegistryRights.QueryValues, ResStr("RegistryRightQueryValues"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)RegistryRights.SetValue, ResStr("RegistryRightSetValue"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)RegistryRights.CreateSubKey, ResStr("RegistryRightCreateSubKey"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)RegistryRights.EnumerateSubKeys, ResStr("RegistryRightEnumerateSubKeys"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)RegistryRights.Notify, ResStr("RegistryRightNotify"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)RegistryRights.CreateLink, ResStr("RegistryRightCreateLink"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)RegistryRights.Delete, ResStr("StdRightDelete"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)RegistryRights.ChangePermissions, ResStr("RegistryRightChangePermissions"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)RegistryRights.TakeOwnership, ResStr("RegistryRightTakeOwnership"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)RegistryRights.ReadPermissions, ResStr("RegistryRightReadControl"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)RegistryRights.FullControl, ResStr("FileRightFullControl"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.SI_ACCESS_SPECIFIC | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
+				new SI_ACCESS((uint)RegistryRights.ReadKey, ResStr("FileRightRead"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
+				new SI_ACCESS((uint)RegistryRights.QueryValues, ResStr("RegistryRightQueryValues"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)RegistryRights.SetValue, ResStr("RegistryRightSetValue"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)RegistryRights.CreateSubKey, ResStr("RegistryRightCreateSubKey"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)RegistryRights.EnumerateSubKeys, ResStr("RegistryRightEnumerateSubKeys"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)RegistryRights.Notify, ResStr("RegistryRightNotify"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)RegistryRights.CreateLink, ResStr("RegistryRightCreateLink"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)RegistryRights.Delete, ResStr("StdRightDelete"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)RegistryRights.ChangePermissions, ResStr("RegistryRightChangePermissions"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)RegistryRights.TakeOwnership, ResStr("RegistryRightTakeOwnership"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)RegistryRights.ReadPermissions, ResStr("RegistryRightReadControl"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
 				new SI_ACCESS(0, ResStr("File"), 0)
 			};
 			defaultIndex = 11;
@@ -299,7 +298,7 @@ namespace Vanara.Security.AccessControl
 
 		public override GENERIC_MAPPING GetGenericMapping(sbyte aceFlags) => new GENERIC_MAPPING((uint)RegistryRights.ReadKey, (uint)RegistryRights.WriteKey, (uint)RegistryRights.ExecuteKey, (uint)RegistryRights.FullControl);
 
-		public override INHERITED_FROM[] GetInheritSource(string objName, string serverName, bool isContainer, uint si, IntPtr pAcl)
+		public override INHERITED_FROM[] GetInheritSource(string objName, string serverName, bool isContainer, uint si, PACL pAcl)
 		{
 			var ret = base.GetInheritSource(objName, serverName, isContainer, si, pAcl);
 			for (var i = 0; i < ret.Length; i++)
@@ -317,8 +316,8 @@ namespace Vanara.Security.AccessControl
 
 		public override SI_INHERIT_TYPE[] GetInheritTypes() => new[] {
 				new SI_INHERIT_TYPE(0, ResStr("RegistryInheritance")),
-				new SI_INHERIT_TYPE(SI_INHERIT_Flags.CONTAINER_INHERIT_ACE | SI_INHERIT_Flags.OBJECT_INHERIT_ACE, ResStr("RegistryInheritanceCI")),
-				new SI_INHERIT_TYPE(SI_INHERIT_Flags.INHERIT_ONLY_ACE | SI_INHERIT_Flags.CONTAINER_INHERIT_ACE, ResStr("RegistryInheritanceIOCI")),
+				new SI_INHERIT_TYPE(INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE, ResStr("RegistryInheritanceCI")),
+				new SI_INHERIT_TYPE(INHERIT_FLAGS.INHERIT_ONLY_ACE | INHERIT_FLAGS.CONTAINER_INHERIT_ACE, ResStr("RegistryInheritanceIOCI")),
 			};
 	}
 
@@ -329,26 +328,26 @@ namespace Vanara.Security.AccessControl
 		public override void GetAccessListInfo(SI_OBJECT_INFO_Flags flags, out SI_ACCESS[] rights, out uint defaultIndex)
 		{
 			rights = new[] {
-				new SI_ACCESS(0x1F01FF, ResStr("FileRightFullControl"), SI_ACCESS_Flags.SI_ACCESS_GENERAL | SI_ACCESS_Flags.SI_ACCESS_SPECIFIC | SI_ACCESS_Flags.CONTAINER_INHERIT_ACE | SI_ACCESS_Flags.OBJECT_INHERIT_ACE),
-				new SI_ACCESS(0x1200A9, ResStr("FileRightListFolderContents"), SI_ACCESS_Flags.SI_ACCESS_CONTAINER | SI_ACCESS_Flags.CONTAINER_INHERIT_ACE),
-				new SI_ACCESS(0x120089, ResStr("FileRightRead"), SI_ACCESS_Flags.SI_ACCESS_GENERAL | SI_ACCESS_Flags.CONTAINER_INHERIT_ACE | SI_ACCESS_Flags.OBJECT_INHERIT_ACE),
-				new SI_ACCESS(0x120116, ResStr("FileRightWrite"), SI_ACCESS_Flags.SI_ACCESS_GENERAL | SI_ACCESS_Flags.CONTAINER_INHERIT_ACE | SI_ACCESS_Flags.OBJECT_INHERIT_ACE),
-				new SI_ACCESS(0x1200A0, ResStr("TaskRightExecute"), SI_ACCESS_Flags.SI_ACCESS_GENERAL | SI_ACCESS_Flags.CONTAINER_INHERIT_ACE | SI_ACCESS_Flags.OBJECT_INHERIT_ACE),
+				new SI_ACCESS(0x1F01FF, ResStr("FileRightFullControl"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.SI_ACCESS_SPECIFIC | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
+				new SI_ACCESS(0x1200A9, ResStr("FileRightListFolderContents"), INHERIT_FLAGS.SI_ACCESS_CONTAINER | INHERIT_FLAGS.CONTAINER_INHERIT_ACE),
+				new SI_ACCESS(0x120089, ResStr("FileRightRead"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
+				new SI_ACCESS(0x120116, ResStr("FileRightWrite"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
+				new SI_ACCESS(0x1200A0, ResStr("TaskRightExecute"), INHERIT_FLAGS.SI_ACCESS_GENERAL | INHERIT_FLAGS.CONTAINER_INHERIT_ACE | INHERIT_FLAGS.OBJECT_INHERIT_ACE),
 
-				new SI_ACCESS(0x000001, ResStr("FileRightReadData"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS(0x000002, ResStr("FileRightWriteData"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS(0x000004, ResStr("FileRightAppendData"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS(0x000008, ResStr("FileRightReadExtendedAttributes"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS(0x000010, ResStr("FileRightWriteExtendedAttributes"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS(0x000020, ResStr("FileRightExecuteFile"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS(0x000040, ResStr("FileRightDeleteSubdirectoriesAndFiles"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS(0x000080, ResStr("FileRightReadAttributes"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS(0x000100, ResStr("FileRightWriteAttributes"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS(0x010000, ResStr("StdRightDelete"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)FileSystemRights.ReadPermissions, ResStr("FileRightReadPermissions"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)FileSystemRights.ChangePermissions, ResStr("FileRightChangePermissions"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS((uint)FileSystemRights.TakeOwnership, ResStr("StdRightTakeOwnership"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
-				new SI_ACCESS(0x100000, ResStr("Synchronize"), SI_ACCESS_Flags.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS(0x000001, ResStr("FileRightReadData"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS(0x000002, ResStr("FileRightWriteData"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS(0x000004, ResStr("FileRightAppendData"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS(0x000008, ResStr("FileRightReadExtendedAttributes"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS(0x000010, ResStr("FileRightWriteExtendedAttributes"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS(0x000020, ResStr("FileRightExecuteFile"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS(0x000040, ResStr("FileRightDeleteSubdirectoriesAndFiles"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS(0x000080, ResStr("FileRightReadAttributes"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS(0x000100, ResStr("FileRightWriteAttributes"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS(0x010000, ResStr("StdRightDelete"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)FileSystemRights.ReadPermissions, ResStr("FileRightReadPermissions"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)FileSystemRights.ChangePermissions, ResStr("FileRightChangePermissions"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS((uint)FileSystemRights.TakeOwnership, ResStr("StdRightTakeOwnership"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
+				new SI_ACCESS(0x100000, ResStr("Synchronize"), INHERIT_FLAGS.SI_ACCESS_SPECIFIC),
 
 				new SI_ACCESS(0x1F019F, ResStr("FileRightReadWriteAndExecute"), 0),
 				new SI_ACCESS(0, ResStr("File"), 0)
@@ -358,7 +357,7 @@ namespace Vanara.Security.AccessControl
 
 		public override GENERIC_MAPPING GetGenericMapping(sbyte aceFlags) => new GENERIC_MAPPING(0x120089, 0x120116, 0x1200A0, 0x1F01FF);
 
-		public override INHERITED_FROM[] GetInheritSource(string objName, string serverName, bool isContainer, uint si, IntPtr pAcl)
+		public override INHERITED_FROM[] GetInheritSource(string objName, string serverName, bool isContainer, uint si, PACL pAcl)
 		{
 			// Get list of all parents
 			//var obj = SecuredObject.GetKnownObject(Windows.Forms.AccessControlEditorDialog.TaskResourceType, objName, serverName);

@@ -5,14 +5,6 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Security;
 using System.Text;
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedParameter.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable InconsistentNaming
-// ReSharper disable MemberHidesStaticFromOuterClass
-// ReSharper disable UnusedMethodReturnValue.Global
-
 namespace Vanara.PInvoke
 {
 	public static partial class Shell32
@@ -43,12 +35,12 @@ namespace Vanara.PInvoke
 			[SecurityCritical]
 			public static string GetPathForKnownFolder(Guid knownFolder)
 			{
-				if (knownFolder == default(Guid))
+				if (knownFolder == default)
 					return null;
 
 				var pathBuilder = new StringBuilder(260);
 				if (SHGetFolderPathEx(knownFolder, 0, HTOKEN.NULL, pathBuilder, (uint)pathBuilder.Capacity).Failed)
-				    return null;
+					return null;
 				return pathBuilder.ToString();
 			}
 
@@ -67,7 +59,7 @@ namespace Vanara.PInvoke
 				if (string.IsNullOrEmpty(path))
 					return null;
 
-				var hr = SHCreateItemFromParsingName(path, null, typeof(IShellItem).GUID, out object unk);
+				var hr = SHCreateItemFromParsingName(path, null, typeof(IShellItem).GUID, out var unk);
 				if (hr == 0x80070002)
 				{
 					Ole32.CreateBindCtx(0, out var ibc).ThrowIfFailed();
@@ -86,24 +78,26 @@ namespace Vanara.PInvoke
 			private class IntFileSysBindData : IFileSystemBindData2
 			{
 				private static readonly Guid CLSID_UnknownJunction = new Guid("{fc0a77e6-9d70-4258-9783-6dab1d0fe31e}");
+				private Guid clsidJunction;
 				private WIN32_FIND_DATA fd;
 				private long fileId;
-				private Guid clsidJunction;
 
-				public IntFileSysBindData() { }
-
-				public void SetFindData(in WIN32_FIND_DATA pfd) => fd = pfd;
-
-				public void GetFindData(out WIN32_FIND_DATA pfd) => pfd = fd;
-
-				public void SetFileID(long liFileID) => fileId = liFileID;
+				public IntFileSysBindData()
+				{
+				}
 
 				public long GetFileID() => fileId;
 
-				public void SetJunctionCLSID(in Guid clsid) => clsidJunction = clsid;
+				public void GetFindData(out WIN32_FIND_DATA pfd) => pfd = fd;
 
 				[return: MarshalAs(UnmanagedType.LPStruct)]
 				public Guid GetJunctionCLSID() => clsidJunction != CLSID_UnknownJunction ? clsidJunction : throw new COMException("Unable to handle junctions", unchecked((int)HRESULT.E_FAIL));
+
+				public void SetFileID(long liFileID) => fileId = liFileID;
+
+				public void SetFindData(in WIN32_FIND_DATA pfd) => fd = pfd;
+
+				public void SetJunctionCLSID(in Guid clsid) => clsidJunction = clsid;
 			}
 		}
 	}

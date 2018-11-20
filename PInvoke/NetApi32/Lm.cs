@@ -190,7 +190,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.NetApi32, ExactSpelling = true), SuppressUnmanagedCodeSecurity]
 		[PInvokeData("lm.h", MSDNShortId = "aa370304")]
-		public static extern Win32Error NetApiBufferFree(SafeNetApiBuffer pBuf);
+		public static extern Win32Error NetApiBufferFree(IntPtr pBuf);
 
 		/// <summary>
 		/// <para>
@@ -2349,7 +2349,7 @@ namespace Vanara.PInvoke
 			public IEnumerable<string> ToStringEnum(int count) => handle.ToStringEnum(count);
 
 			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => NetApiBufferFree(this) == 0;
+			protected override bool InternalReleaseHandle() => NetApiBufferFree(handle) == 0;
 		}
 	}
 }

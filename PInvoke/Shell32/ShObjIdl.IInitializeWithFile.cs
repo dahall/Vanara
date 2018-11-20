@@ -49,6 +49,7 @@ namespace Vanara.PInvoke
 			/// handler should result in the error .
 			/// </para>
 			/// </remarks>
+			[PreserveSig]
 			HRESULT Initialize([In, MarshalAs(UnmanagedType.LPWStr)] string pszFilePath, STGM grfMode);
 		}
 	}

@@ -633,9 +633,8 @@ namespace Vanara.Windows.Forms
 		/// <returns>The hit test code that indicates whether the point in <paramref name="pt"/> is in the background area bounded by <paramref name="bounds"/>.</returns>
 		public System.Windows.Forms.VisualStyles.HitTestCode BackgroundHitTest(IDeviceContext dc, int partId, int stateId, Rectangle bounds, Point pt, System.Windows.Forms.VisualStyles.HitTestOptions options = 0)
 		{
-			RECT r = bounds;
 			using (var hdc = new SafeHDC(dc))
-				return HitTestThemeBackground(Handle, hdc, partId, stateId, (HitTestOptions)options, ref r, HRGN.NULL, pt, out var htcode).Succeeded ? (System.Windows.Forms.VisualStyles.HitTestCode)htcode : 0;
+				return HitTestThemeBackground(Handle, hdc, partId, stateId, (HitTestOptions)options, bounds, HRGN.NULL, pt, out var htcode).Succeeded ? (System.Windows.Forms.VisualStyles.HitTestCode)htcode : 0;
 		}
 
 		/// <summary>Retrieves a hit test code for a point in the background specified by a visual style.</summary>
@@ -651,9 +650,8 @@ namespace Vanara.Windows.Forms
 		/// </returns>
 		public System.Windows.Forms.VisualStyles.HitTestCode BackgroundHitTest(Graphics graphics, int partId, int stateId, Rectangle bounds, Region region, Point pt, System.Windows.Forms.VisualStyles.HitTestOptions options = 0)
 		{
-			RECT r = bounds;
 			using (var hdc = new SafeHDC(graphics))
-				return HitTestThemeBackground(Handle, hdc, partId, stateId, (HitTestOptions)options, ref r, new HRGN(region.GetHrgn(graphics)), pt, out var htcode).Succeeded ? (System.Windows.Forms.VisualStyles.HitTestCode)htcode : 0;
+				return HitTestThemeBackground(Handle, hdc, partId, stateId, (HitTestOptions)options, bounds, new HRGN(region.GetHrgn(graphics)), pt, out var htcode).Succeeded ? (System.Windows.Forms.VisualStyles.HitTestCode)htcode : 0;
 		}
 
 		/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
@@ -670,10 +668,9 @@ namespace Vanara.Windows.Forms
 		/// <param name="omitContent">if set to <c>true</c> omit content when drawing.</param>
 		public void DrawBackground(IDeviceContext graphics, int partId, int stateId, Rectangle bounds, Rectangle? clipRect, bool rightToLeft = false, bool omitBorder = false, bool omitContent = false)
 		{
-			RECT b = bounds;
 			var o = new DTBGOPTS(clipRect) {HasMirroredDC = rightToLeft, OmitBorder = omitBorder, OmitContent = omitContent};
 			using (var hdc = new SafeHDC(graphics))
-				DrawThemeBackgroundEx(Handle, hdc, partId, stateId, ref b, o);
+				DrawThemeBackgroundEx(Handle, hdc, partId, stateId, bounds, o);
 		}
 
 		/// <summary>Draws one or more edges defined by the visual style of a rectangle.</summary>
@@ -687,10 +684,9 @@ namespace Vanara.Windows.Forms
 		/// </param>
 		public void DrawEdge(IDeviceContext graphics, int partId, int stateId, ref Rectangle bounds, BorderStyles3D edges = BorderStyles3D.BDR_SUNKEN, BorderFlags borderType = BorderFlags.BF_RECT | BorderFlags.BF_ADJUST)
 		{
-			RECT b = bounds;
 			using (var hdc = new SafeHDC(graphics))
 			{
-				DrawThemeEdge(Handle, hdc, partId, stateId, ref b, edges, borderType, out var r);
+				DrawThemeEdge(Handle, hdc, partId, stateId, bounds, edges, borderType, out var r);
 				if (borderType.IsFlagSet(BorderFlags.BF_ADJUST))
 					bounds = r;
 			}
@@ -705,9 +701,8 @@ namespace Vanara.Windows.Forms
 		/// <param name="bounds">The bounding rectangle, in logical coordinates.</param>
 		public void DrawIcon(IDeviceContext graphics, int partId, int stateId, ImageList imageList, int imageIndex, Rectangle bounds)
 		{
-			RECT b = bounds;
 			using (var hdc = new SafeHDC(graphics))
-				DrawThemeIcon(Handle, hdc, partId, stateId, ref b, imageList.Handle, imageIndex);
+				DrawThemeIcon(Handle, hdc, partId, stateId, bounds, imageList.Handle, imageIndex);
 		}
 
 		/// <summary>Draws the part of a parent control that is covered by a partially-transparent or alpha-blended child control.</summary>
@@ -739,7 +734,7 @@ namespace Vanara.Windows.Forms
 			using (var hdc = new SafeHDC(graphics))
 			using (var hfont = new SafeHFONT(font?.ToHfont() ?? IntPtr.Zero))
 			using (hdc.SelectObject(hfont))
-				DrawThemeTextEx(Handle, hdc, partId, stateId, text, text.Length, (DrawTextFlags)fmt, ref b, ref dt);
+				DrawThemeTextEx(Handle, hdc, partId, stateId, text, text.Length, (DrawTextFlags)fmt, ref b, dt);
 		}
 
 		/// <summary>Retrieves the size of the content area for the background defined by the visual style.</summary>
@@ -750,9 +745,8 @@ namespace Vanara.Windows.Forms
 		/// <returns>The content area background rectangle, in logical coordinates. This rectangle is calculated to fit the content area.</returns>
 		public Rectangle? GetBackgroundContentRect([Optional] IDeviceContext graphics, int partId, int stateId, Rectangle bounds)
 		{
-			RECT b = bounds;
 			using (var hdc = new SafeHDC(graphics))
-				return GetThemeBackgroundContentRect(Handle, hdc, partId, stateId, ref b, out var rc).Succeeded ? (Rectangle?)rc : null;
+				return GetThemeBackgroundContentRect(Handle, hdc, partId, stateId, bounds, out var rc).Succeeded ? (Rectangle?)rc : null;
 		}
 
 		/// <summary>Calculates the size and location of the background, defined by the visual style, given the content area.</summary>
@@ -763,9 +757,8 @@ namespace Vanara.Windows.Forms
 		/// <returns>The background rectangle, in logical coordinates. This rectangle is based on <paramref name="bounds"/>.</returns>
 		public Rectangle? GetBackgroundExtent([Optional] IDeviceContext graphics, int partId, int stateId, Rectangle bounds)
 		{
-			RECT b = bounds;
 			using (var hdc = new SafeHDC(graphics))
-				return GetThemeBackgroundExtent(Handle, hdc, partId, stateId, ref b, out var rc).Succeeded ? (Rectangle?)rc : null;
+				return GetThemeBackgroundExtent(Handle, hdc, partId, stateId, bounds, out var rc).Succeeded ? (Rectangle?)rc : null;
 		}
 
 		/// <summary>Retrieves the bitmap associated with a particular theme, part, state, and property.</summary>
@@ -773,7 +766,7 @@ namespace Vanara.Windows.Forms
 		/// <param name="stateId">Value that specifies the state of the part that contains the bitmap.</param>
 		/// <param name="propId">The bitmap property identifier.</param>
 		/// <returns>The requested bitmap, if successful; otherwise <c>null</c>.</returns>
-		public Bitmap GetBitmap(int partId, int stateId, BitmapProperty propId) => GetThemeBitmap(Handle, partId, stateId, (int)propId, 0, out var hBmp).Succeeded ? hBmp.ToBitmap() : null;
+		public Bitmap GetBitmap(int partId, int stateId, BitmapProperty propId) => GetThemeBitmap(Handle, partId, stateId, (int)propId, GBF.GBF_COPY, out var hBmp).Succeeded ? hBmp.ToBitmap() : null;
 
 		/// <summary>Retrieves the value of a <c>bool</c> property from the SysMetrics section of theme data.</summary>
 		/// <param name="partId">Value that specifies the part that contains the bool property.</param>

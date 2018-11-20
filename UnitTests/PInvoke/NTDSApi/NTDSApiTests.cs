@@ -11,9 +11,9 @@ namespace Vanara.PInvoke.Tests
 		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AdvApi32Tests.AuthCasesFromFile))]
 		public void DsBindTest(bool validUser, bool validCred, string urn, string dn, string dcn, string domain, string un, string pwd, string notes)
 		{
-			Assert.That(DsBind(dn, dcn, out var dsb).Succeeded && !dsb.IsInvalid, Is.EqualTo(validUser && validCred));
-			Assert.That(DsBind(dn, null, out var dsb1).Succeeded && !dsb1.IsInvalid, Is.EqualTo(validUser && validCred));
-			Assert.That(DsBind(null, dcn, out var dsb2).Succeeded && !dsb2.IsInvalid, Is.EqualTo(validUser && validCred));
+			Assert.That(DsBind(dcn, dn, out var dsb).Succeeded && !dsb.IsInvalid, Is.EqualTo(validUser));
+			Assert.That(DsBind(dcn, null, out var dsb1).Succeeded && !dsb1.IsInvalid, Is.EqualTo(validUser));
+			Assert.That(DsBind(null, dn, out var dsb2).Succeeded && !dsb2.IsInvalid, Is.EqualTo(validUser));
 		}
 
 		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AdvApi32Tests.AuthCasesFromFile))]

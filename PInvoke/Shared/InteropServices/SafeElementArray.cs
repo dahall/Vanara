@@ -8,21 +8,27 @@ using Vanara.Extensions;
 namespace Vanara.InteropServices
 {
 	/// <summary>
-	/// A safe unmanaged array of structures allocated on the global heap with a prefix type (usually a uint or int) that determines the count of elements.
+	/// A safe unmanaged array of structures allocated on the global heap with a prefix type (usually a uint or int) that determines the
+	/// count of elements.
 	/// </summary>
 	public class SafeElementArray<TElem, TPrefix, TMem> : SafeMemoryHandle<TMem>, IEnumerable<TElem> where TMem : IMemoryMethods, new() where TElem : struct where TPrefix : IConvertible
 	{
-		private static int ElemSize = Marshal.SizeOf(typeof(TElem));
-		private static int PrefixSize = Marshal.SizeOf(typeof(TPrefix));
+		private static readonly int ElemSize = Marshal.SizeOf(typeof(TElem));
+		private static readonly int PrefixSize = Marshal.SizeOf(typeof(TPrefix));
 
 		/// <summary>Initializes a new instance of the <see cref="SafeElementArray{TElem, TPrefix, TMem}"/> class.</summary>
 		protected SafeElementArray() : this(0) { }
 
-		/// <summary>Initializes a new instance of the <see cref="SafeElementArray{TElem, TPrefix, TMem}"/> class and allocates <paramref name="elementCount"/> bytes.</summary>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SafeElementArray{TElem, TPrefix, TMem}"/> class and allocates <paramref
+		/// name="elementCount"/> bytes.
+		/// </summary>
 		/// <param name="elementCount">The TElem count to allocate.</param>
 		protected SafeElementArray(TPrefix elementCount) : this(Convert.ToInt32(elementCount)) { }
 
-		/// <summary>Initializes a new instance of the <see cref="SafeElementArray{TElem, TPrefix, TMem}"/> class from a copy of a managed TElem array.</summary>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SafeElementArray{TElem, TPrefix, TMem}"/> class from a copy of a managed TElem array.
+		/// </summary>
 		/// <param name="array">The array of bytes to copy.</param>
 		/// <param name="getElemSize">Size of the get elem.</param>
 		protected SafeElementArray(TElem[] array, Func<TElem, int> getElemSize = null) : base(IntPtr.Zero, 0, true) { GetElemSize = getElemSize; Elements = array; }
@@ -37,12 +43,14 @@ namespace Vanara.InteropServices
 				IntCount = elementCount;
 		}
 
-		private SafeElementArray(int elementCount) : base(GetRequiredSize(elementCount)) { }
+		private SafeElementArray(int elementCount) : base(GetRequiredSize(elementCount))
+		{
+		}
 
 		/// <summary>Gets the number of elements contained in the <see cref="SafeElementArray{TElem, TPrefix, TMem}"/>.</summary>
 		protected TPrefix Count
 		{
-			get => IsInvalid ? default(TPrefix) : handle.ToStructure<TPrefix>();
+			get => IsInvalid ? default : handle.ToStructure<TPrefix>();
 			private set { if (!IsInvalid) Marshal.StructureToPtr(value, handle, false); }
 		}
 

@@ -446,7 +446,7 @@ namespace System.Collections.Generic
 				actualValue = k;
 				return true;
 			}
-			actualValue = default(T);
+			actualValue = default;
 			return false;
 		}
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using static Vanara.PInvoke.Gdi32;
 
 namespace Vanara.PInvoke
 {

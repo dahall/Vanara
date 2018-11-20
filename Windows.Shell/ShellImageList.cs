@@ -54,7 +54,7 @@ namespace Vanara.Windows.Shell
 			var ret = SHGetFileInfo(fileNameOrExtension, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_USEFILEATTRIBUTES | SHGFI.SHGFI_ICON | (SHGFI)iconType);
 			if (ret == IntPtr.Zero)
 				ret = SHGetFileInfo(fileNameOrExtension, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_ICON | (SHGFI)iconType);
-			return ret == IntPtr.Zero ? null : new SafeHICON(shfi.hIcon).ToIcon();
+			return ret == IntPtr.Zero ? null : shfi.hIcon.ToIcon();
 		}
 	}
 }

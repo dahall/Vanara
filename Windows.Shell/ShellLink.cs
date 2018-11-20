@@ -108,7 +108,7 @@ namespace Vanara.Windows.Shell
 		/// <param name="resolveFlags">The resolve flags.</param>
 		/// <param name="timeOut">The time out.</param>
 		/// <exception cref="System.ArgumentNullException">linkFile</exception>
-		public ShellLink(string linkFile, LinkResolution resolveFlags = LinkResolution.NoUI, IWin32Window window = null, TimeSpan timeOut = default(TimeSpan)) : base(linkFile)
+		public ShellLink(string linkFile, LinkResolution resolveFlags = LinkResolution.NoUI, IWin32Window window = null, TimeSpan timeOut = default) : base(linkFile)
 		{
 			LoadAndResolve(linkFile, (SLR_FLAGS)resolveFlags, ShellFolder.IWin2Ptr(window), (ushort)timeOut.TotalMilliseconds);
 		}

@@ -2,14 +2,6 @@
 using System.Runtime.InteropServices;
 using System.Security;
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedParameter.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable InconsistentNaming
-// ReSharper disable MemberHidesStaticFromOuterClass
-// ReSharper disable UnusedMethodReturnValue.Global
-
 namespace Vanara.PInvoke
 {
 	public static partial class Shell32

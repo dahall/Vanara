@@ -74,7 +74,7 @@ namespace Vanara.Collections
 		/// <value>The element at the specified index.</value>
 		public T this[int index]
 		{
-			get => hashtable.TryGetValue(index, out T ret) ? ret : default(T);
+			get => hashtable.TryGetValue(index, out T ret) ? ret : default;
 			set => Insert(index, value);
 		}
 

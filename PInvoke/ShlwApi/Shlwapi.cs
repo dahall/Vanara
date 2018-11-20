@@ -130,53 +130,132 @@ namespace Vanara.PInvoke
 			FDTF_NOAUTOREADINGORDER = 0x00000400,
 		}
 
-		/// <summary><para>Indicates <c>FILETYPEATTRIBUTEFLAGS</c> constants that are used in the EditFlags value of a file association PROGID registry key.</para></summary><remarks><para>These flags represent possible attributes stored in the EditFlags value of a ProgID registration. The EditFlags data is a single REG_DWORD.</para><para>The following example shows the <c><c>FTA_NoRemove</c></c> (0x00000010) and <c><c>FTA_NoNewVerb</c></c> (0x00000020) attributes assigned to the .myp file type.</para><para><c>.myp</c> (Default) = MyProgram.1 <c>MyProgram.1</c> (Default) = MyProgram Application <c>EditFlags</c> = 0x00000030</para><para>APIs such as IQueryAssociations::GetData can retrieve that EditFlags data. Compare the numerical equivalents of these <c>FILETYPEATTRIBUTEFLAGS</c> flags against that retrived value to determine which flags are set.</para><para>The following example demonstrates the use of IQueryAssociations::GetData to determine if those values are set.</para><para>To set an EditFlags attribute, you can use the RegSetValueEx or SHSetValue functions. First use IQueryAssociations::GetData to retrieve the current set of attributes as shown in the example above, add the desired <c>FILETYPEATTRIBUTEFLAGS</c> to that value, then write that value back to the registry using one of the two set functions.</para></remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/ne-shlwapi-filetypeattributeflags
-		// typedef enum FILETYPEATTRIBUTEFLAGS { FTA_None , FTA_Exclude , FTA_Show , FTA_HasExtension , FTA_NoEdit , FTA_NoRemove , FTA_NoNewVerb , FTA_NoEditVerb , FTA_NoRemoveVerb , FTA_NoEditDesc , FTA_NoEditIcon , FTA_NoEditDflt , FTA_NoEditVerbCmd , FTA_NoEditVerbExe , FTA_NoDDE , FTA_NoEditMIME , FTA_OpenIsSafe , FTA_AlwaysUnsafe , FTA_NoRecentDocs , FTA_SafeForElevation , FTA_AlwaysUseDirectInvoke } ;
+		/// <summary>
+		/// <para>
+		/// Indicates <c>FILETYPEATTRIBUTEFLAGS</c> constants that are used in the EditFlags value of a file association PROGID registry key.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// These flags represent possible attributes stored in the EditFlags value of a ProgID registration. The EditFlags data is a single REG_DWORD.
+		/// </para>
+		/// <para>
+		/// The following example shows the <c><c>FTA_NoRemove</c></c> (0x00000010) and <c><c>FTA_NoNewVerb</c></c> (0x00000020) attributes
+		/// assigned to the .myp file type.
+		/// </para>
+		/// <para><c>.myp</c> (Default) = MyProgram.1 <c>MyProgram.1</c> (Default) = MyProgram Application <c>EditFlags</c> = 0x00000030</para>
+		/// <para>
+		/// APIs such as IQueryAssociations::GetData can retrieve that EditFlags data. Compare the numerical equivalents of these
+		/// <c>FILETYPEATTRIBUTEFLAGS</c> flags against that retrived value to determine which flags are set.
+		/// </para>
+		/// <para>The following example demonstrates the use of IQueryAssociations::GetData to determine if those values are set.</para>
+		/// <para>
+		/// To set an EditFlags attribute, you can use the RegSetValueEx or SHSetValue functions. First use IQueryAssociations::GetData to
+		/// retrieve the current set of attributes as shown in the example above, add the desired <c>FILETYPEATTRIBUTEFLAGS</c> to that
+		/// value, then write that value back to the registry using one of the two set functions.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/ne-shlwapi-filetypeattributeflags typedef enum FILETYPEATTRIBUTEFLAGS
+		// { FTA_None , FTA_Exclude , FTA_Show , FTA_HasExtension , FTA_NoEdit , FTA_NoRemove , FTA_NoNewVerb , FTA_NoEditVerb ,
+		// FTA_NoRemoveVerb , FTA_NoEditDesc , FTA_NoEditIcon , FTA_NoEditDflt , FTA_NoEditVerbCmd , FTA_NoEditVerbExe , FTA_NoDDE ,
+		// FTA_NoEditMIME , FTA_OpenIsSafe , FTA_AlwaysUnsafe , FTA_NoRecentDocs , FTA_SafeForElevation , FTA_AlwaysUseDirectInvoke } ;
 		[PInvokeData("shlwapi.h", MSDNShortId = "63b58659-9c4c-4b39-98d1-743724523dcd")]
 		public enum FILETYPEATTRIBUTEFLAGS : uint
 		{
 			/// <summary>No FILETYPEATTRIBUTEFLAGS options set.</summary>
 			FTA_None = 0x00000000,
+
 			/// <summary>Excludes the file type.</summary>
 			FTA_Exclude = 0x00000001,
+
 			/// <summary>Shows file types, such as folders, that are not associated with a file name extension.</summary>
 			FTA_Show = 0x00000002,
+
 			/// <summary>Indicates that the file type has a file name extension.</summary>
 			FTA_HasExtension = 0x00000004,
-			/// <summary>Prohibits editing of the registry entries associated with this file type, the addition of new entries, and the deletion or modification of existing entries.</summary>
+
+			/// <summary>
+			/// Prohibits editing of the registry entries associated with this file type, the addition of new entries, and the deletion or
+			/// modification of existing entries.
+			/// </summary>
 			FTA_NoEdit = 0x00000008,
+
 			/// <summary>Prohibits deletion of the registry entries associated with this file type.</summary>
 			FTA_NoRemove = 0x00000010,
+
 			/// <summary>Prohibits the addition of new verbs to the file type.</summary>
 			FTA_NoNewVerb = 0x00000020,
+
 			/// <summary>Prohibits the modification or deletion of canonical verbs such as open and print.</summary>
 			FTA_NoEditVerb = 0x00000040,
+
 			/// <summary>Prohibits the deletion of canonical verbs such as open and print.</summary>
 			FTA_NoRemoveVerb = 0x00000080,
+
 			/// <summary>Prohibits the modification or deletion of the description of the file type.</summary>
 			FTA_NoEditDesc = 0x00000100,
+
 			/// <summary>Prohibits the modification or deletion of the icon assigned to the file type.</summary>
 			FTA_NoEditIcon = 0x00000200,
+
 			/// <summary>Prohibits the modification of the default verb.</summary>
 			FTA_NoEditDflt = 0x00000400,
+
 			/// <summary>Prohibits the modification of the commands associated with verbs.</summary>
 			FTA_NoEditVerbCmd = 0x00000800,
+
 			/// <summary>Prohibits the modification or deletion of verbs.</summary>
 			FTA_NoEditVerbExe = 0x00001000,
+
 			/// <summary>Prohibits the modification or deletion of the entries related to DDE.</summary>
 			FTA_NoDDE = 0x00002000,
+
 			/// <summary>Prohibits the modification or deletion of the content type and default extension entries.</summary>
 			FTA_NoEditMIME = 0x00008000,
-			/// <summary>Indicates that the file type&#39;s open verb can be safely invoked for downloaded files. This flag applies only to safe file types, as identified by AssocIsDangerous. To improve the user experience and reduce unnecessary user prompts when downloading and activating items, file type owners should specify this flag and applications that download and activate files should respect this flag.</summary>
+
+			/// <summary>
+			/// Indicates that the file type's open verb can be safely invoked for downloaded files. This flag applies only to safe file
+			/// types, as identified by AssocIsDangerous. To improve the user experience and reduce unnecessary user prompts when downloading
+			/// and activating items, file type owners should specify this flag and applications that download and activate files should
+			/// respect this flag.
+			/// </summary>
 			FTA_OpenIsSafe = 0x00010000,
-			/// <summary>Prevents the Never ask me check box from being enabled. Use of this flag means FTA_OpenIsSafe is not respected and AssocIsDangerous always returns TRUE. If your file type can execute code, you should always use this flag or ensure that the file type handlers mitigate risks, for example, by producing warning prompts before running the code. The user can override this attribute through the File Type dialog box.</summary>
+
+			/// <summary>
+			/// Prevents the Never ask me check box from being enabled. Use of this flag means FTA_OpenIsSafe is not respected and
+			/// AssocIsDangerous always returns TRUE. If your file type can execute code, you should always use this flag or ensure that the
+			/// file type handlers mitigate risks, for example, by producing warning prompts before running the code. The user can override
+			/// this attribute through the File Type dialog box.
+			/// </summary>
 			FTA_AlwaysUnsafe = 0x00020000,
-			/// <summary>Prohibits the addition of members of this file type to the Recent Documents folder. Additionally, in Windows 7 and later, prohibits the addition of members of this file type to the automatic Recent or Frequent category of an application&#39;s Jump List. This flag does not restrict members of this file type from being added to a custom Jump List. It also places no restriction on the file type being added to the automatic Jump Lists of other applications in the case that other applications use this file type.</summary>
+
+			/// <summary>
+			/// Prohibits the addition of members of this file type to the Recent Documents folder. Additionally, in Windows 7 and later,
+			/// prohibits the addition of members of this file type to the automatic Recent or Frequent category of an application's Jump
+			/// List. This flag does not restrict members of this file type from being added to a custom Jump List. It also places no
+			/// restriction on the file type being added to the automatic Jump Lists of other applications in the case that other
+			/// applications use this file type.
+			/// </summary>
 			FTA_NoRecentDocs = 0x00100000,
-			/// <summary>Introduced in Windows 8. Marks the file as safe to be passed from a low trust application to a full trust application. Files that originate from the Internet or an app container are examples where the file is considered untrusted. Untrusted files that contain code are especially dangerous, and appropriate security mitigations must be applied if the file is to be opened by a full trust application. File type owners for file formats that have the ability to execute code should specify this flag only if their program mitigates elevation-of-privilege threats that are associated with running code at a higher integrity level. Mitigations include prompting the user before code is executed or executing the code with reduced privileges. By specifying this flag for an entire file type, an app running within an app container can pass files of this type to a program running at full trust. Some file types are recognized as inherently dangerous due to their ability to execute code and will be blocked if you don&#39;t specify this value.</summary>
+
+			/// <summary>
+			/// Introduced in Windows 8. Marks the file as safe to be passed from a low trust application to a full trust application. Files
+			/// that originate from the Internet or an app container are examples where the file is considered untrusted. Untrusted files
+			/// that contain code are especially dangerous, and appropriate security mitigations must be applied if the file is to be opened
+			/// by a full trust application. File type owners for file formats that have the ability to execute code should specify this flag
+			/// only if their program mitigates elevation-of-privilege threats that are associated with running code at a higher integrity
+			/// level. Mitigations include prompting the user before code is executed or executing the code with reduced privileges. By
+			/// specifying this flag for an entire file type, an app running within an app container can pass files of this type to a program
+			/// running at full trust. Some file types are recognized as inherently dangerous due to their ability to execute code and will
+			/// be blocked if you don't specify this value.
+			/// </summary>
 			FTA_SafeForElevation = 0x00200000,
-			/// <summary>Introduced in Windows 8. Ensures that the verbs for the file type are invoked with a URI instead of a downloaded version of the file. Use this flag only if you&#39;ve registered the file type&#39;s verb to support DirectInvoke through the SupportedProtocols or UseUrl registration.</summary>
+
+			/// <summary>
+			/// Introduced in Windows 8. Ensures that the verbs for the file type are invoked with a URI instead of a downloaded version of
+			/// the file. Use this flag only if you've registered the file type's verb to support DirectInvoke through the SupportedProtocols
+			/// or UseUrl registration.
+			/// </summary>
 			FTA_AlwaysUseDirectInvoke = 0x00400000,
 		}
 
@@ -487,9 +566,9 @@ namespace Vanara.PInvoke
 		/// procedure attempts to send a Windows message with SendMessage to a window hosted on the calling thread, the message will arrive
 		/// successfully. If the synchronous procedure attempts to use COM to communicate with an STA object hosted on the calling thread,
 		/// the function call will successfully reach the intended object. The calling thread is open to re-entrance fragility. While the
-		/// calling thread can handle the synchronous procedure's use of SendMessage and COM, if other threads are using SendMessage
-		/// or COM to communicate to objects hosted on the calling thread, then these might be unexpected messages or function calls which
-		/// are processed while the synchronous procedure is completing.
+		/// calling thread can handle the synchronous procedure's use of SendMessage and COM, if other threads are using SendMessage or COM
+		/// to communicate to objects hosted on the calling thread, then these might be unexpected messages or function calls which are
+		/// processed while the synchronous procedure is completing.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -1076,7 +1155,7 @@ namespace Vanara.PInvoke
 		// id );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "25fb51bc-9b36-4afb-bb07-7bc455c7fbc4")]
-		public static extern int GetMenuPosFromID(IntPtr hmenu, uint id);
+		public static extern int GetMenuPosFromID(HMENU hmenu, uint id);
 
 		/// <summary>
 		/// <para>Hashes an array of data.</para>
@@ -1129,7 +1208,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "40ccde4d-38e8-4c03-a826-b6c060037ae5")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool IsCharSpace(Char wch);
+		public static extern bool IsCharSpace(char wch);
 
 		/// <summary>
 		/// <para>Determines whether Windows Internet Explorer is in the Enhanced Security Configuration.</para>
@@ -1476,7 +1555,7 @@ namespace Vanara.PInvoke
 		// PIDLIST_RELATIVE *ppidlOut );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "63b1f842-139b-4558-8105-4986ce592b56")]
-		public static extern HRESULT IStream_ReadPidl(IStream pstm, ref IntPtr ppidlOut);
+		public static extern HRESULT IStream_ReadPidl(IStream pstm, out IntPtr ppidlOut);
 
 		/// <summary>
 		/// <para>Reads from a stream and writes into a string.</para>
@@ -1674,7 +1753,7 @@ namespace Vanara.PInvoke
 		// *punk, REFIID riid, void **ppv );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "95e83078-ab74-40d6-8e31-653e578770f2")]
-		public static extern HRESULT IUnknown_GetSite([MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT IUnknown_GetSite([MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
 
 		/// <summary>
 		/// <para>
@@ -1716,7 +1795,7 @@ namespace Vanara.PInvoke
 		// *punk, HWND *phwnd );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "f8a6f61f-bea3-4049-89fb-c33ef00b327f")]
-		public static extern HRESULT IUnknown_GetWindow([MarshalAs(UnmanagedType.IUnknown)] object punk, out IntPtr phwnd);
+		public static extern HRESULT IUnknown_GetWindow([MarshalAs(UnmanagedType.IUnknown)] object punk, out HWND phwnd);
 
 		/// <summary>
 		/// <para>Retrieves an interface for a service from a specified object.</para>
@@ -1761,7 +1840,7 @@ namespace Vanara.PInvoke
 		// IUnknown *punk, REFGUID guidService, REFIID riid, void **ppvOut );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "3e3f3ed0-ad36-40ef-b30c-8c85ff159f21")]
-		public static extern HRESULT IUnknown_QueryService([MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid guidService, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvOut);
+		public static extern HRESULT IUnknown_QueryService([MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid guidService, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppvOut);
 
 		/// <summary>
 		/// <para>Changes the value of a Component Object Model (COM) interface pointer and releases the previous interface.</para>
@@ -1937,7 +2016,7 @@ namespace Vanara.PInvoke
 		// REFIID riid, void **ppv );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "8429778b-bc9c-43f6-8d75-0fb78e36e790")]
-		public static extern HRESULT QISearch(IntPtr that, QITAB[] pqit, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT QISearch(IntPtr that, QITAB[] pqit, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppv);
 
 		/// <summary>
 		/// <para>
@@ -2220,7 +2299,7 @@ namespace Vanara.PInvoke
 		// pszSrcSubKey, HKEY hkeyDest, DWORD fReserved );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "52521ef4-fe59-4766-8828-acb557b0e968")]
-		public static extern Win32Error SHCopyKey(IntPtr hkeySrc, string pszSrcSubKey, IntPtr hkeyDest, uint fReserved = 0);
+		public static extern Win32Error SHCopyKey(HKEY hkeySrc, string pszSrcSubKey, HKEY hkeyDest, uint fReserved = 0);
 
 		/// <summary>
 		/// <para>Creates a memory stream using a similar process to CreateStreamOnHGlobal.</para>
@@ -2641,7 +2720,7 @@ namespace Vanara.PInvoke
 		// LPCSTR pszSubKey );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "6a560bc3-f65e-4b7d-9fbc-b4f2971ce2a9")]
-		public static extern Win32Error SHDeleteEmptyKey(IntPtr hkey, string pszSubKey);
+		public static extern Win32Error SHDeleteEmptyKey(HKEY hkey, string pszSubKey);
 
 		/// <summary>
 		/// <para>Deletes a subkey and all its descendants. This function removes the key and all the key's values from the registry.</para>
@@ -2674,7 +2753,7 @@ namespace Vanara.PInvoke
 		// pszSubKey );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "3c46db08-52d8-48fa-bda5-3c087908a1d3")]
-		public static extern Win32Error SHDeleteKey(IntPtr hkey, string pszSubKey);
+		public static extern Win32Error SHDeleteKey(HKEY hkey, string pszSubKey);
 
 		/// <summary>
 		/// <para>Deletes a named value from the specified registry key.</para>
@@ -2708,7 +2787,7 @@ namespace Vanara.PInvoke
 		// pszSubKey, LPCSTR pszValue );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "54f3459b-486c-4907-84b1-39b1f8abb12d")]
-		public static extern Win32Error SHDeleteValue(IntPtr hkey, string pszSubKey, string pszValue);
+		public static extern Win32Error SHDeleteValue(HKEY hkey, string pszSubKey, string pszValue);
 
 		/// <summary>
 		/// <para>Enumerates the subkeys of the specified open registry key.</para>
@@ -2749,7 +2828,7 @@ namespace Vanara.PInvoke
 		// dwIndex, LPSTR pszName, LPDWORD pcchName );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "51bf9cf7-87bc-407c-b2ee-18db3cdfe1dc")]
-		public static extern Win32Error SHEnumKeyEx(IntPtr hkey, uint dwIndex, StringBuilder pszName, ref uint pcchName);
+		public static extern Win32Error SHEnumKeyEx(HKEY hkey, uint dwIndex, StringBuilder pszName, ref uint pcchName);
 
 		/// <summary>
 		/// <para>Enumerates the values of the specified open registry key.</para>
@@ -2811,7 +2890,7 @@ namespace Vanara.PInvoke
 		// dwIndex, PSTR pszValueName, LPDWORD pcchValueName, LPDWORD pdwType, void *pvData, LPDWORD pcbData );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "bb0eaa07-5112-4ce3-8796-5439bd863226")]
-		public static extern Win32Error SHEnumValue(IntPtr hkey, uint dwIndex, StringBuilder pszValueName, ref uint pcchValueName, ref uint pdwType, IntPtr pvData, ref uint pcbData);
+		public static extern Win32Error SHEnumValue(HKEY hkey, uint dwIndex, StringBuilder pszValueName, ref uint pcchValueName, ref uint pdwType, IntPtr pvData, ref uint pcbData);
 
 		/// <summary>
 		/// <para>
@@ -3093,7 +3172,7 @@ namespace Vanara.PInvoke
 		// pszSubKey, LPCSTR pszValue, DWORD *pdwType, void *pvData, DWORD *pcbData );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "8cca6bfe-d365-4d10-bc8d-f3bebefaad02")]
-		public static extern Win32Error SHGetValue(IntPtr hkey, string pszSubKey, string pszValue, ref uint pdwType, IntPtr pvData, ref uint pcbData);
+		public static extern Win32Error SHGetValue(HKEY hkey, string pszSubKey, string pszValue, ref uint pdwType, IntPtr pvData, ref uint pcbData);
 
 		/// <summary>
 		/// <para>
@@ -3309,7 +3388,7 @@ namespace Vanara.PInvoke
 		// pszSource, PWSTR pszOutBuf, UINT cchOutBuf, void **ppvReserved );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "f0265cd8-deb8-4bca-b379-39aff49c7df1")]
-		public static extern HRESULT SHLoadIndirectString(string pszSource, StringBuilder pszOutBuf, uint cchOutBuf, out IntPtr ppvReserved);
+		public static extern HRESULT SHLoadIndirectString(string pszSource, StringBuilder pszOutBuf, uint cchOutBuf, IntPtr ppvReserved = default);
 
 		/// <summary>
 		/// <para>
@@ -3453,7 +3532,7 @@ namespace Vanara.PInvoke
 		// IStream *SHOpenRegStream2( HKEY hkey, LPCTSTR pszSubkey, LPCTSTR pszValue, DWORD grfMode ); https://msdn.microsoft.com/en-us/library/bb759879(v=vs.85).aspx
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "bb759879")]
-		public static extern IStream SHOpenRegStream2(IntPtr hkey, string pszSubkey, string pszValue, STGM grfMode);
+		public static extern IStream SHOpenRegStream2(HKEY hkey, string pszSubkey, string pszValue, STGM grfMode);
 
 		/// <summary>
 		/// <para>Retrieves information about a specified registry key.</para>
@@ -3495,7 +3574,7 @@ namespace Vanara.PInvoke
 		// LPDWORD pcSubKeys, LPDWORD pcchMaxSubKeyLen, LPDWORD pcValues, LPDWORD pcchMaxValueNameLen );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "dea535e7-5e61-4587-aa22-b1d62b76943a")]
-		public static extern Win32Error SHQueryInfoKey(IntPtr hkey, out uint pcSubKeys, out uint pcchMaxSubKeyLen, out uint pcValues, out uint pcchMaxValueNameLen);
+		public static extern Win32Error SHQueryInfoKey(HKEY hkey, out uint pcSubKeys, out uint pcchMaxSubKeyLen, out uint pcValues, out uint pcchMaxValueNameLen);
 
 		/// <summary>
 		/// <para>Opens a registry key and queries it for a specific value.</para>
@@ -3544,7 +3623,7 @@ namespace Vanara.PInvoke
 		// pszValue, DWORD *pdwReserved, DWORD *pdwType, void *pvData, DWORD *pcbData );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "9969acae-5965-40fe-bde9-6de9ddf26bb8")]
-		public static extern Win32Error SHQueryValueEx(IntPtr hkey, string pszValue, IntPtr pdwReserved, out uint pdwType, IntPtr pvData, ref uint pcbData);
+		public static extern Win32Error SHQueryValueEx(HKEY hkey, string pszValue, IntPtr pdwReserved, out uint pdwType, IntPtr pvData, ref uint pcbData);
 
 		/// <summary>
 		/// <para>Closes a handle to a user-specific registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -3567,7 +3646,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shregcloseuskey LSTATUS SHRegCloseUSKey( HUSKEY hUSKey );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "1e9900d6-8411-4e6b-a9c0-006f378a2625")]
-		public static extern Win32Error SHRegCloseUSKey(IntPtr hUSKey);
+		public static extern Win32Error SHRegCloseUSKey(HUSKEY hUSKey);
 
 		/// <summary>
 		/// <para>Creates or opens a registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -3629,7 +3708,7 @@ namespace Vanara.PInvoke
 		// pszPath, REGSAM samDesired, HUSKEY hRelativeUSKey, PHUSKEY phNewUSKey, DWORD dwFlags );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "10e3e31e-bff6-4260-95fa-2d750de16ab3")]
-		public static extern Win32Error SHRegCreateUSKey(string pszPath, uint samDesired, IntPtr hRelativeUSKey, out IntPtr phNewUSKey, SHREGSET dwFlags);
+		public static extern Win32Error SHRegCreateUSKey(string pszPath, uint samDesired, HUSKEY hRelativeUSKey, out SafeHUSKEY phNewUSKey, SHREGSET dwFlags);
 
 		/// <summary>
 		/// <para>Deletes an empty registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -3660,7 +3739,7 @@ namespace Vanara.PInvoke
 		// HUSKEY hUSKey, LPCSTR pszSubKey, SHREGDEL_FLAGS delRegFlags );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "adb09a2b-674c-472d-9f16-8e150476f1f5")]
-		public static extern Win32Error SHRegDeleteEmptyUSKey(IntPtr hUSKey, string pszSubKey, SHREGDEL_FLAGS delRegFlags);
+		public static extern Win32Error SHRegDeleteEmptyUSKey(HUSKEY hUSKey, string pszSubKey, SHREGDEL_FLAGS delRegFlags);
 
 		/// <summary>
 		/// <para>Deletes a registry subkey value in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -3692,7 +3771,7 @@ namespace Vanara.PInvoke
 		// hUSKey, LPCSTR pszValue, SHREGDEL_FLAGS delRegFlags );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "f70407af-d8ee-4333-be32-01887d4add4c")]
-		public static extern Win32Error SHRegDeleteUSValue(IntPtr hUSKey, string pszValue, SHREGDEL_FLAGS delRegFlags);
+		public static extern Win32Error SHRegDeleteUSValue(HUSKEY hUSKey, string pszValue, SHREGDEL_FLAGS delRegFlags);
 
 		/// <summary>
 		/// <para>Duplicates a registry key's HKEY handle.</para>
@@ -3708,7 +3787,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shregduplicatehkey HKEY SHRegDuplicateHKey( HKEY hkey );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "73182aa9-0c4d-4723-ba3c-8bab6b51181b")]
-		public static extern IntPtr SHRegDuplicateHKey(IntPtr hkey);
+		public static extern SafeRegistryHandle SHRegDuplicateHKey(HKEY hkey);
 
 		/// <summary>
 		/// <para>Enumerates the subkeys of a registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -3751,7 +3830,7 @@ namespace Vanara.PInvoke
 		// DWORD dwIndex, LPSTR pszName, LPDWORD pcchName, SHREGENUM_FLAGS enumRegFlags );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "9418ad45-f451-4976-afd7-fa1e0088038d")]
-		public static extern Win32Error SHRegEnumUSKey(IntPtr hUSKey, uint dwIndex, StringBuilder pszName, ref uint pcchName, SHREGENUM_FLAGS enumRegFlags);
+		public static extern Win32Error SHRegEnumUSKey(HUSKEY hUSKey, uint dwIndex, StringBuilder pszName, ref uint pcchName, SHREGENUM_FLAGS enumRegFlags);
 
 		/// <summary>Enumerates the values of the specified registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</summary>
 		/// <param name="hUSKey">
@@ -3812,7 +3891,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/windows/desktop/bb773520
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Shlwapi.h", MSDNShortId = "bb773520")]
-		public static extern Win32Error SHRegEnumUSValue(IntPtr hUSKey, uint dwIndex, StringBuilder pszValueName, ref uint pcchValueNameLen, out uint pdwType, IntPtr pvData, ref uint pcbData, SHREGENUM_FLAGS enumRegFlags);
+		public static extern Win32Error SHRegEnumUSValue(HUSKEY hUSKey, uint dwIndex, StringBuilder pszValueName, ref uint pcchValueNameLen, out uint pdwType, IntPtr pvData, ref uint pcbData, SHREGENUM_FLAGS enumRegFlags);
 
 		/// <summary>
 		/// <para>Retrieves a Boolean value from a registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -3981,7 +4060,7 @@ namespace Vanara.PInvoke
 		// pcszSubKey, LPCSTR pcszValue, LPSTR pszPath, DWORD dwFlags );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "2874b868-33f9-4f20-9e0b-136125cf268c")]
-		public static extern Win32Error SHRegGetPath(IntPtr hKey, string pcszSubKey, string pcszValue, StringBuilder pszPath, uint dwFlags = 0);
+		public static extern Win32Error SHRegGetPath(HKEY hKey, string pcszSubKey, string pcszValue, StringBuilder pszPath, uint dwFlags = 0);
 
 		/// <summary>
 		/// <para>Retrieves a value from a registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -4202,7 +4281,7 @@ namespace Vanara.PInvoke
 		// pszSubKey, LPCSTR pszValue, SRRF srrfFlags, DWORD *pdwType, void *pvData, DWORD *pcbData );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "5650eb4c-40fd-47d7-af76-2688d62d9bca")]
-		public static extern Win32Error SHRegGetValue(IntPtr hkey, string pszSubKey, string pszValue, SRRF srrfFlags, ref uint pdwType, IntPtr pvData, ref uint pcbData);
+		public static extern Win32Error SHRegGetValue(HKEY hkey, string pszSubKey, string pszValue, SRRF srrfFlags, ref uint pdwType, IntPtr pvData, ref uint pcbData);
 
 		/// <summary>
 		/// <para>[This function is no longer supported.]</para>
@@ -4305,7 +4384,7 @@ namespace Vanara.PInvoke
 		// REGSAM samDesired, HUSKEY hRelativeUSKey, PHUSKEY phNewUSKey, BOOL fIgnoreHKCU );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "756430a9-a495-412e-95c3-a93222bc467a")]
-		public static extern Win32Error SHRegOpenUSKey(string pszPath, uint samDesired, IntPtr hRelativeUSKey, ref IntPtr phNewUSKey, [MarshalAs(UnmanagedType.Bool)] bool fIgnoreHKCU);
+		public static extern Win32Error SHRegOpenUSKey(string pszPath, uint samDesired, HUSKEY hRelativeUSKey, out SafeHUSKEY phNewUSKey, [MarshalAs(UnmanagedType.Bool)] bool fIgnoreHKCU);
 
 		/// <summary>
 		/// <para>Retrieves information about a specified registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -4349,7 +4428,7 @@ namespace Vanara.PInvoke
 		// hUSKey, LPDWORD pcSubKeys, LPDWORD pcchMaxSubKeyLen, LPDWORD pcValues, LPDWORD pcchMaxValueNameLen, SHREGENUM_FLAGS enumRegFlags );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "e47b4fad-50c7-43d7-82f2-6a835ac543f0")]
-		public static extern Win32Error SHRegQueryInfoUSKey(IntPtr hUSKey, out uint pcSubKeys, out uint pcchMaxSubKeyLen, out uint pcValues, out uint pcchMaxValueNameLen, SHREGENUM_FLAGS enumRegFlags);
+		public static extern Win32Error SHRegQueryInfoUSKey(HUSKEY hUSKey, out uint pcSubKeys, out uint pcchMaxSubKeyLen, out uint pcValues, out uint pcchMaxValueNameLen, SHREGENUM_FLAGS enumRegFlags);
 
 		/// <summary>
 		/// <para>
@@ -4436,7 +4515,7 @@ namespace Vanara.PInvoke
 		// dwDefaultDataSize );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "302a51b5-9cf9-46e5-908c-df0d3c31c91c")]
-		public static extern Win32Error SHRegQueryUSValue(IntPtr hUSKey, string pszValue, ref uint pdwType, IntPtr pvData, ref uint pcbData, [MarshalAs(UnmanagedType.Bool)] bool fIgnoreHKCU, IntPtr pvDefaultData, uint dwDefaultDataSize);
+		public static extern Win32Error SHRegQueryUSValue(HUSKEY hUSKey, string pszValue, ref uint pdwType, IntPtr pvData, ref uint pcbData, [MarshalAs(UnmanagedType.Bool)] bool fIgnoreHKCU, IntPtr pvDefaultData, uint dwDefaultDataSize);
 
 		/// <summary>
 		/// <para>Takes a file path, replaces folder names with environment strings, and places the resulting string in the registry.</para>
@@ -4515,7 +4594,7 @@ namespace Vanara.PInvoke
 		// pcszSubKey, LPCSTR pcszValue, LPCSTR pcszPath, DWORD dwFlags );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "3ee6ec69-5d16-4bdd-a591-651af05bf944")]
-		public static extern Win32Error SHRegSetPath(IntPtr hKey, string pcszSubKey, string pcszValue, string pcszPath, uint dwFlags = 0);
+		public static extern Win32Error SHRegSetPath(HKEY hKey, string pcszSubKey, string pcszValue, string pcszPath, uint dwFlags = 0);
 
 		/// <summary>
 		/// <para>Sets a registry subkey value in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -4661,7 +4740,7 @@ namespace Vanara.PInvoke
 		// hUSKey, LPCSTR pszValue, DWORD dwType, const void *pvData, DWORD cbData, DWORD dwFlags );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "f94569c6-415b-4263-bab4-8a5baca47901")]
-		public static extern Win32Error SHRegWriteUSValue(IntPtr hUSKey, string pszValue, uint dwType, IntPtr pvData, uint cbData, SHREGSET dwFlags);
+		public static extern Win32Error SHRegWriteUSValue(HUSKEY hUSKey, string pszValue, uint dwType, IntPtr pvData, uint cbData, SHREGSET dwFlags);
 
 		/// <summary>
 		/// <para>Releases a thread reference before the thread procedure returns.</para>
@@ -4786,7 +4865,7 @@ namespace Vanara.PInvoke
 		// pszSubKey, LPCSTR pszValue, DWORD dwType, LPCVOID pvData, DWORD cbData );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "6cd5b7fd-8fb9-4c24-9670-20c23ca709bf")]
-		public static extern Win32Error SHSetValue(IntPtr hkey, string pszSubKey, string pszValue, uint dwType, IntPtr pvData, uint cbData);
+		public static extern Win32Error SHSetValue(HKEY hkey, string pszSubKey, string pszValue, uint dwType, IntPtr pvData, uint cbData);
 
 		/// <summary>
 		/// <para>Checks a bind context to see if it is safe to bind to a particular component object.</para>
@@ -5084,6 +5163,54 @@ namespace Vanara.PInvoke
 		[PInvokeData("shlwapi.h", MSDNShortId = "14af733b-81b4-40a2-b93b-6f387b181f12")]
 		public static extern SHELLPLATFORM WhichPlatform();
 
+		/// <summary>Provides a handle to a user specific registry key.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HUSKEY : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="HUSKEY"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public HUSKEY(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HUSKEY"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HUSKEY NULL => new HUSKEY(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HUSKEY"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HUSKEY h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HUSKEY"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HUSKEY(IntPtr h) => new HUSKEY(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HUSKEY h1, HUSKEY h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HUSKEY h1, HUSKEY h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HUSKEY h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
 		/// <summary>
 		/// <para>Used by the QISearch function to describe a single interface.</para>
 		/// </summary>
@@ -5114,6 +5241,28 @@ namespace Vanara.PInvoke
 			/// <para>The offset, in bytes, from the base of the object to the start of the interface.</para>
 			/// </summary>
 			public uint dwOffset;
+		}
+
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HUSKEY"/> that is disposed using <see cref="SHRegCloseUSKey"/>.</summary>
+		public class SafeHUSKEY : HANDLE
+		{
+			/// <summary>Initializes a new instance of the <see cref="SafeHUSKEY"/> class and assigns an existing handle.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
+			public SafeHUSKEY(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHUSKEY"/> class.</summary>
+			private SafeHUSKEY() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHUSKEY"/> to <see cref="HUSKEY"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HUSKEY(SafeHUSKEY h) => h.handle;
+
+			/// <inheritdoc/>
+			protected override bool InternalReleaseHandle() => SHRegCloseUSKey(this).Succeeded;
 		}
 	}
 }

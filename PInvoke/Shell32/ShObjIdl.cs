@@ -7,19 +7,11 @@ using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.PropSys;
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedParameter.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable FieldCanBeMadeReadOnly.Global
-// ReSharper disable InconsistentNaming
-// ReSharper disable MemberHidesStaticFromOuterClass
-// ReSharper disable UnusedMethodReturnValue.Global
-
 namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
-		/// <summary>The bind interruptable</summary>
+		/// <summary>The bind interruptible</summary>
 		public const uint BIND_INTERRUPTABLE = 0xFFFFFFFF;
 
 		/// <summary>
@@ -715,7 +707,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Sets the registry key from which to load the "DefaultIcon" value.</summary>
 			/// <param name="hkey">A handle to the registry key.</param>
-			void SetKey(IntPtr hkey);
+			void SetKey(HKEY hkey);
 
 			/// <summary>Sets the normal icon.</summary>
 			/// <param name="pszFile">
@@ -1265,7 +1257,7 @@ namespace Vanara.PInvoke
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762135")]
 		public static extern HRESULT SHCreateItemFromRelativeName([In, MarshalAs(UnmanagedType.Interface)] IShellItem psiParent, [In, MarshalAs(UnmanagedType.LPWStr)] string pszName,
-			[In, MarshalAs(UnmanagedType.Interface)] IBindCtx pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+			[In, MarshalAs(UnmanagedType.Interface)] IBindCtx pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object ppv);
 
 		/// <summary>Creates a Shell item object for a single file that exists inside a known folder.</summary>
 		/// <param name="kfid">A reference to the KNOWNFOLDERID, a GUID that identifies the folder that contains the item.</param>
@@ -1284,7 +1276,7 @@ namespace Vanara.PInvoke
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762136")]
 		public static extern HRESULT SHCreateItemInKnownFolder(in Guid kfid, [In] KNOWN_FOLDER_FLAG dwKFFlags,
-			[In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pszItem, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+			[In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pszItem, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object ppv);
 
 		/// <summary>Create a Shell item, given a parent folder and a child item ID.</summary>
 		/// <param name="pidlParent">
@@ -1303,7 +1295,7 @@ namespace Vanara.PInvoke
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762137")]
 		public static extern HRESULT SHCreateItemWithParent([In] PIDL pidlParent, [In, MarshalAs(UnmanagedType.Interface)] IShellFolder psfParent,
-			[In] PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppvItem);
+			[In] PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object ppvItem);
 
 		/// <summary>Creates a Shell item array object.</summary>
 		/// <param name="pidlParent">
@@ -1367,8 +1359,8 @@ namespace Vanara.PInvoke
 		public static extern HRESULT SHCreateShellItemArrayFromDataObject(IDataObject pdo, in Guid riid, out IShellItemArray ppv);
 
 		// [DllImport(Lib.Shell32, CharSet = CharSet.Unicode, ExactSpelling = true)] [SecurityCritical, SuppressUnmanagedCodeSecurity]
-		// [PInvokeData("Shlobj.h", MSDNShortId = "bb762141")] public static extern HRESULT SHCreateShellFolderView(in SFV_CREATE
-		// pcsfv, [MarshalAs(UnmanagedType.Interface)] out object ppvItem);
+		// [PInvokeData("Shlobj.h", MSDNShortId = "bb762141")] public static extern HRESULT SHCreateShellFolderView(in SFV_CREATE pcsfv,
+		// [MarshalAs(UnmanagedType.Interface)] out object ppvItem);
 		/// <summary>Creates a Shell item array object from a list of ITEMIDLIST structures.</summary>
 		/// <param name="cidl">The number of elements in the array.</param>
 		/// <param name="rgpidl">A list of cidl constant pointers to ITEMIDLIST structures.</param>
@@ -1404,7 +1396,7 @@ namespace Vanara.PInvoke
 		// SHCreateShellItemArrayFromShellItem( IShellItem *psi, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "93401708-6f11-474d-8009-24554f316e79")]
-		public static extern HRESULT SHCreateShellItemArrayFromShellItem([In, MarshalAs(UnmanagedType.Interface)] IShellItem psi, in Guid riid, out IShellItemArray ppv);
+		public static extern HRESULT SHCreateShellItemArrayFromShellItem([In] IShellItem psi, in Guid riid, out IShellItemArray ppv);
 
 		/// <summary>
 		/// <para>Creates an IShellItem or related object based on an item specified by an IDataObject.</para>
@@ -1441,7 +1433,7 @@ namespace Vanara.PInvoke
 		// SHGetItemFromDataObject( IDataObject *pdtobj, DATAOBJ_GET_ITEM_FLAGS dwFlags, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "1d7b9ffa-9980-4d68-85e4-7bab667be168")]
-		public static extern HRESULT SHGetItemFromDataObject(IDataObject pdtobj, DATAOBJ_GET_ITEM_FLAGS dwFlags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT SHGetItemFromDataObject(IDataObject pdtobj, DATAOBJ_GET_ITEM_FLAGS dwFlags, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppv);
 
 		/// <summary>
 		/// <para>Retrieves an IShellItem for an object.</para>
@@ -1472,7 +1464,7 @@ namespace Vanara.PInvoke
 		// SHGetItemFromObject( IUnknown *punk, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "0ef494c0-81c7-4fbd-9c37-78861d8ac63b")]
-		public static extern HRESULT SHGetItemFromObject([MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT SHGetItemFromObject([MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object ppv);
 
 		/// <summary>
 		/// <para>Retrieves an object that supports IPropertyStore or related interfaces from a pointer to an item identifier list (PIDL).</para>
@@ -1502,7 +1494,7 @@ namespace Vanara.PInvoke
 		// SHGetPropertyStoreFromIDList( PCIDLIST_ABSOLUTE pidl, GETPROPERTYSTOREFLAGS flags, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "2a3c3c80-1bfc-4da0-ba6e-ac9e9a5c3e5b")]
-		public static extern HRESULT SHGetPropertyStoreFromIDList(PIDL pidl, GETPROPERTYSTOREFLAGS flags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+		public static extern HRESULT SHGetPropertyStoreFromIDList(PIDL pidl, GETPROPERTYSTOREFLAGS flags, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppv);
 
 		/// <summary>Returns a property store for an item, given a path or parsing name.</summary>
 		/// <param name="pszPath">A pointer to a null-terminated Unicode string that specifies the item path.</param>
@@ -1520,7 +1512,7 @@ namespace Vanara.PInvoke
 			[In] IBindCtx pbc,
 			GETPROPERTYSTOREFLAGS flags,
 			in Guid riid,
-			[Out] out IPropertyStore propertyStore);
+			out IPropertyStore propertyStore);
 
 		/// <summary>
 		/// <para>
@@ -1533,10 +1525,12 @@ namespace Vanara.PInvoke
 		/// <para>A pointer to the item for which the temporary property is to be retrieved.</para>
 		/// </param>
 		/// <param name="propkey">
-		/// <para>TBD</para>
+		/// <para>Type: <c>REFPROPERTYKEY</c></para>
+		/// <para>The property key.</para>
 		/// </param>
 		/// <param name="ppropvar">
-		/// <para>TBD</para>
+		/// <para>Type: <c>PROPVARIANT*</c></para>
+		/// <para>A pointer to the temporary property for the item.</para>
 		/// </param>
 		/// <returns>
 		/// <para>Type: <c>HRESULT</c></para>
@@ -1546,7 +1540,7 @@ namespace Vanara.PInvoke
 		// SHGetTemporaryPropertyForItem( IShellItem *psi, REFPROPERTYKEY propkey, PROPVARIANT *ppropvar );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "53953a5a-04a2-4749-a03b-8cbd5ac889f1")]
-		public static extern HRESULT SHGetTemporaryPropertyForItem(IShellItem psi, ref PROPERTYKEY propkey, PROPVARIANT ppropvar);
+		public static extern HRESULT SHGetTemporaryPropertyForItem(IShellItem psi, in PROPERTYKEY propkey, PROPVARIANT ppropvar);
 
 		/// <summary>
 		/// <para>Applies the default set of properties on a Shell item.</para>

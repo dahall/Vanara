@@ -524,7 +524,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.PropSys, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("propsys.h", MSDNShortId = "010572d5-0357-4101-803e-0a27fc60ca5e")]
 		public static extern HRESULT PSCreatePropertyStoreFromObject([MarshalAs(UnmanagedType.IUnknown)] object punk, STGM grfMode, in Guid riid,
-			[MarshalAs(UnmanagedType.Interface)] out object ppv);
+			[MarshalAs(UnmanagedType.Interface)] out IPropertyStore ppv);
 
 		/// <summary>
 		/// <para>Wraps an IPropertySetStorage interface in an IPropertyStore interface.</para>

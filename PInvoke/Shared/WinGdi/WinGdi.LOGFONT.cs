@@ -1,10 +1,37 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-// ReSharper disable InconsistentNaming
-
 namespace Vanara.PInvoke
 {
+	/// <summary>
+	/// Font families describe the look of a font in a general way. They are intended for specifying fonts when the exact typeface desired is
+	/// not available.
+	/// </summary>
+	[PInvokeData("Wingdi.h", MSDNShortId = "dd145037")]
+	public enum FontFamily : byte
+	{
+		/// <summary>Use default font.</summary>
+		FF_DONTCARE = 0 << 4,
+
+		/// <summary>Fonts with variable stroke width (proportional) and with serifs. MS Serif is an example.</summary>
+		FF_ROMAN = 1 << 4,
+
+		/// <summary>Fonts with variable stroke width (proportional) and without serifs. MS Sans Serif is an example.</summary>
+		FF_SWISS = 2 << 4,
+
+		/// <summary>
+		/// Fonts with constant stroke width (monospace), with or without serifs. Monospace fonts are usually modern. Pica, Elite, and
+		/// CourierNew are examples.
+		/// </summary>
+		FF_MODERN = 3 << 4,
+
+		/// <summary>Fonts designed to look like handwriting. Script and Cursive are examples.</summary>
+		FF_SCRIPT = 4 << 4,
+
+		/// <summary>Novelty fonts. Old English is an example.</summary>
+		FF_DECORATIVE = 5 << 4,
+	}
+
 	/// <summary>Specifies information about the pitch, the technology, and the family of a physical font.</summary>
 	[PInvokeData("Wingdi.h", MSDNShortId = "dd145037")]
 	[Flags]
@@ -12,18 +39,31 @@ namespace Vanara.PInvoke
 	{
 		/// <summary>The default pitch, which is implementation-dependent.</summary>
 		DEFAULT_PITCH = 0,
+
 		/// <summary>A fixed pitch, which means that all the characters in the font occupy the same width when output in a string.</summary>
 		FIXED_PITCH = 1,
-		/// <summary>A variable pitch, which means that the characters in the font occupy widths that are proportional to the actual widths of the glyphs when output in a string. For example, the "i" and space characters usually have much smaller widths than a "W" or "O" character.</summary>
+
+		/// <summary>
+		/// A variable pitch, which means that the characters in the font occupy widths that are proportional to the actual widths of the
+		/// glyphs when output in a string. For example, the "i" and space characters usually have much smaller widths than a "W" or "O" character.
+		/// </summary>
 		VARIABLE_PITCH = 2,
+
 		/// <summary>The mono font/</summary>
 		MONO_FONT = 8,
-		/// <summary>If this bit is set the font is a variable pitch font. If this bit is clear the font is a fixed pitch font. Note very carefully that those meanings are the opposite of what the constant name implies.</summary>
+
+		/// <summary>
+		/// If this bit is set the font is a variable pitch font. If this bit is clear the font is a fixed pitch font. Note very carefully
+		/// that those meanings are the opposite of what the constant name implies.
+		/// </summary>
 		TMPF_FIXED_PITCH = 0x01,
+
 		/// <summary>If this bit is set the font is a vector font.</summary>
 		TMPF_VECTOR = 0x02,
+
 		/// <summary>If this bit is set the font is a TrueType font.</summary>
 		TMPF_TRUETYPE = 0x04,
+
 		/// <summary>If this bit is set the font is a device font.</summary>
 		TMPF_DEVICE = 0x08,
 	}
@@ -36,8 +76,8 @@ namespace Vanara.PInvoke
 		ANSI_CHARSET = 0,
 
 		/// <summary>
-		/// Specifies a character set based on the current system locale; for example, when the system locale is United States English, the default character
-		/// set is ANSI_CHARSET.
+		/// Specifies a character set based on the current system locale; for example, when the system locale is United States English, the
+		/// default character set is ANSI_CHARSET.
 		/// </summary>
 		DEFAULT_CHARSET = 1,
 
@@ -56,7 +96,9 @@ namespace Vanara.PInvoke
 		/// <summary>Specifies the "simplified" Chinese character set for People's Republic of China.</summary>
 		GB2312_CHARSET = 134,
 
-		/// <summary>Specifies the "traditional" Chinese character set, used mostly in Taiwan and in the Hong Kong and Macao Special Administrative Regions.</summary>
+		/// <summary>
+		/// Specifies the "traditional" Chinese character set, used mostly in Taiwan and in the Hong Kong and Macao Special Administrative Regions.
+		/// </summary>
 		CHINESEBIG5_CHARSET = 136,
 
 		/// <summary>Specifies a mapping to one of the OEM code pages, according to the current system locale setting.</summary>
@@ -107,14 +149,14 @@ namespace Vanara.PInvoke
 		CLIP_DEFAULT_PRECIS = 0,
 
 		/// <summary>
-		/// Windows XP SP1: Turns off font association for the font. Note that this flag is not guaranteed to have any effect on any platform after Windows
-		/// Server 2003.
+		/// Windows XP SP1: Turns off font association for the font. Note that this flag is not guaranteed to have any effect on any platform
+		/// after Windows Server 2003.
 		/// </summary>
 		CLIP_DFA_DISABLE = 4 << 4,
 
 		/// <summary>
-		/// Turns off font association for the font. This is identical to CLIP_DFA_DISABLE, but it can have problems in some situations; the recommended flag
-		/// to use is CLIP_DFA_DISABLE.
+		/// Turns off font association for the font. This is identical to CLIP_DFA_DISABLE, but it can have problems in some situations; the
+		/// recommended flag to use is CLIP_DFA_DISABLE.
 		/// </summary>
 		CLIP_DFA_OVERRIDE = 64,
 
@@ -122,8 +164,9 @@ namespace Vanara.PInvoke
 		CLIP_EMBEDDED = 8 << 4,
 
 		/// <summary>
-		/// When this value is used, the rotation for all fonts depends on whether the orientation of the coordinate system is left-handed or right-handed.
-		/// If not used, device fonts always rotate counterclockwise, but the rotation of other fonts is dependent on the orientation of the coordinate system.
+		/// When this value is used, the rotation for all fonts depends on whether the orientation of the coordinate system is left-handed or
+		/// right-handed. If not used, device fonts always rotate counterclockwise, but the rotation of other fonts is dependent on the
+		/// orientation of the coordinate system.
 		/// </summary>
 		CLIP_LH_ANGLES = 1 << 4,
 
@@ -131,8 +174,8 @@ namespace Vanara.PInvoke
 		CLIP_MASK = 0xf,
 
 		/// <summary>
-		/// Not used by the font mapper, but is returned when raster, vector, or TrueType fonts are enumerated. For compatibility, this value is always
-		/// returned when enumerating fonts.
+		/// Not used by the font mapper, but is returned when raster, vector, or TrueType fonts are enumerated. For compatibility, this value
+		/// is always returned when enumerating fonts.
 		/// </summary>
 		CLIP_STROKE_PRECIS = 2,
 
@@ -141,35 +184,8 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>
-	/// Font families describe the look of a font in a general way. They are intended for specifying fonts when the exact typeface desired is not available.
-	/// </summary>
-	[PInvokeData("Wingdi.h", MSDNShortId = "dd145037")]
-	public enum FontFamily : byte
-	{
-		/// <summary>Use default font.</summary>
-		FF_DONTCARE = 0 << 4,
-
-		/// <summary>Fonts with variable stroke width (proportional) and with serifs. MS Serif is an example.</summary>
-		FF_ROMAN = 1 << 4,
-
-		/// <summary>Fonts with variable stroke width (proportional) and without serifs. MS Sans Serif is an example.</summary>
-		FF_SWISS = 2 << 4,
-
-		/// <summary>
-		/// Fonts with constant stroke width (monospace), with or without serifs. Monospace fonts are usually modern. Pica, Elite, and CourierNew are examples.
-		/// </summary>
-		FF_MODERN = 3 << 4,
-
-		/// <summary>Fonts designed to look like handwriting. Script and Cursive are examples.</summary>
-		FF_SCRIPT = 4 << 4,
-
-		/// <summary>Novelty fonts. Old English is an example.</summary>
-		FF_DECORATIVE = 5 << 4,
-	}
-
-	/// <summary>
-	/// The output precision. The output precision defines how closely the output must match the requested font's height, width, character orientation,
-	/// escapement, pitch, and font type.
+	/// The output precision. The output precision defines how closely the output must match the requested font's height, width, character
+	/// orientation, escapement, pitch, and font type.
 	/// </summary>
 	[PInvokeData("Wingdi.h", MSDNShortId = "dd145037")]
 	public enum LogFontOutputPrecision : byte
@@ -187,8 +203,8 @@ namespace Vanara.PInvoke
 		OUT_OUTLINE_PRECIS = 8,
 
 		/// <summary>
-		/// Instructs the font mapper to choose from only PostScript fonts. If there are no PostScript fonts installed in the system, the font mapper returns
-		/// to default behavior.
+		/// Instructs the font mapper to choose from only PostScript fonts. If there are no PostScript fonts installed in the system, the
+		/// font mapper returns to default behavior.
 		/// </summary>
 		OUT_PS_ONLY_PRECIS = 10,
 
@@ -201,12 +217,14 @@ namespace Vanara.PInvoke
 		/// <summary>This value is not used by the font mapper, but it is returned when raster fonts are enumerated.</summary>
 		OUT_STRING_PRECIS = 1,
 
-		/// <summary>This value is not used by the font mapper, but it is returned when TrueType, other outline-based fonts, and vector fonts are enumerated.</summary>
+		/// <summary>
+		/// This value is not used by the font mapper, but it is returned when TrueType, other outline-based fonts, and vector fonts are enumerated.
+		/// </summary>
 		OUT_STROKE_PRECIS = 3,
 
 		/// <summary>
-		/// Instructs the font mapper to choose from only TrueType fonts. If there are no TrueType fonts installed in the system, the font mapper returns to
-		/// default behavior.
+		/// Instructs the font mapper to choose from only TrueType fonts. If there are no TrueType fonts installed in the system, the font
+		/// mapper returns to default behavior.
 		/// </summary>
 		OUT_TT_ONLY_PRECIS = 7,
 
@@ -215,8 +233,8 @@ namespace Vanara.PInvoke
 	}
 
 	/// <summary>
-	/// The output quality defines how carefully the graphics device interface (GDI) must attempt to match the logical-font attributes to those of an actual
-	/// physical font.
+	/// The output quality defines how carefully the graphics device interface (GDI) must attempt to match the logical-font attributes to
+	/// those of an actual physical font.
 	/// </summary>
 	[PInvokeData("Wingdi.h", MSDNShortId = "dd145037")]
 	public enum LogFontOutputQuality : byte
@@ -225,15 +243,16 @@ namespace Vanara.PInvoke
 		DEFAULT_QUALITY = 0,
 
 		/// <summary>
-		/// Appearance of the font is less important than when PROOF_QUALITY is used. For GDI raster fonts, scaling is enabled, which means that more font
-		/// sizes are available, but the quality may be lower. Bold, italic, underline, and strikeout fonts are synthesized if necessary.
+		/// Appearance of the font is less important than when PROOF_QUALITY is used. For GDI raster fonts, scaling is enabled, which means
+		/// that more font sizes are available, but the quality may be lower. Bold, italic, underline, and strikeout fonts are synthesized if necessary.
 		/// </summary>
 		DRAFT_QUALITY = 1,
 
 		/// <summary>
-		/// Character quality of the font is more important than exact matching of the logical-font attributes. For GDI raster fonts, scaling is disabled and
-		/// the font closest in size is chosen. Although the chosen font size may not be mapped exactly when PROOF_QUALITY is used, the quality of the font
-		/// is high and there is no distortion of appearance. Bold, italic, underline, and strikeout fonts are synthesized if necessary.
+		/// Character quality of the font is more important than exact matching of the logical-font attributes. For GDI raster fonts, scaling
+		/// is disabled and the font closest in size is chosen. Although the chosen font size may not be mapped exactly when PROOF_QUALITY is
+		/// used, the quality of the font is high and there is no distortion of appearance. Bold, italic, underline, and strikeout fonts are
+		/// synthesized if necessary.
 		/// </summary>
 		PROOF_QUALITY = 2,
 
@@ -244,12 +263,14 @@ namespace Vanara.PInvoke
 		ANTIALIASED_QUALITY = 4,
 
 		/// <summary>
-		/// If set, text is rendered (when possible) using ClearType antialiasing method. The font quality is given less importance than maintaining the text size.
+		/// If set, text is rendered (when possible) using ClearType antialiasing method. The font quality is given less importance than
+		/// maintaining the text size.
 		/// </summary>
 		CLEARTYPE_QUALITY = 5,
 
 		/// <summary>
-		/// If set, text is rendered (when possible) using ClearType antialiasing method. The font quality is given more importance than maintaining the text size.
+		/// If set, text is rendered (when possible) using ClearType antialiasing method. The font quality is given more importance than
+		/// maintaining the text size.
 		/// </summary>
 		CLEARTYPE_NATURAL_QUALITY = 6
 	}
@@ -260,36 +281,52 @@ namespace Vanara.PInvoke
 	public struct LOGFONT
 	{
 		/// <summary>
-		/// The height, in logical units, of the font's character cell or character. The character height value (also known as the em height) is the
-		/// character cell height value minus the internal-leading value. The font mapper interprets the value specified in lfHeight in the following manner.
+		/// The height, in logical units, of the font's character cell or character. The character height value (also known as the em height)
+		/// is the character cell height value minus the internal-leading value. The font mapper interprets the value specified in lfHeight
+		/// in the following manner.
 		/// <list type="table">
-		/// <listheader><term>Value</term><definition>Meaning</definition></listheader>
-		/// <item><term>&gt; 0</term><definition>The font mapper transforms this value into device units and matches it against the cell height of the available fonts.</definition></item>
-		/// <item><term>0</term><definition>The font mapper uses a default height value when it searches for a match.</definition></item>
-		/// <item><term>&lt; 0</term><definition>The font mapper transforms this value into device units and matches its absolute value against the character height of the available fonts.</definition></item>
+		/// <listheader>
+		/// <term>Value</term>
+		/// <definition>Meaning</definition>
+		/// </listheader>
+		/// <item>
+		/// <term>&gt; 0</term>
+		/// <definition>The font mapper transforms this value into device units and matches it against the cell height of the available fonts.</definition>
+		/// </item>
+		/// <item>
+		/// <term>0</term>
+		/// <definition>The font mapper uses a default height value when it searches for a match.</definition>
+		/// </item>
+		/// <item>
+		/// <term>&lt; 0</term>
+		/// <definition>The font mapper transforms this value into device units and matches its absolute value against the character height
+		/// of the available fonts.</definition>
+		/// </item>
 		/// </list>
 		/// <para>For all height comparisons, the font mapper looks for the largest font that does not exceed the requested size.</para>
 		/// <para>This mapping occurs when the font is used for the first time.</para>
-		/// <para>For the MM_TEXT mapping mode, you can use the following formula to specify a height for a font with a specified point size:</para>
+		/// <para>
+		/// For the MM_TEXT mapping mode, you can use the following formula to specify a height for a font with a specified point size:
+		/// </para>
 		/// </summary>
 		public int lfHeight;
 
 		/// <summary>
-		/// The average width, in logical units, of characters in the font. If lfWidth is zero, the aspect ratio of the device is matched against the
-		/// digitization aspect ratio of the available fonts to find the closest match, determined by the absolute value of the difference.
+		/// The average width, in logical units, of characters in the font. If lfWidth is zero, the aspect ratio of the device is matched
+		/// against the digitization aspect ratio of the available fonts to find the closest match, determined by the absolute value of the difference.
 		/// </summary>
 		public int lfWidth;
 
 		/// <summary>
-		/// The angle, in tenths of degrees, between the escapement vector and the x-axis of the device. The escapement vector is parallel to the base line
-		/// of a row of text.
+		/// The angle, in tenths of degrees, between the escapement vector and the x-axis of the device. The escapement vector is parallel to
+		/// the base line of a row of text.
 		/// <para>
-		/// When the graphics mode is set to GM_ADVANCED, you can specify the escapement angle of the string independently of the orientation angle of the
-		/// string's characters.
+		/// When the graphics mode is set to GM_ADVANCED, you can specify the escapement angle of the string independently of the orientation
+		/// angle of the string's characters.
 		/// </para>
 		/// <para>
-		/// When the graphics mode is set to GM_COMPATIBLE, lfEscapement specifies both the escapement and orientation. You should set lfEscapement and
-		/// lfOrientation to the same value.
+		/// When the graphics mode is set to GM_COMPATIBLE, lfEscapement specifies both the escapement and orientation. You should set
+		/// lfEscapement and lfOrientation to the same value.
 		/// </para>
 		/// </summary>
 		public int lfEscapement;
@@ -298,7 +335,8 @@ namespace Vanara.PInvoke
 		public int lfOrientation;
 
 		/// <summary>
-		/// The weight of the font in the range 0 through 1000. For example, 400 is normal and 700 is bold. If this value is zero, a default weight is used.
+		/// The weight of the font in the range 0 through 1000. For example, 400 is normal and 700 is bold. If this value is zero, a default
+		/// weight is used.
 		/// </summary>
 		private int _lfWeight;
 
@@ -315,17 +353,19 @@ namespace Vanara.PInvoke
 		public LogFontCharSet lfCharSet;
 
 		/// <summary>
-		/// The output precision. The output precision defines how closely the output must match the requested font's height, width, character orientation,
-		/// escapement, pitch, and font type.
+		/// The output precision. The output precision defines how closely the output must match the requested font's height, width,
+		/// character orientation, escapement, pitch, and font type.
 		/// </summary>
 		public LogFontOutputPrecision lfOutPrecision;
 
-		/// <summary>The clipping precision. The clipping precision defines how to clip characters that are partially outside the clipping region.</summary>
+		/// <summary>
+		/// The clipping precision. The clipping precision defines how to clip characters that are partially outside the clipping region.
+		/// </summary>
 		public LogFontClippingPrecision lfClipPrecision;
 
 		/// <summary>
-		/// The output quality. The output quality defines how carefully the graphics device interface (GDI) must attempt to match the logical-font
-		/// attributes to those of an actual physical font.
+		/// The output quality. The output quality defines how carefully the graphics device interface (GDI) must attempt to match the
+		/// logical-font attributes to those of an actual physical font.
 		/// </summary>
 		public LogFontOutputQuality lfQuality;
 
@@ -333,9 +373,9 @@ namespace Vanara.PInvoke
 		private byte lfPitchAndFamily;
 
 		/// <summary>
-		/// A null-terminated string that specifies the typeface name of the font. The length of this string must not exceed 32 TCHAR values, including the
-		/// terminating NULL. The EnumFontFamiliesEx function can be used to enumerate the typeface names of all currently available fonts. If lfFaceName is
-		/// an empty string, GDI uses the first font that matches the other specified attributes.
+		/// A null-terminated string that specifies the typeface name of the font. The length of this string must not exceed 32 TCHAR values,
+		/// including the terminating NULL. The EnumFontFamiliesEx function can be used to enumerate the typeface names of all currently
+		/// available fonts. If lfFaceName is an empty string, GDI uses the first font that matches the other specified attributes.
 		/// </summary>
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
 		private string _lfFaceName;
@@ -348,9 +388,9 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// A string that specifies the typeface name of the font. The length of this string must not exceed 31 characters. The EnumFontFamiliesEx function
-		/// can be used to enumerate the typeface names of all currently available fonts. If lfFaceName is an empty string, GDI uses the first font that
-		/// matches the other specified attributes.
+		/// A string that specifies the typeface name of the font. The length of this string must not exceed 31 characters. The
+		/// EnumFontFamiliesEx function can be used to enumerate the typeface names of all currently available fonts. If lfFaceName is an
+		/// empty string, GDI uses the first font that matches the other specified attributes.
 		/// </summary>
 		/// <value>The face name of the font.</value>
 		public string lfFaceName
@@ -385,7 +425,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// The weight of the font in the range 0 through 1000. For example, 400 is normal and 700 is bold. If this value is zero, a default weight is used.
+		/// The weight of the font in the range 0 through 1000. For example, 400 is normal and 700 is bold. If this value is zero, a default
+		/// weight is used.
 		/// </summary>
 		public short lfWeight
 		{

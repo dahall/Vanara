@@ -27,7 +27,7 @@ namespace Vanara.PInvoke
 			/// <param name="hkeyProgId">The registry key for the file object or folder type.</param>
 			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 			[PreserveSig]
-			HRESULT Initialize(PIDL pidlFolder, [In] IDataObject pdtobj, IntPtr hkeyProgId);
+			HRESULT Initialize(PIDL pidlFolder, [In] IDataObject pdtobj, HKEY hkeyProgId);
 		}
 	}
 }

@@ -887,10 +887,11 @@ namespace Vanara.PInvoke
 		private static unsafe IAsyncResult BeginDeviceIoControl<TIn, TOut>(HFILE hDevice, uint dwIoControlCode, byte[] buffer, AsyncCallback userCallback, object userState) where TIn : struct where TOut : struct
 		{
 			var ar = OverlappedAsync.SetupOverlappedFunction(hDevice, userCallback, buffer);
+			var prefix = Marshal.SizeOf(typeof(int)) * 2;
 			var inSz = Marshal.SizeOf(typeof(TIn));
-			fixed (byte* pIn = buffer, pOut = &buffer[inSz])
+			fixed (byte* pIn = &buffer[prefix], pOut = &buffer[prefix + inSz])
 			{
-				var ret = DeviceIoControl(hDevice, dwIoControlCode, pIn, (uint)inSz, pOut, (uint)(buffer.Length - inSz), out var bRet, ar.Overlapped);
+				var ret = DeviceIoControl(hDevice, dwIoControlCode, pIn, (uint)inSz, pOut, (uint)Marshal.SizeOf(typeof(TOut)), out var bRet, ar.Overlapped);
 				return OverlappedAsync.EvaluateOverlappedFunction(ar, ret);
 			}
 		}

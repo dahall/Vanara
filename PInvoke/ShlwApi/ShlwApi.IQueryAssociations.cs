@@ -381,7 +381,7 @@ namespace Vanara.PInvoke
 			/// pwszAssoc, set this parameter to NULL.
 			/// </param>
 			/// <param name="hwnd">The HWND.</param>
-			void Init(ASSOCF flags, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pszAssoc, [Optional] IntPtr hkProgid, [Optional] HWND hwnd);
+			void Init(ASSOCF flags, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pszAssoc, [Optional] HKEY hkProgid, [Optional] HWND hwnd);
 
 			/// <summary>Searches for and retrieves a file or protocol association-related string from the registry.</summary>
 			/// <param name="flags">A flag that can be used to control the search. It can be any combination of the following ASSOCF values.</param>
@@ -413,7 +413,7 @@ namespace Vanara.PInvoke
 			/// to a Shell verb such as open. Set this parameter to NULL if it is not used.
 			/// </param>
 			/// <param name="phkeyOut">A pointer to the key's HKEY value.</param>
-			void GetKey(ASSOCF flags, ASSOCKEY key, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pszExtra, out IntPtr phkeyOut);
+			void GetKey(ASSOCF flags, ASSOCKEY key, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pszExtra, out HKEY phkeyOut);
 
 			/// <summary>Searches for and retrieves file or protocol association-related binary data from the registry.</summary>
 			/// <param name="flags">The ASSOCF value that can be used to control the search.</param>
@@ -521,7 +521,7 @@ namespace Vanara.PInvoke
 		// PCWSTR pszExt, PERCEIVED *ptype, PERCEIVEDFLAG *pflag, PWSTR *ppszType );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "d37f1574-b261-43bf-9712-05a569ab4246")]
-		public static extern HRESULT AssocGetPerceivedType([MarshalAs(UnmanagedType.LPWStr)] string pszExt, ref PERCEIVED ptype, ref PERCEIVEDFLAG pflag, [MarshalAs(UnmanagedType.LPWStr)] ref StringBuilder ppszType);
+		public static extern HRESULT AssocGetPerceivedType([MarshalAs(UnmanagedType.LPWStr)] string pszExt, out PERCEIVED ptype, out PERCEIVEDFLAG pflag, [MarshalAs(UnmanagedType.LPWStr)] ref StringBuilder ppszType);
 
 		/// <summary>
 		/// <para>Determines whether a file type is considered a potential security risk.</para>
@@ -611,7 +611,7 @@ namespace Vanara.PInvoke
 		// ASSOCKEY key, LPCSTR pszAssoc, LPCSTR pszExtra, HKEY *phkeyOut );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "9eaeb885-0428-48c3-82a7-5dc21d5015ce")]
-		public static extern HRESULT AssocQueryKey(ASSOCF flags, ASSOCKEY key, string pszAssoc, string pszExtra, out IntPtr phkeyOut);
+		public static extern HRESULT AssocQueryKey(ASSOCF flags, ASSOCKEY key, string pszAssoc, string pszExtra, out HKEY phkeyOut);
 
 		/// <summary>
 		/// <para>Searches for and retrieves a file or protocol association-related string from the registry.</para>

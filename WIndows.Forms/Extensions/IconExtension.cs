@@ -113,7 +113,7 @@ namespace Vanara.Extensions
 			if (pidl.IsInvalid) return null;
 			var shfi = new SHFILEINFO();
 			var ret = SHGetFileInfo(pidl, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_ICON | SHGFI.SHGFI_PIDL | (SHGFI)iconType);
-			return ret == IntPtr.Zero ? null : new SafeHICON(shfi.hIcon).ToIcon();
+			return ret == IntPtr.Zero ? null : new SafeHICON((IntPtr)shfi.hIcon).ToIcon();
 		}
 
 		/// <summary>Gets the system icon for the given file name or extension.</summary>
@@ -142,7 +142,7 @@ namespace Vanara.Extensions
 			var ret = SHGetFileInfo(fileNameOrExtension, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_USEFILEATTRIBUTES | SHGFI.SHGFI_ICON | (SHGFI)iconType);
 			if (ret == IntPtr.Zero)
 				ret = SHGetFileInfo(fileNameOrExtension, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_ICON | (SHGFI)iconType);
-			return ret == IntPtr.Zero ? null : new SafeHICON(shfi.hIcon).ToIcon();
+			return ret == IntPtr.Zero ? null : new SafeHICON((IntPtr)shfi.hIcon).ToIcon();
 		}
 
 		/// <summary>Split an Icon consists of multiple icons into an array of Icon each consists of single icons.</summary>
