@@ -27,7 +27,7 @@ namespace Vanara.Windows.Shell.Tests
 				}
 			}, Throws.Nothing);
 			Assert.That(() => new ShellItem((string)null), Throws.Exception);
-			Assert.That(() => new ShellItem(badTestDoc), Throws.Exception);
+			Assert.That(() => new ShellItem(badTestDoc), Throws.Nothing);
 		}
 
 		[Test]

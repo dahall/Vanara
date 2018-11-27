@@ -1,12 +1,14 @@
 ﻿using System;
 using NUnit.Framework;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 using System.Runtime.InteropServices;
+using System.Collections;
 
 namespace Vanara.Windows.Shell.Tests
 {
@@ -38,17 +40,28 @@ namespace Vanara.Windows.Shell.Tests
 				var c = 0;
 				foreach (var key in i.Properties.Keys)
 				{
-					c++;
-					using (var d = i.Properties.Descriptions[key])
+					try
 					{
-						Assert.That(d, Is.Not.Null);
-						Assert.That(() => {
-							var val = i.Properties[key];
-							TestContext.WriteLine($"({c}) {key} = {val}");
-							TestContext.WriteLine($"   {d.FormatForDisplay(val)}");
-							TestContext.WriteLine($"   DispN:{d.DisplayName}; DispT:{d.DisplayType}");
-						}, Throws.Nothing);
+						TestContext.Write($"({c}) {key} = ");
+						var val = i.Properties[key];
+						if (!(val is string) && val is IEnumerable ie)
+							TestContext.WriteLine(string.Join(",", ie.Cast<object>().Select(o => o?.ToString())));
+						else
+							TestContext.WriteLine(val);
+						using (var d = i.Properties.Descriptions[key])
+						{
+							if (d != null)
+							{
+								TestContext.WriteLine($"   {d.FormatForDisplay(val)}");
+								TestContext.WriteLine($"   DispN:{d.DisplayName}; DispT:{d.DisplayType}");
+							}
+						}
 					}
+					catch (Exception ex)
+					{
+						TestContext.WriteLine(ex.ToString());
+					}
+					c++;
 					TestContext.WriteLine("");
 				}
 				Assert.That(c, Is.EqualTo(i.Properties.Count));

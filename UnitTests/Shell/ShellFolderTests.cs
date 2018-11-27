@@ -22,7 +22,7 @@ namespace Vanara.Windows.Shell.Tests
 			}, Throws.Nothing);
 			Assert.That(() => new ShellFolder((string) null), Throws.Exception);
 			Assert.That(() => new ShellFolder(@"C:\Tamp"), Throws.Exception);
-			Assert.That(() => new ShellFolder(testFile), Throws.Exception);
+			Assert.That(() => new ShellFolder(testFile), Throws.Nothing);
 		}
 
 		[Test]
@@ -49,7 +49,7 @@ namespace Vanara.Windows.Shell.Tests
 			}, Throws.Nothing);
 			Assert.That(() => new ShellFolder((PIDL)null), Throws.Exception);
 			Assert.That(() => new ShellFolder(new PIDL(@"C:\Tamp")), Throws.Exception);
-			Assert.That(() => new ShellFolder(new PIDL(testFile)), Throws.Exception);
+			Assert.That(() => new ShellFolder(new PIDL(testFile)), Throws.Nothing);
 		}
 
 		[Test]
@@ -61,7 +61,7 @@ namespace Vanara.Windows.Shell.Tests
 				Assert.That(i.FileSystemPath, Is.EqualTo(testFld));
 			}, Throws.Nothing);
 			Assert.That(() => new ShellFolder((ShellItem) null), Throws.Exception);
-			Assert.That(() => new ShellFolder(new ShellItem(testFile)), Throws.Exception);
+			Assert.That(() => new ShellFolder(new ShellItem(testFile)), Throws.Nothing);
 		}
 
 		[Test]
