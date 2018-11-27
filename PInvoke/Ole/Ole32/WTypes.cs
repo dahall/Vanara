@@ -184,7 +184,7 @@ namespace Vanara.PInvoke
 			/// <summary>An unsigned integer.</summary>
 			[CorrespondingType(typeof(uint))]
 			VT_UINT = 23,
-			/// <summary>The vt void</summary>
+			/// <summary>A C-style void.</summary>
 			[CorrespondingType(typeof(IntPtr))]
 			VT_VOID = 24,
 			/// <summary>A C-style void.</summary>
@@ -232,7 +232,7 @@ namespace Vanara.PInvoke
 			/// <summary>A clipboard format.</summary>
 			[CorrespondingType(typeof(CLIPDATA))]
 			VT_CF = 71,
-			/// <summary>A class ID.</summary>
+			/// <summary>A class ID (GUID).</summary>
 			[CorrespondingType(typeof(Guid))]
 			VT_CLSID = 72,
 			/// <summary>A stream with a GUID version.</summary>

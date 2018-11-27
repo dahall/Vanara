@@ -18,8 +18,8 @@ namespace Vanara.PInvoke
 	public static partial class Ole32
 	{
 		/// <summary>
-		/// Structure to mimic behavior of VT_BLOB type. "DWORD count of bytes, followed by that many bytes of data. The byte count does not include the four
-		/// bytes for the length of the count itself; an empty blob member would have a count of zero, followed by zero bytes."
+		/// Structure to mimic behavior of VT_BLOB type. "DWORD count of bytes, followed by that many bytes of data. The byte count does not
+		/// include the four bytes for the length of the count itself; an empty blob member would have a count of zero, followed by zero bytes."
 		/// </summary>
 		[StructLayout(LayoutKind.Sequential, Pack = 0)]
 		public struct BLOB
@@ -47,7 +47,9 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="CLIPDATA"/> struct.</summary>
 			/// <param name="clipFmt">The clipboard format.</param>
 			/// <param name="dataPtr">A pointer to the data.</param>
-			/// <param name="dataLength">Length of the data in bytes. Do not include any length other than that pointed to by <paramref name="dataPtr"/>.</param>
+			/// <param name="dataLength">
+			/// Length of the data in bytes. Do not include any length other than that pointed to by <paramref name="dataPtr"/>.
+			/// </param>
 			public CLIPDATA(int clipFmt, IntPtr dataPtr, int dataLength)
 			{
 				cbSize = dataLength + Marshal.SizeOf(typeof(int));
@@ -76,11 +78,14 @@ namespace Vanara.PInvoke
 				{
 					case 0:
 						return "[No data]";
+
 					case -1:
 					case -2:
 						return $"CF={ClipboardFormat}";
+
 					case -3:
 						return $"FMTID={FMTID:B}";
+
 					default:
 						return $"Name={ClipboardFormatName}";
 				}
@@ -97,15 +102,15 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// The PROPVARIANT structure is used in the ReadMultiple and WriteMultiple methods of IPropertyStorage to define the type tag and the value of a
-		/// property in a property set.
+		/// The PROPVARIANT structure is used in the ReadMultiple and WriteMultiple methods of IPropertyStorage to define the type tag and
+		/// the value of a property in a property set.
 		/// <para>
-		/// The PROPVARIANT structure is also used by the GetValue and SetValue methods of IPropertyStore, which replaces IPropertySetStorage as the primary way
-		/// to program item properties in Windows Vista. For more information, see Property Handlers.
+		/// The PROPVARIANT structure is also used by the GetValue and SetValue methods of IPropertyStore, which replaces IPropertySetStorage
+		/// as the primary way to program item properties in Windows Vista. For more information, see Property Handlers.
 		/// </para>
 		/// <para>
-		/// There are five members. The first member, the value-type tag, and the last member, the value of the property, are significant. The middle three
-		/// members are reserved for future use.
+		/// There are five members. The first member, the value-type tag, and the last member, the value of the property, are significant.
+		/// The middle three members are reserved for future use.
 		/// </para>
 		/// </summary>
 		[StructLayout(LayoutKind.Explicit, Size = 16, Pack = 8)]
@@ -148,7 +153,7 @@ namespace Vanara.PInvoke
 			/// <param name="type">If not VT_EMPTY, this value will override the inferred value type.</param>
 			public PROPVARIANT(object obj, VarEnum type = VarEnum.VT_EMPTY)
 			{
-				if (obj == null)
+				if (obj is null)
 					VarType = type;
 				else if (obj is PROPVARIANT pv)
 					PropVariantCopy(this, pv);
@@ -156,11 +161,10 @@ namespace Vanara.PInvoke
 					SetValue(obj, type);
 			}
 
-			/// <summary>Initializes a new instance of the <see cref="PROPVARIANT"/> class from another <c>PROPVARIANT</c>.</summary>
-			/// <param name="sourceVar">An existing <see cref="PROPVARIANT"/> instance.</param>
-			public PROPVARIANT(PROPVARIANT sourceVar)
+			/// <summary>Finalizes an instance of the <see cref="PROPVARIANT"/> class.</summary>
+			~PROPVARIANT()
 			{
-				PropVariantCopy(this, sourceVar);
+				Dispose();
 			}
 
 			/// <summary>Gets the BLOB value.</summary>
@@ -188,14 +192,7 @@ namespace Vanara.PInvoke
 			public IEnumerable<CLIPDATA> caclipdata => GetVector<CLIPDATA>();
 
 			/// <summary>Gets the decimal array value.</summary>
-			public IEnumerable<decimal> cacy
-			{
-				get
-				{
-					foreach (var s in GetVector<long>())
-						yield return decimal.FromOACurrency(s);
-				}
-			}
+			public IEnumerable<decimal> cacy => GetVector<long>().Select(decimal.FromOACurrency);
 
 			/// <summary>Gets the DateTime array value.</summary>
 			public IEnumerable<DateTime> cadate => GetVector<double>().Select(DateTime.FromOADate);
@@ -219,7 +216,7 @@ namespace Vanara.PInvoke
 			public IEnumerable<int> cal => GetVector<int>();
 
 			/// <summary>Gets the ANSI string array value.</summary>
-			public IEnumerable<string> calpstr => throw new NotSupportedException(); //GetStringVector();
+			public IEnumerable<string> calpstr => GetStringVector();
 
 			/// <summary>Gets the Unicode string array value.</summary>
 			public IEnumerable<string> calpwstr => GetStringVector();
@@ -269,6 +266,24 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the int value.</summary>
 			public int intVal => GetRawValue<int>().GetValueOrDefault();
 
+			//public IntPtr pparray { get { return GetRefValue<sbyte>(); } }
+
+			/// <summary>Gets a value indicating whether this instance is by reference.</summary>
+			/// <value><c>true</c> if this instance is null or empty; otherwise, <c>false</c>.</value>
+			public bool IsByRef => vt.IsFlagSet(VARTYPE.VT_BYREF);
+
+			/// <summary>Gets a value indicating whether this instance is null or empty.</summary>
+			/// <value><c>true</c> if this instance is null or empty; otherwise, <c>false</c>.</value>
+			public bool IsNullOrEmpty => vt == VARTYPE.VT_EMPTY || vt == VARTYPE.VT_NULL;
+
+			/// <summary>Gets a value indicating whether this instance is a string.</summary>
+			/// <value><c>true</c> if this instance is a VT_BSTR or VT_LPWSTR; otherwise, <c>false</c>.</value>
+			public bool IsString => vt == VARTYPE.VT_BSTR || vt == VARTYPE.VT_LPWSTR;
+
+			/// <summary>Gets a value indicating whether this instance has a vector type.</summary>
+			/// <value><c>true</c> if this instance is a VT_ARRAY or VT_VECTOR; otherwise, <c>false</c>.</value>
+			public bool IsVector => vt.IsFlagSet(VARTYPE.VT_ARRAY) || vt.IsFlagSet(VARTYPE.VT_VECTOR);
+
 			/// <summary>Gets the short value.</summary>
 			public short iVal => GetRawValue<short>().GetValueOrDefault();
 
@@ -282,7 +297,7 @@ namespace Vanara.PInvoke
 			public bool? pboolVal => GetRawValue<bool>();
 
 			/// <summary>Gets the "by value" string value.</summary>
-			public string pbstrVal => GetString(VarType);
+			public IntPtr pbstrVal => _ptr;
 
 			/// <summary>Gets the "by value" byte value.</summary>
 			public byte? pbVal => GetRawValue<byte>();
@@ -398,138 +413,61 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the uint value.</summary>
 			public uint ulVal => GetRawValue<uint>().GetValueOrDefault();
 
-			//public IntPtr pparray { get { return GetRefValue<sbyte>(); } }
-
-			/// <summary>Gets a value indicating whether this instance is null or empty.</summary>
-			/// <value><c>true</c> if this instance is null or empty; otherwise, <c>false</c>.</value>
-			public bool IsNullOrEmpty => vt == VARTYPE.VT_EMPTY || vt == VARTYPE.VT_NULL;
-
-			/// <summary>Gets a value indicating whether this instance is a string.</summary>
-			/// <value><c>true</c> if this instance is a VT_BSTR or VT_LPWSTR; otherwise, <c>false</c>.</value>
-			public bool IsString => vt == VARTYPE.VT_BSTR || vt == VARTYPE.VT_LPWSTR;
-
-			/// <summary>Gets a value indicating whether this instance has a vector type.</summary>
-			/// <value><c>true</c> if this instance is a VT_ARRAY or VT_VECTOR; otherwise, <c>false</c>.</value>
-			public bool IsVector => vt.IsFlagSet(VARTYPE.VT_ARRAY) || vt.IsFlagSet(VARTYPE.VT_VECTOR);
-
 			/// <summary>Gets the value base on the <see cref="vt"/> value.</summary>
 			public object Value
 			{
-				get
-				{
-					if (vt.IsFlagSet(VARTYPE.VT_ARRAY)) return GetSafeArray();
-					var isVector = vt.IsFlagSet(VARTYPE.VT_VECTOR);
-					var isRef = vt.IsFlagSet(VARTYPE.VT_BYREF);
-					var elemType = (VARTYPE)((int)vt & 0xFFF);
-					switch (elemType)
-					{
-						case VARTYPE.VT_NULL:
-							return DBNull.Value;
-
-						case VARTYPE.VT_I2:
-							return isRef ? piVal : (isVector ? cai : (object)iVal);
-
-						case VARTYPE.VT_INT:
-						case VARTYPE.VT_I4:
-							return isRef ? plVal : (isVector ? cal : (object)lVal);
-
-						case VARTYPE.VT_BSTR:
-							return isRef ? pbstrVal : (isVector ? cabstr : (object)bstrVal);
-
-						case VARTYPE.VT_DISPATCH:
-						case VARTYPE.VT_UNKNOWN:
-							return isVector ? GetVector<IntPtr>()?.Select(Marshal.GetObjectForIUnknown) : (isRef ? ppunkVal : punkVal);
-
-						case VARTYPE.VT_BOOL:
-							return isRef ? pboolVal : (isVector ? cabool : (object)boolVal);
-
-						case VARTYPE.VT_I1:
-							return isRef ? pcVal : (isVector ? cac : (object)cVal);
-
-						case VARTYPE.VT_UI1:
-							return isRef ? pbVal : (isVector ? caub : (object)bVal);
-
-						case VARTYPE.VT_UI2:
-							return isRef ? puiVal : (isVector ? caui : (object)uiVal);
-
-						case VARTYPE.VT_UINT:
-						case VARTYPE.VT_UI4:
-							return isRef ? pulVal : (isVector ? caul : (object)ulVal);
-
-						case VARTYPE.VT_ERROR:
-							return isRef ? pscode : (isVector ? cascode : (object)scode);
-
-						case VARTYPE.VT_I8:
-							return isRef ? hVal : (isVector ? cah : (object)hVal);
-
-						case VARTYPE.VT_UI8:
-							return isRef ? uhVal : (isVector ? cauh : (object)uhVal);
-
-						case VARTYPE.VT_HRESULT:
-							return isRef
-								? (pulVal.HasValue ? new HRESULT(pulVal.Value) : (HRESULT?)null)
-								: (isVector ? caul.Select(u => new HRESULT(u)) : (object)new HRESULT(ulVal));
-
-						case VARTYPE.VT_PTR:
-						case VARTYPE.VT_RECORD:
-						case VARTYPE.VT_USERDEFINED:
-						case VARTYPE.VT_VOID:
-							return isRef ? IntPtr.Zero : (isVector ? GetVector<IntPtr>() : (object)_ptr);
-
-						case VARTYPE.VT_LPSTR:
-							return isRef ? pszVal : (isVector ? calpstr : (object)pszVal);
-
-						case VARTYPE.VT_LPWSTR:
-							return isRef ? pwszVal : (isVector ? calpwstr : (object)pwszVal);
-
-						case VARTYPE.VT_R8:
-							return isRef ? dblVal : (isVector ? cadbl : (object)dblVal);
-
-						case VARTYPE.VT_DATE:
-							return isRef ? pdate : (isVector ? cadate : (object)date);
-
-						case VARTYPE.VT_CY:
-							return isRef ? pcyVal : (isVector ? cacy : (object)cyVal);
-
-						case VARTYPE.VT_DECIMAL:
-							return isRef ? pdecVal : (isVector ? GetVector<decimal>() : (object)pdecVal.GetValueOrDefault());
-
-						case VARTYPE.VT_R4:
-							return isRef ? pfltVal : (isVector ? caflt : (object)fltVal);
-
-						case VARTYPE.VT_FILETIME:
-							return isRef ? filetime : (isVector ? cafiletime : (object)filetime);
-
-						case VARTYPE.VT_BLOB:
-							return isRef ? _blob : (isVector ? null : (object)_blob);
-
-						case VARTYPE.VT_STREAM:
-						case VARTYPE.VT_STREAMED_OBJECT:
-							return isRef ? pStream : (isVector ? null : pStream);
-
-						case VARTYPE.VT_STORAGE:
-						case VARTYPE.VT_STORED_OBJECT:
-							return isRef ? pStorage : (isVector ? null : pStorage);
-
-						case VARTYPE.VT_CF:
-							return isRef ? pclipdata : (isVector ? caclipdata : (object)pclipdata);
-
-						case VARTYPE.VT_CLSID:
-							return isRef ? puuid : (isVector ? cauuid : (object)puuid.GetValueOrDefault());
-
-						case VARTYPE.VT_VARIANT:
-							return isRef ? pvarVal : (isVector ? GetVector<PROPVARIANT>() : (object)pvarVal);
-
-						default:
-							return null;
-					}
-				}
+				get => GetValue();
 				private set => SetValue(value);
 			}
 
 			/// <summary>Gets or sets the type of the variable.</summary>
 			/// <value>The value type.</value>
 			public VarEnum VarType { get => (VarEnum)vt; set => vt = (VARTYPE)value; }
+
+			private bool IsPrimitive
+			{
+				get
+				{
+					switch (vt)
+					{
+						// Signed
+						case VARTYPE.VT_I1:
+						case VARTYPE.VT_I2:
+						case VARTYPE.VT_I4:
+						case VARTYPE.VT_I8:
+						// Unsigned
+						case VARTYPE.VT_UI1:
+						case VARTYPE.VT_UI2:
+						case VARTYPE.VT_UI4:
+						case VARTYPE.VT_UI8:
+						// Converts to int or uint
+						case VARTYPE.VT_BOOL:
+						case VARTYPE.VT_ERROR:
+						case VARTYPE.VT_HRESULT:
+						case VARTYPE.VT_INT:
+						case VARTYPE.VT_UINT:
+						// Floats
+						case VARTYPE.VT_R4:
+						case VARTYPE.VT_R8:
+						// Dates
+						case VARTYPE.VT_DATE:
+						case VARTYPE.VT_FILETIME:
+							return true;
+						default:
+							return false;
+					}
+				}
+			}
+
+			/// <summary>Creates a new <see cref="PROPVARIANT"/> instance from a pointer to a VARIANT.</summary>
+			/// <param name="pSrcNativeVariant">A pointer to a native in-memory VARIANT.</param>
+			/// <returns>A new <see cref="PROPVARIANT"/> instance converted from the VARIANT pointer.</returns>
+			public static PROPVARIANT FromNativeVariant(IntPtr pSrcNativeVariant)
+			{
+				var pv = new PROPVARIANT();
+				VariantToPropVariant(pSrcNativeVariant, pv).ThrowIfFailed();
+				return pv;
+			}
 
 			/// <summary>Gets the Type for a provided VARTYPE.</summary>
 			/// <param name="vt">The VARTYPE value to lookup.</param>
@@ -571,9 +509,10 @@ namespace Vanara.PInvoke
 				if (type.IsArray && elemtype == typeof(object)) return VARTYPE.VT_ARRAY | VARTYPE.VT_VARIANT;
 
 				var isEnumerable = type.IsArray || type != typeof(string) && typeof(IEnumerable).IsAssignableFrom(type);
-				var ret = isEnumerable ? VARTYPE.VT_VECTOR : 0;
-				if (isEnumerable && type.IsGenericType)
+				VARTYPE ret = 0;
+				if (isEnumerable)
 				{
+					ret |= VARTYPE.VT_VECTOR;
 					var i = type.GetInterface("IEnumerable`1");
 					if (i != null)
 					{
@@ -663,13 +602,57 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary>
-			/// Frees all elements that can be freed in this instance. For complex elements with known element pointers, the underlying elements are freed prior
-			/// to freeing the containing element.
+			/// Frees all elements that can be freed in this instance. For complex elements with known element pointers, the underlying
+			/// elements are freed prior to freeing the containing element.
 			/// </summary>
 			[SecurityCritical, SecuritySafeCritical]
 			public void Clear()
 			{
-				PropVariantClear(this);
+				switch (vt)
+				{
+					case VARTYPE.VT_VECTOR | VARTYPE.VT_BSTR:
+						foreach (var ptr in _blob.pBlobData.ToIEnum<IntPtr>((int)_blob.cbSize))
+							Marshal.FreeBSTR(Marshal.ReadIntPtr(ptr));
+						Marshal.FreeCoTaskMem(_blob.pBlobData);
+						break;
+					case VARTYPE.VT_VECTOR | VARTYPE.VT_LPSTR:
+						foreach (var ptr in _blob.pBlobData.ToIEnum<IntPtr>((int)_blob.cbSize))
+							Marshal.FreeCoTaskMem(Marshal.ReadIntPtr(ptr));
+						Marshal.FreeCoTaskMem(_blob.pBlobData);
+						break;
+					case VARTYPE.VT_VECTOR | VARTYPE.VT_I1:
+					case VARTYPE.VT_VECTOR | VARTYPE.VT_R4:
+					case VARTYPE.VT_VECTOR | VARTYPE.VT_CLSID:
+					case VARTYPE.VT_VECTOR | VARTYPE.VT_DECIMAL:
+					case VARTYPE.VT_CF:
+					case VARTYPE.VT_VECTOR | VARTYPE.VT_CF:
+						Marshal.FreeCoTaskMem(_ptr);
+						break;
+					case VARTYPE.VT_UNKNOWN:
+					case VARTYPE.VT_DISPATCH:
+					case VARTYPE.VT_STREAM:
+					case VARTYPE.VT_STREAMED_OBJECT:
+					case VARTYPE.VT_STORAGE:
+					case VARTYPE.VT_STORED_OBJECT:
+						Marshal.Release(_ptr);
+						break;
+					case VARTYPE.VT_VECTOR | VARTYPE.VT_UNKNOWN:
+					case VARTYPE.VT_VECTOR | VARTYPE.VT_DISPATCH:
+						foreach (var iunk in GetVector<IntPtr>())
+							Marshal.Release(iunk);
+						Marshal.FreeCoTaskMem(_ptr);
+						break;
+					case VARTYPE.VT_VECTOR | VARTYPE.VT_VARIANT:
+						foreach (var pv in GetVector<PROPVARIANT>())
+							pv.Dispose();
+						Marshal.FreeCoTaskMem(_ptr);
+						break;
+					default:
+						PropVariantClear(this);
+						break;
+				}
+				vt = 0;
+				_ulong = 0;
 			}
 
 			/// <summary>Copies the contents of one PROPVARIANT structure to another.</summary>
@@ -680,416 +663,49 @@ namespace Vanara.PInvoke
 				PropVariantCopy(clone, this);
 			}
 
-			/// <summary>Creates a new object that is a copy of the current instance.</summary>
-			/// <returns>A new object that is a copy of this instance.</returns>
-			object ICloneable.Clone()
-			{
-				Clone(out PROPVARIANT pv);
-				return pv;
-			}
-
 			/// <summary>
-			/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes,
-			/// follows, or occurs in the same position in the sort order as the other object.
+			/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current
+			/// instance precedes, follows, or occurs in the same position in the sort order as the other object.
 			/// </summary>
 			/// <param name="other">An object to compare with this instance.</param>
 			/// <returns>
-			/// A value that indicates the relative order of the objects being compared. The return value has these meanings: Value Meaning Less than zero This
-			/// instance precedes <paramref name="other"/> in the sort order. Zero This instance occurs in the same position in the sort order as <paramref
-			/// name="other"/>. Greater than zero This instance follows <paramref name="other"/> in the sort order.
+			/// A value that indicates the relative order of the objects being compared. The return value has these meanings: Value Meaning
+			/// Less than zero This instance precedes <paramref name="other"/> in the sort order. Zero This instance occurs in the same
+			/// position in the sort order as <paramref name="other"/>. Greater than zero This instance follows <paramref name="other"/> in
+			/// the sort order.
 			/// </returns>
 			public int CompareTo(object other)
 			{
 				var v = Value;
-				if (other == null) return v == null ? 0 : 1;
+				if (other is null) return v == null ? 0 : 1;
 				if (other is PROPVARIANT pv) return PropVariantCompare(this, pv);
-				if (v == null) return -1;
+				if (v is null) return -1;
 				var pvDest = new PROPVARIANT();
 				if (PropVariantChangeType(pvDest, this, PROPVAR_CHANGE_FLAGS.PVCHF_DEFAULT, GetVarType(other.GetType())).Succeeded)
 					return PropVariantCompare(this, pvDest);
 				throw new ArgumentException(@"Unable to compare supplied object to PROPVARIANT.", nameof(other));
 			}
 
-			/// <summary>Compares the current object with another object of the same type.</summary>
-			/// <param name="other">An object to compare with this object.</param>
-			/// <returns>
-			/// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: Value
-			/// Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref name="other"/>.
-			/// Greater than zero This object is greater than <paramref name="other"/>.
-			/// </returns>
-			int IComparable<PROPVARIANT>.CompareTo(PROPVARIANT other) => CompareTo(other);
+			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+			public void Dispose()
+			{
+				Clear();
+				GC.SuppressFinalize(this);
+			}
 
 			/// <summary>Determines whether the specified <see cref="object"/>, is equal to this instance.</summary>
 			/// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
 			/// <returns><c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-			public override bool Equals(object obj)
-			{
-				var pv = obj as PROPVARIANT;
-				return pv != null ? Equals(pv.Value) : obj == this;
-			}
+			public override bool Equals(object obj) => obj is PROPVARIANT pv ? Equals(pv.Value) : obj == this;
 
 			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 			/// <param name="other">An object to compare with this object.</param>
 			/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 			public bool Equals(PROPVARIANT other) => CompareTo(other) == 0;
 
-			/// <summary>Creates a new <see cref="PROPVARIANT"/> instance from a pointer to a VARIANT.</summary>
-			/// <param name="pSrcNativeVariant">A pointer to a native in-memory VARIANT.</param>
-			/// <returns>A new <see cref="PROPVARIANT"/> instance converted from the VARIANT pointer.</returns>
-			public static PROPVARIANT FromNativeVariant(IntPtr pSrcNativeVariant)
-			{
-				var pv = new PROPVARIANT();
-				VariantToPropVariant(pSrcNativeVariant, pv).ThrowIfFailed();
-				return pv;
-			}
-
 			/// <summary>Returns a hash code for this instance.</summary>
 			/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 			public override int GetHashCode() => vt.GetHashCode();
-
-			/// <summary>Sets the value, clearing any existing value.</summary>
-			/// <param name="value">The value.</param>
-			/// <param name="vEnum">If this value equals VT_EMPTY, the method will attempt to ascertain the value type from the <paramref name="value"/>.</param>
-			private void SetValue(object value, VarEnum vEnum = VarEnum.VT_EMPTY)
-			{
-				Clear();
-				vt = vEnum == VarEnum.VT_EMPTY ? GetVarType(value?.GetType()) : (VARTYPE)vEnum;
-
-				// Finished if NULL or EMPTY
-				if ((int)vt <= 1) return;
-
-				// Handle SAFEARRAY
-				if (vt.IsFlagSet(VARTYPE.VT_ARRAY))
-				{
-					SetSafeArray((object[])value);
-					return;
-				}
-
-				// Handle BYREF null value
-				if (vt.IsFlagSet(VARTYPE.VT_BYREF) && value == null)
-					return;
-
-				// Handle case where element type is put in w/o specifying VECTOR
-				if (value != null && !vt.IsFlagSet(VARTYPE.VT_VECTOR) && value.GetType().IsArray) vt |= VARTYPE.VT_VECTOR;
-
-				switch (vt)
-				{
-					case VARTYPE.VT_I1:
-					case VARTYPE.VT_BYREF | VARTYPE.VT_I1:
-						SetStruct((sbyte?)value, VarType);
-						break;
-
-					case VARTYPE.VT_UI1:
-					case VARTYPE.VT_BYREF | VARTYPE.VT_UI1:
-						SetStruct((byte?)value, VarType);
-						break;
-
-					case VARTYPE.VT_I2:
-					case VARTYPE.VT_BYREF | VARTYPE.VT_I2:
-						SetStruct((short?)value, VarType);
-						break;
-
-					case VARTYPE.VT_UI2:
-					case VARTYPE.VT_BYREF | VARTYPE.VT_UI2:
-						SetStruct((ushort?)value, VarType);
-						break;
-
-					case VARTYPE.VT_I4:
-					case VARTYPE.VT_INT:
-					case VARTYPE.VT_BYREF | VARTYPE.VT_I4:
-					case VARTYPE.VT_BYREF | VARTYPE.VT_INT:
-						SetStruct((int?)value, VarType);
-						break;
-
-					case VARTYPE.VT_UI4:
-					case VARTYPE.VT_UINT:
-					case VARTYPE.VT_BYREF | VARTYPE.VT_UI4:
-					case VARTYPE.VT_BYREF | VARTYPE.VT_UINT:
-						SetStruct((uint?)value, VarType);
-						break;
-
-					case VARTYPE.VT_I8:
-					case VARTYPE.VT_BYREF | VARTYPE.VT_I8:
-						SetStruct((long?)value, VarType);
-						break;
-
-					case VARTYPE.VT_UI8:
-					case VARTYPE.VT_BYREF | VARTYPE.VT_UI8:
-						SetStruct((ulong?)value, VarType);
-						break;
-
-					case VARTYPE.VT_R4:
-					case VARTYPE.VT_BYREF | VARTYPE.VT_R4:
-						SetStruct((float?)value, VarType);
-						break;
-
-					case VARTYPE.VT_R8:
-					case VARTYPE.VT_BYREF | VARTYPE.VT_R8:
-						SetStruct((double?)value, VarType);
-						break;
-
-					case VARTYPE.VT_BOOL:
-					case VARTYPE.VT_BYREF | VARTYPE.VT_BOOL:
-						SetStruct((bool?)value, VarType);
-						break;
-
-					case VARTYPE.VT_ERROR:
-					case VARTYPE.VT_BYREF | VARTYPE.VT_ERROR:
-						{
-							uint? i;
-							if (value is Win32Error)
-								i = (uint?)(int)(Win32Error)value;
-							else
-								i = (uint)Convert.ChangeType(value, typeof(uint));
-							SetStruct(i, VarType);
-						}
-						break;
-
-					case VARTYPE.VT_HRESULT:
-					case VARTYPE.VT_BYREF | VARTYPE.VT_HRESULT:
-						{
-							uint? i;
-							if (value is HRESULT)
-								i = (uint?)(int)(HRESULT)value;
-							else
-								i = (uint)Convert.ChangeType(value, typeof(uint));
-							SetStruct(i, VarType);
-						}
-						break;
-
-					case VARTYPE.VT_CY:
-					case VARTYPE.VT_BYREF | VARTYPE.VT_CY:
-						{
-							ulong? i;
-							if (value is decimal)
-								i = (ulong?)decimal.ToOACurrency((decimal)value);
-							else
-								i = (ulong)Convert.ChangeType(value, typeof(ulong));
-							SetStruct(i, VarType);
-						}
-						break;
-
-					case VARTYPE.VT_DATE:
-					case VARTYPE.VT_BYREF | VARTYPE.VT_DATE:
-						{
-							double? d = null;
-							var dt = value as DateTime?;
-							if (dt != null)
-								d = dt.Value.ToOADate();
-							var ft = value as FILETIME?;
-							if (ft != null)
-								d = ft.Value.ToDateTime().ToOADate();
-							if (d == null)
-								d = (double)Convert.ChangeType(value, typeof(double));
-							SetStruct(d, VarType);
-						}
-						break;
-
-					case VARTYPE.VT_FILETIME:
-						{
-							FILETIME? ft;
-							var dt = value as DateTime?;
-							if (dt != null)
-								ft = dt.Value.ToFileTimeStruct();
-							else
-								ft = value as FILETIME? ?? FileTimeExtensions.MakeFILETIME((ulong)Convert.ChangeType(value, typeof(ulong)));
-							_ft = ft.GetValueOrDefault();
-						}
-						break;
-
-					case VARTYPE.VT_CLSID:
-						SetStruct((Guid?)value, VarType);
-						break;
-
-					case VARTYPE.VT_CF:
-						//SetStruct((CLIPDATA?)value, VarType);
-						//break;
-						throw new NotSupportedException();
-
-					case VARTYPE.VT_BLOB:
-					case VARTYPE.VT_BLOB_OBJECT:
-						_blob = (BLOB)value;
-						break;
-
-					case VARTYPE.VT_BSTR:
-					case VARTYPE.VT_BYREF | VARTYPE.VT_BSTR:
-						if (value is IntPtr)
-							SetStruct((IntPtr?)value, VarType);
-						else
-							SetString(value?.ToString(), VarType);
-						break;
-
-					case VARTYPE.VT_LPSTR:
-					case VARTYPE.VT_LPWSTR:
-						SetString(value?.ToString(), VarType);
-						break;
-
-					case VARTYPE.VT_UNKNOWN:
-						{
-							var p = value as IntPtr? ?? Marshal.GetIUnknownForObject(value);
-							SetStruct<IntPtr>(p, VarType);
-						}
-						break;
-
-#if !(NETSTANDARD2_0)
-					case VARTYPE.VT_DISPATCH:
-						{
-							var p = value as IntPtr? ?? Marshal.GetIDispatchForObject(value);
-							SetStruct<IntPtr>(p, VarType);
-						}
-						break;
-#endif
-
-					case VARTYPE.VT_STREAM:
-					case VARTYPE.VT_STREAMED_OBJECT:
-						SetStruct<IntPtr>(Marshal.GetComInterfaceForObject(value, typeof(IStream)), VarType);
-						break;
-
-					case VARTYPE.VT_STORAGE:
-					case VARTYPE.VT_STORED_OBJECT:
-						SetStruct<IntPtr>(Marshal.GetComInterfaceForObject(value, typeof(IStorage)), VarType);
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_I1:
-						SetVector(ConvertToEnum<sbyte>(value), VarType);
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_UI1:
-						SetVector(ConvertToEnum<byte>(value), VarType);
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_I2:
-						SetVector(ConvertToEnum<short>(value), VarType);
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_UI2:
-						SetVector(ConvertToEnum<ushort>(value), VarType);
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_I4:
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_INT:
-						SetVector(ConvertToEnum<int>(value), VarType);
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_UI4:
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_UINT:
-						SetVector(ConvertToEnum<uint>(value), VarType);
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_I8:
-						SetVector(ConvertToEnum<long>(value), VarType);
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_UI8:
-						SetVector(ConvertToEnum<ulong>(value), VarType);
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_R4:
-						SetVector(ConvertToEnum<float>(value), VarType);
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_R8:
-						SetVector(ConvertToEnum<double>(value), VarType);
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_BOOL:
-						SetVector(ConvertToEnum<bool>(value).Select(b => (ushort)(b ? -1 : 0)), VarType);
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_ERROR:
-						{
-							var ee = (value as IEnumerable<Win32Error>)?.Select(w => (uint)(int)w) ?? ConvertToEnum<uint>(value);
-							SetVector(ee, VarType);
-						}
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_HRESULT:
-						{
-							var ee = (value as IEnumerable<HRESULT>)?.Select(w => (uint)(int)w) ?? ConvertToEnum<uint>(value);
-							SetVector(ee, VarType);
-						}
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_CY:
-						{
-							var ecy = (value as IEnumerable<decimal>)?.Select(d => (ulong)decimal.ToOACurrency(d)) ??
-									  ConvertToEnum<ulong>(value);
-							SetVector(ecy, VarType);
-						}
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_DATE:
-						{
-							var ed = (value as IEnumerable<DateTime>)?.Select(d => d.ToOADate()) ??
-									 (value as IEnumerable<FILETIME>)?.Select(ft => ft.ToDateTime().ToOADate()) ??
-									 ConvertToEnum<double>(value);
-							SetVector(ed, VarType);
-						}
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_FILETIME:
-						{
-							var ed = value as IEnumerable<FILETIME> ??
-									 (value as IEnumerable<DateTime>)?.Select(d => d.ToFileTimeStruct()) ??
-									 ConvertToEnum<ulong>(value)?.Select(FileTimeExtensions.MakeFILETIME);
-							SetVector(ed, VarType);
-						}
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_CLSID:
-						SetVector(ConvertToEnum<Guid>(value), VarType);
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_CF:
-						SetVector(ConvertToEnum<CLIPDATA>(value), VarType);
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_BSTR:
-						{
-							if (value is IEnumerable<IntPtr> ep)
-								SetVector(ep, VarType);
-							else
-								SetStringVector(ConvertToEnum<string>(value), VarType);
-						}
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_LPSTR:
-						throw new NotSupportedException();
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_LPWSTR:
-						SetStringVector(ConvertToEnum<string>(value), VarType);
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_VARIANT:
-						SetVector(ConvertToEnum<PROPVARIANT>(value), VarType);
-						break;
-
-					case VARTYPE.VT_VECTOR | VARTYPE.VT_DECIMAL:
-						SetVector(ConvertToEnum<decimal>(value), VarType);
-						break;
-
-					case VARTYPE.VT_BYREF | VARTYPE.VT_DECIMAL:
-						SetDecimal((decimal?)value);
-						break;
-
-					case VARTYPE.VT_BYREF | VARTYPE.VT_VARIANT:
-						// TODO: Fix this so that it uses the system call in hopes that PropVarClear will actually release the memory.
-						_ptr = this.StructureToPtr(Marshal.AllocCoTaskMem, out int _);
-						break;
-
-					case VARTYPE.VT_VOID:
-					case VARTYPE.VT_PTR:
-					case VARTYPE.VT_USERDEFINED:
-					case VARTYPE.VT_RECORD:
-					case VARTYPE.VT_BYREF | VARTYPE.VT_UNKNOWN:
-					case VARTYPE.VT_BYREF | VARTYPE.VT_DISPATCH:
-						_ptr = (IntPtr)value;
-						break;
-
-					default:
-						throw new ArgumentOutOfRangeException();
-				}
-			}
 
 			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 			/// <returns>A <see cref="string"/> that represents this instance.</returns>
@@ -1103,17 +719,35 @@ namespace Vanara.PInvoke
 				return $"{vt}={s ?? "null"}";
 			}
 
+			/// <summary>Creates a new object that is a copy of the current instance.</summary>
+			/// <returns>A new object that is a copy of this instance.</returns>
+			object ICloneable.Clone()
+			{
+				Clone(out var pv);
+				return pv;
+			}
+
+			/// <summary>Compares the current object with another object of the same type.</summary>
+			/// <param name="other">An object to compare with this object.</param>
+			/// <returns>
+			/// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following
+			/// meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is
+			/// equal to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>.
+			/// </returns>
+			int IComparable<PROPVARIANT>.CompareTo(PROPVARIANT other) => CompareTo(other);
+
 			private static IEnumerable<T> ConvertToEnum<T>(object array, Func<object, T> conv = null)
 			{
-				if (array == null) return null;
+				if (array is null) return null;
 
 				if (array is IEnumerable<T> iet) return iet;
 
-				if (conv == null) conv = o => (T)Convert.ChangeType(o, typeof(T));
+				conv = conv ?? (o => (T)Convert.ChangeType(o, typeof(T)));
+
 				try
 				{
 					var ie = array as IEnumerable;
-					return ie?.Cast<object>().Select(conv) ?? new[] {conv(array)};
+					return ie?.Cast<object>().Select(conv) ?? new[] { conv(array) };
 				}
 				catch
 				{
@@ -1127,10 +761,16 @@ namespace Vanara.PInvoke
 				{
 					case VARTYPE.VT_LPSTR:
 						return Marshal.PtrToStringAnsi(ptr);
+
 					case VARTYPE.VT_LPWSTR:
 						return Marshal.PtrToStringUni(ptr);
-					default:
+
+					case VARTYPE.VT_BSTR:
+					case VARTYPE.VT_BSTR | VARTYPE.VT_BYREF:
 						return Marshal.PtrToStringBSTR(ptr);
+
+					default:
+						throw new InvalidCastException("Cannot cast this type to a string.");
 				}
 			}
 
@@ -1170,8 +810,8 @@ namespace Vanara.PInvoke
 				var sa = new SafeSAFEARRAY(_ptr, false);
 				var dims = SafeArrayGetDim(sa);
 				if (dims != 1) throw new NotSupportedException("Only single-dimensional arrays are supported");
-				SafeArrayGetLBound(sa, 1U, out int lBound);
-				SafeArrayGetUBound(sa, 1U, out int uBound);
+				SafeArrayGetLBound(sa, 1U, out var lBound);
+				SafeArrayGetUBound(sa, 1U, out var uBound);
 				var elemSz = SafeArrayGetElemsize(sa);
 				if (elemSz == 0) throw new Win32Exception();
 				using (var d = new SafeArrayScopedAccessData(sa))
@@ -1180,45 +820,129 @@ namespace Vanara.PInvoke
 
 			private string GetString(VarEnum ve) => GetString(ve, _ptr);
 
-			private IntPtr GetStringPtr(string value, VarEnum ve)
-			{
-				if (value == null) return IntPtr.Zero;
-				var ive = (VARTYPE)ve;
-				if (ive == VARTYPE.VT_LPSTR)
-					return Marshal.StringToCoTaskMemAnsi(value);
-				if (ive == VARTYPE.VT_LPWSTR)
-					return Marshal.StringToCoTaskMemUni(value);
-				if (ive.IsFlagSet(VARTYPE.VT_BSTR))
-					return Marshal.StringToBSTR(value);
-				throw new ArgumentOutOfRangeException(nameof(ve));
-			}
-
 			private IEnumerable<string> GetStringVector()
 			{
 				var ve = (VarEnum)((int)vt & 0x0FFF);
 				if (ve == VarEnum.VT_LPSTR)
-					return _blob.pBlobData.ToIEnum<IntPtr>((int)_blob.cbSize).Select(p => GetString(ve, p));
+					return _blob.pBlobData.ToIEnum<IntPtr>((int)_blob.cbSize).Select(p => GetString(ve, Marshal.ReadIntPtr(p)));
 				PropVariantToStringVectorAlloc(this, out var mem, out var cnt).ThrowIfFailed();
 				return mem.ToStringEnum((int)cnt, CharSet.Unicode);
 			}
 
-			private IEnumerable<T> GetVector<T>()
+			private object GetValue()
 			{
-				if ((vt & VARTYPE.VT_VECTOR) == 0)
-					throw new InvalidCastException();
-				return _blob.cbSize <= 0 ? new T[0] : _blob.pBlobData.ToIEnum<T>((int)_blob.cbSize);
+				if (vt.IsFlagSet(VARTYPE.VT_ARRAY)) return GetSafeArray();
+				var isVector = vt.IsFlagSet(VARTYPE.VT_VECTOR);
+				var isRef = vt.IsFlagSet(VARTYPE.VT_BYREF);
+				var elemType = (VARTYPE)((int)vt & 0xFFF);
+				switch (elemType)
+				{
+					case VARTYPE.VT_NULL:
+						return DBNull.Value;
+
+					case VARTYPE.VT_I1:
+						return isRef ? pcVal : (isVector ? cac : (object)cVal);
+
+					case VARTYPE.VT_UI1:
+						return isRef ? pbVal : (isVector ? caub : (object)bVal);
+
+					case VARTYPE.VT_I2:
+						return isRef ? piVal : (isVector ? cai : (object)iVal);
+
+					case VARTYPE.VT_UI2:
+						return isRef ? puiVal : (isVector ? caui : (object)uiVal);
+
+					case VARTYPE.VT_INT:
+					case VARTYPE.VT_I4:
+						return isRef ? plVal : (isVector ? cal : (object)lVal);
+
+					case VARTYPE.VT_UINT:
+					case VARTYPE.VT_UI4:
+						return isRef ? pulVal : (isVector ? caul : (object)ulVal);
+
+					case VARTYPE.VT_I8:
+						return isRef ? hVal : (isVector ? cah : (object)hVal);
+
+					case VARTYPE.VT_UI8:
+						return isRef ? uhVal : (isVector ? cauh : (object)uhVal);
+
+					case VARTYPE.VT_R4:
+						return isRef ? pfltVal : (isVector ? caflt : (object)fltVal);
+
+					case VARTYPE.VT_R8:
+						return isRef ? dblVal : (isVector ? cadbl : (object)dblVal);
+
+					case VARTYPE.VT_BOOL:
+						return isRef ? pboolVal : (isVector ? cabool : (object)boolVal);
+
+					case VARTYPE.VT_ERROR:
+						return isRef ? pscode : (isVector ? cascode : (object)scode);
+
+					case VARTYPE.VT_HRESULT:
+						return isRef
+							? (pulVal.HasValue ? new HRESULT(pulVal.Value) : (HRESULT?)null)
+							: (isVector ? caul.Select(u => new HRESULT(u)) : (object)new HRESULT(ulVal));
+
+					case VARTYPE.VT_CY:
+						return isRef ? pcyVal : (isVector ? cacy : (object)cyVal);
+
+					case VARTYPE.VT_DATE:
+						return isRef ? pdate : (isVector ? cadate : (object)date);
+
+					case VARTYPE.VT_FILETIME:
+						return isRef ? filetime : (isVector ? cafiletime : (object)filetime);
+
+					case VARTYPE.VT_CLSID:
+						return isRef ? puuid : (isVector ? cauuid : (object)puuid.GetValueOrDefault());
+
+					case VARTYPE.VT_CF:
+						return isRef ? pclipdata : (isVector ? caclipdata : (object)pclipdata);
+
+					case VARTYPE.VT_BSTR:
+						return isRef ? pbstrVal : (isVector ? cabstr : (object)bstrVal);
+
+					case VARTYPE.VT_BLOB:
+						return isRef ? _blob : (isVector ? null : (object)_blob);
+
+					case VARTYPE.VT_LPSTR:
+						return isRef ? pszVal : (isVector ? calpstr : (object)pszVal);
+
+					case VARTYPE.VT_LPWSTR:
+						return isRef ? pwszVal : (isVector ? calpwstr : (object)pwszVal);
+
+					case VARTYPE.VT_UNKNOWN:
+					case VARTYPE.VT_DISPATCH:
+						return isVector ? GetVector<IntPtr>()?.Select(Marshal.GetObjectForIUnknown) : (isRef ? ppunkVal : punkVal);
+
+					case VARTYPE.VT_STREAM:
+					case VARTYPE.VT_STREAMED_OBJECT:
+						return isRef ? pStream : (isVector ? null : pStream);
+
+					case VARTYPE.VT_STORAGE:
+					case VARTYPE.VT_STORED_OBJECT:
+						return isRef ? pStorage : (isVector ? null : pStorage);
+
+					case VARTYPE.VT_DECIMAL:
+						return isRef ? pdecVal : (isVector ? GetVector<decimal>() : (object)pdecVal.GetValueOrDefault());
+
+					case VARTYPE.VT_VARIANT:
+						return isRef ? pvarVal : (isVector ? GetVector<PROPVARIANT>() : (object)pvarVal);
+
+					case VARTYPE.VT_USERDEFINED:
+					case VARTYPE.VT_RECORD:
+					case VARTYPE.VT_PTR:
+					case VARTYPE.VT_VOID:
+						throw new ArgumentOutOfRangeException(nameof(vt), $"{vt}");
+
+					default:
+						return null;
+				}
 			}
 
-			private void SetDecimal(decimal? decVal)
-			{
-				var tempVt = vt;
-				_decimal = decVal.GetValueOrDefault();
-				vt = tempVt;
-			}
+			private IEnumerable<T> GetVector<T>() => vt.IsFlagSet(VARTYPE.VT_VECTOR) ? (_blob.cbSize <= 0 ? new T[0] : _blob.pBlobData.ToIEnum<T>((int)_blob.cbSize)) : throw new InvalidCastException();
 
 			private void SetSafeArray(IList<object> array)
 			{
-				vt = VARTYPE.VT_ARRAY | VARTYPE.VT_VARIANT;
 				if (array == null || array.Count == 0) return;
 				var psa = SafeArrayCreateVector(VARTYPE.VT_VARIANT, 0, (uint)array.Count);
 				if (psa.IsNull) throw new Win32Exception();
@@ -1233,23 +957,11 @@ namespace Vanara.PInvoke
 				psa.SetHandleAsInvalid();
 			}
 
-			private void SetString(string value, VarEnum ve)
-			{
-				VarType = ve;
-				_ptr = GetStringPtr(value, ve);
-				if (_ptr == IntPtr.Zero && ve == VarEnum.VT_BSTR)
-					vt = VARTYPE.VT_BSTR | VARTYPE.VT_BYREF;
-			}
-
 			[SecurityCritical, SecuritySafeCritical]
 			private void SetStringVector(IEnumerable<string> value, VarEnum ve)
 			{
-				var svt = ((VARTYPE)ve).ClearFlags(VARTYPE.VT_VECTOR);
-				if (svt != VARTYPE.VT_LPWSTR && svt != VARTYPE.VT_LPSTR && svt != VARTYPE.VT_BSTR)
-					throw new ArgumentException(@"String vectors must be of VARTYPE VT_LPWSTR, VT_LPSTR or VT_BSTR", nameof(ve));
 				if (value == null) throw new ArgumentNullException(nameof(value));
-
-				Clear();
+				var svt = ((VARTYPE)ve).ClearFlags(VARTYPE.VT_VECTOR);
 				var sc = value.ToArray();
 				if (sc.Length <= 0) return;
 				switch (svt)
@@ -1259,15 +971,17 @@ namespace Vanara.PInvoke
 						_blob.cbSize = (uint)sc.Length;
 						_blob.pBlobData = value.Select(Marshal.StringToBSTR).MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
 						break;
+
 					case VARTYPE.VT_LPSTR:
 						vt = svt | VARTYPE.VT_VECTOR;
 						_blob.cbSize = (uint)sc.Length;
 						_blob.pBlobData = value.Select(Marshal.StringToCoTaskMemAnsi).MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
-						//_blob.pBlobData = value.MarshalToPtr(StringListPackMethod.Packed, Marshal.AllocCoTaskMem, out var _, CharSet.Ansi);
 						break;
+
 					case VARTYPE.VT_LPWSTR:
 						InitPropVariantFromStringVector(sc, (uint)sc.Length, this).ThrowIfFailed();
 						break;
+
 					default:
 						break;
 				}
@@ -1275,8 +989,6 @@ namespace Vanara.PInvoke
 
 			private void SetStruct<T>(T? value, VarEnum ve) where T : struct
 			{
-				Clear();
-				VarType = ve;
 				if (value.HasValue)
 				{
 					var type = typeof(T);
@@ -1289,79 +1001,255 @@ namespace Vanara.PInvoke
 						}
 					else if (type == typeof(FILETIME)) _ft = (FILETIME)(object)value.Value;
 					else if (type == typeof(BLOB)) _blob = (BLOB)(object)value.Value;
-					else if (type == typeof(decimal)) SetDecimal((decimal)(object)value.Value);
-					else if (type == typeof(Guid)) InitPropVariantFromCLSID((Guid)(object)value.Value, this);
 					else throw new ArgumentException($"Unrecognized structure {typeof(T).Name}"); // This would work but there is no means to free this memory. // _ptr = value.Value.StructureToPtr());
 				}
 				else
 					vt |= VARTYPE.VT_BYREF;
 			}
 
-			private void SetVector<T>(IEnumerable<T> array, VarEnum varEnum)
+			/// <summary>Sets the value, clearing any existing value.</summary>
+			/// <param name="value">The value.</param>
+			/// <param name="vEnum">
+			/// If this value equals VT_EMPTY, the method will attempt to ascertain the value type from the <paramref name="value"/>.
+			/// </param>
+			private void SetValue(object value, VarEnum vEnum = VarEnum.VT_EMPTY)
 			{
 				Clear();
-				vt = (VARTYPE)varEnum | VARTYPE.VT_VECTOR;
-				if (array == null) return;
+				var newVT = vt = vEnum == VarEnum.VT_EMPTY ? GetVarType(value?.GetType()) : (VARTYPE)vEnum;
 
-				var sz = 0U;
-				switch (varEnum)
+				// Finished if NULL or EMPTY
+				if ((int)vt <= 1) return;
+
+				// Handle SAFEARRAY
+				if (vt.IsFlagSet(VARTYPE.VT_ARRAY))
 				{
-					case VarEnum.VT_I2:
-						InitPropVariantFromInt16Vector(GetArray<short>(out sz), sz, this).ThrowIfFailed();
-						break;
-					case VarEnum.VT_I4:
-						InitPropVariantFromInt32Vector(GetArray<int>(out sz), sz, this).ThrowIfFailed();
-						break;
-					case VarEnum.VT_R8:
-						InitPropVariantFromDoubleVector(GetArray<double>(out sz), sz, this).ThrowIfFailed();
-						break;
-					case VarEnum.VT_BOOL:
-						InitPropVariantFromBooleanVector(GetArray<bool>(out sz), sz, this).ThrowIfFailed();
-						break;
-					case VarEnum.VT_UI1:
-						InitPropVariantFromBuffer(GetArray<byte>(out sz), sz, this).ThrowIfFailed();
-						break;
-					case VarEnum.VT_UI2:
-						InitPropVariantFromUInt16Vector(GetArray<ushort>(out sz), sz, this).ThrowIfFailed();
-						break;
-					case VarEnum.VT_UI4:
-						InitPropVariantFromUInt32Vector(GetArray<uint>(out sz), sz, this).ThrowIfFailed();
-						break;
-					case VarEnum.VT_I8:
-						InitPropVariantFromInt64Vector(GetArray<long>(out sz), sz, this).ThrowIfFailed();
-						break;
-					case VarEnum.VT_UI8:
-						InitPropVariantFromUInt64Vector(GetArray<ulong>(out sz), sz, this).ThrowIfFailed();
-						break;
-					case VarEnum.VT_FILETIME:
-						InitPropVariantFromFileTimeVector(GetArray<FILETIME>(out sz), sz, this).ThrowIfFailed();
-						break;
-					default:
-						var enumerable = array as ICollection<T> ?? array.ToList();
-						_blob.cbSize = (uint)enumerable.Count;
-						_blob.pBlobData = enumerable.MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
-						break;
+					SetSafeArray(ConvertToEnum<object>(value).ToList());
+					return;
 				}
 
-				TV[] GetArray<TV>(out uint len)
+				var isVector = vt.IsFlagSet(VARTYPE.VT_VECTOR);
+				var isRef = vt.IsFlagSet(VARTYPE.VT_BYREF);
+
+				// Handle BYREF null value
+				if (isRef && value == null)
+					return;
+
+				// Handle case where element type is put in w/o specifying VECTOR
+				if (value != null && !isVector && value.GetType().IsArray) vt |= VARTYPE.VT_VECTOR;
+
+				var sz = 0U;
+				var elemType = (VARTYPE)((int)vt & 0xFFF);
+				switch (elemType)
 				{
-					var ret = ConvertToEnum<TV>(array).ToArray();
+					case VARTYPE.VT_I1:
+						Init<sbyte>(AllocVector);
+						break;
+
+					case VARTYPE.VT_UI1:
+						Init<byte>(InitPropVariantFromBuffer);
+						break;
+
+					case VARTYPE.VT_I2:
+						Init<short>(InitPropVariantFromInt16Vector);
+						break;
+
+					case VARTYPE.VT_UI2:
+						Init<ushort>(InitPropVariantFromUInt16Vector);
+						break;
+
+					case VARTYPE.VT_I4:
+					case VARTYPE.VT_INT:
+						Init<int>(InitPropVariantFromInt32Vector);
+						vt = newVT;
+						break;
+
+					case VARTYPE.VT_UI4:
+					case VARTYPE.VT_UINT:
+						Init<uint>(InitPropVariantFromUInt32Vector);
+						vt = newVT;
+						break;
+
+					case VARTYPE.VT_I8:
+						Init<long>(InitPropVariantFromInt64Vector);
+						break;
+
+					case VARTYPE.VT_UI8:
+						Init<ulong>(InitPropVariantFromUInt64Vector);
+						break;
+
+					case VARTYPE.VT_R4:
+						Init<float>(AllocVector);
+						break;
+
+					case VARTYPE.VT_R8:
+						Init<double>(InitPropVariantFromDoubleVector);
+						break;
+
+					case VARTYPE.VT_BOOL:
+						Init<bool>(InitPropVariantFromBooleanVector);
+						break;
+
+					case VARTYPE.VT_ERROR:
+						Init(InitPropVariantFromUInt32Vector, o => o is Win32Error err ? (uint)(int)err : (uint)Convert.ChangeType(o, typeof(uint)));
+						vt = newVT;
+						break;
+
+					case VARTYPE.VT_HRESULT:
+						Init(InitPropVariantFromUInt32Vector, o => o is HRESULT hr ? (uint)(int)hr : (uint)Convert.ChangeType(o, typeof(uint)));
+						vt = newVT;
+						break;
+
+					case VARTYPE.VT_CY:
+						Init(InitPropVariantFromUInt64Vector, o => o is decimal d ? (ulong)decimal.ToOACurrency(d) : (ulong)Convert.ChangeType(o, typeof(ulong)));
+						vt = newVT;
+						break;
+
+					case VARTYPE.VT_DATE:
+						double ToDouble(object o)
+						{
+							if (o is DateTime dt)
+								return dt.ToOADate();
+							if (o is FILETIME ft)
+								return ft.ToDateTime().ToOADate();
+							return (double)Convert.ChangeType(o, typeof(double));
+						}
+						Init(InitPropVariantFromDoubleVector, ToDouble);
+						vt = newVT;
+						break;
+
+					case VARTYPE.VT_FILETIME:
+						FILETIME ToFileTime(object o)
+						{
+							if (o is DateTime dt)
+								return dt.ToFileTimeStruct();
+							if (o is FILETIME ft)
+								return ft;
+							return FileTimeExtensions.MakeFILETIME((ulong)Convert.ChangeType(o, typeof(ulong)));
+						}
+						Init(InitPropVariantFromFileTimeVector, ToFileTime);
+						break;
+
+					case VARTYPE.VT_CLSID:
+						if (isVector)
+							AllocVector(GetArray<Guid>(out sz), sz);
+						else
+							InitPropVariantFromCLSID(((Guid?)value).GetValueOrDefault(), this).ThrowIfFailed();
+						break;
+
+					case VARTYPE.VT_CF:
+						if (isVector)
+							AllocVector(GetArray<CLIPDATA>(out sz), sz);
+						else
+							_ptr = ((CLIPDATA)value).StructureToPtr(Marshal.AllocCoTaskMem, out var _);
+						break;
+
+					case VARTYPE.VT_BSTR:
+						if (isVector)
+							SetStringVector(ConvertToEnum<string>(value), VarType);
+						else
+						{
+							if (isRef)
+								SetStruct((IntPtr?)value, VarType);
+							else
+								_ptr = Marshal.StringToBSTR(value?.ToString());
+						}
+						break;
+
+					case VARTYPE.VT_BLOB:
+					case VARTYPE.VT_BLOB_OBJECT:
+						if (!isVector && !isRef)
+							_blob = (BLOB)value;
+						break;
+
+					case VARTYPE.VT_LPSTR:
+						if (isVector)
+							SetStringVector(ConvertToEnum<string>(value), VarType);
+						else
+							_ptr = Marshal.StringToCoTaskMemAnsi(value?.ToString());
+						break;
+
+					case VARTYPE.VT_LPWSTR:
+						if (isVector)
+							SetStringVector(ConvertToEnum<string>(value), VarType);
+						else
+							_ptr = Marshal.StringToCoTaskMemUni(value?.ToString());
+						break;
+
+					case VARTYPE.VT_UNKNOWN:
+						IntPtr ToIUnkPtr(object o) => o as IntPtr? ?? Marshal.GetIUnknownForObject(o);
+						if (isVector)
+							AllocVector(GetArray(out sz, ToIUnkPtr), sz);
+						else
+							SetStruct<IntPtr>(ToIUnkPtr(value), VarType);
+						break;
+
+#if !(NETSTANDARD2_0)
+					case VARTYPE.VT_DISPATCH:
+						IntPtr ToIDispPtr(object o) => o as IntPtr? ?? Marshal.GetIDispatchForObject(o);
+						if (isVector)
+							AllocVector(GetArray(out sz, ToIDispPtr), sz);
+						else
+							SetStruct<IntPtr>(ToIDispPtr(value), VarType);
+						break;
+#endif
+
+					case VARTYPE.VT_STREAM:
+					case VARTYPE.VT_STREAMED_OBJECT:
+						if (!isVector && !isRef)
+							SetStruct<IntPtr>(Marshal.GetComInterfaceForObject(value, typeof(IStream)), VarType);
+						break;
+
+					case VARTYPE.VT_STORAGE:
+					case VARTYPE.VT_STORED_OBJECT:
+						if (!isVector && !isRef)
+							SetStruct<IntPtr>(Marshal.GetComInterfaceForObject(value, typeof(IStorage)), VarType);
+						break;
+
+					case VARTYPE.VT_DECIMAL:
+						if (!isVector)
+						{
+							var tempVt = vt;
+							_decimal = ((decimal?)value).GetValueOrDefault();
+							vt = tempVt;
+						}
+						break;
+
+					case VARTYPE.VT_VARIANT:
+						if (isVector)
+							AllocVector(GetArray(out sz, o => { ((PROPVARIANT)o).Clone(out var oo); return oo; }), sz);
+						else if (isRef)
+							InitPropVariantVectorFromPropVariant((PROPVARIANT)value, this);
+						break;
+
+					case VARTYPE.VT_USERDEFINED:
+					case VARTYPE.VT_RECORD:
+					case VARTYPE.VT_VOID:
+					case VARTYPE.VT_PTR:
+					default:
+						throw new ArgumentOutOfRangeException(nameof(Value), $"{vt}={value}");
+				}
+
+				HRESULT AllocVector<T>(T[] vector, uint vsz, PROPVARIANT pv = null)
+				{
+					_blob.cbSize = vsz;
+					_blob.pBlobData = vector.MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
+					return HRESULT.S_OK;
+				}
+
+				T[] GetArray<T>(out uint len, Func<object, T> conv = null)
+				{
+					var ret = ConvertToEnum<T>(value, conv).ToArray();
 					len = (uint)ret.Length;
 					return ret;
 				}
-			}
 
-			/// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-			public void Dispose()
-			{
-				PropVariantClear(this);
-				GC.SuppressFinalize(this);
-			}
-
-			/// <summary>Finalizes an instance of the <see cref="PROPVARIANT"/> class.</summary>
-			~PROPVARIANT()
-			{
-				Dispose();
+				void Init<T>(Func<T[], uint, PROPVARIANT, HRESULT> init, Func<object, T> conv = null) where T : struct
+				{
+					if (isVector)
+						init(GetArray<T>(out sz, conv), sz, this).ThrowIfFailed();
+					else
+						SetStruct((T?)(conv?.Invoke(value) ?? value), VarType);
+				}
 			}
 		}
 	}

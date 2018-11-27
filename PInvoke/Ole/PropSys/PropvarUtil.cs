@@ -299,6 +299,20 @@ namespace Vanara.PInvoke
 		[PInvokeData("propvarutil.h", MSDNShortId = "c958f823-f820-4b0b-86ed-84ad18befbd1")]
 		public static extern HRESULT InitPropVariantFromResource(HINSTANCE hinst, uint id, [In, Out] PROPVARIANT ppropvar);
 
+		/// <summary>Initializes the property variant from string.</summary>
+		/// <param name="psz">Pointer to a buffer that contains the source Unicode string.</param>
+		/// <param name="ppropvar">When this function returns, contains the initialized PROPVARIANT structure.</param>
+		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
+		[PInvokeData("propvarutil.h", MSDNShortId = "cee95d17-532d-8e34-a392-a04778f9bc00")]
+		public static HRESULT InitPropVariantFromString(string psz, [In, Out] PROPVARIANT ppropvar)
+		{
+			PropVariantClear(ppropvar);
+			if (psz is null) return HRESULT.E_INVALIDARG;
+			ppropvar._ptr = Marshal.StringToCoTaskMemUni(psz);
+			ppropvar.vt = VARTYPE.VT_LPWSTR;
+			return HRESULT.S_OK;
+		}
+
 		/// <summary>
 		/// <para>
 		/// Initializes a PROPVARIANT structure from a specified string. The string is parsed as a semi-colon delimited list (for example: "A;B;C").

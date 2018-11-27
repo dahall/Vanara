@@ -101,6 +101,7 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
+		[TestCase(VARTYPE.VT_CF, "pclipdata")]
 		[TestCase(VARTYPE.VT_ARRAY | VARTYPE.VT_VARIANT, "parray")]
 		[TestCase(VARTYPE.VT_BLOB, "blob")]
 		[TestCase(VARTYPE.VT_BSTR, "bstrVal")]
@@ -112,7 +113,6 @@ namespace Vanara.PInvoke.Tests
 		[TestCase(VARTYPE.VT_BYREF | VARTYPE.VT_ERROR, "pscode")]
 		[TestCase(VARTYPE.VT_BYREF | VARTYPE.VT_UNKNOWN, "ppunkVal")]
 		[TestCase(VARTYPE.VT_BYREF | VARTYPE.VT_VARIANT, "pvarVal")]
-		//[TestCase(VARTYPE.VT_CF, "pclipdata")]
 		[TestCase(VARTYPE.VT_CY, "cyVal")]
 		[TestCase(VARTYPE.VT_CLSID, "puuid")]
 		[TestCase(VARTYPE.VT_DATE, "date")]
@@ -124,17 +124,17 @@ namespace Vanara.PInvoke.Tests
 		[TestCase(VARTYPE.VT_STORAGE, "pStorage")]
 		[TestCase(VARTYPE.VT_STREAM, "pStream")]
 		[TestCase(VARTYPE.VT_UNKNOWN, "punkVal")]
-		[TestCase(VARTYPE.VT_VECTOR | VARTYPE.VT_BSTR, "cabstr")]
 		[TestCase(VARTYPE.VT_VECTOR | VARTYPE.VT_CF, "caclipdata")]
 		[TestCase(VARTYPE.VT_VECTOR | VARTYPE.VT_CLSID, "cauuid")]
 		[TestCase(VARTYPE.VT_VECTOR | VARTYPE.VT_CY, "cacy")]
 		[TestCase(VARTYPE.VT_VECTOR | VARTYPE.VT_DATE, "cadate")]
 		[TestCase(VARTYPE.VT_VECTOR | VARTYPE.VT_ERROR, "cascode")]
 		[TestCase(VARTYPE.VT_VECTOR | VARTYPE.VT_FILETIME, "cafiletime")]
-		//[TestCase(VARTYPE.VT_VECTOR | VARTYPE.VT_LPSTR, "calpstr")]
 		[TestCase(VARTYPE.VT_VECTOR | VARTYPE.VT_LPWSTR, "calpwstr")]
 		[TestCase(VARTYPE.VT_VECTOR | VARTYPE.VT_VARIANT, "capropvar")]
 		[TestCase(VARTYPE.VT_VERSIONED_STREAM, "pVersionedStream")]
+		[TestCase(VARTYPE.VT_VECTOR | VARTYPE.VT_BSTR, "cabstr")]
+		[TestCase(VARTYPE.VT_VECTOR | VARTYPE.VT_LPSTR, "calpstr")]
 		public void PROPVARIANTOtherPropsTest(VARTYPE vt, string prop)
 		{
 			object value;
@@ -145,16 +145,18 @@ namespace Vanara.PInvoke.Tests
 				{
 					var isa = value.GetType().IsArray;
 					Assert.That(pv.vt, Is.EqualTo(vt));
+					var pvVal = pv.Value;
 					if (isa)
-						Assert.That(pv.Value, Is.EquivalentTo((IEnumerable)value));
+						Assert.That(pvVal, Is.EquivalentTo((IEnumerable)value));
 					else
-						Assert.That(pv.Value, Is.EqualTo(value));
+						Assert.That(pvVal, Is.EqualTo(value));
 					var pi = pv.GetType().GetProperty(prop);
 					Assert.That(pi, Is.Not.Null);
+					var	piVal = pi.GetValue(pv);
 					if (isa)
-						Assert.That(pi.GetValue(pv), Is.EquivalentTo((IEnumerable)value));
+						Assert.That(piVal, Is.EquivalentTo((IEnumerable)value));
 					else
-						Assert.That(pi.GetValue(pv), Is.EqualTo(value));
+						Assert.That(piVal, Is.EqualTo(value));
 				}
 			}, Throws.Nothing);
 		}
@@ -262,8 +264,9 @@ namespace Vanara.PInvoke.Tests
 					return new Win32Error(5);
 				case VARTYPE.VT_FILETIME:
 					return new DateTime(1999, 12, 31, 23, 59, 59).ToFileTimeStruct();
-				case VARTYPE.VT_BSTR:
 				case VARTYPE.VT_BYREF | VARTYPE.VT_BSTR:
+					return Marshal.StringToBSTR("string");
+				case VARTYPE.VT_BSTR:
 				case VARTYPE.VT_LPSTR:
 				case VARTYPE.VT_LPWSTR:
 					return "string";
