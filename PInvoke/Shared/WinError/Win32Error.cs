@@ -234,10 +234,11 @@ namespace Vanara.PInvoke
 		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value,
 			Type destinationType)
 		{
+			if (!(value is Win32Error err)) throw new NotSupportedException();
 			if (destinationType.IsPrimitive && destinationType != typeof(char))
-				return Convert.ChangeType((Win32Error)value, destinationType);
+				return Convert.ChangeType(err, destinationType);
 			if (destinationType == typeof(string))
-				return ((Win32Error)value).ToString();
+				return err.ToString();
 			return base.ConvertTo(context, culture, value, destinationType);
 		}
 	}

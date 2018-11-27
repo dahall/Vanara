@@ -490,8 +490,8 @@ namespace Vanara.PInvoke
 				return e.ToHRESULT();
 			if (value != null && value.GetType().IsPrimitive)
 			{
-				if (value is bool)
-					return (bool)value ? HRESULT.S_OK : HRESULT.S_FALSE;
+				if (value is bool b)
+					return b ? HRESULT.S_OK : HRESULT.S_FALSE;
 				if (!(value is char))
 					return new HRESULT((uint)Convert.ChangeType(value, TypeCode.UInt32));
 			}
@@ -501,11 +501,11 @@ namespace Vanara.PInvoke
 		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value,
 			Type destinationType)
 		{
-			if (!(value is HRESULT)) throw new NotSupportedException();
+			if (!(value is HRESULT hr)) throw new NotSupportedException();
 			if (destinationType.IsPrimitive && destinationType != typeof(char))
-				return Convert.ChangeType((HRESULT)value, destinationType);
+				return Convert.ChangeType(hr, destinationType);
 			if (destinationType == typeof(string))
-				return ((HRESULT)value).ToString();
+				return hr.ToString();
 			return base.ConvertTo(context, culture, value, destinationType);
 		}
 	}
