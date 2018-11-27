@@ -183,7 +183,7 @@ namespace Vanara.Windows.Shell
 		{
 			if (!TryGetValue(key, out PROPVARIANT ret))
 				throw new ArgumentOutOfRangeException(nameof(key));
-			return new PropertyDescription(key).FormatForDisplay(ret, flags);
+			return PropertyDescription.Create(key)?.FormatForDisplay(ret, flags);
 		}
 
 		/// <summary>Gets the PROPVARIANT value for a key.</summary>
@@ -283,18 +283,16 @@ namespace Vanara.Windows.Shell
 
 		private bool TryGetValue(PROPERTYKEY key, out PROPVARIANT value)
 		{
+			value = new PROPVARIANT();
 			if (iprops != null)
 			{
 				try
 				{
-					var pv = new PROPVARIANT();
-					iprops.GetValue(key, pv);
-					value = pv;
+					iprops.GetValue(key, value);
 					return true;
 				}
 				catch { }
 			}
-			value = null;
 			return false;
 		}
 	}

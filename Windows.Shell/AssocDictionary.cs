@@ -138,7 +138,7 @@ namespace Vanara.Windows.Shell
 		{
 			value = null;
 			if (!ContainsKey(key)) return false;
-			value = new ShellAssociation(key);
+			value = ShellAssociation.CreateFromFileExtension(key);
 			return true;
 		}
 

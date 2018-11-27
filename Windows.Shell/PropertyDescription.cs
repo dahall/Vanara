@@ -24,21 +24,17 @@ namespace Vanara.Windows.Shell
 		protected PropertyTypeList typeList;
 
 		/// <summary>Initializes a new instance of the <see cref="PropertyDescription"/> class.</summary>
-		/// <param name="propkey">A valid <see cref="PROPERTYKEY"/>.</param>
-		public PropertyDescription(PROPERTYKEY propkey)
-		{
-			key = propkey;
-			if (PSGetPropertyDescription(propkey, typeof(IPropertyDescription).GUID, out var ppv).Succeeded)
-				iDesc = (IPropertyDescription)ppv;
-		}
-
-		/// <summary>Initializes a new instance of the <see cref="PropertyDescription"/> class.</summary>
 		/// <param name="propertyDescription">The property description.</param>
 		protected internal PropertyDescription(IPropertyDescription propertyDescription)
 		{
 			iDesc = propertyDescription;
 			key = iDesc.GetPropertyKey();
 		}
+
+		/// <summary>Creates a <see cref="PropertyDescription"/> instance from a specified property key.</summary>
+		/// <param name="propkey">The property key.</param>
+		/// <returns>An associated instance of <see cref="PropertyDescription"/> or <see langword="null"/> if the PROPERTYKEY does not exist in the schema subsystem cache.</returns>
+		public static PropertyDescription Create(PROPERTYKEY propkey) => PSGetPropertyDescription(propkey, typeof(IPropertyDescription).GUID, out var ppv).Succeeded ? new PropertyDescription((IPropertyDescription)ppv) : null;
 
 		/// <summary>Gets a value that describes how the property values are displayed when multiple items are selected in the UI.</summary>
 		public PROPDESC_AGGREGATION_TYPE AggregationType => iDesc?.GetAggregationType() ?? 0;
@@ -201,7 +197,7 @@ namespace Vanara.Windows.Shell
 		/// <value>The <see cref="PropertyDescription" />.</value>
 		/// <param name="propkey">The PROPERTYKEY.</param>
 		/// <returns>The <see cref="PropertyDescription" /> for the specified key.</returns>
-		public virtual PropertyDescription this[PROPERTYKEY propkey] => new PropertyDescription(propkey);
+		public virtual PropertyDescription this[PROPERTYKEY propkey] => PropertyDescription.Create(propkey);
 
 		/// <inheritdoc />
 		public virtual void Dispose()

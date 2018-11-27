@@ -8,7 +8,7 @@ namespace Vanara.Windows.Shell
 	{
 		private IQueryAssociations qassoc;
 
-		internal ShellAssociation(string ext) { Extension = ext; }
+		private ShellAssociation(string ext) { Extension = ext; }
 
 		public static IReadOnlyDictionary<string, ShellAssociation> FileAssociations { get; } = new ShellAssociationDictionary(true);
 
