@@ -333,6 +333,48 @@ namespace Vanara.PInvoke
 		[PInvokeData("NTDSApi.h", MSDNShortId = "ms675931")]
 		public static extern Win32Error DsBind([Optional] string DomainControllerName, [Optional] string DnsDomainName, out SafeDsHandle phDS);
 
+		/// <summary>The DsBindByInstance function explicitly binds to any AD LDS or Active Directory instance.</summary>
+		/// <param name="ServerName">
+		/// (optional)Pointer to a null-terminated string that specifies the name of the instance. This parameter is required to bind to an
+		/// AD LDS instance. If this parameter is NULL when binding to an Active Directory instance, then the DnsDomainName parameter must
+		/// contain a value. If this parameter and the DnsDomainName parameter are both NULL, the function fails with the return value
+		/// ERROR_INVALID_PARAMETER (87).
+		/// </param>
+		/// <param name="Annotation">
+		/// (optional)Pointer to a null-terminated string that specifies the port number of the AD LDS instance or NULL when binding to an
+		/// Active Directory instance. For example, "389".
+		/// <para>
+		/// If this parameter is NULL when binding by domain to an Active Directory instance, then the DnsDomainName parameter must be
+		/// specified. If this parameter is NULL when binding to an AD LDS instance, then the InstanceGuid parameter must be specified.
+		/// </para>
+		/// </param>
+		/// <param name="InstanceGuid">
+		/// (optional)Pointer to a GUID value that contains the GUID of the AD LDS instance. The GUID value is the objectGUID property of the
+		/// nTDSDSA object of the instance. If this parameter is NULL when binding to an AD LDS instance, the Annotation parameter must be specified.
+		/// </param>
+		/// <param name="DnsDomainName">
+		/// (optional)Pointer to a null-terminated string that specifies the DNS name of the domain when binding to an Active Directory
+		/// instance by domain. Set this parameter to NULL to bind to an Active Directory instance by server or to an AD LDS instance.
+		/// </param>
+		/// <param name="AuthIdentity">
+		/// (optional)Handle to the credentials used to start the RPC session. Use the DsMakePasswordCredentials function to create a
+		/// structure suitable for AuthIdentity.
+		/// </param>
+		/// <param name="ServicePrincipalName">
+		/// (optional)Pointer to a null-terminated string that specifies the Service Principal Name to assign to the client. Passing NULL in
+		/// ServicePrincipalName is equivalent to a call to the DsBindWithCred function.
+		/// </param>
+		/// <param name="BindFlags">
+		/// (optional)Contains a set of flags that define the behavior of this function. This parameter can contain zero or a combination of
+		/// the values listed in the following table.
+		/// <para>NTDSAPI_BIND_ALLOW_DELEGATION, NTDSAPI_BIND_FIND_BINDING, NTDSAPI_BIND_FORCE_KERBEROS</para>
+		/// </param>
+		/// <param name="phDS">Address of a DsHandle value that receives the bind handle. To close this handle, call DsUnBind.</param>
+		/// <returns>Returns NO_ERROR if successful or an RPC or Win32 error otherwise.</returns>
+		[DllImport("Ntdsapi.dll", CharSet = CharSet.Auto, EntryPoint = "DsBindByInstance", SetLastError = false, ThrowOnUnmappableChar = true), SuppressUnmanagedCodeSecurity]
+		public static extern Win32Error DsBindByInstance([Optional] string ServerName, [Optional] string Annotation, in Guid InstanceGuid, [Optional] string DnsDomainName,
+			SafeAuthIdentityHandle AuthIdentity, [Optional] string ServicePrincipalName, DsBindFlags BindFlags, out SafeDsHandle phDS);
+
 		/// <summary>
 		/// <para>
 		/// The <c>DsBindingSetTimeout</c> function sets the timeout value that is honored by all RPC calls that use the specified binding
@@ -540,7 +582,41 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("ntdsapi.h", MSDNShortId = "52a5761d-5244-4bc9-8c09-fd08f10a9fff")]
 		public static extern Win32Error DsBindWithSpnEx([Optional] string DomainControllerName, [Optional] string DnsDomainName, SafeAuthIdentityHandle AuthIdentity, string ServicePrincipalName,
-			uint BindFlags, out SafeDsHandle phDS);
+			DsBindFlags BindFlags, out SafeDsHandle phDS);
+
+		/// <summary>Flags for DsBindWithSpnEx and DsBindByInstance</summary>
+		[PInvokeData("ntdsapi.h", MSDNShortId = "52a5761d-5244-4bc9-8c09-fd08f10a9fff")]
+		[Flags]
+		public enum DsBindFlags
+		{
+			/// <summary>
+			/// <para>
+			/// Causes the bind to use the delegate impersonation level. This enables operations that require delegation, such as
+			/// DsAddSidHistory, to succeed. Specifying this flag also causes DsBindWithSpnEx to operate similar to DsBindWithSpn.
+			/// </para>
+			/// <para>
+			/// If this flag is not specified, the bind will use the impersonate impersonation level. For more information about
+			/// impersonation levels, see Impersonation Levels.
+			/// </para>
+			/// <para>
+			/// Most operations do not require the delegate impersonation level; this flag should only be specified if it is required.
+			/// Binding to a rogue server with the delegate impersonation level enables the rogue server to connect to a non-rogue server
+			/// with your credentials and perform unintended operations.
+			/// </para>
+			/// </summary>
+			NTDSAPI_BIND_ALLOW_DELEGATION = 0x00000001,
+			/// <summary>
+			/// With AD/AM, a single machine, could have multiple "AD's" on a single server. Since DsBindXxxx() will not pick an AD/AM
+			/// instance without an instance specifier ( ":389" ), it can be difficult (well impossible) to determine from just a server
+			/// name, what the instance annotation or instance guid is. This option will take a server name and find the first available AD
+			/// or AD/AM instance. WARNING: The results could be non- deterministic on a server w/ multiple instances.
+			/// </summary>
+			NTDSAPI_BIND_FIND_BINDING = 0x00000002,
+			/// <summary>
+			/// Active Directory Lightweight Directory Services: If this flag is specified, DsBindWithSpnEx requires Kerberos authentication to be used. If Kerberos authentication cannot be established, DsBindWithSpnEx will not attempt to authenticate with any other mechanism.
+			/// </summary>
+			NTDSAPI_BIND_FORCE_KERBEROS = 0x00000004,
+		}
 
 		/// <summary>
 		/// <para>
