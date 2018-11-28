@@ -1639,7 +1639,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/sysinfoapi/nf-sysinfoapi-getsystemtimeadjustmentprecise
 		// BOOL GetSystemTimeAdjustmentPrecise( PDWORD64 lpTimeAdjustment, PDWORD64 lpTimeIncrement, PBOOL lpTimeAdjustmentDisabled );
-		[DllImport(Lib.Api, SetLastError = true, ExactSpelling = true)]
+		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("sysinfoapi.h", MSDNShortId = "95EEE23D-01D8-49E1-BA64-49C07E8B1619")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetSystemTimeAdjustmentPrecise(out ulong lpTimeAdjustment, out ulong lpTimeIncrement, [MarshalAs(UnmanagedType.Bool)] out bool lpTimeAdjustmentDisabled);
