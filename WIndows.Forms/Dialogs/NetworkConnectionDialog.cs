@@ -14,7 +14,6 @@ namespace Vanara.Windows.Forms
 	/// <seealso cref="System.Windows.Forms.CommonDialog" />
 	public class NetworkConnectionDialog : CommonDialog
 	{
-		private SafeCoTaskMemHandle lpnres;
 		private NETRESOURCE nres = new NETRESOURCE();
 		private CONNECTDLGSTRUCT opts;
 
@@ -25,10 +24,10 @@ namespace Vanara.Windows.Forms
 			nres.dwType = NETRESOURCEType.RESOURCETYPE_DISK;
 		}
 
-		/// <summary>Gets the connected device count. This value is only valid after successfully running the dialog.</summary>
-		/// <value>The connected device count.</value>
+		/// <summary>Gets the connected device number. This value is only valid after successfully running the dialog.</summary>
+		/// <value>The connected device number. The value is 1 for A:, 2 for B:, 3 for C:, and so on. If the user made a deviceless connection, the value is –1.</value>
 		[Browsable(false)]
-		public int ConnectedDeviceCount => opts.dwDevNum;
+		public int ConnectedDeviceNumber => opts.dwDevNum;
 
 		/// <summary>Gets or sets a value indicating whether to hide the check box allowing the user to restore the connection at logon.</summary>
 		/// <value><c>true</c> if hiding restore connection check box; otherwise, <c>false</c>.</value>
@@ -51,6 +50,14 @@ namespace Vanara.Windows.Forms
 				opts.dwFlags = opts.dwFlags.SetFlags(CONN_DLG.CONNDLG_NOT_PERSIST, !value);
 			}
 		}
+
+		/// <summary>
+		/// Gets or sets a value indicating whether to display a read-only path instead of allowing the user to type in a path. This is only
+		/// valid if <see cref="RemoteNetworkName"/> is not <see langword="null"/>.
+		/// </summary>
+		/// <value><c>true</c> to display a read only path; otherwise, <c>false</c>.</value>
+		[DefaultValue(false), Category("Appearance"), Description("Display a read-only path instead of allowing the user to type in a path.")]
+		public bool ReadOnlyPath { get; set; }
 
 		/// <summary>Gets or sets the name of the remote network.</summary>
 		/// <value>The name of the remote network.</value>
@@ -78,18 +85,24 @@ namespace Vanara.Windows.Forms
 			opts.dwDevNum = -1;
 			opts.dwFlags = 0;
 			opts.lpConnRes = IntPtr.Zero;
+			ReadOnlyPath = false;
 		}
 
 		/// <inheritdoc/>
 		protected override bool RunDialog(IntPtr hwndOwner)
 		{
-			opts.hwndOwner = hwndOwner;
-			lpnres = SafeCoTaskMemHandle.CreateFromStructure(nres);
-			opts.lpConnRes = lpnres.DangerousGetHandle();
-			var ret = WNetConnectionDialog1(opts);
-			if (ret == -1) return false;
-			ret.ThrowIfFailed();
-			return true;
+			using (var lpnres = SafeCoTaskMemHandle.CreateFromStructure(nres))
+			{
+				opts.hwndOwner = hwndOwner;
+				opts.lpConnRes = lpnres.DangerousGetHandle();
+				if (ReadOnlyPath && !string.IsNullOrEmpty(nres.lpRemoteName))
+					opts.dwFlags |= CONN_DLG.CONNDLG_RO_PATH;
+				var ret = WNetConnectionDialog1(opts);
+				opts.lpConnRes = IntPtr.Zero;
+				if (ret == -1) return false;
+				ret.ThrowIfFailed();
+				return true;
+			}
 		}
 	}
 }
