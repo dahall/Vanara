@@ -196,6 +196,43 @@ namespace Vanara.PInvoke
 			DS_SPN_DELETE_SPN_OP,
 		}
 
+		/// <summary>Flags for DsBindWithSpnEx and DsBindByInstance</summary>
+		[PInvokeData("ntdsapi.h", MSDNShortId = "52a5761d-5244-4bc9-8c09-fd08f10a9fff")]
+		[Flags]
+		public enum DsBindFlags
+		{
+			/// <summary>
+			/// <para>
+			/// Causes the bind to use the delegate impersonation level. This enables operations that require delegation, such as
+			/// DsAddSidHistory, to succeed. Specifying this flag also causes DsBindWithSpnEx to operate similar to DsBindWithSpn.
+			/// </para>
+			/// <para>
+			/// If this flag is not specified, the bind will use the impersonate impersonation level. For more information about
+			/// impersonation levels, see Impersonation Levels.
+			/// </para>
+			/// <para>
+			/// Most operations do not require the delegate impersonation level; this flag should only be specified if it is required.
+			/// Binding to a rogue server with the delegate impersonation level enables the rogue server to connect to a non-rogue server
+			/// with your credentials and perform unintended operations.
+			/// </para>
+			/// </summary>
+			NTDSAPI_BIND_ALLOW_DELEGATION = 0x00000001,
+
+			/// <summary>
+			/// With AD/AM, a single machine, could have multiple "AD's" on a single server. Since DsBindXxxx() will not pick an AD/AM
+			/// instance without an instance specifier ( ":389" ), it can be difficult (well impossible) to determine from just a server
+			/// name, what the instance annotation or instance guid is. This option will take a server name and find the first available AD
+			/// or AD/AM instance. WARNING: The results could be non- deterministic on a server w/ multiple instances.
+			/// </summary>
+			NTDSAPI_BIND_FIND_BINDING = 0x00000002,
+
+			/// <summary>
+			/// Active Directory Lightweight Directory Services: If this flag is specified, DsBindWithSpnEx requires Kerberos authentication
+			/// to be used. If Kerberos authentication cannot be established, DsBindWithSpnEx will not attempt to authenticate with any other mechanism.
+			/// </summary>
+			NTDSAPI_BIND_FORCE_KERBEROS = 0x00000004,
+		}
+
 		/// <summary>
 		/// <para>
 		/// The <c>DsAddSidHistory</c> function retrieves the primary account security identifier (SID) of a security principal from one
@@ -583,40 +620,6 @@ namespace Vanara.PInvoke
 		[PInvokeData("ntdsapi.h", MSDNShortId = "52a5761d-5244-4bc9-8c09-fd08f10a9fff")]
 		public static extern Win32Error DsBindWithSpnEx([Optional] string DomainControllerName, [Optional] string DnsDomainName, SafeAuthIdentityHandle AuthIdentity, string ServicePrincipalName,
 			DsBindFlags BindFlags, out SafeDsHandle phDS);
-
-		/// <summary>Flags for DsBindWithSpnEx and DsBindByInstance</summary>
-		[PInvokeData("ntdsapi.h", MSDNShortId = "52a5761d-5244-4bc9-8c09-fd08f10a9fff")]
-		[Flags]
-		public enum DsBindFlags
-		{
-			/// <summary>
-			/// <para>
-			/// Causes the bind to use the delegate impersonation level. This enables operations that require delegation, such as
-			/// DsAddSidHistory, to succeed. Specifying this flag also causes DsBindWithSpnEx to operate similar to DsBindWithSpn.
-			/// </para>
-			/// <para>
-			/// If this flag is not specified, the bind will use the impersonate impersonation level. For more information about
-			/// impersonation levels, see Impersonation Levels.
-			/// </para>
-			/// <para>
-			/// Most operations do not require the delegate impersonation level; this flag should only be specified if it is required.
-			/// Binding to a rogue server with the delegate impersonation level enables the rogue server to connect to a non-rogue server
-			/// with your credentials and perform unintended operations.
-			/// </para>
-			/// </summary>
-			NTDSAPI_BIND_ALLOW_DELEGATION = 0x00000001,
-			/// <summary>
-			/// With AD/AM, a single machine, could have multiple "AD's" on a single server. Since DsBindXxxx() will not pick an AD/AM
-			/// instance without an instance specifier ( ":389" ), it can be difficult (well impossible) to determine from just a server
-			/// name, what the instance annotation or instance guid is. This option will take a server name and find the first available AD
-			/// or AD/AM instance. WARNING: The results could be non- deterministic on a server w/ multiple instances.
-			/// </summary>
-			NTDSAPI_BIND_FIND_BINDING = 0x00000002,
-			/// <summary>
-			/// Active Directory Lightweight Directory Services: If this flag is specified, DsBindWithSpnEx requires Kerberos authentication to be used. If Kerberos authentication cannot be established, DsBindWithSpnEx will not attempt to authenticate with any other mechanism.
-			/// </summary>
-			NTDSAPI_BIND_FORCE_KERBEROS = 0x00000004,
-		}
 
 		/// <summary>
 		/// <para>
