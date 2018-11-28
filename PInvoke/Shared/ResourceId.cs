@@ -166,24 +166,24 @@ namespace Vanara.PInvoke
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		bool IEquatable<int>.Equals(int other) => ptr.ToInt32().Equals(other);
+		public bool Equals(int other) => ptr.ToInt32().Equals(other);
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 		/// <exception cref="NotImplementedException"></exception>
-		bool IEquatable<string>.Equals(string other) => string.Equals(ToString(), other);
+		public bool Equals(string other) => string.Equals(ToString(), other);
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		bool IEquatable<IntPtr>.Equals(IntPtr other) => ptr.Equals(other);
+		public bool Equals(IntPtr other) => ptr.Equals(other);
 
 		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
 		/// <param name="other">An object to compare with this object.</param>
 		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 		/// <exception cref="NotImplementedException"></exception>
-		bool IEquatable<ResourceId>.Equals(ResourceId other) => string.Equals(other.ToString(), ToString());
+		public bool Equals(ResourceId other) => string.Equals(other.ToString(), ToString());
 
 		/// <inheritdoc/>
 		public IntPtr DangerousGetHandle() => ptr;
@@ -248,6 +248,7 @@ namespace Vanara.PInvoke
 			set
 			{
 				if (value > ushort.MaxValue || value <= 0) throw new ArgumentOutOfRangeException(nameof(id));
+				InternalCloseMethod(handle);
 				SetHandle((IntPtr)(ushort)value);
 			}
 		}
@@ -260,7 +261,7 @@ namespace Vanara.PInvoke
 		public override bool IsInvalid => handle == IntPtr.Zero;
 
 		/// <inheritdoc/>
-		protected override Func<IntPtr, bool> CloseMethod => h => { if (h != IntPtr.Zero && !IS_INTRESOURCE(h)) StringHelper.FreeString(h); return true; };
+		protected override Func<IntPtr, bool> CloseMethod => InternalCloseMethod;
 
 		/// <summary>Gets the string representation of a resource identifier.</summary>
 		/// <param name="ptr">The resource identifier.</param>
@@ -303,6 +304,12 @@ namespace Vanara.PInvoke
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator string(SafeResourceId r) => r.ToString();
 
+		/// <summary>
+		/// Gets a cloned handle that also, if a string resource, copies the string to a new handle which must be released using StringHelper.FreeString.
+		/// </summary>
+		/// <returns>A safe copy of this resource id.</returns>
+		public SafeResourceId Clone() => new SafeResourceId(handle);
+
 		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
@@ -334,11 +341,30 @@ namespace Vanara.PInvoke
 			}
 		}
 
-		/// <summary>
-		/// Gets a cloned handle that also, if a string resource, copies the string to a new handle which must be released using StringHelper.FreeString.
-		/// </summary>
-		/// <returns>A safe copy of this resource id.</returns>
-		public SafeResourceId Clone() => new SafeResourceId(handle);
+		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		public bool Equals(string other) => string.Equals(ToString(), other);
+
+		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		public bool Equals(int other) => other == handle.ToInt32();
+
+		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		public bool Equals(SafeResourceId other) => string.Equals(other.ToString(), ToString());
+
+		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		public bool Equals(ResourceId other) => other.Equals((ResourceId)this);
+
+		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+		/// <param name="other">An object to compare with this object.</param>
+		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+		public bool Equals(IntPtr other) => new SafeResourceId(other).Equals(this);
 
 		/// <inheritdoc/>
 		public override int GetHashCode() => handle.GetHashCode();
@@ -346,29 +372,11 @@ namespace Vanara.PInvoke
 		/// <inheritdoc/>
 		public override string ToString() => GetString(handle, CharSet);
 
-		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
-		/// <param name="other">An object to compare with this object.</param>
-		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		bool IEquatable<string>.Equals(string other) => string.Equals(ToString(), other);
-
-		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
-		/// <param name="other">An object to compare with this object.</param>
-		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		bool IEquatable<int>.Equals(int other) => other == handle.ToInt32();
-
-		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
-		/// <param name="other">An object to compare with this object.</param>
-		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		bool IEquatable<SafeResourceId>.Equals(SafeResourceId other) => string.Equals(other.ToString(), ToString());
-
-		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
-		/// <param name="other">An object to compare with this object.</param>
-		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		bool IEquatable<ResourceId>.Equals(ResourceId other) => other.Equals((ResourceId)this);
-
-		/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
-		/// <param name="other">An object to compare with this object.</param>
-		/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
-		bool IEquatable<IntPtr>.Equals(IntPtr other) => new SafeResourceId(other).Equals(this);
+		private bool InternalCloseMethod(IntPtr h)
+		{
+			if (h != IntPtr.Zero && !IS_INTRESOURCE(h))
+				StringHelper.FreeString(h);
+			return true;
+		}
 	}
 }
