@@ -80,7 +80,7 @@ namespace Vanara.Extensions
 			if (nilfi == null) throw new PlatformNotSupportedException();
 			var nil = nilfi.FieldType;
 			// Create a new instance with the handle param
-			var nili = nil.Assembly.CreateInstance(nil.FullName, false, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic, null, new object[] { dhiml }, null, null);
+			var nili = nil.Assembly.CreateInstance(nil.FullName, false, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic, null, new object[] { dhiml.DangerousGetHandle() }, null, null);
 			// Create a new ImageList and initialize with settings from handle
 			var il = new ImageList();
 			nilfi.SetValue(il, nili);
