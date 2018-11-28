@@ -125,7 +125,7 @@ namespace Vanara.PInvoke
 			DS_DOMAIN_DIRECT_INBOUND = 0x0020,
 		}
 
-		/// <summary>Flags supporting behavior of <see cref="DsGetDcName"/>.</summary>
+		/// <summary>Flags supporting behavior of <see cref="DsGetDcName(string, string, in Guid, string, DsGetDcNameFlags, out SafeNetApiBuffer)"/>.</summary>
 		[Flags]
 		[PInvokeData("DsGetDC.h", MSDNShortId = "ms675983")]
 		public enum DsGetDcNameFlags : uint
@@ -1279,14 +1279,14 @@ namespace Vanara.PInvoke
 		/// </summary>
 		public class SafeDCEnumHandle : HANDLE
 		{
-			/// <summary>Initializes a new instance of the <see cref="DCEnumHandle"/> class and assigns an existing handle.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeDCEnumHandle"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle">
 			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
 			/// </param>
 			public SafeDCEnumHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			/// <summary>Initializes a new instance of the <see cref="DCEnumHandle"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeDCEnumHandle"/> class.</summary>
 			private SafeDCEnumHandle() : base() { }
 
 			/// <inheritdoc/>

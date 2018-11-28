@@ -1,6 +1,6 @@
 ﻿namespace Vanara.PInvoke
 {
-	/// <summary>Color index used to get a system color from <see cref="GetSysColor"/>.</summary>
+	/// <summary>Color index used to get a system color from <c>GetSysColor</c>.</summary>
 	[PInvokeData("WinUser.h", MSDNShortId = "ms724371")]
 	public enum SystemColorIndex
 	{

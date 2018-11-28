@@ -533,7 +533,7 @@ namespace Vanara.PInvoke
 		// VARTYPE vt, LONG lLbound, ULONG cElements );
 		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("oleauto.h", MSDNShortId = "b794b8c6-a523-4636-8681-a936dff3fc6f")]
-		public static extern SafeSAFEARRAY SafeArrayCreateVector(VARTYPE vt, int lowerBound, uint cElems);
+		public static extern SafeSAFEARRAY SafeArrayCreateVector(VARTYPE vt, int lLbound, uint cElements);
 
 		/// <summary>
 		/// <para>Creates and returns a one-dimensional safe array of the specified VARTYPE and bounds.</para>
@@ -834,7 +834,7 @@ namespace Vanara.PInvoke
 		// *psa );
 		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("oleauto.h", MSDNShortId = "27bd4a3f-0e9d-45f7-ad7c-0c0b59579dd0")]
-		public static extern int SafeArrayGetElemsize(SafeSAFEARRAY pSafeArray);
+		public static extern int SafeArrayGetElemsize(SafeSAFEARRAY psa);
 
 		/// <summary>
 		/// <para>Gets the GUID of the interface contained within the specified safe array.</para>

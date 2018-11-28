@@ -842,27 +842,28 @@ namespace Vanara.PInvoke
 		/// <para>Identifies the format of the SPNs to compose. The ServiceType parameter can have one of the following values.</para>
 		/// <para>DS_SPN_DNS_HOST, DS_SPN_DN_HOST, DS_SPN_NB_HOST</para>
 		/// <para>The SPNs have the following format.</para>
-		/// </param>
-		/// <param name="ServiceClass/ InstanceName: InstancePort&#xA;">
-		/// <para>
-		/// The ServiceName parameter must be <c>NULL</c>. This is the SPN format for a host-based service, which provides services
-		/// identified with its host computer. The InstancePort component is optional.
-		/// </para>
+		/// <para>The</para>
+		/// <para>ServiceName</para>
+		/// <para>parameter must be</para>
+		/// <para>NULL</para>
+		/// <para>. This is the SPN format for a host-based service, which provides services identified with its host computer. The</para>
+		/// <para>InstancePort</para>
+		/// <para>component is optional.</para>
 		/// <para>DS_SPN_DOMAIN, DS_SPN_NB_DOMAIN</para>
 		/// <para>The SPNs have the following format.</para>
-		/// </param>
-		/// <param name="ServiceClass/ InstanceName: InstancePort/ ServiceName&#xA;">
+		/// <para>The</para>
+		/// <para>ServiceName</para>
 		/// <para>
-		/// The ServiceName parameter must be the DNS name or DN of a domain. This format is used for a replicable service that provides
-		/// services to the specified domain.
+		/// parameter must be the DNS name or DN of a domain. This format is used for a replicable service that provides services to the
+		/// specified domain.
 		/// </para>
 		/// <para>DS_SPN_SERVICE</para>
 		/// <para>The SPNs have the following format.</para>
-		/// </param>
-		/// <param name="ServiceClass/ InstanceName: InstancePort/ ServiceName&#xA;">
+		/// <para>The</para>
+		/// <para>ServiceName</para>
 		/// <para>
-		/// The ServiceName parameter must be a canonical DN or DNS name that identifies an instance of the service. For example, it could be
-		/// a DNS name of a SRV record, or the distinguished name of the service connection point for this service instance.
+		/// parameter must be a canonical DN or DNS name that identifies an instance of the service. For example, it could be a DNS name of a
+		/// SRV record, or the distinguished name of the service connection point for this service instance.
 		/// </para>
 		/// </param>
 		/// <param name="ServiceClass">
@@ -941,9 +942,8 @@ namespace Vanara.PInvoke
 		/// to authenticate the service.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/nf-ntdsapi-dsgetspna NTDSAPI DWORD DsGetSpnA( DS_SPN_NAME_TYPE
-		// ServiceType, LPCSTR ServiceClass, LPCSTR ServiceName, USHORT InstancePort, USHORT cInstanceNames, LPCSTR *pInstanceNames, const
-		// USHORT *pInstancePorts, DWORD *pcSpn, LPSTR **prpszSpn );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ntdsapi/nf-ntdsapi-dsgetspna
+		// NTDSAPI DWORD DsGetSpnA( DS_SPN_NAME_TYPE ServiceType, LPCSTR ServiceClass, LPCSTR ServiceName, USHORT InstancePort, USHORT cInstanceNames, LPCSTR *pInstanceNames, const USHORT *pInstancePorts, DWORD *pcSpn, LPSTR **prpszSpn );
 		[DllImport(Lib.NTDSApi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("ntdsapi.h", MSDNShortId = "cbd53850-9b05-4f74-ab07-30dcad583fc5")]
 		public static extern Win32Error DsGetSpn(DS_SPN_NAME_TYPE ServiceType, string ServiceClass, string ServiceName, ushort InstancePort, ushort cInstanceNames,

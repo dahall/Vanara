@@ -7634,14 +7634,14 @@ namespace Vanara.PInvoke
 		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created PowerRequestObject instance at disposal using CloseHandle.</summary>
 		public class SafePowerRequestObject : SafeKernelHandle
 		{
-			/// <summary>Initializes a new instance of the <see cref="PowerRequestObject"/> class and assigns an existing handle.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafePowerRequestObject"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle">
 			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
 			/// </param>
 			public SafePowerRequestObject(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			/// <summary>Initializes a new instance of the <see cref="PowerRequestObject"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafePowerRequestObject"/> class.</summary>
 			private SafePowerRequestObject() : base() { }
 		}
 
@@ -7650,14 +7650,14 @@ namespace Vanara.PInvoke
 		/// </summary>
 		public class SafePUMS_COMPLETION_LIST : HANDLE
 		{
-			/// <summary>Initializes a new instance of the <see cref="UmsCompletionList"/> class and assigns an existing handle.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafePUMS_COMPLETION_LIST"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle">
 			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
 			/// </param>
 			public SafePUMS_COMPLETION_LIST(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			/// <summary>Initializes a new instance of the <see cref="UmsCompletionList"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafePUMS_COMPLETION_LIST"/> class.</summary>
 			private SafePUMS_COMPLETION_LIST() : base() { }
 
 			/// <inheritdoc/>
@@ -7669,14 +7669,14 @@ namespace Vanara.PInvoke
 		/// </summary>
 		public class SafePUMS_CONTEXT : HANDLE
 		{
-			/// <summary>Initializes a new instance of the <see cref="UmsThreadContext"/> class and assigns an existing handle.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafePUMS_CONTEXT"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle">
 			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
 			/// </param>
 			public SafePUMS_CONTEXT(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			/// <summary>Initializes a new instance of the <see cref="UmsThreadContext"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafePUMS_CONTEXT"/> class.</summary>
 			private SafePUMS_CONTEXT() : base() { }
 
 			/// <inheritdoc/>

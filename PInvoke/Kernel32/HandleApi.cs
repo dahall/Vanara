@@ -101,8 +101,8 @@ namespace Vanara.PInvoke
 		/// handle to a process or thread, respectively.
 		/// </para>
 		/// </returns>
-		public static IntPtr Duplicate(this IKernelHandle sourceHandle, bool bInheritHandle = true, DUPLICATE_HANDLE_OPTIONS dwOptions = DUPLICATE_HANDLE_OPTIONS.DUPLICATE_SAME_ACCESS, uint dwDesiredAccess = 0) =>
-			DuplicateHandle(GetCurrentProcess(), sourceHandle.DangerousGetHandle(), GetCurrentProcess(), out var h, dwDesiredAccess, bInheritHandle, dwOptions) ? h : IntPtr.Zero;
+		public static IntPtr Duplicate(this IKernelHandle hSourceHandle, bool bInheritHandle = true, DUPLICATE_HANDLE_OPTIONS dwOptions = DUPLICATE_HANDLE_OPTIONS.DUPLICATE_SAME_ACCESS, uint dwDesiredAccess = 0) =>
+			DuplicateHandle(GetCurrentProcess(), hSourceHandle.DangerousGetHandle(), GetCurrentProcess(), out var h, dwDesiredAccess, bInheritHandle, dwOptions) ? h : IntPtr.Zero;
 
 		/// <summary>Duplicates an object handle.</summary>
 		/// <param name="hSourceProcessHandle">

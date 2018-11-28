@@ -27,7 +27,8 @@ namespace Vanara.Network
 			/// <summary>Gets the length of the list.</summary>
 			int Length { get; }
 
-			/// <summary>Gets the <see cref="T"/> with the specified identifier.</summary>
+			/// <summary>Gets the with the specified identifier.</summary>
+			/// <value>The found item type.</value>
 			/// <param name="id">The identifier.</param>
 			/// <returns>The item found by the identifier.</returns>
 			T this[TLookup id] { get; }

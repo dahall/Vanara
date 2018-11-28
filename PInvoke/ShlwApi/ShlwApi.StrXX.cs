@@ -998,7 +998,7 @@ namespace Vanara.PInvoke
 		// pszBuf, UINT cchBuf );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "244f93cb-0976-4a31-958c-ae0ed81c1dcf")]
-		public static extern StrPtrUni StrFormatByteSizeW(long qdw, StringBuilder pszBuf, uint cchBuf);
+		public static extern StrPtrUni StrFormatByteSizeW(long dw, StringBuilder pszBuf, uint cchBuf);
 
 		/// <summary>
 		/// <para>Converts a numeric value into a string that represents the number expressed as a size value in kilobytes.</para>
@@ -1523,8 +1523,6 @@ namespace Vanara.PInvoke
 		/// A pointer to the null-terminated string to be converted. A valid string representing a decimal value contains only the characters
 		/// 0-9 and must have the following form to be parsed successfully.
 		/// </para>
-		/// </param>
-		/// <param name="(optional white space)(optional sign)(one or more decimal digits)">
 		/// <para>The optional sign can be the character '-' or '+'; if omitted, the sign is assumed to be positive.</para>
 		/// </param>
 		/// <returns>

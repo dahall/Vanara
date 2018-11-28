@@ -863,13 +863,13 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
 		[System.Security.SecurityCritical]
-		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, [In, Out] ref LVITEMINDEX wParam, int lParam);
+		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage Msg, [In, Out] ref LVITEMINDEX wParam, int lParam);
 
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, ref LVTILEVIEWINFO tileViewInfo);
+		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage Msg, int wParam, ref LVTILEVIEWINFO tileViewInfo);
 
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, ListViewImageList wParam, [In, Out] HIMAGELIST hImageList);
+		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage Msg, ListViewImageList wParam, [In, Out] HIMAGELIST hImageList);
 
 		/// <summary>
 		/// Contains information used when searching for a list-view item. This structure is identical to LV_FINDINFO but has been renamed to

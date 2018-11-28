@@ -81,7 +81,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="Msg">The message to be sent.</param>
 		/// <param name="wParam">Additional message-specific information.</param>
-		/// <param name="splitInfo">Additional message-specific information.</param>
+		/// <param name="progressRange">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		public static extern IntPtr SendMessage(HWND hWnd, ProgressMessage Msg, bool wParam, ref PBRANGE progressRange);

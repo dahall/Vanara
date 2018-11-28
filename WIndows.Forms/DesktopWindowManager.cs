@@ -290,8 +290,6 @@ namespace Vanara.Windows.Forms
 
 		/// <summary>Gets the live client thumbnail.</summary>
 		/// <param name="window">The window.</param>
-		/// <param name="visible">if set to <c>true</c> [visible].</param>
-		/// <param name="destinationRect"></param>
 		/// <returns></returns>
 		public static LiveThumbnail GetLiveClientThumbnail(this IWin32Window window) => new LiveThumbnail(window);
 

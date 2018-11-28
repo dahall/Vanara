@@ -2749,7 +2749,7 @@ namespace Vanara.PInvoke
 		[DefaultProperty(nameof(table))]
 		public class MIB_IFTABLE : SafeElementArray<MIB_IFROW, uint, CoTaskMemoryMethods>
 		{
-			/// <summary>Initializes a new instance of the <see cref="_MIB_IFTABLE"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="MIB_IFTABLE"/> class.</summary>
 			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
 			public MIB_IFTABLE(uint byteSize) : base((int)byteSize, 0)
 			{
@@ -2803,7 +2803,7 @@ namespace Vanara.PInvoke
 		[DefaultProperty(nameof(table))]
 		public class MIB_IPADDRTABLE : SafeElementArray<MIB_IPADDRROW, uint, CoTaskMemoryMethods>
 		{
-			/// <summary>Initializes a new instance of the <see cref="_MIB_IPADDRTABLE"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="MIB_IPADDRTABLE"/> class.</summary>
 			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
 			public MIB_IPADDRTABLE(uint byteSize) : base((int)byteSize, 0)
 			{
@@ -2959,7 +2959,7 @@ namespace Vanara.PInvoke
 		[DefaultProperty(nameof(table))]
 		public class MIB_TCP6TABLE_OWNER_PID : SafeElementArray<MIB_TCP6ROW_OWNER_PID, uint, CoTaskMemoryMethods>
 		{
-			/// <summary>Initializes a new instance of the <see cref="_MIB_TCP6TABLE_OWNER_PID"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="MIB_TCP6TABLE_OWNER_PID"/> class.</summary>
 			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
 			public MIB_TCP6TABLE_OWNER_PID(uint byteSize) : base((int)byteSize, 0)
 			{
@@ -3013,7 +3013,7 @@ namespace Vanara.PInvoke
 		[DefaultProperty(nameof(table))]
 		public class MIB_TCPTABLE : SafeElementArray<MIB_TCPROW, uint, CoTaskMemoryMethods>
 		{
-			/// <summary>Initializes a new instance of the <see cref="_MIB_TCPTABLE"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="MIB_TCPTABLE"/> class.</summary>
 			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
 			public MIB_TCPTABLE(uint byteSize) : base((int)byteSize, 0)
 			{

@@ -357,7 +357,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Represents a block of environment strings obtained by <see cref="GetEnvironmentStrings"/> and freed by <see cref="FreeEnvironmentStrings"/>.</summary>
 		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
-		/// <seealso cref="System.Collections.Generic.IEnumerable{string}"/>
+		/// <seealso cref="System.Collections.Generic.IEnumerable{T}"/>
 		public sealed class EnvironmentStrings : GenericSafeHandle, IEnumerable<string>
 		{
 			/// <summary>Initializes a new instance of the <see cref="EnvironmentStrings"/> class.</summary>

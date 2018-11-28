@@ -138,9 +138,11 @@ namespace Vanara.PInvoke
 			/// </summary>
 			URL_UNESCAPE = 0x10000000,
 
-			/// <summary> Replace unsafe characters with their escape sequences. Unsafe characters are those characters that may be altered
-			/// during transport across the Internet, and include the (<, >, ", #, {, }, |, , ^, [, ], and ') characters. This flag applies
-			/// to all URLs, including opaque URLs. </summary>
+			/// <summary>
+			/// Replace unsafe characters with their escape sequences. Unsafe characters are those characters that may be altered
+			/// during transport across the Internet, and include the (&lt;, &gt;, ", #, {, }, |, , ^, [, ], and ') characters. This flag applies
+			/// to all URLs, including opaque URLs.
+			/// </summary>
 			URL_ESCAPE_UNSAFE = 0x20000000,
 
 			/// <summary>

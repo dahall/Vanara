@@ -2007,12 +2007,12 @@ namespace Vanara.PInvoke
 		/// <summary>Provides a <see cref="SafeHandle"/> to a resource manager that releases its handle at disposal using NTClose.</summary>
 		public class SafeResourceManagerHandle : SafeNtHandle
 		{
-			/// <summary>Initializes a new instance of the <see cref="ResourceManagerHandle"/> class and assigns an existing handle.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeResourceManagerHandle"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
 			public SafeResourceManagerHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			/// <summary>Initializes a new instance of the <see cref="ResourceManagerHandle"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeResourceManagerHandle"/> class.</summary>
 			private SafeResourceManagerHandle() : base() { }
 		}
 
@@ -2818,6 +2818,7 @@ namespace Vanara.PInvoke
 		/// <param name="SystemInformationLength">
 		/// <para>The size of the buffer pointed to by the SystemInformationparameter, in bytes.</para>
 		/// </param>
+		/// <param name="ReturnLength"/>
 		/// <returns>
 		/// <para>Returns an NTSTATUS success or error code.</para>
 		/// <para>
@@ -4136,12 +4137,12 @@ namespace Vanara.PInvoke
 		/// <summary>Provides a <see cref="SafeHandle"/> to an object that releases a created handle at disposal using NtClose.</summary>
 		public abstract class SafeNtHandle : HANDLE
 		{
-			/// <summary>Initializes a new instance of the <see cref="NtHandle"/> class and assigns an existing handle.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeNtHandle"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
 			public SafeNtHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			/// <summary>Initializes a new instance of the <see cref="NtHandle"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeNtHandle"/> class.</summary>
 			protected SafeNtHandle() : base() { }
 
 #pragma warning disable CS0612 // Type or member is obsolete

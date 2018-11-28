@@ -2970,7 +2970,7 @@ namespace Vanara.PInvoke
 		/// <summary>Provides a <see cref="SafeHandle"/> to a  memory resource notification object that releases its instance at disposal using CloseHandle.</summary>
 		public class SafeMemoryResourceNotification : SafeSyncHandle
 		{
-			/// <summary>Initializes a new instance of the <see cref="MemoryResourceNotification"/> class and assigns an existing handle.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeMemoryResourceNotification"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
 			public SafeMemoryResourceNotification(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }

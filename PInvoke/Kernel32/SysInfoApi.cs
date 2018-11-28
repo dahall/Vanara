@@ -622,7 +622,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724295")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetComputerName(StringBuilder lpBuffer, ref uint nSize);
+		public static extern bool GetComputerName(StringBuilder lpBuffer, ref uint lpnSize);
 
 		public static bool GetComputerName(out string name) => CallMethodWithStrBuf((StringBuilder sb, ref uint sz) => GetComputerName(sb, ref sz), out name);
 
@@ -1772,7 +1772,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724451")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetVersionEx(out OSVERSIONINFOEX lpVersionInformation);
+		public static extern bool GetVersionEx(out OSVERSIONINFOEX lpVersionInfo);
 
 		/// <summary>
 		/// <para>Retrieves the path of the Windows directory.</para>
@@ -2155,7 +2155,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "ms725492")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool VerifyVersionInfo(ref OSVERSIONINFOEX lpVersionInformation, VERSION_MASK dwTypeMask, ulong dwlConditionMask);
+		public static extern bool VerifyVersionInfo(ref OSVERSIONINFOEX lpVersionInfo, VERSION_MASK dwTypeMask, ulong dwlConditionMask);
 
 		/// <summary>
 		/// Sets the bits of a 64-bit value to indicate the comparison operator to use for a specified operating system version attribute.

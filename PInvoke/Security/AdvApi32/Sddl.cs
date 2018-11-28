@@ -35,7 +35,6 @@ namespace Vanara.PInvoke
 		/// the output string.
 		/// </para>
 		/// </param>
-		/// <param name="&#x9;&#x9;&#x9;&#x9;The BACKUP_SECURITY_INFORMATION &#x9;flag is not applicable to this function. If the BACKUP_SECURITY_INFORMATION &#x9;flag is passed in, the &amp;lt;i&amp;gt;SecurityInformation&amp;lt;/i&amp;gt; parameter returns TRUE with &amp;lt;b&amp;gt;null&amp;lt;/b&amp;gt; string output.&#xA;"/>
 		/// <param name="StringSecurityDescriptor">
 		/// <para>
 		/// A pointer to a variable that receives a pointer to a <c>null</c>-terminated security descriptor string. For a description of the

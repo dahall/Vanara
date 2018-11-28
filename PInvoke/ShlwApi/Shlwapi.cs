@@ -347,9 +347,11 @@ namespace Vanara.PInvoke
 			/// <summary>The program is running as a Terminal Server client. Equivalent to GetSystemMetrics(SM_REMOTESESSION).</summary>
 			OS_TERMINALCLIENT = 14,
 
-			/// <summary>The program is running on Windows 2000 Terminal Server in the Remote Administration mode or Windows Server 2003 (or
+			/// <summary>
+			/// The program is running on Windows 2000 Terminal Server in the Remote Administration mode or Windows Server 2003 (or
 			/// one of its successors) in the Remote Desktop for Administration mode (these are the default installation modes). This is
-			/// equivalent to VER_SUITE_TERMINAL && VER_SUITE_SINGLEUSERTS.</summary>
+			/// equivalent to VER_SUITE_TERMINAL &amp;&amp; VER_SUITE_SINGLEUSERTS.
+			/// </summary>
 			OS_TERMINALREMOTEADMIN = 15,
 
 			/// <summary>Always returns FALSE.</summary>
@@ -365,15 +367,15 @@ namespace Vanara.PInvoke
 			OS_HOME = 19,
 
 			/// <summary>The program is running on Windows NT Workstation or Windows 2000 (or one of its successors) Professional. Equivalent
-			/// to VER_PLATFORM_WIN32_NT && VER_NT_WORKSTATION.</summary>
+			/// to VER_PLATFORM_WIN32_NT  &amp;&amp; VER_NT_WORKSTATION.</summary>
 			OS_PROFESSIONAL = 20,
 
 			/// <summary>The program is running on Windows Datacenter Server or Windows Server Datacenter Edition, any version. Equivalent to
-			/// (VER_NT_SERVER || VER_NT_DOMAIN_CONTROLLER) && VER_SUITE_DATACENTER.</summary>
+			/// (VER_NT_SERVER || VER_NT_DOMAIN_CONTROLLER)  &amp;&amp; VER_SUITE_DATACENTER.</summary>
 			OS_DATACENTER = 21,
 
 			/// <summary>The program is running on Windows Advanced Server or Windows Server Enterprise Edition, any version. Equivalent to
-			/// (VER_NT_SERVER || VER_NT_DOMAIN_CONTROLLER) && VER_SUITE_ENTERPRISE && !VER_SUITE_DATACENTER.</summary>
+			/// (VER_NT_SERVER || VER_NT_DOMAIN_CONTROLLER)  &amp;&amp; VER_SUITE_ENTERPRISE  &amp;&amp; !VER_SUITE_DATACENTER.</summary>
 			OS_ADVSERVER = 22,
 
 			/// <summary>
@@ -383,11 +385,11 @@ namespace Vanara.PInvoke
 			OS_SERVER = 23,
 
 			/// <summary>The program is running on Windows 2000 Terminal Server in Application Server mode, or on Windows Server 2003 (or one
-			/// of its successors) in Terminal Server mode. This is equivalent to VER_SUITE_TERMINAL && VER_SUITE_SINGLEUSERTS.</summary>
+			/// of its successors) in Terminal Server mode. This is equivalent to VER_SUITE_TERMINAL &amp;&amp; VER_SUITE_SINGLEUSERTS.</summary>
 			OS_TERMINALSERVER = 24,
 
 			/// <summary>The program is running on Windows XP (or one of its successors), Home Edition or Professional. This is equivalent to
-			/// VER_SUITE_SINGLEUSERTS && !VER_SUITE_TERMINAL.</summary>
+			/// VER_SUITE_SINGLEUSERTS  &amp;&amp; !VER_SUITE_TERMINAL.</summary>
 			OS_PERSONALTERMINALSERVER = 25,
 
 			/// <summary>Fast user switching is enabled.</summary>

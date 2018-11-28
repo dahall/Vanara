@@ -98,12 +98,12 @@ namespace Vanara.PInvoke
 		public static Pen ToPen(this SafeHPEN hpen) => ((HPEN)hpen).ToPen();
 
 		/// <summary>Creates a <see cref="Region"/> from an <see cref="HRGN"/>.</summary>
-		/// <param name="hpen">The HRGN value.</param>
+		/// <param name="hrgn">The HRGN value.</param>
 		/// <returns>The Region instance.</returns>
 		public static Region ToRegion(this in HRGN hrgn) => hrgn.IsNull ? null : Region.FromHrgn((IntPtr)hrgn);
 
 		/// <summary>Creates a <see cref="Region"/> from an <see cref="HRGN"/>.</summary>
-		/// <param name="hpen">The HRGN value.</param>
+		/// <param name="hrgn">The HRGN value.</param>
 		/// <returns>The Region instance.</returns>
 		public static Region ToRegion(this SafeHRGN hrgn) => ((HRGN)hrgn).ToRegion();
 

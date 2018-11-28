@@ -715,7 +715,7 @@ namespace Vanara.PInvoke
 			TPM_WORKAREA = 0x10000,
 		}
 
-		/// <summary>Flags for <see cref="UpdateLayeredWindow"/></summary>
+		/// <summary>Flags for <see cref="UpdateLayeredWindow(HWND, HDC, in Point, in SIZE, HDC, in Point, COLORREF, in Gdi32.BLENDFUNCTION, UpdateLayeredWindowFlags)"/></summary>
 		[PInvokeData("winuser.h", MSDNShortId = "updatelayeredwindow")]
 		[Flags]
 		public enum UpdateLayeredWindowFlags
@@ -1622,7 +1622,7 @@ namespace Vanara.PInvoke
 		// hwnd, POINT pt, UINT flags );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "childwindowfrompointex")]
-		public static extern HWND ChildWindowFromPointEx(HWND hwndParent, Point pt, ChildWindowSkipOptions uFlags);
+		public static extern HWND ChildWindowFromPointEx(HWND hwnd, Point pt, ChildWindowSkipOptions flags);
 
 		/// <summary>
 		/// <para>Minimizes (but does not destroy) the specified window.</para>
@@ -2841,7 +2841,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getnextwindow void GetNextWindow( hWnd, wCmd );
 		[PInvokeData("winuser.h", MSDNShortId = "getnextwindow")]
-		public static void GetNextWindow(HWND hWnd, GetWindowCmd uCmd) => GetWindow(hWnd, uCmd);
+		public static void GetNextWindow(HWND hWnd, GetWindowCmd wCmd) => GetWindow(hWnd, wCmd);
 
 		/// <summary>
 		/// <para>Retrieves a handle to the specified window's parent or owner.</para>
@@ -3343,8 +3343,8 @@ namespace Vanara.PInvoke
 		/// <param name="pString">
 		/// <para>Type: <c>LPWSTR</c></para>
 		/// <para>The buffer that is to receive the text.</para>
+		/// <para>If the string is as long or longer than the buffer, the string is truncated and terminated with a null character.</para>
 		/// </param>
-		/// <param name="&#x9;&#x9;&#x9;If the&#xA;&#x9;&#x9;&#x9;string is as long or longer than the buffer, the string is truncated and&#xA;&#x9;&#x9;&#x9;terminated with a null character.&#xA;"/>
 		/// <param name="cchMaxCount">
 		/// <para>Type: <c>int</c></para>
 		/// <para>
@@ -3365,8 +3365,8 @@ namespace Vanara.PInvoke
 		/// 2003. If you do not have a header file and import library for this function, you can call the function using LoadLibrary and GetProcAddress.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-internalgetwindowtext int InternalGetWindowText( HWND
-		// hWnd, LPWSTR pString, int cchMaxCount );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-internalgetwindowtext
+		// int InternalGetWindowText( HWND hWnd, LPWSTR pString, int cchMaxCount );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "internalgetwindowtext")]
 		public static extern int InternalGetWindowText(HWND hWnd, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pString, int cchMaxCount);
@@ -4318,8 +4318,8 @@ namespace Vanara.PInvoke
 		/// The display affinity setting. This setting specifies where the window's contents are can be displayed. Set this value to
 		/// WDA_MONITOR to display the window's contents only on a monitor.
 		/// </para>
+		/// <para>Set this value to WDA_NONE to remove the monitor-only affinity.</para>
 		/// </param>
-		/// <param name="&#x9;&#x9;&#x9;Set this value to WDA_NONE to remove the monitor-only affinity.&#xA;"/>
 		/// <returns>
 		/// <para>Type: <c>Type: <c>BOOL</c></c></para>
 		/// <para>

@@ -432,7 +432,6 @@ namespace Vanara.Windows.Shell
 		public bool IsFolder => iShellItem.GetAttributes(SFGAO.SFGAO_FOLDER) != 0;
 
 		/// <summary>Gets the IShellItem instance of the current ShellItem.</summary>
-		/// <param name="i">A ShellItem instance.</param>
 		public IShellItem IShellItem => iShellItem;
 
 		/// <summary>Gets a value indicating whether this instance is link.</summary>

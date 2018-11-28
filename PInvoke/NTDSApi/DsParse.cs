@@ -39,7 +39,6 @@ namespace Vanara.PInvoke
 		/// components are optional. The &lt;port number&gt; component must be a numeric string value.
 		/// </para>
 		/// </param>
-		/// <param name="&amp;lt;service class&amp;gt;/&amp;lt;instance name&amp;gt;:&amp;lt;port number&amp;gt;/&amp;lt;service name&amp;gt;&#xA;"/>
 		/// <param name="pcServiceClass">
 		/// <para>
 		/// Pointer to a <c>DWORD</c> value that, on entry, contains the size, in <c>TCHARs</c>, of the ServiceClass buffer, including the
@@ -224,9 +223,10 @@ namespace Vanara.PInvoke
 		/// The <c>DsGetRdnW</c> function retrieves the key and value of the first relative distinguished name and a pointer to the next
 		/// relative distinguished name from a distinguished name string.
 		/// </summary>
-		/// <param name="ppDN">Address of a string that contains the distinguished name string to be parsed.</param>
-		/// <param name="ppKey">A string that, if the function succeeds, receives the key in the relative distinguished name string.</param>
-		/// <param name="ppVal">A string that, if the function is successful, receives the value in the relative distinguished name string.</param>
+		/// <param name="fullDN">Address of a string that contains the distinguished name string to be parsed.</param>
+		/// <param name="dn">A string that recieves the remainder of the distinguished name exclusive of current relative distinguished name.</param>
+		/// <param name="key">A string that, if the function succeeds, receives the key in the relative distinguished name string.</param>
+		/// <param name="val">A string that, if the function is successful, receives the value in the relative distinguished name string.</param>
 		/// <returns>Returns <c>ERROR_SUCCESS</c> if successful or a Win32 error code otherwise.</returns>
 		[PInvokeData("dsparse.h", MSDNShortId = "22627f2e-adfb-49de-bae5-20aaf69830ac")]
 		public static Win32Error DsGetRdnW(string fullDN, out string dn, out string key, out string val)

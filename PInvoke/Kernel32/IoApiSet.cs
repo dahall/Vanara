@@ -806,7 +806,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "aa364986")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern unsafe bool GetQueuedCompletionStatus([In] IntPtr CompletionPort, out uint lpNumberOfBytesTransferred, out uint lpCompletionKey, NativeOverlapped** lpOverlapped, uint dwMilliseconds);
+		public static extern unsafe bool GetQueuedCompletionStatus([In] IntPtr CompletionPort, out uint lpNumberOfBytes, out uint lpCompletionKey, NativeOverlapped** lpOverlapped, uint dwMilliseconds);
 
 		/// <summary>
 		/// <para>

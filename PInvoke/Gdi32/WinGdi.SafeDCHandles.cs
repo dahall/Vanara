@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
 {
@@ -43,7 +44,7 @@ namespace Vanara.PInvoke
 			}
 
 			/// <summary>Initializes a new instance of the <see cref="GdiObjectContext"/> class.</summary>
-			/// <param name="hdc">The device context into which <paramref name="hObj"/> is selected.</param>
+			/// <param name="dc">The device context into which <paramref name="hObj"/> is selected.</param>
 			/// <param name="hObj">The graphics object to select.</param>
 			/// <exception cref="ArgumentNullException">dc - Device context cannot be null.</exception>
 			public GdiObjectContext(IDeviceContext dc, HGDIOBJ hObj) : this(new SafeHDC(dc ?? throw new ArgumentNullException(nameof(dc), "Device context cannot be null.")), hObj) { }
@@ -53,7 +54,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Provides a <see cref="SafeHandle"/> to a graphics bitmap object that releases a created HBITMAP instance at disposal using DeleteObject.
+		/// Provides a <see cref="System.Runtime.InteropServices.SafeHandle"/> to a graphics bitmap object that releases a created HBITMAP instance at disposal using DeleteObject.
 		/// </summary>
 		public class SafeHBITMAP : HANDLE
 		{

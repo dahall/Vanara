@@ -1149,7 +1149,6 @@ namespace Vanara.PInvoke
 			/// Allocates from unmanaged memory to represent an array of pointers and marshals the unmanaged pointers (IntPtr) to the native
 			/// array equivalent.
 			/// </summary>
-			/// <param name="hHeap">A handle to a heap created using <see cref="HeapCreate"/> or <see cref="GetProcessHeap"/>.</param>
 			/// <param name="bytes">Array of unmanaged pointers</param>
 			/// <returns>SafeHGlobalHandle object to an native (unmanaged) array of pointers</returns>
 			public SafeHeapBlock(byte[] bytes) : base(bytes) { }

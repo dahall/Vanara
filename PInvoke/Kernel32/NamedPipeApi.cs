@@ -58,7 +58,7 @@ namespace Vanara.PInvoke
 			PIPE_NOWAIT = 0x00000001,
 			/// <summary>Data is read from the pipe as a stream of bytes. This mode can be used with either PIPE_TYPE_MESSAGE or PIPE_TYPE_BYTE.</summary>
 			PIPE_READMODE_BYTE = 0x00000000,
-			/// <summary>Data is read from the pipe as a stream of messages. This mode can be only used if PIPE_TYPE_MESSAGE is also specified./summary>
+			/// <summary>Data is read from the pipe as a stream of messages. This mode can be only used if PIPE_TYPE_MESSAGE is also specified.</summary>
 			PIPE_READMODE_MESSAGE = 0x00000002,
 			/// <summary>
 			/// Data is written to the pipe as a stream of bytes. This mode cannot be used with PIPE_READMODE_MESSAGE. The pipe does not distinguish bytes

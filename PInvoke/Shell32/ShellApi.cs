@@ -253,16 +253,22 @@ namespace Vanara.PInvoke
 			/// </summary>
 			NIIF_LARGE_ICON = 0x00000020,
 
-			/// <summary> Windows 7 and later. Do not display the balloon notification if the current user is in "quiet time", which is the
-			/// first hour after a new user logs into his or her account for the first time. During this time, most notifications should not
-			/// be sent or shown. This lets a user become accustomed to a new computer system without those distractions. Quiet time also
-			/// occurs for each user after an operating system upgrade or clean installation. A notification sent with this flag during quiet
-			/// time is not queued; it is simply dismissed unshown. The application can resend the notification later if it is still valid at
-			/// that time. <paraBecause an application cannot predict when it might encounter quiet time, we recommended that this flag
-			/// always be set on all appropriate notifications by any application that means to honor quiet time.></para> <para>During quiet
-			/// time, certain notifications should still be sent because they are expected by the user as feedback in response to a user
-			/// action, for instance when he or she plugs in a USB device or prints a document.</para> <para>If the current user is not in
-			/// quiet time, this flag has no effect.</para> </summary>
+			/// <summary>
+			/// Windows 7 and later. Do not display the balloon notification if the current user is in "quiet time", which is the first hour
+			/// after a new user logs into his or her account for the first time. During this time, most notifications should not be sent or
+			/// shown. This lets a user become accustomed to a new computer system without those distractions. Quiet time also occurs for
+			/// each user after an operating system upgrade or clean installation. A notification sent with this flag during quiet time is
+			/// not queued; it is simply dismissed unshown. The application can resend the notification later if it is still valid at that time.
+			/// <para>
+			/// Because an application cannot predict when it might encounter quiet time, we recommended that this flag always be set on all
+			/// appropriate notifications by any application that means to honor quiet time.&gt;
+			/// </para>
+			/// <para>
+			/// During quiet time, certain notifications should still be sent because they are expected by the user as feedback in response
+			/// to a user action, for instance when he or she plugs in a USB device or prints a document.
+			/// </para>
+			/// <para>If the current user is not in quiet time, this flag has no effect.</para>
+			/// </summary>
 			NIIF_RESPECT_QUIET_TIME = 0x00000080
 		}
 
@@ -3443,7 +3449,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Adds an icon to a balloon ToolTip. It is placed to the left of the title. If the szTitleInfo member is zero-length, the icon
-			/// is not shown. See <see cref="BalloonIconStyle">RMUtils.WinAPI.Structs.BalloonIconStyle</see> for more information.
+			/// is not shown.
 			/// </summary>
 			public NIIF dwInfoFlags;
 

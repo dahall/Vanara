@@ -1828,7 +1828,7 @@ namespace Vanara.PInvoke
 
 	/// <summary>Base class for all native handles.</summary>
 	/// <seealso cref="Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid"/>
-	/// <seealso cref="System.IEquatable{Vanara.PInvoke.HANDLE}"/>
+	/// <seealso cref="System.IEquatable{T}"/>
 	/// <seealso cref="Vanara.PInvoke.IHandle"/>
 	public class HANDLE : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<HANDLE>, IHandle
 	{
@@ -1842,7 +1842,7 @@ namespace Vanara.PInvoke
 		/// <param name="ownsHandle">
 		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
 		/// </param>
-		protected HANDLE(IntPtr ptr, bool ownsHandle = true) : base(ownsHandle) => SetHandle(ptr);
+		protected HANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(ownsHandle) => SetHandle(preexistingHandle);
 
 		/// <summary>Gets a value indicating whether this instance is null.</summary>
 		/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>

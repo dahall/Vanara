@@ -7,7 +7,7 @@ using static Vanara.PInvoke.BITS;
 namespace Vanara.IO
 {
 	/// <summary>Represents a single BITS job credential.</summary>
-	/// <seealso cref="System.IComparable{Vanara.IO.BackgroundCopyJobCredential}"/>
+	/// <seealso cref="System.IComparable{T}"/>
 	public class BackgroundCopyJobCredential : IComparable<BackgroundCopyJobCredential>
 	{
 		/// <summary>Initializes a new instance of the <see cref="BackgroundCopyJobCredential"/> class.</summary>
@@ -54,7 +54,7 @@ namespace Vanara.IO
 
 	/// <summary>The list of credentials for a job.</summary>
 	/// <seealso cref="System.IDisposable"/>
-	/// <seealso cref="System.Collections.Generic.ICollection{Vanara.IO.BackgroundCopyJobCredential}"/>
+	/// <seealso cref="System.Collections.Generic.ICollection{T}"/>
 	public class BackgroundCopyJobCredentials : IDisposable, ICollection<BackgroundCopyJobCredential>
 	{
 		private Dictionary<uint, BackgroundCopyJobCredential> dict;

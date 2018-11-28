@@ -167,7 +167,7 @@ namespace Vanara.PInvoke
 			GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS = 0x00000004,
 		}
 
-		/// <summary>Flags that may be passed to the <see cref="LoadLibraryEx"/> function.</summary>
+		/// <summary>Flags that may be passed to the <see cref="LoadLibraryEx(string, IntPtr, LoadLibraryExFlags)"/> function.</summary>
 		[PInvokeData("libloaderapi.h")]
 		[Flags]
 		public enum LoadLibraryExFlags

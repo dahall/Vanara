@@ -249,7 +249,7 @@ namespace Vanara.PInvoke
 		/// A pointer to a <c>SYSTEMTIME</c> structure that specifies the UTC time to be converted. The function converts this universal time to the specified
 		/// time zone's corresponding local time.
 		/// </param>
-		/// <param name="lpUniversalTime">A pointer to a <c>SYSTEMTIME</c> structure that receives the local time.</param>
+		/// <param name="lpLocalTime">A pointer to a <c>SYSTEMTIME</c> structure that receives the local time.</param>
 		/// <returns>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</returns>
 		// BOOL WINAPI SystemTimeToTzSpecificLocalTimeEx( _In_opt_ const DYNAMIC_TIME_ZONE_INFORMATION* lpTimeZoneInformation, _In_ const SYSTEMTIME*
 		// lpUniversalTime, _Out_ LPSYSTEMTIME lpLocalTime ); https://msdn.microsoft.com/en-us/library/windows/desktop/jj206642(v=vs.85).aspx

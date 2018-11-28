@@ -99,7 +99,7 @@ namespace Vanara.PInvoke
 			HRESULT GetLocation([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPathBuffer, uint cchMax, [Optional] IntPtr pdwPriority, ref SIZE prgSize, uint dwRecClrDepth, ref IEIFLAG pdwFlags);
 
 			/// <summary>Requests an image from an object, such as an item in a Shell folder.</summary>
-			/// <param name="phBmpImage">The HBITMAP of the image.</param>
+			/// <returns>The HBITMAP of the image.</returns>
 			HBITMAP Extract();
 		}
 	}

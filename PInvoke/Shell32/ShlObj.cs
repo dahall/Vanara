@@ -197,13 +197,13 @@ namespace Vanara.PInvoke
 		[Flags]
 		public enum GPFIDL_FLAGS
 		{
-			/// <summary>Win32 file names, servers, and root drives are included.</para>
+			/// <summary>Win32 file names, servers, and root drives are included.</summary>
 			GPFIDL_DEFAULT = 0x0000,
 
-			/// <summary>Uses short file names.</para>
+			/// <summary>Uses short file names.</summary>
 			GPFIDL_ALTNAME = 0x0001,
 
-			/// <summary>Include UNC printer names items.</para>
+			/// <summary>Include UNC printer names items.</summary>
 			GPFIDL_UNCPRINTER = 0x0002,
 		}
 
@@ -6426,8 +6426,8 @@ namespace Vanara.PInvoke
 			/// <summary> The count of items in member aKeys. This value can be zero. If the value is zero, the extensions are loaded based
 			/// on the object that supports interface IQueryAssociations as specified by member punkAssociationInfo. If the value is
 			/// non-NULL, the extensions are loaded based only on member aKeys and not member punkAssociationInfo.
-			// Note The maximum number of keys is 16. Callers must enforce this limit as the API does not. Failing to do so can result in
-			// memory corruption.
+			/// <note>Note The maximum number of keys is 16. Callers must enforce this limit as the API does not. Failing to do so can result in
+			/// memory corruption.</note>
 			/// </summary>
 			public uint cKeys;
 

@@ -280,7 +280,7 @@ namespace Vanara.PInvoke
 		// HANDLE CreateActCtx( _Inout_ PACTCTX pActCtx); https://msdn.microsoft.com/en-us/library/windows/desktop/aa375125(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa375125")]
-		public static extern SafeHACTCTX CreateActCtx(in ACTCTX actctx);
+		public static extern SafeHACTCTX CreateActCtx(in ACTCTX pActCtx);
 
 		/// <summary>The <c>DeactivateActCtx</c> function deactivates the activation context corresponding to the specified cookie.</summary>
 		/// <param name="dwFlags">
@@ -513,7 +513,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa375152")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetCurrentActCtx(out HACTCTX handle);
+		public static extern bool GetCurrentActCtx(out HACTCTX lphActCtx);
 
 		/// <summary>
 		/// The <c>QueryActCtxSettingsW</c> function specifies the activation context, and the namespace and name of the attribute that is to be queried.

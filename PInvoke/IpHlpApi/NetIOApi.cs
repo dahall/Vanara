@@ -2714,7 +2714,7 @@ namespace Vanara.PInvoke
 		// PMIB_IF_TABLE2 *Table );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "0153c41c-b02b-4832-87b3-88dc3a9f4ff1")]
-		public static extern Win32Error GetIfTable2(out MIB_IF_TABLE2 pIfTable);
+		public static extern Win32Error GetIfTable2(out MIB_IF_TABLE2 Table);
 
 		/// <summary>
 		/// <para>The <c>GetIfTable2Ex</c> function retrieves the MIB-II interface table.</para>
@@ -2811,7 +2811,7 @@ namespace Vanara.PInvoke
 		// GetIfTable2Ex( MIB_IF_TABLE_LEVEL Level, PMIB_IF_TABLE2 *Table );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("netioapi.h", MSDNShortId = "d8663894-50b1-4ca2-a1f4-6ca0970795a7")]
-		public static extern Win32Error GetIfTable2Ex(MIB_IF_TABLE_LEVEL Level, out MIB_IF_TABLE2 pIfTable);
+		public static extern Win32Error GetIfTable2Ex(MIB_IF_TABLE_LEVEL Level, out MIB_IF_TABLE2 Table);
 
 		/// <summary>
 		/// <para>

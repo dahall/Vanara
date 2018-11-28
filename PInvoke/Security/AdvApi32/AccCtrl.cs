@@ -139,8 +139,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>
 			/// Indicates an access right that applies only to containers. If this flag is set, the access right is displayed on the basic
-			/// security page only if the <see cref="ISecurityInformation.GetObjectInformation(ref SI_OBJECT_INFO)"/> specifies the
-			/// SI_CONTAINER flag.
+			/// security page only if the SI_CONTAINER flag is also set.
 			/// </summary>
 			SI_ACCESS_CONTAINER = 0x00040000,
 

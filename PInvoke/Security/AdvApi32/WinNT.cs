@@ -22,7 +22,7 @@ namespace Vanara.PInvoke
 			ACE_INHERITED_OBJECT_TYPE_PRESENT = 0x2
 		}
 
-		/// <summary>Used by the <see cref="GetAclInformation(IntPtr,ref ACL_REVISION_INFORMATION,uint,ACL_INFORMATION_CLASS)"/> function.</summary>
+		/// <summary>Used by the <see cref="GetAclInformation(PACL, ref ACL_SIZE_INFORMATION, uint, ACL_INFORMATION_CLASS)"/> function.</summary>
 		[PInvokeData("winnt.h")]
 		public enum ACL_INFORMATION_CLASS : uint
 		{

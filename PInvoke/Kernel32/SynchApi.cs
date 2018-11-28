@@ -171,7 +171,7 @@ namespace Vanara.PInvoke
 			SYNCHRONIZATION_BARRIER_FLAGS_NO_DELETE = 0x04,
 		}
 
-		/// <summary>Values returned by <see cref="SignalObjectAndWait"/>.</summary>
+		/// <summary>Values returned by <see cref="SignalObjectAndWait(IntPtr, IntPtr, uint, bool)"/>.</summary>
 		public enum WAIT_STATUS : uint
 		{
 			/// <summary>
@@ -2245,7 +2245,7 @@ namespace Vanara.PInvoke
 
 			private static readonly SafeEventHandle nullEvent = new SafeEventHandle(IntPtr.Zero, false);
 
-			/// <summary>Initializes a new instance of the <see cref="Register"/> class and assigns an existing handle.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeRegisteredWaitHandle"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle">
 			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).

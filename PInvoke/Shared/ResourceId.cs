@@ -198,6 +198,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>Initializes a new instance of the <see cref="SafeResourceId"/> class.</summary>
 		/// <param name="resName">Name of the resource.</param>
+		/// <param name="charSet">The character set.</param>
+		/// <exception cref="System.ArgumentNullException">resName</exception>
 		public SafeResourceId(string resName, CharSet charSet = CharSet.Auto)
 		{
 			if (string.IsNullOrEmpty(resName)) throw new ArgumentNullException(nameof(resName));

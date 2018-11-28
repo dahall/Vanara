@@ -519,7 +519,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Prsht.h", MSDNShortId = "bb760811")]
 		[return: MarshalAs(UnmanagedType.SysInt)]
-		public static extern IntPtr PropertySheet(ref PROPSHEETHEADER psh);
+		public static extern IntPtr PropertySheet(ref PROPSHEETHEADER lppsph);
 
 		// TODO: Convert resource id fields to managed properties.
 		/// <summary>Defines the frame and pages of a property sheet.</summary>

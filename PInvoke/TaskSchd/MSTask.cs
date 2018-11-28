@@ -819,16 +819,13 @@ namespace Vanara.PInvoke
 		/// <para>Retrieves the next specified number of tasks in the enumeration sequence.</para>
 		/// <para>If there are fewer than the requested number of tasks left in the sequence, all the remaining elements are retrieved.</para>
 		/// </summary>
-		/// <param name="celt">
-		/// <para>The number of tasks to retrieve.</para>
-		/// </param>
+		/// <param name="enumItems">The <see cref="IEnumWorkItems"/> instance on which to act.</param>
+		/// <param name="celt">The number of tasks to retrieve.</param>
 		/// <param name="names">
 		/// An array of strings containing the file names of the tasks returned from the enumeration sequence. These file names are taken
 		/// from the Scheduled Tasks folder and have the ".job" extension.
 		/// </param>
-		/// <param name="pceltFetched">
-		/// <para>The number of tasks returned in rgpwszNames.</para>
-		/// </param>
+		/// <param name="pceltFetched">The number of tasks returned in rgpwszNames.</param>
 		/// <returns>
 		/// <para>Returns one of the following values.</para>
 		/// <list type="table">

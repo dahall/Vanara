@@ -39,157 +39,42 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Performs caller-implemented actions after the last operation performed by the call to IFileOperation is complete.</summary>
-		/// <param name="hrResult">
-		/// The return value of the final operation. Note that this is not the HRESULT returned by one of the IFileOperation methods, which simply queue the
-		/// operations. Instead, this is the result of the actual operation, such as copy, delete, or move.
-		/// </param>
 		public event EventHandler<ShellFileOpEventArgs> FinishOperations;
 
 		/// <summary>Performs caller-implemented actions after the copy process for each item is complete.</summary>
-		/// <param name="dwFlags">
-		/// bitwise value that contains flags that were used during the copy operation. Some values can be set or changed during the copy operation. See
-		/// TRANSFER_SOURCE_FLAGS for flag descriptions.
-		/// </param>
-		/// <param name="psiItem">Pointer to an IShellItem that specifies the source item.</param>
-		/// <param name="psiDestinationFolder">Pointer to an IShellItem that specifies the destination folder to which the item was copied.</param>
-		/// <param name="pszNewName">
-		/// Pointer to the new name that was given to the item after it was copied. This is a null-terminated Unicode string. Note that this might not be the
-		/// name that you asked for, given collisions and other naming rules.
-		/// </param>
-		/// <param name="hrCopy">
-		/// The return value of the copy operation. Note that this is not the HRESULT returned by CopyItem, which simply queues the copy operation. Instead, this
-		/// is the result of the actual copy.
-		/// </param>
-		/// <param name="psiNewlyCreated">Pointer to an IShellItem that represents the new copy of the item.</param>
 		public event EventHandler<ShellFileOpEventArgs> PostCopyItem;
 
 		/// <summary>Performs caller-implemented actions after the delete process for each item is complete.</summary>
-		/// <param name="dwFlags">
-		/// bitwise value that contains flags that were used during the delete operation. Some values can be set or changed during the delete operation. See
-		/// TRANSFER_SOURCE_FLAGS for flag descriptions.
-		/// </param>
-		/// <param name="psiItem">Pointer to an IShellItem that specifies the item that was deleted.</param>
-		/// <param name="hrDelete">
-		/// The return value of the delete operation. Note that this is not the HRESULT returned by DeleteItem, which simply queues the delete operation.
-		/// Instead, this is the result of the actual deletion.
-		/// </param>
-		/// <param name="psiNewlyCreated">
-		/// A pointer to an IShellItem that specifies the deleted item, now in the Recycle Bin. If the item was fully deleted, this value is NULL.
-		/// </param>
 		public event EventHandler<ShellFileOpEventArgs> PostDeleteItem;
 
 		/// <summary>Performs caller-implemented actions after the move process for each item is complete.</summary>
-		/// <param name="dwFlags">
-		/// bitwise value that contains flags that were used during the move operation. Some values can be set or changed during the move operation. See
-		/// TRANSFER_SOURCE_FLAGS for flag descriptions.
-		/// </param>
-		/// <param name="psiItem">Pointer to an IShellItem that specifies the source item.</param>
-		/// <param name="psiDestinationFolder">Pointer to an IShellItem that specifies the destination folder that contains the moved item.</param>
-		/// <param name="pszNewName">
-		/// Pointer to the name that was given to the item after it was moved. This is a null-terminated Unicode string. Note that this might not be the name
-		/// that you asked for, given collisions and other naming rules.
-		/// </param>
-		/// <param name="hrMove">
-		/// The return value of the move operation. Note that this is not the HRESULT returned by MoveItem, which simply queues the move operation. Instead, this
-		/// is the result of the actual move.
-		/// </param>
-		/// <param name="psiNewlyCreated">Pointer to an IShellItem that represents the moved item in its new location.</param>
 		public event EventHandler<ShellFileOpEventArgs> PostMoveItem;
 
 		/// <summary>Performs caller-implemented actions after the new item is created.</summary>
-		/// <param name="dwFlags">
-		/// bitwise value that contains flags that were used during the creation operation. Some values can be set or changed during the creation operation. See
-		/// TRANSFER_SOURCE_FLAGS for flag descriptions.
-		/// </param>
-		/// <param name="psiDestinationFolder">Pointer to an IShellItem that specifies the destination folder to which the new item was added.</param>
-		/// <param name="pszNewName">Pointer to the file name of the new item, for instance Newfile.txt. This is a null-terminated, Unicode string.</param>
-		/// <param name="pszTemplateName">
-		/// Pointer to the name of the template file (for example Excel9.xls) that the new item is based on, stored in one of the following locations:
-		/// <list type="bullet">
-		/// <item>
-		/// <description>CSIDL_COMMON_TEMPLATES. The default path for this folder is %ALLUSERSPROFILE%\Templates.</description>
-		/// </item>
-		/// <item>
-		/// <description>CSIDL_TEMPLATES. The default path for this folder is %USERPROFILE%\Templates.</description>
-		/// </item>
-		/// <item>
-		/// <description>%SystemRoot%\shellnew</description>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// This is a null-terminated, Unicode string used to specify an existing file of the same type as the new file, containing the minimal content that an
-		/// application wants to include in any new file.
-		/// </para>
-		/// <para>This parameter is normally NULL to specify a new, blank file.</para>
-		/// </param>
-		/// <param name="dwFileAttributes">The file attributes applied to the new item. One or more of the values found at GetFileAttributes.</param>
-		/// <param name="hrNew">
-		/// The return value of the creation operation. Note that this is not the HRESULT returned by NewItem, which simply queues the creation operation.
-		/// Instead, this is the result of the actual creation.
-		/// </param>
-		/// <param name="psiNewItem">Pointer to an IShellItem that represents the new item.</param>
 		public event EventHandler<ShellFileNewOpEventArgs> PostNewItem;
 
 		/// <summary>Performs caller-implemented actions after the rename process for each item is complete.</summary>
-		/// <param name="dwFlags">
-		/// bitwise value that contains flags that were used during the rename operation. Some values can be set or changed during the rename operation. See
-		/// TRANSFER_SOURCE_FLAGS for flag descriptions.
-		/// </param>
-		/// <param name="psiItem">Pointer to an IShellItem that specifies the item before it was renamed.</param>
-		/// <param name="pszNewName">
-		/// Pointer to the new display name of the item. This is a null-terminated, Unicode string. Note that this might not be the name that you asked for,
-		/// given collisions and other naming rules.
-		/// </param>
-		/// <param name="hrRename">
-		/// The return value of the rename operation. Note that this is not the HRESULT returned by RenameItem, which simply queues the rename operation.
-		/// Instead, this is the result of the actual rename operation.
-		/// </param>
-		/// <param name="psiNewlyCreated">Pointer to an IShellItem that represents the item with its new name.</param>
 		public event EventHandler<ShellFileOpEventArgs> PostRenameItem;
 
 		/// <summary>Performs caller-implemented actions before the copy process for each item begins.</summary>
-		/// <param name="dwFlags">bitwise value that contains flags that control the operation. See TRANSFER_SOURCE_FLAGS for flag descriptions.</param>
-		/// <param name="psiItem">Pointer to an IShellItem that specifies the source item.</param>
-		/// <param name="psiDestinationFolder">Pointer to an IShellItem that specifies the destination folder to contain the copy of the item.</param>
-		/// <param name="pszNewName">
-		/// Pointer to a new name for the item after it has been copied. This is a null-terminated Unicode string and can be NULL. If NULL, the name of the
-		/// destination item is the same as the source.
-		/// </param>
 		public event EventHandler<ShellFileOpEventArgs> PreCopyItem;
 
 		/// <summary>Performs caller-implemented actions before the delete process for each item begins.</summary>
-		/// <param name="dwFlags">bitwise value that contains flags that control the operation. See TRANSFER_SOURCE_FLAGS for flag descriptions.</param>
-		/// <param name="psiItem">Pointer to an IShellItem that specifies the item to be deleted.</param>
 		public event EventHandler<ShellFileOpEventArgs> PreDeleteItem;
 
 		/// <summary>Performs caller-implemented actions before the move process for each item begins.</summary>
-		/// <param name="dwFlags">bitwise value that contains flags that control the operation. See TRANSFER_SOURCE_FLAGS for flag descriptions.</param>
-		/// <param name="psiItem">Pointer to an IShellItem that specifies the item to be moved.</param>
-		/// <param name="psiDestinationFolder">Pointer to an IShellItem that specifies the destination folder to contain the moved item.</param>
-		/// <param name="pszNewName">
-		/// Pointer to a new name for the item in its new location. This is a null-terminated Unicode string and can be NULL. If NULL, the name of the
-		/// destination item is the same as the source.
-		/// </param>
 		public event EventHandler<ShellFileOpEventArgs> PreMoveItem;
 
 		/// <summary>Performs caller-implemented actions before the process to create a new item begins.</summary>
-		/// <param name="dwFlags">bitwise value that contains flags that control the operation. See TRANSFER_SOURCE_FLAGS for flag descriptions.</param>
-		/// <param name="psiDestinationFolder">Pointer to an IShellItem that specifies the destination folder that will contain the new item.</param>
-		/// <param name="pszNewName">Pointer to the file name of the new item, for instance Newfile.txt. This is a null-terminated, Unicode string.</param>
 		public event EventHandler<ShellFileOpEventArgs> PreNewItem;
 
 		/// <summary>Performs caller-implemented actions before the rename process for each item begins.</summary>
-		/// <param name="dwFlags">bitwise value that contains flags that control the operation. See TRANSFER_SOURCE_FLAGS for flag descriptions.</param>
-		/// <param name="psiItem">Pointer to an IShellItem that specifies the item to be renamed.</param>
-		/// <param name="pszNewName">Pointer to the new display name of the item. This is a null-terminated, Unicode string.</param>
 		public event EventHandler<ShellFileOpEventArgs> PreRenameItem;
 
 		/// <summary>Performs caller-implemented actions before any specific file operations are performed.</summary>
 		public event EventHandler StartOperations;
 
 		/// <summary>Updates the progress.</summary>
-		/// <param name="iWorkTotal">The i work total.</param>
-		/// <param name="iWorkSoFar">The i work so far.</param>
 		public event System.ComponentModel.ProgressChangedEventHandler UpdateProgress;
 
 		/// <summary>Flags that control the file operation.</summary>

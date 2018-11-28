@@ -38,7 +38,7 @@ using static Vanara.PInvoke.User32_Gdi;
 
 namespace Vanara.Extensions
 {
-	/// <summary>Used to determine the size of the icon returned by <see cref="ShellImageList.GetSystemIcon"/>.</summary>
+	/// <summary>Used to determine the size of the icon returned by various shell methods.</summary>
 	public enum IconSize
 	{
 		/// <summary>
@@ -108,11 +108,11 @@ namespace Vanara.Extensions
 		/// <param name="pidl">The ITEMIDLIST pointer from which to retrieve the icon.</param>
 		/// <param name="iconSize">Size of the icon.</param>
 		/// <returns>Icon of the specified size, or <c>null</c> if no icon is associated with this ITEMIDLIST.</returns>
-		public static Icon GetIcon(this PIDL pidl, IconSize iconType = IconSize.Large)
+		public static Icon GetIcon(this PIDL pidl, IconSize iconSize = IconSize.Large)
 		{
 			if (pidl.IsInvalid) return null;
 			var shfi = new SHFILEINFO();
-			var ret = SHGetFileInfo(pidl, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_ICON | SHGFI.SHGFI_PIDL | (SHGFI)iconType);
+			var ret = SHGetFileInfo(pidl, 0, ref shfi, SHFILEINFO.Size, SHGFI.SHGFI_ICON | SHGFI.SHGFI_PIDL | (SHGFI)iconSize);
 			return ret == IntPtr.Zero ? null : new SafeHICON((IntPtr)shfi.hIcon).ToIcon();
 		}
 
@@ -134,7 +134,7 @@ namespace Vanara.Extensions
 
 		/// <summary>Gets the Shell icon for the given file name or extension.</summary>
 		/// <param name="fileNameOrExtension">The file name or extension .</param>
-		/// <param name="iconType">Flags to specify the type of the icon to retrieve. This uses the <see cref="SHGetFileInfo"/> method and can only retrieve small or large icons.</param>
+		/// <param name="iconType">Flags to specify the type of the icon to retrieve. This uses the <see cref="SHGetFileInfo(string, FileAttributes, ref SHFILEINFO, int, SHGFI)"/> method and can only retrieve small or large icons.</param>
 		/// <returns>An <see cref="Icon"/> instance if found; otherwise <see langword="null"/>.</returns>
 		public static Icon GetFileIcon(string fileNameOrExtension, IconSize iconType = IconSize.Large)
 		{

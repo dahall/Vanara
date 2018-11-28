@@ -333,30 +333,9 @@ namespace Vanara.PInvoke
 			/// point later. The new enumerator supports the same IEnumSTATPROPSTG interface.
 			/// </para>
 			/// </summary>
-			/// <param name="ppenum">
+			/// <returns>
 			/// <para>A pointer to the variable that receives the IEnumSTATPROPSTG interface pointer.</para>
 			/// <para>If the method is unsuccessful, the value of the parameter is undefined.</para>
-			/// </param>
-			/// <returns>
-			/// <para>This method supports the following return values.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Return code</term>
-			/// <term>Description</term>
-			/// </listheader>
-			/// <item>
-			/// <term>E_INVALIDARG</term>
-			/// <term>The parameter is NULL.</term>
-			/// </item>
-			/// <item>
-			/// <term>E_OUTOFMEMORY</term>
-			/// <term>Insufficient memory.</term>
-			/// </item>
-			/// <item>
-			/// <term>E_UNEXPECTED</term>
-			/// <term>An unexpected exception occurred.</term>
-			/// </item>
-			/// </list>
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ienumstatpropstg-clone
 			IEnumSTATPROPSTG Clone();
@@ -455,7 +434,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertysetstorage-create
 			[PreserveSig]
-			HRESULT Create(in Guid rfmtid, [In] IntPtr pclsid, [In] STGM grfFlags, [In] STGM grfMode, out IPropertyStorage propertyStorage);
+			HRESULT Create(in Guid rfmtid, [In] IntPtr pclsid, [In] STGM grfFlags, [In] STGM grfMode, out IPropertyStorage ppprstg);
 
 			/// <summary>
 			/// <para>The <c>Open</c> method opens a property set contained in the property set storage object.</para>
@@ -551,7 +530,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propidl/nf-propidl-ipropertysetstorage-open
 			[PreserveSig]
-			HRESULT Open(in Guid rfmtid, [In] STGM grfMode, out IPropertyStorage propertyStorage);
+			HRESULT Open(in Guid rfmtid, [In] STGM grfMode, out IPropertyStorage ppprstg);
 
 			/// <summary>
 			/// <para>The <c>Delete</c> method deletes one of the property sets contained in the property set storage object.</para>

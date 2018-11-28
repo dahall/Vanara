@@ -48,7 +48,7 @@ namespace Vanara.Extensions
 		/// <param name="startIdx">The zero-based start index of the bit range to set.</param>
 		/// <param name="count">The number of sequential bits to set starting at <paramref name="startIdx"/>.</param>
 		/// <param name="value">The value to set within the specified range of <paramref name="bits"/>.</param>
-		public static void SetBits<T, TValue>(ref T bits, byte startIdx, byte count, TValue value) where T : struct, IComparable, IComparable<T>, IConvertible, IEquatable<T>, IFormattable where TValue : struct, IComparable, IComparable<T>, IConvertible, IEquatable<T>, IFormattable
+		public static void SetBits<T, TValue>(ref T bits, byte startIdx, byte count, TValue value) where T : struct, IComparable, IComparable<T>, IConvertible, IEquatable<T>, IFormattable where TValue : struct, IComparable, IComparable<TValue>, IConvertible, IEquatable<TValue>, IFormattable
 		{
 			if (startIdx >= (Marshal.SizeOf(typeof(T)) * 8)) throw new ArgumentOutOfRangeException(nameof(startIdx));
 			if (count + startIdx > (Marshal.SizeOf(typeof(T)) * 8)) throw new ArgumentOutOfRangeException(nameof(count));

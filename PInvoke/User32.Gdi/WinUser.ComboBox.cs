@@ -271,7 +271,7 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>lParam</term>
 			/// <description>
-			/// A pointer to an <see cref="NMCOMBOBOXEX"/> structure containing information about the notification code and the item that was inserted.
+			/// A pointer to an <c>NMCOMBOBOXEX</c> structure containing information about the notification code and the item that was inserted.
 			/// </description>
 			/// </item>
 			/// </list>
@@ -284,7 +284,7 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>lParam</term>
 			/// <description>
-			/// A pointer to an <see cref="NMCOMBOBOXEX"/> structure that contains information about the notification code and the deleted item.
+			/// A pointer to an <c>NMCOMBOBOXEX</c> structure that contains information about the notification code and the deleted item.
 			/// </description>
 			/// </item>
 			/// </list>
@@ -312,7 +312,7 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>lParam</term>
 			/// <description>
-			/// A pointer to an <see cref="NMCBEENDEDIT"/> structure that contains information about how the user concluded the edit operation.
+			/// A pointer to an <c>NMCBEENDEDIT</c> structure that contains information about how the user concluded the edit operation.
 			/// </description>
 			/// </item>
 			/// </list>
@@ -326,7 +326,7 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>lParam</term>
 			/// <description>
-			/// A pointer to an <see cref="NMCBEENDEDIT"/> structure that contains information about how the user concluded the edit operation.
+			/// A pointer to an <c>NMCBEENDEDIT</c> structure that contains information about how the user concluded the edit operation.
 			/// </description>
 			/// </item>
 			/// </list>
@@ -339,7 +339,7 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>lParam</term>
 			/// <description>
-			/// A pointer to an <see cref="NMCOMBOBOXEX"/> structure that contains information about the notification code.
+			/// A pointer to an <c>NMCOMBOBOXEX</c> structure that contains information about the notification code.
 			/// </description>
 			/// </item>
 			/// </list>
@@ -353,7 +353,7 @@ namespace Vanara.PInvoke
 			/// <item>
 			/// <term>lParam</term>
 			/// <description>
-			/// A pointer to a <see cref="NMCBEDRAGBEGIN"/> structure that contains information about the notification code.
+			/// A pointer to a <c>NMCBEDRAGBEGIN</c> structure that contains information about the notification code.
 			/// </description>
 			/// </item>
 			/// </list>

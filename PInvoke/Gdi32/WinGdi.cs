@@ -597,7 +597,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Converts a height in logical units to pixels.</summary>
-		/// <param name="width">The height in logical units.</param>
+		/// <param name="height">The height in logical units.</param>
 		/// <param name="hdc">The device context handle.</param>
 		/// <returns>The height in pixels.</returns>
 		public static int LogicalHeightToDeviceWidth(int height, HDC hdc = default)

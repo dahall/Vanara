@@ -848,7 +848,7 @@ namespace Vanara.PInvoke
 		/// <summary>Language Group Identifier.</summary>
 		public enum LGRPID : uint
 		{
-			/// <summary>Western Europe & U.S.</summary>
+			/// <summary>Western Europe and U.S.</summary>
 			LGRPID_WESTERN_EUROPE = 0x0001,
 
 			/// <summary>Central Europe</summary>

@@ -39,7 +39,7 @@ namespace Vanara.IO
 		/// </summary>
 		/// <param name="pszPath">The path string. This value should not be <see langword="null"/>.</param>
 		/// <returns>The path string with the appended backslash.</returns>
-		public static string AddBackslash(string path) => SBAllocCallRet((s, sz) => PathCchAddBackslash(s, sz), path, err: ThrowIfNotOkOrFalse);
+		public static string AddBackslash(string pszPath) => SBAllocCallRet((s, sz) => PathCchAddBackslash(s, sz), pszPath, err: ThrowIfNotOkOrFalse);
 
 		/// <summary>
 		/// Adds a file name extension to a path string.

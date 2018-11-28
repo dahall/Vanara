@@ -192,7 +192,7 @@ namespace Vanara.PInvoke
 			/// <summary>Initializes a new instance of the <see cref="SafeAllocatedSID"/> class.</summary>
 			private SafeAllocatedSID() : base() { }
 
-			/// <summary>Performs an implicit conversion from <see cref="SafeAllocatedSID"/> to <see cref="AllocatedSID"/>.</summary>
+			/// <summary>Performs an implicit conversion from <see cref="SafeAllocatedSID"/> to <see cref="PSID"/>.</summary>
 			/// <param name="h">The safe handle instance.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator PSID(SafeAllocatedSID h) => h.handle;

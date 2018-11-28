@@ -327,9 +327,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Flags used in the <see cref="AuthzAccessCheck(AuthzAccessCheckFlags,SafeAUTHZ_CLIENT_CONTEXT_HANDLE,ref
-		/// AUTHZ_ACCESS_REQUEST,SafeAUTHZ_AUDIT_EVENT_HANDLE,SafeSecurityDescriptor,SECURITY_DESCRIPTOR[],uint,AUTHZ_ACCESS_REPLY,out
-		/// SafeAUTHZ_ACCESS_CHECK_RESULTS_HANDLE)"/> method.
+		/// Flags used in the <see cref="AuthzAccessCheck(AuthzAccessCheckFlags, AUTHZ_CLIENT_CONTEXT_HANDLE, in AUTHZ_ACCESS_REQUEST, AUTHZ_AUDIT_EVENT_HANDLE, PSECURITY_DESCRIPTOR, SECURITY_DESCRIPTOR[], uint, AUTHZ_ACCESS_REPLY, IntPtr)"/> method.
 		/// </summary>
 		[PInvokeData("authz.h")]
 		[Flags]

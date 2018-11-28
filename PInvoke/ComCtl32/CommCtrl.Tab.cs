@@ -252,7 +252,7 @@ namespace Vanara.PInvoke
 		/// <param name="splitInfo">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(HWND hWnd, TabControlMessage Msg, int wParam, ref TCHITTESTINFO item);
+		public static extern IntPtr SendMessage(HWND hWnd, TabControlMessage Msg, int wParam, ref TCHITTESTINFO splitInfo);
 
 		/// <summary>
 		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window
@@ -268,7 +268,7 @@ namespace Vanara.PInvoke
 		/// <param name="splitInfo">Additional message-specific information.</param>
 		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(HWND hWnd, TabControlMessage Msg, int wParam, TCITEM item);
+		public static extern IntPtr SendMessage(HWND hWnd, TabControlMessage Msg, int wParam, TCITEM splitInfo);
 
 		/// <summary>Contains information about a hit test. This structure supersedes the TC_HITTESTINFO structure.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760553")]

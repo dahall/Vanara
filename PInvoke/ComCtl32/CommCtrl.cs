@@ -60,8 +60,7 @@ namespace Vanara.PInvoke
 		public delegate IntPtr SUBCLASSPROC(HWND hWnd, uint uMsg, IntPtr wParam, IntPtr lParam, [MarshalAs(UnmanagedType.SysUInt)] uint uIdSubclass, IntPtr dwRefData);
 
 		/// <summary>
-		/// The set of bit flags that indicate which common control classes will be loaded from the DLL when calling <see
-		/// cref="InitCommonControlsEx(ref INITCOMMONCONTROLSEX)"/>.
+		/// The set of bit flags that indicate which common control classes will be loaded from the DLL when calling <see cref="InitCommonControlsEx(in INITCOMMONCONTROLSEX)"/>.
 		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775507")]
 		[Flags]
@@ -1167,8 +1166,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Carries information used to load common control classes from the dynamic-link library (DLL). This structure is used with the <see
-		/// cref="InitCommonControlsEx(ref INITCOMMONCONTROLSEX)"/> function.
+		/// Carries information used to load common control classes from the dynamic-link library (DLL). This structure is used with the
+		/// <see cref="InitCommonControlsEx(in INITCOMMONCONTROLSEX)"/> function.
 		/// </summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775507")]
 		[StructLayout(LayoutKind.Sequential)]
@@ -1178,8 +1177,8 @@ namespace Vanara.PInvoke
 			public int dwSize;
 
 			/// <summary>
-			/// The set of bit flags that indicate which common control classes will be loaded from the DLL when calling <see
-			/// cref="InitCommonControlsEx(ref INITCOMMONCONTROLSEX)"/>.
+			/// The set of bit flags that indicate which common control classes will be loaded from the DLL when calling
+			/// <see cref="InitCommonControlsEx(in INITCOMMONCONTROLSEX)"/>.
 			/// </summary>
 			public CommonControlClass dwICC;
 

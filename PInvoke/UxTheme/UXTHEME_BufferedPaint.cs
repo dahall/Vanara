@@ -613,6 +613,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Initializes a new instance of the <see cref="SafeHANIMATIONBUFFER"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="updateTargetDC">The value to pass <see cref="EndBufferedAnimation"/> when closing this handle.</param>
 			/// <param name="ownsHandle">
 			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
 			/// </param>
@@ -637,6 +638,7 @@ namespace Vanara.PInvoke
 
 			/// <summary>Initializes a new instance of the <see cref="SafeHPAINTBUFFER"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			/// <param name="updateTargetDC">The value to pass <see cref="EndBufferedPaint"/> when closing this handle.</param>
 			/// <param name="ownsHandle">
 			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
 			/// </param>

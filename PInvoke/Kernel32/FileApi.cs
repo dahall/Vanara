@@ -24,7 +24,7 @@ namespace Vanara.PInvoke
 		/// <summary>A value returned when invalid file attributes are found.</summary>
 		[PInvokeData("fileapi.h")] public const int INVALID_FILE_ATTRIBUTES = -2;
 
-		/// <summary>A value returned by <see cref="GetCompressedFileSize(string, ref uint)"/> when the function fails.</summary>
+		/// <summary>A value returned by <see cref="GetCompressedFileSize(string, out uint)"/> when the function fails.</summary>
 		[PInvokeData("fileapi.h")] public const uint INVALID_FILE_SIZE = 0xFFFFFFFF;
 
 		/// <summary>A value returned then a file pointer cannot be set.</summary>

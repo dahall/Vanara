@@ -630,8 +630,8 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Combines the <see cref="SI_PAGE_TYPE"/> and <see cref="SI_PAGE_ACTIVATED"/> types for use in the last parameter of <see
-		/// cref="EditSecurityAdvanced(System.IntPtr,ISecurityInformation,uint)"/> method.
+		/// Combines the <see cref="SI_PAGE_TYPE"/> and <see cref="SI_PAGE_ACTIVATED"/> types for use in the last parameter of
+		/// <see cref="EditSecurityAdvanced(HWND, ISecurityInformation, SI_PAGE_TYPE, SI_PAGE_ACTIVATED)"/> method.
 		/// </summary>
 		/// <param name="pt">The <see cref="SI_PAGE_TYPE"/> value.</param>
 		/// <param name="pa">The <see cref="SI_PAGE_ACTIVATED"/> value.</param>

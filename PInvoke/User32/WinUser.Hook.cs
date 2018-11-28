@@ -494,7 +494,7 @@ namespace Vanara.PInvoke
 		// HOOKPROC lpfn, HINSTANCE hmod, DWORD dwThreadId );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "setwindowshookex")]
-		public static extern SafeHHOOK SetWindowsHookEx(HookType idHook, HookProc lpfn, HINSTANCE hMod, int dwThreadId);
+		public static extern SafeHHOOK SetWindowsHookEx(HookType idHook, HookProc lpfn, HINSTANCE hmod, int dwThreadId);
 
 		/// <summary>
 		/// <para>Removes a hook procedure installed in a hook chain by the SetWindowsHookEx function.</para>

@@ -358,7 +358,7 @@ namespace Vanara.PInvoke
 		/// <returns>Returns the index of the new item or , if the append action fails.</returns>
 		// int DPA_AppendPtr( HDPA pdpa, void *pitem); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775585(v=vs.85).aspx
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775585")]
-		public static int DPA_AppendPtr(HDPA hdpa, IntPtr pitem) => DPA_InsertPtr(hdpa, DA_LAST, pitem);
+		public static int DPA_AppendPtr(HDPA pdpa, IntPtr pitem) => DPA_InsertPtr(pdpa, DA_LAST, pitem);
 
 		/// <summary>
 		/// <para>

@@ -14,18 +14,16 @@ namespace Vanara.InteropServices
 	{
 		private static readonly int ElemSize = Marshal.SizeOf(typeof(TElem));
 
-		/// <summary>Initializes a new instance of the <see cref="SafeNativeArray{TElem, TPrefix, TMem}"/> class.</summary>
+		/// <summary>Initializes a new instance of the <see cref="SafeNativeArray{TElem}"/> class.</summary>
 		public SafeNativeArray() : base(0) { }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="SafeNativeArray{TElem, TPrefix, TMem}"/> class from a copy of a managed TElem array.
+		/// Initializes a new instance of the <see cref="SafeNativeArray{TElem}"/> class from a copy of a managed TElem array.
 		/// </summary>
 		/// <param name="array">The array of bytes to copy.</param>
-		/// <param name="getElemSize">Size of the get elem.</param>
 		public SafeNativeArray(TElem[] array) : base(IntPtr.Zero, 0, true) => Elements = array;
 
-		/// <summary>Initializes a new instance of the <see cref="SafeNativeArray{TElem, TPrefix, TMem}"/> class.</summary>
-		/// <param name="byteSize">Size of the byte.</param>
+		/// <summary>Initializes a new instance of the <see cref="SafeNativeArray{TElem}"/> class.</summary>
 		/// <param name="elementCount">The element count. This value can be 0.</param>
 		public SafeNativeArray(int elementCount) : base(GetRequiredSize(elementCount)) => Zero();
 
@@ -35,7 +33,7 @@ namespace Vanara.InteropServices
 		/// <param name="ownsHandle">if set to <c>true</c> [owns handle].</param>
 		public SafeNativeArray(IntPtr ptr, int size, bool ownsHandle) : base(ptr, size, ownsHandle) { }
 
-		/// <summary>Gets the number of elements contained in the <see cref="SafeNativeArray{TElem, TPrefix, TMem}"/>.</summary>
+		/// <summary>Gets the number of elements contained in the <see cref="SafeNativeArray{TElem}"/>.</summary>
 		public int Count => IsInvalid ? 0 : BytesToCount(Size);
 
 		public bool IsReadOnly => false;

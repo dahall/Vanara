@@ -212,7 +212,7 @@ namespace Vanara.PInvoke
 			WM_VSCROLLCLIPBOARD = 0x030A,
 		}
 
-		/// <summary><para>The clipboard formats defined by the system are called standard clipboard formats.</summary>
+		/// <summary>The clipboard formats defined by the system are called standard clipboard formats.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/dataxchg/standard-clipboard-formats
 		[PInvokeData("Winuser.h", MSDNShortId = "f0af4e61-7ef1-4263-b2c5-e4114515124f")]
 		public enum StandardClipboardFormat : uint

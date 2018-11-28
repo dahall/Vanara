@@ -21,7 +21,7 @@ namespace Vanara.Windows.Forms
 
 		/// <summary>
 		/// Do not display a progress bar. Typically, an application can quantitatively determine how much of the operation remains and
-		/// periodically pass that value to <see cref="UpdateProgress(ulong, ulong)"/>. The progress dialog box uses this information to
+		/// periodically pass that value to <c>UpdateProgress</c>. The progress dialog box uses this information to
 		/// update its progress bar. This flag is typically set when the calling application must wait for an operation to finish, but does
 		/// not have any quantitative information it can use to update the dialog box.
 		/// </summary>
@@ -70,7 +70,7 @@ namespace Vanara.Windows.Forms
 			iDlg = new IProgressDialog();
 		}
 
-		/// <summary> Gets or sets a value indicating whether to automatically estimate the remaining time and display it.</summary> </summary>
+		/// <summary> Gets or sets a value indicating whether to automatically estimate the remaining time and display it.</summary>
 		[DefaultValue(false), Category("Behavior"), Description("Automatically estimate the remaining time and display it.")]
 		public bool AutoTimeEstimation { get => flags[PROGDLG.PROGDLG_AUTOTIME]; set => flags[PROGDLG.PROGDLG_AUTOTIME] = value; }
 
@@ -203,10 +203,10 @@ namespace Vanara.Windows.Forms
 
 		/// <summary>Starts the progress dialog box.</summary>
 		/// <param name="hwndParent">The progress dialog box's parent window. This value can be <see langword="null"/>.</param>
-		public virtual void Start(IWin32Window owner)
+		public virtual void Start(IWin32Window hwndParent)
 		{
 			closed = false;
-			iDlg.StartProgressDialog(owner?.Handle ?? IntPtr.Zero, dwFlags: flags);
+			iDlg.StartProgressDialog(hwndParent?.Handle ?? IntPtr.Zero, dwFlags: flags);
 			iDlg.Timer(PDTIMER.PDTIMER_RESET);
 		}
 

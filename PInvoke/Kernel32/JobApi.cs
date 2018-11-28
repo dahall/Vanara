@@ -670,7 +670,7 @@ namespace Vanara.PInvoke
 		// HANDLE WINAPI OpenJobObject( _In_ DWORD dwDesiredAccess, _In_ BOOL bInheritHandles, _In_ LPCTSTR lpName); https://msdn.microsoft.com/en-us/library/windows/desktop/ms684312(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms684312")]
-		public static extern HJOB OpenJobObject(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, string lpName);
+		public static extern HJOB OpenJobObject(uint dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandles, string lpName);
 
 		/// <summary>Retrieves limit and job state information from the job object.</summary>
 		/// <param name="hJob">
@@ -810,8 +810,8 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms684925")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool QueryInformationJobObject([In] HJOB hJob, JOBOBJECTINFOCLASS JobObjectInformationClass, IntPtr lpJobObjectInformation,
-			uint cbJobObjectInformationLength, out uint lpReturnLength);
+		public static extern bool QueryInformationJobObject([In] HJOB hJob, JOBOBJECTINFOCLASS JobObjectInfoClass, IntPtr lpJobObjectInfo,
+			uint cbJobObjectInfoLength, out uint lpReturnLength);
 
 		/// <summary>Gets information about the control of the I/O rate for a job object.</summary>
 		/// <param name="hJob">
@@ -962,7 +962,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms686216")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetInformationJobObject([In] HJOB hJob, JOBOBJECTINFOCLASS JobObjectInformationClass, [In] IntPtr lpJobObjectInformation, uint cbJobObjectInformationLength);
+		public static extern bool SetInformationJobObject([In] HJOB hJob, JOBOBJECTINFOCLASS JobObjectInfoClass, [In] IntPtr lpJobObjectInfo, uint cbJobObjectInfoLength);
 
 		/// <summary>Sets I/O limits on a job object.</summary>
 		/// <param name="hJob">

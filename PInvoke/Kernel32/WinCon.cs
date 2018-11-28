@@ -333,8 +333,10 @@ namespace Vanara.PInvoke
 			/// </summary>
 			CONSOLE_FULLSCREEN = 1,
 
-			/// <summary>Full-screen console communicating directly with the video hardware. This mode is set after the console is in
-			/// CONSOLE_FULLSCREEN mode to indicate that the transition to full-screen mode has completed./summary>
+			/// <summary>
+			/// Full-screen console communicating directly with the video hardware. This mode is set after the console is in
+			/// CONSOLE_FULLSCREEN mode to indicate that the transition to full-screen mode has completed.
+			/// </summary>
 			CONSOLE_FULLSCREEN_HARDWARE = 2
 		}
 
@@ -632,7 +634,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetConsoleAlias(string Source, StringBuilder TargetBuffer, uint TargetBufferLength, string ExeName);
+		public static extern bool GetConsoleAlias(string lpSource, StringBuilder lpTargetBuffer, uint TargetBufferLength, string lpExeName);
 
 		/// <summary>Retrieves all defined console aliases for the specified executable.</summary>
 		/// <param name="lpAliasBuffer">
@@ -652,7 +654,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetConsoleAliases(StringBuilder AliasBuffer, uint AliasBufferLength, string ExeName);
+		public static extern bool GetConsoleAliases(StringBuilder lpAliasBuffer, uint AliasBufferLength, string lpExeName);
 
 		/// <summary>Retrieves the required size for the buffer used by the <c>GetConsoleAliases</c> function.</summary>
 		/// <param name="lpExeName">The name of the executable file whose console aliases are to be retrieved.</param>

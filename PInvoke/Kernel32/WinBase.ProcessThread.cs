@@ -14,7 +14,7 @@ namespace Vanara.PInvoke
 		// VOID CALLBACK FiberProc( _In_ PVOID lpParameter); https://msdn.microsoft.com/en-us/library/windows/desktop/ms682660(v=vs.85).aspx
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		[PInvokeData("WinBase.h", MSDNShortId = "ms682660")]
-		public delegate void FiberProc(IntPtr lpFiberParameter);
+		public delegate void FiberProc(IntPtr lpParameter);
 
 		/// <summary>The thread's execution requirements.</summary>
 		public enum EXECUTION_STATE : uint

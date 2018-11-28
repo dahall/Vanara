@@ -3258,12 +3258,12 @@ namespace Vanara.PInvoke
 		/// <summary>Provides a <see cref="SafeHandle"/> to a WNet enumeration that releases a created WNetEnumHandle instance at disposal using WNetCloseEnum.</summary>
 		public class SafeWNetEnumHandle : HANDLE
 		{
-			/// <summary>Initializes a new instance of the <see cref="WNetEnumHandle"/> class and assigns an existing handle.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeWNetEnumHandle"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
 			public SafeWNetEnumHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			/// <summary>Initializes a new instance of the <see cref="WNetEnumHandle"/> class.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeWNetEnumHandle"/> class.</summary>
 			private SafeWNetEnumHandle() : base() { }
 
 			/// <inheritdoc/>

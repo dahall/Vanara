@@ -185,7 +185,7 @@ namespace Vanara.PInvoke
 		// lpFormat, _Out_opt_ LPWSTR lpDateStr, _In_ int cchDate, _In_opt_ LPCWSTR lpCalendar); https://msdn.microsoft.com/en-us/library/windows/desktop/dd318088(v=vs.85).aspx
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("Datetimeapi.h", MSDNShortId = "dd318088")]
-		public static extern int GetDateFormatEx(string lpLocaleName, DATE_FORMAT dwFlags, in SYSTEMTIME lpDate, string lpFormat, StringBuilder lpDateStr, int cchDate);
+		public static extern int GetDateFormatEx(string lpLocaleName, DATE_FORMAT dwFlags, in SYSTEMTIME lpDate, string lpFormat, StringBuilder lpDateStr, int cchDate, [Optional] string lpCalendar);
 
 		/// <summary>
 		/// Formats time as a time string for a locale specified by identifier. The function formats either a specified time or the local

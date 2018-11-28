@@ -1773,7 +1773,7 @@ namespace Vanara.PInvoke
 			public static implicit operator SafeInternetConnectHandle(IntPtr hInternet) => new SafeInternetConnectHandle(hInternet);
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="InternetHandle"/> that is disposed using <see cref="InternetCloseHandle"/>.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> that is disposed using <see cref="InternetCloseHandle"/>.</summary>
 		public class SafeInternetHandle : HANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeInternetHandle"/> class and assigns an existing handle.</summary>

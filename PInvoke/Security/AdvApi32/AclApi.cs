@@ -1202,8 +1202,6 @@ namespace Vanara.PInvoke
 		/// A pointer to the function used to track the progress of the <c>TreeResetNamedSecurityInfo</c> function. The prototype of the
 		/// progress function is:
 		/// </para>
-		/// </param>
-		/// <param name="#include &amp;lt;windows.h&amp;gt;&#xA;#include &amp;lt;Aclapi.h&amp;gt;&#xA;&#xA;typedef VOID (*FN_PROGRESS) (&#xA;  IN LPWSTR pObjectName,              // Name of object just processed&#xA;  IN DWORD Status,                    // Status of operation on object&#xA;  IN OUT PPROG_INVOKE_SETTING pInvokeSetting, // When to set&#xA;  IN PVOID Args,                      // Caller specific data&#xA;  IN BOOL SecuritySet                 // Whether security was set&#xA;);&#xA;&#xA;">
 		/// <para>
 		/// The progress function provides the caller with progress and error information when nodes are processed. The caller specifies the
 		/// progress function in fnProgress, and during the tree operation, <c>TreeResetNamedSecurityInfo</c> passes the name of the last
@@ -1352,8 +1350,6 @@ namespace Vanara.PInvoke
 		/// A pointer to the function used to track the progress of the <c>TreeSetNamedSecurityInfo</c> function. The prototype of the
 		/// progress function is:
 		/// </para>
-		/// </param>
-		/// <param name="#include &amp;lt;windows.h&amp;gt;&#xA;#include &amp;lt;Aclapi.h&amp;gt;&#xA;#pragma comment(lib, &amp;quot;AdvApi32.lib&amp;quot;)&#xA;&#xA;typedef VOID (*FN_PROGRESS) (&#xA;  IN LPWSTR pObjectName,              // Name of object just processed&#xA;  IN DWORD Status,                    // Status of operation on object&#xA;  IN OUT PPROG_INVOKE_SETTING&#xA;                      pInvokeSetting, // When to set&#xA;  IN PVOID Args,                      // Caller specific data&#xA;  IN BOOL SecuritySet                 // Whether security was set&#xA;);&#xA;&#xA;">
 		/// <para>
 		/// The progress function provides the caller with progress and error information when nodes are processed. The caller specifies the
 		/// progress function in fnProgress, and during the tree operation, <c>TreeSetNamedSecurityInfo</c> passes the name of the last

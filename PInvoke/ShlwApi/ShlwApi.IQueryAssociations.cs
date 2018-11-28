@@ -413,7 +413,7 @@ namespace Vanara.PInvoke
 			/// to a Shell verb such as open. Set this parameter to NULL if it is not used.
 			/// </param>
 			/// <param name="phkeyOut">A pointer to the key's HKEY value.</param>
-			void GetKey(ASSOCF flags, ASSOCKEY key, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pszExtra, out HKEY phkeyOut);
+			void GetKey(ASSOCF flags, ASSOCKEY data, [Optional, MarshalAs(UnmanagedType.LPWStr)] string pszExtra, out HKEY phkeyOut);
 
 			/// <summary>Searches for and retrieves file or protocol association-related binary data from the registry.</summary>
 			/// <param name="flags">The ASSOCF value that can be used to control the search.</param>

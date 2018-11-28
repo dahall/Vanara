@@ -46,7 +46,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Gets the Shell icon for the given file name or extension.</summary>
 		/// <param name="fileNameOrExtension">The file name or extension .</param>
-		/// <param name="iconType">Flags to specify the type of the icon to retrieve. This uses the <see cref="SHGetFileInfo"/> method and can only retrieve small or large icons.</param>
+		/// <param name="iconType">Flags to specify the type of the icon to retrieve. This uses the <see cref="SHGetFileInfo(string, System.IO.FileAttributes, ref SHFILEINFO, int, SHGFI)"/> method and can only retrieve small or large icons.</param>
 		/// <returns>An <see cref="Icon"/> instance if found; otherwise <see langword="null"/>.</returns>
 		public static Icon GetFileIcon(string fileNameOrExtension, ShellIconType iconType = ShellIconType.Large)
 		{

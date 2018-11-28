@@ -44,8 +44,8 @@ namespace Vanara.Collections
 		protected IEnumerable<KeyValuePair<TKey, TValue>> Items =>
 			Keys.Select(k => new KeyValuePair<TKey, TValue>(k, this[k]));
 
-		/// <summary>Gets or sets the <see cref="TValue"/> with the specified key.</summary>
-		/// <value>The <see cref="TValue"/>.</value>
+		/// <summary>Gets or sets the value with the specified key.</summary>
+		/// <value>The value.</value>
 		/// <param name="key">The key.</param>
 		/// <returns></returns>
 		public virtual TValue this[TKey key]
