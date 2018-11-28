@@ -148,7 +148,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(conv.ConvertTo(hr, typeof(string)), Is.TypeOf<string>());
 			Assert.That(conv.ConvertTo(hr, typeof(bool)), Is.EqualTo(false));
 			Assert.That(conv.ConvertTo(hr, typeof(uint)), Is.EqualTo(Win32Error.ERROR_ACCESS_DENIED));
-			Assert.That(() => conv.ConvertTo("s", typeof(int)), Throws.TypeOf<InvalidCastException>());
+			Assert.That(() => conv.ConvertTo("s", typeof(int)), Throws.TypeOf<NotSupportedException>());
 			Assert.That(() => conv.ConvertTo(hr, typeof(char)), Throws.TypeOf<NotSupportedException>());
 			Assert.That(() => conv.ConvertTo(hr, typeof(DateTime)), Throws.TypeOf<NotSupportedException>());
 		}

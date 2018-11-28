@@ -66,8 +66,9 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void DsGetDCInfoTest()
 		{
-			DsBind(null, null, out var dsb).ThrowIfFailed();
-			var ret = DsGetDomainControllerInfo(dsb, "americas", 1, out var u1, out var i1);
+			var dn = System.Environment.UserDomainName; // System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().DomainName;
+			DsBind(null, dn, out var dsb).ThrowIfFailed();
+			var ret = DsGetDomainControllerInfo(dsb, dn, 1, out var u1, out var i1);
 			ret.ThrowIfFailed();
 			var s1 = i1.ToIEnum<DS_DOMAIN_CONTROLLER_INFO_1>(u1).ToArray();
 			Assert.That(s1[0].fDsEnabled);

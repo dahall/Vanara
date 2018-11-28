@@ -136,8 +136,8 @@ namespace Vanara.Windows.Shell.Tests
 				Assert.That(i.Properties[PROPERTYKEY.System.Author], Has.Member("TestAuthor"));
 				Assert.That(i.Properties[PROPERTYKEY.System.ItemTypeText], Does.StartWith("Microsoft Word"));
 				Assert.That(i.Properties[PROPERTYKEY.System.DateAccessed], Is.TypeOf<FILETIME>());
-				Assert.That(() => i.Properties[new PROPERTYKEY()], Throws.Exception);
-				Assert.That(() => i.Properties[new PROPERTYKEY(Guid.NewGuid(), 2)], Throws.Exception);
+				Assert.That(i.Properties[new PROPERTYKEY()], Is.Null);
+				Assert.That(i.Properties[new PROPERTYKEY(Guid.NewGuid(), 2)], Is.Null);
 
 				Assert.That(i.Properties["System.Author"], Has.Member("TestAuthor"));
 				Assert.That(i.Properties["DocAuthor"], Has.Member("TestAuthor"));

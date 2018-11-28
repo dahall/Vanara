@@ -11,11 +11,11 @@ namespace Vanara.PInvoke.Tests
 		public void SetupOverlappedFunctionTest()
 		{
 			var fn = Path.GetTempFileName();
-			using (var hFile = Kernel32.CreateFile(fn, Kernel32.FileAccess.GENERIC_ALL, FileShare.ReadWrite, null, FileMode.OpenOrCreate, FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL))
+			using (var hFile = Kernel32.CreateFile(fn, Kernel32.FileAccess.GENERIC_ALL, FileShare.ReadWrite, null, FileMode.OpenOrCreate, FileFlagsAndAttributes.FILE_ATTRIBUTE_NORMAL | FileFlagsAndAttributes.FILE_FLAG_OVERLAPPED))
 			{
 				var oar = SetupOverlappedFunction(hFile, ar => { }, 10);
 				Assert.That(oar.AsyncState, Is.EqualTo(10));
-				Assert.That(oar.Handle, Is.EqualTo(hFile));
+				Assert.That(oar.Handle, Is.EqualTo((HFILE)hFile));
 
 				EvaluateOverlappedFunction(oar, true);
 				Assert.That(oar.IsCompleted, Is.True);

@@ -6,6 +6,9 @@ namespace Vanara.Windows.Forms.Tests
 	[TestFixture()]
 	public class TaskDialogTests
 	{
+		[OneTimeSetUp]
+		public void SetupFixture() => Application.EnableVisualStyles();
+
 		[Test()]
 		public void TaskDialogTest()
 		{
