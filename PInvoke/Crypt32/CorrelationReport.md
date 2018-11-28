@@ -233,6 +233,9 @@ Native Method | Native DLL | Header | Managed Method
 [CryptVerifyMessageSignature](https://www.google.com/search?num=5&q=CryptVerifyMessageSignature+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CryptVerifyMessageSignatureWithKey](https://www.google.com/search?num=5&q=CryptVerifyMessageSignatureWithKey+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CryptVerifyTimeStampSignature](https://www.google.com/search?num=5&q=CryptVerifyTimeStampSignature+site%3Amicrosoft.com) | crypt32.dll |  |   
+[I_CertWnfEnableFlushCache](https://www.google.com/search?num=5&q=I_CertWnfEnableFlushCache+site%3Amicrosoft.com) | crypt32.dll |  |   
+[I_PFXDecrypt](https://www.google.com/search?num=5&q=I_PFXDecrypt+site%3Amicrosoft.com) | crypt32.dll |  |   
+[I_PFXHMAC](https://www.google.com/search?num=5&q=I_PFXHMAC+site%3Amicrosoft.com) | crypt32.dll |  |   
 [PFXExportCertStore](https://www.google.com/search?num=5&q=PFXExportCertStore+site%3Amicrosoft.com) | crypt32.dll |  |   
 [PFXExportCertStore2](https://www.google.com/search?num=5&q=PFXExportCertStore2+site%3Amicrosoft.com) | crypt32.dll |  |   
 [PFXExportCertStoreEx](https://www.google.com/search?num=5&q=PFXExportCertStoreEx+site%3Amicrosoft.com) | crypt32.dll |  |   

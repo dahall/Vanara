@@ -79,6 +79,7 @@ Native Method | Native DLL | Header | Managed Method
 [HttpEndRequest](https://www.google.com/search?num=5&q=HttpEndRequestA+site%3Amicrosoft.com) | wininet.dll |  |   
 [HttpGetServerCredentials](https://www.google.com/search?num=5&q=HttpGetServerCredentials+site%3Amicrosoft.com) | wininet.dll |  |   
 [HttpGetTunnelSocket](https://www.google.com/search?num=5&q=HttpGetTunnelSocket+site%3Amicrosoft.com) | wininet.dll |  |   
+[HttpIndicatePageLoadComplete](https://www.google.com/search?num=5&q=HttpIndicatePageLoadComplete+site%3Amicrosoft.com) | wininet.dll |  |   
 [HttpIsHostHstsEnabled](https://www.google.com/search?num=5&q=HttpIsHostHstsEnabled+site%3Amicrosoft.com) | wininet.dll |  |   
 [HttpOpenDependencyHandle](https://www.google.com/search?num=5&q=HttpOpenDependencyHandle+site%3Amicrosoft.com) | wininet.dll |  |   
 [HttpOpenRequest](https://www.google.com/search?num=5&q=HttpOpenRequestA+site%3Amicrosoft.com) | wininet.dll |  |   
@@ -209,6 +210,6 @@ Native Structure | Header | Managed Structure
 [INTERNET_DIAGNOSTIC_SOCKET_INFO](https://www.google.com/search?num=5&q=INTERNET_DIAGNOSTIC_SOCKET_INFO+site%3Amicrosoft.com) |  | Vanara.PInvoke.WinINet+INTERNET_DIAGNOSTIC_SOCKET_INFO  
 [INTERNET_PER_CONN_OPTION](https://www.google.com/search?num=5&q=INTERNET_PER_CONN_OPTION+site%3Amicrosoft.com) |  | Vanara.PInvoke.WinINet+INTERNET_PER_CONN_OPTION  
 [INTERNET_PER_CONN_OPTION_LIST](https://www.google.com/search?num=5&q=INTERNET_PER_CONN_OPTION_LIST+site%3Amicrosoft.com) |  | Vanara.PInvoke.WinINet+INTERNET_PER_CONN_OPTION_LIST  
-[INTERNET_PER_CONN_OPTION_Value](https://www.google.com/search?num=5&q=INTERNET_PER_CONN_OPTION_Value+site%3Amicrosoft.com) |  | Vanara.PInvoke.WinINet+INTERNET_PER_CONN_OPTION_Value  
+[INTERNET_PER_CONN_OPTION_Value](https://www.google.com/search?num=5&q=INTERNET_PER_CONN_OPTION_Value+site%3Amicrosoft.com) |  | Vanara.PInvoke.WinINet+INTERNET_PER_CONN_OPTION+INTERNET_PER_CONN_OPTION_Value  
 [INTERNET_PROXY_INFO](https://www.google.com/search?num=5&q=INTERNET_PROXY_INFO+site%3Amicrosoft.com) |  | Vanara.PInvoke.WinINet+INTERNET_PROXY_INFO  
 [INTERNET_VERSION_INFO](https://www.google.com/search?num=5&q=INTERNET_VERSION_INFO+site%3Amicrosoft.com) |  | Vanara.PInvoke.WinINet+INTERNET_VERSION_INFO  

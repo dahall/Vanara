@@ -1,9 +1,11 @@
 ## Correlation report for ntdsapi.dll  
-### Methods (55% complete)  
+### Methods (57% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [DsAddSidHistory](http://msdn2.microsoft.com/en-us/library/36ef8734-717a-4c3a-a839-6591d85c9734) | ntdsapi.dll | ntdsapi.h | Vanara.PInvoke.NTDSApi.DsAddSidHistory  
 [DsBind](http://msdn2.microsoft.com/en-us/library/ms675931) | ntdsapi.dll | NTDSApi.h | Vanara.PInvoke.NTDSApi.DsBind  
+[DsBindByInstanceA](https://www.google.com/search?num=5&q=DsBindByInstanceA+site%3Amicrosoft.com) | Ntdsapi.dll |  | Vanara.PInvoke.NTDSApi.DsBindByInstance  
+[DsBindByInstanceW](https://www.google.com/search?num=5&q=DsBindByInstanceW+site%3Amicrosoft.com) | Ntdsapi.dll |  | Vanara.PInvoke.NTDSApi.DsBindByInstance  
 [DsBindingSetTimeout](http://msdn2.microsoft.com/en-us/library/abdaae89-fba3-4949-92a9-acd62898ec24) | ntdsapi.dll | ntdsapi.h | Vanara.PInvoke.NTDSApi.DsBindingSetTimeout  
 [DsBindToISTG](http://msdn2.microsoft.com/en-us/library/bd53124c-8578-495d-b540-d4b4c09297c3) | ntdsapi.dll | ntdsapi.h | Vanara.PInvoke.NTDSApi.DsBindToISTG  
 [DsBindWithCred](http://msdn2.microsoft.com/en-us/library/ms675961) | ntdsapi.dll | NTDSApi.h | Vanara.PInvoke.NTDSApi.DsBindWithCred  

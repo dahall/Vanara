@@ -1,5 +1,5 @@
 ## Correlation report for kernel32.dll, kernelbase.dll  
-### Methods (100% complete)  
+### Methods (98% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AcquireSRWLockExclusive](http://msdn2.microsoft.com/en-us/library/ms681930) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive  
@@ -214,6 +214,7 @@ Native Method | Native DLL | Header | Managed Method
 [ExitProcess](http://msdn2.microsoft.com/en-us/library/ms682658) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ExitProcess  
 [ExitThread](http://msdn2.microsoft.com/en-us/library/ms682659) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ExitThread  
 [ExpandEnvironmentStrings](http://msdn2.microsoft.com/en-us/library/ms724265) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ExpandEnvironmentStrings  
+[ExpungeConsoleCommandHistory](https://www.google.com/search?num=5&q=ExpungeConsoleCommandHistoryA+site%3Amicrosoft.com) | kernelbase.dll |  |   
 [FatalAppExit](http://msdn2.microsoft.com/en-us/library/ms679336) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FatalAppExit  
 [FatalExit](http://msdn2.microsoft.com/en-us/library/ms679337) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FatalExit  
 [FileTimeToDosDateTime](http://msdn2.microsoft.com/en-us/library/ms724274) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.FileTimeToDosDateTime  
@@ -289,6 +290,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetCommConfig](http://msdn2.microsoft.com/en-us/library/aa363256) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCommConfig  
 [GetCommMask](http://msdn2.microsoft.com/en-us/library/aa363257) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCommMask  
 [GetCommModemStatus](http://msdn2.microsoft.com/en-us/library/aa363258) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCommModemStatus  
+[GetCommPorts](https://www.google.com/search?num=5&q=GetCommPorts+site%3Amicrosoft.com) | kernelbase.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCommPorts  
 [GetCommProperties](http://msdn2.microsoft.com/en-us/library/aa363259) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCommProperties  
 [GetCommState](http://msdn2.microsoft.com/en-us/library/aa363260) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCommState  
 [GetCommTimeouts](http://msdn2.microsoft.com/en-us/library/aa363261) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCommTimeouts  
@@ -499,6 +501,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetSystemRegistryQuota](http://msdn2.microsoft.com/en-us/library/ms724387) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemRegistryQuota  
 [GetSystemTime](http://msdn2.microsoft.com/en-us/library/ms724390) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemTime  
 [GetSystemTimeAdjustment](http://msdn2.microsoft.com/en-us/library/ms724394) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemTimeAdjustment  
+[GetSystemTimeAdjustmentPrecise](https://www.google.com/search?num=5&q=GetSystemTimeAdjustmentPrecise+site%3Amicrosoft.com) | kernelbase.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemTimeAdjustmentPrecise  
 [GetSystemTimeAsFileTime](http://msdn2.microsoft.com/en-us/library/ms724397) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemTimeAsFileTime  
 [GetSystemTimePreciseAsFileTime](http://msdn2.microsoft.com/en-us/library/hh706895) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetSystemTimePreciseAsFileTime  
 [GetSystemTimes](http://msdn2.microsoft.com/en-us/library/ms724400) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemTimes  
@@ -678,6 +681,8 @@ Native Method | Native DLL | Header | Managed Method
 [MapUserPhysicalPages](http://msdn2.microsoft.com/en-us/library/aa366753) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MapUserPhysicalPages  
 [MapUserPhysicalPagesScatter](http://msdn2.microsoft.com/en-us/library/aa366755) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MapUserPhysicalPagesScatter  
 [MapViewOfFile](http://msdn2.microsoft.com/en-us/library/aa366761) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MapViewOfFile  
+[MapViewOfFile3](https://www.google.com/search?num=5&q=MapViewOfFile3+site%3Amicrosoft.com) | kernelbase.dll |  |   
+[MapViewOfFile3FromApp](https://www.google.com/search?num=5&q=MapViewOfFile3FromApp+site%3Amicrosoft.com) | kernelbase.dll |  |   
 [MapViewOfFileEx](http://msdn2.microsoft.com/en-us/library/aa366763) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MapViewOfFileEx  
 [MapViewOfFileExNuma](http://msdn2.microsoft.com/en-us/library/1e28c8db-112d-481d-b470-8ca618e125ce) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.MapViewOfFileExNuma  
 [MapViewOfFileFromApp](http://msdn2.microsoft.com/en-us/library/hh994454) | kernel32.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.MapViewOfFileFromApp  
@@ -792,6 +797,7 @@ Native Method | Native DLL | Header | Managed Method
 [QueryWorkingSetEx](http://msdn2.microsoft.com/en-us/library/59ae76c9-e954-4648-9c9f-787136375b02) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.QueryWorkingSetEx  
 [QueueUserAPC](http://msdn2.microsoft.com/en-us/library/ms684954) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.QueueUserAPC  
 [QueueUserWorkItem](http://msdn2.microsoft.com/en-us/library/ms684957) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.QueueUserWorkItem  
+[RaiseCustomSystemEventTrigger](https://www.google.com/search?num=5&q=RaiseCustomSystemEventTrigger+site%3Amicrosoft.com) | kernelbase.dll |  |   
 [RaiseException](http://msdn2.microsoft.com/en-us/library/ms680552) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RaiseException  
 [RaiseFailFastException](http://msdn2.microsoft.com/en-us/library/dd941688) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RaiseFailFastException  
 [ReadConsole](https://www.google.com/search?num=5&q=ReadConsoleA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.ReadConsole  
@@ -862,6 +868,7 @@ Native Method | Native DLL | Header | Managed Method
 [SetConsoleDisplayMode](https://www.google.com/search?num=5&q=SetConsoleDisplayMode+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleDisplayMode  
 [SetConsoleHistoryInfo](https://www.google.com/search?num=5&q=SetConsoleHistoryInfo+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleHistoryInfo  
 [SetConsoleMode](https://www.google.com/search?num=5&q=SetConsoleMode+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleMode  
+[SetConsoleNumberOfCommands](https://www.google.com/search?num=5&q=SetConsoleNumberOfCommandsA+site%3Amicrosoft.com) | kernelbase.dll |  |   
 [SetConsoleOutputCP](https://www.google.com/search?num=5&q=SetConsoleOutputCP+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleOutputCP  
 [SetConsoleScreenBufferInfoEx](https://www.google.com/search?num=5&q=SetConsoleScreenBufferInfoEx+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleScreenBufferInfoEx  
 [SetConsoleScreenBufferSize](https://www.google.com/search?num=5&q=SetConsoleScreenBufferSize+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleScreenBufferSize  
@@ -925,6 +932,7 @@ Native Method | Native DLL | Header | Managed Method
 [SetSystemPowerState](http://msdn2.microsoft.com/en-us/library/aa373206) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetSystemPowerState  
 [SetSystemTime](http://msdn2.microsoft.com/en-us/library/ms724942) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetSystemTime  
 [SetSystemTimeAdjustment](http://msdn2.microsoft.com/en-us/library/ms724943) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetSystemTimeAdjustment  
+[SetSystemTimeAdjustmentPrecise](https://www.google.com/search?num=5&q=SetSystemTimeAdjustmentPrecise+site%3Amicrosoft.com) | kernelbase.dll |  |   
 [SetTapeParameters](http://msdn2.microsoft.com/en-us/library/aa362534) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetTapeParameters  
 [SetTapePosition](http://msdn2.microsoft.com/en-us/library/aa362536) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetTapePosition  
 [SetThreadAffinityMask](http://msdn2.microsoft.com/en-us/library/ms686247) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetThreadAffinityMask  
@@ -1016,6 +1024,8 @@ Native Method | Native DLL | Header | Managed Method
 [VerifyVersionInfo](http://msdn2.microsoft.com/en-us/library/ms725492) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.VerifyVersionInfo  
 [VerSetConditionMask](http://msdn2.microsoft.com/en-us/library/ms725493) | kernel32.dll | Winnt.h | Vanara.PInvoke.Kernel32.VerSetConditionMask  
 [VirtualAlloc](http://msdn2.microsoft.com/en-us/library/aa366887) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualAlloc  
+[VirtualAlloc2](https://www.google.com/search?num=5&q=VirtualAlloc2+site%3Amicrosoft.com) | kernelbase.dll |  |   
+[VirtualAlloc2FromApp](https://www.google.com/search?num=5&q=VirtualAlloc2FromApp+site%3Amicrosoft.com) | kernelbase.dll |  |   
 [VirtualAllocEx](http://msdn2.microsoft.com/en-us/library/aa366890) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualAllocEx  
 [VirtualAllocExNuma](http://msdn2.microsoft.com/en-us/library/aa366891) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualAllocExNuma  
 [VirtualAllocFromApp](http://msdn2.microsoft.com/en-us/library/mt169845) | kernelbase.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.VirtualAllocFromApp  

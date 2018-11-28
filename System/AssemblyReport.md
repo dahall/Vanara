@@ -16,6 +16,7 @@ BackgroundCopyJobEventArgs | Event argument for background copy job.
 BackgroundCopyManager | Use the BackgroundCopyManager to create transfer jobs, retrieve an enumerator object that contains the jobs in the queue, and to retrieve individual jobs from the queue.
 FileInfoExtension | Extension methods for `FileSystemInfo` and derived classes to facilitate retrieval of extended properties.
 NetworkConnection | Represents a single network connection. Wraps `INetworkConnection`.
+NetworkInterfaceExt | 
 NetworkListManager | Provides a set of methods to perform network list management functions.
 NetworkProfile | Represents a wireless network profile
 PathEx | Performs operations on String instances that contain file or directory path information. These operations are performed in a cross-platform manner.
@@ -46,6 +47,12 @@ BackgroundCopyJobSecurity | HTTP security flags that indicate which errors to ig
 BackgroundCopyJobState | Defines constant values for the different states of a job. | Queued, Connecting, Transferring, Suspended, Error, TransientError, Transferred, Acknowledged, Cancelled
 BackgroundCopyJobType | Defines constant values that specify the type of transfer job, such as download. | Download, Upload, UploadReply
 DeviceType | Represents the format of the virtual disk. | Unknown, Iso, Vhd, Vhdx, VhdSet
+NetworkInterfaceAccessType | The interface access type. | Loopback, Broadcast, PointToPoint, PointToMultiPoint
+NetworkInterfaceAdministrativeStatus | Specifies the NDIS network interface administrative status, as described in RFC 2863. | Up, Down, Testing
+NetworkInterfaceConnectionType | Specifies the NDIS network interface connection type. | Dedicated, Passive, Demand
+NetworkInterfaceDirectionType | Specifies the NDIS network interface direction type. | SendReceive, SendOnly, ReceiveOnly
+NetworkInterfaceMediaType | The NDIS media type of a network interface. | Ethernet802_3, TokenRing, Fddi, Wan, LocalTalk, Dix, ArcnetRaw, Arcnet878_2, Atm, Wireless, IrDA, Broadcast, CoWAN, Ieee1394, InfiniBand, Tunnel, Native802_11, Loopback, WiMAX, IP
+NetworkInterfacePhysicalMedium | The NDIS physical medium type. | Unspecified, WirelessLan, CableModem, PhoneLine, PowerLine, DSL, FibreChannel, Ieee1394, WirelessWan, Native802_11, Bluetooth, InfiniBand, WiMAX, UWB, Ethernet802_3, TokenRing, IrDA, WiredWAN, WiredCoWAN, Other
 PathCharType |  | Invalid, LongFileName, ShortFileName, Wildcard, Separator
 ProcessIntegrityLevel | Values which define a processes integrity level. | Untrusted, Undefined, Low, Medium, High, System
 Subtype | Represents the subtype of a virtual disk. | Fixed, Dynamic, Differencing

@@ -18,6 +18,7 @@ Native Method | Native DLL | Header | Managed Method
 [LdrRegisterDllNotification](http://msdn2.microsoft.com/en-us/library/c2757aa0-76fa-427a-a4f6-cb26e7f7d0d1) | ntdll.dll |  | Vanara.PInvoke.NtDll.LdrRegisterDllNotification  
 [LdrUnregisterDllNotification](http://msdn2.microsoft.com/en-us/library/18c3a027-e3cb-4083-afdc-00f416a70d8c) | ntdll.dll | ntldr.h | Vanara.PInvoke.NtDll.LdrUnregisterDllNotification  
 [NtAllocateVirtualMemory](http://msdn2.microsoft.com/en-us/library/bb82c90d-9bd3-4a23-b171-06a3208e424b) | ntdll.dll | ntifs.h | Vanara.PInvoke.NtDll.NtAllocateVirtualMemory  
+[NtAllocateVirtualMemoryEx](https://www.google.com/search?num=5&q=NtAllocateVirtualMemoryEx+site%3Amicrosoft.com) | ntdll.dll |  |   
 [NtCallEnclave](https://www.google.com/search?num=5&q=NtCallEnclave+site%3Amicrosoft.com) | ntdll.dll |  |   
 [NtClose](https://www.google.com/search?num=5&q=NtClose+site%3Amicrosoft.com) | ntdll.dll | winternl.h | Vanara.PInvoke.NtDll.NtClose  
 [NtCommitComplete](http://msdn2.microsoft.com/en-us/library/d0b968bc-bbab-4b6f-bb1f-9e36ac7c1e05) | ntdll.dll | wdm.h | Vanara.PInvoke.NtDll.NtCommitComplete  
@@ -47,6 +48,7 @@ Native Method | Native DLL | Header | Managed Method
 [NtGetCurrentProcessorNumber](https://www.google.com/search?num=5&q=NtGetCurrentProcessorNumber+site%3Amicrosoft.com) | ntdll.dll |  |   
 [NtGetNotificationResourceManager](https://www.google.com/search?num=5&q=NtGetNotificationResourceManager+site%3Amicrosoft.com) | ntdll.dll |  |   
 [NtLockFile](https://www.google.com/search?num=5&q=NtLockFile+site%3Amicrosoft.com) | ntdll.dll |  |   
+[NtMapViewOfSectionEx](https://www.google.com/search?num=5&q=NtMapViewOfSectionEx+site%3Amicrosoft.com) | ntdll.dll |  |   
 [NtNotifyChangeDirectoryFileEx](https://www.google.com/search?num=5&q=NtNotifyChangeDirectoryFileEx+site%3Amicrosoft.com) | ntdll.dll |  |   
 [NtNotifyChangeMultipleKeys](https://www.google.com/search?num=5&q=NtNotifyChangeMultipleKeys+site%3Amicrosoft.com) | ntdll.dll |  |   
 [NtOpenDirectoryObject](https://www.google.com/search?num=5&q=NtOpenDirectoryObject+site%3Amicrosoft.com) | ntdll.dll |  |   
@@ -214,6 +216,7 @@ Native Method | Native DLL | Header | Managed Method
 [RtlGetGroupSecurityDescriptor](https://www.google.com/search?num=5&q=RtlGetGroupSecurityDescriptor+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlGetNonVolatileToken](https://www.google.com/search?num=5&q=RtlGetNonVolatileToken+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlGetOwnerSecurityDescriptor](https://www.google.com/search?num=5&q=RtlGetOwnerSecurityDescriptor+site%3Amicrosoft.com) | ntdll.dll |  |   
+[RtlGetPersistedStateLocation](https://www.google.com/search?num=5&q=RtlGetPersistedStateLocation+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlGetSaclSecurityDescriptor](https://www.google.com/search?num=5&q=RtlGetSaclSecurityDescriptor+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlGetSystemBootStatus](https://www.google.com/search?num=5&q=RtlGetSystemBootStatus+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlGetSystemBootStatusEx](https://www.google.com/search?num=5&q=RtlGetSystemBootStatusEx+site%3Amicrosoft.com) | ntdll.dll |  |   
@@ -261,6 +264,7 @@ Native Method | Native DLL | Header | Managed Method
 [RtlIsGenericTableEmpty](https://www.google.com/search?num=5&q=RtlIsGenericTableEmpty+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlIsGenericTableEmptyAvl](https://www.google.com/search?num=5&q=RtlIsGenericTableEmptyAvl+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlIsNameInExpression](https://www.google.com/search?num=5&q=RtlIsNameInExpression+site%3Amicrosoft.com) | ntdll.dll |  |   
+[RtlIsNameInUnUpcasedExpression](https://www.google.com/search?num=5&q=RtlIsNameInUnUpcasedExpression+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlIsNameLegalDOS8Dot3](https://www.google.com/search?num=5&q=RtlIsNameLegalDOS8Dot3+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlIsPartialPlaceholder](https://www.google.com/search?num=5&q=RtlIsPartialPlaceholder+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlIsPartialPlaceholderFileHandle](https://www.google.com/search?num=5&q=RtlIsPartialPlaceholderFileHandle+site%3Amicrosoft.com) | ntdll.dll |  |   
@@ -291,8 +295,12 @@ Native Method | Native DLL | Header | Managed Method
 [RtlPrefixUnicodeString](https://www.google.com/search?num=5&q=RtlPrefixUnicodeString+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlQueryDepthSList](https://www.google.com/search?num=5&q=RtlQueryDepthSList+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlQueryImageMitigationPolicy](https://www.google.com/search?num=5&q=RtlQueryImageMitigationPolicy+site%3Amicrosoft.com) | ntdll.dll |  |   
+[RtlQueryProcessPlaceholderCompatibilityMode](https://www.google.com/search?num=5&q=RtlQueryProcessPlaceholderCompatibilityMode+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlQueryRegistryValues](https://www.google.com/search?num=5&q=RtlQueryRegistryValues+site%3Amicrosoft.com) | ntdll.dll |  |   
+[RtlQueryRegistryValueWithFallback](https://www.google.com/search?num=5&q=RtlQueryRegistryValueWithFallback+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlQueryThreadPlaceholderCompatibilityMode](https://www.google.com/search?num=5&q=RtlQueryThreadPlaceholderCompatibilityMode+site%3Amicrosoft.com) | ntdll.dll |  |   
+[RtlQueryTokenHostIdAsUlong64](https://www.google.com/search?num=5&q=RtlQueryTokenHostIdAsUlong64+site%3Amicrosoft.com) | ntdll.dll |  |   
+[RtlRaiseCustomSystemEventTrigger](https://www.google.com/search?num=5&q=RtlRaiseCustomSystemEventTrigger+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlRaiseException](https://www.google.com/search?num=5&q=RtlRaiseException+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlRandom](https://www.google.com/search?num=5&q=RtlRandom+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlRandomEx](https://www.google.com/search?num=5&q=RtlRandomEx+site%3Amicrosoft.com) | ntdll.dll |  |   
@@ -313,6 +321,7 @@ Native Method | Native DLL | Header | Managed Method
 [RtlSetGroupSecurityDescriptor](https://www.google.com/search?num=5&q=RtlSetGroupSecurityDescriptor+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlSetImageMitigationPolicy](https://www.google.com/search?num=5&q=RtlSetImageMitigationPolicy+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlSetOwnerSecurityDescriptor](https://www.google.com/search?num=5&q=RtlSetOwnerSecurityDescriptor+site%3Amicrosoft.com) | ntdll.dll |  |   
+[RtlSetProcessPlaceholderCompatibilityMode](https://www.google.com/search?num=5&q=RtlSetProcessPlaceholderCompatibilityMode+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlSetProxiedProcessId](https://www.google.com/search?num=5&q=RtlSetProxiedProcessId+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlSetSystemBootStatus](https://www.google.com/search?num=5&q=RtlSetSystemBootStatus+site%3Amicrosoft.com) | ntdll.dll |  |   
 [RtlSetSystemBootStatusEx](https://www.google.com/search?num=5&q=RtlSetSystemBootStatusEx+site%3Amicrosoft.com) | ntdll.dll |  |   
@@ -365,6 +374,7 @@ Native Method | Native DLL | Header | Managed Method
 [VerSetConditionMask](https://www.google.com/search?num=5&q=VerSetConditionMask+site%3Amicrosoft.com) | ntdll.dll |  |   
 [ZwAllocateLocallyUniqueId](https://www.google.com/search?num=5&q=ZwAllocateLocallyUniqueId+site%3Amicrosoft.com) | ntdll.dll |  |   
 [ZwAllocateVirtualMemory](https://www.google.com/search?num=5&q=ZwAllocateVirtualMemory+site%3Amicrosoft.com) | ntdll.dll |  |   
+[ZwAllocateVirtualMemoryEx](https://www.google.com/search?num=5&q=ZwAllocateVirtualMemoryEx+site%3Amicrosoft.com) | ntdll.dll |  |   
 [ZwCallEnclave](https://www.google.com/search?num=5&q=ZwCallEnclave+site%3Amicrosoft.com) | ntdll.dll |  |   
 [ZwClose](https://www.google.com/search?num=5&q=ZwClose+site%3Amicrosoft.com) | ntdll.dll |  |   
 [ZwCommitComplete](https://www.google.com/search?num=5&q=ZwCommitComplete+site%3Amicrosoft.com) | ntdll.dll |  |   
@@ -399,6 +409,7 @@ Native Method | Native DLL | Header | Managed Method
 [ZwLockFile](https://www.google.com/search?num=5&q=ZwLockFile+site%3Amicrosoft.com) | ntdll.dll |  |   
 [ZwMakeTemporaryObject](https://www.google.com/search?num=5&q=ZwMakeTemporaryObject+site%3Amicrosoft.com) | ntdll.dll |  |   
 [ZwMapViewOfSection](https://www.google.com/search?num=5&q=ZwMapViewOfSection+site%3Amicrosoft.com) | ntdll.dll |  |   
+[ZwMapViewOfSectionEx](https://www.google.com/search?num=5&q=ZwMapViewOfSectionEx+site%3Amicrosoft.com) | ntdll.dll |  |   
 [ZwNotifyChangeDirectoryFileEx](https://www.google.com/search?num=5&q=ZwNotifyChangeDirectoryFileEx+site%3Amicrosoft.com) | ntdll.dll |  |   
 [ZwNotifyChangeKey](https://www.google.com/search?num=5&q=ZwNotifyChangeKey+site%3Amicrosoft.com) | ntdll.dll |  |   
 [ZwOpenDirectoryObject](https://www.google.com/search?num=5&q=ZwOpenDirectoryObject+site%3Amicrosoft.com) | ntdll.dll |  |   

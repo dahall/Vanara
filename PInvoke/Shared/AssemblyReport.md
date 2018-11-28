@@ -4,34 +4,79 @@ Class | Description
 ---- | ----
 AssociateAttribute | Associates a Guid with an element.
 CoTaskMemStringMarshaler | Marshals strings that are allocated by native code and must be freed using CoTaskMemFree after use.
+FunctionHelper | 
+HANDLE | Base class for all native handles.
 IEnumFromIndexer<T> | Creates an enumerable class from a counter and an indexer. Useful if a class doesn't support `IEnumerable` or <see cref="T:System.Collections.Generic.IEnumerable`1" /> like some COM objects.
 IEnumFromNext<T> | Creates an enumerable class from a get next method and a reset method. Useful if a class doesn't support `IEnumerable` or <see cref="T:System.Collections.Generic.IEnumerable`1" /> like some COM objects.
 Lib | Holds string values for all used external API libraries.
 Macros | Platform invokable enumerated types, constants and functions from windows.h
-OBJECT_TYPE_LIST | Identifies an object type element in a hierarchy of object types. An array of OBJECT_TYPE_LIST structures to define a hierarchy of an object and its subobjects, such as property sets and properties.
+NullTermStringArrayMarshaler | 
+OBJECT_TYPE_LIST | The <c>OBJECT_TYPE_LIST</c> structure identifies an object type element in a hierarchy of object types. The AccessCheckByType functions use an array of <c>OBJECT_TYPE_LIST</c> structures to define a hierarchy of an object and its subobjects, such as property sets and properties.
 OverlappedAsync | Helper methods to work with asynchronous methods using `NativeOverlapped`.
 OverlappedAsyncResult | Holds all pertinent information for handling results and errors in an overlapped set of method calls.
 PInvokeDataAttribute | Captures information about P/Invoke calls.
 PRECT | Defines the coordinates of the upper-left and lower-right corners of a rectangle.
+PtrFunc<T> | 
 SafeElementArray<T> | A safe unmanaged array of structures allocated on the global heap with a prefix type (usually a uint or int) that determines the count of elements.
+SafeNativeArray<T> | A safe unmanaged array of structures allocated on the global heap. Array size determined by allocated memory size divided by size of structure.
 SafeResourceId | Represents a system resource name that can identify as a string, integer, or pointer.
+SBFunc<T> | 
 SECURITY_ATTRIBUTES | The SECURITY_ATTRIBUTES structure contains the security descriptor for an object and specifies whether the handle retrieved by specifying this structure is inheritable. This structure provides security settings for objects created by various functions, such as CreateFile, CreatePipe, CreateProcess, RegCreateKeyEx, or RegSaveKeyEx.
+SizeFunc<T> | 
 TryGetNext | Delegate that gets the next value in an enumeration and returns true or returns false to indicate there are no more items in the enumeration.
 WIN32_FIND_DATA | Contains information about the file that is found by the FindFirstFile, FindFirstFileEx, or FindNextFile function.
 ### Structures
 Struct | Description
 ---- | ----
 COLORREF | The COLORREF value is used to specify an RGB color in the form <c>0x00bbggrr</c>.
+HACCEL | Provides a handle to an accelator table.
+HBITMAP | Provides a handle to a bitmap.
+HBRUSH | Provides a handle to a drawing brush.
+HCURSOR | Provides a handle to a Windows cursor.
+HDC | Provides a handle to a graphic device context.
+HDESK | Provides a handle to a desktop.
+HDPA | Provides a handle to a DPA.
+HDROP | Provides a handle to a Windows drop operation.
+HDSA | Provides a handle to a DSA.
+HDWP | Provides a handle to a deferred windows position.
+HENHMETAFILE | Provides a handle to an enhanced metafile.
+HFILE | Provides a handle to a file.
+HFONT | Provides a handle to a font.
+HGDIOBJ | Provides a handle to a graphic device object.
+HICON | Provides a handle to a Windows icon.
+HIMAGELIST | Provides a handle to a Windows image list.
+HINSTANCE | Provides a handle to a module or library instance.
+HKEY | Provides a handle to a Windows registry key.
+HMENU | Provides a handle to a menu.
+HMETAFILE | Provides a handle to a metafile.
+HMONITOR | Provides a handle to a monitor.
+HPALETTE | Provides a handle to a palette.
+HPEN | Provides a handle to a drawing pen.
+HPROCESS | Provides a handle to a process.
+HPROPSHEET | Provides a handle to a Windows property sheet.
+HPROPSHEETPAGE | Provides a handle to a property sheet page.
 HRESULT | Formal replacement for the Windows HRESULT definition. In windows.h, it is a defined UINT value. For .NET, this class strongly types the value.
+HRGN | Provides a handle to a drawing region.
+HTHEME | Provides a handle to a Windows theme.
+HTHREAD | Provides a handle to a thread.
+HTHUMBNAIL | Provides a handle to a Windows thumbnail.
+HTOKEN | Provides a handle to an access token .
+HWINSTA | Provides a handle to a windows station.
+HWND | Provides a handle to a window or dialog.
 LOGFONT | The LOGFONT structure defines the attributes of a font.
 MSG | Contains message information from a thread's message queue.
 NTStatus | Formal replacement for the Windows NTStatus definition. In ntstatus.h, it is a defined UINT value. For .NET, this class strongly types the value.
-OBJECT_TYPE_LIST | Identifies an object type element in a hierarchy of object types. An array of OBJECT_TYPE_LIST structures to define a hierarchy of an object and its subobjects, such as property sets and properties.
+OBJECT_TYPE_LIST | The <c>OBJECT_TYPE_LIST</c> structure identifies an object type element in a hierarchy of object types. The AccessCheckByType functions use an array of <c>OBJECT_TYPE_LIST</c> structures to define a hierarchy of an object and its subobjects, such as property sets and properties.
+PACE | Provides a pointer to an access control entry.
+PACL | Provides a pointer to an access control list.
 POINTS | The POINTS structure defines the coordinates of a point.
 PRECT | Defines the coordinates of the upper-left and lower-right corners of a rectangle.
+PSECURITY_DESCRIPTOR | Provides a pointer to a security descriptor.
+PSID | Provides a pointer to a security identifier.
 RECT | Defines the coordinates of the upper-left and lower-right corners of a rectangle.
+ResourceId | Helper structure to use for a pointer that can morph into a string, pointer or integer.
 SECURITY_ATTRIBUTES | The SECURITY_ATTRIBUTES structure contains the security descriptor for an object and specifies whether the handle retrieved by specifying this structure is inheritable. This structure provides security settings for objects created by various functions, such as CreateFile, CreatePipe, CreateProcess, RegCreateKeyEx, or RegSaveKeyEx.
-SIZE | The SIZE structure specifies the width and height of a rectangle.
+SIZE | The <c>SIZE</c> structure specifies the width and height of a rectangle.
 SizeT | Managed instance of the SIZE_T type.
 SYSTEMTIME | Specifies a date and time, using individual members for the month, day, year, weekday, hour, minute, second, and millisecond. The time is either in coordinated universal time (UTC) or local time, depending on the function that is being called.
 WIN32_FIND_DATA | Contains information about the file that is found by the FindFirstFile, FindFirstFileEx, or FindNextFile function.
@@ -58,5 +103,6 @@ SECURITY_INFORMATION | The SECURITY_INFORMATION data type identifies the object-
 SeverityLevel | A value indicating whether an `HRESULT` is a success (Severity bit 31 equals 0). | Success, Fail
 SeverityLevel | A value indicating the severity of an `NTStatus` value (bits 30-31). | STATUS_SEVERITY_SUCCESS, STATUS_SEVERITY_INFORMATIONAL, STATUS_SEVERITY_WARNING, STATUS_SEVERITY_ERROR
 ShowWindowCommand | The flags that specify how an application is to be displayed when it is opened. | SW_HIDE, SW_SHOWNORMAL, SW_NORMAL, SW_SHOWMINIMIZED, SW_SHOWMAXIMIZED, SW_MAXIMIZE, SW_SHOWNOACTIVATE, SW_SHOW, SW_MINIMIZE, SW_SHOWMINNOACTIVE, SW_SHOWNA, SW_RESTORE, SW_SHOWDEFAULT, SW_FORCEMINIMIZE
-STGM | The STGM constants are flags that indicate conditions for creating and deleting the object and access modes for the object. The STGM constants are included in the IStorage, IStream, and IPropertySetStorage interfaces and in the StgCreateDocfile, StgCreateStorageEx, StgCreateDocfileOnILockBytes, StgOpenStorage, and StgOpenStorageEx functions. | STGM_DIRECT, STGM_FAILIFTHERE, STGM_READ, STGM_WRITE, STGM_READWRITE, STGM_SHARE_EXCLUSIVE, STGM_SHARE_DENY_WRITE, STGM_SHARE_DENY_READ, STGM_SHARE_DENY_NONE, STGM_CREATE, STGM_TRANSACTED, STGM_CONVERT, STGM_PRIORITY, STGM_NOSCRATCH, STGM_NOSNAPSHOT, STGM_DIRECT_SWMR, STGM_DELETEONRELEASE, STGM_SIMPLE
+STGM | The STGM constants are flags that indicate conditions for creating and deleting the object and access modes for the object. The STGM constants are included in the IStorage, IStream, and IPropertySetStorage interfaces and in the StgCreateDocfile, StgCreateStorageEx, StgCreateDocfileOnILockBytes, StgOpenStorage, and StgOpenStorageEx functions. <para> These elements are often combined using an OR operator. They are interpreted in groups as listed in the following table. It is not valid to use more than one element from a single group. | STGM_DIRECT, STGM_FAILIFTHERE, STGM_READ, STGM_WRITE, STGM_READWRITE, STGM_SHARE_EXCLUSIVE, STGM_SHARE_DENY_WRITE, STGM_SHARE_DENY_READ, STGM_SHARE_DENY_NONE, STGM_CREATE, STGM_TRANSACTED, STGM_CONVERT, STGM_PRIORITY, STGM_NOSCRATCH, STGM_NOSNAPSHOT, STGM_DIRECT_SWMR, STGM_DELETEONRELEASE, STGM_SIMPLE
+SystemColorIndex | Color index used to get a system color from <see cref="!:GetSysColor" />. | COLOR_SCROLLBAR, COLOR_BACKGROUND, COLOR_DESKTOP, COLOR_ACTIVECAPTION, COLOR_INACTIVECAPTION, COLOR_MENU, COLOR_WINDOW, COLOR_WINDOWFRAME, COLOR_MENUTEXT, COLOR_WINDOWTEXT, COLOR_CAPTIONTEXT, COLOR_ACTIVEBORDER, COLOR_INACTIVEBORDER, COLOR_APPWORKSPACE, COLOR_HIGHLIGHT, COLOR_HIGHLIGHTTEXT, COLOR_BTNFACE, COLOR_3DFACE, COLOR_BTNSHADOW, COLOR_3DSHADOW, COLOR_GRAYTEXT, COLOR_BTNTEXT, COLOR_INACTIVECAPTIONTEXT, COLOR_3DHILIGHT, COLOR_BTNHILIGHT, COLOR_BTNHIGHLIGHT, COLOR_3DHIGHLIGHT, COLOR_3DDKSHADOW, COLOR_3DLIGHT, COLOR_INFOTEXT, COLOR_INFOBK, COLOR_HOTLIGHT, COLOR_GRADIENTACTIVECAPTION, COLOR_GRADIENTINACTIVECAPTION, COLOR_MENUHILIGHT, COLOR_MENUBAR
 SystemShutDownReason | Flags used in the ExitWindowsEx, InitiateShutdown and InitiateSystemShutdownEx functions. | SHTDN_REASON_MAJOR_OTHER, SHTDN_REASON_MINOR_OTHER, SHTDN_REASON_MAJOR_NONE, SHTDN_REASON_MINOR_MAINTENANCE, SHTDN_REASON_MINOR_INSTALLATION, SHTDN_REASON_MINOR_UPGRADE, SHTDN_REASON_MINOR_RECONFIG, SHTDN_REASON_MINOR_HUNG, SHTDN_REASON_MINOR_UNSTABLE, SHTDN_REASON_MINOR_DISK, SHTDN_REASON_MINOR_PROCESSOR, SHTDN_REASON_MINOR_NETWORKCARD, SHTDN_REASON_MINOR_POWER_SUPPLY, SHTDN_REASON_MINOR_CORDUNPLUGGED, SHTDN_REASON_MINOR_ENVIRONMENT, SHTDN_REASON_MINOR_HARDWARE_DRIVER, SHTDN_REASON_MINOR_OTHERDRIVER, SHTDN_REASON_MINOR_BLUESCREEN, SHTDN_REASON_MINOR_SERVICEPACK, SHTDN_REASON_MINOR_HOTFIX, SHTDN_REASON_MINOR_SECURITYFIX, SHTDN_REASON_MINOR_SECURITY, SHTDN_REASON_MINOR_NETWORK_CONNECTIVITY, SHTDN_REASON_MINOR_WMI, SHTDN_REASON_MINOR_SERVICEPACK_UNINSTALL, SHTDN_REASON_MINOR_HOTFIX_UNINSTALL, SHTDN_REASON_MINOR_SECURITYFIX_UNINSTALL, SHTDN_REASON_MINOR_MMC, SHTDN_REASON_MINOR_SYSTEMRESTORE, SHTDN_REASON_MINOR_TERMSRV, SHTDN_REASON_MINOR_DC_PROMOTION, SHTDN_REASON_MINOR_DC_DEMOTION, SHTDN_REASON_MINOR_NONE, SHTDN_REASON_UNKNOWN, SHTDN_REASON_MAJOR_HARDWARE, SHTDN_REASON_MAJOR_OPERATINGSYSTEM, SHTDN_REASON_MAJOR_SOFTWARE, SHTDN_REASON_MAJOR_APPLICATION, SHTDN_REASON_MAJOR_SYSTEM, SHTDN_REASON_MAJOR_POWER, SHTDN_REASON_MAJOR_LEGACY_API, SHTDN_REASON_FLAG_COMMENT_REQUIRED, SHTDN_REASON_FLAG_DIRTY_PROBLEM_ID_REQUIRED, SHTDN_REASON_FLAG_CLEAN_UI, SHTDN_REASON_FLAG_DIRTY_UI, SHTDN_REASON_FLAG_MOBILE_UI_RESERVED, SHTDN_REASON_FLAG_USER_DEFINED, SHTDN_REASON_FLAG_PLANNED, SHTDN_REASON_LEGACY_API

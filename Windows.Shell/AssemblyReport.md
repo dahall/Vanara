@@ -24,6 +24,8 @@ ShellFolder | A folder or container of `ShellItem` instances.
 ShellImageList | Represents the System Image List holding images for all shell icons.
 ShellItem | Encapsulates an item in the Windows Shell.
 ShellItemArray | A folder or container of `ShellItem` instances.
+ShellItemChangeEventArgs | Provides data for `ShellItemChangeWatcher` events.
+ShellItemChangeWatcher | Listens to the shell item change notifications and raises events when a folder, or item in a folder, changes.
 ShellItemPropertyStore | A property store for a `ShellItem`.
 ShellItemPropertyUpdates | A dictionary of properties that can be used to set or update property values on Shell items via the `ShellFileOperations.QueueApplyPropertiesOperation(Vanara.Windows.Shell.ShellItem,Vanara.Windows.Shell.ShellItemPropertyUpdates)` method. This class wraps the `IPropertyChangeArray` COM interface.
 ShellLibrary | Shell library encapsulation.
@@ -34,6 +36,7 @@ TaskbarList | Methods that control the Windows taskbar. It allows you to dynamic
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----
+ChangeFilters | Changes that might occur to a shell item or folder. | ItemRenamed, ItemCreated, ItemDeleted, FolderCreated, FolderDeleted, MediaInserted, MediaRemoved, DriveRemoved, DriveAdded, FolderShared, FolderUnshared, Attributes, FolderUpdated, ItemUpdated, ServerDisconnected, SystemImageUpdated, DriveAddedInteractive, FolderRenamed, AllDiskEvents, DriveFreeSpaceChanged, FileAssociationChanged, AllGlobalEvents, AllEvents
 ExecutableType | Specifies the executable file type. | Nonexecutable, DOS, Win32Console, Windows
 FolderItemFilter | A filter for the types of children to enumerate. | Folders, NonFolders, IncludeHidden, Printers, Shareable, Storage, FastItems, FlatList, IncludeSuperHidden
 LibraryFolderFilter | Defines options for filtering folder items. | FileSystemOnly, StorageObjects, AllItems

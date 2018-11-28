@@ -1,5 +1,5 @@
 ## Correlation report for ole32.dll, oleaut32.dll, propsys.dll  
-### Methods (18% complete)  
+### Methods (20% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BindMoniker](https://www.google.com/search?num=5&q=BindMoniker+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -509,38 +509,38 @@ Native Method | Native DLL | Header | Managed Method
 [RevokeActiveObjectExt](https://www.google.com/search?num=5&q=RevokeActiveObjectExt+site%3Amicrosoft.com) | ole32.dll |  |   
 [RevokeDragDrop](https://www.google.com/search?num=5&q=RevokeDragDrop+site%3Amicrosoft.com) | ole32.dll |  |   
 [RoGetAgileReference](https://www.google.com/search?num=5&q=RoGetAgileReference+site%3Amicrosoft.com) | ole32.dll |  |   
-[SafeArrayAccessData](http://msdn2.microsoft.com/en-us/library/ms221620) | oleaut32.dll | OleAuto.h | Vanara.PInvoke.OleAut32.SafeArrayAccessData  
-[SafeArrayAddRef](https://www.google.com/search?num=5&q=SafeArrayAddRef+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SafeArrayAllocData](https://www.google.com/search?num=5&q=SafeArrayAllocData+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SafeArrayAllocDescriptor](https://www.google.com/search?num=5&q=SafeArrayAllocDescriptor+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SafeArrayAllocDescriptorEx](https://www.google.com/search?num=5&q=SafeArrayAllocDescriptorEx+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SafeArrayCopy](https://www.google.com/search?num=5&q=SafeArrayCopy+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SafeArrayCopyData](https://www.google.com/search?num=5&q=SafeArrayCopyData+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SafeArrayCreate](http://msdn2.microsoft.com/en-us/library/ms221234) | oleaut32.dll | OleAuto.h | Vanara.PInvoke.OleAut32.SafeArrayCreate  
-[SafeArrayCreateEx](http://msdn2.microsoft.com/en-us/library/ms221198) | oleaut32.dll | OleAuto.h | Vanara.PInvoke.OleAut32.SafeArrayCreateEx  
-[SafeArrayCreateVector](http://msdn2.microsoft.com/en-us/library/ms221558) | oleaut32.dll | OleAuto.h | Vanara.PInvoke.OleAut32.SafeArrayCreateVector  
-[SafeArrayCreateVectorEx](https://www.google.com/search?num=5&q=SafeArrayCreateVectorEx+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SafeArrayDestroy](http://msdn2.microsoft.com/en-us/library/ms221702) | oleaut32.dll | OleAuto.h | Vanara.PInvoke.OleAut32.SafeArrayDestroy  
-[SafeArrayDestroyData](https://www.google.com/search?num=5&q=SafeArrayDestroyData+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SafeArrayDestroyDescriptor](https://www.google.com/search?num=5&q=SafeArrayDestroyDescriptor+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SafeArrayGetDim](http://msdn2.microsoft.com/en-us/library/ms221539) | oleaut32.dll | OleAuto.h | Vanara.PInvoke.OleAut32.SafeArrayGetDim  
-[SafeArrayGetElement](http://msdn2.microsoft.com/en-us/library/ms221255) | oleaut32.dll | OleAuto.h | Vanara.PInvoke.OleAut32.SafeArrayGetElement  
-[SafeArrayGetElemsize](http://msdn2.microsoft.com/en-us/library/ms221074) | oleaut32.dll | OleAuto.h | Vanara.PInvoke.OleAut32.SafeArrayGetElemsize  
-[SafeArrayGetIID](https://www.google.com/search?num=5&q=SafeArrayGetIID+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SafeArrayGetLBound](http://msdn2.microsoft.com/en-us/library/ms221622) | oleaut32.dll | OleAuto.h | Vanara.PInvoke.OleAut32.SafeArrayGetLBound  
-[SafeArrayGetRecordInfo](https://www.google.com/search?num=5&q=SafeArrayGetRecordInfo+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SafeArrayGetUBound](http://msdn2.microsoft.com/en-us/library/ms221584) | oleaut32.dll | OleAuto.h | Vanara.PInvoke.OleAut32.SafeArrayGetUBound  
-[SafeArrayGetVartype](https://www.google.com/search?num=5&q=SafeArrayGetVartype+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SafeArrayLock](https://www.google.com/search?num=5&q=SafeArrayLock+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SafeArrayPtrOfIndex](https://www.google.com/search?num=5&q=SafeArrayPtrOfIndex+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SafeArrayPutElement](http://msdn2.microsoft.com/en-us/library/ms221283) | oleaut32.dll | OleAuto.h | Vanara.PInvoke.OleAut32.SafeArrayPutElement  
-[SafeArrayRedim](https://www.google.com/search?num=5&q=SafeArrayRedim+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SafeArrayReleaseData](https://www.google.com/search?num=5&q=SafeArrayReleaseData+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SafeArrayReleaseDescriptor](https://www.google.com/search?num=5&q=SafeArrayReleaseDescriptor+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SafeArraySetIID](https://www.google.com/search?num=5&q=SafeArraySetIID+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SafeArraySetRecordInfo](https://www.google.com/search?num=5&q=SafeArraySetRecordInfo+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[SafeArrayUnaccessData](http://msdn2.microsoft.com/en-us/library/ms221203) | oleaut32.dll | OleAuto.h | Vanara.PInvoke.OleAut32.SafeArrayUnaccessData  
-[SafeArrayUnlock](https://www.google.com/search?num=5&q=SafeArrayUnlock+site%3Amicrosoft.com) | oleaut32.dll |  |   
+[SafeArrayAccessData](http://msdn2.microsoft.com/en-us/library/ded2112e-f6cd-4982-bacb-b95370e80187) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayAccessData  
+[SafeArrayAddRef](http://msdn2.microsoft.com/en-us/library/0745D2E7-447E-4688-ADCF-1F889BC55BFB) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayAddRef  
+[SafeArrayAllocData](http://msdn2.microsoft.com/en-us/library/a1f984cd-9638-415d-8582-25b1bdfbd694) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayAllocData  
+[SafeArrayAllocDescriptor](http://msdn2.microsoft.com/en-us/library/8fe5c802-cdc0-4e7a-9410-ba65f9a5140e) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayAllocDescriptor  
+[SafeArrayAllocDescriptorEx](http://msdn2.microsoft.com/en-us/library/c368d278-ef62-4cf3-a7f8-c48549207c09) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayAllocDescriptorEx  
+[SafeArrayCopy](http://msdn2.microsoft.com/en-us/library/8f84d4f6-1852-4ad8-b174-f3fa37e5bbd6) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayCopy  
+[SafeArrayCopyData](http://msdn2.microsoft.com/en-us/library/32c1fc4f-3fe0-490f-b5af-640514a8cecc) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayCopyData  
+[SafeArrayCreate](http://msdn2.microsoft.com/en-us/library/5b94f1a2-a558-473f-85dd-9545c0464cc7) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayCreate  
+[SafeArrayCreateEx](http://msdn2.microsoft.com/en-us/library/63117428-6676-4fb5-a0ae-7e3b22546d77) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayCreateEx  
+[SafeArrayCreateVector](http://msdn2.microsoft.com/en-us/library/b794b8c6-a523-4636-8681-a936dff3fc6f) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayCreateVector  
+[SafeArrayCreateVectorEx](http://msdn2.microsoft.com/en-us/library/45f2ba42-4189-42eb-9f6c-772198296906) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayCreateVectorEx  
+[SafeArrayDestroy](http://msdn2.microsoft.com/en-us/library/fc94f7e7-b903-4c78-905c-54df1f8d13fa) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayDestroy  
+[SafeArrayDestroyData](http://msdn2.microsoft.com/en-us/library/aa9c62ba-79b5-4fcf-b3ed-664016486dfc) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayDestroyData  
+[SafeArrayDestroyDescriptor](http://msdn2.microsoft.com/en-us/library/f1e8de45-673b-4f20-a639-18c724c82df1) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayDestroyDescriptor  
+[SafeArrayGetDim](http://msdn2.microsoft.com/en-us/library/bc52b23b-d323-478c-881f-d2a31a3289c5) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayGetDim  
+[SafeArrayGetElement](http://msdn2.microsoft.com/en-us/library/47e9ee31-1e3b-4193-8467-6ef0db05966e) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayGetElement  
+[SafeArrayGetElemsize](http://msdn2.microsoft.com/en-us/library/27bd4a3f-0e9d-45f7-ad7c-0c0b59579dd0) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayGetElemsize  
+[SafeArrayGetIID](http://msdn2.microsoft.com/en-us/library/9416f7f8-aee0-4e6a-be4f-ca6061adb244) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayGetIID  
+[SafeArrayGetLBound](http://msdn2.microsoft.com/en-us/library/f3134cc9-759b-4908-ada0-d025a525e795) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayGetLBound  
+[SafeArrayGetRecordInfo](http://msdn2.microsoft.com/en-us/library/1584c00e-06a5-44f4-8c4b-a2b23737a652) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayGetRecordInfo  
+[SafeArrayGetUBound](http://msdn2.microsoft.com/en-us/library/aed339d5-d962-4adc-ac01-6c15a54c51ca) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayGetUBound  
+[SafeArrayGetVartype](http://msdn2.microsoft.com/en-us/library/8ec0e736-bac8-4df4-ba32-433cd8478c55) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayGetVartype  
+[SafeArrayLock](http://msdn2.microsoft.com/en-us/library/cb29d862-c7c5-4852-b017-c29e88d5f1c4) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayLock  
+[SafeArrayPtrOfIndex](http://msdn2.microsoft.com/en-us/library/ms221452) | oleaut32.dll | OleAuto.h | Vanara.PInvoke.OleAut32.SafeArrayPtrOfIndex  
+[SafeArrayPutElement](http://msdn2.microsoft.com/en-us/library/7c837b4f-d319-4d98-934a-b585fe521bf8) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayPutElement  
+[SafeArrayRedim](http://msdn2.microsoft.com/en-us/library/1c7fa627-e5e4-4bb9-8237-2f7358ebc4b8) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayRedim  
+[SafeArrayReleaseData](http://msdn2.microsoft.com/en-us/library/AF3C36A3-2B3A-4159-8183-DB082FBFD215) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayReleaseData  
+[SafeArrayReleaseDescriptor](http://msdn2.microsoft.com/en-us/library/D6678B17-B537-46CF-AC64-4D0C0DC4CDF3) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayReleaseDescriptor  
+[SafeArraySetIID](http://msdn2.microsoft.com/en-us/library/851b8a44-9da4-418c-88bc-80c9fc55d25c) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArraySetIID  
+[SafeArraySetRecordInfo](http://msdn2.microsoft.com/en-us/library/85317e8e-7625-4799-9c34-73245f164f85) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArraySetRecordInfo  
+[SafeArrayUnaccessData](http://msdn2.microsoft.com/en-us/library/61b482cb-f0a3-4efb-9a68-f373f241e89a) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayUnaccessData  
+[SafeArrayUnlock](http://msdn2.microsoft.com/en-us/library/654995ab-1959-44dc-9e26-11c34e489c14) | oleaut32.dll | oleauto.h | Vanara.PInvoke.OleAut32.SafeArrayUnlock  
 [SetConvertStg](https://www.google.com/search?num=5&q=SetConvertStg+site%3Amicrosoft.com) | ole32.dll |  |   
 [SetDocumentBitStg](https://www.google.com/search?num=5&q=SetDocumentBitStg+site%3Amicrosoft.com) | ole32.dll |  |   
 [SetErrorInfo](https://www.google.com/search?num=5&q=SetErrorInfo+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -964,13 +964,18 @@ Native Structure | Header | Managed Structure
 [SAFEARRAY](http://msdn2.microsoft.com/en-us/library/ms221482) | OaIdl.h | Vanara.PInvoke.OleAut32+SAFEARRAY  
 [SAFEARRAYBOUND](http://msdn2.microsoft.com/en-us/library/ms221167) | OaIdl.h | Vanara.PInvoke.OleAut32+SAFEARRAYBOUND  
 [SNB](https://www.google.com/search?num=5&q=SNB+site%3Amicrosoft.com) |  | Vanara.PInvoke.Ole32+SNB  
+[SOLE_AUTHENTICATION_INFO](http://msdn2.microsoft.com/en-us/library/23beb1b1-e4b7-4282-9868-5caf40a69a61) | objidl.h | Vanara.PInvoke.Ole32+SOLE_AUTHENTICATION_INFO  
+[SOLE_AUTHENTICATION_LIST](http://msdn2.microsoft.com/en-us/library/21f7aef3-b6be-41cc-a6ed-16d3778e3cee) | objidl.h | Vanara.PInvoke.Ole32+SOLE_AUTHENTICATION_LIST  
+[SOLE_AUTHENTICATION_SERVICE](http://msdn2.microsoft.com/en-us/library/77fd15d7-54d4-4812-93d3-13a671e7afff) | objidl.h | Vanara.PInvoke.Ole32+SOLE_AUTHENTICATION_SERVICE  
 [STATPROPSETSTG](http://msdn2.microsoft.com/en-us/library/8e5cc502-9f96-4f4b-8729-cac4a1ffcd6f) | propidl.h | Vanara.PInvoke.Ole32+STATPROPSETSTG  
 [STATPROPSTG](http://msdn2.microsoft.com/en-us/library/3b8de6d3-18a3-4c0a-94d1-04bcec05d41a) | propidl.h | Vanara.PInvoke.Ole32+STATPROPSTG  
 [STGOPTIONS](http://msdn2.microsoft.com/en-us/library/aa380344) | Objbase.h | Vanara.PInvoke.Ole32+STGOPTIONS  
 ### Interfaces  
 Native Interface | Native DLL | Header | Managed Interface  
 --- | --- | --- | ---  
+[ICreateObject](http://msdn2.microsoft.com/en-us/library/90502b4a-dc0a-4077-83d7-e9f5445ba69b) | propsys.h | Vanara.PInvoke.PropSys+ICreateObject  
 [IDelayedPropertyStoreFactory](http://msdn2.microsoft.com/en-us/library/855c9f10-9f40-4c60-a669-551fa51133f5) | propsys.h | Vanara.PInvoke.PropSys+IDelayedPropertyStoreFactory  
+[IDropSource](http://msdn2.microsoft.com/en-us/library/963a36bc-4ad7-4591-bffc-a96b4310177d) | oleidl.h | Vanara.PInvoke.Ole32+IDropSource  
 [IEnumSTATPROPSETSTG](http://msdn2.microsoft.com/en-us/library/8d5e658f-312c-4c91-8794-808b2e8dd182) | propidl.h | Vanara.PInvoke.Ole32+IEnumSTATPROPSETSTG  
 [IEnumSTATPROPSTG](http://msdn2.microsoft.com/en-us/library/e625e52a-5628-4d18-9282-aa1c141c83af) | propidl.h | Vanara.PInvoke.Ole32+IEnumSTATPROPSTG  
 [IEnumSTATSTG](http://msdn2.microsoft.com/en-us/library/aa379217) | Objidl.h | Vanara.PInvoke.Ole32+IEnumSTATSTG  
@@ -992,4 +997,5 @@ Native Interface | Native DLL | Header | Managed Interface
 [IPropertyStore](http://msdn2.microsoft.com/en-us/library/bb762502) | Shobjidl.h | Vanara.PInvoke.PropSys+IPropertyStore  
 [IPropertyStoreFactory](http://msdn2.microsoft.com/en-us/library/78ea822d-da8e-4883-b0eb-4277e7eb87a2) | propsys.h | Vanara.PInvoke.PropSys+IPropertyStoreFactory  
 [IPropertySystem](https://www.google.com/search?num=5&q=IPropertySystem+site%3Amicrosoft.com) | PropSys.h | Vanara.PInvoke.PropSys+IPropertySystem  
+[IRecordInfo](https://www.google.com/search?num=5&q=IRecordInfo+site%3Amicrosoft.com) | OAIdl.h | Vanara.PInvoke.Ole32+IRecordInfo  
 [IStorage](http://msdn2.microsoft.com/en-us/library/aa380015) | Objidl.h | Vanara.PInvoke.Ole32+IStorage  
