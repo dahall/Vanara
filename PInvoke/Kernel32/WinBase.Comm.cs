@@ -638,6 +638,49 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetCommModemStatus([In] HFILE hFile, out COMM_MODEM_STATUS lpModemStat);
 
+		/// <summary>
+		/// <para>Gets an array that contains the well-formed COM ports.</para>
+		/// <para>
+		/// This function obtains the COM port numbers from the <c>HKLM\Hardware\DeviceMap\SERIALCOMM</c> registry key and then writes them
+		/// to a caller-supplied array. If the array is too small, the function gets the necessary size.
+		/// </para>
+		/// <para><c>Note</c> If new entries are added to the registry key, the necessary size can change between API calls.</para>
+		/// </summary>
+		/// <param name="lpPortNumbers">
+		/// <para>An array for the port numbers.</para>
+		/// </param>
+		/// <param name="uPortNumbersCount">
+		/// <para>The length of the array in the lpPortNumbers parameter.</para>
+		/// </param>
+		/// <param name="puPortNumbersFound">
+		/// <para>The number of port numbers written to the lpPortNumbers or the length of the array required for the port numbers.</para>
+		/// </param>
+		/// <returns>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_SUCCESS</term>
+		/// <term>The call succeeded. The lpPortNumbers array was large enough for the result.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_MORE_DATA</term>
+		/// <term>The lpPortNumbers array was too small to contain all available port numbers.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_FILE_NOT_FOUND</term>
+		/// <term>There are no comm ports available.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getcommports
+		// ULONG GetCommPorts( PULONG lpPortNumbers, ULONG uPortNumbersCount, PULONG puPortNumbersFound );
+		[DllImport(Lib.KernelBase, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winbase.h", MSDNShortId = "8E57FB62-D7A0-4B47-942B-E33E0B7A37B1", MinClient = PInvokeClient.Windows10)]
+		public static extern Win32Error GetCommPorts([In, Out] uint[] lpPortNumbers, uint uPortNumbersCount, out uint puPortNumbersFound);
+
 		/// <summary>Retrieves information about the communications properties for a specified communications device.</summary>
 		/// <param name="hFile">A handle to the communications device. The <c>CreateFile</c> function returns this handle.</param>
 		/// <param name="lpCommProp">

@@ -1599,6 +1599,51 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetSystemTimeAdjustment(out uint lpTimeAdjustment, out uint lpTimeIncrement, [MarshalAs(UnmanagedType.Bool)] out bool lpTimeAdjustmentDisabled);
 
+		/// <summary>
+		/// <para>
+		/// Determines whether the system is applying periodic, programmed time adjustments to its time-of-day clock, and obtains the value
+		/// and period of any such adjustments.
+		/// </para>
+		/// </summary>
+		/// <param name="lpTimeAdjustment">
+		/// <para>Returns the adjusted clock update frequency.</para>
+		/// </param>
+		/// <param name="lpTimeIncrement">
+		/// <para>Returns the clock update frequency.</para>
+		/// </param>
+		/// <param name="lpTimeAdjustmentDisabled">
+		/// <para>Returns an indicator which specifies whether the time adjustment is enabled.</para>
+		/// <para>
+		/// A value of <c>TRUE</c> indicates that periodic adjustment is disabled. In this case, the system may attempt to keep the
+		/// time-of-day clock in sync using its own internal mechanisms. This may cause time-of-day to periodically jump to the "correct time."
+		/// </para>
+		/// <para>
+		/// A value of <c>FALSE</c> indicates that periodic, programmed time adjustment is being used to serialize time-of-day, and the
+		/// system will not interfere or attempt to synchronize time-of-day on its own.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function is used in algorithms that synchronize the time-of-day with another time source, using a programmed clock
+		/// adjustment. To do this, the system computes the adjusted clock update frequency, and then this function allows the caller to
+		/// obtain that value.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> For a complete code sample on how to enable system-time privileges, adjust the system clock, and display clock
+		/// values, see SetSystemTimeAdjustmentPrecise.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sysinfoapi/nf-sysinfoapi-getsystemtimeadjustmentprecise
+		// BOOL GetSystemTimeAdjustmentPrecise( PDWORD64 lpTimeAdjustment, PDWORD64 lpTimeIncrement, PBOOL lpTimeAdjustmentDisabled );
+		[DllImport(Lib.Api, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("sysinfoapi.h", MSDNShortId = "95EEE23D-01D8-49E1-BA64-49C07E8B1619")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetSystemTimeAdjustmentPrecise(out ulong lpTimeAdjustment, out ulong lpTimeIncrement, [MarshalAs(UnmanagedType.Bool)] out bool lpTimeAdjustmentDisabled);
+
 		/// <summary>Retrieves the current system date and time. The information is in Coordinated Universal Time (UTC) format.</summary>
 		/// <param name="lpSystemTimeAsFileTime">
 		/// A pointer to a <c>FILETIME</c> structure to receive the current system date and time in UTC format.
