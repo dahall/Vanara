@@ -159,27 +159,49 @@ namespace Vanara.PInvoke
 			return BeginDeviceIoControl<TIn, TOut>(hDevice, dwIoControlCode, buffer, userCallback, null);
 		}
 
-		/// <summary>
-		/// <para>
-		/// Cancels all pending input and output (I/O) operations that are issued by the calling thread for the specified file. The function
-		/// does not cancel I/O operations that other threads issue for a file handle.
-		/// </para>
-		/// <para>To cancel I/O operations from another thread, use the <c>CancelIoEx</c> function.</para>
-		/// </summary>
-		/// <param name="hFile">
-		/// <para>A handle to the file.</para>
-		/// <para>The function cancels all pending I/O operations for this file handle.</para>
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// If the function succeeds, the return value is nonzero. The cancel operation for all pending I/O operations issued by the calling
-		/// thread for the specified file handle was successfully requested. The thread can use the <c>GetOverlappedResult</c> function to
-		/// determine when the I/O operations themselves have been completed.
-		/// </para>
-		/// <para>If the function fails, the return value is zero (0). To get extended error information, call the <c>GetLastError</c> function.</para>
-		/// </returns>
-		// BOOL WINAPI CancelIo( _In_ HANDLE hFile);// https://msdn.microsoft.com/en-us/library/windows/desktop/aa363791(v=vs.85).aspx
-		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+        /// <summary>
+        /// Starts the asynchronous operation of sending a control code directly to a specified device driver, causing the corresponding
+        /// device to perform the corresponding operation.
+        /// </summary>
+        /// <param name="hDevice">
+        /// A handle to the device on which the operation is to be performed. The device is typically a volume, directory, file, or stream.
+        /// To retrieve a device handle, use the CreateFile function. For more information, see Remarks.
+        /// </param>
+        /// <param name="dwIoControlCode">
+        /// The control code for the operation. This value identifies the specific operation to be performed and the type of device on which
+        /// to perform it.
+        /// </param>
+        /// <param name="inputBuffer">The input buffer required to perform the operation. Can be null if unnecessary.</param>
+        /// <param name="outputBuffer">The output buffer that is to receive the data returned by the operation. Can be null if unnecessary.</param>
+        /// <param name="userCallback">An AsyncCallback delegate that references the method to invoke when the operation is complete.</param>
+        /// <returns>An IAsyncResult instance that references the asynchronous request.</returns>
+        [PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
+        public static IAsyncResult BeginDeviceIoControl(HFILE hDevice, uint dwIoControlCode, byte[] inputBuffer, byte[] outputBuffer, AsyncCallback userCallback) {
+            var buffer = Pack(inputBuffer, outputBuffer);
+            return BeginDeviceIoControl(hDevice, dwIoControlCode, buffer, userCallback, null);
+        }
+
+        /// <summary>
+        /// <para>
+        /// Cancels all pending input and output (I/O) operations that are issued by the calling thread for the specified file. The function
+        /// does not cancel I/O operations that other threads issue for a file handle.
+        /// </para>
+        /// <para>To cancel I/O operations from another thread, use the <c>CancelIoEx</c> function.</para>
+        /// </summary>
+        /// <param name="hFile">
+        /// <para>A handle to the file.</para>
+        /// <para>The function cancels all pending I/O operations for this file handle.</para>
+        /// </param>
+        /// <returns>
+        /// <para>
+        /// If the function succeeds, the return value is nonzero. The cancel operation for all pending I/O operations issued by the calling
+        /// thread for the specified file handle was successfully requested. The thread can use the <c>GetOverlappedResult</c> function to
+        /// determine when the I/O operations themselves have been completed.
+        /// </para>
+        /// <para>If the function fails, the return value is zero (0). To get extended error information, call the <c>GetLastError</c> function.</para>
+        /// </returns>
+        // BOOL WINAPI CancelIo( _In_ HANDLE hFile);// https://msdn.microsoft.com/en-us/library/windows/desktop/aa363791(v=vs.85).aspx
+        [DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("IoAPI.h", MSDNShortId = "aa363791")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CancelIo([In] HFILE hFile);
@@ -662,6 +684,11 @@ namespace Vanara.PInvoke
 			return Unpack<TIn, TOut>(ret as byte[]).Item2;
 		}
 
+        /// <summary>Ends the asynchronous call to <see cref="BeginDeviceIoControl{TIn, TOut}(HFILE, uint, TIn?, TOut?, AsyncCallback)"/>.</summary>
+		/// <param name="asyncResult">
+		/// The asynchronous result returned from <see cref="BeginDeviceIoControl{TIn, TOut}(HFILE, uint, TIn?, TOut?, AsyncCallback)"/>.
+		/// </param>
+		/// <returns>The output buffer, if exists; <c>null</c> otherwise.</returns>
         [PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
         public static byte[] EndDeviceIoControl(IAsyncResult asyncResult) {
             var ret = OverlappedAsync.EndOverlappedFunction(asyncResult);
@@ -892,15 +919,7 @@ namespace Vanara.PInvoke
 
 		private static unsafe IAsyncResult BeginDeviceIoControl<TIn, TOut>(HFILE hDevice, uint dwIoControlCode, byte[] buffer, AsyncCallback userCallback, object userState) where TIn : struct where TOut : struct
 		{
-			var ar = OverlappedAsync.SetupOverlappedFunction(hDevice, userCallback, buffer);
-			var intSz = Marshal.SizeOf(typeof(int));
-			var inSz = BitConverter.ToInt32(buffer, 0);
-			var outSz = BitConverter.ToInt32(buffer, intSz);
-			fixed (byte* pIn = &buffer[intSz * 2], pOut = &buffer[outSz == 0 ? 0 : intSz * 2 + inSz])
-			{
-				var ret = DeviceIoControl(hDevice, dwIoControlCode, pIn, (uint)inSz, pOut, (uint)outSz, out var bRet, ar.Overlapped);
-				return OverlappedAsync.EvaluateOverlappedFunction(ar, ret);
-			}
+            return BeginDeviceIoControl(hDevice, dwIoControlCode, buffer, userCallback, userState);
 		}
 
         private static unsafe IAsyncResult BeginDeviceIoControl(HFILE hDevice, uint dwIoControlCode, byte[] buffer, AsyncCallback userCallback, object userState) {
