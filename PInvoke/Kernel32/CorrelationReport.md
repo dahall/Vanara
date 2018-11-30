@@ -1,5 +1,5 @@
 ## Correlation report for kernel32.dll, kernelbase.dll  
-### Methods (98% complete)  
+### Methods (99% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AcquireSRWLockExclusive](http://msdn2.microsoft.com/en-us/library/ms681930) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive  
@@ -214,7 +214,6 @@ Native Method | Native DLL | Header | Managed Method
 [ExitProcess](http://msdn2.microsoft.com/en-us/library/ms682658) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ExitProcess  
 [ExitThread](http://msdn2.microsoft.com/en-us/library/ms682659) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.ExitThread  
 [ExpandEnvironmentStrings](http://msdn2.microsoft.com/en-us/library/ms724265) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.ExpandEnvironmentStrings  
-[ExpungeConsoleCommandHistory](https://www.google.com/search?num=5&q=ExpungeConsoleCommandHistoryA+site%3Amicrosoft.com) | kernelbase.dll |  |   
 [FatalAppExit](http://msdn2.microsoft.com/en-us/library/ms679336) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FatalAppExit  
 [FatalExit](http://msdn2.microsoft.com/en-us/library/ms679337) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FatalExit  
 [FileTimeToDosDateTime](http://msdn2.microsoft.com/en-us/library/ms724274) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.FileTimeToDosDateTime  
@@ -290,7 +289,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetCommConfig](http://msdn2.microsoft.com/en-us/library/aa363256) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCommConfig  
 [GetCommMask](http://msdn2.microsoft.com/en-us/library/aa363257) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCommMask  
 [GetCommModemStatus](http://msdn2.microsoft.com/en-us/library/aa363258) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCommModemStatus  
-[GetCommPorts](https://www.google.com/search?num=5&q=GetCommPorts+site%3Amicrosoft.com) | kernelbase.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCommPorts  
+[GetCommPorts](http://msdn2.microsoft.com/en-us/library/8E57FB62-D7A0-4B47-942B-E33E0B7A37B1) | kernelbase.dll | winbase.h | Vanara.PInvoke.Kernel32.GetCommPorts  
 [GetCommProperties](http://msdn2.microsoft.com/en-us/library/aa363259) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCommProperties  
 [GetCommState](http://msdn2.microsoft.com/en-us/library/aa363260) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCommState  
 [GetCommTimeouts](http://msdn2.microsoft.com/en-us/library/aa363261) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetCommTimeouts  
@@ -501,7 +500,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetSystemRegistryQuota](http://msdn2.microsoft.com/en-us/library/ms724387) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemRegistryQuota  
 [GetSystemTime](http://msdn2.microsoft.com/en-us/library/ms724390) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemTime  
 [GetSystemTimeAdjustment](http://msdn2.microsoft.com/en-us/library/ms724394) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemTimeAdjustment  
-[GetSystemTimeAdjustmentPrecise](https://www.google.com/search?num=5&q=GetSystemTimeAdjustmentPrecise+site%3Amicrosoft.com) | kernelbase.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemTimeAdjustmentPrecise  
+[GetSystemTimeAdjustmentPrecise](http://msdn2.microsoft.com/en-us/library/95EEE23D-01D8-49E1-BA64-49C07E8B1619) | kernelbase.dll | sysinfoapi.h | Vanara.PInvoke.Kernel32.GetSystemTimeAdjustmentPrecise  
 [GetSystemTimeAsFileTime](http://msdn2.microsoft.com/en-us/library/ms724397) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemTimeAsFileTime  
 [GetSystemTimePreciseAsFileTime](http://msdn2.microsoft.com/en-us/library/hh706895) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.GetSystemTimePreciseAsFileTime  
 [GetSystemTimes](http://msdn2.microsoft.com/en-us/library/ms724400) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetSystemTimes  

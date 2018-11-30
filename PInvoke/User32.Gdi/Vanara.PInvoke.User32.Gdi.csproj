@@ -4,7 +4,7 @@
     <Description>Methods, structures and constants imported from User32.dll and specific to graphics or window management.</Description>
     <Copyright>Copyright © 2017-2018</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>2.0.0</VersionPrefix>
+    <VersionPrefix>2.0.1</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.User32.Gdi</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -31,7 +31,7 @@ Structures
 ICONINFO, NMHDR, MINMAXINFO, WINDOWPOS, GRPICONDIR, GRPICONDIRENTRY
 
 </PackageReleaseNotes>
-	<LangVersion>latest</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
