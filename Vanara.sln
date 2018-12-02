@@ -83,6 +83,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.NtDll", "PIn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Ws2_32", "PInvoke\Ws2_32\Vanara.PInvoke.Ws2_32.csproj", "{74D00C4C-DA94-4046-B3CD-318FECDE3794}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.BCrypt", "PInvoke\BCrypt\Vanara.PInvoke.BCrypt.csproj", "{B0DF2976-BE60-4856-A634-5487222360B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -219,6 +221,10 @@ Global
 		{74D00C4C-DA94-4046-B3CD-318FECDE3794}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74D00C4C-DA94-4046-B3CD-318FECDE3794}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74D00C4C-DA94-4046-B3CD-318FECDE3794}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0DF2976-BE60-4856-A634-5487222360B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0DF2976-BE60-4856-A634-5487222360B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0DF2976-BE60-4856-A634-5487222360B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0DF2976-BE60-4856-A634-5487222360B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -250,6 +256,7 @@ Global
 		{EF53ED51-C141-4525-A6B7-41109EE5F416} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{9E0C0DC0-E1B6-42A7-BD31-9A62EEADA780} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{74D00C4C-DA94-4046-B3CD-318FECDE3794} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
+		{B0DF2976-BE60-4856-A634-5487222360B2} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}

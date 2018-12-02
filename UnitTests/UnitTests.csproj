@@ -76,6 +76,7 @@
     <Compile Include="PInvoke\AdvApi32\AdvApi32Tests.cs" />
     <Compile Include="PInvoke\AdvApi32\PSIDTests.cs" />
     <Compile Include="PInvoke\Authz\AuthzTests.cs" />
+    <Compile Include="PInvoke\BCrypt\BCryptTests.cs" />
     <Compile Include="PInvoke\CommCtrl\EditTest.cs" />
     <Compile Include="PInvoke\CredUI\CredUITests.cs" />
     <Compile Include="PInvoke\DwmApi\DwmApiTests.cs" />
@@ -146,6 +147,10 @@
     <ProjectReference Include="..\PInvoke\AclUI\Vanara.PInvoke.AclUI.csproj">
       <Project>{ef88cf8c-e737-4bb1-bbf9-f47bf65547e0}</Project>
       <Name>Vanara.PInvoke.AclUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PInvoke\BCrypt\Vanara.PInvoke.BCrypt.csproj">
+      <Project>{b0df2976-be60-4856-a634-5487222360b2}</Project>
+      <Name>Vanara.PInvoke.BCrypt</Name>
     </ProjectReference>
     <ProjectReference Include="..\PInvoke\BITS\Vanara.PInvoke.BITS.csproj">
       <Project>{ef53ed51-c141-4525-a6b7-41109ee5f416}</Project>
