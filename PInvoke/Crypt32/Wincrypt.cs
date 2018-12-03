@@ -8,6 +8,16 @@ namespace Vanara.PInvoke
 	/// <summary>Methods and data types found in Crypt32.dll.</summary>
 	public static partial class Crypt32
 	{
+		/// <summary>Private key pair type.</summary>
+		[PInvokeData("wincrypt.h")]
+		public enum PrivateKeyType
+		{
+			/// <summary>Key exchange</summary>
+			AT_KEYEXCHANGE = 1,
+			/// <summary>Digital signature</summary>
+			AT_SIGNATURE = 2
+		}
+
 		/// <summary>
 		/// The CERT_CONTEXT structure contains both the encoded and decoded representations of a certificate. A certificate context returned
 		/// by one of the functions defined in Wincrypt.h must be freed by calling the CertFreeCertificateContext function. The
