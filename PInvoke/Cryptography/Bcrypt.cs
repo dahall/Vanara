@@ -8105,9 +8105,9 @@ namespace Vanara.PInvoke
 
 				public _BCryptBuffer(in BCryptBuffer b)
 				{
-					cbBuffer = b.cbBuffer;
+					cbBuffer = (uint)(b.pvBuffer?.Length ?? 0);
 					BufferType = b.BufferType;
-					pvBuffer = b.pvBuffer.MarshalToPtr(Marshal.AllocCoTaskMem, out var _);
+					pvBuffer = b.pvBuffer?.MarshalToPtr(Marshal.AllocCoTaskMem, out var _) ?? IntPtr.Zero;
 				}
 
 				public static implicit operator BCryptBuffer(_BCryptBuffer b) => new BCryptBuffer { BufferType = b.BufferType, pvBuffer = b.pvBuffer.ToArray<byte>((int)b.cbBuffer) };

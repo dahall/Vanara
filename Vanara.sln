@@ -83,7 +83,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.NtDll", "PIn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Ws2_32", "PInvoke\Ws2_32\Vanara.PInvoke.Ws2_32.csproj", "{74D00C4C-DA94-4046-B3CD-318FECDE3794}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.BCrypt", "PInvoke\BCrypt\Vanara.PInvoke.BCrypt.csproj", "{B0DF2976-BE60-4856-A634-5487222360B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Cryptography", "PInvoke\Cryptography\Vanara.PInvoke.Cryptography.csproj", "{B0DF2976-BE60-4856-A634-5487222360B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

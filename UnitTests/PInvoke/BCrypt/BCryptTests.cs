@@ -193,7 +193,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void SecretAgreementWithPersistedKeysTest()
 		{
-			byte[] SecretPrependArray = { 0x12, 0x34, 0x56 };
+			/*byte[] SecretPrependArray = { 0x12, 0x34, 0x56 };
 			byte[] SecretAppendArray[] = { 0xab, 0xcd, 0xef };
 
 			const DWORD BufferLength = 3;
@@ -555,6 +555,7 @@ namespace Vanara.PInvoke.Tests
 			err = S_OK;
 
 			wprintf(L"Success!\n");
+			*/
 		}
 	}
 }

@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Description>Methods, structures and constants imported from BCrypt.dll.</Description>
+    <Description>Methods, structures and constants imported from BCrypt.dll and NCrypt.dll.</Description>
     <Copyright>Copyright © 2017-2018</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <VersionPrefix>2.0.1</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0</TargetFrameworks>
-    <AssemblyName>Vanara.PInvoke.BCrypt</AssemblyName>
+    <AssemblyName>Vanara.PInvoke.Cryptography</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <RootNamespace>Vanara.PInvoke</RootNamespace>
     <Authors>David Hall</Authors>
@@ -15,7 +15,7 @@
     <PackageIconUrl>https://raw.githubusercontent.com/dahall/Vanara/master/docs/icons/Vanara48x48.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags>pinvoke vanara net-extensions interop</PackageTags>
+    <PackageTags>pinvoke vanara net-extensions interop cryptography</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
     <IncludeSource>true</IncludeSource>
     <IncludeSymbols>true</IncludeSymbols>

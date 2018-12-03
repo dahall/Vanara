@@ -148,10 +148,6 @@
       <Project>{ef88cf8c-e737-4bb1-bbf9-f47bf65547e0}</Project>
       <Name>Vanara.PInvoke.AclUI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\BCrypt\Vanara.PInvoke.BCrypt.csproj">
-      <Project>{b0df2976-be60-4856-a634-5487222360b2}</Project>
-      <Name>Vanara.PInvoke.BCrypt</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PInvoke\BITS\Vanara.PInvoke.BITS.csproj">
       <Project>{ef53ed51-c141-4525-a6b7-41109ee5f416}</Project>
       <Name>Vanara.PInvoke.BITS</Name>
@@ -167,6 +163,10 @@
     <ProjectReference Include="..\PInvoke\Crypt32\Vanara.PInvoke.Crypt32.csproj">
       <Project>{bd86fd1b-d52e-4b78-89ac-36d89458ebd8}</Project>
       <Name>Vanara.PInvoke.Crypt32</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PInvoke\Cryptography\Vanara.PInvoke.Cryptography.csproj">
+      <Project>{b0df2976-be60-4856-a634-5487222360b2}</Project>
+      <Name>Vanara.PInvoke.Cryptography</Name>
     </ProjectReference>
     <ProjectReference Include="..\PInvoke\DwmApi\Vanara.PInvoke.DwmApi.csproj">
       <Project>{e1c6d6af-60a0-42cd-af77-f0de0ffe1395}</Project>
