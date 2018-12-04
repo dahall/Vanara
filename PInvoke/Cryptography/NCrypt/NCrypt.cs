@@ -284,9 +284,47 @@ namespace Vanara.PInvoke
 			NCRYPT_SILENT_FLAG = 0x00000040,
 		}
 
+		/// <summary>
+		/// <para>
+		/// The <c>NCRYPT_ALLOC_PARA</c> structure enables you to specify custom functions that can be used to allocate and free data. This
+		/// structure is used in the following functions:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>NCryptGetProtectionDescriptorInfo</term>
+		/// </item>
+		/// <item>
+		/// <term>NCryptProtectSecret</term>
+		/// </item>
+		/// <item>
+		/// <term>NCryptUnprotectSecret</term>
+		/// </item>
+		/// </list>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ncrypt/ns-ncrypt-ncrypt_alloc_para typedef struct NCRYPT_ALLOC_PARA { DWORD
+		// cbSize; PFN_NCRYPT_ALLOC pfnAlloc; PFN_NCRYPT_FREE pfnFree; } NCRYPT_ALLOC_PARA;
+		[PInvokeData("ncrypt.h", MSDNShortId = "4F546F51-E4DE-4703-B1D1-F84165C3C31B")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct NCRYPT_ALLOC_PARA
+		{
+			/// <summary>The size, in bytes, of this structure.</summary>
+			public uint cbSize;
+			/// <summary>Address of a custom function that can allocate memory.</summary>
+			public PFN_NCRYPT_ALLOC pfnAlloc;
+			/// <summary>Address of a function that can free memory allocated by the function specified by the <c>pfnAlloc</c> member.</summary>
+			public PFN_NCRYPT_FREE pfnFree;
+		}
+
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		public delegate IntPtr PFN_NCRYPT_ALLOC(SizeT cbSize);
+
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		public delegate void PFN_NCRYPT_FREE(IntPtr pv);
+
 		[Flags]
 		private enum NFlags : uint
 		{
+			NCRYPT_NAMED_DESCRIPTOR_FLAG = 0x00000001,
 			NCRYPT_REGISTER_NOTIFY_FLAG = 0x00000001,
 			NCRYPT_UNREGISTER_NOTIFY_FLAG = 0x00000002,
 			NCRYPT_MACHINE_KEY_FLAG = 0x00000020,
@@ -2823,5 +2861,24 @@ namespace Vanara.PInvoke
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => NCryptFreeObject(handle).Succeeded;
 		}
+
+		/*
+		NCryptCreateClaim
+		NCryptDecrypt
+		NCryptEncrypt
+		NCryptEnumAlgorithms
+		NCryptEnumKeys
+		NCryptEnumStorageProviders
+		NCryptFreeBuffer
+		NCryptGetProperty
+		NCryptIsAlgSupported
+		NCryptIsKeyHandle
+		NCryptKeyDerivation
+		NCryptNotifyChangeKey
+		NCryptSignHash
+		NCryptTranslateHandle
+		NCryptVerifyClaim
+		NCryptVerifySignature
+		*/
 	}
 }

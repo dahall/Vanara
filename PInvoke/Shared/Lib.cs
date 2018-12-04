@@ -78,6 +78,8 @@
 		/// <summary>The shlwapi</summary>
 		public const string Shlwapi = "Shlwapi.dll";
 
+		public const string Tokenbinding = "tokenbinding.dll";
+
 		/// <summary>The user32</summary>
 		public const string User32 = "user32.dll";
 
