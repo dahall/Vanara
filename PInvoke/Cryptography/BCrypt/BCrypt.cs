@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
 using Vanara.InteropServices;
+using static Vanara.PInvoke.NCrypt;
 
 namespace Vanara.PInvoke
 {
@@ -78,200 +79,6 @@ namespace Vanara.PInvoke
 			BCRYPT_MULTI_FLAG = 0x00000040,
 		}
 
-		public enum BufferType
-		{
-			/// <summary>
-			/// The buffer is a key derivation function (KDF) parameter that contains a null-terminated Unicode string that identifies the
-			/// hash algorithm. This can be one of the standard hash algorithm identifiers from CNG Algorithm Identifiers or the identifier
-			/// for another registered hash algorithm.
-			/// <para>The size specified by the cbBuffer member of this structure must include the terminating NULL character.</para>
-			/// </summary>
-			KDF_HASH_ALGORITHM = 0,
-
-			/// <summary>
-			/// The buffer is a KDF parameter that contains the value to add to the beginning of the message input to the hash function.
-			/// </summary>
-			KDF_SECRET_PREPEND = 1,
-
-			/// <summary>The buffer is a KDF parameter that contains the value to add to the end of the message input to the hash function.</summary>
-			KDF_SECRET_APPEND = 2,
-
-			/// <summary>The buffer is a KDF parameter that contains the plain text value of the HMAC key.</summary>
-			KDF_HMAC_KEY = 3,
-
-			/// <summary>
-			/// The buffer is a KDF parameter that contains an ANSI string that contains the transport layer security (TLS) pseudo-random
-			/// function (PRF) label.
-			/// </summary>
-			KDF_TLS_PRF_LABEL = 4,
-
-			/// <summary>The buffer is a KDF parameter that contains the PRF seed value. The seed must be 64 bytes long.</summary>
-			KDF_TLS_PRF_SEED = 5,
-
-			/// <summary>
-			/// The buffer is a KDF parameter that contains the secret agreement handle. The pvBuffer member contains a BCRYPT_SECRET_HANDLE
-			/// value and is not a pointer.
-			/// </summary>
-			KDF_SECRET_HANDLE = 6,
-
-			/// <summary>
-			/// The buffer is a KDF parameter that contains a DWORD value identifying the SSL/TLS protocol version whose PRF algorithm is to
-			/// be used.
-			/// </summary>
-			KDF_TLS_PRF_PROTOCOL = 7,
-
-			/// <summary>
-			/// The buffer is a KDF parameter that contains the byte array to use as the AlgorithmID subfield of the OtherInfo parameter to
-			/// the SP 800-56A KDF.
-			/// </summary>
-			KDF_ALGORITHMID = 8,
-
-			/// <summary>
-			/// The buffer is a KDF parameter that contains the byte array to use as the PartyUInfo subfield of the OtherInfo parameter to
-			/// the SP 800-56A KDF.
-			/// </summary>
-			KDF_PARTYUINFO = 9,
-
-			/// <summary>
-			/// The buffer is a KDF parameter that contains the byte array to use as the PartyVInfo subfield of the OtherInfo parameter to
-			/// the SP 800-56A KDF.
-			/// </summary>
-			KDF_PARTYVINFO = 10,
-
-			/// <summary>
-			/// The buffer is a KDF parameter that contains the byte array to use as the SuppPubInfo subfield of the OtherInfo parameter to
-			/// the SP 800-56A KDF.
-			/// </summary>
-			KDF_SUPPPUBINFO = 11,
-
-			/// <summary>
-			/// The buffer is a KDF parameter that contains the byte array to use as the SuppPrivInfo subfield of the OtherInfo parameter to
-			/// the SP 800-56A KDF.
-			/// </summary>
-			KDF_SUPPPRIVINFO = 12,
-
-			/// <summary>Undocumented.</summary>
-			KDF_LABEL = 0xD,
-
-			/// <summary>Undocumented.</summary>
-			KDF_CONTEXT = 0xE,
-
-			/// <summary>Undocumented.</summary>
-			KDF_SALT = 0xF,
-
-			/// <summary>Undocumented.</summary>
-			KDF_ITERATION_COUNT = 0x10,
-
-			/// <summary>Undocumented.</summary>
-			KDF_GENERIC_PARAMETER = 0x11,
-
-			/// <summary>Undocumented.</summary>
-			KDF_KEYBITLENGTH = 0x12,
-
-			/// <summary>Undocumented.</summary>
-			KDF_HKDF_SALT = 0x13,
-
-			/// <summary>Undocumented.</summary>
-			KDF_HKDF_INFO = 0x14,
-
-			/// <summary>The buffer contains the random number of the SSL client.</summary>
-			NCRYPTBUFFER_SSL_CLIENT_RANDOM = 20,
-
-			/// <summary>The buffer contains the random number of the SSL server.</summary>
-			NCRYPTBUFFER_SSL_SERVER_RANDOM = 21,
-
-			/// <summary>The buffer contains the highest SSL version supported.</summary>
-			NCRYPTBUFFER_SSL_HIGHEST_VERSION = 22,
-
-			/// <summary>The buffer contains the clear portion of the SSL master key.</summary>
-			NCRYPTBUFFER_SSL_CLEAR_KEY = 23,
-
-			/// <summary>The buffer contains the SSL key argument data.</summary>
-			NCRYPTBUFFER_SSL_KEY_ARG_DATA = 24,
-
-			/// <summary>Undocumented.</summary>
-			NCRYPTBUFFER_SSL_SESSION_HASH = 25,
-
-			/// <summary>The buffer contains a null-terminated ANSI string that contains the PKCS object identifier.</summary>
-			NCRYPTBUFFER_PKCS_OID = 40,
-
-			/// <summary>The buffer contains a null-terminated ANSI string that contains the PKCS algorithm object identifier.</summary>
-			NCRYPTBUFFER_PKCS_ALG_OID = 41,
-
-			/// <summary>The buffer contains the PKCS algorithm parameters.</summary>
-			NCRYPTBUFFER_PKCS_ALG_PARAM = 42,
-
-			/// <summary>The buffer contains the PKCS algorithm identifier.</summary>
-			NCRYPTBUFFER_PKCS_ALG_ID = 43,
-
-			/// <summary>The buffer contains the PKCS attributes.</summary>
-			NCRYPTBUFFER_PKCS_ATTRS = 44,
-
-			/// <summary>The buffer contains a null-terminated Unicode string that contains the key name.</summary>
-			NCRYPTBUFFER_PKCS_KEY_NAME = 45,
-
-			/// <summary>
-			/// The buffer contains a null-terminated Unicode string that contains the PKCS8 password. This parameter is optional and can be NULL.
-			/// </summary>
-			NCRYPTBUFFER_PKCS_SECRET = 46,
-
-			/// <summary>
-			/// The buffer contains a serialized certificate store that contains the PKCS certificate. This serialized store is obtained by
-			/// using the CertSaveStore function with the CERT_STORE_SAVE_TO_MEMORY option. When this property is being retrieved, you can
-			/// access the certificate store by passing this serialized store to the CertOpenStore function with the
-			/// CERT_STORE_PROV_SERIALIZED option.
-			/// </summary>
-			NCRYPTBUFFER_CERT_BLOB = 47,
-
-			/// <summary>Undocumented.</summary>
-			NCRYPTBUFFER_CLAIM_IDBINDING_NONCE = 48,
-
-			/// <summary>Undocumented.</summary>
-			NCRYPTBUFFER_CLAIM_KEYATTESTATION_NONCE = 49,
-
-			/// <summary>Undocumented.</summary>
-			NCRYPTBUFFER_KEY_PROPERTY_FLAGS = 50,
-
-			/// <summary>Undocumented.</summary>
-			NCRYPTBUFFER_ATTESTATIONSTATEMENT_BLOB = 51,
-
-			/// <summary>Undocumented.</summary>
-			NCRYPTBUFFER_ATTESTATION_CLAIM_TYPE = 52,
-
-			/// <summary>Undocumented.</summary>
-			NCRYPTBUFFER_ATTESTATION_CLAIM_CHALLENGE_REQUIRED = 53,
-
-			/// <summary>Undocumented.</summary>
-			NCRYPTBUFFER_VSM_KEY_ATTESTATION_CLAIM_RESTRICTIONS = 54,
-
-			/// <summary>Undocumented.</summary>
-			NCRYPTBUFFER_ECC_CURVE_NAME = 60,
-
-			/// <summary>Undocumented.</summary>
-			NCRYPTBUFFER_ECC_PARAMETERS = 61,
-
-			/// <summary>Undocumented.</summary>
-			NCRYPTBUFFER_TPM_SEAL_PASSWORD = 70,
-
-			/// <summary>Undocumented.</summary>
-			NCRYPTBUFFER_TPM_SEAL_POLICYINFO = 71,
-
-			/// <summary>Undocumented.</summary>
-			NCRYPTBUFFER_TPM_SEAL_TICKET = 72,
-
-			/// <summary>Undocumented.</summary>
-			NCRYPTBUFFER_TPM_SEAL_NO_DA_PROTECTION = 73,
-
-			/// <summary>Undocumented.</summary>
-			NCRYPTBUFFER_TPM_PLATFORM_CLAIM_PCR_MASK = 80,
-
-			/// <summary>Undocumented.</summary>
-			NCRYPTBUFFER_TPM_PLATFORM_CLAIM_NONCE = 81,
-
-			/// <summary>Undocumented.</summary>
-			NCRYPTBUFFER_TPM_PLATFORM_CLAIM_STATIC_CREATE = 82,
-		}
-
 		/// <summary>A set of flags that determine the options for the configuration context.</summary>
 		[PInvokeData("bcrypt.h", MSDNShortId = "3e07b7ae-84ef-4b77-bd49-d96906eaa4f8")]
 		[Flags]
@@ -326,7 +133,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// Flags used by <see cref="BCryptDeriveKey(BCRYPT_SECRET_HANDLE, string, BCryptBufferDesc, SafeAllocatedMemoryHandle, uint, out
+		/// Flags used by <see cref="BCryptDeriveKey(BCRYPT_SECRET_HANDLE, string, NCryptBufferDesc, SafeAllocatedMemoryHandle, uint, out
 		/// uint, DeriveKeyFlags)"/>.
 		/// </summary>
 		[PInvokeData("bcrypt.h", MSDNShortId = "33c3cbf7-6c08-42ed-ac3f-feb71f3a9cbf")]
@@ -2053,7 +1860,7 @@ namespace Vanara.PInvoke
 		// ULONG *pcbResult, ULONG dwFlags );
 		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("bcrypt.h", MSDNShortId = "33c3cbf7-6c08-42ed-ac3f-feb71f3a9cbf")]
-		public static extern NTStatus BCryptDeriveKey(BCRYPT_SECRET_HANDLE hSharedSecret, [MarshalAs(UnmanagedType.LPWStr)] string pwszKDF, [Optional] BCryptBufferDesc pParameterList, SafeAllocatedMemoryHandle pbDerivedKey,
+		public static extern NTStatus BCryptDeriveKey(BCRYPT_SECRET_HANDLE hSharedSecret, [MarshalAs(UnmanagedType.LPWStr)] string pwszKDF, [Optional] NCryptBufferDesc pParameterList, SafeAllocatedMemoryHandle pbDerivedKey,
 			uint cbDerivedKey, out uint pcbResult, DeriveKeyFlags dwFlags);
 
 		/// <summary>
@@ -2345,7 +2152,7 @@ namespace Vanara.PInvoke
 		// ULONG *pcbResult, ULONG dwFlags );
 		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("bcrypt.h", MSDNShortId = "33c3cbf7-6c08-42ed-ac3f-feb71f3a9cbf")]
-		public static extern NTStatus BCryptDeriveKey(BCRYPT_SECRET_HANDLE hSharedSecret, [MarshalAs(UnmanagedType.LPWStr)] string pwszKDF, [Optional] BCryptBufferDesc pParameterList, [Optional] IntPtr pbDerivedKey,
+		public static extern NTStatus BCryptDeriveKey(BCRYPT_SECRET_HANDLE hSharedSecret, [MarshalAs(UnmanagedType.LPWStr)] string pwszKDF, [Optional] NCryptBufferDesc pParameterList, [Optional] IntPtr pbDerivedKey,
 			[Optional] uint cbDerivedKey, out uint pcbResult, DeriveKeyFlags dwFlags);
 
 		/// <summary>
@@ -7189,171 +6996,6 @@ namespace Vanara.PInvoke
 			public IntPtr DangerousGetHandle() => handle;
 		}
 
-		/// <summary>The <c>NCryptBuffer</c> structure is used to identify a variable-length memory buffer.</summary>
-		/// <remarks>BCryptBuffer is an alias for this structure.</remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/ns-bcrypt-_bcryptbuffer typedef struct _BCryptBuffer { ULONG cbBuffer;
-		// ULONG BufferType; PVOID pvBuffer; } BCryptBuffer, *PBCryptBuffer;
-		[PInvokeData("bcrypt.h", MSDNShortId = "474d3c0d-ae14-448a-a56d-25abc7e5de88")]
-		public struct BCryptBuffer
-		{
-			/// <summary>
-			/// <para>A value that identifies the type of data that is contained by the buffer. This can be one of the following values.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>KDF_HASH_ALGORITHM 0</term>
-			/// <term>
-			/// The buffer is a key derivation function (KDF) parameter that contains a null-terminated Unicode string that identifies the
-			/// hash algorithm. This can be one of the standard hash algorithm identifiers from CNG Algorithm Identifiers or the identifier
-			/// for another registered hash algorithm. The size specified by the cbBuffer member of this structure must include the
-			/// terminating NULL character.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>KDF_SECRET_PREPEND 1</term>
-			/// <term>The buffer is a KDF parameter that contains the value to add to the beginning of the message input to the hash function.</term>
-			/// </item>
-			/// <item>
-			/// <term>KDF_SECRET_APPEND 2</term>
-			/// <term>The buffer is a KDF parameter that contains the value to add to the end of the message input to the hash function.</term>
-			/// </item>
-			/// <item>
-			/// <term>KDF_HMAC_KEY 3</term>
-			/// <term>The buffer is a KDF parameter that contains the plain text value of the HMAC key.</term>
-			/// </item>
-			/// <item>
-			/// <term>KDF_TLS_PRF_LABEL 4</term>
-			/// <term>
-			/// The buffer is a KDF parameter that contains an ANSI string that contains the transport layer security (TLS) pseudo-random
-			/// function (PRF) label.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>KDF_TLS_PRF_SEED 5</term>
-			/// <term>The buffer is a KDF parameter that contains the PRF seed value. The seed must be 64 bytes long.</term>
-			/// </item>
-			/// <item>
-			/// <term>KDF_SECRET_HANDLE 6</term>
-			/// <term>
-			/// The buffer is a KDF parameter that contains the secret agreement handle. The pvBuffer member contains a BCRYPT_SECRET_HANDLE
-			/// value and is not a pointer.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>KDF_TLS_PRF_PROTOCOL 7</term>
-			/// <term>
-			/// The buffer is a KDF parameter that contains a DWORD value identifying the SSL/TLS protocol version whose PRF algorithm is to
-			/// be used.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>KDF_ALGORITHMID 8</term>
-			/// <term>
-			/// The buffer is a KDF parameter that contains the byte array to use as the AlgorithmID subfield of the OtherInfo parameter to
-			/// the SP 800-56A KDF.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>KDF_PARTYUINFO 9</term>
-			/// <term>
-			/// The buffer is a KDF parameter that contains the byte array to use as the PartyUInfo subfield of the OtherInfo parameter to
-			/// the SP 800-56A KDF.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>KDF_PARTYVINFO 10</term>
-			/// <term>
-			/// The buffer is a KDF parameter that contains the byte array to use as the PartyVInfo subfield of the OtherInfo parameter to
-			/// the SP 800-56A KDF.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>KDF_SUPPPUBINFO 11</term>
-			/// <term>
-			/// The buffer is a KDF parameter that contains the byte array to use as the SuppPubInfo subfield of the OtherInfo parameter to
-			/// the SP 800-56A KDF.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>KDF_SUPPPRIVINFO 12</term>
-			/// <term>
-			/// The buffer is a KDF parameter that contains the byte array to use as the SuppPrivInfo subfield of the OtherInfo parameter to
-			/// the SP 800-56A KDF.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>NCRYPTBUFFER_SSL_CLIENT_RANDOM 20</term>
-			/// <term>The buffer contains the random number of the SSL client.</term>
-			/// </item>
-			/// <item>
-			/// <term>NCRYPTBUFFER_SSL_SERVER_RANDOM 21</term>
-			/// <term>The buffer contains the random number of the SSL server.</term>
-			/// </item>
-			/// <item>
-			/// <term>NCRYPTBUFFER_SSL_HIGHEST_VERSION 22</term>
-			/// <term>The buffer contains the highest SSL version supported.</term>
-			/// </item>
-			/// <item>
-			/// <term>NCRYPTBUFFER_SSL_CLEAR_KEY 23</term>
-			/// <term>The buffer contains the clear portion of the SSL master key.</term>
-			/// </item>
-			/// <item>
-			/// <term>NCRYPTBUFFER_SSL_KEY_ARG_DATA 24</term>
-			/// <term>The buffer contains the SSL key argument data.</term>
-			/// </item>
-			/// <item>
-			/// <term>NCRYPTBUFFER_PKCS_OID 40</term>
-			/// <term>The buffer contains a null-terminated ANSI string that contains the PKCS object identifier.</term>
-			/// </item>
-			/// <item>
-			/// <term>NCRYPTBUFFER_PKCS_ALG_OID 41</term>
-			/// <term>The buffer contains a null-terminated ANSI string that contains the PKCS algorithm object identifier.</term>
-			/// </item>
-			/// <item>
-			/// <term>NCRYPTBUFFER_PKCS_ALG_PARAM 42</term>
-			/// <term>The buffer contains the PKCS algorithm parameters.</term>
-			/// </item>
-			/// <item>
-			/// <term>NCRYPTBUFFER_PKCS_ALG_ID 43</term>
-			/// <term>The buffer contains the PKCS algorithm identifier.</term>
-			/// </item>
-			/// <item>
-			/// <term>NCRYPTBUFFER_PKCS_ATTRS 44</term>
-			/// <term>The buffer contains the PKCS attributes.</term>
-			/// </item>
-			/// <item>
-			/// <term>NCRYPTBUFFER_PKCS_KEY_NAME 45</term>
-			/// <term>The buffer contains a null-terminated Unicode string that contains the key name.</term>
-			/// </item>
-			/// <item>
-			/// <term>NCRYPTBUFFER_PKCS_SECRET 46</term>
-			/// <term>
-			/// The buffer contains a null-terminated Unicode string that contains the PKCS8 password. This parameter is optional and can be NULL.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>NCRYPTBUFFER_CERT_BLOB 47</term>
-			/// <term>
-			/// The buffer contains a serialized certificate store that contains the PKCS certificate. This serialized store is obtained by
-			/// using the CertSaveStore function with the CERT_STORE_SAVE_TO_MEMORY option. When this property is being retrieved, you can
-			/// access the certificate store by passing this serialized store to the CertOpenStore function with the
-			/// CERT_STORE_PROV_SERIALIZED option.
-			/// </term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public BufferType BufferType;
-
-			/// <summary>
-			/// <para>The buffer.</para>
-			/// <para>The format and contents of this buffer are identified by the <c>BufferType</c> member.</para>
-			/// </summary>
-			public byte[] pvBuffer;
-		}
-
 		/// <summary>
 		/// <para>The <c>CRYPT_CONTEXT_CONFIG</c> structure contains configuration information for a CNG context.</para>
 		/// </summary>
@@ -8029,91 +7671,6 @@ namespace Vanara.PInvoke
 			public const string BCRYPT_XTS_AES_ALGORITHM = "XTS-AES";
 		}
 
-		/// <summary>The <c>BCryptBufferDesc</c> structure is used to contain a set of generic CNG buffers.</summary>
-		// typedef struct _BCryptBufferDesc { ULONG ulVersion; ULONG cBuffers; PBCryptBuffer pBuffers;} BCryptBufferDesc, *PBCryptBufferDesc; https://msdn.microsoft.com/en-us/library/windows/desktop/aa375370(v=vs.85).aspx
-		[PInvokeData("Bcrypt.h", MSDNShortId = "aa375370")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		public class BCryptBufferDesc : IDisposable
-		{
-			/// <summary>
-			/// <para>The version of the structure. This must be the following value.</para>
-			/// <para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>BCRYPTBUFFER_VERSION</term>
-			/// <term>The default version number.</term>
-			/// </item>
-			/// </list>
-			/// </para>
-			/// </summary>
-			public uint ulVersion;
-
-			/// <summary>The number of elements in the <c>pBuffers</c> array.</summary>
-			public uint cBuffers;
-
-			/// <summary>
-			/// The address of an array of <c>BCryptBuffer</c> structures that contain the buffers. The <c>cBuffers</c> member contains the
-			/// number of elements in this array.
-			/// </summary>
-			private IntPtr _pBuffers;
-
-			/// <summary>
-			/// The address of an array of <c>BCryptBuffer</c> structures that contain the buffers. The <c>cBuffers</c> member contains the
-			/// number of elements in this array.
-			/// </summary>
-			public BCryptBuffer[] pBuffers
-			{
-				get => _pBuffers.ToIEnum<_BCryptBuffer>((int)cBuffers).Cast<BCryptBuffer>().ToArray();
-				set
-				{
-					((IDisposable)this).Dispose();
-					if (value == null) return;
-					_pBuffers = InteropExtensions.MarshalToPtr(value.Select(b => new _BCryptBuffer(b)), Marshal.AllocCoTaskMem, out var _);
-				}
-			}
-
-			/// <inheritdoc/>
-			void IDisposable.Dispose()
-			{
-				if (_pBuffers == IntPtr.Zero) return;
-				foreach (var b in _pBuffers.ToIEnum<_BCryptBuffer>((int)cBuffers))
-					Marshal.FreeCoTaskMem(b.pvBuffer);
-				Marshal.FreeCoTaskMem(_pBuffers);
-				_pBuffers = IntPtr.Zero;
-			}
-
-			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-			private struct _BCryptBuffer
-			{
-				/// <summary>
-				/// <para>The size, in bytes, of the buffer.</para>
-				/// </summary>
-				public uint cbBuffer;
-
-				/// <summary><para>A value that identifies the type of data that is contained by the buffer.</summary>
-				public BufferType BufferType;
-
-				/// <summary>
-				/// <para>The address of the buffer. The size of this buffer is contained in the <c>cbBuffer</c> member.</para>
-				/// <para>The format and contents of this buffer are identified by the <c>BufferType</c> member.</para>
-				/// </summary>
-				public IntPtr pvBuffer;
-
-				public _BCryptBuffer(in BCryptBuffer b)
-				{
-					cbBuffer = (uint)(b.pvBuffer?.Length ?? 0);
-					BufferType = b.BufferType;
-					pvBuffer = b.pvBuffer?.MarshalToPtr(Marshal.AllocCoTaskMem, out var _) ?? IntPtr.Zero;
-				}
-
-				public static implicit operator BCryptBuffer(_BCryptBuffer b) => new BCryptBuffer { BufferType = b.BufferType, pvBuffer = b.pvBuffer.ToArray<byte>((int)b.cbBuffer) };
-			}
-		}
-
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="BCRYPT_ALG_HANDLE"/> that is disposed using <see cref="BCryptCloseAlgorithmProvider"/>.</summary>
 		public class SafeBCRYPT_ALG_HANDLE : HANDLE
 		{
@@ -8207,7 +7764,7 @@ namespace Vanara.PInvoke
 			protected override bool InternalReleaseHandle() => BCryptDestroySecret(this).Succeeded;
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="BCryptBuffer"/> that is disposed using <see cref="BCryptFreeBuffer"/>.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="NCryptBuffer"/> that is disposed using <see cref="BCryptFreeBuffer"/>.</summary>
 		public class SafeBCryptBuffer : HANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeBCryptBuffer"/> class and assigns an existing handle.</summary>

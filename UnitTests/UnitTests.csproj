@@ -160,10 +160,6 @@
       <Project>{1f0b972a-06da-4f6a-8b60-87d76fb1f2d9}</Project>
       <Name>Vanara.PInvoke.CredUI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\Crypt32\Vanara.PInvoke.Crypt32.csproj">
-      <Project>{bd86fd1b-d52e-4b78-89ac-36d89458ebd8}</Project>
-      <Name>Vanara.PInvoke.Crypt32</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PInvoke\Cryptography\Vanara.PInvoke.Cryptography.csproj">
       <Project>{b0df2976-be60-4856-a634-5487222360b2}</Project>
       <Name>Vanara.PInvoke.Cryptography</Name>

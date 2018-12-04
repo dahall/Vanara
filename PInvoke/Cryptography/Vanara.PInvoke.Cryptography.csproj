@@ -22,7 +22,15 @@
     <Company>GitHub Community</Company>
     <Product>Vanara</Product>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+BCryptAddContextFunction, BCryptCloseAlgorithmProvider, BCryptConfigureContext, BCryptConfigureContextFunction, BCryptCreateContext, BCryptCreateHash, BCryptCreateMultiHash, BCryptDecrypt, BCryptDeleteContext, BCryptDeriveKey, BCryptDestroyHash, BCryptDestroyKey, BCryptDestroySecret, BCryptDuplicateHash, BCryptDuplicateKey, BCryptEncrypt, BCryptEnumAlgorithms, BCryptEnumContextFunctionProviders, BCryptEnumContextFunctions, BCryptEnumContexts, BCryptEnumProviders, BCryptEnumRegisteredProviders, BCryptExportKey, BCryptFinishHash, BCryptFreeBuffer, BCryptGenerateKeyPair, BCryptGenerateSymmetricKey, BCryptGetProperty, BCryptHashData, BCryptImportKey, BCryptImportKeyPair, BCryptOpenAlgorithmProvider, BCryptQueryContextConfiguration, BCryptQueryContextFunctionConfiguration, BCryptQueryContextFunctionProperty, BCryptRemoveContextFunction, BCryptSecretAgreement, BCryptSetContextFunctionProperty, BCryptSetProperty, NCryptCreatePersistedKey, NCryptDeleteKey, NCryptFreeObject, NCryptOpenKey, NCryptOpenStorageProvider
+
+Structures
+BCRYPT_ALGORITHM_IDENTIFIER, BCRYPT_PROVIDER_NAME, BCryptBuffer, CRYPT_CONTEXT_CONFIG, CRYPT_CONTEXT_FUNCTION_CONFIG, CRYPT_CONTEXT_FUNCTION_PROVIDERS, CRYPT_CONTEXT_FUNCTIONS, CRYPT_CONTEXTS, CRYPT_PROVIDERS, BCryptBufferDesc, CERT_CONTEXT, CERT_EXTENSION, CERT_INFO, CERT_PUBLIC_KEY_INFO, CRYPT_ALGORITHM_IDENTIFIER, CRYPTOAPI_BLOB
+
+</PackageReleaseNotes>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">

@@ -193,11 +193,11 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void SecretAgreementWithPersistedKeysTest()
 		{
-			/*byte[] SecretPrependArray = { 0x12, 0x34, 0x56 };
+			byte[] SecretPrependArray = { 0x12, 0x34, 0x56 };
 			byte[] SecretAppendArray[] = { 0xab, 0xcd, 0xef };
 
 			const DWORD BufferLength = 3;
-			var BufferArray = new BCryptBuffer[BufferLength];
+			var BufferArray = new NCryptBuffer[BufferLength];
 
 			// Get a handle to MS KSP
 			var err = NCryptOpenStorageProvider(&ProviderHandleA, MS_KEY_STORAGE_PROVIDER, 0);
@@ -555,7 +555,6 @@ namespace Vanara.PInvoke.Tests
 			err = S_OK;
 
 			wprintf(L"Success!\n");
-			*/
 		}
 	}
 }

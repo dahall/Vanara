@@ -45,6 +45,9 @@
 		/// <summary>The mstask</summary>
 		public const string Mstask = "mstask.dll";
 
+		/// <summary>ncrypt.dll</summary>
+		public const string Ncrypt = "ncrypt.dll";
+
 		/// <summary>The net api32</summary>
 		public const string NetApi32 = "netapi32.dll";
 
