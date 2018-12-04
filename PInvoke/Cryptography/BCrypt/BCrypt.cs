@@ -79,6 +79,54 @@ namespace Vanara.PInvoke
 			BCRYPT_MULTI_FLAG = 0x00000040,
 		}
 
+		/// <summary>The BCRYPT_HASH_OPERATION_TYPE enumeration specifies the hash operation type.</summary>
+		[PInvokeData("bcrypt.h")]
+		public enum BCRYPT_HASH_OPERATION_TYPE
+		{
+			/// <summary>
+			/// The operation performed is equivalent to calling the BCryptHashData function on the hash object array element with
+			/// pbBuffer/cbBuffer pointing to the buffer to be hashed.
+			/// </summary>
+			BCRYPT_HASH_OPERATION_HASH_DATA = 1,
+
+			/// <summary>
+			/// The operation performed is equivalent to calling the BCryptFinishHash function on the hash object array element with
+			/// pbBuffer/cbBuffer pointing to the output buffer that receives the result.
+			/// </summary>
+			BCRYPT_HASH_OPERATION_FINISH_HASH = 2,
+		}
+
+		/// <summary>
+		/// The BCRYPT_MULTI_OPERATION_TYPE enumeration specifies type of multi-operation that is passed to the BCryptProcessMultiOperations function.
+		/// </summary>
+		[PInvokeData("bcrypt.h", MSDNShortId = "5FD28AC3-46D2-4F06-BF06-F5FEF8E531F5")]
+		public enum BCRYPT_MULTI_OPERATION_TYPE
+		{
+			/// <summary>
+			/// A hash operation. This value identifies the hObject parameter as a multi-hash object and the pOperations pointer as pointing
+			/// to an array of BCRYPT_MULTI_HASH_OPERATION elements.
+			/// </summary>
+			BCRYPT_OPERATION_TYPE_HASH = 1,
+		}
+
+		public enum BlobMagicNumber
+		{
+			BCRYPT_DSA_PUBLIC_MAGIC = 0x42505344,
+			BCRYPT_DSA_PUBLIC_MAGIC_V2 = 0x32425044,
+			BCRYPT_DSA_PRIVATE_MAGIC = 0x56505344,
+			BCRYPT_DSA_PRIVATE_MAGIC_V2 = 0x32565044,
+			BCRYPT_ECDH_PUBLIC_P256_MAGIC = 0x314B4345,
+			BCRYPT_ECDH_PUBLIC_P384_MAGIC = 0x334B4345,
+			BCRYPT_ECDH_PUBLIC_P521_MAGIC = 0x354B4345,
+			BCRYPT_ECDSA_PUBLIC_P256_MAGIC = 0x31534345,
+			BCRYPT_ECDSA_PUBLIC_P384_MAGIC = 0x33534345,
+			BCRYPT_ECDSA_PUBLIC_P521_MAGIC = 0x35534345,
+			BCRYPT_RSAPUBLIC_MAGIC = 0x31415352,
+			BCRYPT_RSAPRIVATE_MAGIC = 0x32415352,
+			BCRYPT_RSAFULLPRIVATE_MAGIC = 0x33415352,
+			BCRYPT_KEY_DATA_BLOB_MAGIC = 0x4d42444b
+		}
+
 		/// <summary>A set of flags that determine the options for the configuration context.</summary>
 		[PInvokeData("bcrypt.h", MSDNShortId = "3e07b7ae-84ef-4b77-bd49-d96906eaa4f8")]
 		[Flags]
@@ -184,6 +232,26 @@ namespace Vanara.PInvoke
 			BCRYPT_PAD_PKCS1_OPTIONAL_HASH_OID = 0x00000010,
 		}
 
+		/// <summary>Flags used by <c>BCryptGenRandom</c>.</summary>
+		[PInvokeData("bcrypt.h", MSDNShortId = "7c6cee3a-f2c5-46f3-8cfe-984316f323d9")]
+		[Flags]
+		public enum GenRandomFlags
+		{
+			/// <summary>
+			/// This function will use the number in the pbBuffer buffer as additional entropy for the random number. If this flag is not
+			/// specified, this function will use a random number for the entropy.
+			/// <para>Windows 8 and later: This flag is ignored in Windows 8 and later.</para>
+			/// </summary>
+			BCRYPT_RNG_USE_ENTROPY_IN_BUFFER = 0x00000001,
+
+			/// <summary>
+			/// Use the system-preferred random number generator algorithm. The hAlgorithm parameter must be NULL.
+			/// <para>BCRYPT_USE_SYSTEM_PREFERRED_RNG is only supported at PASSIVE_LEVEL IRQL. For more information, see Remarks.</para>
+			/// <para>Windows Vista: This flag is not supported.</para>
+			/// </summary>
+			BCRYPT_USE_SYSTEM_PREFERRED_RNG = 0x00000002,
+		}
+
 		/// <summary>A set of flags that modify the behavior of this function</summary>
 		[PInvokeData("bcrypt.h", MSDNShortId = "271fc084-6121-4666-b521-b849c7d7966c")]
 		[Flags]
@@ -234,6 +302,18 @@ namespace Vanara.PInvoke
 			NCRYPT_KEY_PROTECTION_INTERFACE = 0x00010004,
 		}
 
+		/// <summary>Flags used with <c>BCryptKeyDerivation</c>.</summary>
+		[PInvokeData("bcrypt.h", MSDNShortId = "D0B91FFE-2E72-4AE3-A84F-DC598C02CF53")]
+		[Flags]
+		public enum KeyDerivationFlags
+		{
+			/// <summary>
+			/// Specifies that the target algorithm is AES and that the key therefore must be double expanded. This flag is only valid with
+			/// the CAPI_KDF algorithm.
+			/// </summary>
+			BCRYPT_CAPI_AES_FLAG = 0,
+		}
+
 		[Flags]
 		public enum PaddingScheme : uint
 		{
@@ -251,6 +331,40 @@ namespace Vanara.PInvoke
 
 			/// <summary>The provider supports the PSS padding scheme.</summary>
 			BCRYPT_SUPPORTED_PAD_PSS = 0x00000010,
+		}
+
+		/// <summary>Specifies the type of information to retrieve.</summary>
+		public enum ProviderInfoType
+		{
+			/// <summary>Retrieve the user mode information for the provider.</summary>
+			CRYPT_UM = 0x00000001,
+
+			/// <summary>Retrieve the kernel mode information for the provider.</summary>
+			CRYPT_KM = 0x00000002,
+
+			/// <summary>Retrieve both the user mode and kernel mode information for the provider.</summary>
+			CRYPT_MM = 0x00000003,
+
+			/// <summary>Retrieve any information for the provider.</summary>
+			CRYPT_ANY = 0x00000004,
+		}
+
+		/// <summary>A set of flags that modify the behavior of BCryptResolveProviders.</summary>
+		[PInvokeData("bcrypt.h", MSDNShortId = "cf30f635-4918-4911-9db0-df90d26a2f1a")]
+		[Flags]
+		public enum ResolveProviderFlags
+		{
+			/// <summary>
+			/// This function will retrieve all of the functions supported by each provider that meets the specified criteria. If this flag
+			/// is not specified, this function will only retrieve the first function of the provider or providers that meet the specified criteria.
+			/// </summary>
+			CRYPT_ALL_FUNCTIONS = 1,
+
+			/// <summary>
+			/// This function will retrieve all of the providers that meet the specified criteria. If this flag is not specified, this
+			/// function will only retrieve the first provider that is found that meets the specified criteria.
+			/// </summary>
+			CRYPT_ALL_PROVIDERS = 2,
 		}
 
 		/// <summary>
@@ -2154,6 +2268,228 @@ namespace Vanara.PInvoke
 		[PInvokeData("bcrypt.h", MSDNShortId = "33c3cbf7-6c08-42ed-ac3f-feb71f3a9cbf")]
 		public static extern NTStatus BCryptDeriveKey(BCRYPT_SECRET_HANDLE hSharedSecret, [MarshalAs(UnmanagedType.LPWStr)] string pwszKDF, [Optional] NCryptBufferDesc pParameterList, [Optional] IntPtr pbDerivedKey,
 			[Optional] uint cbDerivedKey, out uint pcbResult, DeriveKeyFlags dwFlags);
+
+		/// <summary>
+		/// <para>The <c>BCryptDeriveKeyCapi</c> function derives a key from a hash value.</para>
+		/// <para>
+		/// This function is provided as a helper function to assist in migrating legacy Cryptography API (CAPI)–based applications to use
+		/// Cryptography API: Next Generation (CNG). The <c>BCryptDeriveKeyCapi</c> function performs the key derivation in a manner that is
+		/// compatible with the CAPI CryptDeriveKey function.
+		/// </para>
+		/// </summary>
+		/// <param name="hHash">
+		/// The handle of the hash object. The handle is obtained by calling the BCryptCreateHash function. When you have finished using the
+		/// handle, you must free it by calling the BCryptDestroyHash function.
+		/// </param>
+		/// <param name="hTargetAlg">
+		/// <para>The handle of the algorithm object. This can be an ALG_ID value that is compatible with the CryptDeriveKey function.</para>
+		/// <para>
+		/// <c>Note</c> Limitations in CAPI and key expansion prevent the use of any hash algorithm that generates an output that is larger
+		/// than 512 bits.
+		/// </para>
+		/// </param>
+		/// <param name="pbDerivedKey">A pointer to the buffer that receives the derived key.</param>
+		/// <param name="cbDerivedKey">The size, in characters, of the derived key pointed to by the pbDerivedKey parameter.</param>
+		/// <param name="dwFlags">This parameter is reserved and must be set to zero.</param>
+		/// <returns>
+		/// <para>Returns a status code that indicates the success or failure of the function.</para>
+		/// <para>Possible return codes include, but are not limited to, the following.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_SUCCESS</term>
+		/// <term>The function was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_HANDLE</term>
+		/// <term>The handle in the hHash or hTargetAlg parameter is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_PARAMETER</term>
+		/// <term>The value in the cbDerivedKey parameter is larger than twice the output size of the hash function.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_NO_MEMORY</term>
+		/// <term>A memory allocation failure occurred.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>This function does not support the PK salt functionality of the CAPI CryptDeriveKey function.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptderivekeycapi NTSTATUS BCryptDeriveKeyCapi(
+		// BCRYPT_HASH_HANDLE hHash, BCRYPT_ALG_HANDLE hTargetAlg, PUCHAR pbDerivedKey, ULONG cbDerivedKey, ULONG dwFlags );
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("bcrypt.h", MSDNShortId = "bebb0767-8c54-48b7-864c-f53caea7120d")]
+		public static extern NTStatus BCryptDeriveKeyCapi(BCRYPT_HASH_HANDLE hHash, BCRYPT_ALG_HANDLE hTargetAlg, SafeAllocatedMemoryHandle pbDerivedKey, uint cbDerivedKey, uint dwFlags = 0);
+
+		/// <summary>
+		/// <para>The <c>BCryptDeriveKeyCapi</c> function derives a key from a hash value.</para>
+		/// <para>
+		/// This function is provided as a helper function to assist in migrating legacy Cryptography API (CAPI)–based applications to use
+		/// Cryptography API: Next Generation (CNG). The <c>BCryptDeriveKeyCapi</c> function performs the key derivation in a manner that is
+		/// compatible with the CAPI CryptDeriveKey function.
+		/// </para>
+		/// </summary>
+		/// <param name="hHash">
+		/// The handle of the hash object. The handle is obtained by calling the BCryptCreateHash function. When you have finished using the
+		/// handle, you must free it by calling the BCryptDestroyHash function.
+		/// </param>
+		/// <param name="hTargetAlg">
+		/// <para>The handle of the algorithm object. This can be an ALG_ID value that is compatible with the CryptDeriveKey function.</para>
+		/// <para>
+		/// <c>Note</c> Limitations in CAPI and key expansion prevent the use of any hash algorithm that generates an output that is larger
+		/// than 512 bits.
+		/// </para>
+		/// </param>
+		/// <param name="pbDerivedKey">A pointer to the buffer that receives the derived key.</param>
+		/// <param name="cbDerivedKey">The size, in characters, of the derived key pointed to by the pbDerivedKey parameter.</param>
+		/// <param name="dwFlags">This parameter is reserved and must be set to zero.</param>
+		/// <returns>
+		/// <para>Returns a status code that indicates the success or failure of the function.</para>
+		/// <para>Possible return codes include, but are not limited to, the following.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_SUCCESS</term>
+		/// <term>The function was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_HANDLE</term>
+		/// <term>The handle in the hHash or hTargetAlg parameter is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_PARAMETER</term>
+		/// <term>The value in the cbDerivedKey parameter is larger than twice the output size of the hash function.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_NO_MEMORY</term>
+		/// <term>A memory allocation failure occurred.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>This function does not support the PK salt functionality of the CAPI CryptDeriveKey function.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptderivekeycapi NTSTATUS BCryptDeriveKeyCapi(
+		// BCRYPT_HASH_HANDLE hHash, BCRYPT_ALG_HANDLE hTargetAlg, PUCHAR pbDerivedKey, ULONG cbDerivedKey, ULONG dwFlags );
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("bcrypt.h", MSDNShortId = "bebb0767-8c54-48b7-864c-f53caea7120d")]
+		public static extern NTStatus BCryptDeriveKeyCapi(BCRYPT_HASH_HANDLE hHash, BCRYPT_ALG_HANDLE hTargetAlg, [Optional] IntPtr pbDerivedKey, uint cbDerivedKey, uint dwFlags = 0);
+
+		/// <summary>
+		/// The <c>BCryptDeriveKeyPBKDF2</c> function derives a key from a hash value by using the PBKDF2 key derivation algorithm as defined
+		/// by RFC 2898.
+		/// </summary>
+		/// <param name="hPrf">
+		/// <para>
+		/// The handle of an algorithm provider that provides the pseudo-random function. This should be an algorithm provider that performs
+		/// a Message Authentication Code computation. When you use the default Microsoft algorithm provider, any hashing algorithm opened by
+		/// using the <c>BCRYPT_ALG_HANDLE_HMAC_FLAG</c> flag can be used.
+		/// </para>
+		/// <para><c>Note</c> Only algorithms that implement the BCRYPT_IS_KEYED_HASH property can be used to populate this parameter.</para>
+		/// </param>
+		/// <param name="pbPassword">A pointer to a buffer that contains the password parameter for the PBKDF2 key derivation algorithm.</param>
+		/// <param name="cbPassword">The length, in bytes, of the data in the buffer pointed to by the pbPassword parameter.</param>
+		/// <param name="pbSalt">
+		/// <para>A pointer to a buffer that contains the salt argument for the PBKDF2 key derivation algorithm.</para>
+		/// <para><c>Note</c> Any information that is not secret and that is used in the key derivation should be passed in this buffer.</para>
+		/// </param>
+		/// <param name="cbSalt">The length, in bytes, of the salt argument pointed to by the pbSalt parameter.</param>
+		/// <param name="cIterations">The iteration count for the PBKDF2 key derivation algorithm.</param>
+		/// <param name="pbDerivedKey">A pointer to a buffer that receives the derived key.</param>
+		/// <param name="cbDerivedKey">The length, in bytes, of the derived key returned in the buffer pointed to by the pbDerivedKey parameter.</param>
+		/// <param name="dwFlags">This parameter is reserved and must be set to zero.</param>
+		/// <returns>
+		/// <para>Returns a status code that indicates the success or failure of the function.</para>
+		/// <para>Possible return codes include, but are not limited to, the following.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_SUCCESS</term>
+		/// <term>The function was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_HANDLE</term>
+		/// <term>The handle in the hPrf parameter is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_PARAMETER</term>
+		/// <term>One or more parameters are not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_NO_MEMORY</term>
+		/// <term>A memory allocation failure occurred.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptderivekeypbkdf2 NTSTATUS BCryptDeriveKeyPBKDF2(
+		// BCRYPT_ALG_HANDLE hPrf, PUCHAR pbPassword, ULONG cbPassword, PUCHAR pbSalt, ULONG cbSalt, ULONGLONG cIterations, PUCHAR
+		// pbDerivedKey, ULONG cbDerivedKey, ULONG dwFlags );
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("bcrypt.h", MSDNShortId = "afdddfec-a3a5-410c-998b-9a5af8e051b6")]
+		public static extern NTStatus BCryptDeriveKeyPBKDF2(BCRYPT_ALG_HANDLE hPrf, SafeAllocatedMemoryHandle pbPassword, uint cbPassword, SafeAllocatedMemoryHandle pbSalt, uint cbSalt, ulong cIterations, SafeAllocatedMemoryHandle pbDerivedKey, uint cbDerivedKey, uint dwFlags = 0);
+
+		/// <summary>
+		/// The <c>BCryptDeriveKeyPBKDF2</c> function derives a key from a hash value by using the PBKDF2 key derivation algorithm as defined
+		/// by RFC 2898.
+		/// </summary>
+		/// <param name="hPrf">
+		/// <para>
+		/// The handle of an algorithm provider that provides the pseudo-random function. This should be an algorithm provider that performs
+		/// a Message Authentication Code computation. When you use the default Microsoft algorithm provider, any hashing algorithm opened by
+		/// using the <c>BCRYPT_ALG_HANDLE_HMAC_FLAG</c> flag can be used.
+		/// </para>
+		/// <para><c>Note</c> Only algorithms that implement the BCRYPT_IS_KEYED_HASH property can be used to populate this parameter.</para>
+		/// </param>
+		/// <param name="pbPassword">A pointer to a buffer that contains the password parameter for the PBKDF2 key derivation algorithm.</param>
+		/// <param name="cbPassword">The length, in bytes, of the data in the buffer pointed to by the pbPassword parameter.</param>
+		/// <param name="pbSalt">
+		/// <para>A pointer to a buffer that contains the salt argument for the PBKDF2 key derivation algorithm.</para>
+		/// <para><c>Note</c> Any information that is not secret and that is used in the key derivation should be passed in this buffer.</para>
+		/// </param>
+		/// <param name="cbSalt">The length, in bytes, of the salt argument pointed to by the pbSalt parameter.</param>
+		/// <param name="cIterations">The iteration count for the PBKDF2 key derivation algorithm.</param>
+		/// <param name="pbDerivedKey">A pointer to a buffer that receives the derived key.</param>
+		/// <param name="cbDerivedKey">The length, in bytes, of the derived key returned in the buffer pointed to by the pbDerivedKey parameter.</param>
+		/// <param name="dwFlags">This parameter is reserved and must be set to zero.</param>
+		/// <returns>
+		/// <para>Returns a status code that indicates the success or failure of the function.</para>
+		/// <para>Possible return codes include, but are not limited to, the following.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_SUCCESS</term>
+		/// <term>The function was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_HANDLE</term>
+		/// <term>The handle in the hPrf parameter is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_PARAMETER</term>
+		/// <term>One or more parameters are not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_NO_MEMORY</term>
+		/// <term>A memory allocation failure occurred.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptderivekeypbkdf2 NTSTATUS BCryptDeriveKeyPBKDF2(
+		// BCRYPT_ALG_HANDLE hPrf, PUCHAR pbPassword, ULONG cbPassword, PUCHAR pbSalt, ULONG cbSalt, ULONGLONG cIterations, PUCHAR
+		// pbDerivedKey, ULONG cbDerivedKey, ULONG dwFlags );
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("bcrypt.h", MSDNShortId = "afdddfec-a3a5-410c-998b-9a5af8e051b6")]
+		public static extern NTStatus BCryptDeriveKeyPBKDF2(BCRYPT_ALG_HANDLE hPrf, IntPtr pbPassword, uint cbPassword, IntPtr pbSalt, uint cbSalt, ulong cIterations, IntPtr pbDerivedKey, uint cbDerivedKey, uint dwFlags = 0);
 
 		/// <summary>
 		/// <para>The <c>BCryptDestroyHash</c> function destroys a hash or Message Authentication Code (MAC) object.</para>
@@ -4298,6 +4634,58 @@ namespace Vanara.PInvoke
 		public static extern NTStatus BCryptExportKey(BCRYPT_KEY_HANDLE hKey, BCRYPT_KEY_HANDLE hExportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, IntPtr pbOutput, uint cbOutput, out uint pcbResult, uint dwFlags = 0);
 
 		/// <summary>
+		/// The <c>BCryptFinalizeKeyPair</c> function completes a public/private key pair. The key cannot be used until this function has
+		/// been called. After this function has been called, the BCryptSetProperty function can no longer be used for this key.
+		/// </summary>
+		/// <param name="hKey">The handle of the key to complete. This handle is obtained by calling the BCryptGenerateKeyPair function.</param>
+		/// <param name="dwFlags">
+		/// A set of flags that modify the behavior of this function. No flags are currently defined, so this parameter should be zero.
+		/// </param>
+		/// <returns>
+		/// <para>Returns a status code that indicates the success or failure of the function.</para>
+		/// <para>Possible return codes include, but are not limited to, the following.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_SUCCESS</term>
+		/// <term>The function was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_HANDLE</term>
+		/// <term>The key handle in the hKey parameter is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_PARAMETER</term>
+		/// <term>One or more parameters are not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_NOT_SUPPORTED</term>
+		/// <term>The specified provider does not support asymmetric key encryption.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Depending on what processor modes a provider supports, <c>BCryptFinalizeKeyPair</c> can be called either from user mode or kernel
+		/// mode. Kernel mode callers can execute either at <c>PASSIVE_LEVEL</c> IRQL or <c>DISPATCH_LEVEL</c> IRQL. If the current IRQL
+		/// level is <c>DISPATCH_LEVEL</c>, the handle provided in the hKey parameter must be derived from an algorithm handle returned by a
+		/// provider that was opened with the <c>BCRYPT_PROV_DISPATCH</c> flag.
+		/// </para>
+		/// <para>
+		/// To call this function in kernel mode, use Cng.lib, which is part of the Driver Development Kit (DDK). For more information, see
+		/// WDK and Developer Tools. <c>Windows Server 2008 and Windows Vista:</c> To call this function in kernel mode, use Ksecdd.lib.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptfinalizekeypair NTSTATUS BCryptFinalizeKeyPair(
+		// BCRYPT_KEY_HANDLE hKey, ULONG dwFlags );
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("bcrypt.h", MSDNShortId = "bf0b90f1-6da8-464e-9271-ad60ea762653")]
+		public static extern NTStatus BCryptFinalizeKeyPair(BCRYPT_KEY_HANDLE hKey, uint dwFlags = 0);
+
+		/// <summary>
 		/// <para>
 		/// The <c>BCryptFinishHash</c> function retrieves the hash or Message Authentication Code (MAC) value for the data accumulated from
 		/// prior calls to BCryptHashData.
@@ -4783,6 +5171,211 @@ namespace Vanara.PInvoke
 		[PInvokeData("bcrypt.h", MSDNShortId = "c55d714f-f47e-4ddf-97b9-985c0441bb2d")]
 		public static extern NTStatus BCryptGenerateSymmetricKey(BCRYPT_ALG_HANDLE hAlgorithm, out SafeBCRYPT_KEY_HANDLE phKey, [Optional] IntPtr pbKeyObject, [Optional] uint cbKeyObject, IntPtr pbSecret, uint cbSecret, uint dwFlags = 0);
 
+		/// <summary>The <c>BCryptGenRandom</c> function generates a random number.</summary>
+		/// <param name="hAlgorithm">
+		/// The handle of an algorithm provider created by using the BCryptOpenAlgorithmProvider function. The algorithm that was specified
+		/// when the provider was created must support the random number generator interface.
+		/// </param>
+		/// <param name="pbBuffer">
+		/// The address of a buffer that receives the random number. The size of this buffer is specified by the cbBuffer parameter.
+		/// </param>
+		/// <param name="cbBuffer">The size, in bytes, of the pbBuffer buffer.</param>
+		/// <param name="dwFlags">
+		/// <para>A set of flags that modify the behavior of this function. This parameter can be zero or the following value.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>BCRYPT_RNG_USE_ENTROPY_IN_BUFFER 0x00000001</term>
+		/// <term>
+		/// This function will use the number in the pbBuffer buffer as additional entropy for the random number. If this flag is not
+		/// specified, this function will use a random number for the entropy. Windows 8 and later: This flag is ignored in Windows 8 and later.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>BCRYPT_USE_SYSTEM_PREFERRED_RNG 0x00000002</term>
+		/// <term>
+		/// Use the system-preferred random number generator algorithm. The hAlgorithm parameter must be NULL.
+		/// BCRYPT_USE_SYSTEM_PREFERRED_RNG is only supported at PASSIVE_LEVEL IRQL. For more information, see Remarks. Windows Vista: This
+		/// flag is not supported.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Returns a status code that indicates the success or failure of the function.</para>
+		/// <para>Possible return codes include, but are not limited to, the following.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_SUCCESS</term>
+		/// <term>The function was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_HANDLE</term>
+		/// <term>The handle in the hAlgorithm parameter is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_PARAMETER</term>
+		/// <term>One or more parameters are not valid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The default random number provider implements an algorithm for generating random numbers that complies with the NIST SP800-90
+		/// standard, specifically the CTR_DRBG portion of that standard.
+		/// </para>
+		/// <para>
+		/// <c>Windows Vista:</c> Prior to Windows Vista with Service Pack 1 (SP1) the default random number provider implements an algorithm
+		/// for generating random numbers that complies with the FIPS 186-2 standard.
+		/// </para>
+		/// <para>
+		/// Depending on what processor modes a provider supports, <c>BCryptGenRandom</c> can be called either from user mode or kernel mode.
+		/// Kernel mode callers can execute either at <c>PASSIVE_LEVEL</c> IRQL or <c>DISPATCH_LEVEL</c> IRQL. If the current IRQL level is
+		/// <c>DISPATCH_LEVEL</c>, the handle provided in the hAlgorithm parameter must have been opened by using the
+		/// <c>BCRYPT_PROV_DISPATCH</c> flag, and any pointers passed to the <c>BCryptGenRandom</c> function must refer to nonpaged (or
+		/// locked) memory. <c>Windows Vista:</c> The Microsoft provider does not support calling at <c>DISPATCH_LEVEL</c>.
+		/// </para>
+		/// <para>
+		/// To call this function in kernel mode, use Cng.lib, which is part of the Driver Development Kit (DDK). For more information, see
+		/// WDK and Developer Tools. <c>Windows Server 2008 and Windows Vista:</c> To call this function in kernel mode, use Ksecdd.lib.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptgenrandom NTSTATUS BCryptGenRandom( BCRYPT_ALG_HANDLE
+		// hAlgorithm, PUCHAR pbBuffer, ULONG cbBuffer, ULONG dwFlags );
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("bcrypt.h", MSDNShortId = "7c6cee3a-f2c5-46f3-8cfe-984316f323d9")]
+		public static extern NTStatus BCryptGenRandom(BCRYPT_ALG_HANDLE hAlgorithm, IntPtr pbBuffer, uint cbBuffer, GenRandomFlags dwFlags);
+
+		/// <summary>The <c>BCryptGenRandom</c> function generates a random number.</summary>
+		/// <param name="hAlgorithm">
+		/// The handle of an algorithm provider created by using the BCryptOpenAlgorithmProvider function. The algorithm that was specified
+		/// when the provider was created must support the random number generator interface.
+		/// </param>
+		/// <param name="pbBuffer">
+		/// The address of a buffer that receives the random number. The size of this buffer is specified by the cbBuffer parameter.
+		/// </param>
+		/// <param name="cbBuffer">The size, in bytes, of the pbBuffer buffer.</param>
+		/// <param name="dwFlags">
+		/// <para>A set of flags that modify the behavior of this function. This parameter can be zero or the following value.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>BCRYPT_RNG_USE_ENTROPY_IN_BUFFER 0x00000001</term>
+		/// <term>
+		/// This function will use the number in the pbBuffer buffer as additional entropy for the random number. If this flag is not
+		/// specified, this function will use a random number for the entropy. Windows 8 and later: This flag is ignored in Windows 8 and later.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>BCRYPT_USE_SYSTEM_PREFERRED_RNG 0x00000002</term>
+		/// <term>
+		/// Use the system-preferred random number generator algorithm. The hAlgorithm parameter must be NULL.
+		/// BCRYPT_USE_SYSTEM_PREFERRED_RNG is only supported at PASSIVE_LEVEL IRQL. For more information, see Remarks. Windows Vista: This
+		/// flag is not supported.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Returns a status code that indicates the success or failure of the function.</para>
+		/// <para>Possible return codes include, but are not limited to, the following.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_SUCCESS</term>
+		/// <term>The function was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_HANDLE</term>
+		/// <term>The handle in the hAlgorithm parameter is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_PARAMETER</term>
+		/// <term>One or more parameters are not valid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The default random number provider implements an algorithm for generating random numbers that complies with the NIST SP800-90
+		/// standard, specifically the CTR_DRBG portion of that standard.
+		/// </para>
+		/// <para>
+		/// <c>Windows Vista:</c> Prior to Windows Vista with Service Pack 1 (SP1) the default random number provider implements an algorithm
+		/// for generating random numbers that complies with the FIPS 186-2 standard.
+		/// </para>
+		/// <para>
+		/// Depending on what processor modes a provider supports, <c>BCryptGenRandom</c> can be called either from user mode or kernel mode.
+		/// Kernel mode callers can execute either at <c>PASSIVE_LEVEL</c> IRQL or <c>DISPATCH_LEVEL</c> IRQL. If the current IRQL level is
+		/// <c>DISPATCH_LEVEL</c>, the handle provided in the hAlgorithm parameter must have been opened by using the
+		/// <c>BCRYPT_PROV_DISPATCH</c> flag, and any pointers passed to the <c>BCryptGenRandom</c> function must refer to nonpaged (or
+		/// locked) memory. <c>Windows Vista:</c> The Microsoft provider does not support calling at <c>DISPATCH_LEVEL</c>.
+		/// </para>
+		/// <para>
+		/// To call this function in kernel mode, use Cng.lib, which is part of the Driver Development Kit (DDK). For more information, see
+		/// WDK and Developer Tools. <c>Windows Server 2008 and Windows Vista:</c> To call this function in kernel mode, use Ksecdd.lib.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptgenrandom NTSTATUS BCryptGenRandom( BCRYPT_ALG_HANDLE
+		// hAlgorithm, PUCHAR pbBuffer, ULONG cbBuffer, ULONG dwFlags );
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("bcrypt.h", MSDNShortId = "7c6cee3a-f2c5-46f3-8cfe-984316f323d9")]
+		public static extern NTStatus BCryptGenRandom(BCRYPT_ALG_HANDLE hAlgorithm, SafeAllocatedMemoryHandle pbBuffer, uint cbBuffer, GenRandomFlags dwFlags);
+
+		/// <summary>
+		/// <para>
+		/// The <c>BCryptGetFipsAlgorithmMode</c> function determines whether Federal Information Processing Standard (FIPS) compliance is enabled.
+		/// </para>
+		/// </summary>
+		/// <param name="pfEnabled">
+		/// <para>
+		/// The address of a <c>BOOLEAN</c> variable that receives zero if FIPS compliance is not enabled, or a nonzero value if FIPS
+		/// compliance is enabled.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Returns a status code that indicates the success or failure of the function.</para>
+		/// <para>Possible return codes include, but are not limited to, the following.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_SUCCESS</term>
+		/// <term>The function was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_PARAMETER</term>
+		/// <term>The pfEnabled parameter is not valid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>BCryptGetFipsAlgorithmMode</c> can be called either from user mode or kernel mode. Kernel mode callers must be executing at
+		/// <c>PASSIVE_LEVEL</c> IRQL.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptgetfipsalgorithmmode NTSTATUS
+		// BCryptGetFipsAlgorithmMode( BOOLEAN *pfEnabled );
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("bcrypt.h", MSDNShortId = "eb7b758d-3466-49fe-8729-a8a059fadcde")]
+		public static extern NTStatus BCryptGetFipsAlgorithmMode([MarshalAs(UnmanagedType.U1)] out bool pfEnabled);
+
 		/// <summary>The <c>BCryptGetProperty</c> function retrieves the value of a named property for a CNG object.</summary>
 		/// <param name="hObject">A handle that represents the CNG object to obtain the property value for.</param>
 		/// <param name="pszProperty">
@@ -4870,6 +5463,106 @@ namespace Vanara.PInvoke
 				return mem.ToStructure<T>();
 			}
 		}
+
+		/// <summary>
+		/// <para>
+		/// Performs a single hash computation. This is a convenience function that wraps calls to BCryptCreateHash, BCryptHashData,
+		/// BCryptFinishHash, and BCryptDestroyHash.
+		/// </para>
+		/// </summary>
+		/// <param name="hAlgorithm">
+		/// <para>
+		/// The handle of an algorithm provider created by using the BCryptOpenAlgorithmProvider function. The algorithm that was specified
+		/// when the provider was created must support the hash interface.
+		/// </para>
+		/// </param>
+		/// <param name="pbSecret">
+		/// <para>
+		/// A pointer to a buffer that contains the key to use for the hash or MAC. The cbSecret parameter contains the size of this buffer.
+		/// This key only applies to hash algorithms opened by the BCryptOpenAlgorithmProvider function by using the
+		/// <c>BCRYPT_ALG_HANDLE_HMAC</c> flag. Otherwise, set this parameter to <c>NULL</c>
+		/// </para>
+		/// </param>
+		/// <param name="cbSecret">
+		/// <para>The size, in bytes, of the pbSecret buffer. If no key is used, set this parameter to zero.</para>
+		/// </param>
+		/// <param name="pbInput">
+		/// <para>
+		/// A pointer to a buffer that contains the data to process. The cbInput parameter contains the number of bytes in this buffer. This
+		/// function does not modify the contents of this buffer.
+		/// </para>
+		/// </param>
+		/// <param name="cbInput">
+		/// <para>The number of bytes in the pbInput buffer.</para>
+		/// </param>
+		/// <param name="pbOutput">
+		/// <para>A pointer to a buffer that receives the hash or MAC value. The cbOutput parameter contains the size of this buffer.</para>
+		/// </param>
+		/// <param name="cbOutput">
+		/// <para>The size, in bytes, of the pbOutput buffer. This size must exactly match the size of the hash or MAC value.</para>
+		/// <para>
+		/// The size can be obtained by calling the BCryptGetProperty function to get the <c>BCRYPT_HASH_LENGTH</c> property. This will
+		/// provide the size of the hash or MAC value for the specified algorithm.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>A status code indicating success or failure.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcrypthash NTSTATUS BCryptHash( BCRYPT_ALG_HANDLE
+		// hAlgorithm, PUCHAR pbSecret, ULONG cbSecret, PUCHAR pbInput, ULONG cbInput, PUCHAR pbOutput, ULONG cbOutput );
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("bcrypt.h", MSDNShortId = "F0FF9B6D-1345-480A-BE13-BE90547407BF")]
+		public static extern NTStatus BCryptHash(BCRYPT_ALG_HANDLE hAlgorithm, [Optional] IntPtr pbSecret, uint cbSecret, IntPtr pbInput, uint cbInput, IntPtr pbOutput, uint cbOutput);
+
+		/// <summary>
+		/// <para>
+		/// Performs a single hash computation. This is a convenience function that wraps calls to BCryptCreateHash, BCryptHashData,
+		/// BCryptFinishHash, and BCryptDestroyHash.
+		/// </para>
+		/// </summary>
+		/// <param name="hAlgorithm">
+		/// <para>
+		/// The handle of an algorithm provider created by using the BCryptOpenAlgorithmProvider function. The algorithm that was specified
+		/// when the provider was created must support the hash interface.
+		/// </para>
+		/// </param>
+		/// <param name="pbSecret">
+		/// <para>
+		/// A pointer to a buffer that contains the key to use for the hash or MAC. The cbSecret parameter contains the size of this buffer.
+		/// This key only applies to hash algorithms opened by the BCryptOpenAlgorithmProvider function by using the
+		/// <c>BCRYPT_ALG_HANDLE_HMAC</c> flag. Otherwise, set this parameter to <c>NULL</c>
+		/// </para>
+		/// </param>
+		/// <param name="cbSecret">
+		/// <para>The size, in bytes, of the pbSecret buffer. If no key is used, set this parameter to zero.</para>
+		/// </param>
+		/// <param name="pbInput">
+		/// <para>
+		/// A pointer to a buffer that contains the data to process. The cbInput parameter contains the number of bytes in this buffer. This
+		/// function does not modify the contents of this buffer.
+		/// </para>
+		/// </param>
+		/// <param name="cbInput">
+		/// <para>The number of bytes in the pbInput buffer.</para>
+		/// </param>
+		/// <param name="pbOutput">
+		/// <para>A pointer to a buffer that receives the hash or MAC value. The cbOutput parameter contains the size of this buffer.</para>
+		/// </param>
+		/// <param name="cbOutput">
+		/// <para>The size, in bytes, of the pbOutput buffer. This size must exactly match the size of the hash or MAC value.</para>
+		/// <para>
+		/// The size can be obtained by calling the BCryptGetProperty function to get the <c>BCRYPT_HASH_LENGTH</c> property. This will
+		/// provide the size of the hash or MAC value for the specified algorithm.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>A status code indicating success or failure.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcrypthash NTSTATUS BCryptHash( BCRYPT_ALG_HANDLE
+		// hAlgorithm, PUCHAR pbSecret, ULONG cbSecret, PUCHAR pbInput, ULONG cbInput, PUCHAR pbOutput, ULONG cbOutput );
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("bcrypt.h", MSDNShortId = "F0FF9B6D-1345-480A-BE13-BE90547407BF")]
+		public static extern NTStatus BCryptHash(BCRYPT_ALG_HANDLE hAlgorithm, SafeAllocatedMemoryHandle pbSecret, uint cbSecret, SafeAllocatedMemoryHandle pbInput, uint cbInput, SafeAllocatedMemoryHandle pbOutput, uint cbOutput);
 
 		/// <summary>
 		/// <para>The <c>BCryptHashData</c> function performs a one way hash or Message Authentication Code (MAC) on a data buffer.</para>
@@ -5660,6 +6353,368 @@ namespace Vanara.PInvoke
 		public static extern NTStatus BCryptImportKeyPair(BCRYPT_ALG_HANDLE hAlgorithm, [Optional] BCRYPT_KEY_HANDLE hImportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, out SafeBCRYPT_KEY_HANDLE phKey, SafeAllocatedMemoryHandle pbInput, uint cbInput, ImportFlags dwFlags);
 
 		/// <summary>
+		/// <para>
+		/// The <c>BCryptKeyDerivation</c> function derives a key without requiring a secret agreement. It is similar in functionality to
+		/// BCryptDeriveKey but does not require a BCRYPT_SECRET_HANDLE value as input.
+		/// </para>
+		/// </summary>
+		/// <param name="hKey">
+		/// <para>Handle of the input key.</para>
+		/// </param>
+		/// <param name="pParameterList">
+		/// <para>
+		/// Pointer to a <c>BCryptBufferDesc</c> structure that contains the KDF parameters. This parameter is optional and can be
+		/// <c>NULL</c> if it is not needed. The parameters can be specific to a key derivation function (KDF) or generic. The following
+		/// table shows the required and optional parameters for specific KDFs implemented by the Microsoft Primitive provider.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>KDF</term>
+		/// <term>Parameter</term>
+		/// <term>Required</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SP800-108 HMAC in counter mode</term>
+		/// <term>KDF_LABEL</term>
+		/// <term>yes</term>
+		/// </item>
+		/// <item>
+		/// <term/>
+		/// <term>KDF_CONTEXT</term>
+		/// <term>yes</term>
+		/// </item>
+		/// <item>
+		/// <term/>
+		/// <term>KDF_HASH_ALGORITHM</term>
+		/// <term>yes</term>
+		/// </item>
+		/// <item>
+		/// <term>SP800-56A</term>
+		/// <term>KDF_ALGORITHMID</term>
+		/// <term>yes</term>
+		/// </item>
+		/// <item>
+		/// <term/>
+		/// <term>KDF_PARTYUINFO</term>
+		/// <term>yes</term>
+		/// </item>
+		/// <item>
+		/// <term/>
+		/// <term>KDF_PARTYVINFO</term>
+		/// <term>yes</term>
+		/// </item>
+		/// <item>
+		/// <term/>
+		/// <term>KDF_HASH_ALGORITHM</term>
+		/// <term>yes</term>
+		/// </item>
+		/// <item>
+		/// <term/>
+		/// <term>KDF_SUPPPUBINFO</term>
+		/// <term>no</term>
+		/// </item>
+		/// <item>
+		/// <term/>
+		/// <term>KDF_SUPPPRIVINFO</term>
+		/// <term>no</term>
+		/// </item>
+		/// <item>
+		/// <term>PBKDF2</term>
+		/// <term>KDF_HASH_ALGORITHM</term>
+		/// <term>yes</term>
+		/// </item>
+		/// <item>
+		/// <term/>
+		/// <term>KDF_SALT</term>
+		/// <term>yes</term>
+		/// </item>
+		/// <item>
+		/// <term/>
+		/// <term>KDF_ITERATION_COUNT</term>
+		/// <term>no</term>
+		/// </item>
+		/// <item>
+		/// <term>CAPI_KDF</term>
+		/// <term>KDF_HASH_ALGORITHM</term>
+		/// <term>yes</term>
+		/// </item>
+		/// </list>
+		/// <para>The following generic parameter can be used:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>KDF_GENERIC_PARAMETER</term>
+		/// </item>
+		/// </list>
+		/// <para>Generic parameters map to KDF specific parameters in the following manner:</para>
+		/// <para>SP800-108 HMAC in counter mode:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>KDF_GENERIC_PARAMETER = KDF_LABEL||0x00||KDF_CONTEXT</term>
+		/// </item>
+		/// </list>
+		/// <para>SP800-56A</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// KDF_GENERIC_PARAMETER = KDF_ALGORITHMID || KDF_PARTYUINFO || KDF_PARTYVINFO {|| KDF_SUPPPUBINFO } {|| KDF_SUPPPRIVINFO }
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>PBKDF2</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>KDF_GENERIC_PARAMETER = KDF_SALT</term>
+		/// </item>
+		/// <item>
+		/// <term>KDF_ITERATION_COUNT – defaults to 10000</term>
+		/// </item>
+		/// </list>
+		/// <para>CAPI_KDF</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>KDF_GENERIC_PARAMETER = Not Used</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pbDerivedKey">
+		/// <para>Address of a buffer that receives the key. The cbDerivedKey parameter contains the size of this buffer.</para>
+		/// </param>
+		/// <param name="cbDerivedKey">
+		/// <para>Size, in bytes, of the buffer pointed to by the pbDerivedKey parameter.</para>
+		/// </param>
+		/// <param name="pcbResult">
+		/// <para>
+		/// Pointer to a variable that receives the number of bytes that were copied to the buffer pointed to by the pbDerivedKey parameter.
+		/// </para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>Flags that modify the behavior of this function. The following value can be used with the Microsoft Primitive provider.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>BCRYPT_CAPI_AES_FLAG</term>
+		/// <term>
+		/// Specifies that the target algorithm is AES and that the key therefore must be double expanded. This flag is only valid with the
+		/// CAPI_KDF algorithm.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Returns a status code that indicates the success or failure of the function.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>You can use the following algorithm identifiers in the BCryptOpenAlgorithmProvider function before calling <c>BCryptKeyDerivation</c>:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term><c>BCRYPT_CAPI_KDF_ALGORITHM</c></term>
+		/// </item>
+		/// <item>
+		/// <term><c>BCRYPT_SP800108_CTR_HMAC_ALGORITHM</c></term>
+		/// </item>
+		/// <item>
+		/// <term><c>BCRYPT_SP80056A_CONCAT_ALGORITHM</c></term>
+		/// </item>
+		/// <item>
+		/// <term><c>BCRYPT_PBKDF2_ALGORITHM</c></term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// To call this function in kernel mode, use Cng.lib, which is part of the Driver Development Kit (DDK). For more information, see
+		/// WDK and Developer Tools. <c>Windows Server 2008 and Windows Vista:</c> To call this function in kernel mode, use Ksecdd.lib.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptkeyderivation NTSTATUS BCryptKeyDerivation(
+		// BCRYPT_KEY_HANDLE hKey, BCryptBufferDesc *pParameterList, PUCHAR pbDerivedKey, ULONG cbDerivedKey, ULONG *pcbResult, ULONG dwFlags );
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("bcrypt.h", MSDNShortId = "D0B91FFE-2E72-4AE3-A84F-DC598C02CF53")]
+		public static extern NTStatus BCryptKeyDerivation(BCRYPT_KEY_HANDLE hKey, [Optional] NCryptBufferDesc pParameterList, IntPtr pbDerivedKey, uint cbDerivedKey, out uint pcbResult, KeyDerivationFlags dwFlags);
+
+		/// <summary>
+		/// <para>
+		/// The <c>BCryptKeyDerivation</c> function derives a key without requiring a secret agreement. It is similar in functionality to
+		/// BCryptDeriveKey but does not require a BCRYPT_SECRET_HANDLE value as input.
+		/// </para>
+		/// </summary>
+		/// <param name="hKey">
+		/// <para>Handle of the input key.</para>
+		/// </param>
+		/// <param name="pParameterList">
+		/// <para>
+		/// Pointer to a <c>BCryptBufferDesc</c> structure that contains the KDF parameters. This parameter is optional and can be
+		/// <c>NULL</c> if it is not needed. The parameters can be specific to a key derivation function (KDF) or generic. The following
+		/// table shows the required and optional parameters for specific KDFs implemented by the Microsoft Primitive provider.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>KDF</term>
+		/// <term>Parameter</term>
+		/// <term>Required</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SP800-108 HMAC in counter mode</term>
+		/// <term>KDF_LABEL</term>
+		/// <term>yes</term>
+		/// </item>
+		/// <item>
+		/// <term/>
+		/// <term>KDF_CONTEXT</term>
+		/// <term>yes</term>
+		/// </item>
+		/// <item>
+		/// <term/>
+		/// <term>KDF_HASH_ALGORITHM</term>
+		/// <term>yes</term>
+		/// </item>
+		/// <item>
+		/// <term>SP800-56A</term>
+		/// <term>KDF_ALGORITHMID</term>
+		/// <term>yes</term>
+		/// </item>
+		/// <item>
+		/// <term/>
+		/// <term>KDF_PARTYUINFO</term>
+		/// <term>yes</term>
+		/// </item>
+		/// <item>
+		/// <term/>
+		/// <term>KDF_PARTYVINFO</term>
+		/// <term>yes</term>
+		/// </item>
+		/// <item>
+		/// <term/>
+		/// <term>KDF_HASH_ALGORITHM</term>
+		/// <term>yes</term>
+		/// </item>
+		/// <item>
+		/// <term/>
+		/// <term>KDF_SUPPPUBINFO</term>
+		/// <term>no</term>
+		/// </item>
+		/// <item>
+		/// <term/>
+		/// <term>KDF_SUPPPRIVINFO</term>
+		/// <term>no</term>
+		/// </item>
+		/// <item>
+		/// <term>PBKDF2</term>
+		/// <term>KDF_HASH_ALGORITHM</term>
+		/// <term>yes</term>
+		/// </item>
+		/// <item>
+		/// <term/>
+		/// <term>KDF_SALT</term>
+		/// <term>yes</term>
+		/// </item>
+		/// <item>
+		/// <term/>
+		/// <term>KDF_ITERATION_COUNT</term>
+		/// <term>no</term>
+		/// </item>
+		/// <item>
+		/// <term>CAPI_KDF</term>
+		/// <term>KDF_HASH_ALGORITHM</term>
+		/// <term>yes</term>
+		/// </item>
+		/// </list>
+		/// <para>The following generic parameter can be used:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>KDF_GENERIC_PARAMETER</term>
+		/// </item>
+		/// </list>
+		/// <para>Generic parameters map to KDF specific parameters in the following manner:</para>
+		/// <para>SP800-108 HMAC in counter mode:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>KDF_GENERIC_PARAMETER = KDF_LABEL||0x00||KDF_CONTEXT</term>
+		/// </item>
+		/// </list>
+		/// <para>SP800-56A</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// KDF_GENERIC_PARAMETER = KDF_ALGORITHMID || KDF_PARTYUINFO || KDF_PARTYVINFO {|| KDF_SUPPPUBINFO } {|| KDF_SUPPPRIVINFO }
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>PBKDF2</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>KDF_GENERIC_PARAMETER = KDF_SALT</term>
+		/// </item>
+		/// <item>
+		/// <term>KDF_ITERATION_COUNT – defaults to 10000</term>
+		/// </item>
+		/// </list>
+		/// <para>CAPI_KDF</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>KDF_GENERIC_PARAMETER = Not Used</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pbDerivedKey">
+		/// <para>Address of a buffer that receives the key. The cbDerivedKey parameter contains the size of this buffer.</para>
+		/// </param>
+		/// <param name="cbDerivedKey">
+		/// <para>Size, in bytes, of the buffer pointed to by the pbDerivedKey parameter.</para>
+		/// </param>
+		/// <param name="pcbResult">
+		/// <para>
+		/// Pointer to a variable that receives the number of bytes that were copied to the buffer pointed to by the pbDerivedKey parameter.
+		/// </para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>Flags that modify the behavior of this function. The following value can be used with the Microsoft Primitive provider.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>BCRYPT_CAPI_AES_FLAG</term>
+		/// <term>
+		/// Specifies that the target algorithm is AES and that the key therefore must be double expanded. This flag is only valid with the
+		/// CAPI_KDF algorithm.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Returns a status code that indicates the success or failure of the function.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>You can use the following algorithm identifiers in the BCryptOpenAlgorithmProvider function before calling <c>BCryptKeyDerivation</c>:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term><c>BCRYPT_CAPI_KDF_ALGORITHM</c></term>
+		/// </item>
+		/// <item>
+		/// <term><c>BCRYPT_SP800108_CTR_HMAC_ALGORITHM</c></term>
+		/// </item>
+		/// <item>
+		/// <term><c>BCRYPT_SP80056A_CONCAT_ALGORITHM</c></term>
+		/// </item>
+		/// <item>
+		/// <term><c>BCRYPT_PBKDF2_ALGORITHM</c></term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// To call this function in kernel mode, use Cng.lib, which is part of the Driver Development Kit (DDK). For more information, see
+		/// WDK and Developer Tools. <c>Windows Server 2008 and Windows Vista:</c> To call this function in kernel mode, use Ksecdd.lib.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptkeyderivation NTSTATUS BCryptKeyDerivation(
+		// BCRYPT_KEY_HANDLE hKey, BCryptBufferDesc *pParameterList, PUCHAR pbDerivedKey, ULONG cbDerivedKey, ULONG *pcbResult, ULONG dwFlags );
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("bcrypt.h", MSDNShortId = "D0B91FFE-2E72-4AE3-A84F-DC598C02CF53")]
+		public static extern NTStatus BCryptKeyDerivation(BCRYPT_KEY_HANDLE hKey, [Optional] NCryptBufferDesc pParameterList, SafeAllocatedMemoryHandle pbDerivedKey, uint cbDerivedKey, out uint pcbResult, KeyDerivationFlags dwFlags);
+
+		/// <summary>
 		/// <para>The <c>BCryptOpenAlgorithmProvider</c> function loads and initializes a CNG provider.</para>
 		/// </summary>
 		/// <param name="phAlgorithm">
@@ -5783,6 +6838,96 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("bcrypt.h", MSDNShortId = "aceba9c0-19e6-4f3c-972a-752feed4a9f8")]
 		public static extern NTStatus BCryptOpenAlgorithmProvider(out SafeBCRYPT_ALG_HANDLE phAlgorithm, string pszAlgId, [Optional] string pszImplementation, AlgProviderFlags dwFlags = 0);
+
+		/// <summary>
+		/// <para>The <c>BCryptProcessMultiOperations</c> function processes a sequence of operations on a multi-object state.</para>
+		/// </summary>
+		/// <param name="hObject">
+		/// <para>A handle to a multi-object state, such as one created by the BCryptCreateMultiHash function.</para>
+		/// </param>
+		/// <param name="operationType">
+		/// <para>
+		/// A <c>BCRYPT_OPERATION_TYPE_*</c> value. Currently the only defined value is <c>BCRYPT_OPERATION_TYPE_HASH</c>. This value
+		/// identifies the hObject parameter as a multi-hash object and the pOperations pointer as pointing to an array of
+		/// BCRYPT_MULTI_HASH_OPERATION elements.
+		/// </para>
+		/// </param>
+		/// <param name="pOperations">
+		/// <para>
+		/// A pointer to an array of operation command structures. For hashing, it is a pointer to an array of BCRYPT_MULTI_HASH_OPERATION structures.
+		/// </para>
+		/// </param>
+		/// <param name="cbOperations">
+		/// <para>The size, in bytes, of the pOperations array.</para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>Specify a value of zero (0).</para>
+		/// </param>
+		/// <returns>
+		/// <para>None</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Each element of the pOperations array contains instructions for a particular computation to be performed on a single element of
+		/// the multi-object state. The functional behavior of <c>BCryptProcessMultiOperations</c> is equivalent to performing, for each
+		/// element in the multi-object state, the computations specified in the operations array for that element, one at a time, in order.
+		/// </para>
+		/// <para>
+		/// The relative order of two operations that operate on different elements of the array is not guaranteed. If an output buffer
+		/// overlaps an input or output buffer the result is not deterministic.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptprocessmultioperations NTSTATUS
+		// BCryptProcessMultiOperations( BCRYPT_HANDLE hObject, BCRYPT_MULTI_OPERATION_TYPE operationType, PVOID pOperations, ULONG
+		// cbOperations, ULONG dwFlags );
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("bcrypt.h", MSDNShortId = "5FD28AC3-46D2-4F06-BF06-F5FEF8E531F5")]
+		public static extern NTStatus BCryptProcessMultiOperations(BCRYPT_HANDLE hObject, BCRYPT_MULTI_OPERATION_TYPE operationType, IntPtr pOperations, uint cbOperations, uint dwFlags = 0);
+
+		/// <summary>
+		/// <para>The <c>BCryptProcessMultiOperations</c> function processes a sequence of operations on a multi-object state.</para>
+		/// </summary>
+		/// <param name="hObject">
+		/// <para>A handle to a multi-object state, such as one created by the BCryptCreateMultiHash function.</para>
+		/// </param>
+		/// <param name="operationType">
+		/// <para>
+		/// A <c>BCRYPT_OPERATION_TYPE_*</c> value. Currently the only defined value is <c>BCRYPT_OPERATION_TYPE_HASH</c>. This value
+		/// identifies the hObject parameter as a multi-hash object and the pOperations pointer as pointing to an array of
+		/// BCRYPT_MULTI_HASH_OPERATION elements.
+		/// </para>
+		/// </param>
+		/// <param name="pOperations">
+		/// <para>
+		/// A pointer to an array of operation command structures. For hashing, it is a pointer to an array of BCRYPT_MULTI_HASH_OPERATION structures.
+		/// </para>
+		/// </param>
+		/// <param name="cbOperations">
+		/// <para>The size, in bytes, of the pOperations array.</para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>Specify a value of zero (0).</para>
+		/// </param>
+		/// <returns>
+		/// <para>None</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Each element of the pOperations array contains instructions for a particular computation to be performed on a single element of
+		/// the multi-object state. The functional behavior of <c>BCryptProcessMultiOperations</c> is equivalent to performing, for each
+		/// element in the multi-object state, the computations specified in the operations array for that element, one at a time, in order.
+		/// </para>
+		/// <para>
+		/// The relative order of two operations that operate on different elements of the array is not guaranteed. If an output buffer
+		/// overlaps an input or output buffer the result is not deterministic.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptprocessmultioperations NTSTATUS
+		// BCryptProcessMultiOperations( BCRYPT_HANDLE hObject, BCRYPT_MULTI_OPERATION_TYPE operationType, PVOID pOperations, ULONG
+		// cbOperations, ULONG dwFlags );
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("bcrypt.h", MSDNShortId = "5FD28AC3-46D2-4F06-BF06-F5FEF8E531F5")]
+		public static extern NTStatus BCryptProcessMultiOperations(BCRYPT_HANDLE hObject, BCRYPT_MULTI_OPERATION_TYPE operationType, [In] BCRYPT_MULTI_HASH_OPERATION[] pOperations, uint cbOperations, uint dwFlags = 0);
 
 		/// <summary>
 		/// <para>
@@ -6171,6 +7316,178 @@ namespace Vanara.PInvoke
 		[PInvokeData("bcrypt.h", MSDNShortId = "c8814a13-ac28-4583-927f-c787e0a25faf")]
 		public static extern NTStatus BCryptQueryContextFunctionProperty(ContextConfigTable dwTable, string pszContext, InterfaceId dwInterface, string pszFunction, string pszProperty, out uint pcbValue, out SafeBCryptBuffer ppbValue);
 
+		/// <summary>The <c>BCryptQueryProviderRegistration</c> function retrieves information about a CNG provider.</summary>
+		/// <param name="pszProvider">
+		/// A pointer to a null-terminated Unicode string that contains the name of the provider to obtain information about.
+		/// </param>
+		/// <param name="dwMode">
+		/// <para>Specifies the type of information to retrieve. This can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CRYPT_ANY</term>
+		/// <term>Retrieve any information for the provider.</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPT_UM</term>
+		/// <term>Retrieve the user mode information for the provider.</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPT_KM</term>
+		/// <term>Retrieve the kernel mode information for the provider.</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPT_MM</term>
+		/// <term>Retrieve both the user mode and kernel mode information for the provider.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwInterface">
+		/// <para>Specifies the interface to retrieve information for. This can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>BCRYPT_ASYMMETRIC_ENCRYPTION_INTERFACE</term>
+		/// <term>Retrieve the asymmetric encryption interface.</term>
+		/// </item>
+		/// <item>
+		/// <term>BCRYPT_CIPHER_INTERFACE</term>
+		/// <term>Retrieve the cipher interface.</term>
+		/// </item>
+		/// <item>
+		/// <term>BCRYPT_HASH_INTERFACE</term>
+		/// <term>Retrieve the hash interface.</term>
+		/// </item>
+		/// <item>
+		/// <term>NCRYPT_KEY_STORAGE_INTERFACE</term>
+		/// <term>Retrieve the key storage interface.</term>
+		/// </item>
+		/// <item>
+		/// <term>BCRYPT_RNG_INTERFACE</term>
+		/// <term>Retrieve the random number generator interface.</term>
+		/// </item>
+		/// <item>
+		/// <term>NCRYPT_SCHANNEL_INTERFACE</term>
+		/// <term>Retrieve the Schannel interface.</term>
+		/// </item>
+		/// <item>
+		/// <term>BCRYPT_SECRET_AGREEMENT_INTERFACE</term>
+		/// <term>Retrieve the secret agreement interface.</term>
+		/// </item>
+		/// <item>
+		/// <term>BCRYPT_SIGNATURE_INTERFACE</term>
+		/// <term>Retrieve the signature interface.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pcbBuffer">
+		/// <para>
+		/// A pointer to a <c>ULONG</c> value that, on entry, contains the size, in bytes, of the buffer pointed to by the ppBuffer
+		/// parameter. On exit, this value receives either the number of bytes copied to the buffer or the required size, in bytes, of the buffer.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> This is the total size, in bytes, of the entire buffer, not just the size of the CRYPT_PROVIDER_REG structure. The
+		/// buffer must be able to hold other data for the providers in addition to the <c>CRYPT_PROVIDER_REG</c> structure.
+		/// </para>
+		/// </param>
+		/// <param name="ppBuffer">
+		/// <para>A pointer to a buffer pointer that receives a CRYPT_PROVIDER_REG structure and other data that describes the provider.</para>
+		/// <para>
+		/// If this parameter is <c>NULL</c>, this function will return <c>STATUS_BUFFER_TOO_SMALL</c> and place in the value pointed to by
+		/// the pcbBuffer parameter, the required size, in bytes, of all data.
+		/// </para>
+		/// <para>
+		/// If this parameter is the address of a <c>NULL</c> pointer, this function will allocate the required memory, fill it in with the
+		/// provider information, and place a pointer to this memory in this parameter. When you have finished using this memory, free it by
+		/// passing this pointer to the BCryptFreeBuffer function.
+		/// </para>
+		/// <para>
+		/// If this parameter is the address of a non- <c>NULL</c> pointer, this function will copy the provider information into this
+		/// buffer. The pcbBuffer parameter must contain the size, in bytes, of the entire buffer. If the buffer is not large enough to hold
+		/// all of the provider information, this function will return <c>STATUS_BUFFER_TOO_SMALL</c>.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Returns a status code that indicates the success or failure of the function.</para>
+		/// <para>Possible return codes include, but are not limited to, the following.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_SUCCESS</term>
+		/// <term>The function was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_PARAMETER</term>
+		/// <term>One or more parameters are not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_BUFFER_TOO_SMALL</term>
+		/// <term>The size specified by the pcbBuffer parameter is not large enough to hold all of the data.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_NOT_FOUND</term>
+		/// <term>No provider could be found that matches the specified criteria.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks><c>BCryptQueryProviderRegistration</c> can be called only in user mode.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptqueryproviderregistration NTSTATUS
+		// BCryptQueryProviderRegistration( LPCWSTR pszProvider, ULONG dwMode, ULONG dwInterface, ULONG *pcbBuffer, PCRYPT_PROVIDER_REG
+		// *ppBuffer );
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("bcrypt.h", MSDNShortId = "28b8bca9-442f-4d58-86aa-8aa274777ede")]
+		public static extern NTStatus BCryptQueryProviderRegistration([MarshalAs(UnmanagedType.LPWStr)] string pszProvider, ProviderInfoType dwMode, InterfaceId dwInterface, out uint pcbBuffer, out SafeBCryptBuffer ppBuffer);
+
+		/// <summary>
+		/// <para>[ <c>BCryptRegisterConfigChangeNotify</c> is deprecated beginning with Windows 10.]</para>
+		/// <para>The <c>BCryptRegisterConfigChangeNotify(PRKEVENT)</c> function creates a kernel mode CNG configuration change event handler.</para>
+		/// </summary>
+		/// <param name="phEvent">
+		/// <para>
+		/// The address of a <c>PRKEVENT</c> variable that receives the pointer to the event dispatcher object. You use the kernel wait
+		/// functions, such as KeWaitForSingleObject, to determine when the event has been signaled. The event is signaled when the CNG
+		/// configuration has changed.
+		/// </para>
+		/// <para>This handle must be passed to the <c>BCryptUnregisterConfigChangeNotify(PRKEVENT)</c> function to remove the event notification.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Returns a status code that indicates the success or failure of the function.</para>
+		/// <para>Possible return codes include, but are not limited to, the following.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_SUCCESS</term>
+		/// <term>The function was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_PARAMETER</term>
+		/// <term>The phEvent parameter is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_NO_MEMORY</term>
+		/// <term>A memory allocation failure occurred.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </returns>
+		// NTSTATUS WINAPI BCryptRegisterConfigChangeNotify( _In_ PRKEVENT phEvent); https://msdn.microsoft.com/en-us/library/windows/desktop/bb394681(v=vs.85).aspx
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Bcrypt.h", MSDNShortId = "bb394681")]
+		public static extern NTStatus BCryptRegisterConfigChangeNotify(IntPtr phEvent);
+
 		/// <summary>
 		/// <para>
 		/// [ <c>BCryptRemoveContextFunction</c> is available for use in the operating systems specified in the Requirements section. It may
@@ -6282,6 +7599,145 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("bcrypt.h", MSDNShortId = "b8b1df66-f66f-4efc-9c8e-fca32e0278c5")]
 		public static extern NTStatus BCryptRemoveContextFunction(ContextConfigTable dwTable, string pszContext, InterfaceId dwInterface, string pszFunction);
+
+		/// <summary>
+		/// <para>The <c>BCryptResolveProviders</c> function obtains a collection of all of the providers that meet the specified criteria.</para>
+		/// </summary>
+		/// <param name="pszContext">
+		/// <para>
+		/// A pointer to a null-terminated Unicode string that contains the identifier of the context for which to obtain the providers. If
+		/// this is set to <c>NULL</c> or to an empty string, the default context is assumed.
+		/// </para>
+		/// </param>
+		/// <param name="dwInterface">
+		/// <para>
+		/// The identifier of an interface that the provider must support. This must be one of the CNG Interface Identifiers. If the
+		/// pszFunction parameter is not <c>NULL</c> or an empty string, you can set dwInterface to zero to force the function to infer the interface.
+		/// </para>
+		/// </param>
+		/// <param name="pszFunction">
+		/// <para>
+		/// A pointer to a null-terminated Unicode string that contains the algorithm or function identifier that the provider must support.
+		/// This can be one of the standard CNG Algorithm Identifiers or the identifier for another registered algorithm. If dwInterface is
+		/// set to a nonzero value, then pszFunction can be <c>NULL</c> to include all algorithms and functions.
+		/// </para>
+		/// </param>
+		/// <param name="pszProvider">
+		/// <para>
+		/// A pointer to a null-terminated Unicode string that contains the name of the provider to retrieve. If this parameter is
+		/// <c>NULL</c>, then all providers will be included.
+		/// </para>
+		/// <para>
+		/// This parameter allows you to specify a specific provider to retrieve in the event that more than one provider meets the other criteria.
+		/// </para>
+		/// </param>
+		/// <param name="dwMode">
+		/// <para>Specifies the type of provider to retrieve. This can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CRYPT_UM</term>
+		/// <term>Retrieve user mode providers.</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPT_KM</term>
+		/// <term>Retrieve kernel mode providers.</term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPT_MM</term>
+		/// <term>Retrieve both user mode and kernel mode providers.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>A set of flags that modify the behavior of this function.</para>
+		/// <para>This can be a zero or a combination of one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>CRYPT_ALL_FUNCTIONS 1</term>
+		/// <term>
+		/// This function will retrieve all of the functions supported by each provider that meets the specified criteria. If this flag is
+		/// not specified, this function will only retrieve the first function of the provider or providers that meet the specified criteria.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CRYPT_ALL_PROVIDERS 2</term>
+		/// <term>
+		/// This function will retrieve all of the providers that meet the specified criteria. If this flag is not specified, this function
+		/// will only retrieve the first provider that is found that meets the specified criteria.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="pcbBuffer">
+		/// <para>
+		/// A pointer to a <c>DWORD</c> value that, on entry, contains the size, in bytes, of the buffer pointed to by the ppBuffer
+		/// parameter. On exit, this value receives either the number of bytes copied to the buffer or the required size, in bytes, of the buffer.
+		/// </para>
+		/// </param>
+		/// <param name="ppBuffer">
+		/// <para>The address of a CRYPT_PROVIDER_REFS pointer that receives the collection of providers that meet the specified criteria.</para>
+		/// <para>
+		/// If this parameter is <c>NULL</c>, this function will return <c>STATUS_SUCCESS</c> and place in the value pointed to by the
+		/// pcbBuffer parameter, the required size, in bytes, of all the data.
+		/// </para>
+		/// <para>
+		/// If this parameter is the address of a <c>NULL</c> pointer, this function will allocate the required memory, fill the memory with
+		/// the information about the providers, and place the pointer to this memory in this parameter. When you have finished using this
+		/// memory, free it by passing this pointer to the BCryptFreeBuffer function.
+		/// </para>
+		/// <para>
+		/// If this parameter is the address of a non- <c>NULL</c> pointer, this function will copy the provider information into this
+		/// buffer. The pcbBuffer parameter must contain the size, in bytes, of the entire buffer. If the buffer is not large enough to hold
+		/// all of the provider information, this function will return <c>STATUS_BUFFER_TOO_SMALL</c>.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Returns a status code that indicates the success or failure of the function.</para>
+		/// <para>Possible return codes include, but are not limited to, the following.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_SUCCESS</term>
+		/// <term>The function was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_BUFFER_TOO_SMALL</term>
+		/// <term>The size specified by the pcbBuffer parameter is not large enough to hold all of the data.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_PARAMETER</term>
+		/// <term>One or more parameters are not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_NOT_FOUND</term>
+		/// <term>No provider could be found that meets all of the specified criteria.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>BCryptResolveProviders</c> can be called either from user mode or kernel mode. Kernel mode callers must be executing at
+		/// <c>PASSIVE_LEVEL</c> IRQL.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptresolveproviders NTSTATUS BCryptResolveProviders(
+		// LPCWSTR pszContext, ULONG dwInterface, LPCWSTR pszFunction, LPCWSTR pszProvider, ULONG dwMode, ULONG dwFlags, ULONG *pcbBuffer,
+		// PCRYPT_PROVIDER_REFS *ppBuffer );
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("bcrypt.h", MSDNShortId = "cf30f635-4918-4911-9db0-df90d26a2f1a")]
+		public static extern NTStatus BCryptResolveProviders([Optional] string pszContext, InterfaceId dwInterface, [Optional] string pszFunction, [Optional] string pszProvider, ProviderInfoType dwMode,
+			ResolveProviderFlags dwFlags, out uint pcbBuffer, out SafeBCryptBuffer ppBuffer);
 
 		/// <summary>
 		/// <para>The <c>BCryptSecretAgreement</c> function creates a secret agreement value from a private and a public key.</para>
@@ -6714,6 +8170,379 @@ namespace Vanara.PInvoke
 		[PInvokeData("bcrypt.h", MSDNShortId = "687f3410-d28b-4ce2-a2a1-c564f757c668")]
 		public static extern NTStatus BCryptSetProperty(BCRYPT_HANDLE hObject, [MarshalAs(UnmanagedType.LPWStr)] string pszProperty, IntPtr pbInput, uint cbInput, uint dwFlags = 0);
 
+		/// <summary>
+		/// <para>The <c>BCryptSignHash</c> function creates a signature of a hash value.</para>
+		/// </summary>
+		/// <param name="hKey">
+		/// <para>The handle of the key to use to sign the hash.</para>
+		/// </param>
+		/// <param name="pPaddingInfo">
+		/// <para>
+		/// A pointer to a structure that contains padding information. The actual type of structure this parameter points to depends on the
+		/// value of the dwFlags parameter. This parameter is only used with asymmetric keys and must be <c>NULL</c> otherwise.
+		/// </para>
+		/// </param>
+		/// <param name="pbInput">
+		/// <para>A pointer to a buffer that contains the hash value to sign. The cbInput parameter contains the size of this buffer.</para>
+		/// </param>
+		/// <param name="cbInput">
+		/// <para>The number of bytes in the pbInput buffer to sign.</para>
+		/// </param>
+		/// <param name="pbOutput">
+		/// <para>
+		/// The address of a buffer to receive the signature produced by this function. The cbOutput parameter contains the size of this buffer.
+		/// </para>
+		/// <para>
+		/// If this parameter is <c>NULL</c>, this function will calculate the size required for the signature and return the size in the
+		/// location pointed to by the pcbResult parameter.
+		/// </para>
+		/// </param>
+		/// <param name="cbOutput">
+		/// <para>The size, in bytes, of the pbOutput buffer. This parameter is ignored if the pbOutput parameter is <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="pcbResult">
+		/// <para>A pointer to a <c>ULONG</c> variable that receives the number of bytes copied to the pbOutput buffer.</para>
+		/// <para>If pbOutput is <c>NULL</c>, this receives the size, in bytes, required for the signature.</para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>
+		/// A set of flags that modify the behavior of this function. The allowed set of flags depends on the type of key specified by the
+		/// hKey parameter.
+		/// </para>
+		/// <para>This can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>BCRYPT_PAD_PKCS1</term>
+		/// <term>Use the PKCS1 padding scheme. The pPaddingInfo parameter is a pointer to a BCRYPT_PKCS1_PADDING_INFO structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>BCRYPT_PAD_PSS</term>
+		/// <term>
+		/// Use the Probabilistic Signature Scheme (PSS) padding scheme. The pPaddingInfo parameter is a pointer to a BCRYPT_PSS_PADDING_INFO structure.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Returns a status code that indicates the success or failure of the function.</para>
+		/// <para>Possible return codes include, but are not limited to, the following.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_SUCCESS</term>
+		/// <term>The function was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_HANDLE</term>
+		/// <term>The key handle specified by the hKey parameter is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_NOT_SUPPORTED</term>
+		/// <term>The algorithm provider used to create the key handle specified by the hKey parameter is not a signing algorithm.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_NO_MEMORY</term>
+		/// <term>A memory allocation failure occurred.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_BUFFER_TOO_SMALL</term>
+		/// <term>The memory size specified by the cbOutput parameter is not large enough to hold the signature.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>This function will encrypt the hash value with the specified key to create the signature.</para>
+		/// <para>
+		/// To later verify that the signature is valid, call the BCryptVerifySignature function with an identical key and an identical hash
+		/// of the original data.
+		/// </para>
+		/// <para>
+		/// Depending on what processor modes a provider supports, <c>BCryptSignHash</c> can be called either from user mode or kernel mode.
+		/// Kernel mode callers can execute either at <c>PASSIVE_LEVEL</c> IRQL or <c>DISPATCH_LEVEL</c> IRQL. If the current IRQL level is
+		/// <c>DISPATCH_LEVEL</c>, the handle provided in the hKey parameter must be derived from an algorithm handle returned by a provider
+		/// that was opened with the <c>BCRYPT_PROV_DISPATCH</c> flag, and any pointers passed to the <c>BCryptSignHash</c> function must
+		/// refer to nonpaged (or locked) memory.
+		/// </para>
+		/// <para>
+		/// To call this function in kernel mode, use Cng.lib, which is part of the Driver Development Kit (DDK). For more information, see
+		/// WDK and Developer Tools. <c>Windows Server 2008 and Windows Vista:</c> To call this function in kernel mode, use Ksecdd.lib.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptsignhash NTSTATUS BCryptSignHash( BCRYPT_KEY_HANDLE
+		// hKey, VOID *pPaddingInfo, PUCHAR pbInput, ULONG cbInput, PUCHAR pbOutput, ULONG cbOutput, ULONG *pcbResult, ULONG dwFlags );
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("bcrypt.h", MSDNShortId = "f402ea9e-89ae-4ccc-9591-aa2328287c0e")]
+		public static extern NTStatus BCryptSignHash(BCRYPT_KEY_HANDLE hKey, [Optional] IntPtr pPaddingInfo, SafeAllocatedMemoryHandle pbInput, uint cbInput, SafeAllocatedMemoryHandle pbOutput, uint cbOutput, out uint pcbResult, EncryptFlags dwFlags);
+
+		/// <summary>
+		/// <para>The <c>BCryptSignHash</c> function creates a signature of a hash value.</para>
+		/// </summary>
+		/// <param name="hKey">
+		/// <para>The handle of the key to use to sign the hash.</para>
+		/// </param>
+		/// <param name="pPaddingInfo">
+		/// <para>
+		/// A pointer to a structure that contains padding information. The actual type of structure this parameter points to depends on the
+		/// value of the dwFlags parameter. This parameter is only used with asymmetric keys and must be <c>NULL</c> otherwise.
+		/// </para>
+		/// </param>
+		/// <param name="pbInput">
+		/// <para>A pointer to a buffer that contains the hash value to sign. The cbInput parameter contains the size of this buffer.</para>
+		/// </param>
+		/// <param name="cbInput">
+		/// <para>The number of bytes in the pbInput buffer to sign.</para>
+		/// </param>
+		/// <param name="pbOutput">
+		/// <para>
+		/// The address of a buffer to receive the signature produced by this function. The cbOutput parameter contains the size of this buffer.
+		/// </para>
+		/// <para>
+		/// If this parameter is <c>NULL</c>, this function will calculate the size required for the signature and return the size in the
+		/// location pointed to by the pcbResult parameter.
+		/// </para>
+		/// </param>
+		/// <param name="cbOutput">
+		/// <para>The size, in bytes, of the pbOutput buffer. This parameter is ignored if the pbOutput parameter is <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="pcbResult">
+		/// <para>A pointer to a <c>ULONG</c> variable that receives the number of bytes copied to the pbOutput buffer.</para>
+		/// <para>If pbOutput is <c>NULL</c>, this receives the size, in bytes, required for the signature.</para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>
+		/// A set of flags that modify the behavior of this function. The allowed set of flags depends on the type of key specified by the
+		/// hKey parameter.
+		/// </para>
+		/// <para>This can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>BCRYPT_PAD_PKCS1</term>
+		/// <term>Use the PKCS1 padding scheme. The pPaddingInfo parameter is a pointer to a BCRYPT_PKCS1_PADDING_INFO structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>BCRYPT_PAD_PSS</term>
+		/// <term>
+		/// Use the Probabilistic Signature Scheme (PSS) padding scheme. The pPaddingInfo parameter is a pointer to a BCRYPT_PSS_PADDING_INFO structure.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Returns a status code that indicates the success or failure of the function.</para>
+		/// <para>Possible return codes include, but are not limited to, the following.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_SUCCESS</term>
+		/// <term>The function was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_HANDLE</term>
+		/// <term>The key handle specified by the hKey parameter is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_NOT_SUPPORTED</term>
+		/// <term>The algorithm provider used to create the key handle specified by the hKey parameter is not a signing algorithm.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_NO_MEMORY</term>
+		/// <term>A memory allocation failure occurred.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_BUFFER_TOO_SMALL</term>
+		/// <term>The memory size specified by the cbOutput parameter is not large enough to hold the signature.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>This function will encrypt the hash value with the specified key to create the signature.</para>
+		/// <para>
+		/// To later verify that the signature is valid, call the BCryptVerifySignature function with an identical key and an identical hash
+		/// of the original data.
+		/// </para>
+		/// <para>
+		/// Depending on what processor modes a provider supports, <c>BCryptSignHash</c> can be called either from user mode or kernel mode.
+		/// Kernel mode callers can execute either at <c>PASSIVE_LEVEL</c> IRQL or <c>DISPATCH_LEVEL</c> IRQL. If the current IRQL level is
+		/// <c>DISPATCH_LEVEL</c>, the handle provided in the hKey parameter must be derived from an algorithm handle returned by a provider
+		/// that was opened with the <c>BCRYPT_PROV_DISPATCH</c> flag, and any pointers passed to the <c>BCryptSignHash</c> function must
+		/// refer to nonpaged (or locked) memory.
+		/// </para>
+		/// <para>
+		/// To call this function in kernel mode, use Cng.lib, which is part of the Driver Development Kit (DDK). For more information, see
+		/// WDK and Developer Tools. <c>Windows Server 2008 and Windows Vista:</c> To call this function in kernel mode, use Ksecdd.lib.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptsignhash NTSTATUS BCryptSignHash( BCRYPT_KEY_HANDLE
+		// hKey, VOID *pPaddingInfo, PUCHAR pbInput, ULONG cbInput, PUCHAR pbOutput, ULONG cbOutput, ULONG *pcbResult, ULONG dwFlags );
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("bcrypt.h", MSDNShortId = "f402ea9e-89ae-4ccc-9591-aa2328287c0e")]
+		public static extern NTStatus BCryptSignHash(BCRYPT_KEY_HANDLE hKey, [Optional] IntPtr pPaddingInfo, SafeAllocatedMemoryHandle pbInput, uint cbInput, [Optional] IntPtr pbOutput, uint cbOutput, out uint pcbResult, EncryptFlags dwFlags);
+
+		/// <summary>
+		/// The <c>BCryptUnregisterConfigChangeNotify(PRKEVENT)</c> function removes a kernel mode CNG configuration change event handler
+		/// that was created by using the <c>BCryptRegisterConfigChangeNotify(PRKEVENT)</c> function.
+		/// </summary>
+		/// <param name="hEvent">
+		/// The pointer to the event dispatcher object to remove. This is the pointer that was obtained by using the
+		/// <c>BCryptRegisterConfigChangeNotify(PRKEVENT)</c> function.
+		/// </param>
+		/// <returns>
+		/// <para>Returns a status code that indicates the success or failure of the function.</para>
+		/// <para>Possible return codes include, but are not limited to, the following.</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_SUCCESS</term>
+		/// <term>The function was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_PARAMETER</term>
+		/// <term>The hEvent parameter is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_NO_MEMORY</term>
+		/// <term>A memory allocation failure occurred.</term>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </returns>
+		// NTSTATUS WINAPI BCryptUnregisterConfigChangeNotify( _In_ PRKEVENT hEvent); https://msdn.microsoft.com/en-us/library/windows/desktop/bb394683(v=vs.85).aspx
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("Bcrypt.h", MSDNShortId = "bb394683")]
+		public static extern NTStatus BCryptUnregisterConfigChangeNotify(IntPtr hEvent);
+
+		/// <summary>
+		/// <para>The <c>BCryptVerifySignature</c> function verifies that the specified signature matches the specified hash.</para>
+		/// </summary>
+		/// <param name="hKey">
+		/// <para>
+		/// The handle of the key to use to decrypt the signature. This must be an identical key or the public key portion of the key pair
+		/// used to sign the data with the BCryptSignHash function.
+		/// </para>
+		/// </param>
+		/// <param name="pPaddingInfo">
+		/// <para>
+		/// A pointer to a structure that contains padding information. The actual type of structure this parameter points to depends on the
+		/// value of the dwFlags parameter. This parameter is only used with asymmetric keys and must be <c>NULL</c> otherwise.
+		/// </para>
+		/// </param>
+		/// <param name="pbHash">
+		/// <para>The address of a buffer that contains the hash of the data. The cbHash parameter contains the size of this buffer.</para>
+		/// </param>
+		/// <param name="cbHash">
+		/// <para>The size, in bytes, of the pbHash buffer.</para>
+		/// </param>
+		/// <param name="pbSignature">
+		/// <para>
+		/// The address of a buffer that contains the signed hash of the data. The BCryptSignHash function is used to create the signature.
+		/// The cbSignature parameter contains the size of this buffer.
+		/// </para>
+		/// </param>
+		/// <param name="cbSignature">
+		/// <para>The size, in bytes, of the pbSignature buffer. The BCryptSignHash function is used to create the signature.</para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>
+		/// A set of flags that modify the behavior of this function. The allowed set of flags depends on the type of key specified by the
+		/// hKey parameter.
+		/// </para>
+		/// <para>If the key is a symmetric key, this parameter is not used and should be zero.</para>
+		/// <para>If the key is an asymmetric key, this can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>BCRYPT_PAD_PKCS1</term>
+		/// <term>
+		/// The PKCS1 padding scheme was used when the signature was created. The pPaddingInfo parameter is a pointer to a
+		/// BCRYPT_PKCS1_PADDING_INFO structure.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>BCRYPT_PAD_PSS</term>
+		/// <term>
+		/// The Probabilistic Signature Scheme (PSS) padding scheme was used when the signature was created. The pPaddingInfo parameter is a
+		/// pointer to a BCRYPT_PSS_PADDING_INFO structure.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Returns a status code that indicates the success or failure of the function.</para>
+		/// <para>Possible return codes include, but are not limited to, the following.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_SUCCESS</term>
+		/// <term>The function was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_SIGNATURE</term>
+		/// <term>The signature was not verified.</term>
+		/// </item>
+		/// <item>
+		/// <term>NTE_NO_MEMORY</term>
+		/// <term>A memory allocation failure occurred.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_HANDLE</term>
+		/// <term>The key handle specified by the hKey parameter is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_NOT_SUPPORTED</term>
+		/// <term>The algorithm provider used to create the key handle specified by the hKey parameter is not a signing algorithm.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function decrypts the signature with the provided key and then compares the decrypted value to the specified hash value.
+		/// </para>
+		/// <para>
+		/// To use this function, you must hash the data by using the same hashing algorithm that was used to create the hash value that was
+		/// signed. If applicable, you must also specify the same padding scheme that was specified when the signature was created.
+		/// </para>
+		/// <para>
+		/// Depending on what processor modes a provider supports, <c>BCryptVerifySignature</c> can be called either from user mode or kernel
+		/// mode. Kernel mode callers can execute either at <c>PASSIVE_LEVEL</c> IRQL or <c>DISPATCH_LEVEL</c> IRQL. If the current IRQL
+		/// level is <c>DISPATCH_LEVEL</c>, the handle provided in the hKey parameter must be derived from an algorithm handle returned by a
+		/// provider that was opened by using the <c>BCRYPT_PROV_DISPATCH</c> flag, and any pointers passed to the
+		/// <c>BCryptVerifySignature</c> function must refer to nonpaged (or locked) memory.
+		/// </para>
+		/// <para>
+		/// To call this function in kernel mode, use Cng.lib, which is part of the Driver Development Kit (DDK). For more information, see
+		/// WDK and Developer Tools. <c>Windows Server 2008 and Windows Vista:</c> To call this function in kernel mode, use Ksecdd.lib.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptverifysignature NTSTATUS BCryptVerifySignature(
+		// BCRYPT_KEY_HANDLE hKey, VOID *pPaddingInfo, PUCHAR pbHash, ULONG cbHash, PUCHAR pbSignature, ULONG cbSignature, ULONG dwFlags );
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("bcrypt.h", MSDNShortId = "95c32056-e444-441c-bbc1-c5ae82aba964")]
+		public static extern NTStatus BCryptVerifySignature(BCRYPT_KEY_HANDLE hKey, [Optional] IntPtr pPaddingInfo, SafeAllocatedMemoryHandle pbHash, uint cbHash, SafeAllocatedMemoryHandle pbSignature, uint cbSignature, EncryptFlags dwFlags);
+
 		/// <summary>Provides a handle to an algorithm provider.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct BCRYPT_ALG_HANDLE : IHandle
@@ -6937,6 +8766,83 @@ namespace Vanara.PInvoke
 			public IntPtr DangerousGetHandle() => handle;
 		}
 
+		/// <summary>A <c>BCRYPT_MULTI_HASH_OPERATION</c> structure defines a single operation in a multi-hash operation.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/ns-bcrypt-_bcrypt_multi_hash_operation typedef struct
+		// _BCRYPT_MULTI_HASH_OPERATION { ULONG iHash; BCRYPT_HASH_OPERATION_TYPE hashOperation; PUCHAR pbBuffer; ULONG cbBuffer; } BCRYPT_MULTI_HASH_OPERATION;
+		[PInvokeData("bcrypt.h", MSDNShortId = "B0418A07-D2EE-4346-9971-676C8FB08FAA")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct BCRYPT_MULTI_HASH_OPERATION
+		{
+			/// <summary>
+			/// An index into the multi-object state array of the hash state on which this computation operates. The first element of the
+			/// array corresponds to an iHash value of zero (0). Valid values are less than the value of the nHashes parameter of the
+			/// BCryptCreateMultiHash function.
+			/// </summary>
+			public uint iHash;
+
+			/// <summary>
+			/// <para>A hash operation type, either <c>BCRYPT_HASH_OPERATION_HASH_DATA</c> or <c>BCRYPT_HASH_OPERATION_FINISH_HASH</c>.</para>
+			/// <para>
+			/// If the value is <c>BCRYPT_HASH_OPERATION_HASH_DATA</c>, the operation performed is equivalent to calling the BCryptHashData
+			/// function on the hash object array element with pbBuffer/cbBuffer pointing to the buffer to be hashed.
+			/// </para>
+			/// <para>
+			/// If the value is <c>BCRYPT_HASH_OPERATION_FINISH_HASH</c>, the operation performed is equivalent to calling the
+			/// BCryptFinishHash function on the hash object array element with pbBuffer/cbBuffer pointing to the output buffer that receives
+			/// the result.
+			/// </para>
+			/// </summary>
+			public BCRYPT_HASH_OPERATION_TYPE hashOperation;
+
+			/// <summary>The buffer on which the operation works.</summary>
+			public IntPtr pbBuffer;
+
+			/// <summary>The buffer on which the operation works.</summary>
+			public uint cbBuffer;
+		}
+
+		/// <summary>
+		/// The <c>BCRYPT_OAEP_PADDING_INFO</c> structure is used to provide options for the Optimal Asymmetric Encryption Padding (OAEP) scheme.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/ns-bcrypt-_bcrypt_oaep_padding_info typedef struct
+		// _BCRYPT_OAEP_PADDING_INFO { LPCWSTR pszAlgId; PUCHAR pbLabel; ULONG cbLabel; } BCRYPT_OAEP_PADDING_INFO;
+		[PInvokeData("bcrypt.h", MSDNShortId = "19f48f2d-e952-4a01-8112-f298c79919b2")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct BCRYPT_OAEP_PADDING_INFO
+		{
+			/// <summary>
+			/// A pointer to a null-terminated Unicode string that identifies the cryptographic algorithm to use to create the padding. This
+			/// algorithm must be a hashing algorithm.
+			/// </summary>
+			public string pszAlgId;
+
+			/// <summary>
+			/// The address of a buffer that contains the data to use to create the padding. The <c>cbLabel</c> member contains the size of
+			/// this buffer.
+			/// </summary>
+			public IntPtr pbLabel;
+
+			/// <summary>Contains the number of bytes in the <c>pbLabel</c> buffer to use to create the padding.</summary>
+			public uint cbLabel;
+		}
+
+		/// <summary>The <c>BCRYPT_PKCS1_PADDING_INFO</c> structure is used to provide options for the PKCS #1 padding scheme.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/ns-bcrypt-_bcrypt_pkcs1_padding_info typedef struct
+		// _BCRYPT_PKCS1_PADDING_INFO { LPCWSTR pszAlgId; } BCRYPT_PKCS1_PADDING_INFO;
+		[PInvokeData("bcrypt.h", MSDNShortId = "920fa461-5b7e-4429-972d-e7c83fb62c64")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct BCRYPT_PKCS1_PADDING_INFO
+		{
+			/// <summary>
+			/// A pointer to a null-terminated Unicode string that identifies the cryptographic algorithm to use to create the padding. This
+			/// algorithm must be a hashing algorithm. When creating a signature, the object identifier (OID) that corresponds to this
+			/// algorithm is added to the <c>DigestInfo</c> element in the signature, and if this member is <c>NULL</c>, then the OID is not
+			/// added. When verifying a signature, the verification fails if the OID that corresponds to this member is not the same as the
+			/// OID in the signature. If there is no OID in the signature, then verification fails unless this member is <c>NULL</c>.
+			/// </summary>
+			public string pszAlgId;
+		}
+
 		/// <summary>The <c>BCRYPT_PROVIDER_NAME</c> structure contains the name of a CNG provider.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/ns-bcrypt-_bcrypt_provider_name typedef struct _BCRYPT_PROVIDER_NAME {
 		// LPWSTR pszProviderName; } BCRYPT_PROVIDER_NAME;
@@ -6946,6 +8852,25 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>A pointer to a null-terminated Unicode string that contains the name of the provider.</summary>
 			public string pszProviderName;
+		}
+
+		/// <summary>
+		/// The <c>BCRYPT_PSS_PADDING_INFO</c> structure is used to provide options for the Probabilistic Signature Scheme (PSS) padding scheme.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/ns-bcrypt-_bcrypt_pss_padding_info typedef struct
+		// _BCRYPT_PSS_PADDING_INFO { LPCWSTR pszAlgId; ULONG cbSalt; } BCRYPT_PSS_PADDING_INFO;
+		[PInvokeData("bcrypt.h", MSDNShortId = "28605b34-b1e1-4460-a8f0-b0fe9f9b94d4")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct BCRYPT_PSS_PADDING_INFO
+		{
+			/// <summary>
+			/// A pointer to a null-terminated Unicode string that identifies the cryptographic algorithm to use to create the padding. This
+			/// algorithm must be a hashing algorithm.
+			/// </summary>
+			public string pszAlgId;
+
+			/// <summary>The size, in bytes, of the random salt to use for the padding.</summary>
+			public uint cbSalt;
 		}
 
 		/// <summary>Provides a handle to a secret agreement.</summary>
@@ -7785,22 +9710,5 @@ namespace Vanara.PInvoke
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() { BCryptFreeBuffer(handle); return true; }
 		}
-
-		/*
-		BCryptDeriveKeyCapi
-		BCryptDeriveKeyPBKDF2
-		BCryptFinalizeKeyPair
-		BCryptGenRandom
-		BCryptGetFipsAlgorithmMode
-		BCryptHash
-		BCryptKeyDerivation
-		BCryptProcessMultiOperations
-		BCryptQueryProviderRegistration
-		BCryptRegisterConfigChangeNotify
-		BCryptResolveProviders
-		BCryptSignHash
-		BCryptUnregisterConfigChangeNotify
-		BCryptVerifySignature
-		*/
 	}
 }
