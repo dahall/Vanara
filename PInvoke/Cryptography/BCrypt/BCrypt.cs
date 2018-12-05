@@ -109,22 +109,38 @@ namespace Vanara.PInvoke
 			BCRYPT_OPERATION_TYPE_HASH = 1,
 		}
 
+		/// <summary>Magic numbers for the various blobs.</summary>
 		public enum BlobMagicNumber
 		{
-			BCRYPT_DSA_PUBLIC_MAGIC = 0x42505344,
-			BCRYPT_DSA_PUBLIC_MAGIC_V2 = 0x32425044,
+			BCRYPT_DH_PARAMETERS_MAGIC = 0x4d504844,
+			BCRYPT_DH_PRIVATE_MAGIC = 0x56504844,
+			BCRYPT_DH_PUBLIC_MAGIC = 0x42504844,
+			BCRYPT_DSA_PARAMETERS_MAGIC_V2 = 0x324d5044,
 			BCRYPT_DSA_PRIVATE_MAGIC = 0x56505344,
 			BCRYPT_DSA_PRIVATE_MAGIC_V2 = 0x32565044,
+			BCRYPT_DSA_PUBLIC_MAGIC = 0x42505344,
+			BCRYPT_DSA_PUBLIC_MAGIC_V2 = 0x32425044,
+			BCRYPT_ECC_PARAMETERS_MAGIC = 0x50434345,
+			BCRYPT_ECDH_PRIVATE_GENERIC_MAGIC = 0x564B4345,
+			BCRYPT_ECDH_PRIVATE_P256_MAGIC = 0x324B4345,
+			BCRYPT_ECDH_PRIVATE_P384_MAGIC = 0x344B4345,
+			BCRYPT_ECDH_PRIVATE_P521_MAGIC = 0x364B4345,
+			BCRYPT_ECDH_PUBLIC_GENERIC_MAGIC = 0x504B4345,
 			BCRYPT_ECDH_PUBLIC_P256_MAGIC = 0x314B4345,
 			BCRYPT_ECDH_PUBLIC_P384_MAGIC = 0x334B4345,
 			BCRYPT_ECDH_PUBLIC_P521_MAGIC = 0x354B4345,
+			BCRYPT_ECDSA_PRIVATE_GENERIC_MAGIC = 0x56444345,
+			BCRYPT_ECDSA_PRIVATE_P256_MAGIC = 0x32534345,
+			BCRYPT_ECDSA_PRIVATE_P384_MAGIC = 0x34534345,
+			BCRYPT_ECDSA_PRIVATE_P521_MAGIC = 0x36534345,
+			BCRYPT_ECDSA_PUBLIC_GENERIC_MAGIC = 0x50444345,
 			BCRYPT_ECDSA_PUBLIC_P256_MAGIC = 0x31534345,
 			BCRYPT_ECDSA_PUBLIC_P384_MAGIC = 0x33534345,
 			BCRYPT_ECDSA_PUBLIC_P521_MAGIC = 0x35534345,
-			BCRYPT_RSAPUBLIC_MAGIC = 0x31415352,
-			BCRYPT_RSAPRIVATE_MAGIC = 0x32415352,
+			BCRYPT_KEY_DATA_BLOB_MAGIC = 0x4d42444b,
 			BCRYPT_RSAFULLPRIVATE_MAGIC = 0x33415352,
-			BCRYPT_KEY_DATA_BLOB_MAGIC = 0x4d42444b
+			BCRYPT_RSAPRIVATE_MAGIC = 0x32415352,
+			BCRYPT_RSAPUBLIC_MAGIC = 0x31415352,
 		}
 
 		/// <summary>A set of flags that determine the options for the configuration context.</summary>
@@ -964,7 +980,122 @@ namespace Vanara.PInvoke
 		// cbSecret, ULONG dwFlags );
 		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("bcrypt.h", MSDNShortId = "deb02f67-f3d3-4542-8245-fd4982c3190b")]
-		public static extern NTStatus BCryptCreateHash(BCRYPT_ALG_HANDLE hAlgorithm, out SafeBCRYPT_HASH_HANDLE phHash, SafeAllocatedMemoryHandle pbHashObject, uint cbHashObject, SafeAllocatedMemoryHandle pbSecret, uint cbSecret, AlgProviderFlags dwFlags);
+		public static extern NTStatus BCryptCreateHash(BCRYPT_ALG_HANDLE hAlgorithm, out SafeBCRYPT_HASH_HANDLE phHash, SafeAllocatedMemoryHandle pbHashObject, uint cbHashObject, SafeAllocatedMemoryHandle pbSecret, uint cbSecret, AlgProviderFlags dwFlags = 0);
+
+		/// <summary>
+		/// <para>The <c>BCryptCreateHash</c> function is called to create a hash or Message Authentication Code (MAC) object.</para>
+		/// </summary>
+		/// <param name="hAlgorithm">
+		/// <para>
+		/// The handle of an algorithm provider created by using the BCryptOpenAlgorithmProvider function. The algorithm that was specified
+		/// when the provider was created must support the hash interface.
+		/// </para>
+		/// </param>
+		/// <param name="phHash">
+		/// <para>
+		/// A pointer to a <c>BCRYPT_HASH_HANDLE</c> value that receives a handle that represents the hash or MAC object. This handle is used
+		/// in subsequent hashing or MAC functions, such as the BCryptHashData function. When you have finished using this handle, release it
+		/// by passing it to the BCryptDestroyHash function.
+		/// </para>
+		/// </param>
+		/// <param name="pbHashObject">
+		/// <para>
+		/// A pointer to a buffer that receives the hash or MAC object. The cbHashObject parameter contains the size of this buffer. The
+		/// required size of this buffer can be obtained by calling the BCryptGetProperty function to get the <c>BCRYPT_OBJECT_LENGTH</c>
+		/// property. This will provide the size of the hash or MAC object for the specified algorithm.
+		/// </para>
+		/// <para>This memory can only be freed after the handle pointed to by the phHash parameter is destroyed.</para>
+		/// <para>
+		/// If the value of this parameter is <c>NULL</c> and the value of the cbHashObject parameter is zero, the memory for the hash object
+		/// is allocated and freed by this function. <c>Windows 7:</c> This memory management functionality is available beginning with
+		/// Windows 7.
+		/// </para>
+		/// </param>
+		/// <param name="cbHashObject">
+		/// <para>The size, in bytes, of the pbHashObject buffer.</para>
+		/// <para>
+		/// If the value of this parameter is zero and the value of the pbHashObject parameter is <c>NULL</c>, the memory for the key object
+		/// is allocated and freed by this function. <c>Windows 7:</c> This memory management functionality is available beginning with
+		/// Windows 7.
+		/// </para>
+		/// <para>c</para>
+		/// </param>
+		/// <param name="pbSecret">
+		/// <para>
+		/// A pointer to a buffer that contains the key to use for the hash or MAC. The cbSecret parameter contains the size of this buffer.
+		/// This key only applies to hash algorithms opened by the BCryptOpenAlgorithmProvider function by using the
+		/// <c>BCRYPT_ALG_HANDLE_HMAC</c> flag. Otherwise, set this parameter to <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="cbSecret">
+		/// <para>The size, in bytes, of the pbSecret buffer. If no key is used, set this parameter to zero.</para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>Flags that modify the behavior of the function. This can be zero or the following value.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>BCRYPT_HASH_REUSABLE_FLAG</term>
+		/// <term>
+		/// Creates a reusable hashing object. The object can be used for a new hashing operation immediately after calling BCryptFinishHash.
+		/// For more information, see Creating a Hash with CNG. Windows Server 2008 R2, Windows 7, Windows Server 2008 and Windows Vista:
+		/// This flag is not supported.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Returns a status code that indicates the success or failure of the function.</para>
+		/// <para>Possible return codes include, but are not limited to, the following.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>STATUS_SUCCESS</term>
+		/// <term>The function was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_BUFFER_TOO_SMALL</term>
+		/// <term>The size of the hash object specified by the cbHashObject parameter is not large enough to hold the hash object.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_HANDLE</term>
+		/// <term>The algorithm handle in the hAlgorithm parameter is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_INVALID_PARAMETER</term>
+		/// <term>One or more parameters are not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>STATUS_NOT_SUPPORTED</term>
+		/// <term>The algorithm provider specified by the hAlgorithm parameter does not support the hash interface.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Depending on what processor modes a provider supports, <c>BCryptCreateHash</c> can be called either from user mode or kernel
+		/// mode. Kernel mode callers can execute either at <c>PASSIVE_LEVEL</c> IRQL or <c>DISPATCH_LEVEL</c> IRQL. If the current IRQL
+		/// level is <c>DISPATCH_LEVEL</c>, the handle provided in the hAlgorithm parameter must have been opened by using the
+		/// <c>BCRYPT_PROV_DISPATCH</c> flag, and any pointers passed to the <c>BCryptCreateHash</c> function must refer to nonpaged (or
+		/// locked) memory.
+		/// </para>
+		/// <para>
+		/// To call this function in kernel mode, use Cng.lib, which is part of the Driver Development Kit (DDK). For more information, see
+		/// WDK and Developer Tools. <c>Windows Server 2008 and Windows Vista:</c> To call this function in kernel mode, use Ksecdd.lib.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/bcrypt/nf-bcrypt-bcryptcreatehash NTSTATUS BCryptCreateHash(
+		// BCRYPT_ALG_HANDLE hAlgorithm, BCRYPT_HASH_HANDLE *phHash, PUCHAR pbHashObject, ULONG cbHashObject, PUCHAR pbSecret, ULONG
+		// cbSecret, ULONG dwFlags );
+		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("bcrypt.h", MSDNShortId = "deb02f67-f3d3-4542-8245-fd4982c3190b")]
+		public static extern NTStatus BCryptCreateHash(BCRYPT_ALG_HANDLE hAlgorithm, out SafeBCRYPT_HASH_HANDLE phHash, SafeAllocatedMemoryHandle pbHashObject, uint cbHashObject, [Optional] IntPtr pbSecret, [Optional] uint cbSecret, AlgProviderFlags dwFlags = 0);
 
 		/// <summary>
 		/// <para>The <c>BCryptCreateHash</c> function is called to create a hash or Message Authentication Code (MAC) object.</para>
@@ -1079,7 +1210,7 @@ namespace Vanara.PInvoke
 		// cbSecret, ULONG dwFlags );
 		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("bcrypt.h", MSDNShortId = "deb02f67-f3d3-4542-8245-fd4982c3190b", MinClient = PInvokeClient.Windows7)]
-		public static extern NTStatus BCryptCreateHash(BCRYPT_ALG_HANDLE hAlgorithm, out SafeBCRYPT_HASH_HANDLE phHash, [Optional] IntPtr pbHashObject, [Optional] uint cbHashObject, SafeAllocatedMemoryHandle pbSecret, uint cbSecret, AlgProviderFlags dwFlags);
+		public static extern NTStatus BCryptCreateHash(BCRYPT_ALG_HANDLE hAlgorithm, out SafeBCRYPT_HASH_HANDLE phHash, [Optional] IntPtr pbHashObject, [Optional] uint cbHashObject, [Optional] IntPtr pbSecret, [Optional] uint cbSecret, AlgProviderFlags dwFlags = 0);
 
 		/// <summary>
 		/// <para>
@@ -1685,18 +1816,16 @@ namespace Vanara.PInvoke
 		[PInvokeData("bcrypt.h", MSDNShortId = "6a250bed-0ea4-4cae-86e6-f0cea95dc56e")]
 		public static extern NTStatus BCryptDeleteContext(ContextConfigTable dwTable, [MarshalAs(UnmanagedType.LPWStr)] string pszContext);
 
-		/// <summary>
-		/// <para>The <c>BCryptDeriveKey</c> function derives a key from a secret agreement value.</para>
-		/// </summary>
+		/// <summary>The <c>BCryptDeriveKey</c> function derives a key from a secret agreement value.</summary>
 		/// <param name="hSharedSecret">
-		/// <para>The secret agreement handle to create the key from. This handle is obtained from the BCryptSecretAgreement function.</para>
+		/// The secret agreement handle to create the key from. This handle is obtained from the BCryptSecretAgreement function.
 		/// </param>
 		/// <param name="pwszKDF">
 		/// <para>
 		/// A pointer to a null-terminated Unicode string that identifies the key derivation function (KDF) to use to derive the key. This
 		/// can be one of the following strings.
 		/// </para>
-		/// <para>BCRYPT_KDF_HASH (L"HASH")</para>
+		/// <para><b>BCRYPT_KDF_HASH (L"HASH")</b></para>
 		/// <para>Use the hash key derivation function.</para>
 		/// <para>
 		/// If the cbDerivedKey parameter is less than the size of the derived key, this function will only copy the specified number of
@@ -1734,9 +1863,25 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>The call to the KDF is made as shown in the following pseudocode.</para>
-		/// </param>
-		/// <param name="KDF-Prepend = KDF_SECRET_PREPEND[0] + &#xA;    KDF_SECRET_PREPEND[1] + &#xA;    ... +&#xA;    KDF_SECRET_PREPEND[n]&#xA;&#xA;KDF-Append = KDF_SECRET_APPEND[0] + &#xA;    KDF_SECRET_APPEND[1] + &#xA;    ... + &#xA;    KDF_SECRET_APPEND[n]&#xA;&#xA;KDF-Output = Hash(&#xA;    KDF-Prepend + &#xA;    hSharedSecret + &#xA;    KDF-Append)">
-		/// <para>BCRYPT_KDF_HMAC (L"HMAC")</para>
+		/// <code lang="none">
+		/// KDF-Prepend = KDF_SECRET_PREPEND[0] +
+		/// KDF_SECRET_PREPEND[1] +
+		/// ... +
+		/// KDF_SECRET_PREPEND[n]
+		///
+		/// KDF-Append = KDF_SECRET_APPEND[0] +
+		/// KDF_SECRET_APPEND[1] +
+		/// ... +
+		/// KDF_SECRET_APPEND[n]
+		///
+		/// KDF-Output = Hash(
+		/// KDF-Prepend +
+		///
+		/// hSharedSecret +
+		///
+		/// KDF-Append)
+		/// </code>
+		/// <para><b>BCRYPT_KDF_HMAC (L"HMAC")</b></para>
 		/// <para>Use the Hash-Based Message Authentication Code (HMAC) key derivation function.</para>
 		/// <para>
 		/// If the cbDerivedKey parameter is less than the size of the derived key, this function will only copy the specified number of
@@ -1779,9 +1924,24 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>The call to the KDF is made as shown in the following pseudocode.</para>
-		/// </param>
-		/// <param name="KDF-Prepend = KDF_SECRET_PREPEND[0] + &#xA;    KDF_SECRET_PREPEND[1] + &#xA;    ... +&#xA;    KDF_SECRET_PREPEND[n]&#xA;&#xA;KDF-Append = KDF_SECRET_APPEND[0] + &#xA;    KDF_SECRET_APPEND[1] + &#xA;    ... + &#xA;    KDF_SECRET_APPEND[n]&#xA;&#xA;KDF-Output = HMAC-Hash(&#xA;    KDF_HMAC_KEY,&#xA;    KDF-Prepend + &#xA;    hSharedSecret + &#xA;    KDF-Append)">
-		/// <para>BCRYPT_KDF_TLS_PRF (L"TLS_PRF")</para>
+		/// <code lang="none">
+		/// KDF-Prepend = KDF_SECRET_PREPEND[0] +
+		/// KDF_SECRET_PREPEND[1] +
+		/// ... +
+		/// KDF_SECRET_PREPEND[n]
+		///
+		/// KDF-Append = KDF_SECRET_APPEND[0] +
+		/// KDF_SECRET_APPEND[1] +
+		/// ... +
+		/// KDF_SECRET_APPEND[n]
+		///
+		/// KDF-Output = HMAC-Hash(
+		/// KDF_HMAC_KEY,
+		/// KDF-Prepend +
+		/// hSharedSecret +
+		/// KDF-Append)
+		/// </code>
+		/// <para><b>BCRYPT_KDF_TLS_PRF (L"TLS_PRF")</b></para>
 		/// <para>
 		/// Use the transport layer security (TLS) pseudo-random function (PRF) key derivation function. The size of the derived key is
 		/// always 48 bytes, so the cbDerivedKey parameter must be 48.
@@ -1827,8 +1987,12 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>The call to the KDF is made as shown in the following pseudocode.</para>
-		/// </param>
-		/// <param name="KDF-Output = PRF(&#xA;    hSharedSecret, &#xA;    KDF_TLS_PRF_LABEL, &#xA;    KDF_TLS_PRF_SEED)">
+		/// <code lang="none">
+		/// KDF-Output = PRF(
+		/// hSharedSecret,
+		/// KDF_TLS_PRF_LABEL,
+		/// KDF_TLS_PRF_SEED)
+		/// </code>
 		/// <para>BCRYPT_KDF_SP80056A_CONCAT (L"SP800_56A_CONCAT")</para>
 		/// <para>Use the SP800-56A key derivation function.</para>
 		/// <para>
@@ -1883,30 +2047,29 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>The call to the KDF is made as shown in the following pseudocode.</para>
-		/// </param>
-		/// <param name="KDF-Output = SP_800-56A_KDF(&#xA;&#x9;   hSharedSecret,&#xA;&#x9;   KDF_ALGORITHMID,&#xA;&#x9;   KDF_PARTYUINFO,&#xA;&#x9;   KDF_PARTYVINFO,&#xA;&#x9;   KDF_SUPPPUBINFO,&#xA;&#x9;   KDF_SUPPPRIVINFO)">
+		/// <code lang="none">
+		/// KDF-Output = SP_800-56A_KDF(
+		/// hSharedSecret,
+		/// KDF_ALGORITHMID,
+		/// KDF_PARTYUINFO,
+		/// KDF_PARTYVINFO,
+		/// KDF_SUPPPUBINFO,
+		/// KDF_SUPPPRIVINFO)
+		/// </code>
 		/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value is not supported.</para>
 		/// </param>
 		/// <param name="pParameterList">
-		/// <para>
 		/// The address of a BCryptBufferDesc structure that contains the KDF parameters. This parameter is optional and can be <c>NULL</c>
 		/// if it is not needed.
-		/// </para>
 		/// </param>
 		/// <param name="pbDerivedKey">
-		/// <para>
 		/// The address of a buffer that receives the key. The cbDerivedKey parameter contains the size of this buffer. If this parameter is
 		/// <c>NULL</c>, this function will place the required size, in bytes, in the <c>ULONG</c> pointed to by the pcbResult parameter.
-		/// </para>
 		/// </param>
-		/// <param name="cbDerivedKey">
-		/// <para>The size, in bytes, of the pbDerivedKey buffer.</para>
-		/// </param>
+		/// <param name="cbDerivedKey">The size, in bytes, of the pbDerivedKey buffer.</param>
 		/// <param name="pcbResult">
-		/// <para>
 		/// A pointer to a <c>ULONG</c> that receives the number of bytes that were copied to the pbDerivedKey buffer. If the pbDerivedKey
 		/// parameter is <c>NULL</c>, this function will place the required size, in bytes, in the <c>ULONG</c> pointed to by this parameter.
-		/// </para>
 		/// </param>
 		/// <param name="dwFlags">
 		/// <para>A set of flags that modify the behavior of this function. This can be zero or the following value.</para>
@@ -1977,18 +2140,16 @@ namespace Vanara.PInvoke
 		public static extern NTStatus BCryptDeriveKey(BCRYPT_SECRET_HANDLE hSharedSecret, [MarshalAs(UnmanagedType.LPWStr)] string pwszKDF, [Optional] NCryptBufferDesc pParameterList, SafeAllocatedMemoryHandle pbDerivedKey,
 			uint cbDerivedKey, out uint pcbResult, DeriveKeyFlags dwFlags);
 
-		/// <summary>
-		/// <para>The <c>BCryptDeriveKey</c> function derives a key from a secret agreement value.</para>
-		/// </summary>
+		/// <summary>The <c>BCryptDeriveKey</c> function derives a key from a secret agreement value.</summary>
 		/// <param name="hSharedSecret">
-		/// <para>The secret agreement handle to create the key from. This handle is obtained from the BCryptSecretAgreement function.</para>
+		/// The secret agreement handle to create the key from. This handle is obtained from the BCryptSecretAgreement function.
 		/// </param>
 		/// <param name="pwszKDF">
 		/// <para>
 		/// A pointer to a null-terminated Unicode string that identifies the key derivation function (KDF) to use to derive the key. This
 		/// can be one of the following strings.
 		/// </para>
-		/// <para>BCRYPT_KDF_HASH (L"HASH")</para>
+		/// <para><b>BCRYPT_KDF_HASH (L"HASH")</b></para>
 		/// <para>Use the hash key derivation function.</para>
 		/// <para>
 		/// If the cbDerivedKey parameter is less than the size of the derived key, this function will only copy the specified number of
@@ -2026,9 +2187,25 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>The call to the KDF is made as shown in the following pseudocode.</para>
-		/// </param>
-		/// <param name="KDF-Prepend = KDF_SECRET_PREPEND[0] + &#xA;    KDF_SECRET_PREPEND[1] + &#xA;    ... +&#xA;    KDF_SECRET_PREPEND[n]&#xA;&#xA;KDF-Append = KDF_SECRET_APPEND[0] + &#xA;    KDF_SECRET_APPEND[1] + &#xA;    ... + &#xA;    KDF_SECRET_APPEND[n]&#xA;&#xA;KDF-Output = Hash(&#xA;    KDF-Prepend + &#xA;    hSharedSecret + &#xA;    KDF-Append)">
-		/// <para>BCRYPT_KDF_HMAC (L"HMAC")</para>
+		/// <code lang="none">
+		/// KDF-Prepend = KDF_SECRET_PREPEND[0] +
+		/// KDF_SECRET_PREPEND[1] +
+		/// ... +
+		/// KDF_SECRET_PREPEND[n]
+		///
+		/// KDF-Append = KDF_SECRET_APPEND[0] +
+		/// KDF_SECRET_APPEND[1] +
+		/// ... +
+		/// KDF_SECRET_APPEND[n]
+		///
+		/// KDF-Output = Hash(
+		/// KDF-Prepend +
+		///
+		/// hSharedSecret +
+		///
+		/// KDF-Append)
+		/// </code>
+		/// <para><b>BCRYPT_KDF_HMAC (L"HMAC")</b></para>
 		/// <para>Use the Hash-Based Message Authentication Code (HMAC) key derivation function.</para>
 		/// <para>
 		/// If the cbDerivedKey parameter is less than the size of the derived key, this function will only copy the specified number of
@@ -2071,9 +2248,24 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>The call to the KDF is made as shown in the following pseudocode.</para>
-		/// </param>
-		/// <param name="KDF-Prepend = KDF_SECRET_PREPEND[0] + &#xA;    KDF_SECRET_PREPEND[1] + &#xA;    ... +&#xA;    KDF_SECRET_PREPEND[n]&#xA;&#xA;KDF-Append = KDF_SECRET_APPEND[0] + &#xA;    KDF_SECRET_APPEND[1] + &#xA;    ... + &#xA;    KDF_SECRET_APPEND[n]&#xA;&#xA;KDF-Output = HMAC-Hash(&#xA;    KDF_HMAC_KEY,&#xA;    KDF-Prepend + &#xA;    hSharedSecret + &#xA;    KDF-Append)">
-		/// <para>BCRYPT_KDF_TLS_PRF (L"TLS_PRF")</para>
+		/// <code lang="none">
+		/// KDF-Prepend = KDF_SECRET_PREPEND[0] +
+		/// KDF_SECRET_PREPEND[1] +
+		/// ... +
+		/// KDF_SECRET_PREPEND[n]
+		///
+		/// KDF-Append = KDF_SECRET_APPEND[0] +
+		/// KDF_SECRET_APPEND[1] +
+		/// ... +
+		/// KDF_SECRET_APPEND[n]
+		///
+		/// KDF-Output = HMAC-Hash(
+		/// KDF_HMAC_KEY,
+		/// KDF-Prepend +
+		/// hSharedSecret +
+		/// KDF-Append)
+		/// </code>
+		/// <para><b>BCRYPT_KDF_TLS_PRF (L"TLS_PRF")</b></para>
 		/// <para>
 		/// Use the transport layer security (TLS) pseudo-random function (PRF) key derivation function. The size of the derived key is
 		/// always 48 bytes, so the cbDerivedKey parameter must be 48.
@@ -2119,8 +2311,12 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>The call to the KDF is made as shown in the following pseudocode.</para>
-		/// </param>
-		/// <param name="KDF-Output = PRF(&#xA;    hSharedSecret, &#xA;    KDF_TLS_PRF_LABEL, &#xA;    KDF_TLS_PRF_SEED)">
+		/// <code lang="none">
+		/// KDF-Output = PRF(
+		/// hSharedSecret,
+		/// KDF_TLS_PRF_LABEL,
+		/// KDF_TLS_PRF_SEED)
+		/// </code>
 		/// <para>BCRYPT_KDF_SP80056A_CONCAT (L"SP800_56A_CONCAT")</para>
 		/// <para>Use the SP800-56A key derivation function.</para>
 		/// <para>
@@ -2175,30 +2371,29 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>The call to the KDF is made as shown in the following pseudocode.</para>
-		/// </param>
-		/// <param name="KDF-Output = SP_800-56A_KDF(&#xA;&#x9;   hSharedSecret,&#xA;&#x9;   KDF_ALGORITHMID,&#xA;&#x9;   KDF_PARTYUINFO,&#xA;&#x9;   KDF_PARTYVINFO,&#xA;&#x9;   KDF_SUPPPUBINFO,&#xA;&#x9;   KDF_SUPPPRIVINFO)">
+		/// <code lang="none">
+		/// KDF-Output = SP_800-56A_KDF(
+		/// hSharedSecret,
+		/// KDF_ALGORITHMID,
+		/// KDF_PARTYUINFO,
+		/// KDF_PARTYVINFO,
+		/// KDF_SUPPPUBINFO,
+		/// KDF_SUPPPRIVINFO)
+		/// </code>
 		/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value is not supported.</para>
 		/// </param>
 		/// <param name="pParameterList">
-		/// <para>
 		/// The address of a BCryptBufferDesc structure that contains the KDF parameters. This parameter is optional and can be <c>NULL</c>
 		/// if it is not needed.
-		/// </para>
 		/// </param>
 		/// <param name="pbDerivedKey">
-		/// <para>
 		/// The address of a buffer that receives the key. The cbDerivedKey parameter contains the size of this buffer. If this parameter is
 		/// <c>NULL</c>, this function will place the required size, in bytes, in the <c>ULONG</c> pointed to by the pcbResult parameter.
-		/// </para>
 		/// </param>
-		/// <param name="cbDerivedKey">
-		/// <para>The size, in bytes, of the pbDerivedKey buffer.</para>
-		/// </param>
+		/// <param name="cbDerivedKey">The size, in bytes, of the pbDerivedKey buffer.</param>
 		/// <param name="pcbResult">
-		/// <para>
 		/// A pointer to a <c>ULONG</c> that receives the number of bytes that were copied to the pbDerivedKey buffer. If the pbDerivedKey
 		/// parameter is <c>NULL</c>, this function will place the required size, in bytes, in the <c>ULONG</c> pointed to by this parameter.
-		/// </para>
 		/// </param>
 		/// <param name="dwFlags">
 		/// <para>A set of flags that modify the behavior of this function. This can be zero or the following value.</para>
@@ -4631,7 +4826,7 @@ namespace Vanara.PInvoke
 		// hKey, BCRYPT_KEY_HANDLE hExportKey, LPCWSTR pszBlobType, PUCHAR pbOutput, ULONG cbOutput, ULONG *pcbResult, ULONG dwFlags );
 		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("bcrypt.h", MSDNShortId = "a5d73143-c1d6-43b3-a724-7e27c68a5ade")]
-		public static extern NTStatus BCryptExportKey(BCRYPT_KEY_HANDLE hKey, BCRYPT_KEY_HANDLE hExportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, IntPtr pbOutput, uint cbOutput, out uint pcbResult, uint dwFlags = 0);
+		public static extern NTStatus BCryptExportKey(BCRYPT_KEY_HANDLE hKey, BCRYPT_KEY_HANDLE hExportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, [Optional] IntPtr pbOutput, [Optional] uint cbOutput, out uint pcbResult, uint dwFlags = 0);
 
 		/// <summary>
 		/// The <c>BCryptFinalizeKeyPair</c> function completes a public/private key pair. The key cannot be used until this function has
@@ -6146,7 +6341,7 @@ namespace Vanara.PInvoke
 		// cbInput, ULONG dwFlags );
 		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("bcrypt.h", MSDNShortId = "271fc084-6121-4666-b521-b849c7d7966c")]
-		public static extern NTStatus BCryptImportKeyPair(BCRYPT_ALG_HANDLE hAlgorithm, [Optional] BCRYPT_KEY_HANDLE hImportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, out SafeBCRYPT_KEY_HANDLE phKey, [Optional] IntPtr pbInput, [Optional] uint cbInput, ImportFlags dwFlags);
+		public static extern NTStatus BCryptImportKeyPair(BCRYPT_ALG_HANDLE hAlgorithm, [Optional] BCRYPT_KEY_HANDLE hImportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, out SafeBCRYPT_KEY_HANDLE phKey, [Optional] IntPtr pbInput, [Optional] uint cbInput, ImportFlags dwFlags = 0);
 
 		/// <summary>
 		/// The <c>BCryptImportKeyPair</c> function imports a public/private key pair from a key BLOB. The BCryptImportKey function is used
@@ -6350,7 +6545,7 @@ namespace Vanara.PInvoke
 		// cbInput, ULONG dwFlags );
 		[DllImport(Lib.Bcrypt, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("bcrypt.h", MSDNShortId = "271fc084-6121-4666-b521-b849c7d7966c")]
-		public static extern NTStatus BCryptImportKeyPair(BCRYPT_ALG_HANDLE hAlgorithm, [Optional] BCRYPT_KEY_HANDLE hImportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, out SafeBCRYPT_KEY_HANDLE phKey, SafeAllocatedMemoryHandle pbInput, uint cbInput, ImportFlags dwFlags);
+		public static extern NTStatus BCryptImportKeyPair(BCRYPT_ALG_HANDLE hAlgorithm, [Optional] BCRYPT_KEY_HANDLE hImportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, out SafeBCRYPT_KEY_HANDLE phKey, SafeAllocatedMemoryHandle pbInput, uint cbInput, ImportFlags dwFlags = 0);
 
 		/// <summary>
 		/// <para>
@@ -9227,6 +9422,32 @@ namespace Vanara.PInvoke
 			public const string BCRYPT_CHAIN_MODE_NA = "ChainingModeN/A";
 		}
 
+		/// <summary>Known key derivation function identifiers.</summary>
+		[PInvokeData("bcrypt.h", MSDNShortId = "33c3cbf7-6c08-42ed-ac3f-feb71f3a9cbf")]
+		public static class KDF
+		{
+			/// <summary>The hash key derivation function.</summary>
+			public const string BCRYPT_KDF_HASH = "HASH";
+
+			/// <summary>Undocumented.</summary>
+			public const string BCRYPT_KDF_HKDF = "HKDF";
+
+			/// <summary>The Hash-Based Message Authentication Code (HMAC) key derivation function.</summary>
+			public const string BCRYPT_KDF_HMAC = "HMAC";
+
+			/// <summary>Undocumented.</summary>
+			public const string BCRYPT_KDF_RAW_SECRET = "TRUNCATE";
+
+			/// <summary>The SP800-56A key derivation function.</summary>
+			public const string BCRYPT_KDF_SP80056A_CONCAT = "SP800_56A_CONCAT";
+
+			/// <summary>
+			/// The transport layer security (TLS) pseudo-random function (PRF) key derivation function. The size of the derived key is
+			/// always 48 bytes.
+			/// </summary>
+			public const string BCRYPT_KDF_TLS_PRF = "TLS_PRF";
+		}
+
 		/// <summary>Well-known CNG providers.</summary>
 		public static class KnownProvider
 		{
@@ -9241,7 +9462,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>The following values are used with the BCryptGetProperty and BCryptSetProperty functions to identify a property.</summary>
-		public static class PrimitivePropertyId
+		public static class PropertyName
 		{
 			/// <summary>A null-terminated Unicode string that contains the name of the algorithm.</summary>
 			[CorrespondingType(typeof(string))]

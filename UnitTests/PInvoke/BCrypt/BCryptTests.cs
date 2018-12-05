@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.BCrypt;
 using static Vanara.PInvoke.Kernel32;
+using static Vanara.PInvoke.NCrypt;
 
 namespace Vanara.PInvoke.Tests
 {
@@ -15,7 +16,7 @@ namespace Vanara.PInvoke.Tests
 		public void ContextTest()
 		{
 			const string ctx = "Private";
-			const string func = "SHA256";
+			const string func = StandardAlgorithmId.BCRYPT_SHA256_ALGORITHM;
 			const string propName = "Test";
 			object propVal = 255;
 
@@ -81,15 +82,15 @@ namespace Vanara.PInvoke.Tests
 			var err = BCryptOpenAlgorithmProvider(out var hAlg, StandardAlgorithmId.BCRYPT_SHA256_ALGORITHM);
 			Assert.That((uint)err, Is.EqualTo(NTStatus.STATUS_SUCCESS));
 
-			var cbHashObject = BCryptGetProperty<uint>(hAlg, PrimitivePropertyId.BCRYPT_OBJECT_LENGTH);
+			var cbHashObject = BCryptGetProperty<uint>(hAlg, BCrypt.PropertyName.BCRYPT_OBJECT_LENGTH);
 			Assert.That(cbHashObject, Is.GreaterThan(0));
 
-			var cbHash = BCryptGetProperty<uint>(hAlg, PrimitivePropertyId.BCRYPT_HASH_LENGTH);
+			var cbHash = BCryptGetProperty<uint>(hAlg, BCrypt.PropertyName.BCRYPT_HASH_LENGTH);
 			Assert.That(cbHash, Is.GreaterThan(0));
 
 			var pbHashObject = new SafeHeapBlock((int)cbHashObject);
 			var pbHash = new SafeHeapBlock((int)cbHash);
-			err = BCryptCreateHash(hAlg, out var hHash, pbHashObject, cbHashObject, SafeHeapBlock.Null, 0, 0);
+			err = BCryptCreateHash(hAlg, out var hHash, pbHashObject, cbHashObject);
 			Assert.That((uint)err, Is.EqualTo(NTStatus.STATUS_SUCCESS));
 
 			var pbDupHashObj = new SafeCoTaskMemHandle((int)cbHashObject);
@@ -114,15 +115,15 @@ namespace Vanara.PInvoke.Tests
 			var err = BCryptOpenAlgorithmProvider(out var hAlg, StandardAlgorithmId.BCRYPT_AES_ALGORITHM);
 			Assert.That((uint)err, Is.EqualTo(NTStatus.STATUS_SUCCESS));
 
-			var cbKeyObject = BCryptGetProperty<uint>(hAlg, PrimitivePropertyId.BCRYPT_OBJECT_LENGTH);
+			var cbKeyObject = BCryptGetProperty<uint>(hAlg, BCrypt.PropertyName.BCRYPT_OBJECT_LENGTH);
 			Assert.That(cbKeyObject, Is.GreaterThan(0));
 
-			var cbBlockLen = BCryptGetProperty<uint>(hAlg, PrimitivePropertyId.BCRYPT_BLOCK_LENGTH);
+			var cbBlockLen = BCryptGetProperty<uint>(hAlg, BCrypt.PropertyName.BCRYPT_BLOCK_LENGTH);
 			Assert.That(cbBlockLen, Is.GreaterThan(0));
 			Assert.That(cbBlockLen, Is.LessThanOrEqualTo(rgbIV.Length));
 
 			var cm = System.Text.Encoding.Unicode.GetBytes(ChainingMode.BCRYPT_CHAIN_MODE_CBC);
-			err = BCryptSetProperty(hAlg, PrimitivePropertyId.BCRYPT_CHAINING_MODE, cm, (uint)cm.Length);
+			err = BCryptSetProperty(hAlg, BCrypt.PropertyName.BCRYPT_CHAINING_MODE, cm, (uint)cm.Length);
 			Assert.That((uint)err, Is.EqualTo(NTStatus.STATUS_SUCCESS));
 
 			var pbKeyObject = new SafeCoTaskMemHandle((int)cbKeyObject);
@@ -193,368 +194,104 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void SecretAgreementWithPersistedKeysTest()
 		{
+			const string keyName = "Sample ECDH Key";
 			byte[] SecretPrependArray = { 0x12, 0x34, 0x56 };
-			byte[] SecretAppendArray[] = { 0xab, 0xcd, 0xef };
-
-			const DWORD BufferLength = 3;
-			var BufferArray = new NCryptBuffer[BufferLength];
+			byte[] SecretAppendArray = { 0xab, 0xcd, 0xef };
 
 			// Get a handle to MS KSP
-			var err = NCryptOpenStorageProvider(&ProviderHandleA, MS_KEY_STORAGE_PROVIDER, 0);
-			Assert.That((uint)err, Is.EqualTo(NTStatus.STATUS_SUCCESS));
+			var hr = NCryptOpenStorageProvider(out var ProviderHandleA, KnownStorageProvider.MS_KEY_STORAGE_PROVIDER);
+			Assert.That((int)hr, Is.EqualTo(HRESULT.S_OK));
 
 			// Delete existing keys
-			err = NCryptOpenKey(ProviderHandleA, &PrivKeyHandleA, L"Sample ECDH Key", 0, 0);
-			if (err.S)
+			hr = NCryptOpenKey(ProviderHandleA, out var PrivKeyHandleA, keyName);
+			if (hr.Succeeded)
 			{
-				err = NCryptDeleteKey(PrivKeyHandleA, 0);
-				if (FAILED(err))
-				{
-					ReportError(err);
-					goto cleanup;
-				}
-				PrivKeyHandleA = 0;
+				hr = NCryptDeleteKey(PrivKeyHandleA, 0);
+				Assert.That((int)hr, Is.EqualTo(HRESULT.S_OK));
+				PrivKeyHandleA = null;
 			}
 
 			// A generates a private key
-
-			err = NCryptCreatePersistedKey(
-												ProviderHandleA,            // Provider handle
-												&PrivKeyHandleA,            // Key handle - will be created
-												NCRYPT_ECDH_P256_ALGORITHM, // Alg name
-												L"Sample ECDH Key",         // Key name (null terminated unicode string)
-												0,                          // legacy spec
-												0);                         // Flags
-			if (FAILED(err))
-			{
-				ReportError(err);
-				goto cleanup;
-			}
+			hr = NCryptCreatePersistedKey(ProviderHandleA, out PrivKeyHandleA, StandardAlgorithmId.BCRYPT_ECDH_P256_ALGORITHM, keyName);
+			Assert.That((int)hr, Is.EqualTo(HRESULT.S_OK));
 
 			// Make the key exportable
+			var KeyPolicy = BitConverter.GetBytes((uint)ExportPolicy.NCRYPT_ALLOW_EXPORT_FLAG);
+			hr = NCryptSetProperty(PrivKeyHandleA, NCrypt.PropertyName.NCRYPT_EXPORT_POLICY_PROPERTY, KeyPolicy, (uint)KeyPolicy.Length, SetPropFlags.NCRYPT_PERSIST_FLAG);
+			Assert.That((int)hr, Is.EqualTo(HRESULT.S_OK));
 
-			KeyPolicy = NCRYPT_ALLOW_EXPORT_FLAG;
-
-			err = NCryptSetProperty(
-												PrivKeyHandleA,
-												NCRYPT_EXPORT_POLICY_PROPERTY,
-												(PBYTE) & KeyPolicy,
-												sizeof(KeyPolicy),
-												NCRYPT_PERSIST_FLAG);
-			if (FAILED(err))
-			{
-				ReportError(err);
-				goto cleanup;
-			}
-
-			err = NCryptFinalizeKey(
-												PrivKeyHandleA,             // Key handle
-												0);                         // Flags
-			if (FAILED(err))
-			{
-				ReportError(err);
-				goto cleanup;
-			}
+			hr = NCryptFinalizeKey(PrivKeyHandleA);
+			Assert.That((int)hr, Is.EqualTo(HRESULT.S_OK));
 
 			// A exports public key
+			hr = NCryptExportKey(PrivKeyHandleA, default, BlobType.BCRYPT_ECCPUBLIC_BLOB, pcbResult: out var PubBlobLengthA);
+			Assert.That((int)hr, Is.EqualTo(HRESULT.S_OK));
 
-			err = NCryptExportKey(
-												PrivKeyHandleA,             // Handle of the key to export
-												NULL,                       // Handle of the key used to wrap the exported key
-												BCRYPT_ECCPUBLIC_BLOB,      // Blob type (null terminated unicode string)
-												NULL,                       // Parameter list
-												NULL,                       // Buffer that recieves the key blob
-												0,                          // Buffer length (in bytes)
-												&PubBlobLengthA,            // Number of bytes copied to the buffer
-												0);                         // Flags
-			if (FAILED(err))
-			{
-				ReportError(err);
-				goto cleanup;
-			}
-
-			PubBlobA = (PBYTE)HeapAlloc(
-												GetProcessHeap(),
-												0,
-												PubBlobLengthA);
-			if (NULL == PubBlobA)
-			{
-				err = NTE_NO_MEMORY;
-				ReportError(err);
-				goto cleanup;
-			}
-
-			err = NCryptExportKey(
-												PrivKeyHandleA,             // Handle of the key to export
-												NULL,                       // Handle of the key used to wrap the exported key
-												BCRYPT_ECCPUBLIC_BLOB,      // Blob type (null terminated unicode string)
-												NULL,                       // Parameter list
-												PubBlobA,                   // Buffer that recieves the key blob
-												PubBlobLengthA,             // Buffer length (in bytes)
-												&PubBlobLengthA,            // Number of bytes copied to the buffer
-												0);                         // Flags
-			if (FAILED(err))
-			{
-				ReportError(err);
-				goto cleanup;
-			}
+			var PubBlobA = new SafeCoTaskMemHandle((int)PubBlobLengthA);
+			hr = NCryptExportKey(PrivKeyHandleA, default, BlobType.BCRYPT_ECCPUBLIC_BLOB, null, PubBlobA, PubBlobLengthA, out PubBlobLengthA);
+			Assert.That((int)hr, Is.EqualTo(HRESULT.S_OK));
 
 			// B generates a private key
+			var err = BCryptOpenAlgorithmProvider(out var ExchAlgHandleB, StandardAlgorithmId.BCRYPT_ECDH_P256_ALGORITHM, KnownProvider.MS_PRIMITIVE_PROVIDER);
+			Assert.That((uint)err, Is.EqualTo(NTStatus.STATUS_SUCCESS));
 
-			Status = BCryptOpenAlgorithmProvider(
-												&ExchAlgHandleB,
-												BCRYPT_ECDH_P256_ALGORITHM,
-												MS_PRIMITIVE_PROVIDER,
-												0);
-			if (!NT_SUCCESS(Status))
-			{
-				ReportError(Status);
-				err = HRESULT_FROM_NT(Status);
-				goto cleanup;
-			}
+			err = BCryptGenerateKeyPair(ExchAlgHandleB, out var PrivKeyHandleB, 256);
+			Assert.That((uint)err, Is.EqualTo(NTStatus.STATUS_SUCCESS));
 
-			Status = BCryptGenerateKeyPair(
-												ExchAlgHandleB,             // Algorithm handle
-												&PrivKeyHandleB,            // Key handle - will be created
-												256,                        // Length of the key - in bits
-												0);                         // Flags
-			if (!NT_SUCCESS(Status))
-			{
-				ReportError(Status);
-				err = HRESULT_FROM_NT(Status);
-				goto cleanup;
-			}
-
-			Status = BCryptFinalizeKeyPair(
-												PrivKeyHandleB,             // Key handle
-												0);                         // Flags
-			if (!NT_SUCCESS(Status))
-			{
-				ReportError(Status);
-				err = HRESULT_FROM_NT(Status);
-				goto cleanup;
-			}
+			err = BCryptFinalizeKeyPair(PrivKeyHandleB);
+			Assert.That((uint)err, Is.EqualTo(NTStatus.STATUS_SUCCESS));
 
 			// B exports public key
+			err = BCryptExportKey(PrivKeyHandleB, default, BlobType.BCRYPT_ECCPUBLIC_BLOB, pcbResult: out var PubBlobLengthB);
+			Assert.That((uint)err, Is.EqualTo(NTStatus.STATUS_SUCCESS));
 
-			Status = BCryptExportKey(
-												PrivKeyHandleB,             // Handle of the key to export
-												NULL,                       // Handle of the key used to wrap the exported key
-												BCRYPT_ECCPUBLIC_BLOB,      // Blob type (null terminated unicode string)
-												NULL,                       // Buffer that recieves the key blob
-												0,                          // Buffer length (in bytes)
-												&PubBlobLengthB,            // Number of bytes copied to the buffer
-												0);                         // Flags
-			if (!NT_SUCCESS(Status))
-			{
-				ReportError(Status);
-				err = HRESULT_FROM_NT(Status);
-				goto cleanup;
-			}
-
-			PubBlobB = (PBYTE)HeapAlloc(
-												GetProcessHeap(),
-												0,
-												PubBlobLengthB);
-			if (NULL == PubBlobB)
-			{
-				err = NTE_NO_MEMORY;
-				ReportError(err);
-				goto cleanup;
-			}
-
-			Status = BCryptExportKey(
-												PrivKeyHandleB,             // Handle of the key to export
-												NULL,                       // Handle of the key used to wrap the exported key
-												BCRYPT_ECCPUBLIC_BLOB,      // Blob type (null terminated unicode string)
-												PubBlobB,                   // Buffer that recieves the key blob
-												PubBlobLengthB,             // Buffer length (in bytes)
-												&PubBlobLengthB,            // Number of bytes copied to the buffer
-												0);                         // Flags
-			if (!NT_SUCCESS(Status))
-			{
-				ReportError(Status);
-				err = HRESULT_FROM_NT(Status);
-				goto cleanup;
-			}
+			var PubBlobB = new SafeCoTaskMemHandle((int)PubBlobLengthB);
+			err = BCryptExportKey(PrivKeyHandleB, default, BlobType.BCRYPT_ECCPUBLIC_BLOB, PubBlobB, PubBlobLengthB, out PubBlobLengthB);
+			Assert.That((uint)err, Is.EqualTo(NTStatus.STATUS_SUCCESS));
 
 			// A imports B's public key
-
-			err = NCryptImportKey(
-												ProviderHandleA,            // Provider handle
-												NULL,                       // Parameter not used
-												BCRYPT_ECCPUBLIC_BLOB,      // Blob type (Null terminated unicode string)
-												NULL,                       // Parameter list
-												&PubKeyHandleA,             // Key handle that will be recieved
-												PubBlobB,                   // Buffer than points to the key blob
-												PubBlobLengthB,             // Buffer length in bytes
-												0);                         // Flags
-			if (FAILED(err))
-			{
-				ReportError(err);
-				goto cleanup;
-			}
+			hr = NCryptImportKey(ProviderHandleA, default, BlobType.BCRYPT_ECCPUBLIC_BLOB, null, out var PubKeyHandleA, PubBlobB, PubBlobLengthB);
+			Assert.That((int)hr, Is.EqualTo(HRESULT.S_OK));
 
 			// A generates the agreed secret
+			hr = NCryptSecretAgreement(PrivKeyHandleA, PubKeyHandleA, out var AgreedSecretHandleA);
+			Assert.That((int)hr, Is.EqualTo(HRESULT.S_OK));
 
-			err = NCryptSecretAgreement(
-												PrivKeyHandleA,             // Private key handle
-												PubKeyHandleA,              // Public key handle
-												&AgreedSecretHandleA,       // Handle that represents the secret agreement value
-												0);
-			if (FAILED(err))
+			// Build KDF parameter list Specify hash algorithm, secret to append and secret to prepend
+			var ParameterList = new NCryptBufferDesc
 			{
-				ReportError(err);
-				goto cleanup;
-			}
+				pBuffers = new[] {
+				new NCryptBuffer(BufferType.KDF_HASH_ALGORITHM, StandardAlgorithmId.BCRYPT_SHA256_ALGORITHM),
+				new NCryptBuffer(BufferType.KDF_SECRET_APPEND, SecretAppendArray),
+				new NCryptBuffer(BufferType.KDF_SECRET_PREPEND, SecretPrependArray) }
+			};
 
-			// Build KDF parameter list
+			hr = NCryptDeriveKey(AgreedSecretHandleA, KDF.BCRYPT_KDF_HMAC, ParameterList, IntPtr.Zero, 0, out var AgreedSecretLengthA, DeriveKeyFlags.KDF_USE_SECRET_AS_HMAC_KEY_FLAG);
+			Assert.That((int)hr, Is.EqualTo(HRESULT.S_OK));
 
-			//specify hash algorithm
-			BufferArray[0].BufferType = KDF_HASH_ALGORITHM;
-			BufferArray[0].cbBuffer = (DWORD)((wcslen(BCRYPT_SHA256_ALGORITHM) + 1) * sizeof(WCHAR));
-			BufferArray[0].pvBuffer = (PVOID)BCRYPT_SHA256_ALGORITHM;
-
-			//specify secret to append
-			BufferArray[1].BufferType = KDF_SECRET_APPEND;
-			BufferArray[1].cbBuffer = sizeof(SecretAppendArray);
-			BufferArray[1].pvBuffer = (PVOID)SecretAppendArray;
-
-			//specify secret to prepend
-			BufferArray[2].BufferType = KDF_SECRET_PREPEND;
-			BufferArray[2].cbBuffer = sizeof(SecretPrependArray);
-			BufferArray[2].pvBuffer = (PVOID)SecretPrependArray;
-
-			ParameterList.cBuffers = 3;
-			ParameterList.pBuffers = BufferArray;
-			ParameterList.ulVersion = BCRYPTBUFFER_VERSION;
-
-			err = NCryptDeriveKey(
-											   AgreedSecretHandleA,         // Secret agreement handle
-											   BCRYPT_KDF_HMAC,             // Key derivation function (null terminated unicode string)
-											   &ParameterList,              // KDF parameters
-											   NULL,                        // Buffer that recieves the derived key
-											   0,                           // Length of the buffer
-											   &AgreedSecretLengthA,        // Number of bytes copied to the buffer
-											   KDF_USE_SECRET_AS_HMAC_KEY_FLAG);   // Flags
-			if (FAILED(err))
-			{
-				ReportError(err);
-				goto cleanup;
-			}
-
-			AgreedSecretA = (PBYTE)HeapAlloc(
-												GetProcessHeap(),
-												0,
-												AgreedSecretLengthA);
-			if (NULL == AgreedSecretA)
-			{
-				err = NTE_NO_MEMORY;
-				ReportError(err);
-				goto cleanup;
-			}
-
-			err = NCryptDeriveKey(
-											   AgreedSecretHandleA,         // Secret agreement handle
-											   BCRYPT_KDF_HMAC,             // Key derivation function (null terminated unicode string)
-											   &ParameterList,              // KDF parameters
-											   AgreedSecretA,               // Buffer that recieves the derived key
-											   AgreedSecretLengthA,         // Length of the buffer
-											   &AgreedSecretLengthA,        // Number of bytes copied to the buffer
-											   KDF_USE_SECRET_AS_HMAC_KEY_FLAG);   // Flags
-			if (FAILED(err))
-			{
-				ReportError(err);
-				goto cleanup;
-			}
+			var AgreedSecretA = new SafeCoTaskMemHandle((int)AgreedSecretLengthA);
+			hr = NCryptDeriveKey(AgreedSecretHandleA, KDF.BCRYPT_KDF_HMAC, ParameterList, AgreedSecretA, AgreedSecretLengthA, out AgreedSecretLengthA, DeriveKeyFlags.KDF_USE_SECRET_AS_HMAC_KEY_FLAG);
+			Assert.That((int)hr, Is.EqualTo(HRESULT.S_OK));
 
 			// B imports A's public key
-
-			Status = BCryptImportKeyPair(
-												ExchAlgHandleB,             // Alg handle
-												NULL,                       // Parameter not used
-												BCRYPT_ECCPUBLIC_BLOB,      // Blob type (Null terminated unicode string)
-												&PubKeyHandleB,             // Key handle that will be recieved
-												PubBlobA,                   // Buffer than points to the key blob
-												PubBlobLengthA,             // Buffer length in bytes
-												0);                         // Flags
-			if (!NT_SUCCESS(Status))
-			{
-				ReportError(Status);
-				err = HRESULT_FROM_NT(Status);
-				goto cleanup;
-			}
+			err = BCryptImportKeyPair(ExchAlgHandleB, default, BlobType.BCRYPT_ECCPUBLIC_BLOB, out var PubKeyHandleB, PubBlobA, PubBlobLengthA);
+			Assert.That((uint)err, Is.EqualTo(NTStatus.STATUS_SUCCESS));
 
 			// B generates the agreed secret
+			err = BCryptSecretAgreement(PrivKeyHandleB, PubKeyHandleB, out var AgreedSecretHandleB);
+			Assert.That((uint)err, Is.EqualTo(NTStatus.STATUS_SUCCESS));
 
-			Status = BCryptSecretAgreement(
-												PrivKeyHandleB,             // Private key handle
-												PubKeyHandleB,              // Public key handle
-												&AgreedSecretHandleB,       // Handle that represents the secret agreement value
-												0);
-			if (!NT_SUCCESS(Status))
-			{
-				ReportError(Status);
-				err = HRESULT_FROM_NT(Status);
-				goto cleanup;
-			}
+			err = BCryptDeriveKey(AgreedSecretHandleB, KDF.BCRYPT_KDF_HMAC, ParameterList, IntPtr.Zero, 0, out var AgreedSecretLengthB, DeriveKeyFlags.KDF_USE_SECRET_AS_HMAC_KEY_FLAG);
+			Assert.That((uint)err, Is.EqualTo(NTStatus.STATUS_SUCCESS));
 
-			Status = BCryptDeriveKey(
-											   AgreedSecretHandleB,         // Secret agreement handle
-											   BCRYPT_KDF_HMAC,             // Key derivation function (null terminated unicode string)
-											   &ParameterList,              // KDF parameters
-											   NULL,                        // Buffer that recieves the derived key
-											   0,                           // Length of the buffer
-											   &AgreedSecretLengthB,        // Number of bytes copied to the buffer
-											   KDF_USE_SECRET_AS_HMAC_KEY_FLAG);    // Flags
-			if (!NT_SUCCESS(Status))
-			{
-				ReportError(Status);
-				err = HRESULT_FROM_NT(Status);
-				goto cleanup;
-			}
-
-			AgreedSecretB = (PBYTE)HeapAlloc(
-												GetProcessHeap(),
-												0,
-												AgreedSecretLengthB);
-			if (NULL == AgreedSecretB)
-			{
-				err = NTE_NO_MEMORY;
-				ReportError(err);
-				goto cleanup;
-			}
-
-			Status = BCryptDeriveKey(
-											   AgreedSecretHandleB,         // Secret agreement handle
-											   BCRYPT_KDF_HMAC,             // Key derivation function (null terminated unicode string)
-											   &ParameterList,              // KDF parameters
-											   AgreedSecretB,               // Buffer that recieves the derived key
-											   AgreedSecretLengthB,         // Length of the buffer
-											   &AgreedSecretLengthB,        // Number of bytes copied to the buffer
-											   KDF_USE_SECRET_AS_HMAC_KEY_FLAG);    // Flags
-			if (!NT_SUCCESS(Status))
-			{
-				ReportError(Status);
-				err = HRESULT_FROM_NT(Status);
-				goto cleanup;
-			}
+			var AgreedSecretB = new SafeCoTaskMemHandle((int)AgreedSecretLengthB);
+			err = BCryptDeriveKey(AgreedSecretHandleB, KDF.BCRYPT_KDF_HMAC, ParameterList, AgreedSecretB, AgreedSecretLengthB, out AgreedSecretLengthB, DeriveKeyFlags.KDF_USE_SECRET_AS_HMAC_KEY_FLAG);
+			Assert.That((uint)err, Is.EqualTo(NTStatus.STATUS_SUCCESS));
 
 			// At this point the AgreedSecretA should be the same as AgreedSecretB. In a real scenario, the agreed secrets on both sides will
 			// probably be input to a BCryptGenerateSymmetricKey function. Optional : Compare them
-
-			if ((AgreedSecretLengthA != AgreedSecretLengthB) ||
-				(memcmp(AgreedSecretA, AgreedSecretB, AgreedSecretLengthA))
-				)
-			{
-				err = NTE_FAIL;
-				ReportError(err);
-				goto cleanup;
-			}
-
-			err = S_OK;
-
-			wprintf(L"Success!\n");
+			Assert.That(AgreedSecretLengthA, Is.EqualTo(AgreedSecretLengthB));
+			Assert.That(AgreedSecretA.ToEnumerable<byte>(AgreedSecretA.Size), Is.EquivalentTo(AgreedSecretB.ToEnumerable<byte>(AgreedSecretB.Size)));
 		}
 	}
 }

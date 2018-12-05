@@ -9,6 +9,12 @@ namespace Vanara.PInvoke
 	/// <summary>Methods and data types found in NCrypt.dll.</summary>
 	public static partial class NCrypt
 	{
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		public delegate IntPtr PFN_NCRYPT_ALLOC(SizeT cbSize);
+
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		public delegate void PFN_NCRYPT_FREE(IntPtr pv);
+
 		public enum BufferType
 		{
 			/// <summary>
@@ -228,18 +234,6 @@ namespace Vanara.PInvoke
 			NCRYPT_SILENT_FLAG = 0x00000040,
 		}
 
-		[Flags]
-		private enum EncryptFlags : uint
-		{
-			NCRYPT_NO_PADDING_FLAG = 0x00000001,
-			NCRYPT_PAD_PKCS1_FLAG = 0x00000002,
-			NCRYPT_PAD_OAEP_FLAG = 0x00000004,
-			NCRYPT_PAD_PSS_FLAG = 0x00000008,
-			NCRYPT_PAD_CIPHER_FLAG = 0x00000010,
-			NCRYPT_ATTESTATION_FLAG = 0x00000020,
-			NCRYPT_SEALING_FLAG = 0x00000100,
-		}
-
 		/// <summary>Flags for <c>NCryptExportKey</c>.</summary>
 		[PInvokeData("ncrypt.h", MSDNShortId = "1588eb29-4026-4d1c-8bee-a035df38444a")]
 		[Flags]
@@ -250,6 +244,15 @@ namespace Vanara.PInvoke
 			/// the call fails and the KSP should set the NTE_SILENT_CONTEXT error code as the last error.
 			/// </summary>
 			NCRYPT_SILENT_FLAG = 0x00000040,
+		}
+
+		[Flags]
+		public enum ExportPolicy
+		{
+			NCRYPT_ALLOW_EXPORT_FLAG = 0x00000001,
+			NCRYPT_ALLOW_PLAINTEXT_EXPORT_FLAG = 0x00000002,
+			NCRYPT_ALLOW_ARCHIVING_FLAG = 0x00000004,
+			NCRYPT_ALLOW_PLAINTEXT_ARCHIVING_FLAG = 0x00000008,
 		}
 
 		/// <summary>Flags for <c>NCryptFinalizeKey</c>.</summary>
@@ -272,6 +275,16 @@ namespace Vanara.PInvoke
 			NCRYPT_SILENT_FLAG = 0x00000040,
 		}
 
+		[Flags]
+		public enum ImplType
+		{
+			NCRYPT_IMPL_HARDWARE_FLAG = 0x00000001,
+			NCRYPT_IMPL_SOFTWARE_FLAG = 0x00000002,
+			NCRYPT_IMPL_REMOVABLE_FLAG = 0x00000008,
+			NCRYPT_IMPL_HARDWARE_RNG_FLAG = 0x00000010,
+			NCRYPT_IMPL_VIRTUAL_ISOLATION_FLAG = 0x00000020,
+		}
+
 		/// <summary>Flags for <c>NCryptImportKey</c>.</summary>
 		[PInvokeData("ncrypt.h", MSDNShortId = "ede0e7e0-cb2c-44c0-b724-58db3480b781")]
 		[Flags]
@@ -284,65 +297,14 @@ namespace Vanara.PInvoke
 			NCRYPT_SILENT_FLAG = 0x00000040,
 		}
 
-		/// <summary>
-		/// <para>
-		/// The <c>NCRYPT_ALLOC_PARA</c> structure enables you to specify custom functions that can be used to allocate and free data. This
-		/// structure is used in the following functions:
-		/// </para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>NCryptGetProtectionDescriptorInfo</term>
-		/// </item>
-		/// <item>
-		/// <term>NCryptProtectSecret</term>
-		/// </item>
-		/// <item>
-		/// <term>NCryptUnprotectSecret</term>
-		/// </item>
-		/// </list>
-		/// </summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/ncrypt/ns-ncrypt-ncrypt_alloc_para typedef struct NCRYPT_ALLOC_PARA { DWORD
-		// cbSize; PFN_NCRYPT_ALLOC pfnAlloc; PFN_NCRYPT_FREE pfnFree; } NCRYPT_ALLOC_PARA;
-		[PInvokeData("ncrypt.h", MSDNShortId = "4F546F51-E4DE-4703-B1D1-F84165C3C31B")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		public struct NCRYPT_ALLOC_PARA
-		{
-			/// <summary>The size, in bytes, of this structure.</summary>
-			public uint cbSize;
-			/// <summary>Address of a custom function that can allocate memory.</summary>
-			public PFN_NCRYPT_ALLOC pfnAlloc;
-			/// <summary>Address of a function that can free memory allocated by the function specified by the <c>pfnAlloc</c> member.</summary>
-			public PFN_NCRYPT_FREE pfnFree;
-		}
-
-		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate IntPtr PFN_NCRYPT_ALLOC(SizeT cbSize);
-
-		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
-		public delegate void PFN_NCRYPT_FREE(IntPtr pv);
-
 		[Flags]
-		private enum NFlags : uint
+		public enum KeyUsage
 		{
-			NCRYPT_NAMED_DESCRIPTOR_FLAG = 0x00000001,
-			NCRYPT_REGISTER_NOTIFY_FLAG = 0x00000001,
-			NCRYPT_UNREGISTER_NOTIFY_FLAG = 0x00000002,
-			NCRYPT_MACHINE_KEY_FLAG = 0x00000020,
-			NCRYPT_OVERWRITE_KEY_FLAG = 0x00000080,
-			NCRYPT_DO_NOT_FINALIZE_FLAG = 0x00000400,
-			NCRYPT_EXPORT_LEGACY_FLAG = 0x00000800,
-			NCRYPT_IGNORE_DEVICE_STATE_FLAG = 0x00001000,
-			NCRYPT_TREAT_NIST_AS_GENERIC_ECC_FLAG = 0x00002000,
-			NCRYPT_NO_CACHED_PASSWORD = 0x00004000,
-			NCRYPT_PROTECT_TO_LOCAL_SYSTEM = 0x00008000,
-			NCRYPT_WRITE_KEY_TO_LEGACY_STORE_FLAG = 0x00000200,
-			NCRYPT_NO_KEY_VALIDATION = 0x00000008,
-			NCRYPT_SILENT_FLAG = 0x00000040,
-			NCRYPT_PERSIST_ONLY_FLAG = 0x40000000,
-			NCRYPT_PERSIST_FLAG = 0x80000000,
-			NCRYPT_PREFER_VIRTUAL_ISOLATION_FLAG = 0x00010000,
-			NCRYPT_USE_VIRTUAL_ISOLATION_FLAG = 0x00020000,
-			NCRYPT_USE_PER_BOOT_KEY_FLAG = 0x00040000,
+			NCRYPT_ALLOW_DECRYPT_FLAG = 0x00000001,
+			NCRYPT_ALLOW_SIGNING_FLAG = 0x00000002,
+			NCRYPT_ALLOW_KEY_AGREEMENT_FLAG = 0x00000004,
+			NCRYPT_ALLOW_KEY_IMPORT_FLAG = 0x00000008,
+			NCRYPT_ALLOW_ALL_USAGES = 0x00ffffff,
 		}
 
 		/// <summary>Flags used with <c>NCryptOpenKey</c>.</summary>
@@ -357,6 +319,18 @@ namespace Vanara.PInvoke
 
 			/// <summary>Open the key for the local computer. If this flag is not present, the current user key is opened.</summary>
 			NCRYPT_MACHINE_KEY_FLAG = 0x00000020,
+		}
+
+		/// <summary>Flags for <c>NCryptSecretAgreement</c>.</summary>
+		[PInvokeData("ncrypt.h")]
+		[Flags]
+		public enum SecretAgreementFlags
+		{
+			/// <summary>
+			/// Requests that the key service provider (KSP) not display any user interface. If the provider must display the UI to operate,
+			/// the call fails and the KSP should set the NTE_SILENT_CONTEXT error code as the last error.
+			/// </summary>
+			NCRYPT_SILENT_FLAG = 0x00000040,
 		}
 
 		/// <summary>Used by <c>NCryptSetProperty</c>.</summary>
@@ -383,6 +357,51 @@ namespace Vanara.PInvoke
 			/// NCRYPT_MAX_PROPERTY_DATA bytes.
 			/// </summary>
 			NCRYPT_PERSIST_FLAG = 0x80000000,
+		}
+
+		[Flags]
+		public enum UIPolicy
+		{
+			NCRYPT_UI_PROTECT_KEY_FLAG = 0x00000001,
+			NCRYPT_UI_FORCE_HIGH_PROTECTION_FLAG = 0x00000002,
+			NCRYPT_UI_FINGERPRINT_PROTECTION_FLAG = 0x00000004,
+			NCRYPT_UI_APPCONTAINER_ACCESS_MEDIUM_FLAG = 0x00000008,
+		}
+
+		[Flags]
+		private enum EncryptFlags : uint
+		{
+			NCRYPT_NO_PADDING_FLAG = 0x00000001,
+			NCRYPT_PAD_PKCS1_FLAG = 0x00000002,
+			NCRYPT_PAD_OAEP_FLAG = 0x00000004,
+			NCRYPT_PAD_PSS_FLAG = 0x00000008,
+			NCRYPT_PAD_CIPHER_FLAG = 0x00000010,
+			NCRYPT_ATTESTATION_FLAG = 0x00000020,
+			NCRYPT_SEALING_FLAG = 0x00000100,
+		}
+
+		[Flags]
+		private enum NFlags : uint
+		{
+			NCRYPT_NAMED_DESCRIPTOR_FLAG = 0x00000001,
+			NCRYPT_REGISTER_NOTIFY_FLAG = 0x00000001,
+			NCRYPT_UNREGISTER_NOTIFY_FLAG = 0x00000002,
+			NCRYPT_MACHINE_KEY_FLAG = 0x00000020,
+			NCRYPT_OVERWRITE_KEY_FLAG = 0x00000080,
+			NCRYPT_DO_NOT_FINALIZE_FLAG = 0x00000400,
+			NCRYPT_EXPORT_LEGACY_FLAG = 0x00000800,
+			NCRYPT_IGNORE_DEVICE_STATE_FLAG = 0x00001000,
+			NCRYPT_TREAT_NIST_AS_GENERIC_ECC_FLAG = 0x00002000,
+			NCRYPT_NO_CACHED_PASSWORD = 0x00004000,
+			NCRYPT_PROTECT_TO_LOCAL_SYSTEM = 0x00008000,
+			NCRYPT_WRITE_KEY_TO_LEGACY_STORE_FLAG = 0x00000200,
+			NCRYPT_NO_KEY_VALIDATION = 0x00000008,
+			NCRYPT_SILENT_FLAG = 0x00000040,
+			NCRYPT_PERSIST_ONLY_FLAG = 0x40000000,
+			NCRYPT_PERSIST_FLAG = 0x80000000,
+			NCRYPT_PREFER_VIRTUAL_ISOLATION_FLAG = 0x00010000,
+			NCRYPT_USE_VIRTUAL_ISOLATION_FLAG = 0x00020000,
+			NCRYPT_USE_PER_BOOT_KEY_FLAG = 0x00040000,
 		}
 
 		/// <summary>
@@ -497,7 +516,7 @@ namespace Vanara.PInvoke
 		// dwLegacyKeySpec, DWORD dwFlags );
 		[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("ncrypt.h", MSDNShortId = "eeb1842f-fd9e-4edf-9db8-7b4e91760e9b")]
-		public static extern HRESULT NCryptCreatePersistedKey(NCRYPT_PROV_HANDLE hProvider, out SafeNCRYPT_KEY_HANDLE phKey, string pszAlgId, [Optional] string pszKeyName, Crypt32.PrivateKeyType dwLegacyKeySpec, CreatePersistedFlags dwFlags);
+		public static extern HRESULT NCryptCreatePersistedKey(NCRYPT_PROV_HANDLE hProvider, out SafeNCRYPT_KEY_HANDLE phKey, string pszAlgId, [Optional] string pszKeyName, Crypt32.PrivateKeyType dwLegacyKeySpec = 0, CreatePersistedFlags dwFlags = 0);
 
 		/// <summary>The <c>NCryptDeleteKey</c> function deletes a CNG key.</summary>
 		/// <param name="hKey">
@@ -555,7 +574,7 @@ namespace Vanara.PInvoke
 		// NCRYPT_KEY_HANDLE hKey, DWORD dwFlags );
 		[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ncrypt.h", MSDNShortId = "2e1958a7-51e0-4731-b4cf-a90d6c1f9ae0")]
-		public static extern HRESULT NCryptDeleteKey(NCRYPT_KEY_HANDLE hKey, DeleteKeyFlags dwFlags);
+		public static extern HRESULT NCryptDeleteKey(NCRYPT_KEY_HANDLE hKey, DeleteKeyFlags dwFlags = 0);
 
 		/// <summary>
 		/// <para>
@@ -1322,7 +1341,240 @@ namespace Vanara.PInvoke
 		// cbOutput, DWORD *pcbResult, DWORD dwFlags );
 		[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ncrypt.h", MSDNShortId = "1588eb29-4026-4d1c-8bee-a035df38444a")]
-		public static extern HRESULT NCryptExportKey(NCRYPT_KEY_HANDLE hKey, NCRYPT_KEY_HANDLE hExportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, NCryptBufferDesc pParameterList, SafeAllocatedMemoryHandle pbOutput, uint cbOutput, out uint pcbResult, ExportKeyFlags dwFlags);
+		public static extern HRESULT NCryptExportKey(NCRYPT_KEY_HANDLE hKey, NCRYPT_KEY_HANDLE hExportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, [Optional] NCryptBufferDesc pParameterList, SafeAllocatedMemoryHandle pbOutput, uint cbOutput, out uint pcbResult, ExportKeyFlags dwFlags = 0);
+
+		/// <summary>
+		/// <para>The <c>NCryptExportKey</c> function exports a CNG key to a memory BLOB.</para>
+		/// </summary>
+		/// <param name="hKey">
+		/// <para>A handle of the key to export.</para>
+		/// </param>
+		/// <param name="hExportKey">
+		/// <para>
+		/// A handle to a cryptographic key of the destination user. The key data within the exported key BLOB is encrypted by using this
+		/// key. This ensures that only the destination user is able to make use of the key BLOB.
+		/// </para>
+		/// </param>
+		/// <param name="pszBlobType">
+		/// <para>
+		/// A null-terminated Unicode string that contains an identifier that specifies the type of BLOB to export. This can be one of the
+		/// following values.
+		/// </para>
+		/// <para>BCRYPT_DH_PRIVATE_BLOB</para>
+		/// <para>
+		/// Export a Diffie-Hellman public/private key pair. The pbOutput buffer receives a BCRYPT_DH_KEY_BLOB structure immediately followed
+		/// by the key data.
+		/// </para>
+		/// <para>BCRYPT_DH_PUBLIC_BLOB</para>
+		/// <para>
+		/// Export a Diffie-Hellman public key. The pbOutput buffer receives a BCRYPT_DH_KEY_BLOB structure immediately followed by the key data.
+		/// </para>
+		/// <para>BCRYPT_DSA_PRIVATE_BLOB</para>
+		/// <para>
+		/// Export a DSA public/private key pair. The pbOutput buffer receives a BCRYPT_DSA_KEY_BLOB structure immediately followed by the
+		/// key data.
+		/// </para>
+		/// <para>BCRYPT_DSA_PUBLIC_BLOB</para>
+		/// <para>
+		/// Export a DSA public key. The pbOutput buffer receives a BCRYPT_DSA_KEY_BLOB structure immediately followed by the key data.
+		/// </para>
+		/// <para>BCRYPT_ECCPRIVATE_BLOB</para>
+		/// <para>
+		/// Export an elliptic curve cryptography (ECC) private key. The pbOutput buffer receives a BCRYPT_ECCKEY_BLOB structure immediately
+		/// followed by the key data.
+		/// </para>
+		/// <para>BCRYPT_ECCPUBLIC_BLOB</para>
+		/// <para>
+		/// Export an ECC public key. The pbOutput buffer receives a BCRYPT_ECCKEY_BLOB structure immediately followed by the key data.
+		/// </para>
+		/// <para>BCRYPT_PUBLIC_KEY_BLOB</para>
+		/// <para>
+		/// Export a generic public key of any type. The type of key in this BLOB is determined by the <c>Magic</c> member of the
+		/// BCRYPT_KEY_BLOB structure.
+		/// </para>
+		/// <para>BCRYPT_PRIVATE_KEY_BLOB</para>
+		/// <para>
+		/// Export a generic private key of any type. The private key does not necessarily contain the public key. The type of key in this
+		/// BLOB is determined by the <c>Magic</c> member of the BCRYPT_KEY_BLOB structure.
+		/// </para>
+		/// <para>BCRYPT_RSAFULLPRIVATE_BLOB</para>
+		/// <para>
+		/// Export a full RSA public/private key pair. The pbOutput buffer receives a BCRYPT_RSAKEY_BLOB structure immediately followed by
+		/// the key data. This BLOB will include additional key material compared to the <c>BCRYPT_RSAPRIVATE_BLOB</c> type.
+		/// </para>
+		/// <para>BCRYPT_RSAPRIVATE_BLOB</para>
+		/// <para>
+		/// Export an RSA public/private key pair. The pbOutput buffer receives a BCRYPT_RSAKEY_BLOB structure immediately followed by the
+		/// key data.
+		/// </para>
+		/// <para>BCRYPT_RSAPUBLIC_BLOB</para>
+		/// <para>
+		/// Export an RSA public key. The pbOutput buffer receives a BCRYPT_RSAKEY_BLOB structure immediately followed by the key data.
+		/// </para>
+		/// <para>LEGACY_DH_PRIVATE_BLOB</para>
+		/// <para>
+		/// Export a legacy Diffie-Hellman Version 3 Private Key BLOB that contains a Diffie-Hellman public/private key pair that can be
+		/// imported by using CryptoAPI.
+		/// </para>
+		/// <para>LEGACY_DH_PUBLIC_BLOB</para>
+		/// <para>
+		/// Export a legacy Diffie-Hellman Version 3 Private Key BLOB that contains a Diffie-Hellman public key that can be imported by using CryptoAPI.
+		/// </para>
+		/// <para>LEGACY_DSA_PRIVATE_BLOB</para>
+		/// <para>Export a DSA public/private key pair in a form that can be imported by using CryptoAPI.</para>
+		/// <para>LEGACY_DSA_PUBLIC_BLOB</para>
+		/// <para>Export a DSA public key in a form that can be imported by using CryptoAPI.</para>
+		/// <para>LEGACY_RSAPRIVATE_BLOB</para>
+		/// <para>Export an RSA public/private key pair in a form that can be imported by using CryptoAPI.</para>
+		/// <para>LEGACY_RSAPUBLIC_BLOB</para>
+		/// <para>Export an RSA public key in a form that can be imported by using CryptoAPI.</para>
+		/// <para>NCRYPT_CIPHER_KEY_BLOB</para>
+		/// <para>Export a cipher key in a NCRYPT_KEY_BLOB_HEADER structure.</para>
+		/// <para><c>Windows 8 and Windows Server 2012:</c> Support for this value begins.</para>
+		/// <para>NCRYPT_OPAQUETRANSPORT_BLOB</para>
+		/// <para>
+		/// Export a key in a format that is specific to a single CSP and is suitable for transport. Opaque BLOBs are not transferable and
+		/// must be imported by using the same CSP that generated the BLOB.
+		/// </para>
+		/// <para>NCRYPT_PKCS7_ENVELOPE_BLOB</para>
+		/// <para>
+		/// Export a PKCS #7 envelope BLOB. The parameters identified by the pParameterList parameter either can or must contain the
+		/// following parameters, as indicated by the Required or optional column.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Parameter</term>
+		/// <term>Required or optional</term>
+		/// </listheader>
+		/// <item>
+		/// <term>NCRYPTBUFFER_CERT_BLOB</term>
+		/// <term>Required</term>
+		/// </item>
+		/// <item>
+		/// <term>NCRYPTBUFFER_PKCS_ALG_OID</term>
+		/// <term>Required</term>
+		/// </item>
+		/// <item>
+		/// <term>NCRYPTBUFFER_PKCS_ALG_PARAM</term>
+		/// <term>Optional</term>
+		/// </item>
+		/// </list>
+		/// <para>NCRYPT_PKCS8_PRIVATE_KEY_BLOB</para>
+		/// <para>
+		/// Export a PKCS #8 private key BLOB. The parameters identified by the pParameterList parameter either can or must contain the
+		/// following parameters, as indicated by the Required or optional column.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Parameter</term>
+		/// <term>Required or optional</term>
+		/// </listheader>
+		/// <item>
+		/// <term>NCRYPTBUFFER_PKCS_ALG_OID</term>
+		/// <term>Optional</term>
+		/// </item>
+		/// <item>
+		/// <term>NCRYPTBUFFER_PKCS_ALG_PARAM</term>
+		/// <term>Optional</term>
+		/// </item>
+		/// <item>
+		/// <term>NCRYPTBUFFER_PKCS_SECRET</term>
+		/// <term>Optional</term>
+		/// </item>
+		/// </list>
+		/// <para>NCRYPT_PROTECTED_KEY_BLOB</para>
+		/// <para>Export a protected key in a NCRYPT_KEY_BLOB_HEADER structure.</para>
+		/// <para><c>Windows 8 and Windows Server 2012:</c> Support for this value begins.</para>
+		/// </param>
+		/// <param name="pParameterList">
+		/// <para>
+		/// The address of an NCryptBufferDesc structure that receives parameter information for the key. This parameter can be <c>NULL</c>
+		/// if this information is not needed.
+		/// </para>
+		/// </param>
+		/// <param name="pbOutput">
+		/// <para>
+		/// The address of a buffer that receives the key BLOB. The cbOutput parameter contains the size of this buffer. If this parameter is
+		/// <c>NULL</c>, this function will place the required size, in bytes, in the <c>DWORD</c> pointed to by the pcbResult parameter.
+		/// </para>
+		/// </param>
+		/// <param name="cbOutput">
+		/// <para>The size, in bytes, of the pbOutput buffer.</para>
+		/// </param>
+		/// <param name="pcbResult">
+		/// <para>
+		/// The address of a <c>DWORD</c> variable that receives the number of bytes copied to the pbOutput buffer. If the pbOutput parameter
+		/// is <c>NULL</c>, this function will place the required size, in bytes, in the <c>DWORD</c> pointed to by this parameter.
+		/// </para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>
+		/// Flags that modify function behavior. This can be zero or a combination of one or more of the following values. The set of valid
+		/// flags is specific to each key storage provider. The following flag applies to all providers.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>NCRYPT_SILENT_FLAG</term>
+		/// <term>
+		/// Requests that the key service provider (KSP) not display any user interface. If the provider must display the UI to operate, the
+		/// call fails and the KSP should set the NTE_SILENT_CONTEXT error code as the last error.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Returns a status code that indicates the success or failure of the function.</para>
+		/// <para>Possible return codes include, but are not limited to, the following.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_SUCCESS</term>
+		/// <term>The function was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>NTE_BAD_FLAGS</term>
+		/// <term>The dwFlags parameter contains a value that is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>NTE_BAD_KEY_STATE</term>
+		/// <term>
+		/// The key specified by the hKey parameter is not valid. The most common cause of this error is that the key was not completed by
+		/// using the NCryptFinalizeKey function.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>NTE_BAD_TYPE</term>
+		/// <term>The key specified by the hKey parameter cannot be exported into the BLOB type specified by the pszBlobType parameter.</term>
+		/// </item>
+		/// <item>
+		/// <term>NTE_INVALID_HANDLE</term>
+		/// <term>The hKey or the hExportKey parameter is not valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>NTE_INVALID_PARAMETER</term>
+		/// <term>One or more parameters are not valid.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// A service must not call this function from its StartService Function. If a service calls this function from its StartService
+		/// function, a deadlock can occur, and the service may stop responding.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ncrypt/nf-ncrypt-ncryptexportkey SECURITY_STATUS NCryptExportKey(
+		// NCRYPT_KEY_HANDLE hKey, NCRYPT_KEY_HANDLE hExportKey, LPCWSTR pszBlobType, NCryptBufferDesc *pParameterList, PBYTE pbOutput, DWORD
+		// cbOutput, DWORD *pcbResult, DWORD dwFlags );
+		[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("ncrypt.h", MSDNShortId = "1588eb29-4026-4d1c-8bee-a035df38444a")]
+		public static extern HRESULT NCryptExportKey(NCRYPT_KEY_HANDLE hKey, NCRYPT_KEY_HANDLE hExportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, [Optional] NCryptBufferDesc pParameterList, [Optional] IntPtr pbOutput, [Optional] uint cbOutput, out uint pcbResult, ExportKeyFlags dwFlags = 0);
 
 		/// <summary>
 		/// <para>
@@ -1388,7 +1640,7 @@ namespace Vanara.PInvoke
 		// NCRYPT_KEY_HANDLE hKey, DWORD dwFlags );
 		[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ncrypt.h", MSDNShortId = "4386030d-4ce6-4b2e-adc5-a15ddc869349")]
-		public static extern HRESULT NCryptFinalizeKey(NCRYPT_KEY_HANDLE hKey, FinalizeKeyFlags dwFlags);
+		public static extern HRESULT NCryptFinalizeKey(NCRYPT_KEY_HANDLE hKey, FinalizeKeyFlags dwFlags = 0);
 
 		/// <summary>
 		/// <para>The <c>NCryptFreeObject</c> function frees a CNG key storage object.</para>
@@ -1614,7 +1866,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ncrypt.h", MSDNShortId = "ede0e7e0-cb2c-44c0-b724-58db3480b781")]
 		public static extern HRESULT NCryptImportKey(NCRYPT_PROV_HANDLE hProvider, NCRYPT_KEY_HANDLE hImportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, NCryptBufferDesc pParameterList,
-			out SafeNCRYPT_KEY_HANDLE phKey, SafeAllocatedMemoryHandle pbData, uint cbData, ImportKeyFlags dwFlags);
+			out SafeNCRYPT_KEY_HANDLE phKey, SafeAllocatedMemoryHandle pbData, uint cbData, ImportKeyFlags dwFlags = 0);
 
 		/// <summary>
 		/// <para>The <c>NCryptImportKey</c> function imports a Cryptography API: Next Generation (CNG) key from a memory BLOB.</para>
@@ -1802,7 +2054,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ncrypt.h", MSDNShortId = "ede0e7e0-cb2c-44c0-b724-58db3480b781")]
 		public static extern HRESULT NCryptImportKey(NCRYPT_PROV_HANDLE hProvider, NCRYPT_KEY_HANDLE hImportKey, [MarshalAs(UnmanagedType.LPWStr)] string pszBlobType, NCryptBufferDesc pParameterList,
-			out SafeNCRYPT_KEY_HANDLE phKey, [Optional] IntPtr pbData, [Optional] uint cbData, ImportKeyFlags dwFlags);
+			out SafeNCRYPT_KEY_HANDLE phKey, [Optional] IntPtr pbData, [Optional] uint cbData, ImportKeyFlags dwFlags = 0);
 
 		/// <summary>
 		/// <para>The <c>NCryptOpenKey</c> function opens a key that exists in the specified CNG key storage provider.</para>
@@ -1909,7 +2161,7 @@ namespace Vanara.PInvoke
 		// NCRYPT_PROV_HANDLE hProvider, NCRYPT_KEY_HANDLE *phKey, LPCWSTR pszKeyName, DWORD dwLegacyKeySpec, DWORD dwFlags );
 		[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ncrypt.h", MSDNShortId = "581c5d89-730d-4d8c-b3bb-a28edec25910")]
-		public static extern HRESULT NCryptOpenKey(NCRYPT_PROV_HANDLE hProvider, out SafeNCRYPT_KEY_HANDLE phKey, [MarshalAs(UnmanagedType.LPWStr)] string pszKeyName, Crypt32.PrivateKeyType dwLegacyKeySpec, OpenKeyFlags dwFlags);
+		public static extern HRESULT NCryptOpenKey(NCRYPT_PROV_HANDLE hProvider, out SafeNCRYPT_KEY_HANDLE phKey, [MarshalAs(UnmanagedType.LPWStr)] string pszKeyName, Crypt32.PrivateKeyType dwLegacyKeySpec = 0, OpenKeyFlags dwFlags = 0);
 
 		/// <summary>
 		/// <para>The <c>NCryptOpenStorageProvider</c> function loads and initializes a CNG key storage provider.</para>
@@ -2062,7 +2314,7 @@ namespace Vanara.PInvoke
 		// NCRYPT_KEY_HANDLE hPrivKey, NCRYPT_KEY_HANDLE hPubKey, NCRYPT_SECRET_HANDLE *phAgreedSecret, DWORD dwFlags );
 		[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ncrypt.h", MSDNShortId = "b5bf3eac-1fae-43e2-84b6-e8e5e255d7c5")]
-		public static extern HRESULT NCryptSecretAgreement(NCRYPT_KEY_HANDLE hPrivKey, NCRYPT_KEY_HANDLE hPubKey, out SafeNCRYPT_SECRET_HANDLE phAgreedSecret, uint dwFlags);
+		public static extern HRESULT NCryptSecretAgreement(NCRYPT_KEY_HANDLE hPrivKey, NCRYPT_KEY_HANDLE hPubKey, out SafeNCRYPT_SECRET_HANDLE phAgreedSecret, SecretAgreementFlags dwFlags = 0);
 
 		/// <summary>
 		/// <para>The <c>NCryptSetProperty</c> function sets the value for a named property for a CNG key storage object.</para>
@@ -2343,6 +2595,39 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Ncrypt, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("ncrypt.h", MSDNShortId = "ad1148aa-5f64-4867-9e17-6b41cc0c20b7")]
 		public static extern HRESULT NCryptSetProperty(NCRYPT_HANDLE hObject, [MarshalAs(UnmanagedType.LPWStr)] string pszProperty, byte[] pbInput, uint cbInput, SetPropFlags dwFlags);
+
+		/// <summary>
+		/// <para>
+		/// The <c>NCRYPT_ALLOC_PARA</c> structure enables you to specify custom functions that can be used to allocate and free data. This
+		/// structure is used in the following functions:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>NCryptGetProtectionDescriptorInfo</term>
+		/// </item>
+		/// <item>
+		/// <term>NCryptProtectSecret</term>
+		/// </item>
+		/// <item>
+		/// <term>NCryptUnprotectSecret</term>
+		/// </item>
+		/// </list>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ncrypt/ns-ncrypt-ncrypt_alloc_para typedef struct NCRYPT_ALLOC_PARA { DWORD
+		// cbSize; PFN_NCRYPT_ALLOC pfnAlloc; PFN_NCRYPT_FREE pfnFree; } NCRYPT_ALLOC_PARA;
+		[PInvokeData("ncrypt.h", MSDNShortId = "4F546F51-E4DE-4703-B1D1-F84165C3C31B")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct NCRYPT_ALLOC_PARA
+		{
+			/// <summary>The size, in bytes, of this structure.</summary>
+			public uint cbSize;
+
+			/// <summary>Address of a custom function that can allocate memory.</summary>
+			public PFN_NCRYPT_ALLOC pfnAlloc;
+
+			/// <summary>Address of a function that can free memory allocated by the function specified by the <c>pfnAlloc</c> member.</summary>
+			public PFN_NCRYPT_FREE pfnFree;
+		}
 
 		/// <summary>Provides a handle to a key storage object.</summary>
 		[StructLayout(LayoutKind.Sequential)]
@@ -2699,6 +2984,130 @@ namespace Vanara.PInvoke
 			/// <para>The format and contents of this buffer are identified by the <c>BufferType</c> member.</para>
 			/// </summary>
 			public byte[] pvBuffer;
+
+			/// <summary>Initializes a new instance of the <see cref="NCryptBuffer"/> struct.</summary>
+			/// <param name="bufferType">Type of the buffer.</param>
+			/// <param name="buffer">The buffer.</param>
+			public NCryptBuffer(BufferType bufferType, byte[] buffer)
+			{
+				BufferType = bufferType;
+				pvBuffer = buffer;
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="NCryptBuffer"/> struct.</summary>
+			/// <param name="bufferType">Type of the buffer.</param>
+			/// <param name="buffer">The buffer.</param>
+			public NCryptBuffer(BufferType bufferType, string buffer)
+			{
+				BufferType = bufferType;
+				pvBuffer = System.Text.Encoding.Unicode.GetBytes(buffer);
+			}
+		}
+
+		public static class KnownStorageProvider
+		{
+			public const string MS_KEY_STORAGE_PROVIDER = "Microsoft Software Key Storage Provider";
+			public const string MS_NGC_KEY_STORAGE_PROVIDER = "Microsoft Passport Key Storage Provider";
+			public const string MS_PLATFORM_KEY_STORAGE_PROVIDER = "Microsoft Platform Crypto Provider";
+			public const string MS_SMART_CARD_KEY_STORAGE_PROVIDER = "Microsoft Smart Card Key Storage Provider";
+		}
+
+		/// <summary>The following values are used with the NCryptGetProperty and NCryptSetProperty functions to identify a property.</summary>
+		public static class PropertyName
+		{
+			public const string NCRYPT_ALGORITHM_GROUP_PROPERTY = "Algorithm Group";
+			public const string NCRYPT_ALGORITHM_PROPERTY = "Algorithm Name";
+			public const string NCRYPT_ASSOCIATED_ECDH_KEY = "SmartCardAssociatedECDHKey";
+			public const string NCRYPT_AUTH_TAG_LENGTH = "AuthTagLength";
+			public const string NCRYPT_BLOCK_LENGTH_PROPERTY = "Block Length";
+			public const string NCRYPT_CERTIFICATE_PROPERTY = "SmartCardKeyCertificate";
+			public const string NCRYPT_CHAINING_MODE_PROPERTY = "Chaining Mode";
+			public const string NCRYPT_DISMISS_UI_TIMEOUT_SEC_PROPERTY = "SmartCardDismissUITimeoutSeconds";
+			public const string NCRYPT_ECC_CURVE_NAME_LIST_PROPERTY = BCrypt.PropertyName.BCRYPT_ECC_CURVE_NAME_LIST;
+			public const string NCRYPT_ECC_CURVE_NAME_PROPERTY = BCrypt.PropertyName.BCRYPT_ECC_CURVE_NAME;
+			public const string NCRYPT_ECC_PARAMETERS_PROPERTY = BCrypt.PropertyName.BCRYPT_ECC_PARAMETERS;
+			public const string NCRYPT_EXPORT_POLICY_PROPERTY = "Export Policy";
+			public const string NCRYPT_IMPL_TYPE_PROPERTY = "Impl Type";
+			public const string NCRYPT_KDF_SECRET_VALUE = "KDFKeySecret";
+			public const string NCRYPT_KEY_TYPE_PROPERTY = "Key Type";
+			public const string NCRYPT_KEY_USAGE_PROPERTY = "Key Usage";
+			public const string NCRYPT_LAST_MODIFIED_PROPERTY = "Modified";
+			public const string NCRYPT_LENGTH_PROPERTY = "Length";
+			public const string NCRYPT_LENGTHS_PROPERTY = "Lengths";
+			public const string NCRYPT_MAX_NAME_LENGTH_PROPERTY = "Max Name Length";
+			public const string NCRYPT_NAME_PROPERTY = "Name";
+			public const string NCRYPT_PCP_ALTERNATE_KEY_STORAGE_LOCATION_PROPERTY = "PCP_ALTERNATE_KEY_STORAGE_LOCATION";
+			public const string NCRYPT_PCP_CHANGEPASSWORD_PROPERTY = "PCP_CHANGEPASSWORD";
+			public const string NCRYPT_PCP_ECC_EKCERT_PROPERTY = "PCP_ECC_EKCERT";
+			public const string NCRYPT_PCP_ECC_EKNVCERT_PROPERTY = "PCP_ECC_EKNVCERT";
+			public const string NCRYPT_PCP_ECC_EKPUB_PROPERTY = "PCP_ECC_EKPUB";
+			public const string NCRYPT_PCP_EKCERT_PROPERTY = "PCP_EKCERT";
+			public const string NCRYPT_PCP_EKNVCERT_PROPERTY = "PCP_EKNVCERT";
+			public const string NCRYPT_PCP_EKPUB_PROPERTY = "PCP_EKPUB";
+			public const string NCRYPT_PCP_EXPORT_ALLOWED_PROPERTY = "PCP_EXPORT_ALLOWED";
+			public const string NCRYPT_PCP_HMAC_AUTH_NONCE = "PCP_HMAC_AUTH_NONCE";
+			public const string NCRYPT_PCP_HMAC_AUTH_POLICYINFO = "PCP_HMAC_AUTH_POLICYINFO";
+			public const string NCRYPT_PCP_HMAC_AUTH_POLICYREF = "PCP_HMAC_AUTH_POLICYREF";
+			public const string NCRYPT_PCP_HMAC_AUTH_SIGNATURE = "PCP_HMAC_AUTH_SIGNATURE";
+			public const string NCRYPT_PCP_HMAC_AUTH_TICKET = "PCP_HMAC_AUTH_TICKET";
+			public const string NCRYPT_PCP_KEY_CREATIONHASH_PROPERTY = "PCP_KEY_CREATIONHASH";
+			public const string NCRYPT_PCP_KEY_CREATIONTICKET_PROPERTY = "PCP_KEY_CREATIONTICKET";
+			public const string NCRYPT_PCP_KEY_USAGE_POLICY_PROPERTY = "PCP_KEY_USAGE_POLICY";
+			public const string NCRYPT_PCP_KEYATTESTATION_PROPERTY = "PCP_TPM12_KEYATTESTATION";
+			public const string NCRYPT_PCP_MIGRATIONPASSWORD_PROPERTY = "PCP_MIGRATIONPASSWORD";
+			public const string NCRYPT_PCP_NO_DA_PROTECTION_PROPERTY = "PCP_NO_DA_PROTECTION";
+			public const string NCRYPT_PCP_PASSWORD_REQUIRED_PROPERTY = "PCP_PASSWORD_REQUIRED";
+			public const string NCRYPT_PCP_PCRTABLE_PROPERTY = "PCP_PCRTABLE";
+			public const string NCRYPT_PCP_PLATFORM_BINDING_PCRDIGEST_PROPERTY = "PCP_PLATFORM_BINDING_PCRDIGEST";
+			public const string NCRYPT_PCP_PLATFORM_BINDING_PCRDIGESTLIST_PROPERTY = "PCP_PLATFORM_BINDING_PCRDIGESTLIST";
+			public const string NCRYPT_PCP_PLATFORM_BINDING_PCRMASK_PROPERTY = "PCP_PLATFORM_BINDING_PCRMASK";
+			public const string NCRYPT_PCP_PLATFORM_TYPE_PROPERTY = "PCP_PLATFORM_TYPE";
+			public const string NCRYPT_PCP_PLATFORMHANDLE_PROPERTY = "PCP_PLATFORMHANDLE";
+			public const string NCRYPT_PCP_PROVIDER_VERSION_PROPERTY = "PCP_PROVIDER_VERSION";
+			public const string NCRYPT_PCP_PROVIDERHANDLE_PROPERTY = "PCP_PROVIDERMHANDLE";
+			public const string NCRYPT_PCP_RAW_POLICYDIGEST_PROPERTY = "PCP_RAW_POLICYDIGEST";
+			public const string NCRYPT_PCP_RSA_EKCERT_PROPERTY = "PCP_RSA_EKCERT";
+			public const string NCRYPT_PCP_RSA_EKNVCERT_PROPERTY = "PCP_RSA_EKNVCERT";
+			public const string NCRYPT_PCP_RSA_EKPUB_PROPERTY = "PCP_RSA_EKPUB";
+			public const string NCRYPT_PCP_RSA_SCHEME_HASH_ALG_PROPERTY = "PCP_RSA_SCHEME_HASH_ALG";
+			public const string NCRYPT_PCP_RSA_SCHEME_PROPERTY = "PCP_RSA_SCHEME";
+			public const string NCRYPT_PCP_SESSIONID_PROPERTY = "PCP_SESSIONID";
+			public const string NCRYPT_PCP_SRKPUB_PROPERTY = "PCP_SRKPUB";
+			public const string NCRYPT_PCP_STORAGEPARENT_PROPERTY = "PCP_STORAGEPARENT";
+			public const string NCRYPT_PCP_TPM_FW_VERSION_PROPERTY = "PCP_TPM_FW_VERSION";
+			public const string NCRYPT_PCP_TPM_IFX_RSA_KEYGEN_PROHIBITED_PROPERTY = "PCP_TPM_IFX_RSA_KEYGEN_PROHIBITED";
+			public const string NCRYPT_PCP_TPM_IFX_RSA_KEYGEN_VULNERABILITY_PROPERTY = "PCP_TPM_IFX_RSA_KEYGEN_VULNERABILITY";
+			public const string NCRYPT_PCP_TPM_MANUFACTURER_ID_PROPERTY = "PCP_TPM_MANUFACTURER_ID";
+			public const string NCRYPT_PCP_TPM_VERSION_PROPERTY = "PCP_TPM_VERSION";
+			public const string NCRYPT_PCP_TPM12_IDACTIVATION_PROPERTY = "PCP_TPM12_IDACTIVATION";
+			public const string NCRYPT_PCP_TPM12_IDBINDING_DYNAMIC_PROPERTY = "PCP_TPM12_IDBINDING_DYNAMIC";
+			public const string NCRYPT_PCP_TPM12_IDBINDING_PROPERTY = "PCP_TPM12_IDBINDING";
+			public const string NCRYPT_PCP_TPM2BNAME_PROPERTY = "PCP_TPM2BNAME";
+			public const string NCRYPT_PCP_USAGEAUTH_PROPERTY = "PCP_USAGEAUTH";
+			public const string NCRYPT_PIN_PROMPT_PROPERTY = "SmartCardPinPrompt";
+			public const string NCRYPT_PIN_PROPERTY = "SmartCardPin";
+			public const string NCRYPT_PROVIDER_HANDLE_PROPERTY = "Provider Handle";
+			public const string NCRYPT_PUBLIC_LENGTH_PROPERTY = BCrypt.PropertyName.BCRYPT_PUBLIC_KEY_LENGTH;
+			public const string NCRYPT_READER_ICON_PROPERTY = "SmartCardReaderIcon";
+			public const string NCRYPT_READER_PROPERTY = "SmartCardReader";
+			public const string NCRYPT_ROOT_CERTSTORE_PROPERTY = "SmartcardRootCertStore";
+			public const string NCRYPT_SCARD_PIN_ID = "SmartCardPinId";
+			public const string NCRYPT_SCARD_PIN_INFO = "SmartCardPinInfo";
+			public const string NCRYPT_SECURE_PIN_PROPERTY = "SmartCardSecurePin";
+			public const string NCRYPT_SECURITY_DESCR_PROPERTY = "Security Descr";
+			public const string NCRYPT_SECURITY_DESCR_SUPPORT_PROPERTY = "Security Descr Support";
+			public const string NCRYPT_SIGNATURE_LENGTH_PROPERTY = BCrypt.PropertyName.BCRYPT_SIGNATURE_LENGTH;
+			public const string NCRYPT_SMARTCARD_GUID_PROPERTY = "SmartCardGuid";
+			public const string NCRYPT_UI_POLICY_PROPERTY = "UI Policy";
+			public const string NCRYPT_UNIQUE_NAME_PROPERTY = "Unique Name";
+			public const string NCRYPT_USE_CONTEXT_PROPERTY = "Use Context";
+			public const string NCRYPT_USE_COUNT_ENABLED_PROPERTY = "Enabled Use Count";
+			public const string NCRYPT_USE_COUNT_PROPERTY = "Use Count";
+			public const string NCRYPT_USE_PER_BOOT_KEY_PROPERTY = "Per Boot Key";
+			public const string NCRYPT_USE_VIRTUAL_ISOLATION_PROPERTY = "Virtual Iso";
+			public const string NCRYPT_USER_CERTSTORE_PROPERTY = "SmartCardUserCertStore";
+			public const string NCRYPT_VERSION_PROPERTY = "Version";
+			public const string NCRYPT_WINDOW_HANDLE_PROPERTY = "HWND Handle";
 		}
 
 		/// <summary>The <c>BCryptBufferDesc</c> structure is used to contain a set of generic CNG buffers.</summary>
@@ -2707,6 +3116,8 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public class NCryptBufferDesc : IDisposable
 		{
+			private const uint BCRYPTBUFFER_VERSION = 0;
+
 			/// <summary>
 			/// <para>The version of the structure. This must be the following value.</para>
 			/// <para>
@@ -2722,7 +3133,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </para>
 			/// </summary>
-			public uint ulVersion;
+			public uint ulVersion = BCRYPTBUFFER_VERSION;
 
 			/// <summary>The number of elements in the <c>pBuffers</c> array.</summary>
 			public uint cBuffers;

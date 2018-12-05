@@ -1,9 +1,8 @@
-## Correlation report for crypt32.dll, bcrypt.dll, ncrypt.dll  
-### Methods (12% complete)  
+## Correlation report for crypt32.dll, bcrypt.dll, ncrypt.dll, tokenbinding.dll  
+### Methods (23% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BCryptAddContextFunction](http://msdn2.microsoft.com/en-us/library/4f5b6db0-775d-42de-b9d9-a99fb11c89f2) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptAddContextFunction  
-[BCryptAddContextFunctionProvider](https://www.google.com/search?num=5&q=BCryptAddContextFunctionProvider+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [BCryptCloseAlgorithmProvider](http://msdn2.microsoft.com/en-us/library/def90d52-87e0-40e6-9c50-fd77177991d0) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptCloseAlgorithmProvider  
 [BCryptConfigureContext](http://msdn2.microsoft.com/en-us/library/7989fefc-64fe-4ab3-9a48-7992edac171f) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptConfigureContext  
 [BCryptConfigureContextFunction](http://msdn2.microsoft.com/en-us/library/e93c5e3e-3c63-49a3-8c8c-6510e10611ea) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptConfigureContextFunction  
@@ -13,8 +12,8 @@ Native Method | Native DLL | Header | Managed Method
 [BCryptDecrypt](http://msdn2.microsoft.com/en-us/library/62286f6b-0d57-4691-83fc-2b9a9740af71) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptDecrypt  
 [BCryptDeleteContext](http://msdn2.microsoft.com/en-us/library/6a250bed-0ea4-4cae-86e6-f0cea95dc56e) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptDeleteContext  
 [BCryptDeriveKey](http://msdn2.microsoft.com/en-us/library/33c3cbf7-6c08-42ed-ac3f-feb71f3a9cbf) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptDeriveKey  
-[BCryptDeriveKeyCapi](https://www.google.com/search?num=5&q=BCryptDeriveKeyCapi+site%3Amicrosoft.com) | bcrypt.dll |  |   
-[BCryptDeriveKeyPBKDF2](https://www.google.com/search?num=5&q=BCryptDeriveKeyPBKDF2+site%3Amicrosoft.com) | bcrypt.dll |  |   
+[BCryptDeriveKeyCapi](http://msdn2.microsoft.com/en-us/library/bebb0767-8c54-48b7-864c-f53caea7120d) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptDeriveKeyCapi  
+[BCryptDeriveKeyPBKDF2](http://msdn2.microsoft.com/en-us/library/afdddfec-a3a5-410c-998b-9a5af8e051b6) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptDeriveKeyPBKDF2  
 [BCryptDestroyHash](http://msdn2.microsoft.com/en-us/library/067dac61-98b9-478c-ac4d-e141961865e9) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptDestroyHash  
 [BCryptDestroyKey](http://msdn2.microsoft.com/en-us/library/98c02e55-6489-4901-8a7a-021baac41965) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptDestroyKey  
 [BCryptDestroySecret](http://msdn2.microsoft.com/en-us/library/237743ff-ecb1-4c01-b4f9-192f27716f2c) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptDestroySecret  
@@ -28,38 +27,34 @@ Native Method | Native DLL | Header | Managed Method
 [BCryptEnumProviders](http://msdn2.microsoft.com/en-us/library/0496f241-9530-47fb-89e2-15d7ab6da87a) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptEnumProviders  
 [BCryptEnumRegisteredProviders](http://msdn2.microsoft.com/en-us/library/a01adfec-dbe0-4817-af97-63163760fafc) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptEnumRegisteredProviders  
 [BCryptExportKey](http://msdn2.microsoft.com/en-us/library/a5d73143-c1d6-43b3-a724-7e27c68a5ade) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptExportKey  
-[BCryptFinalizeKeyPair](https://www.google.com/search?num=5&q=BCryptFinalizeKeyPair+site%3Amicrosoft.com) | bcrypt.dll |  |   
+[BCryptFinalizeKeyPair](http://msdn2.microsoft.com/en-us/library/bf0b90f1-6da8-464e-9271-ad60ea762653) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptFinalizeKeyPair  
 [BCryptFinishHash](http://msdn2.microsoft.com/en-us/library/82a7c3d9-c01b-46d0-8b54-694dc0d8ffdd) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptFinishHash  
 [BCryptFreeBuffer](http://msdn2.microsoft.com/en-us/library/0ee83ca1-2fe6-4ff2-823e-888b3e66f310) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptFreeBuffer  
 [BCryptGenerateKeyPair](http://msdn2.microsoft.com/en-us/library/cdf0de2e-2445-45e3-91ba-89791a0c0642) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptGenerateKeyPair  
 [BCryptGenerateSymmetricKey](http://msdn2.microsoft.com/en-us/library/c55d714f-f47e-4ddf-97b9-985c0441bb2d) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptGenerateSymmetricKey  
-[BCryptGenRandom](https://www.google.com/search?num=5&q=BCryptGenRandom+site%3Amicrosoft.com) | bcrypt.dll |  |   
-[BCryptGetFipsAlgorithmMode](https://www.google.com/search?num=5&q=BCryptGetFipsAlgorithmMode+site%3Amicrosoft.com) | bcrypt.dll |  |   
+[BCryptGenRandom](http://msdn2.microsoft.com/en-us/library/7c6cee3a-f2c5-46f3-8cfe-984316f323d9) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptGenRandom  
+[BCryptGetFipsAlgorithmMode](http://msdn2.microsoft.com/en-us/library/eb7b758d-3466-49fe-8729-a8a059fadcde) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptGetFipsAlgorithmMode  
 [BCryptGetProperty](http://msdn2.microsoft.com/en-us/library/5c62ca3a-843e-41a7-9340-41785fbb15f4) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptGetProperty  
-[BCryptHash](https://www.google.com/search?num=5&q=BCryptHash+site%3Amicrosoft.com) | bcrypt.dll |  |   
+[BCryptHash](http://msdn2.microsoft.com/en-us/library/F0FF9B6D-1345-480A-BE13-BE90547407BF) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptHash  
 [BCryptHashData](http://msdn2.microsoft.com/en-us/library/dab89dff-dc84-4f69-8b6b-de65704b0265) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptHashData  
 [BCryptImportKey](http://msdn2.microsoft.com/en-us/library/6b9683f4-10f2-40e4-9757-a1f01991bef7) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptImportKey  
 [BCryptImportKeyPair](http://msdn2.microsoft.com/en-us/library/271fc084-6121-4666-b521-b849c7d7966c) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptImportKeyPair  
-[BCryptKeyDerivation](https://www.google.com/search?num=5&q=BCryptKeyDerivation+site%3Amicrosoft.com) | bcrypt.dll |  |   
+[BCryptKeyDerivation](http://msdn2.microsoft.com/en-us/library/D0B91FFE-2E72-4AE3-A84F-DC598C02CF53) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptKeyDerivation  
 [BCryptOpenAlgorithmProvider](http://msdn2.microsoft.com/en-us/library/aceba9c0-19e6-4f3c-972a-752feed4a9f8) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptOpenAlgorithmProvider  
-[BCryptProcessMultiOperations](https://www.google.com/search?num=5&q=BCryptProcessMultiOperations+site%3Amicrosoft.com) | bcrypt.dll |  |   
+[BCryptProcessMultiOperations](http://msdn2.microsoft.com/en-us/library/5FD28AC3-46D2-4F06-BF06-F5FEF8E531F5) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptProcessMultiOperations  
 [BCryptQueryContextConfiguration](http://msdn2.microsoft.com/en-us/library/3e2ae471-cad6-4bfe-9e30-7b2a7014bc08) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptQueryContextConfiguration  
 [BCryptQueryContextFunctionConfiguration](http://msdn2.microsoft.com/en-us/library/4eea9efe-bf45-4926-86fc-9b12b6d292cd) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptQueryContextFunctionConfiguration  
 [BCryptQueryContextFunctionProperty](http://msdn2.microsoft.com/en-us/library/c8814a13-ac28-4583-927f-c787e0a25faf) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptQueryContextFunctionProperty  
-[BCryptQueryProviderRegistration](https://www.google.com/search?num=5&q=BCryptQueryProviderRegistration+site%3Amicrosoft.com) | bcrypt.dll |  |   
-[BCryptRegisterConfigChangeNotify](https://www.google.com/search?num=5&q=BCryptRegisterConfigChangeNotify+site%3Amicrosoft.com) | bcrypt.dll |  |   
-[BCryptRegisterProvider](https://www.google.com/search?num=5&q=BCryptRegisterProvider+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[BCryptQueryProviderRegistration](http://msdn2.microsoft.com/en-us/library/28b8bca9-442f-4d58-86aa-8aa274777ede) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptQueryProviderRegistration  
+[BCryptRegisterConfigChangeNotify](http://msdn2.microsoft.com/en-us/library/bb394681) | bcrypt.dll | Bcrypt.h | Vanara.PInvoke.BCrypt.BCryptRegisterConfigChangeNotify  
 [BCryptRemoveContextFunction](http://msdn2.microsoft.com/en-us/library/b8b1df66-f66f-4efc-9c8e-fca32e0278c5) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptRemoveContextFunction  
-[BCryptRemoveContextFunctionProvider](https://www.google.com/search?num=5&q=BCryptRemoveContextFunctionProvider+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[BCryptResolveProviders](https://www.google.com/search?num=5&q=BCryptResolveProviders+site%3Amicrosoft.com) | bcrypt.dll |  |   
+[BCryptResolveProviders](http://msdn2.microsoft.com/en-us/library/cf30f635-4918-4911-9db0-df90d26a2f1a) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptResolveProviders  
 [BCryptSecretAgreement](http://msdn2.microsoft.com/en-us/library/96863d81-3643-4962-8abf-db1cc2acde07) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptSecretAgreement  
-[BCryptSetAuditingInterface](https://www.google.com/search?num=5&q=BCryptSetAuditingInterface+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [BCryptSetContextFunctionProperty](http://msdn2.microsoft.com/en-us/library/1e02720b-5210-4127-ab9e-24532a764795) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptSetContextFunctionProperty  
 [BCryptSetProperty](http://msdn2.microsoft.com/en-us/library/687f3410-d28b-4ce2-a2a1-c564f757c668) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptSetProperty  
-[BCryptSignHash](https://www.google.com/search?num=5&q=BCryptSignHash+site%3Amicrosoft.com) | bcrypt.dll |  |   
-[BCryptUnregisterConfigChangeNotify](https://www.google.com/search?num=5&q=BCryptUnregisterConfigChangeNotify+site%3Amicrosoft.com) | bcrypt.dll |  |   
-[BCryptUnregisterProvider](https://www.google.com/search?num=5&q=BCryptUnregisterProvider+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[BCryptVerifySignature](https://www.google.com/search?num=5&q=BCryptVerifySignature+site%3Amicrosoft.com) | bcrypt.dll |  |   
+[BCryptSignHash](http://msdn2.microsoft.com/en-us/library/f402ea9e-89ae-4ccc-9591-aa2328287c0e) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptSignHash  
+[BCryptUnregisterConfigChangeNotify](http://msdn2.microsoft.com/en-us/library/bb394683) | bcrypt.dll | Bcrypt.h | Vanara.PInvoke.BCrypt.BCryptUnregisterConfigChangeNotify  
+[BCryptVerifySignature](http://msdn2.microsoft.com/en-us/library/95c32056-e444-441c-bbc1-c5ae82aba964) | bcrypt.dll | bcrypt.h | Vanara.PInvoke.BCrypt.BCryptVerifySignature  
 [CertAddCertificateContextToStore](https://www.google.com/search?num=5&q=CertAddCertificateContextToStore+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CertAddCertificateLinkToStore](https://www.google.com/search?num=5&q=CertAddCertificateLinkToStore+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CertAddCRLContextToStore](https://www.google.com/search?num=5&q=CertAddCRLContextToStore+site%3Amicrosoft.com) | crypt32.dll |  |   
@@ -275,52 +270,43 @@ Native Method | Native DLL | Header | Managed Method
 [CryptVerifyMessageSignature](https://www.google.com/search?num=5&q=CryptVerifyMessageSignature+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CryptVerifyMessageSignatureWithKey](https://www.google.com/search?num=5&q=CryptVerifyMessageSignatureWithKey+site%3Amicrosoft.com) | crypt32.dll |  |   
 [CryptVerifyTimeStampSignature](https://www.google.com/search?num=5&q=CryptVerifyTimeStampSignature+site%3Amicrosoft.com) | crypt32.dll |  |   
-[GetIsolationServerInterface](https://www.google.com/search?num=5&q=GetIsolationServerInterface+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[GetKeyStorageInterface](https://www.google.com/search?num=5&q=GetKeyStorageInterface+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[GetSChannelInterface](https://www.google.com/search?num=5&q=GetSChannelInterface+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptCloseKeyProtector](https://www.google.com/search?num=5&q=NCryptCloseKeyProtector+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptCloseProtectionDescriptor](https://www.google.com/search?num=5&q=NCryptCloseProtectionDescriptor+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[NCryptCloseProtectionDescriptor](http://msdn2.microsoft.com/en-us/library/523FD83E-85A3-4A0E-BA8D-2F27F82C1072) | ncrypt.dll | ncryptprotect.h | Vanara.PInvoke.NCrypt.NCryptCloseProtectionDescriptor  
 [NCryptCreateClaim](https://www.google.com/search?num=5&q=NCryptCreateClaim+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [NCryptCreatePersistedKey](http://msdn2.microsoft.com/en-us/library/eeb1842f-fd9e-4edf-9db8-7b4e91760e9b) | ncrypt.dll | ncrypt.h | Vanara.PInvoke.NCrypt.NCryptCreatePersistedKey  
-[NCryptCreateProtectionDescriptor](https://www.google.com/search?num=5&q=NCryptCreateProtectionDescriptor+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[NCryptCreateProtectionDescriptor](http://msdn2.microsoft.com/en-us/library/BA6B15AC-2CD8-4D9A-817F-65CF9C09D22C) | ncrypt.dll | ncryptprotect.h | Vanara.PInvoke.NCrypt.NCryptCreateProtectionDescriptor  
 [NCryptDecrypt](https://www.google.com/search?num=5&q=NCryptDecrypt+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [NCryptDeleteKey](http://msdn2.microsoft.com/en-us/library/2e1958a7-51e0-4731-b4cf-a90d6c1f9ae0) | ncrypt.dll | ncrypt.h | Vanara.PInvoke.NCrypt.NCryptDeleteKey  
-[NCryptDeriveKey](https://www.google.com/search?num=5&q=NCryptDeriveKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptDuplicateKeyProtectorHandle](https://www.google.com/search?num=5&q=NCryptDuplicateKeyProtectorHandle+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[NCryptDeriveKey](http://msdn2.microsoft.com/en-us/library/0ff08c6a-5f30-43ca-9db8-cda3e0704b0a) | ncrypt.dll | ncrypt.h | Vanara.PInvoke.NCrypt.NCryptDeriveKey  
 [NCryptEncrypt](https://www.google.com/search?num=5&q=NCryptEncrypt+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [NCryptEnumAlgorithms](https://www.google.com/search?num=5&q=NCryptEnumAlgorithms+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [NCryptEnumKeys](https://www.google.com/search?num=5&q=NCryptEnumKeys+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [NCryptEnumStorageProviders](https://www.google.com/search?num=5&q=NCryptEnumStorageProviders+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptExportKey](https://www.google.com/search?num=5&q=NCryptExportKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptFinalizeKey](https://www.google.com/search?num=5&q=NCryptFinalizeKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[NCryptExportKey](http://msdn2.microsoft.com/en-us/library/1588eb29-4026-4d1c-8bee-a035df38444a) | ncrypt.dll | ncrypt.h | Vanara.PInvoke.NCrypt.NCryptExportKey  
+[NCryptFinalizeKey](http://msdn2.microsoft.com/en-us/library/4386030d-4ce6-4b2e-adc5-a15ddc869349) | ncrypt.dll | ncrypt.h | Vanara.PInvoke.NCrypt.NCryptFinalizeKey  
 [NCryptFreeBuffer](https://www.google.com/search?num=5&q=NCryptFreeBuffer+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [NCryptFreeObject](http://msdn2.microsoft.com/en-us/library/a5535cf9-ba8c-4212-badd-f1dc88903624) | ncrypt.dll | ncrypt.h | Vanara.PInvoke.NCrypt.NCryptFreeObject  
 [NCryptGetProperty](https://www.google.com/search?num=5&q=NCryptGetProperty+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptGetProtectionDescriptorInfo](https://www.google.com/search?num=5&q=NCryptGetProtectionDescriptorInfo+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptImportKey](https://www.google.com/search?num=5&q=NCryptImportKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[NCryptGetProtectionDescriptorInfo](http://msdn2.microsoft.com/en-us/library/EF4777D5-E218-4868-8D25-58E0EF8C9D30) | ncrypt.dll | ncryptprotect.h | Vanara.PInvoke.NCrypt.NCryptGetProtectionDescriptorInfo  
+[NCryptImportKey](http://msdn2.microsoft.com/en-us/library/ede0e7e0-cb2c-44c0-b724-58db3480b781) | ncrypt.dll | ncrypt.h | Vanara.PInvoke.NCrypt.NCryptImportKey  
 [NCryptIsAlgSupported](https://www.google.com/search?num=5&q=NCryptIsAlgSupported+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [NCryptIsKeyHandle](https://www.google.com/search?num=5&q=NCryptIsKeyHandle+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [NCryptKeyDerivation](https://www.google.com/search?num=5&q=NCryptKeyDerivation+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [NCryptNotifyChangeKey](https://www.google.com/search?num=5&q=NCryptNotifyChangeKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [NCryptOpenKey](http://msdn2.microsoft.com/en-us/library/581c5d89-730d-4d8c-b3bb-a28edec25910) | ncrypt.dll | ncrypt.h | Vanara.PInvoke.NCrypt.NCryptOpenKey  
-[NCryptOpenKeyProtector](https://www.google.com/search?num=5&q=NCryptOpenKeyProtector+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [NCryptOpenStorageProvider](http://msdn2.microsoft.com/en-us/library/febcf440-78b3-420b-b13d-030e8071cd50) | ncrypt.dll | ncrypt.h | Vanara.PInvoke.NCrypt.NCryptOpenStorageProvider  
-[NCryptProtectKey](https://www.google.com/search?num=5&q=NCryptProtectKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptProtectSecret](https://www.google.com/search?num=5&q=NCryptProtectSecret+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptQueryProtectionDescriptorName](https://www.google.com/search?num=5&q=NCryptQueryProtectionDescriptorName+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptRegisterProtectionDescriptorName](https://www.google.com/search?num=5&q=NCryptRegisterProtectionDescriptorName+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptSecretAgreement](https://www.google.com/search?num=5&q=NCryptSecretAgreement+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptSetAuditingInterface](https://www.google.com/search?num=5&q=NCryptSetAuditingInterface+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptSetProperty](https://www.google.com/search?num=5&q=NCryptSetProperty+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[NCryptProtectSecret](http://msdn2.microsoft.com/en-us/library/8726F92B-34D5-4696-8803-3D7F50F1006D) | ncrypt.dll | ncryptprotect.h | Vanara.PInvoke.NCrypt.NCryptProtectSecret  
+[NCryptQueryProtectionDescriptorName](http://msdn2.microsoft.com/en-us/library/32953AEC-01EE-4ED1-80F3-29963F43004F) | ncrypt.dll | ncryptprotect.h | Vanara.PInvoke.NCrypt.NCryptQueryProtectionDescriptorName  
+[NCryptRegisterProtectionDescriptorName](http://msdn2.microsoft.com/en-us/library/DAB03CB2-630F-4BB3-93BD-06BE9126B1C4) | ncrypt.dll | ncryptprotect.h | Vanara.PInvoke.NCrypt.NCryptRegisterProtectionDescriptorName  
+[NCryptSecretAgreement](http://msdn2.microsoft.com/en-us/library/b5bf3eac-1fae-43e2-84b6-e8e5e255d7c5) | ncrypt.dll | ncrypt.h | Vanara.PInvoke.NCrypt.NCryptSecretAgreement  
+[NCryptSetProperty](http://msdn2.microsoft.com/en-us/library/ad1148aa-5f64-4867-9e17-6b41cc0c20b7) | ncrypt.dll | ncrypt.h | Vanara.PInvoke.NCrypt.NCryptSetProperty  
 [NCryptSignHash](https://www.google.com/search?num=5&q=NCryptSignHash+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptStreamClose](https://www.google.com/search?num=5&q=NCryptStreamClose+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptStreamOpenToProtect](https://www.google.com/search?num=5&q=NCryptStreamOpenToProtect+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptStreamOpenToUnprotect](https://www.google.com/search?num=5&q=NCryptStreamOpenToUnprotect+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptStreamOpenToUnprotectEx](https://www.google.com/search?num=5&q=NCryptStreamOpenToUnprotectEx+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptStreamUpdate](https://www.google.com/search?num=5&q=NCryptStreamUpdate+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[NCryptStreamClose](http://msdn2.microsoft.com/en-us/library/770640F2-04C7-4512-8004-41F4ECDC110E) | ncrypt.dll | ncryptprotect.h | Vanara.PInvoke.NCrypt.NCryptStreamClose  
+[NCryptStreamOpenToProtect](http://msdn2.microsoft.com/en-us/library/7DE74BB1-1B84-4721-BE4A-4D2661E93E00) | ncrypt.dll | ncryptprotect.h | Vanara.PInvoke.NCrypt.NCryptStreamOpenToProtect  
+[NCryptStreamOpenToUnprotect](http://msdn2.microsoft.com/en-us/library/9848082E-EDDA-4DA1-9896-42EAF2ADFAB4) | ncrypt.dll | ncryptprotect.h | Vanara.PInvoke.NCrypt.NCryptStreamOpenToUnprotect  
+[NCryptStreamOpenToUnprotectEx](http://msdn2.microsoft.com/en-us/library/8E607F4F-4A0F-4796-8F40-D232687815AF) | ncrypt.dll | ncryptprotect.h | Vanara.PInvoke.NCrypt.NCryptStreamOpenToUnprotectEx  
+[NCryptStreamUpdate](http://msdn2.microsoft.com/en-us/library/417F9267-6055-489C-AF26-BEF5E17CB8B4) | ncrypt.dll | ncryptprotect.h | Vanara.PInvoke.NCrypt.NCryptStreamUpdate  
 [NCryptTranslateHandle](https://www.google.com/search?num=5&q=NCryptTranslateHandle+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptUnprotectKey](https://www.google.com/search?num=5&q=NCryptUnprotectKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[NCryptUnprotectSecret](https://www.google.com/search?num=5&q=NCryptUnprotectSecret+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[NCryptUnprotectSecret](http://msdn2.microsoft.com/en-us/library/F532F0ED-36F4-47E3-B478-089CC083E5D1) | ncrypt.dll | ncryptprotect.h | Vanara.PInvoke.NCrypt.NCryptUnprotectSecret  
 [NCryptVerifyClaim](https://www.google.com/search?num=5&q=NCryptVerifyClaim+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [NCryptVerifySignature](https://www.google.com/search?num=5&q=NCryptVerifySignature+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [PFXExportCertStore](https://www.google.com/search?num=5&q=PFXExportCertStore+site%3Amicrosoft.com) | crypt32.dll |  |   
@@ -332,7 +318,6 @@ Native Method | Native DLL | Header | Managed Method
 [SslComputeClientAuthHash](https://www.google.com/search?num=5&q=SslComputeClientAuthHash+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslComputeEapKeyBlock](https://www.google.com/search?num=5&q=SslComputeEapKeyBlock+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslComputeFinishedHash](https://www.google.com/search?num=5&q=SslComputeFinishedHash+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslComputeSessionHash](https://www.google.com/search?num=5&q=SslComputeSessionHash+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslCreateClientAuthHash](https://www.google.com/search?num=5&q=SslCreateClientAuthHash+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslCreateEphemeralKey](https://www.google.com/search?num=5&q=SslCreateEphemeralKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslCreateHandshakeHash](https://www.google.com/search?num=5&q=SslCreateHandshakeHash+site%3Amicrosoft.com) | ncrypt.dll |  |   
@@ -340,14 +325,12 @@ Native Method | Native DLL | Header | Managed Method
 [SslDecryptPacket](https://www.google.com/search?num=5&q=SslDecryptPacket+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslEncryptPacket](https://www.google.com/search?num=5&q=SslEncryptPacket+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslEnumCipherSuites](https://www.google.com/search?num=5&q=SslEnumCipherSuites+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslEnumEccCurves](https://www.google.com/search?num=5&q=SslEnumEccCurves+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslEnumProtocolProviders](https://www.google.com/search?num=5&q=SslEnumProtocolProviders+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslExportKey](https://www.google.com/search?num=5&q=SslExportKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslExportKeyingMaterial](https://www.google.com/search?num=5&q=SslExportKeyingMaterial+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslFreeBuffer](https://www.google.com/search?num=5&q=SslFreeBuffer+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslFreeObject](https://www.google.com/search?num=5&q=SslFreeObject+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslGenerateMasterKey](https://www.google.com/search?num=5&q=SslGenerateMasterKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
-[SslGeneratePreMasterKey](https://www.google.com/search?num=5&q=SslGeneratePreMasterKey+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslGenerateSessionKeys](https://www.google.com/search?num=5&q=SslGenerateSessionKeys+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslGetCipherSuitePRFHashAlgorithm](https://www.google.com/search?num=5&q=SslGetCipherSuitePRFHashAlgorithm+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslGetKeyProperty](https://www.google.com/search?num=5&q=SslGetKeyProperty+site%3Amicrosoft.com) | ncrypt.dll |  |   
@@ -362,13 +345,23 @@ Native Method | Native DLL | Header | Managed Method
 [SslOpenProvider](https://www.google.com/search?num=5&q=SslOpenProvider+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslSignHash](https://www.google.com/search?num=5&q=SslSignHash+site%3Amicrosoft.com) | ncrypt.dll |  |   
 [SslVerifySignature](https://www.google.com/search?num=5&q=SslVerifySignature+site%3Amicrosoft.com) | ncrypt.dll |  |   
+[TokenBindingDeleteAllBindings](http://msdn2.microsoft.com/en-us/library/0446F62F-96B4-4F4B-9789-0CD12173E601) | tokenbinding.dll | tokenbinding.h | Vanara.PInvoke.TokenBinding.TokenBindingDeleteAllBindings  
+[TokenBindingDeleteBinding](http://msdn2.microsoft.com/en-us/library/4258CC92-580E-403C-9AE4-4BB726255464) | tokenbinding.dll | tokenbinding.h | Vanara.PInvoke.TokenBinding.TokenBindingDeleteBinding  
+[TokenBindingGenerateBinding](http://msdn2.microsoft.com/en-us/library/4289E3F0-17AC-485B-A326-2C8BECD5CABB) | tokenbinding.dll | tokenbinding.h | Vanara.PInvoke.TokenBinding.TokenBindingGenerateBinding  
+[TokenBindingGenerateID](http://msdn2.microsoft.com/en-us/library/F3E30DF8-2A1D-445E-914B-62999428BB6F) | tokenbinding.dll | tokenbinding.h | Vanara.PInvoke.TokenBinding.TokenBindingGenerateID  
+[TokenBindingGenerateMessage](http://msdn2.microsoft.com/en-us/library/7A268C6D-952B-482A-835D-89D6452D986D) | tokenbinding.dll | tokenbinding.h | Vanara.PInvoke.TokenBinding.TokenBindingGenerateMessage  
+[TokenBindingGetKeyTypesClient](http://msdn2.microsoft.com/en-us/library/583687B6-5A87-4616-A5EE-4FECFF06749E) | tokenbinding.dll | tokenbinding.h | Vanara.PInvoke.TokenBinding.TokenBindingGetKeyTypesClient  
+[TokenBindingGetKeyTypesServer](http://msdn2.microsoft.com/en-us/library/8ABAC0AF-AF68-4742-9C36-3FB17D303409) | tokenbinding.dll | tokenbinding.h | Vanara.PInvoke.TokenBinding.TokenBindingGetKeyTypesServer  
+[TokenBindingVerifyMessage](http://msdn2.microsoft.com/en-us/library/D6827DA3-75DC-4F31-B57A-4ED5B5F03112) | tokenbinding.dll | tokenbinding.h | Vanara.PInvoke.TokenBinding.TokenBindingVerifyMessage  
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
 [BCRYPT_ALGORITHM_IDENTIFIER](http://msdn2.microsoft.com/en-us/library/a49a21c9-5668-4709-b52a-f6cacd944845) | bcrypt.h | Vanara.PInvoke.BCrypt+BCRYPT_ALGORITHM_IDENTIFIER  
+[BCRYPT_MULTI_HASH_OPERATION](http://msdn2.microsoft.com/en-us/library/B0418A07-D2EE-4346-9971-676C8FB08FAA) | bcrypt.h | Vanara.PInvoke.BCrypt+BCRYPT_MULTI_HASH_OPERATION  
+[BCRYPT_OAEP_PADDING_INFO](http://msdn2.microsoft.com/en-us/library/19f48f2d-e952-4a01-8112-f298c79919b2) | bcrypt.h | Vanara.PInvoke.BCrypt+BCRYPT_OAEP_PADDING_INFO  
+[BCRYPT_PKCS1_PADDING_INFO](http://msdn2.microsoft.com/en-us/library/920fa461-5b7e-4429-972d-e7c83fb62c64) | bcrypt.h | Vanara.PInvoke.BCrypt+BCRYPT_PKCS1_PADDING_INFO  
 [BCRYPT_PROVIDER_NAME](http://msdn2.microsoft.com/en-us/library/0c57aa3f-1d9a-4bb2-b142-bce9c054e658) | bcrypt.h | Vanara.PInvoke.BCrypt+BCRYPT_PROVIDER_NAME  
-[BCryptBuffer](http://msdn2.microsoft.com/en-us/library/474d3c0d-ae14-448a-a56d-25abc7e5de88) | bcrypt.h | Vanara.PInvoke.BCrypt+BCryptBuffer  
-[BCryptBufferDesc](http://msdn2.microsoft.com/en-us/library/aa375370) | Bcrypt.h | Vanara.PInvoke.BCrypt+BCryptBufferDesc  
+[BCRYPT_PSS_PADDING_INFO](http://msdn2.microsoft.com/en-us/library/28605b34-b1e1-4460-a8f0-b0fe9f9b94d4) | bcrypt.h | Vanara.PInvoke.BCrypt+BCRYPT_PSS_PADDING_INFO  
 [CERT_CONTEXT](https://www.google.com/search?num=5&q=CERT_CONTEXT+site%3Amicrosoft.com) | wincrypt.h | Vanara.PInvoke.Crypt32+CERT_CONTEXT  
 [CERT_EXTENSION](https://www.google.com/search?num=5&q=CERT_EXTENSION+site%3Amicrosoft.com) | wincrypt.h | Vanara.PInvoke.Crypt32+CERT_EXTENSION  
 [CERT_INFO](https://www.google.com/search?num=5&q=CERT_INFO+site%3Amicrosoft.com) | wincrypt.h | Vanara.PInvoke.Crypt32+CERT_INFO  
@@ -381,3 +374,12 @@ Native Structure | Header | Managed Structure
 [CRYPT_CONTEXTS](http://msdn2.microsoft.com/en-us/library/a1b60660-a4c5-4880-8cd4-48d8717c77c3) | bcrypt.h | Vanara.PInvoke.BCrypt+CRYPT_CONTEXTS  
 [CRYPT_PROVIDERS](http://msdn2.microsoft.com/en-us/library/aef0e173-d3df-466e-ac2a-c686cae5edc9) | bcrypt.h | Vanara.PInvoke.BCrypt+CRYPT_PROVIDERS  
 [CRYPTOAPI_BLOB](https://www.google.com/search?num=5&q=CRYPTOAPI_BLOB+site%3Amicrosoft.com) | wincrypt.h | Vanara.PInvoke.Crypt32+CRYPTOAPI_BLOB  
+[NCRYPT_ALLOC_PARA](http://msdn2.microsoft.com/en-us/library/4F546F51-E4DE-4703-B1D1-F84165C3C31B) | ncrypt.h | Vanara.PInvoke.NCrypt+NCRYPT_ALLOC_PARA  
+[NCRYPT_PROTECT_STREAM_INFO](http://msdn2.microsoft.com/en-us/library/77FADFC1-6C66-4801-B0BD-263963555C3C) | ncryptprotect.h | Vanara.PInvoke.NCrypt+NCRYPT_PROTECT_STREAM_INFO  
+[NCRYPT_PROTECT_STREAM_INFO_EX](https://www.google.com/search?num=5&q=NCRYPT_PROTECT_STREAM_INFO_EX+site%3Amicrosoft.com) | ncryptprotect.h | Vanara.PInvoke.NCrypt+NCRYPT_PROTECT_STREAM_INFO_EX  
+[NCryptBuffer](http://msdn2.microsoft.com/en-us/library/474d3c0d-ae14-448a-a56d-25abc7e5de88) | bcrypt.h | Vanara.PInvoke.NCrypt+NCryptBuffer  
+[NCryptBufferDesc](http://msdn2.microsoft.com/en-us/library/aa375370) | Bcrypt.h | Vanara.PInvoke.NCrypt+NCryptBufferDesc  
+[TOKENBINDING_IDENTIFIER](http://msdn2.microsoft.com/en-us/library/301E099E-B621-41E1-BF9B-3AF8C53F9227) | tokenbinding.h | Vanara.PInvoke.TokenBinding+TOKENBINDING_IDENTIFIER  
+[TOKENBINDING_KEY_TYPES](http://msdn2.microsoft.com/en-us/library/E5029CE3-CD23-4566-A951-35374DC7BC57) | tokenbinding.h | Vanara.PInvoke.TokenBinding+TOKENBINDING_KEY_TYPES  
+[TOKENBINDING_RESULT_DATA](http://msdn2.microsoft.com/en-us/library/6C34E174-CCC4-451D-82C3-C410C8C92C8C) | tokenbinding.h | Vanara.PInvoke.TokenBinding+TOKENBINDING_RESULT_DATA  
+[TOKENBINDING_RESULT_LIST](http://msdn2.microsoft.com/en-us/library/D14CBEA3-5F46-4C45-8C11-407D6E70FD56) | tokenbinding.h | Vanara.PInvoke.TokenBinding+TOKENBINDING_RESULT_LIST  
