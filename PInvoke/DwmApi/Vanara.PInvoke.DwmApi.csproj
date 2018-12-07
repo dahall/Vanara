@@ -28,10 +28,12 @@ Functions
 DwmDefWindowProc, DwmEnableBlurBehindWindow, DwmEnableComposition, DwmEnableMMCSS, DwmExtendFrameIntoClientArea, DwmFlush, DwmGetColorizationColor, DwmGetCompositionTimingInfo, DwmGetTransportAttributes, DwmGetWindowAttribute, DwmInvalidateIconicBitmaps, DwmIsCompositionEnabled, DwmpGetColorizationParameters, DwmpSetColorizationParameters, DwmQueryThumbnailSourceSize, DwmRegisterThumbnail, DwmRenderGesture, DwmSetIconicLivePreviewBitmap, DwmSetIconicThumbnail, DwmSetWindowAttribute, DwmShowContact, DwmTetherContact, DwmTransitionOwnedWindow, DwmUnregisterThumbnail, DwmUpdateThumbnailProperties
 
 Structures
-DWM_COLORIZATION_PARAMS, DWM_THUMBNAIL_PROPERTIES, DWM_TIMING_INFO, MARGINS, UNSIGNED_RATIO
+DWM_BLURBEHIND, DWM_COLORIZATION_PARAMS, DWM_THUMBNAIL_PROPERTIES, DWM_TIMING_INFO, MARGINS, UNSIGNED_RATIO
 
 </PackageReleaseNotes>
     <LangVersion>latest</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

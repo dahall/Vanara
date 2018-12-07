@@ -86,6 +86,8 @@ Native Structure | Header | Managed Structure
 [BP_PAINTPARAMS](http://msdn2.microsoft.com/en-us/library/bb773228) | Uxtheme.h | Vanara.PInvoke.UxTheme+BP_PAINTPARAMS  
 [DTBGOPTS](http://msdn2.microsoft.com/en-us/library/bb773233) | Uxtheme.h | Vanara.PInvoke.UxTheme+DTBGOPTS  
 [DTTOPTS](http://msdn2.microsoft.com/en-us/library/bb773236) | Uxtheme.h | Vanara.PInvoke.UxTheme+DTTOPTS  
+[HANIMATIONBUFFER](https://www.google.com/search?num=5&q=HANIMATIONBUFFER+site%3Amicrosoft.com) |  | Vanara.PInvoke.UxTheme+HANIMATIONBUFFER  
+[HPAINTBUFFER](https://www.google.com/search?num=5&q=HPAINTBUFFER+site%3Amicrosoft.com) |  | Vanara.PInvoke.UxTheme+HPAINTBUFFER  
 [INTLIST](http://msdn2.microsoft.com/en-us/library/bb773240) | UxTheme.h | Vanara.PInvoke.UxTheme+INTLIST  
 [MARGINS](http://msdn2.microsoft.com/en-us/library/bb773244) | UxTheme.h | Vanara.PInvoke.UxTheme+MARGINS  
 [TA_TIMINGFUNCTION](https://www.google.com/search?num=5&q=TA_TIMINGFUNCTION+site%3Amicrosoft.com) |  | Vanara.PInvoke.UxTheme+TA_TIMINGFUNCTION  

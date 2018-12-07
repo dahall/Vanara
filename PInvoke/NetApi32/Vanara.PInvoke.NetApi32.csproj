@@ -32,6 +32,8 @@ DOMAIN_CONTROLLER_INFO, DS_DOMAIN_TRUSTS, DSROLE_OPERATION_STATE_INFO, DSROLE_PR
 
 </PackageReleaseNotes>
     <LangVersion>latest</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

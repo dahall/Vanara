@@ -1100,9 +1100,11 @@ Native Method | Native DLL | Header | Managed Method
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
+[ACTCTX](http://msdn2.microsoft.com/en-us/library/aa374149) | Winbase.h | Vanara.PInvoke.Kernel32+ACTCTX  
 [ACTCTX_SECTION_KEYED_DATA](http://msdn2.microsoft.com/en-us/library/aa374148) | Winbase.h | Vanara.PInvoke.Kernel32+ACTCTX_SECTION_KEYED_DATA  
 [APP_MEMORY_INFORMATION](http://msdn2.microsoft.com/en-us/library/mt767995) | WinBase.h | Vanara.PInvoke.Kernel32+APP_MEMORY_INFORMATION  
 [BLOCK_DATA](https://www.google.com/search?num=5&q=BLOCK_DATA+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PROCESS_HEAP_ENTRY+BLOCK_REGION_UNION+BLOCK_DATA  
+[BoundaryDescriptorHandle](https://www.google.com/search?num=5&q=BoundaryDescriptorHandle+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+BoundaryDescriptorHandle  
 [BY_HANDLE_FILE_INFORMATION](http://msdn2.microsoft.com/en-us/library/aa363788) | FileAPI.h | Vanara.PInvoke.Kernel32+BY_HANDLE_FILE_INFORMATION  
 [CACHE_DESCRIPTOR](http://msdn2.microsoft.com/en-us/library/ms681979) | WinNT.h | Vanara.PInvoke.Kernel32+CACHE_DESCRIPTOR  
 [CACHE_RELATIONSHIP](http://msdn2.microsoft.com/en-us/library/f8fe521b-02d6-4c58-8ef8-653280add111) | winnt.h | Vanara.PInvoke.Kernel32+CACHE_RELATIONSHIP  
@@ -1131,6 +1133,9 @@ Native Structure | Header | Managed Structure
 [CPINFO](http://msdn2.microsoft.com/en-us/library/dd317780) | Winnls.h | Vanara.PInvoke.Kernel32+CPINFO  
 [CPINFOEX](http://msdn2.microsoft.com/en-us/library/dd317781) | Winnls.h | Vanara.PInvoke.Kernel32+CPINFOEX  
 [CPU_RATE_CONTROL_UNION](https://www.google.com/search?num=5&q=CPU_RATE_CONTROL_UNION+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+JOBOBJECT_CPU_RATE_CONTROL_INFORMATION+CPU_RATE_CONTROL_UNION  
+[CREATE_PROCESS_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679286) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXCEPTION_INFO+CREATE_PROCESS_DEBUG_INFO  
+[CREATE_THREAD_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms679287) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXCEPTION_INFO+CREATE_THREAD_DEBUG_INFO  
+[CREATEFILE2_EXTENDED_PARAMETERS](http://msdn2.microsoft.com/en-us/library/hh449426) | FileAPI.h | Vanara.PInvoke.Kernel32+CREATEFILE2_EXTENDED_PARAMETERS  
 [CRITICAL_SECTION](https://www.google.com/search?num=5&q=CRITICAL_SECTION+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+CRITICAL_SECTION  
 [CURRENCYFMT](http://msdn2.microsoft.com/en-us/library/dd317784) | Winnls.h | Vanara.PInvoke.Kernel32+CURRENCYFMT  
 [DCB](http://msdn2.microsoft.com/en-us/library/aa363214) | Winbase.h | Vanara.PInvoke.Kernel32+DCB  
@@ -1164,6 +1169,7 @@ Native Structure | Header | Managed Structure
 [FILE_ID_INFO](http://msdn2.microsoft.com/en-us/library/e2774e29-1a90-44d6-9001-f73a98be6624) | winbase.h | Vanara.PInvoke.Kernel32+FILE_ID_INFO  
 [FILE_IO_PRIORITY_HINT_INFO](http://msdn2.microsoft.com/en-us/library/a142b8fd-b71c-4449-a8c6-fb23715d1576) | winbase.h | Vanara.PInvoke.Kernel32+FILE_IO_PRIORITY_HINT_INFO  
 [FILE_NAME_INFO](http://msdn2.microsoft.com/en-us/library/7ab98f41-b99e-4731-b803-921064a961c4) | winbase.h | Vanara.PInvoke.Kernel32+FILE_NAME_INFO  
+[FILE_RENAME_INFO](http://msdn2.microsoft.com/en-us/library/f4de0130-66fd-4847-bb6f-3f16fe17ca6e) | winbase.h | Vanara.PInvoke.Kernel32+FILE_RENAME_INFO  
 [FILE_STANDARD_INFO](http://msdn2.microsoft.com/en-us/library/da3187de-7de2-4307-a083-ae5fff6d8096) | winbase.h | Vanara.PInvoke.Kernel32+FILE_STANDARD_INFO  
 [FILE_STORAGE_INFO](http://msdn2.microsoft.com/en-us/library/1aa9585d-9001-4d94-babe-a39c8dde2332) | winbase.h | Vanara.PInvoke.Kernel32+FILE_STORAGE_INFO  
 [FILE_STREAM_INFO](http://msdn2.microsoft.com/en-us/library/36d1b0b3-bd6b-41e7-937a-4e8deef6f9da) | winbase.h | Vanara.PInvoke.Kernel32+FILE_STREAM_INFO  
@@ -1180,7 +1186,10 @@ Native Structure | Header | Managed Structure
 [HEAP_SUMMARY](https://www.google.com/search?num=5&q=HEAP_SUMMARY+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HEAP_SUMMARY  
 [HEAPENTRY32](http://msdn2.microsoft.com/en-us/library/c5f1dc66-d44f-4491-b0b7-961b163d0f1f) | tlhelp32.h | Vanara.PInvoke.Kernel32+HEAPENTRY32  
 [HEAPLIST32](http://msdn2.microsoft.com/en-us/library/61e01d23-9f15-44c5-9f6d-45df4809ccad) | tlhelp32.h | Vanara.PInvoke.Kernel32+HEAPLIST32  
+[HGLOBAL](https://www.google.com/search?num=5&q=HGLOBAL+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HGLOBAL  
 [HJOB](https://www.google.com/search?num=5&q=HJOB+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HJOB  
+[HLOCAL](https://www.google.com/search?num=5&q=HLOCAL+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HLOCAL  
+[HSNAPSHOT](https://www.google.com/search?num=5&q=HSNAPSHOT+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HSNAPSHOT  
 [INIT_ONCE](https://www.google.com/search?num=5&q=INIT_ONCE+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+INIT_ONCE  
 [INPUT_RECORD](https://www.google.com/search?num=5&q=INPUT_RECORD+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+INPUT_RECORD  
 [INPUT_RECORD_EVENT](https://www.google.com/search?num=5&q=INPUT_RECORD_EVENT+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+INPUT_RECORD+INPUT_RECORD_EVENT  
@@ -1209,12 +1218,14 @@ Native Structure | Header | Managed Structure
 [JOBOBJECT_SECURITY_LIMIT_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms684159) | WinNT.h | Vanara.PInvoke.Kernel32+JOBOBJECT_SECURITY_LIMIT_INFORMATION  
 [KEY_EVENT_RECORD](https://www.google.com/search?num=5&q=KEY_EVENT_RECORD+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+KEY_EVENT_RECORD  
 [LDT_ENTRY](http://msdn2.microsoft.com/en-us/library/ms680348) | WinNT.h | Vanara.PInvoke.Kernel32+LDT_ENTRY  
+[LOAD_DLL_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms680351) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXCEPTION_INFO+LOAD_DLL_DEBUG_INFO  
 [M128A](https://www.google.com/search?num=5&q=M128A+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+CONTEXT64+M128A  
 [MEMORY_BASIC_INFORMATION](http://msdn2.microsoft.com/en-us/library/dc3fa48e-0986-49cc-88a9-ff8179fbe5f0) | winnt.h | Vanara.PInvoke.Kernel32+MEMORY_BASIC_INFORMATION  
 [MEMORY_PRIORITY_INFORMATION](http://msdn2.microsoft.com/en-us/library/hh448387) | WinBase.h | Vanara.PInvoke.Kernel32+MEMORY_PRIORITY_INFORMATION  
 [MEMORYSTATUS](http://msdn2.microsoft.com/en-us/library/aa366772) | WinBase.h | Vanara.PInvoke.Kernel32+MEMORYSTATUS  
 [MEMORYSTATUSEX](http://msdn2.microsoft.com/en-us/library/aa366770) | WinBase.h | Vanara.PInvoke.Kernel32+MEMORYSTATUSEX  
 [MENU_EVENT_RECORD](https://www.google.com/search?num=5&q=MENU_EVENT_RECORD+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+MENU_EVENT_RECORD  
+[MODULEENTRY32](http://msdn2.microsoft.com/en-us/library/305fab35-625c-42e3-a434-e2513e4c8870) | tlhelp32.h | Vanara.PInvoke.Kernel32+MODULEENTRY32  
 [MODULEINFO](http://msdn2.microsoft.com/en-us/library/583caafe-7fa3-4041-b5bc-4e8899b3a08a) | psapi.h | Vanara.PInvoke.Kernel32+MODULEINFO  
 [MOUSE_EVENT_RECORD](https://www.google.com/search?num=5&q=MOUSE_EVENT_RECORD+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+MOUSE_EVENT_RECORD  
 [Mutant](https://www.google.com/search?num=5&q=Mutant+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PSS_HANDLE_ENTRY+Mutant  
@@ -1273,6 +1284,7 @@ Native Structure | Header | Managed Structure
 [PSS_VA_CLONE_INFORMATION](http://msdn2.microsoft.com/en-us/library/F93D61B0-EDB2-4560-A69F-CF839EC98B53) | processsnapshot.h | Vanara.PInvoke.Kernel32+PSS_VA_CLONE_INFORMATION  
 [PSS_VA_SPACE_ENTRY](http://msdn2.microsoft.com/en-us/library/69B8F6A3-76DF-421B-B89B-73BA3254F897) | processsnapshot.h | Vanara.PInvoke.Kernel32+PSS_VA_SPACE_ENTRY  
 [PSS_VA_SPACE_INFORMATION](http://msdn2.microsoft.com/en-us/library/F38FF7EB-DDC5-4692-8F57-8D633193D891) | processsnapshot.h | Vanara.PInvoke.Kernel32+PSS_VA_SPACE_INFORMATION  
+[PTP_CALLBACK_ENVIRON](https://www.google.com/search?num=5&q=PTP_CALLBACK_ENVIRON+site%3Amicrosoft.com) | threadpoolapiset.h | Vanara.PInvoke.Kernel32+PTP_CALLBACK_ENVIRON  
 [PTP_CALLBACK_INSTANCE](https://www.google.com/search?num=5&q=PTP_CALLBACK_INSTANCE+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PTP_CALLBACK_INSTANCE  
 [PTP_CLEANUP_GROUP](https://www.google.com/search?num=5&q=PTP_CLEANUP_GROUP+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PTP_CLEANUP_GROUP  
 [PTP_IO](https://www.google.com/search?num=5&q=PTP_IO+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PTP_IO  
@@ -1309,12 +1321,15 @@ Native Structure | Header | Managed Structure
 [THREAD_POWER_THROTTLING_STATE](http://msdn2.microsoft.com/en-us/library/mt804325) | Processthreadsapi.h | Vanara.PInvoke.Kernel32+THREAD_POWER_THROTTLING_STATE  
 [THREADENTRY32](http://msdn2.microsoft.com/en-us/library/923feca1-8807-4752-8a5a-79075688aabd) | tlhelp32.h | Vanara.PInvoke.Kernel32+THREADENTRY32  
 [TIME_ZONE_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms725481) | Winbase.h | Vanara.PInvoke.Kernel32+TIME_ZONE_INFORMATION  
+[TimerQueueHandle](https://www.google.com/search?num=5&q=TimerQueueHandle+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+TimerQueueHandle  
+[TimerQueueTimerHandle](https://www.google.com/search?num=5&q=TimerQueueTimerHandle+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+TimerQueueTimerHandle  
 [TP_POOL_STACK_INFORMATION](https://www.google.com/search?num=5&q=TP_POOL_STACK_INFORMATION+site%3Amicrosoft.com) | threadpoolapiset.h | Vanara.PInvoke.Kernel32+TP_POOL_STACK_INFORMATION  
 [UMS_SCHEDULER_STARTUP_INFO](http://msdn2.microsoft.com/en-us/library/e3f7b1b7-d2b8-432d-bce7-3633292e855b) | winbase.h | Vanara.PInvoke.Kernel32+UMS_SCHEDULER_STARTUP_INFO  
 [UMS_SYSTEM_THREAD_INFORMATION](http://msdn2.microsoft.com/en-us/library/eecdc592-5046-47c3-a4c6-ecb10899db3c) | winbase.h | Vanara.PInvoke.Kernel32+UMS_SYSTEM_THREAD_INFORMATION  
 [Union](https://www.google.com/search?num=5&q=Union+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+COPYFILE2_MESSAGE+Union  
 [UNION](https://www.google.com/search?num=5&q=UNION+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PSS_HANDLE_ENTRY+UNION  
 [UNLOAD_DLL_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms681403) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXCEPTION_INFO+UNLOAD_DLL_DEBUG_INFO  
+[UpdateResourceHandle](https://www.google.com/search?num=5&q=UpdateResourceHandle+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+UpdateResourceHandle  
 [WIN32_FILE_ATTRIBUTE_DATA](http://msdn2.microsoft.com/en-us/library/aa365739) | WinBase.h | Vanara.PInvoke.Kernel32+WIN32_FILE_ATTRIBUTE_DATA  
 [WIN32_FIND_STREAM_DATA](http://msdn2.microsoft.com/en-us/library/aa365741) | WinBase.h | Vanara.PInvoke.Kernel32+WIN32_FIND_STREAM_DATA  
 [WIN32_MEMORY_RANGE_ENTRY](http://msdn2.microsoft.com/en-us/library/hh780544) | WinBase.h | Vanara.PInvoke.Kernel32+WIN32_MEMORY_RANGE_ENTRY  

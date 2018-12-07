@@ -35,6 +35,8 @@ ITask, ITaskScheduler, IAction, IActionCollection, IBootTrigger, IComHandlerActi
 
 </PackageReleaseNotes>
     <LangVersion>latest</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

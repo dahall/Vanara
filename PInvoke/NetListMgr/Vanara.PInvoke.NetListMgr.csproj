@@ -32,6 +32,8 @@ IEnumNetworkConnections, IEnumNetworks, INetwork, INetworkConnection, INetworkCo
 
 </PackageReleaseNotes>
     <LangVersion>latest</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

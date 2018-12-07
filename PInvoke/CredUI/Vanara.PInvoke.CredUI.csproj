@@ -28,10 +28,12 @@ Functions
 CredPackAuthenticationBufferA, CredPackAuthenticationBufferW, CredUICmdLinePromptForCredentialsA, CredUICmdLinePromptForCredentialsW, CredUIConfirmCredentialsA, CredUIConfirmCredentialsW, CredUIParseUserNameA, CredUIParseUserNameW, CredUIPromptForCredentialsA, CredUIPromptForCredentialsW, CredUIPromptForWindowsCredentialsA, CredUIPromptForWindowsCredentialsW, CredUIReadSSOCredA, CredUIReadSSOCredW, CredUIStoreSSOCredA, CredUIStoreSSOCredW, CredUnPackAuthenticationBufferA, CredUnPackAuthenticationBufferW, SspiGetCredUIContext, SspiIsPromptingNeeded, SspiPromptForCredentialsA, SspiPromptForCredentialsW, SspiUnmarshalCredUIContext, SspiUpdateCredentials
 
 Structures
-PSEC_WINNT_CREDUI_CONTEXT, PSEC_WINNT_CREDUI_CONTEXT_VECTOR
+PSEC_WINNT_CREDUI_CONTEXT, PSEC_WINNT_CREDUI_CONTEXT_VECTOR, CREDUI_INFO
 
 </PackageReleaseNotes>
     <LangVersion>latest</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

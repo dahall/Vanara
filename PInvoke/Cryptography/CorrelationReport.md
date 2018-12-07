@@ -356,12 +356,17 @@ Native Method | Native DLL | Header | Managed Method
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
+[BCRYPT_ALG_HANDLE](https://www.google.com/search?num=5&q=BCRYPT_ALG_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.BCrypt+BCRYPT_ALG_HANDLE  
 [BCRYPT_ALGORITHM_IDENTIFIER](http://msdn2.microsoft.com/en-us/library/a49a21c9-5668-4709-b52a-f6cacd944845) | bcrypt.h | Vanara.PInvoke.BCrypt+BCRYPT_ALGORITHM_IDENTIFIER  
+[BCRYPT_HANDLE](https://www.google.com/search?num=5&q=BCRYPT_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.BCrypt+BCRYPT_HANDLE  
+[BCRYPT_HASH_HANDLE](https://www.google.com/search?num=5&q=BCRYPT_HASH_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.BCrypt+BCRYPT_HASH_HANDLE  
+[BCRYPT_KEY_HANDLE](https://www.google.com/search?num=5&q=BCRYPT_KEY_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.BCrypt+BCRYPT_KEY_HANDLE  
 [BCRYPT_MULTI_HASH_OPERATION](http://msdn2.microsoft.com/en-us/library/B0418A07-D2EE-4346-9971-676C8FB08FAA) | bcrypt.h | Vanara.PInvoke.BCrypt+BCRYPT_MULTI_HASH_OPERATION  
 [BCRYPT_OAEP_PADDING_INFO](http://msdn2.microsoft.com/en-us/library/19f48f2d-e952-4a01-8112-f298c79919b2) | bcrypt.h | Vanara.PInvoke.BCrypt+BCRYPT_OAEP_PADDING_INFO  
 [BCRYPT_PKCS1_PADDING_INFO](http://msdn2.microsoft.com/en-us/library/920fa461-5b7e-4429-972d-e7c83fb62c64) | bcrypt.h | Vanara.PInvoke.BCrypt+BCRYPT_PKCS1_PADDING_INFO  
 [BCRYPT_PROVIDER_NAME](http://msdn2.microsoft.com/en-us/library/0c57aa3f-1d9a-4bb2-b142-bce9c054e658) | bcrypt.h | Vanara.PInvoke.BCrypt+BCRYPT_PROVIDER_NAME  
 [BCRYPT_PSS_PADDING_INFO](http://msdn2.microsoft.com/en-us/library/28605b34-b1e1-4460-a8f0-b0fe9f9b94d4) | bcrypt.h | Vanara.PInvoke.BCrypt+BCRYPT_PSS_PADDING_INFO  
+[BCRYPT_SECRET_HANDLE](https://www.google.com/search?num=5&q=BCRYPT_SECRET_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.BCrypt+BCRYPT_SECRET_HANDLE  
 [CERT_CONTEXT](https://www.google.com/search?num=5&q=CERT_CONTEXT+site%3Amicrosoft.com) | wincrypt.h | Vanara.PInvoke.Crypt32+CERT_CONTEXT  
 [CERT_EXTENSION](https://www.google.com/search?num=5&q=CERT_EXTENSION+site%3Amicrosoft.com) | wincrypt.h | Vanara.PInvoke.Crypt32+CERT_EXTENSION  
 [CERT_INFO](https://www.google.com/search?num=5&q=CERT_INFO+site%3Amicrosoft.com) | wincrypt.h | Vanara.PInvoke.Crypt32+CERT_INFO  
@@ -375,8 +380,14 @@ Native Structure | Header | Managed Structure
 [CRYPT_PROVIDERS](http://msdn2.microsoft.com/en-us/library/aef0e173-d3df-466e-ac2a-c686cae5edc9) | bcrypt.h | Vanara.PInvoke.BCrypt+CRYPT_PROVIDERS  
 [CRYPTOAPI_BLOB](https://www.google.com/search?num=5&q=CRYPTOAPI_BLOB+site%3Amicrosoft.com) | wincrypt.h | Vanara.PInvoke.Crypt32+CRYPTOAPI_BLOB  
 [NCRYPT_ALLOC_PARA](http://msdn2.microsoft.com/en-us/library/4F546F51-E4DE-4703-B1D1-F84165C3C31B) | ncrypt.h | Vanara.PInvoke.NCrypt+NCRYPT_ALLOC_PARA  
+[NCRYPT_DESCRIPTOR_HANDLE](https://www.google.com/search?num=5&q=NCRYPT_DESCRIPTOR_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.NCrypt+NCRYPT_DESCRIPTOR_HANDLE  
+[NCRYPT_HANDLE](https://www.google.com/search?num=5&q=NCRYPT_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.NCrypt+NCRYPT_HANDLE  
+[NCRYPT_KEY_HANDLE](https://www.google.com/search?num=5&q=NCRYPT_KEY_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.NCrypt+NCRYPT_KEY_HANDLE  
 [NCRYPT_PROTECT_STREAM_INFO](http://msdn2.microsoft.com/en-us/library/77FADFC1-6C66-4801-B0BD-263963555C3C) | ncryptprotect.h | Vanara.PInvoke.NCrypt+NCRYPT_PROTECT_STREAM_INFO  
 [NCRYPT_PROTECT_STREAM_INFO_EX](https://www.google.com/search?num=5&q=NCRYPT_PROTECT_STREAM_INFO_EX+site%3Amicrosoft.com) | ncryptprotect.h | Vanara.PInvoke.NCrypt+NCRYPT_PROTECT_STREAM_INFO_EX  
+[NCRYPT_PROV_HANDLE](https://www.google.com/search?num=5&q=NCRYPT_PROV_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.NCrypt+NCRYPT_PROV_HANDLE  
+[NCRYPT_SECRET_HANDLE](https://www.google.com/search?num=5&q=NCRYPT_SECRET_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.NCrypt+NCRYPT_SECRET_HANDLE  
+[NCRYPT_STREAM_HANDLE](https://www.google.com/search?num=5&q=NCRYPT_STREAM_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.NCrypt+NCRYPT_STREAM_HANDLE  
 [NCryptBuffer](http://msdn2.microsoft.com/en-us/library/474d3c0d-ae14-448a-a56d-25abc7e5de88) | bcrypt.h | Vanara.PInvoke.NCrypt+NCryptBuffer  
 [NCryptBufferDesc](http://msdn2.microsoft.com/en-us/library/aa375370) | Bcrypt.h | Vanara.PInvoke.NCrypt+NCryptBufferDesc  
 [TOKENBINDING_IDENTIFIER](http://msdn2.microsoft.com/en-us/library/301E099E-B621-41E1-BF9B-3AF8C53F9227) | tokenbinding.h | Vanara.PInvoke.TokenBinding+TOKENBINDING_IDENTIFIER  

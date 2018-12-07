@@ -57,6 +57,7 @@ Native Method | Native DLL | Header | Managed Method
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
+[DCInfoHandle](https://www.google.com/search?num=5&q=DCInfoHandle+site%3Amicrosoft.com) |  | Vanara.PInvoke.NTDSApi+DCInfoHandle  
 [DS_DOMAIN_CONTROLLER_INFO_1](http://msdn2.microsoft.com/en-us/library/6cc829ac-2aa6-49ef-b1ab-9c249249e0d6) | ntdsapi.h | Vanara.PInvoke.NTDSApi+DS_DOMAIN_CONTROLLER_INFO_1  
 [DS_DOMAIN_CONTROLLER_INFO_2](http://msdn2.microsoft.com/en-us/library/9d45b732-363d-4b20-ae5c-e9e76264bf1f) | ntdsapi.h | Vanara.PInvoke.NTDSApi+DS_DOMAIN_CONTROLLER_INFO_2  
 [DS_DOMAIN_CONTROLLER_INFO_3](http://msdn2.microsoft.com/en-us/library/510f458e-4c08-41c7-b290-1372ac9c8beb) | ntdsapi.h | Vanara.PInvoke.NTDSApi+DS_DOMAIN_CONTROLLER_INFO_3  
@@ -98,3 +99,4 @@ Native Structure | Header | Managed Structure
 [DS_SITE_COST_INFO](https://www.google.com/search?num=5&q=DS_SITE_COST_INFO+site%3Amicrosoft.com) | ntdsapi.h | Vanara.PInvoke.NTDSApi+DS_SITE_COST_INFO  
 [SCHEDULE](http://msdn2.microsoft.com/en-us/library/d86890db-b34a-415a-820a-6d4790914218) | schedule.h | Vanara.PInvoke.NTDSApi+SCHEDULE  
 [SCHEDULE_HEADER](http://msdn2.microsoft.com/en-us/library/5453927e-306e-4442-a855-916005dc8e3b) | schedule.h | Vanara.PInvoke.NTDSApi+SCHEDULE_HEADER  
+[SpnArrayHandle](https://www.google.com/search?num=5&q=SpnArrayHandle+site%3Amicrosoft.com) |  | Vanara.PInvoke.NTDSApi+SpnArrayHandle  

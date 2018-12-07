@@ -216,6 +216,7 @@ Native Method | Native DLL | Header | Managed Method
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
+[HUSKEY](https://www.google.com/search?num=5&q=HUSKEY+site%3Amicrosoft.com) |  | Vanara.PInvoke.ShlwApi+HUSKEY  
 [PARSEDURL](http://msdn2.microsoft.com/en-us/library/9092dd7a-ff5b-465f-a808-ef4e0067f540) | shlwapi.h | Vanara.PInvoke.ShlwApi+PARSEDURL  
 [QITAB](http://msdn2.microsoft.com/en-us/library/3a055773-6e53-45e1-8936-011a8b2b8b16) | shlwapi.h | Vanara.PInvoke.ShlwApi+QITAB  
 ### Interfaces  
