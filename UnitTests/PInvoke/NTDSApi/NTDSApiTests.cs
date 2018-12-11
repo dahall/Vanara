@@ -1,4 +1,6 @@
 ﻿using NUnit.Framework;
+using System;
+using System.DirectoryServices;
 using System.Linq;
 using System.Text;
 using static Vanara.PInvoke.NTDSApi;
@@ -8,12 +10,34 @@ namespace Vanara.PInvoke.Tests
 	[TestFixture()]
 	public class NTDSApiTests
 	{
+		public SafeDsHandle hDs;
+		public string dn;
+
+		[OneTimeSetUp]
+		public void Setup()
+		{
+			dn = System.Environment.UserDomainName;
+			DsBind(null, dn, out hDs).ThrowIfFailed();
+		}
+
 		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AdvApi32Tests.AuthCasesFromFile))]
 		public void DsBindTest(bool validUser, bool validCred, string urn, string dn, string dcn, string domain, string un, string pwd, string notes)
 		{
 			Assert.That(DsBind(dcn, dn, out var dsb).Succeeded && !dsb.IsInvalid, Is.EqualTo(validUser));
 			Assert.That(DsBind(dcn, null, out var dsb1).Succeeded && !dsb1.IsInvalid, Is.EqualTo(validUser));
 			Assert.That(DsBind(null, dn, out var dsb2).Succeeded && !dsb2.IsInvalid, Is.EqualTo(validUser));
+		}
+
+		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AdvApi32Tests.AuthCasesFromFile))]
+		public void DsBindByInstanceTest(bool validUser, bool validCred, string urn, string dn, string dcn, string domain, string un, string pwd, string notes)
+		{
+			Assert.That(DsBindByInstance(DnsDomainName: dn, AuthIdentity: SafeAuthIdentityHandle.LocalThreadIdentity, phDS: out var dsb).Succeeded && !dsb.IsInvalid, Is.EqualTo(validUser));
+		}
+
+		[Test]
+		public void DsBindToISTGTest()
+		{
+			Assert.That(DsBindToISTG(null, out var dsb).Succeeded && !dsb.IsInvalid, Is.True);
 		}
 
 		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AdvApi32Tests.AuthCasesFromFile))]
@@ -33,8 +57,7 @@ namespace Vanara.PInvoke.Tests
 		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AdvApi32Tests.AuthCasesFromFile))]
 		public void DsCrackNamesTest(bool validUser, bool validCred, string urn, string dn, string dc, string domain, string un, string pwd, string notes)
 		{
-			DsBind(null, null, out var dsb).ThrowIfFailed();
-			var res = DsCrackNames(dsb, new[] {un}, DS_NAME_FORMAT.DS_NT4_ACCOUNT_NAME);
+			var res = DsCrackNames(hDs, new[] {un}, DS_NAME_FORMAT.DS_NT4_ACCOUNT_NAME);
 			Assert.That(res, Has.Exactly(1).Items);
 			for (var i = 0; i < res.Length; i++)
 				TestContext.WriteLine($"{i}) {res[i]}");
@@ -66,13 +89,53 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void DsGetDCInfoTest()
 		{
-			var dn = System.Environment.UserDomainName; // System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().DomainName;
-			DsBind(null, dn, out var dsb).ThrowIfFailed();
-			var ret = DsGetDomainControllerInfo(dsb, dn, 1, out var u1, out var i1);
-			ret.ThrowIfFailed();
-			var s1 = i1.ToIEnum<DS_DOMAIN_CONTROLLER_INFO_1>(u1).ToArray();
+			DS_DOMAIN_CONTROLLER_INFO_1[] s1 = null;
+			Assert.That(() => s1 = DsGetDomainControllerInfo<DS_DOMAIN_CONTROLLER_INFO_1>(hDs, dn), Throws.Nothing);
+			Assert.That(s1, Is.Not.Null.And.Property("Length").GreaterThan(0));
 			Assert.That(s1[0].fDsEnabled);
-			DsFreeDomainControllerInfo(1, u1, i1);
+
+			DS_DOMAIN_CONTROLLER_INFO_2[] s2 = null;
+			Assert.That(() => s2 = DsGetDomainControllerInfo<DS_DOMAIN_CONTROLLER_INFO_2>(hDs, dn), Throws.Nothing);
+			Assert.That(s2, Is.Not.Null.And.Property("Length").GreaterThan(0));
+			Assert.That(s2[0].fDsEnabled);
+
+			DS_DOMAIN_CONTROLLER_INFO_3[] s3 = null;
+			Assert.That(() => s3 = DsGetDomainControllerInfo<DS_DOMAIN_CONTROLLER_INFO_3>(hDs, dn), Throws.Nothing);
+			Assert.That(s3, Is.Not.Null.And.Property("Length").GreaterThan(0));
+			Assert.That(s3[0].fDsEnabled);
+			foreach (var i3 in s3)
+				TestContext.WriteLine($"{(i3.fIsPdc?"PDC":"DC")}{(i3.fIsGc?",GC":"")}{(i3.fIsRodc?",RO":"")}:\t{i3.NetbiosName}\t{i3.DnsHostName}\t{i3.SiteName}\t{i3.SiteObjectName}\t{i3.ComputerObjectName}\t{i3.ServerObjectName}\t{i3.NtdsDsaObjectName}\t{(i3.fDsEnabled?"Enabled":"Disabled")}");
+		}
+
+		[Test]
+		public void DsListRolesTest()
+		{
+			TestNameResult((SafeDsHandle h, out SafeDsNameResult nr) => DsListRoles(h, out nr), "Roles");
+		}
+
+		[Test]
+		public void DsListDomainsInSiteTest()
+		{
+			var site = TestNameResult((SafeDsHandle h, out SafeDsNameResult nr) => DsListSites(h, out nr), "Sites");
+			var dom = TestNameResult((SafeDsHandle h, out SafeDsNameResult nr) => DsListDomainsInSite(h, site, out nr), "Domains");
+			var siteserver = TestNameResult((SafeDsHandle h, out SafeDsNameResult nr) => DsListServersInSite(h, site, out nr), "SiteServers");
+			var dserver = TestNameResult((SafeDsHandle h, out SafeDsNameResult nr) => DsListServersForDomainInSite(h, dom, site, out nr), "DomServers");
+			var item = TestNameResult((SafeDsHandle h, out SafeDsNameResult nr) => DsListInfoForServer(h, dserver, out nr), "SvrInfo");
+		}
+
+		private delegate Win32Error NRDel(SafeDsHandle h, out SafeDsNameResult nr);
+
+		private string TestNameResult(NRDel f, string prefix)
+		{
+			var err = f(hDs, out var hnr);
+			Assert.That(err, Is.EqualTo(Win32Error.ERROR_SUCCESS));
+			var nrs = hnr.ToArray();
+			Assert.That(nrs.Length, Is.Not.Zero);
+			var nr = nrs[0];
+			Assert.That(nr.pName, Is.Not.Null);
+			TestContext.WriteLine(prefix + ": " + string.Join(", ", nrs));
+			TestContext.WriteLine();
+			return nr.pName;
 		}
 
 		[Test]
@@ -83,6 +146,46 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(dn, Is.EqualTo(",dc=fabrikam,dc=com"));
 			Assert.That(key, Is.EqualTo("dc"));
 			Assert.That(val, Is.EqualTo("corp"));
+		}
+
+		[Test]
+		public void DsMapSchemaGuidsTest()
+		{
+			var guid = new Guid("2BEC133B-AE2B-4C32-A3F5-036149C4E671");
+			var err = DsMapSchemaGuids(hDs, 1, new[] { guid }, out var map);
+			Assert.That(err, Is.EqualTo(Win32Error.ERROR_SUCCESS));
+			var items = map.GetItems(1);
+			var item = items[0];
+			Assert.That(item.guid, Is.EqualTo(guid));
+		}
+
+		[Test]
+		public void DsQuerySitesByCostTest()
+		{
+			var err = DsBindToISTG(null, out var hDs);
+			Assert.That(err, Is.EqualTo(Win32Error.ERROR_SUCCESS));
+			err = NetApi32.DsGetSiteName(null, out var hSiteName);
+			Assert.That(err, Is.EqualTo(Win32Error.ERROR_SUCCESS));
+			var site = hSiteName.ToString();
+			var sites = GetAllSiteNames();
+			err = DsQuerySitesByCost(hDs, site, sites, (uint)sites.Length, 0, out var hnr);
+			Assert.That(err, Is.EqualTo(Win32Error.ERROR_SUCCESS));
+			var nrs = hnr.GetItems(sites.Length);
+			Assert.That(nrs.Length, Is.EqualTo(sites.Length));
+			var nr = nrs[0];
+			Assert.That(nr.cost, Is.Not.Null);
+			for (var i = 0; i < sites.Length; i++)
+				TestContext.WriteLine($"{sites[i]}: {(nrs[i].errorCode == Win32Error.ERROR_SUCCESS ? nrs[i].cost.ToString() : "Not found")}");
+		}
+
+		private static string[] GetAllSiteNames()
+		{
+			var rootDSE = new DirectoryEntry("LDAP://RootDSE");
+			var configNC = new DirectoryEntry("LDAP://" + rootDSE.Properties["configurationNamingContext"][0]);
+			var sitesContainer = new DirectoryEntry("LDAP://CN=Sites," + configNC.Properties["distinguishedName"][0]);
+			var siteFinder = new DirectorySearcher(sitesContainer, "(objectClass=site)") { PageSize = 100 };
+			using (var results = siteFinder.FindAll())
+				return results.Cast<SearchResult>().Select(r => r.Properties["name"][0].ToString()).ToArray();
 		}
 	}
 }

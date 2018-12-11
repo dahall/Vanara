@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -1172,6 +1173,40 @@ namespace Vanara.PInvoke
 				if (disposing && mm.HeapHandle != GetProcessHeap())
 					mm.HeapHandle.DangerousRelease();
 			}
+
+			/// <summary>Represents a NULL memory pointer.</summary>
+			public static SafeHeapBlock Null => new SafeHeapBlock(IntPtr.Zero, 0, false);
+
+			/// <summary>Converts an <see cref="IntPtr"/> to a <see cref="SafeHeapBlock"/> where it owns the reference.</summary>
+			/// <param name="ptr">The <see cref="IntPtr"/>.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator SafeHeapBlock(IntPtr ptr) => new SafeHeapBlock(ptr, 0, true);
+
+			/// <summary>Allocates from unmanaged memory sufficient memory to hold an object of type T.</summary>
+			/// <typeparam name="T">Native type</typeparam>
+			/// <param name="value">The value.</param>
+			/// <returns><see cref="SafeHeapBlock"/> object to an native (unmanaged) memory block the size of T.</returns>
+			public static SafeHeapBlock CreateFromStructure<T>(T value = default) => new SafeHeapBlock(InteropExtensions.StructureToPtr(value, new CoTaskMemoryMethods().AllocMem, out int s), s);
+
+			/// <summary>
+			/// Allocates from unmanaged memory to represent a structure with a variable length array at the end and marshal these structure elements. It is the
+			/// callers responsibility to marshal what precedes the trailing array into the unmanaged memory. ONLY structures with attribute StructLayout of
+			/// LayoutKind.Sequential are supported.
+			/// </summary>
+			/// <typeparam name="T">Type of the trailing array of structures</typeparam>
+			/// <param name="values">Collection of structure objects</param>
+			/// <param name="count">Number of items in <paramref name="values"/>. Setting this value to -1 will cause the method to get the count by iterating through <paramref name="values"/>.</param>
+			/// <param name="prefixBytes">Number of bytes preceding the trailing array of structures</param>
+			/// <returns><see cref="SafeHeapBlock"/> object to an native (unmanaged) structure with a trail array of structures</returns>
+			public static SafeHeapBlock CreateFromList<T>(IEnumerable<T> values, int count = -1, int prefixBytes = 0) => new SafeHeapBlock(InteropExtensions.MarshalToPtr(values, new CoTaskMemoryMethods().AllocMem, out int s, prefixBytes), s);
+
+			/// <summary>Allocates from unmanaged memory sufficient memory to hold an array of strings.</summary>
+			/// <param name="values">The list of strings.</param>
+			/// <param name="packing">The packing type for the strings.</param>
+			/// <param name="charSet">The character set to use for the strings.</param>
+			/// <param name="prefixBytes">Number of bytes preceding the trailing strings.</param>
+			/// <returns><see cref="SafeHeapBlock"/> object to an native (unmanaged) array of strings stored using the <paramref name="packing"/> model and the character set defined by <paramref name="charSet"/>.</returns>
+			public static SafeHeapBlock CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto, int prefixBytes = 0) => new SafeHeapBlock(InteropExtensions.MarshalToPtr(values, packing, new CoTaskMemoryMethods().AllocMem, out int s, charSet, prefixBytes), s);
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HHEAP instance at disposal using HeapDestroy.</summary>

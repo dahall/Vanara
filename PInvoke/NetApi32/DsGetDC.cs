@@ -1023,7 +1023,7 @@ namespace Vanara.PInvoke
 		// ComputerName, OUT LPSTR *SiteName );
 		[DllImport(Lib.NetApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("dsgetdc.h", MSDNShortId = "2dfffd9a-af4f-4a93-8b3c-966e4f7c455f")]
-		public static extern Win32Error DsGetSiteName(string ComputerName, out SafeNetApiBuffer SiteName);
+		public static extern Win32Error DsGetSiteName([Optional] string ComputerName, out SafeNetApiBuffer SiteName);
 
 		/// <summary>
 		/// <para>

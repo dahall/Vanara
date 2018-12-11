@@ -75,5 +75,6 @@ Native Structure | Header | Managed Structure
 [STORAGE_DEPENDENCY_INFO_TYPE_2](https://www.google.com/search?num=5&q=STORAGE_DEPENDENCY_INFO_TYPE_2+site%3Amicrosoft.com) | VirtDisk.h | Vanara.PInvoke.VirtDisk+STORAGE_DEPENDENCY_INFO_TYPE_2  
 [TAKE_SNAPSHOT_VHDSET_PARAMETERS](https://www.google.com/search?num=5&q=TAKE_SNAPSHOT_VHDSET_PARAMETERS+site%3Amicrosoft.com) | VirtDisk.h | Vanara.PInvoke.VirtDisk+TAKE_SNAPSHOT_VHDSET_PARAMETERS  
 [TAKE_SNAPSHOT_VHDSET_PARAMETERS_Version1](https://www.google.com/search?num=5&q=TAKE_SNAPSHOT_VHDSET_PARAMETERS_Version1+site%3Amicrosoft.com) | VirtDisk.h | Vanara.PInvoke.VirtDisk+TAKE_SNAPSHOT_VHDSET_PARAMETERS+TAKE_SNAPSHOT_VHDSET_PARAMETERS_Version1  
+[VIRTUAL_DISK_HANDLE](https://www.google.com/search?num=5&q=VIRTUAL_DISK_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.VirtDisk+VIRTUAL_DISK_HANDLE  
 [VIRTUAL_DISK_PROGRESS](https://www.google.com/search?num=5&q=VIRTUAL_DISK_PROGRESS+site%3Amicrosoft.com) | VirtDisk.h | Vanara.PInvoke.VirtDisk+VIRTUAL_DISK_PROGRESS  
 [VIRTUAL_STORAGE_TYPE](https://www.google.com/search?num=5&q=VIRTUAL_STORAGE_TYPE+site%3Amicrosoft.com) | VirtDisk.h | Vanara.PInvoke.VirtDisk+VIRTUAL_STORAGE_TYPE  

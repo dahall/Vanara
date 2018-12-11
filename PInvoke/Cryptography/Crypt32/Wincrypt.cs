@@ -8,11 +8,22 @@ namespace Vanara.PInvoke
 	/// <summary>Methods and data types found in Crypt32.dll.</summary>
 	public static partial class Crypt32
 	{
+		/// <summary>Private key pair type.</summary>
+		[PInvokeData("wincrypt.h")]
+		public enum PrivateKeyType
+		{
+			/// <summary>Key exchange</summary>
+			AT_KEYEXCHANGE = 1,
+			/// <summary>Digital signature</summary>
+			AT_SIGNATURE = 2
+		}
+
 		/// <summary>
 		/// The CERT_CONTEXT structure contains both the encoded and decoded representations of a certificate. A certificate context returned
 		/// by one of the functions defined in Wincrypt.h must be freed by calling the CertFreeCertificateContext function. The
 		/// CertDuplicateCertificateContext function can be called to make a duplicate copy (which also must be freed by calling CertFreeCertificateContext).
 		/// </summary>
+		[PInvokeData("wincrypt.h")]
 		[StructLayout(LayoutKind.Sequential)]
 		public struct CERT_CONTEXT
 		{
@@ -39,6 +50,7 @@ namespace Vanara.PInvoke
 		/// The CERT_EXTENSION structure contains the extension information for a certificate, Certificate Revocation List (CRL) or
 		/// Certificate Trust List (CTL).
 		/// </summary>
+		[PInvokeData("wincrypt.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		public struct CERT_EXTENSION
 		{
@@ -63,6 +75,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>The CERT_INFO structure contains the information of a certificate.</summary>
+		[PInvokeData("wincrypt.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		public struct CERT_INFO
 		{
@@ -126,6 +139,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>The CERT_PUBLIC_KEY_INFO structure contains a public key and its algorithm.</summary>
+		[PInvokeData("wincrypt.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		public struct CERT_PUBLIC_KEY_INFO
 		{
@@ -141,6 +155,7 @@ namespace Vanara.PInvoke
 		/// identifier (OID) of the algorithm and any needed parameters for that algorithm. The parameters contained in its CRYPT_OBJID_BLOB
 		/// are encoded.
 		/// </summary>
+		[PInvokeData("wincrypt.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		public struct CRYPT_ALGORITHM_IDENTIFIER
 		{
@@ -158,6 +173,7 @@ namespace Vanara.PInvoke
 		/// The BLOB structure contains an arbitrary array of bytes. The structure definition includes aliases appropriate to the various
 		/// functions that use it.
 		/// </summary>
+		[PInvokeData("wincrypt.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 		public struct CRYPTOAPI_BLOB
 		{
@@ -167,5 +183,210 @@ namespace Vanara.PInvoke
 			/// <summary>A pointer to the data buffer.</summary>
 			public IntPtr pbData;
 		}
+
+		/*CertAddCertificateContextToStore
+		CertAddCertificateLinkToStore
+		CertAddCRLContextToStore
+		CertAddCRLLinkToStore
+		CertAddCTLContextToStore
+		CertAddCTLLinkToStore
+		CertAddEncodedCertificateToStore
+		CertAddEncodedCertificateToSystemStore
+		CertAddEncodedCRLToStore
+		CertAddEncodedCTLToStore
+		CertAddEnhancedKeyUsageIdentifier
+		CertAddRefServerOcspResponse
+		CertAddRefServerOcspResponseContext
+		CertAddSerializedElementToStore
+		CertAddStoreToCollection
+		CertAlgIdToOID
+		CertCloseServerOcspResponse
+		CertCloseStore
+		CertCompareCertificate
+		CertCompareCertificateName
+		CertCompareIntegerBlob
+		CertComparePublicKeyInfo
+		CertControlStore
+		CertCreateCertificateChainEngine
+		CertCreateCertificateContext
+		CertCreateContext
+		CertCreateCRLContext
+		CertCreateCTLContext
+		CertCreateCTLEntryFromCertificateContextProperties
+		CertCreateSelfSignCertificate
+		CertDeleteCertificateFromStore
+		CertDeleteCRLFromStore
+		CertDeleteCTLFromStore
+		CertDuplicateCertificateChain
+		CertDuplicateCertificateContext
+		CertDuplicateCRLContext
+		CertDuplicateCTLContext
+		CertDuplicateStore
+		CertEnumCertificateContextProperties
+		CertEnumCertificatesInStore
+		CertEnumCRLContextProperties
+		CertEnumCRLsInStore
+		CertEnumCTLContextProperties
+		CertEnumCTLsInStore
+		CertEnumPhysicalStore
+		CertEnumSubjectInSortedCTL
+		CertEnumSystemStore
+		CertEnumSystemStoreLocation
+		CertFindAttribute
+		CertFindCertificateInCRL
+		CertFindCertificateInStore
+		CertFindChainInStore
+		CertFindCRLInStore
+		CertFindCTLInStore
+		CertFindExtension
+		CertFindRDNAttr
+		CertFindSubjectInCTL
+		CertFindSubjectInSortedCTL
+		CertFreeCertificateChain
+		CertFreeCertificateChainEngine
+		CertFreeCertificateChainList
+		CertFreeCertificateContext
+		CertFreeCRLContext
+		CertFreeCTLContext
+		CertFreeServerOcspResponseContext
+		CertGetCertificateChain
+		CertGetCertificateContextProperty
+		CertGetCRLContextProperty
+		CertGetCRLFromStore
+		CertGetCTLContextProperty
+		CertGetEnhancedKeyUsage
+		CertGetIntendedKeyUsage
+		CertGetIssuerCertificateFromStore
+		CertGetNameString
+		CertGetPublicKeyLength
+		CertGetServerOcspResponseContext
+		CertGetStoreProperty
+		CertGetSubjectCertificateFromStore
+		CertGetValidUsages
+		CertIsRDNAttrsInCertificateName
+		CertIsStrongHashToSign
+		CertIsValidCRLForCertificate
+		CertNameToStr
+		CertOIDToAlgId
+		CertOpenServerOcspResponse
+		CertOpenStore
+		CertOpenSystemStore
+		CertRDNValueToStr
+		CertRegisterPhysicalStore
+		CertRegisterSystemStore
+		CertRemoveEnhancedKeyUsageIdentifier
+		CertRemoveStoreFromCollection
+		CertResyncCertificateChainEngine
+		CertRetrieveLogoOrBiometricInfo
+		CertSaveStore
+		CertSelectCertificateChains
+		CertSerializeCertificateStoreElement
+		CertSerializeCRLStoreElement
+		CertSerializeCTLStoreElement
+		CertSetCertificateContextPropertiesFromCTLEntry
+		CertSetCertificateContextProperty
+		CertSetCRLContextProperty
+		CertSetCTLContextProperty
+		CertSetEnhancedKeyUsage
+		CertSetStoreProperty
+		CertStrToName
+		CertUnregisterPhysicalStore
+		CertUnregisterSystemStore
+		CertVerifyCertificateChainPolicy
+		CertVerifyCRLRevocation
+		CertVerifyCRLTimeValidity
+		CertVerifyCTLUsage
+		CertVerifyRevocation
+		CertVerifySubjectCertificateContext
+		CertVerifyTimeValidity
+		CertVerifyValidityNesting
+		CryptAcquireCertificatePrivateKey
+		CryptBinaryToString
+		CryptCreateKeyIdentifierFromCSP
+		CryptDecodeMessage
+		CryptDecodeObject
+		CryptDecodeObjectEx
+		CryptDecryptAndVerifyMessageSignature
+		CryptDecryptMessage
+		CryptEncodeObject
+		CryptEncodeObjectEx
+		CryptEncryptMessage
+		CryptEnumKeyIdentifierProperties
+		CryptEnumOIDFunction
+		CryptEnumOIDInfo
+		CryptExportPublicKeyInfo
+		CryptExportPublicKeyInfoEx
+		CryptExportPublicKeyInfoFromBCryptKeyHandle
+		CryptFindCertificateKeyProvInfo
+		CryptFindLocalizedName
+		CryptFindOIDInfo
+		CryptFormatObject
+		CryptFreeOIDFunctionAddress
+		CryptGetDefaultOIDDllList
+		CryptGetDefaultOIDFunctionAddress
+		CryptGetKeyIdentifierProperty
+		CryptGetMessageCertificates
+		CryptGetMessageSignerCount
+		CryptGetOIDFunctionAddress
+		CryptGetOIDFunctionValue
+		CryptHashCertificate
+		CryptHashCertificate2
+		CryptHashMessage
+		CryptHashPublicKeyInfo
+		CryptHashToBeSigned
+		CryptImportPublicKeyInfo
+		CryptImportPublicKeyInfoEx
+		CryptImportPublicKeyInfoEx2
+		CryptInitOIDFunctionSet
+		CryptInstallDefaultContext
+		CryptInstallOIDFunctionAddress
+		CryptMemAlloc
+		CryptMemFree
+		CryptMemRealloc
+		CryptMsgCalculateEncodedLength
+		CryptMsgClose
+		CryptMsgControl
+		CryptMsgCountersign
+		CryptMsgCountersignEncoded
+		CryptMsgDuplicate
+		CryptMsgEncodeAndSignCTL
+		CryptMsgGetAndVerifySigner
+		CryptMsgGetParam
+		CryptMsgOpenToDecode
+		CryptMsgOpenToEncode
+		CryptMsgSignCTL
+		CryptMsgUpdate
+		CryptMsgVerifyCountersignatureEncoded
+		CryptMsgVerifyCountersignatureEncodedEx
+		CryptQueryObject
+		CryptRegisterDefaultOIDFunction
+		CryptRegisterOIDFunction
+		CryptRegisterOIDInfo
+		CryptRetrieveTimeStamp
+		CryptSetKeyIdentifierProperty
+		CryptSetOIDFunctionValue
+		CryptSignAndEncodeCertificate
+		CryptSignAndEncryptMessage
+		CryptSignCertificate
+		CryptSignMessage
+		CryptSignMessageWithKey
+		CryptStringToBinary
+		CryptUninstallDefaultContext
+		CryptUnregisterDefaultOIDFunction
+		CryptUnregisterOIDFunction
+		CryptUnregisterOIDInfo
+		CryptVerifyCertificateSignature
+		CryptVerifyCertificateSignatureEx
+		CryptVerifyDetachedMessageHash
+		CryptVerifyDetachedMessageSignature
+		CryptVerifyMessageHash
+		CryptVerifyMessageSignature
+		CryptVerifyMessageSignatureWithKey
+		CryptVerifyTimeStampSignature
+		PFXExportCertStore
+		PFXExportCertStoreEx
+		PFXImportCertStore
+		PFXIsPFXBlob
+		PFXVerifyPassword*/
 	}
 }

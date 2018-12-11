@@ -43,6 +43,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Numerics" />
@@ -75,6 +76,7 @@
     <Compile Include="PInvoke\AdvApi32\AdvApi32Tests.cs" />
     <Compile Include="PInvoke\AdvApi32\PSIDTests.cs" />
     <Compile Include="PInvoke\Authz\AuthzTests.cs" />
+    <Compile Include="PInvoke\BCrypt\BCryptTests.cs" />
     <Compile Include="PInvoke\CommCtrl\EditTest.cs" />
     <Compile Include="PInvoke\CredUI\CredUITests.cs" />
     <Compile Include="PInvoke\DwmApi\DwmApiTests.cs" />
@@ -158,9 +160,9 @@
       <Project>{1f0b972a-06da-4f6a-8b60-87d76fb1f2d9}</Project>
       <Name>Vanara.PInvoke.CredUI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\Crypt32\Vanara.PInvoke.Crypt32.csproj">
-      <Project>{bd86fd1b-d52e-4b78-89ac-36d89458ebd8}</Project>
-      <Name>Vanara.PInvoke.Crypt32</Name>
+    <ProjectReference Include="..\PInvoke\Cryptography\Vanara.PInvoke.Cryptography.csproj">
+      <Project>{b0df2976-be60-4856-a634-5487222360b2}</Project>
+      <Name>Vanara.PInvoke.Cryptography</Name>
     </ProjectReference>
     <ProjectReference Include="..\PInvoke\DwmApi\Vanara.PInvoke.DwmApi.csproj">
       <Project>{e1c6d6af-60a0-42cd-af77-f0de0ffe1395}</Project>

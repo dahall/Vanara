@@ -4,7 +4,7 @@
     <Description>Methods, structures and constants imported from UxTheme.dll.</Description>
     <Copyright>Copyright © 2017-2018</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>2.0.0</VersionPrefix>
+    <VersionPrefix>2.0.1</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.UxTheme</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -28,10 +28,12 @@ Functions
 BeginBufferedAnimation, BeginBufferedPaint, BeginPanningFeedback, BufferedPaintClear, BufferedPaintInit, BufferedPaintRenderAnimation, BufferedPaintSetAlpha, BufferedPaintStopAllAnimations, BufferedPaintUnInit, CloseThemeData, DrawThemeBackground, DrawThemeBackgroundEx, DrawThemeEdge, DrawThemeIcon, DrawThemeParentBackground, DrawThemeParentBackgroundEx, DrawThemeText, DrawThemeTextEx, EnableThemeDialogTexture, EnableTheming, EndBufferedAnimation, EndBufferedPaint, EndPanningFeedback, GetBufferedPaintBits, GetBufferedPaintDC, GetBufferedPaintTargetDC, GetBufferedPaintTargetRect, GetCurrentThemeName, GetThemeAnimationProperty, GetThemeAnimationTransform, GetThemeAppProperties, GetThemeBackgroundContentRect, GetThemeBackgroundExtent, GetThemeBackgroundRegion, GetThemeBitmap, GetThemeBool, GetThemeColor, GetThemeDocumentationProperty, GetThemeEnumValue, GetThemeFilename, GetThemeFont, GetThemeInt, GetThemeIntList, GetThemeMargins, GetThemeMetric, GetThemePartSize, GetThemePosition, GetThemePropertyOrigin, GetThemeRect, GetThemeStream, GetThemeString, GetThemeSysBool, GetThemeSysColor, GetThemeSysColorBrush, GetThemeSysFont, GetThemeSysInt, GetThemeSysSize, GetThemeSysString, GetThemeTextExtent, GetThemeTextMetrics, GetThemeTimingFunction, GetThemeTransitionDuration, GetWindowTheme, HitTestThemeBackground, IsAppThemed, IsCompositionActive, IsThemeActive, IsThemeBackgroundPartiallyTransparent, IsThemeDialogTextureEnabled, IsThemePartDefined, OpenThemeData, OpenThemeDataEx, OpenThemeDataForDpi, SetThemeAppProperties, SetWindowTheme, SetWindowThemeAttribute, UpdatePanningFeedback
 
 Structures
-DTTOPTS, INTLIST, MARGINS, TA_TIMINGFUNCTION, TA_TRANSFORM, WTA_OPTIONS, DTBGOPTS, BP_ANIMATIONPARAMS, BP_PAINTPARAMS
+DTTOPTS, INTLIST, MARGINS, TA_TIMINGFUNCTION, TA_TRANSFORM, WTA_OPTIONS, DTBGOPTS, BP_ANIMATIONPARAMS, HANIMATIONBUFFER, HPAINTBUFFER, BP_PAINTPARAMS
 
 </PackageReleaseNotes>
     <LangVersion>latest</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

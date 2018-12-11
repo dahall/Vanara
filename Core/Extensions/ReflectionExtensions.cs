@@ -193,15 +193,25 @@ namespace Vanara.Extensions
 		/// <returns>The <see cref="Type"/> reference, or <c>null</c> if type or assembly not found.</returns>
 		public static Type LoadType(string typeName, string asmRef = null)
 		{
-			Type ret = null;
 			Assembly asm = null;
 			try { asm = Assembly.LoadFrom(asmRef); } catch { }
-			if (!TryGetType(asm, typeName, ref ret))
+			if (!TryGetType(asm, typeName, out var ret))
 			{
 				foreach (var asm2 in AppDomain.CurrentDomain.GetAssemblies())
-					if (TryGetType(asm2, typeName, ref ret)) break;
+					if (TryGetType(asm2, typeName, out ret)) break;
 			}
 			return ret;
+		}
+
+		/// <summary>Sets a named property on an object.</summary>
+		/// <typeparam name="T">The type of the property to be set.</typeparam>
+		/// <param name="obj">The object on which to set the property.</param>
+		/// <param name="propName">Name of the property.</param>
+		/// <param name="value">The property value to set on the object.</param>
+		public static void SetPropertyValue<T>(this object obj, string propName, T value)
+		{
+			try { obj?.GetType().InvokeMember(propName, BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, obj, new object[] { value }, null); }
+			catch { }
 		}
 
 		/// <summary>Tries the retrieve a <see cref="Type"/> reference from an assembly.</summary>
@@ -209,10 +219,10 @@ namespace Vanara.Extensions
 		/// <param name="asm">The assembly from which to load the type.</param>
 		/// <param name="type">The <see cref="Type"/> reference, if found.</param>
 		/// <returns><c>true</c> if the type was found in the assembly; otherwise, <c>false</c>.</returns>
-		private static bool TryGetType(Assembly asm, string typeName, ref Type type)
+		private static bool TryGetType(Assembly asm, string typeName, out Type type)
 		{
-			if (asm == null) return false;
-			return (type = asm.GetType(typeName, false, false)) != null;
+			type = asm?.GetType(typeName, false, false);
+			return !(type is null);
 		}
 	}
 }

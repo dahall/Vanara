@@ -12,6 +12,9 @@
 		/// <summary>The authz</summary>
 		public const string Authz = "authz.dll";
 
+		/// <summary>bcrypt.dll</summary>
+		public const string Bcrypt = "bcrypt.dll";
+
 		/// <summary>The COM CTL32</summary>
 		public const string ComCtl32 = "comctl32.dll";
 
@@ -42,6 +45,9 @@
 		/// <summary>The mstask</summary>
 		public const string Mstask = "mstask.dll";
 
+		/// <summary>ncrypt.dll</summary>
+		public const string Ncrypt = "ncrypt.dll";
+
 		/// <summary>The net api32</summary>
 		public const string NetApi32 = "netapi32.dll";
 
@@ -71,6 +77,8 @@
 
 		/// <summary>The shlwapi</summary>
 		public const string Shlwapi = "Shlwapi.dll";
+
+		public const string Tokenbinding = "tokenbinding.dll";
 
 		/// <summary>The user32</summary>
 		public const string User32 = "user32.dll";

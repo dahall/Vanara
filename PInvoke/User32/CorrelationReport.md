@@ -623,27 +623,47 @@ Native Structure | Header | Managed Structure
 [ALTTABINFO](http://msdn2.microsoft.com/en-us/library/alttabinfo) | winuser.h | Vanara.PInvoke.User32_Gdi+ALTTABINFO  
 [ANIMATIONINFO](http://msdn2.microsoft.com/en-us/library/ms724197) | Winuser.h | Vanara.PInvoke.User32+ANIMATIONINFO  
 [AUDIODESCRIPTION](http://msdn2.microsoft.com/en-us/library/aa379651) | Winuser.h | Vanara.PInvoke.User32+AUDIODESCRIPTION  
+[CBT_CREATEWND](http://msdn2.microsoft.com/en-us/library/cbt_createwnd.htm) | winuser.h | Vanara.PInvoke.User32+CBT_CREATEWND  
+[CBTACTIVATESTRUCT](http://msdn2.microsoft.com/en-us/library/cbtactivatestruct.htm) | winuser.h | Vanara.PInvoke.User32+CBTACTIVATESTRUCT  
 [CHANGEFILTERSTRUCT](http://msdn2.microsoft.com/en-us/library/changefilterstruct) | winuser.h | Vanara.PInvoke.User32_Gdi+CHANGEFILTERSTRUCT  
+[CURSORINFO](http://msdn2.microsoft.com/en-us/library/cursorinfo) | winuser.h | Vanara.PInvoke.User32_Gdi+CURSORINFO  
+[CWPRETSTRUCT](http://msdn2.microsoft.com/en-us/library/cwpretstruct.htm) | winuser.h | Vanara.PInvoke.User32+CWPRETSTRUCT  
+[CWPSTRUCT](http://msdn2.microsoft.com/en-us/library/cwpstruct.htm) | winuser.h | Vanara.PInvoke.User32+CWPSTRUCT  
 [DEBUGHOOKINFO](http://msdn2.microsoft.com/en-us/library/debughookinfo.htm) | winuser.h | Vanara.PInvoke.User32+DEBUGHOOKINFO  
 [DLGITEMTEMPLATE](http://msdn2.microsoft.com/en-us/library/dlgitemtemplate) | winuser.h | Vanara.PInvoke.User32_Gdi+DLGITEMTEMPLATE  
 [DLGTEMPLATE](http://msdn2.microsoft.com/en-us/library/dlgtemplate) | winuser.h | Vanara.PInvoke.User32_Gdi+DLGTEMPLATE  
+[EVENTMSG](http://msdn2.microsoft.com/en-us/library/eventmsg.htm) | winuser.h | Vanara.PInvoke.User32+EVENTMSG  
 [FILTERKEYS](https://www.google.com/search?num=5&q=FILTERKEYS+site%3Amicrosoft.com) | Winuser.h | Vanara.PInvoke.User32+FILTERKEYS  
 [GRPICONDIR](https://www.google.com/search?num=5&q=GRPICONDIR+site%3Amicrosoft.com) |  | Vanara.PInvoke.User32_Gdi+GRPICONDIR  
 [GRPICONDIRENTRY](https://www.google.com/search?num=5&q=GRPICONDIRENTRY+site%3Amicrosoft.com) |  | Vanara.PInvoke.User32_Gdi+GRPICONDIRENTRY  
+[GUITHREADINFO](http://msdn2.microsoft.com/en-us/library/guithreadinfo) | winuser.h | Vanara.PInvoke.User32_Gdi+GUITHREADINFO  
 [HELPINFO](https://www.google.com/search?num=5&q=HELPINFO+site%3Amicrosoft.com) | Winuser.h | Vanara.PInvoke.User32+HELPINFO  
+[HHOOK](https://www.google.com/search?num=5&q=HHOOK+site%3Amicrosoft.com) |  | Vanara.PInvoke.User32+HHOOK  
 [HIGHCONTRAST](https://www.google.com/search?num=5&q=HIGHCONTRAST+site%3Amicrosoft.com) | Winuser.h | Vanara.PInvoke.User32+HIGHCONTRAST  
+[ICONINFO](https://www.google.com/search?num=5&q=ICONINFO+site%3Amicrosoft.com) |  | Vanara.PInvoke.User32_Gdi+ICONINFO  
+[ICONINFOEX](http://msdn2.microsoft.com/en-us/library/iconinfoex) | winuser.h | Vanara.PInvoke.User32_Gdi+ICONINFOEX  
 [ICONMETRICS](https://www.google.com/search?num=5&q=ICONMETRICS+site%3Amicrosoft.com) | Winuser.h | Vanara.PInvoke.User32+ICONMETRICS  
 [KBDLLHOOKSTRUCT](http://msdn2.microsoft.com/en-us/library/kbdllhookstruct.htm) | winuser.h | Vanara.PInvoke.User32+KBDLLHOOKSTRUCT  
+[MDINEXTMENU](http://msdn2.microsoft.com/en-us/library/mdinextmenu.htm) | winuser.h | Vanara.PInvoke.User32_Gdi+MDINEXTMENU  
+[MENUBARINFO](http://msdn2.microsoft.com/en-us/library/menubarinfo.htm) | winuser.h | Vanara.PInvoke.User32_Gdi+MENUBARINFO  
 [MENUEX_TEMPLATE_HEADER](http://msdn2.microsoft.com/en-us/library/df763349-7127-482e-8613-74e68addde5d) | winuser.h | Vanara.PInvoke.User32_Gdi+MENUEX_TEMPLATE_HEADER  
 [MENUEX_TEMPLATE_ITEM](http://msdn2.microsoft.com/en-us/library/f6e2fd0a-16b8-48e3-8597-341085a7adbd) | winuser.h | Vanara.PInvoke.User32_Gdi+MENUEX_TEMPLATE_ITEM  
+[MENUGETOBJECTINFO](http://msdn2.microsoft.com/en-us/library/menugetobjectinfo.htm) | winuser.h | Vanara.PInvoke.User32_Gdi+MENUGETOBJECTINFO  
+[MENUINFO](http://msdn2.microsoft.com/en-us/library/menuinfo.htm) | winuser.h | Vanara.PInvoke.User32_Gdi+MENUINFO  
+[MENUITEMINFO](http://msdn2.microsoft.com/en-us/library/menuiteminfo.htm) | winuser.h | Vanara.PInvoke.User32_Gdi+MENUITEMINFO  
 [MENUITEMTEMPLATE](http://msdn2.microsoft.com/en-us/library/menuitemtemplate.htm) | winuser.h | Vanara.PInvoke.User32_Gdi+MENUITEMTEMPLATE  
 [MENUITEMTEMPLATEHEADER](http://msdn2.microsoft.com/en-us/library/menuitemtemplateheader.htm) | winuser.h | Vanara.PInvoke.User32_Gdi+MENUITEMTEMPLATEHEADER  
+[METAFILEPICT](http://msdn2.microsoft.com/en-us/library/metafilepict) | wingdi.h | Vanara.PInvoke.User32+METAFILEPICT  
 [MINIMIZEDMETRICS](http://msdn2.microsoft.com/en-us/library/ms724500) | Winuser.h | Vanara.PInvoke.User32+MINIMIZEDMETRICS  
 [MINMAXINFO](https://www.google.com/search?num=5&q=MINMAXINFO+site%3Amicrosoft.com) |  | Vanara.PInvoke.User32_Gdi+MINMAXINFO  
 [MONITORINFO](http://msdn2.microsoft.com/en-us/library/ca8ec86f-69ba-4cf8-a867-67182a3d630d) | winuser.h | Vanara.PInvoke.User32_Gdi+MONITORINFO  
 [MONITORINFOEX](http://msdn2.microsoft.com/en-us/library/f296ce29-3fc8-41c9-a201-56e222aa2219) | winuser.h | Vanara.PInvoke.User32_Gdi+MONITORINFOEX  
+[MOUSEHOOKSTRUCT](http://msdn2.microsoft.com/en-us/library/mousehookstruct.htm) | winuser.h | Vanara.PInvoke.User32+MOUSEHOOKSTRUCT  
+[MOUSEHOOKSTRUCTEX](http://msdn2.microsoft.com/en-us/library/mousehookstructex.htm) | winuser.h | Vanara.PInvoke.User32+MOUSEHOOKSTRUCTEX  
 [MOUSEKEYS](https://www.google.com/search?num=5&q=MOUSEKEYS+site%3Amicrosoft.com) | Winuser.h | Vanara.PInvoke.User32+MOUSEKEYS  
+[MSGBOXPARAMS](https://www.google.com/search?num=5&q=MSGBOXPARAMS+site%3Amicrosoft.com) | Winuser.h | Vanara.PInvoke.User32+MSGBOXPARAMS  
 [MSLLHOOKSTRUCT](http://msdn2.microsoft.com/en-us/library/msllhookstruct.htm) | winuser.h | Vanara.PInvoke.User32+MSLLHOOKSTRUCT  
+[NMHDR](https://www.google.com/search?num=5&q=NMHDR+site%3Amicrosoft.com) |  | Vanara.PInvoke.User32_Gdi+NMHDR  
 [NONCLIENTMETRICS](http://msdn2.microsoft.com/en-us/library/ff729175) | Winuser.h | Vanara.PInvoke.User32+NONCLIENTMETRICS  
 [SERIALKEYS](https://www.google.com/search?num=5&q=SERIALKEYS+site%3Amicrosoft.com) | Winuser.h | Vanara.PInvoke.User32+SERIALKEYS  
 [SOUNDSENTRY](https://www.google.com/search?num=5&q=SOUNDSENTRY+site%3Amicrosoft.com) | Winuser.h | Vanara.PInvoke.User32+SOUNDSENTRY  
@@ -652,6 +672,9 @@ Native Structure | Header | Managed Structure
 [TOGGLEKEYS](https://www.google.com/search?num=5&q=TOGGLEKEYS+site%3Amicrosoft.com) | Winuser.h | Vanara.PInvoke.User32+TOGGLEKEYS  
 [TOUCHPREDICTIONPARAMETERS](http://msdn2.microsoft.com/en-us/library/hh969214) | Winuser.h | Vanara.PInvoke.User32+TOUCHPREDICTIONPARAMETERS  
 [TPMPARAMS](http://msdn2.microsoft.com/en-us/library/tpmparams.htm) | winuser.h | Vanara.PInvoke.User32_Gdi+TPMPARAMS  
+[TRACKMOUSEEVENT](http://msdn2.microsoft.com/en-us/library/ms645604) | Winuser.h | Vanara.PInvoke.User32+TRACKMOUSEEVENT  
+[UPDATELAYEREDWINDOWINFO](http://msdn2.microsoft.com/en-us/library/updatelayeredwindowinfo) | winuser.h | Vanara.PInvoke.User32_Gdi+UPDATELAYEREDWINDOWINFO  
 [USEROBJECTFLAGS](http://msdn2.microsoft.com/en-us/library/5a973d45-5ff4-47e7-a927-72d3fdd61dc9) | winuser.h | Vanara.PInvoke.User32_Gdi+USEROBJECTFLAGS  
 [WINDOWINFO](http://msdn2.microsoft.com/en-us/library/windowinfo) | winuser.h | Vanara.PInvoke.User32_Gdi+WINDOWINFO  
 [WINDOWPLACEMENT](http://msdn2.microsoft.com/en-us/library/windowplacement) | winuser.h | Vanara.PInvoke.User32_Gdi+WINDOWPLACEMENT  
+[WINDOWPOS](https://www.google.com/search?num=5&q=WINDOWPOS+site%3Amicrosoft.com) |  | Vanara.PInvoke.User32_Gdi+WINDOWPOS  
