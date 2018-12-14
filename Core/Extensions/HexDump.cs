@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Linq;
-using System.Runtime.InteropServices;
-using Vanara.Extensions;
-using Vanara.InteropServices;
 
-namespace Vanara
+namespace Vanara.Extensions
 {
-	internal static class UnitTestHelper
+	/// <summary>Extension to dump a byte array.</summary>
+	public static class HexDempHelpers
 	{
 		/// <summary>Creates a multi-line dump of a byte array using hexadecimal values.</summary>
 		/// <param name="bytes">The byte array to dump. This value cannot be <see langword="null"/>.</param>
@@ -36,12 +33,6 @@ namespace Vanara
 				sb.AppendLine();
 			}
 			return sb.ToString();
-		}
-
-		public static string Dump(object o)
-		{
-			using (var p = new PinnedObject(o))
-				return (((IntPtr)p).ToArray<byte>(Marshal.SizeOf(o))).ToHexDumpString();
 		}
 	}
 }

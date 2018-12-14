@@ -90,7 +90,6 @@
     <Compile Include="PInvoke\NetApi\NetApi32Tests.cs" />
     <Compile Include="PInvoke\NtDll\NtDllTests.cs" />
     <Compile Include="PInvoke\Shared\InteropServices\SafeNativeArrayTests.cs" />
-    <Compile Include="UnitTestHelper.cs" />
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="PInvoke\NetListMgr\NetListMgrTests.cs" />

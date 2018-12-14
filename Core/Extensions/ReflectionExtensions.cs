@@ -40,11 +40,9 @@ namespace Vanara.Extensions
 		/// <returns>The property value, if found, or the <paramref name="defaultValue"/> if not.</returns>
 		public static T GetPropertyValue<T>(this object obj, string propertyName, T defaultValue = default)
 		{
-			var prop = obj.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, typeof(T), Type.EmptyTypes, null);
-			if (prop == null) return defaultValue;
-			var val = prop.GetValue(obj, null);
-			if (val == null) return defaultValue;
-			return (T)val;
+			if (obj is null || propertyName is null) return defaultValue;
+			try { return (T)Convert.ChangeType(obj.GetType().InvokeMember(propertyName, BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, obj, null, null), typeof(T)); }
+			catch { return defaultValue; }
 		}
 
 		/// <summary>

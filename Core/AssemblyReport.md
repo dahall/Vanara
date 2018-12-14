@@ -16,6 +16,7 @@ Formatter | Base class for expandable formatters.
 FormatterComposer | Extension method to combine formatter instances.
 GenericSafeHandle | A `SafeHandle` that takes a delegate in the constructor that closes the supplied handle.
 GenericVirtualReadOnlyDictionaryy<T> | A generic class that creates a read-only dictionary from a list and getter function.
+HexDempHelpers | Extension to dump a byte array.
 HGlobalMemoryMethods | Unmanaged memory methods for HGlobal.
 InteropExtensions | Extension methods for System.Runtime.InteropServices.
 IOExtensions | Extensions for classes in System.IO.
