@@ -10,7 +10,7 @@
     <Copyright>Copyright © 2017-2018</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <VersionPrefix>2.1.0</VersionPrefix>
-    <TargetFrameworks>net20;net35;net40;net45;netstandard20</TargetFrameworks>
+    <TargetFrameworks>net20;net35;net40;net45;netstandard2.0</TargetFrameworks>
     <AssemblyName>Vanara.Core</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
     <RootNamespace>Vanara</RootNamespace>
@@ -74,6 +74,6 @@ CorrepsondingAction, StringListPackMethod
     <None Include="Collections\VaList.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Theraot.Core" Version="2.1.0" Condition=" '$(TargetFramework)' != 'netstandard20' " />
+    <PackageReference Include="Theraot.Core" Version="2.1.0" Condition=" '$(TargetFramework)' != 'netstandard2.0' " />
   </ItemGroup>
 </Project>
