@@ -32,7 +32,7 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// DeviceIoControl can accept a handle to a specific device. For example, to open a handle to the logical drive
 		/// A: with CreateFile, specify \\.\a:. Alternatively, you can use the names \\.\PhysicalDrive0, \\.\PhysicalDrive1, and so on, to
-		///    open handles to the physical drives on a system.
+		/// open handles to the physical drives on a system.
 		/// </para>
 		/// <para>
 		/// You should specify the FILE_SHARE_READ and FILE_SHARE_WRITE access flags when calling CreateFile to open a handle to a device
@@ -86,7 +86,7 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// DeviceIoControl can accept a handle to a specific device. For example, to open a handle to the logical drive
 		/// A: with CreateFile, specify \\.\a:. Alternatively, you can use the names \\.\PhysicalDrive0, \\.\PhysicalDrive1, and so on, to
-		///    open handles to the physical drives on a system.
+		/// open handles to the physical drives on a system.
 		/// </para>
 		/// <para>
 		/// You should specify the FILE_SHARE_READ and FILE_SHARE_WRITE access flags when calling CreateFile to open a handle to a device
@@ -133,7 +133,7 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// DeviceIoControl can accept a handle to a specific device. For example, to open a handle to the logical drive
 		/// A: with CreateFile, specify \\.\a:. Alternatively, you can use the names \\.\PhysicalDrive0, \\.\PhysicalDrive1, and so on, to
-		///    open handles to the physical drives on a system.
+		/// open handles to the physical drives on a system.
 		/// </para>
 		/// <para>
 		/// You should specify the FILE_SHARE_READ and FILE_SHARE_WRITE access flags when calling CreateFile to open a handle to a device
@@ -155,10 +155,7 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// </remarks>
-		public static Task<TOut?> DeviceIoControlAsync<TOut>(HFILE hDev, uint ioControlCode) where TOut : struct
-		{
-			return DeviceIoControlAsync<int, TOut>(hDev, ioControlCode, null);
-		}
+		public static Task<TOut?> DeviceIoControlAsync<TOut>(HFILE hDev, uint ioControlCode) where TOut : struct => DeviceIoControlAsync<int, TOut>(hDev, ioControlCode, null);
 
 		/// <summary>
 		/// Sends a control code directly to a specified device driver, causing the corresponding device to perform the corresponding operation.
@@ -191,7 +188,7 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// DeviceIoControl can accept a handle to a specific device. For example, to open a handle to the logical drive
 		/// A: with CreateFile, specify \\.\a:. Alternatively, you can use the names \\.\PhysicalDrive0, \\.\PhysicalDrive1, and so on, to
-		///    open handles to the physical drives on a system.
+		/// open handles to the physical drives on a system.
 		/// </para>
 		/// <para>
 		/// You should specify the FILE_SHARE_READ and FILE_SHARE_WRITE access flags when calling CreateFile to open a handle to a device
@@ -213,14 +210,11 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// </remarks>
-        [Obsolete("Use 'Task<TOut?> DeviceIoControlAsync<TIn, TOut>(HFILE hDevice, uint ioControlCode, TIn? inVal)' instead.")]
-		public static Task<TOut?> DeviceIoControlAsync<TIn, TOut>(HFILE hDevice, uint ioControlCode, TIn? inVal, TOut? outVal) where TIn : struct where TOut : struct
-		{
-			var buf = Pack(inVal, outVal);
-			return new TaskFactory().FromAsync(BeginDeviceIoControl<TIn, TOut>, EndDeviceIoControl<TIn, TOut>, hDevice, ioControlCode, buf, null);
-		}
+		[Obsolete("Use 'Task<TOut?> DeviceIoControlAsync<TIn, TOut>(HFILE hDevice, uint ioControlCode, TIn? inVal)' instead.")]
+		public static Task<TOut?> DeviceIoControlAsync<TIn, TOut>(HFILE hDevice, uint ioControlCode, TIn? inVal, TOut? outVal) where TIn : struct where TOut : struct =>
+			new TaskFactory().FromAsync(BeginDeviceIoControl<TIn, TOut>, EndDeviceIoControl<TIn, TOut>, hDevice, ioControlCode, Pack(inVal, outVal), null);
 
-        /// <summary>
+		/// <summary>
 		/// Sends a control code directly to a specified device driver, causing the corresponding device to perform the corresponding operation.
 		/// </summary>
 		/// <typeparam name="TIn">The type of the <paramref name="inVal"/>.</typeparam>
@@ -247,7 +241,7 @@ namespace Vanara.PInvoke
 		/// <para>
 		/// DeviceIoControl can accept a handle to a specific device. For example, to open a handle to the logical drive
 		/// A: with CreateFile, specify \\.\a:. Alternatively, you can use the names \\.\PhysicalDrive0, \\.\PhysicalDrive1, and so on, to
-		///    open handles to the physical drives on a system.
+		/// open handles to the physical drives on a system.
 		/// </para>
 		/// <para>
 		/// You should specify the FILE_SHARE_READ and FILE_SHARE_WRITE access flags when calling CreateFile to open a handle to a device
@@ -269,22 +263,23 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// </remarks>
-		public static Task<TOut?> DeviceIoControlAsync<TIn, TOut>(HFILE hDevice, uint ioControlCode, TIn? inVal) where TIn : struct where TOut : struct {
-            TOut? outValue = default(TOut);
-            var buf = Pack(inVal, outValue);
-            return Task.Factory.FromAsync(BeginDeviceIoControl<TIn, TOut>, EndDeviceIoControl<TIn, TOut>, hDevice, ioControlCode, buf, null);
-        }
+		public static Task<TOut?> DeviceIoControlAsync<TIn, TOut>(HFILE hDevice, uint ioControlCode, TIn? inVal) where TIn : struct where TOut : struct
+		{
+			TOut? outValue = default(TOut);
+			var buf = Pack(inVal, outValue);
+			return Task.Factory.FromAsync(BeginDeviceIoControl<TIn, TOut>, EndDeviceIoControl<TIn, TOut>, hDevice, ioControlCode, buf, null);
+		}
 
-        /// <summary>Explicits the device io control asynchronous.</summary>
-        /// <typeparam name="TIn">The type of the in.</typeparam>
-        /// <typeparam name="TOut">The type of the out.</typeparam>
-        /// <param name="hDevice">The h device.</param>
-        /// <param name="ioControlCode">The io control code.</param>
-        /// <param name="inVal">The in value.</param>
-        /// <param name="outVal">The out value.</param>
-        /// <returns></returns>
-        /// <exception cref="Win32Exception"></exception>
-        private static unsafe Task<TOut?> ExplicitDeviceIoControlAsync<TIn, TOut>(HFILE hDevice, uint ioControlCode, TIn? inVal, TOut? outVal) where TIn : struct where TOut : struct
+		/// <summary>Explicits the device io control asynchronous.</summary>
+		/// <typeparam name="TIn">The type of the in.</typeparam>
+		/// <typeparam name="TOut">The type of the out.</typeparam>
+		/// <param name="hDevice">The h device.</param>
+		/// <param name="ioControlCode">The io control code.</param>
+		/// <param name="inVal">The in value.</param>
+		/// <param name="outVal">The out value.</param>
+		/// <returns></returns>
+		/// <exception cref="Win32Exception"></exception>
+		private static unsafe Task<TOut?> ExplicitDeviceIoControlAsync<TIn, TOut>(HFILE hDevice, uint ioControlCode, TIn? inVal, TOut? outVal) where TIn : struct where TOut : struct
 		{
 #pragma warning disable CS0618 // Type or member is obsolete
 			ThreadPool.BindHandle((IntPtr)hDevice);
