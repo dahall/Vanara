@@ -1,4 +1,4 @@
-﻿#if !(NETSTANDARD2_0)
+﻿#if (NET20 || NET35 || NET40 || NET45)
 using System;
 using System.Linq;
 using System.DirectoryServices.ActiveDirectory;

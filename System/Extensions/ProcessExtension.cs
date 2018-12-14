@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-#if !(NETSTANDARD2_0)
+#if (NET20 || NET35 || NET40 || NET45)
 using System.Management;
 #endif
 using System.Runtime.InteropServices;
@@ -42,7 +42,7 @@ namespace Vanara.Extensions
 			}
 		}
 
-#if !(NET20 || NETSTANDARD2_0)
+#if (NET35 || NET40 || NET45)
 		/// <summary>Gets the child processes.</summary>
 		/// <param name="p">The process.</param>
 		/// <param name="includeDescendants">if set to <c>true</c> include descendants of child processes as well.</param>
@@ -101,7 +101,7 @@ namespace Vanara.Extensions
 			}
 		}
 
-#if !(NETSTANDARD2_0)
+#if (NET20 || NET35 || NET40 || NET45)
 		/// <summary>
 		/// Gets the parent process.
 		/// </summary>

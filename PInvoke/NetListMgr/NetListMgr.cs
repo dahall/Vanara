@@ -177,7 +177,7 @@ namespace Vanara.PInvoke.NetListMgr
 	public interface IEnumNetworkConnections : IEnumerable
 	{
 		[DispId(-4)]
-#if !NETSTANDARD2_0
+#if (NET20 || NET35 || NET40 || NET45)
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "", MarshalTypeRef = typeof(System.Runtime.InteropServices.CustomMarshalers.EnumeratorToEnumVariantMarshaler), MarshalCookie = "")]
 		new IEnumerator GetEnumerator();
 #else
@@ -214,7 +214,7 @@ namespace Vanara.PInvoke.NetListMgr
 	public interface IEnumNetworks : IEnumerable
 	{
 		[DispId(-4)]
-#if !NETSTANDARD2_0
+#if (NET20 || NET35 || NET40 || NET45)
 		[return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalType = "", MarshalTypeRef = typeof(System.Runtime.InteropServices.CustomMarshalers.EnumeratorToEnumVariantMarshaler), MarshalCookie = "")]
 		new IEnumerator GetEnumerator();
 #else
