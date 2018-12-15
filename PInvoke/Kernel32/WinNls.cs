@@ -1355,7 +1355,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317803")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumCalendarInfo(EnumCalendarInfoProc lpCalInfoEnumProc, uint Locale, uint Calendar, CALTYPE CalType);
+		public static extern bool EnumCalendarInfo(EnumCalendarInfoProc pCalInfoEnumProc, uint Locale, uint Calendar, CALTYPE CalType);
 
 		/// <summary>Enumerates calendar information for a locale specified by identifier.</summary>
 		/// <param name="pCalInfoEnumProcEx">Pointer to an application-defined callback function. For more information, see <c>EnumCalendarInfoProcEx</c>.</param>
@@ -1382,7 +1382,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Winnls.h", MSDNShortId = "dd317804")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool EnumCalendarInfoEx(EnumCalendarInfoProcEx lpCalInfoEnumProcEx, uint Locale, uint Calendar, CALTYPE CalType);
+		public static extern bool EnumCalendarInfoEx(EnumCalendarInfoProcEx pCalInfoEnumProcEx, uint Locale, uint Calendar, CALTYPE CalType);
 
 		/// <summary>Enumerates calendar information for a locale specified by name.</summary>
 		/// <param name="pCalInfoEnumProcExEx">Pointer to an application-defined callback function. For more information, see <c>EnumCalendarInfoProcExEx</c>.</param>
@@ -4641,7 +4641,7 @@ namespace Vanara.PInvoke
 		/// <returns>Returns the language identifier.</returns>
 		// WORD MAKELANGID( USHORT usPrimaryLanguage, USHORT usSubLanguage); https://msdn.microsoft.com/en-us/library/windows/desktop/dd373908(v=vs.85).aspx
 		[PInvokeData("Winnt.h", MSDNShortId = "dd373908")]
-		public static ushort MAKELANGID(ushort p, ushort s) => (ushort)(s << 10 | PRIMARYLANGID(p));
+		public static ushort MAKELANGID(ushort usPrimaryLanguage, ushort usSubLanguage) => (ushort)(usSubLanguage << 10 | PRIMARYLANGID(usPrimaryLanguage));
 
 		/// <summary>Creates a locale identifier from a language identifier and a sort order identifier.</summary>
 		/// <param name="wLanguageID">
@@ -4652,7 +4652,7 @@ namespace Vanara.PInvoke
 		/// <returns>Returns the locale identifier.</returns>
 		// DWORD MAKELCID( WORD wLanguageID, WORD wSortID); https://msdn.microsoft.com/en-us/library/windows/desktop/dd319052(v=vs.85).aspx
 		[PInvokeData("Winnt.h", MSDNShortId = "dd319052")]
-		public static uint MAKELCID(ushort lgid, ushort srtid) => Macros.MAKELONG((ushort)(srtid & 0xf), lgid);
+		public static uint MAKELCID(ushort wLanguageID, ushort wSortID) => Macros.MAKELONG((ushort)(wSortID & 0xf), wLanguageID);
 
 		/// <summary>Constructs a locale identifier (LCID) from a language identifier, a sort order identifier, and the sort version.</summary>
 		/// <param name="wLanguageID">
@@ -4664,7 +4664,7 @@ namespace Vanara.PInvoke
 		/// <returns>Returns the LCID.</returns>
 		// DWORD MAKESORTLCID( WORD wLanguageID, WORD wSortID, WORD wSortVersion); https://msdn.microsoft.com/en-us/library/windows/desktop/dd319053(v=vs.85).aspx
 		[PInvokeData("Winnt.h", MSDNShortId = "dd319053")]
-		public static uint MAKESORTLCID(ushort lgid, ushort srtid, ushort ver) => MAKELCID(lgid, srtid) | (((uint)ver & 0xf) << 20);
+		public static uint MAKESORTLCID(ushort wLanguageID, ushort wSortID, ushort wSortVersion) => MAKELCID(wLanguageID, wSortID) | (((uint)wSortVersion & 0xf) << 20);
 
 		/// <summary>
 		/// Normalizes characters of a text string according to Unicode 4.0 TR#15. For more information, see Using Unicode Normalization to

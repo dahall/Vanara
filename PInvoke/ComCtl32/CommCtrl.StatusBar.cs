@@ -86,7 +86,7 @@ namespace Vanara.PInvoke
 		// void DrawStatusTextA( HDC hDC, LPCRECT lprc, LPCSTR pszText, UINT uFlags );
 		[DllImport(Lib.ComCtl32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb760763")]
-		public static extern void DrawStatusText(HDC hdc, in RECT lprc, string pszText, SBT uFlags);
+		public static extern void DrawStatusText(HDC hDC, in RECT lprc, string pszText, SBT uFlags);
 
 		/// <summary>
 		/// Processes <c>WM_MENUSELECT</c> and <c>WM_COMMAND</c> messages and displays Help text about the current menu in the specified

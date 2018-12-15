@@ -1880,7 +1880,7 @@ namespace Vanara.PInvoke
 		// Family, ULONG Flags, PVOID Reserved, PIP_ADAPTER_ADDRESSES AdapterAddresses, PULONG SizePointer );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("iphlpapi.h", MSDNShortId = "7b34138f-7263-4b73-95df-9e854fd81135")]
-		public static extern Win32Error GetAdaptersAddresses(uint Family, GetAdaptersAddressesFlags Flags, IntPtr Reserved, IntPtr pAdapterAddresses, ref uint pOutBufLen);
+		public static extern Win32Error GetAdaptersAddresses(uint Family, GetAdaptersAddressesFlags Flags, IntPtr Reserved, IntPtr AdapterAddresses, ref uint SizePointer);
 
 		/// <summary>The <c>GetAdaptersAddresses</c> function retrieves the addresses associated with the adapters on the local computer.</summary>
 		/// <param name="Flags">
@@ -1982,7 +1982,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("iphlpapi.h", MSDNShortId = "8cdecc84-6566-438b-86d0-3c55490a9a59")]
 		[Obsolete("On Windows XP and later: Use the GetAdaptersAddresses function instead of GetAdaptersInfo.")]
-		public static extern Win32Error GetAdaptersInfo(IntPtr pAdapterInfo, ref uint pBufOutLen);
+		public static extern Win32Error GetAdaptersInfo(IntPtr AdapterInfo, ref uint SizePointer);
 
 		/// <summary>
 		/// <para>
@@ -2995,7 +2995,7 @@ namespace Vanara.PInvoke
 		// IpNetTable, PULONG SizePointer, BOOL Order );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("iphlpapi.h", MSDNShortId = "01bcf86e-5fcc-4ce9-bb89-02d393e75d1d")]
-		public static extern Win32Error GetIpNetTable(IntPtr pIpNetTable, ref uint pdwSize, [MarshalAs(UnmanagedType.Bool)] bool Order);
+		public static extern Win32Error GetIpNetTable(IntPtr IpNetTable, ref uint SizePointer, [MarshalAs(UnmanagedType.Bool)] bool Order);
 
 		/// <summary>The GetIpNetTable function retrieves the IPv4 to physical address mapping table.</summary>
 		/// <param name="sorted">
@@ -3096,7 +3096,7 @@ namespace Vanara.PInvoke
 		// pFixedInfo, PULONG pOutBufLen );
 		[DllImport(Lib.IpHlpApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("iphlpapi.h", MSDNShortId = "5f54a120-5db9-4b8d-a281-1112be0042d6")]
-		public static extern Win32Error GetNetworkParams(IntPtr pFixedInfo, ref uint pBufOutLen);
+		public static extern Win32Error GetNetworkParams(IntPtr pFixedInfo, ref uint pOutBufLen);
 
 		/// <summary>The GetNetworkParams function retrieves network parameters for the local computer.</summary>
 		/// <returns>A <see cref="FIXED_INFO"/> structure that receives the network parameters for the local computer.</returns>

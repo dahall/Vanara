@@ -747,26 +747,6 @@ namespace Vanara.PInvoke
 		/// allocate for an output buffer.
 		/// </para>
 		/// <para>The output buffer cannot be larger than 64K bytes.</para></param>
-		/// <param name="__arglist">
-		/// <para>
-		/// An array of values that are used as insert values in the formatted message. A %1 in the format string indicates the first value
-		/// in the Arguments array; a %2 indicates the second argument; and so on.
-		/// </para>
-		/// <para>
-		/// The interpretation of each value depends on the formatting information associated with the insert in the message definition. The
-		/// default is to treat each value as a pointer to a null-terminated string.
-		/// </para>
-		/// <para>
-		/// By default, the Arguments parameter is of type <c>va_list*</c>, which is a language- and implementation-specific data type for
-		/// describing a variable number of arguments. The state of the <c>va_list</c> argument is undefined upon return from the function.
-		/// To use the <c>va_list</c> again, destroy the variable argument list pointer using <c>va_end</c> and reinitialize it with <c>va_start</c>.
-		/// </para>
-		/// <para>
-		/// If you do not have a pointer of type <c>va_list*</c>, then specify the <c>FORMAT_MESSAGE_ARGUMENT_ARRAY</c> flag and pass a
-		/// pointer to an array of <c>DWORD_PTR</c> values; those values are input to the message formatted as the insert values. Each insert
-		/// must have a corresponding element in the array.
-		/// </para>
-		/// </param>
 		/// <returns>
 		/// <para>
 		/// If the function succeeds, the return value is the number of <c>TCHARs</c> stored in the output buffer, excluding the terminating

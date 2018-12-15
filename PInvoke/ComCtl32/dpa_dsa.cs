@@ -603,7 +603,7 @@ namespace Vanara.PInvoke
 		// int WINAPI DPA_GetPtrIndex( _In_ HDPA hdpa, _In_ const void *pvoid); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775619(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775619")]
-		public static extern int DPA_GetPtrIndex(HDPA pdpa, IntPtr pvoid);
+		public static extern int DPA_GetPtrIndex(HDPA hdpa, IntPtr pvoid);
 
 		/// <summary>Gets the pointer to the internal pointer array of a dynamic pointer array (DPA).</summary>
 		/// <param name="hdpa">A handle to an existing DPA.</param>
@@ -647,7 +647,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775623")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DPA_Grow(HDPA pdpa, int cp);
+		public static extern bool DPA_Grow(HDPA hdpa, int cp);
 
 		/// <summary>
 		/// <para>
@@ -1060,8 +1060,8 @@ namespace Vanara.PInvoke
 		/// <returns>Returns the index of the new item or , if the insert action fails.</returns>
 		// int DPA_SortedInsertPtr( HDPA pdpa, void *pFind, int iStart, PFNDPACOMPARE pfnCmp, LPARAM lParam, UINT options, void *pitem); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775590(v=vs.85).aspx
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775590")]
-		public static int DPA_SortedInsertPtr(HDPA hdpa, IntPtr pFind, int iStart, PFNDACOMPARE pfnCompare, IntPtr lParam, DPAS options, IntPtr pitem) =>
-			DPA_InsertPtr(hdpa, DPA_Search(hdpa, pFind, iStart, pfnCompare, lParam, DPAS.DPAS_SORTED | options), pitem);
+		public static int DPA_SortedInsertPtr(HDPA pdpa, IntPtr pFind, int iStart, PFNDACOMPARE pfnCmp, IntPtr lParam, DPAS options, IntPtr pitem) =>
+			DPA_InsertPtr(pdpa, DPA_Search(pdpa, pFind, iStart, pfnCmp, lParam, DPAS.DPAS_SORTED | options), pitem);
 
 		/// <summary>Appends a new item to the end of a dynamic structure array (DSA).</summary>
 		/// <param name="pdsa">A handle to the DSA in which to insert the item.</param>
@@ -1069,7 +1069,7 @@ namespace Vanara.PInvoke
 		/// <returns>Returns the index of the new item if the append action succeeds, or if the append action fails.</returns>
 		// int DSA_AppendItem( [in] HDSA pdsa, [in] void *pItem); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775591(v=vs.85).aspx
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775591")]
-		public static int DSA_AppendItem(HDSA hdsa, IntPtr pitem) => DSA_InsertItem(hdsa, DA_LAST, pitem);
+		public static int DSA_AppendItem(HDSA pdsa, IntPtr pItem) => DSA_InsertItem(pdsa, DA_LAST, pItem);
 
 		/// <summary>Duplicates a dynamic structure array (DSA).</summary>
 		/// <param name="hdsa">
@@ -1283,7 +1283,7 @@ namespace Vanara.PInvoke
 		// ULONGLONG DSA_GetSize( _In_ HDSA hdsa); https://msdn.microsoft.com/en-us/library/windows/desktop/bb775663(v=vs.85).aspx
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775663")]
-		public static extern ulong DSA_GetSize(HDSA pdsa);
+		public static extern ulong DSA_GetSize(HDSA hdsa);
 
 		/// <summary>
 		/// <para>
@@ -1340,7 +1340,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.ComCtl32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Dpa_dsa.h", MSDNShortId = "bb775668")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DSA_SetItem(HDSA hdsa, int index, IntPtr pItem);
+		public static extern bool DSA_SetItem(HDSA pdsa, int index, IntPtr pItem);
 
 		/// <summary>Sorts the items in a dynamic structure array (DSA).</summary>
 		/// <param name="pdsa">

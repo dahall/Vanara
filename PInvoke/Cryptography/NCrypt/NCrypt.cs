@@ -629,8 +629,6 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>The call to the KDF is made as shown in the following pseudocode.</para>
-		/// </param>
-		/// <param name="KDF-Prepend = KDF_SECRET_PREPEND[0] + &#xA;    KDF_SECRET_PREPEND[1] + &#xA;    ... +&#xA;    KDF_SECRET_PREPEND[n]&#xA;&#xA;KDF-Append = KDF_SECRET_APPEND[0] + &#xA;    KDF_SECRET_APPEND[1] + &#xA;    ... + &#xA;    KDF_SECRET_APPEND[n]&#xA;&#xA;KDF-Output = Hash(&#xA;    KDF-Prepend + &#xA;    hSharedSecret + &#xA;    KDF-Append)">
 		/// <para>BCRYPT_KDF_HMAC (L"HMAC")</para>
 		/// <para>Use the Hash-Based Message Authentication Code (HMAC) key derivation function.</para>
 		/// <para>
@@ -674,8 +672,6 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>The call to the KDF is made as shown in the following pseudocode.</para>
-		/// </param>
-		/// <param name="KDF-Prepend = KDF_SECRET_PREPEND[0] + &#xA;    KDF_SECRET_PREPEND[1] + &#xA;    ... +&#xA;    KDF_SECRET_PREPEND[n]&#xA;&#xA;KDF-Append = KDF_SECRET_APPEND[0] + &#xA;    KDF_SECRET_APPEND[1] + &#xA;    ... + &#xA;    KDF_SECRET_APPEND[n]&#xA;&#xA;KDF-Output = HMAC-Hash(&#xA;    KDF_HMAC_KEY,&#xA;    KDF-Prepend + &#xA;    hSharedSecret + &#xA;    KDF-Append)">
 		/// <para>BCRYPT_KDF_TLS_PRF (L"TLS_PRF")</para>
 		/// <para>
 		/// Use the transport layer security (TLS) pseudo-random function (PRF) key derivation function. The size of the derived key is
@@ -703,8 +699,6 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>The call to the KDF is made as shown in the following pseudocode.</para>
-		/// </param>
-		/// <param name="KDF-Output = PRF(&#xA;    hSharedSecret, &#xA;    KDF_TLS_PRF_LABEL, &#xA;    KDF_TLS_PRF_SEED)">
 		/// <para>BCRYPT_KDF_SP80056A_CONCAT (L"SP800_56A_CONCAT")</para>
 		/// <para>Use the SP800-56A key derivation function.</para>
 		/// <para>
@@ -759,8 +753,6 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>The call to the KDF is made as shown in the following pseudocode.</para>
-		/// </param>
-		/// <param name="KDF-Output = SP_800-56A_KDF(&#xA;&#x9;   hSharedSecret,&#xA;&#x9;   KDF_ALGORITHMID,&#xA;&#x9;   KDF_PARTYUINFO,&#xA;&#x9;   KDF_PARTYVINFO,&#xA;&#x9;   KDF_SUPPPUBINFO,&#xA;&#x9;   KDF_SUPPPRIVINFO)">
 		/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value is not supported.</para>
 		/// </param>
 		/// <param name="pParameterList">
@@ -896,8 +888,6 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>The call to the KDF is made as shown in the following pseudocode.</para>
-		/// </param>
-		/// <param name="KDF-Prepend = KDF_SECRET_PREPEND[0] + &#xA;    KDF_SECRET_PREPEND[1] + &#xA;    ... +&#xA;    KDF_SECRET_PREPEND[n]&#xA;&#xA;KDF-Append = KDF_SECRET_APPEND[0] + &#xA;    KDF_SECRET_APPEND[1] + &#xA;    ... + &#xA;    KDF_SECRET_APPEND[n]&#xA;&#xA;KDF-Output = Hash(&#xA;    KDF-Prepend + &#xA;    hSharedSecret + &#xA;    KDF-Append)">
 		/// <para>BCRYPT_KDF_HMAC (L"HMAC")</para>
 		/// <para>Use the Hash-Based Message Authentication Code (HMAC) key derivation function.</para>
 		/// <para>
@@ -941,8 +931,6 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>The call to the KDF is made as shown in the following pseudocode.</para>
-		/// </param>
-		/// <param name="KDF-Prepend = KDF_SECRET_PREPEND[0] + &#xA;    KDF_SECRET_PREPEND[1] + &#xA;    ... +&#xA;    KDF_SECRET_PREPEND[n]&#xA;&#xA;KDF-Append = KDF_SECRET_APPEND[0] + &#xA;    KDF_SECRET_APPEND[1] + &#xA;    ... + &#xA;    KDF_SECRET_APPEND[n]&#xA;&#xA;KDF-Output = HMAC-Hash(&#xA;    KDF_HMAC_KEY,&#xA;    KDF-Prepend + &#xA;    hSharedSecret + &#xA;    KDF-Append)">
 		/// <para>BCRYPT_KDF_TLS_PRF (L"TLS_PRF")</para>
 		/// <para>
 		/// Use the transport layer security (TLS) pseudo-random function (PRF) key derivation function. The size of the derived key is
@@ -970,8 +958,6 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>The call to the KDF is made as shown in the following pseudocode.</para>
-		/// </param>
-		/// <param name="KDF-Output = PRF(&#xA;    hSharedSecret, &#xA;    KDF_TLS_PRF_LABEL, &#xA;    KDF_TLS_PRF_SEED)">
 		/// <para>BCRYPT_KDF_SP80056A_CONCAT (L"SP800_56A_CONCAT")</para>
 		/// <para>Use the SP800-56A key derivation function.</para>
 		/// <para>
@@ -1026,8 +1012,6 @@ namespace Vanara.PInvoke
 		/// </item>
 		/// </list>
 		/// <para>The call to the KDF is made as shown in the following pseudocode.</para>
-		/// </param>
-		/// <param name="KDF-Output = SP_800-56A_KDF(&#xA;&#x9;   hSharedSecret,&#xA;&#x9;   KDF_ALGORITHMID,&#xA;&#x9;   KDF_PARTYUINFO,&#xA;&#x9;   KDF_PARTYVINFO,&#xA;&#x9;   KDF_SUPPPUBINFO,&#xA;&#x9;   KDF_SUPPPRIVINFO)">
 		/// <para><c>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP:</c> This value is not supported.</para>
 		/// </param>
 		/// <param name="pParameterList">
@@ -3177,7 +3161,7 @@ namespace Vanara.PInvoke
 				/// </summary>
 				public uint cbBuffer;
 
-				/// <summary><para>A value that identifies the type of data that is contained by the buffer.</summary>
+				/// <summary>A value that identifies the type of data that is contained by the buffer.</summary>
 				public BufferType BufferType;
 
 				/// <summary>

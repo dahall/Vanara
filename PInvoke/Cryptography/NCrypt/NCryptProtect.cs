@@ -15,7 +15,7 @@ namespace Vanara.PInvoke
 		/// following syntax.
 		/// </para>
 		/// </summary>
-		/// <param name="*pvCallbackCtxt">
+		/// <param name="pvCallbackCtxt">
 		/// <para>Pointer to data that you can use to keep track of your application. The data is not modified by the data protection API.</para>
 		/// <para>
 		/// <c>Note</c> You can set a pointer to your context data in the <c>pvCallbackCtxt</c> member of the NCRYPT_PROTECT_STREAM_INFO
@@ -23,7 +23,7 @@ namespace Vanara.PInvoke
 		/// NCryptStreamOpenToUnprotect functions.
 		/// </para>
 		/// </param>
-		/// <param name="*pbData">
+		/// <param name="pbData">
 		/// <para>Pointer to a block of processed data that can be used by the application.</para>
 		/// </param>
 		/// <param name="cbData">

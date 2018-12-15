@@ -326,7 +326,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Winbase.h", MSDNShortId = "aa375140")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DeactivateActCtx(DeactivateActCtxFlag dwFlags, IntPtr lpCookie);
+		public static extern bool DeactivateActCtx(DeactivateActCtxFlag dwFlags, IntPtr ulCookie);
 
 		/// <summary>
 		/// The <c>FindActCtxSectionGuid</c> function retrieves information on a specific GUID in the current activation context and returns a
@@ -811,7 +811,6 @@ namespace Vanara.PInvoke
 		public static extern void ReleaseActCtx(HACTCTX hActCtx);
 
 		/// <summary>Removes the active instance of an application from the recovery list.</summary>
-		/// <param name="RegisterApplicationRecoveryCallback"></param>
 		/// <returns>
 		/// <para>This function returns <c>S_OK</c> on success or one of the following error codes.</para>
 		/// <para>

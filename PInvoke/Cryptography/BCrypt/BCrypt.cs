@@ -9866,7 +9866,7 @@ namespace Vanara.PInvoke
 			protected override bool InternalReleaseHandle() => BCryptDestroyHash(this).Succeeded;
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="BCRYPT_KEY_HANDLE"/> that is disposed using <see cref="BCryptDestroyKey."/>.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="BCRYPT_KEY_HANDLE"/> that is disposed using <see cref="BCryptDestroyKey"/>.</summary>
 		public class SafeBCRYPT_KEY_HANDLE : HANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeBCRYPT_KEY_HANDLE"/> class and assigns an existing handle.</summary>

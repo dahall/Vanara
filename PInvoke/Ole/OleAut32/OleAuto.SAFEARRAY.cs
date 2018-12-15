@@ -1167,7 +1167,7 @@ namespace Vanara.PInvoke
 		// *psa, LONG *rgIndices, void *pv );
 		[DllImport(Lib.OleAut32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("oleauto.h", MSDNShortId = "7c837b4f-d319-4d98-934a-b585fe521bf8")]
-		public static extern HRESULT SafeArrayPutElement(SafeSAFEARRAY psa, [MarshalAs(UnmanagedType.LPArray)] int[] rgIndicies, [In] IntPtr pv);
+		public static extern HRESULT SafeArrayPutElement(SafeSAFEARRAY psa, [MarshalAs(UnmanagedType.LPArray)] int[] rgIndices, [In] IntPtr pv);
 
 		/// <summary>
 		/// <para>Changes the right-most (least significant) bound of the specified safe array.</para>

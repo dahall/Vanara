@@ -14,7 +14,7 @@
     <RootNamespace>Vanara.Extensions</RootNamespace>
     <Authors>David Hall</Authors>
     <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/dahall/vanara/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIconUrl>https://raw.githubusercontent.com/dahall/Vanara/master/docs/icons/Vanara48x48.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
     <PackageTags>pinvoke vanara net-extensions interop</PackageTags>
