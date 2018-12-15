@@ -1,5 +1,4 @@
-﻿#if !(NET20 || NET35 || NET40)
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
@@ -451,4 +450,3 @@ namespace Vanara.Windows.Forms
 		public string StatusText { get; set; }
 	}
 }
-#endif

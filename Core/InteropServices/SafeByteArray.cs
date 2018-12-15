@@ -11,10 +11,7 @@ namespace Vanara.InteropServices
 	/// <seealso cref="System.ICloneable"/>
 	/// <seealso cref="System.Collections.IList"/>
 	/// <seealso cref="SafeHGlobalHandle"/>
-	public class SafeByteArray : SafeMemoryHandle<CoTaskMemoryMethods>, IList<byte>, ICloneable, IList
-#if !(NET20 || NET35)
-		, IStructuralComparable, IStructuralEquatable
-#endif
+	public class SafeByteArray : SafeMemoryHandle<CoTaskMemoryMethods>, IList<byte>, ICloneable, IList, IStructuralComparable, IStructuralEquatable
 	{
 		/// <summary>Initializes a new instance of the <see cref="SafeByteArray"/> class from a copy of a managed byte array.</summary>
 		/// <param name="array">The array of bytes to copy.</param>
@@ -26,12 +23,11 @@ namespace Vanara.InteropServices
 
 		/// <summary>Initializes a new instance of the <see cref="SafeByteArray"/> class and allocates <paramref name="byteCount"/> bytes.</summary>
 		/// <param name="byteCount">The byte count to allocate.</param>
-		public SafeByteArray(int byteCount) : base(byteCount)
-		{
-			Zero();
-		}
+		public SafeByteArray(int byteCount) : base(byteCount) => Zero();
 
-		/// <summary>Initializes a new instance of the <see cref="SafeByteArray"/> class by copying the bytes from another unmanaged array.</summary>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SafeByteArray"/> class by copying the bytes from another unmanaged array.
+		/// </summary>
 		/// <param name="src">Another unmanaged array.</param>
 		public SafeByteArray(SafeByteArray src) : base(src?.Count ?? 0)
 		{
@@ -53,11 +49,16 @@ namespace Vanara.InteropServices
 		/// <summary>Gets a value indicating whether the <see cref="T:System.Collections.IList"/> has a fixed size.</summary>
 		bool IList.IsFixedSize => true;
 
-		/// <summary>Gets a value indicating whether access to the <see cref="T:System.Collections.ICollection"/> is synchronized (thread safe).</summary>
+		/// <summary>
+		/// Gets a value indicating whether access to the <see cref="T:System.Collections.ICollection"/> is synchronized (thread safe).
+		/// </summary>
 		bool ICollection.IsSynchronized => true;
 
 		/// <summary>Gets an object that can be used to synchronize access to the <see cref="T:System.Collections.ICollection"/>.</summary>
 		object ICollection.SyncRoot => this;
+
+		[ExcludeFromCodeCoverage]
+		private new int Size { get => base.Size; set => base.Size = value; }
 
 		/// <summary>Gets or sets the <see cref="byte"/> at the specified index.</summary>
 		/// <value>The <see cref="byte"/>.</value>
@@ -89,38 +90,28 @@ namespace Vanara.InteropServices
 			set => this[index] = (byte)value;
 		}
 
-		[ExcludeFromCodeCoverage]
-		private new int Size { get => base.Size; set => base.Size = value; }
-
 		/// <summary>Removes all items from the <see cref="T:System.Collections.Generic.ICollection{T}"/>.</summary>
 		/// <exception cref="System.NotSupportedException"></exception>
-		public void Clear()
-		{
-			Size = 0;
-		}
+		public void Clear() => Size = 0;
 
 		/// <summary>Creates a new object that is a copy of the current instance.</summary>
 		/// <returns>A new object that is a copy of this instance.</returns>
-		public object Clone()
-		{
-			return new SafeByteArray(this);
-		}
+		public object Clone() => new SafeByteArray(this);
 
 		/// <summary>Determines whether the <see cref="T:System.Collections.Generic.ICollection{T}"/> contains a specific value.</summary>
 		/// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection{T}"/>.</param>
-		/// <returns>true if <paramref name="item"/> is found in the <see cref="T:System.Collections.Generic.ICollection{T}"/>; otherwise, false.</returns>
-		public bool Contains(byte item)
-		{
-			return IndexOf(item) != -1;
-		}
+		/// <returns>
+		/// true if <paramref name="item"/> is found in the <see cref="T:System.Collections.Generic.ICollection{T}"/>; otherwise, false.
+		/// </returns>
+		public bool Contains(byte item) => IndexOf(item) != -1;
 
 		/// <summary>
-		/// Copies the elements of the <see cref="T:System.Collections.Generic.ICollection{T}"/> to an <see cref="T:System.Array"/>, starting at a particular
-		/// <see cref="T:System.Array"/> index.
+		/// Copies the elements of the <see cref="T:System.Collections.Generic.ICollection{T}"/> to an <see cref="T:System.Array"/>, starting
+		/// at a particular <see cref="T:System.Array"/> index.
 		/// </summary>
 		/// <param name="array">
-		/// The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from
-		/// <see cref="T:System.Collections.Generic.ICollection{T}"/> . The <see cref="T:System.Array"/> must have zero-based indexing.
+		/// The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from <see
+		/// cref="T:System.Collections.Generic.ICollection{T}"/> . The <see cref="T:System.Array"/> must have zero-based indexing.
 		/// </param>
 		/// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
 		/// <exception cref="System.ArgumentNullException">array</exception>
@@ -166,28 +157,28 @@ namespace Vanara.InteropServices
 
 		/// <summary>Adds an item to the <see cref="T:System.Collections.IList"/>.</summary>
 		/// <param name="value">The object to add to the <see cref="T:System.Collections.IList"/>.</param>
-		/// <returns>The position into which the new element was inserted, or -1 to indicate that the item was not inserted into the collection.</returns>
+		/// <returns>
+		/// The position into which the new element was inserted, or -1 to indicate that the item was not inserted into the collection.
+		/// </returns>
 		int IList.Add(object value) => throw new NotSupportedException();
 
 		/// <summary>Adds an item to the <see cref="T:System.Collections.Generic.ICollection{T}"/>.</summary>
 		/// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection{T}"/>.</param>
 		/// <exception cref="System.NotSupportedException"></exception>
 		[ExcludeFromCodeCoverage]
-		void ICollection<byte>.Add(byte item)
-		{
-			((IList)this).Add(item);
-		}
+		void ICollection<byte>.Add(byte item) => ((IList)this).Add(item);
 
-#if !(NET20 || NET35)
 		/// <summary>
 		/// Determines whether the current collection object precedes, occurs in the same position as, or follows another object in the sort order.
 		/// </summary>
 		/// <param name="other">The object to compare with the current instance.</param>
-		/// <param name="comparer">An object that compares members of the current collection object with the corresponding members of <paramref name="other"/>.</param>
+		/// <param name="comparer">
+		/// An object that compares members of the current collection object with the corresponding members of <paramref name="other"/>.
+		/// </param>
 		/// <returns>
-		/// An integer that indicates the relationship of the current collection object to <paramref name="other"/>, as shown in the following table.Return
-		/// valueDescription-1The current instance precedes <paramref name="other"/>.0The current instance and <paramref name="other"/> are equal.1The current
-		/// instance follows <paramref name="other"/>.
+		/// An integer that indicates the relationship of the current collection object to <paramref name="other"/>, as shown in the
+		/// following table.Return valueDescription-1The current instance precedes <paramref name="other"/>.0The current instance and
+		/// <paramref name="other"/> are equal.1The current instance follows <paramref name="other"/>.
 		/// </returns>
 		int IStructuralComparable.CompareTo(object other, IComparer comparer)
 		{
@@ -212,23 +203,19 @@ namespace Vanara.InteropServices
 			}
 			return 0;
 		}
-#endif
 
 		/// <summary>Determines whether the <see cref="T:System.Collections.IList"/> contains a specific value.</summary>
 		/// <param name="value">The object to locate in the <see cref="T:System.Collections.IList"/>.</param>
 		/// <returns>true if the <see cref="T:System.Object"/> is found in the <see cref="T:System.Collections.IList"/>; otherwise, false.</returns>
-		bool IList.Contains(object value)
-		{
-			return Contains((byte)value);
-		}
+		bool IList.Contains(object value) => Contains((byte)value);
 
 		/// <summary>
-		/// Copies the elements of the <see cref="T:System.Collections.ICollection"/> to an <see cref="T:System.Array"/>, starting at a particular
-		/// <see cref="T:System.Array"/> index.
+		/// Copies the elements of the <see cref="T:System.Collections.ICollection"/> to an <see cref="T:System.Array"/>, starting at a
+		/// particular <see cref="T:System.Array"/> index.
 		/// </summary>
 		/// <param name="array">
-		/// The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from <see cref="T:System.Collections.ICollection"/>.
-		/// The <see cref="T:System.Array"/> must have zero-based indexing.
+		/// The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from <see
+		/// cref="T:System.Collections.ICollection"/>. The <see cref="T:System.Array"/> must have zero-based indexing.
 		/// </param>
 		/// <param name="index">The zero-based index in <paramref name="array"/> at which copying begins.</param>
 		/// <exception cref="System.ArgumentNullException">array</exception>
@@ -241,7 +228,6 @@ namespace Vanara.InteropServices
 				array.SetValue(this[i], i + index);
 		}
 
-#if !(NET20 || NET35)
 		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
 		/// <param name="other">The <see cref="System.Object"/> to compare with this instance.</param>
 		/// <param name="comparer">The comparer.</param>
@@ -274,13 +260,11 @@ namespace Vanara.InteropServices
 			}
 			return true;
 		}
-#endif
 
 		/// <summary>Returns an enumerator that iterates through a collection.</summary>
 		/// <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-#if !(NET20 || NET35)
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <param name="comparer">The comparer.</param>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
@@ -295,7 +279,6 @@ namespace Vanara.InteropServices
 				ret = CombineHashCodes(ret, comparer.GetHashCode(this[i]));
 			return ret;
 		}
-#endif
 
 		/// <summary>Determines the index of a specific item in the <see cref="T:System.Collections.IList"/>.</summary>
 		/// <param name="value">The object to locate in the <see cref="T:System.Collections.IList"/>.</param>
@@ -306,59 +289,39 @@ namespace Vanara.InteropServices
 		/// <param name="index">The zero-based index at which <paramref name="value"/> should be inserted.</param>
 		/// <param name="value">The object to insert into the <see cref="T:System.Collections.IList"/>.</param>
 		[ExcludeFromCodeCoverage]
-		void IList.Insert(int index, object value)
-		{
-			((IList<byte>)this).Insert(index, (byte)value);
-		}
+		void IList.Insert(int index, object value) => ((IList<byte>)this).Insert(index, (byte)value);
 
 		/// <summary>Inserts an item to the <see cref="T:System.Collections.Generic.IList{T}"/> at the specified index.</summary>
 		/// <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param>
 		/// <param name="item">The object to insert into the <see cref="T:System.Collections.Generic.IList{T}"/>.</param>
 		/// <exception cref="System.NotSupportedException"></exception>
-		void IList<byte>.Insert(int index, byte item)
-		{
-			throw new NotSupportedException();
-		}
+		void IList<byte>.Insert(int index, byte item) => throw new NotSupportedException();
 
 		/// <summary>Removes the first occurrence of a specific object from the <see cref="T:System.Collections.IList"/>.</summary>
 		/// <param name="value">The object to remove from the <see cref="T:System.Collections.IList"/>.</param>
 		[ExcludeFromCodeCoverage]
-		void IList.Remove(object value)
-		{
-			((ICollection<byte>)this).Remove((byte)value);
-		}
+		void IList.Remove(object value) => ((ICollection<byte>)this).Remove((byte)value);
 
 		/// <summary>Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection{T}"/>.</summary>
 		/// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection{T}"/>.</param>
 		/// <returns>
-		/// true if <paramref name="item"/> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection{T}"/>; otherwise, false. This
-		/// method also returns false if <paramref name="item"/> is not found in the original <see cref="T:System.Collections.Generic.ICollection{T}"/>.
+		/// true if <paramref name="item"/> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection{T}"/>;
+		/// otherwise, false. This method also returns false if <paramref name="item"/> is not found in the original <see cref="T:System.Collections.Generic.ICollection{T}"/>.
 		/// </returns>
 		/// <exception cref="System.NotSupportedException"></exception>
-		bool ICollection<byte>.Remove(byte item)
-		{
-			throw new NotSupportedException();
-		}
+		bool ICollection<byte>.Remove(byte item) => throw new NotSupportedException();
 
 		/// <summary>Removes the <see cref="T:System.Collections.Generic.IList{T}"/> item at the specified index.</summary>
 		/// <param name="index">The zero-based index of the item to remove.</param>
 		/// <exception cref="System.NotSupportedException"></exception>
-		void IList.RemoveAt(int index)
-		{
-			throw new NotSupportedException();
-		}
+		void IList.RemoveAt(int index) => throw new NotSupportedException();
+
 		/// <summary>Removes the <see cref="T:System.Collections.Generic.IList{T}"/> item at the specified index.</summary>
 		/// <param name="index">The zero-based index of the item to remove.</param>
 		[ExcludeFromCodeCoverage]
-		void IList<byte>.RemoveAt(int index)
-		{
-			((IList)this).RemoveAt(index);
-		}
+		void IList<byte>.RemoveAt(int index) => ((IList)this).RemoveAt(index);
 
-		private static int CombineHashCodes(int h1, int h2)
-		{
-			return ((h1 << 5) + h1) ^ h2;
-		}
+		private static int CombineHashCodes(int h1, int h2) => ((h1 << 5) + h1) ^ h2;
 
 		private static void CopyMemory(IntPtr src, IntPtr dest, int length)
 		{

@@ -102,9 +102,9 @@ namespace Vanara.IO
 		}
 
 		/// <summary> Removes the first occurrence of a specific object from the <see cref="ICollection{T}" />. </summary> <param name="item">The object to
-		/// remove from the <see cref=""ICollection{T}" />.</param> <returns> true if <paramref name="item" /> was successfully removed from the <see
-		/// cref=""ICollection{T}" />; otherwise, false. This method also returns false if <paramref name="item" /> is not found in the original <see
-		/// cref=""ICollection{T}" />. </returns> <exception cref="ArgumentNullException">item</exception>
+		/// remove from the <see cref="ICollection{T}" />.</param> <returns> true if <paramref name="item" /> was successfully removed from the <see
+		/// cref="ICollection{T}" />; otherwise, false. This method also returns false if <paramref name="item" /> is not found in the original <see
+		/// cref="ICollection{T}" />. </returns> <exception cref="ArgumentNullException">item</exception>
 		public bool Remove(BackgroundCopyJob item)
 		{
 			if (item == null) throw new ArgumentNullException(nameof(item));
@@ -116,7 +116,7 @@ namespace Vanara.IO
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 		public override string ToString() => $"Jobs: {Count}";
 
-		/// <summary>Adds an item to the <see cref=""ICollection{T}" />.</summary> <param name="item">The object to add to the <see cref=""ICollection{T}" />.</param>
+		/// <summary>Adds an item to the <see cref="ICollection{T}" />.</summary> <param name="item">The object to add to the <see cref="ICollection{T}" />.</param>
 		void ICollection<BackgroundCopyJob>.Add(BackgroundCopyJob item)
 		{
 		}
@@ -127,9 +127,9 @@ namespace Vanara.IO
 		/// <exception cref="NotImplementedException"></exception>
 		bool ICollection<BackgroundCopyJob>.Contains(BackgroundCopyJob item) => Contains(item.ID);
 
-		/// <summary> Copies the elements of the <see cref=""ICollection{T}" /> to an <see cref="Array" />, starting at a particular <see cref="Array" /> index.
+		/// <summary> Copies the elements of the <see cref="ICollection{T}" /> to an <see cref="Array" />, starting at a particular <see cref="Array" /> index.
 		/// </summary> <param name="array">The one-dimensional <see cref="Array" /> that is the destination of the elements copied from <see
-		/// cref=""ICollection{T}" />. The <see cref="Array" /> must have zero-based indexing.</param> <param name="arrayIndex">The zero-based index in <paramref
+		/// cref="ICollection{T}" />. The <see cref="Array" /> must have zero-based indexing.</param> <param name="arrayIndex">The zero-based index in <paramref
 		/// name="array" /> at which copying begins.</param> <exception cref="NotImplementedException"></exception>
 		void ICollection<BackgroundCopyJob>.CopyTo(BackgroundCopyJob[] array, int arrayIndex)
 		{

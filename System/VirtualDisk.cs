@@ -7,10 +7,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Text;
-#if !(NET20 || NET35 || NET40)
 using System.Threading;
 using System.Threading.Tasks;
-#endif
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using Vanara.PInvoke;
@@ -530,7 +528,6 @@ namespace Vanara.IO
 			ResizeVirtualDisk(Handle, flags, param, IntPtr.Zero).ThrowIfFailed();
 		}
 
-#if !(NET20 || NET35 || NET40)
 		/// <summary>Creates a virtual hard disk (VHD) image file, either using default parameters or using an existing VHD or physical disk.</summary>
 		/// <param name="path">A valid file path that represents the path to the new virtual disk image file.</param>
 		/// <param name="sourcePath">
@@ -569,7 +566,11 @@ namespace Vanara.IO
 					return err;
 				}
 			);
+#if (NET20 || NET35)
+			if (!b) throw new Theraot.Core.NewOperationCanceledException(cancellationToken);
+#else
 			if (!b) throw new OperationCanceledException(cancellationToken);
+#endif
 			return new VirtualDisk(new SafeVIRTUAL_DISK_HANDLE(h), (OPEN_VIRTUAL_DISK_VERSION)param.Version);
 		}
 
@@ -648,10 +649,17 @@ namespace Vanara.IO
 						break;
 				}
 				if (prog.CurrentValue == prog.CompletionValue) return true;
+#if NET40
+				if (cancellationToken == null)
+					await TaskEx.Delay(250);
+				else
+					await TaskEx.Delay(250, cancellationToken);
+#else
 				if (cancellationToken == null)
 					await Task.Delay(250);
 				else
 					await Task.Delay(250, cancellationToken);
+#endif
 			}
 		}
 
@@ -730,7 +738,6 @@ namespace Vanara.IO
 
 			void ReportProgress(int percent) { progress.Report(new Tuple<int, string>(percent, $"Compacting VHD volume \"{loc}\"")); }
 		}*/
-#endif
 
 		private static SafeSecurityDescriptor FileSecToSd(FileSecurity sec)
 		{

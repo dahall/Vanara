@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
-#if !(NET20 || NET35 || NET40)
 using System.Threading;
 using System.Threading.Tasks;
-#endif
 using Vanara.PInvoke;
 using static Vanara.PInvoke.BITS;
 
@@ -63,8 +61,6 @@ namespace Vanara.IO
 			CopyTemplate(sourceFileName, destFileName, () => false, System.Threading.Thread.Sleep, null, f => f.Add(sourceFileName, destFileName));
 		}
 
-#if !(NET20 || NET35 || NET40)
-
 		/// <summary>Copies an existing file to a new file using BITS. Overwriting a file of the same name is not allowed.</summary>
 		/// <param name="sourceFileName">The file to copy.</param>
 		/// <param name="destFileName">The name of the destination file.</param>
@@ -73,12 +69,15 @@ namespace Vanara.IO
 		/// <returns>A task that represents the asynchronous copy operation.</returns>
 		public static async Task CopyAsync(string sourceFileName, string destFileName, CancellationToken cancellationToken, IProgress<Tuple<BackgroundCopyJobState, byte>> progress)
 		{
-			await Task.Run(() => CopyTemplate(sourceFileName, destFileName, () => cancellationToken.IsCancellationRequested,
+#if NET40
+			await TaskEx.Run(() => CopyTemplate(sourceFileName, destFileName, () => cancellationToken.IsCancellationRequested,
 				Thread.Sleep, (s, p) => progress?.Report(new Tuple<BackgroundCopyJobState, byte>(s,p)), f => f.Add(sourceFileName, destFileName)), cancellationToken);
+#else
+			await Task.Run(() => CopyTemplate(sourceFileName, destFileName, () => cancellationToken.IsCancellationRequested,
+				Thread.Sleep, (s, p) => progress?.Report(new Tuple<BackgroundCopyJobState, byte>(s, p)), f => f.Add(sourceFileName, destFileName)), cancellationToken);
+#endif
 			cancellationToken.ThrowIfCancellationRequested();
 		}
-
-#endif
 
 		private static IBackgroundCopyManager IMgr { get; set; }
 
