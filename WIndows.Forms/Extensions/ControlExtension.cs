@@ -48,7 +48,7 @@ namespace Vanara.Extensions
 		/// <typeparam name="T">The <see cref="Control"/> based <see cref="Type"/> of the parent control to retrieve.</typeparam>
 		/// <param name="ctrl">This control.</param>
 		/// <returns>The parent control matching T or null if not found.</returns>
-		public static T GetParent<T>(this Control ctrl) where T : Control, new()
+		public static T GetParent<T>(this Control ctrl) where T : class
 		{
 			var p = ctrl.Parent;
 			while (p != null & !(p is T))
@@ -60,7 +60,7 @@ namespace Vanara.Extensions
 		/// <typeparam name="T">The <see cref="Control"/> based <see cref="Type"/> of the parent control to retrieve.</typeparam>
 		/// <param name="ctrl">This control.</param>
 		/// <returns>The top-most parent control matching T or null if not found.</returns>
-		public static T GetTopMostParent<T>(this Control ctrl) where T : Control, new()
+		public static T GetTopMostParent<T>(this Control ctrl) where T : class
 		{
 			var stack = new System.Collections.Generic.Stack<Control>();
 			var p = ctrl.Parent;
