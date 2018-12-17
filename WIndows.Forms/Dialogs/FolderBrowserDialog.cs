@@ -508,9 +508,9 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
-		/// <summary>Gets the path or name of the folder selected by the user.</summary>
-		[DefaultValue(""), Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-		public string SelectedItem { get; private set; } = "";
+		/// <summary>Gets or sets the path or name of the folder selected by the user.</summary>
+		[DefaultValue(""), Category("Data"), Localizable(true), Description("The path or name of the selected folder")]
+		public string SelectedItem { get; set; } = "";
 
 		/// <summary>Gets the image from the system image list associated with the selected item.</summary>
 		/// <value>The selected item's image.</value>
