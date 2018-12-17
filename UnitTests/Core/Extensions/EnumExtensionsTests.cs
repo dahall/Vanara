@@ -29,8 +29,6 @@ namespace Vanara.Extensions.Tests
 
 			Assert.DoesNotThrow(() => CheckHasValue(ConsoleColor.Blue));
 			Assert.Throws<InvalidEnumArgumentException>(() => CheckHasValue((ConsoleColor)30));
-
-			Assert.Throws<ArgumentException>(() => CheckHasValue(30));
 		}
 
 		[Test()]
@@ -70,7 +68,6 @@ namespace Vanara.Extensions.Tests
 			Assert.That(test.IsFlagSet(TestEnum.Value3), Is.False);
 
 			Assert.Throws<ArgumentException>(() => ConsoleColor.Blue.IsFlagSet(ConsoleColor.Blue));
-			Assert.Throws<ArgumentException>(() => DateTime.Now.IsFlagSet(DateTime.Today));
 		}
 
 		[Test()]
