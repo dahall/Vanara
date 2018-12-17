@@ -8,8 +8,10 @@ using Vanara.Extensions;
 
 namespace Vanara.Windows.Forms.Design
 {
-	// UITypeEditor for flag enums
-	public class FlagEnumUIEditor<TE> : UITypeEditor where TE : struct, IConvertible
+	/// <summary>A <see cref="UITypeEditor"/> for editing flag enums.</summary>
+	/// <typeparam name="TE">The type of the enum.</typeparam>
+	/// <seealso cref="System.Drawing.Design.UITypeEditor"/>
+	public class FlagEnumUIEditor<TE> : UITypeEditor where TE : struct, System.Enum
 	{
 		private readonly FlagCheckedListBox listBox;
 
