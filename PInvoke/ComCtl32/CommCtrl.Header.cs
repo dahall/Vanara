@@ -529,15 +529,6 @@ namespace Vanara.PInvoke
 			HDS_OVERFLOW = 0x1000,
 		}
 
-		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(HWND hWnd, HeaderMessage message, int wParam, [In, Out] HDITEM item);
-
-		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(HWND hWnd, HeaderMessage message, int wParam, [In, Out] HDLAYOUT layout);
-
-		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(HWND hWnd, HeaderMessage message, int wParam, [In, Out] HDHITTESTINFO hittest);
-
 		/// <summary>Contains information about header control text filters.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb775251")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]

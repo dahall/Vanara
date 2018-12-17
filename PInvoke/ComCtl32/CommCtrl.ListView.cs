@@ -473,12 +473,20 @@ namespace Vanara.PInvoke
 			LVIF_ALL = 0x0001FFFF
 		}
 
+		/// <summary>Used by LVM_GETITEMINDEXRECT.</summary>
 		[PInvokeData("Commctrl.h", MSDNShortId = "bb761385")]
 		public enum ListViewItemRect
 		{
+			/// <summary>Returns the bounding rectangle of the entire subitem, including the icon and label.</summary>
 			LVIR_BOUNDS,
+
+			/// <summary>Returns the bounding rectangle of the icon or small icon of the subitem.</summary>
 			LVIR_ICON,
+
+			/// <summary>Returns the bounding rectangle of the subitem text.</summary>
 			LVIR_LABEL,
+
+			/// <summary>Returns the union of the LVIR_ICON and LVIR_LABEL rectangles, but excludes columns in report view.</summary>
 			LVIR_SELECTBOUNDS
 		}
 
@@ -804,72 +812,197 @@ namespace Vanara.PInvoke
 			LVTVIM_LABELMARGIN = 0x00000004,
 		}
 
-		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, [In, Out] LVBKIMAGE bkImage);
-
-		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, [In, Out] LVCOLUMN column);
-
-		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, ref LVFINDINFO findInfo);
-
-		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, [In, Out] LVGROUP group);
-
-		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, ref LVGROUPMETRICS metrics);
-
-		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, ref LVHITTESTINFO hitTestInfo);
-
-		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, ref LVINSERTMARK insertMark);
-
-		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, ref Point wParam, ref LVINSERTMARK insertMark);
-
-		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage message, int wParam, [In, Out] LVITEM item);
-
 		/// <summary>
 		/// <para>
-		/// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified
-		/// window and does not return until the window procedure has processed the message.
-		/// </para>
-		/// <para>
-		/// To send a message and return immediately, use the <c>SendMessageCallback</c> or <c>SendNotifyMessage</c> function. To post a
-		/// message to a thread's message queue and return immediately, use the <c>PostMessage</c> or <c>PostThreadMessage</c> function.
+		/// Gets the bounding rectangle for all or part of a subitem in the current view of a specified list-view control. Use this macro or
+		/// send the LVM_GETITEMINDEXRECT message explicitly.
 		/// </para>
 		/// </summary>
-		/// <param name="hWnd">
+		/// <param name="hwnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the list-view control.</para>
+		/// </param>
+		/// <param name="plvii">
+		/// <para>Type: <c>LVITEMINDEX*</c></para>
 		/// <para>
-		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c>
-		/// ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows,
-		/// overlapped windows, and pop-up windows; but the message is not sent to child windows.
-		/// </para>
-		/// <para>
-		/// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of
-		/// lesser or equal integrity level.
+		/// A pointer to a LVITEMINDEX structure for the parent item of the subitem. The caller is responsible for allocating this structure
+		/// and setting its members. plvii must not be <c>NULL</c>.
 		/// </para>
 		/// </param>
-		/// <param name="Msg">
-		/// <para>The message to be sent.</para>
-		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+		/// <param name="iSubItem">
+		/// <para>Type: <c>LONG</c></para>
+		/// <para>The index of the subitem.</para>
 		/// </param>
-		/// <param name="wParam">Additional message-specific information.</param>
-		/// <param name="lParam">Additional message-specific information.</param>
-		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		// LRESULT WINAPI SendMessage( _In_ HWND hWnd, _In_ UINT Msg, _In_ WPARAM wParam, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx
-		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[System.Security.SecurityCritical]
-		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage Msg, [In, Out] ref LVITEMINDEX wParam, int lParam);
+		/// <param name="code">
+		/// <para>Type: <c>LONG</c></para>
+		/// <para>
+		/// The portion of the list-view subitem for which to retrieve the bounding rectangle. This parameter must be one of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>LVIR_BOUNDS</term>
+		/// <term>Returns the bounding rectangle of the entire subitem, including the icon and label.</term>
+		/// </item>
+		/// <item>
+		/// <term>LVIR_ICON</term>
+		/// <term>Returns the bounding rectangle of the icon or small icon of the subitem.</term>
+		/// </item>
+		/// <item>
+		/// <term>LVIR_LABEL</term>
+		/// <term>Returns the bounding rectangle of the subitem text.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="prc">
+		/// <para>
+		/// A Rectangle structure to receive the coordinates.
+		/// </para>
+		/// </param>
+		/// <returns>Returns TRUE if successful, or FALSE otherwise.</returns>
+		/// <remarks>
+		/// <para>
+		/// If iSubItem is zero, this macro returns the coordinates of the rectangle to the item pointed to by plvii. The value
+		/// LVIR_SELECTBOUNDS for the parameter code is not supported.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/commctrl/nf-commctrl-listview_getitemindexrect
+		[PInvokeData("commctrl.h", MSDNShortId = "listview_getitemindexrect")]
+		public static bool ListView_GetItemIndexRect(HWND hwnd, in LVITEMINDEX plvii, int iSubItem, ListViewItemRect code, out Rectangle prc)
+		{
+			var rc = new PRECT((int)code, iSubItem, 0, 0);
+			var lr = SendMessage(hwnd, ListViewMessage.LVM_GETITEMINDEXRECT, plvii, rc);
+			prc = lr == IntPtr.Zero ? Rectangle.Empty : (Rectangle)rc;
+			return lr != IntPtr.Zero;
+		}
 
-		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage Msg, int wParam, ref LVTILEVIEWINFO tileViewInfo);
+		/// <summary>
+		/// Gets the index of the item in a particular list-view control that has the specified properties and relationship to another
+		/// specific item. Use this macro or send the <c>LVM_GETNEXTITEMINDEX</c> message explicitly.
+		/// </summary>
+		/// <param name="hwnd">
+		/// <para>Type: <c><c>HWND</c></c></para>
+		/// <para>A handle to the list-view control.</para>
+		/// </param>
+		/// <param name="plvii">
+		/// <para>Type: <c><c>LVITEMINDEX</c>*</c></para>
+		/// <para>
+		/// A pointer to the <c>LVITEMINDEX</c> structure with which the item begins the search, or -1 to find the first item that matches
+		/// the specified flags. The calling process is responsible for allocating this structure and setting its members.
+		/// </para>
+		/// </param>
+		/// <param name="flags">
+		/// <para>Type: <c><c>LPARAM</c></c></para>
+		/// <para>The relationship to the item specified in parameter plvii. This can be one or a combination of the following values:</para>
+		/// <para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>Searches by index.</term>
+		/// <term/>
+		/// </item>
+		/// <item>
+		/// <term>LVNI_ALL</term>
+		/// <term>Searches for a subsequent item by index, the default value.</term>
+		/// </item>
+		/// <item>
+		/// <term>Searches by physical relationship to the index of the item where the search is to begin.</term>
+		/// <term/>
+		/// </item>
+		/// <item>
+		/// <term>LVNI_ABOVE</term>
+		/// <term>Searches for an item that is above the specified item.</term>
+		/// </item>
+		/// <item>
+		/// <term>LVNI_BELOW</term>
+		/// <term>Searches for an item that is below the specified item.</term>
+		/// </item>
+		/// <item>
+		/// <term>LVNI_TOLEFT</term>
+		/// <term>Searches for an item to the left of the specified item.</term>
+		/// </item>
+		/// <item>
+		/// <term>LVNI_PREVIOUS</term>
+		/// <term>
+		/// Windows Vista and later: Searches for the item that is previous to the specified item. The LVNI_PREVIOUS flag is not directional
+		/// (LVNI_ABOVE will find the item positioned above, while LVNI_PREVIOUS will find the item ordered before.) The LVNI_PREVIOUS flag
+		/// essentially reverses the logic of the search performed via the LVM_GETNEXTITEM or LVM_GETNEXTITEMINDEX messages.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LVNI_TORIGHT</term>
+		/// <term>Searches for an item to the right of the specified item.</term>
+		/// </item>
+		/// <item>
+		/// <term>LVNI_DIRECTIONMASK</term>
+		/// <term>Windows Vista and later: A directional flag mask with value as follows: LVNI_ABOVE | LVNI_BELOW | LVNI_TOLEFT | LVNI_TORIGHT.</term>
+		/// </item>
+		/// <item>
+		/// <term>The state of the item to find can be specified with one or a combination of the following values:</term>
+		/// <term/>
+		/// </item>
+		/// <item>
+		/// <term>LVNI_CUT</term>
+		/// <term>The item has the LVIS_CUT state flag set.</term>
+		/// </item>
+		/// <item>
+		/// <term>LVNI_DROPHILITED</term>
+		/// <term>The item has the LVIS_DROPHILITED state flag set</term>
+		/// </item>
+		/// <item>
+		/// <term>LVNI_FOCUSED</term>
+		/// <term>The item has the LVIS_FOCUSED state flag set.</term>
+		/// </item>
+		/// <item>
+		/// <term>LVNI_SELECTED</term>
+		/// <term>The item has the LVIS_SELECTED state flag set.</term>
+		/// </item>
+		/// <item>
+		/// <term>LVNI_STATEMASK</term>
+		/// <term>Windows Vista and later: A state flag mask with value as follows: LVNI_FOCUSED | LVNI_SELECTED | LVNI_CUT | LVNI_DROPHILITED.</term>
+		/// </item>
+		/// <item>
+		/// <term>Searches by appearance of items or by group.</term>
+		/// <term/>
+		/// </item>
+		/// <item>
+		/// <term>LVNI_VISIBLEORDER</term>
+		/// <term>Windows Vista and later: Search the visible order.</term>
+		/// </item>
+		/// <item>
+		/// <term>LVNI_VISIBLEONLY</term>
+		/// <term>Windows Vista and later: Search the visible items.</term>
+		/// </item>
+		/// <item>
+		/// <term>LVNI_SAMEGROUPONLY</term>
+		/// <term>Windows Vista and later: Search the current group.</term>
+		/// </item>
+		/// <item>
+		/// <term>If an item does not have all of the specified state flags set, the search continues with the next item.</term>
+		/// <term/>
+		/// </item>
+		/// </list>
+		/// </para>
+		/// </param>
+		/// <returns>Returns <c>TRUE</c> if successful, or <c>FALSE</c> otherwise.</returns>
+		// BOOL ListView_GetNextItemIndex( [in] HWND hwnd, [in, out] LVITEMINDEX *plvii, LPARAM flags);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/bb774986(v=vs.85).aspx
+		[PInvokeData("Commctrl.h", MSDNShortId = "bb774986")]
+		public static bool ListView_GetNextItemIndex(HWND hwnd, in LVITEMINDEX plvii, ListViewNextItemFlag flags) =>
+			SendMessage(hwnd, (uint)ListViewMessage.LVM_GETNEXTITEMINDEX, (IntPtr)SafeCoTaskMemHandle.CreateFromStructure(plvii), (IntPtr)(int)flags) != IntPtr.Zero;
 
-		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
-		public static extern IntPtr SendMessage(HWND hWnd, ListViewMessage Msg, ListViewImageList wParam, [In, Out] HIMAGELIST hImageList);
+		/// <summary><para>Sets the state of a specified list-view item. Use this macro or send the LVM_SETITEMINDEXSTATE message explicitly.</para></summary><param name="hwndLV"><para>Type: <c>HWND</c></para><para>A handle to the list-view control.</para></param><param name="plvii"><para>Type: <c>LVITEMINDEX*</c></para><para>A pointer to an LVITEMINDEX structure for the item. The caller is responsible for allocating this structure and setting the members.</para></param><param name="data"><para>Type: <c>UINT</c></para><para>The state to set on the item as one or more (as a bitwise combination) of the List-View Item States flags.</para></param><param name="mask"><para>Type: <c>UINT</c></para><para>The valid bits of the state specified by parameter data. For more information, see the stateMask member of the LVITEM) structure.</para></param><returns><para>None</para></returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/commctrl/nf-commctrl-listview_setitemindexstate
+		// void ListView_SetItemIndexState( hwndLV, plvii, data, mask );
+		[PInvokeData("commctrl.h", MSDNShortId = "listview_setitemindexstate")]
+		public static HRESULT ListView_SetItemIndexState(HWND hwndLV, in LVITEMINDEX plvii, uint data, ListViewItemState mask) =>
+			new HRESULT((uint)SendMessage(hwndLV, (uint)ListViewMessage.LVM_SETITEMINDEXSTATE, in plvii, new LVITEM(0) { stateMask = mask, state = data }).ToInt32());
 
 		/// <summary>
 		/// Contains information used when searching for a list-view item. This structure is identical to LV_FINDINFO but has been renamed to
@@ -1924,6 +2057,7 @@ namespace Vanara.PInvoke
 			/// <param name="stateMask">The state items to retrieve.</param>
 			public LVITEM(int item, int subitem, ListViewItemMask mask = ListViewItemMask.LVIF_ALL, ListViewItemState stateMask = ListViewItemState.LVIS_ALL)
 			{
+				this.mask = mask;
 				if (mask.IsFlagSet(ListViewItemMask.LVIF_TEXT))
 					pszText = new StrPtrAuto(cchTextMax = 1024);
 				if (mask.IsFlagSet(ListViewItemMask.LVIF_COLUMNS))
