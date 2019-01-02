@@ -257,7 +257,6 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Flags used for <see cref="GetWindowLong"/> and <see cref="SetWindowLong"/> methods to retrieve information about a window.
 		/// </summary>
-		[Flags]
 		public enum WindowLongFlags
 		{
 			/// <summary>The extended window styles</summary>
@@ -549,7 +548,7 @@ namespace Vanara.PInvoke
 		[SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "return", Justification = "This declaration is not used on 64-bit Windows.")]
 		[SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "2", Justification = "This declaration is not used on 64-bit Windows.")]
 		[System.Security.SecurityCritical]
-		public static extern int GetWindowLong(HWND hWnd, int nIndex);
+		public static extern int GetWindowLong(HWND hWnd, WindowLongFlags nIndex);
 
 		/// <summary>
 		/// Retrieves information about the specified window. The function also retrieves the value at a specified offset into the extra
@@ -564,7 +563,7 @@ namespace Vanara.PInvoke
 		/// If the function succeeds, the return value is the requested value. If the function fails, the return value is zero.To get
 		/// extended error information, call GetLastError.
 		/// </returns>
-		public static IntPtr GetWindowLongAuto(HWND hWnd, int nIndex)
+		public static IntPtr GetWindowLongAuto(HWND hWnd, WindowLongFlags nIndex)
 		{
 			IntPtr ret;
 			if (IntPtr.Size == 4)
@@ -592,7 +591,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, CharSet = CharSet.Auto, SetLastError = true)]
 		[SuppressMessage("Microsoft.Interoperability", "CA1400:PInvokeEntryPointsShouldExist", Justification = "Entry point does exist on 64-bit Windows.")]
 		[System.Security.SecurityCritical]
-		public static extern IntPtr GetWindowLongPtr(HWND hWnd, int nIndex);
+		public static extern IntPtr GetWindowLongPtr(HWND hWnd, WindowLongFlags nIndex);
 
 		/// <summary>
 		/// The InvalidateRect function adds a rectangle to the specified window's update region. The update region represents the portion of
@@ -1104,7 +1103,7 @@ namespace Vanara.PInvoke
 		/// SetWindowLongPtr. Function failure will be indicated by a return value of zero and a GetLastError result that is nonzero.
 		/// </para>
 		/// </returns>
-		public static IntPtr SetWindowLong(HWND hWnd, int nIndex, IntPtr dwNewLong)
+		public static IntPtr SetWindowLong(HWND hWnd, WindowLongFlags nIndex, IntPtr dwNewLong)
 		{
 			IntPtr ret;
 			if (IntPtr.Size == 4)
@@ -1114,6 +1113,40 @@ namespace Vanara.PInvoke
 			if (ret == IntPtr.Zero)
 				throw new System.ComponentModel.Win32Exception();
 			return ret;
+		}
+
+		/// <summary>
+		/// Changes an attribute of the specified window. The function also sets a value at the specified offset in the extra window memory.
+		/// </summary>
+		/// <param name="hWnd">
+		/// A handle to the window and, indirectly, the class to which the window belongs. The SetWindowLongPtr function fails if the process
+		/// that owns the window specified by the hWnd parameter is at a higher process privilege in the UIPI hierarchy than the process the
+		/// calling thread resides in.
+		/// </param>
+		/// <param name="nIndex">
+		/// The zero-based offset to the value to be set. Valid values are in the range zero through the number of bytes of extra window
+		/// memory, minus the size of an integer. Alternately, this can be a value from <see cref="WindowLongFlags"/>.
+		/// </param>
+		/// <param name="dwNewLong">The replacement value.</param>
+		/// <returns>
+		/// If the function succeeds, the return value is the previous value of the specified offset. If the function fails, the return value
+		/// is zero. To get extended error information, call GetLastError.
+		/// <para>
+		/// If the previous value is zero and the function succeeds, the return value is zero, but the function does not clear the last error
+		/// information. To determine success or failure, clear the last error information by calling SetLastError with 0, then call
+		/// SetWindowLongPtr. Function failure will be indicated by a return value of zero and a GetLastError result that is nonzero.
+		/// </para>
+		/// </returns>
+		public static int SetWindowLong(HWND hWnd, WindowLongFlags nIndex, int dwNewLong)
+		{
+			IntPtr ret;
+			if (IntPtr.Size == 4)
+				ret = (IntPtr)SetWindowLongPtr32(hWnd, nIndex, (IntPtr)dwNewLong);
+			else
+				ret = SetWindowLongPtr64(hWnd, nIndex, (IntPtr)dwNewLong);
+			if (ret == IntPtr.Zero)
+				throw new System.ComponentModel.Win32Exception();
+			return ret.ToInt32();
 		}
 
 		private static SafeCoTaskMemHandle GetPtr<T>(in T val) => SafeCoTaskMemHandle.CreateFromStructure(val);
@@ -1172,7 +1205,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, EntryPoint = "SetWindowLong")]
 		[SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "return", Justification = "This declaration is not used on 64-bit Windows.")]
 		[SuppressMessage("Microsoft.Portability", "CA1901:PInvokeDeclarationsShouldBePortable", MessageId = "2", Justification = "This declaration is not used on 64-bit Windows.")]
-		private static extern int SetWindowLongPtr32(HWND hWnd, int nIndex, IntPtr dwNewLong);
+		private static extern int SetWindowLongPtr32(HWND hWnd, WindowLongFlags nIndex, IntPtr dwNewLong);
 
 		/// <summary>
 		/// Changes an attribute of the specified window. The function also sets a value at the specified offset in the extra window memory.
@@ -1198,7 +1231,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.User32, SetLastError = true, EntryPoint = "SetWindowLongPtr")]
 		[SuppressMessage("Microsoft.Interoperability", "CA1400:PInvokeEntryPointsShouldExist", Justification = "Entry point does exist on 64-bit Windows.")]
-		private static extern IntPtr SetWindowLongPtr64(HWND hWnd, int nIndex, IntPtr dwNewLong);
+		private static extern IntPtr SetWindowLongPtr64(HWND hWnd, WindowLongFlags nIndex, IntPtr dwNewLong);
 
 		/// <summary>Contains information about a window's maximized size and position and its minimum and maximum tracking size.</summary>
 		[StructLayout(LayoutKind.Sequential)]
