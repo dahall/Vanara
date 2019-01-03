@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
 
 namespace Vanara.PInvoke
 {
@@ -27,6 +28,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Specifies the type of support provided by an object for the command specified in an OLECMD structure.</summary>
 		[PInvokeData("docobj.h")]
+		[Flags]
 		public enum OLECMDF
 		{
 			/// <summary>The command is supported by this object.</summary>
@@ -155,8 +157,8 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// Specifies the type of information that an object should store in the OLECMDTEXT structure passed in
-		/// IOleCommandTarget::QueryStatus. One value from this enumeration is stored the cmdtextf member of the OLECMDTEXT structure to
-		/// indicate the desired information.
+		/// IOleCommandTarget::QueryStatus. One value from this enumeration is stored in <see cref="OLECMDTEXT.cmdtextf"/> to indicate the
+		/// desired information.
 		/// </summary>
 		[PInvokeData("docobj.h")]
 		public enum OLECMDTEXTF
@@ -202,7 +204,7 @@ namespace Vanara.PInvoke
 			/// <param name="cCmds">The number of commands in the prgCmds array.</param>
 			/// <param name="prgCmds">
 			/// A caller-allocated array of OLECMD structures that indicate the commands for which the caller needs status information. This
-			/// method fills the cmdf member of each structure with values taken from the OLECMDF enumeration.
+			/// method fills the <see cref="OLECMD.cmdf"/> member of each structure with values taken from the OLECMDF enumeration.
 			/// </param>
 			/// <param name="pCmdText">
 			/// A pointer to an OLECMDTEXT structure in which to return name and/or status information of a single command. This parameter
@@ -240,40 +242,51 @@ namespace Vanara.PInvoke
 
 		/// <summary>Specifies a text name or status string for a single command identifier.</summary>
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-		public class OLECMDTEXT : IDisposable
+		public struct OLECMDTEXT
 		{
 			/// <summary>
-			/// A value from the OLECMDTEXTF enumeration describing whether the rgwz member contains a command name or status text.
+			/// A value from the OLECMDTEXTF enumeration describing whether the <see cref="rgwz"/> member contains a command name or status text.
 			/// </summary>
 			public OLECMDTEXTF cmdtextf;
 
-			/// <summary>The number of characters actually written into the rgwz buffer before IOleCommandTarget::QueryStatus returns.</summary>
-			public uint cwActual;
+			/// <summary>The number of characters actually written into the <see cref="rgwz"/> buffer before IOleCommandTarget::QueryStatus returns.</summary>
+			private uint cwActual;
 
-			/// <summary>The number of elements in the rgwz array.</summary>
-			public uint cwBuf;
+			/// <summary>The number of elements in the <see cref="rgwz"/> array.</summary>
+			public readonly uint cwBuf;
 
-			private InteropServices.StrPtrUni _rgwz;
+			private readonly IntPtr _rgwz;
 
-			public OLECMDTEXT(OLECMDTEXTF cmdtextf, string nameOrStatus)
-			{
-				this.cmdtextf = cmdtextf;
-				if (nameOrStatus != null)
-					rgwz = nameOrStatus;
-			}
-
-			/// <summary>The command name or status text.</summary>
+#pragma warning disable IDE1006 // Naming Styles
+			/// <summary>
+			/// Gets or sets the command name or status text. When setting, this value must not be longer than <see cref="cwBuf"/> and the
+			/// <see cref="cwActual"/> field will be updated based on the character count of the value provided.
+			/// </summary>
 			public string rgwz
+#pragma warning restore IDE1006 // Naming Styles
 			{
-				get => _rgwz;
-				set { if (value == null) _rgwz.Free(); else _rgwz.Assign(value, out cwActual); }
+				get => cwBuf > 0 ? StringHelper.GetString(_rgwz, CharSet.Unicode) : null;
+				set
+				{
+					if (value == null) value = string.Empty;
+					if (value.Length + 1 > cwBuf)
+						throw new ArgumentOutOfRangeException(nameof(rgwz), "Set value must be of a length that will fit into supplied buffer of length 'cwBuf'.");
+					unsafe
+					{
+						fixed (char* p = value)
+						{
+							var dest = (byte*)_rgwz;
+							System.Text.Encoding.Unicode.GetEncoder().Convert(p, value.Length, dest, (int)cwBuf, true, out var actual, out var offset, out var _);
+							cwActual = (uint)actual;
+							dest[offset] = dest[offset + 1] = 0;
+						}
+					}
+				}
 			}
 
 			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 			/// <returns>A <see cref="string"/> that represents this instance.</returns>
 			public override string ToString() => rgwz;
-
-			void IDisposable.Dispose() => _rgwz.Free();
 		}
 	}
 }
