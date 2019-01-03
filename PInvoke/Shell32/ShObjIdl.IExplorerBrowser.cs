@@ -254,7 +254,7 @@ namespace Vanara.PInvoke
 			/// <summary>Notifies clients of a pending Explorer browser navigation to a Shell folder.</summary>
 			/// <param name="pidlFolder">A PIDL that specifies the folder.</param>
 			[PreserveSig]
-			HRESULT OnNavigationPending([In] PIDL pidlFolder);
+			HRESULT OnNavigationPending([In] IntPtr pidlFolder);
 
 			/// <summary>Notifies clients that the view of the Explorer browser has been created and can be modified.</summary>
 			/// <param name="psv">A pointer to an IShellView.</param>
@@ -264,12 +264,12 @@ namespace Vanara.PInvoke
 			/// <summary>Notifies clients that the Explorer browser has successfully navigated to a Shell folder.</summary>
 			/// <param name="pidlFolder">A PIDL that specifies the folder.</param>
 			[PreserveSig]
-			HRESULT OnNavigationComplete([In] PIDL pidlFolder);
+			HRESULT OnNavigationComplete([In] IntPtr pidlFolder);
 
 			/// <summary>Notifies clients that the Explorer browser has failed to navigate to a Shell folder.</summary>
 			/// <param name="pidlFolder">A PIDL that specifies the folder.</param>
 			[PreserveSig]
-			HRESULT OnNavigationFailed([In] PIDL pidlFolder);
+			HRESULT OnNavigationFailed([In] IntPtr pidlFolder);
 		}
 
 		/// <summary>The ExplorerBrowser class is the base CoClass for all I ExplorerBrowser interfaces.</summary>
