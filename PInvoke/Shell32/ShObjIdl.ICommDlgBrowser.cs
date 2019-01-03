@@ -75,19 +75,23 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Called when a user double-clicks in the view or presses the ENTER key.</summary>
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
-			void OnDefaultCommand([In] IShellView ppshv);
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[PreserveSig]
+			HRESULT OnDefaultCommand([In] IShellView ppshv);
 
 			/// <summary>Called after a state, identified by the uChange parameter, has changed in the IShellView interface.</summary>
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
 			/// <param name="uChange">Change in the selection state. This parameter can be one of the following values.</param>
-			void OnStateChange([In] IShellView ppshv, CDBOSC uChange);
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[PreserveSig]
+			HRESULT OnStateChange([In] IShellView ppshv, CDBOSC uChange);
 
 			/// <summary>Allows the common dialog box to filter objects that the view displays.</summary>
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
 			/// <param name="pidl">A PIDL, relative to the folder, that identifies the object.</param>
 			/// <returns>The browser should return S_OK to include the object in the view, or S_FALSE to hide it.</returns>
 			[PreserveSig]
-			HRESULT IncludeObject([In] IShellView ppshv, PIDL pidl);
+			HRESULT IncludeObject([In] IShellView ppshv, [In] PIDL pidl);
 		}
 
 		/// <summary>
@@ -101,24 +105,30 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Called when a user double-clicks in the view or presses the ENTER key.</summary>
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
-			new void OnDefaultCommand([In] IShellView ppshv);
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[PreserveSig]
+			new HRESULT OnDefaultCommand([In] IShellView ppshv);
 
 			/// <summary>Called after a state, identified by the uChange parameter, has changed in the IShellView interface.</summary>
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
 			/// <param name="uChange">Change in the selection state. This parameter can be one of the following values.</param>
-			new void OnStateChange([In] IShellView ppshv, CDBOSC uChange);
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[PreserveSig]
+			new HRESULT OnStateChange([In] IShellView ppshv, CDBOSC uChange);
 
 			/// <summary>Allows the common dialog box to filter objects that the view displays.</summary>
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
 			/// <param name="pidl">A PIDL, relative to the folder, that identifies the object.</param>
 			/// <returns>The browser should return S_OK to include the object in the view, or S_FALSE to hide it.</returns>
 			[PreserveSig]
-			new HRESULT IncludeObject([In] IShellView ppshv, PIDL pidl);
+			new HRESULT IncludeObject([In] IShellView ppshv, [In] PIDL pidl);
 
 			/// <summary>Called by a Shell view to notify the common dialog box hosting it that an event has occurred.</summary>
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
 			/// <param name="dwNotifyType">A flag that can can take one of the following two values.</param>
-			void Notify([In] IShellView ppshv, CDB2N dwNotifyType);
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[PreserveSig]
+			HRESULT Notify([In] IShellView ppshv, CDB2N dwNotifyType);
 
 			/// <summary>Called by the Shell view to get the default shortcut menu text.</summary>
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
@@ -133,9 +143,13 @@ namespace Vanara.PInvoke
 			[PreserveSig]
 			HRESULT GetDefaultMenuText([In] IShellView ppshv, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszText, int cchMax);
 
-			/// <summary>Called when the view must determine if special customization needs to be made for the common dialog browser.</summary>
-			/// <returns>A DWORD value that controls the behavior of the view when in common dialog mode.</returns>
-			CDB2GVF GetViewFlags();
+			/// <summary>
+			/// Called when the view must determine if special customization needs to be made for the common dialog browser.
+			/// </summary>
+			/// <param name="pdwFlags">A DWORD value that controls the behavior of the view when in common dialog mode.</param>
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[PreserveSig]
+			HRESULT GetViewFlags(out CDB2GVF pdwFlags);
 		}
 
 		/// <summary>Extends the capabilities of ICommDlgBrowser2, and used by the common file dialog boxes when they host a Shell browser.</summary>
@@ -146,24 +160,30 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>Called when a user double-clicks in the view or presses the ENTER key.</summary>
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
-			new void OnDefaultCommand([In] IShellView ppshv);
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[PreserveSig]
+			new HRESULT OnDefaultCommand([In] IShellView ppshv);
 
 			/// <summary>Called after a state, identified by the uChange parameter, has changed in the IShellView interface.</summary>
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
 			/// <param name="uChange">Change in the selection state. This parameter can be one of the following values.</param>
-			new void OnStateChange([In] IShellView ppshv, CDBOSC uChange);
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[PreserveSig]
+			new HRESULT OnStateChange([In] IShellView ppshv, CDBOSC uChange);
 
 			/// <summary>Allows the common dialog box to filter objects that the view displays.</summary>
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
 			/// <param name="pidl">A PIDL, relative to the folder, that identifies the object.</param>
 			/// <returns>The browser should return S_OK to include the object in the view, or S_FALSE to hide it.</returns>
 			[PreserveSig]
-			new HRESULT IncludeObject([In] IShellView ppshv, PIDL pidl);
+			new HRESULT IncludeObject([In] IShellView ppshv, [In] PIDL pidl);
 
 			/// <summary>Called by a Shell view to notify the common dialog box hosting it that an event has occurred.</summary>
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
 			/// <param name="dwNotifyType">A flag that can can take one of the following two values.</param>
-			new void Notify([In] IShellView ppshv, CDB2N dwNotifyType);
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[PreserveSig]
+			new HRESULT Notify([In] IShellView ppshv, CDB2N dwNotifyType);
 
 			/// <summary>Called by the Shell view to get the default shortcut menu text.</summary>
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
@@ -178,23 +198,33 @@ namespace Vanara.PInvoke
 			[PreserveSig]
 			new HRESULT GetDefaultMenuText([In] IShellView ppshv, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszText, int cchMax);
 
-			/// <summary>Called when the view must determine if special customization needs to be made for the common dialog browser.</summary>
-			/// <returns>A DWORD value that controls the behavior of the view when in common dialog mode.</returns>
-			new CDB2GVF GetViewFlags();
+			/// <summary>
+			/// Called when the view must determine if special customization needs to be made for the common dialog browser.
+			/// </summary>
+			/// <param name="pdwFlags">A DWORD value that controls the behavior of the view when in common dialog mode.</param>
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[PreserveSig]
+			new HRESULT GetViewFlags(out CDB2GVF pdwFlags);
 
 			/// <summary>Called after a specified column is clicked in the IShellView interface.</summary>
 			/// <param name="ppshv">A pointer to the IShellView interface of the hosted view.</param>
 			/// <param name="iColumn">The index of the column clicked.</param>
-			void OnColumnClicked([In] IShellView ppshv, int iColumn);
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[PreserveSig]
+			HRESULT OnColumnClicked([In] IShellView ppshv, int iColumn);
 
 			/// <summary>Gets the current filter as a Unicode string.</summary>
 			/// <param name="pszFileSpec">Contains a pointer to the current filter path/file as a Unicode string.</param>
 			/// <param name="cchFileSpec">Specifies the path/file length, in characters.</param>
-			void GetCurrentFilter([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszFileSpec, int cchFileSpec);
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[PreserveSig]
+			HRESULT GetCurrentFilter([MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszFileSpec, int cchFileSpec);
 
 			/// <summary>Called after a specified preview is created in the IShellView interface.</summary>
 			/// <param name="ppshv">A pointer to the IShellView interface of the hosted view.</param>
-			void OnPreViewCreated([In] IShellView ppshv);
+			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
+			[PreserveSig]
+			HRESULT OnPreViewCreated([In] IShellView ppshv);
 		}
 	}
 }
