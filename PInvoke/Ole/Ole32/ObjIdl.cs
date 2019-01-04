@@ -189,6 +189,65 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// Enumerates objects with the IUnknown interface. It can be used to enumerate through the objects in a component containing
+		/// multiple objects.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-ienumunknown
+		[PInvokeData("objidl.h", MSDNShortId = "5aaed96f-39c1-4201-80d0-a2a8a177b65e")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("00000100-0000-0000-C000-000000000046")]
+		public interface IEnumUnknown
+		{
+			/// <summary>Retrieves the specified number of items in the enumeration sequence.</summary>
+			/// <param name="celt">
+			/// The number of items to be retrieved. If there are fewer than the requested number of items left in the sequence, this method
+			/// retrieves the remaining elements.
+			/// </param>
+			/// <param name="rgelt">
+			/// <para>An array of enumerated items.</para>
+			/// <para>
+			/// The enumerator is responsible for calling AddRef, and the caller is responsible for calling Release through each pointer
+			/// enumerated. If celt is greater than 1, the caller must also pass a non-NULL pointer passed to pceltFetched to know how many
+			/// pointers to release.
+			/// </para>
+			/// </param>
+			/// <param name="pceltFetched">
+			/// The number of items that were retrieved. This parameter is always less than or equal to the number of items requested.
+			/// </param>
+			/// <returns>If the method retrieves the number of items requested, the return value is S_OK. Otherwise, it is S_FALSE.</returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumunknown-next HRESULT Next( ULONG celt, IUnknown
+			// **rgelt, ULONG *pceltFetched );
+			[PreserveSig]
+			HRESULT Next(uint celt, ref IntPtr rgelt, out uint pceltFetched);
+
+			/// <summary>Skips over the specified number of items in the enumeration sequence.</summary>
+			/// <param name="celt">The number of items to be skipped.</param>
+			/// <returns>If the method skips the number of items requested, the return value is S_OK. Otherwise, it is S_FALSE.</returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumunknown-skip HRESULT Skip( ULONG celt );
+			[PreserveSig]
+			HRESULT Skip(uint celt);
+
+			/// <summary>Resets the enumeration sequence to the beginning.</summary>
+			/// <remarks>
+			/// There is no guarantee that the same set of objects will be enumerated after the reset operation has completed. A static
+			/// collection is reset to the beginning, but it can be too expensive for some collections, such as files in a directory, to
+			/// guarantee this condition.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumunknown-reset HRESULT Reset( );
+			void Reset();
+
+			/// <summary>
+			/// <para>Creates a new enumerator that contains the same enumeration state as the current one.</para>
+			/// <para>
+			/// This method makes it possible to record a point in the enumeration sequence in order to return to that point at a later time.
+			/// The caller must release this new enumerator separately from the first enumerator.
+			/// </para>
+			/// </summary>
+			/// <returns>A pointer to the cloned enumerator object.</returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumunknown-clone HRESULT Clone( IEnumUnknown **ppenum );
+			IEnumUnknown Clone();
+		}
+
+		/// <summary>
 		/// The IStorage interface supports the creation and management of structured storage objects. Structured storage allows hierarchical
 		/// storage of information within a single file, and is often referred to as "a file system within a file". Elements of a structured
 		/// storage object are storages and streams. Storages are analogous to directories, and streams are analogous to files. Within a

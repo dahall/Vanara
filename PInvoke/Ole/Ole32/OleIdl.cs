@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Vanara.PInvoke
 {
@@ -220,6 +221,473 @@ namespace Vanara.PInvoke
 			/// <summary>Determines whether context-sensitive help mode should be entered during an in-place activation session.</summary>
 			/// <param name="fEnterMode"><c>true</c> if help mode should be entered; <c>false</c> if it should be exited.</param>
 			void ContextSensitiveHelp([MarshalAs(UnmanagedType.Bool)] bool fEnterMode);
+		}
+
+		/// <summary>
+		/// <para>
+		/// Provides the CLSID of an object that can be stored persistently in the system. Allows the object to specify which object handler
+		/// to use in the client process, as it is used in the default implementation of marshaling.
+		/// </para>
+		/// <para>
+		/// <c>IPersist</c> is the base interface for three other interfaces: IPersistStorage, IPersistStream, and IPersistFile. Each of
+		/// these interfaces, therefore, includes the GetClassID method, and the appropriate one of these three interfaces is implemented on
+		/// objects that can be serialized to a storage, a stream, or a file. The methods of these interfaces allow the state of these
+		/// objects to be saved for later instantiations, and load the object using the saved state. Typically, the persistence interfaces
+		/// are implemented by an embedded or linked object, and are called by the container application or the default object handler.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-ipersist
+		[PInvokeData("objidl.h", MSDNShortId = "932eb0e2-35a6-482e-9138-00cff30508a9")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("0000010c-0000-0000-C000-000000000046")]
+		public interface IPersist
+		{
+			/// <summary>Retrieves the class identifier (CLSID) of the object.</summary>
+			/// <returns>
+			/// <para>
+			/// A pointer to the location that receives the CLSID on return. The CLSID is a globally unique identifier (GUID) that uniquely
+			/// represents an object class that defines the code that can manipulate the object's data.
+			/// </para>
+			/// <para>If the method succeeds, the return value is S_OK. Otherwise, it is E_FAIL.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// The <c>GetClassID</c> method retrieves the class identifier (CLSID) for an object, used in later operations to load
+			/// object-specific code into the caller's context.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// A container application might call this method to retrieve the original CLSID of an object that it is treating as a different
+			/// class. Such a call would be necessary if a user performed an editing operation that required the object to be saved. If the
+			/// container were to save it using the treat-as CLSID, the original application would no longer be able to edit the object.
+			/// Typically, in this case, the container calls the OleSave helper function, which performs all the necessary steps. For this
+			/// reason, most container applications have no need to call this method directly.
+			/// </para>
+			/// <para>
+			/// The exception would be a container that provides an object handler for certain objects. In particular, a container
+			/// application should not get an object's CLSID and then use it to retrieve class specific information from the registry.
+			/// Instead, the container should use IOleObject and IDataObject interfaces to retrieve such class-specific information directly
+			/// from the object.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// Typically, implementations of this method simply supply a constant CLSID for an object. If, however, the object's
+			/// <c>TreatAs</c> registry key has been set by an application that supports emulation (and so is treating the object as one of a
+			/// different class), a call to <c>GetClassID</c> must supply the CLSID specified in the <c>TreatAs</c> key. For more information
+			/// on emulation, see CoTreatAsClass.
+			/// </para>
+			/// <para>
+			/// When an object is in the running state, the default handler calls an implementation of <c>GetClassID</c> that delegates the
+			/// call to the implementation in the object. When the object is not running, the default handler instead calls the ReadClassStg
+			/// function to read the CLSID that is saved in the object's storage.
+			/// </para>
+			/// <para>
+			/// If you are writing a custom object handler for your object, you might want to simply delegate this method to the default
+			/// handler implementation (see OleCreateDefaultHandler).
+			/// </para>
+			/// <para>URL Moniker Notes</para>
+			/// <para>This method returns CLSID_StdURLMoniker.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ipersist-getclassid HRESULT GetClassID( CLSID *pClassID );
+			Guid GetClassID();
+		}
+
+		/// <summary>Enables the saving and loading of objects that use a simple serial stream for their storage needs.</summary>
+		/// <remarks>
+		/// <para>
+		/// One way in which this interface is used is to support OLE moniker implementations. Each of the OLE-provided moniker interfaces
+		/// provides an <c>IPersistStream</c> implementation through which the moniker saves or loads itself. An instance of the OLE generic
+		/// composite moniker class calls the <c>IPersistStream</c> methods of its component monikers to load or save the components in the
+		/// proper sequence in a single stream.
+		/// </para>
+		/// <para>IPersistStream URL Moniker Implementation</para>
+		/// <para>
+		/// The URL moniker implementation of <c>IPersistStream</c> is found on an URL moniker object, which supports IUnknown,
+		/// <c>IAsyncMoniker</c>, and IMoniker. The <c>IMoniker</c> interface inherits its definition from <c>IPersistStream</c> and thus,
+		/// the URL moniker also provides an implementation of <c>IPersistStream</c> as part of its implementation of <c>IMoniker</c>.
+		/// </para>
+		/// <para>
+		/// The IAsyncMoniker interface on an URL moniker is simply IUnknown (there are no additional methods); it is used to allow clients
+		/// to determine if a moniker supports asynchronous binding. To get a pointer to the IMoniker interface on this object, call the
+		/// <c>CreateURLMonikerEx</c> function. Then, to get a pointer to <c>IPersistStream</c>, call the QueryInterface method.
+		/// </para>
+		/// <para>
+		/// <c>IPersistStream</c>, in addition to inheriting its definition from IUnknown, also inherits the single method of IPersist, GetClassID.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-ipersiststream
+		[PInvokeData("objidl.h", MSDNShortId = "97ea64ee-d950-4872-add6-1f532a6eb33f")]
+		[ComImport, Guid("00000109-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IPersistStream : IPersist
+		{
+			/// <summary>Retrieves the class identifier (CLSID) of the object.</summary>
+			/// <returns>
+			/// <para>
+			/// A pointer to the location that receives the CLSID on return. The CLSID is a globally unique identifier (GUID) that uniquely
+			/// represents an object class that defines the code that can manipulate the object's data.
+			/// </para>
+			/// <para>If the method succeeds, the return value is S_OK. Otherwise, it is E_FAIL.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// The <c>GetClassID</c> method retrieves the class identifier (CLSID) for an object, used in later operations to load
+			/// object-specific code into the caller's context.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// A container application might call this method to retrieve the original CLSID of an object that it is treating as a different
+			/// class. Such a call would be necessary if a user performed an editing operation that required the object to be saved. If the
+			/// container were to save it using the treat-as CLSID, the original application would no longer be able to edit the object.
+			/// Typically, in this case, the container calls the OleSave helper function, which performs all the necessary steps. For this
+			/// reason, most container applications have no need to call this method directly.
+			/// </para>
+			/// <para>
+			/// The exception would be a container that provides an object handler for certain objects. In particular, a container
+			/// application should not get an object's CLSID and then use it to retrieve class specific information from the registry.
+			/// Instead, the container should use IOleObject and IDataObject interfaces to retrieve such class-specific information directly
+			/// from the object.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// Typically, implementations of this method simply supply a constant CLSID for an object. If, however, the object's
+			/// <c>TreatAs</c> registry key has been set by an application that supports emulation (and so is treating the object as one of a
+			/// different class), a call to <c>GetClassID</c> must supply the CLSID specified in the <c>TreatAs</c> key. For more information
+			/// on emulation, see CoTreatAsClass.
+			/// </para>
+			/// <para>
+			/// When an object is in the running state, the default handler calls an implementation of <c>GetClassID</c> that delegates the
+			/// call to the implementation in the object. When the object is not running, the default handler instead calls the ReadClassStg
+			/// function to read the CLSID that is saved in the object's storage.
+			/// </para>
+			/// <para>
+			/// If you are writing a custom object handler for your object, you might want to simply delegate this method to the default
+			/// handler implementation (see OleCreateDefaultHandler).
+			/// </para>
+			/// <para>URL Moniker Notes</para>
+			/// <para>This method returns CLSID_StdURLMoniker.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ipersist-getclassid HRESULT GetClassID( CLSID *pClassID );
+			new Guid GetClassID();
+
+			/// <summary>Determines whether an object has changed since it was last saved to its stream.</summary>
+			/// <returns>This method returns S_OK to indicate that the object has changed. Otherwise, it returns S_FALSE.</returns>
+			/// <remarks>
+			/// <para>
+			/// Use this method to determine whether an object should be saved before closing it. The dirty flag for an object is
+			/// conditionally cleared in the IPersistStream::Save method.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// You should treat any error return codes as an indication that the object has changed. Unless this method explicitly returns
+			/// S_FALSE, assume that the object must be saved.
+			/// </para>
+			/// <para>
+			/// Note that the OLE-provided implementations of the <c>IPersistStream::IsDirty</c> method in the OLE-provided moniker
+			/// interfaces always return S_FALSE because their internal state never changes.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ipersiststream-isdirty HRESULT IsDirty( );
+			[PreserveSig]
+			HRESULT IsDirty();
+
+			/// <summary>Initializes an object from the stream where it was saved previously.</summary>
+			/// <param name="pstm">The PSTM.</param>
+			/// <remarks>
+			/// <para>
+			/// This method loads an object from its associated stream. The seek pointer is set as it was in the most recent
+			/// IPersistStream::Save method. This method can seek and read from the stream, but cannot write to it.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// Rather than calling <c>IPersistStream::Load</c> directly, you typically call the OleLoadFromStream function does the following:
+			/// </para>
+			/// <list type="number">
+			/// <item>
+			/// <term>Calls the ReadClassStm function to get the class identifier from the stream.</term>
+			/// </item>
+			/// <item>
+			/// <term>Calls the CoCreateInstance function to create an instance of the object.</term>
+			/// </item>
+			/// <item>
+			/// <term>Queries the instance for IPersistStream.</term>
+			/// </item>
+			/// <item>
+			/// <term>Calls <c>IPersistStream::Load</c>.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// The OleLoadFromStream function assumes that objects are stored in the stream with a class identifier followed by the object
+			/// data. This storage pattern is used by the generic, composite-moniker implementation provided by OLE.
+			/// </para>
+			/// <para>If the objects are not stored using this pattern, you must call the methods separately yourself.</para>
+			/// <para>URL Moniker Notes</para>
+			/// <para>
+			/// Initializes an URL moniker from data within a stream, usually stored there previously using its IPersistStream::Save (using
+			/// OleSaveToStream). The binary format of the URL moniker is its URL string in Unicode (may be a full or partial URL string, see
+			/// CreateURLMonikerEx for details). This is represented as a <c>ULONG</c> count of characters followed by that many Unicode characters.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ipersiststream-load HRESULT Load( IStream *pStm );
+			void Load([In, MarshalAs(UnmanagedType.Interface)] IStream pstm);
+
+			/// <summary>Saves an object to the specified stream.</summary>
+			/// <param name="pstm">The PSTM.</param>
+			/// <param name="fClearDirty">
+			/// Indicates whether to clear the dirty flag after the save is complete. If <c>TRUE</c>, the flag should be cleared. If
+			/// <c>FALSE</c>, the flag should be left unchanged.
+			/// </param>
+			/// <remarks>
+			/// <para>
+			/// <c>IPersistStream::Save</c> saves an object into the specified stream and indicates whether the object should reset its dirty flag.
+			/// </para>
+			/// <para>
+			/// The seek pointer is positioned at the location in the stream at which the object should begin writing its data. The object
+			/// calls the ISequentialStream::Write method to write its data.
+			/// </para>
+			/// <para>
+			/// On exit, the seek pointer must be positioned immediately past the object data. The position of the seek pointer is undefined
+			/// if an error returns.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// Rather than calling <c>IPersistStream::Save</c> directly, you typically call the OleSaveToStream helper function which does
+			/// the following:
+			/// </para>
+			/// <list type="number">
+			/// <item>
+			/// <term>Calls GetClassID to get the object's CLSID.</term>
+			/// </item>
+			/// <item>
+			/// <term>Calls the WriteClassStm function to write the object's CLSID to the stream.</term>
+			/// </item>
+			/// <item>
+			/// <term>Calls <c>IPersistStream::Save</c>.</term>
+			/// </item>
+			/// </list>
+			/// <para>If you call these methods directly, you can write other data into the stream after the CLSID before calling <c>IPersistStream::Save</c>.</para>
+			/// <para>The OLE-provided implementation of IPersistStream follows this same pattern.</para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// The <c>IPersistStream::Save</c> method does not write the CLSID to the stream. The caller is responsible for writing the CLSID.
+			/// </para>
+			/// <para>
+			/// The <c>IPersistStream::Save</c> method can read from, write to, and seek in the stream; but it must not seek to a location in
+			/// the stream before that of the seek pointer on entry.
+			/// </para>
+			/// <para>URL Moniker Notes</para>
+			/// <para>
+			/// Saves an URL moniker to a stream. The binary format of URL moniker is its URL string in Unicode (may be a full or partial URL
+			/// string, see CreateURLMonikerEx for details). This is represented as a <c>ULONG</c> count of characters followed by that many
+			/// Unicode characters.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ipersiststream-save HRESULT Save( IStream *pStm, BOOL
+			// fClearDirty );
+			void Save([In, MarshalAs(UnmanagedType.Interface)] IStream pstm, [In, MarshalAs(UnmanagedType.Bool)] bool fClearDirty);
+
+			/// <summary>Retrieves the size of the stream needed to save the object.</summary>
+			/// <returns>The size in bytes of the stream needed to save this object, in bytes.</returns>
+			/// <remarks>
+			/// <para>
+			/// This method returns the size needed to save an object. You can call this method to determine the size and set the necessary
+			/// buffers before calling the IPersistStream::Save method.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// The <c>GetSizeMax</c> implementation should return a conservative estimate of the necessary size because the caller might
+			/// call the IPersistStream::Save method with a non-growable stream.
+			/// </para>
+			/// <para>URL Moniker Notes</para>
+			/// <para>
+			/// This method retrieves the maximum number of bytes in the stream that will be required by a subsequent call to
+			/// IPersistStream::Save. This value is sizeof(ULONG)==4 plus sizeof(WCHAR)*n where n is the length of the full or partial URL
+			/// string, including the NULL terminator.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ipersiststream-getsizemax HRESULT GetSizeMax(
+			// ULARGE_INTEGER *pcbSize );
+			ulong GetSizeMax();
+		}
+
+		/// <summary>
+		/// <para>A replacement for IPersistStream that adds an initialization method.</para>
+		/// <para>
+		/// This interface is not derived from IPersistStream; it is mutually exclusive with <c>IPersistStream</c>. An object chooses to
+		/// support only one of the two interfaces, based on whether it requires the InitNew method.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ocidl/nn-ocidl-ipersiststreaminit
+		[PInvokeData("ocidl.h", MSDNShortId = "49c413b3-3523-4602-9ec1-19f4e0fe5651")]
+		[ComImport, Guid("7FD52380-4E07-101B-AE2D-08002B2EC713"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IPersistStreamInit : IPersist
+		{
+			/// <summary>Retrieves the class identifier (CLSID) of the object.</summary>
+			/// <returns>
+			/// <para>
+			/// A pointer to the location that receives the CLSID on return. The CLSID is a globally unique identifier (GUID) that uniquely
+			/// represents an object class that defines the code that can manipulate the object's data.
+			/// </para>
+			/// <para>If the method succeeds, the return value is S_OK. Otherwise, it is E_FAIL.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// The <c>GetClassID</c> method retrieves the class identifier (CLSID) for an object, used in later operations to load
+			/// object-specific code into the caller's context.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// A container application might call this method to retrieve the original CLSID of an object that it is treating as a different
+			/// class. Such a call would be necessary if a user performed an editing operation that required the object to be saved. If the
+			/// container were to save it using the treat-as CLSID, the original application would no longer be able to edit the object.
+			/// Typically, in this case, the container calls the OleSave helper function, which performs all the necessary steps. For this
+			/// reason, most container applications have no need to call this method directly.
+			/// </para>
+			/// <para>
+			/// The exception would be a container that provides an object handler for certain objects. In particular, a container
+			/// application should not get an object's CLSID and then use it to retrieve class specific information from the registry.
+			/// Instead, the container should use IOleObject and IDataObject interfaces to retrieve such class-specific information directly
+			/// from the object.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// Typically, implementations of this method simply supply a constant CLSID for an object. If, however, the object's
+			/// <c>TreatAs</c> registry key has been set by an application that supports emulation (and so is treating the object as one of a
+			/// different class), a call to <c>GetClassID</c> must supply the CLSID specified in the <c>TreatAs</c> key. For more information
+			/// on emulation, see CoTreatAsClass.
+			/// </para>
+			/// <para>
+			/// When an object is in the running state, the default handler calls an implementation of <c>GetClassID</c> that delegates the
+			/// call to the implementation in the object. When the object is not running, the default handler instead calls the ReadClassStg
+			/// function to read the CLSID that is saved in the object's storage.
+			/// </para>
+			/// <para>
+			/// If you are writing a custom object handler for your object, you might want to simply delegate this method to the default
+			/// handler implementation (see OleCreateDefaultHandler).
+			/// </para>
+			/// <para>URL Moniker Notes</para>
+			/// <para>This method returns CLSID_StdURLMoniker.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ipersist-getclassid HRESULT GetClassID( CLSID *pClassID );
+			new Guid GetClassID();
+
+			/// <summary>
+			/// <para>Determines whether an object has changed since it was last saved to its stream.</para>
+			/// </summary>
+			/// <returns>
+			/// <para>This method returns S_OK to indicate that the object has changed. Otherwise, it returns S_FALSE.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// Use this method to determine whether an object should be saved before closing it. The dirty flag for an object is
+			/// conditionally cleared in the IPersistStreamInit::Save method.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// You should treat any error return codes as an indication that the object has changed. Unless this method explicitly returns
+			/// S_FALSE, assume that the object must be saved.
+			/// </para>
+			/// <para>
+			/// Note that the OLE-provided implementations of the <c>IPersistStreamInit::IsDirty</c> method in the OLE-provided moniker
+			/// interfaces always return S_FALSE because their internal state never changes.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/ocidl/nf-ocidl-ipersiststreaminit-isdirty HRESULT IsDirty( );
+			[PreserveSig]
+			HRESULT IsDirty();
+
+			/// <summary>Initializes an object from the stream where it was saved previously.</summary>
+			/// <param name="pstm">The PSTM.</param>
+			/// <remarks>
+			/// <para>
+			/// This method loads an object from its associated stream. The seek pointer is set as it was in the most recent
+			/// IPersistStreamInit::Save method. This method can seek and read from the stream, but cannot write to it.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// Rather than calling <c>IPersistStreamInit::Load</c> directly, you typically call the OleLoadFromStream function does the following:
+			/// </para>
+			/// <list type="number">
+			/// <item>
+			/// <term>Calls the ReadClassStm function to get the class identifier from the stream.</term>
+			/// </item>
+			/// <item>
+			/// <term>Calls the CoCreateInstance function to create an instance of the object.</term>
+			/// </item>
+			/// <item>
+			/// <term>Queries the instance for IPersistStreamInit.</term>
+			/// </item>
+			/// <item>
+			/// <term>Calls <c>IPersistStreamInit::Load</c>.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// The OleLoadFromStream function assumes that objects are stored in the stream with a class identifier followed by the object
+			/// data. This storage pattern is used by the generic, composite-moniker implementation provided by OLE.
+			/// </para>
+			/// <para>If the objects are not stored using this pattern, you must call the methods separately yourself.</para>
+			/// <para>URL Moniker Notes</para>
+			/// <para>
+			/// Initializes an URL moniker from data within a stream, usually stored there previously using its IPersistStreamInit::Save
+			/// (using OleSaveToStream). The binary format of the URL moniker is its URL string in Unicode (may be a full or partial URL
+			/// string, see CreateURLMonikerEx for details). This is represented as a <c>ULONG</c> count of characters followed by that many
+			/// Unicode characters.
+			/// </para>
+			/// </remarks>
+			// HRESULT Load( LPSTREAM pStm ); https://msdn.microsoft.com/en-us/library/ms864774.aspx
+			void Load([In, MarshalAs(UnmanagedType.Interface)] IStream pstm);
+
+			/// <summary>Saves an object to the specified stream.</summary>
+			/// <param name="pstm">The PSTM.</param>
+			/// <param name="fClearDirty">
+			/// Indicates whether to clear the dirty flag after the save is complete. If <c>TRUE</c>, the flag should be cleared. If
+			/// <c>FALSE</c>, the flag should be left unchanged.
+			/// </param>
+			/// <remarks>
+			/// <para>
+			/// <c>IPersistStreamInit::Save</c> saves an object into the specified stream and indicates whether the object should reset its
+			/// dirty flag.
+			/// </para>
+			/// <para>
+			/// The seek pointer is positioned at the location in the stream at which the object should begin writing its data. The object
+			/// calls the ISequentialStream::Write method to write its data.
+			/// </para>
+			/// <para>
+			/// On exit, the seek pointer must be positioned immediately past the object data. The position of the seek pointer is undefined
+			/// if an error returns.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// The <c>IPersistStreamInit::Save</c> method does not write the CLSID to the stream. The caller is responsible for writing the CLSID.
+			/// </para>
+			/// <para>
+			/// The <c>IPersistStreamInit::Save</c> method can read from, write to, and seek in the stream; but it must not seek to a
+			/// location in the stream before that of the seek pointer on entry.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/ocidl/nf-ocidl-ipersiststreaminit-save HRESULT Save( LPSTREAM pStm, BOOL
+			// fClearDirty );
+			void Save([In, MarshalAs(UnmanagedType.Interface)] IStream pstm, [In, MarshalAs(UnmanagedType.Bool)] bool fClearDirty);
+
+			/// <summary>Retrieves the size of the stream needed to save the object.</summary>
+			/// <returns>The size in bytes of the stream needed to save this object, in bytes.</returns>
+			/// <remarks>
+			/// <para>
+			/// This method returns the size needed to save an object. You can call this method to determine the size and set the necessary
+			/// buffers before calling the IPersistStreamInit::Save method.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// The <c>GetSizeMax</c> implementation should return a conservative estimate of the necessary size because the caller might
+			/// call the IPersistStreamInit::Save method with a non-growable stream.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/ocidl/nf-ocidl-ipersiststreaminit-getsizemax HRESULT GetSizeMax(
+			// ULARGE_INTEGER *pCbSize );
+			ulong GetSizeMax();
+
+			/// <summary>Initializes an object to a default state. This method is to be called instead of IPersistStreamInit::Load.</summary>
+			/// <remarks>If the object has already been initialized with IPersistStreamInit::Load, then this method must return E_UNEXPECTED.</remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/ocidl/nf-ocidl-ipersiststreaminit-initnew HRESULT InitNew( );
+			void InitNew();
 		}
 
 		/// <summary>
