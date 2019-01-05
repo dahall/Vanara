@@ -979,10 +979,14 @@ Native Interface | Native DLL | Header | Managed Interface
 [IEnumSTATPROPSETSTG](http://msdn2.microsoft.com/en-us/library/8d5e658f-312c-4c91-8794-808b2e8dd182) | propidl.h | Vanara.PInvoke.Ole32+IEnumSTATPROPSETSTG  
 [IEnumSTATPROPSTG](http://msdn2.microsoft.com/en-us/library/e625e52a-5628-4d18-9282-aa1c141c83af) | propidl.h | Vanara.PInvoke.Ole32+IEnumSTATPROPSTG  
 [IEnumSTATSTG](http://msdn2.microsoft.com/en-us/library/aa379217) | Objidl.h | Vanara.PInvoke.Ole32+IEnumSTATSTG  
+[IEnumUnknown](http://msdn2.microsoft.com/en-us/library/5aaed96f-39c1-4201-80d0-a2a8a177b65e) | objidl.h | Vanara.PInvoke.Ole32+IEnumUnknown  
 [IErrorLog](https://www.google.com/search?num=5&q=IErrorLog+site%3Amicrosoft.com) | OAIdl.h | Vanara.PInvoke.Ole32+IErrorLog  
 [IInitializeWithStream](http://msdn2.microsoft.com/en-us/library/bb761810) | Propsys.h | Vanara.PInvoke.PropSys+IInitializeWithStream  
 [IObjectWithPropertyKey](http://msdn2.microsoft.com/en-us/library/bb775404) | Propsys.h | Vanara.PInvoke.PropSys+IObjectWithPropertyKey  
 [IOleWindow](https://www.google.com/search?num=5&q=IOleWindow+site%3Amicrosoft.com) | Oleidl.h | Vanara.PInvoke.Ole32+IOleWindow  
+[IPersist](http://msdn2.microsoft.com/en-us/library/932eb0e2-35a6-482e-9138-00cff30508a9) | objidl.h | Vanara.PInvoke.Ole32+IPersist  
+[IPersistStream](http://msdn2.microsoft.com/en-us/library/97ea64ee-d950-4872-add6-1f532a6eb33f) | objidl.h | Vanara.PInvoke.Ole32+IPersistStream  
+[IPersistStreamInit](http://msdn2.microsoft.com/en-us/library/49c413b3-3523-4602-9ec1-19f4e0fe5651) | ocidl.h | Vanara.PInvoke.Ole32+IPersistStreamInit  
 [IPropertyBag](https://www.google.com/search?num=5&q=IPropertyBag+site%3Amicrosoft.com) | OAIdl.h | Vanara.PInvoke.Ole32+IPropertyBag  
 [IPropertyChange](http://msdn2.microsoft.com/en-us/library/bb775244) | Propsys.h | Vanara.PInvoke.PropSys+IPropertyChange  
 [IPropertyChangeArray](http://msdn2.microsoft.com/en-us/library/bb775223) | Propsys.h | Vanara.PInvoke.PropSys+IPropertyChangeArray  

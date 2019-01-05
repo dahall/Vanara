@@ -22,7 +22,7 @@ CollapsiblePanel | Control providing a panel that can be collapsed.
 ComboBoxExtension | 
 CommandLink | Represents a Windows Command Link control.
 ComponentDesignerExtension | Methods to assist when using designer code.
-ControlExtension | 
+ControlExtension | Control extension methods.
 ControlImage | 
 CredentialsDialog | Dialog box which prompts for user credentials using the Win32 CREDUI methods.
 CursorExtension | 
@@ -40,7 +40,7 @@ EnumComboBox |
 ExpandedEventArgs | Provides data for the `Expanded` event.
 FlagCheckedListBox | 
 FlagCheckedListBoxItem | 
-FlagEnumUIEditor<T> | 
+FlagEnumUIEditor<T> | A `UITypeEditor` for editing flag enums.
 FolderBrowserDialog | Class to let the user browse for a folder.
 FolderBrowserDialogInitializedEventArgs | Event arguments for when the `FolderBrowserDialog` has been initialized.
 GenericProvider | Base implementation of `IAccessControlEditorDialogProvider`.

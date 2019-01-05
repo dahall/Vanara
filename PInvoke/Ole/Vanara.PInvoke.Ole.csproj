@@ -31,7 +31,7 @@ Structures
 STGOPTIONS, SOLE_AUTHENTICATION_INFO, SOLE_AUTHENTICATION_LIST, SOLE_AUTHENTICATION_SERVICE, SNB, OLEMENUGROUPWIDTHS, STATPROPSETSTG, STATPROPSTG, BLOB, CLIPDATA, PACKEDMETA, PROPVARIANT, PROPERTYKEY, SAFEARRAY, SAFEARRAYBOUND
 
 Interfaces
-IErrorLog, IPropertyBag, IRecordInfo, IEnumSTATSTG, IStorage, IDropSource, IOleWindow, IEnumSTATPROPSETSTG, IEnumSTATPROPSTG, IPropertySetStorage, IPropertyStorage, ICreateObject, IDelayedPropertyStoreFactory, IInitializeWithStream, IPropertyDescription, IPropertyDescription2, IPropertyDescriptionList, IPropertyEnumType, IPropertyEnumType2, IPropertyEnumTypeList, IPropertyStore, IPropertyStoreFactory, IPropertySystem, IObjectWithPropertyKey, IPropertyChange, IPropertyChangeArray
+IErrorLog, IPropertyBag, IRecordInfo, IEnumSTATSTG, IEnumUnknown, IStorage, IDropSource, IOleWindow, IPersist, IPersistStream, IPersistStreamInit, IEnumSTATPROPSETSTG, IEnumSTATPROPSTG, IPropertySetStorage, IPropertyStorage, ICreateObject, IDelayedPropertyStoreFactory, IInitializeWithStream, IPropertyDescription, IPropertyDescription2, IPropertyDescriptionList, IPropertyEnumType, IPropertyEnumType2, IPropertyEnumTypeList, IPropertyStore, IPropertyStoreFactory, IPropertySystem, IObjectWithPropertyKey, IPropertyChange, IPropertyChangeArray
 
 </PackageReleaseNotes>
     <LangVersion>latest</LangVersion>
