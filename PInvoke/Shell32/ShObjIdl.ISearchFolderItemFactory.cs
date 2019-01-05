@@ -179,7 +179,8 @@ namespace Vanara.PInvoke
 			/// <remarks>When the retrieved IShellItem is enumerated, it returns the search results.</remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-isearchfolderitemfactory-getshellitem
 			// HRESULT GetShellItem( REFIID riid, void **ppv );
-			void GetShellItem(in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+			[return: MarshalAs(UnmanagedType.IUnknown)]
+			object GetShellItem(in Guid riid);
 
 			/// <summary>Gets the search folder as an ITEMIDLIST.</summary>
 			/// <returns>

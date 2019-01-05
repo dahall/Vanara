@@ -628,10 +628,10 @@ namespace Vanara.PInvoke
 			/// <c>NULL</c>, which is equivalent to an empty enumeration.
 			/// </para>
 			/// </param>
-			/// <param name="ppSolution">
+			/// <returns>
 			/// <para>Type: <c>IQuerySolution**</c></para>
 			/// <para>Receives an IQuerySolution object. The caller must release it by calling its IUnknown::Release method.</para>
-			/// </param>
+			/// </returns>
 			/// <remarks>
 			/// <para>
 			/// For each IRichChunk object, the position information identifies the character span of the custom property, the string value
@@ -662,7 +662,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iqueryparser-parse HRESULT Parse(
 			// LPCWSTR pszInputString, IEnumUnknown *pCustomProperties, IQuerySolution **ppSolution );
-			void Parse([In, MarshalAs(UnmanagedType.LPWStr)] string pszInputString, [In] IEnumUnknown pCustomProperties, out IQuerySolution ppSolution);
+			IQuerySolution Parse([In, MarshalAs(UnmanagedType.LPWStr)] string pszInputString, [In] IEnumUnknown pCustomProperties);
 
 			/// <summary>Sets a single option, such as a specified word-breaker, for parsing an input string.</summary>
 			/// <param name="option">
@@ -739,13 +739,14 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>BOOL</c></para>
 			/// <para>Reserved. Must be <c>FALSE</c>.</para>
 			/// </param>
-			/// <param name="ppszQueryString">
+			/// <returns>
 			/// <para>Type: <c>LPWSTR*</c></para>
 			/// <para>Receives the restated query string. The caller must free the string by calling CoTaskMemFree.</para>
-			/// </param>
+			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iqueryparser-restatetostring HRESULT
 			// RestateToString( ICondition *pCondition, BOOL fUseEnglish, LPWSTR *ppszQueryString );
-			void RestateToString([In] ICondition pCondition, [In, MarshalAs(UnmanagedType.Bool)] bool fUseEnglish, [Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszQueryString);
+			[return: MarshalAs(UnmanagedType.LPWStr)]
+			string RestateToString([In] ICondition pCondition, [In, MarshalAs(UnmanagedType.Bool)] bool fUseEnglish);
 
 			/// <summary>Parses a condition for a specified property.</summary>
 			/// <param name="pszPropertyName">
