@@ -34,12 +34,13 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the folder object.</summary>
 			/// <param name="riid">Reference to the desired IID to represent the folder.</param>
 			/// <param name="ppv">When this method returns, contains the interface pointer requested in <paramref name="riid"/>. This is typically IShellFolder or a related interface. This can also be an IShellItemArray with a single element.</param>
-			void GetFolder(in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+			[return: MarshalAs(UnmanagedType.IUnknown)]
+			object GetFolder(in Guid riid);
 
 			/// <summary>Gets the identifier of a specific item in the folder view, by index.</summary>
 			/// <param name="iItemIndex">The index of the item in the view.</param>
 			/// <param name="ppidl">The address of a pointer to a PIDL containing the item's identifier information.</param>
-			void Item(int iItemIndex, out PIDL ppidl);
+			PIDL Item(int iItemIndex);
 
 			/// <summary>Gets the number of items in the folder. This can be the number of all items, or a subset such as the number of selected items.</summary>
 			/// <param name="uFlags">Flags from the _SVGIO enumeration that limit the count to certain types of items.</param>
@@ -50,7 +51,8 @@ namespace Vanara.PInvoke
 			/// <param name="uFlags">_SVGIO values that limit the enumeration to certain types of items.</param>
 			/// <param name="riid">Reference to the desired IID to represent the folder.</param>
 			/// <param name="ppv">When this method returns, contains the interface pointer requested in <paramref name="riid"/>. This is typically an IEnumIDList, IDataObject, or IShellItemArray. If an error occurs, this value is NULL.</param>
-			void Items(SVGIO uFlags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+			[return: MarshalAs(UnmanagedType.IUnknown)]
+			object Items(SVGIO uFlags, in Guid riid);
 
 			/// <summary>Gets the index of an item in the folder's view which has been marked by using the SVSI_SELECTIONMARK in IFolderView::SelectItem.</summary>
 			/// <returns>The index of the marked item.</returns>
@@ -110,12 +112,13 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the folder object.</summary>
 			/// <param name="riid">Reference to the desired IID to represent the folder.</param>
 			/// <param name="ppv">When this method returns, contains the interface pointer requested in <paramref name="riid"/>. This is typically IShellFolder or a related interface. This can also be an IShellItemArray with a single element.</param>
-			new void GetFolder(in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+			[return: MarshalAs(UnmanagedType.IUnknown)]
+			new object GetFolder(in Guid riid);
 
 			/// <summary>Gets the identifier of a specific item in the folder view, by index.</summary>
 			/// <param name="iItemIndex">The index of the item in the view.</param>
 			/// <param name="ppidl">The address of a pointer to a PIDL containing the item's identifier information.</param>
-			new void Item(int iItemIndex, out PIDL ppidl);
+			new PIDL Item(int iItemIndex);
 
 			/// <summary>Gets the number of items in the folder. This can be the number of all items, or a subset such as the number of selected items.</summary>
 			/// <param name="uFlags">Flags from the _SVGIO enumeration that limit the count to certain types of items.</param>
@@ -126,7 +129,8 @@ namespace Vanara.PInvoke
 			/// <param name="uFlags">_SVGIO values that limit the enumeration to certain types of items.</param>
 			/// <param name="riid">Reference to the desired IID to represent the folder.</param>
 			/// <param name="ppv">When this method returns, contains the interface pointer requested in <paramref name="riid"/>. This is typically an IEnumIDList, IDataObject, or IShellItemArray. If an error occurs, this value is NULL.</param>
-			new void Items(SVGIO uFlags, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+			[return: MarshalAs(UnmanagedType.IUnknown)]
+			new object Items(SVGIO uFlags, in Guid riid);
 
 			/// <summary>Gets the index of an item in the folder's view which has been marked by using the SVSI_SELECTIONMARK in IFolderView::SelectItem.</summary>
 			/// <returns>The index of the marked item.</returns>
@@ -183,13 +187,6 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-getgroupby
 			// HRESULT GetGroupBy( PROPERTYKEY *pkey, BOOL *pfAscending );
 			void GetGroupBy(out PROPERTYKEY pkey, [MarshalAs(UnmanagedType.Bool)] out bool pfAscending);
-
-			/// <summary>Retrieves the property and sort order used for grouping items in the folder display.</summary>
-			/// <param name="pkey"><para>Type: <c>PROPERTYKEY*</c></para>
-			/// <para>A pointer to the PROPERTYKEY by which the view is grouped.</para></param>
-			/// <param name="pfAscending"><para>Type: <c>BOOL*</c></para>
-			/// <para>A pointer to a value of type <c>BOOL</c> that indicates sort order of the groups.</para></param>
-			void RemoteGetGroupBy(out PROPERTYKEY pkey, [MarshalAs(UnmanagedType.Bool)] out bool pfAscending);
 
 			/// <summary>
 			///   <para>[This method is still implemented, but should be considered deprecated as of Windows 7. It might not be implemented in future versions of Windows. It cannot be used with items in search results or library views, so consider using the item's existing properties or, if applicable, emitting properties from your namespace or property handler. See Developing Property Handlers for Windows Search for more information.]</para><para>Caches a property for an item in the view's property cache.</para>
