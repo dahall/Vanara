@@ -327,11 +327,62 @@ namespace Vanara.PInvoke
 		[ComImport, Guid("75121952-e0d0-43e5-9380-1d80483acf72"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		public interface ICreateObject
 		{
-			/// <summary><para>Creates a local object of a specified class and returns a pointer to a specified interface on the object.</para></summary><param name="clsid"><para>Type: <c>REFCLSID</c></para><para>A reference to a CLSID.</para></param><param name="pUnkOuter"><para>Type: <c>IUnknown*</c></para><para>A pointer to the IUnknown interface that aggregates the object created by this function, or <c>NULL</c> if no aggregation is desired.</para></param><param name="riid"><para>Type: <c>REFIID</c></para><para>A reference to the IID of the interface the created object should return.</para></param><param name="ppv"><para>Type: <c>void**</c></para><para>When this method returns, contains the address of the pointer to the interface requested in riid.</para></param><returns><para>Type: <c>HRESULT</c></para><para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para></returns><remarks><para>This method can be used with GetPropertyStoreWithCreateObject.</para></remarks>
+			/// <summary>
+			/// <para>Creates a local object of a specified class and returns a pointer to a specified interface on the object.</para>
+			/// </summary>
+			/// <param name="clsid">
+			/// <para>Type: <c>REFCLSID</c></para>
+			/// <para>A reference to a CLSID.</para>
+			/// </param>
+			/// <param name="pUnkOuter">
+			/// <para>Type: <c>IUnknown*</c></para>
+			/// <para>
+			/// A pointer to the IUnknown interface that aggregates the object created by this function, or <c>NULL</c> if no aggregation is desired.
+			/// </para>
+			/// </param>
+			/// <param name="riid">
+			/// <para>Type: <c>REFIID</c></para>
+			/// <para>A reference to the IID of the interface the created object should return.</para>
+			/// </param>
+			/// <param name="ppv">
+			/// <para>Type: <c>void**</c></para>
+			/// <para>When this method returns, contains the address of the pointer to the interface requested in riid.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>This method can be used with GetPropertyStoreWithCreateObject.</para>
+			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-icreateobject-createobject
 			// HRESULT CreateObject( REFCLSID clsid, IUnknown *pUnkOuter, REFIID riid, void **ppv );
 			[PInvokeData("propsys.h", MSDNShortId = "72c56de7-4c04-4bcf-b6bb-6e41d12b68a3")]
 			void CreateObject(in Guid clsid, [MarshalAs(UnmanagedType.IUnknown)] object pUnkOuter, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+		}
+
+		/// <summary>
+		/// Creates a local object of a specified class and returns a pointer to a specified interface on the object.
+		/// </summary>
+		/// <typeparam name="T">The type of the interface the created object should return.</typeparam>
+		/// <param name="co">The <see cref="ICreateObject"/> instance.</param>
+		/// <param name="clsid"><para>Type: <c>REFCLSID</c></para>
+		/// <para>A reference to a CLSID.</para></param>
+		/// <param name="pUnkOuter"><para>Type: <c>IUnknown*</c></para>
+		/// <para>
+		/// A pointer to the IUnknown interface that aggregates the object created by this function, or <c>NULL</c> if no aggregation is desired.
+		/// </para></param>
+		/// <returns>
+		/// <para>Type: <c>void**</c></para>
+		/// <para>When this method returns, contains the address of the pointer to the interface requested in riid.</para>
+		/// </returns>
+		/// <remarks>This method can be used with GetPropertyStoreWithCreateObject.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nf-propsys-icreateobject-createobject
+		// HRESULT CreateObject( REFCLSID clsid, IUnknown *pUnkOuter, REFIID riid, void **ppv );
+		public static T CreateObject<T>(this ICreateObject co, in Guid clsid, [In, MarshalAs(UnmanagedType.IUnknown), Optional] object pUnkOuter) where T : class
+		{
+			co.CreateObject(clsid, pUnkOuter, typeof(T).GUID, out var ppv);
+			return (T)ppv;
 		}
 
 		/// <summary><para>Exposes a method to create a specified IPropertyStore object in circumstances where property access is potentially slow.</para></summary>
@@ -600,15 +651,26 @@ namespace Vanara.PInvoke
 			[PreserveSig] HRESULT GetImageReference([Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszImageRes);
 		}
 
+		/// <summary>Exposes methods that enumerate the possible values for a property.</summary>
 		[ComImport, Guid("A99400F4-3D84-4557-94BA-1242FB2CC9A6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		[PInvokeData("Propsys.h")]
 		public interface IPropertyEnumTypeList
 		{
+			/// <summary>Gets the number of elements in the list.</summary>
+			/// <returns>The number of list elements.</returns>
 			uint GetCount();
 
+			/// <summary>Gets the IPropertyEnumType object at the specified index in the list.</summary>
+			/// <param name="itype">The index of the object in the list.</param>
+			/// <param name="riid">The IID of IPropertyEnumType</param>
+			/// <returns>An IPropertyEnumType instance.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IPropertyEnumType GetAt([In] uint itype, in Guid riid);
 
+			/// <summary>Gets the condition at the specified index.</summary>
+			/// <param name="index">Index of the desired condition.</param>
+			/// <param name="riid">A reference to the IID of the interface to retrieve.</param>
+			/// <returns>An ICondition interface pointer.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			object GetConditionAt([In] uint index, in Guid riid);
 
@@ -654,9 +716,11 @@ namespace Vanara.PInvoke
 				in Guid riid, out IPropertyStore ppv);
 		}
 
+		/// <summary><para>Exposes methods that get property descriptions, register and unregister property schemas, enumerate property descriptions, and format property values in a type-strict way.</para></summary><remarks><para>Many of the exported APIs (such as PSGetPropertyDescription) are simply wrappers around the IPropertySystem methods. If your code calls a lot of these helper APIs in sequence, it may be worthwhile to instantiate a single <c>IPropertySystem</c> object, and call the methods directly, rather than calling the helper APIs. (To improve the performance, the helper APIs do obtain a cached instance of the <c>IPropertySystem</c> object.)</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/propsys/nn-propsys-ipropertysystem
+		[PInvokeData("propsys.h", MSDNShortId = "9ead94d9-4d4e-44c6-8c53-11c4c4ee2fb2")]
 		[SuppressUnmanagedCodeSecurity]
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("ca724e8a-c3e6-442b-88a4-6fb0db8035a3")]
-		[PInvokeData("PropSys.h")]
 		public interface IPropertySystem
 		{
 			[return: MarshalAs(UnmanagedType.Interface)]

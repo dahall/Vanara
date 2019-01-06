@@ -372,7 +372,7 @@ namespace Vanara.PInvoke
 			[KnownFolderDetail("{D9DC8A3B-B784-432E-A781-5A1130A75963}", Equivalent = Environment.SpecialFolder.History)]
 			FOLDERID_History,
 
-			/// <summary>Homegroup</summary>
+			/// <summary>HomeGroup</summary>
 			[KnownFolderDetail("{52528A6B-B9E3-4ADD-B60D-588C2DBA842D}")]
 			FOLDERID_HomeGroup,
 
@@ -601,7 +601,7 @@ namespace Vanara.PInvoke
 			FOLDERID_SavedPicturesLibrary,
 
 			/// <summary>Searches</summary>
-			[KnownFolderDetail("{7d1d3a04-debb-4115-95cf-2f29da2920da}")]
+			[KnownFolderDetail("{7D1D3A04-DEBB-4115-95CF-2F29DA2920DA}")]
 			FOLDERID_SavedSearches,
 
 			/// <summary>Screenshots</summary>
@@ -727,7 +727,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>
 		/// Exposes methods that allow an application to retrieve information about a known folder's category, type, GUID, pointer to an item
-		/// identifier list (PIDL) value, redirection capabilities, and definition. It provides a method for the retrival of a known folder's
+		/// identifier list (PIDL) value, redirection capabilities, and definition. It provides a method for the retrieval of a known folder's
 		/// IShellItem object. It also provides methods to get or set the path of the known folder.
 		/// </summary>
 		[ComImport, Guid("3AA7AF7E-9B36-420c-A8E3-F77D4674A488"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -752,10 +752,10 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="riid">A reference to the IID of the requested interface.</param>
 			/// <returns>
-			/// When this method returns, contains the interface pointer requested in riid. This is typically IShellItem or IShellItem2.
+			/// When this method returns, contains the interface pointer requested in <paramref name="riid"/>. This is typically IShellItem or IShellItem2.
 			/// </returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IShellItem GetShellItem([In] KNOWN_FOLDER_FLAG dwFlags, in Guid riid);
+			object GetShellItem([In] KNOWN_FOLDER_FLAG dwFlags, in Guid riid);
 
 			/// <summary>Retrieves the path of a known folder as a string.</summary>
 			/// <param name="dwFlags">
@@ -927,8 +927,8 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="cFolders">The number of KNOWNFOLDERID values in the array at pExclusion.</param>
 			/// <param name="pExclusion">
-			/// Pointer to an array of KNOWNFOLDERID values that refer to subfolders of rfid that should be excluded from the redirection. If
-			/// no subfolders are excluded, this value can be NULL.
+			/// Pointer to an array of KNOWNFOLDERID values that refer to subfolders of <paramref name="rfid"/> that should be excluded from
+			/// the redirection. If no subfolders are excluded, this value can be NULL.
 			/// </param>
 			/// <returns>
 			/// When this method returns, contains the address of a pointer to a null-terminated Unicode string that contains an error
@@ -937,6 +937,15 @@ namespace Vanara.PInvoke
 			SafeCoTaskMemString Redirect(in Guid rfid, [In] HWND hwnd, [In] KF_REDIRECT_FLAGS flags,
 				[In, MarshalAs(UnmanagedType.LPWStr)] string pszTargetPath, [In] uint cFolders, [In] Guid[] pExclusion);
 		}
+
+		/// <summary>Extension method to simplify using the <see cref="IKnownFolder.GetShellItem"/> method.</summary>
+		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <param name="fv">An <see cref="IKnownFolder"/> instance.</param>
+		/// <param name="dwFlags">
+		/// Flags that specify special retrieval options. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.
+		/// </param>
+		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
+		public static T GetShellItem<T>(this IKnownFolder fv, [In] KNOWN_FOLDER_FLAG dwFlags) where T : class => (T)fv.GetShellItem(dwFlags, typeof(T).GUID);
 
 		/// <summary>Defines the specifics of a known folder.</summary>
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]

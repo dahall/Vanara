@@ -239,8 +239,8 @@ namespace Vanara.PInvoke
 			/// <summary>Gets an interface for the current view of the browser.</summary>
 			/// <param name="riid">A reference to the desired interface ID.</param>
 			/// <returns>
-			/// When this method returns, contains the interface pointer requested in riid. This will typically be IShellView, IShellView2,
-			/// IFolderView, or a related interface.
+			/// When this method returns, contains the interface pointer requested in <paramref name="riid"/>. This will typically be
+			/// IShellView, IShellView2, IFolderView, or a related interface.
 			/// </returns>
 			[return: MarshalAs(UnmanagedType.Interface, IidParameterIndex = 0)]
 			object GetCurrentView(in Guid riid);
@@ -271,6 +271,12 @@ namespace Vanara.PInvoke
 			[PreserveSig]
 			HRESULT OnNavigationFailed([In] IntPtr pidlFolder);
 		}
+
+		/// <summary>Extension method to simplify using the <see cref="IExplorerBrowser.GetCurrentView"/> method.</summary>
+		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <param name="eb">An <see cref="IExplorerBrowser"/> instance.</param>
+		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
+		public static T GetCurrentView<T>(this IExplorerBrowser eb) where T : class => (T)eb.GetCurrentView(typeof(T).GUID);
 
 		/// <summary>The ExplorerBrowser class is the base CoClass for all I ExplorerBrowser interfaces.</summary>
 		[ComImport, Guid("71f96385-ddd6-48d3-a0c1-ae06e8b055fb"), ClassInterface(ClassInterfaceType.None)]

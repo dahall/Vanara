@@ -192,6 +192,12 @@ namespace Vanara.PInvoke
 			PIDL GetIDList();
 		}
 
+		/// <summary>Extension method to simplify using the <see cref="ISearchFolderItemFactory.GetShellItem"/> method.</summary>
+		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <param name="sfif">An <see cref="ISearchFolderItemFactory"/> instance.</param>
+		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
+		public static T GetShellItem<T>(this ISearchFolderItemFactory sfif) where T : class => (T)sfif.GetShellItem(typeof(T).GUID);
+
 		/// <summary>CLSID_SearchFolderItemFactory</summary>
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "a684b373-6de4-4b4a-bbae-85e1c5a7e04a")]
 		[ComImport, Guid("14010e02-bbbd-41f0-88e3-eda371216584"), ClassInterface(ClassInterfaceType.None)]

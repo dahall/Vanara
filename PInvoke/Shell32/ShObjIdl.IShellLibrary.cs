@@ -105,7 +105,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <returns>A pointer to the interface requested in riid. If this call fails, this value is NULL.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IShellItemArray GetFolders([In] LIBRARYFOLDERFILTER lff, in Guid riid);
+			object GetFolders([In] LIBRARYFOLDERFILTER lff, in Guid riid);
 
 			/// <summary>Resolves the target location of a library folder, even if the folder has been moved or renamed.</summary>
 			/// <param name="folderToResolve">An IShellItem object that represents the library folder to locate.</param>
@@ -119,7 +119,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <returns>A pointer to the interface requested in riid.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IShellItem ResolveFolder([In] IShellItem folderToResolve, [In] uint timeout, in Guid riid);
+			object ResolveFolder([In] IShellItem folderToResolve, [In] uint timeout, in Guid riid);
 
 			/// <summary>Retrieves the default target folder that the library uses for save operations.</summary>
 			/// <param name="dsft">The DEFAULTSAVEFOLDERTYPE value that specifies the save folder to get.</param>
@@ -129,7 +129,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <returns>A pointer to the interface requested in riid.</returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
-			IShellItem GetDefaultSaveFolder([In] DEFAULTSAVEFOLDERTYPE dsft, in Guid riid);
+			object GetDefaultSaveFolder([In] DEFAULTSAVEFOLDERTYPE dsft, in Guid riid);
 
 			/// <summary>Sets the default target folder that the library will use for save operations.</summary>
 			/// <param name="dsft">The DEFAULTSAVEFOLDERTYPE value that specifies the default save location to set.</param>
@@ -209,6 +209,31 @@ namespace Vanara.PInvoke
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IShellItem SaveInKnownFolder(in Guid kfidToSaveIn, [In, MarshalAs(UnmanagedType.LPWStr)] string libraryName, [In] LIBRARYSAVEFLAGS lsf);
 		}
+
+		/// <summary>Retrieves the default target folder that the library uses for save operations.</summary>
+		/// <typeparam name="T">The type of the interface to get.</typeparam>
+		/// <param name="sl">The <see cref="IShellLibrary"/> instance.</param>
+		/// <param name="dsft">The DEFAULTSAVEFOLDERTYPE value that specifies the save folder to get.</param>
+		/// <returns>A pointer to the interface requested.</returns>
+		public static T GetDefaultSaveFolder<T>(this IShellLibrary sl, [In] DEFAULTSAVEFOLDERTYPE dsft) where T : class => (T)sl.GetDefaultSaveFolder(dsft, typeof(T).GUID);
+
+		/// <summary>Gets the set of child folders that are contained in the library.</summary>
+		/// <typeparam name="T">The type of the interface to get.</typeparam>
+		/// <param name="sl">The <see cref="IShellLibrary"/> instance.</param>
+		/// <param name="lff">One of the following LIBRARYFOLDERFILTER values that determines the folders to get.</param>
+		/// <returns>A pointer to the interface requested. If this call fails, this value is NULL.</returns>
+		public static T GetFolders<T>(this IShellLibrary sl, [In] LIBRARYFOLDERFILTER lff) where T : class => (T)sl.GetFolders(lff, typeof(T).GUID);
+
+		/// <summary>Resolves the target location of a library folder, even if the folder has been moved or renamed.</summary>
+		/// <typeparam name="T">The type of the interface to get.</typeparam>
+		/// <param name="sl">The <see cref="IShellLibrary"/> instance.</param>
+		/// <param name="folderToResolve">An IShellItem object that represents the library folder to locate.</param>
+		/// <param name="timeout">
+		/// The maximum time, in milliseconds, the method will attempt to locate the folder before returning. If the folder could not be
+		/// located before the specified time elapses, an error is returned.
+		/// </param>
+		/// <returns>A pointer to the interface requested.</returns>
+		public static T ResolveFolder<T>(this IShellLibrary sl, [In] IShellItem folderToResolve, [In] uint timeout) where T : class => (T)sl.ResolveFolder(folderToResolve, timeout, typeof(T).GUID);
 
 		/// <summary>Resolves all locations in a library, even those locations that have been moved or renamed.</summary>
 		/// <param name="psiLibrary">A pointer to an IShellItem object that represents the library.</param>

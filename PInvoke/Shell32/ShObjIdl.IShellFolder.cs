@@ -683,6 +683,64 @@ namespace Vanara.PInvoke
 			PROPERTYKEY MapColumnToSCID(uint iColumn);
 		}
 
+		/// <summary>Extension method to simplify using the <see cref="IShellFolder.BindToObject"/> method.</summary>
+		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <param name="sf">An <see cref="IShellFolder"/> instance.</param>
+		/// <param name="pidl">
+		/// The address of an ITEMIDLIST structure (PIDL) that identifies the subfolder. This value can refer to an item at any level below
+		/// the parent folder in the namespace hierarchy. The structure contains one or more SHITEMID structures, followed by a terminating NULL.
+		/// </param>
+		/// <param name="pbc">
+		/// A pointer to an IBindCtx interface on a bind context object that can be used to pass parameters to the construction of the
+		/// handler. If this parameter is not used, set it to NULL. Because support for this parameter is optional for folder object
+		/// implementations, some folders may not support the use of bind contexts.
+		/// <para>
+		/// Information that can be provided in the bind context includes a BIND_OPTS structure that includes a grfMode member that indicates
+		/// the access mode when binding to a stream handler. Other parameters can be set and discovered using IBindCtx::RegisterObjectParam
+		/// and IBindCtx::GetObjectParam.
+		/// </para>
+		/// </param>
+		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
+		public static T BindToObject<T>(this IShellFolder sf, [In] PIDL pidl, [In, Optional] IBindCtx pbc) where T : class => (T)sf.BindToObject(pidl, pbc, typeof(T).GUID);
+
+		/// <summary>Extension method to simplify using the <see cref="IShellFolder.BindToStorage"/> method.</summary>
+		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <param name="sf">An <see cref="IShellFolder"/> instance.</param>
+		/// <param name="pidl">
+		/// The address of an ITEMIDLIST structure that identifies the subfolder relative to its parent folder. The structure must contain
+		/// exactly one SHITEMID structure followed by a terminating zero.
+		/// </param>
+		/// <param name="pbc">
+		/// The optional address of an IBindCtx interface on a bind context object to be used during this operation. If this parameter is not
+		/// used, set it to NULL. Because support for pbc is optional for folder object implementations, some folders may not support the use
+		/// of bind contexts.
+		/// </param>
+		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
+		public static T BindToStorage<T>(this IShellFolder sf, [In] PIDL pidl, [In, Optional] IBindCtx pbc) where T : class => (T)sf.BindToStorage(pidl, pbc, typeof(T).GUID);
+
+		/// <summary>Extension method to simplify using the <see cref="IShellFolder.CreateViewObject"/> method.</summary>
+		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <param name="sf">An <see cref="IShellFolder"/> instance.</param>
+		/// <param name="hwndOwner">
+		/// A handle to the owner window. If you have implemented a custom folder view object, your folder view window should be created as a
+		/// child of hwndOwner.
+		/// </param>
+		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
+		public static T CreateViewObject<T>(this IShellFolder sf, HWND hwndOwner) where T : class => (T)sf.CreateViewObject(hwndOwner, typeof(T).GUID);
+
+		/// <summary>Extension method to simplify using the <see cref="IShellFolder.GetUIObjectOf"/> method.</summary>
+		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <param name="sf">An <see cref="IShellFolder"/> instance.</param>
+		/// <param name="hwndOwner">
+		/// A handle to the owner window that the client should specify if it displays a dialog box or message box.
+		/// </param>
+		/// <param name="apidl">
+		/// An array of pointers to ITEMIDLIST structures, each of which uniquely identifies a file object or subfolder relative to the
+		/// parent folder. Each item identifier list must contain exactly one SHITEMID structure followed by a terminating zero.
+		/// </param>
+		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
+		public static T GetUIObjectOf<T>(this IShellFolder sf, HWND hwndOwner, PIDL[] apidl) where T : class => (T)sf.GetUIObjectOf(hwndOwner, (uint)apidl.Length, Array.ConvertAll(apidl, p => p.DangerousGetHandle()), typeof(T).GUID);
+
 		/// <summary>
 		/// Used by an IEnumExtraSearch enumerator object to return information on the search objects supported by a Shell Folder object.
 		/// </summary>

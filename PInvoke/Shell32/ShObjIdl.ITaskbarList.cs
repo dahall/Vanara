@@ -773,6 +773,44 @@ namespace Vanara.PInvoke
 			void SetTabProperties(HWND hwndTab, STPFLAG stpFlags);
 		}
 
+		/// <summary>Initiates a building session for a custom Jump List.</summary>
+		/// <typeparam name="T">
+		/// A type of an interface to be retrieved, typically IID_IObjectArray, that will represent all items currently stored in the list of
+		/// removed destinations for the application. This information is used to ensure that removed items are not part of the new Jump List.
+		/// </typeparam>
+		/// <param name="cdl">The <see cref="ICustomDestinationList"/> instance.</param>
+		/// <param name="pcMaxSlots">
+		/// A pointer that, when this method returns, points to the current user setting for the Number of recent items to display in Jump
+		/// Lists option in the Taskbar and Start Menu Properties window. The default value is 10. This is the maximum number of destinations
+		/// that will be shown, and it is a total of all destinations, regardless of category. More destinations can be added, but they will
+		/// not be shown in the UI.
+		/// <para>A Jump List will always show at least this many slots—destinations and, if there is room, tasks.</para>
+		/// <para>
+		/// This number does not include separators and section headers as long as the total number of separators and headers does not exceed
+		/// four. Separators and section headers beyond the first four might reduce the number of destinations displayed if space is
+		/// constrained. This number does not affect the standard command entries for pinning or unpinning, closing the window, or launching
+		/// a new instance. It also does not affect tasks or pinned items, the number of which that can be displayed is based on the space
+		/// available to the Jump List.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// When this method returns, contains the interface pointer requested. This is typically an IObjectArray, which represents a
+		/// collection of IShellItem and IShellLink objects that represent the removed items.
+		/// </returns>
+		public static T BeginList<T>(this ICustomDestinationList cdl, out uint pcMaxSlots) where T : class => (T)cdl.BeginList(out pcMaxSlots, typeof(T).GUID);
+
+		/// <summary>
+		/// Retrieves the current list of destinations that have been removed by the user from the existing Jump List that this custom Jump
+		/// List is meant to replace.
+		/// </summary>
+		/// <typeparam name="T">The type of the interface to retrieve, typically IID_IObjectArray.</typeparam>
+		/// <param name="cdl">The <see cref="ICustomDestinationList"/> instance.</param>
+		/// <returns>
+		/// When this method returns, contains the interface pointer requested. This is typically an IObjectArray, which represents a
+		/// collection of IShellItem or IShellLink objects that represent the items in the list of removed destinations.
+		/// </returns>
+		public static T GetRemovedDestinations<T>(this ICustomDestinationList cdl) where T : class => (T)cdl.GetRemovedDestinations(typeof(T).GUID);
+
 		/// <summary>
 		/// Used by methods of the ITaskbarList3 interface to define buttons used in a toolbar embedded in a window's thumbnail representation.
 		/// </summary>

@@ -359,7 +359,8 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getsubconditions
 			// HRESULT GetSubConditions( REFIID riid, void **ppv );
-			void GetSubConditions(in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+			[return: MarshalAs(UnmanagedType.IUnknown)]
+			object GetSubConditions(in Guid riid);
 
 			/// <summary>Retrieves the property name, operation, and value from a leaf search condition node.</summary>
 			/// <param name="ppszPropertyName">
@@ -380,19 +381,20 @@ namespace Vanara.PInvoke
 			void GetComparisonInfo([Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszPropertyName, out CONDITION_OPERATION pcop, [In, Out] PROPVARIANT ppropvar);
 
 			/// <summary>Retrieves the semantic type of the value of the search condition node.</summary>
-			/// <param name="ppszValueTypeName">
+			/// <returns>
 			/// <para>Type: <c>LPWSTR*</c></para>
 			/// <para>Receives either a pointer to the semantic type of the value as a Unicode string or <c>NULL</c>.</para>
-			/// </param>
+			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getvaluetype
 			// HRESULT GetValueType( LPWSTR *ppszValueTypeName );
-			void GetValueType([Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszValueTypeName);
+			[return: MarshalAs(UnmanagedType.LPWStr)]
+			string GetValueType();
 
 			/// <summary>Retrieves the character-normalized value of the search condition node.</summary>
-			/// <param name="ppszNormalization">
+			/// <returns>
 			/// <para>Type: <c>LPWSTR*</c></para>
 			/// <para>Receives a pointer to a Unicode string representation of the value.</para>
-			/// </param>
+			/// </returns>
 			/// <remarks>
 			/// In <c>Windows 7 and later</c>, if the value of the leaf node is <c>VT_EMPTY</c>, ppwszNormalization points to an empty
 			/// string. If the value is a string, such as VT_LPWSTR, VT_BSTR or VT_LPSTR, then ppwszNormalization is set to a
@@ -401,7 +403,8 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getvaluenormalization
 			// HRESULT GetValueNormalization( LPWSTR *ppszNormalization );
-			void GetValueNormalization([Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszNormalization);
+			[return: MarshalAs(UnmanagedType.LPWStr)]
+			string GetValueNormalization();
 
 			/// <summary>
 			/// For a leaf node, <c>ICondition::GetInputTerms</c> retrieves information about what parts (or ranges) of the input string
@@ -495,5 +498,24 @@ namespace Vanara.PInvoke
 			// HRESULT GetData( ULONG *pFirstPos, ULONG *pLength, LPWSTR *ppsz, PROPVARIANT *pValue );
 			void GetData(out uint pFirstPos, out uint pLength, [Out, MarshalAs(UnmanagedType.LPWStr)] out string ppsz, [In, Out] PROPVARIANT pValue);
 		}
+
+		/// <summary>
+		/// Retrieves a collection of the subconditions of the search condition node and the IID of the interface for enumerating the collection.
+		/// </summary>
+		/// <typeparam name="T">
+		/// The desired type of the enumerating interface: either IID_IEnumUnknown, IID_IEnumVARIANT or (for a negation condition) IID_ICondition.
+		/// </typeparam>
+		/// <param name="c">The <see cref="ICondition"/> instance.</param>
+		/// <returns>
+		/// Receives a collection of zero or more ICondition objects. Each object is a subcondition of this condition node. If
+		/// <typeparamref name="T"/> was IID_ICondition and this is a negation condition, this parameter receives the single subcondition.
+		/// </returns>
+		/// <remarks>
+		/// <para>If the subcondition is a negation node, the return value is set to an enumeration of one element.</para>
+		/// <para>If the node is a conjunction or disjunction node, the return value is set to an enumeration of the subconditions.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquerycondition/nf-structuredquerycondition-icondition-getsubconditions
+		// HRESULT GetSubConditions( REFIID riid, void **ppv );
+		public static T GetSubConditions<T>(this ICondition c) where T : class => (T)c.GetSubConditions(typeof(T).GUID);
 	}
 }

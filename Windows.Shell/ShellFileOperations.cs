@@ -786,7 +786,7 @@ namespace Vanara.Windows.Shell
 				var l = new List<PROPERTYKEY>(Count);
 				for (uint i = 0; i < Count; i++)
 				{
-					using (var p = new ComReleaser<IPropertyChange>(changes.GetAt(i, typeof(IPropertyChange).GUID)))
+					using (var p = new ComReleaser((IPropertyChange)changes.GetAt(i, typeof(IPropertyChange).GUID)))
 						l.Add(p.Item.GetPropertyKey());
 				}
 				return l;

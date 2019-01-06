@@ -745,5 +745,43 @@ namespace Vanara.PInvoke
 			[PreserveSig]
 			HRESULT GetImage([In, MarshalAs(UnmanagedType.Struct)] SIZE size, [In] SIIGBF flags, out Gdi32.SafeHBITMAP phbm);
 		}
+
+		/// <summary>Extension method to simplify using the <see cref="IShellItem.BindToHandler"/> method.</summary>
+		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <param name="si">An <see cref="IShellItem"/> instance.</param>
+		/// <param name="pbc">
+		/// A pointer to an IBindCtx interface on a bind context object. Used to pass optional parameters to the handler. The contents of
+		/// the bind context are handler-specific. For example, when binding to BHID_Stream, the STGM flags in the bind context indicate
+		/// the mode of access desired (read or read/write).
+		/// </param>
+		/// <param name="bhid">Reference to a GUID that specifies which handler will be created.</param>
+		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
+		public static T BindToHandler<T>(this IShellItem si, [In] IBindCtx pbc, in Guid bhid) where T : class => (T)si.BindToHandler(pbc, bhid, typeof(T).GUID);
+
+		/// <summary>Extension method to simplify using the <see cref="IShellItemArray.BindToHandler"/> method.</summary>
+		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <param name="sia">An <see cref="IShellItemArray"/> instance.</param>
+		/// <param name="pbc">
+		/// A pointer to an IBindCtx interface on a bind context object. Used to pass optional parameters to the handler. The contents of
+		/// the bind context are handler-specific. For example, when binding to BHID_Stream, the STGM flags in the bind context indicate
+		/// the mode of access desired (read or read/write).
+		/// </param>
+		/// <param name="rbhid">Reference to a GUID that specifies which handler will be created.</param>
+		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
+		public static T BindToHandler<T>(this IShellItemArray sia, [In] IBindCtx pbc, in Guid rbhid) where T : class => (T)sia.BindToHandler(pbc, rbhid, typeof(T).GUID);
+
+		/// <summary>Extension method to simplify using the <see cref="IShellItemArray.GetPropertyStore"/> method.</summary>
+		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <param name="sia">An <see cref="IShellItemArray"/> instance.</param>
+		/// <param name="flags">One of the GETPROPERTYSTOREFLAGS constants.</param>
+		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
+		public static T GetPropertyStore<T>(this IShellItemArray sia, GETPROPERTYSTOREFLAGS flags) where T : class => (T)sia.GetPropertyStore(flags, typeof(T).GUID);
+
+		/// <summary>Extension method to simplify using the <see cref="IShellItemArray.GetPropertyDescriptionList"/> method.</summary>
+		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <param name="sia">An <see cref="IShellItemArray"/> instance.</param>
+		/// <param name="keyType">A reference to the PROPERTYKEY structure specifying which property list to retrieve.</param>
+		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
+		public static T GetPropertyDescriptionList<T>(this IShellItemArray sia, in PROPERTYKEY keyType) where T : class => (T)sia.GetPropertyDescriptionList(keyType, typeof(T).GUID);
 	}
 }

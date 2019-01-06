@@ -92,7 +92,7 @@ namespace Vanara.Windows.Shell
 		/// <value>The default save folder.</value>
 		public ShellItem DefaultSaveFolder
 		{
-			get => Open(lib.GetDefaultSaveFolder(DEFAULTSAVEFOLDERTYPE.DSFT_DETECT, typeof(IShellItem).GUID));
+			get => Open(lib.GetDefaultSaveFolder<IShellItem>(DEFAULTSAVEFOLDERTYPE.DSFT_DETECT));
 			set => lib.SetDefaultSaveFolder(DEFAULTSAVEFOLDERTYPE.DSFT_DETECT, value.iShellItem);
 		}
 
@@ -154,13 +154,13 @@ namespace Vanara.Windows.Shell
 		/// <param name="filter">A value that determines the folders to get.</param>
 		/// <returns>A <see cref="ShellItemArray"/> containing the child folders.</returns>
 		public ShellLibraryFolders GetFilteredFolders(LibraryFolderFilter filter = LibraryFolderFilter.AllItems) =>
-			new ShellLibraryFolders(lib, lib.GetFolders((LIBRARYFOLDERFILTER)filter, typeof(IShellItemArray).GUID));
+			new ShellLibraryFolders(lib, lib.GetFolders<IShellItemArray>((LIBRARYFOLDERFILTER)filter));
 
 		/// <summary>Resolves the target location of a library folder, even if the folder has been moved or renamed.</summary>
 		/// <param name="item">A ShellItem object that represents the library folder to locate.</param>
 		/// <param name="timeout">The maximum time the method will attempt to locate the folder before returning. If the folder could not be located before the specified time elapses, an error is returned.</param>
 		/// <returns>The resulting target location.</returns>
-		public ShellItem ResolveFolder(ShellItem item, TimeSpan timeout) => Open(lib.ResolveFolder(item.iShellItem, Convert.ToUInt32(timeout.TotalMilliseconds), typeof(IShellItem).GUID));
+		public ShellItem ResolveFolder(ShellItem item, TimeSpan timeout) => Open(lib.ResolveFolder<IShellItem>(item.iShellItem, Convert.ToUInt32(timeout.TotalMilliseconds)));
 
 		/// <summary>Shows the library management dialog box, which enables users to manage the library folders and default save location.</summary>
 		/// <param name="parentWindow">The handle for the window that owns the library management dialog box. The value of this parameter can be NULL.</param>

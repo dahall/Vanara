@@ -394,8 +394,8 @@ namespace Vanara.PInvoke
 			/// <param name="pstReferenceTime">
 			/// <para>Type: <c>SYSTEMTIME const*</c></para>
 			/// <para>
-			/// A pointer to a <c>SYSTEMTIME</c> value to use as the reference date and time. A null pointer can be passed if
-			/// <paramref name="sqro"/> is set to SQRO_DONT_RESOLVE_DATETIME.
+			/// A pointer to a <c>SYSTEMTIME</c> value to use as the reference date and time. A null pointer can be passed if <paramref
+			/// name="sqro"/> is set to SQRO_DONT_RESOLVE_DATETIME.
 			/// </para>
 			/// </param>
 			/// <returns>
@@ -509,8 +509,7 @@ namespace Vanara.PInvoke
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-ientity-getrelationship HRESULT
 			// GetRelationship( LPCWSTR pszRelationName, IRelationship **pRelationship );
-			[return: MarshalAs(UnmanagedType.IUnknown)]
-			object GetRelationship([In, MarshalAs(UnmanagedType.LPWStr)] string pszRelationName);
+			IRelationship GetRelationship([In, MarshalAs(UnmanagedType.LPWStr)] string pszRelationName);
 
 			/// <summary>
 			/// <para>Retrieves an enumeration of IMetaData objects for this entity.</para>
@@ -1024,8 +1023,8 @@ namespace Vanara.PInvoke
 			/// <param name="pstReferenceTime">
 			/// <para>Type: <c>SYSTEMTIME const*</c></para>
 			/// <para>
-			/// A pointer to a <c>SYSTEMTIME</c> value to use as the reference date and time. A null pointer can be passed if
-			/// <paramref name="sqro"/> is set to SQRO_DONT_RESOLVE_DATETIME.
+			/// A pointer to a <c>SYSTEMTIME</c> value to use as the reference date and time. A null pointer can be passed if <paramref
+			/// name="sqro"/> is set to SQRO_DONT_RESOLVE_DATETIME.
 			/// </para>
 			/// </param>
 			/// <returns>
@@ -1126,6 +1125,80 @@ namespace Vanara.PInvoke
 			// GetLexicalData( LPWSTR *ppszInputString, ITokenCollection **ppTokens, LCID *plcid, IUnknown **ppWordBreaker );
 			void GetLexicalData([MarshalAs(UnmanagedType.LPWStr)] out string ppszInputString, [Out] out ITokenCollection ppTokens, [Out] out uint plcid,
 				[Out, MarshalAs(UnmanagedType.IUnknown)] out object ppWordBreaker);
+		}
+
+		/// <summary>Provides methods for retrieving information about a schema property.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nn-structuredquery-irelationship
+		[PInvokeData("structuredquery.h")]
+		[ComImport, Guid("2769280B-5108-498c-9C7F-A51239B63147"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IRelationship
+		{
+			/// <summary>Retrieves the name of the relationship.</summary>
+			/// <returns>
+			/// <para>Type: <c>LPWSTR*</c></para>
+			/// <para>
+			/// Receives a pointer to the name of the relationship as a Unicode string. The calling application must free the returned string
+			/// by calling CoTaskMemFree.
+			/// </para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-irelationship-name HRESULT Name(
+			// LPWSTR *ppszName );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
+			string Name();
+
+			/// <summary>Reports whether a relationship is real.</summary>
+			/// <returns>
+			/// <para>Type: <c>BOOL*</c></para>
+			/// <para>Receives <c>TRUE</c> for a real relationship; otherwise, <c>FALSE</c>.</para>
+			/// </returns>
+			/// <remarks>
+			/// A relationship is not considered real if its source entity derives from an entity that has a relationship of the same name.
+			/// The purpose of such a "shadow" relationship is to store metadata specific to the inherited relationship.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-irelationship-isreal HRESULT IsReal(
+			// BOOL *pIsReal );
+			[return: MarshalAs(UnmanagedType.Bool)]
+			bool IsReal();
+
+			/// <summary>
+			/// Retrieves the destination IEntity object of the relationship. The destination of a relationship corresponds to the type of a property.
+			/// </summary>
+			/// <returns>
+			/// <para>Type: <c>IEntity**</c></para>
+			/// <para>
+			/// Receives the address of a pointer to an IEntity object, or <c>NULL</c> if the relationship is not real. For more information,
+			/// see IRelationship::IsReal.
+			/// </para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-irelationship-destination HRESULT
+			// Destination( IEntity **pDestinationEntity );
+			IEntity Destination();
+
+			/// <summary>Retrieves an enumeration of IMetaData objects for this relationship.</summary>
+			/// <param name="riid">
+			/// <para>Type: <c>REFIID</c></para>
+			/// <para>The desired IID of the result, either IID_IEnumUnknown or IID_IEnumVARIANT.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>void**</c></para>
+			/// <para>
+			/// Receives a pointer to the enumeration of IMetaData objects. There may be multiple pairs with the same key (or the same value).
+			/// </para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-irelationship-metadata HRESULT
+			// MetaData( REFIID riid, void **pMetaData );
+			[return: MarshalAs(UnmanagedType.IUnknown)]
+			object MetaData(in Guid riid);
+
+			/// <summary>Retrieves the default phrase to use for this relationship in restatements.</summary>
+			/// <returns>
+			/// <para>Type: <c>LPWSTR*</c></para>
+			/// <para>Receives the default phrase as a Unicode string. The calling application must free the string by calling CoTaskMemFree.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-irelationship-defaultphrase HRESULT
+			// DefaultPhrase( LPWSTR *ppszPhrase );
+			[return: MarshalAs(UnmanagedType.LPWStr)]
+			string DefaultPhrase();
 		}
 
 		/// <summary>Provides a method for localizing keywords in a specified string.</summary>
@@ -1335,6 +1408,94 @@ namespace Vanara.PInvoke
 			// GetToken( ULONG i, ULONG *pBegin, ULONG *pLength, LPWSTR *ppsz );
 			void GetToken(uint i, out uint pBegin, out uint pLength, [Out, MarshalAs(UnmanagedType.LPWStr)] out string ppsz);
 		}
+
+		/// <summary>
+		/// Creates a new instance of a IQueryParser interface implementation. This instance of the query parser is loaded with the schema
+		/// for the specified catalog and is localized to a specified language. All other settings are initialized to default settings.
+		/// </summary>
+		/// <typeparam name="T">The type of the IQueryParser interface implementation.</typeparam>
+		/// <param name="qpmgr">The <see cref="IQueryParserManager"/> instance.</param>
+		/// <param name="pszCatalog">
+		/// <para>Type: <c>LPCWSTR</c></para>
+		/// <para>The name of the catalog to use. Permitted values are and an empty string (for a trivial schema with no properties).</para>
+		/// </param>
+		/// <param name="langidForKeywords">
+		/// <para>Type: <c>LANGID</c></para>
+		/// <para>The LANGID used to select the localized language for keywords.</para>
+		/// </param>
+		/// <returns>
+		/// Receives a pointer to the newly created parser. The calling application must release it by calling its IUnknown::Release method.
+		/// </returns>
+		/// <remarks>
+		/// If %LOCALAPPDATA% is not available, then this method fails. You should call IQueryParserManager::SetOption to point to a
+		/// different folder like %ProgramData%.
+		/// </remarks>
+		public static T CreateLoadedParser<T>(this IQueryParserManager qpmgr, string pszCatalog, uint langidForKeywords) where T : class => (T)qpmgr.CreateLoadedParser(pszCatalog, langidForKeywords, typeof(T).GUID);
+
+		/// <summary>Retrieves an enumeration of IEntity objects with one entry for each entity in the loaded schema.</summary>
+		/// <typeparam name="T">The desired type of the result, either IID_IEnumUnknown or IID_IEnumVARIANT.</typeparam>
+		/// <param name="sp">The <see cref="ISchemaProvider"/> instance.</param>
+		/// <returns>
+		/// Receives a pointer to an enumeration of entities. The calling application must release it by calling its IUnknown::Release method.
+		/// </returns>
+		public static T Entities<T>(this ISchemaProvider sp) => (T)sp.Entities(typeof(T).GUID);
+
+		/// <summary>
+		/// Identifies parts of the input string that the parser did not recognize or did not use when constructing the IQuerySolution
+		/// condition tree.
+		/// </summary>
+		/// <typeparam name="T">The desired type of the result, either IID_IEnumUnknown or IID_IEnumVARIANT.</typeparam>
+		/// <param name="qs">The <see cref="IQuerySolution"/> instance.</param>
+		/// <returns>
+		/// <para>Type: <c>void**</c></para>
+		/// <para>Receives a pointer to an enumeration of zero or more IRichChunk objects, each describing one parsing error.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Each parsing error is represented by an IRichChunk object in which the position information reflects token counts. The
+		/// <c>IRichChunk</c> object <c>ppsz</c> string is <c>NULL</c>, and the pValue is a PROPVARIANT that contains a <c>lVal</c>
+		/// identifying the STRUCTURED_QUERY_PARSE_ERROR enumeration.
+		/// </para>
+		/// <para>The valid values for <paramref name="riid"/> are __uuidof(IEnumUnknown) and __uuidof(IEnumVARIANT).</para>
+		/// </remarks>
+		public static T GetErrors<T>(this IQuerySolution qs) where T : class => (T)qs.GetErrors(typeof(T).GUID);
+
+		/// <summary>Retrieves an enumeration of IMetaData objects for this entity.</summary>
+		/// <typeparam name="T">The desired type of the result, either IID_IEnumUnknown or IID_IEnumVARIANT.</typeparam>
+		/// <param name="e">The <see cref="IEntity"/> instance.</param>
+		/// <returns>Receives the address of a pointer to an enumeration of IMetaData objects.</returns>
+		public static T MetaData<T>(this IEntity e) where T : class => (T)e.MetaData(typeof(T).GUID);
+
+		/// <summary>Retrieves an enumeration of IMetaData objects for this relationship.</summary>
+		/// <typeparam name="T">The desired type of the result, either IID_IEnumUnknown or IID_IEnumVARIANT.</typeparam>
+		/// <param name="r">The <see cref="IRelationship"/> instance.</param>
+		/// <returns>
+		/// Receives a pointer to the enumeration of IMetaData objects. There may be multiple pairs with the same key (or the same value).
+		/// </returns>
+		public static T MetaData<T>(this IRelationship r) where T : class => (T)r.MetaData(typeof(T).GUID);
+
+		/// <summary>Retrieves an enumeration of global IMetaData objects for the loaded schema.</summary>
+		/// <typeparam name="T">The desired type of the result, either IID_IEnumUnknown or IID_IEnumVARIANT.</typeparam>
+		/// <param name="sp">The <see cref="ISchemaProvider"/> instance.</param>
+		/// <returns>
+		/// Receives a pointer to an enumeration of the IMetaData objects. The calling application must release it by calling its
+		/// IUnknown::Release method.
+		/// </returns>
+		public static T MetaData<T>(this ISchemaProvider sp) => (T)sp.MetaData(typeof(T).GUID);
+
+		/// <summary>Retrieves an enumeration of INamedEntity objects, one for each known named entity of this type.</summary>
+		/// <typeparam name="T">The desired type of the result, either IID_IEnumUnknown or IID_IEnumVARIANT.</typeparam>
+		/// <param name="e">The <see cref="IEntity"/> instance.</param>
+		/// <returns>
+		/// Receives the address of a pointer to an enumeration of INamedEntity objects, one for each known named entity of this type.
+		/// </returns>
+		public static T NamedEntities<T>(this IEntity e) where T : class => (T)e.NamedEntities(typeof(T).GUID);
+
+		/// <summary>Retrieves an enumeration of IRelationship objects, one for each relationship this entity has.</summary>
+		/// <typeparam name="T">The desired type of the result, either IID_IEnumUnknown or IID_IEnumVARIANT.</typeparam>
+		/// <param name="e">The <see cref="IEntity"/> instance.</param>
+		/// <returns>Receives the address of a pointer to the enumeration of the IRelationship objects.</returns>
+		public static T Relationships<T>(this IEntity e) where T : class => (T)e.Relationships(typeof(T).GUID);
 
 		/// <summary>Class interface for ICondition</summary>
 		[ComImport, Guid("116F8D13-101E-4fa5-84D4-FF8279381935"), ClassInterface(ClassInterfaceType.None)]

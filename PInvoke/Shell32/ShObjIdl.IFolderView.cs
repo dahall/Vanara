@@ -629,13 +629,14 @@ namespace Vanara.PInvoke
 			/// <para>Type: <c>REFIID</c></para>
 			/// <para>Reference to the desired IID to represent the item, such as IID_IShellItem.</para>
 			/// </param>
-			/// <param name="ppv">
+			/// <returns>
 			/// <para>Type: <c>void**</c></para>
 			/// <para>When this method returns, contains the interface pointer requested in <paramref name="riid"/>. This is typically IShellItem.</para>
-			/// </param>
+			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-getitem HRESULT GetItem( int
 			// iItem, REFIID riid, void **ppv );
-			void GetItem(int iItem, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+			[return: MarshalAs(UnmanagedType.IUnknown)]
+			object GetItem(int iItem, in Guid riid);
 
 			/// <summary>Gets the next visible item in relation to a given index in the view.</summary>
 			/// <param name="iStart">
@@ -890,6 +891,29 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl/nf-shobjidl-iresultsfolder-removeall HRESULT RemoveAll( );
 			void RemoveAll();
 		}
+
+		/// <summary>Extension method to simplify using the <see cref="IFolderView.GetFolder"/> method.</summary>
+		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <param name="fv">An <see cref="IFolderView"/> instance.</param>
+		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
+		public static T GetFolder<T>(this IFolderView fv) where T : class => (T)fv.GetFolder(typeof(T).GUID);
+
+		/// <summary>Extension method to simplify using the <see cref="IFolderView2.GetItem"/> method.</summary>
+		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <param name="fv">An <see cref="IFolderView2"/> instance.</param>
+		/// <param name="iItem">
+		/// <para>Type: <c>int</c></para>
+		/// <para>The zero-based index of the item to retrieve.</para>
+		/// </param>
+		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
+		public static T GetItem<T>(this IFolderView2 fv, int iItem) where T : class => (T)fv.GetItem(iItem, typeof(T).GUID);
+
+		/// <summary>Extension method to simplify using the <see cref="IFolderView.Items"/> method.</summary>
+		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <param name="fv">An <see cref="IFolderView"/> instance.</param>
+		/// <param name="uFlags">_SVGIO values that limit the enumeration to certain types of items.</param>
+		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
+		public static T Items<T>(this IFolderView fv, SVGIO uFlags) where T : class => (T)fv.Items(uFlags, typeof(T).GUID);
 
 		/// <summary>
 		/// <para>Defines column information. Used by members of the IColumnManager interface.</para>

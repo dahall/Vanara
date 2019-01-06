@@ -1108,6 +1108,15 @@ namespace Vanara.PInvoke
 				FOLDERFLAGS dwFlags, FOLDERVIEWMODE fvMode, in Guid pvid, in RECT prcView);
 		}
 
+		/// <summary>Gets an interface that refers to data presented in the view.</summary>
+		/// <typeparam name="T">The type of the COM interface being requested.</typeparam>
+		/// <param name="sv">The <see cref="IShellView"/> instance.</param>
+		/// <param name="uItem">The constants that refer to an aspect of the view.</param>
+		/// <returns>
+		/// The address that receives the interface pointer. If an error occurs, the pointer returned must be NULL.
+		/// </returns>
+		public static T GetItemObject<T>(this IShellView sv, SVGIO uItem) where T : class => (T)sv.GetItemObject(uItem, typeof(T).GUID);
+
 		/// <summary>Contains folder view information.</summary>
 		[PInvokeData("Shobjidl.h")]
 		[StructLayout(LayoutKind.Sequential)]

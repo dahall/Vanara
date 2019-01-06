@@ -74,5 +74,12 @@ namespace Vanara.PInvoke
 			/// <summary>Removes all objects from the collection.</summary>
 			void Clear();
 		}
+
+		/// <summary>Extension method to simplify using the <see cref="IObjectArray.GetAt(uint, in Guid)"/> method.</summary>
+		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <param name="a">An <see cref="IObjectArray"/> instance.</param>
+		/// <param name="uiIndex">The index of the object</param>
+		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
+		public static T GetAt<T>(this IObjectArray a, uint uiIndex) where T : class => (T)a.GetAt(uiIndex, typeof(T).GUID);
 	}
 }

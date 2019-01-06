@@ -205,5 +205,11 @@ namespace Vanara.PInvoke
 			[PreserveSig]
 			HRESULT GetSite(in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvSite);
 		}
+
+		/// <summary>Extension method to simplify using the <see cref="IObjectWithSite.GetSite"/> method.</summary>
+		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <param name="ows">An <see cref="IObjectWithSite"/> instance.</param>
+		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
+		public static T GetSite<T>(this IObjectWithSite ows) where T : class { ows.GetSite(typeof(T).GUID, out var pSite).ThrowIfFailed(); return (T)pSite; }
 	}
 }
