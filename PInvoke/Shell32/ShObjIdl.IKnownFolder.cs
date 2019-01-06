@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 
@@ -938,6 +939,18 @@ namespace Vanara.PInvoke
 				[In, MarshalAs(UnmanagedType.LPWStr)] string pszTargetPath, [In] uint cFolders, [In] Guid[] pExclusion);
 		}
 
+		/// <summary>Gets an array of all registered known folder IDs. This can be used in enumerating all known folders.</summary>
+		/// <param name="mgr">The <see cref="IKnownFolderManager"/> instance.</param>
+		/// <returns>An enumeration of all KNOWNFOLDERID values registered with the system.</returns>
+		/// <remarks>
+		/// <para>The caller of this method must have User privileges.</para>
+		/// <para>You can use StringFromCLSID or StringFromGUID2 to convert the retrieved KNOWNFOLDERID values to strings.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iknownfoldermanager-getfolderids HRESULT
+		// GetFolderIds( KNOWNFOLDERID **ppKFId, UINT *pCount );
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "3ac09fc4-15c4-4346-94ad-2a4617c463d1")]
+		public static IEnumerable<KNOWNFOLDERID> GetFolderIds(this IKnownFolderManager mgr) { mgr.GetFolderIds(out var mem, out var c); return mem.ToEnumerable<KNOWNFOLDERID>((int)c); }
+
 		/// <summary>Extension method to simplify using the <see cref="IKnownFolder.GetShellItem"/> method.</summary>
 		/// <typeparam name="T">Type of the interface to get.</typeparam>
 		/// <param name="fv">An <see cref="IKnownFolder"/> instance.</param>
@@ -945,7 +958,7 @@ namespace Vanara.PInvoke
 		/// Flags that specify special retrieval options. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.
 		/// </param>
 		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-		public static T GetShellItem<T>(this IKnownFolder fv, [In] KNOWN_FOLDER_FLAG dwFlags) where T : class => (T)fv.GetShellItem(dwFlags, typeof(T).GUID);
+			public static T GetShellItem<T>(this IKnownFolder fv, [In] KNOWN_FOLDER_FLAG dwFlags) where T : class => (T)fv.GetShellItem(dwFlags, typeof(T).GUID);
 
 		/// <summary>Defines the specifics of a known folder.</summary>
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
