@@ -786,7 +786,7 @@ namespace Vanara.Windows.Shell
 				var l = new List<PROPERTYKEY>(Count);
 				for (uint i = 0; i < Count; i++)
 				{
-					using (var p = new ComReleaser((IPropertyChange)changes.GetAt(i, typeof(IPropertyChange).GUID)))
+					using (var p = new ComReleaser<IPropertyChange>(changes.GetAt<IPropertyChange>(i)))
 						l.Add(p.Item.GetPropertyKey());
 				}
 				return l;
@@ -823,7 +823,7 @@ namespace Vanara.Windows.Shell
 		{
 			get
 			{
-				using (var p = new ComReleaser<IPropertyChange>(changes.GetAt((uint)index, typeof(IPropertyChange).GUID)))
+				using (var p = new ComReleaser<IPropertyChange>(changes.GetAt<IPropertyChange>((uint)index)))
 				{
 					p.Item.ApplyToPropVariant(new PROPVARIANT(), out var pv);
 					return new KeyValuePair<PROPERTYKEY, object>(p.Item.GetPropertyKey(), pv.Value);
@@ -919,7 +919,7 @@ namespace Vanara.Windows.Shell
 		{
 			for (uint i = 0; i < Count; i++)
 			{
-				using (var p = new ComReleaser<IPropertyChange>(changes.GetAt(i, typeof(IPropertyChange).GUID)))
+				using (var p = new ComReleaser<IPropertyChange>(changes.GetAt<IPropertyChange>(i)))
 					if (key == p.Item.GetPropertyKey())
 						return (int)i;
 			}
