@@ -101,7 +101,7 @@ namespace Vanara.PInvoke
 		/// <seealso cref="Vanara.PInvoke.Shell32.ICommDlgBrowser"/>
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("10339516-2894-11d2-9039-00C04F8EEB3E")]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "07a416a2-340d-4308-a6f3-cf6f19f3c906")]
-		public interface ICommDlgBrowser2 : ICommDlgBrowser
+		private interface ICommDlgBrowser2 : ICommDlgBrowser
 		{
 			/// <summary>Called when a user double-clicks in the view or presses the ENTER key.</summary>
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
@@ -156,7 +156,7 @@ namespace Vanara.PInvoke
 		/// <seealso cref="Vanara.PInvoke.Shell32.ICommDlgBrowser"/>
 		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("c8ad25a1-3294-41ee-8165-71174bd01c57")]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "c9286061-8ac8-452b-9204-193bc6b571cb")]
-		public interface ICommDlgBrowser3 : ICommDlgBrowser2
+		public interface ICommDlgBrowser3 : ICommDlgBrowser
 		{
 			/// <summary>Called when a user double-clicks in the view or presses the ENTER key.</summary>
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
@@ -183,7 +183,7 @@ namespace Vanara.PInvoke
 			/// <param name="dwNotifyType">A flag that can can take one of the following two values.</param>
 			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
 			[PreserveSig]
-			new HRESULT Notify([In] IShellView ppshv, CDB2N dwNotifyType);
+			HRESULT Notify([In] IShellView ppshv, CDB2N dwNotifyType);
 
 			/// <summary>Called by the Shell view to get the default shortcut menu text.</summary>
 			/// <param name="ppshv">A pointer to the view's IShellView interface.</param>
@@ -196,7 +196,7 @@ namespace Vanara.PInvoke
 			/// Otherwise, returns a standard COM error value.
 			/// </returns>
 			[PreserveSig]
-			new HRESULT GetDefaultMenuText([In] IShellView ppshv, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszText, int cchMax);
+			HRESULT GetDefaultMenuText([In] IShellView ppshv, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszText, int cchMax);
 
 			/// <summary>
 			/// Called when the view must determine if special customization needs to be made for the common dialog browser.
@@ -204,7 +204,7 @@ namespace Vanara.PInvoke
 			/// <param name="pdwFlags">A DWORD value that controls the behavior of the view when in common dialog mode.</param>
 			/// <returns>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</returns>
 			[PreserveSig]
-			new HRESULT GetViewFlags(out CDB2GVF pdwFlags);
+			HRESULT GetViewFlags(out CDB2GVF pdwFlags);
 
 			/// <summary>Called after a specified column is clicked in the IShellView interface.</summary>
 			/// <param name="ppshv">A pointer to the IShellView interface of the hosted view.</param>

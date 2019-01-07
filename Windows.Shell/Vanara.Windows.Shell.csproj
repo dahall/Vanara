@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Classes for Windows Shell items derived from the Vanara PInvoke libraries. Includes shell items, files, icons, links, and taskbar lists.</Description>
-    <Copyright>Copyright © 2017-2018</Copyright>
+    <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <VersionPrefix>2.1.2</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
@@ -17,7 +17,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIconUrl>https://raw.githubusercontent.com/dahall/Vanara/master/docs/icons/Vanara48x48.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
-    <PackageTags>pinvoke vanara net-extensions interop</PackageTags>
+    <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
     <IncludeSource>true</IncludeSource>
     <PackageReleaseNotes>Currently implements:

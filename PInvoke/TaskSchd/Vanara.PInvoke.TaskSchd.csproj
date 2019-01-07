@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Methods, structures and constants imported for Task Scheduler 1.0 and 2.0 COM objects.</Description>
-    <Copyright>Copyright © 2017-2018</Copyright>
+    <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
     <VersionPrefix>2.1.2</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1</TargetFrameworks>
@@ -15,7 +15,7 @@
     <PackageIconUrl>https://raw.githubusercontent.com/dahall/Vanara/master/docs/icons/Vanara48x48.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags>pinvoke vanara net-extensions interop</PackageTags>
+    <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
     <IncludeSource>true</IncludeSource>
     <IncludeSymbols>true</IncludeSymbols>
