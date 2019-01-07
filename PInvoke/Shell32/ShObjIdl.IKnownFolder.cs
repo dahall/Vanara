@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 
@@ -949,7 +950,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iknownfoldermanager-getfolderids HRESULT
 		// GetFolderIds( KNOWNFOLDERID **ppKFId, UINT *pCount );
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "3ac09fc4-15c4-4346-94ad-2a4617c463d1")]
-		public static IEnumerable<KNOWNFOLDERID> GetFolderIds(this IKnownFolderManager mgr) { mgr.GetFolderIds(out var mem, out var c); return mem.ToEnumerable<KNOWNFOLDERID>((int)c); }
+		public static IEnumerable<KNOWNFOLDERID> GetFolderIds(this IKnownFolderManager mgr) { mgr.GetFolderIds(out var mem, out var c); return mem.ToEnumerable<Guid>((int)c).Select(g => AssociateAttribute.TryEnumLookup<KNOWNFOLDERID>(g, out var kf) ? kf : 0); }
 
 		/// <summary>Extension method to simplify using the <see cref="IKnownFolder.GetShellItem"/> method.</summary>
 		/// <typeparam name="T">Type of the interface to get.</typeparam>
@@ -958,7 +959,7 @@ namespace Vanara.PInvoke
 		/// Flags that specify special retrieval options. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.
 		/// </param>
 		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-			public static T GetShellItem<T>(this IKnownFolder fv, [In] KNOWN_FOLDER_FLAG dwFlags) where T : class => (T)fv.GetShellItem(dwFlags, typeof(T).GUID);
+		public static T GetShellItem<T>(this IKnownFolder fv, [In] KNOWN_FOLDER_FLAG dwFlags) where T : class => (T)fv.GetShellItem(dwFlags, typeof(T).GUID);
 
 		/// <summary>Defines the specifics of a known folder.</summary>
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
