@@ -906,7 +906,7 @@ namespace Vanara.PInvoke
 		/// <para>The zero-based index of the item to retrieve.</para>
 		/// </param>
 		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
-		public static T GetItem<T>(this IFolderView2 fv, int iItem) where T : class => (T)fv.GetItem(iItem, typeof(T).GUID);
+		public static T GetItem<T>(this IFolderView2 fv, int iItem) where T : class { try { return (T)fv.GetItem(iItem, typeof(T).GUID); } catch { return null; } }
 
 		/// <summary>Extension method to simplify using the <see cref="IFolderView.Items"/> method.</summary>
 		/// <typeparam name="T">Type of the interface to get.</typeparam>
@@ -914,6 +914,15 @@ namespace Vanara.PInvoke
 		/// <param name="uFlags">_SVGIO values that limit the enumeration to certain types of items.</param>
 		/// <returns>Receives the interface pointer requested in <typeparamref name="T"/>.</returns>
 		public static T Items<T>(this IFolderView fv, SVGIO uFlags) where T : class => (T)fv.Items(uFlags, typeof(T).GUID);
+
+		/// <summary>Extension method to simplify using the <see cref="IFolderView2.GetItem" /> method.</summary>
+		/// <typeparam name="T">Type of the interface to get.</typeparam>
+		/// <param name="fv">An <see cref="IFolderView2" /> instance.</param>
+		/// <param name="iItem"><para>Type: <c>int</c></para>
+		/// <para>The zero-based index of the item to retrieve.</para></param>
+		/// <param name="item">The interface pointer requested in <typeparamref name="T" />.</param>
+		/// <returns><see langword="true"/> if the item is found; <see langword="false"/> otherwise.</returns>
+		public static bool TryGetItem<T>(this IFolderView2 fv, int iItem, out T item) where T : class { try { item = (T)fv.GetItem(iItem, typeof(T).GUID); return true; } catch { item = null;  return false; } }
 
 		/// <summary>
 		/// <para>Defines column information. Used by members of the IColumnManager interface.</para>
