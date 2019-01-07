@@ -46,6 +46,43 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// Unmarshals a buffer containing an interface pointer and releases the stream when an interface pointer has been marshaled from
+		/// another thread to the calling thread.
+		/// </summary>
+		/// <param name="pStm">A pointer to the IStream interface on the stream to be unmarshaled.</param>
+		/// <param name="iid">A reference to the identifier of the interface requested from the unmarshaled object.</param>
+		/// <param name="ppv">
+		/// The address of pointer variable that receives the interface pointer requested in <paramref name="iid"/>. Upon successful return,
+		/// <paramref name="ppv"/> contains the requested interface pointer to the unmarshaled interface.
+		/// </param>
+		/// <returns>
+		/// This function can return the standard return values S_OK and E_INVALIDARG, as well as any of the values returned by CoUnmarshalInterface.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>Important</c> Security Note: Calling this method with untrusted data is a security risk. Call this method only with trusted
+		/// data. For more information, see Untrusted Data Security Risks.
+		/// </para>
+		/// <para>The <c>CoGetInterfaceAndReleaseStream</c> function performs the following tasks:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Calls CoUnmarshalInterface to unmarshal an interface pointer previously passed in a call to CoMarshalInterThreadInterfaceInStream.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// Releases the stream pointer. Even if the unmarshaling fails, the stream is still released because there is no effective way to
+		/// recover from a failure of this kind.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-cogetinterfaceandreleasestream
+		// HRESULT CoGetInterfaceAndReleaseStream( LPSTREAM pStm, REFIID iid, LPVOID *ppv );
+		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("combaseapi.h", MSDNShortId = "b529f65f-3208-4594-a772-d1cad3727dc1")]
+		public static extern HRESULT CoGetInterfaceAndReleaseStream(IStream pStm, in Guid iid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+
+		/// <summary>
 		/// Initializes the COM library for use by the calling thread, sets the thread's concurrency model, and creates a new apartment for the thread if one is required.
 		/// <para>
 		/// You should call Windows::Foundation::Initialize to initialize the thread instead of CoInitializeEx if you want to use the Windows Runtime APIs or if
@@ -151,6 +188,121 @@ namespace Vanara.PInvoke
 			[Optional] IntPtr pReserved1, RPC_C_AUTHN_LEVEL dwAuthnLevel, RPC_C_IMP_LEVEL dwImpLevel, in SOLE_AUTHENTICATION_LIST pAuthList, EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities,
 			[Optional] IntPtr pReserved3);
 
+		/// <summary>Writes into a stream the data required to initialize a proxy object in some client process.</summary>
+		/// <param name="pStm">A pointer to the stream to be used during marshaling. See IStream.</param>
+		/// <param name="riid">
+		/// A reference to the identifier of the interface to be marshaled. This interface must be derived from the IUnknown interface.
+		/// </param>
+		/// <param name="pUnk">A pointer to the interface to be marshaled. This interface must be derived from the IUnknown interface.</param>
+		/// <param name="dwDestContext">
+		/// The destination context where the specified interface is to be unmarshaled. The possible values come from the enumeration MSHCTX.
+		/// Currently, unmarshaling can occur in another apartment of the current process (MSHCTX_INPROC), in another process on the same
+		/// computer as the current process (MSHCTX_LOCAL), or in a process on a different computer (MSHCTX_DIFFERENTMACHINE).
+		/// </param>
+		/// <param name="pvDestContext">This parameter is reserved and must be <c>NULL</c>.</param>
+		/// <param name="mshlflags">
+		/// The flags that specify whether the data to be marshaled is to be transmitted back to the client process (the typical case) or
+		/// written to a global table, where it can be retrieved by multiple clients. The possibles values come from the MSHLFLAGS enumeration.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// This function can return the standard return values E_FAIL, E_OUTOFMEMORY, and E_UNEXPECTED, the stream-access error values
+		/// returned by IStream, as well as the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>The HRESULT was marshaled successfully.</term>
+		/// </item>
+		/// <item>
+		/// <term>CO_E_NOTINITIALIZED</term>
+		/// <term>The CoInitialize or OleInitialize function was not called on the current thread before this function was called.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>CoMarshalInterface</c> function marshals the interface referred to by riid on the object whose IUnknown implementation is
+		/// pointed to by pUnk. To do so, the <c>CoMarshalInterface</c> function performs the following tasks:
+		/// </para>
+		/// <list type="number">
+		/// <item>
+		/// <term>
+		/// Queries the object for a pointer to the IMarshal interface. If the object does not implement <c>IMarshal</c>, meaning that it
+		/// relies on COM to provide marshaling support, <c>CoMarshalInterface</c> gets a pointer to COM's default implementation of <c>IMarshal</c>.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// Gets the CLSID of the object's proxy by calling IMarshal::GetUnmarshalClass, using whichever IMarshal interface pointer has been returned.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>Writes the CLSID of the proxy to the stream to be used for marshaling.</term>
+		/// </item>
+		/// <item>
+		/// <term>Marshals the interface pointer by calling IMarshal::MarshalInterface.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The COM library in the client process calls the CoUnmarshalInterface function to extract the data and initialize the proxy.
+		/// Before calling <c>CoUnmarshalInterface</c>, seek back to the original position in the stream.
+		/// </para>
+		/// <para>
+		/// If you are implementing existing COM interfaces or defining your own interfaces using the Microsoft Interface Definition Language
+		/// (MIDL), the MIDL-generated proxies and stubs call <c>CoMarshalInterface</c> for you. If you are writing your own proxies and
+		/// stubs, your proxy code and stub code should each call <c>CoMarshalInterface</c> to correctly marshal interface pointers. Calling
+		/// IMarshal directly from your proxy and stub code is not recommended.
+		/// </para>
+		/// <para>
+		/// If you are writing your own implementation of IMarshal, and your proxy needs access to a private object, you can include an
+		/// interface pointer to that object as part of the data you write to the stream. In such situations, if you want to use COM's
+		/// default marshaling implementation when passing the interface pointer, you can call <c>CoMarshalInterface</c> on the object to do so.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-comarshalinterface
+		// HRESULT CoMarshalInterface( LPSTREAM pStm, REFIID riid, LPUNKNOWN pUnk, DWORD dwDestContext, LPVOID pvDestContext, DWORD mshlflags );
+		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("combaseapi.h", MSDNShortId = "04ca1217-eac1-43e2-b736-8d7522ce8592")]
+		public static extern HRESULT CoMarshalInterface(IStream pStm, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] object pUnk, MSHCTX dwDestContext, [Optional] IntPtr pvDestContext, MSHLFLAGS mshlflags);
+
+		/// <summary>Marshals an interface pointer from one thread to another thread in the same process.</summary>
+		/// <param name="riid">A reference to the identifier of the interface to be marshaled.</param>
+		/// <param name="pUnk">A pointer to the interface to be marshaled, which must be derived from IUnknown. This parameter can be <c>NULL</c>.</param>
+		/// <param name="ppStm">
+		/// The address of the IStream* pointer variable that receives the interface pointer to the stream that contains the marshaled interface.
+		/// </param>
+		/// <returns>This function can return the standard return values E_OUTOFMEMORY and S_OK.</returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>CoMarshalInterThreadInterfaceInStream</c> function enables an object to easily and reliably marshal an interface pointer
+		/// to another thread in the same process. The stream returned in the ppStm parameter is guaranteed to behave correctly when a client
+		/// running in the receiving thread attempts to unmarshal the pointer. The client can then call the CoGetInterfaceAndReleaseStream to
+		/// unmarshal the interface pointer and release the stream object.
+		/// </para>
+		/// <para>The <c>CoMarshalInterThreadInterfaceInStream</c> function performs the following tasks:</para>
+		/// <list type="number">
+		/// <item>
+		/// <term>Creates a stream object.</term>
+		/// </item>
+		/// <item>
+		/// <term>Passes the stream object's IStream pointer to CoMarshalInterface.</term>
+		/// </item>
+		/// <item>
+		/// <term>Returns the IStream pointer to the caller.</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-comarshalinterthreadinterfaceinstream
+		// HRESULT CoMarshalInterThreadInterfaceInStream( REFIID riid, LPUNKNOWN pUnk, LPSTREAM *ppStm );
+		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("combaseapi.h", MSDNShortId = "c9ab8713-8604-4f0b-a11b-bdfb7d595d95")]
+		public static extern HRESULT CoMarshalInterThreadInterfaceInStream(in Guid riid, [In, MarshalAs(UnmanagedType.IUnknown)] object pUnk, out IStream ppStm);
+
 		/// <summary>
 		/// Closes the COM library on the current thread, unloads all DLLs loaded by the thread, frees any other resources that the thread maintains, and forces
 		/// all RPC connections on the thread to close.
@@ -158,6 +310,90 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Ole32, ExactSpelling = true, CallingConvention = CallingConvention.StdCall, SetLastError = false)]
 		[PInvokeData("Objbase.h", MSDNShortId = "ms688715")]
 		public static extern void CoUninitialize();
+
+		/// <summary>
+		/// Initializes a newly created proxy using data written into the stream by a previous call to the CoMarshalInterface function, and
+		/// returns an interface pointer to that proxy.
+		/// </summary>
+		/// <param name="pStm">A pointer to the stream from which the interface is to be unmarshaled.</param>
+		/// <param name="riid">A reference to the identifier of the interface to be unmarshaled. For <c>IID_NULL</c>, the returned interface is the one defined
+		/// by the stream, objref.iid.</param>
+		/// <param name="ppv">The address of pointer variable that receives the interface pointer requested in <paramref name="riid" />. Upon successful return,
+		/// <paramref name="ppv" /> contains the requested interface pointer for the unmarshaled interface.</param>
+		/// <returns>
+		/// <para>This function can return the standard return value E_FAIL, errors returned by CoCreateInstance, and the following values.</para>
+		/// <list type="table">
+		///   <listheader>
+		///     <term>Return code</term>
+		///     <term>Description</term>
+		///   </listheader>
+		///   <item>
+		///     <term>S_OK</term>
+		///     <term>The interface pointer was unmarshaled successfully.</term>
+		///   </item>
+		///   <item>
+		///     <term>STG_E_INVALIDPOINTER</term>
+		///     <term>pStm is an invalid pointer.</term>
+		///   </item>
+		///   <item>
+		///     <term>CO_E_NOTINITIALIZED</term>
+		///     <term>The CoInitialize or OleInitialize function was not called on the current thread before this function was called.</term>
+		///   </item>
+		///   <item>
+		///     <term>CO_E_OBJNOTCONNECTED</term>
+		///     <term>
+		/// The object application has been disconnected from the remoting system (for example, as a result of a call to the
+		/// CoDisconnectObject function).
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>REGDB_E_CLASSNOTREG</term>
+		///     <term>An error occurred reading the registration database.</term>
+		///   </item>
+		///   <item>
+		///     <term>E_NOINTERFACE</term>
+		///     <term>The final QueryInterface of this function for the requested interface returned E_NOINTERFACE.</term>
+		///   </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		///   <c>Important</c> Security Note: Calling this method with untrusted data is a security risk. Call this method only with trusted
+		/// data. For more information, see Untrusted Data Security Risks.
+		/// </para>
+		/// <para>The <c>CoUnmarshalInterface</c> function performs the following tasks:</para>
+		/// <list type="number">
+		///   <item>
+		///     <term>Reads from the stream the CLSID to be used to create an instance of the proxy.</term>
+		///   </item>
+		///   <item>
+		///     <term>
+		/// Gets an IMarshal pointer to the proxy that is to do the unmarshaling. If the object uses COM's default marshaling implementation,
+		/// the pointer thus obtained is to an instance of the generic proxy object. If the marshaling is occurring between two threads in
+		/// the same process, the pointer is to an instance of the in-process free threaded marshaler. If the object provides its own
+		/// marshaling code, <c>CoUnmarshalInterface</c> calls the CoCreateInstance function, passing the CLSID it read from the marshaling
+		/// stream. <c>CoCreateInstance</c> creates an instance of the object's proxy and returns an <c>IMarshal</c> interface pointer to the proxy.
+		/// </term>
+		///   </item>
+		///   <item>
+		///     <term>
+		/// Using whichever IMarshal interface pointer it has acquired, the function then calls IMarshal::UnmarshalInterface and, if
+		/// appropriate, IMarshal::ReleaseMarshalData.
+		/// </term>
+		///   </item>
+		/// </list>
+		/// <para>
+		/// The primary caller of this function is COM itself, from within interface proxies or stubs that unmarshal an interface pointer.
+		/// There are, however, some situations in which you might call <c>CoUnmarshalInterface</c>. For example, if you are implementing a
+		/// stub, your implementation would call <c>CoUnmarshalInterface</c> when the stub receives an interface pointer as a parameter in a
+		/// method call.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-counmarshalinterface
+		// HRESULT CoUnmarshalInterface( LPSTREAM pStm, REFIID riid, LPVOID *ppv );
+		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("combaseapi.h", MSDNShortId = "d0eac0da-2f41-40c4-b756-31bc22752c17")]
+		public static extern HRESULT CoUnmarshalInterface(IStream pStm, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>Returns a pointer to an implementation of IBindCtx (a bind context object). This object stores information about a particular moniker-binding operation.</summary>
 		/// <param name="reserved">This parameter is reserved and must be 0.</param>

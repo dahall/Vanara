@@ -8,6 +8,48 @@ namespace Vanara.PInvoke
 	/// <summary>Platform invokable enumerated types, constants and functions from ole32.h</summary>
 	public static partial class Ole32
 	{
+		/// <summary>Specifies the destination context, which is the process in which the unmarshaling is to be done.</summary>
+		[PInvokeData("wtypesbase.h")]
+		public enum MSHCTX
+		{
+			/// <summary>The unmarshaling process is local and has shared memory access with the marshaling process.</summary>
+			MSHCTX_LOCAL,
+			/// <summary>The unmarshaling process does not have shared memory access with the marshaling process.</summary>
+			MSHCTX_NOSHAREDMEM,
+			/// <summary>The unmarshaling process is on a different computer. The marshaling code cannot assume that a particular piece of application code is installed on that computer.</summary>
+			MSHCTX_DIFFERENTMACHINE,
+			/// <summary>The unmarshaling will be done in another apartment in the same process.</summary>
+			MSHCTX_INPROC,
+			/// <summary>Create a new context in the current apartment.</summary>
+			MSHCTX_CROSSCTX,
+			/// <summary>Reserved</summary>
+			MSHCTX_RESERVED1,
+		}
+
+		/// <summary>Specifies why the marshaling is to be done.</summary>
+		[PInvokeData("wtypesbase.h")]
+		public enum MSHLFLAGS
+		{
+			/// <summary>The marshaling is occurring because an interface pointer is being passed from one process to another. This is the normal case. The data packet produced by the marshaling process will be unmarshaled in the destination process. The marshaled data packet can be unmarshaled just once, or not at all. If the receiver unmarshals the data packet successfully, the CoReleaseMarshalData function is automatically called on the data packet as part of the unmarshaling process. If the receiver does not or cannot unmarshal the data packet, the sender must call CoReleaseMarshalData on the data packet.</summary>
+			MSHLFLAGS_NORMAL,
+			/// <summary>The marshaling is occurring because the data packet is to be stored in a globally accessible table from which it can be unmarshaled one or more times, or not at all. The presence of the data packet in the table counts as a strong reference to the interface being marshaled, meaning that it is sufficient to keep the object alive. When the data packet is removed from the table, the table implementer must call the CoReleaseMarshalData function on the data packet.
+			/// <para>MSHLFLAGS_TABLESTRONG is used by the RegisterDragDrop function when registering a window as a drop target. This keeps the window registered as a drop target no matter how many times the end user drags across the window. The RevokeDragDrop function calls CoReleaseMarshalData.</para></summary>
+			MSHLFLAGS_TABLESTRONG,
+			/// <summary>The marshaling is occurring because the data packet is to be stored in a globally accessible table from which it can be unmarshaled one or more times, or not at all. However, the presence of the data packet in the table acts as a weak reference to the interface being marshaled, meaning that it is not sufficient to keep the object alive. When the data packet is removed from the table, the table implementer must call the CoReleaseMarshalData function on the data packet.
+			/// <para>MSHLFLAGS_TABLEWEAK is typically used when registering an object in the running object table (ROT). This prevents the object's entry in the ROT from keeping the object alive in the absence of any other connections. See IRunningObjectTable::Register for more information.</para></summary>
+			MSHLFLAGS_TABLEWEAK,
+			/// <summary>Adding this flag to an original object marshaling (as opposed to marshaling a proxy) will disable the ping protocol for that object.</summary>
+			MSHLFLAGS_NOPING,
+			/// <summary>Reserved</summary>
+			MSHLFLAGS_RESERVED1,
+			/// <summary>Reserved</summary>
+			MSHLFLAGS_RESERVED2,
+			/// <summary>Reserved</summary>
+			MSHLFLAGS_RESERVED3,
+			/// <summary>Reserved</summary>
+			MSHLFLAGS_RESERVED4,
+		}
+
 		/// <summary>
 		/// Indicates whether the method should try to return a name in the pwcsName member of the STATSTG structure. The values are used in the
 		/// ILockBytes::Stat, IStorage::Stat, and IStream::Stat methods to save memory when the pwcsName member is not required.
