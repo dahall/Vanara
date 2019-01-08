@@ -182,5 +182,15 @@ namespace Vanara.Extensions
 				SetWindowLong(href, WindowLongFlags.GWL_STYLE, new IntPtr(oldstyle & ~style));
 			ctrl.Refresh();
 		}
+
+		/// <summary>Converts a <see cref="PInvoke.MSG"/> structure to a <see cref="Message"/> structure.</summary>
+		/// <param name="msg">The MSG instance.</param>
+		/// <returns>An equivalent <see cref="Message"/> structure.</returns>
+		public static Message ToMessage(this PInvoke.MSG msg) => Message.Create((IntPtr)msg.hwnd, (int)msg.message, msg.wParam, msg.lParam);
+
+		/// <summary>Converts a <see cref="Message"/> structure to a <see cref="PInvoke.MSG"/> structure.</summary>
+		/// <param name="msg">The Message instance.</param>
+		/// <returns>An equivalent <see cref="PInvoke.MSG"/> structure.</returns>
+		public static PInvoke.MSG ToMSG(this Message msg) => new PInvoke.MSG { message = (uint)msg.Msg, hwnd = msg.HWnd, wParam = msg.WParam, lParam = msg.LParam };
 	}
 }
