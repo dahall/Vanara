@@ -13,10 +13,8 @@ using static Vanara.PInvoke.User32_Gdi;
 
 namespace Vanara.Windows.Forms
 {
-	/// <summary>
-	/// An Internet Protocol (IP) address control allows the user to enter an IP address in an easily understood format.
-	/// </summary>
-	/// <seealso cref="System.Windows.Forms.Control" />
+	/// <summary>An Internet Protocol (IP) address control allows the user to enter an IP address in an easily understood format.</summary>
+	/// <seealso cref="System.Windows.Forms.Control"/>
 	[DefaultEvent(nameof(FieldChanged)), DefaultProperty(nameof(Text))]
 	//[Designer(typeof(IPAddressBoxDesigner))]
 	public partial class IPAddressBox : Control
@@ -32,7 +30,10 @@ namespace Vanara.Windows.Forms
 			SetStyle(ControlStyles.StandardClick | ControlStyles.StandardDoubleClick | ControlStyles.UseTextForAccessibility | ControlStyles.UserPaint, false);
 		}
 
-		/// <summary>Occurs when one of the fields change. To change the value set in the control, set the <see cref="IPAddressFieldChangedEventArgs.Value"/> property.</summary>
+		/// <summary>
+		/// Occurs when one of the fields change. To change the value set in the control, set the
+		/// <see cref="IPAddressFieldChangedEventArgs.Value"/> property.
+		/// </summary>
 		public event EventHandler<IPAddressFieldChangedEventArgs> FieldChanged;
 
 		/// <summary>Gets or sets the border style.</summary>
@@ -86,7 +87,7 @@ namespace Vanara.Windows.Forms
 			{
 				var height = FontHeight;
 				if (borderStyle != BorderStyle.None)
-					height += SystemInformation.BorderSize.Height*4 + 3;
+					height += SystemInformation.BorderSize.Height * 4 + 3;
 				return height;
 			}
 		}
@@ -118,6 +119,7 @@ namespace Vanara.Windows.Forms
 					case BorderStyle.Fixed3D:
 						cp.ExStyle |= (int)WindowStylesEx.WS_EX_CLIENTEDGE;
 						break;
+
 					case BorderStyle.FixedSingle:
 						cp.Style |= (int)WindowStyles.WS_BORDER;
 						break;
@@ -131,21 +133,16 @@ namespace Vanara.Windows.Forms
 		protected override Size DefaultSize => new Size(100, PreferredHeight);
 
 		/// <summary>Clears the value and resets it to 0.0.0.0.</summary>
-		public void Clear()
-		{
-			SendMessage(IPAddressMessage.IPM_CLEARADDRESS);
-		}
+		public void Clear() => SendMessage(IPAddressMessage.IPM_CLEARADDRESS);
 
 		/// <inheritdoc/>
 		public override Size GetPreferredSize(Size proposedConstraints)
 		{
 			const string measureString = "  255  .  255  .  255  .  255  ";
 
-			// 3px vertical space is required between the text and the border to keep the last
-			// line from being clipped.
-			// This 3 pixel size was added in everett and we do this to maintain compat.
-			// old everett behavior was FontHeight + [SystemInformation.BorderSize.Height * 4 + 3]
-			// however the [ ] was only added if borderstyle was not none.
+			// 3px vertical space is required between the text and the border to keep the last line from being clipped. This 3 pixel size was
+			// added in everett and we do this to maintain compat. old everett behavior was FontHeight + [SystemInformation.BorderSize.Height
+			// * 4 + 3] however the [ ] was only added if borderstyle was not none.
 			var bordersAndPadding = SizeFromClientSize(Size.Empty) + Padding.Size;
 
 			if (BorderStyle != BorderStyle.None)
@@ -160,8 +157,7 @@ namespace Vanara.Windows.Forms
 			// Reduce constraints by border/padding size
 			proposedConstraints -= bordersAndPadding;
 
-			// Fit the text to the remaining space
-			// Fix for Dev10 
+			// Fit the text to the remaining space Fix for Dev10
 
 			var format = TextFormatFlags.NoPrefix;
 			format |= TextFormatFlags.SingleLine;
@@ -173,9 +169,7 @@ namespace Vanara.Windows.Forms
 			return preferredSize;
 		}
 
-		/// <summary>
-		/// Sets the valid range for the specified field in the IP address control.
-		/// </summary>
+		/// <summary>Sets the valid range for the specified field in the IP address control.</summary>
 		/// <param name="field">A zero-based field index to which the range will be applied.</param>
 		/// <param name="minValue">The lower limit of the range (inclusive).</param>
 		/// <param name="maxValue">The upper limit of the range (inclusive).</param>
@@ -190,15 +184,10 @@ namespace Vanara.Windows.Forms
 
 		/// <summary>Raises the <see cref="E:FieldChanged"/> event.</summary>
 		/// <param name="e">The <see cref="IPAddressFieldChangedEventArgs"/> instance containing the event data.</param>
-		protected void OnFieldChanged(IPAddressFieldChangedEventArgs e)
-		{
-			FieldChanged?.Invoke(this, e);
-		}
+		protected void OnFieldChanged(IPAddressFieldChangedEventArgs e) => FieldChanged?.Invoke(this, e);
 
-		/// <summary>
-		/// Processes reflected notification messages.
-		/// </summary>
-		/// <param name="m">The Windows <see cref="T:System.Windows.Forms.Message" /> to process.</param>
+		/// <summary>Processes reflected notification messages.</summary>
+		/// <param name="m">The Windows <see cref="T:System.Windows.Forms.Message"/> to process.</param>
 		/// <returns><c>true</c> if message handled; otherwise <c>false</c>.</returns>
 		protected virtual bool WmReflectNotify(ref Message m)
 		{
@@ -230,10 +219,8 @@ namespace Vanara.Windows.Forms
 		private IntPtr SendMessage(IPAddressMessage msg, IntPtr wParam, ref uint lParam) => User32_Gdi.SendMessage(Handle, msg, wParam, ref lParam);
 	}
 
-	/// <summary>
-	/// Contains the arguments needed to handle the <see cref="IPAddressBox.FieldChanged"/> event.
-	/// </summary>
-	/// <seealso cref="System.EventArgs" />
+	/// <summary>Contains the arguments needed to handle the <see cref="IPAddressBox.FieldChanged"/> event.</summary>
+	/// <seealso cref="System.EventArgs"/>
 	public class IPAddressFieldChangedEventArgs : EventArgs
 	{
 		/// <summary>Initializes a new instance of the <see cref="IPAddressFieldChangedEventArgs"/> class.</summary>
@@ -250,8 +237,8 @@ namespace Vanara.Windows.Forms
 		public int Field { get; }
 
 		/// <summary>
-		/// The new value of the field specified in the <see cref="Field"/> property. This property can be set to any value that is within the range of the field
-		/// and the control will place this new value in the field.
+		/// The new value of the field specified in the <see cref="Field"/> property. This property can be set to any value that is within
+		/// the range of the field and the control will place this new value in the field.
 		/// </summary>
 		/// <value>The value set by the user on input and the value to place in the control on output.</value>
 		public byte Value { get; set; }
