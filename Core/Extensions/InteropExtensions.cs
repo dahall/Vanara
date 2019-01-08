@@ -195,6 +195,19 @@ namespace Vanara.Extensions
 		/// <returns>A new pointer that reflects the addition of <paramref name="offset"/> to <paramref name="pointer"/>.</returns>
 		public static IntPtr Offset(this IntPtr pointer, long offset) => new IntPtr(pointer.ToInt64() + offset);
 
+		/// <summary>Queries the object for a COM interface and returns it, if found, in <paramref name="ppv"/>.</summary>
+		/// <param name="iUnk">The object to query.</param>
+		/// <param name="iid">The interface identifier (IID) of the requested interface.</param>
+		/// <param name="ppv">When this method returns, contains a reference to the returned interface.</param>
+		/// <returns>An HRESULT that indicates the success or failure of the call.</returns>
+		public static int QueryInterface(object iUnk, in Guid iid, out object ppv)
+		{
+			var tmp = iid;
+			var hr = Marshal.QueryInterface(Marshal.GetIUnknownForObject(iUnk), ref tmp, out var ippv);
+			ppv = hr == 0 ? Marshal.GetObjectForIUnknown(ippv) : null;
+			return hr;
+		}
+
 		/// <summary>Marshals data from a managed object to an unmanaged block of memory that is allocated using <paramref name="memAlloc"/>.</summary>
 		/// <typeparam name="T">The type of the managed object.</typeparam>
 		/// <param name="value">
