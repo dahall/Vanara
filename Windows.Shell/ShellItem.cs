@@ -678,7 +678,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Creates the most specialized derivative of ShellItem from an IShellItem object.</summary>
 		/// <param name="iItem">The IShellItem object.</param>
 		/// <returns>A ShellItem derivative for the supplied IShellItem.</returns>
-		internal static ShellItem Open(IShellItem iItem)
+		public static ShellItem Open(IShellItem iItem)
 		{
 			if (iItem.GetAttributes(SFGAO.SFGAO_LINK) != 0)
 				return new ShellLink(iItem);
