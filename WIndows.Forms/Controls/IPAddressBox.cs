@@ -11,8 +11,6 @@ using Vanara.PInvoke;
 using static Vanara.PInvoke.ComCtl32;
 using static Vanara.PInvoke.User32_Gdi;
 
-// ReSharper disable InconsistentNaming
-
 namespace Vanara.Windows.Forms
 {
 	/// <summary>
@@ -30,7 +28,6 @@ namespace Vanara.Windows.Forms
 		/// <summary>Initializes a new instance of the <see cref="IPAddressBox"/> class.</summary>
 		public IPAddressBox()
 		{
-			InitializeComponent();
 			SetStyle(ControlStyles.FixedHeight, true);
 			SetStyle(ControlStyles.StandardClick | ControlStyles.StandardDoubleClick | ControlStyles.UseTextForAccessibility | ControlStyles.UserPaint, false);
 		}
@@ -38,6 +35,8 @@ namespace Vanara.Windows.Forms
 		/// <summary>Occurs when one of the fields change. To change the value set in the control, set the <see cref="IPAddressFieldChangedEventArgs.Value"/> property.</summary>
 		public event EventHandler<IPAddressFieldChangedEventArgs> FieldChanged;
 
+		/// <summary>Gets or sets the border style.</summary>
+		/// <value>The border style.</value>
 		[Category("Appearance"), DefaultValue(BorderStyle.Fixed3D), Description("")]
 		public BorderStyle BorderStyle
 		{
@@ -77,6 +76,8 @@ namespace Vanara.Windows.Forms
 		[DefaultValue(true), Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public bool IsBlank => SendMessage(IPAddressMessage.IPM_ISBLANK).ToInt32() > 0;
 
+		/// <summary>Gets the preferred height of the control.</summary>
+		/// <value>The preferred height of the control.</value>
 		[Category("Layout"), Browsable(false), EditorBrowsable(EditorBrowsableState.Advanced),
 		 DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Description("")]
 		public int PreferredHeight
@@ -90,8 +91,7 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
-		/// <summary>Gets or sets the text associated with this control.</summary>
-		/// <returns>The text associated with this control.</returns>
+		/// <inheritdoc/>
 		[DefaultValue(defaultText)]
 		public override string Text
 		{
@@ -104,7 +104,7 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
-		/// <summary>Gets the required creation parameters when the control handle is created.</summary>
+		/// <inheritdoc/>
 		protected override CreateParams CreateParams
 		{
 			get
@@ -127,6 +127,7 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
+		/// <inheritdoc/>
 		protected override Size DefaultSize => new Size(100, PreferredHeight);
 
 		/// <summary>Clears the value and resets it to 0.0.0.0.</summary>
@@ -135,6 +136,7 @@ namespace Vanara.Windows.Forms
 			SendMessage(IPAddressMessage.IPM_CLEARADDRESS);
 		}
 
+		/// <inheritdoc/>
 		public override Size GetPreferredSize(Size proposedConstraints)
 		{
 			const string measureString = "  255  .  255  .  255  .  255  ";
