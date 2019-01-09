@@ -108,7 +108,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nn-shobjidl_core-inamespacewalk
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "164732ae-1c72-465c-a16b-a8eeaa9cc185")]
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("57ced8a7-3f4a-432c-9350-30f24483f74f")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("57ced8a7-3f4a-432c-9350-30f24483f74f"), CoClass(typeof(NamespaceWalker))]
 		public interface INamespaceWalk
 		{
 			/// <summary>Initiates a recursive walk of the namespace from the specified root to the given depth.</summary>
@@ -463,5 +463,9 @@ namespace Vanara.PInvoke
 			[PreserveSig]
 			HRESULT WalkComplete(HRESULT hr);
 		}
+
+		/// <summary>CLSID_NamespaceWalker</summary>
+		[ComImport, Guid("72eb61e0-8672-4303-9175-f2e4c68b2e7c"), ClassInterface(ClassInterfaceType.None)]
+		public class NamespaceWalker { }
 	}
 }
