@@ -9,6 +9,38 @@ namespace Vanara.PInvoke
 	/// <summary>Extension methods to convert GdiObj handle variants to their .NET equivalents.</summary>
 	public static class GdiObjExtensions
 	{
+		/// <summary>Draws on a device context (<see cref="Graphics"/>) via a DIB section. This is useful when you need to draw on a transparent background.</summary>
+		/// <param name="dc">The device context.</param>
+		/// <param name="bounds">The bounds of the device context to paint.</param>
+		/// <param name="drawMethod">The draw method.</param>
+		public static void DrawViaDIB(this IDeviceContext dc, in Rectangle bounds, Action<SafeHDC, Rectangle> drawMethod)
+		{
+			using (var sdc = new SafeHDC(dc))
+				DrawViaDIB(sdc, bounds, drawMethod);
+		}
+
+		/// <summary>Draws on a device context (<see cref="SafeHDC"/>) via a DIB section. This is useful when you need to draw on a transparent background.</summary>
+		/// <param name="hdc">The device context.</param>
+		/// <param name="bounds">The bounds of the device context to paint.</param>
+		/// <param name="drawMethod">The draw method.</param>
+		public static void DrawViaDIB(this SafeHDC hdc, in Rectangle bounds, Action<SafeHDC, Rectangle> drawMethod)
+		{
+			// Create a memory DC so we can work off screen
+			using (var memoryHdc = hdc.GetCompatibleDCHandle())
+			{
+				// Create a device-independent bitmap and select it into our DC
+				var info = new BITMAPINFO(bounds.Width, -bounds.Height);
+				using (memoryHdc.SelectObject(CreateDIBSection(hdc, ref info, 0, out var pBits, IntPtr.Zero, 0)))
+				{
+					// Call method
+					drawMethod(memoryHdc, bounds);
+
+					// Copy to foreground
+					BitBlt(hdc, bounds.Left, bounds.Top, bounds.Width, bounds.Height, memoryHdc, 0, 0, RasterOperationMode.SRCCOPY);
+				}
+			}
+		}
+
 		/// <summary>Creates a <see cref="Bitmap"/> from an <see cref="HBITMAP"/>.</summary>
 		/// <param name="hbmp">The HBMP value.</param>
 		/// <returns>The Bitmap instance.</returns>
