@@ -725,12 +725,30 @@ namespace Vanara.Windows.Forms
 		/// <param name="bounds">The bounding rectangle, in logical coordinates.</param>
 		/// <param name="text">A string that contains the text to draw.</param>
 		/// <param name="fmt">One or more values that specify the string's formatting.</param>
+		/// <param name="disabled">Draw text disabled.</param>
+		/// <param name="font">The font to use when drawing the text. If <c>null</c>, the default system font is used.</param>
+		public void DrawText(IDeviceContext graphics, int partId, int stateId, Rectangle bounds, string text, TextFormatFlags fmt = TextFormatFlags.Default, bool disabled = false, Font font = null)
+		{
+			RECT b = bounds;
+			using (var hdc = new SafeHDC(graphics))
+			using (var hfont = new SafeHFONT(font?.ToHfont() ?? IntPtr.Zero))
+			using (hdc.SelectObject(hfont))
+				DrawThemeText(Handle, hdc, partId, stateId, text, text.Length, (DrawTextFlags)fmt, disabled ? 1 : 0, b);
+		}
+
+		/// <summary>Draws text using the color and font defined by the visual style.</summary>
+		/// <param name="graphics">Used for drawing the text.</param>
+		/// <param name="partId">Value that specifies the part to draw.</param>
+		/// <param name="stateId">Value that specifies the state of the part to draw.</param>
+		/// <param name="bounds">The bounding rectangle, in logical coordinates.</param>
+		/// <param name="text">A string that contains the text to draw.</param>
+		/// <param name="fmt">One or more values that specify the string's formatting.</param>
 		/// <param name="options">Additional formatting options.</param>
 		/// <param name="font">The font to use when drawing the text. If <c>null</c>, the default system font is used.</param>
 		public void DrawText(IDeviceContext graphics, int partId, int stateId, Rectangle bounds, string text, TextFormatFlags fmt = TextFormatFlags.Default, DTTOPTS? options = null, Font font = null)
 		{
 			RECT b = bounds;
-			var dt = options ?? DTTOPTS.Default; //new DrawThemeTextOptions(true) {AntiAliasedAlpha = true, BorderSize = 10, BorderColor = Color.Red, ApplyOverlay = true, ShadowType = TextShadowType.Continuous, ShadowColor = Color.White, ShadowOffset = new Point(2, 2), GlowSize = 18, TextColor = Color.White, Callback = DrawTextCallback };
+			var dt = options ?? DTTOPTS.Default;
 			using (var hdc = new SafeHDC(graphics))
 			using (var hfont = new SafeHFONT(font?.ToHfont() ?? IntPtr.Zero))
 			using (hdc.SelectObject(hfont))
