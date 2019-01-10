@@ -12,8 +12,8 @@ using static Vanara.PInvoke.UxTheme;
 namespace Vanara.Extensions
 {
 	/// <summary>
-	/// Extension methods for <see cref="VisualStyleRenderer"/> for glass effects and extended method functionality. Also provides GetFont2 and GetMargins2
-	/// methods that corrects base library's non-functioning methods.
+	/// Extension methods for <see cref="VisualStyleRenderer"/> for glass effects and extended method functionality. Also provides GetFont2
+	/// and GetMargins2 methods that corrects base library's non-functioning methods.
 	/// </summary>
 	public static partial class VisualStylesRendererExtension
 	{
@@ -22,7 +22,8 @@ namespace Vanara.Extensions
 		private delegate void DrawWrapperMethod(HDC hdc);
 
 		/// <summary>
-		/// Draws the background image of the current visual style element within the specified bounding rectangle and optionally clipped to the specified clipping rectangle.
+		/// Draws the background image of the current visual style element within the specified bounding rectangle and optionally clipped to
+		/// the specified clipping rectangle.
 		/// </summary>
 		/// <param name="rnd">The <see cref="VisualStyleRenderer"/> instance.</param>
 		/// <param name="dc">The <see cref="IDeviceContext"/> used to draw the background image.</param>
@@ -51,7 +52,8 @@ namespace Vanara.Extensions
 		}
 
 		/// <summary>
-		/// Draws the background image of the current visual style element onto a glass background within the specified bounding rectangle and optionally clipped to the specified clipping rectangle.
+		/// Draws the background image of the current visual style element onto a glass background within the specified bounding rectangle
+		/// and optionally clipped to the specified clipping rectangle.
 		/// </summary>
 		/// <param name="rnd">The <see cref="VisualStyleRenderer"/> instance.</param>
 		/// <param name="dc">The <see cref="IDeviceContext"/> used to draw the background image.</param>
@@ -61,8 +63,7 @@ namespace Vanara.Extensions
 		public static void DrawGlassBackground(this VisualStyleRenderer rnd, IDeviceContext dc, Rectangle bounds, Rectangle? clipRectangle = null, bool rightToLeft = false)
 		{
 			var ht = new SafeHTHEME(rnd.Handle, false);
-			DrawWrapper(dc, bounds,
-				memoryHdc =>
+			dc.DrawViaDIB(bounds, (memoryHdc, b) =>
 				{
 					var rBounds = new RECT(bounds);
 					//var opts = new DrawThemeBackgroundOptions(clipRectangle);
@@ -78,9 +79,7 @@ namespace Vanara.Extensions
 				);
 		}
 
-		/// <summary>
-		/// Draws the image from the specified <paramref name="imageList"/> within the specified bounds on a glass background.
-		/// </summary>
+		/// <summary>Draws the image from the specified <paramref name="imageList"/> within the specified bounds on a glass background.</summary>
 		/// <param name="rnd">The <see cref="VisualStyleRenderer"/> instance.</param>
 		/// <param name="g">The <see cref="Graphics"/> used to draw the image.</param>
 		/// <param name="bounds">A <see cref="Rectangle"/> in which the image is drawn.</param>
@@ -89,28 +88,23 @@ namespace Vanara.Extensions
 		public static void DrawGlassImage(this VisualStyleRenderer rnd, IDeviceContext g, Rectangle bounds, ImageList imageList, int imageIndex)
 		{
 			var ht = new SafeHTHEME(rnd.Handle, false);
-			DrawWrapper(g, bounds,
-				memoryHdc =>
-				{
-					DrawThemeIcon(ht, memoryHdc, rnd.Part, rnd.State, bounds, imageList.Handle, imageIndex);
-				}
-				);
+			g.DrawViaDIB(bounds, (memoryHdc, b) =>
+				DrawThemeIcon(ht, memoryHdc, rnd.Part, rnd.State, bounds, imageList.Handle, imageIndex));
 		}
 
-		/// <summary>
-		/// Draws the specified image within the specified bounds on a glass background.
-		/// </summary>
-		/// <param name="rnd">The <see cref="VisualStyleRenderer" /> instance.</param>
-		/// <param name="g">The <see cref="Graphics" /> used to draw the image.</param>
-		/// <param name="bounds">A <see cref="Rectangle" /> in which the image is drawn.</param>
-		/// <param name="image">An <see cref="ImageList" /> that contains the <see cref="Image" /> to draw.</param>
-		/// <param name="disabled">if set to <c>true</c> draws the image in a disabled state using the <see cref="ControlPaint.DrawImageDisabled"/> method.</param>
+		/// <summary>Draws the specified image within the specified bounds on a glass background.</summary>
+		/// <param name="rnd">The <see cref="VisualStyleRenderer"/> instance.</param>
+		/// <param name="g">The <see cref="Graphics"/> used to draw the image.</param>
+		/// <param name="bounds">A <see cref="Rectangle"/> in which the image is drawn.</param>
+		/// <param name="image">An <see cref="ImageList"/> that contains the <see cref="Image"/> to draw.</param>
+		/// <param name="disabled">
+		/// if set to <c>true</c> draws the image in a disabled state using the <see cref="ControlPaint.DrawImageDisabled"/> method.
+		/// </param>
 		public static void DrawGlassImage(this VisualStyleRenderer rnd, IDeviceContext g, Rectangle bounds, Image image, bool disabled = false)
 		{
-			DrawWrapper(g, bounds,
-				memoryHdc =>
+			g.DrawViaDIB(bounds, (memoryHdc, b) =>
 				{
-					using (var mg = Graphics.FromHdc((IntPtr)memoryHdc))
+					using (var mg = Graphics.FromHdc(memoryHdc.DangerousGetHandle()))
 					{
 						if (disabled)
 							ControlPaint.DrawImageDisabled(mg, image, bounds.X, bounds.Y, Color.Transparent);
@@ -124,25 +118,24 @@ namespace Vanara.Extensions
 		/// <summary>
 		/// Draws glowing text in the specified bounding rectangle with the option of overriding text color and applying other text formatting.
 		/// </summary>
-		/// <param name="rnd">The <see cref="VisualStyleRenderer" /> instance.</param>
-		/// <param name="dc">The <see cref="IDeviceContext" /> used to draw the text.</param>
-		/// <param name="bounds">A <see cref="Rectangle" /> in which the text is drawn.</param>
+		/// <param name="rnd">The <see cref="VisualStyleRenderer"/> instance.</param>
+		/// <param name="dc">The <see cref="IDeviceContext"/> used to draw the text.</param>
+		/// <param name="bounds">A <see cref="Rectangle"/> in which the text is drawn.</param>
 		/// <param name="text">The text to draw.</param>
 		/// <param name="font">Optional font override.</param>
 		/// <param name="color">Optionally, the color to draw text in overriding the default color for the theme.</param>
-		/// <param name="flags">A bitwise combination of the <see cref="TextFormatFlags" /> values.</param>
+		/// <param name="flags">A bitwise combination of the <see cref="TextFormatFlags"/> values.</param>
 		/// <param name="glowSize">The size of the glow.</param>
 		public static void DrawGlowingText(this VisualStyleRenderer rnd, IDeviceContext dc, Rectangle bounds, string text, Font font, Color? color, TextFormatFlags flags = TextFormatFlags.Default, int glowSize = 10)
 		{
 			var ht = new SafeHTHEME(rnd.Handle, false);
-			DrawWrapper(dc, bounds,
-				memoryHdc =>
+			dc.DrawViaDIB(bounds, (memoryHdc, b) =>
 				{
 					// Create and select font
 					using (new GdiObjectContext(memoryHdc, new SafeHFONT(font?.ToHfont() ?? IntPtr.Zero)))
 					{
 						// Draw glowing text
-						var dttOpts = new DTTOPTS(null) {GlowSize = glowSize, AntiAliasedAlpha = true};
+						var dttOpts = new DTTOPTS(null) { GlowSize = glowSize, AntiAliasedAlpha = true };
 						if (color != null) dttOpts.TextColor = color.Value;
 						var textBounds = new RECT(4, 0, bounds.Right - bounds.Left, bounds.Bottom - bounds.Top);
 						DrawThemeTextEx(ht, memoryHdc, rnd.Part, rnd.State, text, text.Length, FromTFF(flags), ref textBounds, dttOpts);
@@ -151,12 +144,10 @@ namespace Vanara.Extensions
 				);
 		}
 
-		/// <summary>
-		/// Draws text in the specified bounding rectangle with the option of applying other text formatting.
-		/// </summary>
-		/// <param name="rnd">The <see cref="VisualStyleRenderer" /> instance.</param>
-		/// <param name="dc">The <see cref="IDeviceContext" /> used to draw the text.</param>
-		/// <param name="bounds">A <see cref="Rectangle" /> in which the text is drawn.</param>
+		/// <summary>Draws text in the specified bounding rectangle with the option of applying other text formatting.</summary>
+		/// <param name="rnd">The <see cref="VisualStyleRenderer"/> instance.</param>
+		/// <param name="dc">The <see cref="IDeviceContext"/> used to draw the text.</param>
+		/// <param name="bounds">A <see cref="Rectangle"/> in which the text is drawn.</param>
 		/// <param name="text">The text to draw.</param>
 		/// <param name="flags">A bitwise combination of the <see cref="TextFormatFlags"/> values.</param>
 		/// <param name="options">The <see cref="DTTOPTS"/> .</param>
@@ -169,10 +160,9 @@ namespace Vanara.Extensions
 			bounds = rc;
 		}
 
-		private static DrawTextFlags FromTFF(TextFormatFlags tff) => (DrawTextFlags)(int)tff;
-
 		/// <summary>
-		/// Gets the background image of the current visual style element within the specified background color. If <paramref name="states"/> is set, the resulting image will contain each of the state images side by side.
+		/// Gets the background image of the current visual style element within the specified background color. If <paramref name="states"/>
+		/// is set, the resulting image will contain each of the state images side by side.
 		/// </summary>
 		/// <param name="rnd">The <see cref="VisualStyleRenderer"/> instance.</param>
 		/// <param name="clr">The background color. This color cannot have an alpha channel.</param>
@@ -234,45 +224,26 @@ namespace Vanara.Extensions
 			}
 		}
 
-		private static Size MaxSize(Size sz1, Size sz2) => new Size(Math.Max(sz1.Width, sz2.Width), Math.Max(sz1.Height, sz2.Height));
-
-		/// <summary>
-		/// Returns the value of the specified font property for the current visual style element.
-		/// </summary>
-		/// <param name="rnd">The <see cref="VisualStyleRenderer" /> instance.</param>
-		/// <param name="dc">The <see cref="IDeviceContext" /> used to draw the text.</param>
+		/// <summary>Returns the value of the specified font property for the current visual style element.</summary>
+		/// <param name="rnd">The <see cref="VisualStyleRenderer"/> instance.</param>
+		/// <param name="dc">The <see cref="IDeviceContext"/> used to draw the text.</param>
 		/// <param name="defaultValue">A value to return if the system has no font defined for this <see cref="VisualStyleRenderer"/> instance.</param>
-		/// <returns>A <see cref="Font"/> that contains the value of the property specified by the prop parameter for the current visual style element.</returns>
+		/// <returns>
+		/// A <see cref="Font"/> that contains the value of the property specified by the prop parameter for the current visual style element.
+		/// </returns>
 		public static Font GetFont2(this VisualStyleRenderer rnd, IDeviceContext dc = null, Font defaultValue = null)
 		{
 			using (var hdc = new SafeHDC(dc))
 			{
-				return 0 != GetThemeFont(new SafeHTHEME(rnd.Handle, false), hdc, rnd.Part, rnd.State, 210, out LOGFONT f)
+				return 0 != GetThemeFont(new SafeHTHEME(rnd.Handle, false), hdc, rnd.Part, rnd.State, 210, out var f)
 					? defaultValue : Font.FromLogFont(f);
 			}
 		}
 
-		private static void DrawWrapper(IDeviceContext dc, Rectangle bounds, DrawWrapperMethod func)
-		{
-			using (var sdc = new SafeHDC(dc))
-			{
-				// Create a memory DC so we can work off screen
-				using (var memoryHdc = sdc.GetCompatibleDCHandle())
-				{
-					// Create a device-independent bitmap and select it into our DC
-					var info = new BITMAPINFO(bounds.Width, -bounds.Height);
-					using (memoryHdc.SelectObject(CreateDIBSection(sdc, ref info, 0, out var pBits, IntPtr.Zero, 0)))
-					{
-						// Call method
-						func(memoryHdc);
-
-						// Copy to foreground
-						BitBlt(sdc, bounds.Left, bounds.Top, bounds.Width, bounds.Height, memoryHdc, 0, 0, RasterOperationMode.SRCCOPY);
-					}
-				}
-			}
-		}
+		private static DrawTextFlags FromTFF(TextFormatFlags tff) => (DrawTextFlags)(int)tff;
 
 		private static long GetHashCode(this VisualStyleRenderer r) => (long)r.Class.GetHashCode() << 32 | ((uint)r.Part << 16 | (ushort)r.State);
+
+		private static Size MaxSize(Size sz1, Size sz2) => new Size(Math.Max(sz1.Width, sz2.Width), Math.Max(sz1.Height, sz2.Height));
 	}
 }
