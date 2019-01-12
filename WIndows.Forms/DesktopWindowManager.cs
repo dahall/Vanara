@@ -11,8 +11,8 @@ using static Vanara.PInvoke.DwmApi;
 namespace Vanara.Windows.Forms
 {
 	/// <summary>Main DWM class, provides glass sheet effect and blur behind.</summary>
-	[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1724:TypeNamesShouldNotMatchNamespaces")]
-	[global::System.Security.Permissions.PermissionSet(global::System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1724:TypeNamesShouldNotMatchNamespaces")]
+	[System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
 	[SecuritySafeCritical]
 	public static partial class DesktopWindowManager
 	{
@@ -20,7 +20,6 @@ namespace Vanara.Windows.Forms
 		private static readonly object _lock = new object();
 		private static readonly object colorizationColorChangedKey = new object();
 		private static readonly object compositionChangedKey = new object();
-		//static object windowMaximizedChangedKey = new object();
 		private static readonly object[] keys = { compositionChangedKey, nonClientRenderingChangedKey, colorizationColorChangedKey/*, WindowMaximizedChangedKey*/ };
 		private static readonly object nonClientRenderingChangedKey = new object();
 		private static EventHandlerList eventHandlerList;
@@ -47,8 +46,10 @@ namespace Vanara.Windows.Forms
 			remove { RemoveEventHandler(nonClientRenderingChangedKey, value); }
 		}
 
-		/// <summary>Use with GetWindowAttr and WindowAttribute.Cloaked. If the window is cloaked, provides one of the following values explaining why.</summary>
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1714:FlagsEnumsShouldHavePluralNames")]
+		/// <summary>
+		/// Use with GetWindowAttr and WindowAttribute.Cloaked. If the window is cloaked, provides one of the following values explaining why.
+		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1714:FlagsEnumsShouldHavePluralNames")]
 		[Flags]
 		public enum CloakingSource
 		{
@@ -65,7 +66,9 @@ namespace Vanara.Windows.Forms
 		/// <summary>Flags used by the SetWindowAttr method to specify the Flip3D window policy.</summary>
 		public enum Flip3DWindowPolicy
 		{
-			/// <summary>Use the window's style and visibility settings to determine whether to hide or include the window in Flip3D rendering.</summary>
+			/// <summary>
+			/// Use the window's style and visibility settings to determine whether to hide or include the window in Flip3D rendering.
+			/// </summary>
 			Default,
 
 			/// <summary>Exclude the window from Flip3D and display it below the Flip3D rendering.</summary>
@@ -89,8 +92,8 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// Gets or sets the current color used for Desktop Window Manager (DWM) glass composition. This value is based on the current color scheme and can be
-		/// modified by the user.
+		/// Gets or sets the current color used for Desktop Window Manager (DWM) glass composition. This value is based on the current color
+		/// scheme and can be modified by the user.
 		/// </summary>
 		/// <value>The color of the glass composition.</value>
 		public static Color CompositionColor
@@ -126,10 +129,12 @@ namespace Vanara.Windows.Forms
 		public static bool CompositionSupported => Environment.OSVersion.Version.Major >= 6;
 
 		/// <summary>
-		/// Gets a value notifying the Desktop Window Manager (DWM) to opt in to or out of Multimedia Class Schedule Service (MMCSS) scheduling while the calling
-		/// process is alive.
+		/// Gets a value notifying the Desktop Window Manager (DWM) to opt in to or out of Multimedia Class Schedule Service (MMCSS)
+		/// scheduling while the calling process is alive.
 		/// </summary>
-		/// <value><c>true</c> to instruct DWM to participate in MMCSS scheduling; otherwise, <c>false</c> to opt out or end participation in MMCSS scheduling.</value>
+		/// <value>
+		/// <c>true</c> to instruct DWM to participate in MMCSS scheduling; otherwise, <c>false</c> to opt out or end participation in MMCSS scheduling.
+		/// </value>
 		public static bool MultimediaClassScheduleServiceEnabled { set => DwmEnableMMCSS(value).ThrowIfFailed(); }
 
 		/// <summary>Gets or sets a value that indicates whether the <see cref="CompositionColor"/> is transparent.</summary>
@@ -164,28 +169,31 @@ namespace Vanara.Windows.Forms
 
 		/// <summary>Enables content rendered in the non-client area to be visible on the frame drawn by DWM.</summary>
 		/// <param name="form">The form.</param>
-		/// <param name="allowNCPaint">Set to <c>true</c> to enable content rendered in the non-client area to be visible on the frame; otherwise, <c>false</c>.</param>
-		public static void AllowNonClientPainting(this Form form, bool allowNCPaint) => SetWindowAttribute<bool>(form, DWMWINDOWATTRIBUTE.DWMWA_ALLOW_NCPAINT, allowNCPaint);
+		/// <param name="allowNCPaint">
+		/// Set to <c>true</c> to enable content rendered in the non-client area to be visible on the frame; otherwise, <c>false</c>.
+		/// </param>
+		public static void AllowNonClientPainting(this Form form, bool allowNCPaint) => SetWindowAttribute(form, DWMWINDOWATTRIBUTE.DWMWA_ALLOW_NCPAINT, allowNCPaint);
 
 		/// <summary>Cloaks the window such that it is not visible to the user. The window is still composed by DWM.</summary>
 		/// <param name="form">The form.</param>
 		/// <param name="cloak">If set to <c>true</c>, cloak.</param>
-		public static void Cloak(this Form form, bool cloak) => SetWindowAttribute<bool>(form, DWMWINDOWATTRIBUTE.DWMWA_CLOAK, cloak);
+		public static void Cloak(this Form form, bool cloak) => SetWindowAttribute(form, DWMWINDOWATTRIBUTE.DWMWA_CLOAK, cloak);
 
 		/// <summary>Enables or forcibly disables DWM transitions.</summary>
 		/// <param name="form">The form.</param>
 		/// <param name="forceDisabled"><c>true</c> to disable transitions.</param>
-		public static void DisableTransitions(this Form form, bool forceDisabled) => SetWindowAttribute<bool>(form, DWMWINDOWATTRIBUTE.DWMWA_TRANSITIONS_FORCEDISABLED, forceDisabled);
+		public static void DisableTransitions(this Form form, bool forceDisabled) => SetWindowAttribute(form, DWMWINDOWATTRIBUTE.DWMWA_TRANSITIONS_FORCEDISABLED, forceDisabled);
 
 		/// <summary>
-		/// Do not show peek preview for the window. The peek view shows a full-sized preview of the window when the mouse hovers over the window's thumbnail in
-		/// the taskbar.
+		/// Do not show peek preview for the window. The peek view shows a full-sized preview of the window when the mouse hovers over the
+		/// window's thumbnail in the taskbar.
 		/// </summary>
 		/// <param name="form">The form.</param>
 		/// <param name="disallowPeek">
-		/// if set to <c>true</c>, hovering the mouse pointer over the window's thumbnail dismisses peek (in case another window in the group has a peek preview showing).
+		/// if set to <c>true</c>, hovering the mouse pointer over the window's thumbnail dismisses peek (in case another window in the group
+		/// has a peek preview showing).
 		/// </param>
-		public static void DisallowPeekPreview(this Form form, bool disallowPeek) => SetWindowAttribute<bool>(form, DWMWINDOWATTRIBUTE.DWMWA_DISALLOW_PEEK, disallowPeek);
+		public static void DisallowPeekPreview(this Form form, bool disallowPeek) => SetWindowAttribute(form, DWMWINDOWATTRIBUTE.DWMWA_DISALLOW_PEEK, disallowPeek);
 
 		/// <summary>Enable the Aero "Blur Behind" effect on the whole client area. Background must be black.</summary>
 		/// <param name="window">The window.</param>
@@ -197,7 +205,9 @@ namespace Vanara.Windows.Forms
 		/// <param name="graphics">The graphics area on which the region resides.</param>
 		/// <param name="region">The region within the client area to apply the blur behind.</param>
 		/// <param name="enabled"><c>true</c> to enable blur behind for this region, <c>false</c> to disable it.</param>
-		/// <param name="transitionOnMaximized"><c>true</c> if the window's colorization should transition to match the maximized windows; otherwise, <c>false</c>.</param>
+		/// <param name="transitionOnMaximized">
+		/// <c>true</c> if the window's colorization should transition to match the maximized windows; otherwise, <c>false</c>.
+		/// </param>
 		public static void EnableBlurBehind(this IWin32Window window, Graphics graphics, Region region, bool enabled, bool transitionOnMaximized)
 		{
 			if (window == null)
@@ -253,30 +263,32 @@ namespace Vanara.Windows.Forms
 		}
 
 		/// <summary>
-		/// Issues a flush call that blocks the caller until the next present, when all of the Microsoft DirectX surface updates that are currently outstanding
-		/// have been made. This compensates for very complex scenes or calling processes with very low priority.
+		/// Issues a flush call that blocks the caller until the next present, when all of the Microsoft DirectX surface updates that are
+		/// currently outstanding have been made. This compensates for very complex scenes or calling processes with very low priority.
 		/// </summary>
 		public static void Flush() => DwmFlush().ThrowIfFailed();
 
 		/// <summary>
-		/// Forces the window to display an iconic thumbnail or peek representation (a static bitmap), even if a live or snapshot representation of the window is
-		/// available. This value normally is set during a window's creation and not changed throughout the window's lifetime. Some scenarios, however, might
-		/// require the value to change over time.
+		/// Forces the window to display an iconic thumbnail or peek representation (a static bitmap), even if a live or snapshot
+		/// representation of the window is available. This value normally is set during a window's creation and not changed throughout the
+		/// window's lifetime. Some scenarios, however, might require the value to change over time.
 		/// </summary>
 		/// <param name="form">The form.</param>
 		/// <param name="iconRep"><c>true</c> to require a iconic thumbnail or peek representation; otherwise, <c>false</c>.</param>
-		public static void ForceIconicRepresentation(this Form form, bool iconRep) => SetWindowAttribute<bool>(form, DWMWINDOWATTRIBUTE.DWMWA_FORCE_ICONIC_REPRESENTATION, iconRep);
+		public static void ForceIconicRepresentation(this Form form, bool iconRep) => SetWindowAttribute(form, DWMWINDOWATTRIBUTE.DWMWA_FORCE_ICONIC_REPRESENTATION, iconRep);
 
-		/// <summary>Freeze the window's thumbnail image with its current visuals. Do no further live updates on the thumbnail image
-		/// to match the window's contents.</summary>
+		/// <summary>
+		/// Freeze the window's thumbnail image with its current visuals. Do no further live updates on the thumbnail image to match the
+		/// window's contents.
+		/// </summary>
 		/// <param name="form">The form.</param>
 		/// <param name="freeze">if set to <c>true</c> freeze thumbnail.</param>
-		public static void FreezeLiveThumbnail(this Form form, bool freeze) => SetWindowAttribute<bool>(form, DWMWINDOWATTRIBUTE.DWMWA_FREEZE_REPRESENTATION, freeze);
+		public static void FreezeLiveThumbnail(this Form form, bool freeze) => SetWindowAttribute(form, DWMWINDOWATTRIBUTE.DWMWA_FREEZE_REPRESENTATION, freeze);
 
 		/// <summary>Retrieves the bounds of the caption button area in the window-relative space.</summary>
 		/// <param name="form">The form.</param>
 		/// <returns>The bounds.</returns>
-		public static Rectangle GetCaptionButtonBounds(this Form form) => GetWindowAttribute<Vanara.PInvoke.RECT>(form, DWMWINDOWATTRIBUTE.DWMWA_CAPTION_BUTTON_BOUNDS);
+		public static Rectangle GetCaptionButtonBounds(this Form form) => GetWindowAttribute<RECT>(form, DWMWINDOWATTRIBUTE.DWMWA_CAPTION_BUTTON_BOUNDS);
 
 		/// <summary>If the window is cloaked, provides a value explaining why.</summary>
 		/// <param name="form">The form.</param>
@@ -286,7 +298,7 @@ namespace Vanara.Windows.Forms
 		/// <summary>Retrieves the extended frame bounds rectangle in screen space.</summary>
 		/// <param name="form">The form.</param>
 		/// <returns>The bounds.</returns>
-		public static Rectangle GetExtendedFrameBounds(this Form form) => GetWindowAttribute<Vanara.PInvoke.RECT>(form, DWMWINDOWATTRIBUTE.DWMWA_EXTENDED_FRAME_BOUNDS);
+		public static Rectangle GetExtendedFrameBounds(this Form form) => GetWindowAttribute<RECT>(form, DWMWINDOWATTRIBUTE.DWMWA_EXTENDED_FRAME_BOUNDS);
 
 		/// <summary>Gets the live client thumbnail.</summary>
 		/// <param name="window">The window.</param>
@@ -294,18 +306,22 @@ namespace Vanara.Windows.Forms
 		public static LiveThumbnail GetLiveClientThumbnail(this IWin32Window window) => new LiveThumbnail(window);
 
 		/// <summary>
-		/// The window will provide a bitmap for use by DWM as an iconic thumbnail or peek representation (a static bitmap)
-		/// for the window. DWMWA_HAS_ICONIC_BITMAP can be specified with DWMWA_FORCE_ICONIC_REPRESENTATION. DWMWA_HAS_ICONIC_BITMAP normally is set during a
-		/// window's creation and not changed throughout the window's lifetime. Some scenarios, however, might require the value to change over time.
+		/// The window will provide a bitmap for use by DWM as an iconic thumbnail or peek representation (a static bitmap) for the window.
+		/// DWMWA_HAS_ICONIC_BITMAP can be specified with DWMWA_FORCE_ICONIC_REPRESENTATION. DWMWA_HAS_ICONIC_BITMAP normally is set during a
+		/// window's creation and not changed throughout the window's lifetime. Some scenarios, however, might require the value to change
+		/// over time.
 		/// </summary>
 		/// <param name="form">The form.</param>
 		/// <param name="hasIcon">if set to <c>true</c> inform DWM that the window will provide an iconic thumbnail or peek representation.</param>
-		public static void HasIconicBitmap(this Form form, bool hasIcon) => SetWindowAttribute<bool>(form, DWMWINDOWATTRIBUTE.DWMWA_HAS_ICONIC_BITMAP, hasIcon);
+		public static void HasIconicBitmap(this Form form, bool hasIcon) => SetWindowAttribute(form, DWMWINDOWATTRIBUTE.DWMWA_HAS_ICONIC_BITMAP, hasIcon);
 
 		/// <summary>
-		/// Called by an application to indicate that all previously provided iconic bitmaps from a window, both thumbnails and peek representations, should be refreshed.
+		/// Called by an application to indicate that all previously provided iconic bitmaps from a window, both thumbnails and peek
+		/// representations, should be refreshed.
 		/// </summary>
-		/// <param name="window">The window or tab whose bitmaps are being invalidated through this call. This window must belong to the calling process.</param>
+		/// <param name="window">
+		/// The window or tab whose bitmaps are being invalidated through this call. This window must belong to the calling process.
+		/// </param>
 		public static void InvalidateIconicBitmaps(this IWin32Window window) => DwmInvalidateIconicBitmaps(window.Handle).ThrowIfFailed();
 
 		/// <summary>Discovers whether non-client rendering is enabled.</summary>
@@ -316,22 +332,22 @@ namespace Vanara.Windows.Forms
 		/// <summary>Specifies whether non-client content is right-to-left (RTL) mirrored.</summary>
 		/// <param name="form">The form.</param>
 		/// <param name="rtl">if set to <c>true</c> the non-client content is right-to-left (RTL) mirrored.</param>
-		public static void NonClientRightToLeft(this Form form, bool rtl) => SetWindowAttribute<bool>(form, DWMWINDOWATTRIBUTE.DWMWA_NONCLIENT_RTL_LAYOUT, rtl);
+		public static void NonClientRightToLeft(this Form form, bool rtl) => SetWindowAttribute(form, DWMWINDOWATTRIBUTE.DWMWA_NONCLIENT_RTL_LAYOUT, rtl);
 
 		/// <summary>Prevents a window from fading to a glass sheet when peek is invoked.</summary>
 		/// <param name="form">The form.</param>
 		/// <param name="prevent">if set to <c>true</c> prevent the window from fading during another window's peek.</param>
-		public static void PreventFadingOnPeekPreview(this Form form, bool prevent) => SetWindowAttribute<bool>(form, DWMWINDOWATTRIBUTE.DWMWA_EXCLUDED_FROM_PEEK, prevent);
+		public static void PreventFadingOnPeekPreview(this Form form, bool prevent) => SetWindowAttribute(form, DWMWINDOWATTRIBUTE.DWMWA_EXCLUDED_FROM_PEEK, prevent);
 
 		/// <summary>Sets how Flip3D treats the window.</summary>
 		/// <param name="form">The form.</param>
 		/// <param name="policy">The policy.</param>
-		public static void SetFlip3DPolicy(this Form form, Flip3DWindowPolicy policy) => SetWindowAttribute<DWMFLIP3DWINDOWPOLICY>(form, DWMWINDOWATTRIBUTE.DWMWA_FLIP3D_POLICY, (DWMFLIP3DWINDOWPOLICY)policy);
+		public static void SetFlip3DPolicy(this Form form, Flip3DWindowPolicy policy) => SetWindowAttribute(form, DWMWINDOWATTRIBUTE.DWMWA_FLIP3D_POLICY, (DWMFLIP3DWINDOWPOLICY)policy);
 
 		/// <summary>Sets the non-client rendering policy.</summary>
 		/// <param name="form">The form.</param>
 		/// <param name="policy">The policy.</param>
-		public static void SetNonClientRenderingPolicy(this Form form, NonClientRenderingPolicy policy) => SetWindowAttribute<DWMNCRENDERINGPOLICY>(form, DWMWINDOWATTRIBUTE.DWMWA_NCRENDERING_POLICY, (DWMNCRENDERINGPOLICY)policy);
+		public static void SetNonClientRenderingPolicy(this Form form, NonClientRenderingPolicy policy) => SetWindowAttribute(form, DWMWINDOWATTRIBUTE.DWMWA_NCRENDERING_POLICY, (DWMNCRENDERINGPOLICY)policy);
 
 		private static void AddEventHandler(object id, EventHandler value)
 		{
@@ -360,11 +376,12 @@ namespace Vanara.Windows.Forms
 				return ptr.ToStructure<T>();
 			}
 		}
+
 		/// <summary>Indicates whether Desktop Window Manager (DWM) composition is enabled.</summary>
 		/// <returns><c>true</c> if is composition enabled; otherwise, <c>false</c>.</returns>
 		private static bool IsCompositionEnabled()
 		{
-			if (!CompositionSupported || !global::System.IO.File.Exists(global::System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), @"dwmapi.dll")))
+			if (!CompositionSupported || !System.IO.File.Exists(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), @"dwmapi.dll")))
 				return false;
 			DwmIsCompositionEnabled(out var res);
 			return res;
@@ -394,7 +411,9 @@ namespace Vanara.Windows.Forms
 		{
 			private Dictionary<IntPtr, HTHUMBNAIL> thumbnails = new Dictionary<IntPtr, HTHUMBNAIL>();
 
-			public ThumbnailMgr() { }
+			public ThumbnailMgr()
+			{
+			}
 
 			public void Dispose()
 			{
@@ -429,11 +448,11 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
-		[global::System.Security.Permissions.PermissionSet(global::System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
-		[global::System.Security.SecuritySafeCritical]
+		[System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
+		[SecuritySafeCritical]
 		private class MessageWindow : NativeWindow, IDisposable
 		{
-			[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+			[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
 			public MessageWindow()
 			{
 				var cp = new CreateParams { Style = 0, ExStyle = 0, ClassStyle = 0, Parent = IntPtr.Zero, Caption = GetType().Name };
@@ -442,7 +461,7 @@ namespace Vanara.Windows.Forms
 
 			public void Dispose() => DestroyHandle();
 
-			[global::System.Security.Permissions.PermissionSet(global::System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
+			[System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
 			protected override void WndProc(ref Message m)
 			{
 				// ReSharper disable InconsistentNaming
