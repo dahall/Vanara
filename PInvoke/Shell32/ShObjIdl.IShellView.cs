@@ -801,14 +801,14 @@ namespace Vanara.PInvoke
 
 			/// <summary>Enables or disables modeless dialog boxes. This method is not currently implemented.</summary>
 			/// <param name="enable"><c>true</c> to enable modeless dialog box windows or <c>false</c> to disable them.</param>
-			void EnableModeless([MarshalAs(UnmanagedType.Bool)] bool enable);
+			void EnableModeless([In, MarshalAs(UnmanagedType.Bool)] bool enable);
 
 			/// <summary>
 			/// Called when the activation state of the view window is changed by an event that is not caused by the Shell view itself. For
 			/// example, if the TAB key is pressed when the tree has the focus, the view should be given the focus.
 			/// </summary>
 			/// <param name="uState">Flag specifying the activation state of the window.</param>
-			void UIActivate(SVUIA uState);
+			void UIActivate([In] SVUIA uState);
 
 			/// <summary>Refreshes the view's contents in response to user input.</summary>
 			void Refresh();
@@ -828,7 +828,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="prcView">The dimensions of the new view, in client coordinates.</param>
 			/// <returns>The address of the window handle being created.</returns>
-			HWND CreateViewWindow(IShellView psvPrevious, in FOLDERSETTINGS pfs, IShellBrowser psb, in RECT prcView);
+			HWND CreateViewWindow([In] IShellView psvPrevious, in FOLDERSETTINGS pfs, [In] IShellBrowser psb, in RECT prcView);
 
 			/// <summary>Destroys the view window.</summary>
 			void DestroyViewWindow();
@@ -841,7 +841,7 @@ namespace Vanara.PInvoke
 			/// <param name="dwReserved">Reserved.</param>
 			/// <param name="lpfn">The address of the callback function used to add the pages.</param>
 			/// <param name="lparam">A value that must be passed as the callback function's lparam parameter.</param>
-			void AddPropertySheetPages(uint dwReserved, [In] AddPropSheetPageProc lpfn, [In] IntPtr lparam);
+			void AddPropertySheetPages([In, Optional] uint dwReserved, [In] AddPropSheetPageProc lpfn, [In] IntPtr lparam);
 
 			/// <summary>Saves the Shell's view settings so the current state can be restored during a subsequent browsing session.</summary>
 			void SaveViewState();
@@ -849,14 +849,14 @@ namespace Vanara.PInvoke
 			/// <summary>Changes the selection state of one or more items within the Shell view window.</summary>
 			/// <param name="pidlItem">The address of the ITEMIDLIST structure.</param>
 			/// <param name="uFlags">One of the _SVSIF constants that specify the type of selection to apply.</param>
-			void SelectItem(PIDL pidlItem, SVSIF uFlags);
+			void SelectItem([In] IntPtr pidlItem, [In] SVSIF uFlags);
 
 			/// <summary>Gets an interface that refers to data presented in the view.</summary>
 			/// <param name="uItem">The constants that refer to an aspect of the view.</param>
 			/// <param name="riid">The identifier of the COM interface being requested.</param>
 			/// <returns>The address that receives the interface pointer. If an error occurs, the pointer returned must be NULL.</returns>
-			[return: MarshalAs(UnmanagedType.IUnknown)]
-			object GetItemObject(SVGIO uItem, in Guid riid);
+			[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)]
+			object GetItemObject([In] SVGIO uItem, in Guid riid);
 		}
 
 		/// <summary>

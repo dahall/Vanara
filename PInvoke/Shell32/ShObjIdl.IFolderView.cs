@@ -237,38 +237,38 @@ namespace Vanara.PInvoke
 
 			/// <summary>Sets the selected folder's view mode.</summary>
 			/// <param name="ViewMode">One of the following values from the FOLDERVIEWMODE enumeration.</param>
-			void SetCurrentViewMode(FOLDERVIEWMODE ViewMode);
+			void SetCurrentViewMode([In] FOLDERVIEWMODE ViewMode);
 
 			/// <summary>Gets the folder object.</summary>
 			/// <param name="riid">Reference to the desired IID to represent the folder.</param>
-			/// <param name="ppv">
+			/// <returns>
 			/// When this method returns, contains the interface pointer requested in <paramref name="riid"/>. This is typically IShellFolder
 			/// or a related interface. This can also be an IShellItemArray with a single element.
-			/// </param>
-			[return: MarshalAs(UnmanagedType.IUnknown)]
+			/// </returns>
+			[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)]
 			object GetFolder(in Guid riid);
 
 			/// <summary>Gets the identifier of a specific item in the folder view, by index.</summary>
 			/// <param name="iItemIndex">The index of the item in the view.</param>
-			/// <param name="ppidl">The address of a pointer to a PIDL containing the item's identifier information.</param>
-			PIDL Item(int iItemIndex);
+			/// <returns>The address of a pointer to a PIDL containing the item's identifier information.</returns>
+			IntPtr Item([In] int iItemIndex);
 
 			/// <summary>
 			/// Gets the number of items in the folder. This can be the number of all items, or a subset such as the number of selected items.
 			/// </summary>
 			/// <param name="uFlags">Flags from the _SVGIO enumeration that limit the count to certain types of items.</param>
 			/// <returns>The number of items (files and folders) displayed in the folder view.</returns>
-			int ItemCount(SVGIO uFlags);
+			int ItemCount([In] SVGIO uFlags);
 
 			/// <summary>Gets the address of an enumeration object based on the collection of items in the folder view.</summary>
 			/// <param name="uFlags">_SVGIO values that limit the enumeration to certain types of items.</param>
 			/// <param name="riid">Reference to the desired IID to represent the folder.</param>
-			/// <param name="ppv">
+			/// <returns>
 			/// When this method returns, contains the interface pointer requested in <paramref name="riid"/>. This is typically an
 			/// IEnumIDList, IDataObject, or IShellItemArray. If an error occurs, this value is NULL.
-			/// </param>
-			[return: MarshalAs(UnmanagedType.IUnknown)]
-			object Items(SVGIO uFlags, in Guid riid);
+			/// </returns>
+			[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)]
+			object Items([In] SVGIO uFlags, in Guid riid);
 
 			/// <summary>Gets the index of an item in the folder's view which has been marked by using the SVSI_SELECTIONMARK in IFolderView::SelectItem.</summary>
 			/// <returns>The index of the marked item.</returns>
@@ -281,7 +281,7 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the position of an item in the folder's view.</summary>
 			/// <param name="pidl">A pointer to an ITEMIDLIST interface.</param>
 			/// <returns>The position of the item's upper-left corner.</returns>
-			Point GetItemPosition([In] PIDL pidl);
+			Point GetItemPosition([In] IntPtr pidl);
 
 			/// <summary>
 			/// Gets a POINT structure containing the width (x) and height (y) dimensions, including the surrounding white space, of an item.
@@ -304,7 +304,7 @@ namespace Vanara.PInvoke
 			/// <summary>Selects an item in the folder's view.</summary>
 			/// <param name="iItem">The index of the item to select in the folder's view.</param>
 			/// <param name="dwFlags">One of the _SVSIF constants that specify the type of selection to apply.</param>
-			void SelectItem(int iItem, SVSIF dwFlags);
+			void SelectItem([In] int iItem, [In] SVSIF dwFlags);
 
 			/// <summary>Allows the selection and positioning of items visible in the folder's view.</summary>
 			/// <param name="cidl">The number of items to select.</param>
@@ -314,7 +314,7 @@ namespace Vanara.PInvoke
 			/// name="apidl"/> should be positioned.
 			/// </param>
 			/// <param name="dwFlags">One of the _SVSIF constants that specifies the type of selection to apply.</param>
-			void SelectAndPositionItems(uint cidl, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PIDL[] apidl, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Point[] apt, SVSIF dwFlags);
+			void SelectAndPositionItems([In] uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] apidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Point[] apt, [In] SVSIF dwFlags);
 		}
 
 		/// <summary>
@@ -332,38 +332,38 @@ namespace Vanara.PInvoke
 
 			/// <summary>Sets the selected folder's view mode.</summary>
 			/// <param name="ViewMode">One of the following values from the FOLDERVIEWMODE enumeration.</param>
-			new void SetCurrentViewMode(FOLDERVIEWMODE ViewMode);
+			new void SetCurrentViewMode([In] FOLDERVIEWMODE ViewMode);
 
 			/// <summary>Gets the folder object.</summary>
 			/// <param name="riid">Reference to the desired IID to represent the folder.</param>
-			/// <param name="ppv">
+			/// <returns>
 			/// When this method returns, contains the interface pointer requested in <paramref name="riid"/>. This is typically IShellFolder
 			/// or a related interface. This can also be an IShellItemArray with a single element.
-			/// </param>
-			[return: MarshalAs(UnmanagedType.IUnknown)]
+			/// </returns>
+			[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)]
 			new object GetFolder(in Guid riid);
 
 			/// <summary>Gets the identifier of a specific item in the folder view, by index.</summary>
 			/// <param name="iItemIndex">The index of the item in the view.</param>
-			/// <param name="ppidl">The address of a pointer to a PIDL containing the item's identifier information.</param>
-			new PIDL Item(int iItemIndex);
+			/// <returns>The address of a pointer to a PIDL containing the item's identifier information.</returns>
+			new IntPtr Item([In] int iItemIndex);
 
 			/// <summary>
 			/// Gets the number of items in the folder. This can be the number of all items, or a subset such as the number of selected items.
 			/// </summary>
 			/// <param name="uFlags">Flags from the _SVGIO enumeration that limit the count to certain types of items.</param>
 			/// <returns>The number of items (files and folders) displayed in the folder view.</returns>
-			new int ItemCount(SVGIO uFlags);
+			new int ItemCount([In] SVGIO uFlags);
 
 			/// <summary>Gets the address of an enumeration object based on the collection of items in the folder view.</summary>
 			/// <param name="uFlags">_SVGIO values that limit the enumeration to certain types of items.</param>
 			/// <param name="riid">Reference to the desired IID to represent the folder.</param>
-			/// <param name="ppv">
+			/// <returns>
 			/// When this method returns, contains the interface pointer requested in <paramref name="riid"/>. This is typically an
 			/// IEnumIDList, IDataObject, or IShellItemArray. If an error occurs, this value is NULL.
-			/// </param>
-			[return: MarshalAs(UnmanagedType.IUnknown)]
-			new object Items(SVGIO uFlags, in Guid riid);
+			/// </returns>
+			[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)]
+			new object Items([In] SVGIO uFlags, in Guid riid);
 
 			/// <summary>Gets the index of an item in the folder's view which has been marked by using the SVSI_SELECTIONMARK in IFolderView::SelectItem.</summary>
 			/// <returns>The index of the marked item.</returns>
@@ -376,7 +376,7 @@ namespace Vanara.PInvoke
 			/// <summary>Gets the position of an item in the folder's view.</summary>
 			/// <param name="pidl">A pointer to an ITEMIDLIST interface.</param>
 			/// <returns>The position of the item's upper-left corner.</returns>
-			new Point GetItemPosition([In] PIDL pidl);
+			new Point GetItemPosition([In] IntPtr pidl);
 
 			/// <summary>
 			/// Gets a POINT structure containing the width (x) and height (y) dimensions, including the surrounding white space, of an item.
@@ -399,7 +399,7 @@ namespace Vanara.PInvoke
 			/// <summary>Selects an item in the folder's view.</summary>
 			/// <param name="iItem">The index of the item to select in the folder's view.</param>
 			/// <param name="dwFlags">One of the _SVSIF constants that specify the type of selection to apply.</param>
-			new void SelectItem(int iItem, SVSIF dwFlags);
+			new void SelectItem([In] int iItem, [In] SVSIF dwFlags);
 
 			/// <summary>Allows the selection and positioning of items visible in the folder's view.</summary>
 			/// <param name="cidl">The number of items to select.</param>
@@ -409,7 +409,7 @@ namespace Vanara.PInvoke
 			/// name="apidl"/> should be positioned.
 			/// </param>
 			/// <param name="dwFlags">One of the _SVSIF constants that specifies the type of selection to apply.</param>
-			new void SelectAndPositionItems(uint cidl, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] PIDL[] apidl, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Point[] apt, SVSIF dwFlags);
+			new void SelectAndPositionItems([In] uint cidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] apidl, [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] Point[] apt, [In] SVSIF dwFlags);
 
 			/// <summary>Groups the view by the given property key and direction.</summary>
 			/// <param name="key">
@@ -462,7 +462,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-setviewproperty
 			// DEPRECATED_HRESULT SetViewProperty( PCUITEMID_CHILD pidl, REFPROPERTYKEY propkey, REFPROPVARIANT propvar );
 			[Obsolete]
-			void SetViewProperty([In] PIDL pidl, in PROPERTYKEY propkey, [In] PROPVARIANT propvar);
+			void SetViewProperty([In] IntPtr pidl, in PROPERTYKEY propkey, [In] PROPVARIANT propvar);
 
 			/// <summary>
 			/// <para>
@@ -488,7 +488,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-getviewproperty
 			// DEPRECATED_HRESULT GetViewProperty( PCUITEMID_CHILD pidl, REFPROPERTYKEY propkey, PROPVARIANT *ppropvar );
 			[Obsolete]
-			void GetViewProperty([In] PIDL pidl, in PROPERTYKEY propkey, [In, Out] PROPVARIANT ppropvar);
+			void GetViewProperty([In] IntPtr pidl, in PROPERTYKEY propkey, [In, Out] PROPVARIANT ppropvar);
 
 			/// <summary>
 			/// <para>
@@ -515,7 +515,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-settileviewproperties
 			// DEPRECATED_HRESULT SetTileViewProperties( PCUITEMID_CHILD pidl, LPCWSTR pszPropList );
 			[Obsolete]
-			void SetTileViewProperties([In] PIDL pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszPropList);
+			void SetTileViewProperties([In] IntPtr pidl, [In, MarshalAs(UnmanagedType.LPWStr)] string pszPropList);
 
 			/// <summary>
 			/// <para>
@@ -541,7 +541,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-setextendedtileviewproperties
 			// DEPRECATED_HRESULT SetExtendedTileViewProperties( PCUITEMID_CHILD pidl, LPCWSTR pszPropList );
 			[Obsolete]
-			void SetExtendedTileViewProperties([In] PIDL pidl, [MarshalAs(UnmanagedType.LPWStr)] string pszPropList);
+			void SetExtendedTileViewProperties([In] IntPtr pidl, [In, MarshalAs(UnmanagedType.LPWStr)] string pszPropList);
 
 			/// <summary>Sets the default text to be used when there are no items in the view.</summary>
 			/// <param name="iType">
@@ -556,7 +556,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-settext HRESULT SetText(
 			// FVTEXTTYPE iType, LPCWSTR pwszText );
-			void SetText(FVTEXTTYPE iType, [MarshalAs(UnmanagedType.LPWStr)] string pwszText);
+			void SetText([In] FVTEXTTYPE iType, [In, MarshalAs(UnmanagedType.LPWStr)] string pwszText);
 
 			/// <summary>Sets and applies specified folder flags.</summary>
 			/// <param name="dwMask">
@@ -573,7 +573,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-setcurrentfolderflags HRESULT
 			// SetCurrentFolderFlags( DWORD dwMask, DWORD dwFlags );
-			void SetCurrentFolderFlags(FOLDERFLAGS dwMask, FOLDERFLAGS dwFlags);
+			void SetCurrentFolderFlags([In] FOLDERFLAGS dwMask, [In] FOLDERFLAGS dwFlags);
 
 			/// <summary>Gets the currently applied folder flags.</summary>
 			/// <returns>
@@ -605,7 +605,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-setsortcolumns HRESULT
 			// SetSortColumns( const SORTCOLUMN *rgSortColumns, int cColumns );
-			void SetSortColumns([In] SORTCOLUMN[] rgSortColumns, int cColumns);
+			void SetSortColumns([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SORTCOLUMN[] rgSortColumns, [In] int cColumns);
 
 			/// <summary>Gets the sort columns currently applied to the view.</summary>
 			/// <param name="rgSortColumns">
@@ -618,7 +618,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-getsortcolumns HRESULT
 			// GetSortColumns( SORTCOLUMN *rgSortColumns, int cColumns );
-			void GetSortColumns([In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SORTCOLUMN[] rgSortColumns, int cColumns);
+			void GetSortColumns([In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SORTCOLUMN[] rgSortColumns, [In] int cColumns);
 
 			/// <summary>Retrieves an object that represents a specified item.</summary>
 			/// <param name="iItem">
@@ -635,8 +635,8 @@ namespace Vanara.PInvoke
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-getitem HRESULT GetItem( int
 			// iItem, REFIID riid, void **ppv );
-			[return: MarshalAs(UnmanagedType.IUnknown)]
-			object GetItem(int iItem, in Guid riid);
+			[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 0)]
+			object GetItem([In] int iItem, in Guid riid);
 
 			/// <summary>Gets the next visible item in relation to a given index in the view.</summary>
 			/// <param name="iStart">
@@ -672,7 +672,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-getvisibleitem HRESULT
 			// GetVisibleItem( int iStart, BOOL fPrevious, int *piItem );
 			[PreserveSig]
-			HRESULT GetVisibleItem(int iStart, [MarshalAs(UnmanagedType.Bool)] bool fPrevious, out int piItem);
+			HRESULT GetVisibleItem([In] int iStart, [In, MarshalAs(UnmanagedType.Bool)] bool fPrevious, out int piItem);
 
 			/// <summary>Locates the currently selected item at or after a given index.</summary>
 			/// <param name="iStart">The index position from which to start searching for the currently selected item.</param>
@@ -696,7 +696,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </returns>
 			[PreserveSig]
-			HRESULT GetSelectedItem(int iStart, out int piItem);
+			HRESULT GetSelectedItem([In] int iStart, out int piItem);
 
 			/// <summary>
 			/// <para>Gets the current selection as an IShellItemArray.</para>
@@ -730,7 +730,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-getselection HRESULT
 			// GetSelection( BOOL fNoneImpliesFolder, IShellItemArray **ppsia );
 			[PreserveSig]
-			HRESULT GetSelection([MarshalAs(UnmanagedType.Bool)] bool fNoneImpliesFolder, out IShellItemArray ppsia);
+			HRESULT GetSelection([In, MarshalAs(UnmanagedType.Bool)] bool fNoneImpliesFolder, out IShellItemArray ppsia);
 
 			/// <summary>Gets the selection state including check state.</summary>
 			/// <param name="pidl">
@@ -746,7 +746,7 @@ namespace Vanara.PInvoke
 			/// </returns>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-getselectionstate HRESULT
 			// GetSelectionState( PCUITEMID_CHILD pidl, DWORD *pdwFlags );
-			SVSIF GetSelectionState([In] PIDL pidl);
+			SVSIF GetSelectionState([In] IntPtr pidl);
 
 			/// <summary>Invokes the given verb on the current selection.</summary>
 			/// <param name="pszVerb">
@@ -756,7 +756,7 @@ namespace Vanara.PInvoke
 			/// <remarks>If pszVerb is <c>NULL</c>, then the default verb is invoked on the selection.</remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-invokeverbonselection HRESULT
 			// InvokeVerbOnSelection( LPCSTR pszVerb );
-			void InvokeVerbOnSelection([MarshalAs(UnmanagedType.LPWStr)] string pszVerb);
+			void InvokeVerbOnSelection([In, MarshalAs(UnmanagedType.LPWStr)] string pszVerb);
 
 			/// <summary>Sets and applies the view mode and image size.</summary>
 			/// <param name="uViewMode">
@@ -770,7 +770,7 @@ namespace Vanara.PInvoke
 			/// <remarks>If iImageSize is -1 then the current default icon size for the view mode is used.</remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-setviewmodeandiconsize
 			// HRESULT SetViewModeAndIconSize( FOLDERVIEWMODE uViewMode, int iImageSize );
-			void SetViewModeAndIconSize(FOLDERVIEWMODE uViewMode, int iImageSize);
+			void SetViewModeAndIconSize([In] FOLDERVIEWMODE uViewMode, [In] int iImageSize = -1);
 
 			/// <summary>Gets the current view mode and icon size applied to the view.</summary>
 			/// <param name="puViewMode">
@@ -793,7 +793,7 @@ namespace Vanara.PInvoke
 			/// <remarks>If cVisibleRows is zero, subsetting is turned off.</remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-setgroupsubsetcount HRESULT
 			// SetGroupSubsetCount( UINT cVisibleRows );
-			void SetGroupSubsetCount(uint cVisibleRows);
+			void SetGroupSubsetCount([In] uint cVisibleRows);
 
 			/// <summary>Gets the count of visible rows displayed for a group's subset.</summary>
 			/// <returns>
@@ -812,7 +812,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifolderview2-setredraw HRESULT SetRedraw(
 			// BOOL fRedrawOn );
-			void SetRedraw([MarshalAs(UnmanagedType.Bool)] bool fRedrawOn);
+			void SetRedraw([In, MarshalAs(UnmanagedType.Bool)] bool fRedrawOn);
 
 			/// <summary>
 			/// Checks to see if this view sourced the current drag-and-drop or cut-and-paste operation (used by drop target objects).

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
@@ -155,7 +156,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nn-shobjidl_core-iexplorerbrowser
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "da2cf5d4-5a68-4d18-807b-b9d4e2712c10")]
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("dfd3b6b5-c10c-4be9-85f6-a66969f402f6"), CoClass(typeof(ExplorerBrowser))]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("DFD3B6B5-C10C-4BE9-85F6-A66969F402F6"), CoClass(typeof(ExplorerBrowser))]
 		public interface IExplorerBrowser
 		{
 			/// <summary>Prepares the browser to be navigated.</summary>
@@ -173,7 +174,7 @@ namespace Vanara.PInvoke
 			/// <summary>Sets the size and position of the view windows created by the browser.</summary>
 			/// <param name="phdwp">A pointer to a DeferWindowPos handle. This parameter can be NULL.</param>
 			/// <param name="rcBrowser">The coordinates that the browser will occupy.</param>
-			void SetRect(IntPtr phdwp, RECT rcBrowser);
+			void SetRect([In, Out] ref HDWP phdwp, [In] RECT rcBrowser);
 
 			/// <summary>Sets the name of the property bag.</summary>
 			/// <param name="pszPropertyBag">
@@ -218,7 +219,7 @@ namespace Vanara.PInvoke
 			/// This parameter can be NULL. For more information, see Remarks.
 			/// </param>
 			/// <param name="uFlags">A flag that specifies the category of the pidl. This affects how navigation is accomplished.</param>
-			void BrowseToIDList([In] PIDL pidl, [In] SBSP uFlags);
+			void BrowseToIDList([In] IntPtr pidl, [In] SBSP uFlags);
 
 			/// <summary>Browses to an object.</summary>
 			/// <param name="punk">A pointer to an object to browse to. If the object cannot be browsed, an error value is returned.</param>
@@ -247,27 +248,91 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Exposes methods for notification of Explorer browser navigation and view creation events.</summary>
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("361bbdc7-e6ee-4e13-be58-58e2240c810f"), CoClass(typeof(ExplorerBrowser))]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("361bbdc7-e6ee-4e13-be58-58e2240c810f")]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "802d547f-41c2-4c4a-9f07-be615d7b86eb")]
 		public interface IExplorerBrowserEvents
 		{
 			/// <summary>Notifies clients of a pending Explorer browser navigation to a Shell folder.</summary>
-			/// <param name="pidlFolder">A PIDL that specifies the folder.</param>
+			/// <param name="pidlFolder">
+			/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+			/// <para>A PIDL that specifies the folder.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// Explorer browser calls this method before it navigates to a folder, that is, before calling
+			/// IExplorerBrowserEvents::OnNavigationFailed or IExplorerBrowserEvents::OnNavigationComplete.
+			/// </para>
+			/// <para>Returning any failure code from this method, including E_NOTIMPL, will cancel the navigation.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iexplorerbrowserevents-onnavigationpending
+			// HRESULT OnNavigationPending( PCIDLIST_ABSOLUTE pidlFolder );
 			[PreserveSig]
 			HRESULT OnNavigationPending([In] IntPtr pidlFolder);
 
 			/// <summary>Notifies clients that the view of the Explorer browser has been created and can be modified.</summary>
-			/// <param name="psv">A pointer to an IShellView.</param>
+			/// <param name="psv">
+			/// <para>Type: <c>IShellView*</c></para>
+			/// <para>A pointer to an IShellView.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			/// <remarks>
+			/// An Explorer browser calls this method to enable the client to perform any modifications to the Explorer browser view before
+			/// it is shown; for example, to set view modes or folder flags.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iexplorerbrowserevents-onviewcreated
+			// HRESULT OnViewCreated( IShellView *psv );
 			[PreserveSig]
 			HRESULT OnViewCreated([In] IShellView psv);
 
 			/// <summary>Notifies clients that the Explorer browser has successfully navigated to a Shell folder.</summary>
-			/// <param name="pidlFolder">A PIDL that specifies the folder.</param>
+			/// <param name="pidlFolder">
+			/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+			/// <para>A PIDL that specifies the folder.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>This method is called after method IExplorerBrowserEvents::OnViewCreated, assuming a successful view creation.</para>
+			/// <para>
+			/// After a navigation and view creation, either <c>IExplorerBrowserEvents::OnNavigationComplete</c> or
+			/// IExplorerBrowserEvents::OnNavigationFailed is called depending on whether the destination could be navigated to. For example,
+			/// a failure to navigate includes a destination that is not reached either because there is no route to the path or the user has canceled.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iexplorerbrowserevents-onnavigationcomplete
+			// HRESULT OnNavigationComplete( PCIDLIST_ABSOLUTE pidlFolder );
 			[PreserveSig]
 			HRESULT OnNavigationComplete([In] IntPtr pidlFolder);
 
 			/// <summary>Notifies clients that the Explorer browser has failed to navigate to a Shell folder.</summary>
-			/// <param name="pidlFolder">A PIDL that specifies the folder.</param>
+			/// <param name="pidlFolder">
+			/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+			/// <para>A PIDL that specifies the folder.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>This method is called after method IExplorerBrowserEvents::OnViewCreated, assuming a successful view creation.</para>
+			/// <para>
+			/// After a navigation and view creation, either IExplorerBrowserEvents::OnNavigationComplete or
+			/// <c>IExplorerBrowserEvents::OnNavigationFailed</c> is called, depending on whether the destination could be navigated to. For
+			/// example, a failure to navigate includes a destination that is not reached either because there is no route to the path or the
+			/// user has canceled.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iexplorerbrowserevents-onnavigationfailed
+			// HRESULT OnNavigationFailed( PCIDLIST_ABSOLUTE pidlFolder );
 			[PreserveSig]
 			HRESULT OnNavigationFailed([In] IntPtr pidlFolder);
 		}

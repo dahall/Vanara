@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
@@ -18,7 +19,9 @@ namespace Vanara.PInvoke
 			/// <param name="ppvObject">The interface specified by the <paramref name="riid"/> parameter.</param>
 			/// <returns>If this method succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 			[PreserveSig]
-			HRESULT QueryService(in Guid guidService, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvObject);
+			//HRESULT QueryService(in Guid guidService, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvObject);
+			[MethodImpl(MethodImplOptions.InternalCall)]
+			HRESULT QueryService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject);
 		}
 	}
 }

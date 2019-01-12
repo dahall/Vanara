@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
@@ -101,7 +102,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			[PInvokeData("shobjidl_core.h", MSDNShortId = "6c051cdc-b7f9-48dc-ba32-38f0f1ee5fda")]
 			[PreserveSig]
-			HRESULT GetPaneState(in Guid ep, ref EXPLORERPANESTATE peps);
+			HRESULT GetPaneState(in Guid ep, out EXPLORERPANESTATE peps);
 		}
 
 		/// <summary>Constant GUIDs used by IExplorerPaneVisibility::GetPaneState.</summary>
