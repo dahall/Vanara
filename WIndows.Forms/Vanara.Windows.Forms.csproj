@@ -45,6 +45,7 @@ BitmapProperty, BoolProperty, CloakingSource, CollapsiblePanelBorderCondition, C
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Controls\ExplorerBrowser.cs" />
+    <Compile Remove="Design\ExplorerBrowserDesigner.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Controls\ExplorerBrowser.bmp" />
@@ -62,6 +63,7 @@ BitmapProperty, BoolProperty, CloakingSource, CollapsiblePanelBorderCondition, C
   </ItemGroup>
   <ItemGroup>
     <None Include="Controls\ExplorerBrowser.cs" />
+    <None Include="Design\ExplorerBrowserDesigner.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Vanara.Core.csproj" />

@@ -135,7 +135,8 @@
     <Compile Include="UI\Dialogs\AccessControlEditorTests.cs" />
     <Compile Include="UI\Dialogs\TaskDialogTests.cs" />
     <Compile Include="UI\Dialogs\NetworkConnectionDialogTests.cs" />
-    <Compile Include="UI\ExplorerBrowserTests.cs" />
+    <Compile Include="UI\ThemedControlTests.cs" />
+    <None Include="UI\ExplorerBrowserTests.cs" />
     <Compile Include="UI\VisualThemeTests.cs" />
     <Compile Include="UI\Extensions\ImageListTests.cs" />
     <Compile Include="UI\Dialogs\CredentialsDialogTests.cs" />

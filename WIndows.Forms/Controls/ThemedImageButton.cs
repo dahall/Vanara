@@ -3,38 +3,33 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using Vanara.Drawing;
 using Vanara.Extensions;
+using Vanara.PInvoke;
+using static Vanara.PInvoke.UxTheme;
 
 namespace Vanara.Windows.Forms
 {
-	public delegate int TranslateButtonStateDelegate(ControlState btnState);
-
-	/// <summary>
-	/// A button that displays an image and no text.
-	/// </summary>
+	/// <summary>A button that displays an image and no text.</summary>
 	[ToolboxItem(true), ToolboxBitmap(typeof(ThemedImageDraw), "ThemedImageButton.bmp")]
 	public class ThemedImageDraw : CustomDrawBase
 	{
+		private const string defaultClass = "BUTTON";
+		private const int defaultPart = 1;
 		private const string defaultText = "";
 		private const string defaultToolTip = "";
 
 		private readonly ToolTip toolTip;
-		private VisualStyleRenderer rnd;
-		private int[,] rndTransitions;
+		private string styleClass;
+		private int stylePart;
+		private bool supportGlass;
+		private VisualTheme theme;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ThemedImageDraw"/> class.
-		/// </summary>
+		/// <summary>Initializes a new instance of the <see cref="ThemedImageDraw"/> class.</summary>
 		public ThemedImageDraw()
 		{
-			SetStyle(ControlStyles.SupportsTransparentBackColor |
-				ControlStyles.OptimizedDoubleBuffer |
-				ControlStyles.AllPaintingInWmPaint |
-				ControlStyles.ResizeRedraw |
-				ControlStyles.UserPaint, true);
-
+			SetStyle(ControlStyles.SupportsTransparentBackColor | ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.ResizeRedraw | ControlStyles.UserPaint, true);
+			SetTheme(defaultClass, defaultPart);
 			toolTip = new ToolTip();
 			toolTip.SetToolTip(this, defaultToolTip);
 			StyleClass = "BUTTON";
@@ -42,25 +37,24 @@ namespace Vanara.Windows.Forms
 			base.Text = defaultText;
 		}
 
-		public event TranslateButtonStateDelegate TranslateButtonState;
+		/// <summary>Fired when button state needs to be translated.</summary>
+		public event Func<ControlState, int> TranslateButtonState;
 
-		/// <summary>
-		/// Gets or sets the background color of the control.
-		/// </summary>
-		/// <returns>A <see cref="T:System.Drawing.Color" /> value representing the background color.</returns>
+		/// <summary>Gets or sets the background color of the control.</summary>
+		/// <returns>A <see cref="T:System.Drawing.Color"/> value representing the background color.</returns>
 		public override Color BackColor
 		{
-			get => OnGlass ? Color.Transparent : base.BackColor; set => base.BackColor = value;
+			get => OnGlass ? Color.Transparent : base.BackColor;
+			set => base.BackColor = value;
 		}
 
-		/// <summary>
-		/// Gets or sets the image that is displayed on a button control.
-		/// </summary>
-		/// <returns>The <see cref="T:System.Drawing.Image" /> displayed on the button control. The default value is null.</returns>
+		/// <summary>Gets or sets the image that is displayed on a button control.</summary>
+		/// <returns>The <see cref="T:System.Drawing.Image"/> displayed on the button control. The default value is null.</returns>
 		[DefaultValue(null)]
 		public new Image Image
 		{
-			get => base.Image; set
+			get => base.Image;
+			set
 			{
 				if (value != null)
 				{
@@ -73,78 +67,68 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
-		/// <summary>
-		/// Gets or sets a value indicating whether this control supports glass (can be enclosed in the glass margin).
-		/// </summary>
-		/// <value>
-		///   <c>true</c> if supports glass; otherwise, <c>false</c>.
-		/// </value>
-		[DefaultValue(false), Category("Appearance")]
-		public bool SupportGlass { get; set; }
-
-		/// <summary>
-		/// Gets or sets the style class.
-		/// </summary>
+		/// <summary>Gets or sets the style class.</summary>
 		/// <value>The style class.</value>
-		[DefaultValue("BUTTON"), Category("Appearance")]
-		public string StyleClass { get; set; }
+		[DefaultValue(defaultClass), Category("Appearance")]
+		public string StyleClass
+		{
+			get => styleClass;
+			set { if (styleClass != value) { styleClass = value; ResetTheme(); } }
+		}
 
-		/// <summary>
-		/// Gets or sets the style part.
-		/// </summary>
+		/// <summary>Gets or sets the style part.</summary>
 		/// <value>The style part.</value>
-		[DefaultValue(1), Category("Appearance")]
-		public int StylePart { get; set; }
+		[DefaultValue(defaultPart), Category("Appearance")]
+		public int StylePart
+		{
+			get => stylePart;
+			set { if (stylePart != value) { stylePart = value; Invalidate(); } }
+		}
 
-		/// <summary>
-		/// Gets or sets the text associated with this control.
-		/// </summary>
-		/// <returns>
-		/// The text associated with this control.
-		///   </returns>
+		/// <summary>Gets or sets a value indicating whether this table supports glass (can be enclosed in the glass margin).</summary>
+		/// <value><c>true</c> if supports glass; otherwise, <c>false</c>.</value>
+		[DefaultValue(false), Category("Appearance")]
+		public bool SupportGlass
+		{
+			get => supportGlass;
+			set { if (supportGlass != value) { supportGlass = value; Invalidate(); } }
+		}
+
+		/// <summary>Gets or sets the text associated with this control.</summary>
+		/// <returns>The text associated with this control.</returns>
 		[DefaultValue(defaultText), Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), EditorBrowsable(EditorBrowsableState.Never)]
 		public override string Text
 		{
-			get => base.Text; set => base.Text = value;
+			get => base.Text;
+			set => base.Text = value;
 		}
 
-		/// <summary>
-		/// Gets or sets the tool tip text.
-		/// </summary>
+		/// <summary>Gets or sets the tool tip text.</summary>
 		/// <value>The tool tip text.</value>
 		[DefaultValue(defaultToolTip), Category("Appearance")]
 		public string ToolTipText
 		{
-			get => toolTip.GetToolTip(this); set => toolTip.SetToolTip(this, value);
+			get => toolTip.GetToolTip(this);
+			set => toolTip.SetToolTip(this, value);
 		}
 
-		/// <summary>
-		/// Gets a value indicating whether on glass.
-		/// </summary>
-		/// <value><c>true</c> if on glass; otherwise, <c>false</c>.</value>
-		private bool OnGlass => !this.IsDesignMode() && DesktopWindowManager.CompositionEnabled && SupportGlass;
-
-		/// <summary>
-		/// Retrieves the default size for the control.
-		/// </summary>
+		/// <summary>Retrieves the default size for the control.</summary>
 		/// <value></value>
-		/// <returns>
-		/// The default <see cref="T:System.Drawing.Size"/> of the control.
-		/// </returns>
+		/// <returns>The default <see cref="T:System.Drawing.Size"/> of the control.</returns>
 		protected override Size DefaultSize => new Size(30, 30);
 
-		/// <summary>
-		/// Retrieves the size of a rectangular area into which a control can be fitted.
-		/// </summary>
+		/// <summary>Gets a value indicating whether on glass.</summary>
+		/// <value><c>true</c> if on glass; otherwise, <c>false</c>.</value>
+		private bool OnGlass => !this.IsDesignMode() && ThemingSupported && SupportGlass;
+
+		private bool ThemingSupported => Application.RenderWithVisualStyles || DesktopWindowManager.CompositionEnabled;
+
+		/// <summary>Retrieves the size of a rectangular area into which a control can be fitted.</summary>
 		/// <param name="proposedSize">The custom-sized area for a control.</param>
-		/// <returns>
-		/// An ordered pair of type <see cref="T:System.Drawing.Size"/> representing the width and height of a rectangle.
-		/// </returns>
+		/// <returns>An ordered pair of type <see cref="T:System.Drawing.Size"/> representing the width and height of a rectangle.</returns>
 		public override Size GetPreferredSize(Size proposedSize) => DefaultSize;
 
-		/// <summary>
-		/// Sets the image list images using an image strip.
-		/// </summary>
+		/// <summary>Sets the image list images using an image strip.</summary>
 		/// <param name="imageStrip">The image strip.</param>
 		/// <param name="orientation">The orientation of the strip.</param>
 		public void SetImageListImageStrip(Image imageStrip, Orientation orientation)
@@ -164,12 +148,22 @@ namespace Vanara.Windows.Forms
 			}
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.Paint"/> event.
-		/// </summary>
+		/// <summary>Sets the theme using theme class information.</summary>
+		/// <param name="className">Name of the theme class.</param>
+		/// <param name="part">The theme part.</param>
+		/// <param name="state">The theme state.</param>
+		public void SetTheme(string className, int part)
+		{
+			styleClass = className;
+			stylePart = part;
+			ResetTheme();
+		}
+
+		/// <summary>Raises the <see cref="E:System.Windows.Forms.Control.Paint"/> event.</summary>
 		/// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event data.</param>
 		protected override void OnPaint(PaintEventArgs e)
 		{
+			if (!Visible) return;
 			var g = e.Graphics;
 			g.SmoothingMode = SmoothingMode.HighQuality;
 			g.CompositingQuality = CompositingQuality.HighQuality;
@@ -177,42 +171,33 @@ namespace Vanara.Windows.Forms
 			BufferedPaint.PaintAnimation(g, this, e.ClipRectangle, PaintAction, TranslateState(LastState), TranslateState(State), GetDuration);
 		}
 
-		private void PaintAction(Graphics graphics, Rectangle bounds, int currentstate, int data)
-		{
-			PaintButton(graphics, bounds, currentstate);
-		}
-
-		private int GetDuration(int oldstate, int newstate) => rndTransitions?[oldstate - 1, newstate - 1] ?? 0;
-
-		private int TranslateState(ControlState st) => TranslateButtonState?.Invoke(st) ?? (int)st;
-
-		/// <summary>
-		/// Primary function for painting the button. This method should be overridden instead of OnPaint.
-		/// </summary>
+		/// <summary>Primary function for painting the button. This method should be overridden instead of OnPaint.</summary>
 		/// <param name="graphics">The graphics.</param>
 		/// <param name="bounds">The bounds.</param>
 		/// <param name="currentstate">The translated current state of the control.</param>
 		protected virtual void PaintButton(Graphics graphics, Rectangle bounds, int currentstate)
 		{
-			System.Diagnostics.Debug.WriteLine($"PaintButton: desMode:{this.IsDesignMode()};vsEnabled:{Application.RenderWithVisualStyles};vsOnOS:{VisualStyleInformation.IsSupportedByOS};btnState:{currentstate};enabled:{Enabled};imgCt:{ImageList?.Images.Count ?? 0}");
+			System.Diagnostics.Debug.WriteLine($"PaintButton: desMode:{this.IsDesignMode()};vsEnabled:{Application.RenderWithVisualStyles};vsOnOS:{ThemingSupported};btnState:{currentstate};enabled:{Enabled};imgCt:{ImageList?.Images.Count ?? 0}");
 
-			if (InitializeRenderer())
+			if (theme != null && ThemingSupported)
 			{
+				var bs = TranslateButtonState?.Invoke(State) ?? (int)State;
+				var rtl = this.GetRightToLeftProperty() == RightToLeft.Yes;
 				if (OnGlass)
 				{
-					rnd.DrawGlassBackground(graphics, bounds, bounds);
+					graphics.DrawViaDIB(bounds, (hdc, r) => theme.DrawBackground(Graphics.FromHdc(hdc.DangerousGetHandle()), stylePart, bs, r, r, rtl));
 				}
 				else
 				{
-					rnd.DrawParentBackground(graphics, bounds, this);
-					rnd.DrawBackground(graphics, bounds);
+					theme.DrawParentBackground(this, graphics, bounds);
+					theme.DrawBackground(graphics, stylePart, bs, bounds, bounds, rtl);
 				}
 			}
 			else
 			{
 				if (ImageList != null && ImageList.Images.Count > 0)
 				{
-					var idx = (int)currentstate - 1;
+					var idx = currentstate - 1;
 					if (ImageList.Images.Count == 1)
 						idx = 0;
 					else if (ImageList.Images.Count == 2)
@@ -223,11 +208,11 @@ namespace Vanara.Windows.Forms
 					var forceDisabled = !Enabled && ImageList.Images.Count == 1;
 					if (OnGlass)
 					{
-                        VisualStylesRendererExtension.DrawGlassImage(null, graphics, bounds, ImageList.Images[idx], forceDisabled);
+						VisualStylesRendererExtension.DrawGlassImage(null, graphics, bounds, ImageList.Images[idx], forceDisabled);
 					}
 					else
 					{
-						if (!Application.RenderWithVisualStyles && VisualStyleInformation.IsSupportedByOS)
+						if (!ThemingSupported)
 						{
 							var g = graphics.BeginContainer();
 							var translateRect = bounds;
@@ -266,10 +251,10 @@ namespace Vanara.Windows.Forms
 				else
 				{
 					ButtonRenderer.DrawParentBackground(graphics, bounds, this);
-					if (Enum.IsDefined(typeof(PushButtonState), currentstate))
-						ButtonRenderer.DrawButton(graphics, bounds, (PushButtonState)currentstate);
+					if (Enum.IsDefined(typeof(System.Windows.Forms.VisualStyles.PushButtonState), currentstate))
+						ButtonRenderer.DrawButton(graphics, bounds, (System.Windows.Forms.VisualStyles.PushButtonState)currentstate);
 					else
-						ButtonRenderer.DrawButton(graphics, bounds, PushButtonState.Normal);
+						ButtonRenderer.DrawButton(graphics, bounds, System.Windows.Forms.VisualStyles.PushButtonState.Normal);
 				}
 			}
 
@@ -277,35 +262,30 @@ namespace Vanara.Windows.Forms
 				ControlPaint.DrawFocusRectangle(graphics, bounds);
 		}
 
-		private void InitializeImageList(Size imageSize)
-		{
-			ImageList = new ImageList() { ImageSize = imageSize, ColorDepth = ColorDepth.Depth32Bit, TransparentColor = Color.Transparent };
-		}
+		private int GetDuration(int oldstate, int newstate) => (int)(theme?.GetTransitionDuration(stylePart, oldstate - 1, newstate - 1)?.TotalMilliseconds ?? 0.0);
 
-		private bool InitializeRenderer()
+		private void InitializeImageList(Size imageSize) => ImageList = new ImageList() { ImageSize = imageSize, ColorDepth = ColorDepth.Depth32Bit, TransparentColor = Color.Transparent };
+
+		private void PaintAction(Graphics graphics, Rectangle bounds, int currentstate, int data) => PaintButton(graphics, bounds, currentstate);
+
+		private void ResetTheme()
 		{
-			if (Application.RenderWithVisualStyles)
+			if (styleClass != null && ThemingSupported)
 			{
 				try
 				{
-					var bs = TranslateButtonState?.Invoke(State) ?? (int)State;
-					if (rnd == null)
-					{
-						rnd = new VisualStyleRenderer(StyleClass, StylePart, bs);
-						rndTransitions = rnd.GetTransitionMatrix();
-					}
-					else if (StyleClass != rnd.Class || StylePart != rnd.Part || bs != rnd.State)
-					{
-						rnd.SetParameters(StyleClass, StylePart, bs);
-						rndTransitions = rnd.GetTransitionMatrix();
-					}
-					return true;
+					theme = new VisualTheme(Parent, styleClass, SupportGlass ? OpenThemeDataOptions.OTD_NONCLIENT : OpenThemeDataOptions.None);
 				}
-				catch { }
+				catch
+				{
+					theme = null;
+				}
 			}
-			rnd = null;
-			rndTransitions = null;
-			return false;
+			else
+				theme = null;
+			Refresh();
 		}
+
+		private int TranslateState(ControlState st) => TranslateButtonState?.Invoke(st) ?? (int)st;
 	}
 }

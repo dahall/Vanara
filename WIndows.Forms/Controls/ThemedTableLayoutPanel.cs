@@ -1,8 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using Vanara.Extensions;
+using static Vanara.PInvoke.UxTheme;
 
 namespace Vanara.Windows.Forms
 {
@@ -12,42 +14,58 @@ namespace Vanara.Windows.Forms
 	[ToolboxItem(true), ToolboxBitmap(typeof(ThemedTableLayoutPanel), "ThemedTableLayoutPanel.bmp")]
 	public class ThemedTableLayoutPanel : TableLayoutPanel
 	{
-		private VisualStyleRenderer rnd;
+		private const string defaultClass = "WINDOW";
+		private const int defaultPart = 29;
+		private const int defaultState = 0;
+
 		private string styleClass;
 		private int stylePart;
 		private int styleState;
 		private bool supportGlass;
+		private VisualTheme theme;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ThemedTableLayoutPanel"/> class.
-		/// </summary>
+		/// <summary>Initializes a new instance of the <see cref="ThemedTableLayoutPanel"/> class.</summary>
 		public ThemedTableLayoutPanel()
 		{
-			SetTheme("WINDOW", 29, 1);
+			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
+			SetTheme(defaultClass, defaultPart, defaultState);
+			HandleCreated += (s, e) => BindFormEvents(true);
+			HandleDestroyed += (s, e) => BindFormEvents(false);
+		}
+
+		/// <summary>Sets the theme using a defined <see cref="VisualStyleElement"/>.</summary>
+		[Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+		public VisualStyleRenderer Style
+		{
+			get => new VisualStyleRenderer(styleClass, stylePart, styleState);
+			set => SetTheme(value?.Class, value?.Part ?? 0, value?.State ?? 0);
 		}
 
 		/// <summary>Gets or sets the style class.</summary>
 		/// <value>The style class.</value>
-		[DefaultValue("WINDOW"), Category("Appearance")]
+		[DefaultValue(defaultClass), Category("Appearance")]
 		public string StyleClass
 		{
-			get => styleClass; set { styleClass = value; ResetTheme(); }
+			get => styleClass;
+			set { if (styleClass != value) { styleClass = value; ResetTheme(); } }
 		}
 
 		/// <summary>Gets or sets the style part.</summary>
 		/// <value>The style part.</value>
-		[DefaultValue(29), Category("Appearance")]
+		[DefaultValue(defaultPart), Category("Appearance")]
 		public int StylePart
 		{
-			get => stylePart; set { stylePart = value; ResetTheme(); }
+			get => stylePart;
+			set { if (stylePart != value) { stylePart = value; Invalidate(); } }
 		}
 
 		/// <summary>Gets or sets the style part.</summary>
 		/// <value>The style part.</value>
-		[DefaultValue(1), Category("Appearance")]
+		[DefaultValue(defaultState), Category("Appearance")]
 		public int StyleState
 		{
-			get => styleState; set { styleState = value; ResetTheme(); }
+			get => styleState;
+			set { if (styleState != value) { styleState = value; Invalidate(); } }
 		}
 
 		/// <summary>Gets or sets a value indicating whether this table supports glass (can be enclosed in the glass margin).</summary>
@@ -55,12 +73,18 @@ namespace Vanara.Windows.Forms
 		[DefaultValue(false), Category("Appearance")]
 		public bool SupportGlass
 		{
-			get => supportGlass; set { supportGlass = value; Invalidate(); }
+			get => supportGlass;
+			set { if (supportGlass != value) { supportGlass = value; Invalidate(); } }
 		}
 
-		/// <summary>
-		/// Sets the theme using theme class information.
-		/// </summary>
+		/// <summary>Gets or sets a style part value that is used when focus is lost.</summary>
+		/// <value>The non-focused style part value. A value of -1 will set the state to the same value as <see cref="StyleState"/>.</value>
+		[DefaultValue(-1), Category("Appearance")]
+		public int UnfocusedStyleState { get; set; } = -1;
+
+		private bool ThemingSupported => Application.RenderWithVisualStyles || DesktopWindowManager.CompositionEnabled;
+
+		/// <summary>Sets the theme using theme class information.</summary>
 		/// <param name="className">Name of the theme class.</param>
 		/// <param name="part">The theme part.</param>
 		/// <param name="state">The theme state.</param>
@@ -72,59 +96,83 @@ namespace Vanara.Windows.Forms
 			ResetTheme();
 		}
 
-		/// <summary>
-		/// Raises the <see cref="E:System.Windows.Forms.Control.Paint" /> event.
-		/// </summary>
-		/// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs" /> that contains the event data.</param>
+		/// <summary>Raises the <see cref="Control.Paint"/> event.</summary>
+		/// <param name="e">A <see cref="PaintEventArgs"/> that contains the event data.</param>
 		protected override void OnPaint(PaintEventArgs e)
 		{
-			if (!this.IsDesignMode() && SupportGlass && DesktopWindowManager.CompositionEnabled)
-				try { e.Graphics.Clear(Color.Black); } catch { }
-			else
+			if (Visible)
 			{
-				if (rnd == null || !Application.RenderWithVisualStyles)
-				{
-					try { e.Graphics.Clear(BackColor); } catch { }
-				}
+				if (!this.IsDesignMode() && SupportGlass && ThemingSupported)
+					try { e.Graphics.Clear(Color.Black); } catch { }
 				else
 				{
-					if (rnd.IsBackgroundPartiallyTransparent())
-						rnd.DrawParentBackground(e.Graphics, ClientRectangle, this);
-					rnd.DrawBackground(e.Graphics, ClientRectangle, e.ClipRectangle);
+					var state = UnfocusedStyleState == -1 || FindForm().Focused ? styleState : UnfocusedStyleState;
+					if (theme != null && ThemingSupported)
+					{
+						if (theme.IsBackgroundPartiallyTransparent(stylePart, state))
+							theme.DrawParentBackground(this, e.Graphics, ClientRectangle);
+						theme.DrawBackground(e.Graphics, stylePart, state, ClientRectangle, e.ClipRectangle);
+						if (!string.IsNullOrEmpty(Text))
+							theme.DrawText(e.Graphics, stylePart, state, ClientRectangle, Text, this.BuildTextFormatFlags(false), !Enabled);
+					}
+					else
+					{
+						try { e.Graphics.Clear(BackColor); } catch { }
+						if (!string.IsNullOrEmpty(Text))
+							TextRenderer.DrawText(e.Graphics, Text, Font, ClientRectangle, ForeColor, this.BuildTextFormatFlags(false));
+					}
 				}
 			}
 			base.OnPaint(e);
 		}
 
 		/// <summary>
-		/// Fires the event indicating that the panel has been resized. Inheriting controls should use this in favor of actually listening to the event, but should still call base.onResize to ensure that the event is fired for external listeners.
+		/// Fires the event indicating that the panel has been resized. Inheriting controls should use this in favor of actually listening to
+		/// the event, but should still call base.onResize to ensure that the event is fired for external listeners.
 		/// </summary>
-		/// <param name="eventargs">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
-		protected override void OnResize(System.EventArgs eventargs)
+		/// <param name="eventargs">An <see cref="EventArgs"/> that contains the event data.</param>
+		protected override void OnResize(EventArgs eventargs)
 		{
 			base.OnResize(eventargs);
 			Refresh();
 		}
 
+		private void BindFormEvents(bool attach)
+		{
+			var pForm = FindForm();
+			if (pForm != null)
+			{
+				if (attach)
+				{
+					pForm.Activated += ParentStateChanged;
+					pForm.Deactivate += ParentStateChanged;
+				}
+				else
+				{
+					pForm.Activated -= ParentStateChanged;
+					pForm.Deactivate -= ParentStateChanged;
+				}
+			}
+		}
+
+		private void ParentStateChanged(object sender, EventArgs e) => Refresh();
+
 		private void ResetTheme()
 		{
-			if (VisualStyleRenderer.IsSupported && styleClass != null)
+			if (styleClass != null && ThemingSupported)
 			{
 				try
 				{
-					if (rnd == null)
-						rnd = new VisualStyleRenderer(styleClass, stylePart, styleState);
-					else
-						rnd.SetParameters(styleClass, stylePart, styleState);
+					theme = new VisualTheme(Parent, styleClass, SupportGlass ? OpenThemeDataOptions.OTD_NONCLIENT : OpenThemeDataOptions.None);
 				}
 				catch
 				{
-					rnd = null;
+					theme = null;
 				}
 			}
 			else
-				rnd = null;
-			Invalidate();
+				theme = null;
+			Refresh();
 		}
 	}
 }
