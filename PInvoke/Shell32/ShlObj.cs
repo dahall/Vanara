@@ -3415,11 +3415,11 @@ namespace Vanara.PInvoke
 		/// <para>Type: <c>HANDLE</c></para>
 		/// <para>Returns a handle (HLOCK) to the locked memory. Pass this value to SHChangeNotification_Unlock when finished.</para>
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shchangenotification_lock HANDLE
-		// SHChangeNotification_Lock( HANDLE hChange, DWORD dwProcId, PIDLIST_ABSOLUTE **pppidl, LONG *plEvent );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shchangenotification_lock
+		// HANDLE SHChangeNotification_Lock( HANDLE hChange, DWORD dwProcId, PIDLIST_ABSOLUTE **pppidl, LONG *plEvent );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "8e22d5d0-64be-403c-982d-c23705d85223")]
-		public static extern IntPtr SHChangeNotification_Lock(HWND hChange, uint dwProcId, out IntPtr pppidl, out int plEvent);
+		public static extern HLOCK SHChangeNotification_Lock(HWND hChange, uint dwProcId, out IntPtr pppidl, out SHCNE plEvent);
 
 		/// <summary>
 		/// <para>Unlocks shared memory for a change notification.</para>
@@ -3437,7 +3437,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "967ede1f-ee9c-46ee-a371-dcfc3a57d824")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SHChangeNotification_Unlock(IntPtr hLock);
+		public static extern bool SHChangeNotification_Unlock(HLOCK hLock);
 
 		/// <summary>
 		/// Notifies the system of an event that an application has performed. An application should use this function if it performs an
@@ -6501,6 +6501,54 @@ namespace Vanara.PInvoke
 			public string swzTarget;
 		}
 
+		/// <summary>Provides a handle to a notification lock.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HLOCK : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="HLOCK"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public HLOCK(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="HLOCK"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static HLOCK NULL => new HLOCK(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HLOCK"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HLOCK h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HLOCK"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HLOCK(IntPtr h) => new HLOCK(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HLOCK h1, HLOCK h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HLOCK h1, HLOCK h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HLOCK h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
 		/// <summary>Provides a handle to a .pif file.</summary>
 		[StructLayout(LayoutKind.Sequential)]
 		public struct HPIF : IHandle
@@ -6930,6 +6978,24 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[MarshalAs(UnmanagedType.Bool)]
 			public bool fRecursive;
+
+			/// <summary>Initializes a new instance of the <see cref="SHChangeNotifyEntry"/> struct.</summary>
+			/// <param name="pidl">PIDL for which to receive notifications.</param>
+			/// <param name="recursive">A flag indicating whether to post notifications for children of this PIDL.</param>
+			public SHChangeNotifyEntry(IntPtr pidl, bool recursive = false)
+			{
+				this.pidl = pidl;
+				fRecursive = recursive;
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="SHChangeNotifyEntry"/> struct.</summary>
+			/// <param name="pidl">PIDL for which to receive notifications.</param>
+			/// <param name="recursive">A flag indicating whether to post notifications for children of this PIDL.</param>
+			public SHChangeNotifyEntry(PIDL pidl, bool recursive = false)
+			{
+				this.pidl = pidl?.DangerousGetHandle() ?? default;
+				fRecursive = recursive;
+			}
 		}
 
 		/// <summary>Receives item data in response to a call to SHGetDataFromIDList.</summary>
