@@ -1215,7 +1215,19 @@ namespace Vanara.PInvoke
 		/// <returns>If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.</returns>
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762133")]
-		public static extern HRESULT SHCreateItemFromIDList(PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
+		public static extern HRESULT SHCreateItemFromIDList(PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppv);
+
+		/// <summary>
+		/// Creates and initializes a Shell item object from a pointer to an item identifier list (PIDL). The resulting shell item object
+		/// supports the IShellItem interface.
+		/// </summary>
+		/// <typeparam name="T">The type of the requested interface.</typeparam>
+		/// <param name="pidl">The source PIDL.</param>
+		/// <returns>
+		/// When this function returns, contains the interface pointer requested in <typeparamref name="T"/>. This will typically be IShellItem or IShellItem2.
+		/// </returns>
+		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762133")]
+		public static T SHCreateItemFromIDList<T>(PIDL pidl) where T : class { SHCreateItemFromIDList(pidl, typeof(T).GUID, out var ppv).ThrowIfFailed(); return (T)ppv; }
 
 		/// <summary>Creates and initializes a Shell item object from a parsing name.</summary>
 		/// <param name="pszPath">A pointer to a display name.</param>
@@ -1242,6 +1254,26 @@ namespace Vanara.PInvoke
 			[In, Optional] IBindCtx pbc,
 			in Guid riid,
 			[MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppv);
+
+		/// <summary>Creates and initializes a Shell item object from a parsing name.</summary>
+		/// <typeparam name="T">The type of the interface to retrieve, typically IID_IShellItem or IID_IShellItem2.</typeparam>
+		/// <param name="pszPath">A pointer to a display name.</param>
+		/// <param name="pbc">
+		/// Optional. A pointer to a bind context used to pass parameters as inputs and outputs to the parsing function. These passed
+		/// parameters are often specific to the data source and are documented by the data source owners. For example, the file system data
+		/// source accepts the name being parsed (as a WIN32_FIND_DATA structure), using the STR_FILE_SYS_BIND_DATA bind context parameter.
+		/// <para>
+		/// STR_PARSE_PREFER_FOLDER_BROWSING can be passed to indicate that URLs are parsed using the file system data source when
+		/// possible.Construct a bind context object using CreateBindCtx and populate the values using IBindCtx::RegisterObjectParam. See
+		/// Bind Context String Keys for a complete list of these.See the Parsing With Parameters Sample for an example of the use of this parameter.
+		/// </para>
+		/// <para>If no data is being passed to or received from the parsing function, this value can be NULL.</para>
+		/// </param>
+		/// <returns>
+		/// When this method returns successfully, contains the interface pointer requested in <typeparamref name="T"/>. This is typically IShellItem or IShellItem2.
+		/// </returns>
+		[PInvokeData("Shlobjidl.h", MSDNShortId = "bb762134")]
+		public static T SHCreateItemFromParsingName<T>(string pszPath, IBindCtx pbc = null) where T : class { SHCreateItemFromParsingName(pszPath, pbc, typeof(T).GUID, out var ppv).ThrowIfFailed(); return (T)ppv; }
 
 		/// <summary>Creates and initializes a Shell item object from a relative parsing name.</summary>
 		/// <param name="psiParent">A pointer to the parent Shell item.</param>
