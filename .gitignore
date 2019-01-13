@@ -245,6 +245,7 @@ ModelManifest.xml
 .fake/
 /CodeMap1.dgml
 *.cmd
+*.ps1
 /RefFileResults.txt
 
 # Solution specific
