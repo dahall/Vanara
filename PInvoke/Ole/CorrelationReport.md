@@ -67,7 +67,7 @@ Native Method | Native DLL | Header | Managed Method
 [CoGetInterceptor](https://www.google.com/search?num=5&q=CoGetInterceptor+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoGetInterceptorForOle32](https://www.google.com/search?num=5&q=CoGetInterceptorForOle32+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoGetInterceptorFromTypeInfo](https://www.google.com/search?num=5&q=CoGetInterceptorFromTypeInfo+site%3Amicrosoft.com) | ole32.dll |  |   
-[CoGetInterfaceAndReleaseStream](https://www.google.com/search?num=5&q=CoGetInterfaceAndReleaseStream+site%3Amicrosoft.com) | ole32.dll |  |   
+[CoGetInterfaceAndReleaseStream](http://msdn2.microsoft.com/en-us/library/b529f65f-3208-4594-a772-d1cad3727dc1) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoGetInterfaceAndReleaseStream  
 [CoGetMalloc](https://www.google.com/search?num=5&q=CoGetMalloc+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoGetMarshalSizeMax](https://www.google.com/search?num=5&q=CoGetMarshalSizeMax+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoGetModuleType](https://www.google.com/search?num=5&q=CoGetModuleType+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -94,8 +94,8 @@ Native Method | Native DLL | Header | Managed Method
 [CoLoadLibrary](https://www.google.com/search?num=5&q=CoLoadLibrary+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoLockObjectExternal](https://www.google.com/search?num=5&q=CoLockObjectExternal+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoMarshalHresult](https://www.google.com/search?num=5&q=CoMarshalHresult+site%3Amicrosoft.com) | ole32.dll |  |   
-[CoMarshalInterface](https://www.google.com/search?num=5&q=CoMarshalInterface+site%3Amicrosoft.com) | ole32.dll |  |   
-[CoMarshalInterThreadInterfaceInStream](https://www.google.com/search?num=5&q=CoMarshalInterThreadInterfaceInStream+site%3Amicrosoft.com) | ole32.dll |  |   
+[CoMarshalInterface](http://msdn2.microsoft.com/en-us/library/04ca1217-eac1-43e2-b736-8d7522ce8592) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoMarshalInterface  
+[CoMarshalInterThreadInterfaceInStream](http://msdn2.microsoft.com/en-us/library/c9ab8713-8604-4f0b-a11b-bdfb7d595d95) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoMarshalInterThreadInterfaceInStream  
 [ComPs_NdrDllCanUnloadNow](https://www.google.com/search?num=5&q=ComPs_NdrDllCanUnloadNow+site%3Amicrosoft.com) | ole32.dll |  |   
 [ComPs_NdrDllGetClassObject](https://www.google.com/search?num=5&q=ComPs_NdrDllGetClassObject+site%3Amicrosoft.com) | ole32.dll |  |   
 [ComPs_NdrDllRegisterProxy](https://www.google.com/search?num=5&q=ComPs_NdrDllRegisterProxy+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -138,7 +138,7 @@ Native Method | Native DLL | Header | Managed Method
 [CoUninitialize](http://msdn2.microsoft.com/en-us/library/ms688715) | ole32.dll | Objbase.h | Vanara.PInvoke.Ole32.CoUninitialize  
 [CoUnloadingWOW](https://www.google.com/search?num=5&q=CoUnloadingWOW+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoUnmarshalHresult](https://www.google.com/search?num=5&q=CoUnmarshalHresult+site%3Amicrosoft.com) | ole32.dll |  |   
-[CoUnmarshalInterface](https://www.google.com/search?num=5&q=CoUnmarshalInterface+site%3Amicrosoft.com) | ole32.dll |  |   
+[CoUnmarshalInterface](http://msdn2.microsoft.com/en-us/library/d0eac0da-2f41-40c4-b756-31bc22752c17) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoUnmarshalInterface  
 [CoVrfCheckThreadState](https://www.google.com/search?num=5&q=CoVrfCheckThreadState+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoVrfGetThreadState](https://www.google.com/search?num=5&q=CoVrfGetThreadState+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoVrfReleaseThreadState](https://www.google.com/search?num=5&q=CoVrfReleaseThreadState+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -1000,6 +1000,6 @@ Native Interface | Native DLL | Header | Managed Interface
 [IPropertyStorage](http://msdn2.microsoft.com/en-us/library/c021f695-db54-4861-9f30-35a81d2dccd5) | propidl.h | Vanara.PInvoke.Ole32+IPropertyStorage  
 [IPropertyStore](http://msdn2.microsoft.com/en-us/library/bb762502) | Shobjidl.h | Vanara.PInvoke.PropSys+IPropertyStore  
 [IPropertyStoreFactory](http://msdn2.microsoft.com/en-us/library/78ea822d-da8e-4883-b0eb-4277e7eb87a2) | propsys.h | Vanara.PInvoke.PropSys+IPropertyStoreFactory  
-[IPropertySystem](https://www.google.com/search?num=5&q=IPropertySystem+site%3Amicrosoft.com) | PropSys.h | Vanara.PInvoke.PropSys+IPropertySystem  
+[IPropertySystem](http://msdn2.microsoft.com/en-us/library/9ead94d9-4d4e-44c6-8c53-11c4c4ee2fb2) | propsys.h | Vanara.PInvoke.PropSys+IPropertySystem  
 [IRecordInfo](https://www.google.com/search?num=5&q=IRecordInfo+site%3Amicrosoft.com) | OAIdl.h | Vanara.PInvoke.Ole32+IRecordInfo  
 [IStorage](http://msdn2.microsoft.com/en-us/library/aa380015) | Objidl.h | Vanara.PInvoke.Ole32+IStorage  

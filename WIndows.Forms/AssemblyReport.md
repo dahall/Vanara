@@ -93,7 +93,6 @@ ThemedPanel | A panel that supports a glass overlay and is drawn using a visual 
 ThemedTableLayoutPanel | A table layout panel that supports a glass overlay.
 TimerEventArgs | Provides data for the `Timer` event.
 TrackBarEx | Extends the `TrackBar` class to provide full native-control functionality.
-TranslateButtonStateDelegate | 
 TreeViewExtension | Extension methods for `TreeView` controls.
 TypedBehavior<T> | 
 TypedDesignerActionList<T> | 
