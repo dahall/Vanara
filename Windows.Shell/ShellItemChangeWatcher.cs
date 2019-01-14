@@ -314,7 +314,7 @@ namespace Vanara.Windows.Shell
 		/// <seealso cref="System.EventArgs"/>
 		public class ShellItemChangeEventArgs : EventArgs
 		{
-			internal ShellItemChangeEventArgs(int levent, IntPtr rgpidl)
+			internal ShellItemChangeEventArgs(SHCNE levent, IntPtr rgpidl)
 			{
 				ChangeType = (ChangeFilters)levent;
 				ChangedItems = new PIDL(rgpidl, true).Select(p => new ShellItem(p)).ToArray();
@@ -347,7 +347,7 @@ namespace Vanara.Windows.Shell
 			{
 				if (m.Msg == MessageId)
 				{
-					IntPtr hNotifyLock = default;
+					HLOCK hNotifyLock = default;
 					try
 					{
 						hNotifyLock = SHChangeNotification_Lock(m.WParam, (uint)m.LParam.ToInt32(), out var rgpidl, out var lEvent);
