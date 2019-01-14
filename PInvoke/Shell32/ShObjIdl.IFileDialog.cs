@@ -238,7 +238,7 @@ namespace Vanara.PInvoke
 			/// HRESULT_FROM_WIN32(ERROR_CANCELLED) = The user closed the window by canceling the operation.
 			/// </returns>
 			[PreserveSig]
-			new HRESULT Show(HWND parent);
+			new HRESULT Show([Optional] HWND parent);
 
 			/// <summary>Sets the file types that the dialog can open or save.</summary>
 			/// <param name="cFileTypes">The number of elements in the array specified by rgFilterSpec.</param>
@@ -379,7 +379,7 @@ namespace Vanara.PInvoke
 			/// HRESULT_FROM_WIN32(ERROR_CANCELLED) = The user closed the window by canceling the operation.
 			/// </returns>
 			[PreserveSig]
-			new HRESULT Show(HWND parent);
+			new HRESULT Show([Optional] HWND parent);
 
 			/// <summary>Sets the file types that the dialog can open or save.</summary>
 			/// <param name="cFileTypes">The number of elements in the array specified by rgFilterSpec.</param>
@@ -814,7 +814,7 @@ namespace Vanara.PInvoke
 			/// HRESULT_FROM_WIN32(ERROR_CANCELLED) = The user closed the window by canceling the operation.
 			/// </returns>
 			[PreserveSig]
-			new HRESULT Show(HWND parent);
+			new HRESULT Show([Optional] HWND parent);
 
 			/// <summary>Sets the file types that the dialog can open or save.</summary>
 			/// <param name="cFileTypes">The number of elements in the array specified by rgFilterSpec.</param>
@@ -1171,7 +1171,7 @@ namespace Vanara.PInvoke
 			/// HRESULT_FROM_WIN32(ERROR_CANCELLED) = The user closed the window by canceling the operation.
 			/// </returns>
 			[PreserveSig]
-			new HRESULT Show(HWND parent);
+			new HRESULT Show([Optional] HWND parent);
 
 			/// <summary>Sets the file types that the dialog can open or save.</summary>
 			/// <param name="cFileTypes">The number of elements in the array specified by rgFilterSpec.</param>
@@ -1343,7 +1343,7 @@ namespace Vanara.PInvoke
 			/// HRESULT_FROM_WIN32(ERROR_CANCELLED) = The user closed the window by cancelling the operation.
 			/// </returns>
 			[PreserveSig]
-			HRESULT Show(HWND parent);
+			HRESULT Show([Optional] HWND parent);
 		}
 
 		/// <summary>Used generically to filter elements.</summary>
