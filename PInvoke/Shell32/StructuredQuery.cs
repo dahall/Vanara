@@ -6,6 +6,29 @@ namespace Vanara.PInvoke
 {
 	public static partial class Shell32
 	{
+		/// <summary><para>Provides a set of flags to be used with the following interfaces to indicate the type of condition tree node: ICondition, ICondition2, IConditionFactory, IConditionFactory2, and IConditionGenerator.</para></summary><remarks><para>&gt;Only one of following flags should be set simultaneously:</para><list type="bullet"><item><term>CONDITION_CREATION_VECTOR_AND</term></item><item><term>CONDITION_CREATION_VECTOR_OR</term></item><item><term>CONDITION_CREATION_VECTOR_LEAF</term></item></list><para>However, if none of these flags is set, then attempting to create a leaf condition with VT_VECTOR set in the PROPVARIANT results in failure.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/ne-structuredquery-condition_creation_options
+		// typedef enum CONDITION_CREATION_OPTIONS { CONDITION_CREATION_DEFAULT, CONDITION_CREATION_NONE, CONDITION_CREATION_SIMPLIFY, CONDITION_CREATION_VECTOR_AND, CONDITION_CREATION_VECTOR_OR, CONDITION_CREATION_VECTOR_LEAF, CONDITION_CREATION_USE_CONTENT_LOCALE } ;
+		[PInvokeData("structuredquery.h")]
+		[Flags]
+		public enum CONDITION_CREATION_OPTIONS
+		{
+			/// <summary>Indicates that the condition is set to the default value.</summary>
+			CONDITION_CREATION_DEFAULT = 0,
+			/// <summary>Indicates that the condition is set to NULL.</summary>
+			CONDITION_CREATION_NONE = 0,
+			/// <summary>Indicates that you should simplify the returned condition as much as possible. In some cases this flag indicates that the returned condition is not newly created but refers to an existing object.</summary>
+			CONDITION_CREATION_SIMPLIFY = 0x01,
+			/// <summary>Indicates that you should create an AND condition of leaves with vector elements as values, instead of attempting to create a leaf condition with VT_VECTOR set in the PROPVARIANT.</summary>
+			CONDITION_CREATION_VECTOR_AND = 0x02,
+			/// <summary>Indicates that you should create an OR condition of leaves with vector elements as values, instead of attempting to create a leaf condition with VT_VECTOR set in the PROPVARIANT.</summary>
+			CONDITION_CREATION_VECTOR_OR = 0x04,
+			/// <summary>Indicates that you should allow the creation of a leaf condition with VT_VECTOR set in the PROPVARIANT.</summary>
+			CONDITION_CREATION_VECTOR_LEAF = 0x08,
+			/// <summary>Indicates that you should ignore any specified locale and use the currently selected content locale IConditionFactory2::CreateStringLeaf and IConditionFactory2::CreateLeaf.</summary>
+			CONDITION_CREATION_USE_CONTENT_LOCALE = 0x10,
+		}
+
 		/// <summary>
 		/// Used by IQueryParserManager::SetOption to set parsing options. This can be used to specify schemas and localization options.
 		/// </summary>
@@ -428,6 +451,455 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory-resolve HRESULT
 			// Resolve( ICondition *pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, const SYSTEMTIME *pstReferenceTime, ICondition **ppcResolved );
 			ICondition Resolve([In] ICondition pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, in SYSTEMTIME pstReferenceTime);
+		}
+
+		/// <summary>
+		/// Extends the functionality of IConditionFactory. <c>IConditionFactory2</c> provides methods for creating or resolving a condition tree that was obtained by parsing a query string.
+		/// </summary>
+		/// <seealso cref="Vanara.PInvoke.Shell32.IConditionFactory" />
+		/// <remarks>
+		/// The StructuredQuerySample code sample, available on Code Gallery and the Windows 7 SDK, demonstrates how to read lines from the console, parse them using the system schema, and display the resulting condition trees.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nn-structuredquery-iconditionfactory2
+		[PInvokeData("structuredquery.h")]
+		[ComImport, Guid("71D222E1-432F-429e-8C13-B6DAFDE5077A"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), CoClass(typeof(ConditionFactory))]
+		public interface IConditionFactory2 : IConditionFactory
+		{
+			/// <summary>Creates a condition node that is a logical negation (NOT) of another condition (a subnode of this node).</summary>
+			/// <param name="pcSub">
+			/// <para>Type: <c>ICondition*</c></para>
+			/// <para>Pointer to the ICondition subnode to be negated.</para>
+			/// </param>
+			/// <param name="fSimplify">
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>
+			/// <c>TRUE</c> to logically simplify the result if possible; <c>FALSE</c> otherwise. In a query builder scenario, fSimplify
+			/// should typically be set to VARIANT_FALSE.
+			/// </para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>ICondition**</c></para>
+			/// <para>Receives a pointer to the new ICondition node.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// Logically simplifying a condition node usually results in a smaller, more easily traversed and processed condition tree. For
+			/// example, if pcSub is itself a negation condition with a subcondition C, then the double negation is logically resolved, and
+			/// ppcResult is set to C. Without simplification, the resulting tree would look like NOT — NOT — C.
+			/// </para>
+			/// <para>
+			/// Applications that need to execute queries based on the condition tree would typically benefit from setting this parameter to <c>TRUE</c>.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory-makenot HRESULT
+			// MakeNot( ICondition *pcSub, BOOL fSimplify, ICondition **ppcResult );
+			new ICondition MakeNot([In] ICondition pcSub, [In, MarshalAs(UnmanagedType.Bool)] bool fSimplify);
+
+			/// <summary>Creates a condition node that is a logical conjunction (AND) or disjunction (OR) of a collection of subconditions.</summary>
+			/// <param name="ct">
+			/// <para>Type: <c>CONDITION_TYPE</c></para>
+			/// <para>The CONDITION_TYPE of the condition node. The <c>CONDITION_TYPE</c> must be either <c>CT_AND_CONDITION</c> or <c>CT_OR_CONDITION</c>.</para>
+			/// </param>
+			/// <param name="peuSubs">
+			/// <para>Type: <c>IEnumUnknown*</c></para>
+			/// <para>A pointer to an enumeration of ICondition objects, or <c>NULL</c> for an empty enumeration.</para>
+			/// </param>
+			/// <param name="fSimplify">
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>
+			/// <c>TRUE</c> to logically simplify the result, if possible; then the result will not necessarily to be of the specified kind.
+			/// <c>FALSE</c> if the result should have exactly the prescribed structure.
+			/// </para>
+			/// <para>
+			/// An application that plans to execute a query based on the condition tree would typically benefit from setting this parameter
+			/// to <c>TRUE</c>.
+			/// </para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>ICondition**</c></para>
+			/// <para>Receives the address of a pointer to the new ICondition node.</para>
+			/// </returns>
+			/// <remarks>
+			/// There are no special condition trees for <c>TRUE</c> and <c>FALSE</c>. However, a condition tree consisting of an AND node
+			/// with no subconditions is always <c>TRUE</c>, and a condition tree consisting of an OR node with no subconditions is always <c>FALSE</c>.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory-makeandor HRESULT
+			// MakeAndOr( CONDITION_TYPE ct, IEnumUnknown *peuSubs, BOOL fSimplify, ICondition **ppcResult );
+			new ICondition MakeAndOr([In] CONDITION_TYPE ct, [In] IEnumUnknown peuSubs, [In, MarshalAs(UnmanagedType.Bool)] bool fSimplify);
+
+			/// <summary>Creates a leaf condition node that represents a comparison of property value and constant value.</summary>
+			/// <param name="pszPropertyName">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>
+			/// The name of a property to be compared, or <c>NULL</c> for an unspecified property. The locale name of the leaf node is LOCALE_NAME_USER_DEFAULT.
+			/// </para>
+			/// </param>
+			/// <param name="cop">
+			/// <para>Type: <c>CONDITION_OPERATION</c></para>
+			/// <para>A CONDITION_OPERATION enumeration.</para>
+			/// </param>
+			/// <param name="pszValueType">
+			/// <para>Type: <c>LPCWSTR</c></para>
+			/// <para>The name of a semantic type of the value, or <c>NULL</c> for a plain string.</para>
+			/// </param>
+			/// <param name="ppropvar">
+			/// <para>Type: <c>PROPVARIANT const*</c></para>
+			/// <para>The constant value against which the property value should be compared.</para>
+			/// </param>
+			/// <param name="richChunk1">The rich chunk1.</param>
+			/// <param name="richChunk2">The rich chunk2.</param>
+			/// <param name="richChunk3">The rich chunk3.</param>
+			/// <param name="fExpand">
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>
+			/// If <c>TRUE</c> and pszPropertyName identifies a virtual property, the resulting node is not a leaf node; instead, it is a
+			/// disjunction of leaf condition nodes, each of which corresponds to one expansion of the virtual property.
+			/// </para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>ICondition**</c></para>
+			/// <para>Receives a pointer to the new ICondition leaf node.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>For more information about leaf node terms (property, value, and operation), see ICondition::GetInputTerms.</para>
+			/// <para>
+			/// A virtual property has one or more metadata items in which the key is "MapsToRelation" and the value is a property name
+			/// (which is one expansion of the property). For more information about metadata, see MetaData.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory-makeleaf HRESULT
+			// MakeLeaf( LPCWSTR pszPropertyName, CONDITION_OPERATION cop, LPCWSTR pszValueType, const PROPVARIANT *ppropvar, IRichChunk
+			// *pPropertyNameTerm, IRichChunk *pOperationTerm, IRichChunk *pValueTerm, BOOL fExpand, ICondition **ppcResult );
+			new ICondition MakeLeaf([In, MarshalAs(UnmanagedType.LPWStr)] string pszPropertyName, [In] CONDITION_OPERATION cop, [In, MarshalAs(UnmanagedType.LPWStr)] string pszValueType,
+				[In] PROPVARIANT ppropvar, IRichChunk richChunk1, IRichChunk richChunk2, IRichChunk richChunk3, [In, MarshalAs(UnmanagedType.Bool)] bool fExpand);
+
+			/// <summary>
+			/// Performs a variety of transformations on a condition tree, including the following: resolves conditions with relative
+			/// date/time expressions to conditions with absolute date/time (as a VT_FILETIME); turns other recognized named entities into
+			/// condition trees with actual values; simplifies condition trees; replaces virtual or compound properties with OR trees of
+			/// other properties; removes condition trees resulting from queries with property keywords that had no condition applied.
+			/// </summary>
+			/// <param name="pc">
+			/// <para>Type: <c>ICondition*</c></para>
+			/// <para>A pointer to an ICondition object to be resolved.</para>
+			/// </param>
+			/// <param name="sqro">
+			/// <para>Type: <c>STRUCTURED_QUERY_RESOLVE_OPTION</c></para>
+			/// <para>
+			/// Specifies zero or more of the STRUCTURED_QUERY_RESOLVE_OPTION flags. For <c>Windows 7 and later</c>, the
+			/// SQRO_ADD_VALUE_TYPE_FOR_PLAIN_VALUES flag is automatically added to <paramref name="sqro"/>.
+			/// </para>
+			/// </param>
+			/// <param name="pstReferenceTime">
+			/// <para>Type: <c>SYSTEMTIME const*</c></para>
+			/// <para>
+			/// A pointer to a <c>SYSTEMTIME</c> value to use as the reference date and time. A null pointer can be passed if
+			/// <paramref name="sqro"/> is set to SQRO_DONT_RESOLVE_DATETIME.
+			/// </para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>ICondition**</c></para>
+			/// <para>
+			/// Receives a pointer to the new ICondition in which all time fields have been resolved to have values of type VT_FILETIME. This
+			/// new condition tree is the resolved version of <paramref name="pc"/>.
+			/// </para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// In a condition tree produced by the Parse method and returned by GetQuery, the leaves pair up properties with restrictions on
+			/// these properties, and result in a condition tree that is partially finished. The <c>IConditionFactory::Resolve</c> method
+			/// finishes such a condition tree by a process known as resolution. The input condition tree is not modified in any way. The
+			/// output condition tree may share parts of the input condition that contained no leaf nodes with unresolved date/time values.
+			/// </para>
+			/// <para><c>Note</c> Resolving a leaf node often produces a non-leaf node.</para>
+			/// <para>
+			/// For example, Structured Query supports relative date/time expressions, which remain unresolved until they are applied to some
+			/// reference time. In a leaf node with semantic type <c>System.StructuredQueryType.DateTime</c>, the value can be either a
+			/// VT_FILETIME or a VT_LPWSTR. VT_FILETIME is an absolute date/time so it is already resolved. VT_LPWSTR is a string
+			/// representation of a relative date/time expression. The specified reference time should be a local time, but the resolved
+			/// times in the resulting query expression will be in Coordinated Universal Time (UTC).
+			/// </para>
+			/// <para>
+			/// The StructuredQuerySample code sample, available on Code Gallery and the Windows 7 SDK, demonstrates how to read lines from
+			/// the console, parse them using the system schema, and display the resulting condition trees.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory-resolve HRESULT
+			// Resolve( ICondition *pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, const SYSTEMTIME *pstReferenceTime, ICondition **ppcResolved );
+			new ICondition Resolve([In] ICondition pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, in SYSTEMTIME pstReferenceTime);
+
+			/// <summary>
+			/// Creates a search condition that is either <c>TRUE</c> or <c>FALSE</c>. The returned object supports ICondition and ICondition2
+			/// </summary>
+			/// <param name="fVal">
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>The value of the search condition to use. fValue should typically be set to VARIANT_FALSE.</para>
+			/// </param>
+			/// <param name="cco">
+			/// <para>Type: <c>CONDITION_CREATION_OPTIONS</c></para>
+			/// <para>The condition creation operation of the leaf condition as the CONDITION_CREATION_OPTIONS enumeration.</para>
+			/// </param>
+			/// <param name="riid">
+			/// <para>Type: <c>REFIID</c></para>
+			/// <para>The desired IID of the enumerating interface: either IEnumUnknown, IEnumVARIANT, or (for a negation condition) IID_ICondition.</para>
+			/// </param>
+			/// <param name="ppv">
+			/// <para>Type: <c>void**</c></para>
+			/// <para>Receives a pointer to zero or more ICondition and ICondition2 objects.</para>
+			/// </param>
+			/// <returns>Receives a pointer to zero or more ICondition and ICondition2 objects.</returns>
+			/// <remarks>For default options, use the CONDITION_CREATION_DEFAULT flag.</remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-createtruefalse
+			// HRESULT CreateTrueFalse( BOOL fVal, CONDITION_CREATION_OPTIONS cco, REFIID riid, void **ppv );
+			[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)]
+			object CreateTrueFalse([MarshalAs(UnmanagedType.Bool)] bool fVal, CONDITION_CREATION_OPTIONS cco, in Guid riid);
+
+			/// <summary>
+			/// Creates a condition node that is a logical negation (NOT) of another condition (a subnode of this node).
+			/// </summary>
+			/// <param name="pcSub"><para>Type: <c>ICondition*</c></para>
+			/// <para>A pointer to the ICondition subnode to be negated. For default options, use the CONDITION_CREATION_DEFAULT flag.</para></param>
+			/// <param name="cco"><para>Type: <c>CONDITION_CREATION_OPTIONS</c></para>
+			/// <para>The condition creation operation of the leaf condition as the CONDITION_CREATION_OPTIONS enumeration.</para></param>
+			/// <param name="riid"><para>Type: <c>REFIID</c></para>
+			/// <para>The desired IID of the enumerating interface: either IEnumUnknown, IEnumVARIANT, or (for a negation condition) IID_ICondition.</para></param>
+			/// <returns>
+			/// <para>Type: <c>void**</c></para>
+			/// <para>Receives a pointer to zero or more ICondition and ICondition2 objects.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// Logically simplifying a condition node usually results in a smaller, more easily traversed and processed condition tree. For
+			/// example, if pcSub is itself a negation condition with a subcondition C, then the double negation is logically resolved, and
+			/// ppcResult is set to C. Without simplification, the resulting tree would look like NOT — NOT — C.
+			/// </para>
+			/// <para>
+			/// Applications that need to execute queries based on the condition tree would typically benefit from setting this parameter to <c>TRUE</c>.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-createnegation
+			// HRESULT CreateNegation( ICondition *pcSub, CONDITION_CREATION_OPTIONS cco, REFIID riid, void **ppv );
+			[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)]
+			object CreateNegation([In] ICondition pcSub, CONDITION_CREATION_OPTIONS cco, in Guid riid);
+
+			/// <summary>
+			/// Creates a leaf condition node that is a conjunction (AND) or a disjunction (OR) of a collection of subconditions. The
+			/// returned object supports ICondition and ICondition2.
+			/// </summary>
+			/// <param name="ct"><para>Type: <c>CONDITION_TYPE</c></para>
+			/// <para>A CONDITION_TYPE enumeration that must be set to either the CT_AND_CONDITION or CT_OR_CONDITION flag.</para></param>
+			/// <param name="poaSubs"><para>Type: <c>IObjectArray*</c></para>
+			/// <para>
+			/// Each element of the poaSubs parameter must implement ICondition. This parameter may also be <c>NULL</c>, which is equivalent
+			/// to being empty.
+			/// </para></param>
+			/// <param name="cco"><para>Type: <c>CONDITION_CREATION_OPTIONS</c></para>
+			/// <para>The condition creation operation of the leaf condition as the CONDITION_CREATION_OPTIONS enumeration.</para></param>
+			/// <param name="riid"><para>Type: <c>REFIID</c></para>
+			/// <para>
+			/// The desired IID of the enumerating interface: either IEnumUnknown, IID_IEnumVARIANT, or (for a negation condition) IID_ICondition.
+			/// </para></param>
+			/// <returns>
+			/// <para>Type: <c>void**</c></para>
+			/// <para>A collection of zero or more ICondition and ICondition2 objects.</para>
+			/// </returns>
+			/// <remarks>For default options, use the CONDITION_CREATION_DEFAULT flag.</remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-createcompoundfromobjectarray
+			// HRESULT CreateCompoundFromObjectArray( CONDITION_TYPE ct, IObjectArray *poaSubs, CONDITION_CREATION_OPTIONS cco, REFIID riid, void **ppv );
+			[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)]
+			object CreateCompoundFromObjectArray(CONDITION_TYPE ct, [In, Optional] IObjectArray poaSubs, CONDITION_CREATION_OPTIONS cco, in Guid riid);
+
+			/// <summary>
+			/// Creates a leaf condition node that is a conjunction (AND) or a disjunction (OR) from an array of condition nodes. The
+			/// returned object supports ICondition and ICondition2.
+			/// </summary>
+			/// <param name="ct"><para>Type: <c>CONDITION_TYPE</c></para>
+			/// <para>A CONDITION_TYPE enumeration that must be set to either the CT_AND_CONDITION or CT_OR_CONDITION flag.</para></param>
+			/// <param name="ppcondSubs"><para>Type: <c>ICondition**</c></para>
+			/// <para>Each element of the ppCondSubs parameter must implement ICondition.</para></param>
+			/// <param name="cSubs"><para>Type: <c>ULONG</c></para>
+			/// <para>The leaf subcondition as an unsigned 64-bit integer value.</para></param>
+			/// <param name="cco"><para>Type: <c>CONDITION_CREATION_OPTIONS</c></para>
+			/// <para>The condition creation operation of the leaf condition as the CONDITION_CREATION_OPTIONS enumeration.</para></param>
+			/// <param name="riid"><para>Type: <c>REFIID</c></para>
+			/// <para>
+			/// The desired IID of the enumerating interface: either IEnumUnknown, IID_IEnumVARIANT, or (for a negation condition) IID_ICondition.
+			/// </para></param>
+			/// <returns>
+			/// <para>Type: <c>void**</c></para>
+			/// <para>A collection of zero or more ICondition and ICondition2 objects.</para>
+			/// </returns>
+			/// <remarks>For default options, use the CONDITION_CREATION_DEFAULT flag.</remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-createcompoundfromarray
+			// HRESULT CreateCompoundFromArray( CONDITION_TYPE ct, ICondition **ppcondSubs, ULONG cSubs, CONDITION_CREATION_OPTIONS cco, REFIID riid, void **ppv );
+			[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)]
+			object CreateCompoundFromArray(CONDITION_TYPE ct, [In] ICondition[] ppcondSubs, uint cSubs, CONDITION_CREATION_OPTIONS cco, in Guid riid);
+
+			/// <summary>
+			/// Creates a leaf condition node for a string value that represents a comparison of property value and constant value. The
+			/// returned object supports ICondition and ICondition2.
+			/// </summary>
+			/// <param name="propkey"><para>Type: <c>REFPROPERTYKEY</c></para>
+			/// <para>The name of the property of the leaf condition as a REFPROPERTYKEY. If the leaf has no particular property, use PKEY_Null.</para></param>
+			/// <param name="cop"><para>Type: <c>CONDITION_OPERATION</c></para>
+			/// <para>A CONDITION_OPERATION enumeration. If the leaf has no particular operation, then use COP_IMPLICIT.</para></param>
+			/// <param name="pszValue"><para>Type: <c>LPCWSTR</c></para>
+			/// <para>The value to be compared, or <c>NULL</c> for an unspecified property. The locale name of the leaf node is LOCALE_NAME_USER_DEFAULT.</para></param>
+			/// <param name="pszLocaleName"><para>Type: <c>LPCWSTR</c></para>
+			/// <para>
+			/// The name of the locale of the lead condition, or <c>NULL</c> for a plain string. The locale name of the leaf node is LOCALE_NAME_USER_DEFAULT.
+			/// </para></param>
+			/// <param name="cco"><para>Type: <c>CONDITION_CREATION_OPTIONS</c></para>
+			/// <para>The condition creation operation of the leaf condition as the CONDITION_CREATION_OPTIONS enumeration.</para></param>
+			/// <param name="riid"><para>Type: <c>REFIID</c></para>
+			/// <para>
+			/// The desired IID of the enumerating interface: either IEnumUnknown, IID_IEnumVARIANT, or (for a negation condition) IID_ICondition.
+			/// </para></param>
+			/// <param name="ppv">The PPV.</param>
+			/// <returns>
+			/// <para>Type: <c>void**</c></para>
+			/// <para>Receives a pointer to zero or more ICondition and ICondition2 objects.</para>
+			/// </returns>
+			/// <remarks>For default options, use the CONDITION_CREATION_DEFAULT flag.</remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-createstringleaf
+			// HRESULT CreateStringLeaf( REFPROPERTYKEY propkey, CONDITION_OPERATION cop, LPCWSTR pszValue, LPCWSTR pszLocaleName, CONDITION_CREATION_OPTIONS cco, REFIID riid, void **ppv );
+			[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 5)]
+			object CreateStringLeaf(in PROPERTYKEY propkey, CONDITION_OPERATION cop, [MarshalAs(UnmanagedType.LPWStr), Optional] string pszValue,
+				[MarshalAs(UnmanagedType.LPWStr), Optional] string pszLocaleName, CONDITION_CREATION_OPTIONS cco, in Guid riid);
+
+			/// <summary>
+			/// Creates a leaf condition node for an integer value. The returned object supports ICondition and ICondition2.
+			/// </summary>
+			/// <param name="propkey"><para>Type: <c>REFPROPERTYKEY</c></para>
+			/// <para>The name of the property of the leaf condition as a REFPROPERTYKEY. If the leaf has no particular property, use PKEY_Null.</para></param>
+			/// <param name="cop"><para>Type: <c>CONDITION_OPERATION</c></para>
+			/// <para>A CONDITION_OPERATION enumeration. If the leaf has no particular operation, then use COP_IMPLICIT.</para></param>
+			/// <param name="lValue"><para>Type: <c>INT32</c></para>
+			/// <para>The value of a leaf condition node as a 32-bit integer.</para></param>
+			/// <param name="cco"><para>Type: <c>CONDITION_CREATION_OPTIONS</c></para>
+			/// <para>The condition creation operation of the leaf condition as the CONDITION_CREATION_OPTIONS enumeration.</para></param>
+			/// <param name="riid"><para>Type: <c>REFIID</c></para>
+			/// <para>
+			/// The desired IID of the enumerating interface: either IEnumUnknown, IID_IEnumVARIANT, or (for a negation condition) IID_ICondition.
+			/// </para></param>
+			/// <returns>
+			/// <para>Type: <c>void**</c></para>
+			/// <para>Receives a pointer to zero or more ICondition and ICondition2 objects.</para>
+			/// </returns>
+			/// <remarks>For default options, use the CONDITION_CREATION_DEFAULT flag.</remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-createintegerleaf
+			// HRESULT CreateIntegerLeaf( REFPROPERTYKEY propkey, CONDITION_OPERATION cop, INT32 lValue, CONDITION_CREATION_OPTIONS cco, REFIID riid, void **ppv );
+			[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)]
+			object CreateIntegerLeaf(in PROPERTYKEY propkey, CONDITION_OPERATION cop, int lValue, CONDITION_CREATION_OPTIONS cco, in Guid riid);
+
+			/// <summary>
+			/// Creates a search condition that is either <c>TRUE</c> or <c>FALSE</c>. The returned object supports ICondition and ICondition2
+			/// </summary>
+			/// <param name="propkey"><para>Type: <c>REFPROPERTYKEY</c></para>
+			/// <para>The name of the property of the leaf condition as a REFPROPERTYKEY. If the leaf has no particular property, use PKEY_Null.</para></param>
+			/// <param name="cop"><para>Type: <c>CONDITION_OPERATION</c></para>
+			/// <para>A CONDITION_OPERATION enumeration. If the leaf has no particular operation, then use COP_IMPLICIT.</para></param>
+			/// <param name="fValue"><para>Type: <c>BOOL</c></para>
+			/// <para>The value of the search condition to use. fValue should typically be set to VARIANT_FALSE.</para></param>
+			/// <param name="cco"><para>Type: <c>CONDITION_CREATION_OPTIONS</c></para>
+			/// <para>The condition creation operation of the leaf condition as the CONDITION_CREATION_OPTIONS enumeration.</para></param>
+			/// <param name="riid"><para>Type: <c>REFIID</c></para>
+			/// <para>The desired IID of the enumerating interface: either IEnumUnknown, IEnumVARIANT, or (for a negation condition) IID_ICondition.</para></param>
+			/// <returns>
+			/// <para>Type: <c>void**</c></para>
+			/// <para>Receives a pointer to zero or more ICondition and ICondition2 objects.</para>
+			/// </returns>
+			/// <remarks>For default options, use the CONDITION_CREATION_DEFAULT flag.</remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-createbooleanleaf
+			// HRESULT CreateBooleanLeaf( REFPROPERTYKEY propkey, CONDITION_OPERATION cop, BOOL fValue, CONDITION_CREATION_OPTIONS cco, REFIID riid, void **ppv );
+			[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)]
+			object CreateBooleanLeaf(in PROPERTYKEY propkey, CONDITION_OPERATION cop, [MarshalAs(UnmanagedType.Bool)] bool fValue, CONDITION_CREATION_OPTIONS cco, in Guid riid);
+
+			/// <summary>Creates a leaf condition node for any value. The returned object supports ICondition and ICondition2.</summary>
+			/// <param name="propkey"><para>Type: <c>REFPROPERTYKEY</c></para>
+			/// <para>The name of the property of the leaf condition as a REFPROPERTYKEY. If the leaf has no particular property, use PKEY_Null.</para></param>
+			/// <param name="cop"><para>Type: <c>CONDITION_OPERATION</c></para>
+			/// <para>A CONDITION_OPERATION enumeration. If the leaf has no particular operation, then use COP_IMPLICIT.</para></param>
+			/// <param name="propvar"><para>Type: <c>REFPROPERTYKEY</c></para>
+			/// <para>The property value of the leaf condition as a REFPROPERTYKEY.</para></param>
+			/// <param name="pszSemanticType"><para>Type: <c>LPCWSTR</c></para>
+			/// <para>
+			/// The name of a semantic type of the value, or <c>NULL</c> for a plain string. If the newly created leaf is an unresolved named
+			/// entity, pszSemanticType should be the name of a semantic type, otherwise <c>NULL</c>.
+			/// </para></param>
+			/// <param name="pszLocaleName"><para>Type: <c>LPCWSTR</c></para>
+			/// <para>
+			/// The name of the locale to be compared, or <c>NULL</c> for an unspecified locale. If propvar does not contain a string value,
+			/// then pszLocaleName should be LOCALE_NAME_USER_DEFAULT; otherwise, pszLocaleName should reflect the language the string.
+			/// Alternatively, pszLocaleName could be LOCALE_NAME_INVARIANT.
+			/// </para></param>
+			/// <param name="pPropertyNameTerm"><para>Type: <c>IRichChunk*</c></para>
+			/// <para>A pointer to an IRichChunk that identifies the range of the input string that repesents the property. It can be <c>NULL</c>.</para></param>
+			/// <param name="pOperationTerm"><para>Type: <c>IRichChunk*</c></para>
+			/// <para>A pointer to an IRichChunk that identifies the range of the input string that repesents the operation. It can be <c>NULL</c>.</para></param>
+			/// <param name="pValueTerm"><para>Type: <c>IRichChunk*</c></para>
+			/// <para>A pointer to an IRichChunk that identifies the range of the input string that repesents the value. It can be <c>NULL</c>.</para></param>
+			/// <param name="cco"><para>Type: <c>CONDITION_CREATION_OPTIONS</c></para>
+			/// <para>The condition creation operation of the leaf condition as the CONDITION_CREATION_OPTIONS enumeration.</para></param>
+			/// <param name="riid"><para>Type: <c>REFIID</c></para>
+			/// <para>The desired IID of the enumerating interface: either IEnumUnknown, IEnumVARIANT, or (for a negation condition) IID_ICondition.</para></param>
+			/// <returns>
+			/// <para>Type: <c>void**</c></para>
+			/// <para>Receives a pointer to zero or more ICondition and ICondition2 objects.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>For default options, use the CONDITION_CREATION_DEFAULT flag.</para>
+			/// <para>
+			/// If the leaf condition was obtained by parsing a string, one or more of the parameters pPropertyNameTerm, pOperationTerm and
+			/// pValueTerm may be represented by an IRichChunk interface (obtained through the ICondition::GetInputTerms method). Otherwise
+			/// all three parameters can be <c>NULL</c>.
+			/// </para>
+			/// <para>For more information about leaf node terms (property, value, and operation), see ICondition::GetInputTerms.</para>
+			/// <para>
+			/// A virtual property has one or more metadata items in which the key is "MapsToRelation" and the value is a property name
+			/// (which is one expansion of the property). For more information about metadata, see MetaData.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-createleaf
+			// HRESULT CreateLeaf( REFPROPERTYKEY propkey, CONDITION_OPERATION cop, REFPROPVARIANT propvar, LPCWSTR pszSemanticType, LPCWSTR pszLocaleName, IRichChunk *pPropertyNameTerm, IRichChunk *pOperationTerm, IRichChunk *pValueTerm, CONDITION_CREATION_OPTIONS cco, REFIID riid, void **ppv );
+			[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 9)]
+			object CreateLeaf(in PROPERTYKEY propkey, CONDITION_OPERATION cop, [In] PROPVARIANT propvar, [In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pszSemanticType,
+				[In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pszLocaleName, [In, Optional] IRichChunk pPropertyNameTerm, [In, Optional] IRichChunk pOperationTerm,
+				[In, Optional] IRichChunk pValueTerm, CONDITION_CREATION_OPTIONS cco, in Guid riid);
+
+			/// <summary>
+			/// Performs a variety of transformations on a condition tree, and thereby the resolved condition for evaluation. The returned
+			/// object supports ICondition and ICondition2.
+			/// </summary>
+			/// <param name="pc"><para>Type: <c>ICondition*</c></para>
+			/// <para>Pointer to an ICondition object to be resolved.</para></param>
+			/// <param name="sqro"><para>Type: <c>STRUCTURED_QUERY_RESOLVE_OPTION</c></para>
+			/// <para>
+			/// Specifies zero or more of the STRUCTURED_QUERY_RESOLVE_OPTION flags. The SQRO_NULL_VALUE_TYPE_FOR_PLAIN_VALUES flag is
+			/// automatically added to sqro.
+			/// </para></param>
+			/// <param name="pstReferenceTime"><para>Type: <c>SYSTEMTIME const*</c></para>
+			/// <para>
+			/// Pointer to a <c>SYSTEMTIME</c> value to use as the reference date and time. A null pointer can be passed if sqro is set to
+			/// the SQRO_DONT_RESOLVE_DATETIME flag.
+			/// </para></param>
+			/// <param name="riid"><para>Type: <c>REFIID</c></para>
+			/// <para>The desired IID of the enumerating interface: either IEnumUnknown, IEnumVARIANT, or (for a negation condition) IID_ICondition.</para></param>
+			/// <returns>
+			/// <para>Type: <c>void**</c></para>
+			/// <para>Receives a pointer to zero or more ICondition and ICondition2 objects.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// The StructuredQuerySample code sample, available on Code Gallery and the Windows 7 SDK, demonstrates how to read lines from
+			/// the console, parse them using the system schema, and display the resulting condition trees.
+			/// </para>
+			/// <para>Refer to the Resolve method for additional detail.</para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-resolvecondition
+			// HRESULT ResolveCondition( ICondition *pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, const SYSTEMTIME *pstReferenceTime, REFIID riid, void **ppv );
+			[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)]
+			object ResolveCondition([In] ICondition pc, STRUCTURED_QUERY_RESOLVE_OPTION sqro, in SYSTEMTIME pstReferenceTime, in Guid riid);
 		}
 
 		/// <summary>Provides methods for retrieving information about an entity type in the schema.</summary>
