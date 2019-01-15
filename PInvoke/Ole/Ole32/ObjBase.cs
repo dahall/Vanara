@@ -403,6 +403,100 @@ namespace Vanara.PInvoke
 		[PInvokeData("Objbase.h", MSDNShortId = "ms678542")]
 		public static extern HRESULT CreateBindCtx([Optional] uint reserved, out IBindCtx ppbc);
 
+		/// <summary>Creates a file moniker based on the specified path.</summary>
+		/// <param name="lpszPathName">
+		/// <para>The path on which this moniker is to be based.</para>
+		/// <para>
+		/// This parameter can specify a relative path, a UNC path, or a drive-letter-based path. If based on a relative path, the resulting
+		/// moniker must be composed onto another file moniker before it can be bound.
+		/// </para>
+		/// </param>
+		/// <param name="ppmk">
+		/// The address of an IMoniker* pointer variable that receives the interface pointer to the new file moniker. When successful, the
+		/// function has called AddRef on the file moniker and the caller is responsible for calling Release. When an error occurs, the value
+		/// of the interface pointer is <c>NULL</c>.
+		/// </param>
+		/// <returns>
+		/// <para>This function can return the standard return value E_OUTOFMEMORY, as well as the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>S_OK</term>
+		/// <term>The moniker was created successfully.</term>
+		/// </item>
+		/// <item>
+		/// <term>MK_E_SYNTAX</term>
+		/// <term>There was an error in the syntax of the path.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>CreateFileMoniker</c> creates a moniker for an object that is stored in a file. A moniker provider (an object that provides
+		/// monikers to other objects) can call this function to create a moniker to identify a file-based object that it controls, and can
+		/// then make the pointer to this moniker available to other objects. An object identified by a file moniker must also implement the
+		/// IPersistFile interface so it can be loaded when a file moniker is bound.
+		/// </para>
+		/// <para>
+		/// When each object resides in its own file, as in an OLE server application that supports linking only to file-based documents in
+		/// their entirety, file monikers are the only type of moniker necessary. To identify objects smaller than a file, the moniker
+		/// provider must use another type of moniker (such as an item moniker) in addition to file monikers, creating a composite moniker.
+		/// Composite monikers would be needed in an OLE server application that supports linking to objects smaller than a document (such as
+		/// sections of a document or embedded objects).
+		/// </para>
+		/// <para>
+		/// A file moniker can be composed to the right only of another file moniker when the first moniker is based on an absolute path and
+		/// the other is a relative path, resulting in a single file moniker based on the combination of the two paths. A moniker composed to
+		/// the right of another moniker must be a refinement of that moniker, and the file moniker represents the largest unit of storage.
+		/// To identify objects stored within a file, you would compose other types of monikers (usually item monikers) to the right of a
+		/// file moniker.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objbase/nf-objbase-createfilemoniker
+		// HRESULT CreateFileMoniker( LPCOLESTR lpszPathName, LPMONIKER *ppmk );
+		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("objbase.h", MSDNShortId = "d9677fa0-cda0-4b63-a21f-1fd0e27c8f3f")]
+		public static extern HRESULT CreateFileMoniker([MarshalAs(UnmanagedType.LPWStr)] string lpszPathName, out IMoniker ppmk);
+
+		/// <summary>Returns a pointer to the IRunningObjectTable interface on the local running object table (ROT).</summary>
+		/// <param name="reserved">This parameter is reserved and must be 0.</param>
+		/// <param name="pprot">
+		/// The address of an IRunningObjectTable* pointer variable that receives the interface pointer to the local ROT. When the function
+		/// is successful, the caller is responsible for calling Release on the interface pointer. If an error occurs, *pprot is undefined.
+		/// </param>
+		/// <returns>This function can return the standard return values E_UNEXPECTED and S_OK.</returns>
+		/// <remarks>
+		/// <para>
+		/// Each workstation has a local ROT that maintains a table of the objects that have been registered as running on that computer.
+		/// This function returns an IRunningObjectTable interface pointer, which provides access to that table.
+		/// </para>
+		/// <para>
+		/// Moniker providers, which hand out monikers that identify objects so they are accessible to others, should call
+		/// <c>GetRunningObjectTable</c>. Use the interface pointer returned by this function to register your objects when they begin
+		/// running, to record the times that those objects are modified, and to revoke their registrations when they stop running. See the
+		/// IRunningObjectTable interface for more information.
+		/// </para>
+		/// <para>
+		/// Compound-document link sources are the most common example of moniker providers. These include server applications that support
+		/// linking to their documents (or portions of a document) and container applications that support linking to embeddings within their
+		/// documents. Server applications that do not support linking can also use the ROT to cooperate with container applications that
+		/// support linking to embeddings.
+		/// </para>
+		/// <para>
+		/// If you are implementing the IMoniker interface to write a new moniker class, and you need an interface pointer to the ROT, call
+		/// IBindCtx::GetRunningObjectTable rather than the <c>GetRunningObjectTable</c> function. This allows future implementations of the
+		/// IBindCtx interface to modify binding behavior.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objbase/nf-objbase-getrunningobjecttable
+		// HRESULT GetRunningObjectTable( DWORD reserved, LPRUNNINGOBJECTTABLE *pprot );
+		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("objbase.h", MSDNShortId = "65d9cf7d-cc8a-4199-9a4a-7fd67ef8872d")]
+		public static extern HRESULT GetRunningObjectTable([Optional] uint reserved, out IRunningObjectTable pprot);
+
 		/// <summary>The StgCreateStorageEx function creates a new storage object using a provided implementation for the IStorage or IPropertySetStorage interfaces. To open an existing file, use the StgOpenStorageEx function instead.
 		/// <para>Applications written for Windows 2000, Windows Server 2003 and Windows XP must use StgCreateStorageEx rather than StgCreateDocfile to take advantage of the enhanced Windows 2000 and Windows XP Structured Storage features.</para></summary>
 		/// <param name="pwcsName">A pointer to the path of the file to create. It is passed uninterpreted to the file system. This can be a relative name or NULL. If NULL, a temporary file is allocated with a unique name. If non-NULL, the string size must not exceed MAX_PATH characters.
