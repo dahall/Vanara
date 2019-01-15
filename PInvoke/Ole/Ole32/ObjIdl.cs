@@ -142,6 +142,21 @@ namespace Vanara.PInvoke
 			EOAC_DISABLE_AAA = 0x1000,
 		}
 
+		/// <summary>Flags used by <see cref="IRunningObjectTable.Register"/></summary>
+		[PInvokeData("wtypes.h")]
+		[Flags]
+		public enum ROTFLAGS
+		{
+			/// <summary>When set, indicates a strong registration for the object.</summary>
+			ROTFLAGS_REGISTRATIONKEEPSALIVE = 0x1,
+
+			/// <summary>
+			/// When set, any client can connect to the running object through its entry in the ROT.When not set, only clients in the window
+			/// station that registered the object can connect to it.
+			/// </summary>
+			ROTFLAGS_ALLOWANYCLIENT = 0x2,
+		}
+
 		/// <summary>
 		/// The IEnumSTATSTG interface enumerates an array of STATSTG structures. These structures contain statistical data about open
 		/// storage, stream, or byte array objects.
@@ -245,6 +260,313 @@ namespace Vanara.PInvoke
 			/// <returns>A pointer to the cloned enumerator object.</returns>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumunknown-clone HRESULT Clone( IEnumUnknown **ppenum );
 			IEnumUnknown Clone();
+		}
+
+		/// <summary>
+		/// Manages access to the running object table (ROT), a globally accessible look-up table on each workstation. A workstation's ROT
+		/// keeps track of those objects that can be identified by a moniker and that are currently running on the workstation. When a client
+		/// tries to bind a moniker to an object, the moniker checks the ROT to see if the object is already running; this allows the moniker
+		/// to bind to the current instance instead of loading a new one.
+		/// </summary>
+		/// <remarks>
+		/// <para>The ROT contains entries of the following form: (pmkObjectName, pUnkObject).</para>
+		/// <para>
+		/// The pmkObjectName element is a pointer to the moniker that identifies the running object. The pUnkObject element is a pointer to
+		/// the running object itself. During the binding process, monikers consult the pmkObjectName entries in the ROT to see whether an
+		/// object is already running.
+		/// </para>
+		/// <para>
+		/// Objects that can be named by monikers must be registered with the ROT when they are loaded and their registration must be revoked
+		/// when they are no longer running.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-irunningobjecttable
+		[PInvokeData("objidl.h", MSDNShortId = "ff89bcb5-df6d-4325-b0e8-613217a68f42")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("00000010-0000-0000-C000-000000000046")]
+		public interface IRunningObjectTable
+		{
+			/// <summary>Registers an object and its identifying moniker in the running object table (ROT).</summary>
+			/// <param name="grfFlags">
+			/// <para>
+			/// Specifies whether the ROT's reference to punkObject is weak or strong and controls access to the object through its entry in
+			/// the ROT. For details, see the Remarks section.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ROTFLAGS_REGISTRATIONKEEPSALIVE</term>
+			/// <term>When set, indicates a strong registration for the object.</term>
+			/// </item>
+			/// <item>
+			/// <term>ROTFLAGS_ALLOWANYCLIENT</term>
+			/// <term>
+			/// When set, any client can connect to the running object through its entry in the ROT. When not set, only clients in the window
+			/// station that registered the object can connect to it.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </param>
+			/// <param name="punkObject">A pointer to the object that is being registered as running.</param>
+			/// <param name="pmkObjectName">A pointer to the moniker that identifies punkObject.</param>
+			/// <returns>
+			/// An identifier for this ROT entry that can be used in subsequent calls to IRunningObjectTable::Revoke or
+			/// IRunningObjectTable::NoteChangeTime. The caller cannot specify <c>NULL</c> for this parameter. If an error occurs,
+			/// *pdwRegister is set to zero.
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// This method registers a pointer to an object under a moniker that identifies the object. The moniker is used as the key when
+			/// the table is searched with IRunningObjectTable::GetObject.
+			/// </para>
+			/// <para>
+			/// When an object is registered, the ROT always calls AddRef on the object. For a weak registration
+			/// (ROTFLAGS_REGISTRATIONKEEPSALIVE not set), the ROT will release the object whenever the last strong reference to the object
+			/// is released. For a strong registration (ROTFLAGS_REGISTRATIONKEEPSALIVE set), the ROT prevents the object from being
+			/// destroyed until the object's registration is explicitly revoked.
+			/// </para>
+			/// <para>
+			/// A server registered as either LocalService or RunAs can set the ROTFLAGS_ALLOWANYCLIENT flag in its call to <c>Register</c>
+			/// to allow any client to connect to it. A server setting this bit must have its executable name in the AppID section of the
+			/// registry that refers to the AppID for the executable. An "activate as activator" server (not registered as LocalService or
+			/// RunAs) must not set this flag in its call to <c>Register</c>. For details on installing services, see Installing as a Service Application.
+			/// </para>
+			/// <para>
+			/// Registering a second object with the same moniker, or re-registering the same object with the same moniker, creates a second
+			/// entry in the ROT. In this case, <c>Register</c> returns MK_S_MONIKERALREADYREGISTERED. Each call to <c>Register</c> must be
+			/// matched by a call to IRunningObjectTable::Revoke because even duplicate entries have different pdwRegister identifiers. A
+			/// problem with duplicate registrations is that there is no way to determine which object will be returned if the moniker is
+			/// specified in a subsequent call to IRunningObjectTable::IsRunning.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// If you are a moniker provider (that is, you hand out monikers identifying your objects to make them accessible to others),
+			/// you must call the <c>Register</c> method to register your objects when they begin running. You must also call this method if
+			/// you rename your objects while they are loaded.
+			/// </para>
+			/// <para>
+			/// The most common type of moniker provider is a compound-document link source. This includes server applications that support
+			/// linking to their documents (or portions of a document) and container applications that support linking to embeddings within
+			/// their documents. Server applications that do not support linking can also use the ROT to cooperate with container
+			/// applications that support linking to embeddings.
+			/// </para>
+			/// <para>
+			/// If you are writing a server application, you should register an object with the ROT when it begins running, typically in your
+			/// implementation of IOleObject::DoVerb. The object must be registered under its full moniker, which requires getting the
+			/// moniker of its container document using IOleClientSite::GetMoniker. You should also revoke and re-register the object in your
+			/// implementation of IOleObject::SetMoniker, which is called if the container document is renamed.
+			/// </para>
+			/// <para>
+			/// If you are writing a container application that supports linking to embeddings, you should register your document with the
+			/// ROT when it is loaded. If your document is renamed, you should revoke and re-register it with the ROT and call
+			/// IOleObject::SetMoniker for any embedded objects in the document to give them an opportunity to re-register themselves.
+			/// </para>
+			/// <para>
+			/// Objects registered in the ROT must be explicitly revoked when the object is no longer running or when its moniker changes.
+			/// This revocation is important because there is no way for the system to automatically remove entries from the ROT. You must
+			/// cache the identifier that is written through pdwRegister and use it in a call to IRunningObjectTable::Revoke to revoke the
+			/// registration. For a strong registration, a strong reference is released when the objects registration is revoked.
+			/// </para>
+			/// <para>
+			/// As of Windows Server 2003, if there are stale entries that remain in the ROT due to unexpected server problems, COM will
+			/// automatically remove these stale entries from the ROT.
+			/// </para>
+			/// <para>
+			/// The system's implementation of <c>Register</c> calls IMoniker::Reduce on the pmkObjectName parameter to ensure that the
+			/// moniker is fully reduced before registration. If an object is known by more than one fully reduced moniker, it should be
+			/// registered under all such monikers.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-irunningobjecttable-register HRESULT Register( DWORD
+			// grfFlags, IUnknown *punkObject, IMoniker *pmkObjectName, DWORD *pdwRegister );
+			uint Register([In] ROTFLAGS grfFlags, [In, MarshalAs(UnmanagedType.IUnknown)] object punkObject, [In] IMoniker pmkObjectName);
+
+			/// <summary>Removes an entry from the running object table (ROT) that was previously registered by a call to IRunningObjectTable::Register.</summary>
+			/// <param name="dwRegister">The identifier of the ROT entry to be revoked.</param>
+			/// <returns>This method can return the standard return values E_INVALIDARG and S_OK.</returns>
+			/// <remarks>
+			/// <para>
+			/// This method undoes the effect of a call to IRunningObjectTable::Register, removing both the moniker and the pointer to the
+			/// object identified by that moniker.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// A moniker provider (hands out monikers identifying its objects to make them accessible to others) must call the <c>Revoke</c>
+			/// method to revoke the registration of its objects when it stops running. It must have previously called
+			/// IRunningObjectTable::Register and stored the identifier returned by that method; it uses that identifier when calling <c>Revoke</c>.
+			/// </para>
+			/// <para>
+			/// The most common type of moniker provider is a compound-document link source. This includes server applications that support
+			/// linking to their documents (or portions of a document) and container applications that support linking to embeddings within
+			/// their documents. Server applications that do not support linking can also use the ROT to cooperate with container
+			/// applications that support linking to embeddings.
+			/// </para>
+			/// <para>
+			/// If you are writing a container application, you must revoke a document's registration when the document is closed. You must
+			/// also revoke a document's registration before re-registering it when it is renamed.
+			/// </para>
+			/// <para>
+			/// If you are writing a server application, you must revoke an object's registration when the object is closed. You must also
+			/// revoke an object's registration before re-registering it when its container document is renamed (see IOleObject::SetMoniker).
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-irunningobjecttable-revoke HRESULT Revoke( DWORD
+			// dwRegister );
+			void Revoke([In] uint dwRegister);
+
+			/// <summary>Determines whether the object identified by the specified moniker is currently running.</summary>
+			/// <param name="pmkObjectName">A pointer to the IMoniker interface on the moniker.</param>
+			/// <returns>If the object is in the running state, the return value is <c>TRUE</c>. Otherwise, it is <c>FALSE</c>.</returns>
+			/// <remarks>
+			/// <para>
+			/// This method simply indicates whether a object is running. To retrieve a pointer to a running object, use the
+			/// IRunningObjectTable::GetObject method.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// Generally, you call the <c>IsRunning</c> method only if you are writing your own moniker class (that is, implementing the
+			/// IMoniker interface). You typically call this method from your implementation of IMoniker::IsRunning. However, you should do
+			/// so only if the pmkToLeft parameter of <c>IMoniker::IsRunning</c> is <c>NULL</c>. Otherwise, you should call
+			/// <c>IMoniker::IsRunning</c> on your pmkToLeft parameter instead.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-irunningobjecttable-isrunning HRESULT IsRunning(
+			// IMoniker *pmkObjectName );
+			[PreserveSig]
+			HRESULT IsRunning([In] IMoniker pmkObjectName);
+
+			/// <summary>
+			/// Determines whether the object identified by the specified moniker is running, and if it is, retrieves a pointer to that object.
+			/// </summary>
+			/// <param name="pmkObjectName">A pointer to the IMoniker interface on the moniker.</param>
+			/// <param name="ppunkObject">
+			/// A pointer to an IUnknown pointer variable that receives the interface pointer to the running object. When successful, the
+			/// implementation calls AddRef on the object; it is the caller's responsibility to call Release. If the object is not running or
+			/// if an error occurs, the implementation sets *ppunkObject to <c>NULL</c>.
+			/// </param>
+			/// <returns>
+			/// <para>This method can return the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_OK</term>
+			/// <term>Indicates that pmkObjectName was found in the ROT and a pointer was retrieved.</term>
+			/// </item>
+			/// <item>
+			/// <term>S_FALSE</term>
+			/// <term>
+			/// There is no entry for pmkObjectName in the ROT, or that the object it identifies is no longer running (in which case, the
+			/// entry is revoked).
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// This method checks the ROT for the moniker specified by pmkObjectName. If that moniker had previously been registered with a
+			/// call to IRunningObjectTable::Register, this method returns the pointer that was registered at that time.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// Generally, you call the <c>IRunningObjectTable::GetObject</c> method only if you are writing your own moniker class (that is,
+			/// implementing the IMoniker interface). You typically call this method from your implementation of IMoniker::BindToObject.
+			/// </para>
+			/// <para>
+			/// However, note that not all implementations of IMoniker::BindToObject need to call this method. If you expect your moniker to
+			/// have a prefix (indicated by a non- <c>NULL</c> pmkToLeft parameter to <c>IMoniker::BindToObject</c>), you should not check
+			/// the ROT. The reason for this is that only complete monikers are registered with the ROT, and if your moniker has a prefix,
+			/// your moniker is part of a composite and thus not complete. Instead, your moniker should request services from the object
+			/// identified by the prefix (for example, the container of the object identified by your moniker).
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-irunningobjecttable-getobject HRESULT GetObject(
+			// IMoniker *pmkObjectName, IUnknown **ppunkObject );
+			[return: MarshalAs(UnmanagedType.IUnknown)]
+			object GetObject([In] IMoniker pmkObjectName);
+
+			/// <summary>
+			/// Records the time that a running object was last modified. The object must have previously been registered with the running
+			/// object table (ROT). This method stores the time of last change in the ROT.
+			/// </summary>
+			/// <param name="dwRegister">The identifier of the ROT entry of the changed object. This value was previously returned by IRunningObjectTable::Register.</param>
+			/// <param name="pfiletime">A pointer to a FILETIME structure containing the object's last change time.</param>
+			/// <returns>This method can return the standard return values E_INVALIDARG and S_OK.</returns>
+			/// <remarks>
+			/// <para>The time recorded by this method can be retrieved by calling IRunningObjectTable::GetTimeOfLastChange.</para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// A moniker provider (hands out monikers identifying its objects to make them accessible to others) must call the
+			/// <c>NoteChangeTime</c> method whenever its objects are modified. It must have previously called IRunningObjectTable::Register
+			/// and stored the identifier returned by that method; it uses that identifier when calling <c>NoteChangeTime</c>.
+			/// </para>
+			/// <para>
+			/// The most common type of moniker provider is a compound-document link source. This includes server applications that support
+			/// linking to their documents (or portions of a document) and container applications that support linking to embeddings within
+			/// their documents. Server applications that do not support linking can also use the ROT to cooperate with container
+			/// applications that support linking to embeddings.
+			/// </para>
+			/// <para>
+			/// When an object is first registered in the ROT, the ROT records its last change time as the value returned by calling
+			/// IMoniker::GetTimeOfLastChange on the moniker being registered.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-irunningobjecttable-notechangetime HRESULT
+			// NoteChangeTime( DWORD dwRegister, FILETIME *pfiletime );
+			void NoteChangeTime([In] uint dwRegister, in FILETIME pfiletime);
+
+			/// <summary>Retrieves the time that an object was last modified.</summary>
+			/// <param name="pmkObjectName">A pointer to the IMoniker interface on the moniker.</param>
+			/// <returns>A pointer to a FILETIME structure that receives the object's last change time.</returns>
+			/// <remarks>
+			/// <para>
+			/// This method returns the change time that was last reported for this object by a call to IRunningObjectTable::NoteChangeTime.
+			/// If <c>NoteChangeTime</c> has not been called previously, the method returns the time that was recorded when the object was registered.
+			/// </para>
+			/// <para>
+			/// This method is provided to enable checking whether a connection between two objects (represented by one object holding a
+			/// moniker that identifies the other) is up-to-date. For example, if one object is holding cached information about the other
+			/// object, this method can be used to check whether the object has been modified since the cache was last updated. See IMoniker::GetTimeOfLastChange.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// Generally, you call <c>GetTimeOfLastChange</c> only if you are writing your own moniker class (that is, implementing the
+			/// IMoniker interface). You typically call this method from your implementation of IMoniker::GetTimeOfLastChange. However, you
+			/// should do so only if the pmkToLeft parameter of <c>IMoniker::GetTimeOfLastChange</c> is <c>NULL</c>. Otherwise, you should
+			/// call <c>IMoniker::GetTimeOfLastChange</c> on your pmkToLeft parameter instead.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-irunningobjecttable-gettimeoflastchange HRESULT
+			// GetTimeOfLastChange( IMoniker *pmkObjectName, FILETIME *pfiletime );
+			FILETIME GetTimeOfLastChange([In] IMoniker pmkObjectName);
+
+			/// <summary>
+			/// Creates and returns a pointer to an enumerator that can list the monikers of all the objects currently registered in the
+			/// running object table (ROT).
+			/// </summary>
+			/// <returns>
+			/// A pointer to an IEnumMoniker pointer variable that receives the interface pointer to the new enumerator for the ROT. When
+			/// successful, the implementation calls AddRef on the enumerator; it is the caller's responsibility to call Release. If an error
+			/// occurs; the implementation sets *ppenumMoniker to <c>NULL</c>.
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// <c>IRunningObjectTable::EnumRunning</c> must create and return a pointer to an IEnumMoniker interface on an enumerator
+			/// object. The standard enumerator methods can then be called to enumerate the monikers currently registered in the registry.
+			/// The enumerator cannot be used to enumerate monikers that are registered in the ROT after the enumerator has been created.
+			/// </para>
+			/// <para>
+			/// The <c>EnumRunning</c> method is intended primarily for the use by the system in implementing the alert object table. Note
+			/// that OLE 2 does not include an implementation of the alert object table.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-irunningobjecttable-enumrunning HRESULT EnumRunning(
+			// IEnumMoniker **ppenumMoniker );
+			IEnumMoniker EnumRunning();
 		}
 
 		/// <summary>
