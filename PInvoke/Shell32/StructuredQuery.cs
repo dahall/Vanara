@@ -733,7 +733,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/structuredquery/nf-structuredquery-iconditionfactory2-createcompoundfromarray
 			// HRESULT CreateCompoundFromArray( CONDITION_TYPE ct, ICondition **ppcondSubs, ULONG cSubs, CONDITION_CREATION_OPTIONS cco, REFIID riid, void **ppv );
 			[return: MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 4)]
-			object CreateCompoundFromArray(CONDITION_TYPE ct, [In] ICondition[] ppcondSubs, uint cSubs, CONDITION_CREATION_OPTIONS cco, in Guid riid);
+			object CreateCompoundFromArray(CONDITION_TYPE ct, [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown)] ICondition[] ppcondSubs, uint cSubs, CONDITION_CREATION_OPTIONS cco, in Guid riid);
 
 			/// <summary>
 			/// Creates a leaf condition node for a string value that represents a comparison of property value and constant value. The
