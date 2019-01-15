@@ -121,6 +121,32 @@ namespace Vanara.PInvoke
 		void GetOptions(out AUTOCOMPLETEOPTIONS dwFlag);
 	}
 
+	/// <summary><para>Exposes methods that modify the view and select items in the current folder.</para></summary>
+	// https://docs.microsoft.com/en-us/windows/desktop/api/shldisp/nn-shldisp-ishellfolderviewdual
+	[PInvokeData("shldisp.h", MSDNShortId = "48135f9d-ee80-4dec-87dc-83f407c25777")]
+	[ComImport, Guid("E572D3C9-37BE-4AE2-825D-D521763E3108"), InterfaceType(ComInterfaceType.InterfaceIsDual)]
+	public interface IShellFolderViewDual
+	{
+		object Application { [return: MarshalAs(UnmanagedType.IDispatch)] get; }
+
+		object Parent { [return: MarshalAs(UnmanagedType.IDispatch)] get; }
+
+		object Folder { [return: MarshalAs(UnmanagedType.IDispatch)] get; }
+
+		object SelectedItems { [return: MarshalAs(UnmanagedType.IDispatch)] get; }
+
+		object FocusedItem { [return: MarshalAs(UnmanagedType.IDispatch)] get; }
+
+		void SelectItem([In, MarshalAs(UnmanagedType.Struct)] ref object pvfi, int dwFlags);
+
+		[return: MarshalAs(UnmanagedType.BStr)]
+		string PopupItemMenu([In, MarshalAs(UnmanagedType.IDispatch)] object pfi, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vx, [In, Optional, MarshalAs(UnmanagedType.Struct)] object vy);
+
+		object Script { [return: MarshalAs(UnmanagedType.IDispatch)] get; }
+
+		long ViewOptions { get; }
+	}
+
 	/// <summary>An autocomplete object (CLSID_AutoComplete).</summary>
 	[ComImport, SuppressUnmanagedCodeSecurity, Guid("00BB2763-6A77-11D0-A535-00C04FD7D062"), ClassInterface(ClassInterfaceType.None)]
 	public class CAutoComplete { }
