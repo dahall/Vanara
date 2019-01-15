@@ -30,7 +30,7 @@ namespace Vanara.PInvoke
 	/// <summary>Signals that a structure or class holds a handle to a synchronization object.</summary>
 	public interface IUserHandle : IHandle { }
 
-	/// <summary>Provides a handle to an accelator table.</summary>
+	/// <summary>Provides a handle to an accelerator table.</summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct HACCEL : IHandle
 	{
@@ -575,6 +575,9 @@ namespace Vanara.PInvoke
 	[StructLayout(LayoutKind.Sequential)]
 	public struct HFILE : IKernelHandle
 	{
+		/// <summary>Represents an invalid handle.</summary>
+		public static readonly IntPtr INVALID_HANDLE_VALUE = new IntPtr(-1);
+
 		private IntPtr handle;
 
 		/// <summary>Initializes a new instance of the <see cref="HFILE"/> struct.</summary>
@@ -583,6 +586,9 @@ namespace Vanara.PInvoke
 
 		/// <summary>Returns an invalid handle by instantiating a <see cref="HFILE"/> object with <see cref="IntPtr.Zero"/>.</summary>
 		public static HFILE NULL => new HFILE(IntPtr.Zero);
+
+		/// <summary>Gets a value indicating whether this instance is an invalid handle (INVALID_HANDLE_VALUE).</summary>
+		public bool IsInvalid => handle == INVALID_HANDLE_VALUE;
 
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
