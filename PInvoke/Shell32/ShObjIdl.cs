@@ -542,6 +542,27 @@ namespace Vanara.PInvoke
 			DOGIF_ONLY_IF_ONE = 0x0008,
 		}
 
+		/// <summary>Constants used by IFileIsInUse::GetUsage to indicate how a file in use is being used.</summary>
+		/// <remarks>
+		/// The interpretation of "playing" or "editing" is left to the application's implementation of IFileIsInUse. Generally, "playing"
+		/// would refer to a media file while "editing" can refer to any file being altered in an application. However, the application
+		/// itself best knows how to map these terms to its actions.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/ne-shobjidl_core-file_usage_type
+		// typedef enum FILE_USAGE_TYPE { FUT_PLAYING, FUT_EDITING, FUT_GENERIC } ;
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "32b0e148-499a-401d-837c-8cea74cf9cac")]
+		public enum FILE_USAGE_TYPE
+		{
+			/// <summary>The file is being played by the process that has it open.</summary>
+			FUT_PLAYING,
+
+			/// <summary>The file is being edited by the process that has it open.</summary>
+			FUT_EDITING,
+
+			/// <summary>The file is open in the process for an unspecified action or an action that does not readily fit into the other two categories.</summary>
+			FUT_GENERIC,
+		}
+
 		/// <summary>One of the following values that indicate which known category to add to the list</summary>
 		[PInvokeData("Shobjidl.h", MSDNShortId = "dd378397")]
 		public enum KNOWNDESTCATEGORY
@@ -551,6 +572,18 @@ namespace Vanara.PInvoke
 
 			/// <summary>Add the Recent category.</summary>
 			KDC_RECENT = 2
+		}
+
+		/// <summary>The capability flags used by <see cref="IFileIsInUse.GetCapabilities(out OF_CAP)"/>.</summary>
+		[PInvokeData("shobjidl_core.h")]
+		[Flags]
+		public enum OF_CAP
+		{
+			/// <summary>The UI can switch to the top-level window of the application that is using the file.</summary>
+			OF_CAP_CANSWITCHTO = 0x0001,
+
+			/// <summary>The file can be closed.</summary>
+			OF_CAP_CANCLOSE = 0x0002
 		}
 
 		/// <summary>
@@ -806,6 +839,171 @@ namespace Vanara.PInvoke
 			/// </returns>
 			[return: MarshalAs(UnmanagedType.Interface)]
 			IEnumIDList Clone();
+		}
+
+		/// <summary>
+		/// Exposes methods that can be called to get information on or close a file that is in use by another application. When an
+		/// application attempts to access a file and finds that file already in use, it can use the methods of this interface to gather
+		/// information to present to the user in a dialog box.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// In versions of Windows before Windows Vista, when a user attempted to access a file that was open in another application, the
+		/// user would simply receive a dialog box with a message stating that the file was already open. The message instructed that the
+		/// user close the other application, but did not identify it. Other than that suggestion, the dialog box provided no user action to
+		/// address the situation. This interface provides methods that can lead to a more informative dialog box from which the user can
+		/// take direct action.
+		/// </para>
+		/// <para>The Running Object Table</para>
+		/// <para>
+		/// When an application opens a file, that application registers the file by inserting the instantiated <c>IFileIsInUse</c> object
+		/// into the running object table (ROT). The ROT is a globally accessible lookup table that keeps track of currently running objects.
+		/// These objects can be identified by a moniker. When a client attempts to bind a moniker to an object, the moniker checks the ROT
+		/// to determine whether the object is already running. This allows the moniker to bind to the current instance rather than loading a
+		/// new instance.
+		/// </para>
+		/// <para>Perform these steps to add a file to the ROT:</para>
+		/// <list type="number">
+		/// <item>
+		/// <term>Call the GetRunningObjectTable function to retrieve an instance of IRunningObjectTable.</term>
+		/// </item>
+		/// <item>
+		/// <term>Create an <c>IFileIsInUse</c> object for the file that is currently in use.</term>
+		/// </item>
+		/// <item>
+		/// <term>Create an IMoniker object for the file that is currently in use.</term>
+		/// </item>
+		/// <item>
+		/// <term>Insert the <c>IFileIsInUse</c> and IMoniker objects into the ROT by calling IRunningObjectTable::Register.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// In the call to Register, specify the <c>ROTFLAGS_ALLOWANYCLIENT</c> flag. This allows the ROT entry to work across security
+		/// boundaries. Use of this flag requires the calling application to have an explicit Application User Model ID (AppUserModelID)
+		/// (System.AppUserModel.ID). An explicit AppUserModelID allows the Component Object Model (COM) to inspect the application's
+		/// security settings. An attempt to call <c>Register</c> with ROTFLAGS_ALLOWANYCLIENT and no explicit AppUserModelID will fail. You
+		/// can call <c>Register</c> without the ROTFLAGS_ALLOWANYCLIENT flag and the application will work correctly, but only within its
+		/// own security level.
+		/// </para>
+		/// <para>
+		/// The value retrieved in the Register method's [out] parameter is used to identify the entry in later calls to retrieve or remove
+		/// it from the ROT.
+		/// </para>
+		/// <para>When to Implement</para>
+		/// <para>
+		/// Applications that open file types that can be opened by other applications should implement <c>IFileIsInUse</c>. An application's
+		/// implementation of this interface enables Windows Explorer to discover the source of sharing errors, which enables users to
+		/// address and retry operations that fail due to those errors.
+		/// </para>
+		/// <para>When to Use</para>
+		/// <para>
+		/// An application calls <c>IFileIsInUse</c> to communicate with other applications to resolve sharing errors. These errors occur in
+		/// response to user action in the file system. For example, when a user attempts to rename a folder while a file in that folder is
+		/// open in an application, the renaming operation fails. Windows Explorer can call that appplication's implementation of
+		/// <c>IFileIsInUse</c> to help the user identify the conflict and resolve this issue.
+		/// </para>
+		/// <para>Sample</para>
+		/// <para>
+		/// See the File Is in Use sample, which demonstrates how to implement <c>IFileIsInUse</c> and register a file with the ROT. It then
+		/// shows how to customize the <c>File In Use</c> dialog to display additional information and options for files currently opened in
+		/// an application.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nn-shobjidl_core-ifileisinuse
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "68a4ab3d-165e-4917-8915-77f15901dbad")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("64a1cbf0-3a1a-4461-9158-376969693950")]
+		public interface IFileIsInUse
+		{
+			/// <summary>Retrieves the name of the application that is using the file.</summary>
+			/// <param name="ppszName">
+			/// <para>Type: <c>LPWSTR*</c></para>
+			/// <para>The address of a pointer to a buffer that, when this method returns successfully, receives the application name.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			/// <remarks>
+			/// This information can be passed to the user in a dialog box so that the user knows the source of the conflict and can act
+			/// accordingly. For instance "File.txt is in use by Litware."
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifileisinuse-getappname
+			// HRESULT GetAppName( LPWSTR *ppszName );
+			[PreserveSig]
+			HRESULT GetAppName([MarshalAs(UnmanagedType.LPWStr)] out string ppszName);
+
+			/// <summary>Gets a value that indicates how the file in use is being used.</summary>
+			/// <param name="pfut">
+			/// <para>Type: <c>FILE_USAGE_TYPE*</c></para>
+			/// <para>Pointer to a value that, when this method returns successfully, receives one of the FILE_USAGE_TYPE values.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifileisinuse-getusage
+			// HRESULT GetUsage( FILE_USAGE_TYPE *pfut );
+			[PreserveSig]
+			HRESULT GetUsage(out FILE_USAGE_TYPE pfut);
+
+			/// <summary>
+			/// Determines whether the file can be closed and whether the UI is capable of switching to the window of the application that is
+			/// using the file.
+			/// </summary>
+			/// <param name="pdwCapFlags">
+			/// <para>Type: <c>DWORD*</c></para>
+			/// <para>
+			/// A pointer to a value that, when this method returns successfully, receives the capability flags. One or both of the following values:
+			/// </para>
+			/// <para>OF_CAP_CANSWITCHTO (0x0001)</para>
+			/// <para>0x0001. The UI can switch to the top-level window of the application that is using the file.</para>
+			/// <para>OF_CAP_CANCLOSE (0x0002)</para>
+			/// <para>0x0002. The file can be closed.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			/// <remarks>
+			/// The capabilities returned by this method can be used in the composition of the dialog box presented to the user that informs
+			/// them of the sharing conflict. For instance, if the OF_CAP_CANSWITCHTO flag is retrieved, a button can be added to the dialog
+			/// box that will switch the user to the conflicting application window (based on the <c>HWND</c> information retrieved by
+			/// IFileIsInUse::GetSwitchToHWND) so that the user can address the situation as they see fit. If the OF_CAP_CANCLOSE flag is
+			/// retrieved, the dialog box can present a <c>Close</c> button that calls the CloseFile method.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifileisinuse-getcapabilities
+			// HRESULT GetCapabilities( DWORD *pdwCapFlags );
+			[PreserveSig]
+			HRESULT GetCapabilities(out OF_CAP pdwCapFlags);
+
+			/// <summary>Retrieves the handle of the top-level window of the application that is using the file.</summary>
+			/// <param name="phwnd">
+			/// <para>Type: <c>HWND*</c></para>
+			/// <para>A pointer to an <c>HWND</c> value that, when this method returns successfully, receives the window handle.</para>
+			/// </param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			/// <remarks>Only files that return the capability flag OF_CAP_CANSWITCHTO can be switched to.</remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifileisinuse-getswitchtohwnd
+			// HRESULT GetSwitchToHWND( HWND *phwnd );
+			[PreserveSig]
+			HRESULT GetSwitchToHWND(out HWND phwnd);
+
+			/// <summary>Closes the file currently in use.</summary>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			/// <remarks>
+			/// Only files that return the capability flag OF_CAP_CANCLOSE can be closed by this method. If that flag is returned, the user
+			/// can be presented with a dialog box that includes a <c>Close</c> option that calls this method.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-ifileisinuse-closefile
+			// HRESULT CloseFile( );
+			[PreserveSig]
+			HRESULT CloseFile();
 		}
 
 		/// <summary>Exposes methods that store file system information for optimizing calls to IShellFolder::ParseDisplayName.</summary>
