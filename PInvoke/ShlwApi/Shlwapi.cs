@@ -3174,7 +3174,59 @@ namespace Vanara.PInvoke
 		// pszSubKey, LPCSTR pszValue, DWORD *pdwType, void *pvData, DWORD *pcbData );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "8cca6bfe-d365-4d10-bc8d-f3bebefaad02")]
-		public static extern Win32Error SHGetValue(HKEY hkey, string pszSubKey, string pszValue, ref uint pdwType, IntPtr pvData, ref uint pcbData);
+		public static extern Win32Error SHGetValue(HKEY hkey, string pszSubKey, string pszValue, out uint pdwType, IntPtr pvData, ref uint pcbData);
+
+		/// <summary>
+		/// <para>Retrieves a registry value.</para>
+		/// </summary>
+		/// <param name="hkey">
+		/// <para>Type: <c>HKEY</c></para>
+		/// <para>A handle to the currently open key, or any of the following predefined values.</para>
+		/// <para>HKEY_CLASSES_ROOT</para>
+		/// <para>HKEY_CURRENT_CONFIG</para>
+		/// <para>HKEY_CURRENT_USER</para>
+		/// <para>HKEY_LOCAL_MACHINE</para>
+		/// <para>HKEY_PERFORMANCE_DATA</para>
+		/// <para>HKEY_USERS</para>
+		/// </param>
+		/// <param name="pszSubKey">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>The address of a null-terminated string that specifies the name of the subkey from which to retrieve the value.</para>
+		/// </param>
+		/// <param name="pszValue">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>The address of the value.</para>
+		/// </param>
+		/// <param name="pdwType">
+		/// <para>Type: <c>LPDWORD</c></para>
+		/// <para>The type of value. For more information, see Registry Data Types.</para>
+		/// </param>
+		/// <param name="pvData">
+		/// <para>Type: <c>LPVOID</c></para>
+		/// <para>The address of the destination data buffer.</para>
+		/// </param>
+		/// <param name="pcbData">
+		/// <para>Type: <c>LPDWORD</c></para>
+		/// <para>The size of the destination data buffer.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LSTATUS</c></para>
+		/// <para>
+		/// Returns ERROR_SUCCESS if successful, or a nonzero error code defined in Winerror.h otherwise. You can use the FormatMessage
+		/// function with the FORMAT_MESSAGE_FROM_SYSTEM flag to retrieve a generic description of the error.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If your application must set/retrieve a series of values in the same key, it is better to open the key once and set/retrieve the
+		/// values with the regular Microsoft Win32 registry functions rather than use this function repeatedly.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shgetvaluea LSTATUS SHGetValueA( HKEY hkey, LPCSTR
+		// pszSubKey, LPCSTR pszValue, DWORD *pdwType, void *pvData, DWORD *pcbData );
+		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shlwapi.h", MSDNShortId = "8cca6bfe-d365-4d10-bc8d-f3bebefaad02")]
+		public static extern Win32Error SHGetValue(HKEY hkey, string pszSubKey, string pszValue, out uint pdwType, SafeAllocatedMemoryHandle pvData, ref uint pcbData);
 
 		/// <summary>
 		/// <para>
