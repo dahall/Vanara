@@ -683,7 +683,7 @@ namespace Vanara.PInvoke
 		/// Exposes methods that allow an application to remove one or all destinations from the Recent or Frequent categories in a Jump List.
 		/// </summary>
 		[SuppressUnmanagedCodeSecurity]
-		[ComImport, Guid("12337d35-94c6-48a0-bce7-6a9c69d4d600"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		[ComImport, Guid("12337d35-94c6-48a0-bce7-6a9c69d4d600"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown), CoClass(typeof(ApplicationDestinations))]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "dd378413")]
 		public interface IApplicationDestinations
 		{
@@ -1898,6 +1898,11 @@ namespace Vanara.PInvoke
 		[PInvokeData("shobjidl_core.h")]
 		[ComImport, Guid("591209c7-767b-42b2-9fba-44ee4615f2c7"), ClassInterface(ClassInterfaceType.None)]
 		public class ApplicationAssociationRegistration { }
+
+		/// <summary>Implements CLSID_ApplicationDestinations to create IApplicationDestinations.</summary>
+		[PInvokeData("shobjidl_core.h")]
+		[ComImport, Guid("86c14003-4d6b-4ef3-a7b4-0506663b2e68"), ClassInterface(ClassInterfaceType.None)]
+		public class ApplicationDestinations { }
 
 		/// <summary>Class interface for IEnumerableObjectCollection.</summary>
 		[ComImport, Guid("2d3468c1-36a7-43b6-ac24-d3f02fd9607a"), ClassInterface(ClassInterfaceType.None)]
