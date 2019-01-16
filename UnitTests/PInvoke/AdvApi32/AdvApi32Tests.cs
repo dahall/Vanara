@@ -375,7 +375,7 @@ namespace Vanara.PInvoke.Tests
 				Microsoft.Win32.Registry.CurrentUser.CreateSubKey(tmpRegKey);
 				Microsoft.Win32.Registry.CurrentUser.DeleteSubKey(tmpRegKey);
 			}).Start();
-			Assert.That(RegOpenKeyEx(HKEY_CURRENT_USER, "Software", RegOpenOptions.REG_OPTION_NON_VOLATILE, RegAccessTypes.KEY_NOTIFY,
+			Assert.That(RegOpenKeyEx(HKEY.HKEY_CURRENT_USER, "Software", RegOpenOptions.REG_OPTION_NON_VOLATILE, RegAccessTypes.KEY_NOTIFY,
 				out var h), Is.EqualTo(0));
 			var hEvent = CreateEvent(null, true, false);
 			Assert.That(RegNotifyChangeKeyValue(h, false, RegNotifyChangeFilter.REG_NOTIFY_CHANGE_NAME, hEvent, true), Is.EqualTo(0));
