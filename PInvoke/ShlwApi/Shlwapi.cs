@@ -1661,6 +1661,35 @@ namespace Vanara.PInvoke
 		public static extern HRESULT IStream_Write(IStream pstm, IntPtr pv, uint cb);
 
 		/// <summary>
+		/// <para>Writes data of unknown format from a buffer to a specified stream.</para>
+		/// </summary>
+		/// <param name="pstm">
+		/// <para>Type: <c>IStream*</c></para>
+		/// <para>An IStream pointer that specifies the target stream.</para>
+		/// </param>
+		/// <param name="pv">
+		/// <para>Type: <c>const void*</c></para>
+		/// <para>Pointer to a buffer that holds the data to send to the target stream. This buffer must be at least cb bytes in size.</para>
+		/// </param>
+		/// <param name="cb">
+		/// <para>Type: <c>ULONG</c></para>
+		/// <para>The number of bytes of data to write to the target stream.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>
+		/// Returns S_OK if the function successfully wrote the specified number of bytes to the stream, or an error value otherwise. In
+		/// particular, if less than cb bytes was written to the target stream, even if some data was successfully written, the function
+		/// returns E_FAIL.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-istream_write LWSTDAPI IStream_Write( IStream *pstm, const
+		// void *pv, ULONG cb );
+		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlwapi.h", MSDNShortId = "fdcfdaf8-7fcb-433e-b3d4-98ca143fbe6b")]
+		public static extern HRESULT IStream_Write(IStream pstm, SafeAllocatedMemoryHandle pv, uint cb);
+
+		/// <summary>
 		/// <para>Writes a pointer to an item identifier list (PIDL) from a PCUIDLIST_RELATIVE object into an IStream object.</para>
 		/// </summary>
 		/// <param name="pstm">
@@ -2539,7 +2568,7 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shcreatestreamonfileex LWSTDAPI SHCreateStreamOnFileEx(
 		// LPCWSTR pszFile, DWORD grfMode, DWORD dwAttributes, BOOL fCreate, IStream *pstmTemplate, IStream **ppstm );
-		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "f948f7dd-987d-4c2d-b650-62081133c3f4")]
 		public static extern HRESULT SHCreateStreamOnFileEx(string pszFile, STGM grfMode, FileFlagsAndAttributes dwAttributes,
 			[MarshalAs(UnmanagedType.Bool)] bool fCreate, [Optional] IStream pstmTemplate, out IStream ppstm);
@@ -2892,7 +2921,69 @@ namespace Vanara.PInvoke
 		// dwIndex, PSTR pszValueName, LPDWORD pcchValueName, LPDWORD pdwType, void *pvData, LPDWORD pcbData );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "bb0eaa07-5112-4ce3-8796-5439bd863226")]
-		public static extern Win32Error SHEnumValue(HKEY hkey, uint dwIndex, StringBuilder pszValueName, ref uint pcchValueName, ref uint pdwType, IntPtr pvData, ref uint pcbData);
+		public static extern Win32Error SHEnumValue(HKEY hkey, uint dwIndex, StringBuilder pszValueName, ref uint pcchValueName, ref REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData);
+
+		/// <summary>
+		/// <para>Enumerates the values of the specified open registry key.</para>
+		/// </summary>
+		/// <param name="hkey">
+		/// <para>Type: <c>HKEY</c></para>
+		/// <para>A handle to the currently open key, or any of the following predefined values.</para>
+		/// <para>HKEY_CLASSES_ROOT</para>
+		/// <para>HKEY_CURRENT_CONFIG</para>
+		/// <para>HKEY_CURRENT_USER</para>
+		/// <para>HKEY_LOCAL_MACHINE</para>
+		/// <para>HKEY_PERFORMANCE_DATA</para>
+		/// <para>HKEY_USERS</para>
+		/// </param>
+		/// <param name="dwIndex">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The index of the value to retrieve. This parameter should be zero for the first call and incremented for subsequent calls.</para>
+		/// </param>
+		/// <param name="pszValueName">
+		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>The address of a character buffer that receives the enumerated value name. The size of this buffer is specified in pcchValueName.</para>
+		/// </param>
+		/// <param name="pcchValueName">
+		/// <para>Type: <c>LPDWORD</c></para>
+		/// <para>
+		/// The address of a <c>DWORD</c> that, on entry, contains the size of the buffer at pszValueName, in characters. On exit, this
+		/// contains the number of characters that were copied to pszValueName.
+		/// </para>
+		/// </param>
+		/// <param name="pdwType">
+		/// <para>Type: <c>LPDWORD</c></para>
+		/// <para>
+		/// The address of a <c>DWORD</c> that receives the data type of the value. These are the same values as those described under the
+		/// lpType parameter of RegEnumValue.
+		/// </para>
+		/// </param>
+		/// <param name="pvData">
+		/// <para>Type: <c>LPVOID</c></para>
+		/// <para>
+		/// The address of a buffer that receives the data for the value entry. The size of this buffer is specified in pcbData. This
+		/// parameter can be <c>NULL</c> if the data is not required.
+		/// </para>
+		/// </param>
+		/// <param name="pcbData">
+		/// <para>Type: <c>LPDWORD</c></para>
+		/// <para>
+		/// The address of a <c>DWORD</c> that, on entry, contains the size of the buffer at pvData, in bytes. On exit, this contains the
+		/// number of bytes that were copied to pvData.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LSTATUS</c></para>
+		/// <para>
+		/// Returns ERROR_SUCCESS if successful, or a nonzero error code defined in Winerror.h otherwise. You can use the FormatMessage
+		/// function with the FORMAT_MESSAGE_FROM_SYSTEM flag to retrieve a textual description of the error.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shenumvaluea LSTATUS SHEnumValueA( HKEY hkey, DWORD
+		// dwIndex, PSTR pszValueName, LPDWORD pcchValueName, LPDWORD pdwType, void *pvData, LPDWORD pcbData );
+		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shlwapi.h", MSDNShortId = "bb0eaa07-5112-4ce3-8796-5439bd863226")]
+		public static extern Win32Error SHEnumValue(HKEY hkey, uint dwIndex, StringBuilder pszValueName, ref uint pcchValueName, ref REG_VALUE_TYPE pdwType, SafeAllocatedMemoryHandle pvData, ref uint pcbData);
 
 		/// <summary>
 		/// <para>
@@ -3174,7 +3265,7 @@ namespace Vanara.PInvoke
 		// pszSubKey, LPCSTR pszValue, DWORD *pdwType, void *pvData, DWORD *pcbData );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "8cca6bfe-d365-4d10-bc8d-f3bebefaad02")]
-		public static extern Win32Error SHGetValue(HKEY hkey, string pszSubKey, string pszValue, out uint pdwType, IntPtr pvData, ref uint pcbData);
+		public static extern Win32Error SHGetValue(HKEY hkey, string pszSubKey, string pszValue, out REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData);
 
 		/// <summary>
 		/// <para>Retrieves a registry value.</para>
@@ -3226,7 +3317,7 @@ namespace Vanara.PInvoke
 		// pszSubKey, LPCSTR pszValue, DWORD *pdwType, void *pvData, DWORD *pcbData );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "8cca6bfe-d365-4d10-bc8d-f3bebefaad02")]
-		public static extern Win32Error SHGetValue(HKEY hkey, string pszSubKey, string pszValue, out uint pdwType, SafeAllocatedMemoryHandle pvData, ref uint pcbData);
+		public static extern Win32Error SHGetValue(HKEY hkey, string pszSubKey, string pszValue, out REG_VALUE_TYPE pdwType, SafeAllocatedMemoryHandle pvData, ref uint pcbData);
 
 		/// <summary>
 		/// <para>
@@ -3677,7 +3768,7 @@ namespace Vanara.PInvoke
 		// pszValue, DWORD *pdwReserved, DWORD *pdwType, void *pvData, DWORD *pcbData );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "9969acae-5965-40fe-bde9-6de9ddf26bb8")]
-		public static extern Win32Error SHQueryValueEx(HKEY hkey, string pszValue, IntPtr pdwReserved, out uint pdwType, IntPtr pvData, ref uint pcbData);
+		public static extern Win32Error SHQueryValueEx(HKEY hkey, string pszValue, [Optional] IntPtr pdwReserved, out REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData);
 
 		/// <summary>
 		/// <para>Closes a handle to a user-specific registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -3945,7 +4036,7 @@ namespace Vanara.PInvoke
 		// https://msdn.microsoft.com/en-us/windows/desktop/bb773520
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("Shlwapi.h", MSDNShortId = "bb773520")]
-		public static extern Win32Error SHRegEnumUSValue(HUSKEY hUSKey, uint dwIndex, StringBuilder pszValueName, ref uint pcchValueNameLen, out uint pdwType, IntPtr pvData, ref uint pcbData, SHREGENUM_FLAGS enumRegFlags);
+		public static extern Win32Error SHRegEnumUSValue(HUSKEY hUSKey, uint dwIndex, StringBuilder pszValueName, ref uint pcchValueNameLen, out REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData, SHREGENUM_FLAGS enumRegFlags);
 
 		/// <summary>
 		/// <para>Retrieves a Boolean value from a registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -4191,7 +4282,84 @@ namespace Vanara.PInvoke
 		// dwDefaultDataSize );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "4d3b3bbe-dc2e-40c9-8ff1-0f9d2e323743")]
-		public static extern Win32Error SHRegGetUSValue(string pszSubKey, string pszValue, ref uint pdwType, IntPtr pvData, ref uint pcbData, [MarshalAs(UnmanagedType.Bool)] bool fIgnoreHKCU, IntPtr pvDefaultData, uint dwDefaultDataSize);
+		public static extern Win32Error SHRegGetUSValue(string pszSubKey, string pszValue, ref REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData, [MarshalAs(UnmanagedType.Bool)] bool fIgnoreHKCU, IntPtr pvDefaultData, uint dwDefaultDataSize);
+
+		/// <summary>
+		/// <para>Retrieves a value from a registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
+		/// </summary>
+		/// <param name="pszSubKey">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>
+		/// A pointer to a null-terminated string with the name of the subkey relative to <c>HKEY_LOCAL_MACHINE</c> and
+		/// <c>HKEY_CURRENT_USER</c>. For example: "Software\MyCompany\MyProduct".
+		/// </para>
+		/// </param>
+		/// <param name="pszValue">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>A pointer to a null-terminated string with the name of the value. This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="pdwType">
+		/// <para>Type: <c>DWORD*</c></para>
+		/// <para>
+		/// A pointer to a <c>DWORD</c> that receives the type of data stored in the retrieved value. When using default values, the input
+		/// pdwType is the type of the default value. For possible values, see Registry Data Types. If type information is not required, this
+		/// parameter can be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="pvData">
+		/// <para>Type: <c>void*</c></para>
+		/// <para>A pointer to a buffer that receives the value's data.</para>
+		/// </param>
+		/// <param name="pcbData">
+		/// <para>Type: <c>DWORD*</c></para>
+		/// <para>
+		/// A pointer to a variable that specifies the size, in bytes, of the buffer pointed to by pvData. When <c>SHRegGetUSValue</c>
+		/// returns, pcbData contains the size of the data copied to pvData.
+		/// </para>
+		/// </param>
+		/// <param name="fIgnoreHKCU">
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>
+		/// A variable that specifies which key to look under. When set to <c>TRUE</c>, <c>SHRegGetUSValue</c> ignores
+		/// <c>HKEY_CURRENT_USER</c> and returns the value from the key under <c>HKEY_LOCAL_MACHINE</c>.
+		/// </para>
+		/// </param>
+		/// <param name="pvDefaultData">
+		/// <para>Type: <c>void*</c></para>
+		/// <para>A pointer to a buffer that receives the value's default data.</para>
+		/// </param>
+		/// <param name="dwDefaultDataSize">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The length, in bytes, of the buffer pointed to by pvDefaultData.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LSTATUS</c></para>
+		/// <para>
+		/// Returns ERROR_SUCCESS if successful, or a nonzero error code defined in Winerror.h otherwise. You can use the FormatMessage
+		/// function with the FORMAT_MESSAGE_FROM_SYSTEM flag to retrieve a generic description of the error.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// When fIgnoreHKCU is set to <c>TRUE</c>, <c>SHRegGetUSValue</c> returns the value from the key under <c>HKEY_LOCAL_MACHINE</c>.
+		/// When set to <c>FALSE</c>, <c>SHRegGetUSValue</c> first tries to return the value from the key under <c>HKEY_CURRENT_USER</c>.
+		/// However, if the key is not found under <c>HKEY_CURRENT_USER</c>, the value is returned from the key under
+		/// <c>HKEY_LOCAL_MACHINE</c>. If neither key is present, or if an error occurred and dwDefaultDataSize is nonzero, then the default
+		/// data is copied to pvData and ERROR_SUCCESS returns. ERROR_SUCCESS returns for both default and non-default data, and there is no
+		/// way of distinguishing which value copies to pvData. To prevent the use of default data, set pvDefaultData to <c>NULL</c> and
+		/// dwDefaultDataSize to zero.
+		/// </para>
+		/// <para>
+		/// This function opens the key each time it is used. If your code involves getting a series of values from the same key, it is more
+		/// efficient to open the key once with SHRegOpenUSKey and then use SHRegQueryUSValue to retrieve the data.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shreggetusvaluea LSTATUS SHRegGetUSValueA( LPCSTR
+		// pszSubKey, LPCSTR pszValue, DWORD *pdwType, void *pvData, DWORD *pcbData, BOOL fIgnoreHKCU, void *pvDefaultData, DWORD
+		// dwDefaultDataSize );
+		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shlwapi.h", MSDNShortId = "4d3b3bbe-dc2e-40c9-8ff1-0f9d2e323743")]
+		public static extern Win32Error SHRegGetUSValue(string pszSubKey, string pszValue, ref REG_VALUE_TYPE pdwType, SafeAllocatedMemoryHandle pvData, ref uint pcbData, [MarshalAs(UnmanagedType.Bool)] bool fIgnoreHKCU, SafeAllocatedMemoryHandle pvDefaultData, uint dwDefaultDataSize);
 
 		/// <summary>
 		/// <para>
@@ -4335,7 +4503,151 @@ namespace Vanara.PInvoke
 		// pszSubKey, LPCSTR pszValue, SRRF srrfFlags, DWORD *pdwType, void *pvData, DWORD *pcbData );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "5650eb4c-40fd-47d7-af76-2688d62d9bca")]
-		public static extern Win32Error SHRegGetValue(HKEY hkey, string pszSubKey, string pszValue, SRRF srrfFlags, ref uint pdwType, IntPtr pvData, ref uint pcbData);
+		public static extern Win32Error SHRegGetValue(HKEY hkey, string pszSubKey, string pszValue, SRRF srrfFlags, ref REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData);
+
+		/// <summary>
+		/// <para>
+		/// [ <c>SHRegGetValue</c> may be altered or unavailable in subsequent versions of the operating system or product. Use RegGetValue
+		/// in its place.]
+		/// </para>
+		/// <para>Retrieves a registry value.</para>
+		/// </summary>
+		/// <param name="hkey">
+		/// <para>Type: <c>HKEY</c></para>
+		/// <para>A handle to the currently open key, or any of the following predefined values.</para>
+		/// <para>HKEY_CLASSES_ROOT</para>
+		/// <para>HKEY_CURRENT_CONFIG</para>
+		/// <para>HKEY_CURRENT_USER</para>
+		/// <para>HKEY_LOCAL_MACHINE</para>
+		/// <para>HKEY_PERFORMANCE_DATA</para>
+		/// <para>HKEY_USERS</para>
+		/// </param>
+		/// <param name="pszSubKey">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>
+		/// A pointer to a <c>null</c>-terminated string that specifies the relative path from hkey to the subkey to retrieve the value from.
+		/// This parameter can be <c>NULL</c> or an empty string, in which case the data is retrieved from the hkey location.
+		/// </para>
+		/// </param>
+		/// <param name="pszValue">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>
+		/// A pointer to a <c>null</c>-terminated string that contains the name of the value. This parameter can be <c>NULL</c> or an empty
+		/// string, in which case the data is retrieved from the Default value.
+		/// </para>
+		/// </param>
+		/// <param name="srrfFlags">
+		/// <para>Type: <c>SRRF</c></para>
+		/// <para>
+		/// One or more of the SRRF flags that restricts the data to be retrieved. At least one type restriction (SRRF_RT) value must be specified.
+		/// </para>
+		/// </param>
+		/// <param name="pdwType">
+		/// <para>Type: <c>LPDWORD</c></para>
+		/// <para>
+		/// A pointer to a <c>DWORD</c> that receives the type of data stored in the retrieved value. When using default values, the input
+		/// pdwType is the type of the default value. For possible values, see Registry Data Types. If the SRRF_NOEXPAND flag is not set,
+		/// REG_EXPAND_SZ types are automatically expanded and returned as REG_SZ. If type information is not required, this parameter can be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="pvData">
+		/// <para>Type: <c>LPVOID</c></para>
+		/// <para>
+		/// A pointer to a buffer that receives the value's data. This parameter can be <c>NULL</c> if the data is not needed. For example,
+		/// if you were testing only for a value's existence, the specific value data would be superfluous.
+		/// </para>
+		/// </param>
+		/// <param name="pcbData">
+		/// <para>Type: <c>LPDWORD</c></para>
+		/// <para>
+		/// A pointer to a <c>DWORD</c> that, on entry, contains the size of the destination data buffer pvData, in bytes. This value can be
+		/// <c>NULL</c> only if pvData is <c>NULL</c>. On exit, pcbData points to one of these values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>pvData</term>
+		/// <term>Return Value</term>
+		/// <term>pcbData</term>
+		/// </listheader>
+		/// <item>
+		/// <term>NULL</term>
+		/// <term>ERROR_SUCCESS</term>
+		/// <term>
+		/// Size in bytes sufficient to hold the registry data. Note that this is not guaranteed to be the precise size, but only a
+		/// sufficient size.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>Non-NULL</term>
+		/// <term>ERROR_SUCCESS</term>
+		/// <term>Exact number of bytes written to pvData.</term>
+		/// </item>
+		/// <item>
+		/// <term>Non-NULL</term>
+		/// <term>ERROR_MORE_DATA</term>
+		/// <term>
+		/// Size in bytes needed to hold the entire data. Note that this is not guaranteed to be the precise size, but only a sufficient size.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LSTATUS</c></para>
+		/// <para>
+		/// Returns <c>ERROR_SUCCESS</c> if successful, or a nonzero error code defined in Winerror.h otherwise. You can use the
+		/// FormatMessage function with the <c>FORMAT_MESSAGE_FROM_SYSTEM</c> flag to retrieve a generic description of the error.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>SHRegGetValue</c> provides data type checking, boot mode checking, auto-expansion of REG_EXPAND_SZ data, and guaranteed
+		/// <c>null</c>-termination of REG_SZ, REG_EXPAND_SZ, and REG_MULTI_SZ data.
+		/// </para>
+		/// <para>
+		/// The key identified by hkey must have been opened with KEY_QUERY_VALUE security access. If pszSubKey is not <c>NULL</c> or an
+		/// empty string, that key also must be able to be opened with <c>KEY_QUERY_VALUE</c> security access in the current calling context.
+		/// </para>
+		/// <para>
+		/// If the data's type is REG_SZ, REG_EXPAND_SZ or REG_MULTI_SZ, then any returned data includes or takes into account the string's
+		/// <c>null</c>-termination. For example, if pvData is not <c>NULL</c>, the data returned in that buffer is <c>null</c>-terminated.
+		/// If pcbData is not <c>NULL</c>, the buffer size that it points to includes the bytes required to hold the terminating <c>null</c> character.
+		/// </para>
+		/// <para>
+		/// Unless the SRRF_NOEXPAND flag is set, string data of type REG_EXPAND_SZ is automatically expanded before being returned. The
+		/// expanded string's type is reported in pdwType as REG_SZ, the pcbData parameter points to the number of bytes written for the
+		/// expanded string, and the buffer pointed to by pvData holds the expanded version of the string.
+		/// </para>
+		/// <para>Performance Notes</para>
+		/// <para>
+		/// If pszSubKey is not <c>NULL</c> or an empty string, that key is opened and closed by this function each time it is accessed. If
+		/// your application must retrieve a series of values from the same subkey, you will see better performance by opening the key using
+		/// RegOpenKeyEx before calling <c>SHRegGetValue</c>. Use the key returned in the phkResult parameter of <c>RegOpenKeyEx</c> as the
+		/// hkey parameter in this function, with pszSubKey set to <c>NULL</c>.
+		/// </para>
+		/// <para>
+		/// The potential for an additional call to the registry to read or re-read the data exists when the data type is REG_EXPAND_SZ and
+		/// the SRRF_NOEXPAND flag has not been set. The following conditions result in that additional call.
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// pvData is <c>NULL</c>, pcbData is not <c>NULL</c>. Though the data is not retrieved, the registry must be read to get the string
+		/// and that string expanded to determine the required size of the data buffer.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// pvData is not <c>NULL</c>, but is too small to hold the data. The data is re-read to get the full string, the string is expanded,
+		/// and the total required size is determined.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shreggetvaluea LSTATUS SHRegGetValueA( HKEY hkey, LPCSTR
+		// pszSubKey, LPCSTR pszValue, SRRF srrfFlags, DWORD *pdwType, void *pvData, DWORD *pcbData );
+		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shlwapi.h", MSDNShortId = "5650eb4c-40fd-47d7-af76-2688d62d9bca")]
+		public static extern Win32Error SHRegGetValue(HKEY hkey, string pszSubKey, string pszValue, SRRF srrfFlags, ref REG_VALUE_TYPE pdwType, SafeAllocatedMemoryHandle pvData, ref uint pcbData);
 
 		/// <summary>
 		/// <para>[This function is no longer supported.]</para>
@@ -4397,7 +4709,69 @@ namespace Vanara.PInvoke
 		// SHRegGetValueFromHKCUHKLM( PCWSTR pwszKey, PCWSTR pwszValue, SRRF srrfFlags, DWORD *pdwType, void *pvData, DWORD *pcbData );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "5c4b13f4-0dd8-476e-9e89-ace23d541389")]
-		public static extern Win32Error SHRegGetValueFromHKCUHKLM(string pwszKey, string pwszValue, SRRF srrfFlags, ref uint pdwType, IntPtr pvData, ref uint pcbData);
+		public static extern Win32Error SHRegGetValueFromHKCUHKLM(string pwszKey, string pwszValue, SRRF srrfFlags, ref REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData);
+
+		/// <summary>
+		/// <para>[This function is no longer supported.]</para>
+		/// <para>
+		/// Obtains specified information from the registry. This function will check HKEY_CURRENT_USER for the requested information in the
+		/// specified subkey. If the information does not exist under the HKEY_CURRENT_USER subtree, the function checks the
+		/// HKEY_LOCAL_MACHINE subtree for the same information.
+		/// </para>
+		/// </summary>
+		/// <param name="pwszKey">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>A pointer to a <c>null</c>-terminated Unicode string that specifies the path to the registry key.</para>
+		/// </param>
+		/// <param name="pwszValue">
+		/// <para>Type: <c>PCWSTR</c></para>
+		/// <para>
+		/// A pointer to a <c>null</c>-terminated Unicode string that specifies the key value. This value can be <c>NULL</c>, in which case
+		/// data is retrieved from the Default value.
+		/// </para>
+		/// </param>
+		/// <param name="srrfFlags">
+		/// <para>Type: <c>SRRF</c></para>
+		/// <para>
+		/// The SRRF flag constants. If more than one flag is used they can be combined using a bitwise OR. These flags are used to restrict
+		/// the type of data returned. This value cannot be 0.
+		/// </para>
+		/// </param>
+		/// <param name="pdwType">
+		/// <para>Type: <c>DWORD*</c></para>
+		/// <para>
+		/// When this function returns, contains a pointer to a <c>DWORD</c> which receives a code that indicates the type of data stored in
+		/// the specified value. This can be set to <c>NULL</c> if no type information is wanted. If this value is not <c>NULL</c>, and the
+		/// SRRF_NOEXPAND flag has not been set, data types of REG_EXPAND_SZ will be returned as REG_SZ since they are automatically expanded
+		/// in this method.
+		/// </para>
+		/// </param>
+		/// <param name="pvData">
+		/// <para>Type: <c>LPCVOID</c></para>
+		/// <para>
+		/// A pointer to a buffer that contains the value's data. This parameter can be <c>NULL</c> if the data is not needed. This value
+		/// must contain the size of the pvData buffer on entry. If pvData is <c>NULL</c> (or if pvData is not <c>NULL</c>, but too small of
+		/// a buffer to hold the registry data), then on exit it will contain the size required to hold the registry data.
+		/// </para>
+		/// </param>
+		/// <param name="pcbData">
+		/// <para>Type: <c>DWORD*</c></para>
+		/// <para>When this function returns, contains a pointer to the size of the data, in bytes.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LONG</c></para>
+		/// <para>
+		/// If successful, this function returns ERROR_SUCCESS and all out parameters requested. Returns ERROR_MORE_DATA if the function
+		/// fails due to insufficient space in a provided non- <c>NULL</c> pvData. In this case only pdwType and pcbData may contain valid
+		/// data, pvData will be undefined. Otherwise, returns a nonzero error code defined in Winerror.h . You can use the FormatMessage
+		/// function with the FORMAT_MESSAGE_FROM_SYSTEM flag to retrieve a generic description of the error.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shreggetvaluefromhkcuhklm LSTATUS
+		// SHRegGetValueFromHKCUHKLM( PCWSTR pwszKey, PCWSTR pwszValue, SRRF srrfFlags, DWORD *pdwType, void *pvData, DWORD *pcbData );
+		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("shlwapi.h", MSDNShortId = "5c4b13f4-0dd8-476e-9e89-ace23d541389")]
+		public static extern Win32Error SHRegGetValueFromHKCUHKLM(string pwszKey, string pwszValue, SRRF srrfFlags, ref REG_VALUE_TYPE pdwType, SafeAllocatedMemoryHandle pvData, ref uint pcbData);
 
 		/// <summary>
 		/// <para>Opens a registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -4569,7 +4943,7 @@ namespace Vanara.PInvoke
 		// dwDefaultDataSize );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "302a51b5-9cf9-46e5-908c-df0d3c31c91c")]
-		public static extern Win32Error SHRegQueryUSValue(HUSKEY hUSKey, string pszValue, ref uint pdwType, IntPtr pvData, ref uint pcbData, [MarshalAs(UnmanagedType.Bool)] bool fIgnoreHKCU, IntPtr pvDefaultData, uint dwDefaultDataSize);
+		public static extern Win32Error SHRegQueryUSValue(HUSKEY hUSKey, string pszValue, ref REG_VALUE_TYPE pdwType, IntPtr pvData, ref uint pcbData, [MarshalAs(UnmanagedType.Bool)] bool fIgnoreHKCU, IntPtr pvDefaultData, uint dwDefaultDataSize);
 
 		/// <summary>
 		/// <para>Takes a file path, replaces folder names with environment strings, and places the resulting string in the registry.</para>
@@ -4702,7 +5076,7 @@ namespace Vanara.PInvoke
 		// pszSubKey, LPCSTR pszValue, DWORD dwType, const void *pvData, DWORD cbData, DWORD dwFlags );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "96559f8c-8527-4924-928e-f27049069407")]
-		public static extern Win32Error SHRegSetUSValue(string pszSubKey, string pszValue, uint dwType, IntPtr pvData, uint cbData, SHREGSET dwFlags);
+		public static extern Win32Error SHRegSetUSValue(string pszSubKey, string pszValue, REG_VALUE_TYPE dwType, IntPtr pvData, uint cbData, SHREGSET dwFlags);
 
 		/// <summary>
 		/// <para>Writes a value to a registry subkey in a user-specific subtree (HKEY_CURRENT_USER or HKEY_LOCAL_MACHINE).</para>
@@ -4794,7 +5168,7 @@ namespace Vanara.PInvoke
 		// hUSKey, LPCSTR pszValue, DWORD dwType, const void *pvData, DWORD cbData, DWORD dwFlags );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "f94569c6-415b-4263-bab4-8a5baca47901")]
-		public static extern Win32Error SHRegWriteUSValue(HUSKEY hUSKey, string pszValue, uint dwType, IntPtr pvData, uint cbData, SHREGSET dwFlags);
+		public static extern Win32Error SHRegWriteUSValue(HUSKEY hUSKey, string pszValue, REG_VALUE_TYPE dwType, IntPtr pvData, uint cbData, SHREGSET dwFlags);
 
 		/// <summary>
 		/// <para>Releases a thread reference before the thread procedure returns.</para>
@@ -4919,7 +5293,59 @@ namespace Vanara.PInvoke
 		// pszSubKey, LPCSTR pszValue, DWORD dwType, LPCVOID pvData, DWORD cbData );
 		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "6cd5b7fd-8fb9-4c24-9670-20c23ca709bf")]
-		public static extern Win32Error SHSetValue(HKEY hkey, string pszSubKey, string pszValue, uint dwType, IntPtr pvData, uint cbData);
+		public static extern Win32Error SHSetValue(HKEY hkey, string pszSubKey, string pszValue, REG_VALUE_TYPE dwType, IntPtr pvData, uint cbData);
+
+		/// <summary>
+		/// <para>Sets the value of a registry key.</para>
+		/// </summary>
+		/// <param name="hkey">
+		/// <para>Type: <c>HKEY</c></para>
+		/// <para>A handle to the currently open key, or any of the following predefined values.</para>
+		/// <para>HKEY_CLASSES_ROOT</para>
+		/// <para>HKEY_CURRENT_CONFIG</para>
+		/// <para>HKEY_CURRENT_USER</para>
+		/// <para>HKEY_LOCAL_MACHINE</para>
+		/// <para>HKEY_PERFORMANCE_DATA</para>
+		/// <para>HKEY_USERS</para>
+		/// </param>
+		/// <param name="pszSubKey">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>
+		/// The address of a null-terminated string that specifies the name of the subkey with which a value is associated. This can be
+		/// <c>NULL</c> or a pointer to an empty string. In this case, the value is added to the key identified by the hkey parameter.
+		/// </para>
+		/// </param>
+		/// <param name="pszValue">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>The address of a null-terminated string that specifies the value. This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="dwType">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>Type of data to be stored. This parameter must be the <c>REG_SZ</c> type. For more information, see Registry Data Types.</para>
+		/// </param>
+		/// <param name="pvData">
+		/// <para>Type: <c>LPCVOID</c></para>
+		/// <para>Pointer to a buffer that contains the data to set for the specified value. This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="cbData">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// Length, in bytes, of the buffer pointed to by the pvData parameter. If the data is a null-terminated string, this length includes
+		/// the terminating null character.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LSTATUS</c></para>
+		/// <para>
+		/// Returns ERROR_SUCCESS if successful; otherwise, a nonzero error code defined in Winerror.h. You can use the FormatMessage
+		/// function with the FORMAT_MESSAGE_FROM_SYSTEM flag to retrieve a generic description of the error.
+		/// </para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-shsetvaluea LSTATUS SHSetValueA( HKEY hkey, LPCSTR
+		// pszSubKey, LPCSTR pszValue, DWORD dwType, LPCVOID pvData, DWORD cbData );
+		[DllImport(Lib.Shlwapi, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("shlwapi.h", MSDNShortId = "6cd5b7fd-8fb9-4c24-9670-20c23ca709bf")]
+		public static extern Win32Error SHSetValue(HKEY hkey, string pszSubKey, string pszValue, REG_VALUE_TYPE dwType, SafeAllocatedMemoryHandle pvData, uint cbData);
 
 		/// <summary>
 		/// <para>Checks a bind context to see if it is safe to bind to a particular component object.</para>
