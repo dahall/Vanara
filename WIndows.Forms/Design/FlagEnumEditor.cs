@@ -128,7 +128,7 @@ namespace Vanara.Windows.Forms.Design
 
 				public long LongVal => Convert.ToInt64(Value);
 
-				public override string ToString() => Value.ToString(CultureInfo.CurrentCulture);
+				public override string ToString() => Value.ToString();
 			}
 		}
 	}
