@@ -916,7 +916,54 @@ namespace Vanara.PInvoke
 		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
 		public bool IsNull => handle == IntPtr.Zero;
 
-		/// <summary>Performs an explicit conversion from <see cref="HKEY"/> to <see cref="IntPtr"/>.</summary>
+		/// <summary>
+		/// Registry entries subordinate to this key define types (or classes) of documents and the properties associated with those types.
+		/// Shell and COM applications use the information stored under this key.
+		/// </summary>
+		public static readonly HKEY HKEY_CLASSES_ROOT = new HKEY(new IntPtr(unchecked((int)0x80000000)));
+
+		/// <summary>
+		/// Contains information about the current hardware profile of the local computer system. The information under HKEY_CURRENT_CONFIG
+		/// describes only the differences between the current hardware configuration and the standard configuration. Information about the
+		/// standard hardware configuration is stored under the Software and System keys of HKEY_LOCAL_MACHINE.
+		/// </summary>
+		public static readonly HKEY HKEY_CURRENT_CONFIG = new HKEY(new IntPtr(unchecked((int)0x80000005)));
+
+		/// <summary>
+		/// Registry entries subordinate to this key define the preferences of the current user. These preferences include the settings of
+		/// environment variables, data about program groups, colors, printers, network connections, and application preferences. This key
+		/// makes it easier to establish the current user's settings; the key maps to the current user's branch in HKEY_USERS. In
+		/// HKEY_CURRENT_USER, software vendors store the current user-specific preferences to be used within their applications. Microsoft,
+		/// for example, creates the HKEY_CURRENT_USER\Software\Microsoft key for its applications to use, with each application creating its
+		/// own subkey under the Microsoft key.
+		/// </summary>
+		public static readonly HKEY HKEY_CURRENT_USER = new HKEY(new IntPtr(unchecked((int)0x80000001)));
+
+		/// <summary></summary>
+		public static readonly HKEY HKEY_DYN_DATA = new HKEY(new IntPtr(unchecked((int)0x80000006)));
+
+		/// <summary>
+		/// Registry entries subordinate to this key define the physical state of the computer, including data about the bus type, system
+		/// memory, and installed hardware and software. It contains subkeys that hold current configuration data, including Plug and Play
+		/// information (the Enum branch, which includes a complete list of all hardware that has ever been on the system), network logon
+		/// preferences, network security information, software-related information (such as server names and the location of the server),
+		/// and other system information.
+		/// </summary>
+		public static readonly HKEY HKEY_LOCAL_MACHINE = new HKEY(new IntPtr(unchecked((int)0x80000002)));
+
+		/// <summary>
+		/// Registry entries subordinate to this key allow you to access performance data. The data is not actually stored in the registry;
+		/// the registry functions cause the system to collect the data from its source.
+		/// </summary>
+		public static readonly HKEY HKEY_PERFORMANCE_DATA = new HKEY(new IntPtr(unchecked((int)0x80000004)));
+
+		/// <summary>
+		/// Registry entries subordinate to this key define the default user configuration for new users on the local computer and the user
+		/// configuration for the current user.
+		/// </summary>
+		public static readonly HKEY HKEY_USERS = new HKEY(new IntPtr(unchecked((int)0x80000003)));
+
+		/// <summary>Performs an explicit conversion from <see cref="HKEY" /> to <see cref="IntPtr" />.</summary>
 		/// <param name="h">The handle.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator IntPtr(HKEY h) => h.handle;
