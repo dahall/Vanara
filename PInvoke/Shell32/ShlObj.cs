@@ -3141,6 +3141,30 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, ExactSpelling = true)]
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Shlobj.h", MSDNShortId = "bb762105")]
+		public static extern void SHAddToRecentDocs(SHARD uFlags, IShellItem pv);
+
+		/// <summary>
+		/// Notifies the system that an item has been accessed, for the purposes of tracking those items used most recently and most
+		/// frequently. This function can also be used to clear all usage data.
+		/// </summary>
+		/// <param name="uFlags">A value from the SHARD enumeration that indicates the form of the information pointed to by the pv parameter.</param>
+		/// <param name="pv">
+		/// A pointer to data that identifies the item that has been accessed. The item can be specified in this parameter in one of the
+		/// following forms:
+		/// <list type="bullet">
+		/// <item><definition>A null-terminated string that contains the path and file name of the item.</definition></item>
+		/// <item><definition>A PIDL that identifies the item's file object.</definition></item>
+		/// <item>
+		/// <definition>Windows 7 and later only. A SHARDAPPIDINFO, SHARDAPPIDINFOIDLIST, or SHARDAPPIDINFOLINK structure that identifies the
+		/// item through an AppUserModelID. See Application User Model IDs (AppUserModelIDs) for more information.</definition>
+		/// </item>
+		/// <item><definition>Windows 7 and later only. An IShellLink object that identifies the item through a shortcut.</definition></item>
+		/// </list>
+		/// <para>Set this parameter to NULL to clear all usage data on all items.</para>
+		/// </param>
+		[DllImport(Lib.Shell32, ExactSpelling = true)]
+		[SecurityCritical, SuppressUnmanagedCodeSecurity]
+		[PInvokeData("Shlobj.h", MSDNShortId = "bb762105")]
 		public static extern void SHAddToRecentDocs(SHARD uFlags, IShellLinkW pv);
 
 		/// <summary>
