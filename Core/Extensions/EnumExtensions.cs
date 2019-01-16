@@ -76,7 +76,7 @@ namespace Vanara.Extensions
 		{
 			// If this is flag, return flags if there are more than one.
 			if (IsFlags<T>() && value.GetFlags().Count() > 1)
-				return value.ToString(CultureInfo.InvariantCulture);
+				return value.ToString();
 			// Get the name or description of the single enum value.
 			var name = Enum.GetName(typeof(T), value);
 			if (name != null)
