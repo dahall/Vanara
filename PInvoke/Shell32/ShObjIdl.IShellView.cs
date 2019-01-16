@@ -697,7 +697,7 @@ namespace Vanara.PInvoke
 			/// the flag or flags set in the wFlags parameter.
 			/// </param>
 			/// <param name="wFlags">Flags specifying the folder to be browsed.</param>
-			void BrowseObject(PIDL pidl, SBSP wFlags);
+			void BrowseObject(IntPtr pidl, SBSP wFlags);
 
 			/// <summary>Gets an IStream interface that can be used for storage of view-specific state information.</summary>
 			/// <param name="grfMode">Read/write access of the IStream interface.</param>
@@ -941,7 +941,7 @@ namespace Vanara.PInvoke
 			/// <summary>Changes the selection state of one or more items within the Shell view window.</summary>
 			/// <param name="pidlItem">The address of the ITEMIDLIST structure.</param>
 			/// <param name="uFlags">One of the _SVSIF constants that specify the type of selection to apply.</param>
-			new void SelectItem(PIDL pidlItem, SVSIF uFlags);
+			new void SelectItem(IntPtr pidlItem, SVSIF uFlags);
 
 			/// <summary>Gets an interface that refers to data presented in the view.</summary>
 			/// <param name="uItem">The constants that refer to an aspect of the view.</param>
@@ -969,13 +969,13 @@ namespace Vanara.PInvoke
 			/// <param name="pidlNew">
 			/// A pointer to an ITEMIDLIST structure. The current identifier is passed in and is replaced by the new one.
 			/// </param>
-			void HandleRename(PIDL pidlNew);
+			void HandleRename(IntPtr pidlNew);
 
 			/// <summary>Selects and positions an item in a Shell View.</summary>
 			/// <param name="pidlItem">A pointer to an ITEMIDLIST structure that uniquely identifies the item of interest.</param>
 			/// <param name="flags">One of the _SVSIF constants that specify the type of selection to apply.</param>
 			/// <param name="point">A pointer to a POINT structure containing the new position.</param>
-			void SelectAndPositionItem(PIDL pidlItem, SVSIF flags, in System.Drawing.Point point);
+			void SelectAndPositionItem(IntPtr pidlItem, SVSIF flags, in System.Drawing.Point point);
 		}
 
 		/// <summary>
@@ -1053,7 +1053,7 @@ namespace Vanara.PInvoke
 			/// <summary>Changes the selection state of one or more items within the Shell view window.</summary>
 			/// <param name="pidlItem">The address of the ITEMIDLIST structure.</param>
 			/// <param name="uFlags">One of the _SVSIF constants that specify the type of selection to apply.</param>
-			new void SelectItem(PIDL pidlItem, SVSIF uFlags);
+			new void SelectItem(IntPtr pidlItem, SVSIF uFlags);
 
 			/// <summary>Gets an interface that refers to data presented in the view.</summary>
 			/// <param name="uItem">The constants that refer to an aspect of the view.</param>
@@ -1081,13 +1081,13 @@ namespace Vanara.PInvoke
 			/// <param name="pidlNew">
 			/// A pointer to an ITEMIDLIST structure. The current identifier is passed in and is replaced by the new one.
 			/// </param>
-			new void HandleRename(PIDL pidlNew);
+			new void HandleRename(IntPtr pidlNew);
 
 			/// <summary>Selects and positions an item in a Shell View.</summary>
 			/// <param name="pidlItem">A pointer to an ITEMIDLIST structure that uniquely identifies the item of interest.</param>
 			/// <param name="flags">One of the _SVSIF constants that specify the type of selection to apply.</param>
 			/// <param name="point">A pointer to a POINT structure containing the new position.</param>
-			new void SelectAndPositionItem(PIDL pidlItem, SVSIF flags, in System.Drawing.Point point);
+			new void SelectAndPositionItem(IntPtr pidlItem, SVSIF flags, in System.Drawing.Point point);
 
 			/// <summary>
 			/// Requests the creation of a new Shell view window. The view can be either the right pane of Windows Explorer or the client
