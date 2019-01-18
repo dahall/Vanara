@@ -2,6 +2,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
@@ -3376,9 +3377,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("winreg.h", MSDNShortId = "08bf8fc1-6a08-490e-b589-730211774257")]
 		public static extern Win32Error RegSetKeySecurity(HKEY hKey, SECURITY_INFORMATION SecurityInformation, PSECURITY_DESCRIPTOR pSecurityDescriptor);
 
-		/// <summary>
-		/// <para>Sets the data for the specified value in the specified registry key and subkey.</para>
-		/// </summary>
+		/// <summary>Sets the data for the specified value in the specified registry key and subkey.</summary>
 		/// <param name="hKey">
 		/// <para>
 		/// A handle to an open registry key. The key must have been opened with the KEY_SET_VALUE access right. For more information, see
@@ -3391,16 +3390,12 @@ namespace Vanara.PInvoke
 		/// <para><c></c><c>HKEY_CLASSES_ROOT</c><c>HKEY_CURRENT_CONFIG</c><c>HKEY_CURRENT_USER</c><c>HKEY_LOCAL_MACHINE</c><c>HKEY_USERS</c></para>
 		/// </param>
 		/// <param name="lpSubKey">
-		/// <para>
 		/// The name of a key and a subkey to the key identified by hKey. If this parameter is <c>NULL</c>, then this value is created in the
 		/// key using the hKey value and the key gets a default security descriptor.
-		/// </para>
 		/// </param>
-		/// <param name="lpValueName">
-		/// <para>The name of the registry value whose data is to be updated.</para>
-		/// </param>
+		/// <param name="lpValueName">The name of the registry value whose data is to be updated.</param>
 		/// <param name="dwType">
-		/// <para>The type of data pointed to by the lpData parameter. For a list of the possible types, see Registry Value Types.</para>
+		/// The type of data pointed to by the lpData parameter. For a list of the possible types, see Registry Value Types.
 		/// </param>
 		/// <param name="lpData">
 		/// <para>The data to be stored with the specified value name.</para>
@@ -3410,10 +3405,8 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </param>
 		/// <param name="cbData">
-		/// <para>
 		/// The size of the information pointed to by the lpData parameter, in bytes. If the data is of type REG_SZ, REG_EXPAND_SZ, or
 		/// REG_MULTI_SZ, cbData must include the size of the terminating null character or characters.
-		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
@@ -3423,16 +3416,158 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </returns>
 		/// <remarks>
-		/// <para>
 		/// To compile an application that uses this function, define _WIN32_WINNT as 0x0600 or later. For more information, see Using the
 		/// Windows Headers.
-		/// </para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regsetkeyvaluea LSTATUS RegSetKeyValueA( HKEY hKey, LPCSTR
 		// lpSubKey, LPCSTR lpValueName, DWORD dwType, LPCVOID lpData, DWORD cbData );
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "e27d2dd6-b139-4ac1-8dd8-527022333364")]
 		public static extern Win32Error RegSetKeyValue(HKEY hKey, string lpSubKey, string lpValueName, REG_VALUE_TYPE dwType, IntPtr lpData, uint cbData);
+
+		/// <summary>Sets the data for the specified value in the specified registry key and subkey.</summary>
+		/// <param name="hKey">
+		/// <para>
+		/// A handle to an open registry key. The key must have been opened with the KEY_SET_VALUE access right. For more information, see
+		/// Registry Key Security and Access Rights.
+		/// </para>
+		/// <para>
+		/// This handle is returned by the RegCreateKeyEx, RegCreateKeyTransacted, RegOpenKeyEx, or RegOpenKeyTransacted function. It can
+		/// also be one of the following predefined keys:
+		/// </para>
+		/// <para><c></c><c>HKEY_CLASSES_ROOT</c><c>HKEY_CURRENT_CONFIG</c><c>HKEY_CURRENT_USER</c><c>HKEY_LOCAL_MACHINE</c><c>HKEY_USERS</c></para>
+		/// </param>
+		/// <param name="lpSubKey">
+		/// The name of a key and a subkey to the key identified by hKey. If this parameter is <c>NULL</c>, then this value is created in the
+		/// key using the hKey value and the key gets a default security descriptor.
+		/// </param>
+		/// <param name="lpValueName">The name of the registry value whose data is to be updated.</param>
+		/// <param name="dwType">
+		/// The type of data pointed to by the lpData parameter. For a list of the possible types, see Registry Value Types.
+		/// </param>
+		/// <param name="lpData">
+		/// <para>The data to be stored with the specified value name.</para>
+		/// <para>
+		/// For string-based types, such as REG_SZ, the string must be null-terminated. With the REG_MULTI_SZ data type, the string must be
+		/// terminated with two null characters.
+		/// </para>
+		/// </param>
+		/// <param name="cbData">
+		/// The size of the information pointed to by the lpData parameter, in bytes. If the data is of type REG_SZ, REG_EXPAND_SZ, or
+		/// REG_MULTI_SZ, cbData must include the size of the terminating null character or characters.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, the return value is a nonzero error code defined in Winerror.h. You can use the FormatMessage function
+		/// with the FORMAT_MESSAGE_FROM_SYSTEM flag to get a generic description of the error.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// To compile an application that uses this function, define _WIN32_WINNT as 0x0600 or later. For more information, see Using the
+		/// Windows Headers.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regsetkeyvaluea LSTATUS RegSetKeyValueA( HKEY hKey, LPCSTR
+		// lpSubKey, LPCSTR lpValueName, DWORD dwType, LPCVOID lpData, DWORD cbData );
+		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winreg.h", MSDNShortId = "e27d2dd6-b139-4ac1-8dd8-527022333364")]
+		public static extern Win32Error RegSetKeyValue(HKEY hKey, string lpSubKey, string lpValueName, REG_VALUE_TYPE dwType, string lpData, uint cbData);
+
+		/// <summary>Sets the data for the specified value in the specified registry key and subkey.</summary>
+		/// <param name="hKey">
+		/// <para>
+		/// A handle to an open registry key. The key must have been opened with the KEY_SET_VALUE access right. For more information, see
+		/// Registry Key Security and Access Rights.
+		/// </para>
+		/// <para>
+		/// This handle is returned by the RegCreateKeyEx, RegCreateKeyTransacted, RegOpenKeyEx, or RegOpenKeyTransacted function. It can
+		/// also be one of the following predefined keys:
+		/// </para>
+		/// <para><c></c><c>HKEY_CLASSES_ROOT</c><c>HKEY_CURRENT_CONFIG</c><c>HKEY_CURRENT_USER</c><c>HKEY_LOCAL_MACHINE</c><c>HKEY_USERS</c></para>
+		/// </param>
+		/// <param name="lpSubKey">
+		/// The name of a key and a subkey to the key identified by hKey. If this parameter is <c>NULL</c>, then this value is created in the
+		/// key using the hKey value and the key gets a default security descriptor.
+		/// </param>
+		/// <param name="lpValueName">The name of the registry value whose data is to be updated.</param>
+		/// <param name="dwType">
+		/// The type of data pointed to by the lpData parameter. For a list of the possible types, see Registry Value Types.
+		/// </param>
+		/// <param name="lpData">
+		/// <para>The data to be stored with the specified value name.</para>
+		/// <para>
+		/// For string-based types, such as REG_SZ, the string must be null-terminated. With the REG_MULTI_SZ data type, the string must be
+		/// terminated with two null characters.
+		/// </para>
+		/// </param>
+		/// <param name="cbData">
+		/// The size of the information pointed to by the lpData parameter, in bytes. If the data is of type REG_SZ, REG_EXPAND_SZ, or
+		/// REG_MULTI_SZ, cbData must include the size of the terminating null character or characters.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, the return value is a nonzero error code defined in Winerror.h. You can use the FormatMessage function
+		/// with the FORMAT_MESSAGE_FROM_SYSTEM flag to get a generic description of the error.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// To compile an application that uses this function, define _WIN32_WINNT as 0x0600 or later. For more information, see Using the
+		/// Windows Headers.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regsetkeyvaluea LSTATUS RegSetKeyValueA( HKEY hKey, LPCSTR
+		// lpSubKey, LPCSTR lpValueName, DWORD dwType, LPCVOID lpData, DWORD cbData );
+		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winreg.h", MSDNShortId = "e27d2dd6-b139-4ac1-8dd8-527022333364")]
+		public static extern Win32Error RegSetKeyValue(HKEY hKey, string lpSubKey, string lpValueName, REG_VALUE_TYPE dwType, IntPtr lpData, uint cbData);
+
+		/// <summary>Sets the data for the specified value in the specified registry key and subkey.</summary>
+		/// <param name="hKey">
+		/// <para>
+		/// A handle to an open registry key. The key must have been opened with the KEY_SET_VALUE access right. For more information, see
+		/// Registry Key Security and Access Rights.
+		/// </para>
+		/// <para>
+		/// This handle is returned by the RegCreateKeyEx, RegCreateKeyTransacted, RegOpenKeyEx, or RegOpenKeyTransacted function. It can
+		/// also be one of the following predefined keys:
+		/// </para>
+		/// <para><c></c><c>HKEY_CLASSES_ROOT</c><c>HKEY_CURRENT_CONFIG</c><c>HKEY_CURRENT_USER</c><c>HKEY_LOCAL_MACHINE</c><c>HKEY_USERS</c></para>
+		/// </param>
+		/// <param name="lpSubKey">
+		/// The name of a key and a subkey to the key identified by hKey. If this parameter is <c>NULL</c>, then this value is created in the
+		/// key using the hKey value and the key gets a default security descriptor.
+		/// </param>
+		/// <param name="lpValueName">The name of the registry value whose data is to be updated.</param>
+		/// <param name="dwType">
+		/// The type of data pointed to by the lpData parameter. For a list of the possible types, see Registry Value Types.
+		/// </param>
+		/// <param name="lpData">
+		/// <para>The data to be stored with the specified value name.</para>
+		/// <para>
+		/// For string-based types, such as REG_SZ, the string must be null-terminated. With the REG_MULTI_SZ data type, the string must be
+		/// terminated with two null characters.
+		/// </para>
+		/// </param>
+		/// <param name="cbData">
+		/// The size of the information pointed to by the lpData parameter, in bytes. If the data is of type REG_SZ, REG_EXPAND_SZ, or
+		/// REG_MULTI_SZ, cbData must include the size of the terminating null character or characters.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, the return value is a nonzero error code defined in Winerror.h. You can use the FormatMessage function
+		/// with the FORMAT_MESSAGE_FROM_SYSTEM flag to get a generic description of the error.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// To compile an application that uses this function, define _WIN32_WINNT as 0x0600 or later. For more information, see Using the
+		/// Windows Headers.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regsetkeyvaluea LSTATUS RegSetKeyValueA( HKEY hKey, LPCSTR
+		// lpSubKey, LPCSTR lpValueName, DWORD dwType, LPCVOID lpData, DWORD cbData );
+		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winreg.h", MSDNShortId = "e27d2dd6-b139-4ac1-8dd8-527022333364")]
+		public static extern Win32Error RegSetKeyValue(HKEY hKey, string lpSubKey, string lpValueName, REG_VALUE_TYPE dwType, SafeAllocatedMemoryHandle lpData, uint cbData);
 
 		/// <summary>
 		/// <para>Sets the data for the default or unnamed value of a specified registry key. The data must be a text string.</para>
@@ -3470,15 +3605,74 @@ namespace Vanara.PInvoke
 		/// <para>For more information, see Registry Element Size Limits.</para>
 		/// </param>
 		/// <param name="dwType">
-		/// <para>
 		/// The type of information to be stored. This parameter must be the REG_SZ type. To store other data types, use the RegSetValueEx function.
-		/// </para>
 		/// </param>
-		/// <param name="lpData">
-		/// <para>The data to be stored. This parameter cannot be <c>NULL</c>.</para>
-		/// </param>
+		/// <param name="lpData">The data to be stored. This parameter cannot be <c>NULL</c>.</param>
 		/// <param name="cbData">
-		/// <para>This parameter is ignored. The function calculates this value based on the size of the data in the lpData parameter.</para>
+		/// This parameter is ignored. The function calculates this value based on the size of the data in the lpData parameter.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, the return value is a nonzero error code defined in Winerror.h. You can use the FormatMessage function
+		/// with the FORMAT_MESSAGE_FROM_SYSTEM flag to get a generic description of the error.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>If the key specified by the lpSubKey parameter does not exist, the <c>RegSetValue</c> function creates it.</para>
+		/// <para>
+		/// If the ANSI version of this function is used (either by explicitly calling <c>RegSetValueA</c> or by not defining UNICODE before
+		/// including the Windows.h file), the lpData parameter must be an ANSI character string. The string is converted to Unicode before
+		/// it is stored in the registry.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regsetvaluea LSTATUS RegSetValueA( HKEY hKey, LPCSTR
+		// lpSubKey, DWORD dwType, LPCSTR lpData, DWORD cbData );
+		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winreg.h", MSDNShortId = "f99774d4-575b-43a3-8887-e15acb0477fd")]
+		public static extern Win32Error RegSetValue(HKEY hKey, string lpSubKey, REG_VALUE_TYPE dwType, IntPtr lpData, uint cbData = 0);
+
+		/// <summary>
+		/// <para>Sets the data for the default or unnamed value of a specified registry key. The data must be a text string.</para>
+		/// <para>
+		/// <c>Note</c> This function is provided only for compatibility with 16-bit versions of Windows. Applications should use the
+		/// RegSetValueEx function.
+		/// </para>
+		/// </summary>
+		/// <param name="hKey">
+		/// <para>
+		/// A handle to an open registry key. The key must have been opened with the KEY_SET_VALUE access right. For more information, see
+		/// Registry Key Security and Access Rights.
+		/// </para>
+		/// <para>This handle is returned by the</para>
+		/// <para>RegCreateKeyEx</para>
+		/// <para>,</para>
+		/// <para>RegCreateKeyTransacted</para>
+		/// <para>,</para>
+		/// <para>RegOpenKeyEx</para>
+		/// <para>, or</para>
+		/// <para>RegOpenKeyTransacted</para>
+		/// <para>function. It can also be one of the following</para>
+		/// <para>predefined keys</para>
+		/// <para>:</para>
+		/// </param>
+		/// <param name="lpSubKey">
+		/// <para>
+		/// The name of a subkey of the hKey parameter. The function sets the default value of the specified subkey. If lpSubKey does not
+		/// exist, the function creates it.
+		/// </para>
+		/// <para>Key names are not case sensitive.</para>
+		/// <para>
+		/// If this parameter is <c>NULL</c> or points to an empty string, the function sets the default value of the key identified by hKey.
+		/// </para>
+		/// <para>For more information, see Registry Element Size Limits.</para>
+		/// </param>
+		/// <param name="dwType">
+		/// The type of information to be stored. This parameter must be the REG_SZ type. To store other data types, use the RegSetValueEx function.
+		/// </param>
+		/// <param name="lpData">The data to be stored. This parameter cannot be <c>NULL</c>.</param>
+		/// <param name="cbData">
+		/// This parameter is ignored. The function calculates this value based on the size of the data in the lpData parameter.
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
@@ -3502,8 +3696,69 @@ namespace Vanara.PInvoke
 		public static extern Win32Error RegSetValue(HKEY hKey, string lpSubKey, REG_VALUE_TYPE dwType, string lpData, uint cbData = 0);
 
 		/// <summary>
-		/// <para>Sets the data and type of a specified value under a registry key.</para>
+		/// <para>Sets the data for the default or unnamed value of a specified registry key. The data must be a text string.</para>
+		/// <para>
+		/// <c>Note</c> This function is provided only for compatibility with 16-bit versions of Windows. Applications should use the
+		/// RegSetValueEx function.
+		/// </para>
 		/// </summary>
+		/// <param name="hKey">
+		/// <para>
+		/// A handle to an open registry key. The key must have been opened with the KEY_SET_VALUE access right. For more information, see
+		/// Registry Key Security and Access Rights.
+		/// </para>
+		/// <para>This handle is returned by the</para>
+		/// <para>RegCreateKeyEx</para>
+		/// <para>,</para>
+		/// <para>RegCreateKeyTransacted</para>
+		/// <para>,</para>
+		/// <para>RegOpenKeyEx</para>
+		/// <para>, or</para>
+		/// <para>RegOpenKeyTransacted</para>
+		/// <para>function. It can also be one of the following</para>
+		/// <para>predefined keys</para>
+		/// <para>:</para>
+		/// </param>
+		/// <param name="lpSubKey">
+		/// <para>
+		/// The name of a subkey of the hKey parameter. The function sets the default value of the specified subkey. If lpSubKey does not
+		/// exist, the function creates it.
+		/// </para>
+		/// <para>Key names are not case sensitive.</para>
+		/// <para>
+		/// If this parameter is <c>NULL</c> or points to an empty string, the function sets the default value of the key identified by hKey.
+		/// </para>
+		/// <para>For more information, see Registry Element Size Limits.</para>
+		/// </param>
+		/// <param name="dwType">
+		/// The type of information to be stored. This parameter must be the REG_SZ type. To store other data types, use the RegSetValueEx function.
+		/// </param>
+		/// <param name="lpData">The data to be stored. This parameter cannot be <c>NULL</c>.</param>
+		/// <param name="cbData">
+		/// This parameter is ignored. The function calculates this value based on the size of the data in the lpData parameter.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, the return value is a nonzero error code defined in Winerror.h. You can use the FormatMessage function
+		/// with the FORMAT_MESSAGE_FROM_SYSTEM flag to get a generic description of the error.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>If the key specified by the lpSubKey parameter does not exist, the <c>RegSetValue</c> function creates it.</para>
+		/// <para>
+		/// If the ANSI version of this function is used (either by explicitly calling <c>RegSetValueA</c> or by not defining UNICODE before
+		/// including the Windows.h file), the lpData parameter must be an ANSI character string. The string is converted to Unicode before
+		/// it is stored in the registry.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regsetvaluea LSTATUS RegSetValueA( HKEY hKey, LPCSTR
+		// lpSubKey, DWORD dwType, LPCSTR lpData, DWORD cbData );
+		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winreg.h", MSDNShortId = "f99774d4-575b-43a3-8887-e15acb0477fd")]
+		public static extern Win32Error RegSetValue(HKEY hKey, string lpSubKey, REG_VALUE_TYPE dwType, SafeAllocatedMemoryHandle lpData, uint cbData = 0);
+
+		/// <summary>Sets the data and type of a specified value under a registry key.</summary>
 		/// <param name="hKey">
 		/// <para>
 		/// A handle to an open registry key. The key must have been opened with the KEY_SET_VALUE access right. For more information, see
@@ -3540,11 +3795,9 @@ namespace Vanara.PInvoke
 		/// <para>For more information, see Registry Element Size Limits.</para>
 		/// <para>Registry keys do not have default values, but they can have one unnamed value, which can be of any type.</para>
 		/// </param>
-		/// <param name="Reserved">
-		/// <para>This parameter is reserved and must be zero.</para>
-		/// </param>
+		/// <param name="Reserved">This parameter is reserved and must be zero.</param>
 		/// <param name="dwType">
-		/// <para>The type of data pointed to by the lpData parameter. For a list of the possible types, see Registry Value Types.</para>
+		/// The type of data pointed to by the lpData parameter. For a list of the possible types, see Registry Value Types.
 		/// </param>
 		/// <param name="lpData">
 		/// <para>The data to be stored.</para>
@@ -3555,10 +3808,8 @@ namespace Vanara.PInvoke
 		/// <para><c>Note</c> lpData indicating a <c>null</c> value is valid, however, if this is the case, cbData must be set to '0'.</para>
 		/// </param>
 		/// <param name="cbData">
-		/// <para>
 		/// The size of the information pointed to by the lpData parameter, in bytes. If the data is of type REG_SZ, REG_EXPAND_SZ, or
 		/// REG_MULTI_SZ, cbData must include the size of the terminating <c>null</c> character or characters.
-		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
@@ -3588,6 +3839,170 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winreg.h", MSDNShortId = "29b0e27c-4999-4e92-bd8b-bba74920bccc")]
 		public static extern Win32Error RegSetValueEx(HKEY hKey, string lpValueName, uint Reserved, REG_VALUE_TYPE dwType, IntPtr lpData, uint cbData);
+
+		/// <summary>Sets the data and type of a specified value under a registry key.</summary>
+		/// <param name="hKey">
+		/// <para>
+		/// A handle to an open registry key. The key must have been opened with the KEY_SET_VALUE access right. For more information, see
+		/// Registry Key Security and Access Rights.
+		/// </para>
+		/// <para>This handle is returned by the</para>
+		/// <para>RegCreateKeyEx</para>
+		/// <para>,</para>
+		/// <para>RegCreateKeyTransacted</para>
+		/// <para>,</para>
+		/// <para>RegOpenKeyEx</para>
+		/// <para>, or</para>
+		/// <para>RegOpenKeyTransacted</para>
+		/// <para>function. It can also be one of the following</para>
+		/// <para>predefined keys</para>
+		/// <para>:</para>
+		/// <para>The Unicode version of this function supports the following additional predefined keys:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term><c>HKEY_PERFORMANCE_TEXT</c></term>
+		/// </item>
+		/// <item>
+		/// <term><c>HKEY_PERFORMANCE_NLSTEXT</c></term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="lpValueName">
+		/// <para>
+		/// The name of the value to be set. If a value with this name is not already present in the key, the function adds it to the key.
+		/// </para>
+		/// <para>
+		/// If lpValueName is <c>NULL</c> or an empty string, "", the function sets the type and data for the key's unnamed or default value.
+		/// </para>
+		/// <para>For more information, see Registry Element Size Limits.</para>
+		/// <para>Registry keys do not have default values, but they can have one unnamed value, which can be of any type.</para>
+		/// </param>
+		/// <param name="Reserved">This parameter is reserved and must be zero.</param>
+		/// <param name="dwType">
+		/// The type of data pointed to by the lpData parameter. For a list of the possible types, see Registry Value Types.
+		/// </param>
+		/// <param name="lpData">
+		/// <para>The data to be stored.</para>
+		/// <para>
+		/// For string-based types, such as REG_SZ, the string must be <c>null</c>-terminated. With the REG_MULTI_SZ data type, the string
+		/// must be terminated with two <c>null</c> characters.
+		/// </para>
+		/// <para><c>Note</c> lpData indicating a <c>null</c> value is valid, however, if this is the case, cbData must be set to '0'.</para>
+		/// </param>
+		/// <param name="cbData">
+		/// The size of the information pointed to by the lpData parameter, in bytes. If the data is of type REG_SZ, REG_EXPAND_SZ, or
+		/// REG_MULTI_SZ, cbData must include the size of the terminating <c>null</c> character or characters.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, the return value is a nonzero error code defined in Winerror.h. You can use the FormatMessage function
+		/// with the FORMAT_MESSAGE_FROM_SYSTEM flag to get a generic description of the error.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Value sizes are limited by available memory. However, storing large values in the registry can affect its performance. Long
+		/// values (more than 2,048 bytes) should be stored as files, with the locations of the files stored in the registry.
+		/// </para>
+		/// <para>Application elements such as icons, bitmaps, and executable files should be stored as files and not be placed in the registry.</para>
+		/// <para>
+		/// If dwType is the REG_SZ, REG_MULTI_SZ, or REG_EXPAND_SZ type and the ANSI version of this function is used (either by explicitly
+		/// calling <c>RegSetValueExA</c> or by not defining UNICODE before including the Windows.h file), the data pointed to by the lpData
+		/// parameter must be an ANSI character string. The string is converted to Unicode before it is stored in the registry.
+		/// </para>
+		/// <para>
+		/// Note that operations that access certain registry keys are redirected. For more information, see Registry Virtualization and
+		/// 32-bit and 64-bit Application Data in the Registry.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regsetvalueexa LSTATUS RegSetValueExA( HKEY hKey, LPCSTR
+		// lpValueName, DWORD Reserved, DWORD dwType, CONST BYTE *lpData, DWORD cbData );
+		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winreg.h", MSDNShortId = "29b0e27c-4999-4e92-bd8b-bba74920bccc")]
+		public static extern Win32Error RegSetValueEx(HKEY hKey, string lpValueName, uint Reserved, REG_VALUE_TYPE dwType, string lpData, uint cbData);
+
+		/// <summary>Sets the data and type of a specified value under a registry key.</summary>
+		/// <param name="hKey">
+		/// <para>
+		/// A handle to an open registry key. The key must have been opened with the KEY_SET_VALUE access right. For more information, see
+		/// Registry Key Security and Access Rights.
+		/// </para>
+		/// <para>This handle is returned by the</para>
+		/// <para>RegCreateKeyEx</para>
+		/// <para>,</para>
+		/// <para>RegCreateKeyTransacted</para>
+		/// <para>,</para>
+		/// <para>RegOpenKeyEx</para>
+		/// <para>, or</para>
+		/// <para>RegOpenKeyTransacted</para>
+		/// <para>function. It can also be one of the following</para>
+		/// <para>predefined keys</para>
+		/// <para>:</para>
+		/// <para>The Unicode version of this function supports the following additional predefined keys:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term><c>HKEY_PERFORMANCE_TEXT</c></term>
+		/// </item>
+		/// <item>
+		/// <term><c>HKEY_PERFORMANCE_NLSTEXT</c></term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="lpValueName">
+		/// <para>
+		/// The name of the value to be set. If a value with this name is not already present in the key, the function adds it to the key.
+		/// </para>
+		/// <para>
+		/// If lpValueName is <c>NULL</c> or an empty string, "", the function sets the type and data for the key's unnamed or default value.
+		/// </para>
+		/// <para>For more information, see Registry Element Size Limits.</para>
+		/// <para>Registry keys do not have default values, but they can have one unnamed value, which can be of any type.</para>
+		/// </param>
+		/// <param name="Reserved">This parameter is reserved and must be zero.</param>
+		/// <param name="dwType">
+		/// The type of data pointed to by the lpData parameter. For a list of the possible types, see Registry Value Types.
+		/// </param>
+		/// <param name="lpData">
+		/// <para>The data to be stored.</para>
+		/// <para>
+		/// For string-based types, such as REG_SZ, the string must be <c>null</c>-terminated. With the REG_MULTI_SZ data type, the string
+		/// must be terminated with two <c>null</c> characters.
+		/// </para>
+		/// <para><c>Note</c> lpData indicating a <c>null</c> value is valid, however, if this is the case, cbData must be set to '0'.</para>
+		/// </param>
+		/// <param name="cbData">
+		/// The size of the information pointed to by the lpData parameter, in bytes. If the data is of type REG_SZ, REG_EXPAND_SZ, or
+		/// REG_MULTI_SZ, cbData must include the size of the terminating <c>null</c> character or characters.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is ERROR_SUCCESS.</para>
+		/// <para>
+		/// If the function fails, the return value is a nonzero error code defined in Winerror.h. You can use the FormatMessage function
+		/// with the FORMAT_MESSAGE_FROM_SYSTEM flag to get a generic description of the error.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Value sizes are limited by available memory. However, storing large values in the registry can affect its performance. Long
+		/// values (more than 2,048 bytes) should be stored as files, with the locations of the files stored in the registry.
+		/// </para>
+		/// <para>Application elements such as icons, bitmaps, and executable files should be stored as files and not be placed in the registry.</para>
+		/// <para>
+		/// If dwType is the REG_SZ, REG_MULTI_SZ, or REG_EXPAND_SZ type and the ANSI version of this function is used (either by explicitly
+		/// calling <c>RegSetValueExA</c> or by not defining UNICODE before including the Windows.h file), the data pointed to by the lpData
+		/// parameter must be an ANSI character string. The string is converted to Unicode before it is stored in the registry.
+		/// </para>
+		/// <para>
+		/// Note that operations that access certain registry keys are redirected. For more information, see Registry Virtualization and
+		/// 32-bit and 64-bit Application Data in the Registry.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winreg/nf-winreg-regsetvalueexa LSTATUS RegSetValueExA( HKEY hKey, LPCSTR
+		// lpValueName, DWORD Reserved, DWORD dwType, CONST BYTE *lpData, DWORD cbData );
+		[DllImport(Lib.AdvApi32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winreg.h", MSDNShortId = "29b0e27c-4999-4e92-bd8b-bba74920bccc")]
+		public static extern Win32Error RegSetValueEx(HKEY hKey, string lpValueName, uint Reserved, REG_VALUE_TYPE dwType, SafeAllocatedMemoryHandle lpData, uint cbData);
 
 		/// <summary>
 		/// <para>Unloads the specified registry key and its subkeys from the registry.</para>
