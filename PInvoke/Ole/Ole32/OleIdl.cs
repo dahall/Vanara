@@ -237,7 +237,7 @@ namespace Vanara.PInvoke
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/oleidl/nn-oleidl-idroptarget
 		[PInvokeData("oleidl.h", MSDNShortId = "13fbe834-1ef8-4944-b2e4-9f5c413c65c8")]
-		[ComImport(), Guid("00000122-0000-0000-C000-000000000046"), InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)]
+		[ComImport, Guid("00000122-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 		public interface IDropTarget
 		{
 			/// <summary>Indicates whether a drop can be accepted, and, if so, the effect of the drop.</summary>
@@ -338,8 +338,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/oleidl/nf-oleidl-idroptarget-dragenter HRESULT DragEnter( IDataObject
 			// *pDataObj, DWORD grfKeyState, POINTL pt, DWORD *pdwEffect );
 			[PreserveSig]
-			HRESULT DragEnter([In, MarshalAs(UnmanagedType.Interface)] object pDataObj,
-				[In] uint grfKeyState, [In] Point pt, [In, Out] ref uint pdwEffect);
+			HRESULT DragEnter([In] IDataObject pDataObj, [In] uint grfKeyState, [In] Point pt, [In, Out] ref DROPEFFECT pdwEffect);
 
 			/// <summary>
 			/// Provides target feedback to the user and communicates the drop's effect to the DoDragDrop function so it can communicate the
@@ -445,7 +444,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/oleidl/nf-oleidl-idroptarget-dragover HRESULT DragOver( DWORD
 			// grfKeyState, POINTL pt, DWORD *pdwEffect );
 			[PreserveSig]
-			HRESULT DragOver([In] uint grfKeyState, [In] Point pt, [In, Out] ref uint pdwEffect);
+			HRESULT DragOver([In] uint grfKeyState, [In] Point pt, [In, Out] ref DROPEFFECT pdwEffect);
 
 			/// <summary>Removes target feedback and releases the data object.</summary>
 			/// <returns>
@@ -547,12 +546,8 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/oleidl/nf-oleidl-idroptarget-drop HRESULT Drop( IDataObject *pDataObj,
 			// DWORD grfKeyState, POINTL pt, DWORD *pdwEffect );
-			[DllImport(Lib.OleIdl, SetLastError = false, ExactSpelling = true)]
-			[PInvokeData("oleidl.h", MSDNShortId = "7ea6d815-bf8f-47d5-99d3-f9a55bafee2e")]
-			// public static extern HRESULT Drop(ref IDataObject pDataObj, uint grfKeyState, POINTL pt, ref uint pdwEffect);
 			[PreserveSig]
-			HRESULT Drop([In, MarshalAs(UnmanagedType.Interface)] object pDataObj, [In] uint grfKeyState, [In] Point pt,
-				[In, Out] ref uint pdwEffect);
+			HRESULT Drop([In] IDataObject pDataObj, [In] uint grfKeyState, [In] Point pt, [In, Out] ref DROPEFFECT pdwEffect);
 		}
 
 		/// <summary>
