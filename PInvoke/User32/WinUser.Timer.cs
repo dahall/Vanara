@@ -19,7 +19,7 @@ namespace Vanara.PInvoke
 		// hwnd, _In_ UINT uMsg, _In_ UINT_PTR idEvent, _In_ DWORD dwTime);
 		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
 		[PInvokeData("winuser.h")]
-		public delegate void Timerproc(HWND hwnd, uint uMsg, UIntPtr idEvent, uint dwTime);
+		public delegate void Timerproc(HWND hwnd, uint uMsg, IntPtr idEvent, uint dwTime);
 
 		/// <summary>Destroys the specified timer.</summary>
 		/// <param name="hWnd">
@@ -51,7 +51,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool KillTimer([Optional] HWND hWnd, UIntPtr uIDEvent);
+		public static extern bool KillTimer([Optional] HWND hWnd, IntPtr uIDEvent);
 
 		/// <summary>Creates a timer with the specified time-out value.</summary>
 		/// <param name="hWnd">
@@ -120,6 +120,6 @@ namespace Vanara.PInvoke
 		// UINT uElapse, TIMERPROC lpTimerFunc );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h")]
-		public static extern UIntPtr SetTimer([Optional] HWND hWnd, [Optional] UIntPtr nIDEvent, [Optional] uint uElapse, [Optional] Timerproc lpTimerFunc);
+		public static extern IntPtr SetTimer([Optional] HWND hWnd, [Optional] IntPtr nIDEvent, [Optional] uint uElapse, [Optional] Timerproc lpTimerFunc);
 	}
 }
