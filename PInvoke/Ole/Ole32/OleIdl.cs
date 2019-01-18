@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 
@@ -202,6 +203,356 @@ namespace Vanara.PInvoke
 			[PInvokeData("oleidl.h", MSDNShortId = "dde37299-ad7c-4f59-af99-e75b72ad9188")]
 			[PreserveSig]
 			HRESULT GiveFeedback(DROPEFFECT dwEffect);
+		}
+
+		/// <summary>
+		/// <para>
+		/// The <c>IDropTarget</c> interface is one of the interfaces you implement to provide drag-and-drop operations in your application.
+		/// It contains methods used in any application that can be a target for data during a drag-and-drop operation. A drop-target
+		/// application is responsible for:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Determining the effect of the drop on the target application.</term>
+		/// </item>
+		/// <item>
+		/// <term>Incorporating any valid dropped data when the drop occurs.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// Communicating target feedback to the source so the source application can provide appropriate visual feedback such as setting the cursor.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>Implementing drag scrolling.</term>
+		/// </item>
+		/// <item>
+		/// <term>Registering and revoking its application windows as drop targets.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The <c>IDropTarget</c> interface contains methods that handle all these responsibilities except registering and revoking the
+		/// application window as a drop target, for which you must call the RegisterDragDrop and the RevokeDragDrop functions.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/oleidl/nn-oleidl-idroptarget
+		[PInvokeData("oleidl.h", MSDNShortId = "13fbe834-1ef8-4944-b2e4-9f5c413c65c8")]
+		[ComImport(), Guid("00000122-0000-0000-C000-000000000046"), InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IDropTarget
+		{
+			/// <summary>Indicates whether a drop can be accepted, and, if so, the effect of the drop.</summary>
+			/// <param name="pDataObj">
+			/// A pointer to the IDataObject interface on the data object. This data object contains the data being transferred in the
+			/// drag-and-drop operation. If the drop occurs, this data object will be incorporated into the target.
+			/// </param>
+			/// <param name="grfKeyState">
+			/// The current state of the keyboard modifier keys on the keyboard. Possible values can be a combination of any of the flags
+			/// MK_CONTROL, MK_SHIFT, MK_ALT, MK_BUTTON, MK_LBUTTON, MK_MBUTTON, and MK_RBUTTON.
+			/// </param>
+			/// <param name="pt">A POINTL structure containing the current cursor coordinates in screen coordinates.</param>
+			/// <param name="pdwEffect">
+			/// On input, pointer to the value of the pdwEffect parameter of the DoDragDrop function. On return, must contain one of the
+			/// DROPEFFECT flags, which indicates what the result of the drop operation would be.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_INVALIDARG</term>
+			/// <term>The pdwEffect parameter is NULL on input.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>There was insufficient memory available for this operation.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// You do not call <c>DragEnter</c> directly; instead the DoDragDrop function calls it to determine the effect of a drop the
+			/// first time the user drags the mouse into the registered window of a drop target.
+			/// </para>
+			/// <para>
+			/// To implement <c>DragEnter</c>, you must determine whether the target can use the data in the source data object by checking
+			/// three things:
+			/// </para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>The format and medium specified by the data object</term>
+			/// </item>
+			/// <item>
+			/// <term>The input value of pdwEffect</term>
+			/// </item>
+			/// <item>
+			/// <term>The state of the modifier keys</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// To check the format and medium, use the IDataObject pointer passed in the pDataObject parameter to call
+			/// IDataObject::EnumFormatEtc so you can enumerate the FORMATETC structures the source data object supports. Then call
+			/// IDataObject::QueryGetData to determine whether the data object can render the data on the target by examining the formats and
+			/// medium specified for the data object.
+			/// </para>
+			/// <para>
+			/// On entry to <c>IDropTarget::DragEnter</c>, the pdwEffect parameter is set to the effects given to the pdwOkEffect parameter
+			/// of the DoDragDrop function. The <c>IDropTarget::DragEnter</c> method must choose one of these effects or disable the drop.
+			/// </para>
+			/// <para>The following modifier keys affect the result of the drop.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Key Combination</term>
+			/// <term>User-Visible Feedback</term>
+			/// <term>Drop Effect</term>
+			/// </listheader>
+			/// <item>
+			/// <term>CTRL + SHIFT</term>
+			/// <term>=</term>
+			/// <term>DROPEFFECT_LINK</term>
+			/// </item>
+			/// <item>
+			/// <term>CTRL</term>
+			/// <term>+</term>
+			/// <term>DROPEFFECT_COPY</term>
+			/// </item>
+			/// <item>
+			/// <term>No keys or SHIFT</term>
+			/// <term>None</term>
+			/// <term>DROPEFFECT_MOVE</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// On return, the method must write the effect, one of the DROPEFFECT flags, to the pdwEffect parameter. DoDragDrop then takes
+			/// this parameter and writes it to its pdwEffect parameter. You communicate the effect of the drop back to the source through
+			/// <c>DoDragDrop</c> in the pdwEffect parameter. The <c>DoDragDrop</c> function then calls IDropSource::GiveFeedback so that the
+			/// source application can display the appropriate visual feedback to the user through the target window.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oleidl/nf-oleidl-idroptarget-dragenter HRESULT DragEnter( IDataObject
+			// *pDataObj, DWORD grfKeyState, POINTL pt, DWORD *pdwEffect );
+			[PreserveSig]
+			HRESULT DragEnter([In, MarshalAs(UnmanagedType.Interface)] object pDataObj,
+				[In] uint grfKeyState, [In] Point pt, [In, Out] ref uint pdwEffect);
+
+			/// <summary>
+			/// Provides target feedback to the user and communicates the drop's effect to the DoDragDrop function so it can communicate the
+			/// effect of the drop back to the source.
+			/// </summary>
+			/// <param name="grfKeyState">
+			/// The current state of the keyboard modifier keys on the keyboard. Valid values can be a combination of any of the flags
+			/// MK_CONTROL, MK_SHIFT, MK_ALT, MK_BUTTON, MK_LBUTTON, MK_MBUTTON, and MK_RBUTTON.
+			/// </param>
+			/// <param name="pt">A POINTL structure containing the current cursor coordinates in screen coordinates.</param>
+			/// <param name="pdwEffect">
+			/// On input, pointer to the value of the pdwEffect parameter of the DoDragDrop function. On return, must contain one of the
+			/// DROPEFFECT flags, which indicates what the result of the drop operation would be.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_INVALIDARG</term>
+			/// <term>The pdwEffect value is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>There was insufficient memory available for this operation.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// You do not call <c>DragOver</c> directly. The DoDragDrop function calls this method each time the user moves the mouse across
+			/// a given target window. <c>DoDragDrop</c> exits the loop if the drag-and-drop operation is canceled, if the user drags the
+			/// mouse out of the target window, or if the drop is completed.
+			/// </para>
+			/// <para>
+			/// In implementing <c>IDropTarget::DragOver</c>, you must provide features similar to those in IDropTarget::DragEnter. You must
+			/// determine the effect of dropping the data on the target by examining the FORMATETC defining the data object's formats and
+			/// medium, along with the state of the modifier keys. The mouse position may also play a role in determining the effect of a
+			/// drop. The following modifier keys affect the result of the drop.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Key Combination</term>
+			/// <term>User-Visible Feedback</term>
+			/// <term>Drop Effect</term>
+			/// </listheader>
+			/// <item>
+			/// <term>CTRL + SHIFT</term>
+			/// <term>=</term>
+			/// <term>DROPEFFECT_LINK</term>
+			/// </item>
+			/// <item>
+			/// <term>CTRL</term>
+			/// <term>+</term>
+			/// <term>DROPEFFECT_COPY</term>
+			/// </item>
+			/// <item>
+			/// <term>No keys or SHIFT</term>
+			/// <term>None</term>
+			/// <term>DROPEFFECT_MOVE</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// You communicate the effect of the drop back to the source through DoDragDrop in pdwEffect. The <c>DoDragDrop</c> function
+			/// then calls IDropSource::GiveFeedback so the source application can display the appropriate visual feedback to the user.
+			/// </para>
+			/// <para>
+			/// On entry to <c>IDropTarget::DragOver</c>, the pdwEffect parameter must be set to the allowed effects passed to the
+			/// pdwOkEffect parameter of the DoDragDrop function. The <c>IDropTarget::DragOver</c> method must be able to choose one of these
+			/// effects or disable the drop.
+			/// </para>
+			/// <para>
+			/// Upon return, pdwEffect is set to one of the DROPEFFECT flags. This value is then passed to the pdwEffect parameter of
+			/// DoDragDrop. Reasonable values are DROPEFFECT_COPY to copy the dragged data to the target, DROPEFFECT_LINK to create a link to
+			/// the source data, or DROPEFFECT_MOVE to allow the dragged data to be permanently moved from the source application to the target.
+			/// </para>
+			/// <para>
+			/// You may also wish to provide appropriate visual feedback in the target window. There may be some target feedback already
+			/// displayed from a previous call to <c>IDropTarget::DragOver</c> or from the initial IDropTarget::DragEnter. If this feedback
+			/// is no longer appropriate, you should remove it.
+			/// </para>
+			/// <para>
+			/// For efficiency reasons, a data object is not passed in <c>IDropTarget::DragOver</c>. The data object passed in the most
+			/// recent call to IDropTarget::DragEnter is available and can be used.
+			/// </para>
+			/// <para>
+			/// When <c>IDropTarget::DragOver</c> has completed its operation, the DoDragDrop function calls IDropSource::GiveFeedback so the
+			/// source application can display the appropriate visual feedback to the user.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// This function is called frequently during the DoDragDrop loop so it makes sense to optimize your implementation of the
+			/// <c>DragOver</c> method as much as possible.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oleidl/nf-oleidl-idroptarget-dragover HRESULT DragOver( DWORD
+			// grfKeyState, POINTL pt, DWORD *pdwEffect );
+			[PreserveSig]
+			HRESULT DragOver([In] uint grfKeyState, [In] Point pt, [In, Out] ref uint pdwEffect);
+
+			/// <summary>Removes target feedback and releases the data object.</summary>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>There is insufficient memory available for this operation.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>You do not call this method directly. The DoDragDrop function calls this method in either of the following cases:</para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>When the user drags the cursor out of a given target window.</term>
+			/// </item>
+			/// <item>
+			/// <term>When the user cancels the current drag-and-drop operation.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// To implement <c>IDropTarget::DragLeave</c>, you must remove any target feedback that is currently displayed. You must also
+			/// release any references you hold to the data transfer object.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oleidl/nf-oleidl-idroptarget-dragleave HRESULT DragLeave( );
+			[PreserveSig]
+			HRESULT DragLeave();
+
+			/// <summary>Incorporates the source data into the target window, removes target feedback, and releases the data object.</summary>
+			/// <param name="pDataObj">
+			/// A pointer to the IDataObject interface on the data object being transferred in the drag-and-drop operation.
+			/// </param>
+			/// <param name="grfKeyState">
+			/// The current state of the keyboard modifier keys on the keyboard. Possible values can be a combination of any of the flags
+			/// MK_CONTROL, MK_SHIFT, MK_ALT, MK_BUTTON, MK_LBUTTON, MK_MBUTTON, and MK_RBUTTON.
+			/// </param>
+			/// <param name="pt">A POINTL structure containing the current cursor coordinates in screen coordinates.</param>
+			/// <param name="pdwEffect">
+			/// On input, pointer to the value of the pdwEffect parameter of the DoDragDrop function. On return, must contain one of the
+			/// DROPEFFECT flags, which indicates what the result of the drop operation would be.
+			/// </param>
+			/// <returns>
+			/// <para>This method returns S_OK on success. Other possible values include the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>E_UNEXPECTED</term>
+			/// <term>An unexpected error has occurred.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_INVALIDARG</term>
+			/// <term>The pdwEffect parameter is not valid.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_OUTOFMEMORY</term>
+			/// <term>There is insufficient memory available for this operation.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// You do not call this method directly. The DoDragDrop function calls this method when the user completes the drag-and-drop operation.
+			/// </para>
+			/// <para>
+			/// In implementing <c>Drop</c>, you must incorporate the data object into the target. Use the formats available in IDataObject,
+			/// available through pDataObj, along with the current state of the modifier keys to determine how the data is to be
+			/// incorporated, such as linking or embedding.
+			/// </para>
+			/// <para>In addition to incorporating the data, you must also clean up as you do in the IDropTarget::DragLeave method:</para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>Remove any target feedback that is currently displayed.</term>
+			/// </item>
+			/// <item>
+			/// <term>Release any references to the data object.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// You also pass the effect of this operation back to the source application through DoDragDrop, so the source application can
+			/// clean up after the drag-and-drop operation is complete:
+			/// </para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>Remove any source feedback that is being displayed.</term>
+			/// </item>
+			/// <item>
+			/// <term>Make any necessary changes to the data, such as removing the data if the operation was a move.</term>
+			/// </item>
+			/// </list>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/oleidl/nf-oleidl-idroptarget-drop HRESULT Drop( IDataObject *pDataObj,
+			// DWORD grfKeyState, POINTL pt, DWORD *pdwEffect );
+			[DllImport(Lib.OleIdl, SetLastError = false, ExactSpelling = true)]
+			[PInvokeData("oleidl.h", MSDNShortId = "7ea6d815-bf8f-47d5-99d3-f9a55bafee2e")]
+			// public static extern HRESULT Drop(ref IDataObject pDataObj, uint grfKeyState, POINTL pt, ref uint pdwEffect);
+			[PreserveSig]
+			HRESULT Drop([In, MarshalAs(UnmanagedType.Interface)] object pDataObj, [In] uint grfKeyState, [In] Point pt,
+				[In, Out] ref uint pdwEffect);
 		}
 
 		/// <summary>
