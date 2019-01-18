@@ -430,11 +430,6 @@ namespace Vanara.PInvoke
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator HRESULT(bool value) => value ? S_OK : S_FALSE;
 
-		/// <summary>Performs an explicit conversion from <see cref="Win32Error"/> to <see cref="HRESULT"/>.</summary>
-		/// <param name="value">The value.</param>
-		/// <returns>The result of the conversion.</returns>
-		public static explicit operator HRESULT(Win32Error value) => value.ToHRESULT();
-
 		private static uint? ValueFromObj(object obj)
 		{
 			if (obj == null) return null;
