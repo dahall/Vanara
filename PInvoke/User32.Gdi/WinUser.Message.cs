@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Text;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
-	public static partial class User32
+	public static partial class User32_Gdi
 	{
 		/// <summary>
 		/// Used to define private messages for use by private window classes, usually of the form OCM__BASE+x, where x is an integer value.
@@ -378,7 +380,7 @@ namespace Vanara.PInvoke
 		// flags, LPDWORD lpInfo, UINT Msg, WPARAM wParam, LPARAM lParam );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h")]
-		public static extern long BroadcastSystemMessage(BSF flags, ref BSM lpInfo, uint Msg, IntPtr wParam, IntPtr lParam);
+		public static extern long BroadcastSystemMessage(BSF flags, ref BSM lpInfo, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam);
 
 		/// <summary>
 		/// <para>
@@ -526,7 +528,7 @@ namespace Vanara.PInvoke
 		// DWORD flags, LPDWORD lpInfo, UINT Msg, WPARAM wParam, LPARAM lParam, PBSMINFO pbsmInfo );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h")]
-		public static extern long BroadcastSystemMessageEx(BSF flags, ref BSM lpInfo, uint Msg, IntPtr wParam, IntPtr lParam, ref BSMINFO pbsmInfo);
+		public static extern long BroadcastSystemMessageEx(BSF flags, ref BSM lpInfo, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam, ref BSMINFO pbsmInfo);
 
 		/// <summary>
 		/// Dispatches a message to a window procedure. It is typically used to dispatch a message retrieved by the GetMessage function.
@@ -693,7 +695,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetMessage(out MSG lpMsg, HWND hWnd, uint wMsgFilterMin, uint wMsgFilterMax);
+		public static extern bool GetMessage(out MSG lpMsg, [Optional] HWND hWnd, [Optional] uint wMsgFilterMin, [Optional] uint wMsgFilterMax);
 
 		/// <summary>
 		/// Retrieves the extra message information for the current thread. Extra message information is an application- or driver-defined
@@ -924,7 +926,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-insendmessageex DWORD InSendMessageEx( LPVOID lpReserved );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h")]
-		public static extern ISMEX InSendMessageEx(IntPtr lpReserved);
+		public static extern ISMEX InSendMessageEx([Optional] IntPtr lpReserved);
 
 		/// <summary>
 		/// Dispatches incoming sent messages, checks the thread message queue for a posted message, and retrieves the message (if any exist).
@@ -1085,7 +1087,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PeekMessage(out MSG lpMsg, HWND hWnd, uint wMsgFilterMin, uint wMsgFilterMax, PM wRemoveMsg);
+		public static extern bool PeekMessage(out MSG lpMsg, [Optional] HWND hWnd, [Optional] uint wMsgFilterMin, [Optional] uint wMsgFilterMax, [Optional] PM wRemoveMsg);
 
 		/// <summary>
 		/// <para>
@@ -1183,7 +1185,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PostMessage(HWND hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+		public static extern bool PostMessage([Optional] HWND hWnd, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam);
 
 		/// <summary>
 		/// Indicates to the system that a thread has made a request to terminate (quit). It is typically used in response to a WM_DESTROY message.
@@ -1207,7 +1209,7 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-postquitmessage void PostQuitMessage( int nExitCode );
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h")]
-		public static extern void PostQuitMessage(int nExitCode);
+		public static extern void PostQuitMessage([Optional] int nExitCode);
 
 		/// <summary>
 		/// Posts a message to the message queue of the specified thread. It returns without waiting for the thread to process the message.
@@ -1302,7 +1304,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PostThreadMessage(uint idThread, uint Msg, IntPtr wParam, IntPtr lParam);
+		public static extern bool PostThreadMessage(uint idThread, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam);
 
 		/// <summary>
 		/// Defines a new window message that is guaranteed to be unique throughout the system. The message value can be used when sending or
@@ -1374,12 +1376,11 @@ namespace Vanara.PInvoke
 		/// window and does not return until the window procedure has processed the message.
 		/// </para>
 		/// <para>
-		/// To send a message and return immediately, use the SendMessageCallback or SendNotifyMessage function. To post a message to a
-		/// thread's message queue and return immediately, use the PostMessage or PostThreadMessage function.
+		/// To send a message and return immediately, use the <c>SendMessageCallback</c> or <c>SendNotifyMessage</c> function. To post a
+		/// message to a thread's message queue and return immediately, use the <c>PostMessage</c> or <c>PostThreadMessage</c> function.
 		/// </para>
 		/// </summary>
 		/// <param name="hWnd">
-		/// <para>Type: <c>HWND</c></para>
 		/// <para>
 		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c>
 		/// ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows,
@@ -1390,53 +1391,271 @@ namespace Vanara.PInvoke
 		/// lesser or equal integrity level.
 		/// </para>
 		/// </param>
-		/// <param name="Msg">
-		/// <para>Type: <c>UINT</c></para>
+		/// <param name="msg">
 		/// <para>The message to be sent.</para>
 		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
 		/// </param>
-		/// <param name="wParam">
-		/// <para>Type: <c>WPARAM</c></para>
-		/// <para>Additional message-specific information.</para>
+		/// <param name="wParam">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
+		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		// LRESULT WINAPI SendMessage( _In_ HWND hWnd, _In_ UINT Msg, _In_ WPARAM wParam, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
+		[System.Security.SecurityCritical]
+		public static extern IntPtr SendMessage(HWND hWnd, uint msg, IntPtr wParam = default, IntPtr lParam = default);
+
+		/// <summary>
+		/// <para>
+		/// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified
+		/// window and does not return until the window procedure has processed the message.
+		/// </para>
+		/// <para>
+		/// To send a message and return immediately, use the <c>SendMessageCallback</c> or <c>SendNotifyMessage</c> function. To post a
+		/// message to a thread's message queue and return immediately, use the <c>PostMessage</c> or <c>PostThreadMessage</c> function.
+		/// </para>
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>
+		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c>
+		/// ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows,
+		/// overlapped windows, and pop-up windows; but the message is not sent to child windows.
+		/// </para>
+		/// <para>
+		/// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of
+		/// lesser or equal integrity level.
+		/// </para>
 		/// </param>
-		/// <param name="lParam">
-		/// <para>Type: <c>LPARAM</c></para>
-		/// <para>Additional message-specific information.</para>
+		/// <param name="msg">
+		/// <para>The message to be sent.</para>
+		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
 		/// </param>
-		/// <returns>
-		/// <para>Type: <c>Type: <c>LRESULT</c></c></para>
-		/// <para>The return value specifies the result of the message processing; it depends on the message sent.</para>
-		/// </returns>
-		/// <remarks>
-		/// <para>When a message is blocked by UIPI the last error, retrieved with GetLastError, is set to 5 (access denied).</para>
+		/// <param name="wParam">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
+		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		// LRESULT WINAPI SendMessage( _In_ HWND hWnd, _In_ UINT Msg, _In_ WPARAM wParam, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
+		[System.Security.SecurityCritical]
+		public static extern IntPtr SendMessage(HWND hWnd, uint msg, IntPtr wParam, string lParam);
+
+		/// <summary>
 		/// <para>
-		/// Applications that need to communicate using <c>HWND_BROADCAST</c> should use the RegisterWindowMessage function to obtain a
-		/// unique message for inter-application communication.
+		/// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified
+		/// window and does not return until the window procedure has processed the message.
 		/// </para>
 		/// <para>
-		/// The system only does marshaling for system messages (those in the range 0 to (WM_USER-1)). To send other messages (those &gt;=
-		/// <c>WM_USER</c>) to another process, you must do custom marshaling.
+		/// To send a message and return immediately, use the <c>SendMessageCallback</c> or <c>SendNotifyMessage</c> function. To post a
+		/// message to a thread's message queue and return immediately, use the <c>PostMessage</c> or <c>PostThreadMessage</c> function.
+		/// </para>
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>
+		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c>
+		/// ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows,
+		/// overlapped windows, and pop-up windows; but the message is not sent to child windows.
 		/// </para>
 		/// <para>
-		/// If the specified window was created by the calling thread, the window procedure is called immediately as a subroutine. If the
-		/// specified window was created by a different thread, the system switches to that thread and calls the appropriate window
-		/// procedure. Messages sent between threads are processed only when the receiving thread executes message retrieval code. The
-		/// sending thread is blocked until the receiving thread processes the message. However, the sending thread will process incoming
-		/// non-queued messages while waiting for its message to be processed. To prevent this, use SendMessageTimeout with SMTO_BLOCK set.
-		/// For more information on non-queued messages, see Non-queued Messages.
+		/// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of
+		/// lesser or equal integrity level.
+		/// </para>
+		/// </param>
+		/// <param name="msg">
+		/// <para>The message to be sent.</para>
+		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+		/// </param>
+		/// <param name="wParam">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
+		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		// LRESULT WINAPI SendMessage( _In_ HWND hWnd, _In_ UINT Msg, _In_ WPARAM wParam, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
+		[System.Security.SecurityCritical]
+		public static extern IntPtr SendMessage(HWND hWnd, uint msg, ref int wParam, [In, Out] StringBuilder lParam);
+
+		/// <summary>
+		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window
+		/// and does not return until the window procedure has processed the message.
+		/// </summary>
+		/// <typeparam name="TEnum">The type of the <paramref name="msg"/> value.</typeparam>
+		/// <typeparam name="TWP">The type of the <paramref name="wParam"/> value.</typeparam>
+		/// <typeparam name="TLP">The type of the <paramref name="lParam"/> value.</typeparam>
+		/// <param name="hWnd">
+		/// A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the
+		/// message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and
+		/// pop-up windows; but the message is not sent to child windows.
+		/// </param>
+		/// <param name="msg">The message to be sent.</param>
+		/// <param name="wParam">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
+		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		public static IntPtr SendMessage<TEnum, TWP, TLP>(HWND hWnd, TEnum msg, IntPtr wParam, TLP lParam)
+			where TEnum : struct, IConvertible where TLP : class
+		{
+			var m = Convert.ToUInt32(msg);
+			using (var lp = new PinnedObject(lParam))
+				return SendMessage(hWnd, m, wParam, (IntPtr)lp);
+		}
+
+		/// <summary>
+		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window
+		/// and does not return until the window procedure has processed the message.
+		/// </summary>
+		/// <typeparam name="TEnum">The type of the <paramref name="msg"/> value.</typeparam>
+		/// <typeparam name="TWP">The type of the <paramref name="wParam"/> value.</typeparam>
+		/// <typeparam name="TLP">The type of the <paramref name="lParam"/> value.</typeparam>
+		/// <param name="hWnd">
+		/// A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the
+		/// message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and
+		/// pop-up windows; but the message is not sent to child windows.
+		/// </param>
+		/// <param name="msg">The message to be sent.</param>
+		/// <param name="wParam">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
+		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		public static IntPtr SendMessage<TEnum, TWP, TLP>(HWND hWnd, TEnum msg, IntPtr wParam, ref TLP lParam)
+			where TEnum : struct, IConvertible where TLP : struct
+		{
+			using (var lp = GetPtr(lParam))
+			{
+				var lr = SendMessage(hWnd, Convert.ToUInt32(msg), wParam, (IntPtr)lp);
+				lParam = lp.ToStructure<TLP>();
+				return lr;
+			}
+		}
+
+		/// <summary>
+		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window
+		/// and does not return until the window procedure has processed the message.
+		/// </summary>
+		/// <typeparam name="TEnum">The type of the <paramref name="msg"/> value.</typeparam>
+		/// <typeparam name="TWP">The type of the <paramref name="wParam"/> value.</typeparam>
+		/// <typeparam name="TLP">The type of the <paramref name="lParam"/> value.</typeparam>
+		/// <param name="hWnd">
+		/// A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the
+		/// message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and
+		/// pop-up windows; but the message is not sent to child windows.
+		/// </param>
+		/// <param name="msg">The message to be sent.</param>
+		/// <param name="wParam">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
+		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		public static IntPtr SendMessage<TEnum, TWP, TLP>(HWND hWnd, TEnum msg, TWP wParam, TLP lParam)
+			where TEnum : struct, IConvertible where TWP : struct, IConvertible where TLP : class
+		{
+			using (var lp = new PinnedObject(lParam))
+				return SendMessage(hWnd, Convert.ToUInt32(msg), new IntPtr(Convert.ToInt64(wParam)), (IntPtr)lp);
+		}
+
+		/// <summary>
+		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window
+		/// and does not return until the window procedure has processed the message.
+		/// </summary>
+		/// <typeparam name="TEnum">The type of the <paramref name="msg"/> value.</typeparam>
+		/// <typeparam name="TWP">The type of the <paramref name="wParam"/> value.</typeparam>
+		/// <typeparam name="TLP">The type of the <paramref name="lParam"/> value.</typeparam>
+		/// <param name="hWnd">
+		/// A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the
+		/// message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and
+		/// pop-up windows; but the message is not sent to child windows.
+		/// </param>
+		/// <param name="msg">The message to be sent.</param>
+		/// <param name="wParam">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
+		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		public static IntPtr SendMessage<TEnum, TWP, TLP>(HWND hWnd, TEnum msg, TWP wParam, ref TLP lParam)
+			where TEnum : struct, IConvertible where TWP : struct, IConvertible where TLP : struct
+		{
+			using (var lp = GetPtr(lParam))
+			{
+				var lr = SendMessage(hWnd, Convert.ToUInt32(msg), new IntPtr(Convert.ToInt64(wParam)), (IntPtr)lp);
+				lParam = lp.ToStructure<TLP>();
+				return lr;
+			}
+		}
+
+		/// <summary>
+		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window
+		/// and does not return until the window procedure has processed the message.
+		/// </summary>
+		/// <typeparam name="TEnum">The type of the <paramref name="msg"/> value.</typeparam>
+		/// <typeparam name="TWP">The type of the <paramref name="wParam"/> value.</typeparam>
+		/// <typeparam name="TLP">The type of the <paramref name="lParam"/> value.</typeparam>
+		/// <param name="hWnd">
+		/// A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the
+		/// message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and
+		/// pop-up windows; but the message is not sent to child windows.
+		/// </param>
+		/// <param name="msg">The message to be sent.</param>
+		/// <param name="wParam">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
+		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		public static IntPtr SendMessage<TEnum, TWP, TLP>(HWND hWnd, TEnum msg, in TWP wParam, TLP lParam)
+			where TEnum : struct, IConvertible where TWP : struct where TLP : class
+		{
+			using (PinnedObject wp = new PinnedObject(wParam), lp = new PinnedObject(lParam))
+				return SendMessage(hWnd, Convert.ToUInt32(msg), wp, (IntPtr)lp);
+		}
+
+		/// <summary>
+		/// Sends the specified message to a window or windows. The SendMessage function calls the window procedure for the specified window
+		/// and does not return until the window procedure has processed the message.
+		/// </summary>
+		/// <typeparam name="TEnum">The type of the <paramref name="msg"/> value.</typeparam>
+		/// <typeparam name="TWP">The type of the <paramref name="wParam"/> value.</typeparam>
+		/// <typeparam name="TLP">The type of the <paramref name="lParam"/> value.</typeparam>
+		/// <param name="hWnd">
+		/// A handle to the window whose window procedure will receive the message. If this parameter is HWND_BROADCAST ((HWND)0xffff), the
+		/// message is sent to all top-level windows in the system, including disabled or invisible unowned windows, overlapped windows, and
+		/// pop-up windows; but the message is not sent to child windows.
+		/// </param>
+		/// <param name="msg">The message to be sent.</param>
+		/// <param name="wParam">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
+		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		public static IntPtr SendMessage<TEnum, TWP, TLP>(HWND hWnd, TEnum msg, in TWP wParam, ref TLP lParam)
+			where TEnum : struct, IConvertible where TWP : struct where TLP : struct
+		{
+			using (var lp = GetPtr(lParam))
+			{
+				var lr = SendMessage(hWnd, Convert.ToUInt32(msg), (IntPtr)GetPtr(wParam), (IntPtr)lp);
+				lParam = lp.ToStructure<TLP>();
+				return lr;
+			}
+		}
+
+		/// <summary>
+		/// <para>
+		/// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified
+		/// window and does not return until the window procedure has processed the message.
 		/// </para>
 		/// <para>
-		/// An accessibility application can use <c>SendMessage</c> to send WM_APPCOMMAND messages to the shell to launch applications. This
-		/// functionality is not guaranteed to work for other types of applications.
+		/// To send a message and return immediately, use the <c>SendMessageCallback</c> or <c>SendNotifyMessage</c> function. To post a
+		/// message to a thread's message queue and return immediately, use the <c>PostMessage</c> or <c>PostThreadMessage</c> function.
 		/// </para>
-		/// <para>Examples</para>
-		/// <para>For an example, see Displaying Keyboard Input.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-sendmessage LRESULT SendMessage( HWND hWnd, UINT Msg,
-		// WPARAM wParam, LPARAM lParam );
-		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("winuser.h")]
-		public static extern IntPtr SendMessage(HWND hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>
+		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c>
+		/// ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows,
+		/// overlapped windows, and pop-up windows; but the message is not sent to child windows.
+		/// </para>
+		/// <para>
+		/// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of
+		/// lesser or equal integrity level.
+		/// </para>
+		/// </param>
+		/// <param name="msg">
+		/// <para>The message to be sent.</para>
+		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+		/// </param>
+		/// <param name="wParam">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
+		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		// LRESULT WINAPI SendMessage( _In_ HWND hWnd, _In_ UINT Msg, _In_ WPARAM wParam, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto, EntryPoint = "SendMessage")]
+		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
+		[System.Security.SecurityCritical]
+		public static unsafe extern void* SendMessageUnsafe(void* hWnd, uint msg, void* wParam, void* lParam);
 
 		/// <summary>
 		/// Sends the specified message to a window or windows. It calls the window procedure for the specified window and returns
@@ -1509,7 +1728,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SendMessageCallback(HWND hWnd, uint Msg, IntPtr wParam, IntPtr lParam, Sendasyncproc lpResultCallBack, UIntPtr dwData);
+		public static extern bool SendMessageCallback(HWND hWnd, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam, Sendasyncproc lpResultCallBack, UIntPtr dwData);
 
 		/// <summary>Sends the specified message to one or more windows.</summary>
 		/// <param name="hWnd">
@@ -1611,7 +1830,7 @@ namespace Vanara.PInvoke
 		// hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, UINT fuFlags, UINT uTimeout, PDWORD_PTR lpdwResult );
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h")]
-		public static extern IntPtr SendMessageTimeout(HWND hWnd, uint Msg, IntPtr wParam, IntPtr lParam, SMTO fuFlags, uint uTimeout, ref IntPtr lpdwResult);
+		public static extern IntPtr SendMessageTimeout(HWND hWnd, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam, SMTO fuFlags, uint uTimeout, ref IntPtr lpdwResult);
 
 		/// <summary>
 		/// Sends the specified message to a window or windows. If the window was created by the calling thread, <c>SendNotifyMessage</c>
@@ -1665,7 +1884,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SendNotifyMessage(HWND hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+		public static extern bool SendNotifyMessage(HWND hWnd, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam);
 
 		/// <summary>
 		/// Sets the extra message information for the current thread. Extra message information is an application- or driver-defined value
