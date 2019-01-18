@@ -51,7 +51,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool KillTimer(HWND hWnd, UIntPtr uIDEvent);
+		public static extern bool KillTimer([Optional] HWND hWnd, UIntPtr uIDEvent);
 
 		/// <summary>Creates a timer with the specified time-out value.</summary>
 		/// <param name="hWnd">
@@ -120,6 +120,6 @@ namespace Vanara.PInvoke
 		// UINT uElapse, TIMERPROC lpTimerFunc );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h")]
-		public static extern UIntPtr SetTimer(HWND hWnd, UIntPtr nIDEvent, uint uElapse, Timerproc lpTimerFunc);
+		public static extern UIntPtr SetTimer([Optional] HWND hWnd, [Optional] UIntPtr nIDEvent, [Optional] uint uElapse, [Optional] Timerproc lpTimerFunc);
 	}
 }
