@@ -11,7 +11,7 @@
 * Shared structures and enums (see release notes)</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>2.1.3</VersionPrefix>
+    <VersionPrefix>2.2.0</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Shared</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -38,7 +38,7 @@ Structures
 COLORREF, HACCEL, HBITMAP, HBRUSH, HCURSOR, HDC, HDESK, HDPA, HDROP, HDSA, HDWP, HENHMETAFILE, HFILE, HFONT, HGDIOBJ, HICON, HIMAGELIST, HINSTANCE, HKEY, HMENU, HMETAFILE, HMONITOR, HPALETTE, HPEN, HPROCESS, HPROPSHEET, HPROPSHEETPAGE, HRESULT, HRGN, HTHEME, HTHREAD, HTHUMBNAIL, HTOKEN, HWINSTA, HWND, LOGFONT, MSG, NTStatus, OBJECT_TYPE_LIST, PACE, PACL, POINTS, PRECT, PSECURITY_DESCRIPTOR, PSID, RECT, ResourceId, SECURITY_ATTRIBUTES, SIZE, SizeT, SYSTEMTIME, WIN32_FIND_DATA, Win32Error
 
 Enumerations
-ACCESS_MASK, DrawTextFlags, FacilityCode, FacilityCode, FileFlagsAndAttributes, FontFamily, FontPitch, LogFontCharSet, LogFontClippingPrecision, LogFontOutputPrecision, LogFontOutputQuality, ObjectTypeListLevel, PInvokeClient, ProcessorArchitecture, ResourceType, SECURITY_INFORMATION, SeverityLevel, SeverityLevel, ShowWindowCommand, STGM, SystemColorIndex, SystemShutDownReason
+ACCESS_MASK, DrawTextFlags, FacilityCode, FacilityCode, FileFlagsAndAttributes, FontFamily, FontPitch, LogFontCharSet, LogFontClippingPrecision, LogFontOutputPrecision, LogFontOutputQuality, ObjectTypeListLevel, PInvokeClient, ProcessorArchitecture, REG_VALUE_TYPE, ResourceType, SECURITY_INFORMATION, SeverityLevel, SeverityLevel, ShowWindowCommand, STGM, SystemColorIndex, SystemShutDownReason
 
 </PackageReleaseNotes>
     <LangVersion>latest</LangVersion>

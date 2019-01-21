@@ -5,6 +5,7 @@ Class | Description
 CommandVerb | Encapsulates a shortcut menu verb in the registry.
 CommandVerbDictionary | 
 ControlPanel | Provides a means to open Control Panel items and get their paths.
+DataObjectExtensions | 
 IconLocation | Wraps the icon location string used by some Shell classes.
 IndirectString | Wraps the icon location string used by some Shell classes.
 ProgId | Represents a programmatic identifier in the registry for an application.

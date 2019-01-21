@@ -29,7 +29,7 @@ WIN32_FIND_DATA | Contains information about the file that is found by the FindF
 Struct | Description
 ---- | ----
 COLORREF | The COLORREF value is used to specify an RGB color in the form <c>0x00bbggrr</c>.
-HACCEL | Provides a handle to an accelator table.
+HACCEL | Provides a handle to an accelerator table.
 HBITMAP | Provides a handle to a bitmap.
 HBRUSH | Provides a handle to a drawing brush.
 HCURSOR | Provides a handle to a Windows cursor.
@@ -98,6 +98,7 @@ LogFontOutputQuality | The output quality defines how carefully the graphics dev
 ObjectTypeListLevel | Valid values for the `level` field. | ACCESS_OBJECT_GUID, ACCESS_PROPERTY_SET_GUID, ACCESS_PROPERTY_GUID, ACCESS_MAX_LEVEL
 PInvokeClient | Flags that determine the minimum supported client(s) for a P/Invoke function. | None, Windows2000, WindowsXP, WindowsXP_SP2, WindowsVista, WindowsVista_SP2, Windows7, Windows8, Windows81, Windows10
 ProcessorArchitecture | Processor architecture | PROCESSOR_ARCHITECTURE_INTEL, PROCESSOR_ARCHITECTURE_MIPS, PROCESSOR_ARCHITECTURE_ALPHA, PROCESSOR_ARCHITECTURE_PPC, PROCESSOR_ARCHITECTURE_SHX, PROCESSOR_ARCHITECTURE_ARM, PROCESSOR_ARCHITECTURE_IA64, PROCESSOR_ARCHITECTURE_ALPHA64, PROCESSOR_ARCHITECTURE_MSIL, PROCESSOR_ARCHITECTURE_AMD64, PROCESSOR_ARCHITECTURE_IA32_ON_WIN64, PROCESSOR_ARCHITECTURE_NEUTRAL, PROCESSOR_ARCHITECTURE_ARM64, PROCESSOR_ARCHITECTURE_ARM32_ON_WIN64, PROCESSOR_ARCHITECTURE_UNKNOWN
+REG_VALUE_TYPE | A registry value can store data in various formats. When you store data under a registry value, for instance by calling the RegSetValueEx function, you can specify one of the following values to indicate the type of data being stored. When you retrieve a registry value, functions such as RegQueryValueEx use these values to indicate the type of data retrieved. | REG_NONE, REG_SZ, REG_EXPAND_SZ, REG_BINARY, REG_DWORD_LITTLE_ENDIAN, REG_DWORD, REG_DWORD_BIG_ENDIAN, REG_LINK, REG_MULTI_SZ, REG_RESOURCE_LIST, REG_FULL_RESOURCE_DESCRIPTOR, REG_RESOURCE_REQUIREMENTS_LIST, REG_QWORD_LITTLE_ENDIAN, REG_QWORD
 ResourceType | Predefined resource types. | RT_CURSOR, RT_BITMAP, RT_ICON, RT_MENU, RT_DIALOG, RT_STRING, RT_FONTDIR, RT_FONT, RT_ACCELERATOR, RT_RCDATA, RT_MESSAGETABLE, RT_GROUP_CURSOR, RT_GROUP_ICON, RT_VERSION, RT_DLGINCLUDE, RT_PLUGPLAY, RT_VXD, RT_ANICURSOR, RT_ANIICON, RT_HTML, RT_MANIFEST
 SECURITY_INFORMATION | The SECURITY_INFORMATION data type identifies the object-related security information being set or queried. This security information includes: | OWNER_SECURITY_INFORMATION, GROUP_SECURITY_INFORMATION, DACL_SECURITY_INFORMATION, SACL_SECURITY_INFORMATION, LABEL_SECURITY_INFORMATION, ATTRIBUTE_SECURITY_INFORMATION, SCOPE_SECURITY_INFORMATION, PROCESS_TRUST_LABEL_SECURITY_INFORMATION, BACKUP_SECURITY_INFORMATION, UNPROTECTED_SACL_SECURITY_INFORMATION, UNPROTECTED_DACL_SECURITY_INFORMATION, PROTECTED_SACL_SECURITY_INFORMATION, PROTECTED_DACL_SECURITY_INFORMATION
 SeverityLevel | A value indicating whether an `HRESULT` is a success (Severity bit 31 equals 0). | Success, Fail

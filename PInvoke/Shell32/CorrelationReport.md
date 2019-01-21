@@ -197,6 +197,7 @@ Native Structure | Header | Managed Structure
 [ASSOCIATIONELEMENT](http://msdn2.microsoft.com/en-us/library/1d1a963f-7ebb-4ba6-9a97-795c8ef11ae4) | shellapi.h | Vanara.PInvoke.Shell32+ASSOCIATIONELEMENT  
 [BROWSEINFO](http://msdn2.microsoft.com/en-us/library/bb773205) | Shlobj.h | Vanara.PInvoke.Shell32+BROWSEINFO  
 [CABINETSTATE](http://msdn2.microsoft.com/en-us/library/4b82b6a8-c4c0-4af2-9612-0551376c1c62) | shlobj_core.h | Vanara.PInvoke.Shell32+CABINETSTATE  
+[CIDA](http://msdn2.microsoft.com/en-us/library/30caf91d-8f3c-48ea-ad64-47f919f33f1d) | shlobj_core.h | Vanara.PInvoke.Shell32+CIDA  
 [CM_COLUMNINFO](http://msdn2.microsoft.com/en-us/library/b4437aa7-9682-4819-a353-936179e84005) | shobjidl_core.h | Vanara.PInvoke.Shell32+CM_COLUMNINFO  
 [CMINVOKECOMMANDINFOEX](http://msdn2.microsoft.com/en-us/library/c4c7f053-fdb1-4bba-9eb9-a514ce1d90f6) | shobjidl_core.h | Vanara.PInvoke.Shell32+CMINVOKECOMMANDINFOEX  
 [COMDLG_FILTERSPEC](http://msdn2.microsoft.com/en-us/library/bb773221) | Shtypes.h | Vanara.PInvoke.Shell32+COMDLG_FILTERSPEC  
@@ -271,6 +272,7 @@ Native Interface | Native DLL | Header | Managed Interface
 [ICommDlgBrowser3](http://msdn2.microsoft.com/en-us/library/c9286061-8ac8-452b-9204-193bc6b571cb) | Shobjidl.h | Vanara.PInvoke.Shell32+ICommDlgBrowser3  
 [ICondition](https://www.google.com/search?num=5&q=ICondition+site%3Amicrosoft.com) | structuredquerycondition.h | Vanara.PInvoke.Shell32+ICondition  
 [IConditionFactory](https://www.google.com/search?num=5&q=IConditionFactory+site%3Amicrosoft.com) | structuredquery.h | Vanara.PInvoke.Shell32+IConditionFactory  
+[IConditionFactory2](https://www.google.com/search?num=5&q=IConditionFactory2+site%3Amicrosoft.com) | structuredquery.h | Vanara.PInvoke.Shell32+IConditionFactory2  
 [IContextMenu](http://msdn2.microsoft.com/en-us/library/bb776095) | Shobjidl.h | Vanara.PInvoke.Shell32+IContextMenu  
 [IContextMenu2](http://msdn2.microsoft.com/en-us/library/4e3331ad-4adc-4ea9-8a22-6aad15f618c8) | shobjidl_core.h | Vanara.PInvoke.Shell32+IContextMenu2  
 [IContextMenu3](http://msdn2.microsoft.com/en-us/library/c08e1b98-2b8b-41f6-93c5-3a5937bd3b2c) | shobjidl_core.h | Vanara.PInvoke.Shell32+IContextMenu3  
@@ -284,6 +286,7 @@ Native Interface | Native DLL | Header | Managed Interface
 [IEnumExtraSearch](http://msdn2.microsoft.com/en-us/library/bb761992) | Shobjidl.h | Vanara.PInvoke.Shell32+IEnumExtraSearch  
 [IEnumIDList](http://msdn2.microsoft.com/en-us/library/bb761982) | Shobjidl.h | Vanara.PInvoke.Shell32+IEnumIDList  
 [IEnumShellItems](http://msdn2.microsoft.com/en-us/library/bb761962) | Shobjidl.h | Vanara.PInvoke.Shell32+IEnumShellItems  
+[IExecuteCommand](http://msdn2.microsoft.com/en-us/library/a3432f1a-dd33-4e0d-8b26-1312bb5151f7) | shobjidl_core.h | Vanara.PInvoke.Shell32+IExecuteCommand  
 [IExplorerBrowser](http://msdn2.microsoft.com/en-us/library/da2cf5d4-5a68-4d18-807b-b9d4e2712c10) | shobjidl_core.h | Vanara.PInvoke.Shell32+IExplorerBrowser  
 [IExplorerBrowserEvents](http://msdn2.microsoft.com/en-us/library/802d547f-41c2-4c4a-9f07-be615d7b86eb) | Shobjidl.h | Vanara.PInvoke.Shell32+IExplorerBrowserEvents  
 [IExplorerPaneVisibility](http://msdn2.microsoft.com/en-us/library/b940adc2-dfef-49c5-b86c-d0da83db0aad) | Shobjidl.h | Vanara.PInvoke.Shell32+IExplorerPaneVisibility  
@@ -294,6 +297,7 @@ Native Interface | Native DLL | Header | Managed Interface
 [IFileDialogControlEvents](https://www.google.com/search?num=5&q=IFileDialogControlEvents+site%3Amicrosoft.com) | Shobjidl.h | Vanara.PInvoke.Shell32+IFileDialogControlEvents  
 [IFileDialogCustomize](https://www.google.com/search?num=5&q=IFileDialogCustomize+site%3Amicrosoft.com) |  | Vanara.PInvoke.Shell32+IFileDialogCustomize  
 [IFileDialogEvents](http://msdn2.microsoft.com/en-us/library/bb775876) | Shobjidl.h | Vanara.PInvoke.Shell32+IFileDialogEvents  
+[IFileIsInUse](http://msdn2.microsoft.com/en-us/library/68a4ab3d-165e-4917-8915-77f15901dbad) | shobjidl_core.h | Vanara.PInvoke.Shell32+IFileIsInUse  
 [IFileOpenDialog](http://msdn2.microsoft.com/en-us/library/bb775834) | Shobjidl.h | Vanara.PInvoke.Shell32+IFileOpenDialog  
 [IFileOperation](https://www.google.com/search?num=5&q=IFileOperation+site%3Amicrosoft.com) | Shobjidl.h | Vanara.PInvoke.Shell32+IFileOperation  
 [IFileOperationProgressSink](http://msdn2.microsoft.com/en-us/library/bb775722) | Shobjidl.h | Vanara.PInvoke.Shell32+IFileOperationProgressSink  
@@ -323,6 +327,7 @@ Native Interface | Native DLL | Header | Managed Interface
 [IObjectCollection](http://msdn2.microsoft.com/en-us/library/d7665b26-5839-4b08-a099-ef25a68c65db) | objectarray.h | Vanara.PInvoke.Shell32+IObjectCollection  
 [IObjectWithAppUserModelId](http://msdn2.microsoft.com/en-us/library/f5b4e6bf-a5bf-49c5-b343-e9c1ec6c263d) | shobjidl_core.h | Vanara.PInvoke.Shell32+IObjectWithAppUserModelId  
 [IObjectWithProgId](http://msdn2.microsoft.com/en-us/library/3b66ba49-ed39-464e-b15a-c72fdff7f5e5) | shobjidl_core.h | Vanara.PInvoke.Shell32+IObjectWithProgId  
+[IObjectWithSelection](http://msdn2.microsoft.com/en-us/library/8fb248eb-73e7-4db0-8585-4accafe332d0) | shobjidl_core.h | Vanara.PInvoke.Shell32+IObjectWithSelection  
 [IObjectWithSite](http://msdn2.microsoft.com/en-us/library/e688136e-e06b-46ba-bec9-b8db2f9c468d) | ocidl.h | Vanara.PInvoke.Shell32+IObjectWithSite  
 [IOleCommandTarget](http://msdn2.microsoft.com/en-us/library/5c8b455e-7740-4f71-aef6-27390a11a1a3) | docobj.h | Vanara.PInvoke.Shell32+IOleCommandTarget  
 [IOpenControlPanel](https://www.google.com/search?num=5&q=IOpenControlPanel+site%3Amicrosoft.com) | Shobjidl.h | Vanara.PInvoke.Shell32+IOpenControlPanel  
@@ -354,7 +359,7 @@ Native Interface | Native DLL | Header | Managed Interface
 [IShellFolder](http://msdn2.microsoft.com/en-us/library/bb775075) | Shobjidl.h | Vanara.PInvoke.Shell32+IShellFolder  
 [IShellFolder2](http://msdn2.microsoft.com/en-us/library/bb775075) | Shobjidl.h | Vanara.PInvoke.Shell32+IShellFolder2  
 [IShellFolderViewCB](http://msdn2.microsoft.com/en-us/library/bb774967) | Shlobj.h | Vanara.PInvoke.Shell32+IShellFolderViewCB  
-[IShellFolderViewDual](https://www.google.com/search?num=5&q=IShellFolderViewDual+site%3Amicrosoft.com) | shell32.dll |  |   
+[IShellFolderViewDual](https://www.google.com/search?num=5&q=IShellFolderViewDual+site%3Amicrosoft.com) | shell32.dll | shldisp.h | Vanara.PInvoke.IShellFolderViewDual  
 [IShellFolderViewDual2](https://www.google.com/search?num=5&q=IShellFolderViewDual2+site%3Amicrosoft.com) | shell32.dll |  |   
 [IShellFolderViewDual3](https://www.google.com/search?num=5&q=IShellFolderViewDual3+site%3Amicrosoft.com) | shell32.dll |  |   
 [IShellItem](http://msdn2.microsoft.com/en-us/library/bb761144) | Shobjidl.h | Vanara.PInvoke.Shell32+IShellItem  
@@ -370,6 +375,7 @@ Native Interface | Native DLL | Header | Managed Interface
 [IShellView](http://msdn2.microsoft.com/en-us/library/91438583-e4f1-456f-a130-2a45846fd725) | shobjidl_core.h | Vanara.PInvoke.Shell32+IShellView  
 [IShellView2](http://msdn2.microsoft.com/en-us/library/a61aec39-406d-4066-941d-e788d64f4310) | shobjidl_core.h | Vanara.PInvoke.Shell32+IShellView2  
 [IShellView3](http://msdn2.microsoft.com/en-us/library/96b61e84-0d31-494d-a922-cd3dcd5735b9) | shobjidl.h | Vanara.PInvoke.Shell32+IShellView3  
+[IShellWindows](http://msdn2.microsoft.com/en-us/library/e609c8b6-2b2e-4188-894c-5c85960206ea) | exdisp.h | Vanara.PInvoke.Shell32+IShellWindows  
 [IStartMenuPinnedList](http://msdn2.microsoft.com/en-us/library/e1f4dbdb-34c0-4bf5-bb8b-a622a81c1617) | shobjidl.h | Vanara.PInvoke.Shell32+IStartMenuPinnedList  
 [ITaskbarList](http://msdn2.microsoft.com/en-us/library/bb774652) | Shobjidl.h | Vanara.PInvoke.Shell32+ITaskbarList  
 [ITaskbarList2](http://msdn2.microsoft.com/en-us/library/bb774638) | Shobjidl.h | Vanara.PInvoke.Shell32+ITaskbarList2  

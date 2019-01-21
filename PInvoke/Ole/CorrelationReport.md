@@ -1,5 +1,5 @@
 ## Correlation report for ole32.dll, oleaut32.dll, propsys.dll  
-### Methods (20% complete)  
+### Methods (21% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [BindMoniker](https://www.google.com/search?num=5&q=BindMoniker+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -55,7 +55,7 @@ Native Method | Native DLL | Header | Managed Method
 [CoGetCallerTID](https://www.google.com/search?num=5&q=CoGetCallerTID+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoGetCallState](https://www.google.com/search?num=5&q=CoGetCallState+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoGetCancelObject](https://www.google.com/search?num=5&q=CoGetCancelObject+site%3Amicrosoft.com) | ole32.dll |  |   
-[CoGetClassObject](https://www.google.com/search?num=5&q=CoGetClassObject+site%3Amicrosoft.com) | ole32.dll |  |   
+[CoGetClassObject](http://msdn2.microsoft.com/en-us/library/65e758ce-50a4-49e8-b3b2-0cd148d2781a) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoGetClassObject  
 [CoGetClassVersion](https://www.google.com/search?num=5&q=CoGetClassVersion+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoGetComCatalog](https://www.google.com/search?num=5&q=CoGetComCatalog+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoGetContextToken](https://www.google.com/search?num=5&q=CoGetContextToken+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -109,7 +109,7 @@ Native Method | Native DLL | Header | Managed Method
 [CoReactivateObject](https://www.google.com/search?num=5&q=CoReactivateObject+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoRegisterActivationFilter](https://www.google.com/search?num=5&q=CoRegisterActivationFilter+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoRegisterChannelHook](https://www.google.com/search?num=5&q=CoRegisterChannelHook+site%3Amicrosoft.com) | ole32.dll |  |   
-[CoRegisterClassObject](https://www.google.com/search?num=5&q=CoRegisterClassObject+site%3Amicrosoft.com) | ole32.dll |  |   
+[CoRegisterClassObject](http://msdn2.microsoft.com/en-us/library/d27bfa6c-194a-41f1-8fcf-76c4dff14a8a) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoRegisterClassObject  
 [CoRegisterInitializeSpy](https://www.google.com/search?num=5&q=CoRegisterInitializeSpy+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoRegisterMallocSpy](https://www.google.com/search?num=5&q=CoRegisterMallocSpy+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoRegisterMessageFilter](https://www.google.com/search?num=5&q=CoRegisterMessageFilter+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -121,7 +121,7 @@ Native Method | Native DLL | Header | Managed Method
 [CoResumeClassObjects](https://www.google.com/search?num=5&q=CoResumeClassObjects+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoRetireServer](https://www.google.com/search?num=5&q=CoRetireServer+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoRevertToSelf](https://www.google.com/search?num=5&q=CoRevertToSelf+site%3Amicrosoft.com) | ole32.dll |  |   
-[CoRevokeClassObject](https://www.google.com/search?num=5&q=CoRevokeClassObject+site%3Amicrosoft.com) | ole32.dll |  |   
+[CoRevokeClassObject](http://msdn2.microsoft.com/en-us/library/90b9b9ca-b5b2-48f5-8c2a-b478b6daa7ec) | ole32.dll | combaseapi.h | Vanara.PInvoke.Ole32.CoRevokeClassObject  
 [CoRevokeInitializeSpy](https://www.google.com/search?num=5&q=CoRevokeInitializeSpy+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoRevokeMallocSpy](https://www.google.com/search?num=5&q=CoRevokeMallocSpy+site%3Amicrosoft.com) | ole32.dll |  |   
 [CoSetCancelObject](https://www.google.com/search?num=5&q=CoSetCancelObject+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -151,7 +151,7 @@ Native Method | Native DLL | Header | Managed Method
 [CreateDataCache](https://www.google.com/search?num=5&q=CreateDataCache+site%3Amicrosoft.com) | ole32.dll |  |   
 [CreateDispTypeInfo](https://www.google.com/search?num=5&q=CreateDispTypeInfo+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [CreateErrorInfo](https://www.google.com/search?num=5&q=CreateErrorInfo+site%3Amicrosoft.com) | ole32.dll |  |   
-[CreateFileMoniker](https://www.google.com/search?num=5&q=CreateFileMoniker+site%3Amicrosoft.com) | ole32.dll |  |   
+[CreateFileMoniker](http://msdn2.microsoft.com/en-us/library/d9677fa0-cda0-4b63-a21f-1fd0e27c8f3f) | ole32.dll | objbase.h | Vanara.PInvoke.Ole32.CreateFileMoniker  
 [CreateGenericComposite](https://www.google.com/search?num=5&q=CreateGenericComposite+site%3Amicrosoft.com) | ole32.dll |  |   
 [CreateILockBytesOnHGlobal](https://www.google.com/search?num=5&q=CreateILockBytesOnHGlobal+site%3Amicrosoft.com) | ole32.dll |  |   
 [CreateItemMoniker](https://www.google.com/search?num=5&q=CreateItemMoniker+site%3Amicrosoft.com) | ole32.dll |  |   
@@ -206,7 +206,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetObjectFromRotByPath](https://www.google.com/search?num=5&q=GetObjectFromRotByPath+site%3Amicrosoft.com) | ole32.dll |  |   
 [GetRecordInfoFromGuids](https://www.google.com/search?num=5&q=GetRecordInfoFromGuids+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [GetRecordInfoFromTypeInfo](https://www.google.com/search?num=5&q=GetRecordInfoFromTypeInfo+site%3Amicrosoft.com) | oleaut32.dll |  |   
-[GetRunningObjectTable](https://www.google.com/search?num=5&q=GetRunningObjectTable+site%3Amicrosoft.com) | ole32.dll |  |   
+[GetRunningObjectTable](http://msdn2.microsoft.com/en-us/library/65d9cf7d-cc8a-4199-9a4a-7fd67ef8872d) | ole32.dll | objbase.h | Vanara.PInvoke.Ole32.GetRunningObjectTable  
 [GetVarConversionLocaleSetting](https://www.google.com/search?num=5&q=GetVarConversionLocaleSetting+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [HWND_UserFree](https://www.google.com/search?num=5&q=HWND_UserFree+site%3Amicrosoft.com) | oleaut32.dll |  |   
 [HWND_UserFree64](https://www.google.com/search?num=5&q=HWND_UserFree64+site%3Amicrosoft.com) | oleaut32.dll |  |   
@@ -973,9 +973,11 @@ Native Structure | Header | Managed Structure
 ### Interfaces  
 Native Interface | Native DLL | Header | Managed Interface  
 --- | --- | --- | ---  
+[IClassFactory](http://msdn2.microsoft.com/en-us/library/f624f833-2b69-43bc-92cd-c4ecbe6051c5) | unknwnbase.h | Vanara.PInvoke.Ole32+IClassFactory  
 [ICreateObject](http://msdn2.microsoft.com/en-us/library/90502b4a-dc0a-4077-83d7-e9f5445ba69b) | propsys.h | Vanara.PInvoke.PropSys+ICreateObject  
 [IDelayedPropertyStoreFactory](http://msdn2.microsoft.com/en-us/library/855c9f10-9f40-4c60-a669-551fa51133f5) | propsys.h | Vanara.PInvoke.PropSys+IDelayedPropertyStoreFactory  
 [IDropSource](http://msdn2.microsoft.com/en-us/library/963a36bc-4ad7-4591-bffc-a96b4310177d) | oleidl.h | Vanara.PInvoke.Ole32+IDropSource  
+[IDropTarget](http://msdn2.microsoft.com/en-us/library/13fbe834-1ef8-4944-b2e4-9f5c413c65c8) | oleidl.h | Vanara.PInvoke.Ole32+IDropTarget  
 [IEnumSTATPROPSETSTG](http://msdn2.microsoft.com/en-us/library/8d5e658f-312c-4c91-8794-808b2e8dd182) | propidl.h | Vanara.PInvoke.Ole32+IEnumSTATPROPSETSTG  
 [IEnumSTATPROPSTG](http://msdn2.microsoft.com/en-us/library/e625e52a-5628-4d18-9282-aa1c141c83af) | propidl.h | Vanara.PInvoke.Ole32+IEnumSTATPROPSTG  
 [IEnumSTATSTG](http://msdn2.microsoft.com/en-us/library/aa379217) | Objidl.h | Vanara.PInvoke.Ole32+IEnumSTATSTG  
@@ -1002,4 +1004,5 @@ Native Interface | Native DLL | Header | Managed Interface
 [IPropertyStoreFactory](http://msdn2.microsoft.com/en-us/library/78ea822d-da8e-4883-b0eb-4277e7eb87a2) | propsys.h | Vanara.PInvoke.PropSys+IPropertyStoreFactory  
 [IPropertySystem](http://msdn2.microsoft.com/en-us/library/9ead94d9-4d4e-44c6-8c53-11c4c4ee2fb2) | propsys.h | Vanara.PInvoke.PropSys+IPropertySystem  
 [IRecordInfo](https://www.google.com/search?num=5&q=IRecordInfo+site%3Amicrosoft.com) | OAIdl.h | Vanara.PInvoke.Ole32+IRecordInfo  
+[IRunningObjectTable](http://msdn2.microsoft.com/en-us/library/ff89bcb5-df6d-4325-b0e8-613217a68f42) | objidl.h | Vanara.PInvoke.Ole32+IRunningObjectTable  
 [IStorage](http://msdn2.microsoft.com/en-us/library/aa380015) | Objidl.h | Vanara.PInvoke.Ole32+IStorage  
