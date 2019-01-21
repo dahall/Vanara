@@ -249,7 +249,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-inamespacewalk-getidarrayresult HRESULT
 			// GetIDArrayResult( UINT *pcItems, PIDLIST_ABSOLUTE **prgpidl );
 			[PreserveSig]
-			HRESULT GetIDArrayResult(out uint pcItems, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 0)] PIDL[] prgpidl);
+			HRESULT GetIDArrayResult(out uint pcItems, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeConst = 0)] IntPtr[] prgpidl);
 		}
 
 		/// <summary>
@@ -282,7 +282,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-inamespacewalkcb-founditem HRESULT
 			// FoundItem( IShellFolder *psf, PCUITEMID_CHILD pidl );
 			[PreserveSig]
-			HRESULT FoundItem([In] IShellFolder psf, [In] PIDL pidl);
+			HRESULT FoundItem([In] IShellFolder psf, [In] IntPtr pidl);
 
 			/// <summary>
 			/// Called when a folder is about to be entered during a namespace walk. Use this method for any initialization of the retrieved item.
@@ -302,7 +302,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-inamespacewalkcb-enterfolder HRESULT
 			// EnterFolder( IShellFolder *psf, PCUITEMID_CHILD pidl );
 			[PreserveSig]
-			HRESULT EnterFolder([In] IShellFolder psf, [In] PIDL pidl);
+			HRESULT EnterFolder([In] IShellFolder psf, [In] IntPtr pidl);
 
 			/// <summary>
 			/// Called after a namespace walk through a folder. Use this method to perform any necessary cleanup following the actions
@@ -323,7 +323,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-inamespacewalkcb-leavefolder HRESULT
 			// LeaveFolder( IShellFolder *psf, PCUITEMID_CHILD pidl );
 			[PreserveSig]
-			HRESULT LeaveFolder([In] IShellFolder psf, [In] PIDL pidl);
+			HRESULT LeaveFolder([In] IShellFolder psf, [In] IntPtr pidl);
 
 			/// <summary>
 			/// Initializes the window title and cancel button text of the progress dialog box displayed during the namespace walk.
@@ -381,7 +381,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-inamespacewalkcb-founditem HRESULT
 			// FoundItem( IShellFolder *psf, PCUITEMID_CHILD pidl );
 			[PreserveSig]
-			new HRESULT FoundItem([In] IShellFolder psf, [In] PIDL pidl);
+			new HRESULT FoundItem([In] IShellFolder psf, [In] IntPtr pidl);
 
 			/// <summary>
 			/// Called when a folder is about to be entered during a namespace walk. Use this method for any initialization of the retrieved item.
@@ -401,7 +401,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-inamespacewalkcb-enterfolder HRESULT
 			// EnterFolder( IShellFolder *psf, PCUITEMID_CHILD pidl );
 			[PreserveSig]
-			new HRESULT EnterFolder([In] IShellFolder psf, [In] PIDL pidl);
+			new HRESULT EnterFolder([In] IShellFolder psf, [In] IntPtr pidl);
 
 			/// <summary>
 			/// Called after a namespace walk through a folder. Use this method to perform any necessary cleanup following the actions
@@ -422,7 +422,7 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-inamespacewalkcb-leavefolder HRESULT
 			// LeaveFolder( IShellFolder *psf, PCUITEMID_CHILD pidl );
 			[PreserveSig]
-			new HRESULT LeaveFolder([In] IShellFolder psf, [In] PIDL pidl);
+			new HRESULT LeaveFolder([In] IShellFolder psf, [In] IntPtr pidl);
 
 			/// <summary>
 			/// Initializes the window title and cancel button text of the progress dialog box displayed during the namespace walk.
