@@ -1601,7 +1601,7 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762137")]
-		public static TIntf SHCreateItemWithParent<TIntf>(PIDL pidlParent, PIDL pidl) where TIntf : class =>
+		public static TIntf SHCreateItemWithParent<TIntf>([In] PIDL pidlParent, [In] PIDL pidl) where TIntf : class =>
 			IidGetObj<TIntf>((in Guid g, out object o) => SHCreateItemWithParent(pidlParent, null, pidl, g, out o));
 
 		/// <summary>Create a Shell item, given a parent folder and a child item ID.</summary>
@@ -1616,8 +1616,8 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[SecurityCritical, SuppressUnmanagedCodeSecurity]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762137")]
-		public static TIntf SHCreateItemWithParent<TIntf>(IShellFolder psfParent, PIDL pidl) where TIntf : class =>
-			IidGetObj<TIntf>((in Guid g, out object o) => SHCreateItemWithParent(null, psfParent, pidl, g, out o));
+		public static TIntf SHCreateItemWithParent<TIntf>([In] IShellFolder psfParent, [In] PIDL pidl) where TIntf : class =>
+			IidGetObj<TIntf>((in Guid g, out object o) => SHCreateItemWithParent(PIDL.Null, psfParent, pidl, g, out o));
 
 		/// <summary>Creates a Shell item array object.</summary>
 		/// <param name="pidlParent">
