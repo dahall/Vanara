@@ -66,8 +66,6 @@ Native Method | Native DLL | Header | Managed Method
 [MenuHelp](http://msdn2.microsoft.com/en-us/library/bb760765) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.MenuHelp  
 [PropertySheet](https://www.google.com/search?num=5&q=PropertySheet+site%3Amicrosoft.com) | comctl32.dll | Prsht.h | Vanara.PInvoke.ComCtl32.PropertySheet  
 [RemoveWindowSubclass](http://msdn2.microsoft.com/en-us/library/bb762094) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.RemoveWindowSubclass  
-[SendMessageA](https://www.google.com/search?num=5&q=SendMessageA+site%3Amicrosoft.com) | user32.dll |  | Vanara.PInvoke.ComCtl32.SendMessage  
-[SendMessageW](https://www.google.com/search?num=5&q=SendMessageW+site%3Amicrosoft.com) | user32.dll |  | Vanara.PInvoke.ComCtl32.SendMessage  
 [SetWindowSubclass](http://msdn2.microsoft.com/en-us/library/bb762102) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.SetWindowSubclass  
 [ShowHideMenuCtl](http://msdn2.microsoft.com/en-us/library/bb775731) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.ShowHideMenuCtl  
 [Str_SetPtrW](http://msdn2.microsoft.com/en-us/library/bb775735) | comctl32.dll | Commctrl.h | Vanara.PInvoke.ComCtl32.Str_SetPtr  
