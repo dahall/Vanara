@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using Vanara.Extensions;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
@@ -78,6 +79,43 @@ namespace Vanara.PInvoke
 
 			/// <summary><c>Windows Vista and later</c>. The descriptor is Unicode.</summary>
 			FD_UNICODE = 0x80000000,
+		}
+
+		/// <summary><para>Used with the CFSTR_SHELLIDLIST clipboard format to transfer the pointer to an item identifier list (PIDL) of one or more Shell namespace objects.</para></summary><remarks><para>To use this structure to retrieve a particular PIDL, add the <c>aoffset</c> value of the PIDL to the address of the structure. The following two macros can be used to retrieve PIDLs from the structure. The first retrieves the PIDL of the parent folder. The second retrieves a PIDL, specified by its zero-based index.</para><para>The value that is returned by these macros is a pointer to the ITEMIDLIST structure. Since these structures vary in length, you must determine the end of the structure by parsing it. See NameSpace for further discussion of PIDLs and the <c>ITEMIDLIST</c> structure.</para></remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/ns-shlobj_core-_ida
+		// typedef struct _IDA { UINT cidl; UINT aoffset[1]; } CIDA, *LPIDA;
+		[PInvokeData("shlobj_core.h", MSDNShortId = "30caf91d-8f3c-48ea-ad64-47f919f33f1d")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CIDA
+		{
+			/// <summary>
+			///   <para>Type: <c>UINT</c></para><para>The number of PIDLs that are being transferred, not including the parent folder.</para>
+			/// </summary>
+			public uint cidl;
+
+			/// <summary>
+			///   <para>Type: <c>UINT[1]</c></para><para>An array of offsets, relative to the beginning of this structure. The array contains <c>cidl</c>+1 elements. The first element of <c>aoffset</c> contains an offset to the fully qualified PIDL of a parent folder. If this PIDL is empty, the parent folder is the desktop. Each of the remaining elements of the array contains an offset to one of the PIDLs to be transferred. All of these PIDLs are relative to the PIDL of the parent folder.</para>
+			/// </summary>
+			public IntPtr aoffset;
+
+			/// <summary>
+			///   <para>Type: <c>UINT[]</c></para><para>An array of offsets, relative to the beginning of this structure. The array contains <c>cidl</c>+1 elements. The first element of <c>aoffset</c> contains an offset to the fully qualified PIDL of a parent folder. If this PIDL is empty, the parent folder is the desktop. Each of the remaining elements of the array contains an offset to one of the PIDLs to be transferred. All of these PIDLs are relative to the PIDL of the parent folder.</para>
+			/// </summary>
+			/// <value>Returns a <see cref="UInt32[]"/> value.</value>
+			public uint[] offsets => aoffset.ToArray<uint>((int)cidl + 1);
+
+			public PIDL GetFolderPIDL()
+			{
+				using (var pinned = new PinnedObject(this))
+					return new PIDL(((IntPtr)pinned).Offset(offsets[0]), true);
+			}
+
+			public PIDL GetItemRelativePIDL(int childIndex)
+			{
+				if (childIndex >= cidl) throw new ArgumentOutOfRangeException(nameof(childIndex));
+				using (var pinned = new PinnedObject(this))
+					return new PIDL(((IntPtr)pinned).Offset(offsets[childIndex + 1]), true);
+			}
 		}
 
 		/// <summary>Describes the image and accompanying text for a drop object.</summary>
