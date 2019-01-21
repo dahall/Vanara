@@ -3266,6 +3266,30 @@ namespace Vanara.PInvoke
 		public static extern HRESULT SHBindToFolderIDListParent(IShellFolder psfRoot, PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, out IntPtr ppidlLast);
 
 		/// <summary>
+		/// Given a Shell namespace item specified in the form of a folder, and an item identifier list relative to that folder, this
+		/// function binds to the parent of the namespace item and optionally returns a pointer to the final component of the item identifier list.
+		/// </summary>
+		/// <typeparam name="TIntf">The type of the requested interface. This is typically IShellFolder or IShellFolder2, but
+		/// can be anything supported by the target folder.</typeparam>
+		/// <param name="psfRoot"><para>Type: <c>IShellFolder*</c></para>
+		/// <para>A pointer to a Shell folder object. If is <c>NULL</c>, indicates that the IDList passed is relative to the desktop.</para></param>
+		/// <param name="pidl"><para>Type: <c>PCUIDLIST_RELATIVE</c></para>
+		/// <para>A PIDL to bind to, relative to . If is <c>NULL</c>, this is an absolute IDList relative to the desktop folder.</para></param>
+		/// <returns>
+		/// When this function returns, contains the interface pointer requested. This is typically IShellFolder or IShellFolder2, but
+		/// can be anything supported by the target folder.
+		/// </returns>
+		/// <remarks>
+		/// <c>Note</c> Calling the <c>SHBindToFolderIDListParent</c> function is equivalent to calling the SHBindToFolderIDListParentEx
+		/// function with <c>NULL</c> as the bind context.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shbindtofolderidlistparent SHSTDAPI
+		// SHBindToFolderIDListParent( IShellFolder *psfRoot, PCUIDLIST_RELATIVE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
+		[PInvokeData("shlobj_core.h", MSDNShortId = "72a79d1b-15ed-475e-9ebd-03345579a06a")]
+		public static TIntf SHBindToFolderIDListParent<TIntf>(IShellFolder psfRoot = null, PIDL pidl = null) where TIntf : class =>
+			IidGetObj<TIntf>((in Guid g, out object o) => SHBindToFolderIDListParent(psfRoot, pidl, g, out o, out var _));
+
+		/// <summary>
 		/// <para>Extends the SHBindToFolderIDListParent function by allowing the caller to specify a bind context.</para>
 		/// </summary>
 		/// <param name="psfRoot">
@@ -3315,53 +3339,102 @@ namespace Vanara.PInvoke
 		[PInvokeData("shlobj_core.h", MSDNShortId = "4f9b68cb-d0ae-45f7-90f5-2db1da3ab599")]
 		public static extern HRESULT SHBindToFolderIDListParentEx(IShellFolder psfRoot, PIDL pidl, IBindCtx ppbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, out IntPtr ppidlLast);
 
-		/// <summary>
-		/// <para>Retrieves and binds to a specified object by using the Shell namespace IShellFolder::BindToObject method.</para>
-		/// </summary>
-		/// <param name="psf">
+		/// <summary>Extends the SHBindToFolderIDListParent function by allowing the caller to specify a bind context.</summary>
+		/// <typeparam name="TIntf">
+		/// The type of the requested interface. This is typically IShellFolder or IShellFolder2, but can be anything supported by the target folder.
+		/// </typeparam>
+		/// <param name="psfRoot">
 		/// <para>Type: <c>IShellFolder*</c></para>
-		/// <para>
-		/// A pointer to IShellFolder. This parameter can be <c>NULL</c>. If is <c>NULL</c>, this indicates parameter is relative to the
-		/// desktop. In this case, must specify an absolute ITEMIDLIST.
-		/// </para>
+		/// <para>A pointer to a Shell folder object. If is <c>NULL</c>, indicates that the IDList passed is relative to the desktop.</para>
 		/// </param>
 		/// <param name="pidl">
 		/// <para>Type: <c>PCUIDLIST_RELATIVE</c></para>
-		/// <para>
-		/// A pointer to a constant ITEMIDLIST to bind to that is relative to . If is <c>NULL</c>, this is an absolute <c>ITEMIDLIST</c>
-		/// relative to the desktop folder.
-		/// </para>
+		/// <para>A PIDL to bind to, relative to . If is <c>NULL</c>, this is an absolute IDList relative to the desktop folder.</para>
 		/// </param>
-		/// <param name="pbc">
+		/// <param name="ppbc">
 		/// <para>Type: <c>IBindCtx*</c></para>
 		/// <para>
 		/// A pointer to IBindCtx interface on a bind context object to be used during this operation. If this parameter is not used, set it
-		/// to <c>NULL</c>. Because support for is optional for folder object implementations, some folders may not support the use of bind contexts.
+		/// to <c>NULL</c>, which is equivalent to calling the SHBindToFolderIDListParent function. Because support for is optional for
+		/// folder object implementations, some folders may not support the use of bind contexts.
 		/// </para>
 		/// </param>
-		/// <param name="riid">
-		/// <para>Type: <c>REFIID</c></para>
-		/// <para>Identifier of the interface to return.</para>
-		/// </param>
-		/// <param name="ppv">
-		/// <para>Type: <c>void**</c></para>
+		/// <returns>
+		/// When this function returns, contains the interface pointer requested in . This is typically IShellFolder or IShellFolder2, but
+		/// can be anything supported by the target folder.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shbindtofolderidlistparentex SHSTDAPI
+		// SHBindToFolderIDListParentEx( IShellFolder *psfRoot, PCUIDLIST_RELATIVE pidl, IBindCtx *ppbc, REFIID riid, void **ppv,
+		// PCUITEMID_CHILD *ppidlLast );
+		[PInvokeData("shlobj_core.h", MSDNShortId = "4f9b68cb-d0ae-45f7-90f5-2db1da3ab599")]
+		public static TIntf SHBindToFolderIDListParentEx<TIntf>(IShellFolder psfRoot = null, PIDL pidl = null, IBindCtx ppbc = null) where TIntf : class =>
+			IidGetObj<TIntf>((in Guid g, out object o) => SHBindToFolderIDListParentEx(psfRoot, pidl, ppbc, g, out o, out var _));
+
+		/// <summary>
+		/// Retrieves and binds to a specified object by using the Shell namespace IShellFolder::BindToObject method.
+		/// </summary>
+		/// <param name="psf"><para>Type: <c>IShellFolder*</c></para>
+		/// <para>
+		/// A pointer to IShellFolder. This parameter can be <c>NULL</c>. If is <c>NULL</c>, this indicates parameter is relative to the
+		/// desktop. In this case, must specify an absolute ITEMIDLIST.
+		/// </para></param>
+		/// <param name="pidl"><para>Type: <c>PCUIDLIST_RELATIVE</c></para>
+		/// <para>
+		/// A pointer to a constant ITEMIDLIST to bind to that is relative to . If is <c>NULL</c>, this is an absolute <c>ITEMIDLIST</c>
+		/// relative to the desktop folder.
+		/// </para></param>
+		/// <param name="pbc"><para>Type: <c>IBindCtx*</c></para>
+		/// <para>
+		/// A pointer to IBindCtx interface on a bind context object to be used during this operation. If this parameter is not used, set it
+		/// to <c>NULL</c>. Because support for is optional for folder object implementations, some folders may not support the use of bind contexts.
+		/// </para></param>
+		/// <param name="riid"><para>Type: <c>REFIID</c></para>
+		/// <para>Identifier of the interface to return.</para></param>
+		/// <param name="ppv"><para>Type: <c>void**</c></para>
 		/// <para>
 		/// When this method returns, contains the interface pointer as specified in to the bound object. If an error occurs, contains a
 		/// <c>NULL</c> pointer.
-		/// </para>
-		/// </param>
+		/// </para></param>
 		/// <returns>
 		/// <para>Type: <c>HRESULT</c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
 		/// </returns>
-		/// <remarks>
-		/// <para><c>Note</c> This is a helper function that gets the desktop object by calling SHGetDesktopFolder.</para>
-		/// </remarks>
+		/// <remarks><c>Note</c> This is a helper function that gets the desktop object by calling SHGetDesktopFolder.</remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shbindtoobject SHSTDAPI SHBindToObject(
 		// IShellFolder *psf, PCUIDLIST_RELATIVE pidl, IBindCtx *pbc, REFIID riid, void **ppv );
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "acc16097-8301-4118-8cb5-00aa2705306a")]
 		public static extern HRESULT SHBindToObject(IShellFolder psf, PIDL pidl, IBindCtx pbc, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+
+		/// <summary>
+		/// Retrieves and binds to a specified object by using the Shell namespace IShellFolder::BindToObject method.
+		/// </summary>
+		/// <typeparam name="TIntf">Type of the interface to return.</typeparam>
+		/// <param name="psf"><para>Type: <c>IShellFolder*</c></para>
+		/// <para>
+		/// A pointer to IShellFolder. This parameter can be <c>NULL</c>. If is <c>NULL</c>, this indicates parameter is relative to the
+		/// desktop. In this case, must specify an absolute ITEMIDLIST.
+		/// </para></param>
+		/// <param name="pidl"><para>Type: <c>PCUIDLIST_RELATIVE</c></para>
+		/// <para>
+		/// A pointer to a constant ITEMIDLIST to bind to that is relative to . If is <c>NULL</c>, this is an absolute <c>ITEMIDLIST</c>
+		/// relative to the desktop folder.
+		/// </para></param>
+		/// <param name="pbc"><para>Type: <c>IBindCtx*</c></para>
+		/// <para>
+		/// A pointer to IBindCtx interface on a bind context object to be used during this operation. If this parameter is not used, set it
+		/// to <c>NULL</c>. Because support for is optional for folder object implementations, some folders may not support the use of bind contexts.
+		/// </para></param>
+		/// <returns>
+		/// When this method returns, contains the interface pointer as specified in to the bound object. If an error occurs, contains a
+		/// <c>NULL</c> pointer.
+		/// </returns>
+		/// <remarks><c>Note</c> This is a helper function that gets the desktop object by calling SHGetDesktopFolder.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shbindtoobject SHSTDAPI SHBindToObject(
+		// IShellFolder *psf, PCUIDLIST_RELATIVE pidl, IBindCtx *pbc, REFIID riid, void **ppv );
+		[PInvokeData("shlobj_core.h", MSDNShortId = "acc16097-8301-4118-8cb5-00aa2705306a")]
+		public static TIntf SHBindToObject<TIntf>(IShellFolder psf, PIDL pidl, IBindCtx pbc) where TIntf : class =>
+			IidGetObj<TIntf>((in Guid g, out object o) => SHBindToObject(psf, pidl, pbc, g, out o));
 
 		/// <summary>
 		/// <para>
@@ -3400,6 +3473,19 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "1cb283a6-3ebf-4986-9f32-5f6ab8d977ad")]
 		public static extern HRESULT SHBindToParent(PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv, out IntPtr ppidlLast);
+
+		/// <summary>
+		/// Takes a pointer to a fully qualified item identifier list (PIDL), and returns a specified interface pointer on the parent object.
+		/// </summary>
+		/// <typeparam name="TIntf">The Type of one of the interfaces exposed by the item's parent object.</typeparam>
+		/// <param name="pidl"><para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+		/// <para>The item's PIDL.</para></param>
+		/// <returns>A pointer to the interface specified. You must release the object when you are finished.</returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-shbindtoparent SHSTDAPI SHBindToParent(
+		// PCIDLIST_ABSOLUTE pidl, REFIID riid, void **ppv, PCUITEMID_CHILD *ppidlLast );
+		[PInvokeData("shlobj_core.h", MSDNShortId = "1cb283a6-3ebf-4986-9f32-5f6ab8d977ad")]
+		public static TIntf SHBindToParent<TIntf>(PIDL pidl) where TIntf : class =>
+			IidGetObj<TIntf>((in Guid g, out object o) => SHBindToParent(pidl, g, out o, out var _));
 
 		/// <summary>Displays a dialog box that enables the user to select a Shell folder.</summary>
 		/// <param name="lpbi">A pointer to a BROWSEINFO structure that contains information used to display the dialog box.</param>
@@ -5017,6 +5103,34 @@ namespace Vanara.PInvoke
 		[PInvokeData("Shlobj.h", MSDNShortId = "dd378429")]
 		public static extern HRESULT SHGetKnownFolderItem(in Guid rfid, KNOWN_FOLDER_FLAG dwFlags, [In, Optional] HTOKEN hToken, in Guid riid, [MarshalAs(UnmanagedType.Interface)] out object ppv);
 
+		/// <summary>Retrieves an IShellItem object that represents a known folder.</summary>
+		/// <typeparam name="TIntf">The Type of the interface that represents the item, usually IShellItem or IShellItem2.</typeparam>
+		/// <param name="rfid">The KNOWNFOLDERID that identifies the folder that contains the item.</param>
+		/// <param name="dwFlags">
+		/// Flags that specify special options used in the retrieval of the known folder IShellItem. This value can be KF_FLAG_DEFAULT;
+		/// otherwise, one or more of the KNOWN_FOLDER_FLAG values.
+		/// </param>
+		/// <param name="hToken">
+		/// An access token used to represent a particular user. This parameter is usually set to NULL, in which case the function tries to
+		/// access the current user's instance of the folder. However, you may need to assign a value to hToken for those folders that can
+		/// have multiple users but are treated as belonging to a single user. The most commonly used folder of this type is Documents.
+		/// <para>
+		/// The calling application is responsible for correct impersonation when hToken is non-null. It must have appropriate security
+		/// privileges for the particular user, including TOKEN_QUERY and TOKEN_IMPERSONATE, and the user's registry hive must be currently
+		/// mounted. See Access Control for further discussion of access control issues.
+		/// </para>
+		/// <para>
+		/// Assigning the hToken parameter a value of -1 indicates the Default User. This allows clients of SHGetKnownFolderIDList to find
+		/// folder locations (such as the Desktop folder) for the Default User. The Default User user profile is duplicated when any new user
+		/// account is created, and includes special folders such as Documents and Desktop. Any items added to the Default User folder also
+		/// appear in any new user account. Note that access to the Default User folders requires administrator privileges.
+		/// </para>
+		/// </param>
+		/// <returns>When this method returns, contains the interface pointer requested.</returns>
+		[PInvokeData("Shlobj.h", MSDNShortId = "dd378429")]
+		public static TIntf SHGetKnownFolderItem<TIntf>(KNOWNFOLDERID rfid, KNOWN_FOLDER_FLAG dwFlags = KNOWN_FOLDER_FLAG.KF_FLAG_DEFAULT, [In] HTOKEN hToken = default) where TIntf : class =>
+			IidGetObj<TIntf>((in Guid g, out object o) => SHGetKnownFolderItem(rfid.Guid(), dwFlags, hToken, g, out o));
+
 		/// <summary>Retrieves the full path of a known folder identified by the folder's KNOWNFOLDERID.</summary>
 		/// <param name="rfid">A reference to the KNOWNFOLDERID that identifies the folder.</param>
 		/// <param name="dwFlags">
@@ -6166,6 +6280,26 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlobj_core.h", MSDNShortId = "d45ec25c-359b-46f8-b0f6-5888525c7349")]
 		public static extern HRESULT StgMakeUniqueName(IStorage pstgParent, [MarshalAs(UnmanagedType.LPWStr)] string pszFileSpec, STGM grfMode, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+
+		/// <summary>Creates a unique name for a stream or storage object from a template.</summary>
+		/// <typeparam name="TIntf">The type of the interface to retrieve through, typically IStorage or IStream.</typeparam>
+		/// <param name="pstgParent"><para>Type: <c>IStorage*</c></para>
+		/// <para>A pointer to an IStorage object.</para></param>
+		/// <param name="pszFileSpec"><para>Type: <c>PCWSTR</c></para>
+		/// <para>The format or template for the name of the stream or storage object.</para></param>
+		/// <param name="grfMode"><para>Type: <c>DWORD</c></para>
+		/// <para>
+		/// The access mode to use when opening the stream or storage object. For more information and descriptions of the possible values,
+		/// see STGM Constants.
+		/// </para></param>
+		/// <returns>
+		/// When this method returns, contains the interface pointer requested in . This is typically IStorage or IStream.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlobj_core/nf-shlobj_core-stgmakeuniquename HRESULT StgMakeUniqueName(
+		// IStorage *pstgParent, PCWSTR pszFileSpec, DWORD grfMode, REFIID riid, void **ppv );
+		[PInvokeData("shlobj_core.h", MSDNShortId = "d45ec25c-359b-46f8-b0f6-5888525c7349")]
+		public static TIntf StgMakeUniqueName<TIntf>(IStorage pstgParent, string pszFileSpec, STGM grfMode) where TIntf : class =>
+			IidGetObj<TIntf>((in Guid g, out object o) => StgMakeUniqueName(pstgParent, pszFileSpec, grfMode, g, out o));
 
 		/// <summary>
 		/// <para>

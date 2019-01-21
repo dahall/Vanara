@@ -1133,6 +1133,20 @@ namespace Vanara.PInvoke
 		[PInvokeData("shellapi.h", MSDNShortId = "43257507-dd5e-4622-8445-c132187fd1e5")]
 		public static extern HRESULT AssocCreateForClasses([In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] ASSOCIATIONELEMENT[] rgClasses, uint cClasses, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
+		/// <summary>Retrieves an object that implements an IQueryAssociations interface.</summary>
+		/// <typeparam name="TIntf">Reference to the desired IID type, normally IQueryAssociations.</typeparam>
+		/// <param name="rgClasses"><para>Type: <c>const ASSOCIATIONELEMENT*</c></para>
+		/// <para>A pointer to an array of ASSOCIATIONELEMENT structures.</para></param>
+		/// <returns>
+		/// When this method returns, contains the interface pointer requested in . This is normally IQueryAssociations.
+		/// </returns>
+		/// <remarks>For systems earlier than Windows Vista, use the AssocCreate function.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-assoccreateforclasses SHSTDAPI AssocCreateForClasses(
+		// const ASSOCIATIONELEMENT *rgClasses, ULONG cClasses, REFIID riid, void **ppv );
+		[PInvokeData("shellapi.h", MSDNShortId = "43257507-dd5e-4622-8445-c132187fd1e5")]
+		public static TIntf AssocCreateForClasses<TIntf>(ASSOCIATIONELEMENT[] rgClasses) where TIntf : class =>
+			IidGetObj<TIntf>((in Guid g, out object o) => AssocCreateForClasses(rgClasses, (uint)(rgClasses?.Length ?? 0), g, out o));
+
 		/// <summary>
 		/// <para>
 		/// Parses a Unicode command line string and returns an array of pointers to the command line arguments, along with a count of such
@@ -2684,6 +2698,50 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shellapi.h", MSDNShortId = "772aa2c8-6dd1-480c-a008-58f30902cb80")]
 		public static extern HRESULT SHGetPropertyStoreForWindow(HWND hwnd, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
+
+		/// <summary>
+		/// Retrieves an object that represents a specific window's collection of properties, which allows those properties to be queried or set.
+		/// </summary>
+		/// <typeparam name="TIntf">The type of the property store object to retrieve. This is typically IPropertyStore.</typeparam>
+		/// <param name="hwnd"><para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window whose properties are being retrieved.</para></param>
+		/// <returns>
+		/// When this function returns, contains the interface pointer requested in . This is typically IPropertyStore.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// An application can use this function to obtain access to a window's property store so that it can set an explicit Application
+		/// User Model ID (AppUserModelID) in the System.AppUserModel.ID property.
+		/// </para>
+		/// <para>
+		/// A window's properties must be removed before the window is closed. If this is not done, the resources used by those properties
+		/// are not returned to the system. A property is removed by setting it to the PROPVARIANT type VT_EMPTY.
+		/// </para>
+		/// <para>
+		/// When a call is made to IPropertyStore::SetValue on the object retrieved through , the properties and values are immediately
+		/// stored on the window. Therefore, no call to IPropertyStore::Commit is needed. No error occurs if it is called, but it has no effect.
+		/// </para>
+		/// <para>
+		/// An application sets AppUserModelIDs on individual windows to control the application's taskbar grouping and Jump List contents.
+		/// For instance, a suite application might want to provide a different taskbar button for each of its subfeatures, with the windows
+		/// relating to that subfeature grouped under that button. Without window-level AppUserModelIDs, those windows would all be grouped
+		/// together under the main process.
+		/// </para>
+		/// <para>
+		/// Applications should also use this property store to set these relaunch properties so that the system can return the application
+		/// to that state.
+		/// </para>
+		/// <list type="bullet">
+		///   <item>System.AppUserModel.RelaunchCommand</item>
+		///   <item>System.AppUserModel.RelaunchDisplayNameResource</item>
+		///   <item>System.AppUserModel.RelaunchIconResource</item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shellapi/nf-shellapi-shgetpropertystoreforwindow SHSTDAPI
+		// SHGetPropertyStoreForWindow( HWND hwnd, REFIID riid, void **ppv );
+		[PInvokeData("shellapi.h", MSDNShortId = "772aa2c8-6dd1-480c-a008-58f30902cb80")]
+		public static TIntf SHGetPropertyStoreForWindow<TIntf>(HWND hwnd) where TIntf : class =>
+			IidGetObj<TIntf>((in Guid g, out object o) => SHGetPropertyStoreForWindow(hwnd, g, out o));
 
 		/// <summary>
 		/// <para>Retrieves information about system-defined Shell icons.</para>

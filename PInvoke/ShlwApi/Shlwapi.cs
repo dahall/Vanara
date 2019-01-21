@@ -1505,20 +1505,14 @@ namespace Vanara.PInvoke
 		public static extern HRESULT IStream_Copy(IStream pstmFrom, IStream pstmTo, uint cb);
 
 		/// <summary>
-		/// <para>Reads bytes from a specified stream and returns a value that indicates whether all bytes were successfully read.</para>
+		/// Reads bytes from a specified stream and returns a value that indicates whether all bytes were successfully read.
 		/// </summary>
-		/// <param name="pstm">
-		/// <para>Type: <c>IStream*</c></para>
-		/// <para>A pointer to the IStream interface of the stream from which to read.</para>
-		/// </param>
-		/// <param name="pv">
-		/// <para>Type: <c>VOID*</c></para>
-		/// <para>A pointer to a buffer to receive the stream data from pstm. This buffer must be at least cb bytes in size.</para>
-		/// </param>
-		/// <param name="cb">
-		/// <para>Type: <c>ULONG</c></para>
-		/// <para>The number of bytes of data that the function should attempt to read from the input stream.</para>
-		/// </param>
+		/// <param name="pstm"><para>Type: <c>IStream*</c></para>
+		/// <para>A pointer to the IStream interface of the stream from which to read.</para></param>
+		/// <param name="pv"><para>Type: <c>VOID*</c></para>
+		/// <para>A pointer to a buffer to receive the stream data from pstm. This buffer must be at least cb bytes in size.</para></param>
+		/// <param name="cb"><para>Type: <c>ULONG</c></para>
+		/// <para>The number of bytes of data that the function should attempt to read from the input stream.</para></param>
 		/// <returns>
 		/// <para>Type: <c>HRESULT</c></para>
 		/// <para>
@@ -1527,16 +1521,40 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// </returns>
 		/// <remarks>
-		/// <para>
 		/// This function calls the ISequentialStream::Read method to read data from the specified stream into the buffer. If the function
 		/// fails for any reason, the contents of the output buffer and the position of the read pointer in the input stream are undefined.
-		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-istream_read LWSTDAPI IStream_Read( IStream *pstm, void
-		// *pv, ULONG cb );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-istream_read
+		// LWSTDAPI IStream_Read(IStream *pstm, void *pv, ULONG cb );
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "07a3a500-babb-458b-ba98-9344c63ea014")]
 		public static extern HRESULT IStream_Read(IStream pstm, IntPtr pv, uint cb);
+
+		/// <summary>
+		/// Reads bytes from a specified stream and returns a value that indicates whether all bytes were successfully read.
+		/// </summary>
+		/// <param name="pstm"><para>Type: <c>IStream*</c></para>
+		/// <para>A pointer to the IStream interface of the stream from which to read.</para></param>
+		/// <param name="pv"><para>Type: <c>VOID*</c></para>
+		/// <para>A pointer to a buffer to receive the stream data from pstm. This buffer must be at least cb bytes in size.</para></param>
+		/// <param name="cb"><para>Type: <c>ULONG</c></para>
+		/// <para>The number of bytes of data that the function should attempt to read from the input stream.</para></param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>
+		/// Returns <c>S_OK</c> if the function successfully reads the specified number of bytes from the stream, or a COM failure code
+		/// otherwise. In particular, if the read attempt was successful but fewer than cb bytes were read, the function returns <c>E_FAIL</c>.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// This function calls the ISequentialStream::Read method to read data from the specified stream into the buffer. If the function
+		/// fails for any reason, the contents of the output buffer and the position of the read pointer in the input stream are undefined.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-istream_read
+		// LWSTDAPI IStream_Read(IStream *pstm, void *pv, ULONG cb );
+		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shlwapi.h", MSDNShortId = "07a3a500-babb-458b-ba98-9344c63ea014")]
+		public static extern HRESULT IStream_Read(IStream pstm, SafeAllocatedMemoryHandle pv, uint cb);
 
 		/// <summary>
 		/// <para>Reads a pointer to an item identifier list (PIDL) from an IStream object into a PIDLIST_RELATIVE object.</para>
@@ -1872,6 +1890,41 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shlwapi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shlwapi.h", MSDNShortId = "3e3f3ed0-ad36-40ef-b30c-8c85ff159f21")]
 		public static extern HRESULT IUnknown_QueryService([MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid guidService, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppvOut);
+
+		/// <summary>Retrieves an interface for a service from a specified object.</summary>
+		/// <typeparam name="TOut">The type of the desired service interface.</typeparam>
+		/// <param name="punk"><para>Type: <c>IUnknown*</c></para>
+		/// <para>A pointer to the IUnknown instance of the COM object that supports the service.</para></param>
+		/// <param name="guidService"><para>Type: <c>REFGUID</c></para>
+		/// <para>The service's unique identifier (SID).</para></param>
+		/// <param name="riid"><para>Type: <c>Guid?</c></para>
+		/// <para>The IID of the desired service interface. If <see langword="null" />, the Guid of the <typeparamref name="TOut" /> type is used.</para></param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>
+		/// When this method returns, contains the interface pointer requested riid. If successful, the calling application is responsible
+		/// for calling IUnknown::Release using this value when the service is no longer needed. In the case of failure, this value is <c>NULL</c>.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If the object passed in the punk parameter supports the IServiceProvider interface, then its QueryService method is invoked,
+		/// passing the guidService, riid, and ppvOut parameters and propagating the return value. Otherwise, the function returns E_FAIL.
+		/// </para>
+		/// <para>
+		/// For those versions of Windows that do not include <c>IUnknown_QueryService</c> in Shlwapi.h, this function must be called
+		/// directly from Shlwapi.dll using ordinal 176.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shlwapi/nf-shlwapi-iunknown_queryservice LWSTDAPI IUnknown_QueryService(
+		// IUnknown *punk, REFGUID guidService, REFIID riid, void **ppvOut );
+		[PInvokeData("shlwapi.h", MSDNShortId = "3e3f3ed0-ad36-40ef-b30c-8c85ff159f21")]
+		public static TOut IUnknown_QueryService<TOut>(object punk, in Guid guidService, in Guid? riid = null)
+		{
+			var iid = riid ?? typeof(TOut).GUID;
+			IUnknown_QueryService(punk, guidService, iid, out var ppvOut).ThrowIfFailed();
+			return (TOut)ppvOut;
+		}
 
 		/// <summary>
 		/// <para>Changes the value of a Component Object Model (COM) interface pointer and releases the previous interface.</para>

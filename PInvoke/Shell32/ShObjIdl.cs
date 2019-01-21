@@ -350,6 +350,8 @@ namespace Vanara.PInvoke
 		/// <summary>Not used.</summary>
 		public const string STR_TRACK_CLSID = "Track the CLSID";
 
+		private delegate HRESULT IidFunc(in Guid riid, out object ppv);
+
 		/// <summary>Values that specify from which category the list of destinations should be retrieved.</summary>
 		[PInvokeData("Shobjidl.h", MSDNShortId = "dd378410")]
 		public enum APPDOCLISTTYPE
@@ -1326,17 +1328,28 @@ namespace Vanara.PInvoke
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "8bc3b9ce-5909-46a0-b5f1-35ab808aaa55")]
 		public static extern HRESULT SHAssocEnumHandlersForProtocolByApplication([MarshalAs(UnmanagedType.LPWStr)] string protocol, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object enumHandlers);
 
+		/// <summary>Gets an enumeration interface that provides access to handlers associated with a given protocol.</summary>
+		/// <typeparam name="TIntf">The type of the interface to retrieve, typically IID_IEnumAssocHandlers.</typeparam>
+		/// <param name="protocol"><para>Type: <c>PCWSTR</c></para>
+		/// <para>Pointer to a string that specifies the protocol.</para></param>
+		/// <returns>
+		/// When this method returns, contains the interface pointer requested in <typeparamref name="TIntf" />. This is typically IEnumAssocHandlers.
+		/// </returns>
+		/// <remarks>
+		/// It is recommended that you use the <c>IID_PPV_ARGS</c> macro, defined in Objbase.h, to package the and parameters. This macro
+		/// provides the correct IID based on the interface pointed to by the value in , which eliminates the possibility of a coding error.
+		/// </remarks>
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "8bc3b9ce-5909-46a0-b5f1-35ab808aaa55")]
+		public static TIntf SHAssocEnumHandlersForProtocolByApplication<TIntf>(string protocol) where TIntf : class =>
+			IidGetObj<TIntf>((in Guid g, out object o) => SHAssocEnumHandlersForProtocolByApplication(protocol, g, out o));
+
 		/// <summary>
-		/// <para>Creates an IApplicationAssociationRegistration object based on the stock implementation of the interface provided by Windows.</para>
+		/// Creates an IApplicationAssociationRegistration object based on the stock implementation of the interface provided by Windows.
 		/// </summary>
-		/// <param name="riid">
-		/// <para>Type: <c>REFIID</c></para>
-		/// <para>A reference to the IID of the requested interface.</para>
-		/// </param>
-		/// <param name="ppv">
-		/// <para>Type: <c>void**</c></para>
-		/// <para>When this function returns, contains the address of a pointer to the IApplicationAssociationRegistration object.</para>
-		/// </param>
+		/// <param name="riid"><para>Type: <c>REFIID</c></para>
+		/// <para>A reference to the IID of the requested interface.</para></param>
+		/// <param name="ppv"><para>Type: <c>void**</c></para>
+		/// <para>When this function returns, contains the address of a pointer to the IApplicationAssociationRegistration object.</para></param>
 		/// <returns>
 		/// <para>Type: <c>HRESULT</c></para>
 		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
@@ -1346,6 +1359,21 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "7998f49d-2515-4c77-991e-62c0fefa43df")]
 		public static extern HRESULT SHCreateAssociationRegistration(in Guid riid, out IApplicationAssociationRegistration ppv);
+
+		/// <summary>
+		/// Creates an IApplicationAssociationRegistration object based on the stock implementation of the interface provided by Windows.
+		/// </summary>
+		/// <returns>
+		/// When this function returns, contains the address of a pointer to the IApplicationAssociationRegistration object.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shcreateassociationregistration SHSTDAPI
+		// SHCreateAssociationRegistration( REFIID riid, void **ppv );
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "7998f49d-2515-4c77-991e-62c0fefa43df")]
+		public static IApplicationAssociationRegistration SHCreateAssociationRegistration()
+		{
+			SHCreateAssociationRegistration(typeof(IApplicationAssociationRegistration).GUID, out var ppv).ThrowIfFailed();
+			return ppv;
+		}
 
 		/// <summary>
 		/// <para>Creates a standard icon extractor, whose defaults can be further configured via the IDefaultExtractIconInit interface.</para>
@@ -1419,13 +1447,14 @@ namespace Vanara.PInvoke
 		/// Creates and initializes a Shell item object from a pointer to an item identifier list (PIDL). The resulting shell item object
 		/// supports the IShellItem interface.
 		/// </summary>
-		/// <typeparam name="T">The type of the requested interface.</typeparam>
+		/// <typeparam name="TIntf">The type of the requested interface. This will typically be IShellItem or IShellItem2.</typeparam>
 		/// <param name="pidl">The source PIDL.</param>
 		/// <returns>
-		/// When this function returns, contains the interface pointer requested in <typeparamref name="T"/>. This will typically be IShellItem or IShellItem2.
+		/// When this function returns, contains the interface pointer requested.
 		/// </returns>
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762133")]
-		public static T SHCreateItemFromIDList<T>(PIDL pidl) where T : class { SHCreateItemFromIDList(pidl, typeof(T).GUID, out var ppv).ThrowIfFailed(); return (T)ppv; }
+		public static TIntf SHCreateItemFromIDList<TIntf>(PIDL pidl) where TIntf : class =>
+			IidGetObj<TIntf>((in Guid g, out object o) => SHCreateItemFromIDList(pidl, g, out o));
 
 		/// <summary>Creates and initializes a Shell item object from a parsing name.</summary>
 		/// <param name="pszPath">A pointer to a display name.</param>
@@ -1471,7 +1500,8 @@ namespace Vanara.PInvoke
 		/// When this method returns successfully, contains the interface pointer requested in <typeparamref name="T"/>. This is typically IShellItem or IShellItem2.
 		/// </returns>
 		[PInvokeData("Shlobjidl.h", MSDNShortId = "bb762134")]
-		public static T SHCreateItemFromParsingName<T>(string pszPath, IBindCtx pbc = null) where T : class { SHCreateItemFromParsingName(pszPath, pbc, typeof(T).GUID, out var ppv).ThrowIfFailed(); return (T)ppv; }
+		public static T SHCreateItemFromParsingName<T>(string pszPath, IBindCtx pbc = null) where T : class =>
+			IidGetObj<T>((in Guid g, out object o) => SHCreateItemFromParsingName(pszPath, pbc, g, out o));
 
 		/// <summary>Creates and initializes a Shell item object from a relative parsing name.</summary>
 		/// <param name="psiParent">A pointer to the parent Shell item.</param>
@@ -1488,6 +1518,21 @@ namespace Vanara.PInvoke
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762135")]
 		public static extern HRESULT SHCreateItemFromRelativeName([In, MarshalAs(UnmanagedType.Interface)] IShellItem psiParent, [In, MarshalAs(UnmanagedType.LPWStr)] string pszName,
 			[In, MarshalAs(UnmanagedType.Interface)] IBindCtx pbc, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object ppv);
+
+		/// <summary>Creates and initializes a Shell item object from a relative parsing name.</summary>
+		/// <typeparam name="TIntf">The type of the requested interface. This will typically be IShellItem or IShellItem2.</typeparam>
+		/// <param name="psiParent">A pointer to the parent Shell item.</param>
+		/// <param name="pszName">
+		/// A pointer to a null-terminated, Unicode string that specifies a display name that is relative to the psiParent.
+		/// </param>
+		/// <param name="pbc">A pointer to a bind context that controls the parsing operation. This parameter can be NULL.</param>
+		/// <returns>
+		/// When this function returns, contains the interface pointer requested in riid. This will usually be IShellItem or IShellItem2.
+		/// </returns>
+		[SecurityCritical, SuppressUnmanagedCodeSecurity]
+		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762135")]
+		public static TIntf SHCreateItemFromRelativeName<TIntf>(IShellItem psiParent, string pszName, IBindCtx pbc = null) where TIntf : class =>
+			IidGetObj<TIntf>((in Guid g, out object o) => SHCreateItemFromRelativeName(psiParent, pszName, pbc, g, out o));
 
 		/// <summary>Creates a Shell item object for a single file that exists inside a known folder.</summary>
 		/// <param name="kfid">A reference to the KNOWNFOLDERID, a GUID that identifies the folder that contains the item.</param>
@@ -1508,6 +1553,24 @@ namespace Vanara.PInvoke
 		public static extern HRESULT SHCreateItemInKnownFolder(in Guid kfid, [In] KNOWN_FOLDER_FLAG dwKFFlags,
 			[In, Optional, MarshalAs(UnmanagedType.LPWStr)] string pszItem, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object ppv);
 
+		/// <summary>Creates a Shell item object for a single file that exists inside a known folder.</summary>
+		/// <typeparam name="TIntf">The type of the requested interface. This will typically be IShellItem or IShellItem2.</typeparam>
+		/// <param name="kfid">A reference to the KNOWNFOLDERID that identifies the folder that contains the item.</param>
+		/// <param name="dwKFFlags">
+		/// Flags that specify special options in the object retrieval. This value can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.
+		/// </param>
+		/// <param name="pszItem">
+		/// A pointer to a null-terminated buffer that contains the file name of the new item as a Unicode string. This parameter can also be
+		/// NULL. In this case, an IShellItem that represents the known folder itself is created.
+		/// </param>
+		/// <returns>
+		/// When this function returns, contains the interface pointer requested in riid. This will usually be IShellItem or IShellItem2.
+		/// </returns>
+		[SecurityCritical, SuppressUnmanagedCodeSecurity]
+		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762136")]
+		public static TIntf SHCreateItemInKnownFolder<TIntf>(KNOWNFOLDERID kfid, KNOWN_FOLDER_FLAG dwKFFlags = 0, string pszItem = null) where TIntf : class =>
+			IidGetObj<TIntf>((in Guid g, out object o) => SHCreateItemInKnownFolder(kfid.Guid(), dwKFFlags, pszItem, g, out o));
+
 		/// <summary>Create a Shell item, given a parent folder and a child item ID.</summary>
 		/// <param name="pidlParent">
 		/// The IDList of the parent folder of the item being created; the IDList of psfParent. This parameter can be NULL, if psfParent is specified.
@@ -1526,6 +1589,35 @@ namespace Vanara.PInvoke
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762137")]
 		public static extern HRESULT SHCreateItemWithParent([In] PIDL pidlParent, [In, MarshalAs(UnmanagedType.Interface)] IShellFolder psfParent,
 			[In] PIDL pidl, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 3)] out object ppvItem);
+
+		/// <summary>Create a Shell item, given a parent folder and a child item ID.</summary>
+		/// <typeparam name="TIntf">The type of the requested interface. This will typically be IShellItem or IShellItem2.</typeparam>
+		/// <param name="pidlParent">
+		/// The IDList of the parent folder of the item being created; the IDList of psfParent. This parameter cannot be NULL.
+		/// </param>
+		/// <param name="pidl">A child item ID relative to its parent folder specified by psfParent or pidlParent.</param>
+		/// <returns>
+		/// When this function returns, contains the interface pointer requested in riid. This will usually be IShellItem or IShellItem2.
+		/// </returns>
+		[SecurityCritical, SuppressUnmanagedCodeSecurity]
+		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762137")]
+		public static TIntf SHCreateItemWithParent<TIntf>(PIDL pidlParent, PIDL pidl) where TIntf : class =>
+			IidGetObj<TIntf>((in Guid g, out object o) => SHCreateItemWithParent(pidlParent, null, pidl, g, out o));
+
+		/// <summary>Create a Shell item, given a parent folder and a child item ID.</summary>
+		/// <typeparam name="TIntf">The type of the requested interface. This will typically be IShellItem or IShellItem2.</typeparam>
+		/// <param name="psfParent">
+		/// A pointer to IShellFolder interface that specifies the shell data source of the child item specified by the pidl. This parameter
+		/// cannot be NULL.
+		/// </param>
+		/// <param name="pidl">A child item ID relative to its parent folder specified by psfParent or pidlParent.</param>
+		/// <returns>
+		/// When this function returns, contains the interface pointer requested in riid. This will usually be IShellItem or IShellItem2.
+		/// </returns>
+		[SecurityCritical, SuppressUnmanagedCodeSecurity]
+		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762137")]
+		public static TIntf SHCreateItemWithParent<TIntf>(IShellFolder psfParent, PIDL pidl) where TIntf : class =>
+			IidGetObj<TIntf>((in Guid g, out object o) => SHCreateItemWithParent(null, psfParent, pidl, g, out o));
 
 		/// <summary>Creates a Shell item array object.</summary>
 		/// <param name="pidlParent">
@@ -1588,9 +1680,37 @@ namespace Vanara.PInvoke
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "91e65c9a-0600-42e3-97f5-2a5960e1ec89")]
 		public static extern HRESULT SHCreateShellItemArrayFromDataObject(IDataObject pdo, in Guid riid, out IShellItemArray ppv);
 
-		// [DllImport(Lib.Shell32, CharSet = CharSet.Unicode, ExactSpelling = true)] [SecurityCritical, SuppressUnmanagedCodeSecurity]
-		// [PInvokeData("Shlobj.h", MSDNShortId = "bb762141")] public static extern HRESULT SHCreateShellFolderView(in SFV_CREATE pcsfv,
-		// [MarshalAs(UnmanagedType.Interface)] out object ppvItem);
+		/// <summary>Creates a Shell item array object from a data object.</summary>
+		/// <param name="pdo"><para>Type: <c>IDataObject*</c></para>
+		/// <para>A pointer to IDataObject interface.</para></param>
+		/// <returns>
+		/// When this method returns, contains the interface pointer requested. This is typically IShellItemArray.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function is useful for Shell extensions that implement IShellExtInit and are passed a data object to the
+		/// IShellExtInit::Initialize method; for example, context menu handlers.
+		/// </para>
+		/// <para>
+		/// This API lets you convert the data object into a Shell item that the handler can consume. It is recommend that handlers use a
+		/// Shell item array rather than clipboard formats like <c>CF_HDROP</c> and <c>CFSTR_SHELLIDLIST</c> (also known as HIDA) as it leads
+		/// to simpler code and allows some performance improvements.
+		/// </para>
+		/// <para>
+		/// The resulting shell item array holds a reference to the source data object. Therefore, that data object must remain valid for the
+		/// lifetime of the shell item array. Notably, the data objects passed to IDropTarget methods are no longer valid after the drop
+		/// operation completes.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shcreateshellitemarrayfromdataobject SHSTDAPI
+		// SHCreateShellItemArrayFromDataObject( IDataObject *pdo, REFIID riid, void **ppv );
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "91e65c9a-0600-42e3-97f5-2a5960e1ec89")]
+		public static IShellItemArray SHCreateShellItemArrayFromDataObject(IDataObject pdo)
+		{
+			SHCreateShellItemArrayFromDataObject(pdo, typeof(IShellItemArray).GUID, out var o).ThrowIfFailed();
+			return o;
+		}
+
 		/// <summary>Creates a Shell item array object from a list of ITEMIDLIST structures.</summary>
 		/// <param name="cidl">The number of elements in the array.</param>
 		/// <param name="rgpidl">A list of cidl constant pointers to ITEMIDLIST structures.</param>
@@ -1665,6 +1785,21 @@ namespace Vanara.PInvoke
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "1d7b9ffa-9980-4d68-85e4-7bab667be168")]
 		public static extern HRESULT SHGetItemFromDataObject(IDataObject pdtobj, DATAOBJ_GET_ITEM_FLAGS dwFlags, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppv);
 
+		/// <summary>Creates an IShellItem or related object based on an item specified by an IDataObject.</summary>
+		/// <typeparam name="TIntf">The type of the requested interface. This will typically be IShellItem or IShellItem2.</typeparam>
+		/// <param name="pdtobj"><para>Type: <c>IDataObject*</c></para>
+		/// <para>A pointer to the source IDataObject instance.</para></param>
+		/// <param name="dwFlags"><para>Type: <c>DATAOBJ_GET_ITEM_FLAGS</c></para>
+		/// <para>
+		/// One or more values from the DATAOBJ_GET_ITEM_FLAGS enumeration to specify options regarding the target object. This value can be 0.
+		/// </para></param>
+		/// <returns>When this method returns, contains the interface pointer requested. This is typically IShellItem.</returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shgetitemfromdataobject HRESULT
+		// SHGetItemFromDataObject( IDataObject *pdtobj, DATAOBJ_GET_ITEM_FLAGS dwFlags, REFIID riid, void **ppv );
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "1d7b9ffa-9980-4d68-85e4-7bab667be168")]
+		public static TIntf SHGetItemFromDataObject<TIntf>(IDataObject pdtobj, DATAOBJ_GET_ITEM_FLAGS dwFlags) where TIntf : class =>
+			IidGetObj<TIntf>((in Guid g, out object o) => SHGetItemFromDataObject(pdtobj, dwFlags, g, out o));
+
 		/// <summary>
 		/// <para>Retrieves an IShellItem for an object.</para>
 		/// </summary>
@@ -1696,6 +1831,23 @@ namespace Vanara.PInvoke
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "0ef494c0-81c7-4fbd-9c37-78861d8ac63b")]
 		public static extern HRESULT SHGetItemFromObject([MarshalAs(UnmanagedType.IUnknown)] object punk, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 1)] out object ppv);
 
+		/// <summary>Retrieves an IShellItem for an object.</summary>
+		/// <typeparam name="TIntf">The type of the requested interface. This is typically IShellItem or a related interface.</typeparam>
+		/// <param name="punk"><para>Type: <c>IUnknown*</c></para>
+		/// <para>A pointer to the IUnknown of the object.</para></param>
+		/// <returns>
+		/// When this method returns, contains the interface pointer requested. This is typically IShellItem or a related interface.
+		/// </returns>
+		/// <remarks>
+		/// From the standpoint of performance, this method is preferred to SHGetIDListFromObject in those cases where the IDList is already
+		/// bound to a folder.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shgetitemfromobject SHSTDAPI
+		// SHGetItemFromObject( IUnknown *punk, REFIID riid, void **ppv );
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "0ef494c0-81c7-4fbd-9c37-78861d8ac63b")]
+		public static TIntf SHGetItemFromObject<TIntf>(object punk) where TIntf : class =>
+			IidGetObj<TIntf>((in Guid g, out object o) => SHGetItemFromObject(punk, g, out o));
+
 		/// <summary>
 		/// <para>Retrieves an object that supports IPropertyStore or related interfaces from a pointer to an item identifier list (PIDL).</para>
 		/// </summary>
@@ -1725,6 +1877,23 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("shobjidl_core.h", MSDNShortId = "2a3c3c80-1bfc-4da0-ba6e-ac9e9a5c3e5b")]
 		public static extern HRESULT SHGetPropertyStoreFromIDList(PIDL pidl, GETPROPERTYSTOREFLAGS flags, in Guid riid, [MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out object ppv);
+
+		/// <summary>
+		/// Retrieves an object that supports IPropertyStore or related interfaces from a pointer to an item identifier list (PIDL).
+		/// </summary>
+		/// <typeparam name="TIntf">The type of the requested interface. This is typically IPropertyStore or a related interface.</typeparam>
+		/// <param name="pidl"><para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+		/// <para>A pointer to an item ID list.</para></param>
+		/// <param name="flags"><para>Type: <c>GETPROPERTYSTOREFLAGS</c></para>
+		/// <para>One or more values from the GETPROPERTYSTOREFLAGS constants. This parameter can also be <c>NULL</c>.</para></param>
+		/// <returns>
+		/// When this function returns, contains the interface pointer requested. This is typically IPropertyStore or a related interface.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shgetpropertystorefromidlist SHSTDAPI
+		// SHGetPropertyStoreFromIDList( PCIDLIST_ABSOLUTE pidl, GETPROPERTYSTOREFLAGS flags, REFIID riid, void **ppv );
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "2a3c3c80-1bfc-4da0-ba6e-ac9e9a5c3e5b")]
+		public static TIntf SHGetPropertyStoreFromIDList<TIntf>(PIDL pidl, GETPROPERTYSTOREFLAGS flags) where TIntf : class =>
+			IidGetObj<TIntf>((in Guid g, out object o) => SHGetPropertyStoreFromIDList(pidl, flags, g, out o));
 
 		/// <summary>Returns a property store for an item, given a path or parsing name.</summary>
 		/// <param name="pszPath">A pointer to a null-terminated Unicode string that specifies the item path.</param>
@@ -1893,6 +2062,12 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Shell32, EntryPoint = "ILCombine", SetLastError = false)]
 		[PInvokeData("Shobjidl.h", MSDNShortId = "bb776437")]
 		internal static extern IntPtr IntILCombine(IntPtr pidl1, IntPtr pidl2);
+
+		private static T IidGetObj<T>(IidFunc f) where T : class
+		{
+			f(typeof(T).GUID, out var ppv).ThrowIfFailed();
+			return (T)ppv;
+		}
 
 		/// <summary>Implements CLSID_ApplicationAssociationRegistration to create IApplicationAssociationRegistration.</summary>
 		[PInvokeData("shobjidl_core.h")]
