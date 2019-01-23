@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.PInvoke
 {
@@ -169,6 +170,58 @@ namespace Vanara.PInvoke
 			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iexecutecommand-execute HRESULT Execute( );
 			[PreserveSig]
 			HRESULT Execute();
+		}
+
+		/// <summary>
+		/// Exposes a single method used to initialize objects that implement IExplorerCommandState, IExecuteCommand or IDropTarget with the
+		/// application-specified command name and its registered properties.
+		/// </summary>
+		/// <remarks>
+		/// <para>When to Implement</para>
+		/// <para>Implement <c>IInitializeCommand</c> in the following situations.</para>
+		/// <list type="bullet">
+		///   <item>
+		///     <term>
+		/// Implement this interface to differentiate between related commands that share implementations of IExplorerCommandState,
+		/// IDropTarget or IExecuteCommand. Differentiation is made through the command name passed in IInitializeCommand::Initialize.
+		/// Commands can also use <c>Initialize</c> to pass a specific property bag for the command, using properties the command has placed
+		/// in the registry.
+		/// </term>
+		///   </item>
+		/// </list>
+		/// <para>When to Use</para>
+		/// <para>
+		/// Do not call the method of <c>IInitializeCommand</c> directly. Windows Explorer calls this method when a verb object that
+		/// implements this interface is invoked.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nn-shobjidl_core-iinitializecommand
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "e5a2a4d3-2488-4da2-aaab-c27461859d9f")]
+		[ComImport, Guid("85075acf-231f-40ea-9610-d26b7b58f638"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		public interface IInitializeCommand
+		{
+			/// <summary>
+			/// Initialize objects that share an implementation of IExplorerCommandState, IExecuteCommand or IDropTarget with the
+			/// application-specified command name and its registered properties.
+			/// </summary>
+			/// <param name="pszCommandName"><para>Type: <c>LPCWSTR</c></para>
+			/// <para>
+			/// Pointer to a string that contains the command name (the name of the command key as found in the registry). For instance, if
+			/// the command is registered under <c>...</c>&lt;b&gt;shell&lt;b&gt;MyCommand, pszCommandName points to "MyCommand".
+			/// </para></param>
+			/// <param name="ppb"><para>Type: <c>IPropertyBag*</c></para>
+			/// <para>
+			/// Pointer to an IPropertyBag instance that can be used to read the properties related to the command in the registry. For
+			/// example, a command may registry a string property under its <c>...</c>&lt;b&gt;shell&lt;b&gt;MyCommand subkey.
+			/// </para></param>
+			/// <returns>
+			/// <para>Type: <c>HRESULT</c></para>
+			/// <para>If this method succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-iinitializecommand-initialize
+			// HRESULT Initialize( LPCWSTR pszCommandName, IPropertyBag *ppb );
+			[PreserveSig]
+			HRESULT Initialize([In, MarshalAs(UnmanagedType.LPWStr)] string pszCommandName, [In] IPropertyBag ppb);
 		}
 	}
 }
