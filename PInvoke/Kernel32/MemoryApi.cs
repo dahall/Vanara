@@ -1115,6 +1115,18 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinBase.h", MSDNShortId = "dn781432")]
 		public static extern uint DiscardVirtualMemory(IntPtr VirtualAddress, SizeT Size);
 
+		/// <summary>Fills a block of memory with a specified value.</summary>
+		/// <param name="Destination">A pointer to the starting address of the block of memory to fill.</param>
+		/// <param name="Length">
+		/// The size of the block of memory to fill, in bytes. This value must be less than the size of the Destination buffer.
+		/// </param>
+		/// <param name="Fill">The byte value with which to fill the memory block.</param>
+		// void FillMemory( [out] PVOID Destination, [in] SIZE_T Length, [in] BYTE Fill);
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/aa366561(v=vs.85).aspx
+		[PInvokeData("WinBase.h", MSDNShortId = "aa366561")]
+		[DllImport(Lib.Kernel32, EntryPoint = "RtlFillMemory", SetLastError = false)]
+		public static extern void FillMemory(IntPtr Destination, SizeT Length, byte Fill);
+
 		/// <summary>Writes to the disk a byte range within a mapped view of a file.</summary>
 		/// <param name="lpBaseAddress">A pointer to the base address of the byte range to be flushed to the disk representation of the mapped file.</param>
 		/// <param name="dwNumberOfBytesToFlush">
