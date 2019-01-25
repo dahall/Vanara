@@ -12,6 +12,26 @@ namespace Vanara.Extensions
 	public static partial class InteropExtensions
 	{
 		/// <summary>
+		/// Fills the memory with a particular byte value. <note type="warning">This is a very dangerous function that can cause memory
+		/// access errors if the provided <paramref name="length"/> is bigger than allocated memory of if the <paramref name="ptr"/> is not a
+		/// valid memory pointer.</note>
+		/// </summary>
+		/// <param name="ptr">The allocated memory pointer.</param>
+		/// <param name="value">The byte value with which to fill the memory.</param>
+		/// <param name="length">The number of bytes to fill with the value.</param>
+		public static void FillMemory(this IntPtr ptr, byte value, int length)
+		{
+			if (ptr == IntPtr.Zero || length <= 0) return;
+			// Write multiples of 8 bytes first
+			var lval = value == 0 ? 0L : BitConverter.ToInt64(new byte[] { value, value, value, value, value, value, value, value }, 0);
+			for (var ofs = 0; ofs < length / 8; ofs++)
+				Marshal.WriteInt64(ptr, ofs * 8, lval);
+			// Write remaining bytes
+			for (var ofs = length - (length % 8); ofs < length; ofs++)
+				Marshal.WriteByte(ptr, length, value);
+		}
+
+		/// <summary>
 		/// Gets the length of a null terminated array of pointers. <note type="warning">This is a very dangerous function and can result in
 		/// memory access errors if the <paramref name="lptr"/> does not point to a null-terminated array of pointers.</note>
 		/// </summary>
