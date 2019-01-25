@@ -133,15 +133,19 @@ namespace Vanara.InteropServices
 		public abstract int Size { get; set; }
 
 		/// <summary>Zero out all allocated memory.</summary>
-		protected virtual void Zero()
+		public virtual void Zero() => Fill(0, Size);
+
+		/// <summary>Fills the allocated memory with a specific byte value.</summary>
+		/// <param name="value">The byte value.</param>
+		public virtual void Fill(byte value) => Fill(value, Size);
+
+		/// <summary>Fills the allocated memory with a specific byte value.</summary>
+		/// <param name="value">The byte value.</param>
+		/// <param name="length">The number of bytes in the block of memory to be filled.</param>
+		public virtual void Fill(byte value, int length)
 		{
-			if (handle == IntPtr.Zero || Size <= 0) return;
-			// Write multiples of 8 bytes first
-			for (var ofs = 0; ofs < Size / 8; ofs++)
-				Marshal.WriteInt64(handle, ofs * 8, 0);
-			// Write remaining bytes
-			for (var ofs = Size - (Size % 8); ofs < Size; ofs++)
-				Marshal.WriteByte(handle, ofs, 0);
+			if (length > Size) throw new ArgumentOutOfRangeException(nameof(length));
+			Vanara.Extensions.InteropExtensions.FillMemory(handle, value, length);
 		}
 	}
 
