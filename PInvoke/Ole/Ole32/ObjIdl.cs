@@ -12,6 +12,16 @@ namespace Vanara.PInvoke
 {
 	public static partial class Ole32
 	{
+		public enum ACTIVATIONTYPE
+		{
+			ACTIVATIONTYPE_UNCATEGORIZED = 0x0,
+			ACTIVATIONTYPE_FROM_MONIKER = 0x1,
+			ACTIVATIONTYPE_FROM_DATA = 0x2,
+			ACTIVATIONTYPE_FROM_STORAGE = 0x4,
+			ACTIVATIONTYPE_FROM_STREAM = 0x8,
+			ACTIVATIONTYPE_FROM_FILE = 0x10
+		}
+
 		/// <summary>
 		/// <para>Specifies various capabilities in CoInitializeSecurity and IClientSecurity::SetBlanket (or its helper function CoSetProxyBlanket).</para>
 		/// </summary>
@@ -157,6 +167,159 @@ namespace Vanara.PInvoke
 			ROTFLAGS_ALLOWANYCLIENT = 0x2,
 		}
 
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("00000017-0000-0000-C000-000000000046")]
+		public interface IActivationFilter
+		{
+			Guid HandleActivation(ACTIVATIONTYPE dwActivationType, in Guid rclsid);
+		}
+
+		/// <summary>Marks an interface as agile across apartments.</summary>
+		/// <remarks>
+		/// <para>
+		/// The <c>IAgileObject</c> interface is a marker interface that indicates that an object is free threaded and can be called from any apartment.
+		/// </para>
+		/// <para>
+		/// Unlike what happens when aggregating the Free Threaded Marshaler (FTM), implementing the <c>IAgileObject</c> interface doesn't
+		/// affect what happens when marshaling a call. Instead, the <c>IAgileObject</c> interface is recognized by the Global Interface
+		/// Table (GIT). When an object that implements the <c>IAgileObject</c> interface is placed in the GIT and localized to another
+		/// apartment, the object is called directly in the new apartment, rather than marshaling.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-iagileobject
+		[PInvokeData("objidl.h", MSDNShortId = "787A22DE-AEAB-4570-BB97-C49D656E5D40")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("94ea2b94-e9cc-49e0-c0ff-ee64ca8f5b90")]
+		public interface IAgileObject
+		{
+		}
+
+		/// <summary>Enables retrieving an agile reference to an object.</summary>
+		/// <remarks>Call the RoGetAgileReference function to create an agile reference to an object.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-iagilereference
+		[PInvokeData("objidl.h", MSDNShortId = "51787A45-BCDE-4028-A338-1C16F2DE79AD")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("C03F6A43-65A4-9818-987E-E0B810D2A6F2")]
+		public interface IAgileReference
+		{
+			/// <summary>Gets the interface ID of an agile reference to an object.</summary>
+			/// <param name="riid">The riid.</param>
+			/// <returns>On successful completion, *ppvObjectReference is a pointer to the interface specified by riid.</returns>
+			/// <remarks>
+			/// Call the RoGetAgileReference function to create an agile reference to an object. Call the <c>Resolve</c> method to localize
+			/// the object into the apartment in which <c>Resolve</c> is called.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-iagilereference-resolve%28q_%29 HRESULT __clrcall
+			// Resolve( Q **pp, );
+			[return: MarshalAs(UnmanagedType.IUnknown)]
+			object Resolve(in Guid riid);
+		}
+
+		/// <summary>Supports setting COM+ context properties.</summary>
+		/// <remarks>An instance of this interface for the current context can be obtained using CoGetObjectContext.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-icontext
+		[PInvokeData("objidl.h", MSDNShortId = "89c41d9c-186c-4927-990d-92aa501f7d35")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("000001c0-0000-0000-C000-000000000046")]
+		public interface IContext
+		{
+			/// <summary>Adds the specified context property to the object context.</summary>
+			/// <param name="rpolicyId">A GUID that uniquely identifies this context property.</param>
+			/// <param name="flags">This parameter is reserved and must be zero.</param>
+			/// <param name="pUnk">A pointer to the context property to be added.</param>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-icontext-setproperty HRESULT SetProperty( REFGUID
+			// rpolicyId, CPFLAGS flags, IUnknown *pUnk );
+			void SetProperty(in Guid rpolicyId, [Optional] uint flags, [In, MarshalAs(UnmanagedType.IUnknown)] object pUnk);
+
+			/// <summary>Removes the specified context property from the context.</summary>
+			/// <param name="rPolicyId">The GUID that uniquely identifies the context property to be removed.</param>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-icontext-removeproperty HRESULT RemoveProperty( REFGUID
+			// rPolicyId );
+			void RemoveProperty(in Guid rPolicyId);
+
+			/// <summary>Retrieves the specified context property from the context.</summary>
+			/// <param name="rGuid">The GUID that uniquely identifies the context property to be retrieved.</param>
+			/// <param name="pFlags">The address of the variable that receives the flags associated with the property.</param>
+			/// <returns>The address of the variable that receives the IUnknown interface pointer of the requested context property.</returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-icontext-getproperty HRESULT GetProperty( REFGUID rGuid,
+			// CPFLAGS *pFlags, IUnknown **ppUnk );
+			[return: MarshalAs(UnmanagedType.IUnknown)]
+			object GetProperty(in Guid rGuid, out uint pFlags);
+
+			/// <summary>
+			/// Returns an IEnumContextProps interface pointer that can be used to enumerate the context properties in this context.
+			/// </summary>
+			/// <returns>The address of the variable that receives the new IEnumContextProps interface pointer.</returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-icontext-enumcontextprops HRESULT EnumContextProps(
+			// IEnumContextProps **ppEnumContextProps );
+			IEnumContextProps EnumContextProps();
+		}
+
+		/// <summary>Provides a mechanism for enumerating the context properties associated with a COM+ object context.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-ienumcontextprops
+		[PInvokeData("objidl.h", MSDNShortId = "64591e45-5478-4360-8c1f-08b09b5aef8e")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("000001c1-0000-0000-C000-000000000046")]
+		public interface IEnumContextProps
+		{
+			/// <summary>Retrieves the specified number of items in the enumeration sequence.</summary>
+			/// <param name="celt">
+			/// The number of items to be retrieved. If there are fewer than the requested number of items left in the sequence, this method
+			/// retrieves the remaining elements.
+			/// </param>
+			/// <param name="pContextProperties">
+			/// <para>An array of enumerated items.</para>
+			/// <para>
+			/// The enumerator is responsible for allocating any memory, and the caller is responsible for freeing it. If celt is greater
+			/// than 1, the caller must also pass a non-NULL pointer passed to pceltFetched to know how many pointers to release.
+			/// </para>
+			/// </param>
+			/// <param name="pceltFetched">
+			/// The number of items that were retrieved. This parameter is always less than or equal to the number of items requested.
+			/// </param>
+			/// <returns>If the method retrieves the number of items requested, the return value is S_OK. Otherwise, it is S_FALSE.</returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumcontextprops-next HRESULT Next( ULONG celt,
+			// ContextProperty *pContextProperties, ULONG *pceltFetched );
+			[PreserveSig]
+			HRESULT Next(uint celt, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] ContextProperty[] pContextProperties,
+				 out uint pceltFetched);
+
+			/// <summary>Skips over the specified number of items in the enumeration sequence.</summary>
+			/// <param name="celt">The number of items to be skipped.</param>
+			/// <returns>If the method skips the number of items requested, the return value is S_OK. Otherwise, it is S_FALSE.</returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumcontextprops-skip HRESULT Skip( ULONG celt );
+			[PreserveSig]
+			HRESULT Skip(uint celt);
+
+			/// <summary>
+			/// <para>Resets the enumeration sequence to the beginning.</para>
+			/// </summary>
+			/// <returns>
+			/// <para>The return value is S_OK.</para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// There is no guarantee that the same set of objects will be enumerated after the reset operation has completed. A static
+			/// collection is reset to the beginning, but it can be too expensive for some collections, such as files in a directory, to
+			/// guarantee this condition.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumcontextprops-reset HRESULT Reset( );
+			void Reset();
+
+			/// <summary>
+			/// <para>Creates a new enumerator that contains the same enumeration state as the current one.</para>
+			/// <para>
+			/// This method makes it possible to record a point in the enumeration sequence in order to return to that point at a later time.
+			/// The caller must release this new enumerator separately from the first enumerator.
+			/// </para>
+			/// </summary>
+			/// <returns>A pointer to the cloned enumerator object.</returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumcontextprops-clone HRESULT Clone( IEnumContextProps
+			// **ppEnumContextProps );
+			IEnumContextProps Clone();
+
+			/// <summary>Retrieves the number of context properties in the context.</summary>
+			/// <returns>The count of items in the sequence.</returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumcontextprops-count HRESULT Count( ULONG *pcelt );
+			uint Count();
+		}
+
 		/// <summary>
 		/// The IEnumSTATSTG interface enumerates an array of STATSTG structures. These structures contain statistical data about open
 		/// storage, stream, or byte array objects.
@@ -260,6 +423,699 @@ namespace Vanara.PInvoke
 			/// <returns>A pointer to the cloned enumerator object.</returns>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumunknown-clone HRESULT Clone( IEnumUnknown **ppenum );
 			IEnumUnknown Clone();
+		}
+
+		/// <summary>Allocates, frees, and manages memory.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-imalloc
+		[PInvokeData("objidl.h", MSDNShortId = "047f281e-2665-4d6d-9a0b-918cd3339447")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("00000002-0000-0000-C000-000000000046")]
+		public interface IMalloc
+		{
+			/// <summary>Allocates a block of memory.</summary>
+			/// <param name="cb">The size of the memory block to be allocated, in bytes.</param>
+			/// <returns>
+			/// <para>If the method succeeds, the return value is a pointer to the allocated block of memory. Otherwise, it is <c>NULL</c>.</para>
+			/// <para>
+			/// Applications should always check the return value from this method, even when requesting small amounts of memory, because
+			/// there is no guarantee the memory will be allocated.
+			/// </para>
+			/// </returns>
+			/// <remarks>
+			/// <para>
+			/// The initial contents of the returned memory block are undefined, there is no guarantee that the block has been initialized,
+			/// so you should initialize it in your code. The allocated block may be larger than cb bytes because of the space required for
+			/// alignment and for maintenance information.
+			/// </para>
+			/// <para>
+			/// If cb is zero, <c>Alloc</c> allocates a zero-length item and returns a valid pointer to that item. If there is insufficient
+			/// memory available, <c>Alloc</c> returns <c>NULL</c>.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imalloc-alloc void * Alloc( SIZE_T cb );
+			[PreserveSig]
+			IntPtr Alloc(SizeT cb);
+
+			/// <summary>Changes the size of a previously allocated block of memory.</summary>
+			/// <param name="pv">
+			/// A pointer to the block of memory to be reallocated. This parameter can be <c>NULL</c>, as discussed in the Remarks section below.
+			/// </param>
+			/// <param name="cb">
+			/// The size of the memory block to be reallocated, in bytes. This parameter can be 0, as discussed in the Remarks section below.
+			/// </param>
+			/// <returns>If the method succeeds, the return value is a pointer to the reallocated block of memory. Otherwise, it is <c>NULL</c>.</returns>
+			/// <remarks>
+			/// <para>
+			/// This method reallocates a block of memory, but does not guarantee that its contents are initialized. Therefore, the caller is
+			/// responsible for subsequently initializing the memory. The allocated block may be larger than cb bytes because of the space
+			/// required for alignment and for maintenance information.
+			/// </para>
+			/// <para>
+			/// The pv argument points to the beginning of the block. If pv is <c>NULL</c>, <c>Realloc</c> allocates a new memory block in
+			/// the same way that IMalloc::Alloc does. If pv is not <c>NULL</c>, it should be a pointer returned by a prior call to <c>Alloc</c>.
+			/// </para>
+			/// <para>
+			/// The cb argument specifies the size of the new block, in bytes. The contents of the block are unchanged up to the shorter of
+			/// the new and old sizes, although the new block can be in a different location. Because the new block can be in a different
+			/// memory location, the pointer returned by <c>Realloc</c> is not guaranteed to be the pointer passed through the pv argument.
+			/// If pv is not <c>NULL</c> and cb is zero, the memory pointed to by pv is freed.
+			/// </para>
+			/// <para>
+			/// <c>Realloc</c> returns a void pointer to the reallocated (and possibly moved) block of memory. The return value is
+			/// <c>NULL</c> if the size is zero and the buffer argument is not <c>NULL</c>, or if there is not enough memory available to
+			/// expand the block to the specified size. In the first case, the original block is freed; in the second, the original block is unchanged.
+			/// </para>
+			/// <para>
+			/// The storage space pointed to by the return value is guaranteed to be suitably aligned for storage of any type of object. To
+			/// get a pointer to a type other than <c>void</c>, use a type cast on the return value.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imalloc-realloc void * Realloc( void *pv, SIZE_T cb );
+			[PreserveSig]
+			IntPtr Realloc([In, Optional] IntPtr pv, SizeT cb);
+
+			/// <summary>Frees a previously allocated block of memory.</summary>
+			/// <param name="pv">A pointer to the memory block to be freed. If this parameter is <c>NULL</c>, this method has no effect.</param>
+			/// <remarks>
+			/// This method frees a block of memory previously allocated through a call to IMalloc::Alloc or IMalloc::Realloc. The number of
+			/// bytes freed equals the number of bytes that were allocated. After the call, the block of memory pointed to by pv is invalid
+			/// and can no longer be used.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imalloc-free void Free( void *pv );
+			[PreserveSig]
+			void Free([In, Optional] IntPtr pv);
+
+			/// <summary>Retrieves the size of a previously allocated block of memory.</summary>
+			/// <param name="pv">A pointer to the block of memory.</param>
+			/// <returns>The size of the allocated memory block in bytes or, if pv is a <c>NULL</c> pointer, -1.</returns>
+			/// <remarks>
+			/// To get the size in bytes of a memory block, the block must have been previously allocated with IMalloc::Alloc or
+			/// IMalloc::Realloc. The size returned is the actual size of the allocation, which may be greater than the size requested when
+			/// the allocation was made.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imalloc-getsize SIZE_T GetSize( void *pv );
+			[PreserveSig]
+			SizeT GetSize([In, Optional] IntPtr pv);
+
+			/// <summary>Determines whether this allocator was used to allocate the specified block of memory.</summary>
+			/// <param name="pv">A pointer to the block of memory. If this parameter is a <c>NULL</c> pointer, -1 is returned.</param>
+			/// <returns>
+			/// <para>This method can return the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return value</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>1</term>
+			/// <term>The block of memory was allocated by this allocator.</term>
+			/// </item>
+			/// <item>
+			/// <term>0</term>
+			/// <term>The block of memory was not allocated by this allocator.</term>
+			/// </item>
+			/// <item>
+			/// <term>-1</term>
+			/// <term>This method cannot determine whether this allocator allocated the block of memory.</term>
+			/// </item>
+			/// </list>
+			/// </returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imalloc-didalloc int DidAlloc( void *pv );
+			[PreserveSig]
+			int DidAlloc([In, Optional] IntPtr pv);
+
+			/// <summary>
+			/// Minimizes the heap as much as possible by releasing unused memory to the operating system, coalescing adjacent free blocks,
+			/// and committing free pages.
+			/// </summary>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imalloc-heapminimize void HeapMinimize( );
+			[PreserveSig]
+			void HeapMinimize();
+		}
+
+		/// <summary>Enables a COM object to define and manage the marshaling of its interface pointers.</summary>
+		/// <remarks>
+		/// <para>
+		/// Marshaling is the process of packaging data into packets for transmission to a different process or computer. Unmarshaling is the
+		/// process of recovering that data at the receiving end. In any given call, method arguments are marshaled and unmarshaled in one
+		/// direction, while return values are marshaled and unmarshaled in the other.
+		/// </para>
+		/// <para>
+		/// Although marshaling applies to all data types, interface pointers require special handling. The fundamental problem is how client
+		/// code running in one address space can correctly dereference a pointer to an interface on an object residing in a different
+		/// address space. The COM solution is for a client application to communicate with the original object through a surrogate object,
+		/// or proxy, which lives in the client's process. The proxy holds a reference to an interface on the original object and hands the
+		/// client a pointer to an interface on itself. When the client calls an interface method on the original object, its call is
+		/// actually going to the proxy. Therefore, from the client's point of view, all calls are in-process.
+		/// </para>
+		/// <para>
+		/// On receiving a call, the proxy marshals the method arguments and through some means of interprocess communication, such as RPC,
+		/// passes them along to code in the server process, which unmarshals the arguments and passes them to the original object. This same
+		/// code marshals return values for transmission back to the proxy, which unmarshals the values and passes them to the client application.
+		/// </para>
+		/// <para>
+		/// <c>IMarshal</c> provides methods for creating, initializing, and managing a proxy in a client process; it does not dictate how
+		/// the proxy should communicate with the original object. The COM default implementation of <c>IMarshal</c> uses RPC. When you
+		/// implement this interface yourself, you are free to choose any method of interprocess communication you deem to be appropriate for
+		/// your application—shared memory, named pipe, window handle, RPC—in short, whatever works.
+		/// </para>
+		/// <para>IMarshal Default Implementation</para>
+		/// <para>
+		/// COM uses its own internal implementation of the <c>IMarshal</c> interface to marshal any object that does not provide its own
+		/// implementation. COM makes this determination by querying the object for <c>IMarshal</c>. If the interface is missing, COM
+		/// defaults to its internal implementation.
+		/// </para>
+		/// <para>
+		/// The COM default implementation of <c>IMarshal</c> uses a generic proxy for each object and creates individual stubs and proxies,
+		/// as they are needed, for each interface implemented on the object. This mechanism is necessary because COM cannot know in advance
+		/// what particular interfaces a given object may implement. Developers who do not use COM default marshaling, electing instead to
+		/// write their own proxy and marshaling routines, know at compile time all the interfaces to be found on their objects and therefore
+		/// understand exactly what marshaling code is required. COM, in providing marshaling support for all objects, must do so at run time.
+		/// </para>
+		/// <para>
+		/// The interface proxy resides in the client process; the interface stub resides in the server. Together, each pair handles all
+		/// marshaling for the interface. The job of each interface proxy is to marshal arguments and unmarshal return values and out
+		/// parameters that are passed back and forth in subsequent calls to its interface. The job of each interface stub is to unmarshal
+		/// function arguments and pass them along to the original object and then marshal the return values and out parameters that the
+		/// object returns.
+		/// </para>
+		/// <para>
+		/// Proxy and stub communicate by means of an RPC (remote procedure call) channel, which utilizes the system's RPC infrastructure for
+		/// interprocess communication. The RPC channel implements a single interface, IRpcChannelBuffer, to which both interface proxies and
+		/// stubs hold a pointer. The proxy and stub call the interface to obtain a marshaling packet, send the data to their counterpart,
+		/// and destroy the packet when they are done. The interface stub also holds a pointer to the original object.
+		/// </para>
+		/// <para>
+		/// For any given interface, the proxy and stub are both implemented as instances of the same class, which is listed for each
+		/// interface in the system registry under the label <c>ProxyStubClsid32</c>. This entry maps the interface's IID to the <c>CLSID</c>
+		/// of its proxy and stub objects. When COM needs to marshal an interface, it looks in the system registry to obtain the appropriate
+		/// <c>CLSID</c>. The server identified by this <c>CLSID</c> implements both the interface proxy and interface stub.
+		/// </para>
+		/// <para>
+		/// Most often, the class to which this <c>CLSID</c> refers is automatically generated by a tool whose input is a description of the
+		/// function signatures and semantics of a given interface, written in some interface description language. While using such a
+		/// language is highly recommended and encouraged for accuracy's sake, doing so is not required. Proxies and stubs are merely COM
+		/// components used by the RPC infrastructure and, as such, can be written in any manner desired, as long as the correct external
+		/// contracts are upheld. The programmer who designs a new interface is responsible for ensuring that all interface proxies and stubs
+		/// that ever exist agree on the representation of their marshaled data.
+		/// </para>
+		/// <para>
+		/// When created, interface proxies are always aggregated into a larger proxy, which represents the object as a whole. This object
+		/// proxy also aggregates the COM generic proxy object, which is known as the proxy manager. The proxy manager implements two
+		/// interfaces: IUnknown and <c>IMarshal</c>. All of the other interfaces that may be implemented on an object are exposed in its
+		/// object proxy through the aggregation of individual interface proxies. A client holding a pointer to the object proxy "believes"
+		/// it holds a pointer to the actual object.
+		/// </para>
+		/// <para>
+		/// A proxy representing the object as a whole is required in the client process so that a client can distinguish calls to the same
+		/// interfaces implemented on entirely different objects. Such a requirement does not exist in the server process, however, where the
+		/// object itself resides, because all interface stubs communicate only with the objects for which they were created. No other
+		/// connection is possible.
+		/// </para>
+		/// <para>
+		/// Interface stubs, by contrast with interface proxies, are not aggregated because there is no need that they appear to some
+		/// external client to be part of a larger whole. When connected, an interface stub is given a pointer to the server object to which
+		/// it should forward method invocations that it receives. Although it is useful to refer conceptually to a stub manager, meaning
+		/// whatever pieces of code and state in the server-side RPC infrastructure that service the remoting of a given object, there is no
+		/// direct requirement that the code and state take any particular, well-specified form.
+		/// </para>
+		/// <para>
+		/// The first time a client requests a pointer to an interface on a particular object, COM loads an IClassFactory stub in the server
+		/// process and uses it to marshal the first pointer back to the client. In the client process, COM loads the generic proxy for the
+		/// class factory object and calls its implementation of <c>IMarshal</c> to unmarshal that first pointer. COM then creates the first
+		/// interface proxy and hands it a pointer to the RPC channel. Finally, COM returns the <c>IClassFactory</c> pointer to the client,
+		/// which uses it to call IClassFactory::CreateInstance, passing it a reference to the interface.
+		/// </para>
+		/// <para>
+		/// Back in the server process, COM now creates a new instance of the object, along with a stub for the requested interface. This
+		/// stub marshals the interface pointer back to the client process, where another object proxy is created, this time for the object
+		/// itself. Also created is a proxy for the requested interface, a pointer to which is returned to the client. With subsequent calls
+		/// to other interfaces on the object, COM will load the appropriate interface stubs and proxies as needed.
+		/// </para>
+		/// <para>
+		/// When a new interface proxy is created, COM hands it a pointer to the proxy manager's implementation of IUnknown, to which it
+		/// delegates all QueryInterface calls. Each interface proxy implements two interfaces of its own: the interface it represents and
+		/// IRpcProxyBuffer. The interface proxy exposes its own interface directly to clients, which can obtain its pointer by calling
+		/// <c>QueryInterface</c> on the proxy manager. Only COM, however, can call <c>IRpcProxyBuffer</c>, which is used to connect and
+		/// disconnect the proxy to the RPC channel. A client cannot query an interface proxy to obtain a pointer to the
+		/// <c>IRpcProxyBuffer</c> interface.
+		/// </para>
+		/// <para>
+		/// On the server side, each interface stub implements IRpcStubBuffer. The server code acting as a stub manager calls
+		/// IRpcStubBuffer::Connect and passes the interface stub the IUnknown pointer of its object.
+		/// </para>
+		/// <para>
+		/// When an interface proxy receives a method invocation, it obtains a marshaling packet from its RPC channel through a call to
+		/// IRpcChannelBuffer::GetBuffer. The process of marshaling the arguments will copy data into the buffer. When marshaling is
+		/// complete, the interface proxy invokes IRpcChannelBuffer::SendReceive to send the marshaled packet to the corresponding interface
+		/// stub. When <c>IRpcChannelBuffer::SendReceive</c> returns, the buffer into which the arguments were marshaled will have been
+		/// replaced by a new buffer containing the return values marshaled from the interface stub. The interface proxy unmarshals the
+		/// return values, invokes IRpcChannelBuffer::FreeBuffer to free the buffer, and then returns the return values to the original
+		/// caller of the method.
+		/// </para>
+		/// <para>
+		/// It is the implementation of IRpcChannelBuffer::SendReceive that actually sends the request to the server process and that knows
+		/// how to identify the server process and, within that process, the object to which the request should be sent. The channel
+		/// implementation also knows how to forward the request on to the appropriate stub manager in that process. The interface stub
+		/// unmarshals the arguments from the provided buffer, invokes the indicated method on the server object, and marshals the return
+		/// values back into a new buffer allocated by a call to IRpcChannelBuffer::GetBuffer. The channel then transmits the return data
+		/// packet back to the interface proxy, which is still in the middle of <c>IRpcChannelBuffer::SendReceive</c>, which returns to the
+		/// interface proxy.
+		/// </para>
+		/// <para>
+		/// A particular instance of an interface proxy can be used to service more than one interface, as long as the following conditions
+		/// are met:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>The IIDs of the affected interfaces must be mapped to the appropriate ProxyStubClsid in the system registry.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// The interface proxy must support calls to QueryInterface from one supported interface to the other interfaces, as usual, as well
+		/// as from IUnknown and IRpcProxyBuffer.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// A single instance of an interface stub can also service more than one interface, but only if that set of interfaces has a strict
+		/// single-inheritance relationship. This restriction exists because the stub can direct method invocations to multiple interfaces
+		/// only where it knows in advance which methods are implemented on which interfaces.
+		/// </para>
+		/// <para>
+		/// At various times, proxies and stubs will have need to allocate or free memory. Interface proxies, for example, will need to
+		/// allocate memory in which to return out parameters to their caller. In this respect, interface proxies and interface stubs are
+		/// just normal COM components, in that they should use the standard task allocator. (See CoGetMalloc.)
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-imarshal
+		[PInvokeData("objidl.h", MSDNShortId = "e6f08949-f27d-4aba-adff-eaf9c356a928")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("00000003-0000-0000-C000-000000000046")]
+		public interface IMarshal
+		{
+			/// <summary>Retrieves the CLSID of the unmarshaling code.</summary>
+			/// <param name="riid">A reference to the identifier of the interface to be marshaled.</param>
+			/// <param name="pv">
+			/// A pointer to the interface to be marshaled; can be <c>NULL</c> if the caller does not have a pointer to the desired interface.
+			/// </param>
+			/// <param name="dwDestContext">
+			/// The destination context where the specified interface is to be unmarshaled. Possible values come from the enumeration MSHCTX.
+			/// Unmarshaling can occur either in another apartment of the current process (MSHCTX_INPROC) or in another process on the same
+			/// computer as the current process (MSHCTX_LOCAL).
+			/// </param>
+			/// <param name="pvDestContext">This parameter is reserved and must be <c>NULL</c>.</param>
+			/// <param name="mshlflags">
+			/// Indicates whether the data to be marshaled is to be transmitted back to the client process, the typical caseâ€”or written to
+			/// a global table, where it can be retrieved by multiple clients. Possible values come from the MSHLFLAGS enumeration.
+			/// </param>
+			/// <returns>A pointer that receives the CLSID to be used to create a proxy in the client process.</returns>
+			/// <remarks>
+			/// <para>
+			/// This method is called indirectly, in a call to CoMarshalInterface, by whatever code in the server process is responsible for
+			/// marshaling a pointer to an interface on an object. This marshaling code is usually a stub generated by COM for one of several
+			/// interfaces that can marshal a pointer to an interface implemented on an entirely different object. Examples include the
+			/// IClassFactory and IOleItemContainer interfaces. For purposes of discussion, the code responsible for marshaling a pointer is
+			/// called the marshaling stub.
+			/// </para>
+			/// <para>
+			/// To create a proxy for an object, COM requires two pieces of information from the original object: the amount of data to be
+			/// written to the marshaling stream and the proxy's CLSID.
+			/// </para>
+			/// <para>The marshaling stub obtains these two pieces of information with successive calls to CoGetMarshalSizeMax and CoMarshalInterface.</para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// The marshaling stub calls the object's implementation of this method to obtain the CLSID to be used in creating an instance
+			/// of the proxy. The client, upon receiving the CLSID, loads the DLL listed for it in the system registry.
+			/// </para>
+			/// <para>
+			/// You do not explicitly call this method if you are implementing existing COM interfaces or using the Microsoft Interface
+			/// Definition Language (MIDL) to define your own interfaces. In either case, the stub automatically makes the call. See Defining
+			/// COM Interfaces.
+			/// </para>
+			/// <para>
+			/// If you are not using MIDL to define your own interface, your stub must call this method, either directly or indirectly, to
+			/// get the CLSID that the client-side COM library needs to create a proxy for the object implementing the interface.
+			/// </para>
+			/// <para>
+			/// If the caller has a pointer to the interface to be marshaled, it should, as a matter of efficiency, use the pv parameter to
+			/// pass that pointer. In this way, an implementation that may use such a pointer to determine the appropriate CLSID for the
+			/// proxy does not have to call QueryInterface on itself. If a caller does not have a pointer to the interface to be marshaled,
+			/// it can pass <c>NULL</c>.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// COM calls <c>GetUnmarshalClass</c> to obtain the CLSID to be used for creating a proxy in the client process. The CLSID to be
+			/// used for a proxy is normally not that of the original object, but one you will have generated (using the Guidgen.exe tool)
+			/// specifically for your proxy object.
+			/// </para>
+			/// <para>
+			/// Implement this method for each object that provides marshaling for one or more of its interfaces. The code responsible for
+			/// marshaling the object writes the CLSID, along with the marshaling data, to a stream; COM extracts the CLSID and data from the
+			/// stream on the receiving side.
+			/// </para>
+			/// <para>
+			/// If your proxy implementation consists simply of copying the entire original object into the client process, thereby
+			/// eliminating the need to forward calls to the original object, the CLSID returned would be the same as that of the original
+			/// object. This strategy, of course, is advisable only for objects that are not expected to change.
+			/// </para>
+			/// <para>
+			/// If the pv parameter is <c>NULL</c> and your implementation needs an interface pointer, it can call QueryInterface on the
+			/// current object to get it. The pv parameter exists merely to improve efficiency.
+			/// </para>
+			/// <para>
+			/// To ensure that your implementation of <c>GetUnmarshalClass</c> continues to work properly as new destination contexts are
+			/// supported in the future, delegate marshaling to the COM default implementation for all dwDestContext values that your
+			/// implementation does not handle. To delegate marshaling to the COM default implementation, call the CoGetStandardMarshal function.
+			/// </para>
+			/// <para>
+			/// <c>Note</c> The <c>ThreadingModel</c> registry value must be <c>Both</c> for an in-process server that implements the CLSID
+			/// returned from the <c>GetUnmarshalClass</c> method. For more information, see InprocServer32.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imarshal-getunmarshalclass HRESULT GetUnmarshalClass(
+			// REFIID riid, void *pv, DWORD dwDestContext, void *pvDestContext, DWORD mshlflags, CLSID *pCid );
+			Guid GetUnmarshalClass(in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object pv, [In] MSHCTX dwDestContext,
+				[In, Optional] IntPtr pvDestContext, [In] MSHLFLAGS mshlflags);
+
+			/// <summary>Retrieves the maximum size of the buffer that will be needed during marshaling.</summary>
+			/// <param name="riid">A reference to the identifier of the interface to be marshaled.</param>
+			/// <param name="pv">The interface pointer to be marshaled. This parameter can be <c>NULL</c>.</param>
+			/// <param name="dwDestContext">
+			/// The destination context where the specified interface is to be unmarshaled. Possible values come from the enumeration MSHCTX.
+			/// Unmarshaling can occur either in another apartment of the current process (MSHCTX_INPROC) or in another process on the same
+			/// computer as the current process (MSHCTX_LOCAL).
+			/// </param>
+			/// <param name="pvDestContext">This parameter is reserved and must be <c>NULL</c>.</param>
+			/// <param name="mshlflags">
+			/// Indicates whether the data to be marshaled is to be transmitted back to the client processâ€”the typical caseâ€”or written to
+			/// a global table, where it can be retrieved by multiple clients. Possible values come from the MSHLFLAGS enumeration.
+			/// </param>
+			/// <param name="pSize">Size of the p.</param>
+			/// <returns>A pointer to a variable that receives the maximum size of the buffer.</returns>
+			/// <remarks>
+			/// <para>
+			/// This method is called indirectly, in a call to CoGetMarshalSizeMax, by whatever code in the server process is responsible for
+			/// marshaling a pointer to an interface on an object. This marshaling code is usually a stub generated by COM for one of several
+			/// interfaces that can marshal a pointer to an interface implemented on an entirely different object. Examples include the
+			/// IClassFactory and IOleItemContainer interfaces. For purposes of discussion, the code responsible for marshaling a pointer is
+			/// called the marshaling stub.
+			/// </para>
+			/// <para>
+			/// To create a proxy for an object, COM requires two pieces of information from the original object: the amount of data to be
+			/// written to the marshaling stream and the proxy's CLSID.
+			/// </para>
+			/// <para>The marshaling stub obtains these two pieces of information with successive calls to CoGetMarshalSizeMax and CoMarshalInterface.</para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// The marshaling stub, through a call to CoGetMarshalSizeMax, calls the object's implementation of this method to preallocate
+			/// the stream buffer that will be passed to MarshalInterface.
+			/// </para>
+			/// <para>
+			/// You do not explicitly call this method if you are implementing existing COM interfaces or using the Microsoft Interface
+			/// Definition Language (MIDL) to define your own custom interfaces. In either case, the MIDL-generated stub automatically makes
+			/// the call.
+			/// </para>
+			/// <para>
+			/// If you are not using MIDL to define your own interface (see Defining COM Interfaces), your marshaling stub does not have to
+			/// call <c>GetMarshalSizeMax</c>, although doing so is highly recommended. An object knows better than an interface stub what
+			/// the maximum size of a marshaling data packet is likely to be. Therefore, unless you are providing an automatically growing
+			/// stream that is so efficient that the overhead of expanding it is insignificant, you should call this method even when
+			/// implementing your own interfaces.
+			/// </para>
+			/// <para>
+			/// The value returned by this method is guaranteed to be valid only as long as the internal state of the object being marshaled
+			/// does not change. Therefore, the actual marshaling should be done immediately after this function returns, or the stub runs
+			/// the risk that the object, because of some change in state, might require more memory to marshal than it originally indicated.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// Your implementation of MarshalInterface will use the preallocated buffer to write marshaling data into the stream. If the
+			/// buffer is too small, the marshaling operation will fail. Therefore, the value returned by this method must be a conservative
+			/// estimate of the amount of data that will be needed to marshal the interface. Violation of this requirement should be treated
+			/// as a catastrophic error.
+			/// </para>
+			/// <para>
+			/// In a subsequent call to MarshalInterface, your IMarshal implementation cannot rely on the caller actually having called
+			/// <c>GetMarshalSizeMax</c> beforehand. It must still be wary of STG_E_MEDIUMFULL errors returned by the stream and be prepared
+			/// to handle them gracefully.
+			/// </para>
+			/// <para>
+			/// To ensure that your implementation of <c>GetMarshalSizeMax</c> will continue to work properly as new destination contexts are
+			/// supported in the future, delegate marshaling to the COM default implementation for all dwDestContext values that your
+			/// implementation does not understand. To delegate marshaling to the COM default implementation, call the CoGetStandardMarshal function.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imarshal-getmarshalsizemax HRESULT GetMarshalSizeMax(
+			// REFIID riid, void *pv, DWORD dwDestContext, void *pvDestContext, DWORD mshlflags, DWORD *pSize );
+			uint GetMarshalSizeMax(in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object pv, [In] MSHCTX dwDestContext,
+				[In, Optional] IntPtr pvDestContext, [In] MSHLFLAGS mshlflags);
+
+			/// <summary>Marshals an interface pointer.</summary>
+			/// <param name="pStm">A pointer to the stream to be used during marshaling.</param>
+			/// <param name="riid">
+			/// A reference to the identifier of the interface to be marshaled. This interface must be derived from the IUnknown interface.
+			/// </param>
+			/// <param name="pv">
+			/// A pointer to the interface pointer to be marshaled. This parameter can be <c>NULL</c> if the caller does not have a pointer
+			/// to the desired interface.
+			/// </param>
+			/// <param name="dwDestContext">
+			/// The destination context where the specified interface is to be unmarshaled. Possible values for dwDestContext come from the
+			/// enumeration MSHCTX. Currently, unmarshaling can occur either in another apartment of the current process (MSHCTX_INPROC) or
+			/// in another process on the same computer as the current process (MSHCTX_LOCAL).
+			/// </param>
+			/// <param name="pvDestContext">This parameter is reserved and must be 0.</param>
+			/// <param name="mshlflags">
+			/// Indicates whether the data to be marshaled is to be transmitted back to the client process—the typical case—or written to a
+			/// global table, where it can be retrieved by multiple clients. Possible values come from the MSHLFLAGS enumeration.
+			/// </param>
+			/// <remarks>
+			/// <para>
+			/// This method is called indirectly, in a call to CoMarshalInterface, by whatever code in the server process is responsible for
+			/// marshaling a pointer to an interface on an object. This marshaling code is usually a stub generated by COM for one of several
+			/// interfaces that can marshal a pointer to an interface implemented on an entirely different object. Examples include the
+			/// IClassFactory and IOleItemContainer interfaces. For purposes of discussion, the code responsible for marshaling a pointer is
+			/// called the marshaling stub.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// Typically, rather than calling <c>MarshalInterface</c> directly, your marshaling stub instead should call the
+			/// CoMarshalInterface function, which contains a call to this method. The stub makes this call to command an object to write its
+			/// marshaling data into a stream. The stub then either passes the marshaling data back to the client process or writes it to a
+			/// global table, where it can be unmarshaled by multiple clients. The stub's call to <c>CoMarshalInterface</c> is normally
+			/// preceded by a call to CoGetMarshalSizeMax to get the maximum size of the stream buffer into which the marshaling data will be written.
+			/// </para>
+			/// <para>
+			/// You do not explicitly call this method if you are implementing existing COM interfaces or defining your own interfaces using
+			/// the Microsoft Interface Definition Language (MIDL). In either case, the MIDL-generated stub automatically makes the call.
+			/// </para>
+			/// <para>
+			/// If you are not using MIDL to define your own interface, your marshaling stub must call this method, either directly or
+			/// indirectly. Your stub implementation should call <c>MarshalInterface</c> immediately after its previous call to
+			/// IMarshal::GetMarshalSizeMax returns. Because the value returned by <c>GetMarshalSizeMax</c> is guaranteed to be valid only as
+			/// long as the internal state of the object being marshaled does not change, a delay in calling <c>MarshalInterface</c> runs the
+			/// risk that the object will require a larger stream buffer than originally indicated.
+			/// </para>
+			/// <para>
+			/// If the caller has a pointer to the interface to be marshaled, it should, as a matter of efficiency, use the pv parameter to
+			/// pass that pointer. In this way, an implementation that may use such a pointer to determine the appropriate CLSID for the
+			/// proxy does not have to call QueryInterface on itself. If a caller does not have a pointer to the interface to be marshaled,
+			/// it can pass <c>NULL</c>.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// Your implementation of <c>MarshalInterface</c> must write to the stream whatever data is needed to initialize the proxy on
+			/// the receiving side. Such data would include a reference to the interface to be marshaled, a MSHLFLAGS value specifying
+			/// whether the data should be returned to the client process or written to a global table, and whatever is needed to connect to
+			/// the object, such as a named pipe, handle to a window, or pointer to an RPC channel.
+			/// </para>
+			/// <para>
+			/// Your implementation should not assume that the stream is large enough to hold all the data. Rather, it should gracefully
+			/// handle a STG_E_MEDIUMFULL error. Just before exiting, your implementation should position the seek pointer in the stream
+			/// immediately after the last byte of data written.
+			/// </para>
+			/// <para>
+			/// If the pv parameter is <c>NULL</c> and your implementation needs an interface pointer, it can call QueryInterface on the
+			/// current object to get it. The pv parameter exists merely to improve efficiency.
+			/// </para>
+			/// <para>
+			/// To ensure that your implementation of <c>MarshalInterface</c> continues to work properly as new destination contexts are
+			/// supported in the future, delegate marshaling to the COM default implementation for all dwDestContext values that your
+			/// implementation does not handle. To delegate marshaling to the COM default implementation, call the CoGetStandardMarshal
+			/// helper function.
+			/// </para>
+			/// <para>
+			/// Using the MSHLFLAGS enumeration, callers can specify whether an interface pointer is to be marshaled back to a single client
+			/// or written to a global table, where it can be unmarshaled by multiple clients. You must make sure that your object can handle
+			/// calls from the multiple proxies that might be created from the same initialization data.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imarshal-marshalinterface HRESULT MarshalInterface(
+			// IStream *pStm, REFIID riid, void *pv, DWORD dwDestContext, void *pvDestContext, DWORD mshlflags );
+			void MarshalInterface([In] IStream pStm, in Guid riid, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object pv,
+				[In] MSHCTX dwDestContext, [In, Optional] IntPtr pvDestContext, [In] MSHLFLAGS mshlflags);
+
+			/// <summary>Unmarshals an interface pointer.</summary>
+			/// <param name="pStm">A pointer to the stream from which the interface pointer is to be unmarshaled.</param>
+			/// <param name="riid">A reference to the identifier of the interface to be unmarshaled.</param>
+			/// <returns>
+			/// The address of pointer variable that receives the interface pointer. Upon successful return, *ppv contains the requested
+			/// interface pointer of the interface to be unmarshaled.
+			/// </returns>
+			/// <remarks>
+			/// <para>The COM library in the process where unmarshaling is to occur calls the proxy's implementation of this method.</para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// You do not call this method directly. There are, however, some situations in which you might call it indirectly through a
+			/// call to CoUnmarshalInterface. For example, if you are implementing a stub, your implementation would call
+			/// <c>CoUnmarshalInterface</c> when the stub receives an interface pointer as a parameter in a method call.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// The proxy's implementation should read the data written to the stream by the original object's implementation of
+			/// IMarshal::MarshalInterface and use that data to initialize the proxy object whose CLSID was returned by the marshaling stub's
+			/// call to the original object's implementation of IMarshal::GetUnmarshalClass.
+			/// </para>
+			/// <para>
+			/// To return the appropriate interface pointer, the proxy implementation can simply call QueryInterface on itself, passing the
+			/// riid and ppv parameters. However, your implementation of <c>UnmarshalInterface</c> is free to create a different object and,
+			/// if necessary, return a pointer to it.
+			/// </para>
+			/// <para>
+			/// Just before exiting, even if exiting with an error, your implementation should reposition the seek pointer in the stream
+			/// immediately after the last byte of data read.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imarshal-unmarshalinterface HRESULT UnmarshalInterface(
+			// IStream *pStm, REFIID riid, void **ppv );
+			[return: MarshalAs(UnmanagedType.IUnknown)]
+			object UnmarshalInterface([In] IStream pStm, in Guid riid);
+
+			/// <summary>Destroys a marshaled data packet.</summary>
+			/// <param name="pStm">A pointer to a stream that contains the data packet to be destroyed.</param>
+			/// <remarks>
+			/// <para>
+			/// If an object's marshaled data packet does not get unmarshaled in the client process space and the packet is no longer needed,
+			/// the client calls <c>ReleaseMarshalData</c> on the proxy's IMarshal implementation to instruct the object to destroy the data
+			/// packet. The call occurs within the CoReleaseMarshalData function. The data packet serves as an additional reference on the
+			/// object, and releasing the data is like releasing an interface pointer by calling Release.
+			/// </para>
+			/// <para>
+			/// If the marshaled data packet somehow does not arrive in the client process or if <c>ReleaseMarshalData</c> is not
+			/// successfully re-created in the proxy, COM can call this method on the object itself.
+			/// </para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// You will rarely if ever have occasion to call this method yourself. A possible exception would be if you were to implement
+			/// IMarshal on a class factory for a class object on which you are also implementing <c>IMarshal</c>. In this case, if you were
+			/// marshaling the object to a table where it could be retrieved by multiple clients, you might, as part of your unmarshaling
+			/// routine, call <c>ReleaseMarshalData</c> to release the data packet for each proxy.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// If your implementation stores state information about marshaled data packets, you can use this method to release the state
+			/// information associated with the data packet represented by pStm. Your implementation should also position the seek pointer in
+			/// the stream past the last byte of data.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imarshal-releasemarshaldata HRESULT ReleaseMarshalData(
+			// IStream *pStm );
+			void ReleaseMarshalData([In] IStream pStm);
+
+			/// <summary>
+			/// Releases all connections to an object. The object's server calls the object's implementation of this method prior to shutting down.
+			/// </summary>
+			/// <param name="dwReserved">This parameter is reserved and must be 0.</param>
+			/// <remarks>
+			/// <para>This method is implemented on the object, not the proxy.</para>
+			/// <para>Notes to Callers</para>
+			/// <para>
+			/// The usual case in which this method is called occurs when an end user forcibly closes a COM server that has one or more
+			/// running objects that implement IMarshal. Prior to shutting down, the server calls the CoDisconnectObject function to release
+			/// external connections to all its running objects. For each object that implements <c>IMarshal</c>, however, this function
+			/// calls <c>DisconnectObject</c> so that each object that manages its own marshaling can take steps to notify its proxy that it
+			/// is about to shut down.
+			/// </para>
+			/// <para>Notes to Implementers</para>
+			/// <para>
+			/// As part of its normal shutdown code, a server should call CoDisconnectObject, which in turn calls <c>DisconnectObject</c>, on
+			/// each of its running objects that implements IMarshal.
+			/// </para>
+			/// <para>
+			/// The outcome of any implementation of this method should be to enable a proxy to respond to all subsequent calls from its
+			/// client by returning RPC_E_DISCONNECTED or CO_E_OBJNOTCONNECTED rather than attempting to forward the calls on to the original
+			/// object. It is up to the client to destroy the proxy.
+			/// </para>
+			/// <para>
+			/// If you are implementing this method for an immutable object, such as a moniker, your implementation does not need to do
+			/// anything because such objects are typically copied whole into the client's address space. Therefore, they have neither a
+			/// proxy nor a connection to the original object. For more information on marshaling immutable objects, see the "When to
+			/// Implement" section of the IMarshal topic.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-imarshal-disconnectobject HRESULT DisconnectObject(
+			// DWORD dwReserved );
+			void DisconnectObject([In, Optional] uint dwReserved);
+		}
+
+		/// <summary>Marks an object that doesn't support being marshaled or stored in the Global Interface Table.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-inomarshal
+		[PInvokeData("objidl.h", MSDNShortId = "6C82B08D-C8AF-4FB6-988C-CD7F9BABEE92")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("ecc8691b-c1db-4dc0-855e-65f6c551af49")]
+		public interface INoMarshal
+		{
+		}
+
+		/// <summary>Performs various operations on contexts.</summary>
+		/// <seealso cref="IContext"/>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-iobjcontext
+		[PInvokeData("objidl.h", MSDNShortId = "983615a1-cfa2-4137-8c7e-42e2ef6923a8")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("000001c6-0000-0000-C000-000000000046")]
+		public interface IObjContext : IContext
+		{
+			/// <summary>Adds the specified context property to the object context.</summary>
+			/// <param name="rpolicyId">A GUID that uniquely identifies this context property.</param>
+			/// <param name="flags">This parameter is reserved and must be zero.</param>
+			/// <param name="pUnk">A pointer to the context property to be added.</param>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-icontext-setproperty HRESULT SetProperty( REFGUID
+			// rpolicyId, CPFLAGS flags, IUnknown *pUnk );
+			new void SetProperty(in Guid rpolicyId, [Optional] uint flags, [In, MarshalAs(UnmanagedType.IUnknown)] object pUnk);
+
+			/// <summary>Removes the specified context property from the context.</summary>
+			/// <param name="rPolicyId">The GUID that uniquely identifies the context property to be removed.</param>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-icontext-removeproperty HRESULT RemoveProperty( REFGUID
+			// rPolicyId );
+			new void RemoveProperty(in Guid rPolicyId);
+
+			/// <summary>Retrieves the specified context property from the context.</summary>
+			/// <param name="rGuid">The GUID that uniquely identifies the context property to be retrieved.</param>
+			/// <param name="pFlags">The address of the variable that receives the flags associated with the property.</param>
+			/// <returns>The address of the variable that receives the IUnknown interface pointer of the requested context property.</returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-icontext-getproperty HRESULT GetProperty( REFGUID rGuid,
+			// CPFLAGS *pFlags, IUnknown **ppUnk );
+			[return: MarshalAs(UnmanagedType.IUnknown)]
+			new object GetProperty(in Guid rGuid, out uint pFlags);
+
+			/// <summary>
+			/// Returns an IEnumContextProps interface pointer that can be used to enumerate the context properties in this context.
+			/// </summary>
+			/// <returns>The address of the variable that receives the new IEnumContextProps interface pointer.</returns>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-icontext-enumcontextprops HRESULT EnumContextProps(
+			// IEnumContextProps **ppEnumContextProps );
+			new IEnumContextProps EnumContextProps();
+
+			void Reserved1();
+
+			void Reserved2();
+
+			void Reserved3();
+
+			void Reserved4();
+
+			void Reserved5();
+
+			void Reserved6();
+
+			void Reserved7();
 		}
 
 		/// <summary>
@@ -820,6 +1676,79 @@ namespace Vanara.PInvoke
 			/// </param>
 			[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 			void Stat(out STATSTG pstatstg, [In] STATFLAG grfStatFlag);
+		}
+
+		/// <summary>
+		/// Used to dynamically load new DLL servers into an existing surrogate and free the surrogate when it is no longer needed.
+		/// </summary>
+		/// <remarks>
+		/// A surrogate is an EXE process into which a DLL server can be loaded to give the DLL server the advantages of an EXE server
+		/// without the coding overhead. It can also allow independent DLL servers to be located together within a single process, reducing
+		/// the total number of processes needed. DLL servers are easy to write using standard development tools, like Microsoft Visual
+		/// Studio, and running them in a surrogate process provides the benefits of an executable implementation, including fault isolation,
+		/// the ability to serve multiple clients simultaneously, and allowing the server to provide services to remote clients in a
+		/// distributed environment.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nn-objidl-isurrogate
+		[PInvokeData("objidl.h", MSDNShortId = "fbed0514-3646-4744-aa7a-4a98f1a12cc0")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("00000022-0000-0000-C000-000000000046")]
+		public interface ISurrogate
+		{
+			/// <summary>
+			/// Loads a DLL server into the implementing surrogate. COM calls this method when there is an activation request for the DLL
+			/// server's class, if the class is registered as DllSurrogate.
+			/// </summary>
+			/// <param name="Clsid">The CLSID of the DLL server to be loaded.</param>
+			/// <remarks>
+			/// <para>Upon receiving a load request through <c>LoadDllServer</c>, the surrogate must perform the following steps:</para>
+			/// <list type="number">
+			/// <item>
+			/// <term>Create a class factory object that supports IUnknown, IClassFactory, and IMarshal.</term>
+			/// </item>
+			/// <item>
+			/// <term>Call CoRegisterClassObject to register the new class factory object as the class factory for the requested CLSID.</term>
+			/// </item>
+			/// </list>
+			/// <para>
+			/// This class factory's implementation of IClassFactory::CreateInstance will create an instance of the requested CLSID method by
+			/// calling CoGetClassObject to get the class factory which creates an actual object for the given CLSID.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-isurrogate-loaddllserver HRESULT LoadDllServer( REFCLSID
+			// Clsid );
+			void LoadDllServer(in Guid Clsid);
+
+			/// <summary>Unloads a DLL server.</summary>
+			/// <remarks>
+			/// <para>
+			/// COM calls <c>FreeSurrogate</c> when there are no more DLL servers running in the surrogate process. When <c>FreeSurrogate</c>
+			/// is called, the method must properly revoke all of the class factories registered in the surrogate, and then cause the
+			/// surrogate process to exit.
+			/// </para>
+			/// <para>
+			/// Surrogate processes must call the CoFreeUnusedLibraries function periodically to unload DLL servers that are no longer in
+			/// use. The surrogate process assumes this responsibility, which would normally be the client's responsibility.
+			/// <c>CoFreeUnusedLibraries</c> calls the DllCanUnloadNow function on any loaded DLL servers. Because
+			/// <c>CoFreeUnusedLibraries</c> depends on the existence and proper implementation of <c>DllCanUnloadNow</c> in DLL servers, it
+			/// is not guaranteed to unload all DLL servers that should be unloaded --not every server implements <c>DllCanUnloadNow</c>, and
+			/// this function is unreliable for free-threaded DLLs. Additionally, the surrogate has no way of being informed when all DLL
+			/// servers are gone. COM, however, can determine when all DLL servers have been unloaded, and will then call the
+			/// <c>FreeSurrogate</c> method.
+			/// </para>
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-isurrogate-freesurrogate HRESULT FreeSurrogate( );
+			void FreeSurrogate();
+		}
+
+		/// <summary>Structure returned by IEnumContextProps::Enum</summary>
+		[PInvokeData("objidl.h", MSDNShortId = "64591e45-5478-4360-8c1f-08b09b5aef8e")]
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/nf-objidl-ienumcontextprops-next
+		[StructLayout(LayoutKind.Sequential)]
+		public struct ContextProperty
+		{
+			public Guid policyId;
+			public uint flags;
+			public IntPtr pUnk;
 		}
 
 		/// <summary>

@@ -6,6 +6,86 @@ namespace Vanara.PInvoke
 {
 	public static partial class Ole32
 	{
+		/// <summary>Specifies different types of apartments.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/ne-objidl-_apttype typedef enum _APTTYPE { APTTYPE_CURRENT,
+		// APTTYPE_STA, APTTYPE_MTA, APTTYPE_NA, APTTYPE_MAINSTA } APTTYPE;
+		[PInvokeData("objidl.h", MSDNShortId = "eae95b1f-3883-4334-aa7e-84e71e05fb24")]
+		public enum APTTYPE
+		{
+			/// <summary>The current thread.</summary>
+			APTTYPE_CURRENT = -1,
+
+			/// <summary>A single-threaded apartment.</summary>
+			APTTYPE_STA = 0,
+
+			/// <summary>A multi-threaded apartment.</summary>
+			APTTYPE_MTA = 1,
+
+			/// <summary>A neutral apartment.</summary>
+			APTTYPE_NA = 2,
+
+			/// <summary>The main single-threaded apartment.</summary>
+			APTTYPE_MAINSTA = 3,
+		}
+
+		/// <summary>Specifies the set of possible COM apartment type qualifiers.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidlbase/ne-objidlbase-apttypequalifier typedef enum _APTTYPEQUALIFIER {
+		// APTTYPEQUALIFIER_NONE, APTTYPEQUALIFIER_IMPLICIT_MTA, APTTYPEQUALIFIER_NA_ON_MTA, APTTYPEQUALIFIER_NA_ON_STA,
+		// APTTYPEQUALIFIER_NA_ON_IMPLICIT_MTA, APTTYPEQUALIFIER_NA_ON_MAINSTA, APTTYPEQUALIFIER_APPLICATION_STA, APTTYPEQUALIFIER_RESERVED_1
+		// } APTTYPEQUALIFIER;
+		[PInvokeData("objidlbase.h", MSDNShortId = "ac28076d-d266-4939-b6c1-d56494ffbcd8")]
+		public enum APTTYPEQUALIFIER
+		{
+			/// <summary>No qualifier information for the current COM apartment type is available.</summary>
+			APTTYPEQUALIFIER_NONE = 0,
+
+			/// <summary>
+			/// This qualifier is only valid when the pAptType parameter of the CoGetApartmentType function specifies APTTYPE_MTA on return.
+			/// A thread has an implicit MTA apartment type if it does not initialize the COM apartment itself, and if another thread has
+			/// already initialized the MTA in the process. This qualifier informs the API caller that the MTA of the thread is implicitly
+			/// inherited from other threads and is not initialized directly.
+			/// </summary>
+			APTTYPEQUALIFIER_IMPLICIT_MTA,
+
+			/// <summary>
+			/// This qualifier is only valid when the pAptType parameter of the CoGetApartmentType function contains APTTYPE_NA on return.
+			/// When an MTA thread creates or invokes a COM in-process object using the "Neutral" threading model, the COM apartment type of
+			/// the thread switches from MTA to a Neutral apartment type. This qualifier informs the API caller that the thread has switched
+			/// from the MTA apartment type to the NA type.
+			/// </summary>
+			APTTYPEQUALIFIER_NA_ON_MTA,
+
+			/// <summary>
+			/// This qualifier is only valid when the pAptType parameter of the CoGetApartmentType function contains APTTYPE_NA on return.
+			/// When an STA thread creates or invokes a COM in-process object using the "Neutral" threading model, the COM apartment type of
+			/// the thread switches from STA to a Neutral apartment type. This qualifier informs the API caller that the thread has switched
+			/// from the STA apartment type to the NA type.
+			/// </summary>
+			APTTYPEQUALIFIER_NA_ON_STA,
+
+			/// <summary>
+			/// This qualifier is only valid when the pAptType parameter of the CoGetApartmentType function contains APTTYPE_NA on return.
+			/// When an implicit MTA thread creates or invokes a COM in-process object using the "Neutral" threading model, the COM apartment
+			/// type of the thread switches from the implicit MTA type to a Neutral apartment type. This qualifier informs the API caller
+			/// that the thread has switched from the implicit MTA apartment type to the NA type.
+			/// </summary>
+			APTTYPEQUALIFIER_NA_ON_IMPLICIT_MTA,
+
+			/// <summary>
+			/// This qualifier is only valid when the pAptType parameter of the CoGetApartmentType function contains APTTYPE_NA on return.
+			/// When the main STA thread creates or invokes a COM in-process object using the "Neutral" threading model, the COM apartment
+			/// type of the thread switches from the main STA type to a Neutral apartment type. This qualifier informs the API caller that
+			/// the thread has switched from the main STA apartment type to the NA type.
+			/// </summary>
+			APTTYPEQUALIFIER_NA_ON_MAINSTA,
+
+			/// <summary/>
+			APTTYPEQUALIFIER_APPLICATION_STA,
+
+			/// <summary/>
+			APTTYPEQUALIFIER_RESERVED_1,
+		}
+
 		/// <summary>
 		/// Values that are used in activation calls to indicate the execution contexts in which an object is to be run. These values are
 		/// also used in calls to CoRegisterClassObject to indicate the set of execution contexts in which a class object is to be made
@@ -27,64 +107,64 @@ namespace Vanara.PInvoke
 		/// other parameters according to the following algorithm.
 		/// </para>
 		/// <list type="number">
-		///   <item>
-		///     <term>
+		/// <item>
+		/// <term>
 		/// If the call specifies one of the following, CLSCTX_REMOTE_SERVER is implied and is added to the list of flags: The second case
 		/// allows applications written prior to the release of distributed COM to be the configuration of classes for remote activation to
 		/// be used by client applications available prior to DCOM and the CLSCTX_REMOTE_SERVER flag. The cases in which there would be no
 		/// explicit COSERVERINFO structure are when the value is specified as <c>NULL</c> or when it is not one of the function parameters
 		/// (as in calls to CoCreateInstance and CoGetClassObject).
 		/// </term>
-		///   </item>
-		///   <item>
-		///     <term>If the explicit COSERVERINFO parameter indicates the current computer, CLSCTX_REMOTE_SERVER is removed if present.</term>
-		///   </item>
+		/// </item>
+		/// <item>
+		/// <term>If the explicit COSERVERINFO parameter indicates the current computer, CLSCTX_REMOTE_SERVER is removed if present.</term>
+		/// </item>
 		/// </list>
 		/// <para>The rest of the processing proceeds by looking at the value(s) in the following sequence:</para>
 		/// <list type="number">
-		///   <item>
-		///     <term>
+		/// <item>
+		/// <term>
 		/// If the flags include CLSCTX_REMOTE_SERVER and no COSERVERINFO parameter is specified and if the activation request indicates a
 		/// persistent state from which to initialize the object (with CoGetInstanceFromFile, CoGetInstanceFromIStorage, or, for a file
 		/// moniker, in a call to IMoniker::BindToObject) and the class has an ActivateAtStorage subkey or no class registry information
 		/// whatsoever, the request to activate and initialize is forwarded to the computer where the persistent state resides. (Refer to the
 		/// remote activation functions listed in the See Also section for details.)
 		/// </term>
-		///   </item>
-		///   <item>
-		///     <term>
+		/// </item>
+		/// <item>
+		/// <term>
 		/// If the flags include CLSCTX_INPROC_SERVER, the class code in the DLL found under the class's InprocServer32 key is used if this
 		/// key exists. The class code will run within the same process as the caller.
 		/// </term>
-		///   </item>
-		///   <item>
-		///     <term>
+		/// </item>
+		/// <item>
+		/// <term>
 		/// If the flags include CLSCTX_INPROC_HANDLER, the class code in the DLL found under the class's InprocHandler32 key is used if this
 		/// key exists. The class code will run within the same process as the caller.
 		/// </term>
-		///   </item>
-		///   <item>
-		///     <term>
+		/// </item>
+		/// <item>
+		/// <term>
 		/// If the flags include CLSCTX_LOCAL_SERVER, the class code in the service found under the class's LocalService key is used if this
 		/// key exists. If no service is specified but an EXE is specified under that same key, the class code associated with that EXE is
 		/// used. The class code (in either case) will be run in a separate service process on the same computer as the caller.
 		/// </term>
-		///   </item>
-		///   <item>
-		///     <term>
+		/// </item>
+		/// <item>
+		/// <term>
 		/// If the flag is set to CLSCTX_REMOTE_SERVER and an additional COSERVERINFO parameter to the function specifies a particular remote
 		/// computer, a request to activate is forwarded to this remote computer with flags modified to set to CLSCTX_LOCAL_SERVER. The class
 		/// code will run in its own process on this specific computer, which must be different from that of the caller.
 		/// </term>
-		///   </item>
-		///   <item>
-		///     <term>
+		/// </item>
+		/// <item>
+		/// <term>
 		/// Finally, if the flags include CLSCTX_REMOTE_SERVER and no COSERVERINFO parameter is specified and if a computer name is given
 		/// under the class's RemoteServerName named-value, the request to activate is forwarded to this remote computer with the flags
 		/// modified to be set to CLSCTX_LOCAL_SERVER. The class code will run in its own process on this specific computer, which must be
 		/// different from that of the caller.
 		/// </term>
-		///   </item>
+		/// </item>
 		/// </list>
 		/// <para>CLSCTX_ACTIVATE_32_BIT_SERVER and CLSCTX_ACTIVATE_64_BIT_SERVER</para>
 		/// <para>
@@ -106,20 +186,20 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>If neither the client nor the server specifies a preference, then:</para>
 		/// <list type="bullet">
-		///   <item>
-		///     <term>
+		/// <item>
+		/// <term>
 		/// If the computer that hosts the server is running Windows Server 2003 with Service Pack 1 (SP1) or a later system, then COM will
 		/// try to match the server architecture to the client architecture. In other words, for a 32-bit client, COM will activate a 32-bit
 		/// server if available; otherwise it will activate a 64-bit version of the server. For a 64-bit client, COM will activate a 64-bit
 		/// server if available; otherwise it will activate a 32-bit server.
 		/// </term>
-		///   </item>
-		///   <item>
-		///     <term>
+		/// </item>
+		/// <item>
+		/// <term>
 		/// If the computer that hosts the server is running Windows XP or Windows Server 2003 without SP1 or later installed, then COM will
 		/// prefer a 64-bit version of the server if available; otherwise it will activate a 32-bit version of the server.
 		/// </term>
-		///   </item>
+		/// </item>
 		/// </list>
 		/// <para>
 		/// If a <c>CLSCTX</c> enumeration has both the CLSCTX_ACTIVATE_32_BIT_SERVER and CLSCTX_ACTIVATE_64_BIT_SERVER flags set, then it is
@@ -134,108 +214,107 @@ namespace Vanara.PInvoke
 		/// hosts the server is running the 64-bit Windows, then it will honor these flags; otherwise it will ignore them.
 		/// </para>
 		/// <list type="table">
-		///   <listheader>
-		///     <term />
-		///     <term>32-bit client, no flag</term>
-		///     <term>64-bit client, no flag</term>
-		///     <term>32-bit client, 32-bit flag¹</term>
-		///     <term>32-bit client, 64-bit flag²</term>
-		///     <term>64-bit client, 32-bit flag¹</term>
-		///     <term>64-bit client, 64-bit flag²</term>
-		///   </listheader>
-		///   <item>
-		///     <term>32-bit server, match client registry value³</term>
-		///     <term>32-bit server</term>
-		///     <term>See ⁸</term>
-		///     <term>32-bit server</term>
-		///     <term>See ⁸</term>
-		///     <term>32-bit server</term>
-		///     <term>See ⁸</term>
-		///   </item>
-		///   <item>
-		///     <term>32-bit server, 32-bit registry value⁴</term>
-		///     <term>32-bit server</term>
-		///     <term>32-bit server</term>
-		///     <term>32-bit server</term>
-		///     <term>See ⁸</term>
-		///     <term>32-bit server</term>
-		///     <term>See ⁸</term>
-		///   </item>
-		///   <item>
-		///     <term>32-bit server, 64-bit registry value⁵</term>
-		///     <term>See ⁸</term>
-		///     <term>See ⁸</term>
-		///     <term>32-bit server</term>
-		///     <term>See ⁸</term>
-		///     <term>32-bit server</term>
-		///     <term>See ⁸</term>
-		///   </item>
-		///   <item>
-		///     <term>32-bit server, no registry value⁶</term>
-		///     <term>32-bit server</term>
-		///     <term>64/32⁹</term>
-		///     <term>32-bit server</term>
-		///     <term>See ⁸</term>
-		///     <term>32-bit server</term>
-		///     <term>See ⁸</term>
-		///   </item>
-		///   <item>
-		///     <term>32-bit server, no registry value (before Windows Server 2003 with SP1)⁷</term>
-		///     <term>64/32⁹</term>
-		///     <term>64/32⁹</term>
-		///     <term>32-bit server</term>
-		///     <term>See ⁸</term>
-		///     <term>32-bit server</term>
-		///     <term>See ⁸</term>
-		///   </item>
-		///   <item>
-		///     <term>64-bit server, match client registry value³</term>
-		///     <term>See ⁸</term>
-		///     <term>64-bit server</term>
-		///     <term>See ⁸</term>
-		///     <term>64-bit server</term>
-		///     <term>See ⁸</term>
-		///     <term>64-bit server</term>
-		///   </item>
-		///   <item>
-		///     <term>64-bit server, 32-bit registry value⁴</term>
-		///     <term>See ⁸</term>
-		///     <term>See ⁸</term>
-		///     <term>See ⁸</term>
-		///     <term>64-bit server</term>
-		///     <term>See ⁸</term>
-		///     <term>64-bit server</term>
-		///   </item>
-		///   <item>
-		///     <term>64-bit server, 64-bit registry value⁵</term>
-		///     <term>64-bit server</term>
-		///     <term>64-bit server</term>
-		///     <term>See ⁸</term>
-		///     <term>64-bit server</term>
-		///     <term>See ⁸</term>
-		///     <term>64-bit server</term>
-		///   </item>
-		///   <item>
-		///     <term>64-bit server, no registry value⁶</term>
-		///     <term>32/64¹⁰</term>
-		///     <term>64-bit server</term>
-		///     <term>See ⁸</term>
-		///     <term>64-bit server</term>
-		///     <term>See ⁸</term>
-		///     <term>64-bit server</term>
-		///   </item>
-		///   <item>
-		///     <term>64-bit server, no registry value (before Windows Server 2003 with SP1)⁷</term>
-		///     <term>64-bit server</term>
-		///     <term>64-bit server</term>
-		///     <term>See ⁸</term>
-		///     <term>64-bit server</term>
-		///     <term>See ⁸</term>
-		///     <term>64-bit server</term>
-		///   </item>
+		/// <listheader>
+		/// <term/>
+		/// <term>32-bit client, no flag</term>
+		/// <term>64-bit client, no flag</term>
+		/// <term>32-bit client, 32-bit flag¹</term>
+		/// <term>32-bit client, 64-bit flag²</term>
+		/// <term>64-bit client, 32-bit flag¹</term>
+		/// <term>64-bit client, 64-bit flag²</term>
+		/// </listheader>
+		/// <item>
+		/// <term>32-bit server, match client registry value³</term>
+		/// <term>32-bit server</term>
+		/// <term>See ⁸</term>
+		/// <term>32-bit server</term>
+		/// <term>See ⁸</term>
+		/// <term>32-bit server</term>
+		/// <term>See ⁸</term>
+		/// </item>
+		/// <item>
+		/// <term>32-bit server, 32-bit registry value⁴</term>
+		/// <term>32-bit server</term>
+		/// <term>32-bit server</term>
+		/// <term>32-bit server</term>
+		/// <term>See ⁸</term>
+		/// <term>32-bit server</term>
+		/// <term>See ⁸</term>
+		/// </item>
+		/// <item>
+		/// <term>32-bit server, 64-bit registry value⁵</term>
+		/// <term>See ⁸</term>
+		/// <term>See ⁸</term>
+		/// <term>32-bit server</term>
+		/// <term>See ⁸</term>
+		/// <term>32-bit server</term>
+		/// <term>See ⁸</term>
+		/// </item>
+		/// <item>
+		/// <term>32-bit server, no registry value⁶</term>
+		/// <term>32-bit server</term>
+		/// <term>64/32⁹</term>
+		/// <term>32-bit server</term>
+		/// <term>See ⁸</term>
+		/// <term>32-bit server</term>
+		/// <term>See ⁸</term>
+		/// </item>
+		/// <item>
+		/// <term>32-bit server, no registry value (before Windows Server 2003 with SP1)⁷</term>
+		/// <term>64/32⁹</term>
+		/// <term>64/32⁹</term>
+		/// <term>32-bit server</term>
+		/// <term>See ⁸</term>
+		/// <term>32-bit server</term>
+		/// <term>See ⁸</term>
+		/// </item>
+		/// <item>
+		/// <term>64-bit server, match client registry value³</term>
+		/// <term>See ⁸</term>
+		/// <term>64-bit server</term>
+		/// <term>See ⁸</term>
+		/// <term>64-bit server</term>
+		/// <term>See ⁸</term>
+		/// <term>64-bit server</term>
+		/// </item>
+		/// <item>
+		/// <term>64-bit server, 32-bit registry value⁴</term>
+		/// <term>See ⁸</term>
+		/// <term>See ⁸</term>
+		/// <term>See ⁸</term>
+		/// <term>64-bit server</term>
+		/// <term>See ⁸</term>
+		/// <term>64-bit server</term>
+		/// </item>
+		/// <item>
+		/// <term>64-bit server, 64-bit registry value⁵</term>
+		/// <term>64-bit server</term>
+		/// <term>64-bit server</term>
+		/// <term>See ⁸</term>
+		/// <term>64-bit server</term>
+		/// <term>See ⁸</term>
+		/// <term>64-bit server</term>
+		/// </item>
+		/// <item>
+		/// <term>64-bit server, no registry value⁶</term>
+		/// <term>32/64¹⁰</term>
+		/// <term>64-bit server</term>
+		/// <term>See ⁸</term>
+		/// <term>64-bit server</term>
+		/// <term>See ⁸</term>
+		/// <term>64-bit server</term>
+		/// </item>
+		/// <item>
+		/// <term>64-bit server, no registry value (before Windows Server 2003 with SP1)⁷</term>
+		/// <term>64-bit server</term>
+		/// <term>64-bit server</term>
+		/// <term>See ⁸</term>
+		/// <term>64-bit server</term>
+		/// <term>See ⁸</term>
+		/// <term>64-bit server</term>
+		/// </item>
 		/// </list>
-		/// <para>
-		///   <c>PreferredServerBitness</c> PreferredServerBitness <c>PreferredServerBitness</c><c>PreferredServerBitness</c><c>PreferredServerBitness</c><c>PreferredServerBitness</c></para>
+		/// <para><c>PreferredServerBitness</c> PreferredServerBitness <c>PreferredServerBitness</c><c>PreferredServerBitness</c><c>PreferredServerBitness</c><c>PreferredServerBitness</c></para>
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/wtypesbase/ne-wtypesbase-tagclsctx typedef enum tagCLSCTX {
 		// CLSCTX_INPROC_SERVER, CLSCTX_INPROC_HANDLER, CLSCTX_LOCAL_SERVER, CLSCTX_INPROC_SERVER16, CLSCTX_REMOTE_SERVER,
@@ -353,10 +432,10 @@ namespace Vanara.PInvoke
 
 			/// <summary/>
 			CLSCTX_APPCONTAINER = 0x400000,
-			
+
 			/// <summary/>
 			CLSCTX_ACTIVATE_AAA_AS_IU = 0x800000,
-			
+
 			/// <summary/>
 			CLSCTX_RESERVED6 = 0x1000000,
 
@@ -386,126 +465,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>Increase memory usage in an attempt to increase performance.</summary>
 			COINIT_SPEED_OVER_MEMORY = 0x8
-		}
-
-		/// <summary>
-		/// <para>Controls the type of connections to a class object.</para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// In CoRegisterClassObject, members of both the <c>REGCLS</c> and the CLSCTX enumerations, taken together, determine how the class
-		/// object is registered.
-		/// </para>
-		/// <para>
-		/// An EXE surrogate (in which DLL servers are run) calls CoRegisterClassObject to register a class factory using a new <c>REGCLS</c>
-		/// value, REGCLS_SURROGATE.
-		/// </para>
-		/// <para>
-		/// All class factories for DLL surrogates should be registered with REGCLS_SURROGATE set. Do not set REGCLS_SINGLUSE or
-		/// REGCLS_MULTIPLEUSE when you register a surrogate for DLL servers.
-		/// </para>
-		/// <para>
-		/// The following table summarizes the allowable <c>REGCLS</c> value combinations and the object registrations affected by the combinations.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term/>
-		/// <term>REGCLS_SINGLEUSE</term>
-		/// <term>REGCLS_MULTIPLEUSE</term>
-		/// <term>REGCLS_MULTI_SEPARATE</term>
-		/// <term>Other</term>
-		/// </listheader>
-		/// <item>
-		/// <term>CLSCTX_INPROC_SERVER</term>
-		/// <term>Error</term>
-		/// <term>In-process</term>
-		/// <term>In-process</term>
-		/// <term>Error</term>
-		/// </item>
-		/// <item>
-		/// <term>CLSCTX_LOCAL_SERVER</term>
-		/// <term>Local</term>
-		/// <term>In-process/local</term>
-		/// <term>Local</term>
-		/// <term>Error</term>
-		/// </item>
-		/// <item>
-		/// <term>Both of the above</term>
-		/// <term>Error</term>
-		/// <term>In-process/local</term>
-		/// <term>In-process/local</term>
-		/// <term>Error</term>
-		/// </item>
-		/// <item>
-		/// <term>Other</term>
-		/// <term>Error</term>
-		/// <term>Error</term>
-		/// <term>Error</term>
-		/// <term>Error</term>
-		/// </item>
-		/// </list>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/ne-combaseapi-tagregcls typedef enum tagREGCLS { REGCLS_SINGLEUSE,
-		// REGCLS_MULTIPLEUSE, REGCLS_MULTI_SEPARATE, REGCLS_SUSPENDED, REGCLS_SURROGATE, REGCLS_AGILE } REGCLS;
-		[PInvokeData("combaseapi.h", MSDNShortId = "16bca8e0-9999-4d51-b7f0-87deb7619d89")]
-		[Flags]
-		public enum REGCLS
-		{
-			/// <summary>
-			/// After an application is connected to a class object with CoGetClassObject, the class object is removed from public view so
-			/// that no other applications can connect to it. This value is commonly used for single document interface (SDI) applications.
-			/// Specifying this value does not affect the responsibility of the object application to call CoRevokeClassObject; it must
-			/// always call CoRevokeClassObject when it is finished with an object class.
-			/// </summary>
-			REGCLS_SINGLEUSE = 0,
-
-			/// <summary>
-			/// Multiple applications can connect to the class object through calls to CoGetClassObject. If both the REGCLS_MULTIPLEUSE and
-			/// CLSCTX_LOCAL_SERVER are set in a call to CoRegisterClassObject, the class object is also automatically registered as an
-			/// in-process server, whether CLSCTX_INPROC_SERVER is explicitly set.
-			/// </summary>
-			REGCLS_MULTIPLEUSE = 1,
-
-			/// <summary>
-			/// Useful for registering separate CLSCTX_LOCAL_SERVER and CLSCTX_INPROC_SERVER class factories through calls to
-			/// CoGetClassObject. If REGCLS_MULTI_SEPARATE is set, each execution context must be set separately; CoRegisterClassObject does
-			/// not automatically register an out-of-process server (for which CLSCTX_LOCAL_SERVER is set) as an in-process server. This
-			/// allows the EXE to create multiple instances of the object for in-process needs, such as self embeddings, without disturbing
-			/// its CLSCTX_LOCAL_SERVER registration. If an EXE registers a REGCLS_MULTI_SEPARATE class factory and a CLSCTX_INPROC_SERVER
-			/// class factory, instance creation calls that specify CLSCTX_INPROC_SERVER in the CLSCTX parameter executed by the EXE would be
-			/// satisfied locally without approaching the SCM. This mechanism is useful when the EXE uses functions such as OleCreate and
-			/// OleLoad to create embeddings, but at the same does not wish to launch a new instance of itself for the self-embedding case.
-			/// The distinction is important for embeddings because the default handler aggregates the proxy manager by default and the
-			/// application should override this default behavior by calling OleCreateEmbeddingHelper for the self-embedding case. If your
-			/// application need not distinguish between the local and inproc case, you need not register your class factory using
-			/// REGCLS_MULTI_SEPARATE. In fact, the application incurs an extra network round trip to the SCM when it registers its
-			/// MULTIPLEUSE class factory as MULTI_SEPARATE and does not register another class factory as INPROC_SERVER.
-			/// </summary>
-			REGCLS_MULTI_SEPARATE = 2,
-
-			/// <summary>
-			/// Suspends registration and activation requests for the specified CLSID until there is a call to CoResumeClassObjects. This is
-			/// used typically to register the CLSIDs for servers that can register multiple class objects to reduce the overall registration
-			/// time, and thus the server application startup time, by making a single call to the SCM, no matter how many CLSIDs are
-			/// registered for the server.
-			/// </summary>
-			REGCLS_SUSPENDED = 4,
-
-			/// <summary>
-			/// The class object is a surrogate process used to run DLL servers. The class factory registered by the surrogate process is not
-			/// the actual class factory implemented by the DLL server, but a generic class factory implemented by the surrogate. This
-			/// generic class factory delegates instance creation and marshaling to the class factory of the DLL server running in the
-			/// surrogate. For further information on DLL surrogates, see the DllSurrogate registry value.
-			/// </summary>
-			REGCLS_SURROGATE = 8,
-
-			/// <summary>
-			/// The class object aggregates the free-threaded marshaler and will be made visible to all inproc apartments. Can be used
-			/// together with other flags. For example, REGCLS_AGILE | REGCLS_MULTIPLEUSE to register a class object that can be used
-			/// multiple times from different apartments. Without other flags, behavior will retain REGCLS_SINGLEUSE semantics in that only
-			/// one instance can be generated.
-			/// </summary>
-			REGCLS_AGILE = 0x10,
 		}
 
 		/// <summary>
@@ -542,192 +501,6 @@ namespace Vanara.PInvoke
 			/// </summary>
 			STGFMT_DOCFILE = 5
 		}
-
-		/// <summary>
-		/// <para>
-		/// Provides a pointer to an interface on a class object associated with a specified CLSID. <c>CoGetClassObject</c> locates, and if
-		/// necessary, dynamically loads the executable code required to do this.
-		/// </para>
-		/// <para>
-		/// Call <c>CoGetClassObject</c> directly to create multiple objects through a class object for which there is a CLSID in the system
-		/// registry. You can also retrieve a class object from a specific remote computer. Most class objects implement the IClassFactory
-		/// interface. You would then call CreateInstance to create an uninitialized object. It is not always necessary to go through this
-		/// process however. To create a single object, call the CoCreateInstanceEx function, which allows you to create an instance on a
-		/// remote machine. This replaces the CoCreateInstance function, which can still be used to create an instance on a local computer.
-		/// Both functions encapsulate connecting to the class object, creating the instance, and releasing the class object. Two other
-		/// functions, CoGetInstanceFromFile and CoGetInstanceFromIStorage, provide both instance creation on a remote system and object
-		/// activation. There are numerous functions and interface methods whose purpose is to create objects of a single type and provide a
-		/// pointer to an interface on that object.
-		/// </para>
-		/// </summary>
-		/// <param name="rclsid">The CLSID associated with the data and code that you will use to create the objects.</param>
-		/// <param name="dwClsContext">
-		/// The context in which the executable code is to be run. To enable a remote activation, include CLSCTX_REMOTE_SERVER. For more
-		/// information on the context values and their use, see the CLSCTX enumeration.
-		/// </param>
-		/// <param name="pvReserved">
-		/// A pointer to computer on which to instantiate the class object. If this parameter is <c>NULL</c>, the class object is
-		/// instantiated on the current computer or at the computer specified under the class's RemoteServerName key, according to the
-		/// interpretation of the dwClsCtx parameter. See COSERVERINFO.
-		/// </param>
-		/// <param name="riid">
-		/// Reference to the identifier of the interface, which will be supplied in ppv on successful return. This interface will be used to
-		/// communicate with the class object. Typically this value is IID_IClassFactory, although other values â€“ such as
-		/// IID_IClassFactory2 which supports a form of licensing â€“ are allowed. All OLE-defined interface IIDs are defined in the OLE
-		/// header files as IID_interfacename, where interfacename is the name of the interface.
-		/// </param>
-		/// <param name="ppv">
-		/// The address of pointer variable that receives the interface pointer requested in riid. Upon successful return, *ppv contains the
-		/// requested interface pointer.
-		/// </param>
-		/// <returns>
-		/// <para>This function can return the following values.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>S_OK</term>
-		/// <term>Location and connection to the specified class object was successful.</term>
-		/// </item>
-		/// <item>
-		/// <term>REGDB_E_CLASSNOTREG</term>
-		/// <term>
-		/// The CLSID is not properly registered. This error can also indicate that the value you specified in dwClsContext is not in the registry.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>E_NOINTERFACE</term>
-		/// <term>
-		/// Either the object pointed to by ppv does not support the interface identified by riid, or the QueryInterface operation on the
-		/// class object returned E_NOINTERFACE.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>REGDB_E_READREGDB</term>
-		/// <term>There was an error reading the registration database.</term>
-		/// </item>
-		/// <item>
-		/// <term>CO_E_DLLNOTFOUND</term>
-		/// <term>Either the in-process DLL or handler DLL was not found (depending on the context).</term>
-		/// </item>
-		/// <item>
-		/// <term>CO_E_APPNOTFOUND</term>
-		/// <term>The executable (.exe) was not found (CLSCTX_LOCAL_SERVER only).</term>
-		/// </item>
-		/// <item>
-		/// <term>E_ACCESSDENIED</term>
-		/// <term>There was a general access failure on load.</term>
-		/// </item>
-		/// <item>
-		/// <term>CO_E_ERRORINDLL</term>
-		/// <term>There is an error in the executable image.</term>
-		/// </item>
-		/// <item>
-		/// <term>CO_E_APPDIDNTREG</term>
-		/// <term>The executable was launched, but it did not register the class object (and it may have shut down).</term>
-		/// </item>
-		/// </list>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// A class object in OLE is an intermediate object that supports an interface that permits operations common to a group of objects.
-		/// The objects in this group are instances derived from the same object definition represented by a single CLSID. Usually, the
-		/// interface implemented on a class object is IClassFactory, through which you can create object instances of a given definition (class).
-		/// </para>
-		/// <para>
-		/// A call to <c>CoGetClassObject</c> creates, initializes, and gives the caller access (through a pointer to an interface specified
-		/// with the riid parameter) to the class object. The class object is the one associated with the CLSID that you specify in the
-		/// rclsid parameter. The details of how the system locates the associated code and data within a computer are transparent to the
-		/// caller, as is the dynamic loading of any code that is not already loaded.
-		/// </para>
-		/// <para>
-		/// If the class context is CLSCTX_REMOTE_SERVER, indicating remote activation is required, the COSERVERINFO structure provided in
-		/// the pServerInfo parameter allows you to specify the computer on which the server is located. For information on the algorithm
-		/// used to locate a remote server when pServerInfo is <c>NULL</c>, refer to the CLSCTX enumeration.
-		/// </para>
-		/// <para>There are two places to find a CLSID for a class:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>
-		/// The registry holds an association between CLSIDs and file suffixes, and between CLSIDs and file signatures for determining the
-		/// class of an object.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>When an object is saved to persistent storage, its CLSID is stored with its data.</term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// To create and initialize embedded or linked OLE document objects, it is not necessary to call <c>CoGetClassObject</c> directly.
-		/// Instead, call the OleCreate or <c>OleCreate</c> XXX function. These functions encapsulate the entire object instantiation and
-		/// initialization process, and call, among other functions, <c>CoGetClassObject</c>.
-		/// </para>
-		/// <para>
-		/// The riid parameter specifies the interface the client will use to communicate with the class object. In most cases, this
-		/// interface is IClassFactory. This provides access to the CreateInstance method, through which the caller can then create an
-		/// uninitialized object of the kind specified in its implementation. All classes registered in the system with a CLSID must
-		/// implement IClassFactory.
-		/// </para>
-		/// <para>
-		/// In rare cases, however, you may want to specify some other interface that defines operations common to a set of objects. For
-		/// example, in the way OLE implements monikers, the interface on the class object is IParseDisplayName, used to transform the
-		/// display name of an object into a moniker.
-		/// </para>
-		/// <para>
-		/// The dwClsContext parameter specifies the execution context, allowing one CLSID to be associated with different pieces of code in
-		/// different execution contexts. The CLSCTX enumeration specifies the available context flags. <c>CoGetClassObject</c> consults (as
-		/// appropriate for the context indicated) both the registry and the class objects that are currently registered by calling the
-		/// CoRegisterClassObject function.
-		/// </para>
-		/// <para>
-		/// To release a class object, use the class object's Release method. The function CoRevokeClassObject is to be used only to remove a
-		/// class object's CLSID from the system registry.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-cogetclassobject HRESULT CoGetClassObject( REFCLSID
-		// rclsid, DWORD dwClsContext, LPVOID pvReserved, REFIID riid, LPVOID *ppv );
-		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("combaseapi.h", MSDNShortId = "65e758ce-50a4-49e8-b3b2-0cd148d2781a")]
-		public static extern HRESULT CoGetClassObject(in Guid rclsid, CLSCTX dwClsContext, IntPtr pvReserved, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 3)] out object ppv);
-
-		/// <summary>
-		/// Unmarshals a buffer containing an interface pointer and releases the stream when an interface pointer has been marshaled from
-		/// another thread to the calling thread.
-		/// </summary>
-		/// <param name="pStm">A pointer to the IStream interface on the stream to be unmarshaled.</param>
-		/// <param name="iid">A reference to the identifier of the interface requested from the unmarshaled object.</param>
-		/// <param name="ppv">
-		/// The address of pointer variable that receives the interface pointer requested in <paramref name="iid"/>. Upon successful return,
-		/// <paramref name="ppv"/> contains the requested interface pointer to the unmarshaled interface.
-		/// </param>
-		/// <returns>
-		/// This function can return the standard return values S_OK and E_INVALIDARG, as well as any of the values returned by CoUnmarshalInterface.
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// <c>Important</c> Security Note: Calling this method with untrusted data is a security risk. Call this method only with trusted
-		/// data. For more information, see Untrusted Data Security Risks.
-		/// </para>
-		/// <para>The <c>CoGetInterfaceAndReleaseStream</c> function performs the following tasks:</para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>Calls CoUnmarshalInterface to unmarshal an interface pointer previously passed in a call to CoMarshalInterThreadInterfaceInStream.</term>
-		/// </item>
-		/// <item>
-		/// <term>
-		/// Releases the stream pointer. Even if the unmarshaling fails, the stream is still released because there is no effective way to
-		/// recover from a failure of this kind.
-		/// </term>
-		/// </item>
-		/// </list>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-cogetinterfaceandreleasestream HRESULT
-		// CoGetInterfaceAndReleaseStream( LPSTREAM pStm, REFIID iid, LPVOID *ppv );
-		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("combaseapi.h", MSDNShortId = "b529f65f-3208-4594-a772-d1cad3727dc1")]
-		public static extern HRESULT CoGetInterfaceAndReleaseStream(IStream pStm, in Guid iid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>
 		/// Initializes the COM library for use by the calling thread, sets the thread's concurrency model, and creates a new apartment for
@@ -856,242 +629,6 @@ namespace Vanara.PInvoke
 			[Optional] IntPtr pReserved1, RPC_C_AUTHN_LEVEL dwAuthnLevel, RPC_C_IMP_LEVEL dwImpLevel, in SOLE_AUTHENTICATION_LIST pAuthList, EOLE_AUTHENTICATION_CAPABILITIES dwCapabilities,
 			[Optional] IntPtr pReserved3);
 
-		/// <summary>Writes into a stream the data required to initialize a proxy object in some client process.</summary>
-		/// <param name="pStm">A pointer to the stream to be used during marshaling. See IStream.</param>
-		/// <param name="riid">
-		/// A reference to the identifier of the interface to be marshaled. This interface must be derived from the IUnknown interface.
-		/// </param>
-		/// <param name="pUnk">A pointer to the interface to be marshaled. This interface must be derived from the IUnknown interface.</param>
-		/// <param name="dwDestContext">
-		/// The destination context where the specified interface is to be unmarshaled. The possible values come from the enumeration MSHCTX.
-		/// Currently, unmarshaling can occur in another apartment of the current process (MSHCTX_INPROC), in another process on the same
-		/// computer as the current process (MSHCTX_LOCAL), or in a process on a different computer (MSHCTX_DIFFERENTMACHINE).
-		/// </param>
-		/// <param name="pvDestContext">This parameter is reserved and must be <c>NULL</c>.</param>
-		/// <param name="mshlflags">
-		/// The flags that specify whether the data to be marshaled is to be transmitted back to the client process (the typical case) or
-		/// written to a global table, where it can be retrieved by multiple clients. The possibles values come from the MSHLFLAGS enumeration.
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// This function can return the standard return values E_FAIL, E_OUTOFMEMORY, and E_UNEXPECTED, the stream-access error values
-		/// returned by IStream, as well as the following values.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>S_OK</term>
-		/// <term>The HRESULT was marshaled successfully.</term>
-		/// </item>
-		/// <item>
-		/// <term>CO_E_NOTINITIALIZED</term>
-		/// <term>The CoInitialize or OleInitialize function was not called on the current thread before this function was called.</term>
-		/// </item>
-		/// </list>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// The <c>CoMarshalInterface</c> function marshals the interface referred to by riid on the object whose IUnknown implementation is
-		/// pointed to by pUnk. To do so, the <c>CoMarshalInterface</c> function performs the following tasks:
-		/// </para>
-		/// <list type="number">
-		/// <item>
-		/// <term>
-		/// Queries the object for a pointer to the IMarshal interface. If the object does not implement <c>IMarshal</c>, meaning that it
-		/// relies on COM to provide marshaling support, <c>CoMarshalInterface</c> gets a pointer to COM's default implementation of <c>IMarshal</c>.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>
-		/// Gets the CLSID of the object's proxy by calling IMarshal::GetUnmarshalClass, using whichever IMarshal interface pointer has been returned.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>Writes the CLSID of the proxy to the stream to be used for marshaling.</term>
-		/// </item>
-		/// <item>
-		/// <term>Marshals the interface pointer by calling IMarshal::MarshalInterface.</term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// The COM library in the client process calls the CoUnmarshalInterface function to extract the data and initialize the proxy.
-		/// Before calling <c>CoUnmarshalInterface</c>, seek back to the original position in the stream.
-		/// </para>
-		/// <para>
-		/// If you are implementing existing COM interfaces or defining your own interfaces using the Microsoft Interface Definition Language
-		/// (MIDL), the MIDL-generated proxies and stubs call <c>CoMarshalInterface</c> for you. If you are writing your own proxies and
-		/// stubs, your proxy code and stub code should each call <c>CoMarshalInterface</c> to correctly marshal interface pointers. Calling
-		/// IMarshal directly from your proxy and stub code is not recommended.
-		/// </para>
-		/// <para>
-		/// If you are writing your own implementation of IMarshal, and your proxy needs access to a private object, you can include an
-		/// interface pointer to that object as part of the data you write to the stream. In such situations, if you want to use COM's
-		/// default marshaling implementation when passing the interface pointer, you can call <c>CoMarshalInterface</c> on the object to do so.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-comarshalinterface HRESULT CoMarshalInterface(
-		// LPSTREAM pStm, REFIID riid, LPUNKNOWN pUnk, DWORD dwDestContext, LPVOID pvDestContext, DWORD mshlflags );
-		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("combaseapi.h", MSDNShortId = "04ca1217-eac1-43e2-b736-8d7522ce8592")]
-		public static extern HRESULT CoMarshalInterface(IStream pStm, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] object pUnk, MSHCTX dwDestContext, [Optional] IntPtr pvDestContext, MSHLFLAGS mshlflags);
-
-		/// <summary>Marshals an interface pointer from one thread to another thread in the same process.</summary>
-		/// <param name="riid">A reference to the identifier of the interface to be marshaled.</param>
-		/// <param name="pUnk">A pointer to the interface to be marshaled, which must be derived from IUnknown. This parameter can be <c>NULL</c>.</param>
-		/// <param name="ppStm">
-		/// The address of the IStream* pointer variable that receives the interface pointer to the stream that contains the marshaled interface.
-		/// </param>
-		/// <returns>This function can return the standard return values E_OUTOFMEMORY and S_OK.</returns>
-		/// <remarks>
-		/// <para>
-		/// The <c>CoMarshalInterThreadInterfaceInStream</c> function enables an object to easily and reliably marshal an interface pointer
-		/// to another thread in the same process. The stream returned in the ppStm parameter is guaranteed to behave correctly when a client
-		/// running in the receiving thread attempts to unmarshal the pointer. The client can then call the CoGetInterfaceAndReleaseStream to
-		/// unmarshal the interface pointer and release the stream object.
-		/// </para>
-		/// <para>The <c>CoMarshalInterThreadInterfaceInStream</c> function performs the following tasks:</para>
-		/// <list type="number">
-		/// <item>
-		/// <term>Creates a stream object.</term>
-		/// </item>
-		/// <item>
-		/// <term>Passes the stream object's IStream pointer to CoMarshalInterface.</term>
-		/// </item>
-		/// <item>
-		/// <term>Returns the IStream pointer to the caller.</term>
-		/// </item>
-		/// </list>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-comarshalinterthreadinterfaceinstream HRESULT
-		// CoMarshalInterThreadInterfaceInStream( REFIID riid, LPUNKNOWN pUnk, LPSTREAM *ppStm );
-		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("combaseapi.h", MSDNShortId = "c9ab8713-8604-4f0b-a11b-bdfb7d595d95")]
-		public static extern HRESULT CoMarshalInterThreadInterfaceInStream(in Guid riid, [In, MarshalAs(UnmanagedType.IUnknown)] object pUnk, out IStream ppStm);
-
-		/// <summary>Registers an EXE class object with OLE so other applications can connect to it.</summary>
-		/// <param name="rclsid">The CLSID to be registered.</param>
-		/// <param name="pUnk">A pointer to the IUnknown interface on the class object whose availability is being published.</param>
-		/// <param name="dwClsContext">
-		/// The context in which the executable code is to be run. For information on these context values, see the CLSCTX enumeration.
-		/// </param>
-		/// <param name="flags">
-		/// Indicates how connections are made to the class object. For information on these flags, see the REGCLS enumeration.
-		/// </param>
-		/// <param name="lpdwRegister">
-		/// A pointer to a value that identifies the class object registered; later used by the CoRevokeClassObject function to revoke the registration.
-		/// </param>
-		/// <returns>
-		/// <para>
-		/// This function can return the standard return values E_INVALIDARG, E_OUTOFMEMORY, and E_UNEXPECTED, as well as the following values.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>S_OK</term>
-		/// <term>The class object was registered successfully.</term>
-		/// </item>
-		/// </list>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// EXE object applications should call <c>CoRegisterClassObject</c> on startup. It can also be used to register internal objects for
-		/// use by the same EXE or other code (such as DLLs) that the EXE uses. Only EXE object applications call
-		/// <c>CoRegisterClassObject</c>. Object handlers or DLL object applications do not call this function — instead, they must implement
-		/// and export the DllGetClassObject function.
-		/// </para>
-		/// <para>
-		/// At startup, a multiple-use EXE object application must create a class object (with the IClassFactory interface on it), and call
-		/// <c>CoRegisterClassObject</c> to register the class object. Object applications that support several different classes (such as
-		/// multiple types of embeddable objects) must allocate and register a different class object for each.
-		/// </para>
-		/// <para>
-		/// Multiple registrations of the same class object are independent and do not produce an error. Each subsequent registration yields
-		/// a unique key in lpdwRegister.
-		/// </para>
-		/// <para>
-		/// Multiple document interface (MDI) applications must register their class objects. Single document interface (SDI) applications
-		/// must register their class objects only if they can be started by means of the <c>/Embedding</c> switch.
-		/// </para>
-		/// <para>
-		/// The server for a class object should call CoRevokeClassObject to revoke the class object (remove its registration) when all of
-		/// the following are true:
-		/// </para>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>There are no existing instances of the object definition.</term>
-		/// </item>
-		/// <item>
-		/// <term>There are no locks on the class object.</term>
-		/// </item>
-		/// <item>
-		/// <term>The application providing services to the class object is not under user control (not visible to the user on the display).</term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// After the class object is revoked, when its reference count reaches zero, the class object can be released, allowing the
-		/// application to exit. Note that <c>CoRegisterClassObject</c> calls IUnknown::AddRef and CoRevokeClassObject calls
-		/// IUnknown::Release, so the two functions form an <c>AddRef</c>/ <c>Release</c> pair.
-		/// </para>
-		/// <para>
-		/// As of Windows Server 2003, if a COM object application is registered as a service, COM verifies the registration. COM makes sure
-		/// the process ID of the service, in the service control manager (SCM), matches the process ID of the registering process. If not,
-		/// COM fails the registration. If the COM object application runs in the system account with no registry key, COM treats the objects
-		/// application identity as Launching User.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-coregisterclassobject HRESULT CoRegisterClassObject(
-		// REFCLSID rclsid, LPUNKNOWN pUnk, DWORD dwClsContext, DWORD flags, LPDWORD lpdwRegister );
-		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("combaseapi.h", MSDNShortId = "d27bfa6c-194a-41f1-8fcf-76c4dff14a8a")]
-		public static extern HRESULT CoRegisterClassObject(in Guid rclsid, [MarshalAs(UnmanagedType.IUnknown)] object pUnk, CLSCTX dwClsContext, REGCLS flags, out uint lpdwRegister);
-
-		/// <summary>
-		/// Informs OLE that a class object, previously registered with the CoRegisterClassObject function, is no longer available for use.
-		/// </summary>
-		/// <param name="dwRegister">A token previously returned from the CoRegisterClassObject function.</param>
-		/// <returns>
-		/// <para>
-		/// This function can return the standard return values E_INVALIDARG, E_OUTOFMEMORY, and E_UNEXPECTED, as well as the following values.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>S_OK</term>
-		/// <term>The class object was revoked successfully.</term>
-		/// </item>
-		/// </list>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// A successful call to <c>CoRevokeClassObject</c> means that the class object has been removed from the global class object table
-		/// (although it does not release the class object). If other clients still have pointers to the class object and have caused the
-		/// reference count to be incremented by calls to IUnknown::AddRef, the reference count will not be zero. When this occurs,
-		/// applications may benefit if subsequent calls (with the obvious exceptions of <c>AddRef</c> and IUnknown::Release) to the class
-		/// object fail. Note that CoRegisterClassObject calls <c>AddRef</c> and <c>CoRevokeClassObject</c> calls <c>Release</c>, so the two
-		/// functions form an <c>AddRef</c>/ <c>Release</c> pair.
-		/// </para>
-		/// <para>
-		/// An object application must call <c>CoRevokeClassObject</c> to revoke registered class objects before exiting the program. Class
-		/// object implementers should call <c>CoRevokeClassObject</c> as part of the release sequence. You must specifically revoke the
-		/// class object even when you have specified the flags value REGCLS_SINGLEUSE in a call to CoRegisterClassObject, indicating that
-		/// only one application can connect to the class object.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-corevokeclassobject HRESULT CoRevokeClassObject(
-		// DWORD dwRegister );
-		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("combaseapi.h", MSDNShortId = "90b9b9ca-b5b2-48f5-8c2a-b478b6daa7ec")]
-		public static extern HRESULT CoRevokeClassObject(uint dwRegister);
-
 		/// <summary>
 		/// Closes the COM library on the current thread, unloads all DLLs loaded by the thread, frees any other resources that the thread
 		/// maintains, and forces all RPC connections on the thread to close.
@@ -1099,94 +636,6 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Ole32, ExactSpelling = true, CallingConvention = CallingConvention.StdCall, SetLastError = false)]
 		[PInvokeData("Objbase.h", MSDNShortId = "ms688715")]
 		public static extern void CoUninitialize();
-
-		/// <summary>
-		/// Initializes a newly created proxy using data written into the stream by a previous call to the CoMarshalInterface function, and
-		/// returns an interface pointer to that proxy.
-		/// </summary>
-		/// <param name="pStm">A pointer to the stream from which the interface is to be unmarshaled.</param>
-		/// <param name="riid">
-		/// A reference to the identifier of the interface to be unmarshaled. For <c>IID_NULL</c>, the returned interface is the one defined
-		/// by the stream, objref.iid.
-		/// </param>
-		/// <param name="ppv">
-		/// The address of pointer variable that receives the interface pointer requested in <paramref name="riid"/>. Upon successful return,
-		/// <paramref name="ppv"/> contains the requested interface pointer for the unmarshaled interface.
-		/// </param>
-		/// <returns>
-		/// <para>This function can return the standard return value E_FAIL, errors returned by CoCreateInstance, and the following values.</para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Return code</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>S_OK</term>
-		/// <term>The interface pointer was unmarshaled successfully.</term>
-		/// </item>
-		/// <item>
-		/// <term>STG_E_INVALIDPOINTER</term>
-		/// <term>pStm is an invalid pointer.</term>
-		/// </item>
-		/// <item>
-		/// <term>CO_E_NOTINITIALIZED</term>
-		/// <term>The CoInitialize or OleInitialize function was not called on the current thread before this function was called.</term>
-		/// </item>
-		/// <item>
-		/// <term>CO_E_OBJNOTCONNECTED</term>
-		/// <term>
-		/// The object application has been disconnected from the remoting system (for example, as a result of a call to the
-		/// CoDisconnectObject function).
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>REGDB_E_CLASSNOTREG</term>
-		/// <term>An error occurred reading the registration database.</term>
-		/// </item>
-		/// <item>
-		/// <term>E_NOINTERFACE</term>
-		/// <term>The final QueryInterface of this function for the requested interface returned E_NOINTERFACE.</term>
-		/// </item>
-		/// </list>
-		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// <c>Important</c> Security Note: Calling this method with untrusted data is a security risk. Call this method only with trusted
-		/// data. For more information, see Untrusted Data Security Risks.
-		/// </para>
-		/// <para>The <c>CoUnmarshalInterface</c> function performs the following tasks:</para>
-		/// <list type="number">
-		/// <item>
-		/// <term>Reads from the stream the CLSID to be used to create an instance of the proxy.</term>
-		/// </item>
-		/// <item>
-		/// <term>
-		/// Gets an IMarshal pointer to the proxy that is to do the unmarshaling. If the object uses COM's default marshaling implementation,
-		/// the pointer thus obtained is to an instance of the generic proxy object. If the marshaling is occurring between two threads in
-		/// the same process, the pointer is to an instance of the in-process free threaded marshaler. If the object provides its own
-		/// marshaling code, <c>CoUnmarshalInterface</c> calls the CoCreateInstance function, passing the CLSID it read from the marshaling
-		/// stream. <c>CoCreateInstance</c> creates an instance of the object's proxy and returns an <c>IMarshal</c> interface pointer to the proxy.
-		/// </term>
-		/// </item>
-		/// <item>
-		/// <term>
-		/// Using whichever IMarshal interface pointer it has acquired, the function then calls IMarshal::UnmarshalInterface and, if
-		/// appropriate, IMarshal::ReleaseMarshalData.
-		/// </term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// The primary caller of this function is COM itself, from within interface proxies or stubs that unmarshal an interface pointer.
-		/// There are, however, some situations in which you might call <c>CoUnmarshalInterface</c>. For example, if you are implementing a
-		/// stub, your implementation would call <c>CoUnmarshalInterface</c> when the stub receives an interface pointer as a parameter in a
-		/// method call.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/combaseapi/nf-combaseapi-counmarshalinterface HRESULT CoUnmarshalInterface(
-		// LPSTREAM pStm, REFIID riid, LPVOID *ppv );
-		[DllImport(Lib.Ole32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("combaseapi.h", MSDNShortId = "d0eac0da-2f41-40c4-b756-31bc22752c17")]
-		public static extern HRESULT CoUnmarshalInterface(IStream pStm, in Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppv);
 
 		/// <summary>
 		/// Returns a pointer to an implementation of IBindCtx (a bind context object). This object stores information about a particular
@@ -1610,6 +1059,81 @@ namespace Vanara.PInvoke
 			FileFlagsAndAttributes grfAttrs, [Optional] IntPtr pStgOptions, [Optional] IntPtr reserved2, in Guid riid,
 			[MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 6)] out object ppObjectOpen);
 
+		/// <summary>Provides a CO_MTA_USAGE_COOKIE.</summary>
+		[StructLayout(LayoutKind.Sequential)]
+		public struct CO_MTA_USAGE_COOKIE : IHandle
+		{
+			private IntPtr handle;
+
+			/// <summary>Initializes a new instance of the <see cref="CO_MTA_USAGE_COOKIE"/> struct.</summary>
+			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+			public CO_MTA_USAGE_COOKIE(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+			/// <summary>Returns an invalid handle by instantiating a <see cref="CO_MTA_USAGE_COOKIE"/> object with <see cref="IntPtr.Zero"/>.</summary>
+			public static CO_MTA_USAGE_COOKIE NULL => new CO_MTA_USAGE_COOKIE(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="CO_MTA_USAGE_COOKIE"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(CO_MTA_USAGE_COOKIE h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="CO_MTA_USAGE_COOKIE"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator CO_MTA_USAGE_COOKIE(IntPtr h) => new CO_MTA_USAGE_COOKIE(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(CO_MTA_USAGE_COOKIE h1, CO_MTA_USAGE_COOKIE h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(CO_MTA_USAGE_COOKIE h1, CO_MTA_USAGE_COOKIE h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is CO_MTA_USAGE_COOKIE h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
+		}
+
+		/// <summary>Represents an interface in a query for multiple interfaces.</summary>
+		/// <remarks>
+		/// To optimize network performance, most remote activation functions take an array of <c>MULTI_QI</c> structures rather than just a
+		/// single IID as input and a single pointer to the requested interface on the object as output, as do local activation functions.
+		/// This allows a set of pointers to interfaces to be returned from the same object in a single round-trip to the server. In network
+		/// scenarios, requesting multiple interfaces at the time of object construction can save considerable time over using a number of
+		/// calls to QueryInterface for unique interfaces, each of which would require a round-trip to the server.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/ns-objidl-tagmulti_qi typedef struct tagMULTI_QI { const IID *pIID;
+		// IUnknown *pItf; HRESULT hr; } MULTI_QI;
+		[PInvokeData("objidl.h", MSDNShortId = "845040c9-fad4-4ac8-856d-d35edbf48ec9")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct MULTI_QI
+		{
+			/// <summary>A pointer to an interface identifier.</summary>
+			public IntPtr pIID;
+
+			/// <summary>A pointer to the interface requested in <c>pIID</c>. This member must be <c>NULL</c> on input.</summary>
+			public IntPtr pItf;
+
+			/// <summary>
+			/// The return value of the QueryInterface call to locate the requested interface. Common return values include S_OK and
+			/// E_NOINTERFACE. This member must be 0 on input.
+			/// </summary>
+			public HRESULT hr;
+		}
+
 		/// <summary>
 		/// The STGOPTIONS structure specifies features of the storage object, such as sector size, in the StgCreateStorageEx and
 		/// StgOpenStorageEx functions.
@@ -1642,6 +1166,75 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// </summary>
 			public string pwcsTemplateFile;
+		}
+
+		/// <summary>Identifies a remote computer resource to the activation functions.</summary>
+		/// <remarks>
+		/// <para>
+		/// The <c>COSERVERINFO</c> structure is used primarily to identify a remote system in object creation functions. Computer resources
+		/// are named using the naming scheme of the network transport. By default, all UNC ("\server" or "server") and DNS names
+		/// ("domain.com", "example.microsoft.com", or "135.5.33.19") names are allowed.
+		/// </para>
+		/// <para>
+		/// If <c>pAuthInfo</c> is set to <c>NULL</c>, Snego will be used to negotiate an authentication service that will work between the
+		/// client and server. However, a non- <c>NULL</c> COAUTHINFO structure can be specified for <c>pAuthInfo</c> to meet any one of the
+		/// following needs:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>
+		/// To specify a different client identity for computer remote activations. The specified identity will be used for the launch
+		/// permission check on the server rather than the real client identity.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// To specify that Kerberos, rather than NTLMSSP, is used for machine remote activation. A nondefault client identity may or may not
+		/// be specified.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>To request unsecure activation.</term>
+		/// </item>
+		/// <item>
+		/// <term>To specify a proprietary authentication service.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// If <c>pAuthInfo</c> is not <c>NULL</c>, those values will be used to specify the authentication settings for the remote call.
+		/// These settings will be passed to the RpcBindingSetAuthInfoEx function.
+		/// </para>
+		/// <para>
+		/// If the pAuthInfo parameter is <c>NULL</c>, then dwAuthnLevel can be overridden by the authentication level set by the
+		/// CoInitializeSecurity function. If the <c>CoInitializeSecurity</c> function isn't called, then the authentication level specified
+		/// under the AppID registry key is used, if it exists.
+		/// </para>
+		/// <para>
+		/// Starting with Windows XP with Service Pack 2 (SP2), dwAuthnLevel is the maximum of RPC_C_AUTHN_LEVEL_CONNECT and the process-wide
+		/// authentication level of the client process that is issuing the activation request. For earlier versions of the operating system,
+		/// this is RPC_C_AUTHN_LEVEL_CONNECT.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/objidl/ns-objidl-_coserverinfo typedef struct _COSERVERINFO { DWORD
+		// dwReserved1; LPWSTR pwszName; COAUTHINFO *pAuthInfo; DWORD dwReserved2; } COSERVERINFO;
+		[PInvokeData("objidl.h", MSDNShortId = "88c94a7f-5cf0-4d61-833f-91cba45d8624")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public class COSERVERINFO
+		{
+			/// <summary>This member is reserved and must be 0.</summary>
+			public uint dwReserved1;
+
+			/// <summary>The name of the computer.</summary>
+			public string pwszName;
+
+			/// <summary>
+			/// A pointer to a COAUTHINFO structure to override the default activation security for machine remote activations. Otherwise,
+			/// set to <c>NULL</c> to indicate that default values should be used. For more information, see the Remarks section.
+			/// </summary>
+			public IntPtr pAuthInfo;
+
+			/// <summary>This member is reserved and must be 0.</summary>
+			public uint dwReserved2;
 		}
 	}
 }
