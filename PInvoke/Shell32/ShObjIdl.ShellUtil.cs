@@ -74,6 +74,30 @@ namespace Vanara.PInvoke
 				return (IShellItem)unk;
 			}
 
+			/// <summary>Requests a specified interface from a COM object.</summary>
+			/// <param name="iUnk">The interface to be queried.</param>
+			/// <param name="riid">The interface identifier (IID) of the requested interface.</param>
+			/// <returns>The returned interface.</returns>
+			public static object QueryInterface(in object iUnk, in Guid riid)
+			{
+				QueryInterface(iUnk, riid, out var ppv).ThrowIfFailed();
+				return ppv;
+			}
+
+			/// <summary>Requests a specified interface from a COM object.</summary>
+			/// <param name="iUnk">The interface to be queried.</param>
+			/// <param name="riid">The interface identifier (IID) of the requested interface.</param>
+			/// <param name="ppv">When this method returns, contains the returned interface.</param>
+			/// <returns>An HRESULT that indicates the success or failure of the call.</returns>
+			public static HRESULT QueryInterface(in object iUnk, in Guid riid, out object ppv)
+			{
+				var tmp = riid;
+				HRESULT hr = Marshal.QueryInterface(Marshal.GetIUnknownForObject(iUnk), ref tmp, out var ippv);
+				ppv = hr.Succeeded ? Marshal.GetObjectForIUnknown(ippv) : null;
+				System.Diagnostics.Debug.WriteLine($"Successful QI:\t{riid}");
+				return hr;
+			}
+
 			[ComVisible(true)]
 			private class IntFileSysBindData : IFileSystemBindData2
 			{
