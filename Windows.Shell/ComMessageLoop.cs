@@ -17,7 +17,8 @@ namespace Vanara.Windows.Shell
 		// this case. This timer needs to be canceled once the app learns that it has should remain running.
 		protected const uint cTimeout = 30 * 1000;
 
-		private Action appCallback;
+		private Action<object> appCallback;
+		private object callbackObj;
 		private IntPtr postTimerId;      // timer id used to to queue a callback to the app
 		private IntPtr timeoutTimerId;   // timer id used to exit the app if the app is not called back within a certain time
 
@@ -34,10 +35,11 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
-		public void QueueAppCallback(Action callback)
+		public void QueueAppCallback(Action<object> callback, object tag = null)
 		{
 			// queue a callback on OnAppCallback() by setting a timer of zero seconds
 			appCallback = callback;
+			callbackObj = tag;
 			postTimerId = SetTimer(default, default, 0, null);
 			if (postTimerId != default)
 				CancelTimeout();
@@ -65,7 +67,7 @@ namespace Vanara.Windows.Shell
 					else if (msg.wParam == postTimerId)
 					{
 						postTimerId = IntPtr.Zero;
-						appCallback?.Invoke();
+						appCallback?.Invoke(callbackObj);
 						appCallback = null;
 					}
 					PostQuitMessage(0);
