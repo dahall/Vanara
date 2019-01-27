@@ -66,7 +66,7 @@ namespace Vanara.Windows.Shell
 		public Guid? CLSID
 		{
 			get { var s = key.GetSubKeyDefaultValue("CLSID")?.ToString(); return s == null ? (Guid?)null : new Guid(s); }
-			set => UpdateKeyValue("CLSID", value?.ToString());
+			set => UpdateKeyValue("CLSID", value?.ToRegString());
 		}
 
 		/// <summary>Gets or sets the versioned ProgId for this instance.</summary>

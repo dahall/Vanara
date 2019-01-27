@@ -55,7 +55,7 @@ namespace Vanara.Windows.Shell
 		public Guid? CommandStateHandler
 		{
 			get => key.GetGuidValue("CommandStateHandler");
-			set => UpdateValue("CommandStateHandler", value?.ToString());
+			set => UpdateValue("CommandStateHandler", value);
 		}
 
 		public string DefaultAppliesTo
@@ -67,7 +67,7 @@ namespace Vanara.Windows.Shell
 		public Guid? DelegateExecute
 		{
 			get => key.GetGuidValue("DelegateExecute");
-			set => UpdateValue("DelegateExecute", value?.ToString());
+			set => UpdateValue("DelegateExecute", value);
 		}
 
 		/// <summary>
@@ -108,7 +108,7 @@ namespace Vanara.Windows.Shell
 		public Guid? ExplorerCommandHandler
 		{
 			get => key.GetGuidValue("ExplorerCommandHandler");
-			set => UpdateValue("ExplorerCommandHandler", value?.ToString());
+			set => UpdateValue("ExplorerCommandHandler", value);
 		}
 
 		public bool Extended

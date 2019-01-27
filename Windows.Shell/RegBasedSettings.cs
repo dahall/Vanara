@@ -91,7 +91,10 @@ namespace Vanara.Windows.Shell
 			if (Equals(value, deleteIfValue))
 				key.DeleteValue(name, false);
 			else
-				key.SetValue(name, value, valueKind == RegistryValueKind.Unknown && value is string ? RegistryValueKind.String : valueKind);
+			{
+				var o = value is Guid g ? (object)g.ToRegString() : value;
+				key.SetValue(name, value, valueKind == RegistryValueKind.Unknown && o is string ? RegistryValueKind.String : valueKind);
+			}
 		}
 	}
 }
