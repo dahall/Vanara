@@ -122,7 +122,9 @@ namespace Vanara.Windows.Shell
 		public static CommandVerb RegisterCommandVerb(RegistryKey parentKey, string verb, string displayName = null, string command = null)
 		{
 			var vkey = parentKey.CreateSubKey("shell\\" + verb) ?? throw new InvalidOperationException("Unable to create required key in registry.");
-			var v = new CommandVerb(vkey, verb, false) {DisplayName = displayName, Command = command};
+			var v = new CommandVerb(vkey, verb, false);
+			if (!(displayName is null)) v.DisplayName = displayName;
+			if (!(command is null)) v.Command = command;
 			NotifyShell();
 			return v;
 		}
