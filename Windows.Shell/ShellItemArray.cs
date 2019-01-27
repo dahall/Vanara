@@ -58,6 +58,15 @@ namespace Vanara.Windows.Shell
 		/// <returns>A <see cref="ShellItem"/> instance.</returns>
 		public ShellItem this[int index] => ShellItem.Open(array.GetItemAt((uint)index));
 
+		/// <summary>Creates a shell item array from a data object.</summary>
+		/// <param name="dataObject">The data object.</param>
+		/// <returns>On success, a new <see cref="ShellItemArray"/>; otherwise <see langword="null"/>.</returns>
+		public static ShellItemArray FromDataObject(System.Runtime.InteropServices.ComTypes.IDataObject dataObject)
+		{
+			var ppv = SHCreateShellItemArrayFromDataObject(dataObject);
+			return ppv is null ? null : new ShellItemArray(ppv);
+		}
+
 		/// <summary>Determines whether the <see cref="ICollection{ShellItem}"/> contains a specific value.</summary>
 		/// <param name="item">The object to locate in the <see cref="ICollection{ShellItem}"/>.</param>
 		/// <returns>true if <paramref name="item"/> is found in the <see cref="ICollection{ShellItem}"/>; otherwise, false.</returns>
