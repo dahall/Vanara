@@ -44,5 +44,9 @@ namespace Vanara.Windows.Shell
 		}
 
 		public static bool HasValue(this RegistryKey key, string name) => !Equals(key.GetValue(name, improbableValue), improbableValue);
+
+		public static string ToRegString(this Guid guid) => guid.ToString("B").ToUpperInvariant();
+
+		public static string ToRegString(this Guid? guid) => guid.HasValue ? guid.Value.ToRegString() : null;
 	}
 }
