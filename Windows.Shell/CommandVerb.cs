@@ -100,7 +100,7 @@ namespace Vanara.Windows.Shell
 				else
 				{
 					using (var sk = key.CreateSubKey("DropTarget"))
-						sk?.SetValue("CLSID", value.Value.ToString());
+						sk?.SetValue("CLSID", value.Value.ToRegString());
 				}
 			}
 		}
