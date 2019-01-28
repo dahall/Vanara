@@ -15,13 +15,14 @@ namespace Vanara.Windows.Shell
 		/// <param name="autoLoadVersioned">
 		/// if set to <c>true</c> automatically load a referenced versioned ProgId instead of the specified ProgId.
 		/// </param>
-		public ProgId(string progId, bool readOnly = true, bool autoLoadVersioned = true) : base(Registry.ClassesRoot.OpenSubKey(progId ?? throw new ArgumentNullException(nameof(progId)), !readOnly), readOnly)
+		public ProgId(string progId, bool readOnly = true, bool autoLoadVersioned = true, bool systemWide = false) :
+			base(ComRegistrar.GetRoot(systemWide, !readOnly, progId ?? throw new ArgumentNullException(nameof(progId))), readOnly)
 		{
 			if (autoLoadVersioned)
 			{
 				var cv = key.GetSubKeyDefaultValue("CurVer")?.ToString();
 				if (cv != null)
-					key = Registry.ClassesRoot.OpenSubKey(cv, !readOnly);
+					key = ComRegistrar.GetRoot(systemWide, !readOnly).OpenSubKey(cv, !readOnly);
 			}
 			if (key == null) throw new ArgumentException("Unable to load specified ProgId", nameof(progId));
 			ID = progId;

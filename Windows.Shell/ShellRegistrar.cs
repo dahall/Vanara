@@ -73,8 +73,7 @@ namespace Vanara.Windows.Shell
 			var fn = Path.GetFileName(fullExePath).ToLower();
 
 			// Handle registrations in user or machine "App Paths"
-			var root = userOnly ? Registry.CurrentUser : Registry.LocalMachine;
-			using (var reg = root.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\App Paths"))
+			using (var reg = ComRegistrar.GetRoot(!userOnly, true, @"Software\Microsoft\Windows\CurrentVersion\App Paths"))
 			using (var sk = reg?.CreateSubKey(fn))
 			{
 				if (sk == null) throw new InvalidOperationException("Unable to create application key in the 'App Paths' subkey.");
