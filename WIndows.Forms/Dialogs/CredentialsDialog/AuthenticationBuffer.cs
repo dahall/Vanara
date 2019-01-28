@@ -1,22 +1,21 @@
 using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using Vanara.Extensions;
 using Vanara.InteropServices;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.CredUI;
 
 namespace Vanara.Security
 {
 	/// <summary>
-	/// Safe container for an authentication buffer. Allows for creation using native <c>CredPackAuthenticationBuffer</c> method or assignment from an existing
-	/// <c>IntPtr</c>. Can unpack to <see cref="string"/> or <see cref="SecureString"/> values.
+	/// Safe container for an authentication buffer. Allows for creation using native <c>CredPackAuthenticationBuffer</c> method or
+	/// assignment from an existing <c>IntPtr</c>. Can unpack to <see cref="string"/> or <see cref="SecureString"/> values.
 	/// </summary>
 	public class AuthenticationBuffer : IDisposable
 	{
-		private IntPtr buffer = IntPtr.Zero;
-		private int bufferSize;
+		private SafeCoTaskMemHandle buffer;
 
 		public AuthenticationBuffer(string userName, string password)
 		{
@@ -32,26 +31,19 @@ namespace Vanara.Security
 			Init(0, pUserName, pPassword);
 		}
 
-		public AuthenticationBuffer(IntPtr authBuffer, int authBufferSize)
+		public AuthenticationBuffer(IntPtr authBuffer, int authBufferSize) => buffer = new SafeCoTaskMemHandle(authBuffer, authBufferSize);
+
+		public IntPtr DangerousHandle => buffer?.DangerousGetHandle() ?? IntPtr.Zero;
+
+		public int Size => buffer?.Size ?? 0;
+
+		public static implicit operator IntPtr(AuthenticationBuffer b) => b.DangerousHandle;
+
+		public void Dispose()
 		{
-			buffer = authBuffer;
-			bufferSize = authBufferSize;
-		}
-
-		public IntPtr DangerousHandle => buffer;
-
-		public int Size => bufferSize;
-
-		private void Init(CredPackFlags flags, string pUserName, string pPassword)
-		{
-			if (!CredPackAuthenticationBuffer(flags, pUserName, pPassword, IntPtr.Zero, ref bufferSize) && Marshal.GetLastWin32Error() == 122) /*ERROR_INSUFFICIENT_BUFFER*/
-			{
-				buffer = Marshal.AllocCoTaskMem(bufferSize);
-				if (!CredPackAuthenticationBuffer(flags, pUserName, pPassword, buffer, ref bufferSize))
-					throw new Win32Exception();
-			}
-			else
-				throw new Win32Exception();
+			if (buffer is null) return;
+			buffer.Zero();
+			buffer = null;
 		}
 
 		public void UnPack(bool decryptProtectedCredentials, out string userName, out string domainName, out string password)
@@ -63,7 +55,7 @@ namespace Vanara.Security
 			var domainNameSize = pDomainName.Capacity;
 			var passwordSize = pPassword.Capacity;
 
-			if (!CredUnPackAuthenticationBuffer(decryptProtectedCredentials ? CredPackFlags.CRED_PACK_PROTECTED_CREDENTIALS : 0x0, buffer, bufferSize,
+			if (!CredUnPackAuthenticationBuffer(decryptProtectedCredentials ? CredPackFlags.CRED_PACK_PROTECTED_CREDENTIALS : 0x0, DangerousHandle, Size,
 				pUserName, ref userNameSize, pDomainName, ref domainNameSize, pPassword, ref passwordSize))
 				throw new Win32Exception();
 
@@ -81,7 +73,7 @@ namespace Vanara.Security
 			var domainNameSize = pDomainName.CharCapacity;
 			var passwordSize = pPassword.CharCapacity;
 
-			if (!CredUnPackAuthenticationBuffer(decryptProtectedCredentials ? CredPackFlags.CRED_PACK_PROTECTED_CREDENTIALS : 0x0, buffer, bufferSize,
+			if (!CredUnPackAuthenticationBuffer(decryptProtectedCredentials ? CredPackFlags.CRED_PACK_PROTECTED_CREDENTIALS : 0x0, DangerousHandle, Size,
 				(IntPtr)pUserName, ref userNameSize, (IntPtr)pDomainName, ref domainNameSize, (IntPtr)pPassword, ref passwordSize))
 				throw new Win32Exception();
 
@@ -90,12 +82,17 @@ namespace Vanara.Security
 			password = pPassword.DangerousGetHandle().ToSecureString();
 		}
 
-		public void Dispose()
+		private void Init(CredPackFlags flags, string pUserName, string pPassword)
 		{
-			if (buffer != IntPtr.Zero)
-				Marshal.FreeCoTaskMem(buffer);
+			var bufferSize = 0;
+			if (!CredPackAuthenticationBuffer(flags, pUserName, pPassword, IntPtr.Zero, ref bufferSize) && Win32Error.GetLastError() == Win32Error.ERROR_INSUFFICIENT_BUFFER)
+			{
+				buffer = new SafeCoTaskMemHandle(bufferSize);
+				if (!CredPackAuthenticationBuffer(flags, pUserName, pPassword, DangerousHandle, ref bufferSize))
+					throw new Win32Exception();
+			}
+			else
+				throw new Win32Exception();
 		}
-
-		public static implicit operator IntPtr(AuthenticationBuffer b) => b.buffer;
 	}
 }

@@ -238,34 +238,32 @@ namespace Vanara.Windows.Forms
 					if (ShowSaveCheckBox)
 						flag |= WindowsCredentialsDialogOptions.CREDUIWIN_CHECKBOX;
 
-					AuthenticationBuffer buf;
-					if (EncryptPassword && SecurePassword != null)
-						buf = new AuthenticationBuffer(UserName.ToSecureString(), SecurePassword);
-					else
-						buf = new AuthenticationBuffer(UserName, Password);
-
-					var retVal = CredUIPromptForWindowsCredentials(info, 0, ref authPackage, buf, (uint)buf.Size, out var outAuthBuffer, out var outAuthBufferSize, ref saveChecked, flag);
-					if (retVal == Win32Error.ERROR_CANCELLED)
-						return false;
-					retVal.ThrowIfFailed();
-
-					var outAuth = new AuthenticationBuffer(outAuthBuffer, (int)outAuthBufferSize);
-
-					if (EncryptPassword)
+					using (var buf = EncryptPassword && SecurePassword != null ? new AuthenticationBuffer(UserName.ToSecureString(), SecurePassword)
+						: new AuthenticationBuffer(UserName, Password))
 					{
-						outAuth.UnPack(true, out SecureString u, out var d, out var p);
-						Password = null;
-						SecurePassword = p;
-						UserName = d?.Length > 0 ? $"{d.ToInsecureString()}\\{u.ToInsecureString()}" : u.ToInsecureString();
-					}
-					else
-					{
-						outAuth.UnPack(true, out string u, out var d, out var p);
-						Password = p;
-						SecurePassword = null;
-						UserName = string.IsNullOrEmpty(d) ? u : $"{d}\\{u}";
-					}
+						var retVal = CredUIPromptForWindowsCredentials(info, 0, ref authPackage, buf, (uint)buf.Size, out var outAuthBuffer, out var outAuthBufferSize, ref saveChecked, flag);
+						if (retVal == Win32Error.ERROR_CANCELLED)
+							return false;
+						retVal.ThrowIfFailed();
 
+						using (var outAuth = new AuthenticationBuffer(outAuthBuffer, (int)outAuthBufferSize))
+						{
+							if (EncryptPassword)
+							{
+								outAuth.UnPack(true, out SecureString u, out var d, out var p);
+								Password = null;
+								SecurePassword = p;
+								UserName = d?.Length > 0 ? $"{d.ToInsecureString()}\\{u.ToInsecureString()}" : u.ToInsecureString();
+							}
+							else
+							{
+								outAuth.UnPack(true, out string u, out var d, out var p);
+								Password = p;
+								SecurePassword = null;
+								UserName = string.IsNullOrEmpty(d) ? u : $"{d}\\{u}";
+							}
+						}
+					}
 					if (ValidatePassword != null)
 					{
 						var pve = new PasswordValidatorEventArgs(UserName, Password, SecurePassword);
