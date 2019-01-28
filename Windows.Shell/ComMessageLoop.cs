@@ -24,6 +24,8 @@ namespace Vanara.Windows.Shell
 
 		public ComMessageLoop() => timeoutTimerId = SetTimer(default, default, cTimeout, null);
 
+		public bool Running { get; private set; } = false;
+
 		// Cancel the timeout timer. This should be called when the appliation knows that it wants to keep running, for example when it
 		// recieves the incomming call to invoke the verb, this is done implictly when the app queues a callback.
 		public void CancelTimeout()
@@ -48,12 +50,14 @@ namespace Vanara.Windows.Shell
 		public void Quit(int exitCode = 0)
 		{
 			CancelTimeout();
-			PostQuitMessage(exitCode);
+			if (Running)
+				PostQuitMessage(exitCode);
 		}
 
 		public void RunMessageLoop()
 		{
 			const uint WM_TIMER = 0x0113;
+			Running = true;
 			while (GetMessage(out var msg, default, 0, 0))
 			{
 				if (msg.message == WM_TIMER)
@@ -76,6 +80,7 @@ namespace Vanara.Windows.Shell
 				TranslateMessage(msg);
 				DispatchMessage(msg);
 			}
+			Running = false;
 		}
 	}
 }
