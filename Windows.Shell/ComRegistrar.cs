@@ -22,12 +22,12 @@ namespace Vanara.Windows.Shell
 			var _appId = appId ?? clsid;
 			if (!(cmdLineArgs is null)) cmdLine += " " + cmdLineArgs;
 
-			using (var root = (systemWide ? Registry.LocalMachine : Registry.CurrentUser).CreateSubKey(@"Software\Classes"))
-			using (root.CreateSubKey(@"AppID\" + _appId.GetString(), pszFriendlyName))
-			using (var rClsid = root.CreateSubKey(@"CLSID\" + clsid.GetString(), pszFriendlyName))
+			using (var root = GetRoot(systemWide, true))
+			using (root.CreateSubKey(@"AppID\" + _appId.ToRegString(), pszFriendlyName))
+			using (var rClsid = root.CreateSubKey(@"CLSID\" + clsid.ToRegString(), pszFriendlyName))
 			using (rClsid.CreateSubKey("LocalServer32", cmdLine))
 			{
-				rClsid.SetValue("AppId", _appId.GetString());
+				rClsid.SetValue("AppId", _appId.ToRegString());
 			}
 		}
 
@@ -38,15 +38,19 @@ namespace Vanara.Windows.Shell
 		public static void UnregisterLocalServer<TComObject>(bool systemWide = false, Guid? appId = null) where TComObject : ComObject
 		{
 			var clsid = GetClsid<TComObject>();
-			using (var root = (systemWide ? Registry.LocalMachine : Registry.CurrentUser).CreateSubKey(@"Software\Classes"))
+			using (var root = GetRoot(systemWide, true))
 			{
-				root.DeleteSubKeyTree(@"AppID\" + (appId ?? clsid).GetString());
-				root.DeleteSubKeyTree(@"CLSID\" + clsid.GetString());
+				root.DeleteSubKeyTree(@"AppID\" + (appId ?? clsid).ToRegString());
+				root.DeleteSubKeyTree(@"CLSID\" + clsid.ToRegString());
 			}
 		}
 
-		private static Guid GetClsid<TComObject>() => Marshal.GenerateGuidForType(typeof(TComObject));
+		internal static RegistryKey GetRoot(bool systemWide, bool writable, string subkey = null)
+		{
+			var key = systemWide ? Registry.LocalMachine : Registry.CurrentUser;
+			return key.OpenSubKey(@"Software\Classes" + (subkey is null ? "" : "\\" + subkey), writable);
+		}
 
-		private static string GetString(this Guid g) => g.ToString("B").ToUpperInvariant();
+		private static Guid GetClsid<TComObject>() => Marshal.GenerateGuidForType(typeof(TComObject));
 	}
 }
