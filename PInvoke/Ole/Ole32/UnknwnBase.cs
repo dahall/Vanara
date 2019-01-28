@@ -26,9 +26,6 @@ namespace Vanara.PInvoke
 			/// contains the requested interface pointer. If the object does not support the interface specified in riid, the implementation
 			/// must set *ppvObject to <c>NULL</c>.
 			/// </param>
-			/// <param name="LockServer">The lock server.</param>
-			/// <param name="">The .</param>
-			/// <param name="fLock">The f lock.</param>
 			/// <returns>
 			/// <para>
 			/// This method can return the standard return values E_INVALIDARG, E_OUTOFMEMORY, and E_UNEXPECTED, as well as the following values.
@@ -95,6 +92,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/unknwn/nf-unknwn-iclassfactory-createinstance HRESULT CreateInstance(
 			// IUnknown *pUnkOuter, REFIID riid, void **ppvObject );
+			[PreserveSig]
 			HRESULT CreateInstance([In, MarshalAs(UnmanagedType.IUnknown)] object pUnkOuter, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvObject);
 
 			/// <summary>Locks an object application open in memory. This enables instances to be created more quickly.</summary>
@@ -126,6 +124,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/unknwnbase/nf-unknwnbase-iclassfactory-lockserver HRESULT LockServer(
 			// BOOL fLock );
+			[PreserveSig]
 			HRESULT LockServer([MarshalAs(UnmanagedType.Bool)] bool fLock);
 		}
 
@@ -229,6 +228,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/unknwn/nf-unknwn-iclassfactory-createinstance HRESULT CreateInstance(
 			// IUnknown *pUnkOuter, REFIID riid, void **ppvObject );
+			[PreserveSig]
 			new HRESULT CreateInstance([In, MarshalAs(UnmanagedType.IUnknown)] object pUnkOuter, in Guid riid, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 1)] out object ppvObject);
 
 			/// <summary>Locks an object application open in memory. This enables instances to be created more quickly.</summary>
@@ -260,6 +260,7 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/unknwnbase/nf-unknwnbase-iclassfactory-lockserver HRESULT LockServer(
 			// BOOL fLock );
+			[PreserveSig]
 			new HRESULT LockServer([MarshalAs(UnmanagedType.Bool)] bool fLock);
 
 			/// <summary>Retrieves information about the licensing capabilities of this class factory.</summary>
@@ -295,9 +296,39 @@ namespace Vanara.PInvoke
 
 			/// <summary>Creates a license key that the caller can save and use later to create an instance of the licensed object.</summary>
 			/// <param name="dwReserved">This parameter is reserved and must be zero.</param>
-			/// <returns>
+			/// <param name="pBstrKey">
 			/// A pointer to the caller-allocated variable that receives the callee-allocated license key on successful return from this
 			/// method. This parameter is set to <c>NULL</c> on any failure.
+			/// </param>
+			/// <returns>
+			/// <para>
+			/// This method can return the standard return values E_INVALIDARG, E_OUTOFMEMORY, and E_UNEXPECTED, as well as the following values.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_OK</term>
+			/// <term>The license key was successfully created.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_NOTIMPL</term>
+			/// <term>This class factory does not support run-time license keys.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_POINTER</term>
+			/// <term>The address passed in pbstrKey is not valid. For example, it may be NULL.</term>
+			/// </item>
+			/// <item>
+			/// <term>CLASS_E_NOTLICENSED</term>
+			/// <term>
+			/// This class factory supports run-time licensing, but the current machine itself is not licensed. Thus, a run-time key is not
+			/// available on this machine.
+			/// </term>
+			/// </item>
+			/// </list>
 			/// </returns>
 			/// <remarks>
 			/// <para>
@@ -318,8 +349,8 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/ocidl/nf-ocidl-iclassfactory2-requestlickey HRESULT RequestLicKey( DWORD
 			// dwReserved, BSTR *pBstrKey );
-			[return: MarshalAs(UnmanagedType.BStr)]
-			string RequestLicKey(uint dwReserved = 0);
+			[PreserveSig]
+			HRESULT RequestLicKey([Optional] uint dwReserved, [MarshalAs(UnmanagedType.BStr)] out string pBstrKey);
 
 			/// <summary>
 			/// Creates an instance of the licensed object for the specified license key. This method is the only possible means to create an
@@ -334,9 +365,46 @@ namespace Vanara.PInvoke
 			/// <param name="bstrKey">
 			/// Run-time license key previously obtained from IClassFactory2::RequestLicKey that is required to create an object.
 			/// </param>
-			/// <returns>
+			/// <param name="ppvObj">
 			/// Address of pointer variable that receives the interface pointer requested in riid. Upon successful return, *ppvObj contains
 			/// the requested interface pointer. If an error occurs, the implementation must set *ppvObj to <c>NULL</c>.
+			/// </param>
+			/// <returns>
+			/// <para>
+			/// This method can return the standard return values E_INVALIDARG, E_OUTOFMEMORY, and E_UNEXPECTED, as well as the following values.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Return code</term>
+			/// <term>Description</term>
+			/// </listheader>
+			/// <item>
+			/// <term>S_OK</term>
+			/// <term>The license was successfully created.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_NOTIMPL</term>
+			/// <term>This method is not implemented because objects can only be created on fully licensed machines through IClassFactory::CreateInstance.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_POINTER</term>
+			/// <term>A pointer passed in bstrKey or ppvObj is not valid. For example, it may be NULL.</term>
+			/// </item>
+			/// <item>
+			/// <term>E_NOINTERFACE</term>
+			/// <term>
+			/// The object can be created (and the license key is valid) except the object does not support the interface specified by riid.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>CLASS_E_NOAGGREGATION</term>
+			/// <term>The pUnkOuter parameter is non-NULL, but this object class does not support aggregation.</term>
+			/// </item>
+			/// <item>
+			/// <term>CLASS_E_NOTLICENSED</term>
+			/// <term>The key provided in bstrKey is not a valid license key.</term>
+			/// </item>
+			/// </list>
 			/// </returns>
 			/// <remarks>
 			/// <para>Notes to Implementers</para>
@@ -349,9 +417,9 @@ namespace Vanara.PInvoke
 			/// </remarks>
 			// https://docs.microsoft.com/en-us/windows/desktop/api/ocidl/nf-ocidl-iclassfactory2-createinstancelic HRESULT
 			// CreateInstanceLic( IUnknown *pUnkOuter, IUnknown *pUnkReserved, REFIID riid, BSTR bstrKey, PVOID *ppvObj );
-			[return: MarshalAs(UnmanagedType.Interface)]
-			object CreateInstanceLic([In, MarshalAs(UnmanagedType.Interface)] object pUnkOuter, [In, MarshalAs(UnmanagedType.Interface)] object pUnkReserved,
-				in Guid riid, [In, MarshalAs(UnmanagedType.BStr)] string bstrKey);
+			[PreserveSig]
+			HRESULT CreateInstanceLic([In, MarshalAs(UnmanagedType.IUnknown)] object pUnkOuter, [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkReserved,
+				in Guid riid, [In, MarshalAs(UnmanagedType.BStr)] string bstrKey, [MarshalAs(UnmanagedType.IUnknown, IidParameterIndex = 2)] out object ppvObj);
 		}
 
 		/// <summary>
