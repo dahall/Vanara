@@ -17,10 +17,15 @@ namespace Vanara.Windows.Shell
 	public abstract class ComObject : IDisposable, IObjectWithSite
 	{
 		private bool disposedValue = false;
-		private ComMessageLoop msgLoop;
+		private ComMessageLoop msgLoop = new ComMessageLoop();
+		private ComClassFactory classFactory;
 
 		/// <summary>Initializes a new instance of the <see cref="ComObject"/> class.</summary>
-		public ComObject() => CoAddRefServerProcess();
+		public ComObject()
+		{
+			CoAddRefServerProcess();
+			classFactory = new ComClassFactory(this);
+		}
 
 		/// <summary>Gets or sets the site exposed by <see cref="IObjectWithSite"/>.</summary>
 		/// <value>The site object.</value>
@@ -40,17 +45,16 @@ namespace Vanara.Windows.Shell
 		/// <summary>Queues a non-blocking callback. This is useful in situations where a method cannot block an implemented method but further processing is needed. For example, IDropTarget::DragDrop and IExecuteCommand::Execute.</summary>
 		/// <param name="callback">The callback method.</param>
 		/// <param name="tag">An optional object that will be passed to the callback.</param>
-		public void QueueNonBlockingCallback(Action<object> callback, [Optional] object tag) => msgLoop?.QueueAppCallback(callback, tag);
+		public void QueueNonBlockingCallback(Action<object> callback, [Optional] object tag) => msgLoop.QueueAppCallback(callback, tag);
 
 		/// <summary>Quits the message loop by sending PostQuitMessage.</summary>
 		/// <param name="exitCode">The exit code.</param>
-		public void QuitMessageLoop(int exitCode = 0) => msgLoop?.Quit(exitCode);
+		public void QuitMessageLoop(int exitCode = 0) => msgLoop.Quit(exitCode);
 
 		/// <summary>Runs the message loop.</summary>
-		public void RunMessageLoop()
+		public void Run()
 		{
-			if (msgLoop == null || msgLoop.Running) return;
-			msgLoop = new ComMessageLoop();
+			if (msgLoop.Running) return;
 			msgLoop.RunMessageLoop();
 		}
 
@@ -80,6 +84,7 @@ namespace Vanara.Windows.Shell
 				if (disposing)
 				{
 					QuitMessageLoop();
+					classFactory.Dispose();
 					CoReleaseServerProcess();
 				}
 				disposedValue = true;
