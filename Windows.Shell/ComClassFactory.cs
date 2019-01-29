@@ -9,7 +9,7 @@ namespace Vanara.Windows.Shell
 	/// <summary>An implementation of <see cref="IClassFactory"/> to be used with <see cref="ComObject"/> derivatives.</summary>
 	/// <seealso cref="Vanara.PInvoke.Ole32.IClassFactory"/>
 	/// <seealso cref="System.IDisposable"/>
-	public class ComClassFactory : IClassFactory, IDisposable
+	internal class ComClassFactory : IClassFactory, IDisposable
 	{
 		private readonly ComObject comObj;
 		private uint registrationId;
@@ -100,7 +100,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <inheritdoc/>
-		void IDisposable.Dispose()
+		public void Dispose()
 		{
 			if (registrationId == 0) return;
 			CoRevokeClassObject(registrationId);
