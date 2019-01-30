@@ -21,10 +21,17 @@ namespace Vanara.Windows.Shell
 		private ComClassFactory classFactory;
 
 		/// <summary>Initializes a new instance of the <see cref="ComObject"/> class.</summary>
-		public ComObject()
+		protected ComObject() : this(CLSCTX.CLSCTX_LOCAL_SERVER, REGCLS.REGCLS_MULTIPLEUSE | REGCLS.REGCLS_SUSPENDED)
 		{
+		}
+
+		/// <summary>Initializes a new instance of the <see cref="ComObject"/> class.</summary>
+		/// <param name="classContext">The context within which the COM object is to be run.</param>
+		/// <param name="classUse">Indicates how connections are made to the class object.</param>
+		protected ComObject(CLSCTX classContext, REGCLS classUse)
+		{
+			classFactory = new ComClassFactory(this, classContext, classUse);
 			CoAddRefServerProcess();
-			classFactory = new ComClassFactory(this);
 		}
 
 		/// <summary>Gets or sets the site exposed by <see cref="IObjectWithSite"/>.</summary>
@@ -54,6 +61,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Runs the message loop.</summary>
 		public void Run()
 		{
+			classFactory.Resume();
 			if (msgLoop.Running) return;
 			msgLoop.RunMessageLoop();
 		}

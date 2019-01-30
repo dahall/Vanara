@@ -23,6 +23,11 @@ namespace Vanara.Windows.Shell
 		/// <summary>Initializes a new instance of the <see cref="ShellDropTarget"/> class.</summary>
 		protected ShellDropTarget() : base() { }
 
+		/// <summary>Initializes a new instance of the <see cref="ShellDropTarget"/> class.</summary>
+		/// <param name="classContext">The context within which the COM object is to be run.</param>
+		/// <param name="classUse">Indicates how connections are made to the class object.</param>
+		protected ShellDropTarget(CLSCTX classContext, REGCLS classUse) : base(classContext, classUse) { }
+
 		/// <summary>Occurs when a drag-and-drop operation is started. All calls from this event must be non-blocking.</summary>
 		public event DragEventHandler DragDrop;
 
