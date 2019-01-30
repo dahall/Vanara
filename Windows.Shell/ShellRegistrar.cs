@@ -233,17 +233,22 @@ namespace Vanara.Windows.Shell
 		/// <param name="appId">The AppId to relate to this CLSID. If <see langword="null"/>, the CLSID value will be used.</param>
 		public static void RegisterLocalServer<TComObject>(string pszFriendlyName, string cmdLineArgs = null, Assembly assembly = null, bool systemWide = false, Guid? appId = null) where TComObject : ComObject
 		{
-			var cmdLine = (assembly ?? typeof(TComObject).Assembly).Location;
+			if (assembly == null) assembly = typeof(TComObject).Assembly;
+			var cmdLine = assembly.Location;
+			var qCmdLine = string.Concat("\"", cmdLine, "\"");
+			var typelib = Marshal.GetTypeLibGuidForAssembly(assembly);
 			var clsid = GetClsid<TComObject>();
 			var _appId = appId ?? clsid;
-			if (!(cmdLineArgs is null)) cmdLine += " " + cmdLineArgs;
+			if (!(cmdLineArgs is null)) qCmdLine += " " + cmdLineArgs;
 
 			using (var root = GetRoot(systemWide, true))
 			using (root.CreateSubKey(@"AppID\" + _appId.ToRegString(), pszFriendlyName))
 			using (var rClsid = root.CreateSubKey(@"CLSID\" + clsid.ToRegString(), pszFriendlyName))
-			using (rClsid.CreateSubKey("LocalServer32", cmdLine))
+			using (rClsid.CreateSubKey("TypeLib", typelib.ToRegString()))
+			using (var rLS32 = rClsid.CreateSubKey("LocalServer32", cmdLineArgs is null ? qCmdLine : string.Concat("\"", qCmdLine, "\"")))
 			{
 				rClsid.SetValue("AppId", _appId.ToRegString());
+				rLS32.SetValue("ServerExecutable", cmdLine);
 			}
 		}
 
