@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Vanara.PInvoke;
 using Vanara.Extensions;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.Windows.Shell
@@ -16,28 +16,28 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Initializes a new instance of the <see cref="ComClassFactory"/> class.</summary>
 		/// <param name="punkObject">The COM object that is to be registered as a class object and queried for interfaces.</param>
-		/// <param name="classContent">The context within which the COM object is to be run.</param>
+		/// <param name="classContext">The context within which the COM object is to be run.</param>
 		/// <param name="classUse">Indicates how connections are made to the class object.</param>
-		public ComClassFactory(ComObject punkObject, CLSCTX classContent = CLSCTX.CLSCTX_LOCAL_SERVER, REGCLS classUse = REGCLS.REGCLS_SINGLEUSE)
+		public ComClassFactory(ComObject punkObject, CLSCTX classContext, REGCLS classUse)
 		{
 			comObj = punkObject ?? throw new ArgumentNullException(nameof(punkObject));
-			CoRegisterClassObject(Marshal.GenerateGuidForType(comObj.GetType()), this, classContent, classUse, out registrationId);
+			CoRegisterClassObject(Marshal.GenerateGuidForType(comObj.GetType()), punkObject, classContext, classUse, out registrationId);
 		}
 
 		/// <summary>Creates an uninitialized object.</summary>
 		/// <param name="pUnkOuter">
-		/// If the object is being created as part of an aggregate, specify a pointer to the controlling IUnknown interface of the
-		/// aggregate. Otherwise, this parameter must be <c>NULL</c>.
+		/// If the object is being created as part of an aggregate, specify a pointer to the controlling IUnknown interface of the aggregate.
+		/// Otherwise, this parameter must be <c>NULL</c>.
 		/// </param>
 		/// <param name="riid">
 		/// A reference to the identifier of the interface to be used to communicate with the newly created object. If pUnkOuter is
-		/// <c>NULL</c>, this parameter is generally the IID of the initializing interface; if pUnkOuter is non- <c>NULL</c>, riid must
-		/// be IID_IUnknown.
+		/// <c>NULL</c>, this parameter is generally the IID of the initializing interface; if pUnkOuter is non- <c>NULL</c>, <paramref name="riid"/>
+		/// must be IID_IUnknown.
 		/// </param>
 		/// <param name="ppvObject">
-		/// The address of pointer variable that receives the interface pointer requested in riid. Upon successful return, *ppvObject
-		/// contains the requested interface pointer. If the object does not support the interface specified in riid, the implementation
-		/// must set *ppvObject to <c>NULL</c>.
+		/// The address of pointer variable that receives the interface pointer requested in <paramref name="riid"/>. Upon successful return, *ppvObject
+		/// contains the requested interface pointer. If the object does not support the interface specified in <paramref name="riid"/>, the implementation must
+		/// set *ppvObject to <c>NULL</c>.
 		/// </param>
 		/// <param name="LockServer">The lock server.</param>
 		/// <param name="">The .</param>
@@ -61,7 +61,7 @@ namespace Vanara.Windows.Shell
 		/// </item>
 		/// <item>
 		/// <term>E_NOINTERFACE</term>
-		/// <term>The object that ppvObject points to does not support the interface identified by riid.</term>
+		/// <term>The object that ppvObject points to does not support the interface identified by <paramref name="riid"/>.</term>
 		/// </item>
 		/// </list>
 		/// </returns>
@@ -80,12 +80,20 @@ namespace Vanara.Windows.Shell
 			return HRESULT.S_OK;
 		}
 
+		/// <inheritdoc/>
+		public void Dispose()
+		{
+			if (registrationId == 0) return;
+			CoRevokeClassObject(registrationId);
+			registrationId = 0;
+		}
+
 		/// <summary>Locks an object application open in memory. This enables instances to be created more quickly.</summary>
 		/// <param name="fLock">If <c>TRUE</c>, increments the lock count; if <c>FALSE</c>, decrements the lock count.</param>
 		/// <returns>This method can return the standard return values E_OUTOFMEMORY, E_UNEXPECTED, E_FAIL, and S_OK.</returns>
 		/// <remarks>
-		/// <c>IClassFactory::LockServer</c> controls whether an object's server is kept in memory. Keeping the application alive in
-		/// memory allows instances to be created more quickly.
+		/// <c>IClassFactory::LockServer</c> controls whether an object's server is kept in memory. Keeping the application alive in memory
+		/// allows instances to be created more quickly.
 		/// </remarks>
 		public virtual HRESULT LockServer(bool fLock)
 		{
@@ -99,12 +107,10 @@ namespace Vanara.Windows.Shell
 			return HRESULT.S_OK;
 		}
 
-		/// <inheritdoc/>
-		public void Dispose()
-		{
-			if (registrationId == 0) return;
-			CoRevokeClassObject(registrationId);
-			registrationId = 0;
-		}
+		/// <summary>
+		/// Resumes activation requests for class objects using <see cref="CoResumeClassObjects"/>. Must use
+		/// <see cref="REGCLS.REGCLS_SUSPENDED"/> in the constructor.
+		/// </summary>
+		public void Resume() => CoResumeClassObjects().ThrowIfFailed();
 	}
 }
