@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
+using static Vanara.PInvoke.Shell32;
 using IDataObject = System.Runtime.InteropServices.ComTypes.IDataObject;
 using IDropTarget = Vanara.PInvoke.Ole32.IDropTarget;
 
@@ -98,7 +99,7 @@ namespace Vanara.Windows.Shell
 	///}</code></remarks>
 	/// <seealso cref="Vanara.Windows.Shell.ComObject"/>
 	/// <seealso cref="Vanara.PInvoke.Ole32.IDropTarget"/>
-	public abstract class ShellDropTarget : ComObject, IDropTarget
+	public abstract class ShellDropTarget : ComObject, IDropTarget, IInitializeCommand
 	{
 		private DataObject lastDataObject;
 		private DROPEFFECT lastEffect = DROPEFFECT.DROPEFFECT_NONE;
@@ -125,6 +126,20 @@ namespace Vanara.Windows.Shell
 		/// communicate the effect of the drop back to the source.
 		/// </summary>
 		public event DragEventHandler DragOver;
+
+		/// <summary>Gets the name of the command returned by <c>IInitializeCommand.Initialize</c>.</summary>
+		/// <value>
+		/// The name of the command as found in the registry. This value is <see langword="null"/> until <c>IInitializeCommand.Initialize</c>
+		/// is called by the host.
+		/// </value>
+		public string CommandName { get; private set; }
+
+		/// <summary>Gets the properties exposed through <c>IInitializeCommand.Initialize</c>.</summary>
+		/// <value>
+		/// Gets a <see cref="PropertyBag"/> instance. This value is <see langword="null"/> until <c>IInitializeCommand.Initialize</c> is
+		/// called by the host.
+		/// </value>
+		public PropertyBag Properties { get; private set; }
 
 		/// <inheritdoc/>
 		HRESULT IDropTarget.DragEnter(IDataObject pDataObj, uint grfKeyState, Point pt, ref DROPEFFECT pdwEffect)
@@ -162,6 +177,14 @@ namespace Vanara.Windows.Shell
 			var drgevent = CreateDragEventArgs(pDataObj, grfKeyState, pt, pdwEffect);
 			DragDrop?.Invoke(this, drgevent);
 			pdwEffect = (DROPEFFECT)drgevent.Effect;
+			return HRESULT.S_OK;
+		}
+
+		/// <inheritdoc/>
+		HRESULT IInitializeCommand.Initialize(string pszCommandName, IPropertyBag ppb)
+		{
+			CommandName = pszCommandName;
+			Properties = new PropertyBag(ppb);
 			return HRESULT.S_OK;
 		}
 
