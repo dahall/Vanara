@@ -63,6 +63,11 @@ namespace Vanara.Windows.Shell
 
 		*/
 
+		/// <summary>Gets the CLSID for the specified type.</summary>
+		/// <param name="type">The type.</param>
+		/// <returns>The CLSID value for the type. Calls <see cref="Marshal.GenerateGuidForType"/> to get the value.</returns>
+		public static Guid CLSID(this Type type) => Marshal.GenerateGuidForType(type);
+
 		/// <summary>Gets the file extensions associated with a given ProgID.</summary>
 		/// <param name="progId">The ProgID.</param>
 		/// <returns>An enumeration of file extensions in the form ".ext".</returns>
@@ -341,7 +346,7 @@ namespace Vanara.Windows.Shell
 
 		internal static void NotifyShell() => SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_FLUSHNOWAIT | SHCNF.SHCNF_IDLIST);
 
-		private static Guid GetClsid<TComObject>() => Marshal.GenerateGuidForType(typeof(TComObject));
+		private static Guid GetClsid<TComObject>() => typeof(TComObject).CLSID();
 
 		private static bool IsDefined(string rootValue) => Registry.ClassesRoot.HasSubKey(rootValue);
 	}
