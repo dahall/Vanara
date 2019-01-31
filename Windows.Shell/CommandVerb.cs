@@ -66,8 +66,25 @@ namespace Vanara.Windows.Shell
 
 		public Guid? DelegateExecute
 		{
-			get => key.GetGuidValue("DelegateExecute");
-			set => UpdateValue("DelegateExecute", value);
+			get
+			{
+				using (var sk = key.OpenSubKey("command"))
+					return sk?.GetGuidValue("DelegateExecute");
+			}
+
+			set
+			{
+				CheckRW();
+				if (!value.HasValue)
+				{
+					try { key.DeleteSubKeyTree("command"); } catch { }
+				}
+				else
+				{
+					using (var sk = key.CreateSubKey("command"))
+						sk?.SetValue("DelegateExecute", value.Value.ToRegString());
+				}
+			}
 		}
 
 		/// <summary>
