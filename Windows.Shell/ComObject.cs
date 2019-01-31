@@ -1,24 +1,54 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell
 {
+	/// <summary>Exposed methods from <see cref="ComObject"/>.</summary>
+	[ComVisible(false)]
+	public interface IComObject
+	{
+		/// <summary>Creates an uninitialized object.</summary>
+		/// <param name="riid">
+		/// A reference to the identifier of the interface to be used to communicate with the newly created object. This parameter is
+		/// generally the IID of the initializing interface.
+		/// </param>
+		/// <returns>
+		/// The interface pointer requested in <paramref name="riid"/>. If the object does not support the interface specified in
+		/// <paramref name="riid"/>, the implementation must return <see langword="null"/>.
+		/// </returns>
+		object QueryInterface(in Guid riid);
+
+		/// <summary>Quits the message loop by sending PostQuitMessage.</summary>
+		/// <param name="exitCode">The exit code.</param>
+		void QuitMessageLoop(int exitCode = 0);
+
+		/// <summary>Runs the message loop.</summary>
+		/// <param name="timeout">
+		/// The time span after which the message loop will be terminated. If this value equals TimeSpan.Zero or is not specified, the
+		/// message loop will run until the <see cref="Quit"/> method is called or the message loop receives a quit message.
+		/// </param>
+		void Run(TimeSpan timeout = default);
+	}
+
 	/// <summary>
 	/// Base class for all COM objects which handles calling AddRef and Release for the assembly, connection to IClassFactory, implements
 	/// IObjectWithSite, using an internal message loop, and a mechanism to issue a non-blocking call to itself. Once implemented, you only
 	/// need to implement your own interfaces. The IClassFactory implementation can get any derived interfaces through casting for calls to
 	/// its QueryInterface method. If you want more control, override the QueryInterface method in this class.
 	/// </summary>
-	/// <seealso cref="System.IDisposable"/>
-	/// <seealso cref="Vanara.PInvoke.Shell32.IObjectWithSite"/>
-	public abstract class ComObject : IDisposable, IObjectWithSite
+	/// <remarks>See <see cref="ShellDropTarget"/> for an example of how to use this class to create a local COM server.</remarks>
+	/// <seealso cref="IDisposable"/>
+	/// <seealso cref="IObjectWithSite"/>
+	public abstract class ComObject : IComObject, IDisposable, IObjectWithSite
 	{
+		private readonly CLSCTX ctx;
+		private readonly REGCLS use;
 		private bool disposedValue = false;
-		private ComMessageLoop msgLoop = new ComMessageLoop();
-		private ComClassFactory classFactory;
+		private MessageLoop msgLoop = new MessageLoop();
 
 		/// <summary>Initializes a new instance of the <see cref="ComObject"/> class.</summary>
 		protected ComObject() : this(CLSCTX.CLSCTX_LOCAL_SERVER, REGCLS.REGCLS_MULTIPLEUSE | REGCLS.REGCLS_SUSPENDED)
@@ -30,7 +60,8 @@ namespace Vanara.Windows.Shell
 		/// <param name="classUse">Indicates how connections are made to the class object.</param>
 		protected ComObject(CLSCTX classContext, REGCLS classUse)
 		{
-			classFactory = new ComClassFactory(this, classContext, classUse);
+			ctx = classContext;
+			use = classUse;
 			CoAddRefServerProcess();
 		}
 
@@ -47,23 +78,40 @@ namespace Vanara.Windows.Shell
 		/// The interface pointer requested in <paramref name="riid"/>. If the object does not support the interface specified in
 		/// <paramref name="riid"/>, the implementation must return <see langword="null"/>.
 		/// </returns>
-		public virtual object QueryInterface(in Guid riid) => ShellUtil.QueryInterface(this, riid);
+		public virtual object QueryInterface(in Guid riid)
+		{
+			var o = ShellUtil.QueryInterface(this, riid);
+			msgLoop.CancelTimeout();
+			return o;
+		}
 
-		/// <summary>Queues a non-blocking callback. This is useful in situations where a method cannot block an implemented method but further processing is needed. For example, IDropTarget::DragDrop and IExecuteCommand::Execute.</summary>
+		/// <summary>
+		/// Queues a non-blocking callback. This is useful in situations where a method cannot block an implemented method but further
+		/// processing is needed. For example, IDropTarget::DragDrop and IExecuteCommand::Execute.
+		/// </summary>
 		/// <param name="callback">The callback method.</param>
 		/// <param name="tag">An optional object that will be passed to the callback.</param>
-		public void QueueNonBlockingCallback(Action<object> callback, [Optional] object tag) => msgLoop.QueueAppCallback(callback, tag);
+		public void QueueNonBlockingCallback(Action<object> callback, [Optional] object tag) => msgLoop.QueueCallback(callback, tag);
 
 		/// <summary>Quits the message loop by sending PostQuitMessage.</summary>
 		/// <param name="exitCode">The exit code.</param>
 		public void QuitMessageLoop(int exitCode = 0) => msgLoop.Quit(exitCode);
 
 		/// <summary>Runs the message loop.</summary>
-		public void Run()
+		/// <param name="timeout">
+		/// The time span after which the message loop will be terminated. If this value equals TimeSpan.Zero or is not specified, the
+		/// message loop will run until the <see cref="Quit"/> method is called or the message loop receives a quit message.
+		/// </param>
+		public void Run(TimeSpan timeout = default)
 		{
-			classFactory.Resume();
 			if (msgLoop.Running) return;
-			msgLoop.RunMessageLoop();
+			using (var cf = new ComClassFactory(this, ctx, use))
+			{
+				if (use.IsFlagSet(REGCLS.REGCLS_SUSPENDED))
+					cf.Resume();
+				msgLoop.Run(timeout);
+			}
+			System.Diagnostics.Debug.WriteLine("ComObject.Run ended.");
 		}
 
 		/// <inheritdoc/>
@@ -84,7 +132,9 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Releases the unmanaged resources used by this object, and optionally releases the managed resources.</summary>
-		/// <param name="disposing"><see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</param>
+		/// <param name="disposing">
+		/// <see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.
+		/// </param>
 		protected virtual void Dispose(bool disposing)
 		{
 			if (!disposedValue)
@@ -92,7 +142,6 @@ namespace Vanara.Windows.Shell
 				if (disposing)
 				{
 					QuitMessageLoop();
-					classFactory.Dispose();
 					CoReleaseServerProcess();
 				}
 				disposedValue = true;
