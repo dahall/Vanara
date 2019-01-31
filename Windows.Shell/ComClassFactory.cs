@@ -6,23 +6,30 @@ using static Vanara.PInvoke.Ole32;
 
 namespace Vanara.Windows.Shell
 {
-	/// <summary>An implementation of <see cref="IClassFactory"/> to be used with <see cref="ComObject"/> derivatives.</summary>
+	/// <summary>An implementation of <see cref="IClassFactory"/> to be used in conjunction with <see cref="IComObject"/> derivatives.</summary>
 	/// <seealso cref="Vanara.PInvoke.Ole32.IClassFactory"/>
 	/// <seealso cref="System.IDisposable"/>
-	internal class ComClassFactory : IClassFactory, IDisposable
+	[ComVisible(true)]
+	public class ComClassFactory : IClassFactory, IDisposable
 	{
-		private readonly ComObject comObj;
+		private readonly IComObject comObj;
 		private uint registrationId;
 
 		/// <summary>Initializes a new instance of the <see cref="ComClassFactory"/> class.</summary>
 		/// <param name="punkObject">The COM object that is to be registered as a class object and queried for interfaces.</param>
 		/// <param name="classContext">The context within which the COM object is to be run.</param>
 		/// <param name="classUse">Indicates how connections are made to the class object.</param>
-		public ComClassFactory(ComObject punkObject, CLSCTX classContext, REGCLS classUse)
+		public ComClassFactory(IComObject punkObject, CLSCTX classContext, REGCLS classUse)
 		{
 			comObj = punkObject ?? throw new ArgumentNullException(nameof(punkObject));
-			CoRegisterClassObject(Marshal.GenerateGuidForType(comObj.GetType()), punkObject, classContext, classUse, out registrationId);
+			CoRegisterClassObject(comObj.GetType().CLSID(), this, classContext, classUse, out registrationId).ThrowIfFailed();
 		}
+
+		/// <summary>
+		/// Resumes activation requests for class objects using <see cref="CoResumeClassObjects"/>. Must use
+		/// <see cref="REGCLS.REGCLS_SUSPENDED"/> in the constructor.
+		/// </summary>
+		public void Resume() => CoResumeClassObjects().ThrowIfFailed();
 
 		/// <summary>Creates an uninitialized object.</summary>
 		/// <param name="pUnkOuter">
@@ -65,13 +72,15 @@ namespace Vanara.Windows.Shell
 		/// </item>
 		/// </list>
 		/// </returns>
-		public virtual HRESULT CreateInstance(object punkOuter, in Guid riid, out object ppv)
+		HRESULT IClassFactory.CreateInstance(object punkOuter, in Guid riid, out object ppv)
 		{
+			System.Diagnostics.Debug.WriteLine($"IClassFactory.CreateInstance: riid={riid:B}");
 			ppv = null;
 			if (!(punkOuter is null)) return HRESULT.CLASS_E_NOAGGREGATION;
 			try
 			{
 				ppv = comObj.QueryInterface(riid);
+				System.Diagnostics.Debug.WriteLine($"IClassFactory.CreateInstance: out ppv={ppv?.GetType().Name}");
 			}
 			catch (Exception e)
 			{
@@ -81,7 +90,7 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <inheritdoc/>
-		public void Dispose()
+		void IDisposable.Dispose()
 		{
 			if (registrationId == 0) return;
 			CoRevokeClassObject(registrationId);
@@ -95,10 +104,12 @@ namespace Vanara.Windows.Shell
 		/// <c>IClassFactory::LockServer</c> controls whether an object's server is kept in memory. Keeping the application alive in memory
 		/// allows instances to be created more quickly.
 		/// </remarks>
-		public virtual HRESULT LockServer(bool fLock)
+		HRESULT IClassFactory.LockServer(bool fLock)
 		{
 			if (fLock)
+			{
 				CoAddRefServerProcess();
+			}
 			else
 			{
 				if (0 == CoReleaseServerProcess())
@@ -106,11 +117,5 @@ namespace Vanara.Windows.Shell
 			}
 			return HRESULT.S_OK;
 		}
-
-		/// <summary>
-		/// Resumes activation requests for class objects using <see cref="CoResumeClassObjects"/>. Must use
-		/// <see cref="REGCLS.REGCLS_SUSPENDED"/> in the constructor.
-		/// </summary>
-		public void Resume() => CoResumeClassObjects().ThrowIfFailed();
 	}
 }
