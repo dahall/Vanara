@@ -20,9 +20,9 @@ namespace Vanara.Windows.Shell
 	/// <item>Create a .NET application project.</item>
 	/// <item>Delete the Program.cs file that includes the Main method.</item>
 	/// <item>Create a new class and derive it from <see cref="ShellDropTarget"/> with the attributes in the example below.</item>
+	/// <item>Ensure the project is built as "X86".</item>
 	/// </list>
-	/// <para><b>Example:</b></para>
-	/// <code title="Example">[Guid("&lt;Your GUID here&gt;"), ClassInterface(ClassInterfaceType.None)]
+	/// <code title="Example" lang="cs">[Guid("&lt;Your GUID here&gt;"), ClassInterface(ClassInterfaceType.None)]
 	///public class MyDropTarget : ShellDropTarget
 	///{
 	///   // In your constructor, be sure to override the DragEnter and DragDrop events and set the effect you desire.
@@ -77,14 +77,14 @@ namespace Vanara.Windows.Shell
 	///            new MyDropTarget().Run(TimeSpan.FromSeconds(30));
 	///            break;
 	///
-	///         // Unregister this out-of-proc server from handling the DropTarget. This can be ommitted if done by an installer.
+	///         // Unregister this out-of-proc server from handling the DropTarget. This can be omitted if done by an installer.
 	///         case "unregister":
 	///            using (var progid = new ProgId(progID, false))
 	///               progid.Verbs.Remove(verbName);
 	///            ShellRegistrar.UnregisterLocalServer&lt;MyDropTarget&gt;(false);
 	///            break;
 	///
-	///         // Register this out-of-proc server to handle the DropTarget. This can be ommitted if done by an installer.
+	///         // Register this out-of-proc server to handle the DropTarget. This can be omitted if done by an installer.
 	///         default:
 	///            ShellRegistrar.RegisterLocalServer&lt;MyDropTarget&gt;("MyTestDropTarget", systemWide: false);
 	///            using (var progid = new ProgId(progID, false))
@@ -99,7 +99,7 @@ namespace Vanara.Windows.Shell
 	///}</code></remarks>
 	/// <seealso cref="Vanara.Windows.Shell.ComObject"/>
 	/// <seealso cref="Vanara.PInvoke.Ole32.IDropTarget"/>
-	public abstract class ShellDropTarget : ComObject, IDropTarget, IInitializeCommand
+	public abstract class ShellDropTarget : ShellCommand, IDropTarget, IInitializeCommand
 	{
 		private DataObject lastDataObject;
 		private DROPEFFECT lastEffect = DROPEFFECT.DROPEFFECT_NONE;
@@ -126,20 +126,6 @@ namespace Vanara.Windows.Shell
 		/// communicate the effect of the drop back to the source.
 		/// </summary>
 		public event DragEventHandler DragOver;
-
-		/// <summary>Gets the name of the command returned by <c>IInitializeCommand.Initialize</c>.</summary>
-		/// <value>
-		/// The name of the command as found in the registry. This value is <see langword="null"/> until <c>IInitializeCommand.Initialize</c>
-		/// is called by the host.
-		/// </value>
-		public string CommandName { get; private set; }
-
-		/// <summary>Gets the properties exposed through <c>IInitializeCommand.Initialize</c>.</summary>
-		/// <value>
-		/// Gets a <see cref="PropertyBag"/> instance. This value is <see langword="null"/> until <c>IInitializeCommand.Initialize</c> is
-		/// called by the host.
-		/// </value>
-		public PropertyBag Properties { get; private set; }
 
 		/// <inheritdoc/>
 		HRESULT IDropTarget.DragEnter(IDataObject pDataObj, uint grfKeyState, Point pt, ref DROPEFFECT pdwEffect)
@@ -177,14 +163,7 @@ namespace Vanara.Windows.Shell
 			var drgevent = CreateDragEventArgs(pDataObj, grfKeyState, pt, pdwEffect);
 			DragDrop?.Invoke(this, drgevent);
 			pdwEffect = (DROPEFFECT)drgevent.Effect;
-			return HRESULT.S_OK;
-		}
-
-		/// <inheritdoc/>
-		HRESULT IInitializeCommand.Initialize(string pszCommandName, IPropertyBag ppb)
-		{
-			CommandName = pszCommandName;
-			Properties = new PropertyBag(ppb);
+			CancelTimeout();
 			return HRESULT.S_OK;
 		}
 
