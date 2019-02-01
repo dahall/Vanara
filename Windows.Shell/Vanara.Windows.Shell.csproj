@@ -23,7 +23,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Classes
-CommandVerb, CommandVerbDictionary, ControlPanel, DataObjectExtensions, IconLocation, IndirectString, ProgId, PropertyDescription, PropertyDescriptionList, PropertyStore, PropertyType, PropertyTypeList, RegBasedSettings, RegistryBasedVirtualDictionary&lt;T&gt;, ShellAssociation, ShellFileInfo, ShellFileNewOpEventArgs, ShellFileOperations, ShellFileOpEventArgs, ShellFolder, ShellImageList, ShellItem, ShellItemArray, ShellItemChangeEventArgs, ShellItemChangeWatcher, ShellItemPropertyStore, ShellItemPropertyUpdates, ShellLibrary, ShellLibraryFolders, ShellLink, ShellRegistrar, TaskbarList
+ComClassFactory, CommandVerb, CommandVerbDictionary, ComObject, ControlPanel, IconLocation, IndirectString, MessageLoop, ProgId, PropertyBag, PropertyDescription, PropertyDescriptionList, PropertyStore, PropertyType, PropertyTypeList, RegBasedSettings, RegistryBasedVirtualDictionary&lt;T&gt;, ShellAssociation, ShellCommand, ShellDropTarget, ShellExecuteCommand, ShellFileInfo, ShellFileNewOpEventArgs, ShellFileOperations, ShellFileOpEventArgs, ShellFolder, ShellImageList, ShellItem, ShellItemArray, ShellItemChangeEventArgs, ShellItemChangeWatcher, ShellItemPropertyStore, ShellItemPropertyUpdates, ShellLibrary, ShellLibraryFolders, ShellLink, ShellRegistrar, TaskbarList
 
 Enumerations
 ChangeFilters, ExecutableType, FolderItemFilter, LibraryFolderFilter, LibraryViewTemplate, LinkResolution, OperationFlags, ShellIconType, ShellImageSize, ShellItemAttribute, ShellItemComparison, ShellItemDisplayString, ShellItemGetImageOptions, ShellItemToolTipOptions, TransferFlags, VerbMultiSelectModel, VerbPosition, VerbSelectionModel

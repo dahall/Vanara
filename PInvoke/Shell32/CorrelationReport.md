@@ -89,7 +89,7 @@ Native Method | Native DLL | Header | Managed Method
 [SHCreateShellFolderView](http://msdn2.microsoft.com/en-us/library/f2948a6d-84a5-456b-b328-ba76dba46e9d) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.SHCreateShellFolderView  
 [SHCreateShellFolderViewEx](http://msdn2.microsoft.com/en-us/library/7edd6786-7d74-4065-8cf1-cbb489007a46) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.SHCreateShellFolderViewEx  
 [SHCreateShellItem](http://msdn2.microsoft.com/en-us/library/d4371cdf-a8f4-4a39-ba66-97fd40ed46ae) | shell32.dll | shlobj_core.h | Vanara.PInvoke.Shell32.SHCreateShellItem  
-[SHCreateShellItemArray](http://msdn2.microsoft.com/en-us/library/bb762144) | shell32.dll | Shobjidl.h | Vanara.PInvoke.Shell32.SHCreateShellItemArray  
+[SHCreateShellItemArray](http://msdn2.microsoft.com/en-us/library/024ccbc7-97f1-4cb5-8588-9c9b1f747336) | shell32.dll | shobjidl_core.h | Vanara.PInvoke.Shell32.SHCreateShellItemArray  
 [SHCreateShellItemArrayFromDataObject](http://msdn2.microsoft.com/en-us/library/91e65c9a-0600-42e3-97f5-2a5960e1ec89) | shell32.dll | shobjidl_core.h | Vanara.PInvoke.Shell32.SHCreateShellItemArrayFromDataObject  
 [SHCreateShellItemArrayFromIDLists](http://msdn2.microsoft.com/en-us/library/bb762146) | shell32.dll | Shobjidl.h | Vanara.PInvoke.Shell32.SHCreateShellItemArrayFromIDLists  
 [SHCreateShellItemArrayFromShellItem](http://msdn2.microsoft.com/en-us/library/93401708-6f11-474d-8009-24554f316e79) | shell32.dll | shobjidl_core.h | Vanara.PInvoke.Shell32.SHCreateShellItemArrayFromShellItem  
@@ -309,6 +309,7 @@ Native Interface | Native DLL | Header | Managed Interface
 [IFolderView2](http://msdn2.microsoft.com/en-us/library/bb761848) | Shobjidl.h | Vanara.PInvoke.Shell32+IFolderView2  
 [IFolderViewOC](https://www.google.com/search?num=5&q=IFolderViewOC+site%3Amicrosoft.com) | shell32.dll |  |   
 [IFolderViewOptions](http://msdn2.microsoft.com/en-us/library/4831e62c-45e4-435d-b926-0e140cbfb6fc) | shobjidl.h | Vanara.PInvoke.Shell32+IFolderViewOptions  
+[IInitializeCommand](http://msdn2.microsoft.com/en-us/library/e5a2a4d3-2488-4da2-aaab-c27461859d9f) | shobjidl_core.h | Vanara.PInvoke.Shell32+IInitializeCommand  
 [IInitializeWithFile](http://msdn2.microsoft.com/en-us/library/323181ab-1dc2-4b2a-a91f-3eccd7968bcd) | propsys.h | Vanara.PInvoke.Shell32+IInitializeWithFile  
 [IInitializeWithItem](http://msdn2.microsoft.com/en-us/library/bb761814) | Shobjidl.h | Vanara.PInvoke.Shell32+IInitializeWithItem  
 [IInitializeWithStream](http://msdn2.microsoft.com/en-us/library/9050845d-1e70-4e85-8d2f-c8bbb382abe5) | propsys.h | Vanara.PInvoke.Shell32+IInitializeWithStream  

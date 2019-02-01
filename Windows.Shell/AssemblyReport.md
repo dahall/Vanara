@@ -2,21 +2,27 @@
 ### Classes
 Class | Description
 ---- | ----
+ComClassFactory | An implementation of `IClassFactory` to be used in conjunction with `IComObject` derivatives.
 CommandVerb | Encapsulates a shortcut menu verb in the registry.
-CommandVerbDictionary | 
+CommandVerbDictionary | A dictionary of Command Verbs defined in the Windows Registry.
+ComObject | Base class for all COM objects which handles calling AddRef and Release for the assembly, connection to IClassFactory, implements IObjectWithSite, using an internal message loop, and a mechanism to issue a non-blocking call to itself. Once implemented, you only need to implement your own interfaces. The IClassFactory implementation can get any derived interfaces through casting for calls to its QueryInterface method. If you want more control, override the QueryInterface method in this class.
 ControlPanel | Provides a means to open Control Panel items and get their paths.
-DataObjectExtensions | 
 IconLocation | Wraps the icon location string used by some Shell classes.
 IndirectString | Wraps the icon location string used by some Shell classes.
+MessageLoop | <para> This class encapsulates the management of a message loop for an application. It supports queuing a callback to the application via the message loop to enable the app to return from a call and continue processing that call later. This behavior is needed when implementing a shell verb as verbs must not block the caller. </para> <note type="note">The ComObject derived class should call QueueNonBlockingCallback in its invoke function, for example IExecuteCommand::Execute() or IDropTarget::Drop() passing a method that will complete the initialization work.</note>
 ProgId | Represents a programmatic identifier in the registry for an application.
+PropertyBag | Encapsulates an `IPropertyBag` instance.
 PropertyDescription | Enumerate and retrieve individual property description details. Wraps the `IPropertyDescription` shell interface
 PropertyDescriptionList | Exposes methods that extract information from a collection of property descriptions presented as a list.
 PropertyStore | Encapsulates the IPropertyStore object.
 PropertyType | Exposes methods that extract data from enumeration information.
 PropertyTypeList | Exposes methods that enumerate the possible values for a property.
 RegBasedSettings | Base class for registry based settings.
-RegistryBasedVirtualDictionary<T> | 
-ShellAssociation | 
+RegistryBasedVirtualDictionary<T> | A virtual dictionary that is based on values in the Windows Registry.
+ShellAssociation | Represents a Shell file association defined in the Windows Registry. Wraps `IQueryAssociations`.
+ShellCommand | Wraps the functionality of IInitializeCommand. When deriving, handling the `InitializeCommand` event is optional.
+ShellDropTarget | COM object that implements IDropTarget. Solves race problem on drop and simplifies interface calls. All IDropTarget methods call their equivalent On[MethodName] equivalents. To specialize their handling, simply override the On[MethodName] method or hook an event to the corresponding event.
+ShellExecuteCommand | Wraps the functionality of IExecuteCommand. To implement, derive from this class and override the `OnExecute` method. All Shell items passed to the command are available through the `SelectedItems` property.
 ShellFileInfo | Information and icons for any shell file.
 ShellFileNewOpEventArgs | Arguments supplied to the `PostNewItem` event.
 ShellFileOperations | Queued and static file operations using the Shell.
@@ -32,7 +38,7 @@ ShellItemPropertyUpdates | A dictionary of properties that can be used to set or
 ShellLibrary | Shell library encapsulation.
 ShellLibraryFolders | Folders of a `ShellLibrary`.
 ShellLink | Represents a Shell Shortcut (.lnk) file.
-ShellRegistrar | Static class that has methods used to register and unregister shell items in the Windows Registry.
+ShellRegistrar | Contains static methods used to register and unregister shell items in the Windows Registry.
 TaskbarList | Methods that control the Windows taskbar. It allows you to dynamically add, remove, and activate items on the taskbar. This wraps all of the ITaskbarListX interfaces.
 ### Enumerations
 Enum | Description | Values

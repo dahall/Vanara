@@ -840,6 +840,7 @@ Native Method | Native DLL | Header | Managed Method
 [RtlAddFunctionTable](http://msdn2.microsoft.com/en-us/library/ms680588) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlAddFunctionTable  
 [RtlCaptureContext](http://msdn2.microsoft.com/en-us/library/ms680591) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlCaptureContext  
 [RtlDeleteFunctionTable](http://msdn2.microsoft.com/en-us/library/ms680593) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlDeleteFunctionTable  
+[RtlFillMemory](http://msdn2.microsoft.com/en-us/library/aa366561) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.FillMemory  
 [RtlInstallFunctionTableCallback](http://msdn2.microsoft.com/en-us/library/ms680595) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlInstallFunctionTableCallback  
 [RtlLookupFunctionEntry](http://msdn2.microsoft.com/en-us/library/ms680597) | kernel32.dll | WinNT.h | Vanara.PInvoke.Kernel32.RtlLookupFunctionEntry  
 [RtlMoveMemory](http://msdn2.microsoft.com/en-us/library/aa366788) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MoveMemory  
