@@ -1621,23 +1621,79 @@ namespace Vanara.PInvoke
 
 		/// <summary>Creates a Shell item array object.</summary>
 		/// <param name="pidlParent">
-		/// The ID list of the parent folder of the items specified in ppidl. If psf is specified, this parameter can be NULL. If this
+		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+		/// <para>
+		/// The ID list of the parent folder of the items specified in ppidl. If psf is specified, this parameter can be <c>NULL</c>. If this
 		/// pidlParent is not specified, it is computed from the psf parameter using IPersistFolder2.
+		/// </para>
 		/// </param>
 		/// <param name="psf">
+		/// <para>Type: <c>IShellFolder*</c></para>
+		/// <para>
 		/// The Shell data source object that is the parent of the child items specified in ppidl. If pidlParent is specified, this parameter
-		/// can be NULL.
+		/// can be <c>NULL</c>.
+		/// </para>
 		/// </param>
-		/// <param name="cidl">The number of elements in the array specified by ppidl.</param>
-		/// <param name="ppidl">The list of child item IDs for which the array is being created. This value can be NULL.</param>
+		/// <param name="cidl">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The number of elements in the array specified by ppidl.</para>
+		/// </param>
+		/// <param name="ppidl">
+		/// <para>Type: <c>PCUITEMID_CHILD_ARRAY</c></para>
+		/// <para>The list of child item IDs for which the array is being created. This value can be <c>NULL</c>.</para>
+		/// </param>
 		/// <param name="ppsiItemArray">
-		/// When this function returns, contains the address of an <see cref="IShellItemArray"/> interface pointer.
+		/// <para>Type: <c>IShellItemArray**</c></para>
+		/// <para>When this function returns, contains the address of an IShellItemArray interface pointer.</para>
 		/// </param>
-		[DllImport(Lib.Shell32, CharSet = CharSet.Unicode, ExactSpelling = true)]
-		[SecurityCritical, SuppressUnmanagedCodeSecurity]
-		[PInvokeData("Shobjidl.h", MSDNShortId = "bb762144")]
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shcreateshellitemarray
+		// SHSTDAPI SHCreateShellItemArray( PCIDLIST_ABSOLUTE pidlParent, IShellFolder *psf, UINT cidl, PCUITEMID_CHILD_ARRAY ppidl, IShellItemArray **ppsiItemArray );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "024ccbc7-97f1-4cb5-8588-9c9b1f747336")]
 		public static extern HRESULT SHCreateShellItemArray([In] PIDL pidlParent, [In, MarshalAs(UnmanagedType.Interface)] IShellFolder psf,
 			uint cidl, [In] PIDL ppidl, out IShellItemArray ppsiItemArray);
+
+		/// <summary>Creates a Shell item array object.</summary>
+		/// <param name="pidlParent">
+		/// <para>Type: <c>PCIDLIST_ABSOLUTE</c></para>
+		/// <para>
+		/// The ID list of the parent folder of the items specified in ppidl. If psf is specified, this parameter can be <c>NULL</c>. If this
+		/// pidlParent is not specified, it is computed from the psf parameter using IPersistFolder2.
+		/// </para>
+		/// </param>
+		/// <param name="psf">
+		/// <para>Type: <c>IShellFolder*</c></para>
+		/// <para>
+		/// The Shell data source object that is the parent of the child items specified in ppidl. If pidlParent is specified, this parameter
+		/// can be <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="cidl">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The number of elements in the array specified by ppidl.</para>
+		/// </param>
+		/// <param name="ppidl">
+		/// <para>Type: <c>PCUITEMID_CHILD_ARRAY</c></para>
+		/// <para>The list of child item IDs for which the array is being created. This value can be <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="ppsiItemArray">
+		/// <para>Type: <c>IShellItemArray**</c></para>
+		/// <para>When this function returns, contains the address of an IShellItemArray interface pointer.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HRESULT</c></para>
+		/// <para>If this function succeeds, it returns <c>S_OK</c>. Otherwise, it returns an <c>HRESULT</c> error code.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-shcreateshellitemarray
+		// SHSTDAPI SHCreateShellItemArray( PCIDLIST_ABSOLUTE pidlParent, IShellFolder *psf, UINT cidl, PCUITEMID_CHILD_ARRAY ppidl, IShellItemArray **ppsiItemArray );
+		[DllImport(Lib.Shell32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("shobjidl_core.h", MSDNShortId = "024ccbc7-97f1-4cb5-8588-9c9b1f747336")]
+		public static extern HRESULT SHCreateShellItemArray([In, Optional] IntPtr pidlParent, [In, Optional, MarshalAs(UnmanagedType.Interface)] IShellFolder psf,
+			[In, Optional] uint cidl, [In, Optional] IntPtr ppidl, out IShellItemArray ppsiItemArray);
 
 		/// <summary>
 		/// <para>Creates a Shell item array object from a data object.</para>
