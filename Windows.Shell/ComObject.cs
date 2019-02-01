@@ -69,6 +69,12 @@ namespace Vanara.Windows.Shell
 		/// <value>The site object.</value>
 		public virtual object Site { get; set; }
 
+		/// <summary>
+		/// Cancels the timeout specified in the <see cref="Run"/> method. This should be called when the application knows that it wants to
+		/// keep running, for example when it receives the incoming call to invoke the verb.
+		/// </summary>
+		public void CancelTimeout() => msgLoop.CancelTimeout();
+
 		/// <summary>Creates an uninitialized object.</summary>
 		/// <param name="riid">
 		/// A reference to the identifier of the interface to be used to communicate with the newly created object. This parameter is
@@ -78,12 +84,7 @@ namespace Vanara.Windows.Shell
 		/// The interface pointer requested in <paramref name="riid"/>. If the object does not support the interface specified in
 		/// <paramref name="riid"/>, the implementation must return <see langword="null"/>.
 		/// </returns>
-		public virtual object QueryInterface(in Guid riid)
-		{
-			var o = ShellUtil.QueryInterface(this, riid);
-			msgLoop.CancelTimeout();
-			return o;
-		}
+		public virtual object QueryInterface(in Guid riid) => ShellUtil.QueryInterface(this, riid);
 
 		/// <summary>
 		/// Queues a non-blocking callback. This is useful in situations where a method cannot block an implemented method but further
