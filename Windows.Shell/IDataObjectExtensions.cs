@@ -11,7 +11,7 @@ using IComDataObject = System.Runtime.InteropServices.ComTypes.IDataObject;
 namespace Vanara.Windows.Shell
 {
 	// TODO
-	public static class DataObjectExtensions
+	internal static class DataObjectExtensions
 	{
 		public static IReadOnlyList<string> GetFileNameMap(this DataObject dobj)
 		{
