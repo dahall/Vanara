@@ -4,12 +4,15 @@ using static Vanara.PInvoke.User32_Gdi;
 
 namespace Vanara.PInvoke
 {
-	// This class encapsulates the management of a message loop for an application. It supports queing a callback to the application via the
-	// message loop to enable the app to return from a call and continue processing that call later. This behavior is needed when
-	// implementing a shell verb as verbs must not block the caller.
-	//
-	// Notes: The ComObject derived class should call QueueNonBlockingCallback in its invoke function, for example IExecuteCommand::Execute()
-	// or IDropTarget::Drop() passing a method that will complete the initialization work.
+	/// <summary>
+	/// <para>
+	/// This class encapsulates the management of a message loop for an application. It supports queuing a callback to the application via
+	/// the message loop to enable the app to return from a call and continue processing that call later. This behavior is needed when
+	/// implementing a shell verb as verbs must not block the caller.
+	/// </para>
+	/// <note type="note">The ComObject derived class should call QueueNonBlockingCallback in its invoke function, for example
+	/// IExecuteCommand::Execute() or IDropTarget::Drop() passing a method that will complete the initialization work.</note>
+	/// </summary>
 	public class MessageLoop
 	{
 		private Action<object> appCallback;
@@ -25,8 +28,10 @@ namespace Vanara.PInvoke
 		/// <value><see langword="true" /> if running; otherwise, <see langword="false" />.</value>
 		public virtual bool Running { get; private set; } = false;
 
-		// Cancel the timeout timer. This should be called when the appliation knows that it wants to keep running, for example when it
-		// recieves the incomming call to invoke the verb.
+		/// <summary>
+		/// Cancel the timeout timer. This should be called when the application knows that it wants to keep running, for example when it
+		/// receives the incoming call to invoke the verb.
+		/// </summary>
 		public virtual void CancelTimeout()
 		{
 			if (timeoutTimerId == default) return;
