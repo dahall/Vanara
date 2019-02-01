@@ -567,7 +567,7 @@ namespace Vanara.IO
 				}
 			);
 #if (NET20 || NET35)
-			if (!b) throw new Theraot.Core.NewOperationCanceledException(cancellationToken);
+			if (!b) throw new OperationCanceledExceptionEx(cancellationToken);
 #else
 			if (!b) throw new OperationCanceledException(cancellationToken);
 #endif
