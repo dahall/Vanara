@@ -112,6 +112,7 @@
     <Compile Include="PInvoke\Shared\WinError\Win32ErrorTests.cs" />
     <Compile Include="PInvoke\Shared\WinNT\OBJECT_TYPE_LISTTests.cs" />
     <Compile Include="PInvoke\Shared\WinUser\MacrosTests.cs" />
+    <Compile Include="PInvoke\Shell32\Methods.cs" />
     <Compile Include="PInvoke\Shell32\ExplorerTests.cs" />
     <Compile Include="PInvoke\Shell32\KnownFolderIdExtTests.cs" />
     <Compile Include="PInvoke\Shell32\ProgressDialogTests.cs" />
