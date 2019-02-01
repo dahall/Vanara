@@ -12,6 +12,9 @@ namespace Vanara.Windows.Shell
 	{
 		private IShellItemArray array;
 
+		/// <summary>Initializes a new instance of the <see cref="ShellFolder"/> class.</summary>
+		public ShellItemArray() { }
+
 		/// <summary>Initializes a new instance of the <see cref="ShellItem" /> class.</summary>
 		/// <param name="shellItems">The shell items.</param>
 		public ShellItemArray(IShellItemArray shellItems)
@@ -38,15 +41,12 @@ namespace Vanara.Windows.Shell
 			SHCreateShellItemArrayFromIDLists((uint)pidls.Length, pidls, out array).ThrowIfFailed();
 		}
 
-		/// <summary>Initializes a new instance of the <see cref="ShellFolder"/> class.</summary>
-		private ShellItemArray() { }
-
 		/// <summary>Gets the number of elements contained in the <see cref="ICollection{ShellItem}"/>.</summary>
-		public int Count => (int)array.GetCount();
+		public int Count => (int)(array?.GetCount() ?? 0);
 
 		/// <summary>Gets the <see cref="IEnumShellItems"/> instance behind this class.</summary>
 		/// <value>The <see cref="IEnumShellItems"/> instance.</value>
-		public IEnumShellItems IEnumShellItems => array.EnumItems();
+		public IEnumShellItems IEnumShellItems => array?.EnumItems();
 
 		/// <summary>Gets the <see cref="IShellItemArray"/> instance behind this class.</summary>
 		/// <value>The <see cref="IShellItemArray"/> instance.</value>
@@ -56,7 +56,7 @@ namespace Vanara.Windows.Shell
 		/// <value>The <see cref="ShellItem"/>.</value>
 		/// <param name="index">The index.</param>
 		/// <returns>A <see cref="ShellItem"/> instance.</returns>
-		public ShellItem this[int index] => ShellItem.Open(array.GetItemAt((uint)index));
+		public ShellItem this[int index] => array is null ? throw new ArgumentOutOfRangeException(nameof(index)) : ShellItem.Open(array.GetItemAt((uint)index));
 
 		/// <summary>Creates a shell item array from a data object.</summary>
 		/// <param name="dataObject">The data object.</param>
@@ -107,6 +107,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets the items.</summary>
 		protected IEnumerable<IShellItem> GetItems()
 		{
+			if (array is null) yield break;
 			for (uint i = 0; i < array.GetCount(); i++)
 				yield return array.GetItemAt(i);
 		}
