@@ -12,13 +12,14 @@ namespace Vanara.PInvoke
 	// or IDropTarget::Drop() passing a method that will complete the initialization work.
 	public class MessageLoop
 	{
-		private uint callbackMsg;
 		private Action<object> appCallback;
+		private uint callbackMsg;
 		private object callbackObj;
+		private readonly uint curThreadId;
 		private IntPtr timeoutTimerId;   // timer id used to exit the app if the app is not called back within a certain time
 
 		/// <summary>Initializes a new instance of the <see cref="MessageLoop"/> class.</summary>
-		public MessageLoop() { }
+		public MessageLoop() => curThreadId = Vanara.PInvoke.Kernel32.GetCurrentThreadId();
 
 		/// <summary>Gets a value indicating whether this <see cref="MessageLoop"/> is running.</summary>
 		/// <value><see langword="true" /> if running; otherwise, <see langword="false" />.</value>
@@ -47,7 +48,7 @@ namespace Vanara.PInvoke
 			callbackObj = tag;
 			if (callbackMsg == 0)
 				callbackMsg = RegisterWindowMessage(GetType().FullName + "+Callback");
-			PostThreadMessage(Vanara.PInvoke.Kernel32.GetCurrentThreadId(), callbackMsg);
+			PostThreadMessage(curThreadId, callbackMsg);
 		}
 
 		/// <summary>Quits the running message loop by calling <see cref="PostQuitMessage"/>.</summary>
