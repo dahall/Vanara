@@ -15,17 +15,20 @@ namespace Vanara.PInvoke
 	/// </summary>
 	public class MessageLoop
 	{
+		private readonly uint curThreadId;
 		private Action<object> appCallback;
 		private uint callbackMsg;
 		private object callbackObj;
-		private readonly uint curThreadId;
 		private IntPtr timeoutTimerId;   // timer id used to exit the app if the app is not called back within a certain time
 
 		/// <summary>Initializes a new instance of the <see cref="MessageLoop"/> class.</summary>
 		public MessageLoop() => curThreadId = Vanara.PInvoke.Kernel32.GetCurrentThreadId();
 
+		/// <summary>Occurs when a new message is available.</summary>
+		public event EventHandlerEx<MessageEventArgs> ProcessMessage;
+
 		/// <summary>Gets a value indicating whether this <see cref="MessageLoop"/> is running.</summary>
-		/// <value><see langword="true" /> if running; otherwise, <see langword="false" />.</value>
+		/// <value><see langword="true"/> if running; otherwise, <see langword="false"/>.</value>
 		public virtual bool Running { get; private set; } = false;
 
 		/// <summary>
@@ -81,6 +84,7 @@ namespace Vanara.PInvoke
 			while (GetMessage(out var msg))
 			{
 				System.Diagnostics.Debug.WriteLine($"Message loop: message={msg.message}");
+				try { ProcessMessage?.Invoke(this, new MessageEventArgs(msg)); } catch { }
 				if (msg.message == WM_TIMER)
 				{
 					KillTimer(default, msg.wParam);
@@ -100,6 +104,17 @@ namespace Vanara.PInvoke
 				DispatchMessage(msg);
 			}
 			Running = false;
+		}
+
+		/// <summary>Holds a copy of the MSG instance retrieved by GetMessage.</summary>
+		/// <seealso cref="System.EventArgs"/>
+		public class MessageEventArgs : EventArgs
+		{
+			internal MessageEventArgs(MSG msg) => MSG = msg;
+
+			/// <summary>Gets or sets the MSG.</summary>
+			/// <value>The MSG.</value>
+			public MSG MSG { get; set; }
 		}
 	}
 }
