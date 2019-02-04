@@ -1264,6 +1264,11 @@ namespace Vanara.PInvoke
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator HHEAP(SafeHHEAP h) => h.handle;
 
+			/// <summary>Gets a block of memory from this private heap.</summary>
+			/// <param name="size">The size of the block.</param>
+			/// <returns>A safe handle for the memory that will call HeapFree on disposal.</returns>
+			public SafeHeapBlock GetBlock(int size) => new SafeHeapBlock(this, size);
+
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => HeapDestroy(this);
 		}
