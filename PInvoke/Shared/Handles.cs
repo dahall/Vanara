@@ -78,6 +78,54 @@ namespace Vanara.PInvoke
 		public IntPtr DangerousGetHandle() => handle;
 	}
 
+	/// <summary>Provides a generic handle.</summary>
+	[StructLayout(LayoutKind.Sequential)]
+	public struct HANDLE : IHandle
+	{
+		private IntPtr handle;
+
+		/// <summary>Initializes a new instance of the <see cref="HANDLE"/> struct.</summary>
+		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
+		public HANDLE(IntPtr preexistingHandle) => handle = preexistingHandle;
+
+		/// <summary>Returns an invalid handle by instantiating a <see cref="HANDLE"/> object with <see cref="IntPtr.Zero"/>.</summary>
+		public static HANDLE NULL => new HANDLE(IntPtr.Zero);
+
+		/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+		public bool IsNull => handle == IntPtr.Zero;
+
+		/// <summary>Performs an explicit conversion from <see cref="HANDLE"/> to <see cref="IntPtr"/>.</summary>
+		/// <param name="h">The handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static explicit operator IntPtr(HANDLE h) => h.handle;
+
+		/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HANDLE"/>.</summary>
+		/// <param name="h">The pointer to a handle.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HANDLE(IntPtr h) => new HANDLE(h);
+
+		/// <summary>Implements the operator !=.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator !=(HANDLE h1, HANDLE h2) => !(h1 == h2);
+
+		/// <summary>Implements the operator ==.</summary>
+		/// <param name="h1">The first handle.</param>
+		/// <param name="h2">The second handle.</param>
+		/// <returns>The result of the operator.</returns>
+		public static bool operator ==(HANDLE h1, HANDLE h2) => h1.Equals(h2);
+
+		/// <inheritdoc/>
+		public override bool Equals(object obj) => obj is HANDLE h ? handle == h.handle : false;
+
+		/// <inheritdoc/>
+		public override int GetHashCode() => handle.GetHashCode();
+
+		/// <inheritdoc/>
+		public IntPtr DangerousGetHandle() => handle;
+	}
+
 	/// <summary>Provides a handle to a bitmap.</summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct HBITMAP : IGraphicsObjectHandle
@@ -963,7 +1011,7 @@ namespace Vanara.PInvoke
 		/// </summary>
 		public static readonly HKEY HKEY_USERS = new HKEY(new IntPtr(unchecked((int)0x80000003)));
 
-		/// <summary>Performs an explicit conversion from <see cref="HKEY" /> to <see cref="IntPtr" />.</summary>
+		/// <summary>Performs an explicit conversion from <see cref="HKEY"/> to <see cref="IntPtr"/>.</summary>
 		/// <param name="h">The handle.</param>
 		/// <returns>The result of the conversion.</returns>
 		public static explicit operator IntPtr(HKEY h) => h.handle;
