@@ -796,7 +796,6 @@ Native Method | Native DLL | Header | Managed Method
 [QueryWorkingSetEx](http://msdn2.microsoft.com/en-us/library/59ae76c9-e954-4648-9c9f-787136375b02) | kernelbase.dll | psapi.h | Vanara.PInvoke.Kernel32.QueryWorkingSetEx  
 [QueueUserAPC](http://msdn2.microsoft.com/en-us/library/ms684954) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.QueueUserAPC  
 [QueueUserWorkItem](http://msdn2.microsoft.com/en-us/library/ms684957) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.QueueUserWorkItem  
-[RaiseCustomSystemEventTrigger](https://www.google.com/search?num=5&q=RaiseCustomSystemEventTrigger+site%3Amicrosoft.com) | kernelbase.dll |  |   
 [RaiseException](http://msdn2.microsoft.com/en-us/library/ms680552) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RaiseException  
 [RaiseFailFastException](http://msdn2.microsoft.com/en-us/library/dd941688) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.RaiseFailFastException  
 [ReadConsole](https://www.google.com/search?num=5&q=ReadConsoleA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.ReadConsole  
@@ -868,7 +867,6 @@ Native Method | Native DLL | Header | Managed Method
 [SetConsoleDisplayMode](https://www.google.com/search?num=5&q=SetConsoleDisplayMode+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleDisplayMode  
 [SetConsoleHistoryInfo](https://www.google.com/search?num=5&q=SetConsoleHistoryInfo+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleHistoryInfo  
 [SetConsoleMode](https://www.google.com/search?num=5&q=SetConsoleMode+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleMode  
-[SetConsoleNumberOfCommands](https://www.google.com/search?num=5&q=SetConsoleNumberOfCommandsA+site%3Amicrosoft.com) | kernelbase.dll |  |   
 [SetConsoleOutputCP](https://www.google.com/search?num=5&q=SetConsoleOutputCP+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleOutputCP  
 [SetConsoleScreenBufferInfoEx](https://www.google.com/search?num=5&q=SetConsoleScreenBufferInfoEx+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleScreenBufferInfoEx  
 [SetConsoleScreenBufferSize](https://www.google.com/search?num=5&q=SetConsoleScreenBufferSize+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.SetConsoleScreenBufferSize  
@@ -932,7 +930,7 @@ Native Method | Native DLL | Header | Managed Method
 [SetSystemPowerState](http://msdn2.microsoft.com/en-us/library/aa373206) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetSystemPowerState  
 [SetSystemTime](http://msdn2.microsoft.com/en-us/library/ms724942) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetSystemTime  
 [SetSystemTimeAdjustment](http://msdn2.microsoft.com/en-us/library/ms724943) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetSystemTimeAdjustment  
-[SetSystemTimeAdjustmentPrecise](https://www.google.com/search?num=5&q=SetSystemTimeAdjustmentPrecise+site%3Amicrosoft.com) | kernelbase.dll |  |   
+[SetSystemTimeAdjustmentPrecise](http://msdn2.microsoft.com/en-us/library/8B429BFC-9781-4434-9A2F-9E50E2BF299A) | kernelbase.dll | sysinfoapi.h | Vanara.PInvoke.Kernel32.SetSystemTimeAdjustmentPrecise  
 [SetTapeParameters](http://msdn2.microsoft.com/en-us/library/aa362534) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetTapeParameters  
 [SetTapePosition](http://msdn2.microsoft.com/en-us/library/aa362536) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.SetTapePosition  
 [SetThreadAffinityMask](http://msdn2.microsoft.com/en-us/library/ms686247) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.SetThreadAffinityMask  
@@ -1024,8 +1022,8 @@ Native Method | Native DLL | Header | Managed Method
 [VerifyVersionInfo](http://msdn2.microsoft.com/en-us/library/ms725492) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.VerifyVersionInfo  
 [VerSetConditionMask](http://msdn2.microsoft.com/en-us/library/ms725493) | kernel32.dll | Winnt.h | Vanara.PInvoke.Kernel32.VerSetConditionMask  
 [VirtualAlloc](http://msdn2.microsoft.com/en-us/library/aa366887) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualAlloc  
-[VirtualAlloc2](https://www.google.com/search?num=5&q=VirtualAlloc2+site%3Amicrosoft.com) | kernelbase.dll |  |   
-[VirtualAlloc2FromApp](https://www.google.com/search?num=5&q=VirtualAlloc2FromApp+site%3Amicrosoft.com) | kernelbase.dll |  |   
+[VirtualAlloc2](http://msdn2.microsoft.com/en-us/library/5021062F-E414-49A1-8B70-BE2A57A90E54) | kernelbase.dll | memoryapi.h | Vanara.PInvoke.Kernel32.VirtualAlloc2  
+[VirtualAlloc2FromApp](http://msdn2.microsoft.com/en-us/library/84896A75-A917-4CA1-A417-650428E1FBFD) | kernelbase.dll | memoryapi.h | Vanara.PInvoke.Kernel32.VirtualAlloc2FromApp  
 [VirtualAllocEx](http://msdn2.microsoft.com/en-us/library/aa366890) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualAllocEx  
 [VirtualAllocExNuma](http://msdn2.microsoft.com/en-us/library/aa366891) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.VirtualAllocExNuma  
 [VirtualAllocFromApp](http://msdn2.microsoft.com/en-us/library/mt169845) | kernelbase.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.VirtualAllocFromApp  
@@ -1188,8 +1186,10 @@ Native Structure | Header | Managed Structure
 [HEAPENTRY32](http://msdn2.microsoft.com/en-us/library/c5f1dc66-d44f-4491-b0b7-961b163d0f1f) | tlhelp32.h | Vanara.PInvoke.Kernel32+HEAPENTRY32  
 [HEAPLIST32](http://msdn2.microsoft.com/en-us/library/61e01d23-9f15-44c5-9f6d-45df4809ccad) | tlhelp32.h | Vanara.PInvoke.Kernel32+HEAPLIST32  
 [HGLOBAL](https://www.google.com/search?num=5&q=HGLOBAL+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HGLOBAL  
+[HHEAP](https://www.google.com/search?num=5&q=HHEAP+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HHEAP  
 [HJOB](https://www.google.com/search?num=5&q=HJOB+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HJOB  
 [HLOCAL](https://www.google.com/search?num=5&q=HLOCAL+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HLOCAL  
+[HRSRC](https://www.google.com/search?num=5&q=HRSRC+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HRSRC  
 [HSNAPSHOT](https://www.google.com/search?num=5&q=HSNAPSHOT+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HSNAPSHOT  
 [INIT_ONCE](https://www.google.com/search?num=5&q=INIT_ONCE+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+INIT_ONCE  
 [INPUT_RECORD](https://www.google.com/search?num=5&q=INPUT_RECORD+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+INPUT_RECORD  
@@ -1221,6 +1221,8 @@ Native Structure | Header | Managed Structure
 [LDT_ENTRY](http://msdn2.microsoft.com/en-us/library/ms680348) | WinNT.h | Vanara.PInvoke.Kernel32+LDT_ENTRY  
 [LOAD_DLL_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms680351) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXCEPTION_INFO+LOAD_DLL_DEBUG_INFO  
 [M128A](https://www.google.com/search?num=5&q=M128A+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+CONTEXT64+M128A  
+[MEM_ADDRESS_REQUIREMENTS](http://msdn2.microsoft.com/en-us/library/1CAB4942-F0D2-4A60-9472-4EDF2FC9FA7A) | winnt.h | Vanara.PInvoke.Kernel32+MEM_ADDRESS_REQUIREMENTS  
+[MEM_EXTENDED_PARAMETER](http://msdn2.microsoft.com/en-us/library/8D189F7E-83E7-4AF3-9E25-928C66666887) | winnt.h | Vanara.PInvoke.Kernel32+MEM_EXTENDED_PARAMETER  
 [MEMORY_BASIC_INFORMATION](http://msdn2.microsoft.com/en-us/library/dc3fa48e-0986-49cc-88a9-ff8179fbe5f0) | winnt.h | Vanara.PInvoke.Kernel32+MEMORY_BASIC_INFORMATION  
 [MEMORY_PRIORITY_INFORMATION](http://msdn2.microsoft.com/en-us/library/hh448387) | WinBase.h | Vanara.PInvoke.Kernel32+MEMORY_PRIORITY_INFORMATION  
 [MEMORYSTATUS](http://msdn2.microsoft.com/en-us/library/aa366772) | WinBase.h | Vanara.PInvoke.Kernel32+MEMORYSTATUS  

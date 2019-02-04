@@ -1,5 +1,5 @@
 ## Correlation report for netapi32.dll  
-### Methods (11% complete)  
+### Methods (14% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [DavAddConnection](https://www.google.com/search?num=5&q=DavAddConnection+site%3Amicrosoft.com) | netapi32.dll |  |   
@@ -14,7 +14,6 @@ Native Method | Native DLL | Header | Managed Method
 [DsEnumerateDomainTrusts](http://msdn2.microsoft.com/en-us/library/6c3b788f-ee53-4637-acdb-04316e8464fe) | netapi32.dll | dsgetdc.h | Vanara.PInvoke.NetApi32.DsEnumerateDomainTrusts  
 [DsGetDcCloseW](http://msdn2.microsoft.com/en-us/library/d193e4cd-ad66-4d93-b912-348f17e93a6f) | netapi32.dll | dsgetdc.h | Vanara.PInvoke.NetApi32.DsGetDcClose  
 [DsGetDcName](http://msdn2.microsoft.com/en-us/library/ms675983) | netapi32.dll | DsGetDC.h | Vanara.PInvoke.NetApi32.DsGetDcName  
-[DsGetDcNameWithAccount](https://www.google.com/search?num=5&q=DsGetDcNameWithAccountA+site%3Amicrosoft.com) | netapi32.dll |  |   
 [DsGetDcNext](http://msdn2.microsoft.com/en-us/library/2906772f-4391-411b-b0a9-5a20ebb6c0ee) | netapi32.dll | dsgetdc.h | Vanara.PInvoke.NetApi32.DsGetDcNext  
 [DsGetDcOpen](http://msdn2.microsoft.com/en-us/library/2811cc30-f367-4f1a-8f0c-ed0a77dad24c) | netapi32.dll | dsgetdc.h | Vanara.PInvoke.NetApi32.DsGetDcOpen  
 [DsGetDcSiteCoverage](http://msdn2.microsoft.com/en-us/library/e0f757d9-36b6-40f8-a1db-fb5b9862b46a) | netapi32.dll | dsgetdc.h | Vanara.PInvoke.NetApi32.DsGetDcSiteCoverage  
@@ -38,7 +37,6 @@ Native Method | Native DLL | Header | Managed Method
 [NetApiBufferFree](http://msdn2.microsoft.com/en-us/library/aa370304) | netapi32.dll | lm.h | Vanara.PInvoke.NetApi32.NetApiBufferFree  
 [NetApiBufferReallocate](https://www.google.com/search?num=5&q=NetApiBufferReallocate+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetApiBufferSize](https://www.google.com/search?num=5&q=NetApiBufferSize+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetapipBufferAllocate](https://www.google.com/search?num=5&q=NetapipBufferAllocate+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetAuditClear](https://www.google.com/search?num=5&q=NetAuditClear+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetAuditRead](https://www.google.com/search?num=5&q=NetAuditRead+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetAuditWrite](https://www.google.com/search?num=5&q=NetAuditWrite+site%3Amicrosoft.com) | netapi32.dll |  |   
@@ -55,22 +53,17 @@ Native Method | Native DLL | Header | Managed Method
 [NetDfsAddStdRootForced](https://www.google.com/search?num=5&q=NetDfsAddStdRootForced+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetDfsEnum](https://www.google.com/search?num=5&q=NetDfsEnum+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetDfsGetClientInfo](https://www.google.com/search?num=5&q=NetDfsGetClientInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsGetDcAddress](https://www.google.com/search?num=5&q=NetDfsGetDcAddress+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetDfsGetFtContainerSecurity](https://www.google.com/search?num=5&q=NetDfsGetFtContainerSecurity+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetDfsGetInfo](https://www.google.com/search?num=5&q=NetDfsGetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetDfsGetSecurity](https://www.google.com/search?num=5&q=NetDfsGetSecurity+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetDfsGetStdContainerSecurity](https://www.google.com/search?num=5&q=NetDfsGetStdContainerSecurity+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetDfsGetSupportedNamespaceVersion](https://www.google.com/search?num=5&q=NetDfsGetSupportedNamespaceVersion+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsManagerGetConfigInfo](https://www.google.com/search?num=5&q=NetDfsManagerGetConfigInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsManagerInitialize](https://www.google.com/search?num=5&q=NetDfsManagerInitialize+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsManagerSendSiteInfo](https://www.google.com/search?num=5&q=NetDfsManagerSendSiteInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetDfsMove](https://www.google.com/search?num=5&q=NetDfsMove+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetDfsRemove](https://www.google.com/search?num=5&q=NetDfsRemove+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetDfsRemoveFtRoot](https://www.google.com/search?num=5&q=NetDfsRemoveFtRoot+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetDfsRemoveFtRootForced](https://www.google.com/search?num=5&q=NetDfsRemoveFtRootForced+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetDfsRemoveRootTarget](https://www.google.com/search?num=5&q=NetDfsRemoveRootTarget+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetDfsRemoveStdRoot](https://www.google.com/search?num=5&q=NetDfsRemoveStdRoot+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsRename](https://www.google.com/search?num=5&q=NetDfsRename+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetDfsSetClientInfo](https://www.google.com/search?num=5&q=NetDfsSetClientInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetDfsSetFtContainerSecurity](https://www.google.com/search?num=5&q=NetDfsSetFtContainerSecurity+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetDfsSetInfo](https://www.google.com/search?num=5&q=NetDfsSetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
@@ -78,7 +71,6 @@ Native Method | Native DLL | Header | Managed Method
 [NetDfsSetStdContainerSecurity](https://www.google.com/search?num=5&q=NetDfsSetStdContainerSecurity+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetEnumerateComputerNames](https://www.google.com/search?num=5&q=NetEnumerateComputerNames+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetEnumerateServiceAccounts](https://www.google.com/search?num=5&q=NetEnumerateServiceAccounts+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetEnumerateTrustedDomains](https://www.google.com/search?num=5&q=NetEnumerateTrustedDomains+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetErrorLogClear](https://www.google.com/search?num=5&q=NetErrorLogClear+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetErrorLogRead](https://www.google.com/search?num=5&q=NetErrorLogRead+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetErrorLogWrite](https://www.google.com/search?num=5&q=NetErrorLogWrite+site%3Amicrosoft.com) | netapi32.dll |  |   
@@ -114,64 +106,19 @@ Native Method | Native DLL | Header | Managed Method
 [NetLocalGroupGetMembers](https://www.google.com/search?num=5&q=NetLocalGroupGetMembers+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetLocalGroupSetInfo](https://www.google.com/search?num=5&q=NetLocalGroupSetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetLocalGroupSetMembers](https://www.google.com/search?num=5&q=NetLocalGroupSetMembers+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetLogonGetTimeServiceParentDomain](https://www.google.com/search?num=5&q=NetLogonGetTimeServiceParentDomain+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetLogonSetServiceBits](https://www.google.com/search?num=5&q=NetLogonSetServiceBits+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetMessageBufferSend](https://www.google.com/search?num=5&q=NetMessageBufferSend+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetMessageNameAdd](https://www.google.com/search?num=5&q=NetMessageNameAdd+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetMessageNameDel](https://www.google.com/search?num=5&q=NetMessageNameDel+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetMessageNameEnum](https://www.google.com/search?num=5&q=NetMessageNameEnum+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetMessageNameGetInfo](https://www.google.com/search?num=5&q=NetMessageNameGetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpAddTlnFtinfoEntry](https://www.google.com/search?num=5&q=NetpAddTlnFtinfoEntry+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpAllocFtinfoEntry](https://www.google.com/search?num=5&q=NetpAllocFtinfoEntry+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpAssertFailed](https://www.google.com/search?num=5&q=NetpAssertFailed+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpCleanFtinfoContext](https://www.google.com/search?num=5&q=NetpCleanFtinfoContext+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpCloseConfigData](https://www.google.com/search?num=5&q=NetpCloseConfigData+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpCopyFtinfoContext](https://www.google.com/search?num=5&q=NetpCopyFtinfoContext+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpDbgPrint](https://www.google.com/search?num=5&q=NetpDbgPrint+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpGetConfigBool](https://www.google.com/search?num=5&q=NetpGetConfigBool+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpGetConfigDword](https://www.google.com/search?num=5&q=NetpGetConfigDword+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpGetConfigTStrArray](https://www.google.com/search?num=5&q=NetpGetConfigTStrArray+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpGetConfigValue](https://www.google.com/search?num=5&q=NetpGetConfigValue+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpGetFileSecurity](https://www.google.com/search?num=5&q=NetpGetFileSecurity+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpHexDump](https://www.google.com/search?num=5&q=NetpHexDump+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpInitFtinfoContext](https://www.google.com/search?num=5&q=NetpInitFtinfoContext+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpIsRemote](https://www.google.com/search?num=5&q=NetpIsRemote+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpIsUncComputerNameValid](https://www.google.com/search?num=5&q=NetpIsUncComputerNameValid+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpMergeFtinfo](https://www.google.com/search?num=5&q=NetpMergeFtinfo+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpNetBiosReset](https://www.google.com/search?num=5&q=NetpNetBiosReset+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpNetBiosStatusToApiStatus](https://www.google.com/search?num=5&q=NetpNetBiosStatusToApiStatus+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpOpenConfigData](https://www.google.com/search?num=5&q=NetpOpenConfigData+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetProvisionComputerAccount](https://www.google.com/search?num=5&q=NetProvisionComputerAccount+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpSetFileSecurity](https://www.google.com/search?num=5&q=NetpSetFileSecurity+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpwNameCanonicalize](https://www.google.com/search?num=5&q=NetpwNameCanonicalize+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpwNameCompare](https://www.google.com/search?num=5&q=NetpwNameCompare+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpwNameValidate](https://www.google.com/search?num=5&q=NetpwNameValidate+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpwPathCanonicalize](https://www.google.com/search?num=5&q=NetpwPathCanonicalize+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpwPathCompare](https://www.google.com/search?num=5&q=NetpwPathCompare+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetpwPathType](https://www.google.com/search?num=5&q=NetpwPathType+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetQueryDisplayInformation](https://www.google.com/search?num=5&q=NetQueryDisplayInformation+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetQueryServiceAccount](https://www.google.com/search?num=5&q=NetQueryServiceAccount+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetRegisterDomainNameChangeNotification](https://www.google.com/search?num=5&q=NetRegisterDomainNameChangeNotification+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetRemoteComputerSupports](https://www.google.com/search?num=5&q=NetRemoteComputerSupports+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetRemoteTOD](https://www.google.com/search?num=5&q=NetRemoteTOD+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetRemoveAlternateComputerName](https://www.google.com/search?num=5&q=NetRemoveAlternateComputerName+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetRemoveServiceAccount](https://www.google.com/search?num=5&q=NetRemoveServiceAccount+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetRenameMachineInDomain](https://www.google.com/search?num=5&q=NetRenameMachineInDomain+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetReplExportDirAdd](https://www.google.com/search?num=5&q=NetReplExportDirAdd+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetReplExportDirDel](https://www.google.com/search?num=5&q=NetReplExportDirDel+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetReplExportDirEnum](https://www.google.com/search?num=5&q=NetReplExportDirEnum+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetReplExportDirGetInfo](https://www.google.com/search?num=5&q=NetReplExportDirGetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetReplExportDirLock](https://www.google.com/search?num=5&q=NetReplExportDirLock+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetReplExportDirSetInfo](https://www.google.com/search?num=5&q=NetReplExportDirSetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetReplExportDirUnlock](https://www.google.com/search?num=5&q=NetReplExportDirUnlock+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetReplGetInfo](https://www.google.com/search?num=5&q=NetReplGetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetReplImportDirAdd](https://www.google.com/search?num=5&q=NetReplImportDirAdd+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetReplImportDirDel](https://www.google.com/search?num=5&q=NetReplImportDirDel+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetReplImportDirEnum](https://www.google.com/search?num=5&q=NetReplImportDirEnum+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetReplImportDirGetInfo](https://www.google.com/search?num=5&q=NetReplImportDirGetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetReplImportDirLock](https://www.google.com/search?num=5&q=NetReplImportDirLock+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetReplImportDirUnlock](https://www.google.com/search?num=5&q=NetReplImportDirUnlock+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetReplSetInfo](https://www.google.com/search?num=5&q=NetReplSetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetRequestOfflineDomainJoin](https://www.google.com/search?num=5&q=NetRequestOfflineDomainJoin+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetRequestProvisioningPackageInstall](https://www.google.com/search?num=5&q=NetRequestProvisioningPackageInstall+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetScheduleJobAdd](https://www.google.com/search?num=5&q=NetScheduleJobAdd+site%3Amicrosoft.com) | netapi32.dll |  |   
@@ -200,14 +147,11 @@ Native Method | Native DLL | Header | Managed Method
 [NetShareCheck](https://www.google.com/search?num=5&q=NetShareCheck+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetShareDel](https://www.google.com/search?num=5&q=NetShareDel+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetShareDelEx](https://www.google.com/search?num=5&q=NetShareDelEx+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetShareDelSticky](https://www.google.com/search?num=5&q=NetShareDelSticky+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetShareEnum](https://www.google.com/search?num=5&q=NetShareEnum+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetShareEnumSticky](https://www.google.com/search?num=5&q=NetShareEnumSticky+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetShareGetInfo](https://www.google.com/search?num=5&q=NetShareGetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetShareSetInfo](https://www.google.com/search?num=5&q=NetShareSetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetStatisticsGet](https://www.google.com/search?num=5&q=NetStatisticsGet+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetUnjoinDomain](https://www.google.com/search?num=5&q=NetUnjoinDomain+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetUnregisterDomainNameChangeNotification](https://www.google.com/search?num=5&q=NetUnregisterDomainNameChangeNotification+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetUseAdd](https://www.google.com/search?num=5&q=NetUseAdd+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetUseDel](https://www.google.com/search?num=5&q=NetUseDel+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetUseEnum](https://www.google.com/search?num=5&q=NetUseEnum+site%3Amicrosoft.com) | netapi32.dll |  |   

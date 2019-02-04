@@ -1,5 +1,5 @@
 ## Correlation report for dwmapi.dll  
-### Methods (96% complete)  
+### Methods (100% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [DwmDefWindowProc](https://www.google.com/search?num=5&q=DwmDefWindowProc+site%3Amicrosoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmDefWindowProc  
@@ -11,7 +11,7 @@ Native Method | Native DLL | Header | Managed Method
 [DwmGetColorizationColor](https://www.google.com/search?num=5&q=DwmGetColorizationColor+site%3Amicrosoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmGetColorizationColor  
 [DwmGetCompositionTimingInfo](https://www.google.com/search?num=5&q=DwmGetCompositionTimingInfo+site%3Amicrosoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmGetCompositionTimingInfo  
 [DwmGetTransportAttributes](https://www.google.com/search?num=5&q=DwmGetTransportAttributes+site%3Amicrosoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmGetTransportAttributes  
-[DwmGetUnmetTabRequirements](https://www.google.com/search?num=5&q=DwmGetUnmetTabRequirements+site%3Amicrosoft.com) | dwmapi.dll |  |   
+[DwmGetUnmetTabRequirements](http://msdn2.microsoft.com/en-us/library/8E67E1BE-D6FC-4A8A-8E71-45B6F337E3BD) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmGetUnmetTabRequirements  
 [DwmGetWindowAttribute](https://www.google.com/search?num=5&q=DwmGetWindowAttribute+site%3Amicrosoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmGetWindowAttribute  
 [DwmInvalidateIconicBitmaps](https://www.google.com/search?num=5&q=DwmInvalidateIconicBitmaps+site%3Amicrosoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmInvalidateIconicBitmaps  
 [DwmIsCompositionEnabled](https://www.google.com/search?num=5&q=DwmIsCompositionEnabled+site%3Amicrosoft.com) | dwmapi.dll | dwmapi.h | Vanara.PInvoke.DwmApi.DwmIsCompositionEnabled  
