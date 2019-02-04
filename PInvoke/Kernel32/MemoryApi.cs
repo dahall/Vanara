@@ -1627,6 +1627,88 @@ namespace Vanara.PInvoke
 		public static extern IntPtr MapViewOfFile([In] HFILE hFileMappingObject, FILE_MAP dwDesiredAccess, uint dwFileOffsetHigh, uint dwFileOffsetLow, uint dwNumberOfBytesToMap);
 
 		/// <summary>
+		/// <para>Maps a view of a file or a pagefile-backed section into the address space of the specified process.</para>
+		/// <para>
+		/// Using this function, you can: for new allocations, specify a range of virtual address space and a power-of-2 alignment
+		/// restriction; specify an arbitrary number of extended parameters; specify a preferred NUMA node for the physical memory as an
+		/// extended parameter; and specify a placeholder operation (specifically, replacement).
+		/// </para>
+		/// <para>To specify the NUMA node, see the ExtendedParameters parameter.</para>
+		/// </summary>
+		/// <param name="FileMapping">A <c>HANDLE</c> to a section that is to be mapped into the address space of the specified process.</param>
+		/// <param name="Process">A <c>HANDLE</c> to a process into which the section will be mapped.</param>
+		/// <param name="BaseAddress">
+		/// The desired base address of the view. The address is rounded down to the nearest 64k boundary. If this parameter is <c>NULL</c>,
+		/// the system picks the base address.
+		/// </param>
+		/// <param name="Offset">The offset from the beginning of the section. This must be 64k aligned.</param>
+		/// <param name="ViewSize">
+		/// <para>The number of bytes to map. A value of zero (0) specifies that the entire section is to be mapped.</para>
+		/// <para>The size must always be a multiple of the page size.</para>
+		/// </param>
+		/// <param name="AllocationType">
+		/// <para>The type of memory allocation. This parameter can be zero (0) or one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MEM_RESERVE 0x00002000</term>
+		/// <term>Maps a reserved view.</term>
+		/// </item>
+		/// <item>
+		/// <term>MEM_REPLACE_PLACEHOLDER 0x00004000</term>
+		/// <term>
+		/// Replaces a placeholder with a mapped view. Only data/pf-backed section views are supported (no images, physical memory, etc.).
+		/// When you replace a placeholder, BaseAddress and ViewSize must exactly match those of the placeholder. After you replace a
+		/// placeholder with a mapped view, to free that mapped view back to a placeholder, see the UnmapFlags parameter of UnmapViewOfFileEx
+		/// and UnmapViewOfFile2. A placeholder is a type of reserved memory region.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MEM_LARGE_PAGES 0x20000000</term>
+		/// <term>Maps a large page view. See large page support.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="PageProtection">
+		/// <para>The desired page protection.</para>
+		/// <para>
+		/// For file-mapping objects created with the <c>SEC_IMAGE</c> attribute, the PageProtection parameter has no effect, and should be
+		/// set to any valid value such as <c>PAGE_READONLY</c>.
+		/// </para>
+		/// </param>
+		/// <param name="ExtendedParameters">
+		/// An optional pointer to one or more extended parameters of type MEM_EXTENDED_PARAMETER. Each of those extended parameter values
+		/// can itself have a Type field of either <c>MemExtendedParameterAddressRequirements</c> or <c>MemExtendedParameterNumaNode</c>. If
+		/// no <c>MemExtendedParameterNumaNode</c> extended parameter is provided, then the behavior is the same as for the
+		/// VirtualAlloc/MapViewOfFile functions (that is, the preferred NUMA node for the physical pages is determined based on the ideal
+		/// processor of the thread that first accesses the memory).
+		/// </param>
+		/// <param name="ParameterCount">The number of extended parameters pointed to by ExtendedParameters.</param>
+		/// <returns>
+		/// Returns the base address of the mapped view, if successful. Otherwise, returns <c>NULL</c> and extended error status is available
+		/// using GetLastError.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This API helps support high-performance games, and server applications, which have particular requirements around managing their
+		/// virtual address space. For example, mapping memory on top of a previously reserved region; this is useful for implementing an
+		/// automatically wrapping ring buffer. And allocating memory with specific alignment; for example, to enable your application to
+		/// commit large/huge page-mapped regions on demand.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For a code example, see Scenario 1 in Virtual2Alloc.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/memoryapi/nf-memoryapi-mapviewoffile3
+		// PVOID MapViewOfFile3( HANDLE FileMapping, HANDLE Process, PVOID BaseAddress, ULONG64 Offset, SIZE_T ViewSize, ULONG AllocationType, ULONG PageProtection, MEM_EXTENDED_PARAMETER *ExtendedParameters, ULONG ParameterCount );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("memoryapi.h", MSDNShortId = "585D7BA1-688F-4F24-8D8D-46A2FC137193")]
+		public static extern IntPtr MapViewOfFile3([In] HFILE FileMapping, [In] HPROCESS Process, [In] IntPtr BaseAddress, ulong Offset, SizeT ViewSize, MEM_ALLOCATION_TYPE AllocationType, 
+			MEM_PROTECTION PageProtection, [In] MEM_EXTENDED_PARAMETER[] ExtendedParameters, uint ParameterCount);
+
+		/// <summary>
 		/// <para>
 		/// Maps a view of a file mapping into the address space of a calling process. A caller can optionally specify a suggested base
 		/// memory address for the view.
@@ -1815,6 +1897,98 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("MemoryApi.h", MSDNShortId = "hh994454")]
 		public static extern IntPtr MapViewOfFileFromApp([In] HFILE hFileMappingObject, FILE_MAP DesiredAccess, ulong FileOffset, SizeT NumberOfBytesToMap);
+
+		/// <summary>
+		/// <para>Maps a view of a file mapping into the address space of a calling Windows Store app.</para>
+		/// <para>
+		/// Using this function, you can: for new allocations, specify a range of virtual address space and a power-of-2 alignment
+		/// restriction; specify an arbitrary number of extended parameters; specify a preferred NUMA node for the physical memory as an
+		/// extended parameter; and specify a placeholder operation (specifically, replacement).
+		/// </para>
+		/// <para>To specify the NUMA node, see the ExtendedParameters parameter.</para>
+		/// </summary>
+		/// <param name="FileMapping">A <c>HANDLE</c> to a section that is to be mapped into the address space of the specified process.</param>
+		/// <param name="Process">A <c>HANDLE</c> to a process into which the section will be mapped.</param>
+		/// <param name="BaseAddress">
+		/// The desired base address of the view. The address is rounded down to the nearest 64k boundary. If this parameter is <c>NULL</c>,
+		/// the system picks the base address.
+		/// </param>
+		/// <param name="Offset">The offset from the beginning of the section. This must be 64k aligned.</param>
+		/// <param name="ViewSize">
+		/// <para>The number of bytes to map. A value of zero (0) specifies that the entire section is to be mapped.</para>
+		/// <para>The size must always be a multiple of the page size.</para>
+		/// </param>
+		/// <param name="AllocationType">
+		/// <para>The type of memory allocation. This parameter can be zero (0) or one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>MEM_RESERVE 0x00002000</term>
+		/// <term>Maps a reserved view.</term>
+		/// </item>
+		/// <item>
+		/// <term>MEM_REPLACE_PLACEHOLDER 0x00004000</term>
+		/// <term>
+		/// Replaces a placeholder with a mapped view. Only data/pf-backed section views are supported (no images, physical memory, etc.).
+		/// When you replace a placeholder, BaseAddress and ViewSize must exactly match those of the placeholder. After you replace a
+		/// placeholder with a mapped view, to free that mapped view back to a placeholder, see the UnmapFlags parameter of UnmapViewOfFileEx
+		/// and UnmapViewOfFile2. A placeholder is a type of reserved memory region.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MEM_LARGE_PAGES 0x20000000</term>
+		/// <term>Maps a large page view. See large page support.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="PageProtection">
+		/// <para>The desired page protection.</para>
+		/// <para>
+		/// For file-mapping objects created with the <c>SEC_IMAGE</c> attribute, the PageProtection parameter has no effect, and should be
+		/// set to any valid value such as <c>PAGE_READONLY</c>.
+		/// </para>
+		/// </param>
+		/// <param name="ExtendedParameters">
+		/// An optional pointer to one or more extended parameters of type MEM_EXTENDED_PARAMETER. Each of those extended parameter values
+		/// can itself have a Type field of either <c>MemExtendedParameterAddressRequirements</c> or <c>MemExtendedParameterNumaNode</c>. If
+		/// no <c>MemExtendedParameterNumaNode</c> extended parameter is provided, then the behavior is the same as for the
+		/// VirtualAlloc/MapViewOfFile functions (that is, the preferred NUMA node for the physical pages is determined based on the ideal
+		/// processor of the thread that first accesses the memory).
+		/// </param>
+		/// <param name="ParameterCount">The number of extended parameters pointed to by ExtendedParameters.</param>
+		/// <returns>
+		/// Returns the base address of the mapped view, if successful. Otherwise, returns <c>NULL</c> and extended error status is available
+		/// using GetLastError.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This API helps support high-performance games, and server applications, which have particular requirements around managing their
+		/// virtual address space. For example, mapping memory on top of a previously reserved region; this is useful for implementing an
+		/// automatically wrapping ring buffer. And allocating memory with specific alignment; for example, to enable your application to
+		/// commit large/huge page-mapped regions on demand.
+		/// </para>
+		/// <para>
+		/// With one important exception, file views derived from any file mapping object that is backed by the same file are coherent or
+		/// identical at a specific time. Coherency is guaranteed for views within a process and for views that are mapped by different processes.
+		/// </para>
+		/// <para>
+		/// The exception is related to remote files. Although <c>MapViewOfFile3FromApp</c> works with remote files, it does not keep them
+		/// coherent. For example, if two computers both map a file as writable, and both change the same page, each computer only sees its
+		/// own writes to the page. When the data gets updated on the disk, it is not merged.
+		/// </para>
+		/// <para>You can only successfully request executable protection if your app has the <c>codeGeneration</c> capability.</para>
+		/// <para>Examples</para>
+		/// <para>For a code example, see Scenario 1 in Virtual2Alloc.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/memoryapi/nf-memoryapi-mapviewoffile3fromapp
+		// PVOID MapViewOfFile3FromApp( HANDLE FileMapping, HANDLE Process, PVOID BaseAddress, ULONG64 Offset, SIZE_T ViewSize, ULONG AllocationType, ULONG PageProtection, MEM_EXTENDED_PARAMETER *ExtendedParameters, ULONG ParameterCount );
+		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("memoryapi.h", MSDNShortId = "5E10E1B2-69D9-4F68-8F06-D411CF7FE2ED")]
+		public static extern IntPtr MapViewOfFile3FromApp([In] HFILE FileMapping, [In] HPROCESS Process, [In] IntPtr BaseAddress, ulong Offset, SizeT ViewSize, MEM_ALLOCATION_TYPE AllocationType,
+			MEM_PROTECTION PageProtection, [In] MEM_EXTENDED_PARAMETER[] ExtendedParameters, uint ParameterCount);
 
 		/// <summary>Maps a view of a file or a pagefile-backed section into the address space of the specified process.</summary>
 		/// <param name="FileMappingHandle">A <c>HANDLE</c> to a section that is to be mapped into the address space of the specified process.</param>
