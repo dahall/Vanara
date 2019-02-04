@@ -77,6 +77,66 @@ namespace Vanara.PInvoke
 			DWMSC_ALL = 0xFFFFFFFF
 		}
 
+		/// <summary>
+		/// Returned by DwmGetUnmetTabRequirements to indicate the requirements needed for a window to put tabs in the application title bar.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/dwmapi/ne-dwmapi-dwm_tab_window_requirements typedef enum
+		// DWM_TAB_WINDOW_REQUIREMENTS { DWMTWR_NONE, DWMTWR_IMPLEMENTED_BY_SYSTEM, DWMTWR_WINDOW_RELATIONSHIP, DWMTWR_WINDOW_STYLES,
+		// DWMTWR_WINDOW_REGION, DWMTWR_WINDOW_DWM_ATTRIBUTES, DWMTWR_WINDOW_MARGINS, DWMTWR_TABBING_ENABLED, DWMTWR_USER_POLICY,
+		// DWMTWR_GROUP_POLICY, DWMTWR_APP_COMPAT } ;
+		[PInvokeData("dwmapi.h", MSDNShortId = "8366ABE4-263D-448D-9FC9-3F4DAF9B700D")]
+		[Flags]
+		public enum DWM_TAB_WINDOW_REQUIREMENTS
+		{
+			/// <summary>The window meets all requirements requested.</summary>
+			DWMTWR_NONE = 0x0000,
+
+			/// <summary>
+			/// In some configurations, the admin/user setting or mode of the system means that windows won't be tabbed. This requirement
+			/// indicates that the system mode must implement tabbing. If the system does not implement tabbing, nothing can be done to
+			/// change this.
+			/// </summary>
+			DWMTWR_IMPLEMENTED_BY_SYSTEM = 0x0001,
+
+			/// <summary>The window has an owner or parent, and is therefore ineligible for tabbing.</summary>
+			DWMTWR_WINDOW_RELATIONSHIP = 0x0002,
+
+			/// <summary>
+			/// The window has one or more styles that make it ineligible for tabbing. To be eligible for tabbing, a window must:
+			/// </summary>
+			DWMTWR_WINDOW_STYLES = 0x0004,
+
+			/// <summary>The window has a region (set using SetWindowRgn) making it ineligible.</summary>
+			DWMTWR_WINDOW_REGION = 0x0008,
+
+			/// <summary>
+			/// The window is ineligible due to its Dwm configuration. To resolve this issue, the window must not extended its client area
+			/// into the title bar using DwmExtendFrameIntoClientArea. In addition, the window must not have DWMWA_NCRENDERING_POLICY set to DWMNCRP_ENABLED.
+			/// </summary>
+			DWMTWR_WINDOW_DWM_ATTRIBUTES = 0x0010,
+
+			/// <summary>
+			/// The window is ineligible due to its margins, most likely due to custom handling in WM_NCCALCSIZE. To resolve this issue, the
+			/// window must use the default window margins for the non-client area.
+			/// </summary>
+			DWMTWR_WINDOW_MARGINS = 0x0020,
+
+			/// <summary>The window has been explicitly opted out by setting DWMWA_TABBING_ENABLED to false.</summary>
+			DWMTWR_TABBING_ENABLED = 0x0040,
+
+			/// <summary>The user has configured this application to not participate in tabbing.</summary>
+			DWMTWR_USER_POLICY = 0x0080,
+
+			/// <summary>The group policy has configured this application to not participate in tabbing.</summary>
+			DWMTWR_GROUP_POLICY = 0x0100,
+
+			/// <summary>
+			/// This is set if app compat has blocked tabs for this window. Can be overridden per window by setting DWMWA_TABBING_ENABLED to
+			/// TRUE. That does not override any other tabbing requirements.
+			/// </summary>
+			DWMTWR_APP_COMPAT = 0x0200,
+		}
+
 		/// <summary>Flags used by the DWM_THUMBNAIL_PROPERTIES structure to indicate which of its members contain valid information.</summary>
 		[Flags]
 		[PInvokeData("dwmapi.h")]
@@ -446,6 +506,19 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dwmapi.h")]
 		public static extern HRESULT DwmGetTransportAttributes([MarshalAs(UnmanagedType.Bool)] out bool pfIsRemoting, [MarshalAs(UnmanagedType.Bool)] out bool pfIsConnected, out uint pDwGeneration);
+
+		/// <summary>
+		///   <para><c>Note</c> This function is publicly available, but nonfunctional, for Windows 10, version 1803.</para>
+		///   <para>Checks the requirements needed to get tabs in the application title bar for the specified window.</para>
+		/// </summary>
+		/// <param name="appWindow">The handle of the window to check.</param>
+		/// <param name="value">The value.</param>
+		/// <returns>None</returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/dwmapi/nf-dwmapi-dwmgetunmettabrequirements
+		// DWMAPI DwmGetUnmetTabRequirements( HWND appWindow, DWM_TAB_WINDOW_REQUIREMENTS *value );
+		[DllImport(Lib.DwmApi, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("dwmapi.h", MSDNShortId = "8E67E1BE-D6FC-4A8A-8E71-45B6F337E3BD")]
+		public static extern HRESULT DwmGetUnmetTabRequirements(HWND appWindow, out DWM_TAB_WINDOW_REQUIREMENTS value);
 
 		/// <summary>Retrieves the current value of a specified attribute applied to a window.</summary>
 		/// <param name="hwnd">The handle to the window from which the attribute data is retrieved.</param>
