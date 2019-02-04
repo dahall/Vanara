@@ -1751,7 +1751,7 @@ namespace Vanara.PInvoke
 		/// Provides a <see cref="SafeHandle"/> to a check results value that releases a created AUTHZ_ACCESS_CHECK_RESULTS_HANDLE instance
 		/// at disposal using AuthzFreeHandle.
 		/// </summary>
-		public class SafeAUTHZ_ACCESS_CHECK_RESULTS_HANDLE : HANDLE
+		public class SafeAUTHZ_ACCESS_CHECK_RESULTS_HANDLE : SafeHANDLE
 		{
 			/// <summary>
 			/// Initializes a new instance of the <see cref="AUTHZ_ACCESS_CHECK_RESULTS_HANDLE"/> class and assigns an existing handle.
@@ -1777,7 +1777,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Provides a <see cref="SafeHandle"/> to an audit event that releases a created AUTHZ_AUDIT_EVENT_HANDLE instance at disposal using AuthzFreeAuditEvent.
 		/// </summary>
-		public class SafeAUTHZ_AUDIT_EVENT_HANDLE : HANDLE
+		public class SafeAUTHZ_AUDIT_EVENT_HANDLE : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="AUTHZ_AUDIT_EVENT_HANDLE"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1799,7 +1799,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="AUTHZ_CLIENT_CONTEXT_HANDLE"/> that is disposed using <see cref="AuthzFreeContext"/>.</summary>
-		public class SafeAUTHZ_CLIENT_CONTEXT_HANDLE : HANDLE
+		public class SafeAUTHZ_CLIENT_CONTEXT_HANDLE : SafeHANDLE
 		{
 			/// <summary>
 			/// Initializes a new instance of the <see cref="SafeAUTHZ_CLIENT_CONTEXT_HANDLE"/> class and assigns an existing handle.
@@ -1825,7 +1825,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Provides a <see cref="SafeHandle"/> for <see cref="AUTHZ_RESOURCE_MANAGER_HANDLE"/> that is disposed using <see cref="AuthzFreeResourceManager"/>.
 		/// </summary>
-		public class SafeAUTHZ_RESOURCE_MANAGER_HANDLE : HANDLE
+		public class SafeAUTHZ_RESOURCE_MANAGER_HANDLE : SafeHANDLE
 		{
 			/// <summary>
 			/// Initializes a new instance of the <see cref="SafeAUTHZ_RESOURCE_MANAGER_HANDLE"/> class and assigns an existing handle.

@@ -1078,7 +1078,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to an account context that releases a created HACTCTX instance at disposal using ReleaseActCtx.</summary>
-		public class SafeHACTCTX : HANDLE
+		public class SafeHACTCTX : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="HACTCTX"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

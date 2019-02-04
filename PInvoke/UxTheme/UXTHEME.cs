@@ -3647,7 +3647,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Represents a safe handle for a theme. Use in place of HTHEME.</summary>
-		public class SafeHTHEME : HANDLE
+		public class SafeHTHEME : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHTHEME"/> class.</summary>
 			/// <param name="hTheme">The h theme.</param>

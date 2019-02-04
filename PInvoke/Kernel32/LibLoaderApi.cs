@@ -1910,7 +1910,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HINSTANCE instance at disposal using FreeLibrary.</summary>
 		[PInvokeData("LibLoaderAPI.h")]
-		public class SafeHINSTANCE : HANDLE
+		public class SafeHINSTANCE : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="HINSTANCE"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1948,7 +1948,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Represents a loaded resource handle.</summary>
 		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
-		public class SafeResourceDataHandle : HANDLE
+		public class SafeResourceDataHandle : SafeHANDLE
 		{
 			private IntPtr bptr;
 
@@ -1965,7 +1965,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Represents a resource data block handle.</summary>
 		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
-		public class SafeResourceHandle : HANDLE
+		public class SafeResourceHandle : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeResourceHandle"/> class.</summary>
 			public SafeResourceHandle() : base() { }

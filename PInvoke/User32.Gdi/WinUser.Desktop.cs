@@ -1105,7 +1105,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HDESK instance at disposal using CloseDesktop.</summary>
-		public class SafeHDESK : HANDLE
+		public class SafeHDESK : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="HDESK"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1128,7 +1128,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HWINSTA instance at disposal using CloseWindowStation.</summary>
-		public class SafeHWINSTA : HANDLE
+		public class SafeHWINSTA : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="HWINSTA"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

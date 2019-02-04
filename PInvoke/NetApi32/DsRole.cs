@@ -296,7 +296,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a buffer that releases a created handle at disposal using DsRoleFreeMemory.</summary>
-		public class SafeDcRoleBuffer : HANDLE
+		public class SafeDcRoleBuffer : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeDcRoleBuffer"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

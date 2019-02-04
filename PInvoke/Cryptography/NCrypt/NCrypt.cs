@@ -3182,7 +3182,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="NCRYPT_KEY_HANDLE"/> that is disposed using <see cref="NCryptFreeObject"/>.</summary>
-		public class SafeNCRYPT_KEY_HANDLE : HANDLE
+		public class SafeNCRYPT_KEY_HANDLE : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeNCRYPT_KEY_HANDLE"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -3209,7 +3209,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="NCRYPT_PROV_HANDLE"/> that is disposed using <see cref="NCryptFreeObject"/>.</summary>
-		public class SafeNCRYPT_PROV_HANDLE : HANDLE
+		public class SafeNCRYPT_PROV_HANDLE : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeNCRYPT_PROV_HANDLE"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -3236,7 +3236,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="NCRYPT_SECRET_HANDLE"/> that is disposed using <see cref="NCryptFreeObject"/>.</summary>
-		public class SafeNCRYPT_SECRET_HANDLE : HANDLE
+		public class SafeNCRYPT_SECRET_HANDLE : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeNCRYPT_SECRET_HANDLE"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

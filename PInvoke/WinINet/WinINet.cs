@@ -1774,7 +1774,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> that is disposed using <see cref="InternetCloseHandle"/>.</summary>
-		public class SafeInternetHandle : HANDLE
+		public class SafeInternetHandle : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeInternetHandle"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

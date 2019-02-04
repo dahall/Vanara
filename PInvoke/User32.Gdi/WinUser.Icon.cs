@@ -1140,7 +1140,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a Windows that disposes a created HICON instance at disposal using DestroyIcon.</summary>
-		public class SafeHICON : HANDLE
+		public class SafeHICON : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHICON"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

@@ -246,12 +246,12 @@ namespace Vanara.PInvoke
 		public static extern bool SetHandleInformation([In] IntPtr hObject, HANDLE_FLAG dwMask, HANDLE_FLAG dwFlags);
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a handle that releases a created HANDLE instance at disposal using CloseHandle.</summary>
-		public abstract class SafeKernelHandle : HANDLE, IKernelHandle
+		public abstract class SafeKernelHandle : SafeHANDLE, IKernelHandle
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeSyncHandle"/> class.</summary>
 			protected SafeKernelHandle() : base() { }
 
-			/// <summary>Initializes a new instance of the <see cref="HANDLE"/> class and assigns an existing handle.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeHANDLE"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
 			protected SafeKernelHandle(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }

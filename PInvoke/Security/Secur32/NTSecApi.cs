@@ -151,7 +151,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="LsaConnectionHandle"/> that is disposed using <see cref="LsaDeregisterLogonProcess"/>.</summary>
-		public class SafeLsaConnectionHandle : HANDLE
+		public class SafeLsaConnectionHandle : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeLsaConnectionHandle"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

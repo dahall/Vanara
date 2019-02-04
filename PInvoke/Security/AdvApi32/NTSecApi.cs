@@ -1852,7 +1852,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Provides a <see cref="SafeHandle"/> to a LSA handle that releases a created LSA_HANDLE instance at disposal using LsaClose.
 		/// </summary>
-		public class SafeLSA_HANDLE : HANDLE
+		public class SafeLSA_HANDLE : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="LSA_HANDLE"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1876,7 +1876,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Provides a <see cref="SafeHandle"/> to a LSA memory handle that releases a created LsaMemoryHandle instance at disposal using LsaFreeMemory.
 		/// </summary>
-		public class SafeLsaMemoryHandle : HANDLE
+		public class SafeLsaMemoryHandle : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeLsaMemoryHandle"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1893,7 +1893,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>A <see cref="SafeHandle"/> for values that must be freed using the <see cref="LsaFreeReturnBuffer(IntPtr)"/> function.</summary>
-		public sealed class SafeLsaReturnBufferHandle : HANDLE
+		public sealed class SafeLsaReturnBufferHandle : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeLsaReturnBufferHandle"/> class.</summary>
 			/// <param name="preexistingHandle">The pointer to the memory allocated by an Lsa function.</param>

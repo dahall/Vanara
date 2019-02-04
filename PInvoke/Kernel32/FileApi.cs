@@ -3963,7 +3963,7 @@ namespace Vanara.PInvoke
 		/// FindFirstFileNameTransactedW, FindFirstFileTransacted, FindFirstStreamTransactedW, or FindFirstStreamW functions.
 		/// </summary>
 		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
-		public class SafeSearchHandle : HANDLE
+		public class SafeSearchHandle : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeSearchHandle"/> class.</summary>
 			/// <param name="handle">The handle.</param>
@@ -3977,7 +3977,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Represents a self-closing volume search handle opened by the FindFirstVolume.</summary>
 		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
-		public class SafeVolumeSearchHandle : HANDLE
+		public class SafeVolumeSearchHandle : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeVolumeSearchHandle"/> class.</summary>
 			/// <param name="handle">The handle.</param>

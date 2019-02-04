@@ -559,7 +559,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Provides a <see cref="SafeHandle"/> to a timer queue that releases a created TimerQueueHandle instance at disposal using CloseHandle.
 		/// </summary>
-		public class SafeTimerQueueHandle : HANDLE
+		public class SafeTimerQueueHandle : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="TimerQueueHandle"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -583,7 +583,7 @@ namespace Vanara.PInvoke
 		/// Provides a <see cref="SafeHandle"/> to a timer queue timer that releases a created TimerQueueTimerHandle instance at disposal
 		/// using DeleteTimerQueueTimer.
 		/// </summary>
-		public class SafeTimerQueueTimerHandle : HANDLE
+		public class SafeTimerQueueTimerHandle : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="TimerQueueTimerHandle"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

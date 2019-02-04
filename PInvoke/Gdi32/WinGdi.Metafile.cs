@@ -136,7 +136,7 @@ namespace Vanara.PInvoke
 		public static extern SafeHENHMETAFILE GetEnhMetaFile(string lpName);
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HENHMETAFILE"/> that is disposed using <see cref="DeleteEnhMetaFile"/>.</summary>
-		public class SafeHENHMETAFILE : HANDLE
+		public class SafeHENHMETAFILE : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHENHMETAFILE"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

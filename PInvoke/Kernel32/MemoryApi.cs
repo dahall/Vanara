@@ -2711,7 +2711,7 @@ namespace Vanara.PInvoke
 		// ParameterCount );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("memoryapi.h", MSDNShortId = "5021062F-E414-49A1-8B70-BE2A57A90E54")]
-		public static extern IntPtr VirtualAlloc2(HANDLE Process, IntPtr BaseAddress, SizeT Size, MEM_ALLOCATION_TYPE AllocationType, MEM_PROTECTION PageProtection, MEM_EXTENDED_PARAMETER[] ExtendedParameters, uint ParameterCount);
+		public static extern IntPtr VirtualAlloc2(SafeHANDLE Process, IntPtr BaseAddress, SizeT Size, MEM_ALLOCATION_TYPE AllocationType, MEM_PROTECTION PageProtection, MEM_EXTENDED_PARAMETER[] ExtendedParameters, uint ParameterCount);
 
 		/// <summary>
 		/// <para>
@@ -2952,7 +2952,7 @@ namespace Vanara.PInvoke
 		// *ExtendedParameters, ULONG ParameterCount );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("memoryapi.h", MSDNShortId = "84896A75-A917-4CA1-A417-650428E1FBFD")]
-		public static extern IntPtr VirtualAlloc2FromApp(HANDLE Process, IntPtr BaseAddress, SizeT Size, MEM_ALLOCATION_TYPE AllocationType, MEM_PROTECTION PageProtection, MEM_EXTENDED_PARAMETER[] ExtendedParameters, uint ParameterCount);
+		public static extern IntPtr VirtualAlloc2FromApp(SafeHANDLE Process, IntPtr BaseAddress, SizeT Size, MEM_ALLOCATION_TYPE AllocationType, MEM_PROTECTION PageProtection, MEM_EXTENDED_PARAMETER[] ExtendedParameters, uint ParameterCount);
 
 		/// <summary>
 		/// <para>

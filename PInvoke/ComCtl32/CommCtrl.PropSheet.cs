@@ -920,7 +920,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HPROPSHEETPAGE instance at disposal using DestroyPropertySheetPage.</summary>
-		public class SafeHPROPSHEETPAGE : HANDLE
+		public class SafeHPROPSHEETPAGE : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="HPROPSHEETPAGE"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

@@ -1445,7 +1445,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a safe array that releases a created SAFEARRAY instance at disposal using SafeArrayDestroy.</summary>
-		public class SafeSAFEARRAY : HANDLE
+		public class SafeSAFEARRAY : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeSAFEARRAY"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

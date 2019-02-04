@@ -1078,7 +1078,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a handle to a heap.</summary>
-		public class HHEAP : HANDLE
+		public class HHEAP : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="HHEAP"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

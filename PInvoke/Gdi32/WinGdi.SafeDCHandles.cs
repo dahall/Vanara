@@ -56,7 +56,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Provides a <see cref="System.Runtime.InteropServices.SafeHandle"/> to a graphics bitmap object that releases a created HBITMAP instance at disposal using DeleteObject.
 		/// </summary>
-		public class SafeHBITMAP : HANDLE
+		public class SafeHBITMAP : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHBITMAP"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -84,7 +84,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Provides a <see cref="SafeHandle"/> to a graphics bitmap object that releases a created HBRUSH instance at disposal using DeleteObject.
 		/// </summary>
-		public class SafeHBRUSH : HANDLE
+		public class SafeHBRUSH : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHBRUSH"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -110,7 +110,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>A SafeHandle to track DC handles.</summary>
-		public class SafeHDC : HANDLE
+		public class SafeHDC : SafeHANDLE
 		{
 			private readonly IDeviceContext idc;
 
@@ -173,7 +173,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Provides a <see cref="SafeHandle"/> to a graphics bitmap object that releases a created HFONT instance at disposal using DeleteObject.
 		/// </summary>
-		public class SafeHFONT : HANDLE
+		public class SafeHFONT : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHFONT"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -202,7 +202,7 @@ namespace Vanara.PInvoke
 		/// Provides a <see cref="SafeHandle"/> to a graphics color palette object that releases a created HPALETTE instance at disposal
 		/// using DeleteObject.
 		/// </summary>
-		public class SafeHPALETTE : HANDLE
+		public class SafeHPALETTE : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHPALETTE"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -230,7 +230,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Provides a <see cref="SafeHandle"/> to a graphics bitmap object that releases a created HPEN instance at disposal using DeleteObject.
 		/// </summary>
-		public class SafeHPEN : HANDLE
+		public class SafeHPEN : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHPEN"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -258,7 +258,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Provides a <see cref="SafeHandle"/> to a graphics bitmap object that releases a created HRGN instance at disposal using DeleteObject.
 		/// </summary>
-		public class SafeHRGN : HANDLE
+		public class SafeHRGN : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHRGN"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

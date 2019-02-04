@@ -5144,7 +5144,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to an authentication identity that releases its handle at disposal using DsFreePasswordCredentials.</summary>
-		public class SafeAuthIdentityHandle : HANDLE
+		public class SafeAuthIdentityHandle : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeAuthIdentityHandle"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -5191,7 +5191,7 @@ namespace Vanara.PInvoke
 		/// <seealso cref="Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid"/>
 		[SuppressUnmanagedCodeSecurity, ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
 		[PInvokeData("NTDSApi.h")]
-		public class SafeDsHandle : HANDLE
+		public class SafeDsHandle : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeDsHandle"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -5248,7 +5248,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>A <see cref="SafeHandle"/> for the results from <see cref="DsReplicaGetInfo2W(SafeDsHandle, DS_REPL_INFO_TYPE, string, Guid?, string, string, DsReplInfoFlags, uint, out SafeDsReplicaInfo)"/>.</summary>
 		[PInvokeData("NTDSApi.h")]
-		public class SafeDsReplicaInfo : HANDLE
+		public class SafeDsReplicaInfo : SafeHANDLE
 		{
 			internal SafeDsReplicaInfo()
 			{

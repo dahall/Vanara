@@ -775,7 +775,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a Windows that disposes a created HCURSOR instance at disposal using DestroyCursor.</summary>
-		public class SafeHCURSOR : HANDLE
+		public class SafeHCURSOR : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="HCURSOR"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

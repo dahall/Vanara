@@ -607,7 +607,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HANIMATIONBUFFER"/> that is disposed using <see cref="EndBufferedAnimation"/>.</summary>
-		public class SafeHANIMATIONBUFFER : HANDLE
+		public class SafeHANIMATIONBUFFER : SafeHANDLE
 		{
 			private readonly bool fUpdateTarget = true;
 
@@ -632,7 +632,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPAINTBUFFER"/> that is disposed using <see cref="EndBufferedPaint"/>.</summary>
-		public class SafeHPAINTBUFFER : HANDLE
+		public class SafeHPAINTBUFFER : SafeHANDLE
 		{
 			private readonly bool fUpdateTarget = true;
 

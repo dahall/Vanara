@@ -1404,7 +1404,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HDPA instance at disposal using DPA_Destroy.</summary>
-		public class SafeHDPA : HANDLE
+		public class SafeHDPA : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="HDPA"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1425,7 +1425,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HDSA instance at disposal using DSA_Destroy.</summary>
-		public class SafeHDSA : HANDLE
+		public class SafeHDSA : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="HDSA"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

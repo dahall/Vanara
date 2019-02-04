@@ -7648,7 +7648,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Provides a <see cref="SafeHandle"/> to a UMS completion list that releases a created UmsCompletionList instance at disposal using DeleteUmsCompletionList.
 		/// </summary>
-		public class SafePUMS_COMPLETION_LIST : HANDLE
+		public class SafePUMS_COMPLETION_LIST : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafePUMS_COMPLETION_LIST"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -7667,7 +7667,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Provides a <see cref="SafeHandle"/> to a UMS thread context that releases a created UmsThreadContext instance at disposal using DeleteUmsThreadContext.
 		/// </summary>
-		public class SafePUMS_CONTEXT : HANDLE
+		public class SafePUMS_CONTEXT : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafePUMS_CONTEXT"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

@@ -1557,7 +1557,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Safe image list handle. Be aware that if this is instantiated with ownership of the handle, it will be destroyed on disposal.
 		/// </summary>
-		public class SafeHIMAGELIST : HANDLE
+		public class SafeHIMAGELIST : SafeHANDLE
 		{
 			private IImageList iImageList;
 

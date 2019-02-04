@@ -1444,7 +1444,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="NCRYPT_DESCRIPTOR_HANDLE"/> that is disposed using <see cref="NCryptCloseProtectionDescriptor"/>.</summary>
-		public class SafeNCRYPT_DESCRIPTOR_HANDLE : HANDLE
+		public class SafeNCRYPT_DESCRIPTOR_HANDLE : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeNCRYPT_DESCRIPTOR_HANDLE"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -1466,7 +1466,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="NCRYPT_STREAM_HANDLE"/> that is disposed using <see cref="NCryptStreamClose"/>.</summary>
-		public class SafeNCRYPT_STREAM_HANDLE : HANDLE
+		public class SafeNCRYPT_STREAM_HANDLE : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeNCRYPT_STREAM_HANDLE"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

@@ -7639,7 +7639,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPIF"/> that is disposed using <see cref="PifMgr_CloseProperties"/>.</summary>
-		public class SafeHPIF : HANDLE
+		public class SafeHPIF : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHPIF"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -7661,7 +7661,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HPSXA"/> that is disposed using <see cref="SHDestroyPropSheetExtArray"/>.</summary>
-		public class SafeHPSXA : HANDLE
+		public class SafeHPSXA : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHPSXA"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

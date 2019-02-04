@@ -3799,7 +3799,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Represents a search handle used in a subsequent call to the <c>FindNextVolumeMountPoint</c> and retrieved by <c>FindFirstVolumeMountPoint</c>.</summary>
-		public class SafeVolumeMountPointHandle : HANDLE
+		public class SafeVolumeMountPointHandle : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeVolumeMountPointHandle"/> class.</summary>
 			/// <param name="handle">The handle.</param>

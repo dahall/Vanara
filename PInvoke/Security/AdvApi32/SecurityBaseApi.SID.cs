@@ -187,7 +187,7 @@ namespace Vanara.PInvoke
 		public static extern bool IsValidSid(PSID pSid);
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to an allocated SID that is released at disposal using FreeSid.</summary>
-		public class SafeAllocatedSID : HANDLE, ISecurityObject
+		public class SafeAllocatedSID : SafeHANDLE, ISecurityObject
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeAllocatedSID"/> class.</summary>
 			private SafeAllocatedSID() : base() { }

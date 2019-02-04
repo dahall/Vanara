@@ -2239,7 +2239,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Provides a <see cref="SafeHandle"/> to a wait handle created by RegisterWaitForSingleObject and closed on disposal by UnregisterWaitEx.
 		/// </summary>
-		public class SafeRegisteredWaitHandle : HANDLE
+		public class SafeRegisteredWaitHandle : SafeHANDLE
 		{
 			private static readonly SafeEventHandle invalidEvent = new SafeEventHandle(new IntPtr(-1), false);
 

@@ -234,7 +234,7 @@ namespace Vanara.PInvoke
 		/// Provides a <see cref="SafeHandle"/> to a boundary descriptor that releases a created BoundaryDescriptorHandle instance at
 		/// disposal using DeleteBoundaryDescriptor.
 		/// </summary>
-		public class SafeBoundaryDescriptorHandle : HANDLE
+		public class SafeBoundaryDescriptorHandle : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="BoundaryDescriptorHandle"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
@@ -256,7 +256,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created NamespaceHandle instance at disposal using CloseHandle.</summary>
-		public class SafeNamespaceHandle : HANDLE
+		public class SafeNamespaceHandle : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="NamespaceHandle"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

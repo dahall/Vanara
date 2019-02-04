@@ -5777,7 +5777,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HUSKEY"/> that is disposed using <see cref="SHRegCloseUSKey"/>.</summary>
-		public class SafeHUSKEY : HANDLE
+		public class SafeHUSKEY : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeHUSKEY"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

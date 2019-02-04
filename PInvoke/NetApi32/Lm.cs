@@ -2317,7 +2317,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a buffer that releases a created handle at disposal using NetApiBufferFree.</summary>
-		public class SafeNetApiBuffer : HANDLE
+		public class SafeNetApiBuffer : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeNetApiBuffer"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

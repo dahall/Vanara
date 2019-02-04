@@ -2880,7 +2880,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to a service that releases a created SC_HANDLE instance at disposal using CloseServiceHandle.</summary>
-		public class SafeSC_HANDLE : HANDLE
+		public class SafeSC_HANDLE : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SC_HANDLE"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

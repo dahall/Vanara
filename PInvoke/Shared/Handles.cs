@@ -1883,19 +1883,19 @@ namespace Vanara.PInvoke
 	/// <seealso cref="Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid"/>
 	/// <seealso cref="System.IEquatable{T}"/>
 	/// <seealso cref="Vanara.PInvoke.IHandle"/>
-	public class HANDLE : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<HANDLE>, IHandle
+	public abstract class SafeHANDLE : SafeHandleZeroOrMinusOneIsInvalid, IEquatable<SafeHANDLE>, IHandle
 	{
-		/// <summary>Initializes a new instance of the <see cref="HANDLE"/> class.</summary>
-		public HANDLE() : base(true)
+		/// <summary>Initializes a new instance of the <see cref="SafeHANDLE"/> class.</summary>
+		public SafeHANDLE() : base(true)
 		{
 		}
 
-		/// <summary>Initializes a new instance of the <see cref="HANDLE"/> class and assigns an existing handle.</summary>
+		/// <summary>Initializes a new instance of the <see cref="SafeHANDLE"/> class and assigns an existing handle.</summary>
 		/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
 		/// <param name="ownsHandle">
 		/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
 		/// </param>
-		protected HANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(ownsHandle) => SetHandle(preexistingHandle);
+		protected SafeHANDLE(IntPtr preexistingHandle, bool ownsHandle = true) : base(ownsHandle) => SetHandle(preexistingHandle);
 
 		/// <summary>Gets a value indicating whether this instance is null.</summary>
 		/// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
@@ -1905,18 +1905,18 @@ namespace Vanara.PInvoke
 		/// <param name="h1">The first handle.</param>
 		/// <param name="h2">The second handle.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator !=(HANDLE h1, HANDLE h2) => !(h1 == h2);
+		public static bool operator !=(SafeHANDLE h1, SafeHANDLE h2) => !(h1 == h2);
 
 		/// <summary>Implements the operator ==.</summary>
 		/// <param name="h1">The first handle.</param>
 		/// <param name="h2">The second handle.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(HANDLE h1, HANDLE h2) => h1 is null || h2 is null ? false : h1.Equals(h2);
+		public static bool operator ==(SafeHANDLE h1, SafeHANDLE h2) => h1 is null || h2 is null ? false : h1.Equals(h2);
 
-		/// <summary>Determines whether the specified <see cref="HANDLE"/>, is equal to this instance.</summary>
-		/// <param name="other">The <see cref="HANDLE"/> to compare with this instance.</param>
-		/// <returns><c>true</c> if the specified <see cref="HANDLE"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public bool Equals(HANDLE other)
+		/// <summary>Determines whether the specified <see cref="SafeHANDLE"/>, is equal to this instance.</summary>
+		/// <param name="other">The <see cref="SafeHANDLE"/> to compare with this instance.</param>
+		/// <returns><c>true</c> if the specified <see cref="SafeHANDLE"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+		public bool Equals(SafeHANDLE other)
 		{
 			if (other is null)
 				return false;
@@ -1928,7 +1928,7 @@ namespace Vanara.PInvoke
 		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
 		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-		public override bool Equals(object obj) => obj is HANDLE h ? Equals(h) : base.Equals(obj);
+		public override bool Equals(object obj) => obj is SafeHANDLE h ? Equals(h) : base.Equals(obj);
 
 		/// <summary>Returns a hash code for this instance.</summary>
 		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
@@ -1939,7 +1939,7 @@ namespace Vanara.PInvoke
 		/// zeros the handle.
 		/// </summary>
 		/// <returns><c>true</c> to indicate successful release of the handle; <c>false</c> otherwise.</returns>
-		protected virtual bool InternalReleaseHandle() => true;
+		protected abstract bool InternalReleaseHandle();
 
 		/// <inheritdoc/>
 		protected override bool ReleaseHandle()

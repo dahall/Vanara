@@ -4135,7 +4135,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a <see cref="SafeHandle"/> to an object that releases a created handle at disposal using NtClose.</summary>
-		public abstract class SafeNtHandle : HANDLE
+		public abstract class SafeNtHandle : SafeHANDLE
 		{
 			/// <summary>Initializes a new instance of the <see cref="SafeNtHandle"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>

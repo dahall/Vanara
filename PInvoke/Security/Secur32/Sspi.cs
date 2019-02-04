@@ -461,7 +461,7 @@ namespace Vanara.PInvoke
 		/// <summary>
 		/// Provides a <see cref="SafeHandle"/> for <see cref="PSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> that is disposed using <see cref="SspiFreeAuthIdentity"/>.
 		/// </summary>
-		public class SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE : HANDLE
+		public class SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE : SafeHANDLE
 		{
 			/// <summary>
 			/// Initializes a new instance of the <see cref="SafePSEC_WINNT_AUTH_IDENTITY_OPAQUE"/> class and assigns an existing handle.
