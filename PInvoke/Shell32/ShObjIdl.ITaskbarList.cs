@@ -265,7 +265,7 @@ namespace Vanara.PInvoke
 			/// <param name="hwnd">A handle to the window on the taskbar to be displayed as active.</param>
 			void ActivateTab(HWND hwnd);
 
-			/// <summary>Marks a taskbar item as active but does not visually activate it.</summary>
+			/// <summary>Marks a taskbar button as active but does not visually activate it.</summary>
 			/// <param name="hwnd">A handle to the window to be marked as active.</param>
 			void SetActiveAlt(HWND hwnd);
 		}
@@ -297,13 +297,28 @@ namespace Vanara.PInvoke
 			/// <param name="hwnd">A handle to the window on the taskbar to be displayed as active.</param>
 			new void ActivateTab(HWND hwnd);
 
-			/// <summary>Marks a taskbar item as active but does not visually activate it.</summary>
+			/// <summary>Marks a taskbar button as active but does not visually activate it.</summary>
 			/// <param name="hwnd">A handle to the window to be marked as active.</param>
 			new void SetActiveAlt(HWND hwnd);
 
 			/// <summary>Marks a window as full-screen.</summary>
-			/// <param name="hwnd">The handle of the window to be marked.</param>
-			/// <param name="fFullscreen">A Boolean value marking the desired full-screen status of the window.</param>
+			/// <param name="hwnd">
+			/// <para>Type: <c>HWND</c></para>
+			/// <para>The handle of the window to be marked.</para>
+			/// </param>
+			/// <param name="fFullscreen">
+			/// <para>Type: <c>BOOL</c></para>
+			/// <para>A Boolean value marking the desired full-screen status of the window.</para>
+			/// </param>
+			/// <remarks>
+			/// Setting the value of fFullscreen to <c>TRUE</c>, the Shell treats this window as a full-screen window, and the taskbar is
+			/// moved to the bottom of the z-order when this window is active. Setting the value of fFullscreen to <c>FALSE</c> removes the
+			/// full-screen marking, but does not cause the Shell to treat the window as though it were definitely not full-screen. With a
+			/// <c>FALSE</c> fFullscreen value, the Shell depends on its automatic detection facility to specify how the window should be
+			/// treated, possibly still flagging the window as full-screen.
+			/// </remarks>
+			// https://docs.microsoft.com/en-us/windows/desktop/api/shobjidl_core/nf-shobjidl_core-itaskbarlist2-markfullscreenwindow
+			// HRESULT MarkFullscreenWindow( HWND hwnd, BOOL fFullscreen );
 			void MarkFullscreenWindow(HWND hwnd, [MarshalAs(UnmanagedType.Bool)] bool fFullscreen);
 		}
 
@@ -338,7 +353,7 @@ namespace Vanara.PInvoke
 			/// <param name="hwnd">A handle to the window on the taskbar to be displayed as active.</param>
 			new void ActivateTab(HWND hwnd);
 
-			/// <summary>Marks a taskbar item as active but does not visually activate it.</summary>
+			/// <summary>Marks a taskbar button as active but does not visually activate it.</summary>
 			/// <param name="hwnd">A handle to the window to be marked as active.</param>
 			new void SetActiveAlt(HWND hwnd);
 
@@ -564,7 +579,7 @@ namespace Vanara.PInvoke
 			/// <param name="hwnd">A handle to the window on the taskbar to be displayed as active.</param>
 			new void ActivateTab(HWND hwnd);
 
-			/// <summary>Marks a taskbar item as active but does not visually activate it.</summary>
+			/// <summary>Marks a taskbar button as active but does not visually activate it.</summary>
 			/// <param name="hwnd">A handle to the window to be marked as active.</param>
 			new void SetActiveAlt(HWND hwnd);
 
