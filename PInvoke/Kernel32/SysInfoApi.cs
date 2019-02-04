@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Security.Permissions;
 using System.Text;
 using Vanara.Extensions;
 using static Vanara.PInvoke.FunctionHelper;
@@ -2079,6 +2080,48 @@ namespace Vanara.PInvoke
 		[PInvokeData("Winbase.h", MSDNShortId = "ms724943")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetSystemTimeAdjustment(uint dwTimeAdjustment, [MarshalAs(UnmanagedType.Bool)] bool bTimeAdjustmentDisabled);
+
+		/// <summary>
+		/// Enables or disables periodic time adjustments to the system's time-of-day clock. When enabled, such time adjustments can be used
+		/// to synchronize the time of day with some other source of time information.
+		/// </summary>
+		/// <param name="dwTimeAdjustment">Supplies the adjusted clock update frequency.</param>
+		/// <param name="bTimeAdjustmentDisabled">
+		/// <para>Supplies a flag which specifies the time adjustment mode that the system is to use.</para>
+		/// <para>
+		/// A value of <c>TRUE</c> indicates that the system should synchronize time-of-day using its own internal mechanisms. In this case,
+		/// the value of dwTimeAdjustment is ignored.
+		/// </para>
+		/// <para>
+		/// A value of <c>FALSE</c> indicates that the application is in control, and that the specified value of dwTimeAdjustment is to be
+		/// added to the time-of-day clock at each clock update interrupt.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is non-zero.</para>
+		/// <para>
+		/// If the function fails, the return value is zero. To get extended error information, call GetLastError. One way the function can
+		/// fail is if the caller does not possess the SE_SYSTEMTIME_NAME privilege.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// To use this function, the caller must have system-time privilege (SE_SYSTEMTIME_NAME). This privilege is disabled by default. Use
+		/// the AdjustTokenPrivileges function to enable the privilege before calling this function, then disable the privilege after the
+		/// function call. For more information, see the code example below.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>
+		/// This sample demonstrates how to enable system-time privileges, adjust the system clock using GetSystemTimeAdjustmentPrecise and
+		/// <c>SetSystemTimeAdjustmentPrecise</c>, and how to neatly print the current system-time adjustments.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/sysinfoapi/nf-sysinfoapi-setsystemtimeadjustmentprecise
+		// BOOL SetSystemTimeAdjustmentPrecise( DWORD64 dwTimeAdjustment, BOOL bTimeAdjustmentDisabled );
+		[DllImport(Lib.KernelBase, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("sysinfoapi.h", MSDNShortId = "8B429BFC-9781-4434-9A2F-9E50E2BF299A")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetSystemTimeAdjustmentPrecise(ulong dwTimeAdjustment, [MarshalAs(UnmanagedType.Bool)] bool bTimeAdjustmentDisabled);
 
 		/// <summary>
 		/// Compares a set of operating system version requirements to the corresponding values for the currently running version of the
