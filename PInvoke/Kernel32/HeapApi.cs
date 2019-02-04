@@ -334,7 +334,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("HeapApi.h", MSDNShortId = "aa366700")]
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool HeapDestroy(HHEAP hHeap);
+		public static extern bool HeapDestroy(SafeHHEAP hHeap);
 
 		/// <summary>Frees a memory block allocated from a heap by the HeapAlloc or HeapReAlloc function.</summary>
 		/// <param name="hHeap">
@@ -1078,23 +1078,51 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Provides a handle to a heap.</summary>
-		public class HHEAP : SafeHANDLE
+		[StructLayout(LayoutKind.Sequential)]
+		public struct HHEAP : IHandle
 		{
-			/// <summary>Initializes a new instance of the <see cref="HHEAP"/> class and assigns an existing handle.</summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			public HHEAP(IntPtr preexistingHandle) : base(preexistingHandle, true) { }
+			private IntPtr handle;
 
-			/// <summary>Initializes a new instance of the <see cref="HHEAP"/> class and assigns an existing handle.</summary>
+			/// <summary>Initializes a new instance of the <see cref="HHEAP"/> struct.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-			/// </param>
-			protected HHEAP(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-			protected HHEAP() : base() { }
+			public HHEAP(IntPtr preexistingHandle) => handle = preexistingHandle;
 
 			/// <summary>Returns an invalid handle by instantiating a <see cref="HHEAP"/> object with <see cref="IntPtr.Zero"/>.</summary>
 			public static HHEAP NULL => new HHEAP(IntPtr.Zero);
+
+			/// <summary>Gets a value indicating whether this instance is a null handle.</summary>
+			public bool IsNull => handle == IntPtr.Zero;
+
+			/// <summary>Performs an explicit conversion from <see cref="HHEAP"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="h">The handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static explicit operator IntPtr(HHEAP h) => h.handle;
+
+			/// <summary>Performs an implicit conversion from <see cref="IntPtr"/> to <see cref="HHEAP"/>.</summary>
+			/// <param name="h">The pointer to a handle.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HHEAP(IntPtr h) => new HHEAP(h);
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(HHEAP h1, HHEAP h2) => !(h1 == h2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="h1">The first handle.</param>
+			/// <param name="h2">The second handle.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(HHEAP h1, HHEAP h2) => h1.Equals(h2);
+
+			/// <inheritdoc/>
+			public override bool Equals(object obj) => obj is HHEAP h ? handle == h.handle : false;
+
+			/// <inheritdoc/>
+			public override int GetHashCode() => handle.GetHashCode();
+
+			/// <inheritdoc/>
+			public IntPtr DangerousGetHandle() => handle;
 
 			/// <summary>Gets a block of memory from this private heap.</summary>
 			/// <param name="size">The size of the block.</param>
@@ -1106,6 +1134,8 @@ namespace Vanara.PInvoke
 		/// <seealso cref="Vanara.InteropServices.GenericSafeHandle"/>
 		public class SafeHeapBlock : SafeMemoryHandleExt<HeapMemoryMethods>
 		{
+			private SafeHHEAP safeHHeap;
+
 			/// <summary>Initializes a new instance of the <see cref="SafeHeapBlock"/> class.</summary>
 			/// <param name="ptr">The handle created by <see cref="HeapAlloc"/>.</param>
 			/// <param name="ownsHandle">if set to <c>true</c> this safe handle disposes the handle when done.</param>
@@ -1121,9 +1151,19 @@ namespace Vanara.PInvoke
 			/// <param name="size">The size, in bytes, of the allocated heap memory, if known.</param>
 			public SafeHeapBlock(HHEAP hHeap, IntPtr ptr, int size, bool ownsHandle = true) : base(ptr, size, ownsHandle)
 			{
+				if (hHeap.IsNull) throw new ArgumentNullException(nameof(hHeap));
 				mm.HeapHandle = hHeap;
-				var success = true;
-				mm.HeapHandle.DangerousAddRef(ref success);
+			}
+
+			/// <summary>Initializes a new instance of the <see cref="SafeHeapBlock"/> class.</summary>
+			/// <param name="hHeap">A handle to a heap created using <see cref="HeapCreate"/> or <see cref="GetProcessHeap"/>.</param>
+			/// <param name="ptr">The handle created by <see cref="HeapAlloc"/>.</param>
+			/// <param name="ownsHandle">if set to <c>true</c> this safe handle disposes the handle when done.</param>
+			/// <param name="size">The size, in bytes, of the allocated heap memory, if known.</param>
+			public SafeHeapBlock(SafeHHEAP hHeap, IntPtr ptr, int size, bool ownsHandle = true) : base(ptr, size, ownsHandle)
+			{
+				if (hHeap is null || hHeap.IsInvalid) throw new ArgumentNullException(nameof(hHeap));
+				mm.HeapHandle = safeHHeap = hHeap;
 			}
 
 			/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
@@ -1169,9 +1209,8 @@ namespace Vanara.PInvoke
 			/// </param>
 			protected override void Dispose(bool disposing)
 			{
+				safeHHeap = null;
 				base.Dispose(disposing);
-				if (disposing && mm.HeapHandle != GetProcessHeap())
-					mm.HeapHandle.DangerousRelease();
 			}
 
 			/// <summary>Represents a NULL memory pointer.</summary>
@@ -1209,17 +1248,21 @@ namespace Vanara.PInvoke
 			public static SafeHeapBlock CreateFromStringList(IEnumerable<string> values, StringListPackMethod packing = StringListPackMethod.Concatenated, CharSet charSet = CharSet.Auto, int prefixBytes = 0) => new SafeHeapBlock(InteropExtensions.MarshalToPtr(values, packing, new CoTaskMemoryMethods().AllocMem, out int s, charSet, prefixBytes), s);
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HHEAP instance at disposal using HeapDestroy.</summary>
-		public class SafeHHEAP : HHEAP
+		/// <summary>Provides a <see cref="SafeHandle"/> for <see cref="HHEAP"/> that is disposed using <see cref="HeapDestroy"/>.</summary>
+		public class SafeHHEAP : SafeHANDLE
 		{
-			/// <summary>Initializes a new instance of the <see cref="HHEAP"/> class and assigns an existing handle.</summary>
+			/// <summary>Initializes a new instance of the <see cref="SafeHHEAP"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-			/// </param>
+			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
 			public SafeHHEAP(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
+			/// <summary>Initializes a new instance of the <see cref="SafeHHEAP"/> class.</summary>
 			private SafeHHEAP() : base() { }
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHHEAP"/> to <see cref="HHEAP"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HHEAP(SafeHHEAP h) => h.handle;
 
 			/// <inheritdoc/>
 			protected override bool InternalReleaseHandle() => HeapDestroy(this);
