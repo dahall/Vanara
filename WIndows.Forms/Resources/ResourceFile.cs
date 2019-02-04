@@ -81,7 +81,7 @@ namespace Vanara.Resources
 			// Get binary image of the specified resource.
 
 			var hResInfo = FindResource(hLib, name, resourceType);
-			if (hResInfo.IsInvalid)
+			if (hResInfo.IsNull)
 				throw new Win32Exception();
 
 			var hResData = LoadResource(hLib, hResInfo);
