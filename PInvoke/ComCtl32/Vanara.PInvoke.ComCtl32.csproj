@@ -4,7 +4,7 @@
     <Description>Methods, structures and constants imported from ComCtl32.dll.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>2.2.0</VersionPrefix>
+    <VersionPrefix>2.2.1</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.ComCtl32</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>

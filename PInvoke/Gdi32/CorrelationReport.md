@@ -627,6 +627,7 @@ Native Structure | Header | Managed Structure
 [BITMAPINFOHEADER](http://msdn2.microsoft.com/en-us/library/dd183376) | Wingdi.h | Vanara.PInvoke.Gdi32+BITMAPINFOHEADER  
 [BLENDFUNCTION](http://msdn2.microsoft.com/en-us/library/dd183393) | Wingdi.h | Vanara.PInvoke.Gdi32+BLENDFUNCTION  
 [DIBSECTION](http://msdn2.microsoft.com/en-us/library/dd183567) | Wingdi.h | Vanara.PInvoke.Gdi32+DIBSECTION  
+[DISPLAY_DEVICE](http://msdn2.microsoft.com/en-us/library/9a7813fe-358a-44eb-99da-c63f98d055c3) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAY_DEVICE  
 [EXTLOGPEN](http://msdn2.microsoft.com/en-us/library/34ffa71d-e94d-425e-9f9d-21e3df4990b7) | wingdi.h | Vanara.PInvoke.Gdi32+EXTLOGPEN  
 [LOGBRUSH](http://msdn2.microsoft.com/en-us/library/ded2c7a4-2248-4d01-95c6-ab4050719094) | wingdi.h | Vanara.PInvoke.Gdi32+LOGBRUSH  
 [LOGPEN](http://msdn2.microsoft.com/en-us/library/0e098b5a-e249-43ad-a6d8-2509b6562453) | wingdi.h | Vanara.PInvoke.Gdi32+LOGPEN  

@@ -1,5 +1,5 @@
 ## Correlation report for kernel32.dll, kernelbase.dll  
-### Methods (99% complete)  
+### Methods (100% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AcquireSRWLockExclusive](http://msdn2.microsoft.com/en-us/library/ms681930) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.AcquireSRWLockExclusive  
@@ -680,8 +680,8 @@ Native Method | Native DLL | Header | Managed Method
 [MapUserPhysicalPages](http://msdn2.microsoft.com/en-us/library/aa366753) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MapUserPhysicalPages  
 [MapUserPhysicalPagesScatter](http://msdn2.microsoft.com/en-us/library/aa366755) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MapUserPhysicalPagesScatter  
 [MapViewOfFile](http://msdn2.microsoft.com/en-us/library/aa366761) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MapViewOfFile  
-[MapViewOfFile3](https://www.google.com/search?num=5&q=MapViewOfFile3+site%3Amicrosoft.com) | kernelbase.dll |  |   
-[MapViewOfFile3FromApp](https://www.google.com/search?num=5&q=MapViewOfFile3FromApp+site%3Amicrosoft.com) | kernelbase.dll |  |   
+[MapViewOfFile3](http://msdn2.microsoft.com/en-us/library/585D7BA1-688F-4F24-8D8D-46A2FC137193) | kernelbase.dll | memoryapi.h | Vanara.PInvoke.Kernel32.MapViewOfFile3  
+[MapViewOfFile3FromApp](http://msdn2.microsoft.com/en-us/library/5E10E1B2-69D9-4F68-8F06-D411CF7FE2ED) | kernelbase.dll | memoryapi.h | Vanara.PInvoke.Kernel32.MapViewOfFile3FromApp  
 [MapViewOfFileEx](http://msdn2.microsoft.com/en-us/library/aa366763) | kernel32.dll | WinBase.h | Vanara.PInvoke.Kernel32.MapViewOfFileEx  
 [MapViewOfFileExNuma](http://msdn2.microsoft.com/en-us/library/1e28c8db-112d-481d-b470-8ca618e125ce) | kernel32.dll | winbase.h | Vanara.PInvoke.Kernel32.MapViewOfFileExNuma  
 [MapViewOfFileFromApp](http://msdn2.microsoft.com/en-us/library/hh994454) | kernel32.dll | MemoryApi.h | Vanara.PInvoke.Kernel32.MapViewOfFileFromApp  
