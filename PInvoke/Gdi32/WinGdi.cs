@@ -210,6 +210,67 @@ namespace Vanara.PInvoke
 			BLTALIGNMENT = 119
 		}
 
+		/// <summary>Device state flags.</summary>
+		[PInvokeData("wingdi.h", MSDNShortId = "9a7813fe-358a-44eb-99da-c63f98d055c3")]
+		[Flags]
+		public enum DISPLAY_DEVICE_FLAGS
+		{
+			/// <summary>
+			/// The DISPLAY_DEVICE_ACTIVE specifies whether a monitor is presented as being "on" by the respective GDI view. Windows Vista:
+			/// EnumDisplayDevices will only enumerate monitors that can be presented as being "on."
+			/// </summary>
+			DISPLAY_DEVICE_ACTIVE = 0x00000001,
+
+			/// <summary>The display device is attached.</summary>
+			DISPLAY_DEVICE_ATTACHED = 0x00000002,
+
+			/// <summary>The display device attached to desktop</summary>
+			DISPLAY_DEVICE_ATTACHED_TO_DESKTOP = 0x00000001,
+
+			/// <summary>Undocumented.</summary>
+			DISPLAY_DEVICE_MULTI_DRIVER = 0x00000002,
+
+			/// <summary>
+			/// The primary desktop is on the device. For a system with a single display card, this is always set. For a system with multiple
+			/// display cards, only one device can have this set.
+			/// </summary>
+			DISPLAY_DEVICE_PRIMARY_DEVICE = 0x00000004,
+
+			/// <summary>
+			/// Represents a pseudo device used to mirror application drawing for remoting or other purposes. An invisible pseudo monitor is
+			/// associated with this device. For example, NetMeeting uses it. Note that GetSystemMetrics (SM_MONITORS) only accounts for
+			/// visible display monitors.
+			/// </summary>
+			DISPLAY_DEVICE_MIRRORING_DRIVER = 0x00000008,
+
+			/// <summary>The device is VGA compatible.</summary>
+			DISPLAY_DEVICE_VGA_COMPATIBLE = 0x00000010,
+
+			/// <summary>The device is removable; it cannot be the primary display.</summary>
+			DISPLAY_DEVICE_REMOVABLE = 0x00000020,
+
+			/// <summary>Undocumented.</summary>
+			DISPLAY_DEVICE_ACC_DRIVER = 0x00000040,
+
+			/// <summary>The device has more display modes than its output devices support.</summary>
+			DISPLAY_DEVICE_MODESPRUNED = 0x08000000,
+
+			/// <summary>Undocumented.</summary>
+			DISPLAY_DEVICE_RDPUDD = 0x01000000,
+
+			/// <summary>Undocumented.</summary>
+			DISPLAY_DEVICE_REMOTE = 0x04000000,
+
+			/// <summary>Undocumented.</summary>
+			DISPLAY_DEVICE_DISCONNECT = 0x02000000,
+
+			/// <summary>Undocumented.</summary>
+			DISPLAY_DEVICE_TS_COMPATIBLE = 0x00200000,
+
+			/// <summary>Undocumented.</summary>
+			DISPLAY_DEVICE_UNSAFE_MODES_ON = 0x00080000,
+		}
+
 		/// <summary>Hatch style used by <see cref="LOGBRUSH.lbHatchStyle"/>.</summary>
 		[PInvokeData("wingdi.h", MSDNShortId = "ded2c7a4-2248-4d01-95c6-ab4050719094")]
 		public enum HatchStyle : uint
@@ -312,6 +373,23 @@ namespace Vanara.PInvoke
 			/// window.Note that this generally cannot be used for printing device contexts.
 			/// </summary>
 			CAPTUREBLT = 0x40000000
+		}
+
+		/// <summary>Flags used with region functions.</summary>
+		[PInvokeData("wingdi.h")]
+		public enum RegionFlags
+		{
+			/// <summary>An error occurred.</summary>
+			ERROR = 0,
+
+			/// <summary>Region is empty.</summary>
+			NULLREGION = 1,
+
+			/// <summary>Region is a single rectangle.</summary>
+			SIMPLEREGION = 2,
+
+			/// <summary>Region consists of more than one rectangle.</summary>
+			COMPLEXREGION = 3,
 		}
 
 		/// <summary>The AlphaBlend function displays bitmaps that have transparent or semitransparent pixels.</summary>
@@ -453,7 +531,7 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para>
 		/// ICM: If the DC that is passed to this function is enabled for Image Color Management (ICM), the DC created by the function is
-		///      ICM-enabled. The source and destination color spaces are specified in the DC.
+		/// ICM-enabled. The source and destination color spaces are specified in the DC.
 		/// </para>
 		/// </remarks>
 		[DllImport(Lib.Gdi32, ExactSpelling = true, SetLastError = true)]
@@ -742,5 +820,92 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		[PInvokeData("Wingdi.h", MSDNShortId = "dd145141")]
 		public static extern bool TransparentBlt(HDC hdcDest, int xOriginDest, int yOriginDest, int wDest, int hDest, HDC hdcSrc, int xOriginSrc, int yOriginSrc, int wSrc, int hSrc, int crTransparent);
+
+		/// <summary>
+		/// The <c>DISPLAY_DEVICE</c> structure receives information about the display device specified by the iDevNum parameter of the
+		/// EnumDisplayDevices function.
+		/// </summary>
+		/// <remarks>
+		/// The four string members are set based on the parameters passed to EnumDisplayDevices. If the lpDevice param is <c>NULL</c>, then
+		/// DISPLAY_DEVICE is filled in with information about the display adapter(s). If it is a valid device name, then it is filled in
+		/// with information about the monitor(s) for that device.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/wingdi/ns-wingdi-_display_devicea typedef struct _DISPLAY_DEVICEA { DWORD cb;
+		// CHAR DeviceName[32]; CHAR DeviceString[128]; DWORD StateFlags; CHAR DeviceID[128]; CHAR DeviceKey[128]; } DISPLAY_DEVICEA,
+		// *PDISPLAY_DEVICEA, *LPDISPLAY_DEVICEA;
+		[PInvokeData("wingdi.h", MSDNShortId = "9a7813fe-358a-44eb-99da-c63f98d055c3")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct DISPLAY_DEVICE
+		{
+			/// <summary>Size, in bytes, of the <c>DISPLAY_DEVICE</c> structure. This must be initialized prior to calling EnumDisplayDevices.</summary>
+			public uint cb;
+
+			/// <summary>An array of characters identifying the device name. This is either the adapter device or the monitor device.</summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+			public string DeviceName;
+
+			/// <summary>
+			/// An array of characters containing the device context string. This is either a description of the display adapter or of the
+			/// display monitor.
+			/// </summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+			public string DeviceString;
+
+			/// <summary>
+			/// <para>Device state flags. It can be any reasonable combination of the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>DISPLAY_DEVICE_ACTIVE</term>
+			/// <term>
+			/// DISPLAY_DEVICE_ACTIVE specifies whether a monitor is presented as being "on" by the respective GDI view. Windows Vista:
+			/// EnumDisplayDevices will only enumerate monitors that can be presented as being "on."
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>DISPLAY_DEVICE_MIRRORING_DRIVER</term>
+			/// <term>
+			/// Represents a pseudo device used to mirror application drawing for remoting or other purposes. An invisible pseudo monitor is
+			/// associated with this device. For example, NetMeeting uses it. Note that GetSystemMetrics (SM_MONITORS) only accounts for
+			/// visible display monitors.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>DISPLAY_DEVICE_MODESPRUNED</term>
+			/// <term>The device has more display modes than its output devices support.</term>
+			/// </item>
+			/// <item>
+			/// <term>DISPLAY_DEVICE_PRIMARY_DEVICE</term>
+			/// <term>
+			/// The primary desktop is on the device. For a system with a single display card, this is always set. For a system with multiple
+			/// display cards, only one device can have this set.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>DISPLAY_DEVICE_REMOVABLE</term>
+			/// <term>The device is removable; it cannot be the primary display.</term>
+			/// </item>
+			/// <item>
+			/// <term>DISPLAY_DEVICE_VGA_COMPATIBLE</term>
+			/// <term>The device is VGA compatible.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public DISPLAY_DEVICE_FLAGS StateFlags;
+
+			/// <summary>Not used.</summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+			public string DeviceID;
+
+			/// <summary>Reserved.</summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+			public string DeviceKey;
+
+			/// <summary>Gets an empty structure with the <see cref="cb"/> set to the size of the structure.</summary>
+			public static readonly DISPLAY_DEVICE Default = new DISPLAY_DEVICE { cb = (uint)Marshal.SizeOf(typeof(DISPLAY_DEVICE)) };
+		}
 	}
 }
