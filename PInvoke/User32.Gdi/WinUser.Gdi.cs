@@ -12,112 +12,55 @@ namespace Vanara.PInvoke
 	{
 		public const int OCM_NOTIFY = 0x204E; // WM_NOTIFY + WM_REFLECT
 
-		/// <summary>Flags used by the <see cref="DrawEdge"/> method.</summary>
-		[PInvokeData("WinUser.h")]
+		/// <summary>Flags used by <see cref="ChangeDisplaySettings"/>.</summary>
+		[PInvokeData("winuser.h", MSDNShortId = "208bf1cc-c03c-4d03-92e4-32fcf856b4d8")]
 		[Flags]
-		public enum BorderFlags : uint
+		public enum ChangeDisplaySettingsFlags
 		{
-			/// <summary>Left side of border rectangle.</summary>
-			BF_LEFT = 0x0001,
-
-			/// <summary>Top of border rectangle.</summary>
-			BF_TOP = 0x0002,
-
-			/// <summary>Right side of border rectangle.</summary>
-			BF_RIGHT = 0x0004,
-
-			/// <summary>Bottom of border rectangle.</summary>
-			BF_BOTTOM = 0x0008,
-
-			/// <summary>Top and left side of border rectangle.</summary>
-			BF_TOPLEFT = (BF_TOP | BF_LEFT),
-
-			/// <summary>Top and right side of border rectangle.</summary>
-			BF_TOPRIGHT = (BF_TOP | BF_RIGHT),
-
-			/// <summary>Bottom and left side of border rectangle.</summary>
-			BF_BOTTOMLEFT = (BF_BOTTOM | BF_LEFT),
-
-			/// <summary>Bottom and right side of border rectangle.</summary>
-			BF_BOTTOMRIGHT = (BF_BOTTOM | BF_RIGHT),
-
-			/// <summary>Entire border rectangle.</summary>
-			BF_RECT = (BF_LEFT | BF_TOP | BF_RIGHT | BF_BOTTOM),
-
-			/// <summary>Diagonal border.</summary>
-			BF_DIAGONAL = 0x0010,
-
-			/// <summary>Diagonal border. The end point is the top-right corner of the rectangle; the origin is lower-left corner.</summary>
-			BF_DIAGONAL_ENDTOPRIGHT = (BF_DIAGONAL | BF_TOP | BF_RIGHT),
-
-			/// <summary>Diagonal border. The end point is the top-left corner of the rectangle; the origin is lower-right corner.</summary>
-			BF_DIAGONAL_ENDTOPLEFT = (BF_DIAGONAL | BF_TOP | BF_LEFT),
-
-			/// <summary>Diagonal border. The end point is the lower-left corner of the rectangle; the origin is top-right corner.</summary>
-			BF_DIAGONAL_ENDBOTTOMLEFT = (BF_DIAGONAL | BF_BOTTOM | BF_LEFT),
-
-			/// <summary>Diagonal border. The end point is the lower-right corner of the rectangle; the origin is top-left corner.</summary>
-			BF_DIAGONAL_ENDBOTTOMRIGHT = (BF_DIAGONAL | BF_BOTTOM | BF_RIGHT),
-
-			/// <summary>Interior of rectangle to be filled.</summary>
-			BF_MIDDLE = 0x0800,
-
-			/// <summary>Soft buttons instead of tiles.</summary>
-			BF_SOFT = 0x1000,
+			/// <summary>The graphics mode for the current screen will be changed dynamically.</summary>
+			CDS_DEFAULT = 0,
 
 			/// <summary>
-			/// The rectangle pointed to by the pDestRect parameter is shrunk to exclude the edges that were drawn; otherwise the rectangle
-			/// does not change.
+			/// The graphics mode for the current screen will be changed dynamically and the graphics mode will be updated in the registry.
+			/// The mode information is stored in the USER profile.
 			/// </summary>
-			BF_ADJUST = 0x2000,
+			CDS_UPDATEREGISTRY = 0x00000001,
 
-			/// <summary>Flat border.</summary>
-			BF_FLAT = 0x4000,
+			/// <summary>The system tests if the requested graphics mode could be set.</summary>
+			CDS_TEST = 0x00000002,
 
-			/// <summary>One-dimensional border.</summary>
-			BF_MONO = 0x8000,
-		}
+			/// <summary>The mode is temporary in nature. If you change to and from another desktop, this mode will not be reset.</summary>
+			CDS_FULLSCREEN = 0x00000004,
 
-		/// <summary>Styles used by the <see cref="DrawEdge"/> method.</summary>
-		[PInvokeData("WinUser.h")]
-		[Flags]
-		public enum BorderStyles3D : uint
-		{
-			/// <summary>Raised outer edge</summary>
-			BDR_RAISEDOUTER = 0x0001,
+			/// <summary>
+			/// The settings will be saved in the global settings area so that they will affect all users on the machine. Otherwise, only the
+			/// settings for the user are modified. This flag is only valid when specified with the CDS_UPDATEREGISTRY flag.
+			/// </summary>
+			CDS_GLOBAL = 0x00000008,
 
-			/// <summary>Sunken outer edge</summary>
-			BDR_SUNKENOUTER = 0x0002,
+			/// <summary>This device will become the primary device.</summary>
+			CDS_SET_PRIMARY = 0x00000010,
 
-			/// <summary>Raised inner edge</summary>
-			BDR_RAISEDINNER = 0x0004,
+			/// <summary>When set, the lParam parameter is a pointer to a VIDEOPARAMETERS structure.</summary>
+			CDS_VIDEOPARAMETERS = 0x00000020,
 
-			/// <summary>Sunken inner edge</summary>
-			BDR_SUNKENINNER = 0x0008,
+			/// <summary>Enables settings changes to unsafe graphics modes.</summary>
+			CDS_ENABLE_UNSAFE_MODES = 0x00000100,
 
-			/// <summary>Combination of BDR_RAISEDOUTER and BDR_SUNKENINNER</summary>
-			BDR_OUTER = (BDR_RAISEDOUTER | BDR_SUNKENOUTER),
+			/// <summary>Disables settings changes to unsafe graphics modes.</summary>
+			CDS_DISABLE_UNSAFE_MODES = 0x00000200,
 
-			/// <summary>Combination of BDR_RAISEDINNER and BDR_SUNKENINNER</summary>
-			BDR_INNER = (BDR_RAISEDINNER | BDR_SUNKENINNER),
+			/// <summary>The settings should be changed, even if the requested settings are the same as the current settings.</summary>
+			CDS_RESET = 0x40000000,
 
-			/// <summary>Combination of BDR_RAISEDOUTER and BDR_RAISEDINNER</summary>
-			BDR_RAISED = (BDR_RAISEDOUTER | BDR_RAISEDINNER),
+			/// <summary>Undocumented</summary>
+			CDS_RESET_EX = 0x20000000,
 
-			/// <summary>Combination of BDR_SUNKENOUTER and BDR_SUNKENINNER</summary>
-			BDR_SUNKEN = (BDR_SUNKENOUTER | BDR_SUNKENINNER),
-
-			/// <summary>Combination of BDR_RAISEDOUTER and BDR_RAISEDINNER</summary>
-			EDGE_RAISED = (BDR_RAISEDOUTER | BDR_RAISEDINNER),
-
-			/// <summary>Combination of BDR_SUNKENOUTER and BDR_SUNKENINNER</summary>
-			EDGE_SUNKEN = (BDR_SUNKENOUTER | BDR_SUNKENINNER),
-
-			/// <summary>Combination of BDR_SUNKENOUTER and BDR_RAISEDINNER</summary>
-			EDGE_ETCHED = (BDR_SUNKENOUTER | BDR_RAISEDINNER),
-
-			/// <summary>Combination of BDR_RAISEDOUTER and BDR_SUNKENINNER</summary>
-			EDGE_BUMP = (BDR_RAISEDOUTER | BDR_SUNKENINNER),
+			/// <summary>
+			/// The settings will be saved in the registry, but will not take effect. This flag is only valid when specified with the
+			/// CDS_UPDATEREGISTRY flag.
+			/// </summary>
+			CDS_NORESET = 0x10000000,
 		}
 
 		[Flags]
@@ -156,6 +99,57 @@ namespace Vanara.PInvoke
 
 			/// <summary>Loads the image in black and white.</summary>
 			LR_MONOCHROME = 0x00000001,
+		}
+
+		/// <summary>Flags used by <see cref="GetDCEx"/>.</summary>
+		[PInvokeData("winuser.h", MSDNShortId = "590cf928-0ad6-43f8-97e9-1dafbcfa9f49")]
+		[Flags]
+		public enum DCX
+		{
+			/// <summary>Returns a DC that corresponds to the window rectangle rather than the client rectangle.</summary>
+			DCX_WINDOW = 0x00000001,
+
+			/// <summary>Returns a DC from the cache, rather than the OWNDC or CLASSDC window. Essentially overrides CS_OWNDC and CS_CLASSDC.</summary>
+			DCX_CACHE = 0x00000002,
+
+			/// <summary>This flag is ignored.</summary>
+			DCX_NORESETATTRS = 0x00000004,
+
+			/// <summary>Excludes the visible regions of all child windows below the window identified by hWnd.</summary>
+			DCX_CLIPCHILDREN = 0x00000008,
+
+			/// <summary>Excludes the visible regions of all sibling windows above the window identified by hWnd.</summary>
+			DCX_CLIPSIBLINGS = 0x00000010,
+
+			/// <summary>
+			/// Uses the visible region of the parent window. The parent's WS_CLIPCHILDREN and CS_PARENTDC style bits are ignored. The origin
+			/// is set to the upper-left corner of the window identified by hWnd.
+			/// </summary>
+			DCX_PARENTCLIP = 0x00000020,
+
+			/// <summary>The clipping region identified by hrgnClip is excluded from the visible region of the returned DC.</summary>
+			DCX_EXCLUDERGN = 0x00000040,
+
+			/// <summary>The clipping region identified by hrgnClip is intersected with the visible region of the returned DC.</summary>
+			DCX_INTERSECTRGN = 0x00000080,
+
+			/// <summary>Returns a region that excludes the window's update region.</summary>
+			DCX_EXCLUDEUPDATE = 0x00000100,
+
+			/// <summary>Returns a region that includes the window's update region.</summary>
+			DCX_INTERSECTUPDATE = 0x00000200,
+
+			/// <summary>
+			/// Allows drawing even if there is a LockWindowUpdate call in effect that would otherwise exclude this window. Used for drawing
+			/// during tracking.
+			/// </summary>
+			DCX_LOCKWINDOWUPDATE = 0x00000400,
+
+			/// <summary>
+			/// When specified with DCX_INTERSECTUPDATE, causes the device context to be completely validated.
+			/// <para>Using this function with both DCX_INTERSECTUPDATE and DCX_VALIDATE is identical to using the BeginPaint function.</para>
+			/// </summary>
+			DCX_VALIDATE = 0x00200000,
 		}
 
 		/// <summary>Values to use a return codes when handling the WM_HCHITTEST message.</summary>
@@ -289,171 +283,1211 @@ namespace Vanara.PInvoke
 			DWLP_DLGPROC = 0x4
 		}
 
-		/// <summary>The <c>DrawEdge</c> function draws one or more edges of rectangle.</summary>
-		/// <param name="hdc">A handle to the device context.</param>
-		/// <param name="qrc">A pointer to a <c>RECT</c> structure that contains the logical coordinates of the rectangle.</param>
-		/// <param name="edge">
+		/// <summary>
 		/// <para>
-		/// The type of inner and outer edges to draw. This parameter must be a combination of one inner-border flag and one outer-border
-		/// flag. The inner-border flags are as follows.
+		/// The <c>ChangeDisplaySettings</c> function changes the settings of the default display device to the specified graphics mode.
+		/// </para>
+		/// <para>To change the settings of a specified display device, use the ChangeDisplaySettingsEx function.</para>
+		/// <para>
+		/// <c>Note</c> Apps that you design to target Windows 8 and later can no longer query or set display modes that are less than 32
+		/// bits per pixel (bpp); these operations will fail. These apps have a compatibility manifest that targets Windows 8. Windows 8
+		/// still supports 8-bit and 16-bit color modes for desktop apps that were built without a Windows 8 manifest; Windows 8 emulates
+		/// these modes but still runs in 32-bit color mode.
+		/// </para>
+		/// </summary>
+		/// <param name="lpDevMode">
+		/// <para>
+		/// A pointer to a DEVMODE structure that describes the new graphics mode. If lpDevMode is <c>NULL</c>, all the values currently in
+		/// the registry will be used for the display setting. Passing <c>NULL</c> for the lpDevMode parameter and 0 for the dwFlags
+		/// parameter is the easiest way to return to the default mode after a dynamic mode change.
 		/// </para>
 		/// <para>
+		/// The <c>dmSize</c> member of DEVMODE must be initialized to the size, in bytes, of the <c>DEVMODE</c> structure. The
+		/// <c>dmDriverExtra</c> member of <c>DEVMODE</c> must be initialized to indicate the number of bytes of private driver data
+		/// following the <c>DEVMODE</c> structure. In addition, you can use any or all of the following members of the <c>DEVMODE</c> structure.
+		/// </para>
 		/// <list type="table">
 		/// <listheader>
-		/// <term>Value</term>
+		/// <term>Member</term>
 		/// <term>Meaning</term>
 		/// </listheader>
 		/// <item>
-		/// <term>BDR_RAISEDINNER</term>
-		/// <term>Raised inner edge.</term>
+		/// <term>dmBitsPerPel</term>
+		/// <term>Bits per pixel</term>
 		/// </item>
 		/// <item>
-		/// <term>BDR_SUNKENINNER</term>
-		/// <term>Sunken inner edge.</term>
+		/// <term>dmPelsWidth</term>
+		/// <term>Pixel width</term>
+		/// </item>
+		/// <item>
+		/// <term>dmPelsHeight</term>
+		/// <term>Pixel height</term>
+		/// </item>
+		/// <item>
+		/// <term>dmDisplayFlags</term>
+		/// <term>Mode flags</term>
+		/// </item>
+		/// <item>
+		/// <term>dmDisplayFrequency</term>
+		/// <term>Mode frequency</term>
+		/// </item>
+		/// <item>
+		/// <term>dmPosition</term>
+		/// <term>Position of the device in a multi-monitor configuration.</term>
 		/// </item>
 		/// </list>
-		/// </para>
-		/// <para>The outer-border flags are as follows.</para>
 		/// <para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>BDR_RAISEDOUTER</term>
-		/// <term>Raised outer edge.</term>
-		/// </item>
-		/// <item>
-		/// <term>BDR_SUNKENOUTER</term>
-		/// <term>Sunken outer edge.</term>
-		/// </item>
-		/// </list>
-		/// </para>
-		/// <para>Alternatively, the edge parameter can specify one of the following flags.</para>
-		/// <para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>EDGE_BUMP</term>
-		/// <term>Combination of BDR_RAISEDOUTER and BDR_SUNKENINNER.</term>
-		/// </item>
-		/// <item>
-		/// <term>EDGE_ETCHED</term>
-		/// <term>Combination of BDR_SUNKENOUTER and BDR_RAISEDINNER.</term>
-		/// </item>
-		/// <item>
-		/// <term>EDGE_RAISED</term>
-		/// <term>Combination of BDR_RAISEDOUTER and BDR_RAISEDINNER.</term>
-		/// </item>
-		/// <item>
-		/// <term>EDGE_SUNKEN</term>
-		/// <term>Combination of BDR_SUNKENOUTER and BDR_SUNKENINNER.</term>
-		/// </item>
-		/// </list>
+		/// In addition to using one or more of the preceding DEVMODE members, you must also set one or more of the following values in the
+		/// <c>dmFields</c> member to change the display setting.
 		/// </para>
 		/// </param>
-		/// <param name="grfFlags">
-		/// <para>The type of border. This parameter can be a combination of the following values.</para>
-		/// <para>
+		/// <param name="dwFlags">
+		/// <para>Indicates how the graphics mode should be changed. This parameter can be one of the following values.</para>
 		/// <list type="table">
 		/// <listheader>
 		/// <term>Value</term>
 		/// <term>Meaning</term>
 		/// </listheader>
 		/// <item>
-		/// <term>BF_ADJUST</term>
+		/// <term>0</term>
+		/// <term>The graphics mode for the current screen will be changed dynamically.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_FULLSCREEN</term>
+		/// <term>The mode is temporary in nature. If you change to and from another desktop, this mode will not be reset.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_GLOBAL</term>
 		/// <term>
-		/// If this flag is passed, shrink the rectangle pointed to by the qrc parameter to exclude the edges that were drawn.If this flag is
-		/// not passed, then do not change the rectangle pointed to by the qrc parameter.
+		/// The settings will be saved in the global settings area so that they will affect all users on the machine. Otherwise, only the
+		/// settings for the user are modified. This flag is only valid when specified with the CDS_UPDATEREGISTRY flag.
 		/// </term>
 		/// </item>
 		/// <item>
-		/// <term>BF_BOTTOM</term>
-		/// <term>Bottom of border rectangle.</term>
+		/// <term>CDS_NORESET</term>
+		/// <term>
+		/// The settings will be saved in the registry, but will not take effect. This flag is only valid when specified with the
+		/// CDS_UPDATEREGISTRY flag.
+		/// </term>
 		/// </item>
 		/// <item>
-		/// <term>BF_BOTTOMLEFT</term>
-		/// <term>Bottom and left side of border rectangle.</term>
+		/// <term>CDS_RESET</term>
+		/// <term>The settings should be changed, even if the requested settings are the same as the current settings.</term>
 		/// </item>
 		/// <item>
-		/// <term>BF_BOTTOMRIGHT</term>
-		/// <term>Bottom and right side of border rectangle.</term>
+		/// <term>CDS_SET_PRIMARY</term>
+		/// <term>This device will become the primary device.</term>
 		/// </item>
 		/// <item>
-		/// <term>BF_DIAGONAL</term>
-		/// <term>Diagonal border.</term>
+		/// <term>CDS_TEST</term>
+		/// <term>The system tests if the requested graphics mode could be set.</term>
 		/// </item>
 		/// <item>
-		/// <term>BF_DIAGONAL_ENDBOTTOMLEFT</term>
-		/// <term>Diagonal border. The end point is the lower-left corner of the rectangle; the origin is top-right corner.</term>
-		/// </item>
-		/// <item>
-		/// <term>BF_DIAGONAL_ENDBOTTOMRIGHT</term>
-		/// <term>Diagonal border. The end point is the lower-right corner of the rectangle; the origin is top-left corner.</term>
-		/// </item>
-		/// <item>
-		/// <term>BF_DIAGONAL_ENDTOPLEFT</term>
-		/// <term>Diagonal border. The end point is the top-left corner of the rectangle; the origin is lower-right corner.</term>
-		/// </item>
-		/// <item>
-		/// <term>BF_DIAGONAL_ENDTOPRIGHT</term>
-		/// <term>Diagonal border. The end point is the top-right corner of the rectangle; the origin is lower-left corner.</term>
-		/// </item>
-		/// <item>
-		/// <term>BF_FLAT</term>
-		/// <term>Flat border.</term>
-		/// </item>
-		/// <item>
-		/// <term>BF_LEFT</term>
-		/// <term>Left side of border rectangle.</term>
-		/// </item>
-		/// <item>
-		/// <term>BF_MIDDLE</term>
-		/// <term>Interior of rectangle to be filled.</term>
-		/// </item>
-		/// <item>
-		/// <term>BF_MONO</term>
-		/// <term>One-dimensional border.</term>
-		/// </item>
-		/// <item>
-		/// <term>BF_RECT</term>
-		/// <term>Entire border rectangle.</term>
-		/// </item>
-		/// <item>
-		/// <term>BF_RIGHT</term>
-		/// <term>Right side of border rectangle.</term>
-		/// </item>
-		/// <item>
-		/// <term>BF_SOFT</term>
-		/// <term>Soft buttons instead of tiles.</term>
-		/// </item>
-		/// <item>
-		/// <term>BF_TOP</term>
-		/// <term>Top of border rectangle.</term>
-		/// </item>
-		/// <item>
-		/// <term>BF_TOPLEFT</term>
-		/// <term>Top and left side of border rectangle.</term>
-		/// </item>
-		/// <item>
-		/// <term>BF_TOPRIGHT</term>
-		/// <term>Top and right side of border rectangle.</term>
+		/// <term>CDS_UPDATEREGISTRY</term>
+		/// <term>
+		/// The graphics mode for the current screen will be changed dynamically and the graphics mode will be updated in the registry. The
+		/// mode information is stored in the USER profile.
+		/// </term>
 		/// </item>
 		/// </list>
+		/// <para>
+		/// Specifying CDS_TEST allows an application to determine which graphics modes are actually valid, without causing the system to
+		/// change to that graphics mode.
+		/// </para>
+		/// <para>
+		/// If CDS_UPDATEREGISTRY is specified and it is possible to change the graphics mode dynamically, the information is stored in the
+		/// registry and DISP_CHANGE_SUCCESSFUL is returned. If it is not possible to change the graphics mode dynamically, the information
+		/// is stored in the registry and DISP_CHANGE_RESTART is returned.
+		/// </para>
+		/// <para>
+		/// If CDS_UPDATEREGISTRY is specified and the information could not be stored in the registry, the graphics mode is not changed and
+		/// DISP_CHANGE_NOTUPDATED is returned.
 		/// </para>
 		/// </param>
 		/// <returns>
-		/// <para>If the function succeeds, the return value is nonzero.</para>
-		/// <para>If the function fails, the return value is zero.</para>
+		/// <para>The <c>ChangeDisplaySettings</c> function returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DISP_CHANGE_SUCCESSFUL</term>
+		/// <term>The settings change was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_BADDUALVIEW</term>
+		/// <term>The settings change was unsuccessful because the system is DualView capable.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_BADFLAGS</term>
+		/// <term>An invalid set of flags was passed in.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_BADMODE</term>
+		/// <term>The graphics mode is not supported.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_BADPARAM</term>
+		/// <term>An invalid parameter was passed in. This can include an invalid flag or combination of flags.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_FAILED</term>
+		/// <term>The display driver failed the specified graphics mode.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_NOTUPDATED</term>
+		/// <term>Unable to write settings to the registry.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_RESTART</term>
+		/// <term>The computer must be restarted for the graphics mode to work.</term>
+		/// </item>
+		/// </list>
 		/// </returns>
-		// BOOL DrawEdge( _In_ HDC hdc, _Inout_ LPRECT qrc, _In_ UINT edge, _In_ UINT grfFlags); https://msdn.microsoft.com/en-us/library/windows/desktop/dd162477(v=vs.85).aspx
-		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("Winuser.h", MSDNShortId = "dd162477")]
-		public static extern bool DrawEdge(HDC hdc, ref RECT qrc, BorderStyles3D edge, BorderFlags grfFlags);
+		/// <remarks>
+		/// <para>
+		/// To ensure that the DEVMODE structure passed to <c>ChangeDisplaySettings</c> is valid and contains only values supported by the
+		/// display driver, use the <c>DEVMODE</c> returned by the EnumDisplaySettings function.
+		/// </para>
+		/// <para>
+		/// When the display mode is changed dynamically, the WM_DISPLAYCHANGE message is sent to all running applications with the following
+		/// message parameters.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Parameters</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>wParam</term>
+		/// <term>New bits per pixel</term>
+		/// </item>
+		/// <item>
+		/// <term>LOWORD(lParam)</term>
+		/// <term>New pixel width</term>
+		/// </item>
+		/// <item>
+		/// <term>HIWORD(lParam)</term>
+		/// <term>New pixel height</term>
+		/// </item>
+		/// </list>
+		/// <para>DPI Virtualization</para>
+		/// <para>
+		/// This API does not participate in DPI virtualization. The input given is always in terms of physical pixels, and is not related to
+		/// the calling context.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-changedisplaysettingsa LONG ChangeDisplaySettingsA(
+		// DEVMODEA *lpDevMode, DWORD dwFlags );
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "208bf1cc-c03c-4d03-92e4-32fcf856b4d8")]
+		public static extern int ChangeDisplaySettings(in DEVMODE lpDevMode, ChangeDisplaySettingsFlags dwFlags);
+
+		/// <summary>
+		/// <para>
+		/// The <c>ChangeDisplaySettings</c> function changes the settings of the default display device to the specified graphics mode.
+		/// </para>
+		/// <para>To change the settings of a specified display device, use the ChangeDisplaySettingsEx function.</para>
+		/// <para>
+		/// <c>Note</c> Apps that you design to target Windows 8 and later can no longer query or set display modes that are less than 32
+		/// bits per pixel (bpp); these operations will fail. These apps have a compatibility manifest that targets Windows 8. Windows 8
+		/// still supports 8-bit and 16-bit color modes for desktop apps that were built without a Windows 8 manifest; Windows 8 emulates
+		/// these modes but still runs in 32-bit color mode.
+		/// </para>
+		/// </summary>
+		/// <param name="lpDevMode">
+		/// <para>
+		/// A pointer to a DEVMODE structure that describes the new graphics mode. If lpDevMode is <c>NULL</c>, all the values currently in
+		/// the registry will be used for the display setting. Passing <c>NULL</c> for the lpDevMode parameter and 0 for the dwFlags
+		/// parameter is the easiest way to return to the default mode after a dynamic mode change.
+		/// </para>
+		/// <para>
+		/// The <c>dmSize</c> member of DEVMODE must be initialized to the size, in bytes, of the <c>DEVMODE</c> structure. The
+		/// <c>dmDriverExtra</c> member of <c>DEVMODE</c> must be initialized to indicate the number of bytes of private driver data
+		/// following the <c>DEVMODE</c> structure. In addition, you can use any or all of the following members of the <c>DEVMODE</c> structure.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Member</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>dmBitsPerPel</term>
+		/// <term>Bits per pixel</term>
+		/// </item>
+		/// <item>
+		/// <term>dmPelsWidth</term>
+		/// <term>Pixel width</term>
+		/// </item>
+		/// <item>
+		/// <term>dmPelsHeight</term>
+		/// <term>Pixel height</term>
+		/// </item>
+		/// <item>
+		/// <term>dmDisplayFlags</term>
+		/// <term>Mode flags</term>
+		/// </item>
+		/// <item>
+		/// <term>dmDisplayFrequency</term>
+		/// <term>Mode frequency</term>
+		/// </item>
+		/// <item>
+		/// <term>dmPosition</term>
+		/// <term>Position of the device in a multi-monitor configuration.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// In addition to using one or more of the preceding DEVMODE members, you must also set one or more of the following values in the
+		/// <c>dmFields</c> member to change the display setting.
+		/// </para>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>Indicates how the graphics mode should be changed. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0</term>
+		/// <term>The graphics mode for the current screen will be changed dynamically.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_FULLSCREEN</term>
+		/// <term>The mode is temporary in nature. If you change to and from another desktop, this mode will not be reset.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_GLOBAL</term>
+		/// <term>
+		/// The settings will be saved in the global settings area so that they will affect all users on the machine. Otherwise, only the
+		/// settings for the user are modified. This flag is only valid when specified with the CDS_UPDATEREGISTRY flag.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_NORESET</term>
+		/// <term>
+		/// The settings will be saved in the registry, but will not take effect. This flag is only valid when specified with the
+		/// CDS_UPDATEREGISTRY flag.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_RESET</term>
+		/// <term>The settings should be changed, even if the requested settings are the same as the current settings.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_SET_PRIMARY</term>
+		/// <term>This device will become the primary device.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_TEST</term>
+		/// <term>The system tests if the requested graphics mode could be set.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_UPDATEREGISTRY</term>
+		/// <term>
+		/// The graphics mode for the current screen will be changed dynamically and the graphics mode will be updated in the registry. The
+		/// mode information is stored in the USER profile.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// Specifying CDS_TEST allows an application to determine which graphics modes are actually valid, without causing the system to
+		/// change to that graphics mode.
+		/// </para>
+		/// <para>
+		/// If CDS_UPDATEREGISTRY is specified and it is possible to change the graphics mode dynamically, the information is stored in the
+		/// registry and DISP_CHANGE_SUCCESSFUL is returned. If it is not possible to change the graphics mode dynamically, the information
+		/// is stored in the registry and DISP_CHANGE_RESTART is returned.
+		/// </para>
+		/// <para>
+		/// If CDS_UPDATEREGISTRY is specified and the information could not be stored in the registry, the graphics mode is not changed and
+		/// DISP_CHANGE_NOTUPDATED is returned.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>The <c>ChangeDisplaySettings</c> function returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DISP_CHANGE_SUCCESSFUL</term>
+		/// <term>The settings change was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_BADDUALVIEW</term>
+		/// <term>The settings change was unsuccessful because the system is DualView capable.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_BADFLAGS</term>
+		/// <term>An invalid set of flags was passed in.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_BADMODE</term>
+		/// <term>The graphics mode is not supported.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_BADPARAM</term>
+		/// <term>An invalid parameter was passed in. This can include an invalid flag or combination of flags.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_FAILED</term>
+		/// <term>The display driver failed the specified graphics mode.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_NOTUPDATED</term>
+		/// <term>Unable to write settings to the registry.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_RESTART</term>
+		/// <term>The computer must be restarted for the graphics mode to work.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// To ensure that the DEVMODE structure passed to <c>ChangeDisplaySettings</c> is valid and contains only values supported by the
+		/// display driver, use the <c>DEVMODE</c> returned by the EnumDisplaySettings function.
+		/// </para>
+		/// <para>
+		/// When the display mode is changed dynamically, the WM_DISPLAYCHANGE message is sent to all running applications with the following
+		/// message parameters.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Parameters</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>wParam</term>
+		/// <term>New bits per pixel</term>
+		/// </item>
+		/// <item>
+		/// <term>LOWORD(lParam)</term>
+		/// <term>New pixel width</term>
+		/// </item>
+		/// <item>
+		/// <term>HIWORD(lParam)</term>
+		/// <term>New pixel height</term>
+		/// </item>
+		/// </list>
+		/// <para>DPI Virtualization</para>
+		/// <para>
+		/// This API does not participate in DPI virtualization. The input given is always in terms of physical pixels, and is not related to
+		/// the calling context.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-changedisplaysettingsa LONG ChangeDisplaySettingsA(
+		// DEVMODEA *lpDevMode, DWORD dwFlags );
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "208bf1cc-c03c-4d03-92e4-32fcf856b4d8")]
+		public static extern int ChangeDisplaySettings([Optional] IntPtr lpDevMode, ChangeDisplaySettingsFlags dwFlags);
+
+		/// <summary>
+		/// <para>
+		/// The <c>ChangeDisplaySettingsEx</c> function changes the settings of the specified display device to the specified graphics mode.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> Apps that you design to target Windows 8 and later can no longer query or set display modes that are less than 32
+		/// bits per pixel (bpp); these operations will fail. These apps have a compatibility manifest that targets Windows 8. Windows 8
+		/// still supports 8-bit and 16-bit color modes for desktop apps that were built without a Windows 8 manifest; Windows 8 emulates
+		/// these modes but still runs in 32-bit color mode.
+		/// </para>
+		/// </summary>
+		/// <param name="lpszDeviceName">
+		/// <para>
+		/// A pointer to a null-terminated string that specifies the display device whose graphics mode will change. Only display device
+		/// names as returned by EnumDisplayDevices are valid. See <c>EnumDisplayDevices</c> for further information on the names associated
+		/// with these display devices.
+		/// </para>
+		/// <para>
+		/// The lpszDeviceName parameter can be <c>NULL</c>. A <c>NULL</c> value specifies the default display device. The default device can
+		/// be determined by calling EnumDisplayDevices and checking for the DISPLAY_DEVICE_PRIMARY_DEVICE flag.
+		/// </para>
+		/// </param>
+		/// <param name="lpDevMode">
+		/// <para>
+		/// A pointer to a DEVMODE structure that describes the new graphics mode. If lpDevMode is <c>NULL</c>, all the values currently in
+		/// the registry will be used for the display setting. Passing <c>NULL</c> for the lpDevMode parameter and 0 for the dwFlags
+		/// parameter is the easiest way to return to the default mode after a dynamic mode change.
+		/// </para>
+		/// <para>
+		/// The <c>dmSize</c> member must be initialized to the size, in bytes, of the DEVMODE structure. The <c>dmDriverExtra</c> member
+		/// must be initialized to indicate the number of bytes of private driver data following the <c>DEVMODE</c> structure. In addition,
+		/// you can use any of the following members of the <c>DEVMODE</c> structure.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Member</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>dmBitsPerPel</term>
+		/// <term>Bits per pixel</term>
+		/// </item>
+		/// <item>
+		/// <term>dmPelsWidth</term>
+		/// <term>Pixel width</term>
+		/// </item>
+		/// <item>
+		/// <term>dmPelsHeight</term>
+		/// <term>Pixel height</term>
+		/// </item>
+		/// <item>
+		/// <term>dmDisplayFlags</term>
+		/// <term>Mode flags</term>
+		/// </item>
+		/// <item>
+		/// <term>dmDisplayFrequency</term>
+		/// <term>Mode frequency</term>
+		/// </item>
+		/// <item>
+		/// <term>dmPosition</term>
+		/// <term>Position of the device in a multi-monitor configuration.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// In addition to using one or more of the preceding DEVMODE members, you must also set one or more of the following values in the
+		/// <c>dmFields</c> member to change the display settings.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DM_BITSPERPEL</term>
+		/// <term>Use the dmBitsPerPel value.</term>
+		/// </item>
+		/// <item>
+		/// <term>DM_PELSWIDTH</term>
+		/// <term>Use the dmPelsWidth value.</term>
+		/// </item>
+		/// <item>
+		/// <term>DM_PELSHEIGHT</term>
+		/// <term>Use the dmPelsHeight value.</term>
+		/// </item>
+		/// <item>
+		/// <term>DM_DISPLAYFLAGS</term>
+		/// <term>Use the dmDisplayFlags value.</term>
+		/// </item>
+		/// <item>
+		/// <term>DM_DISPLAYFREQUENCY</term>
+		/// <term>Use the dmDisplayFrequency value.</term>
+		/// </item>
+		/// <item>
+		/// <term>DM_POSITION</term>
+		/// <term>Use the dmPosition value.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="hwnd">Reserved; must be <c>NULL</c>.</param>
+		/// <param name="dwflags">
+		/// <para>Indicates how the graphics mode should be changed. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0</term>
+		/// <term>The graphics mode for the current screen will be changed dynamically.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_FULLSCREEN</term>
+		/// <term>The mode is temporary in nature. If you change to and from another desktop, this mode will not be reset.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_GLOBAL</term>
+		/// <term>
+		/// The settings will be saved in the global settings area so that they will affect all users on the machine. Otherwise, only the
+		/// settings for the user are modified. This flag is only valid when specified with the CDS_UPDATEREGISTRY flag.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_NORESET</term>
+		/// <term>
+		/// The settings will be saved in the registry, but will not take effect. This flag is only valid when specified with the
+		/// CDS_UPDATEREGISTRY flag.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_RESET</term>
+		/// <term>The settings should be changed, even if the requested settings are the same as the current settings.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_SET_PRIMARY</term>
+		/// <term>This device will become the primary device.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_TEST</term>
+		/// <term>The system tests if the requested graphics mode could be set.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_UPDATEREGISTRY</term>
+		/// <term>
+		/// The graphics mode for the current screen will be changed dynamically and the graphics mode will be updated in the registry. The
+		/// mode information is stored in the USER profile.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_VIDEOPARAMETERS</term>
+		/// <term>When set, the lParam parameter is a pointer to a VIDEOPARAMETERS structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_ENABLE_UNSAFE_MODES</term>
+		/// <term>Enables settings changes to unsafe graphics modes.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_DISABLE_UNSAFE_MODES</term>
+		/// <term>Disables settings changes to unsafe graphics modes.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// Specifying CDS_TEST allows an application to determine which graphics modes are actually valid, without causing the system to
+		/// change to them.
+		/// </para>
+		/// <para>
+		/// If CDS_UPDATEREGISTRY is specified and it is possible to change the graphics mode dynamically, the information is stored in the
+		/// registry and DISP_CHANGE_SUCCESSFUL is returned. If it is not possible to change the graphics mode dynamically, the information
+		/// is stored in the registry and DISP_CHANGE_RESTART is returned.
+		/// </para>
+		/// <para>
+		/// If CDS_UPDATEREGISTRY is specified and the information could not be stored in the registry, the graphics mode is not changed and
+		/// DISP_CHANGE_NOTUPDATED is returned.
+		/// </para>
+		/// </param>
+		/// <param name="lParam">
+		/// If dwFlags is <c>CDS_VIDEOPARAMETERS</c>, lParam is a pointer to a VIDEOPARAMETERS structure. Otherwise lParam must be <c>NULL</c>.
+		/// </param>
+		/// <returns>
+		/// <para>The <c>ChangeDisplaySettingsEx</c> function returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DISP_CHANGE_SUCCESSFUL</term>
+		/// <term>The settings change was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_BADDUALVIEW</term>
+		/// <term>The settings change was unsuccessful because the system is DualView capable.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_BADFLAGS</term>
+		/// <term>An invalid set of flags was passed in.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_BADMODE</term>
+		/// <term>The graphics mode is not supported.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_BADPARAM</term>
+		/// <term>An invalid parameter was passed in. This can include an invalid flag or combination of flags.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_FAILED</term>
+		/// <term>The display driver failed the specified graphics mode.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_NOTUPDATED</term>
+		/// <term>Unable to write settings to the registry.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_RESTART</term>
+		/// <term>The computer must be restarted for the graphics mode to work.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// To ensure that the DEVMODE structure passed to <c>ChangeDisplaySettingsEx</c> is valid and contains only values supported by the
+		/// display driver, use the <c>DEVMODE</c> returned by the EnumDisplaySettings function.
+		/// </para>
+		/// <para>
+		/// When adding a display monitor to a multiple-monitor system programmatically, set <c>DEVMODE.dmFields</c> to DM_POSITION and
+		/// specify a position (in <c>DEVMODE.dmPosition</c>) for the monitor you are adding that is adjacent to at least one pixel of the
+		/// display area of an existing monitor. To detach the monitor, set <c>DEVMODE.dmFields</c> to DM_POSITION but set
+		/// <c>DEVMODE.dmPelsWidth</c> and <c>DEVMODE.dmPelsHeight</c> to zero. For more information, see Multiple Display Monitors.
+		/// </para>
+		/// <para>
+		/// When the display mode is changed dynamically, the WM_DISPLAYCHANGE message is sent to all running applications with the following
+		/// message parameters.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Parameters</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>wParam</term>
+		/// <term>New bits per pixel</term>
+		/// </item>
+		/// <item>
+		/// <term>LOWORD(lParam)</term>
+		/// <term>New pixel width</term>
+		/// </item>
+		/// <item>
+		/// <term>HIWORD(lParam)</term>
+		/// <term>New pixel height</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// To change the settings for more than one display at the same time, first call <c>ChangeDisplaySettingsEx</c> for each device
+		/// individually to update the registry without applying the changes. Then call <c>ChangeDisplaySettingsEx</c> once more, with a
+		/// <c>NULL</c> device, to apply the changes. For example, to change the settings for two displays, do the following:
+		/// </para>
+		/// <para>DPI Virtualization</para>
+		/// <para>
+		/// This API does not participate in DPI virtualization. The input given is always in terms of physical pixels, and is not related to
+		/// the calling context.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-changedisplaysettingsexa LONG ChangeDisplaySettingsExA(
+		// LPCSTR lpszDeviceName, DEVMODEA *lpDevMode, HWND hwnd, DWORD dwflags, LPVOID lParam );
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "1448e04c-1452-4eab-bda4-4d249cb67a24")]
+		public static extern int ChangeDisplaySettingsEx([Optional] string lpszDeviceName, in DEVMODE lpDevMode, [Optional] HWND hwnd, [Optional] ChangeDisplaySettingsFlags dwflags, [Optional] IntPtr lParam);
+
+		/// <summary>
+		/// <para>
+		/// The <c>ChangeDisplaySettingsEx</c> function changes the settings of the specified display device to the specified graphics mode.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> Apps that you design to target Windows 8 and later can no longer query or set display modes that are less than 32
+		/// bits per pixel (bpp); these operations will fail. These apps have a compatibility manifest that targets Windows 8. Windows 8
+		/// still supports 8-bit and 16-bit color modes for desktop apps that were built without a Windows 8 manifest; Windows 8 emulates
+		/// these modes but still runs in 32-bit color mode.
+		/// </para>
+		/// </summary>
+		/// <param name="lpszDeviceName">
+		/// <para>
+		/// A pointer to a null-terminated string that specifies the display device whose graphics mode will change. Only display device
+		/// names as returned by EnumDisplayDevices are valid. See <c>EnumDisplayDevices</c> for further information on the names associated
+		/// with these display devices.
+		/// </para>
+		/// <para>
+		/// The lpszDeviceName parameter can be <c>NULL</c>. A <c>NULL</c> value specifies the default display device. The default device can
+		/// be determined by calling EnumDisplayDevices and checking for the DISPLAY_DEVICE_PRIMARY_DEVICE flag.
+		/// </para>
+		/// </param>
+		/// <param name="lpDevMode">
+		/// <para>
+		/// A pointer to a DEVMODE structure that describes the new graphics mode. If lpDevMode is <c>NULL</c>, all the values currently in
+		/// the registry will be used for the display setting. Passing <c>NULL</c> for the lpDevMode parameter and 0 for the dwFlags
+		/// parameter is the easiest way to return to the default mode after a dynamic mode change.
+		/// </para>
+		/// <para>
+		/// The <c>dmSize</c> member must be initialized to the size, in bytes, of the DEVMODE structure. The <c>dmDriverExtra</c> member
+		/// must be initialized to indicate the number of bytes of private driver data following the <c>DEVMODE</c> structure. In addition,
+		/// you can use any of the following members of the <c>DEVMODE</c> structure.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Member</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>dmBitsPerPel</term>
+		/// <term>Bits per pixel</term>
+		/// </item>
+		/// <item>
+		/// <term>dmPelsWidth</term>
+		/// <term>Pixel width</term>
+		/// </item>
+		/// <item>
+		/// <term>dmPelsHeight</term>
+		/// <term>Pixel height</term>
+		/// </item>
+		/// <item>
+		/// <term>dmDisplayFlags</term>
+		/// <term>Mode flags</term>
+		/// </item>
+		/// <item>
+		/// <term>dmDisplayFrequency</term>
+		/// <term>Mode frequency</term>
+		/// </item>
+		/// <item>
+		/// <term>dmPosition</term>
+		/// <term>Position of the device in a multi-monitor configuration.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// In addition to using one or more of the preceding DEVMODE members, you must also set one or more of the following values in the
+		/// <c>dmFields</c> member to change the display settings.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DM_BITSPERPEL</term>
+		/// <term>Use the dmBitsPerPel value.</term>
+		/// </item>
+		/// <item>
+		/// <term>DM_PELSWIDTH</term>
+		/// <term>Use the dmPelsWidth value.</term>
+		/// </item>
+		/// <item>
+		/// <term>DM_PELSHEIGHT</term>
+		/// <term>Use the dmPelsHeight value.</term>
+		/// </item>
+		/// <item>
+		/// <term>DM_DISPLAYFLAGS</term>
+		/// <term>Use the dmDisplayFlags value.</term>
+		/// </item>
+		/// <item>
+		/// <term>DM_DISPLAYFREQUENCY</term>
+		/// <term>Use the dmDisplayFrequency value.</term>
+		/// </item>
+		/// <item>
+		/// <term>DM_POSITION</term>
+		/// <term>Use the dmPosition value.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="hwnd">Reserved; must be <c>NULL</c>.</param>
+		/// <param name="dwflags">
+		/// <para>Indicates how the graphics mode should be changed. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0</term>
+		/// <term>The graphics mode for the current screen will be changed dynamically.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_FULLSCREEN</term>
+		/// <term>The mode is temporary in nature. If you change to and from another desktop, this mode will not be reset.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_GLOBAL</term>
+		/// <term>
+		/// The settings will be saved in the global settings area so that they will affect all users on the machine. Otherwise, only the
+		/// settings for the user are modified. This flag is only valid when specified with the CDS_UPDATEREGISTRY flag.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_NORESET</term>
+		/// <term>
+		/// The settings will be saved in the registry, but will not take effect. This flag is only valid when specified with the
+		/// CDS_UPDATEREGISTRY flag.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_RESET</term>
+		/// <term>The settings should be changed, even if the requested settings are the same as the current settings.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_SET_PRIMARY</term>
+		/// <term>This device will become the primary device.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_TEST</term>
+		/// <term>The system tests if the requested graphics mode could be set.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_UPDATEREGISTRY</term>
+		/// <term>
+		/// The graphics mode for the current screen will be changed dynamically and the graphics mode will be updated in the registry. The
+		/// mode information is stored in the USER profile.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_VIDEOPARAMETERS</term>
+		/// <term>When set, the lParam parameter is a pointer to a VIDEOPARAMETERS structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_ENABLE_UNSAFE_MODES</term>
+		/// <term>Enables settings changes to unsafe graphics modes.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_DISABLE_UNSAFE_MODES</term>
+		/// <term>Disables settings changes to unsafe graphics modes.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// Specifying CDS_TEST allows an application to determine which graphics modes are actually valid, without causing the system to
+		/// change to them.
+		/// </para>
+		/// <para>
+		/// If CDS_UPDATEREGISTRY is specified and it is possible to change the graphics mode dynamically, the information is stored in the
+		/// registry and DISP_CHANGE_SUCCESSFUL is returned. If it is not possible to change the graphics mode dynamically, the information
+		/// is stored in the registry and DISP_CHANGE_RESTART is returned.
+		/// </para>
+		/// <para>
+		/// If CDS_UPDATEREGISTRY is specified and the information could not be stored in the registry, the graphics mode is not changed and
+		/// DISP_CHANGE_NOTUPDATED is returned.
+		/// </para>
+		/// </param>
+		/// <param name="lParam">
+		/// If dwFlags is <c>CDS_VIDEOPARAMETERS</c>, lParam is a pointer to a VIDEOPARAMETERS structure. Otherwise lParam must be <c>NULL</c>.
+		/// </param>
+		/// <returns>
+		/// <para>The <c>ChangeDisplaySettingsEx</c> function returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DISP_CHANGE_SUCCESSFUL</term>
+		/// <term>The settings change was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_BADDUALVIEW</term>
+		/// <term>The settings change was unsuccessful because the system is DualView capable.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_BADFLAGS</term>
+		/// <term>An invalid set of flags was passed in.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_BADMODE</term>
+		/// <term>The graphics mode is not supported.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_BADPARAM</term>
+		/// <term>An invalid parameter was passed in. This can include an invalid flag or combination of flags.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_FAILED</term>
+		/// <term>The display driver failed the specified graphics mode.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_NOTUPDATED</term>
+		/// <term>Unable to write settings to the registry.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_RESTART</term>
+		/// <term>The computer must be restarted for the graphics mode to work.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// To ensure that the DEVMODE structure passed to <c>ChangeDisplaySettingsEx</c> is valid and contains only values supported by the
+		/// display driver, use the <c>DEVMODE</c> returned by the EnumDisplaySettings function.
+		/// </para>
+		/// <para>
+		/// When adding a display monitor to a multiple-monitor system programmatically, set <c>DEVMODE.dmFields</c> to DM_POSITION and
+		/// specify a position (in <c>DEVMODE.dmPosition</c>) for the monitor you are adding that is adjacent to at least one pixel of the
+		/// display area of an existing monitor. To detach the monitor, set <c>DEVMODE.dmFields</c> to DM_POSITION but set
+		/// <c>DEVMODE.dmPelsWidth</c> and <c>DEVMODE.dmPelsHeight</c> to zero. For more information, see Multiple Display Monitors.
+		/// </para>
+		/// <para>
+		/// When the display mode is changed dynamically, the WM_DISPLAYCHANGE message is sent to all running applications with the following
+		/// message parameters.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Parameters</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>wParam</term>
+		/// <term>New bits per pixel</term>
+		/// </item>
+		/// <item>
+		/// <term>LOWORD(lParam)</term>
+		/// <term>New pixel width</term>
+		/// </item>
+		/// <item>
+		/// <term>HIWORD(lParam)</term>
+		/// <term>New pixel height</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// To change the settings for more than one display at the same time, first call <c>ChangeDisplaySettingsEx</c> for each device
+		/// individually to update the registry without applying the changes. Then call <c>ChangeDisplaySettingsEx</c> once more, with a
+		/// <c>NULL</c> device, to apply the changes. For example, to change the settings for two displays, do the following:
+		/// </para>
+		/// <para>DPI Virtualization</para>
+		/// <para>
+		/// This API does not participate in DPI virtualization. The input given is always in terms of physical pixels, and is not related to
+		/// the calling context.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-changedisplaysettingsexa LONG ChangeDisplaySettingsExA(
+		// LPCSTR lpszDeviceName, DEVMODEA *lpDevMode, HWND hwnd, DWORD dwflags, LPVOID lParam );
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "1448e04c-1452-4eab-bda4-4d249cb67a24")]
+		public static extern int ChangeDisplaySettingsEx([Optional] string lpszDeviceName, [Optional] IntPtr lpDevMode, [Optional] HWND hwnd, [Optional] ChangeDisplaySettingsFlags dwflags, [Optional] IntPtr lParam);
+
+		/// <summary>
+		/// <para>
+		/// The <c>ChangeDisplaySettingsEx</c> function changes the settings of the specified display device to the specified graphics mode.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> Apps that you design to target Windows 8 and later can no longer query or set display modes that are less than 32
+		/// bits per pixel (bpp); these operations will fail. These apps have a compatibility manifest that targets Windows 8. Windows 8
+		/// still supports 8-bit and 16-bit color modes for desktop apps that were built without a Windows 8 manifest; Windows 8 emulates
+		/// these modes but still runs in 32-bit color mode.
+		/// </para>
+		/// </summary>
+		/// <param name="lpszDeviceName">
+		/// <para>
+		/// A pointer to a null-terminated string that specifies the display device whose graphics mode will change. Only display device
+		/// names as returned by EnumDisplayDevices are valid. See <c>EnumDisplayDevices</c> for further information on the names associated
+		/// with these display devices.
+		/// </para>
+		/// <para>
+		/// The lpszDeviceName parameter can be <c>NULL</c>. A <c>NULL</c> value specifies the default display device. The default device can
+		/// be determined by calling EnumDisplayDevices and checking for the DISPLAY_DEVICE_PRIMARY_DEVICE flag.
+		/// </para>
+		/// </param>
+		/// <param name="lpDevMode">
+		/// <para>
+		/// A pointer to a DEVMODE structure that describes the new graphics mode. If lpDevMode is <c>NULL</c>, all the values currently in
+		/// the registry will be used for the display setting. Passing <c>NULL</c> for the lpDevMode parameter and 0 for the dwFlags
+		/// parameter is the easiest way to return to the default mode after a dynamic mode change.
+		/// </para>
+		/// <para>
+		/// The <c>dmSize</c> member must be initialized to the size, in bytes, of the DEVMODE structure. The <c>dmDriverExtra</c> member
+		/// must be initialized to indicate the number of bytes of private driver data following the <c>DEVMODE</c> structure. In addition,
+		/// you can use any of the following members of the <c>DEVMODE</c> structure.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Member</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>dmBitsPerPel</term>
+		/// <term>Bits per pixel</term>
+		/// </item>
+		/// <item>
+		/// <term>dmPelsWidth</term>
+		/// <term>Pixel width</term>
+		/// </item>
+		/// <item>
+		/// <term>dmPelsHeight</term>
+		/// <term>Pixel height</term>
+		/// </item>
+		/// <item>
+		/// <term>dmDisplayFlags</term>
+		/// <term>Mode flags</term>
+		/// </item>
+		/// <item>
+		/// <term>dmDisplayFrequency</term>
+		/// <term>Mode frequency</term>
+		/// </item>
+		/// <item>
+		/// <term>dmPosition</term>
+		/// <term>Position of the device in a multi-monitor configuration.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// In addition to using one or more of the preceding DEVMODE members, you must also set one or more of the following values in the
+		/// <c>dmFields</c> member to change the display settings.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DM_BITSPERPEL</term>
+		/// <term>Use the dmBitsPerPel value.</term>
+		/// </item>
+		/// <item>
+		/// <term>DM_PELSWIDTH</term>
+		/// <term>Use the dmPelsWidth value.</term>
+		/// </item>
+		/// <item>
+		/// <term>DM_PELSHEIGHT</term>
+		/// <term>Use the dmPelsHeight value.</term>
+		/// </item>
+		/// <item>
+		/// <term>DM_DISPLAYFLAGS</term>
+		/// <term>Use the dmDisplayFlags value.</term>
+		/// </item>
+		/// <item>
+		/// <term>DM_DISPLAYFREQUENCY</term>
+		/// <term>Use the dmDisplayFrequency value.</term>
+		/// </item>
+		/// <item>
+		/// <term>DM_POSITION</term>
+		/// <term>Use the dmPosition value.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="hwnd">Reserved; must be <c>NULL</c>.</param>
+		/// <param name="dwflags">
+		/// <para>Indicates how the graphics mode should be changed. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0</term>
+		/// <term>The graphics mode for the current screen will be changed dynamically.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_FULLSCREEN</term>
+		/// <term>The mode is temporary in nature. If you change to and from another desktop, this mode will not be reset.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_GLOBAL</term>
+		/// <term>
+		/// The settings will be saved in the global settings area so that they will affect all users on the machine. Otherwise, only the
+		/// settings for the user are modified. This flag is only valid when specified with the CDS_UPDATEREGISTRY flag.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_NORESET</term>
+		/// <term>
+		/// The settings will be saved in the registry, but will not take effect. This flag is only valid when specified with the
+		/// CDS_UPDATEREGISTRY flag.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_RESET</term>
+		/// <term>The settings should be changed, even if the requested settings are the same as the current settings.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_SET_PRIMARY</term>
+		/// <term>This device will become the primary device.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_TEST</term>
+		/// <term>The system tests if the requested graphics mode could be set.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_UPDATEREGISTRY</term>
+		/// <term>
+		/// The graphics mode for the current screen will be changed dynamically and the graphics mode will be updated in the registry. The
+		/// mode information is stored in the USER profile.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_VIDEOPARAMETERS</term>
+		/// <term>When set, the lParam parameter is a pointer to a VIDEOPARAMETERS structure.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_ENABLE_UNSAFE_MODES</term>
+		/// <term>Enables settings changes to unsafe graphics modes.</term>
+		/// </item>
+		/// <item>
+		/// <term>CDS_DISABLE_UNSAFE_MODES</term>
+		/// <term>Disables settings changes to unsafe graphics modes.</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// Specifying CDS_TEST allows an application to determine which graphics modes are actually valid, without causing the system to
+		/// change to them.
+		/// </para>
+		/// <para>
+		/// If CDS_UPDATEREGISTRY is specified and it is possible to change the graphics mode dynamically, the information is stored in the
+		/// registry and DISP_CHANGE_SUCCESSFUL is returned. If it is not possible to change the graphics mode dynamically, the information
+		/// is stored in the registry and DISP_CHANGE_RESTART is returned.
+		/// </para>
+		/// <para>
+		/// If CDS_UPDATEREGISTRY is specified and the information could not be stored in the registry, the graphics mode is not changed and
+		/// DISP_CHANGE_NOTUPDATED is returned.
+		/// </para>
+		/// </param>
+		/// <param name="lParam">
+		/// If dwFlags is <c>CDS_VIDEOPARAMETERS</c>, lParam is a pointer to a VIDEOPARAMETERS structure. Otherwise lParam must be <c>NULL</c>.
+		/// </param>
+		/// <returns>
+		/// <para>The <c>ChangeDisplaySettingsEx</c> function returns one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DISP_CHANGE_SUCCESSFUL</term>
+		/// <term>The settings change was successful.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_BADDUALVIEW</term>
+		/// <term>The settings change was unsuccessful because the system is DualView capable.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_BADFLAGS</term>
+		/// <term>An invalid set of flags was passed in.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_BADMODE</term>
+		/// <term>The graphics mode is not supported.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_BADPARAM</term>
+		/// <term>An invalid parameter was passed in. This can include an invalid flag or combination of flags.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_FAILED</term>
+		/// <term>The display driver failed the specified graphics mode.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_NOTUPDATED</term>
+		/// <term>Unable to write settings to the registry.</term>
+		/// </item>
+		/// <item>
+		/// <term>DISP_CHANGE_RESTART</term>
+		/// <term>The computer must be restarted for the graphics mode to work.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// To ensure that the DEVMODE structure passed to <c>ChangeDisplaySettingsEx</c> is valid and contains only values supported by the
+		/// display driver, use the <c>DEVMODE</c> returned by the EnumDisplaySettings function.
+		/// </para>
+		/// <para>
+		/// When adding a display monitor to a multiple-monitor system programmatically, set <c>DEVMODE.dmFields</c> to DM_POSITION and
+		/// specify a position (in <c>DEVMODE.dmPosition</c>) for the monitor you are adding that is adjacent to at least one pixel of the
+		/// display area of an existing monitor. To detach the monitor, set <c>DEVMODE.dmFields</c> to DM_POSITION but set
+		/// <c>DEVMODE.dmPelsWidth</c> and <c>DEVMODE.dmPelsHeight</c> to zero. For more information, see Multiple Display Monitors.
+		/// </para>
+		/// <para>
+		/// When the display mode is changed dynamically, the WM_DISPLAYCHANGE message is sent to all running applications with the following
+		/// message parameters.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Parameters</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>wParam</term>
+		/// <term>New bits per pixel</term>
+		/// </item>
+		/// <item>
+		/// <term>LOWORD(lParam)</term>
+		/// <term>New pixel width</term>
+		/// </item>
+		/// <item>
+		/// <term>HIWORD(lParam)</term>
+		/// <term>New pixel height</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// To change the settings for more than one display at the same time, first call <c>ChangeDisplaySettingsEx</c> for each device
+		/// individually to update the registry without applying the changes. Then call <c>ChangeDisplaySettingsEx</c> once more, with a
+		/// <c>NULL</c> device, to apply the changes. For example, to change the settings for two displays, do the following:
+		/// </para>
+		/// <para>DPI Virtualization</para>
+		/// <para>
+		/// This API does not participate in DPI virtualization. The input given is always in terms of physical pixels, and is not related to
+		/// the calling context.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-changedisplaysettingsexa LONG ChangeDisplaySettingsExA(
+		// LPCSTR lpszDeviceName, DEVMODEA *lpDevMode, HWND hwnd, DWORD dwflags, LPVOID lParam );
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "1448e04c-1452-4eab-bda4-4d249cb67a24")]
+		public static extern int ChangeDisplaySettingsEx([Optional] string lpszDeviceName, in DEVMODE lpDevMode, [Optional] HWND hwnd, [Optional] ChangeDisplaySettingsFlags dwflags, in VIDEOPARAMETERS lParam);
 
 		/// <summary>
 		/// The DrawText function draws formatted text in the specified rectangle. It formats the text according to the specified method
@@ -499,6 +1533,105 @@ namespace Vanara.PInvoke
 		public static extern SafeHDC GetDC(HWND ptr);
 
 		/// <summary>
+		/// <para>
+		/// The <c>GetDCEx</c> function retrieves a handle to a device context (DC) for the client area of a specified window or for the
+		/// entire screen. You can use the returned handle in subsequent GDI functions to draw in the DC. The device context is an opaque
+		/// data structure, whose values are used internally by GDI.
+		/// </para>
+		/// <para>
+		/// This function is an extension to the GetDC function, which gives an application more control over how and whether clipping occurs
+		/// in the client area.
+		/// </para>
+		/// </summary>
+		/// <param name="hWnd">
+		/// A handle to the window whose DC is to be retrieved. If this value is <c>NULL</c>, <c>GetDCEx</c> retrieves the DC for the entire screen.
+		/// </param>
+		/// <param name="hrgnClip">
+		/// A clipping region that may be combined with the visible region of the DC. If the value of flags is DCX_INTERSECTRGN or
+		/// DCX_EXCLUDERGN, then the operating system assumes ownership of the region and will automatically delete it when it is no longer
+		/// needed. In this case, the application should not use or delete the region after a successful call to <c>GetDCEx</c>.
+		/// </param>
+		/// <param name="flags">
+		/// <para>Specifies how the DC is created. This parameter can be one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>DCX_WINDOW</term>
+		/// <term>Returns a DC that corresponds to the window rectangle rather than the client rectangle.</term>
+		/// </item>
+		/// <item>
+		/// <term>DCX_CACHE</term>
+		/// <term>Returns a DC from the cache, rather than the OWNDC or CLASSDC window. Essentially overrides CS_OWNDC and CS_CLASSDC.</term>
+		/// </item>
+		/// <item>
+		/// <term>DCX_PARENTCLIP</term>
+		/// <term>
+		/// Uses the visible region of the parent window. The parent's WS_CLIPCHILDREN and CS_PARENTDC style bits are ignored. The origin is
+		/// set to the upper-left corner of the window identified by hWnd.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DCX_CLIPSIBLINGS</term>
+		/// <term>Excludes the visible regions of all sibling windows above the window identified by hWnd.</term>
+		/// </item>
+		/// <item>
+		/// <term>DCX_CLIPCHILDREN</term>
+		/// <term>Excludes the visible regions of all child windows below the window identified by hWnd.</term>
+		/// </item>
+		/// <item>
+		/// <term>DCX_NORESETATTRS</term>
+		/// <term>This flag is ignored.</term>
+		/// </item>
+		/// <item>
+		/// <term>DCX_LOCKWINDOWUPDATE</term>
+		/// <term>
+		/// Allows drawing even if there is a LockWindowUpdate call in effect that would otherwise exclude this window. Used for drawing
+		/// during tracking.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>DCX_EXCLUDERGN</term>
+		/// <term>The clipping region identified by hrgnClip is excluded from the visible region of the returned DC.</term>
+		/// </item>
+		/// <item>
+		/// <term>DCX_INTERSECTRGN</term>
+		/// <term>The clipping region identified by hrgnClip is intersected with the visible region of the returned DC.</term>
+		/// </item>
+		/// <item>
+		/// <term>DCX_INTERSECTUPDATE</term>
+		/// <term>Reserved; do not use.</term>
+		/// </item>
+		/// <item>
+		/// <term>DCX_VALIDATE</term>
+		/// <term>Reserved; do not use.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is the handle to the DC for the specified window.</para>
+		/// <para>
+		/// If the function fails, the return value is <c>NULL</c>. An invalid value for the hWnd parameter will cause the function to fail.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Unless the display DC belongs to a window class, the ReleaseDC function must be called to release the DC after painting. Also,
+		/// <c>ReleaseDC</c> must be called from the same thread that called <c>GetDCEx</c>. The number of DCs is limited only by available memory.
+		/// </para>
+		/// <para>
+		/// The function returns a handle to a DC that belongs to the window's class if CS_CLASSDC, CS_OWNDC or CS_PARENTDC was specified as
+		/// a style in the WNDCLASS structure when the class was registered.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getdcex HDC GetDCEx( HWND hWnd, HRGN hrgnClip, DWORD flags );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "590cf928-0ad6-43f8-97e9-1dafbcfa9f49")]
+		public static extern HDC GetDCEx(HWND hWnd, HRGN hrgnClip, DCX flags);
+
+		/// <summary>
 		/// Retrieves the current color of the specified display element. Display elements are the parts of a window and the display that
 		/// appear on the system display screen.
 		/// </summary>
@@ -528,6 +1661,97 @@ namespace Vanara.PInvoke
 		[PInvokeData("WinUser.h", MSDNShortId = "dd144927")]
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		public static extern HBRUSH GetSysColorBrush(SystemColorIndex nIndex);
+
+		/// <summary>
+		/// The <c>GetTabbedTextExtent</c> function computes the width and height of a character string. If the string contains one or more
+		/// tab characters, the width of the string is based upon the specified tab stops. The <c>GetTabbedTextExtent</c> function uses the
+		/// currently selected font to compute the dimensions of the string.
+		/// </summary>
+		/// <param name="hdc">A handle to the device context.</param>
+		/// <param name="lpString">A pointer to a character string.</param>
+		/// <param name="chCount">
+		/// The length of the text string. For the ANSI function it is a BYTE count and for the Unicode function it is a WORD count. Note
+		/// that for the ANSI function, characters in SBCS code pages take one byte each, while most characters in DBCS code pages take two
+		/// bytes; for the Unicode function, most currently defined Unicode characters (those in the Basic Multilingual Plane (BMP)) are one
+		/// WORD while Unicode surrogates are two WORDs.
+		/// </param>
+		/// <param name="nTabPositions">The number of tab-stop positions in the array pointed to by the lpnTabStopPositions parameter.</param>
+		/// <param name="lpnTabStopPositions">
+		/// A pointer to an array containing the tab-stop positions, in device units. The tab stops must be sorted in increasing order; the
+		/// smallest x-value should be the first item in the array.
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value is the dimensions of the string in logical units. The height is in the high-order word
+		/// and the width is in the low-order word.
+		/// </para>
+		/// <para>
+		/// If the function fails, the return value is 0. <c>GetTabbedTextExtent</c> will fail if hDC is invalid and if nTabPositions is less
+		/// than 0.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>The current clipping region does not affect the width and height returned by the <c>GetTabbedTextExtent</c> function.</para>
+		/// <para>
+		/// Because some devices do not place characters in regular cell arrays (that is, they kern the characters), the sum of the extents
+		/// of the characters in a string may not be equal to the extent of the string.
+		/// </para>
+		/// <para>
+		/// If the nTabPositions parameter is zero and the lpnTabStopPositions parameter is <c>NULL</c>, tabs are expanded to eight times the
+		/// average character width.
+		/// </para>
+		/// <para>
+		/// If nTabPositions is 1, the tab stops are separated by the distance specified by the first value in the array to which
+		/// lpnTabStopPositions points.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-gettabbedtextextenta DWORD GetTabbedTextExtentA( HDC hdc,
+		// LPCSTR lpString, int chCount, int nTabPositions, const INT *lpnTabStopPositions );
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "3444bb8d-4a30-47d4-b211-01f7cba39975")]
+		public static extern uint GetTabbedTextExtent(HDC hdc, string lpString, int chCount, int nTabPositions, [In] int[] lpnTabStopPositions);
+
+		/// <summary>
+		/// The <c>GetTabbedTextExtent</c> function computes the width and height of a character string. If the string contains one or more
+		/// tab characters, the width of the string is based upon the specified tab stops. The <c>GetTabbedTextExtent</c> function uses the
+		/// currently selected font to compute the dimensions of the string.
+		/// </summary>
+		/// <param name="hdc">A handle to the device context.</param>
+		/// <param name="lpString">A pointer to a character string.</param>
+		/// <param name="lpnTabStopPositions">
+		/// A pointer to an array containing the tab-stop positions, in device units. The tab stops must be sorted in increasing order; the
+		/// smallest x-value should be the first item in the array.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is the dimensions of the string in logical units.</para>
+		/// <para>
+		/// If the function fails, the return value is Size.Empty. <c>GetTabbedTextExtent</c> will fail if hDC is invalid and if
+		/// nTabPositions is less than 0.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>The current clipping region does not affect the width and height returned by the <c>GetTabbedTextExtent</c> function.</para>
+		/// <para>
+		/// Because some devices do not place characters in regular cell arrays (that is, they kern the characters), the sum of the extents
+		/// of the characters in a string may not be equal to the extent of the string.
+		/// </para>
+		/// <para>
+		/// If the nTabPositions parameter is zero and the lpnTabStopPositions parameter is <c>NULL</c>, tabs are expanded to eight times the
+		/// average character width.
+		/// </para>
+		/// <para>
+		/// If nTabPositions is 1, the tab stops are separated by the distance specified by the first value in the array to which
+		/// lpnTabStopPositions points.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-gettabbedtextextenta DWORD GetTabbedTextExtentA( HDC hdc,
+		// LPCSTR lpString, int chCount, int nTabPositions, const INT *lpnTabStopPositions );
+		[PInvokeData("winuser.h", MSDNShortId = "3444bb8d-4a30-47d4-b211-01f7cba39975")]
+		public static Size GetTabbedTextExtent(HDC hdc, string lpString, int[] lpnTabStopPositions)
+		{
+			var ret = GetTabbedTextExtent(hdc, lpString, lpString?.Length ?? 0, lpnTabStopPositions?.Length ?? 0, lpnTabStopPositions);
+			return new Size(Macros.LOWORD(ret), Macros.HIWORD(ret));
+		}
 
 		/// <summary>
 		/// Retrieves information about the specified window. The function also retrieves the value at a specified offset into the extra
@@ -593,139 +1817,151 @@ namespace Vanara.PInvoke
 		public static extern IntPtr GetWindowLongPtr(HWND hWnd, WindowLongFlags nIndex);
 
 		/// <summary>
-		/// The InvalidateRect function adds a rectangle to the specified window's update region. The update region represents the portion of
-		/// the window's client area that must be redrawn.
+		/// <para>
+		/// [ <c>LoadBitmap</c> is available for use in the operating systems specified in the Requirements section. It may be altered or
+		/// unavailable in subsequent versions. Instead, use LoadImage and DrawFrameControl.]
+		/// </para>
+		/// <para>The <c>LoadBitmap</c> function loads the specified bitmap resource from a module's executable file.</para>
 		/// </summary>
-		/// <param name="hWnd">
-		/// A handle to the window whose update region has changed. If this parameter is NULL, the system invalidates and redraws all
-		/// windows, not just the windows for this application, and sends the WM_ERASEBKGND and WM_NCPAINT messages before the function
-		/// returns. Setting this parameter to NULL is not recommended.
-		/// </param>
-		/// <param name="rect">
-		/// A pointer to a RECT structure that contains the client coordinates of the rectangle to be added to the update region. If this
-		/// parameter is NULL, the entire client area is added to the update region.
-		/// </param>
-		/// <param name="bErase">
-		/// Specifies whether the background within the update region is to be erased when the update region is processed. If this parameter
-		/// is TRUE, the background is erased when the BeginPaint function is called. If this parameter is FALSE, the background remains unchanged.
+		/// <param name="hInstance">A handle to the instance of the module whose executable file contains the bitmap to be loaded.</param>
+		/// <param name="lpBitmapName">
+		/// A pointer to a null-terminated string that contains the name of the bitmap resource to be loaded. Alternatively, this parameter
+		/// can consist of the resource identifier in the low-order word and zero in the high-order word. The MAKEINTRESOURCE macro can be
+		/// used to create this value.
 		/// </param>
 		/// <returns>
-		/// If the function succeeds, the return value is true. If the function fails, the return value is false. To get extended error
-		/// information, call GetLastError.
+		/// <para>If the function succeeds, the return value is the handle to the specified bitmap.</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>.</para>
 		/// </returns>
-		[PInvokeData("WinUser.h", MSDNShortId = "")]
-		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
+		/// <remarks>
+		/// <para>
+		/// If the bitmap pointed to by the lpBitmapName parameter does not exist or there is insufficient memory to load the bitmap, the
+		/// function fails.
+		/// </para>
+		/// <para>
+		/// <c>LoadBitmap</c> creates a compatible bitmap of the display, which cannot be selected to a printer. To load a bitmap that you
+		/// can select to a printer, call LoadImage and specify LR_CREATEDIBSECTION to create a DIB section. A DIB section can be selected to
+		/// any device.
+		/// </para>
+		/// <para>
+		/// An application can use the <c>LoadBitmap</c> function to access predefined bitmaps. To do so, the application must set the
+		/// hInstance parameter to <c>NULL</c> and the lpBitmapName parameter to one of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Bitmap name</term>
+		/// <term>Bitmap name</term>
+		/// </listheader>
+		/// <item>
+		/// <term>OBM_BTNCORNERS</term>
+		/// <term>OBM_OLD_RESTORE</term>
+		/// </item>
+		/// <item>
+		/// <term>OBM_BTSIZE</term>
+		/// <term>OBM_OLD_RGARROW</term>
+		/// </item>
+		/// <item>
+		/// <term>OBM_CHECK</term>
+		/// <term>OBM_OLD_UPARROW</term>
+		/// </item>
+		/// <item>
+		/// <term>OBM_CHECKBOXES</term>
+		/// <term>OBM_OLD_ZOOM</term>
+		/// </item>
+		/// <item>
+		/// <term>OBM_CLOSE</term>
+		/// <term>OBM_REDUCE</term>
+		/// </item>
+		/// <item>
+		/// <term>OBM_COMBO</term>
+		/// <term>OBM_REDUCED</term>
+		/// </item>
+		/// <item>
+		/// <term>OBM_DNARROW</term>
+		/// <term>OBM_RESTORE</term>
+		/// </item>
+		/// <item>
+		/// <term>OBM_DNARROWD</term>
+		/// <term>OBM_RESTORED</term>
+		/// </item>
+		/// <item>
+		/// <term>OBM_DNARROWI</term>
+		/// <term>OBM_RGARROW</term>
+		/// </item>
+		/// <item>
+		/// <term>OBM_LFARROW</term>
+		/// <term>OBM_RGARROWD</term>
+		/// </item>
+		/// <item>
+		/// <term>OBM_LFARROWD</term>
+		/// <term>OBM_RGARROWI</term>
+		/// </item>
+		/// <item>
+		/// <term>OBM_LFARROWI</term>
+		/// <term>OBM_SIZE</term>
+		/// </item>
+		/// <item>
+		/// <term>OBM_MNARROW</term>
+		/// <term>OBM_UPARROW</term>
+		/// </item>
+		/// <item>
+		/// <term>OBM_OLD_CLOSE</term>
+		/// <term>OBM_UPARROWD</term>
+		/// </item>
+		/// <item>
+		/// <term>OBM_OLD_DNARROW</term>
+		/// <term>OBM_UPARROWI</term>
+		/// </item>
+		/// <item>
+		/// <term>OBM_OLD_LFARROW</term>
+		/// <term>OBM_ZOOM</term>
+		/// </item>
+		/// <item>
+		/// <term>OBM_OLD_REDUCE</term>
+		/// <term>OBM_ZOOMD</term>
+		/// </item>
+		/// </list>
+		/// <para>Bitmap names that begin with OBM_OLD represent bitmaps used by 16-bit versions of Windows earlier than 3.0.</para>
+		/// <para>
+		/// For an application to use any of the OBM_ constants, the constant OEMRESOURCE must be defined before the Windows.h header file is included.
+		/// </para>
+		/// <para>The application must call the DeleteObject function to delete each bitmap handle returned by the <c>LoadBitmap</c> function.</para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Example of Menu-Item Bitmaps in Using Menus.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-loadbitmapa HBITMAP LoadBitmapA( HINSTANCE hInstance,
+		// LPCSTR lpBitmapName );
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "5eed5f78-deaf-4b23-986e-4802dc05936c")]
+		public static extern SafeHBITMAP LoadBitmap(HINSTANCE hInstance, [In] SafeResourceId lpBitmapName);
+
+		/// <summary>
+		/// The <c>ReleaseDC</c> function releases a device context (DC), freeing it for use by other applications. The effect of the
+		/// <c>ReleaseDC</c> function depends on the type of DC. It frees only common and window DCs. It has no effect on class or private DCs.
+		/// </summary>
+		/// <param name="hWnd">A handle to the window whose DC is to be released.</param>
+		/// <param name="hDC">A handle to the DC to be released.</param>
+		/// <returns>
+		/// <para>The return value indicates whether the DC was released. If the DC was released, the return value is 1.</para>
+		/// <para>If the DC was not released, the return value is zero.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The application must call the <c>ReleaseDC</c> function for each call to the GetWindowDC function and for each call to the GetDC
+		/// function that retrieves a common DC.
+		/// </para>
+		/// <para>
+		/// An application cannot use the <c>ReleaseDC</c> function to release a DC that was created by calling the CreateDC function;
+		/// instead, it must use the DeleteDC function. <c>ReleaseDC</c> must be called from the same thread that called GetDC.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Scaling an Image.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-releasedc int ReleaseDC( HWND hWnd, HDC hDC );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "c4f48f1e-4a37-4330-908e-2ac5c65e1a1d")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		[System.Security.SecurityCritical]
-		public static extern bool InvalidateRect(HWND hWnd, [In, Optional] PRECT rect, [MarshalAs(UnmanagedType.Bool)] bool bErase);
-
-		/// <summary>
-		/// The MapWindowPoints function converts (maps) a set of points from a coordinate space relative to one window to a coordinate space
-		/// relative to another window.
-		/// </summary>
-		/// <param name="hWndFrom">
-		/// A handle to the window from which points are converted. If this parameter is NULL or HWND_DESKTOP, the points are presumed to be
-		/// in screen coordinates.
-		/// </param>
-		/// <param name="hWndTo">
-		/// A handle to the window to which points are converted. If this parameter is NULL or HWND_DESKTOP, the points are converted to
-		/// screen coordinates.
-		/// </param>
-		/// <param name="lpPoints">
-		/// A pointer to an array of POINT structures that contain the set of points to be converted. The points are in device units. This
-		/// parameter can also point to a RECT structure, in which case the cPoints parameter should be set to 2.
-		/// </param>
-		/// <param name="cPoints">The number of POINT structures in the array pointed to by the lpPoints parameter.</param>
-		/// <returns>
-		/// If the function succeeds, the low-order word of the return value is the number of pixels added to the horizontal coordinate of
-		/// each source point in order to compute the horizontal coordinate of each destination point. (In addition to that, if precisely one
-		/// of hWndFrom and hWndTo is mirrored, then each resulting horizontal coordinate is multiplied by -1.) The high-order word is the
-		/// number of pixels added to the vertical coordinate of each source point in order to compute the vertical coordinate of each
-		/// destination point.
-		/// <para>
-		/// If the function fails, the return value is zero. Call SetLastError prior to calling this method to differentiate an error return
-		/// value from a legitimate "0" return value.
-		/// </para>
-		/// </returns>
-		[PInvokeData("WinUser.h", MSDNShortId = "")]
-		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
-		public static extern int MapWindowPoints(HWND hWndFrom, HWND hWndTo, ref RECT lpPoints, uint cPoints = 2);
-
-		/// <summary>
-		/// The MapWindowPoints function converts (maps) a set of points from a coordinate space relative to one window to a coordinate space
-		/// relative to another window.
-		/// </summary>
-		/// <param name="hWndFrom">
-		/// A handle to the window from which points are converted. If this parameter is NULL or HWND_DESKTOP, the points are presumed to be
-		/// in screen coordinates.
-		/// </param>
-		/// <param name="hWndTo">
-		/// A handle to the window to which points are converted. If this parameter is NULL or HWND_DESKTOP, the points are converted to
-		/// screen coordinates.
-		/// </param>
-		/// <param name="lpPoints">
-		/// A pointer to an array of POINT structures that contain the set of points to be converted. The points are in device units. This
-		/// parameter can also point to a RECT structure, in which case the cPoints parameter should be set to 2.
-		/// </param>
-		/// <param name="cPoints">The number of POINT structures in the array pointed to by the lpPoints parameter.</param>
-		/// <returns>
-		/// If the function succeeds, the low-order word of the return value is the number of pixels added to the horizontal coordinate of
-		/// each source point in order to compute the horizontal coordinate of each destination point. (In addition to that, if precisely one
-		/// of hWndFrom and hWndTo is mirrored, then each resulting horizontal coordinate is multiplied by -1.) The high-order word is the
-		/// number of pixels added to the vertical coordinate of each source point in order to compute the vertical coordinate of each
-		/// destination point.
-		/// <para>
-		/// If the function fails, the return value is zero. Call SetLastError prior to calling this method to differentiate an error return
-		/// value from a legitimate "0" return value.
-		/// </para>
-		/// </returns>
-		[PInvokeData("WinUser.h", MSDNShortId = "")]
-		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
-		public static extern int MapWindowPoints(HWND hWndFrom, HWND hWndTo, ref Point lpPoints, uint cPoints = 1);
-
-		/// <summary>
-		/// The MapWindowPoints function converts (maps) a set of points from a coordinate space relative to one window to a coordinate space
-		/// relative to another window.
-		/// </summary>
-		/// <param name="hWndFrom">
-		/// A handle to the window from which points are converted. If this parameter is NULL or HWND_DESKTOP, the points are presumed to be
-		/// in screen coordinates.
-		/// </param>
-		/// <param name="hWndTo">
-		/// A handle to the window to which points are converted. If this parameter is NULL or HWND_DESKTOP, the points are converted to
-		/// screen coordinates.
-		/// </param>
-		/// <param name="lpPoints">
-		/// A pointer to an array of POINT structures that contain the set of points to be converted. The points are in device units. This
-		/// parameter can also point to a RECT structure, in which case the cPoints parameter should be set to 2.
-		/// </param>
-		/// <param name="cPoints">The number of POINT structures in the array pointed to by the lpPoints parameter.</param>
-		/// <returns>
-		/// If the function succeeds, the low-order word of the return value is the number of pixels added to the horizontal coordinate of
-		/// each source point in order to compute the horizontal coordinate of each destination point. (In addition to that, if precisely one
-		/// of hWndFrom and hWndTo is mirrored, then each resulting horizontal coordinate is multiplied by -1.) The high-order word is the
-		/// number of pixels added to the vertical coordinate of each source point in order to compute the vertical coordinate of each
-		/// destination point.
-		/// <para>
-		/// If the function fails, the return value is zero. Call SetLastError prior to calling this method to differentiate an error return
-		/// value from a legitimate "0" return value.
-		/// </para>
-		/// </returns>
-		[PInvokeData("WinUser.h", MSDNShortId = "")]
-		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
-		public static extern int MapWindowPoints(HWND hWndFrom, HWND hWndTo, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] Point[] lpPoints, [MarshalAs(UnmanagedType.U4)] int cPoints);
-
-		/// <summary>The ScreenToClient function converts the screen coordinates of a specified point on the screen to client-area coordinates.</summary>
-		/// <param name="hWnd">A handle to the window whose client area will be used for the conversion.</param>
-		/// <param name="lpPoint">A pointer to a POINT structure that specifies the screen coordinates to be converted.</param>
-		/// <returns>
-		/// If the function succeeds, the return value is true. If the function fails, the return value is false. To get extended error
-		/// information, call GetLastError.
-		/// </returns>
-		[DllImport(Lib.User32, ExactSpelling = true, SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		[System.Security.SecurityCritical]
-		public static extern bool ScreenToClient(HWND hWnd, [In, Out] ref Point lpPoint);
+		public static extern bool ReleaseDC(HWND hWnd, HDC hDC);
 
 		/// <summary>
 		/// <para>
@@ -847,6 +2083,76 @@ namespace Vanara.PInvoke
 				throw new System.ComponentModel.Win32Exception();
 			return ret.ToInt32();
 		}
+
+		/// <summary>
+		/// The <c>TabbedTextOut</c> function writes a character string at a specified location, expanding tabs to the values specified in an
+		/// array of tab-stop positions. Text is written in the currently selected font, background color, and text color.
+		/// </summary>
+		/// <param name="hdc">A handle to the device context.</param>
+		/// <param name="x">The x-coordinate of the starting point of the string, in logical units.</param>
+		/// <param name="y">The y-coordinate of the starting point of the string, in logical units.</param>
+		/// <param name="lpString">
+		/// A pointer to the character string to draw. The string does not need to be zero-terminated, since nCount specifies the length of
+		/// the string.
+		/// </param>
+		/// <param name="chCount">The length of the string pointed to by lpString.</param>
+		/// <param name="nTabPositions">The number of values in the array of tab-stop positions.</param>
+		/// <param name="lpnTabStopPositions">
+		/// A pointer to an array containing the tab-stop positions, in logical units. The tab stops must be sorted in increasing order; the
+		/// smallest x-value should be the first item in the array.
+		/// </param>
+		/// <param name="nTabOrigin">The x-coordinate of the starting position from which tabs are expanded, in logical units.</param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value is the dimensions, in logical units, of the string. The height is in the high-order
+		/// word and the width is in the low-order word.
+		/// </para>
+		/// <para>If the function fails, the return value is zero.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If the nTabPositions parameter is zero and the lpnTabStopPositions parameter is <c>NULL</c>, tabs are expanded to eight times the
+		/// average character width.
+		/// </para>
+		/// <para>
+		/// If nTabPositions is 1, the tab stops are separated by the distance specified by the first value in the lpnTabStopPositions array.
+		/// </para>
+		/// <para>
+		/// If the lpnTabStopPositions array contains more than one value, a tab stop is set for each value in the array, up to the number
+		/// specified by nTabPositions.
+		/// </para>
+		/// <para>
+		/// The nTabOrigin parameter allows an application to call the <c>TabbedTextOut</c> function several times for a single line. If the
+		/// application calls <c>TabbedTextOut</c> more than once with the nTabOrigin set to the same value each time, the function expands
+		/// all tabs relative to the position specified by nTabOrigin.
+		/// </para>
+		/// <para>
+		/// By default, the current position is not used or updated by the <c>TabbedTextOut</c> function. If an application needs to update
+		/// the current position when it calls <c>TabbedTextOut</c>, the application can call the SetTextAlign function with the wFlags
+		/// parameter set to TA_UPDATECP. When this flag is set, the system ignores the X and Y parameters on subsequent calls to the
+		/// <c>TabbedTextOut</c> function, using the current position instead.
+		/// </para>
+		/// <para><c>Note</c> For Windows Vista and later, <c>TabbedTextOut</c> ignores text alignment when it draws text.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-tabbedtextouta LONG TabbedTextOutA( HDC hdc, int x, int y,
+		// LPCSTR lpString, int chCount, int nTabPositions, const INT *lpnTabStopPositions, int nTabOrigin );
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "1cb78a75-752d-4e06-afdf-cd797f209114")]
+		public static extern int TabbedTextOut(HDC hdc, int x, int y, string lpString, int chCount, [Optional] int nTabPositions, [In, Optional] int[] lpnTabStopPositions, int nTabOrigin);
+
+		/// <summary>
+		/// The <c>WindowFromDC</c> function returns a handle to the window associated with the specified display device context (DC). Output
+		/// functions that use the specified device context draw into this window.
+		/// </summary>
+		/// <param name="hDC">Handle to the device context from which a handle to the associated window is to be retrieved.</param>
+		/// <returns>
+		/// The return value is a handle to the window associated with the specified DC. If no window is associated with the specified DC,
+		/// the return value is <c>NULL</c>.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-windowfromdc HWND WindowFromDC( HDC hDC );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "57ecec82-03be-4d1a-84cf-6b64131af19d")]
+		public static extern HWND WindowFromDC(HDC hDC);
 
 		private static SafeCoTaskMemHandle GetPtr<T>(in T val) => SafeCoTaskMemHandle.CreateFromStructure(val);
 
