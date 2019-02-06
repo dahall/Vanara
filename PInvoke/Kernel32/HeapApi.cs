@@ -334,7 +334,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("HeapApi.h", MSDNShortId = "aa366700")]
 		[DllImport(Lib.Kernel32, ExactSpelling = true, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool HeapDestroy(SafeHHEAP hHeap);
+		public static extern bool HeapDestroy(HHEAP hHeap);
 
 		/// <summary>Frees a memory block allocated from a heap by the HeapAlloc or HeapReAlloc function.</summary>
 		/// <param name="hHeap">
