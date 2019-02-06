@@ -671,7 +671,7 @@ namespace Vanara.PInvoke
 		// dmICMMethod; DWORD dmICMIntent; DWORD dmMediaType; DWORD dmDitherType; DWORD dmReserved1; DWORD dmReserved2; DWORD dmPanningWidth;
 		// DWORD dmPanningHeight; } DEVMODEA, *PDEVMODEA, *NPDEVMODEA, *LPDEVMODEA;
 		[PInvokeData("wingdi.h", MSDNShortId = "85741025-9393-42ab-8a6d-27f1ae2c0f1b")]
-		[StructLayout(LayoutKind.Explicit, CharSet = CharSet.Auto)]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct DEVMODE
 		{
 			/// <summary>
@@ -679,32 +679,28 @@ namespace Vanara.PInvoke
 			/// LaserJet" in the case of PCL/HP LaserJet. This string is unique among device drivers. Note that this name may be truncated to
 			/// fit in the <c>dmDeviceName</c> array.
 			/// </summary>
-			[FieldOffset(0), MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
 			public string dmDeviceName;
 
 			/// <summary>
 			/// The version number of the initialization data specification on which the structure is based. To ensure the correct version is
 			/// used for any operating system, use DM_SPECVERSION.
 			/// </summary>
-			[FieldOffset(32)]
 			public ushort dmSpecVersion;
 
 			/// <summary>The driver version number assigned by the driver developer.</summary>
-			[FieldOffset(34)]
 			public ushort dmDriverVersion;
 
 			/// <summary>
 			/// Specifies the size, in bytes, of the <c>DEVMODE</c> structure, not including any private driver-specific data that might
 			/// follow the structure's public members. Set this member to to indicate the version of the <c>DEVMODE</c> structure being used.
 			/// </summary>
-			[FieldOffset(36)]
 			public ushort dmSize;
 
 			/// <summary>
 			/// Contains the number of bytes of private driver-data that follow this structure. If a device driver does not use
 			/// device-specific information, set this member to zero.
 			/// </summary>
-			[FieldOffset(38)]
 			public ushort dmDriverExtra;
 
 			/// <summary>
@@ -841,15 +837,53 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			[FieldOffset(40)]
 			public DMFIELDS dmFields;
+
+			/// <summary>DUMMYUNIONNAME</summary>
+			private DEVMODE_U1 Union;
+
+			[StructLayout(LayoutKind.Explicit)]
+			private struct DEVMODE_U1
+			{
+				[FieldOffset(0)]
+				public DMORIENT dmOrientation;
+
+				[FieldOffset(2)]
+				public DMPAPER dmPaperSize;
+
+				[FieldOffset(4)]
+				public short dmPaperLength;
+
+				[FieldOffset(6)]
+				public short dmPaperWidth;
+
+				[FieldOffset(8)]
+				public short dmScale;
+
+				[FieldOffset(10)]
+				public short dmCopies;
+
+				[FieldOffset(12)]
+				public short dmDefaultSource;
+
+				[FieldOffset(14)]
+				public DMRES dmPrintQuality;
+
+				[FieldOffset(0)]
+				public Point dmPosition;
+
+				[FieldOffset(8)]
+				public DMDO dmDisplayOrientation;
+
+				[FieldOffset(12)]
+				public DMDFO dmDisplayFixedOutput;
+			}
 
 			/// <summary>
 			/// For printer devices only, selects the orientation of the paper. This member can be either DMORIENT_PORTRAIT (1) or
 			/// DMORIENT_LANDSCAPE (2).
 			/// </summary>
-			[FieldOffset(44)]
-			public DMORIENT dmOrientation;
+			public DMORIENT dmOrientation { get => Union.dmOrientation; set => Union.dmOrientation = value; }
 
 			/// <summary>
 			/// <para>
@@ -1324,32 +1358,27 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			[FieldOffset(46)]
-			public DMPAPER dmPaperSize;
+			public DMPAPER dmPaperSize { get => Union.dmPaperSize; set => Union.dmPaperSize = value; }
 
 			/// <summary>
 			/// For printer devices only, overrides the length of the paper specified by the <c>dmPaperSize</c> member, either for custom
 			/// paper sizes or for devices such as dot-matrix printers that can print on a page of arbitrary length. These values, along with
 			/// all other values in this structure that specify a physical length, are in tenths of a millimeter.
 			/// </summary>
-			[FieldOffset(48)]
-			public short dmPaperLength;
+			public short dmPaperLength { get => Union.dmPaperLength; set => Union.dmPaperLength = value; }
 
 			/// <summary>For printer devices only, overrides the width of the paper specified by the <c>dmPaperSize</c> member.</summary>
-			[FieldOffset(50)]
-			public short dmPaperWidth;
+			public short dmPaperWidth { get => Union.dmPaperWidth; set => Union.dmPaperWidth = value; }
 
 			/// <summary>
 			/// Specifies the factor by which the printed output is to be scaled. The apparent page size is scaled from the physical page
 			/// size by a factor of <c>dmScale</c> /100. For example, a letter-sized page with a <c>dmScale</c> value of 50 would contain as
 			/// much data as a page of 17- by 22-inches because the output text and graphics would be half their original height and width.
 			/// </summary>
-			[FieldOffset(52)]
-			public short dmScale;
+			public short dmScale { get => Union.dmScale; set => Union.dmScale = value; }
 
 			/// <summary>Selects the number of copies printed if the device supports multiple-page copies.</summary>
-			[FieldOffset(54)]
-			public short dmCopies;
+			public short dmCopies { get => Union.dmCopies; set => Union.dmCopies = value; }
 
 			/// <summary>
 			/// <para>
@@ -1358,22 +1387,19 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para>This member can be one of the following values, or it can be a device-specific value greater than or equal to DMBIN_USER.</para>
 			/// </summary>
-			[FieldOffset(56)]
-			public short dmDefaultSource;
+			public short dmDefaultSource { get => Union.dmDefaultSource; set => Union.dmDefaultSource = value; }
 
 			/// <summary>
 			/// <para>Specifies the printer resolution. There are four predefined device-independent values:</para>
 			/// <para>If a positive value is specified, it specifies the number of dots per inch (DPI) and is therefore device dependent.</para>
 			/// </summary>
-			[FieldOffset(58)]
-			public DMRES dmPrintQuality;
+			public DMRES dmPrintQuality { get => Union.dmPrintQuality; set => Union.dmPrintQuality = value; }
 
 			/// <summary>
 			/// For display devices only, a POINTL structure that indicates the positional coordinates of the display device in reference to
 			/// the desktop area. The primary display device is always located at coordinates (0,0).
 			/// </summary>
-			[FieldOffset(44)]
-			public Point dmPosition;
+			public Point dmPosition { get => Union.dmPosition; set => Union.dmPosition = value; }
 
 			/// <summary>
 			/// <para>
@@ -1407,8 +1433,7 @@ namespace Vanara.PInvoke
 			/// </para>
 			/// <para><c>Windows 2000:</c> Not supported.</para>
 			/// </summary>
-			[FieldOffset(52)]
-			public DMDO dmDisplayOrientation;
+			public DMDO dmDisplayOrientation { get => Union.dmDisplayOrientation; set => Union.dmDisplayOrientation = value; }
 
 			/// <summary>
 			/// <para>
@@ -1438,8 +1463,7 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// <para><c>Windows 2000:</c> Not supported.</para>
 			/// </summary>
-			[FieldOffset(56)]
-			public DMDFO dmDisplayFixedOutput;
+			public DMDFO dmDisplayFixedOutput { get => Union.dmDisplayFixedOutput; set => Union.dmDisplayFixedOutput = value; }
 
 			/// <summary>
 			/// <para>Switches between color and monochrome on color printers. The following are the possible values:</para>
@@ -1452,7 +1476,6 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			[FieldOffset(60)]
 			public DMCOLOR dmColor;
 
 			/// <summary>
@@ -1476,14 +1499,12 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			[FieldOffset(62)]
 			public DMDUP dmDuplex;
 
 			/// <summary>
 			/// Specifies the y-resolution, in dots per inch, of the printer. If the printer initializes this member, the
 			/// <c>dmPrintQuality</c> member specifies the x-resolution, in dots per inch, of the printer.
 			/// </summary>
-			[FieldOffset(64)]
 			public short dmYResolution;
 
 			/// <summary>
@@ -1514,7 +1535,6 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			[FieldOffset(66)]
 			public DMTT dmTTOption;
 
 			/// <summary>
@@ -1537,18 +1557,16 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			[FieldOffset(68)]
 			public DMCOLLATE dmCollate;
 
 			/// <summary>
 			/// A zero-terminated character array that specifies the name of the form to use; for example, "Letter" or "Legal". A complete
 			/// set of names can be retrieved by using the EnumForms function.
 			/// </summary>
-			[FieldOffset(70), MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
 			public string dmFormName;
 
 			/// <summary>The number of pixels per logical inch. Printer drivers do not use this member.</summary>
-			[FieldOffset(102)]
 			public ushort dmLogPixels;
 
 			/// <summary>
@@ -1556,22 +1574,32 @@ namespace Vanara.PInvoke
 			/// colors, or 16 bits for 65,536 colors). Display drivers use this member, for example, in the ChangeDisplaySettings function.
 			/// Printer drivers do not use this member.
 			/// </summary>
-			[FieldOffset(104)]
 			public uint dmBitsPerPel;
 
 			/// <summary>
 			/// Specifies the width, in pixels, of the visible device surface. Display drivers use this member, for example, in the
 			/// ChangeDisplaySettings function. Printer drivers do not use this member.
 			/// </summary>
-			[FieldOffset(108)]
 			public uint dmPelsWidth;
 
 			/// <summary>
 			/// Specifies the height, in pixels, of the visible device surface. Display drivers use this member, for example, in the
 			/// ChangeDisplaySettings function. Printer drivers do not use this member.
 			/// </summary>
-			[FieldOffset(112)]
 			public uint dmPelsHeight;
+
+			/// <summary>DUMMYUNIONNAME2</summary>
+			private DEVMODE_U2 Union2;
+
+			[StructLayout(LayoutKind.Explicit)]
+			private struct DEVMODE_U2
+			{
+				[FieldOffset(0)]
+				public DMDISPLAY dmDisplayFlags;
+
+				[FieldOffset(0)]
+				public DMNUP dmNup;
+			}
 
 			/// <summary>
 			/// <para>Specifies the device's display mode. This member can be a combination of the following values.</para>
@@ -1593,8 +1621,7 @@ namespace Vanara.PInvoke
 			/// Display drivers use this member, for example, in the ChangeDisplaySettings function. Printer drivers do not use this member.
 			/// </para>
 			/// </summary>
-			[FieldOffset(116)]
-			public DMDISPLAY dmDisplayFlags;
+			public DMDISPLAY dmDisplayFlags { get => Union2.dmDisplayFlags; set => Union2.dmDisplayFlags = value; }
 
 			/// <summary>
 			/// <para>Specifies where the NUP is done. It can be one of the following.</para>
@@ -1613,8 +1640,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			[FieldOffset(116)]
-			public DMNUP dmNup;
+			public DMNUP dmNup { get => Union2.dmNup; set => Union2.dmNup = value; }
 
 			/// <summary>
 			/// <para>
@@ -1628,7 +1654,6 @@ namespace Vanara.PInvoke
 			/// card or computer motherboard, or by a configuration program that does not use display functions such as ChangeDisplaySettings.
 			/// </para>
 			/// </summary>
-			[FieldOffset(120)]
 			public uint dmDisplayFrequency;
 
 			/// <summary>
@@ -1664,7 +1689,6 @@ namespace Vanara.PInvoke
 			/// DMICMMETHOD_SYSTEM or DMICMMETHOD_NONE value. Drivers for PostScript printers support all values.
 			/// </para>
 			/// </summary>
-			[FieldOffset(124)]
 			public DMICMMETHOD dmICMMethod;
 
 			/// <summary>
@@ -1708,7 +1732,6 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			[FieldOffset(128)]
 			public DMICM dmICMIntent;
 
 			/// <summary>
@@ -1738,7 +1761,6 @@ namespace Vanara.PInvoke
 			/// To retrieve a list of the available media types for a printer, use the DeviceCapabilities function with the DC_MEDIATYPES flag.
 			/// </para>
 			/// </summary>
-			[FieldOffset(132)]
 			public DMMEDIA dmMediaType;
 
 			/// <summary>
@@ -1776,23 +1798,19 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			[FieldOffset(136)]
 			public DMDITHER dmDitherType;
 
 			/// <summary>Not used; must be zero.</summary>
-			[FieldOffset(140)]
 			public uint dmReserved1;
 
 			/// <summary>Not used; must be zero.</summary>
-			[FieldOffset(144)]
 			public uint dmReserved2;
 
 			/// <summary>This member must be zero.</summary>
-			[FieldOffset(148)]
 			public uint dmPanningWidth;
 
 			/// <summary>This member must be zero.</summary>
-			[FieldOffset(152)]
+			
 			public uint dmPanningHeight;
 
 			/// <summary>A default value with dmSize and dmSpecVersion set.</summary>
