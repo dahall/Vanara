@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Runtime.InteropServices;
 using Vanara.InteropServices;
+using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.User32;
 using static Vanara.PInvoke.User32_Gdi;
 
@@ -27,10 +29,57 @@ namespace Vanara.PInvoke.Tests
 			throw new NotImplementedException();
 		}
 
+		[Test]
+		public void EnumDisplayDevicesTest()
+		{
+			var devNum = 0U;
+			var dd = DISPLAY_DEVICE.Default;
+			while (EnumDisplayDevices(null, devNum, ref dd, EDD.EDD_GET_DEVICE_INTERFACE_NAME))
+			{
+				TestContext.WriteLine($"Name: {dd.DeviceName} : {dd.DeviceString}; State: {dd.StateFlags}");
+				var dm = DEVMODE.Default;
+				var mode = 0U;
+				while (EnumDisplaySettings(dd.DeviceName, mode, ref dm))
+				{
+					TestContext.WriteLine($"   {mode}) {dm.dmBitsPerPel},{dm.dmPelsWidth},{dm.dmPelsHeight},{dm.dmDisplayFlags},{dm.dmDisplayFrequency}");
+					mode++;
+				}
+				dm = DEVMODE.Default;
+				mode = 0U;
+				while (EnumDisplaySettingsEx(dd.DeviceName, mode, ref dm, EDS.EDS_ROTATEDMODE))
+				{
+					TestContext.WriteLine($"   {mode}) {dm.dmBitsPerPel},{dm.dmPelsWidth},{dm.dmPelsHeight},{dm.dmDisplayFlags},{dm.dmDisplayFrequency},{dm.dmDisplayOrientation},{dm.dmPosition}");
+					mode++;
+				}
+				devNum++;
+			}
+		}
+
 		[Test()]
 		public void GetActiveWindowTest()
 		{
-			throw new NotImplementedException();
+			var hwnd = GetActiveWindow();
+			Assert.That(hwnd.IsNull, Is.False);
+		}
+
+		[Test]
+		public void GetDisplayAutoRotationPreferencesTest()
+		{
+			Assert.That(GetDisplayAutoRotationPreferences(out var o));
+			Assert.That(o, Is.EqualTo(ORIENTATION_PREFERENCE.ORIENTATION_PREFERENCE_NONE));
+		}
+
+		[Test]
+		public void GetGestureConfigTest()
+		{
+			var array = new GESTURECONFIG[] { new GESTURECONFIG(GID.GID_ZOOM), new GESTURECONFIG(GID.GID_ROTATE), new GESTURECONFIG(GID.GID_PAN) };
+			var aLen = (uint)array.Length;
+			var b = GetGestureConfig(FindWindow(null, null), 0, 0, ref aLen, array, (uint)Marshal.SizeOf(typeof(GESTURECONFIG)));
+			if (!b) Win32Error.ThrowLastError();
+			Assert.That(b, Is.True);
+			Assert.That(aLen, Is.GreaterThan(0));
+			for (var i = 0; i < aLen; i++)
+				TestContext.WriteLine($"{array[i].dwID} = {array[i].dwWant} / {array[i].dwBlock}");
 		}
 
 		[Test()]
