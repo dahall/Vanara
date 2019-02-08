@@ -6,9 +6,6 @@ using Vanara.Extensions;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Shell32;
 
-// ReSharper disable UnusedMember.Global
-// ReSharper disable MemberCanBePrivate.Global
-
 namespace Vanara.Windows.Shell
 {
 	/// <summary>Defines options for filtering folder items.</summary>
@@ -16,8 +13,10 @@ namespace Vanara.Windows.Shell
 	{
 		/// <summary>Return only file system items.</summary>
 		FileSystemOnly = LIBRARYFOLDERFILTER.LFF_FORCEFILESYSTEM,
+
 		/// <summary>Return items that can be bound to an IStorage object.</summary>
 		StorageObjects = LIBRARYFOLDERFILTER.LFF_STORAGEITEMS,
+
 		/// <summary>Return all items.</summary>
 		AllItems = LIBRARYFOLDERFILTER.LFF_ALLITEMS
 	}
@@ -27,14 +26,19 @@ namespace Vanara.Windows.Shell
 	{
 		/// <summary>Introduced in Windows 8.1. The folder does not fall under one of the other categories.</summary>
 		General = FOLDERTYPEID.FOLDERTYPEID_StorageProviderGeneric,
+
 		/// <summary>Introduced in Windows 8.1. The folder contains document files. These can be of mixed format—.doc, .txt, and others.</summary>
 		Documents = FOLDERTYPEID.FOLDERTYPEID_StorageProviderDocuments,
+
 		/// <summary>Introduced in Windows 8.1. The folder contains image files, such as .jpg, .tif, or .png files.</summary>
 		Pictures = FOLDERTYPEID.FOLDERTYPEID_StorageProviderPictures,
+
 		/// <summary>Introduced in Windows 8.1. The folder contains audio files, such as .mp3 and .wma files.</summary>
 		Music = FOLDERTYPEID.FOLDERTYPEID_StorageProviderMusic,
+
 		/// <summary>Introduced in Windows 8.1. The folder contains video files. These can be of mixed format—.wmv, .mov, and others.</summary>
 		Videos = FOLDERTYPEID.FOLDERTYPEID_StorageProviderVideos,
+
 		/// <summary>A custom template defined in the registry. Use <see cref="ShellLibrary.ViewTemplateId"/> for the identifier.</summary>
 		Custom = -1,
 	}
@@ -45,6 +49,7 @@ namespace Vanara.Windows.Shell
 	{
 		//private const string ext = ".library-ms";
 		internal IShellLibrary lib;
+
 		private ShellLibraryFolders folders;
 		private string name;
 
@@ -60,7 +65,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Initializes a new instance of the <see cref="ShellLibrary"/> class.</summary>
 		/// <param name="libraryName">Name of the library.</param>
-		/// <param name="kf">The kf.</param>
+		/// <param name="kf">The known folder identifier.</param>
 		/// <param name="overwrite">if set to <c>true</c> [overwrite].</param>
 		public ShellLibrary(string libraryName, KNOWNFOLDERID kf = KNOWNFOLDERID.FOLDERID_Libraries, bool overwrite = false)
 		{
@@ -88,6 +93,7 @@ namespace Vanara.Windows.Shell
 			lib = new IShellLibrary();
 			lib.LoadLibraryFromItem(iItem, readOnly ? STGM.STGM_READ : STGM.STGM_READWRITE);
 		}
+
 		/// <summary>Gets or sets the default target folder the library uses for save operations.</summary>
 		/// <value>The default save folder.</value>
 		public ShellItem DefaultSaveFolder
@@ -100,12 +106,15 @@ namespace Vanara.Windows.Shell
 		/// <value>A <see cref="ShellItemArray"/> containing the child folders.</value>
 		public ShellLibraryFolders Folders => folders ?? (folders = GetFilteredFolders());
 
-		/// <summary>Gets or sets a string that describes the location of the default icon. The string must be formatted as <c>ModuleFileName,ResourceIndex or ModuleFileName,-ResourceID</c>.</summary>
+		/// <summary>
+		/// Gets or sets a string that describes the location of the default icon. The string must be formatted as
+		/// <c>ModuleFileName,ResourceIndex or ModuleFileName,-ResourceID</c>.
+		/// </summary>
 		/// <value>The default icon location.</value>
 		public IconLocation IconLocation
 		{
 			get { IconLocation.TryParse(lib.GetIcon(), out var l); return l; }
-			set => lib.SetIcon(value.StringValue);
+			set => lib.SetIcon(value.ToString());
 		}
 
 		/// <summary>Gets the name relative to the parent for the item.</summary>
@@ -123,8 +132,8 @@ namespace Vanara.Windows.Shell
 		/// <value>The View Template.</value>
 		public LibraryViewTemplate ViewTemplate
 		{
-			get => (LibraryViewTemplate) ShlGuidExt.Lookup<FOLDERTYPEID>(ViewTemplateId);
-			set { if (value != LibraryViewTemplate.Custom) ViewTemplateId = ((FOLDERTYPEID) value).Guid(); }
+			get => (LibraryViewTemplate)ShlGuidExt.Lookup<FOLDERTYPEID>(ViewTemplateId);
+			set { if (value != LibraryViewTemplate.Custom) ViewTemplateId = ((FOLDERTYPEID)value).Guid(); }
 		}
 
 		/// <summary>Gets or sets the library's View Template identifier.</summary>
@@ -158,15 +167,27 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Resolves the target location of a library folder, even if the folder has been moved or renamed.</summary>
 		/// <param name="item">A ShellItem object that represents the library folder to locate.</param>
-		/// <param name="timeout">The maximum time the method will attempt to locate the folder before returning. If the folder could not be located before the specified time elapses, an error is returned.</param>
+		/// <param name="timeout">
+		/// The maximum time the method will attempt to locate the folder before returning. If the folder could not be located before the
+		/// specified time elapses, an error is returned.
+		/// </param>
 		/// <returns>The resulting target location.</returns>
 		public ShellItem ResolveFolder(ShellItem item, TimeSpan timeout) => Open(lib.ResolveFolder<IShellItem>(item.iShellItem, Convert.ToUInt32(timeout.TotalMilliseconds)));
 
 		/// <summary>Shows the library management dialog box, which enables users to manage the library folders and default save location.</summary>
-		/// <param name="parentWindow">The handle for the window that owns the library management dialog box. The value of this parameter can be NULL.</param>
-		/// <param name="title">The title for the library management dialog. To display the generic title string, set the value of this parameter to NULL.</param>
-		/// <param name="instruction">The help string to display below the title string in the library management dialog box. To display the generic help string, set the value of this parameter to NULL.</param>
-		/// <param name="allowUnindexableLocations">if set to <c>true</c> do not display a warning dialog to the user in collisions that concern network locations that cannot be indexed.</param>
+		/// <param name="parentWindow">
+		/// The handle for the window that owns the library management dialog box. The value of this parameter can be NULL.
+		/// </param>
+		/// <param name="title">
+		/// The title for the library management dialog. To display the generic title string, set the value of this parameter to NULL.
+		/// </param>
+		/// <param name="instruction">
+		/// The help string to display below the title string in the library management dialog box. To display the generic help string, set
+		/// the value of this parameter to NULL.
+		/// </param>
+		/// <param name="allowUnindexableLocations">
+		/// if set to <c>true</c> do not display a warning dialog to the user in collisions that concern network locations that cannot be indexed.
+		/// </param>
 		public void ShowLibraryManagementDialog(IWin32Window parentWindow = null, string title = null, string instruction = null, bool allowUnindexableLocations = false)
 		{
 			SHShowManageLibraryUI(iShellItem, parentWindow?.Handle ?? IntPtr.Zero, title, instruction,
@@ -183,10 +204,7 @@ namespace Vanara.Windows.Shell
 			/// <summary>Initializes a new instance of the <see cref="ShellLibraryFolders"/> class.</summary>
 			/// <param name="lib">The library.</param>
 			/// <param name="shellItemArray">The shell item array.</param>
-			internal ShellLibraryFolders(IShellLibrary lib, IShellItemArray shellItemArray) : base(shellItemArray)
-			{
-				this.lib = lib;
-			}
+			internal ShellLibraryFolders(IShellLibrary lib, IShellItemArray shellItemArray) : base(shellItemArray) => this.lib = lib;
 
 			/// <summary>Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</summary>
 			bool ICollection<ShellItem>.IsReadOnly => false;

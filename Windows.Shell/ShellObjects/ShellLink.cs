@@ -5,19 +5,12 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.AccessControl;
 using System.Security.Permissions;
-using System.Text;
 using System.Windows.Forms;
 using Vanara.Extensions;
 using Vanara.PInvoke;
-using static Vanara.PInvoke.Macros;
-using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.Kernel32;
+using static Vanara.PInvoke.Macros;
 using static Vanara.PInvoke.Shell32;
-// ReSharper disable UnusedParameter.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable SuspiciousTypeConversion.Global
-// ReSharper disable InconsistentNaming
 
 namespace Vanara.Windows.Shell
 {
@@ -29,10 +22,10 @@ namespace Vanara.Windows.Shell
 		None = 0,
 
 		/// <summary>
-		/// Do not display a dialog box if the link cannot be resolved. When NoUI is set, a time-out value that specifies
-		/// the maximum amount of time to be spent resolving the link can be specified in milliseconds. The function
-		/// returns if the link cannot be resolved within the time-out duration. If the timeout is not set, the time-out
-		/// duration will be set to the default value of 3,000 milliseconds (3 seconds).
+		/// Do not display a dialog box if the link cannot be resolved. When NoUI is set, a time-out value that specifies the maximum amount
+		/// of time to be spent resolving the link can be specified in milliseconds. The function returns if the link cannot be resolved
+		/// within the time-out duration. If the timeout is not set, the time-out duration will be set to the default value of 3,000
+		/// milliseconds (3 seconds).
 		/// </summary>
 		NoUI = 0x1,
 
@@ -40,8 +33,8 @@ namespace Vanara.Windows.Shell
 		AnyMatch = 0x2,
 
 		/// <summary>
-		/// If the link object has changed, update its path and list of identifiers. If UPDATE is set, you do not need to
-		/// call IPersistFile::IsDirty to determine whether or not the link object has changed.
+		/// If the link object has changed, update its path and list of identifiers. If UPDATE is set, you do not need to call
+		/// IPersistFile::IsDirty to determine whether or not the link object has changed.
 		/// </summary>
 		Update = 0x4,
 
@@ -55,9 +48,9 @@ namespace Vanara.Windows.Shell
 		NoTrack = 0x20,
 
 		/// <summary>
-		/// Disable distributed link tracking. By default, distributed link tracking tracks removable media across
-		/// multiple devices based on the volume name. It also uses the UNC path to track remote file systems whose drive
-		/// letter has changed. Setting NoLinkInfo disables both types of tracking.
+		/// Disable distributed link tracking. By default, distributed link tracking tracks removable media across multiple devices based on
+		/// the volume name. It also uses the UNC path to track remote file systems whose drive letter has changed. Setting NoLinkInfo
+		/// disables both types of tracking.
 		/// </summary>
 		NoLinkInfo = 0x40,
 
@@ -68,21 +61,19 @@ namespace Vanara.Windows.Shell
 		NoUIWithMsgPump = 0x101,
 
 		/// <summary>
-		/// Windows 7 and later. Offer the option to delete the shortcut when this method is unable to resolve it, even
-		/// if the shortcut is not a shortcut to a file.
+		/// Windows 7 and later. Offer the option to delete the shortcut when this method is unable to resolve it, even if the shortcut is
+		/// not a shortcut to a file.
 		/// </summary>
 		OfferDeleteWithoutFile = 0x200,
 
 		/// <summary>
-		/// Windows 7 and later. Report as dirty if the target is a known folder and the known folder was redirected.
-		/// This only works if the original target path was a file system path or ID list and not an aliased known folder
-		/// ID list.
+		/// Windows 7 and later. Report as dirty if the target is a known folder and the known folder was redirected. This only works if the
+		/// original target path was a file system path or ID list and not an aliased known folder ID list.
 		/// </summary>
 		KnownFolder = 0x400,
 
 		/// <summary>
-		/// Windows 7 and later. Resolve the computer name in UNC targets that point to a local computer. This value is
-		/// used with SLDFKEEPLOCALIDLISTFORUNCTARGET.
+		/// Windows 7 and later. Resolve the computer name in UNC targets that point to a local computer. This value is used with SLDFKEEPLOCALIDLISTFORUNCTARGET.
 		/// </summary>
 		MachineInLocalTarget = 0x800,
 
@@ -102,23 +93,19 @@ namespace Vanara.Windows.Shell
 		/// <summary>Initializes a new instance of the <see cref="ShellLink"/> class, which acts as a wrapper for a .lnk file.</summary>
 		/// <param name="linkFile">The shortcut file (.lnk) to load.</param>
 		/// <param name="window">
-		/// The window that the Shell will use as the parent for a dialog box. The Shell displays the dialog box if it needs to prompt the user for more
-		/// information while resolving a Shell link.
+		/// The window that the Shell will use as the parent for a dialog box. The Shell displays the dialog box if it needs to prompt the
+		/// user for more information while resolving a Shell link.
 		/// </param>
 		/// <param name="resolveFlags">The resolve flags.</param>
 		/// <param name="timeOut">The time out.</param>
 		/// <exception cref="System.ArgumentNullException">linkFile</exception>
-		public ShellLink(string linkFile, LinkResolution resolveFlags = LinkResolution.NoUI, IWin32Window window = null, TimeSpan timeOut = default) : base(linkFile)
-		{
-			LoadAndResolve(linkFile, (SLR_FLAGS)resolveFlags, ShellFolder.IWin2Ptr(window), (ushort)timeOut.TotalMilliseconds);
-		}
+		public ShellLink(string linkFile, LinkResolution resolveFlags = LinkResolution.NoUI, IWin32Window window = null, TimeSpan timeOut = default) : base(linkFile) => LoadAndResolve(linkFile, (SLR_FLAGS)resolveFlags, ShellFolder.IWin2Ptr(window), (ushort)timeOut.TotalMilliseconds);
 
-		internal ShellLink(IShellItem iItem) : base(iItem)
-		{
-			LoadAndResolve(iItem.GetDisplayName(SIGDN.SIGDN_FILESYSPATH), SLR_FLAGS.SLR_NO_UI);
-		}
+		internal ShellLink(IShellItem iItem) : base(iItem) => LoadAndResolve(iItem.GetDisplayName(SIGDN.SIGDN_FILESYSPATH), SLR_FLAGS.SLR_NO_UI);
 
-		private ShellLink() { }
+		private ShellLink()
+		{
+		}
 
 		/*public string AppUserModelID
 		{
@@ -152,10 +139,10 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Gets/sets the description of the link</summary>
-		public string Description
+		public IndirectString Description
 		{
-			get => GetStringValue(link.GetDescription, ComCtl32.INFOTIPSIZE);
-			set { link.SetDescription(value); Save(); }
+			get => IndirectString.TryParse(GetStringValue(link.GetDescription, ComCtl32.INFOTIPSIZE), out var loc) ? loc : null;
+			set { link.SetDescription(value?.ToString()); Save(); }
 		}
 
 		/// <summary>Gets the full path of the link file.</summary>
@@ -172,12 +159,7 @@ namespace Vanara.Windows.Shell
 		/// <summary>Gets the index of this icon within the icon path's resources.</summary>
 		public IconLocation IconLocation
 		{
-			get
-			{
-				var iconPath = new StringBuilder(MAX_PATH, MAX_PATH);
-				link.GetIconLocation(iconPath, iconPath.Capacity, out var iconIndex);
-				return new IconLocation(iconPath.ToString(), iconIndex);
-			}
+			get => IconLocation.TryParse(GetStringValue((sb, l) => link.GetIconLocation(sb, l, out var iconIndex)), out var loc) ? loc : null;
 			set { link.SetIconLocation(value.ModuleFileName, value.ResourceId); Save(); }
 		}
 
@@ -286,12 +268,13 @@ namespace Vanara.Windows.Shell
 			return lnk;
 		}
 
-		/// <summary>
-		/// Copies an existing file to a new file, allowing the overwriting of an existing file.
-		/// </summary>
+		/// <summary>Copies an existing file to a new file, allowing the overwriting of an existing file.</summary>
 		/// <param name="destShellLink">The name of the new file to copy to.</param>
 		/// <param name="overwrite"><c>true</c> to allow an existing file to be overwritten; otherwise <c>false</c>.</param>
-		/// <returns>A new file, or an overwrite of an existing file if overwrite is true. If the file exists and overwrite is false, an IOException is thrown.</returns>
+		/// <returns>
+		/// A new file, or an overwrite of an existing file if overwrite is true. If the file exists and overwrite is false, an IOException
+		/// is thrown.
+		/// </returns>
 		public ShellLink CopyTo(string destShellLink, bool overwrite = false)
 		{
 			File.Copy(FullPath, destShellLink, overwrite);
@@ -308,9 +291,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
 		/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-		/// <returns>
-		/// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
-		/// </returns>
+		/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
 		public override bool Equals(object obj)
 		{
 			var link2 = obj as ShellLink;
@@ -320,17 +301,18 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>
-		/// Gets a FileSecurity object that encapsulates the specified type of access control list (ACL) entries for the file described by the current FileInfo object.
+		/// Gets a FileSecurity object that encapsulates the specified type of access control list (ACL) entries for the file described by
+		/// the current FileInfo object.
 		/// </summary>
-		/// <param name="includeSections">One of the AccessControlSections values that specifies which group of access control entries to retrieve.</param>
+		/// <param name="includeSections">
+		/// One of the AccessControlSections values that specifies which group of access control entries to retrieve.
+		/// </param>
 		/// <returns>A FileSecurity object that encapsulates the access control rules for the current file.</returns>
 		public FileSecurity GetAccessControl(AccessControlSections includeSections = AccessControlSections.Access | AccessControlSections.Group | AccessControlSections.Owner) =>
 			File.GetAccessControl(FullPath, includeSections);
 
 		/// <summary>Returns a hash code for this instance.</summary>
-		/// <returns>
-		/// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
-		/// </returns>
+		/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 		public override int GetHashCode() => ToString().GetHashCode();
 
 		/// <summary>Gets the icon for this link file.</summary>
@@ -349,33 +331,18 @@ namespace Vanara.Windows.Shell
 		/// <summary>
 		/// Applies access control list (ACL) entries described by a FileSecurity object to the file described by the current FileInfo object.
 		/// </summary>
-		/// <param name="fileSecurity">A FileSecurity object that describes an access control list (ACL) entry to apply to the current file.</param>
-		public void SetAccessControl(FileSecurity fileSecurity)
-		{
-			File.SetAccessControl(FullPath, fileSecurity);
-		}
+		/// <param name="fileSecurity">
+		/// A FileSecurity object that describes an access control list (ACL) entry to apply to the current file.
+		/// </param>
+		public void SetAccessControl(FileSecurity fileSecurity) => File.SetAccessControl(FullPath, fileSecurity);
 
 		/*/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 		/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-		// Path and title should be case insensitive. Shell treats arguments as case sensitive because apps can handle
-		// those differently.
+		// Path and title should be case insensitive. Shell treats arguments as case sensitive because apps can handle those differently.
 		public override string ToString() =>
 			$"{(Properties.GetProperty<string>(PROPERTYKEY.System.Title) ?? "").ToUpperInvariant()} {FullPath.ToUpperInvariant()} {Arguments}";*/
 
-		private static string GetStringValue(Action<StringBuilder, int> method, int buffSize)
-		{
-			var ret = new StringBuilder(buffSize, buffSize);
-			method(ret, ret.Capacity);
-			return ret.ToString();
-		}
-
-		private string GetPath(SLGP value)
-		{
-			var target = new StringBuilder(MAX_PATH, MAX_PATH);
-			var fd = new WIN32_FIND_DATA();
-			link.GetPath(target, target.Capacity, fd, value);
-			return target.ToString();
-		}
+		private string GetPath(SLGP value) => GetStringValue((sb, l) => link.GetPath(sb, l, null, value));
 
 		private void LoadAndResolve(string linkFile, SLR_FLAGS resolveFlags, HWND hWin = default, ushort timeOut = 0)
 		{
@@ -404,9 +371,6 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Saves the shortcut to the specified file</summary>
 		/// <param name="linkFile">The shortcut file (.lnk)</param>
-		private void SaveAs(string linkFile)
-		{
-			((IPersistFile)link).Save(linkFile, true);
-		}
+		private void SaveAs(string linkFile) => ((IPersistFile)link).Save(linkFile, true);
 	}
 }

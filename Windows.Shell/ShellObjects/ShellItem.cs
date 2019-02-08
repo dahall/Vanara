@@ -1,25 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+using Vanara.Extensions;
+using Vanara.InteropServices;
 using Vanara.PInvoke;
-using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.Ole32;
-using static Vanara.PInvoke.Shell32;
-using Vanara.InteropServices;
 using static Vanara.PInvoke.PropSys;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Diagnostics;
-using Vanara.Extensions;
-using System.ComponentModel;
-
-// ReSharper disable UnusedMember.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable MemberCanBeProtected.Global
-// ReSharper disable InconsistentNaming
+using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Windows.Shell
 {
@@ -34,25 +28,24 @@ namespace Vanara.Windows.Shell
 		CanMove = 0x00000002,
 
 		/// <summary>
-		/// Shortcuts can be created for the specified items. If a namespace extension returns this attribute, a Create
-		/// Shortcut entry with a default handler is added to the shortcut menu that is displayed during drag-and-drop
-		/// operations. The extension can also implement its own handler for the link verb in place of the default. If
-		/// the extension does so, it is responsible for creating the shortcut. A Create Shortcut item is also added to
-		/// the Windows Explorer File menu and to normal shortcut menus. If the item is selected, your application's
-		/// IContextMenu::InvokeCommand method is invoked with the lpVerb member of the CMINVOKECOMMANDINFO structure set
+		/// Shortcuts can be created for the specified items. If a namespace extension returns this attribute, a Create Shortcut entry with a
+		/// default handler is added to the shortcut menu that is displayed during drag-and-drop operations. The extension can also implement
+		/// its own handler for the link verb in place of the default. If the extension does so, it is responsible for creating the shortcut.
+		/// A Create Shortcut item is also added to the Windows Explorer File menu and to normal shortcut menus. If the item is selected,
+		/// your application's IContextMenu::InvokeCommand method is invoked with the lpVerb member of the CMINVOKECOMMANDINFO structure set
 		/// to link. Your application is responsible for creating the link.
 		/// </summary>
 		CanLink = 0x00000004,
 
 		/// <summary>
-		/// The specified items can be bound to an IStorage object throughIShellFolder::BindToObject. For more
-		/// information about namespace manipulation capabilities, see IStorage.
+		/// The specified items can be bound to an IStorage object throughIShellFolder::BindToObject. For more information about namespace
+		/// manipulation capabilities, see IStorage.
 		/// </summary>
 		Storage = 0x00000008,
 
 		/// <summary>
-		/// The specified items can be renamed. Note that this value is essentially a suggestion; not all namespace
-		/// clients allow items to be renamed. However, those that do must have this attribute set.
+		/// The specified items can be renamed. Note that this value is essentially a suggestion; not all namespace clients allow items to be
+		/// renamed. However, those that do must have this attribute set.
 		/// </summary>
 		CanRename = 0x00000010,
 
@@ -66,8 +59,8 @@ namespace Vanara.Windows.Shell
 		DropTarget = 0x00000100,
 
 		/// <summary>
-		/// This flag is a mask for the capability attributes: CANCOPY, CANMOVE, CANLINK, CANRENAME, CANDELETE,
-		/// HASPROPSHEET, and DROPTARGET. Callers normally do not use this value.
+		/// This flag is a mask for the capability attributes: CANCOPY, CANMOVE, CANLINK, CANRENAME, CANDELETE, HASPROPSHEET, and DROPTARGET.
+		/// Callers normally do not use this value.
 		/// </summary>
 		CapabilityMask = 0x00000177,
 
@@ -78,13 +71,12 @@ namespace Vanara.Windows.Shell
 		Encrypted = 0x00002000,
 
 		/// <summary>
-		/// Accessing the item (through IStream or other storage interfaces) is expected to be a slow operation.
-		/// Applications should avoid accessing items flagged with ISSLOW. Note: Opening a stream for an item is
-		/// generally a slow operation at all times. ISSLOW indicates that it is expected to be especially slow, for
-		/// example in the case of slow network connections or offline (FILE_ATTRIBUTE_OFFLINE) files. However, querying
-		/// ISSLOW is itself a slow operation. Applications should query ISSLOW only on a background thread. An alternate
-		/// method, such as retrieving the PKEY_FileAttributes property and testing for FILE_ATTRIBUTE_OFFLINE, could be
-		/// used in place of a method call that involves ISSLOW.
+		/// Accessing the item (through IStream or other storage interfaces) is expected to be a slow operation. Applications should avoid
+		/// accessing items flagged with ISSLOW. Note: Opening a stream for an item is generally a slow operation at all times. ISSLOW
+		/// indicates that it is expected to be especially slow, for example in the case of slow network connections or offline
+		/// (FILE_ATTRIBUTE_OFFLINE) files. However, querying ISSLOW is itself a slow operation. Applications should query ISSLOW only on a
+		/// background thread. An alternate method, such as retrieving the PKEY_FileAttributes property and testing for
+		/// FILE_ATTRIBUTE_OFFLINE, could be used in place of a method call that involves ISSLOW.
 		/// </summary>
 		IsSlow = 0x00004000,
 
@@ -98,16 +90,14 @@ namespace Vanara.Windows.Shell
 		Share = 0x00020000,
 
 		/// <summary>
-		/// The specified items are read-only. In the case of folders, this means that new items cannot be created in
-		/// those folders. This should not be confused with the behavior specified by the FILE_ATTRIBUTE_READONLY flag
-		/// retrieved by IColumnProvider::GetItemData in a SHCOLUMNDATAstructure. FILE_ATTRIBUTE_READONLY has no meaning
-		/// for Win32 file system folders.
+		/// The specified items are read-only. In the case of folders, this means that new items cannot be created in those folders. This
+		/// should not be confused with the behavior specified by the FILE_ATTRIBUTE_READONLY flag retrieved by IColumnProvider::GetItemData
+		/// in a SHCOLUMNDATAstructure. FILE_ATTRIBUTE_READONLY has no meaning for Win32 file system folders.
 		/// </summary>
 		ReadOnly = 0x00040000,
 
 		/// <summary>
-		/// The item is hidden and should not be displayed unless the Show hidden files and folders option is enabled in
-		/// Folder Settings.
+		/// The item is hidden and should not be displayed unless the Show hidden files and folders option is enabled in Folder Settings.
 		/// </summary>
 		Hidden = 0x00080000,
 
@@ -115,8 +105,8 @@ namespace Vanara.Windows.Shell
 		DisplayAttrMask = 0x000FC000,
 
 		/// <summary>
-		/// The items are nonenumerated items and should be hidden. They are not returned through an enumerator such as
-		/// that created by theIShellFolder::EnumObjects method.
+		/// The items are non-enumerated items and should be hidden. They are not returned through an enumerator such as that created by
+		/// theIShellFolder::EnumObjects method.
 		/// </summary>
 		NonEnumerated = 0x00100000,
 
@@ -130,22 +120,19 @@ namespace Vanara.Windows.Shell
 		HasStorage = 0x00400000,
 
 		/// <summary>
-		/// Indicates that the item has a stream associated with it. That stream can be accessed through a call to
-		/// IShellFolder::BindToObject orIShellItem::BindToHandler with IID_IStream in the riid parameter.
+		/// Indicates that the item has a stream associated with it. That stream can be accessed through a call to IShellFolder::BindToObject
+		/// orIShellItem::BindToHandler with IID_IStream in the riid parameter.
 		/// </summary>
 		Stream = 0x00400000,
 
-		/// <summary>
-		/// Children of this item are accessible through IStream or IStorage. Those children are flagged with STORAGE or STREAM.
-		/// </summary>
+		/// <summary>Children of this item are accessible through IStream or IStorage. Those children are flagged with STORAGE or STREAM.</summary>
 		StorageAncestor = 0x00800000,
 
 		/// <summary>
-		/// When specified as input, VALIDATE instructs the folder to validate that the items contained in a folder or
-		/// Shell item array exist. If one or more of those items do not exist, IShellFolder::GetAttributesOf and
-		/// IShellItemArray::GetAttributes return a failure code. This flag is never returned as an [out] value. When
-		/// used with the file system folder, VALIDATE instructs the folder to discard cached properties retrieved by
-		/// clients of IShellFolder2::GetDetailsEx that might have accumulated for the specified items.
+		/// When specified as input, VALIDATE instructs the folder to validate that the items contained in a folder or Shell item array
+		/// exist. If one or more of those items do not exist, IShellFolder::GetAttributesOf and IShellItemArray::GetAttributes return a
+		/// failure code. This flag is never returned as an [out] value. When used with the file system folder, VALIDATE instructs the folder
+		/// to discard cached properties retrieved by clients of IShellFolder2::GetDetailsEx that might have accumulated for the specified items.
 		/// </summary>
 		Validate = 0x01000000,
 
@@ -159,48 +146,44 @@ namespace Vanara.Windows.Shell
 		Browsable = 0x08000000,
 
 		/// <summary>
-		/// The specified folders are either file system folders or contain at least one descendant (child, grandchild,
-		/// or later) that is a file system (FILESYSTEM) folder.
+		/// The specified folders are either file system folders or contain at least one descendant (child, grandchild, or later) that is a
+		/// file system (FILESYSTEM) folder.
 		/// </summary>
 		FileSysAncestor = 0x10000000,
 
 		/// <summary>
-		/// The specified items are folders. Some items can be flagged with both STREAM and FOLDER, such as a compressed
-		/// file with a .zip file name extension. Some applications might include this flag when testing for items that
-		/// are both files and containers.
+		/// The specified items are folders. Some items can be flagged with both STREAM and FOLDER, such as a compressed file with a .zip
+		/// file name extension. Some applications might include this flag when testing for items that are both files and containers.
 		/// </summary>
 		Folder = 0x20000000,
 
 		/// <summary>
-		/// The specified folders or files are part of the file system (that is, they are files, directories, or root
-		/// directories). The parsed names of the items can be assumed to be valid Win32 file system paths. These paths
-		/// can be either UNC or drive-letter based.
+		/// The specified folders or files are part of the file system (that is, they are files, directories, or root directories). The
+		/// parsed names of the items can be assumed to be valid Win32 file system paths. These paths can be either UNC or drive-letter based.
 		/// </summary>
 		FileSystem = 0x40000000,
 
 		/// <summary>
-		/// This flag is a mask for the storage capability attributes: STORAGE, LINK, READONLY, STREAM, STORAGEANCESTOR,
-		/// FILESYSANCESTOR, FOLDER, and FILESYSTEM. Callers normally do not use this value.
+		/// This flag is a mask for the storage capability attributes: STORAGE, LINK, READONLY, STREAM, STORAGEANCESTOR, FILESYSANCESTOR,
+		/// FOLDER, and FILESYSTEM. Callers normally do not use this value.
 		/// </summary>
 		StorageCapMask = 0x70C50008,
 
 		/// <summary>
-		/// The specified folders have subfolders. The HASSUBFOLDER attribute is only advisory and might be returned by
-		/// Shell folder implementations even if they do not contain subfolders. Note, however, that the converse—failing
-		/// to return HASSUBFOLDER—definitively states that the folder objects do not have subfolders. Returning
-		/// HASSUBFOLDER is recommended whenever a significant amount of time is required to determine whether any
-		/// subfolders exist. For example, the Shell always returns HASSUBFOLDER when a folder is located on a network drive.
+		/// The specified folders have subfolders. The HASSUBFOLDER attribute is only advisory and might be returned by Shell folder
+		/// implementations even if they do not contain subfolders. Note, however, that the converse—failing to return
+		/// HASSUBFOLDER—definitively states that the folder objects do not have subfolders. Returning HASSUBFOLDER is recommended whenever a
+		/// significant amount of time is required to determine whether any subfolders exist. For example, the Shell always returns
+		/// HASSUBFOLDER when a folder is located on a network drive.
 		/// </summary>
 		HasSubfolder = 0x80000000,
 
-		/// <summary>
-		/// This flag is a mask for content attributes, at present only HASSUBFOLDER. Callers normally do not use this value.
-		/// </summary>
+		/// <summary>This flag is a mask for content attributes, at present only HASSUBFOLDER. Callers normally do not use this value.</summary>
 		ContentsMask = 0x80000000,
 
 		/// <summary>
-		/// Mask used by the PKEY_SFGAOFlags property to determine attributes that are considered to cause slow
-		/// calculations or lack context: ISSLOW, READONLY, HASSUBFOLDER, and VALIDATE. Callers normally do not use this value.
+		/// Mask used by the PKEY_SFGAOFlags property to determine attributes that are considered to cause slow calculations or lack context:
+		/// ISSLOW, READONLY, HASSUBFOLDER, and VALIDATE. Callers normally do not use this value.
 		/// </summary>
 		PKEYMask = 0x81044000
 	}
@@ -225,47 +208,37 @@ namespace Vanara.Windows.Shell
 	/// <summary>Requests the form of an item's display name to retrieve through <see cref="ShellItem.GetDisplayName(ShellItemDisplayString)"/>.</summary>
 	public enum ShellItemDisplayString : uint
 	{
-		/// <summary>
-		/// Returns the display name relative to the parent folder. In UI this name is generally ideal for display to the user.
-		/// </summary>
+		/// <summary>Returns the display name relative to the parent folder. In UI this name is generally ideal for display to the user.</summary>
 		NormalDisplay = 0x00000000,
 
-		/// <summary>
-		/// Returns the parsing name relative to the parent folder. This name is not suitable for use in UI.
-		/// </summary>
+		/// <summary>Returns the parsing name relative to the parent folder. This name is not suitable for use in UI.</summary>
 		ParentRelativeParsing = 0x80018001,
 
 		/// <summary>Returns the parsing name relative to the desktop. This name is not suitable for use in UI.</summary>
 		DesktopAbsoluteParsing = 0x80028000,
 
-		/// <summary>
-		/// Returns the editing name relative to the parent folder. In UI this name is suitable for display to the user.
-		/// </summary>
+		/// <summary>Returns the editing name relative to the parent folder. In UI this name is suitable for display to the user.</summary>
 		ParentRelativeEditing = 0x80031001,
 
-		/// <summary>
-		/// Returns the editing name relative to the desktop. In UI this name is suitable for display to the user.
-		/// </summary>
+		/// <summary>Returns the editing name relative to the desktop. In UI this name is suitable for display to the user.</summary>
 		DesktopAbsoluteEditing = 0x8004c000,
 
 		/// <summary>
-		/// Returns the item's file system path, if it has one. Only items that report SFGAO_FILESYSTEM have a file
-		/// system path. When an item does not have a file system path, a call to IShellItem::GetDisplayName on that item
-		/// will fail. In UI this name is suitable for display to the user in some cases, but note that it might not be
-		/// specified for all items.
+		/// Returns the item's file system path, if it has one. Only items that report SFGAO_FILESYSTEM have a file system path. When an item
+		/// does not have a file system path, a call to IShellItem::GetDisplayName on that item will fail. In UI this name is suitable for
+		/// display to the user in some cases, but note that it might not be specified for all items.
 		/// </summary>
 		FileSysPath = 0x80058000,
 
 		/// <summary>
-		/// Returns the item's URL, if it has one. Some items do not have a URL, and in those cases a call to
-		/// IShellItem::GetDisplayName will fail. This name is suitable for display to the user in some cases, but note
-		/// that it might not be specified for all items.
+		/// Returns the item's URL, if it has one. Some items do not have a URL, and in those cases a call to IShellItem::GetDisplayName will
+		/// fail. This name is suitable for display to the user in some cases, but note that it might not be specified for all items.
 		/// </summary>
 		Url = 0x80068000,
 
 		/// <summary>
-		/// Returns the path relative to the parent folder in a friendly format as displayed in an address bar. This name
-		/// is suitable for display to the user.
+		/// Returns the path relative to the parent folder in a friendly format as displayed in an address bar. This name is suitable for
+		/// display to the user.
 		/// </summary>
 		ParentRelativeForAddressBar = 0x8007c001,
 
@@ -282,34 +255,48 @@ namespace Vanara.Windows.Shell
 	{
 		/// <summary>Shrink the bitmap as necessary to fit, preserving its aspect ratio.</summary>
 		ResizeToFit = 0x00000000,
+
 		/// <summary>
-		/// Passed by callers if they want to stretch the returned image themselves. For example, if the caller passes an icon size of 80x80, a 96x96
-		/// thumbnail could be returned. This action can be used as a performance optimization if the caller expects that they will need to stretch the image.
+		/// Passed by callers if they want to stretch the returned image themselves. For example, if the caller passes an icon size of 80x80,
+		/// a 96x96 thumbnail could be returned. This action can be used as a performance optimization if the caller expects that they will
+		/// need to stretch the image.
 		/// </summary>
 		BiggerSizeOk = 0x00000001,
+
 		/// <summary>
-		/// Return the item only if it is already in memory. Do not access the disk even if the item is cached. Note that this only returns an already-cached
-		/// icon and can fall back to a per-class icon if an item has a per-instance icon that has not been cached. Retrieving a thumbnail, even if it is
-		/// cached, always requires the disk to be accessed, so GetImage should not be called from the UI thread without passing MemoryOnly.
+		/// Return the item only if it is already in memory. Do not access the disk even if the item is cached. Note that this only returns
+		/// an already-cached icon and can fall back to a per-class icon if an item has a per-instance icon that has not been cached.
+		/// Retrieving a thumbnail, even if it is cached, always requires the disk to be accessed, so GetImage should not be called from the
+		/// UI thread without passing MemoryOnly.
 		/// </summary>
 		MemoryOnly = 0x00000002,
+
 		/// <summary>Return only the icon, never the thumbnail.</summary>
 		IconOnly = 0x00000004,
+
 		/// <summary>
-		/// Return only the thumbnail, never the icon. Note that not all items have thumbnails, so ThumbnailOnly will cause the method to fail in these cases.
+		/// Return only the thumbnail, never the icon. Note that not all items have thumbnails, so ThumbnailOnly will cause the method to
+		/// fail in these cases.
 		/// </summary>
 		ThumbnailOnly = 0x00000008,
+
 		/// <summary>
-		/// Allows access to the disk, but only to retrieve a cached item. This returns a cached thumbnail if it is available. If no cached thumbnail is
-		/// available, it returns a cached per-instance icon but does not extract a thumbnail or icon.
+		/// Allows access to the disk, but only to retrieve a cached item. This returns a cached thumbnail if it is available. If no cached
+		/// thumbnail is available, it returns a cached per-instance icon but does not extract a thumbnail or icon.
 		/// </summary>
 		InCacheOnly = 0x00000010,
+
 		/// <summary>Introduced in Windows 8. If necessary, crop the bitmap to a square.</summary>
 		CropToSquare = 0x00000020,
+
 		/// <summary>Introduced in Windows 8. Stretch and crop the bitmap to a 0.7 aspect ratio.</summary>
 		WideThumbnails = 0x00000040,
-		/// <summary>Introduced in Windows 8. If returning an icon, paint a background using the associated app's registered background color.</summary>
+
+		/// <summary>
+		/// Introduced in Windows 8. If returning an icon, paint a background using the associated app's registered background color.
+		/// </summary>
 		IconBackground = 0x00000080,
+
 		/// <summary>Introduced in Windows 8. If necessary, stretch the bitmap so that the height and width fit the given size.</summary>
 		ScaleUp = 0x00000100,
 	}
@@ -352,16 +339,13 @@ namespace Vanara.Windows.Shell
 		internal IShellItem iShellItem;
 		internal IShellItem2 iShellItem2;
 		private static Dictionary<Type, BHID> bhidLookup;
-		private IQueryInfo qi;
-		private ShellItemPropertyStore props;
 		private PropertyDescriptionList propDescList;
+		private ShellItemPropertyStore props;
+		private IQueryInfo qi;
 
 		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 		/// <param name="path">The file system path of the item.</param>
-		public ShellItem(string path)
-		{
-			Init(ShellUtil.GetShellItemForPath(path));
-		}
+		public ShellItem(string path) => Init(ShellUtil.GetShellItemForPath(path));
 
 		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 		/// <param name="idList">The ID list.</param>
@@ -381,7 +365,7 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 		/// <param name="si">An existing IShellItem instance.</param>
-		protected ShellItem(IShellItem si) { Init(si); }
+		protected ShellItem(IShellItem si) => Init(si);
 
 		/// <summary>Initializes a new instance of the <see cref="ShellItem"/> class.</summary>
 		/// <param name="knownFolder">A known folder reference.</param>
@@ -495,6 +479,36 @@ namespace Vanara.Windows.Shell
 			}
 		}
 
+		/// <summary>Creates the most specialized derivative of ShellItem from an IShellItem object.</summary>
+		/// <param name="iItem">The IShellItem object.</param>
+		/// <returns>A ShellItem derivative for the supplied IShellItem.</returns>
+		public static ShellItem Open(IShellItem iItem)
+		{
+			if (iItem.GetAttributes(SFGAO.SFGAO_LINK) != 0)
+				return new ShellLink(iItem);
+
+			// If not a folder, get the ShellItem
+			if (iItem.GetAttributes(SFGAO.SFGAO_FOLDER) == 0)
+				return new ShellItem(iItem);
+
+			// Try to get specialized folder type from property
+			var pk = PROPERTYKEY.System.ItemType;
+			string itemType = null;
+			try { itemType = (iItem as IShellItem2)?.GetString(pk)?.ToString().ToLowerInvariant(); } catch { }
+			switch (itemType)
+			{
+				case ".library-ms":
+					return new ShellLibrary(iItem);
+
+				case ".searchconnector-ms":
+				// TODO: Return a search connector
+				case ".search-ms":
+				// TODO: Return a saved search connection
+				default:
+					return new ShellFolder(iItem);
+			}
+		}
+
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="left">The left operand.</param>
 		/// <param name="right">The right operand.</param>
@@ -508,14 +522,14 @@ namespace Vanara.Windows.Shell
 		public static bool operator ==(ShellItem left, ShellItem right) => Equals(left?.iShellItem, right?.iShellItem);
 
 		/// <summary>
-		/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes,
-		/// follows, or occurs in the same position in the sort order as the other object.
+		/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current
+		/// instance precedes, follows, or occurs in the same position in the sort order as the other object.
 		/// </summary>
 		/// <param name="other">An object to compare with this instance.</param>
 		/// <param name="hint">Optional hint value that determines how to perform the comparison. The default compares all fields.</param>
 		/// <returns>
-		/// A value that indicates the relative order of the objects being compared. If the two items are the same this parameter equals zero; if they are
-		/// different the parameter is nonzero.
+		/// A value that indicates the relative order of the objects being compared. If the two items are the same this parameter equals
+		/// zero; if they are different the parameter is nonzero.
 		/// </returns>
 		public int CompareTo(ShellItem other, ShellItemComparison hint = ShellItemComparison.SecondaryFileSystemPath) => iShellItem.Compare(other?.iShellItem, (SICHINTF)hint);
 
@@ -567,8 +581,8 @@ namespace Vanara.Windows.Shell
 		public override int GetHashCode() => GetDisplayName(SIGDN.SIGDN_DESKTOPABSOLUTEPARSING).GetHashCode();
 
 		/// <summary>
-		/// Gets an image that represents this item. The default behavior is to load a thumbnail. If there is no thumbnail for the current item, it retrieves the
-		/// icon of the item. The thumbnail or icon is extracted if it is not currently cached.
+		/// Gets an image that represents this item. The default behavior is to load a thumbnail. If there is no thumbnail for the current
+		/// item, it retrieves the icon of the item. The thumbnail or icon is extracted if it is not currently cached.
 		/// </summary>
 		/// <param name="size">A structure that specifies the size of the image to be received.</param>
 		/// <param name="flags">One or more of the option flags.</param>
@@ -577,8 +591,7 @@ namespace Vanara.Windows.Shell
 		public Image GetImage(Size size, ShellItemGetImageOptions flags)
 		{
 			if (!IsMinVista) throw new PlatformNotSupportedException();
-			var fctry = iShellItem as IShellItemImageFactory;
-			if (fctry != null)
+			if (iShellItem is IShellItemImageFactory fctry)
 			{
 				var hres = fctry.GetImage(size, (SIIGBF)flags, out var hbitmap);
 				if (hres == 0x8004B200 && flags.IsFlagSet(ShellItemGetImageOptions.ThumbnailOnly))
@@ -593,7 +606,10 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Gets a property description list object given a reference to a property key.</summary>
-		/// <param name="keyType">A reference to a PROPERTYKEY structure. The values in <see cref="PROPERTYKEY.System.PropList"/> are all valid. <see cref="PROPERTYKEY.System.PropList.FullDetails"/> will return all properties.</param>
+		/// <param name="keyType">
+		/// A reference to a PROPERTYKEY structure. The values in <see cref="PROPERTYKEY.System.PropList"/> are all valid.
+		/// <see cref="PROPERTYKEY.System.PropList.FullDetails"/> will return all properties.
+		/// </param>
 		/// <returns>A <see cref="PropertyDescriptionList"/> instance for the supplied key.</returns>
 		public PropertyDescriptionList GetPropertyDescriptionList(PROPERTYKEY keyType)
 		{
@@ -630,16 +646,17 @@ namespace Vanara.Windows.Shell
 		}
 
 		/// <summary>Open a new Windows Explorer window with this item selected.</summary>
-		public void ViewInExplorer()
-		{
-			SHOpenFolderAndSelectItems(Parent.PIDL, 1, new IntPtr[] { (IntPtr)PIDL }, OFASI.OFASI_NONE);
-		}
+		public void ViewInExplorer() => SHOpenFolderAndSelectItems(Parent.PIDL, 1, new IntPtr[] { (IntPtr)PIDL }, OFASI.OFASI_NONE);
 
 		/// <summary>
-		/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.
+		/// Compares the current instance with another object of the same type and returns an integer that indicates whether the current
+		/// instance precedes, follows, or occurs in the same position in the sort order as the other object.
 		/// </summary>
 		/// <param name="other">An object to compare with this instance.</param>
-		/// <returns>A value that indicates the relative order of the objects being compared. If the two items are the same this parameter equals zero; if they are different the parameter is nonzero.</returns>
+		/// <returns>
+		/// A value that indicates the relative order of the objects being compared. If the two items are the same this parameter equals
+		/// zero; if they are different the parameter is nonzero.
+		/// </returns>
 		int IComparable<ShellItem>.CompareTo(ShellItem other) => CompareTo(other);
 
 		/// <summary>Gets the BHID for the supplied <typeparamref name="TInterface"/>.</summary>
@@ -675,32 +692,14 @@ namespace Vanara.Windows.Shell
 			return bhidLookup.TryGetValue(typeof(TInterface), out var value) ? value : 0;
 		}
 
-		/// <summary>Creates the most specialized derivative of ShellItem from an IShellItem object.</summary>
-		/// <param name="iItem">The IShellItem object.</param>
-		/// <returns>A ShellItem derivative for the supplied IShellItem.</returns>
-		public static ShellItem Open(IShellItem iItem)
+		internal static string GetStringValue(Action<StringBuilder, int> method, int buffSize = MAX_PATH)
 		{
-			if (iItem.GetAttributes(SFGAO.SFGAO_LINK) != 0)
-				return new ShellLink(iItem);
-
-			// If not a folder, get the ShellItem
-			if (iItem.GetAttributes(SFGAO.SFGAO_FOLDER) == 0)
-				return new ShellItem(iItem);
-
-			// Try to get specialized folder type from property
-			var pk = PROPERTYKEY.System.ItemType;
-			string itemType = null;
-			try { itemType = (iItem as IShellItem2)?.GetString(pk)?.ToString().ToLowerInvariant(); } catch { }
-			switch (itemType)
+			while (true)
 			{
-				case ".library-ms":
-					return new ShellLibrary(iItem);
-				case ".searchconnector-ms":
-				// TODO: Return a search connector
-				case ".search-ms":
-				// TODO: Return a saved search connection
-				default:
-					return new ShellFolder(iItem);
+				var ret = new StringBuilder(buffSize, buffSize);
+				try { method(ret, ret.Capacity); }
+				catch (COMException ex) { if (ex.ErrorCode == unchecked((int)0x8007007A) || ex.ErrorCode == unchecked((int)0x800700EA) || buffSize <= 8192) buffSize *= 2; else throw ex; }
+				return ret.ToString();
 			}
 		}
 
@@ -746,7 +745,6 @@ namespace Vanara.Windows.Shell
 
 		/// <summary>Initializes this instance with the specified IShellItem.</summary>
 		/// <param name="si">The IShellItem object.</param>
-		/// <exception cref="ArgumentNullException">si</exception>
 		protected void Init(IShellItem si)
 		{
 			iShellItem = si ?? throw new ArgumentNullException(nameof(si));
@@ -766,8 +764,8 @@ namespace Vanara.Windows.Shell
 			var bitmap = new Bitmap(dibsection.dsBm.bmWidth, dibsection.dsBm.bmHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 			using (var mstr = new MarshalingStream(dibsection.dsBm.bmBits, (long)dibsection.dsBm.bmBits))
 			{
-				for (int x = 0; x < dibsection.dsBmih.biWidth; x++)
-					for (int y = 0; y < dibsection.dsBmih.biHeight; y++)
+				for (var x = 0; x < dibsection.dsBmih.biWidth; x++)
+					for (var y = 0; y < dibsection.dsBmih.biHeight; y++)
 					{
 						var rgbquad = mstr.Read<RGBQUAD>();
 						if (rgbquad.rgbReserved != 0)
@@ -802,10 +800,7 @@ namespace Vanara.Windows.Shell
 
 		protected class ShellItemImpl : IDisposable, IShellItem
 		{
-			public ShellItemImpl(PIDL pidl, bool owner)
-			{
-				PIDL = owner ? pidl : new PIDL(pidl);
-			}
+			public ShellItemImpl(PIDL pidl, bool owner) => PIDL = owner ? pidl : new PIDL(pidl);
 
 			private PIDL PIDL { get; set; }
 
@@ -827,10 +822,7 @@ namespace Vanara.Windows.Shell
 				return 1;
 			}
 
-			public void Dispose()
-			{
-				PIDL = null;
-			}
+			public void Dispose() => PIDL = null;
 
 			public SFGAO GetAttributes(SFGAO sfgaoMask)
 			{
