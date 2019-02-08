@@ -1,13 +1,16 @@
 ﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.Design.Serialization;
 using System.Drawing;
-using Vanara.PInvoke;
+using System.Globalization;
 using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32_Gdi;
 
 namespace Vanara.Windows.Shell
 {
 	/// <summary>Wraps the icon location string used by some Shell classes.</summary>
-	public class IconLocation
+	[TypeConverter(typeof(IconLocationTypeConverter))]
+	public class IconLocation : IndirectResource
 	{
 		/// <summary>Initializes a new instance of the <see cref="IconLocation"/> class.</summary>
 		public IconLocation() { }
@@ -15,14 +18,11 @@ namespace Vanara.Windows.Shell
 		/// <summary>Initializes a new instance of the <see cref="IconLocation"/> class.</summary>
 		/// <param name="module">The module file name.</param>
 		/// <param name="resourceIdOrIndex">If this number is positive, this is the index of the resource in the module file. If negative, the absolute value of the number is the resource ID of the icon in the module file.</param>
-		public IconLocation(string module, int resourceIdOrIndex)
-		{
-			ModuleFileName = module;
-			ResourceId = resourceIdOrIndex;
-		}
+		public IconLocation(string module, int resourceIdOrIndex) : base(module, resourceIdOrIndex) { }
 
 		/// <summary>Gets the icon referred to by this instance.</summary>
 		/// <value>The icon.</value>
+		[Browsable(false)]
 		public Icon Icon
 		{
 			get
@@ -37,22 +37,6 @@ namespace Vanara.Windows.Shell
 				//	ExtractIconEx(loc.ModuleFileName, loc.ResourceId, null, hIconEx, 1);
 			}
 		}
-
-		/// <summary>Returns true if this location is valid.</summary>
-		/// <value><c>true</c> if this location is valid; otherwise, <c>false</c>.</value>
-		public bool IsValid => System.IO.File.Exists(ModuleFileName) && ResourceId != 0;
-
-		/// <summary>Gets or sets the module file name.</summary>
-		/// <value>The module file name.</value>
-		public string ModuleFileName { get; set; }
-
-		/// <summary>Gets or sets the resource index or resource ID.</summary>
-		/// <value>If this number is positive, this is the index of the resource in the module file. If negative, the absolute value of the number is the resource ID of the icon in the module file.</value>
-		public int ResourceId { get; set; }
-
-		/// <summary>Gets the string value.</summary>
-		/// <value>The string value.</value>
-		public string StringValue => IsValid ? ToString() : null;
 
 		/// <summary>Tries to parse the specified string to create a <see cref="IconLocation"/> instance.</summary>
 		/// <param name="value">The string representation in the format of either "ModuleFileName,ResourceIndex" or "ModuleFileName,-ResourceID".</param>
@@ -74,4 +58,38 @@ namespace Vanara.Windows.Shell
 		/// <returns>A <see cref="System.String" /> that represents this instance.</returns>
 		public override string ToString() => IsValid ? $"{ModuleFileName},{ResourceId}" : string.Empty;
 	}
+
+	internal class IconLocationTypeConverter : ExpandableObjectConverter
+	{
+		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+		{
+			if (sourceType == typeof(string))
+				return true;
+			return base.CanConvertFrom(context, sourceType);
+		}
+
+		public override bool CanConvertTo(ITypeDescriptorContext context, Type destType)
+		{
+			if (destType == typeof(InstanceDescriptor) || destType == typeof(string))
+				return true;
+			return base.CanConvertTo(context, destType);
+		}
+
+		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+		{
+			if (value is string s)
+				return IconLocation.TryParse(s, out var loc) ? loc : null;
+			return base.ConvertFrom(context, culture, value);
+		}
+
+		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo info, object value, Type destType)
+		{
+			if (destType == typeof(InstanceDescriptor))
+				return new InstanceDescriptor(typeof(IconLocation).GetConstructor(new Type[0]), null, false);
+			if (destType == typeof(string) && value is IconLocation s)
+				return s.ToString();
+			return base.ConvertTo(context, info, value, destType);
+		}
+	}
+
 }
