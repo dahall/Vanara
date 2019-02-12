@@ -61,13 +61,8 @@ namespace Vanara.InteropServices
 		/// <returns>SafeHGlobalHandle object to an native (unmanaged) Unicode string</returns>
 		public SafeHGlobalHandle(string s) : base(s) { }
 
-        /// <summary>Initializes a new instance of the <see cref="SafeHGlobalHandle"/> class.</summary>
-        /// <param name="structureType">The type of a structure</param>
-        /// <exception cref="System.ArgumentOutOfRangeException">size - The value of this argument must be non-negative</exception>
-        public SafeHGlobalHandle(Type structureType) : base(Marshal.SizeOf(structureType)) { }
-
-        /// <summary>Initializes a new instance of the <see cref="SafeHGlobalHandle"/> class.</summary>
-        [ExcludeFromCodeCoverage]
+		/// <summary>Initializes a new instance of the <see cref="SafeHGlobalHandle"/> class.</summary>
+		[ExcludeFromCodeCoverage]
 		internal SafeHGlobalHandle() : base(0) { }
 
 		/// <summary>Represents a NULL memory pointer.</summary>
