@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32.SafeHandles;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -20,6 +19,27 @@ namespace Vanara.PInvoke.Tests
 	public class AdvApi32Tests
 	{
 		internal const string fn = @"C:\Temp\help.ico";
+
+		internal static object[] AuthCasesFromFile
+		{
+			get
+			{
+				const string authfn = @"C:\Temp\AuthTestCases.txt";
+				var lines = File.ReadAllLines(authfn).Skip(1).Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
+				var ret = new object[lines.Length];
+				for (var i = 0; i < lines.Length; i++)
+				{
+					var items = lines[i].Split('\t').Select(s => s == string.Empty ? null : s).Cast<object>().ToArray();
+					if (items.Length < 9) continue;
+					bool.TryParse(items[0].ToString(), out var validUser);
+					items[0] = validUser;
+					bool.TryParse(items[1].ToString(), out var validCred);
+					items[1] = validCred;
+					ret[i] = items;
+				}
+				return ret;
+			}
+		}
 
 		[Test()]
 		public void AdjustTokenPrivilegesTest()
@@ -330,6 +350,30 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test()]
+		public void OpenCloseSCManager()
+		{
+			using (var scm = AdvApi32.OpenSCManager(null, null, ScManagerAccessTypes.SC_MANAGER_CONNECT))
+			{
+				AssertHandleIsValid(scm);
+			}
+		}
+
+		[Test()]
+		public void OpenCloseService()
+		{
+			using (var scm = AdvApi32.OpenSCManager(null, null, ScManagerAccessTypes.SC_MANAGER_CONNECT))
+			{
+				AssertHandleIsValid(scm);
+
+				//opens task scheduler service
+				using (var service = AdvApi32.OpenService(scm, "Schedule", ServiceAccessTypes.SERVICE_QUERY_STATUS))
+				{
+					AssertHandleIsValid(service);
+				}
+			}
+		}
+
+		[Test()]
 		public void PrivilegeCheckTest()
 		{
 			using (var t = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_QUERY))
@@ -361,6 +405,27 @@ namespace Vanara.PInvoke.Tests
 					Assert.That(b, Is.True);
 					Assert.That(sd.lpDescription, Is.Not.Null);
 					TestContext.WriteLine(sd.lpDescription);
+				}
+			}
+		}
+
+		[Test()]
+		public void QueryServiceStatus()
+		{
+			using (var scm = AdvApi32.OpenSCManager(null, null, ScManagerAccessTypes.SC_MANAGER_CONNECT))
+			{
+				AssertHandleIsValid(scm);
+
+				//opens task scheduler service
+				using (var service = AdvApi32.OpenService(scm, "Schedule", ServiceAccessTypes.SERVICE_QUERY_STATUS))
+				{
+					AssertHandleIsValid(service);
+
+					//query service status
+					var status = AdvApi32.QueryServiceStatusEx<SERVICE_STATUS_PROCESS>(service, SC_STATUS_TYPE.SC_STATUS_PROCESS_INFO);
+
+					Assert.That(status.dwServiceType, Is.EqualTo(ServiceTypes.SERVICE_WIN32).Or.EqualTo(ServiceTypes.SERVICE_WIN32_SHARE_PROCESS));
+					Assert.That(status.dwServiceFlags, Is.EqualTo(0));
 				}
 			}
 		}
@@ -402,24 +467,44 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
-		internal static object[] AuthCasesFromFile
+		[Test()]
+		public void StartStopService()
 		{
-			get
+			using (var scm = AdvApi32.OpenSCManager(null, null, ScManagerAccessTypes.SC_MANAGER_CONNECT))
 			{
-				const string authfn = @"C:\Temp\AuthTestCases.txt";
-				var lines = File.ReadAllLines(authfn).Skip(1).Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
-				var ret = new object[lines.Length];
-				for (var i = 0; i < lines.Length; i++)
+				AssertHandleIsValid(scm);
+
+				var access = ServiceAccessTypes.SERVICE_START | ServiceAccessTypes.SERVICE_STOP | ServiceAccessTypes.SERVICE_QUERY_STATUS;
+
+				//opens print spooler service
+				using (var service = AdvApi32.OpenService(scm, "Spooler", access))
 				{
-					var items = lines[i].Split('\t').Select(s => s == string.Empty ? null : s).Cast<object>().ToArray();
-					if (items.Length < 9) continue;
-					bool.TryParse(items[0].ToString(), out var validUser);
-					items[0] = validUser;
-					bool.TryParse(items[1].ToString(), out var validCred);
-					items[1] = validCred;
-					ret[i] = items;
+					AssertHandleIsValid(service);
+
+					//query service status
+					var status = AdvApi32.QueryServiceStatusEx<SERVICE_STATUS_PROCESS>(service, SC_STATUS_TYPE.SC_STATUS_PROCESS_INFO);
+
+					if (status.dwCurrentState == ServiceState.SERVICE_RUNNING)
+					{
+						var ret4 = AdvApi32.StopService(service, out var _);
+						if (!ret4) Win32Error.ThrowLastError();
+
+						WaitForServiceStatus(service, ServiceState.SERVICE_STOPPED);
+
+						var ret6 = AdvApi32.StartService(service);
+						if (!ret6) Win32Error.ThrowLastError();
+					}
+					else
+					{
+						var ret4 = AdvApi32.StartService(service);
+						if (!ret4) Win32Error.ThrowLastError();
+
+						WaitForServiceStatus(service, ServiceState.SERVICE_RUNNING);
+
+						var ret6 = AdvApi32.StopService(service, out var _);
+						if (!ret6) Win32Error.ThrowLastError();
+					}
 				}
-				return ret;
 			}
 		}
 
@@ -433,6 +518,35 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(pOwn, Is.Not.EqualTo(IntPtr.Zero));
 			Assert.That(pAcl, Is.Not.EqualTo(IntPtr.Zero));
 			return pSD;
+		}
+
+		private static void AssertHandleIsValid(SafeSC_HANDLE handle)
+		{
+			if (handle.IsInvalid)
+				Win32Error.ThrowLastError();
+
+			Assert.That(handle.IsNull, Is.False);
+			Assert.That(handle.IsClosed, Is.False);
+			Assert.That(handle.IsInvalid, Is.False);
+		}
+
+		private static void WaitForServiceStatus(SafeSC_HANDLE service, ServiceState status)
+		{
+			//query service status again to check that it changed
+			var tests = 0;
+
+			while (tests < 40)
+			{
+				var status2 = AdvApi32.QueryServiceStatusEx<SERVICE_STATUS_PROCESS>(service, SC_STATUS_TYPE.SC_STATUS_PROCESS_INFO);
+				if (status2.dwCurrentState == status)
+					break;
+
+				Thread.Sleep(500);
+				tests++;
+			}
+
+			if (tests >= 40)
+				throw new TimeoutException($"Timed-out waiting for service status {status}");
 		}
 	}
 }
