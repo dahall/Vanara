@@ -1,5 +1,5 @@
 ## Correlation report for advapi32.dll, secur32.dll, authz.dll  
-### Methods (28% complete)  
+### Methods (29% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AbortSystemShutdown](http://msdn2.microsoft.com/en-us/library/aa376630) | advapi32.dll | winreg.h | Vanara.PInvoke.AdvApi32.AbortSystemShutdown  
@@ -151,8 +151,8 @@ Native Method | Native DLL | Header | Managed Method
 [CommandLineFromMsiDescriptor](https://www.google.com/search?num=5&q=CommandLineFromMsiDescriptor+site%3Amicrosoft.com) | advapi32.dll |  |   
 [CompleteAuthToken](https://www.google.com/search?num=5&q=CompleteAuthToken+site%3Amicrosoft.com) | secur32.dll |  |   
 [ComputeAccessTokenFromCodeAuthzLevel](https://www.google.com/search?num=5&q=ComputeAccessTokenFromCodeAuthzLevel+site%3Amicrosoft.com) | advapi32.dll |  |   
-[ControlService](https://www.google.com/search?num=5&q=ControlService+site%3Amicrosoft.com) | advapi32.dll |  |   
-[ControlServiceEx](https://www.google.com/search?num=5&q=ControlServiceExA+site%3Amicrosoft.com) | advapi32.dll |  |   
+[ControlService](http://msdn2.microsoft.com/en-us/library/c112b587-7455-4f15-93e1-ded73de6dbbd) | advapi32.dll | winsvc.h | Vanara.PInvoke.AdvApi32.ControlService  
+[ControlServiceEx](http://msdn2.microsoft.com/en-us/library/de249903-7545-4fb6-925a-aa647f862f93) | advapi32.dll | winsvc.h | Vanara.PInvoke.AdvApi32.ControlServiceEx  
 [ControlTrace](https://www.google.com/search?num=5&q=ControlTraceA+site%3Amicrosoft.com) | advapi32.dll |  |   
 [ConvertAccessToSecurityDescriptor](https://www.google.com/search?num=5&q=ConvertAccessToSecurityDescriptorA+site%3Amicrosoft.com) | advapi32.dll |  |   
 [ConvertSDToStringSDDomainW](https://www.google.com/search?num=5&q=ConvertSDToStringSDDomainW+site%3Amicrosoft.com) | advapi32.dll |  |   
@@ -204,7 +204,7 @@ Native Method | Native DLL | Header | Managed Method
 [DeleteAce](https://www.google.com/search?num=5&q=DeleteAce+site%3Amicrosoft.com) | advapi32.dll |  |   
 [DeleteSecurityContext](https://www.google.com/search?num=5&q=DeleteSecurityContext+site%3Amicrosoft.com) | secur32.dll |  |   
 [DeleteSecurityPackage](https://www.google.com/search?num=5&q=DeleteSecurityPackageA+site%3Amicrosoft.com) | secur32.dll |  |   
-[DeleteService](https://www.google.com/search?num=5&q=DeleteService+site%3Amicrosoft.com) | advapi32.dll |  |   
+[DeleteService](http://msdn2.microsoft.com/en-us/library/5b0fc714-60e0-4ae3-8fa8-ace36dab2fb0) | advapi32.dll | winsvc.h | Vanara.PInvoke.AdvApi32.DeleteService  
 [DeregisterEventSource](http://msdn2.microsoft.com/en-us/library/f5d1f4b0-5320-4aec-a129-cafff6f1fed1) | advapi32.dll | winbase.h | Vanara.PInvoke.AdvApi32.DeregisterEventSource  
 [DestroyPrivateObjectSecurity](https://www.google.com/search?num=5&q=DestroyPrivateObjectSecurity+site%3Amicrosoft.com) | advapi32.dll |  |   
 [DuplicateEncryptionInfoFile](https://www.google.com/search?num=5&q=DuplicateEncryptionInfoFile+site%3Amicrosoft.com) | advapi32.dll |  |   
@@ -513,7 +513,7 @@ Native Method | Native DLL | Header | Managed Method
 [QueryServiceLockStatus](https://www.google.com/search?num=5&q=QueryServiceLockStatusA+site%3Amicrosoft.com) | advapi32.dll |  |   
 [QueryServiceObjectSecurity](https://www.google.com/search?num=5&q=QueryServiceObjectSecurity+site%3Amicrosoft.com) | advapi32.dll |  |   
 [QueryServiceStatus](https://www.google.com/search?num=5&q=QueryServiceStatus+site%3Amicrosoft.com) | advapi32.dll |  |   
-[QueryServiceStatusEx](https://www.google.com/search?num=5&q=QueryServiceStatusEx+site%3Amicrosoft.com) | advapi32.dll |  |   
+[QueryServiceStatusEx](http://msdn2.microsoft.com/en-us/library/3fe02245-97b1-49f3-8f35-2dcd6f221547) | advapi32.dll | winsvc.h | Vanara.PInvoke.AdvApi32.QueryServiceStatusEx  
 [QueryTrace](https://www.google.com/search?num=5&q=QueryTraceA+site%3Amicrosoft.com) | advapi32.dll |  |   
 [QueryTraceProcessingHandle](https://www.google.com/search?num=5&q=QueryTraceProcessingHandle+site%3Amicrosoft.com) | advapi32.dll |  |   
 [QueryUserServiceName](https://www.google.com/search?num=5&q=QueryUserServiceName+site%3Amicrosoft.com) | advapi32.dll |  |   
@@ -662,7 +662,7 @@ Native Method | Native DLL | Header | Managed Method
 [SspiUnmarshalAuthIdentity](http://msdn2.microsoft.com/en-us/library/89798b37-808a-4174-8362-a2dc4ee1b460) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SspiUnmarshalAuthIdentity  
 [SspiValidateAuthIdentity](http://msdn2.microsoft.com/en-us/library/82733abd-d984-4902-b6e4-c3809171ad51) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SspiValidateAuthIdentity  
 [SspiZeroAuthIdentity](http://msdn2.microsoft.com/en-us/library/50b1f24a-c802-4691-a450-316cb31bf44d) | secur32.dll | sspi.h | Vanara.PInvoke.Secur32.SspiZeroAuthIdentity  
-[StartService](https://www.google.com/search?num=5&q=StartServiceA+site%3Amicrosoft.com) | advapi32.dll |  |   
+[StartService](http://msdn2.microsoft.com/en-us/library/f185a878-e1c3-4fe5-8ec9-c5296d27f985) | advapi32.dll | winsvc.h | Vanara.PInvoke.AdvApi32.StartService  
 [StartServiceCtrlDispatcher](https://www.google.com/search?num=5&q=StartServiceCtrlDispatcherA+site%3Amicrosoft.com) | advapi32.dll |  |   
 [StartTrace](https://www.google.com/search?num=5&q=StartTraceA+site%3Amicrosoft.com) | advapi32.dll |  |   
 [StopTrace](https://www.google.com/search?num=5&q=StopTraceA+site%3Amicrosoft.com) | advapi32.dll |  |   
@@ -764,6 +764,7 @@ Native Structure | Header | Managed Structure
 [SC_ACTION](http://msdn2.microsoft.com/en-us/library/e2c355a6-affe-46bf-a3e6-f8c420422d46) | winsvc.h | Vanara.PInvoke.AdvApi32+SC_ACTION  
 [SC_HANDLE](https://www.google.com/search?num=5&q=SC_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.AdvApi32+SC_HANDLE  
 [SECURITY_DESCRIPTOR](http://msdn2.microsoft.com/en-us/library/aa379561) | Winnt.h | Vanara.PInvoke.AdvApi32+SECURITY_DESCRIPTOR  
+[SERVICE_CONTROL_STATUS_REASON_PARAMS](http://msdn2.microsoft.com/en-us/library/f7213cbb-255f-4ce3-93c9-5537256e078f) | winsvc.h | Vanara.PInvoke.AdvApi32+SERVICE_CONTROL_STATUS_REASON_PARAMS  
 [SERVICE_DELAYED_AUTO_START_INFO](http://msdn2.microsoft.com/en-us/library/16117450-eb73-47de-8be7-c7aff3d44c81) | winsvc.h | Vanara.PInvoke.AdvApi32+SERVICE_DELAYED_AUTO_START_INFO  
 [SERVICE_DESCRIPTION](http://msdn2.microsoft.com/en-us/library/ms685156) | Winsvc.h | Vanara.PInvoke.AdvApi32+SERVICE_DESCRIPTION  
 [SERVICE_FAILURE_ACTIONS](http://msdn2.microsoft.com/en-us/library/180ca6d9-f2c3-4ea1-b2c6-319d08ef88ee) | winsvc.h | Vanara.PInvoke.AdvApi32+SERVICE_FAILURE_ACTIONS  
@@ -775,6 +776,7 @@ Native Structure | Header | Managed Structure
 [SERVICE_SID_INFO](http://msdn2.microsoft.com/en-us/library/cb1a32bd-aafb-4e41-8d6f-673c3d747f14) | winsvc.h | Vanara.PInvoke.AdvApi32+SERVICE_SID_INFO  
 [SERVICE_STATUS](http://msdn2.microsoft.com/en-us/library/d268609b-d442-4d0f-9d49-ed23fee84961) | winsvc.h | Vanara.PInvoke.AdvApi32+SERVICE_STATUS  
 [SERVICE_STATUS_HANDLE](https://www.google.com/search?num=5&q=SERVICE_STATUS_HANDLE+site%3Amicrosoft.com) |  | Vanara.PInvoke.AdvApi32+SERVICE_STATUS_HANDLE  
+[SERVICE_STATUS_PROCESS](https://www.google.com/search?num=5&q=SERVICE_STATUS_PROCESS+site%3Amicrosoft.com) | winsvc.h | Vanara.PInvoke.AdvApi32+SERVICE_STATUS_PROCESS  
 [SERVICE_TRIGGER](http://msdn2.microsoft.com/en-us/library/a57aa702-40a2-4880-80db-6c4f43c3e7ea) | winsvc.h | Vanara.PInvoke.AdvApi32+SERVICE_TRIGGER  
 [SERVICE_TRIGGER_INFO](http://msdn2.microsoft.com/en-us/library/8de46056-1ea5-46f2-a260-ad140fd77bc1) | winsvc.h | Vanara.PInvoke.AdvApi32+SERVICE_TRIGGER_INFO  
 [SERVICE_TRIGGER_SPECIFIC_DATA_ITEM](http://msdn2.microsoft.com/en-us/library/670e6c49-bbc0-4af6-9e47-6c89801ebb45) | winsvc.h | Vanara.PInvoke.AdvApi32+SERVICE_TRIGGER_SPECIFIC_DATA_ITEM  

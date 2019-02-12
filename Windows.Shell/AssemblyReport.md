@@ -9,6 +9,7 @@ ComObject | Base class for all COM objects which handles calling AddRef and Rele
 ControlPanel | Provides a means to open Control Panel items and get their paths.
 IconLocation | Wraps the icon location string used by some Shell classes.
 IndirectString | Wraps the icon location string used by some Shell classes.
+MessageEventArgs | Holds a copy of the MSG instance retrieved by GetMessage.
 MessageLoop | <para> This class encapsulates the management of a message loop for an application. It supports queuing a callback to the application via the message loop to enable the app to return from a call and continue processing that call later. This behavior is needed when implementing a shell verb as verbs must not block the caller. </para> <note type="note">The ComObject derived class should call QueueNonBlockingCallback in its invoke function, for example IExecuteCommand::Execute() or IDropTarget::Drop() passing a method that will complete the initialization work.</note>
 ProgId | Represents a programmatic identifier in the registry for an application.
 PropertyBag | Encapsulates an `IPropertyBag` instance.
@@ -57,6 +58,7 @@ ShellItemComparison | Used to determine how to compare two Shell items. ShellIte
 ShellItemDisplayString | Requests the form of an item's display name to retrieve through `ShellItem.GetDisplayName(Vanara.Windows.Shell.ShellItemDisplayString)`. | NormalDisplay, ParentRelativeParsing, DesktopAbsoluteParsing, ParentRelativeEditing, DesktopAbsoluteEditing, FileSysPath, Url, ParentRelativeForAddressBar, ParentRelative, ParentRelativeForUI
 ShellItemGetImageOptions | Options for retrieving images from a `ShellItem`. | ResizeToFit, BiggerSizeOk, MemoryOnly, IconOnly, ThumbnailOnly, InCacheOnly, CropToSquare, WideThumbnails, IconBackground, ScaleUp
 ShellItemToolTipOptions | Flags that direct the handling of the item from which you're retrieving the info tip text. | Default, Name, LinkNotTarget, LinkTarget, AllowDelay, SingleLine
+TaskbarButtonProgressState | State of the progress shown on a taskbar button. | None, Indeterminate, Normal, Error, Paused
 TransferFlags | Used by methods of the ITransferSource and ITransferDestination interfaces to control their file operations. | Normal, FailExist, RenameExist, OverwriteExist, AllowDecryption, NoSecurity, CopyCreationTime, CopyWriteTime, UseFullAccess, DeleteRecycleIfPossible, CopyHardLink, CopyLocalizedName, MoveAsCopyDelete, SuspendShellEvents
 VerbMultiSelectModel |  | Unset, Player, Single, Document
 VerbPosition |  | Unset, Top, Bottom

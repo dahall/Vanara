@@ -5,7 +5,6 @@ Class | Description
 AssociateAttribute | Associates a Guid with an element.
 CoTaskMemStringMarshaler | Marshals strings that are allocated by native code and must be freed using CoTaskMemFree after use.
 FunctionHelper | 
-HANDLE | Base class for all native handles.
 IEnumFromIndexer<T> | Creates an enumerable class from a counter and an indexer. Useful if a class doesn't support `IEnumerable` or <see cref="T:System.Collections.Generic.IEnumerable`1" /> like some COM objects.
 IEnumFromNext<T> | Creates an enumerable class from a get next method and a reset method. Useful if a class doesn't support `IEnumerable` or <see cref="T:System.Collections.Generic.IEnumerable`1" /> like some COM objects.
 Lib | Holds string values for all used external API libraries.
@@ -18,6 +17,7 @@ PInvokeDataAttribute | Captures information about P/Invoke calls.
 PRECT | Defines the coordinates of the upper-left and lower-right corners of a rectangle.
 PtrFunc<T> | 
 SafeElementArray<T> | A safe unmanaged array of structures allocated on the global heap with a prefix type (usually a uint or int) that determines the count of elements.
+SafeHANDLE | Base class for all native handles.
 SafeNativeArray<T> | A safe unmanaged array of structures allocated on the global heap. Array size determined by allocated memory size divided by size of structure.
 SafeResourceId | Represents a system resource name that can identify as a string, integer, or pointer.
 SBFunc<T> | 
@@ -30,6 +30,7 @@ Struct | Description
 ---- | ----
 COLORREF | The COLORREF value is used to specify an RGB color in the form <c>0x00bbggrr</c>.
 HACCEL | Provides a handle to an accelerator table.
+HANDLE | Provides a generic handle.
 HBITMAP | Provides a handle to a bitmap.
 HBRUSH | Provides a handle to a drawing brush.
 HCURSOR | Provides a handle to a Windows cursor.

@@ -32,10 +32,10 @@
     <PackageReleaseNotes>Currently implements:
 
 Classes
-AssociateAttribute, CoTaskMemStringMarshaler, FunctionHelper, HANDLE, IEnumFromIndexer&lt;T&gt;, IEnumFromNext&lt;T&gt;, Lib, Macros, NullTermStringArrayMarshaler, OBJECT_TYPE_LIST, OverlappedAsync, OverlappedAsyncResult, PInvokeDataAttribute, PRECT, PtrFunc&lt;T&gt;, SafeElementArray&lt;T&gt;, SafeNativeArray&lt;T&gt;, SafeResourceId, SBFunc&lt;T&gt;, SECURITY_ATTRIBUTES, SizeFunc&lt;T&gt;, TryGetNext, WIN32_FIND_DATA
+AssociateAttribute, CoTaskMemStringMarshaler, FunctionHelper, IEnumFromIndexer&lt;T&gt;, IEnumFromNext&lt;T&gt;, Lib, Macros, NullTermStringArrayMarshaler, OBJECT_TYPE_LIST, OverlappedAsync, OverlappedAsyncResult, PInvokeDataAttribute, PRECT, PtrFunc&lt;T&gt;, SafeElementArray&lt;T&gt;, SafeHANDLE, SafeNativeArray&lt;T&gt;, SafeResourceId, SBFunc&lt;T&gt;, SECURITY_ATTRIBUTES, SizeFunc&lt;T&gt;, TryGetNext, WIN32_FIND_DATA
 
 Structures
-COLORREF, HACCEL, HBITMAP, HBRUSH, HCURSOR, HDC, HDESK, HDPA, HDROP, HDSA, HDWP, HENHMETAFILE, HFILE, HFONT, HGDIOBJ, HICON, HIMAGELIST, HINSTANCE, HKEY, HMENU, HMETAFILE, HMONITOR, HPALETTE, HPEN, HPROCESS, HPROPSHEET, HPROPSHEETPAGE, HRESULT, HRGN, HTHEME, HTHREAD, HTHUMBNAIL, HTOKEN, HWINSTA, HWND, LOGFONT, MSG, NTStatus, OBJECT_TYPE_LIST, PACE, PACL, POINTS, PRECT, PSECURITY_DESCRIPTOR, PSID, RECT, ResourceId, SECURITY_ATTRIBUTES, SIZE, SizeT, SYSTEMTIME, WIN32_FIND_DATA, Win32Error
+COLORREF, HACCEL, HANDLE, HBITMAP, HBRUSH, HCURSOR, HDC, HDESK, HDPA, HDROP, HDSA, HDWP, HENHMETAFILE, HFILE, HFONT, HGDIOBJ, HICON, HIMAGELIST, HINSTANCE, HKEY, HMENU, HMETAFILE, HMONITOR, HPALETTE, HPEN, HPROCESS, HPROPSHEET, HPROPSHEETPAGE, HRESULT, HRGN, HTHEME, HTHREAD, HTHUMBNAIL, HTOKEN, HWINSTA, HWND, LOGFONT, MSG, NTStatus, OBJECT_TYPE_LIST, PACE, PACL, POINTS, PRECT, PSECURITY_DESCRIPTOR, PSID, RECT, ResourceId, SECURITY_ATTRIBUTES, SIZE, SizeT, SYSTEMTIME, WIN32_FIND_DATA, Win32Error
 
 Enumerations
 ACCESS_MASK, DrawTextFlags, FacilityCode, FacilityCode, FileFlagsAndAttributes, FontFamily, FontPitch, LogFontCharSet, LogFontClippingPrecision, LogFontOutputPrecision, LogFontOutputQuality, ObjectTypeListLevel, PInvokeClient, ProcessorArchitecture, REG_VALUE_TYPE, ResourceType, SECURITY_INFORMATION, SeverityLevel, SeverityLevel, ShowWindowCommand, STGM, SystemColorIndex, SystemShutDownReason
