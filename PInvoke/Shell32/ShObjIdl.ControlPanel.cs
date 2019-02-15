@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Security;
+using System.Text;
 using static Vanara.PInvoke.Shell32;
 
 namespace Vanara.Extensions
@@ -291,9 +291,8 @@ namespace Vanara.PInvoke
 		/// Exposes methods that retrieve the view state of the Control Panel, the path of individual Control Panel items, and that open
 		/// either the Control Panel itself or an individual Control Panel item.
 		/// </summary>
-		[SuppressUnmanagedCodeSecurity]
-		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("D11AD862-66DE-4DF4-BF6C-1F5621996AF1"), CoClass(typeof(OpenControlPanel))]
 		[PInvokeData("Shobjidl.h")]
+		[ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("D11AD862-66DE-4DF4-BF6C-1F5621996AF1"), CoClass(typeof(OpenControlPanel))]
 		public interface IOpenControlPanel
 		{
 			/// <summary>Opens the specified Control Panel item, optionally to a specific page.</summary>
@@ -310,7 +309,7 @@ namespace Vanara.PInvoke
 			/// <param name="punkSite">
 			/// A pointer to the site for navigating in-frame for Shell folder Control Panel items. This parameter can be NULL.
 			/// </param>
-			void Open([MarshalAs(UnmanagedType.LPWStr)] string pszName, [MarshalAs(UnmanagedType.LPWStr)] string page, [MarshalAs(UnmanagedType.IUnknown)] object punkSite);
+			void Open([MarshalAs(UnmanagedType.LPWStr), Optional] string pszName, [MarshalAs(UnmanagedType.LPWStr), Optional] string page, [In, Optional, MarshalAs(UnmanagedType.IUnknown)] object punkSite);
 
 			/// <summary>Gets the path of a specified Control Panel item.</summary>
 			/// <param name="pszName">
@@ -319,7 +318,7 @@ namespace Vanara.PInvoke
 			/// </param>
 			/// <param name="pszPath">When this method returns, contains the path of the specified Control Panel item as a Unicode string.</param>
 			/// <param name="cchPath">The size of the buffer pointed to by pszPath, in WCHARs.</param>
-			void GetPath([MarshalAs(UnmanagedType.LPWStr)] string pszName, [MarshalAs(UnmanagedType.LPWStr)] System.Text.StringBuilder pszPath, uint cchPath);
+			void GetPath([MarshalAs(UnmanagedType.LPWStr), Optional] string pszName, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszPath, uint cchPath);
 
 			/// <summary>Gets the most recent Control Panel view: Classic view or Category view.</summary>
 			/// <returns>The most recent view.</returns>
@@ -327,6 +326,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Class interface for IOpenControlPanel.</summary>
+		[PInvokeData("Shobjidl.h")]
 		[ComImport, Guid("06622D85-6856-4460-8DE1-A81921B41C4B"), ClassInterface(ClassInterfaceType.None)]
 		public class OpenControlPanel { }
 
