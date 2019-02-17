@@ -6,6 +6,7 @@ using System.Security;
 using System.Text;
 using Vanara.Extensions;
 using Vanara.InteropServices;
+using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace Vanara.PInvoke
 {
@@ -35,6 +36,44 @@ namespace Vanara.PInvoke
 
 			/// <summary>Marks the end of an enumeration.</summary>
 			ForestTrustRecordTypeLast,
+		}
+
+		/// <summary>Flags used by LSA_FOREST_TRUST_RECORD.</summary>
+		[PInvokeData("ntsecapi.h", MSDNShortId = "19b4ee56-664f-4f37-bfc9-129032ebeb22")]
+		[Flags]
+		public enum LSA_TLN
+		{
+			/// <summary>The top-level name trust record is disabled during initial creation.<note type="note>This flag MUST be used only
+			/// with forest trust record types of ForestTrustTopLevelName and ForestTrustTopLevelNameEx.</note></summary>
+			LSA_TLN_DISABLED_NEW = 0x00000001,
+
+			/// <summary>The top-level name trust record is disabled by the domain administrator.<note type="note>This flag MUST be used only
+			/// with forest trust record types of ForestTrustTopLevelName and ForestTrustTopLevelNameEx.</note></summary>
+			LSA_TLN_DISABLED_ADMIN = 0x00000002,
+
+			/// <summary>The top-level name trust record is disabled due to a conflict.<note type="note>This flag MUST be used only with
+			/// forest trust record types of ForestTrustTopLevelName and ForestTrustTopLevelNameEx.</note></summary>
+			LSA_TLN_DISABLED_CONFLICT = 0x00000004,
+
+			/// <summary>The domain information trust record is disabled by the domain administrator.<note type="note>This flag MUST be used
+			/// only with a forest trust record type of ForestTrustDomainInfo.</note></summary>
+			LSA_SID_DISABLED_ADMIN = 0x00000001,
+
+			/// <summary>The domain information trust record is disabled due to a conflict.<note type="note>This flag MUST be used only with
+			/// a forest trust record type of ForestTrustDomainInfo.</note></summary>
+			LSA_SID_DISABLED_CONFLICT = 0x00000002,
+
+			/// <summary>The domain information trust record is disabled by the domain administrator.<note type="note>This flag MUST be used
+			/// only with a forest trust record type of ForestTrustDomainInfo.</note></summary>
+			LSA_NB_DISABLED_ADMIN = 0x00000004,
+
+			/// <summary>The domain information trust record is disabled due to a conflict.<note type="note>This flag MUST be used only with
+			/// a forest trust record type of ForestTrustDomainInfo.</note></summary>
+			LSA_NB_DISABLED_CONFLICT = 0x00000008,
+
+			/// <summary>The domain information trust record is disabled.<note type="note>This set of flags is reserved; for current and
+			/// future reasons, the trust is disabled.</note></summary>
+			LSA_FTRECORD_DISABLED_REASONS = 0x0000FFFF,
 		}
 
 		/// <summary>The Policy object has the following object-specific access types:</summary>
@@ -1273,7 +1312,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// <para>The <c>LSA_FOREST_TRUST_BINARY_DATA</c> structure contains binary data used in Local Security Authority forest trust operations.</para>
+		/// The <c>LSA_FOREST_TRUST_BINARY_DATA</c> structure contains binary data used in Local Security Authority forest trust operations.
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-_lsa_forest_trust_binary_data typedef struct
 		// _LSA_FOREST_TRUST_BINARY_DATA { #if ... ULONG Length; #if ... PUCHAR Buffer; #else ULONG Length; #endif #else PUCHAR Buffer;
@@ -1282,13 +1321,14 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct LSA_FOREST_TRUST_BINARY_DATA
 		{
+			/// <summary>The count of bytes in Buffer.</summary>
 			public uint Length;
+
+			/// <summary>The trust record. If the Length field has a value other than 0, this field MUST NOT be NULL.</summary>
 			public IntPtr Buffer;
 		}
 
-		/// <summary>
-		/// <para>The <c>LSA_FOREST_TRUST_DOMAIN_INFO</c> structure contains identifying information for a domain.</para>
-		/// </summary>
+		/// <summary>The <c>LSA_FOREST_TRUST_DOMAIN_INFO</c> structure contains identifying information for a domain.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-_lsa_forest_trust_domain_info typedef struct
 		// _LSA_FOREST_TRUST_DOMAIN_INFO { #if ... PISID Sid; #else PSID Sid; #endif LSA_UNICODE_STRING DnsName; LSA_UNICODE_STRING
 		// NetbiosName; } LSA_FOREST_TRUST_DOMAIN_INFO, *PLSA_FOREST_TRUST_DOMAIN_INFO;
@@ -1296,22 +1336,18 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct LSA_FOREST_TRUST_DOMAIN_INFO
 		{
-			/// <summary/>
-			public PSID Sid;
+			/// <summary>Domain SID for the trusted domain.</summary>
+			public IntPtr Sid;
 
-			/// <summary>
-			/// <para>LSA_UNICODE_STRING structure that contains the DNS name of the domain.</para>
-			/// </summary>
+			/// <summary>LSA_UNICODE_STRING structure that contains the DNS name of the domain.</summary>
 			public LSA_UNICODE_STRING DnsName;
 
-			/// <summary>
-			/// <para>LSA_UNICODE_STRING structure that contains the NetBIOS name of the domain.</para>
-			/// </summary>
+			/// <summary>LSA_UNICODE_STRING structure that contains the NetBIOS name of the domain.</summary>
 			public LSA_UNICODE_STRING NetbiosName;
 		}
 
 		/// <summary>
-		/// <para>The <c>LSA_FOREST_TRUST_INFORMATION</c> structure contains Local Security Authority forest trust information.</para>
+		/// The <c>LSA_FOREST_TRUST_INFORMATION</c> structure contains Local Security Authority forest trust information.
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/ntsecapi/ns-ntsecapi-_lsa_forest_trust_information typedef struct
 		// _LSA_FOREST_TRUST_INFORMATION { #if ... ULONG RecordCount; #if ... PLSA_FOREST_TRUST_RECORD *Entries; #else ULONG RecordCount;
@@ -1320,7 +1356,10 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct LSA_FOREST_TRUST_INFORMATION
 		{
+			/// <summary>A count of elements in the Entries array.</summary>
 			public uint RecordCount;
+
+			/// <summary>An array of LSA_FOREST_TRUST_RECORD structures. If the RecordCount field has a value other than 0, this field MUST NOT be NULL.</summary>
 			public IntPtr Entries;
 		}
 
@@ -1336,58 +1375,150 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct LSA_FOREST_TRUST_RECORD
 		{
-			/// <summary>
-			/// <para>Flags that control the behavior of the operation.</para>
-			/// </summary>
-			public uint Flags;
+			/// <summary>Flags that control the behavior of the operation.</summary>
+			public LSA_TLN Flags;
 
 			/// <summary>
 			/// <para>
 			/// LSA_FOREST_TRUST_RECORD_TYPE enumeration that indicates the type of the record. The following table shows the possible values.
 			/// </para>
 			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>ForestTrustTopLevelName</term>
-			/// <term>Record contains an included top-level name.</term>
-			/// </item>
-			/// <item>
-			/// <term>ForestTrustTopLevelNameEx</term>
-			/// <term>Record contains an excluded top-level name.</term>
-			/// </item>
-			/// <item>
-			/// <term>ForestTrustDomainInfo</term>
-			/// <term>Record contains an LSA_FOREST_TRUST_DOMAIN_INFO structure.</term>
-			/// </item>
-			/// <item>
-			/// <term>ForestTrustRecordTypeLast</term>
-			/// <term>Marks the end of an enumeration.</term>
-			/// </item>
+			///   <listheader>
+			///     <term>Value</term>
+			///     <term>Meaning</term>
+			///   </listheader>
+			///   <item>
+			///     <term>ForestTrustTopLevelName</term>
+			///     <term>Record contains an included top-level name.</term>
+			///   </item>
+			///   <item>
+			///     <term>ForestTrustTopLevelNameEx</term>
+			///     <term>Record contains an excluded top-level name.</term>
+			///   </item>
+			///   <item>
+			///     <term>ForestTrustDomainInfo</term>
+			///     <term>Record contains an LSA_FOREST_TRUST_DOMAIN_INFO structure.</term>
+			///   </item>
+			///   <item>
+			///     <term>ForestTrustRecordTypeLast</term>
+			///     <term>Marks the end of an enumeration.</term>
+			///   </item>
 			/// </list>
 			/// </summary>
 			public LSA_FOREST_TRUST_RECORD_TYPE ForestTrustType;
 
-			/// <summary>
-			/// <para>Time stamp of the record.</para>
-			/// </summary>
-			public long Time;
+			/// <summary>Time stamp of the record.</summary>
+			public FILETIME Time;
 
+			/// <summary>An LSA_UNICODE_STRING or LSA_FOREST_TRUST_DOMAIN_INFO structure, depending on the value ForestTrustType as specified in the structure definition for LSA_FOREST_TRUST_RECORD.</summary>
 			public ForestTrustDataUnion ForestTrustData;
 
+			/// <summary>An LSA_UNICODE_STRING or LSA_FOREST_TRUST_DOMAIN_INFO structure, depending on the value ForestTrustType as specified in the structure definition for LSA_FOREST_TRUST_RECORD.</summary>
 			[StructLayout(LayoutKind.Explicit)]
 			public struct ForestTrustDataUnion
 			{
+				/// <summary>Top-level name. This member is used only if the ForestTrustType member is ForestTrustTopLevelName or ForestTrustTopLevelNameEx.</summary>
 				[FieldOffset(0)]
 				public LSA_UNICODE_STRING TopLevelName;
 
+				/// <summary>Domain information. This member is used only if the ForestTrustType member is ForestTrustDomainInfo.</summary>
 				[FieldOffset(0)]
 				public LSA_FOREST_TRUST_DOMAIN_INFO DomainInfo;
 
+				/// <summary>Binary data. This member is used for unrecognized entries after ForestTrustRecordTypeLast.</summary>
 				[FieldOffset(0)]
 				public LSA_FOREST_TRUST_BINARY_DATA Data;
+			}
+		}
+
+		/// <summary>Smart wrapper for LSA_FOREST_TRUST_INFORMATION.</summary>
+		public class LsaForestTrustInformation : IDisposable
+		{
+			private SafeAllocatedMemoryHandle allocatedMemory;
+
+			/// <summary>A list of LsaForestTrustRecord entries that wrap LSA_FOREST_TRUST_RECORD.</summary>
+			/// <value>Returns a <see cref="List{LsaForestTrustRecord}"/> value.</value>
+			public List<LsaForestTrustRecord> Entries { get; } = new List<LsaForestTrustRecord>();
+
+			/// <summary>
+			/// Returns an instance of <see cref="LSA_FOREST_TRUST_INFORMATION"/>. Warning! The memory allocated for the entries is tied to
+			/// this instance and will be disposed with it. Thus, if the returned structure is copied, the pointers within it may become
+			/// invalid if its scope outlives this instance's scope. Subsequent calls to this method will also invalidate the pointers within
+			/// any previous structures. In other words, just use this method to extract the structure for one time use and ensure this
+			/// instance does not go out of scope while the structure's being used.
+			/// </summary>
+			/// <returns>A <see cref="LSA_FOREST_TRUST_INFORMATION"/> instance matching the values of this instance.</returns>
+			public LSA_FOREST_TRUST_INFORMATION DangerousGetLSA_FOREST_TRUST_INFORMATION()
+			{
+				((IDisposable)this).Dispose();
+				allocatedMemory = SafeHGlobalHandle.CreateFromList(Entries.Select(e => e.Convert())); //.Concat(new[] { new LSA_FOREST_TRUST_RECORD { ForestTrustType = LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustRecordTypeLast } }));
+
+				return new LSA_FOREST_TRUST_INFORMATION { RecordCount = (uint)Entries.Count, Entries = allocatedMemory.DangerousGetHandle() };
+			}
+
+			/// <summary>Releases the unmanaged resources used by this object, and optionally releases the managed resources.</summary>
+			void IDisposable.Dispose() => allocatedMemory?.Dispose();
+
+			/// <summary>Represents a LSA_FOREST_TRUST_RECORD.</summary>
+			public abstract class LsaForestTrustRecord
+			{
+				/// <summary>Flags that control the behavior of the operation.</summary>
+				public LSA_TLN Flags { get; set; }
+
+				/// <summary>Time stamp of the record.</summary>
+				public DateTime Time { get; set; }
+
+				protected virtual internal LSA_FOREST_TRUST_RECORD Convert() =>
+					new LSA_FOREST_TRUST_RECORD { Flags = Flags, Time = Time.ToFileTimeStruct() };
+			}
+
+			/// <summary>
+			/// Represents a LSA_FOREST_TRUST_RECORD with the ForestTrustType value set to ForestTrustTopLevelNameEx if the
+			/// <see cref="Excluded"/> property is <see langword="true"/> and ForestTrustTopLevelName if the <see cref="Excluded"/> property
+			/// is <see langword="true"/>.
+			/// </summary>
+			public class LsaForestTrustTopLevelName : LsaForestTrustRecord
+			{
+				public LsaForestTrustTopLevelName(string name = null, bool exclude = false)
+				{
+					TopLevelName = name;
+					Excluded = exclude;
+				}
+
+				public string TopLevelName { get; set; }
+
+				public bool Excluded { get; set; }
+
+				protected internal override LSA_FOREST_TRUST_RECORD Convert()
+				{
+					var ret = base.Convert();
+					ret.ForestTrustType = Excluded ? LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustTopLevelNameEx : LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustTopLevelName;
+					ret.ForestTrustData.TopLevelName = new LSA_UNICODE_STRING(TopLevelName);
+					return ret;
+				}
+			}
+
+			/// <summary>Represents a LSA_FOREST_TRUST_RECORD with the ForestTrustType value set to ForestTrustDomainInfo.</summary>
+			public class LsaForestTrustDomainInfo : LsaForestTrustRecord
+			{
+				/// <summary>Domain SID for the trusted domain.</summary>
+				public PSID Sid { get; set; }
+
+				/// <summary>The DNS name of the domain.</summary>
+				public string DnsName { get; set; }
+
+				/// <summary>The NetBIOS name of the domain.</summary>
+				public string NetbiosName { get; set; }
+
+				protected internal override LSA_FOREST_TRUST_RECORD Convert()
+				{
+					var ret = base.Convert();
+					ret.ForestTrustType = LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustDomainInfo;
+					ret.ForestTrustData.DomainInfo.DnsName = new LSA_UNICODE_STRING(DnsName);
+					ret.ForestTrustData.DomainInfo.NetbiosName = new LSA_UNICODE_STRING(NetbiosName);
+					ret.ForestTrustData.DomainInfo.Sid = (IntPtr)Sid;
+					return ret;
+				}
 			}
 		}
 
