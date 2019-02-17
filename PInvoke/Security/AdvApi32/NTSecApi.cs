@@ -1440,6 +1440,38 @@ namespace Vanara.PInvoke
 			/// <value>Returns a <see cref="List{LsaForestTrustRecord}"/> value.</value>
 			public List<LsaForestTrustRecord> Entries { get; } = new List<LsaForestTrustRecord>();
 
+			/// <summary>Creates a new instance from a memory pointer. This can fail if the memory is not allocated properly.</summary>
+			/// <param name="ptr">The memory pointer.</param>
+			/// <returns>A new instance of <see cref="LsaForestTrustInformation"/>.</returns>
+			public static LsaForestTrustInformation FromBuffer(IntPtr ptr)
+			{
+				var ret = new LsaForestTrustInformation();
+				var info = ptr.ToStructure<LSA_FOREST_TRUST_INFORMATION>();
+				foreach (var e in info.Entries.ToIEnum<LSA_FOREST_TRUST_RECORD>((int)info.RecordCount))
+				{
+					if (e.ForestTrustType == LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustRecordTypeLast) break;
+					LsaForestTrustRecord rec = null;
+					switch (e.ForestTrustType)
+					{
+						case LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustTopLevelName:
+							rec = new LsaForestTrustTopLevelName(e.ForestTrustData.TopLevelName, false);
+							break;
+						case LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustTopLevelNameEx:
+							rec = new LsaForestTrustTopLevelName(e.ForestTrustData.TopLevelName, true);
+							break;
+						case LSA_FOREST_TRUST_RECORD_TYPE.ForestTrustDomainInfo:
+							rec = new LsaForestTrustDomainInfo { DnsName = e.ForestTrustData.DomainInfo.DnsName, NetbiosName = e.ForestTrustData.DomainInfo.NetbiosName, Sid = new PSID(e.ForestTrustData.DomainInfo.Sid) };
+							break;
+						default:
+							throw new ArgumentException("Unrecognized record type.", nameof(ptr));
+					}
+					rec.Flags = e.Flags;
+					rec.Time = e.Time.ToDateTime();
+					ret.Entries.Add(rec);
+				}
+				return ret;
+			}
+
 			/// <summary>
 			/// Returns an instance of <see cref="LSA_FOREST_TRUST_INFORMATION"/>. Warning! The memory allocated for the entries is tied to
 			/// this instance and will be disposed with it. Thus, if the returned structure is copied, the pointers within it may become
