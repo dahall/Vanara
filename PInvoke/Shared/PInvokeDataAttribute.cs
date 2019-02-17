@@ -65,3 +65,44 @@ namespace Vanara.PInvoke
 		public string MSDNShortId { get; set; }
 	}
 }
+
+namespace Vanara.Extensions
+{
+	/// <summary>Extension methods for <see cref="PInvoke.PInvokeClient"/>.</summary>
+	public static class PInvokeClientExtensions
+	{
+		/// <summary>Determines whether the running OS is minimally the one specified.</summary>
+		/// <param name="client">The OS version to check.</param>
+		/// <returns><see langword="true"/> if the running OS is minimally the specified client; otherwise, <see langword="false"/>.</returns>
+		public static bool IsPlatformSupported(this PInvoke.PInvokeClient client)
+		{
+			var osVer = System.Environment.OSVersion.Version;
+
+			switch (client)
+			{
+				case PInvoke.PInvokeClient.None:
+					return true;
+				case PInvoke.PInvokeClient.Windows2000:
+					return osVer.Major >= 5;
+				case PInvoke.PInvokeClient.WindowsXP:
+					return osVer >= new Version(5, 1);
+				case PInvoke.PInvokeClient.WindowsXP_SP2:
+					return osVer >= new Version(5, 1, 2600, 2180);
+				case PInvoke.PInvokeClient.WindowsVista:
+					return osVer.Major >= 6;
+				case PInvoke.PInvokeClient.WindowsVista_SP2:
+					return osVer >= new Version(6, 0, 6002);
+				case PInvoke.PInvokeClient.Windows7:
+					return osVer >= new Version(6, 1);
+				case PInvoke.PInvokeClient.Windows8:
+					return osVer >= new Version(6, 2);
+				case PInvoke.PInvokeClient.Windows81:
+					return osVer >= new Version(6, 3);
+				case PInvoke.PInvokeClient.Windows10:
+					return osVer.Major >= 10;
+				default:
+					return false;
+			}
+		}
+	}
+}
