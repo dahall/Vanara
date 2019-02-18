@@ -10,6 +10,7 @@ namespace Vanara.PInvoke
 	{
 		/// <summary>Flags used by SESSION_INFO_XX structures</summary>
 		[PInvokeData("lmshare.h", MSDNShortId = "a86a00ae-f60a-4b12-a9ac-4b96f9abd6a2")]
+		[Flags]
 		public enum SESS
 		{
 			/// <summary>The user specified by the sesi502_username member established the session using a guest account.</summary>
@@ -20,6 +21,7 @@ namespace Vanara.PInvoke
 		}
 
 		[PInvokeData("lmshare.h", MSDNShortId = "9fb3e0ae-76b5-4432-80dd-f3361738aa7c")]
+		[Flags]
 		public enum SHI1005_FLAGS
 		{
 			/// <summary>The specified share is present in a Dfs tree structure. This flag cannot be set with NetShareSetInfo.</summary>
@@ -140,64 +142,50 @@ namespace Vanara.PInvoke
 		/// is more than one user using this connection, then it is possible to get more than one structure for the same connection, but with
 		/// a different user name.
 		/// </summary>
-		/// <param name="servername">
-		/// <para>
+		/// <param name="servername"><para>
 		/// Pointer to a string that specifies the DNS or NetBIOS name of the remote server on which the function is to execute. If this
 		/// parameter is <c>NULL</c>, the local computer is used.
 		/// </para>
-		/// <para>This string is Unicode if <c>_WIN32_WINNT</c> or <c>FORCE_UNICODE</c> is defined.</para>
-		/// </param>
-		/// <param name="qualifier">
-		/// <para>
+		/// <para>This string is Unicode if <c>_WIN32_WINNT</c> or <c>FORCE_UNICODE</c> is defined.</para></param>
+		/// <param name="qualifier"><para>
 		/// Pointer to a string that specifies a share name or computer name for the connections of interest. If it is a share name, then all
 		/// the connections made to that share name are listed. If it is a computer name (for example, it starts with two backslash
 		/// characters), then <c>NetConnectionEnum</c> lists all connections made from that computer to the server specified.
 		/// </para>
-		/// <para>This string is Unicode if <c>_WIN32_WINNT</c> or <c>FORCE_UNICODE</c> is defined.</para>
-		/// </param>
-		/// <param name="level">
-		/// <para>Specifies the information level of the data. This parameter can be one of the following values.</para>
+		/// <para>This string is Unicode if <c>_WIN32_WINNT</c> or <c>FORCE_UNICODE</c> is defined.</para></param>
+		/// <param name="level"><para>Specifies the information level of the data. This parameter can be one of the following values.</para>
 		/// <list type="table">
-		/// <listheader>
-		/// <term>Value</term>
-		/// <term>Meaning</term>
-		/// </listheader>
-		/// <item>
-		/// <term>0</term>
-		/// <term>Return connection identifiers. The bufptr parameter is a pointer to an array of CONNECTION_INFO_0 structures.</term>
-		/// </item>
-		/// <item>
-		/// <term>1</term>
-		/// <term>
+		///   <listheader>
+		///     <term>Value</term>
+		///     <term>Meaning</term>
+		///   </listheader>
+		///   <item>
+		///     <term>0</term>
+		///     <term>Return connection identifiers. The bufptr parameter is a pointer to an array of CONNECTION_INFO_0 structures.</term>
+		///   </item>
+		///   <item>
+		///     <term>1</term>
+		///     <term>
 		/// Return connection identifiers and connection information. The bufptr parameter is a pointer to an array of CONNECTION_INFO_1 structures.
 		/// </term>
-		/// </item>
-		/// </list>
-		/// </param>
-		/// <param name="bufptr">
-		/// <para>
+		///   </item>
+		/// </list></param>
+		/// <param name="bufptr"><para>
 		/// Pointer to the address of the buffer that receives the information. The format of this data depends on the value of the level parameter.
 		/// </para>
 		/// <para>
 		/// This buffer is allocated by the system and must be freed using the NetApiBufferFree function. Note that you must free the buffer
 		/// even if the function fails with <c>ERROR_MORE_DATA</c>.
-		/// </para>
-		/// </param>
-		/// <param name="prefmaxlen">
-		/// Specifies the preferred maximum length of returned data, in bytes. If you specify <c>MAX_PREFERRED_LENGTH</c>, the function
+		/// </para></param>
+		/// <param name="prefmaxlen">Specifies the preferred maximum length of returned data, in bytes. If you specify <c>MAX_PREFERRED_LENGTH</c>, the function
 		/// allocates the amount of memory required for the data. If you specify another value in this parameter, it can restrict the number
 		/// of bytes that the function returns. If the buffer size is insufficient to hold all entries, the function returns
-		/// <c>ERROR_MORE_DATA</c>. For more information, see Network Management Function Buffers and Network Management Function Buffer Lengths.
-		/// </param>
+		/// <c>ERROR_MORE_DATA</c>. For more information, see Network Management Function Buffers and Network Management Function Buffer Lengths.</param>
 		/// <param name="entriesread">Pointer to a value that receives the count of elements actually enumerated.</param>
-		/// <param name="totalentries">
-		/// Pointer to a value that receives the total number of entries that could have been enumerated from the current resume position.
-		/// Note that applications should consider this value only as a hint.
-		/// </param>
-		/// <param name="resume_handle">
-		/// Pointer to a value that contains a resume handle which is used to continue an existing connection search. The handle should be
-		/// zero on the first call and left unchanged for subsequent calls. If this parameter is <c>NULL</c>, then no resume handle is stored.
-		/// </param>
+		/// <param name="totalentries">Pointer to a value that receives the total number of entries that could have been enumerated from the current resume position.
+		/// Note that applications should consider this value only as a hint.</param>
+		/// <param name="resume_handle">Pointer to a value that contains a resume handle which is used to continue an existing connection search. The handle should be
+		/// zero on the first call and left unchanged for subsequent calls. If this parameter is <c>NULL</c>, then no resume handle is stored.</param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is <c>NERR_Success</c>.</para>
 		/// <para>If the function fails, the return value is a system error code. For a list of error codes, see System Error Codes.</para>
@@ -221,7 +209,7 @@ namespace Vanara.PInvoke
 		// totalentries, LPDWORD resume_handle );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("lmshare.h", MSDNShortId = "935ac6e9-78e0-42ae-a454-0a14b03ddc21")]
-		public static extern Win32Error NetConnectionEnum(string servername, string qualifier, uint level, out SafeNetApiBuffer bufptr,
+		public static extern Win32Error NetConnectionEnum([Optional] string servername, string qualifier, uint level, out SafeNetApiBuffer bufptr,
 			uint prefmaxlen, out uint entriesread, out uint totalentries, ref uint resume_handle);
 
 		/// <summary>
@@ -380,7 +368,7 @@ namespace Vanara.PInvoke
 		// totalentries, PDWORD_PTR resume_handle );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("lmshare.h", MSDNShortId = "1375b337-efb0-4be1-94f7-473456a825b5")]
-		public static extern Win32Error NetFileEnum(string servername, string basepath, string username, uint level, out SafeNetApiBuffer bufptr,
+		public static extern Win32Error NetFileEnum([Optional] string servername, [Optional] string basepath, [Optional] string username, uint level, out SafeNetApiBuffer bufptr,
 			uint prefmaxlen, out uint entriesread, out uint totalentries, ref IntPtr resume_handle);
 
 		/// <summary>Retrieves information about a particular opening of a server resource.</summary>
@@ -667,7 +655,7 @@ namespace Vanara.PInvoke
 		// entriesread, LPDWORD totalentries, LPDWORD resume_handle );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("lmshare.h", MSDNShortId = "5923a8cc-bf7a-4ffa-b089-fd7f26ee42d2")]
-		public static extern Win32Error NetSessionEnum(string servername, string UncClientName, string username, uint level, out SafeNetApiBuffer bufptr,
+		public static extern Win32Error NetSessionEnum([Optional] string servername, string UncClientName, [Optional] string username, uint level, out SafeNetApiBuffer bufptr,
 			uint prefmaxlen, out uint entriesread, out uint totalentries, ref uint resume_handle);
 
 		/// <summary>Retrieves information about a session established between a particular server and workstation.</summary>
@@ -786,7 +774,7 @@ namespace Vanara.PInvoke
 		// NetSessionGetInfo( LMSTR servername, LMSTR UncClientName, LMSTR username, DWORD level, LPBYTE *bufptr );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("lmshare.h", MSDNShortId = "d44fb8d8-2b64-4268-8603-7784e2c5f2d5")]
-		public static extern Win32Error NetSessionGetInfo(string servername, string UncClientName, string username, uint level, out SafeNetApiBuffer bufptr);
+		public static extern Win32Error NetSessionGetInfo([Optional] string servername, string UncClientName, string username, uint level, out SafeNetApiBuffer bufptr);
 
 		/// <summary>Shares a server resource.</summary>
 		/// <param name="servername">
@@ -900,7 +888,7 @@ namespace Vanara.PInvoke
 		// LMSTR servername, DWORD level, LPBYTE buf, LPDWORD parm_err );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("lmshare.h", MSDNShortId = "8b51c155-24e8-4d39-b818-eb2d1bb0ee8b")]
-		public static extern Win32Error NetShareAdd(string servername, uint level, IntPtr buf, out uint parm_err);
+		public static extern Win32Error NetShareAdd([Optional] string servername, uint level, IntPtr buf, out uint parm_err);
 
 		/// <summary>Checks whether or not a server is sharing a device.</summary>
 		/// <param name="servername">
@@ -994,7 +982,7 @@ namespace Vanara.PInvoke
 		// NetShareCheck( LMSTR servername, LMSTR device, LPDWORD type );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("lmshare.h", MSDNShortId = "8453dcd2-5c58-4fe4-9426-0fd51647394d")]
-		public static extern Win32Error NetShareCheck(string servername, string device, out STYPE type);
+		public static extern Win32Error NetShareCheck([Optional] string servername, string device, out STYPE type);
 
 		/// <summary>
 		/// <para>Deletes a share name from a server's list of shared resources, disconnecting all connections to the shared resource.</para>
@@ -1061,7 +1049,7 @@ namespace Vanara.PInvoke
 		// LMSTR servername, LMSTR netname, DWORD reserved );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("lmshare.h", MSDNShortId = "374b8f81-b3d6-4967-bd4a-ffd3fdc3cf7c")]
-		public static extern Win32Error NetShareDel(string servername, string netname, uint reserved = 0);
+		public static extern Win32Error NetShareDel([Optional] string servername, string netname, uint reserved = 0);
 
 		/// <summary>
 		/// Deletes a share name from a server's list of shared resources, which disconnects all connections to that share. This function,
@@ -1143,7 +1131,7 @@ namespace Vanara.PInvoke
 		// NetShareDelEx( LMSTR servername, DWORD level, LPBYTE buf );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("lmshare.h", MSDNShortId = "2461c533-351b-48f4-b660-cb17ac3398fa")]
-		public static extern Win32Error NetShareDelEx(string servername, uint level, IntPtr buf);
+		public static extern Win32Error NetShareDelEx([Optional] string servername, uint level, IntPtr buf);
 
 		/// <summary>
 		/// <para>Retrieves information about each shared resource on a server.</para>
@@ -1262,7 +1250,7 @@ namespace Vanara.PInvoke
 		// LMSTR servername, DWORD level, LPBYTE *bufptr, DWORD prefmaxlen, LPDWORD entriesread, LPDWORD totalentries, LPDWORD resume_handle );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("lmshare.h", MSDNShortId = "9114c54d-3905-4d40-9162-b3ea605f6fcb")]
-		public static extern Win32Error NetShareEnum(string servername, uint level, out SafeNetApiBuffer bufptr, uint prefmaxlen,
+		public static extern Win32Error NetShareEnum([Optional] string servername, uint level, out SafeNetApiBuffer bufptr, uint prefmaxlen,
 			out uint entriesread, out uint totalentries, ref uint resume_handle);
 
 		/// <summary>Retrieves information about a particular shared resource on a server.</summary>
@@ -1401,7 +1389,7 @@ namespace Vanara.PInvoke
 		// NetShareGetInfo( LMSTR servername, LMSTR netname, DWORD level, LPBYTE *bufptr );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("lmshare.h", MSDNShortId = "672ea208-4048-4d2f-9606-ee3e2133765b")]
-		public static extern Win32Error NetShareGetInfo(string servername, string netname, uint level, out SafeNetApiBuffer bufptr);
+		public static extern Win32Error NetShareGetInfo([Optional] string servername, string netname, uint level, out SafeNetApiBuffer bufptr);
 
 		/// <summary>Sets the parameters of a shared resource.</summary>
 		/// <param name="servername">
@@ -1579,7 +1567,7 @@ namespace Vanara.PInvoke
 		// NetShareSetInfo( LMSTR servername, LMSTR netname, DWORD level, LPBYTE buf, LPDWORD parm_err );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("lmshare.h", MSDNShortId = "216b0b78-87da-4734-ad07-5ad1c9edf494")]
-		public static extern Win32Error NetShareSetInfo(string servername, string netname, uint level, IntPtr buf, out uint parm_err);
+		public static extern Win32Error NetShareSetInfo([Optional] string servername, string netname, uint level, IntPtr buf, out uint parm_err);
 
 		/// <summary>Contains the identification number of a connection.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/lmshare/ns-lmshare-_connection_info_0 typedef struct _CONNECTION_INFO_0 {

@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Security;
-using Vanara.Extensions;
 
 namespace Vanara.PInvoke
 {
@@ -14,13 +11,11 @@ namespace Vanara.PInvoke
 		/// PreferedMaximumLength parameter. When specified as an input parameter, this value indicates that the method MUST allocate as much
 		/// space as the data requires.
 		/// </summary>
-		public const int MAX_PREFERRED_LENGTH = -1;
+		public const uint MAX_PREFERRED_LENGTH = unchecked((uint)-1);
 
-		/// <summary>
-		/// Filters used by <see cref="NetServerEnum(string, int, out SafeNetApiBuffer, int, out int, out int, NetServerEnumFilter, string, IntPtr)"/>.
-		/// </summary>
+		/// <summary>Filters used by <see cref="NetServerEnum(string, int, out SafeNetApiBuffer, int, out int, out int, NetServerEnumFilter, string, IntPtr)"/>.</summary>
 		[Flags]
-		[PInvokeData("lm.h", MSDNShortId = "aa370623")]
+		[PInvokeData("lmserver.h", MSDNShortId = "aa370623")]
 		public enum NetServerEnumFilter : uint
 		{
 			/// <summary>All workstations.</summary>
@@ -126,6 +121,8 @@ namespace Vanara.PInvoke
 			SV_TYPE_ALL = 0xFFFFFFFF,
 		}
 
+		[Flags]
+		[PInvokeData("lmserver.h")]
 		public enum SERVER_TRANSPORT_FLAGS : uint
 		{
 			/// <summary>
@@ -158,7 +155,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>The information level to use for platform-specific information.</summary>
-		[PInvokeData("lm.h", MSDNShortId = "aa370903")]
+		[PInvokeData("lmserver.h", MSDNShortId = "aa370903")]
 		public enum ServerPlatform
 		{
 			/// <summary>The MS-DOS platform.</summary>
@@ -177,20 +174,8 @@ namespace Vanara.PInvoke
 			PLATFORM_ID_VMS = 700
 		}
 
-		/// <summary>
-		/// The NetApiBufferFree function frees the memory that the NetApiBufferAllocate function allocates. Applications should also call
-		/// NetApiBufferFree to free the memory that other network management functions use internally to return information.
-		/// </summary>
-		/// <param name="pBuf">
-		/// A pointer to a buffer returned previously by another network management function or memory allocated by calling the
-		/// NetApiBufferAllocate function.
-		/// </param>
-		/// <returns>
-		/// If the function succeeds, the return value is NERR_Success. If the function fails, the return value is a system error code.
-		/// </returns>
-		[DllImport(Lib.NetApi32, ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-		[PInvokeData("lm.h", MSDNShortId = "aa370304")]
-		public static extern Win32Error NetApiBufferFree(IntPtr pBuf);
+		/// <summary>Inherit from this interface for any implementation of the SERVER_INFO_XXXX structures to use the helper functions.</summary>
+		public interface INetServerInfo { }
 
 		/// <summary>
 		/// <para>
@@ -338,26 +323,18 @@ namespace Vanara.PInvoke
 		public static extern Win32Error NetServerComputerNameDel([Optional] string ServerName, string EmulatedServerName);
 
 		/// <summary>
-		/// <para>
 		/// The <c>NetServerDiskEnum</c> function retrieves a list of disk drives on a server. The function returns an array of
 		/// three-character strings (a drive letter, a colon, and a terminating null character).
-		/// </para>
 		/// </summary>
 		/// <param name="servername">
-		/// <para>
 		/// A pointer to a string that specifies the DNS or NetBIOS name of the remote server on which the function is to execute. If this
 		/// parameter is <c>NULL</c>, the local computer is used.
-		/// </para>
 		/// </param>
-		/// <param name="level">
-		/// <para>The level of information required. A value of zero is the only valid level.</para>
-		/// </param>
+		/// <param name="level">The level of information required. A value of zero is the only valid level.</param>
 		/// <param name="bufptr">
-		/// <para>
 		/// A pointer to the buffer that receives the data. The data is an array of three-character strings (a drive letter, a colon, and a
 		/// terminating null character). This buffer is allocated by the system and must be freed using the NetApiBufferFree function. Note
 		/// that you must free the buffer even if the function fails with ERROR_MORE_DATA.
-		/// </para>
 		/// </param>
 		/// <param name="prefmaxlen">
 		/// <para>
@@ -368,21 +345,15 @@ namespace Vanara.PInvoke
 		/// </para>
 		/// <para><c>Note</c> This parameter is currently ignored.</para>
 		/// </param>
-		/// <param name="entriesread">
-		/// <para>A pointer to a value that receives the count of elements actually enumerated.</para>
-		/// </param>
+		/// <param name="entriesread">A pointer to a value that receives the count of elements actually enumerated.</param>
 		/// <param name="totalentries">
-		/// <para>
 		/// A pointer to a value that receives the total number of entries that could have been enumerated from the current resume position.
 		/// Note that applications should consider this value only as a hint.
-		/// </para>
 		/// </param>
 		/// <param name="resume_handle">
-		/// <para>
 		/// A pointer to a value that contains a resume handle which is used to continue an existing server disk search. The handle should be
 		/// zero on the first call and left unchanged for subsequent calls. If the resume_handle parameter is a <c>NULL</c> pointer, then no
 		/// resume handle is stored.
-		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is NERR_Success.</para>
@@ -441,11 +412,27 @@ namespace Vanara.PInvoke
 		// LPDWORD resume_handle );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("lmserver.h", MSDNShortId = "56c981f4-7a1d-4465-bd7b-5996222c4210")]
-		public static extern Win32Error NetServerDiskEnum([Optional] string servername, int level, out SafeNetApiBuffer bufptr, int prefmaxlen, out int entriesread, out int totalentries, ref uint resume_handle);
+		public static extern Win32Error NetServerDiskEnum([Optional] string servername, [Optional] uint level, out SafeNetApiBuffer bufptr, uint prefmaxlen, out uint entriesread, out uint totalentries, ref uint resume_handle);
 
-		/// <summary>The NetServerEnum function lists all servers of the specified type that are visible in a domain.</summary>
-		/// <param name="servernane">Reserved; must be NULL.</param>
-		/// <param name="level">The information level of the data requested.</param>
+		/// <summary>The <c>NetServerEnum</c> function lists all servers of the specified type that are visible in a domain.</summary>
+		/// <param name="servername">Reserved; must be <c>NULL</c>.</param>
+		/// <param name="level">
+		/// <para>The information level of the data requested. This parameter can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>100</term>
+		/// <term>Return server names and platform information. The bufptr parameter points to an array of SERVER_INFO_100 structures.</term>
+		/// </item>
+		/// <item>
+		/// <term>101</term>
+		/// <term>Return server names, types, and associated data. The bufptr parameter points to an array of SERVER_INFO_101 structures.</term>
+		/// </item>
+		/// </list>
+		/// </param>
 		/// <param name="bufptr">
 		/// A pointer to the buffer that receives the data. The format of this data depends on the value of the level parameter. This buffer
 		/// is allocated by the system and must be freed using the NetApiBufferFree function. Note that you must free the buffer even if the
@@ -462,18 +449,254 @@ namespace Vanara.PInvoke
 		/// A pointer to a value that receives the total number of visible servers and workstations on the network. Note that applications
 		/// should consider this value only as a hint.
 		/// </param>
-		/// <param name="servertype">A value that filters the server entries to return from the enumeration.</param>
+		/// <param name="servertype">
+		/// <para>
+		/// A value that filters the server entries to return from the enumeration. This parameter can be a combination of the following
+		/// values defined in the Lmserver.h header file.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>SV_TYPE_WORKSTATION 0x00000001</term>
+		/// <term>All workstations.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_SERVER 0x00000002</term>
+		/// <term>All computers that run the Server service.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_SQLSERVER 0x00000004</term>
+		/// <term>Any server that runs an instance of Microsoft SQL Server.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_DOMAIN_CTRL 0x00000008</term>
+		/// <term>A server that is primary domain controller.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_DOMAIN_BAKCTRL 0x00000010</term>
+		/// <term>Any server that is a backup domain controller.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_TIME_SOURCE 0x00000020</term>
+		/// <term>Any server that runs the Timesource service.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_AFP 0x00000040</term>
+		/// <term>Any server that runs the Apple Filing Protocol (AFP) file service.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_NOVELL 0x00000080</term>
+		/// <term>Any server that is a Novell server.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_DOMAIN_MEMBER 0x00000100</term>
+		/// <term>Any computer that is LAN Manager 2.x domain member.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_PRINTQ_SERVER 0x00000200</term>
+		/// <term>Any computer that shares a print queue.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_DIALIN_SERVER 0x00000400</term>
+		/// <term>Any server that runs a dial-in service.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_XENIX_SERVER 0x00000800</term>
+		/// <term>Any server that is a Xenix server.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_SERVER_UNIX 0x00000800</term>
+		/// <term>Any server that is a UNIX server. This is the same as the SV_TYPE_XENIX_SERVER.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_NT 0x00001000</term>
+		/// <term>A workstation or server.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_WFW 0x00002000</term>
+		/// <term>Any computer that runs Windows for Workgroups.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_SERVER_MFPN 0x00004000</term>
+		/// <term>Any server that runs the Microsoft File and Print for NetWare service.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_SERVER_NT 0x00008000</term>
+		/// <term>Any server that is not a domain controller.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_POTENTIAL_BROWSER 0x00010000</term>
+		/// <term>Any computer that can run the browser service.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_BACKUP_BROWSER 0x00020000</term>
+		/// <term>A computer that runs a browser service as backup.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_MASTER_BROWSER 0x00040000</term>
+		/// <term>A computer that runs the master browser service.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_DOMAIN_MASTER 0x00080000</term>
+		/// <term>A computer that runs the domain master browser.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_SERVER_OSF 0x00100000</term>
+		/// <term>A computer that runs OSF/1.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_SERVER_VMS 0x00200000</term>
+		/// <term>A computer that runs Open Virtual Memory System (VMS).</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_WINDOWS 0x00400000</term>
+		/// <term>A computer that runs Windows.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_DFS 0x00800000</term>
+		/// <term>A computer that is the root of Distributed File System (DFS) tree.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_CLUSTER_NT 0x01000000</term>
+		/// <term>Server clusters available in the domain.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_TERMINALSERVER 0x02000000</term>
+		/// <term>A server running the Terminal Server service.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_CLUSTER_VS_NT 0x04000000</term>
+		/// <term>Cluster virtual servers available in the domain. Windows 2000: This value is not supported.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_DCE 0x10000000</term>
+		/// <term>A computer that runs IBM Directory and Security Services (DSS) or equivalent.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_ALTERNATE_XPORT 0x20000000</term>
+		/// <term>A computer that over an alternate transport.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_LOCAL_LIST_ONLY 0x40000000</term>
+		/// <term>Any computer maintained in a list by the browser. See the following Remarks section.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_DOMAIN_ENUM 0x80000000</term>
+		/// <term>The primary domain.</term>
+		/// </item>
+		/// <item>
+		/// <term>SV_TYPE_ALL 0xFFFFFFFF</term>
+		/// <term>All servers. This is a convenience that will return all possible servers.</term>
+		/// </item>
+		/// </list>
+		/// </param>
 		/// <param name="domain">
+		/// <para>
 		/// A pointer to a constant string that specifies the name of the domain for which a list of servers is to be returned. The domain
-		/// name must be a NetBIOS domain name (for example, microsoft). The NetServerEnum function does not support DNS-style names (for
-		/// example, microsoft.com). If this parameter is NULL, the primary domain is implied.
+		/// name must be a NetBIOS domain name (for example, microsoft). The <c>NetServerEnum</c> function does not support DNS-style names
+		/// (for example, microsoft.com).
+		/// </para>
+		/// <para>If this parameter is <c>NULL</c>, the primary domain is implied.</para>
 		/// </param>
 		/// <param name="resume_handle">Reserved; must be set to zero.</param>
-		/// <returns>If the function succeeds, the return value is NERR_Success.</returns>
-		[DllImport(Lib.NetApi32, ExactSpelling = true, CharSet = CharSet.Unicode), SuppressUnmanagedCodeSecurity]
-		[PInvokeData("lm.h", MSDNShortId = "aa370623")]
-		public static extern Win32Error NetServerEnum([Optional] string servernane, int level, out SafeNetApiBuffer bufptr, int prefmaxlen, out int entriesread,
-			out int totalentries, NetServerEnumFilter servertype, string domain, [Optional] IntPtr resume_handle);
+		/// <returns>
+		/// <para>If the function succeeds, the return value is NERR_Success.</para>
+		/// <para>If the function fails, the return value can be one of the following error codes:</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code/value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_ACCESS_DENIED 5</term>
+		/// <term>Access was denied.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER 87</term>
+		/// <term>The parameter is incorrect.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_MORE_DATA 234</term>
+		/// <term>More entries are available. Specify a large enough buffer to receive all entries.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_NO_BROWSER_SERVERS_FOUND 6118</term>
+		/// <term>No browser servers found.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_NOT_SUPPORTED 50</term>
+		/// <term>The request is not supported.</term>
+		/// </item>
+		/// <item>
+		/// <term>NERR_RemoteErr 2127</term>
+		/// <term>A remote error occurred with no data returned by the server.</term>
+		/// </item>
+		/// <item>
+		/// <term>NERR_ServerNotStarted 2114</term>
+		/// <term>The server service is not started.</term>
+		/// </item>
+		/// <item>
+		/// <term>NERR_ServiceNotInstalled 2184</term>
+		/// <term>The service has not been started.</term>
+		/// </item>
+		/// <item>
+		/// <term>NERR_WkstaNotStarted 2138</term>
+		/// <term>
+		/// The Workstation service has not been started. The local workstation service is used to communicate with a downlevel remote server.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>NetServerEnum</c> function is used to list all servers of the specified type that are visible in a domain. For example, an
+		/// application can call <c>NetServerEnum</c> to list all domain controllers only or all servers that run instances of SQL server only.
+		/// </para>
+		/// <para>
+		/// An application combine the bit masks for various server types in the servertype parameter to list several types. For example, a
+		/// value of SV_TYPE_WORKSTATION | SVTYPE_SERVER (0x00000003) combines the bit masks for SV_TYPE_WORKSTATION (0x00000001) and
+		/// SV_TYPE_SERVER (0x00000002).
+		/// </para>
+		/// <para>If you require more information for a specific server, call the WNetEnumResource function.</para>
+		/// <para>No special group membership is required to successfully execute the <c>NetServerEnum</c> function.</para>
+		/// <para>
+		/// If you specify the value SV_TYPE_LOCAL_LIST_ONLY, the <c>NetServerEnum</c> function returns the list of servers that the browser
+		/// maintains internally. This has meaning only on the master browser (or on a computer that has been the master browser in the
+		/// past). The master browser is the computer that currently has rights to determine which computers can be servers or workstations
+		/// on the network.
+		/// </para>
+		/// <para>
+		/// If there are no servers found that match the types specified in the servertype parameter, the <c>NetServerEnum</c> function
+		/// returns the bufptr parameter as <c>NULL</c> and DWORD values pointed to by the entriesread and totalentries parameters are set to zero.
+		/// </para>
+		/// <para>
+		/// The <c>NetServerEnum</c> function depends on the browser service being installed and running. If no browser servers are found,
+		/// then <c>NetServerEnum</c> fails with ERROR_NO_BROWSER_SERVERS_FOUND.
+		/// </para>
+		/// <para>
+		/// If you are programming for Active Directory, you may be able to call certain Active Directory Service Interface (ADSI) methods to
+		/// achieve the same function you can achieve by calling the network management server functions. For more information, see IADsComputer.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>
+		/// The following code sample demonstrates how to list all servers that are visible in a domain with a call to the
+		/// <c>NetServerEnum</c> function. The sample calls <c>NetServerEnum</c>, specifying information level 101 ( SERVER_INFO_101). If any
+		/// servers are found, the sample code loops through the entries and prints the retrieved data. If the server is a domain controller,
+		/// it identifies the server as either a primary domain controller (PDC) or a backup domain controller (BDC). The sample also prints
+		/// the total number of entries available and a hint about the number of entries actually enumerated, warning the user if all entries
+		/// were not enumerated. Finally, the sample frees the memory allocated for the information buffer.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/lmserver/nf-lmserver-netserverenum NET_API_STATUS NET_API_FUNCTION
+		// NetServerEnum( IN LMCSTR servername, IN DWORD level, OUT LPBYTE *bufptr, IN DWORD prefmaxlen, OUT LPDWORD entriesread, OUT LPDWORD
+		// totalentries, IN DWORD servertype, IN LMCSTR domain, IN OUT LPDWORD resume_handle );
+		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("lmserver.h", MSDNShortId = "10012a87-805e-4817-9f09-9e5632b1fa09")]
+		public static extern Win32Error NetServerEnum([Optional] string servername, uint level, out SafeNetApiBuffer bufptr, uint prefmaxlen, out uint entriesread,
+			out uint totalentries, NetServerEnumFilter servertype, [Optional] string domain, [Optional] IntPtr resume_handle);
 
 		/// <summary>The NetServerGetInfo function retrieves current configuration information for the specified server.</summary>
 		/// <param name="servername">
@@ -487,7 +710,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <returns>If the function succeeds, the return value is NERR_Success.</returns>
 		[DllImport(Lib.NetApi32, ExactSpelling = true, CharSet = CharSet.Unicode)]
-		[PInvokeData("lm.h", MSDNShortId = "aa370624")]
+		[PInvokeData("lmserver.h", MSDNShortId = "aa370624")]
 		public static extern Win32Error NetServerGetInfo([Optional] string servername, int level, out SafeNetApiBuffer bufptr);
 
 		/// <summary>
@@ -1093,13 +1316,11 @@ namespace Vanara.PInvoke
 		public static extern Win32Error NetServerTransportDel([Optional] string servername, int level, IntPtr bufptr);
 
 		/// <summary>
-		/// <para>The <c>NetServerTransportEnum</c> function supplies information about transport protocols that are managed by the server.</para>
+		/// The <c>NetServerTransportEnum</c> function supplies information about transport protocols that are managed by the server.
 		/// </summary>
 		/// <param name="servername">
-		/// <para>
 		/// Pointer to a string that specifies the DNS or NetBIOS name of the remote server on which the function is to execute. If this
 		/// parameter is <c>NULL</c>, the local computer is used.
-		/// </para>
 		/// </param>
 		/// <param name="level">
 		/// <para>Specifies the information level of the data. This parameter can be one of the following values.</para>
@@ -1125,30 +1346,22 @@ namespace Vanara.PInvoke
 		/// </list>
 		/// </param>
 		/// <param name="bufptr">
-		/// <para>
 		/// Pointer to the buffer that receives the data. The format of this data depends on the value of the level parameter. This buffer is
 		/// allocated by the system and must be freed using the NetApiBufferFree function. Note that you must free the buffer even if the
 		/// function fails with ERROR_MORE_DATA.
-		/// </para>
 		/// </param>
 		/// <param name="prefmaxlen">
-		/// <para>
 		/// Specifies the preferred maximum length of returned data, in bytes. If you specify MAX_PREFERRED_LENGTH, the function allocates
 		/// the amount of memory required for the data. If you specify another value in this parameter, it can restrict the number of bytes
 		/// that the function returns. If the buffer size is insufficient to hold all entries, the function returns ERROR_MORE_DATA. For more
 		/// information, see Network Management Function Buffers and Network Management Function Buffer Lengths.
-		/// </para>
 		/// </param>
-		/// <param name="entriesread">
-		/// <para>Pointer to a value that receives the count of elements actually enumerated.</para>
-		/// </param>
+		/// <param name="entriesread">Pointer to a value that receives the count of elements actually enumerated.</param>
 		/// <param name="totalentries">
-		/// <para>
 		/// Pointer to a value that receives the total number of entries that could have been enumerated from the current resume position.
 		/// Note that applications should consider this value only as a hint.
-		/// </para>
 		/// </param>
-		/// <param name="resume_handle"/>
+		/// <param name="resume_handle">The resume handle.</param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is NERR_Success.</para>
 		/// <para>If the function fails, the return value can be one of the following error codes.</para>
@@ -1193,12 +1406,12 @@ namespace Vanara.PInvoke
 		// totalentries, LPDWORD resume_handle );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("lmserver.h", MSDNShortId = "db42ac44-d70d-4b89-882a-6ac83fd611fd")]
-		public static extern Win32Error NetServerTransportEnum([Optional] string servername, int level, out SafeNetApiBuffer bufptr, int prefmaxlen, out int entriesread, out int totalentries, ref uint resume_handle);
+		public static extern Win32Error NetServerTransportEnum([Optional] string servername, int level, out SafeNetApiBuffer bufptr, uint prefmaxlen, out uint entriesread, out uint totalentries, ref uint resume_handle);
 
 		/// <summary>The <c>SERVER_INFO_100</c> structure contains information about the specified server, including the name and platform.</summary>
 		/// <seealso cref="INetServerInfo"/>
 		[StructLayout(LayoutKind.Sequential)]
-		[PInvokeData("lm.h", MSDNShortId = "aa370897")]
+		[PInvokeData("lmserver.h", MSDNShortId = "aa370897")]
 		public struct SERVER_INFO_100 : INetServerInfo
 		{
 			/// <summary>The information level to use for platform-specific information.</summary>
@@ -1215,7 +1428,7 @@ namespace Vanara.PInvoke
 		/// </summary>
 		/// <seealso cref="INetServerInfo"/>
 		[StructLayout(LayoutKind.Sequential)]
-		[PInvokeData("lm.h", MSDNShortId = "aa370903")]
+		[PInvokeData("lmserver.h", MSDNShortId = "aa370903")]
 		public struct SERVER_INFO_101 : INetServerInfo
 		{
 			/// <summary>The information level to use for platform-specific information.</summary>
@@ -1256,7 +1469,7 @@ namespace Vanara.PInvoke
 		/// </summary>
 		/// <seealso cref="INetServerInfo"/>
 		[StructLayout(LayoutKind.Sequential)]
-		[PInvokeData("lm.h", MSDNShortId = "aa370904")]
+		[PInvokeData("lmserver.h", MSDNShortId = "aa370904")]
 		public struct SERVER_INFO_102 : INetServerInfo
 		{
 			/// <summary>The information level to use for platform-specific information.</summary>
@@ -2316,40 +2529,40 @@ namespace Vanara.PInvoke
 			public byte[] svti3_password;
 		}
 
-		/// <summary>Provides a <see cref="SafeHandle"/> to a buffer that releases a created handle at disposal using NetApiBufferFree.</summary>
-		public class SafeNetApiBuffer : SafeHANDLE
-		{
-			/// <summary>Initializes a new instance of the <see cref="SafeNetApiBuffer"/> class and assigns an existing handle.</summary>
-			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle">
-			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
-			/// </param>
-			public SafeNetApiBuffer(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
-
-			/// <summary>Initializes a new instance of the <see cref="SafeNetApiBuffer"/> class.</summary>
-			private SafeNetApiBuffer() : base() { }
-
-			/// <summary>Returns an extracted structure from this buffer.</summary>
-			/// <typeparam name="T">The structure type to extract.</typeparam>
-			/// <returns>Extracted structure or default(T) if the buffer is invalid.</returns>
-			public T ToStructure<T>() where T : struct => IsInvalid ? default : (T)Marshal.PtrToStructure(handle, typeof(T));
-
-			/// <inheritdoc/>
-			public override string ToString() => Extensions.StringHelper.GetString(handle);
-
-			/// <summary>Extracts a list of structures.</summary>
-			/// <typeparam name="T">The type of the structure.</typeparam>
-			/// <param name="count">The count of structures in the list.</param>
-			/// <returns>The list of structures.</returns>
-			public IEnumerable<T> ToIEnum<T>(int count) => handle.ToIEnum<T>(count);
-
-			/// <summary>Extracts a list of strings. Used by <see cref="DsAddressToSiteNames"/>.</summary>
-			/// <param name="count">The number of elements in the list.</param>
-			/// <returns>The list of strings.</returns>
-			public IEnumerable<string> ToStringEnum(int count) => handle.ToStringEnum(count);
-
-			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() => NetApiBufferFree(handle) == 0;
-		}
+		/*
+		SERVER_INFO_1005 structure
+		SERVER_INFO_1010 structure
+		SERVER_INFO_1016 structure
+		SERVER_INFO_1017 structure
+		SERVER_INFO_1018 structure
+		SERVER_INFO_1107 structure
+		SERVER_INFO_1501 structure
+		SERVER_INFO_1502 structure
+		SERVER_INFO_1503 structure
+		SERVER_INFO_1506 structure
+		SERVER_INFO_1509 structure
+		SERVER_INFO_1510 structure
+		SERVER_INFO_1511 structure
+		SERVER_INFO_1512 structure
+		SERVER_INFO_1513 structure
+		SERVER_INFO_1515 structure
+		SERVER_INFO_1516 structure
+		SERVER_INFO_1518 structure
+		SERVER_INFO_1523 structure
+		SERVER_INFO_1528 structure
+		SERVER_INFO_1529 structure
+		SERVER_INFO_1530 structure
+		SERVER_INFO_1533 structure
+		SERVER_INFO_1536 structure
+		SERVER_INFO_1538 structure
+		SERVER_INFO_1539 structure
+		SERVER_INFO_1540 structure
+		SERVER_INFO_1541 structure
+		SERVER_INFO_1542 structure
+		SERVER_INFO_1544 structure
+		SERVER_INFO_1550 structure
+		SERVER_INFO_1552 structure
+		SERVER_INFO_502 structure
+		SERVER_INFO_503 structure*/
 	}
 }

@@ -104,7 +104,7 @@ namespace Vanara.PInvoke
 		{
 			/// <summary>The DsRoleGetPrimaryDomainInformation function retrieves data from a DSROLE_PRIMARY_DOMAIN_INFO_BASIC structure.</summary>
 			[CorrespondingType(typeof(DSROLE_PRIMARY_DOMAIN_INFO_BASIC), CorrepsondingAction.Get)]
-			DsRolePrimaryDomainInfoBasic,
+			DsRolePrimaryDomainInfoBasic = 1,
 
 			/// <summary>The DsRoleGetPrimaryDomainInformation function retrieves from a DSROLE_UPGRADE_STATUS_INFO structure.</summary>
 			[CorrespondingType(typeof(DSROLE_UPGRADE_STATUS_INFO), CorrepsondingAction.Get)]
@@ -147,25 +147,19 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/dsrole/nf-dsrole-dsrolefreememory void DsRoleFreeMemory( IN PVOID Buffer );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dsrole.h", MSDNShortId = "5560dfec-2134-4e02-9c87-26d246cd5841")]
-		public static extern void DsRoleFreeMemory(SafeDcRoleBuffer Buffer);
+		public static extern void DsRoleFreeMemory(IntPtr Buffer);
 
 		/// <summary>
-		/// <para>
 		/// The <c>DsRoleGetPrimaryDomainInformation</c> function retrieves state data for the computer. This data includes the state of the
 		/// directory service installation and domain data.
-		/// </para>
 		/// </summary>
 		/// <param name="lpServer">
-		/// <para>
 		/// Pointer to null-terminated Unicode string that contains the name of the computer on which to call the function. If this parameter
 		/// is <c>NULL</c>, the local computer is used.
-		/// </para>
 		/// </param>
 		/// <param name="InfoLevel">
-		/// <para>
 		/// Contains one of the DSROLE_PRIMARY_DOMAIN_INFO_LEVEL values that specify the type of data to retrieve. This parameter also
 		/// determines the format of the data supplied in Buffer.
-		/// </para>
 		/// </param>
 		/// <param name="Buffer">
 		/// <para>
@@ -182,7 +176,7 @@ namespace Vanara.PInvoke
 		// DsRoleGetPrimaryDomainInformation( IN LPCWSTR lpServer, IN DSROLE_PRIMARY_DOMAIN_INFO_LEVEL InfoLevel, OUT PBYTE *Buffer );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("dsrole.h", MSDNShortId = "d54876e3-a622-4b44-a597-db0f710f7758")]
-		public static extern uint DsRoleGetPrimaryDomainInformation([MarshalAs(UnmanagedType.LPWStr)] string lpServer, DSROLE_PRIMARY_DOMAIN_INFO_LEVEL InfoLevel, out SafeDcRoleBuffer Buffer);
+		public static extern Win32Error DsRoleGetPrimaryDomainInformation([In, MarshalAs(UnmanagedType.LPWStr), Optional] string lpServer, DSROLE_PRIMARY_DOMAIN_INFO_LEVEL InfoLevel, out SafeDcRoleBuffer Buffer);
 
 		/// <summary>
 		/// <para>
@@ -314,7 +308,7 @@ namespace Vanara.PInvoke
 			public T ToStructure<T>() where T : struct => IsInvalid ? default : (T)Marshal.PtrToStructure(handle, typeof(T));
 
 			/// <inheritdoc/>
-			protected override bool InternalReleaseHandle() { DsRoleFreeMemory(this); return true; }
+			protected override bool InternalReleaseHandle() { DsRoleFreeMemory(handle); return true; }
 		}
 	}
 }

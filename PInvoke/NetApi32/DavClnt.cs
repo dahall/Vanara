@@ -136,6 +136,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Authentication scheme.</summary>
 		[PInvokeData("davclnt.h", MSDNShortId = "6ac191ac-e63f-431f-893b-92c69320db58")]
+		[Flags]
 		public enum DAV_AUTHN_SCHEME
 		{
 			/// <summary>Basic authentication is to be used.</summary>

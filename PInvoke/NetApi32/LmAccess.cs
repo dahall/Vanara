@@ -1,0 +1,124 @@
+using System;
+using System.Runtime.InteropServices;
+using System.Text;
+using Vanara.Extensions;
+
+namespace Vanara.PInvoke
+{
+	public static partial class NetApi32
+	{
+		/*
+		GROUP_INFO_0 structure
+		GROUP_INFO_1 structure
+		GROUP_INFO_1002 structure
+		GROUP_INFO_1005 structure
+		GROUP_INFO_2 structure
+		GROUP_INFO_3 structure
+		GROUP_USERS_INFO_0 structure
+		GROUP_USERS_INFO_1 structure
+		LOCALGROUP_INFO_0 structure
+		LOCALGROUP_INFO_1 structure
+		LOCALGROUP_INFO_1002 structure
+		LOCALGROUP_MEMBERS_INFO_0 structure
+		LOCALGROUP_MEMBERS_INFO_1 structure
+		LOCALGROUP_MEMBERS_INFO_2 structure
+		LOCALGROUP_MEMBERS_INFO_3 structure
+		LOCALGROUP_USERS_INFO_0 structure
+		NET_DISPLAY_GROUP structure
+		NET_DISPLAY_MACHINE structure
+		NET_DISPLAY_USER structure
+		NET_VALIDATE_AUTHENTICATION_INPUT_ARG structure
+		NET_VALIDATE_OUTPUT_ARG structure
+		NET_VALIDATE_PASSWORD_CHANGE_INPUT_ARG structure
+		NET_VALIDATE_PASSWORD_HASH structure
+		NET_VALIDATE_PASSWORD_RESET_INPUT_ARG structure
+		NET_VALIDATE_PERSISTED_FIELDS structure
+		USER_INFO_0 structure
+		USER_INFO_1 structure
+		USER_INFO_10 structure
+		USER_INFO_1003 structure
+		USER_INFO_1005 structure
+		USER_INFO_1006 structure
+		USER_INFO_1007 structure
+		USER_INFO_1008 structure
+		USER_INFO_1009 structure
+		USER_INFO_1010 structure
+		USER_INFO_1011 structure
+		USER_INFO_1012 structure
+		USER_INFO_1013 structure
+		USER_INFO_1014 structure
+		USER_INFO_1017 structure
+		USER_INFO_1018 structure
+		USER_INFO_1020 structure
+		USER_INFO_1023 structure
+		USER_INFO_1024 structure
+		USER_INFO_1025 structure
+		USER_INFO_1051 structure
+		USER_INFO_1052 structure
+		USER_INFO_1053 structure
+		USER_INFO_11 structure
+		USER_INFO_2 structure
+		USER_INFO_20 structure
+		USER_INFO_21 structure
+		USER_INFO_22 structure
+		USER_INFO_23 structure
+		USER_INFO_24 structure
+		USER_INFO_3 structure
+		USER_INFO_4 structure
+		USER_MODALS_INFO_0 structure
+		USER_MODALS_INFO_1 structure
+		USER_MODALS_INFO_1001 structure
+		USER_MODALS_INFO_1002 structure
+		USER_MODALS_INFO_1003 structure
+		USER_MODALS_INFO_1004 structure
+		USER_MODALS_INFO_1005 structure
+		USER_MODALS_INFO_1006 structure
+		USER_MODALS_INFO_1007 structure
+		USER_MODALS_INFO_2 structure
+		USER_MODALS_INFO_3 structure
+		NetAccessAdd function
+		NetAccessDel function
+		NetAccessEnum function
+		NetAccessGetInfo function
+		NetAccessGetUserPerms function
+		NetAccessSetInfo function
+		NetGetAnyDCName function
+		NetGetDCName function
+		NetGetDisplayInformationIndex function
+		NetGroupAdd function
+		NetGroupAddUser function
+		NetGroupDel function
+		NetGroupDelUser function
+		NetGroupEnum function
+		NetGroupGetInfo function
+		NetGroupGetUsers function
+		NetGroupSetInfo function
+		NetGroupSetUsers function
+		NetLocalGroupAdd function
+		NetLocalGroupAddMember function
+		NetLocalGroupAddMembers function
+		NetLocalGroupDel function
+		NetLocalGroupDelMember function
+		NetLocalGroupDelMembers function
+		NetLocalGroupEnum function
+		NetLocalGroupGetInfo function
+		NetLocalGroupGetMembers function
+		NetLocalGroupSetInfo function
+		NetLocalGroupSetMembers function
+		NetQueryDisplayInformation function
+		NetUserAdd function
+		NetUserChangePassword function
+		NetUserDel function
+		NetUserEnum function
+		NetUserGetGroups function
+		NetUserGetInfo function
+		NetUserGetLocalGroups function
+		NetUserModalsGet function
+		NetUserModalsSet function
+		NetUserSetGroups function
+		NetUserSetInfo function
+		NetValidatePasswordPolicy function
+		NetValidatePasswordPolicyFree function
+		*/
+	}
+}
