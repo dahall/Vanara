@@ -86,11 +86,11 @@ namespace Vanara.Windows.Shell
 			{
 				const int cchPath = 128;
 				var pszPath = new StringBuilder(cchPath, cchPath);
-				icp.GetPath(pszName, pszPath, cchPath).ThrowIfFailed();
+				icp.GetPath(pszName, pszPath, cchPath);
 				return pszPath.ToString();
 			}
 
-			public bool Open(string pszName = null, string page = null, object punkSite = null) => icp.Open(pszName, page, punkSite).Succeeded;
+			public bool Open(string pszName = null, string page = null, object punkSite = null) { try { icp.Open(pszName, page, punkSite); return true; } catch { return false; } }
 
 			protected virtual void Dispose(bool disposing)
 			{
