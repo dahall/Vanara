@@ -1521,6 +1521,8 @@ namespace Vanara.PInvoke
 
 				public bool Excluded { get; set; }
 
+				public override string ToString() => $"TopName:{TopLevelName}, Excl:{Excluded}, Time:{Time:u}, Flg:{Flags}";
+
 				protected internal override LSA_FOREST_TRUST_RECORD Convert()
 				{
 					var ret = base.Convert();
@@ -1541,6 +1543,8 @@ namespace Vanara.PInvoke
 
 				/// <summary>The NetBIOS name of the domain.</summary>
 				public string NetbiosName { get; set; }
+
+				public override string ToString() => $"DnsName:{DnsName}, NB:{NetbiosName}, Time:{Time:u}, Flg:{Flags}";
 
 				protected internal override LSA_FOREST_TRUST_RECORD Convert()
 				{
