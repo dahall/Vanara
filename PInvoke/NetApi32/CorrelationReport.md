@@ -1,5 +1,5 @@
 ## Correlation report for netapi32.dll  
-### Methods (52% complete)  
+### Methods (71% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [DavAddConnection](http://msdn2.microsoft.com/en-us/library/d69cba04-503c-4d21-b762-3094c0921e28) | netapi32.dll | davclnt.h | Vanara.PInvoke.NetApi32.DavAddConnection  
@@ -28,12 +28,6 @@ Native Method | Native DLL | Header | Managed Method
 [DsRoleFreeMemory](http://msdn2.microsoft.com/en-us/library/5560dfec-2134-4e02-9c87-26d246cd5841) | netapi32.dll | dsrole.h | Vanara.PInvoke.NetApi32.DsRoleFreeMemory  
 [DsRoleGetPrimaryDomainInformation](http://msdn2.microsoft.com/en-us/library/d54876e3-a622-4b44-a597-db0f710f7758) | netapi32.dll | dsrole.h | Vanara.PInvoke.NetApi32.DsRoleGetPrimaryDomainInformation  
 [DsValidateSubnetName](http://msdn2.microsoft.com/en-us/library/bed49e08-4cb7-439c-bfb7-815263ec7568) | netapi32.dll | dsgetdc.h | Vanara.PInvoke.NetApi32.DsValidateSubnetName  
-[NetAccessAdd](https://www.google.com/search?num=5&q=NetAccessAdd+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetAccessDel](https://www.google.com/search?num=5&q=NetAccessDel+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetAccessEnum](https://www.google.com/search?num=5&q=NetAccessEnum+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetAccessGetInfo](https://www.google.com/search?num=5&q=NetAccessGetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetAccessGetUserPerms](https://www.google.com/search?num=5&q=NetAccessGetUserPerms+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetAccessSetInfo](https://www.google.com/search?num=5&q=NetAccessSetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetAddAlternateComputerName](http://msdn2.microsoft.com/en-us/library/710865c6-e327-439c-931d-de8674d69233) | netapi32.dll | lmjoin.h | Vanara.PInvoke.NetApi32.NetAddAlternateComputerName  
 [NetAddServiceAccount](https://www.google.com/search?num=5&q=NetAddServiceAccount+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetAlertRaise](http://msdn2.microsoft.com/en-us/library/11367a72-c21d-4044-98cf-a7a30cc43a8b) | netapi32.dll | lmalert.h | Vanara.PInvoke.NetApi32.NetAlertRaise  
@@ -42,32 +36,31 @@ Native Method | Native DLL | Header | Managed Method
 [NetApiBufferFree](http://msdn2.microsoft.com/en-us/library/aa370304) | netapi32.dll | lm.h | Vanara.PInvoke.NetApi32.NetApiBufferFree  
 [NetApiBufferReallocate](http://msdn2.microsoft.com/en-us/library/61153de0-33d3-4c83-a8aa-a7179252328c) | netapi32.dll | lmapibuf.h | Vanara.PInvoke.NetApi32.NetApiBufferReallocate  
 [NetApiBufferSize](http://msdn2.microsoft.com/en-us/library/0c28feeb-00a3-4ad5-b85f-96326515fae2) | netapi32.dll | lmapibuf.h | Vanara.PInvoke.NetApi32.NetApiBufferSize  
-[Netbios](https://www.google.com/search?num=5&q=Netbios+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetConnectionEnum](http://msdn2.microsoft.com/en-us/library/935ac6e9-78e0-42ae-a454-0a14b03ddc21) | netapi32.dll | lmshare.h | Vanara.PInvoke.NetApi32.NetConnectionEnum  
 [NetCreateProvisioningPackage](http://msdn2.microsoft.com/en-us/library/6E2A5578-8308-41E2-B5E9-5E34E9E76C0B) | netapi32.dll | lmjoin.h | Vanara.PInvoke.NetApi32.NetCreateProvisioningPackage  
-[NetDfsAdd](https://www.google.com/search?num=5&q=NetDfsAdd+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsAddFtRoot](https://www.google.com/search?num=5&q=NetDfsAddFtRoot+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsAddRootTarget](https://www.google.com/search?num=5&q=NetDfsAddRootTarget+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsAddStdRoot](https://www.google.com/search?num=5&q=NetDfsAddStdRoot+site%3Amicrosoft.com) | netapi32.dll |  |   
+[NetDfsAdd](http://msdn2.microsoft.com/en-us/library/2c8816b2-5489-486e-b749-605932ba9fe9) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsAdd  
+[NetDfsAddFtRoot](http://msdn2.microsoft.com/en-us/library/df3192f8-f8fc-40ad-a5ff-fb991befff09) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsAddFtRoot  
+[NetDfsAddRootTarget](http://msdn2.microsoft.com/en-us/library/c4ce8f50-f090-4783-b6c9-834d9e0c33de) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsAddRootTarget  
+[NetDfsAddStdRoot](http://msdn2.microsoft.com/en-us/library/e59236ac-06d7-4b2f-b318-ec13e6c662ac) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsAddStdRoot  
 [NetDfsAddStdRootForced](https://www.google.com/search?num=5&q=NetDfsAddStdRootForced+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsEnum](https://www.google.com/search?num=5&q=NetDfsEnum+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsGetClientInfo](https://www.google.com/search?num=5&q=NetDfsGetClientInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsGetFtContainerSecurity](https://www.google.com/search?num=5&q=NetDfsGetFtContainerSecurity+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsGetInfo](https://www.google.com/search?num=5&q=NetDfsGetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsGetSecurity](https://www.google.com/search?num=5&q=NetDfsGetSecurity+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsGetStdContainerSecurity](https://www.google.com/search?num=5&q=NetDfsGetStdContainerSecurity+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsGetSupportedNamespaceVersion](https://www.google.com/search?num=5&q=NetDfsGetSupportedNamespaceVersion+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsMove](https://www.google.com/search?num=5&q=NetDfsMove+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsRemove](https://www.google.com/search?num=5&q=NetDfsRemove+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsRemoveFtRoot](https://www.google.com/search?num=5&q=NetDfsRemoveFtRoot+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsRemoveFtRootForced](https://www.google.com/search?num=5&q=NetDfsRemoveFtRootForced+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsRemoveRootTarget](https://www.google.com/search?num=5&q=NetDfsRemoveRootTarget+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsRemoveStdRoot](https://www.google.com/search?num=5&q=NetDfsRemoveStdRoot+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsSetClientInfo](https://www.google.com/search?num=5&q=NetDfsSetClientInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsSetFtContainerSecurity](https://www.google.com/search?num=5&q=NetDfsSetFtContainerSecurity+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsSetInfo](https://www.google.com/search?num=5&q=NetDfsSetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsSetSecurity](https://www.google.com/search?num=5&q=NetDfsSetSecurity+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetDfsSetStdContainerSecurity](https://www.google.com/search?num=5&q=NetDfsSetStdContainerSecurity+site%3Amicrosoft.com) | netapi32.dll |  |   
+[NetDfsEnum](http://msdn2.microsoft.com/en-us/library/c05a8d78-41f4-4c19-a25e-ef4885869584) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsEnum  
+[NetDfsGetClientInfo](http://msdn2.microsoft.com/en-us/library/065ec002-cb90-4d78-a70c-6ac37f71994f) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsGetClientInfo  
+[NetDfsGetFtContainerSecurity](http://msdn2.microsoft.com/en-us/library/88e988db-1418-49d5-8cac-1ea6144474a5) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsGetFtContainerSecurity  
+[NetDfsGetInfo](http://msdn2.microsoft.com/en-us/library/bbb2f24d-1c49-4016-a16b-60fde4a78193) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsGetInfo  
+[NetDfsGetSecurity](http://msdn2.microsoft.com/en-us/library/a6db7c82-c2ec-464a-8c05-2360622880b4) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsGetSecurity  
+[NetDfsGetStdContainerSecurity](http://msdn2.microsoft.com/en-us/library/63ad610e-c66f-4fad-b3b6-2ee15e90a723) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsGetStdContainerSecurity  
+[NetDfsGetSupportedNamespaceVersion](http://msdn2.microsoft.com/en-us/library/32ccf4a7-9d07-45e1-93db-29eddee01680) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsGetSupportedNamespaceVersion  
+[NetDfsMove](http://msdn2.microsoft.com/en-us/library/d9d225ac-26b9-4074-93b6-6294538a3504) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsMove  
+[NetDfsRemove](http://msdn2.microsoft.com/en-us/library/c879ba56-cc42-4fa3-960f-ddc65a75dbe3) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsRemove  
+[NetDfsRemoveFtRoot](http://msdn2.microsoft.com/en-us/library/aa5c9991-ca8e-48ba-922d-feadaff45cc2) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsRemoveFtRoot  
+[NetDfsRemoveFtRootForced](http://msdn2.microsoft.com/en-us/library/4eaa0e2a-fa09-4a20-98e1-4c0c4ff5d0ef) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsRemoveFtRootForced  
+[NetDfsRemoveRootTarget](http://msdn2.microsoft.com/en-us/library/9a8c78f4-3170-4568-940c-1c51aebad3ae) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsRemoveRootTarget  
+[NetDfsRemoveStdRoot](http://msdn2.microsoft.com/en-us/library/850427cc-56da-45cc-8833-e242acc53589) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsRemoveStdRoot  
+[NetDfsSetClientInfo](http://msdn2.microsoft.com/en-us/library/4c95dffb-a092-45ad-9a3f-37d3abbf4427) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsSetClientInfo  
+[NetDfsSetFtContainerSecurity](http://msdn2.microsoft.com/en-us/library/84300e38-b263-4c38-bc31-5221621b89f1) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsSetFtContainerSecurity  
+[NetDfsSetInfo](http://msdn2.microsoft.com/en-us/library/5526afa7-82bc-47c7-99d6-44e41ef772b1) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsSetInfo  
+[NetDfsSetSecurity](http://msdn2.microsoft.com/en-us/library/7ee81f67-face-498f-b5bd-ca2636408012) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsSetSecurity  
+[NetDfsSetStdContainerSecurity](http://msdn2.microsoft.com/en-us/library/BC408A12-5106-45A0-BBED-0468D51708BC) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsSetStdContainerSecurity  
 [NetEnumerateComputerNames](http://msdn2.microsoft.com/en-us/library/c657ae33-404e-4c36-a956-5fbcfa540be7) | netapi32.dll | lmjoin.h | Vanara.PInvoke.NetApi32.NetEnumerateComputerNames  
 [NetEnumerateServiceAccounts](https://www.google.com/search?num=5&q=NetEnumerateServiceAccounts+site%3Amicrosoft.com) | netapi32.dll |  |   
 [NetFileClose](http://msdn2.microsoft.com/en-us/library/36a5f464-fec3-4b4f-91c3-447ff5ff70af) | netapi32.dll | lmshare.h | Vanara.PInvoke.NetApi32.NetFileClose  
@@ -112,10 +105,10 @@ Native Method | Native DLL | Header | Managed Method
 [NetRenameMachineInDomain](http://msdn2.microsoft.com/en-us/library/1f7ddaa1-a349-49a6-856d-a2fde2f1dc3b) | netapi32.dll | lmjoin.h | Vanara.PInvoke.NetApi32.NetRenameMachineInDomain  
 [NetRequestOfflineDomainJoin](http://msdn2.microsoft.com/en-us/library/f3f8fe00-d6f7-4d59-a4e7-6aef7f507e1a) | netapi32.dll | lmjoin.h | Vanara.PInvoke.NetApi32.NetRequestOfflineDomainJoin  
 [NetRequestProvisioningPackageInstall](http://msdn2.microsoft.com/en-us/library/107ED0F7-8DDD-4C18-8C34-3A67F771FA62) | netapi32.dll | lmjoin.h | Vanara.PInvoke.NetApi32.NetRequestProvisioningPackageInstall  
-[NetScheduleJobAdd](https://www.google.com/search?num=5&q=NetScheduleJobAdd+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetScheduleJobDel](https://www.google.com/search?num=5&q=NetScheduleJobDel+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetScheduleJobEnum](https://www.google.com/search?num=5&q=NetScheduleJobEnum+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetScheduleJobGetInfo](https://www.google.com/search?num=5&q=NetScheduleJobGetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
+[NetScheduleJobAdd](http://msdn2.microsoft.com/en-us/library/813d13ba-abe1-4b14-88c7-87ba88a42a3b) | netapi32.dll | lmat.h | Vanara.PInvoke.NetApi32.NetScheduleJobAdd  
+[NetScheduleJobDel](http://msdn2.microsoft.com/en-us/library/5ae668ab-f51d-457e-a239-2ec16a0e5a55) | netapi32.dll | lmat.h | Vanara.PInvoke.NetApi32.NetScheduleJobDel  
+[NetScheduleJobEnum](http://msdn2.microsoft.com/en-us/library/e3384414-6a15-4979-bed4-6f94f046474a) | netapi32.dll | lmat.h | Vanara.PInvoke.NetApi32.NetScheduleJobEnum  
+[NetScheduleJobGetInfo](http://msdn2.microsoft.com/en-us/library/44589715-edab-4737-9e49-6f491fd44c28) | netapi32.dll | lmat.h | Vanara.PInvoke.NetApi32.NetScheduleJobGetInfo  
 [NetServerComputerNameAdd](http://msdn2.microsoft.com/en-us/library/0789fbfe-be91-4849-a31c-1e1a6ae1e70d) | netapi32.dll | lmserver.h | Vanara.PInvoke.NetApi32.NetServerComputerNameAdd  
 [NetServerComputerNameDel](http://msdn2.microsoft.com/en-us/library/501232ad-2821-4bbd-9f16-0f49984f6101) | netapi32.dll | lmserver.h | Vanara.PInvoke.NetApi32.NetServerComputerNameDel  
 [NetServerDiskEnum](http://msdn2.microsoft.com/en-us/library/56c981f4-7a1d-4465-bd7b-5996222c4210) | netapi32.dll | lmserver.h | Vanara.PInvoke.NetApi32.NetServerDiskEnum  
@@ -169,11 +162,39 @@ Native Method | Native DLL | Header | Managed Method
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
 [ADMIN_OTHER_INFO](http://msdn2.microsoft.com/en-us/library/43119dcf-7d04-4e3b-b1dc-20e814fbdc2f) | lmalert.h | Vanara.PInvoke.NetApi32+ADMIN_OTHER_INFO  
+[AT_ENUM](http://msdn2.microsoft.com/en-us/library/ed7c5171-b8aa-4a9a-8f31-4d914bcad0b1) | lmat.h | Vanara.PInvoke.NetApi32+AT_ENUM  
+[AT_INFO](http://msdn2.microsoft.com/en-us/library/eb0bf696-53ca-432a-b04c-5e0b6a61a0fd) | lmat.h | Vanara.PInvoke.NetApi32+AT_INFO  
 [CONNECTION_INFO_0](http://msdn2.microsoft.com/en-us/library/aebafe24-1216-48ab-92db-df8f77d36f26) | lmshare.h | Vanara.PInvoke.NetApi32+CONNECTION_INFO_0  
 [CONNECTION_INFO_1](http://msdn2.microsoft.com/en-us/library/9904c448-dcc4-47cc-a2e0-7df8d4d37f3f) | lmshare.h | Vanara.PInvoke.NetApi32+CONNECTION_INFO_1  
 [DAV_CALLBACK_AUTH_BLOB](http://msdn2.microsoft.com/en-us/library/59976cb0-ed68-4db0-b8f8-cfe5e778916b) | davclnt.h | Vanara.PInvoke.NetApi32+DAV_CALLBACK_AUTH_BLOB  
 [DAV_CALLBACK_AUTH_UNP](http://msdn2.microsoft.com/en-us/library/47420a67-bf3f-40d9-bfc4-ac2cb2776a40) | davclnt.h | Vanara.PInvoke.NetApi32+DAV_CALLBACK_AUTH_UNP  
 [DAV_CALLBACK_CRED](http://msdn2.microsoft.com/en-us/library/5414d7b5-b506-4d0a-a4b8-89ab7878d674) | davclnt.h | Vanara.PInvoke.NetApi32+DAV_CALLBACK_CRED  
+[DFS_GET_PKT_ENTRY_STATE_ARG](http://msdn2.microsoft.com/en-us/library/eb69d346-d88c-48e8-abd7-5cbb5976f41f) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_GET_PKT_ENTRY_STATE_ARG  
+[DFS_INFO_1](http://msdn2.microsoft.com/en-us/library/96647570-BADD-4925-AB90-054A00BA04C4) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_1  
+[DFS_INFO_100](http://msdn2.microsoft.com/en-us/library/763ba0f0-01e9-47cf-bbe5-93e13aa83aa0) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_100  
+[DFS_INFO_101](http://msdn2.microsoft.com/en-us/library/506aaf68-2f23-4dd2-b43c-aeb86334a3d8) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_101  
+[DFS_INFO_102](http://msdn2.microsoft.com/en-us/library/ca4da0a2-d5b3-4ad6-bc00-6629b9bf13e7) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_102  
+[DFS_INFO_103](http://msdn2.microsoft.com/en-us/library/d3d31087-770e-4434-8ee0-6183102a9a6b) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_103  
+[DFS_INFO_104](http://msdn2.microsoft.com/en-us/library/95b2cd36-4933-440d-889d-ebf36d7b9cc7) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_104  
+[DFS_INFO_105](http://msdn2.microsoft.com/en-us/library/b9ad9e41-d5b4-446f-ac99-a51808344f77) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_105  
+[DFS_INFO_106](http://msdn2.microsoft.com/en-us/library/12c114e4-f978-4423-85a8-ec0cf9c9e8c5) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_106  
+[DFS_INFO_107](http://msdn2.microsoft.com/en-us/library/38afc682-bb37-42ad-9e92-a1b0aa277f29) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_107  
+[DFS_INFO_150](http://msdn2.microsoft.com/en-us/library/b0fa6fca-8e60-447d-9334-c4df04f13439) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_150  
+[DFS_INFO_2](http://msdn2.microsoft.com/en-us/library/c5fe27be-fd6e-4cf0-abf6-8363c78edf5b) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_2  
+[DFS_INFO_200](http://msdn2.microsoft.com/en-us/library/a37a97b2-f2f2-45fc-9466-da75e273b075) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_200  
+[DFS_INFO_3](http://msdn2.microsoft.com/en-us/library/fd60cb52-fa17-4cac-a7e8-9803303336dc) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_3  
+[DFS_INFO_300](http://msdn2.microsoft.com/en-us/library/b418517a-9313-49e9-a679-69b02f4ee37f) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_300  
+[DFS_INFO_4](http://msdn2.microsoft.com/en-us/library/0b255be8-b719-4f40-9051-7e8a1bffa0e0) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_4  
+[DFS_INFO_5](http://msdn2.microsoft.com/en-us/library/bd68d7bf-94e1-41f9-84e9-e58ab34378a1) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_5  
+[DFS_INFO_50](http://msdn2.microsoft.com/en-us/library/1af2866c-fe83-43fc-b4cc-9976157fb269) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_50  
+[DFS_INFO_6](http://msdn2.microsoft.com/en-us/library/96a9c5eb-f79f-4577-b320-ebacff84fcc4) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_6  
+[DFS_INFO_7](http://msdn2.microsoft.com/en-us/library/03bcd93d-e3ec-49aa-be6c-399922f67c28) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_7  
+[DFS_INFO_8](http://msdn2.microsoft.com/en-us/library/d1f1051e-fe4d-4771-9665-85d6f718b081) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_8  
+[DFS_INFO_9](http://msdn2.microsoft.com/en-us/library/d09ebaa7-4ec7-4d25-8b77-fe568264e6b9) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_INFO_9  
+[DFS_STORAGE_INFO](http://msdn2.microsoft.com/en-us/library/f50f32d8-1745-4ff6-97a6-ddd6fff95955) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_STORAGE_INFO  
+[DFS_STORAGE_INFO_1](http://msdn2.microsoft.com/en-us/library/777b9688-9e34-48dd-bc8c-df17bef396d0) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_STORAGE_INFO_1  
+[DFS_SUPPORTED_NAMESPACE_VERSION_INFO](http://msdn2.microsoft.com/en-us/library/ee75c500-70c6-4dce-9d38-36cacd695746) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_SUPPORTED_NAMESPACE_VERSION_INFO  
+[DFS_TARGET_PRIORITY](http://msdn2.microsoft.com/en-us/library/b8f645ab-e3b4-4e0f-809a-57e27ab1e641) | lmdfs.h | Vanara.PInvoke.NetApi32+DFS_TARGET_PRIORITY  
 [DOMAIN_CONTROLLER_INFO](http://msdn2.microsoft.com/en-us/library/ms675912) | DsGetDC.h | Vanara.PInvoke.NetApi32+DOMAIN_CONTROLLER_INFO  
 [DS_DOMAIN_TRUSTS](http://msdn2.microsoft.com/en-us/library/cd260fd1-dc38-4405-95ba-097a23faf668) | dsgetdc.h | Vanara.PInvoke.NetApi32+DS_DOMAIN_TRUSTS  
 [DSREG_USER_INFO](http://msdn2.microsoft.com/en-us/library/5E639988-0F53-40D7-BBEC-F78B3D124CC0) | lmjoin.h | Vanara.PInvoke.NetApi32+DSREG_USER_INFO  
