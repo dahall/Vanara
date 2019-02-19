@@ -104,6 +104,11 @@ namespace Vanara.PInvoke
 		/// <returns>The result of the conversion.</returns>
 		public static implicit operator HANDLE(IntPtr h) => new HANDLE(h);
 
+		/// <summary>Performs an implicit conversion from <see cref="SafeHANDLE"/> to <see cref="HANDLE"/>.</summary>
+		/// <param name="h">The h.</param>
+		/// <returns>The result of the conversion.</returns>
+		public static implicit operator HANDLE(SafeHANDLE h) => new HANDLE(h.DangerousGetHandle());
+
 		/// <summary>Implements the operator !=.</summary>
 		/// <param name="h1">The first handle.</param>
 		/// <param name="h2">The second handle.</param>
@@ -1959,7 +1964,7 @@ namespace Vanara.PInvoke
 		/// <param name="h1">The first handle.</param>
 		/// <param name="h2">The second handle.</param>
 		/// <returns>The result of the operator.</returns>
-		public static bool operator ==(SafeHANDLE h1, SafeHANDLE h2) => h1 is null || h2 is null ? false : h1.Equals(h2);
+		public static bool operator ==(SafeHANDLE h1, SafeHANDLE h2) => h1?.Equals(h2) ?? h2 is null;
 
 		/// <summary>Determines whether the specified <see cref="SafeHANDLE"/>, is equal to this instance.</summary>
 		/// <param name="other">The <see cref="SafeHANDLE"/> to compare with this instance.</param>
