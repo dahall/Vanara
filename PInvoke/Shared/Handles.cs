@@ -629,7 +629,7 @@ namespace Vanara.PInvoke
 	public struct HFILE : IKernelHandle
 	{
 		/// <summary>Represents an invalid handle.</summary>
-		public static readonly IntPtr INVALID_HANDLE_VALUE = new IntPtr(-1);
+		public static readonly HFILE INVALID_HANDLE_VALUE = new IntPtr(-1);
 
 		private IntPtr handle;
 
