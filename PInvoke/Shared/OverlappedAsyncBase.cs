@@ -69,9 +69,7 @@ namespace Vanara.PInvoke
 		/// <returns>An <see cref="OverlappedAsyncResult"/> instance for the asynchronous calls.</returns>
 		public static unsafe OverlappedAsyncResult SetupOverlappedFunction(HFILE hDevice, AsyncCallback userCallback, object userState)
 		{
-#pragma warning disable CS0618 // Type or member is obsolete
-			ThreadPool.BindHandle((IntPtr)hDevice);
-#pragma warning restore CS0618 // Type or member is obsolete
+			try { ThreadPool.BindHandle(new Microsoft.Win32.SafeHandles.SafeFileHandle((IntPtr)hDevice, false)); } catch { }
 			var ar = new OverlappedAsyncResult(userState, userCallback, hDevice);
 			var o = new Overlapped(0, 0, IntPtr.Zero, ar);
 			ar.Overlapped = o.Pack((code, bytes, pOverlapped) =>
