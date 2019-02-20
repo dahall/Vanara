@@ -41,6 +41,8 @@ I have tried to follow the concepts below in laying out the libraries.
 
 Library/DLL | Assembly | Coverage | NuGet&nbsp;Link
 --- | --- | --- | ---
+*Core* (see Supporting Assemblies) | [Vanara.Core](https://github.com/dahall/Vanara/blob/master/Core/AssemblyReport.md) | ![Coverage](https://img.shields.io/badge/100%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.Core)](https://www.nuget.org/packages/Vanara.Core)
+*Shared* (see Supporting Assemblies) | [Vanara.PInvoke.Shared](https://github.com/dahall/Vanara/blob/master/PInvoke/Shared/AssemblyReport.md) | ![Coverage](https://img.shields.io/badge/100%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.Shared)](https://www.nuget.org/packages/Vanara.PInvoke.Shared)
 AclUI.dll | [Vanara.PInvoke.AclUI](https://github.com/dahall/Vanara/blob/master/PInvoke/AclUI/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/100%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.AclUI)](https://www.nuget.org/packages/Vanara.PInvoke.AclUI)
 qmgr.dll (BITS) | [Vanara.PInvoke.BITS](https://github.com/dahall/Vanara/blob/master/PInvoke/BITS/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/100%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.BITS)](https://www.nuget.org/packages/Vanara.PInvoke.BITS)
 ComCtl32.dll | [Vanara.PInvoke.ComCtl32](https://github.com/dahall/Vanara/blob/master/PInvoke/ComCtl32/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/100%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.ComCtl32)](https://www.nuget.org/packages/Vanara.PInvoke.ComCtl32)
@@ -69,8 +71,8 @@ Ws2_32.dll | [Vanara.PInvoke.Ws2_32](https://github.com/dahall/Vanara/blob/maste
 
 ## Supporting Assemblies
 
-Assembly | NuGet&nbsp;Link | Description
---- | -------------------- | --- 
+Assembly | &nbsp;&nbsp;&nbsp;NuGet&nbsp;Link&nbsp;&nbsp;&nbsp; | Description
+--- | --- | --- 
 [Vanara.Core](https://github.com/dahall/Vanara/blob/master/Core/AssemblyReport.md) | [![NuGet](https://buildstats.info/nuget/Vanara.Core)](https://www.nuget.org/packages/Vanara.Core) | Shared methods, structures and constants for use throughout the Vanara assemblies. Think of it as windows.h with some useful extensions.
 [Vanara.PInvoke.Shared](https://github.com/dahall/Vanara/blob/master/PInvoke/Shared/AssemblyReport.md) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.Shared)](https://www.nuget.org/packages/Vanara.PInvoke.Shared) | Shared methods, structures and constants for use throughout the Vanara.PInvoke assemblies.
 [Vanara.Security](https://github.com/dahall/Vanara/blob/master/Security/AssemblyReport.md) | [![NuGet](https://buildstats.info/nuget/Vanara.Security)](https://www.nuget.org/packages/Vanara.Security) | Classes for Windows Security that are missing or incomplete in .NET. Includes claims, privileges, impersonation, Active Directory, and UAC. 
