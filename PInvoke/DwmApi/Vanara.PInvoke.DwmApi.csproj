@@ -4,7 +4,7 @@
     <Description>Methods, structures and constants imported from DwmApi.dll.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>2.2.1</VersionPrefix>
+    <VersionPrefix>2.3.0</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.DwmApi</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
