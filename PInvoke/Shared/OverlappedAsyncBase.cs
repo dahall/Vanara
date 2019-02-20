@@ -9,6 +9,8 @@ namespace Vanara.PInvoke
 	/// <summary>Helper methods to work with asynchronous methods using <see cref="NativeOverlapped"/>.</summary>
 	public static class OverlappedAsync
 	{
+		public static System.Collections.Generic.HashSet<HFILE> boundHandles = new System.Collections.Generic.HashSet<HFILE>();
+
 		/// <summary>Cleans up at the end of the <see cref="Overlapped.Pack(IOCompletionCallback, object)"/> callback method.</summary>
 		/// <param name="asyncResult">The asynchronous result.</param>
 		/// <returns>The object passed into the <see cref="Overlapped.Pack(IOCompletionCallback, object)"/> method.</returns>
@@ -69,7 +71,7 @@ namespace Vanara.PInvoke
 		/// <returns>An <see cref="OverlappedAsyncResult"/> instance for the asynchronous calls.</returns>
 		public static unsafe OverlappedAsyncResult SetupOverlappedFunction(HFILE hDevice, AsyncCallback userCallback, object userState)
 		{
-			try { ThreadPool.BindHandle(new Microsoft.Win32.SafeHandles.SafeFileHandle((IntPtr)hDevice, false)); } catch { }
+			BindHandle(hDevice);
 			var ar = new OverlappedAsyncResult(userState, userCallback, hDevice);
 			var o = new Overlapped(0, 0, IntPtr.Zero, ar);
 			ar.Overlapped = o.Pack((code, bytes, pOverlapped) =>
@@ -81,6 +83,12 @@ namespace Vanara.PInvoke
 				asyncResult.Complete(true, (int)code);
 			}, userState);
 			return ar;
+		}
+
+		private static void BindHandle(HFILE hDevice)
+		{
+			if (boundHandles.Add(hDevice))
+				ThreadPool.BindHandle(new Microsoft.Win32.SafeHandles.SafeFileHandle((IntPtr)hDevice, false));
 		}
 
 		/// <summary>Holds all pertinent information for handling results and errors in an overlapped set of method calls.</summary>
