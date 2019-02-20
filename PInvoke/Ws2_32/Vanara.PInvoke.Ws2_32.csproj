@@ -24,8 +24,11 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PackageReleaseNotes>Currently implements:
 
+Functions
+bind, closesocket, inet_ntoa, listen, socket, WSAAccept, WSAAddressToStringA, WSAAddressToStringW, WSACleanup, WSAStartup
+
 Structures
-IN_ADDR, IN6_ADDR, SOCKADDR_IN, SOCKADDR_IN6, SOCKADDR_IN6_PAIR, SOCKADDR_INET, SOCKET_ADDRESS
+FLOWSPEC, IN_ADDR, IN6_ADDR, QOS, SOCKADDR_IN, SOCKADDR_IN6, SOCKADDR_IN6_PAIR, SOCKADDR_INET, SOCKET, SOCKET_ADDRESS, WSABUF, WSADATA, WSAPROTOCOL_INFO, WSAPROTOCOLCHAIN
 
 </PackageReleaseNotes>
     <LangVersion>latest</LangVersion>

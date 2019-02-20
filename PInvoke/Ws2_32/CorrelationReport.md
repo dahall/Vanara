@@ -1,11 +1,11 @@
 ## Correlation report for Ws2_32.dll  
-### Methods (0% complete)  
+### Methods (5% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [__WSAFDIsSet](https://www.google.com/search?num=5&q=__WSAFDIsSet+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [accept](https://www.google.com/search?num=5&q=accept+site%3Amicrosoft.com) | Ws2_32.dll |  |   
-[bind](https://www.google.com/search?num=5&q=bind+site%3Amicrosoft.com) | Ws2_32.dll |  |   
-[closesocket](https://www.google.com/search?num=5&q=closesocket+site%3Amicrosoft.com) | Ws2_32.dll |  |   
+[bind](http://msdn2.microsoft.com/en-us/library/3a651daa-7404-4ef7-8cff-0d3dff41a8e8) | Ws2_32.dll | winsock.h | Vanara.PInvoke.Ws2_32.bind  
+[closesocket](http://msdn2.microsoft.com/en-us/library/2f357aa8-389b-4c92-8a9f-289e048cc41c) | Ws2_32.dll | winsock.h | Vanara.PInvoke.Ws2_32.closesocket  
 [connect](https://www.google.com/search?num=5&q=connect+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [freeaddrinfo](https://www.google.com/search?num=5&q=freeaddrinfo+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [FreeAddrInfoEx](https://www.google.com/search?num=5&q=FreeAddrInfoEx+site%3Amicrosoft.com) | Ws2_32.dll |  |   
@@ -31,13 +31,13 @@ Native Method | Native DLL | Header | Managed Method
 [htonl](https://www.google.com/search?num=5&q=htonl+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [htons](https://www.google.com/search?num=5&q=htons+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [inet_addr](https://www.google.com/search?num=5&q=inet_addr+site%3Amicrosoft.com) | Ws2_32.dll |  |   
-[inet_ntoa](https://www.google.com/search?num=5&q=inet_ntoa+site%3Amicrosoft.com) | Ws2_32.dll |  |   
+[inet_ntoa](http://msdn2.microsoft.com/en-us/library/01cd32e7-a01d-40e8-afb5-69223d643a0e) | Ws2_32.dll | wsipv6ok.h | Vanara.PInvoke.Ws2_32.inet_ntoa  
 [inet_ntop](https://www.google.com/search?num=5&q=inet_ntop+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [inet_pton](https://www.google.com/search?num=5&q=inet_pton+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [InetNtopW](https://www.google.com/search?num=5&q=InetNtopW+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [InetPtonW](https://www.google.com/search?num=5&q=InetPtonW+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [ioctlsocket](https://www.google.com/search?num=5&q=ioctlsocket+site%3Amicrosoft.com) | Ws2_32.dll |  |   
-[listen](https://www.google.com/search?num=5&q=listen+site%3Amicrosoft.com) | Ws2_32.dll |  |   
+[listen](http://msdn2.microsoft.com/en-us/library/1233feeb-a8c1-49ac-ab34-82af224ecf00) | Ws2_32.dll | winsock2.h | Vanara.PInvoke.Ws2_32.listen  
 [ntohl](https://www.google.com/search?num=5&q=ntohl+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [ntohs](https://www.google.com/search?num=5&q=ntohs+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [recv](https://www.google.com/search?num=5&q=recv+site%3Amicrosoft.com) | Ws2_32.dll |  |   
@@ -48,7 +48,7 @@ Native Method | Native DLL | Header | Managed Method
 [SetAddrInfoEx](https://www.google.com/search?num=5&q=SetAddrInfoExA+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [setsockopt](https://www.google.com/search?num=5&q=setsockopt+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [shutdown](https://www.google.com/search?num=5&q=shutdown+site%3Amicrosoft.com) | Ws2_32.dll |  |   
-[socket](https://www.google.com/search?num=5&q=socket+site%3Amicrosoft.com) | Ws2_32.dll |  |   
+[socket](http://msdn2.microsoft.com/en-us/library/6bf6e6c4-6268-479c-86a6-52e90cf317db) | Ws2_32.dll | winsock2.h | Vanara.PInvoke.Ws2_32.socket  
 [WahCloseApcHelper](https://www.google.com/search?num=5&q=WahCloseApcHelper+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [WahCloseHandleHelper](https://www.google.com/search?num=5&q=WahCloseHandleHelper+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [WahCloseNotificationHandleHelper](https://www.google.com/search?num=5&q=WahCloseNotificationHandleHelper+site%3Amicrosoft.com) | Ws2_32.dll |  |   
@@ -76,8 +76,8 @@ Native Method | Native DLL | Header | Managed Method
 [WEP](https://www.google.com/search?num=5&q=WEP+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [WPUCompleteOverlappedRequest](https://www.google.com/search?num=5&q=WPUCompleteOverlappedRequest+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [WPUGetProviderPathEx](https://www.google.com/search?num=5&q=WPUGetProviderPathEx+site%3Amicrosoft.com) | Ws2_32.dll |  |   
-[WSAAccept](https://www.google.com/search?num=5&q=WSAAccept+site%3Amicrosoft.com) | Ws2_32.dll |  |   
-[WSAAddressToString](https://www.google.com/search?num=5&q=WSAAddressToStringA+site%3Amicrosoft.com) | Ws2_32.dll |  |   
+[WSAAccept](http://msdn2.microsoft.com/en-us/library/f385f63f-49b2-4eb7-8717-ad4cca1a2252) | Ws2_32.dll | winsock2.h | Vanara.PInvoke.Ws2_32.WSAAccept  
+[WSAAddressToString](http://msdn2.microsoft.com/en-us/library/d72e55e6-79a9-4386-9e1a-24a322f13426) | Ws2_32.dll | winsock2.h | Vanara.PInvoke.Ws2_32.WSAAddressToString  
 [WSAAdvertiseProvider](https://www.google.com/search?num=5&q=WSAAdvertiseProvider+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [WSAAsyncGetHostByAddr](https://www.google.com/search?num=5&q=WSAAsyncGetHostByAddr+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [WSAAsyncGetHostByName](https://www.google.com/search?num=5&q=WSAAsyncGetHostByName+site%3Amicrosoft.com) | Ws2_32.dll |  |   
@@ -88,7 +88,7 @@ Native Method | Native DLL | Header | Managed Method
 [WSAAsyncSelect](https://www.google.com/search?num=5&q=WSAAsyncSelect+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [WSACancelAsyncRequest](https://www.google.com/search?num=5&q=WSACancelAsyncRequest+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [WSACancelBlockingCall](https://www.google.com/search?num=5&q=WSACancelBlockingCall+site%3Amicrosoft.com) | Ws2_32.dll |  |   
-[WSACleanup](https://www.google.com/search?num=5&q=WSACleanup+site%3Amicrosoft.com) | Ws2_32.dll |  |   
+[WSACleanup](http://msdn2.microsoft.com/en-us/library/72b7cc3e-be34-41e7-acbf-61742149ec8b) | Ws2_32.dll | winsock.h | Vanara.PInvoke.Ws2_32.WSACleanup  
 [WSACloseEvent](https://www.google.com/search?num=5&q=WSACloseEvent+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [WSAConnect](https://www.google.com/search?num=5&q=WSAConnect+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [WSAConnectByList](https://www.google.com/search?num=5&q=WSAConnectByList+site%3Amicrosoft.com) | Ws2_32.dll |  |   
@@ -135,7 +135,7 @@ Native Method | Native DLL | Header | Managed Method
 [WSASetLastError](https://www.google.com/search?num=5&q=WSASetLastError+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [WSASetService](https://www.google.com/search?num=5&q=WSASetServiceA+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [WSASocket](https://www.google.com/search?num=5&q=WSASocketA+site%3Amicrosoft.com) | Ws2_32.dll |  |   
-[WSAStartup](https://www.google.com/search?num=5&q=WSAStartup+site%3Amicrosoft.com) | Ws2_32.dll |  |   
+[WSAStartup](http://msdn2.microsoft.com/en-us/library/08299592-867c-491d-9769-d16602133659) | Ws2_32.dll | winsock.h | Vanara.PInvoke.Ws2_32.WSAStartup  
 [WSAStringToAddress](https://www.google.com/search?num=5&q=WSAStringToAddressA+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [WSAUnadvertiseProvider](https://www.google.com/search?num=5&q=WSAUnadvertiseProvider+site%3Amicrosoft.com) | Ws2_32.dll |  |   
 [WSAUnhookBlockingHook](https://www.google.com/search?num=5&q=WSAUnhookBlockingHook+site%3Amicrosoft.com) | Ws2_32.dll |  |   
@@ -183,10 +183,17 @@ Native Method | Native DLL | Header | Managed Method
 ### Structures  
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
+[FLOWSPEC](http://msdn2.microsoft.com/en-us/library/268e0d3a-2b04-40fd-91eb-f1780236b3e4) | qos.h | Vanara.PInvoke.Ws2_32+FLOWSPEC  
 [IN_ADDR](https://www.google.com/search?num=5&q=IN_ADDR+site%3Amicrosoft.com) | winsock2.h | Vanara.PInvoke.Ws2_32+IN_ADDR  
 [IN6_ADDR](https://www.google.com/search?num=5&q=IN6_ADDR+site%3Amicrosoft.com) | winsock2.h | Vanara.PInvoke.Ws2_32+IN6_ADDR  
+[QOS](http://msdn2.microsoft.com/en-us/library/859faa13-bd66-46ee-8452-6ff5d53d66c9) | winsock2.h | Vanara.PInvoke.Ws2_32+QOS  
 [SOCKADDR_IN](https://www.google.com/search?num=5&q=SOCKADDR_IN+site%3Amicrosoft.com) | winsock2.h | Vanara.PInvoke.Ws2_32+SOCKADDR_IN  
 [SOCKADDR_IN6](https://www.google.com/search?num=5&q=SOCKADDR_IN6+site%3Amicrosoft.com) | winsock2.h | Vanara.PInvoke.Ws2_32+SOCKADDR_IN6  
 [SOCKADDR_IN6_PAIR](http://msdn2.microsoft.com/en-us/library/0265f8e0-8b35-4d9d-bf22-e98e9ff36a17) | ws2ipdef.h | Vanara.PInvoke.Ws2_32+SOCKADDR_IN6_PAIR  
 [SOCKADDR_INET](https://www.google.com/search?num=5&q=SOCKADDR_INET+site%3Amicrosoft.com) | winsock2.h | Vanara.PInvoke.Ws2_32+SOCKADDR_INET  
+[SOCKET](https://www.google.com/search?num=5&q=SOCKET+site%3Amicrosoft.com) | winsock2.h | Vanara.PInvoke.Ws2_32+SOCKET  
 [SOCKET_ADDRESS](https://www.google.com/search?num=5&q=SOCKET_ADDRESS+site%3Amicrosoft.com) | winsock2.h | Vanara.PInvoke.Ws2_32+SOCKET_ADDRESS  
+[WSABUF](http://msdn2.microsoft.com/en-us/library/a012c3ba-67fd-4fcf-84d1-85e9d495c29c) | ws2def.h | Vanara.PInvoke.Ws2_32+WSABUF  
+[WSADATA](http://msdn2.microsoft.com/en-us/library/c3c4c0d6-c8b3-4991-bedb-f45816cc8160) | winsock.h | Vanara.PInvoke.Ws2_32+WSADATA  
+[WSAPROTOCOL_INFO](http://msdn2.microsoft.com/en-us/library/758c5553-056f-4ea5-a851-30ef641ffb14) | winsock2.h | Vanara.PInvoke.Ws2_32+WSAPROTOCOL_INFO  
+[WSAPROTOCOLCHAIN](http://msdn2.microsoft.com/en-us/library/c0676f45-e3e3-45f2-9b34-d7318fddc282) | winsock2.h | Vanara.PInvoke.Ws2_32+WSAPROTOCOLCHAIN  

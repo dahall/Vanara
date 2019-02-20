@@ -94,5 +94,8 @@
 
 		/// <summary>The win inet</summary>
 		public const string WinInet = "wininet.dll";
+
+		/// <summary>The Winsock2 dll</summary>
+		public const string Ws2_32 = "ws2_32.dll";
 	}
 }
