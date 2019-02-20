@@ -773,6 +773,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Undocumented.</summary>
+		[PInvokeData("lmuse.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct USE_INFO_4
 		{
@@ -787,6 +788,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>Undocumented.</summary>
+		[PInvokeData("lmuse.h")]
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct USE_INFO_5
 		{

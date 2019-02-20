@@ -731,7 +731,7 @@ namespace Vanara.PInvoke
 		// NetDfsGetClientInfo( LPWSTR DfsEntryPath, LPWSTR ServerName, LPWSTR ShareName, DWORD Level, LPBYTE *Buffer );
 		[DllImport(Lib.NetApi32, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("lmdfs.h", MSDNShortId = "065ec002-cb90-4d78-a70c-6ac37f71994f")]
-		public static extern Win32Error NetDfsGetClientInfo(string DfsEntryPath, [Optional] string ServerName, [Optional] StringBuilder ShareName, uint Level, out SafeNetApiBuffer Buffer);
+		public static extern Win32Error NetDfsGetClientInfo(string DfsEntryPath, [Optional] string ServerName, [Optional] string ShareName, uint Level, out SafeNetApiBuffer Buffer);
 
 		/// <summary>
 		/// Retrieves the security descriptor of the container object for the domain-based DFS namespaces in the specified Active Directory domain.
@@ -2081,7 +2081,7 @@ namespace Vanara.PInvoke
 			/// A self-relative security descriptor to be associated with a DFS link.For more information on security descriptors, see[MS -
 			/// DTYP] section 2.4.6.
 			/// </summary>
-			public IntPtr pSecurityDescriptor;
+			public PSECURITY_DESCRIPTOR pSecurityDescriptor;
 		}
 
 		/// <summary>
@@ -2102,7 +2102,7 @@ namespace Vanara.PInvoke
 			/// A self-relative security descriptor to be associated with a DFS link.For more information on security descriptors, see[MS -
 			/// DTYP] section 2.4.6.
 			/// </summary>
-			public IntPtr pSecurityDescriptor;
+			public PSECURITY_DESCRIPTOR pSecurityDescriptor;
 		}
 
 		/// <summary>
@@ -2854,7 +2854,7 @@ namespace Vanara.PInvoke
 			/// A self-relative security descriptor to be associated with a DFS link.For more information on security descriptors, see[MS -
 			/// DTYP] section 2.4.6.
 			/// </summary>
-			public IntPtr pSecurityDescriptor;
+			public PSECURITY_DESCRIPTOR pSecurityDescriptor;
 
 			/// <summary>Specifies the number of storage servers for the volume that contains the DFS root or link.</summary>
 			public uint NumberOfStorages;
@@ -3007,7 +3007,7 @@ namespace Vanara.PInvoke
 			/// A self-relative security descriptor to be associated with a DFS link.For more information on security descriptors, see[MS -
 			/// DTYP] section 2.4.6.
 			/// </summary>
-			public IntPtr pSecurityDescriptor;
+			public PSECURITY_DESCRIPTOR pSecurityDescriptor;
 
 			/// <summary>Specifies the number of storage servers for the volume that contains the DFS root or link.</summary>
 			public uint NumberOfStorages;

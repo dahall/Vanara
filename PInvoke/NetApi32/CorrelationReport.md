@@ -1,5 +1,5 @@
 ## Correlation report for netapi32.dll  
-### Methods (71% complete)  
+### Methods (100% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [DavAddConnection](http://msdn2.microsoft.com/en-us/library/d69cba04-503c-4d21-b762-3094c0921e28) | netapi32.dll | davclnt.h | Vanara.PInvoke.NetApi32.DavAddConnection  
@@ -29,7 +29,7 @@ Native Method | Native DLL | Header | Managed Method
 [DsRoleGetPrimaryDomainInformation](http://msdn2.microsoft.com/en-us/library/d54876e3-a622-4b44-a597-db0f710f7758) | netapi32.dll | dsrole.h | Vanara.PInvoke.NetApi32.DsRoleGetPrimaryDomainInformation  
 [DsValidateSubnetName](http://msdn2.microsoft.com/en-us/library/bed49e08-4cb7-439c-bfb7-815263ec7568) | netapi32.dll | dsgetdc.h | Vanara.PInvoke.NetApi32.DsValidateSubnetName  
 [NetAddAlternateComputerName](http://msdn2.microsoft.com/en-us/library/710865c6-e327-439c-931d-de8674d69233) | netapi32.dll | lmjoin.h | Vanara.PInvoke.NetApi32.NetAddAlternateComputerName  
-[NetAddServiceAccount](https://www.google.com/search?num=5&q=NetAddServiceAccount+site%3Amicrosoft.com) | netapi32.dll |  |   
+[NetAddServiceAccount](http://msdn2.microsoft.com/en-us/library/004bd392-8837-4d98-905a-cd19ed02817d) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetAddServiceAccount  
 [NetAlertRaise](http://msdn2.microsoft.com/en-us/library/11367a72-c21d-4044-98cf-a7a30cc43a8b) | netapi32.dll | lmalert.h | Vanara.PInvoke.NetApi32.NetAlertRaise  
 [NetAlertRaiseEx](http://msdn2.microsoft.com/en-us/library/9762f0d6-0022-4e05-b2d8-6223d7bbb2c8) | netapi32.dll | lmalert.h | Vanara.PInvoke.NetApi32.NetAlertRaiseEx  
 [NetApiBufferAllocate](http://msdn2.microsoft.com/en-us/library/9ff1e3eb-9417-469f-a8c0-cdcda3cd9583) | netapi32.dll | lmapibuf.h | Vanara.PInvoke.NetApi32.NetApiBufferAllocate  
@@ -42,7 +42,7 @@ Native Method | Native DLL | Header | Managed Method
 [NetDfsAddFtRoot](http://msdn2.microsoft.com/en-us/library/df3192f8-f8fc-40ad-a5ff-fb991befff09) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsAddFtRoot  
 [NetDfsAddRootTarget](http://msdn2.microsoft.com/en-us/library/c4ce8f50-f090-4783-b6c9-834d9e0c33de) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsAddRootTarget  
 [NetDfsAddStdRoot](http://msdn2.microsoft.com/en-us/library/e59236ac-06d7-4b2f-b318-ec13e6c662ac) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsAddStdRoot  
-[NetDfsAddStdRootForced](https://www.google.com/search?num=5&q=NetDfsAddStdRootForced+site%3Amicrosoft.com) | netapi32.dll |  |   
+[NetDfsAddStdRootForced](https://www.google.com/search?num=5&q=NetDfsAddStdRootForced+site%3Amicrosoft.com) | netapi32.dll | LmDfs.h | Vanara.PInvoke.NetApi32.NetDfsAddStdRootForced  
 [NetDfsEnum](http://msdn2.microsoft.com/en-us/library/c05a8d78-41f4-4c19-a25e-ef4885869584) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsEnum  
 [NetDfsGetClientInfo](http://msdn2.microsoft.com/en-us/library/065ec002-cb90-4d78-a70c-6ac37f71994f) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsGetClientInfo  
 [NetDfsGetFtContainerSecurity](http://msdn2.microsoft.com/en-us/library/88e988db-1418-49d5-8cac-1ea6144474a5) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsGetFtContainerSecurity  
@@ -62,46 +62,46 @@ Native Method | Native DLL | Header | Managed Method
 [NetDfsSetSecurity](http://msdn2.microsoft.com/en-us/library/7ee81f67-face-498f-b5bd-ca2636408012) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsSetSecurity  
 [NetDfsSetStdContainerSecurity](http://msdn2.microsoft.com/en-us/library/BC408A12-5106-45A0-BBED-0468D51708BC) | netapi32.dll | lmdfs.h | Vanara.PInvoke.NetApi32.NetDfsSetStdContainerSecurity  
 [NetEnumerateComputerNames](http://msdn2.microsoft.com/en-us/library/c657ae33-404e-4c36-a956-5fbcfa540be7) | netapi32.dll | lmjoin.h | Vanara.PInvoke.NetApi32.NetEnumerateComputerNames  
-[NetEnumerateServiceAccounts](https://www.google.com/search?num=5&q=NetEnumerateServiceAccounts+site%3Amicrosoft.com) | netapi32.dll |  |   
+[NetEnumerateServiceAccounts](http://msdn2.microsoft.com/en-us/library/048116b6-1bae-4dcc-9bd0-a466c395e5d8) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetEnumerateServiceAccounts  
 [NetFileClose](http://msdn2.microsoft.com/en-us/library/36a5f464-fec3-4b4f-91c3-447ff5ff70af) | netapi32.dll | lmshare.h | Vanara.PInvoke.NetApi32.NetFileClose  
 [NetFileEnum](http://msdn2.microsoft.com/en-us/library/1375b337-efb0-4be1-94f7-473456a825b5) | netapi32.dll | lmshare.h | Vanara.PInvoke.NetApi32.NetFileEnum  
 [NetFileGetInfo](http://msdn2.microsoft.com/en-us/library/d50c05e7-7ddd-4a7d-96f6-51878e52373c) | netapi32.dll | lmshare.h | Vanara.PInvoke.NetApi32.NetFileGetInfo  
 [NetFreeAadJoinInformation](http://msdn2.microsoft.com/en-us/library/BDFB6179-4B8C-43E3-8D34-A2B470EA0D0B) | netapi32.dll | lmjoin.h | Vanara.PInvoke.NetApi32.NetFreeAadJoinInformation  
 [NetGetAadJoinInformation](http://msdn2.microsoft.com/en-us/library/C63B3AA7-FC7E-4CB9-9318-BD25560591AB) | netapi32.dll | lmjoin.h | Vanara.PInvoke.NetApi32.NetGetAadJoinInformation  
-[NetGetAnyDCName](https://www.google.com/search?num=5&q=NetGetAnyDCName+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetGetDCName](https://www.google.com/search?num=5&q=NetGetDCName+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetGetDisplayInformationIndex](https://www.google.com/search?num=5&q=NetGetDisplayInformationIndex+site%3Amicrosoft.com) | netapi32.dll |  |   
+[NetGetAnyDCName](http://msdn2.microsoft.com/en-us/library/64dacbf4-46c2-4f82-b250-b7d338535e7c) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetGetAnyDCName  
+[NetGetDCName](http://msdn2.microsoft.com/en-us/library/3e32aacc-088e-455a-bc1b-92274e98d2e5) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetGetDCName  
+[NetGetDisplayInformationIndex](http://msdn2.microsoft.com/en-us/library/aa370421) | netapi32.dll | Lmaccess.h | Vanara.PInvoke.NetApi32.NetGetDisplayInformationIndex  
 [NetGetJoinableOUs](http://msdn2.microsoft.com/en-us/library/1faa912b-c56d-431c-95d5-d36790b0d467) | netapi32.dll | lmjoin.h | Vanara.PInvoke.NetApi32.NetGetJoinableOUs  
 [NetGetJoinInformation](http://msdn2.microsoft.com/en-us/library/c7cc1cf2-4530-4039-806b-fbee572f564d) | netapi32.dll | lmjoin.h | Vanara.PInvoke.NetApi32.NetGetJoinInformation  
-[NetGroupAdd](https://www.google.com/search?num=5&q=NetGroupAdd+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetGroupAddUser](https://www.google.com/search?num=5&q=NetGroupAddUser+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetGroupDel](https://www.google.com/search?num=5&q=NetGroupDel+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetGroupDelUser](https://www.google.com/search?num=5&q=NetGroupDelUser+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetGroupEnum](https://www.google.com/search?num=5&q=NetGroupEnum+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetGroupGetInfo](https://www.google.com/search?num=5&q=NetGroupGetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetGroupGetUsers](https://www.google.com/search?num=5&q=NetGroupGetUsers+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetGroupSetInfo](https://www.google.com/search?num=5&q=NetGroupSetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetGroupSetUsers](https://www.google.com/search?num=5&q=NetGroupSetUsers+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetIsServiceAccount](https://www.google.com/search?num=5&q=NetIsServiceAccount+site%3Amicrosoft.com) | netapi32.dll |  |   
+[NetGroupAdd](http://msdn2.microsoft.com/en-us/library/fbf90758-79fd-4959-b6d0-ad3872e77242) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetGroupAdd  
+[NetGroupAddUser](http://msdn2.microsoft.com/en-us/library/a2eefde8-29e3-4fa1-87db-c7f6d24b699d) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetGroupAddUser  
+[NetGroupDel](http://msdn2.microsoft.com/en-us/library/e637d1af-c900-4c91-a771-1428f9cfac8b) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetGroupDel  
+[NetGroupDelUser](http://msdn2.microsoft.com/en-us/library/ab8ce12a-60c0-4d79-8894-4537c6568e15) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetGroupDelUser  
+[NetGroupEnum](http://msdn2.microsoft.com/en-us/library/3f8fabce-94cb-41f5-9af1-04585ac3f16e) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetGroupEnum  
+[NetGroupGetInfo](http://msdn2.microsoft.com/en-us/library/f9957c15-9a49-4b53-ae31-efd6a03417a6) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetGroupGetInfo  
+[NetGroupGetUsers](http://msdn2.microsoft.com/en-us/library/a9bcb806-f44c-4db2-9644-06687b31405d) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetGroupGetUsers  
+[NetGroupSetInfo](http://msdn2.microsoft.com/en-us/library/8c235f9a-095e-4108-9b93-008ffe9bc776) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetGroupSetInfo  
+[NetGroupSetUsers](http://msdn2.microsoft.com/en-us/library/4221f5c8-a71c-4368-9be4-9562063b6cfd) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetGroupSetUsers  
+[NetIsServiceAccount](http://msdn2.microsoft.com/en-us/library/975e7c0d-d803-4d78-99ed-d07369341674) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetIsServiceAccount  
 [NetJoinDomain](http://msdn2.microsoft.com/en-us/library/4efcb399-03af-4312-9f1d-6bc38f356cac) | netapi32.dll | lmjoin.h | Vanara.PInvoke.NetApi32.NetJoinDomain  
-[NetLocalGroupAdd](https://www.google.com/search?num=5&q=NetLocalGroupAdd+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetLocalGroupAddMember](https://www.google.com/search?num=5&q=NetLocalGroupAddMember+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetLocalGroupAddMembers](https://www.google.com/search?num=5&q=NetLocalGroupAddMembers+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetLocalGroupDel](https://www.google.com/search?num=5&q=NetLocalGroupDel+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetLocalGroupDelMember](https://www.google.com/search?num=5&q=NetLocalGroupDelMember+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetLocalGroupDelMembers](https://www.google.com/search?num=5&q=NetLocalGroupDelMembers+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetLocalGroupEnum](https://www.google.com/search?num=5&q=NetLocalGroupEnum+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetLocalGroupGetInfo](https://www.google.com/search?num=5&q=NetLocalGroupGetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetLocalGroupGetMembers](https://www.google.com/search?num=5&q=NetLocalGroupGetMembers+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetLocalGroupSetInfo](https://www.google.com/search?num=5&q=NetLocalGroupSetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetLocalGroupSetMembers](https://www.google.com/search?num=5&q=NetLocalGroupSetMembers+site%3Amicrosoft.com) | netapi32.dll |  |   
+[NetLocalGroupAdd](http://msdn2.microsoft.com/en-us/library/5028c1bc-8fed-4f02-8e69-d0d122b08d9f) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetLocalGroupAdd  
+[NetLocalGroupAddMember](http://msdn2.microsoft.com/en-us/library/df249dfd-2509-4e67-af4d-b152b95d0eae) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetLocalGroupAddMember  
+[NetLocalGroupAddMembers](http://msdn2.microsoft.com/en-us/library/3b2d3e4a-742e-4e67-8b28-3cd6d7e6a857) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetLocalGroupAddMembers  
+[NetLocalGroupDel](http://msdn2.microsoft.com/en-us/library/b26bfd52-c20a-4f6f-9503-87cac5168362) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetLocalGroupDel  
+[NetLocalGroupDelMember](http://msdn2.microsoft.com/en-us/library/4a231da6-904e-4b49-9855-03e004a0b695) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetLocalGroupDelMember  
+[NetLocalGroupDelMembers](http://msdn2.microsoft.com/en-us/library/85ae796b-c94a-46a8-9fa8-6c612db38671) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetLocalGroupDelMembers  
+[NetLocalGroupEnum](http://msdn2.microsoft.com/en-us/library/fc27d7f1-bfbe-46d7-a154-f04eb9249248) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetLocalGroupEnum  
+[NetLocalGroupGetInfo](http://msdn2.microsoft.com/en-us/library/ee2f0be9-8d52-439b-ab65-f9e11a2872c5) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetLocalGroupGetInfo  
+[NetLocalGroupGetMembers](http://msdn2.microsoft.com/en-us/library/35770b32-dae9-46f5-84e3-1c31ca22f708) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetLocalGroupGetMembers  
+[NetLocalGroupSetInfo](http://msdn2.microsoft.com/en-us/library/c1d2a68b-0910-4815-9547-0f0f3c983164) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetLocalGroupSetInfo  
+[NetLocalGroupSetMembers](http://msdn2.microsoft.com/en-us/library/4dce1e10-b74d-4d69-ac5a-12e7d9d84e5c) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetLocalGroupSetMembers  
 [NetProvisionComputerAccount](http://msdn2.microsoft.com/en-us/library/4c854258-b84d-4ef3-a6da-ce0a9540ffd5) | netapi32.dll | lmjoin.h | Vanara.PInvoke.NetApi32.NetProvisionComputerAccount  
-[NetQueryDisplayInformation](https://www.google.com/search?num=5&q=NetQueryDisplayInformation+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetQueryServiceAccount](https://www.google.com/search?num=5&q=NetQueryServiceAccount+site%3Amicrosoft.com) | netapi32.dll |  |   
+[NetQueryDisplayInformation](http://msdn2.microsoft.com/en-us/library/049f1ea3-4d23-4b35-8b08-7256859aed45) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetQueryDisplayInformation  
+[NetQueryServiceAccount](http://msdn2.microsoft.com/en-us/library/ee253cab-bd53-426e-809a-12a1ccdc010b) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetQueryServiceAccount  
 [NetRemoteComputerSupports](http://msdn2.microsoft.com/en-us/library/e807489a-250e-4d4c-adb6-eff8ac30603b) | netapi32.dll | lmremutl.h | Vanara.PInvoke.NetApi32.NetRemoteComputerSupports  
 [NetRemoteTOD](http://msdn2.microsoft.com/en-us/library/5a935e09-f188-4ee1-b998-c67488475baa) | netapi32.dll | lmremutl.h | Vanara.PInvoke.NetApi32.NetRemoteTOD  
 [NetRemoveAlternateComputerName](http://msdn2.microsoft.com/en-us/library/3c7ab44e-d5fa-40da-83fe-a44bf85b2ba5) | netapi32.dll | lmjoin.h | Vanara.PInvoke.NetApi32.NetRemoveAlternateComputerName  
-[NetRemoveServiceAccount](https://www.google.com/search?num=5&q=NetRemoveServiceAccount+site%3Amicrosoft.com) | netapi32.dll |  |   
+[NetRemoveServiceAccount](http://msdn2.microsoft.com/en-us/library/f67745b7-bdfd-44bc-83e0-2ad24b78e137) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetRemoveServiceAccount  
 [NetRenameMachineInDomain](http://msdn2.microsoft.com/en-us/library/1f7ddaa1-a349-49a6-856d-a2fde2f1dc3b) | netapi32.dll | lmjoin.h | Vanara.PInvoke.NetApi32.NetRenameMachineInDomain  
 [NetRequestOfflineDomainJoin](http://msdn2.microsoft.com/en-us/library/f3f8fe00-d6f7-4d59-a4e7-6aef7f507e1a) | netapi32.dll | lmjoin.h | Vanara.PInvoke.NetApi32.NetRequestOfflineDomainJoin  
 [NetRequestProvisioningPackageInstall](http://msdn2.microsoft.com/en-us/library/107ED0F7-8DDD-4C18-8C34-3A67F771FA62) | netapi32.dll | lmjoin.h | Vanara.PInvoke.NetApi32.NetRequestProvisioningPackageInstall  
@@ -130,26 +130,26 @@ Native Method | Native DLL | Header | Managed Method
 [NetShareEnum](http://msdn2.microsoft.com/en-us/library/9114c54d-3905-4d40-9162-b3ea605f6fcb) | netapi32.dll | lmshare.h | Vanara.PInvoke.NetApi32.NetShareEnum  
 [NetShareGetInfo](http://msdn2.microsoft.com/en-us/library/672ea208-4048-4d2f-9606-ee3e2133765b) | netapi32.dll | lmshare.h | Vanara.PInvoke.NetApi32.NetShareGetInfo  
 [NetShareSetInfo](http://msdn2.microsoft.com/en-us/library/216b0b78-87da-4734-ad07-5ad1c9edf494) | netapi32.dll | lmshare.h | Vanara.PInvoke.NetApi32.NetShareSetInfo  
-[NetStatisticsGet](https://www.google.com/search?num=5&q=NetStatisticsGet+site%3Amicrosoft.com) | netapi32.dll |  |   
+[NetStatisticsGet](http://msdn2.microsoft.com/en-us/library/d0e51d8a-2f54-42ca-9759-0da82c1f0f55) | netapi32.dll | lmstats.h | Vanara.PInvoke.NetApi32.NetStatisticsGet  
 [NetUnjoinDomain](http://msdn2.microsoft.com/en-us/library/cc755c22-1fd6-4787-999e-a43258287a05) | netapi32.dll | lmjoin.h | Vanara.PInvoke.NetApi32.NetUnjoinDomain  
 [NetUseAdd](http://msdn2.microsoft.com/en-us/library/22550c17-003a-4f59-80f0-58fa3e286844) | netapi32.dll | lmuse.h | Vanara.PInvoke.NetApi32.NetUseAdd  
 [NetUseDel](http://msdn2.microsoft.com/en-us/library/200b0640-71e9-4f60-bf4c-c8df10bfe095) | netapi32.dll | lmuse.h | Vanara.PInvoke.NetApi32.NetUseDel  
 [NetUseEnum](http://msdn2.microsoft.com/en-us/library/fb527f85-baea-48e8-b837-967870834ec5) | netapi32.dll | lmuse.h | Vanara.PInvoke.NetApi32.NetUseEnum  
 [NetUseGetInfo](http://msdn2.microsoft.com/en-us/library/257875db-5ed9-4569-8dbb-5dcc7a6af95c) | netapi32.dll | lmuse.h | Vanara.PInvoke.NetApi32.NetUseGetInfo  
-[NetUserAdd](https://www.google.com/search?num=5&q=NetUserAdd+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetUserChangePassword](https://www.google.com/search?num=5&q=NetUserChangePassword+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetUserDel](https://www.google.com/search?num=5&q=NetUserDel+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetUserEnum](https://www.google.com/search?num=5&q=NetUserEnum+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetUserGetGroups](https://www.google.com/search?num=5&q=NetUserGetGroups+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetUserGetInfo](https://www.google.com/search?num=5&q=NetUserGetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetUserGetLocalGroups](https://www.google.com/search?num=5&q=NetUserGetLocalGroups+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetUserModalsGet](https://www.google.com/search?num=5&q=NetUserModalsGet+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetUserModalsSet](https://www.google.com/search?num=5&q=NetUserModalsSet+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetUserSetGroups](https://www.google.com/search?num=5&q=NetUserSetGroups+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetUserSetInfo](https://www.google.com/search?num=5&q=NetUserSetInfo+site%3Amicrosoft.com) | netapi32.dll |  |   
+[NetUserAdd](http://msdn2.microsoft.com/en-us/library/b5ca5f76-d40b-4abf-925a-0de54fc476e4) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetUserAdd  
+[NetUserChangePassword](http://msdn2.microsoft.com/en-us/library/e3791756-3bd4-490b-983a-9687373d846b) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetUserChangePassword  
+[NetUserDel](http://msdn2.microsoft.com/en-us/library/c1429b82-4fd1-48b6-8957-04dee0426077) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetUserDel  
+[NetUserEnum](http://msdn2.microsoft.com/en-us/library/b26ef3c0-934a-4840-8c06-4eaff5c9ff86) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetUserEnum  
+[NetUserGetGroups](http://msdn2.microsoft.com/en-us/library/ecf1a94c-5dda-4f49-81bd-93e551e089f1) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetUserGetGroups  
+[NetUserGetInfo](http://msdn2.microsoft.com/en-us/library/5bd13bed-938a-4273-840e-99fca99f7139) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetUserGetInfo  
+[NetUserGetLocalGroups](http://msdn2.microsoft.com/en-us/library/cc5c1c15-cad7-4103-a2c9-1a8adf742703) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetUserGetLocalGroups  
+[NetUserModalsGet](http://msdn2.microsoft.com/en-us/library/5bb18144-82a6-4e9b-8321-c06a667bdd03) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetUserModalsGet  
+[NetUserModalsSet](http://msdn2.microsoft.com/en-us/library/9884e076-ee6a-4aca-abe6-a79754667759) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetUserModalsSet  
+[NetUserSetGroups](http://msdn2.microsoft.com/en-us/library/7042c43a-09d1-4179-8074-eb055dc279a6) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetUserSetGroups  
+[NetUserSetInfo](http://msdn2.microsoft.com/en-us/library/ffe49d4b-e7e8-4982-8087-59bb7534b257) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetUserSetInfo  
 [NetValidateName](http://msdn2.microsoft.com/en-us/library/772603df-ec17-4a83-a715-2d9a14d5c2bb) | netapi32.dll | lmjoin.h | Vanara.PInvoke.NetApi32.NetValidateName  
-[NetValidatePasswordPolicy](https://www.google.com/search?num=5&q=NetValidatePasswordPolicy+site%3Amicrosoft.com) | netapi32.dll |  |   
-[NetValidatePasswordPolicyFree](https://www.google.com/search?num=5&q=NetValidatePasswordPolicyFree+site%3Amicrosoft.com) | netapi32.dll |  |   
+[NetValidatePasswordPolicy](http://msdn2.microsoft.com/en-us/library/be5ce51b-6568-49c8-954d-7b0d4bcb8611) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetValidatePasswordPolicy  
+[NetValidatePasswordPolicyFree](http://msdn2.microsoft.com/en-us/library/263834cd-a0e2-4ec0-9cb1-c03eb198de3a) | netapi32.dll | lmaccess.h | Vanara.PInvoke.NetApi32.NetValidatePasswordPolicyFree  
 [NetWkstaGetInfo](http://msdn2.microsoft.com/en-us/library/08777069-1afd-4482-8090-c65ef0bec1ea) | netapi32.dll | lmwksta.h | Vanara.PInvoke.NetApi32.NetWkstaGetInfo  
 [NetWkstaSetInfo](http://msdn2.microsoft.com/en-us/library/d746b6c9-5ef1-4174-a84f-44e4e50200cd) | netapi32.dll | lmwksta.h | Vanara.PInvoke.NetApi32.NetWkstaSetInfo  
 [NetWkstaTransportAdd](http://msdn2.microsoft.com/en-us/library/016060ea-eae1-421f-b708-5c2ddd2000c1) | netapi32.dll | lmwksta.h | Vanara.PInvoke.NetApi32.NetWkstaTransportAdd  
@@ -204,6 +204,31 @@ Native Structure | Header | Managed Structure
 [ERRLOG_OTHER_INFO](http://msdn2.microsoft.com/en-us/library/832ebe88-e1c4-4ce3-8057-922419b577f7) | lmalert.h | Vanara.PInvoke.NetApi32+ERRLOG_OTHER_INFO  
 [FILE_INFO_2](http://msdn2.microsoft.com/en-us/library/c80090d5-7064-4809-9185-02116f7ac2ef) | lmshare.h | Vanara.PInvoke.NetApi32+FILE_INFO_2  
 [FILE_INFO_3](http://msdn2.microsoft.com/en-us/library/67f5fa89-12c7-46fb-a118-de4bfed96923) | lmshare.h | Vanara.PInvoke.NetApi32+FILE_INFO_3  
+[GROUP_INFO_0](http://msdn2.microsoft.com/en-us/library/019796d1-b987-45d2-90df-1d3b484217a9) | lmaccess.h | Vanara.PInvoke.NetApi32+GROUP_INFO_0  
+[GROUP_INFO_1](http://msdn2.microsoft.com/en-us/library/0b42a438-64fd-4f37-98b8-77e10c09548c) | lmaccess.h | Vanara.PInvoke.NetApi32+GROUP_INFO_1  
+[GROUP_INFO_1002](http://msdn2.microsoft.com/en-us/library/9c322ef5-4f98-44ad-8b57-40f8533eb9c1) | lmaccess.h | Vanara.PInvoke.NetApi32+GROUP_INFO_1002  
+[GROUP_INFO_1005](http://msdn2.microsoft.com/en-us/library/bd93820a-e019-45f4-88c7-011a517955ad) | lmaccess.h | Vanara.PInvoke.NetApi32+GROUP_INFO_1005  
+[GROUP_INFO_2](http://msdn2.microsoft.com/en-us/library/2c17a70c-7b62-4dcc-9dc6-2f4b8c41d6ec) | lmaccess.h | Vanara.PInvoke.NetApi32+GROUP_INFO_2  
+[GROUP_INFO_3](http://msdn2.microsoft.com/en-us/library/aa0c3b6e-ab27-48b9-a37f-5cceb63c70fd) | lmaccess.h | Vanara.PInvoke.NetApi32+GROUP_INFO_3  
+[GROUP_USERS_INFO_0](http://msdn2.microsoft.com/en-us/library/cc0e5d27-91f1-4640-bb80-e73899fabba9) | lmaccess.h | Vanara.PInvoke.NetApi32+GROUP_USERS_INFO_0  
+[GROUP_USERS_INFO_1](http://msdn2.microsoft.com/en-us/library/d92e7c18-f2c7-4ea5-8bb6-fec023272dbb) | lmaccess.h | Vanara.PInvoke.NetApi32+GROUP_USERS_INFO_1  
+[LOCALGROUP_INFO_0](http://msdn2.microsoft.com/en-us/library/dfdb4c20-ea4a-45c9-b4f3-d6a844f89bb6) | lmaccess.h | Vanara.PInvoke.NetApi32+LOCALGROUP_INFO_0  
+[LOCALGROUP_INFO_1](http://msdn2.microsoft.com/en-us/library/b96d7ddc-3ffb-4203-88b1-4aa123051695) | lmaccess.h | Vanara.PInvoke.NetApi32+LOCALGROUP_INFO_1  
+[LOCALGROUP_INFO_1002](http://msdn2.microsoft.com/en-us/library/027db4a3-6722-46e8-a204-922ed97cb3f5) | lmaccess.h | Vanara.PInvoke.NetApi32+LOCALGROUP_INFO_1002  
+[LOCALGROUP_MEMBERS_INFO_0](http://msdn2.microsoft.com/en-us/library/e559cd90-942c-442a-b57f-7d2024523455) | lmaccess.h | Vanara.PInvoke.NetApi32+LOCALGROUP_MEMBERS_INFO_0  
+[LOCALGROUP_MEMBERS_INFO_1](http://msdn2.microsoft.com/en-us/library/d6b1b729-cdd5-4ed3-a5a1-cf3a8b6cecf2) | lmaccess.h | Vanara.PInvoke.NetApi32+LOCALGROUP_MEMBERS_INFO_1  
+[LOCALGROUP_MEMBERS_INFO_2](http://msdn2.microsoft.com/en-us/library/f5cd6e84-1111-4558-bec4-26af13f21b61) | lmaccess.h | Vanara.PInvoke.NetApi32+LOCALGROUP_MEMBERS_INFO_2  
+[LOCALGROUP_MEMBERS_INFO_3](http://msdn2.microsoft.com/en-us/library/e8d1d884-c955-4706-bc3e-142469b02545) | lmaccess.h | Vanara.PInvoke.NetApi32+LOCALGROUP_MEMBERS_INFO_3  
+[LOCALGROUP_USERS_INFO_0](http://msdn2.microsoft.com/en-us/library/e9358f19-ec8f-4454-896c-c9fadb848378) | lmaccess.h | Vanara.PInvoke.NetApi32+LOCALGROUP_USERS_INFO_0  
+[NET_DISPLAY_GROUP](http://msdn2.microsoft.com/en-us/library/8e467f20-2cfb-40ae-a8b2-a5350d736eed) | lmaccess.h | Vanara.PInvoke.NetApi32+NET_DISPLAY_GROUP  
+[NET_DISPLAY_MACHINE](http://msdn2.microsoft.com/en-us/library/bdb1bef0-51f1-41d7-97fb-bda4ad24e386) | lmaccess.h | Vanara.PInvoke.NetApi32+NET_DISPLAY_MACHINE  
+[NET_DISPLAY_USER](http://msdn2.microsoft.com/en-us/library/308966f7-448c-4748-bbe7-9ac63afae1d9) | lmaccess.h | Vanara.PInvoke.NetApi32+NET_DISPLAY_USER  
+[NET_VALIDATE_AUTHENTICATION_INPUT_ARG](http://msdn2.microsoft.com/en-us/library/b7466e8a-81d8-4552-adff-47fc2f3ed3ad) | lmaccess.h | Vanara.PInvoke.NetApi32+NET_VALIDATE_AUTHENTICATION_INPUT_ARG  
+[NET_VALIDATE_OUTPUT_ARG](http://msdn2.microsoft.com/en-us/library/833c89c3-34ba-485b-a310-1d709aa618cd) | lmaccess.h | Vanara.PInvoke.NetApi32+NET_VALIDATE_OUTPUT_ARG  
+[NET_VALIDATE_PASSWORD_CHANGE_INPUT_ARG](http://msdn2.microsoft.com/en-us/library/09404998-81c5-400c-9d99-a0a4bb4095bf) | lmaccess.h | Vanara.PInvoke.NetApi32+NET_VALIDATE_PASSWORD_CHANGE_INPUT_ARG  
+[NET_VALIDATE_PASSWORD_HASH](http://msdn2.microsoft.com/en-us/library/884e5b8c-1288-454e-862d-323d79123356) | lmaccess.h | Vanara.PInvoke.NetApi32+NET_VALIDATE_PASSWORD_HASH  
+[NET_VALIDATE_PASSWORD_RESET_INPUT_ARG](http://msdn2.microsoft.com/en-us/library/3a6d4c2d-0d90-48bf-9dfa-2ba587538350) | lmaccess.h | Vanara.PInvoke.NetApi32+NET_VALIDATE_PASSWORD_RESET_INPUT_ARG  
+[NET_VALIDATE_PERSISTED_FIELDS](http://msdn2.microsoft.com/en-us/library/1e6ea28a-a007-4cd1-b5d6-686bcf019fa1) | lmaccess.h | Vanara.PInvoke.NetApi32+NET_VALIDATE_PERSISTED_FIELDS  
 [NETSETUP_PROVISIONING_PARAMS](http://msdn2.microsoft.com/en-us/library/E965804F-145A-4D8F-BB8E-466580AC65DA) | lmjoin.h | Vanara.PInvoke.NetApi32+NETSETUP_PROVISIONING_PARAMS  
 [PRINT_OTHER_INFO](http://msdn2.microsoft.com/en-us/library/f2fd87bc-abde-43c0-b29d-d43cc5f038b8) | lmalert.h | Vanara.PInvoke.NetApi32+PRINT_OTHER_INFO  
 [SERVER_INFO_100](http://msdn2.microsoft.com/en-us/library/aa370897) | lmserver.h | Vanara.PInvoke.NetApi32+SERVER_INFO_100  
@@ -229,50 +254,95 @@ Native Structure | Header | Managed Structure
 [SHARE_INFO_2](http://msdn2.microsoft.com/en-us/library/cd152ccd-cd60-455f-b25c-c4939c65e0ab) | lmshare.h | Vanara.PInvoke.NetApi32+SHARE_INFO_2  
 [SHARE_INFO_502](http://msdn2.microsoft.com/en-us/library/306e6704-2068-42da-bcc4-c0772c719ee8) | lmshare.h | Vanara.PInvoke.NetApi32+SHARE_INFO_502  
 [SHARE_INFO_503](http://msdn2.microsoft.com/en-us/library/12650bc0-f67d-464e-8386-a0fd53cdc749) | lmshare.h | Vanara.PInvoke.NetApi32+SHARE_INFO_503  
+[STAT_SERVER_0](http://msdn2.microsoft.com/en-us/library/7eb4e4a9-f4db-4702-a4ad-2d8bfac9f9ce) | lmstats.h | Vanara.PInvoke.NetApi32+STAT_SERVER_0  
+[STAT_WORKSTATION_0](http://msdn2.microsoft.com/en-us/library/7a29fe54-fd15-499d-b255-f49025421861) | lmstats.h | Vanara.PInvoke.NetApi32+STAT_WORKSTATION_0  
 [STD_ALERT](http://msdn2.microsoft.com/en-us/library/daa4594f-e59e-4f05-8183-677bee4ea446) | lmalert.h | Vanara.PInvoke.NetApi32+STD_ALERT  
 [TIME_OF_DAY_INFO](http://msdn2.microsoft.com/en-us/library/bf89f071-5c04-40c2-a7b7-4e59fc9eaa02) | lmremutl.h | Vanara.PInvoke.NetApi32+TIME_OF_DAY_INFO  
 [USE_INFO_0](http://msdn2.microsoft.com/en-us/library/86db3f19-84c5-4e89-82cb-f01d17dcf4ec) | lmuse.h | Vanara.PInvoke.NetApi32+USE_INFO_0  
 [USE_INFO_1](http://msdn2.microsoft.com/en-us/library/b9f680b8-b56a-42be-9af1-d7b18328ded4) | lmuse.h | Vanara.PInvoke.NetApi32+USE_INFO_1  
 [USE_INFO_2](http://msdn2.microsoft.com/en-us/library/4cc36108-085a-47c4-9dfa-b46f7e208c8b) | lmuse.h | Vanara.PInvoke.NetApi32+USE_INFO_2  
 [USE_INFO_3](http://msdn2.microsoft.com/en-us/library/3fb3ad35-f9e5-46ba-b930-fc2ccafd8ee9) | lmuse.h | Vanara.PInvoke.NetApi32+USE_INFO_3  
-[USE_INFO_4](https://www.google.com/search?num=5&q=USE_INFO_4+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+USE_INFO_4  
-[USE_INFO_5](https://www.google.com/search?num=5&q=USE_INFO_5+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+USE_INFO_5  
+[USE_INFO_4](https://www.google.com/search?num=5&q=USE_INFO_4+site%3Amicrosoft.com) | lmuse.h | Vanara.PInvoke.NetApi32+USE_INFO_4  
+[USE_INFO_5](https://www.google.com/search?num=5&q=USE_INFO_5+site%3Amicrosoft.com) | lmuse.h | Vanara.PInvoke.NetApi32+USE_INFO_5  
+[USER_INFO_0](http://msdn2.microsoft.com/en-us/library/5d24a2dd-d1ee-4c97-8fbc-0b336313b60c) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_0  
+[USER_INFO_1](http://msdn2.microsoft.com/en-us/library/f17a1aef-45f1-461f-975d-75221d08277c) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1  
+[USER_INFO_10](http://msdn2.microsoft.com/en-us/library/f85e3e92-02b2-4ee8-8a82-38e4ef5b4072) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_10  
+[USER_INFO_1003](http://msdn2.microsoft.com/en-us/library/ef1d1ecd-7226-4e4e-a0b3-ec096d3b1207) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1003  
+[USER_INFO_1005](http://msdn2.microsoft.com/en-us/library/a953b48f-bda0-4dce-a153-d4db912de533) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1005  
+[USER_INFO_1006](http://msdn2.microsoft.com/en-us/library/9eb4973b-cda5-4862-b558-3af90b7de19f) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1006  
+[USER_INFO_1007](http://msdn2.microsoft.com/en-us/library/a2e49802-799d-4f98-aa6d-5cb1478cb4d4) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1007  
+[USER_INFO_1008](http://msdn2.microsoft.com/en-us/library/142408ef-ed8e-4af3-8fc2-ffdd40ce4f1e) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1008  
+[USER_INFO_1009](http://msdn2.microsoft.com/en-us/library/baaabbf9-9571-49db-bf38-a3fc2d0a200a) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1009  
+[USER_INFO_1010](http://msdn2.microsoft.com/en-us/library/6760729a-1d59-430e-8412-1257977af169) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1010  
+[USER_INFO_1011](http://msdn2.microsoft.com/en-us/library/f60075b4-19c5-4998-b8c3-61e960e76035) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1011  
+[USER_INFO_1012](http://msdn2.microsoft.com/en-us/library/92501552-7afe-4a95-980a-576254a122a9) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1012  
+[USER_INFO_1013](http://msdn2.microsoft.com/en-us/library/7166201d-57e3-4288-ad15-392cc3733dc6) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1013  
+[USER_INFO_1014](http://msdn2.microsoft.com/en-us/library/ff7f385d-bcda-4560-b22f-d1fc94e7ae41) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1014  
+[USER_INFO_1017](http://msdn2.microsoft.com/en-us/library/67ded50e-ab9a-4202-9496-1a39d1af0f58) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1017  
+[USER_INFO_1018](http://msdn2.microsoft.com/en-us/library/15bdff5c-a360-4519-8e0b-c73ddd01298c) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1018  
+[USER_INFO_1020](http://msdn2.microsoft.com/en-us/library/959ed1f4-d5ee-4d77-abd7-bb681778f0b1) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1020  
+[USER_INFO_1023](http://msdn2.microsoft.com/en-us/library/44985bbe-48d2-4fe9-9247-2800089269cb) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1023  
+[USER_INFO_1024](http://msdn2.microsoft.com/en-us/library/8133238f-c968-4a65-a8dd-7b9a61a193f5) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1024  
+[USER_INFO_1025](http://msdn2.microsoft.com/en-us/library/85e3584f-8245-47e3-9e48-5c43db51be0f) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1025  
+[USER_INFO_1051](http://msdn2.microsoft.com/en-us/library/dbd7c63b-c383-48dd-98f2-087f2b41fc52) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1051  
+[USER_INFO_1052](http://msdn2.microsoft.com/en-us/library/55ec6819-8558-413a-9a79-c2d59993163d) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1052  
+[USER_INFO_1053](http://msdn2.microsoft.com/en-us/library/687b2c35-344d-49db-a1e2-fb5c2b5db2d6) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_1053  
+[USER_INFO_11](http://msdn2.microsoft.com/en-us/library/718e7143-a6df-4912-954c-cc63bb490044) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_11  
+[USER_INFO_2](http://msdn2.microsoft.com/en-us/library/50c78c6a-a08f-473b-929a-9528e618165f) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_2  
+[USER_INFO_20](http://msdn2.microsoft.com/en-us/library/67f58d6b-488b-4a88-808f-edb9c3464d85) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_20  
+[USER_INFO_21](http://msdn2.microsoft.com/en-us/library/227e97c5-972e-4d4a-9609-53e60e76d43e) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_21  
+[USER_INFO_22](http://msdn2.microsoft.com/en-us/library/ff8d2088-953b-4a8a-bdcb-86148dc66a7a) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_22  
+[USER_INFO_23](http://msdn2.microsoft.com/en-us/library/1af3ff6d-bc9f-44ad-9981-124ac1961298) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_23  
+[USER_INFO_24](http://msdn2.microsoft.com/en-us/library/CE65EDE0-F4AE-4582-9D7F-6667BBA98C75) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_24  
+[USER_INFO_3](http://msdn2.microsoft.com/en-us/library/39ed05f5-165d-4cb8-98af-e4120a1634f6) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_3  
+[USER_INFO_4](http://msdn2.microsoft.com/en-us/library/66b11a5f-1c2d-4564-8845-9e2fa1f40f3e) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_INFO_4  
+[USER_MODALS_INFO_0](http://msdn2.microsoft.com/en-us/library/cf3dd091-106e-4a0d-b4db-62bd11fd65cf) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_MODALS_INFO_0  
+[USER_MODALS_INFO_1](http://msdn2.microsoft.com/en-us/library/2cb7f310-c76e-42fd-892c-fead374af16c) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_MODALS_INFO_1  
+[USER_MODALS_INFO_1001](http://msdn2.microsoft.com/en-us/library/ef6e63da-f092-4435-93f0-e50d2fdd5664) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_MODALS_INFO_1001  
+[USER_MODALS_INFO_1002](http://msdn2.microsoft.com/en-us/library/d4899deb-6250-4cdc-9820-56d24e3acfc1) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_MODALS_INFO_1002  
+[USER_MODALS_INFO_1003](http://msdn2.microsoft.com/en-us/library/5efbba0f-b871-4ffa-8e83-abeab6b70a52) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_MODALS_INFO_1003  
+[USER_MODALS_INFO_1004](http://msdn2.microsoft.com/en-us/library/c11a3c94-940e-474f-9251-a32ea098788d) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_MODALS_INFO_1004  
+[USER_MODALS_INFO_1005](http://msdn2.microsoft.com/en-us/library/0156443a-e126-4aa5-a248-9ff55ff53771) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_MODALS_INFO_1005  
+[USER_MODALS_INFO_1006](http://msdn2.microsoft.com/en-us/library/ca5c0819-b4a0-4d07-90fc-54c86ac5ecf5) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_MODALS_INFO_1006  
+[USER_MODALS_INFO_1007](http://msdn2.microsoft.com/en-us/library/aa6425eb-576c-4f6f-b9c9-96d9535bc7d6) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_MODALS_INFO_1007  
+[USER_MODALS_INFO_2](http://msdn2.microsoft.com/en-us/library/9a4b3fc1-03b5-4ba7-948f-e455c34fa234) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_MODALS_INFO_2  
+[USER_MODALS_INFO_3](http://msdn2.microsoft.com/en-us/library/39f85712-1afd-4e34-8e7b-0938a7a48234) | lmaccess.h | Vanara.PInvoke.NetApi32+USER_MODALS_INFO_3  
 [USER_OTHER_INFO](http://msdn2.microsoft.com/en-us/library/2f6bd906-fdab-410a-8856-4482e047371f) | lmalert.h | Vanara.PInvoke.NetApi32+USER_OTHER_INFO  
 [WKSTA_INFO_100](http://msdn2.microsoft.com/en-us/library/c705dadd-cf55-44d9-bf36-09e078112479) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_100  
 [WKSTA_INFO_101](http://msdn2.microsoft.com/en-us/library/2b692d40-6229-45ef-9ec6-ee464bba0696) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_101  
-[WKSTA_INFO_1010](https://www.google.com/search?num=5&q=WKSTA_INFO_1010+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1010  
-[WKSTA_INFO_1011](https://www.google.com/search?num=5&q=WKSTA_INFO_1011+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1011  
-[WKSTA_INFO_1012](https://www.google.com/search?num=5&q=WKSTA_INFO_1012+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1012  
-[WKSTA_INFO_1013](https://www.google.com/search?num=5&q=WKSTA_INFO_1013+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1013  
-[WKSTA_INFO_1018](https://www.google.com/search?num=5&q=WKSTA_INFO_1018+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1018  
+[WKSTA_INFO_1010](https://www.google.com/search?num=5&q=WKSTA_INFO_1010+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1010  
+[WKSTA_INFO_1011](https://www.google.com/search?num=5&q=WKSTA_INFO_1011+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1011  
+[WKSTA_INFO_1012](https://www.google.com/search?num=5&q=WKSTA_INFO_1012+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1012  
+[WKSTA_INFO_1013](https://www.google.com/search?num=5&q=WKSTA_INFO_1013+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1013  
+[WKSTA_INFO_1018](https://www.google.com/search?num=5&q=WKSTA_INFO_1018+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1018  
 [WKSTA_INFO_102](http://msdn2.microsoft.com/en-us/library/01607fb5-c433-439c-aaaa-3736697f7c07) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_102  
-[WKSTA_INFO_1023](https://www.google.com/search?num=5&q=WKSTA_INFO_1023+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1023  
-[WKSTA_INFO_1027](https://www.google.com/search?num=5&q=WKSTA_INFO_1027+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1027  
-[WKSTA_INFO_1028](https://www.google.com/search?num=5&q=WKSTA_INFO_1028+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1028  
-[WKSTA_INFO_1032](https://www.google.com/search?num=5&q=WKSTA_INFO_1032+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1032  
-[WKSTA_INFO_1033](https://www.google.com/search?num=5&q=WKSTA_INFO_1033+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1033  
-[WKSTA_INFO_1041](https://www.google.com/search?num=5&q=WKSTA_INFO_1041+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1041  
-[WKSTA_INFO_1042](https://www.google.com/search?num=5&q=WKSTA_INFO_1042+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1042  
-[WKSTA_INFO_1043](https://www.google.com/search?num=5&q=WKSTA_INFO_1043+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1043  
-[WKSTA_INFO_1044](https://www.google.com/search?num=5&q=WKSTA_INFO_1044+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1044  
-[WKSTA_INFO_1045](https://www.google.com/search?num=5&q=WKSTA_INFO_1045+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1045  
-[WKSTA_INFO_1046](https://www.google.com/search?num=5&q=WKSTA_INFO_1046+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1046  
-[WKSTA_INFO_1047](https://www.google.com/search?num=5&q=WKSTA_INFO_1047+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1047  
-[WKSTA_INFO_1048](https://www.google.com/search?num=5&q=WKSTA_INFO_1048+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1048  
-[WKSTA_INFO_1049](https://www.google.com/search?num=5&q=WKSTA_INFO_1049+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1049  
-[WKSTA_INFO_1050](https://www.google.com/search?num=5&q=WKSTA_INFO_1050+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1050  
-[WKSTA_INFO_1051](https://www.google.com/search?num=5&q=WKSTA_INFO_1051+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1051  
-[WKSTA_INFO_1052](https://www.google.com/search?num=5&q=WKSTA_INFO_1052+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1052  
-[WKSTA_INFO_1053](https://www.google.com/search?num=5&q=WKSTA_INFO_1053+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1053  
-[WKSTA_INFO_1054](https://www.google.com/search?num=5&q=WKSTA_INFO_1054+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1054  
-[WKSTA_INFO_1055](https://www.google.com/search?num=5&q=WKSTA_INFO_1055+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1055  
-[WKSTA_INFO_1056](https://www.google.com/search?num=5&q=WKSTA_INFO_1056+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1056  
-[WKSTA_INFO_1057](https://www.google.com/search?num=5&q=WKSTA_INFO_1057+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1057  
-[WKSTA_INFO_1058](https://www.google.com/search?num=5&q=WKSTA_INFO_1058+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1058  
-[WKSTA_INFO_1059](https://www.google.com/search?num=5&q=WKSTA_INFO_1059+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1059  
-[WKSTA_INFO_1060](https://www.google.com/search?num=5&q=WKSTA_INFO_1060+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1060  
-[WKSTA_INFO_1061](https://www.google.com/search?num=5&q=WKSTA_INFO_1061+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1061  
-[WKSTA_INFO_1062](https://www.google.com/search?num=5&q=WKSTA_INFO_1062+site%3Amicrosoft.com) |  | Vanara.PInvoke.NetApi32+WKSTA_INFO_1062  
+[WKSTA_INFO_1023](https://www.google.com/search?num=5&q=WKSTA_INFO_1023+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1023  
+[WKSTA_INFO_1027](https://www.google.com/search?num=5&q=WKSTA_INFO_1027+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1027  
+[WKSTA_INFO_1028](https://www.google.com/search?num=5&q=WKSTA_INFO_1028+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1028  
+[WKSTA_INFO_1032](https://www.google.com/search?num=5&q=WKSTA_INFO_1032+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1032  
+[WKSTA_INFO_1033](https://www.google.com/search?num=5&q=WKSTA_INFO_1033+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1033  
+[WKSTA_INFO_1041](https://www.google.com/search?num=5&q=WKSTA_INFO_1041+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1041  
+[WKSTA_INFO_1042](https://www.google.com/search?num=5&q=WKSTA_INFO_1042+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1042  
+[WKSTA_INFO_1043](https://www.google.com/search?num=5&q=WKSTA_INFO_1043+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1043  
+[WKSTA_INFO_1044](https://www.google.com/search?num=5&q=WKSTA_INFO_1044+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1044  
+[WKSTA_INFO_1045](https://www.google.com/search?num=5&q=WKSTA_INFO_1045+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1045  
+[WKSTA_INFO_1046](https://www.google.com/search?num=5&q=WKSTA_INFO_1046+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1046  
+[WKSTA_INFO_1047](https://www.google.com/search?num=5&q=WKSTA_INFO_1047+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1047  
+[WKSTA_INFO_1048](https://www.google.com/search?num=5&q=WKSTA_INFO_1048+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1048  
+[WKSTA_INFO_1049](https://www.google.com/search?num=5&q=WKSTA_INFO_1049+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1049  
+[WKSTA_INFO_1050](https://www.google.com/search?num=5&q=WKSTA_INFO_1050+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1050  
+[WKSTA_INFO_1051](https://www.google.com/search?num=5&q=WKSTA_INFO_1051+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1051  
+[WKSTA_INFO_1052](https://www.google.com/search?num=5&q=WKSTA_INFO_1052+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1052  
+[WKSTA_INFO_1053](https://www.google.com/search?num=5&q=WKSTA_INFO_1053+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1053  
+[WKSTA_INFO_1054](https://www.google.com/search?num=5&q=WKSTA_INFO_1054+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1054  
+[WKSTA_INFO_1055](https://www.google.com/search?num=5&q=WKSTA_INFO_1055+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1055  
+[WKSTA_INFO_1056](https://www.google.com/search?num=5&q=WKSTA_INFO_1056+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1056  
+[WKSTA_INFO_1057](https://www.google.com/search?num=5&q=WKSTA_INFO_1057+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1057  
+[WKSTA_INFO_1058](https://www.google.com/search?num=5&q=WKSTA_INFO_1058+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1058  
+[WKSTA_INFO_1059](https://www.google.com/search?num=5&q=WKSTA_INFO_1059+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1059  
+[WKSTA_INFO_1060](https://www.google.com/search?num=5&q=WKSTA_INFO_1060+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1060  
+[WKSTA_INFO_1061](https://www.google.com/search?num=5&q=WKSTA_INFO_1061+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1061  
+[WKSTA_INFO_1062](https://www.google.com/search?num=5&q=WKSTA_INFO_1062+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_1062  
 [WKSTA_INFO_302](https://www.google.com/search?num=5&q=WKSTA_INFO_302+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_302  
 [WKSTA_INFO_402](https://www.google.com/search?num=5&q=WKSTA_INFO_402+site%3Amicrosoft.com) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_402  
 [WKSTA_INFO_502](http://msdn2.microsoft.com/en-us/library/716e700a-e464-47ec-a2df-74c03597ac6d) | lmwksta.h | Vanara.PInvoke.NetApi32+WKSTA_INFO_502  

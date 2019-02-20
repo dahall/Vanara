@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Linq;
+using Vanara.InteropServices;
 using static Vanara.PInvoke.NetApi32;
 
 namespace Vanara.PInvoke.Tests
@@ -119,5 +120,62 @@ namespace Vanara.PInvoke.Tests
 			e = NetUseEnum<USE_INFO_0>();
 			Assert.That(() => e.First(i => i.ui0_local == dl), Throws.Exception);
 		}
+
+		[Test]
+		public void NetGroupTest()
+		{
+			const string val = "Dummy";
+			NetGroupAdd(null, new GROUP_INFO_3 { grpi3_name = val, grpi3_comment = val });
+			var e = NetGroupEnum<GROUP_INFO_0>();
+			Assert.That(e, Is.Not.Empty);
+			Assert.That(() => e.First(i => i.grpi0_name == val), Throws.Nothing);
+			var info = NetGroupGetInfo<GROUP_INFO_1>(null, val);
+			Assert.That(info.grpi1_name, Is.EqualTo(val));
+			Assert.That(() => NetGroupDel(null, val).ThrowIfFailed(), Throws.Nothing);
+			e = NetGroupEnum<GROUP_INFO_0>();
+			Assert.That(() => e.First(i => i.grpi0_name == val), Throws.Exception);
+		}
+
+		[Test]
+		public void NetLocalGroupTest()
+		{
+			const string val = "Dummy";
+			NetLocalGroupDel(null, val);
+			NetLocalGroupAdd(null, new LOCALGROUP_INFO_1 { lgrpi1_name = val, lgrpi1_comment = val });
+			var e = NetLocalGroupEnum<LOCALGROUP_INFO_0>();
+			Assert.That(e, Is.Not.Empty);
+			Assert.That(() => e.First(i => i.lgrpi0_name == val), Throws.Nothing);
+			var info = NetLocalGroupGetInfo<LOCALGROUP_INFO_1>(null, val);
+			Assert.That(info.lgrpi1_name, Is.EqualTo(val));
+			var sidmem = new SafeHGlobalHandle(System.Security.Principal.WindowsIdentity.GetCurrent().User.GetBytes());
+			NetLocalGroupAddMembers(null, val, new[] { new LOCALGROUP_MEMBERS_INFO_0 { lgrmi0_sid = (IntPtr)sidmem } });
+			var m = NetLocalGroupGetMembers<LOCALGROUP_MEMBERS_INFO_3>(null, val);
+			Assert.That(m, Is.Not.Empty);
+			NetLocalGroupDelMembers(null, val, m.ToArray());
+			Assert.That(NetLocalGroupGetMembers<LOCALGROUP_MEMBERS_INFO_3>(null, val), Is.Empty);
+			Assert.That(() => NetLocalGroupDel(null, val).ThrowIfFailed(), Throws.Nothing);
+			e = NetLocalGroupEnum<LOCALGROUP_INFO_0>();
+			Assert.That(() => e.First(i => i.lgrpi0_name == val), Throws.Exception);
+		}
+
+		[Test]
+		public void NetUserTest()
+		{
+			const string val = "Dummy";
+			NetUserDel(null, val);
+			NetUserAdd(null, new USER_INFO_1 { usri1_name = val, usri1_password = "BigLongPwd0!", usri1_priv = UserPrivilege.USER_PRIV_USER, usri1_flags = UserAcctCtrlFlags.UF_ACCOUNTDISABLE });
+			var e = NetUserEnum<USER_INFO_1>();
+			Assert.That(e, Is.Not.Empty);
+			Assert.That(() => e.First(i => i.usri1_name == val), Throws.Nothing);
+			var info = NetUserGetInfo<USER_INFO_1>(null, val);
+			Assert.That(info.usri1_name, Is.EqualTo(val));
+			Assert.That(NetUserGetGroups<GROUP_USERS_INFO_0>(null, val), Is.Not.Empty);
+			Assert.That(NetUserGetLocalGroups<LOCALGROUP_USERS_INFO_0>(null, val, 0), Is.Empty);
+			//Assert.That(NetUserModalsGet<USER_MODALS_INFO_0>(null), Is.Empty);
+			Assert.That(() => NetUserDel(null, val).ThrowIfFailed(), Throws.Nothing);
+			e = NetUserEnum<USER_INFO_1>();
+			Assert.That(() => e.First(i => i.usri1_name == val), Throws.Exception);
+		}
+
 	}
 }

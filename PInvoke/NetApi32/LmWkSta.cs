@@ -1040,26 +1040,36 @@ namespace Vanara.PInvoke
 			public string wki101_lanroot;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1010
 		{
 			public uint wki1010_char_wait;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1011
 		{
 			public uint wki1011_collection_time;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1012
 		{
 			public uint wki1012_maximum_collection_count;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1013
 		{
 			public uint wki1013_keep_conn;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1018
 		{
 			public uint wki1018_sess_timeout;
@@ -1149,136 +1159,190 @@ namespace Vanara.PInvoke
 			public uint wki102_logged_on_users;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1023
 		{
 			public uint wki1023_siz_char_buf;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1027
 		{
 			public uint wki1027_errlog_sz;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1028
 		{
 			public uint wki1028_print_buf_time;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1032
 		{
 			public uint wki1032_wrk_heuristics;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1033
 		{
 			public uint wki1033_max_threads;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1041
 		{
 			public uint wki1041_lock_quota;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1042
 		{
 			public uint wki1042_lock_increment;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1043
 		{
 			public uint wki1043_lock_maximum;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1044
 		{
 			public uint wki1044_pipe_increment;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1045
 		{
 			public uint wki1045_pipe_maximum;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1046
 		{
 			public uint wki1046_dormant_file_limit;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1047
 		{
 			public uint wki1047_cache_file_timeout;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1048
 		{
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1048_use_opportunistic_locking;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1049
 		{
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1049_use_unlock_behind;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1050
 		{
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1050_use_close_behind;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1051
 		{
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1051_buf_named_pipes;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1052
 		{
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1052_use_lock_read_unlock;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1053
 		{
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1053_utilize_nt_caching;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1054
 		{
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1054_use_raw_read;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1055
 		{
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1055_use_raw_write;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1056
 		{
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1056_use_write_raw_data;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1057
 		{
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1057_use_encryption;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1058
 		{
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1058_buf_files_deny_write;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1059
 		{
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1059_buf_read_only_files;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1060
 		{
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1060_force_core_create_mode;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1061
 		{
 			[MarshalAs(UnmanagedType.Bool)] public bool wki1061_use_512_byte_max_transfer;
 		}
 
+		[PInvokeData("lmwksta.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		public struct WKSTA_INFO_1062
 		{
 			public uint wki1062_read_ahead_throughput;
