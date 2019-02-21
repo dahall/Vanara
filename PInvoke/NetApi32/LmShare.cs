@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using Vanara.Extensions;
 
 namespace Vanara.PInvoke
 {
@@ -18,6 +15,46 @@ namespace Vanara.PInvoke
 
 			/// <summary>The user specified by the sesi502_username member established the session without using password encryption.</summary>
 			SESS_NOENCRYPTION = 0x00000002,
+		}
+
+		/// <summary>
+		/// Indicates the shared resource's permissions for servers running with share-level security. A server running user-level security
+		/// ignores this member.
+		/// </summary>
+		[PInvokeData("lmshare.h", MSDNShortId = "cd152ccd-cd60-455f-b25c-c4939c65e0ab")]
+		[Flags]
+		public enum ShareLevelAccess
+		{
+			/// <summary>No access.</summary>
+			ACCESS_NONE = 0,
+
+			/// <summary>Permission to read, write, create, execute, and delete resources, and to modify their attributes and permissions.</summary>
+			ACCESS_ALL = ACCESS_READ | ACCESS_WRITE | ACCESS_CREATE | ACCESS_EXEC | ACCESS_DELETE | ACCESS_ATRIB | ACCESS_PERM,
+
+			/// <summary>Permission to read data from a resource and, by default, to execute the resource.</summary>
+			ACCESS_READ = 0x01,
+
+			/// <summary>Permission to write data to the resource.</summary>
+			ACCESS_WRITE = 0x02,
+
+			/// <summary>
+			/// Permission to create an instance of the resource (such as a file); data can be written to the resource as the resource is created.
+			/// </summary>
+			ACCESS_CREATE = 0x04,
+
+			/// <summary>Permission to execute the resource.</summary>
+			ACCESS_EXEC = 0x08,
+
+			/// <summary>Permission to delete the resource.</summary>
+			ACCESS_DELETE = 0x10,
+
+			/// <summary>Permission to modify the resource's attributes (such as the date and time when a file was last modified).</summary>
+			ACCESS_ATRIB = 0x20,
+
+			/// <summary>
+			/// Permission to modify the permissions (read, write, create, execute, and delete) assigned to a resource for a user or application.
+			/// </summary>
+			ACCESS_PERM = 0x40,
 		}
 
 		[PInvokeData("lmshare.h", MSDNShortId = "9fb3e0ae-76b5-4432-80dd-f3361738aa7c")]
@@ -142,50 +179,64 @@ namespace Vanara.PInvoke
 		/// is more than one user using this connection, then it is possible to get more than one structure for the same connection, but with
 		/// a different user name.
 		/// </summary>
-		/// <param name="servername"><para>
+		/// <param name="servername">
+		/// <para>
 		/// Pointer to a string that specifies the DNS or NetBIOS name of the remote server on which the function is to execute. If this
 		/// parameter is <c>NULL</c>, the local computer is used.
 		/// </para>
-		/// <para>This string is Unicode if <c>_WIN32_WINNT</c> or <c>FORCE_UNICODE</c> is defined.</para></param>
-		/// <param name="qualifier"><para>
+		/// <para>This string is Unicode if <c>_WIN32_WINNT</c> or <c>FORCE_UNICODE</c> is defined.</para>
+		/// </param>
+		/// <param name="qualifier">
+		/// <para>
 		/// Pointer to a string that specifies a share name or computer name for the connections of interest. If it is a share name, then all
 		/// the connections made to that share name are listed. If it is a computer name (for example, it starts with two backslash
 		/// characters), then <c>NetConnectionEnum</c> lists all connections made from that computer to the server specified.
 		/// </para>
-		/// <para>This string is Unicode if <c>_WIN32_WINNT</c> or <c>FORCE_UNICODE</c> is defined.</para></param>
-		/// <param name="level"><para>Specifies the information level of the data. This parameter can be one of the following values.</para>
+		/// <para>This string is Unicode if <c>_WIN32_WINNT</c> or <c>FORCE_UNICODE</c> is defined.</para>
+		/// </param>
+		/// <param name="level">
+		/// <para>Specifies the information level of the data. This parameter can be one of the following values.</para>
 		/// <list type="table">
-		///   <listheader>
-		///     <term>Value</term>
-		///     <term>Meaning</term>
-		///   </listheader>
-		///   <item>
-		///     <term>0</term>
-		///     <term>Return connection identifiers. The bufptr parameter is a pointer to an array of CONNECTION_INFO_0 structures.</term>
-		///   </item>
-		///   <item>
-		///     <term>1</term>
-		///     <term>
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0</term>
+		/// <term>Return connection identifiers. The bufptr parameter is a pointer to an array of CONNECTION_INFO_0 structures.</term>
+		/// </item>
+		/// <item>
+		/// <term>1</term>
+		/// <term>
 		/// Return connection identifiers and connection information. The bufptr parameter is a pointer to an array of CONNECTION_INFO_1 structures.
 		/// </term>
-		///   </item>
-		/// </list></param>
-		/// <param name="bufptr"><para>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="bufptr">
+		/// <para>
 		/// Pointer to the address of the buffer that receives the information. The format of this data depends on the value of the level parameter.
 		/// </para>
 		/// <para>
 		/// This buffer is allocated by the system and must be freed using the NetApiBufferFree function. Note that you must free the buffer
 		/// even if the function fails with <c>ERROR_MORE_DATA</c>.
-		/// </para></param>
-		/// <param name="prefmaxlen">Specifies the preferred maximum length of returned data, in bytes. If you specify <c>MAX_PREFERRED_LENGTH</c>, the function
+		/// </para>
+		/// </param>
+		/// <param name="prefmaxlen">
+		/// Specifies the preferred maximum length of returned data, in bytes. If you specify <c>MAX_PREFERRED_LENGTH</c>, the function
 		/// allocates the amount of memory required for the data. If you specify another value in this parameter, it can restrict the number
 		/// of bytes that the function returns. If the buffer size is insufficient to hold all entries, the function returns
-		/// <c>ERROR_MORE_DATA</c>. For more information, see Network Management Function Buffers and Network Management Function Buffer Lengths.</param>
+		/// <c>ERROR_MORE_DATA</c>. For more information, see Network Management Function Buffers and Network Management Function Buffer Lengths.
+		/// </param>
 		/// <param name="entriesread">Pointer to a value that receives the count of elements actually enumerated.</param>
-		/// <param name="totalentries">Pointer to a value that receives the total number of entries that could have been enumerated from the current resume position.
-		/// Note that applications should consider this value only as a hint.</param>
-		/// <param name="resume_handle">Pointer to a value that contains a resume handle which is used to continue an existing connection search. The handle should be
-		/// zero on the first call and left unchanged for subsequent calls. If this parameter is <c>NULL</c>, then no resume handle is stored.</param>
+		/// <param name="totalentries">
+		/// Pointer to a value that receives the total number of entries that could have been enumerated from the current resume position.
+		/// Note that applications should consider this value only as a hint.
+		/// </param>
+		/// <param name="resume_handle">
+		/// Pointer to a value that contains a resume handle which is used to continue an existing connection search. The handle should be
+		/// zero on the first call and left unchanged for subsequent calls. If this parameter is <c>NULL</c>, then no resume handle is stored.
+		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is <c>NERR_Success</c>.</para>
 		/// <para>If the function fails, the return value is a system error code. For a list of error codes, see System Error Codes.</para>
@@ -2198,7 +2249,16 @@ namespace Vanara.PInvoke
 			public uint shi1501_reserved;
 
 			/// <summary>Specifies the SECURITY_DESCRIPTOR associated with the share.</summary>
-			public IntPtr shi1501_security_descriptor;
+			public PSECURITY_DESCRIPTOR shi1501_security_descriptor;
+		}
+
+		/// <summary>Contains the filter associated with the specified share.</summary>
+		[PInvokeData("lmshare.h")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct SHARE_INFO_1503
+		{
+			/// <summary>Undocumented.</summary>
+			public Guid shi1503_sharefilter;
 		}
 
 		/// <summary>
@@ -2319,7 +2379,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public uint shi2_permissions;
+			public ShareLevelAccess shi2_permissions;
 
 			/// <summary>
 			/// Specifies a DWORD value that indicates the maximum number of concurrent connections that the shared resource can accommodate.
@@ -2347,6 +2407,154 @@ namespace Vanara.PInvoke
 			/// Note that Windows does not support share-level security.
 			/// </summary>
 			public string shi2_passwd;
+		}
+
+		/// <summary>
+		/// Contains information about the shared resource, including name of the resource, type, remark and flags. For more information
+		/// about controlling access to securable objects, see Access Control, Privileges, and Securable Objects.
+		/// </summary>
+		[PInvokeData("lmshare.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct SHARE_INFO_501
+		{
+			/// <summary>
+			/// Pointer to a Unicode string specifying the share name of a resource. Calls to the NetShareSetInfo function ignore this member.
+			/// </summary>
+			public string shi501_netname;
+
+			/// <summary>
+			/// <para>
+			/// A combination of values that specify the type of the shared resource. Calls to the <c>NetShareSetInfo</c> function ignore
+			/// this member.
+			/// </para>
+			/// <para>One of the following values may be specified. You can isolate these values by using the <c>STYPE_MASK</c> value.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>STYPE_DISKTREE</term>
+			/// <term>Disk drive.</term>
+			/// </item>
+			/// <item>
+			/// <term>STYPE_PRINTQ</term>
+			/// <term>Print queue.</term>
+			/// </item>
+			/// <item>
+			/// <term>STYPE_DEVICE</term>
+			/// <term>Communication device.</term>
+			/// </item>
+			/// <item>
+			/// <term>STYPE_IPC</term>
+			/// <term>Interprocess communication (IPC).</term>
+			/// </item>
+			/// </list>
+			/// <para>In addition, one or both of the following values may be specified.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>STYPE_SPECIAL</term>
+			/// <term>
+			/// Special share reserved for interprocess communication (IPC$) or remote administration of the server (ADMIN$). Can also refer
+			/// to administrative shares such as C$, D$, E$, and so forth. For more information, see Network Share Functions.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>STYPE_TEMPORARY</term>
+			/// <term>A temporary share.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public STYPE shi501_type;
+
+			/// <summary>Pointer to a Unicode string that contains an optional comment about the shared resource.</summary>
+			public string shi501_remark;
+
+			/// <summary>
+			/// <para>A bitmask of flags that specify information about the shared resource.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>SHI1005_FLAGS_DFS 0x0001</term>
+			/// <term>The specified share is present in a Dfs tree structure. This flag cannot be set with NetShareSetInfo.</term>
+			/// </item>
+			/// <item>
+			/// <term>SHI1005_FLAGS_DFS_ROOT 0x0002</term>
+			/// <term>The specified share is the root volume in a Dfs tree structure. This flag cannot be set with NetShareSetInfo.</term>
+			/// </item>
+			/// <item>
+			/// <term>SHI1005_FLAGS_RESTRICT_EXCLUSIVE_OPENS 0x0100</term>
+			/// <term>The specified share disallows exclusive file opens, where reads to an open file are disallowed.</term>
+			/// </item>
+			/// <item>
+			/// <term>SHI1005_FLAGS_FORCE_SHARED_DELETE 0x0200</term>
+			/// <term>Shared files in the specified share can be forcibly deleted.</term>
+			/// </item>
+			/// <item>
+			/// <term>SHI1005_FLAGS_ALLOW_NAMESPACE_CACHING 0x0400</term>
+			/// <term>Clients are allowed to cache the namespace of the specified share.</term>
+			/// </item>
+			/// <item>
+			/// <term>SHI1005_FLAGS_ACCESS_BASED_DIRECTORY_ENUM 0x0800</term>
+			/// <term>
+			/// The server will filter directory entries based on the access permissions that the user on the client computer has for the
+			/// server on which the files reside. Only files for which the user has read access and directories for which the user has
+			/// FILE_LIST_DIRECTORY access will be returned. If the user has SeBackupPrivilege, all available information will be returned.
+			/// For more information about file and directory access, see File Security and Access Rights. For more information about
+			/// SeBackupPrivilege, see Privilege Constants.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>SHI1005_FLAGS_FORCE_LEVELII_OPLOCK 0x1000</term>
+			/// <term>Prevents exclusive caching modes that can cause delays for highly shared read-only data.</term>
+			/// </item>
+			/// <item>
+			/// <term>SHI1005_FLAGS_ENABLE_HASH 0x2000</term>
+			/// <term>
+			/// Enables server-side functionality needed for peer caching support. Clients on high-latency or low-bandwidth connections can
+			/// use alternate methods to retrieve data from peers if available, instead of sending requests to the server. This is only
+			/// supported on shares configured for manual caching (CSC_CACHE_MANUAL_REINT).
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>SHI1005_FLAGS_ENABLE_CA 0X4000</term>
+			/// <term>
+			/// Enables Continuous Availability on a cluster share. Handles that are opened against a continuously available share can
+			/// survive network failures as well as cluster node failures. Windows 7, Windows Server 2008 R2, Windows Vista, Windows Server
+			/// 2008 and Windows Server 2003: This flag is not supported.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// <para>The CSC_MASK and CSC_MASK_EXT mask values can be used to apply flags that are specific to client-side caching (CSC).</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>CSC_MASK 0x0030</term>
+			/// <term>
+			/// Provides a mask for the following CSC states. CSC_CACHE_MANUAL_REINT 0x0000 CSC_CACHE_AUTO_REINT 0x0010 CSC_CACHE_VDO 0x0020
+			/// CSC_CACHE_NONE 0x0030
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>CSC_MASK_EXT 0x2030</term>
+			/// <term>
+			/// Provides a mask for the following CSC states and options. CSC_CACHE_MANUAL_REINT 0x0000 CSC_CACHE_AUTO_REINT 0x0010
+			/// CSC_CACHE_VDO 0x0020 CSC_CACHE_NONE 0x0030 SHI1005_FLAGS_ENABLE_HASH 0x2000
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public SHI1005_FLAGS shi501_flags;
 		}
 
 		/// <summary>
@@ -2468,7 +2676,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public uint shi502_permissions;
+			public ShareLevelAccess shi502_permissions;
 
 			/// <summary>
 			/// Specifies a DWORD value that indicates the maximum number of concurrent connections that the shared resource can accommodate.
@@ -2505,7 +2713,7 @@ namespace Vanara.PInvoke
 			public uint shi502_reserved;
 
 			/// <summary>Specifies the SECURITY_DESCRIPTOR associated with this share.</summary>
-			public IntPtr shi502_security_descriptor;
+			public PSECURITY_DESCRIPTOR shi502_security_descriptor;
 		}
 
 		/// <summary>
@@ -2631,7 +2839,7 @@ namespace Vanara.PInvoke
 			/// </item>
 			/// </list>
 			/// </summary>
-			public uint shi503_permissions;
+			public ShareLevelAccess shi503_permissions;
 
 			/// <summary>
 			/// Specifies a DWORD value that indicates the maximum number of concurrent connections that the shared resource can accommodate.
@@ -2674,7 +2882,7 @@ namespace Vanara.PInvoke
 			public uint shi503_reserved;
 
 			/// <summary>Specifies the SECURITY_DESCRIPTOR associated with this share.</summary>
-			public IntPtr shi503_security_descriptor;
+			public PSECURITY_DESCRIPTOR shi503_security_descriptor;
 		}
 	}
 }
