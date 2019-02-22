@@ -61,6 +61,16 @@ BackgroundCopyACLFlags, BackgroundCopyCost, BackgroundCopyErrorContext, Backgrou
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="Computer\LocalGroup.cs" />
+    <Compile Remove="Computer\LocalUser.cs" />
+    <Compile Remove="Computer\~LocalGroup.cs" />
+    <Compile Remove="Computer\~LocalUser.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Computer\~LocalGroup.cs" />
+    <None Include="Computer\~LocalUser.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="System.IO.FileSystem.AccessControl" Version="4.5.0" Condition=" '$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netcoreapp2.0' Or '$(TargetFramework)' == 'netcoreapp2.1' " />
     <PackageReference Include="Theraot.Core" Version="3.0.2" Condition=" '$(TargetFramework)' == 'net20' Or '$(TargetFramework)' == 'net35' Or '$(TargetFramework)' == 'net40' " />
   </ItemGroup>
@@ -68,6 +78,7 @@ BackgroundCopyACLFlags, BackgroundCopyCost, BackgroundCopyErrorContext, Backgrou
     <ProjectReference Include="..\PInvoke\BITS\Vanara.PInvoke.BITS.csproj" />
     <ProjectReference Include="..\PInvoke\IpHlpApi\Vanara.PInvoke.IpHlpApi.csproj" />
     <ProjectReference Include="..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
+    <ProjectReference Include="..\PInvoke\NetApi32\Vanara.PInvoke.NetApi32.csproj" />
     <ProjectReference Include="..\PInvoke\NetListMgr\Vanara.PInvoke.NetListMgr.csproj" />
     <ProjectReference Include="..\PInvoke\ShlwApi\Vanara.PInvoke.ShlwApi.csproj" />
     <ProjectReference Include="..\PInvoke\User32\Vanara.PInvoke.User32.csproj" />
