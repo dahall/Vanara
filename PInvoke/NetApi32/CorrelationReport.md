@@ -251,7 +251,9 @@ Native Structure | Header | Managed Structure
 [SHARE_INFO_1005](http://msdn2.microsoft.com/en-us/library/9fb3e0ae-76b5-4432-80dd-f3361738aa7c) | lmshare.h | Vanara.PInvoke.NetApi32+SHARE_INFO_1005  
 [SHARE_INFO_1006](http://msdn2.microsoft.com/en-us/library/645a8670-5661-4d6c-8d9e-67c1bbb0f1d7) | lmshare.h | Vanara.PInvoke.NetApi32+SHARE_INFO_1006  
 [SHARE_INFO_1501](http://msdn2.microsoft.com/en-us/library/ef5d4936-8c0b-4a3c-b2b9-34868eb01a2e) | lmshare.h | Vanara.PInvoke.NetApi32+SHARE_INFO_1501  
+[SHARE_INFO_1503](https://www.google.com/search?num=5&q=SHARE_INFO_1503+site%3Amicrosoft.com) | lmshare.h | Vanara.PInvoke.NetApi32+SHARE_INFO_1503  
 [SHARE_INFO_2](http://msdn2.microsoft.com/en-us/library/cd152ccd-cd60-455f-b25c-c4939c65e0ab) | lmshare.h | Vanara.PInvoke.NetApi32+SHARE_INFO_2  
+[SHARE_INFO_501](https://www.google.com/search?num=5&q=SHARE_INFO_501+site%3Amicrosoft.com) | lmshare.h | Vanara.PInvoke.NetApi32+SHARE_INFO_501  
 [SHARE_INFO_502](http://msdn2.microsoft.com/en-us/library/306e6704-2068-42da-bcc4-c0772c719ee8) | lmshare.h | Vanara.PInvoke.NetApi32+SHARE_INFO_502  
 [SHARE_INFO_503](http://msdn2.microsoft.com/en-us/library/12650bc0-f67d-464e-8386-a0fd53cdc749) | lmshare.h | Vanara.PInvoke.NetApi32+SHARE_INFO_503  
 [STAT_SERVER_0](http://msdn2.microsoft.com/en-us/library/7eb4e4a9-f4db-4702-a4ad-2d8bfac9f9ce) | lmstats.h | Vanara.PInvoke.NetApi32+STAT_SERVER_0  

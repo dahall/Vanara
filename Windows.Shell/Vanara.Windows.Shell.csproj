@@ -77,17 +77,26 @@ ChangeFilters, ExecutableType, FolderItemFilter, LibraryFolderFilter, LibraryVie
     <Compile Remove="TaskBar\ThumbnailToolbar.cs" />
     <Compile Remove="TaskBar\ThumbnailToolbarButton.cs" />
     <Compile Remove="TaskBar\ThumbnailToolbarButtonCollection.cs" />
+    <Compile Remove="TaskBar\~AssocUtil.cs" />
+    <Compile Remove="TaskBar\~ImageIndexer.cs" />
+    <Compile Remove="TaskBar\~JumpList.cs" />
+    <Compile Remove="TaskBar\~TaskbarButton.cs" />
+    <Compile Remove="TaskBar\~TaskbarButtonThumbnail.cs" />
+    <Compile Remove="TaskBar\~TaskbarButtonThumbnails.cs" />
+    <Compile Remove="TaskBar\~ThumbnailToolbar.cs" />
+    <Compile Remove="TaskBar\~ThumbnailToolbarButton.cs" />
+    <Compile Remove="TaskBar\~ThumbnailToolbarButtonCollection.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="TaskBar\AssocUtil.cs" />
-    <None Include="TaskBar\ImageIndexer.cs" />
-    <None Include="TaskBar\JumpList.cs" />
-    <None Include="TaskBar\TaskbarButton.cs" />
-    <None Include="TaskBar\TaskbarButtonThumbnail.cs" />
-    <None Include="TaskBar\TaskbarButtonThumbnails.cs" />
-    <None Include="TaskBar\ThumbnailToolbar.cs" />
-    <None Include="TaskBar\ThumbnailToolbarButton.cs" />
-    <None Include="TaskBar\ThumbnailToolbarButtonCollection.cs" />
+    <None Include="TaskBar\~AssocUtil.cs" />
+    <None Include="TaskBar\~ImageIndexer.cs" />
+    <None Include="TaskBar\~JumpList.cs" />
+    <None Include="TaskBar\~TaskbarButton.cs" />
+    <None Include="TaskBar\~TaskbarButtonThumbnail.cs" />
+    <None Include="TaskBar\~TaskbarButtonThumbnails.cs" />
+    <None Include="TaskBar\~ThumbnailToolbar.cs" />
+    <None Include="TaskBar\~ThumbnailToolbarButton.cs" />
+    <None Include="TaskBar\~ThumbnailToolbarButtonCollection.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Vanara.Core.csproj" />
