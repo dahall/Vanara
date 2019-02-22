@@ -125,10 +125,29 @@ namespace Vanara.PInvoke
 
 			/// <summary>Undocumented.</summary>
 			SHI1005_FLAGS_CLUSTER_MANAGED = 0x80000,
+
+			/// <summary>Used to mask off the following states (including SHI1005_FLAGS_ENABLE_HASH)</summary>
+			CSC_MASK_EXT = 0x2030,
+
+			/// <summary>Used to mask off the following states</summary>
+			CSC_MASK = 0x0030,
+
+			/// <summary>No automatic file by file reintegration</summary>
+			CSC_CACHE_MANUAL_REINT = 0x0000,
+
+			/// <summary>File by file reintegration is OK</summary>
+			CSC_CACHE_AUTO_REINT = 0x0010,
+
+			/// <summary>no need to flow opens</summary>
+			CSC_CACHE_VDO = 0x0020,
+
+			/// <summary>no CSC for this share</summary>
+			CSC_CACHE_NONE = 0x0030,
 		}
 
 		/// <summary>Type of shared device.</summary>
 		[PInvokeData("lmshare.h", MSDNShortId = "8453dcd2-5c58-4fe4-9426-0fd51647394d")]
+		[Flags]
 		public enum STYPE : uint
 		{
 			/// <summary>Disk drive.</summary>
