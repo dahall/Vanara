@@ -33,7 +33,7 @@ SafeMemoryHandle<T> | Abstract base class for all SafeAllocatedMemoryHandle deri
 SafeMemoryHandleExt<T> | A `SafeHandle` for memory allocated via COM.
 SparseArray<T> | A sparse array based on a dictionary.
 StringHelper | A safe class that represents an object that is pinned in memory.
-TryGetValueDelegate | 
+TryGetValueDelegate | Delegate for the implementation of the <see cref="M:Vanara.Collections.GenericVirtualReadOnlyDictionaryy`2.TryGetValue(`0,`1@)" /> method.
 VirtualDictionary<T> | A generic base class for providing a dictionary that gets and sets its values using virtual method calls. Useful for exposing lookups into existing list environments like the file system, registry, service controller, etc.
 VirtualReadOnlyDictionary<T> | A generic base class for providing a read-only dictionary that gets its values using virtual method calls. Useful for exposing lookups into existing list environments like the file system, registry, service controller, etc.
 ### Structures

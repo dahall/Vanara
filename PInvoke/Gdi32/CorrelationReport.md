@@ -629,8 +629,31 @@ Native Structure | Header | Managed Structure
 [DEVMODE](http://msdn2.microsoft.com/en-us/library/85741025-9393-42ab-8a6d-27f1ae2c0f1b) | wingdi.h | Vanara.PInvoke.Gdi32+DEVMODE  
 [DIBSECTION](http://msdn2.microsoft.com/en-us/library/dd183567) | Wingdi.h | Vanara.PInvoke.Gdi32+DIBSECTION  
 [DISPLAY_DEVICE](http://msdn2.microsoft.com/en-us/library/9a7813fe-358a-44eb-99da-c63f98d055c3) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAY_DEVICE  
+[DISPLAYCONFIG_2DREGION](http://msdn2.microsoft.com/en-us/library/ea306268-53fc-488b-afae-b8e9e5d09f2b) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_2DREGION  
+[DISPLAYCONFIG_ADAPTER_NAME](http://msdn2.microsoft.com/en-us/library/248f325f-37ae-48f4-a758-ee78a3e3f0b8) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_ADAPTER_NAME  
+[DISPLAYCONFIG_DESKTOP_IMAGE_INFO](http://msdn2.microsoft.com/en-us/library/2DACA175-19BC-4192-A2FF-CB8AC7220B98) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_DESKTOP_IMAGE_INFO  
+[DISPLAYCONFIG_DEVICE_INFO_HEADER](http://msdn2.microsoft.com/en-us/library/2fdfa54e-2a5f-448f-98e3-e51ce0acaeaf) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_DEVICE_INFO_HEADER  
+[DISPLAYCONFIG_GET_ADVANCED_COLOR_INFO](https://www.google.com/search?num=5&q=DISPLAYCONFIG_GET_ADVANCED_COLOR_INFO+site%3Amicrosoft.com) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_GET_ADVANCED_COLOR_INFO  
+[DISPLAYCONFIG_MODE_INFO](http://msdn2.microsoft.com/en-us/library/39ffe49b-96d3-4d8b-94a7-01c388448b82) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_MODE_INFO  
+[DISPLAYCONFIG_PATH_INFO](http://msdn2.microsoft.com/en-us/library/e218c36d-60d5-42c8-9443-419a388a2b8d) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_PATH_INFO  
+[DISPLAYCONFIG_PATH_SOURCE_INFO](http://msdn2.microsoft.com/en-us/library/df43d20b-a55a-4bec-89a2-9ede03b4d6c5) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_PATH_SOURCE_INFO  
+[DISPLAYCONFIG_PATH_TARGET_INFO](http://msdn2.microsoft.com/en-us/library/3dcdca96-7c5d-4e69-b7dd-8b5ccda25f6a) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_PATH_TARGET_INFO  
+[DISPLAYCONFIG_RATIONAL](http://msdn2.microsoft.com/en-us/library/1f2f25f7-5ea1-46f4-ad9f-c50c367bb600) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_RATIONAL  
+[DISPLAYCONFIG_SDR_WHITE_LEVEL](https://www.google.com/search?num=5&q=DISPLAYCONFIG_SDR_WHITE_LEVEL+site%3Amicrosoft.com) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_SDR_WHITE_LEVEL  
+[DISPLAYCONFIG_SET_ADVANCED_COLOR_STATE](https://www.google.com/search?num=5&q=DISPLAYCONFIG_SET_ADVANCED_COLOR_STATE+site%3Amicrosoft.com) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_SET_ADVANCED_COLOR_STATE  
+[DISPLAYCONFIG_SET_TARGET_PERSISTENCE](http://msdn2.microsoft.com/en-us/library/4798a1e1-8685-40c2-917a-0ee071bc780c) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_SET_TARGET_PERSISTENCE  
+[DISPLAYCONFIG_SOURCE_DEVICE_NAME](http://msdn2.microsoft.com/en-us/library/92813ffc-1915-4f26-afb1-936bf76f7844) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_SOURCE_DEVICE_NAME  
+[DISPLAYCONFIG_SOURCE_MODE](http://msdn2.microsoft.com/en-us/library/413d63e5-da9d-4906-80a9-049da6e85275) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_SOURCE_MODE  
+[DISPLAYCONFIG_SUPPORT_VIRTUAL_RESOLUTION](http://msdn2.microsoft.com/en-us/library/D9208D00-F437-4B2E-8C39-044F75088659) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_SUPPORT_VIRTUAL_RESOLUTION  
+[DISPLAYCONFIG_TARGET_BASE_TYPE](http://msdn2.microsoft.com/en-us/library/7916E714-9A3C-4682-AC08-9B6EE222D8B7) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_TARGET_BASE_TYPE  
+[DISPLAYCONFIG_TARGET_DEVICE_NAME](http://msdn2.microsoft.com/en-us/library/85507b69-8ce0-4f39-a4d3-7d67f515b451) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_TARGET_DEVICE_NAME  
+[DISPLAYCONFIG_TARGET_MODE](http://msdn2.microsoft.com/en-us/library/c81768f0-67d3-4ddd-94c8-013b1e4cf83e) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_TARGET_MODE  
+[DISPLAYCONFIG_TARGET_PREFERRED_MODE](http://msdn2.microsoft.com/en-us/library/1a4926ca-36d2-466c-b3d2-b59d34a89ee6) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_TARGET_PREFERRED_MODE  
+[DISPLAYCONFIG_VIDEO_SIGNAL_INFO](http://msdn2.microsoft.com/en-us/library/960089fe-dbb7-41a1-af73-0002cfce6da2) | wingdi.h | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_VIDEO_SIGNAL_INFO  
 [EXTLOGPEN](http://msdn2.microsoft.com/en-us/library/34ffa71d-e94d-425e-9f9d-21e3df4990b7) | wingdi.h | Vanara.PInvoke.Gdi32+EXTLOGPEN  
 [LOGBRUSH](http://msdn2.microsoft.com/en-us/library/ded2c7a4-2248-4d01-95c6-ab4050719094) | wingdi.h | Vanara.PInvoke.Gdi32+LOGBRUSH  
 [LOGPEN](http://msdn2.microsoft.com/en-us/library/0e098b5a-e249-43ad-a6d8-2509b6562453) | wingdi.h | Vanara.PInvoke.Gdi32+LOGPEN  
 [RGBQUAD](http://msdn2.microsoft.com/en-us/library/dd162938) | Wingdi.h | Vanara.PInvoke.Gdi32+RGBQUAD  
 [TEXTMETRIC](http://msdn2.microsoft.com/en-us/library/0a46da58-5d0f-4db4-bba6-9e1b6c1f892c) | wingdi.h | Vanara.PInvoke.Gdi32+TEXTMETRIC  
+[Union](https://www.google.com/search?num=5&q=Union+site%3Amicrosoft.com) |  | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_PATH_SOURCE_INFO+Union  
+[Union](https://www.google.com/search?num=5&q=Union+site%3Amicrosoft.com) |  | Vanara.PInvoke.Gdi32+DISPLAYCONFIG_PATH_TARGET_INFO+Union  

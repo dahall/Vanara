@@ -3,6 +3,7 @@
 Class | Description
 ---- | ----
 AccessControlHelper | Helper methods for working with Access Control structures.
+AccessExtension | Extension methods for native and .NET access control objects.
 AccountPrivileges | Allows for the privileges of a user to be retrieved, enumerated and set.
 AccountUtils | Helper methods for working with `WindowsIdentity` and user names.
 ActiveDirectoryExtension | 

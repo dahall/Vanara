@@ -4,7 +4,7 @@
     <Description>Classes for system related items derived from the Vanara PInvoke libraries. Includes a class for working with virtual disks (including async methods), classes for BITS, and extensions for Process (privileges and elavation), FileInfo (compression info), and ServiceController (SetStartType) that pull extended information through native API calls.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>2.3.0</VersionPrefix>
+    <VersionPrefix>2.3.1</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1</TargetFrameworks>
     <AssemblyName>Vanara.SystemServices</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -23,13 +23,13 @@
     <PackageReleaseNotes>Currently implements:
 
 Classes
-BackgroundCopyException, BackgroundCopyFileCollection, BackgroundCopyFileInfo, BackgroundCopyFileRange, BackgroundCopyFileRangesTransferredEventArgs, BackgroundCopyFileTransferredEventArgs, BackgroundCopyJob, BackgroundCopyJobCollection, BackgroundCopyJobCredential, BackgroundCopyJobCredentials, BackgroundCopyJobEventArgs, BackgroundCopyManager, FileInfoExtension, NetworkConnection, NetworkInterfaceExt, NetworkListManager, NetworkProfile, PathEx, ProcessExtension, RegistryEventArgs, RegistryEventMonitor, ServiceControllerExtension, SystemShutdown, VirtualDisk, VirtualDiskMetadata, Wow64Redirect
+BackgroundCopyException, BackgroundCopyFileCollection, BackgroundCopyFileInfo, BackgroundCopyFileRange, BackgroundCopyFileRangesTransferredEventArgs, BackgroundCopyFileTransferredEventArgs, BackgroundCopyJob, BackgroundCopyJobCollection, BackgroundCopyJobCredential, BackgroundCopyJobCredentials, BackgroundCopyJobEventArgs, BackgroundCopyManager, Computer, FileInfoExtension, NetworkConnection, NetworkInterfaceExt, NetworkListManager, NetworkProfile, PathEx, ProcessExtension, RegistryEventArgs, RegistryEventMonitor, ServiceControllerExtension, SharedDevice, SharedDevices, SystemShutdown, VirtualDisk, VirtualDiskMetadata, Wow64Redirect
 
 Structures
 BackgroundCopyFileRange, BackgroundCopyJobProgress, BackgroundCopyJobReplyProgress
 
 Enumerations
-BackgroundCopyACLFlags, BackgroundCopyCost, BackgroundCopyErrorContext, BackgroundCopyJobCredentialScheme, BackgroundCopyJobCredentialTarget, BackgroundCopyJobPriority, BackgroundCopyJobSecurity, BackgroundCopyJobState, BackgroundCopyJobType, DeviceType, NetworkInterfaceAccessType, NetworkInterfaceAdministrativeStatus, NetworkInterfaceConnectionType, NetworkInterfaceDirectionType, NetworkInterfaceMediaType, NetworkInterfacePhysicalMedium, PathCharType, ProcessIntegrityLevel, Subtype
+BackgroundCopyACLFlags, BackgroundCopyCost, BackgroundCopyErrorContext, BackgroundCopyJobCredentialScheme, BackgroundCopyJobCredentialTarget, BackgroundCopyJobPriority, BackgroundCopyJobSecurity, BackgroundCopyJobState, BackgroundCopyJobType, DeviceType, NetworkInterfaceAccessType, NetworkInterfaceAdministrativeStatus, NetworkInterfaceConnectionType, NetworkInterfaceDirectionType, NetworkInterfaceMediaType, NetworkInterfacePhysicalMedium, PathCharType, ProcessIntegrityLevel, ShareOfflineSettings, Subtype
 
 </PackageReleaseNotes>
     <LangVersion>latest</LangVersion>

@@ -14,6 +14,7 @@ BackgroundCopyJobCredential | Represents a single BITS job credential.
 BackgroundCopyJobCredentials | The list of credentials for a job.
 BackgroundCopyJobEventArgs | Event argument for background copy job.
 BackgroundCopyManager | Use the BackgroundCopyManager to create transfer jobs, retrieve an enumerator object that contains the jobs in the queue, and to retrieve individual jobs from the queue.
+Computer | Represents a single connected (authenticated) computer.
 FileInfoExtension | Extension methods for `FileSystemInfo` and derived classes to facilitate retrieval of extended properties.
 NetworkConnection | Represents a single network connection. Wraps `INetworkConnection`.
 NetworkInterfaceExt | 
@@ -24,6 +25,8 @@ ProcessExtension | Extension methods for `Process` for privilegs, status, elevat
 RegistryEventArgs | Argument used in `RegistryEventMonitor` events.
 RegistryEventMonitor | Watches the Windows Registry for any changes.
 ServiceControllerExtension | Extension methods for `ServiceController`.
+SharedDevice | Represents a shared device on a computer.
+SharedDevices | Represents all the shared devices on a computers.
 SystemShutdown | Provides access to system shutdown, restart, lock and notifications.
 VirtualDisk | Class that represents a virtual disk and allows for performing actions on it. This wraps most of the methods found in virtdisk.h.
 VirtualDiskMetadata | Supports getting and setting metadata on a virtual disk.
@@ -55,4 +58,5 @@ NetworkInterfaceMediaType | The NDIS media type of a network interface. | Ethern
 NetworkInterfacePhysicalMedium | The NDIS physical medium type. | Unspecified, WirelessLan, CableModem, PhoneLine, PowerLine, DSL, FibreChannel, Ieee1394, WirelessWan, Native802_11, Bluetooth, InfiniBand, WiMAX, UWB, Ethernet802_3, TokenRing, IrDA, WiredWAN, WiredCoWAN, Other
 PathCharType |  | Invalid, LongFileName, ShortFileName, Wildcard, Separator
 ProcessIntegrityLevel | Values which define a processes integrity level. | Untrusted, Undefined, Low, Medium, High, System
+ShareOfflineSettings | Offline settings for a shared folder. | OnlySpecified, All, AllOptimized, None
 Subtype | Represents the subtype of a virtual disk. | Fixed, Dynamic, Differencing
