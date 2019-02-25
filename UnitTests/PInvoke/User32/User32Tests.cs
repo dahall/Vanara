@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Gdi32;
@@ -52,6 +53,28 @@ namespace Vanara.PInvoke.Tests
 					mode++;
 				}
 				devNum++;
+			}
+		}
+
+		[Test]
+		public void DisplayConfigTest()
+		{
+			Assert.That(QueryDisplayConfig(QDC.QDC_ONLY_ACTIVE_PATHS, out var paths, out var modes, out var topId).Succeeded, Is.True);
+			foreach (var mode in modes.Where(m => m.infoType == DISPLAYCONFIG_MODE_INFO_TYPE.DISPLAYCONFIG_MODE_INFO_TYPE_TARGET))
+			{
+				Assert.That(() => DisplayConfigGetDeviceInfo<DISPLAYCONFIG_TARGET_DEVICE_NAME>(mode.adapterId, mode.id, DISPLAYCONFIG_DEVICE_INFO_TYPE.DISPLAYCONFIG_DEVICE_INFO_GET_ADAPTER_NAME), Throws.Exception);
+				Assert.That(() => DisplayConfigGetDeviceInfo<RECT>(mode.adapterId, mode.id), Throws.Exception);
+				TestContext.WriteLine(DisplayConfigGetDeviceInfo<DISPLAYCONFIG_TARGET_DEVICE_NAME>(mode.adapterId, mode.id).monitorFriendlyDeviceName);
+				TestContext.WriteLine(DisplayConfigGetDeviceInfo<DISPLAYCONFIG_ADAPTER_NAME>(mode.adapterId, mode.id).adapterDevicePath);
+				TestContext.WriteLine(DisplayConfigGetDeviceInfo<DISPLAYCONFIG_TARGET_BASE_TYPE>(mode.adapterId, mode.id).baseOutputTechnology);
+				TestContext.WriteLine(DisplayConfigGetDeviceInfo<DISPLAYCONFIG_SUPPORT_VIRTUAL_RESOLUTION>(mode.adapterId, mode.id).value);
+				TestContext.WriteLine(DisplayConfigGetDeviceInfo<DISPLAYCONFIG_GET_ADVANCED_COLOR_INFO>(mode.adapterId, mode.id).colorEncoding);
+				TestContext.WriteLine(DisplayConfigGetDeviceInfo<DISPLAYCONFIG_SDR_WHITE_LEVEL>(mode.adapterId, mode.id).SDRWhiteLevel);
+				TestContext.WriteLine(DisplayConfigGetDeviceInfo<DISPLAYCONFIG_TARGET_PREFERRED_MODE>(mode.adapterId, mode.id).targetMode);
+			}
+			foreach (var path in paths.Where(p => p.targetInfo.targetAvailable))
+			{
+				TestContext.WriteLine(DisplayConfigGetDeviceInfo<DISPLAYCONFIG_SOURCE_DEVICE_NAME>(path.sourceInfo.adapterId, path.sourceInfo.id).viewGdiDeviceName);
 			}
 		}
 
