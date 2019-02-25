@@ -381,27 +381,6 @@ namespace Vanara.PInvoke
 			MSGFLTINFO_ALLOWED_HIGHER = 3,
 		}
 
-		/// <summary>The mouse state flags.</summary>
-		[PInvokeData("winuser.h")]
-		[Flags]
-		public enum MouseState : ushort
-		{
-			/// <summary>Mouse attributes changed; application needs to query the mouse attributes.</summary>
-			MOUSE_ATTRIBUTES_CHANGED = 0x04,
-
-			/// <summary>Mouse movement data is relative to the last mouse position.</summary>
-			MOUSE_MOVE_RELATIVE = 0,
-
-			/// <summary>Mouse movement data is based on absolute position.</summary>
-			MOUSE_MOVE_ABSOLUTE = 1,
-
-			/// <summary>Mouse coordinates are mapped to the virtual desktop (for a multiple monitor system).</summary>
-			MOUSE_VIRTUAL_DESKTOP = 0x02,
-
-			/// <summary>Do not coalesce mouse moves.</summary>
-			MOUSE_MOVE_NOCOALESCE = 0x08,
-		}
-
 		/// <summary>
 		/// <para>
 		/// This topic describes the constant values used to describe the state of objects in an application UI. The state constants are
@@ -585,104 +564,6 @@ namespace Vanara.PInvoke
 
 			/// <summary>The object is unavailable.</summary>
 			STATE_SYSTEM_UNAVAILABLE = 0x00000001,
-		}
-
-		/// <summary>Flags for scan code information.</summary>
-		[PInvokeData("winuser.h")]
-		[Flags]
-		public enum RI_KEY : ushort
-		{
-			/// <summary>The key is down.</summary>
-			RI_KEY_MAKE = 0,
-
-			/// <summary>The key is up.</summary>
-			RI_KEY_BREAK = 1,
-
-			/// <summary>The scan code has the E0 prefix.</summary>
-			RI_KEY_E0 = 2,
-
-			/// <summary>The scan code has the E1 prefix.</summary>
-			RI_KEY_E1 = 4,
-
-			/// <summary>Undocumented</summary>
-			RI_KEY_TERMSRV_SET_LED = 8,
-
-			/// <summary>Undocumented</summary>
-			RI_KEY_TERMSRV_SHADOW = 0x10
-		}
-
-		/// <summary>Mouse button transition state indicators.</summary>
-		[PInvokeData("winuser.h")]
-		[Flags]
-		public enum RI_MOUSE : ushort
-		{
-			/// <summary>Left button changed to down.</summary>
-			RI_MOUSE_LEFT_BUTTON_DOWN = 0x0001,
-
-			/// <summary>Left button changed to up.</summary>
-			RI_MOUSE_LEFT_BUTTON_UP = 0x0002,
-
-			/// <summary>Right button changed to down.</summary>
-			RI_MOUSE_RIGHT_BUTTON_DOWN = 0x0004,
-
-			/// <summary>Right button changed to up.</summary>
-			RI_MOUSE_RIGHT_BUTTON_UP = 0x0008,
-
-			/// <summary>Middle button changed to down.</summary>
-			RI_MOUSE_MIDDLE_BUTTON_DOWN = 0x0010,
-
-			/// <summary>Middle button changed to up.</summary>
-			RI_MOUSE_MIDDLE_BUTTON_UP = 0x0020,
-
-			/// <summary>RI_MOUSE_LEFT_BUTTON_DOWN</summary>
-			RI_MOUSE_BUTTON_1_DOWN = RI_MOUSE_LEFT_BUTTON_DOWN,
-
-			/// <summary>RI_MOUSE_LEFT_BUTTON_UP</summary>
-			RI_MOUSE_BUTTON_1_UP = RI_MOUSE_LEFT_BUTTON_UP,
-
-			/// <summary>RI_MOUSE_RIGHT_BUTTON_DOWN</summary>
-			RI_MOUSE_BUTTON_2_DOWN = RI_MOUSE_RIGHT_BUTTON_DOWN,
-
-			/// <summary>RI_MOUSE_RIGHT_BUTTON_UP</summary>
-			RI_MOUSE_BUTTON_2_UP = RI_MOUSE_RIGHT_BUTTON_UP,
-
-			/// <summary>RI_MOUSE_MIDDLE_BUTTON_DOWN</summary>
-			RI_MOUSE_BUTTON_3_DOWN = RI_MOUSE_MIDDLE_BUTTON_DOWN,
-
-			/// <summary>RI_MOUSE_MIDDLE_BUTTON_UP</summary>
-			RI_MOUSE_BUTTON_3_UP = RI_MOUSE_MIDDLE_BUTTON_UP,
-
-			/// <summary>XBUTTON1 changed to down.</summary>
-			RI_MOUSE_BUTTON_4_DOWN = 0x0040,
-
-			/// <summary>XBUTTON1 changed to up.</summary>
-			RI_MOUSE_BUTTON_4_UP = 0x0080,
-
-			/// <summary>XBUTTON2 changed to down.</summary>
-			RI_MOUSE_BUTTON_5_DOWN = 0x0100,
-
-			/// <summary>XBUTTON2 changed to up.</summary>
-			RI_MOUSE_BUTTON_5_UP = 0x0200,
-
-			/// <summary>Raw input comes from a mouse wheel. The wheel delta is stored in usButtonData.</summary>
-			RI_MOUSE_WHEEL = 0x0400,
-
-			/// <summary>Raw input comes from a mouse horizontal wheel. The wheel delta is stored in usButtonData.</summary>
-			RI_MOUSE_HWHEEL = 0x0800,
-		}
-
-		/// <summary>The type of raw input.</summary>
-		[PInvokeData("winuser.h")]
-		public enum RIM_TYPE
-		{
-			/// <summary>Raw input comes from some device that is not a keyboard or a mouse.</summary>
-			RIM_TYPEHID = 2,
-
-			/// <summary>Raw input comes from the keyboard.</summary>
-			RIM_TYPEKEYBOARD = 1,
-
-			/// <summary>Raw input comes from the mouse.</summary>
-			RIM_TYPEMOUSE = 0,
 		}
 
 		/// <summary>Window sizing and positioning flags.</summary>
@@ -2381,33 +2262,6 @@ namespace Vanara.PInvoke
 		public static extern IntPtr DefMDIChildProc(HWND hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
 
 		/// <summary>
-		/// Calls the default raw input procedure to provide default processing for any raw input messages that an application does not
-		/// process. This function ensures that every message is processed. <c>DefRawInputProc</c> is called with the same parameters
-		/// received by the window procedure.
-		/// </summary>
-		/// <param name="paRawInput">
-		/// <para>Type: <c>PRAWINPUT*</c></para>
-		/// <para>An array of RAWINPUT structures.</para>
-		/// </param>
-		/// <param name="nInput">
-		/// <para>Type: <c>INT</c></para>
-		/// <para>The number of RAWINPUT structures pointed to by paRawInput.</para>
-		/// </param>
-		/// <param name="cbSizeHeader">
-		/// <para>Type: <c>UINT</c></para>
-		/// <para>The size, in bytes, of the RAWINPUTHEADER structure.</para>
-		/// </param>
-		/// <returns>
-		/// <para>Type: <c>LRESULT</c></para>
-		/// <para>If successful, the function returns <c>S_OK</c>. Otherwise it returns an error value.</para>
-		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-defrawinputproc LRESULT DefRawInputProc( PRAWINPUT
-		// *paRawInput, INT nInput, UINT cbSizeHeader );
-		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
-		[PInvokeData("winuser.h")]
-		public static extern IntPtr DefRawInputProc(RAWINPUT[] paRawInput, int nInput, uint cbSizeHeader);
-
-		/// <summary>
 		/// Calls the default window procedure to provide default processing for any window messages that an application does not process.
 		/// This function ensures that every message is processed. <c>DefWindowProc</c> is called with the same parameters received by the
 		/// window procedure.
@@ -2499,6 +2353,84 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "destroywindow")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool DestroyWindow(HWND hWnd);
+
+		/// <summary>
+		/// Captures the mouse and tracks its movement until the user releases the left button, presses the ESC key, or moves the mouse
+		/// outside the drag rectangle around the specified point. The width and height of the drag rectangle are specified by the
+		/// <c>SM_CXDRAG</c> and <c>SM_CYDRAG</c> values returned by the GetSystemMetrics function.
+		/// </summary>
+		/// <param name="hwnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window receiving mouse input.</para>
+		/// </param>
+		/// <param name="pt">
+		/// <para>Type: <c>POINT</c></para>
+		/// <para>
+		/// Initial position of the mouse, in screen coordinates. The function determines the coordinates of the drag rectangle by using this point.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>If the user moved the mouse outside of the drag rectangle while holding down the left button, the return value is nonzero.</para>
+		/// <para>
+		/// If the user did not move the mouse outside of the drag rectangle while holding down the left button, the return value is zero.
+		/// </para>
+		/// </returns>
+		/// <remarks>The system metrics for the drag rectangle are configurable, allowing for larger or smaller drag rectangles.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-dragdetect BOOL DragDetect( HWND hwnd, POINT pt );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool DragDetect(HWND hwnd, System.Drawing.Point pt);
+
+		/// <summary>
+		/// Enables or disables mouse and keyboard input to the specified window or control. When input is disabled, the window does not
+		/// receive input such as mouse clicks and key presses. When input is enabled, the window receives all input.
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window to be enabled or disabled.</para>
+		/// </param>
+		/// <param name="bEnable">
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>
+		/// Indicates whether to enable or disable the window. If this parameter is <c>TRUE</c>, the window is enabled. If the parameter is
+		/// <c>FALSE</c>, the window is disabled.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>If the window was previously disabled, the return value is nonzero.</para>
+		/// <para>If the window was not previously disabled, the return value is zero.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If the window is being disabled, the system sends a WM_CANCELMODE message. If the enabled state of a window is changing, the
+		/// system sends a WM_ENABLE message after the <c>WM_CANCELMODE</c> message. (These messages are sent before <c>EnableWindow</c>
+		/// returns.) If a window is already disabled, its child windows are implicitly disabled, although they are not sent a
+		/// <c>WM_ENABLE</c> message.
+		/// </para>
+		/// <para>
+		/// A window must be enabled before it can be activated. For example, if an application is displaying a modeless dialog box and has
+		/// disabled its main window, the application must enable the main window before destroying the dialog box. Otherwise, another window
+		/// will receive the keyboard focus and be activated. If a child window is disabled, it is ignored when the system tries to determine
+		/// which window should receive mouse messages.
+		/// </para>
+		/// <para>
+		/// By default, a window is enabled when it is created. To create a window that is initially disabled, an application can specify the
+		/// <c>WS_DISABLED</c> style in the CreateWindow or CreateWindowEx function. After a window has been created, an application can use
+		/// <c>EnableWindow</c> to enable or disable the window.
+		/// </para>
+		/// <para>
+		/// An application can use this function to enable or disable a control in a dialog box. A disabled control cannot receive the
+		/// keyboard focus, nor can a user gain access to it.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-enablewindow BOOL EnableWindow( HWND hWnd, BOOL bEnable );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool EnableWindow(HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool bEnable);
 
 		/// <summary>
 		/// <para>Simultaneously updates the position and size of one or more windows in a single screen-refreshing cycle.</para>
@@ -2893,6 +2825,29 @@ namespace Vanara.PInvoke
 		public static extern HWND GetAncestor(HWND hwnd, GetAncestorFlag gaFlags);
 
 		/// <summary>
+		/// Retrieves a handle to the window (if any) that has captured the mouse. Only one window at a time can capture the mouse; this
+		/// window receives mouse input whether or not the cursor is within its borders.
+		/// </summary>
+		/// <returns>
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>
+		/// The return value is a handle to the capture window associated with the current thread. If no window in the thread has captured
+		/// the mouse, the return value is <c>NULL</c>.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// A <c>NULL</c> return value means the current thread has not captured the mouse. However, it is possible that another thread or
+		/// process has captured the mouse.
+		/// </para>
+		/// <para>To get a handle to the capture window on another thread, use the GetGUIThreadInfo function.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getcapture HWND GetCapture( );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		public static extern HWND GetCapture();
+
+		/// <summary>
 		/// Retrieves the coordinates of a window's client area. The client coordinates specify the upper-left and lower-right corners of the
 		/// client area. Because client coordinates are relative to the upper-left corner of a window's client area, the coordinates of the
 		/// upper-left corner are (0,0).
@@ -2921,6 +2876,36 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("Winuser.h", MSDNShortId = "ms633504")]
 		public static extern HWND GetDesktopWindow();
+
+		/// <summary>
+		/// Retrieves the handle to the window that has the keyboard focus, if the window is attached to the calling thread's message queue.
+		/// </summary>
+		/// <returns>
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>
+		/// The return value is the handle to the window with the keyboard focus. If the calling thread's message queue does not have an
+		/// associated window with the keyboard focus, the return value is <c>NULL</c>.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>GetFocus</c> returns the window with the keyboard focus for the current thread's message queue. If <c>GetFocus</c> returns
+		/// <c>NULL</c>, another thread's queue may be attached to a window that has the keyboard focus.
+		/// </para>
+		/// <para>
+		/// Use the GetForegroundWindow function to retrieve the handle to the window with which the user is currently working. You can
+		/// associate your thread's message queue with the windows owned by another thread by using the AttachThreadInput function.
+		/// </para>
+		/// <para>
+		/// To get the window with the keyboard focus on the foreground queue or the queue of another thread, use the GetGUIThreadInfo function.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see "Creating a Combo Box Toolbar" in Using Combo Boxes.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getfocus HWND GetFocus( );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		public static extern HWND GetFocus();
 
 		/// <summary>
 		/// <para>
@@ -3856,6 +3841,23 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool IsWindow(HWND hWnd);
 
+		/// <summary>Determines whether the specified window is enabled for mouse and keyboard input.</summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window to be tested.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>If the window is enabled, the return value is nonzero.</para>
+		/// <para>If the window is not enabled, the return value is zero.</para>
+		/// </returns>
+		/// <remarks>A child window receives input only if it is both enabled and visible.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-iswindowenabled BOOL IsWindowEnabled( HWND hWnd );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool IsWindowEnabled(HWND hWnd);
+
 		/// <summary>
 		/// <para>Determines whether the specified window is a native Unicode window.</para>
 		/// </summary>
@@ -4346,6 +4348,129 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "registershellhookwindow")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool RegisterShellHookWindow(HWND hwnd);
+
+		/// <summary>
+		/// Releases the mouse capture from a window in the current thread and restores normal mouse input processing. A window that has
+		/// captured the mouse receives all mouse input, regardless of the position of the cursor, except when a mouse button is clicked
+		/// while the cursor hot spot is in the window of another thread.
+		/// </summary>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>An application calls this function after calling the SetCapture function.</para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Drawing Lines with the Mouse.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-releasecapture BOOL ReleaseCapture( );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool ReleaseCapture();
+
+		/// <summary>Activates a window. The window must be attached to the calling thread's message queue.</summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the top-level window to be activated.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>If the function succeeds, the return value is the handle to the window that was previously active.</para>
+		/// <para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>SetActiveWindow</c> function activates a window, but not if the application is in the background. The window will be
+		/// brought into the foreground (top of Z-Order) if its application is in the foreground when the system activates the window.
+		/// </para>
+		/// <para>
+		/// If the window identified by the hWnd parameter was created by the calling thread, the active window status of the calling thread
+		/// is set to hWnd. Otherwise, the active window status of the calling thread is set to <c>NULL</c>.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setactivewindow HWND SetActiveWindow( HWND hWnd );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		public static extern HWND SetActiveWindow(HWND hWnd);
+
+		/// <summary>
+		/// <para>
+		/// Sets the mouse capture to the specified window belonging to the current thread. <c>SetCapture</c> captures mouse input either
+		/// when the mouse is over the capturing window, or when the mouse button was pressed while the mouse was over the capturing window
+		/// and the button is still down. Only one window at a time can capture the mouse.
+		/// </para>
+		/// <para>
+		/// If the mouse cursor is over a window created by another thread, the system will direct mouse input to the specified window only
+		/// if a mouse button is down.
+		/// </para>
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window in the current thread that is to capture the mouse.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>
+		/// The return value is a handle to the window that had previously captured the mouse. If there is no such window, the return value
+		/// is <c>NULL</c>.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Only the foreground window can capture the mouse. When a background window attempts to do so, the window receives messages only
+		/// for mouse events that occur when the cursor hot spot is within the visible portion of the window. Also, even if the foreground
+		/// window has captured the mouse, the user can still click another window, bringing it to the foreground.
+		/// </para>
+		/// <para>
+		/// When the window no longer requires all mouse input, the thread that created the window should call the ReleaseCapture function to
+		/// release the mouse.
+		/// </para>
+		/// <para>This function cannot be used to capture mouse input meant for another process.</para>
+		/// <para>When the mouse is captured, menu hotkeys and other keyboard accelerators do not work.</para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Drawing Lines with the Mouse.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setcapture HWND SetCapture( HWND hWnd );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		public static extern HWND SetCapture(HWND hWnd);
+
+		/// <summary>Sets the keyboard focus to the specified window. The window must be attached to the calling thread's message queue.</summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window that will receive the keyboard input. If this parameter is <c>NULL</c>, keystrokes are ignored.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>
+		/// If the function succeeds, the return value is the handle to the window that previously had the keyboard focus. If the hWnd
+		/// parameter is invalid or the window is not attached to the calling thread's message queue, the return value is <c>NULL</c>. To get
+		/// extended error information, call GetLastError.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>SetFocus</c> function sends a WM_KILLFOCUS message to the window that loses the keyboard focus and a WM_SETFOCUS message
+		/// to the window that receives the keyboard focus. It also activates either the window that receives the focus or the parent of the
+		/// window that receives the focus.
+		/// </para>
+		/// <para>
+		/// If a window is active but does not have the focus, any key pressed will produce the WM_SYSCHAR, WM_SYSKEYDOWN, or WM_SYSKEYUP
+		/// message. If the <c>VK_MENU</c> key is also pressed, the
+		/// </para>
+		/// <para>
+		/// By using the AttachThreadInput function, a thread can attach its input processing to another thread. This allows a thread to call
+		/// <c>SetFocus</c> to set the keyboard focus to a window attached to another thread's message queue.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Initializing a Dialog Box.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setfocus HWND SetFocus( HWND hWnd );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		public static extern HWND SetFocus(HWND hWnd);
 
 		/// <summary>
 		/// <para>
@@ -5905,362 +6030,6 @@ namespace Vanara.PInvoke
 			public RECT rcCaret;
 		}
 
-		/// <summary>Describes the format of the raw input from a Human Interface Device (HID).</summary>
-		/// <remarks>
-		/// Each WM_INPUT can indicate several inputs, but all of the inputs come from the same HID. The size of the <c>bRawData</c> array is
-		/// <c>dwSizeHid</c> * <c>dwCount</c>.
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagrawhid typedef struct tagRAWHID { DWORD dwSizeHid;
-		// DWORD dwCount; BYTE bRawData[1]; } RAWHID, *PRAWHID, *LPRAWHID;
-		[PInvokeData("winuser.h")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		public struct RAWHID
-		{
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The size, in bytes, of each HID input in <c>bRawData</c>.</para>
-			/// </summary>
-			public uint dwSizeHid;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of HID inputs in <c>bRawData</c>.</para>
-			/// </summary>
-			public uint dwCount;
-
-			/// <summary>
-			/// <para>Type: <c>BYTE[1]</c></para>
-			/// <para>The raw input data, as an array of bytes.</para>
-			/// </summary>
-			public IntPtr bRawData;
-		}
-
-		/// <summary>Contains the raw input from a device.</summary>
-		/// <remarks>
-		/// <para>The handle to this structure is passed in the lParam parameter of WM_INPUT.</para>
-		/// <para>To get detailed information -- such as the header and the content of the raw input -- call GetRawInputData.</para>
-		/// <para>To read the <c>RAWINPUT</c> in the message loop as a buffered read, call GetRawInputBuffer.</para>
-		/// <para>To get device specific information, call GetRawInputDeviceInfo with the hDevice from RAWINPUTHEADER.</para>
-		/// <para>Raw input is available only when the application calls RegisterRawInputDevices with valid device specifications.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagrawinput typedef struct tagRAWINPUT { RAWINPUTHEADER
-		// header; union { RAWMOUSE mouse; RAWKEYBOARD keyboard; RAWHID hid; } data; } RAWINPUT, *PRAWINPUT, *LPRAWINPUT;
-		[PInvokeData("winuser.h")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		public struct RAWINPUT
-		{
-			/// <summary>
-			/// <para>Type: <c>RAWINPUTHEADER</c></para>
-			/// <para>The raw input data.</para>
-			/// </summary>
-			public RAWINPUTHEADER header;
-
-			/// <summary>The data</summary>
-			public DATA data;
-
-			/// <summary></summary>
-			[StructLayout(LayoutKind.Explicit)]
-			public struct DATA
-			{
-				/// <summary><c>Type: <c>RAWMOUSE</c></c> If the data comes from a mouse, this is the raw input data.</summary>
-				[FieldOffset(0)]
-				public RAWMOUSE mouse;
-
-				/// <summary><c>Type: <c>RAWKEYBOARD</c></c> If the data comes from a keyboard, this is the raw input data.</summary>
-				[FieldOffset(0)]
-				public RAWKEYBOARD keyboard;
-
-				/// <summary><c>Type: <c>RAWHID</c></c> If the data comes from an HID, this is the raw input data.</summary>
-				[FieldOffset(0)]
-				public RAWHID hid;
-			}
-		}
-
-		/// <summary>
-		/// <para>Contains the header information that is part of the raw input data.</para>
-		/// </summary>
-		/// <remarks>
-		/// <para>To get more information on the device, use <c>hDevice</c> in a call to GetRawInputDeviceInfo.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagrawinputheader typedef struct tagRAWINPUTHEADER { DWORD
-		// dwType; DWORD dwSize; HANDLE hDevice; WPARAM wParam; } RAWINPUTHEADER, *PRAWINPUTHEADER, *LPRAWINPUTHEADER;
-		[PInvokeData("winuser.h")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		public struct RAWINPUTHEADER
-		{
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The type of raw input. It can be one of the following values.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>RIM_TYPEHID 2</term>
-			/// <term>Raw input comes from some device that is not a keyboard or a mouse.</term>
-			/// </item>
-			/// <item>
-			/// <term>RIM_TYPEKEYBOARD 1</term>
-			/// <term>Raw input comes from the keyboard.</term>
-			/// </item>
-			/// <item>
-			/// <term>RIM_TYPEMOUSE 0</term>
-			/// <term>Raw input comes from the mouse.</term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public RIM_TYPE dwType;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The size, in bytes, of the entire input packet of data. This includes RAWINPUT plus possible extra input reports in the
-			/// RAWHID variable length array.
-			/// </para>
-			/// </summary>
-			public uint dwSize;
-
-			/// <summary>
-			/// <para>Type: <c>HANDLE</c></para>
-			/// <para>A handle to the device generating the raw input data.</para>
-			/// </summary>
-			public HANDLE hDevice;
-
-			/// <summary>
-			/// <para>Type: <c>WPARAM</c></para>
-			/// <para>The value passed in the wParam parameter of the WM_INPUT message.</para>
-			/// </summary>
-			public IntPtr wParam;
-		}
-
-		/// <summary>Contains information about the state of the keyboard.</summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagrawkeyboard typedef struct tagRAWKEYBOARD { USHORT
-		// MakeCode; USHORT Flags; USHORT Reserved; USHORT VKey; UINT Message; ULONG ExtraInformation; } RAWKEYBOARD, *PRAWKEYBOARD, *LPRAWKEYBOARD;
-		[PInvokeData("winuser.h")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		public struct RAWKEYBOARD
-		{
-			/// <summary>
-			/// <para>Type: <c>USHORT</c></para>
-			/// <para>The scan code from the key depression. The scan code for keyboard overrun is <c>KEYBOARD_OVERRUN_MAKE_CODE</c>.</para>
-			/// </summary>
-			public ushort MakeCode;
-
-			/// <summary>
-			/// <para>Type: <c>USHORT</c></para>
-			/// <para>Flags for scan code information. It can be one or more of the following.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>RI_KEY_BREAK 1</term>
-			/// <term>The key is up.</term>
-			/// </item>
-			/// <item>
-			/// <term>RI_KEY_E0 2</term>
-			/// <term>The scan code has the E0 prefix.</term>
-			/// </item>
-			/// <item>
-			/// <term>RI_KEY_E1 4</term>
-			/// <term>The scan code has the E1 prefix.</term>
-			/// </item>
-			/// <item>
-			/// <term>RI_KEY_MAKE 0</term>
-			/// <term>The key is down.</term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public RI_KEY Flags;
-
-			/// <summary>
-			/// <para>Type: <c>USHORT</c></para>
-			/// <para>Reserved; must be zero.</para>
-			/// </summary>
-			public ushort Reserved;
-
-			/// <summary>
-			/// <para>Type: <c>USHORT</c></para>
-			/// <para>Windows message compatible virtual-key code. For more information, see Virtual Key Codes.</para>
-			/// </summary>
-			public ushort VKey;
-
-			/// <summary>
-			/// <para>Type: <c>UINT</c></para>
-			/// <para>The corresponding window message, for example WM_KEYDOWN, WM_SYSKEYDOWN, and so forth.</para>
-			/// </summary>
-			public uint Message;
-
-			/// <summary>
-			/// <para>Type: <c>ULONG</c></para>
-			/// <para>The device-specific additional information for the event.</para>
-			/// </summary>
-			public uint ExtraInformation;
-		}
-
-		/// <summary>Contains information about the state of the mouse.</summary>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagrawmouse typedef struct tagRAWMOUSE { USHORT usFlags;
-		// union { ULONG ulButtons; struct { USHORT usButtonFlags; USHORT usButtonData; } DUMMYSTRUCTNAME; } DUMMYUNIONNAME; ULONG
-		// ulRawButtons; LONG lLastX; LONG lLastY; ULONG ulExtraInformation; } RAWMOUSE, *PRAWMOUSE, *LPRAWMOUSE;
-		[PInvokeData("winuser.h")]
-		[StructLayout(LayoutKind.Explicit)]
-		public struct RAWMOUSE
-		{
-			/// <summary>
-			/// <para>Type: <c>USHORT</c></para>
-			/// <para>The mouse state. This member can be any reasonable combination of the following.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>MOUSE_ATTRIBUTES_CHANGED 0x04</term>
-			/// <term>Mouse attributes changed; application needs to query the mouse attributes.</term>
-			/// </item>
-			/// <item>
-			/// <term>MOUSE_MOVE_RELATIVE 0</term>
-			/// <term>Mouse movement data is relative to the last mouse position.</term>
-			/// </item>
-			/// <item>
-			/// <term>MOUSE_MOVE_ABSOLUTE 1</term>
-			/// <term>Mouse movement data is based on absolute position.</term>
-			/// </item>
-			/// <item>
-			/// <term>MOUSE_VIRTUAL_DESKTOP 0x02</term>
-			/// <term>Mouse coordinates are mapped to the virtual desktop (for a multiple monitor system).</term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			[FieldOffset(0)]
-			public MouseState usFlags;
-
-			/// <summary>
-			/// <para>Type: <c>ULONG</c></para>
-			/// <para>Reserved.</para>
-			/// </summary>
-			[FieldOffset(2)]
-			public uint ulButtons;
-
-			/// <summary>
-			/// <para>Type: <c>USHORT</c></para>
-			/// <para>The transition state of the mouse buttons. This member can be one or more of the following values.</para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>RI_MOUSE_LEFT_BUTTON_DOWN 0x0001</term>
-			/// <term>Left button changed to down.</term>
-			/// </item>
-			/// <item>
-			/// <term>RI_MOUSE_LEFT_BUTTON_UP 0x0002</term>
-			/// <term>Left button changed to up.</term>
-			/// </item>
-			/// <item>
-			/// <term>RI_MOUSE_MIDDLE_BUTTON_DOWN 0x0010</term>
-			/// <term>Middle button changed to down.</term>
-			/// </item>
-			/// <item>
-			/// <term>RI_MOUSE_MIDDLE_BUTTON_UP 0x0020</term>
-			/// <term>Middle button changed to up.</term>
-			/// </item>
-			/// <item>
-			/// <term>RI_MOUSE_RIGHT_BUTTON_DOWN 0x0004</term>
-			/// <term>Right button changed to down.</term>
-			/// </item>
-			/// <item>
-			/// <term>RI_MOUSE_RIGHT_BUTTON_UP 0x0008</term>
-			/// <term>Right button changed to up.</term>
-			/// </item>
-			/// <item>
-			/// <term>RI_MOUSE_BUTTON_1_DOWN 0x0001</term>
-			/// <term>RI_MOUSE_LEFT_BUTTON_DOWN</term>
-			/// </item>
-			/// <item>
-			/// <term>RI_MOUSE_BUTTON_1_UP 0x0002</term>
-			/// <term>RI_MOUSE_LEFT_BUTTON_UP</term>
-			/// </item>
-			/// <item>
-			/// <term>RI_MOUSE_BUTTON_2_DOWN 0x0004</term>
-			/// <term>RI_MOUSE_RIGHT_BUTTON_DOWN</term>
-			/// </item>
-			/// <item>
-			/// <term>RI_MOUSE_BUTTON_2_UP 0x0008</term>
-			/// <term>RI_MOUSE_RIGHT_BUTTON_UP</term>
-			/// </item>
-			/// <item>
-			/// <term>RI_MOUSE_BUTTON_3_DOWN 0x0010</term>
-			/// <term>RI_MOUSE_MIDDLE_BUTTON_DOWN</term>
-			/// </item>
-			/// <item>
-			/// <term>RI_MOUSE_BUTTON_3_UP 0x0020</term>
-			/// <term>RI_MOUSE_MIDDLE_BUTTON_UP</term>
-			/// </item>
-			/// <item>
-			/// <term>RI_MOUSE_BUTTON_4_DOWN 0x0040</term>
-			/// <term>XBUTTON1 changed to down.</term>
-			/// </item>
-			/// <item>
-			/// <term>RI_MOUSE_BUTTON_4_UP 0x0080</term>
-			/// <term>XBUTTON1 changed to up.</term>
-			/// </item>
-			/// <item>
-			/// <term>RI_MOUSE_BUTTON_5_DOWN 0x100</term>
-			/// <term>XBUTTON2 changed to down.</term>
-			/// </item>
-			/// <item>
-			/// <term>RI_MOUSE_BUTTON_5_UP 0x0200</term>
-			/// <term>XBUTTON2 changed to up.</term>
-			/// </item>
-			/// <item>
-			/// <term>RI_MOUSE_WHEEL 0x0400</term>
-			/// <term>Raw input comes from a mouse wheel. The wheel delta is stored in usButtonData.</term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			[FieldOffset(2)]
-			public RI_MOUSE usButtonFlags;
-
-			/// <summary>
-			/// <para>Type: <c>USHORT</c></para>
-			/// <para>If <c>usButtonFlags</c> is <c>RI_MOUSE_WHEEL</c>, this member is a signed value that specifies the wheel delta.</para>
-			/// </summary>
-			[FieldOffset(4)]
-			public ushort usButtonData;
-
-			/// <summary>
-			/// <para>Type: <c>ULONG</c></para>
-			/// <para>The raw state of the mouse buttons.</para>
-			/// </summary>
-			[FieldOffset(6)]
-			public uint ulRawButtons;
-
-			/// <summary>
-			/// <para>Type: <c>LONG</c></para>
-			/// <para>The motion in the X direction. This is signed relative motion or absolute motion, depending on the value of <c>usFlags</c>.</para>
-			/// </summary>
-			[FieldOffset(10)]
-			public int lLastX;
-
-			/// <summary>
-			/// <para>Type: <c>LONG</c></para>
-			/// <para>The motion in the Y direction. This is signed relative motion or absolute motion, depending on the value of <c>usFlags</c>.</para>
-			/// </summary>
-			[FieldOffset(14)]
-			public int lLastY;
-
-			/// <summary>
-			/// <para>Type: <c>ULONG</c></para>
-			/// <para>The device-specific additional information for the event.</para>
-			/// </summary>
-			[FieldOffset(18)]
-			public uint ulExtraInformation;
-		}
-
 		/// <summary>
 		/// <para>Contains title bar information.</para>
 		/// </summary>
@@ -6726,5 +6495,15 @@ namespace Vanara.PInvoke
 				return DestroyWindow(this);
 			}
 		}
+
+		/*GET_APPCOMMAND_LPARAM macro
+		GET_DEVICE_LPARAM macro
+		GET_FLAGS_LPARAM macro
+		GET_KEYSTATE_LPARAM macro
+		GET_KEYSTATE_WPARAM macro
+		GET_NCHITTEST_WPARAM macro
+		GET_RAWINPUT_CODE_WPARAM macro
+		GET_WHEEL_DELTA_WPARAM macro
+		GET_XBUTTON_WPARAM macro*/
 	}
 }
