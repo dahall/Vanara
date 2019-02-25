@@ -381,6 +381,27 @@ namespace Vanara.PInvoke
 			MSGFLTINFO_ALLOWED_HIGHER = 3,
 		}
 
+		/// <summary>The mouse state flags.</summary>
+		[PInvokeData("winuser.h")]
+		[Flags]
+		public enum MouseState : ushort
+		{
+			/// <summary>Mouse attributes changed; application needs to query the mouse attributes.</summary>
+			MOUSE_ATTRIBUTES_CHANGED = 0x04,
+
+			/// <summary>Mouse movement data is relative to the last mouse position.</summary>
+			MOUSE_MOVE_RELATIVE = 0,
+
+			/// <summary>Mouse movement data is based on absolute position.</summary>
+			MOUSE_MOVE_ABSOLUTE = 1,
+
+			/// <summary>Mouse coordinates are mapped to the virtual desktop (for a multiple monitor system).</summary>
+			MOUSE_VIRTUAL_DESKTOP = 0x02,
+
+			/// <summary>Do not coalesce mouse moves.</summary>
+			MOUSE_MOVE_NOCOALESCE = 0x08,
+		}
+
 		/// <summary>
 		/// <para>
 		/// This topic describes the constant values used to describe the state of objects in an application UI. The state constants are
@@ -564,6 +585,104 @@ namespace Vanara.PInvoke
 
 			/// <summary>The object is unavailable.</summary>
 			STATE_SYSTEM_UNAVAILABLE = 0x00000001,
+		}
+
+		/// <summary>Flags for scan code information.</summary>
+		[PInvokeData("winuser.h")]
+		[Flags]
+		public enum RI_KEY : ushort
+		{
+			/// <summary>The key is down.</summary>
+			RI_KEY_MAKE = 0,
+
+			/// <summary>The key is up.</summary>
+			RI_KEY_BREAK = 1,
+
+			/// <summary>The scan code has the E0 prefix.</summary>
+			RI_KEY_E0 = 2,
+
+			/// <summary>The scan code has the E1 prefix.</summary>
+			RI_KEY_E1 = 4,
+
+			/// <summary>Undocumented</summary>
+			RI_KEY_TERMSRV_SET_LED = 8,
+
+			/// <summary>Undocumented</summary>
+			RI_KEY_TERMSRV_SHADOW = 0x10
+		}
+
+		/// <summary>Mouse button transition state indicators.</summary>
+		[PInvokeData("winuser.h")]
+		[Flags]
+		public enum RI_MOUSE : ushort
+		{
+			/// <summary>Left button changed to down.</summary>
+			RI_MOUSE_LEFT_BUTTON_DOWN = 0x0001,
+
+			/// <summary>Left button changed to up.</summary>
+			RI_MOUSE_LEFT_BUTTON_UP = 0x0002,
+
+			/// <summary>Right button changed to down.</summary>
+			RI_MOUSE_RIGHT_BUTTON_DOWN = 0x0004,
+
+			/// <summary>Right button changed to up.</summary>
+			RI_MOUSE_RIGHT_BUTTON_UP = 0x0008,
+
+			/// <summary>Middle button changed to down.</summary>
+			RI_MOUSE_MIDDLE_BUTTON_DOWN = 0x0010,
+
+			/// <summary>Middle button changed to up.</summary>
+			RI_MOUSE_MIDDLE_BUTTON_UP = 0x0020,
+
+			/// <summary>RI_MOUSE_LEFT_BUTTON_DOWN</summary>
+			RI_MOUSE_BUTTON_1_DOWN = RI_MOUSE_LEFT_BUTTON_DOWN,
+
+			/// <summary>RI_MOUSE_LEFT_BUTTON_UP</summary>
+			RI_MOUSE_BUTTON_1_UP = RI_MOUSE_LEFT_BUTTON_UP,
+
+			/// <summary>RI_MOUSE_RIGHT_BUTTON_DOWN</summary>
+			RI_MOUSE_BUTTON_2_DOWN = RI_MOUSE_RIGHT_BUTTON_DOWN,
+
+			/// <summary>RI_MOUSE_RIGHT_BUTTON_UP</summary>
+			RI_MOUSE_BUTTON_2_UP = RI_MOUSE_RIGHT_BUTTON_UP,
+
+			/// <summary>RI_MOUSE_MIDDLE_BUTTON_DOWN</summary>
+			RI_MOUSE_BUTTON_3_DOWN = RI_MOUSE_MIDDLE_BUTTON_DOWN,
+
+			/// <summary>RI_MOUSE_MIDDLE_BUTTON_UP</summary>
+			RI_MOUSE_BUTTON_3_UP = RI_MOUSE_MIDDLE_BUTTON_UP,
+
+			/// <summary>XBUTTON1 changed to down.</summary>
+			RI_MOUSE_BUTTON_4_DOWN = 0x0040,
+
+			/// <summary>XBUTTON1 changed to up.</summary>
+			RI_MOUSE_BUTTON_4_UP = 0x0080,
+
+			/// <summary>XBUTTON2 changed to down.</summary>
+			RI_MOUSE_BUTTON_5_DOWN = 0x0100,
+
+			/// <summary>XBUTTON2 changed to up.</summary>
+			RI_MOUSE_BUTTON_5_UP = 0x0200,
+
+			/// <summary>Raw input comes from a mouse wheel. The wheel delta is stored in usButtonData.</summary>
+			RI_MOUSE_WHEEL = 0x0400,
+
+			/// <summary>Raw input comes from a mouse horizontal wheel. The wheel delta is stored in usButtonData.</summary>
+			RI_MOUSE_HWHEEL = 0x0800,
+		}
+
+		/// <summary>The type of raw input.</summary>
+		[PInvokeData("winuser.h")]
+		public enum RIM_TYPE
+		{
+			/// <summary>Raw input comes from some device that is not a keyboard or a mouse.</summary>
+			RIM_TYPEHID = 2,
+
+			/// <summary>Raw input comes from the keyboard.</summary>
+			RIM_TYPEKEYBOARD = 1,
+
+			/// <summary>Raw input comes from the mouse.</summary>
+			RIM_TYPEMOUSE = 0,
 		}
 
 		/// <summary>Window sizing and positioning flags.</summary>
@@ -2106,6 +2225,220 @@ namespace Vanara.PInvoke
 		public static extern HDWP DeferWindowPos(HDWP hWinPosInfo, HWND hWnd, HWND hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPosFlags uFlags);
 
 		/// <summary>
+		/// Provides default processing for any window messages that the window procedure of a multiple-document interface (MDI) frame window
+		/// does not process. All window messages that are not explicitly processed by the window procedure must be passed to the
+		/// <c>DefFrameProc</c> function, not the DefWindowProc function.
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the MDI frame window.</para>
+		/// </param>
+		/// <param name="hWndMDIClient">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the MDI client window.</para>
+		/// </param>
+		/// <param name="uMsg">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The message to be processed.</para>
+		/// </param>
+		/// <param name="wParam">
+		/// <para>Type: <c>WPARAM</c></para>
+		/// <para>Additional message-specific information.</para>
+		/// </param>
+		/// <param name="lParam">
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>Additional message-specific information.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>LRESULT</c></c></para>
+		/// <para>
+		/// The return value specifies the result of the message processing and depends on the message. If the hWndMDIClient parameter is
+		/// <c>NULL</c>, the return value is the same as for the DefWindowProc function.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// When an application's window procedure does not handle a message, it typically passes the message to the DefWindowProc function
+		/// to process the message. MDI applications use the <c>DefFrameProc</c> and DefMDIChildProc functions instead of
+		/// <c>DefWindowProc</c> to provide default message processing. All messages that an application would usually pass to
+		/// <c>DefWindowProc</c> (such as nonclient messages and the WM_SETTEXT message) should be passed to <c>DefFrameProc</c> instead. The
+		/// <c>DefFrameProc</c> function also handles the following messages.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Message</term>
+		/// <term>Response</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WM_COMMAND</term>
+		/// <term>
+		/// Activates the MDI child window that the user chooses. This message is sent when the user chooses an MDI child window from the
+		/// window menu of the MDI frame window. The window identifier accompanying this message identifies the MDI child window to be activated.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WM_MENUCHAR</term>
+		/// <term>Opens the window menu of the active MDI child window when the user presses the ALT+ – (minus) key combination.</term>
+		/// </item>
+		/// <item>
+		/// <term>WM_SETFOCUS</term>
+		/// <term>Passes the keyboard focus to the MDI client window, which in turn passes it to the active MDI child window.</term>
+		/// </item>
+		/// <item>
+		/// <term>WM_SIZE</term>
+		/// <term>
+		/// Resizes the MDI client window to fit in the new frame window's client area. If the frame window procedure sizes the MDI client
+		/// window to a different size, it should not pass the message to the DefWindowProc function.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-defframeproca LRESULT DefFrameProcA( HWND hWnd, HWND
+		// hWndMDIClient, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h")]
+		public static extern IntPtr DefFrameProc(HWND hWnd, HWND hWndMDIClient, uint uMsg, IntPtr wParam, IntPtr lParam);
+
+		/// <summary>
+		/// Provides default processing for any window message that the window procedure of a multiple-document interface (MDI) child window
+		/// does not process. A window message not processed by the window procedure must be passed to the <c>DefMDIChildProc</c> function,
+		/// not to the DefWindowProc function.
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the MDI child window.</para>
+		/// </param>
+		/// <param name="uMsg">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The message to be processed.</para>
+		/// </param>
+		/// <param name="wParam">
+		/// <para>Type: <c>WPARAM</c></para>
+		/// <para>Additional message-specific information.</para>
+		/// </param>
+		/// <param name="lParam">
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>Additional message-specific information.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>LRESULT</c></c></para>
+		/// <para>The return value specifies the result of the message processing and depends on the message.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>DefMDIChildProc</c> function assumes that the parent window of the MDI child window identified by the hWnd parameter was
+		/// created with the <c>MDICLIENT</c> class.
+		/// </para>
+		/// <para>
+		/// When an application's window procedure does not handle a message, it typically passes the message to the DefWindowProc function
+		/// to process the message. MDI applications use the DefFrameProc and <c>DefMDIChildProc</c> functions instead of
+		/// <c>DefWindowProc</c> to provide default message processing. All messages that an application would usually pass to
+		/// <c>DefWindowProc</c> (such as nonclient messages and the WM_SETTEXT message) should be passed to <c>DefMDIChildProc</c> instead.
+		/// In addition, <c>DefMDIChildProc</c> also handles the following messages.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Message</term>
+		/// <term>Response</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WM_CHILDACTIVATE</term>
+		/// <term>Performs activation processing when MDI child windows are sized, moved, or displayed. This message must be passed.</term>
+		/// </item>
+		/// <item>
+		/// <term>WM_GETMINMAXINFO</term>
+		/// <term>Calculates the size of a maximized MDI child window, based on the current size of the MDI client window.</term>
+		/// </item>
+		/// <item>
+		/// <term>WM_MENUCHAR</term>
+		/// <term>Passes the message to the MDI frame window.</term>
+		/// </item>
+		/// <item>
+		/// <term>WM_MOVE</term>
+		/// <term>Recalculates MDI client scroll bars if they are present.</term>
+		/// </item>
+		/// <item>
+		/// <term>WM_SETFOCUS</term>
+		/// <term>Activates the child window if it is not the active MDI child window.</term>
+		/// </item>
+		/// <item>
+		/// <term>WM_SIZE</term>
+		/// <term>
+		/// Performs operations necessary for changing the size of a window, especially for maximizing or restoring an MDI child window.
+		/// Failing to pass this message to the DefMDIChildProc function produces highly undesirable results.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WM_SYSCOMMAND</term>
+		/// <term>Handles window menu commands: SC_NEXTWINDOW, SC_PREVWINDOW, SC_MOVE, SC_SIZE, and SC_MAXIMIZE.</term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-defmdichildproca LRESULT LRESULT DefMDIChildProcA( HWND
+		// hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h")]
+		public static extern IntPtr DefMDIChildProc(HWND hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
+
+		/// <summary>
+		/// Calls the default raw input procedure to provide default processing for any raw input messages that an application does not
+		/// process. This function ensures that every message is processed. <c>DefRawInputProc</c> is called with the same parameters
+		/// received by the window procedure.
+		/// </summary>
+		/// <param name="paRawInput">
+		/// <para>Type: <c>PRAWINPUT*</c></para>
+		/// <para>An array of RAWINPUT structures.</para>
+		/// </param>
+		/// <param name="nInput">
+		/// <para>Type: <c>INT</c></para>
+		/// <para>The number of RAWINPUT structures pointed to by paRawInput.</para>
+		/// </param>
+		/// <param name="cbSizeHeader">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The size, in bytes, of the RAWINPUTHEADER structure.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LRESULT</c></para>
+		/// <para>If successful, the function returns <c>S_OK</c>. Otherwise it returns an error value.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-defrawinputproc LRESULT DefRawInputProc( PRAWINPUT
+		// *paRawInput, INT nInput, UINT cbSizeHeader );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h")]
+		public static extern IntPtr DefRawInputProc(RAWINPUT[] paRawInput, int nInput, uint cbSizeHeader);
+
+		/// <summary>
+		/// Calls the default window procedure to provide default processing for any window messages that an application does not process.
+		/// This function ensures that every message is processed. <c>DefWindowProc</c> is called with the same parameters received by the
+		/// window procedure.
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window procedure that received the message.</para>
+		/// </param>
+		/// <param name="Msg">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The message.</para>
+		/// </param>
+		/// <param name="wParam">
+		/// <para>Type: <c>WPARAM</c></para>
+		/// <para>Additional message information. The content of this parameter depends on the value of the Msg parameter.</para>
+		/// </param>
+		/// <param name="lParam">
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>Additional message information. The content of this parameter depends on the value of the Msg parameter.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>LRESULT</c></c></para>
+		/// <para>The return value is the result of the message processing and depends on the message.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-defwindowproca LRESULT LRESULT DefWindowProcA( HWND hWnd,
+		// UINT Msg, WPARAM wParam, LPARAM lParam );
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h")]
+		public static extern IntPtr DefWindowProc(HWND hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+		/// <summary>
 		/// <para>[This function is not intended for general use. It may be altered or unavailable in subsequent versions of Windows.]</para>
 		/// <para>Unregisters a specified Shell window that is registered to receive Shell hook messages.</para>
 		/// </summary>
@@ -3365,8 +3698,8 @@ namespace Vanara.PInvoke
 		/// 2003. If you do not have a header file and import library for this function, you can call the function using LoadLibrary and GetProcAddress.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-internalgetwindowtext
-		// int InternalGetWindowText( HWND hWnd, LPWSTR pString, int cchMaxCount );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-internalgetwindowtext int InternalGetWindowText( HWND
+		// hWnd, LPWSTR pString, int cchMaxCount );
 		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "internalgetwindowtext")]
 		public static extern int InternalGetWindowText(HWND hWnd, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder pString, int cchMaxCount);
@@ -5570,6 +5903,362 @@ namespace Vanara.PInvoke
 			/// <para>The caret's bounding rectangle, in client coordinates, relative to the window specified by the <c>hwndCaret</c> member.</para>
 			/// </summary>
 			public RECT rcCaret;
+		}
+
+		/// <summary>Describes the format of the raw input from a Human Interface Device (HID).</summary>
+		/// <remarks>
+		/// Each WM_INPUT can indicate several inputs, but all of the inputs come from the same HID. The size of the <c>bRawData</c> array is
+		/// <c>dwSizeHid</c> * <c>dwCount</c>.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagrawhid typedef struct tagRAWHID { DWORD dwSizeHid;
+		// DWORD dwCount; BYTE bRawData[1]; } RAWHID, *PRAWHID, *LPRAWHID;
+		[PInvokeData("winuser.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct RAWHID
+		{
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The size, in bytes, of each HID input in <c>bRawData</c>.</para>
+			/// </summary>
+			public uint dwSizeHid;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of HID inputs in <c>bRawData</c>.</para>
+			/// </summary>
+			public uint dwCount;
+
+			/// <summary>
+			/// <para>Type: <c>BYTE[1]</c></para>
+			/// <para>The raw input data, as an array of bytes.</para>
+			/// </summary>
+			public IntPtr bRawData;
+		}
+
+		/// <summary>Contains the raw input from a device.</summary>
+		/// <remarks>
+		/// <para>The handle to this structure is passed in the lParam parameter of WM_INPUT.</para>
+		/// <para>To get detailed information -- such as the header and the content of the raw input -- call GetRawInputData.</para>
+		/// <para>To read the <c>RAWINPUT</c> in the message loop as a buffered read, call GetRawInputBuffer.</para>
+		/// <para>To get device specific information, call GetRawInputDeviceInfo with the hDevice from RAWINPUTHEADER.</para>
+		/// <para>Raw input is available only when the application calls RegisterRawInputDevices with valid device specifications.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagrawinput typedef struct tagRAWINPUT { RAWINPUTHEADER
+		// header; union { RAWMOUSE mouse; RAWKEYBOARD keyboard; RAWHID hid; } data; } RAWINPUT, *PRAWINPUT, *LPRAWINPUT;
+		[PInvokeData("winuser.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct RAWINPUT
+		{
+			/// <summary>
+			/// <para>Type: <c>RAWINPUTHEADER</c></para>
+			/// <para>The raw input data.</para>
+			/// </summary>
+			public RAWINPUTHEADER header;
+
+			/// <summary>The data</summary>
+			public DATA data;
+
+			/// <summary></summary>
+			[StructLayout(LayoutKind.Explicit)]
+			public struct DATA
+			{
+				/// <summary><c>Type: <c>RAWMOUSE</c></c> If the data comes from a mouse, this is the raw input data.</summary>
+				[FieldOffset(0)]
+				public RAWMOUSE mouse;
+
+				/// <summary><c>Type: <c>RAWKEYBOARD</c></c> If the data comes from a keyboard, this is the raw input data.</summary>
+				[FieldOffset(0)]
+				public RAWKEYBOARD keyboard;
+
+				/// <summary><c>Type: <c>RAWHID</c></c> If the data comes from an HID, this is the raw input data.</summary>
+				[FieldOffset(0)]
+				public RAWHID hid;
+			}
+		}
+
+		/// <summary>
+		/// <para>Contains the header information that is part of the raw input data.</para>
+		/// </summary>
+		/// <remarks>
+		/// <para>To get more information on the device, use <c>hDevice</c> in a call to GetRawInputDeviceInfo.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagrawinputheader typedef struct tagRAWINPUTHEADER { DWORD
+		// dwType; DWORD dwSize; HANDLE hDevice; WPARAM wParam; } RAWINPUTHEADER, *PRAWINPUTHEADER, *LPRAWINPUTHEADER;
+		[PInvokeData("winuser.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct RAWINPUTHEADER
+		{
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The type of raw input. It can be one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>RIM_TYPEHID 2</term>
+			/// <term>Raw input comes from some device that is not a keyboard or a mouse.</term>
+			/// </item>
+			/// <item>
+			/// <term>RIM_TYPEKEYBOARD 1</term>
+			/// <term>Raw input comes from the keyboard.</term>
+			/// </item>
+			/// <item>
+			/// <term>RIM_TYPEMOUSE 0</term>
+			/// <term>Raw input comes from the mouse.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public RIM_TYPE dwType;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// The size, in bytes, of the entire input packet of data. This includes RAWINPUT plus possible extra input reports in the
+			/// RAWHID variable length array.
+			/// </para>
+			/// </summary>
+			public uint dwSize;
+
+			/// <summary>
+			/// <para>Type: <c>HANDLE</c></para>
+			/// <para>A handle to the device generating the raw input data.</para>
+			/// </summary>
+			public HANDLE hDevice;
+
+			/// <summary>
+			/// <para>Type: <c>WPARAM</c></para>
+			/// <para>The value passed in the wParam parameter of the WM_INPUT message.</para>
+			/// </summary>
+			public IntPtr wParam;
+		}
+
+		/// <summary>Contains information about the state of the keyboard.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagrawkeyboard typedef struct tagRAWKEYBOARD { USHORT
+		// MakeCode; USHORT Flags; USHORT Reserved; USHORT VKey; UINT Message; ULONG ExtraInformation; } RAWKEYBOARD, *PRAWKEYBOARD, *LPRAWKEYBOARD;
+		[PInvokeData("winuser.h")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct RAWKEYBOARD
+		{
+			/// <summary>
+			/// <para>Type: <c>USHORT</c></para>
+			/// <para>The scan code from the key depression. The scan code for keyboard overrun is <c>KEYBOARD_OVERRUN_MAKE_CODE</c>.</para>
+			/// </summary>
+			public ushort MakeCode;
+
+			/// <summary>
+			/// <para>Type: <c>USHORT</c></para>
+			/// <para>Flags for scan code information. It can be one or more of the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>RI_KEY_BREAK 1</term>
+			/// <term>The key is up.</term>
+			/// </item>
+			/// <item>
+			/// <term>RI_KEY_E0 2</term>
+			/// <term>The scan code has the E0 prefix.</term>
+			/// </item>
+			/// <item>
+			/// <term>RI_KEY_E1 4</term>
+			/// <term>The scan code has the E1 prefix.</term>
+			/// </item>
+			/// <item>
+			/// <term>RI_KEY_MAKE 0</term>
+			/// <term>The key is down.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public RI_KEY Flags;
+
+			/// <summary>
+			/// <para>Type: <c>USHORT</c></para>
+			/// <para>Reserved; must be zero.</para>
+			/// </summary>
+			public ushort Reserved;
+
+			/// <summary>
+			/// <para>Type: <c>USHORT</c></para>
+			/// <para>Windows message compatible virtual-key code. For more information, see Virtual Key Codes.</para>
+			/// </summary>
+			public ushort VKey;
+
+			/// <summary>
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>The corresponding window message, for example WM_KEYDOWN, WM_SYSKEYDOWN, and so forth.</para>
+			/// </summary>
+			public uint Message;
+
+			/// <summary>
+			/// <para>Type: <c>ULONG</c></para>
+			/// <para>The device-specific additional information for the event.</para>
+			/// </summary>
+			public uint ExtraInformation;
+		}
+
+		/// <summary>Contains information about the state of the mouse.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagrawmouse typedef struct tagRAWMOUSE { USHORT usFlags;
+		// union { ULONG ulButtons; struct { USHORT usButtonFlags; USHORT usButtonData; } DUMMYSTRUCTNAME; } DUMMYUNIONNAME; ULONG
+		// ulRawButtons; LONG lLastX; LONG lLastY; ULONG ulExtraInformation; } RAWMOUSE, *PRAWMOUSE, *LPRAWMOUSE;
+		[PInvokeData("winuser.h")]
+		[StructLayout(LayoutKind.Explicit)]
+		public struct RAWMOUSE
+		{
+			/// <summary>
+			/// <para>Type: <c>USHORT</c></para>
+			/// <para>The mouse state. This member can be any reasonable combination of the following.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>MOUSE_ATTRIBUTES_CHANGED 0x04</term>
+			/// <term>Mouse attributes changed; application needs to query the mouse attributes.</term>
+			/// </item>
+			/// <item>
+			/// <term>MOUSE_MOVE_RELATIVE 0</term>
+			/// <term>Mouse movement data is relative to the last mouse position.</term>
+			/// </item>
+			/// <item>
+			/// <term>MOUSE_MOVE_ABSOLUTE 1</term>
+			/// <term>Mouse movement data is based on absolute position.</term>
+			/// </item>
+			/// <item>
+			/// <term>MOUSE_VIRTUAL_DESKTOP 0x02</term>
+			/// <term>Mouse coordinates are mapped to the virtual desktop (for a multiple monitor system).</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			[FieldOffset(0)]
+			public MouseState usFlags;
+
+			/// <summary>
+			/// <para>Type: <c>ULONG</c></para>
+			/// <para>Reserved.</para>
+			/// </summary>
+			[FieldOffset(2)]
+			public uint ulButtons;
+
+			/// <summary>
+			/// <para>Type: <c>USHORT</c></para>
+			/// <para>The transition state of the mouse buttons. This member can be one or more of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>RI_MOUSE_LEFT_BUTTON_DOWN 0x0001</term>
+			/// <term>Left button changed to down.</term>
+			/// </item>
+			/// <item>
+			/// <term>RI_MOUSE_LEFT_BUTTON_UP 0x0002</term>
+			/// <term>Left button changed to up.</term>
+			/// </item>
+			/// <item>
+			/// <term>RI_MOUSE_MIDDLE_BUTTON_DOWN 0x0010</term>
+			/// <term>Middle button changed to down.</term>
+			/// </item>
+			/// <item>
+			/// <term>RI_MOUSE_MIDDLE_BUTTON_UP 0x0020</term>
+			/// <term>Middle button changed to up.</term>
+			/// </item>
+			/// <item>
+			/// <term>RI_MOUSE_RIGHT_BUTTON_DOWN 0x0004</term>
+			/// <term>Right button changed to down.</term>
+			/// </item>
+			/// <item>
+			/// <term>RI_MOUSE_RIGHT_BUTTON_UP 0x0008</term>
+			/// <term>Right button changed to up.</term>
+			/// </item>
+			/// <item>
+			/// <term>RI_MOUSE_BUTTON_1_DOWN 0x0001</term>
+			/// <term>RI_MOUSE_LEFT_BUTTON_DOWN</term>
+			/// </item>
+			/// <item>
+			/// <term>RI_MOUSE_BUTTON_1_UP 0x0002</term>
+			/// <term>RI_MOUSE_LEFT_BUTTON_UP</term>
+			/// </item>
+			/// <item>
+			/// <term>RI_MOUSE_BUTTON_2_DOWN 0x0004</term>
+			/// <term>RI_MOUSE_RIGHT_BUTTON_DOWN</term>
+			/// </item>
+			/// <item>
+			/// <term>RI_MOUSE_BUTTON_2_UP 0x0008</term>
+			/// <term>RI_MOUSE_RIGHT_BUTTON_UP</term>
+			/// </item>
+			/// <item>
+			/// <term>RI_MOUSE_BUTTON_3_DOWN 0x0010</term>
+			/// <term>RI_MOUSE_MIDDLE_BUTTON_DOWN</term>
+			/// </item>
+			/// <item>
+			/// <term>RI_MOUSE_BUTTON_3_UP 0x0020</term>
+			/// <term>RI_MOUSE_MIDDLE_BUTTON_UP</term>
+			/// </item>
+			/// <item>
+			/// <term>RI_MOUSE_BUTTON_4_DOWN 0x0040</term>
+			/// <term>XBUTTON1 changed to down.</term>
+			/// </item>
+			/// <item>
+			/// <term>RI_MOUSE_BUTTON_4_UP 0x0080</term>
+			/// <term>XBUTTON1 changed to up.</term>
+			/// </item>
+			/// <item>
+			/// <term>RI_MOUSE_BUTTON_5_DOWN 0x100</term>
+			/// <term>XBUTTON2 changed to down.</term>
+			/// </item>
+			/// <item>
+			/// <term>RI_MOUSE_BUTTON_5_UP 0x0200</term>
+			/// <term>XBUTTON2 changed to up.</term>
+			/// </item>
+			/// <item>
+			/// <term>RI_MOUSE_WHEEL 0x0400</term>
+			/// <term>Raw input comes from a mouse wheel. The wheel delta is stored in usButtonData.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			[FieldOffset(2)]
+			public RI_MOUSE usButtonFlags;
+
+			/// <summary>
+			/// <para>Type: <c>USHORT</c></para>
+			/// <para>If <c>usButtonFlags</c> is <c>RI_MOUSE_WHEEL</c>, this member is a signed value that specifies the wheel delta.</para>
+			/// </summary>
+			[FieldOffset(4)]
+			public ushort usButtonData;
+
+			/// <summary>
+			/// <para>Type: <c>ULONG</c></para>
+			/// <para>The raw state of the mouse buttons.</para>
+			/// </summary>
+			[FieldOffset(6)]
+			public uint ulRawButtons;
+
+			/// <summary>
+			/// <para>Type: <c>LONG</c></para>
+			/// <para>The motion in the X direction. This is signed relative motion or absolute motion, depending on the value of <c>usFlags</c>.</para>
+			/// </summary>
+			[FieldOffset(10)]
+			public int lLastX;
+
+			/// <summary>
+			/// <para>Type: <c>LONG</c></para>
+			/// <para>The motion in the Y direction. This is signed relative motion or absolute motion, depending on the value of <c>usFlags</c>.</para>
+			/// </summary>
+			[FieldOffset(14)]
+			public int lLastY;
+
+			/// <summary>
+			/// <para>Type: <c>ULONG</c></para>
+			/// <para>The device-specific additional information for the event.</para>
+			/// </summary>
+			[FieldOffset(18)]
+			public uint ulExtraInformation;
 		}
 
 		/// <summary>
