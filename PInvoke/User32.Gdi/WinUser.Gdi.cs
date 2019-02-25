@@ -1490,6 +1490,26 @@ namespace Vanara.PInvoke
 		public static extern int ChangeDisplaySettingsEx([Optional] string lpszDeviceName, in DEVMODE lpDevMode, [Optional] HWND hwnd, [Optional] ChangeDisplaySettingsFlags dwflags, in VIDEOPARAMETERS lParam);
 
 		/// <summary>
+		/// Creates a new image (icon, cursor, or bitmap) and copies the attributes of the specified image to the new one. If necessary, the function stretches the bits to fit the desired size of the new image.
+		/// </summary>
+		/// <param name="h"><para>Type: <c>HANDLE</c></para><para>A handle to the image to be copied.</para></param>
+		/// <param name="type"><para>Type: <c>UINT</c></para><para>The type of image to be copied. This parameter can be one of the following values.</para><list type="table"><listheader><term>Value</term><term>Meaning</term></listheader><item><term> IMAGE_BITMAP 0 </term><term>Copies a bitmap.</term></item><item><term> IMAGE_CURSOR 2 </term><term>Copies a cursor.</term></item><item><term> IMAGE_ICON 1 </term><term>Copies an icon.</term></item></list></param>
+		/// <param name="cx"><para>Type: <c>int</c></para><para>The desired width, in pixels, of the image. If this is zero, then the returned image will have the same width as the original hImage.</para></param>
+		/// <param name="cy"><para>Type: <c>int</c></para><para>The desired height, in pixels, of the image. If this is zero, then the returned image will have the same height as the original hImage.</para></param>
+		/// <param name="flags"><para>Type: <c>UINT</c></para><para>This parameter can be one or more of the following values.</para><list type="table"><listheader><term>Value</term><term>Meaning</term></listheader><item><term> LR_COPYDELETEORG 0x00000008 </term><term>Deletes the original image after creating the copy.</term></item><item><term> LR_COPYFROMRESOURCE 0x00004000 </term><term> Tries to reload an icon or cursor resource from the original resource file rather than simply copying the current image. This is useful for creating a different-sized copy when the resource file contains multiple sizes of the resource. Without this flag, CopyImage stretches the original image to the new size. If this flag is set, CopyImage uses the size in the resource file closest to the desired size. This will succeed only if hImage was loaded by LoadIcon or LoadCursor, or by LoadImage with the LR_SHARED flag. </term></item><item><term> LR_COPYRETURNORG 0x00000004 </term><term> Returns the original hImage if it satisfies the criteria for the copy—that is, correct dimensions and color depth—in which case the LR_COPYDELETEORG flag is ignored. If this flag is not specified, a new object is always created. </term></item><item><term> LR_CREATEDIBSECTION 0x00002000 </term><term> If this is set and a new bitmap is created, the bitmap is created as a DIB section. Otherwise, the bitmap image is created as a device-dependent bitmap. This flag is only valid if uType is IMAGE_BITMAP. </term></item><item><term> LR_DEFAULTSIZE 0x00000040 </term><term> Uses the width or height specified by the system metric values for cursors or icons, if the cxDesired or cyDesired values are set to zero. If this flag is not specified and cxDesired and cyDesired are set to zero, the function uses the actual resource size. If the resource contains multiple images, the function uses the size of the first image. </term></item><item><term> LR_MONOCHROME 0x00000001 </term><term>Creates a new monochrome image.</term></item></list></param>
+		/// <returns>
+		///   <para>Type: <c>HANDLE</c></para><para>If the function succeeds, the return value is the handle to the newly created image.</para><para>If the function fails, the return value is <c>NULL</c>. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		///   <para>When you are finished using the resource, you can release its associated memory by calling one of the functions in the following table.</para><list type="table"><listheader><term>Resource</term><term>Release function</term></listheader><item><term>Bitmap</term><term>DeleteObject</term></item><item><term>Cursor</term><term>DestroyCursor</term></item><item><term>Icon</term><term>DestroyIcon</term></item></list><para>The system automatically deletes the resource when its process terminates, however, calling the appropriate function saves memory and decreases the size of the process's working set.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-copyimage
+		// HANDLE CopyImage( HANDLE h, UINT type, int cx, int cy, UINT flags );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h")]
+		public static extern HANDLE CopyImage(HANDLE h, LoadImageType type, int cx, int cy, CopyImageOptions flags);
+
+		/// <summary>
 		/// The DrawText function draws formatted text in the specified rectangle. It formats the text according to the specified method
 		/// (expanding tabs, justifying characters, breaking lines, and so forth).
 		/// </summary>

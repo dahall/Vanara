@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace Vanara.PInvoke
@@ -104,32 +105,72 @@ namespace Vanara.PInvoke
 		public static extern bool ClipCursor(in RECT lpRect);
 
 		/// <summary>
-		/// <para>Copies the specified cursor.</para>
+		/// Creates a new cursor and copies the attributes of the specified image to the new one. If necessary, the function stretches the
+		/// bits to fit the desired size of the new image.
 		/// </summary>
-		/// <param name="pcur">
-		/// <para>Type: <c>HCURSOR</c></para>
-		/// <para>A handle to the cursor to be copied.</para>
+		/// <param name="h">
+		/// <para>A handle to the image to be copied.</para>
+		/// </param>
+		/// <param name="desiredSize">
+		/// The desired size, in pixels, of the image. If this is Size.Empty, then the returned image will have the same size as the original hImage.
+		/// </param>
+		/// <param name="options">
+		/// <para>This parameter can be one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>LR_COPYDELETEORG 0x00000008</term>
+		/// <term>Deletes the original image after creating the copy.</term>
+		/// </item>
+		/// <item>
+		/// <term>LR_COPYFROMRESOURCE 0x00004000</term>
+		/// <term>
+		/// Tries to reload an icon or cursor resource from the original resource file rather than simply copying the current image. This is
+		/// useful for creating a different-sized copy when the resource file contains multiple sizes of the resource. Without this flag,
+		/// CopyImage stretches the original image to the new size. If this flag is set, CopyImage uses the size in the resource file closest
+		/// to the desired size. This will succeed only if hImage was loaded by LoadIcon or LoadCursor, or by LoadImage with the LR_SHARED flag.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LR_COPYRETURNORG 0x00000004</term>
+		/// <term>
+		/// Returns the original hImage if it satisfies the criteria for the copy—that is, correct dimensions and color depth—in which case
+		/// the LR_COPYDELETEORG flag is ignored. If this flag is not specified, a new object is always created.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LR_CREATEDIBSECTION 0x00002000</term>
+		/// <term>
+		/// If this is set and a new bitmap is created, the bitmap is created as a DIB section. Otherwise, the bitmap image is created as a
+		/// device-dependent bitmap. This flag is only valid if uType is IMAGE_BITMAP.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LR_DEFAULTSIZE 0x00000040</term>
+		/// <term>
+		/// Uses the width or height specified by the system metric values for cursors or icons, if the cxDesired or cyDesired values are set
+		/// to zero. If this flag is not specified and cxDesired and cyDesired are set to zero, the function uses the actual resource size.
+		/// If the resource contains multiple images, the function uses the size of the first image.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>LR_MONOCHROME 0x00000001</term>
+		/// <term>Creates a new monochrome image.</term>
+		/// </item>
+		/// </list>
 		/// </param>
 		/// <returns>
-		/// <para>None</para>
+		/// <para>The return value is a safe handle to the newly created image.</para>
 		/// </returns>
-		/// <remarks>
-		/// <para>
-		/// <c>CopyCursor</c> enables an application or DLL to obtain the handle to a cursor shape owned by another module. Then if the other
-		/// module is freed, the application is still able to use the cursor shape.
-		/// </para>
-		/// <para>Before closing, an application must call the DestroyCursor function to free any system resources associated with the cursor.</para>
-		/// <para>Do not use the <c>CopyCursor</c> function for animated cursors. Instead, use the CopyImage function.</para>
-		/// <para><c>CopyCursor</c> is implemented as a call to the CopyIcon function.</para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-copycursor void CopyCursor( pcur );
-		[PInvokeData("winuser.h", MSDNShortId = "copycursor")]
-		public static SafeHCURSOR CopyCursor(HCURSOR pcur)
+		[PInvokeData("winuser.h")]
+		public static SafeHCURSOR CopyCursor(HCURSOR h, Size desiredSize = default, CopyImageOptions options = 0)
 		{
-			var safeHIcon = CopyIcon(new HICON((IntPtr)pcur));
-			var ptr = safeHIcon.DangerousGetHandle();
-			safeHIcon.SetHandleAsInvalid();
-			return new SafeHCURSOR(ptr, true);
+			var hret = CopyImage(h.DangerousGetHandle(), LoadImageType.IMAGE_CURSOR, desiredSize.Width, desiredSize.Height, options);
+			if (hret == HANDLE.NULL) Win32Error.ThrowLastError();
+			return new SafeHCURSOR(hret.DangerousGetHandle(), true);
 		}
 
 		/// <summary>
