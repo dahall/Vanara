@@ -27,14 +27,18 @@ namespace Vanara.Windows.Forms.Forms
 	/// </code></para></remarks>
 	public class PreventShutdownContext : IDisposable
 	{
+		private const int WM_QUERYENDSESSION = 0x11;
 		private HandleRef href;
 
-		/// <summary>Initializes a new instance of the <see cref="PreventShutdownContext"/> class.</summary>
-		/// <param name="window">The <see cref="Form"/> or <see cref="Control"/> that contains a valid window handle.</param>
+		/// <summary>Initializes a new instance of the <see cref="PreventShutdownContext" /> class.</summary>
+		/// <param name="window">The <see cref="Form" /> that contains a valid window handle.</param>
 		/// <param name="reason">The reason the application must block system shutdown. Because users are typically in a hurry when shutting down the system, they may spend only a few seconds looking at the shutdown reasons that are displayed by the system. Therefore, it is important that your reason strings are short and clear.</param>
-		public PreventShutdownContext(Control window, string reason)
+		/// <param name="tryToPreventShutdown">If set to <see langword="true" />, this class will return false to the WM_QUERYENDSESSION by handling the e.Cancel response to Form.FormClosing.</param>
+		public PreventShutdownContext(Form window, string reason, bool tryToPreventShutdown = false)
 		{
 			href = new HandleRef(window, window.Handle);
+			if (tryToPreventShutdown)
+				window.FormClosing += (s, e) => e.Cancel = true;
 			Reason = reason;
 		}
 
