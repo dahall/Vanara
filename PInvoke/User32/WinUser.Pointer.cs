@@ -88,6 +88,48 @@ namespace Vanara.PInvoke
 			POINTER_CHANGE_FIFTHBUTTON_UP,
 		}
 
+		/// <summary>Identifies the pointer device cursor types.</summary>
+		/// <remarks>
+		/// Cursor objects represent pointing and selecting devices used with digitizer devices, most commonly tactile contacts on touch
+		/// digitizers and tablet pens on pen digitizers. Physical pens may have multiple tips (such as normal and eraser ends), with each
+		/// pen tip representing a different cursor object. Each cursor object has an associated cursor identifier.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ne-winuser-pointer_device_cursor_type typedef enum
+		// tagPOINTER_DEVICE_CURSOR_TYPE { POINTER_DEVICE_CURSOR_TYPE_UNKNOWN, POINTER_DEVICE_CURSOR_TYPE_TIP,
+		// POINTER_DEVICE_CURSOR_TYPE_ERASER, POINTER_DEVICE_CURSOR_TYPE_MAX } POINTER_DEVICE_CURSOR_TYPE;
+		[PInvokeData("winuser.h", MSDNShortId = "ebd5c0c6-a949-42f1-976e-96d143b1a0d7")]
+		public enum POINTER_DEVICE_CURSOR_TYPE
+		{
+			/// <summary>Unidentified cursor.</summary>
+			POINTER_DEVICE_CURSOR_TYPE_UNKNOWN,
+
+			/// <summary>Pen tip.</summary>
+			POINTER_DEVICE_CURSOR_TYPE_TIP,
+
+			/// <summary>Pen eraser.</summary>
+			POINTER_DEVICE_CURSOR_TYPE_ERASER,
+		}
+
+		/// <summary>Identifies the pointer device types.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ne-winuser-pointer_device_type typedef enum tagPOINTER_DEVICE_TYPE {
+		// POINTER_DEVICE_TYPE_INTEGRATED_PEN, POINTER_DEVICE_TYPE_EXTERNAL_PEN, POINTER_DEVICE_TYPE_TOUCH, POINTER_DEVICE_TYPE_TOUCH_PAD,
+		// POINTER_DEVICE_TYPE_MAX } POINTER_DEVICE_TYPE;
+		[PInvokeData("winuser.h", MSDNShortId = "7702adec-e24f-4dc8-b5d4-f1f9dbcb5ed0")]
+		public enum POINTER_DEVICE_TYPE : uint
+		{
+			/// <summary>Direct pen digitizer (integrated into display).</summary>
+			POINTER_DEVICE_TYPE_INTEGRATED_PEN = 1,
+
+			/// <summary>Indirect pen digitizer (not integrated into display).</summary>
+			POINTER_DEVICE_TYPE_EXTERNAL_PEN,
+
+			/// <summary>Touch digitizer.</summary>
+			POINTER_DEVICE_TYPE_TOUCH,
+
+			/// <summary>Touchpad digitizer (Windows 8.1 and later).</summary>
+			POINTER_DEVICE_TYPE_TOUCH_PAD,
+		}
+
 		/// <summary>Values that can appear in the <c>pointerFlags</c> field of the <c>POINTER_INFO</c> structure.</summary>
 		/// <remarks>
 		/// XBUTTON1 and XBUTTON2 are additional buttons used on many mouse devices. They return the same data as standard mouse buttons.
@@ -317,6 +359,112 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "43211600-ee82-416f-860f-423c581eda75")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetPointerCursorId(uint pointerId, out uint cursorId);
+
+		/// <summary>Gets information about the pointer device.</summary>
+		/// <param name="device">The handle to the device.</param>
+		/// <param name="pointerDevice">A POINTER_DEVICE_INFO structure that contains information about the pointer device.</param>
+		/// <returns>
+		/// <para>If this function succeeds, it returns TRUE.</para>
+		/// <para>Otherwise, it returns FALSE. To retrieve extended error information, call the GetLastError function.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getpointerdevice BOOL GetPointerDevice( HANDLE device,
+		// POINTER_DEVICE_INFO *pointerDevice );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+		[PInvokeData("winuser.h", MSDNShortId = "800E0BFE-6E57-4EAA-B47C-FEEC0B5BFA2F")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetPointerDevice(HANDLE device, out POINTER_DEVICE_INFO pointerDevice);
+
+		/// <summary>Gets the cursor IDs that are mapped to the cursors associated with a pointer device.</summary>
+		/// <param name="device">The device handle.</param>
+		/// <param name="cursorCount">The number of cursors associated with the pointer device.</param>
+		/// <param name="deviceCursors">
+		/// An array of POINTER_DEVICE_CURSOR_INFO structures that contain info about the cursors. If NULL, cursorCount returns the number of
+		/// cursors associated with the pointer device.
+		/// </param>
+		/// <returns>
+		/// TRUE if the function succeeds; otherwise, FALSE. If the function fails, call the GetLastError function for more information.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getpointerdevicecursors BOOL GetPointerDeviceCursors(
+		// HANDLE device, UINT32 *cursorCount, POINTER_DEVICE_CURSOR_INFO *deviceCursors );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "4dd25033-e63a-4fa9-89b9-bfcae4061a76")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetPointerDeviceCursors(HANDLE device, ref uint cursorCount, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)]POINTER_DEVICE_CURSOR_INFO[] deviceCursors);
+
+		/// <summary>Gets device properties that aren't included in the POINTER_DEVICE_INFO structure.</summary>
+		/// <param name="device">
+		/// <para>The pointer device to query properties from.</para>
+		/// <para>A call to the GetPointerDevices function returns this handle in the POINTER_DEVICE_INFO structure.</para>
+		/// </param>
+		/// <param name="propertyCount">
+		/// <para>The number of properties.</para>
+		/// <para>Returns the count that's written or needed if pointerProperties is NULL.</para>
+		/// <para>
+		/// If this value is less than the number of properties that the pointer device supports and pointerProperties is not NULL, the
+		/// function returns the actual number of properties in this variable and fails.
+		/// </para>
+		/// </param>
+		/// <param name="pointerProperties">The array of properties.</param>
+		/// <returns>
+		/// TRUE if the function succeeds; otherwise, FALSE. If the function fails, call the GetLastError function for more information.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getpointerdeviceproperties BOOL
+		// GetPointerDeviceProperties( HANDLE device, UINT32 *propertyCount, POINTER_DEVICE_PROPERTY *pointerProperties );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "dbb81637-217a-49b1-9e81-2068cf4c0951")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetPointerDeviceProperties(HANDLE device, ref uint propertyCount, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] POINTER_DEVICE_PROPERTY[] pointerProperties);
+
+		/// <summary>
+		/// Gets the x and y range for the pointer device (in himetric) and the x and y range (current resolution) for the display that the
+		/// pointer device is mapped to.
+		/// </summary>
+		/// <param name="device">The handle to the pointer device.</param>
+		/// <param name="pointerDeviceRect">The structure for retrieving the device's physical range data.</param>
+		/// <param name="displayRect">The structure for retrieving the display resolution.</param>
+		/// <returns>
+		/// TRUE if the function succeeds; otherwise, FALSE. If the function fails, call the GetLastError function for more information.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getpointerdevicerects BOOL GetPointerDeviceRects( HANDLE
+		// device, RECT *pointerDeviceRect, RECT *displayRect );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "a6586dec-6d57-4345-be56-89c7308c1097")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetPointerDeviceRects(HANDLE device, out RECT pointerDeviceRect, out RECT displayRect);
+
+		/// <summary>Gets information about the pointer devices attached to the system.</summary>
+		/// <param name="deviceCount">
+		/// If pointerDevices is NULL, deviceCount returns the total number of attached pointer devices. Otherwise, deviceCount specifies the
+		/// number of POINTER_DEVICE_INFO structures pointed to by pointerDevices.
+		/// </param>
+		/// <param name="pointerDevices">
+		/// Array of POINTER_DEVICE_INFO structures for the pointer devices attached to the system. If NULL, the total number of attached
+		/// pointer devices is returned in deviceCount.
+		/// </param>
+		/// <returns>
+		/// <para>If this function succeeds, it returns TRUE.</para>
+		/// <para>Otherwise, it returns FALSE. To retrieve extended error information, call the GetLastError function.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Windows 8 supports the following:</para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>256 contacts per pointer device.</term>
+		/// </item>
+		/// <item>
+		/// <term>
+		/// 2560 total contacts per system session, regardless of the number of attached devices. For example, 10 pointer devices with 256
+		/// contacts each, 20 pointer devices with 128 contacts each, and so on.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getpointerdevices BOOL GetPointerDevices( UINT32
+		// *deviceCount, POINTER_DEVICE_INFO *pointerDevices );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "91FD5EBA-EDD7-4D7D-ABF3-3CE2461417B0")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetPointerDevices(ref uint deviceCount, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] POINTER_DEVICE_INFO[] pointerDevices);
 
 		/// <summary>Gets the entire frame of information for the specified pointers associated with the current message.</summary>
 		/// <param name="pointerId">An identifier of the pointer for which to retrieve frame information.</param>
@@ -1300,6 +1448,22 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetPointerType(uint pointerId, out POINTER_INPUT_TYPE pointerType);
 
+		/// <summary>Gets the raw input data from the pointer device.</summary>
+		/// <param name="pointerId">An identifier of the pointer for which to retrieve information.</param>
+		/// <param name="historyCount">The pointer history.</param>
+		/// <param name="propertiesCount">Number of properties to retrieve.</param>
+		/// <param name="pProperties">Array of POINTER_DEVICE_PROPERTY structures that contain raw data reported by the device.</param>
+		/// <param name="pValues">The values for pProperties.</param>
+		/// <returns>
+		/// TRUE if the function succeeds; otherwise, FALSE. If the function fails, call the GetLastError function for more information.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getrawpointerdevicedata BOOL GetRawPointerDeviceData(
+		// UINT32 pointerId, UINT32 historyCount, UINT32 propertiesCount, POINTER_DEVICE_PROPERTY *pProperties, LONG *pValues );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "56b65cc9-9582-4c7f-81e8-0b0d45b4dc8b")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetRawPointerDeviceData(uint pointerId, uint historyCount, uint propertiesCount, [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] POINTER_DEVICE_PROPERTY[] pProperties, IntPtr pValues);
+
 		/// <summary>Gets pointer data before it has gone through touch prediction processing.</summary>
 		/// <returns>The screen location of the pointer input.</returns>
 		/// <remarks>By default, touch prediction is activated.</remarks>
@@ -1333,6 +1497,89 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "5D493066-2425-4610-8489-575BF25C8C16")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool IsMouseInPointerEnabled();
+
+		/// <summary>
+		/// Registers a window to process the WM_POINTERDEVICECHANGE, WM_POINTERDEVICEINRANGE, and WM_POINTERDEVICEOUTOFRANGE pointer device notifications.
+		/// </summary>
+		/// <param name="window">
+		/// The window that receives WM_POINTERDEVICECHANGE, WM_POINTERDEVICEINRANGE, and WM_POINTERDEVICEOUTOFRANGE notifications.
+		/// </param>
+		/// <param name="notifyRange">
+		/// If set to TRUE, process the WM_POINTERDEVICEINRANGE and WM_POINTERDEVICEOUTOFRANGE messages. If set to FALSE, these messages
+		/// aren't processed.
+		/// </param>
+		/// <returns>
+		/// <para>If this function succeeds, it returns TRUE.</para>
+		/// <para>Otherwise, it returns FALSE. To retrieve extended error information, call the GetLastError function.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-registerpointerdevicenotifications BOOL
+		// RegisterPointerDeviceNotifications( HWND window, BOOL notifyRange );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "a7322d97-f96c-449d-94a6-2081962ec7ed")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool RegisterPointerDeviceNotifications(HWND window, [MarshalAs(UnmanagedType.Bool)] bool notifyRange);
+
+		/// <summary>Allows the caller to register a target window to which all pointer input of the specified type is redirected.</summary>
+		/// <param name="hwnd">
+		/// <para>The window to register as a global redirection target.</para>
+		/// <para>
+		/// Redirection can cause the foreground window to lose activation (focus). To avoid this, ensure the window is a message-only window
+		/// or has the WS_EX_NOACTIVATE style set.
+		/// </para>
+		/// </param>
+		/// <param name="pointerType">
+		/// Type of pointer input to be redirected to the specified window. This is any valid and supported value from the POINTER_INPUT_TYPE
+		/// enumeration. Note that the generic <c>PT_POINTER</c> type and the <c>PT_MOUSE</c> type are not valid in this parameter.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is non-zero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// An application with the UI Access privilege can use this function to register its own window to receive all input of the
+		/// specified pointer input type. Each desktop allows only one such global redirection target window for each pointer input type at
+		/// any given time. The first window to successfully register remains in effect until the window is unregistered or destroyed, at
+		/// which point the role is available to the next qualified caller.
+		/// </para>
+		/// <para>
+		/// While the registration is in effect, all input of the specified pointer type, whether from an input device or injected by an
+		/// application, is redirected to the registered window. However, when the process that owns the registered window injects input of
+		/// the specified pointer type, such injected is not redirected but is instead processed normally.
+		/// </para>
+		/// <para>
+		/// An application that wishes to register the same window as a global redirection target for multiple pointer input types must call
+		/// the <c>RegisterPointerInputTarget</c> function multiple times, once for each pointer input type of interest.
+		/// </para>
+		/// <para>If the calling thread does not have the UI Access privilege, this function fails with the last error set to <c>ERROR_ACCESS_DENIED</c>.</para>
+		/// <para>If the specified pointer input type is not valid, this function fails with the last error set to <c>ERROR_INVALID_PARAMETER</c>.</para>
+		/// <para>If the calling thread does not own the specified window, this function fails with the last error set to <c>ERROR_ACCESS_DENIED</c>.</para>
+		/// <para>
+		/// If the specified window’s desktop already has a registered global redirection target for the specified pointer input type, this
+		/// function fails with the last error set to <c>ERROR_ACCESS_DENIED</c>.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-registerpointerinputtarget BOOL
+		// RegisterPointerInputTarget( HWND hwnd, POINTER_INPUT_TYPE pointerType );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "75faea24-91cd-448b-b67a-09fe530f1830")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool RegisterPointerInputTarget(HWND hwnd, POINTER_INPUT_TYPE pointerType);
+
+		/// <summary>
+		/// <para>[ <c>RegisterPointerInputTargetEx</c> is not supported and may be altered or unavailable in the future. Instead, use RegisterPointerInputTarget.]</para>
+		/// <para><c>RegisterPointerInputTargetEx</c> may be altered or unavailable. Instead, use RegisterPointerInputTarget.</para>
+		/// </summary>
+		/// <param name="hwnd">Not supported.</param>
+		/// <param name="pointerType">Not supported.</param>
+		/// <param name="fObserve">Not supported.</param>
+		/// <returns>Not supported.</returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-registerpointerinputtargetex BOOL
+		// RegisterPointerInputTargetEx( HWND hwnd, POINTER_INPUT_TYPE pointerType, BOOL fObserve );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "E2B3D097-36E5-4444-B9DF-B3D38F1FEF48")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool RegisterPointerInputTargetEx(HWND hwnd, POINTER_INPUT_TYPE pointerType, [MarshalAs(UnmanagedType.Bool)] bool fObserve);
 
 		/// <summary>
 		/// Determines which pointer input frame generated the most recently retrieved message for the specified pointer and discards any
@@ -1390,6 +1637,41 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SkipPointerFrameMessages(uint pointerId);
 
+		/// <summary>Allows the caller to unregister a target window to which all pointer input of the specified type is redirected.</summary>
+		/// <param name="hwnd">Window to be un-registered as a global redirection target on its desktop.</param>
+		/// <param name="pointerType">
+		/// Type of pointer input to no longer be redirected to the specified window. This is any valid and supported value from the
+		/// POINTER_INPUT_TYPE enumeration. Note that the generic <c>PT_POINTER</c> type and the <c>PT_MOUSE</c> type are not valid in this parameter.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is non-zero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// An application that has successfully called the RegisterPointerInputTarget function can call this function to un-register the
+		/// window from the role of global redirected target for the specified pointer type.
+		/// </para>
+		/// <para>
+		/// An application that has registered the same window as a global redirection target for multiple pointer input types can call the
+		/// <c>UnregisterPointerInputTarget</c> to un-register the window for one of those types while leaving the window registered for the
+		/// remaining types.
+		/// </para>
+		/// <para>If the calling thread does not have the UI Access privilege, this function fails with the last error set to <c>ERROR_ACCESS_DENIED</c>.</para>
+		/// <para>If the specified pointer input type is not valid, this function fails with the last error set to <c>ERROR_INVALID_PARAMETER</c>.</para>
+		/// <para>If the calling thread does not own the specified window, this function fails with the last error set to <c>ERROR_ACCESS_DENIED</c>.</para>
+		/// <para>
+		/// If the specified window is not the registered global redirection target for the specified pointer input type on its desktop, this
+		/// function takes no action and returns success.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-unregisterpointerinputtarget BOOL
+		// UnregisterPointerInputTarget( HWND hwnd, POINTER_INPUT_TYPE pointerType );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "75faea24-91cd-448b-b67a-09fe530f1800")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool UnregisterPointerInputTarget(HWND hwnd, POINTER_INPUT_TYPE pointerType);
+
 		/// <summary>
 		/// Defines the matrix that represents a transform on a message consumer. This matrix can be used to transform pointer input data
 		/// from client coordinates to screen coordinates, while the inverse can be used to transform pointer input data from screen
@@ -1437,6 +1719,97 @@ namespace Vanara.PInvoke
 					}
 				}
 			}
+		}
+
+		/// <summary>Contains cursor ID mappings for pointer devices.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-pointer_device_cursor_info typedef struct
+		// tagPOINTER_DEVICE_CURSOR_INFO { UINT32 cursorId; POINTER_DEVICE_CURSOR_TYPE cursor; } POINTER_DEVICE_CURSOR_INFO;
+		[PInvokeData("winuser.h", MSDNShortId = "5d71e5b4-95eb-453e-9164-e7659ef4059e")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct POINTER_DEVICE_CURSOR_INFO
+		{
+			/// <summary>The assigned cursor ID.</summary>
+			public uint cursorId;
+
+			/// <summary>The POINTER_DEVICE_CURSOR_TYPE that the ID is mapped to.</summary>
+			public POINTER_DEVICE_CURSOR_TYPE cursor;
+		}
+
+		/// <summary>
+		/// Contains information about a pointer device. An array of these structures is returned from the GetPointerDevices function. A
+		/// single structure is returned from a call to the GetPointerDevice function.
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagpointer_device_info typedef struct
+		// tagPOINTER_DEVICE_INFO { DWORD displayOrientation; HANDLE device; POINTER_DEVICE_TYPE pointerDeviceType; HMONITOR monitor; ULONG
+		// startingCursorId; USHORT maxActiveContacts; WCHAR productString[POINTER_DEVICE_PRODUCT_STRING_MAX]; } POINTER_DEVICE_INFO;
+		[PInvokeData("winuser.h", MSDNShortId = "1b909caf-2d69-42b9-8d60-5d89a0286f59")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct POINTER_DEVICE_INFO
+		{
+			/// <summary>
+			/// <para>One of the values from DISPLAYCONFIG_ROTATION, which identifies the orientation of the input digitizer.</para>
+			/// <para><c>Note</c> This value is 0 when the source of input is Touch Injection.</para>
+			/// </summary>
+			public uint displayOrientation;
+
+			/// <summary>The handle to the pointer device.</summary>
+			public HANDLE device;
+
+			/// <summary>The device type.</summary>
+			public POINTER_DEVICE_TYPE pointerDeviceType;
+
+			/// <summary>
+			/// The HMONITOR for the display that the device is mapped to. This is not necessarily the monitor that the pointer device is
+			/// physically connected to.
+			/// </summary>
+			public HMONITOR monitor;
+
+			/// <summary>The lowest ID that's assigned to the device.</summary>
+			public uint startingCursorId;
+
+			/// <summary>The number of supported simultaneous contacts.</summary>
+			public ushort maxActiveContacts;
+
+			/// <summary>The string that identifies the product.</summary>
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 520)]
+			public string productString;
+		}
+
+		/// <summary>Contains pointer-based device properties (Human Interface Device (HID) global items that correspond to HID usages).</summary>
+		/// <remarks>
+		/// Developers can use this function to determine the properties that a device supports beyond the standard ones that are delivered
+		/// through Pointer Input Messages and Notifications. The properties map directly to HID usages.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagpointer_device_property typedef struct
+		// tagPOINTER_DEVICE_PROPERTY { INT32 logicalMin; INT32 logicalMax; INT32 physicalMin; INT32 physicalMax; UINT32 unit; UINT32
+		// unitExponent; USHORT usagePageId; USHORT usageId; } POINTER_DEVICE_PROPERTY;
+		[PInvokeData("winuser.h", MSDNShortId = "2c96379e-7c9f-440c-a98b-bda38bacd33f")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct POINTER_DEVICE_PROPERTY
+		{
+			/// <summary>The minimum value that the device can report for this property.</summary>
+			public int logicalMin;
+
+			/// <summary>The maximum value that the device can report for this property.</summary>
+			public int logicalMax;
+
+			/// <summary>The physical minimum in Himetric.</summary>
+			public int physicalMin;
+
+			/// <summary>The physical maximum in Himetric.</summary>
+			public int physicalMax;
+
+			/// <summary>The unit.</summary>
+			public uint unit;
+
+			/// <summary>The exponent.</summary>
+			public uint unitExponent;
+
+			/// <summary>The usage page for the property, as documented in the HID specification.</summary>
+			public ushort usagePageId;
+
+			/// <summary>The usage of the property, as documented in the HID specification.</summary>
+			public ushort usageId;
 		}
 
 		/// <summary>

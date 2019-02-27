@@ -3706,6 +3706,15 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool LockWorkStation();
 
+		/// <summary>Returns strings for standard message box buttons.</summary>
+		/// <param name="wBtn">The id of the string to return. These are identified by the Dialog Box Command ID values listed in winuser.h.</param>
+		/// <returns>The string, or NULL if not found.</returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/dlgbox/mb-getstring LPCWSTR WINAPI MB_GetString( UINT wBtn );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("", MSDNShortId = "D2AF238D-F5A8-477D-BF47-0F5D4D68B27E")]
+		[return: MarshalAs(UnmanagedType.LPWStr)]
+		public static extern string MB_GetString(uint wBtn);
+
 		/// <summary>
 		/// <para>Plays a waveform sound. The waveform sound for each sound type is identified by an entry in the registry.</para>
 		/// </summary>

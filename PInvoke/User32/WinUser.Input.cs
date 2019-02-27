@@ -5,6 +5,61 @@ namespace Vanara.PInvoke
 {
 	public static partial class User32
 	{
+		/// <summary>
+		/// <para>The type of device that sent the input message.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ne-winuser-input_message_device_type typedef enum
+		// tagINPUT_MESSAGE_DEVICE_TYPE { IMDT_UNAVAILABLE, IMDT_KEYBOARD, IMDT_MOUSE, IMDT_TOUCH, IMDT_PEN, IMDT_TOUCHPAD } INPUT_MESSAGE_DEVICE_TYPE;
+		[PInvokeData("winuser.h", MSDNShortId = "aaaa8d9b-1056-4fa3-afcf-43d2c4b41c0e")]
+		[Flags]
+		public enum INPUT_MESSAGE_DEVICE_TYPE
+		{
+			/// <summary>The device type isn't identified.</summary>
+			IMDT_UNAVAILABLE = 0x00,
+
+			/// <summary>Keyboard input.</summary>
+			IMDT_KEYBOARD = 0x01,
+
+			/// <summary>Mouse input.</summary>
+			IMDT_MOUSE = 0x02,
+
+			/// <summary>Touch input.</summary>
+			IMDT_TOUCH = 0x04,
+
+			/// <summary>Pen or stylus input.</summary>
+			IMDT_PEN = 0x08,
+
+			/// <summary>Touchpad input (Windows 8.1 and later).</summary>
+			IMDT_TOUCHPAD = 0x10,
+		}
+
+		/// <summary>The ID of the input message source.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ne-winuser-input_message_origin_id typedef enum
+		// tagINPUT_MESSAGE_ORIGIN_ID { IMO_UNAVAILABLE, IMO_HARDWARE, IMO_INJECTED, IMO_SYSTEM } INPUT_MESSAGE_ORIGIN_ID;
+		[PInvokeData("winuser.h", MSDNShortId = "5637bf3a-9fd8-4c89-acd0-4e0e47c0a3bf")]
+		[Flags]
+		public enum INPUT_MESSAGE_ORIGIN_ID
+		{
+			/// <summary>The source isn't identified.</summary>
+			IMO_UNAVAILABLE = 0x00,
+
+			/// <summary>
+			/// The input message is from a hardware device or has been injected into the message queue by an application that has the
+			/// UIAccess attribute set to TRUE in its manifest file. For more information about the UIAccess attribute and application
+			/// manifests, see UAC References.
+			/// </summary>
+			IMO_HARDWARE = 0x01,
+
+			/// <summary>
+			/// The input message has been injected (through the SendInput function) by an application that doesn't have the UIAccess
+			/// attribute set to TRUE in its manifest file.
+			/// </summary>
+			IMO_INJECTED = 0x02,
+
+			/// <summary>The system has injected the input message.</summary>
+			IMO_SYSTEM = 0x04,
+		}
+
 		/// <summary>Type for <see cref="INPUT"/> structure.</summary>
 		[PInvokeData("winuser.h", MSDNShortId = "")]
 		public enum INPUTTYPE
@@ -240,6 +295,25 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h")]
 		public static extern IntPtr DefRawInputProc(RAWINPUT[] paRawInput, int nInput, uint cbSizeHeader);
+
+		/// <summary>Retrieves the source of the input message.</summary>
+		/// <param name="inputMessageSource">
+		/// <para>The INPUT_MESSAGE_SOURCE structure that holds the device type and the ID of the input message source.</para>
+		/// <para>
+		/// <c>Note</c><c>deviceType</c> in INPUT_MESSAGE_SOURCE is set to IMDT_UNAVAILABLE when SendMessage is used to inject input (system
+		/// generated or through messages such as WM_PAINT). This remains true until <c>SendMessage</c> returns.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// If this function succeeds, it returns TRUE. Otherwise, it returns FALSE. To retrieve extended error information, call the
+		/// GetLastError function.
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getcurrentinputmessagesource BOOL
+		// GetCurrentInputMessageSource( INPUT_MESSAGE_SOURCE *inputMessageSource );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "35e4ebf5-df9d-4168-9996-355204c2ab93")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetCurrentInputMessageSource(ref INPUT_MESSAGE_SOURCE inputMessageSource);
 
 		/// <summary>Retrieves the time of the last input event.</summary>
 		/// <param name="plii">
@@ -718,6 +792,20 @@ namespace Vanara.PInvoke
 			/// </summary>
 			[FieldOffset(4)]
 			public HARDWAREINPUT hi;
+		}
+
+		/// <summary>Contains information about the source of the input message.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-taginput_message_source typedef struct
+		// tagINPUT_MESSAGE_SOURCE { INPUT_MESSAGE_DEVICE_TYPE deviceType; INPUT_MESSAGE_ORIGIN_ID originId; } INPUT_MESSAGE_SOURCE;
+		[PInvokeData("winuser.h", MSDNShortId = "75437c0a-925a-44d9-9254-43095b281c21")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct INPUT_MESSAGE_SOURCE
+		{
+			/// <summary>The device type (INPUT_MESSAGE_DEVICE_TYPE) of the source of the input message.</summary>
+			public INPUT_MESSAGE_DEVICE_TYPE deviceType;
+
+			/// <summary>The ID (INPUT_MESSAGE_ORIGIN_ID) of the source of the input message.</summary>
+			public INPUT_MESSAGE_ORIGIN_ID originId;
 		}
 
 		/// <summary>Contains the time of the last input.</summary>

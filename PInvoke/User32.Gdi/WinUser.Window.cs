@@ -128,6 +128,39 @@ namespace Vanara.PInvoke
 		public delegate bool WNDENUMPROC([In] HWND hwnd, [In] IntPtr lParam);
 
 		/// <summary>
+		/// <para>
+		/// An application-defined function that processes messages sent to a window. The <c>WNDPROC</c> type defines a pointer to this
+		/// callback function.
+		/// </para>
+		/// <para>WindowProc is a placeholder for the application-defined function name.</para>
+		/// </summary>
+		/// <param name="hwnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window.</para>
+		/// </param>
+		/// <param name="uMsg">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The message.</para>
+		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+		/// </param>
+		/// <param name="wParam">
+		/// <para>Type: <c>WPARAM</c></para>
+		/// <para>Additional message information. The contents of this parameter depend on the value of the uMsg parameter.</para>
+		/// </param>
+		/// <param name="lParam">
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>Additional message information. The contents of this parameter depend on the value of the uMsg parameter.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type:</para>
+		/// <para>The return value is the result of the message processing and depends on the message sent.</para>
+		/// </returns>
+		// LRESULT CALLBACK WindowProc( _In_ HWND hwnd, _In_ UINT uMsg, _In_ WPARAM wParam, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms633573(v=vs.85).aspx
+		[PInvokeData("Winuser.h", MSDNShortId = "ms633573")]
+		[UnmanagedFunctionPointer(CallingConvention.Winapi)]
+		public delegate IntPtr WNDPROC([In] HWND hwnd, [In] uint uMsg, [In] IntPtr wParam, [In] IntPtr lParam);
+
+		/// <summary>
 		/// The type of animation. Note that, by default, these flags take effect when showing a window. To take effect when hiding a window,
 		/// use <c>AW_HIDE</c> and a logical OR operator with the appropriate flags.
 		/// </summary>
@@ -204,6 +237,79 @@ namespace Vanara.PInvoke
 
 			/// <summary>Sets the default horizontal layout to be right to left.</summary>
 			LAYOUT_RTL = 1,
+		}
+
+		/// <summary>
+		/// <para>Specifies the visual feedback associated with an event.</para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ne-winuser-tagfeedback_type typedef enum tagFEEDBACK_TYPE {
+		// FEEDBACK_TOUCH_CONTACTVISUALIZATION, FEEDBACK_PEN_BARRELVISUALIZATION, FEEDBACK_PEN_TAP, FEEDBACK_PEN_DOUBLETAP,
+		// FEEDBACK_PEN_PRESSANDHOLD, FEEDBACK_PEN_RIGHTTAP, FEEDBACK_TOUCH_TAP, FEEDBACK_TOUCH_DOUBLETAP, FEEDBACK_TOUCH_PRESSANDHOLD,
+		// FEEDBACK_TOUCH_RIGHTTAP, FEEDBACK_GESTURE_PRESSANDTAP, FEEDBACK_MAX } FEEDBACK_TYPE;
+		[PInvokeData("winuser.h", MSDNShortId = "EEA3024E-D38C-4F4D-A63C-58ECB2B87F20")]
+		public enum FEEDBACK_TYPE : uint
+		{
+			/// <summary>Feedback for a touch contact event.</summary>
+			FEEDBACK_TOUCH_CONTACTVISUALIZATION = 1,
+
+			/// <summary>Feedback for a pen barrel-button event.</summary>
+			FEEDBACK_PEN_BARRELVISUALIZATION,
+
+			/// <summary>Feedback for a pen tap event.</summary>
+			FEEDBACK_PEN_TAP,
+
+			/// <summary>Feedback for a pen double-tap event.</summary>
+			FEEDBACK_PEN_DOUBLETAP,
+
+			/// <summary>Feedback for a pen press-and-hold event.</summary>
+			FEEDBACK_PEN_PRESSANDHOLD,
+
+			/// <summary>Feedback for a pen right-tap event.</summary>
+			FEEDBACK_PEN_RIGHTTAP,
+
+			/// <summary>Feedback for a touch tap event.</summary>
+			FEEDBACK_TOUCH_TAP,
+
+			/// <summary>Feedback for a touch double-tap event.</summary>
+			FEEDBACK_TOUCH_DOUBLETAP,
+
+			/// <summary>Feedback for a touch press-and-hold event.</summary>
+			FEEDBACK_TOUCH_PRESSANDHOLD,
+
+			/// <summary>Feedback for a touch right-tap event.</summary>
+			FEEDBACK_TOUCH_RIGHTTAP,
+
+			/// <summary>Feedback for a press-and-tap gesture.</summary>
+			FEEDBACK_GESTURE_PRESSANDTAP,
+
+			/// <summary>Do not use.</summary>
+			FEEDBACK_MAX = uint.MaxValue,
+		}
+
+		/// <summary>The flash status.</summary>
+		[PInvokeData("winuser.h", MSDNShortId = "b16636bc-fa77-4eb9-9801-dc2cdf0556e5")]
+		[Flags]
+		public enum FLASHW
+		{
+			/// <summary>
+			/// Flash both the window caption and taskbar button. This is equivalent to setting the FLASHW_CAPTION | FLASHW_TRAY flags.
+			/// </summary>
+			FLASHW_ALL = 0x00000003,
+
+			/// <summary>Flash the window caption.</summary>
+			FLASHW_CAPTION = 0x00000001,
+
+			/// <summary>Stop flashing. The system restores the window to its original state.</summary>
+			FLASHW_STOP = 0,
+
+			/// <summary>Flash continuously, until the FLASHW_STOP flag is set.</summary>
+			FLASHW_TIMER = 0x00000004,
+
+			/// <summary>Flash continuously until the window comes to the foreground.</summary>
+			FLASHW_TIMERNOFG = 0x0000000C,
+
+			/// <summary>Flash the taskbar button.</summary>
+			FLASHW_TRAY = 0x00000002,
 		}
 
 		/// <summary>The ancestor to be retrieved.</summary>
@@ -290,6 +396,15 @@ namespace Vanara.PInvoke
 
 			/// <summary>The thread's system menu state. This bit is set if the thread is in a system menu mode.</summary>
 			GUI_SYSTEMMENUMODE = 0x00000008,
+		}
+
+		/// <summary>Flags for <see cref="GetWindowFeedbackSetting"/>.</summary>
+		[PInvokeData("winuser.h", MSDNShortId = "a40806b3-9085-42b6-9a87-95be0d1669c6")]
+		[Flags]
+		public enum GWFS
+		{
+			/// <summary>Check the parent window chain until a value is found</summary>
+			GWFS_INCLUDE_ANCESTORS = 0x00000001,
 		}
 
 		/// <summary>A layering flag.</summary>
@@ -566,6 +681,21 @@ namespace Vanara.PInvoke
 			STATE_SYSTEM_UNAVAILABLE = 0x00000001,
 		}
 
+		/// <summary>Flags for <see cref="PrintWindow"/>.</summary>
+		[PInvokeData("winuser.h", MSDNShortId = "00b38cd8-1cfb-408e-88da-6e61563d9d8e")]
+		[Flags]
+		public enum PW : uint
+		{
+			/// <summary>Render the entire window.</summary>
+			PW_ENTIREWINDOW = 0,
+
+			/// <summary>Only the client area of the window is copied to hdcBlt. By default, the entire window is copied.</summary>
+			PW_CLIENTONLY = 1,
+
+			/// <summary>Undocumented</summary>
+			PW_RENDERFULLCONTENT = 0x00000002,
+		}
+
 		/// <summary>Window sizing and positioning flags.</summary>
 		[PInvokeData("winuser.h", MSDNShortId = "setwindowpos")]
 		[Flags]
@@ -736,6 +866,86 @@ namespace Vanara.PInvoke
 			/// Force the UpdateLayeredWindowIndirect function to fail if the current window size does not match the size specified in the psize.
 			/// </summary>
 			ULW_EX_NORESIZE = 0x00000008,
+		}
+
+		/// <summary>Window class styles.</summary>
+		[PInvokeData("winuser.h")]
+		[Flags]
+		public enum WindowClassStyles : uint
+		{
+			/// <summary>
+			/// Aligns the window's client area on a byte boundary (in the x direction). This style affects the width of the window and its
+			/// horizontal placement on the display.
+			/// </summary>
+			CS_BYTEALIGNCLIENT = 0x1000,
+
+			/// <summary>
+			/// Aligns the window on a byte boundary (in the x direction). This style affects the width of the window and its horizontal
+			/// placement on the display.
+			/// </summary>
+			CS_BYTEALIGNWINDOW = 0x2000,
+
+			/// <summary>
+			/// Allocates one device context to be shared by all windows in the class. Because window classes are process specific, it is
+			/// possible for multiple threads of an application to create a window of the same class. It is also possible for the threads to
+			/// attempt to use the device context simultaneously. When this happens, the system allows only one thread to successfully finish
+			/// its drawing operation.
+			/// </summary>
+			CS_CLASSDC = 0x0040,
+
+			/// <summary>
+			/// Sends a double-click message to the window procedure when the user double-clicks the mouse while the cursor is within a
+			/// window belonging to the class.
+			/// </summary>
+			CS_DBLCLKS = 0x0008,
+
+			/// <summary>
+			/// Enables the drop shadow effect on a window. The effect is turned on and off through SPI_SETDROPSHADOW. Typically, this is
+			/// enabled for small, short-lived windows such as menus to emphasize their Z-order relationship to other windows. Windows
+			/// created from a class with this style must be top-level windows; they may not be child windows.
+			/// </summary>
+			CS_DROPSHADOW = 0x00020000,
+
+			/// <summary>
+			/// Indicates that the window class is an application global class. For more information, see the "Application Global Classes"
+			/// section of About Window Classes.
+			/// </summary>
+			CS_GLOBALCLASS = 0x4000,
+
+			/// <summary>Redraws the entire window if a movement or size adjustment changes the width of the client area.</summary>
+			CS_HREDRAW = 0x0002,
+
+			/// <summary>Disables Close on the window menu.</summary>
+			CS_NOCLOSE = 0x0200,
+
+			/// <summary>Allocates a unique device context for each window in the class.</summary>
+			CS_OWNDC = 0x0020,
+
+			/// <summary>
+			/// Sets the clipping rectangle of the child window to that of the parent window so that the child can draw on the parent. A
+			/// window with the CS_PARENTDC style bit receives a regular device context from the system's cache of device contexts. It does
+			/// not give the child the parent's device context or device context settings. Specifying CS_PARENTDC enhances an application's performance.
+			/// </summary>
+			CS_PARENTDC = 0x0080,
+
+			/// <summary>
+			/// Saves, as a bitmap, the portion of the screen image obscured by a window of this class. When the window is removed, the
+			/// system uses the saved bitmap to restore the screen image, including other windows that were obscured. Therefore, the system
+			/// does not send WM_PAINT messages to windows that were obscured if the memory used by the bitmap has not been discarded and if
+			/// other screen actions have not invalidated the stored image.
+			/// <para>
+			/// This style is useful for small windows (for example, menus or dialog boxes) that are displayed briefly and then removed
+			/// before other screen activity takes place. This style increases the time required to display the window, because the system
+			/// must first allocate memory to store the bitmap.
+			/// </para>
+			/// </summary>
+			CS_SAVEBITS = 0x0800,
+
+			/// <summary>Redraws the entire window if a movement or size adjustment changes the height of the client area.</summary>
+			CS_VREDRAW = 0x0001,
+
+			/// <summary>Undocumented.</summary>
+			CS_IME = 0x00010000,
 		}
 
 		/// <summary>The display affinity setting. This setting specifies where the window's contents are can be displayed.</summary>
@@ -1310,6 +1520,76 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "calculatepopupwindowposition")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool CalculatePopupWindowPosition(in Point anchorPoint, in SIZE windowSize, TrackPopupMenuFlags flags, [Optional] PRECT excludeRect, out RECT popupWindowPosition);
+
+		/// <summary>Passes message information to the specified window procedure.</summary>
+		/// <param name="lpPrevWndFunc">
+		/// <para>Type: <c>WNDPROC</c></para>
+		/// <para>
+		/// The previous window procedure. If this value is obtained by calling the GetWindowLong function with the nIndex parameter set to
+		/// <c>GWL_WNDPROC</c> or <c>DWL_DLGPROC</c>, it is actually either the address of a window or dialog box procedure, or a special
+		/// internal value meaningful only to <c>CallWindowProc</c>.
+		/// </para>
+		/// </param>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window procedure to receive the message.</para>
+		/// </param>
+		/// <param name="Msg">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The message.</para>
+		/// </param>
+		/// <param name="wParam">
+		/// <para>Type: <c>WPARAM</c></para>
+		/// <para>Additional message-specific information. The contents of this parameter depend on the value of the Msg parameter.</para>
+		/// </param>
+		/// <param name="lParam">
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>Additional message-specific information. The contents of this parameter depend on the value of the Msg parameter.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>LRESULT</c></c></para>
+		/// <para>The return value specifies the result of the message processing and depends on the message sent.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Use the <c>CallWindowProc</c> function for window subclassing. Usually, all windows with the same class share one window
+		/// procedure. A subclass is a window or set of windows with the same class whose messages are intercepted and processed by another
+		/// window procedure (or procedures) before being passed to the window procedure of the class.
+		/// </para>
+		/// <para>
+		/// The SetWindowLong function creates the subclass by changing the window procedure associated with a particular window, causing the
+		/// system to call the new window procedure instead of the previous one. An application must pass any messages not processed by the
+		/// new window procedure to the previous window procedure by calling <c>CallWindowProc</c>. This allows the application to create a
+		/// chain of window procedures.
+		/// </para>
+		/// <para>
+		/// If <c>STRICT</c> is defined, the lpPrevWndFunc parameter has the data type <c>WNDPROC</c>. The <c>WNDPROC</c> type is declared as follows:
+		/// </para>
+		/// <para>
+		/// If <c>STRICT</c> is not defined, the lpPrevWndFunc parameter has the data type <c>FARPROC</c>. The <c>FARPROC</c> type is
+		/// declared as follows:
+		/// </para>
+		/// <para>
+		/// In C, the <c>FARPROC</c> declaration indicates a callback function that has an unspecified parameter list. In C++, however, the
+		/// empty parameter list in the declaration indicates that a function has no parameters. This subtle distinction can break careless
+		/// code. Following is one way to handle this situation:
+		/// </para>
+		/// <para>
+		/// For further information about functions declared with empty argument lists, refer to The C++ Programming Language, Second
+		/// Edition, by Bjarne Stroustrup.
+		/// </para>
+		/// <para>
+		/// The <c>CallWindowProc</c> function handles Unicode-to-ANSI conversion. You cannot take advantage of this conversion if you call
+		/// the window procedure directly.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Subclassing a Window</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-callwindowproca LRESULT CallWindowProcA( WNDPROC
+		// lpPrevWndFunc, HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam );
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		public static extern IntPtr CallWindowProc(WNDPROC lpPrevWndFunc, HWND hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
 		/// <summary>
 		/// <para>Cascades the specified child windows of the specified parent window.</para>
@@ -2355,6 +2635,17 @@ namespace Vanara.PInvoke
 		public static extern bool DestroyWindow(HWND hWnd);
 
 		/// <summary>
+		/// Disables the window ghosting feature for the calling GUI process. Window ghosting is a Windows Manager feature that lets the user
+		/// minimize, move, or close the main window of an application that is not responding.
+		/// </summary>
+		/// <remarks>After calling <c>DisableProcessWindowsGhosting</c>, the ghosting feature is disabled for the duration of the process.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-disableprocesswindowsghosting void
+		// DisableProcessWindowsGhosting( );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		public static extern void DisableProcessWindowsGhosting();
+
+		/// <summary>
 		/// Captures the mouse and tracks its movement until the user releases the left button, presses the ESC key, or moves the mouse
 		/// outside the drag rectangle around the specified point. The width and height of the drag rectangle are specified by the
 		/// <c>SM_CXDRAG</c> and <c>SM_CYDRAG</c> values returned by the GetSystemMetrics function.
@@ -2718,6 +3009,62 @@ namespace Vanara.PInvoke
 		public static extern HWND FindWindowEx(HWND hWndParent, HWND hWndChildAfter, string lpszClass, string lpszWindow);
 
 		/// <summary>
+		/// <para>Flashes the specified window one time. It does not change the active state of the window.</para>
+		/// <para>To flash the window a specified number of times, use the FlashWindowEx function.</para>
+		/// </summary>
+		/// <param name="hWnd">A handle to the window to be flashed. The window can be either open or minimized.</param>
+		/// <param name="bInvert">
+		/// <para>
+		/// If this parameter is <c>TRUE</c>, the window is flashed from one state to the other. If it is <c>FALSE</c>, the window is
+		/// returned to its original state (either active or inactive).
+		/// </para>
+		/// <para>
+		/// When an application is minimized and this parameter is <c>TRUE</c>, the taskbar window button flashes active/inactive. If it is
+		/// <c>FALSE</c>, the taskbar window button flashes inactive, meaning that it does not change colors. It flashes, as if it were being
+		/// redrawn, but it does not provide the visual invert clue to the user.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// The return value specifies the window's state before the call to the <c>FlashWindow</c> function. If the window caption was drawn
+		/// as active before the call, the return value is nonzero. Otherwise, the return value is zero.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Flashing a window means changing the appearance of its caption bar as if the window were changing from inactive to active status,
+		/// or vice versa. (An inactive caption bar changes to an active caption bar; an active caption bar changes to an inactive caption bar.)
+		/// </para>
+		/// <para>
+		/// Typically, a window is flashed to inform the user that the window requires attention but that it does not currently have the
+		/// keyboard focus.
+		/// </para>
+		/// <para>
+		/// The <c>FlashWindow</c> function flashes the window only once; for repeated flashing, the application should create a system timer.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-flashwindow BOOL FlashWindow( HWND hWnd, BOOL bInvert );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "c4af997d-5cb8-4d5d-ae8d-1e0cc724fe02")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool FlashWindow(HWND hWnd, [MarshalAs(UnmanagedType.Bool)] bool bInvert);
+
+		/// <summary>Flashes the specified window. It does not change the active state of the window.</summary>
+		/// <param name="pfwi">A pointer to a FLASHWINFO structure.</param>
+		/// <returns>
+		/// The return value specifies the window's state before the call to the <c>FlashWindowEx</c> function. If the window caption was
+		/// drawn as active before the call, the return value is nonzero. Otherwise, the return value is zero.
+		/// </returns>
+		/// <remarks>
+		/// Typically, you flash a window to inform the user that the window requires attention but does not currently have the keyboard
+		/// focus. When a window flashes, it appears to change from inactive to active status. An inactive caption bar changes to an active
+		/// caption bar; an active caption bar changes to an inactive caption bar.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-flashwindowex BOOL FlashWindowEx( PFLASHWINFO pfwi );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "474ec2d9-3ee9-4622-843e-d6ae36fedd7f")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool FlashWindowEx(in FLASHWINFO pfwi);
+
+		/// <summary>
 		/// <para>Retrieves the window handle to the active window attached to the calling thread's message queue.</para>
 		/// </summary>
 		/// <returns>
@@ -2846,6 +3193,255 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "")]
 		public static extern HWND GetCapture();
+
+		/// <summary>
+		/// <para>Retrieves information about a window class.</para>
+		/// <para>
+		/// <c>Note</c> The <c>GetClassInfo</c> function has been superseded by the GetClassInfoEx function. You can still use
+		/// <c>GetClassInfo</c>, however, if you do not need information about the class small icon.
+		/// </para>
+		/// </summary>
+		/// <param name="hInstance">
+		/// <para>Type: <c>HINSTANCE</c></para>
+		/// <para>
+		/// A handle to the instance of the application that created the class. To retrieve information about classes defined by the system
+		/// (such as buttons or list boxes), set this parameter to <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="lpClassName">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>
+		/// The class name. The name must be that of a preregistered class or a class registered by a previous call to the RegisterClass or
+		/// RegisterClassEx function.
+		/// </para>
+		/// <para>
+		/// Alternatively, this parameter can be an atom. If so, it must be a class atom created by a previous call to RegisterClass or
+		/// RegisterClassEx. The atom must be in the low-order word of lpClassName; the high-order word must be zero.
+		/// </para>
+		/// </param>
+		/// <param name="lpWndClass">
+		/// <para>Type: <c>LPWNDCLASS</c></para>
+		/// <para>A pointer to a WNDCLASS structure that receives the information about the class.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>BOOL</c></c></para>
+		/// <para>If the function finds a matching class and successfully copies the data, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclassinfoa BOOL GetClassInfoA( HINSTANCE hInstance,
+		// LPCSTR lpClassName, LPWNDCLASSA lpWndClass );
+		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetClassInfo(HINSTANCE hInstance, string lpClassName, out WNDCLASS lpWndClass);
+
+		/// <summary>
+		/// <para>
+		/// Retrieves information about a window class, including a handle to the small icon associated with the window class. The
+		/// GetClassInfo function does not retrieve a handle to the small icon.
+		/// </para>
+		/// </summary>
+		/// <param name="hInstance">
+		/// <para>Type: <c>HINSTANCE</c></para>
+		/// <para>
+		/// A handle to the instance of the application that created the class. To retrieve information about classes defined by the system
+		/// (such as buttons or list boxes), set this parameter to <c>NULL</c>.
+		/// </para>
+		/// </param>
+		/// <param name="lpszClass">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>
+		/// The class name. The name must be that of a preregistered class or a class registered by a previous call to the RegisterClass or
+		/// RegisterClassEx function. Alternatively, this parameter can be a class atom created by a previous call to <c>RegisterClass</c> or
+		/// <c>RegisterClassEx</c>. The atom must be in the low-order word of lpszClass; the high-order word must be zero.
+		/// </para>
+		/// </param>
+		/// <param name="lpwcx">
+		/// <para>Type: <c>LPWNDCLASSEX</c></para>
+		/// <para>A pointer to a WNDCLASSEX structure that receives the information about the class.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>BOOL</c></c></para>
+		/// <para>If the function finds a matching class and successfully copies the data, the return value is nonzero.</para>
+		/// <para>
+		/// If the function does not find a matching class and successfully copy the data, the return value is zero. To get extended error
+		/// information, call GetLastError.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Class atoms are created using the RegisterClass or RegisterClassEx function, not the GlobalAddAtom function.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclassinfoexa BOOL GetClassInfoExA( HINSTANCE hInstance,
+		// LPCSTR lpszClass, LPWNDCLASSEXA lpwcx );
+		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetClassInfoEx(HINSTANCE hInstance, string lpszClass, ref WNDCLASSEX lpwcx);
+
+		/// <summary>
+		/// <para>Retrieves the specified value from the WNDCLASSEX structure associated with the specified window.</para>
+		/// <para>
+		/// <c>Note</c> To write code that is compatible with both 32-bit and 64-bit versions of Windows, use <c>GetClassLongPtr</c>. When
+		/// compiling for 32-bit Windows, <c>GetClassLongPtr</c> is defined as a call to the GetClassLong function.
+		/// </para>
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window and, indirectly, the class to which the window belongs.</para>
+		/// </param>
+		/// <param name="nIndex">
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// The value to be retrieved. To retrieve a value from the extra class memory, specify the positive, zero-based byte offset of the
+		/// value to be retrieved. Valid values are in the range zero through the number of bytes of extra class memory, minus eight; for
+		/// example, if you specified 24 or more bytes of extra class memory, a value of 16 would be an index to the third integer. To
+		/// retrieve any other value from the WNDCLASSEX structure, specify one of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>GCW_ATOM -32</term>
+		/// <term>
+		/// Retrieves an ATOM value that uniquely identifies the window class. This is the same atom that the RegisterClassEx function returns.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_CBCLSEXTRA -20</term>
+		/// <term>Retrieves the size, in bytes, of the extra memory associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_CBWNDEXTRA -18</term>
+		/// <term>
+		/// Retrieves the size, in bytes, of the extra window memory associated with each window in the class. For information on how to
+		/// access this memory, see GetWindowLongPtr.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_HBRBACKGROUND -10</term>
+		/// <term>Retrieves a handle to the background brush associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_HCURSOR -12</term>
+		/// <term>Retrieves a handle to the cursor associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_HICON -14</term>
+		/// <term>Retrieves a handle to the icon associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_HICONSM -34</term>
+		/// <term>Retrieves a handle to the small icon associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_HMODULE -16</term>
+		/// <term>Retrieves a handle to the module that registered the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_MENUNAME -8</term>
+		/// <term>Retrieves the pointer to the menu name string. The string identifies the menu resource associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_STYLE -26</term>
+		/// <term>Retrieves the window-class style bits.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_WNDPROC -24</term>
+		/// <term>
+		/// Retrieves the address of the window procedure, or a handle representing the address of the window procedure. You must use the
+		/// CallWindowProc function to call the window procedure.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>ULONG_PTR</c></c></para>
+		/// <para>If the function succeeds, the return value is the requested value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// Reserve extra class memory by specifying a nonzero value in the <c>cbClsExtra</c> member of the WNDCLASSEX structure used with
+		/// the RegisterClassEx function.
+		/// </remarks>
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		public static IntPtr GetClassLong(HWND hWnd, int nIndex) => IntPtr.Size > 4 ? GetClassLongPtr(hWnd, nIndex) : (IntPtr)GetClassLong32(hWnd, nIndex);
+
+		/// <summary>Retrieves the name of the class to which the specified window belongs.</summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window and, indirectly, the class to which the window belongs.</para>
+		/// </param>
+		/// <param name="lpClassName">
+		/// <para>Type: <c>LPTSTR</c></para>
+		/// <para>The class name string.</para>
+		/// </param>
+		/// <param name="nMaxCount">
+		/// <para>Type: <c>int</c></para>
+		/// <para>The length</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>int</c></c></para>
+		/// <para>
+		/// If the function succeeds, the return value is the number of characters copied to the buffer, not including the terminating null character.
+		/// </para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclassname int GetClassName( HWND hWnd, LPTSTR
+		// lpClassName, int nMaxCount );
+		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		public static extern int GetClassName(HWND hWnd, StringBuilder lpClassName, int nMaxCount);
+
+		/// <summary>
+		/// <para>
+		/// Retrieves the 16-bit ( <c>WORD</c>) value at the specified offset into the extra class memory for the window class to which the
+		/// specified window belongs.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> This function is deprecated for any use other than nIndex set to <c>GCW_ATOM</c>. The function is provided only for
+		/// compatibility with 16-bit versions of Windows. Applications should use the GetClassLongPtr or GetClassLongPtr function.
+		/// </para>
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window and, indirectly, the class to which the window belongs.</para>
+		/// </param>
+		/// <param name="nIndex">
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// The zero-based byte offset of the value to be retrieved. Valid values are in the range zero through the number of bytes of class
+		/// memory, minus two; for example, if you specified 10 or more bytes of extra class memory, a value of eight would be an index to
+		/// the fifth 16-bit integer. There is an additional valid value as shown in the following table.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>GCW_ATOM -32</term>
+		/// <term>
+		/// Retrieves an ATOM value that uniquely identifies the window class. This is the same atom that the RegisterClass or
+		/// RegisterClassEx function returns.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>WORD</c></c></para>
+		/// <para>If the function succeeds, the return value is the requested 16-bit value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// Reserve extra class memory by specifying a nonzero value in the <c>cbClsExtra</c> member of the WNDCLASS structure used with the
+		/// RegisterClass function.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclassword WORD GetClassWord( HWND hWnd, int nIndex );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		public static extern ushort GetClassWord(HWND hWnd, int nIndex);
 
 		/// <summary>
 		/// Retrieves the coordinates of a window's client area. The client coordinates specify the upper-left and lower-right corners of the
@@ -3376,6 +3972,106 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "getwindow")]
 		public static extern HWND GetWindow(HWND hWnd, GetWindowCmd uCmd);
 
+		/// <summary>Retrieves a handle to a window that has the specified relationship (Z-Order or owner) to the specified window.</summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to a window. The window handle retrieved is relative to this window, based on the value of the uCmd parameter.</para>
+		/// </param>
+		/// <param name="uCmd">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>
+		/// The relationship between the specified window and the window whose handle is to be retrieved. This parameter can be one of the
+		/// following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>GW_CHILD 5</term>
+		/// <term>
+		/// The retrieved handle identifies the child window at the top of the Z order, if the specified window is a parent window;
+		/// otherwise, the retrieved handle is NULL. The function examines only child windows of the specified window. It does not examine
+		/// descendant windows.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GW_ENABLEDPOPUP 6</term>
+		/// <term>
+		/// The retrieved handle identifies the enabled popup window owned by the specified window (the search uses the first such window
+		/// found using GW_HWNDNEXT); otherwise, if there are no enabled popup windows, the retrieved handle is that of the specified window.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GW_HWNDFIRST 0</term>
+		/// <term>
+		/// The retrieved handle identifies the window of the same type that is highest in the Z order. If the specified window is a topmost
+		/// window, the handle identifies a topmost window. If the specified window is a top-level window, the handle identifies a top-level
+		/// window. If the specified window is a child window, the handle identifies a sibling window.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GW_HWNDLAST 1</term>
+		/// <term>
+		/// The retrieved handle identifies the window of the same type that is lowest in the Z order. If the specified window is a topmost
+		/// window, the handle identifies a topmost window. If the specified window is a top-level window, the handle identifies a top-level
+		/// window. If the specified window is a child window, the handle identifies a sibling window.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GW_HWNDNEXT 2</term>
+		/// <term>
+		/// The retrieved handle identifies the window below the specified window in the Z order. If the specified window is a topmost
+		/// window, the handle identifies a topmost window. If the specified window is a top-level window, the handle identifies a top-level
+		/// window. If the specified window is a child window, the handle identifies a sibling window.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GW_HWNDPREV 3</term>
+		/// <term>
+		/// The retrieved handle identifies the window above the specified window in the Z order. If the specified window is a topmost
+		/// window, the handle identifies a topmost window. If the specified window is a top-level window, the handle identifies a top-level
+		/// window. If the specified window is a child window, the handle identifies a sibling window.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GW_OWNER 4</term>
+		/// <term>The retrieved handle identifies the specified window's owner window, if any. For more information, see Owned Windows.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>HWND</c></c></para>
+		/// <para>
+		/// If the function succeeds, the return value is a window handle. If no window exists with the specified relationship to the
+		/// specified window, the return value is <c>NULL</c>. To get extended error information, call GetLastError.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// The EnumChildWindows function is more reliable than calling <c>GetWindow</c> in a loop. An application that calls
+		/// <c>GetWindow</c> to perform this task risks being caught in an infinite loop or referencing a handle to a window that has been destroyed.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindow HWND GetWindow( HWND hWnd, UINT uCmd );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		public static extern HWND GetWindow(HWND hWnd, uint uCmd);
+
+		/// <summary>Retrieves the Help context identifier, if any, associated with the specified window.</summary>
+		/// <param name="Arg1">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window for which the Help context identifier is to be retrieved.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>Returns the Help context identifier if the window has one, or zero otherwise.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindowcontexthelpid DWORD GetWindowContextHelpId( HWND
+		// Arg1 );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "28e57c01-0327-4f64-9ef4-ca13c3c32b0c")]
+		public static extern uint GetWindowContextHelpId(HWND Arg1);
+
 		/// <summary>
 		/// <para>Retrieves the current display affinity setting, from any process, for a given window.</para>
 		/// </summary>
@@ -3416,6 +4112,32 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "getwindowdisplayaffinity")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetWindowDisplayAffinity(HWND hWnd, out WindowDisplayAffinity pdwAffinity);
+
+		/// <summary>Retrieves the feedback configuration for a window.</summary>
+		/// <param name="hwnd">The window to check for feedback configuration.</param>
+		/// <param name="feedback">One of the values from the FEEDBACK_TYPE enumeration.</param>
+		/// <param name="dwFlags">
+		/// Specify GWFS_INCLUDE_ANCESTORS to check the parent window chain until a value is found. The default is 0 and indicates that only
+		/// the specified window will be checked.
+		/// </param>
+		/// <param name="pSize">
+		/// <para>The size of memory region that the config parameter points to.</para>
+		/// <para>The pSize parameter specifies the size of the configuration data for the feedback type in feedback and must be sizeof(BOOL).</para>
+		/// </param>
+		/// <param name="config">
+		/// <para>The configuration data.</para>
+		/// <para>The config parameter must point to a value of type BOOL.</para>
+		/// </param>
+		/// <returns>
+		/// Returns TRUE if the specified feedback setting is configured on the specified window. Otherwise, it returns FALSE (and config
+		/// won't be modified).
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getwindowfeedbacksetting BOOL GetWindowFeedbackSetting(
+		// HWND hwnd, FEEDBACK_TYPE feedback, DWORD dwFlags, UINT32 *pSize, VOID *config );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "a40806b3-9085-42b6-9a87-95be0d1669c6")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool GetWindowFeedbackSetting(HWND hwnd, FEEDBACK_TYPE feedback, GWFS dwFlags, ref uint pSize, [MarshalAs(UnmanagedType.Bool)] out bool config);
 
 		/// <summary>
 		/// <para>Retrieves information about the specified window.</para>
@@ -3645,6 +4367,47 @@ namespace Vanara.PInvoke
 		public static extern uint GetWindowThreadProcessId(HWND hWnd, out uint lpdwProcessId);
 
 		/// <summary>
+		/// Enables a Dynamic Data Exchange (DDE) server application to impersonate a DDE client application's security context. This
+		/// protects secure server data from unauthorized DDE clients.
+		/// </summary>
+		/// <param name="hWndClient">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>
+		/// A handle to the DDE client window to be impersonated. The client window must have established a DDE conversation with the server
+		/// window identified by the hWndServer parameter.
+		/// </para>
+		/// </param>
+		/// <param name="hWndServer">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the DDE server window. An application must create the server window before calling this function.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// An application should call the RevertToSelf function to undo the impersonation set by the <c>ImpersonateDdeClientWindow</c> function.
+		/// </para>
+		/// <para>A DDEML application should use the DdeImpersonateClient function.</para>
+		/// <para>Security Considerations</para>
+		/// <para>
+		/// Using this function incorrectly might compromise the security of your program. It is very important to check the return value of
+		/// the call. If the function fails for any reason, the client is not impersonated and any subsequent client request is made in the
+		/// security context of the calling process. If the calling process is running as a highly privileged account, such as LocalSystem or
+		/// as a member of an administrative group, the user may be able to perform actions that would otherwise be disallowed. Therefore, if
+		/// the call fails or raises an error do not continue execution of the client request.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/dde/nf-dde-impersonateddeclientwindow BOOL ImpersonateDdeClientWindow( HWND
+		// hWndClient, HWND hWndServer );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("dde.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool ImpersonateDdeClientWindow(HWND hWndClient, HWND hWndServer);
+
+		/// <summary>
 		/// <para>[This function is not intended for general use. It may be altered or unavailable in subsequent versions of Windows.]</para>
 		/// <para>Copies the text of the specified window's title bar (if it has one) into a buffer.</para>
 		/// <para>
@@ -3857,6 +4620,30 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool IsWindowEnabled(HWND hWnd);
+
+		/// <summary>
+		/// The <c>IsWindowRedirectedForPrint</c> function determines whether the specified window is currently redirected for printing.
+		/// </summary>
+		/// <param name="hWnd">The h WND.</param>
+		/// <returns>
+		/// If the window is currently redirected for printing, the function returns a nonzero value; otherwise, it returns zero.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// A window is redirected for printing when it processes a call to <c>PrintWindow</c>. In a call to <c>PrintWindow</c>, a window
+		/// renders its content to an off-screen device context.
+		/// </para>
+		/// <para>
+		/// This function has no associated import library or header file; you must call it by using the <c>LoadLibrary</c> and
+		/// <c>GetProcAddress</c> functions.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/printdocs/iswindowredirectedforprint BOOL WINAPI IsWindowRedirectedForPrint( _In_
+		// HWND hWnd );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("", MSDNShortId = "49FD0D63-0F7F-48C6-81B6-25715294E7B7")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool IsWindowRedirectedForPrint([In] HWND hWnd);
 
 		/// <summary>
 		/// <para>Determines whether the specified window is a native Unicode window.</para>
@@ -4103,6 +4890,65 @@ namespace Vanara.PInvoke
 		public static extern bool MoveWindow(HWND hWnd, int X, int Y, int nWidth, int nHeight, [MarshalAs(UnmanagedType.Bool)] bool bRepaint);
 
 		/// <summary>
+		/// Signals the system that a predefined event occurred. If any client applications have registered a hook function for the event,
+		/// the system calls the client's hook function.
+		/// </summary>
+		/// <param name="winEvent">The win event.</param>
+		/// <param name="hwnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>Handle to the window that contains the object that generated the event.</para>
+		/// </param>
+		/// <param name="idObject">
+		/// <para>Type: <c>LONG</c></para>
+		/// <para>
+		/// Identifies the object that generated the event. This value is either one of the predefined object identifiers or a custom object
+		/// ID value.
+		/// </para>
+		/// </param>
+		/// <param name="idChild">
+		/// <para>Type: <c>LONG</c></para>
+		/// <para>
+		/// Identifies whether the event was generated by an object or by a child element of the object. If this value is CHILDID_SELF, the
+		/// event was generated by the object itself. If not CHILDID_SELF, this value is the child ID of the element that generated the event.
+		/// </para>
+		/// </param>
+		/// <remarks>
+		/// <para>
+		/// Servers call this function to notify the system that an event has occurred. Microsoft Active Accessibility checks to see if any
+		/// client applications have set hook procedures for the event and, if so, calls the appropriate hook procedures.
+		/// </para>
+		/// <para>If no hook procedures are registered for the event, the performance penalty for calling this function is minor.</para>
+		/// <para>
+		/// Servers call <c>NotifyWinEvent</c> to announce the event to the system after the event has occurred; they must never notify the
+		/// system of an event before the event has occurred.
+		/// </para>
+		/// <para>
+		/// When the client's hook procedure is called, it receives a number of parameters that describe the event and the object that
+		/// generated the event. The hook procedure uses the AccessibleObjectFromEvent function to retrieve a pointer to the IAccessible
+		/// interface of the object that generated the event.
+		/// </para>
+		/// <para>
+		/// Servers may receive a WM_GETOBJECT message immediately after calling this function. This can happen if there are any in-context
+		/// clients that call AccessibleObjectFromEvent in the event callback.
+		/// </para>
+		/// <para>
+		/// When servers call this function, they must be ready to handle WM_GETOBJECT, return an IAccessible interface pointer, and handle
+		/// any of the <c>IAccessible</c> methods.
+		/// </para>
+		/// <para>
+		/// <c>Note to Server Developers:</c> When you call <c>NotifyWinEvent</c>, if any clients are listening for that event in-context,
+		/// their event handlers, which typically send WM_GETOBJECT and call IAccessible methods, will execute before <c>NotifyWinEvent</c>
+		/// returns. When you call <c>NotifyWinEvent</c>, you should be prepared to handle these calls, if they occur. If you need to do
+		/// extra setup to allow for this, you should do so before you call <c>NotifyWinEvent</c>, not after.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-notifywinevent void NotifyWinEvent( DWORD event, HWND
+		// hwnd, LONG idObject, LONG idChild );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "08e74d45-95b6-44c2-a2e0-5ba6ffdcd56a")]
+		public static extern void NotifyWinEvent(uint winEvent, HWND hwnd, int idObject, int idChild);
+
+		/// <summary>
 		/// <para>Restores a minimized (iconic) window to its previous size and position; it then activates the window.</para>
 		/// </summary>
 		/// <param name="hWnd">
@@ -4181,6 +5027,48 @@ namespace Vanara.PInvoke
 		public static extern bool PhysicalToLogicalPoint(HWND hWnd, ref Point lpPoint);
 
 		/// <summary>
+		/// The <c>PrintWindow</c> function copies a visual window into the specified device context (DC), typically a printer DC.
+		/// </summary>
+		/// <param name="hwnd">A handle to the window that will be copied.</param>
+		/// <param name="hdcBlt">A handle to the device context.</param>
+		/// <param name="nFlags">
+		/// <para>The drawing options. It can be one of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>PW_CLIENTONLY</term>
+		/// <term>Only the client area of the window is copied to hdcBlt. By default, the entire window is copied.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, it returns a nonzero value.</para>
+		/// <para>If the function fails, it returns zero.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// <c>Note</c> This is a blocking or synchronous function and might not return immediately. How quickly this function returns
+		/// depends on run-time factors such as network status, print server configuration, and printer driver implementation—factors that
+		/// are difficult to predict when writing an application. Calling this function from a thread that manages interaction with the user
+		/// interface could make the application appear to be unresponsive.
+		/// </para>
+		/// <para>
+		/// The application that owns the window referenced by hWnd processes the <c>PrintWindow</c> call and renders the image in the device
+		/// context that is referenced by hdcBlt. The application receives a WM_PRINT message or, if the <c>PW_PRINTCLIENT</c> flag is
+		/// specified, a WM_PRINTCLIENT message. For more information, see <c>WM_PRINT</c> and <c>WM_PRINTCLIENT</c>.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-printwindow BOOL PrintWindow( HWND hwnd, HDC hdcBlt, UINT
+		// nFlags );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "00b38cd8-1cfb-408e-88da-6e61563d9d8e")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool PrintWindow(HWND hwnd, HDC hdcBlt, PW nFlags);
+
+		/// <summary>
 		/// <para>
 		/// Retrieves a handle to the child window at the specified point. The search is restricted to immediate child windows; grandchildren
 		/// and deeper descendant windows are not searched.
@@ -4238,6 +5126,88 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("winuser.h", MSDNShortId = "realgetwindowclass")]
 		public static extern uint RealGetWindowClass(HWND hwnd, StringBuilder ptszClassName, uint cchClassNameMax);
+
+		/// <summary>
+		/// <para>Registers a window class for subsequent use in calls to the CreateWindow or CreateWindowEx function.</para>
+		/// <para>
+		/// <c>Note</c> The <c>RegisterClass</c> function has been superseded by the RegisterClassEx function. You can still use
+		/// <c>RegisterClass</c>, however, if you do not need to set the class small icon.
+		/// </para>
+		/// </summary>
+		/// <param name="lpWndClass">
+		/// <para>Type: <c>const WNDCLASS*</c></para>
+		/// <para>
+		/// A pointer to a WNDCLASS structure. You must fill the structure with the appropriate class attributes before passing it to the function.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>ATOM</c></c></para>
+		/// <para>
+		/// If the function succeeds, the return value is a class atom that uniquely identifies the class being registered. This atom can
+		/// only be used by the CreateWindow, CreateWindowEx, GetClassInfo, GetClassInfoEx, FindWindow, FindWindowEx, and UnregisterClass
+		/// functions and the <c>IActiveIMMap::FilterClientWindows</c> method.
+		/// </para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If you register the window class by using <c>RegisterClassA</c>, the application tells the system that the windows of the created
+		/// class expect messages with text or character parameters to use the ANSI character set; if you register it by using
+		/// <c>RegisterClassW</c>, the application requests that the system pass text parameters of messages as Unicode. The IsWindowUnicode
+		/// function enables applications to query the nature of each window. For more information on ANSI and Unicode functions, see
+		/// Conventions for Function Prototypes.
+		/// </para>
+		/// <para>All window classes that an application registers are unregistered when it terminates.</para>
+		/// <para>
+		/// No window classes registered by a DLL are unregistered when the DLL is unloaded. A DLL must explicitly unregister its classes
+		/// when it is unloaded.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Associating a Window Procedure with a Window Class.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-registerclassa ATOM RegisterClassA( const WNDCLASSA
+		// *lpWndClass );
+		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		public static extern ushort RegisterClass(in WNDCLASS lpWndClass);
+
+		/// <summary>Registers a window class for subsequent use in calls to the CreateWindow or CreateWindowEx function.</summary>
+		/// <param name="Arg1">
+		/// <para>Type: <c>const WNDCLASSEX*</c></para>
+		/// <para>
+		/// A pointer to a WNDCLASSEX structure. You must fill the structure with the appropriate class attributes before passing it to the function.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>ATOM</c></c></para>
+		/// <para>
+		/// If the function succeeds, the return value is a class atom that uniquely identifies the class being registered. This atom can
+		/// only be used by the CreateWindow, CreateWindowEx, GetClassInfo, GetClassInfoEx, FindWindow, FindWindowEx, and UnregisterClass
+		/// functions and the <c>IActiveIMMap::FilterClientWindows</c> method.
+		/// </para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If you register the window class by using <c>RegisterClassExA</c>, the application tells the system that the windows of the
+		/// created class expect messages with text or character parameters to use the ANSI character set; if you register it by using
+		/// <c>RegisterClassExW</c>, the application requests that the system pass text parameters of messages as Unicode. The
+		/// IsWindowUnicode function enables applications to query the nature of each window. For more information on ANSI and Unicode
+		/// functions, see Conventions for Function Prototypes.
+		/// </para>
+		/// <para>All window classes that an application registers are unregistered when it terminates.</para>
+		/// <para>
+		/// No window classes registered by a DLL are unregistered when the DLL is unloaded. A DLL must explicitly unregister its classes
+		/// when it is unloaded.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Using Window Classes.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-registerclassexa ATOM RegisterClassExA( const WNDCLASSEXA
+		// *Arg1 );
+		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		public static extern ushort RegisterClassEx(in WNDCLASSEX Arg1);
 
 		/// <summary>
 		/// <para>[This function is not intended for general use. It may be altered or unavailable in subsequent versions of Windows.]</para>
@@ -4436,6 +5406,155 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h", MSDNShortId = "")]
 		public static extern HWND SetCapture(HWND hWnd);
+
+		/// <summary>
+		/// Replaces the specified value at the specified offset in the extra class memory or the WNDCLASSEX structure for the class to which
+		/// the specified window belongs.
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window and, indirectly, the class to which the window belongs.</para>
+		/// </param>
+		/// <param name="nIndex">
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// The value to be replaced. To set a value in the extra class memory, specify the positive, zero-based byte offset of the value to
+		/// be set. Valid values are in the range zero through the number of bytes of extra class memory, minus eight; for example, if you
+		/// specified 24 or more bytes of extra class memory, a value of 16 would be an index to the third integer. To set a value other than
+		/// the WNDCLASSEX structure, specify one of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>GCL_CBCLSEXTRA -20</term>
+		/// <term>
+		/// Sets the size, in bytes, of the extra memory associated with the class. Setting this value does not change the number of extra
+		/// bytes already allocated.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_CBWNDEXTRA -18</term>
+		/// <term>
+		/// Sets the size, in bytes, of the extra window memory associated with each window in the class. Setting this value does not change
+		/// the number of extra bytes already allocated. For information on how to access this memory, see SetWindowLongPtr.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_ HBRBACKGROUND -10</term>
+		/// <term>Replaces a handle to the background brush associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_HCURSOR -12</term>
+		/// <term>Replaces a handle to the cursor associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_HICON -14</term>
+		/// <term>Replaces a handle to the icon associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_HICONSM -34</term>
+		/// <term>Retrieves a handle to the small icon associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_HMODULE -16</term>
+		/// <term>Replaces a handle to the module that registered the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_MENUNAME -8</term>
+		/// <term>Replaces the pointer to the menu name string. The string identifies the menu resource associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_STYLE -26</term>
+		/// <term>Replaces the window-class style bits.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_WNDPROC -24</term>
+		/// <term>Replaces the pointer to the window procedure associated with the class.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwNewLong">
+		/// <para>Type: <c>LONG_PTR</c></para>
+		/// <para>The replacement value.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>ULONG_PTR</c></c></para>
+		/// <para>
+		/// If the function succeeds, the return value is the previous value of the specified offset. If this was not previously set, the
+		/// return value is zero.
+		/// </para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If you use the <c>SetClassLongPtr</c> function and the <c>GCLP_WNDPROC</c> index to replace the window procedure, the window
+		/// procedure must conform to the guidelines specified in the description of the WindowProc callback function.
+		/// </para>
+		/// <para>
+		/// Calling <c>SetClassLongPtr</c> with the <c>GCLP_WNDPROC</c> index creates a subclass of the window class that affects all windows
+		/// subsequently created with the class. An application can subclass a system class, but should not subclass a window class created
+		/// by another process.
+		/// </para>
+		/// <para>
+		/// Reserve extra class memory by specifying a nonzero value in the <c>cbClsExtra</c> member of the WNDCLASSEX structure used with
+		/// the RegisterClassEx function.
+		/// </para>
+		/// <para>
+		/// Use the <c>SetClassLongPtr</c> function with care. For example, it is possible to change the background color for a class by
+		/// using <c>SetClassLongPtr</c>, but this change does not immediately repaint all windows belonging to the class.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setclasslongptra ULONG_PTR SetClassLongPtrA( HWND hWnd,
+		// int nIndex, LONG_PTR dwNewLong );
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		public static IntPtr SetClassLong(HWND hWnd, int nIndex, IntPtr dwNewLong) => IntPtr.Size > 4 ? SetClassLongPtr(hWnd, nIndex, dwNewLong) : (IntPtr)SetClassLong32(hWnd, nIndex, dwNewLong.ToInt32());
+
+		/// <summary>
+		/// <para>
+		/// Replaces the 16-bit ( <c>WORD</c>) value at the specified offset into the extra class memory for the window class to which the
+		/// specified window belongs.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> This function is provided only for compatibility with 16-bit versions of Windows. Applications should use the
+		/// SetClassLong function.
+		/// </para>
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window and, indirectly, the class to which the window belongs.</para>
+		/// </param>
+		/// <param name="nIndex">
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// The zero-based byte offset of the value to be replaced. Valid values are in the range zero through the number of bytes of class
+		/// memory minus two; for example, if you specified 10 or more bytes of extra class memory, a value of 8 would be an index to the
+		/// fifth 16-bit integer.
+		/// </para>
+		/// </param>
+		/// <param name="wNewWord">
+		/// <para>Type: <c>WORD</c></para>
+		/// <para>The replacement value.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>WORD</c></c></para>
+		/// <para>
+		/// If the function succeeds, the return value is the previous value of the specified 16-bit integer. If the value was not previously
+		/// set, the return value is zero.
+		/// </para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// Reserve extra class memory by specifying a nonzero value in the <c>cbClsExtra</c> member of the WNDCLASS structure used with the
+		/// RegisterClass function.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setclassword WORD SetClassWord( HWND hWnd, int nIndex,
+		// WORD wNewWord );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		public static extern ushort SetClassWord(HWND hWnd, int nIndex, ushort wNewWord);
 
 		/// <summary>Sets the keyboard focus to the specified window. The window must be attached to the calling thread's message queue.</summary>
 		/// <param name="hWnd">
@@ -4763,6 +5882,32 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetProcessDPIAware();
 
+		/// <summary>Associates a Help context identifier with the specified window.</summary>
+		/// <param name="arg1">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window with which to associate the Help context identifier.</para>
+		/// </param>
+		/// <param name="arg2">
+		/// <para>Type: <c>DWORD</c></para>
+		/// <para>The Help context identifier.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>Returns nonzero if successful, or zero otherwise.</para>
+		/// <para>To retrieve extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// If a child window does not have a Help context identifier, it inherits the identifier of its parent window. Likewise, if an owned
+		/// window does not have a Help context identifier, it inherits the identifier of its owner window. This inheritance of Help context
+		/// identifiers allows an application to set just one identifier for a dialog box and all of its controls.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setwindowcontexthelpid BOOL SetWindowContextHelpId( HWND ,
+		// DWORD );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "7e0963d1-5807-4db5-9abf-cdb21a03b525")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetWindowContextHelpId(HWND arg1, uint arg2);
+
 		/// <summary>
 		/// <para>Stores the display affinity setting in kernel mode on the hWnd associated with the window.</para>
 		/// </summary>
@@ -4804,6 +5949,22 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h", MSDNShortId = "setwindowdisplayaffinity")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetWindowDisplayAffinity(HWND hWnd, WindowDisplayAffinity dwAffinity);
+
+		/// <summary>Sets the feedback configuration for a window.</summary>
+		/// <param name="hwnd">The window to configure feedback on.</param>
+		/// <param name="feedback">One of the values from the FEEDBACK_TYPE enumeration.</param>
+		/// <param name="dwFlags">Reserved. Must be 0.</param>
+		/// <param name="size">
+		/// The size, in bytes, of the configuration data. Must be sizeof(BOOL) or 0 if the feedback setting is being reset.
+		/// </param>
+		/// <param name="configuration">The configuration data. Must be BOOL or NULL if the feedback setting is being reset.</param>
+		/// <returns>Returns TRUE if successful; otherwise, returns FALSE.</returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setwindowfeedbacksetting BOOL SetWindowFeedbackSetting(
+		// HWND hwnd, FEEDBACK_TYPE feedback, DWORD dwFlags, UINT32 size, const VOID *configuration );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "72bee160-7004-40be-9c91-e431b06ccaed")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool SetWindowFeedbackSetting(HWND hwnd, FEEDBACK_TYPE feedback, [Optional] uint dwFlags, uint size, IntPtr configuration);
 
 		/// <summary>
 		/// <para>Sets the show state and the restored, minimized, and maximized positions of the specified window.</para>
@@ -5406,6 +6567,70 @@ namespace Vanara.PInvoke
 		public static extern ushort TileWindows(HWND hwndParent, MdiTileFlags wHow, PRECT lpRect, uint cKids, [In] HWND[] lpKids);
 
 		/// <summary>
+		/// Processes accelerator keystrokes for window menu commands of the multiple-document interface (MDI) child windows associated with
+		/// the specified MDI client window. The function translates WM_KEYUP and WM_KEYDOWN messages to WM_SYSCOMMAND messages and sends
+		/// them to the appropriate MDI child windows.
+		/// </summary>
+		/// <param name="hWndClient">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the MDI client window.</para>
+		/// </param>
+		/// <param name="lpMsg">
+		/// <para>Type: <c>LPMSG</c></para>
+		/// <para>
+		/// A pointer to a message retrieved by using the GetMessage or PeekMessage function. The message must be an MSG structure and
+		/// contain message information from the application's message queue.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>BOOL</c></c></para>
+		/// <para>If the message is translated into a system command, the return value is nonzero.</para>
+		/// <para>If the message is not translated into a system command, the return value is zero.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-translatemdisysaccel BOOL TranslateMDISysAccel( HWND
+		// hWndClient, LPMSG lpMsg );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool TranslateMDISysAccel(HWND hWndClient, ref MSG lpMsg);
+
+		/// <summary>Unregisters a window class, freeing the memory required for the class.</summary>
+		/// <param name="lpClassName">
+		/// <para>Type: <c>LPCTSTR</c></para>
+		/// <para>
+		/// A null-terminated string or a class atom. If lpClassName is a string, it specifies the window class name. This class name must
+		/// have been registered by a previous call to the RegisterClass or RegisterClassEx function. System classes, such as dialog box
+		/// controls, cannot be unregistered. If this parameter is an atom, it must be a class atom created by a previous call to the
+		/// <c>RegisterClass</c> or <c>RegisterClassEx</c> function. The atom must be in the low-order word of lpClassName; the high-order
+		/// word must be zero.
+		/// </para>
+		/// </param>
+		/// <param name="hInstance">
+		/// <para>Type: <c>HINSTANCE</c></para>
+		/// <para>A handle to the instance of the module that created the class.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>BOOL</c></c></para>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>
+		/// If the class could not be found or if a window still exists that was created with the class, the return value is zero. To get
+		/// extended error information, call GetLastError.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>Before calling this function, an application must destroy all windows created with the specified class.</para>
+		/// <para>All window classes that an application registers are unregistered when it terminates.</para>
+		/// <para>Class atoms are special atoms returned only by RegisterClass and RegisterClassEx.</para>
+		/// <para>No window classes registered by a DLL are unregistered when the .dll is unloaded.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-unregisterclassa BOOL UnregisterClassA( LPCSTR
+		// lpClassName, HINSTANCE hInstance );
+		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool UnregisterClass(string lpClassName, HINSTANCE hInstance);
+
+		/// <summary>
 		/// <para>Updates the position, size, shape, content, and translucency of a layered window.</para>
 		/// </summary>
 		/// <param name="hWnd">
@@ -5729,6 +6954,439 @@ namespace Vanara.PInvoke
 		public static extern HWND WindowFromPoint(Point Point);
 
 		/// <summary>
+		/// <para>
+		/// Temporarily enables or disables an Input Method Editor (IME) and, at the same time, turns on or off the display of all windows
+		/// owned by the IME.
+		/// </para>
+		/// <para><c>Note</c> This function is obsolete and should not be used.</para>
+		/// </summary>
+		/// <param name="hWnd">Must be <c>NULL</c>. Specifying a particular IME for each application is not supported.</param>
+		/// <param name="fEnable"><c>TRUE</c> to enable the IME; <c>FALSE</c> to disable.</param>
+		/// <returns>The previous state of the IME. <c>TRUE</c> if it was enabled before this call, otherwise, <c>FALSE</c>.</returns>
+		/// <remarks>
+		/// <para>The terms "enabled" and "disabled" in regard to this function are defined as follows:</para>
+		/// <para>
+		/// If an IME is disabled, IME_WINDOWUPDATE(FALSE) is issued to the IME, which responds by deleting the conversion and system
+		/// windows. With the IME disabled, keyboard messages are not sent to the IME, but are sent directly to the application. Even if the
+		/// IME is disabled, the API that uses the SendIMEMessageEx function is still valid.
+		/// </para>
+		/// <para>
+		/// If an IME is enabled, IME_WINDOWUPDATE(TRUE) is issued to the IME, which responds by redisplaying the conversion and system
+		/// windows. With the IME enabled, keyboard messages are sent to the IME.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winnls32/nf-winnls32-winnlsenableime BOOL WINNLSEnableIME( IN HWND, IN BOOL );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winnls32.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool WINNLSEnableIME([In, Optional] HWND hWnd, [In] [MarshalAs(UnmanagedType.Bool)] bool fEnable);
+
+		/// <summary>
+		/// <para>Retrieves the specified 32-bit ( <c>DWORD</c>) value from the WNDCLASSEX structure associated with the specified window.</para>
+		/// <para>
+		/// <c>Note</c> If you are retrieving a pointer or a handle, this function has been superseded by the GetClassLongPtr function.
+		/// (Pointers and handles are 32 bits on 32-bit Windows and 64 bits on 64-bit Windows.)
+		/// </para>
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window and, indirectly, the class to which the window belongs.</para>
+		/// </param>
+		/// <param name="nIndex">
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// The value to be retrieved. To retrieve a value from the extra class memory, specify the positive, zero-based byte offset of the
+		/// value to be retrieved. Valid values are in the range zero through the number of bytes of extra class memory, minus four; for
+		/// example, if you specified 12 or more bytes of extra class memory, a value of 8 would be an index to the third integer. To
+		/// retrieve any other value from the WNDCLASSEX structure, specify one of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>GCW_ATOM -32</term>
+		/// <term>
+		/// Retrieves an ATOM value that uniquely identifies the window class. This is the same atom that the RegisterClassEx function returns.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_CBCLSEXTRA -20</term>
+		/// <term>Retrieves the size, in bytes, of the extra memory associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_CBWNDEXTRA -18</term>
+		/// <term>
+		/// Retrieves the size, in bytes, of the extra window memory associated with each window in the class. For information on how to
+		/// access this memory, see GetWindowLong.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_HBRBACKGROUND -10</term>
+		/// <term>Retrieves a handle to the background brush associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_HCURSOR -12</term>
+		/// <term>Retrieves a handle to the cursor associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_HICON -14</term>
+		/// <term>Retrieves a handle to the icon associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_HICONSM -34</term>
+		/// <term>Retrieves a handle to the small icon associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_HMODULE -16</term>
+		/// <term>Retrieves a handle to the module that registered the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_MENUNAME -8</term>
+		/// <term>Retrieves the address of the menu name string. The string identifies the menu resource associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_STYLE -26</term>
+		/// <term>Retrieves the window-class style bits.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_WNDPROC -24</term>
+		/// <term>
+		/// Retrieves the address of the window procedure, or a handle representing the address of the window procedure. You must use the
+		/// CallWindowProc function to call the window procedure.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>DWORD</c></c></para>
+		/// <para>If the function succeeds, the return value is the requested value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// Reserve extra class memory by specifying a nonzero value in the <c>cbClsExtra</c> member of the WNDCLASSEX structure used with
+		/// the RegisterClassEx function.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclasslonga DWORD GetClassLongA( HWND hWnd, int nIndex );
+		[DllImport(Lib.User32, SetLastError = true, EntryPoint = "GetClassLong", CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		private static extern int GetClassLong32(HWND hWnd, int nIndex);
+
+		/// <summary>
+		/// <para>Retrieves the specified value from the WNDCLASSEX structure associated with the specified window.</para>
+		/// <para>
+		/// <c>Note</c> To write code that is compatible with both 32-bit and 64-bit versions of Windows, use <c>GetClassLongPtr</c>. When
+		/// compiling for 32-bit Windows, <c>GetClassLongPtr</c> is defined as a call to the GetClassLong function.
+		/// </para>
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window and, indirectly, the class to which the window belongs.</para>
+		/// </param>
+		/// <param name="nIndex">
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// The value to be retrieved. To retrieve a value from the extra class memory, specify the positive, zero-based byte offset of the
+		/// value to be retrieved. Valid values are in the range zero through the number of bytes of extra class memory, minus eight; for
+		/// example, if you specified 24 or more bytes of extra class memory, a value of 16 would be an index to the third integer. To
+		/// retrieve any other value from the WNDCLASSEX structure, specify one of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>GCW_ATOM -32</term>
+		/// <term>
+		/// Retrieves an ATOM value that uniquely identifies the window class. This is the same atom that the RegisterClassEx function returns.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_CBCLSEXTRA -20</term>
+		/// <term>Retrieves the size, in bytes, of the extra memory associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_CBWNDEXTRA -18</term>
+		/// <term>
+		/// Retrieves the size, in bytes, of the extra window memory associated with each window in the class. For information on how to
+		/// access this memory, see GetWindowLongPtr.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_HBRBACKGROUND -10</term>
+		/// <term>Retrieves a handle to the background brush associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_HCURSOR -12</term>
+		/// <term>Retrieves a handle to the cursor associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_HICON -14</term>
+		/// <term>Retrieves a handle to the icon associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_HICONSM -34</term>
+		/// <term>Retrieves a handle to the small icon associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_HMODULE -16</term>
+		/// <term>Retrieves a handle to the module that registered the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_MENUNAME -8</term>
+		/// <term>Retrieves the pointer to the menu name string. The string identifies the menu resource associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_STYLE -26</term>
+		/// <term>Retrieves the window-class style bits.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_WNDPROC -24</term>
+		/// <term>
+		/// Retrieves the address of the window procedure, or a handle representing the address of the window procedure. You must use the
+		/// CallWindowProc function to call the window procedure.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>ULONG_PTR</c></c></para>
+		/// <para>If the function succeeds, the return value is the requested value.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// Reserve extra class memory by specifying a nonzero value in the <c>cbClsExtra</c> member of the WNDCLASSEX structure used with
+		/// the RegisterClassEx function.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-getclasslongptra ULONG_PTR GetClassLongPtrA( HWND hWnd,
+		// int nIndex );
+		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		private static extern IntPtr GetClassLongPtr(HWND hWnd, int nIndex);
+
+		/// <summary>
+		/// <para>
+		/// Replaces the specified 32-bit ( <c>long</c>) value at the specified offset into the extra class memory or the WNDCLASSEX
+		/// structure for the class to which the specified window belongs.
+		/// </para>
+		/// <para>
+		/// <c>Note</c> This function has been superseded by the SetClassLongPtr function. To write code that is compatible with both 32-bit
+		/// and 64-bit versions of Windows, use <c>SetClassLongPtr</c>.
+		/// </para>
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window and, indirectly, the class to which the window belongs.</para>
+		/// </param>
+		/// <param name="nIndex">
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// The value to be replaced. To set a 32-bit value in the extra class memory, specify the positive, zero-based byte offset of the
+		/// value to be set. Valid values are in the range zero through the number of bytes of extra class memory, minus four; for example,
+		/// if you specified 12 or more bytes of extra class memory, a value of 8 would be an index to the third 32-bit integer. To set any
+		/// other value from the WNDCLASSEX structure, specify one of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>GCL_CBCLSEXTRA -20</term>
+		/// <term>
+		/// Sets the size, in bytes, of the extra memory associated with the class. Setting this value does not change the number of extra
+		/// bytes already allocated.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_CBWNDEXTRA -18</term>
+		/// <term>
+		/// Sets the size, in bytes, of the extra window memory associated with each window in the class. Setting this value does not change
+		/// the number of extra bytes already allocated. For information on how to access this memory, see SetWindowLong.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_HBRBACKGROUND -10</term>
+		/// <term>Replaces a handle to the background brush associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_HCURSOR -12</term>
+		/// <term>Replaces a handle to the cursor associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_HICON -14</term>
+		/// <term>Replaces a handle to the icon associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_HICONSM -34</term>
+		/// <term>Replace a handle to the small icon associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_HMODULE -16</term>
+		/// <term>Replaces a handle to the module that registered the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_MENUNAME -8</term>
+		/// <term>Replaces the address of the menu name string. The string identifies the menu resource associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_STYLE -26</term>
+		/// <term>Replaces the window-class style bits.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_WNDPROC -24</term>
+		/// <term>Replaces the address of the window procedure associated with the class.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwNewLong">
+		/// <para>Type: <c>LONG</c></para>
+		/// <para>The replacement value.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>DWORD</c></c></para>
+		/// <para>
+		/// If the function succeeds, the return value is the previous value of the specified 32-bit integer. If the value was not previously
+		/// set, the return value is zero.
+		/// </para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If you use the <c>SetClassLong</c> function and the <c>GCL_WNDPROC</c> index to replace the window procedure, the window
+		/// procedure must conform to the guidelines specified in the description of the WindowProc callback function.
+		/// </para>
+		/// <para>
+		/// Calling <c>SetClassLong</c> with the <c>GCL_WNDPROC</c> index creates a subclass of the window class that affects all windows
+		/// subsequently created with the class. An application can subclass a system class, but should not subclass a window class created
+		/// by another process.
+		/// </para>
+		/// <para>
+		/// Reserve extra class memory by specifying a nonzero value in the <c>cbClsExtra</c> member of the WNDCLASSEX structure used with
+		/// the RegisterClassEx function.
+		/// </para>
+		/// <para>
+		/// Use the <c>SetClassLong</c> function with care. For example, it is possible to change the background color for a class by using
+		/// <c>SetClassLong</c>, but this change does not immediately repaint all windows belonging to the class.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example, see Displaying an Icon.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setclasslonga DWORD SetClassLongA( HWND hWnd, int nIndex,
+		// LONG dwNewLong );
+		[DllImport(Lib.User32, SetLastError = true, EntryPoint = "SetClassLong", CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		private static extern uint SetClassLong32(HWND hWnd, int nIndex, int dwNewLong);
+
+		/// <summary>
+		/// Replaces the specified value at the specified offset in the extra class memory or the WNDCLASSEX structure for the class to which
+		/// the specified window belongs.
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>Type: <c>HWND</c></para>
+		/// <para>A handle to the window and, indirectly, the class to which the window belongs.</para>
+		/// </param>
+		/// <param name="nIndex">
+		/// <para>Type: <c>int</c></para>
+		/// <para>
+		/// The value to be replaced. To set a value in the extra class memory, specify the positive, zero-based byte offset of the value to
+		/// be set. Valid values are in the range zero through the number of bytes of extra class memory, minus eight; for example, if you
+		/// specified 24 or more bytes of extra class memory, a value of 16 would be an index to the third integer. To set a value other than
+		/// the WNDCLASSEX structure, specify one of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>GCL_CBCLSEXTRA -20</term>
+		/// <term>
+		/// Sets the size, in bytes, of the extra memory associated with the class. Setting this value does not change the number of extra
+		/// bytes already allocated.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_CBWNDEXTRA -18</term>
+		/// <term>
+		/// Sets the size, in bytes, of the extra window memory associated with each window in the class. Setting this value does not change
+		/// the number of extra bytes already allocated. For information on how to access this memory, see SetWindowLongPtr.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_ HBRBACKGROUND -10</term>
+		/// <term>Replaces a handle to the background brush associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_HCURSOR -12</term>
+		/// <term>Replaces a handle to the cursor associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_HICON -14</term>
+		/// <term>Replaces a handle to the icon associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_HICONSM -34</term>
+		/// <term>Retrieves a handle to the small icon associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_HMODULE -16</term>
+		/// <term>Replaces a handle to the module that registered the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_MENUNAME -8</term>
+		/// <term>Replaces the pointer to the menu name string. The string identifies the menu resource associated with the class.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCL_STYLE -26</term>
+		/// <term>Replaces the window-class style bits.</term>
+		/// </item>
+		/// <item>
+		/// <term>GCLP_WNDPROC -24</term>
+		/// <term>Replaces the pointer to the window procedure associated with the class.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwNewLong">
+		/// <para>Type: <c>LONG_PTR</c></para>
+		/// <para>The replacement value.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>Type: <c>ULONG_PTR</c></c></para>
+		/// <para>
+		/// If the function succeeds, the return value is the previous value of the specified offset. If this was not previously set, the
+		/// return value is zero.
+		/// </para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// If you use the <c>SetClassLongPtr</c> function and the <c>GCLP_WNDPROC</c> index to replace the window procedure, the window
+		/// procedure must conform to the guidelines specified in the description of the WindowProc callback function.
+		/// </para>
+		/// <para>
+		/// Calling <c>SetClassLongPtr</c> with the <c>GCLP_WNDPROC</c> index creates a subclass of the window class that affects all windows
+		/// subsequently created with the class. An application can subclass a system class, but should not subclass a window class created
+		/// by another process.
+		/// </para>
+		/// <para>
+		/// Reserve extra class memory by specifying a nonzero value in the <c>cbClsExtra</c> member of the WNDCLASSEX structure used with
+		/// the RegisterClassEx function.
+		/// </para>
+		/// <para>
+		/// Use the <c>SetClassLongPtr</c> function with care. For example, it is possible to change the background color for a class by
+		/// using <c>SetClassLongPtr</c>, but this change does not immediately repaint all windows belonging to the class.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-setclasslongptra ULONG_PTR SetClassLongPtrA( HWND hWnd,
+		// int nIndex, LONG_PTR dwNewLong );
+		[DllImport(Lib.User32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		private static extern IntPtr SetClassLongPtr(HWND hWnd, int nIndex, IntPtr dwNewLong);
+
+		/// <summary>
 		/// <para>Contains status information for the application-switching (ALT+TAB) window.</para>
 		/// </summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagalttabinfo typedef struct tagALTTABINFO { DWORD cbSize;
@@ -5932,6 +7590,64 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </summary>
 			public MessageFilterInformation ExtStatus;
+		}
+
+		/// <summary>Contains the flash status for a window and the number of times the system should flash the window.</summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-flashwinfo typedef struct { UINT cbSize; HWND hwnd; DWORD
+		// dwFlags; UINT uCount; DWORD dwTimeout; } FLASHWINFO, *PFLASHWINFO;
+		[PInvokeData("winuser.h", MSDNShortId = "b16636bc-fa77-4eb9-9801-dc2cdf0556e5")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct FLASHWINFO
+		{
+			/// <summary>The size of the structure, in bytes.</summary>
+			public uint cbSize;
+
+			/// <summary>A handle to the window to be flashed. The window can be either opened or minimized.</summary>
+			public HWND hwnd;
+
+			/// <summary>
+			/// <para>The flash status. This parameter can be one or more of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>FLASHW_ALL 0x00000003</term>
+			/// <term>Flash both the window caption and taskbar button. This is equivalent to setting the FLASHW_CAPTION | FLASHW_TRAY flags.</term>
+			/// </item>
+			/// <item>
+			/// <term>FLASHW_CAPTION 0x00000001</term>
+			/// <term>Flash the window caption.</term>
+			/// </item>
+			/// <item>
+			/// <term>FLASHW_STOP 0</term>
+			/// <term>Stop flashing. The system restores the window to its original state.</term>
+			/// </item>
+			/// <item>
+			/// <term>FLASHW_TIMER 0x00000004</term>
+			/// <term>Flash continuously, until the FLASHW_STOP flag is set.</term>
+			/// </item>
+			/// <item>
+			/// <term>FLASHW_TIMERNOFG 0x0000000C</term>
+			/// <term>Flash continuously until the window comes to the foreground.</term>
+			/// </item>
+			/// <item>
+			/// <term>FLASHW_TRAY 0x00000002</term>
+			/// <term>Flash the taskbar button.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public FLASHW dwFlags;
+
+			/// <summary>The number of times to flash the window.</summary>
+			public uint uCount;
+
+			/// <summary>
+			/// The rate at which the window is to be flashed, in milliseconds. If <c>dwTimeout</c> is zero, the function uses the default
+			/// cursor blink rate.
+			/// </summary>
+			public uint dwTimeout;
 		}
 
 		/// <summary>
@@ -6464,6 +8180,373 @@ namespace Vanara.PInvoke
 
 			/// <summary/>
 			public RECT rcDevice;
+		}
+
+		/// <summary>
+		/// <para>Contains the window class attributes that are registered by the RegisterClass function.</para>
+		/// <para>
+		/// This structure has been superseded by the WNDCLASSEX structure used with the RegisterClassEx function. You can still use
+		/// <c>WNDCLASS</c> and RegisterClass if you do not need to set the small icon associated with the window class.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagwndclassa typedef struct tagWNDCLASSA { UINT style;
+		// WNDPROC lpfnWndProc; int cbClsExtra; int cbWndExtra; HINSTANCE hInstance; HICON hIcon; HCURSOR hCursor; HBRUSH hbrBackground;
+		// LPCSTR lpszMenuName; LPCSTR lpszClassName; } WNDCLASSA, *PWNDCLASSA, *NPWNDCLASSA, *LPWNDCLASSA;
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct WNDCLASS
+		{
+			/// <summary>
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>The class style(s). This member can be any combination of the Class Styles.</para>
+			/// </summary>
+			public WindowClassStyles style;
+
+			/// <summary>
+			/// <para>Type: <c>WNDPROC</c></para>
+			/// <para>
+			/// A pointer to the window procedure. You must use the CallWindowProc function to call the window procedure. For more
+			/// information, see WindowProc.
+			/// </para>
+			/// </summary>
+			public WNDPROC lpfnWndProc;
+
+			/// <summary>
+			/// <para>Type: <c>int</c></para>
+			/// <para>The number of extra bytes to allocate following the window-class structure. The system initializes the bytes to zero.</para>
+			/// </summary>
+			public int cbClsExtra;
+
+			/// <summary>
+			/// <para>Type: <c>int</c></para>
+			/// <para>
+			/// The number of extra bytes to allocate following the window instance. The system initializes the bytes to zero. If an
+			/// application uses <c>WNDCLASS</c> to register a dialog box created by using the <c>CLASS</c> directive in the resource file,
+			/// it must set this member to <c>DLGWINDOWEXTRA</c>.
+			/// </para>
+			/// </summary>
+			public int cbWndExtra;
+
+			/// <summary>
+			/// <para>Type: <c>HINSTANCE</c></para>
+			/// <para>A handle to the instance that contains the window procedure for the class.</para>
+			/// </summary>
+			public HINSTANCE hInstance;
+
+			/// <summary>
+			/// <para>Type: <c>HICON</c></para>
+			/// <para>
+			/// A handle to the class icon. This member must be a handle to an icon resource. If this member is <c>NULL</c>, the system
+			/// provides a default icon.
+			/// </para>
+			/// </summary>
+			public HICON hIcon;
+
+			/// <summary>
+			/// <para>Type: <c>HCURSOR</c></para>
+			/// <para>
+			/// A handle to the class cursor. This member must be a handle to a cursor resource. If this member is <c>NULL</c>, an
+			/// application must explicitly set the cursor shape whenever the mouse moves into the application's window.
+			/// </para>
+			/// </summary>
+			public HCURSOR hCursor;
+
+			/// <summary>
+			/// <para>Type: <c>HBRUSH</c></para>
+			/// <para>
+			/// A handle to the class background brush. This member can be a handle to the physical brush to be used for painting the
+			/// background, or it can be a color value. A color value must be one of the following standard system colors (the value 1 must
+			/// be added to the chosen color). If a color value is given, you must convert it to one of the following <c>HBRUSH</c> types:
+			/// </para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>COLOR_ACTIVEBORDER</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_ACTIVECAPTION</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_APPWORKSPACE</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_BACKGROUND</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_BTNFACE</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_BTNSHADOW</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_BTNTEXT</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_CAPTIONTEXT</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_GRAYTEXT</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_HIGHLIGHT</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_HIGHLIGHTTEXT</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_INACTIVEBORDER</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_INACTIVECAPTION</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_MENU</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_MENUTEXT</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_SCROLLBAR</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_WINDOW</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_WINDOWFRAME</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_WINDOWTEXT</term>
+			/// </item>
+			/// </list>
+			/// <para>The system automatically deletes class background brushes when the class is unregistered by using</para>
+			/// <para>UnregisterClass</para>
+			/// <para>. An application should not delete these brushes.</para>
+			/// <para>
+			/// When this member is <c>NULL</c>, an application must paint its own background whenever it is requested to paint in its client
+			/// area. To determine whether the background must be painted, an application can either process the WM_ERASEBKGND message or
+			/// test the <c>fErase</c> member of the PAINTSTRUCT structure filled by the BeginPaint function.
+			/// </para>
+			/// </summary>
+			public HBRUSH hbrBackground;
+
+			/// <summary>
+			/// <para>Type: <c>LPCTSTR</c></para>
+			/// <para>
+			/// The resource name of the class menu, as the name appears in the resource file. If you use an integer to identify the menu,
+			/// use the MAKEINTRESOURCE macro. If this member is <c>NULL</c>, windows belonging to this class have no default menu.
+			/// </para>
+			/// </summary>
+			public string lpszMenuName;
+
+			/// <summary>
+			/// <para>Type: <c>LPCTSTR</c></para>
+			/// <para>
+			/// A pointer to a null-terminated string or is an atom. If this parameter is an atom, it must be a class atom created by a
+			/// previous call to the RegisterClass or RegisterClassEx function. The atom must be in the low-order word of
+			/// <c>lpszClassName</c>; the high-order word must be zero.
+			/// </para>
+			/// <para>
+			/// If <c>lpszClassName</c> is a string, it specifies the window class name. The class name can be any name registered with
+			/// RegisterClass or RegisterClassEx, or any of the predefined control-class names.
+			/// </para>
+			/// <para>
+			/// The maximum length for <c>lpszClassName</c> is 256. If <c>lpszClassName</c> is greater than the maximum length, the
+			/// RegisterClass function will fail.
+			/// </para>
+			/// </summary>
+			public string lpszClassName;
+		}
+
+		/// <summary>
+		/// <para>Contains window class information. It is used with the RegisterClassEx and GetClassInfoEx functions.</para>
+		/// <para>
+		/// The <c>WNDCLASSEX</c> structure is similar to the WNDCLASS structure. There are two differences. <c>WNDCLASSEX</c> includes the
+		/// <c>cbSize</c> member, which specifies the size of the structure, and the <c>hIconSm</c> member, which contains a handle to a
+		/// small icon associated with the window class.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-tagwndclassexa typedef struct tagWNDCLASSEXA { UINT
+		// cbSize; UINT style; WNDPROC lpfnWndProc; int cbClsExtra; int cbWndExtra; HINSTANCE hInstance; HICON hIcon; HCURSOR hCursor; HBRUSH
+		// hbrBackground; LPCSTR lpszMenuName; LPCSTR lpszClassName; HICON hIconSm; } WNDCLASSEXA, *PWNDCLASSEXA, *NPWNDCLASSEXA, *LPWNDCLASSEXA;
+		[PInvokeData("winuser.h", MSDNShortId = "")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct WNDCLASSEX
+		{
+			/// <summary>
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>
+			/// The size, in bytes, of this structure. Set this member to . Be sure to set this member before calling the GetClassInfoEx function.
+			/// </para>
+			/// </summary>
+			public uint cbSize;
+
+			/// <summary>
+			/// <para>Type: <c>UINT</c></para>
+			/// <para>The class style(s). This member can be any combination of the Class Styles.</para>
+			/// </summary>
+			public WindowClassStyles style;
+
+			/// <summary>
+			/// <para>Type: <c>WNDPROC</c></para>
+			/// <para>
+			/// A pointer to the window procedure. You must use the CallWindowProc function to call the window procedure. For more
+			/// information, see WindowProc.
+			/// </para>
+			/// </summary>
+			public WNDPROC lpfnWndProc;
+
+			/// <summary>
+			/// <para>Type: <c>int</c></para>
+			/// <para>The number of extra bytes to allocate following the window-class structure. The system initializes the bytes to zero.</para>
+			/// </summary>
+			public int cbClsExtra;
+
+			/// <summary>
+			/// <para>Type: <c>int</c></para>
+			/// <para>
+			/// The number of extra bytes to allocate following the window instance. The system initializes the bytes to zero. If an
+			/// application uses <c>WNDCLASSEX</c> to register a dialog box created by using the <c>CLASS</c> directive in the resource file,
+			/// it must set this member to <c>DLGWINDOWEXTRA</c>.
+			/// </para>
+			/// </summary>
+			public int cbWndExtra;
+
+			/// <summary>
+			/// <para>Type: <c>HINSTANCE</c></para>
+			/// <para>A handle to the instance that contains the window procedure for the class.</para>
+			/// </summary>
+			public HINSTANCE hInstance;
+
+			/// <summary>
+			/// <para>Type: <c>HICON</c></para>
+			/// <para>
+			/// A handle to the class icon. This member must be a handle to an icon resource. If this member is <c>NULL</c>, the system
+			/// provides a default icon.
+			/// </para>
+			/// </summary>
+			public HICON hIcon;
+
+			/// <summary>
+			/// <para>Type: <c>HCURSOR</c></para>
+			/// <para>
+			/// A handle to the class cursor. This member must be a handle to a cursor resource. If this member is <c>NULL</c>, an
+			/// application must explicitly set the cursor shape whenever the mouse moves into the application's window.
+			/// </para>
+			/// </summary>
+			public HCURSOR hCursor;
+
+			/// <summary>
+			/// <para>Type: <c>HBRUSH</c></para>
+			/// <para>
+			/// A handle to the class background brush. This member can be a handle to the brush to be used for painting the background, or
+			/// it can be a color value. A color value must be one of the following standard system colors (the value 1 must be added to the
+			/// chosen color). If a color value is given, you must convert it to one of the following <c>HBRUSH</c> types:
+			/// </para>
+			/// <list type="bullet">
+			/// <item>
+			/// <term>COLOR_ACTIVEBORDER</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_ACTIVECAPTION</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_APPWORKSPACE</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_BACKGROUND</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_BTNFACE</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_BTNSHADOW</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_BTNTEXT</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_CAPTIONTEXT</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_GRAYTEXT</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_HIGHLIGHT</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_HIGHLIGHTTEXT</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_INACTIVEBORDER</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_INACTIVECAPTION</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_MENU</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_MENUTEXT</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_SCROLLBAR</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_WINDOW</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_WINDOWFRAME</term>
+			/// </item>
+			/// <item>
+			/// <term>COLOR_WINDOWTEXT</term>
+			/// </item>
+			/// </list>
+			/// <para>The system automatically deletes class background brushes when the class is unregistered by using</para>
+			/// <para>UnregisterClass</para>
+			/// <para>. An application should not delete these brushes.</para>
+			/// <para>
+			/// When this member is <c>NULL</c>, an application must paint its own background whenever it is requested to paint in its client
+			/// area. To determine whether the background must be painted, an application can either process the WM_ERASEBKGND message or
+			/// test the <c>fErase</c> member of the PAINTSTRUCT structure filled by the BeginPaint function.
+			/// </para>
+			/// </summary>
+			public HBRUSH hbrBackground;
+
+			/// <summary>
+			/// <para>Type: <c>LPCTSTR</c></para>
+			/// <para>
+			/// Pointer to a null-terminated character string that specifies the resource name of the class menu, as the name appears in the
+			/// resource file. If you use an integer to identify the menu, use the MAKEINTRESOURCE macro. If this member is <c>NULL</c>,
+			/// windows belonging to this class have no default menu.
+			/// </para>
+			/// </summary>
+			public string lpszMenuName;
+
+			/// <summary>
+			/// <para>Type: <c>LPCTSTR</c></para>
+			/// <para>
+			/// A pointer to a null-terminated string or is an atom. If this parameter is an atom, it must be a class atom created by a
+			/// previous call to the RegisterClass or RegisterClassEx function. The atom must be in the low-order word of
+			/// <c>lpszClassName</c>; the high-order word must be zero.
+			/// </para>
+			/// <para>
+			/// If <c>lpszClassName</c> is a string, it specifies the window class name. The class name can be any name registered with
+			/// RegisterClass or RegisterClassEx, or any of the predefined control-class names.
+			/// </para>
+			/// <para>
+			/// The maximum length for <c>lpszClassName</c> is 256. If <c>lpszClassName</c> is greater than the maximum length, the
+			/// RegisterClassEx function will fail.
+			/// </para>
+			/// </summary>
+			public string lpszClassName;
+
+			/// <summary>
+			/// <para>Type: <c>HICON</c></para>
+			/// <para>
+			/// A handle to a small icon that is associated with the window class. If this member is <c>NULL</c>, the system searches the
+			/// icon resource specified by the <c>hIcon</c> member for an icon of the appropriate size to use as the small icon.
+			/// </para>
+			/// </summary>
+			public HICON hIconSm;
 		}
 
 		/// <summary>

@@ -108,6 +108,27 @@ namespace Vanara.PInvoke
 		public static extern bool IntersectRect(out RECT lprcDst, in RECT lprcSrc1, in RECT lprcSrc2);
 
 		/// <summary>
+		/// The <c>InvertRect</c> function inverts a rectangle in a window by performing a logical NOT operation on the color values for each
+		/// pixel in the rectangle's interior.
+		/// </summary>
+		/// <param name="hDC">A handle to the device context.</param>
+		/// <param name="lprc">A pointer to a RECT structure that contains the logical coordinates of the rectangle to be inverted.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero.</para>
+		/// </returns>
+		/// <remarks>
+		/// On monochrome screens, <c>InvertRect</c> makes white pixels black and black pixels white. On color screens, the inversion depends
+		/// on how colors are generated for the screen. Calling <c>InvertRect</c> twice for the same rectangle restores the display to its
+		/// previous colors.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-invertrect BOOL InvertRect( HDC hDC, const RECT *lprc );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "a8c4dbf1-94ec-46e9-b365-7dfc89e4f176")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool InvertRect(HDC hDC, ref RECT lprc);
+
+		/// <summary>
 		/// The <c>IsRectEmpty</c> function determines whether the specified rectangle is empty. An empty rectangle is one that has no area;
 		/// that is, the coordinate of the right side is less than or equal to the coordinate of the left side, or the coordinate of the
 		/// bottom side is less than or equal to the coordinate of the top side.

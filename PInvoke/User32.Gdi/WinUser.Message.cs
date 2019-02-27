@@ -143,6 +143,35 @@ namespace Vanara.PInvoke
 			ISMEX_SEND = 0x00000001,
 		}
 
+		/// <summary>Flags for <see cref="MsgWaitForMultipleObjectsEx"/></summary>
+		[PInvokeData("winuser.h", MSDNShortId = "1774b721-3ad4-492e-96af-b71de9066f0c")]
+		[Flags]
+		public enum MWMO
+		{
+			/// <summary>
+			/// The function returns when any one of the objects is signaled. The return value indicates the object whose state caused the
+			/// function to return.
+			/// </summary>
+			MWMO_ANY = 0,
+
+			/// <summary>
+			/// The function also returns if an APC has been queued to the thread with QueueUserAPC while the thread is in the waiting state.
+			/// </summary>
+			MWMO_ALERTABLE = 0x0002,
+
+			/// <summary>
+			/// The function returns if input exists for the queue, even if the input has been seen (but not removed) using a call to another
+			/// function, such as PeekMessage.
+			/// </summary>
+			MWMO_INPUTAVAILABLE = 0x0004,
+
+			/// <summary>
+			/// The function returns when all objects in the pHandles array are signaled and an input event has been received, all at the
+			/// same time.
+			/// </summary>
+			MWMO_WAITALL = 0x0001,
+		}
+
 		/// <summary>Flags used by PeekMessage.</summary>
 		[PInvokeData("winuser.h")]
 		[Flags]
@@ -563,6 +592,33 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h")]
 		public static extern IntPtr DispatchMessage(in MSG lpMsg);
 
+		/// <summary>
+		/// Frees the memory specified by the lParam parameter of a posted Dynamic Data Exchange (DDE) message. An application receiving a
+		/// posted DDE message should call this function after it has used the UnpackDDElParam function to unpack the lParam value.
+		/// </summary>
+		/// <param name="msg">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The posted DDE message.</para>
+		/// </param>
+		/// <param name="lParam">
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>The lParam parameter of the posted DDE message.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>An application should call this function only for posted DDE messages.</para>
+		/// <para>This function frees the memory specified by the lParam parameter. It does not free the contents of lParam.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/dde/nf-dde-freeddelparam BOOL FreeDDElParam( UINT msg, LPARAM lParam );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("dde.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool FreeDDElParam(uint msg, IntPtr lParam);
+
 		/// <summary>Determines whether there are mouse-button or keyboard messages in the calling thread's message queue.</summary>
 		/// <returns>
 		/// <para>Type: <c>Type: <c>BOOL</c></c></para>
@@ -927,6 +983,562 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("winuser.h")]
 		public static extern ISMEX InSendMessageEx([Optional] IntPtr lpReserved);
+
+		/// <summary>Determines whether the last message read from the current thread's queue originated from a WOW64 process.</summary>
+		/// <returns>
+		/// The function returns TRUE if the last message read from the current thread's queue originated from a WOW64 process, and FALSE otherwise.
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// This function is useful to helping you develop 64-bit native applications that can receive private messages sent from 32-bit
+		/// client applications, if the messages are associated with data structures that contain pointer-dependent data. In these
+		/// situations, you can call this function in your 64-bit native application to determine if the message originated from a WOW64
+		/// process and then thunk the message appropriately.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>
+		/// For compatibility with operating systems that do not support this function, call GetProcAddress to detect whether
+		/// <c>IsWow64Message</c> is implemented in User32.dll. If <c>GetProcAddress</c> succeeds, it is safe to call this function.
+		/// Otherwise, WOW64 is not present. Note that this technique is not a reliable way to detect whether the operating system is a
+		/// 64-bit version of Windows because the User32.dll in current versions of 32-bit Windows also contains this function.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-iswow64message BOOL IsWow64Message( );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "bc0ac424-3c5b-41bf-9dae-bcb405d5b548")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool IsWow64Message();
+
+		/// <summary>
+		/// <para>
+		/// Waits until one or all of the specified objects are in the signaled state or the time-out interval elapses. The objects can
+		/// include input event objects, which you specify using the dwWakeMask parameter.
+		/// </para>
+		/// <para>To enter an alertable wait state, use the MsgWaitForMultipleObjectsEx function.</para>
+		/// </summary>
+		/// <param name="nCount">
+		/// The number of object handles in the array pointed to by pHandles. The maximum number of object handles is
+		/// <c>MAXIMUM_WAIT_OBJECTS</c> minus one. If this parameter has the value zero, then the function waits only for an input event.
+		/// </param>
+		/// <param name="pHandles">
+		/// <para>
+		/// An array of object handles. For a list of the object types whose handles can be specified, see the following Remarks section. The
+		/// array can contain handles of objects of different types. It may not contain multiple copies of the same handle.
+		/// </para>
+		/// <para>If one of these handles is closed while the wait is still pending, the function's behavior is undefined.</para>
+		/// <para>The handles must have the <c>SYNCHRONIZE</c> access right. For more information, see Standard Access Rights.</para>
+		/// </param>
+		/// <param name="fWaitAll">
+		/// If this parameter is <c>TRUE</c>, the function returns when the states of all objects in the pHandles array have been set to
+		/// signaled and an input event has been received. If this parameter is <c>FALSE</c>, the function returns when the state of any one
+		/// of the objects is set to signaled or an input event has been received. In this case, the return value indicates the object whose
+		/// state caused the function to return.
+		/// </param>
+		/// <param name="dwMilliseconds">
+		/// The time-out interval, in milliseconds. If a nonzero value is specified, the function waits until the specified objects are
+		/// signaled or the interval elapses. If dwMilliseconds is zero, the function does not enter a wait state if the specified objects
+		/// are not signaled; it always returns immediately. If dwMilliseconds is <c>INFINITE</c>, the function will return only when the
+		/// specified objects are signaled.
+		/// </param>
+		/// <param name="dwWakeMask">
+		/// <para>
+		/// The input types for which an input event object handle will be added to the array of object handles. This parameter can be any
+		/// combination of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>QS_ALLEVENTS 0x04BF</term>
+		/// <term>
+		/// An input, WM_TIMER, WM_PAINT, WM_HOTKEY, or posted message is in the queue. This value is a combination of QS_INPUT,
+		/// QS_POSTMESSAGE, QS_TIMER, QS_PAINT, and QS_HOTKEY.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>QS_ALLINPUT 0x04FF</term>
+		/// <term>
+		/// Any message is in the queue. This value is a combination of QS_INPUT, QS_POSTMESSAGE, QS_TIMER, QS_PAINT, QS_HOTKEY, and QS_SENDMESSAGE.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>QS_ALLPOSTMESSAGE 0x0100</term>
+		/// <term>A posted message is in the queue. This value is cleared when you call GetMessage or PeekMessage without filtering messages.</term>
+		/// </item>
+		/// <item>
+		/// <term>QS_HOTKEY 0x0080</term>
+		/// <term>A WM_HOTKEY message is in the queue.</term>
+		/// </item>
+		/// <item>
+		/// <term>QS_INPUT 0x407</term>
+		/// <term>An input message is in the queue. This value is a combination of QS_MOUSE, QS_KEY, and QS_RAWINPUT.</term>
+		/// </item>
+		/// <item>
+		/// <term>QS_KEY 0x0001</term>
+		/// <term>A WM_KEYUP, WM_KEYDOWN, WM_SYSKEYUP, or WM_SYSKEYDOWN message is in the queue.</term>
+		/// </item>
+		/// <item>
+		/// <term>QS_MOUSE 0x0006</term>
+		/// <term>
+		/// A WM_MOUSEMOVE message or mouse-button message (WM_LBUTTONUP, WM_RBUTTONDOWN, and so on). This value is a combination of
+		/// QS_MOUSEMOVE and QS_MOUSEBUTTON.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>QS_MOUSEBUTTON 0x0004</term>
+		/// <term>A mouse-button message (WM_LBUTTONUP, WM_RBUTTONDOWN, and so on).</term>
+		/// </item>
+		/// <item>
+		/// <term>QS_MOUSEMOVE 0x0002</term>
+		/// <term>A WM_MOUSEMOVE message is in the queue.</term>
+		/// </item>
+		/// <item>
+		/// <term>QS_PAINT 0x0020</term>
+		/// <term>A WM_PAINT message is in the queue.</term>
+		/// </item>
+		/// <item>
+		/// <term>QS_POSTMESSAGE 0x0008</term>
+		/// <term>
+		/// A posted message is in the queue. This value is cleared when you call GetMessage or PeekMessage, whether or not you are filtering messages.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>QS_RAWINPUT 0x0400</term>
+		/// <term>A raw input message is in the queue. For more information, see Raw Input.</term>
+		/// </item>
+		/// <item>
+		/// <term>QS_SENDMESSAGE 0x0040</term>
+		/// <term>A message sent by another thread or application is in the queue.</term>
+		/// </item>
+		/// <item>
+		/// <term>QS_TIMER 0x0010</term>
+		/// <term>A WM_TIMER message is in the queue.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value indicates the event that caused the function to return. It can be one of the following
+		/// values. (Note that <c>WAIT_OBJECT_0</c> is defined as 0 and <c>WAIT_ABANDONED_0</c> is defined as 0x00000080L.)
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code/value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WAIT_OBJECT_0 to (WAIT_OBJECT_0 + nCount– 1)</term>
+		/// <term>
+		/// If bWaitAll is TRUE, the return value indicates that the state of all specified objects is signaled. If bWaitAll is FALSE, the
+		/// return value minus WAIT_OBJECT_0 indicates the pHandles array index of the object that satisfied the wait.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WAIT_OBJECT_0 + nCount</term>
+		/// <term>
+		/// New input of the type specified in the dwWakeMask parameter is available in the thread's input queue. Functions such as
+		/// PeekMessage, GetMessage, and WaitMessage mark messages in the queue as old messages. Therefore, after you call one of these
+		/// functions, a subsequent call to MsgWaitForMultipleObjects will not return until new input of the specified type arrives. This
+		/// value is also returned upon the occurrence of a system event that requires the thread's action, such as foreground activation.
+		/// Therefore, MsgWaitForMultipleObjects can return even though no appropriate input is available and even if dwWakeMask is set to 0.
+		/// If this occurs, call GetMessage or PeekMessage to process the system event before trying the call to MsgWaitForMultipleObjects again.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WAIT_ABANDONED_0 to (WAIT_ABANDONED_0 + nCount– 1)</term>
+		/// <term>
+		/// If bWaitAll is TRUE, the return value indicates that the state of all specified objects is signaled and at least one of the
+		/// objects is an abandoned mutex object. If bWaitAll is FALSE, the return value minus WAIT_ABANDONED_0 indicates the pHandles array
+		/// index of an abandoned mutex object that satisfied the wait. Ownership of the mutex object is granted to the calling thread, and
+		/// the mutex is set to nonsignaled. If the mutex was protecting persistent state information, you should check it for consistency.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WAIT_TIMEOUT 258L</term>
+		/// <term>The time-out interval elapsed and the conditions specified by the bWaitAll and dwWakeMask parameters were not satisfied.</term>
+		/// </item>
+		/// <item>
+		/// <term>WAIT_FAILED (DWORD)0xFFFFFFFF</term>
+		/// <term>The function has failed. To get extended error information, call GetLastError.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>MsgWaitForMultipleObjects</c> function determines whether the wait criteria have been met. If the criteria have not been
+		/// met, the calling thread enters the wait state until the conditions of the wait criteria have been met or the time-out interval elapses.
+		/// </para>
+		/// <para>
+		/// When bWaitAll is <c>TRUE</c>, the function does not modify the states of the specified objects until the states of all objects
+		/// have been set to signaled. For example, a mutex can be signaled, but the thread does not get ownership until the states of the
+		/// other objects have also been set to signaled. In the meantime, some other thread may get ownership of the mutex, thereby setting
+		/// its state to nonsignaled.
+		/// </para>
+		/// <para>
+		/// When bWaitAll is <c>TRUE</c>, the function's wait is completed only when the states of all objects have been set to signaled and
+		/// an input event has been received. Therefore, setting bWaitAll to <c>TRUE</c> prevents input from being processed until the state
+		/// of all objects in the pHandles array have been set to signaled. For this reason, if you set bWaitAll to <c>TRUE</c>, you should
+		/// use a short timeout value in dwMilliseconds. If you have a thread that creates windows waiting for all objects in the pHandles
+		/// array, including input events specified by dwWakeMask, with no timeout interval, the system will deadlock. This is because
+		/// threads that create windows must process messages. DDE sends message to all windows in the system. Therefore, if a thread creates
+		/// windows, do not set the bWaitAll parameter to <c>TRUE</c> in calls to <c>MsgWaitForMultipleObjects</c> made from that thread.
+		/// </para>
+		/// <para>
+		/// When bWaitAll is <c>FALSE</c>, this function checks the handles in the array in order starting with index 0, until one of the
+		/// objects is signaled. If multiple objects become signaled, the function returns the index of the first handle in the array whose
+		/// object was signaled.
+		/// </para>
+		/// <para>
+		/// <c>MsgWaitForMultipleObjects</c> does not return if there is unread input of the specified type in the message queue after the
+		/// thread has called a function to check the queue. This is because functions such as PeekMessage, GetMessage, GetQueueStatus, and
+		/// WaitMessage check the queue and then change the state information for the queue so that the input is no longer considered new. A
+		/// subsequent call to <c>MsgWaitForMultipleObjects</c> will not return until new input of the specified type arrives. The existing
+		/// unread input (received prior to the last time the thread checked the queue) is ignored.
+		/// </para>
+		/// <para>
+		/// The function modifies the state of some types of synchronization objects. Modification occurs only for the object or objects
+		/// whose signaled state caused the function to return. For example, the count of a semaphore object is decreased by one. For more
+		/// information, see the documentation for the individual synchronization objects.
+		/// </para>
+		/// <para>
+		/// The <c>MsgWaitForMultipleObjects</c> function can specify handles of any of the following object types in the pHandles array:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Change notification</term>
+		/// </item>
+		/// <item>
+		/// <term>Console input</term>
+		/// </item>
+		/// <item>
+		/// <term>Event</term>
+		/// </item>
+		/// <item>
+		/// <term>Memory resource notification</term>
+		/// </item>
+		/// <item>
+		/// <term>Mutex</term>
+		/// </item>
+		/// <item>
+		/// <term>Process</term>
+		/// </item>
+		/// <item>
+		/// <term>Semaphore</term>
+		/// </item>
+		/// <item>
+		/// <term>Thread</term>
+		/// </item>
+		/// <item>
+		/// <term>Waitable timer</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The <c>QS_ALLPOSTMESSAGE</c> and <c>QS_POSTMESSAGE</c> flags differ in when they are cleared. <c>QS_POSTMESSAGE</c> is cleared
+		/// when you call GetMessage or PeekMessage, whether or not you are filtering messages. <c>QS_ALLPOSTMESSAGE</c> is cleared when you
+		/// call <c>GetMessage</c> or PeekMessage without filtering messages (wMsgFilterMin and wMsgFilterMax are 0). This can be useful when
+		/// you call PeekMessage multiple times to get messages in different ranges.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-msgwaitformultipleobjects DWORD MsgWaitForMultipleObjects(
+		// DWORD nCount, const HANDLE *pHandles, BOOL fWaitAll, DWORD dwMilliseconds, DWORD dwWakeMask );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "0629f1b3-6805-43a7-9aeb-4f80939ec62c")]
+		public static extern uint MsgWaitForMultipleObjects(uint nCount, HANDLE[] pHandles, [MarshalAs(UnmanagedType.Bool)] bool fWaitAll, uint dwMilliseconds,
+			QS dwWakeMask);
+
+		/// <summary>
+		/// <para>
+		/// Waits until one or all of the specified objects are in the signaled state, an I/O completion routine or asynchronous procedure
+		/// call (APC) is queued to the thread, or the time-out interval elapses. The array of objects can include input event objects, which
+		/// you specify using the dwWakeMask parameter.
+		/// </para>
+		/// </summary>
+		/// <param name="nCount">
+		/// <para>
+		/// The number of object handles in the array pointed to by pHandles. The maximum number of object handles is
+		/// <c>MAXIMUM_WAIT_OBJECTS</c> minus one. If this parameter has the value zero, then the function waits only for an input event.
+		/// </para>
+		/// </param>
+		/// <param name="pHandles">
+		/// <para>
+		/// An array of object handles. For a list of the object types whose handles you can specify, see the Remarks section later in this
+		/// topic. The array can contain handles to multiple types of objects. It may not contain multiple copies of the same handle.
+		/// </para>
+		/// <para>If one of these handles is closed while the wait is still pending, the function's behavior is undefined.</para>
+		/// <para>The handles must have the <c>SYNCHRONIZE</c> access right. For more information, see Standard Access Rights.</para>
+		/// </param>
+		/// <param name="dwMilliseconds">
+		/// <para>
+		/// The time-out interval, in milliseconds. If a nonzero value is specified, the function waits until the specified objects are
+		/// signaled, an I/O completion routine or APC is queued, or the interval elapses. If dwMilliseconds is zero, the function does not
+		/// enter a wait state if the criteria is not met; it always returns immediately. If dwMilliseconds is <c>INFINITE</c>, the function
+		/// will return only when the specified objects are signaled or an I/O completion routine or APC is queued.
+		/// </para>
+		/// </param>
+		/// <param name="dwWakeMask">
+		/// <para>
+		/// The input types for which an input event object handle will be added to the array of object handles. This parameter can be one or
+		/// more of the following values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>QS_ALLEVENTS 0x04BF</term>
+		/// <term>
+		/// An input, WM_TIMER, WM_PAINT, WM_HOTKEY, or posted message is in the queue. This value is a combination of QS_INPUT,
+		/// QS_POSTMESSAGE, QS_TIMER, QS_PAINT, and QS_HOTKEY.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>QS_ALLINPUT 0x04FF</term>
+		/// <term>
+		/// Any message is in the queue. This value is a combination of QS_INPUT, QS_POSTMESSAGE, QS_TIMER, QS_PAINT, QS_HOTKEY, and QS_SENDMESSAGE.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>QS_ALLPOSTMESSAGE 0x0100</term>
+		/// <term>A posted message is in the queue. This value is cleared when you call GetMessage or PeekMessage without filtering messages.</term>
+		/// </item>
+		/// <item>
+		/// <term>QS_HOTKEY 0x0080</term>
+		/// <term>A WM_HOTKEY message is in the queue.</term>
+		/// </item>
+		/// <item>
+		/// <term>QS_INPUT 0x407</term>
+		/// <term>An input message is in the queue. This value is a combination of QS_MOUSE, QS_KEY, and QS_RAWINPUT.</term>
+		/// </item>
+		/// <item>
+		/// <term>QS_KEY 0x0001</term>
+		/// <term>A WM_KEYUP, WM_KEYDOWN, WM_SYSKEYUP, or WM_SYSKEYDOWN message is in the queue.</term>
+		/// </item>
+		/// <item>
+		/// <term>QS_MOUSE 0x0006</term>
+		/// <term>
+		/// A WM_MOUSEMOVE message or mouse-button message (WM_LBUTTONUP, WM_RBUTTONDOWN, and so on). This value is a combination of
+		/// QS_MOUSEMOVE and QS_MOUSEBUTTON.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>QS_MOUSEBUTTON 0x0004</term>
+		/// <term>A mouse-button message (WM_LBUTTONUP, WM_RBUTTONDOWN, and so on).</term>
+		/// </item>
+		/// <item>
+		/// <term>QS_MOUSEMOVE 0x0002</term>
+		/// <term>A WM_MOUSEMOVE message is in the queue.</term>
+		/// </item>
+		/// <item>
+		/// <term>QS_PAINT 0x0020</term>
+		/// <term>A WM_PAINT message is in the queue.</term>
+		/// </item>
+		/// <item>
+		/// <term>QS_POSTMESSAGE 0x0008</term>
+		/// <term>
+		/// A posted message is in the queue. This value is cleared when you call GetMessage or PeekMessage, whether or not you are filtering messages.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>QS_RAWINPUT 0x0400</term>
+		/// <term>A raw input message is in the queue. For more information, see Raw Input.</term>
+		/// </item>
+		/// <item>
+		/// <term>QS_SENDMESSAGE 0x0040</term>
+		/// <term>A message sent by another thread or application is in the queue.</term>
+		/// </item>
+		/// <item>
+		/// <term>QS_TIMER 0x0010</term>
+		/// <term>A WM_TIMER message is in the queue.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="dwFlags">
+		/// <para>The wait type. This parameter can be one or more of the following values.</para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>0</term>
+		/// <term>
+		/// The function returns when any one of the objects is signaled. The return value indicates the object whose state caused the
+		/// function to return.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MWMO_ALERTABLE 0x0002</term>
+		/// <term>
+		/// The function also returns if an APC has been queued to the thread with QueueUserAPC while the thread is in the waiting state.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MWMO_INPUTAVAILABLE 0x0004</term>
+		/// <term>
+		/// The function returns if input exists for the queue, even if the input has been seen (but not removed) using a call to another
+		/// function, such as PeekMessage.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>MWMO_WAITALL 0x0001</term>
+		/// <term>
+		/// The function returns when all objects in the pHandles array are signaled and an input event has been received, all at the same time.
+		/// </term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// <para>
+		/// If the function succeeds, the return value indicates the event that caused the function to return. It can be one of the following
+		/// values. (Note that <c>WAIT_OBJECT_0</c> is defined as 0 and <c>WAIT_ABANDONED_0</c> is defined as 0x00000080L.)
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code/value</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>WAIT_OBJECT_0 to (WAIT_OBJECT_0 + nCount - 1)</term>
+		/// <term>
+		/// If the MWMO_WAITALL flag is used, the return value indicates that the state of all specified objects is signaled. Otherwise, the
+		/// return value minus WAIT_OBJECT_0 indicates the pHandles array index of the object that caused the function to return.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WAIT_OBJECT_0 + nCount</term>
+		/// <term>
+		/// New input of the type specified in the dwWakeMask parameter is available in the thread's input queue. Functions such as
+		/// PeekMessage, GetMessage, GetQueueStatus, and WaitMessage mark messages in the queue as old messages. Therefore, after you call
+		/// one of these functions, a subsequent call to MsgWaitForMultipleObjectsEx will not return until new input of the specified type
+		/// arrives. This value is also returned upon the occurrence of a system event that requires the thread's action, such as foreground
+		/// activation. Therefore, MsgWaitForMultipleObjectsEx can return even though no appropriate input is available and even if
+		/// dwWakeMask is set to 0. If this occurs, call GetMessage or PeekMessage to process the system event before trying the call to
+		/// MsgWaitForMultipleObjectsEx again.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WAIT_ABANDONED_0 to (WAIT_ABANDONED_0 + nCount - 1)</term>
+		/// <term>
+		/// If the MWMO_WAITALL flag is used, the return value indicates that the state of all specified objects is signaled and at least one
+		/// of the objects is an abandoned mutex object. Otherwise, the return value minus WAIT_ABANDONED_0 indicates the pHandles array
+		/// index of an abandoned mutex object that caused the function to return. Ownership of the mutex object is granted to the calling
+		/// thread, and the mutex is set to nonsignaled. If the mutex was protecting persistent state information, you should check it for consistency.
+		/// </term>
+		/// </item>
+		/// <item>
+		/// <term>WAIT_IO_COMPLETION 0x000000C0L</term>
+		/// <term>The wait was ended by one or more user-mode asynchronous procedure calls (APC) queued to the thread.</term>
+		/// </item>
+		/// <item>
+		/// <term>WAIT_TIMEOUT 258L</term>
+		/// <term>The time-out interval elapsed, but the conditions specified by the dwFlags and dwWakeMask parameters were not met.</term>
+		/// </item>
+		/// <item>
+		/// <term>WAIT_FAILED (DWORD)0xFFFFFFFF</term>
+		/// <term>The function has failed. To get extended error information, call GetLastError.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>MsgWaitForMultipleObjectsEx</c> function determines whether the conditions specified by dwWakeMask and dwFlags have been
+		/// met. If the conditions have not been met, the calling thread enters the wait state until the conditions of the wait criteria have
+		/// been met or the time-out interval elapses.
+		/// </para>
+		/// <para>
+		/// When dwFlags is zero, this function checks the handles in the array in order starting with index 0, until one of the objects is
+		/// signaled. If multiple objects become signaled, the function returns the index of the first handle in the array whose object was signaled.
+		/// </para>
+		/// <para>
+		/// <c>MsgWaitForMultipleObjectsEx</c> does not return if there is unread input of the specified type in the message queue after the
+		/// thread has called a function to check the queue, unless you use the <c>MWMO_INPUTAVAILABLE</c> flag. This is because functions
+		/// such as PeekMessage, GetMessage, GetQueueStatus, and WaitMessage check the queue and then change the state information for the
+		/// queue so that the input is no longer considered new. A subsequent call to <c>MsgWaitForMultipleObjectsEx</c> will not return
+		/// until new input of the specified type arrives, unless you use the <c>MWMO_INPUTAVAILABLE</c> flag. If this flag is not used, the
+		/// existing unread input (received prior to the last time the thread checked the queue) is ignored.
+		/// </para>
+		/// <para>
+		/// The function modifies the state of some types of synchronization objects. Modification occurs only for the object or objects
+		/// whose signaled state caused the function to return. For example, the system decreases the count of a semaphore object by one. For
+		/// more information, see the documentation for the individual synchronization objects.
+		/// </para>
+		/// <para>
+		/// The <c>MsgWaitForMultipleObjectsEx</c> function can specify handles of any of the following object types in the pHandles array:
+		/// </para>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>Change notification</term>
+		/// </item>
+		/// <item>
+		/// <term>Console input</term>
+		/// </item>
+		/// <item>
+		/// <term>Event</term>
+		/// </item>
+		/// <item>
+		/// <term>Memory resource notification</term>
+		/// </item>
+		/// <item>
+		/// <term>Mutex</term>
+		/// </item>
+		/// <item>
+		/// <term>Process</term>
+		/// </item>
+		/// <item>
+		/// <term>Semaphore</term>
+		/// </item>
+		/// <item>
+		/// <term>Thread</term>
+		/// </item>
+		/// <item>
+		/// <term>Waitable timer</term>
+		/// </item>
+		/// </list>
+		/// <para>
+		/// The <c>QS_ALLPOSTMESSAGE</c> and <c>QS_POSTMESSAGE</c> flags differ in when they are cleared. <c>QS_POSTMESSAGE</c> is cleared
+		/// when you call GetMessage or PeekMessage, whether or not you are filtering messages. <c>QS_ALLPOSTMESSAGE</c> is cleared when you
+		/// call <c>GetMessage</c> or <c>PeekMessage</c> without filtering messages (wMsgFilterMin and wMsgFilterMax are 0). This can be
+		/// useful when you call <c>PeekMessage</c> multiple times to get messages in different ranges.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-msgwaitformultipleobjectsex DWORD
+		// MsgWaitForMultipleObjectsEx( DWORD nCount, const HANDLE *pHandles, DWORD dwMilliseconds, DWORD dwWakeMask, DWORD dwFlags );
+		[DllImport(Lib.User32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("winuser.h", MSDNShortId = "1774b721-3ad4-492e-96af-b71de9066f0c")]
+		public static extern uint MsgWaitForMultipleObjectsEx(uint nCount, HANDLE[] pHandles, uint dwMilliseconds, QS dwWakeMask, MWMO dwFlags);
+
+		/// <summary>Packs a Dynamic Data Exchange (DDE) lParam value into an internal structure used for sharing DDE data between processes.</summary>
+		/// <param name="msg">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The DDE message to be posted.</para>
+		/// </param>
+		/// <param name="uiLo">
+		/// <para>Type: <c>UINT_PTR</c></para>
+		/// <para>A value that corresponds to the 16-bit Windows low-order word of an lParam parameter for the DDE message being posted.</para>
+		/// </param>
+		/// <param name="uiHi">
+		/// <para>Type: <c>UINT_PTR</c></para>
+		/// <para>A value that corresponds to the 16-bit Windows high-order word of an lParam parameter for the DDE message being posted.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>The return value is the lParam value.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The return value must be posted as the lParam parameter of a DDE message; it must not be used for any other purpose. After the
+		/// application posts a return value, it need not perform any action to dispose of the lParam parameter.
+		/// </para>
+		/// <para>An application should call this function only for posted DDE messages.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/dde/nf-dde-packddelparam LPARAM PackDDElParam( UINT msg, UINT_PTR uiLo,
+		// UINT_PTR uiHi );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("dde.h", MSDNShortId = "")]
+		public static extern IntPtr PackDDElParam(uint msg, IntPtr uiLo, IntPtr uiHi);
 
 		/// <summary>
 		/// Dispatches incoming sent messages, checks the thread message queue for a posted message, and retrieves the message (if any exist).
@@ -1371,6 +1983,54 @@ namespace Vanara.PInvoke
 		public static extern bool ReplyMessage(IntPtr lResult);
 
 		/// <summary>
+		/// Enables an application to reuse a packed Dynamic Data Exchange (DDE) lParam parameter, rather than allocating a new packed
+		/// lParam. Using this function reduces reallocations for applications that pass packed DDE messages.
+		/// </summary>
+		/// <param name="lParam">
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>The lParam parameter of the posted DDE message being reused.</para>
+		/// </param>
+		/// <param name="msgIn">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The identifier of the received DDE message.</para>
+		/// </param>
+		/// <param name="msgOut">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The identifier of the DDE message to be posted. The DDE message will reuse the packed lParam parameter.</para>
+		/// </param>
+		/// <param name="uiLo">
+		/// <para>Type: <c>UINT_PTR</c></para>
+		/// <para>The value to be packed into the low-order word of the reused lParam parameter.</para>
+		/// </param>
+		/// <param name="uiHi">
+		/// <para>Type: <c>UINT_PTR</c></para>
+		/// <para>The value to be packed into the high-order word of the reused lParam parameter.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>The return value is the new lParam value.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The return value must be posted as the lParam parameter of a DDE message; it must not be used for any other purpose. Once the
+		/// return value is posted, the posting application need not perform any action to dispose of the lParam parameter.
+		/// </para>
+		/// <para>
+		/// Use <c>ReuseDDElParam</c> instead of FreeDDElParam if the lParam parameter will be reused in a responding message.
+		/// <c>ReuseDDElParam</c> returns the lParam appropriate for reuse.
+		/// </para>
+		/// <para>
+		/// This function allocates or frees lParam parameters as needed, depending on the packing requirements of the incoming and outgoing
+		/// messages. This reduces reallocations in passing DDE messages.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/dde/nf-dde-reuseddelparam LPARAM ReuseDDElParam( LPARAM lParam, UINT msgIn,
+		// UINT msgOut, UINT_PTR uiLo, UINT_PTR uiHi );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("dde.h", MSDNShortId = "")]
+		public static extern IntPtr ReuseDDElParam(IntPtr lParam, uint msgIn, uint msgOut, IntPtr uiLo, IntPtr uiHi);
+
+		/// <summary>
 		/// <para>
 		/// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified
 		/// window and does not return until the window procedure has processed the message.
@@ -1593,7 +2253,7 @@ namespace Vanara.PInvoke
 			where TEnum : struct, IConvertible where TWP : struct where TLP : class
 		{
 			using (PinnedObject wp = new PinnedObject(wParam), lp = new PinnedObject(lParam))
-				return SendMessage(hWnd, Convert.ToUInt32(msg), wp, (IntPtr)lp);
+				return SendMessage(hWnd, Convert.ToUInt32(msg), wp, lp);
 		}
 
 		/// <summary>
@@ -1622,40 +2282,6 @@ namespace Vanara.PInvoke
 				return lr;
 			}
 		}
-
-		/// <summary>
-		/// <para>
-		/// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified
-		/// window and does not return until the window procedure has processed the message.
-		/// </para>
-		/// <para>
-		/// To send a message and return immediately, use the <c>SendMessageCallback</c> or <c>SendNotifyMessage</c> function. To post a
-		/// message to a thread's message queue and return immediately, use the <c>PostMessage</c> or <c>PostThreadMessage</c> function.
-		/// </para>
-		/// </summary>
-		/// <param name="hWnd">
-		/// <para>
-		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c>
-		/// ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows,
-		/// overlapped windows, and pop-up windows; but the message is not sent to child windows.
-		/// </para>
-		/// <para>
-		/// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of
-		/// lesser or equal integrity level.
-		/// </para>
-		/// </param>
-		/// <param name="msg">
-		/// <para>The message to be sent.</para>
-		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
-		/// </param>
-		/// <param name="wParam">Additional message-specific information.</param>
-		/// <param name="lParam">Additional message-specific information.</param>
-		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
-		// LRESULT WINAPI SendMessage( _In_ HWND hWnd, _In_ UINT Msg, _In_ WPARAM wParam, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx
-		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto, EntryPoint = "SendMessage")]
-		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
-		[System.Security.SecurityCritical]
-		public static unsafe extern void* SendMessageUnsafe(void* hWnd, uint msg, void* wParam, void* lParam);
 
 		/// <summary>
 		/// Sends the specified message to a window or windows. It calls the window procedure for the specified window and returns
@@ -1833,6 +2459,40 @@ namespace Vanara.PInvoke
 		public static extern IntPtr SendMessageTimeout(HWND hWnd, uint Msg, [Optional] IntPtr wParam, [Optional] IntPtr lParam, SMTO fuFlags, uint uTimeout, ref IntPtr lpdwResult);
 
 		/// <summary>
+		/// <para>
+		/// Sends the specified message to a window or windows. The <c>SendMessage</c> function calls the window procedure for the specified
+		/// window and does not return until the window procedure has processed the message.
+		/// </para>
+		/// <para>
+		/// To send a message and return immediately, use the <c>SendMessageCallback</c> or <c>SendNotifyMessage</c> function. To post a
+		/// message to a thread's message queue and return immediately, use the <c>PostMessage</c> or <c>PostThreadMessage</c> function.
+		/// </para>
+		/// </summary>
+		/// <param name="hWnd">
+		/// <para>
+		/// A handle to the window whose window procedure will receive the message. If this parameter is <c>HWND_BROADCAST</c>
+		/// ((HWND)0xffff), the message is sent to all top-level windows in the system, including disabled or invisible unowned windows,
+		/// overlapped windows, and pop-up windows; but the message is not sent to child windows.
+		/// </para>
+		/// <para>
+		/// Message sending is subject to UIPI. The thread of a process can send messages only to message queues of threads in processes of
+		/// lesser or equal integrity level.
+		/// </para>
+		/// </param>
+		/// <param name="msg">
+		/// <para>The message to be sent.</para>
+		/// <para>For lists of the system-provided messages, see System-Defined Messages.</para>
+		/// </param>
+		/// <param name="wParam">Additional message-specific information.</param>
+		/// <param name="lParam">Additional message-specific information.</param>
+		/// <returns>The return value specifies the result of the message processing; it depends on the message sent.</returns>
+		// LRESULT WINAPI SendMessage( _In_ HWND hWnd, _In_ UINT Msg, _In_ WPARAM wParam, _In_ LPARAM lParam); https://msdn.microsoft.com/en-us/library/windows/desktop/ms644950(v=vs.85).aspx
+		[DllImport(Lib.User32, SetLastError = false, CharSet = CharSet.Auto, EntryPoint = "SendMessage")]
+		[PInvokeData("Winuser.h", MSDNShortId = "ms644950")]
+		[System.Security.SecurityCritical]
+		public static unsafe extern void* SendMessageUnsafe(void* hWnd, uint msg, void* wParam, void* lParam);
+
+		/// <summary>
 		/// Sends the specified message to a window or windows. If the window was created by the calling thread, <c>SendNotifyMessage</c>
 		/// calls the window procedure for the window and does not return until the window procedure has processed the message. If the window
 		/// was created by a different thread, <c>SendNotifyMessage</c> passes the message to the window procedure and returns immediately;
@@ -1950,6 +2610,39 @@ namespace Vanara.PInvoke
 		[PInvokeData("winuser.h")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool TranslateMessage(in MSG lpMsg);
+
+		/// <summary>Unpacks a Dynamic Data Exchange (DDE)lParam value received from a posted DDE message.</summary>
+		/// <param name="msg">
+		/// <para>Type: <c>UINT</c></para>
+		/// <para>The posted DDE message.</para>
+		/// </param>
+		/// <param name="lParam">
+		/// <para>Type: <c>LPARAM</c></para>
+		/// <para>
+		/// The lParam parameter of the posted DDE message that was received. The application must free the memory object specified by the
+		/// lParam parameter by calling the FreeDDElParam function.
+		/// </para>
+		/// </param>
+		/// <param name="puiLo">
+		/// <para>Type: <c>PUINT_PTR</c></para>
+		/// <para>A pointer to a variable that receives the low-order word of lParam.</para>
+		/// </param>
+		/// <param name="puiHi">
+		/// <para>Type: <c>PUINT_PTR</c></para>
+		/// <para>A pointer to a variable that receives the high-order word of lParam.</para>
+		/// </param>
+		/// <returns>
+		/// <para>Type: <c>BOOL</c></para>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero.</para>
+		/// </returns>
+		/// <remarks>PackDDElParam eases the porting of 16-bit DDE applications to 32-bit DDE applications.</remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/dde/nf-dde-unpackddelparam BOOL UnpackDDElParam( UINT msg, LPARAM lParam,
+		// PUINT_PTR puiLo, PUINT_PTR puiHi );
+		[DllImport(Lib.User32, SetLastError = false, ExactSpelling = true)]
+		[PInvokeData("dde.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool UnpackDDElParam(uint msg, IntPtr lParam, out IntPtr puiLo, out IntPtr puiHi);
 
 		/// <summary>
 		/// Yields control to other threads when a thread has no other messages in its message queue. The <c>WaitMessage</c> function
