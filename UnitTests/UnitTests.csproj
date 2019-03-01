@@ -94,6 +94,7 @@
     <Compile Include="PInvoke\Mpr\WinNetWkTests.cs" />
     <Compile Include="PInvoke\NetApi\NetApi32Tests.cs" />
     <Compile Include="PInvoke\NtDll\NtDllTests.cs" />
+    <Compile Include="PInvoke\PowrProf\PowrProf.cs" />
     <Compile Include="PInvoke\Shared\InteropServices\SafeNativeArrayTests.cs" />
     <None Include="app.config" />
     <None Include="packages.config" />
@@ -210,6 +211,10 @@
     <ProjectReference Include="..\PInvoke\Ole\Vanara.PInvoke.Ole.csproj">
       <Project>{bbe4a7d6-0b24-4f58-9726-e05f358c1256}</Project>
       <Name>Vanara.PInvoke.Ole</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PInvoke\PowrProf\Vanara.PInvoke.PowrProf.csproj">
+      <Project>{c3622793-7925-46c7-b876-af23cc3c8a90}</Project>
+      <Name>Vanara.PInvoke.PowrProf</Name>
     </ProjectReference>
     <ProjectReference Include="..\PInvoke\Security\Vanara.PInvoke.Security.csproj">
       <Project>{392a14b0-1e10-4e88-9c13-0d965665ffb5}</Project>

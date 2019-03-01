@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>PInvoke API (methods, structures and constants) imported from Windows PowrProf.dll.</Description>
+    <Copyright>Copyright © 2017-2019</Copyright>
+    <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+    <VersionPrefix>2.3.2</VersionPrefix>
+    <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1</TargetFrameworks>
+    <AssemblyName>Vanara.PInvoke.PowrProf</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <RootNamespace>Vanara.PInvoke</RootNamespace>
+    <Authors>David Hall</Authors>
+    <PackageProjectUrl>https://github.com/dahall/vanara</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIconUrl>https://raw.githubusercontent.com/dahall/Vanara/master/docs/icons/Vanara48x48.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/dahall/vanara</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>pinvoke;vanara;net-extensions;interop</PackageTags>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <IncludeSource>true</IncludeSource>
+    <IncludeSymbols>true</IncludeSymbols>
+    <Company>GitHub Community</Company>
+    <Product>Vanara</Product>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <PackageReleaseNotes>Currently implements:
+
+Functions
+CallNtPowerInformation, CanUserWritePwrScheme, DeletePwrScheme, DevicePowerClose, DevicePowerEnumDevices, DevicePowerOpen, DevicePowerSetDeviceState, EnumPwrSchemes, GetActivePwrScheme, GetCurrentPowerPolicies, GetPwrCapabilities, GetPwrDiskSpindownRange, IsPwrHibernateAllowed, IsPwrShutdownAllowed, IsPwrSuspendAllowed, PowerCanRestoreIndividualDefaultPowerScheme, PowerCreatePossibleSetting, PowerCreateSetting, PowerDeleteScheme, PowerDeterminePlatformRole, PowerDeterminePlatformRoleEx, PowerDuplicateScheme, PowerEnumerate, PowerGetActiveScheme, PowerImportPowerScheme, PowerIsSettingRangeDefined, PowerReadACDefaultIndex, PowerReadACValue, PowerReadACValueIndex, PowerReadDCDefaultIndex, PowerReadDCValue, PowerReadDCValueIndex, PowerReadDescription, PowerReadFriendlyName, PowerReadIconResourceSpecifier, PowerReadPossibleDescription, PowerReadPossibleFriendlyName, PowerReadPossibleValue, PowerReadSettingAttributes, PowerReadValueIncrement, PowerReadValueMax, PowerReadValueMin, PowerReadValueUnitsSpecifier, PowerRegisterForEffectivePowerModeNotifications, PowerRegisterSuspendResumeNotification, PowerRemovePowerSetting, PowerReplaceDefaultPowerSchemes, PowerReportThermalEvent, PowerRestoreDefaultPowerSchemes, PowerRestoreIndividualDefaultPowerScheme, PowerSetActiveScheme, PowerSettingAccessCheck, PowerSettingAccessCheckEx, PowerSettingRegisterNotification, PowerSettingUnregisterNotification, PowerUnregisterFromEffectivePowerModeNotifications, PowerUnregisterSuspendResumeNotification, PowerWriteACDefaultIndex, PowerWriteACValueIndex, PowerWriteDCDefaultIndex, PowerWriteDCValueIndex, PowerWriteDescription, PowerWriteFriendlyName, PowerWriteIconResourceSpecifier, PowerWritePossibleDescription, PowerWritePossibleFriendlyName, PowerWritePossibleValue, PowerWriteSettingAttributes, PowerWriteValueIncrement, PowerWriteValueMax, PowerWriteValueMin, PowerWriteValueUnitsSpecifier, ReadGlobalPwrPolicy, ReadProcessorPwrScheme, ReadPwrScheme, SetActivePwrScheme, SetSuspendState, WriteGlobalPwrPolicy, WriteProcessorPwrScheme, WritePwrScheme
+
+Structures
+BATTERY_REPORTING_SCALE, SYSTEM_POWER_CAPABILITIES, DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS, GLOBAL_MACHINE_POWER_POLICY, GLOBAL_POWER_POLICY, GLOBAL_USER_POWER_POLICY, MACHINE_POWER_POLICY, MACHINE_PROCESSOR_POWER_POLICY, POWER_ACTION_POLICY, POWER_POLICY, PROCESSOR_POWER_POLICY, PROCESSOR_POWER_POLICY_INFO, SYSTEM_POWER_LEVEL, THERMAL_EVENT, USER_POWER_POLICY
+
+</PackageReleaseNotes>
+    <LangVersion>latest</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net20' ">
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj" />
+    <ProjectReference Include="..\Kernel32\Vanara.PInvoke.Kernel32.csproj" />
+    <ProjectReference Include="..\Shared\Vanara.PInvoke.Shared.csproj" />
+  </ItemGroup>
+</Project>

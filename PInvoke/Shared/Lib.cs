@@ -66,6 +66,9 @@
 		/// <summary>The OLE aut32</summary>
 		public const string OleAut32 = "oleaut32.dll";
 
+		/// <summary>The power profiling DLL.</summary>
+		public const string PowrProf = "powrprof.dll";
+
 		/// <summary>The property system</summary>
 		public const string PropSys = "propsys.dll";
 
