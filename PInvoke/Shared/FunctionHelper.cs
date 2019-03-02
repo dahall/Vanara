@@ -15,7 +15,9 @@ namespace Vanara.PInvoke
 
 		public static Win32Error BoolToLastErr(bool result) => result ? Win32Error.ERROR_SUCCESS : Win32Error.GetLastError();
 
-		public static TRet CallMethodWithStrBuf<TSize, TRet>(SBFunc<TSize, TRet> method, out string result, Func<TSize, TRet, bool> gotGoodSize = null) where TSize : struct, IConvertible
+		public static bool ChkGoodBuf<TSize, TRet>(TSize sz, TRet err) where TSize : struct where TRet : IErrorProvider, IConvertible => !sz.Equals(default(TSize)) && (err.ToHRESULT() == (HRESULT)(Win32Error)Win32Error.ERROR_MORE_DATA || err.ToHRESULT() == (HRESULT)(Win32Error)Win32Error.ERROR_INSUFFICIENT_BUFFER);
+
+		public static TRet CallMethodWithStrBuf<TSize, TRet>(SBFunc<TSize, TRet> method, out string result, Func<TSize, TRet, bool> gotGoodSize = null) where TSize : struct, IConvertible where TRet : IErrorProvider
 		{
 			TSize sz = default;
 			var ret0 = method(null, ref sz);

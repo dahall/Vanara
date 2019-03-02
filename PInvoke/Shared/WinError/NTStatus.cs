@@ -36,7 +36,7 @@ namespace Vanara.PInvoke
 	/// <seealso cref="System.IEquatable{NTStatus}"/>
 	[StructLayout(LayoutKind.Sequential)]
 	[TypeConverter(typeof(NTStatusTypeConverter))]
-	public partial struct NTStatus : IComparable, IComparable<NTStatus>, IEquatable<NTStatus>, IConvertible
+	public partial struct NTStatus : IComparable, IComparable<NTStatus>, IEquatable<NTStatus>, IConvertible, IErrorProvider
 	{
 		internal readonly uint _value;
 
@@ -377,6 +377,10 @@ namespace Vanara.PInvoke
 		/// <param name="ntstatus">The 32-bit raw NTStatus value.</param>
 		/// <param name="message">The optional message to assign to the <see cref="Exception"/>.</param>
 		public static void ThrowIfFailed(uint ntstatus, string message = null) => new NTStatus(ntstatus).ThrowIfFailed(message);
+
+		/// <summary>Converts this error to an <see cref="T:Vanara.PInvoke.HRESULT" />.</summary>
+		/// <returns>An equivalent <see cref="T:Vanara.PInvoke.HRESULT" />.</returns>
+		HRESULT IErrorProvider.ToHRESULT() => HRESULT_FROM_NT(_value);
 
 		/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
 		/// <returns>A <see cref="string"/> that represents this instance.</returns>
