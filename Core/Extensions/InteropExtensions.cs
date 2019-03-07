@@ -173,7 +173,7 @@ namespace Vanara.Extensions
 			if (count == 0)
 			{
 				var ret = memAlloc(bytesAllocated);
-				Marshal.Copy(new byte[bytesAllocated], 0, ret, bytesAllocated);
+				ret.FillMemory(0, bytesAllocated);
 				return ret;
 			}
 
@@ -193,7 +193,7 @@ namespace Vanara.Extensions
 					ms.Position += (count + 1) * IntPtr.Size;
 					for (var i = 0; i < list.Count; i++)
 					{
-						ms.Poke(list[i] == null ? IntPtr.Zero : ms.Pointer.Offset(ms.Position), prefixBytes + (i * IntPtr.Size));
+						ms.Poke(list[i] is null ? IntPtr.Zero : ms.Pointer.Offset(ms.Position), prefixBytes + (i * IntPtr.Size));
 						ms.Write(list[i]);
 					}
 					ms.Poke(IntPtr.Zero, prefixBytes + (count * IntPtr.Size));
@@ -206,6 +206,74 @@ namespace Vanara.Extensions
 				}
 
 				return ms.Pointer;
+			}
+		}
+
+		/// <summary>
+		/// Marshals data from a managed list of objects to an unmanaged block of memory allocated by the <paramref name="memAlloc"/> method.
+		/// </summary>
+		/// <param name="values">The enumerated list of objects to marshal.</param>
+		/// <param name="memAlloc">
+		/// The function that allocates the memory for the block of objects (typically <see cref="Marshal.AllocCoTaskMem(int)"/> or <see cref="Marshal.AllocHGlobal(int)"/>.
+		/// </param>
+		/// <param name="bytesAllocated">The bytes allocated by the <paramref name="memAlloc"/> method.</param>
+		/// <param name="referencePointers">
+		/// if set to <see langword="true"/> the pointer will be processed by storing a reference to the value; if <see langword="false"/>,
+		/// the pointer value will be directly inserted into the array of pointers.
+		/// </param>
+		/// <param name="charSet">The character set to use for strings.</param>
+		/// <param name="prefixBytes">Number of bytes preceding the allocated objects.</param>
+		/// <returns>Pointer to the allocated native (unmanaged) array of objects stored using the character set defined by <paramref name="charSet"/>.</returns>
+		public static IntPtr MarshalObjectsToPtr(this IEnumerable<object> values, Func<int, IntPtr> memAlloc, out int bytesAllocated, bool referencePointers = false, CharSet charSet = CharSet.Auto, int prefixBytes = 0)
+		{
+			// Convert to list to avoid multiple iterations
+			var list = values as IList<object> ?? (values != null ? new List<object>(values) : null);
+
+			// Look at count and bail early if 0
+			var count = values?.Count() ?? 0;
+			bytesAllocated = prefixBytes + IntPtr.Size;
+			if (count == 0)
+			{
+				var ret = memAlloc(bytesAllocated);
+				ret.FillMemory(0, bytesAllocated);
+				return ret;
+			}
+
+			// Get size of output (array size + objects sizes)
+			var chSz = StringHelper.GetCharSize(charSet);
+			bytesAllocated += IntPtr.Size * count;
+			bytesAllocated += list.Sum(GetSize);
+
+			// Create pointer array
+			var ptrs = new IntPtr[count + 1];
+
+			using (var ms = new MarshalingStream(memAlloc(bytesAllocated), bytesAllocated) { Position = prefixBytes, CharSet = charSet })
+			{
+				ms.Position += (count + 1) * IntPtr.Size;
+				for (var i = 0; i < list.Count; i++)
+				{
+					if (!referencePointers && list[i] is IntPtr p)
+					{
+						ptrs[i] = p;
+					}
+					else
+					{
+						ptrs[i] = list[i] is null ? IntPtr.Zero : ms.Pointer.Offset(ms.Position);
+						ms.Write(list[i]);
+					}
+				}
+				ms.Position = 0;
+				ms.Write(ptrs);
+
+				return ms.Pointer;
+			}
+
+			int GetSize(object o)
+			{
+				if (o is null) return 0;
+				if (o is string s) return (s.Length + 1) * chSz;
+				if (o is IntPtr) return referencePointers ? IntPtr.Size : 0;
+				return Marshal.SizeOf(o);
 			}
 		}
 
