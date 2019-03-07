@@ -27,38 +27,23 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void PowerEnumerateTest()
 		{
-			var sb = new StringBuilder(1024, 1024);
-
-			Guid? scheme = null;
-			Guid? subgroup = null;
-			TestContext.WriteLine("========================= null, null");
-			foreach (var value in PowerEnumerate<Guid>(scheme, subgroup))
-				WriteName(value);
-
-			PowerGetActiveScheme(out var gScheme).ThrowIfFailed();
-			scheme = gScheme;
-			subgroup = GUID_SYSTEM_BUTTON_SUBGROUP;
-			TestContext.WriteLine("========================= Active, GUID_SYSTEM_BUTTON_SUBGROUP");
-			foreach (var value in PowerEnumerate<Guid>(scheme, subgroup))
-				WriteName(value);
-
-			subgroup = null;
-			TestContext.WriteLine("========================= Active, null");
-			foreach (var value in PowerEnumerate<Guid>(scheme, subgroup))
-				WriteName(value);
-
-			subgroup = NO_SUBGROUP_GUID;
-			TestContext.WriteLine("========================= Active, NO_SUBGROUP_GUID");
-			foreach (var value in PowerEnumerate<Guid>(scheme, subgroup))
-				WriteName(value);
-
-			void WriteName(in Guid setting)
+			foreach (var scheme in PowerEnumerate<Guid>(null, null))
 			{
-				sb.Clear();
-				var sbSz = (uint)sb.Capacity;
-				if (PowerReadFriendlyName(default, scheme.GetValueOrDefault(), subgroup.GetValueOrDefault(), setting, sb, ref sbSz).Succeeded)
-					TestContext.WriteLine($"{sb.ToString()} : {setting}");
+				PowerGetActiveScheme(out var active);
+				TestContext.WriteLine($"Scheme: {scheme} {(scheme == active ? "(Active)" : "")}");
+				foreach (var subgroup in PowerEnumerate<Guid>(scheme, null).Concat(new[] { NO_SUBGROUP_GUID }))
+				{
+					TestContext.Write("  ");
+					WriteName(scheme, subgroup, null);
+					foreach (var value in PowerEnumerate<Guid>(scheme, subgroup))
+					{
+						TestContext.Write("    ");
+						WriteName(scheme, subgroup, value);
+					}
+				}
 			}
+
+			void WriteName(Guid? sch, Guid? grp, Guid? setting) { TestContext.WriteLine($"{PowerReadFriendlyName(sch, grp, setting)} : {PowerReadDescription(sch, grp, setting)} : {setting}"); }
 		}
 
 		[Test]

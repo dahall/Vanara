@@ -317,6 +317,20 @@ namespace Vanara.PInvoke
 			PowerInformationLevelMaximum,
 		}
 
+		/// <summary>
+		/// The version of the POWER_PLATFORM_ROLE enumeration for the platform used by <see cref="PowerDeterminePlatformRoleEx"/>.
+		/// </summary>
+		[PInvokeData("powerbase.h", MSDNShortId = "64b597d3-ca7a-4ff7-8527-72c3625147cd")]
+		public enum PowerPlatformRoleVersion
+		{
+			/// <summary>The version of the POWER_PLATFORM_ROLE enumeration for Windows 7, Windows Server 2008 R2, Windows Vista or Windows Server 2008.
+			/// <para>Calling PowerDeterminePlatformRoleEx with this value returns the same result as calling PowerDeterminePlatformRole on Windows 7, Windows Server 2008 R2, Windows Vista or Windows Server 2008.</para></summary>
+			POWER_PLATFORM_ROLE_V1 = 1,
+
+			/// <summary>The version of the POWER_PLATFORM_ROLE enumeration for Windows 8 and Windows Server 2012.</summary>
+			POWER_PLATFORM_ROLE_V2 = 2
+		}
+
 		/// <summary>Flags for <see cref="PowerRegisterSuspendResumeNotification"/>.</summary>
 		[PInvokeData("powerbase.h", MSDNShortId = "3b39ec3a-417c-4ce4-a581-ed967f1baec9")]
 		public enum RegisterSuspendResumeNotificationFlags
@@ -568,7 +582,7 @@ namespace Vanara.PInvoke
 		// PowerDeterminePlatformRoleEx( ULONG Version );
 		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("powerbase.h", MSDNShortId = "64b597d3-ca7a-4ff7-8527-72c3625147cd")]
-		public static extern POWER_PLATFORM_ROLE PowerDeterminePlatformRoleEx(uint Version);
+		public static extern POWER_PLATFORM_ROLE PowerDeterminePlatformRoleEx(PowerPlatformRoleVersion Version);
 
 		/// <summary>Registers to receive notification when the system is suspended or resumed.</summary>
 		/// <param name="Flags">This parameter must be <c>DEVICE_NOTIFY_CALLBACK</c>.</param>

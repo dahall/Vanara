@@ -36,6 +36,8 @@ namespace Vanara.PInvoke
 		[return: MarshalAs(UnmanagedType.U1)]
 		public delegate bool PWRSCHEMESENUMPROC(uint uiIndex, uint dwName, string sName, uint dwDesc, string sDesc, in POWER_POLICY pp, IntPtr lParam);
 
+		private delegate Win32Error PwrReadMemFunc(HKEY h, IntPtr a, IntPtr b, IntPtr c, IntPtr d, ref uint e);
+
 		/// <summary>The global flags constants are used to enable or disable user power policy options.</summary>
 		[PInvokeData("powrprof.h", MSDNShortId = "0e89ae66-a889-4929-b028-125fcef5c89c")]
 		[Flags]
@@ -549,10 +551,10 @@ namespace Vanara.PInvoke
 		/// </remarks>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/powrprof/nf-powrprof-devicepowerenumdevices BOOLEAN DevicePowerEnumDevices(
 		// ULONG QueryIndex, ULONG QueryInterpretationFlags, ULONG QueryFlags, PBYTE pReturnBuffer, PULONG pBufferSize );
-		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("powrprof.h", MSDNShortId = "bb67634c-69d9-4194-ac27-4f9740d73a1a")]
 		[return: MarshalAs(UnmanagedType.U1)]
-		public static extern bool DevicePowerEnumDevices(uint QueryIndex, PDQUERY QueryInterpretationFlags, PDCAP QueryFlags, IntPtr pReturnBuffer, ref uint pBufferSize);
+		public static extern bool DevicePowerEnumDevices(uint QueryIndex, PDQUERY QueryInterpretationFlags, PDCAP QueryFlags, StringBuilder pReturnBuffer, ref uint pBufferSize);
 
 		/// <summary>Initializes a device list by querying all the devices.</summary>
 		/// <param name="DebugMask">Reserved; must be 0.</param>
@@ -595,7 +597,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.PowrProf, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("powrprof.h", MSDNShortId = "300842ae-d7d4-42c2-959c-e1713f466d32")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DevicePowerSetDeviceState([MarshalAs(UnmanagedType.LPWStr)] string DeviceDescription, PDSET SetFlags, IntPtr SetData);
+		public static extern bool DevicePowerSetDeviceState([MarshalAs(UnmanagedType.LPWStr)] string DeviceDescription, PDSET SetFlags, IntPtr SetData = default);
 
 		/// <summary>
 		/// <para>
@@ -1062,13 +1064,7 @@ namespace Vanara.PInvoke
 		// DWORD *BufferSize );
 		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("powrprof.h", MSDNShortId = "5b2c8263-d916-4909-be56-ec784537bdc3")]
-		public static extern Win32Error PowerEnumerate([Optional] HKEY RootPowerKey, [Optional] in Guid SchemeGuid, [Optional] in Guid SubGroupOfPowerSettingsGuid, POWER_DATA_ACCESSOR AccessFlags, uint Index, IntPtr Buffer, ref uint BufferSize);
-
-		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true)]
-		private static extern Win32Error PowerEnumerate([Optional] HKEY RootPowerKey, IntPtr SchemeGuid, IntPtr SubGroupOfPowerSettingsGuid, POWER_DATA_ACCESSOR AccessFlags, uint Index, IntPtr Buffer, ref uint BufferSize);
-
-		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true)]
-		private static extern Win32Error PowerEnumerate([Optional] HKEY RootPowerKey, in Guid SchemeGuid, IntPtr SubGroupOfPowerSettingsGuid, POWER_DATA_ACCESSOR AccessFlags, uint Index, IntPtr Buffer, ref uint BufferSize);
+		public static extern Win32Error PowerEnumerate([Optional] HKEY RootPowerKey, [Optional, In] IntPtr SchemeGuid, [Optional, In] IntPtr SubGroupOfPowerSettingsGuid, POWER_DATA_ACCESSOR AccessFlags, uint Index, IntPtr Buffer, ref uint BufferSize);
 
 		/// <summary>
 		/// Enumerates the specified elements in a power scheme. This function is normally called in a loop incrementing the Index parameter
@@ -1154,32 +1150,29 @@ namespace Vanara.PInvoke
 		{
 			if (AccessFlags == (POWER_DATA_ACCESSOR)(-1))
 				AccessFlags = SchemeGuid is null ? POWER_DATA_ACCESSOR.ACCESS_SCHEME : (SubGroupOfPowerSettingsGuid is null ? POWER_DATA_ACCESSOR.ACCESS_SUBGROUP : POWER_DATA_ACCESSOR.ACCESS_INDIVIDUAL_SETTING);
-			var checkSize = true;
-			for (var i = 0U; ; i++)
-			{
-				var sz = 0U;
-				var err = CallEnum(i, default, ref sz);
-				if (err == Win32Error.ERROR_NO_MORE_ITEMS)
-					break;
-				if (err != Win32Error.ERROR_MORE_DATA)
-					throw err.GetException();
-				if (checkSize && sz < Marshal.SizeOf(typeof(T))) throw new ArgumentException("Size mismatch between returned value and size of T.", nameof(T));
-				checkSize = false;
-				using (var mem = new SafeHGlobalHandle((int)sz))
+			var l = new List<T>();
+			PwrGuidTsl(SchemeGuid, SubGroupOfPowerSettingsGuid, null, (p1, p2, p3) => {
+				var checkSize = true;
+				for (var i = 0U; ; i++)
 				{
-					CallEnum(i, (IntPtr)mem, ref sz).ThrowIfFailed();
-					yield return mem.ToStructure<T>();
+					var sz = 0U;
+					var err = PowerEnumerate(default, p1, p2, AccessFlags, i, IntPtr.Zero, ref sz);
+					if (err == Win32Error.ERROR_NO_MORE_ITEMS)
+						break;
+					if (err != Win32Error.ERROR_MORE_DATA)
+						return err;
+					if (checkSize && sz < Marshal.SizeOf(typeof(T))) throw new ArgumentException("Size mismatch between returned value and size of T.", nameof(T));
+					checkSize = false;
+					using (var mem = new SafeHGlobalHandle((int)sz))
+					{
+						err = PowerEnumerate(default, p1, p2, AccessFlags, i, (IntPtr)mem, ref sz);
+						if (err.Failed) return err;
+						l.Add(mem.ToStructure<T>());
+					}
 				}
-			}
-
-			Win32Error CallEnum(uint Index, IntPtr Buffer, ref uint BufferSize)
-			{
-				if (!SchemeGuid.HasValue && !SubGroupOfPowerSettingsGuid.HasValue)
-					return PowerEnumerate(default, IntPtr.Zero, IntPtr.Zero, AccessFlags, Index, Buffer, ref BufferSize);
-				if (SchemeGuid.HasValue && !SubGroupOfPowerSettingsGuid.HasValue)
-					return PowerEnumerate(default, SchemeGuid.Value, IntPtr.Zero, AccessFlags, Index, Buffer, ref BufferSize);
-				return PowerEnumerate(default, SchemeGuid.Value, SubGroupOfPowerSettingsGuid.Value, AccessFlags, Index, Buffer, ref BufferSize);
-			}
+				return Win32Error.ERROR_SUCCESS;
+			}).ThrowIfFailed();
+			return l;
 		}
 
 		/// <summary>Imports a power scheme from a file.</summary>
@@ -1269,7 +1262,7 @@ namespace Vanara.PInvoke
 		// *SubGroupOfPowerSettingsGuid, _In_ const GUID *PowerSettingGuid, _Out_ LPDWORD AcDefaultIndex); https://msdn.microsoft.com/en-us/library/windows/desktop/aa372733(v=vs.85).aspx
 		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("PowrProf.h", MSDNShortId = "aa372733")]
-		public static extern Win32Error PowerReadACDefaultIndex([Optional] HKEY RootPowerKey, in Guid SchemePersonalityGuid, [Optional] in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, out uint AcDefaultIndex);
+		public static extern Win32Error PowerReadACDefaultIndex([Optional] HKEY RootPowerKey, in Guid SchemePersonalityGuid, in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, out uint AcDefaultIndex);
 
 		/// <summary>Retrieves the AC index of the specified power setting.</summary>
 		/// <param name="RootPowerKey">This parameter is reserved for future use and must be set to <c>NULL</c>.</param>
@@ -1325,7 +1318,7 @@ namespace Vanara.PInvoke
 		// RootPowerKey, const GUID *SchemeGuid, const GUID *SubGroupOfPowerSettingsGuid, const GUID *PowerSettingGuid, LPDWORD AcValueIndex );
 		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("powrprof.h", MSDNShortId = "e8760e78-78cd-4652-94b1-f42a72df5db2")]
-		public static extern Win32Error PowerReadACValueIndex([Optional] HKEY RootPowerKey, in Guid SchemeGuid, [Optional] in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, out uint AcValueIndex);
+		public static extern Win32Error PowerReadACValueIndex([Optional] HKEY RootPowerKey, in Guid SchemeGuid, in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, out uint AcValueIndex);
 
 		/// <summary>Retrieves the default DC index of the specified power setting.</summary>
 		/// <param name="RootPowerKey">This parameter is reserved for future use and must be set to <c>NULL</c>.</param>
@@ -1386,7 +1379,7 @@ namespace Vanara.PInvoke
 		// *SubGroupOfPowerSettingsGuid, _In_ const GUID *PowerSettingGuid, _Out_ LPDWORD DcDefaultIndex); https://msdn.microsoft.com/en-us/library/windows/desktop/aa372736(v=vs.85).aspx
 		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("PowrProf.h", MSDNShortId = "aa372736")]
-		public static extern Win32Error PowerReadDCDefaultIndex([Optional] HKEY RootPowerKey, in Guid SchemePersonalityGuid, [Optional] in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, out uint DcDefaultIndex);
+		public static extern Win32Error PowerReadDCDefaultIndex([Optional] HKEY RootPowerKey, in Guid SchemePersonalityGuid, in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, out uint DcDefaultIndex);
 
 		/// <summary>Retrieves the DC value index of the specified power setting.</summary>
 		/// <param name="RootPowerKey">This parameter is reserved for future use and must be set to <c>NULL</c>.</param>
@@ -1440,7 +1433,7 @@ namespace Vanara.PInvoke
 		// RootPowerKey, const GUID *SchemeGuid, const GUID *SubGroupOfPowerSettingsGuid, const GUID *PowerSettingGuid, LPDWORD DcValueIndex );
 		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("powrprof.h", MSDNShortId = "91ba83bd-3e28-4933-a1ad-0cd8414fee37")]
-		public static extern Win32Error PowerReadDCValueIndex([Optional] HKEY RootPowerKey, in Guid SchemeGuid, [Optional] in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, out uint DcValueIndex);
+		public static extern Win32Error PowerReadDCValueIndex([Optional] HKEY RootPowerKey, in Guid SchemeGuid, in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, out uint DcValueIndex);
 
 		/// <summary>
 		/// Retrieves the description for the specified power setting, subgroup, or scheme. If the SchemeGuid parameter is not <c>NULL</c>
@@ -1515,12 +1508,72 @@ namespace Vanara.PInvoke
 		/// specified by the BufferSize parameter is too small, the function returns <c>ERROR_SUCCESS</c> and the <c>DWORD</c> pointed to by
 		/// the BufferSize parameter is filled in with the required buffer size.
 		/// </returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/powrprof/nf-powrprof-powerreaddescription DWORD PowerReadDescription( HKEY
-		// RootPowerKey, const GUID *SchemeGuid, const GUID *SubGroupOfPowerSettingsGuid, const GUID *PowerSettingGuid, PUCHAR Buffer,
-		// LPDWORD BufferSize );
+		// https://docs.microsoft.com/en-us/windows/desktop/api/powrprof/nf-powrprof-powerreaddescription
+		// DWORD PowerReadDescription( HKEY RootPowerKey, const GUID *SchemeGuid, const GUID *SubGroupOfPowerSettingsGuid, const GUID *PowerSettingGuid, PUCHAR Buffer, LPDWORD BufferSize );
 		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("powrprof.h", MSDNShortId = "3c264f4f-fd1b-466b-ba76-fe78593a3628")]
-		public static extern Win32Error PowerReadDescription([Optional] HKEY RootPowerKey, in Guid SchemeGuid, [Optional] in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, StringBuilder Buffer, ref uint BufferSize);
+		public static extern Win32Error PowerReadDescription([Optional] HKEY RootPowerKey, [In] IntPtr SchemeGuid, [In] IntPtr SubGroupOfPowerSettingsGuid, [In] IntPtr PowerSettingGuid, IntPtr Buffer, ref uint BufferSize);
+
+		/// <summary>
+		/// Retrieves the description for the specified power setting, subgroup, or scheme. If the SchemeGuid parameter is not <c>NULL</c>
+		/// but both the SubGroupOfPowerSettingsGuid and PowerSettingGuid parameters are <c>NULL</c>, the description of the power scheme
+		/// will be returned. If the SchemeGuid and SubGroupOfPowerSettingsGuid parameters are not <c>NULL</c> and the PowerSettingGuid
+		/// parameter is <c>NULL</c>, the description of the subgroup will be returned. If the SchemeGuid, SubGroupOfPowerSettingsGuid, and
+		/// PowerSettingGuid parameters are not <c>NULL</c>, the description of the power setting will be returned.
+		/// </summary>
+		/// <param name="RootPowerKey">This parameter is reserved for future use and must be set to <c>NULL</c>.</param>
+		/// <param name="SchemeGuid">The identifier of the power scheme.</param>
+		/// <param name="SubGroupOfPowerSettingsGuid">
+		/// <para>
+		/// The subgroup of power settings. This parameter can be one of the following values defined in WinNT.h. Use <c>NO_SUBGROUP_GUID</c>
+		/// to refer to the default power scheme.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>NO_SUBGROUP_GUID fea3413e-7e05-4911-9a71-700331f1c294</term>
+		/// <term>Settings in this subgroup are part of the default power scheme.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_DISK_SUBGROUP 0012ee47-9041-4b5d-9b77-535fba8b1442</term>
+		/// <term>Settings in this subgroup control power management configuration of the system's hard disk drives.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_SYSTEM_BUTTON_SUBGROUP 4f971e89-eebd-4455-a8de-9e59040e7347</term>
+		/// <term>Settings in this subgroup control configuration of the system power buttons.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_PROCESSOR_SETTINGS_SUBGROUP 54533251-82be-4824-96c1-47b60b740d00</term>
+		/// <term>Settings in this subgroup control configuration of processor power management features.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_VIDEO_SUBGROUP 7516b95f-f776-4464-8c53-06167f40cc99</term>
+		/// <term>Settings in this subgroup control configuration of the video power management features.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_BATTERY_SUBGROUP e73a048d-bf27-4f12-9731-8b2076e8891f</term>
+		/// <term>Settings in this subgroup control battery alarm trip points and actions.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_SLEEP_SUBGROUP 238C9FA8-0AAD-41ED-83F4-97BE242C8F20</term>
+		/// <term>Settings in this subgroup control system sleep settings.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_PCIEXPRESS_SETTINGS_SUBGROUP 501a4d13-42af-4429-9fd1-a8218c268e20</term>
+		/// <term>Settings in this subgroup control PCI Express settings.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="PowerSettingGuid">The identifier of the power setting that is being used.</param>
+		/// <returns>
+		/// The description.
+		/// </returns>
+		[PInvokeData("powrprof.h", MSDNShortId = "3c264f4f-fd1b-466b-ba76-fe78593a3628")]
+		public static string PowerReadDescription([In] Guid? SchemeGuid = null, [In] Guid? SubGroupOfPowerSettingsGuid = null, [In] Guid? PowerSettingGuid = null) =>
+			PwrReadMem(PowerReadDescription, SchemeGuid, SubGroupOfPowerSettingsGuid, PowerSettingGuid)?.ToString(-1) ?? string.Empty;
 
 		/// <summary>
 		/// Retrieves the friendly name for the specified power setting, subgroup, or scheme. If the SchemeGuid parameter is not <c>NULL</c>
@@ -1597,7 +1650,63 @@ namespace Vanara.PInvoke
 		// LPDWORD BufferSize );
 		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("powrprof.h", MSDNShortId = "e6e46bbf-f9be-4dee-8976-df48bb1ccdf4")]
-		public static extern Win32Error PowerReadFriendlyName([Optional] HKEY RootPowerKey, in Guid SchemeGuid, in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, StringBuilder Buffer, ref uint BufferSize);
+		public static extern Win32Error PowerReadFriendlyName([Optional] HKEY RootPowerKey, [In] IntPtr SchemeGuid, [In] IntPtr SubGroupOfPowerSettingsGuid, [In] IntPtr PowerSettingGuid, IntPtr Buffer, ref uint BufferSize);
+
+		/// <summary>
+		/// Retrieves the friendly name for the specified power setting, subgroup, or scheme. If the SchemeGuid parameter is not <c>NULL</c>
+		/// but both the SubGroupOfPowerSettingsGuid and PowerSettingGuid parameters are <c>NULL</c>, the friendly name of the power scheme
+		/// will be returned. If the SchemeGuid and SubGroupOfPowerSettingsGuid parameters are not <c>NULL</c> and the PowerSettingGuid
+		/// parameter is <c>NULL</c>, the friendly name of the subgroup will be returned. If the SchemeGuid, SubGroupOfPowerSettingsGuid, and
+		/// PowerSettingGuid parameters are not <c>NULL</c>, the friendly name of the power setting will be returned.
+		/// </summary>
+		/// <param name="SchemeGuid">The identifier of the power scheme.</param>
+		/// <param name="SubGroupOfPowerSettingsGuid"><para>The subgroup of power settings. Use <c>NO_SUBGROUP_GUID</c> to refer to the default power scheme.</para>
+		/// <list type="table">
+		///   <listheader>
+		///     <term>Value</term>
+		///     <term>Meaning</term>
+		///   </listheader>
+		///   <item>
+		///     <term>NO_SUBGROUP_GUID fea3413e-7e05-4911-9a71-700331f1c294</term>
+		///     <term>Settings in this subgroup are part of the default power scheme.</term>
+		///   </item>
+		///   <item>
+		///     <term>GUID_DISK_SUBGROUP 0012ee47-9041-4b5d-9b77-535fba8b1442</term>
+		///     <term>Settings in this subgroup control power management configuration of the system's hard disk drives.</term>
+		///   </item>
+		///   <item>
+		///     <term>GUID_SYSTEM_BUTTON_SUBGROUP 4f971e89-eebd-4455-a8de-9e59040e7347</term>
+		///     <term>Settings in this subgroup control configuration of the system power buttons.</term>
+		///   </item>
+		///   <item>
+		///     <term>GUID_PROCESSOR_SETTINGS_SUBGROUP 54533251-82be-4824-96c1-47b60b740d00</term>
+		///     <term>Settings in this subgroup control configuration of processor power management features.</term>
+		///   </item>
+		///   <item>
+		///     <term>GUID_VIDEO_SUBGROUP 7516b95f-f776-4464-8c53-06167f40cc99</term>
+		///     <term>Settings in this subgroup control configuration of the video power management features.</term>
+		///   </item>
+		///   <item>
+		///     <term>GUID_BATTERY_SUBGROUP e73a048d-bf27-4f12-9731-8b2076e8891f</term>
+		///     <term>Settings in this subgroup control battery alarm trip points and actions.</term>
+		///   </item>
+		///   <item>
+		///     <term>GUID_SLEEP_SUBGROUP 238C9FA8-0AAD-41ED-83F4-97BE242C8F20</term>
+		///     <term>Settings in this subgroup control system sleep settings.</term>
+		///   </item>
+		///   <item>
+		///     <term>GUID_PCIEXPRESS_SETTINGS_SUBGROUP 501a4d13-42af-4429-9fd1-a8218c268e20</term>
+		///     <term>Settings in this subgroup control PCI Express settings.</term>
+		///   </item>
+		/// </list></param>
+		/// <param name="PowerSettingGuid">The identifier of the power setting that is being used.</param>
+		/// <returns>The friendly name.</returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/powrprof/nf-powrprof-powerreadfriendlyname DWORD PowerReadFriendlyName( HKEY
+		// RootPowerKey, const GUID *SchemeGuid, const GUID *SubGroupOfPowerSettingsGuid, const GUID *PowerSettingGuid, PUCHAR Buffer,
+		// LPDWORD BufferSize );
+		[PInvokeData("powrprof.h", MSDNShortId = "e6e46bbf-f9be-4dee-8976-df48bb1ccdf4")]
+		public static string PowerReadFriendlyName([In] Guid? SchemeGuid = null, [In] Guid? SubGroupOfPowerSettingsGuid = null, [In] Guid? PowerSettingGuid = null) =>
+			PwrReadMem(PowerReadFriendlyName, SchemeGuid, SubGroupOfPowerSettingsGuid, PowerSettingGuid)?.ToString(-1) ?? string.Empty;
 
 		/// <summary>
 		/// Retrieves the icon resource for the specified power setting, subgroup, or scheme. If the SchemeGuid parameter is not <c>NULL</c>
@@ -1677,7 +1786,7 @@ namespace Vanara.PInvoke
 		// *PowerSettingGuid, PUCHAR Buffer, LPDWORD BufferSize );
 		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("powrprof.h", MSDNShortId = "d9454acd-7a4a-4f54-b614-beee8763f1ef")]
-		public static extern Win32Error PowerReadIconResourceSpecifier([Optional] HKEY RootPowerKey, in Guid SchemeGuid, [Optional] in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, IntPtr Buffer, ref uint BufferSize);
+		public static extern Win32Error PowerReadIconResourceSpecifier([Optional] HKEY RootPowerKey, [In] IntPtr SchemeGuid, [In] IntPtr SubGroupOfPowerSettingsGuid, [In] IntPtr PowerSettingGuid, IntPtr Buffer, ref uint BufferSize);
 
 		/// <summary>Retrieves the description for one of the possible choices of a power setting value.</summary>
 		/// <param name="RootPowerKey">This parameter is reserved for future use and must be set to <c>NULL</c>.</param>
@@ -1748,9 +1857,9 @@ namespace Vanara.PInvoke
 		// https://docs.microsoft.com/en-us/windows/desktop/api/powrprof/nf-powrprof-powerreadpossibledescription DWORD
 		// PowerReadPossibleDescription( HKEY RootPowerKey, const GUID *SubGroupOfPowerSettingsGuid, const GUID *PowerSettingGuid, ULONG
 		// PossibleSettingIndex, PUCHAR Buffer, LPDWORD BufferSize );
-		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true)]
+		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("powrprof.h", MSDNShortId = "e803dc6b-706a-49fc-8c8d-ba9b0ccf8491")]
-		public static extern Win32Error PowerReadPossibleDescription([Optional] HKEY RootPowerKey, in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, uint PossibleSettingIndex, IntPtr Buffer, ref uint BufferSize);
+		public static extern Win32Error PowerReadPossibleDescription([Optional] HKEY RootPowerKey, in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, uint PossibleSettingIndex, StringBuilder Buffer, ref uint BufferSize);
 
 		/// <summary>Retrieves the friendly name for one of the possible choices of a power setting value.</summary>
 		/// <param name="RootPowerKey">This parameter is reserved for future use and must be set to <c>NULL</c>.</param>
@@ -2648,7 +2757,70 @@ namespace Vanara.PInvoke
 		// BufferSize );
 		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("powrprof.h", MSDNShortId = "42ee26ac-1a9c-4390-92e8-879b401168c7")]
-		public static extern Win32Error PowerWriteDescription([Optional] HKEY RootPowerKey, in Guid SchemeGuid, [Optional] in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, string Buffer, uint BufferSize);
+		public static extern Win32Error PowerWriteDescription([Optional] HKEY RootPowerKey, [In] IntPtr SchemeGuid, [In] IntPtr SubGroupOfPowerSettingsGuid, [In] IntPtr PowerSettingGuid, string Buffer, uint BufferSize);
+
+		/// <summary>Sets the description for the specified power setting, subgroup, or scheme.</summary>
+		/// <param name="SchemeGuid">The identifier of the power scheme.</param>
+		/// <param name="SubGroupOfPowerSettingsGuid">
+		/// <para>
+		/// The subgroup of power settings. This parameter can be one of the following values defined in WinNT.h. Use <c>NO_SUBGROUP_GUID</c>
+		/// to refer to the default power scheme.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>NO_SUBGROUP_GUID fea3413e-7e05-4911-9a71-700331f1c294</term>
+		/// <term>Settings in this subgroup are part of the default power scheme.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_DISK_SUBGROUP 0012ee47-9041-4b5d-9b77-535fba8b1442</term>
+		/// <term>Settings in this subgroup control power management configuration of the system's hard disk drives.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_SYSTEM_BUTTON_SUBGROUP 4f971e89-eebd-4455-a8de-9e59040e7347</term>
+		/// <term>Settings in this subgroup control configuration of the system power buttons.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_PROCESSOR_SETTINGS_SUBGROUP 54533251-82be-4824-96c1-47b60b740d00</term>
+		/// <term>Settings in this subgroup control configuration of processor power management features.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_VIDEO_SUBGROUP 7516b95f-f776-4464-8c53-06167f40cc99</term>
+		/// <term>Settings in this subgroup control configuration of the video power management features.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_BATTERY_SUBGROUP e73a048d-bf27-4f12-9731-8b2076e8891f</term>
+		/// <term>Settings in this subgroup control battery alarm trip points and actions.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_SLEEP_SUBGROUP 238C9FA8-0AAD-41ED-83F4-97BE242C8F20</term>
+		/// <term>Settings in this subgroup control system sleep settings.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_PCIEXPRESS_SETTINGS_SUBGROUP 501a4d13-42af-4429-9fd1-a8218c268e20</term>
+		/// <term>Settings in this subgroup control PCI Express settings.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="PowerSettingGuid">The identifier of the power setting.</param>
+		/// <param name="Buffer">The description, in wide (Unicode) characters.</param>
+		/// <returns>Returns <c>ERROR_SUCCESS</c> (zero) if the call was successful, and a nonzero value if the call failed.</returns>
+		/// <remarks>
+		/// <para>
+		/// If the SchemeGuid parameter is not <c>NULL</c> but both the SubGroupOfPowerSettingsGuid and PowerSettingGuid parameters are
+		/// <c>NULL</c>, the description of the power scheme will be set. If the SchemeGuid and SubGroupOfPowerSettingsGuid parameters are
+		/// not <c>NULL</c> and the PowerSettingGuid parameter is <c>NULL</c>, the description of the subgroup will be set. If the
+		/// SchemeGuid, SubGroupOfPowerSettingsGuid, and PowerSettingGuid parameters are not <c>NULL</c>, the description of the power
+		/// setting will be set.
+		/// </para>
+		/// <para>Changes to the settings for the active power scheme do not take effect until you call the PowerSetActiveScheme function.</para>
+		/// </remarks>
+		[PInvokeData("powrprof.h", MSDNShortId = "42ee26ac-1a9c-4390-92e8-879b401168c7")]
+		public static Win32Error PowerWriteDescription([In] Guid? SchemeGuid, [In] Guid? SubGroupOfPowerSettingsGuid, [In] Guid? PowerSettingGuid, string Buffer) =>
+			PwrGuidTsl(SchemeGuid, SubGroupOfPowerSettingsGuid, PowerSettingGuid, (p1, p2, p3) => PowerWriteDescription(default, p1, p2, p3, Buffer, (uint)(Buffer.Length + 1) * 2));
 
 		/// <summary>
 		/// Sets the friendly name for the specified power setting, subgroup, or scheme. If the SchemeGuid parameter is not <c>NULL</c> but
@@ -2715,7 +2887,68 @@ namespace Vanara.PInvoke
 		// DWORD BufferSize );
 		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true, CharSet = CharSet.Unicode)]
 		[PInvokeData("powrprof.h", MSDNShortId = "3d81f634-8095-49c6-a5fe-6fe5e33bf0aa")]
-		public static extern Win32Error PowerWriteFriendlyName([Optional] HKEY RootPowerKey, in Guid SchemeGuid, [Optional] in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, string Buffer, uint BufferSize);
+		public static extern Win32Error PowerWriteFriendlyName([Optional] HKEY RootPowerKey, [In] IntPtr SchemeGuid, [In] IntPtr SubGroupOfPowerSettingsGuid, [In] IntPtr PowerSettingGuid, string Buffer, uint BufferSize);
+
+		/// <summary>
+		/// Sets the friendly name for the specified power setting, subgroup, or scheme. If the SchemeGuid parameter is not <c>NULL</c> but
+		/// both the SubGroupOfPowerSettingsGuid and PowerSettingGuid parameters are <c>NULL</c>, the friendly name of the power scheme will
+		/// be set. If the SchemeGuid and SubGroupOfPowerSettingsGuid parameters are not <c>NULL</c> and the PowerSettingGuid parameter is
+		/// <c>NULL</c>, the friendly name of the subgroup will be set. If the SchemeGuid, SubGroupOfPowerSettingsGuid, and PowerSettingGuid
+		/// parameters are not <c>NULL</c>, the friendly name of the power setting will be set.
+		/// </summary>
+		/// <param name="RootPowerKey">This parameter is reserved for future use and must be set to <c>NULL</c>.</param>
+		/// <param name="SchemeGuid">The identifier of the power scheme.</param>
+		/// <param name="SubGroupOfPowerSettingsGuid">
+		/// <para>
+		/// The subgroup of power settings. This parameter can be one of the following values defined in WinNT.h. Use <c>NO_SUBGROUP_GUID</c>
+		/// to refer to the default power scheme.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Value</term>
+		/// <term>Meaning</term>
+		/// </listheader>
+		/// <item>
+		/// <term>NO_SUBGROUP_GUID fea3413e-7e05-4911-9a71-700331f1c294</term>
+		/// <term>Settings in this subgroup are part of the default power scheme.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_DISK_SUBGROUP 0012ee47-9041-4b5d-9b77-535fba8b1442</term>
+		/// <term>Settings in this subgroup control power management configuration of the system's hard disk drives.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_SYSTEM_BUTTON_SUBGROUP 4f971e89-eebd-4455-a8de-9e59040e7347</term>
+		/// <term>Settings in this subgroup control configuration of the system power buttons.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_PROCESSOR_SETTINGS_SUBGROUP 54533251-82be-4824-96c1-47b60b740d00</term>
+		/// <term>Settings in this subgroup control configuration of processor power management features.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_VIDEO_SUBGROUP 7516b95f-f776-4464-8c53-06167f40cc99</term>
+		/// <term>Settings in this subgroup control configuration of the video power management features.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_BATTERY_SUBGROUP e73a048d-bf27-4f12-9731-8b2076e8891f</term>
+		/// <term>Settings in this subgroup control battery alarm trip points and actions.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_SLEEP_SUBGROUP 238C9FA8-0AAD-41ED-83F4-97BE242C8F20</term>
+		/// <term>Settings in this subgroup control system sleep settings.</term>
+		/// </item>
+		/// <item>
+		/// <term>GUID_PCIEXPRESS_SETTINGS_SUBGROUP 501a4d13-42af-4429-9fd1-a8218c268e20</term>
+		/// <term>Settings in this subgroup control PCI Express settings.</term>
+		/// </item>
+		/// </list>
+		/// </param>
+		/// <param name="PowerSettingGuid">The identifier of the power setting.</param>
+		/// <param name="Buffer">The friendly name, in wide (Unicode) characters.</param>
+		/// <returns>Returns <c>ERROR_SUCCESS</c> (zero) if the call was successful, and a nonzero value if the call failed.</returns>
+		/// <remarks>Changes to the settings for the active power scheme do not take effect until you call the PowerSetActiveScheme function.</remarks>
+		[PInvokeData("powrprof.h", MSDNShortId = "3d81f634-8095-49c6-a5fe-6fe5e33bf0aa")]
+		public static Win32Error PowerWriteFriendlyName([In] Guid? SchemeGuid, [In] Guid? SubGroupOfPowerSettingsGuid, [In] Guid? PowerSettingGuid, string Buffer) =>
+			PwrGuidTsl(SchemeGuid, SubGroupOfPowerSettingsGuid, PowerSettingGuid, (p1, p2, p3) => PowerWriteFriendlyName(default, p1, p2, p3, Buffer, (uint)(Buffer.Length + 1) * 2));
 
 		/// <summary>Sets the icon resource for the specified power setting, subgroup, or scheme.</summary>
 		/// <param name="RootPowerKey">This parameter is reserved for future use and must be set to <c>NULL</c>.</param>
@@ -2783,7 +3016,7 @@ namespace Vanara.PInvoke
 		// *PowerSettingGuid, UCHAR *Buffer, DWORD BufferSize );
 		[DllImport(Lib.PowrProf, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("powrprof.h", MSDNShortId = "968b068a-f62a-4148-b96c-48f47218f368")]
-		public static extern Win32Error PowerWriteIconResourceSpecifier([Optional] HKEY RootPowerKey, in Guid SchemeGuid, [Optional] in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, IntPtr Buffer, uint BufferSize);
+		public static extern Win32Error PowerWriteIconResourceSpecifier([Optional] HKEY RootPowerKey, in Guid SchemeGuid, in Guid SubGroupOfPowerSettingsGuid, in Guid PowerSettingGuid, IntPtr Buffer, uint BufferSize);
 
 		/// <summary>Sets the description for one of the possible choices of a power setting value.</summary>
 		/// <param name="RootPowerKey">This parameter is reserved for future use and must be set to <c>NULL</c>.</param>
@@ -3538,6 +3771,29 @@ namespace Vanara.PInvoke
 		[PInvokeData("powrprof.h", MSDNShortId = "b9233601-6848-41c4-bb58-27decad60ba5")]
 		[return: MarshalAs(UnmanagedType.U1)]
 		public static extern bool WritePwrScheme(ref uint puiID, [MarshalAs(UnmanagedType.LPWStr)] string lpszSchemeName, [MarshalAs(UnmanagedType.LPWStr)] string lpszDescription, in POWER_POLICY lpScheme);
+
+		private static unsafe TRet PwrGuidTsl<TRet>(Guid? g1, Guid? g2, Guid? g3, Func<IntPtr, IntPtr, IntPtr, TRet> f)
+		{
+			var guids = new Guid[] { g1.GetValueOrDefault(), g2.GetValueOrDefault(), g3.GetValueOrDefault() };
+			fixed (Guid* ptrs = guids)
+				return f(g1.HasValue ? (IntPtr)(void*)&ptrs[0] : IntPtr.Zero, g2.HasValue ? (IntPtr)(void*)&ptrs[1] : IntPtr.Zero, g3.HasValue ? (IntPtr)(void*)&ptrs[2] : IntPtr.Zero);
+		}
+
+		private static SafeHGlobalHandle PwrReadMem(PwrReadMemFunc f, Guid? g1, Guid? g2, Guid? g3)
+		{
+			return PwrGuidTsl(g1, g2, g3, (p1, p2, p3) => {
+				var sz = 0U;
+				var err = f(HKEY.NULL, p1, p2, p3, IntPtr.Zero, ref sz);
+				if (err.Failed)
+				{
+					if (err == Win32Error.ERROR_FILE_NOT_FOUND) return null;
+					if (err != Win32Error.ERROR_MORE_DATA) throw err.GetException();
+				}
+				var p = new SafeHGlobalHandle((int)sz);
+				f(HKEY.NULL, p1, p2, p3, (IntPtr)p, ref sz).ThrowIfFailed();
+				return p;
+			});
+		}
 
 		/// <summary>Contains parameters used when registering for a power notification.</summary>
 		// https://docs.microsoft.com/en-us/windows/desktop/api/powrprof/ns-powrprof-device_notify_subscribe_parameters typedef struct
