@@ -114,7 +114,7 @@ namespace Vanara.Collections
 
 		/// <summary>Gets the enumerated list of items.</summary>
 		/// <value>The enumerated list of items.</value>
-		protected IEnumerable<KeyValuePair<TKey, TValue>> Items =>
+		protected virtual IEnumerable<KeyValuePair<TKey, TValue>> Items =>
 			Keys.Select(k => new KeyValuePair<TKey, TValue>(k, this[k]));
 
 		/// <summary>Gets or sets the <see cref="TValue"/> with the specified key.</summary>
