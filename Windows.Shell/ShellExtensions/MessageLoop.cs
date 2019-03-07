@@ -1,4 +1,5 @@
 ﻿using System;
+using static Vanara.PInvoke.Kernel32;
 using static Vanara.PInvoke.User32;
 using static Vanara.PInvoke.User32_Gdi;
 
@@ -22,7 +23,7 @@ namespace Vanara.PInvoke
 		private IntPtr timeoutTimerId;   // timer id used to exit the app if the app is not called back within a certain time
 
 		/// <summary>Initializes a new instance of the <see cref="MessageLoop"/> class.</summary>
-		public MessageLoop() => curThreadId = Vanara.PInvoke.Kernel32.GetCurrentThreadId();
+		public MessageLoop() => curThreadId = GetCurrentThreadId();
 
 		/// <summary>Occurs when a new message is available.</summary>
 		public event EventHandlerEx<MessageEventArgs> ProcessMessage;
