@@ -1,4 +1,5 @@
 ﻿using System;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
@@ -14,9 +15,11 @@ namespace Vanara.PInvoke
 		REG_NONE = 0,
 
 		/// <summary>Binary data in any form.</summary>
+		[CorrespondingType(typeof(byte[]))]
 		REG_BINARY = 3,
 
 		/// <summary>A 32-bit number.</summary>
+		[CorrespondingType(typeof(uint))]
 		REG_DWORD = 4,
 
 		/// <summary>
@@ -24,6 +27,7 @@ namespace Vanara.PInvoke
 		/// <para>Windows is designed to run on little-endian computer architectures.</para>
 		/// <para>Therefore, this value is defined as REG_DWORD in the Windows header files.</para>
 		/// </summary>
+		[CorrespondingType(typeof(uint))]
 		REG_DWORD_LITTLE_ENDIAN = 4,
 
 		/// <summary>
@@ -57,6 +61,7 @@ namespace Vanara.PInvoke
 		REG_MULTI_SZ = 7,
 
 		/// <summary>A 64-bit number.</summary>
+		[CorrespondingType(typeof(ulong))]
 		REG_QWORD = 11,
 
 		/// <summary>
@@ -66,6 +71,7 @@ namespace Vanara.PInvoke
 		/// Windows header files.
 		/// </para>
 		/// </summary>
+		[CorrespondingType(typeof(ulong))]
 		REG_QWORD_LITTLE_ENDIAN = 11,
 
 		/// <summary>
@@ -81,5 +87,47 @@ namespace Vanara.PInvoke
 
 		/// <summary>Resource requirement list.</summary>
 		REG_RESOURCE_REQUIREMENTS_LIST = 10,
+	}
+}
+
+namespace Vanara.Extensions
+{
+	/// <summary>Extension methods for registry types.</summary>
+	public static class RegistryTypeExt
+	{
+		/// <summary>Extract the value of this registry type from a pointer.</summary>
+		/// <param name="value">The registry type value.</param>
+		/// <param name="ptr">The allocated memory pointer.</param>
+		/// <param name="size">The size of the allocated memory.</param>
+		/// <returns>The extracted value.</returns>
+		public static object GetValue(this Vanara.PInvoke.REG_VALUE_TYPE value, IntPtr ptr, uint size)
+		{
+			switch (value)
+			{
+				case PInvoke.REG_VALUE_TYPE.REG_DWORD:
+					return IntPtrConverter.Convert<uint>(ptr, size);
+				case PInvoke.REG_VALUE_TYPE.REG_DWORD_BIG_ENDIAN:
+					var data = IntPtrConverter.Convert<byte[]>(ptr, 4);
+					return unchecked((uint)((data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3]));
+				case PInvoke.REG_VALUE_TYPE.REG_EXPAND_SZ:
+					return Environment.ExpandEnvironmentVariables(StringHelper.GetString(ptr));
+				case PInvoke.REG_VALUE_TYPE.REG_LINK:
+					return new Uri(StringHelper.GetString(ptr));
+				case PInvoke.REG_VALUE_TYPE.REG_MULTI_SZ:
+					return ptr.ToStringEnum();
+				case PInvoke.REG_VALUE_TYPE.REG_QWORD:
+					return IntPtrConverter.Convert<ulong>(ptr, size);
+				case PInvoke.REG_VALUE_TYPE.REG_SZ:
+					return StringHelper.GetString(ptr);
+				case PInvoke.REG_VALUE_TYPE.REG_RESOURCE_LIST:
+				case PInvoke.REG_VALUE_TYPE.REG_FULL_RESOURCE_DESCRIPTOR:
+				case PInvoke.REG_VALUE_TYPE.REG_RESOURCE_REQUIREMENTS_LIST:
+				case PInvoke.REG_VALUE_TYPE.REG_BINARY:
+					return IntPtrConverter.Convert<byte[]>(ptr, size);
+				default:
+				case PInvoke.REG_VALUE_TYPE.REG_NONE:
+					return ptr;
+			}
+		}
 	}
 }
