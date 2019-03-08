@@ -4,7 +4,7 @@
     <Description>PInvoke API (interfaces, structures and constants) for Windows NetListMgr COM object.</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>2.3.2</VersionPrefix>
+    <VersionPrefix>2.3.3</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.NetListMgr</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>

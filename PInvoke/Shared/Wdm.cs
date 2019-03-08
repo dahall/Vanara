@@ -664,7 +664,7 @@ namespace Vanara.PInvoke
 			public uint Length;
 		}
 
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 2)]
 		public struct Interrupt
 		{
 			/// <summary>The level</summary>
@@ -692,7 +692,7 @@ namespace Vanara.PInvoke
 			public UIntPtr Affinity;
 		}
 
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 2)]
 		public struct MessageInterruptRaw
 		{
 			/// <summary>
@@ -726,7 +726,7 @@ namespace Vanara.PInvoke
 			public uint Reserved1;
 		}
 
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		public struct DmaV3
 		{
 			/// <summary>Specifies the number of the DMA channel on the system DMA controller that is allocated to the device.</summary>
@@ -754,9 +754,19 @@ namespace Vanara.PInvoke
 		[StructLayout(LayoutKind.Sequential)]
 		public struct DevicePrivate
 		{
+			private uint data0, data1, data2;
+
 			/// <summary>The data</summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-			public uint[] Data;
+			public uint[] Data
+			{
+				get => new[] {data0, data1, data2};
+				set
+				{
+					data0 = value[0];
+					data1 = value[1];
+					data2 = value[2];
+				}
+			}
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
@@ -854,7 +864,7 @@ namespace Vanara.PInvoke
 			public uint Length64;
 		}
 
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		public struct Connection
 		{
 			/// <summary>

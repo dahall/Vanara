@@ -17,6 +17,7 @@ PInvokeClientExtensions | Extension methods for `PInvokeClient`.
 PInvokeDataAttribute | Captures information about P/Invoke calls.
 PRECT | Defines the coordinates of the upper-left and lower-right corners of a rectangle.
 PtrFunc<T> | 
+RegistryTypeExt | Extension methods for registry types.
 SafeElementArray<T> | A safe unmanaged array of structures allocated on the global heap with a prefix type (usually a uint or int) that determines the count of elements.
 SafeHANDLE | Base class for all native handles.
 SafeNativeArray<T> | A safe unmanaged array of structures allocated on the global heap. Array size determined by allocated memory size divided by size of structure.
@@ -29,7 +30,18 @@ WIN32_FIND_DATA | Contains information about the file that is found by the FindF
 ### Structures
 Struct | Description
 ---- | ----
+BusNumber | 
+CM_FULL_RESOURCE_DESCRIPTOR | <para> The <c>CM_FULL_RESOURCE_DESCRIPTOR</c> structure specifies a set of system hardware resources of various types, assigned to a device that is connected to a specific bus. This structure is contained within a CM_RESOURCE_LIST structure. </para>
+CM_PARTIAL_RESOURCE_DESCRIPTOR | The <c>CM_PARTIAL_RESOURCE_DESCRIPTOR</c> structure specifies one or more system hardware resources, of a single type, assigned to a device. This structure is used to create an array within a CM_PARTIAL_RESOURCE_LIST structure.
+CM_PARTIAL_RESOURCE_LIST | <para> The <c>CM_PARTIAL_RESOURCE_LIST</c> structure specifies a set of system hardware resources, of various types, assigned to a device. This structure is contained within a CM_FULL_RESOURCE_DESCRIPTOR structure. </para>
+CM_RESOURCE_LIST | The <c>CM_RESOURCE_LIST</c> structure specifies all of the system hardware resources assigned to a device.
 COLORREF | The COLORREF value is used to specify an RGB color in the form <c>0x00bbggrr</c>.
+Connection | 
+DevicePrivate | 
+DeviceSpecificData | 
+Dma | 
+DmaV3 | 
+Generic | 
 HACCEL | Provides a handle to an accelerator table.
 HANDLE | Provides a generic handle.
 HBITMAP | Provides a handle to a bitmap.
@@ -65,7 +77,12 @@ HTHUMBNAIL | Provides a handle to a Windows thumbnail.
 HTOKEN | Provides a handle to an access token .
 HWINSTA | Provides a handle to a windows station.
 HWND | Provides a handle to a window or dialog.
+Interrupt | 
 LOGFONT | The LOGFONT structure defines the attributes of a font.
+Memory40 | 
+Memory48 | 
+Memory64 | 
+MessageInterruptRaw | 
 MSG | Contains message information from a thread's message queue.
 NTStatus | Formal replacement for the Windows NTStatus definition. In ntstatus.h, it is a defined UINT value. For .NET, this class strongly types the value.
 OBJECT_TYPE_LIST | The <c>OBJECT_TYPE_LIST</c> structure identifies an object type element in a hierarchy of object types. The AccessCheckByType functions use an array of <c>OBJECT_TYPE_LIST</c> structures to define a hierarchy of an object and its subobjects, such as property sets and properties.
@@ -81,18 +98,23 @@ SECURITY_ATTRIBUTES | The SECURITY_ATTRIBUTES structure contains the security de
 SIZE | The <c>SIZE</c> structure specifies the width and height of a rectangle.
 SizeT | Managed instance of the SIZE_T type.
 SYSTEMTIME | Specifies a date and time, using individual members for the month, day, year, weekday, hour, minute, second, and millisecond. The time is either in coordinated universal time (UTC) or local time, depending on the function that is being called.
+union | 
 WIN32_FIND_DATA | Contains information about the file that is found by the FindFirstFile, FindFirstFileEx, or FindNextFile function.
 Win32Error | Represents a Win32 Error Code. This can be used in place of a return value.
 ### Enumerations
 Enum | Description | Values
 ---- | ---- | ----
 ACCESS_MASK | Access flags. | SPECIFIC_RIGHTS_ALL, DELETE, STANDARD_RIGHTS_EXECUTE, STANDARD_RIGHTS_READ, READ_CONTROL, STANDARD_RIGHTS_WRITE, WRITE_DAC, WRITE_OWNER, STANDARD_RIGHTS_REQUIRED, SYNCHRONIZE, STANDARD_RIGHTS_ALL, ACCESS_SYSTEM_SECURITY, MAXIMUM_ALLOWED, GENERIC_ALL, GENERIC_EXECUTE, GENERIC_WRITE, GENERIC_READ
+CM_RESOURCE | Contains flag bits that are specific to the resource type, as indicated in the following table. Flags can be bitwise-ORed together as appropriate. | CM_RESOURCE_DMA_8, CM_RESOURCE_MEMORY_READ_WRITE, CM_RESOURCE_PORT_MEMORY, DMAV3_TRANFER_WIDTH_8, CM_RESOURCE_INTERRUPT_LEVEL_SENSITIVE, CM_RESOURCE_DMA_16, CM_RESOURCE_CONNECTION_TYPE_FUNCTION_CONFIG, CM_RESOURCE_INTERRUPT_LATCHED, CM_RESOURCE_PORT_IO, CM_RESOURCE_MEMORY_READ_ONLY, CM_RESOURCE_CONNECTION_TYPE_SERIAL_I2C, DMAV3_TRANFER_WIDTH_16, CM_RESOURCE_INTERRUPT_LEVEL_LATCHED_BITS, CM_RESOURCE_CONNECTION_CLASS_GPIO, CM_RESOURCE_INTERRUPT_MESSAGE, CM_RESOURCE_DMA_32, CM_RESOURCE_CONNECTION_CLASS_SERIAL, DMAV3_TRANFER_WIDTH_32, CM_RESOURCE_CONNECTION_TYPE_GPIO_IO, CM_RESOURCE_CONNECTION_TYPE_SERIAL_SPI, CM_RESOURCE_MEMORY_WRITE_ONLY, CM_RESOURCE_MEMORY_WRITEABILITY_MASK, DMAV3_TRANFER_WIDTH_64, CM_RESOURCE_CONNECTION_TYPE_SERIAL_UART, CM_RESOURCE_CONNECTION_CLASS_FUNCTION_CONFIG, CM_RESOURCE_DMA_8_AND_16, CM_RESOURCE_INTERRUPT_POLICY_INCLUDED, DMAV3_TRANFER_WIDTH_128, CM_RESOURCE_MEMORY_PREFETCHABLE, CM_RESOURCE_PORT_10_BIT_DECODE, DMAV3_TRANFER_WIDTH_256, CM_RESOURCE_MEMORY_COMBINEDWRITE, CM_RESOURCE_DMA_BUS_MASTER, CM_RESOURCE_PORT_12_BIT_DECODE, CM_RESOURCE_PORT_16_BIT_DECODE, CM_RESOURCE_INTERRUPT_SECONDARY_INTERRUPT, CM_RESOURCE_MEMORY_24, CM_RESOURCE_DMA_TYPE_A, CM_RESOURCE_INTERRUPT_WAKE_HINT, CM_RESOURCE_DMA_TYPE_B, CM_RESOURCE_PORT_POSITIVE_DECODE, CM_RESOURCE_MEMORY_CACHEABLE, CM_RESOURCE_DMA_TYPE_F, CM_RESOURCE_PORT_PASSIVE_DECODE, CM_RESOURCE_MEMORY_WINDOW_DECODE, CM_RESOURCE_MEMORY_BAR, CM_RESOURCE_DMA_V3, CM_RESOURCE_PORT_WINDOW_DECODE, CM_RESOURCE_MEMORY_COMPAT_FOR_INACCESSIBLE_RANGE, CM_RESOURCE_PORT_BAR, CM_RESOURCE_MEMORY_LARGE_40, CM_RESOURCE_MEMORY_LARGE_48, CM_RESOURCE_MEMORY_LARGE_64, CM_RESOURCE_MEMORY_LARGE, CM_RESOURCE_INTERRUPT_MESSAGE_TOKEN
+CM_SHARE_DISPOSITION | Indicates whether the described resource can be shared. | CmResourceShareUndetermined, CmResourceShareDeviceExclusive, CmResourceShareDriverExclusive, CmResourceShareShared
+CmResourceType | Identifies the resource type. The constant value specified for Type indicates which structure within the u union is valid, as indicated in the following table. (These flags are used within both CM_PARTIAL_RESOURCE_DESCRIPTOR and IO_RESOURCE_DESCRIPTOR structures, except where noted.) | CmResourceTypeNull, CmResourceTypePort, CmResourceTypeInterrupt, CmResourceTypeMemory, CmResourceTypeDma, CmResourceTypeDeviceSpecific, CmResourceTypeBusNumber, CmResourceTypeMemoryLarge, CmResourceTypeNonArbitrated, CmResourceTypeConfigData, CmResourceTypeDevicePrivate, CmResourceTypePcCardConfig, CmResourceTypeMfCardConfig, CmResourceTypeConnection
 DrawTextFlags | The formatting options for DrawText. | DT_TOP, DT_LEFT, DT_CENTER, DT_RIGHT, DT_VCENTER, DT_BOTTOM, DT_WORDBREAK, DT_SINGLELINE, DT_EXPANDTABS, DT_TABSTOP, DT_NOCLIP, DT_EXTERNALLEADING, DT_CALCRECT, DT_NOPREFIX, DT_INTERNAL, DT_EDITCONTROL, DT_PATH_ELLIPSIS, DT_END_ELLIPSIS, DT_MODIFYSTRING, DT_RTLREADING, DT_WORD_ELLIPSIS, DT_NOFULLWIDTHCHARBREAK, DT_HIDEPREFIX, DT_PREFIXONLY
 FacilityCode | Enumeration of facility codes | FACILITY_NULL, FACILITY_RPC, FACILITY_DISPATCH, FACILITY_STORAGE, FACILITY_ITF, FACILITY_WIN32, FACILITY_WINDOWS, FACILITY_SECURITY, FACILITY_SSPI, FACILITY_CONTROL, FACILITY_CERT, FACILITY_INTERNET, FACILITY_MEDIASERVER, FACILITY_MSMQ, FACILITY_SETUPAPI, FACILITY_SCARD, FACILITY_COMPLUS, FACILITY_AAF, FACILITY_URT, FACILITY_ACS, FACILITY_DPLAY, FACILITY_UMI, FACILITY_SXS, FACILITY_WINDOWS_CE, FACILITY_HTTP, FACILITY_USERMODE_COMMONLOG, FACILITY_USERMODE_FILTER_MANAGER, FACILITY_BACKGROUNDCOPY, FACILITY_CONFIGURATION, FACILITY_STATE_MANAGEMENT, FACILITY_METADIRECTORY, FACILITY_WINDOWSUPDATE, FACILITY_DIRECTORYSERVICE, FACILITY_GRAPHICS, FACILITY_SHELL, FACILITY_TPM_SERVICES, FACILITY_TPM_SOFTWARE, FACILITY_PLA, FACILITY_FVE, FACILITY_FWP, FACILITY_WINRM, FACILITY_NDIS, FACILITY_USERMODE_HYPERVISOR, FACILITY_CMI, FACILITY_USERMODE_VIRTUALIZATION, FACILITY_USERMODE_VOLMGR, FACILITY_BCD, FACILITY_USERMODE_VHD, FACILITY_SDIAG, FACILITY_WEBSERVICES, FACILITY_WINDOWS_DEFENDER, FACILITY_OPC
 FacilityCode | Enumeration of facility codes | FACILITY_NULL, FACILITY_DEBUGGER, FACILITY_RPC_RUNTIME, FACILITY_RPC_STUBS, FACILITY_IO_ERROR_CODE, FACILITY_CODCLASS_ERROR_CODE, FACILITY_NTWIN32, FACILITY_NTCERT, FACILITY_NTSSPI, FACILITY_TERMINAL_SERVER, FACILTIY_MUI_ERROR_CODE, FACILITY_USB_ERROR_CODE, FACILITY_HID_ERROR_CODE, FACILITY_FIREWIRE_ERROR_CODE, FACILITY_CLUSTER_ERROR_CODE, FACILITY_ACPI_ERROR_CODE, FACILITY_SXS_ERROR_CODE, FACILITY_TRANSACTION, FACILITY_COMMONLOG, FACILITY_VIDEO, FACILITY_FILTER_MANAGER, FACILITY_MONITOR, FACILITY_GRAPHICS_KERNEL, FACILITY_DRIVER_FRAMEWORK, FACILITY_FVE_ERROR_CODE, FACILITY_FWP_ERROR_CODE, FACILITY_NDIS_ERROR_CODE, FACILITY_TPM, FACILITY_RTPM, FACILITY_HYPERVISOR, FACILITY_IPSEC, FACILITY_VIRTUALIZATION, FACILITY_VOLMGR, FACILITY_BCD_ERROR_CODE, FACILITY_WIN32K_NTUSER, FACILITY_WIN32K_NTGDI, FACILITY_RESUME_KEY_FILTER, FACILITY_RDBSS, FACILITY_BTH_ATT, FACILITY_SECUREBOOT, FACILITY_AUDIO_KERNEL, FACILITY_VSM, FACILITY_VOLSNAP, FACILITY_SDBUS, FACILITY_SHARED_VHDX, FACILITY_SMB, FACILITY_INTERIX, FACILITY_SPACES, FACILITY_SECURITY_CORE, FACILITY_SYSTEM_INTEGRITY, FACILITY_LICENSING, FACILITY_PLATFORM_MANIFEST, FACILITY_MAXIMUM_VALUE
 FileFlagsAndAttributes | File attributes are metadata values stored by the file system on disk and are used by the system and are available to developers via various file I/O APIs. | SECURITY_ANONYMOUS, FILE_ATTRIBUTE_READONLY, FILE_ATTRIBUTE_HIDDEN, FILE_ATTRIBUTE_SYSTEM, FILE_ATTRIBUTE_DIRECTORY, FILE_ATTRIBUTE_ARCHIVE, FILE_ATTRIBUTE_DEVICE, FILE_ATTRIBUTE_NORMAL, FILE_ATTRIBUTE_TEMPORARY, FILE_ATTRIBUTE_SPARSE_FILE, FILE_ATTRIBUTE_REPARSE_POINT, FILE_ATTRIBUTE_COMPRESSED, FILE_ATTRIBUTE_OFFLINE, FILE_ATTRIBUTE_NOT_CONTENT_INDEXED, FILE_ATTRIBUTE_ENCRYPTED, FILE_ATTRIBUTE_INTEGRITY_STREAM, SECURITY_IDENTIFICATION, FILE_ATTRIBUTE_VIRTUAL, FILE_ATTRIBUTE_NO_SCRUB_DATA, SECURITY_IMPERSONATION, SECURITY_DELEGATION, FILE_ATTRIBUTE_EA, SECURITY_CONTEXT_TRACKING, FILE_FLAG_FIRST_PIPE_INSTANCE, SECURITY_EFFECTIVE_ONLY, FILE_FLAG_OPEN_NO_RECALL, SECURITY_SQOS_PRESENT, FILE_FLAG_OPEN_REPARSE_POINT, FILE_FLAG_SESSION_AWARE, FILE_FLAG_POSIX_SEMANTICS, FILE_FLAG_BACKUP_SEMANTICS, FILE_FLAG_DELETE_ON_CLOSE, FILE_FLAG_SEQUENTIAL_SCAN, FILE_FLAG_RANDOM_ACCESS, FILE_FLAG_NO_BUFFERING, FILE_FLAG_OVERLAPPED, FILE_FLAG_WRITE_THROUGH
 FontFamily | Font families describe the look of a font in a general way. They are intended for specifying fonts when the exact typeface desired is not available. | FF_DONTCARE, FF_ROMAN, FF_SWISS, FF_MODERN, FF_SCRIPT, FF_DECORATIVE
 FontPitch | Specifies information about the pitch, the technology, and the family of a physical font. | DEFAULT_PITCH, FIXED_PITCH, TMPF_FIXED_PITCH, VARIABLE_PITCH, TMPF_VECTOR, TMPF_TRUETYPE, MONO_FONT, TMPF_DEVICE
+INTERFACE_TYPE | The <c>INTERFACE_TYPE</c> enumeration indicates the bus type. | Internal, Isa, Eisa, MicroChannel, TurboChannel, PCIBus, VMEBus, NuBus, PCMCIABus, CBus, MPIBus, MPSABus, ProcessorInternal, InternalPowerBus, PNPISABus, PNPBus, Vmcs, ACPIBus, MaximumInterfaceType, InterfaceTypeUndefined
 LogFontCharSet | The character set. | ANSI_CHARSET, DEFAULT_CHARSET, SYMBOL_CHARSET, MAC_CHARSET, SHIFTJIS_CHARSET, HANGUL_CHARSET, HANGEUL_CHARSET, JOHAB_CHARSET, GB2312_CHARSET, CHINESEBIG5_CHARSET, GREEK_CHARSET, TURKISH_CHARSET, VIETNAMESE_CHARSET, HEBREW_CHARSET, ARABIC_CHARSET, BALTIC_CHARSET, RUSSIAN_CHARSET, THAI_CHARSET, EASTEUROPE_CHARSET, OEM_CHARSET
 LogFontClippingPrecision | The clipping precision defines how to clip characters that are partially outside the clipping region. | CLIP_DEFAULT_PRECIS, CLIP_CHARACTER_PRECIS, CLIP_STROKE_PRECIS, CLIP_MASK, CLIP_LH_ANGLES, CLIP_TT_ALWAYS, CLIP_DFA_OVERRIDE, CLIP_DFA_DISABLE, CLIP_EMBEDDED
 LogFontOutputPrecision | The output precision. The output precision defines how closely the output must match the requested font's height, width, character orientation, escapement, pitch, and font type. | OUT_DEFAULT_PRECIS, OUT_STRING_PRECIS, OUT_CHARACTER_PRECIS, OUT_STROKE_PRECIS, OUT_TT_PRECIS, OUT_DEVICE_PRECIS, OUT_RASTER_PRECIS, OUT_TT_ONLY_PRECIS, OUT_OUTLINE_PRECIS, OUT_SCREEN_OUTLINE_PRECIS, OUT_PS_ONLY_PRECIS
