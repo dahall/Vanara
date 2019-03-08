@@ -2,7 +2,7 @@
 
 This project contains various .NET assemblies that contain P/Invoke functions, interfaces, enums and structures from Windows libraries. Each assembly is associated with one or a few tightly related libraries. For example, Shlwapi.dll has all the exported functions from shlwapi.lib; Kernel32.dll has all for both kernel32.lib and kernelbase.lib.
 
-All assemblies are available via NuGet and provide builds against .NET 2.0, 3.5, 4.0 and 4.5. In all cases where a dependency doesn't disallow it, a .NET Standard 2.0 build is also included for use with UWP and other .NET Core and Standard projects.
+All assemblies are available via NuGet and provide builds against .NET 2.0, 3.5, 4.0 and 4.5. In all cases where a dependency doesn't disallow it, .NET Standard 2.0, .NET Core 2.0, and 2.1 builds are also included for use with UWP and other .NET Core and Standard projects.
 
 ## Use
 1. Look for the function you need in Microsoft documentation. Note which library or DLL the function is in.
@@ -26,7 +26,7 @@ I have tried to follow the concepts below in laying out the libraries.
 * Any structure or macro or enumeration (no function) that is used by many libraries is put into either `Vanara.Core` or `Vanara.PInvoke.Shared`.
   * (e.g. The macro `HIWORD` and the structure `SIZE` are both in `Vanara.PInvoke.Shared` and classes to simplfy interop calls and native memory management are in `Vanara.Core`.)
 * Inside a project, all constructs are contained in a file named after the header file (*.h) in which they are defined in the Windows API.
-  * (e.g. In the Vanara.PInvoke.Kernel32 project directory, you'll find a FileApi.cs, a WinBase.cs and a WinNT.cs file representing fileapi.h, winbase.h and winnt.h respectively.)
+  * (e.g. In the `Vanara.PInvoke.Kernel32` project directory, you'll find a FileApi.cs, a WinBase.cs and a WinNT.cs file representing fileapi.h, winbase.h and winnt.h respectively.)
 * Where the direct interpretation of a structure or function leads to memory leaks or misuse, I have tried to simplify its use.
 * Where a structure is always passed by reference and where that structure needs to clean up memory allocations, I have changed the structure to a class implementing `IDisposable`.
 * Wherever possible, all handles have been turned into `SafeHandle` derivatives named after the Windows API handle. If those handles require a call to a function to release/close/destroy, a derived `SafeHANDLE` exists that performs that function on disposal.
@@ -59,6 +59,7 @@ NetListMgr.dll | [Vanara.PInvoke.NetListMgr](https://github.com/dahall/Vanara/bl
 NTDSApi.dll | [Vanara.PInvoke.NTDSApi](https://github.com/dahall/Vanara/blob/master/PInvoke/NTDSApi/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/100%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.NTDSApi)](https://www.nuget.org/packages/Vanara.PInvoke.NTDSApi)
 NTDll.dll | [Vanara.PInvoke.NTDll](https://github.com/dahall/Vanara/blob/master/PInvoke/NTDll/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/4%25-red.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.NTDll)](https://www.nuget.org/packages/Vanara.PInvoke.NTDll)
 Ole32.dll, OleAut32 and PropSys.dll | [Vanara.PInvoke.Ole](https://github.com/dahall/Vanara/blob/master/PInvoke/Ole/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/27%25-red.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.Ole)](https://www.nuget.org/packages/Vanara.PInvoke.Ole)
+PowrProf.dll | [Vanara.PInvoke.PowrProf](https://github.com/dahall/Vanara/blob/master/PInvoke/PowrProf/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/100%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.PowrProf)](https://www.nuget.org/packages/Vanara.PInvoke.PowrProf)
 AdvApi32.dll, Authz.dll and Secur32.dll | [Vanara.PInvoke.Security](https://github.com/dahall/Vanara/blob/master/PInvoke/Security/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/29%25-red.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.Security)](https://www.nuget.org/packages/Vanara.PInvoke.Security)
 Shell32.dll | [Vanara.PInvoke.Shell32](https://github.com/dahall/Vanara/blob/master/PInvoke/Shell32/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/100%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.Shell32)](https://www.nuget.org/packages/Vanara.PInvoke.Shell32)
 ShlwApi.dll | [Vanara.PInvoke.ShlwApi](https://github.com/dahall/Vanara/blob/master/PInvoke/ShlwApi/CorrelationReport.md) | ![Coverage](https://img.shields.io/badge/100%25-green.svg) | [![NuGet](https://buildstats.info/nuget/Vanara.PInvoke.ShlwApi)](https://www.nuget.org/packages/Vanara.PInvoke.ShlwApi)
