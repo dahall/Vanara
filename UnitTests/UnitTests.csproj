@@ -135,6 +135,7 @@
     <Compile Include="Shell\ShellFolderTests.cs" />
     <Compile Include="Shell\ShellItemPropStoreTests.cs" />
     <Compile Include="System\BackgroundCopyTests.cs" />
+    <Compile Include="System\PowerTests.cs" />
     <Compile Include="System\RegTests.cs" />
     <Compile Include="System\NetworkListTests.cs" />
     <Compile Include="System\VirtualDiskTests.cs" />
