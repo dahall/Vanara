@@ -11,7 +11,7 @@
 * Shared structures and enums (see release notes)</Description>
     <Copyright>Copyright © 2017-2019</Copyright>
     <AssemblyTitle>$(AssemblyName)</AssemblyTitle>
-    <VersionPrefix>2.3.3</VersionPrefix>
+    <VersionPrefix>2.3.4</VersionPrefix>
     <TargetFrameworks>net20;net35;net40;net45;netstandard2.0;netcoreapp2.0;netcoreapp2.1</TargetFrameworks>
     <AssemblyName>Vanara.PInvoke.Shared</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
@@ -44,8 +44,10 @@ ACCESS_MASK, CM_RESOURCE, CM_SHARE_DISPOSITION, CmResourceType, DrawTextFlags, F
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\Vanara.snk</AssemblyOriginatorKeyFile>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="InteropServices\SafeLocalHandle.cs" />
