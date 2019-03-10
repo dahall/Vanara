@@ -38,7 +38,7 @@ namespace Vanara
 		/// <param name="password">
 		/// The password that is used to connect to the computer. If the user name and password are not specified, then the current token is used.
 		/// </param>
-		public Computer(string target, string userName = null, string accountDomain = null, string password = null)
+		public Computer(string target, string userName = null, string password = null)
 		{
 			BeginInit();
 			Target = target;
@@ -168,5 +168,24 @@ namespace Vanara
 		private bool ShouldSerializeTargetServer() => targetServer != null && !targetServer.Trim('\\').Equals(Environment.MachineName.Trim('\\'), StringComparison.InvariantCultureIgnoreCase);
 
 		private bool ShouldSerializeUserName() => userName != null && !userName.Equals(Environment.UserName, StringComparison.InvariantCultureIgnoreCase);
+
+		internal System.Security.Principal.WindowsIdentity Identity
+		{
+			get
+			{
+				if (UserName is null)
+					return null;
+
+				var nonUpnIdx = UserName.IndexOf('\\');
+				var un = UserName;
+				string dn = null;
+				if (nonUpnIdx >= 0)
+				{
+					dn = UserName.Substring(0, nonUpnIdx);
+					un = UserName.Substring(nonUpnIdx + 1);
+				}
+				return new Vanara.Security.Principal.WindowsLoggedInIdentity(un, dn, UserPassword).AuthenticatedIdentity;
+			}
+		}
 	}
 }
