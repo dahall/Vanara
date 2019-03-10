@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Security.AccessControl;
+using System.Security.Principal;
 using Vanara.Extensions;
+using Vanara.Security;
 using static Vanara.PInvoke.NetApi32;
 
 namespace Vanara
@@ -30,11 +32,13 @@ namespace Vanara
 	/// <seealso cref="Vanara.INamedEntity"/>
 	public class SharedDevice : INamedEntity
 	{
+		private readonly WindowsIdentity identity;
 		private readonly string target;
 		private STYPE type = (STYPE)uint.MaxValue;
 
-		internal SharedDevice(string target, string netname)
+		internal SharedDevice(string target, string netname, WindowsIdentity accessIdentity)
 		{
+			identity = accessIdentity;
 			this.target = target;
 			Name = netname;
 		}
@@ -43,8 +47,8 @@ namespace Vanara
 		/// <value>The resource description.</value>
 		public string Description
 		{
-			get => NetShareGetInfo<SHARE_INFO_1>(target, Name).shi1_remark;
-			set => NetShareSetInfo(target, Name, new SHARE_INFO_1004 { shi1004_remark = value });
+			get => GetInfo<SHARE_INFO_1>().shi1_remark;
+			set => SetInfo(new SHARE_INFO_1004 { shi1004_remark = value });
 		}
 
 		/// <summary>Gets a value indicating whether this instance is communication device.</summary>
@@ -82,12 +86,12 @@ namespace Vanara
 		/// <value>The offline settings.</value>
 		public ShareOfflineSettings OfflineSettings
 		{
-			get => (ShareOfflineSettings)(NetShareGetInfo<SHARE_INFO_1005>(target, Name).shi1005_flags & SHI1005_FLAGS.CSC_MASK_EXT);
+			get => (ShareOfflineSettings)(GetInfo<SHARE_INFO_1005>().shi1005_flags & SHI1005_FLAGS.CSC_MASK_EXT);
 			set
 			{
-				var i = NetShareGetInfo<SHARE_INFO_1005>(target, Name);
+				var i = GetInfo<SHARE_INFO_1005>();
 				i.shi1005_flags = i.shi1005_flags & ~SHI1005_FLAGS.CSC_MASK | (SHI1005_FLAGS)value;
-				NetShareSetInfo(target, Name, i);
+				SetInfo(i);
 			}
 		}
 
@@ -102,13 +106,13 @@ namespace Vanara
 		{
 			get
 			{
-				try { return NetShareGetInfo<SHARE_INFO_2>(target, Name).shi2_path; } catch { return string.Empty; }
+				try { return GetInfo<SHARE_INFO_2>().shi2_path; } catch { return string.Empty; }
 			}
 			set
 			{
-				var i = NetShareGetInfo<SHARE_INFO_2>(target, Name);
+				var i = GetInfo<SHARE_INFO_2>();
 				i.shi2_path = value;
-				NetShareSetInfo(target, Name, i);
+				SetInfo(i);
 			}
 		}
 
@@ -120,13 +124,13 @@ namespace Vanara
 		{
 			get
 			{
-				try { return NetShareGetInfo<SHARE_INFO_502>(target, Name).shi502_security_descriptor.ToManaged(); } catch { return null; }
+				try { return GetInfo<SHARE_INFO_502>().shi502_security_descriptor.ToManaged(); } catch { return null; }
 			}
 			set
 			{
-				var i = NetShareGetInfo<SHARE_INFO_502>(target, Name);
+				var i = GetInfo<SHARE_INFO_502>();
 				i.shi502_security_descriptor = value.ToNative();
-				NetShareSetInfo(target, Name, i);
+				SetInfo(i);
 			}
 		}
 
@@ -139,21 +143,21 @@ namespace Vanara
 		{
 			get
 			{
-				try { return unchecked((int)NetShareGetInfo<SHARE_INFO_2>(target, Name).shi2_max_uses); } catch { return -1; }
+				try { return unchecked((int)GetInfo<SHARE_INFO_2>().shi2_max_uses); } catch { return -1; }
 			}
 			set
 			{
-				var i = NetShareGetInfo<SHARE_INFO_2>(target, Name);
+				var i = GetInfo<SHARE_INFO_2>();
 				i.shi2_max_uses = unchecked((uint)value);
-				NetShareSetInfo(target, Name, i);
+				SetInfo(i);
 			}
 		}
 
 		/// <summary>Gets the shared resource's permissions for servers running with share-level security.</summary>
 		/// <value>Returns a <see cref="ShareLevelAccess"/> value.</value>
-		private ShareLevelAccess Access => NetShareGetInfo<SHARE_INFO_2>(target, Name).shi2_permissions;
+		private ShareLevelAccess Access => GetInfo<SHARE_INFO_2>().shi2_permissions;
 
-		private STYPE Type => (uint)type == uint.MaxValue ? (type = NetShareGetInfo<SHARE_INFO_1>(target, Name).shi1_type) : type;
+		private STYPE Type => (uint)type == uint.MaxValue ? type = GetInfo<SHARE_INFO_1>().shi1_type : type;
 
 		/// <summary>Creates the disk volume share.</summary>
 		/// <param name="target">
@@ -168,39 +172,47 @@ namespace Vanara
 		/// </param>
 		/// <returns>On success, a new instance of <see cref="SharedDevice"/> represented a newly created shared disk.</returns>
 		public static SharedDevice CreateDiskVolumeShare(string target, string name, string comment, string path) =>
-			Create(target, name, comment, path, STYPE.STYPE_DISKTREE);
+			Create(target, name, comment, path, STYPE.STYPE_DISKTREE, null);
 
 		/// <summary>Creates the specified target.</summary>
-		/// <param name="target">
-		/// A string that specifies the DNS or NetBIOS name of the remote server on which the function is to execute. If this parameter is
-		/// <see langword="null"/>, the local computer is used.
-		/// </param>
+		/// <param name="target">A string that specifies the DNS or NetBIOS name of the remote server on which the function is to execute. If this parameter is
+		/// <see langword="null" />, the local computer is used.</param>
 		/// <param name="name">The share name of a resource.</param>
 		/// <param name="comment">An optional comment about the shared resource.</param>
-		/// <param name="path">
-		/// The local path for the shared resource. For disks, this is the path being shared. For print queues, this is the name of the print
-		/// queue being shared.
-		/// </param>
+		/// <param name="path">The local path for the shared resource. For disks, this is the path being shared. For print queues, this is the name of the print
+		/// queue being shared.</param>
 		/// <param name="type">A combination of values that specify the type of the shared resource.</param>
-		/// <returns>On success, a new instance of <see cref="SharedDevice"/> represented a newly created shared resource.</returns>
-		internal static SharedDevice Create(string target, string name, string comment, string path, STYPE type)
+		/// <param name="identity">The identity.</param>
+		/// <returns>
+		/// On success, a new instance of <see cref="SharedDevice" /> represented a newly created shared resource.
+		/// </returns>
+		internal static SharedDevice Create(string target, string name, string comment, string path, STYPE type, WindowsIdentity identity)
 		{
-			NetShareAdd(target, new SHARE_INFO_2 { shi2_netname = name, shi2_remark = comment, shi2_path = path, shi2_max_uses = unchecked((uint)-1), shi2_type = type });
-			return new SharedDevice(target, name);
+			identity.Run(() => NetShareAdd(target, new SHARE_INFO_2 { shi2_netname = name, shi2_remark = comment, shi2_path = path, shi2_max_uses = unchecked((uint)-1), shi2_type = type }));
+			return new SharedDevice(target, name, identity);
 		}
+
+		private T GetInfo<T>() where T : struct => identity.Run(() => NetShareGetInfo<T>(target, Name));
+
+		private void SetInfo<T>(T s) where T : struct => identity.Run(() => NetShareSetInfo<T>(target, Name, s));
 	}
 
 	/// <summary>Represents all the shared devices on a computers.</summary>
-	/// <seealso cref="Vanara.NamedEntityDictionary{Vanara.SharedDevice}"/>
 	public class SharedDevices : Collections.VirtualDictionary<string, SharedDevice>
 	{
 		private readonly string target = null;
+		private readonly WindowsIdentity identity;
 
-		/// <summary>Initializes a new instance of the <see cref="SharedDevices"/> class.</summary>
+		/// <summary>Initializes a new instance of the <see cref="SharedDevices" /> class.</summary>
 		/// <param name="serverName">Name of the computer from which to retrieve and manage the shared devices.</param>
-		public SharedDevices(string serverName = null) : base(false) => target = serverName;
+		/// <param name="accessIdentity">The Windows identity used to access the shared device information. If this value <see langword="null"/>, the current identity is used.</param>
+		public SharedDevices(string serverName = null, WindowsIdentity accessIdentity = null) : base(false)
+		{
+			target = serverName;
+			identity = accessIdentity;
+		}
 
-		internal SharedDevices(Computer computer) : this(computer.Target)
+		internal SharedDevices(Computer computer) : this(computer.Target, computer.Identity)
 		{
 		}
 
@@ -211,14 +223,15 @@ namespace Vanara
 			get
 			{
 				var h = 0U;
-				NetShareEnum(target, 0, out var _, MAX_PREFERRED_LENGTH, out var cnt, out var _, ref h).ThrowIfFailed();
+				var cnt = 0U;
+				identity.Run(() => NetShareEnum(target, 0, out var _, MAX_PREFERRED_LENGTH, out cnt, out _, ref h).ThrowIfFailed());
 				return (int)cnt;
 			}
 		}
 
 		/// <summary>Gets an <see cref="T:System.Collections.Generic.ICollection`1"/> containing the keys of the <see cref="T:System.Collections.Generic.IDictionary`2"/>.</summary>
 		/// <value>An <see cref="T:System.Collections.Generic.ICollection`1"/> containing the keys of the object that implements <see cref="T:System.Collections.Generic.IDictionary`2"/>.</value>
-		public override ICollection<string> Keys => NetShareEnum<SHARE_INFO_0>(target).Select(i => i.shi0_netname).ToArray();
+		public override ICollection<string> Keys => identity.Run(() => NetShareEnum<SHARE_INFO_0>(target).Select(i => i.shi0_netname).ToArray());
 
 		/// <summary>Creates the specified target.</summary>
 		/// <param name="name">The share name of a resource.</param>
@@ -229,7 +242,7 @@ namespace Vanara
 		/// </param>
 		/// <param name="type">A combination of values that specify the type of the shared resource.</param>
 		/// <returns>On success, a new instance of <see cref="SharedDevice"/> represented a newly created shared resource.</returns>
-		public SharedDevice Add(string name, string comment, string path, STYPE type = STYPE.STYPE_DISKTREE) => SharedDevice.Create(target, name, comment, path, type);
+		public SharedDevice Add(string name, string comment, string path, STYPE type = STYPE.STYPE_DISKTREE) => SharedDevice.Create(target, name, comment, path, type, identity);
 
 		/// <summary>Removes the element with the specified key from the <see cref="T:System.Collections.Generic.IDictionary`2"/>.</summary>
 		/// <param name="key">The key of the element to remove.</param>
@@ -237,7 +250,7 @@ namespace Vanara
 		/// <see langword="true"/> if the element is successfully removed; otherwise, <see langword="false"/>. This method also returns false
 		/// if key was not found in the original <see cref="T:System.Collections.Generic.IDictionary`2"/>.
 		/// </returns>
-		public override bool Remove(string key) => NetShareDel(target, key).Succeeded;
+		public override bool Remove(string key) => identity.Run(() => NetShareDel(target, key).Succeeded);
 
 		/// <summary>Gets the value associated with the specified key.</summary>
 		/// <param name="key">The key whose value to get.</param>
@@ -251,7 +264,7 @@ namespace Vanara
 		/// </returns>
 		public override bool TryGetValue(string key, out SharedDevice value)
 		{
-			value = ContainsKey(key) ? new SharedDevice(target, key) : null;
+			value = ContainsKey(key) ? new SharedDevice(target, key, identity) : null;
 			return !(value is null);
 		}
 	}
