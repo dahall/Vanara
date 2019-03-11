@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.Serialization;
+using Vanara.Security;
+using static Vanara.PInvoke.NetApi32;
 
 namespace Vanara
 {
@@ -15,6 +18,7 @@ namespace Vanara
 		/// <summary>The local computer connected by the current account.</summary>
 		public static readonly Computer Local = new Computer();
 
+		private SharedDevices devices;
 		private bool initializing;
 		private string targetServer;
 		private bool targetServerSet;
@@ -22,7 +26,6 @@ namespace Vanara
 		private bool userNameSet;
 		private string userPassword;
 		private bool userPasswordSet;
-		private SharedDevices devices;
 
 		/// <summary>Creates a new instance of a TaskService connecting to the local machine as the current user.</summary>
 		public Computer() => Connect();
@@ -56,6 +59,19 @@ namespace Vanara
 			EndInit();
 		}
 
+		//public IEnumerable<LocalUser> LocalUsers => LocalUser.GetEnum(Target, UserName, UserPassword);
+
+		//public IEnumerable<LocalGroup> LocalGroups => LocalGroup.GetEnum(Target, UserName, UserPassword);
+
+		/// <summary>Gets the open files associated with this device.</summary>
+		/// <value>Returns a <see cref="IEnumerable{OpenFile}"/> value.</value>
+		public IEnumerable<OpenFile> OpenFiles => Identity.Run(() => NetFileEnum<FILE_INFO_3>(Target).Select(i => new OpenFile(i)));
+
+		/// <summary>Gets the shared devices defined for this computer.</summary>
+		/// <value>Returns a <see cref="SharedDevices"/> value.</value>
+		[Browsable(false)]
+		public SharedDevices SharedDevices => devices ?? (devices = new SharedDevices(this));
+
 		/// <summary>Gets or sets the name of the computer that the user is connected to.</summary>
 		[Category("Data"), DefaultValue(null), Description("The name of the computer to connect to.")]
 		public string Target
@@ -72,15 +88,6 @@ namespace Vanara
 				}
 			}
 		}
-
-		/// <summary>Gets the shared devices defined for this computer.</summary>
-		/// <value>Returns a <see cref="SharedDevices"/> value.</value>
-		[Browsable(false)]
-		public SharedDevices SharedDevices => devices ?? (devices = new SharedDevices(this));
-
-		//public IEnumerable<LocalUser> LocalUsers => LocalUser.GetEnum(Target, UserName, UserPassword);
-
-		//public IEnumerable<LocalGroup> LocalGroups => LocalGroup.GetEnum(Target, UserName, UserPassword);
 
 		/// <summary>Gets or sets the user name to be used when connecting to the <see cref="Target"/>.</summary>
 		/// <value>The user name.</value>
@@ -115,6 +122,25 @@ namespace Vanara
 					userPassword = value;
 					Connect();
 				}
+			}
+		}
+
+		internal System.Security.Principal.WindowsIdentity Identity
+		{
+			get
+			{
+				if (UserName is null)
+					return null;
+
+				var nonUpnIdx = UserName.IndexOf('\\');
+				var un = UserName;
+				string dn = null;
+				if (nonUpnIdx >= 0)
+				{
+					dn = UserName.Substring(0, nonUpnIdx);
+					un = UserName.Substring(nonUpnIdx + 1);
+				}
+				return new Vanara.Security.Principal.WindowsLoggedInIdentity(un, dn, UserPassword).AuthenticatedIdentity;
 			}
 		}
 
@@ -168,24 +194,5 @@ namespace Vanara
 		private bool ShouldSerializeTargetServer() => targetServer != null && !targetServer.Trim('\\').Equals(Environment.MachineName.Trim('\\'), StringComparison.InvariantCultureIgnoreCase);
 
 		private bool ShouldSerializeUserName() => userName != null && !userName.Equals(Environment.UserName, StringComparison.InvariantCultureIgnoreCase);
-
-		internal System.Security.Principal.WindowsIdentity Identity
-		{
-			get
-			{
-				if (UserName is null)
-					return null;
-
-				var nonUpnIdx = UserName.IndexOf('\\');
-				var un = UserName;
-				string dn = null;
-				if (nonUpnIdx >= 0)
-				{
-					dn = UserName.Substring(0, nonUpnIdx);
-					un = UserName.Substring(nonUpnIdx + 1);
-				}
-				return new Vanara.Security.Principal.WindowsLoggedInIdentity(un, dn, UserPassword).AuthenticatedIdentity;
-			}
-		}
 	}
 }

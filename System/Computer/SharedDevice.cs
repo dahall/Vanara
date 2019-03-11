@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Security.Principal;
@@ -28,27 +27,101 @@ namespace Vanara
 		None = SHI1005_FLAGS.CSC_CACHE_NONE,
 	}
 
+	/// <summary>Represents an open file associated with a share.</summary>
+	public class OpenFile
+	{
+		private FILE_INFO_3 fi;
+
+		internal OpenFile(in FILE_INFO_3 i) => fi = i;
+
+		/// <summary>Gets the number of file locks on the file, device, or pipe.</summary>
+		/// <value>Returns a <see cref="int"/> value.</value>
+		public int FileLockCount => (int)fi.fi3_num_locks;
+
+		/// <summary>Gets the path of the opened resource.</summary>
+		/// <value>Returns a <see cref="string"/> value.</value>
+		public string FullPath => fi.fi3_pathname;
+
+		/// <summary>Gets the identification number assigned to the resource when it is opened.</summary>
+		/// <value>Returns a <see cref="int"/> value.</value>
+		public int Id => (int)fi.fi3_id;
+
+		/// <summary>
+		/// Gets the string that specifies which user (on servers that have user-level security) or which computer (on servers that have
+		/// share-level security) opened the resource. Note that Windows does not support share-level security.
+		/// </summary>
+		/// <value>The name of the user.</value>
+		public string UserName => fi.fi3_username;
+	}
+
+	/// <summary>Represents a connection to a shared device.</summary>
+	public class ShareConnection
+	{
+		private CONNECTION_INFO_1 ci;
+		private SharedDevice share;
+
+		internal ShareConnection(in CONNECTION_INFO_1 ci, SharedDevice dev)
+		{
+			this.ci = ci; share = dev;
+		}
+
+		/// <summary>
+		/// If the server sharing the resource is running with user-level security, this value describes which user made the connection. If
+		/// the server is running with share-level security, this value describes which computer (computername) made the connection. Note
+		/// that Windows does not support share-level security.
+		/// </summary>
+		/// <value>Returns a <see cref="string"/> value.</value>
+		public string ConnectedUser => ci.coni1_username;
+
+		/// <summary>Gets the number of users on the connection.</summary>
+		/// <value>Returns a <see cref="int"/> value.</value>
+		public int ConnectedUserCount => (int)ci.coni1_num_users;
+
+		/// <summary>Gets the duration that the connection has been established.</summary>
+		/// <value>The duration of the connection.</value>
+		public TimeSpan ConnectionDuration => TimeSpan.FromSeconds(ci.coni1_time);
+
+		/// <summary>Gets the connection identification number.</summary>
+		/// <value>Returns a <see cref="int"/> value.</value>
+		public int Id => (int)ci.coni1_id;
+
+		/// <summary>Gets the number of files currently open as a result of the connection.</summary>
+		/// <value>Returns a <see cref="int"/> value.</value>
+		public int OpenFileCount => (int)ci.coni1_num_opens;
+
+		/// <summary>Gets the open files associated with this share.</summary>
+		/// <value>Returns a <see cref="IEnumerable{OpenFile}"/> value.</value>
+		public IEnumerable<OpenFile> OpenFiles => share.Id.Run(() => NetFileEnum<FILE_INFO_3>(share.Target, share.Path).Where(i => share.Path?.Length > 0 || i.fi3_pathname.StartsWith("\\")).Select(i => new OpenFile(i)));
+	}
+
 	/// <summary>Represents a shared device on a computer.</summary>
 	/// <seealso cref="Vanara.INamedEntity"/>
 	public class SharedDevice : INamedEntity
 	{
-		private readonly WindowsIdentity identity;
-		private readonly string target;
 		private STYPE type = (STYPE)uint.MaxValue;
 
 		internal SharedDevice(string target, string netname, WindowsIdentity accessIdentity)
 		{
-			identity = accessIdentity;
-			this.target = target;
+			Id = accessIdentity;
+			Target = target;
 			Name = netname;
 		}
+
+		private delegate void Setter<T>(ref T value);
+
+		/// <summary>
+		/// Lists all connections made to this shared resource on the target server. If there is more than one user using this connection,
+		/// then it is possible to get more than one structure for the same connection, but with a different user name.
+		/// </summary>
+		/// <value>Returns a <see cref="IEnumerable{ShareConnection}"/> value.</value>
+		public IEnumerable<ShareConnection> Connections => Id.Run(() => NetConnectionEnum<CONNECTION_INFO_1>(Target, Name).Select(ci => new ShareConnection(ci, this)));
 
 		/// <summary>Gets or sets an optional comment about the shared resource.</summary>
 		/// <value>The resource description.</value>
 		public string Description
 		{
 			get => GetInfo<SHARE_INFO_1>().shi1_remark;
-			set => SetInfo(new SHARE_INFO_1004 { shi1004_remark = value });
+			set => SetInfo((ref SHARE_INFO_1004 i) => i.shi1004_remark = value, false);
 		}
 
 		/// <summary>Gets a value indicating whether this instance is communication device.</summary>
@@ -87,12 +160,7 @@ namespace Vanara
 		public ShareOfflineSettings OfflineSettings
 		{
 			get => (ShareOfflineSettings)(GetInfo<SHARE_INFO_1005>().shi1005_flags & SHI1005_FLAGS.CSC_MASK_EXT);
-			set
-			{
-				var i = GetInfo<SHARE_INFO_1005>();
-				i.shi1005_flags = i.shi1005_flags & ~SHI1005_FLAGS.CSC_MASK | (SHI1005_FLAGS)value;
-				SetInfo(i);
-			}
+			set => SetInfo((ref SHARE_INFO_1005 i) => i.shi1005_flags = i.shi1005_flags & ~SHI1005_FLAGS.CSC_MASK | (SHI1005_FLAGS)value);
 		}
 
 		/// <summary>
@@ -104,16 +172,8 @@ namespace Vanara
 		/// </value>
 		public string Path
 		{
-			get
-			{
-				try { return GetInfo<SHARE_INFO_2>().shi2_path; } catch { return string.Empty; }
-			}
-			set
-			{
-				var i = GetInfo<SHARE_INFO_2>();
-				i.shi2_path = value;
-				SetInfo(i);
-			}
+			get { try { return GetInfo<SHARE_INFO_2>().shi2_path; } catch { return string.Empty; } }
+			set => SetInfo((ref SHARE_INFO_2 i) => i.shi2_path = value);
 		}
 
 		/// <summary>Gets or sets the permissions of the shared resource.</summary>
@@ -122,16 +182,8 @@ namespace Vanara
 		/// </value>
 		public RawSecurityDescriptor Permissions
 		{
-			get
-			{
-				try { return GetInfo<SHARE_INFO_502>().shi502_security_descriptor.ToManaged(); } catch { return null; }
-			}
-			set
-			{
-				var i = GetInfo<SHARE_INFO_502>();
-				i.shi502_security_descriptor = value.ToNative();
-				SetInfo(i);
-			}
+			get { try { return GetInfo<SHARE_INFO_502>().shi502_security_descriptor.ToManaged(); } catch { return null; } }
+			set => SetInfo((ref SHARE_INFO_502 i) => i.shi502_security_descriptor = value.ToNative());
 		}
 
 		/// <summary>
@@ -141,17 +193,12 @@ namespace Vanara
 		/// <value>The maximum number of concurrent connections.</value>
 		public int UserLimit
 		{
-			get
-			{
-				try { return unchecked((int)GetInfo<SHARE_INFO_2>().shi2_max_uses); } catch { return -1; }
-			}
-			set
-			{
-				var i = GetInfo<SHARE_INFO_2>();
-				i.shi2_max_uses = unchecked((uint)value);
-				SetInfo(i);
-			}
+			get { try { return unchecked((int)GetInfo<SHARE_INFO_2>().shi2_max_uses); } catch { return -1; } }
+			set => SetInfo((ref SHARE_INFO_2 i) => i.shi2_max_uses = unchecked((uint)value));
 		}
+
+		internal WindowsIdentity Id { get; private set; }
+		internal string Target { get; private set; }
 
 		/// <summary>Gets the shared resource's permissions for servers running with share-level security.</summary>
 		/// <value>Returns a <see cref="ShareLevelAccess"/> value.</value>
@@ -175,37 +222,49 @@ namespace Vanara
 			Create(target, name, comment, path, STYPE.STYPE_DISKTREE, null);
 
 		/// <summary>Creates the specified target.</summary>
-		/// <param name="target">A string that specifies the DNS or NetBIOS name of the remote server on which the function is to execute. If this parameter is
-		/// <see langword="null" />, the local computer is used.</param>
+		/// <param name="target">
+		/// A string that specifies the DNS or NetBIOS name of the remote server on which the function is to execute. If this parameter is
+		/// <see langword="null"/>, the local computer is used.
+		/// </param>
 		/// <param name="name">The share name of a resource.</param>
 		/// <param name="comment">An optional comment about the shared resource.</param>
-		/// <param name="path">The local path for the shared resource. For disks, this is the path being shared. For print queues, this is the name of the print
-		/// queue being shared.</param>
+		/// <param name="path">
+		/// The local path for the shared resource. For disks, this is the path being shared. For print queues, this is the name of the print
+		/// queue being shared.
+		/// </param>
 		/// <param name="type">A combination of values that specify the type of the shared resource.</param>
 		/// <param name="identity">The identity.</param>
-		/// <returns>
-		/// On success, a new instance of <see cref="SharedDevice" /> represented a newly created shared resource.
-		/// </returns>
+		/// <returns>On success, a new instance of <see cref="SharedDevice"/> represented a newly created shared resource.</returns>
 		internal static SharedDevice Create(string target, string name, string comment, string path, STYPE type, WindowsIdentity identity)
 		{
 			identity.Run(() => NetShareAdd(target, new SHARE_INFO_2 { shi2_netname = name, shi2_remark = comment, shi2_path = path, shi2_max_uses = unchecked((uint)-1), shi2_type = type }));
 			return new SharedDevice(target, name, identity);
 		}
 
-		private T GetInfo<T>() where T : struct => identity.Run(() => NetShareGetInfo<T>(target, Name));
+		private T GetInfo<T>() where T : struct => Id.Run(() => NetShareGetInfo<T>(Target, Name));
 
-		private void SetInfo<T>(T s) where T : struct => identity.Run(() => NetShareSetInfo<T>(target, Name, s));
+		private void SetInfo<T>(Setter<T> f, bool getFirst = true) where T : struct
+		{
+			Id.Run(() =>
+			{
+				var value = getFirst ? GetInfo<T>() : default;
+				f(ref value);
+				NetShareSetInfo(Target, Name, value);
+			});
+		}
 	}
 
 	/// <summary>Represents all the shared devices on a computers.</summary>
 	public class SharedDevices : Collections.VirtualDictionary<string, SharedDevice>
 	{
-		private readonly string target = null;
 		private readonly WindowsIdentity identity;
+		private readonly string target = null;
 
-		/// <summary>Initializes a new instance of the <see cref="SharedDevices" /> class.</summary>
+		/// <summary>Initializes a new instance of the <see cref="SharedDevices"/> class.</summary>
 		/// <param name="serverName">Name of the computer from which to retrieve and manage the shared devices.</param>
-		/// <param name="accessIdentity">The Windows identity used to access the shared device information. If this value <see langword="null"/>, the current identity is used.</param>
+		/// <param name="accessIdentity">
+		/// The Windows identity used to access the shared device information. If this value <see langword="null"/>, the current identity is used.
+		/// </param>
 		public SharedDevices(string serverName = null, WindowsIdentity accessIdentity = null) : base(false)
 		{
 			target = serverName;
