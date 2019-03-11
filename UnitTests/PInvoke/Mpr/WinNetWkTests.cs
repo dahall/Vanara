@@ -21,6 +21,7 @@ namespace Vanara.PInvoke.Tests
 		[OneTimeSetUp]
 		public void FixtureSetup()
 		{
+			FixtureTeardown();
 			WNetAddConnection(remSh, null, ldev).ThrowIfFailed();
 		}
 
@@ -58,11 +59,17 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void WNetEnumResourceTest()
 		{
-			var ne = WNetEnumResources(null, recurseContainers: true);
+			var ne = WNetEnumResources(recurseContainers: true);
 			Assert.That(ne, Is.Not.Empty);
-
 			foreach (var net in ne)
-				TestContext.WriteLine($"Type:{net.dwDisplayType}=Prov:{net.lpProvider}; Rem:{net.lpRemoteName}");
+				TestContext.WriteLine($"Type:{net.dwDisplayType}; Prov:{net.lpProvider}; Loc:{net.lpLocalName}; Rem:{net.lpRemoteName}");
+
+			TestContext.WriteLine();
+			var nr = new NETRESOURCE(@"\\" + Environment.MachineName) { dwType = NETRESOURCEType.RESOURCETYPE_ANY, dwScope = NETRESOURCEScope.RESOURCE_GLOBALNET, dwUsage = NETRESOURCEUsage.RESOURCEUSAGE_CONTAINER };
+			ne = WNetEnumResources(nr, dwType: NETRESOURCEType.RESOURCETYPE_DISK);
+			Assert.That(ne, Is.Not.Empty);
+			foreach (var net in ne)
+				TestContext.WriteLine($"Type:{net.dwDisplayType}; Prov:{net.lpProvider}; Loc:{net.lpLocalName}; Rem:{net.lpRemoteName}");
 		}
 
 		[Test]
