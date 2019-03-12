@@ -15,6 +15,9 @@
 		/// <summary>bcrypt.dll</summary>
 		public const string Bcrypt = "bcrypt.dll";
 
+		/// <summary>cabinet.dll</summary>
+		public const string Cabinet = "cabinet.dll";
+
 		/// <summary>The COM CTL32</summary>
 		public const string ComCtl32 = "comctl32.dll";
 

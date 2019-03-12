@@ -85,6 +85,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.Cryptography
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vanara.PInvoke.PowrProf", "PInvoke\PowrProf\Vanara.PInvoke.PowrProf.csproj", "{C3622793-7925-46C7-B876-AF23CC3C8A90}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vanara.PInvoke.Cabinet", "PInvoke\Cabinet\Vanara.PInvoke.Cabinet.csproj", "{F1BDAEA9-E2F0-4E9C-844E-0FB958552EC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -225,6 +227,10 @@ Global
 		{C3622793-7925-46C7-B876-AF23CC3C8A90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3622793-7925-46C7-B876-AF23CC3C8A90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3622793-7925-46C7-B876-AF23CC3C8A90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1BDAEA9-E2F0-4E9C-844E-0FB958552EC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1BDAEA9-E2F0-4E9C-844E-0FB958552EC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1BDAEA9-E2F0-4E9C-844E-0FB958552EC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1BDAEA9-E2F0-4E9C-844E-0FB958552EC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -257,6 +263,7 @@ Global
 		{74D00C4C-DA94-4046-B3CD-318FECDE3794} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{B0DF2976-BE60-4856-A634-5487222360B2} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 		{C3622793-7925-46C7-B876-AF23CC3C8A90} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
+		{F1BDAEA9-E2F0-4E9C-844E-0FB958552EC7} = {212ABBD0-B724-4CFA-9D6D-E3891547FA90}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {543FAC75-2AF1-4EF1-9609-B242B63FEED4}
