@@ -105,6 +105,7 @@ namespace Vanara.Extensions
 		/// <param name="prefixBytes">The number of bytes to skip before writing the first element of <paramref name="items"/>.</param>
 		public static void MarshalToPtr<T>(this IEnumerable<T> items, IntPtr ptr, int prefixBytes = 0)
 		{
+			if (items is null) return;
 			var stSize = Marshal.SizeOf(typeof(T));
 			var i = 0;
 			foreach (var item in items)
