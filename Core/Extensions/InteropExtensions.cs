@@ -331,6 +331,23 @@ namespace Vanara.Extensions
 			return ret;
 		}
 
+		/// <summary>Converts an <see cref="IntPtr"/> that points to a C-style array into a CLI array.</summary>
+		/// <param name="ptr">The <see cref="IntPtr"/> pointing to the native array.</param>
+		/// <param name="type">Type of native structure used by the C-style array.</param>
+		/// <param name="count">The number of items in the native array.</param>
+		/// <param name="prefixBytes">Bytes to skip before reading the array.</param>
+		/// <returns>An array of type <paramref name="type"/> containing the elements of the native array.</returns>
+		public static object[] ToArray(this IntPtr ptr, Type type, int count, int prefixBytes = 0)
+		{
+			if (type is null) throw new ArgumentNullException(nameof(type));
+			if (ptr == IntPtr.Zero) return null;
+			var ret = new object[count];
+			var stSize = Marshal.SizeOf(type);
+			for (var i = 0; i < count; i++)
+				ret[i] = Marshal.PtrToStructure(ptr.Offset(prefixBytes + i * stSize), type);
+			return ret;
+		}
+
 		/// <summary>Converts an <see cref="IntPtr"/> that points to a C-style array into an <see cref="IEnumerable{T}"/>.</summary>
 		/// <typeparam name="T">Type of native structure used by the C-style array.</typeparam>
 		/// <param name="ptr">The <see cref="IntPtr"/> pointing to the native array.</param>
@@ -343,6 +360,21 @@ namespace Vanara.Extensions
 			var stSize = Marshal.SizeOf(typeof(T));
 			for (var i = 0; i < count; i++)
 				yield return ToStructure<T>(ptr.Offset(prefixBytes + i * stSize));
+		}
+
+		/// <summary>Converts an <see cref="IntPtr"/> that points to a C-style array into an <see cref="IEnumerable{T}"/>.</summary>
+		/// <param name="ptr">The <see cref="IntPtr"/> pointing to the native array.</param>
+		/// <param name="type">Type of native structure used by the C-style array.</param>
+		/// <param name="count">The number of items in the native array.</param>
+		/// <param name="prefixBytes">Bytes to skip before reading the array.</param>
+		/// <returns>An <see cref="IEnumerable{T}"/> exposing the elements of the native array.</returns>
+		public static IEnumerable<object> ToIEnum(this IntPtr ptr, Type type, int count, int prefixBytes = 0)
+		{
+			if (type is null) throw new ArgumentNullException(nameof(type));
+			if (count == 0 || ptr == IntPtr.Zero) yield break;
+			var stSize = Marshal.SizeOf(type);
+			for (var i = 0; i < count; i++)
+				yield return Marshal.PtrToStructure(ptr.Offset(prefixBytes + i * stSize), type);
 		}
 
 		/// <summary>Converts a <see cref="SecureString"/> to a string.</summary>
