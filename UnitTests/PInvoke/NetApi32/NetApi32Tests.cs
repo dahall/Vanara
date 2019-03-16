@@ -1,6 +1,8 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Linq;
+using System.Security.Principal;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.NetApi32;
 
@@ -177,5 +179,17 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(() => e.First(i => i.usri1_name == val), Throws.Exception);
 		}
 
+	}
+
+	public static class UtilExt
+	{
+		public static byte[] GetBytes(this SecurityIdentifier si)
+		{
+			if (si == null) return new byte[0];
+			var sidLen = si.BinaryLength;
+			var bytes = new byte[sidLen];
+			si.GetBinaryForm(bytes, 0);
+			return bytes;
+		}
 	}
 }

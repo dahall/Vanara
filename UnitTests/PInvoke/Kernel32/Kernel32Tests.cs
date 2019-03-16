@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
-using static Vanara.PInvoke.Macros;
-using static Vanara.PInvoke.User32_Gdi;
 
 namespace Vanara.PInvoke.Tests
 {
@@ -18,6 +16,7 @@ namespace Vanara.PInvoke.Tests
 		internal const string badlibfn = @"C:\Windows\System32\ole3.dll";
 		internal const string libfn = @"ole32.dll";
 		internal const string tmpstr = @"Temporary";
+		internal const string fn = @"C:\Temp\help.ico";
 
 		public static string CreateTempFile(bool markAsTemp = true)
 		{
@@ -156,10 +155,7 @@ namespace Vanara.PInvoke.Tests
 				var l = EnumResourceNamesEx(hLib, ResourceType.RT_STRING);
 				Assert.That(l.Count, Is.GreaterThan(0));
 				foreach (var resourceName in l)
-				{
-					LoadString(hLib, resourceName, out var sptr, 0);
-					TestContext.WriteLine($"{resourceName} = {StringHelper.GetString(sptr)}");
-				}
+					Assert.That(resourceName.ToString(), Has.Length.GreaterThan(0));
 			}
 		}
 
@@ -221,7 +217,7 @@ namespace Vanara.PInvoke.Tests
 		[Test]
 		public void GetCompressedFileSizeTest()
 		{
-			var err = GetCompressedFileSize(AdvApi32Tests.fn, out ulong sz);
+			var err = GetCompressedFileSize(fn, out ulong sz);
 			if (err.Failed)
 				TestContext.WriteLine(err);
 			Assert.That(sz, Is.GreaterThan(0));

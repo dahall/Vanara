@@ -9,7 +9,6 @@ using Vanara.InteropServices;
 using static Vanara.PInvoke.Ole32;
 using static Vanara.PInvoke.OleAut32;
 using static Vanara.PInvoke.PropSys;
-using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.ShlwApi;
 
 namespace Vanara.PInvoke.Tests
@@ -212,7 +211,7 @@ namespace Vanara.PInvoke.Tests
 			Assert.That(new PROPVARIANT(new byte[] {255,1,15,0}).ToString(), Is.EqualTo("VT_UI1, VT_VECTOR=255,1,15,0"));
 		}
 
-		public void GetCF()
+		/*public void GetCF()
 		{
 			foreach (var f in Directory.EnumerateFiles(@"C:\Temp", "*.*", SearchOption.AllDirectories))
 			{
@@ -234,7 +233,7 @@ namespace Vanara.PInvoke.Tests
 				{
 				}
 			}
-		}
+		}*/
 
 		private static object GetSampleData(VARTYPE vt)
 		{
@@ -274,10 +273,10 @@ namespace Vanara.PInvoke.Tests
 					StgCreateStorageEx(Path.GetTempFileName(), STGM.STGM_DELETEONRELEASE | STGM.STGM_CREATE | STGM.STGM_DIRECT | STGM.STGM_READWRITE | STGM.STGM_SHARE_EXCLUSIVE, STGFMT.STGFMT_DOCFILE, 0, IntPtr.Zero, IntPtr.Zero, typeof(IStorage).GUID, out var iptr);
 					return (IStorage)iptr;
 				case VARTYPE.VT_STREAM:
-					SHCreateStreamOnFileEx(AdvApi32Tests.fn, STGM.STGM_READ | STGM.STGM_SHARE_EXCLUSIVE, 0, false, null, out var stm);
+					SHCreateStreamOnFileEx(@"C:\Temp\Help.ico", STGM.STGM_READ | STGM.STGM_SHARE_EXCLUSIVE, 0, false, null, out var stm);
 					return stm;
 				case VARTYPE.VT_UNKNOWN:
-					return new IShellLinkW();
+					return Activator.CreateInstance(Type.GetTypeFromProgID("ADODB.Error"));
 				case VARTYPE.VT_VECTOR | VARTYPE.VT_BSTR:
 				case VARTYPE.VT_VECTOR | VARTYPE.VT_LPSTR:
 				case VARTYPE.VT_VECTOR | VARTYPE.VT_LPWSTR:

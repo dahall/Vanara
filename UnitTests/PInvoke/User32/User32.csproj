@@ -7,10 +7,11 @@
     <ProjectGuid>{60A80A72-67BD-4CC2-95DA-0F6D3553A221}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>User32</RootNamespace>
-    <AssemblyName>User32</AssemblyName>
+    <RootNamespace>Vanara.PInvoke.Tests</RootNamespace>
+    <AssemblyName>UnitTest.PInvoke.User32</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,6 +43,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="User32Tests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Vanara.Core.csproj">
+      <Project>{241f73ee-9298-45c9-b869-a045dff94c03}</Project>
+      <Name>Vanara.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj">
+      <Project>{842d436f-598c-47d7-b5aa-12399f8ccfe9}</Project>
+      <Name>Vanara.PInvoke.Kernel32</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj">
+      <Project>{a5e519e9-feba-4fe3-93a5-b8269bef72f4}</Project>
+      <Name>Vanara.PInvoke.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\User32.Gdi\Vanara.PInvoke.User32.Gdi.csproj">
+      <Project>{fc7b25b5-3bb9-44f5-93d9-9ab7193b1be9}</Project>
+      <Name>Vanara.PInvoke.User32.Gdi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\User32\Vanara.PInvoke.User32.csproj">
+      <Project>{a6771907-addc-49fc-8444-a97aa65e77e2}</Project>
+      <Name>Vanara.PInvoke.User32</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

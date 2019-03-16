@@ -7,10 +7,11 @@
     <ProjectGuid>{6947F255-E176-409C-9788-9C02A68C9D3B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VirtDisk</RootNamespace>
-    <AssemblyName>VirtDisk</AssemblyName>
+    <RootNamespace>Vanara.PInvoke.Tests</RootNamespace>
+    <AssemblyName>UnitTest.PInvoke.VirtDisk</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,6 +43,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="VirtDiskTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Vanara.Core.csproj">
+      <Project>{241f73ee-9298-45c9-b869-a045dff94c03}</Project>
+      <Name>Vanara.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj">
+      <Project>{a5e519e9-feba-4fe3-93a5-b8269bef72f4}</Project>
+      <Name>Vanara.PInvoke.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\VirtDisk\Vanara.PInvoke.VirtDisk.csproj">
+      <Project>{5ce784d4-42b7-4aa7-b2d0-e175c7fb40c8}</Project>
+      <Name>Vanara.PInvoke.VirtDisk</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -7,10 +7,11 @@
     <ProjectGuid>{2043D4AA-5286-491F-A334-A3CC7A08DB56}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetApi32</RootNamespace>
-    <AssemblyName>NetApi32</AssemblyName>
+    <RootNamespace>Vanara.PInvoke.Tests</RootNamespace>
+    <AssemblyName>UnitTest.PInvoke.NetApi32</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,6 +43,31 @@
     <PackageReference Include="NUnit3TestAdapter">
       <Version>3.13.0</Version>
     </PackageReference>
+    <PackageReference Include="System.ValueTuple">
+      <Version>4.5.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\Vanara.Core.csproj">
+      <Project>{241f73ee-9298-45c9-b869-a045dff94c03}</Project>
+      <Name>Vanara.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\NetApi32\Vanara.PInvoke.NetApi32.csproj">
+      <Project>{48ed1b1b-1450-43d2-917e-b5ace357fd82}</Project>
+      <Name>Vanara.PInvoke.NetApi32</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\Security\Vanara.PInvoke.Security.csproj">
+      <Project>{392a14b0-1e10-4e88-9c13-0d965665ffb5}</Project>
+      <Name>Vanara.PInvoke.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj">
+      <Project>{a5e519e9-feba-4fe3-93a5-b8269bef72f4}</Project>
+      <Name>Vanara.PInvoke.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\PInvoke\Ws2_32\Vanara.PInvoke.Ws2_32.csproj">
+      <Project>{74d00c4c-da94-4046-b3cd-318fecde3794}</Project>
+      <Name>Vanara.PInvoke.Ws2_32</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

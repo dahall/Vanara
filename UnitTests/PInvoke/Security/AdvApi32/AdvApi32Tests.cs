@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading;
 using Vanara.Extensions;
 using Vanara.InteropServices;
-using Vanara.Security.AccessControl;
 using static Vanara.PInvoke.AdvApi32;
 using static Vanara.PInvoke.Kernel32;
 
@@ -262,7 +261,7 @@ namespace Vanara.PInvoke.Tests
 			//Assert.That(InitiateShutdown(null, "InitiateShutdown test", 60, ShutdownFlags.SHUTDOWN_RESTART | ShutdownFlags.SHUTDOWN_HYBRID,
 			//	SystemShutDownReason.SHTDN_REASON_MAJOR_APPLICATION | SystemShutDownReason.SHTDN_REASON_MINOR_MAINTENANCE |
 			//	SystemShutDownReason.SHTDN_REASON_FLAG_PLANNED), Is.EqualTo(Win32Error.ERROR_ACCESS_DENIED));
-			using (new PrivilegedCodeBlock(SystemPrivilege.Shutdown))
+			//using (new PrivilegedCodeBlock(SystemPrivilege.Shutdown))
 			{
 				var e = InitiateShutdown(null, "InitiateShutdown test", 60, ShutdownFlags.SHUTDOWN_RESTART | ShutdownFlags.SHUTDOWN_HYBRID,
 					SystemShutDownReason.SHTDN_REASON_MAJOR_APPLICATION | SystemShutDownReason.SHTDN_REASON_MINOR_MAINTENANCE |
@@ -280,7 +279,7 @@ namespace Vanara.PInvoke.Tests
 			//Assert.That(InitiateSystemShutdownEx(null, "InitiateSystemShutdownEx test", 60, false, true,
 			//	SystemShutDownReason.SHTDN_REASON_MAJOR_APPLICATION | SystemShutDownReason.SHTDN_REASON_MINOR_MAINTENANCE |
 			//	SystemShutDownReason.SHTDN_REASON_FLAG_PLANNED), Is.False);
-			using (new PrivilegedCodeBlock(SystemPrivilege.Shutdown))
+			//using (new PrivilegedCodeBlock(SystemPrivilege.Shutdown))
 			{
 				var e = InitiateSystemShutdownEx(null, "InitiateSystemShutdownEx test", 60, false, true,
 					SystemShutDownReason.SHTDN_REASON_MAJOR_APPLICATION | SystemShutDownReason.SHTDN_REASON_MINOR_MAINTENANCE |
