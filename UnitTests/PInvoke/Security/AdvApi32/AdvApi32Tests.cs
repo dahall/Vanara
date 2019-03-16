@@ -392,6 +392,24 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
+		[Test]
+		public void AccessCheckTest()
+		{
+			using (var pSD = GetSD(fn, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION))
+			using (var hTok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_READ).Duplicate(SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation))
+			{
+				var ps = PRIVILEGE_SET.InitializeWithCapacity(10);
+				var psSz = ps.SizeInBytes;
+				var gm = GENERIC_MAPPING.GenericFileMapping;
+				var accessMask = (uint)Kernel32.FileAccess.GENERIC_READ;
+				MapGenericMask(ref accessMask, gm);
+				var b = AccessCheck(pSD, hTok, accessMask, gm, ref ps, ref psSz, out var access, out var status);
+				if (!b) TestContext.WriteLine($"AccessCheck failed: {Win32Error.GetLastError()}");
+				Assert.That(b, Is.True);
+				TestContext.WriteLine($"Access={(Kernel32.FileAccess)access}; Status={status}");
+			}
+		}
+
 		[Test()]
 		public void QueryServiceConfig2Test()
 		{
@@ -508,15 +526,11 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
-		internal static SafeSecurityDescriptor GetSD(string filename)
+		internal static SafeSecurityDescriptor GetSD(string filename, SECURITY_INFORMATION si = SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION)
 		{
-			var err = GetNamedSecurityInfo(filename, SE_OBJECT_TYPE.SE_FILE_OBJECT,
-				SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION,
-				out var pOwn, out var pGrp, out var pAcl, out var pSacl, out var pSD);
+			var err = GetNamedSecurityInfo(filename, SE_OBJECT_TYPE.SE_FILE_OBJECT, si, out _, out _, out _, out _, out var pSD);
 			Assert.That(err, Is.EqualTo(0));
 			Assert.That(!pSD.IsInvalid);
-			Assert.That(pOwn, Is.Not.EqualTo(IntPtr.Zero));
-			Assert.That(pAcl, Is.Not.EqualTo(IntPtr.Zero));
 			return pSD;
 		}
 

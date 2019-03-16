@@ -58,223 +58,156 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Collections\EventedListTests.cs" />
-    <Compile Include="Core\Collections\HashSet2.0Tests.cs" />
-    <Compile Include="Core\Collections\HierarchyTests.cs" />
-    <Compile Include="Core\Collections\SparseArrayTests.cs" />
-    <Compile Include="Core\Extensions\EnumExtensionsTests.cs" />
-    <Compile Include="Core\Extensions\EnumFlagIndexerTests.cs" />
-    <Compile Include="Core\Extensions\FileTimeExtensionsTests.cs" />
-    <Compile Include="Core\Extensions\InteropExtensionsTests.cs" />
-    <Compile Include="Core\Extensions\IOExtensionsTests.cs" />
-    <Compile Include="Core\Extensions\ReflectionExtensionsTests.cs" />
-    <Compile Include="Core\Extensions\StringHelperTests.cs" />
-    <Compile Include="Core\InteropServices\GenericSafeHandleTests.cs" />
-    <Compile Include="Core\InteropServices\MarshalingStreamTests.cs" />
-    <Compile Include="Core\InteropServices\PinnedObjectTests.cs" />
-    <Compile Include="Core\InteropServices\SafeByteArrayTests.cs" />
-    <Compile Include="Core\InteropServices\SafeCoTaskMemHandleTests.cs" />
-    <Compile Include="Core\InteropServices\SafeCoTaskMemStringTests.cs" />
-    <Compile Include="Core\InteropServices\SafeHGlobalHandleTests.cs" />
-    <Compile Include="Core\InteropServices\StrPtrTests.cs" />
-    <Compile Include="PInvoke\AclUI\AclUITests.cs" />
-    <Compile Include="PInvoke\AdvApi32\AdvApi32Tests.cs" />
-    <Compile Include="PInvoke\AdvApi32\PSIDTests.cs" />
-    <Compile Include="PInvoke\Authz\AuthzTests.cs" />
-    <Compile Include="PInvoke\BCrypt\BCryptTests.cs" />
-    <Compile Include="PInvoke\CommCtrl\EditTest.cs" />
-    <Compile Include="PInvoke\CredUI\CredUITests.cs" />
-    <Compile Include="PInvoke\DwmApi\DwmApiTests.cs" />
-    <Compile Include="PInvoke\Gdi32\Gdi32Tests.cs" />
-    <Compile Include="PInvoke\InteropServices\SafeLocalHandleTests.cs" />
-    <Compile Include="PInvoke\IpHlpApi\IpHlpApiTests.cs" />
-    <Compile Include="PInvoke\Kernel32\SnapshotTests.cs" />
-    <Compile Include="PInvoke\Kernel32\SysInfoTests.cs" />
-    <Compile Include="PInvoke\Kernel32\Kernel32Tests.cs" />
-    <Compile Include="PInvoke\Mpr\WinNetWkTests.cs" />
-    <Compile Include="PInvoke\NetApi\NetApi32Tests.cs" />
-    <Compile Include="PInvoke\NtDll\NtDllTests.cs" />
-    <Compile Include="PInvoke\PowrProf\PowrProf.cs" />
-    <Compile Include="PInvoke\Shared\InteropServices\SafeNativeArrayTests.cs" />
+    <Compile Include="Collections\EventedListTests.cs" />
+    <Compile Include="Collections\HashSet2.0Tests.cs" />
+    <Compile Include="Collections\HierarchyTests.cs" />
+    <Compile Include="Collections\SparseArrayTests.cs" />
+    <Compile Include="Extensions\EnumExtensionsTests.cs" />
+    <Compile Include="Extensions\EnumFlagIndexerTests.cs" />
+    <Compile Include="Extensions\FileTimeExtensionsTests.cs" />
+    <Compile Include="Extensions\InteropExtensionsTests.cs" />
+    <Compile Include="Extensions\IOExtensionsTests.cs" />
+    <Compile Include="Extensions\ReflectionExtensionsTests.cs" />
+    <Compile Include="Extensions\StringHelperTests.cs" />
+    <Compile Include="InteropServices\GenericSafeHandleTests.cs" />
+    <Compile Include="InteropServices\MarshalingStreamTests.cs" />
+    <Compile Include="InteropServices\NativeMemoryStreamTests.cs" />
+    <Compile Include="InteropServices\PinnedObjectTests.cs" />
+    <Compile Include="InteropServices\SafeByteArrayTests.cs" />
+    <Compile Include="InteropServices\SafeCoTaskMemHandleTests.cs" />
+    <Compile Include="InteropServices\SafeCoTaskMemStringTests.cs" />
+    <Compile Include="InteropServices\SafeHGlobalHandleTests.cs" />
+    <Compile Include="InteropServices\StrPtrTests.cs" />
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="PInvoke\NetListMgr\NetListMgrTests.cs" />
-    <Compile Include="PInvoke\NTDSApi\NTDSApiTests.cs" />
-    <Compile Include="PInvoke\Ole32\Ole32Tests.cs" />
-    <Compile Include="PInvoke\Ole32\OleAut32Tests.cs" />
-    <Compile Include="PInvoke\Ole32\PROPVARIANTTests.cs" />
-    <Compile Include="PInvoke\PropSys\PropSysTests.cs" />
-    <Compile Include="PInvoke\Shared\Collections\ComEnumeratorTests.cs" />
-    <Compile Include="PInvoke\Shared\InteropServices\CoTaskMemStringMarshalerTests.cs" />
-    <Compile Include="PInvoke\Shared\OverlappedAsyncTests.cs" />
-    <Compile Include="PInvoke\Shared\ResourceIdTests.cs" />
-    <Compile Include="PInvoke\Shared\WinBase\SYSTEMTIMETests.cs" />
-    <Compile Include="PInvoke\Shared\WinDef\PRECTTests.cs" />
-    <Compile Include="PInvoke\Shared\WinDef\RECTTests.cs" />
-    <Compile Include="PInvoke\Shared\WinDef\SIZETests.cs" />
-    <Compile Include="PInvoke\Shared\WinError\HRESULTTests.cs" />
-    <Compile Include="PInvoke\Shared\WinError\NTStatusTests.cs" />
-    <Compile Include="PInvoke\Shared\WinError\Win32ErrorTests.cs" />
-    <Compile Include="PInvoke\Shared\WinNT\OBJECT_TYPE_LISTTests.cs" />
-    <Compile Include="PInvoke\Shared\WinUser\MacrosTests.cs" />
-    <Compile Include="PInvoke\Shell32\Methods.cs" />
-    <Compile Include="PInvoke\Shell32\ExplorerTests.cs" />
-    <Compile Include="PInvoke\Shell32\KnownFolderIdExtTests.cs" />
-    <Compile Include="PInvoke\Shell32\ProgressDialogTests.cs" />
-    <Compile Include="PInvoke\TaskSchd\TaskSchdTests.cs" />
-    <Compile Include="PInvoke\User32\User32Tests.cs" />
-    <Compile Include="PInvoke\UxTheme\UxThemeTests.cs" />
-    <Compile Include="PInvoke\VirtDisk\VirtDiskTests.cs" />
-    <Compile Include="PInvoke\WinInet\WinInetTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\AccessControl\SystemSecurityTests.cs" />
-    <Compile Include="Shell\ShellAssocTests.cs" />
-    <Compile Include="Shell\ShellFileOperationsTests.cs" />
-    <Compile Include="Shell\ControlPanelTests.cs" />
-    <Compile Include="Shell\ShellItemTests.cs" />
-    <Compile Include="Shell\ShellFolderTests.cs" />
-    <Compile Include="Shell\ShellItemPropStoreTests.cs" />
-    <Compile Include="System\BackgroundCopyTests.cs" />
-    <Compile Include="System\ComputerTests.cs" />
-    <Compile Include="System\PowerTests.cs" />
-    <Compile Include="System\RegTests.cs" />
-    <Compile Include="System\NetworkListTests.cs" />
-    <Compile Include="System\VirtualDiskTests.cs" />
-    <Compile Include="UI\Dialogs\AccessControlEditorTests.cs" />
-    <Compile Include="UI\Dialogs\TaskDialogTests.cs" />
-    <Compile Include="UI\Dialogs\NetworkConnectionDialogTests.cs" />
-    <Compile Include="UI\ThemedControlTests.cs" />
-    <None Include="UI\ExplorerBrowserTests.cs" />
-    <Compile Include="UI\VisualThemeTests.cs" />
-    <Compile Include="UI\Extensions\ImageListTests.cs" />
-    <Compile Include="UI\Dialogs\CredentialsDialogTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Vanara.Core.csproj">
+    <ProjectReference Include="..\..\Core\Vanara.Core.csproj">
       <Project>{241f73ee-9298-45c9-b869-a045dff94c03}</Project>
       <Name>Vanara.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\AclUI\Vanara.PInvoke.AclUI.csproj">
+    <ProjectReference Include="..\..\PInvoke\AclUI\Vanara.PInvoke.AclUI.csproj">
       <Project>{ef88cf8c-e737-4bb1-bbf9-f47bf65547e0}</Project>
       <Name>Vanara.PInvoke.AclUI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\BITS\Vanara.PInvoke.BITS.csproj">
+    <ProjectReference Include="..\..\PInvoke\BITS\Vanara.PInvoke.BITS.csproj">
       <Project>{ef53ed51-c141-4525-a6b7-41109ee5f416}</Project>
       <Name>Vanara.PInvoke.BITS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\ComCtl32\Vanara.PInvoke.ComCtl32.csproj">
+    <ProjectReference Include="..\..\PInvoke\ComCtl32\Vanara.PInvoke.ComCtl32.csproj">
       <Project>{291af9b0-51e8-4e4a-972b-77310a7a0c06}</Project>
       <Name>Vanara.PInvoke.ComCtl32</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\CredUI\Vanara.PInvoke.CredUI.csproj">
+    <ProjectReference Include="..\..\PInvoke\CredUI\Vanara.PInvoke.CredUI.csproj">
       <Project>{1f0b972a-06da-4f6a-8b60-87d76fb1f2d9}</Project>
       <Name>Vanara.PInvoke.CredUI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\Cryptography\Vanara.PInvoke.Cryptography.csproj">
+    <ProjectReference Include="..\..\PInvoke\Cryptography\Vanara.PInvoke.Cryptography.csproj">
       <Project>{b0df2976-be60-4856-a634-5487222360b2}</Project>
       <Name>Vanara.PInvoke.Cryptography</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\DwmApi\Vanara.PInvoke.DwmApi.csproj">
+    <ProjectReference Include="..\..\PInvoke\DwmApi\Vanara.PInvoke.DwmApi.csproj">
       <Project>{e1c6d6af-60a0-42cd-af77-f0de0ffe1395}</Project>
       <Name>Vanara.PInvoke.DwmApi</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\Gdi32\Vanara.PInvoke.Gdi32.csproj">
+    <ProjectReference Include="..\..\PInvoke\Gdi32\Vanara.PInvoke.Gdi32.csproj">
       <Project>{e186aff0-bc70-4776-8bee-9fdae108f4eb}</Project>
       <Name>Vanara.PInvoke.Gdi32</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\IpHlpApi\Vanara.PInvoke.IpHlpApi.csproj">
+    <ProjectReference Include="..\..\PInvoke\IpHlpApi\Vanara.PInvoke.IpHlpApi.csproj">
       <Project>{bbd8ce8d-31d2-4dfb-8d96-46825c09c7f1}</Project>
       <Name>Vanara.PInvoke.IpHlpApi</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj">
+    <ProjectReference Include="..\..\PInvoke\Kernel32\Vanara.PInvoke.Kernel32.csproj">
       <Project>{842d436f-598c-47d7-b5aa-12399f8ccfe9}</Project>
       <Name>Vanara.PInvoke.Kernel32</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\Mpr\Vanara.PInvoke.Mpr.csproj">
+    <ProjectReference Include="..\..\PInvoke\Mpr\Vanara.PInvoke.Mpr.csproj">
       <Project>{e91c263f-82d9-40a9-99a1-f879cb076bce}</Project>
       <Name>Vanara.PInvoke.Mpr</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\NetApi32\Vanara.PInvoke.NetApi32.csproj">
+    <ProjectReference Include="..\..\PInvoke\NetApi32\Vanara.PInvoke.NetApi32.csproj">
       <Project>{48ed1b1b-1450-43d2-917e-b5ace357fd82}</Project>
       <Name>Vanara.PInvoke.NetApi32</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\NetListMgr\Vanara.PInvoke.NetListMgr.csproj">
+    <ProjectReference Include="..\..\PInvoke\NetListMgr\Vanara.PInvoke.NetListMgr.csproj">
       <Project>{d7575cdb-0aa6-4029-a8fa-64b49dc178ce}</Project>
       <Name>Vanara.PInvoke.NetListMgr</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\NtDll\Vanara.PInvoke.NtDll.csproj">
+    <ProjectReference Include="..\..\PInvoke\NtDll\Vanara.PInvoke.NtDll.csproj">
       <Project>{9e0c0dc0-e1b6-42a7-bd31-9a62eeada780}</Project>
       <Name>Vanara.PInvoke.NtDll</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\NTDSApi\Vanara.PInvoke.NTDSApi.csproj">
+    <ProjectReference Include="..\..\PInvoke\NTDSApi\Vanara.PInvoke.NTDSApi.csproj">
       <Project>{ff26f707-5f0e-461b-bcc9-013724f87bd4}</Project>
       <Name>Vanara.PInvoke.NTDSApi</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\Ole\Vanara.PInvoke.Ole.csproj">
+    <ProjectReference Include="..\..\PInvoke\Ole\Vanara.PInvoke.Ole.csproj">
       <Project>{bbe4a7d6-0b24-4f58-9726-e05f358c1256}</Project>
       <Name>Vanara.PInvoke.Ole</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\PowrProf\Vanara.PInvoke.PowrProf.csproj">
+    <ProjectReference Include="..\..\PInvoke\PowrProf\Vanara.PInvoke.PowrProf.csproj">
       <Project>{c3622793-7925-46c7-b876-af23cc3c8a90}</Project>
       <Name>Vanara.PInvoke.PowrProf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\Security\Vanara.PInvoke.Security.csproj">
+    <ProjectReference Include="..\..\PInvoke\Security\Vanara.PInvoke.Security.csproj">
       <Project>{392a14b0-1e10-4e88-9c13-0d965665ffb5}</Project>
       <Name>Vanara.PInvoke.Security</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj">
+    <ProjectReference Include="..\..\PInvoke\Shared\Vanara.PInvoke.Shared.csproj">
       <Project>{a5e519e9-feba-4fe3-93a5-b8269bef72f4}</Project>
       <Name>Vanara.PInvoke.Shared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\Shell32\Vanara.PInvoke.Shell32.csproj">
+    <ProjectReference Include="..\..\PInvoke\Shell32\Vanara.PInvoke.Shell32.csproj">
       <Project>{3226020f-4c9d-41b3-ac8a-2bc9fd064cd8}</Project>
       <Name>Vanara.PInvoke.Shell32</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\ShlwApi\Vanara.PInvoke.ShlwApi.csproj">
+    <ProjectReference Include="..\..\PInvoke\ShlwApi\Vanara.PInvoke.ShlwApi.csproj">
       <Project>{30fd6779-6549-449e-880a-695815eb89b0}</Project>
       <Name>Vanara.PInvoke.ShlwApi</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\TaskSchd\Vanara.PInvoke.TaskSchd.csproj">
+    <ProjectReference Include="..\..\PInvoke\TaskSchd\Vanara.PInvoke.TaskSchd.csproj">
       <Project>{ac7d45c6-3c00-4fbf-90be-1a026fb26df0}</Project>
       <Name>Vanara.PInvoke.TaskSchd</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\User32.Gdi\Vanara.PInvoke.User32.Gdi.csproj">
+    <ProjectReference Include="..\..\PInvoke\User32.Gdi\Vanara.PInvoke.User32.Gdi.csproj">
       <Project>{fc7b25b5-3bb9-44f5-93d9-9ab7193b1be9}</Project>
       <Name>Vanara.PInvoke.User32.Gdi</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\User32\Vanara.PInvoke.User32.csproj">
+    <ProjectReference Include="..\..\PInvoke\User32\Vanara.PInvoke.User32.csproj">
       <Project>{a6771907-addc-49fc-8444-a97aa65e77e2}</Project>
       <Name>Vanara.PInvoke.User32</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\UxTheme\Vanara.PInvoke.UxTheme.csproj">
+    <ProjectReference Include="..\..\PInvoke\UxTheme\Vanara.PInvoke.UxTheme.csproj">
       <Project>{f73a658b-d900-4d9b-ba8e-19e6dfdc6147}</Project>
       <Name>Vanara.PInvoke.UxTheme</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\VirtDisk\Vanara.PInvoke.VirtDisk.csproj">
+    <ProjectReference Include="..\..\PInvoke\VirtDisk\Vanara.PInvoke.VirtDisk.csproj">
       <Project>{5ce784d4-42b7-4aa7-b2d0-e175c7fb40c8}</Project>
       <Name>Vanara.PInvoke.VirtDisk</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\WinInet\Vanara.PInvoke.WinINet.csproj">
+    <ProjectReference Include="..\..\PInvoke\WinInet\Vanara.PInvoke.WinINet.csproj">
       <Project>{e8a0c4df-541c-4435-937b-2865cd61bb17}</Project>
       <Name>Vanara.PInvoke.WinINet</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PInvoke\Ws2_32\Vanara.PInvoke.Ws2_32.csproj">
+    <ProjectReference Include="..\..\PInvoke\Ws2_32\Vanara.PInvoke.Ws2_32.csproj">
       <Project>{74d00c4c-da94-4046-b3cd-318fecde3794}</Project>
       <Name>Vanara.PInvoke.Ws2_32</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Security\Vanara.Security.csproj">
+    <ProjectReference Include="..\..\Security\Vanara.Security.csproj">
       <Project>{b1af8b23-b1cb-4cdb-9345-5e0c0e836b7c}</Project>
       <Name>Vanara.Security</Name>
     </ProjectReference>
-    <ProjectReference Include="..\System\Vanara.SystemServices.csproj">
+    <ProjectReference Include="..\..\System\Vanara.SystemServices.csproj">
       <Project>{eeec146d-14b2-4eef-9155-e1aef82d85f6}</Project>
       <Name>Vanara.SystemServices</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Windows.Forms\Vanara.Windows.Forms.csproj">
+    <ProjectReference Include="..\..\Windows.Forms\Vanara.Windows.Forms.csproj">
       <Project>{51986cd3-eeda-4369-93a4-255512548f68}</Project>
       <Name>Vanara.Windows.Forms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Windows.Shell\Vanara.Windows.Shell.csproj">
+    <ProjectReference Include="..\..\Windows.Shell\Vanara.Windows.Shell.csproj">
       <Project>{43685be2-a65e-4b01-be16-479526940f23}</Project>
       <Name>Vanara.Windows.Shell</Name>
     </ProjectReference>
