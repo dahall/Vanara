@@ -10,27 +10,37 @@ namespace Vanara.InteropServices
 	/// <summary>Functions to safely convert a memory pointer to a type.</summary>
 	public static class IntPtrConverter
 	{
-		/// <summary>Converts the specified pointer to <typeparamref name="T"/>.</summary>
+		/// <summary>Converts the specified pointer to <typeparamref name="T" />.</summary>
 		/// <typeparam name="T">The destination type.</typeparam>
 		/// <param name="ptr">The pointer to a block of memory.</param>
 		/// <param name="sz">The size of the allocated memory block.</param>
+		/// <param name="charSet">The character set.</param>
 		/// <returns>A value of the type specified.</returns>
-		public static T Convert<T>(this IntPtr ptr, uint sz) => (T)Convert(ptr, sz, typeof(T));
+		public static T Convert<T>(this IntPtr ptr, uint sz, CharSet charSet = CharSet.Auto) => (T)Convert(ptr, sz, typeof(T), charSet);
 
-		/// <summary>Converts the specified pointer to type specified in <paramref name="destType"/>.</summary>
+		/// <summary>Converts the specified pointer to type specified in <paramref name="destType" />.</summary>
 		/// <param name="ptr">The pointer to a block of memory.</param>
 		/// <param name="sz">The size of the allocated memory block.</param>
 		/// <param name="destType">The destination type.</param>
+		/// <param name="charSet">The character set.</param>
 		/// <returns>A value of the type specified.</returns>
+		/// <exception cref="ArgumentException">
+		/// Cannot convert a null pointer. - ptr
+		/// or
+		/// Cannot convert a pointer with no Size. - sz
+		/// </exception>
 		/// <exception cref="NotSupportedException">Thrown if type cannot be converted from memory.</exception>
-		public static object Convert(this IntPtr ptr, uint sz, Type destType)
+		/// <exception cref="OutOfMemoryException"></exception>
+		public static object Convert(this IntPtr ptr, uint sz, Type destType, CharSet charSet = CharSet.Auto)
 		{
 			if (ptr == IntPtr.Zero) throw new ArgumentException("Cannot convert a null pointer.", nameof(ptr));
 			if (sz == 0) throw new ArgumentException("Cannot convert a pointer with no Size.", nameof(sz));
 
-			// Handle byte array as special case
+			// Handle byte array and pointer as special cases
 			if (destType.IsArray && destType.GetElementType() == typeof(byte))
 				return ptr.ToArray<byte>((int)sz);
+			if (destType == typeof(IntPtr))
+				return Marshal.ReadIntPtr(ptr);
 
 			var typeCode = Type.GetTypeCode(destType);
 			switch (typeCode)
@@ -85,6 +95,9 @@ namespace Vanara.InteropServices
 
 				case TypeCode.DateTime:
 					return DateTime.FromBinary((long)GetBlittable(typeof(long)));
+
+				case TypeCode.String:
+					return StringHelper.GetString(ptr, charSet, sz);
 
 				default:
 					throw new NotSupportedException("Unsupported type parameter.");
