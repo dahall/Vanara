@@ -32,6 +32,33 @@ namespace Vanara.Extensions
 		public static IEnumerable<TAttr> GetCustomAttributes<TAttr>(this Type type, bool inherit = false, Func<TAttr, bool> predicate = null) where TAttr : Attribute =>
 			type.GetCustomAttributes(typeof(TAttr), inherit).Cast<TAttr>().Where(predicate ?? (a => true));
 
+		/// <summary>Finds the type of the element of a type. Returns null if this type does not enumerate.</summary>
+		/// <param name="type">The type to check.</param>
+		/// <returns>The element type, if found; otherwise, <see langword="null"/>.</returns>
+		public static Type FindElementType(this Type type)
+		{
+			if (type.IsArray)
+				return type.GetElementType();
+
+			// type is IEnumerable<T>;
+			if (ImplIEnumT(type))
+				return type.GetGenericArguments().First();
+
+			// type implements/extends IEnumerable<T>;
+			var enumType = type.GetInterfaces().Where(ImplIEnumT).Select(t => t.GetGenericArguments().First()).FirstOrDefault();
+			if (enumType != null)
+				return enumType;
+
+			// type is IEnumerable
+			if (IsIEnum(type) || type.GetInterfaces().Any(IsIEnum))
+				return typeof(object);
+
+			return null;
+
+			bool IsIEnum(Type t) => t == typeof(System.Collections.IEnumerable);
+			bool ImplIEnumT(Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>);
+		}
+
 		/// <summary>Gets a named property value from an object.</summary>
 		/// <typeparam name="T">The expected type of the property to be returned.</typeparam>
 		/// <param name="obj">The object from which to retrieve the property.</param>
