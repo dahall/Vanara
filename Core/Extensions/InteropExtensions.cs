@@ -19,16 +19,16 @@ namespace Vanara.Extensions
 		/// <param name="ptr">The allocated memory pointer.</param>
 		/// <param name="value">The byte value with which to fill the memory.</param>
 		/// <param name="length">The number of bytes to fill with the value.</param>
-		public static void FillMemory(this IntPtr ptr, byte value, int length)
+		public static void FillMemory(this IntPtr ptr, byte value, long length)
 		{
 			if (ptr == IntPtr.Zero || length <= 0) return;
 			// Write multiples of 8 bytes first
 			var lval = value == 0 ? 0L : BitConverter.ToInt64(new byte[] { value, value, value, value, value, value, value, value }, 0);
-			for (var ofs = 0; ofs < length / 8; ofs++)
-				Marshal.WriteInt64(ptr, ofs * 8, lval);
+			for (var ofs = 0L; ofs < length / 8; ofs++)
+				Marshal.WriteInt64(ptr.Offset(ofs * 8), 0, lval);
 			// Write remaining bytes
 			for (var ofs = length - (length % 8); ofs < length; ofs++)
-				Marshal.WriteByte(ptr, length, value);
+				Marshal.WriteByte(ptr.Offset(ofs), 0, value);
 		}
 
 		/// <summary>
@@ -463,10 +463,12 @@ namespace Vanara.Extensions
 		/// <param name="count">The count of expected strings.</param>
 		/// <param name="charSet">The character set of the strings.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
+		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
 		/// <returns>Enumeration of strings.</returns>
-		public static IEnumerable<string> ToStringEnum(this IntPtr ptr, int count, CharSet charSet = CharSet.Auto, int prefixBytes = 0)
+		public static IEnumerable<string> ToStringEnum(this IntPtr ptr, int count, CharSet charSet = CharSet.Auto, int prefixBytes = 0, int allocatedBytes = int.MaxValue)
 		{
 			if (ptr == IntPtr.Zero || count == 0) yield break;
+			if (count * IntPtr.Size + prefixBytes > allocatedBytes) throw new InsufficientMemoryException();
 			var lPtrVal = ptr.ToInt64();
 			for (var i = 0; i < count; i++)
 			{
@@ -483,18 +485,22 @@ namespace Vanara.Extensions
 		/// <param name="lptr">The <see cref="IntPtr"/> pointing to the native array.</param>
 		/// <param name="charSet">The character set of the strings.</param>
 		/// <param name="prefixBytes">Number of bytes preceding the array of string pointers.</param>
+		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="lptr"/>.</param>
 		/// <returns>An enumerated list of strings.</returns>
-		public static IEnumerable<string> ToStringEnum(this IntPtr lptr, CharSet charSet = CharSet.Auto, int prefixBytes = 0)
+		public static IEnumerable<string> ToStringEnum(this IntPtr lptr, CharSet charSet = CharSet.Auto, int prefixBytes = 0, int allocatedBytes = int.MaxValue)
 		{
 			if (lptr == IntPtr.Zero) yield break;
 			var charLength = StringHelper.GetCharSize(charSet);
 			int GetCh(IntPtr p) => charLength == 1 ? Marshal.ReadByte(p) : Marshal.ReadInt16(p);
-			for (var ptr = lptr.Offset(prefixBytes); GetCh(ptr) != 0;)
+			var i = prefixBytes;
+			for (var ptr = lptr.Offset(i); i + charLength <= allocatedBytes && GetCh(ptr) != 0; i += charLength, ptr = lptr.Offset(i))
 			{
-				var s = StringHelper.GetString(ptr, charSet);
-				yield return s;
-				ptr = ptr.Offset(((s?.Length ?? 0) + 1) * charLength);
+				for (var cptr = ptr; i + charLength <= allocatedBytes && GetCh(cptr) != 0; cptr = cptr.Offset(charLength), i += charLength) ;
+				if (i + charLength > allocatedBytes) throw new InsufficientMemoryException();
+				yield return StringHelper.GetString(ptr, charSet);
+				//ptr = ptr.Offset(((s?.Length ?? 0) + 1) * charLength);
 			}
+			if (i + charLength > allocatedBytes) throw new InsufficientMemoryException();
 		}
 
 		/// <summary>
@@ -504,7 +510,7 @@ namespace Vanara.Extensions
 		/// <param name="ptr">A pointer to an unmanaged block of memory.</param>
 		/// <returns>A managed object that contains the data that the <paramref name="ptr"/> parameter points to.</returns>
 		[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
-		public static T ToStructure<T>(this IntPtr ptr) => typeof(T) == typeof(IntPtr) ? (T)(object)ptr : ((T)Marshal.PtrToStructure(ptr, typeof(T).IsEnum ? Enum.GetUnderlyingType(typeof(T)) : typeof(T)));
+		public static T ToStructure<T>(this IntPtr ptr) => (T)Marshal.PtrToStructure(ptr, typeof(T).IsEnum ? Enum.GetUnderlyingType(typeof(T)) : typeof(T));
 
 		/// <summary>Marshals data from an unmanaged block of memory to a managed object.</summary>
 		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a formatted class.</typeparam>
