@@ -173,7 +173,7 @@ namespace Vanara.Extensions
 				}
 				else
 				{
-					for (var uptr = (ushort*)ptr; chkLen < allocatedBytes && *uptr != 0; chkLen += 2, uptr++)
+					for (var uptr = (ushort*)ptr; chkLen + 2 <= allocatedBytes && *uptr != 0; chkLen += 2, uptr++)
 						sb.Append((char)*uptr);
 				}
 			}
