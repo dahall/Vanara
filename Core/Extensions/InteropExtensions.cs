@@ -23,7 +23,7 @@ namespace Vanara.Extensions
 		{
 			if (ptr == IntPtr.Zero || length <= 0) return;
 			// Write multiples of 8 bytes first
-			var lval = value == 0 ? 0L : BitConverter.ToInt64(new byte[] { value, value, value, value, value, value, value, value }, 0);
+			var lval = value == 0 ? 0L : BitConverter.ToInt64(new[] { value, value, value, value, value, value, value, value }, 0);
 			for (var ofs = 0L; ofs < length / 8; ofs++)
 				Marshal.WriteInt64(ptr.Offset(ofs * 8), 0, lval);
 			// Write remaining bytes
@@ -43,7 +43,8 @@ namespace Vanara.Extensions
 		{
 			if (lptr == IntPtr.Zero) return 0;
 			var c = 0;
-			while (Marshal.ReadIntPtr(lptr, IntPtr.Size * c++) != IntPtr.Zero) ;
+			while (Marshal.ReadIntPtr(lptr, IntPtr.Size * c++) != IntPtr.Zero) { }
+
 			return c - 1;
 		}
 
@@ -52,6 +53,8 @@ namespace Vanara.Extensions
 		/// <returns><c>true</c> if the specified type is blittable; otherwise, <c>false</c>.</returns>
 		public static bool IsBlittable(this Type T)
 		{
+			if (T is null) return false;
+
 			// if (T.IsArray && T.GetArrayRank() > 1) return false; // Need to find a way to exclude jagged arrays
 			while (T.IsArray)
 				T = T.GetElementType();
@@ -89,7 +92,6 @@ namespace Vanara.Extensions
 				yield return ret;
 				pCurrent = next(ret);
 			}
-			yield break;
 		}
 
 		/// <summary>Marshals data from a managed list of specified type to a pre-allocated unmanaged block of memory.</summary>
@@ -132,7 +134,7 @@ namespace Vanara.Extensions
 			if (!typeof(T).IsBlittable()) throw new ArgumentException(@"Structure layout is not sequential or explicit.");
 
 			bytesAllocated = prefixBytes;
-			var count = (items as IList<T>)?.Count ?? (items as T[])?.Length ?? items?.Count() ?? 0;
+			var count = items?.Count() ?? 0;
 			if (count == 0) return memAlloc(bytesAllocated);
 
 			var sz = Marshal.SizeOf(typeof(T));
@@ -168,7 +170,7 @@ namespace Vanara.Extensions
 			var list = values as IList<string> ?? (values != null ? new List<string>(values) : null);
 
 			// Look at count and bail early if 0
-			var count = values?.Count() ?? 0;
+			var count = list?.Count ?? 0;
 			var chSz = StringHelper.GetCharSize(charSet);
 			bytesAllocated = prefixBytes + (packing == StringListPackMethod.Concatenated ? chSz : IntPtr.Size);
 			if (count == 0)
@@ -179,11 +181,11 @@ namespace Vanara.Extensions
 			}
 
 			// Check for empty and/or null strings
-			if (packing == StringListPackMethod.Concatenated && list.Any(s => string.IsNullOrEmpty(s)))
+			if (packing == StringListPackMethod.Concatenated && list.Any(string.IsNullOrEmpty))
 				throw new ArgumentException("Concatenated string arrays cannot contain empty or null strings.");
 
 			// Get size of output
-			var sumStrLen = list.Sum(s => s == null ? 0 : s.Length + 1);
+			var sumStrLen = list.Sum(s => s?.Length + 1 ?? 0);
 			bytesAllocated += sumStrLen * chSz;
 			if (packing == StringListPackMethod.Packed) bytesAllocated += (IntPtr.Size * count);
 
@@ -231,7 +233,7 @@ namespace Vanara.Extensions
 			var list = values as IList<object> ?? (values != null ? new List<object>(values) : null);
 
 			// Look at count and bail early if 0
-			var count = values?.Count() ?? 0;
+			var count = list?.Count ?? 0;
 			bytesAllocated = prefixBytes + IntPtr.Size;
 			if (count == 0)
 			{
@@ -495,7 +497,7 @@ namespace Vanara.Extensions
 			var i = prefixBytes;
 			for (var ptr = lptr.Offset(i); i + charLength <= allocatedBytes && GetCh(ptr) != 0; i += charLength, ptr = lptr.Offset(i))
 			{
-				for (var cptr = ptr; i + charLength <= allocatedBytes && GetCh(cptr) != 0; cptr = cptr.Offset(charLength), i += charLength) ;
+				for (var cptr = ptr; i + charLength <= allocatedBytes && GetCh(cptr) != 0; cptr = cptr.Offset(charLength), i += charLength) { }
 				if (i + charLength > allocatedBytes) throw new InsufficientMemoryException();
 				yield return StringHelper.GetString(ptr, charSet);
 				//ptr = ptr.Offset(((s?.Length ?? 0) + 1) * charLength);
@@ -508,9 +510,17 @@ namespace Vanara.Extensions
 		/// </summary>
 		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a structure.</typeparam>
 		/// <param name="ptr">A pointer to an unmanaged block of memory.</param>
-		/// <returns>A managed object that contains the data that the <paramref name="ptr"/> parameter points to.</returns>
+		/// <param name="allocatedBytes">If known, the total number of bytes allocated to the native memory in <paramref name="ptr"/>.</param>
+		/// <returns>A managed object that contains the data that the <paramref name="ptr" /> parameter points to.</returns>
+		/// <exception cref="InsufficientMemoryException"></exception>
 		[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
-		public static T ToStructure<T>(this IntPtr ptr) => (T)Marshal.PtrToStructure(ptr, typeof(T).IsEnum ? Enum.GetUnderlyingType(typeof(T)) : typeof(T));
+		public static T ToStructure<T>(this IntPtr ptr, long allocatedBytes = -1)
+		{
+			var t = typeof(T).IsEnum ? Enum.GetUnderlyingType(typeof(T)) : typeof(T);
+			if (allocatedBytes >= 0 && allocatedBytes < Marshal.SizeOf(t))
+				throw new InsufficientMemoryException();
+			return (T)Marshal.PtrToStructure(ptr, t);
+		}
 
 		/// <summary>Marshals data from an unmanaged block of memory to a managed object.</summary>
 		/// <typeparam name="T">The type of the object to which the data is to be copied. This must be a formatted class.</typeparam>
