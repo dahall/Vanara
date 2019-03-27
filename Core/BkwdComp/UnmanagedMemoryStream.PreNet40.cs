@@ -16,20 +16,14 @@ namespace System.IO
 	{
 		internal bool _isOpen;
 		private FileAccess _access;
-
-		[SecurityCritical] // auto-generated
+		[SecurityCritical]
 		private SafeBuffer _buffer;
-
 		private long _capacity;
-
 		[NonSerialized]
 		private Task<int> _lastReadTask;
-
 		private long _length;
-
 		[SecurityCritical]
 		private unsafe byte* _mem;
-
 		private long _offset;
 		private long _position;
 
@@ -168,9 +162,7 @@ namespace System.IO
 			get
 			{
 				if (_buffer != null)
-				{
 					throw new NotSupportedException(ResourceHelper.GetString("NotSupported_UmsSafeBuffer"));
-				}
 
 				// Use a temp to avoid a race
 				var pos = Interlocked.Read(ref _position);
@@ -185,8 +177,8 @@ namespace System.IO
 			{
 				if (_buffer != null)
 					throw new NotSupportedException(ResourceHelper.GetString("NotSupported_UmsSafeBuffer"));
-				if (!_isOpen) ErrorStreamIsClosed();
-
+				if (!_isOpen)
+					ErrorStreamIsClosed();
 				if (value < _mem)
 					throw new IOException(ResourceHelper.GetString("IO.IO_SeekBeforeBegin"));
 
@@ -197,13 +189,7 @@ namespace System.IO
 		internal unsafe byte* Pointer
 		{
 			[SecurityCritical]
-			get
-			{
-				if (_buffer != null)
-					throw new NotSupportedException(ResourceHelper.GetString("NotSupported_UmsSafeBuffer"));
-
-				return _mem;
-			}
+			get => _buffer == null ? _mem : throw new NotSupportedException(ResourceHelper.GetString("NotSupported_UmsSafeBuffer"));
 		}
 
 		/// <summary>Clears all buffers for this stream and causes any buffered data to be written to the underlying device.</summary>
