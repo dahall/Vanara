@@ -9,6 +9,8 @@ namespace Vanara.Extensions
 	/// <summary>Extensions related to <c>System.Reflection</c></summary>
 	public static class ReflectionExtensions
 	{
+		private const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.IgnoreCase;
+
 		/// <summary>Gets all loaded types in the <see cref="AppDomain"/>.</summary>
 		/// <param name="appDomain">The application domain.</param>
 		/// <returns>All loaded types.</returns>
@@ -68,7 +70,7 @@ namespace Vanara.Extensions
 		public static T GetPropertyValue<T>(this object obj, string propertyName, T defaultValue = default)
 		{
 			if (obj is null || propertyName is null) return defaultValue;
-			try { return (T)Convert.ChangeType(obj.GetType().InvokeMember(propertyName, BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, obj, null, null), typeof(T)); }
+			try { return (T)Convert.ChangeType(obj.GetType().InvokeMember(propertyName, BindingFlags.GetProperty | bindingFlags, null, obj, null, null), typeof(T)); }
 			catch { return defaultValue; }
 		}
 
@@ -86,7 +88,7 @@ namespace Vanara.Extensions
 		/// <exception cref="ArgumentException">Method not found - methodName</exception>
 		public static object InvokeGenericMethod(this object obj, string methodName, Type[] typeArguments, Type[] argTypes, object[] args)
 		{
-			var mi = obj?.GetType().GetMethod(methodName, argTypes);
+			var mi = obj?.GetType().GetMethod(methodName, bindingFlags, null, argTypes, null);
 			if (mi == null) throw new ArgumentException(@"Method not found", nameof(methodName));
 			var gmi = mi.MakeGenericMethod(typeArguments);
 			return gmi.Invoke(obj, args);
@@ -148,7 +150,7 @@ namespace Vanara.Extensions
 		/// <param name="args">The arguments to provide to the method invocation.</param>
 		public static void InvokeMethod(this object obj, string methodName, Type[] argTypes, object[] args)
 		{
-			var mi = obj?.GetType().GetMethod(methodName, argTypes);
+			var mi = obj?.GetType().GetMethod(methodName, bindingFlags, null, argTypes, null);
 			if (mi == null) throw new ArgumentException(@"Method not found", nameof(methodName));
 			mi.Invoke(obj, args);
 		}
@@ -162,7 +164,7 @@ namespace Vanara.Extensions
 		/// <returns>The value returned from the method.</returns>
 		public static T InvokeMethod<T>(this object obj, string methodName, Type[] argTypes, object[] args)
 		{
-			var mi = obj?.GetType().GetMethod(methodName, argTypes);
+			var mi = obj?.GetType().GetMethod(methodName, bindingFlags, null, argTypes, null);
 			if (mi == null) throw new ArgumentException(@"Method not found", nameof(methodName));
 			var tt = typeof(T);
 			if (tt != typeof(object) && mi.ReturnType != tt && !mi.ReturnType.IsSubclassOf(tt))
@@ -235,7 +237,7 @@ namespace Vanara.Extensions
 		/// <param name="value">The property value to set on the object.</param>
 		public static void SetPropertyValue<T>(this object obj, string propName, T value)
 		{
-			try { obj?.GetType().InvokeMember(propName, BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, obj, new object[] { value }, null); }
+			try { obj?.GetType().InvokeMember(propName, BindingFlags.SetProperty | bindingFlags, null, obj, new object[] { value }, null); }
 			catch { }
 		}
 
