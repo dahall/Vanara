@@ -123,10 +123,10 @@ namespace Vanara.PInvoke
 			/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
 			public bool Equals(IntPtr other) => EqualSid(handle, other);
 
-			/// <summary>Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.</summary>
+			/// <summary>Determines whether the specified <see cref="object"/> is equal to the current <see cref="object"/>.</summary>
 			/// <param name="obj">The object to compare with the current object.</param>
 			/// <returns>
-			/// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+			/// true if the specified <see cref="object"/> is equal to the current <see cref="object"/>; otherwise, false.
 			/// </returns>
 			public override bool Equals(object obj)
 			{
@@ -147,8 +147,8 @@ namespace Vanara.PInvoke
 			/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 			public override int GetHashCode() => base.GetHashCode();
 
-			/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
-			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+			/// <returns>A <see cref="string"/> that represents this instance.</returns>
 			public override string ToString() => ConvertSidToStringSid(this);
 
 			/// <summary>Creates a new object that is a copy of the current instance.</summary>
