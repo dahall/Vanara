@@ -5,6 +5,7 @@ using System.Security.AccessControl;
 using System.Text;
 using Vanara.Extensions;
 using Vanara.InteropServices;
+using static Vanara.PInvoke.Kernel32;
 
 namespace Vanara.PInvoke
 {
@@ -27,9 +28,11 @@ namespace Vanara.PInvoke
 		public enum ACL_INFORMATION_CLASS : uint
 		{
 			/// <summary>Indicates ACL revision information.</summary>
+			[CorrespondingType(typeof(ACL_REVISION_INFORMATION))]
 			AclRevisionInformation = 1,
 
 			/// <summary>Indicates ACL size information.</summary>
+			[CorrespondingType(typeof(ACL_SIZE_INFORMATION))]
 			AclSizeInformation
 		}
 
@@ -639,6 +642,19 @@ namespace Vanara.PInvoke
 			/// <summary>Returns a hash code for this instance.</summary>
 			/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
 			public override int GetHashCode() => new { A = Header.AceFlags, B = Header.AceType, C = Mask }.GetHashCode();
+
+			/// <summary>Gets the SID value associated with <see cref="SidStart"/>.</summary>
+			/// <returns>A <see cref="SafePSID"/> value copied from the bits associated with <see cref="SidStart"/>.</returns>
+			public SafePSID GetSid()
+			{
+				unsafe
+				{
+					fixed (int* psid = &SidStart)
+					{
+						return SafePSID.CreateFromPtr((IntPtr)(void*)psid);
+					}
+				}
+			}
 		}
 
 		/// <summary>The ACE_HEADER structure defines the type and size of an access control entry (ACE).</summary>
@@ -764,6 +780,290 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
+		/// <para>Contains information that is included immediately after the newest event log record.</para>
+		/// <para>
+		/// The <c>ELF_EOF_RECORD</c> structure is used in an event log to enable the event-logging service to reconstruct the
+		/// <c>ELF_LOGFILE_HEADER</c>. The event-logging service must add the <c>ELF_EOF_RECORD</c> to the event log. For more information
+		/// about <c>ELF_EOF_RECORD</c>, see Event Log File Format.
+		/// </para>
+		/// </summary>
+		// typedef struct _EVENTLOGEOF { ULONG RecordSizeBeginning; ULONG One; ULONG Two; ULONG Three; ULONG Four; ULONG BeginRecord; ULONG
+		// EndRecord; ULONG CurrentRecordNumber; ULONG OldestRecordNumber; ULONG RecordSizeEnd;} EVENTLOGEOF, *PEVENTLOGEOF; https://msdn.microsoft.com/en-us/library/windows/desktop/bb309022(v=vs.85).aspx
+		[PInvokeData("Winnt.h", MSDNShortId = "bb309022")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct EVENTLOGEOF
+		{
+			/// <summary>The beginning size of the <c>ELF_EOF_RECORD</c>. The beginning size is always 0x28.</summary>
+			public uint RecordSizeBeginning;
+
+			/// <summary>
+			/// An identifier that helps to differentiate this record from other records in the event log. The value is always set to 0x11111111.
+			/// </summary>
+			public uint One;
+
+			/// <summary>
+			/// An identifier that helps to differentiate this record from other records in the event log. The value is always set to 0x22222222.
+			/// </summary>
+			public uint Two;
+
+			/// <summary>
+			/// An identifier that helps to differentiate this record from other records in the event log. The value is always set to 0x33333333.
+			/// </summary>
+			public uint Three;
+
+			/// <summary>
+			/// An identifier that helps to differentiate this record from other records in the event log. The value is always set to 0x44444444.
+			/// </summary>
+			public uint Four;
+
+			/// <summary>The offset to the oldest record. If the event log is empty, this is set to the start of this structure.</summary>
+			public uint BeginRecord;
+
+			/// <summary>The offset to the start of this structure.</summary>
+			public uint EndRecord;
+
+			/// <summary>The record number of the next event that will be written to the event log.</summary>
+			public uint CurrentRecordNumber;
+
+			/// <summary>The record number of the oldest record in the event log. The record number will be 0 if the event log is empty.</summary>
+			public uint OldestRecordNumber;
+
+			/// <summary>The ending size of the <c>ELF_EOF_RECORD</c>. The ending size is always 0x28.</summary>
+			public uint RecordSizeEnd;
+		}
+
+		/// <summary>
+		/// <para>Contains information that is included at the beginning of an event log.</para>
+		/// <para>
+		/// The <c>ELF_LOGFILE_HEADER</c> structure is used at the beginning of an event log to define information about the event log. The
+		/// event-logging service must add the <c>ELF_LOGFILE_HEADER</c> to the event log. For more information about how the
+		/// <c>ELF_LOGFILE_HEADER</c> is used, see Event Log File Format.
+		/// </para>
+		/// </summary>
+		// typedef struct _EVENTLOGHEADER { ULONG HeaderSize; ULONG Signature; ULONG MajorVersion; ULONG MinorVersion; ULONG StartOffset;
+		// ULONG EndOffset; ULONG CurrentRecordNumber; ULONG OldestRecordNumber; ULONG MaxSize; ULONG Flags; ULONG Retention; ULONG
+		// EndHeaderSize;} EVENTLOGHEADER, *PEVENTLOGHEADER; https://msdn.microsoft.com/en-us/library/windows/desktop/bb309024(v=vs.85).aspx
+		[PInvokeData("Winnt.h", MSDNShortId = "bb309024")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct EVENTLOGHEADER
+		{
+			/// <summary>The size of the header structure. The size is always 0x30.</summary>
+			public uint HeaderSize;
+
+			/// <summary>The signature is always 0x654c664c, which is ASCII for eLfL.</summary>
+			public uint Signature;
+
+			/// <summary>The major version number of the event log. The major version number is always set to 1.</summary>
+			public uint MajorVersion;
+
+			/// <summary>The minor version number of the event log. The minor version number is always set to 1.</summary>
+			public uint MinorVersion;
+
+			/// <summary>The offset to the oldest record in the event log.</summary>
+			public uint StartOffset;
+
+			/// <summary>The offset to the <c>ELF_EOF_RECORD</c> in the event log.</summary>
+			public uint EndOffset;
+
+			/// <summary>The number of the next record that will be added to the event log.</summary>
+			public uint CurrentRecordNumber;
+
+			/// <summary>The number of the oldest record in the event log. For an empty file, the oldest record number is set to 0.</summary>
+			public uint OldestRecordNumber;
+
+			/// <summary>
+			/// The maximum size, in bytes, of the event log. The maximum size is defined when the event log is created. The event-logging
+			/// service does not typically update this value, it relies on the registry configuration. The reader of the event log can use
+			/// normal file APIs to determine the size of the file. For more information about registry configuration values, see Eventlog Key.
+			/// </summary>
+			public uint MaxSize;
+
+			/// <summary>
+			/// <para>The status of the event log. This member can be one of the following values:</para>
+			/// <para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ELF_LOGFILE_HEADER_DIRTY0x0001</term>
+			/// <term>
+			/// Indicates that records have been written to an event log, but the event log file has not been properly closed. For more
+			/// information about this flag, see the Remarks section.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ELF_LOGFILE_HEADER_WRAP0x0002</term>
+			/// <term>Indicates that records in the event log have wrapped.</term>
+			/// </item>
+			/// <item>
+			/// <term>ELF_LOGFILE_LOGFULL_WRITTEN0x0004</term>
+			/// <term>Indicates that the most recent write attempt failed due to insufficient space.</term>
+			/// </item>
+			/// <item>
+			/// <term>ELF_LOGFILE_ARCHIVE_SET0x0008</term>
+			/// <term>
+			/// Indicates that the archive attribute has been set for the file. Normal file APIs can also be used to determine the value of
+			/// this flag.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </para>
+			/// </summary>
+			public ELF_FLAGS Flags;
+
+			/// <summary>
+			/// The retention value of the file when it is created. The event-logging service does not typically update this value, it relies
+			/// on the registry configuration. For more information about registry configuration values, see Eventlog Key.
+			/// </summary>
+			public uint Retention;
+
+			/// <summary>The ending size of the header structure. The size is always 0x30.</summary>
+			public uint EndHeaderSize;
+		}
+
+		/// <summary>Contains information about an event record returned by the ReadEventLog function.</summary>
+		/// <remarks>
+		/// <para>
+		/// The defined members are followed by the replacement strings for the message identified by the event identifier, the binary
+		/// information, some pad bytes to make sure the full entry is on a <c>DWORD</c> boundary, and finally the length of the log entry
+		/// again. Because the strings and the binary information can be of any length, no structure members are defined to reference them.
+		/// The declaration of this structure in Winnt.h describes these members as follows:
+		/// </para>
+		/// <para>
+		/// The source name is a variable-length string that specifies the name of the event source. The computer name is the name of the
+		/// computer that generated the event. It may be followed with some padding bytes so that the user SID is aligned on a <c>DWORD</c>
+		/// boundary. The user SID identifies the active user at the time this event was logged. If <c>UserSidLength</c> is zero, this field
+		/// may be empty.
+		/// </para>
+		/// <para>
+		/// The event identifier together with source name and a language identifier identify a string that describes the event in more
+		/// detail. The strings are used as replacement strings and are merged into the message string to make a complete message. The
+		/// message strings are contained in a message file specified in the source entry in the registry. To obtain the appropriate message
+		/// string from the message file, load the message file with the LoadLibrary function and use the FormatMessage function.
+		/// </para>
+		/// <para>
+		/// The binary information is information that is specific to the event. It could be the contents of the processor registers when a
+		/// device driver got an error, a dump of an invalid packet that was received from the network, a dump of all the structures in a
+		/// program (when the data area was detected to be corrupt), and so on. This information should be useful to the writer of the device
+		/// driver or the application in tracking down bugs or unauthorized breaks into the application.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_eventlogrecord typedef struct _EVENTLOGRECORD { DWORD Length;
+		// DWORD Reserved; DWORD RecordNumber; DWORD TimeGenerated; DWORD TimeWritten; DWORD EventID; WORD EventType; WORD NumStrings; WORD
+		// EventCategory; WORD ReservedFlags; DWORD ClosingRecordNumber; DWORD StringOffset; DWORD UserSidLength; DWORD UserSidOffset; DWORD
+		// DataLength; DWORD DataOffset; } EVENTLOGRECORD, *PEVENTLOGRECORD;
+		[PInvokeData("winnt.h", MSDNShortId = "669b182a-bc81-4386-9815-6ffa09e2e743")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct EVENTLOGRECORD
+		{
+			/// <summary>
+			/// The size of this event record, in bytes. Note that this value is stored at both ends of the entry to ease moving forward or
+			/// backward through the log. The length includes any pad bytes inserted at the end of the record for <c>DWORD</c> alignment.
+			/// </summary>
+			public uint Length;
+
+			/// <summary>A DWORD value that is always set to <c>ELF_LOG_SIGNATURE</c> (the value is 0x654c664c), which is ASCII for eLfL.</summary>
+			public uint Reserved;
+
+			/// <summary>
+			/// The number of the record. This value can be used with the EVENTLOG_SEEK_READ flag in the ReadEventLog function to begin
+			/// reading at a specified record. For more information, see Event Log Records.
+			/// </summary>
+			public uint RecordNumber;
+
+			/// <summary>
+			/// The time at which this entry was submitted. This time is measured in the number of seconds elapsed since 00:00:00 January 1,
+			/// 1970, Universal Coordinated Time.
+			/// </summary>
+			public uint TimeGenerated;
+
+			/// <summary>
+			/// The time at which this entry was received by the service to be written to the log. This time is measured in the number of
+			/// seconds elapsed since 00:00:00 January 1, 1970, Universal Coordinated Time.
+			/// </summary>
+			public uint TimeWritten;
+
+			/// <summary>
+			/// The event identifier. The value is specific to the event source for the event, and is used with source name to locate a
+			/// description string in the message file for the event source. For more information, see Event Identifiers.
+			/// </summary>
+			public uint EventID;
+
+			/// <summary>
+			/// <para>The type of event. This member can be one of the following values.</para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>EVENTLOG_ERROR_TYPE 0x0001</term>
+			/// <term>Error event</term>
+			/// </item>
+			/// <item>
+			/// <term>EVENTLOG_AUDIT_FAILURE 0x0010</term>
+			/// <term>Failure Audit event</term>
+			/// </item>
+			/// <item>
+			/// <term>EVENTLOG_AUDIT_SUCCESS 0x0008</term>
+			/// <term>Success Audit event</term>
+			/// </item>
+			/// <item>
+			/// <term>EVENTLOG_INFORMATION_TYPE 0x0004</term>
+			/// <term>Information event</term>
+			/// </item>
+			/// <item>
+			/// <term>EVENTLOG_WARNING_TYPE 0x0002</term>
+			/// <term>Warning event</term>
+			/// </item>
+			/// </list>
+			/// <para>For more information, see Event Types.</para>
+			/// </summary>
+			public ushort EventType;
+
+			/// <summary>
+			/// The number of strings present in the log (at the position indicated by <c>StringOffset</c>). These strings are merged into
+			/// the message before it is displayed to the user.
+			/// </summary>
+			public ushort NumStrings;
+
+			/// <summary>
+			/// The category for this event. The meaning of this value depends on the event source. For more information, see Event Categories.
+			/// </summary>
+			public ushort EventCategory;
+
+			/// <summary>Reserved.</summary>
+			public ushort ReservedFlags;
+
+			/// <summary>Reserved.</summary>
+			public uint ClosingRecordNumber;
+
+			/// <summary>The offset of the description strings within this event log record.</summary>
+			public uint StringOffset;
+
+			/// <summary>The size of the <c>UserSid</c> member, in bytes. This value can be zero if no security identifier was provided.</summary>
+			public uint UserSidLength;
+
+			/// <summary>
+			/// The offset of the security identifier (SID) within this event log record. To obtain the user name for this SID, use the
+			/// LookupAccountSid function.
+			/// </summary>
+			public uint UserSidOffset;
+
+			/// <summary>The size of the event-specific data (at the position indicated by <c>DataOffset</c>), in bytes.</summary>
+			public uint DataLength;
+
+			/// <summary>
+			/// The offset of the event-specific information within this event log record, in bytes. This information could be something
+			/// specific (a disk driver might log the number of retries, for example), followed by binary information specific to the event
+			/// being logged and to the source that generated the entry.
+			/// </summary>
+			public uint DataOffset;
+		}
+
+		/// <summary>
 		/// Defines the mapping of generic access rights to specific and standard access rights for an object. When a client application
 		/// requests generic access to an object, that request is mapped to the access rights defined in this structure.
 		/// </summary>
@@ -795,6 +1095,9 @@ namespace Vanara.PInvoke
 				GenericExecute = execute;
 				GenericAll = all;
 			}
+
+			/// <summary>The generic file mappings (FILE_GENERIC_READ, FILE_GENERIC_WRITE, FILE_GENERIC_READ, FILE_ALL_ACCESS).</summary>
+			public static readonly GENERIC_MAPPING GenericFileMapping = new GENERIC_MAPPING((uint)FileAccess.FILE_GENERIC_READ, (uint)FileAccess.FILE_GENERIC_WRITE, (uint)FileAccess.FILE_GENERIC_READ, (uint)FileAccess.FILE_ALL_ACCESS);
 		}
 
 		/// <summary>
@@ -1442,11 +1745,16 @@ namespace Vanara.PInvoke
 
 			/// <summary>Gets the size in bytes of this instance.</summary>
 			/// <value>The size in bytes.</value>
-			public uint SizeInBytes => Marshaler.GetSize(PrivilegeCount);
+			public uint SizeInBytes => (uint)Marshal.SizeOf(typeof(uint)) * 2 + (uint)(Marshal.SizeOf(typeof(LUID_AND_ATTRIBUTES)) * (PrivilegeCount == 0 ? 1 : PrivilegeCount));
 
 			/// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
 			/// <returns>A <see cref="System.String"/> that represents this instance.</returns>
 			public override string ToString() => $"Count:{PrivilegeCount}";
+
+			/// <summary>Initializes a new <c>PRIVILEGE_SET</c> the with capacity to hold the specified number of privileges.</summary>
+			/// <param name="privilegeCount">The privilege count to allocate.</param>
+			/// <returns>A <c>PRIVILEGE_SET</c> instance with sufficient capacity for marshaling.</returns>
+			public static PRIVILEGE_SET InitializeWithCapacity(int privilegeCount = 1) => new PRIVILEGE_SET() { PrivilegeCount = (uint)privilegeCount };
 
 			internal class Marshaler : ICustomMarshaler
 			{
@@ -1462,9 +1770,10 @@ namespace Vanara.PInvoke
 
 				public IntPtr MarshalManagedToNative(object ManagedObj)
 				{
-					if (!(ManagedObj is PRIVILEGE_SET)) return IntPtr.Zero;
-					var ps = (PRIVILEGE_SET)ManagedObj;
-					var ptr = Marshal.AllocCoTaskMem((int)GetSize(ps.PrivilegeCount));
+					if (!(ManagedObj is PRIVILEGE_SET ps)) return IntPtr.Zero;
+					var ptr = Marshal.AllocCoTaskMem((int)ps.SizeInBytes);
+					if (ps.Privilege?.Length != ps.PrivilegeCount)
+						ptr.FillMemory(0, (int)ps.SizeInBytes);
 					Marshal.WriteInt32(ptr, (int)ps.PrivilegeCount);
 					Marshal.WriteInt32(ptr, Marshal.SizeOf(typeof(int)), (int)ps.Control);
 					ps.Privilege.MarshalToPtr(ptr, Marshal.SizeOf(typeof(int)) * 2);
@@ -1480,8 +1789,6 @@ namespace Vanara.PInvoke
 					var privPtr = Marshal.ReadIntPtr(pNativeData, sz * 2);
 					return new PRIVILEGE_SET { PrivilegeCount = (uint)cnt, Control = ctrl, Privilege = cnt > 0 ? privPtr.ToIEnum<LUID_AND_ATTRIBUTES>(cnt).ToArray() : new LUID_AND_ATTRIBUTES[0] };
 				}
-
-				internal static uint GetSize(uint privCount) => (uint)Marshal.SizeOf(typeof(uint)) * 2 + (uint)(Marshal.SizeOf(typeof(LUID_AND_ATTRIBUTES)) * (privCount == 0 ? 1 : privCount));
 			}
 		}
 
@@ -1694,22 +2001,26 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>A SafeHandle for security descriptors. If owned, will call LocalFree on the pointer when disposed.</summary>
-		public class SafeSecurityDescriptor : GenericSafeHandle
+		public class SafeSecurityDescriptor : SafeMemoryHandle<LocalMemoryMethods>, IEquatable<SafeSecurityDescriptor>, IEquatable<PSECURITY_DESCRIPTOR>, IEquatable<IntPtr>, ISecurityObject
 		{
 			/// <summary>The null value for a SafeSecurityDescriptor.</summary>
 			public static readonly SafeSecurityDescriptor Null = new SafeSecurityDescriptor();
 
+			private const SECURITY_INFORMATION defSecInfo = SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.SACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION;
+
 			/// <summary>Initializes a new instance of the <see cref="SafeSecurityDescriptor"/> class.</summary>
-			public SafeSecurityDescriptor() : this(IntPtr.Zero) { }
+			public SafeSecurityDescriptor() : base(IntPtr.Zero, 0, false) { }
 
 			/// <summary>Initializes a new instance of the <see cref="SafeSecurityDescriptor"/> class from an existing pointer.</summary>
 			/// <param name="pSecurityDescriptor">The security descriptor pointer.</param>
 			/// <param name="own">if set to <c>true</c> indicates that this pointer should be freed when disposed.</param>
-			public SafeSecurityDescriptor(PSECURITY_DESCRIPTOR pSecurityDescriptor, bool own = true) : base((IntPtr)pSecurityDescriptor, h => { LocalMemoryMethods.Instance.FreeMem(h); return true; }, own) { }
+			public SafeSecurityDescriptor(PSECURITY_DESCRIPTOR pSecurityDescriptor, bool own = true) :
+				base((IntPtr)pSecurityDescriptor, (int)GetSecurityDescriptorLength(pSecurityDescriptor), own)
+			{ }
 
 			/// <summary>Initializes a new instance of the <see cref="SafeSecurityDescriptor"/> class to an empty memory buffer.</summary>
 			/// <param name="size">The size of the uninitialized security descriptor.</param>
-			public SafeSecurityDescriptor(int size) : this(LocalMemoryMethods.Instance.AllocMem(size), true) { }
+			public SafeSecurityDescriptor(int size) : base(size) { }
 
 			/// <summary>Initializes a new instance of the <see cref="SafeSecurityDescriptor"/> class.</summary>
 			/// <param name="bytes">An array of bytes that contain an existing security descriptor.</param>
@@ -1719,10 +2030,91 @@ namespace Vanara.PInvoke
 				Marshal.Copy(bytes, 0, handle, bytes.Length);
 			}
 
+			/// <summary>Initializes a new instance of the <see cref="SafeSecurityDescriptor"/> class with an SDDL string.</summary>
+			/// <param name="sddl">An SDDL value representing the security descriptor.</param>
+			public SafeSecurityDescriptor(string sddl)
+			{
+				if (!ConvertStringSecurityDescriptorToSecurityDescriptor(sddl, SDDL_REVISION.SDDL_REVISION_1, out var sd, out var sdsz))
+					Win32Error.ThrowLastError();
+				handle = sd.DangerousGetHandle();
+				sz = (int)sdsz;
+				sd.SetHandleAsInvalid();
+			}
+
+			/// <summary>Determines whether the components of this security descriptor are valid.</summary>
+			public bool IsValidSecurityDescriptor => IsValidSecurityDescriptor(handle);
+
+			/// <summary>
+			/// Gets the length, in bytes, of a structurally valid security descriptor. The length includes the length of all associated structures.
+			/// </summary>
+			public uint Length => GetSecurityDescriptorLength(handle);
+
 			/// <summary>Performs an explicit conversion from <see cref="SafeSecurityDescriptor"/> to <see cref="PSECURITY_DESCRIPTOR"/>.</summary>
 			/// <param name="sd">The safe security descriptor.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator PSECURITY_DESCRIPTOR(SafeSecurityDescriptor sd) => sd.DangerousGetHandle();
+
+			/// <summary>Implements the operator !=.</summary>
+			/// <param name="psd1">The first value.</param>
+			/// <param name="psd2">The second value.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator !=(SafeSecurityDescriptor psd1, SafeSecurityDescriptor psd2) => !(psd1 == psd2);
+
+			/// <summary>Implements the operator ==.</summary>
+			/// <param name="psd1">The first value.</param>
+			/// <param name="psd2">The second value.</param>
+			/// <returns>The result of the operator.</returns>
+			public static bool operator ==(SafeSecurityDescriptor psd1, SafeSecurityDescriptor psd2)
+			{
+				if (ReferenceEquals(psd1, psd2)) return true;
+				if (Equals(null, psd1) || Equals(null, psd2)) return false;
+				return psd1.Equals(psd2);
+			}
+
+			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+			/// <param name="other">An object to compare with this object.</param>
+			/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+			public bool Equals(SafeSecurityDescriptor other) => Equals(other.DangerousGetHandle());
+
+			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+			/// <param name="other">An object to compare with this object.</param>
+			/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+			public bool Equals(PSECURITY_DESCRIPTOR other) => Equals(other.DangerousGetHandle());
+
+			/// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+			/// <param name="other">An object to compare with this object.</param>
+			/// <returns>true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.</returns>
+			public bool Equals(IntPtr other)
+			{
+				if (GetSecurityDescriptorLength(handle) != GetSecurityDescriptorLength(other)) return false;
+				var s1 = ConvertSecurityDescriptorToStringSecurityDescriptor(handle, defSecInfo);
+				var s2 = ConvertSecurityDescriptorToStringSecurityDescriptor(other, defSecInfo);
+				return string.CompareOrdinal(s1, s2) == 0;
+			}
+
+			/// <summary>Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.</summary>
+			/// <param name="obj">The object to compare with the current object.</param>
+			/// <returns>
+			/// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+			/// </returns>
+			public override bool Equals(object obj)
+			{
+				if (obj is SafeSecurityDescriptor psid2)
+					return Equals(psid2);
+				if (obj is PSECURITY_DESCRIPTOR psidh)
+					return Equals(psidh);
+				if (obj is IntPtr ptr)
+					return Equals(ptr);
+				return false;
+			}
+
+			/// <summary>Returns a hash code for this instance.</summary>
+			/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+			public override int GetHashCode() => ToString().GetHashCode();
+
+			/// <summary>Returns a <see cref="string"/> that represents this instance.</summary>
+			/// <returns>A <see cref="string"/> that represents this instance.</returns>
+			public override string ToString() => ConvertSecurityDescriptorToStringSecurityDescriptor(handle, defSecInfo);
 		}
 	}
 }
