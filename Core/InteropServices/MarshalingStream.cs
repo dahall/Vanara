@@ -7,6 +7,7 @@ namespace Vanara.InteropServices
 {
 	/// <summary>A <see cref="Stream"/> derivative for working with unmanaged memory.</summary>
 	/// <seealso cref="System.IO.Stream"/>
+	[Obsolete("This class may not be available in future releases. Please replace uses with Vanara.InteropServices.NativeMemoryStream.")]
 	public class MarshalingStream : Stream
 	{
 		private readonly IntPtr ptr;
