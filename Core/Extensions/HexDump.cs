@@ -11,8 +11,7 @@ namespace Vanara.Extensions
 		/// <param name="gapEvery">The number of bytes to display before inserting an extra space to create a visual gap.</param>
 		/// <param name="rowIdLen">
 		/// The number of hexadecimal digits to display on the left side of each line to indicate position. If this value is 0, then no
-		/// position indicator will be shown. If this value is -1, then the size will be computed in increments of 4 based on the size of
-		/// <paramref name="bytes"/>.
+		/// position indicator will be shown. If this value is -1, then the size will be computed in increments of 4 based on the size of <paramref name="bytes"/>.
 		/// </param>
 		/// <returns>A multi-line string that contains a hexadecimal dump of <paramref name="bytes"/>.</returns>
 		/// <exception cref="ArgumentNullException">bytes</exception>
@@ -34,5 +33,19 @@ namespace Vanara.Extensions
 			}
 			return sb.ToString();
 		}
+
+		/// <summary>Creates a multi-line dump of a byte array using hexadecimal values.</summary>
+		/// <param name="ptr">A pointer to the memory to dump.</param>
+		/// <param name="byteCount">The number of bytes to display starting at the location pointed to by <paramref name="ptr"/>.</param>
+		/// <param name="bytesPerRow">The number of bytes to display on each line.</param>
+		/// <param name="gapEvery">The number of bytes to display before inserting an extra space to create a visual gap.</param>
+		/// <param name="rowIdLen">
+		/// The number of hexadecimal digits to display on the left side of each line to indicate position. If this value is 0, then no
+		/// position indicator will be shown. If this value is -1, then the size will be computed in increments of 4 based on the size of <paramref name="byteCount"/>.
+		/// </param>
+		/// <returns>A multi-line string that contains a hexadecimal dump of <paramref name="ptr"/>.</returns>
+		/// <exception cref="ArgumentNullException">bytes</exception>
+		public static string ToHexDumpString(this IntPtr ptr, int byteCount, int bytesPerRow = 16, int gapEvery = 4, int rowIdLen = -1) =>
+			ptr.ToArray<byte>(byteCount).ToHexDumpString(bytesPerRow, gapEvery, rowIdLen);
 	}
 }
