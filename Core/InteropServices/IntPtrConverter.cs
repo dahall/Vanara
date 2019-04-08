@@ -33,7 +33,11 @@ namespace Vanara.InteropServices
 		/// <exception cref="OutOfMemoryException"></exception>
 		public static object Convert(this IntPtr ptr, uint sz, Type destType, CharSet charSet = CharSet.Auto)
 		{
-			if (ptr == IntPtr.Zero) throw new ArgumentException("Cannot convert a null pointer.", nameof(ptr));
+			if (ptr == IntPtr.Zero)
+			{
+				if (!destType.IsValueType) return null;
+				throw new ArgumentException("Cannot convert a null pointer.", nameof(ptr));
+			}
 			if (sz == 0) throw new ArgumentException("Cannot convert a pointer with no Size.", nameof(sz));
 
 			// Handle byte array and pointer as special cases
@@ -64,18 +68,7 @@ namespace Vanara.InteropServices
 						throw new NotSupportedException("Unsupported type parameter.");
 					}
 				case TypeCode.Boolean:
-					object boolVal;
-					if (sz == 1)
-						boolVal = GetBlittable(typeof(byte));
-					else if (sz == 2)
-						boolVal = GetBlittable(typeof(ushort));
-					else if (sz == 4)
-						boolVal = GetBlittable(typeof(uint));
-					else if (sz == 8)
-						boolVal = GetBlittable(typeof(ulong));
-					else
-						throw SizeExc();
-					return System.Convert.ChangeType(boolVal, typeCode);
+					return System.Convert.ChangeType(GetBlittable(typeof(uint)), typeCode);
 
 				case TypeCode.Char:
 					return System.Convert.ChangeType(GetBlittable(typeof(ushort)), typeCode);
