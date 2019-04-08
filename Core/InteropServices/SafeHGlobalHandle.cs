@@ -29,6 +29,9 @@ namespace Vanara.InteropServices
 		public Action<IntPtr> FreeSecureStringUni => Marshal.ZeroFreeGlobalAllocUnicode;
 		/// <summary>Gets the Ansi <see cref="SecureString"/> free method.</summary>
 		public Action<IntPtr> FreeSecureStringAnsi => Marshal.ZeroFreeGlobalAllocAnsi;
+
+		/// <summary>Static instance to methods.</summary>
+		public static IMemoryMethods Instance { get; } = new HGlobalMemoryMethods();
 	}
 
 	/// <summary>A <see cref="SafeHandle"/> for memory allocated via LocalAlloc.</summary>

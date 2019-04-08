@@ -29,6 +29,10 @@ namespace Vanara.InteropServices
 		public Action<IntPtr> FreeSecureStringUni => Marshal.ZeroFreeCoTaskMemUnicode;
 		/// <summary>Gets the Ansi <see cref="SecureString"/> free method.</summary>
 		public Action<IntPtr> FreeSecureStringAnsi => Marshal.ZeroFreeCoTaskMemAnsi;
+
+
+		/// <summary>Static instance to methods.</summary>
+		public static IMemoryMethods Instance { get; } = new CoTaskMemoryMethods();
 	}
 
 	/// <summary>A <see cref="SafeHandle"/> for memory allocated via COM.</summary>
