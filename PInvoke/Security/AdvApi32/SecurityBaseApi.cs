@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
-using System.Text;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 
@@ -82,6 +81,293 @@ namespace Vanara.PInvoke
 			/// </summary>
 			LOGON32_LOGON_NEW_CREDENTIALS = 9
 		}
+
+		/// <summary>
+		/// The <c>AccessCheck</c> function determines whether a security descriptor grants a specified set of access rights to the client
+		/// identified by an access token. Typically, server applications use this function to check access to a private object.
+		/// </summary>
+		/// <param name="pSecurityDescriptor">A pointer to a SECURITY_DESCRIPTOR structure against which access is checked.</param>
+		/// <param name="ClientToken">
+		/// A handle to an impersonation token that represents the client that is attempting to gain access. The handle must have TOKEN_QUERY
+		/// access to the token; otherwise, the function fails with ERROR_ACCESS_DENIED.
+		/// </param>
+		/// <param name="DesiredAccess">
+		/// <para>
+		/// Access mask that specifies the access rights to check. This mask must have been mapped by the MapGenericMask function to contain
+		/// no generic access rights.
+		/// </para>
+		/// <para>
+		/// If this parameter is MAXIMUM_ALLOWED, the function sets the GrantedAccess access mask to indicate the maximum access rights the
+		/// security descriptor allows the client.
+		/// </para>
+		/// </param>
+		/// <param name="GenericMapping">
+		/// A pointer to the GENERIC_MAPPING structure associated with the object for which access is being checked.
+		/// </param>
+		/// <param name="PrivilegeSet">
+		/// A pointer to a PRIVILEGE_SET structure that receives the privileges used to perform the access validation. If no privileges were
+		/// used, the function sets the <c>PrivilegeCount</c> member to zero.
+		/// </param>
+		/// <param name="PrivilegeSetLength">Specifies the size, in bytes, of the buffer pointed to by the PrivilegeSet parameter.</param>
+		/// <param name="GrantedAccess">
+		/// A pointer to an access mask that receives the granted access rights. If AccessStatus is set to <c>FALSE</c>, the function sets
+		/// the access mask to zero. If the function fails, it does not set the access mask.
+		/// </param>
+		/// <param name="AccessStatus">
+		/// A pointer to a variable that receives the results of the access check. If the security descriptor allows the requested access
+		/// rights to the client identified by the access token, AccessStatus is set to <c>TRUE</c>. Otherwise, AccessStatus is set to
+		/// <c>FALSE</c>, and you can call GetLastError to get extended error information.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>For more information, see the How AccessCheck Works overview.</para>
+		/// <para>
+		/// The <c>AccessCheck</c> function compares the specified security descriptor with the specified access token and indicates, in the
+		/// AccessStatus parameter, whether access is granted or denied. If access is granted, the requested access mask becomes the object's
+		/// granted access mask.
+		/// </para>
+		/// <para>
+		/// If the security descriptor's DACL is <c>NULL</c>, the AccessStatus parameter returns <c>TRUE</c>, which indicates that the client
+		/// has the requested access.
+		/// </para>
+		/// <para>
+		/// The <c>AccessCheck</c> function fails with ERROR_INVALID_SECURITY_DESCR if the security descriptor does not contain owner and
+		/// group SIDs.
+		/// </para>
+		/// <para>
+		/// The <c>AccessCheck</c> function does not generate an audit. If your application requires audits for access checks, use functions
+		/// such as AccessCheckAndAuditAlarm, AccessCheckByTypeAndAuditAlarm, AccessCheckByTypeResultListAndAuditAlarm, or
+		/// AccessCheckByTypeResultListAndAuditAlarmByHandle, instead of <c>AccessCheck</c>.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example that uses this function, see Verifying Client Access with ACLs.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-accesscheck BOOL AccessCheck(
+		// PSECURITY_DESCRIPTOR pSecurityDescriptor, HANDLE ClientToken, DWORD DesiredAccess, PGENERIC_MAPPING GenericMapping, PPRIVILEGE_SET
+		// PrivilegeSet, LPDWORD PrivilegeSetLength, LPDWORD GrantedAccess, LPBOOL AccessStatus );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("securitybaseapi.h", MSDNShortId = "d9fd2e44-5782-40c9-a1cf-1788ca7afc50")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AccessCheck(PSECURITY_DESCRIPTOR pSecurityDescriptor, HTOKEN ClientToken, uint DesiredAccess, in GENERIC_MAPPING GenericMapping,
+			[In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRIVILEGE_SET.Marshaler))] ref PRIVILEGE_SET PrivilegeSet, ref uint PrivilegeSetLength,
+			out uint GrantedAccess, [MarshalAs(UnmanagedType.Bool)] out bool AccessStatus);
+
+		/// <summary>
+		/// The <c>AccessCheckByType</c> function determines whether a security descriptor grants a specified set of access rights to the
+		/// client identified by an access token. The function can check the client's access to a hierarchy of objects, such as an object,
+		/// its property sets, and properties. The function grants or denies access to the hierarchy as a whole. Typically, server
+		/// applications use this function to check access to a private object.
+		/// </summary>
+		/// <param name="pSecurityDescriptor">A pointer to a SECURITY_DESCRIPTOR structure against which access is checked.</param>
+		/// <param name="PrincipalSelfSid">
+		/// <para>
+		/// A pointer to a security identifier (SID). If the security descriptor is associated with an object that represents a principal
+		/// (for example, a user object), the PrincipalSelfSid parameter should be the SID of the object. When evaluating access, this SID
+		/// logically replaces the SID in any access control entry containing the well-known PRINCIPAL_SELF SID (S-1-5-10). For information
+		/// about well-known SIDs, see Well-known SIDs.
+		/// </para>
+		/// <para>Set this parameter to <c>NULL</c> if the protected object does not represent a principal.</para>
+		/// </param>
+		/// <param name="ClientToken">
+		/// A handle to an impersonation token that represents the client attempting to gain access. The handle must have TOKEN_QUERY access
+		/// to the token; otherwise, the function fails with ERROR_ACCESS_DENIED.
+		/// </param>
+		/// <param name="DesiredAccess">
+		/// <para>
+		/// Access mask that specifies the access rights to check. This mask must have been mapped by the MapGenericMask function to contain
+		/// no generic access rights.
+		/// </para>
+		/// <para>
+		/// If this parameter is MAXIMUM_ALLOWED, the function sets the GrantedAccess access mask to indicate the maximum access rights the
+		/// security descriptor allows the client.
+		/// </para>
+		/// </param>
+		/// <param name="ObjectTypeList">
+		/// <para>
+		/// A pointer to an array of OBJECT_TYPE_LIST structures that identify the hierarchy of object types for which to check access. Each
+		/// element in the array specifies a GUID that identifies the object type and a value indicating the level of the object type in the
+		/// hierarchy of object types. The array should not have two elements with the same GUID.
+		/// </para>
+		/// <para>
+		/// The array must have at least one element. The first element in the array must be at level zero and identify the object itself.
+		/// The array can have only one level zero element. The second element is a subobject, such as a property set, at level 1. Following
+		/// each level 1 entry are subordinate entries for the level 2 through 4 subobjects. Thus, the levels for the elements in the array
+		/// might be {0, 1, 2, 2, 1, 2, 3}. If the object type list is out of order, <c>AccessCheckByType</c> fails and GetLastError returns ERROR_INVALID_PARAMETER.
+		/// </para>
+		/// <para>If ObjectTypeList is <c>NULL</c>, <c>AccessCheckByType</c> is the same as the AccessCheck function.</para>
+		/// </param>
+		/// <param name="ObjectTypeListLength">Specifies the number of elements in the ObjectTypeList array.</param>
+		/// <param name="GenericMapping">
+		/// A pointer to the GENERIC_MAPPING structure associated with the object for which access is being checked. The <c>GenericAll</c>
+		/// member of the <c>GENERIC_MAPPING</c> structure should contain all the access rights that can be granted by the resource manager,
+		/// including STANDARD_RIGHTS_ALL and all of the rights that are set in the <c>GenericRead</c>, <c>GenericWrite</c>, and
+		/// <c>GenericExecute</c> members.
+		/// </param>
+		/// <param name="PrivilegeSet">
+		/// A pointer to a PRIVILEGE_SET structure that receives the privileges used to perform the access validation. If no privileges were
+		/// used, the function sets the <c>PrivilegeCount</c> member to zero.
+		/// </param>
+		/// <param name="PrivilegeSetLength">Specifies the size, in bytes, of the buffer pointed to by the PrivilegeSet parameter.</param>
+		/// <param name="GrantedAccess">
+		/// A pointer to an access mask that receives the granted access rights. If AccessStatus is set to <c>FALSE</c>, the function sets
+		/// the access mask to zero. If the function fails, it does not set the access mask.
+		/// </param>
+		/// <param name="AccessStatus">
+		/// A pointer to a variable that receives the results of the access check. If the security descriptor allows the requested access
+		/// rights to the client identified by the access token, AccessStatus is set to <c>TRUE</c>. Otherwise, AccessStatus is set to
+		/// <c>FALSE</c>, and you can call GetLastError to get extended error information.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>For more information, see the How AccessCheck Works overview.</para>
+		/// <para>
+		/// The <c>AccessCheckByType</c> function compares the specified security descriptor with the specified access token and indicates,
+		/// in the AccessStatus parameter, whether access is granted or denied.
+		/// </para>
+		/// <para>
+		/// The ObjectTypeList array does not necessarily represent the entire defined object. Rather, it represents that subset of the
+		/// object for which to check access. For instance, to check access to two properties in a property set, specify an object type list
+		/// with four elements: the object itself at level zero, the property set at level 1, and the two properties at level 2.
+		/// </para>
+		/// <para>
+		/// The <c>AccessCheckByType</c> function evaluates ACEs that apply to the object itself and object-specific ACEs for the object
+		/// types listed in the ObjectTypeList array. The function ignores object-specific ACEs for object types not listed in the
+		/// ObjectTypeList array. Thus, the results returned in the AccessStatus parameter indicate the access allowed to the subset of the
+		/// object defined by the ObjectTypeList parameter, not to the entire object.
+		/// </para>
+		/// <para>
+		/// For more information about how a hierarchy of ACEs controls access to an object and its subobjects, see ACEs to Control Access to
+		/// an Object's Properties.
+		/// </para>
+		/// <para>
+		/// If the security descriptor's DACL is <c>NULL</c>, the AccessStatus parameter returns <c>TRUE</c>, indicating that the client has
+		/// the requested access.
+		/// </para>
+		/// <para>If the security descriptor does not contain owner and group SIDs, <c>AccessCheckByType</c> fails with ERROR_INVALID_SECURITY_DESCR.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-accesscheckbytype BOOL AccessCheckByType(
+		// PSECURITY_DESCRIPTOR pSecurityDescriptor, PSID PrincipalSelfSid, HANDLE ClientToken, DWORD DesiredAccess, POBJECT_TYPE_LIST
+		// ObjectTypeList, DWORD ObjectTypeListLength, PGENERIC_MAPPING GenericMapping, PPRIVILEGE_SET PrivilegeSet, LPDWORD
+		// PrivilegeSetLength, LPDWORD GrantedAccess, LPBOOL AccessStatus );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("securitybaseapi.h", MSDNShortId = "50acfc17-459d-464c-9927-88b32dd424c7")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AccessCheckByType(PSECURITY_DESCRIPTOR pSecurityDescriptor, PSID PrincipalSelfSid, HTOKEN ClientToken, uint DesiredAccess, OBJECT_TYPE_LIST[] ObjectTypeList,
+			uint ObjectTypeListLength, in GENERIC_MAPPING GenericMapping, [Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRIVILEGE_SET.Marshaler))] PRIVILEGE_SET PrivilegeSet,
+			ref uint PrivilegeSetLength, out uint GrantedAccess, [MarshalAs(UnmanagedType.Bool)] out bool AccessStatus);
+
+		/// <summary>
+		/// The <c>AccessCheckByTypeResultList</c> function determines whether a security descriptor grants a specified set of access rights
+		/// to the client identified by an access token. The function can check the client's access to a hierarchy of objects, such as an
+		/// object, its property sets, and properties. The function reports the access rights granted or denied to each object type in the
+		/// hierarchy. Typically, server applications use this function to check access to a private object.
+		/// </summary>
+		/// <param name="pSecurityDescriptor">A pointer to a SECURITY_DESCRIPTOR structure against which access is checked.</param>
+		/// <param name="PrincipalSelfSid">
+		/// <para>
+		/// A pointer to a security identifier (SID). If the security descriptor is associated with an object that represents a principal
+		/// (for example, a user object), the PrincipalSelfSid parameter should be the SID of the object. When evaluating access, this SID
+		/// logically replaces the SID in any access control entry (ACE) that contains the well-known PRINCIPAL_SELF SID (S-1-5-10). For
+		/// information about well-known SIDs, see Well-known SIDs.
+		/// </para>
+		/// <para>If the protected object does not represent a principal, set this parameter to <c>NULL</c>.</para>
+		/// </param>
+		/// <param name="ClientToken">
+		/// A handle to an impersonation token that represents the client attempting to gain access. The handle must have TOKEN_QUERY access
+		/// to the token; otherwise, the function fails with ERROR_ACCESS_DENIED.
+		/// </param>
+		/// <param name="DesiredAccess">
+		/// <para>
+		/// An access mask that specifies the access rights to check. This mask must have been mapped by the MapGenericMask function to
+		/// contain no generic access rights.
+		/// </para>
+		/// <para>
+		/// If this parameter is MAXIMUM_ALLOWED, the function sets the access masks in the GrantedAccess array to indicate the client's
+		/// maximum access rights to each element in the object type list.
+		/// </para>
+		/// </param>
+		/// <param name="ObjectTypeList">
+		/// <para>
+		/// A pointer to an array of OBJECT_TYPE_LIST structures that identify the hierarchy of object types for which to check access. Each
+		/// element in the array specifies a GUID that identifies the object type and a value that indicates the level of the object type in
+		/// the hierarchy of object types. The array should not have two elements with the same GUID.
+		/// </para>
+		/// <para>
+		/// The array must have at least one element. The first element in the array must be at level zero and identify the object itself.
+		/// The array can have only one level zero element. The second element is a subobject, such as a property set, at level 1. Following
+		/// each level 1 entry are subordinate entries for the level 2 through 4 subobjects. Thus, the levels for the elements in the array
+		/// might be {0, 1, 2, 2, 1, 2, 3}. If the object type list is out of order, <c>AccessCheckByTypeResultList</c> fails and
+		/// GetLastError returns ERROR_INVALID_PARAMETER.
+		/// </para>
+		/// </param>
+		/// <param name="ObjectTypeListLength">
+		/// The number of elements in the ObjectTypeList array. This is also the number of elements in the arrays pointed to by the
+		/// GrantedAccessList and AccessStatusList parameters.
+		/// </param>
+		/// <param name="GenericMapping">
+		/// A pointer to the GENERIC_MAPPING structure associated with the object for which access is being checked.
+		/// </param>
+		/// <param name="PrivilegeSet">
+		/// A pointer to a PRIVILEGE_SET structure that receives the privileges used to perform the access validation. If no privileges were
+		/// used, the function sets the <c>PrivilegeCount</c> member to zero.
+		/// </param>
+		/// <param name="PrivilegeSetLength">The size, in bytes, of the buffer pointed to by the PrivilegeSet parameter.</param>
+		/// <param name="GrantedAccessList">
+		/// A pointer to an array of access masks. The function sets each access mask to indicate the access rights granted to the
+		/// corresponding element in the object type list. If the function fails, it does not set the access masks.
+		/// </param>
+		/// <param name="AccessStatusList">
+		/// A pointer to an array of status codes for the corresponding elements in the object type list. The function sets an element to
+		/// zero to indicate success or a nonzero value to indicate the specific error during the access check. If the function fails, it
+		/// does not set any of the elements in the array.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns nonzero.</para>
+		/// <para>If the function fails, it returns zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>For more information, see the How AccessCheck Works overview.</para>
+		/// <para>
+		/// The <c>AccessCheckByTypeResultList</c> function compares the specified security descriptor with the specified access token and
+		/// indicates, in the AccessStatusList parameter, whether access is granted or denied for each of the elements in the object types list.
+		/// </para>
+		/// <para>
+		/// The ObjectTypeList array does not necessarily represent the entire defined object. Rather, it represents that subset of the
+		/// object for which to check access. For instance, to check access to two properties in a property set, specify an object type list
+		/// with four elements: the object itself at level zero, the property set at level 1, and the two properties at level 2.
+		/// </para>
+		/// <para>
+		/// The <c>AccessCheckByTypeResultList</c> function evaluates ACEs that apply to the object itself and object-specific ACEs for the
+		/// object types listed in the ObjectTypeList array. The function ignores object-specific ACEs for object types not listed in the
+		/// ObjectTypeList array. Thus, the results returned for element zero in the AccessStatusList parameter indicate the access allowed
+		/// to the subset of the object defined by the ObjectTypeList parameter, not to the entire object.
+		/// </para>
+		/// <para>
+		/// For more information about how a hierarchy of ACEs controls access to an object and its subobjects, see ACEs to Control Access to
+		/// an Object's Properties.
+		/// </para>
+		/// <para>
+		/// If the security descriptor's discretionary access control list (DACL) is <c>NULL</c>, the function grants the requested access to
+		/// all of the elements in the object type list.
+		/// </para>
+		/// <para>If the security descriptor does not contain owner and group SIDs, <c>AccessCheckByTypeResultList</c> fails with ERROR_INVALID_SECURITY_DESCR.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-accesscheckbytyperesultlist BOOL
+		// AccessCheckByTypeResultList( PSECURITY_DESCRIPTOR pSecurityDescriptor, PSID PrincipalSelfSid, HANDLE ClientToken, DWORD
+		// DesiredAccess, POBJECT_TYPE_LIST ObjectTypeList, DWORD ObjectTypeListLength, PGENERIC_MAPPING GenericMapping, PPRIVILEGE_SET
+		// PrivilegeSet, LPDWORD PrivilegeSetLength, LPDWORD GrantedAccessList, LPDWORD AccessStatusList );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("securitybaseapi.h", MSDNShortId = "ce713421-d4ff-48ed-b751-5e5c5397d820")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AccessCheckByTypeResultList(PSECURITY_DESCRIPTOR pSecurityDescriptor, PSID PrincipalSelfSid, HTOKEN ClientToken, uint DesiredAccess, [In] OBJECT_TYPE_LIST[] ObjectTypeList,
+			uint ObjectTypeListLength, in GENERIC_MAPPING GenericMapping, [Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PRIVILEGE_SET.Marshaler))] PRIVILEGE_SET PrivilegeSet,
+			ref uint PrivilegeSetLength, out uint GrantedAccessList, out uint AccessStatusList);
 
 		/// <summary>
 		/// The AdjustTokenPrivileges function enables or disables privileges in the specified access token. Enabling or disabling privileges
@@ -342,6 +628,40 @@ namespace Vanara.PInvoke
 		/// </returns>
 		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446635")]
+		public static extern bool GetAclInformation(PACL pAcl, IntPtr pAclInformation, uint nAclInformationLength, ACL_INFORMATION_CLASS dwAclInformationClass);
+
+		/// <summary>The GetAclInformation function retrieves information about an access control list (ACL).</summary>
+		/// <param name="pAcl">
+		/// A pointer to an ACL. The function retrieves information about this ACL. If a null value is passed, the function causes an access violation.
+		/// </param>
+		/// <param name="pAclInformation">
+		/// A pointer to a buffer to receive the requested information. The structure that is placed into the buffer depends on the
+		/// information class requested in the dwAclInformationClass parameter.
+		/// </param>
+		/// <param name="nAclInformationLength">The size, in bytes, of the buffer pointed to by the pAclInformation parameter.</param>
+		/// <param name="dwAclInformationClass">
+		/// A value of the ACL_INFORMATION_CLASS enumeration that indicates the class of information requested. This parameter can be one of
+		/// two values from this enumeration:
+		/// <list type="bullet">
+		/// <listItem>
+		/// <para>
+		/// If the value is AclRevisionInformation, the function fills the buffer pointed to by the pAclInformation parameter with an
+		/// ACL_REVISION_INFORMATION structure.
+		/// </para>
+		/// </listItem><listItem>
+		/// <para>
+		/// If the value is AclSizeInformation, the function fills the buffer pointed to by the pAclInformation parameter with an
+		/// ACL_SIZE_INFORMATION structure.
+		/// </para>
+		/// </listItem>
+		/// </list>
+		/// </param>
+		/// <returns>
+		/// If the function succeeds, the function returns nonzero. If the function fails, it returns zero. To get extended error
+		/// information, call GetLastError.
+		/// </returns>
+		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
+		[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446635")]
 		public static extern bool GetAclInformation(PACL pAcl, ref ACL_REVISION_INFORMATION pAclInformation, uint nAclInformationLength = 4, ACL_INFORMATION_CLASS dwAclInformationClass = ACL_INFORMATION_CLASS.AclRevisionInformation);
 
 		/// <summary>The GetAclInformation function retrieves information about an access control list (ACL).</summary>
@@ -378,6 +698,24 @@ namespace Vanara.PInvoke
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446635")]
 		public static extern bool GetAclInformation(PACL pAcl, ref ACL_SIZE_INFORMATION pAclInformation, uint nAclInformationLength = 12, ACL_INFORMATION_CLASS dwAclInformationClass = ACL_INFORMATION_CLASS.AclSizeInformation);
 
+		/// <summary>The GetAclInformation function retrieves information about an access control list (ACL).</summary>
+		/// <param name="pAcl">
+		/// A pointer to an ACL. The function retrieves information about this ACL. If a null value is passed, the function causes an access violation.
+		/// </param>
+		/// <returns>
+		/// The requested information. The structure that is returned depends on the information class requested in the dwAclInformationClass parameter.
+		/// </returns>
+		public static T GetAclInformation<T>(this PACL pAcl) where T : struct
+		{
+			if (!CorrespondingTypeAttribute.CanGet<T, ACL_INFORMATION_CLASS>(out var c)) throw new ArgumentException("Cannot retrieve value of type T.");
+			using (var mem = new SafeCoTaskMemHandle(12))
+			{
+				if (!GetAclInformation(pAcl, (IntPtr)mem, (uint)Marshal.SizeOf(typeof(T)), c))
+					throw new Win32Exception();
+				return mem.ToStructure<T>();
+			}
+		}
+
 		/// <summary>The GetPrivateObjectSecurity function retrieves information from a private object's security descriptor.</summary>
 		/// <param name="ObjectDescriptor">A pointer to a SECURITY_DESCRIPTOR structure. This is the security descriptor to be queried.</param>
 		/// <param name="SecurityInformation">
@@ -405,9 +743,62 @@ namespace Vanara.PInvoke
 		public static extern bool GetPrivateObjectSecurity(PSECURITY_DESCRIPTOR ObjectDescriptor, SECURITY_INFORMATION SecurityInformation,
 			SafeSecurityDescriptor ResultantDescriptor, uint DescriptorLength, out uint ReturnLength);
 
-		/// <summary><para>The <c>GetSecurityDescriptorControl</c> function retrieves a security descriptor control and revision information.</para></summary><param name="pSecurityDescriptor"><para>A pointer to a SECURITY_DESCRIPTOR structure whose control and revision information the function retrieves.</para></param><param name="pControl"><para>A pointer to a SECURITY_DESCRIPTOR_CONTROL structure that receives the security descriptor&#39;s control information.</para></param><param name="lpdwRevision"><para>A pointer to a variable that receives the security descriptor&#39;s revision value. This value is always set, even when <c>GetSecurityDescriptorControl</c> returns an error.</para></param><returns><para>If the function succeeds, the return value is nonzero.</para><para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para></returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-getsecuritydescriptorcontrol
-		// BOOL GetSecurityDescriptorControl( PSECURITY_DESCRIPTOR pSecurityDescriptor, PSECURITY_DESCRIPTOR_CONTROL pControl, LPDWORD lpdwRevision );
+		/// <summary>The GetPrivateObjectSecurity function retrieves information from a private object's security descriptor.</summary>
+		/// <param name="ObjectDescriptor">A pointer to a SECURITY_DESCRIPTOR structure. This is the security descriptor to be queried.</param>
+		/// <param name="SecurityInformation">
+		/// A set of bit flags that indicate the parts of the security descriptor to retrieve. This parameter can be a combination of the
+		/// SECURITY_INFORMATION bit flags.
+		/// </param>
+		/// <returns>
+		/// The requested information from the specified security descriptor. The SECURITY_DESCRIPTOR structure is returned in self-relative format.
+		/// </returns>
+		public static SafeSecurityDescriptor GetPrivateObjectSecurity(this PSECURITY_DESCRIPTOR ObjectDescriptor, SECURITY_INFORMATION SecurityInformation)
+		{
+			var pResSD = SafeSecurityDescriptor.Null;
+			AdvApi32.GetPrivateObjectSecurity(ObjectDescriptor, SecurityInformation, pResSD, 0, out var ret);
+			if (ret > 0)
+			{
+				pResSD = new SafeSecurityDescriptor((int)ret);
+				if (!pResSD.IsInvalid && !AdvApi32.GetPrivateObjectSecurity(ObjectDescriptor, SecurityInformation, pResSD, ret, out ret))
+					Win32Error.GetLastError().ThrowIfFailed();
+			}
+			return pResSD;
+		}
+
+		/// <summary>The GetPrivateObjectSecurity function retrieves information from a private object's security descriptor.</summary>
+		/// <param name="ObjectDescriptor">A pointer to a SECURITY_DESCRIPTOR structure. This is the security descriptor to be queried.</param>
+		/// <param name="SecurityInformation">
+		/// A set of bit flags that indicate the parts of the security descriptor to retrieve. This parameter can be a combination of the
+		/// SECURITY_INFORMATION bit flags.
+		/// </param>
+		/// <returns>
+		/// The requested information from the specified security descriptor. The SECURITY_DESCRIPTOR structure is returned in self-relative format.
+		/// </returns>
+		public static SafeSecurityDescriptor GetPrivateObjectSecurity(this SafeSecurityDescriptor ObjectDescriptor, SECURITY_INFORMATION SecurityInformation) =>
+			GetPrivateObjectSecurity((PSECURITY_DESCRIPTOR)ObjectDescriptor, SecurityInformation);
+
+		/// <summary>
+		/// <para>The <c>GetSecurityDescriptorControl</c> function retrieves a security descriptor control and revision information.</para>
+		/// </summary>
+		/// <param name="pSecurityDescriptor">
+		/// <para>A pointer to a SECURITY_DESCRIPTOR structure whose control and revision information the function retrieves.</para>
+		/// </param>
+		/// <param name="pControl">
+		/// <para>A pointer to a SECURITY_DESCRIPTOR_CONTROL structure that receives the security descriptor's control information.</para>
+		/// </param>
+		/// <param name="lpdwRevision">
+		/// <para>
+		/// A pointer to a variable that receives the security descriptor's revision value. This value is always set, even when
+		/// <c>GetSecurityDescriptorControl</c> returns an error.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-getsecuritydescriptorcontrol BOOL
+		// GetSecurityDescriptorControl( PSECURITY_DESCRIPTOR pSecurityDescriptor, PSECURITY_DESCRIPTOR_CONTROL pControl, LPDWORD
+		// lpdwRevision );
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "d66682f2-8017-4245-9d93-5f8332a5b483")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -456,17 +847,57 @@ namespace Vanara.PInvoke
 		public static extern bool GetSecurityDescriptorDacl(PSECURITY_DESCRIPTOR pSecurityDescriptor, [MarshalAs(UnmanagedType.Bool)] out bool lpbDaclPresent,
 			out PACL pDacl, [MarshalAs(UnmanagedType.Bool)] out bool lpbDaclDefaulted);
 
-		/// <summary><para>The <c>GetSecurityDescriptorGroup</c> function retrieves the primary group information from a security descriptor.</para></summary><param name="pSecurityDescriptor"><para>A pointer to a SECURITY_DESCRIPTOR structure whose primary group information the function retrieves.</para></param><param name="pGroup"><para>A pointer to a pointer to a security identifier (SID) that identifies the primary group when the function returns. If the security descriptor does not contain a primary group, the function sets the pointer pointed to by pGroup to <c>NULL</c> and ignores the remaining output parameter, lpbGroupDefaulted. If the security descriptor contains a primary group, the function sets the pointer pointed to by pGroup to the address of the security descriptor&#39;s group SID and provides a valid value for the variable pointed to by lpbGroupDefaulted.</para></param><param name="lpbGroupDefaulted"><para>A pointer to a flag that is set to the value of the SE_GROUP_DEFAULTED flag in the SECURITY_DESCRIPTOR_CONTROL structure when the function returns. If the value stored in the variable pointed to by the pGroup parameter is <c>NULL</c>, no value is set.</para></param><returns><para>If the function succeeds, the function returns nonzero.</para><para>If the function fails, it returns zero. To get extended error information, call GetLastError.</para></returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-getsecuritydescriptorgroup
-		// BOOL GetSecurityDescriptorGroup( PSECURITY_DESCRIPTOR pSecurityDescriptor, PSID *pGroup, LPBOOL lpbGroupDefaulted );
+		/// <summary>
+		/// <para>The <c>GetSecurityDescriptorGroup</c> function retrieves the primary group information from a security descriptor.</para>
+		/// </summary>
+		/// <param name="pSecurityDescriptor">
+		/// <para>A pointer to a SECURITY_DESCRIPTOR structure whose primary group information the function retrieves.</para>
+		/// </param>
+		/// <param name="pGroup">
+		/// <para>
+		/// A pointer to a pointer to a security identifier (SID) that identifies the primary group when the function returns. If the
+		/// security descriptor does not contain a primary group, the function sets the pointer pointed to by pGroup to <c>NULL</c> and
+		/// ignores the remaining output parameter, lpbGroupDefaulted. If the security descriptor contains a primary group, the function sets
+		/// the pointer pointed to by pGroup to the address of the security descriptor's group SID and provides a valid value for the
+		/// variable pointed to by lpbGroupDefaulted.
+		/// </para>
+		/// </param>
+		/// <param name="lpbGroupDefaulted">
+		/// <para>
+		/// A pointer to a flag that is set to the value of the SE_GROUP_DEFAULTED flag in the SECURITY_DESCRIPTOR_CONTROL structure when the
+		/// function returns. If the value stored in the variable pointed to by the pGroup parameter is <c>NULL</c>, no value is set.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns nonzero.</para>
+		/// <para>If the function fails, it returns zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-getsecuritydescriptorgroup BOOL
+		// GetSecurityDescriptorGroup( PSECURITY_DESCRIPTOR pSecurityDescriptor, PSID *pGroup, LPBOOL lpbGroupDefaulted );
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "a920b49e-a4c2-4e49-b529-88c12205d995")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetSecurityDescriptorGroup(PSECURITY_DESCRIPTOR pSecurityDescriptor, out PSID pGroup, [MarshalAs(UnmanagedType.Bool)] out bool lpbGroupDefaulted);
 
-		/// <summary><para>The <c>GetSecurityDescriptorLength</c> function returns the length, in bytes, of a structurally valid security descriptor. The length includes the length of all associated structures.</para></summary><param name="pSecurityDescriptor"><para>A pointer to the SECURITY_DESCRIPTOR structure whose length the function returns. The pointer is assumed to be valid.</para></param><returns><para>If the function succeeds, the function returns the length, in bytes, of the SECURITY_DESCRIPTOR structure.</para><para>If the SECURITY_DESCRIPTOR structure is not valid, the return value is undefined.</para></returns><remarks><para>The minimum length of a security descriptor is SECURITY_DESCRIPTOR_MIN_LENGTH. A security descriptor of this length has no associated security identifiers (SIDs) or access control lists (ACLs).</para></remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-getsecuritydescriptorlength
-		// DWORD GetSecurityDescriptorLength( PSECURITY_DESCRIPTOR pSecurityDescriptor );
+		/// <summary>
+		/// The <c>GetSecurityDescriptorLength</c> function returns the length, in bytes, of a structurally valid security descriptor. The
+		/// length includes the length of all associated structures.
+		/// </summary>
+		/// <param name="pSecurityDescriptor">
+		/// <para>A pointer to the SECURITY_DESCRIPTOR structure whose length the function returns. The pointer is assumed to be valid.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns the length, in bytes, of the SECURITY_DESCRIPTOR structure.</para>
+		/// <para>If the SECURITY_DESCRIPTOR structure is not valid, the return value is undefined.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The minimum length of a security descriptor is SECURITY_DESCRIPTOR_MIN_LENGTH. A security descriptor of this length has no
+		/// associated security identifiers (SIDs) or access control lists (ACLs).
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-getsecuritydescriptorlength DWORD
+		// GetSecurityDescriptorLength( PSECURITY_DESCRIPTOR pSecurityDescriptor );
 		[DllImport(Lib.AdvApi32, SetLastError = false, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "eb331839-ff3e-4f4b-b93b-18da2ea72697")]
 		public static extern uint GetSecurityDescriptorLength(PSECURITY_DESCRIPTOR pSecurityDescriptor);
@@ -492,9 +923,44 @@ namespace Vanara.PInvoke
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446651")]
 		public static extern bool GetSecurityDescriptorOwner(PSECURITY_DESCRIPTOR pSecurityDescriptor, out PSID pOwner, [MarshalAs(UnmanagedType.Bool)] out bool lpbOwnerDefaulted);
 
-		/// <summary><para>The <c>GetSecurityDescriptorSacl</c> function retrieves a pointer to the system access control list (SACL) in a specified security descriptor.</para></summary><param name="pSecurityDescriptor"><para>A pointer to the SECURITY_DESCRIPTOR structure that contains the SACL to which the function retrieves a pointer.</para></param><param name="lpbSaclPresent"><para>A pointer to a flag the function sets to indicate the presence of a SACL in the specified security descriptor. If this parameter is <c>TRUE</c>, the security descriptor contains a SACL, and the remaining output parameters in this function receive valid values. If this parameter is <c>FALSE</c>, the security descriptor does not contain a SACL, and the remaining output parameters do not receive valid values.</para></param><param name="pSacl"><para>A pointer to a pointer to an access control list (ACL). If a SACL exists, the function sets the pointer pointed to by pSacl to the address of the security descriptor&#39;s SACL. If a SACL does not exist, no value is stored.</para><para>If the function stores a <c>NULL</c> value in the pointer pointed to by pSacl, the security descriptor has a <c>NULL</c> SACL.</para></param><param name="lpbSaclDefaulted"><para>A pointer to a flag that is set to the value of the SE_SACL_DEFAULTED flag in the SECURITY_DESCRIPTOR_CONTROL structure if a SACL exists for the security descriptor.</para></param><returns><para>If the function succeeds, the function returns nonzero.</para><para>If the function fails, it returns zero. To get extended error information, call GetLastError.</para></returns>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-getsecuritydescriptorsacl
-		// BOOL GetSecurityDescriptorSacl( PSECURITY_DESCRIPTOR pSecurityDescriptor, LPBOOL lpbSaclPresent, PACL *pSacl, LPBOOL lpbSaclDefaulted );
+		/// <summary>
+		/// <para>
+		/// The <c>GetSecurityDescriptorSacl</c> function retrieves a pointer to the system access control list (SACL) in a specified
+		/// security descriptor.
+		/// </para>
+		/// </summary>
+		/// <param name="pSecurityDescriptor">
+		/// <para>A pointer to the SECURITY_DESCRIPTOR structure that contains the SACL to which the function retrieves a pointer.</para>
+		/// </param>
+		/// <param name="lpbSaclPresent">
+		/// <para>
+		/// A pointer to a flag the function sets to indicate the presence of a SACL in the specified security descriptor. If this parameter
+		/// is <c>TRUE</c>, the security descriptor contains a SACL, and the remaining output parameters in this function receive valid
+		/// values. If this parameter is <c>FALSE</c>, the security descriptor does not contain a SACL, and the remaining output parameters
+		/// do not receive valid values.
+		/// </para>
+		/// </param>
+		/// <param name="pSacl">
+		/// <para>
+		/// A pointer to a pointer to an access control list (ACL). If a SACL exists, the function sets the pointer pointed to by pSacl to
+		/// the address of the security descriptor's SACL. If a SACL does not exist, no value is stored.
+		/// </para>
+		/// <para>
+		/// If the function stores a <c>NULL</c> value in the pointer pointed to by pSacl, the security descriptor has a <c>NULL</c> SACL.
+		/// </para>
+		/// </param>
+		/// <param name="lpbSaclDefaulted">
+		/// <para>
+		/// A pointer to a flag that is set to the value of the SE_SACL_DEFAULTED flag in the SECURITY_DESCRIPTOR_CONTROL structure if a SACL
+		/// exists for the security descriptor.
+		/// </para>
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the function returns nonzero.</para>
+		/// <para>If the function fails, it returns zero. To get extended error information, call GetLastError.</para>
+		/// </returns>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-getsecuritydescriptorsacl BOOL
+		// GetSecurityDescriptorSacl( PSECURITY_DESCRIPTOR pSecurityDescriptor, LPBOOL lpbSaclPresent, PACL *pSacl, LPBOOL lpbSaclDefaulted );
 		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "6bf59735-aaa3-4751-8c98-00cc197df4e5")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -602,6 +1068,32 @@ namespace Vanara.PInvoke
 		public static extern bool ImpersonateLoggedOnUser(HTOKEN hToken);
 
 		/// <summary>
+		/// <para>The <c>IsValidSecurityDescriptor</c> function determines whether the components of a security descriptor are valid.</para>
+		/// </summary>
+		/// <param name="pSecurityDescriptor">
+		/// <para>A pointer to a SECURITY_DESCRIPTOR structure that the function validates.</para>
+		/// </param>
+		/// <returns>
+		/// <para>If the components of the security descriptor are valid, the return value is nonzero.</para>
+		/// <para>
+		/// If any of the components of the security descriptor are not valid, the return value is zero. There is no extended error
+		/// information for this function; do not call GetLastError.
+		/// </para>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The <c>IsValidSecurityDescriptor</c> function checks the validity of the components that are present in the security descriptor.
+		/// It does not verify whether certain components are present nor does it verify the contents of the individual ACE or ACL.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-isvalidsecuritydescriptor BOOL
+		// IsValidSecurityDescriptor( PSECURITY_DESCRIPTOR pSecurityDescriptor );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("securitybaseapi.h", MSDNShortId = "24a98229-11e4-45ef-988b-c2cf831275e7")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool IsValidSecurityDescriptor(PSECURITY_DESCRIPTOR pSecurityDescriptor);
+
+		/// <summary>
 		/// The MapGenericMask function maps the generic access rights in an access mask to specific and standard access rights. The function
 		/// applies a mapping supplied in a <see cref="GENERIC_MAPPING"/> structure.
 		/// </summary>
@@ -612,7 +1104,7 @@ namespace Vanara.PInvoke
 		/// </param>
 		[DllImport(Lib.AdvApi32, ExactSpelling = true)]
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "aa379266")]
-		public static extern void MapGenericMask(ref uint AccessMask, ref GENERIC_MAPPING GenericMapping);
+		public static extern void MapGenericMask(ref uint AccessMask, in GENERIC_MAPPING GenericMapping);
 
 		/// <summary>
 		/// The PrivilegeCheck function determines whether a specified set of privileges are enabled in an access token. The PrivilegeCheck
@@ -658,7 +1150,7 @@ namespace Vanara.PInvoke
 		[PInvokeData("securitybaseapi.h", MSDNShortId = "aa379317")]
 		public static extern bool RevertToSelf();
 
-		/// <summary>Provides a <see cref="SafeHandle"/> to a  that releases a created HTOKEN instance at disposal using CloseHandle.</summary>
+		/// <summary>Provides a <see cref="SafeHandle"/> to a that releases a created HTOKEN instance at disposal using CloseHandle.</summary>
 		public class SafeHTOKEN : SafeKernelHandle
 		{
 			/// <summary>
@@ -725,10 +1217,14 @@ namespace Vanara.PInvoke
 
 			/// <summary>Initializes a new instance of the <see cref="HTOKEN"/> class and assigns an existing handle.</summary>
 			/// <param name="preexistingHandle">An <see cref="IntPtr"/> object that represents the pre-existing handle to use.</param>
-			/// <param name="ownsHandle"><see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).</param>
+			/// <param name="ownsHandle">
+			/// <see langword="true"/> to reliably release the handle during the finalization phase; otherwise, <see langword="false"/> (not recommended).
+			/// </param>
 			public SafeHTOKEN(IntPtr preexistingHandle, bool ownsHandle = true) : base(preexistingHandle, ownsHandle) { }
 
-			private SafeHTOKEN() : base() { }
+			private SafeHTOKEN() : base()
+			{
+			}
 
 			/// <summary>Gets a value indicating whether this token is elevated.</summary>
 			/// <value><c>true</c> if this instance is elevated; otherwise, <c>false</c>.</value>
@@ -769,6 +1265,88 @@ namespace Vanara.PInvoke
 						Win32Error.ThrowLastError();
 				}
 				return val;
+			}
+
+			/// <summary>Performs an implicit conversion from <see cref="SafeHTOKEN"/> to <see cref="HTOKEN"/>.</summary>
+			/// <param name="h">The safe handle instance.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator HTOKEN(SafeHTOKEN h) => h.handle;
+
+			/// <summary>The <c>Duplicate</c> function creates a new access token that duplicates the current one.</summary>
+			/// <param name="level">
+			/// Specifies a <c>SECURITY_IMPERSONATION_LEVEL</c> enumerated type that supplies the impersonation level of the new token.
+			/// </param>
+			/// <returns>A new token.</returns>
+			public SafeHTOKEN Duplicate(SECURITY_IMPERSONATION_LEVEL level)
+			{
+				if (!DuplicateToken(this, level, out var dup)) Win32Error.ThrowLastError();
+				return dup;
+			}
+
+			/// <summary>
+			/// The <c>DuplicateImpersonate</c> function creates a new impersonated access token that duplicates an existing token.
+			/// </summary>
+			/// <param name="impersonationLevel">
+			/// Specifies a value from the <c>SECURITY_IMPERSONATION_LEVEL</c> enumeration that indicates the impersonation level of the new token.
+			/// </param>
+			/// <param name="desiredAccess">
+			/// <para>
+			/// Specifies the requested access rights for the new token. The <c>DuplicateTokenEx</c> function compares the requested access
+			/// rights with the existing token's discretionary access control list (DACL) to determine which rights are granted or denied. To
+			/// request the same access rights as the existing token, specify zero. To request all access rights that are valid for the
+			/// caller, specify MAXIMUM_ALLOWED.
+			/// </para>
+			/// <para>For a list of access rights for access tokens, see Access Rights for Access-Token Objects.</para>
+			/// </param>
+			/// <param name="tokenAttributes">
+			/// <para>
+			/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new token and determines
+			/// whether child processes can inherit the token. If lpTokenAttributes is <c>NULL</c>, the token gets a default security
+			/// descriptor and the handle cannot be inherited. If the security descriptor contains a system access control list (SACL), the
+			/// token gets ACCESS_SYSTEM_SECURITY access right, even if it was not requested in dwDesiredAccess.
+			/// </para>
+			/// <para>
+			/// To set the owner in the security descriptor for the new token, the caller's process token must have the
+			/// <c>SE_RESTORE_NAME</c> privilege set.
+			/// </para>
+			/// </param>
+			/// <returns>A pointer to a <c>SafeHTOKEN</c> variable that receives the new token.</returns>
+			public SafeHTOKEN DuplicateImpersonate(SECURITY_IMPERSONATION_LEVEL impersonationLevel = SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation, TokenAccess desiredAccess = TokenAccess.TOKEN_QUERY | TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_ASSIGN_PRIMARY | TokenAccess.TOKEN_ADJUST_DEFAULT | TokenAccess.TOKEN_ADJUST_SESSIONID | TokenAccess.TOKEN_IMPERSONATE, SECURITY_ATTRIBUTES tokenAttributes = null)
+			{
+				if (!DuplicateTokenEx(this, desiredAccess, tokenAttributes, impersonationLevel, TOKEN_TYPE.TokenImpersonation, out var dup)) Win32Error.ThrowLastError();
+				return dup;
+			}
+
+			/// <summary>The <c>DuplicatePrimary</c> function creates a new primary access token that duplicates an existing token.</summary>
+			/// <param name="desiredAccess">
+			/// <para>
+			/// Specifies the requested access rights for the new token. The <c>DuplicateTokenEx</c> function compares the requested access
+			/// rights with the existing token's discretionary access control list (DACL) to determine which rights are granted or denied. To
+			/// request the same access rights as the existing token, specify zero. To request all access rights that are valid for the
+			/// caller, specify MAXIMUM_ALLOWED.
+			/// </para>
+			/// <para>For a list of access rights for access tokens, see Access Rights for Access-Token Objects.</para>
+			/// </param>
+			/// <param name="impersonationLevel">
+			/// Specifies a value from the <c>SECURITY_IMPERSONATION_LEVEL</c> enumeration that indicates the impersonation level of the new token.
+			/// </param>
+			/// <param name="tokenAttributes">
+			/// <para>
+			/// A pointer to a <c>SECURITY_ATTRIBUTES</c> structure that specifies a security descriptor for the new token and determines
+			/// whether child processes can inherit the token. If lpTokenAttributes is <c>NULL</c>, the token gets a default security
+			/// descriptor and the handle cannot be inherited. If the security descriptor contains a system access control list (SACL), the
+			/// token gets ACCESS_SYSTEM_SECURITY access right, even if it was not requested in dwDesiredAccess.
+			/// </para>
+			/// <para>
+			/// To set the owner in the security descriptor for the new token, the caller's process token must have the
+			/// <c>SE_RESTORE_NAME</c> privilege set.
+			/// </para>
+			/// </param>
+			/// <returns>A pointer to a <c>SafeHTOKEN</c> variable that receives the new token.</returns>
+			public SafeHTOKEN DuplicatePrimary(TokenAccess desiredAccess = TokenAccess.TOKEN_ASSIGN_PRIMARY | TokenAccess.TOKEN_ALL_ACCESS, SECURITY_IMPERSONATION_LEVEL impersonationLevel = SECURITY_IMPERSONATION_LEVEL.SecurityIdentification, SECURITY_ATTRIBUTES tokenAttributes = null)
+			{
+				if (!DuplicateTokenEx(this, desiredAccess, tokenAttributes, impersonationLevel, TOKEN_TYPE.TokenPrimary, out var dup)) Win32Error.ThrowLastError();
+				return dup;
 			}
 
 			/// <summary>
@@ -878,11 +1456,69 @@ namespace Vanara.PInvoke
 
 				return pType;
 			}
-
-			/// <summary>Performs an implicit conversion from <see cref="SafeHTOKEN"/> to <see cref="HTOKEN"/>.</summary>
-			/// <param name="h">The safe handle instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator HTOKEN(SafeHTOKEN h) => h.handle;
 		}
+
+		/*AddAccessAllowedAce function
+		AddAccessAllowedAceEx function
+		AddAccessAllowedObjectAce function
+		AddAccessDeniedAce function
+		AddAccessDeniedAceEx function
+		AddAccessDeniedObjectAce function
+		AddAce function
+		AddAuditAccessAce function
+		AddAuditAccessAceEx function
+		AddAuditAccessObjectAce function
+		AddMandatoryAce function
+		AddResourceAttributeAce function
+		AddScopedPolicyIDAce function
+		AdjustTokenGroups function
+		AreAllAccessesGranted function
+		AreAnyAccessesGranted function
+		CheckTokenCapability function
+		CheckTokenMembership function
+		CheckTokenMembershipEx function
+		ConvertToAutoInheritPrivateObjectSecurity function
+		CreatePrivateObjectSecurity function
+		CreatePrivateObjectSecurityEx function
+		CreatePrivateObjectSecurityWithMultipleInheritance function
+		CreateRestrictedToken function
+		CreateWellKnownSid function
+		CveEventWrite function
+		DeleteAce function
+		DeriveCapabilitySidsFromName function
+		DestroyPrivateObjectSecurity function
+		EqualDomainSid function
+		EqualPrefixSid function
+		FindFirstFreeAce function
+		GetKernelObjectSecurity function
+		GetSecurityDescriptorRMControl function
+		GetSidSubAuthorityCount function
+		GetWindowsAccountDomainSid function
+		ImpersonateAnonymousToken function
+		ImpersonateSelf function
+		InitializeAcl function
+		InitializeSecurityDescriptor function
+		InitializeSid function
+		IsTokenRestricted function
+		IsValidAcl function
+		IsValidSecurityDescriptor function
+		IsValidSid function
+		IsWellKnownSid function
+		MakeAbsoluteSD function
+		MakeSelfRelativeSD function
+		QuerySecurityAccessMask function
+		SetAclInformation function
+		SetKernelObjectSecurity function
+		SetPrivateObjectSecurity function
+		SetPrivateObjectSecurityEx function
+		SetSecurityAccessMask function
+		SetSecurityDescriptorControl function
+		SetSecurityDescriptorDacl function
+		SetSecurityDescriptorGroup function
+		SetSecurityDescriptorOwner function
+		SetSecurityDescriptorRMControl function
+		SetSecurityDescriptorSacl function
+		SetTokenInformation function
+		*/
 	}
 }
