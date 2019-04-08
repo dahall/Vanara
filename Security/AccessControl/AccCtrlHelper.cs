@@ -57,22 +57,23 @@ namespace Vanara.Security.AccessControl
 	/// <summary>Helper methods for working with Access Control structures.</summary>
 	public static class AccessControlHelper
 	{
-		public static ACCESS_ALLOWED_ACE GetAce(PACL pAcl, int aceIndex)
+		public static ACCESS_ALLOWED_ACE GetAce(this PACL pAcl, int aceIndex)
 		{
 			if (AdvApi32.GetAce(pAcl, aceIndex, out var acePtr))
 				return (ACCESS_ALLOWED_ACE)Marshal.PtrToStructure((IntPtr)acePtr, typeof(ACCESS_ALLOWED_ACE));
 			throw new System.ComponentModel.Win32Exception();
 		}
 
-		public static uint GetAceCount(PACL pAcl) => GetAclInfo(pAcl).AceCount;
-
-		public static ACL_SIZE_INFORMATION GetAclInfo(PACL pAcl)
+		public static IEnumerable<ACCESS_ALLOWED_ACE> GetAces(this PACL pAcl)
 		{
-			var si = new ACL_SIZE_INFORMATION();
-			if (!GetAclInformation(pAcl, ref si, (uint)Marshal.SizeOf(si), ACL_INFORMATION_CLASS.AclSizeInformation))
-				throw new System.ComponentModel.Win32Exception();
-			return si;
+			var cnt = GetAceCount(pAcl);
+			for (var i = 0; i < cnt; i++)
+				yield return GetAce(pAcl, i);
 		}
+
+		public static uint GetAceCount(this PACL pAcl) => GetAclInfo(pAcl).AceCount;
+
+		public static ACL_SIZE_INFORMATION GetAclInfo(PACL pAcl) => pAcl.GetAclInformation<ACL_SIZE_INFORMATION>();
 
 		public static uint GetAclSize(PACL pAcl) => GetAclInfo(pAcl).AclBytesInUse;
 
