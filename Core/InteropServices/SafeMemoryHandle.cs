@@ -209,6 +209,7 @@ namespace Vanara.InteropServices
 			if (size == 0) return;
 			RuntimeHelpers.PrepareConstrainedRegions();
 			SetHandle(mm.AllocMem(sz = size));
+			Zero();
 		}
 
 		/// <summary>Initializes a new instance of the <see cref="SafeMemoryHandle{T}"/> class.</summary>
@@ -238,8 +239,10 @@ namespace Vanara.InteropServices
 				}
 				else
 				{
+					if (value < 0) throw new ArgumentOutOfRangeException(nameof(value));
 					handle = IsInvalid ? mm.AllocMem(value) : mm.ReAllocMem(handle, value);
-					if (sz != 0) Marshal.Copy(new byte[value], 0, handle, value);
+					if (value > sz)
+						handle.Offset(sz).FillMemory(0, value - sz);
 					sz = value;
 				}
 			}
