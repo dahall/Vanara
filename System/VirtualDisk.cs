@@ -769,7 +769,7 @@ namespace Vanara.IO
 					return (T)(object)Encoding.Unicode.GetString(mem.ToArray<byte>((int)sz), 8 + (int)offset, (int)sz - 8 - (int)offset).TrimEnd('\0');
 				}
 
-				var ms = new MarshalingStream(mem.DangerousGetHandle(), mem.Size) { Position = 8 + offset };
+				var ms = new MarshalingStream(mem.DangerousGetHandle(), mem.Size) { SetPosition(8 + offset) };
 				return typeof(T) == typeof(bool) ? (T)Convert.ChangeType(ms.Read<uint>() != 0, typeof(bool)) : ms.Read<T>();
 			}
 		}
