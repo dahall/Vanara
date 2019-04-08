@@ -193,7 +193,7 @@ namespace Vanara.Extensions
 			{
 				if (packing == StringListPackMethod.Packed)
 				{
-					ms.Position += (count + 1) * IntPtr.Size;
+					ms.Position = ms.Position + (count + 1) * IntPtr.Size;
 					for (var i = 0; i < list.Count; i++)
 					{
 						ms.Poke(list[i] is null ? IntPtr.Zero : ms.Pointer.Offset(ms.Position), prefixBytes + (i * IntPtr.Size));
@@ -252,7 +252,7 @@ namespace Vanara.Extensions
 
 			using (var ms = new MarshalingStream(memAlloc(bytesAllocated), bytesAllocated) { Position = prefixBytes, CharSet = charSet })
 			{
-				ms.Position += (count + 1) * IntPtr.Size;
+				ms.Position = ms.Position + (count + 1) * IntPtr.Size;
 				for (var i = 0; i < list.Count; i++)
 				{
 					if (!referencePointers && list[i] is IntPtr p)
