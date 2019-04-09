@@ -65,12 +65,22 @@ namespace Vanara.Extensions
 		/// <typeparam name="T">The expected type of the property to be returned.</typeparam>
 		/// <param name="obj">The object from which to retrieve the property.</param>
 		/// <param name="propertyName">Name of the property.</param>
+		/// <returns>The property value.</returns>
+		public static T GetPropertyValue<T>(this object obj, string propertyName)
+		{
+			if (obj is null) throw new ArgumentNullException(nameof(obj));
+			return (T)obj.GetType().InvokeMember(propertyName, BindingFlags.GetProperty | bindingFlags, null, obj, null, null);
+		}
+
+		/// <summary>Gets a named property value from an object.</summary>
+		/// <typeparam name="T">The expected type of the property to be returned.</typeparam>
+		/// <param name="obj">The object from which to retrieve the property.</param>
+		/// <param name="propertyName">Name of the property.</param>
 		/// <param name="defaultValue">The default value to return in the instance that the property is not found.</param>
 		/// <returns>The property value, if found, or the <paramref name="defaultValue"/> if not.</returns>
-		public static T GetPropertyValue<T>(this object obj, string propertyName, T defaultValue = default)
+		public static T GetPropertyValue<T>(this object obj, string propertyName, T defaultValue)
 		{
-			if (obj is null || propertyName is null) return defaultValue;
-			try { return (T)Convert.ChangeType(obj.GetType().InvokeMember(propertyName, BindingFlags.GetProperty | bindingFlags, null, obj, null, null), typeof(T)); }
+			try { return GetPropertyValue<T>(obj, propertyName); }
 			catch { return defaultValue; }
 		}
 
