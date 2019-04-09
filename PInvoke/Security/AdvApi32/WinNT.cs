@@ -83,6 +83,25 @@ namespace Vanara.PInvoke
 			SE_GROUP_RESOURCE = 0x20000000
 		}
 
+		/// <summary>
+		/// A set of bit flags that indicate whether the <c>ObjectType</c> and <c>InheritedObjectType</c> members are present in an object ACE.
+		/// </summary>
+		[Flags]
+		public enum ObjectAceFlags : uint
+		{
+			/// <summary>
+			/// ObjectType is present and contains a GUID. If this value is not specified, the InheritedObjectType member follows immediately
+			/// after the Flags member.
+			/// </summary>
+			ACE_OBJECT_TYPE_PRESENT = 0x1,
+
+			/// <summary>
+			/// InheritedObjectType is present and contains a GUID. If this value is not specified, all types of child objects can inherit
+			/// the ACE.
+			/// </summary>
+			ACE_INHERITED_OBJECT_TYPE_PRESENT = 0x2
+		}
+
 		/// <summary>Privilege attributes.</summary>
 		[Flags]
 		[PInvokeData("winnt.h")]
@@ -604,6 +623,76 @@ namespace Vanara.PInvoke
 			TOKEN_EXECUTE = 0x00020000
 		}
 
+		/// <summary>Gets the header for an ACE.</summary>
+		/// <param name="pAce">A pointer to an ACE.</param>
+		/// <returns>The <see cref="ACE_HEADER"/> value.</returns>
+		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		public static ACE_HEADER GetHeader(this PACE pAce) => !pAce.IsNull ? pAce.DangerousGetHandle().ToStructure<ACE_HEADER>() : throw new ArgumentNullException(nameof(pAce));
+
+		/// <summary>Gets the mask for an ACE.</summary>
+		/// <param name="pAce">A pointer to an ACE.</param>
+		/// <returns>The ACCESS_MASK value.</returns>
+		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		public static uint GetMask(this PACE pAce) => !pAce.IsNull ? pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_ACE>().Mask : throw new ArgumentNullException(nameof(pAce));
+
+		/// <summary>Gets the SID for an ACE.</summary>
+		/// <param name="pAce">A pointer to an ACE.</param>
+		/// <returns>The SID value.</returns>
+		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		public static SafePSID GetSid(this PACE pAce)
+		{
+			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
+			var offset = Marshal.SizeOf(typeof(ACE_HEADER)) + sizeof(uint);
+			if (pAce.IsObjectAce()) offset += sizeof(uint) + Marshal.SizeOf(typeof(Guid)) * 2;
+			unsafe
+			{
+				return SafePSID.CreateFromPtr((IntPtr)((byte*)pAce.DangerousGetHandle() + offset));
+			}
+		}
+
+		/// <summary>Gets the Flags for an ACE, if defined.</summary>
+		/// <param name="pAce">A pointer to an ACE.</param>
+		/// <returns>The Flags value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
+		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		public static ObjectAceFlags? GetFlags(this PACE pAce)
+		{
+			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
+			return !pAce.IsObjectAce() ? null : (ObjectAceFlags?)pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_OBJECT_ACE>().Flags;
+		}
+
+		/// <summary>Gets the ObjectType for an ACE, if defined.</summary>
+		/// <param name="pAce">A pointer to an ACE.</param>
+		/// <returns>The ObjectType value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
+		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		public static Guid? GetObjectType(this PACE pAce)
+		{
+			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
+			return !pAce.IsObjectAce() ? null : (Guid?)pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_OBJECT_ACE>().ObjectType;
+		}
+
+		/// <summary>Gets the InheritedObjectType for an ACE, if defined.</summary>
+		/// <param name="pAce">A pointer to an ACE.</param>
+		/// <returns>The InheritedObjectType value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
+		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		public static Guid? GetInheritedObjectType(this PACE pAce)
+		{
+			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
+			return !pAce.IsObjectAce() ? null : (Guid?)pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_OBJECT_ACE>().InheritedObjectType;
+		}
+
+		/// <summary>Determines if a ACE is an object ACE.</summary>
+		/// <param name="pAce">A pointer to an ACE.</param>
+		/// <returns><see langword="true"/> if is this is an object ACE; otherwise, <see langword="false"/>.</returns>
+		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		/// <exception cref="System.ArgumentOutOfRangeException">pAce - Unknown ACE type.</exception>
+		public static bool IsObjectAce(this PACE pAce)
+		{
+			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
+			var aceType = (byte)GetHeader(pAce).AceType;
+			if (aceType > 0x15) throw new ArgumentOutOfRangeException(nameof(pAce), "Unknown ACE type.");
+			return (aceType >= 0x5 && aceType <= 0x8) || aceType == 0xB || aceType == 0xC || aceType == 0xF || aceType == 0x10;
+		}
+
 		/// <summary>
 		/// The ACCESS_ALLOWED_ACE structure defines an access control entry (ACE) for the discretionary access control list (DACL) that
 		/// controls access to an object. An access-allowed ACE allows access to an object for a specific trustee identified by a security
@@ -621,44 +710,170 @@ namespace Vanara.PInvoke
 			public ACE_HEADER Header;
 
 			/// <summary>Specifies an ACCESS_MASK structure that specifies the access rights granted by this ACE.</summary>
-			public int Mask;
+			public uint Mask;
 
 			/// <summary>
 			/// The first DWORD of a trustee's SID. The remaining bytes of the SID are stored in contiguous memory after the SidStart member.
 			/// This SID can be appended with application data.
 			/// </summary>
-			public int SidStart;
+			public uint SidStart;
+		}
 
-			/// <summary>Determines whether the specified <see cref="System.Object"/>, is equal to this instance.</summary>
-			/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-			/// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-			public override bool Equals(object obj)
-			{
-				return obj is ACCESS_ALLOWED_ACE aaa
-					? Header.AceType == aaa.Header.AceType && Header.AceFlags == aaa.Header.AceFlags && Mask == aaa.Mask
-					: base.Equals(obj);
-			}
+		/// <summary>
+		/// The <c>ACCESS_ALLOWED_OBJECT_ACE</c> structure defines an access control entry (ACE) that controls allowed access to an object, a
+		/// property set, or property. The ACE contains a set of access rights, a <c>GUID</c> that identifies the type of object, and a
+		/// security identifier (SID) that identifies the trustee to whom the system will grant access. The ACE also contains a <c>GUID</c>
+		/// and a set of flags that control inheritance of the ACE by child objects.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// If neither the <c>ObjectType</c> nor <c>InheritedObjectType</c> GUID is specified, the <c>ACCESS_ALLOWED_OBJECT_ACE</c> structure
+		/// has the same semantics as those used by the ACCESS_ALLOWED_ACE structure. In that case, use the <c>ACCESS_ALLOWED_ACE</c>
+		/// structure because it is smaller and more efficient.
+		/// </para>
+		/// <para>An ACL that contains an <c>ACCESS_ALLOWED_OBJECT_ACE</c> must specify the ACL_REVISION_DS revision number in its ACL header.</para>
+		/// <para>
+		/// The access rights specified by the <c>Mask</c> member are granted to any trustee that possesses an enabled SID that matches the
+		/// SID stored in the <c>SidStart</c> member.
+		/// </para>
+		/// <para>
+		/// An <c>ACCESS_ALLOWED_OBJECT_ACE</c> structure can be created in an access control list (ACL) by a call to the
+		/// AddAccessAllowedObjectAce function. When this function is used, the correct amount of memory needed to accommodate the GUID
+		/// structures in the <c>ObjectType</c> and <c>InheritedObjectType</c> members, if one or both of them exists, as well as to
+		/// accommodate the trustee's SID is automatically allocated. In addition, the values of the <c>Header.AceType</c> and
+		/// <c>Header.AceSize</c> members are set automatically. When an <c>ACCESS_ALLOWED_OBJECT_ACE</c> structure is created outside an
+		/// ACL, sufficient memory must be allocated to accommodate the GUID structures in the <c>ObjectType</c> and
+		/// <c>InheritedObjectType</c> members, if one or both of them exists, as well as to accommodate the complete SID of the trustee in
+		/// the <c>SidStart</c> member and the contiguous memory following it. In addition, the values of the <c>Header.AceType</c> and
+		/// <c>Header.AceSize</c> members must be set explicitly by the application.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ns-winnt-_access_allowed_object_ace typedef struct
+		// _ACCESS_ALLOWED_OBJECT_ACE { ACE_HEADER Header; ACCESS_MASK Mask; DWORD Flags; GUID ObjectType; GUID InheritedObjectType; DWORD
+		// SidStart; } ACCESS_ALLOWED_OBJECT_ACE, *PACCESS_ALLOWED_OBJECT_ACE;
+		[PInvokeData("winnt.h", MSDNShortId = "ee91ca50-e81b-4872-95eb-349c2d5be004")]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct ACCESS_ALLOWED_OBJECT_ACE
+		{
+			/// <summary>
+			/// ACE_HEADER structure that specifies the size and type of ACE. It also contains flags that control inheritance of the ACE by
+			/// child objects. The <c>AceType</c> member of the <c>ACE_HEADER</c> structure should be set to ACCESS_ALLOWED_OBJECT_ACE_TYPE,
+			/// and the <c>AceSize</c> member should be set to the total number of bytes allocated for the <c>ACCESS_ALLOWED_OBJECT_ACE</c> structure.
+			/// </summary>
+			public ACE_HEADER Header;
 
-			/// <summary>Returns a hash code for this instance.</summary>
-			/// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-			public override int GetHashCode() => new { A = Header.AceFlags, B = Header.AceType, C = Mask }.GetHashCode();
+			/// <summary>An ACCESS_MASK that specifies the access rights the system will allow to the trustee.</summary>
+			public uint Mask;
 
-			/// <summary>Gets the SID value associated with <see cref="SidStart"/>.</summary>
-			/// <returns>A <see cref="SafePSID"/> value copied from the bits associated with <see cref="SidStart"/>.</returns>
-			public SafePSID GetSid()
-			{
-				unsafe
-				{
-					fixed (int* psid = &SidStart)
-					{
-						return SafePSID.CreateFromPtr((IntPtr)(void*)psid);
-					}
-				}
-			}
+			/// <summary>
+			/// <para>
+			/// A set of bit flags that indicate whether the <c>ObjectType</c> and <c>InheritedObjectType</c> members are present. This
+			/// parameter can be one or more of the following values.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>0</term>
+			/// <term>Neither ObjectType nor InheritedObjectType are present. The SidStart member follows immediately after the Flags member.</term>
+			/// </item>
+			/// <item>
+			/// <term>ACE_OBJECT_TYPE_PRESENT</term>
+			/// <term>
+			/// ObjectType is present and contains a GUID. If this value is not specified, the InheritedObjectType member follows immediately
+			/// after the Flags member.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ACE_INHERITED_OBJECT_TYPE_PRESENT</term>
+			/// <term>
+			/// InheritedObjectType is present and contains a GUID. If this value is not specified, all types of child objects can inherit
+			/// the ACE.
+			/// </term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public ObjectAceFlags Flags;
+
+			/// <summary>
+			/// <para>
+			/// This member exists only if the ACE_OBJECT_TYPE_PRESENT bit is set in the <c>Flags</c> member. Otherwise, the
+			/// <c>InheritedObjectType</c> member follows immediately after the <c>Flags</c> member.
+			/// </para>
+			/// <para>
+			/// If this member exists, it is a GUID structure that identifies a property set, property, extended right, or type of child
+			/// object. The purpose of this <c>GUID</c> depends on the access rights specified in the <c>Mask</c> member.
+			/// </para>
+			/// <list type="table">
+			/// <listheader>
+			/// <term>Value</term>
+			/// <term>Meaning</term>
+			/// </listheader>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_CONTROL_ACCESS</term>
+			/// <term>The ObjectType GUID identifies an extended access right.</term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_CREATE_CHILD</term>
+			/// <term>
+			/// The ObjectType GUID identifies a type of child object. The ACE controls the trustee's right to create this type of child object.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_READ_PROP</term>
+			/// <term>
+			/// The ObjectType GUID identifies a property set or property of the object. The ACE controls the trustee's right to read the
+			/// property or property set.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_WRITE_PROP</term>
+			/// <term>
+			/// The ObjectType GUID identifies a property set or property of the object. The ACE controls the trustee's right to write the
+			/// property or property set.
+			/// </term>
+			/// </item>
+			/// <item>
+			/// <term>ADS_RIGHT_DS_SELF</term>
+			/// <term>The ObjectType GUID identifies a validated write.</term>
+			/// </item>
+			/// </list>
+			/// </summary>
+			public Guid ObjectType;
+
+			/// <summary>
+			/// <para>This member exists only if the ACE_INHERITED_OBJECT_TYPE_PRESENT bit is set in the <c>Flags</c> member.</para>
+			/// <para>
+			/// If this member exists, it is a GUID structure that identifies the type of child object that can inherit the ACE. Inheritance
+			/// is also controlled by the inheritance flags in the ACE_HEADER, as well as by any protection against inheritance placed on the
+			/// child objects.
+			/// </para>
+			/// <para>
+			/// The offset of this member can vary. If the <c>Flags</c> member does not contain the ACE_OBJECT_TYPE_PRESENT flag, the
+			/// <c>InheritedObjectType</c> member starts at the offset specified by the <c>ObjectType</c> member.
+			/// </para>
+			/// </summary>
+			public Guid InheritedObjectType;
+
+			/// <summary>
+			/// <para>
+			/// Specifies the first <c>DWORD</c> of a SID that identifies the trustee to whom the access rights are granted. The remaining
+			/// bytes of the SID are stored in contiguous memory after the <c>SidStart</c> member. This SID can be appended with application data.
+			/// </para>
+			/// <para>
+			/// The offset of this member can vary. If the <c>Flags</c> member is zero, the <c>SidStart</c> member starts at the offset
+			/// specified by the <c>ObjectType</c> member. If <c>Flags</c> contains only one flag (either ACE_OBJECT_TYPE_PRESENT or
+			/// ACE_INHERITED_OBJECT_TYPE_PRESENT), the <c>SidStart</c> member starts at the offset specified by the
+			/// <c>InheritedObjectType</c> member.
+			/// </para>
+			/// </summary>
+			public uint SidStart;
 		}
 
 		/// <summary>The ACE_HEADER structure defines the type and size of an access control entry (ACE).</summary>
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 1)]
 		[PInvokeData("Winnt.h", MSDNShortId = "aa374919")]
 		public struct ACE_HEADER
 		{

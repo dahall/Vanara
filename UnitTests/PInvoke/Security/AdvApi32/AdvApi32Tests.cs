@@ -178,13 +178,17 @@ namespace Vanara.PInvoke.Tests
 			var asi = new ACL_SIZE_INFORMATION();
 			b = GetAclInformation(pAcl, ref asi, (uint)Marshal.SizeOf(typeof(ACL_SIZE_INFORMATION)), ACL_INFORMATION_CLASS.AclSizeInformation);
 			Assert.That(b, Is.True);
-			Assert.That(asi.AceCount, Is.GreaterThan(0));
 			Assert.That(asi.AceCount, Is.EqualTo(hardAcl.AceCount));
-			b = GetAce(pAcl, 0, out var pAce);
-			Assert.That(b, Is.True);
+			for (var i = 0U; i < asi.AceCount; i++)
+			{
+				b = GetAce(pAcl, i, out var pAce);
+				Assert.That(b, Is.True);
+				var id = new SecurityIdentifier((IntPtr)pAce.GetSid()).Translate(typeof(NTAccount));
+				TestContext.WriteLine($"Ace{i}: {pAce.GetHeader().AceType}={id}; {pAce.GetMask()}");
+			}
+
 			BuildTrusteeWithName(out var pTrustee, fun);
 			Assert.That(GetEffectiveRightsFromAcl(pAcl, pTrustee, out var accessRights), Is.EqualTo(Win32Error.ERROR_NONE_MAPPED).Or.Zero);
-
 			var map = new GENERIC_MAPPING((uint)Kernel32.FileAccess.FILE_GENERIC_READ, (uint)Kernel32.FileAccess.FILE_GENERIC_WRITE, (uint)Kernel32.FileAccess.FILE_GENERIC_EXECUTE, (uint)Kernel32.FileAccess.FILE_ALL_ACCESS);
 			var ifArray = new SafeInheritedFromArray(hardAcl.AceCount);
 			var err = GetInheritanceSource(fn, SE_OBJECT_TYPE.SE_FILE_OBJECT, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, false, null,

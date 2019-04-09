@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
+using Vanara.Extensions;
 using Vanara.InteropServices;
 using static Vanara.PInvoke.Kernel32;
 
@@ -370,6 +371,272 @@ namespace Vanara.PInvoke
 			ref uint PrivilegeSetLength, out uint GrantedAccessList, out uint AccessStatusList);
 
 		/// <summary>
+		/// <para>
+		/// The <c>AddAccessAllowedAce</c> function adds an access-allowed access control entry (ACE) to an access control list (ACL). The
+		/// access is granted to a specified security identifier (SID).
+		/// </para>
+		/// <para>To control whether the new ACE can be inherited by child objects, use the AddAccessAllowedAceEx function.</para>
+		/// </summary>
+		/// <param name="pAcl">
+		/// A pointer to an ACL. This function adds an access-allowed ACE to the end of this ACL. The ACE is in the form of an
+		/// ACCESS_ALLOWED_ACE structure.
+		/// </param>
+		/// <param name="dwAceRevision">
+		/// <para>Specifies the revision level of the ACL being modified.</para>
+		/// <para>This value can be ACL_REVISION or ACL_REVISION_DS. Use ACL_REVISION_DS if the ACL contains object-specific ACEs.</para>
+		/// </param>
+		/// <param name="AccessMask">Specifies the mask of access rights to be granted to the specified SID.</param>
+		/// <param name="pSid">A pointer to the SID representing a user, group, or logon account being granted access.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>
+		/// If the function fails, the return value is zero. To get extended error information, call GetLastError. The following are possible
+		/// error values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_ALLOTTED_SPACE_EXCEEDED</term>
+		/// <term>The new ACE does not fit into the ACL. A larger ACL buffer is required.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_ACL</term>
+		/// <term>The specified ACL is not properly formed.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_SID</term>
+		/// <term>The specified SID is not structurally valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_REVISION_MISMATCH</term>
+		/// <term>The specified revision is not known or is incompatible with that of the ACL.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_SUCCESS</term>
+		/// <term>The ACE was successfully added.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>The addition of an access-allowed ACE to an ACL is the most common form of ACL modification.</para>
+		/// <para>
+		/// The <c>AddAccessAllowedAce</c> and AddAccessDeniedAce functions add a new ACE to the end of the list of ACEs for the ACL. These
+		/// functions do not automatically place the new ACE in the proper canonical order. It is the caller's responsibility to ensure that
+		/// the ACL is in canonical order by adding ACEs in the proper sequence.
+		/// </para>
+		/// <para>
+		/// The ACE_HEADER structure placed in the ACE by the <c>AddAccessAllowedAce</c> function specifies a type and size, but provides no
+		/// inheritance and no ACE flags.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example that uses this function, see Starting an Interactive Client Process.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-addaccessallowedace
+		// BOOL AddAccessAllowedAce( PACL pAcl, DWORD dwAceRevision, DWORD AccessMask, PSID pSid );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("securitybaseapi.h", MSDNShortId = "1004353a-f907-4452-9c0f-85eba0ece813")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AddAccessAllowedAce(PACL pAcl, uint dwAceRevision, uint AccessMask, PSID pSid);
+
+		/// <summary>
+		/// <para>
+		/// The <c>AddAccessDeniedAce</c> function adds an access-denied access control entry (ACE) to an access control list (ACL). The
+		/// access is denied to a specified security identifier (SID).
+		/// </para>
+		/// <para>To control whether the new ACE can be inherited by child objects, use the AddAccessDeniedAceEx function.</para>
+		/// </summary>
+		/// <param name="pAcl">
+		/// A pointer to an ACL . This function adds an access-denied ACE to the end of this ACL. The ACE is in the form of an
+		/// ACCESS_DENIED_ACE structure.
+		/// </param>
+		/// <param name="dwAceRevision">
+		/// <para>Specifies the revision level of the ACL being modified.</para>
+		/// <para>This value can be ACL_REVISION or ACL_REVISION_DS. Use ACL_REVISION_DS if the ACL contains object-specific ACEs.</para>
+		/// </param>
+		/// <param name="AccessMask">Specifies the mask of access rights being denied to the specified SID.</param>
+		/// <param name="pSid">A pointer to the SID structure representing the user, group, or logon account being denied access.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>
+		/// If the function fails, the return value is zero. To get extended error information, call GetLastError. The following are possible
+		/// error values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_ALLOTTED_SPACE_EXCEEDED</term>
+		/// <term>The new ACE does not fit into the ACL. A larger ACL buffer is required.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_ACL</term>
+		/// <term>The specified ACL is not properly formed.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_SID</term>
+		/// <term>The specified SID is not structurally valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_REVISION_MISMATCH</term>
+		/// <term>The specified revision is not known or is incompatible with that of the ACL.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_SUCCESS</term>
+		/// <term>The ACE was successfully added.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// The AddAccessAllowedAce and <c>AddAccessDeniedAce</c> functions add a new ACE to the end of the list of ACEs for the ACL. These
+		/// functions do not automatically place the new ACE in the proper canonical order. It is the caller's responsibility to ensure that
+		/// the ACL is in canonical order by adding ACEs in the proper sequence.
+		/// </para>
+		/// <para>
+		/// The ACE_HEADER structure placed in the ACE by the <c>AddAccessDeniedAce</c> function specifies a type and size, but provides no
+		/// ACE flags.
+		/// </para>
+		/// <para>The ACE added by <c>AddAccessDeniedAce</c> is not inheritable.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-addaccessdeniedace
+		// BOOL AddAccessDeniedAce( PACL pAcl, DWORD dwAceRevision, DWORD AccessMask, PSID pSid );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("securitybaseapi.h", MSDNShortId = "5b4c4164-48f4-4cd5-b60e-554f2498d547")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AddAccessDeniedAce(PACL pAcl, uint dwAceRevision, uint AccessMask, PSID pSid);
+
+		/// <summary>The <c>AddAce</c> function adds one or more access control entries (ACEs) to a specified access control list (ACL).</summary>
+		/// <param name="pAcl">A pointer to an ACL. This function adds an ACE to this ACL.</param>
+		/// <param name="dwAceRevision">
+		/// <para>Specifies the revision level of the ACL being modified.</para>
+		/// <para>
+		/// This value can be ACL_REVISION or ACL_REVISION_DS. Use ACL_REVISION_DS if the ACL contains object-specific ACEs. This value must
+		/// be compatible with the <c>AceType</c> field of all ACEs in pAceList. Otherwise, the function will fail and set the last error to ERROR_INVALID_PARAMETER.
+		/// </para>
+		/// </param>
+		/// <param name="dwStartingAceIndex">
+		/// Specifies the position in the ACL's list of ACEs at which to add new ACEs. A value of zero inserts the ACEs at the beginning of
+		/// the list. A value of MAXDWORD appends the ACEs to the end of the list.
+		/// </param>
+		/// <param name="pAceList">
+		/// A pointer to a list of one or more ACEs to be added to the specified ACL. The ACEs in the list must be stored contiguously.
+		/// </param>
+		/// <param name="nAceListLength">Specifies the size, in bytes, of the input buffer pointed to by the pAceList parameter.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>
+		/// If the function fails, the return value is zero. To get extended error information, call GetLastError. The following are possible
+		/// error values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_INSUFFICIENT_BUFFER</term>
+		/// <term>The new ACE does not fit into the ACL. A larger ACL buffer is required.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_PARAMETER</term>
+		/// <term>The specified ACL is not properly formed.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_SUCCESS</term>
+		/// <term>The ACE was successfully added.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// Applications frequently use the FindFirstFreeAce and GetAce functions when using the <c>AddAce</c> function to manipulate an ACL.
+		/// In addition, the ACL_SIZE_INFORMATION structure retrieved by the GetAclInformation function contains the size of the ACL and the
+		/// number of ACEs it contains.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>For an example that uses this function, see Starting an Interactive Client Process.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-addace
+		// BOOL AddAce( PACL pAcl, DWORD dwAceRevision, DWORD dwStartingAceIndex, LPVOID pAceList, DWORD nAceListLength );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("securitybaseapi.h", MSDNShortId = "f472d864-a273-49b5-b5e2-98772989971e")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AddAce(PACL pAcl, uint dwAceRevision, uint dwStartingAceIndex, IntPtr pAceList, uint nAceListLength);
+
+		/// <summary>
+		/// <para>
+		/// The <c>AddAuditAccessAce</c> function adds a system-audit access control entry (ACE) to a system access control list (ACL). The
+		/// access of a specified security identifier (SID) is audited.
+		/// </para>
+		/// <para>To control whether the new ACE can be inherited by child objects, use the AddAuditAccessAceEx function.</para>
+		/// </summary>
+		/// <param name="pAcl">
+		/// A pointer to an ACL. This function adds a system-audit ACE to this ACL. The ACE is in the form of a SYSTEM_AUDIT_ACE structure.
+		/// </param>
+		/// <param name="dwAceRevision">
+		/// <para>Specifies the revision level of the ACL being modified.</para>
+		/// <para>This value can be ACL_REVISION or ACL_REVISION_DS. Use ACL_REVISION_DS if the ACL contains object-specific ACEs.</para>
+		/// </param>
+		/// <param name="dwAccessMask">Specifies the mask of access rights to be audited for the specified SID.</param>
+		/// <param name="pSid">A pointer to the SID representing the process whose access is being audited.</param>
+		/// <param name="bAuditSuccess">
+		/// Specifies whether successful access attempts are to be audited. Set this flag to <c>TRUE</c> to enable auditing; otherwise, set
+		/// it to <c>FALSE</c>.
+		/// </param>
+		/// <param name="bAuditFailure">
+		/// Specifies whether unsuccessful access attempts are to be audited. Set this flag to <c>TRUE</c> to enable auditing; otherwise, set
+		/// it to <c>FALSE</c>.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>
+		/// If the function fails, the return value is zero. To get extended error information, call GetLastError. The following are possible
+		/// error values.
+		/// </para>
+		/// <list type="table">
+		/// <listheader>
+		/// <term>Return code</term>
+		/// <term>Description</term>
+		/// </listheader>
+		/// <item>
+		/// <term>ERROR_ALLOTTED_SPACE_EXCEEDED</term>
+		/// <term>The new ACE does not fit into the ACL. A larger ACL buffer is required.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_ACL</term>
+		/// <term>The specified ACL is not properly formed.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_INVALID_SID</term>
+		/// <term>The specified SID is not structurally valid.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_REVISION_MISMATCH</term>
+		/// <term>The specified revision is not known or is incompatible with that of the ACL.</term>
+		/// </item>
+		/// <item>
+		/// <term>ERROR_SUCCESS</term>
+		/// <term>The ACE was successfully added.</term>
+		/// </item>
+		/// </list>
+		/// </returns>
+		/// <remarks>
+		/// The ACE_HEADER structure placed in the ACE by the <c>AddAuditAccessAce</c> function specifies a type and size, but provides no
+		/// ACE flags.
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-addauditaccessace
+		// BOOL AddAuditAccessAce( PACL pAcl, DWORD dwAceRevision, DWORD dwAccessMask, PSID pSid, BOOL bAuditSuccess, BOOL bAuditFailure );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("securitybaseapi.h", MSDNShortId = "34f22aea-9cde-411e-b2d5-bfcd3bfe325d")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool AddAuditAccessAce(PACL pAcl, uint dwAceRevision, uint dwAccessMask, PSID pSid, [MarshalAs(UnmanagedType.Bool)] bool bAuditSuccess, [MarshalAs(UnmanagedType.Bool)] bool bAuditFailure);
+
+		/// <summary>
 		/// The AdjustTokenPrivileges function enables or disables privileges in the specified access token. Enabling or disabling privileges
 		/// in an access token requires TOKEN_ADJUST_PRIVILEGES access.
 		/// </summary>
@@ -580,7 +847,7 @@ namespace Vanara.PInvoke
 		public static extern bool DuplicateTokenEx(HTOKEN hExistingToken, TokenAccess dwDesiredAccess, SECURITY_ATTRIBUTES lpTokenAttributes,
 			SECURITY_IMPERSONATION_LEVEL ImpersonationLevel, TOKEN_TYPE TokenType, out SafeHTOKEN phNewToken);
 
-		/// <summary>The GetAce function obtains a pointer to an access control entry (ACE) in an access control list (ACL).</summary>
+		/// <summary>The <c>GetAce</c> function obtains a pointer to an access control entry (ACE) in an access control list (ACL).</summary>
 		/// <param name="pAcl">A pointer to an ACL that contains the ACE to be retrieved.</param>
 		/// <param name="dwAceIndex">
 		/// The index of the ACE to be retrieved. A value of zero corresponds to the first ACE in the ACL, a value of one to the second ACE,
@@ -588,13 +855,15 @@ namespace Vanara.PInvoke
 		/// </param>
 		/// <param name="pAce">A pointer to a pointer that the function sets to the address of the ACE.</param>
 		/// <returns>
-		/// If the function succeeds, the function returns nonzero. If the function fails, it returns zero. To get extended error
-		/// information, call GetLastError.
+		/// <para>If the function succeeds, the function returns nonzero.</para>
+		/// <para>If the function fails, it returns zero. To get extended error information, call GetLastError.</para>
 		/// </returns>
-		[DllImport(Lib.AdvApi32, ExactSpelling = true, SetLastError = true)]
+		// https://docs.microsoft.com/en-us/windows/desktop/api/securitybaseapi/nf-securitybaseapi-getace
+		// BOOL GetAce( PACL pAcl, DWORD dwAceIndex, LPVOID *pAce );
+		[DllImport(Lib.AdvApi32, SetLastError = true, ExactSpelling = true)]
+		[PInvokeData("securitybaseapi.h", MSDNShortId = "5b5d8751-20d7-40a2-bd70-cfbe956aaa03")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		[PInvokeData("securitybaseapi.h", MSDNShortId = "aa446634")]
-		public static extern bool GetAce(PACL pAcl, int dwAceIndex, out PACE pAce);
+		public static extern bool GetAce(PACL pAcl, uint dwAceIndex, out PACE pAce);
 
 		/// <summary>The GetAclInformation function retrieves information about an access control list (ACL).</summary>
 		/// <param name="pAcl">
@@ -1458,14 +1727,11 @@ namespace Vanara.PInvoke
 			}
 		}
 
-		/*AddAccessAllowedAce function
+		/*
 		AddAccessAllowedAceEx function
 		AddAccessAllowedObjectAce function
-		AddAccessDeniedAce function
 		AddAccessDeniedAceEx function
 		AddAccessDeniedObjectAce function
-		AddAce function
-		AddAuditAccessAce function
 		AddAuditAccessAceEx function
 		AddAuditAccessObjectAce function
 		AddMandatoryAce function
