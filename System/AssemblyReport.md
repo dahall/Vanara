@@ -20,6 +20,7 @@ NetworkConnection | Represents a single network connection. Wraps `INetworkConne
 NetworkInterfaceExt | 
 NetworkListManager | Provides a set of methods to perform network list management functions.
 NetworkProfile | Represents a wireless network profile
+OpenFile | Represents an open file associated with a share.
 PathEx | Performs operations on String instances that contain file or directory path information. These operations are performed in a cross-platform manner.
 PoweredDevice | Represents a device on the system that has power requirements.
 PoweredDeviceCollection | Retrieves the list, optionally filtered, of the powered devices on the system.
@@ -34,6 +35,7 @@ ProcessExtension | Extension methods for `Process` for privilegs, status, elevat
 RegistryEventArgs | Argument used in `RegistryEventMonitor` events.
 RegistryEventMonitor | Watches the Windows Registry for any changes.
 ServiceControllerExtension | Extension methods for `ServiceController`.
+ShareConnection | Represents a connection to a shared device.
 SharedDevice | Represents a shared device on a computer.
 SharedDevices | Represents all the shared devices on a computers.
 SystemShutdown | Provides access to system shutdown, restart, lock and notifications.

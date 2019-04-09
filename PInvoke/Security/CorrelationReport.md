@@ -1,25 +1,25 @@
 ## Correlation report for advapi32.dll, secur32.dll, authz.dll  
-### Methods (29% complete)  
+### Methods (32% complete)  
 Native Method | Native DLL | Header | Managed Method  
 --- | --- | --- | ---  
 [AbortSystemShutdown](http://msdn2.microsoft.com/en-us/library/aa376630) | advapi32.dll | winreg.h | Vanara.PInvoke.AdvApi32.AbortSystemShutdown  
 [AcceptSecurityContext](https://www.google.com/search?num=5&q=AcceptSecurityContext+site%3Amicrosoft.com) | secur32.dll |  |   
-[AccessCheck](https://www.google.com/search?num=5&q=AccessCheck+site%3Amicrosoft.com) | advapi32.dll |  |   
+[AccessCheck](http://msdn2.microsoft.com/en-us/library/d9fd2e44-5782-40c9-a1cf-1788ca7afc50) | advapi32.dll | securitybaseapi.h | Vanara.PInvoke.AdvApi32.AccessCheck  
 [AccessCheckAndAuditAlarm](https://www.google.com/search?num=5&q=AccessCheckAndAuditAlarmA+site%3Amicrosoft.com) | advapi32.dll |  |   
-[AccessCheckByType](https://www.google.com/search?num=5&q=AccessCheckByType+site%3Amicrosoft.com) | advapi32.dll |  |   
+[AccessCheckByType](http://msdn2.microsoft.com/en-us/library/50acfc17-459d-464c-9927-88b32dd424c7) | advapi32.dll | securitybaseapi.h | Vanara.PInvoke.AdvApi32.AccessCheckByType  
 [AccessCheckByTypeAndAuditAlarm](https://www.google.com/search?num=5&q=AccessCheckByTypeAndAuditAlarmA+site%3Amicrosoft.com) | advapi32.dll |  |   
-[AccessCheckByTypeResultList](https://www.google.com/search?num=5&q=AccessCheckByTypeResultList+site%3Amicrosoft.com) | advapi32.dll |  |   
+[AccessCheckByTypeResultList](http://msdn2.microsoft.com/en-us/library/ce713421-d4ff-48ed-b751-5e5c5397d820) | advapi32.dll | securitybaseapi.h | Vanara.PInvoke.AdvApi32.AccessCheckByTypeResultList  
 [AccessCheckByTypeResultListAndAuditAlarm](https://www.google.com/search?num=5&q=AccessCheckByTypeResultListAndAuditAlarmA+site%3Amicrosoft.com) | advapi32.dll |  |   
 [AccessCheckByTypeResultListAndAuditAlarmByHandle](https://www.google.com/search?num=5&q=AccessCheckByTypeResultListAndAuditAlarmByHandleA+site%3Amicrosoft.com) | advapi32.dll |  |   
 [AcquireCredentialsHandle](https://www.google.com/search?num=5&q=AcquireCredentialsHandleA+site%3Amicrosoft.com) | secur32.dll |  |   
-[AddAccessAllowedAce](https://www.google.com/search?num=5&q=AddAccessAllowedAce+site%3Amicrosoft.com) | advapi32.dll |  |   
+[AddAccessAllowedAce](http://msdn2.microsoft.com/en-us/library/1004353a-f907-4452-9c0f-85eba0ece813) | advapi32.dll | securitybaseapi.h | Vanara.PInvoke.AdvApi32.AddAccessAllowedAce  
 [AddAccessAllowedAceEx](https://www.google.com/search?num=5&q=AddAccessAllowedAceEx+site%3Amicrosoft.com) | advapi32.dll |  |   
 [AddAccessAllowedObjectAce](https://www.google.com/search?num=5&q=AddAccessAllowedObjectAce+site%3Amicrosoft.com) | advapi32.dll |  |   
-[AddAccessDeniedAce](https://www.google.com/search?num=5&q=AddAccessDeniedAce+site%3Amicrosoft.com) | advapi32.dll |  |   
+[AddAccessDeniedAce](http://msdn2.microsoft.com/en-us/library/5b4c4164-48f4-4cd5-b60e-554f2498d547) | advapi32.dll | securitybaseapi.h | Vanara.PInvoke.AdvApi32.AddAccessDeniedAce  
 [AddAccessDeniedAceEx](https://www.google.com/search?num=5&q=AddAccessDeniedAceEx+site%3Amicrosoft.com) | advapi32.dll |  |   
 [AddAccessDeniedObjectAce](https://www.google.com/search?num=5&q=AddAccessDeniedObjectAce+site%3Amicrosoft.com) | advapi32.dll |  |   
-[AddAce](https://www.google.com/search?num=5&q=AddAce+site%3Amicrosoft.com) | advapi32.dll |  |   
-[AddAuditAccessAce](https://www.google.com/search?num=5&q=AddAuditAccessAce+site%3Amicrosoft.com) | advapi32.dll |  |   
+[AddAce](http://msdn2.microsoft.com/en-us/library/f472d864-a273-49b5-b5e2-98772989971e) | advapi32.dll | securitybaseapi.h | Vanara.PInvoke.AdvApi32.AddAce  
+[AddAuditAccessAce](http://msdn2.microsoft.com/en-us/library/34f22aea-9cde-411e-b2d5-bfcd3bfe325d) | advapi32.dll | securitybaseapi.h | Vanara.PInvoke.AdvApi32.AddAuditAccessAce  
 [AddAuditAccessAceEx](https://www.google.com/search?num=5&q=AddAuditAccessAceEx+site%3Amicrosoft.com) | advapi32.dll |  |   
 [AddAuditAccessObjectAce](https://www.google.com/search?num=5&q=AddAuditAccessObjectAce+site%3Amicrosoft.com) | advapi32.dll |  |   
 [AddConditionalAce](https://www.google.com/search?num=5&q=AddConditionalAce+site%3Amicrosoft.com) | advapi32.dll |  |   
@@ -111,7 +111,7 @@ Native Method | Native DLL | Header | Managed Method
 [AuthzUninstallSecurityEventSource](https://www.google.com/search?num=5&q=AuthzUninstallSecurityEventSource+site%3Amicrosoft.com) | authz.dll |  |   
 [AuthzUnregisterCapChangeNotification](https://www.google.com/search?num=5&q=AuthzUnregisterCapChangeNotification+site%3Amicrosoft.com) | authz.dll |  |   
 [AuthzUnregisterSecurityEventSource](https://www.google.com/search?num=5&q=AuthzUnregisterSecurityEventSource+site%3Amicrosoft.com) | authz.dll |  |   
-[BackupEventLog](https://www.google.com/search?num=5&q=BackupEventLogA+site%3Amicrosoft.com) | advapi32.dll |  |   
+[BackupEventLog](http://msdn2.microsoft.com/en-us/library/5cfd5bad-4401-4abd-9e81-5f139e4ecf73) | advapi32.dll | winbase.h | Vanara.PInvoke.AdvApi32.BackupEventLog  
 [BaseRegCloseKey](https://www.google.com/search?num=5&q=BaseRegCloseKey+site%3Amicrosoft.com) | advapi32.dll |  |   
 [BaseRegCreateKey](https://www.google.com/search?num=5&q=BaseRegCreateKey+site%3Amicrosoft.com) | advapi32.dll |  |   
 [BaseRegDeleteKeyEx](https://www.google.com/search?num=5&q=BaseRegDeleteKeyEx+site%3Amicrosoft.com) | advapi32.dll |  |   
@@ -139,10 +139,10 @@ Native Method | Native DLL | Header | Managed Method
 [ChangeServiceConfig2](http://msdn2.microsoft.com/en-us/library/ms681988) | advapi32.dll | winsvc.h | Vanara.PInvoke.AdvApi32.ChangeServiceConfig2  
 [CheckForHiberboot](https://www.google.com/search?num=5&q=CheckForHiberboot+site%3Amicrosoft.com) | advapi32.dll |  |   
 [CheckTokenMembership](https://www.google.com/search?num=5&q=CheckTokenMembership+site%3Amicrosoft.com) | advapi32.dll |  |   
-[ClearEventLog](https://www.google.com/search?num=5&q=ClearEventLogA+site%3Amicrosoft.com) | advapi32.dll |  |   
+[ClearEventLog](http://msdn2.microsoft.com/en-us/library/b66896f6-baee-43c4-9d9b-5663c164d092) | advapi32.dll | winbase.h | Vanara.PInvoke.AdvApi32.ClearEventLog  
 [CloseCodeAuthzLevel](https://www.google.com/search?num=5&q=CloseCodeAuthzLevel+site%3Amicrosoft.com) | advapi32.dll |  |   
 [CloseEncryptedFileRaw](https://www.google.com/search?num=5&q=CloseEncryptedFileRaw+site%3Amicrosoft.com) | advapi32.dll |  |   
-[CloseEventLog](https://www.google.com/search?num=5&q=CloseEventLog+site%3Amicrosoft.com) | advapi32.dll |  |   
+[CloseEventLog](http://msdn2.microsoft.com/en-us/library/cb98a0cf-8ee9-4d78-8508-efae1d43a91d) | advapi32.dll | winbase.h | Vanara.PInvoke.AdvApi32.CloseEventLog  
 [CloseLsaPerformanceData](https://www.google.com/search?num=5&q=CloseLsaPerformanceData+site%3Amicrosoft.com) | secur32.dll |  |   
 [CloseServiceHandle](http://msdn2.microsoft.com/en-us/library/6cf25994-4939-4aff-af38-5ffc8fc606ae) | advapi32.dll | winsvc.h | Vanara.PInvoke.AdvApi32.CloseServiceHandle  
 [CloseThreadWaitChainSession](https://www.google.com/search?num=5&q=CloseThreadWaitChainSession+site%3Amicrosoft.com) | advapi32.dll |  |   
@@ -259,7 +259,7 @@ Native Method | Native DLL | Header | Managed Method
 [FreeSid](http://msdn2.microsoft.com/en-us/library/aa446631) | advapi32.dll | securitybaseapi.h | Vanara.PInvoke.AdvApi32.FreeSid  
 [GenerateNewCAPID](https://www.google.com/search?num=5&q=GenerateNewCAPID+site%3Amicrosoft.com) | authz.dll |  |   
 [GetAccessPermissionsForObject](https://www.google.com/search?num=5&q=GetAccessPermissionsForObjectA+site%3Amicrosoft.com) | advapi32.dll |  |   
-[GetAce](http://msdn2.microsoft.com/en-us/library/aa446634) | advapi32.dll | securitybaseapi.h | Vanara.PInvoke.AdvApi32.GetAce  
+[GetAce](http://msdn2.microsoft.com/en-us/library/5b5d8751-20d7-40a2-bd70-cfbe956aaa03) | advapi32.dll | securitybaseapi.h | Vanara.PInvoke.AdvApi32.GetAce  
 [GetAclInformation](http://msdn2.microsoft.com/en-us/library/aa446635) | advapi32.dll | securitybaseapi.h | Vanara.PInvoke.AdvApi32.GetAclInformation  
 [GetAuditedPermissionsFromAcl](http://msdn2.microsoft.com/en-us/library/4381fe12-5fb3-4f9c-8daa-261cb1a466ec) | advapi32.dll | aclapi.h | Vanara.PInvoke.AdvApi32.GetAuditedPermissionsFromAcl  
 [GetCentralAccessPoliciesByCapID](https://www.google.com/search?num=5&q=GetCentralAccessPoliciesByCapID+site%3Amicrosoft.com) | authz.dll |  |   
@@ -272,7 +272,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetDynamicTimeZoneInformationEffectiveYears](https://www.google.com/search?num=5&q=GetDynamicTimeZoneInformationEffectiveYears+site%3Amicrosoft.com) | advapi32.dll |  |   
 [GetEffectiveRightsFromAcl](http://msdn2.microsoft.com/en-us/library/aa446637) | advapi32.dll | Aclapi.h | Vanara.PInvoke.AdvApi32.GetEffectiveRightsFromAcl  
 [GetEncryptedFileMetadata](https://www.google.com/search?num=5&q=GetEncryptedFileMetadata+site%3Amicrosoft.com) | advapi32.dll |  |   
-[GetEventLogInformation](https://www.google.com/search?num=5&q=GetEventLogInformation+site%3Amicrosoft.com) | advapi32.dll |  |   
+[GetEventLogInformation](http://msdn2.microsoft.com/en-us/library/627e0af2-3ce6-47fe-89c6-d7c0483cb94b) | advapi32.dll | winbase.h | Vanara.PInvoke.AdvApi32.GetEventLogInformation  
 [GetExplicitEntriesFromAcl](http://msdn2.microsoft.com/en-us/library/186aa6aa-efc3-4f8a-acad-e257da3dac0b) | advapi32.dll | aclapi.h | Vanara.PInvoke.AdvApi32.GetExplicitEntriesFromAcl  
 [GetFileSecurity](https://www.google.com/search?num=5&q=GetFileSecurityA+site%3Amicrosoft.com) | advapi32.dll |  |   
 [GetInformationCodeAuthzLevelW](https://www.google.com/search?num=5&q=GetInformationCodeAuthzLevelW+site%3Amicrosoft.com) | advapi32.dll |  |   
@@ -288,8 +288,8 @@ Native Method | Native DLL | Header | Managed Method
 [GetMultipleTrusteeOperation](https://www.google.com/search?num=5&q=GetMultipleTrusteeOperationA+site%3Amicrosoft.com) | advapi32.dll |  |   
 [GetNamedSecurityInfo](http://msdn2.microsoft.com/en-us/library/aa446645) | advapi32.dll | Aclapi.h | Vanara.PInvoke.AdvApi32.GetNamedSecurityInfo  
 [GetNamedSecurityInfoEx](https://www.google.com/search?num=5&q=GetNamedSecurityInfoExA+site%3Amicrosoft.com) | advapi32.dll |  |   
-[GetNumberOfEventLogRecords](https://www.google.com/search?num=5&q=GetNumberOfEventLogRecords+site%3Amicrosoft.com) | advapi32.dll |  |   
-[GetOldestEventLogRecord](https://www.google.com/search?num=5&q=GetOldestEventLogRecord+site%3Amicrosoft.com) | advapi32.dll |  |   
+[GetNumberOfEventLogRecords](http://msdn2.microsoft.com/en-us/library/80cc8735-26a2-4ad3-a111-28f2c0c52e98) | advapi32.dll | winbase.h | Vanara.PInvoke.AdvApi32.GetNumberOfEventLogRecords  
+[GetOldestEventLogRecord](http://msdn2.microsoft.com/en-us/library/2f64f82b-a5f5-4701-844b-5979a0124414) | advapi32.dll | winbase.h | Vanara.PInvoke.AdvApi32.GetOldestEventLogRecord  
 [GetOverlappedAccessResults](https://www.google.com/search?num=5&q=GetOverlappedAccessResults+site%3Amicrosoft.com) | advapi32.dll |  |   
 [GetPrivateObjectSecurity](http://msdn2.microsoft.com/en-us/library/aa446646) | advapi32.dll | securitybaseapi.h | Vanara.PInvoke.AdvApi32.GetPrivateObjectSecurity  
 [GetSecurityDescriptorControl](http://msdn2.microsoft.com/en-us/library/d66682f2-8017-4245-9d93-5f8332a5b483) | advapi32.dll | securitybaseapi.h | Vanara.PInvoke.AdvApi32.GetSecurityDescriptorControl  
@@ -342,7 +342,7 @@ Native Method | Native DLL | Header | Managed Method
 [IsTokenUntrusted](https://www.google.com/search?num=5&q=IsTokenUntrusted+site%3Amicrosoft.com) | advapi32.dll |  |   
 [IsValidAcl](https://www.google.com/search?num=5&q=IsValidAcl+site%3Amicrosoft.com) | advapi32.dll |  |   
 [IsValidRelativeSecurityDescriptor](https://www.google.com/search?num=5&q=IsValidRelativeSecurityDescriptor+site%3Amicrosoft.com) | advapi32.dll |  |   
-[IsValidSecurityDescriptor](https://www.google.com/search?num=5&q=IsValidSecurityDescriptor+site%3Amicrosoft.com) | advapi32.dll |  |   
+[IsValidSecurityDescriptor](http://msdn2.microsoft.com/en-us/library/24a98229-11e4-45ef-988b-c2cf831275e7) | advapi32.dll | securitybaseapi.h | Vanara.PInvoke.AdvApi32.IsValidSecurityDescriptor  
 [IsValidSid](http://msdn2.microsoft.com/en-us/library/aa379151) | advapi32.dll | securitybaseapi.h | Vanara.PInvoke.AdvApi32.IsValidSid  
 [IsWellKnownSid](https://www.google.com/search?num=5&q=IsWellKnownSid+site%3Amicrosoft.com) | advapi32.dll |  |   
 [LockServiceDatabase](https://www.google.com/search?num=5&q=LockServiceDatabase+site%3Amicrosoft.com) | advapi32.dll |  |   
@@ -447,16 +447,16 @@ Native Method | Native DLL | Header | Managed Method
 [MSChapSrvChangePassword](https://www.google.com/search?num=5&q=MSChapSrvChangePassword+site%3Amicrosoft.com) | advapi32.dll |  |   
 [MSChapSrvChangePassword2](https://www.google.com/search?num=5&q=MSChapSrvChangePassword2+site%3Amicrosoft.com) | advapi32.dll |  |   
 [NotifyBootConfigStatus](https://www.google.com/search?num=5&q=NotifyBootConfigStatus+site%3Amicrosoft.com) | advapi32.dll |  |   
-[NotifyChangeEventLog](https://www.google.com/search?num=5&q=NotifyChangeEventLog+site%3Amicrosoft.com) | advapi32.dll |  |   
+[NotifyChangeEventLog](http://msdn2.microsoft.com/en-us/library/12b9a7bf-2aad-48b7-8cfd-a72b353ba2b2) | advapi32.dll | winbase.h | Vanara.PInvoke.AdvApi32.NotifyChangeEventLog  
 [NotifyServiceStatusChange](https://www.google.com/search?num=5&q=NotifyServiceStatusChange+site%3Amicrosoft.com) | advapi32.dll |  |   
 [NpGetUserName](https://www.google.com/search?num=5&q=NpGetUserName+site%3Amicrosoft.com) | advapi32.dll |  |   
 [ObjectCloseAuditAlarm](https://www.google.com/search?num=5&q=ObjectCloseAuditAlarmA+site%3Amicrosoft.com) | advapi32.dll |  |   
 [ObjectDeleteAuditAlarm](https://www.google.com/search?num=5&q=ObjectDeleteAuditAlarmA+site%3Amicrosoft.com) | advapi32.dll |  |   
 [ObjectOpenAuditAlarm](https://www.google.com/search?num=5&q=ObjectOpenAuditAlarmA+site%3Amicrosoft.com) | advapi32.dll |  |   
 [ObjectPrivilegeAuditAlarm](https://www.google.com/search?num=5&q=ObjectPrivilegeAuditAlarmA+site%3Amicrosoft.com) | advapi32.dll |  |   
-[OpenBackupEventLog](https://www.google.com/search?num=5&q=OpenBackupEventLogA+site%3Amicrosoft.com) | advapi32.dll |  |   
+[OpenBackupEventLog](http://msdn2.microsoft.com/en-us/library/cfef0912-9d35-44aa-a1d3-f9bb37213ce0) | advapi32.dll | winbase.h | Vanara.PInvoke.AdvApi32.OpenBackupEventLog  
 [OpenEncryptedFileRaw](https://www.google.com/search?num=5&q=OpenEncryptedFileRawA+site%3Amicrosoft.com) | advapi32.dll |  |   
-[OpenEventLog](https://www.google.com/search?num=5&q=OpenEventLogA+site%3Amicrosoft.com) | advapi32.dll |  |   
+[OpenEventLog](http://msdn2.microsoft.com/en-us/library/6cd8797a-aeaf-4603-b43c-b1ff45b6200a) | advapi32.dll | winbase.h | Vanara.PInvoke.AdvApi32.OpenEventLog  
 [OpenLsaPerformanceData](https://www.google.com/search?num=5&q=OpenLsaPerformanceData+site%3Amicrosoft.com) | secur32.dll |  |   
 [OpenProcessToken](http://msdn2.microsoft.com/en-us/library/aa379295) | advapi32.dll | processthreadsapi.h | Vanara.PInvoke.AdvApi32.OpenProcessToken  
 [OpenSCManager](http://msdn2.microsoft.com/en-us/library/a0237989-e5a7-4a3a-ab23-e2474a995341) | advapi32.dll | winsvc.h | Vanara.PInvoke.AdvApi32.OpenSCManager  
@@ -520,7 +520,7 @@ Native Method | Native DLL | Header | Managed Method
 [QueryUserServiceNameForContext](https://www.google.com/search?num=5&q=QueryUserServiceNameForContext+site%3Amicrosoft.com) | advapi32.dll |  |   
 [QueryUsersOnEncryptedFile](https://www.google.com/search?num=5&q=QueryUsersOnEncryptedFile+site%3Amicrosoft.com) | advapi32.dll |  |   
 [ReadEncryptedFileRaw](https://www.google.com/search?num=5&q=ReadEncryptedFileRaw+site%3Amicrosoft.com) | advapi32.dll |  |   
-[ReadEventLog](https://www.google.com/search?num=5&q=ReadEventLogA+site%3Amicrosoft.com) | advapi32.dll |  |   
+[ReadEventLog](http://msdn2.microsoft.com/en-us/library/10b37174-661a-4dc6-a7fe-752739494156) | advapi32.dll | winbase.h | Vanara.PInvoke.AdvApi32.ReadEventLog  
 [RefreshClaimDictionary](https://www.google.com/search?num=5&q=RefreshClaimDictionary+site%3Amicrosoft.com) | authz.dll |  |   
 [RegCloseKey](http://msdn2.microsoft.com/en-us/library/ms724837) | advapi32.dll | winreg.h | Vanara.PInvoke.AdvApi32.RegCloseKey  
 [RegConnectRegistry](http://msdn2.microsoft.com/en-us/library/d7fb41cc-4855-4ad7-879c-b1ac85ac5803) | advapi32.dll | winreg.h | Vanara.PInvoke.AdvApi32.RegConnectRegistry  
@@ -577,7 +577,7 @@ Native Method | Native DLL | Header | Managed Method
 [RemoteRegQueryMultipleValuesWrapper](https://www.google.com/search?num=5&q=RemoteRegQueryMultipleValuesWrapper+site%3Amicrosoft.com) | advapi32.dll |  |   
 [RemoveTraceCallback](https://www.google.com/search?num=5&q=RemoveTraceCallback+site%3Amicrosoft.com) | advapi32.dll |  |   
 [RemoveUsersFromEncryptedFile](https://www.google.com/search?num=5&q=RemoveUsersFromEncryptedFile+site%3Amicrosoft.com) | advapi32.dll |  |   
-[ReportEvent](https://www.google.com/search?num=5&q=ReportEventA+site%3Amicrosoft.com) | advapi32.dll |  |   
+[ReportEvent](http://msdn2.microsoft.com/en-us/library/e39273c3-9e42-41a1-9ec1-1cdff2ab7b55) | advapi32.dll | winbase.h | Vanara.PInvoke.AdvApi32.ReportEvent  
 [RevertSecurityContext](https://www.google.com/search?num=5&q=RevertSecurityContext+site%3Amicrosoft.com) | secur32.dll |  |   
 [RevertToSelf](http://msdn2.microsoft.com/en-us/library/aa379317) | advapi32.dll | securitybaseapi.h | Vanara.PInvoke.AdvApi32.RevertToSelf  
 [SafeBaseRegGetKeySecurity](https://www.google.com/search?num=5&q=SafeBaseRegGetKeySecurity+site%3Amicrosoft.com) | advapi32.dll |  |   
@@ -707,6 +707,7 @@ Native Method | Native DLL | Header | Managed Method
 Native Structure | Header | Managed Structure  
 --- | --- | ---  
 [ACCESS_ALLOWED_ACE](http://msdn2.microsoft.com/en-us/library/aa374847) | Winnt.h | Vanara.PInvoke.AdvApi32+ACCESS_ALLOWED_ACE  
+[ACCESS_ALLOWED_OBJECT_ACE](http://msdn2.microsoft.com/en-us/library/ee91ca50-e81b-4872-95eb-349c2d5be004) | winnt.h | Vanara.PInvoke.AdvApi32+ACCESS_ALLOWED_OBJECT_ACE  
 [ACE_HEADER](http://msdn2.microsoft.com/en-us/library/aa374919) | Winnt.h | Vanara.PInvoke.AdvApi32+ACE_HEADER  
 [ACL](http://msdn2.microsoft.com/en-us/library/aa374931) | Winnt.h | Vanara.PInvoke.AdvApi32+ACL  
 [ACL_REVISION_INFORMATION](http://msdn2.microsoft.com/en-us/library/aa374942) | Winnt.h | Vanara.PInvoke.AdvApi32+ACL_REVISION_INFORMATION  
@@ -733,6 +734,10 @@ Native Structure | Header | Managed Structure
 [CLAIM_SECURITY_ATTRIBUTES_INFORMATION](http://msdn2.microsoft.com/en-us/library/hh448481) | Winnt.h | Vanara.PInvoke.AdvApi32+CLAIM_SECURITY_ATTRIBUTES_INFORMATION  
 [CREDENTIAL](https://www.google.com/search?num=5&q=CREDENTIAL+site%3Amicrosoft.com) | wincred.h | Vanara.PInvoke.AdvApi32+CREDENTIAL  
 [CREDENTIAL_TARGET_INFORMATION](http://msdn2.microsoft.com/en-us/library/92180f2c-ef7c-4481-9b6f-19234c114afb) | wincred.h | Vanara.PInvoke.AdvApi32+CREDENTIAL_TARGET_INFORMATION  
+[EVENTLOG_FULL_INFORMATION](http://msdn2.microsoft.com/en-us/library/3ca41d6b-51a6-4226-89be-ab2c37628289) | winbase.h | Vanara.PInvoke.AdvApi32+EVENTLOG_FULL_INFORMATION  
+[EVENTLOGEOF](http://msdn2.microsoft.com/en-us/library/bb309022) | Winnt.h | Vanara.PInvoke.AdvApi32+EVENTLOGEOF  
+[EVENTLOGHEADER](http://msdn2.microsoft.com/en-us/library/bb309024) | Winnt.h | Vanara.PInvoke.AdvApi32+EVENTLOGHEADER  
+[EVENTLOGRECORD](http://msdn2.microsoft.com/en-us/library/669b182a-bc81-4386-9815-6ffa09e2e743) | winnt.h | Vanara.PInvoke.AdvApi32+EVENTLOGRECORD  
 [EXPLICIT_ACCESS](http://msdn2.microsoft.com/en-us/library/6fe09542-10dd-439c-adf8-a4e06943ddb2) | accctrl.h | Vanara.PInvoke.AdvApi32+EXPLICIT_ACCESS  
 [GENERIC_MAPPING](http://msdn2.microsoft.com/en-us/library/aa446633) | Winnt.h | Vanara.PInvoke.AdvApi32+GENERIC_MAPPING  
 [HEVENTLOG](https://www.google.com/search?num=5&q=HEVENTLOG+site%3Amicrosoft.com) |  | Vanara.PInvoke.AdvApi32+HEVENTLOG  

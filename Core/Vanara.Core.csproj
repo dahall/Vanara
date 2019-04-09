@@ -30,7 +30,7 @@
     <PackageReleaseNotes>Currently implements:
 
 Classes
-BitHelper, ByteSizeFormatter, ComConnectionPoint, ComReleaser&lt;T&gt;, CorrespondingTypeAttribute, CoTaskMemoryMethods, EnumerableEqualityComparer&lt;T&gt;, EnumExtensions, EventedList&lt;T&gt;, FileTimeExtensions, Formatter, FormatterComposer, GenericSafeHandle, GenericVirtualReadOnlyDictionaryy&lt;T&gt;, HexDempHelpers, HGlobalMemoryMethods, InteropExtensions, IntPtrConverter, IOExtensions, ListChangedEventArgs&lt;T&gt;, MarshalingStream, PinnedObject, ReflectionExtensions, SafeAllocatedMemoryHandle, SafeByteArray, SafeCoTaskMemHandle, SafeCoTaskMemString, SafeHGlobalHandle, SafeMemoryHandle&lt;T&gt;, SafeMemoryHandleExt&lt;T&gt;, SparseArray&lt;T&gt;, StringHelper, TryGetValueDelegate, VirtualDictionary&lt;T&gt;, VirtualReadOnlyDictionary&lt;T&gt;
+BitHelper, ByteSizeFormatter, ComConnectionPoint, ComReleaser&lt;T&gt;, CorrespondingTypeAttribute, CoTaskMemoryMethods, EnumerableEqualityComparer&lt;T&gt;, EnumExtensions, EventedList&lt;T&gt;, FileTimeExtensions, Formatter, FormatterComposer, GenericSafeHandle, GenericVirtualReadOnlyDictionaryy&lt;T&gt;, HexDempHelpers, HGlobalMemoryMethods, InteropExtensions, IntPtrConverter, IOExtensions, ListChangedEventArgs&lt;T&gt;, MarshalingStream, NativeMemoryStream, PinnedObject, ReflectionExtensions, SafeAllocatedMemoryHandle, SafeByteArray, SafeCoTaskMemHandle, SafeCoTaskMemString, SafeHGlobalHandle, SafeMemoryHandle&lt;T&gt;, SafeMemoryHandleExt&lt;T&gt;, SparseArray&lt;T&gt;, StringHelper, TryGetValueDelegate, VirtualDictionary&lt;T&gt;, VirtualReadOnlyDictionary&lt;T&gt;
 
 Structures
 EnumFlagIndexer&lt;T&gt;, StrPtrAnsi, StrPtrAuto, StrPtrUni

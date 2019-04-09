@@ -10,7 +10,6 @@ IEnumFromNext<T> | Creates an enumerable class from a get next method and a rese
 Lib | Holds string values for all used external API libraries.
 Macros | Platform invokable enumerated types, constants and functions from windows.h
 NullTermStringArrayMarshaler | 
-OBJECT_TYPE_LIST | The <c>OBJECT_TYPE_LIST</c> structure identifies an object type element in a hierarchy of object types. The AccessCheckByType functions use an array of <c>OBJECT_TYPE_LIST</c> structures to define a hierarchy of an object and its subobjects, such as property sets and properties.
 OverlappedAsync | Helper methods to work with asynchronous methods using `NativeOverlapped`.
 OverlappedAsyncResult | Holds all pertinent information for handling results and errors in an overlapped set of method calls.
 PInvokeClientExtensions | Extension methods for `PInvokeClient`.
