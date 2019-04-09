@@ -29,6 +29,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -57,6 +63,7 @@
     <Compile Include="InteropServices\SafeCoTaskMemStringTests.cs" />
     <Compile Include="InteropServices\SafeHGlobalHandleTests.cs" />
     <Compile Include="InteropServices\StrPtrTests.cs" />
+    <Compile Include="InteropServices\StructMarshalerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
