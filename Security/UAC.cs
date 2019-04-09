@@ -79,7 +79,7 @@ namespace Vanara.Security
 					if (elevType == TOKEN_ELEVATION_TYPE.TokenElevationTypeLimited)
 					{
 						// Marshal the linked token value from native to .NET.
-						hObjectToCheck = new SafeHTOKEN(hObject.GetInfo<IntPtr>(TOKEN_INFORMATION_CLASS.TokenLinkedToken));
+						hObjectToCheck = new SafeHTOKEN(hObject.GetInfo<TOKEN_LINKED_TOKEN>(TOKEN_INFORMATION_CLASS.TokenLinkedToken).LinkedToken);
 					}
 				}
 
