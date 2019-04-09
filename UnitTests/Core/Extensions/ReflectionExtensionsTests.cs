@@ -20,14 +20,20 @@ namespace Vanara.Extensions.Tests
 		public void GetPropertyValueTest()
 		{
 			var dt = DateTime.Today;
+			// Has public value
 			Assert.That(dt.GetPropertyValue("Ticks", 0L), Is.EqualTo(dt.Ticks));
-			Assert.That(dt.GetPropertyValue("InternalTicks", 0L), Is.EqualTo(dt.Ticks));
-			Assert.That(dt.GetPropertyValue<long?>("Tacks"), Is.Null);
-			Assert.That(dt.GetPropertyValue<string>("Ticks"), Is.Null);
-			Assert.That(dt.GetPropertyValue<ulong>("Ticks", 0), Is.EqualTo((ulong)0));
-			Assert.That(dt.GetPropertyValue<byte>("Ticks"), Is.EqualTo((byte)0));
+			Assert.That(dt.GetPropertyValue<long>("Ticks"), Is.EqualTo(dt.Ticks));
+			// Has private value
+			Assert.That(dt.GetPropertyValue<long>("InternalTicks"), Is.EqualTo(dt.Ticks));
+			// Bad propname
+			Assert.That(() => dt.GetPropertyValue<long?>("Tacks"), Throws.Exception);
+			Assert.That(() => dt.GetPropertyValue<long?>("Tacks", null), Is.Null);
+			// Diff ret type
+			Assert.That(() => dt.GetPropertyValue<string>("Ticks"), Throws.Exception);
+			Assert.That(dt.GetPropertyValue("Ticks", string.Empty), Is.EqualTo(string.Empty));
+			// Has null val
 			var x = new X();
-			Assert.That(x.GetPropertyValue<string>("Str", ""), Is.EqualTo(""));
+			Assert.That(x.GetPropertyValue("Str", ""), Is.Null);
 		}
 
 		[TestCase(typeof(string), typeof(char))]

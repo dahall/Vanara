@@ -63,7 +63,7 @@
     <Compile Include="InteropServices\SafeCoTaskMemStringTests.cs" />
     <Compile Include="InteropServices\SafeHGlobalHandleTests.cs" />
     <Compile Include="InteropServices\StrPtrTests.cs" />
-    <Compile Include="InteropServices\StructMarshalerTests.cs" />
+    <None Include="InteropServices\StructMarshalerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

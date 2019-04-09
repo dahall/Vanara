@@ -144,7 +144,7 @@ namespace Vanara.Extensions.Tests
 				Assert.That(h, Is.Not.EqualTo(IntPtr.Zero));
 				var chSz = 2;
 				Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + ((rs.Length + 1) * IntPtr.Size) + i));
-				var ro = h.ToIEnum<IntPtr>(rs.Length, i).Select(p => Marshal.ReadIntPtr(p)).ToArray();
+				var ro = h.ToIEnum<IntPtr>(rs.Length, i).ToArray();
 				Assert.That(ro, Has.None.EqualTo(IntPtr.Zero));
 				for (var i = 0; i < ro.Length; i++)
 					Assert.That(StringHelper.GetString(ro[i], CharSet.Unicode), Is.EqualTo(rs[i]));
@@ -154,7 +154,7 @@ namespace Vanara.Extensions.Tests
 				Assert.That(h, Is.Not.EqualTo(IntPtr.Zero));
 				chSz = 1;
 				Assert.That(a, Is.EqualTo(chSz * (rs[0].Length + 1) * rs.Length + ((rs.Length + 1) * IntPtr.Size) + i));
-				ro = h.ToIEnum<IntPtr>(rs.Length, i).Select(p => Marshal.ReadIntPtr(p)).ToArray();
+				ro = h.ToIEnum<IntPtr>(rs.Length, i).ToArray();
 				Assert.That(ro, Has.None.EqualTo(IntPtr.Zero));
 				for (var i = 0; i < ro.Length; i++)
 					Assert.That(StringHelper.GetString(ro[i], CharSet.Ansi), Is.EqualTo(rs[i]));
