@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Permissions;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
@@ -37,6 +38,24 @@ namespace Vanara.PInvoke.Tests
 					ret[i] = items;
 				}
 				return ret;
+			}
+		}
+
+		[Test]
+		public void AccessCheckTest()
+		{
+			using (var pSD = GetSD(fn, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION))
+			using (var hTok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_READ).Duplicate(SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation))
+			{
+				var ps = PRIVILEGE_SET.InitializeWithCapacity(10);
+				var psSz = ps.SizeInBytes;
+				var gm = GENERIC_MAPPING.GenericFileMapping;
+				var accessMask = (uint)Kernel32.FileAccess.GENERIC_READ;
+				MapGenericMask(ref accessMask, gm);
+				var b = AccessCheck(pSD, hTok, accessMask, gm, ref ps, ref psSz, out var access, out var status);
+				if (!b) TestContext.WriteLine($"AccessCheck failed: {Win32Error.GetLastError()}");
+				Assert.That(b, Is.True);
+				TestContext.WriteLine($"Access={(Kernel32.FileAccess)access}; Status={status}");
 			}
 		}
 
@@ -90,9 +109,10 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test()]
+		[PrincipalPermission(SecurityAction.Demand, Role = "Administrators")]
 		public void ChangeAndQueryServiceConfigTest()
 		{
-			using (var sc = new System.ServiceProcess.ServiceController("Fax"))
+			using (var sc = new System.ServiceProcess.ServiceController("Netlogon"))
 			{
 				using (var h = sc.ServiceHandle)
 				{
@@ -183,8 +203,14 @@ namespace Vanara.PInvoke.Tests
 			{
 				b = GetAce(pAcl, i, out var pAce);
 				Assert.That(b, Is.True);
-				var id = new SecurityIdentifier((IntPtr)pAce.GetSid()).Translate(typeof(NTAccount));
-				TestContext.WriteLine($"Ace{i}: {pAce.GetHeader().AceType}={id}; {pAce.GetMask()}");
+
+				var accountSize = 1024;
+				var domainSize = 1024;
+				var outuser = new StringBuilder(accountSize, accountSize);
+				var outdomain = new StringBuilder(domainSize, domainSize);
+				b = LookupAccountSid(null, pAce.GetSid(), outuser, ref accountSize, outdomain, ref domainSize, out _);
+				Assert.That(b, Is.True);
+				TestContext.WriteLine($"Ace{i}: {pAce.GetHeader().AceType}={outdomain}\\{outuser}; {pAce.GetMask()}");
 			}
 
 			BuildTrusteeWithName(out var pTrustee, fun);
@@ -298,9 +324,7 @@ namespace Vanara.PInvoke.Tests
 		[Test, TestCaseSource(typeof(AdvApi32Tests), nameof(AuthCasesFromFile))]
 		public void LogonUserExTest(bool validUser, bool validCred, string urn, string dn, string dcn, string domain, string un, string pwd, string notes)
 		{
-			var b = LogonUserEx(urn, null, pwd, LogonUserType.LOGON32_LOGON_INTERACTIVE,
-				LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out var hTok, out var _,
-				out var _, out var _, out var _);
+			var b = LogonUserEx(urn, null, pwd, LogonUserType.LOGON32_LOGON_INTERACTIVE, LogonUserProvider.LOGON32_PROVIDER_DEFAULT, out var hTok, out _, out _, out _, out _);
 			if (!b) TestContext.WriteLine(Win32Error.GetLastError());
 			Assert.That(b, Is.EqualTo(validCred && validUser));
 			hTok.Dispose();
@@ -395,28 +419,11 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
-		[Test]
-		public void AccessCheckTest()
-		{
-			using (var pSD = GetSD(fn, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION | SECURITY_INFORMATION.GROUP_SECURITY_INFORMATION))
-			using (var hTok = SafeHTOKEN.FromProcess(GetCurrentProcess(), TokenAccess.TOKEN_IMPERSONATE | TokenAccess.TOKEN_DUPLICATE | TokenAccess.TOKEN_READ).Duplicate(SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation))
-			{
-				var ps = PRIVILEGE_SET.InitializeWithCapacity(10);
-				var psSz = ps.SizeInBytes;
-				var gm = GENERIC_MAPPING.GenericFileMapping;
-				var accessMask = (uint)Kernel32.FileAccess.GENERIC_READ;
-				MapGenericMask(ref accessMask, gm);
-				var b = AccessCheck(pSD, hTok, accessMask, gm, ref ps, ref psSz, out var access, out var status);
-				if (!b) TestContext.WriteLine($"AccessCheck failed: {Win32Error.GetLastError()}");
-				Assert.That(b, Is.True);
-				TestContext.WriteLine($"Access={(Kernel32.FileAccess)access}; Status={status}");
-			}
-		}
-
 		[Test()]
+		[PrincipalPermission(SecurityAction.Demand, Role = "Administrators")]
 		public void QueryServiceConfig2Test()
 		{
-			using (var sc = new System.ServiceProcess.ServiceController("Fax"))
+			using (var sc = new System.ServiceProcess.ServiceController("Netlogon"))
 			{
 				using (var h = sc.ServiceHandle)
 				{
@@ -470,6 +477,7 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test()]
+		[PrincipalPermission(SecurityAction.Demand, Role = "Administrators")]
 		public void SetNamedSecurityInfoTest()
 		{
 			using (var pSD = GetSD(fn))
@@ -489,6 +497,7 @@ namespace Vanara.PInvoke.Tests
 		}
 
 		[Test()]
+		[PrincipalPermission(SecurityAction.Demand, Role = "Administrators")]
 		public void StartStopService()
 		{
 			using (var scm = AdvApi32.OpenSCManager(null, null, ScManagerAccessTypes.SC_MANAGER_CONNECT))
@@ -529,6 +538,23 @@ namespace Vanara.PInvoke.Tests
 			}
 		}
 
+		[Test]
+		public void UserTest()
+		{
+			GetNamedSecurityInfo(fn, SE_OBJECT_TYPE.SE_FILE_OBJECT, SECURITY_INFORMATION.DACL_SECURITY_INFORMATION, out _, out _, out var ppDacl, out _, out var ppSecurityDescriptor).ThrowIfFailed();
+
+			var aceCount = ppDacl.GetAclInformation<ACL_SIZE_INFORMATION>().AceCount;
+			for (var i = 0U; i < aceCount; i++)
+			{
+				if (!GetAce(ppDacl, i, out var ace)) Win32Error.ThrowLastError();
+				var accountSize = 1024;
+				var domainSize = 1024;
+				var account = new StringBuilder(accountSize, accountSize);
+				var domain = new StringBuilder(domainSize, domainSize);
+				if (!LookupAccountSid(null, ace.GetSid(), account, ref accountSize, domain, ref domainSize, out _)) Win32Error.ThrowLastError();
+				TestContext.WriteLine($"Ace{i}: {ace.GetHeader().AceType}={domain}\\{account}; {ace.GetMask()}");
+			}
+		}
 		internal static SafeSecurityDescriptor GetSD(string filename, SECURITY_INFORMATION si = SECURITY_INFORMATION.DACL_SECURITY_INFORMATION | SECURITY_INFORMATION.OWNER_SECURITY_INFORMATION)
 		{
 			var err = GetNamedSecurityInfo(filename, SE_OBJECT_TYPE.SE_FILE_OBJECT, si, out _, out _, out _, out _, out var pSD);
