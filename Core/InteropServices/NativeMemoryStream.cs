@@ -49,9 +49,10 @@ namespace Vanara.InteropServices
 		/// <summary>Initializes a new instance of the <see cref="NativeMemoryStream"/> class with a pointer and allows for dynamic growth.</summary>
 		/// <param name="unmanagedPtr">The pointer to unmanaged, preallocated memory.</param>
 		/// <param name="bytesAllocated">The bytes allocated to <paramref name="unmanagedPtr"/>.</param>
-		public NativeMemoryStream(IntPtr unmanagedPtr, long bytesAllocated)
+		/// <param name="access">The mode of file access to the native memory stream.</param>
+		public NativeMemoryStream(IntPtr unmanagedPtr, long bytesAllocated, FileAccess access = FileAccess.Read)
 		{
-			access = FileAccess.Read;
+			this.access = access;
 			chunkSize = 0;
 			Pointer = unmanagedPtr;
 			MaxCapacity = capacity = bytesAllocated;
@@ -321,7 +322,7 @@ namespace Vanara.InteropServices
 		/// <summary>Writes the specified value into the stream.</summary>
 		/// <typeparam name="T">The type of the value.</typeparam>
 		/// <param name="value">The value.</param>
-		public void Write<T>(in T value) where T : unmanaged => WriteObject(value);
+		public void Write<T>(in T value) where T : struct => WriteObject(value);
 
 		/// <summary>Writes the specified string into the stream.</summary>
 		/// <param name="value">The string value.</param>
@@ -340,7 +341,7 @@ namespace Vanara.InteropServices
 		/// <typeparam name="T">The type of the array item.</typeparam>
 		/// <param name="items">The items.</param>
 		/// <param name="byRef">Write values as a referenced array.</param>
-		public void Write<T>(IEnumerable<T> items, bool byRef = false) where T : unmanaged
+		public void Write<T>(IEnumerable<T> items, bool byRef = false) where T : struct
 		{
 			if (access == FileAccess.Read) throw new NotSupportedException();
 			if (items == null) return;
