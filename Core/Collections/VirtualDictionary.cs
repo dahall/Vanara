@@ -41,10 +41,6 @@ namespace Vanara.Collections
 
 		/// <summary>Gets an enumerable collection that contains the keys in the read-only dictionary.</summary>
 		/// <value>An enumerable collection that contains the keys in the read-only dictionary.</value>
-		/// <remarks>
-		/// The order of the keys in the enumerable collection is unspecified, but the implementation must guarantee that the keys are in the
-		/// same order as the corresponding values in the enumerable collection that is returned by the <see cref="Values"/> property.
-		/// </remarks>
 		public override IEnumerable<TKey> Keys { get; }
 
 		/// <summary>Determines whether the <see cref="IDictionary{TKey, TValue}"/> contains an element with the specified key.</summary>
@@ -117,9 +113,10 @@ namespace Vanara.Collections
 		protected virtual IEnumerable<KeyValuePair<TKey, TValue>> Items =>
 			Keys.Select(k => new KeyValuePair<TKey, TValue>(k, this[k]));
 
-		/// <summary>Gets or sets the <see cref="TValue"/> with the specified key.</summary>
-		/// <value>The element with the specified key.</value>
-		/// <param name="key">The key of the element to get or set.</param>
+		/// <summary>Gets or sets the <typeparamref name="TValue"/> with the specified key.</summary>
+		/// <value>The <typeparamref name="TValue"/>.</value>
+		/// <param name="key">The key.</param>
+		/// <returns>The <typeparamref name="TValue"/> with the specified key.</returns>
 		public virtual TValue this[TKey key]
 		{
 			get => TryGetValue(key, out var value) ? value : default;
@@ -141,12 +138,12 @@ namespace Vanara.Collections
 		public virtual bool ContainsKey(TKey key) => Keys.Contains(key);
 
 		/// <summary>
-		/// Copies the elements of the <see cref="ICollection{KeyValuePair{TKey, TValue}}"/> to an <see cref="Array"/>, starting at a
-		/// particular <see cref="Array"/> index.
+		/// Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1"/> to an <see cref="T:System.Array"/>, starting
+		/// at a particular <see cref="T:System.Array"/> index.
 		/// </summary>
 		/// <param name="array">
-		/// The one-dimensional <see cref="Array"/> that is the destination of the elements copied from
-		/// <see cref="ICollection{KeyValuePair{TKey, TValue}}"/>. The <see cref="Array"/> must have zero-based indexing.
+		/// The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from
+		/// <see cref="T:System.Collections.Generic.ICollection`1"/>. The <see cref="T:System.Array"/> must have zero-based indexing.
 		/// </param>
 		/// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
 		public virtual void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
@@ -178,19 +175,19 @@ namespace Vanara.Collections
 		/// </returns>
 		public abstract bool TryGetValue(TKey key, out TValue value);
 
-		/// <summary>Adds an item to the <see cref="ICollection{KeyValuePair{TKey, TValue}}"/>.</summary>
-		/// <param name="item">The object to add to the <see cref="ICollection{KeyValuePair{TKey, TValue}}"/>.</param>
-		void IDictionary<TKey, TValue>.Add(TKey key, TValue value) => SetValue(key, value);
-
-		/// <summary>Adds an element with the provided key and value to the <see cref="IDictionary{TKey, TValue}"/>.</summary>
+		/// <summary>Adds an element with the provided key and value to the <see cref="T:System.Collections.Generic.IDictionary`2"/>.</summary>
 		/// <param name="key">The object to use as the key of the element to add.</param>
 		/// <param name="value">The object to use as the value of the element to add.</param>
+		void IDictionary<TKey, TValue>.Add(TKey key, TValue value) => SetValue(key, value);
+
+		/// <summary>Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</summary>
+		/// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
 		void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item) => SetValue(item.Key, item.Value);
 
-		/// <summary>Determines whether <see cref="ICollection{KeyValuePair{TKey, TValue}}"/> contains a specific value.</summary>
-		/// <param name="item">The object to locate in the <see cref="ICollection{KeyValuePair{TKey, TValue}}"/>.</param>
+		/// <summary>Determines whether this instance contains the object.</summary>
+		/// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
 		/// <returns>
-		/// <see langword="true"/> if item is found in the <see cref="ICollection{KeyValuePair{TKey, TValue}}"/>; otherwise, <see langword="false"/>.
+		/// true if <paramref name="item"/> is found in the <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false.
 		/// </returns>
 		bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item) =>
 			ContainsKey(item.Key) && Equals(this[item.Key], item.Value);
@@ -199,11 +196,12 @@ namespace Vanara.Collections
 		/// <returns>An <see cref="IEnumerator"/> object that can be used to iterate through the collection.</returns>
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-		/// <summary>Removes the first occurrence of a specific object from the <see cref="IDictionary{TKey, TValue}"/>.</summary>
-		/// <param name="key">The object to remove from the <see cref="IDictionary{TKey, TValue}"/>.</param>
+		/// <summary>
+		/// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1" />.
+		/// </summary>
+		/// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
 		/// <returns>
-		/// <see langword="true"/> if <paramref name="item"/> was successfully removed; otherwise, <see langword="false"/>. This method also
-		/// returns false if <paramref name="item"/> was not found in the original <see cref="IDictionary{TKey, TValue}"/>.
+		/// true if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false. This method also returns false if <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" />.
 		/// </returns>
 		bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item) => ((ICollection<KeyValuePair<TKey, TValue>>)this).Contains(item) && Remove(item.Key);
 
@@ -246,7 +244,7 @@ namespace Vanara.Collections
 		protected IEnumerable<KeyValuePair<TKey, TValue>> Items =>
 			Keys.Select(k => new KeyValuePair<TKey, TValue>(k, this[k]));
 
-		/// <summary>Gets the <see cref="TValue"/> with the specified key.</summary>
+		/// <summary>Gets the <typeparamref name="TValue"/> with the specified key.</summary>
 		/// <value>The element with the specified key.</value>
 		/// <param name="key">The key of the element to get.</param>
 		public virtual TValue this[TKey key] => TryGetValue(key, out var value) ? value : default;

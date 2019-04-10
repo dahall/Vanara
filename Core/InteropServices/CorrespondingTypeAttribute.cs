@@ -63,6 +63,10 @@ namespace Vanara.InteropServices
 		/// <returns><c>true</c> if this instance can get the specified type; otherwise, <c>false</c>.</returns>
 		public static bool CanGet(object value, Type typeRef) => GetAttrForObj(value).Any(a => a.Action.IsFlagSet(CorrepsondingAction.Get) && a.TypeRef == typeRef);
 
+		/// <summary>Determines whether this instance can get the type for the specified enum type.</summary>
+		/// <param name="value">The enumeration type.</param>
+		/// <param name="typeRef">The type supplied by the user to validate.</param>
+		/// <returns><c>true</c> if this instance can get the specified type; otherwise, <c>false</c>.</returns>
 		public static bool CanGet<TEnum>(TEnum value, Type typeRef) where TEnum : System.Enum => GetAttrForEnum(value).Any(a => a.Action.IsFlagSet(CorrepsondingAction.Get) && a.TypeRef == typeRef);
 
 		/// <summary>Determines whether this type can get the specified reference type.</summary>
