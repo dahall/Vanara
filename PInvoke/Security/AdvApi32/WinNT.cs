@@ -36,6 +36,21 @@ namespace Vanara.PInvoke
 			AclSizeInformation
 		}
 
+		/// <summary>Flags that affect the behavior of <see cref="CheckTokenMembershipEx"/>.</summary>
+		[PInvokeData("winnt.h")]
+		[Flags]
+		public enum CTMF : uint
+		{
+			/// <summary>
+			/// Allows app containers to pass the call as long as the other requirements of the token are met, such as the group specified is
+			/// present and enabled.
+			/// </summary>
+			CTMF_INCLUDE_APPCONTAINER = 0x00000001,
+
+			/// <summary>Undocumented.</summary>
+			CTMF_INCLUDE_LPAC = 0x00000002
+		}
+
 		/// <summary>Group attributes.</summary>
 		[Flags]
 		[PInvokeData("winnt.h")]
@@ -285,6 +300,78 @@ namespace Vanara.PInvoke
 			SecurityDelegation
 		}
 
+		/// <summary>A set of bit flags that control how access control entries (ACEs) are inherited from ParentDescriptor.</summary>
+		[PInvokeData("winnt.h")]
+		[Flags]
+		public enum SEF : uint
+		{
+			/// <summary>
+			/// The new discretionary access control list (DACL) contains ACEs inherited from the DACL of ParentDescriptor, as well as any
+			/// explicit ACEs specified in the DACL of CreatorDescriptor. If this flag is not set, the new DACL does not inherit ACEs.
+			/// </summary>
+			SEF_DACL_AUTO_INHERIT = 0x01,
+
+			/// <summary>
+			/// The new system access control list (SACL) contains ACEs inherited from the SACL of ParentDescriptor, as well as any explicit
+			/// ACEs specified in the SACL of CreatorDescriptor. If this flag is not set, the new SACL does not inherit ACEs.
+			/// </summary>
+			SEF_SACL_AUTO_INHERIT = 0x02,
+
+			/// <summary>
+			/// CreatorDescriptor is the default descriptor for the types of objects specified by ObjectTypes. As such, CreatorDescriptor is
+			/// ignored if ParentDescriptor has any object-specific ACEs for the types of objects specified by the ObjectTypes parameter. If
+			/// no such ACEs are inherited, CreatorDescriptor is handled as though this flag were not specified.
+			/// </summary>
+			SEF_DEFAULT_DESCRIPTOR_FOR_OBJECT = 0x04,
+
+			/// <summary>
+			/// The function does not perform privilege checking. If the SEF_AVOID_OWNER_CHECK flag is also set, the Token parameter can be
+			/// NULL. This flag is useful while implementing automatic inheritance to avoid checking privileges on each child updated.
+			/// </summary>
+			SEF_AVOID_PRIVILEGE_CHECK = 0x08,
+
+			/// <summary>
+			/// The function does not check the validity of the owner in the resultant NewDescriptor as described in the Remarks section. If
+			/// the SEF_AVOID_PRIVILEGE_CHECK flag is also set, the Token parameter can be NULL.
+			/// </summary>
+			SEF_AVOID_OWNER_CHECK = 0x10,
+
+			/// <summary>
+			/// The owner of NewDescriptor defaults to the owner from ParentDescriptor. If not set, the owner of NewDescriptor defaults to
+			/// the owner of the token specified by the Token parameter. The owner of the token is specified in the token itself. In either
+			/// case, if the CreatorDescriptor parameter is not NULL, the NewDescriptor owner is set to the owner from CreatorDescriptor.
+			/// </summary>
+			SEF_DEFAULT_OWNER_FROM_PARENT = 0x20,
+
+			/// <summary>
+			/// The group of NewDescriptor defaults to the group from ParentDescriptor. If not set, the group of NewDescriptor defaults to
+			/// the group of the token specified by the Token parameter. The group of the token is specified in the token itself. In either
+			/// case, if the CreatorDescriptor parameter is not NULL, the NewDescriptor group is set to the group from CreatorDescriptor.
+			/// </summary>
+			SEF_DEFAULT_GROUP_FROM_PARENT = 0x40,
+
+			/// <summary>A principal with a mandatory level lower than that of the object cannot write to the object.</summary>
+			SEF_MACL_NO_WRITE_UP = 0x100,
+
+			/// <summary>A principal with a mandatory level lower than that of the object cannot read the object.</summary>
+			SEF_MACL_NO_READ_UP = 0x200,
+
+			/// <summary>A principal with a mandatory level lower than that of the object cannot execute the object.</summary>
+			SEF_MACL_NO_EXECUTE_UP = 0x400,
+
+			/// <summary>Undocumented</summary>
+			SEF_AI_USE_EXTRA_PARAMS = 0x800,
+
+			/// <summary>
+			/// Any restrictions specified by the ParentDescriptor parameter that would limit the caller's ability to specify a DACL in the
+			/// CreatorDescriptor are ignored.
+			/// </summary>
+			SEF_AVOID_OWNER_RESTRICTION = 0x1000,
+
+			/// <summary>Undocumented</summary>
+			SEF_FORCE_USER_MODE = 0x2000
+		}
+
 		/// <summary>The SID_NAME_USE enumeration contains values that specify the type of a security identifier (SID).</summary>
 		public enum SID_NAME_USE
 		{
@@ -317,6 +404,24 @@ namespace Vanara.PInvoke
 
 			/// <summary>A mandatory integrity label SID.</summary>
 			SidTypeLabel
+		}
+
+		/// <summary>
+		/// The access policy for principals with a mandatory integrity level lower than the object associated with the SACL that contains
+		/// this ACE.
+		/// </summary>
+		[PInvokeData("winnt.h")]
+		[Flags]
+		public enum SYSTEM_MANDATORY_LABEL : uint
+		{
+			/// <summary>A principal with a lower mandatory level than the object cannot write to the object.</summary>
+			SYSTEM_MANDATORY_LABEL_NO_WRITE_UP = 0x1,
+
+			/// <summary>A principal with a lower mandatory level than the object cannot read the object.</summary>
+			SYSTEM_MANDATORY_LABEL_NO_READ_UP = 0x2,
+
+			/// <summary>A principal with a lower mandatory level than the object cannot execute the object.</summary>
+			SYSTEM_MANDATORY_LABEL_NO_EXECUTE_UP = 0x4,
 		}
 
 		/// <summary>
@@ -623,17 +728,469 @@ namespace Vanara.PInvoke
 			TOKEN_EXECUTE = 0x00020000
 		}
 
+		/// <summary>
+		/// <para>
+		/// The <c>WELL_KNOWN_SID_TYPE</c> enumeration is a list of commonly used security identifiers (SIDs). Programs can pass these values
+		/// to the CreateWellKnownSid function to create a SID from this list.
+		/// </para>
+		/// </summary>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/winnt/ne-winnt-well_known_sid_type
+		[PInvokeData("winnt.h", MSDNShortId = "6f1fa59e-17c0-412b-937b-ddf746ed68bd")]
+		public enum WELL_KNOWN_SID_TYPE
+		{
+			/// <summary>Indicates a null SID.</summary>
+			WinNullSid,
+
+			/// <summary>Indicates a SID that matches everyone.</summary>
+			WinWorldSid,
+
+			/// <summary>Indicates a local SID.</summary>
+			WinLocalSid,
+
+			/// <summary>Indicates a SID that matches the owner or creator of an object.</summary>
+			WinCreatorOwnerSid,
+
+			/// <summary>Indicates a SID that matches the creator group of an object.</summary>
+			WinCreatorGroupSid,
+
+			/// <summary>Indicates a creator owner server SID.</summary>
+			WinCreatorOwnerServerSid,
+
+			/// <summary>Indicates a creator group server SID.</summary>
+			WinCreatorGroupServerSid,
+
+			/// <summary>Indicates a SID for the Windows NT authority account.</summary>
+			WinNtAuthoritySid,
+
+			/// <summary>Indicates a SID for a dial-up account.</summary>
+			WinDialupSid,
+
+			/// <summary>
+			/// Indicates a SID for a network account. This SID is added to the process of a token when it logs on across a network. The
+			/// corresponding logon type is LOGON32_LOGON_NETWORK.
+			/// </summary>
+			WinNetworkSid,
+
+			/// <summary>
+			/// Indicates a SID for a batch process. This SID is added to the process of a token when it logs on as a batch job. The
+			/// corresponding logon type is LOGON32_LOGON_BATCH.
+			/// </summary>
+			WinBatchSid,
+
+			/// <summary>
+			/// Indicates a SID for an interactive account. This SID is added to the process of a token when it logs on interactively. The
+			/// corresponding logon type is LOGON32_LOGON_INTERACTIVE.
+			/// </summary>
+			WinInteractiveSid,
+
+			/// <summary>
+			/// Indicates a SID for a service. This SID is added to the process of a token when it logs on as a service. The corresponding
+			/// logon type is LOGON32_LOGON_SERVICE.
+			/// </summary>
+			WinServiceSid,
+
+			/// <summary>Indicates a SID for the anonymous account.</summary>
+			WinAnonymousSid,
+
+			/// <summary>Indicates a proxy SID.</summary>
+			WinProxySid,
+
+			/// <summary>Indicates a SID for an enterprise controller.</summary>
+			WinEnterpriseControllersSid,
+
+			/// <summary>Indicates a SID for self.</summary>
+			WinSelfSid,
+
+			/// <summary>Indicates a SID that matches any authenticated user.</summary>
+			WinAuthenticatedUserSid,
+
+			/// <summary>Indicates a SID for restricted code.</summary>
+			WinRestrictedCodeSid,
+
+			/// <summary>Indicates a SID that matches a terminal server account.</summary>
+			WinTerminalServerSid,
+
+			/// <summary>Indicates a SID that matches remote logons.</summary>
+			WinRemoteLogonIdSid,
+
+			/// <summary>Indicates a SID that matches logon IDs.</summary>
+			WinLogonIdsSid,
+
+			/// <summary>Indicates a SID that matches the local system.</summary>
+			WinLocalSystemSid,
+
+			/// <summary>Indicates a SID that matches a local service.</summary>
+			WinLocalServiceSid,
+
+			/// <summary>Indicates a SID that matches a network service.</summary>
+			WinNetworkServiceSid,
+
+			/// <summary>Indicates a SID that matches the domain account.</summary>
+			WinBuiltinDomainSid,
+
+			/// <summary>Indicates a SID that matches the administrator group.</summary>
+			WinBuiltinAdministratorsSid,
+
+			/// <summary>Indicates a SID that matches built-in user accounts.</summary>
+			WinBuiltinUsersSid,
+
+			/// <summary>Indicates a SID that matches the guest account.</summary>
+			WinBuiltinGuestsSid,
+
+			/// <summary>Indicates a SID that matches the power users group.</summary>
+			WinBuiltinPowerUsersSid,
+
+			/// <summary>Indicates a SID that matches the account operators account.</summary>
+			WinBuiltinAccountOperatorsSid,
+
+			/// <summary>Indicates a SID that matches the system operators group.</summary>
+			WinBuiltinSystemOperatorsSid,
+
+			/// <summary>Indicates a SID that matches the print operators group.</summary>
+			WinBuiltinPrintOperatorsSid,
+
+			/// <summary>Indicates a SID that matches the backup operators group.</summary>
+			WinBuiltinBackupOperatorsSid,
+
+			/// <summary>Indicates a SID that matches the replicator account.</summary>
+			WinBuiltinReplicatorSid,
+
+			/// <summary>Indicates a SID that matches pre-Windows 2000 compatible accounts.</summary>
+			WinBuiltinPreWindows2000CompatibleAccessSid,
+
+			/// <summary>Indicates a SID that matches remote desktop users.</summary>
+			WinBuiltinRemoteDesktopUsersSid,
+
+			/// <summary>Indicates a SID that matches the network operators group.</summary>
+			WinBuiltinNetworkConfigurationOperatorsSid,
+
+			/// <summary>Indicates a SID that matches the account administrator's account.</summary>
+			WinAccountAdministratorSid,
+
+			/// <summary>Indicates a SID that matches the account guest group.</summary>
+			WinAccountGuestSid,
+
+			/// <summary>Indicates a SID that matches account Kerberos target group.</summary>
+			WinAccountKrbtgtSid,
+
+			/// <summary>Indicates a SID that matches the account domain administrator group.</summary>
+			WinAccountDomainAdminsSid,
+
+			/// <summary>Indicates a SID that matches the account domain users group.</summary>
+			WinAccountDomainUsersSid,
+
+			/// <summary>Indicates a SID that matches the account domain guests group.</summary>
+			WinAccountDomainGuestsSid,
+
+			/// <summary>Indicates a SID that matches the account computer group.</summary>
+			WinAccountComputersSid,
+
+			/// <summary>Indicates a SID that matches the account controller group.</summary>
+			WinAccountControllersSid,
+
+			/// <summary>Indicates a SID that matches the certificate administrators group.</summary>
+			WinAccountCertAdminsSid,
+
+			/// <summary>Indicates a SID that matches the schema administrators group.</summary>
+			WinAccountSchemaAdminsSid,
+
+			/// <summary>Indicates a SID that matches the enterprise administrators group.</summary>
+			WinAccountEnterpriseAdminsSid,
+
+			/// <summary>Indicates a SID that matches the policy administrators group.</summary>
+			WinAccountPolicyAdminsSid,
+
+			/// <summary>Indicates a SID that matches the RAS and IAS server account.</summary>
+			WinAccountRasAndIasServersSid,
+
+			/// <summary>Indicates a SID present when the Microsoft NTLM authentication package authenticated the client.</summary>
+			WinNTLMAuthenticationSid,
+
+			/// <summary>Indicates a SID present when the Microsoft Digest authentication package authenticated the client.</summary>
+			WinDigestAuthenticationSid,
+
+			/// <summary>Indicates a SID present when the Secure Channel (SSL/TLS) authentication package authenticated the client.</summary>
+			WinSChannelAuthenticationSid,
+
+			/// <summary>
+			/// Indicates a SID present when the user authenticated from within the forest or across a trust that does not have the selective
+			/// authentication option enabled. If this SID is present, then WinOtherOrganizationSid cannot be present.
+			/// </summary>
+			WinThisOrganizationSid,
+
+			/// <summary>
+			/// Indicates a SID present when the user authenticated across a forest with the selective authentication option enabled. If this
+			/// SID is present, then WinThisOrganizationSid cannot be present.
+			/// </summary>
+			WinOtherOrganizationSid,
+
+			/// <summary>
+			/// Indicates a SID that allows a user to create incoming forest trusts. It is added to the token of users who are a member of
+			/// the Incoming Forest Trust Builders built-in group in the root domain of the forest.
+			/// </summary>
+			WinBuiltinIncomingForestTrustBuildersSid,
+
+			/// <summary>Indicates a SID that matches the performance monitor user group.</summary>
+			WinBuiltinPerfMonitoringUsersSid,
+
+			/// <summary>Indicates a SID that matches the performance log user group.</summary>
+			WinBuiltinPerfLoggingUsersSid,
+
+			/// <summary>Indicates a SID that matches the Windows Authorization Access group.</summary>
+			WinBuiltinAuthorizationAccessSid,
+
+			/// <summary>Indicates a SID is present in a server that can issue terminal server licenses.</summary>
+			WinBuiltinTerminalServerLicenseServersSid,
+
+			/// <summary>Indicates a SID that matches the distributed COM user group.</summary>
+			WinBuiltinDCOMUsersSid,
+
+			/// <summary>Indicates a SID that matches the Internet built-in user group.</summary>
+			WinBuiltinIUsersSid,
+
+			/// <summary>Indicates a SID that matches the Internet user group.</summary>
+			WinIUserSid,
+
+			/// <summary>
+			/// Indicates a SID that allows a user to use cryptographic operations. It is added to the token of users who are a member of the
+			/// CryptoOperators built-in group.
+			/// </summary>
+			WinBuiltinCryptoOperatorsSid,
+
+			/// <summary>Indicates a SID that matches an untrusted label.</summary>
+			WinUntrustedLabelSid,
+
+			/// <summary>Indicates a SID that matches an low level of trust label.</summary>
+			WinLowLabelSid,
+
+			/// <summary>Indicates a SID that matches an medium level of trust label.</summary>
+			WinMediumLabelSid,
+
+			/// <summary>Indicates a SID that matches a high level of trust label.</summary>
+			WinHighLabelSid,
+
+			/// <summary>Indicates a SID that matches a system label.</summary>
+			WinSystemLabelSid,
+
+			/// <summary>Indicates a SID that matches a write restricted code group.</summary>
+			WinWriteRestrictedCodeSid,
+
+			/// <summary>Indicates a SID that matches a creator and owner rights group.</summary>
+			WinCreatorOwnerRightsSid,
+
+			/// <summary>Indicates a SID that matches a cacheable principals group.</summary>
+			WinCacheablePrincipalsGroupSid,
+
+			/// <summary>Indicates a SID that matches a non-cacheable principals group.</summary>
+			WinNonCacheablePrincipalsGroupSid,
+
+			/// <summary>Indicates a SID that matches an enterprise wide read-only controllers group.</summary>
+			WinEnterpriseReadonlyControllersSid,
+
+			/// <summary>Indicates a SID that matches an account read-only controllers group.</summary>
+			WinAccountReadonlyControllersSid,
+
+			/// <summary>Indicates a SID that matches an event log readers group.</summary>
+			WinBuiltinEventLogReadersGroup,
+
+			/// <summary>Indicates a SID that matches a read-only enterprise domain controller.</summary>
+			WinNewEnterpriseReadonlyControllersSid,
+
+			/// <summary>Indicates a SID that matches the built-in DCOM certification services access group.</summary>
+			WinBuiltinCertSvcDComAccessGroup,
+
+			/// <summary>
+			/// Indicates a SID that matches the medium plus integrity label. Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows
+			/// Vista, Windows Server 2003 and Windows XP: This value is not available.
+			/// </summary>
+			WinMediumPlusLabelSid,
+
+			/// <summary>
+			/// Indicates a SID that matches a local logon group. Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista,
+			/// Windows Server 2003 and Windows XP: This value is not available.
+			/// </summary>
+			WinLocalLogonSid,
+
+			/// <summary>
+			/// Indicates a SID that matches a console logon group. Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista,
+			/// Windows Server 2003 and Windows XP: This value is not available.
+			/// </summary>
+			WinConsoleLogonSid,
+
+			/// <summary>Undocumented</summary>
+			WinThisOrganizationCertificateSid,
+
+			/// <summary>
+			/// Indicates a SID that matches the application package authority. Windows Server 2008 R2, Windows 7, Windows Server 2008,
+			/// Windows Vista, Windows Server 2003 and Windows XP: This value is not available.
+			/// </summary>
+			WinApplicationPackageAuthoritySid,
+
+			/// <summary>Undocumented</summary>
+			WinBuiltinAnyPackageSid,
+
+			/// <summary>
+			/// Indicates a SID of Internet client capability for app containers. Windows Server 2008 R2, Windows 7, Windows Server 2008,
+			/// Windows Vista, Windows Server 2003 and Windows XP: This value is not available.
+			/// </summary>
+			WinCapabilityInternetClientSid,
+
+			/// <summary>Undocumented</summary>
+			WinCapabilityInternetClientServerSid,
+
+			/// <summary>
+			/// Indicates a SID of private network client and server capability for app containers. Windows Server 2008 R2, Windows 7,
+			/// Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not available.
+			/// </summary>
+			WinCapabilityPrivateNetworkClientServerSid,
+
+			/// <summary>Undocumented</summary>
+			WinCapabilityPicturesLibrarySid,
+
+			/// <summary>
+			/// Indicates a SID for videos library capability for app containers. Windows Server 2008 R2, Windows 7, Windows Server 2008,
+			/// Windows Vista, Windows Server 2003 and Windows XP: This value is not available.
+			/// </summary>
+			WinCapabilityVideosLibrarySid,
+
+			/// <summary>Undocumented</summary>
+			WinCapabilityMusicLibrarySid,
+
+			/// <summary>
+			/// Indicates a SID for documents library capability for app containers. Windows Server 2008 R2, Windows 7, Windows Server 2008,
+			/// Windows Vista, Windows Server 2003 and Windows XP: This value is not available.
+			/// </summary>
+			WinCapabilityDocumentsLibrarySid,
+
+			/// <summary>Undocumented</summary>
+			WinCapabilitySharedUserCertificatesSid,
+
+			/// <summary>
+			/// Indicates a SID for Windows credentials capability for app containers. Windows Server 2008 R2, Windows 7, Windows Server
+			/// 2008, Windows Vista, Windows Server 2003 and Windows XP: This value is not available.
+			/// </summary>
+			WinCapabilityEnterpriseAuthenticationSid,
+
+			/// <summary>Undocumented</summary>
+			WinCapabilityRemovableStorageSid,
+
+			/// <summary/>
+			WinBuiltinRDSRemoteAccessServersSid,
+
+			/// <summary/>
+			WinBuiltinRDSEndpointServersSid,
+
+			/// <summary/>
+			WinBuiltinRDSManagementServersSid,
+
+			/// <summary/>
+			WinUserModeDriversSid,
+
+			/// <summary/>
+			WinBuiltinHyperVAdminsSid,
+
+			/// <summary/>
+			WinAccountCloneableControllersSid,
+
+			/// <summary/>
+			WinBuiltinAccessControlAssistanceOperatorsSid,
+
+			/// <summary/>
+			WinBuiltinRemoteManagementUsersSid,
+
+			/// <summary/>
+			WinAuthenticationAuthorityAssertedSid,
+
+			/// <summary/>
+			WinAuthenticationServiceAssertedSid,
+
+			/// <summary/>
+			WinLocalAccountSid,
+
+			/// <summary/>
+			WinLocalAccountAndAdministratorSid,
+
+			/// <summary/>
+			WinAccountProtectedUsersSid,
+
+			/// <summary/>
+			WinCapabilityAppointmentsSid,
+
+			/// <summary/>
+			WinCapabilityContactsSid,
+
+			/// <summary/>
+			WinAccountDefaultSystemManagedSid,
+
+			/// <summary/>
+			WinBuiltinDefaultSystemManagedGroupSid,
+
+			/// <summary/>
+			WinBuiltinStorageReplicaAdminsSid,
+
+			/// <summary/>
+			WinAccountKeyAdminsSid,
+
+			/// <summary/>
+			WinAccountEnterpriseKeyAdminsSid,
+
+			/// <summary/>
+			WinAuthenticationKeyTrustSid,
+
+			/// <summary/>
+			WinAuthenticationKeyPropertyMFASid,
+
+			/// <summary/>
+			WinAuthenticationKeyPropertyAttestationSid,
+
+			/// <summary/>
+			WinAuthenticationFreshKeyAuthSid,
+
+			/// <summary/>
+			WinBuiltinDeviceOwnersSid,
+		}
+
+		/// <summary>Gets the Flags for an ACE, if defined.</summary>
+		/// <param name="pAce">A pointer to an ACE.</param>
+		/// <returns>The Flags value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
+		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		public static ObjectAceFlags? GetFlags(this PACE pAce)
+		{
+			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
+			return !pAce.IsObjectAce() ? null : (ObjectAceFlags?)pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_OBJECT_ACE>().Flags;
+		}
+
 		/// <summary>Gets the header for an ACE.</summary>
 		/// <param name="pAce">A pointer to an ACE.</param>
 		/// <returns>The <see cref="ACE_HEADER"/> value.</returns>
 		/// <exception cref="System.ArgumentNullException">pAce</exception>
 		public static ACE_HEADER GetHeader(this PACE pAce) => !pAce.IsNull ? pAce.DangerousGetHandle().ToStructure<ACE_HEADER>() : throw new ArgumentNullException(nameof(pAce));
 
+		/// <summary>Gets the InheritedObjectType for an ACE, if defined.</summary>
+		/// <param name="pAce">A pointer to an ACE.</param>
+		/// <returns>The InheritedObjectType value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
+		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		public static Guid? GetInheritedObjectType(this PACE pAce)
+		{
+			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
+			return !pAce.IsObjectAce() ? null : (Guid?)pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_OBJECT_ACE>().InheritedObjectType;
+		}
+
 		/// <summary>Gets the mask for an ACE.</summary>
 		/// <param name="pAce">A pointer to an ACE.</param>
 		/// <returns>The ACCESS_MASK value.</returns>
 		/// <exception cref="System.ArgumentNullException">pAce</exception>
 		public static uint GetMask(this PACE pAce) => !pAce.IsNull ? pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_ACE>().Mask : throw new ArgumentNullException(nameof(pAce));
+
+		/// <summary>Gets the ObjectType for an ACE, if defined.</summary>
+		/// <param name="pAce">A pointer to an ACE.</param>
+		/// <returns>The ObjectType value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
+		/// <exception cref="System.ArgumentNullException">pAce</exception>
+		public static Guid? GetObjectType(this PACE pAce)
+		{
+			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
+			return !pAce.IsObjectAce() ? null : (Guid?)pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_OBJECT_ACE>().ObjectType;
+		}
 
 		/// <summary>Gets the SID for an ACE.</summary>
 		/// <param name="pAce">A pointer to an ACE.</param>
@@ -648,36 +1205,6 @@ namespace Vanara.PInvoke
 			{
 				return SafePSID.CreateFromPtr((IntPtr)((byte*)pAce.DangerousGetHandle() + offset));
 			}
-		}
-
-		/// <summary>Gets the Flags for an ACE, if defined.</summary>
-		/// <param name="pAce">A pointer to an ACE.</param>
-		/// <returns>The Flags value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
-		public static ObjectAceFlags? GetFlags(this PACE pAce)
-		{
-			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-			return !pAce.IsObjectAce() ? null : (ObjectAceFlags?)pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_OBJECT_ACE>().Flags;
-		}
-
-		/// <summary>Gets the ObjectType for an ACE, if defined.</summary>
-		/// <param name="pAce">A pointer to an ACE.</param>
-		/// <returns>The ObjectType value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
-		public static Guid? GetObjectType(this PACE pAce)
-		{
-			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-			return !pAce.IsObjectAce() ? null : (Guid?)pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_OBJECT_ACE>().ObjectType;
-		}
-
-		/// <summary>Gets the InheritedObjectType for an ACE, if defined.</summary>
-		/// <param name="pAce">A pointer to an ACE.</param>
-		/// <returns>The InheritedObjectType value, if this is an object ACE, otherwise <see langword="null"/>.</returns>
-		/// <exception cref="System.ArgumentNullException">pAce</exception>
-		public static Guid? GetInheritedObjectType(this PACE pAce)
-		{
-			if (pAce.IsNull) throw new ArgumentNullException(nameof(pAce));
-			return !pAce.IsObjectAce() ? null : (Guid?)pAce.DangerousGetHandle().ToStructure<ACCESS_ALLOWED_OBJECT_ACE>().InheritedObjectType;
 		}
 
 		/// <summary>Determines if a ACE is an object ACE.</summary>
