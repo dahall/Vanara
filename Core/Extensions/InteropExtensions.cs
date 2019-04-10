@@ -11,6 +11,18 @@ namespace Vanara.Extensions
 	/// <summary>Extension methods for System.Runtime.InteropServices.</summary>
 	public static partial class InteropExtensions
 	{
+		/// <summary>Copies the number of specified bytes from one unmanaged memory block to another.</summary>
+		/// <param name="ptr">The allocated memory pointer.</param>
+		/// <param name="dest">The allocated memory pointer to copy to.</param>
+		/// <param name="length">The number of bytes to copy from <paramref name="ptr"/> to <paramref name="dest"/>.</param>
+		public static unsafe void CopyTo(this IntPtr ptr, IntPtr dest, long length)
+		{
+			var psrc = (byte*)ptr;
+			var pdest = (byte*)dest;
+			for (var i = 0; i < length; i++, psrc++, pdest++)
+				*pdest = *psrc;
+		}
+
 		/// <summary>
 		/// Fills the memory with a particular byte value. <note type="warning">This is a very dangerous function that can cause memory
 		/// access errors if the provided <paramref name="length"/> is bigger than allocated memory of if the <paramref name="ptr"/> is not a
@@ -166,49 +178,41 @@ namespace Vanara.Extensions
 		/// </returns>
 		public static IntPtr MarshalToPtr(this IEnumerable<string> values, StringListPackMethod packing, Func<int, IntPtr> memAlloc, out int bytesAllocated, CharSet charSet = CharSet.Auto, int prefixBytes = 0)
 		{
-			// Convert to list to avoid multiple iterations
-			var list = values as IList<string> ?? (values != null ? new List<string>(values) : null);
-
-			// Look at count and bail early if 0
-			var count = list?.Count ?? 0;
-			var chSz = StringHelper.GetCharSize(charSet);
-			bytesAllocated = prefixBytes + (packing == StringListPackMethod.Concatenated ? chSz : IntPtr.Size);
-			if (count == 0)
+			// Bail early if empty
+			if (values is null || !values.Any())
 			{
+				bytesAllocated = prefixBytes + (packing == StringListPackMethod.Concatenated ? StringHelper.GetCharSize(charSet) : IntPtr.Size);
 				var ret = memAlloc(bytesAllocated);
 				ret.FillMemory(0, bytesAllocated);
 				return ret;
 			}
 
-			// Check for empty and/or null strings
-			if (packing == StringListPackMethod.Concatenated && list.Any(string.IsNullOrEmpty))
-				throw new ArgumentException("Concatenated string arrays cannot contain empty or null strings.");
-
-			// Get size of output
-			var sumStrLen = list.Sum(s => s?.Length + 1 ?? 0);
-			bytesAllocated += sumStrLen * chSz;
-			if (packing == StringListPackMethod.Packed) bytesAllocated += (IntPtr.Size * count);
-
-			using (var ms = new MarshalingStream(memAlloc(bytesAllocated), bytesAllocated) { Position = prefixBytes, CharSet = charSet })
+			// Write to memory stream
+			using (var ms = new NativeMemoryStream(1024, 1024) { CharSet = charSet })
 			{
+				ms.SetLength(ms.Position = prefixBytes);
 				if (packing == StringListPackMethod.Packed)
 				{
-					ms.Position = ms.Position + (count + 1) * IntPtr.Size;
-					for (var i = 0; i < list.Count; i++)
-					{
-						ms.Poke(list[i] is null ? IntPtr.Zero : ms.Pointer.Offset(ms.Position), prefixBytes + (i * IntPtr.Size));
-						ms.Write(list[i]);
-					}
-					ms.Poke(IntPtr.Zero, prefixBytes + (count * IntPtr.Size));
+					foreach (var s in values)
+						ms.WriteReference(s);
+					ms.WriteReference(null);
 				}
 				else
 				{
-					foreach (var s in list)
+					foreach (var s in values)
+					{
+						if (string.IsNullOrEmpty(s)) throw new ArgumentException("Concatenated string arrays cannot contain empty or null strings.");
 						ms.Write(s);
+					}
 					ms.Write("");
 				}
+				ms.Flush();
 
-				return ms.Pointer;
+				// Copy to newly allocated memory using memAlloc
+				bytesAllocated = (int)ms.Length;
+				var ret = memAlloc(bytesAllocated);
+				ms.Pointer.CopyTo(ret, bytesAllocated);
+				return ret;
 			}
 		}
 
@@ -229,54 +233,34 @@ namespace Vanara.Extensions
 		/// <returns>Pointer to the allocated native (unmanaged) array of objects stored using the character set defined by <paramref name="charSet"/>.</returns>
 		public static IntPtr MarshalObjectsToPtr(this IEnumerable<object> values, Func<int, IntPtr> memAlloc, out int bytesAllocated, bool referencePointers = false, CharSet charSet = CharSet.Auto, int prefixBytes = 0)
 		{
-			// Convert to list to avoid multiple iterations
-			var list = values as IList<object> ?? (values != null ? new List<object>(values) : null);
-
-			// Look at count and bail early if 0
-			var count = list?.Count ?? 0;
-			bytesAllocated = prefixBytes + IntPtr.Size;
-			if (count == 0)
+			// Bail early if empty
+			if (values is null || !values.Any())
 			{
+				bytesAllocated = prefixBytes + IntPtr.Size;
 				var ret = memAlloc(bytesAllocated);
 				ret.FillMemory(0, bytesAllocated);
 				return ret;
 			}
 
-			// Get size of output (array size + objects sizes)
-			var chSz = StringHelper.GetCharSize(charSet);
-			bytesAllocated += IntPtr.Size * count;
-			bytesAllocated += list.Sum(GetSize);
-
-			// Create pointer array
-			var ptrs = new IntPtr[count + 1];
-
-			using (var ms = new MarshalingStream(memAlloc(bytesAllocated), bytesAllocated) { Position = prefixBytes, CharSet = charSet })
+			// Write to memory stream
+			using (var ms = new NativeMemoryStream(1024, 1024) { CharSet = charSet })
 			{
-				ms.Position = ms.Position + (count + 1) * IntPtr.Size;
-				for (var i = 0; i < list.Count; i++)
+				ms.SetLength(ms.Position = prefixBytes);
+				foreach (var o in values)
 				{
-					if (!referencePointers && list[i] is IntPtr p)
-					{
-						ptrs[i] = p;
-					}
+					if (referencePointers)
+						ms.WriteReferenceObject(o);
 					else
-					{
-						ptrs[i] = list[i] is null ? IntPtr.Zero : ms.Pointer.Offset(ms.Position);
-						ms.Write(list[i]);
-					}
+						ms.WriteObject(o);
 				}
-				ms.Position = 0;
-				ms.Write(ptrs);
+				if (referencePointers) ms.WriteReference(null);
+				ms.Flush();
 
-				return ms.Pointer;
-			}
-
-			int GetSize(object o)
-			{
-				if (o is null) return 0;
-				if (o is string s) return (s.Length + 1) * chSz;
-				if (o is IntPtr) return referencePointers ? IntPtr.Size : 0;
-				return Marshal.SizeOf(o);
+				// Copy to newly allocated memory using memAlloc
+				bytesAllocated = (int)ms.Length;
+				var ret = memAlloc(bytesAllocated);
+				ms.Pointer.CopyTo(ret, bytesAllocated);
+				return ret;
 			}
 		}
 
