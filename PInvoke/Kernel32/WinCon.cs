@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using Vanara.Extensions;
+using Vanara.InteropServices;
 
 namespace Vanara.PInvoke
 {
@@ -638,23 +639,76 @@ namespace Vanara.PInvoke
 
 		/// <summary>Retrieves all defined console aliases for the specified executable.</summary>
 		/// <param name="lpAliasBuffer">
-		/// <para>A pointer to a buffer that receives the aliases.</para>
+		/// <para>[out] A pointer to a buffer that receives the aliases.</para>
 		/// <para>
 		/// The format of the data is as follows: Source1=Target1\0Source2=Target2\0... SourceN=TargetN\0, where N is the number of console
 		/// aliases defined.
 		/// </para>
 		/// </param>
-		/// <param name="AliasBufferLength">The size of the buffer pointed to by lpAliasBuffer, in bytes.</param>
-		/// <param name="lpExeName">The executable file whose aliases are to be retrieved.</param>
+		/// <param name="AliasBufferLength">[in] The size of the buffer pointed to by lpAliasBuffer, in bytes.</param>
+		/// <param name="lpExeName">[in] The executable file whose aliases are to be retrieved.</param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
+		/// <remarks>
+		/// <para>To determine the required size for the lpExeName buffer, use the <c>GetConsoleAliasesLength</c> function.</para>
+		/// <para>
+		/// To compile an application that uses this function, define <c>_WIN32_WINNT</c> as 0x0501 or later. For more information, see Using
+		/// the Windows Headers.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/console/getconsolealiases
 		// DWORD WINAPI GetConsoleAliases( _Out_ LPTSTR lpAliasBuffer, _In_ DWORD AliasBufferLength, _In_ LPTSTR lpExeName );
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
-		[PInvokeData("Wincon.h", MSDNShortId = "")]
+		[PInvokeData("ConsoleApi3.h", MSDNShortId = "92eefa4e-ffde-4886-afde-5aecf450b425")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetConsoleAliases(StringBuilder lpAliasBuffer, uint AliasBufferLength, string lpExeName);
+
+		/// <summary>Retrieves all defined console aliases for the specified executable.</summary>
+		/// <param name="lpAliasBuffer">
+		/// <para>[out] A pointer to a buffer that receives the aliases.</para>
+		/// <para>
+		/// The format of the data is as follows: Source1=Target1\0Source2=Target2\0... SourceN=TargetN\0, where N is the number of console
+		/// aliases defined.
+		/// </para>
+		/// </param>
+		/// <param name="AliasBufferLength">[in] The size of the buffer pointed to by lpAliasBuffer, in bytes.</param>
+		/// <param name="lpExeName">[in] The executable file whose aliases are to be retrieved.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		/// <remarks>
+		/// <para>To determine the required size for the lpExeName buffer, use the <c>GetConsoleAliasesLength</c> function.</para>
+		/// <para>
+		/// To compile an application that uses this function, define <c>_WIN32_WINNT</c> as 0x0501 or later. For more information, see Using
+		/// the Windows Headers.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/console/getconsolealiases
+		// DWORD WINAPI GetConsoleAliases( _Out_ LPTSTR lpAliasBuffer, _In_ DWORD AliasBufferLength, _In_ LPTSTR lpExeName );
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("ConsoleApi3.h", MSDNShortId = "92eefa4e-ffde-4886-afde-5aecf450b425")]
+		public static extern bool GetConsoleAliases(SafeAllocatedMemoryHandle lpAliasBuffer, uint AliasBufferLength, string lpExeName);
+
+		/// <summary>Retrieves all defined console aliases for the specified executable.</summary>
+		/// <param name="lpExeName">The executable file whose aliases are to be retrieved.</param>
+		/// <param name="aliases">The aliases.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		[PInvokeData("ConsoleApi3.h", MSDNShortId = "92eefa4e-ffde-4886-afde-5aecf450b425")]
+		public static bool GetConsoleAliases(string lpExeName, out string[] aliases)
+		{
+			using (var buf = new SafeHGlobalHandle(GetConsoleAliasesLength(lpExeName)))
+			{
+				var ret = GetConsoleAliases(buf, buf.Size, lpExeName);
+				aliases = ret ? buf.ToStringEnum().ToArray() : new string[0];
+				return ret;
+			}
+		}
 
 		/// <summary>Retrieves the required size for the buffer used by the <c>GetConsoleAliases</c> function.</summary>
 		/// <param name="lpExeName">The name of the executable file whose console aliases are to be retrieved.</param>
@@ -790,16 +844,15 @@ namespace Vanara.PInvoke
 
 		/// <summary>Retrieves the current input mode of a console's input buffer or the current output mode of a console screen buffer.</summary>
 		/// <param name="hConsoleHandle">
-		/// A handle to the console input buffer or the console screen buffer. The handle must have the <c>GENERIC_READ</c> access right. For
-		/// more information, see Console Buffer Security and Access Rights.
+		/// [in] A handle to the console input buffer or the console screen buffer. The handle must have the <c>GENERIC_READ</c> access
+		/// right. For more information, see Console Buffer Security and Access Rights.
 		/// </param>
 		/// <param name="lpMode">
-		/// <para>A pointer to a variable that receives the current mode of the specified buffer.</para>
+		/// <para>[out] A pointer to a variable that receives the current mode of the specified buffer.</para>
 		/// <para>
 		/// If the hConsoleHandle parameter is an input handle, the mode can be one or more of the following values. When a console is
 		/// created, all input modes except <c>ENABLE_WINDOW_INPUT</c> are enabled by default.
 		/// </para>
-		/// <para>
 		/// <list type="table">
 		/// <listheader>
 		/// <term>Value</term>
@@ -873,12 +926,10 @@ namespace Vanara.PInvoke
 		/// <item/>
 		/// <item/>
 		/// </list>
-		/// </para>
 		/// <para>
 		/// If the hConsoleHandle parameter is a screen buffer handle, the mode can be one or more of the following values. When a screen
 		/// buffer is created, both output modes are enabled by default.
 		/// </para>
-		/// <para>
 		/// <list type="table">
 		/// <listheader>
 		/// <term>Value</term>
@@ -897,9 +948,8 @@ namespace Vanara.PInvoke
 		/// When writing with WriteFile or WriteConsole or echoing with ReadFile or ReadConsole, the cursor moves to the beginning of the
 		/// next row when it reaches the end of the current row. This causes the rows displayed in the console window to scroll up
 		/// automatically when the cursor advances beyond the last row in the window. It also causes the contents of the console screen
-		/// buffer to scroll up (discarding the top row of the console screen
-		/// buffer) when the cursor advances beyond the last row in the console screen buffer. If this mode is disabled, the last character
-		///         in the row is overwritten with any subsequent characters.
+		/// buffer to scroll up (discarding the top row of the console screen buffer) when the cursor advances beyond the last row in the
+		/// console screen buffer. If this mode is disabled, the last character in the row is overwritten with any subsequent characters.
 		/// </term>
 		/// </item>
 		/// <item>
@@ -946,17 +996,40 @@ namespace Vanara.PInvoke
 		/// <item/>
 		/// <item/>
 		/// </list>
-		/// </para>
 		/// </param>
 		/// <returns>
 		/// <para>If the function succeeds, the return value is nonzero.</para>
 		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
 		/// </returns>
+		/// <remarks>
+		/// <para>
+		/// A console consists of an input buffer and one or more screen buffers. The mode of a console buffer determines how the console
+		/// behaves during input or output (I/O) operations. One set of flag constants is used with input handles, and another set is used
+		/// with screen buffer (output) handles. Setting the output modes of one screen buffer does not affect the output modes of other
+		/// screen buffers.
+		/// </para>
+		/// <para>
+		/// The <c>ENABLE_LINE_INPUT</c> and <c>ENABLE_ECHO_INPUT</c> modes only affect processes that use <c>ReadFile</c> or
+		/// <c>ReadConsole</c> to read from the console's input buffer. Similarly, the <c>ENABLE_PROCESSED_INPUT</c> mode primarily affects
+		/// <c>ReadFile</c> and <c>ReadConsole</c> users, except that it also determines whether CTRL+C input is reported in the input buffer
+		/// (to be read by the <c>ReadConsoleInput</c> function) or is passed to a function defined by the application.
+		/// </para>
+		/// <para>
+		/// The <c>ENABLE_WINDOW_INPUT</c> and <c>ENABLE_MOUSE_INPUT</c> modes determine whether user interactions involving window resizing
+		/// and mouse actions are reported in the input buffer or discarded. These events can be read by <c>ReadConsoleInput</c>, but they
+		/// are always filtered by <c>ReadFile</c> and <c>ReadConsole</c>.
+		/// </para>
+		/// <para>
+		/// The <c>ENABLE_PROCESSED_OUTPUT</c> and <c>ENABLE_WRAP_AT_EOL_OUTPUT</c> modes only affect processes using <c>ReadFile</c> or
+		/// <c>ReadConsole</c> and <c>WriteFile</c> or <c>WriteConsole</c>.
+		/// </para>
+		/// <para>To change a console's I/O modes, call <c>SetConsoleMode</c> function.</para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/console/getconsolemode
 		// BOOL WINAPI GetConsoleMode( _In_ HANDLE hConsoleHandle, _Out_ LPDWORD lpMode );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
-		[PInvokeData("Wincon.h", MSDNShortId = "")]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetConsoleMode(HFILE hConsoleHandle, ref CONSOLE_MODE lpMode);
+		[PInvokeData("ConsoleApi.h", MSDNShortId = "49adf618-196d-4490-93ca-cd177807f58e")]
+		public static extern bool GetConsoleMode(HFILE hConsoleHandle, out CONSOLE_MODE lpMode);
 
 		/// <summary>Retrieves the original title for the current console window.</summary>
 		/// <param name="lpConsoleTitle">
@@ -1023,7 +1096,7 @@ namespace Vanara.PInvoke
 			var cnt = 8U;
 			do
 			{
-				cnt = cnt << 1;
+				cnt <<= 1;
 				var h = GetProcessHeap().GetBlock(Marshal.SizeOf(typeof(uint)) * (int)cnt);
 				var c = GetConsoleProcessList(h, cnt);
 				if (c >= 1 && c <= cnt) return h.DangerousGetHandle().ToArray<uint>((int)c);
@@ -1047,7 +1120,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetConsoleScreenBufferInfo(HFILE hConsoleOutput, ref CONSOLE_SCREEN_BUFFER_INFO lpConsoleScreenBufferInfo);
+		public static extern bool GetConsoleScreenBufferInfo(HFILE hConsoleOutput, out CONSOLE_SCREEN_BUFFER_INFO lpConsoleScreenBufferInfo);
 
 		/// <summary>Retrieves extended information about the specified console screen buffer.</summary>
 		/// <param name="hConsoleOutput">
@@ -1219,7 +1292,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool PeekConsoleInput(HFILE hConsoleInput, ref INPUT_RECORD lpBuffer, uint nLength, ref uint lpNumberOfEventsRead);
+		public static extern bool PeekConsoleInput(HFILE hConsoleInput, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] INPUT_RECORD[] lpBuffer, uint nLength, out uint lpNumberOfEventsRead);
 
 		/// <summary>Reads character input from the console input buffer and removes it from the buffer.</summary>
 		/// <param name="hConsoleInput">
@@ -1421,7 +1494,41 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ScrollConsoleScreenBuffer(HFILE hConsoleOutput, ref SMALL_RECT lpScrollRectangle, ref SMALL_RECT lpClipRectangle, COORD dwDestinationOrigin, ref CHAR_INFO lpFill);
+		public static extern bool ScrollConsoleScreenBuffer(HFILE hConsoleOutput, in SMALL_RECT lpScrollRectangle, in SMALL_RECT lpClipRectangle, COORD dwDestinationOrigin, in CHAR_INFO lpFill);
+
+		/// <summary>
+		/// Moves a block of data in a screen buffer. The effects of the move can be limited by specifying a clipping rectangle, so the
+		/// contents of the console screen buffer outside the clipping rectangle are unchanged.
+		/// </summary>
+		/// <param name="hConsoleOutput">
+		/// A handle to the console screen buffer. The handle must have the <c>GENERIC_READ</c> access right. For more information, see
+		/// Console Buffer Security and Access Rights.
+		/// </param>
+		/// <param name="lpScrollRectangle">
+		/// A pointer to a <c>SMALL_RECT</c> structure whose members specify the upper-left and lower-right coordinates of the console screen
+		/// buffer rectangle to be moved.
+		/// </param>
+		/// <param name="lpClipRectangle">
+		/// A pointer to a <c>SMALL_RECT</c> structure whose members specify the upper-left and lower-right coordinates of the console screen
+		/// buffer rectangle that is affected by the scrolling. This pointer can be <c>NULL</c>.
+		/// </param>
+		/// <param name="dwDestinationOrigin">
+		/// A <c>COORD</c> structure that specifies the upper-left corner of the new location of the lpScrollRectangle contents, in characters.
+		/// </param>
+		/// <param name="lpFill">
+		/// A pointer to a <c>CHAR_INFO</c> structure that specifies the character and color attributes to be used in filling the cells
+		/// within the intersection of lpScrollRectangle and lpClipRectangle that were left empty as a result of the move.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI ScrollConsoleScreenBuffer( _In_ HANDLE hConsoleOutput, _In_ const SMALL_RECT *lpScrollRectangle, _In_opt_ const SMALL_RECT
+		// *lpClipRectangle, _In_ COORD dwDestinationOrigin, _In_ const CHAR_INFO *lpFill );
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("Wincon.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool ScrollConsoleScreenBuffer(HFILE hConsoleOutput, in SMALL_RECT lpScrollRectangle, [Optional] IntPtr lpClipRectangle, COORD dwDestinationOrigin, in CHAR_INFO lpFill);
 
 		/// <summary>Sets the specified screen buffer to be the currently displayed console screen buffer.</summary>
 		/// <param name="hConsoleOutput">A handle to the console screen buffer.</param>
@@ -1496,7 +1603,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetConsoleCursorInfo(HFILE hConsoleOutput, ref CONSOLE_CURSOR_INFO lpConsoleCursorInfo);
+		public static extern bool SetConsoleCursorInfo(HFILE hConsoleOutput, in CONSOLE_CURSOR_INFO lpConsoleCursorInfo);
 
 		/// <summary>
 		/// <para>Sets the cursor position in the specified console screen buffer.</para>
@@ -1581,7 +1688,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetConsoleHistoryInfo(ref CONSOLE_HISTORY_INFO lpConsoleHistoryInfo);
+		public static extern bool SetConsoleHistoryInfo(in CONSOLE_HISTORY_INFO lpConsoleHistoryInfo);
 
 		/// <summary>Sets the input mode of a console's input buffer or the output mode of a console screen buffer.</summary>
 		/// <param name="hConsoleHandle">
@@ -1789,7 +1896,7 @@ namespace Vanara.PInvoke
 		// lpConsoleScreenBufferInfoEx );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
-		public static extern bool SetConsoleScreenBufferInfoEx(HFILE hConsoleOutput, ref CONSOLE_SCREEN_BUFFER_INFOEX lpConsoleScreenBufferInfoEx);
+		public static extern bool SetConsoleScreenBufferInfoEx(HFILE hConsoleOutput, in CONSOLE_SCREEN_BUFFER_INFOEX lpConsoleScreenBufferInfoEx);
 
 		/// <summary>Changes the size of the specified console screen buffer.</summary>
 		/// <param name="hConsoleOutput">
@@ -1865,7 +1972,7 @@ namespace Vanara.PInvoke
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool SetConsoleWindowInfo(HFILE hConsoleOutput, [MarshalAs(UnmanagedType.Bool)] bool bAbsolute, ref SMALL_RECT lpConsoleWindow);
+		public static extern bool SetConsoleWindowInfo(HFILE hConsoleOutput, [MarshalAs(UnmanagedType.Bool)] bool bAbsolute, in SMALL_RECT lpConsoleWindow);
 
 		/// <summary>Sets extended information about the current console font.</summary>
 		/// <param name="hConsoleOutput">
@@ -1885,7 +1992,7 @@ namespace Vanara.PInvoke
 		// lpConsoleCurrentFontEx );
 		[DllImport(Lib.Kernel32, SetLastError = true, ExactSpelling = true)]
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
-		public static extern bool SetCurrentConsoleFontEx(HFILE hConsoleOutput, [MarshalAs(UnmanagedType.Bool)] bool bMaximumWindow, ref CONSOLE_FONT_INFOEX lpConsoleCurrentFontEx);
+		public static extern bool SetCurrentConsoleFontEx(HFILE hConsoleOutput, [MarshalAs(UnmanagedType.Bool)] bool bMaximumWindow, in CONSOLE_FONT_INFOEX lpConsoleCurrentFontEx);
 
 		/// <summary>Writes a character string to a console screen buffer beginning at the current cursor location.</summary>
 		/// <param name="hConsoleOutput">
@@ -1915,6 +2022,35 @@ namespace Vanara.PInvoke
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool WriteConsole(HFILE hConsoleOutput, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] char[] lpBuffer, uint nNumberOfCharsToWrite, out uint lpNumberOfCharsWritten, IntPtr lpReserved = default);
+
+		/// <summary>Writes a character string to a console screen buffer beginning at the current cursor location.</summary>
+		/// <param name="hConsoleOutput">
+		/// A handle to the console screen buffer. The handle must have the <c>GENERIC_WRITE</c> access right. For more information, see
+		/// Console Buffer Security and Access Rights.
+		/// </param>
+		/// <param name="lpBuffer">
+		/// <para>A pointer to a buffer that contains characters to be written to the console screen buffer.</para>
+		/// <para>
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
+		/// will depend on heap usage.
+		/// </para>
+		/// </param>
+		/// <param name="nNumberOfCharsToWrite">
+		/// The number of characters to be written. If the total size of the specified number of characters exceeds the available heap, the
+		/// function fails with <c>ERROR_NOT_ENOUGH_MEMORY</c>.
+		/// </param>
+		/// <param name="lpNumberOfCharsWritten">A pointer to a variable that receives the number of characters actually written.</param>
+		/// <param name="lpReserved">Reserved; must be <c>NULL</c>.</param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI WriteConsole( _In_ HANDLE hConsoleOutput, _In_ const VOID *lpBuffer, _In_ DWORD nNumberOfCharsToWrite, _Out_ LPDWORD
+		// lpNumberOfCharsWritten, _Reserved_ LPVOID lpReserved );
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("Wincon.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool WriteConsole(HFILE hConsoleOutput, string lpBuffer, uint nNumberOfCharsToWrite, out uint lpNumberOfCharsWritten, IntPtr lpReserved = default);
 
 		/// <summary>Writes data directly to the console input buffer.</summary>
 		/// <param name="hConsoleInput">
@@ -1981,6 +2117,47 @@ namespace Vanara.PInvoke
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool WriteConsoleOutput(HFILE hConsoleOutput, IntPtr lpBuffer, COORD dwBufferSize, COORD dwBufferCoord, ref SMALL_RECT lpWriteRegion);
+
+		/// <summary>
+		/// Writes character and color attribute data to a specified rectangular block of character cells in a console screen buffer. The
+		/// data to be written is taken from a correspondingly sized rectangular block at a specified location in the source buffer.
+		/// </summary>
+		/// <param name="hConsoleOutput">
+		/// A handle to the console screen buffer. The handle must have the <c>GENERIC_WRITE</c> access right. For more information, see
+		/// Console Buffer Security and Access Rights.
+		/// </param>
+		/// <param name="lpBuffer">
+		/// <para>
+		/// The data to be written to the console screen buffer. This pointer is treated as the origin of a two-dimensional array of
+		/// <c>CHAR_INFO</c> structures whose size is specified by the dwBufferSize parameter.
+		/// </para>
+		/// <para>
+		/// The storage for this buffer is allocated from a shared heap for the process that is 64 KB in size. The maximum size of the buffer
+		/// will depend on heap usage.
+		/// </para>
+		/// </param>
+		/// <param name="dwBufferSize">
+		/// The size of the buffer pointed to by the lpBuffer parameter, in character cells. The <c>X</c> member of the <c>COORD</c>
+		/// structure is the number of columns; the <c>Y</c> member is the number of rows.
+		/// </param>
+		/// <param name="dwBufferCoord">
+		/// The coordinates of the upper-left cell in the buffer pointed to by the lpBuffer parameter. The <c>X</c> member of the
+		/// <c>COORD</c> structure is the column, and the <c>Y</c> member is the row.
+		/// </param>
+		/// <param name="lpWriteRegion">
+		/// A pointer to a <c>SMALL_RECT</c> structure. On input, the structure members specify the upper-left and lower-right coordinates of
+		/// the console screen buffer rectangle to write to. On output, the structure members specify the actual rectangle that was used.
+		/// </param>
+		/// <returns>
+		/// <para>If the function succeeds, the return value is nonzero.</para>
+		/// <para>If the function fails, the return value is zero. To get extended error information, call <c>GetLastError</c>.</para>
+		/// </returns>
+		// BOOL WINAPI WriteConsoleOutput( _In_ HANDLE hConsoleOutput, _In_ const CHAR_INFO *lpBuffer, _In_ COORD dwBufferSize, _In_ COORD
+		// dwBufferCoord, _Inout_ PSMALL_RECT lpWriteRegion );
+		[DllImport(Lib.Kernel32, SetLastError = true, CharSet = CharSet.Auto)]
+		[PInvokeData("Wincon.h", MSDNShortId = "")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool WriteConsoleOutput(HFILE hConsoleOutput, [In] CHAR_INFO[] lpBuffer, COORD dwBufferSize, COORD dwBufferCoord, ref SMALL_RECT lpWriteRegion);
 
 		/// <summary>
 		/// Copies a number of character attributes to consecutive cells of a console screen buffer, beginning at a specified location.
@@ -2052,7 +2229,7 @@ namespace Vanara.PInvoke
 		/// </summary>
 		// typedef struct _CHAR_INFO { union { WCHAR UnicodeChar; CHAR AsciiChar; } Char; WORD Attributes; } CHAR_INFO, *PCHAR_INFO;
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 2)]
 		public struct CHAR_INFO
 		{
 			/// <summary>A union of the following members.</summary>
@@ -2309,8 +2486,8 @@ namespace Vanara.PInvoke
 			public bool bFullscreenSupported;
 
 			/// <summary>An array of <c>COLORREF</c> values that describe the console's color settings.</summary>
-			[MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 16, ArraySubType = UnmanagedType.U4)]
-			public uint[] ColorTable;
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+			public COLORREF[] ColorTable;
 		}
 
 		/// <summary>Contains information for a console selection.</summary>
@@ -2379,7 +2556,7 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>A union of the following members.</summary>
-		[StructLayout(LayoutKind.Explicit)]
+		[StructLayout(LayoutKind.Explicit, Size = 2)]
 		public struct ENCODING_INFO
 		{
 			/// <summary>Translated Unicode character.</summary>
@@ -2411,7 +2588,7 @@ namespace Vanara.PInvoke
 		// typedef struct _INPUT_RECORD { WORD EventType; union { KEY_EVENT_RECORD KeyEvent; MOUSE_EVENT_RECORD MouseEvent;
 		// WINDOW_BUFFER_SIZE_RECORD WindowBufferSizeEvent; MENU_EVENT_RECORD MenuEvent; FOCUS_EVENT_RECORD FocusEvent; } Event; } INPUT_RECORD;
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Explicit)]
 		public struct INPUT_RECORD
 		{
 			/// <summary>
@@ -2451,11 +2628,13 @@ namespace Vanara.PInvoke
 			/// </list>
 			/// </para>
 			/// </summary>
+			[FieldOffset(0)]
 			public EVENT_TYPE EventType;
 
 			/// <summary>
 			/// The event information. The format of this member depends on the event type specified by the <c>EventType</c> member.
 			/// </summary>
+			[FieldOffset(4)]
 			public INPUT_RECORD_EVENT Event;
 
 			/// <summary>The event union.</summary>
@@ -2488,7 +2667,7 @@ namespace Vanara.PInvoke
 		// typedef struct _KEY_EVENT_RECORD { BOOL bKeyDown; WORD wRepeatCount; WORD wVirtualKeyCode; WORD wVirtualScanCode; union { WCHAR
 		// UnicodeChar; CHAR AsciiChar; } uChar; DWORD dwControlKeyState; } KEY_EVENT_RECORD;
 		[PInvokeData("Wincon.h", MSDNShortId = "")]
-		[StructLayout(LayoutKind.Sequential)]
+		[StructLayout(LayoutKind.Sequential, Pack = 2)]
 		public struct KEY_EVENT_RECORD
 		{
 			/// <summary>If the key is pressed, this member is <c>TRUE</c>. Otherwise, this member is <c>FALSE</c> (the key is released).</summary>
