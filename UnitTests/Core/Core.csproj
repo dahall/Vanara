@@ -64,7 +64,6 @@
     <Compile Include="InteropServices\SafeHGlobalHandleTests.cs" />
     <Compile Include="InteropServices\StrPtrTests.cs" />
     <None Include="InteropServices\StructMarshalerTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Vanara.Core.csproj">
@@ -79,6 +78,9 @@
     <PackageReference Include="NUnit3TestAdapter">
       <Version>3.13.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

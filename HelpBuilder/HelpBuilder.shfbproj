@@ -29,7 +29,7 @@
     <KeepLogFile>False</KeepLogFile>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CleanIntermediates>True</CleanIntermediates>
-    <HelpFileVersion>2.3.5</HelpFileVersion>
+    <HelpFileVersion>2.3.6</HelpFileVersion>
     <MaximumGroupParts>2</MaximumGroupParts>
     <NamespaceGrouping>True</NamespaceGrouping>
     <SyntaxFilters>C#, Visual Basic</SyntaxFilters>
