@@ -4,26 +4,26 @@ Class | Description
 ---- | ----
 AssociateAttribute | Associates a Guid with an element.
 CoTaskMemStringMarshaler | Marshals strings that are allocated by native code and must be freed using CoTaskMemFree after use.
-FunctionHelper | 
+FunctionHelper | Generic functions to help with standard function patterns like getting a string from a method.
 IEnumFromIndexer<T> | Creates an enumerable class from a counter and an indexer. Useful if a class doesn't support `IEnumerable` or <see cref="T:System.Collections.Generic.IEnumerable`1" /> like some COM objects.
 IEnumFromNext<T> | Creates an enumerable class from a get next method and a reset method. Useful if a class doesn't support `IEnumerable` or <see cref="T:System.Collections.Generic.IEnumerable`1" /> like some COM objects.
 Lib | Holds string values for all used external API libraries.
 Macros | Platform invokable enumerated types, constants and functions from windows.h
-NullTermStringArrayMarshaler | 
+NullTermStringArrayMarshaler | Marshals an array of strings to a concatenated list of strings with an extra NULL terminator.
 OverlappedAsync | Helper methods to work with asynchronous methods using `NativeOverlapped`.
 OverlappedAsyncResult | Holds all pertinent information for handling results and errors in an overlapped set of method calls.
 PInvokeClientExtensions | Extension methods for `PInvokeClient`.
 PInvokeDataAttribute | Captures information about P/Invoke calls.
 PRECT | Defines the coordinates of the upper-left and lower-right corners of a rectangle.
-PtrFunc<T> | 
+PtrFunc<T> | Delegate to get the size of memory allocated to a pointer.
 RegistryTypeExt | Extension methods for registry types.
 SafeElementArray<T> | A safe unmanaged array of structures allocated on the global heap with a prefix type (usually a uint or int) that determines the count of elements.
 SafeHANDLE | Base class for all native handles.
 SafeNativeArray<T> | A safe unmanaged array of structures allocated on the global heap. Array size determined by allocated memory size divided by size of structure.
 SafeResourceId | Represents a system resource name that can identify as a string, integer, or pointer.
-SBFunc<T> | 
+SBFunc<T> | Delegate that takes and StringBuilder and initial size and returns a result.
 SECURITY_ATTRIBUTES | The SECURITY_ATTRIBUTES structure contains the security descriptor for an object and specifies whether the handle retrieved by specifying this structure is inheritable. This structure provides security settings for objects created by various functions, such as CreateFile, CreatePipe, CreateProcess, RegCreateKeyEx, or RegSaveKeyEx.
-SizeFunc<T> | 
+SizeFunc<T> | Gets a size and returns an error.
 TryGetNext | Delegate that gets the next value in an enumeration and returns true or returns false to indicate there are no more items in the enumeration.
 WIN32_FIND_DATA | Contains information about the file that is found by the FindFirstFile, FindFirstFileEx, or FindNextFile function.
 ### Structures

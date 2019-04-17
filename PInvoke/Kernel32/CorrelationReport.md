@@ -298,7 +298,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetComputerName](http://msdn2.microsoft.com/en-us/library/ms724295) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetComputerName  
 [GetComputerNameEx](http://msdn2.microsoft.com/en-us/library/ms724301) | kernel32.dll | Winbase.h | Vanara.PInvoke.Kernel32.GetComputerNameEx  
 [GetConsoleAlias](https://www.google.com/search?num=5&q=GetConsoleAliasA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleAlias  
-[GetConsoleAliases](https://www.google.com/search?num=5&q=GetConsoleAliasesA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleAliases  
+[GetConsoleAliases](http://msdn2.microsoft.com/en-us/library/92eefa4e-ffde-4886-afde-5aecf450b425) | kernel32.dll | ConsoleApi3.h | Vanara.PInvoke.Kernel32.GetConsoleAliases  
 [GetConsoleAliasesLength](https://www.google.com/search?num=5&q=GetConsoleAliasesLengthA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleAliasesLength  
 [GetConsoleAliasExes](https://www.google.com/search?num=5&q=GetConsoleAliasExesA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleAliasExes  
 [GetConsoleAliasExesLength](https://www.google.com/search?num=5&q=GetConsoleAliasExesLengthA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleAliasExesLength  
@@ -307,7 +307,7 @@ Native Method | Native DLL | Header | Managed Method
 [GetConsoleDisplayMode](https://www.google.com/search?num=5&q=GetConsoleDisplayMode+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleDisplayMode  
 [GetConsoleFontSize](https://www.google.com/search?num=5&q=GetConsoleFontSize+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleFontSize  
 [GetConsoleHistoryInfo](https://www.google.com/search?num=5&q=GetConsoleHistoryInfo+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleHistoryInfo  
-[GetConsoleMode](https://www.google.com/search?num=5&q=GetConsoleMode+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleMode  
+[GetConsoleMode](http://msdn2.microsoft.com/en-us/library/49adf618-196d-4490-93ca-cd177807f58e) | kernel32.dll | ConsoleApi.h | Vanara.PInvoke.Kernel32.GetConsoleMode  
 [GetConsoleOriginalTitle](https://www.google.com/search?num=5&q=GetConsoleOriginalTitleA+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleOriginalTitle  
 [GetConsoleOutputCP](https://www.google.com/search?num=5&q=GetConsoleOutputCP+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleOutputCP  
 [GetConsoleProcessList](https://www.google.com/search?num=5&q=GetConsoleProcessList+site%3Amicrosoft.com) | kernel32.dll | Wincon.h | Vanara.PInvoke.Kernel32.GetConsoleProcessList  
@@ -1121,6 +1121,7 @@ Native Structure | Header | Managed Structure
 [CONSOLE_FONT_INFO](https://www.google.com/search?num=5&q=CONSOLE_FONT_INFO+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+CONSOLE_FONT_INFO  
 [CONSOLE_FONT_INFOEX](https://www.google.com/search?num=5&q=CONSOLE_FONT_INFOEX+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+CONSOLE_FONT_INFOEX  
 [CONSOLE_HISTORY_INFO](https://www.google.com/search?num=5&q=CONSOLE_HISTORY_INFO+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+CONSOLE_HISTORY_INFO  
+[CONSOLE_READCONSOLE_CONTROL](http://msdn2.microsoft.com/en-us/library/6a8451a6-d692-43af-88c4-972c4dc5e07c) | ConsoleApi.h | Vanara.PInvoke.Kernel32+CONSOLE_READCONSOLE_CONTROL  
 [CONSOLE_SCREEN_BUFFER_INFO](https://www.google.com/search?num=5&q=CONSOLE_SCREEN_BUFFER_INFO+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+CONSOLE_SCREEN_BUFFER_INFO  
 [CONSOLE_SCREEN_BUFFER_INFOEX](https://www.google.com/search?num=5&q=CONSOLE_SCREEN_BUFFER_INFOEX+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+CONSOLE_SCREEN_BUFFER_INFOEX  
 [CONSOLE_SELECTION_INFO](https://www.google.com/search?num=5&q=CONSOLE_SELECTION_INFO+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+CONSOLE_SELECTION_INFO  
@@ -1145,7 +1146,6 @@ Native Structure | Header | Managed Structure
 [ENCLAVE_CREATE_INFO_VBS](http://msdn2.microsoft.com/en-us/library/mt844238) | Winnt.h | Vanara.PInvoke.Kernel32+ENCLAVE_CREATE_INFO_VBS  
 [ENCLAVE_INIT_INFO_SGX](http://msdn2.microsoft.com/en-us/library/mt592868) | Winnt.h | Vanara.PInvoke.Kernel32+ENCLAVE_INIT_INFO_SGX  
 [ENCLAVE_INIT_INFO_VBS](http://msdn2.microsoft.com/en-us/library/mt844241) | Winnt.h | Vanara.PInvoke.Kernel32+ENCLAVE_INIT_INFO_VBS  
-[ENCODING_INFO](https://www.google.com/search?num=5&q=ENCODING_INFO+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+ENCODING_INFO  
 [ENUM_PAGE_FILE_INFORMATION](http://msdn2.microsoft.com/en-us/library/020f3be8-f624-4788-8079-0f7679c9bef0) | psapi.h | Vanara.PInvoke.Kernel32+ENUM_PAGE_FILE_INFORMATION  
 [Error](https://www.google.com/search?num=5&q=Error+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+COPYFILE2_MESSAGE+Error  
 [Event](https://www.google.com/search?num=5&q=Event+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+PSS_HANDLE_ENTRY+Event  
@@ -1192,7 +1192,7 @@ Native Structure | Header | Managed Structure
 [HRSRC](https://www.google.com/search?num=5&q=HRSRC+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HRSRC  
 [HSNAPSHOT](https://www.google.com/search?num=5&q=HSNAPSHOT+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+HSNAPSHOT  
 [INIT_ONCE](https://www.google.com/search?num=5&q=INIT_ONCE+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+INIT_ONCE  
-[INPUT_RECORD](https://www.google.com/search?num=5&q=INPUT_RECORD+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+INPUT_RECORD  
+[INPUT_RECORD](http://msdn2.microsoft.com/en-us/library/a46ba7fd-097a-455d-96ac-13aa01e11dc1) | Wincon.h | Vanara.PInvoke.Kernel32+INPUT_RECORD  
 [INPUT_RECORD_EVENT](https://www.google.com/search?num=5&q=INPUT_RECORD_EVENT+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+INPUT_RECORD+INPUT_RECORD_EVENT  
 [IO_COUNTERS](http://msdn2.microsoft.com/en-us/library/ms684125) | WinNT.h | Vanara.PInvoke.Kernel32+IO_COUNTERS  
 [JOBOBJECT_ASSOCIATE_COMPLETION_PORT](http://msdn2.microsoft.com/en-us/library/ms684141) | WinNT.h | Vanara.PInvoke.Kernel32+JOBOBJECT_ASSOCIATE_COMPLETION_PORT  
@@ -1217,7 +1217,7 @@ Native Structure | Header | Managed Structure
 [JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION](http://msdn2.microsoft.com/en-us/library/hh448386) | WinNT.h | Vanara.PInvoke.Kernel32+JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION  
 [JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2](http://msdn2.microsoft.com/en-us/library/mt280125) | Winnt.h | Vanara.PInvoke.Kernel32+JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2  
 [JOBOBJECT_SECURITY_LIMIT_INFORMATION](http://msdn2.microsoft.com/en-us/library/ms684159) | WinNT.h | Vanara.PInvoke.Kernel32+JOBOBJECT_SECURITY_LIMIT_INFORMATION  
-[KEY_EVENT_RECORD](https://www.google.com/search?num=5&q=KEY_EVENT_RECORD+site%3Amicrosoft.com) | Wincon.h | Vanara.PInvoke.Kernel32+KEY_EVENT_RECORD  
+[KEY_EVENT_RECORD](http://msdn2.microsoft.com/en-us/library/b3fed86b-84ef-48e4-97e1-cb3d65f714a7) | Wincon.h | Vanara.PInvoke.Kernel32+KEY_EVENT_RECORD  
 [LDT_ENTRY](http://msdn2.microsoft.com/en-us/library/ms680348) | WinNT.h | Vanara.PInvoke.Kernel32+LDT_ENTRY  
 [LOAD_DLL_DEBUG_INFO](http://msdn2.microsoft.com/en-us/library/ms680351) | WinBase.h | Vanara.PInvoke.Kernel32+DEBUG_EVENT+EXCEPTION_INFO+LOAD_DLL_DEBUG_INFO  
 [M128A](https://www.google.com/search?num=5&q=M128A+site%3Amicrosoft.com) |  | Vanara.PInvoke.Kernel32+CONTEXT64+M128A  
