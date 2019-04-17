@@ -27,7 +27,7 @@ namespace Vanara.PInvoke
 
 		/// <summary>Gets a size and returns an error.</summary>
 		/// <typeparam name="TSize">The type of the size result. This is usually <see cref="int"/> or <see cref="uint"/>.</typeparam>
-		/// <param name="sz">On input, the size of the <paramref name="sb"/> capacity. On output, the number of characters written.</param>
+		/// <param name="sz">On input, the size of the capacity. On output, the number of characters written.</param>
 		/// <returns>Resulting error or <see cref="Win32Error.ERROR_SUCCESS"/> on success.</returns>
 		public delegate Win32Error SizeFunc<TSize>(ref TSize sz) where TSize : struct, IConvertible;
 
@@ -41,7 +41,7 @@ namespace Vanara.PInvoke
 		/// </summary>
 		/// <typeparam name="TSize">The type of the size result. This is usually <see cref="int"/> or <see cref="uint"/>.</typeparam>
 		/// <typeparam name="TRet">The error provider return type.</typeparam>
-		/// <param name="sz">On input, the size of the <paramref name="sb"/> capacity. On ouput, the number of characters written.</param>
+		/// <param name="sz">On input, the size of the capacity. On output, the number of characters written.</param>
 		/// <param name="err">The error.</param>
 		/// <returns><c>true</c> if buffer size is good; otherwise <c>false</c>.</returns>
 		public static bool ChkGoodBuf<TSize, TRet>(TSize sz, TRet err) where TSize : struct where TRet : IErrorProvider, IConvertible => !sz.Equals(default(TSize)) && (err.ToHRESULT() == (HRESULT)(Win32Error)Win32Error.ERROR_MORE_DATA || err.ToHRESULT() == (HRESULT)(Win32Error)Win32Error.ERROR_INSUFFICIENT_BUFFER);

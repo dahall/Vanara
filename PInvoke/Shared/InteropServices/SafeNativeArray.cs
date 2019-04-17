@@ -49,8 +49,8 @@ namespace Vanara.InteropServices
 			}
 		}
 
-		/// <summary>Gets or sets the <see cref="TElem"/> at the specified index.</summary>
-		/// <value>The <see cref="TElem"/>.</value>
+		/// <summary>Gets or sets the <typeparamref name="TElem"/> value at the specified index.</summary>
+		/// <value>The <typeparamref name="TElem"/> value.</value>
 		/// <param name="index">The index.</param>
 		/// <returns></returns>
 		/// <exception cref="ArgumentOutOfRangeException">index or index</exception>
