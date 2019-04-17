@@ -9,7 +9,7 @@ namespace Vanara.PInvoke
 	/// <summary>Helper methods to work with asynchronous methods using <see cref="NativeOverlapped"/>.</summary>
 	public static class OverlappedAsync
 	{
-		public static System.Collections.Generic.HashSet<HFILE> boundHandles = new System.Collections.Generic.HashSet<HFILE>();
+		private static System.Collections.Generic.HashSet<HFILE> boundHandles = new System.Collections.Generic.HashSet<HFILE>();
 
 		/// <summary>Cleans up at the end of the <see cref="Overlapped.Pack(IOCompletionCallback, object)"/> callback method.</summary>
 		/// <param name="asyncResult">The asynchronous result.</param>

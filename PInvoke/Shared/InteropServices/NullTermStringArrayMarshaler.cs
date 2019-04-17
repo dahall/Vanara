@@ -5,6 +5,8 @@ using Vanara.Extensions;
 
 namespace Vanara.InteropServices
 {
+	/// <summary>Marshals an array of strings to a concatenated list of strings with an extra NULL terminator.</summary>
+	/// <seealso cref="System.Runtime.InteropServices.ICustomMarshaler"/>
 	public class NullTermStringArrayMarshaler : ICustomMarshaler
 	{
 		private readonly CharSet charSet = CharSet.Unicode;
