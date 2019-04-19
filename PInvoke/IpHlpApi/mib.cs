@@ -155,6 +155,23 @@ namespace Vanara.PInvoke
 			MIB_IPNET_TYPE_STATIC = 4,
 		}
 
+		/// <summary>Specifies whether IP forwarding is enabled or disabled for a protocol (IPv4 or IPv6).</summary>
+		[PInvokeData("ipmib.h", MSDNShortId = "920e71b6-247c-4442-9f66-704a6c878feb")]
+		public enum MIB_IPSTATS_FORWARDING
+		{
+			/// <summary>IP forwarding is enabled.</summary>
+			MIB_IP_FORWARDING = 1,
+
+			/// <summary>IP forwarding is not enabled.</summary>
+			MIB_IP_NOT_FORWARDING = 2,
+
+			/// <summary>
+			/// Use the current IP forwarding setting. This value is only applicable when setting the forwarding and time-to-live (TTL)
+			/// options using the SetIpStatistics and SetIpStatisticsEx functions.
+			/// </summary>
+			MIB_USE_CURRENT_FORWARDING = -1
+		}
+
 		/// <summary>The MIB_TCP_STATE enumeration enumerates different possible TCP states.</summary>
 		[PInvokeData("IpHlpApi.h", MSDNShortId = "cc669305")]
 		public enum MIB_TCP_STATE
@@ -197,254 +214,53 @@ namespace Vanara.PInvoke
 		}
 
 		/// <summary>
-		/// <para>The <c>TCP_CONNECTION_OFFLOAD_STATE</c> enumeration defines the possible TCP offload states for a TCP connection.</para>
+		/// The <c>MIB_ICMP</c> structure contains the Internet Control Message Protocol (ICMP) statistics for a particular computer.
 		/// </summary>
 		/// <remarks>
-		/// <para>The <c>TCP_CONNECTION_OFFLOAD_STATE</c> enumeration is defined on Windows Server 2003 and later.</para>
-		/// <para>
 		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed and the <c>TCP_CONNECTION_OFFLOAD_STATE</c> enumeration is defined in the Tcpmib.h header file not in the Iprtrmib.h
-		/// header file. Note that the Tcpmib.h header file is automatically included in Iprtrmib.h which is automatically included in the
-		/// Iphlpapi.h header file. The Tcpmib.h and Iprtrmib.h header files should never be used directly.
-		/// </para>
+		/// has changed and the <c>MIB_ICMP</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note that
+		/// the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header file.
+		/// The Ipmib.h and Iprtrmib.h header files should never be used directly.
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/tcpmib/ne-tcpmib-tcp_connection_offload_state typedef enum
-		// TCP_CONNECTION_OFFLOAD_STATE { TcpConnectionOffloadStateInHost , TcpConnectionOffloadStateOffloading ,
-		// TcpConnectionOffloadStateOffloaded , TcpConnectionOffloadStateUploading , TcpConnectionOffloadStateMax } *PTCP_CONNECTION_OFFLOAD_STATE;
-		[PInvokeData("tcpmib.h", MSDNShortId = "cef633e7-1577-4f10-bd14-8d8e85aa78e6")]
-		public enum TCP_CONNECTION_OFFLOAD_STATE
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-_mib_icmp typedef struct _MIB_ICMP { MIBICMPINFO stats; }
+		// MIB_ICMP, *PMIB_ICMP;
+		[PInvokeData("ipmib.h", MSDNShortId = "45ccaacb-f2cd-4be5-94ef-48d4403d5f60")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct MIB_ICMP
 		{
-			/// <summary>The TCP connection is currently owned by the network stack on the local computer, and is not offloaded</summary>
-			TcpConnectionOffloadStateInHost = 0,
-
-			/// <summary>The TCP connection is in the process of being offloaded, but the offload has not been completed.</summary>
-			TcpConnectionOffloadStateOffloading,
-
-			/// <summary>The TCP connection is offloaded to the network interface controller.</summary>
-			TcpConnectionOffloadStateOffloaded,
-
-			/// <summary>
-			/// The TCP connection is in the process of being uploaded back to the network stack on the local computer, but the
-			/// reinstate-to-host process has not completed.
-			/// </summary>
-			TcpConnectionOffloadStateUploading,
-
-			/// <summary>
-			/// The maximum possible value for the TCP_CONNECTION_OFFLOAD_STATE enumeration type. This is not a legal value for the possible
-			/// TCP connection offload state.
-			/// </summary>
-			TcpConnectionOffloadStateMax,
-		}
-
-		/// <summary>The TCP_RTO_ALGORITHM enumerates different TCP retransmission time-out algorithms.</summary>
-		[PInvokeData("tcpmib.h", MSDNShortId = "cc669306")]
-		public enum TCP_RTO_ALGORITHM
-		{
-			/// <summary>Other.</summary>
-			TcpRtoAlgorithmOther = 1,
-
-			/// <summary>Constant time-out.</summary>
-			TcpRtoAlgorithmConstant = 2,
-
-			/// <summary>MIL-STD-1778. See [RFC4022].</summary>
-			TcpRtoAlgorithmRsre = 3,
-
-			/// <summary>Van Jacobson's algorithm. See [RFC1144].</summary>
-			TcpRtoAlgorithmVanj = 4,
-
-			/// <summary>Other.</summary>
-			MIB_TCP_RTO_OTHER = 1,
-
-			/// <summary>Constant time-out.</summary>
-			MIB_TCP_RTO_CONSTANT = 2,
-
-			/// <summary>MIL-STD-1778. See [RFC4022].</summary>
-			MIB_TCP_RTO_RSRE = 3,
-
-			/// <summary>Van Jacobson's algorithm. See [RFC1144].</summary>
-			MIB_TCP_RTO_VANJ = 4,
+			/// <summary>A MIBICMPINFO structure that contains the ICMP statistics for the computer.</summary>
+			public MIBICMPINFO stats;
 		}
 
 		/// <summary>
 		/// <para>
-		/// The <c>TCP_TABLE_CLASS</c> enumeration defines the set of values used to indicate the type of table returned by calls to GetExtendedTcpTable.
+		/// The <c>MIB_ICMP_EX</c> structure contains the extended Internet Control Message Protocol (ICMP) statistics for a particular computer.
 		/// </para>
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed and the <c>TCP_TABLE_CLASS</c> enumeration is defined in the Iprtrmib.h header file, not in the Iphlpapi.h header
-		/// file. Note that the Iprtrmib.h header file is automatically included in Iphlpapi.h header file. The Iprtrmib.h header files
-		/// should never be used directly.
+		/// Two MIBICMPSTATS_EX structures are required to hold all the extended ICMP statistics for a given computer. One
+		/// <c>MIBICMPSTATS_EX</c> structure contains the extended statistics for incoming ICMP messages. The other contains the extended
+		/// statistics for outgoing ICMP messages. For this reason, the <c>MIB_ICMP_EX</c> structure contains two <c>MIBICMPSTATS_EX</c> structures.
 		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/iprtrmib/ne-iprtrmib-_tcp_table_class typedef enum _TCP_TABLE_CLASS {
-		// TCP_TABLE_BASIC_LISTENER , TCP_TABLE_BASIC_CONNECTIONS , TCP_TABLE_BASIC_ALL , TCP_TABLE_OWNER_PID_LISTENER ,
-		// TCP_TABLE_OWNER_PID_CONNECTIONS , TCP_TABLE_OWNER_PID_ALL , TCP_TABLE_OWNER_MODULE_LISTENER , TCP_TABLE_OWNER_MODULE_CONNECTIONS ,
-		// TCP_TABLE_OWNER_MODULE_ALL } TCP_TABLE_CLASS, *PTCP_TABLE_CLASS;
-		[PInvokeData("iprtrmib.h", MSDNShortId = "abfaf7e5-7739-4f23-bfb4-09206111599f")]
-		public enum TCP_TABLE_CLASS
-		{
-			/// <summary>
-			/// A MIB_TCPTABLE table that contains all listening (receiving only) TCP endpoints on the local computer is returned to the caller.
-			/// </summary>
-			[CorrespondingType(typeof(MIB_TCPTABLE), CorrepsondingAction.Get)]
-			TCP_TABLE_BASIC_LISTENER,
-
-			/// <summary>A MIB_TCPTABLE table that contains all connected TCP endpoints on the local computer is returned to the caller.</summary>
-			[CorrespondingType(typeof(MIB_TCPTABLE), CorrepsondingAction.Get)]
-			TCP_TABLE_BASIC_CONNECTIONS,
-
-			/// <summary>A MIB_TCPTABLE table that contains all TCP endpoints on the local computer is returned to the caller.</summary>
-			[CorrespondingType(typeof(MIB_TCPTABLE), CorrepsondingAction.Get)]
-			TCP_TABLE_BASIC_ALL,
-
-			/// <summary>
-			/// A MIB_TCPTABLE_OWNER_PID or MIB_TCP6TABLE_OWNER_PID that contains all listening (receiving only) TCP endpoints on the local
-			/// computer is returned to the caller.
-			/// </summary>
-			[CorrespondingType(typeof(MIB_TCPTABLE_OWNER_PID), CorrepsondingAction.Get)]
-			[CorrespondingType(typeof(MIB_TCP6TABLE_OWNER_PID), CorrepsondingAction.Get)]
-			TCP_TABLE_OWNER_PID_LISTENER,
-
-			/// <summary>
-			/// A MIB_TCPTABLE_OWNER_PID or MIB_TCP6TABLE_OWNER_PID that structure that contains all connected TCP endpoints on the local
-			/// computer is returned to the caller.
-			/// </summary>
-			[CorrespondingType(typeof(MIB_TCPTABLE_OWNER_PID), CorrepsondingAction.Get)]
-			[CorrespondingType(typeof(MIB_TCP6TABLE_OWNER_PID), CorrepsondingAction.Get)]
-			TCP_TABLE_OWNER_PID_CONNECTIONS,
-
-			/// <summary>
-			/// A MIB_TCPTABLE_OWNER_PID or MIB_TCP6TABLE_OWNER_PID structure that contains all TCP endpoints on the local computer is
-			/// returned to the caller.
-			/// </summary>
-			[CorrespondingType(typeof(MIB_TCPTABLE_OWNER_PID), CorrepsondingAction.Get)]
-			[CorrespondingType(typeof(MIB_TCP6TABLE_OWNER_PID), CorrepsondingAction.Get)]
-			TCP_TABLE_OWNER_PID_ALL,
-
-			/// <summary>
-			/// A MIB_TCPTABLE_OWNER_MODULE or MIB_TCP6TABLE_OWNER_MODULE structure that contains all listening (receiving only) TCP
-			/// endpoints on the local computer is returned to the caller.
-			/// </summary>
-			[CorrespondingType(typeof(MIB_TCPTABLE_OWNER_MODULE), CorrepsondingAction.Get)]
-			[CorrespondingType(typeof(MIB_TCP6TABLE_OWNER_MODULE), CorrepsondingAction.Get)]
-			TCP_TABLE_OWNER_MODULE_LISTENER,
-
-			/// <summary>
-			/// A MIB_TCPTABLE_OWNER_MODULE or MIB_TCP6TABLE_OWNER_MODULE structure that contains all connected TCP endpoints on the local
-			/// computer is returned to the caller.
-			/// </summary>
-			[CorrespondingType(typeof(MIB_TCPTABLE_OWNER_MODULE), CorrepsondingAction.Get)]
-			[CorrespondingType(typeof(MIB_TCP6TABLE_OWNER_MODULE), CorrepsondingAction.Get)]
-			TCP_TABLE_OWNER_MODULE_CONNECTIONS,
-
-			/// <summary>
-			/// A MIB_TCPTABLE_OWNER_MODULE or MIB_TCP6TABLE_OWNER_MODULE structure that contains all TCP endpoints on the local computer is
-			/// returned to the caller.
-			/// </summary>
-			[CorrespondingType(typeof(MIB_TCPTABLE_OWNER_MODULE), CorrepsondingAction.Get)]
-			[CorrespondingType(typeof(MIB_TCP6TABLE_OWNER_MODULE), CorrepsondingAction.Get)]
-			TCP_TABLE_OWNER_MODULE_ALL
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>UDP_TABLE_CLASS</c> enumeration defines the set of values used to indicate the type of table returned by calls to GetExtendedUdpTable.
-		/// </para>
-		/// </summary>
-		/// <remarks>
 		/// <para>
 		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed and the <c>UDP_TABLE_CLASS</c> enumeration is defined in the Iprtrmib.h header file, not in the Iphlpapi.h header
-		/// file. Note that the Iprtrmib.h header file is automatically included in Iphlpapi.h header file. The Iprtrmib.h header files
-		/// should never be used directly.
+		/// has changed and the <c>MIB_ICMP_EX</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note
+		/// that the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header
+		/// file. The Ipmib.h and Iprtrmib.h header files should never be used directly.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/iprtrmib/ne-iprtrmib-_udp_table_class typedef enum _UDP_TABLE_CLASS {
-		// UDP_TABLE_BASIC , UDP_TABLE_OWNER_PID , UDP_TABLE_OWNER_MODULE } UDP_TABLE_CLASS, *PUDP_TABLE_CLASS;
-		[PInvokeData("iprtrmib.h", MSDNShortId = "2e7304d1-b89c-46d4-9121-936a1c38cc51")]
-		public enum UDP_TABLE_CLASS
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-_mib_icmp_ex_xpsp1 typedef struct _MIB_ICMP_EX_XPSP1 {
+		// MIBICMPSTATS_EX icmpInStats; MIBICMPSTATS_EX icmpOutStats; } MIB_ICMP_EX_XPSP1, *PMIB_ICMP_EX_XPSP1;
+		[PInvokeData("ipmib.h", MSDNShortId = "3d2c7edc-c9e6-4db6-b7c8-07f7f01cbe0d")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct MIB_ICMP_EX
 		{
-			/// <summary>A MIB_UDPTABLE structure that contains all UDP endpoints on the local computer is returned to the caller.</summary>
-			[CorrespondingType(typeof(MIB_UDPTABLE), CorrepsondingAction.Get)]
-			UDP_TABLE_BASIC,
+			/// <summary>Specifies an MIBICMPSTATS_EX structure that contains the extended statistics for incoming ICMP messages.</summary>
+			public MIBICMPSTATS_EX icmpInStats;
 
-			/// <summary>
-			/// A MIB_UDPTABLE_OWNER_PID or MIB_UDP6TABLE_OWNER_PID structure that contains all UDP endpoints on the local computer is
-			/// returned to the caller.
-			/// </summary>
-			[CorrespondingType(typeof(MIB_UDPTABLE_OWNER_PID), CorrepsondingAction.Get)]
-			[CorrespondingType(typeof(MIB_UDP6TABLE_OWNER_PID), CorrepsondingAction.Get)]
-			UDP_TABLE_OWNER_PID,
-
-			/// <summary>
-			/// A MIB_UDPTABLE_OWNER_MODULE or MIB_UDP6TABLE_OWNER_MODULE structure that contains all UDP endpoints on the local computer is
-			/// returned to the caller.
-			/// </summary>
-			[CorrespondingType(typeof(MIB_UDPTABLE_OWNER_MODULE), CorrepsondingAction.Get)]
-			[CorrespondingType(typeof(MIB_UDP6TABLE_OWNER_MODULE), CorrepsondingAction.Get)]
-			UDP_TABLE_OWNER_MODULE,
-		}
-
-		/// <summary><para>The <c>MIB_IFROW</c> structure stores information about a particular interface.</para></summary><remarks><para>The <c>dwSpeed</c> member of the <c>MIB_IFROW</c> structure will be incorrect for very high-speed network interfaces (10 Gbit/s network adapter, for example) since the maximum value that can be store in a DWORD is 4,294,967,295. Applications should use the MIB_IF_ROW2 structure returned by the GetIfEntry2 and GetIfTable2functions or the IP_ADAPTER_ADDRESSES structure returned by the GetAdaptersAddressesfunction for determining the speed for very high-speed network interfaces.</para><para>On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files has changed and the <c>MIB_IFROW</c> structure is defined in the Ifmib.h header file not in the Iprtrmib.h header file. Note that the Ifmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header file. The Ifmib.h and Iprtrmib.h header files should never be used directly.</para></remarks>
-		// https://docs.microsoft.com/en-us/windows/desktop/api/ifmib/ns-ifmib-_mib_ifrow
-		// typedef struct _MIB_IFROW { WCHAR wszName[MAX_INTERFACE_NAME_LEN]; IF_INDEX dwIndex; IFTYPE dwType; DWORD dwMtu; DWORD dwSpeed; DWORD dwPhysAddrLen; UCHAR bPhysAddr[MAXLEN_PHYSADDR]; DWORD dwAdminStatus; INTERNAL_IF_OPER_STATUS dwOperStatus; DWORD dwLastChange; DWORD dwInOctets; DWORD dwInUcastPkts; DWORD dwInNUcastPkts; DWORD dwInDiscards; DWORD dwInErrors; DWORD dwInUnknownProtos; DWORD dwOutOctets; DWORD dwOutUcastPkts; DWORD dwOutNUcastPkts; DWORD dwOutDiscards; DWORD dwOutErrors; DWORD dwOutQLen; DWORD dwDescrLen; UCHAR bDescr[MAXLEN_IFDESCR]; } MIB_IFROW, *PMIB_IFROW;
-		[PInvokeData("ifmib.h", MSDNShortId = "b08631e9-6036-4377-b2f2-4ea899acb787")]
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-		public struct MIB_IFROW
-		{
-			/// <summary><para>Type: <c>WCHAR[MAX_INTERFACE_NAME_LEN]</c></para><para>A pointer to a Unicode string that contains the name of the interface.</para></summary>
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = MAX_INTERFACE_NAME_LEN)]
-			public string wszName;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The index that identifies the interface. This index value may change when a network adapter is disabled and then enabled, and should not be considered persistent.</para></summary>
-			public uint dwIndex;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The interface type as defined by the Internet Assigned Names Authority (IANA). For more information, see http://www.iana.org/assignments/ianaiftype-mib. Possible values for the interface type are listed in the Ipifcons.h header file.</para><para>The table below lists common values for the interface type although many other values are possible.</para><list type="table"><listheader><term>Value</term><term>Meaning</term></listheader><item><term> IF_TYPE_OTHER 1 </term><term>Some other type of network interface.</term></item><item><term> IF_TYPE_ETHERNET_CSMACD 6 </term><term>An Ethernet network interface.</term></item><item><term> IF_TYPE_ISO88025_TOKENRING 9 </term><term>A token ring network interface.</term></item><item><term> IF_TYPE_FDDI 15 </term><term>A Fiber Distributed Data Interface (FDDI) network interface.</term></item><item><term> IF_TYPE_PPP 23 </term><term>A PPP network interface.</term></item><item><term> IF_TYPE_SOFTWARE_LOOPBACK 24 </term><term>A software loopback network interface.</term></item><item><term> IF_TYPE_ATM 37 </term><term>An ATM network interface.</term></item><item><term> IF_TYPE_IEEE80211 71 </term><term>An IEEE 802.11 wireless network interface.</term></item><item><term> IF_TYPE_TUNNEL 131 </term><term>A tunnel type encapsulation network interface.</term></item><item><term> IF_TYPE_IEEE1394 144 </term><term>An IEEE 1394 (Firewire) high performance serial bus network interface.</term></item><item><term> IF_TYPE_IEEE80216_WMAN 237 </term><term> A mobile broadband interface for WiMax devices. </term></item><item><term> IF_TYPE_WWANPP 243 </term><term> A mobile broadband interface for GSM-based devices. </term></item><item><term> IF_TYPE_WWANPP2 244 </term><term> An mobile broadband interface for CDMA-based devices. </term></item></list></summary>
-			public uint dwType;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The Maximum Transmission Unit (MTU) size in bytes.</para></summary>
-			public uint dwMtu;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The speed of the interface in bits per second.</para></summary>
-			public uint dwSpeed;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The length, in bytes, of the physical address specified by the <c>bPhysAddr</c> member.</para></summary>
-			public uint dwPhysAddrLen;
-			/// <summary><para>Type: <c>BYTE[MAXLEN_PHYSADDR]</c></para><para>The physical address of the adapter for this interface.</para></summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = MAXLEN_PHYSADDR)]
-			public byte[] bPhysAddr;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The interface is administratively enabled or disabled.</para></summary>
-			public uint dwAdminStatus;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The operational status of the interface. This member can be one of the following values defined in the INTERNAL_IF_OPER_STATUS enumeration defined in the Ipifcons.h header file.</para><list type="table"><listheader><term>Value</term><term>Meaning</term></listheader><item><term> IF_OPER_STATUS_NON_OPERATIONAL </term><term>LAN adapter has been disabled, for example because of an address conflict.</term></item><item><term> IF_OPER_STATUS_UNREACHABLE </term><term>WAN adapter that is not connected.</term></item><item><term> IF_OPER_STATUS_DISCONNECTED </term><term>For LAN adapters: network cable disconnected. For WAN adapters: no carrier.</term></item><item><term> IF_OPER_STATUS_CONNECTING </term><term>WAN adapter that is in the process of connecting.</term></item><item><term> IF_OPER_STATUS_CONNECTED </term><term>WAN adapter that is connected to a remote peer.</term></item><item><term> IF_OPER_STATUS_OPERATIONAL </term><term>Default status for LAN adapters</term></item></list></summary>
-			public uint dwOperStatus;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The length of time, in hundredths of seconds (10^-2 sec), starting from the last computer restart, when the interface entered its current operational state. This value rolls over after 2^32 hundredths of a second.</para><para>The <c>dwLastChange</c> member is not currently supported by NDIS. On Windows Vista and later, NDIS returns zero for this member. On earlier versions of Windows, an arbitrary value is returned in this member for the interfaces supported by NDIS. For interfaces supported by other interface providers, they might return an appropriate value.</para></summary>
-			public uint dwLastChange;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The number of octets of data received through this interface.</para></summary>
-			public uint dwInOctets;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The number of unicast packets received through this interface.</para></summary>
-			public uint dwInUcastPkts;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The number of non-unicast packets received through this interface. Broadcast and multicast packets are included.</para></summary>
-			public uint dwInNUcastPkts;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The number of incoming packets that were discarded even though they did not have errors.</para></summary>
-			public uint dwInDiscards;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The number of incoming packets that were discarded because of errors.</para></summary>
-			public uint dwInErrors;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The number of incoming packets that were discarded because the protocol was unknown.</para></summary>
-			public uint dwInUnknownProtos;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The number of octets of data sent through this interface.</para></summary>
-			public uint dwOutOctets;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The number of unicast packets sent through this interface.</para></summary>
-			public uint dwOutUcastPkts;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The number of non-unicast packets sent through this interface. Broadcast and multicast packets are included.</para></summary>
-			public uint dwOutNUcastPkts;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The number of outgoing packets that were discarded even though they did not have errors.</para></summary>
-			public uint dwOutDiscards;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The number of outgoing packets that were discarded because of errors.</para></summary>
-			public uint dwOutErrors;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The transmit queue length. This field is not currently used.</para></summary>
-			public uint dwOutQLen;
-			/// <summary><para>Type: <c>DWORD</c></para><para>The length, in bytes, of the <c>bDescr</c> member.</para></summary>
-			public uint dwDescrLen;
-			/// <summary><para>Type: <c>BYTE[MAXLEN_IFDESCR]</c></para><para>A description of the interface.</para></summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = MAXLEN_IFDESCR)]
-			public byte[] bDescr;                                             
+			/// <summary>Specifies an MIBICMPSTATS_EX structure that contains the extended statistics for outgoing ICMP messages.</summary>
+			public MIBICMPSTATS_EX icmpOutStats;
 		}
 
 		/// <summary>
@@ -784,755 +600,56 @@ namespace Vanara.PInvoke
 			public MIB_IPNET_TYPE dwType;
 		}
 
-		/// <summary>
-		/// <para>The <c>MIB_TCP6ROW</c> structure contains information that describes an IPv6 TCP connection.</para>
-		/// </summary>
+		/// <summary>The <c>MIB_IPSTATS</c> structure stores information about the IP protocol running on a particular computer.</summary>
 		/// <remarks>
-		/// <para>The <c>MIB_TCP6ROW</c> structure is defined on Windows Vista and later.</para>
+		/// <para>The <c>MIB_IPSTATS</c> structure stores information per protocol (IPv4 or IPv6).</para>
 		/// <para>
-		/// The GetTcp6Table function retrieves the IPv6 TCP connection table on the local computer and returns this information in a
-		/// MIB_TCP6TABLE structure.
+		/// The <c>dwForwarding</c> member specifies the per-protocol forwarding state for IPv4 or IPv6, not the forwarding state for an
+		/// interface. The forwarding state of each interface state is the state that is in affect for that interface. The per-protocol state
+		/// returned by the <c>GetIpStatistics</c> or the <c>GetIpStatisticsEx</c> function is not the forwarding state in affect. The
+		/// <c>dwForwarding</c> member exists to serve two purposes:
 		/// </para>
-		/// <para>An array of <c>MIB_TCP6ROW</c> structures are contained in the <c>MIB_TCP6TABLE</c> structure.</para>
-		/// <para>
-		/// The <c>State</c> member indicates the state of the TCP entry in a TCP state diagram. A TCP connection progresses through a series
-		/// of states during its lifetime. The states are: LISTEN, SYN-SENT, SYN-RECEIVED, ESTABLISHED, FIN-WAIT-1, FIN-WAIT-2, CLOSE-WAIT,
-		/// CLOSING, LAST-ACK, TIME-WAIT, and the fictional state CLOSED. The CLOSED state is fictional because it represents the state when
-		/// there is no Transmission Control Block, and therefore, no connection. The TCP protocol is described in RFC 793. For more
-		/// information, see http://www.ietf.org/rfc/rfc793.txt.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalPort</c>, and <c>dwRemotePort</c> members are in network byte order. In order to use the <c>dwLocalPort</c> or
-		/// <c>dwRemotePort</c> members, the ntohs or inet_ntoa functions in Windows Sockets or similar functions may be needed.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalScopeId</c>, and <c>dwRemoteScopeId</c> members are in network byte order. In order to use the
-		/// <c>dwLocalScopeId</c> or <c>dwRemoteScopeId</c> members, the ntohl or inet_ntoa functions in Windows Sockets or similar functions
-		/// may be needed.
-		/// </para>
-		/// <para>
-		/// The <c>LocalAddr</c> and <c>RemoteAddr</c> members are stored in in6_addr structures. The RtlIpv6AddressToString or
-		/// RtlIpv6AddressToStringEx functions may be used to convert the IPv6 address in the <c>LocalAddr</c> or <c>RemoteAddr</c> members
-		/// to a string without loading the Windows Sockets DLL.
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>
-		/// The following example retrieves the TCP connection table for IPv6 and prints the state of each connection represented as a
-		/// <c>MIB_TCP6ROW</c> structure.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/tcpmib/ns-tcpmib-_mib_tcp6row typedef struct _MIB_TCP6ROW {
-		// MIB_TCP_STATE State; IN6_ADDR LocalAddr; DWORD dwLocalScopeId; DWORD dwLocalPort; IN6_ADDR RemoteAddr; DWORD dwRemoteScopeId;
-		// DWORD dwRemotePort; } MIB_TCP6ROW, *PMIB_TCP6ROW;
-		[PInvokeData("tcpmib.h", MSDNShortId = "b3e9eda5-5e86-4790-8b1b-ca9bae44b502")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct MIB_TCP6ROW
-		{
-			/// <summary>
-			/// <para>Type: <c>MIB_TCP_STATE</c></para>
-			/// <para>
-			/// The state of the TCP connection. This member can be one of the values from the <c>MIB_TCP_STATE</c> enumeration type defined
-			/// in the Tcpmib.h header file.
-			/// </para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>MIB_TCP_STATE_CLOSED 1</term>
-			/// <term>The TCP connection is in the CLOSED state that represents no connection state at all.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_LISTEN 2</term>
-			/// <term>The TCP connection is in the LISTEN state waiting for a connection request from any remote TCP and port.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_SYN_SENT 3</term>
-			/// <term>
-			/// The TCP connection is in the SYN-SENT state waiting for a matching connection request after having sent a connection request
-			/// (SYN packet).
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_SYN_RCVD 4</term>
-			/// <term>
-			/// The TCP connection is in the SYN-RECEIVED state waiting for a confirming connection request acknowledgment after having both
-			/// received and sent a connection request (SYN packet).
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_ESTAB 5</term>
-			/// <term>
-			/// The TCP connection is in the ESTABLISHED state that represents an open connection, data received can be delivered to the
-			/// user. This is the normal state for the data transfer phase of the TCP connection.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_FIN_WAIT1 6</term>
-			/// <term>
-			/// The TCP connection is FIN-WAIT-1 state waiting for a connection termination request from the remote TCP, or an acknowledgment
-			/// of the connection termination request previously sent.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_FIN_WAIT2 7</term>
-			/// <term>The TCP connection is FIN-WAIT-1 state waiting for a connection termination request from the remote TCP.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_CLOSE_WAIT 8</term>
-			/// <term>The TCP connection is in the CLOSE-WAIT state waiting for a connection termination request from the local user.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_CLOSING 9</term>
-			/// <term>
-			/// The TCP connection is in the CLOSING state waiting for a connection termination request acknowledgment from the remote TCP.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_LAST_ACK 10</term>
-			/// <term>
-			/// The TCP connection is in the LAST-ACK state waiting for an acknowledgment of the connection termination request previously
-			/// sent to the remote TCP (which includes an acknowledgment of its connection termination request).
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_TIME_WAIT 11</term>
-			/// <term>
-			/// The TCP connection is in the TIME-WAIT state waiting for enough time to pass to be sure the remote TCP received the
-			/// acknowledgment of its connection termination request.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_DELETE_TCB 12</term>
-			/// <term>
-			/// The TCP connection is in the delete TCB state that represents the deletion of the Transmission Control Block (TCB), a data
-			/// structure used to maintain information on each TCP entry.
-			/// </term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public MIB_TCP_STATE dwState;
-
-			/// <summary>
-			/// <para>Type: <c>IN6_ADDR</c></para>
-			/// <para>
-			/// The local IPv6 address for the TCP connection on the local computer. A value of zero indicates the listener can accept a
-			/// connection on any interface.
-			/// </para>
-			/// </summary>
-			public IN6_ADDR LocalAddr;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The local scope ID for the TCP connection on the local computer.</para>
-			/// </summary>
-			public uint dwLocalScopeId;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The local port number in network byte order for the TCP connection on the local computer.</para>
-			/// <para>
-			/// The maximum size of an IP port number is 16 bits, so only the lower 16 bits should be used. The upper 16 bits may contain
-			/// uninitialized data.
-			/// </para>
-			/// </summary>
-			public uint dwLocalPort;
-
-			/// <summary>
-			/// <para>Type: <c>IN6_ADDR</c></para>
-			/// <para>
-			/// The IPv6 address for the TCP connection on the remote computer. When the <c>State</c> member is <c>MIB_TCP_STATE_LISTEN</c>,
-			/// this value has no meaning.
-			/// </para>
-			/// </summary>
-			public IN6_ADDR RemoteAddr;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The remote scope ID for the TCP connection on the remote computer. When the <c>State</c> member is
-			/// <c>MIB_TCP_STATE_LISTEN</c>, this value has no meaning.
-			/// </para>
-			/// </summary>
-			public uint dwRemoteScopeId;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The remote port number in network byte order for the TCP connection on the remote computer. When the <c>State</c> member is
-			/// <c>MIB_TCP_STATE_LISTEN</c>, this value has no meaning.
-			/// </para>
-			/// <para>
-			/// The maximum size of an IP port number is 16 bits, so only the lower 16 bits should be used. The upper 16 bits may contain
-			/// uninitialized data.
-			/// </para>
-			/// </summary>
-			public uint dwRemotePort;
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>MIB_TCP6ROW_OWNER_MODULE</c> structure contains information that describes an IPv6 TCP connection bound to a specific
-		/// process ID (PID) with ownership data.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The MIB_TCP6TABLE_OWNER_MODULE structure is returned by a call to GetExtendedTcpTable with the TableClass parameter set to a
-		/// <c>TCP_TABLE_OWNER_MODULE_LISTENER</c>, <c>TCP_TABLE_OWNER_MODULE_CONNECTIONS</c>, or <c>TCP_TABLE_OWNER_MODULE_ALL</c> from the
-		/// TCP_TABLE_CLASS enumeration and the ulAf parameter set to <c>AF_INET6</c>. The <c>MIB_TCP6TABLE_OWNER_MODULE</c> structure
-		/// contains an array of <c>MIB_TCP6ROW_OWNER_MODULE</c> structures.
-		/// </para>
-		/// <para>
-		/// The <c>dwState</c> member indicates the state of the TCP entry in a TCP state diagram. A TCP connection progresses through a
-		/// series of states during its lifetime. The states are: LISTEN, SYN-SENT, SYN-RECEIVED, ESTABLISHED, FIN-WAIT-1, FIN-WAIT-2,
-		/// CLOSE-WAIT, CLOSING, LAST-ACK, TIME-WAIT, and the fictional state CLOSED. The CLOSED state is fictional because it represents the
-		/// state when there is no Transmission Control Block, and therefore, no connection. The TCP protocol is described in RFC 793. For
-		/// more information, see http://www.ietf.org/rfc/rfc793.txt.
-		/// </para>
-		/// <para>
-		/// The <c>ucLocalAddr</c> and <c>ucRemoteAddr</c> members are stored in a character array in network byte order. The
-		/// RtlIpv6AddressToString or RtlIpv6AddressToStringEx functions may be used to convert the IPv6 address in the <c>ucLocalAddr</c> or
-		/// <c>ucRemoteAddr</c> members to a string without loading the Windows Sockets DLL.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalScopeId</c>, and <c>dwRemoteScopeId</c> members are in network byte order. In order to use the
-		/// <c>dwLocalScopeId</c> or <c>dwRemoteScopeId</c> members, the ntohl or inet_ntoa functions in Windows Sockets or similar functions
-		/// may be needed.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalPort</c> and <c>dwRemotePort</c> members are in network byte order. In order to use the <c>dwLocalPort</c> or
-		/// <c>dwRemotePort</c> members, the ntohs or inet_ntoa functions in Windows Sockets or similar functions may be needed.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed. This structure is defined in the Tcpmib.h header file, not in the Iprtrmib.h header file. Note that the Tcpmib.h
-		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Tcpmib.h
-		/// and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/tcpmib/ns-tcpmib-_mib_tcp6row_owner_module typedef struct
-		// _MIB_TCP6ROW_OWNER_MODULE { UCHAR ucLocalAddr[16]; DWORD dwLocalScopeId; DWORD dwLocalPort; UCHAR ucRemoteAddr[16]; DWORD
-		// dwRemoteScopeId; DWORD dwRemotePort; DWORD dwState; DWORD dwOwningPid; LARGE_INTEGER liCreateTimestamp; ULONGLONG
-		// OwningModuleInfo[TCPIP_OWNING_MODULE_SIZE]; } MIB_TCP6ROW_OWNER_MODULE, *PMIB_TCP6ROW_OWNER_MODULE;
-		[PInvokeData("tcpmib.h", MSDNShortId = "24f2041c-0a8c-4f2c-8585-ebbb0cad394f")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct MIB_TCP6ROW_OWNER_MODULE
-		{
-			/// <summary>
-			/// <para>Type: <c>UCHAR[16]</c></para>
-			/// <para>
-			/// The IPv6 address for the local endpoint of the TCP connection on the local computer. A value of zero indicates the listener
-			/// can accept a connection on any interface.
-			/// </para>
-			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-			public byte[] ucLocalAddr;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The scope ID in network byte order for the local IPv6 address.</para>
-			/// </summary>
-			public uint dwLocalScopeId;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The port number in network byte order for the local endpoint of the TCP connection on the local computer.</para>
-			/// </summary>
-			public uint dwLocalPort;
-
-			/// <summary>
-			/// <para>Type: <c>UCHAR[16]</c></para>
-			/// <para>
-			/// The IPv6 address of the remote endpoint of the TCP connection on the remote computer. When the <c>dwState</c> member is
-			/// <c>MIB_TCP_STATE_LISTEN</c>, this value has no meaning.
-			/// </para>
-			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-			public byte[] ucRemoteAddr;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The scope ID in network byte order for the remote IPv6 address.</para>
-			/// </summary>
-			public uint dwRemoteScopeId;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The port number in network byte order for the remote endpoint of the TCP connection on the remote computer.</para>
-			/// </summary>
-			public uint dwRemotePort;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The state of the TCP connection. This member can be one of the values from the <c>MIB_TCP_STATE</c> enumeration defined in
-			/// the Tcpmib.h header file. Note that the Tcpmib.h header file is automatically included in Iprtrmib.h, which is automatically
-			/// included in the Iphlpapi.h header file. The Tcpmib.h and Iprtrmib.h header files should never be used directly.
-			/// </para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>MIB_TCP_STATE_CLOSED 1</term>
-			/// <term>The TCP connection is in the CLOSED state that represents no connection state at all.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_LISTEN 2</term>
-			/// <term>The TCP connection is in the LISTEN state waiting for a connection request from any remote TCP and port.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_SYN_SENT 3</term>
-			/// <term>
-			/// The TCP connection is in the SYN-SENT state waiting for a matching connection request after having sent a connection request
-			/// (SYN packet).
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_SYN_RCVD 4</term>
-			/// <term>
-			/// The TCP connection is in the SYN-RECEIVED state waiting for a confirming connection request acknowledgment after having both
-			/// received and sent a connection request (SYN packet).
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_ESTAB 5</term>
-			/// <term>
-			/// The TCP connection is in the ESTABLISHED state that represents an open connection, data received can be delivered to the
-			/// user. This is the normal state for the data transfer phase of the TCP connection.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_FIN_WAIT1 6</term>
-			/// <term>
-			/// The TCP connection is FIN-WAIT-1 state waiting for a connection termination request from the remote TCP, or an acknowledgment
-			/// of the connection termination request previously sent.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_FIN_WAIT2 7</term>
-			/// <term>The TCP connection is FIN-WAIT-1 state waiting for a connection termination request from the remote TCP.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_CLOSE_WAIT 8</term>
-			/// <term>The TCP connection is in the CLOSE-WAIT state waiting for a connection termination request from the local user.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_CLOSING 9</term>
-			/// <term>
-			/// The TCP connection is in the CLOSING state waiting for a connection termination request acknowledgment from the remote TCP.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_LAST_ACK 10</term>
-			/// <term>
-			/// The TCP connection is in the LAST-ACK state waiting for an acknowledgment of the connection termination request previously
-			/// sent to the remote TCP (which includes an acknowledgment of its connection termination request).
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_TIME_WAIT 11</term>
-			/// <term>
-			/// The TCP connection is in the TIME-WAIT state waiting for enough time to pass to be sure the remote TCP received the
-			/// acknowledgment of its connection termination request.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_DELETE_TCB 12</term>
-			/// <term>
-			/// The TCP connection is in the delete TCB state that represents the deletion of the Transmission Control Block (TCB), a data
-			/// structure used to maintain information on each TCP entry.
-			/// </term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public MIB_TCP_STATE dwState;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The PID of the local process that issued a context bind for this TCP connection.</para>
-			/// </summary>
-			public uint dwOwningPid;
-
-			/// <summary>
-			/// <para>Type: <c>LARGE_INTEGER</c></para>
-			/// <para>A SYSTEMTIME structure that indicates when the context bind operation that created this TCP connection occurred.</para>
-			/// </summary>
-			public SYSTEMTIME liCreateTimestamp;
-
-			/// <summary>
-			/// <para>Type: <c>ULONGLONG[TCPIP_OWNING_MODULE_SIZE]</c></para>
-			/// <para>An array of opaque data that contains ownership information.</para>
-			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = TCPIP_OWNING_MODULE_SIZE)]
-			public ulong[] OwningModuleInfo;
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>MIB_TCP6ROW_OWNER_PID</c> structure contains information that describes an IPv6 TCP connection associated with a specific
-		/// process ID (PID).
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The MIB_TCP6TABLE_OWNER_PID structure is returned by a call to GetExtendedTcpTable with the TableClass parameter set to
-		/// <c>TCP_TABLE_OWNER_PID_LISTENER</c>, <c>TCP_TABLE_OWNER_PID_CONNECTIONS</c>, or <c>TCP_TABLE_OWNER_PID_ALL</c> from the
-		/// TCP_TABLE_CLASS enumeration and the ulAf parameter set to <c>AF_INET6</c>. The <c>MIB_TCP6TABLE_OWNER_PID</c> structure contains
-		/// an array of <c>MIB_TCP6ROW_OWNER_PID</c> structures.
-		/// </para>
-		/// <para>
-		/// The <c>dwState</c> member indicates the state of the TCP entry in a TCP state diagram. A TCP connection progresses through a
-		/// series of states during its lifetime. The states are: LISTEN, SYN-SENT, SYN-RECEIVED, ESTABLISHED, FIN-WAIT-1, FIN-WAIT-2,
-		/// CLOSE-WAIT, CLOSING, LAST-ACK, TIME-WAIT, and the fictional state CLOSED. The CLOSED state is fictional because it represents the
-		/// state when there is no Transmission Control Block, and therefore, no connection. The TCP protocol is described in RFC 793. For
-		/// more information, see http://www.ietf.org/rfc/rfc793.txt.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalPort</c>, and <c>dwRemotePort</c> members are in network byte order. In order to use the <c>dwLocalPort</c> or
-		/// <c>dwRemotePort</c> members, the ntohs or inet_ntoa functions in Windows Sockets or similar functions may be needed.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalScopeId</c>, and <c>dwRemoteScopeId</c> members are in network byte order. In order to use the
-		/// <c>dwLocalScopeId</c> or <c>dwRemoteScopeId</c> members, the ntohl or inet_ntoa functions in Windows Sockets or similar functions
-		/// may be needed.
-		/// </para>
-		/// <para>
-		/// The <c>ucLocalAddr</c> and <c>ucRemoteAddr</c> members are stored in a character array in network byte order. The
-		/// RtlIpv6AddressToString or RtlIpv6AddressToStringEx functions may be used to convert the IPv6 address in the <c>ucLocalAddr</c> or
-		/// <c>ucRemoteAddr</c> members to a string without loading the Windows Sockets DLL.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed. This structure is defined in the Tcpmib.h header file, not in the Iprtrmib.h header file. Note that the Tcpmib.h
-		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Tcpmib.h
-		/// and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/tcpmib/ns-tcpmib-_mib_tcp6row_owner_pid typedef struct
-		// _MIB_TCP6ROW_OWNER_PID { UCHAR ucLocalAddr[16]; DWORD dwLocalScopeId; DWORD dwLocalPort; UCHAR ucRemoteAddr[16]; DWORD
-		// dwRemoteScopeId; DWORD dwRemotePort; DWORD dwState; DWORD dwOwningPid; } MIB_TCP6ROW_OWNER_PID, *PMIB_TCP6ROW_OWNER_PID;
-		[PInvokeData("tcpmib.h", MSDNShortId = "d0c9c783-c095-487e-a007-8a10700f9fea")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct MIB_TCP6ROW_OWNER_PID
-		{
-			/// <summary>
-			/// <para>Type: <c>UCHAR[16]</c></para>
-			/// <para>
-			/// The IPv6 address for the local endpoint of the TCP connection on the local computer. A value of zero indicates the listener
-			/// can accept a connection on any interface.
-			/// </para>
-			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-			public byte[] ucLocalAddr;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The scope ID in network byte order for the local IPv6 address.</para>
-			/// </summary>
-			public uint dwLocalScopeId;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The port number in network byte order for the local endpoint of the TCP connection on the local computer.</para>
-			/// </summary>
-			public uint dwLocalPort;
-
-			/// <summary>
-			/// <para>Type: <c>UCHAR[16]</c></para>
-			/// <para>
-			/// The IPv6 address of the remote endpoint of the TCP connection on the remote computer. When the <c>dwState</c> member is
-			/// <c>MIB_TCP_STATE_LISTEN</c>, this value has no meaning.
-			/// </para>
-			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-			public byte[] ucRemoteAddr;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The scope ID in network byte order for the remote IPv6 address.</para>
-			/// </summary>
-			public uint dwRemoteScopeId;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The port number in network byte order for the remote endpoint of the TCP connection on the remote computer.</para>
-			/// </summary>
-			public uint dwRemotePort;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The state of the TCP connection. This member can be one of the values from the <c>MIB_TCP_STATE</c> enumeration defined in
-			/// the Tcpmib.h header file. Note that the Tcpmib.h header file is automatically included in Iprtrmib.h, which is automatically
-			/// included in the Iphlpapi.h header file. The Tcpmib.h and Iprtrmib.h header files should never be used directly.
-			/// </para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>MIB_TCP_STATE_CLOSED 1</term>
-			/// <term>The TCP connection is in the CLOSED state that represents no connection state at all.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_LISTEN 2</term>
-			/// <term>The TCP connection is in the LISTEN state waiting for a connection request from any remote TCP and port.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_SYN_SENT 3</term>
-			/// <term>
-			/// The TCP connection is in the SYN-SENT state waiting for a matching connection request after having sent a connection request
-			/// (SYN packet).
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_SYN_RCVD 4</term>
-			/// <term>
-			/// The TCP connection is in the SYN-RECEIVED state waiting for a confirming connection request acknowledgment after having both
-			/// received and sent a connection request (SYN packet).
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_ESTAB 5</term>
-			/// <term>
-			/// The TCP connection is in the ESTABLISHED state that represents an open connection, data received can be delivered to the
-			/// user. This is the normal state for the data transfer phase of the TCP connection.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_FIN_WAIT1 6</term>
-			/// <term>
-			/// The TCP connection is FIN-WAIT-1 state waiting for a connection termination request from the remote TCP, or an acknowledgment
-			/// of the connection termination request previously sent.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_FIN_WAIT2 7</term>
-			/// <term>The TCP connection is FIN-WAIT-1 state waiting for a connection termination request from the remote TCP.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_CLOSE_WAIT 8</term>
-			/// <term>The TCP connection is in the CLOSE-WAIT state waiting for a connection termination request from the local user.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_CLOSING 9</term>
-			/// <term>
-			/// The TCP connection is in the CLOSING state waiting for a connection termination request acknowledgment from the remote TCP.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_LAST_ACK 10</term>
-			/// <term>
-			/// The TCP connection is in the LAST-ACK state waiting for an acknowledgment of the connection termination request previously
-			/// sent to the remote TCP (which includes an acknowledgment of its connection termination request).
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_TIME_WAIT 11</term>
-			/// <term>
-			/// The TCP connection is in the TIME-WAIT state waiting for enough time to pass to be sure the remote TCP received the
-			/// acknowledgment of its connection termination request.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_DELETE_TCB 12</term>
-			/// <term>
-			/// The TCP connection is in the delete TCB state that represents the deletion of the Transmission Control Block (TCB), a data
-			/// structure used to maintain information on each TCP entry.
-			/// </term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public MIB_TCP_STATE dwState;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The PID of the local process that issued a context bind for this TCP connection.</para>
-			/// </summary>
-			public uint dwOwningPid;
-		}
-
-		/// <summary>
-		/// <para>The <c>MIB_TCPROW</c> structure contains information that descibes an IPv4 TCP connection.</para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The GetTcpTable function retrieves the IPv4 TCP connection table on the local computer and returns this information in a
-		/// MIB_TCPTABLE structure.
-		/// </para>
-		/// <para>
-		/// An array of <c>MIB_TCPROW</c> structures are contained in the <c>MIB_TCPTABLE</c> structure. The <c>MIB_TCPROW</c> structure is
-		/// also used by the SetTcpEntry function.
-		/// </para>
-		/// <para>
-		/// The <c>dwState</c> member indicates the state of the TCP entry in a TCP state diagram. A TCP connection progresses through a
-		/// series of states during its lifetime. The states are: LISTEN, SYN-SENT, SYN-RECEIVED, ESTABLISHED, FIN-WAIT-1, FIN-WAIT-2,
-		/// CLOSE-WAIT, CLOSING, LAST-ACK, TIME-WAIT, and the fictional state CLOSED. The CLOSED state is fictional because it represents the
-		/// state when there is no Transmission Control Block, and therefore, no connection. The TCP protocol is described in RFC 793. For
-		/// more information, see http://www.ietf.org/rfc/rfc793.txt.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalAddr</c> and <c>dwRemoteAddr</c> members are stored as a <c>DWORD</c> in the same format as the in_addr structure.
-		/// In order to use the <c>dwLocalAddr</c> or <c>dwRemoteAddr</c> members, the ntohl or inet_ntoa functions in Windows Sockets or
-		/// similar functions may be needed. On Windows Vista and later, the RtlIpv4AddressToString or RtlIpv4AddressToStringEx functions may
-		/// be used to convert the IPv4 address in the <c>dwLocalAddr</c> or <c>dwRemoteAddr</c> members to a string without loading the
-		/// Windows Sockets DLL.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalPort</c>, and <c>dwRemotePort</c> members are in network byte order. In order to use the <c>dwLocalPort</c> or
-		/// <c>dwRemotePort</c> members, the ntohs or inet_ntoa functions in Windows Sockets or similar functions may be needed.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_TCPROW</c> structure changed slightly on Windows Vista and later. On Windows Vista and later, the <c>dwState</c>
-		/// member is replaced by a union that contains the following members.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Member</term>
-		/// <term>Description</term>
-		/// </listheader>
+		/// <list type="bullet">
 		/// <item>
-		/// <term>DWORD dwState</term>
-		/// <term>The state of the TCP connection.</term>
+		/// <term>
+		/// Provides a default value for the forwarding state when a new interface is created with no specific forwarding state (neither
+		/// disabled nor enabled) . This value is inherited per-protocol state.
+		/// </term>
 		/// </item>
 		/// <item>
-		/// <term>MIB_TCP_STATE State</term>
 		/// <term>
-		/// The state of the TCP connection. This member can be one of the values from the MIB_TCP_STATE enumeration type defined in the
-		/// Tcpmib.h header file. The possible values are the same as those defined for the dwState member.
+		/// Provides a value set by a domain administrator to enable or disable a per-protocol forwarding state. The forwarding states of all
+		/// interfaces using that protocol are also enabled or disabled.
 		/// </term>
 		/// </item>
 		/// </list>
 		/// <para>
-		/// In the Windows SDK, the version of the structure for use on Windows Vista and later is defined as <c>MIB_TCPROW_LH</c>. In the
-		/// Windows SDK, the version of this structure to be used on earlier systems including Windows 2000 and later is defined as
-		/// <c>MIB_TCPROW_W2K</c>. When compiling an application if the target platform is Windows Vista and later (, , or ), the
-		/// <c>MIB_TCPROW_LH</c> structure is typedefed to the <c>MIB_TCPROW</c> structure. When compiling an application if the target
-		/// platform is not Windows Vista and later, the <c>MIB_TCPROW_W2K</c> structure is typedefed to the <c>MIB_TCPROW</c> structure.
-		/// </para>
-		/// <para>
-		/// On the Windows SDK released for Windows Vista and later, the organization of header files has changed. This structure is defined
-		/// in the Tcpmib.h header file, not in the Iprtrmib.h header file. Note that the Tcpmib.h header file is automatically included in
-		/// Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Tcpmib.h and Iprtrmib.h header files should never
-		/// be used directly.
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>
-		/// The following example retrieves the TCP connection table and prints the state of each connection represented as a
-		/// <c>MIB_TCPROW</c> structure.
+		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
+		/// has changed and the <c>MIB_IPSTATS</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note
+		/// that the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header
+		/// file. The Ipmib.h and Iprtrmib.h header files should never be used directly.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/tcpmib/ns-tcpmib-_mib_tcprow_lh typedef struct
-		// _MIB_TCPROW_LH { union { DWORD dwState; MIB_TCP_STATE State; }; DWORD dwLocalAddr; DWORD dwLocalPort; DWORD dwRemoteAddr; DWORD
-		// dwRemotePort; } MIB_TCPROW_LH, *PMIB_TCPROW_LH;
-		[PInvokeData("tcpmib.h", MSDNShortId = "36364854-caa8-4652-be8e-f741b36d9fd7")]
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-mib_ipstats_w2k typedef struct _MIB_IPSTATS_W2K { DWORD
+		// dwForwarding; DWORD dwDefaultTTL; DWORD dwInReceives; DWORD dwInHdrErrors; DWORD dwInAddrErrors; DWORD dwForwDatagrams; DWORD
+		// dwInUnknownProtos; DWORD dwInDiscards; DWORD dwInDelivers; DWORD dwOutRequests; DWORD dwRoutingDiscards; DWORD dwOutDiscards;
+		// DWORD dwOutNoRoutes; DWORD dwReasmTimeout; DWORD dwReasmReqds; DWORD dwReasmOks; DWORD dwReasmFails; DWORD dwFragOks; DWORD
+		// dwFragFails; DWORD dwFragCreates; DWORD dwNumIf; DWORD dwNumAddr; DWORD dwNumRoutes; } MIB_IPSTATS_W2K, *PMIB_IPSTATS_W2K;
+		[PInvokeData("ipmib.h", MSDNShortId = "920e71b6-247c-4442-9f66-704a6c878feb")]
 		[StructLayout(LayoutKind.Sequential)]
-		public struct MIB_TCPROW
-		{
-			/// <summary>The state of the TCP connection.</summary>
-			public MIB_TCP_STATE dwState;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The local IPv4 address for the TCP connection on the local computer. A value of zero indicates the listener can accept a
-			/// connection on any interface.
-			/// </para>
-			/// </summary>
-			public uint dwLocalAddr;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The local port number in network byte order for the TCP connection on the local computer.</para>
-			/// <para>
-			/// The maximum size of an IP port number is 16 bits, so only the lower 16 bits should be used. The upper 16 bits may contain
-			/// uninitialized data.
-			/// </para>
-			/// </summary>
-			public uint dwLocalPort;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The IPv4 address for the TCP connection on the remote computer. When the <c>dwState</c> member is
-			/// <c>MIB_TCP_STATE_LISTEN</c>, this value has no meaning.
-			/// </para>
-			/// </summary>
-			public uint dwRemoteAddr;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The remote port number in network byte order for the TCP connection on the remote computer. When the <c>dwState</c> member is
-			/// <c>MIB_TCP_STATE_LISTEN</c>, this member has no meaning.
-			/// </para>
-			/// <para>
-			/// The maximum size of an IP port number is 16 bits, so only the lower 16 bits should be used. The upper 16 bits may contain
-			/// uninitialized data.
-			/// </para>
-			/// </summary>
-			public uint dwRemotePort;
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>MIB_TCPROW_OWNER_MODULE</c> structure contains information that describes an IPv4 TCP connection with ownership data, IPv4
-		/// addresses, ports used by the TCP connection, and the specific process ID (PID) associated with connection.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The <c>MIB_TCPROW_OWNER_MODULE</c> structure is returned by a call to GetExtendedTcpTable with the TableClass parameter set to
-		/// <c>TCP_TABLE_OWNER_MODULE_LISTENER</c>, <c>TCP_TABLE_OWNER_MODULE_CONNECTIONS</c>, or <c>TCP_TABLE_OWNER_MODULE_ALL</c> from the
-		/// TCP_TABLE_CLASS enumeration and the ulAf parameter set to <c>AF_INET4</c>.
-		/// </para>
-		/// <para>
-		/// The <c>dwState</c> member indicates the state of the TCP entry in a TCP state diagram. A TCP connection progresses through a
-		/// series of states during its lifetime. The states are: LISTEN, SYN-SENT, SYN-RECEIVED, ESTABLISHED, FIN-WAIT-1, FIN-WAIT-2,
-		/// CLOSE-WAIT, CLOSING, LAST-ACK, TIME-WAIT, and the fictional state CLOSED. The CLOSED state is fictional because it represents the
-		/// state when there is no Transmission Control Block, and therefore, no connection. The TCP protocol is described in RFC 793. For
-		/// more information, see http://www.ietf.org/rfc/rfc793.txt.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalPort</c>, and <c>dwRemotePort</c> members are in network byte order. In order to use the <c>dwLocalPort</c> or
-		/// <c>dwRemotePort</c> members, the ntohs or inet_ntoa functions in Windows Sockets or similar functions may be needed. The
-		/// <c>dwLocalAddr</c> and <c>dwRemoteAddr</c> members are stored as a <c>DWORD</c> in the same format as the in_addr structure. In
-		/// order to use the <c>dwLocalAddr</c> or <c>dwRemoteAddr</c> members, the ntohl or <c>inet_ntoa</c> functions in Windows Sockets or
-		/// similar functions may be needed. On Windows Vista and later, the RtlIpv4AddressToString or RtlIpv4AddressToStringEx functions may
-		/// be used to convert the IPv4 address in the <c>dwLocalAddr</c> or <c>dwRemoteAddr</c> members to a string without loading the
-		/// Windows Sockets DLL.
-		/// </para>
-		/// <para>
-		/// On the Windows SDK released for Windows Vista and later, the organization of header files has changed. This structure is defined
-		/// in the Tcpmib.h header file, not in the Iprtrmib.h header file. Note that the Tcpmib.h header file is automatically included in
-		/// Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Tcpmib.h and Iprtrmib.h header files should never
-		/// be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/tcpmib/ns-tcpmib-_mib_tcprow_owner_module typedef struct
-		// _MIB_TCPROW_OWNER_MODULE { DWORD dwState; DWORD dwLocalAddr; DWORD dwLocalPort; DWORD dwRemoteAddr; DWORD dwRemotePort; DWORD
-		// dwOwningPid; LARGE_INTEGER liCreateTimestamp; ULONGLONG OwningModuleInfo[TCPIP_OWNING_MODULE_SIZE]; } MIB_TCPROW_OWNER_MODULE, *PMIB_TCPROW_OWNER_MODULE;
-		[PInvokeData("tcpmib.h", MSDNShortId = "5fc1e95a-4ab1-4a15-aedc-47cfd811c035")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct MIB_TCPROW_OWNER_MODULE
+		public struct MIB_IPSTATS
 		{
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
-			/// <para>dwState</para>
+			/// <para>Specifies whether IP forwarding is enabled or disabled for a protocol (IPv4 or IPv6).</para>
 			/// <para>
-			/// <c>Type: <c>DWORD</c></c> The state of the TCP connection. This member can be one of the values defined in the Iprtrmib.h
+			/// On Windows Vista and later, this member is defined as a union containing a <c>DWORD dwForwarding</c> member and a
+			/// <c>MIB_IPSTATS_FORWARDING Forwarding</c> member where <c>MIB_IPSTATS_FORWARDING</c> is an enumeration defined in the Ipmib.h
 			/// header file.
 			/// </para>
 			/// <para>
-			/// On the Windows SDK released for Windows Vista and later, the organization of header files has changed. This member can be one
-			/// of the values from the <c>MIB_TCP_STATE</c> enumeration defined in the Tcpmib.h header file, not in the Iprtrmib.h header
-			/// file. Note that the Tcpmib.h header file is automatically included in Iprtrmib.h, which is automatically included in the
-			/// Iphlpapi.h header file. The Tcpmib.h and Iprtrmib.h header files should never be used directly.
+			/// <c>Note</c> This member applies to the entire system per protocol (IPv4 or IPv6) and doesn’t return per interface
+			/// configuration for IP forwarding.
 			/// </para>
 			/// <list type="table">
 			/// <listheader>
@@ -1540,1235 +657,374 @@ namespace Vanara.PInvoke
 			/// <term>Meaning</term>
 			/// </listheader>
 			/// <item>
-			/// <term>MIB_TCP_STATE_CLOSED 1</term>
-			/// <term>The TCP connection is in the CLOSED state that represents no connection state at all.</term>
+			/// <term>MIB_IP_FORWARDING 1</term>
+			/// <term>IP forwarding is enabled.</term>
 			/// </item>
 			/// <item>
-			/// <term>MIB_TCP_STATE_LISTEN 2</term>
-			/// <term>The TCP connection is in the LISTEN state waiting for a connection request from any remote TCP and port.</term>
+			/// <term>MIB_IP_NOT_FORWARDING 2</term>
+			/// <term>IP forwarding is not enabled.</term>
 			/// </item>
 			/// <item>
-			/// <term>MIB_TCP_STATE_SYN_SENT 3</term>
+			/// <term>MIB_USE_CURRENT_FORWARDING 0xffff</term>
 			/// <term>
-			/// The TCP connection is in the SYN-SENT state waiting for a matching connection request after having sent a connection request
-			/// (SYN packet).
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_SYN_RCVD 4</term>
-			/// <term>
-			/// The TCP connection is in the SYN-RECEIVED state waiting for a confirming connection request acknowledgment after having both
-			/// received and sent a connection request (SYN packet).
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_ESTAB 5</term>
-			/// <term>
-			/// The TCP connection is in the ESTABLISHED state that represents an open connection, data received can be delivered to the
-			/// user. This is the normal state for the data transfer phase of the TCP connection.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_FIN_WAIT1 6</term>
-			/// <term>
-			/// The TCP connection is FIN-WAIT-1 state waiting for a connection termination request from the remote TCP, or an acknowledgment
-			/// of the connection termination request previously sent.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_FIN_WAIT2 7</term>
-			/// <term>The TCP connection is FIN-WAIT-1 state waiting for a connection termination request from the remote TCP.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_CLOSE_WAIT 8</term>
-			/// <term>The TCP connection is in the CLOSE-WAIT state waiting for a connection termination request from the local user.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_CLOSING 9</term>
-			/// <term>
-			/// The TCP connection is in the CLOSING state waiting for a connection termination request acknowledgment from the remote TCP.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_LAST_ACK 10</term>
-			/// <term>
-			/// The TCP connection is in the LAST-ACK state waiting for an acknowledgment of the connection termination request previously
-			/// sent to the remote TCP (which includes an acknowledgment of its connection termination request).
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_TIME_WAIT 11</term>
-			/// <term>
-			/// The TCP connection is in the TIME-WAIT state waiting for enough time to pass to be sure the remote TCP received the
-			/// acknowledgment of its connection termination request.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_DELETE_TCB 12</term>
-			/// <term>
-			/// The TCP connection is in the delete TCB state that represents the deletion of the Transmission Control Block (TCB), a data
-			/// structure used to maintain information on each TCP entry.
+			/// Use the current IP forwarding setting. This value is only applicable when setting the forwarding and time-to-live (TTL)
+			/// options using the SetIpStatistics and SetIpStatisticsEx functions.
 			/// </term>
 			/// </item>
 			/// </list>
 			/// </summary>
-			public MIB_TCP_STATE dwState;
+			public MIB_IPSTATS_FORWARDING Forwarding;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The default initial time-to-live (TTL) for datagrams originating on a particular computer.</para>
+			/// <para>
+			/// This member can be set to <c>MIB_USE_CURRENT_TTL</c> to use the current deafult TTL value when setting the forwarding and
+			/// time-to-live (TTL) options using the <c>SetIpStatistics</c> and SetIpStatisticsEx functions.
+			/// </para>
+			/// </summary>
+			public uint dwDefaultTTL;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of datagrams received.</para>
+			/// </summary>
+			public uint dwInReceives;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of datagrams received that have header errors.</para>
+			/// </summary>
+			public uint dwInHdrErrors;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of datagrams received that have address errors.</para>
+			/// </summary>
+			public uint dwInAddrErrors;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of datagrams forwarded.</para>
+			/// </summary>
+			public uint dwForwDatagrams;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of datagrams received that have an unknown protocol.</para>
+			/// </summary>
+			public uint dwInUnknownProtos;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of received datagrams discarded.</para>
+			/// </summary>
+			public uint dwInDiscards;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of received datagrams delivered.</para>
+			/// </summary>
+			public uint dwInDelivers;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of outgoing datagrams that IP is requested to transmit. This number does not include forwarded datagrams.</para>
+			/// </summary>
+			public uint dwOutRequests;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of outgoing datagrams discarded.</para>
+			/// </summary>
+			public uint dwRoutingDiscards;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of transmitted datagrams discarded.</para>
+			/// </summary>
+			public uint dwOutDiscards;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
 			/// <para>
-			/// The local IPv4 address for the TCP connection on the local computer. A value of zero indicates the listener can accept a
-			/// connection on any interface.
+			/// The number of datagrams for which this computer did not have a route to the destination IP address. These datagrams were discarded.
 			/// </para>
 			/// </summary>
-			public IN_ADDR dwLocalAddr;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The local port number in network byte order for the TCP connection on the local computer.</para>
-			/// </summary>
-			public uint dwLocalPort;
+			public uint dwOutNoRoutes;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
 			/// <para>
-			/// The IPv4 address for the TCP connection on the remote computer. When the <c>dwState</c> member is
-			/// <c>MIB_TCP_STATE_LISTEN</c>, this value has no meaning.
+			/// The amount of time allowed for all pieces of a fragmented datagram to arrive. If all pieces do not arrive within this time,
+			/// the datagram is discarded.
 			/// </para>
 			/// </summary>
-			public IN_ADDR dwRemoteAddr;
+			public uint dwReasmTimeout;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of datagrams that require re-assembly.</para>
+			/// </summary>
+			public uint dwReasmReqds;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of datagrams that were successfully reassembled.</para>
+			/// </summary>
+			public uint dwReasmOks;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of datagrams that cannot be reassembled.</para>
+			/// </summary>
+			public uint dwReasmFails;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of datagrams that were fragmented successfully.</para>
+			/// </summary>
+			public uint dwFragOks;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
 			/// <para>
-			/// The remote port number in network byte order for the TCP connection on the remote computer. When the <c>dwState</c> member is
-			/// <c>MIB_TCP_STATE_LISTEN</c>, this member has no meaning.
+			/// The number of datagrams that have not been fragmented because the IP header specifies no fragmentation. These datagrams are discarded.
 			/// </para>
 			/// </summary>
-			public uint dwRemotePort;
+			public uint dwFragFails;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The PID of the process that issued a context bind for this TCP connection.</para>
+			/// <para>The number of fragments created.</para>
 			/// </summary>
-			public uint dwOwningPid;
+			public uint dwFragCreates;
 
 			/// <summary>
-			/// <para>Type: <c>LARGE_INTEGER</c></para>
-			/// <para>A SYSTEMTIME structure that indicates when the context bind operation that created this TCP link occurred.</para>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of interfaces.</para>
 			/// </summary>
-			public SYSTEMTIME liCreateTimestamp;
+			public uint dwNumIf;
 
 			/// <summary>
-			/// <para>Type: <c>ULONGLONG[TCPIP_OWNING_MODULE_SIZE]</c></para>
-			/// <para>An array of opaque data that contains ownership information.</para>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of IP addresses associated with this computer.</para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = TCPIP_OWNING_MODULE_SIZE)]
-			public ulong[] OwningModuleInfo;
+			public uint dwNumAddr;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of routes in the IP routing table.</para>
+			/// </summary>
+			public uint dwNumRoutes;
 		}
 
-		/// <summary>
-		/// <para>
-		/// The <c>MIB_TCPROW_OWNER_PID</c> structure contains information that describes an IPv4 TCP connection with IPv4 addresses, ports
-		/// used by the TCP connection, and the specific process ID (PID) associated with connection.
-		/// </para>
-		/// </summary>
+		/// <summary>The <c>MIBICMPINFO</c> structure contains Internet Control Message Protocol (ICMP) statistics for a particular computer.</summary>
 		/// <remarks>
 		/// <para>
-		/// The <c>MIB_TCPROW_OWNER_PID</c> structure is returned by a call to GetExtendedTcpTable with the TableClass parameter set to
-		/// <c>TCP_TABLE_OWNER_PID_LISTENER</c>, <c>TCP_TABLE_OWNER_PID_CONNECTIONS</c>, or <c>TCP_TABLE_OWNER_PID_ALL</c> from the
-		/// TCP_TABLE_CLASS enumeration and the ulAf parameter set to <c>AF_INET4</c>.
-		/// </para>
-		/// <para>
-		/// The <c>dwState</c> member indicates the state of the TCP entry in a TCP state diagram. A TCP connection progresses through a
-		/// series of states during its lifetime. The states are: LISTEN, SYN-SENT, SYN-RECEIVED, ESTABLISHED, FIN-WAIT-1, FIN-WAIT-2,
-		/// CLOSE-WAIT, CLOSING, LAST-ACK, TIME-WAIT, and the fictional state CLOSED. The CLOSED state is fictional because it represents the
-		/// state when there is no Transmission Control Block, and therefore, no connection. The TCP protocol is described in RFC 793. For
-		/// more information, see http://www.ietf.org/rfc/rfc793.txt.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalPort</c>, and <c>dwRemotePort</c> members are in network byte order. In order to use the <c>dwLocalPort</c> or
-		/// <c>dwRemotePort</c> members, the ntohs or inet_ntoa functions in Windows Sockets or similar functions may be needed. The
-		/// <c>dwLocalAddr</c> and <c>dwRemoteAddr</c> members are stored as a <c>DWORD</c> in the same format as the in_addr structure. In
-		/// order to use the <c>dwLocalAddr</c> or <c>dwRemoteAddr</c> members, the ntohl or <c>inet_ntoa</c> functions in Windows Sockets or
-		/// similar functions may be needed. On Windows Vista and later, the RtlIpv4AddressToString or RtlIpv4AddressToStringEx functions may
-		/// be used to convert the IPv4 address in the <c>dwLocalAddr</c> or <c>dwRemoteAddr</c> members to a string without loading the
-		/// Windows Sockets DLL.
-		/// </para>
-		/// <para>
-		/// On the Windows SDK released for Windows Vista and later, the organization of header files has changed. This structure is defined
-		/// in the Tcpmib.h header file, not in the Iprtrmib.h header file. Note that the Tcpmib.h header file is automatically included in
-		/// Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Tcpmib.h and Iprtrmib.h header files should never
-		/// be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/tcpmib/ns-tcpmib-_mib_tcprow_owner_pid typedef struct
-		// _MIB_TCPROW_OWNER_PID { DWORD dwState; DWORD dwLocalAddr; DWORD dwLocalPort; DWORD dwRemoteAddr; DWORD dwRemotePort; DWORD
-		// dwOwningPid; } MIB_TCPROW_OWNER_PID, *PMIB_TCPROW_OWNER_PID;
-		[PInvokeData("tcpmib.h", MSDNShortId = "220b69a4-b372-4eff-8d5a-eca0d39b8af9")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct MIB_TCPROW_OWNER_PID
-		{
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The state of the TCP connection. This member can be one of the values defined in the Iprtrmib.h header file.</para>
-			/// <para>
-			/// On the Windows SDK released for Windows Vista and later, the organization of header files has changed. This member can be one
-			/// of the values from the <c>MIB_TCP_STATE</c> enumeration defined in the Tcpmib.h header file, not in the Iprtrmib.h header
-			/// file. Note that the Tcpmib.h header file is automatically included in Iprtrmib.h, which is automatically included in the
-			/// Iphlpapi.h header file. The Tcpmib.h and Iprtrmib.h header files should never be used directly.
-			/// </para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>MIB_TCP_STATE_CLOSED 1</term>
-			/// <term>The TCP connection is in the CLOSED state that represents no connection state at all.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_LISTEN 2</term>
-			/// <term>The TCP connection is in the LISTEN state waiting for a connection request from any remote TCP and port.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_SYN_SENT 3</term>
-			/// <term>
-			/// The TCP connection is in the SYN-SENT state waiting for a matching connection request after having sent a connection request
-			/// (SYN packet).
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_SYN_RCVD 4</term>
-			/// <term>
-			/// The TCP connection is in the SYN-RECEIVED state waiting for a confirming connection request acknowledgment after having both
-			/// received and sent a connection request (SYN packet).
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_ESTAB 5</term>
-			/// <term>
-			/// The TCP connection is in the ESTABLISHED state that represents an open connection, data received can be delivered to the
-			/// user. This is the normal state for the data transfer phase of the TCP connection.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_FIN_WAIT1 6</term>
-			/// <term>
-			/// The TCP connection is FIN-WAIT-1 state waiting for a connection termination request from the remote TCP, or an acknowledgment
-			/// of the connection termination request previously sent.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_FIN_WAIT2 7</term>
-			/// <term>The TCP connection is FIN-WAIT-2 state waiting for a connection termination request from the remote TCP.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_CLOSE_WAIT 8</term>
-			/// <term>The TCP connection is in the CLOSE-WAIT state waiting for a connection termination request from the local user.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_CLOSING 9</term>
-			/// <term>
-			/// The TCP connection is in the CLOSING state waiting for a connection termination request acknowledgment from the remote TCP.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_LAST_ACK 10</term>
-			/// <term>
-			/// The TCP connection is in the LAST-ACK state waiting for an acknowledgment of the connection termination request previously
-			/// sent to the remote TCP (which includes an acknowledgment of its connection termination request).
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_TIME_WAIT 11</term>
-			/// <term>
-			/// The TCP connection is in the TIME-WAIT state waiting for enough time to pass to be sure the remote TCP received the
-			/// acknowledgment of its connection termination request.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_DELETE_TCB 12</term>
-			/// <term>
-			/// The TCP connection is in the delete TCB state that represents the deletion of the Transmission Control Block (TCB), a data
-			/// structure used to maintain information on each TCP entry.
-			/// </term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public MIB_TCP_STATE dwState;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The local IPv4 address for the TCP connection on the local computer. A value of zero indicates the listener can accept a
-			/// connection on any interface.
-			/// </para>
-			/// </summary>
-			public IN_ADDR dwLocalAddr;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The local port number in network byte order for the TCP connection on the local computer.</para>
-			/// </summary>
-			public uint dwLocalPort;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The IPv4 address for the TCP connection on the remote computer. When the <c>dwState</c> member is
-			/// <c>MIB_TCP_STATE_LISTEN</c>, this value has no meaning.
-			/// </para>
-			/// </summary>
-			public IN_ADDR dwRemoteAddr;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The remote port number in network byte order for the TCP connection on the remote computer. When the <c>dwState</c> member is
-			/// <c>MIB_TCP_STATE_LISTEN</c>, this member has no meaning.
-			/// </para>
-			/// </summary>
-			public uint dwRemotePort;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The PID of the process that issued a context bind for this TCP connection.</para>
-			/// </summary>
-			public uint dwOwningPid;
-		}
-
-		/// <summary>
-		/// <para>The <c>MIB_TCPROW2</c> structure contains information that describes an IPv4 TCP connection.</para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The GetTcpTable2 function retrieves the IPv4 TCP connection table on the local computer and returns this information in a
-		/// MIB_TCPTABLE2 structure.
-		/// </para>
-		/// <para>An array of <c>MIB_TCPROW2</c> structures are contained in the <c>MIB_TCPTABLE2</c> structure.</para>
-		/// <para>
-		/// The <c>dwState</c> member indicates the state of the TCP entry in a TCP state diagram. A TCP connection progresses through a
-		/// series of states during its lifetime. The states are: LISTEN, SYN-SENT, SYN-RECEIVED, ESTABLISHED, FIN-WAIT-1, FIN-WAIT-2,
-		/// CLOSE-WAIT, CLOSING, LAST-ACK, TIME-WAIT, and the fictional state CLOSED. The CLOSED state is fictional because it represents the
-		/// state when there is no Transmission Control Block, and therefore, no connection. The TCP protocol is described in RFC 793. For
-		/// more information, see http://www.ietf.org/rfc/rfc793.txt.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalPort</c>, and <c>dwRemotePort</c> members are in network byte order. In order to use the <c>dwLocalPort</c> or
-		/// <c>dwRemotePort</c> members, the ntohs or inet_ntoa functions in Windows Sockets or similar functions may be needed. The
-		/// <c>dwLocalAddr</c> and <c>dwRemoteAddr</c> members are stored as a <c>DWORD</c> in the same format as the in_addr structure. In
-		/// order to use the <c>dwLocalAddr</c> or <c>dwRemoteAddr</c> members, the ntohl or <c>inet_ntoa</c> functions in Windows Sockets or
-		/// similar functions may be needed. On Windows Vista and later, the RtlIpv4AddressToString or RtlIpv4AddressToStringEx functions may
-		/// be used to convert the IPv4 address in the <c>dwLocalAddr</c> or <c>dwRemoteAddr</c> members to a string without loading the
-		/// Windows Sockets DLL.
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>
-		/// The following example retrieves the TCP connection table for IPv4 and prints the state of each connection represented as a
-		/// <c>MIB_TCPROW2</c> structure.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/tcpmib/ns-tcpmib-_mib_tcprow2 typedef struct _MIB_TCPROW2 {
-		// DWORD dwState; DWORD dwLocalAddr; DWORD dwLocalPort; DWORD dwRemoteAddr; DWORD dwRemotePort; DWORD dwOwningPid;
-		// TCP_CONNECTION_OFFLOAD_STATE dwOffloadState; } MIB_TCPROW2, *PMIB_TCPROW2;
-		[PInvokeData("tcpmib.h", MSDNShortId = "cff343cd-fe85-4e60-87bd-c1e9833cea38")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct MIB_TCPROW2
-		{
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The state of the TCP connection. This member can be one of the values defined in the Iprtrmib.h header file.</para>
-			/// <para>
-			/// On the Windows SDK released for Windows Vista and later, the organization of header files has changed. This member can be one
-			/// of the values from the <c>MIB_TCP_STATE</c> enumeration defined in the Tcpmib.h header file, not in the Iprtrmib.h header
-			/// file. Note that the Tcpmib.h header file is automatically included in Iprtrmib.h, which is automatically included in the
-			/// Iphlpapi.h header file. The Tcpmib.h and Iprtrmib.h header files should never be used directly.
-			/// </para>
-			/// <list type="table">
-			/// <listheader>
-			/// <term>Value</term>
-			/// <term>Meaning</term>
-			/// </listheader>
-			/// <item>
-			/// <term>MIB_TCP_STATE_CLOSED 1</term>
-			/// <term>The TCP connection is in the CLOSED state that represents no connection state at all.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_LISTEN 2</term>
-			/// <term>The TCP connection is in the LISTEN state waiting for a connection request from any remote TCP and port.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_SYN_SENT 3</term>
-			/// <term>
-			/// The TCP connection is in the SYN-SENT state waiting for a matching connection request after having sent a connection request
-			/// (SYN packet).
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_SYN_RCVD 4</term>
-			/// <term>
-			/// The TCP connection is in the SYN-RECEIVED state waiting for a confirming connection request acknowledgment after having both
-			/// received and sent a connection request (SYN packet).
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_ESTAB 5</term>
-			/// <term>
-			/// The TCP connection is in the ESTABLISHED state that represents an open connection, data received can be delivered to the
-			/// user. This is the normal state for the data transfer phase of the TCP connection.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_FIN_WAIT1 6</term>
-			/// <term>
-			/// The TCP connection is FIN-WAIT-1 state waiting for a connection termination request from the remote TCP, or an acknowledgment
-			/// of the connection termination request previously sent.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_FIN_WAIT2 7</term>
-			/// <term>The TCP connection is FIN-WAIT-1 state waiting for a connection termination request from the remote TCP.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_CLOSE_WAIT 8</term>
-			/// <term>The TCP connection is in the CLOSE-WAIT state waiting for a connection termination request from the local user.</term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_CLOSING 9</term>
-			/// <term>
-			/// The TCP connection is in the CLOSING state waiting for a connection termination request acknowledgment from the remote TCP.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_LAST_ACK 10</term>
-			/// <term>
-			/// The TCP connection is in the LAST-ACK state waiting for an acknowledgment of the connection termination request previously
-			/// sent to the remote TCP (which includes an acknowledgment of its connection termination request).
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_TIME_WAIT 11</term>
-			/// <term>
-			/// The TCP connection is in the TIME-WAIT state waiting for enough time to pass to be sure the remote TCP received the
-			/// acknowledgment of its connection termination request.
-			/// </term>
-			/// </item>
-			/// <item>
-			/// <term>MIB_TCP_STATE_DELETE_TCB 12</term>
-			/// <term>
-			/// The TCP connection is in the delete TCB state that represents the deletion of the Transmission Control Block (TCB), a data
-			/// structure used to maintain information on each TCP entry.
-			/// </term>
-			/// </item>
-			/// </list>
-			/// </summary>
-			public MIB_TCP_STATE dwState;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The local IPv4 address for the TCP connection on the local computer. A value of zero indicates the listener can accept a
-			/// connection on any interface.
-			/// </para>
-			/// </summary>
-			public IN_ADDR dwLocalAddr;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The local port number in network byte order for the TCP connection on the local computer.</para>
-			/// <para>
-			/// The maximum size of an IP port number is 16 bits, so only the lower 16 bits should be used. The upper 16 bits may contain
-			/// uninitialized data.
-			/// </para>
-			/// </summary>
-			public uint dwLocalPort;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The IPv4 address for the TCP connection on the remote computer. When the <c>dwState</c> member is
-			/// <c>MIB_TCP_STATE_LISTEN</c>, this value has no meaning.
-			/// </para>
-			/// </summary>
-			public IN_ADDR dwRemoteAddr;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The remote port number in network byte order for the TCP connection on the remote computer. When the <c>dwState</c> member is
-			/// <c>MIB_TCP_STATE_LISTEN</c>, this member has no meaning.
-			/// </para>
-			/// <para>
-			/// The maximum size of an IP port number is 16 bits, so only the lower 16 bits should be used. The upper 16 bits may contain
-			/// uninitialized data.
-			/// </para>
-			/// </summary>
-			public uint dwRemotePort;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The PID of the process that issued a context bind for this TCP connection.</para>
-			/// </summary>
-			public uint dwOwningPid;
-
-			/// <summary>
-			/// <para>Type: <c>TCP_CONNECTION_OFFLOAD_STATE</c></para>
-			/// <para>
-			/// The offload state for this TCP connection. This parameter can be one of the enumeration values for the
-			/// TCP_CONNECTION_OFFLOAD_STATE defined in the Tcpmib.h header.
-			/// </para>
-			/// </summary>
-			public TCP_CONNECTION_OFFLOAD_STATE dwOffloadState;
-		}
-
-		/// <summary>
-		/// <para>The <c>MIB_TCPSTATS</c> structure contains statistics for the TCP protocol running on the local computer.</para>
-		/// </summary>
-		/// <remarks>
-		/// <para>The GetTcpStatistics function returns a pointer to a <c>MIB_TCPSTATS</c> structure.</para>
-		/// <para>
-		/// The <c>MIB_TCPSTATS</c> structure changed slightly on Windows Vista and later. On Windows Vista and later, the
-		/// <c>dwRtoAlgorithm</c> member is replaced by a union that contains the following members.
-		/// </para>
-		/// <list type="table">
-		/// <listheader>
-		/// <term>Member</term>
-		/// <term>Description</term>
-		/// </listheader>
-		/// <item>
-		/// <term>DWORD dwRtoAlgorithm</term>
-		/// <term>The retransmission time-out (RTO) algorithm in use.</term>
-		/// </item>
-		/// <item>
-		/// <term>TCP_RTO_ALGORITHM RtoAlgorithm</term>
-		/// <term>
-		/// The retransmission time-out (RTO) algorithm in use. This member can be one of the values from the TCP_RTO_ALGORITHM enumeration
-		/// type defined in the Tcpmib.h header file. The possible values are the same as those defined for the dwRtoAlgorithm member.
-		/// </term>
-		/// </item>
-		/// </list>
-		/// <para>
-		/// In the Windows SDK, the version of the structure for use on Windows Vista and later is defined as <c>MIB_TCPSTATS_LH</c>. In the
-		/// Windows SDK, the version of this structure to be used on earlier systems including Windows 2000 and later is defined as
-		/// <c>MIB_TCPSTATS_W2K</c>. When compiling an application if the target platform is Windows Vista and later (, , or ), the
-		/// <c>MIB_TCPSTATS_LH</c> structure is typedefed to the <c>MIB_TCPSTATS</c> structure. When compiling an application if the target
-		/// platform is not Windows Vista and later, the <c>MIB_TCPSTATS_W2K</c> structure is typedefed to the <c>MIB_TCPSTATS</c> structure.
+		/// Two MIBICMPSTATS structures are required to hold all the ICMP statistics for a given computer. One <c>MIBICMPSTATS</c> structure
+		/// contains the statistics for incoming ICMP messages. The other contains the statistics for outgoing ICMP messages. For this
+		/// reason, the <c>MIBICMPINFO</c> structure contains two <c>MIBICMPSTATS</c> structures.
 		/// </para>
 		/// <para>
 		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed. This structure is defined in the Tcpmib.h header file, not in the Iprtrmib.h header file. Note that the Tcpmib.h
-		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Tcpmib.h
-		/// and Iprtrmib.h header files should never be used directly.
+		/// has changed and the <c>MIBICMPINFO</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note
+		/// that the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header
+		/// file. The Ipmib.h and Iprtrmib.h header files should never be used directly.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/tcpmib/ns-tcpmib-_mib_tcpstats_lh typedef struct
-		// _MIB_TCPSTATS_LH { union { DWORD dwRtoAlgorithm; TCP_RTO_ALGORITHM RtoAlgorithm; }; DWORD dwRtoMin; DWORD dwRtoMax; DWORD
-		// dwMaxConn; DWORD dwActiveOpens; DWORD dwPassiveOpens; DWORD dwAttemptFails; DWORD dwEstabResets; DWORD dwCurrEstab; DWORD
-		// dwInSegs; DWORD dwOutSegs; DWORD dwRetransSegs; DWORD dwInErrs; DWORD dwOutRsts; DWORD dwNumConns; } MIB_TCPSTATS_LH, *PMIB_TCPSTATS_LH;
-		[PInvokeData("tcpmib.h", MSDNShortId = "08d85d02-62a0-479d-bf56-5dad452436f3")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct MIB_TCPSTATS
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-_mibicmpinfo typedef struct _MIBICMPINFO { MIBICMPSTATS
+		// icmpInStats; MIBICMPSTATS icmpOutStats; } MIBICMPINFO;
+		[PInvokeData("ipmib.h", MSDNShortId = "547da10e-3490-44d2-9142-0caed041503b")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct MIBICMPINFO
 		{
-			/// <summary>
-			/// The retransmission time-out (RTO) algorithm in use. This member can be one of the values from the TCP_RTO_ALGORITHM
-			/// enumeration type defined in the Tcpmib.h header file. The possible values are the same as those defined for the
-			/// dwRtoAlgorithm member.
-			/// </summary>
-			public TCP_RTO_ALGORITHM RtoAlgorithm;
+			/// <summary>An MIBICMPSTATS structure that contains the statistics for incoming ICMP messages.</summary>
+			public MIBICMPSTATS icmpInStats;
 
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The minimum RTO value in milliseconds.</para>
-			/// </summary>
-			public uint dwRtoMin;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The maximum RTO value in milliseconds.</para>
-			/// </summary>
-			public uint dwRtoMax;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The maximum number of connections. If this member is -1, the maximum number of connections is variable.</para>
-			/// </summary>
-			public uint dwMaxConn;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of active opens. In an active open, the client is initiating a connection with the server.</para>
-			/// </summary>
-			public uint dwActiveOpens;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of passive opens. In a passive open, the server is listening for a connection request from a client.</para>
-			/// </summary>
-			public uint dwPassiveOpens;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of failed connection attempts.</para>
-			/// </summary>
-			public uint dwAttemptFails;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of established connections that were reset.</para>
-			/// </summary>
-			public uint dwEstabResets;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of currently established connections.</para>
-			/// </summary>
-			public uint dwCurrEstab;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of segments received.</para>
-			/// </summary>
-			public uint dwInSegs;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of segments transmitted. This number does not include retransmitted segments.</para>
-			/// </summary>
-			public uint dwOutSegs;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of segments retransmitted.</para>
-			/// </summary>
-			public uint dwRetransSegs;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of errors received.</para>
-			/// </summary>
-			public uint dwInErrs;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of segments transmitted with the reset flag set.</para>
-			/// </summary>
-			public uint dwOutRsts;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The number of connections that are currently present in the system. This total number includes connections in all states
-			/// except listening connections.
-			/// </para>
-			/// </summary>
-			public uint dwNumConns;
+			/// <summary>An MIBICMPSTATS structure that contains the statistics for outgoing ICMP messages.</summary>
+			public MIBICMPSTATS icmpOutStats;
 		}
 
 		/// <summary>
-		/// <para>
-		/// [Some information relates to pre-released product which may be substantially modified before it's commercially released.
-		/// Microsoft makes no warranties, express or implied, with respect to the information provided here.]
-		/// </para>
-		/// <para>
-		/// The <c>MIB_TCPSTATS2</c> structure contains statistics for the TCP protocol running on the local computer. This structure is
-		/// different from MIB_TCPSTATS structure in that it uses 64-bit counters, rather than 32-bit counters.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>The GetTcpStatisticsEx2 function returns a pointer to a <c>MIB_TCPSTATS2</c> structure.</para>
-		/// <para>
-		/// This structure is defined in the Tcpmib.h header file, not in the Iprtrmib.h header file. Note that the Tcpmib.h header file is
-		/// automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Tcpmib.h and Iprtrmib.h
-		/// header files should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/tcpmib/ns-tcpmib-_mib_tcpstats2 typedef struct
-		// _MIB_TCPSTATS2 { TCP_RTO_ALGORITHM RtoAlgorithm; DWORD dwRtoMin; DWORD dwRtoMax; DWORD dwMaxConn; DWORD dwActiveOpens; DWORD
-		// dwPassiveOpens; DWORD dwAttemptFails; DWORD dwEstabResets; DWORD dwCurrEstab; DWORD64 dw64InSegs; DWORD64 dw64OutSegs; DWORD
-		// dwRetransSegs; DWORD dwInErrs; DWORD dwOutRsts; DWORD dwNumConns; } MIB_TCPSTATS2, *PMIB_TCPSTATS2;
-		[PInvokeData("tcpmib.h", MSDNShortId = "A32AA866-406B-4BE0-A4F1-5EBC9DFD646D")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct MIB_TCPSTATS2
-		{
-			/// <summary>
-			/// The retransmission time-out (RTO) algorithm in use. This member can be one of the values from the TCP_RTO_ALGORITHM
-			/// enumeration type defined in the Tcpmib.h header file. The possible values are the same as those defined for the
-			/// dwRtoAlgorithm member.
-			/// </summary>
-			public TCP_RTO_ALGORITHM RtoAlgorithm;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The minimum RTO value in milliseconds.</para>
-			/// </summary>
-			public uint dwRtoMin;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The maximum RTO value in milliseconds.</para>
-			/// </summary>
-			public uint dwRtoMax;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The maximum number of connections. If this member is -1, the maximum number of connections is variable.</para>
-			/// </summary>
-			public uint dwMaxConn;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of active opens. In an active open, the client is initiating a connection with the server.</para>
-			/// </summary>
-			public uint dwActiveOpens;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of passive opens. In a passive open, the server is listening for a connection request from a client.</para>
-			/// </summary>
-			public uint dwPassiveOpens;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of failed connection attempts.</para>
-			/// </summary>
-			public uint dwAttemptFails;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of established connections that were reset.</para>
-			/// </summary>
-			public uint dwEstabResets;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of currently established connections.</para>
-			/// </summary>
-			public uint dwCurrEstab;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of segments received.</para>
-			/// </summary>
-			public ulong dw64InSegs;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD64</c></para>
-			/// <para>The number of segments transmitted. This number does not include retransmitted segments.</para>
-			/// </summary>
-			public ulong dw64OutSegs;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD64</c></para>
-			/// <para>The number of segments retransmitted.</para>
-			/// </summary>
-			public uint dwRetransSegs;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of errors received.</para>
-			/// </summary>
-			public uint dwInErrs;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The number of segments transmitted with the reset flag set.</para>
-			/// </summary>
-			public uint dwOutRsts;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The number of connections that are currently present in the system. This total number includes connections in all states
-			/// except listening connections.
-			/// </para>
-			/// </summary>
-			public uint dwNumConns;
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>MIB_UDP6ROW</c> structure contains an entry from the User Datagram Protocol (UDP) listener table for IPv6 on the local computer.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>The <c>MIB_UDP6ROW</c> structure is defined on Windows Vista and later.</para>
-		/// <para>
-		/// The GetUdp6Table function retrieves the UDP listener table for IPv6 on the local computer and returns this information in a
-		/// MIB_UDP6TABLE structure.
-		/// </para>
-		/// <para>An array of <c>MIB_UDP6ROW</c> structures are contained in the <c>MIB_UDP6TABLE</c> structure.</para>
-		/// <para>
-		/// The <c>dwLocalAddr</c> member is stored in an in6_addr structure. The RtlIpv6AddressToString or RtlIpv6AddressToStringEx
-		/// functions may be used to convert the IPv6 address in the <c>dwLocalAddr</c> member to a string without loading the Windows
-		/// Sockets DLL.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalScopeId</c> and <c>dwLocalPort</c> members are in network byte order. In order to use the <c>dwLocalScopeId</c> and
-		/// <c>dwLocalPort</c> members, the ntohs or inet_ntoa functions in Windows Sockets or similar functions may be needed.
-		/// </para>
-		/// <para>
-		/// The MIB_UDP6TABLE structure contains the UDP listener table for IPv6 on the local computer. The name is based on the definition
-		/// of this table in RFC 2454 published by the IETF. For more information, see http://www.ietf.org/rfc/rfc2454.txt. This table
-		/// contains UDP endpoints for IPv6 that have been bound to an address. It should be noted that an application can create a UDP
-		/// socket and bind it to an address for the sole purpose of sending a UDP datagram, with no intention of receiving packets using
-		/// this socket (functioning as a listener).
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/udpmib/ns-udpmib-_mib_udp6row typedef struct _MIB_UDP6ROW {
-		// IN6_ADDR dwLocalAddr; DWORD dwLocalScopeId; DWORD dwLocalPort; } MIB_UDP6ROW, *PMIB_UDP6ROW;
-		[PInvokeData("udpmib.h", MSDNShortId = "c2cc4f77-8557-4206-9e46-aadf065eb8df")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct MIB_UDP6ROW
-		{
-			/// <summary>
-			/// <para>
-			/// The IPv6 address of the UDP endpoint on the local computer. This member is stored in a character array in network byte order.
-			/// </para>
-			/// <para>
-			/// A value of zero indicates a UDP listener willing to accept datagrams for any IP interface associated with the local computer.
-			/// </para>
-			/// </summary>
-			public IN6_ADDR dwLocalAddr;
-
-			/// <summary>
-			/// <para>
-			/// The scope ID for the IPv6 address of the UDP endpoint on the local computer. This member is stored in network byte order.
-			/// </para>
-			/// </summary>
-			public uint dwLocalScopeId;
-
-			/// <summary>
-			/// <para>The port number of the UDP endpoint on the local computer. This member is stored in network byte order.</para>
-			/// </summary>
-			public uint dwLocalPort;
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>MIB_UDP6ROW_OWNER_MODULE</c> structure contains an entry from the User Datagram Protocol (UDP) listener table for IPv6 on
-		/// the local computer. This entry also also includes any available ownership data and the process ID (PID) that issued the call to
-		/// the bind function for the UDP endpoint.
-		/// </para>
+		/// The <c>MIBICMPSTATS</c> structure contains statistics for either incoming or outgoing Internet Control Message Protocol (ICMP)
+		/// messages on a particular computer.
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// The MIB_UDP6TABLE_OWNER_MODULE structure is returned by a call to GetExtendedUdpTable with the TableClass parameter set to a
-		/// <c>UDP_TABLE_OWNER_MODULE</c> from the UDP_TABLE_CLASS enumeration and the ulAf parameter set to <c>AF_INET6</c>. The
-		/// <c>MIB_UDP6TABLE_OWNER_MODULE</c> structure contains an array of <c>MIB_UDP6ROW_OWNER_MODULE</c> structures.
-		/// </para>
-		/// <para>
-		/// The <c>ucLocalAddr</c> member is stored in a character array in network byte order. On Windows Vista and later, the
-		/// RtlIpv6AddressToString or RtlIpv6AddressToStringEx functions may be used to convert the IPv6 address in the <c>ucLocalAddr</c>
-		/// member to a string without loading the Windows Sockets DLL.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalScopeId</c> member is in network byte order. In order to use the <c>dwLocalScopeId</c> member, the ntohl or
-		/// inet_ntoa functions in Windows Sockets or similar functions may be needed.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalPort</c> member are in network byte order. In order to use the <c>dwLocalPort</c> member, the ntohs or inet_ntoa
-		/// functions in Windows Sockets or similar functions may be needed.
-		/// </para>
-		/// <para>
-		/// The MIB_UDP6TABLE_OWNER_MODULE structure contains the UDP listener table for IPv6 on the local computer. The name is based on the
-		/// definition of this table in RFC 2454 published by the IETF. For more information, see http://www.ietf.org/rfc/rfc2454.txt. This
-		/// table contains UDP endpoints for IPv6 that have been bound to an address. It should be noted that an application can create a UDP
-		/// socket and bind it to an address for the sole purpose of sending a UDP datagram, with no intention of receiving packets using
-		/// this socket (functioning as a listener).
+		/// Two <c>MIBICMPSTATS</c> structures are required to hold all the ICMP statistics for a given computer. One <c>MIBICMPSTATS</c>
+		/// structure contains the statistics for incoming ICMP messages. The other contains the statistics for outgoing ICMP messages. For
+		/// this reason, the MIBICMPINFO structure contains two <c>MIBICMPSTATS</c> structures.
 		/// </para>
 		/// <para>
 		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed. This structure is defined in the Udpmib.h header file, not in the Iprtrmib.h header file. Note that the Udpmib.h
-		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Udpmib.h
-		/// and Iprtrmib.h header files should never be used directly.
+		/// has changed and the <c>MIBICMPSTATS</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file. Note
+		/// that the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h header
+		/// file. The Ipmib.h and Iprtrmib.h header files should never be used directly.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/udpmib/ns-udpmib-_mib_udp6row_owner_module typedef struct
-		// _MIB_UDP6ROW_OWNER_MODULE { UCHAR ucLocalAddr[16]; DWORD dwLocalScopeId; DWORD dwLocalPort; DWORD dwOwningPid; LARGE_INTEGER
-		// liCreateTimestamp; union { struct { int SpecificPortBind : 1; }; int dwFlags; }; ULONGLONG
-		// OwningModuleInfo[TCPIP_OWNING_MODULE_SIZE]; } MIB_UDP6ROW_OWNER_MODULE, *PMIB_UDP6ROW_OWNER_MODULE;
-		[PInvokeData("udpmib.h", MSDNShortId = "dcc80b3c-d4d5-44f4-9c7f-df6be2e21889")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct MIB_UDP6ROW_OWNER_MODULE
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-_mibicmpstats typedef struct _MIBICMPSTATS { DWORD dwMsgs;
+		// DWORD dwErrors; DWORD dwDestUnreachs; DWORD dwTimeExcds; DWORD dwParmProbs; DWORD dwSrcQuenchs; DWORD dwRedirects; DWORD dwEchos;
+		// DWORD dwEchoReps; DWORD dwTimestamps; DWORD dwTimestampReps; DWORD dwAddrMasks; DWORD dwAddrMaskReps; } MIBICMPSTATS, *PMIBICMPSTATS;
+		[PInvokeData("ipmib.h", MSDNShortId = "080cdd28-3e2d-4cd0-8e5a-9ec9dcb9df48")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct MIBICMPSTATS
 		{
 			/// <summary>
-			/// <para>Type: <c>UCHAR[16]</c></para>
-			/// <para>
-			/// The IPv6 address of the UDP endpoint on the local computer. This member is stored in a character array in network byte order.
-			/// </para>
-			/// <para>
-			/// A value of zero indicates a UDP listener willing to accept datagrams for any IP interface associated with the local computer.
-			/// </para>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>The number of messages received or sent.</para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-			public byte[] ucLocalAddr;
+			public uint dwMsgs;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The scope ID for the IPv6 address of the UDP endpoint on the local computer.</para>
+			/// <para>The number of errors received or sent.</para>
 			/// </summary>
-			public uint dwLocalScopeId;
-
-			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The port number for the local UDP endpoint.</para>
-			/// </summary>
-			public uint dwLocalPort;
+			public uint dwErrors;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
 			/// <para>
-			/// The PID of the process that issued a context bind for this endpoint. If this value is set to 0, the information for this
-			/// endpoint is unavailable.
+			/// The number of destination-unreachable messages received or sent. A destination-unreachable message is sent to the originating
+			/// computer when a datagram fails to reach its intended destination.
 			/// </para>
 			/// </summary>
-			public uint dwOwningPid;
+			public uint dwDestUnreachs;
 
 			/// <summary>
-			/// <para>Type: <c>LARGE_INTEGER</c></para>
-			/// <para>A SYSTEMTIME structure that indicates when the context bind operation that created this endpoint occurred.</para>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// The number of time-to-live (TTL) exceeded messages received or sent. A time-to-live exceeded message is sent to the
+			/// originating computer when a datagram is discarded because the number of routers it has passed through exceeds its
+			/// time-to-live value.
+			/// </para>
 			/// </summary>
-			public SYSTEMTIME liCreateTimestamp;
-
-			public int SpecificPortBind;
+			public uint dwTimeExcds;
 
 			/// <summary>
-			/// <para>Type: <c>ULONGLONG[TCPIP_OWNING_MODULE_SIZE]</c></para>
-			/// <para>An array of opaque data that contains ownership information.</para>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// The number of parameter-problem messages received or sent. A parameter-problem message is sent to the originating computer
+			/// when a router or host detects an error in a datagram's IP header.
+			/// </para>
 			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = TCPIP_OWNING_MODULE_SIZE)]
-			public ulong[] OwningModuleInfo;
+			public uint dwParmProbs;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// The number of source quench messages received or sent. A source quench request is sent to a computer to request that it
+			/// reduce its rate of packet transmission.
+			/// </para>
+			/// </summary>
+			public uint dwSrcQuenchs;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// The number of redirect messages received or sent. A redirect message is sent to the originating computer when a better route
+			/// is discovered for a datagram sent by that computer.
+			/// </para>
+			/// </summary>
+			public uint dwRedirects;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// The number of echo requests received or sent. An echo request causes the receiving computer to send an echo reply message
+			/// back to the originating computer.
+			/// </para>
+			/// </summary>
+			public uint dwEchos;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// The number of echo replies received or sent. A computer sends an echo reply in response to receiving an echo request message.
+			/// </para>
+			/// </summary>
+			public uint dwEchoReps;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// The number of time-stamp requests received or sent. A time-stamp request causes the receiving computer to send a time-stamp
+			/// reply back to the originating computer.
+			/// </para>
+			/// </summary>
+			public uint dwTimestamps;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// The number of time-stamp replies received or sent. A computer sends a time-stamp reply in response to receiving a time-stamp
+			/// request. Routers can use time-stamp requests and replies to measure the transmission speed of datagrams on a network.
+			/// </para>
+			/// </summary>
+			public uint dwTimestampReps;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// The number of address mask requests received or sent. A computer sends an address mask request to determine the number of
+			/// bits in the subnet mask for its local subnet.
+			/// </para>
+			/// </summary>
+			public uint dwAddrMasks;
+
+			/// <summary>
+			/// <para>Type: <c>DWORD</c></para>
+			/// <para>
+			/// The number of address mask responses received or sent. A computer sends an address mask response in response to an address
+			/// mask request.
+			/// </para>
+			/// </summary>
+			public uint dwAddrMaskReps;
 		}
 
 		/// <summary>
 		/// <para>
-		/// The <c>MIB_UDP6ROW_OWNER_PID</c> structure contains an entry from the User Datagram Protocol (UDP) listener table for IPv6 on the
-		/// local computer. The entry also includes the process ID (PID) that issued the call to the bind function for the UDP endpoint.
+		/// The <c>MIBICMPSTATS_EX</c> structure contains extended statistics for either incoming or outgoing Internet Control Message
+		/// Protocol (ICMP) messages on a particular computer.
 		/// </para>
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// The MIB_UDP6TABLE_OWNER_PID structure is returned by a call to GetExtendedUdpTable with the TableClass parameter set to a
-		/// <c>UDP_TABLE_OWNER_PID</c> from the UDP_TABLE_CLASS enumeration and the ulAf parameter set to <c>AF_INET6</c>. The
-		/// <c>MIB_UDP6TABLE_OWNER_PID</c> structure contains an array of <c>MIB_UDP6ROW_OWNER_PID</c> structures.
-		/// </para>
-		/// <para>
-		/// The <c>ucLocalAddr</c> member is stored in a character array in network byte order. On Windows Vista and later, the
-		/// RtlIpv6AddressToString or RtlIpv6AddressToStringEx functions may be used to convert the IPv6 address in the <c>ucLocalAddr</c>
-		/// member to a string without loading the Windows Sockets DLL.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalScopeId</c> member is in network byte order. In order to use the <c>dwLocalScopeId</c> member, the ntohl or
-		/// inet_ntoa functions in Windows Sockets or similar functions may be needed.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalPort</c> member are in network byte order. In order to use the <c>dwLocalPort</c> member, the ntohs or inet_ntoa
-		/// functions in Windows Sockets or similar functions may be needed.
-		/// </para>
-		/// <para>
-		/// The MIB_UDP6TABLE_OWNER_PID structure contains the UDP listener table for IPv6 on the local computer. The name is based on the
-		/// definition of this table in RFC 2454 published by the IETF. For more information, see http://www.ietf.org/rfc/rfc2454.txt. This
-		/// table contains UDP endpoints for IPv6 that have been bound to an address. It should be noted that an application can create a UDP
-		/// socket and bind it to an address for the sole purpose of sending a UDP datagram, with no intention of receiving packets using
-		/// this socket (functioning as a listener).
+		/// Two <c>MIBICMPSTATS_EX</c> structures are required to hold all the extended ICMP statistics for a given computer. One
+		/// <c>MIBICMPSTATS_EX</c> structure contains the extended statistics for incoming ICMP messages. The other contains the extended
+		/// statistics for outgoing ICMP messages. For this reason, the MIB_ICMP_EX structure contains two <c>MIBICMPSTATS_EX</c> structures.
 		/// </para>
 		/// <para>
 		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed. This structure is defined in the Udpmib.h header file, not in the Iprtrmib.h header file. Note that the Udpmib.h
-		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Udpmib.h
-		/// and Iprtrmib.h header files should never be used directly.
+		/// has changed and the <c>MIBICMPSTATS_EX</c> structure is defined in the Ipmib.h header file not in the Iprtrmib.h header file.
+		/// Note that the Ipmib.h header file is automatically included in Iprtrmib.h which is automatically included in the Iphlpapi.h
+		/// header file. The Ipmib.h and Iprtrmib.h header files should never be used directly.
 		/// </para>
 		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/udpmib/ns-udpmib-_mib_udp6row_owner_pid typedef struct
-		// _MIB_UDP6ROW_OWNER_PID { UCHAR ucLocalAddr[16]; DWORD dwLocalScopeId; DWORD dwLocalPort; DWORD dwOwningPid; }
-		// MIB_UDP6ROW_OWNER_PID, *PMIB_UDP6ROW_OWNER_PID;
-		[PInvokeData("udpmib.h", MSDNShortId = "d3d02485-381b-4058-b4b9-0a2c9c365f43")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct MIB_UDP6ROW_OWNER_PID
-		{
-			/// <summary>
-			/// <para>The IPv6 address for the local UDP endpoint. This member is stored in a character array in network byte order.</para>
-			/// <para>
-			/// A value of zero indicates a UDP listener willing to accept datagrams for any IP interface associated with the local computer.
-			/// </para>
-			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-			public byte[] ucLocalAddr;
-
-			/// <summary>
-			/// <para>
-			/// The scope ID for the IPv6 address of the UDP endpoint on the local computer. This member is stored in network byte order.
-			/// </para>
-			/// </summary>
-			public uint dwLocalScopeId;
-
-			/// <summary>
-			/// <para>The port number of the UDP endpoint on the local computer. This member is stored in network byte order.</para>
-			/// </summary>
-			public uint dwLocalPort;
-
-			/// <summary>
-			/// <para>
-			/// The PID of the process that issued a context bind for this endpoint. If this value is set to 0, the information for this
-			/// endpoint is unavailable.
-			/// </para>
-			/// </summary>
-			public uint dwOwningPid;
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>MIB_UDPROW</c> structure contains an entry from the User Datagram Protocol (UDP) listener table for IPv4 on the local computer.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The GetUdpTable function retrieves the IPv4 UDP listener table on the local computer and returns this information in a
-		/// MIB_UDPTABLE structure.
-		/// </para>
-		/// <para>An array of <c>MIB_UDPROW</c> structures are contained in the <c>MIB_UDPTABLE</c> structure.</para>
-		/// <para>
-		/// The <c>dwLocalAddr</c> member is stored as a <c>DWORD</c> in the same format as the in_addr structure. In order to use the
-		/// <c>dwLocalAddr</c> member, the ntohl or inet_ntoa functions in Windows Sockets or similar functions may be needed. On Windows
-		/// Vista and later, the RtlIpv4AddressToString or RtlIpv4AddressToStringEx functions may be used to convert the IPv4 address in the
-		/// <c>dwLocalAddr</c> member to a string without loading the Windows Sockets DLL.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalPort</c> member is in network byte order. In order to use the <c>dwLocalPort</c> member, the ntohs or inet_ntoa
-		/// functions in Windows Sockets or similar functions may be needed.
-		/// </para>
-		/// <para>
-		/// The MIB_UDPTABLE structure contains the UDP listener table for IPv4 on the local computer. The name is based on the definition of
-		/// this table in RFC 1213 published by the IETF. For more information, see http://www.ietf.org/rfc/rfc1213.txt. This table contains
-		/// UDP endpoints for IPv4 that have been bound to an address. It should be noted that an application can create a UDP socket and
-		/// bind it to an address for the sole purpose of sending a UDP datagram, with no intention of receiving packets using this socket
-		/// (functioning as a listener).
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed. This structure is defined in the Udpmib.h header file, not in the Iprtrmib.h header file. Note that the Udpmib.h
-		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Udpmib.h
-		/// and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/udpmib/ns-udpmib-_mib_udprow typedef struct _MIB_UDPROW {
-		// DWORD dwLocalAddr; DWORD dwLocalPort; } MIB_UDPROW, *PMIB_UDPROW;
-		[PInvokeData("udpmib.h", MSDNShortId = "db366802-962f-4e83-838e-1e2f51beab92")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct MIB_UDPROW
-		{
-			/// <summary>
-			/// <para>The IPv4 address of the UDP endpoint on the local computer.</para>
-			/// <para>
-			/// A value of zero indicates a UDP listener willing to accept datagrams for any IP interface associated with the local computer.
-			/// </para>
-			/// </summary>
-			public IN_ADDR dwLocalAddr;
-
-			/// <summary>
-			/// <para>The port number of the UDP endpoint on the local computer. This member is stored in network byte order.</para>
-			/// </summary>
-			public uint dwLocalPort;
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>MIB_UDPROW_OWNER_MODULE</c> structure contains an entry from the IPv4 User Datagram Protocol (UDP) listener table on the
-		/// local computer. This entry also also includes any available ownership data and the process ID (PID) that issued the call to the
-		/// bind function for the UDP endpoint.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The MIB_UDPTABLE_OWNER_MODULE structure is returned by a call to GetExtendedUdpTable with the TableClass parameter set to
-		/// <c>UDP_TABLE_OWNER_MODULE</c> from the UDP_TABLE_CLASS enumeration and the ulAf parameter set to <c>AF_INET</c>. The
-		/// <c>MIB_UDPTABLE_OWNER_MODULE</c> structure contains an array of <c>MIB_UDPROW_OWNER_MODULE</c> structures.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalAddr</c> member is stored as a <c>DWORD</c> in the same format as the in_addr structure. In order to use the
-		/// <c>dwLocalAddr</c> member, the ntohl or inet_ntoa functions in Windows Sockets or similar functions may be needed. On Windows
-		/// Vista and later, the RtlIpv4AddressToString or RtlIpv4AddressToStringEx functions may be used to convert the IPv4 address in the
-		/// <c>dwLocalAddr</c> member to a string without loading the Windows Sockets DLL.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalPort</c> member is in network byte order. In order to use the <c>dwLocalPort</c> member, the ntohs or inet_ntoa
-		/// functions in Windows Sockets or similar functions may be needed.
-		/// </para>
-		/// <para>
-		/// The MIB_UDPTABLE_OWNER_MODULE structure contains the UDP listener table for IPv4 on the local computer. The name is based on the
-		/// definition of this table in RFC 1213 published by the IETF. For more information, see http://www.ietf.org/rfc/rfc1213.txt. This
-		/// table contains UDP endpoints for IPv4 that have been bound to an address. It should be noted that an application can create a UDP
-		/// socket and bind it to an address for the sole purpose of sending a UDP datagram, with no intention of receiving packets using
-		/// this socket (functioning as a listener).
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed. This structure is defined in the Udpmib.h header file, not in the Iprtrmib.h header file. Note that the Udpmib.h
-		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Udpmib.h
-		/// and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/udpmib/ns-udpmib-_mib_udprow_owner_module typedef struct
-		// _MIB_UDPROW_OWNER_MODULE { DWORD dwLocalAddr; DWORD dwLocalPort; DWORD dwOwningPid; LARGE_INTEGER liCreateTimestamp; union {
-		// struct { int SpecificPortBind : 1; }; int dwFlags; }; ULONGLONG OwningModuleInfo[TCPIP_OWNING_MODULE_SIZE]; }
-		// MIB_UDPROW_OWNER_MODULE, *PMIB_UDPROW_OWNER_MODULE;
-		[PInvokeData("udpmib.h", MSDNShortId = "9ae304e0-4653-4757-a823-d4ccf68627bf")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct MIB_UDPROW_OWNER_MODULE
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-_mibicmpstats_ex_xpsp1 typedef struct _MIBICMPSTATS_EX_XPSP1 {
+		// DWORD dwMsgs; DWORD dwErrors; DWORD rgdwTypeCount[256]; } MIBICMPSTATS_EX_XPSP1, *PMIBICMPSTATS_EX_XPSP1;
+		[PInvokeData("ipmib.h", MSDNShortId = "d97921f8-8be0-4a14-887f-aaafcb82eb1f")]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public struct MIBICMPSTATS_EX
 		{
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The IPv4 address of the UDP endpoint on the local computer.</para>
-			/// <para>
-			/// A value of zero indicates a UDP listener willing to accept datagrams for any IP interface associated with the local computer.
-			/// </para>
+			/// <para>Specifies the number of messages received or sent.</para>
 			/// </summary>
-			public IN_ADDR dwLocalAddr;
+			public uint dwMsgs;
 
 			/// <summary>
 			/// <para>Type: <c>DWORD</c></para>
-			/// <para>The port number of the UDP endpoint on the local computer. This member is stored in network byte order.</para>
+			/// <para>The number of errors received or sent.</para>
 			/// </summary>
-			public uint dwLocalPort;
+			public uint dwErrors;
 
 			/// <summary>
-			/// <para>Type: <c>DWORD</c></para>
-			/// <para>
-			/// The PID of the process that issued the call to the bind function for the UDP endpoint. This member is set to 0 when the PID
-			/// is unavailable.
-			/// </para>
+			/// <para>Type: <c>DWORD[256]</c></para>
+			/// <para>The type count.</para>
 			/// </summary>
-			public uint dwOwningPid;
-
-			/// <summary>
-			/// <para>Type: <c>LARGE_INTEGER</c></para>
-			/// <para>A SYSTEMTIME structure that indicates when the call to the bind function for the UDP endpoint occurred.</para>
-			/// </summary>
-			public SYSTEMTIME liCreateTimestamp;
-
-			/// <summary>Undocumented.</summary>
-			public int SpecificPortBind;
-
-			/// <summary>
-			/// <para>Type: <c>ULONGLONG[TCPIP_OWNING_MODULE_SIZE]</c></para>
-			/// <para>An array of opaque data that contains ownership information.</para>
-			/// </summary>
-			[MarshalAs(UnmanagedType.ByValArray, SizeConst = TCPIP_OWNING_MODULE_SIZE)]
-			public ulong[] OwningModuleInfo;
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>MIB_UDPROW_OWNER_PID</c> structure contains an entry from the User Datagram Protocol (UDP) listener table for IPv4 on the
-		/// local computer. The entry also includes the process ID (PID) that issued the call to the bind function for the UDP endpoint.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The MIB_UDPTABLE_OWNER_PID structure is returned by a call to GetExtendedUdpTable with the TableClass parameter set to
-		/// <c>UDP_TABLE_OWNER_PID</c> and the ulAf parameter set to <c>AF_INET</c>. The <c>MIB_UDPTABLE_OWNER_PID</c> structure contains an
-		/// array of <c>MIB_UDPROW_OWNER_PID</c> structures.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalAddr</c> member is stored as a <c>DWORD</c> in the same format as the in_addr structure. In order to use the
-		/// <c>dwLocalAddr</c> member, the ntohl or inet_ntoa functions in Windows Sockets or similar functions may be needed. On Windows
-		/// Vista and later, the RtlIpv4AddressToString or RtlIpv4AddressToStringEx functions may be used to convert the IPv4 address in the
-		/// <c>dwLocalAddr</c> member to a string without loading the Windows Sockets DLL.
-		/// </para>
-		/// <para>
-		/// The <c>dwLocalPort</c> member is in network byte order. In order to use the <c>dwLocalPort</c> member, the ntohs or inet_ntoa
-		/// functions in Windows Sockets or similar functions may be needed.
-		/// </para>
-		/// <para>
-		/// The MIB_UDPTABLE_OWNER_PID structure contains the UDP listener table for IPv4 on the local computer. The name is based on the
-		/// definition of this table in RFC 1213 published by the IETF. For more information, see http://www.ietf.org/rfc/rfc1213.txt. This
-		/// table contains UDP endpoints for IPv4 that have been bound to an address. It should be noted that an application can create a UDP
-		/// socket and bind it to an address for the sole purpose of sending a UDP datagram, with no intention of receiving packets using
-		/// this socket (functioning as a listener).
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed. This structure is defined in the Udpmib.h header file, not in the Iprtrmib.h header file. Note that the Udpmib.h
-		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Udpmib.h
-		/// and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/udpmib/ns-udpmib-_mib_udprow_owner_pid typedef struct
-		// _MIB_UDPROW_OWNER_PID { DWORD dwLocalAddr; DWORD dwLocalPort; DWORD dwOwningPid; } MIB_UDPROW_OWNER_PID, *PMIB_UDPROW_OWNER_PID;
-		[PInvokeData("udpmib.h", MSDNShortId = "b914b6eb-adf9-4a61-ae8f-05d3ff90ce90")]
-		[StructLayout(LayoutKind.Sequential)]
-		public struct MIB_UDPROW_OWNER_PID
-		{
-			/// <summary>
-			/// <para>The IPv4 address of the UDP endpoint on the local computer.</para>
-			/// <para>
-			/// A value of zero indicates a UDP listener willing to accept datagrams for any IP interface associated with the local computer.
-			/// </para>
-			/// </summary>
-			public IN_ADDR dwLocalAddr;
-
-			/// <summary>
-			/// <para>The port number of the UDP endpoint on the local computer. This member is stored in network byte order.</para>
-			/// </summary>
-			public uint dwLocalPort;
-
-			/// <summary>
-			/// <para>
-			/// The PID of the process that issued the call to the bind function for the UDP endpoint. This member is set to 0 when the PID
-			/// is unavailable.
-			/// </para>
-			/// </summary>
-			public uint dwOwningPid;
-		}
-
-		/// <summary>
-		/// <para>The <c>MIB_IFTABLE</c> structure contains a table of interface entries.</para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The GetIfTable function enumerates the interface entries on a local system and returns this information in a <c>MIB_IFTABLE</c> structure.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_IFTABLE</c> structure may contain padding for alignment between the <c>dwNumEntries</c> member and the first MIB_IFROW
-		/// array entry in the <c>table</c> member. Padding for alignment may also be present between the <c>MIB_IFROW</c> array entries in
-		/// the <c>table</c> member. Any access to a <c>MIB_IFROW</c> array entry should assume padding may exist.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed and the <c>MIB_IFTABLE</c> structure is defined in the Ifmib.h header file not in the Iprtrmib.h header file. Note
-		/// that the Ifmib.h header file is automatically included in Ipmib.h header file. This file is automatically included in the
-		/// Iprtrmib.h header file which is automatically included in the Iphlpapi.h header file. The Ifmib.h header file should never be
-		/// used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/ifmib/ns-ifmib-_mib_iftable typedef struct _MIB_IFTABLE {
-		// DWORD dwNumEntries; MIB_IFROW table[ANY_SIZE]; } MIB_IFTABLE, *PMIB_IFTABLE;
-		[PInvokeData("ifmib.h", MSDNShortId = "7c3ca3d0-b6fe-4e1c-858f-82ffb26622e7")]
-		[CorrespondingType(typeof(MIB_IFROW))]
-		[DefaultProperty(nameof(table))]
-		public class MIB_IFTABLE : SafeElementArray<MIB_IFROW, uint, CoTaskMemoryMethods>
-		{
-			/// <summary>Initializes a new instance of the <see cref="MIB_IFTABLE"/> class.</summary>
-			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
-			public MIB_IFTABLE(uint byteSize) : base((int)byteSize, 0)
-			{
-			}
-
-			/// <summary>
-			/// <para>The number of interface entries in the array.</para>
-			/// </summary>
-			public uint dwNumEntries => Count;
-
-			/// <summary>
-			/// <para>An array of MIB_IFROW structures containing interface entries.</para>
-			/// </summary>
-			public MIB_IFROW[] table { get => Elements; set => Elements = value; }
-
-			/// <summary>Performs an implicit conversion from <see cref="MIB_IFTABLE"/> to <see cref="System.IntPtr"/>.</summary>
-			/// <param name="table">The MIB_IFTABLE instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator IntPtr(MIB_IFTABLE table) => table.DangerousGetHandle();
+			[MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
+			public uint[] rgdwTypeCount;
 		}
 
 		/// <summary>
@@ -2825,6 +1081,57 @@ namespace Vanara.PInvoke
 			public static implicit operator IntPtr(MIB_IPADDRTABLE table) => table.DangerousGetHandle();
 		}
 
+		/// <summary>The <c>MIB_IPFORWARDTABLE</c> structure contains a table of IPv4 route entries.</summary>
+		/// <remarks>
+		/// <para>
+		/// The GetIpForwardTable function enumerates the IPv4 route entries on a local system and returns this information in a
+		/// <c>MIB_IPFORWARDTABLE</c> structure.
+		/// </para>
+		/// <para>
+		/// The <c>MIB_IPFORWARDTABLE</c> structure may contain padding for alignment between the <c>dwNumEntries</c> member and the first
+		/// MIB_IPFORWARDROW array entry in the <c>table</c> member. Padding for alignment may also be present between the
+		/// <c>MIB_IPFORWARDROW</c> array entries in the <c>table</c> member. Any access to a <c>MIB_IPFORWARDROW</c> array entry should
+		/// assume padding may exist.
+		/// </para>
+		/// <para>
+		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
+		/// has changed. This structure is defined in the Ipmib.h header file, not in the Iprtrmib.h header file. Note that the Ipmib.h
+		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Ipmib.h
+		/// and Iprtrmib.h header files should never be used directly.
+		/// </para>
+		/// <para>Examples</para>
+		/// <para>
+		/// To view an example that retrieves the <c>MIB_IPFORWARDTABLE</c> structure and then prints out the MIB_IPFORWARDROW structure
+		/// entries in this table, see the GetIpForwardTable function.
+		/// </para>
+		/// </remarks>
+		// https://docs.microsoft.com/en-us/windows/desktop/api/ipmib/ns-ipmib-_mib_ipforwardtable typedef struct _MIB_IPFORWARDTABLE { DWORD
+		// dwNumEntries; MIB_IPFORWARDROW table[ANY_SIZE]; } MIB_IPFORWARDTABLE, *PMIB_IPFORWARDTABLE;
+		[PInvokeData("ipmib.h", MSDNShortId = "bdecf944-fe19-4033-8778-362523984b03")]
+		[CorrespondingType(typeof(MIB_IPFORWARDROW))]
+		[DefaultProperty(nameof(table))]
+		public class MIB_IPFORWARDTABLE : SafeElementArray<MIB_IPFORWARDROW, uint, CoTaskMemoryMethods>
+		{
+			/// <summary>Initializes a new instance of the <see cref="MIB_IPFORWARDTABLE"/> class.</summary>
+			/// <param name="byteSize">Size of the byte.</param>
+			public MIB_IPFORWARDTABLE(uint byteSize) : base((int)byteSize, 0)
+			{
+			}
+
+			/// <summary>The number of route entries in the table.</summary>
+			public uint dwNumEntries => Count;
+
+			/// <summary>A pointer to a table of route entries implemented as an array of MIB_IPFORWARDROW structures.</summary>
+			/// <value>The <see cref="MIB_IPFORWARDROW"/>.</value>
+			/// <returns></returns>
+			public MIB_IPFORWARDROW[] table { get => Elements; set => Elements = value; }
+
+			/// <summary>Performs an implicit conversion from <see cref="MIB_IPFORWARDTABLE"/> to <see cref="IntPtr"/>.</summary>
+			/// <param name="table">The table.</param>
+			/// <returns>The result of the conversion.</returns>
+			public static implicit operator IntPtr(MIB_IPFORWARDTABLE table) => table.DangerousGetHandle();
+		}
+
 		/// <summary>
 		/// <para>The <c>MIB_IPNETTABLE</c> structure contains a table of Address Resolution Protocol (ARP) entries for IPv4 addresses.</para>
 		/// </summary>
@@ -2871,664 +1178,6 @@ namespace Vanara.PInvoke
 			/// <param name="table">The MIB_IPNETTABLE instance.</param>
 			/// <returns>The result of the conversion.</returns>
 			public static implicit operator IntPtr(MIB_IPNETTABLE table) => table.DangerousGetHandle();
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>MIB_TCP6TABLE_OWNER_MODULE</c> structure contains a table of process IDs (PIDs) and the IPv6 TCP links context bound to
-		/// these PIDs with any available ownership data.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The <c>MIB_TCP6TABLE_OWNER_MODULE</c> structure is returned by a call to GetExtendedTcpTable with the TableClass parameter set to
-		/// a <c>TCP_TABLE_OWNER_MODULE_LISTENER</c>, <c>TCP_TABLE_OWNER_MODULE_CONNECTIONS</c>, or <c>TCP_TABLE_OWNER_MODULE_ALL</c> from
-		/// the TCP_TABLE_CLASS enumeration and the ulAf parameter set to <c>AF_INET6</c>.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_TCP6TABLE_OWNER_MODULE</c> structure may contain padding for alignment between the <c>dwNumEntries</c> member and the
-		/// first MIB_TCP6ROW_OWNER_MODULE array entry in the <c>table</c> member. Padding for alignment may also be present between the
-		/// <c>MIB_TCP6ROW_OWNER_MODULE</c> array entries in the <c>table</c> member. Any access to a <c>MIB_TCP6ROW_OWNER_MODULE</c> array
-		/// entry should assume padding may exist.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed. This structure is defined in the Tcpmib.h header file, not in the Iprtrmib.h header file. Note that the Tcpmib.h
-		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Tcpmib.h
-		/// and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/tcpmib/ns-tcpmib-_mib_tcp6table_owner_module typedef struct
-		// _MIB_TCP6TABLE_OWNER_MODULE { DWORD dwNumEntries; MIB_TCP6ROW_OWNER_MODULE table[ANY_SIZE]; } MIB_TCP6TABLE_OWNER_MODULE, *PMIB_TCP6TABLE_OWNER_MODULE;
-		[PInvokeData("tcpmib.h", MSDNShortId = "aa52531c-1d4e-44f9-8638-1528beb491f3")]
-		[CorrespondingType(typeof(MIB_TCP6ROW_OWNER_MODULE))]
-		[DefaultProperty(nameof(table))]
-		public class MIB_TCP6TABLE_OWNER_MODULE : SafeElementArray<MIB_TCP6ROW_OWNER_MODULE, uint, CoTaskMemoryMethods>
-		{
-			/// <summary>Initializes a new instance of the <see cref="MIB_TCP6TABLE_OWNER_MODULE"/> class.</summary>
-			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
-			public MIB_TCP6TABLE_OWNER_MODULE(uint byteSize) : base((int)byteSize, 0)
-			{
-			}
-
-			/// <summary>
-			/// <para>The number of MIB_TCP6ROW_OWNER_MODULE elements in the <c>table</c>.</para>
-			/// </summary>
-			public uint dwNumEntries => Count;
-
-			/// <summary>
-			/// <para>Array of MIB_TCP6ROW_OWNER_MODULE structures returned by a call to GetExtendedTcpTable.</para>
-			/// </summary>
-			public MIB_TCP6ROW_OWNER_MODULE[] table { get => Elements; set => Elements = value; }
-
-			/// <summary>Performs an implicit conversion from <see cref="MIB_TCP6TABLE_OWNER_MODULE"/> to <see cref="IntPtr"/>.</summary>
-			/// <param name="table">The MIB_TCP6TABLE_OWNER_MODULE instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator IntPtr(MIB_TCP6TABLE_OWNER_MODULE table) => table.DangerousGetHandle();
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>MIB_TCP6TABLE_OWNER_PID</c> structure contains a table of process IDs (PIDs) and the IPv6 TCP links that are context bound
-		/// to these PIDs.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The <c>MIB_TCP6TABLE_OWNER_PID</c> structure is returned by a call to GetExtendedTcpTable with the TableClass parameter set to
-		/// <c>TCP_TABLE_OWNER_PID_LISTENER</c>, <c>TCP_TABLE_OWNER_PID_CONNECTIONS</c>, or <c>TCP_TABLE_OWNER_PID_ALL</c> from the
-		/// TCP_TABLE_CLASS enumeration and the ulAf parameter set to <c>AF_INET6</c>.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_TCP6TABLE_OWNER_PID</c> structure may contain padding for alignment between the <c>dwNumEntries</c> member and the
-		/// first MIB_TCP6ROW_OWNER_PID array entry in the <c>table</c> member. Padding for alignment may also be present between the
-		/// <c>MIB_TCP6ROW_OWNER_PID</c> array entries in the <c>table</c> member. Any access to a <c>MIB_TCP6ROW_OWNER_PID</c> array entry
-		/// should assume padding may exist.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed. This structure is defined in the Tcpmib.h header file, not in the Iprtrmib.h header file. Note that the Tcpmib.h
-		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Tcpmib.h
-		/// and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/tcpmib/ns-tcpmib-_mib_tcp6table_owner_pid typedef struct
-		// _MIB_TCP6TABLE_OWNER_PID { DWORD dwNumEntries; MIB_TCP6ROW_OWNER_PID table[ANY_SIZE]; } MIB_TCP6TABLE_OWNER_PID, *PMIB_TCP6TABLE_OWNER_PID;
-		[PInvokeData("tcpmib.h", MSDNShortId = "93629d1d-e5f2-4ae8-b585-17e39ae4986d")]
-		[CorrespondingType(typeof(MIB_TCP6ROW_OWNER_PID))]
-		[DefaultProperty(nameof(table))]
-		public class MIB_TCP6TABLE_OWNER_PID : SafeElementArray<MIB_TCP6ROW_OWNER_PID, uint, CoTaskMemoryMethods>
-		{
-			/// <summary>Initializes a new instance of the <see cref="MIB_TCP6TABLE_OWNER_PID"/> class.</summary>
-			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
-			public MIB_TCP6TABLE_OWNER_PID(uint byteSize) : base((int)byteSize, 0)
-			{
-			}
-
-			/// <summary>
-			/// <para>The number of MIB_TCP6ROW_OWNER_PID elements in the <c>table</c>.</para>
-			/// </summary>
-			public uint dwNumEntries => Count;
-
-			/// <summary>
-			/// <para>Array of MIB_TCP6ROW_OWNER_PID structures returned by a call to GetExtendedTcpTable.</para>
-			/// </summary>
-			public MIB_TCP6ROW_OWNER_PID[] table { get => Elements; set => Elements = value; }
-
-			/// <summary>Performs an implicit conversion from <see cref="MIB_TCP6TABLE_OWNER_PID"/> to <see cref="IntPtr"/>.</summary>
-			/// <param name="table">The MIB_TCP6TABLE_OWNER_PID instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator IntPtr(MIB_TCP6TABLE_OWNER_PID table) => table.DangerousGetHandle();
-		}
-
-		/// <summary>
-		/// <para>The <c>MIB_TCPTABLE</c> structure contains a table of TCP connections for IPv4 on the local computer.</para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The GetTcpTable function retrieves the IPv4 TCP connection table on the local computer and returns this information in a
-		/// <c>MIB_TCPTABLE</c> structure. An array of MIB_TCPROW structures are contained in the <c>MIB_TCPTABLE</c> structure.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_TCPTABLE</c> structure may contain padding for alignment between the <c>dwNumEntries</c> member and the first
-		/// MIB_TCPROW array entry in the <c>table</c> member. Padding for alignment may also be present between the <c>MIB_TCPROW</c> array
-		/// entries in the <c>table</c> member. Any access to a <c>MIB_TCPROW</c> array entry should assume padding may exist.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed. This structure is defined in the Tcpmib.h header file, not in the Iprtrmib.h header file. Note that the Tcpmib.h
-		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Tcpmib.h
-		/// and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// <para>Examples</para>
-		/// <para>
-		/// The following example retrieves the TCP connection table for IPv4 as a <c>MIB_TCPTABLE</c> structure and prints the state of each
-		/// connection represented as a MIB_TCPROW structure.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/tcpmib/ns-tcpmib-_mib_tcptable typedef struct _MIB_TCPTABLE
-		// { DWORD dwNumEntries; MIB_TCPROW table[ANY_SIZE]; } MIB_TCPTABLE, *PMIB_TCPTABLE;
-		[PInvokeData("tcpmib.h", MSDNShortId = "a8ed8ac2-a72f-4099-ac99-a8b0b77b7b84")]
-		[CorrespondingType(typeof(MIB_TCPROW))]
-		[DefaultProperty(nameof(table))]
-		public class MIB_TCPTABLE : SafeElementArray<MIB_TCPROW, uint, CoTaskMemoryMethods>
-		{
-			/// <summary>Initializes a new instance of the <see cref="MIB_TCPTABLE"/> class.</summary>
-			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
-			public MIB_TCPTABLE(uint byteSize) : base((int)byteSize, 0)
-			{
-			}
-
-			/// <summary>
-			/// <para>The number of entries in the table.</para>
-			/// </summary>
-			public uint dwNumEntries => Count;
-
-			/// <summary>
-			/// <para>A pointer to a table of TCP connections implemented as an array of MIB_TCPROW structures.</para>
-			/// </summary>
-			public MIB_TCPROW[] table { get => Elements; set => Elements = value; }
-
-			/// <summary>Performs an implicit conversion from <see cref="MIB_TCPTABLE"/> to <see cref="System.IntPtr"/>.</summary>
-			/// <param name="table">The MIB_TCPTABLE instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator IntPtr(MIB_TCPTABLE table) => table.DangerousGetHandle();
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>MIB_TCPTABLE_OWNER_MODULE</c> structure contains a table of process IDs (PIDs) and the IPv4 TCP links context bound to the
-		/// PIDs, and any available ownership data.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// This table is specifically returned by a call to GetExtendedTcpTable with the TableClass parameter set to a
-		/// <c>TCP_TABLE_OWNER_MODULE_*</c> value from the TCP_TABLE_CLASS enumeration and the ulAf parameter set to <c>AF_INET4</c>.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_TCPTABLE_OWNER_MODULE</c> structure may contain padding for alignment between the <c>dwNumEntries</c> member and the
-		/// first MIB_TCPROW_OWNER_MODULE array entry in the <c>table</c> member. Padding for alignment may also be present between the
-		/// <c>MIB_TCPROW_OWNER_MODULE</c> array entries in the <c>table</c> member. Any access to a <c>MIB_TCPROW_OWNER_MODULE</c> array
-		/// entry should assume padding may exist.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed. This structure is defined in the Tcpmib.h header file, not in the Iprtrmib.h header file. Note that the Tcpmib.h
-		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Tcpmib.h
-		/// and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/tcpmib/ns-tcpmib-_mib_tcptable_owner_module typedef struct
-		// _MIB_TCPTABLE_OWNER_MODULE { DWORD dwNumEntries; MIB_TCPROW_OWNER_MODULE table[ANY_SIZE]; } MIB_TCPTABLE_OWNER_MODULE, *PMIB_TCPTABLE_OWNER_MODULE;
-		[PInvokeData("tcpmib.h", MSDNShortId = "d44c9d82-906b-43ea-8edd-cf973864668d")]
-		[CorrespondingType(typeof(MIB_TCPROW_OWNER_MODULE))]
-		[DefaultProperty(nameof(table))]
-		public class MIB_TCPTABLE_OWNER_MODULE : SafeElementArray<MIB_TCPROW_OWNER_MODULE, uint, CoTaskMemoryMethods>
-		{
-			/// <summary>Initializes a new instance of the <see cref="MIB_TCPTABLE_OWNER_MODULE"/> class.</summary>
-			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
-			public MIB_TCPTABLE_OWNER_MODULE(uint byteSize) : base((int)byteSize, 0)
-			{
-			}
-
-			/// <summary>
-			/// <para>The number of MIB_TCPROW_OWNER_MODULE elements in the <c>table</c>.</para>
-			/// </summary>
-			public uint dwNumEntries => Count;
-
-			/// <summary>
-			/// <para>Array of MIB_TCPROW_OWNER_MODULE structures returned by a call to GetExtendedTcpTable.</para>
-			/// </summary>
-			public MIB_TCPROW_OWNER_MODULE[] table { get => Elements; set => Elements = value; }
-
-			/// <summary>Performs an implicit conversion from <see cref="MIB_TCPTABLE_OWNER_MODULE"/> to <see cref="IntPtr"/>.</summary>
-			/// <param name="table">The MIB_TCPTABLE_OWNER_MODULE instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator IntPtr(MIB_TCPTABLE_OWNER_MODULE table) => table.DangerousGetHandle();
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>MIB_TCPTABLE_OWNER_PID</c> structure contains a table of process IDs (PIDs) and the IPv4 TCP links that are context bound
-		/// to these PIDs.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// This table is specifically returned by a call to GetExtendedTcpTable with the TableClass parameter set to a
-		/// <c>TCP_TABLE_OWNER_PID_*</c> value from the TCP_TABLE_CLASS enumeration and the ulAf parameter set to <c>AF_INET4</c>.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_TCPTABLE_OWNER_PID</c> structure may contain padding for alignment between the <c>dwNumEntries</c> member and the
-		/// first MIB_TCPROW_OWNER_PID array entry in the <c>table</c> member. Padding for alignment may also be present between the
-		/// <c>MIB_TCPROW_OWNER_PID</c> array entries in the <c>table</c> member. Any access to a <c>MIB_TCPROW_OWNER_PID</c> array entry
-		/// should assume padding may exist.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed. This structure is defined in the Tcpmib.h header file, not in the Iprtrmib.h header file. Note that the Tcpmib.h
-		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Tcpmib.h
-		/// and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/tcpmib/ns-tcpmib-_mib_tcptable_owner_pid typedef struct
-		// _MIB_TCPTABLE_OWNER_PID { DWORD dwNumEntries; MIB_TCPROW_OWNER_PID table[ANY_SIZE]; } MIB_TCPTABLE_OWNER_PID, *PMIB_TCPTABLE_OWNER_PID;
-		[PInvokeData("tcpmib.h", MSDNShortId = "ef39b832-1f22-468a-8734-c7d9bd3ac965")]
-		[CorrespondingType(typeof(MIB_TCPROW_OWNER_PID))]
-		[DefaultProperty(nameof(table))]
-		public class MIB_TCPTABLE_OWNER_PID : SafeElementArray<MIB_TCPROW_OWNER_PID, uint, CoTaskMemoryMethods>
-		{
-			/// <summary>Initializes a new instance of the <see cref="MIB_TCPTABLE_OWNER_PID"/> class.</summary>
-			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
-			public MIB_TCPTABLE_OWNER_PID(uint byteSize) : base((int)byteSize, 0)
-			{
-			}
-
-			/// <summary>
-			/// <para>The number of MIB_TCPROW_OWNER_PID elements in the <c>table</c>.</para>
-			/// </summary>
-			public uint dwNumEntries => Count;
-
-			/// <summary>
-			/// <para>Array of MIB_TCPROW_OWNER_PID structures returned by a call to GetExtendedTcpTable.</para>
-			/// </summary>
-			public MIB_TCPROW_OWNER_PID[] table { get => Elements; set => Elements = value; }
-
-			/// <summary>Performs an implicit conversion from <see cref="MIB_TCPTABLE_OWNER_PID"/> to <see cref="IntPtr"/>.</summary>
-			/// <param name="table">The MIB_TCPTABLE_OWNER_PID instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator IntPtr(MIB_TCPTABLE_OWNER_PID table) => table.DangerousGetHandle();
-		}
-
-		/// <summary>
-		/// <para>The <c>MIB_UDP6TABLE</c> structure contains the User Datagram Protocol (UDP) listener table for IPv6 on the local computer.</para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The GetUdp6Table function enumerates the UDP endpoints for IPv6 that have been bound to an address on the local computer and
-		/// returns this information in a <c>MIB_UDP6TABLE</c> structure.
-		/// </para>
-		/// <para>
-		/// This table includes the local IPv6 address, scope ID, and port information for sending and receiving UDP datagrams on the local
-		/// computer. An array of MIB_UDP6ROW structures are contained in the <c>MIB_UDP6TABLE</c> structure.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_UDP6TABLE</c> structure may contain padding for alignment between the <c>dwNumEntries</c> member and the first
-		/// MIB_UDP6ROW array entry in the <c>table</c> member. Padding for alignment may also be present between the <c>MIB_UDP6ROW</c>
-		/// array entries in the <c>table</c> member. Any access to a <c>MIB_UDP6ROW</c> array entry should assume padding may exist.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_UDP6TABLE</c> structure contains the UDP listener table for IPv6 on the local computer. The name is based on the
-		/// definition of this table in RFC 2454 published by the IETF. For more information, see http://www.ietf.org/rfc/rfc2454.txt. This
-		/// table contains UDP endpoints for IPv6 that have been bound to an address. It should be noted that an application can create a UDP
-		/// socket and bind it to an address for the sole purpose of sending a UDP datagram, with no intention of receiving packets using
-		/// this socket (functioning as a listener).
-		/// </para>
-		/// <para>
-		/// The MIB_UDP6TABLE_OWNER_MODULE structure is an enhanced version of the MIB_UDP6TABLE_OWNER_PID structure that includes any
-		/// available ownership data for each UDP endpoint in the table. The <c>MIB_UDP6TABLE_OWNER_PID</c> is an enhanced version of the
-		/// <c>MIB_UDP6TABLE</c> that includes the process ID (PID) that issued the call to the bind function for each UDP endpoint in the table.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/udpmib/ns-udpmib-_mib_udp6table typedef struct
-		// _MIB_UDP6TABLE { DWORD dwNumEntries; MIB_UDP6ROW table[ANY_SIZE]; } MIB_UDP6TABLE, *PMIB_UDP6TABLE;
-		[PInvokeData("udpmib.h", MSDNShortId = "49da9a1f-f244-464e-96b2-944a286445d4")]
-		[CorrespondingType(typeof(MIB_UDP6ROW))]
-		[DefaultProperty(nameof(table))]
-		public class MIB_UDP6TABLE : SafeElementArray<MIB_UDP6ROW, uint, CoTaskMemoryMethods>
-		{
-			/// <summary>Initializes a new instance of the <see cref="MIB_UDP6TABLE"/> class.</summary>
-			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
-			public MIB_UDP6TABLE(uint byteSize) : base((int)byteSize, 0)
-			{
-			}
-
-			/// <summary>
-			/// <para>The number of entries in the table.</para>
-			/// </summary>
-			public uint dwNumEntries => Count;
-
-			/// <summary>
-			/// <para>A pointer to an array of MIB_UDP6ROW structures.</para>
-			/// </summary>
-			public MIB_UDP6ROW[] table { get => Elements; set => Elements = value; }
-
-			/// <summary>Performs an implicit conversion from <see cref="MIB_UDP6TABLE"/> to <see cref="IntPtr"/>.</summary>
-			/// <param name="table">The MIB_UDP6TABLE instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator IntPtr(MIB_UDP6TABLE table) => table.DangerousGetHandle();
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>MIB_UDP6TABLE_OWNER_MODULE</c> structure contains the User Datagram Protocol (UDP) listener table for IPv6 on the local
-		/// computer. The table also includes any available ownership data and the process ID (PID) that issued the call to the bind function
-		/// for each UDP endpoint.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The <c>MIB_UDP6TABLE_OWNER_MODULE</c> structure is returned by a call to GetExtendedUdpTable with the TableClass parameter set to
-		/// a <c>UDP_TABLE_OWNER_MODULE</c> from the UDP_TABLE_CLASS enumeration and the ulAf parameter set to <c>AF_INET6</c>. The
-		/// <c>MIB_UDP6TABLE_OWNER_MODULE</c> structure contains an array of MIB_UDP6ROW_OWNER_MODULE structures.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_UDP6TABLE_OWNER_MODULE</c> structure may contain padding for alignment between the <c>dwNumEntries</c> member and the
-		/// first MIB_UDP6ROW_OWNER_MODULE array entry in the <c>table</c> member. Padding for alignment may also be present between the
-		/// <c>MIB_UDP6ROW_OWNER_MODULE</c> array entries in the <c>table</c> member. Any access to a <c>MIB_UDP6ROW_OWNER_MODULE</c> array
-		/// entry should assume padding may exist.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_UDP6TABLE_OWNER_MODULE</c> structure contains the UDP listener table for IPv6 on the local computer. The name is based
-		/// on the definition of this table in RFC 2454 published by the IETF. For more information, see http://www.ietf.org/rfc/rfc2454.txt.
-		/// This table contains UDP endpoints for IPv6 that have been bound to an address. It should be noted that an application can create
-		/// a UDP socket and bind it to an address for the sole purpose of sending a UDP datagram, with no intention of receiving packets
-		/// using this socket (functioning as a listener).
-		/// </para>
-		/// <para>
-		/// The <c>MIB_UDP6TABLE_OWNER_MODULE</c> structure is an enhanced version of the MIB_UDP6TABLE_OWNER_PID structure that includes any
-		/// available ownership data for each UDP endpoint in the table. The <c>MIB_UDP6TABLE_OWNER_PID</c> is an enhanced version of the
-		/// MIB_UDP6TABLE that includes the process ID (PID) that issued the call to the bind function for each UDP endpoint in the table.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed. This structure is defined in the Udpmib.h header file, not in the Iprtrmib.h header file. Note that the Udpmib.h
-		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Udpmib.h
-		/// and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/udpmib/ns-udpmib-_mib_udp6table_owner_module typedef struct
-		// _MIB_UDP6TABLE_OWNER_MODULE { DWORD dwNumEntries; MIB_UDP6ROW_OWNER_MODULE table[ANY_SIZE]; } MIB_UDP6TABLE_OWNER_MODULE, *PMIB_UDP6TABLE_OWNER_MODULE;
-		[PInvokeData("udpmib.h", MSDNShortId = "11bf2d6d-b9bc-4a4d-b7b0-6f7d61eb3756")]
-		[CorrespondingType(typeof(MIB_UDP6ROW_OWNER_MODULE))]
-		[DefaultProperty(nameof(table))]
-		public class MIB_UDP6TABLE_OWNER_MODULE : SafeElementArray<MIB_UDP6ROW_OWNER_MODULE, uint, CoTaskMemoryMethods>
-		{
-			/// <summary>Initializes a new instance of the <see cref="MIB_UDP6TABLE_OWNER_MODULE"/> class.</summary>
-			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
-			public MIB_UDP6TABLE_OWNER_MODULE(uint byteSize) : base((int)byteSize, 0)
-			{
-			}
-
-			/// <summary>
-			/// <para>The number of MIB_UDP6ROW_OWNER_MODULE elements in <c>table</c>.</para>
-			/// </summary>
-			public uint dwNumEntries => Count;
-
-			/// <summary>
-			/// <para>An array of MIB_UDP6ROW_OWNER_MODULE structures returned by a call to GetExtendedUdpTable.</para>
-			/// </summary>
-			public MIB_UDP6ROW_OWNER_MODULE[] table { get => Elements; set => Elements = value; }
-
-			/// <summary>Performs an implicit conversion from <see cref="MIB_UDP6TABLE_OWNER_MODULE"/> to <see cref="IntPtr"/>.</summary>
-			/// <param name="table">The MIB_UDP6TABLE_OWNER_MODULE instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator IntPtr(MIB_UDP6TABLE_OWNER_MODULE table) => table.DangerousGetHandle();
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>MIB_UDP6TABLE_OWNER_PID</c> structure contains the User Datagram Protocol (UDP) listener table for IPv6 on the local
-		/// computer. The table also includes the process ID (PID) that issued the call to the bind function for each UDP endpoint.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The <c>MIB_UDP6TABLE_OWNER_PID</c> structure is returned by a call to GetExtendedUdpTable with the TableClass parameter set to a
-		/// <c>UDP_TABLE_OWNER_PID</c> from the UDP_TABLE_CLASS enumeration and the ulAf parameter set to <c>AF_INET6</c>. The
-		/// <c>MIB_UDP6TABLE_OWNER_PID</c> structure contains an array of MIB_UDP6ROW_OWNER_PID structures.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_UDP6TABLE_OWNER_PID</c> structure may contain padding for alignment between the <c>dwNumEntries</c> member and the
-		/// first MIB_UDP6ROW_OWNER_PID array entry in the <c>table</c> member. Padding for alignment may also be present between the
-		/// <c>MIB_UDP6ROW_OWNER_PID</c> array entries in the <c>table</c> member. Any access to a <c>MIB_UDP6ROW_OWNER_PID</c> array entry
-		/// should assume padding may exist.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_UDP6TABLE_OWNER_PID</c> structure contains the UDP listener table for IPv6 on the local computer. The name is based on
-		/// the definition of this table in RFC 2454 published by the IETF. For more information, see http://www.ietf.org/rfc/rfc2454.txt.
-		/// This table contains UDP endpoints for IPv6 that have been bound to an address. It should be noted that an application can create
-		/// a UDP socket and bind it to an address for the sole purpose of sending a UDP datagram, with no intention of receiving packets
-		/// using this socket (functioning as a listener).
-		/// </para>
-		/// <para>
-		/// The MIB_UDP6TABLE_OWNER_MODULE structure is an enhanced version of the <c>MIB_UDP6TABLE_OWNER_PID</c> structure that includes any
-		/// available ownership data for each UDP endpoint in the table. The <c>MIB_UDP6TABLE_OWNER_PID</c> is an enhanced version of the
-		/// MIB_UDP6TABLE that includes the process ID (PID) that issued the call to the bind function for each UDP endpoint in the table.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed. This structure is defined in the Udpmib.h header file, not in the Iprtrmib.h header file. Note that the Udpmib.h
-		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Udpmib.h
-		/// and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/udpmib/ns-udpmib-_mib_udp6table_owner_pid typedef struct
-		// _MIB_UDP6TABLE_OWNER_PID { DWORD dwNumEntries; MIB_UDP6ROW_OWNER_PID table[ANY_SIZE]; } MIB_UDP6TABLE_OWNER_PID, *PMIB_UDP6TABLE_OWNER_PID;
-		[PInvokeData("udpmib.h", MSDNShortId = "6c8d1cb9-209b-47a0-b41c-6b4098a4a81e")]
-		[CorrespondingType(typeof(MIB_UDP6ROW_OWNER_PID))]
-		[DefaultProperty(nameof(table))]
-		public class MIB_UDP6TABLE_OWNER_PID : SafeElementArray<MIB_UDP6ROW_OWNER_PID, uint, CoTaskMemoryMethods>
-		{
-			/// <summary>Initializes a new instance of the <see cref="MIB_UDP6TABLE_OWNER_PID"/> class.</summary>
-			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
-			public MIB_UDP6TABLE_OWNER_PID(uint byteSize) : base((int)byteSize, 0)
-			{
-			}
-
-			/// <summary>
-			/// <para>The number of MIB_UDP6ROW_OWNER_PID elements in <c>table</c>.</para>
-			/// </summary>
-			public uint dwNumEntries => Count;
-
-			/// <summary>
-			/// <para>An array of MIB_UDP6ROW_OWNER_PID structures returned by a call to GetExtendedUdpTable.</para>
-			/// </summary>
-			public MIB_UDP6ROW_OWNER_PID[] table { get => Elements; set => Elements = value; }
-
-			/// <summary>Performs an implicit conversion from <see cref="MIB_UDP6TABLE_OWNER_PID"/> to <see cref="IntPtr"/>.</summary>
-			/// <param name="table">The MIB_UDP6TABLE_OWNER_PID instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator IntPtr(MIB_UDP6TABLE_OWNER_PID table) => table.DangerousGetHandle();
-		}
-
-		/// <summary>
-		/// <para>The <c>MIB_UDPTABLE</c> structure contains the User Datagram Protocol (UDP) listener table for IPv4 on the local computer.</para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The GetUdpTable function enumerates the table of UDP endpoints for IPv4 that have been bound to an address on the local computer
-		/// and returns this information in a <c>MIB_UDPTABLE</c> structure.
-		/// </para>
-		/// <para>
-		/// This table includes the local IPv4 address and port information for sending and receiving UDP datagrams on the local computer. An
-		/// array of MIB_UDPROW structures are contained in the <c>MIB_UDPTABLE</c> structure.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_UDPTABLE</c> structure may contain padding for alignment between the <c>dwNumEntries</c> member and the first
-		/// MIB_UDPROW array entry in the <c>table</c> member. Padding for alignment may also be present between the <c>MIB_UDPROW</c> array
-		/// entries in the <c>table</c> member. Any access to a <c>MIB_UDPROW</c> array entry should assume padding may exist.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_UDPTABLE</c> structure contains the UDP listener table for IPv4 on the local computer. The name is based on the
-		/// definition of this table in RFC 1213 published by the IETF. For more information, see http://www.ietf.org/rfc/rfc1213.txt. This
-		/// table contains UDP endpoints for IPv4 that have been bound to an address. It should be noted that an application can create a UDP
-		/// socket and bind it to an address for the sole purpose of sending a UDP datagram, with no intention of receiving packets using
-		/// this socket (functioning as a listener).
-		/// </para>
-		/// <para>
-		/// The MIB_UDPTABLE_OWNER_MODULE structure is an enhanced version of the MIB_UDPTABLE_OWNER_PID structure that includes any
-		/// available ownership data for each UDP endpoint in the table. The <c>MIB_UDPTABLE_OWNER_PID</c> is an enhanced version of the
-		/// <c>MIB_UDPTABLE</c> that includes the process ID (PID) that issued the call to the bind function for each UDP endpoint in the table.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed. This structure is defined in the Udpmib.h header file, not in the Iprtrmib.h header file. Note that the Udpmib.h
-		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Udpmib.h
-		/// and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/udpmib/ns-udpmib-_mib_udptable typedef struct _MIB_UDPTABLE
-		// { DWORD dwNumEntries; MIB_UDPROW table[ANY_SIZE]; } MIB_UDPTABLE, *PMIB_UDPTABLE;
-		[PInvokeData("udpmib.h", MSDNShortId = "83608d38-e352-483a-b284-2f9cb444e64f")]
-		[CorrespondingType(typeof(MIB_UDPROW))]
-		[DefaultProperty(nameof(table))]
-		public class MIB_UDPTABLE : SafeElementArray<MIB_UDPROW, uint, CoTaskMemoryMethods>
-		{
-			/// <summary>Initializes a new instance of the <see cref="MIB_UDPTABLE"/> class.</summary>
-			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
-			public MIB_UDPTABLE(uint byteSize) : base((int)byteSize, 0)
-			{
-			}
-
-			/// <summary>
-			/// <para>The number of entries in the table.</para>
-			/// </summary>
-			public uint dwNumEntries => Count;
-
-			/// <summary>
-			/// <para>A pointer to an array of MIB_UDPROW structures.</para>
-			/// </summary>
-			public MIB_UDPROW[] table { get => Elements; set => Elements = value; }
-
-			/// <summary>Performs an implicit conversion from <see cref="MIB_UDPTABLE"/> to <see cref="IntPtr"/>.</summary>
-			/// <param name="table">The MIB_UDPTABLE instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator IntPtr(MIB_UDPTABLE table) => table.DangerousGetHandle();
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>MIB_UDPTABLE_OWNER_MODULE</c> structure contains the User Datagram Protocol (UDP) listener table for IPv4 on the local
-		/// computer. The table also includes any available ownership data and the process ID (PID) that issued the call to the bind function
-		/// for each UDP endpoint.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The <c>MIB_UDPTABLE_OWNER_MODULE</c> structure is returned by a call to GetExtendedUdpTable with the TableClass parameter set to
-		/// <c>UDP_TABLE_OWNER_MODULE</c> from the UDP_TABLE_CLASS enumeration and the ulAf parameter set to <c>AF_INET4</c>. The
-		/// <c>MIB_UDPTABLE_OWNER_MODULE</c> structure contains an array of MIB_UDPROW_OWNER_MODULE structures.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_UDPTABLE_OWNER_MODULE</c> structure may contain padding for alignment between the <c>dwNumEntries</c> member and the
-		/// first MIB_UDPROW_OWNER_MODULE array entry in the <c>table</c> member. Padding for alignment may also be present between the
-		/// <c>MIB_UDPROW_OWNER_MODULE</c> array entries in the <c>table</c> member. Any access to a <c>MIB_UDPROW_OWNER_MODULE</c> array
-		/// entry should assume padding may exist.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_UDPTABLE_OWNER_MODULE</c> structure contains the UDP listener table for IPv4 on the local computer. The name is based
-		/// on the definition of this table in RFC 1213 published by the IETF. For more information, see http://www.ietf.org/rfc/rfc1213.txt.
-		/// This table contains UDP endpoints for IPv4 that have been bound to an address. It should be noted that an application can create
-		/// a UDP socket and bind it to an address for the sole purpose of sending a UDP datagram, with no intention of receiving packets
-		/// using this socket (functioning as a listener).
-		/// </para>
-		/// <para>
-		/// The <c>MIB_UDPTABLE_OWNER_MODULE</c> structure is an enhanced version of the MIB_UDPTABLE_OWNER_PID structure that includes any
-		/// available ownership data for each UDP endpoint in the table. The <c>MIB_UDPTABLE_OWNER_PID</c> is an enhanced version of the
-		/// MIB_UDPTABLE that includes the process ID (PID) that issued the call to the bind function for each UDP endpoint in the table.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed. This structure is defined in the Udpmib.h header file, not in the Iprtrmib.h header file. Note that the Udpmib.h
-		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Udpmib.h
-		/// and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/udpmib/ns-udpmib-_mib_udptable_owner_module typedef struct
-		// _MIB_UDPTABLE_OWNER_MODULE { DWORD dwNumEntries; MIB_UDPROW_OWNER_MODULE table[ANY_SIZE]; } MIB_UDPTABLE_OWNER_MODULE, *PMIB_UDPTABLE_OWNER_MODULE;
-		[PInvokeData("udpmib.h", MSDNShortId = "909749d7-a6be-4b3a-b432-79a5aa6e3f4c")]
-		[CorrespondingType(typeof(MIB_UDPROW_OWNER_MODULE))]
-		[DefaultProperty(nameof(table))]
-		public class MIB_UDPTABLE_OWNER_MODULE : SafeElementArray<MIB_UDPROW_OWNER_MODULE, uint, CoTaskMemoryMethods>
-		{
-			/// <summary>Initializes a new instance of the <see cref="MIB_UDPTABLE_OWNER_MODULE"/> class.</summary>
-			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
-			public MIB_UDPTABLE_OWNER_MODULE(uint byteSize) : base((int)byteSize, 0)
-			{
-			}
-
-			/// <summary>
-			/// <para>The number of MIB_UDPROW_OWNER_MODULE elements in <c>table</c>.</para>
-			/// </summary>
-			public uint dwNumEntries => Count;
-
-			/// <summary>
-			/// <para>An array of MIB_UDPROW_OWNER_MODULE structures returned by a call to GetExtendedUdpTable.</para>
-			/// </summary>
-			public MIB_UDPROW_OWNER_MODULE[] table { get => Elements; set => Elements = value; }
-
-			/// <summary>Performs an implicit conversion from <see cref="MIB_UDPTABLE_OWNER_MODULE"/> to <see cref="IntPtr"/>.</summary>
-			/// <param name="table">The MIB_UDPTABLE_OWNER_MODULE instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator IntPtr(MIB_UDPTABLE_OWNER_MODULE table) => table.DangerousGetHandle();
-		}
-
-		/// <summary>
-		/// <para>
-		/// The <c>MIB_UDPTABLE_OWNER_PID</c> structure contains the User Datagram Protocol (UDP) listener table for IPv4 on the local
-		/// computer. The table also includes the process ID (PID) that issued the call to the bind function for each UDP endpoint.
-		/// </para>
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The <c>MIB_UDPTABLE_OWNER_PID</c> structure is returned by a call to GetExtendedUdpTable with the TableClass parameter set to
-		/// <c>UDP_TABLE_OWNER_PID</c> from the UDP_TABLE_CLASS enumeration and the ulAf parameter set to <c>AF_INET4</c>. The
-		/// <c>MIB_UDPTABLE_OWNER_PID</c> structure contains an array of MIB_UDPROW_OWNER_PID structures.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_UDPTABLE_OWNER_PID</c> structure may contain padding for alignment between the <c>dwNumEntries</c> member and the
-		/// first MIB_UDPROW_OWNER_PID array entry in the <c>table</c> member. Padding for alignment may also be present between the
-		/// <c>MIB_UDPROW_OWNER_PID</c> array entries in the <c>table</c> member. Any access to a <c>MIB_UDPROW_OWNER_PID</c> array entry
-		/// should assume padding may exist.
-		/// </para>
-		/// <para>
-		/// The <c>MIB_UDPTABLE_OWNER_PID</c> structure contains the UDP listener table for IPv4 on the local computer. The name is based on
-		/// the definition of this table in RFC 1213 published by the IETF. For more information, see http://www.ietf.org/rfc/rfc1213.txt.
-		/// This table contains UDP endpoints for IPv4 that have been bound to an address. It should be noted that an application can create
-		/// a UDP socket and bind it to an address for the sole purpose of sending a UDP datagram, with no intention of receiving packets
-		/// using this socket (functioning as a listener).
-		/// </para>
-		/// <para>
-		/// The MIB_UDPTABLE_OWNER_MODULE structure is an enhanced version of the <c>MIB_UDPTABLE_OWNER_PID</c> structure that includes any
-		/// available ownership data for each UDP endpoint in the table. The <c>MIB_UDPTABLE_OWNER_PID</c> is an enhanced version of the
-		/// MIB_UDPTABLE that includes the process ID (PID) that issued the call to the bind function for each UDP endpoint in the table.
-		/// </para>
-		/// <para>
-		/// On the Microsoft Windows Software Development Kit (SDK) released for Windows Vista and later, the organization of header files
-		/// has changed. This structure is defined in the Udpmib.h header file, not in the Iprtrmib.h header file. Note that the Udpmib.h
-		/// header file is automatically included in Iprtrmib.h, which is automatically included in the Iphlpapi.h header file. The Udpmib.h
-		/// and Iprtrmib.h header files should never be used directly.
-		/// </para>
-		/// </remarks>
-		// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/udpmib/ns-udpmib-_mib_udptable_owner_pid typedef struct
-		// _MIB_UDPTABLE_OWNER_PID { DWORD dwNumEntries; MIB_UDPROW_OWNER_PID table[ANY_SIZE]; } MIB_UDPTABLE_OWNER_PID, *PMIB_UDPTABLE_OWNER_PID;
-		[PInvokeData("udpmib.h", MSDNShortId = "7c51a1e4-1e07-4fb1-8db3-e48229f12aca")]
-		[CorrespondingType(typeof(MIB_UDPROW_OWNER_PID))]
-		[DefaultProperty(nameof(table))]
-		public class MIB_UDPTABLE_OWNER_PID : SafeElementArray<MIB_UDPROW_OWNER_PID, uint, CoTaskMemoryMethods>
-		{
-			/// <summary>Initializes a new instance of the <see cref="MIB_UDPTABLE_OWNER_PID"/> class.</summary>
-			/// <param name="byteSize">Amount of space, in bytes, to reserve.</param>
-			public MIB_UDPTABLE_OWNER_PID(uint byteSize) : base((int)byteSize, 0)
-			{
-			}
-
-			/// <summary>
-			/// <para>The number of MIB_UDPROW_OWNER_PID elements in <c>table</c>.</para>
-			/// </summary>
-			public uint dwNumEntries => Count;
-
-			/// <summary>
-			/// <para>An array of MIB_UDPROW_OWNER_PID structures returned by a call to GetExtendedUdpTable.</para>
-			/// </summary>
-			public MIB_UDPROW_OWNER_PID[] table { get => Elements; set => Elements = value; }
-
-			/// <summary>Performs an implicit conversion from <see cref="MIB_UDPTABLE_OWNER_PID"/> to <see cref="IntPtr"/>.</summary>
-			/// <param name="table">The MIB_UDPTABLE_OWNER_PID instance.</param>
-			/// <returns>The result of the conversion.</returns>
-			public static implicit operator IntPtr(MIB_UDPTABLE_OWNER_PID table) => table.DangerousGetHandle();
 		}
 	}
 }
