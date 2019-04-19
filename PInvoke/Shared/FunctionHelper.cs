@@ -99,17 +99,30 @@ namespace Vanara.PInvoke
 		{
 			TSize sz = default;
 			result = default;
-			var err = getSize(ref sz);
+			var err = (getSize ?? GetSize)(ref sz);
 			if (err.Failed) return err;
-			var len = sz.ToInt32(null);
-			using (var buf = new SafeHGlobalHandle(len))
+			using (var buf = new SafeHGlobalHandle(sz.ToInt32(null)))
 			{
 				var ret = method(buf.DangerousGetHandle(), ref sz);
 				result = (outConverter ?? Conv)(buf.DangerousGetHandle(), sz);
 				return ret;
 			}
 
+			Win32Error GetSize(ref TSize sz1) { var serr = method(IntPtr.Zero, ref sz1); return serr == Win32Error.ERROR_INSUFFICIENT_BUFFER || serr == Win32Error.ERROR_MORE_DATA ? Win32Error.ERROR_SUCCESS : serr; }
 			TOut Conv(IntPtr p, TSize s) => p.ToStructure<TOut>();
+		}
+
+		/// <summary>Calls a method with buffer for a type and gets the result or error.</summary>
+		/// <typeparam name="TOut">The return type.</typeparam>
+		/// <typeparam name="TSize">The type of the size result. This is usually <see cref="int"/> or <see cref="uint"/>.</typeparam>
+		/// <param name="method">The lambda or method to call into.</param>
+		/// <param name="getSize">Method to get the size of the buffer.</param>
+		/// <param name="outConverter">An optional method to convert the pointer to the type specified by <typeparamref name="TOut"/>. By default, this will marshal the pointer to the structure.</param>
+		/// <returns>The resulting value of <typeparamref name="TOut"/>.</returns>
+		public static TOut CallMethodWithTypedBuf<TOut, TSize>(PtrFunc<TSize> method, SizeFunc<TSize> getSize = null, Func<IntPtr, TSize, TOut> outConverter = null) where TSize : struct, IConvertible
+		{
+			CallMethodWithTypedBuf(getSize, method, out var res, outConverter).ThrowIfFailed();
+			return res;
 		}
 	}
 }
