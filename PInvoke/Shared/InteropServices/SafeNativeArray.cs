@@ -10,7 +10,8 @@ namespace Vanara.InteropServices
 	/// <summary>
 	/// A safe unmanaged array of structures allocated on the global heap. Array size determined by allocated memory size divided by size of structure.
 	/// </summary>
-	public class SafeNativeArray<TElem> : SafeMemoryHandle<HGlobalMemoryMethods>, IList<TElem> where TElem : unmanaged
+	/// <typeparam name="TElem">The type of the array elements.</typeparam>
+	public class SafeNativeArray<TElem> : SafeMemoryHandle<HGlobalMemoryMethods>, IList<TElem> where TElem : struct
 	{
 		private static readonly int ElemSize = Marshal.SizeOf(typeof(TElem));
 
@@ -23,13 +24,18 @@ namespace Vanara.InteropServices
 
 		/// <summary>Initializes a new instance of the <see cref="SafeNativeArray{TElem}"/> class.</summary>
 		/// <param name="elementCount">The element count. This value can be 0.</param>
-		public SafeNativeArray(int elementCount) : base(GetRequiredSize(elementCount)) => Zero();
+		public SafeNativeArray(int elementCount) : base(GetRequiredSize(elementCount)) { }
 
 		/// <summary>Initializes a new instance of the <see cref="SafeNativeArray{TElem}"/> class.</summary>
-		/// <param name="ptr">The PTR.</param>
-		/// <param name="size">The size.</param>
-		/// <param name="ownsHandle">if set to <c>true</c> [owns handle].</param>
+		/// <param name="ptr">The handle.</param>
+		/// <param name="size">The size of memory allocated to the handle, in bytes.</param>
+		/// <param name="ownsHandle">if set to <c>true</c> if this class is responsible for freeing the memory on disposal.</param>
 		public SafeNativeArray(IntPtr ptr, int size, bool ownsHandle) : base(ptr, size, ownsHandle) { }
+
+		/// <summary>Initializes a new instance of the <see cref="SafeNativeArray{TElem}"/> class.</summary>
+		/// <param name="byteCount">The number of bytes to allocate for this new array.</param>
+		/// <param name="_">This parameter is ignored and is only used to distinguish this protected constructor.</param>
+		protected SafeNativeArray(int byteCount, bool _) : base(byteCount) { }
 
 		/// <summary>Gets the number of elements contained in the <see cref="SafeNativeArray{TElem}"/>.</summary>
 		public int Count => IsInvalid ? 0 : BytesToCount(Size);
